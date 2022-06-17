@@ -9,11 +9,11 @@
 }
 
 .landingBg {
-  @apply h-screen flex justify-end items-center px-5 md:px-10 lg:px-20;
+  @apply h-screen flex justify-end items-center px-4 md:px-10 lg:px-20;
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
-  background-image: url("../Assets/Images/fullBg.png");
+  background-image: url("../Assets/Images/fullBg.jpg");
 }
 
 .social_wrap img {
