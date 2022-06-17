@@ -17,19 +17,19 @@ const Login = () => {
     <div className="landingBg">
       <div className="signCard">
         <div className="flex justify-end">
-          <img src={logo} alt="logo" />
+          <img src={logo} alt="logo" className="h-6" />
         </div>
-        <div className="pb-10 pt-12 px-10 text-center">
+        <div className="pb-10 pt-12 px-1 md:px-7 text-center">
           <p className="text-sm text-right">
             Don't have an account?
-            <Link to="#!" className="text-red-800 font-semibold pl-3">
+            <Link to="#!" className="text-red-600 font-semibold pl-3">
               SIGN UP
             </Link>
           </p>
 
           <h1 className="text-2xl pt-5">Start free trial</h1>
           <p className="text-sm text-gray-400">Getting started is easy</p>
-          <div className="grid grid-cols-2 md:grid-cols-3 gap-4 mt-5">
+          <div className="grid grid-cols-3 gap-4 mt-5 social_wrap">
             <img src={microSoft} alt="" />
             <img src={slack} alt="" />
             <img src={linkedIn} alt="" />
@@ -40,11 +40,24 @@ const Login = () => {
             <img src={twiter} alt="" />
             <img src={apple} alt="" />
           </div>
-          <div className="flex gap-2">
-            <div className="h-1 w-full bg-gray-400"/>
-            <span>Or continue with</span>
-            <div className="h-1 w-full bg-gray-400"/>
+          <div className="grid grid-cols-3 place-items-center my-4">
+            <div className="w-4/5 bg-gray-400" style={{ height: "1px" }} />
+            <span className="text-sm">Or continue with</span>
+            <div className="w-4/5 bg-gray-400" style={{ height: "1px" }} />
           </div>
+          <form>
+            <input
+              type="email"
+              placeholder="Email"
+              className="w-full rounded-md py-2 px-3 border border-gray-400 focus:outline-none"
+            />
+            <button
+              type="submit"
+              className="bg-red-600 rounded hover:bg-opacity-70 transition ease-in duration-300 w-full text-white py-2 font-semibold mt-6"
+            >
+              NEXT
+            </button>
+          </form>
         </div>
       </div>
     </div>

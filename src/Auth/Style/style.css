@@ -16,7 +16,6 @@
   background-image: url("../Assets/Images/fullBg.png");
 }
 
-
-.signCard img {
-    @apply h-20;
+.social_wrap img {
+  @apply h-10 cursor-pointer hover:shadow-md transition ease-in duration-200;
 }
