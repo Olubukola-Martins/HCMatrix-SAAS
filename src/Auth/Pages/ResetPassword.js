@@ -11,9 +11,9 @@ import office365 from "../Assets/Images/office365.png";
 import google from "../Assets/Images/google.png";
 import twiter from "../Assets/Images/twiter.png";
 import apple from "../Assets/Images/apple.png";
-import EmailVerificationModal from "../Components/EmailVerificationModal";
+import SuccessResetPwdModal from "../Components/SuccessResetPwdModal";
 
-const Register = () => {
+const ResetPassword = () => {
   const [openModal,setOpenModal] = useState(false);
   const showModal = (val) => {
     setOpenModal(val);
@@ -26,7 +26,7 @@ const Register = () => {
 
   return (
     <div className="landingBg">
-      <EmailVerificationModal open = {openModal} handleClose = {() => showModal(false)}/>
+      <SuccessResetPwdModal open = {openModal} handleClose = {() => showModal(false)}/>
       <div className="signCard">
         <div className="flex justify-end">
           <img src={logo} alt="logo" className="h-6" />
@@ -58,37 +58,24 @@ const Register = () => {
             <div className="w-4/5 bg-gray-400" style={{ height: "1px" }} />
           </div>
           <form className = 'flex flex-col'>
-           
-            <input
-              type="text"
-              placeholder="Full Name*"
-              className="w-full rounded-md py-2 px-3 border border-gray-400 focus:outline-none mb-6"
-            />
-            <input
-              type="text"
-              placeholder="Organization*"
-              className="w-full rounded-md py-2 px-3 border border-gray-400 focus:outline-none mb-6"
-            />
-            <input
-              type="email"
-              placeholder="Business Email*"
-              className="w-full rounded-md py-2 px-3 border border-gray-400 focus:outline-none mb-6"
-            />
+         
             <input
               type="password"
               placeholder="Password*"
               className="w-full rounded-md py-2 px-3 border border-gray-400 focus:outline-none mb-6"
             />
-            <div className="flex align-start">
-              <input type = 'checkbox' className="mt-1 mr-1"/>
-              <p className = 'max-w-fit text-sm text-gray-400 text-left'>By continuing you indicate that you have read and agreed to the <Link to = '/terms-of-use' className = 'text-red-500'>TERMS OF USE</Link>  and  <Link className = 'text-red-500' to= '/privacy-policy'>PRIVACY POLICY</Link></p>
-            </div>
+            <input
+              type="password"
+              placeholder="Retype Password*"
+              className="w-full rounded-md py-2 px-3 border border-gray-400 focus:outline-none mb-6"
+            />
+          
             <button
               onClick={handleClick}
               type="submit"
               className="bg-red-600 capitalize rounded hover:bg-opacity-70 transition ease-in duration-300 w-full text-white py-2 font-semibold mt-6"
             >
-              Free SignUp
+              Reset Password
             </button>
           </form>
         </div>
@@ -97,4 +84,4 @@ const Register = () => {
   );
 };
 
-export default Register;
+export default ResetPassword;

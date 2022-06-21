@@ -9,7 +9,7 @@
 }
 
 .landingBg {
-  @apply h-screen flex justify-end items-center px-4 md:px-10 lg:px-20;
+  @apply min-h-screen flex justify-end items-center px-4 md:px-10 lg:px-20 py-10;
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
