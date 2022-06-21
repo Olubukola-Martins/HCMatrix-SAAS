@@ -13,12 +13,12 @@ const DashboardLayout = ({ children }) => {
   return (
     <div className="mode_color" data-theme={theme}>
       <TopBar switchTheme={switchTheme} theme={theme} />
-      <div className="flex w-full">
-        <div className="w-24 left-0 fixed overflow-y-auto">
+      <div className="flex w-full relative">
+        <div className="w-24 fixed ">
           <SideBar />
         </div>
 
-        <div className="flex-1">{children}</div>
+        <div className="flex-1 lg:ml-24">{children}</div>
       </div>
     </div>
   );

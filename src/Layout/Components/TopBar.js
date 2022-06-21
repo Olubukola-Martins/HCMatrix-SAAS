@@ -3,7 +3,7 @@ import logo from "../Images/logo.png";
 
 const TopBar = ({ switchTheme, theme }) => {
   return (
-    <div className="bg-tiger w-full py-2 sticky top-0">
+    <div className="bg-tiger w-full py-2 sticky top-0 z-50">
       <div className="Container flex items-center justify-between">
         <img src={logo} alt="logo" className="h-10" />
         <div className="flex items-center gap-2">
