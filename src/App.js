@@ -1,9 +1,10 @@
-import Login from "./Auth/Pages/Login";
+import Home from "./Home/Home";
+
 
 function App() {
   return (
     <>
-    <Login/>
+       <Home/>
     </>
   );
 }

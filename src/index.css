@@ -4,6 +4,24 @@
 
 @import url("https://fonts.googleapis.com/css2?family=Manrope:wght@200;300;400;500;600;700;800&display=swap");
 
+:root {
+  --background: #ffffff;
+  --text-color: #252526;
+  --caramel: #D69A00;
+  --tiger:#FF6647;
+  --card: #F6F7FB;
+}
+
+[data-theme="dark"] {
+  --background: #252526;
+  --text-color: #ffffff;
+  --caramel: #D69A00;
+  --tiger:#FF6647;
+  --card: #28282B;
+}
+
+
+
 html {
   scroll-behavior: smooth;
   overscroll-behavior-y: none;
@@ -13,6 +31,12 @@ body {
   font-family: "Manrope", sans-serif;
 }
 
-h1 {
-  font-weight: bold;
+.mode_color {
+  background-color: var(--background);
+  color: var(--text-color);
+  transition: all 0.5s;
+}
+
+.Container {
+  @apply container w-full mx-auto md:px-6 lg:px-6 px-5;
 }
