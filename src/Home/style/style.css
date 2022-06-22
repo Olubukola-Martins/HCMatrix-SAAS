@@ -5,7 +5,7 @@
 
 .setUp_progress2 {
   border-radius: 30px;
-  background-color: #E1E1E1;
+  background-color: var(--scrollBg);
 }
 
 .setUp_progress-bar2 {

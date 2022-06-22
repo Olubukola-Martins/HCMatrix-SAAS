@@ -8,7 +8,7 @@
   --background: #ffffff;
   --text-color: #252526;
   --caramel: #d69a00;
-  --tiger: #ff6647;
+  /* --tiger: #ff6647; */
   --card: #f6f7fb;
   --accent: #3a3a3a;
   --sideBar: #f6f7fb;
@@ -19,14 +19,22 @@
 [data-theme="dark"] {
   --background: #000000;
   --text-color: #ffffff;
-  --caramel: #d69a00;
-  --tiger: #ff6647;
   --card: #28282b;
   --accent: rgba(247, 249, 252, 0.7);
   --sideBar: #121212;
   --sideBarIcon: #28282b;
   --scrollBg: #808080;
 }
+
+[color-theme="orange"] {
+  --caramel: #ff6647;
+}
+
+[color-theme="green"] {
+  --caramel: #01966b;
+}
+
+
 
 html {
   scroll-behavior: smooth;

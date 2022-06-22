@@ -79,8 +79,8 @@ const Home = () => {
               </div>
             </div>
           </div>
-          <div className="bg-card rounded-xl px-5 py-4">
-            <h5 className="font-semibold text-accent">Pending Setup</h5>
+          <div className="bg-card rounded-xl px-5 py-4 text-accent">
+            <h5 className="font-semibold">Pending Setup</h5>
             <div className="flex flex-col gap-5 text-sm mt-4">
               <div>
                 <span>General setup(1/4)</span>
