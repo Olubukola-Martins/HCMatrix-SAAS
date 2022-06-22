@@ -3,10 +3,13 @@ import logo from "../Images/logo.png";
 
 const TopBar = ({ switchTheme, theme }) => {
   return (
-    <div className="bg-tiger w-full py-2 sticky top-0 z-50">
+    <div className="bg-caramel w-full py-2 sticky top-0 z-50">
       <div className="Container flex items-center justify-between">
         <img src={logo} alt="logo" className="h-10" />
-        <div className="flex items-center gap-2">
+      
+
+        <div className="flex gap-4 items-center">
+            <div className="flex items-center gap-2">
           <div class="relative w-full">
             <div class="flex absolute inset-y-0 left-0 items-center pl-3 pointer-events-none">
               <svg
@@ -24,14 +27,12 @@ const TopBar = ({ switchTheme, theme }) => {
             </div>
             <input
               type="text"
-              className="bg-white border border-white text-sm rounded-2xl focus:outline-none block w-full pl-10 py-1"
+              className="bg-white border border-white text-sm rounded-2xl focus:outline-none block w-full pl-10 py-1 pr-24"
               placeholder="Search..."
             />
           </div>
-          <i className="ri-equalizer-fill cursor-pointer h-8 w-10 rounded-full bg-white flex items-center justify-center text-tiger"></i>
+          <i className="ri-equalizer-fill cursor-pointer h-8 w-10 rounded-full bg-white flex items-center justify-center text-caramel"></i>
         </div>
-
-        <div className="flex gap-4 items-center">
           {theme === "light" ? (
             <i
               onClick={switchTheme}

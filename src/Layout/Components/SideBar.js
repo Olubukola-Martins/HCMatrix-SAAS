@@ -5,11 +5,11 @@ const SideBar = () => {
   return (
     <div
       className="h-screen overflow-y-auto flex-col flex items-center text-center pb-32 scrollBar"
-      style={{ background: "var(--sideBar)" }}
+      style={{ background: "var(--sideBar)"}}
     >
       <div className="mt-10 cursor-pointer">
         <div className="flex justify-center">
-          <span className="sideBarList" style={{ background: "var(--tiger)" }}>
+          <span className="sideBarList" style={{ background: "var(--caramel)" }}>
             <i className="ri-home-smile-line" style={{ color: "#fff" }}></i>
           </span>
         </div>

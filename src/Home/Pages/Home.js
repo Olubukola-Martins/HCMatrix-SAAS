@@ -15,7 +15,7 @@ const Home = () => {
   return (
     <DashboardLayout>
       <div className="Container pb-20">
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 mt-5">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 mt-2">
           <div className="bg-card col-span-2 rounded-xl px-5 py-4">
             <h5 className="font-semibold text-accent">
               Welcome Jaleel Habibah 🖐
@@ -54,25 +54,25 @@ const Home = () => {
             </div>
             <div className="grid grid-cols-2 md:grid-cols-4 gap-3 text-center lg:px-10 mt-5">
               <div>
-                <Link to="#!" className="text-tiger font-semibold text-lg">
+                <Link to="#!" className="text-caramel font-semibold text-lg">
                   View
                 </Link>
                 <h6 className="text-xs font-semibold">Company Handbook</h6>
               </div>
               <div>
-                <Link to="#!" className="text-tiger font-semibold text-lg">
+                <Link to="#!" className="text-caramel font-semibold text-lg">
                   View
                 </Link>
                 <h6 className="text-xs font-semibold">Company organogram</h6>
               </div>
               <div>
-                <Link to="#!" className="text-tiger font-semibold text-lg">
+                <Link to="#!" className="text-caramel font-semibold text-lg">
                   View
                 </Link>
                 <h6 className="text-xs font-semibold">HMO ID Details</h6>
               </div>
               <div>
-                <Link to="#!" className="text-tiger font-semibold text-lg">
+                <Link to="#!" className="text-caramel font-semibold text-lg">
                   View
                 </Link>
                 <h6 className="text-xs font-semibold">ID Number</h6>
@@ -81,10 +81,41 @@ const Home = () => {
           </div>
           <div className="bg-card rounded-xl px-5 py-4">
             <h5 className="font-semibold text-accent">Pending Setup</h5>
-            <ul className="list-disc px-3 pt-5 text-sm flex flex-col gap-3">
-              <li>Manual Guide</li>
-              <li>Video Guide</li>
-            </ul>
+            <div className="flex flex-col gap-5 text-sm mt-4">
+              <div>
+                <span>General setup(1/4)</span>
+                <div className="setUp_progress2 general_setup">
+                  <div className="setUp_progress-bar2" />
+                </div>
+              </div>
+              <div>
+                <span>Video Guid</span>
+                <div className="setUp_progress2 video_setup">
+                  <div className="setUp_progress-bar2" />
+                </div>
+              </div>
+              <div>
+                <span>User access control</span>
+                <div className="setUp_progress2 user-access">
+                  <div className="setUp_progress-bar2" />
+                </div>
+              </div>
+              <div>
+                <span>Employee profile</span>
+                <div className="setUp_progress2 employee-profile">
+                  <div className="setUp_progress-bar2" />
+                </div>
+              </div>
+              <div>
+                <span>How to video</span>
+                <div className="setUp_progress2 video">
+                  <div className="setUp_progress-bar2" />
+                </div>
+              </div>
+              <p>Set-up Guide</p>
+
+              <p>Contact Support</p>
+            </div>
           </div>
         </div>
 
@@ -123,23 +154,19 @@ const Home = () => {
             image={interviews}
             desc="No interviews Scheduled"
           />
-            <HomeCard
+          <HomeCard
             title="Timesheets"
             image={timesheets}
             desc="No record found"
             subTitle="0 out of 0 results"
           />
-            <HomeCard
+          <HomeCard
             title="Attendance"
             image={attendance}
             desc="No record found"
             subTitle="0 out of 0 results"
           />
-           <HomeCard
-            title="Files"
-            image={files}
-            desc="No files found"
-          />
+          <HomeCard title="Files" image={files} desc="No files found" />
         </div>
       </div>
     </DashboardLayout>

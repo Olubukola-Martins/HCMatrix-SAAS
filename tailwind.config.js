@@ -4,12 +4,12 @@ module.exports = {
   theme: {
     extend: {
       backgroundColor: {
-        carmel: "var(--caramel)",
+        caramel: "var(--caramel)",
         tiger: "var(--tiger)",
         card: "var(--card)",
       },
       colors: {
-        carmel: "var(--caramel)",
+        caramel: "var(--caramel)",
         tiger: "var(--tiger)",
         card: "var(--card)",
         accent:"var(--accent)"

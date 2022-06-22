@@ -10,7 +10,7 @@ const HomeCard = ({ title, image, desc, subTitle }) => {
       <div className="px-3 pt-6">
         <div className="flex justify-center">
           <div className="cardImgBg p-4">
-            <img src={image} alt={title} />
+            <img src={image} alt={title} className="h-8"/>
           </div>
         </div>
         <h5 className="text-center pt-10">{desc}</h5>

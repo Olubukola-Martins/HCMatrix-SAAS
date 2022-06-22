@@ -1,4 +1,39 @@
 .cardImgBg {
   border-radius: 30% 70% 70% 30% / 30% 30% 70% 70%;
-  background: #FFF6EE;
+  background: #fff6ee;
 }
+
+.setUp_progress2 {
+  border-radius: 30px;
+  background-color: #E1E1E1;
+}
+
+.setUp_progress-bar2 {
+  height: 8px;
+  border-radius: 30px;
+  transition: 0.4s linear;
+  transition-property: width, background-color;
+  background-color: var(--caramel);
+  margin-top: 3px;
+}
+
+.general_setup .setUp_progress-bar2 {
+  width: 55%;
+}
+
+.video_setup .setUp_progress-bar2 {
+  width: 30%;
+}
+
+.user-access .setUp_progress-bar2 {
+  width: 40%;
+}
+
+.employee-profile  .setUp_progress-bar2{
+  width: 80%;
+}
+
+.video .setUp_progress-bar2 {
+  width: 10%;
+}
+
