@@ -12,6 +12,7 @@ module.exports = {
         carmel: "var(--caramel)",
         tiger: "var(--tiger)",
         card: "var(--card)",
+        accent:"var(--accent)"
       },
     },
   },

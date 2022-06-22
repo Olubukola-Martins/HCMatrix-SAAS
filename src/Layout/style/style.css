@@ -1,0 +1,19 @@
+.sideBarList {
+  @apply rounded-md h-9 w-9 flex justify-center items-center;
+  background: var(--sideBarIcon)
+}
+
+.sideBarList i {
+  @apply text-xl text-gray-600;
+}
+
+.sideBarName {
+    @apply font-medium text-xs text-accent;
+}
+
+.sideBarItemWrap {
+    @apply mt-5 cursor-pointer;
+}
+
+
+/* C1C1C1 */

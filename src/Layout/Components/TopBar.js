@@ -24,11 +24,11 @@ const TopBar = ({ switchTheme, theme }) => {
             </div>
             <input
               type="text"
-              className="bg-card border border-card text-sm rounded-2xl focus:outline-none block w-full pl-10 py-1"
+              className="bg-white border border-white text-sm rounded-2xl focus:outline-none block w-full pl-10 py-1"
               placeholder="Search..."
             />
           </div>
-          <i className="ri-equalizer-fill cursor-pointer h-8 w-10 rounded-full bg-card flex items-center justify-center text-tiger"></i>
+          <i className="ri-equalizer-fill cursor-pointer h-8 w-10 rounded-full bg-white flex items-center justify-center text-tiger"></i>
         </div>
 
         <div className="flex gap-4 items-center">
