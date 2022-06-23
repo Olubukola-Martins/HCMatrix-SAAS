@@ -4,6 +4,38 @@
 
 @import url("https://fonts.googleapis.com/css2?family=Manrope:wght@200;300;400;500;600;700;800&display=swap");
 
+:root {
+  --background: #ffffff;
+  --text-color: #252526;
+  --caramel: #d69a00;
+  /* --tiger: #ff6647; */
+  --card: #f6f7fb;
+  --accent: #3a3a3a;
+  --sideBar: #f6f7fb;
+  --sideBarIcon: #ffffff;
+  --scrollBg: rgba(0, 0, 0, 0.3);
+}
+
+[data-theme="dark"] {
+  --background: #000000;
+  --text-color: #ffffff;
+  --card: #28282b;
+  --accent: rgba(247, 249, 252, 0.7);
+  --sideBar: #121212;
+  --sideBarIcon: #28282b;
+  --scrollBg: #808080;
+}
+
+[color-theme="orange"] {
+  --caramel: #ff6647;
+}
+
+[color-theme="green"] {
+  --caramel: #01966b;
+}
+
+
+
 html {
   scroll-behavior: smooth;
   overscroll-behavior-y: none;
@@ -11,8 +43,29 @@ html {
 
 body {
   font-family: "Manrope", sans-serif;
+  font-size: 17px;
 }
 
-h1 {
-  font-weight: bold;
+.mode_color {
+  background-color: var(--background);
+  color: var(--text-color);
+  transition: all 0.5s;
+}
+
+.Container {
+  @apply container w-full mx-auto md:px-6 lg:px-12 px-5;
+}
+
+.scrollBar::-webkit-scrollbar {
+  width: 10px;
+}
+
+.scrollBar::-webkit-scrollbar-track {
+  -webkit-box-shadow: inset 0 0 6px var(--scrollBg);
+  border-radius: 10px;
+}
+
+.scrollBar::-webkit-scrollbar-thumb {
+  border-radius: 10px;
+  -webkit-box-shadow: inset 0 0 6px var(--scrollBg);
 }
