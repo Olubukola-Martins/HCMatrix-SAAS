@@ -5,7 +5,7 @@ const SideBar = () => {
   return (
     <>
       <div
-        className="h-screen overflow-y-auto flex-col flex items-center text-center pb-32 scrollBar"
+        className="h-screen overflow-y-auto flex-col flex items-center px-2 text-center pb-32 scrollBar"
         style={{ background: "var(--sideBar)" }}
       >
         <div className="mt-10 cursor-pointer">

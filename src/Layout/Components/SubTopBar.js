@@ -1,6 +1,18 @@
-import React from "react";
+import React, { useState } from "react";
 
 const SubTopBar = () => {
+  const [hideOrShow, setHideOrShow] = useState(false);
+
+  const hideTrial = () => {
+    if (window.scrollY >= 5) {
+      setHideOrShow(true);
+    } else {
+      setHideOrShow(false);
+    }
+  };
+
+  window.addEventListener("scroll", hideTrial);
+
   return (
     <>
       <div
@@ -10,7 +22,13 @@ const SubTopBar = () => {
           boxShadow: "0px 15px 10px -15px var(--scrollBg)",
         }}
       >
-        <div className="Container flex items-center gap-4 text-accent font-medium text-sm">
+        <div className="Container md:hidden flex justify-between ">
+          <span className="text-accent font-medium cursor-pointer hover:text-caramel">
+            Modules
+          </span>
+          <i className="ri-menu-line text-accent text-xl cursor-pointer"></i>
+        </div>
+        <div className="Container hidden md:flex  items-center md:flex-row flex-col gap-4 text-accent font-medium text-sm">
           <div className="flex items-center gap-1 cursor-pointer hover:text-caramel">
             <i class="ri-scales-line text-base"></i>
             <span>Performance</span>
@@ -33,11 +51,15 @@ const SubTopBar = () => {
           </div>
         </div>
       </div>
-      <div className="Container text-right">
-        <span className="text-xs text-caramel font-medium">
-          Enjoy your free 30 days trial
-        </span>
-      </div>
+      {hideOrShow ? (
+        ""
+      ) : (
+        <div className="Container text-right">
+          <span className="text-xs text-caramel font-medium">
+            Enjoy your free 30 days trial
+          </span>
+        </div>
+      )}
     </>
   );
 };

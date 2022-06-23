@@ -40,17 +40,19 @@ const Home = () => {
                   <li>phone: +1-9034-463- 80</li>
                   <li>location: Houston, TX</li>
                 </ul>
-                <p className="text-xs pt-7 leading-5 text-accent">
+                <p className="text-xs pt-7 leading-5 text-accent text-justify">
                   As ultra influential young entrepreneur - Shelby Leimgruber
                   has succeeded in multiple business facets. From worldwide
                   travel and modeling to negotiating brand deals with high net
                   worth clientele. After
                 </p>
               </div>
-              <img
-                src="https://res.cloudinary.com/ddvaelej7/image/upload/v1655827312/samples/Image_r0ikln.png"
-                alt="user"
-              />
+              <div className="flex justify-center">
+                <img
+                  src="https://res.cloudinary.com/ddvaelej7/image/upload/v1655827312/samples/Image_r0ikln.png"
+                  alt="user"
+                />
+              </div>
             </div>
             <div className="grid grid-cols-2 md:grid-cols-4 gap-3 text-center lg:px-10 mt-5">
               <div>
@@ -79,7 +81,7 @@ const Home = () => {
               </div>
             </div>
           </div>
-          <div className="bg-card rounded-xl px-5 py-4 text-accent">
+          <div className="bg-card rounded-xl px-5 py-4 text-accent w-full">
             <h5 className="font-semibold">Pending Setup</h5>
             <div className="flex flex-col gap-5 text-sm mt-4">
               <div>

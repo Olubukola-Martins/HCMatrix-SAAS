@@ -21,7 +21,7 @@ function App() {
         <ResetPassword/>
       </Route>
       <Route path="*">
-        <span>Not Found</span>
+        {/* <span>Not Found</span> */}
       </Route>
     </Router>
 

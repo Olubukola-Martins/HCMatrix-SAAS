@@ -8,7 +8,6 @@
   --background: #ffffff;
   --text-color: #252526;
   --caramel: #ff6647;
-  /* --tiger: #ff6647; */
   --card: #f6f7fb;
   --accent: #3a3a3a;
   --sideBar: #f6f7fb;
@@ -27,14 +26,12 @@
 }
 
 [color-theme="orange"] {
-  --caramel:#d69a00;
+  --caramel: #d69a00;
 }
 
 [color-theme="green"] {
   --caramel: #01966b;
 }
-
-
 
 html {
   scroll-behavior: smooth;
@@ -57,7 +54,7 @@ body {
 }
 
 .scrollBar::-webkit-scrollbar {
-  width: 10px;
+  width: 8px;
 }
 
 .scrollBar::-webkit-scrollbar-track {
