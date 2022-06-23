@@ -3,6 +3,7 @@ import Login from "./Auth/Pages/Login";
 import Register from "./Auth/Pages/Register";
 import { BrowserRouter as Router, Route } from "react-router-dom";
 import ResetPassword from "./Auth/Pages/ResetPassword";
+import Home from "./Home/Pages/Home";
 
 function App() {
   return (
