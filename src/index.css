@@ -7,7 +7,7 @@
 :root {
   --background: #ffffff;
   --text-color: #252526;
-  --caramel: #d69a00;
+  --caramel: #ff6647;
   /* --tiger: #ff6647; */
   --card: #f6f7fb;
   --accent: #3a3a3a;
@@ -27,7 +27,7 @@
 }
 
 [color-theme="orange"] {
-  --caramel: #ff6647;
+  --caramel:#d69a00;
 }
 
 [color-theme="green"] {
