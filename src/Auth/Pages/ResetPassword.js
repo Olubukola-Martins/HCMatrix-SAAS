@@ -11,11 +11,10 @@ import office365 from "../Assets/Images/office365.png";
 import google from "../Assets/Images/google.png";
 import twiter from "../Assets/Images/twiter.png";
 import apple from "../Assets/Images/apple.png";
-import EmailVerificationModal from "../Components/EmailVerificationModal";
+import SuccessResetPwdModal from "../Components/SuccessResetPwdModal";
 
-const Register = () => {
+const ResetPassword = () => {
   const [openModal,setOpenModal] = useState(false);
-  const [inputType, setInputType] = useState('password');
   const showModal = (val) => {
     setOpenModal(val);
   }
@@ -24,19 +23,10 @@ const Register = () => {
     showModal(true)
 
   }
-  const handleType = () => {
-    if(inputType === 'password'){
-      setInputType('text')
-    }
-    if(inputType === 'text'){
-      setInputType('password')
-    }
-
-  }
 
   return (
     <div className="landingBg">
-      <EmailVerificationModal open = {openModal} handleClose = {() => showModal(false)}/>
+      <SuccessResetPwdModal open = {openModal} handleClose = {() => showModal(false)}/>
       <div className="signCard">
         <div className="flex md:justify-end justify-center">
           <img src={logo} alt="logo" className="h-6" />
@@ -68,43 +58,24 @@ const Register = () => {
             <div className="w-4/5 bg-gray-400" style={{ height: "1px" }} />
           </div>
           <form className = 'flex flex-col'>
-           
+         
             <input
-              type="text"
-              placeholder="Full Name*"
+              type="password"
+              placeholder="Password*"
               className="w-full rounded-md py-2 px-3 border border-gray-400 focus:outline-none mb-6"
             />
             <input
-              type="text"
-              placeholder="Organization*"
+              type="password"
+              placeholder="Retype Password*"
               className="w-full rounded-md py-2 px-3 border border-gray-400 focus:outline-none mb-6"
             />
-            <input
-              type="email"
-              placeholder="Business Email*"
-              className="w-full rounded-md py-2 px-3 border border-gray-400 focus:outline-none mb-6"
-            />
-       
-            <div class="relative w-full mb-6">
-              {/* the toggler */}
-    <div class="absolute inset-y-0 right-0 flex items-center px-2" onClick={handleType}>
-    
-      <label class="px-2 py-1 text-sm text-gray-600 font-mono cursor-pointer js-password-label" for="toggle">
-        {inputType === 'password' ? <i className="fa fa-eye-slash" aria-hidden="true"></i>: <i className="fa fa-eye" aria-hidden="false"></i>}</label>
-    </div>
-    <input class="w-full rounded-md py-2 px-3 border border-gray-400 focus:outline-none" id="password" type={inputType}autocomplete="off"
-    />
-  </div>
-            <div className="flex align-start">
-              <input type = 'checkbox' className="mt-1 mr-1"/>
-              <p className = 'max-w-fit text-sm text-gray-400 text-left'>By continuing you indicate that you have read and agreed to the <Link to = '/terms-of-use' className = 'text-red-500'>TERMS OF USE</Link>  and  <Link className = 'text-red-500' to= '/privacy-policy'>PRIVACY POLICY</Link></p>
-            </div>
+          
             <button
               onClick={handleClick}
               type="submit"
               className="bg-red-600 capitalize rounded hover:bg-opacity-70 transition ease-in duration-300 w-full text-white py-2 font-semibold mt-6"
             >
-              Free SignUp
+              Reset Password
             </button>
           </form>
         </div>
@@ -113,4 +84,4 @@ const Register = () => {
   );
 };
 
-export default Register;
+export default ResetPassword;
