@@ -1,10 +1,11 @@
-import Login from "./Auth/Pages/Login";
+import { BrowserRouter } from "react-router-dom";
+import Home from "./Home/Pages/Home";
 
 function App() {
   return (
-    <>
-    <Login/>
-    </>
+    <BrowserRouter>
+       <Home/>
+    </BrowserRouter>
   );
 }
 
