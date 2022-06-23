@@ -28,11 +28,11 @@ const ResetPassword = () => {
     <div className="landingBg">
       <SuccessResetPwdModal open = {openModal} handleClose = {() => showModal(false)}/>
       <div className="signCard">
-        <div className="flex justify-end">
+        <div className="flex md:justify-end justify-center">
           <img src={logo} alt="logo" className="h-6" />
         </div>
         <div className="pb-10 pt-12 px-1 md:px-7 text-center">
-          <p className="text-sm text-right">
+          <p className="text-sm text-center md:text-right">
             Have an account?
             <Link className="text-red-600 font-semibold pl-3" to = '/login'>
               SIGN IN

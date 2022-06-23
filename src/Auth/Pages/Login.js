@@ -16,10 +16,21 @@ import ResetPasswordModal from "../Components/ResetPasswordModal";
 
 const Login = () => {
   const [showComp,setShowComp] = useState('');
+  const [inputType, setInputType] = useState('password');
+
   
   const [password,setPassword] = useState('');
   const [email,setEmail] = useState('');
   const [otp, setOTP] = useState('');
+  const handleType = () => {
+    if(inputType === 'password'){
+      setInputType('text')
+    }
+    if(inputType === 'text'){
+      setInputType('password')
+    }
+
+  }
   
   const handleEmail = (e) => {
     setEmail(e.target.value)
@@ -80,11 +91,11 @@ const Login = () => {
       <LoginSuccessModal open = {openLoginModal} handleClose = {() => showLoginModal(false)}/>
       <ResetPasswordModal open = {openResetModal} handleClose = {() => showResetModal(false)}/>
       <div className="signCard">
-        <div className="flex justify-end">
+        <div className="flex md:justify-end justify-center">
           <img src={logo} alt="logo" className="h-6" />
         </div>
         <div className="pb-10 pt-12 px-1 md:px-7 text-center">
-          <p className="text-sm text-right">
+          <p className="text-sm text-center md:text-right">
             Don't have an account?
             <Link className="text-red-600 font-semibold pl-3" to = '/register'>
               SIGN UP
@@ -123,13 +134,16 @@ const Login = () => {
             <span>{email}</span>
             <span className="text-orange-400 underline ml-2 cursor-pointer" onClick={() => setShowComp('')}>Change</span>
             </div>
-            <input
-              type="password"
-              placeholder="Password*"
-              value = {password}
-              onChange = {handlePwd}
-              className="w-full rounded-md py-2 px-3 border border-gray-400 focus:outline-none "
-            />
+            <div class="relative w-full">
+              {/* the toggler */}
+    <div class="absolute inset-y-0 right-0 flex items-center px-2" onClick={handleType}>
+    
+      <label class="px-2 py-1 text-sm text-gray-600 font-mono cursor-pointer js-password-label" for="toggle">
+        {inputType === 'password' ? <i className="fa fa-eye-slash" aria-hidden="true"></i>: <i className="fa fa-eye" aria-hidden="false"></i>}</label>
+    </div>
+    <input value ={password} onChange = {handlePwd}class="w-full rounded-md py-2 px-3 border border-gray-400 focus:outline-none" id="password" type={inputType}autocomplete="off"
+    />
+  </div>
             <div className="flex justify-between mt-2 text-sm">
             <span className="text-orange-400 cursor-pointer" onClick = {() => showResetModal(true)}>Forgot Password?</span>
               <span className="text-orange-400 cursor-pointer" onClick={() => setShowComp('otp')}>Sign In using OTP</span>

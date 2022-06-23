@@ -15,6 +15,7 @@ import EmailVerificationModal from "../Components/EmailVerificationModal";
 
 const Register = () => {
   const [openModal,setOpenModal] = useState(false);
+  const [inputType, setInputType] = useState('password');
   const showModal = (val) => {
     setOpenModal(val);
   }
@@ -23,16 +24,25 @@ const Register = () => {
     showModal(true)
 
   }
+  const handleType = () => {
+    if(inputType === 'password'){
+      setInputType('text')
+    }
+    if(inputType === 'text'){
+      setInputType('password')
+    }
+
+  }
 
   return (
     <div className="landingBg">
       <EmailVerificationModal open = {openModal} handleClose = {() => showModal(false)}/>
       <div className="signCard">
-        <div className="flex justify-end">
+        <div className="flex md:justify-end justify-center">
           <img src={logo} alt="logo" className="h-6" />
         </div>
         <div className="pb-10 pt-12 px-1 md:px-7 text-center">
-          <p className="text-sm text-right">
+          <p className="text-sm text-center md:text-right">
             Have an account?
             <Link className="text-red-600 font-semibold pl-3" to = '/login'>
               SIGN IN
@@ -74,11 +84,17 @@ const Register = () => {
               placeholder="Business Email*"
               className="w-full rounded-md py-2 px-3 border border-gray-400 focus:outline-none mb-6"
             />
-            <input
-              type="password"
-              placeholder="Password*"
-              className="w-full rounded-md py-2 px-3 border border-gray-400 focus:outline-none mb-6"
-            />
+       
+            <div class="relative w-full mb-6">
+              {/* the toggler */}
+    <div class="absolute inset-y-0 right-0 flex items-center px-2" onClick={handleType}>
+    
+      <label class="px-2 py-1 text-sm text-gray-600 font-mono cursor-pointer js-password-label" for="toggle">
+        {inputType === 'password' ? <i className="fa fa-eye-slash" aria-hidden="true"></i>: <i className="fa fa-eye" aria-hidden="false"></i>}</label>
+    </div>
+    <input class="w-full rounded-md py-2 px-3 border border-gray-400 focus:outline-none" id="password" type={inputType}autocomplete="off"
+    />
+  </div>
             <div className="flex align-start">
               <input type = 'checkbox' className="mt-1 mr-1"/>
               <p className = 'max-w-fit text-sm text-gray-400 text-left'>By continuing you indicate that you have read and agreed to the <Link to = '/terms-of-use' className = 'text-red-500'>TERMS OF USE</Link>  and  <Link className = 'text-red-500' to= '/privacy-policy'>PRIVACY POLICY</Link></p>

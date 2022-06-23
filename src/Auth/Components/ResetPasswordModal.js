@@ -43,11 +43,7 @@ const ResetPasswordModal = ({open, handleClose}) => {
         <Typography  variant="h5" component="h2" className = 'font-bold' align = 'center'>
         A password reset link has been sent to email.
         </Typography>
-        <button
-              
-              type="submit"
-              className="bg-sky-600 rounded hover:bg-opacity-70 transition ease-in duration-300 w-full text-white py-2 font-semibold mt-6"
-            >
+        <button type="submit" className="bg-sky-600 rounded hover:bg-opacity-70 transition ease-in duration-300 w-full text-white py-2 font-semibold mt-6">
             
               Check your Email
             </button>
