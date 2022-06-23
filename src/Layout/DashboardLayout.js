@@ -30,10 +30,16 @@ const DashboardLayout = ({ children }) => {
 
   return (
     <div className="mode_color" data-theme={theme} color-theme={colorTheme}>
-      <TopBar switchTheme={switchTheme} theme={theme} />
+      <TopBar
+        switchTheme={switchTheme}
+        theme={theme}
+        green={switchGreenColor}
+        orange={switchOrangeColor}
+        yellow={switchYellowColor}
+      />
       <div className="flex w-full relative">
         <div className="w-28 fixed z-40">
-          <SideBar green={switchGreenColor} orange={switchOrangeColor} yellow={switchYellowColor}/>
+          <SideBar />
         </div>
 
         <div className="flex-1 lg:ml-24">
