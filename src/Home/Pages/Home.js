@@ -73,7 +73,7 @@ const Home = () => {
               </div>
               <div>
                 <Link to="#!" className="text-caramel font-semibold text-lg">
-                  View
+                  NI34
                 </Link>
                 <h6 className="text-xs font-semibold">ID Number</h6>
               </div>
@@ -83,38 +83,50 @@ const Home = () => {
             <h5 className="font-semibold">Pending Setup</h5>
             <div className="flex flex-col gap-5 text-sm mt-4">
               <div>
-                <span>General setup(1/4)</span>
+                <span>General Setup(1/4)</span>
                 <div className="setUp_progress2 general_setup">
                   <div className="setUp_progress-bar2" />
                 </div>
               </div>
               <div>
-                <span>Video Guid</span>
+                <span>Organization(1/7)</span>
                 <div className="setUp_progress2 video_setup">
                   <div className="setUp_progress-bar2" />
                 </div>
               </div>
               <div>
-                <span>User access control</span>
+                <span>User Access Control(1/4)</span>
                 <div className="setUp_progress2 user-access">
                   <div className="setUp_progress-bar2" />
                 </div>
               </div>
               <div>
-                <span>Employee profile</span>
+                <span>Data Administration(1/4)</span>
                 <div className="setUp_progress2 employee-profile">
                   <div className="setUp_progress-bar2" />
                 </div>
               </div>
               <div>
-                <span>How to video</span>
+                <span>Automation(1/4)</span>
                 <div className="setUp_progress2 video">
                   <div className="setUp_progress-bar2" />
                 </div>
               </div>
-              <p>Set-up Guide</p>
+              <div className="grid grid-cols-2 gap-x-2 gap-y-3 text-xs font-medium mt-3">
+                <div className="flex items-center gap-3 cursor-pointer">
+                  <i className="ri-movie-line text-2xl"></i>
+                  <span className="text-caramel">Video Guide</span>
+                </div>
+                <div className="flex items-center gap-3 cursor-pointer">
+                  <i className="ri-layout-grid-line text-2xl"></i>
+                  <span className="text-caramel">Set-up Guide</span>
+                </div>
 
-              <p>Contact Support</p>
+                <div className="flex items-center gap-3 cursor-pointer">
+                  <i className="ri-customer-service-2-line text-2xl"></i>
+                  <span className="text-caramel">Contact Support</span>
+                </div>
+              </div>
             </div>
           </div>
         </div>

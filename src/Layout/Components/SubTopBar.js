@@ -5,7 +5,10 @@ const SubTopBar = () => {
     <>
       <div
         className="w-full shadow-lg py-3 flex items-center gap-3"
-        style={{ background: "var(--background)", boxShadow : "0px 15px 10px -15px var(--scrollBg)" }}
+        style={{
+          background: "var(--background)",
+          boxShadow: "0px 15px 10px -15px var(--scrollBg)",
+        }}
       >
         <div className="Container flex items-center gap-4 text-accent font-medium text-sm">
           <div className="flex items-center gap-1 cursor-pointer hover:text-caramel">

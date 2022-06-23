@@ -31,7 +31,6 @@ const DashboardLayout = ({ children }) => {
   return (
     <div className="mode_color" data-theme={theme} color-theme={colorTheme}>
       <TopBar switchTheme={switchTheme} theme={theme} />
-      {/* <SubTopBar/> */}
       <div className="flex w-full relative">
         <div className="w-28 fixed z-40">
           <SideBar green={switchGreenColor} orange={switchOrangeColor} yellow={switchYellowColor}/>

@@ -5,14 +5,12 @@ module.exports = {
     extend: {
       backgroundColor: {
         caramel: "var(--caramel)",
-        tiger: "var(--tiger)",
         card: "var(--card)",
       },
       colors: {
         caramel: "var(--caramel)",
-        tiger: "var(--tiger)",
         card: "var(--card)",
-        accent:"var(--accent)"
+        accent: "var(--accent)",
       },
     },
   },
