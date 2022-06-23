@@ -8,7 +8,6 @@
   --background: #ffffff;
   --text-color: #252526;
   --caramel: #ff6647;
-  /* --tiger: #ff6647; */
   --card: #f6f7fb;
   --accent: #3a3a3a;
   --sideBar: #f6f7fb;
@@ -57,15 +56,17 @@ body {
 }
 
 .scrollBar::-webkit-scrollbar {
-  width: 10px;
+  width: 8px;
 }
 
 .scrollBar::-webkit-scrollbar-track {
   -webkit-box-shadow: inset 0 0 6px var(--scrollBg);
   border-radius: 10px;
+  
 }
 
 .scrollBar::-webkit-scrollbar-thumb {
   border-radius: 10px;
   -webkit-box-shadow: inset 0 0 6px var(--scrollBg);
 }
+

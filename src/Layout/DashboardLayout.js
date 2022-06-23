@@ -38,12 +38,12 @@ const DashboardLayout = ({ children }) => {
         yellow={switchYellowColor}
       />
       <div className="flex w-full relative">
-        <div className="w-28 fixed z-40">
+        <div className="w-32 fixed z-40 lg:flex hidden">
           <SideBar />
         </div>
 
         <div className="flex-1 lg:ml-24">
-          <div>
+          <div className="w-full md:top-14 top-10 sticky">
             <SubTopBar />
           </div>
           {children}
