@@ -26,14 +26,12 @@
 }
 
 [color-theme="orange"] {
-  --caramel:#d69a00;
+  --caramel: #d69a00;
 }
 
 [color-theme="green"] {
   --caramel: #01966b;
 }
-
-
 
 html {
   scroll-behavior: smooth;
@@ -62,11 +60,9 @@ body {
 .scrollBar::-webkit-scrollbar-track {
   -webkit-box-shadow: inset 0 0 6px var(--scrollBg);
   border-radius: 10px;
-  
 }
 
 .scrollBar::-webkit-scrollbar-thumb {
   border-radius: 10px;
   -webkit-box-shadow: inset 0 0 6px var(--scrollBg);
 }
-

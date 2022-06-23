@@ -23,7 +23,7 @@ const TopBar = ({ switchTheme, theme, green, yellow, orange }) => {
           <img src={logo} alt="logo" className="md:h-10 h-7" />
 
           <div className="flex gap-4 items-center">
-            <i className="fa-solid fa-magnifying-glass md:hidden cursor-pointer md:text-base text-sm"></i>
+            <i className="fa-solid fa-magnifying-glass md:hidden cursor-pointer text-base"></i>
             <div className="md:flex items-center gap-2 hidden">
               <div class="relative w-full">
                 <div class="flex absolute inset-y-0 left-0 items-center pl-3 pointer-events-none">

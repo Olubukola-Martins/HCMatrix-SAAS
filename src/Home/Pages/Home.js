@@ -47,12 +47,12 @@ const Home = () => {
                   worth clientele. After
                 </p>
               </div>
-               <div className="flex justify-center">
-               <img
-                src="https://res.cloudinary.com/ddvaelej7/image/upload/v1655827312/samples/Image_r0ikln.png"
-                alt="user"
-              />
-               </div>
+              <div className="flex justify-center">
+                <img
+                  src="https://res.cloudinary.com/ddvaelej7/image/upload/v1655827312/samples/Image_r0ikln.png"
+                  alt="user"
+                />
+              </div>
             </div>
             <div className="grid grid-cols-2 md:grid-cols-4 gap-3 text-center lg:px-10 mt-5">
               <div>
