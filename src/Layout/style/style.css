@@ -1,6 +1,6 @@
 .sideBarList {
   @apply rounded-md h-9 w-9 flex justify-center items-center;
-  background: var(--sideBarIcon)
+  background: var(--sideBarIcon);
 }
 
 .sideBarList i {
@@ -8,14 +8,18 @@
 }
 
 .sideBarName {
-    @apply font-medium text-xs text-accent;
+  @apply font-medium text-xs text-accent;
 }
 
 .sideBarItemWrap {
-    @apply mt-5 cursor-pointer;
+  @apply mt-5 cursor-pointer;
 }
 
 /* sub top bar */
-.model_list_item {
+.module_list_item {
   @apply flex items-center gap-1 cursor-pointer hover:text-caramel;
+}
+
+.module_list_item_mobile {
+  @apply flex items-center gap-3 cursor-pointer text-base;
 }
