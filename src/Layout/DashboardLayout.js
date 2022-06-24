@@ -4,8 +4,6 @@ import TopBar from "./Components/TopBar";
 import SideBar from "./Components/SideBar";
 import SubTopBar from "./Components/SubTopBar";
 
-
-
 const DashboardLayout = ({ children }) => {
   const [theme, setTheme] = useLocalStorage("theme" ? "dark" : "light");
   const [colorTheme, setColorThem] = useLocalStorage("");
@@ -42,7 +40,6 @@ const DashboardLayout = ({ children }) => {
 
   // Material UI dark and light mode
 
-
   return (
     <div className="mode_color" data-theme={theme} color-theme={colorTheme}>
       <TopBar
@@ -60,14 +57,13 @@ const DashboardLayout = ({ children }) => {
         </div>
 
         <div className="flex-1 lg:ml-24">
-          <div className="w-full md:top-14 top-10 sticky">
+          <div className="w-full md:top-14 top-10 sticky z-40">
             <SubTopBar />
           </div>
           {children}
         </div>
       </div>
     </div>
-
   );
 };
 

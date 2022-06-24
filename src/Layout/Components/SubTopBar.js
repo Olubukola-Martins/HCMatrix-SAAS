@@ -1,7 +1,11 @@
 import React, { useState } from "react";
+import Drawer from "@mui/material/Drawer";
 
 const SubTopBar = () => {
   const [hideOrShow, setHideOrShow] = useState(false);
+  const [moduleDrawer, setModuleDrawer] = useState({
+    left: false,
+  });
 
   const hideTrial = () => {
     if (window.scrollY >= 5) {
@@ -13,8 +17,38 @@ const SubTopBar = () => {
 
   window.addEventListener("scroll", hideTrial);
 
+  const toggleDrawer = (anchor, open) => () => {
+    setModuleDrawer({ ...moduleDrawer, [anchor]: open });
+  };
+
   return (
     <>
+      <Drawer open={moduleDrawer["left"]} onClose={toggleDrawer("left", false)}>
+        <div className="flex items-center h-screen overflow-auto">
+          <div className="Container flex gap-4 flex-col text-accent font-medium text-sm">
+            <div className="flex items-center gap-1 cursor-pointer">
+              <i className="ri-scales-line text-base"></i>
+              <span>Performance</span>
+            </div>
+            <div className="flex items-center gap-1 cursor-pointer">
+              <i className="ri-money-dollar-circle-line text-base"></i>
+              <span>Payroll</span>
+            </div>
+            <div className="flex items-center gap-1 cursor-pointer">
+              <i className="ri-team-line text-base"></i>
+              <span>Manage employee</span>
+            </div>
+            <div className="flex items-center gap-1 cursor-pointer">
+              <i className="ri-user-shared-2-line text-base"></i>
+              <span>Recruitment</span>
+            </div>
+            <div className="flex items-center gap-1 cursor-pointer">
+              <i className="ri-honour-line text-base"></i>
+              <span>Attendance</span>
+            </div>
+          </div>
+        </div>
+      </Drawer>
       <div
         className="w-full shadow-lg py-3 flex items-center gap-3"
         style={{
@@ -22,31 +56,34 @@ const SubTopBar = () => {
           boxShadow: "0px 15px 10px -15px var(--scrollBg)",
         }}
       >
-        <div className="Container md:hidden flex justify-between ">
-          <span className="text-accent font-medium cursor-pointer hover:text-caramel">
+        <div className="Container lg:hidden flex justify-between ">
+          <span
+            className="text-accent font-medium cursor-pointer hover:text-caramel"
+            onClick={toggleDrawer("left", true)}
+          >
             Modules
           </span>
           <i className="ri-menu-line text-accent text-xl cursor-pointer"></i>
         </div>
-        <div className="Container hidden md:flex  items-center md:flex-row flex-col gap-4 text-accent font-medium text-sm">
-          <div className="flex items-center gap-1 cursor-pointer hover:text-caramel">
-            <i class="ri-scales-line text-base"></i>
+        <div className="Container hidden lg:flex  items-center md:flex-row flex-col gap-4 text-accent font-medium text-sm">
+          <div className="model_list_item">
+            <i className="ri-scales-line text-base"></i>
             <span>Performance</span>
           </div>
-          <div className="flex items-center gap-1 cursor-pointer hover:text-caramel">
-            <i class="ri-money-dollar-circle-line text-base"></i>
+          <div className="model_list_item">
+            <i className="ri-money-dollar-circle-line text-base"></i>
             <span>Payroll</span>
           </div>
-          <div className="flex items-center gap-1 cursor-pointer hover:text-caramel">
-            <i class="ri-team-line text-base"></i>
+          <div className="model_list_item">
+            <i className="ri-team-line text-base"></i>
             <span>Manage employee</span>
           </div>
-          <div className="flex items-center gap-1 cursor-pointer hover:text-caramel">
-            <i class="ri-user-shared-2-line text-base"></i>
+          <div className="model_list_item">
+            <i className="ri-user-shared-2-line text-base"></i>
             <span>Recruitment</span>
           </div>
-          <div className="flex items-center gap-1 cursor-pointer hover:text-caramel">
-            <i class="ri-honour-line text-base"></i>
+          <div className="model_list_item">
+            <i className="ri-honour-line text-base"></i>
             <span>Attendance</span>
           </div>
         </div>

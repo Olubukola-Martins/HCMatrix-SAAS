@@ -3,7 +3,15 @@ import logo from "../Images/logo.png";
 import Popover from "@mui/material/Popover";
 import sun from "../Images/sun.svg";
 
-const TopBar = ({ switchTheme, theme, green, yellow, orange, blue, purple }) => {
+const TopBar = ({
+  switchTheme,
+  theme,
+  green,
+  yellow,
+  orange,
+  blue,
+  purple,
+}) => {
   const [anchorEl, setAnchorEl] = useState(null);
 
   const handleClick = (event) => {
@@ -23,10 +31,10 @@ const TopBar = ({ switchTheme, theme, green, yellow, orange, blue, purple }) => 
           <img src={logo} alt="logo" className="md:h-10 h-7" />
 
           <div className="flex gap-4 items-center">
-            <i className="fa-solid fa-magnifying-glass md:hidden cursor-pointer text-base text-white"></i>
-            <div className="md:flex items-center gap-2 hidden">
-              <div class="relative w-full">
-                <div class="flex absolute inset-y-0 left-0 items-center pl-3 pointer-events-none">
+            <i className="fa-solid fa-magnifying-glass lg:hidden cursor-pointer text-base text-white"></i>
+            <div className="lg:flex items-center gap-2 hidden mr-10">
+              <div className="relative w-full">
+                <div className="flex absolute inset-y-0 left-0 items-center pl-3 pointer-events-none">
                   <svg
                     className="w-4 h-4 text-gray-500"
                     fill="currentColor"
@@ -51,7 +59,7 @@ const TopBar = ({ switchTheme, theme, green, yellow, orange, blue, purple }) => 
             {theme === "light" ? (
               <i
                 onClick={switchTheme}
-                class="fas fa-moon text-lg cursor-pointer text-black"
+                className="fas fa-moon text-lg cursor-pointer text-black"
                 title="Dark mode"
               ></i>
             ) : (
@@ -70,7 +78,7 @@ const TopBar = ({ switchTheme, theme, green, yellow, orange, blue, purple }) => 
               title="Settings"
             ></i>
             <i
-              class="ri-notification-3-line text-xl cursor-pointer text-white"
+              className="ri-notification-3-line text-xl cursor-pointer text-white"
               title="Notifications"
             ></i>
             <img
@@ -113,7 +121,7 @@ const TopBar = ({ switchTheme, theme, green, yellow, orange, blue, purple }) => 
             style={{ background: "#349CE4" }}
             onClick={blue}
           />
-           <div
+          <div
             className="h-4 w-4 rounded-full cursor-pointer"
             style={{ background: "#6E55FF" }}
             onClick={purple}
