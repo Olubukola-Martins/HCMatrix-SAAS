@@ -68,14 +68,7 @@ const SideBar = () => {
           </div>
           <span className="sideBarName">Support</span>
         </div>
-        {/* <div className="sideBarItemWrap">
-        <div className="flex justify-center">
-          <span className="sideBarList">
-            <i className="ri-settings-3-line"></i>
-          </span>
-        </div>
-        <span className="sideBarName">Settings</span>
-      </div> */}
+      
 
         <div className="mt-28" />
         <div className="sideBarItemWrap">
