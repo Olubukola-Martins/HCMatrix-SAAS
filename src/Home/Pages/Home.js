@@ -14,7 +14,7 @@ import files from "../Assets/Images/files.svg";
 const Home = () => {
   return (
     <DashboardLayout>
-      <div className="Container pb-20">
+      <div className="Container pb-20 mt-4">
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 mt-2">
           <div className="bg-card col-span-2 rounded-xl px-5 py-4">
             <h5 className="font-semibold text-accent">

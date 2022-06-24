@@ -3,7 +3,7 @@ import logo from "../Images/logo.png";
 import Popover from "@mui/material/Popover";
 import sun from "../Images/sun.svg";
 
-const TopBar = ({ switchTheme, theme, green, yellow, orange }) => {
+const TopBar = ({ switchTheme, theme, green, yellow, orange, blue, purple }) => {
   const [anchorEl, setAnchorEl] = useState(null);
 
   const handleClick = (event) => {
@@ -107,6 +107,16 @@ const TopBar = ({ switchTheme, theme, green, yellow, orange }) => {
             className="h-4 w-4 rounded-full cursor-pointer"
             style={{ background: "#d69a00" }}
             onClick={orange}
+          />
+          <div
+            className="h-4 w-4 rounded-full cursor-pointer"
+            style={{ background: "#349CE4" }}
+            onClick={blue}
+          />
+           <div
+            className="h-4 w-4 rounded-full cursor-pointer"
+            style={{ background: "#6E55FF" }}
+            onClick={purple}
           />
         </div>
       </Popover>
