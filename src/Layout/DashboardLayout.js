@@ -23,10 +23,22 @@ const DashboardLayout = ({ children }) => {
     setColorThem(newTheme);
   };
 
+  const switchBlueColor = () => {
+    const newTheme = colorTheme === "light" ? "orange" : "blue";
+    setColorThem(newTheme);
+  };
+
+  const switchPurpleColor = () => {
+    const newTheme = colorTheme === "light" ? "blue" : "purple";
+    setColorThem(newTheme);
+  };
+
   const switchYellowColor = () => {
     const newTheme = colorTheme === "default";
     setColorThem(newTheme);
   };
+
+  // Material UI dark and light mode
 
   return (
     <div className="mode_color" data-theme={theme} color-theme={colorTheme}>
@@ -36,6 +48,8 @@ const DashboardLayout = ({ children }) => {
         green={switchGreenColor}
         orange={switchOrangeColor}
         yellow={switchYellowColor}
+        blue={switchBlueColor}
+        purple={switchPurpleColor}
       />
       <div className="flex w-full relative">
         <div className="w-32 fixed z-40 lg:flex hidden">
@@ -43,7 +57,7 @@ const DashboardLayout = ({ children }) => {
         </div>
 
         <div className="flex-1 lg:ml-24">
-          <div className="w-full md:top-14 top-10 sticky">
+          <div className="w-full md:top-14 top-10 sticky z-40">
             <SubTopBar />
           </div>
           {children}

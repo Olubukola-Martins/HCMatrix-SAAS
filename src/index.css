@@ -33,6 +33,14 @@
   --caramel: #01966b;
 }
 
+[color-theme="blue"] {
+  --caramel: #349CE4;
+}
+
+[color-theme="purple"] {
+  --caramel: #6E55FF;
+}
+
 html {
   scroll-behavior: smooth;
   overscroll-behavior-y: none;

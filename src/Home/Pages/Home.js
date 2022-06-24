@@ -14,7 +14,7 @@ import files from "../Assets/Images/files.svg";
 const Home = () => {
   return (
     <DashboardLayout>
-      <div className="Container pb-20">
+      <div className="Container pb-20 mt-4">
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 mt-2">
           <div className="bg-card col-span-2 rounded-xl px-5 py-4">
             <h5 className="font-semibold text-accent">
@@ -33,7 +33,7 @@ const Home = () => {
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-5 mt-5">
               <div>
-                <h1 className="text-2xl font-black pb-4">Jaleel Habibah</h1>
+                <h1 className="text-xl md:text-2xl font-black pb-4">Jaleel Habibah</h1>
                 <ul className="flex flex-col gap-2 text-xs text-accent">
                   <li>Line manager: Godswill Laser</li>
                   <li>Email: Gworld@gmail.com</li>
