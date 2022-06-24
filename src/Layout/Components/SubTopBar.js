@@ -34,8 +34,17 @@ const SubTopBar = () => {
     <>
       {/* Modules mobile drawer */}
       <Drawer open={moduleDrawer["left"]} onClose={toggleDrawer("left", false)}>
-        <div className="flex items-center h-screen overflow-auto">
-          <div className="Container flex gap-4 flex-col text-accent font-medium text-sm">
+        <div className="Container flex justify-end">
+          <i
+            className="ri-close-line text-right pt-5 text-xl cursor-pointer"
+            onClick={toggleDrawer("left", false)}
+          ></i>
+        </div>
+        <div
+          className="flex items-center overflow-auto"
+          style={{ height: "97vh" }}
+        >
+          <div className="Container flex gap-4 flex-col text-accent font-medium">
             <div className="module_list_item_mobile">
               <i className="ri-scales-line text-base"></i>
               <span>Performance</span>
@@ -65,10 +74,61 @@ const SubTopBar = () => {
         open={featuresDrawer["left"]}
         onClose={toggleDrawerFeatures("left", false)}
       >
-        <div>
-          <SideBar/>
+        <div className="Container flex justify-end">
+          <i
+            className="ri-close-line text-right pt-5 text-xl cursor-pointer"
+            onClick={toggleDrawerFeatures("left", false)}
+          ></i>
+        </div>
+
+        <div
+          className="flex items-center overflow-auto"
+          style={{ height: "97vh" }}
+        >
+          <div className="Container flex gap-4 flex-col text-accent font-medium">
+            <div className="module_list_item_mobile">
+              <i className="ri-home-smile-line text-base"></i>
+              <span>Home</span>
+            </div>
+
+            <div className="module_list_item_mobile">
+              <i className="ri-check-double-line text-base"></i>
+              <span>Approval</span>
+            </div>
+
+            <div className="module_list_item_mobile">
+              <i className="ri-line-chart-line text-base"></i>
+              <span>Evaluation</span>
+            </div>
+
+            <div className="module_list_item_mobile">
+              <i className="ri-organization-chart text-base"></i>
+              <span>Self-service</span>
+            </div>
+            
+            <div className="module_list_item_mobile">
+              <i className="ri-creative-commons-sa-line text-base"></i>
+              <span>Review 360</span>
+            </div>
+
+            <div className="module_list_item_mobile">
+              <i className="ri-hard-drive-2-line text-base"></i>
+              <span>Visitor Module</span>
+            </div>
+          
+            <div className="module_list_item_mobile">
+              <i className="ri-customer-service-line text-base"></i>
+              <span>Support</span>
+            </div>
+            <div className="module_list_item_mobile">
+              <i className="ri-logout-circle-line text-base"></i>
+              <span>Logout</span>
+            </div>
+          </div>
         </div>
       </Drawer>
+      {/* Features drawer mobile End*/}
+
       <div
         className="w-full shadow-lg py-3 flex items-center gap-3"
         style={{
