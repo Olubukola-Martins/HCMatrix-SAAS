@@ -62,11 +62,11 @@ body {
 
 /*=== General button ===*/
 .button {
-  @apply border border-caramel px-7 py-2 rounded font-medium bg-caramel text-white transition ease-in-out duration-500 text-base tracking-wider hover:bg-transparent hover:text-caramel;
+  @apply border border-caramel px-7 py-2 rounded font-medium bg-caramel text-white transition ease-in-out duration-300 text-base tracking-wider hover:opacity-70;
 }
 
 .transparentButton {
-  @apply border px-6 py-2 rounded font-medium bg-transparent text-accent transition ease-in-out duration-500 text-base tracking-wider hover:text-caramel;
+  @apply border border-slate-200 hover:border-slate-400 px-6 py-2 rounded font-medium bg-transparent text-accent transition ease-in-out duration-500 text-base tracking-wider;
 }
 
 /*=== General scroll bar ===*/
