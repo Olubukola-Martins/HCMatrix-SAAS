@@ -104,7 +104,7 @@ const SubTopBar = () => {
               <i className="ri-organization-chart text-base"></i>
               <span>Self-service</span>
             </div>
-            
+
             <div className="module_list_item_mobile">
               <i className="ri-creative-commons-sa-line text-base"></i>
               <span>Review 360</span>
@@ -114,7 +114,7 @@ const SubTopBar = () => {
               <i className="ri-hard-drive-2-line text-base"></i>
               <span>Visitor Module</span>
             </div>
-          
+
             <div className="module_list_item_mobile">
               <i className="ri-customer-service-line text-base"></i>
               <span>Support</span>
