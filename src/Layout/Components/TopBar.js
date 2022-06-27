@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import logo from "../Images/logo.png";
 import Popover from "@mui/material/Popover";
 import sun from "../Images/sun.svg";
+import { Link } from "react-router-dom";
 
 const TopBar = ({
   switchTheme,
@@ -28,7 +29,7 @@ const TopBar = ({
     <>
       <div className="bg-caramel w-full py-2 sticky top-0 z-50">
         <div className="Container flex items-center justify-between">
-          <img src={logo} alt="logo" className="md:h-10 h-7" />
+          <Link to="/">  <img src={logo} alt="logo" className="md:h-10 h-7" /></Link>
 
           <div className="flex gap-4 items-center">
             <i className="fa-solid fa-magnifying-glass lg:hidden cursor-pointer text-base text-white"></i>
