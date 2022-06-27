@@ -54,7 +54,23 @@ const Domains = () => {
         {/* Domain modal */}
         <Modal open={open} onClose={handleClose}>
           <Box sx={style}>
-            <h1 className="font-bold text-lg text-accent">Add Domain Name</h1>
+            <h1 className="font-bold text-lg text-accent text-center">
+              Add Domain Name
+            </h1>
+            <form className="my-4">
+              <input
+                type="text"
+                className="border py-2 pl-2 text-sm rounded w-full focus:outline-none"
+                placeholder="Domain name"
+              />
+              <span className="text-xs">Example: johndoe.com</span>
+            </form>
+            <div className="flex items-center justify-center gap-4">
+              <button className="button">Add</button>
+              <button className="transparentButton" onClick={handleClose}>
+                Cancel
+              </button>
+            </div>
           </Box>
         </Modal>
       </div>

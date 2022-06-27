@@ -34,11 +34,11 @@
 }
 
 [color-theme="blue"] {
-  --caramel: #349CE4;
+  --caramel: #349ce4;
 }
 
 [color-theme="purple"] {
-  --caramel: #6E55FF;
+  --caramel: #6e55ff;
 }
 
 html {
@@ -48,7 +48,6 @@ html {
 
 body {
   font-family: "Manrope", sans-serif;
-  font-size: 17px;
 }
 
 .mode_color {
@@ -61,6 +60,16 @@ body {
   @apply container w-full mx-auto md:px-6 lg:px-12 px-5;
 }
 
+/*=== General button ===*/
+.button {
+  @apply border border-caramel px-7 py-2 rounded font-medium bg-caramel text-white transition ease-in-out duration-500 text-base tracking-wider hover:bg-transparent hover:text-caramel;
+}
+
+.transparentButton {
+  @apply border px-6 py-2 rounded font-medium bg-transparent text-accent transition ease-in-out duration-500 text-base tracking-wider hover:text-caramel;
+}
+
+/*=== General scroll bar ===*/
 .scrollBar::-webkit-scrollbar {
   width: 8px;
 }
