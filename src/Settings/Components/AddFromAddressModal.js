@@ -46,7 +46,7 @@ const AddFromAddressModal = ({open, handleClose}) => {
         <Typography  variant="h4" component="h2" className = 'font-bold' align = 'center'>
         Add From Address
         </Typography>
-        <form className='mt-16 mr-20'>
+        <form className='mt-16 lg:mr-20 '>
             <div className='flex items-center w-full mb-8'>
                 <label className = 'block text-slate-400 w-60 mr-4'>Display Name</label>
                 <input
