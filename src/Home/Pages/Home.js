@@ -14,7 +14,7 @@ import files from "../Assets/Images/files.svg";
 const Home = () => {
   return (
     <DashboardLayout>
-      <div className="Container pb-20">
+      <div className="Container pb-20 mt-4">
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 mt-2">
           <div className="bg-card col-span-2 rounded-xl px-5 py-4">
             <h5 className="font-semibold text-accent">
@@ -33,24 +33,28 @@ const Home = () => {
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-5 mt-5">
               <div>
-                <h1 className="text-2xl font-black pb-4">Jaleel Habibah</h1>
+                <h1 className="text-xl md:text-2xl font-black pb-4">
+                  Jaleel Habibah
+                </h1>
                 <ul className="flex flex-col gap-2 text-xs text-accent">
                   <li>Line manager: Godswill Laser</li>
                   <li>Email: Gworld@gmail.com</li>
                   <li>phone: +1-9034-463- 80</li>
                   <li>location: Houston, TX</li>
                 </ul>
-                <p className="text-xs pt-7 leading-5 text-accent">
+                <p className="text-xs pt-7 leading-5 text-accent text-justify">
                   As ultra influential young entrepreneur - Shelby Leimgruber
                   has succeeded in multiple business facets. From worldwide
                   travel and modeling to negotiating brand deals with high net
                   worth clientele. After
                 </p>
               </div>
-              <img
-                src="https://res.cloudinary.com/ddvaelej7/image/upload/v1655827312/samples/Image_r0ikln.png"
-                alt="user"
-              />
+              <div className="flex justify-center">
+                <img
+                  src="https://res.cloudinary.com/ddvaelej7/image/upload/v1655827312/samples/Image_r0ikln.png"
+                  alt="user"
+                />
+              </div>
             </div>
             <div className="grid grid-cols-2 md:grid-cols-4 gap-3 text-center lg:px-10 mt-5">
               <div>
@@ -79,7 +83,7 @@ const Home = () => {
               </div>
             </div>
           </div>
-          <div className="bg-card rounded-xl px-5 py-4 text-accent">
+          <div className="bg-card rounded-xl px-5 py-4 text-accent w-full">
             <h5 className="font-semibold">Pending Setup</h5>
             <div className="flex flex-col gap-5 text-sm mt-4">
               <div>
