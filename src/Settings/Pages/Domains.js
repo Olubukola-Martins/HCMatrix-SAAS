@@ -12,7 +12,10 @@ const style = {
   transform: "translate(-50%, -50%)",
   maxwidth: 400,
   bgcolor: "background.paper",
-  p: 4,
+  pt: 2,
+  pb: 4,
+  pr: 4,
+  pl: 4,
   borderRadius: 4,
 };
 
@@ -54,6 +57,9 @@ const Domains = () => {
         {/* Domain modal */}
         <Modal open={open} onClose={handleClose}>
           <Box sx={style}>
+              <span className="flex justify-end mb-2">
+              <i className="ri-close-line cursor-pointer" onClick={handleClose}></i>
+              </span>
             <h1 className="font-bold text-lg text-accent text-center">
               Add Domain Name
             </h1>
