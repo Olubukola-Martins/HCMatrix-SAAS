@@ -8,27 +8,14 @@ function App() {
   return (
     <Router>
       <Routes>
-      <Route path="/" element={<Home />} />
-      <Route path="/login" element={<Login />} />
-      <Route path="/register" element={<Register />} />
-      <Route path="/reset-password" element={<ResetPassword />} />
-
-      {/* <Home/>
-      </Route> */}
-      {/* <Route path="/login">
-        <Login/>
-      </Route> */}
-      {/* <Route path="/register">
-        <Register/>
-      </Route> */}
-      {/* <Route path="/reset-password">
-        <ResetPassword/>
-      </Route> */}
-
-      {/* <Route path="*">
+        <Route path="/" element={<Home />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Register />} />
+        <Route path="/reset-password" element={<ResetPassword />} />
+        {/* <Route path="*">
         <span>Not Found</span>
       </Route> */}
-            </Routes>
+      </Routes>
     </Router>
   );
 }
