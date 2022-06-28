@@ -14,12 +14,12 @@ const GeneralSettings = () => {
         </h4>
        <div className = 'flex flex-col mt-2'>
             {/* search */}
-            <div className='border flex justify-between border-0 border-b w-2/4 mt-16 self-center px-2'>
-                <input className='border-none mb-2 flex-1 outline-0' placeholder='Search in company details, roles ................'></input>
+            <div className='border flex justify-between border-0 border-b w-3/4 md:w-2/4 mt-16 self-center px-2'>
+                <input className='border-none mb-2 flex-1 outline-0 bg-transparent' placeholder='Search in company details, roles ................'></input>
                 <i class="fas fa-search"></i>
             </div>
             {/* Page NavItems */}
-            <div className='grid grid-cols-1 lg:grid-cols-4 gap-4 justify-between mt-40'>
+            <div className='grid grid-cols-2 lg:grid-cols-4 gap-4 justify-between mt-40'>
                 {/* item */}
                 {settingNavItems.map((item) => (
                     <SettingNavItem item = {item} key = {item.title}/>

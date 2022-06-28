@@ -12,7 +12,7 @@ const CompanyDetails = () => {
         <div className="Container pb-20 mt-10 mb-72">
             {/* heading container */}
             <div className='flex justify-between items-center'>
-            <h4 className="font-bold text-accent text-2xl">
+            <h4 className="font-bold text-accent text-xl">
             Customize your HCMatrix Login URL
 
             </h4>
@@ -35,16 +35,16 @@ const CompanyDetails = () => {
             {/* form container */}
             <div className='form-container  mb-20  mt-48'>
               <form>
-                <div className='grid grid-cols-2 gap-24 my-12 items-start'>
+                <div className='grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-24 my-12 items-start'>
                   <div className='login flex items-center'>
-                    <label className='text-xl mr-40 uppercase'>Login URL</label>
+                    <label className='text-xl mr-10 lg:mr-24 uppercase whitespace-nowrap '>Login URL</label>
                     <input
                     type="text"
                     placeholder=""
                     className="flex-1 rounded-md py-2 px-3 border border-gray-400 bg-slate-100 focus:outline-none"
                     />
                   </div>
-                  <div className='other flex flex-col py-4 px-6 rounded-xl border w-3/5'>
+                  <div className='other flex flex-col py-4 px-6 rounded-xl border md:w-3/5'>
                     <div className='mb-8 flex justify-between items-center'>
                       <label className=' text-lg'>Select</label> 
                       <i className="fa fa-angle-down" aria-hidden="true"></i>

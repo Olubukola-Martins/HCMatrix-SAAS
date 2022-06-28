@@ -3,7 +3,7 @@ export const settingNavItems = [
         title: 'General',
         items: [
             {name: 'Company', link: '/settings/company-details'},
-            {name: 'Domain', link: '/settings/domain'},
+            {name: 'Domain', link: '/settings/domains'},
             {name: 'Rebranding', link: '/settings/rebranding'},
             {name: 'From Addresses', link: '/settings/from-addresses'},
 
