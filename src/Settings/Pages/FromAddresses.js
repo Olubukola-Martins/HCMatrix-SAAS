@@ -1,7 +1,10 @@
 import {useState} from 'react'
 import DashboardLayout from '../../Layout/DashboardLayout'
 import InfoIcon from '../Assets/info_icon.svg'
-import AddFromAddressModal from '../Components/AddFromAddressModal';
+import Themes from "../../Themes/Themes";
+import Modal from '@mui/material/Modal';
+
+
 
 const FromAddresses = () => {
   const [openModal,setOpenModal] = useState(false);
@@ -14,9 +17,66 @@ const FromAddresses = () => {
     showModal(true)
 
   }
+  const handleClose =  () => setOpenModal(false)
   return (
     <div>
-      <AddFromAddressModal open = {openModal} handleClose = {() => showModal(false)}/>
+      <Modal open={openModal} onClose={handleClose}>
+      <Themes>
+            <div className="CModal" style={{ maxWidth: 600 }}>
+            <div className='flex flex-col items-center justify-center pb-12'>
+        {/* <div className = 'w-64'>
+        <img src={emailIcon} alt="" className="max-w-full h-auto object-contain"/>
+        </div> */}
+        <div className='flex items-center justify-end w-full mb-8'>
+        <i class="fas fa-times cursor-pointer text-2xl" onClick={handleClose}></i>
+
+        </div>
+    
+
+        <h4 className="font-bold text-2xl text-accent text-center">
+        Add From Address
+        </h4>
+        <form className='mt-8 lg:mr-20 '>
+            <div className='flex items-center w-full mb-8'>
+                <label className = 'block text-slate-400 w-60 mr-4'>Display Name</label>
+                <input
+                type="text"
+                placeholder="Add display name"
+                className="w-full bg-transparent rounded-md py-3 px-3 bg-white border border-gray-200 focus:outline-none"
+                />
+            </div>
+            <div className='flex items-center w-full mb-8'>
+                <label className = 'block text-slate-400 w-60 mr-4'>From Address</label>
+                <input
+                type="text"
+                placeholder="john@gmail.com"
+                className="w-full bg-transparent rounded-md py-3 px-3 bg-white border border-gray-200 focus:outline-none"
+                />
+            </div>
+            <div className='flex items-center w-full mb-2'>
+                <label className = 'block text-slate-400 w-60 mr-4 invisible'>From Address</label>
+                <div className='flex justify-between items-center w-full'>
+
+                <button
+                    htmlType="submit"
+                    className="button"
+                    // className="bg-red-600 capitalize rounded hover:bg-opacity-70 transition ease-in duration-300 w-2/4 mr-2 text-white py-3 font-semibold"
+                >
+                Submit
+                </button>
+                <button
+                    onClick={handleClose}
+                    className="border border-1 border-slate-200 capitalize rounded hover:border-slate-400 hover:text-slate-400 transition ease-in duration-300 w-2/4 ml-2 text-slate-300 py-2 font-semibold"
+                >
+                Cancel
+                </button>
+                </div>
+            </div>
+        </form>
+    </div>
+            </div>
+            </Themes>
+      </Modal>
       <DashboardLayout>
         
         

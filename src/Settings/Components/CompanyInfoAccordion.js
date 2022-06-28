@@ -131,9 +131,9 @@ const CompanyInfoAccordion = () => {
   <label className = 'text-sm mb-4 block invisible'>Country</label>
 
   <button
-       style={{ background: "var(--caramel)" }}
+      //  style={{ background: "var(--caramel)" }}
       type="submit"
-      className="capitalize rounded hover:bg-opacity-70 transition ease-in duration-300 w-full text-white py-3 font-semibold mb-6"
+      className="bg-caramel capitalize rounded hover:bg-opacity-70 transition ease-in duration-300 w-full text-white py-3 font-semibold mb-6"
     >
       Submit
     </button>
