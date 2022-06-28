@@ -73,12 +73,12 @@ const TopBar = ({
               />
             )}
 
-            <i
-              onClick={handleClick}
+            <Link to="/settings"> <i
               className="ri-settings-3-line text-xl text-white cursor-pointer"
               title="Settings"
-            ></i>
+            ></i></Link>
             <i
+            onClick={handleClick}
               className="ri-notification-3-line text-xl cursor-pointer text-white"
               title="Notifications"
             ></i>
