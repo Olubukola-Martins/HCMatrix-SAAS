@@ -9,6 +9,7 @@ function App() {
       <SettingRoutes/>
       
       <Routes>
+       
       <Route path="*" element={<span>Not found1</span> }/>
       </Routes>
     </Router>

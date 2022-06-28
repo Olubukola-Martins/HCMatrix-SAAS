@@ -72,6 +72,7 @@ const SubTopBar = () => {
       <Drawer
         open={featuresDrawer["left"]}
         onClose={toggleDrawerFeatures("left", false)}
+       
       >
         <div className="Container flex justify-end">
           <i

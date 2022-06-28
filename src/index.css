@@ -34,11 +34,11 @@
 }
 
 [color-theme="blue"] {
-  --caramel: #349CE4;
+  --caramel: #349ce4;
 }
 
 [color-theme="purple"] {
-  --caramel: #6E55FF;
+  --caramel: #6e55ff;
 }
 
 html {
@@ -48,7 +48,6 @@ html {
 
 body {
   font-family: "Manrope", sans-serif;
-  font-size: 17px;
 }
 
 .mode_color {
@@ -61,6 +60,16 @@ body {
   @apply container w-full mx-auto md:px-6 lg:px-12 px-5;
 }
 
+/*=== General button ===*/
+.button {
+  @apply border border-caramel px-7 py-2 rounded font-medium bg-caramel text-white transition ease-in-out duration-300 text-base tracking-wider hover:opacity-70;
+}
+
+.transparentButton {
+  @apply border border-slate-200 hover:border-slate-400 px-6 py-2 rounded font-medium bg-transparent text-accent transition ease-in-out duration-500 text-base tracking-wider;
+}
+
+/*=== General scroll bar ===*/
 .scrollBar::-webkit-scrollbar {
   width: 8px;
 }
@@ -74,3 +83,16 @@ body {
   border-radius: 10px;
   -webkit-box-shadow: inset 0 0 6px var(--scrollBg);
 }
+
+
+/*=== General modal style ===*/
+.CModal {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: var(--card);
+  padding: 15px 25px 25px 25px;
+  border-radius: 10px;
+   width: 90%
+};
