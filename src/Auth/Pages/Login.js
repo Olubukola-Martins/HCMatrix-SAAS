@@ -2,7 +2,7 @@ import React, {useState} from "react";
 import "../Style/style.css";
 import logo from "../Assets/Images/logo.png";
 import { Link } from "react-router-dom";
-import microSoft from "../Assets/Images/microsoft.png";
+// import microSoft from "../Assets/Images/microsoft.png";
 import slack from "../Assets/Images/slack.png";
 import linkedIn from "../Assets/Images/linkedIn.png";
 import yahoo from "../Assets/Images/yahoo.png";
@@ -105,7 +105,7 @@ const Login = () => {
           <h1 className="text-2xl pt-5">Start free trial</h1>
           <p className="text-sm text-gray-400">Getting started is easy</p>
           <div className="grid grid-cols-3 gap-4 mt-5 social_wrap">
-            <img src={microSoft} alt="" />
+            {/* <img src={microSoft} alt="" /> */}
             <img src={slack} alt="" />
             <img src={linkedIn} alt="" />
             <img src={yahoo} alt="" />
