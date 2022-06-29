@@ -39,23 +39,23 @@ const FromAddresses = () => {
         </h4>
         <form className='mt-8 lg:mr-20 '>
             <div className='flex items-center w-full mb-8'>
-                <label className = 'block text-slate-400 w-60 mr-4'>Display Name</label>
+                <label className = 'block text-slate-400 md:w-60 mr-4'>Display Name</label>
                 <input
                 type="text"
                 placeholder="Add display name"
-                className="w-full bg-transparent rounded-md py-3 px-3 bg-white border border-gray-200 focus:outline-none"
+                className="md:w-full bg-transparent rounded-md py-3 px-3 bg-white border border-gray-200 focus:outline-none"
                 />
             </div>
             <div className='flex items-center w-full mb-8'>
-                <label className = 'block text-slate-400 w-60 mr-4'>From Address</label>
+                <label className = 'block text-slate-400 md:w-60 mr-4'>From Address</label>
                 <input
                 type="text"
                 placeholder="john@gmail.com"
-                className="w-full bg-transparent rounded-md py-3 px-3 bg-white border border-gray-200 focus:outline-none"
+                className="md:w-full bg-transparent rounded-md py-3 px-3 bg-white border border-gray-200 focus:outline-none"
                 />
             </div>
             <div className='flex items-center w-full mb-2'>
-                <label className = 'block text-slate-400 w-60 mr-4 invisible'>From Address</label>
+                <label className = 'block text-slate-400 md:w-60 mr-4 invisible'>From Address</label>
                 <div className='flex justify-between items-center w-full'>
 
                 <button
