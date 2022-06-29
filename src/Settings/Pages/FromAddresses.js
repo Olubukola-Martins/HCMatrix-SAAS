@@ -99,7 +99,7 @@ const FromAddresses = () => {
 
               </div>
               {/* table container */}
-              <div className='table-container mt-20'>
+              <div className='table-container mt-10'>
                 <div className='table-heading grid grid-cols-3 md:gap-24 gap-2 mb-4 px-4 py-4 rounded-xl items-start bg-card  text-xs lg:text-base font-semibold '>
                   <h5 className=''>Display Name</h5>
                   <h5 className=''>From Address</h5>
@@ -110,7 +110,7 @@ const FromAddresses = () => {
                       <i class="fa-solid fa-star text-green-500"></i>
                       <span className='md:ml-4 ml-1'>noreply</span>
                   </div>
-                  <span className=''>noreply@hcmatrix.com</span>
+                  <div><span className='break-words'>noreply@hcmatrix.com</span></div>
                   <div className= 'flex items-center'>
                       <i class="fas fa-check-circle text-green-500"></i>
                       <span className='md:ml-4 ml-1'>Verified</span>
