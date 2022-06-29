@@ -8,9 +8,9 @@ const SettingNavItem = ({item}) => {
                     <h5 className="font-semibold text-accent text-xl">
                         {title}
                     </h5>
-                    <ul className='sub-items mt-8'>
+                    <ul className='sub-items mt-4'>
                         {items.map(item => (
-                            <li className='mb-6 text-sm'>
+                            <li className='mb-4 text-base'>
                                 <Link to = {item.link}>{item.name}</Link>
                             </li>
                         ))}

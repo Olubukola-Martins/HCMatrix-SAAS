@@ -57,8 +57,8 @@ id="panel1a-header"
  </div>
 </AccordionSummary>
 <AccordionDetails>
-<div className='grid grid-cols-1 lg:grid-cols-1 gap-1 justify-between text-accent'>
-    <div className='section-container grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-24 my-12'>
+<div className='grid grid-cols-1 lg:grid-cols-1 gap-1  justify-between text-accent'>
+    <div className='section-container grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-24 lg:my-12 my-4 lg:pt-12 pt-4'>
     <div className = 'sub-container'>
         <div className='heading flex items-center mb-8'>
             <h5 className='text-lg mr-6'>Administrator</h5>
@@ -94,7 +94,7 @@ id="panel1a-header"
                 />
                 <img src={PenIcon} alt= 'info' className="ml-4 h-6 block lg:hidden"/>
             </div>
-            <img src={PenIcon} alt= 'info' className="h-6 relative lg:right-2 invisible lg:visible"/>
+            <img src={PenIcon} alt= 'info' className="h-6 relative invisible lg:visible"/>
 
 
 
@@ -103,7 +103,7 @@ id="panel1a-header"
     </div>
     </div>
     {/* <Divider light /> */}
-    <div className='section-container grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-24 my-12 border border-0 border-t border-gray-200 pt-12'>
+    <div className='section-container grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-24 lg:my-12 my-4 border border-0 border-t border-gray-200 lg:pt-12 pt-4'>
     <div className = 'sub-container'>
         <div className='heading flex items-center mb-8'>
             <h5 className='text-lg mr-6'>Location settings</h5>
@@ -147,7 +147,7 @@ id="panel1a-header"
     </div>
     </div>
     {/* <Divider light /> */}
-    <div className='section-container grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-24 my-12 my-12 border border-0 border-t border-gray-200 pt-12'>
+    <div className='section-container grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-24 lg:my-12 my-4 border border-0 border-t border-gray-200 lg:pt-12 pt-4'>
     <div className = 'sub-container'>
         <div className='heading flex items-center mb-8'>
             <h5 className='text-lg mr-6'>Display Settings</h5>
@@ -203,7 +203,7 @@ id="panel1a-header"
     </div>
     </div>
     {/* <Divider light /> */}
-    <div className='section-container grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-24 my-12 my-12 border border-0 border-t border-gray-200 pt-12'>
+    <div className='section-container grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-24 lg:my-12 my-4 border border-0 border-t border-gray-200 lg:pt-12 pt-4'>
     <div className = 'sub-container'>
         <div className='heading flex items-center mb-8'>
             <h5 className='text-lg mr-6'>Profile photo settings</h5>
@@ -241,7 +241,7 @@ id="panel1a-header"
     </div>
     </div>
     {/* <Divider light /> */}
-    <div className='section-container grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-24 my-12 my-12 border border-0 border-t border-gray-200 pt-12'>
+    <div className='section-container grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-24 lg:my-12 my-4 border border-0 border-t border-gray-200 lg:pt-12 pt-4'>
     <div className = 'sub-container'>
         <div className='heading flex items-center mb-8'>
             <h5 className='text-lg mr-6'>Notifications Settings</h5>
@@ -279,7 +279,7 @@ id="panel1a-header"
     </div>
     </div>
     {/* <Divider light /> */}
-    <div className='section-container grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-24 my-12 my-12 border border-0 border-t border-gray-200 pt-12'>
+    <div className='section-container grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-24 lg:my-12 my-4 border border-0 border-t border-gray-200 lg:pt-12 pt-4'>
     <div className = 'sub-container'>
         <div className='heading flex items-center mb-8'>
             <h5 className='text-lg mr-6'>Employee Settings</h5>
@@ -343,7 +343,7 @@ id="panel1a-header"
     </div>
     </div>
     {/* <Divider light /> */}
-    <div className='section-container grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-24 my-12 my-12 border border-0 border-t border-gray-200 pt-12'>
+    <div className='section-container grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-24 lg:my-12 my-4 border border-0 border-t border-gray-200 lg:pt-12 pt-4'>
     <div className = 'sub-container'>
         <div className='heading flex items-center mb-8'>
             <h5 className='text-lg mr-6'>Employee Settings</h5>

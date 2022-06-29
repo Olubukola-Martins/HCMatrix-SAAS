@@ -3,6 +3,7 @@ import DashboardLayout from '../../Layout/DashboardLayout'
 import InfoIcon from '../Assets/info_icon.svg'
 import Themes from "../../Themes/Themes";
 import Modal from '@mui/material/Modal';
+import {Link} from 'react-router-dom'
 
 
 
@@ -81,9 +82,13 @@ const FromAddresses = () => {
         
         
           <div className="Container pb-20 mt-10 mb-72">
+          
               {/* heading container */}
-              <div className='flex flex-col lg:flex-row lg:justify-between lg:items-center '>
-              <h4 className="font-bold text-accent text-lg lg:text-xl md:w-3/5 md:leading-10 mb-20 lg:mb-0">
+              <div className='flex flex-col lg:flex-row lg:justify-between lg:items-start '>
+              <Link to = '/settings'>
+              <i className="fa fa-arrow-left text-accent text-lg " aria-hidden="true"></i></Link>
+             
+              <h4 className="font-bold text-accent lg:text-center text-lg lg:text-lg md:w-3/5 md:leading-10 mb-10 lg:mb-0">
               Create and manage official from addresses for automated e-mails sent from your organization.
               </h4>
               <div className='left-action flex'>
@@ -95,20 +100,20 @@ const FromAddresses = () => {
               </div>
               {/* table container */}
               <div className='table-container mt-20'>
-                <div className='table-heading grid grid-cols-3 gap-24 mb-4 px-4 py-4 rounded-xl items-start bg-card  text-xs lg:text-base font-semibold '>
+                <div className='table-heading grid grid-cols-3 md:gap-24 gap-2 mb-4 px-4 py-4 rounded-xl items-start bg-card  text-xs lg:text-base font-semibold '>
                   <h5 className=''>Display Name</h5>
                   <h5 className=''>From Address</h5>
                   <h5 className=''>Verification Status</h5>
                 </div>
-                <div className='table-entry grid grid-cols-3 gap-24 mb-4 text-xs  lg:text-sm px-4 py-4 rounded-xl items-start bg-card '>
+                <div className='table-entry grid grid-cols-3 md:gap-24  gap-2  mb-4 text-xs  lg:text-sm px-4 py-4 rounded-xl items-start bg-card '>
                   <div className= 'flex items-center'>
                       <i class="fa-solid fa-star text-green-500"></i>
-                      <span className='ml-4'>noreply</span>
+                      <span className='md:ml-4 ml-1'>noreply</span>
                   </div>
-                  <span className=''>noreply@hcmatrix.com</span>
+                  <span className='whitespace-wrap'>noreply@hcmatrix.com</span>
                   <div className= 'flex items-center'>
                       <i class="fas fa-check-circle text-green-500"></i>
-                      <span className='ml-4'>Verified</span>
+                      <span className='md:ml-4 ml-1'>Verified</span>
                   </div>
                   
                 </div>

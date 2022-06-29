@@ -4,6 +4,7 @@ import MuiAccordion from '@mui/material/Accordion';
 import AccordionSummary from '@mui/material/AccordionSummary';
 import AccordionDetails from '@mui/material/AccordionDetails';
 
+
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { countries, industries } from '../Data';
 
@@ -19,7 +20,7 @@ const Accordion = styled((props) => (
 
 
 const CompanyInfoAccordion = () => {
-    const [expanded, setExpanded] = useState(false)
+    const [expanded, setExpanded] = useState('panel1')
     const handleChange = (panel) => (event, isExpanded) => {
         setExpanded(isExpanded ? panel : false);
     };
@@ -42,8 +43,8 @@ const CompanyInfoAccordion = () => {
 </h4>
 </AccordionSummary>
 <AccordionDetails>
-<div className='grid grid-cols-2 lg:grid-cols-3 gap-2 lg:gap-4 justify-between text-accent'>
-  <div className='input-container lg:w-3/4'>
+<div className='grid grid-cols-2 lg:grid-cols-3 gap-x-5 md:gap-x-10 gap-y-2 justify-between text-accent'>
+  <div className='input-container w-full'>
   <label className = 'text-sm mb-4 block invisible'>Company Name</label>
        <input
       type="text"
@@ -51,7 +52,7 @@ const CompanyInfoAccordion = () => {
       className="w-full bg-transparent rounded-md py-3 px-3 border border-gray-400 focus:outline-none mb-6"
     />
   </div>
-  <div className='input-container lg:w-3/4'>
+  <div className='input-container w-full'>
   <label className = 'text-sm mb-4 block invisible'>Website</label>
        <input
       type="text"
@@ -59,7 +60,7 @@ const CompanyInfoAccordion = () => {
       className="w-full bg-transparent rounded-md py-3 px-3 border border-gray-400 focus:outline-none mb-6"
     />
   </div>
-  <div className='input-container lg:w-3/4'>
+  <div className='input-container w-full'>
     <label className = 'text-sm mb-4 block '>Industry</label>
        <select
       className="w-full bg-transparent rounded-md py-3 px-3 border border-gray-400 focus:outline-none mb-6"
@@ -69,7 +70,7 @@ const CompanyInfoAccordion = () => {
       {industries.map(item => (<option value = {item.value} key = {item.value}>{item.label}</option>))}
     </select>
   </div>
-  <div className='input-container lg:w-3/4'>
+  <div className='input-container w-full'>
   <label className = 'text-sm mb-4 block'>Contact Person</label>
        <input
       type="text"
@@ -77,7 +78,7 @@ const CompanyInfoAccordion = () => {
       className="w-full bg-transparent rounded-md py-3 px-3 border border-gray-400 focus:outline-none mb-6"
     />
   </div>
-  <div className='input-container lg:w-3/4'>
+  <div className='input-container w-full'>
   <label className = 'text-sm mb-4 block'>Phone</label>
        <input
       type="text"
@@ -85,7 +86,7 @@ const CompanyInfoAccordion = () => {
       className="w-full bg-transparent rounded-md py-3 px-3 border border-gray-400 focus:outline-none mb-6"
     />
   </div>
-  <div className='input-container lg:w-3/4'>
+  <div className='input-container w-full'>
   <label className = 'text-sm mb-4 block invisible'>Email</label>
        <input
       type="email"
@@ -93,7 +94,7 @@ const CompanyInfoAccordion = () => {
       className="w-full bg-transparent rounded-md py-3 px-3 border border-gray-400 focus:outline-none mb-6"
     />
   </div>
-  <div className='input-container lg:w-3/4'>
+  <div className='input-container w-full'>
   <label className = 'text-sm mb-4 block'>Address Details</label>
        <input
       type="text"
@@ -101,7 +102,7 @@ const CompanyInfoAccordion = () => {
       className="w-full bg-transparent rounded-md py-3 px-3 border border-gray-400 focus:outline-none mb-6"
     />
   </div>
-  <div className='input-container lg:w-3/4'>
+  <div className='input-container w-full'>
   <label className = 'text-sm mb-4 block invisible'>City</label>
        <input
       type="text"
@@ -109,7 +110,7 @@ const CompanyInfoAccordion = () => {
       className="w-full bg-transparent rounded-md py-3 px-3 border border-gray-400 focus:outline-none mb-6"
     />
   </div>
-  <div className='input-container lg:w-3/4'>
+  <div className='input-container w-full'>
   <label className = 'text-sm mb-4 block invisible'>State/Province</label>
        <input
       type="text"
@@ -117,7 +118,7 @@ const CompanyInfoAccordion = () => {
       className="w-full bg-transparent rounded-md py-3 px-3 border border-gray-400 focus:outline-none mb-6"
     />
   </div>
-  <div className='input-container lg:w-3/4'>
+  <div className='input-container w-full'>
     <label className = 'text-sm mb-4 block invisible'>Country</label>
        <select
       className="w-full bg-transparent rounded-md py-3 px-3 border border-gray-400 focus:outline-none mb-6"
