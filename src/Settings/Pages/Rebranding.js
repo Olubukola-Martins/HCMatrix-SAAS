@@ -1,6 +1,7 @@
 
 import DashboardLayout from '../../Layout/DashboardLayout'
 import InfoIcon from '../Assets/info_icon.svg'
+import {Link} from 'react-router-dom'
 
 
 
@@ -12,16 +13,18 @@ const CompanyDetails = () => {
         <div className="Container pb-20 mt-10 mb-72">
             {/* heading container */}
             <div className='flex justify-between items-center'>
-            <h4 className="font-bold text-accent text-xl">
+            <Link to = '/settings'>
+              <i className="fa fa-arrow-left text-accent text-lg" aria-hidden="true"></i></Link>
+            <h4 className="font-bold text-accent text-base md:text-lg">
             Customize your HCMatrix Login URL
 
             </h4>
-            <img src={InfoIcon} alt= 'info' className="h-6"/>
+            <img src={InfoIcon} alt= 'info' className="md:h-6 h-4"/>
 
             </div>
             {/* info container */}
-            <div className='info-container mt-52'>
-              <div className="bg-card rounded-xl px-12 py-8 border-l-8 border-orange-500 leading-10">
+            <div className='info-container mt-10'>
+              <div className="bg-card rounded-xl px-12 py-8 border-l-8 border-slate-700 leading-10">
                 <p className=''>The default login URL of hcmatrix is tademo.thehcmatrix.com. This can be customized as per your need, provided your domain is verified in hcmatrix.</p>
                 <div className='mid-section mt-24 mb-40'>
                   <p className=' mb-8'>Ensure that you have mapped the CNAME entry and linked it to tademo.thehcmatrix.com before you map your domain with hcmatrix</p>
@@ -33,15 +36,15 @@ const CompanyDetails = () => {
 
             </div>
             {/* form container */}
-            <div className='form-container  mb-20  mt-48'>
+            <div className='form-container  mb-20  mt-16'>
               <form>
                 <div className='grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-24 my-12 items-start'>
                   <div className='login flex items-center'>
                     <label className='text-xl mr-10 lg:mr-24 uppercase whitespace-nowrap '>Login URL</label>
                     <input
                     type="text"
-                    placeholder=""
-                    className="flex-1 rounded-md py-2 px-3 border border-gray-400 bg-slate-100 focus:outline-none"
+                    placeholder=" Enter Login Url"
+                    className="flex-1 bg-transparent rounded-md py-2 px-3 border border-gray-400 focus:outline-none"
                     />
                   </div>
                   <div className='other flex flex-col py-4 px-6 rounded-xl border md:w-3/5'>
@@ -51,13 +54,13 @@ const CompanyDetails = () => {
                     </div>
                     <input
                     type="text"
-                    placeholder=""
-                    className="flex-1 rounded-md mb-8 py-2 px-3 border border-gray-400  focus:outline-none"
+                    placeholder="Enter"
+                    className="flex-1 bg-transparent rounded-md mb-8 py-2 px-3 border border-gray-400  focus:outline-none"
                     />
                     <input
                     type="text"
                     placeholder="Select"
-                    className="flex-1 rounded-md py-2 px-3 border border-gray-400 bg-slate-100 focus:outline-none"
+                    className="flex-1 bg-transparent rounded-md py-2 px-3 border border-gray-400  focus:outline-none"
                     />
                   </div>
                 </div>
