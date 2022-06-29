@@ -110,7 +110,7 @@ const FromAddresses = () => {
                       <i class="fa-solid fa-star text-green-500"></i>
                       <span className='md:ml-4 ml-1'>noreply</span>
                   </div>
-                  <span className='whitespace-wrap'>noreply@hcmatrix.com</span>
+                  <span className=''>noreply@hcmatrix.com</span>
                   <div className= 'flex items-center'>
                       <i class="fas fa-check-circle text-green-500"></i>
                       <span className='md:ml-4 ml-1'>Verified</span>
