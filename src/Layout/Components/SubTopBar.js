@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import Drawer from "@mui/material/Drawer";
+import Themes from "../../Themes/Themes";
 
 const SubTopBar = () => {
   const [hideOrShow, setHideOrShow] = useState(false);
@@ -33,6 +34,7 @@ const SubTopBar = () => {
     <>
       {/* Modules mobile drawer */}
       <Drawer open={moduleDrawer["left"]} onClose={toggleDrawer("left", false)}>
+        <Themes>
         <div className="Container flex justify-end">
           <i
             className="ri-close-line text-right pt-5 text-xl cursor-pointer"
@@ -66,6 +68,7 @@ const SubTopBar = () => {
             </div>
           </div>
         </div>
+        </Themes>
       </Drawer>
 
       {/* Features drawer mobile */}
@@ -74,6 +77,7 @@ const SubTopBar = () => {
         onClose={toggleDrawerFeatures("left", false)}
        
       >
+          <Themes>
         <div className="Container flex justify-end">
           <i
             className="ri-close-line text-right pt-5 text-xl cursor-pointer"
@@ -126,6 +130,7 @@ const SubTopBar = () => {
             </div>
           </div>
         </div>
+        </Themes>
       </Drawer>
       {/* Features drawer mobile End*/}
 

@@ -51,7 +51,7 @@ const TopBar = ({
                 </div>
                 <input
                   type="text"
-                  className="bg-white border border-white text-sm rounded-2xl focus:outline-none block w-full pl-10 py-1 md:pr-16 lg:pr-24 text-accent"
+                  className="bg-white border border-white text-sm rounded-2xl focus:outline-none block w-full pl-10 py-1 md:pr-16 lg:pr-24 text-slate-400"
                   placeholder="Search..."
                 />
               </div>
