@@ -39,23 +39,23 @@ const FromAddresses = () => {
         </h4>
         <form className='mt-8 lg:mr-20 '>
             <div className='flex items-center w-full mb-8'>
-                <label className = 'block text-slate-400 w-60 mr-4'>Display Name</label>
+                <label className = 'block text-slate-400 md:w-60 mr-4'>Display Name</label>
                 <input
                 type="text"
                 placeholder="Add display name"
-                className="w-full bg-transparent rounded-md py-3 px-3 bg-white border border-gray-200 focus:outline-none"
+                className="md:w-full bg-transparent rounded-md py-3 px-3 bg-white border border-gray-200 focus:outline-none"
                 />
             </div>
             <div className='flex items-center w-full mb-8'>
-                <label className = 'block text-slate-400 w-60 mr-4'>From Address</label>
+                <label className = 'block text-slate-400 md:w-60 mr-4'>From Address</label>
                 <input
                 type="text"
                 placeholder="john@gmail.com"
-                className="w-full bg-transparent rounded-md py-3 px-3 bg-white border border-gray-200 focus:outline-none"
+                className="md:w-full bg-transparent rounded-md py-3 px-3 bg-white border border-gray-200 focus:outline-none"
                 />
             </div>
             <div className='flex items-center w-full mb-2'>
-                <label className = 'block text-slate-400 w-60 mr-4 invisible'>From Address</label>
+                <label className = 'block text-slate-400 md:w-60 mr-4 invisible'>From Address</label>
                 <div className='flex justify-between items-center w-full'>
 
                 <button
@@ -99,7 +99,7 @@ const FromAddresses = () => {
 
               </div>
               {/* table container */}
-              <div className='table-container mt-20'>
+              <div className='table-container mt-10'>
                 <div className='table-heading grid grid-cols-3 md:gap-24 gap-2 mb-4 px-4 py-4 rounded-xl items-start bg-card  text-xs lg:text-base font-semibold '>
                   <h5 className=''>Display Name</h5>
                   <h5 className=''>From Address</h5>
@@ -110,7 +110,7 @@ const FromAddresses = () => {
                       <i class="fa-solid fa-star text-green-500"></i>
                       <span className='md:ml-4 ml-1'>noreply</span>
                   </div>
-                  <span className=''>noreply@hcmatrix.com</span>
+                  <div><span className='break-words'>noreply@hcmatrix.com</span></div>
                   <div className= 'flex items-center'>
                       <i class="fas fa-check-circle text-green-500"></i>
                       <span className='md:ml-4 ml-1'>Verified</span>

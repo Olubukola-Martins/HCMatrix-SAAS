@@ -30,7 +30,7 @@ const ResetPasswordModal = ({open, handleClose}) => {
     onClose={handleClose}
     aria-labelledby="Email Verification"
     aria-describedby="Please verify your account by checking your inbox."
-    BackdropProps = {{invisible: true}}
+    BackdropProps = {{invisible: false}}
   >
     <Box sx={style}>
         
