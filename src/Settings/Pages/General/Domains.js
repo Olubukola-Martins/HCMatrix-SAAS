@@ -1,9 +1,9 @@
 import React from "react";
 import Modal from "@mui/material/Modal";
-import Themes from "../../Themes/Themes";
+import Themes from "../../../Themes/Themes";
 import { Link } from 'react-router-dom';
 
-import DashboardLayout from "../../Layout/DashboardLayout";
+import DashboardLayout from "../../../Layout/DashboardLayout";
 
 const Domains = () => {
   const [open, setOpen] = React.useState(false);

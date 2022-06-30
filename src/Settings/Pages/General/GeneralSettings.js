@@ -1,7 +1,7 @@
 import React, {useState} from 'react'
- import DashboardLayout from '../../Layout/DashboardLayout'
-import SettingNavItem from '../Components/SettingNavItem'
-import { settingNavItems } from '../Data'
+ import DashboardLayout from '../../../Layout/DashboardLayout'
+import SettingNavItem from '../../Components/SettingNavItem'
+import { settingNavItems } from '../../Data'
 
 
 

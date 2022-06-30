@@ -1,10 +1,10 @@
 import React from "react";
 import { Route, Routes } from "react-router-dom";
-import GeneralSettings from '../Pages/GeneralSettings'
-import CompanyDetails from '../Pages/CompanyDetails'
-import FromAddresses from '../Pages/FromAddresses'
-import Rebranding from '../Pages/Rebranding'
-import Domains from '../Pages/Domains'
+import GeneralSettings from '../Pages/General/GeneralSettings'
+import CompanyDetails from '../Pages/General/CompanyDetails'
+import FromAddresses from '../Pages/General/FromAddresses'
+import Rebranding from '../Pages/General/Rebranding'
+import Domains from '../Pages/General/Domains'
 
 const SettingRoutes = () => {
   return (

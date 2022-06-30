@@ -1,7 +1,7 @@
 import {useState} from 'react'
-import DashboardLayout from '../../Layout/DashboardLayout'
-import InfoIcon from '../Assets/info_icon.svg'
-import Themes from "../../Themes/Themes";
+import DashboardLayout from '../../../Layout/DashboardLayout'
+import InfoIcon from '../../Assets/info_icon.svg'
+import Themes from "../../../Themes/Themes";
 import Modal from '@mui/material/Modal';
 import {Link} from 'react-router-dom'
 

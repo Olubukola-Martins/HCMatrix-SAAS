@@ -1,8 +1,8 @@
 
-import DashboardLayout from '../../Layout/DashboardLayout'
+import DashboardLayout from '../../../Layout/DashboardLayout'
 // import Logo from '../Assets/round_company_logo.png'
-import CompanyInfoAccordion from '../Components/CompanyInfoAccordion'
-import CompanySettingsAccordion from '../Components/CompanySettingsAccordion'
+import CompanyInfoAccordion from '../../Components/CompanyInfoAccordion'
+import CompanySettingsAccordion from '../../Components/CompanySettingsAccordion'
 import Avatar from '@mui/material/Avatar';
 import {Link} from 'react-router-dom'
 

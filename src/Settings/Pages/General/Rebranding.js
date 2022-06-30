@@ -1,6 +1,6 @@
 
-import DashboardLayout from '../../Layout/DashboardLayout'
-import InfoIcon from '../Assets/info_icon.svg'
+import DashboardLayout from '../../../Layout/DashboardLayout'
+import InfoIcon from '../../Assets/info_icon.svg'
 import {Link} from 'react-router-dom'
 
 
