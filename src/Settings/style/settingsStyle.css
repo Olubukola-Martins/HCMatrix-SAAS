@@ -1,0 +1,21 @@
+.MuiMenu-paper{
+    background: var(--card) !important;
+}
+
+.employee-profile-table {
+    @apply w-full text-center text-accent;
+}
+
+.employee-profile-table tr{
+  background: var(--card);
+  border-bottom: 5px solid var(--background);
+}
+
+.employee-profile-table td {
+    @apply text-sm
+}
+
+.employee-profile-table th, .employee-profile-table td {
+    padding: 10px;
+
+}
