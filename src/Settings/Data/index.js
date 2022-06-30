@@ -13,7 +13,7 @@ export const settingNavItems = [
         title: 'Organization',
         items: [
             {name: 'Users', link: '/settings/company-details'},
-            {name: 'Employee profiles', link: '/settings/domain'},
+            {name: 'Employee profiles', link: '/settings/employee-profile'},
             {name: 'Departments', link: '/settings/rebranding'},
             {name: 'Designations', link: '/settings/from-addresses'},
             {name: 'Locations', link: '/settings/from-addresses'},

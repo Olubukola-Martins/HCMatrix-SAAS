@@ -5,6 +5,7 @@ import CompanyDetails from '../Pages/General/CompanyDetails'
 import FromAddresses from '../Pages/General/FromAddresses'
 import Rebranding from '../Pages/General/Rebranding'
 import Domains from '../Pages/General/Domains'
+import EmployeeProfiles from "../Pages/Organization/EmployeeProfiles";
 
 const SettingRoutes = () => {
   return (
@@ -14,6 +15,7 @@ const SettingRoutes = () => {
       <Route path="/settings/domains" element={<Domains />} />
       <Route path="/settings/rebranding" element={<Rebranding />} />
       <Route path="/settings/from-addresses" element={<FromAddresses />} />
+      <Route path="/settings/employee-profile" element={<EmployeeProfiles />} />
     </Routes>
   );
 };

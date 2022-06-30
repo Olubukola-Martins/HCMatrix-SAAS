@@ -10,7 +10,7 @@ function App() {
       <SettingRoutes/>
       
       {/* <Routes>
-      <Route path="*" element={<NotFoundPage/> }/>
+      <Route path="*" element={<NotFoundPage /> }/>
       </Routes> */}
     </Router>
   );
