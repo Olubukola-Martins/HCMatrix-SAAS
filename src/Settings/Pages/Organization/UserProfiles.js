@@ -70,7 +70,7 @@ const UserProfiles = () => {
           </div>
         </div>
         <br />
-        <div className = 'bg-gray-100 px-6 py-2  mb-4 flex items-end gap-4 text-sm'>
+        <div className = 'px-6 py-2  mb-4 flex items-end gap-4 text-sm' style = {{background: 'var(--card)'}}>
             <p className="text-caramel underline">Resend Information</p>
             <p className="text-caramel underline">Change Login Status</p>
             <p className="text-caramel underline">Trigger onboarding</p>
