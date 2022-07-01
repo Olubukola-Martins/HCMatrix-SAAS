@@ -265,7 +265,6 @@ const EmployeeProfiles = () => {
                 </span>
               </td>
             </tr>
-
           </tbody>
         </table>
       </div>

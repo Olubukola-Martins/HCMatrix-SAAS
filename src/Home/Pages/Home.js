@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import DashboardLayout from "../../Layout/DashboardLayout";
 import HomeCard from "../Components/HomeCard";
@@ -10,8 +10,19 @@ import interviews from "../Assets/Images/interviews.svg";
 import timesheets from "../Assets/Images/timesheets.svg";
 import attendance from "../Assets/Images/attendance.svg";
 import files from "../Assets/Images/files.svg";
+import Themes from "../../Themes/Themes";
+import Menu from "@mui/material/Menu";
 
 const Home = () => {
+  const [anchorEl, setAnchorEl] = useState(null);
+  const open = Boolean(anchorEl);
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
   return (
     <DashboardLayout>
       <div className="Container pb-20 mt-4">
@@ -56,31 +67,23 @@ const Home = () => {
                 />
               </div>
             </div>
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-3 text-center lg:px-10 mt-5">
-              <div>
-                <Link to="#!" className="text-caramel font-semibold text-lg">
-                  View
-                </Link>
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-3 text-center mt-5">
+              <Link to="#!" className="dashboardLink">
+                <span className="text-caramel font-semibold text-lg">View</span>
                 <h6 className="text-xs font-semibold">Company Handbook</h6>
-              </div>
-              <div>
-                <Link to="#!" className="text-caramel font-semibold text-lg">
-                  View
-                </Link>
+              </Link>
+              <Link to="#!" className="dashboardLink">
+                <span className="text-caramel font-semibold text-lg">View</span>
                 <h6 className="text-xs font-semibold">Company organogram</h6>
-              </div>
-              <div>
-                <Link to="#!" className="text-caramel font-semibold text-lg">
-                  View
-                </Link>
+              </Link>
+              <Link to="#!" className="dashboardLink">
+                <span className="text-caramel font-semibold text-lg">View</span>
                 <h6 className="text-xs font-semibold">HMO ID Details</h6>
-              </div>
-              <div>
-                <Link to="#!" className="text-caramel font-semibold text-lg">
-                  NI34
-                </Link>
+              </Link>
+              <Link to="#!" className="dashboardLink">
+                <span className="text-caramel font-semibold text-lg">NI34</span>
                 <h6 className="text-xs font-semibold">ID Number</h6>
-              </div>
+              </Link>
             </div>
           </div>
           <div className="bg-card rounded-xl px-5 py-4 text-accent w-full">
@@ -128,8 +131,23 @@ const Home = () => {
 
                 <div className="flex items-center gap-3 cursor-pointer">
                   <i className="ri-customer-service-2-line text-2xl"></i>
-                  <span className="text-caramel">Contact Support</span>
+                  <span className="text-caramel" onClick={handleClick}>Contact Support</span>
                 </div>
+
+                {/* Contact Support menu */}
+                <Menu anchorEl={anchorEl} open={open} onClose={handleClose}>
+                  <Themes>
+                    <div className="bg-card w-32 px-3 text-sm py-1 text-accent">
+                      <h5 className="flex items-center justify-between border-b cursor-pointer">
+                      <i className="ri-whatsapp-fill text-lg text-green-500"></i> <span>WhatsApp</span>
+                      </h5>
+                      <h5 className="flex items-center justify-between py-2 cursor-pointer">
+                      <i className="ri-mail-line text-lg"></i> <span>EMail Us</span>
+                      </h5>
+                     
+                    </div>
+                  </Themes>
+                </Menu>
               </div>
             </div>
           </div>
