@@ -1,4 +1,4 @@
-import React from "react";
+import {useState} from "react";
 import { Link } from "react-router-dom";
 import DashboardLayout from "../../Layout/DashboardLayout";
 import HomeCard from "../Components/HomeCard";
@@ -10,8 +10,44 @@ import interviews from "../Assets/Images/interviews.svg";
 import timesheets from "../Assets/Images/timesheets.svg";
 import attendance from "../Assets/Images/attendance.svg";
 import files from "../Assets/Images/files.svg";
+import { motion } from "framer-motion";
+import { settingNavItems } from "../../Settings/Data";
+
+
+const ProgressBar = ({width}) => {
+  return (
+    <div className="setUp_progress2" style={{width: '100%', marginTop: '0'}}>
+      <div className="setUp_progress-bar2" style = {{width,  height: '6px',}}/>
+    </div>
+  )
+}
+const PendingItem = ({handleClick, item, openId}) => {
+  return (
+    <div>
+    <div className = 'cursor-pointer' onClick={() => handleClick(item.title)}>
+      <span>{item.title}(1/4)</span>
+      <div className="setUp_progress2 general_setup">
+        <div className="setUp_progress-bar2" />
+      </div>
+    </div>
+    <motion.div className={`other overflow-y-hidden flex flex-col justify-center pl-2  border-0  ${ openId === item.title ?'border-b' : ''} border-slate-400`} initial = {{height:0}} animate = {{height: openId === item.title ? (item.items.length * 43) : '0'}}>
+      {item.items.map(child => (<div key = {child.name} className="item flex gap-6 text-xs mb-2 items-center">
+        <span>{child.name}</span>
+        <ProgressBar width={'25%'}/>
+      </div>))}
+  
+
+    </motion.div>
+  </div>
+  )
+}
 
 const Home = () => {
+  const [openId, setOpenId] = useState('');
+  const handleClick = (val) => {
+    setOpenId((preVal) => preVal === val ? '' : val)
+
+  }
   return (
     <DashboardLayout>
       <div className="Container pb-20 mt-4">
@@ -86,13 +122,36 @@ const Home = () => {
           <div className="bg-card rounded-xl px-5 py-4 text-accent w-full">
             <h5 className="font-semibold">Pending Setup</h5>
             <div className="flex flex-col gap-5 text-sm mt-4">
-              <div>
-                <span>General Setup(1/4)</span>
-                <div className="setUp_progress2 general_setup">
-                  <div className="setUp_progress-bar2" />
+              {settingNavItems.map(item => (
+                <PendingItem key = {item.title} handleClick = {handleClick} openId = {openId} item = {item}/>
+              ))}
+
+
+              {/* <div>
+              // THE TEMPLATE
+                <div className = 'cursor-pointer' onClick={() => handleClick('company')}>
+                  <span>General Setup(1/4)</span>
+                  <div className="setUp_progress2 general_setup">
+                    <div className="setUp_progress-bar2" />
+                  </div>
                 </div>
-              </div>
-              <div>
+                <motion.div className={`other overflow-y-hidden flex flex-col justify-center pl-2 border ${ openId === 'company' ?'border-b' : ''} border-slate-400`} initial = {{height:0}} animate = {{height: openId === 'company' ?'100px' : '0'}}>
+                  <div className="item flex gap-6 text-xs mb-2 items-center">
+                    <span>Company</span>
+                    <ProgressBar width={'25%'}/>
+                  </div>
+                  <div className="item flex gap-6 text-xs mb-2 items-center">
+                    <span>Domain</span>
+                    <ProgressBar width={'25%'}/>
+                  </div>
+                  <div className="item flex gap-6 text-xs mb-2 items-center">
+                    <span>Rebranding</span>
+                    <ProgressBar width={'25%'}/>
+                  </div>
+
+                </motion.div>
+              </div> */}
+              {/* <div>
                 <span>Organization(1/7)</span>
                 <div className="setUp_progress2 video_setup">
                   <div className="setUp_progress-bar2" />
@@ -115,7 +174,7 @@ const Home = () => {
                 <div className="setUp_progress2 video">
                   <div className="setUp_progress-bar2" />
                 </div>
-              </div>
+              </div> */}
               <div className="grid grid-cols-2 gap-x-2 gap-y-3 text-xs font-medium mt-3">
                 <div className="flex items-center gap-3 cursor-pointer">
                   <i className="ri-movie-line text-2xl"></i>

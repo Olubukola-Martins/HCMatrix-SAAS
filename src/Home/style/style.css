@@ -6,6 +6,9 @@
 .setUp_progress2 {
   border-radius: 30px;
   background-color: var(--scrollBg);
+  /* moved to parent container margin-top */
+  margin-top: 3px;
+
 }
 
 .setUp_progress-bar2 {
@@ -14,7 +17,6 @@
   transition: 0.4s linear;
   transition-property: width, background-color;
   background-color: var(--caramel);
-  margin-top: 3px;
 }
 
 .general_setup .setUp_progress-bar2 {
