@@ -1,5 +1,6 @@
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import AuthRoutes from "./Auth/Routes/AuthRoutes";
+// import NotFoundPage from "./Layout/Components/NotFoundPage";
 import SettingRoutes from "./Settings/Routes/SettingRoutes";
 
 function App() {
@@ -8,10 +9,9 @@ function App() {
       <AuthRoutes />
       <SettingRoutes/>
       
-      <Routes>
-       
-      <Route path="*" element={<span>Not found1</span> }/>
-      </Routes>
+      {/* <Routes>
+      <Route path="*" element={<NotFoundPage /> }/>
+      </Routes> */}
     </Router>
   );
 }
