@@ -6,6 +6,7 @@ import FromAddresses from '../Pages/General/FromAddresses'
 import Rebranding from '../Pages/General/Rebranding'
 import Domains from '../Pages/General/Domains'
 import EmployeeProfiles from "../Pages/Organization/EmployeeProfiles";
+import UserProfiles from "../Pages/Organization/UserProfiles";
 
 const SettingRoutes = () => {
   return (
@@ -18,6 +19,7 @@ const SettingRoutes = () => {
 
 
       <Route path="/settings/employee-profile" element={<EmployeeProfiles />} />
+      <Route path="/settings/user-profile" element={<UserProfiles />} />
 
     </Routes>
   );
