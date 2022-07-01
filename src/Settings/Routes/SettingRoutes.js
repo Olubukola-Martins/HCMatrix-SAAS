@@ -14,6 +14,7 @@ const SettingRoutes = () => {
       <Route path="/settings/domains" element={<Domains />} />
       <Route path="/settings/rebranding" element={<Rebranding />} />
       <Route path="/settings/from-addresses" element={<FromAddresses />} />
+      
     </Routes>
   );
 };
