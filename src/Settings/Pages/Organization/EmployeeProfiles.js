@@ -39,13 +39,16 @@ const EmployeeProfiles = () => {
       </div>
       <div className="Container pb-10">
         <div className="flex justify-between mt-5">
-          <h4
-            onClick={handleClick}
-            className="flex items-center gap-2 cursor-pointer hover:text-caramel text-accent"
-          >
-            <span>Employee Status</span>
-            <i className="ri-arrow-down-s-line text-xl"></i>
-          </h4>
+          <div className="flex items-center gap-3">
+            <h4 className="cursor-pointer text-accent">Employee Status</h4>
+            <button
+              className="flex items-center gap-2 transition duration-300 ease-in-out hover:border-slate-400 text-slate-400 border rounded text-sm px-2"
+              onClick={handleClick}
+            >
+              <span>Master record 24</span>
+              <i className="ri-arrow-down-s-line text-xl"></i>
+            </button>
+          </div>
 
           <div className="flex items-center gap-3 text-accent">
             <button className="py-1 px-2 bg-caramel rounded text-sm text-white font-medium">
