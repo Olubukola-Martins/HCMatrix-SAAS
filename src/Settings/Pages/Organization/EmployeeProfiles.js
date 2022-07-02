@@ -6,19 +6,20 @@ import "../../style/settingsStyle.css";
 
 const EmployeeProfiles = () => {
   const [anchorEl, setAnchorEl] = useState(null);
+  const [anchorE2, setAnchorE2] = useState(null);
+
   const open = Boolean(anchorEl);
+  const openDisplay = Boolean(anchorE2);
+
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
-  };
-  const handleClose = () => {
-    setAnchorEl(null);
   };
 
   return (
     <DashboardLayout>
       {/* Employee Status menu */}
       <div className="me">
-        <Menu anchorEl={anchorEl} open={open} onClose={handleClose}>
+        <Menu anchorEl={anchorEl} open={open} onClose={() => setAnchorEl(null)}>
           <Themes>
             <div className="bg-card w-36 px-2 text-sm py-3 text-accent">
               <h5 className="flex items-center justify-between border-b">
@@ -64,8 +65,8 @@ const EmployeeProfiles = () => {
             ></i>
           </div>
         </div>
-        <br />
-        <div className="bg-card flex items-center justify-between p-3">
+    
+        <div className="bg-card flex items-center justify-between p-3 mb-2 mt-7">
           <h5 className="font-medium">Employee Information</h5>
           <div className="flex items-center gap-5">
             <button className="flex items-center gap-2 text-sm text-white bg-green-600 px-2 py-1">
@@ -92,9 +93,7 @@ const EmployeeProfiles = () => {
 
           <div />
         </div>
-
-        <br />
-        <div className="bg-card">
+        <div className="bg-card mb-2">
           <div className="flex justify-end">
             <span className="pr-3 pb-2 cursor-pointer">x</span>
           </div>
@@ -121,7 +120,60 @@ const EmployeeProfiles = () => {
             <button className="border-b-2 border-caramel">Others</button>
           </div>
         </div>
-        <br />
+  
+
+        <div className="bg-card flex items-center justify-start gap-2 mb-2 p-3">
+          <button className="text-sm text-white bg-caramel px-2 py-1">
+            <span>FOCUS</span>
+          </button>
+          <button
+            onClick={(e) => setAnchorE2(e.currentTarget)}
+            className="flex items-center gap-2 text-sm text-white bg-caramel px-2 py-1"
+          >
+            <span>Display</span>
+            <i className="ri-arrow-down-s-line text-base"></i>
+          </button>
+          <Menu
+            anchorEl={anchorE2}
+            open={openDisplay}
+            onClose={() => setAnchorE2(null)}
+          >
+            <Themes>
+              <div className="bg-card w-32 px-2 text-sm py-3 text-accent">
+                <h5 className="flex items-center gap-4 border-b">
+                  <input type="checkbox" /> <span>Display All</span>
+                </h5>
+                <h5 className="flex items-center gap-5 py-1 border-b">
+                  <input type="checkbox" /> <span>Name</span>
+                </h5>
+                <h5 className="flex items-center gap-4 py-1">
+                  <input type="checkbox" /> <span>Staff ID</span>
+                </h5>
+                <h5 className="flex items-center gap-5 py-1 border-b">
+                  <input type="checkbox" /> <span>Grade</span>
+                </h5>
+                <h5 className="flex items-center gap-5 py-1 border-b">
+                  <input type="checkbox" /> <span>Gender</span>
+                </h5>
+                <h5 className="flex items-center gap-5 py-1 border-b">
+                  <input type="checkbox" /> <span>Status</span>
+                </h5>
+                <h5 className="flex items-center gap-4 py-1">
+                  <input type="checkbox" /> <span>Department</span>
+                </h5>
+                <h5 className="flex items-center gap-5 py-1 border-b">
+                  <input type="checkbox" /> <span>Email</span>
+                </h5>
+                <h5 className="flex items-center gap-5 py-1 border-b">
+                  <input type="checkbox" /> <span>Role</span>
+                </h5>
+                <h5 className="flex items-center gap-5 pt-1">
+                  <input type="checkbox" /> <span>Options</span>
+                </h5>
+              </div>
+            </Themes>
+          </Menu>
+        </div>
 
         <table className="employee-profile-table">
           <thead>
