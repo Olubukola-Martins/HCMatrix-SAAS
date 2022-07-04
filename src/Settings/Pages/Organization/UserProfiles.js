@@ -210,16 +210,13 @@ const UserProfiles = () => {
               className="px-6 py-4  mb-2 flex items-center gap-4 text-sm"
               style={{ background: "var(--card)" }}
             >
-              <button
-                htmlType="submit"
-                className="bg-red-600 flex items-center gap-2 capitalize  hover:bg-opacity-70 transition ease-in duration-300 text-white py-1 text-sm px-2"
-              >
+              <button className="bg-caramel flex items-center gap-2 capitalize  hover:bg-opacity-70 transition ease-in duration-300 text-white py-1 text-sm px-2">
                 <span>Focus</span>
               </button>
               <button
                 id="display-button"
                 onClick={handleDisplayClick}
-                className="bg-red-600 flex items-center gap-2 capitalize  hover:bg-opacity-70 transition ease-in duration-300 text-white py-1 text-sm px-2"
+                className="bg-caramel flex items-center gap-2 capitalize  hover:bg-opacity-70 transition ease-in duration-300 text-white py-1 text-sm px-2"
               >
                 Display
                 <i className="fa fa-caret-down" aria-hidden="true"></i>
