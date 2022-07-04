@@ -17,31 +17,23 @@ const DisplayDropdown = ({ anchorEl, handleClose }) => {
       }}
     >
       <Themes>
-        <MenuItem onClick={handleClose}>
-          <label>
-            <input type="checkbox" /> Display all
-          </label>
-        </MenuItem>
-        <MenuItem onClick={handleClose}>
-          <label>
-            <input type="checkbox" /> Name
-          </label>
-        </MenuItem>
-        <MenuItem onClick={handleClose}>
-          <label>
-            <input type="checkbox" /> Staff ID
-          </label>
-        </MenuItem>
-        <MenuItem onClick={handleClose}>
-          <label>
-            <input type="checkbox" /> Grade
-          </label>
-        </MenuItem>
-        <MenuItem onClick={handleClose}>
-          <label>
-            <input type="checkbox" /> Gender
-          </label>
-        </MenuItem>
+        {[
+          "Display all",
+          "Name",
+          "Staff ID",
+          "grade",
+          "Gender",
+          "status",
+          "department",
+          "email",
+          "role",
+        ].map((item) => (
+          <MenuItem key="item">
+            <label className="capitalize">
+              <input type="checkbox" /> {item}
+            </label>
+          </MenuItem>
+        ))}
       </Themes>
     </Menu>
   );
