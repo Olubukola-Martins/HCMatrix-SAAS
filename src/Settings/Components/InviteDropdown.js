@@ -1,36 +1,18 @@
-import { useState } from "react";
 import Themes from "../../Themes/Themes";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
-import InviteUserDrawer from "./InviteUserDrawer";
-import InviteMultipleUserDrawer from "./InviteMultipleUserDrawer";
 
-const InviteDropdown = ({ anchorEl, handleClose, toggleExperiment }) => {
+const InviteDropdown = ({ anchorEl, handleClose, handleDrawer }) => {
   const open = Boolean(anchorEl);
   //invite user drawer
-  const [openInviteUser, setOpenInviteUser] = useState(false);
-  const handleInviteUser = () => {
-    handleClose();
 
-    // setOpenInviteUser(true);
-    toggleExperiment();
-  };
-  //invite multiple user drawer
-  const [openInviteMultipleUser, setOpenInviteMultipleUser] = useState(false);
-  const handleInviteMultipleUser = () => {
+  const handleSingleDrawer = (val) => {
+    handleDrawer(val);
     handleClose();
-
-    setOpenInviteMultipleUser(true);
   };
 
   return (
     <>
-      <InviteUserDrawer open={openInviteUser} setOpen={setOpenInviteUser} />
-      <InviteMultipleUserDrawer
-        open={openInviteMultipleUser}
-        setOpen={setOpenInviteMultipleUser}
-      />
-
       <Menu
         id="invite-menu"
         anchorEl={anchorEl}
@@ -41,8 +23,10 @@ const InviteDropdown = ({ anchorEl, handleClose, toggleExperiment }) => {
         }}
       >
         <Themes>
-          <MenuItem onClick={handleInviteUser}>Invite User</MenuItem>
-          <MenuItem onClick={handleInviteMultipleUser}>
+          <MenuItem onClick={() => handleSingleDrawer("single-invite")}>
+            Invite User
+          </MenuItem>
+          <MenuItem onClick={() => handleSingleDrawer("multiple-invite")}>
             Invite Multiple Users
           </MenuItem>
         </Themes>
