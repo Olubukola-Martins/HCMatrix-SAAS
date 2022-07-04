@@ -4,7 +4,6 @@ import Themes from "../../Themes/Themes";
 import Stepper from "@mui/material/Stepper";
 import Step from "@mui/material/Step";
 import StepLabel from "@mui/material/StepLabel";
-import { motion } from "framer-motion";
 
 const steps = [
   "Upload File",
@@ -23,7 +22,7 @@ const UploadFileModal = ({ open, handleClose }) => {
       BackdropProps={{ invisible: false }}
     >
       <Themes>
-        <motion.div
+        <div
           className="CModal overflow-y-auto"
           style={{
             maxWidth: 600,
@@ -136,7 +135,7 @@ const UploadFileModal = ({ open, handleClose }) => {
               </div>
             </div>
           </div>
-        </motion.div>
+        </div>
       </Themes>
     </Modal>
   );

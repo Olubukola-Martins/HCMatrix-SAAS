@@ -260,10 +260,7 @@ const UserProfiles = () => {
                           alt="user"
                         />
                         <div className="flex flex-col">
-                          <h6 className="font-medium text-sm">
-                            Francis terr, 4
-                          </h6>
-                          <span className="text-xs">francis@gmail.com</span>
+                          <h6 className="font-medium text-sm">Francis terr</h6>
                         </div>
                       </div>
                     </td>
