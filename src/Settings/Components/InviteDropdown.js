@@ -5,14 +5,15 @@ import MenuItem from "@mui/material/MenuItem";
 import InviteUserDrawer from "./InviteUserDrawer";
 import InviteMultipleUserDrawer from "./InviteMultipleUserDrawer";
 
-const InviteDropdown = ({ anchorEl, handleClose }) => {
+const InviteDropdown = ({ anchorEl, handleClose, toggleExperiment }) => {
   const open = Boolean(anchorEl);
   //invite user drawer
   const [openInviteUser, setOpenInviteUser] = useState(false);
   const handleInviteUser = () => {
     handleClose();
 
-    setOpenInviteUser(true);
+    // setOpenInviteUser(true);
+    toggleExperiment();
   };
   //invite multiple user drawer
   const [openInviteMultipleUser, setOpenInviteMultipleUser] = useState(false);

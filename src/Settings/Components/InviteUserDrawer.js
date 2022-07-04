@@ -1,6 +1,7 @@
 import React from "react";
 import Drawer from "@mui/material/Drawer";
 import Themes from "../../Themes/Themes";
+// import { motion } from "framer-motion";
 
 const InviteUserDrawer = ({ open, setOpen }) => {
   const toggleDrawer = (anchor) => (event) => {
