@@ -1,7 +1,13 @@
-.MuiMenu-paper{
-    background: var(--card) !important;
-}
+/* to remove the backgroud of list items */
 
+.MuiMenu-paper{
+    background: none !important;
+}
+.MuiList-root{
+    background: none !important;
+
+}
+/* to remove the backgroud of list items */
 .employee-profile-table {
     @apply w-full text-center text-accent;
 }
@@ -19,3 +25,11 @@
     padding: 10px;
 
 }
+/* to adjust stepper */
+.MuiStepIcon-root.Mui-active {
+    color: #fff !important;
+}
+.MuiStepIcon-text{
+    fill: var(--caramel) !important;
+}
+/* to adjust stepper - make this better later */
