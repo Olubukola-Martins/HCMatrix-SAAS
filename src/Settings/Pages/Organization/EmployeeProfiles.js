@@ -3,16 +3,19 @@ import DashboardLayout from "../../../Layout/DashboardLayout";
 import Menu from "@mui/material/Menu";
 import Themes from "../../../Themes/Themes";
 import "../../style/settingsStyle.css";
-import UserIcon from "../../Assets/user.svg";
-import PenIcon from "../../Assets/pen_icon.svg";
-import DummyIcon from "../../Assets/dummy.svg";
 import { AnimatePresence } from "framer-motion";
 import FilterDrawer from "../../Components/FilterDrawer";
+import { Dialog, Slide } from "@mui/material";
+import AddEmployee from "../../Components/AddEmployee";
+const Transition = React.forwardRef(function Transition(props, ref) {
+  return <Slide direction="up" ref={ref} {...props} />;
+});
 
 const EmployeeProfiles = () => {
   const [anchorEl, setAnchorEl] = useState(null);
   const [anchorE2, setAnchorE2] = useState(null);
   const [showDraggableDrawer, setShowDraggableDrawer] = useState("");
+  const [openFullDialog, setOpenFullDialog] = useState(false);
 
   const open = Boolean(anchorEl);
   const openDisplay = Boolean(anchorE2);
@@ -23,24 +26,28 @@ const EmployeeProfiles = () => {
 
   return (
     <DashboardLayout>
+      <Dialog fullScreen open={openFullDialog} TransitionComponent={Transition}>
+        <DashboardLayout>
+          <AddEmployee close={() => setOpenFullDialog(false)} />
+        </DashboardLayout>
+      </Dialog>
+
       {/* Employee Status menu */}
-      <div className="me">
-        <Menu anchorEl={anchorEl} open={open} onClose={() => setAnchorEl(null)}>
-          <Themes>
-            <div className="bg-card w-36 px-2 text-sm py-3 text-accent">
-              <h5 className="flex items-center justify-between border-b">
-                <span>Probation</span> <span>6</span>
-              </h5>
-              <h5 className="flex items-center justify-between py-2 border-b">
-                <span>Confirmed</span> <span>10</span>
-              </h5>
-              <h5 className="flex items-center justify-between">
-                <span>Disengaged</span> <span>8</span>
-              </h5>
-            </div>
-          </Themes>
-        </Menu>
-      </div>
+      <Menu anchorEl={anchorEl} open={open} onClose={() => setAnchorEl(null)}>
+        <Themes>
+          <div className="bg-card w-36 px-2 text-sm py-3 text-accent">
+            <h5 className="flex items-center justify-between border-b">
+              <span>Probation</span> <span>6</span>
+            </h5>
+            <h5 className="flex items-center justify-between py-2 border-b">
+              <span>Confirmed</span> <span>10</span>
+            </h5>
+            <h5 className="flex items-center justify-between">
+              <span>Disengaged</span> <span>8</span>
+            </h5>
+          </div>
+        </Themes>
+      </Menu>
 
       {/* </div> */}
       <div className="relative pb-10">
@@ -59,7 +66,10 @@ const EmployeeProfiles = () => {
           </div>
 
           <div className="flex items-center gap-3 text-accent">
-            <button className="py-1 px-2 bg-caramel rounded text-sm text-white font-medium">
+            <button
+              className="py-1 px-2 bg-caramel rounded text-sm text-white font-medium"
+              onClick={() => setOpenFullDialog(true)}
+            >
               Add Employee Profile
             </button>
             <button className="py-1 px-2 bg-transparent rounded text-sm text-accent border border-slate-200 hover:border-slate-400 font-medium transition ease-in-out duration-300">

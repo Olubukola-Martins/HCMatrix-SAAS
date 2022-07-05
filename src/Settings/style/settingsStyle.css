@@ -33,3 +33,18 @@
     fill: var(--caramel) !important;
 }
 /* to adjust stepper - make this better later */
+
+
+
+.addEmployee_form label {
+    @apply block text-sm font-medium pb-1 text-accent;
+  }
+  .addEmployee_form input,
+  .addEmployee_form select {
+    @apply w-full rounded py-2 focus:outline-none px-2 text-sm;
+    background: var(--background);
+  }
+
+  .addEmployee_form select {
+      @apply text-slate-400;
+  }
