@@ -62,7 +62,7 @@ const PendingItem = ({ handleClick, item, openId }) => {
 
 const Home = () => {
  const [openId, setOpenId] = useState("");
-  const handleClick = (val) => {
+  const handlePendingClick = (val) => {
     setOpenId((preVal) => (preVal === val ? "" : val));
   };
   const [anchorEl, setAnchorEl] = useState(null);
@@ -144,7 +144,7 @@ const Home = () => {
               {settingNavItems.map((item) => (
                 <PendingItem
                   key={item.title}
-                  handleClick={handleClick}
+                  handleClick={handlePendingClick}
                   openId={openId}
                   item={item}
                 />
