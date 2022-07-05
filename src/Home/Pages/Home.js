@@ -137,12 +137,20 @@ const Home = () => {
                 {/* Contact Support menu */}
                 <Menu anchorEl={anchorEl} open={open} onClose={handleClose}>
                   <Themes>
-                    <div className="bg-card w-32 px-3 text-sm py-1 text-accent">
-                      <h5 className="flex items-center justify-between border-b cursor-pointer">
-                      <i className="ri-whatsapp-fill text-lg text-green-500"></i> <span>WhatsApp</span>
+                    <div className="bg-card w-38 px-3 text-xs py-1 text-accent">
+                      <h5 className="cursor-pointer group">
+                      <i className="ri-whatsapp-fill text-base text-green-500 block"></i> <span className="group-hover:text-caramel">WhatsApp support</span>
                       </h5>
-                      <h5 className="flex items-center justify-between py-2 cursor-pointer">
-                      <i className="ri-mail-line text-lg"></i> <span>EMail Us</span>
+
+                    
+
+                      <h5 className="my-2 cursor-pointer group">
+                      <i className="ri-phone-line text-base block"></i> <a href="tel: +1 (254) 244-0305" className="group-hover:text-caramel">+1 (254) 244-0305</a>
+                      </h5>
+                      
+                      <h5 className="my-1 cursor-pointer group">
+                      <i className="ri-mail-line text-base block"></i>
+                      <a href="mailto: support@hcmatrix.com" className="group-hover:text-caramel">support@hcmatrix.com</a>
                       </h5>
                      
                     </div>
