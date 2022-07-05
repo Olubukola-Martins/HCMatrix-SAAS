@@ -10,7 +10,7 @@ const FilterDrawer = ({ handleDrawer }) => {
       }}
       transition={{ ease: "easeIn" }}
       exit={{ x: 500 }}
-      className="w-96 fixed overflow-y-auto mode_color right-0 drop-shadow-lg z-50 cursor-move py-2 px-4 pb-8 "
+      className="w-96 scrollBar fixed overflow-y-auto mode_color right-0 drop-shadow-lg z-50 cursor-move py-2 px-4 pb-8 "
       drag
       style={{ height: "28rem" }}
     >
