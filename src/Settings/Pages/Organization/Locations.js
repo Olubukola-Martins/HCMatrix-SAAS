@@ -2,7 +2,6 @@ import { AnimatePresence } from "framer-motion";
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import DashboardLayout from "../../../Layout/DashboardLayout";
-import grid from "../../Assets/grid.png";
 import AddLocation from "../../Components/AddLocation";
 import { LocationGridView } from "../../Components/LocationGridView";
 import { LocationTableView } from "../../Components/LocationTableView";
@@ -38,24 +37,23 @@ const Location = () => {
                 Import
               </button>
               <div className="flex items-center">
-                {/* <div
-                  className={switchView ? "bg-caramel p-2 cursor-pointer" : "bg-white p-2 cursor-pointer"}
-                  onClick={() => setSwitchView(true)}
-                >
-                  <img src={grid} alt="grid" title="Grid view" />
-                </div> */}
-                {/* <i className="ri-layout-grid-fill text-lg text-black bg-white px-2 border"></i> */}
-
                 <i
                   onClick={() => setSwitchView(true)}
-                  className= {switchView ? "ri-layout-grid-fill text-base text-white bg-caramel px-2 border cursor-pointer" : "ri-layout-grid-fill text-base text-black bg-white px-2 border cursor-pointer"}
+                  className={
+                    switchView
+                      ? "ri-layout-grid-fill text-base text-white bg-caramel px-2 border cursor-pointer"
+                      : "ri-layout-grid-fill text-base text-black bg-white px-2 border cursor-pointer"
+                  }
                   title="Grid view"
                 ></i>
 
-
                 <i
                   onClick={() => setSwitchView(false)}
-                  className= {switchView ? "ri-list-unordered text-base text-black bg-white px-2 border cursor-pointer" : "ri-list-unordered text-base text-white bg-caramel px-2 border cursor-pointer"}
+                  className={
+                    switchView
+                      ? "ri-list-unordered text-base text-black bg-white px-2 border cursor-pointer"
+                      : "ri-list-unordered text-base text-white bg-caramel px-2 border cursor-pointer"
+                  }
                   title="Table view"
                 ></i>
               </div>

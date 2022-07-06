@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import Menu from "@mui/material/Menu";
 import Themes from "../../Themes/Themes";
+import { Link } from "react-router-dom";
 
 export const LocationGridView = () => {
   return (
@@ -18,14 +19,18 @@ const LocationBox = () => {
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
 
-
   return (
     <>
       {/* view */}
       <Menu anchorEl={anchorEl} open={open} onClose={() => setAnchorEl(null)}>
         <Themes>
           <div className="px-6 py-4 rounded-md bg-card">
-            <span className="cursor-pointer font-medium hover:text-caramel">View</span>
+            <Link
+              to="/settings/locations/id"
+              className="cursor-pointer font-medium hover:text-caramel"
+            >
+              View
+            </Link>
           </div>
         </Themes>
       </Menu>
