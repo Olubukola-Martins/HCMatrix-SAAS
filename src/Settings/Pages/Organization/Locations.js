@@ -5,6 +5,7 @@ import DashboardLayout from "../../../Layout/DashboardLayout";
 import grid from "../../Assets/grid.png";
 import AddLocation from "../../Components/AddLocation";
 import { LocationGridView } from "../../Components/LocationGridView";
+import { LocationTableView } from "../../Components/LocationTableView";
 
 const Location = () => {
   const [showDraggableDrawer, setShowDraggableDrawer] = useState("");
@@ -12,7 +13,7 @@ const Location = () => {
   return (
     <DashboardLayout>
       <div className="relative">
-        <div className="Container pb-10">
+        <div className="Container pb-12">
           <div className="flex items-center gap-3 text-accent font-semibold mt-2 pb-1">
             <Link to="/settings">
               <i className="ri-arrow-left-line text-xl cursor-pointer hover:text-caramel"></i>
@@ -20,7 +21,7 @@ const Location = () => {
             <h5 className="text-lg">Work Location</h5>
           </div>
 
-          <div className="bg-card flex flex-col lg:flex-row gap-4 lg:justify-between lg:items-center py-2 px-3 rounded-md">
+          <div className="bg-card flex flex-col lg:flex-row gap-4 lg:justify-between lg:items-center p-3 rounded-md">
             <p className="text-sm md:text-base text-accent">
               Create multiple locations for your organization and manage
               location details
@@ -52,9 +53,10 @@ const Location = () => {
           </AnimatePresence>
 
           {/* main body */}
-           <div className="mt-5">
-           <LocationGridView/>
-           </div>
+          <div className="mt-10">
+            {/* <LocationGridView/> */}
+            <LocationTableView />
+          </div>
         </div>
       </div>
     </DashboardLayout>
