@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import DashboardLayout from "../../../Layout/DashboardLayout";
 import grid from "../../Assets/grid.png";
 import AddLocation from "../../Components/AddLocation";
+import { LocationGridView } from "../../Components/LocationGridView";
 
 const Location = () => {
   const [showDraggableDrawer, setShowDraggableDrawer] = useState("");
@@ -49,6 +50,11 @@ const Location = () => {
               <AddLocation handleDrawer={() => setShowDraggableDrawer("")} />
             )}
           </AnimatePresence>
+
+          {/* main body */}
+           <div className="mt-5">
+           <LocationGridView/>
+           </div>
         </div>
       </div>
     </DashboardLayout>
