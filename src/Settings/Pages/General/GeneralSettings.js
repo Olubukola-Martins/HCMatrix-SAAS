@@ -2,7 +2,7 @@ import { useState } from "react";
 import DashboardLayout from "../../../Layout/DashboardLayout";
 import SettingNavItem from "../../Components/SettingNavItem";
 import { settingNavItems } from "../../Data";
-import FramerAccordian from "./custom/FramerAccordian";
+import FramerAccordian from "../../Components/custom/FramerAccordian";
 
 const GeneralSettings = () => {
   const [navItems, setNavItems] = useState(settingNavItems);
