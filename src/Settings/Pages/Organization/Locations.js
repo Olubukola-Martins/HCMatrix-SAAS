@@ -9,6 +9,7 @@ import { LocationTableView } from "../../Components/LocationTableView";
 
 const Location = () => {
   const [showDraggableDrawer, setShowDraggableDrawer] = useState("");
+  const [switchView, setSwitchView] = useState(true);
 
   return (
     <DashboardLayout>
@@ -37,11 +38,26 @@ const Location = () => {
                 Import
               </button>
               <div className="flex items-center">
-                <div className="bg-caramel p-2 cursor-pointer">
-                  <img src={grid} alt="grid" />
-                </div>
+                {/* <div
+                  className={switchView ? "bg-caramel p-2 cursor-pointer" : "bg-white p-2 cursor-pointer"}
+                  onClick={() => setSwitchView(true)}
+                >
+                  <img src={grid} alt="grid" title="Grid view" />
+                </div> */}
+                {/* <i className="ri-layout-grid-fill text-lg text-black bg-white px-2 border"></i> */}
 
-                <i className="ri-list-unordered text-base text-black bg-white px-2 border cursor-pointer"></i>
+                <i
+                  onClick={() => setSwitchView(true)}
+                  className= {switchView ? "ri-layout-grid-fill text-base text-white bg-caramel px-2 border cursor-pointer" : "ri-layout-grid-fill text-base text-black bg-white px-2 border cursor-pointer"}
+                  title="Grid view"
+                ></i>
+
+
+                <i
+                  onClick={() => setSwitchView(false)}
+                  className= {switchView ? "ri-list-unordered text-base text-black bg-white px-2 border cursor-pointer" : "ri-list-unordered text-base text-white bg-caramel px-2 border cursor-pointer"}
+                  title="Table view"
+                ></i>
               </div>
               <i className="ri-question-fill text-xl text-slate-400"></i>
             </div>
@@ -54,8 +70,7 @@ const Location = () => {
 
           {/* main body */}
           <div className="mt-10">
-            {/* <LocationGridView/> */}
-            <LocationTableView />
+            {switchView ? <LocationGridView /> : <LocationTableView />}
           </div>
         </div>
       </div>
