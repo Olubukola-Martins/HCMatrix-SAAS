@@ -13,7 +13,7 @@ const AddEmployee = ({ close }) => {
           <h5 className="font-semibold text-lg text-accent">Add Employee</h5>
         </div>
 
-        <form className="addEmployee_form mt-7">
+        <form className="whiteBg_form mt-7">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             <div>
               <label>First Name</label>

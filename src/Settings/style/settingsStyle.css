@@ -35,16 +35,20 @@
 /* to adjust stepper - make this better later */
 
 
-
-.addEmployee_form label {
+/* Inputs with white background */
+.whiteBg_form label {
     @apply block text-sm font-medium pb-1 text-accent;
   }
-  .addEmployee_form input,
-  .addEmployee_form select {
-    @apply w-full rounded py-2 focus:outline-none px-2 text-sm;
+  .whiteBg_form input,
+  .whiteBg_form select {
+    @apply w-full rounded p-2 focus:outline-none text-sm;
     background: var(--background);
   }
 
-  .addEmployee_form select {
+  .whiteBg_form select {
       @apply text-slate-400;
+  }
+
+  .whiteBg_form textarea {
+    background: var(--background);
   }
