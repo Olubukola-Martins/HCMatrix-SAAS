@@ -16,7 +16,7 @@ export const settingNavItems = [
             {name: 'Employee profiles', link: '/settings/employee-profile'},
             {name: 'Departments', link: '/settings/rebranding'},
             {name: 'Designations', link: '/settings/from-addresses'},
-            {name: 'Locations', link: '/settings/from-addresses'},
+            {name: 'Locations', link: '/settings/locations'},
             {name: 'Groups', link: '/settings/from-addresses'},
             {name: 'Delegation', link: '/settings/from-addresses'},
 
