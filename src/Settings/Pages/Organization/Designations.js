@@ -138,7 +138,7 @@ const Designations = () => {
               >
                 <div className="grid grid-cols-1 lg:grid-cols-4 gap-4">
                   {designations.map((item) => (
-                    <div className="border p-4 rounded-lg grid grid-cols-1 gap-4">
+                    <div className="border p-4 rounded-lg grid grid-cols-1 gap-4 border-caramel">
                       <div className="flex justify-between">
                         <h6 className="text-xl font-thin capitalize">
                           {item.name}
