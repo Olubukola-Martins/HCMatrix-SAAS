@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import DashboardLayout from "../../../Layout/DashboardLayout";
 import AddLocation from "../../Components/AddLocation";
+import ImportLocation from "../../Components/ImportLocation";
 import { LocationGridView } from "../../Components/LocationGridView";
 import { LocationTableView } from "../../Components/LocationTableView";
 
@@ -33,7 +34,7 @@ const Location = () => {
               >
                 Add location
               </button>
-              <button className="py-1 px-2 bg-transparent rounded text-sm text-accent border border-slate-200 hover:border-slate-400 font-medium transition ease-in-out duration-300">
+              <button  onClick={() => setShowDraggableDrawer("importLocation")} className="py-1 px-2 bg-transparent rounded text-sm text-accent border border-slate-200 hover:border-slate-400 font-medium transition ease-in-out duration-300">
                 Import
               </button>
               <div className="flex items-center">
@@ -64,10 +65,13 @@ const Location = () => {
             {showDraggableDrawer === "filter" && (
               <AddLocation handleDrawer={() => setShowDraggableDrawer("")} />
             )}
+             {showDraggableDrawer === "importLocation" && (
+              <ImportLocation handleDrawer={() => setShowDraggableDrawer("")} />
+            )}
           </AnimatePresence>
 
           {/* main body */}
-          <div className="mt-10">
+          <div className="mt-10 min-h-screen">
             {switchView ? <LocationGridView /> : <LocationTableView />}
           </div>
         </div>
