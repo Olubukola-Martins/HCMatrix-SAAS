@@ -88,25 +88,25 @@ const Designations = () => {
                   Add designation
                 </button>
                 <div className="view-toggler flex rounded overflow-hidden items-center">
-                  <div
-                    className={`p-1 cursor-pointer ${
-                      viewId === "grid" ? "bg-caramel text-accent" : "bg-card"
-                    }`}
+                  <i
                     onClick={() => handleViewId("grid")}
-                  >
-                    <i
-                      className="fa fa-th  text-base fa-solid "
-                      aria-hidden="true"
-                    ></i>
-                  </div>
-                  <div
-                    className={`p-1  cursor-pointer ${
-                      viewId === "list" ? "bg-caramel text-accent" : "bg-card"
-                    }`}
+                    className={
+                      viewId === "grid"
+                        ? "ri-layout-grid-fill text-base text-white bg-caramel px-2 border cursor-pointer"
+                        : "ri-layout-grid-fill text-base text-black bg-white px-2 border cursor-pointer"
+                    }
+                    aria-hidden="true"
+                  ></i>
+
+                  <i
+                    className={
+                      viewId === "list"
+                        ? "ri-list-unordered text-base text-black bg-white px-2 border cursor-pointer"
+                        : "ri-list-unordered text-base text-white bg-caramel px-2 border cursor-pointer"
+                    }
                     onClick={() => handleViewId("list")}
-                  >
-                    <i className="fa fa-list " aria-hidden="true"></i>
-                  </div>
+                    aria-hidden="true"
+                  ></i>
                 </div>
                 <div className="question-icon">
                   <i
