@@ -1,17 +1,39 @@
-import { AnimatePresence, motion } from "framer-motion";
+import { AnimatePresence } from "framer-motion";
 import React, { useState } from "react";
 import DashboardLayout from "../../../Layout/DashboardLayout";
 import PenIcon from "../../Assets/pen_icon.svg";
 import AddDesignationDrawer from "../../Components/AddDesignationDrawer";
+import { DesignationsGridView } from "../../Components/DesignationsGridView";
+import { DesignationsTableView } from "../../Components/DesignationsTableView";
 
 const designations = [
-  { id: "1", name: "backend developer", email: "isaac@snapnet.com" },
-  { id: "12", name: "backend developer", email: "isaac@snapnet.com" },
-  { id: "11", name: "frontend developer", email: "isaac@snapnet.com" },
-  { id: "123", name: "python developer", email: "isaac@snapnet.com" },
-  { id: "114", name: "AI/ML expert", email: "isaac@snapnet.com" },
-  { id: "41", name: "UI/UX designer", email: "isaac@snapnet.com" },
-  { id: "15", name: "Devops Engineer", email: "isaac@snapnet.com" },
+  {
+    id: "1",
+    name: "fullstack developer",
+    email: "isaac@snapnet.com",
+    count: 0,
+  },
+  {
+    id: "12",
+    name: "backend developer",
+    email: "isaac@snapnet.com",
+    count: 2,
+  },
+  {
+    id: "11",
+    name: "frontend developer",
+    email: "isaac@snapnet.com",
+    count: 1,
+  },
+  {
+    id: "123",
+    name: "python developer",
+    email: "isaac@snapnet.com",
+    count: 4,
+  },
+  { id: "114", name: "AI/ML expert", email: "isaac@snapnet.com", count: 9 },
+  { id: "41", name: "UI/UX designer", email: "isaac@snapnet.com", count: 3 },
+  { id: "15", name: "Devops Engineer", email: "isaac@snapnet.com", count: 1 },
 ];
 
 const Designations = () => {
@@ -76,7 +98,7 @@ const Designations = () => {
         {headerId === "header3" && (
           <div className="Container mt-4">
             <h4 className="text-lg  mb-1">Job designation</h4>
-            <div className="flex justify-between items-center bg-card p-2 rounded text-sm">
+            <div className="flex flex-col gap-2 md:flex-row md:justify-between md:items-center bg-card p-2 rounded text-sm">
               <p>Manage all the designation details in your organization.</p>
 
               <div className="flex gap-4 items-center">
@@ -108,7 +130,7 @@ const Designations = () => {
                     aria-hidden="true"
                   ></i>
                 </div>
-                <div className="question-icon">
+                <div className="question-icon ml-auto md:ml-0">
                   <i
                     className="ri-question-fill text-xl cursor-pointer text-gray-400"
                     title="Employee profile"
@@ -125,77 +147,11 @@ const Designations = () => {
           )}
           <AnimatePresence exitBeforeEnter>
             {viewId === "grid" && (
-              <motion.div
-                className="Container mt-4"
-                initial={{ opacity: 0, y: 400 }}
-                animate={{
-                  opacity: 1,
-                  y: 0,
-                }}
-                key={0}
-                transition={{ ease: "easeIn" }}
-                exit={{ opacity: 0, y: 400 }}
-              >
-                <div className="grid grid-cols-1 lg:grid-cols-4 gap-4">
-                  {designations.map((item) => (
-                    <div className="border p-4 rounded-lg grid grid-cols-1 gap-4 border-caramel">
-                      <div className="flex justify-between">
-                        <h6 className="text-xl font-thin capitalize">
-                          {item.name}
-                        </h6>
-                        <i className="fa-solid fa-ellipsis"></i>
-                      </div>
-                      <div className="flex justify-between items-center">
-                        <p className="text-sm">{item.email}</p>
-                        <div className="rounded-full bg-caramel h-8 w-8 flex items-center justify-center">
-                          <span>O</span>
-                        </div>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </motion.div>
+              <DesignationsGridView designations={designations} />
             )}
 
             {viewId === "list" && (
-              <motion.div
-                className="Container mt-4"
-                initial={{ opacity: 0, y: 400 }}
-                animate={{
-                  opacity: 1,
-                  y: 0,
-                }}
-                key={2}
-                transition={{ ease: "easeIn" }}
-                exit={{ opacity: 0, y: 400 }}
-              >
-                <table className="employee-profile-table">
-                  <thead>
-                    <tr className="text-left">
-                      <th>Designation Name</th>
-                      <th>Number of Employees</th>
-                      <th>Mail Alias</th>
-                      <th className="opacity-0">Actions</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {designations.map((item) => (
-                      <tr key={item} className="text-left ">
-                        <td className="capitalize">{item.name}</td>
-                        <td>0</td>
-                        <td>{item.email}</td>
-
-                        <td>
-                          <div className="flex items-center gap-2 text-xl ">
-                            <img src={PenIcon} alt="edit" className="h-4" />{" "}
-                            <i className="ri-delete-bin-line text-slate-400"></i>
-                          </div>
-                        </td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </motion.div>
+              <DesignationsTableView designations={designations} />
             )}
           </AnimatePresence>
         </div>

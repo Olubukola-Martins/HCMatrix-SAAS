@@ -96,4 +96,9 @@ body {
   padding: 15px 25px 25px 25px;
   border-radius: 10px;
    width: 90%
-};
+}
+
+/* ==== Custom Dropdown Menu ==== */
+.custom-dropdown:hover .dropdown-menu {
+  display: block;
+}
