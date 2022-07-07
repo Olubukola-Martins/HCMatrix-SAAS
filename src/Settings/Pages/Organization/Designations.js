@@ -101,8 +101,8 @@ const Designations = () => {
                   <i
                     className={
                       viewId === "list"
-                        ? "ri-list-unordered text-base text-black bg-white px-2 border cursor-pointer"
-                        : "ri-list-unordered text-base text-white bg-caramel px-2 border cursor-pointer"
+                        ? "ri-list-unordered text-base text-white bg-caramel px-2 border cursor-pointer"
+                        : "ri-list-unordered text-base text-black bg-white px-2 border cursor-pointer"
                     }
                     onClick={() => handleViewId("list")}
                     aria-hidden="true"
