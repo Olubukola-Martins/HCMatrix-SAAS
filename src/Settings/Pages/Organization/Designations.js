@@ -33,7 +33,14 @@ const designations = [
   },
   { id: "114", name: "AI/ML expert", email: "isaac@snapnet.com", count: 9 },
   { id: "41", name: "UI/UX designer", email: "isaac@snapnet.com", count: 3 },
-  { id: "15", name: "Devops Engineer", email: "isaac@snapnet.com", count: 1 },
+  { id: "15", name: "Devops Engineer", email: "isaac@snapnet.com", count: 10 },
+  { id: "15", name: "Scrum Master", email: "isaac@snapnet.com", count: 15 },
+  {
+    id: "15",
+    name: "Product Manager/Scrum Master",
+    email: "isaac@snapnet.com",
+    count: 1,
+  },
 ];
 
 const Designations = () => {

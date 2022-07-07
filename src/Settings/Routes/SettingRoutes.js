@@ -8,6 +8,7 @@ import Domains from "../Pages/General/Domains";
 import EmployeeProfiles from "../Pages/Organization/EmployeeProfiles";
 import UserProfiles from "../Pages/Organization/UserProfiles";
 import Designations from "../Pages/Organization/Designations";
+import DesignationDetail from "../Pages/Organization/DesignationDetail";
 
 const SettingRoutes = () => {
   return (
@@ -23,6 +24,10 @@ const SettingRoutes = () => {
       <Route path="/settings/employee-profile" element={<EmployeeProfiles />} />
       <Route path="/settings/user-profile" element={<UserProfiles />} />
       <Route path="/settings/designations" element={<Designations />} />
+      <Route
+        path="/settings/designations/:id"
+        element={<DesignationDetail />}
+      />
     </Routes>
   );
 };
