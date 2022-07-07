@@ -7,6 +7,7 @@ export const settingNavItems = [
       { name: "Rebranding", link: "/settings/rebranding" },
       { name: "From Addresses", link: "/settings/from-addresses" },
     ],
+    category: "basic",
   },
   {
     title: "Organization",
@@ -19,6 +20,7 @@ export const settingNavItems = [
       { name: "Groups", link: "/settings/groups" },
       { name: "Delegation", link: "/settings/from-addresses" },
     ],
+    category: "basic",
   },
   {
     title: "User Access Control",
@@ -28,6 +30,7 @@ export const settingNavItems = [
       { name: "Allowed IP's", link: "/settings/rebranding" },
       { name: "Geo Restrictions", link: "/settings/from-addresses" },
     ],
+    category: "basic",
   },
 
   {
@@ -38,6 +41,7 @@ export const settingNavItems = [
       { name: "Approvals", link: "/settings/rebranding" },
       { name: "Scheduler", link: "/settings/from-addresses" },
     ],
+    category: "basic",
   },
   {
     title: "Data Administration",
@@ -48,6 +52,19 @@ export const settingNavItems = [
       { name: "Files Usage", link: "/settings/from-addresses" },
       { name: "API Usage", link: "/settings/from-addresses" },
     ],
+    category: "basic",
+  },
+  // next category goes here
+  {
+    title: "Leave",
+    items: [
+      { name: "Leave requests", link: "/settings/company-details" },
+      { name: "Loan requests", link: "/settings/domain" },
+      { name: "Activity Log", link: "/settings/rebranding" },
+      { name: "Files Usage", link: "/settings/from-addresses" },
+      { name: "API Usage", link: "/settings/from-addresses" },
+    ],
+    category: "self-service",
   },
 ];
 

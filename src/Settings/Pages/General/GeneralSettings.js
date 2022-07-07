@@ -6,6 +6,7 @@ import FramerAccordian from "../../Components/custom/FramerAccordian";
 
 const GeneralSettings = () => {
   const [navItems, setNavItems] = useState(settingNavItems);
+  const [isSearch, setIsSearch] = useState(false);
 
   const handleSearch = (e) => {
     const val = e.target.value;
@@ -23,7 +24,10 @@ const GeneralSettings = () => {
 
     if (val !== "") {
       setNavItems(() => result);
+      setIsSearch(false);
     } else {
+      setIsSearch(true);
+
       setNavItems(settingNavItems);
     }
   };
@@ -42,10 +46,56 @@ const GeneralSettings = () => {
             <i class="fas fa-search"></i>
           </div>
           {/* Page NavItems */}
-          <div className="mt-12 grid grid-cols-1  gap-4">
-            {/* grouped settings */}
-            {/* Basic */}
-            <FramerAccordian heading={"Basic Settings"}>
+          {isSearch ? (
+            <div className="mt-12 grid grid-cols-1  gap-4">
+              {/* grouped settings */}
+              {/* Basic */}
+              <FramerAccordian heading={"Basic Settings"}>
+                <div className="grid grid-cols-2 lg:grid-cols-5 gap-4">
+                  {/* item */}
+                  {settingNavItems
+                    .filter((item) => item.category === "basic")
+                    .map((item) => (
+                      <SettingNavItem item={item} key={item.title} />
+                    ))}
+                </div>
+              </FramerAccordian>
+              {/* Self service*/}
+              <FramerAccordian heading={"Self Service"}>
+                <div className="grid grid-cols-2 lg:grid-cols-5 gap-4">
+                  {/* item */}
+                  {settingNavItems
+                    .filter((item) => item.category === "self-service")
+                    .map((item) => (
+                      <SettingNavItem item={item} key={item.title} />
+                    ))}
+                </div>
+              </FramerAccordian>
+              {/* Payroll */}
+              <FramerAccordian heading={"Payroll"}>
+                <div className="grid grid-cols-2 lg:grid-cols-5 gap-4">
+                  {/* item */}
+                  {settingNavItems
+                    .filter((item) => item.category === "payroll")
+                    .map((item) => (
+                      <SettingNavItem item={item} key={item.title} />
+                    ))}
+                </div>
+              </FramerAccordian>
+              {/* Performance */}
+              <FramerAccordian heading={"Performance"}>
+                <div className="grid grid-cols-2 lg:grid-cols-5 gap-4">
+                  {/* item */}
+                  {settingNavItems
+                    .filter((item) => item.category === "performance")
+                    .map((item) => (
+                      <SettingNavItem item={item} key={item.title} />
+                    ))}
+                </div>
+              </FramerAccordian>
+            </div>
+          ) : (
+            <div className="mt-12">
               {navItems && navItems.length > 0 ? (
                 <div className="grid grid-cols-2 lg:grid-cols-5 gap-4">
                   {/* item */}
@@ -62,65 +112,8 @@ const GeneralSettings = () => {
                   </p>
                 </div>
               )}
-            </FramerAccordian>
-            {/* Self service*/}
-            <FramerAccordian heading={"Self Service"}>
-              {navItems && navItems.length > 0 ? (
-                <div className="grid grid-cols-2 lg:grid-cols-5 gap-4">
-                  {/* item */}
-                  {navItems &&
-                    navItems.map((item) => (
-                      <SettingNavItem item={item} key={item.title} />
-                    ))}
-                </div>
-              ) : (
-                <div className="mt-32 w-full">
-                  <p className="text-accent text-2xl text-center">
-                    {" "}
-                    No items found
-                  </p>
-                </div>
-              )}
-            </FramerAccordian>
-            {/* Payroll */}
-            <FramerAccordian heading={"Payroll"}>
-              {navItems && navItems.length > 0 ? (
-                <div className="grid grid-cols-2 lg:grid-cols-5 gap-4">
-                  {/* item */}
-                  {navItems &&
-                    navItems.map((item) => (
-                      <SettingNavItem item={item} key={item.title} />
-                    ))}
-                </div>
-              ) : (
-                <div className="mt-32 w-full">
-                  <p className="text-accent text-2xl text-center">
-                    {" "}
-                    No items found
-                  </p>
-                </div>
-              )}
-            </FramerAccordian>
-            {/* Performance */}
-            <FramerAccordian heading={"Performance"}>
-              {navItems && navItems.length > 0 ? (
-                <div className="grid grid-cols-2 lg:grid-cols-5 gap-4">
-                  {/* item */}
-                  {navItems &&
-                    navItems.map((item) => (
-                      <SettingNavItem item={item} key={item.title} />
-                    ))}
-                </div>
-              ) : (
-                <div className="mt-32 w-full">
-                  <p className="text-accent text-2xl text-center">
-                    {" "}
-                    No items found
-                  </p>
-                </div>
-              )}
-            </FramerAccordian>
-          </div>
+            </div>
+          )}
         </div>
       </div>
     </DashboardLayout>
