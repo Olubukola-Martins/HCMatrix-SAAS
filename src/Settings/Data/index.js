@@ -16,7 +16,7 @@ export const settingNavItems = [
       { name: "Departments", link: "/settings/rebranding" },
       { name: "Designations", link: "/settings/designations" },
       { name: "Locations", link: "/settings/from-addresses" },
-      { name: "Groups", link: "/settings/from-addresses" },
+      { name: "Groups", link: "/settings/groups" },
       { name: "Delegation", link: "/settings/from-addresses" },
     ],
   },
