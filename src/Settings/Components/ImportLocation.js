@@ -1,7 +1,6 @@
 import React from "react";
 import { motion } from "framer-motion";
 import { Step, StepLabel, Stepper } from "@mui/material";
-import { makeStyles } from "@material-ui/core";
 
 const steps = [
   "Upload file",
@@ -11,16 +10,7 @@ const steps = [
 ];
 
 const ImportLocation = ({ handleDrawer }) => {
-//   const useStyles = makeStyles(() => ({
-//     root: {
-//       "& .MuiStepIcon-active": { color: "red" },
-//       "& .MuiStepIcon-completed": { color: "red" },
-//       "& .Mui-disabled .MuiStepIcon-root": { color: "gray" },
-//     },
-//   }));
 
-//   const c = useStyles();
-  
   return (
     <motion.div
       initial={{ x: 500 }}
