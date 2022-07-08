@@ -11,7 +11,7 @@ const SettingNavItem = ({ item }) => {
       <h5 className="text-accent text-lg font-semibold">{title}</h5>
       <ul className="sub-items mt-4">
         {items.map((item) => (
-          <li className="mb-3 text-base" key={item.Link}>
+          <li className="mb-3 text-base hover:text-caramel" key={item.Link}>
             <Link to={item.link}>{item.name}</Link>
           </li>
         ))}

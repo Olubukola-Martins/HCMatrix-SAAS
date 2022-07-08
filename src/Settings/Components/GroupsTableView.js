@@ -17,7 +17,12 @@ export const GroupsTableView = ({ groups }) => {
       <table className="w-full text-left text-accent;">
         <thead>
           <tr className="border-b border-accent">
-            <th className="p-3">Group Name</th>
+            <th className="p-3">
+              <div className="flex gap-4 items-center">
+                <input type={"checkbox"} className="invisible" />
+                <span>Group Name</span>
+              </div>
+            </th>
             <th className="p-3">Group Email ID</th>
             <th className="p-3">Description</th>
             <th className="opacity-0 p-3">Actions</th>
@@ -27,7 +32,12 @@ export const GroupsTableView = ({ groups }) => {
         <tbody>
           {groups.map((item) => (
             <tr key={item.id} className="border-b border-accent">
-              <td className="p-3 text-sm capitalize">{item.name}</td>
+              <td className="p-3 text-sm capitalize">
+                <div className="flex gap-4 items-center">
+                  <input type={"checkbox"} />
+                  <span>{item.name}</span>
+                </div>
+              </td>
               <td className="p-3 text-sm">{item.email}</td>
               <td className="p-3 text-sm">{item.description}</td>
 
