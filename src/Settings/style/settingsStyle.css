@@ -18,21 +18,12 @@
 }
 
 .employee-profile-table td {
-    @apply text-sm
+    @apply text-sm;
 }
 
 .employee-profile-table th, .employee-profile-table td {
     padding: 10px;
-
 }
-/* to adjust stepper */
-.MuiStepIcon-root.Mui-active {
-    /* color: #fff !important; */
-}
-.MuiStepIcon-text{
-    /* fill: var(--caramel) !important; */
-}
-/* to adjust stepper - make this better later */
 
 
 /* Inputs with white background */

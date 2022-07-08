@@ -8,6 +8,7 @@ import FilterDrawer from "../../Components/FilterDrawer";
 import { Dialog, Slide } from "@mui/material";
 import AddEmployee from "../../Components/AddEmployee";
 import ExportModal from "../../Components/ExportModal";
+import { Link } from "react-router-dom";
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
@@ -136,7 +137,8 @@ const EmployeeProfiles = () => {
           </div>
         </div>
         <div className="Container">
-          <div className="bg-card mb-2">
+          {/* show on checkbox thick */}
+          <div className="bg-card mb-2 hidden">
             <div className="flex justify-end">
               <span className="pr-3 pb-2 cursor-pointer">x</span>
             </div>
@@ -225,12 +227,13 @@ const EmployeeProfiles = () => {
               <tr>
                 <th className="flex items-center justify-center gap-3">
                   <input type="checkbox" />
-                  <span>Basic Information</span>
+                  <span>Name</span>
                 </th>
-                <th>Date of Birth</th>
-                <th>Role</th>
-                <th>Location</th>
-                <th>Employee status</th>
+                <th>Gender</th>
+                <th>Staff ID</th>
+                <th>Grade</th>
+                <th>Department</th>
+                <th>Email</th>
                 <th>Actions</th>
               </tr>
             </thead>
@@ -244,16 +247,16 @@ const EmployeeProfiles = () => {
                         src="https://res.cloudinary.com/ddvaelej7/image/upload/v1656616707/samples/Ellipse_1915_maqdtn.png"
                         alt="user"
                       />
-                      <div className="flex flex-col">
-                        <h6 className="font-medium text-sm">Francis terr, 4</h6>
-                        <span className="text-xs">francis@gmail.com</span>
-                      </div>
+                      <Link to="/settings/personal-information" className="font-medium cursor-pointer">
+                        Francis terr
+                      </Link>
                     </div>
                   </td>
-                  <td>24 - 06 - 2022</td>
-                  <td>UX Designer</td>
-                  <td>Abuja</td>
-                  <td>Active</td>
+                  <td>Male</td>
+                  <td>D2345</td>
+                  <td>2</td>
+                  <td>Admin</td>
+                  <td>johndoe@email.com</td>
                   <td>
                     <span className="flex items-center gap-2 text-xl justify-center">
                       <i className="fa-solid fa-circle-user"></i>{" "}
