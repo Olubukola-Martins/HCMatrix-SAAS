@@ -10,6 +10,7 @@ import UserProfiles from "../Pages/Organization/UserProfiles";
 import Designations from "../Pages/Organization/Designations";
 import DesignationDetail from "../Pages/Organization/DesignationDetail";
 import Groups from "../Pages/Organization/Groups";
+import Departments from "../Pages/Organization/Departments";
 
 const SettingRoutes = () => {
   return (
@@ -31,6 +32,8 @@ const SettingRoutes = () => {
       />
       <Route path="/settings/groups" element={<Groups />} />
       <Route path="/settings/groups/:id" element={<DesignationDetail />} />
+
+      <Route path="/settings/departments" element={<Departments />} />
     </Routes>
   );
 };
