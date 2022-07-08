@@ -1,6 +1,5 @@
 import React from "react";
 import Themes from "../../Themes/Themes";
-
 import Modal from "@mui/material/Modal";
 
 const ExportModal = ({ open, handleClose }) => {

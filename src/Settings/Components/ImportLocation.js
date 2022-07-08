@@ -1,7 +1,7 @@
 import React from "react";
 import { motion } from "framer-motion";
-import { Box } from "@mui/system";
 import { Step, StepLabel, Stepper } from "@mui/material";
+import { makeStyles } from "@material-ui/core";
 
 const steps = [
   "Upload file",
@@ -11,6 +11,16 @@ const steps = [
 ];
 
 const ImportLocation = ({ handleDrawer }) => {
+//   const useStyles = makeStyles(() => ({
+//     root: {
+//       "& .MuiStepIcon-active": { color: "red" },
+//       "& .MuiStepIcon-completed": { color: "red" },
+//       "& .Mui-disabled .MuiStepIcon-root": { color: "gray" },
+//     },
+//   }));
+
+//   const c = useStyles();
+  
   return (
     <motion.div
       initial={{ x: 500 }}
@@ -32,11 +42,14 @@ const ImportLocation = ({ handleDrawer }) => {
           onClick={handleDrawer}
         ></i>
       </div>
-      <div className="my-8">
+      <div className="my-8 w-full">
         <Stepper activeStep={1} alternativeLabel orientation="horizontal">
           {steps.map((label) => (
             <Step key={label}>
-              <StepLabel style={{color: "red"}}><span className="text-xs text-accent">{label}</span></StepLabel>
+              <StepLabel>
+              {label}
+                {/* <span className="text-xs">{label}</span> */}
+              </StepLabel>
             </Step>
           ))}
         </Stepper>
@@ -72,24 +85,30 @@ const ImportLocation = ({ handleDrawer }) => {
             Maximum upload file size is 5 MB.
           </p>
           <div className="flex justify-center mt-3">
-            <label htmlFor="file" className="border px-3 pt-1 cursor-pointer border-caramel" style={{color: "var(--caramel)"}}>
+            <label
+              htmlFor="file"
+              className="border px-3 pt-1 cursor-pointer border-caramel"
+              style={{ color: "var(--caramel)" }}
+            >
               Upload File
             </label>
           </div>
           <input type="file" required id="file" className="hidden" />
 
-          <p className="text-sm text-caramel pt-7 pb-12">Download Sample template for import</p>
+          <p className="text-sm text-caramel pt-7 pb-12">
+            Download Sample template for import
+          </p>
         </div>
       </form>
       <div className="flex items-center justify-between mt-6">
-          <h5
-            className="font-medium cursor-pointer hover:font-semibold"
-            onClick={handleDrawer}
-          >
-            Cancel
-          </h5>
-          <button className="button">Save Changes</button>
-        </div>
+        <h5
+          className="font-medium cursor-pointer hover:font-semibold"
+          onClick={handleDrawer}
+        >
+          Cancel
+        </h5>
+        <button className="button">Save Changes</button>
+      </div>
     </motion.div>
   );
 };

@@ -27,10 +27,10 @@
 }
 /* to adjust stepper */
 .MuiStepIcon-root.Mui-active {
-    color: #fff !important;
+    /* color: #fff !important; */
 }
 .MuiStepIcon-text{
-    fill: var(--caramel) !important;
+    /* fill: var(--caramel) !important; */
 }
 /* to adjust stepper - make this better later */
 

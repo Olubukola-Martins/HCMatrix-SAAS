@@ -85,7 +85,6 @@ body {
   -webkit-box-shadow: inset 0 0 6px var(--scrollBg);
 }
 
-
 /*=== General modal style ===*/
 .CModal {
   position: absolute;
@@ -95,5 +94,10 @@ body {
   background: var(--card);
   padding: 15px 25px 25px 25px;
   border-radius: 10px;
-   width: 90%
-};
+  width: 90%;
+}
+
+/* step */
+.css-1u4zpwo-MuiSvgIcon-root-MuiStepIcon-root {
+  color: var(--caramel) !important;
+}
