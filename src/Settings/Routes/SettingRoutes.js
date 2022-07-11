@@ -12,6 +12,8 @@ import DesignationDetail from "../Pages/Organization/DesignationDetail";
 import Groups from "../Pages/Organization/Groups";
 import Departments from "../Pages/Organization/Departments";
 import DepartmentDetail from "../Pages/Organization/DepartmentDetail";
+import Delegations from "../Pages/Organization/Delegations";
+import DelegationDetail from "../Pages/Organization/DelegationDetail";
 
 const SettingRoutes = () => {
   return (
@@ -32,10 +34,14 @@ const SettingRoutes = () => {
         element={<DesignationDetail />}
       />
       <Route path="/settings/groups" element={<Groups />} />
-      <Route path="/settings/groups/:id" element={<DesignationDetail />} />
+      {/* not in figma - ask Emma */}
+      {/* <Route path="/settings/groups/:id" element={<DesignationDetail />} /> */}
 
       <Route path="/settings/departments" element={<Departments />} />
       <Route path="/settings/departments/:id" element={<DepartmentDetail />} />
+
+      <Route path="/settings/delegations" element={<Delegations />} />
+      <Route path="/settings/delegations/:id" element={<DelegationDetail />} />
     </Routes>
   );
 };
