@@ -11,6 +11,7 @@ import Designations from "../Pages/Organization/Designations";
 import DesignationDetail from "../Pages/Organization/DesignationDetail";
 import Groups from "../Pages/Organization/Groups";
 import Departments from "../Pages/Organization/Departments";
+import DepartmentDetail from "../Pages/Organization/DepartmentDetail";
 
 const SettingRoutes = () => {
   return (
@@ -34,6 +35,7 @@ const SettingRoutes = () => {
       <Route path="/settings/groups/:id" element={<DesignationDetail />} />
 
       <Route path="/settings/departments" element={<Departments />} />
+      <Route path="/settings/departments/:id" element={<DepartmentDetail />} />
     </Routes>
   );
 };

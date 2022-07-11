@@ -1,45 +1,46 @@
 import { AnimatePresence } from "framer-motion";
 import React, { useState } from "react";
 import DashboardLayout from "../../../Layout/DashboardLayout";
-import PenIcon from "../../Assets/pen_icon.svg";
-import AddDesignationDrawer from "../../Components/AddDesignationDrawer";
-import { DesignationsGridView } from "../../Components/DesignationsGridView";
-import { DesignationsTableView } from "../../Components/DesignationsTableView";
 
-const designations = [
+import AddDepartmentDrawer from "../../Components/AddDepartmentDrawer";
+import { DepartmentsGridView } from "../../Components/DepartmentsGridView";
+import { DepartmentsTableView } from "../../Components/DepartmentsTableView";
+
+const departments = [
   {
     id: "1",
-    name: "fullstack developer",
+    name: "Human Resource",
     email: "isaac@snapnet.com",
-    count: 0,
+    noOfEmployees: 4,
+    head: "Emeka Chukwu",
+  },
+  {
+    id: "3",
+    name: "App development",
+    email: "isaac@snapnet.com",
+    noOfEmployees: 2,
+    head: "Emeka Chukwu",
+  },
+  {
+    id: "2",
+    name: "Marketing",
+    email: "isaac@snapnet.com",
+    noOfEmployees: 15,
+    head: "Emeka Chukwu",
+  },
+  {
+    id: "4",
+    name: "Devops",
+    email: "isaac@snapnet.com",
+    noOfEmployees: 15,
+    head: "Emeka Chukwu",
   },
   {
     id: "12",
-    name: "backend developer",
+    name: "Graphic Design",
     email: "isaac@snapnet.com",
-    count: 2,
-  },
-  {
-    id: "11",
-    name: "frontend developer",
-    email: "isaac@snapnet.com",
-    count: 1,
-  },
-  {
-    id: "123",
-    name: "python developer",
-    email: "isaac@snapnet.com",
-    count: 4,
-  },
-  { id: "114", name: "AI/ML expert", email: "isaac@snapnet.com", count: 9 },
-  { id: "41", name: "UI/UX designer", email: "isaac@snapnet.com", count: 3 },
-  { id: "15", name: "Devops Engineer", email: "isaac@snapnet.com", count: 10 },
-  { id: "15", name: "Scrum Master", email: "isaac@snapnet.com", count: 15 },
-  {
-    id: "15",
-    name: "Product Manager/Scrum Master",
-    email: "isaac@snapnet.com",
-    count: 1,
+    noOfEmployees: 15,
+    head: "Emeka Chukwu",
   },
 ];
 
@@ -66,9 +67,9 @@ const Departments = () => {
                 <button
                   id="invite-button"
                   className="py-1 px-2 bg-caramel rounded text-sm text-white font-medium"
-                  onClick={() => setShowDraggableDrawer("add-designation")}
+                  onClick={() => setShowDraggableDrawer("add-department")}
                 >
-                  Add designation
+                  Add department
                 </button>
                 <div className="view-toggler flex rounded overflow-hidden items-center">
                   <i
@@ -103,16 +104,16 @@ const Departments = () => {
         }
 
         <div className="content overflow-y-hidden relative">
-          {showDraggableDrawer === "add-designation" && (
-            <AddDesignationDrawer handleDrawer={setShowDraggableDrawer} />
+          {showDraggableDrawer === "add-department" && (
+            <AddDepartmentDrawer handleDrawer={setShowDraggableDrawer} />
           )}
           <AnimatePresence exitBeforeEnter>
             {viewId === "grid" && (
-              <DesignationsGridView designations={designations} />
+              <DepartmentsGridView departments={departments} />
             )}
 
             {viewId === "list" && (
-              <DesignationsTableView designations={designations} />
+              <DepartmentsTableView departments={departments} />
             )}
           </AnimatePresence>
         </div>
