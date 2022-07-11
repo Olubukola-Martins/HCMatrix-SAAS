@@ -24,9 +24,9 @@ const GeneralSettings = () => {
 
     if (val !== "") {
       setNavItems(() => result);
-      setIsSearch(false);
-    } else {
       setIsSearch(true);
+    } else {
+      setIsSearch(false);
 
       setNavItems(settingNavItems);
     }
@@ -46,7 +46,7 @@ const GeneralSettings = () => {
             <i class="fas fa-search"></i>
           </div>
           {/* Page NavItems */}
-          {isSearch ? (
+          {!isSearch ? (
             <div className="mt-12 grid grid-cols-1  gap-4">
               {/* grouped settings */}
               {/* Basic */}
