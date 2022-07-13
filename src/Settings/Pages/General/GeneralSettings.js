@@ -50,7 +50,13 @@ const GeneralSettings = () => {
             <div className="mt-12 grid grid-cols-1  gap-4">
               {/* grouped settings */}
               {/* Basic */}
-              <FramerAccordian heading={"Basic Settings"}>
+              <FramerAccordian
+                heading={
+                  <h5 className="text-caramel text-xl font-semibold">
+                    Basic settings
+                  </h5>
+                }
+              >
                 <div className="grid grid-cols-2 lg:grid-cols-5 gap-4">
                   {/* item */}
                   {settingNavItems

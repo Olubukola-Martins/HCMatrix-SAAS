@@ -1,11 +1,11 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
-const FramerAccordian = ({ heading, children }) => {
+const FramerAccordian = ({ heading, children, bgClassName }) => {
   const [isOpen, setIsOpen] = useState(false);
   return (
     <motion.div
-      className="basic-setting border rounded overflow-hidden"
+      className={`basic-setting border rounded overflow-hidden ${bgClassName}`}
       animate={{
         height: isOpen ? "max-content" : "55px",
         transition: {
@@ -18,7 +18,7 @@ const FramerAccordian = ({ heading, children }) => {
         style={{ height: "55px" }}
         onClick={() => setIsOpen(!isOpen)}
       >
-        <h5 className="text-caramel text-xl font-semibold">{heading}</h5>
+        {heading}
         <motion.div
           className="dropdown-btn"
           animate={{ rotate: isOpen ? 180 : 0 }}
