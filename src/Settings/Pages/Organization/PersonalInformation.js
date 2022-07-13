@@ -4,6 +4,7 @@ import DashboardLayout from "../../../Layout/DashboardLayout";
 import FramerAccordian from "../../Components/custom/FramerAccordian";
 import EmployeeInformation from "../../Components/EmployeeProfile/EmployeeInformation";
 import ManagerDirectReport from "../../Components/EmployeeProfile/ManagerDirectReport";
+import WorkHistory from "../../Components/EmployeeProfile/WorkHistory";
 
 const PersonalInformation = () => {
   return (
@@ -147,8 +148,7 @@ const PersonalInformation = () => {
             }
             bgClassName="bg-card"
           >
-            hello
-            {/* <ManagerDirectReport /> */}
+            <WorkHistory />
           </FramerAccordian>
         </div>
       </div>
