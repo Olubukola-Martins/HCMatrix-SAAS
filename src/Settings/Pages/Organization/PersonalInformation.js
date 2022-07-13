@@ -1,6 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import DashboardLayout from "../../../Layout/DashboardLayout";
+import EmployeeInformation from "../../Components/EmployeeProfile/EmployeeInformation";
 
 const PersonalInformation = () => {
   return (
@@ -34,7 +35,7 @@ const PersonalInformation = () => {
           </div>
 
           <div className="bg-card py-6 px-3 rounded-md col-span-3">
-            <form className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <form className="grid grid-cols-1 md:grid-cols-2 gap-4 lg:gap-8">
               <div>
                 <div className="P_Form_Group">
                   <label>Name</label>
@@ -104,6 +105,9 @@ const PersonalInformation = () => {
             </form>
           </div>
         </div>
+
+        {/* Accordion section */}
+        <EmployeeInformation/>
       </div>
     </DashboardLayout>
   );
