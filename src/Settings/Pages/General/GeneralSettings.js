@@ -52,7 +52,7 @@ const GeneralSettings = () => {
               {/* Basic */}
               <FramerAccordian
                 heading={
-                  <h5 className="text-caramel text-xl font-semibold">
+                  <h5 className="text-caramel  text-base lg:text-xl  font-semibold">
                     Basic settings
                   </h5>
                 }
@@ -67,7 +67,13 @@ const GeneralSettings = () => {
                 </div>
               </FramerAccordian>
               {/* Self service*/}
-              <FramerAccordian heading={"Self Service"}>
+              <FramerAccordian
+                heading={
+                  <h5 className="text-caramel  text-base lg:text-xl  font-semibold">
+                    Self Service
+                  </h5>
+                }
+              >
                 <div className="grid grid-cols-2 lg:grid-cols-5 gap-4">
                   {/* item */}
                   {settingNavItems
@@ -78,7 +84,13 @@ const GeneralSettings = () => {
                 </div>
               </FramerAccordian>
               {/* Payroll */}
-              <FramerAccordian heading={"Payroll"}>
+              <FramerAccordian
+                heading={
+                  <h5 className="text-caramel  text-base lg:text-xl  font-semibold">
+                    Payroll
+                  </h5>
+                }
+              >
                 <div className="grid grid-cols-2 lg:grid-cols-5 gap-4">
                   {/* item */}
                   {settingNavItems
@@ -89,7 +101,13 @@ const GeneralSettings = () => {
                 </div>
               </FramerAccordian>
               {/* Performance */}
-              <FramerAccordian heading={"Performance"}>
+              <FramerAccordian
+                heading={
+                  <h5 className="text-caramel  text-base lg:text-xl  font-semibold">
+                    Performance
+                  </h5>
+                }
+              >
                 <div className="grid grid-cols-2 lg:grid-cols-5 gap-4">
                   {/* item */}
                   {settingNavItems
