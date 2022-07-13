@@ -27,11 +27,11 @@
 
 /*== employee details table ==*/
 .employee_info_table {
-  @apply border border-collapse w-full text-accent;
+  @apply border border-collapse w-full text-accent text-sm text-center;
 }
 
 .employee_info_table th {
-  @apply border;
+  @apply border p-2;
 }
 
 /* Inputs with white background */

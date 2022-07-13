@@ -140,6 +140,16 @@ const PersonalInformation = () => {
           >
             <ManagerDirectReport />
           </FramerAccordian>
+          <br />
+          <FramerAccordian
+            heading={
+              <h5 className="text-accent font-semibold">Work History</h5>
+            }
+            bgClassName="bg-card"
+          >
+            hello
+            {/* <ManagerDirectReport /> */}
+          </FramerAccordian>
         </div>
       </div>
     </DashboardLayout>
