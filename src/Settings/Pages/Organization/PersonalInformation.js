@@ -2,8 +2,13 @@ import React from "react";
 import { Link } from "react-router-dom";
 import DashboardLayout from "../../../Layout/DashboardLayout";
 import FramerAccordian from "../../Components/custom/FramerAccordian";
+import Dependant from "../../Components/EmployeeProfile/Dependant";
 import EmployeeInformation from "../../Components/EmployeeProfile/EmployeeInformation";
 import ManagerDirectReport from "../../Components/EmployeeProfile/ManagerDirectReport";
+import Qualification from "../../Components/EmployeeProfile/Qualification";
+import Salary from "../../Components/EmployeeProfile/Salary";
+import Skills from "../../Components/EmployeeProfile/Skills";
+import Skill from "../../Components/EmployeeProfile/Skills";
 import WorkHistory from "../../Components/EmployeeProfile/WorkHistory";
 
 const PersonalInformation = () => {
@@ -149,6 +154,37 @@ const PersonalInformation = () => {
             bgClassName="bg-card"
           >
             <WorkHistory />
+          </FramerAccordian>
+          <br />
+          <FramerAccordian
+            heading={<h5 className="text-accent font-semibold">Salary</h5>}
+            bgClassName="bg-card"
+          >
+            <Salary />
+          </FramerAccordian>
+          <br />
+          <FramerAccordian
+            heading={
+              <h5 className="text-accent font-semibold">Academic History</h5>
+            }
+            bgClassName="bg-card"
+          >
+            <Qualification />
+          </FramerAccordian>
+          <br />
+          <FramerAccordian
+            heading={<h5 className="text-accent font-semibold">Dependant</h5>}
+            bgClassName="bg-card"
+          >
+            <Dependant />
+          </FramerAccordian>
+          <br />
+          <br />
+          <FramerAccordian
+            heading={<h5 className="text-accent font-semibold">Skills</h5>}
+            bgClassName="bg-card"
+          >
+            <Skills />
           </FramerAccordian>
         </div>
       </div>

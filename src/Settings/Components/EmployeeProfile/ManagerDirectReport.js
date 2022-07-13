@@ -36,9 +36,7 @@ const ManagerDirectReport = () => {
       {/*  Manager(s) */}
       <div className="mt-20">
         <div className="flex items-center justify-between">
-          <h5 className="text-accent text-sm font-semibold pb-2">
-          Manager(s)
-          </h5>
+          <h5 className="text-accent text-sm font-semibold pb-2">Manager(s)</h5>
 
           <input
             type="text"

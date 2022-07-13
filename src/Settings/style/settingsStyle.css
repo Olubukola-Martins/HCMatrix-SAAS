@@ -30,7 +30,7 @@
   @apply border border-collapse w-full text-accent text-sm text-center;
 }
 
-.employee_info_table th {
+.employee_info_table th, .employee_info_table td {
   @apply border p-2;
 }
 

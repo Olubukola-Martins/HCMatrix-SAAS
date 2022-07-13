@@ -262,7 +262,7 @@ const EmployeeProfiles = () => {
                   <td>johndoe@email.com</td>
                   <td>
                     <span className="flex items-center gap-2 text-xl justify-center">
-                      <i className="fa-solid fa-circle-user"></i>{" "}
+                      <i className="fa-solid fa-circle-user"></i>
                       <i className="ri-pencil-line"></i>{" "}
                       <i className="ri-delete-bin-line"></i>
                     </span>
