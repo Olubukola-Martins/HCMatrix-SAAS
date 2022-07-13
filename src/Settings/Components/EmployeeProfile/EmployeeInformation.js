@@ -93,14 +93,14 @@ const EmployeeInformation = () => {
       <div className="my-12">
         <h5 className="text-accent font-semibold pb-2">Next of Kin</h5>
         <div className="border-b mb-4" />
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-x-6 lg:gap-x-10  gap-y-3 lg:gap-y-10">
           <div>
             <div className="P_Form_Group">
               <label>Name</label>
               <input type="text" placeholder="Godswill Omenuko" />
             </div>
 
-            <div className="P_Form_Group my-4">
+            <div className="P_Form_Group mt-4">
               <label>Address</label>
               <textarea
                 className="resize-none"
@@ -110,7 +110,7 @@ const EmployeeInformation = () => {
           </div>
 
           <div>
-            <div className="P_Form_Group my-4">
+            <div className="P_Form_Group">
               <label>Relation</label>
               <select>
                 <option value="male">Spouse</option>
@@ -120,6 +120,47 @@ const EmployeeInformation = () => {
               <label>Employee Number</label>
               <input type="tel" placeholder="+234 | 9078657754" />
             </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Personal Account detail */}
+      <div className="my-12">
+        <h5 className="text-accent font-semibold pb-2">
+          Pension Account Details
+        </h5>
+        <div className="border-b mb-4" />
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-x-6 lg:gap-x-10  gap-y-3 lg:gap-y-10">
+          <div className="P_Form_Group">
+            <label>Pension fund Administrator</label>
+            <select>
+              <option value="male">Stanbic IBTC Pension</option>
+            </select>
+          </div>
+
+          <div className="P_Form_Group">
+            <label>Pension Account Number</label>
+            <input type="text" placeholder="RSA275697464" />
+          </div>
+        </div>
+      </div>
+         {/* Bank Account Details */}
+         <div className="my-12">
+        <h5 className="text-accent font-semibold pb-2">
+        Bank Account Details
+        </h5>
+        <div className="border-b mb-4" />
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-x-6 lg:gap-x-10  gap-y-3 lg:gap-y-10">
+          <div className="P_Form_Group">
+            <label>Bank</label>
+            <select>
+              <option value="male">Access Bank Ltd</option>
+            </select>
+          </div>
+
+          <div className="P_Form_Group">
+            <label>Bank Account Number</label>
+            <input type="number" placeholder="2756970464" />
           </div>
         </div>
       </div>

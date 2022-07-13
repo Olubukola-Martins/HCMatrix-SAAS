@@ -6,7 +6,7 @@ module.exports = {
       backgroundColor: {
         caramel: "var(--caramel)",
         card: "var(--card)",
-        
+        mainBg: "var(--background)",
       },
       colors: {
         caramel: "var(--caramel)",

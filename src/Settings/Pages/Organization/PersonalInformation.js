@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import DashboardLayout from "../../../Layout/DashboardLayout";
 import FramerAccordian from "../../Components/custom/FramerAccordian";
 import EmployeeInformation from "../../Components/EmployeeProfile/EmployeeInformation";
+import ManagerDirectReport from "../../Components/EmployeeProfile/ManagerDirectReport";
 
 const PersonalInformation = () => {
   return (
@@ -127,6 +128,17 @@ const PersonalInformation = () => {
             bgClassName="bg-card"
           >
             <EmployeeInformation />
+          </FramerAccordian>
+          <br />
+          <FramerAccordian
+            heading={
+              <h5 className="text-accent font-semibold">
+                Manager(s)/Direct Report(s)
+              </h5>
+            }
+            bgClassName="bg-card"
+          >
+            <ManagerDirectReport />
           </FramerAccordian>
         </div>
       </div>
