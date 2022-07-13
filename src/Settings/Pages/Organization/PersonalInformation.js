@@ -1,6 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import DashboardLayout from "../../../Layout/DashboardLayout";
+import FramerAccordian from "../../Components/custom/FramerAccordian";
 import EmployeeInformation from "../../Components/EmployeeProfile/EmployeeInformation";
 
 const PersonalInformation = () => {
@@ -24,13 +25,22 @@ const PersonalInformation = () => {
               />
             </div>
             <div className="bg-card py-1 rounded font-medium text-sm hover:shadow cursor-pointer text-accent">
-              <label htmlFor="file">Browse..</label>
+              <label
+                htmlFor="file"
+               
+              >
+                <span>Browse..</span>
+              </label>
               <input type="file" id="file" className="hidden" />
             </div>
 
-            <div className="flex items-center justify-center mt-10 -mr-3 md:flex-col lg:flex-row">
-               <button className="transparentButton mr-2">Separate User</button>
-               <button className="transparentButton">Suspend User</button>
+            <div className="flex items-center gap-2 mt-10 md:flex-col lg:flex-row">
+              <button className="transparentButton">
+                <span className="text-xs">Separate User</span>
+              </button>
+              <button className="transparentButton">
+                <span className="text-xs">Suspend User</span>
+              </button>
             </div>
           </div>
 
@@ -44,7 +54,10 @@ const PersonalInformation = () => {
 
                 <div className="P_Form_Group my-4">
                   <label>Address</label>
-                  <textarea className="resize-none" placeholder="No 3 United Estate Ajah Lagos Nigeria"/>
+                  <textarea
+                    className="resize-none"
+                    placeholder="No 3 United Estate Ajah Lagos Nigeria"
+                  />
                 </div>
 
                 <div className="grid grid-cols-2 gap-5">
@@ -98,16 +111,20 @@ const PersonalInformation = () => {
                   />
                 </div>
 
-              <div className="flex justify-end mt-10">
-              <button className="button">Save Changes</button>
-              </div>
+                <div className="flex justify-end mt-10">
+                  <button className="button">Save Changes</button>
+                </div>
               </div>
             </form>
           </div>
         </div>
 
         {/* Accordion section */}
-        <EmployeeInformation/>
+        <div className="mt-10">
+          <FramerAccordian heading="testing">
+            <EmployeeInformation />
+          </FramerAccordian>
+        </div>
       </div>
     </DashboardLayout>
   );

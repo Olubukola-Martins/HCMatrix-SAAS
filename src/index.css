@@ -100,4 +100,11 @@ body {
 /* step */
 .css-1u4zpwo-MuiSvgIcon-root-MuiStepIcon-root {
   color: var(--caramel) !important;
+  width: 90%
+}
+  
+
+/* ==== Custom Dropdown Menu ==== */
+.custom-dropdown:hover .dropdown-menu {
+  display: block;
 }

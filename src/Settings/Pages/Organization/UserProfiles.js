@@ -175,7 +175,7 @@ const UserProfiles = () => {
               </button>
               <button
                 onClick={() => setOpenExport(true)}
-                className="bg-red-600 flex items-center gap-2 capitalize  hover:bg-opacity-70 transition ease-in duration-300 text-white py-1 text-sm px-2"
+                className="bg-caramel flex items-center gap-2 capitalize  hover:bg-opacity-70 transition ease-in duration-300 text-white py-1 text-sm px-2"
               >
                 <span>Export</span>
                 <img src={RedXIcon} alt="page_icon" />
