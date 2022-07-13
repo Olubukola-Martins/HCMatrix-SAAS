@@ -247,7 +247,10 @@ const EmployeeProfiles = () => {
                         src="https://res.cloudinary.com/ddvaelej7/image/upload/v1656616707/samples/Ellipse_1915_maqdtn.png"
                         alt="user"
                       />
-                      <Link to="/settings/personal-information" className="font-medium cursor-pointer">
+                      <Link
+                        to="/settings/employee-profile/id"
+                        className="font-medium cursor-pointer"
+                      >
                         Francis terr
                       </Link>
                     </div>

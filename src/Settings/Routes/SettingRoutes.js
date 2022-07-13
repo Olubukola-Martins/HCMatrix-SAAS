@@ -23,7 +23,7 @@ const SettingRoutes = () => {
       <Route path="/settings/locations/id" element={<LocationDetail />} />
       <Route path="/settings/employee-profile" element={<EmployeeProfiles />} />
       <Route path="/settings/user-profile" element={<UserProfiles />} />
-      <Route path="/settings/personal-information" element={<PersonalInformation/>} />
+      <Route path="/settings/employee-profile/id" element={<PersonalInformation/>} />
     </Routes>
   );
 };

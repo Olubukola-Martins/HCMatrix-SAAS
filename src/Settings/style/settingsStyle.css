@@ -48,3 +48,12 @@
   .P_Form_Group {
     @apply flex gap-2 items-center;
   }
+
+  .P_Form_Group input, .P_Form_Group textarea, .P_Form_Group select {
+    @apply flex-1 rounded p-2 focus:outline-none text-sm placeholder:text-sm;
+    background: var(--background);
+  }
+
+  .P_Form_Group label {
+    @apply text-xs lg:text-sm font-medium text-accent;
+  }

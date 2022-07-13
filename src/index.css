@@ -67,7 +67,7 @@ body {
 }
 
 .transparentButton {
-  @apply border border-slate-200 hover:border-slate-400 px-6 py-2 rounded font-medium bg-transparent text-accent transition ease-in-out duration-500 text-base tracking-wider;
+  @apply border border-slate-200 hover:border-slate-400 px-3 py-2 rounded font-medium bg-transparent text-accent transition ease-in-out duration-500 text-sm tracking-wider;
 }
 
 /*=== General scroll bar ===*/
