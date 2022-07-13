@@ -14,7 +14,7 @@ const FramerAccordian = ({ heading, children, bgClassName }) => {
       }}
     >
       <motion.div
-        className="heading px-6 py-4 border-0 border-b flex justify-between"
+        className="heading px-3 lg:px-6 py-4 border-0 border-b flex justify-between cursor-pointer"
         style={{ height: "55px" }}
         onClick={() => setIsOpen(!isOpen)}
       >
@@ -27,7 +27,7 @@ const FramerAccordian = ({ heading, children, bgClassName }) => {
         </motion.div>
       </motion.div>
       <AnimatePresence>
-        {<motion.div className="content p-6">{children}</motion.div>}
+        {<motion.div className="content py-6 px-3 lg:px-6">{children}</motion.div>}
       </AnimatePresence>
     </motion.div>
   );

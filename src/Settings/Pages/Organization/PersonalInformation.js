@@ -7,7 +7,7 @@ import EmployeeInformation from "../../Components/EmployeeProfile/EmployeeInform
 const PersonalInformation = () => {
   return (
     <DashboardLayout>
-      <div className="Container pb-10">
+      <div className="Container pb-20">
         <div className="flex items-center gap-2 text-accent font-semibold mt-2 pb-1">
           <Link to="/settings/employee-profile">
             <i className="ri-arrow-left-line text-xl cursor-pointer hover:text-caramel"></i>
@@ -25,10 +25,7 @@ const PersonalInformation = () => {
               />
             </div>
             <div className="bg-card py-1 rounded font-medium text-sm hover:shadow cursor-pointer text-accent">
-              <label
-                htmlFor="file"
-               
-              >
+              <label htmlFor="file">
                 <span>Browse..</span>
               </label>
               <input type="file" id="file" className="hidden" />
@@ -49,7 +46,7 @@ const PersonalInformation = () => {
               <div>
                 <div className="P_Form_Group">
                   <label>Name</label>
-                  <input type="text" placeholder="Godswill    Omenuko" />
+                  <input type="text" placeholder="Godswill Omenuko" />
                 </div>
 
                 <div className="P_Form_Group my-4">
@@ -121,7 +118,14 @@ const PersonalInformation = () => {
 
         {/* Accordion section */}
         <div className="mt-10">
-          <FramerAccordian heading="testing">
+          <FramerAccordian
+            heading={
+              <h5 className="text-accent font-semibold">
+                Personal Information
+              </h5>
+            }
+            bgClassName="bg-card"
+          >
             <EmployeeInformation />
           </FramerAccordian>
         </div>
