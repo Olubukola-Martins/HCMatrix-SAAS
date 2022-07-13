@@ -43,3 +43,8 @@
   .whiteBg_form textarea {
     background: var(--background);
   }
+
+  /*=== Personal information page form  ===*/
+  .P_Form_Group {
+    @apply flex gap-2 items-center;
+  }

@@ -12,6 +12,24 @@ const PersonalInformation = () => {
           </Link>
           <h5 className="text-lg">Personal Information</h5>
         </div>
+
+        <div className="grid md:grid-cols-3 grid-cols-1 gap-6 mt-5">
+          <div className="text-center">
+            <div className="flex justify-center">
+              <img
+                src="https://res.cloudinary.com/ddvaelej7/image/upload/v1657714689/samples/personal-info_vgptbq.png"
+                alt="user"
+                className="h-32"
+              />
+            </div>
+            <div className="bg-card inline-block pl-3 pr-7 py-1 rounded font-medium text-sm">
+              <label htmlFor="file" className="cursor-pointer">Browse..</label>
+              <input type="file" id="file" className="hidden" />
+            </div>
+          </div>
+
+          <div>2</div>
+        </div>
       </div>
     </DashboardLayout>
   );
