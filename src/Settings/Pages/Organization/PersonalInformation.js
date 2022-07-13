@@ -4,11 +4,14 @@ import DashboardLayout from "../../../Layout/DashboardLayout";
 import FramerAccordian from "../../Components/custom/FramerAccordian";
 import Dependant from "../../Components/EmployeeProfile/Dependant";
 import EmployeeInformation from "../../Components/EmployeeProfile/EmployeeInformation";
+import FingerPrints from "../../Components/EmployeeProfile/FingerPrints";
 import ManagerDirectReport from "../../Components/EmployeeProfile/ManagerDirectReport";
 import Qualification from "../../Components/EmployeeProfile/Qualification";
+import QueryHistory from "../../Components/EmployeeProfile/QueryHistory";
 import Salary from "../../Components/EmployeeProfile/Salary";
 import Skills from "../../Components/EmployeeProfile/Skills";
-import Skill from "../../Components/EmployeeProfile/Skills";
+import TrainingHistory from "../../Components/EmployeeProfile/TrainingHistory";
+import UserGroups from "../../Components/EmployeeProfile/UserGroups";
 import WorkHistory from "../../Components/EmployeeProfile/WorkHistory";
 
 const PersonalInformation = () => {
@@ -178,13 +181,49 @@ const PersonalInformation = () => {
           >
             <Dependant />
           </FramerAccordian>
-          <br />
+
           <br />
           <FramerAccordian
             heading={<h5 className="text-accent font-semibold">Skills</h5>}
             bgClassName="bg-card"
           >
             <Skills />
+          </FramerAccordian>
+          <br />
+          <FramerAccordian
+            heading={
+              <h5 className="text-accent font-semibold">Query History</h5>
+            }
+            bgClassName="bg-card"
+          >
+            <QueryHistory />
+          </FramerAccordian>
+          <br />
+          <FramerAccordian
+            heading={
+              <h5 className="text-accent font-semibold">Training History</h5>
+            }
+            bgClassName="bg-card"
+          >
+            <TrainingHistory />
+          </FramerAccordian>
+          <br />
+          <FramerAccordian
+            heading={
+              <h5 className="text-accent font-semibold">User Groups</h5>
+            }
+            bgClassName="bg-card"
+          >
+            <UserGroups />
+          </FramerAccordian>
+          <br />
+          <FramerAccordian
+            heading={
+              <h5 className="text-accent font-semibold">Finger Prints</h5>
+            }
+            bgClassName="bg-card"
+          >
+            <FingerPrints />
           </FramerAccordian>
         </div>
       </div>

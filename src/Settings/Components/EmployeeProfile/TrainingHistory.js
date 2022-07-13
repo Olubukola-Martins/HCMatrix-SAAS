@@ -1,9 +1,9 @@
-import React from "react";
+import React from 'react'
 
-const QueryHistory = () => {
+const TrainingHistory = () => {
   return (
-    <>
-      <div className="flex justify-end">
+  <>
+   <div className="flex justify-end">
         <input
           type="text"
           placeholder="Search.."
@@ -14,21 +14,17 @@ const QueryHistory = () => {
       <table className="employee_info_table mt-5">
         <thead>
           <tr>
-            <th>QueryType</th>
-            <th>Employee Name</th>
-            <th>Status</th>
-            <th>Query Excerpt</th>
-            <th>Action taken</th>
-            <th>Date issued</th>
-            <th>Action</th>
+            <th>Name of training</th>
+            <th>Completion Status</th>
+           <th>Rating</th>
           </tr>
         </thead>
       </table>
       <div className="border text-center py-1 text-sm mt-1">
         No Matching Records
       </div>
-    </>
-  );
-};
+  </>
+  )
+}
 
-export default QueryHistory;
+export default TrainingHistory

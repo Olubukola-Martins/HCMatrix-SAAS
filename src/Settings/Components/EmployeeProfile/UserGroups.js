@@ -1,6 +1,6 @@
 import React from "react";
 
-const QueryHistory = () => {
+const UserGroups = () => {
   return (
     <>
       <div className="flex justify-end">
@@ -14,12 +14,7 @@ const QueryHistory = () => {
       <table className="employee_info_table mt-5">
         <thead>
           <tr>
-            <th>QueryType</th>
-            <th>Employee Name</th>
-            <th>Status</th>
-            <th>Query Excerpt</th>
-            <th>Action taken</th>
-            <th>Date issued</th>
+            <th>Name</th>
             <th>Action</th>
           </tr>
         </thead>
@@ -31,4 +26,4 @@ const QueryHistory = () => {
   );
 };
 
-export default QueryHistory;
+export default UserGroups;
