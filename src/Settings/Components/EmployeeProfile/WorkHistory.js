@@ -15,7 +15,9 @@ const WorkHistory = () => {
           Promotion History
         </h5>
         <div className="flex items-center justify-between">
-          <button className="button" onClick={() => setGradeModal(true)}>Change Grade</button>
+          <button className="button" onClick={() => setGradeModal(true)}>
+            Change Grade
+          </button>
           <input
             type="text"
             placeholder="Search.."
@@ -48,14 +50,18 @@ const WorkHistory = () => {
       <div>
         <h5 className="text-accent text-sm font-semibold pb-2">Job History</h5>
         <div className="flex items-center justify-between">
-          <button className="button" onClick={() => setJobModal(true)}>Assign New Job</button>
+          <button className="button" onClick={() => setJobModal(true)}>
+            Assign New Job
+          </button>
           <input
             type="text"
             placeholder="Search.."
             className="rounded-3xl px-4 py-1 focus:outline-none bg-mainBg placeholder:text-sm"
           />
-          <AssignJobRole  open={jobModal}
-            handleClose={() => setJobModal(false)}/>
+          <AssignJobRole
+            open={jobModal}
+            handleClose={() => setJobModal(false)}
+          />
         </div>
 
         <table className="employee_info_table mt-5">
@@ -82,14 +88,21 @@ const WorkHistory = () => {
           Work Experience
         </h5>
         <div className="flex items-center justify-between">
-          <button className="button" onClick={() => workExperienceModal(true)}>Add Employment History</button>
+          <button
+            className="button"
+            onClick={() => setWorkExperienceModal(true)}
+          >
+            Add Employment History
+          </button>
           <input
             type="text"
             placeholder="Search.."
             className="rounded-3xl px-4 py-1 focus:outline-none bg-mainBg placeholder:text-sm"
           />
-          <WorkExperienceForm open={workExperienceModal}
-            handleClose={() => setWorkExperienceModal(false)}/>
+          <WorkExperienceForm
+            open={workExperienceModal}
+            handleClose={() => setWorkExperienceModal(false)}
+          />
         </div>
 
         <table className="employee_info_table mt-5">

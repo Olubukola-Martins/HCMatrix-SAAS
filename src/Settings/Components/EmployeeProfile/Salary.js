@@ -1,15 +1,19 @@
-import React from "react";
+import React, { useState } from "react";
+import AddSalaryForm from "./AddSalaryForm";
 
 const Salary = () => {
+  const [salaryFormModal, setSalaryFormModal] = useState(false)
   return (
     <>
       <div className="flex items-center justify-between">
-        <button className="button">Add Salary</button>
+        <button className="button" onClick={() => setSalaryFormModal(true)}>Add Salary</button>
         <input
           type="text"
           placeholder="Search.."
           className="rounded-3xl px-4 py-1 focus:outline-none bg-mainBg placeholder:text-sm"
         />
+        <AddSalaryForm open={salaryFormModal}
+            handleClose={() => setSalaryFormModal(false)}/>
       </div>
 
       <table className="employee_info_table mt-5">
