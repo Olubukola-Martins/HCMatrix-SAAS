@@ -8,14 +8,24 @@ import PenIcon from "../../Assets/pen_icon.svg";
 import DummyIcon from "../../Assets/dummy.svg";
 import { AnimatePresence } from "framer-motion";
 import FilterDrawer from "../../Components/FilterDrawer";
+import EmployeeActions from "../../Components/EmployeeActions";
 
 const EmployeeProfiles = () => {
   const [anchorEl, setAnchorEl] = useState(null);
   const [anchorE2, setAnchorE2] = useState(null);
   const [showDraggableDrawer, setShowDraggableDrawer] = useState("");
+  const [bulk, setBulk] = useState([]);
 
   const open = Boolean(anchorEl);
   const openDisplay = Boolean(anchorE2);
+  const handleChange = (item) => {
+    if (bulk.find((a) => a === item)) {
+      const result = bulk.filter((a) => a !== item);
+      setBulk(result);
+      return;
+    }
+    setBulk((items) => [...items, item]);
+  };
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -124,36 +134,8 @@ const EmployeeProfiles = () => {
             <div />
           </div>
         </div>
-        <div className="Container">
-          <div className="bg-card mb-2">
-            <div className="flex justify-end">
-              <span className="pr-3 pb-2 cursor-pointer">x</span>
-            </div>
-            <div className="px-3 pb-4 text-caramel font-semibold text-sm flex items-center justify-between">
-              <button className="border-b-2 border-caramel">
-                Enroll to E-Learning
-              </button>
-              <button className="border-b-2 border-caramel">
-                + Add to Group
-              </button>
-              <button className="border-b-2 border-caramel">
-                Assign to Role
-              </button>
-              <button className="border-b-2 border-caramel">
-                Assign to Line Manager
-              </button>
-
-              <button className="border-b-2 border-caramel">
-                Change Employee Status
-              </button>
-              <button className="border-b-2 border-caramel">
-                Change Login Status
-              </button>
-              <button className="border-b-2 border-caramel">Others</button>
-            </div>
-          </div>
-        </div>
-        <div className="Container">
+        {bulk.length > 0 && <EmployeeActions />}
+        {/* <div className="Container">
           <div className="bg-card flex items-center justify-start gap-2 mb-2 p-3">
             <button className="text-sm text-white bg-caramel px-2 py-1">
               <span>FOCUS</span>
@@ -206,7 +188,7 @@ const EmployeeProfiles = () => {
               </Themes>
             </Menu>
           </div>
-        </div>
+        </div> */}
 
         <div className="Container">
           <table className="employee-profile-table">
@@ -224,192 +206,40 @@ const EmployeeProfiles = () => {
               </tr>
             </thead>
             <tbody>
-              <tr>
-                <td className="flex items-center justify-center gap-3">
-                  <input type="checkbox" />
-                  <div className="flex items-center gap-2 justify-center">
-                    <img
-                      src="https://res.cloudinary.com/ddvaelej7/image/upload/v1656616707/samples/Ellipse_1915_maqdtn.png"
-                      alt="user"
+              {[1, 2, 3, 4, 5, 6].map((item) => (
+                <tr>
+                  <td
+                    className="flex items-center justify-center gap-3"
+                    key={item}
+                  >
+                    <input
+                      type="checkbox"
+                      onChange={() => handleChange(item)}
                     />
-                    <div className="flex flex-col">
-                      <h6 className="font-medium text-sm">Francis terr, 4</h6>
-                      <span className="text-xs">francis@gmail.com</span>
+                    <div className="flex items-center gap-2 justify-center">
+                      <img
+                        src="https://res.cloudinary.com/ddvaelej7/image/upload/v1656616707/samples/Ellipse_1915_maqdtn.png"
+                        alt="user"
+                      />
+                      <div className="flex flex-col">
+                        <h6 className="font-medium text-sm">Francis terr, 4</h6>
+                        <span className="text-xs">francis@gmail.com</span>
+                      </div>
                     </div>
-                  </div>
-                </td>
-                <td>24 - 06 - 2022</td>
-                <td>UX Designer</td>
-                <td>Abuja</td>
-                <td>Active</td>
-                <td>
-                  <span className="flex items-center gap-2 text-xl justify-center">
-                    <i className="fa-solid fa-circle-user"></i>{" "}
-                    <i className="ri-pencil-line"></i>{" "}
-                    <i className="ri-delete-bin-line"></i>
-                  </span>
-                </td>
-              </tr>
-              <tr>
-                <td className="flex items-center justify-center gap-3">
-                  <input type="checkbox" />
-                  <div className="flex items-center gap-2 justify-center">
-                    <img
-                      src="https://res.cloudinary.com/ddvaelej7/image/upload/v1656616707/samples/Ellipse_1915_maqdtn.png"
-                      alt="user"
-                    />
-                    <div className="flex flex-col">
-                      <h6 className="font-medium text-sm">Francis terr, 4</h6>
-                      <span className="text-xs">francis@gmail.com</span>
-                    </div>
-                  </div>
-                </td>
-                <td>24 - 06 - 2022</td>
-                <td>UX Designer</td>
-                <td>Abuja</td>
-                <td>Active</td>
-                <td>
-                  <span className="flex items-center gap-2 text-xl justify-center">
-                    <i className="fa-solid fa-circle-user"></i>{" "}
-                    <i className="ri-pencil-line"></i>{" "}
-                    <i className="ri-delete-bin-line"></i>
-                  </span>
-                </td>
-              </tr>
-              <tr>
-                <td className="flex items-center justify-center gap-3">
-                  <input type="checkbox" />
-                  <div className="flex items-center gap-2 justify-center">
-                    <img
-                      src="https://res.cloudinary.com/ddvaelej7/image/upload/v1656616707/samples/Ellipse_1915_maqdtn.png"
-                      alt="user"
-                    />
-                    <div className="flex flex-col">
-                      <h6 className="font-medium text-sm">Francis terr, 4</h6>
-                      <span className="text-xs">francis@gmail.com</span>
-                    </div>
-                  </div>
-                </td>
-                <td>24 - 06 - 2022</td>
-                <td>UX Designer</td>
-                <td>Abuja</td>
-                <td>Active</td>
-                <td>
-                  <span className="flex items-center gap-2 text-xl justify-center">
-                    <i className="fa-solid fa-circle-user"></i>{" "}
-                    <i className="ri-pencil-line"></i>{" "}
-                    <i className="ri-delete-bin-line"></i>
-                  </span>
-                </td>
-              </tr>
-
-              <tr>
-                <td className="flex items-center justify-center gap-3">
-                  <input type="checkbox" />
-                  <div className="flex items-center gap-2 justify-center">
-                    <img
-                      src="https://res.cloudinary.com/ddvaelej7/image/upload/v1656616707/samples/Ellipse_1915_maqdtn.png"
-                      alt="user"
-                    />
-                    <div className="flex flex-col">
-                      <h6 className="font-medium text-sm">Francis terr, 4</h6>
-                      <span className="text-xs">francis@gmail.com</span>
-                    </div>
-                  </div>
-                </td>
-                <td>24 - 06 - 2022</td>
-                <td>UX Designer</td>
-                <td>Abuja</td>
-                <td>Active</td>
-                <td>
-                  <span className="flex items-center gap-2 text-xl justify-center">
-                    <i className="fa-solid fa-circle-user"></i>{" "}
-                    <i className="ri-pencil-line"></i>{" "}
-                    <i className="ri-delete-bin-line"></i>
-                  </span>
-                </td>
-              </tr>
-
-              <tr>
-                <td className="flex items-center justify-center gap-3">
-                  <input type="checkbox" />
-                  <div className="flex items-center gap-2 justify-center">
-                    <img
-                      src="https://res.cloudinary.com/ddvaelej7/image/upload/v1656616707/samples/Ellipse_1915_maqdtn.png"
-                      alt="user"
-                    />
-                    <div className="flex flex-col">
-                      <h6 className="font-medium text-sm">Francis terr, 4</h6>
-                      <span className="text-xs">francis@gmail.com</span>
-                    </div>
-                  </div>
-                </td>
-                <td>24 - 06 - 2022</td>
-                <td>UX Designer</td>
-                <td>Abuja</td>
-                <td>Active</td>
-                <td>
-                  <span className="flex items-center gap-2 text-xl justify-center">
-                    <i className="fa-solid fa-circle-user"></i>{" "}
-                    <i className="ri-pencil-line"></i>{" "}
-                    <i className="ri-delete-bin-line"></i>
-                  </span>
-                </td>
-              </tr>
-
-              <tr>
-                <td className="flex items-center justify-center gap-3">
-                  <input type="checkbox" />
-                  <div className="flex items-center gap-2 justify-center">
-                    <img
-                      src="https://res.cloudinary.com/ddvaelej7/image/upload/v1656616707/samples/Ellipse_1915_maqdtn.png"
-                      alt="user"
-                    />
-                    <div className="flex flex-col">
-                      <h6 className="font-medium text-sm">Francis terr, 4</h6>
-                      <span className="text-xs">francis@gmail.com</span>
-                    </div>
-                  </div>
-                </td>
-                <td>24 - 06 - 2022</td>
-                <td>UX Designer</td>
-                <td>Abuja</td>
-                <td>Active</td>
-                <td>
-                  <span className="flex items-center gap-2 text-xl justify-center">
-                    <i className="fa-solid fa-circle-user"></i>{" "}
-                    <i className="ri-pencil-line"></i>{" "}
-                    <i className="ri-delete-bin-line"></i>
-                  </span>
-                </td>
-              </tr>
-
-              <tr>
-                <td className="flex items-center justify-center gap-3">
-                  <input type="checkbox" />
-                  <div className="flex items-center gap-2 justify-center">
-                    <img
-                      src="https://res.cloudinary.com/ddvaelej7/image/upload/v1656616707/samples/Ellipse_1915_maqdtn.png"
-                      alt="user"
-                    />
-                    <div className="flex flex-col">
-                      <h6 className="font-medium text-sm">Francis terr, 4</h6>
-                      <span className="text-xs">francis@gmail.com</span>
-                    </div>
-                  </div>
-                </td>
-                <td>24 - 06 - 2022</td>
-                <td>UX Designer</td>
-                <td>Abuja</td>
-                <td>Active</td>
-                <td>
-                  <span className="flex items-center gap-2 text-xl justify-center">
-                    <i className="fa-solid fa-circle-user"></i>{" "}
-                    <i className="ri-pencil-line"></i>{" "}
-                    <i className="ri-delete-bin-line"></i>
-                  </span>
-                </td>
-              </tr>
+                  </td>
+                  <td>24 - 06 - 2022</td>
+                  <td>UX Designer</td>
+                  <td>Abuja</td>
+                  <td>Active</td>
+                  <td>
+                    <span className="flex items-center gap-2 text-xl justify-center">
+                      <i className="fa-solid fa-circle-user"></i>{" "}
+                      <i className="ri-pencil-line"></i>{" "}
+                      <i className="ri-delete-bin-line"></i>
+                    </span>
+                  </td>
+                </tr>
+              ))}
             </tbody>
           </table>
         </div>
