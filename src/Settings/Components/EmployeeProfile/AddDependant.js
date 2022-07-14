@@ -17,7 +17,7 @@ const AddDependant = ({ open, handleClose }) => {
             </div>
 
             <form>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
                 <div className="whiteBg_form">
                   <label>Name</label>
                   <input type="text" placeholder="Godswill smile" />
@@ -35,7 +35,31 @@ const AddDependant = ({ open, handleClose }) => {
                   <label>Email</label>
                   <input type="text" placeholder="johndoe@email.com" />
                 </div>
+                <div className="whiteBg_form">
+                  <label>Phone</label>
+                  <input type="tel" placeholder="+234 | 8047463822" />
+                </div>
+                <div className="whiteBg_form">
+                  <label>Relationship</label>
+                  <select name="" id="">
+                    <option value="father">Father</option>
+                    <option value="mother">Mother</option>
+                  </select>
+                </div>
+                <div className="flex items-center justify-around mt-5">
+                <button
+                  type="button"
+                  onClick={handleClose}
+                  className="transparentButton"
+                >
+                  Cancel
+                </button>
+                <button type="submit" className="button">
+                  Submit
+                </button>
               </div>
+              </div>
+             
             </form>
           </div>
         </Themes>
