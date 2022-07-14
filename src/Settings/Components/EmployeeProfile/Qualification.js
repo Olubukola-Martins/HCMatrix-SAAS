@@ -1,16 +1,23 @@
-import React from 'react'
+import React, { useState } from "react";
 import "../../style/settingsStyle.css";
+import AddQualification from "./AddQualification";
 
 const Qualification = () => {
+  const [qualificationModal, setQualificationModal] = useState(false);
   return (
     <>
-    
-     <div className="flex items-center justify-between">
-        <button className="button">Add Qualification</button>
+      <div className="flex items-center justify-between">
+        <button className="button" onClick={() => setQualificationModal(true)}>
+          Add Qualification
+        </button>
         <input
           type="text"
           placeholder="Search.."
           className="rounded-3xl px-4 py-1 focus:outline-none bg-mainBg placeholder:text-sm"
+        />
+        <AddQualification
+          open={qualificationModal}
+          handleClose={() => setQualificationModal(false)}
         />
       </div>
 
@@ -44,7 +51,7 @@ const Qualification = () => {
         </tbody>
       </table>
     </>
-  )
-}
+  );
+};
 
-export default Qualification
+export default Qualification;
