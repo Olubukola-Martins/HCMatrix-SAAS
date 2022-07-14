@@ -1,28 +1,32 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import DashboardLayout from "../../../Layout/DashboardLayout";
-import FramerAccordian from "../../Components/custom/FramerAccordian";
-import Dependant from "../../Components/EmployeeProfile/Dependant";
-import EmployeeInformation from "../../Components/EmployeeProfile/EmployeeInformation";
-import FingerPrints from "../../Components/EmployeeProfile/FingerPrints";
-import ManagerDirectReport from "../../Components/EmployeeProfile/ManagerDirectReport";
-import Qualification from "../../Components/EmployeeProfile/Qualification";
-import QueryHistory from "../../Components/EmployeeProfile/QueryHistory";
-import Salary from "../../Components/EmployeeProfile/Salary";
-import Skills from "../../Components/EmployeeProfile/Skills";
-import TrainingHistory from "../../Components/EmployeeProfile/TrainingHistory";
-import UserGroups from "../../Components/EmployeeProfile/UserGroups";
-import WorkHistory from "../../Components/EmployeeProfile/WorkHistory";
+import { EmployeeFullInfoAccordionWrap } from "../../Components/EmployeeProfile/EmployeeFullInfoAccordionWrap";
+import {
+  SeparateEmployee,
+  SuspendEmployee,
+} from "../../Components/EmployeeProfile/SuspendAndSeparateEmployee";
 
 const PersonalInformation = () => {
+  const [suspendModal, setSuspendModal] = useState(false);
+  const [separateModal, setSeparateModal] = useState(false);
+
   return (
     <DashboardLayout>
       <div className="Container pb-20">
-        <div className="flex items-center gap-2 text-accent font-semibold mt-2 pb-1">
-          <Link to="/settings/employee-profile">
-            <i className="ri-arrow-left-line text-xl cursor-pointer hover:text-caramel"></i>
-          </Link>
-          <h5 className="text-lg">Personal Information</h5>
+        <div className="flex justify-between items-center mt-3">
+          <div className="flex items-center gap-2 text-accent font-semibold mt-2 pb-1">
+            <Link to="/settings/employee-profile">
+              <i className="ri-arrow-left-line text-xl cursor-pointer hover:text-caramel"></i>
+            </Link>
+            <h5 className="text-lg">Personal Information</h5>
+          </div>
+          <div className="flex items-center gap-2">
+            <button className="button" title="Download personal information">
+              Download
+            </button>
+            <button className="button">View in as</button>
+          </div>
         </div>
 
         <div className="grid md:grid-cols-4 grid-cols-1 gap-6 mt-5">
@@ -42,12 +46,27 @@ const PersonalInformation = () => {
             </div>
 
             <div className="flex items-center gap-2 mt-10 md:flex-col lg:flex-row">
-              <button className="transparentButton">
-                <span className="text-xs">Separate User</span>
+              <button
+                className="transparentButton"
+                onClick={() => setSeparateModal(true)}
+              >
+                Separate User
               </button>
-              <button className="transparentButton">
-                <span className="text-xs">Suspend User</span>
+              <button
+                className="transparentButton"
+                onClick={() => setSuspendModal(true)}
+              >
+                Suspend User
               </button>
+
+              <SuspendEmployee
+                open={suspendModal}
+                handleClose={() => setSuspendModal(false)}
+              />
+              <SeparateEmployee
+                open={separateModal}
+                handleClose={() => setSeparateModal(false)}
+              />
             </div>
           </div>
 
@@ -128,103 +147,7 @@ const PersonalInformation = () => {
 
         {/* Accordion section */}
         <div className="mt-10">
-          <FramerAccordian
-            heading={
-              <h5 className="text-accent font-semibold">
-                Personal Information
-              </h5>
-            }
-            bgClassName="bg-card"
-          >
-            <EmployeeInformation />
-          </FramerAccordian>
-          <br />
-          <FramerAccordian
-            heading={
-              <h5 className="text-accent font-semibold">
-                Manager(s)/Direct Report(s)
-              </h5>
-            }
-            bgClassName="bg-card"
-          >
-            <ManagerDirectReport />
-          </FramerAccordian>
-          <br />
-          <FramerAccordian
-            heading={
-              <h5 className="text-accent font-semibold">Work History</h5>
-            }
-            bgClassName="bg-card"
-          >
-            <WorkHistory />
-          </FramerAccordian>
-          <br />
-          <FramerAccordian
-            heading={<h5 className="text-accent font-semibold">Salary</h5>}
-            bgClassName="bg-card"
-          >
-            <Salary />
-          </FramerAccordian>
-          <br />
-          <FramerAccordian
-            heading={
-              <h5 className="text-accent font-semibold">Academic History</h5>
-            }
-            bgClassName="bg-card"
-          >
-            <Qualification />
-          </FramerAccordian>
-          <br />
-          <FramerAccordian
-            heading={<h5 className="text-accent font-semibold">Dependant</h5>}
-            bgClassName="bg-card"
-          >
-            <Dependant />
-          </FramerAccordian>
-
-          <br />
-          <FramerAccordian
-            heading={<h5 className="text-accent font-semibold">Skills</h5>}
-            bgClassName="bg-card"
-          >
-            <Skills />
-          </FramerAccordian>
-          <br />
-          <FramerAccordian
-            heading={
-              <h5 className="text-accent font-semibold">Query History</h5>
-            }
-            bgClassName="bg-card"
-          >
-            <QueryHistory />
-          </FramerAccordian>
-          <br />
-          <FramerAccordian
-            heading={
-              <h5 className="text-accent font-semibold">Training History</h5>
-            }
-            bgClassName="bg-card"
-          >
-            <TrainingHistory />
-          </FramerAccordian>
-          <br />
-          <FramerAccordian
-            heading={
-              <h5 className="text-accent font-semibold">User Groups</h5>
-            }
-            bgClassName="bg-card"
-          >
-            <UserGroups />
-          </FramerAccordian>
-          <br />
-          <FramerAccordian
-            heading={
-              <h5 className="text-accent font-semibold">Finger Prints</h5>
-            }
-            bgClassName="bg-card"
-          >
-            <FingerPrints />
-          </FramerAccordian>
+          <EmployeeFullInfoAccordionWrap />
         </div>
       </div>
     </DashboardLayout>

@@ -63,11 +63,13 @@ body {
 
 /*=== General button ===*/
 .button {
-  @apply border border-caramel px-3 py-2 rounded font-medium bg-caramel text-white transition ease-in-out duration-300 text-sm tracking-wider hover:opacity-70;
+  @apply border border-caramel rounded font-medium bg-caramel text-white transition ease-in-out duration-300 text-sm tracking-wider hover:opacity-70;
+  padding: 6px 8.5px;
 }
 
 .transparentButton {
-  @apply border border-slate-200 hover:border-slate-400 px-3 py-2 rounded font-medium bg-transparent text-accent transition ease-in-out duration-500 text-sm tracking-wider;
+  @apply border border-slate-200 hover:border-slate-400 rounded font-medium bg-transparent text-accent transition ease-in-out duration-500 text-sm tracking-wider;
+  padding: 6px 8.5px;
 }
 
 /*=== General scroll bar ===*/

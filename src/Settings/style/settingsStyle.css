@@ -39,7 +39,8 @@
   @apply block text-sm font-medium pb-1 text-accent;
 }
 .whiteBg_form input,
-.whiteBg_form select {
+.whiteBg_form select,
+.whiteBg_form textarea {
   @apply w-full rounded p-2 focus:outline-none text-sm;
   background: var(--background);
 }

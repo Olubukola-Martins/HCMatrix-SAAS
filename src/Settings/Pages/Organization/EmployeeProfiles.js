@@ -120,6 +120,7 @@ const EmployeeProfiles = () => {
                 <span>All</span>
                 <i className="ri-file-excel-line text-base"></i>
               </button>
+
               <button
                 onClick={() => setOpenExport(true)}
                 className="flex items-center gap-2 text-sm text-white bg-caramel px-2 py-1"
@@ -132,92 +133,25 @@ const EmployeeProfiles = () => {
                 handleClose={() => setOpenExport(false)}
               />
             </div>
-
-            <div />
+            <div/>
           </div>
         </div>
         <div className="Container">
           {/* show on checkbox thick */}
-          <div className="bg-card mb-2 hidden">
+          <div className="bg-card mb-2">
             <div className="flex justify-end">
               <span className="pr-3 pb-2 cursor-pointer">x</span>
             </div>
-            <div className="px-3 pb-4 text-caramel font-semibold text-sm flex items-center justify-between">
-              <button className="border-b-2 border-caramel">
-                Enroll to E-Learning
-              </button>
-              <button className="border-b-2 border-caramel">
-                + Add to Group
-              </button>
-              <button className="border-b-2 border-caramel">
-                Assign to Role
-              </button>
-              <button className="border-b-2 border-caramel">
-                Assign to Line Manager
-              </button>
-
-              <button className="border-b-2 border-caramel">
-                Change Employee Status
-              </button>
-              <button className="border-b-2 border-caramel">
-                Change Login Status
-              </button>
-              <button className="border-b-2 border-caramel">Others</button>
+            <div className="px-3 pb-4 text-caramel font-medium text-sm flex items-center gap-4">
+              <button>Enroll to E-Learning</button>
+              <button>+ Add to Group</button>
+              <button>Assign to Role</button>
+              <button>Assign to Line Manager</button>
+              <button>Change Employee Status</button>
+              <button>Change Login Status</button>
+              <button>Move to department</button>
+              <button>Move to company</button>
             </div>
-          </div>
-        </div>
-        <div className="Container">
-          <div className="bg-card flex items-center justify-start gap-2 mb-2 p-3">
-            <button className="text-sm text-white bg-caramel px-2 py-1">
-              <span>FOCUS</span>
-            </button>
-            <button
-              onClick={(e) => setAnchorE2(e.currentTarget)}
-              className="flex items-center gap-2 text-sm text-white bg-caramel px-2 py-1"
-            >
-              <span>Display</span>
-              <i className="ri-arrow-down-s-line text-base"></i>
-            </button>
-            <Menu
-              anchorEl={anchorE2}
-              open={openDisplay}
-              onClose={() => setAnchorE2(null)}
-            >
-              <Themes>
-                <div className="bg-card w-32 px-2 text-sm py-3 text-accent">
-                  <h5 className="flex items-center gap-4 border-b">
-                    <input type="checkbox" /> <span>Display All</span>
-                  </h5>
-                  <h5 className="flex items-center gap-5 py-1 border-b">
-                    <input type="checkbox" /> <span>Name</span>
-                  </h5>
-                  <h5 className="flex items-center gap-4 py-1">
-                    <input type="checkbox" /> <span>Staff ID</span>
-                  </h5>
-                  <h5 className="flex items-center gap-5 py-1 border-b">
-                    <input type="checkbox" /> <span>Grade</span>
-                  </h5>
-                  <h5 className="flex items-center gap-5 py-1 border-b">
-                    <input type="checkbox" /> <span>Gender</span>
-                  </h5>
-                  <h5 className="flex items-center gap-5 py-1 border-b">
-                    <input type="checkbox" /> <span>Status</span>
-                  </h5>
-                  <h5 className="flex items-center gap-4 py-1">
-                    <input type="checkbox" /> <span>Department</span>
-                  </h5>
-                  <h5 className="flex items-center gap-5 py-1 border-b">
-                    <input type="checkbox" /> <span>Email</span>
-                  </h5>
-                  <h5 className="flex items-center gap-5 py-1 border-b">
-                    <input type="checkbox" /> <span>Role</span>
-                  </h5>
-                  <h5 className="flex items-center gap-5 pt-1">
-                    <input type="checkbox" /> <span>Options</span>
-                  </h5>
-                </div>
-              </Themes>
-            </Menu>
           </div>
         </div>
 

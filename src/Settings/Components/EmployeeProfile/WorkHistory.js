@@ -1,6 +1,10 @@
-import React from "react";
+import React, { useState } from "react";
+import AssignJobRole from "./AssignJobRole";
+import EmployeeGradeForm from "./EmployeeGradeForm";
 
 const WorkHistory = () => {
+  const [gradeModal, setGradeModal] = useState(false);
+  const [jobModal, setJobModal] = useState(false);
   return (
     <>
       {/* promotion history */}
@@ -9,11 +13,15 @@ const WorkHistory = () => {
           Promotion History
         </h5>
         <div className="flex items-center justify-between">
-          <button className="button">Change Grade</button>
+          <button className="button" onClick={() => setGradeModal(true)}>Change Grade</button>
           <input
             type="text"
             placeholder="Search.."
             className="rounded-3xl px-4 py-1 focus:outline-none bg-mainBg placeholder:text-sm"
+          />
+          <EmployeeGradeForm
+            open={gradeModal}
+            handleClose={() => setGradeModal(false)}
           />
         </div>
 
@@ -31,21 +39,21 @@ const WorkHistory = () => {
           No Matching Records
         </div>
       </div>
-       
-       <div className="border-b my-10"/>
+
+      <div className="border-b my-10" />
 
       {/* Job History */}
       <div>
-        <h5 className="text-accent text-sm font-semibold pb-2">
-          Job History
-        </h5>
+        <h5 className="text-accent text-sm font-semibold pb-2">Job History</h5>
         <div className="flex items-center justify-between">
-          <button className="button">Assign New Job</button>
+          <button className="button" onClick={() => setJobModal(true)}>Assign New Job</button>
           <input
             type="text"
             placeholder="Search.."
             className="rounded-3xl px-4 py-1 focus:outline-none bg-mainBg placeholder:text-sm"
           />
+          <AssignJobRole  open={jobModal}
+            handleClose={() => setJobModal(false)}/>
         </div>
 
         <table className="employee_info_table mt-5">
@@ -64,12 +72,12 @@ const WorkHistory = () => {
         </div>
       </div>
 
-      <div className="border-b my-10"/>
+      <div className="border-b my-10" />
 
       {/* Work Experience */}
       <div>
         <h5 className="text-accent text-sm font-semibold pb-2">
-        Work Experience 
+          Work Experience
         </h5>
         <div className="flex items-center justify-between">
           <button className="button">Add Employment History</button>
