@@ -1,10 +1,12 @@
 import React, { useState } from "react";
 import AssignJobRole from "./AssignJobRole";
 import EmployeeGradeForm from "./EmployeeGradeForm";
+import WorkExperienceForm from "./WorkExperienceForm";
 
 const WorkHistory = () => {
   const [gradeModal, setGradeModal] = useState(false);
   const [jobModal, setJobModal] = useState(false);
+  const [workExperienceModal, setWorkExperienceModal] = useState(false);
   return (
     <>
       {/* promotion history */}
@@ -80,12 +82,14 @@ const WorkHistory = () => {
           Work Experience
         </h5>
         <div className="flex items-center justify-between">
-          <button className="button">Add Employment History</button>
+          <button className="button" onClick={() => workExperienceModal(true)}>Add Employment History</button>
           <input
             type="text"
             placeholder="Search.."
             className="rounded-3xl px-4 py-1 focus:outline-none bg-mainBg placeholder:text-sm"
           />
+          <WorkExperienceForm open={workExperienceModal}
+            handleClose={() => setWorkExperienceModal(false)}/>
         </div>
 
         <table className="employee_info_table mt-5">
