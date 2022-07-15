@@ -25,7 +25,7 @@ const PersonalInformation = () => {
           </div>
           <div className="flex items-center gap-2">
             <button className="button" onClick={() => setViewInModal(true)}>
-              View in as
+              View other users
             </button>
             <button className="button" title="Download personal information">
               Print
