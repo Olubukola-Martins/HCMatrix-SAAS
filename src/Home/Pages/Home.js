@@ -213,12 +213,7 @@ const Home = () => {
                 </div>
 
                 {/* Contact Support menu */}
-                <Menu
-                  anchorEl={anchorEl}
-                  open={open}
-                  onClose={handleClose}
-                
-                >
+                <Menu anchorEl={anchorEl} open={open} onClose={handleClose}>
                   <Themes>
                     <div className="bg-card w-38 px-3 text-xs py-1 text-accent">
                       <h5 className="cursor-pointer group">
