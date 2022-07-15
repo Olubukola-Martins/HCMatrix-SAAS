@@ -63,11 +63,22 @@ body {
 
 /*=== General button ===*/
 .button {
-  @apply border border-caramel px-7 py-2 rounded font-medium bg-caramel text-white transition ease-in-out duration-300 text-base tracking-wider hover:opacity-70;
+  @apply border border-caramel rounded font-medium bg-caramel text-white transition ease-in-out duration-300 text-sm tracking-wider hover:opacity-70;
+  padding: 6px 8.5px;
 }
 
 .transparentButton {
-  @apply border border-slate-200 hover:border-slate-400 px-6 py-2 rounded font-medium bg-transparent text-accent transition ease-in-out duration-500 text-base tracking-wider;
+  @apply border border-slate-400 hover:border-slate-800 rounded font-medium bg-transparent text-accent transition ease-in-out duration-500 text-sm tracking-wider;
+  padding: 6px 8.5px;
+}
+
+.button:disabled,
+.button:disabled:hover,
+.button:disabled:active {
+  background-color: #ccc;
+  color: #292929;
+  border-color: #ccc;
+  cursor: not-allowed;
 }
 
 /*=== General scroll bar ===*/
@@ -85,7 +96,6 @@ body {
   -webkit-box-shadow: inset 0 0 6px var(--scrollBg);
 }
 
-
 /*=== General modal style ===*/
 .CModal {
   position: absolute;
@@ -95,8 +105,15 @@ body {
   background: var(--card);
   padding: 15px 25px 25px 25px;
   border-radius: 10px;
-   width: 90%
+  width: 90%;
 }
+
+/* step */
+.css-1u4zpwo-MuiSvgIcon-root-MuiStepIcon-root {
+  color: var(--caramel) !important;
+  width: 90%
+}
+  
 
 /* ==== Custom Dropdown Menu ==== */
 .custom-dropdown:hover .dropdown-menu {

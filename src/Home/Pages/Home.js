@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import DashboardLayout from "../../Layout/DashboardLayout";
@@ -57,23 +56,21 @@ const PendingItem = ({ handleClick, item, openId }) => {
   );
 };
 
-
-
-
 const Home = () => {
- const [openId, setOpenId] = useState("");
+  const [openId, setOpenId] = useState("");
+
   const handlePendingClick = (val) => {
     setOpenId((preVal) => (preVal === val ? "" : val));
   };
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
+
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
   const handleClose = () => {
     setAnchorEl(null);
   };
-
 
   return (
     <DashboardLayout>
@@ -210,28 +207,46 @@ const Home = () => {
 
                 <div className="flex items-center gap-3 cursor-pointer">
                   <i className="ri-customer-service-2-line text-2xl"></i>
-                  <span className="text-caramel" onClick={handleClick}>Contact Support</span>
+                  <span className="text-caramel" onClick={handleClick}>
+                    Contact Support
+                  </span>
                 </div>
 
                 {/* Contact Support menu */}
-                <Menu anchorEl={anchorEl} open={open} onClose={handleClose}>
+                <Menu
+                  anchorEl={anchorEl}
+                  open={open}
+                  onClose={handleClose}
+                
+                >
                   <Themes>
                     <div className="bg-card w-38 px-3 text-xs py-1 text-accent">
                       <h5 className="cursor-pointer group">
-                      <i className="ri-whatsapp-fill text-base text-green-500 block"></i> <span className="group-hover:text-caramel">WhatsApp support</span>
+                        <i className="ri-whatsapp-fill text-base text-green-500 block"></i>
+                        <span className="group-hover:text-caramel">
+                          WhatsApp support
+                        </span>
                       </h5>
-
-                    
 
                       <h5 className="my-2 cursor-pointer group">
-                      <i className="ri-phone-line text-base block"></i> <a href="tel: +1 (254) 244-0305" className="group-hover:text-caramel">+1 (254) 244-0305</a>
+                        <i className="ri-phone-line text-base block"></i>
+                        <a
+                          href="tel: +1 (254) 244-0305"
+                          className="group-hover:text-caramel"
+                        >
+                          +1 (254) 244-0305
+                        </a>
                       </h5>
-                      
+
                       <h5 className="my-1 cursor-pointer group">
-                      <i className="ri-mail-line text-base block"></i>
-                      <a href="mailto: support@hcmatrix.com" className="group-hover:text-caramel">support@hcmatrix.com</a>
+                        <i className="ri-mail-line text-base block"></i>
+                        <a
+                          href="mailto: support@hcmatrix.com"
+                          className="group-hover:text-caramel"
+                        >
+                          support@hcmatrix.com
+                        </a>
                       </h5>
-                     
                     </div>
                   </Themes>
                 </Menu>

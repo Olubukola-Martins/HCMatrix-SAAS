@@ -61,8 +61,7 @@ const UserProfiles = () => {
   const [openExport, setOpenExport] = useState(false);
   //upload file modal
   const [openUploadFile, setOpenUploadFile] = useState(false);
-  // experimental
-  // values - ['single-invite','multiple-invite','filter']
+
   const [showDraggableDrawer, setShowDraggableDrawer] = useState("");
 
   return (

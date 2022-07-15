@@ -1,6 +1,5 @@
 import React from "react";
 import Themes from "../../Themes/Themes";
-
 import Modal from "@mui/material/Modal";
 
 const ExportModal = ({ open, handleClose }) => {
@@ -31,9 +30,9 @@ const ExportModal = ({ open, handleClose }) => {
               {["xls", "xlsx", "csv", "tsv"].map((item) => (
                 <div
                   key={item}
-                  className="radio-input flex gap-2 items-center px-3 py-1 bg-opacity-20 bg-gray-500 rounded"
+                  className="radio-input flex gap-2 items-center px-3 py-1 bg-opacity-20 bg-gray-500 rounded cursor-pointer"
                 >
-                  <input type="radio" name="exportType"></input>
+                  <input type="radio" name="exportType"/>
                   <label>{item}</label>
                 </div>
               ))}
