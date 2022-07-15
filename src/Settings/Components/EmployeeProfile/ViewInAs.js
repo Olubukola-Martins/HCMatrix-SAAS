@@ -1,17 +1,24 @@
 import { Autocomplete, Modal, TextField } from "@mui/material";
-import React from "react";
+import React, { useState } from "react";
+import { Link } from "react-router-dom";
 import Themes from "../../../Themes/Themes";
 
 const ViewInAs = ({ open, handleClose }) => {
+    const [nextUser, setNextUser] = useState(0)
+    
   const users = [
-    { label: "Godswill Omenuko", id: 1994 },
-    { label: "Isaac Odeh", id: 1972 },
-    { label: "Basil Ikpe", id: 1974 },
-    { label: "Emmanuel John", id: 2008 },
-    { label: "Peter Obi", year: 1993 },
-    { label: "Atiku Abubakar", year: 1994 },
-    { label: "Bola Tinubu", year: 1957 },
+    { name: "Godswill Omenuko", id: 1994 },
+    { name: "Isaac Odeh", id: 1972 },
+    { name: "Basil Ikpe", id: 1974 },
+    { name: "Emmanuel John", id: 2008 },
+    { name: "Peter Obi", id: 1993 },
+    { name: "Atiku Abubakar", id: 1994 },
+    { name: "Bola Tinubu", id: 1957 },
   ];
+
+  function changeUserId(userId) {
+    setNextUser(userId)
+  }
 
   return (
     <>
@@ -19,7 +26,11 @@ const ViewInAs = ({ open, handleClose }) => {
         <Themes>
           <div className="CModal" style={{ maxWidth: 400 }}>
             <div className="flex items-center justify-between w-full mb-8">
-           <button className="transparentButton">View user details</button>
+              <button className="button">
+                <Link to={`/settings/employee-profile/${nextUser}`} >
+                  View user details
+                </Link>
+              </button>
               <i
                 class="fas fa-times cursor-pointer text-xl"
                 onClick={handleClose}
@@ -30,7 +41,13 @@ const ViewInAs = ({ open, handleClose }) => {
               disablePortal
               id="combo-box-demo"
               options={users}
-              renderInput={(params) => <TextField {...params} label="Users" />}
+              getOptionLabel={(option) =>
+                option.name + " (" + option.id + ")"
+              }
+              onChange={(event, value) =>
+                changeUserId(value?.id, value?.name)
+              }
+              renderInput={(params) => <TextField {...params} label="Search Users" />}
             />
           </div>
         </Themes>
