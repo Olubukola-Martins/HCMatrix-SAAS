@@ -5,18 +5,18 @@ import CompanyDetails from "../Pages/General/CompanyDetails";
 import FromAddresses from "../Pages/General/FromAddresses";
 import Rebranding from "../Pages/General/Rebranding";
 import Domains from "../Pages/General/Domains";
-import EmployeeProfiles from "../Pages/Organization/EmployeeProfiles";
-import UserProfiles from "../Pages/Organization/UserProfiles";
-import Locations from "../Pages/Organization/Locations";
-import LocationDetail from "../Pages/Organization/LocationDetail";
-import PersonalInformation from "../Pages/Organization/PersonalInformation";
-import Designations from "../Pages/Organization/Designations";
-import DesignationDetail from "../Pages/Organization/DesignationDetail";
-import Groups from "../Pages/Organization/Groups";
-import Departments from "../Pages/Organization/Departments";
-import DepartmentDetail from "../Pages/Organization/DepartmentDetail";
-import Delegations from "../Pages/Organization/Delegations";
-import DelegationDetail from "../Pages/Organization/DelegationDetail";
+import EmployeeProfiles from "../Pages/Organization/EmployeeProfiles/EmployeeProfiles";
+import UserProfiles from "../Pages/Organization/UserProfiles/UserProfiles";
+import Locations from "../Pages/Organization/Locations/Locations";
+import LocationDetail from "../Pages/Organization/Locations/LocationDetail";
+import PersonalInformation from "../Pages/Organization/EmployeeProfiles/PersonalInformation";
+import Designations from "../Pages/Organization/Designations/Designations";
+import DesignationDetail from "../Pages/Organization/Designations/DesignationDetail";
+import Groups from "../Pages/Organization/Groups/Groups";
+import Departments from "../Pages/Organization/Departments/Departments";
+import DepartmentDetail from "../Pages/Organization/Departments/DepartmentDetail";
+import Delegations from "../Pages/Organization/Delegations/Delegations";
+import DelegationDetail from "../Pages/Organization/Delegations/DelegationDetail";
 import Roles from "../Pages/UserAccessControl/Roles";
 
 const SettingRoutes = () => {
@@ -32,7 +32,10 @@ const SettingRoutes = () => {
       <Route path="/settings/locations/id" element={<LocationDetail />} />
       <Route path="/settings/employee-profile" element={<EmployeeProfiles />} />
       <Route path="/settings/user-profile" element={<UserProfiles />} />
-      <Route path="/settings/employee-profile/id" element={<PersonalInformation/>} />
+      <Route
+        path="/settings/employee-profile/id"
+        element={<PersonalInformation />}
+      />
 
       {/* Organization */}
       <Route path="/settings/employee-profile" element={<EmployeeProfiles />} />

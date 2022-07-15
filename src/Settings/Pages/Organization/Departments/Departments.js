@@ -1,35 +1,46 @@
 import { AnimatePresence } from "framer-motion";
 import React, { useState } from "react";
-import DashboardLayout from "../../../Layout/DashboardLayout";
+import DashboardLayout from "../../../../Layout/DashboardLayout";
 
-// import AddDelegationDrawer from "../../Components/AddDelegationDrawer";
+import AddDepartmentDrawer from "../../../Components/Organization/Departments/AddDepartmentDrawer";
+import { DepartmentsGridView } from "../../../Components/Organization/Departments/DepartmentsGridView";
+import { DepartmentsTableView } from "../../../Components/Organization/Departments/DepartmentsTableView";
 
-// import { RolesTableView } from "../../Components/RolesTableView";
-
-const roles = [
+const departments = [
   {
-    id: 1,
-    name: "Manager Manager",
-    lastModifiedBy: "John Doe",
-    updatedAt: "July 3, 2022",
+    id: "1",
+    name: "Human Resource",
+    email: "isaac@snapnet.com",
+    noOfEmployees: 4,
+    head: "Emeka Chukwu",
   },
   {
-    id: 2,
-    name: "Head of Strategy",
-    lastModifiedBy: "John Doe",
-    updatedAt: "July 3, 2022",
+    id: "3",
+    name: "App development",
+    email: "isaac@snapnet.com",
+    noOfEmployees: 2,
+    head: "Emeka Chukwu",
   },
   {
-    id: 3,
-    name: "Head of Hr",
-    lastModifiedBy: "John Doe",
-    updatedAt: "July 3, 2022",
+    id: "2",
+    name: "Marketing",
+    email: "isaac@snapnet.com",
+    noOfEmployees: 15,
+    head: "Emeka Chukwu",
   },
   {
-    id: 4,
-    name: "Employee",
-    lastModifiedBy: "John Doe",
-    updatedAt: "July 3, 2022",
+    id: "4",
+    name: "Devops",
+    email: "isaac@snapnet.com",
+    noOfEmployees: 15,
+    head: "Emeka Chukwu",
+  },
+  {
+    id: "12",
+    name: "Graphic Design",
+    email: "isaac@snapnet.com",
+    noOfEmployees: 15,
+    head: "Emeka Chukwu",
   },
 ];
 
@@ -37,27 +48,30 @@ const Departments = () => {
   const [viewId, setViewId] = useState("list");
   const [showDraggableDrawer, setShowDraggableDrawer] = useState("");
 
-  // const handleViewId = (val) => {
-  //   setViewId(val);
-  // };
+  const handleViewId = (val) => {
+    setViewId(val);
+  };
   return (
     <DashboardLayout>
       <div className="h-screen">
         {
           <div className="Container mt-4">
-            <h4 className="text-lg  mb-1">Roles</h4>
+            <h4 className="text-lg  mb-1">Departments</h4>
             <div className="flex flex-col gap-2 md:flex-row md:justify-between md:items-center bg-card p-2 rounded text-sm">
-              <p>Manage roles</p>
+              <p>
+                Manage all the department details and the departments settings
+                in your organization.
+              </p>
 
               <div className="flex gap-4 items-center">
                 <button
                   id="invite-button"
                   className="py-1 px-2 bg-caramel rounded text-sm text-white font-medium"
-                  onClick={() => setShowDraggableDrawer("add-delegation")}
+                  onClick={() => setShowDraggableDrawer("add-department")}
                 >
-                  Add role
+                  Add department
                 </button>
-                {/* <div className="view-toggler flex rounded overflow-hidden items-center">
+                <div className="view-toggler flex rounded overflow-hidden items-center">
                   <i
                     onClick={() => handleViewId("grid")}
                     className={
@@ -77,7 +91,7 @@ const Departments = () => {
                     onClick={() => handleViewId("list")}
                     aria-hidden="true"
                   ></i>
-                </div> */}
+                </div>
                 <div className="question-icon ml-auto md:ml-0">
                   <i
                     className="ri-question-fill text-xl cursor-pointer text-gray-400"
@@ -86,27 +100,23 @@ const Departments = () => {
                 </div>
               </div>
             </div>
-            <div className="flex flex-col gap-2 md:flex-row md:justify-end md:items-center mt-2 p-2 rounded text-sm">
-              <div className="input-container w-1/4">
-                <input
-                  type="text"
-                  placeholder="Search roles"
-                  className="w-full bg-transparent rounded-md p-2 border border-gray-400 focus:outline-none "
-                />
-              </div>
-            </div>
           </div>
         }
-        {/* adjust accordingly */}
 
-        {/* <div className="content overflow-y-hidden relative">
-          {showDraggableDrawer === "add-delegation" && (
-            <AddDelegationDrawer handleDrawer={setShowDraggableDrawer} />
+        <div className="content overflow-y-hidden relative">
+          {showDraggableDrawer === "add-department" && (
+            <AddDepartmentDrawer handleDrawer={setShowDraggableDrawer} />
           )}
           <AnimatePresence exitBeforeEnter>
-            {viewId === "list" && <RolesTableView roles={roles} />}
+            {viewId === "grid" && (
+              <DepartmentsGridView departments={departments} />
+            )}
+
+            {viewId === "list" && (
+              <DepartmentsTableView departments={departments} />
+            )}
           </AnimatePresence>
-        </div> */}
+        </div>
       </div>
     </DashboardLayout>
   );

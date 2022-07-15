@@ -1,35 +1,39 @@
 import { AnimatePresence } from "framer-motion";
 import React, { useState } from "react";
-import DashboardLayout from "../../../Layout/DashboardLayout";
+import DashboardLayout from "../../../../Layout/DashboardLayout";
 
-// import AddDelegationDrawer from "../../Components/AddDelegationDrawer";
+import AddDelegationDrawer from "../../../Components/Organization/Delegations/AddDelegationDrawer";
+import { DelegationsGridView } from "../../../Components/Organization/Delegations/DelegationsGridView";
+import { DelegationsTableView } from "../../../Components/Organization/Delegations/DelegationsTableView";
 
-// import { RolesTableView } from "../../Components/RolesTableView";
-
-const roles = [
+const delegations = [
   {
-    id: 1,
-    name: "Manager Manager",
-    lastModifiedBy: "John Doe",
-    updatedAt: "July 3, 2022",
+    id: "2",
+    delegator: {
+      name: "Emeka Doe",
+      image: "",
+    },
+    delegatee: {
+      name: "Mary Doe",
+      image: "",
+    },
+    type: "permanent",
+    dateRange: "07/July/2022 - 16/July/2022",
+    status: "Upcoming",
   },
   {
-    id: 2,
-    name: "Head of Strategy",
-    lastModifiedBy: "John Doe",
-    updatedAt: "July 3, 2022",
-  },
-  {
-    id: 3,
-    name: "Head of Hr",
-    lastModifiedBy: "John Doe",
-    updatedAt: "July 3, 2022",
-  },
-  {
-    id: 4,
-    name: "Employee",
-    lastModifiedBy: "John Doe",
-    updatedAt: "July 3, 2022",
+    id: "1",
+    delegator: {
+      name: "James Doe",
+      image: "",
+    },
+    delegatee: {
+      name: "Mary Doe",
+      image: "",
+    },
+    type: "temporary",
+    dateRange: "07/July/2022 - 16/July/2022",
+    status: "Upcoming",
   },
 ];
 
@@ -45,9 +49,9 @@ const Departments = () => {
       <div className="h-screen">
         {
           <div className="Container mt-4">
-            <h4 className="text-lg  mb-1">Roles</h4>
+            <h4 className="text-lg  mb-1">Delegations</h4>
             <div className="flex flex-col gap-2 md:flex-row md:justify-between md:items-center bg-card p-2 rounded text-sm">
-              <p>Manage roles</p>
+              <p>Manage delegations</p>
 
               <div className="flex gap-4 items-center">
                 <button
@@ -55,7 +59,7 @@ const Departments = () => {
                   className="py-1 px-2 bg-caramel rounded text-sm text-white font-medium"
                   onClick={() => setShowDraggableDrawer("add-delegation")}
                 >
-                  Add role
+                  Add delegation
                 </button>
                 {/* <div className="view-toggler flex rounded overflow-hidden items-center">
                   <i
@@ -86,27 +90,23 @@ const Departments = () => {
                 </div>
               </div>
             </div>
-            <div className="flex flex-col gap-2 md:flex-row md:justify-end md:items-center mt-2 p-2 rounded text-sm">
-              <div className="input-container w-1/4">
-                <input
-                  type="text"
-                  placeholder="Search roles"
-                  className="w-full bg-transparent rounded-md p-2 border border-gray-400 focus:outline-none "
-                />
-              </div>
-            </div>
           </div>
         }
-        {/* adjust accordingly */}
 
-        {/* <div className="content overflow-y-hidden relative">
+        <div className="content overflow-y-hidden relative">
           {showDraggableDrawer === "add-delegation" && (
             <AddDelegationDrawer handleDrawer={setShowDraggableDrawer} />
           )}
           <AnimatePresence exitBeforeEnter>
-            {viewId === "list" && <RolesTableView roles={roles} />}
+            {viewId === "grid" && (
+              <DelegationsGridView delegations={delegations} />
+            )}
+
+            {viewId === "list" && (
+              <DelegationsTableView delegations={delegations} />
+            )}
           </AnimatePresence>
-        </div> */}
+        </div>
       </div>
     </DashboardLayout>
   );
