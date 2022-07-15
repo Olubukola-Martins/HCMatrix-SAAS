@@ -22,10 +22,10 @@ const PersonalInformation = () => {
             <h5 className="text-lg">Personal Information</h5>
           </div>
           <div className="flex items-center gap-2">
-            <button className="button" title="Download personal information">
-              Download
-            </button>
             <button className="button">View in as</button>
+            <button className="button" title="Download personal information">
+              Print
+            </button>
           </div>
         </div>
 
