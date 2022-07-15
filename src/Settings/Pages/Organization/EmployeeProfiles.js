@@ -9,6 +9,8 @@ import { Dialog, Slide } from "@mui/material";
 import AddEmployee from "../../Components/AddEmployee";
 import ExportModal from "../../Components/ExportModal";
 import { Link } from "react-router-dom";
+import EmployeeActions from "../../Components/EmployeeActions";
+
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
@@ -19,9 +21,16 @@ const EmployeeProfiles = () => {
   const [showDraggableDrawer, setShowDraggableDrawer] = useState("");
   const [openFullDialog, setOpenFullDialog] = useState(false);
   const [openExport, setOpenExport] = useState(false);
-
+  const [bulk, setBulk] = useState([]);
   const open = Boolean(anchorEl);
-  const openDisplay = Boolean(anchorE2);
+  const handleChange = (item) => {
+    if (bulk.find((a) => a === item)) {
+      const result = bulk.filter((a) => a !== item);
+      setBulk(result);
+      return;
+    }
+    setBulk((items) => [...items, item]);
+  };
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -133,27 +142,64 @@ const EmployeeProfiles = () => {
                 handleClose={() => setOpenExport(false)}
               />
             </div>
-            <div/>
+            <div />
           </div>
         </div>
-        <div className="Container">
-          {/* show on checkbox thick */}
-          <div className="bg-card mb-2">
-            <div className="flex justify-end">
-              <span className="pr-3 pb-2 cursor-pointer">x</span>
-            </div>
-            <div className="px-3 pb-4 text-caramel font-medium text-sm flex items-center gap-4">
-              <button>Enroll to E-Learning</button>
-              <button>+ Add to Group</button>
-              <button>Assign to Role</button>
-              <button>Assign to Line Manager</button>
-              <button>Change Employee Status</button>
-              <button>Change Login Status</button>
-              <button>Move to department</button>
-              <button>Move to company</button>
-            </div>
+        {bulk.length > 0 && <EmployeeActions />}
+        {/* <div className="Container">
+          <div className="bg-card flex items-center justify-start gap-2 mb-2 p-3">
+            <button className="text-sm text-white bg-caramel px-2 py-1">
+              <span>FOCUS</span>
+            </button>
+            <button
+              onClick={(e) => setAnchorE2(e.currentTarget)}
+              className="flex items-center gap-2 text-sm text-white bg-caramel px-2 py-1"
+            >
+              <span>Display</span>
+              <i className="ri-arrow-down-s-line text-base"></i>
+            </button>
+            <Menu
+              anchorEl={anchorE2}
+              open={openDisplay}
+              onClose={() => setAnchorE2(null)}
+            >
+              <Themes>
+                <div className="bg-card w-32 px-2 text-sm py-3 text-accent">
+                  <h5 className="flex items-center gap-4 border-b">
+                    <input type="checkbox" /> <span>Display All</span>
+                  </h5>
+                  <h5 className="flex items-center gap-5 py-1 border-b">
+                    <input type="checkbox" /> <span>Name</span>
+                  </h5>
+                  <h5 className="flex items-center gap-4 py-1">
+                    <input type="checkbox" /> <span>Staff ID</span>
+                  </h5>
+                  <h5 className="flex items-center gap-5 py-1 border-b">
+                    <input type="checkbox" /> <span>Grade</span>
+                  </h5>
+                  <h5 className="flex items-center gap-5 py-1 border-b">
+                    <input type="checkbox" /> <span>Gender</span>
+                  </h5>
+                  <h5 className="flex items-center gap-5 py-1 border-b">
+                    <input type="checkbox" /> <span>Status</span>
+                  </h5>
+                  <h5 className="flex items-center gap-4 py-1">
+                    <input type="checkbox" /> <span>Department</span>
+                  </h5>
+                  <h5 className="flex items-center gap-5 py-1 border-b">
+                    <input type="checkbox" /> <span>Email</span>
+                  </h5>
+                  <h5 className="flex items-center gap-5 py-1 border-b">
+                    <input type="checkbox" /> <span>Role</span>
+                  </h5>
+                  <h5 className="flex items-center gap-5 pt-1">
+                    <input type="checkbox" /> <span>Options</span>
+                  </h5>
+                </div>
+              </Themes>
+            </Menu>
           </div>
-        </div>
+        </div> */}
 
         <div className="Container">
           <table className="employee-profile-table">
@@ -172,10 +218,16 @@ const EmployeeProfiles = () => {
               </tr>
             </thead>
             <tbody>
-              {[1, 2, 3, 4, 5, 6, 7, 8, 9].map((index) => (
-                <tr key={index}>
-                  <td className="flex items-center justify-center gap-3">
-                    <input type="checkbox" />
+              {[1, 2, 3, 4, 5, 6].map((item) => (
+                <tr>
+                  <td
+                    className="flex items-center justify-center gap-3"
+                    key={item}
+                  >
+                    <input
+                      type="checkbox"
+                      onChange={() => handleChange(item)}
+                    />
                     <div className="flex items-center gap-2 justify-center">
                       <img
                         src="https://res.cloudinary.com/ddvaelej7/image/upload/v1656616707/samples/Ellipse_1915_maqdtn.png"
