@@ -21,12 +21,12 @@ export const DelegationsTableView = ({ delegations }) => {
               <th className="p-3">
                 <div className="flex gap-4 items-center">
                   <input type={"checkbox"} className="invisible" />
-                  <span>Department Name</span>
+                  <span>Delegator</span>
                 </div>
               </th>
-              <th className="p-3">Number of Employees</th>
-              <th className="p-3">Department mail</th>
-              <th className="p-3">Department head</th>
+              <th className="p-3">Delegatee</th>
+              <th className="p-3">Type</th>
+              <th className="p-3">Date range</th>
               <th className="opacity-0 p-3">Actions</th>
             </tr>
           </thead>
@@ -37,12 +37,36 @@ export const DelegationsTableView = ({ delegations }) => {
                 <td className="p-3 text-sm capitalize">
                   <div className="flex gap-4 items-center">
                     <input type={"checkbox"} />
-                    <span>{item.name}</span>
+                    <div className="flex items-center gap-2 justify-center">
+                      <img
+                        src="https://res.cloudinary.com/ddvaelej7/image/upload/v1656616707/samples/Ellipse_1915_maqdtn.png"
+                        alt="user"
+                      />
+                      <div className="flex flex-col">
+                        <h6 className="font-medium text-sm">
+                          {item.delegator.name}
+                        </h6>
+                      </div>
+                    </div>
                   </div>
                 </td>
-                <td className="p-3 text-sm">{item.noOfEmployees}</td>
-                <td className="p-3 text-sm">{item.email}</td>
-                <td className="p-3 text-sm">{item.head}</td>
+                <td className="p-3 text-sm capitalize">
+                  <div className="flex gap-4 items-center">
+                    <div className="flex items-center gap-2 justify-center">
+                      <img
+                        src="https://res.cloudinary.com/ddvaelej7/image/upload/v1656616707/samples/Ellipse_1915_maqdtn.png"
+                        alt="user"
+                      />
+                      <div className="flex flex-col">
+                        <h6 className="font-medium text-sm">
+                          {item.delegatee.name}
+                        </h6>
+                      </div>
+                    </div>
+                  </div>
+                </td>
+                <td className="p-3 text-sm capitalize">{item.type}</td>
+                <td className="p-3 text-sm">{item.dateRange}</td>
 
                 <td className="p-3 text-lg">
                   <i className="ri-pencil-fill cursor-pointer hover:text-caramel"></i>{" "}
