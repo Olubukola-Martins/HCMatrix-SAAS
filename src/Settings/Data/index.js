@@ -25,7 +25,7 @@ export const settingNavItems = [
   {
     title: "User Access Control",
     items: [
-      { name: "Roles", link: "/settings/company-details" },
+      { name: "Roles", link: "/settings/roles" },
       { name: "Permissions", link: "/settings/domain" },
       { name: "Allowed IP's", link: "/settings/rebranding" },
       { name: "Geo Restrictions", link: "/settings/from-addresses" },
