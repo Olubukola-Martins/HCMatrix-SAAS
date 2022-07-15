@@ -17,8 +17,9 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 
 const EmployeeProfiles = () => {
   const [anchorEl, setAnchorEl] = useState(null);
-  // const [anchorE2, setAnchorE2] = useState(null);
+  const [anchorE2, setAnchorE2] = useState(null);
   const [showDraggableDrawer, setShowDraggableDrawer] = useState("");
+  const [openFullDialog, setOpenFullDialog] = useState(false);
   const [openExport, setOpenExport] = useState(false);
   const [bulk, setBulk] = useState([]);
   const open = Boolean(anchorEl);
