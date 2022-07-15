@@ -17,6 +17,7 @@ import Departments from "../Pages/Organization/Departments";
 import DepartmentDetail from "../Pages/Organization/DepartmentDetail";
 import Delegations from "../Pages/Organization/Delegations";
 import DelegationDetail from "../Pages/Organization/DelegationDetail";
+import Roles from "../Pages/UserAccessControl/Roles";
 
 const SettingRoutes = () => {
   return (
@@ -50,6 +51,8 @@ const SettingRoutes = () => {
 
       <Route path="/settings/delegations" element={<Delegations />} />
       <Route path="/settings/delegations/:id" element={<DelegationDetail />} />
+
+      <Route path="/settings/roles" element={<Roles />} />
     </Routes>
   );
 };
