@@ -6,10 +6,12 @@ import {
   SeparateEmployee,
   SuspendEmployee,
 } from "../../Components/EmployeeProfile/SuspendAndSeparateEmployee";
+import ViewInAs from "../../Components/EmployeeProfile/ViewInAs";
 
 const PersonalInformation = () => {
   const [suspendModal, setSuspendModal] = useState(false);
   const [separateModal, setSeparateModal] = useState(false);
+  const [viewInModal, setViewInModal] = useState(false)
 
   return (
     <DashboardLayout>
@@ -22,10 +24,11 @@ const PersonalInformation = () => {
             <h5 className="text-lg">Personal Information</h5>
           </div>
           <div className="flex items-center gap-2">
-            <button className="button">View in as</button>
+            <button className="button" onClick={() => setViewInModal(true)}>View in as</button>
             <button className="button" title="Download personal information">
               Print
             </button>
+            <ViewInAs open={viewInModal} handleClose={() => setViewInModal(false)}/>
           </div>
         </div>
 
