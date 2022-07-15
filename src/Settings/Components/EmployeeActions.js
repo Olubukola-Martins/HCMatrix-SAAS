@@ -58,7 +58,7 @@ const EmployeeActions = () => {
             // onClick={() => setOpenId("move-to-company")}
             onClick={handleSyncClick}
           >
-            <span>Move to company</span>
+            <span>Transfer to company</span>
           </button>
           <MoveToCompanyDropdown
             anchorEl={anchorSyncEl}

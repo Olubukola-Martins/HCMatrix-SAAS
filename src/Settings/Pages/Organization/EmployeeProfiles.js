@@ -195,7 +195,7 @@ const EmployeeProfiles = () => {
             <thead>
               <tr>
                 <th className="flex items-center justify-center gap-3">
-                  <input type="checkbox" />
+                  <input type="checkbox" className="invisible" />
                   <span>Basic Information</span>
                 </th>
                 <th>Date of Birth</th>
@@ -223,7 +223,6 @@ const EmployeeProfiles = () => {
                       />
                       <div className="flex flex-col">
                         <h6 className="font-medium text-sm">Francis terr, 4</h6>
-                        <span className="text-xs">francis@gmail.com</span>
                       </div>
                     </div>
                   </td>
