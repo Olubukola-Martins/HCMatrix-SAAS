@@ -74,7 +74,7 @@ const UserProfiles = () => {
             // onClick={handleClick}
             className="flex items-center gap-2  text-accent"
           >
-            <span>Total Users 1</span>
+            <span>Users</span>
             {/* <i className="ri-arrow-down-s-line text-xl"></i> */}
           </h4>
 
