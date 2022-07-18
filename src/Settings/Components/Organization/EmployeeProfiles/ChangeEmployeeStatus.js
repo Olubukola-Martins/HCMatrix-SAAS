@@ -28,7 +28,7 @@ const ChangeEmployeeStatus = ({ open, handleClose }) => {
                 <label htmlFor="confirm">Confirm</label>
               </div>
 
-              <div className="radioBtn">
+              <div className="radioBtn" onClick={() => setSuspendModal(true)}>
                 <input type="radio" id="suspend" name="employeeStatus" value="dewey" />
                 <label htmlFor="suspend">Suspend</label>
               </div>
@@ -42,7 +42,7 @@ const ChangeEmployeeStatus = ({ open, handleClose }) => {
                 handleClose={() => setSuspendModal(false)}
               />
 
-              <SuspendEmployee open={separateModal}
+              <SeparateEmployee open={separateModal}
                 handleClose={() => setSeparateModal(false)}/>
 
               <div className="flex items-center justify-around mt-8">

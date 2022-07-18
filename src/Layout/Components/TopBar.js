@@ -34,7 +34,7 @@ const TopBar = ({
           </Link>
 
           <div className="flex gap-4 items-center">
-            <select className="rounded pl-2 pr-10 py-2 focus:outline-none text-sm font-medium cursor-pointer bg-mainBg">
+            <select className="switchCompany">
               <option value="">Switch Company</option>
               <option value="">Snapnet Ltd</option>
               <option value="">New Era Nig</option>
