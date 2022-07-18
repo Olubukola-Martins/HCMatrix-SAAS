@@ -30,7 +30,8 @@
   @apply border border-collapse w-full text-accent text-sm text-center;
 }
 
-.employee_info_table th, .employee_info_table td {
+.employee_info_table th,
+.employee_info_table td {
   @apply border p-2;
 }
 
@@ -71,4 +72,62 @@
 
 .P_Form_Group label {
   @apply text-xs font-medium text-accent;
+}
+
+/*== checks button ==*/
+.radioBtn {
+  position: relative;
+  display: block;
+}
+.radioBtn label {
+  display: block;
+  background: transparent;
+  border-radius: 5px;
+  padding: 10px 20px;
+  margin-bottom: 5px;
+  cursor: pointer;
+  @apply border-2 text-accent my-4;
+}
+.radioBtn label:after,
+.radioBtn label:before {
+  content: "";
+  position: absolute;
+  right: 11px;
+  top: 11px;
+  width: 20px;
+  height: 20px;
+  border-radius: 3px;
+  @apply border-2;
+}
+.radioBtn label:before {
+  background: transparent;
+  z-index: 2;
+  overflow: hidden;
+  background-repeat: no-repeat;
+  background-size: 13px;
+  background-position: center;
+  width: 0;
+  height: 0;
+  background-image: url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxNS4zIDEzLjIiPiAgPHBhdGggZmlsbD0iI2ZmZiIgZD0iTTE0LjcuOGwtLjQtLjRhMS43IDEuNyAwIDAgMC0yLjMuMUw1LjIgOC4yIDMgNi40YTEuNyAxLjcgMCAwIDAtMi4zLjFMLjQgN2ExLjcgMS43IDAgMCAwIC4xIDIuM2wzLjggMy41YTEuNyAxLjcgMCAwIDAgMi40LS4xTDE1IDMuMWExLjcgMS43IDAgMCAwLS4yLTIuM3oiIGRhdGEtbmFtZT0iUGZhZCA0Ii8+PC9zdmc+);
+}
+.radioBtn input[type="radio"] {
+  display: none;
+  position: absolute;
+  width: 100%;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+}
+.radioBtn input[type="radio"]:checked + label {
+  background: var(--caramel);
+  border-color: var(--caramel);
+  color: var(--background);
+}
+.radioBtn input[type="radio"]:checked + label:after {
+  background: var(--caramel);
+  @apply border;
+}
+.radioBtn input[type="radio"]:checked + label:before {
+  width: 20px;
+  height: 20px;
 }

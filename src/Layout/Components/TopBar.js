@@ -29,34 +29,20 @@ const TopBar = ({
     <>
       <div className="bg-caramel w-full py-2 sticky top-0 z-50">
         <div className="Container flex items-center justify-between">
-          <Link to="/">  <img src={logo} alt="logo" className="md:h-10 h-7" /></Link>
+          <Link to="/">
+            <img src={logo} alt="logo" className="md:h-10 h-7" />
+          </Link>
 
           <div className="flex gap-4 items-center">
-            <i className="fa-solid fa-magnifying-glass lg:hidden cursor-pointer text-base text-white"></i>
-            <div className="lg:flex items-center gap-2 hidden mr-10">
-              <div className="relative w-full">
-                <div className="flex absolute inset-y-0 left-0 items-center pl-3 pointer-events-none">
-                  <svg
-                    className="w-4 h-4 text-gray-500"
-                    fill="currentColor"
-                    viewBox="0 0 20 20"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path
-                      fillRule="evenodd"
-                      d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z"
-                      clipRule="evenodd"
-                    ></path>
-                  </svg>
-                </div>
-                <input
-                  type="text"
-                  className="bg-white border border-white text-sm rounded-2xl focus:outline-none block w-full pl-10 py-1 md:pr-16 lg:pr-24 text-slate-400"
-                  placeholder="Search..."
-                />
-              </div>
-              <i className="ri-equalizer-fill cursor-pointer h-8 w-10 rounded-full bg-white flex items-center justify-center text-caramel"></i>
-            </div>
+            <select className="rounded pl-2 pr-10 py-2 focus:outline-none text-sm font-medium cursor-pointer bg-mainBg">
+              <option value="">Switch Company</option>
+              <option value="">Snapnet Ltd</option>
+              <option value="">New Era Nig</option>
+              <option value="">Pwan Homes</option>
+            </select>
+
+            <i className="fa-solid fa-magnifying-glass cursor-pointer text-base text-white"></i>
+
             {theme === "light" ? (
               <i
                 onClick={switchTheme}
@@ -73,12 +59,15 @@ const TopBar = ({
               />
             )}
 
-            <Link to="/settings"> <i
-              className="ri-settings-3-line text-xl text-white cursor-pointer"
-              title="Settings"
-            ></i></Link>
+            <Link to="/settings">
+              {" "}
+              <i
+                className="ri-settings-3-line text-xl text-white cursor-pointer"
+                title="Settings"
+              ></i>
+            </Link>
             <i
-            onClick={handleClick}
+              onClick={handleClick}
               className="ri-notification-3-line text-xl cursor-pointer text-white"
               title="Notifications"
             ></i>

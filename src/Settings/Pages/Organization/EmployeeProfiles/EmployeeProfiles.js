@@ -54,8 +54,11 @@ const EmployeeProfiles = () => {
             <h5 className="flex items-center justify-between py-2 border-b">
               <span>Confirmed</span> <span>10</span>
             </h5>
+            <h5 className="flex items-center justify-between border-b pb-2">
+              <span>Separated</span> <span>8</span>
+            </h5>
             <h5 className="flex items-center justify-between">
-              <span>Disengaged</span> <span>8</span>
+              <span>Suspended</span> <span>10</span>
             </h5>
           </div>
         </Themes>
@@ -65,16 +68,14 @@ const EmployeeProfiles = () => {
       <div className="relative pb-10">
         <div className="flex justify-between mt-5 Container">
           <div className="flex items-center gap-3">
-            <h4 className="cursor-pointer text-accent font-medium">
-              Employee Status
-            </h4>
             <button
-              className="flex items-center gap-2 transition duration-300 ease-in-out hover:border-slate-400 text-slate-400 border rounded text-sm px-2"
+              className="flex items-center gap-2 transition duration-300 ease-in-out border-slate-400 text-slate-400 border rounded text-sm px-2 py-1 hover:border-caramel"
               onClick={handleClick}
             >
-              <span>Master record 24</span>
+              <span>Total Record</span>
               <i className="ri-arrow-down-s-line text-xl"></i>
             </button>
+            <button className="button">100</button>
           </div>
 
           <div className="flex items-center gap-3 text-accent">
@@ -146,7 +147,7 @@ const EmployeeProfiles = () => {
           </div>
         </div>
         {bulk.length > 0 && <EmployeeActions />}
-  
+
         <div className="Container">
           <table className="employee-profile-table">
             <thead>
