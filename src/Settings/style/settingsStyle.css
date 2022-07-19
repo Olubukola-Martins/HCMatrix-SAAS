@@ -131,3 +131,21 @@
   width: 20px;
   height: 20px;
 }
+
+/*== medical history table ==*/
+.medicalTableWrap {
+  @apply pb-6 px-5 pt-3 text-black;
+  background: #FFEDED;
+}
+
+.medicalTableWrap table {
+  @apply w-full text-sm text-left;
+}
+
+.medicalTableWrap table th{
+  @apply pb-5;
+}
+
+.medicalTableWrap table td{
+  @apply pb-2;
+}
