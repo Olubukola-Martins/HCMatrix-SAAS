@@ -9,6 +9,7 @@ import Qualification from "./Qualification";
 import QueryHistory from "./QueryHistory";
 import Salary from "./Salary";
 import Skills from "./Skills";
+import SocialHistory from "./SocialHistory";
 import TrainingHistory from "./TrainingHistory";
 import UserGroups from "./UserGroups";
 import WorkHistory from "./WorkHistory";
@@ -109,12 +110,12 @@ export const EmployeeFullInfoAccordionWrap = () => {
         bgClassName="bg-card"
       >
         <MedicalHistory />
-      </FramerAccordian>
+      </FramerAccordian><br />
       <FramerAccordian
-        heading={<h5 className="text-accent font-semibold">Medical History</h5>}
+        heading={<h5 className="text-accent font-semibold">Social History</h5>}
         bgClassName="bg-card"
       >
-        <MedicalHistory />
+        <SocialHistory />
       </FramerAccordian>
 
     </>
