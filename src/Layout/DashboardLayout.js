@@ -3,6 +3,7 @@ import useLocalStorage from "use-local-storage";
 import TopBar from "./Components/TopBar";
 import SideBar from "./Components/SideBar";
 import SubTopBar from "./Components/SubTopBar";
+import GlobalSupport from "./Components/GlobalSupport";
 
 const DashboardLayout = ({ children }) => {
   const [theme, setTheme] = useLocalStorage("theme" ? "dark" : "light");
@@ -51,6 +52,7 @@ const DashboardLayout = ({ children }) => {
         blue={switchBlueColor}
         purple={switchPurpleColor}
       />
+      <GlobalSupport/>
       <div className="flex w-full relative">
         <div className="w-32 fixed z-40 lg:flex hidden">
           <SideBar />
