@@ -138,7 +138,7 @@ const MedicalHistory = () => {
             <table>
               <thead>
                 <tr>
-                  <th>Condition</th>
+                  <th>Surgery</th>
                   <th>Date of Onset</th>
                   <th></th>
                 </tr>
@@ -234,7 +234,7 @@ const MedicalHistory = () => {
             <table>
               <thead>
                 <tr>
-                  <th>Condition</th>
+                  <th>Medication</th>
                   <th></th>
                 </tr>
               </thead>
@@ -258,8 +258,8 @@ const MedicalHistory = () => {
           </div>
         </div>
       </div>
-              {/* Allergy */}
-              <div>
+      {/* Allergy */}
+      <div>
         <div className="flex items-center justify-between mb-1 px-1">
           <span className="text-sm font-medium">Allergy</span>
           <i className="ri-information-line font-medium cursor-pointer"></i>
@@ -267,7 +267,7 @@ const MedicalHistory = () => {
         <div className="border border-gray-300 rounded-md">
           <form className="p-5">
             <div className="whiteBg_form">
-              <input type="text" placeholder="Name of Medication" />
+              <input type="text" placeholder="Name of Allergy" />
             </div>
 
             <div className="flex justify-end mt-5">
@@ -278,7 +278,7 @@ const MedicalHistory = () => {
             <table>
               <thead>
                 <tr>
-                  <th>Condition</th>
+                  <th>Allergy</th>
                   <th></th>
                 </tr>
               </thead>

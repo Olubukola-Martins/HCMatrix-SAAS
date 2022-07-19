@@ -110,6 +110,13 @@ export const EmployeeFullInfoAccordionWrap = () => {
       >
         <MedicalHistory />
       </FramerAccordian>
+      <FramerAccordian
+        heading={<h5 className="text-accent font-semibold">Medical History</h5>}
+        bgClassName="bg-card"
+      >
+        <MedicalHistory />
+      </FramerAccordian>
+
     </>
   );
 };
