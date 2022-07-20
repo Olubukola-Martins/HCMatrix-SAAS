@@ -3,6 +3,8 @@ import logo from "../Images/logo.png";
 import Popover from "@mui/material/Popover";
 import sun from "../Images/sun.svg";
 import { Link } from "react-router-dom";
+import { Menu } from "@mui/material";
+import Themes from "../../Themes/Themes";
 
 const TopBar = ({
   switchTheme,
@@ -13,18 +15,15 @@ const TopBar = ({
   blue,
   purple,
 }) => {
-  const [anchorEl, setAnchorEl] = useState(null);
 
+  const [anchorEl, setAnchorEl] = useState(null);
+  const open = Boolean(anchorEl);
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
-
   const handleClose = () => {
     setAnchorEl(null);
   };
-
-  const open = Boolean(anchorEl);
-  const id = open ? "simple-popover" : undefined;
   return (
     <>
       <div className="bg-caramel w-full py-2 sticky top-0 z-50">
@@ -74,22 +73,14 @@ const TopBar = ({
             <img
               src="https://res.cloudinary.com/ddvaelej7/image/upload/v1655735373/samples/Ellipse_4_j0womm.png"
               alt=""
-              className="h-6 md:h-8"
+              className="h-6 md:h-8 cursor-pointer"
+              onClick={handleClick}
             />
           </div>
         </div>
       </div>
       {/* settings popup */}
-      <Popover
-        id={id}
-        open={open}
-        anchorEl={anchorEl}
-        onClose={handleClose}
-        anchorOrigin={{
-          vertical: "top",
-          horizontal: "right",
-        }}
-      >
+      <Popover>
         <div className="flex items-center gap-4 py-9 px-2 rounded">
           <div
             className="h-4 w-4 rounded-full cursor-pointer"
@@ -118,6 +109,31 @@ const TopBar = ({
           />
         </div>
       </Popover>
+
+      {/* User profile dropdown*/}
+      <Menu
+        id="basic-menu"
+        anchorEl={anchorEl}
+        open={open}
+        onClose={handleClose}
+        MenuListProps={{
+          'aria-labelledby': 'basic-button',
+        }}
+      >
+        <Themes>
+          <div className="rounded-md pt-4 pb-2 px-3 text-center">
+            <div className="border-b-2 border-slate-600 pb-4">
+              <h4 className="font-extrabold text-lg">Todd Cantley</h4>
+              <span className="block text-xs pb-2 text-gray-500">todd@snapnetsolutions.com</span>
+               <Link to="/settings/employee-profile/id" className="button font-semibold">My Profile</Link>
+            </div>
+
+          <ul>
+            <li></li>
+          </ul>
+          </div>
+        </Themes>
+      </Menu>
     </>
   );
 };
