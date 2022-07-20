@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import logo from "../Images/logo.png";
-import Popover from "@mui/material/Popover";
 import sun from "../Images/sun.svg";
 import { Link } from "react-router-dom";
 import { Menu } from "@mui/material";
@@ -32,12 +31,7 @@ const TopBar = ({
           </Link>
 
           <div className="flex gap-4 items-center">
-            <select className="switchCompany">
-              <option value="">Switch Company</option>
-              <option value="">Snapnet Ltd</option>
-              <option value="">New Era Nig</option>
-              <option value="">Pwan Homes</option>
-            </select>
+           
 
             <i className="fa-solid fa-magnifying-glass cursor-pointer text-base text-white"></i>
 
@@ -90,27 +84,27 @@ const TopBar = ({
         }}
       >
         <Themes>
-          <div className="rounded-md pt-4 pb-2 px-3 text-center">
+          <div className="rounded-md py-5 px-5 text-center">
             <div className="border-b-2 border-slate-600 pb-4">
               <h4 className="font-extrabold text-lg">Todd Cantley</h4>
-              <span className="block text-xs pb-2 text-gray-500">
+              <span className="block text-xs pb-3 pt-1 text-gray-500">
                 todd@snapnetsolutions.com
               </span>
               <Link
                 to="/settings/employee-profile/id"
-                className="button font-semibold"
+                className="font-semibold border border-red-500 rounded bg-red-500 text-white transition ease-in-out duration-300 text-sm py-2 px-3 tracking-wider hover:opacity-70"
               >
                 My Profile
               </Link>
             </div>
 
             <ul className="flex flex-col gap-2 pt-2 text-accent font-medium">
-              <li className="border-b-2 pb-2">Transfer Ownership</li>
-              <li className="border-b-2 pb-2">Delegate Leave</li>
-              <li className="border-b-2 pb-2">Delegate Payroll</li>
-              <li className="border-b-2 pb-2">Advanced Settings</li>
-              <li className="border-b-2 pb-2">Billings</li>
-              <li className="border-b-2 pb-2">Change language</li>
+              <li className="border-b-2 pb-2 cursor-pointer hover:text-caramel">Transfer Ownership</li>
+              <li className="border-b-2 pb-2 cursor-pointer hover:text-caramel">Delegate Leave</li>
+              <li className="border-b-2 pb-2 cursor-pointer hover:text-caramel">Delegate Payroll</li>
+              <li className="border-b-2 pb-2 cursor-pointer hover:text-caramel">Advanced Settings</li>
+              <li className="border-b-2 pb-2 cursor-pointer hover:text-caramel">Billings</li>
+              <li className="border-b-2 pb-2 cursor-pointer hover:text-caramel">Change language</li>
             </ul>
                <h5 className="font-bold text-left text-sm pb-3 pt-4">Change Theme</h5>
             <div className="flex items-center gap-4 px-2 rounded">
@@ -139,6 +133,10 @@ const TopBar = ({
                 style={{ background: "#6E55FF" }}
                 onClick={purple}
               />
+            </div>
+            <div className="flex items-center gap-3 mt-5">
+            <i className="ri-logout-box-r-line"></i>
+              <span>Logout</span>
             </div>
           </div>
         </Themes>

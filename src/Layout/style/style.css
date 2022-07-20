@@ -24,10 +24,3 @@
   @apply flex items-center gap-3 cursor-pointer text-base;
 }
 
-.switchCompany {
-  @apply rounded pl-2 pr-10 py-2 focus:outline-none text-sm font-medium cursor-pointer bg-mainBg mr-5;
-}
-
-.switchCompany option {
-  @apply text-accent font-medium cursor-pointer;
-}
