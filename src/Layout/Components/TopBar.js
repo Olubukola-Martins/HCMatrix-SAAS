@@ -15,7 +15,6 @@ const TopBar = ({
   blue,
   purple,
 }) => {
-
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
   const handleClick = (event) => {
@@ -117,20 +116,34 @@ const TopBar = ({
         open={open}
         onClose={handleClose}
         MenuListProps={{
-          'aria-labelledby': 'basic-button',
+          "aria-labelledby": "basic-button",
         }}
       >
         <Themes>
           <div className="rounded-md pt-4 pb-2 px-3 text-center">
             <div className="border-b-2 border-slate-600 pb-4">
               <h4 className="font-extrabold text-lg">Todd Cantley</h4>
-              <span className="block text-xs pb-2 text-gray-500">todd@snapnetsolutions.com</span>
-               <Link to="/settings/employee-profile/id" className="button font-semibold">My Profile</Link>
+              <span className="block text-xs pb-2 text-gray-500">
+                todd@snapnetsolutions.com
+              </span>
+              <Link
+                to="/settings/employee-profile/id"
+                className="button font-semibold"
+              >
+                My Profile
+              </Link>
             </div>
 
-          <ul>
-            <li></li>
-          </ul>
+            <ul className="flex flex-col gap-2 pt-2 text-accent">
+              <li className="border-b-2 pb-2">Transfer Ownership</li>
+              <li className="border-b-2 pb-2">Delegate Leave</li>
+              <li className="border-b-2 pb-2">Delegate Payroll</li>
+              <li className="border-b-2 pb-2">Advanced Settings</li>
+              <li className="border-b-2 pb-2">Billings</li>
+              <li className="border-b-2 pb-2">Change language</li>
+            </ul>
+
+
           </div>
         </Themes>
       </Menu>
