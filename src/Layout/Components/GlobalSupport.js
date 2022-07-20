@@ -152,7 +152,7 @@ const GlobalSupport = () => {
               </div>
 
               <div className="flex items-center justify-around mt-5">
-                  <button className="transparentButton" type="button">Cancel</button>
+                  <button onClick={() => setQueryModal(false)} className="transparentButton" type="button">Cancel</button>
                   <button className="button" type="submit">Submit</button>
               </div>
             </form>

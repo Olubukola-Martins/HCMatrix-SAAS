@@ -31,8 +31,6 @@ const TopBar = ({
           </Link>
 
           <div className="flex gap-4 items-center">
-           
-
             <i className="fa-solid fa-magnifying-glass cursor-pointer text-base text-white"></i>
 
             {theme === "light" ? (
@@ -99,14 +97,28 @@ const TopBar = ({
             </div>
 
             <ul className="flex flex-col gap-2 pt-2 text-accent font-medium">
-              <li className="border-b-2 pb-2 cursor-pointer hover:text-caramel">Transfer Ownership</li>
-              <li className="border-b-2 pb-2 cursor-pointer hover:text-caramel">Delegate Leave</li>
-              <li className="border-b-2 pb-2 cursor-pointer hover:text-caramel">Delegate Payroll</li>
-              <li className="border-b-2 pb-2 cursor-pointer hover:text-caramel">Advanced Settings</li>
-              <li className="border-b-2 pb-2 cursor-pointer hover:text-caramel">Billings</li>
-              <li className="border-b-2 pb-2 cursor-pointer hover:text-caramel">Change language</li>
+              <li className="border-b-2 pb-2 cursor-pointer hover:text-caramel">
+                Transfer Ownership
+              </li>
+              <li className="border-b-2 pb-2 cursor-pointer hover:text-caramel">
+                Delegate Leave
+              </li>
+              <li className="border-b-2 pb-2 cursor-pointer hover:text-caramel">
+                Delegate Payroll
+              </li>
+              <li className="border-b-2 pb-2 cursor-pointer hover:text-caramel">
+                Advanced Settings
+              </li>
+              <li className="border-b-2 pb-2 cursor-pointer hover:text-caramel">
+                Billings
+              </li>
+              <li className="border-b-2 pb-2 cursor-pointer hover:text-caramel">
+                Change language
+              </li>
             </ul>
-               <h5 className="font-bold text-left text-sm pb-3 pt-4">Change Theme</h5>
+            <h5 className="font-bold text-left text-sm pb-3 pt-4">
+              Change Theme
+            </h5>
             <div className="flex items-center gap-4 px-2 rounded">
               <div
                 className="h-4 w-4 rounded-full cursor-pointer"
@@ -135,7 +147,7 @@ const TopBar = ({
               />
             </div>
             <div className="flex items-center gap-2 mt-7 cursor-pointer font-medium text-gray-500 group">
-            <i className="ri-logout-box-r-line group-hover:text-caramel"></i>
+              <i className="ri-logout-box-r-line group-hover:text-caramel"></i>
               <span className="group-hover:text-caramel">Logout</span>
             </div>
           </div>
