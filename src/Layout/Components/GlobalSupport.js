@@ -45,23 +45,33 @@ const GlobalSupport = () => {
             </div>
             <div className="my-3 font-medium">
               <ul className="flex flex-col gap-y-3">
-                <li className="flex items-center gap-x-5 border-b-2 pb-1 px-3 cursor-pointer">
+                <li className="flex items-center gap-x-5 border-b-2 pb-1 px-3 cursor-pointer group">
                   <img src={helpVideo} alt="help video" />
-                  <span>Help Video</span>
+                  <span className="group-hover:text-caramel">Help Video</span>
                 </li>
-                <li className="flex items-center gap-x-5 border-b-2 pb-1 px-3 cursor-pointer">
+                <li className="flex items-center gap-x-5 border-b-2 pb-1 px-3 cursor-pointer group">
                   <img src={read} alt="help video" />
-                  <span>Read Article</span>
+                  <span className="group-hover:text-caramel">Read Article</span>
                 </li>
-                <li className="flex items-center gap-x-5 border-b-2 pb-1 px-3 cursor-pointer">
-                  <img src={call} alt="help video" /> <span>Call</span>
+                <li className="flex items-center gap-x-5 border-b-2 pb-1 px-3 cursor-pointer group">
+                  <img src={call} alt="help video" />{" "}
+                  <a
+                    href="tel: +1 (254) 244-0305"
+                    className="group-hover:text-caramel"
+                  >
+                    Call
+                  </a>
                 </li>
-                <li className="flex items-center gap-x-5 border-b-2 pb-1 px-3 cursor-pointer">
-                  <img src={chat} alt="help video" /> <span>Chat</span>
+                <li className="flex items-center gap-x-5 border-b-2 pb-1 px-3 cursor-pointer group">
+                  <img src={chat} alt="help video" />{" "}
+                  <span className="group-hover:text-caramel">Chat</span>
                 </li>
-                <li onClick={() => setQueryModal(true)} className="flex items-center gap-x-5 pb-1 px-3 cursor-pointer">
+                <li
+                  onClick={() => setQueryModal(true)}
+                  className="flex items-center gap-x-5 pb-1 px-3 cursor-pointer group"
+                >
                   <img src={query} alt="help video" />
-                  <span>Drop Query</span>
+                  <span className="group-hover:text-caramel">Drop Query</span>
                 </li>
               </ul>
             </div>
@@ -91,6 +101,38 @@ const GlobalSupport = () => {
                 onClick={() => setQueryModal(false)}
               ></i>
             </div>
+
+            <form>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+                <div className="whiteBg_form">
+                  <label>Email Address</label>
+                  <input type="email" placeholder="godswill@solution.com" />
+                </div>
+                <div className="whiteBg_form">
+                  <label>Module</label>
+                  <select name="" id="">
+                    <option value="">Select Module</option>
+                    <option value="payroll">Payroll</option>
+                    <option value="performance">Performance</option>
+                    <option value="attendance">Attendance</option>
+                  </select>
+                </div>
+                <div className="whiteBg_form">
+                  <label>Complaint Type</label>
+                  <select name="" id="">
+                    <option value="">Select Complaint</option>
+                    <option value="payroll">System failure</option>
+                  </select>
+                </div>
+                <div className="whiteBg_form">
+                  <label>Subject</label>
+                  <input type="text" placeholder="Not receiving OTP" />
+                </div>
+              </div>
+              <div className="whiteBg_form">
+
+              </div>
+            </form>
           </div>
         </Themes>
       </Modal>
