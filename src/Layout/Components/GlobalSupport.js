@@ -43,18 +43,18 @@ const GlobalSupport = () => {
                 onClick={() => setAnchorEl(null)}
               ></i>
             </div>
-            <div className="my-3 font-medium">
+            <div className="py-3 font-medium">
               <ul className="flex flex-col gap-y-3">
                 <li className="flex items-center gap-x-5 border-b-2 pb-1 px-3 cursor-pointer group">
-                  <img src={helpVideo} alt="help video" />
+                  <i className="ri-movie-line text-xl"></i>
                   <span className="group-hover:text-caramel">Help Video</span>
                 </li>
                 <li className="flex items-center gap-x-5 border-b-2 pb-1 px-3 cursor-pointer group">
-                  <img src={read} alt="help video" />
+                <i className="ri-book-line text-xl"></i>
                   <span className="group-hover:text-caramel">Read Article</span>
                 </li>
                 <li className="flex items-center gap-x-5 border-b-2 pb-1 px-3 cursor-pointer group">
-                  <img src={call} alt="help video" />{" "}
+                <i className="ri-phone-line text-xl"></i>
                   <a
                     href="tel: +1 (254) 244-0305"
                     className="group-hover:text-caramel"
@@ -63,14 +63,14 @@ const GlobalSupport = () => {
                   </a>
                 </li>
                 <li className="flex items-center gap-x-5 border-b-2 pb-1 px-3 cursor-pointer group">
-                  <img src={chat} alt="help video" />{" "}
+                <i className="ri-message-2-line text-xl"></i>
                   <span className="group-hover:text-caramel">Chat</span>
                 </li>
                 <li
                   onClick={() => setQueryModal(true)}
                   className="flex items-center gap-x-5 pb-1 px-3 cursor-pointer group"
                 >
-                  <img src={query} alt="help video" />
+                 <i className="ri-mail-line text-xl"></i>
                   <span className="group-hover:text-caramel">Drop Query</span>
                 </li>
               </ul>
@@ -103,7 +103,7 @@ const GlobalSupport = () => {
             </div>
 
             <form>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-x-5 gap-y-6">
                 <div className="whiteBg_form">
                   <label>Email Address</label>
                   <input type="email" placeholder="godswill@solution.com" />
@@ -129,8 +129,31 @@ const GlobalSupport = () => {
                   <input type="text" placeholder="Not receiving OTP" />
                 </div>
               </div>
-              <div className="whiteBg_form">
+              <div className="whiteBg_form my-4">
+                <label>Description</label>
+                <textarea name="" id="" className="resize-none" />
+              </div>
 
+              <div>
+                <h5 className="font-medium pb-1">Attachment</h5>
+                <div className="border border-dotted border-caramel rounded py-5 bg-mainBg text-center">
+                <i className="ri-upload-cloud-2-line text-4xl"></i>
+                  <div className="flex items-center justify-center gap-1 mt-4">
+                    <span>Drag and Drop file or</span>
+                    <label
+                      htmlFor="file"
+                      className="font-semibold text-caramel cursor-pointer underline"
+                    >
+                      Browse
+                    </label>
+                  </div>
+                  <input type="file" id="file" className="hidden" multiple />
+                </div>
+              </div>
+
+              <div className="flex items-center justify-around mt-5">
+                  <button className="transparentButton" type="button">Cancel</button>
+                  <button className="button" type="submit">Submit</button>
               </div>
             </form>
           </div>
