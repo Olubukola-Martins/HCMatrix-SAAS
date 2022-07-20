@@ -78,36 +78,6 @@ const TopBar = ({
           </div>
         </div>
       </div>
-      {/* settings popup */}
-      <Popover>
-        <div className="flex items-center gap-4 py-9 px-2 rounded">
-          <div
-            className="h-4 w-4 rounded-full cursor-pointer"
-            style={{ background: "#ff6647" }}
-            onClick={yellow}
-          />
-          <div
-            className="h-4 w-4 rounded-full cursor-pointer"
-            style={{ background: "#01966b" }}
-            onClick={green}
-          />
-          <div
-            className="h-4 w-4 rounded-full cursor-pointer"
-            style={{ background: "#d69a00" }}
-            onClick={orange}
-          />
-          <div
-            className="h-4 w-4 rounded-full cursor-pointer"
-            style={{ background: "#349CE4" }}
-            onClick={blue}
-          />
-          <div
-            className="h-4 w-4 rounded-full cursor-pointer"
-            style={{ background: "#6E55FF" }}
-            onClick={purple}
-          />
-        </div>
-      </Popover>
 
       {/* User profile dropdown*/}
       <Menu
@@ -134,7 +104,7 @@ const TopBar = ({
               </Link>
             </div>
 
-            <ul className="flex flex-col gap-2 pt-2 text-accent">
+            <ul className="flex flex-col gap-2 pt-2 text-accent font-medium">
               <li className="border-b-2 pb-2">Transfer Ownership</li>
               <li className="border-b-2 pb-2">Delegate Leave</li>
               <li className="border-b-2 pb-2">Delegate Payroll</li>
@@ -142,8 +112,34 @@ const TopBar = ({
               <li className="border-b-2 pb-2">Billings</li>
               <li className="border-b-2 pb-2">Change language</li>
             </ul>
-
-
+               <h5 className="font-bold text-left text-sm pb-3 pt-4">Change Theme</h5>
+            <div className="flex items-center gap-4 px-2 rounded">
+              <div
+                className="h-4 w-4 rounded-full cursor-pointer"
+                style={{ background: "#ff6647" }}
+                onClick={yellow}
+              />
+              <div
+                className="h-4 w-4 rounded-full cursor-pointer"
+                style={{ background: "#01966b" }}
+                onClick={green}
+              />
+              <div
+                className="h-4 w-4 rounded-full cursor-pointer"
+                style={{ background: "#d69a00" }}
+                onClick={orange}
+              />
+              <div
+                className="h-4 w-4 rounded-full cursor-pointer"
+                style={{ background: "#349CE4" }}
+                onClick={blue}
+              />
+              <div
+                className="h-4 w-4 rounded-full cursor-pointer"
+                style={{ background: "#6E55FF" }}
+                onClick={purple}
+              />
+            </div>
           </div>
         </Themes>
       </Menu>
