@@ -68,17 +68,6 @@ const SideBar = () => {
           </div>
           <span className="sideBarName">Support</span>
         </div>
-      
-
-        <div className="mt-28" />
-        <div className="sideBarItemWrap">
-          <div className="flex justify-center">
-            <span className="sideBarList">
-              <i className="ri-logout-circle-line"></i>
-            </span>
-          </div>
-          <span className="sideBarName">Logout</span>
-        </div>
       </div>
     </>
   );

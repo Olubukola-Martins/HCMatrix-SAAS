@@ -84,7 +84,7 @@ const TopBar = ({
         }}
       >
         <Themes>
-          <div className="rounded-md py-5 px-5 text-center">
+          <div className="rounded-md pt-5 pb-2 px-5 text-center">
             <div className="border-b-2 border-slate-600 pb-4">
               <h4 className="font-extrabold text-lg">Todd Cantley</h4>
               <span className="block text-xs pb-3 pt-1 text-gray-500">
@@ -134,9 +134,9 @@ const TopBar = ({
                 onClick={purple}
               />
             </div>
-            <div className="flex items-center gap-3 mt-5">
-            <i className="ri-logout-box-r-line"></i>
-              <span>Logout</span>
+            <div className="flex items-center gap-2 mt-7 cursor-pointer font-medium text-gray-500 group">
+            <i className="ri-logout-box-r-line group-hover:text-caramel"></i>
+              <span className="group-hover:text-caramel">Logout</span>
             </div>
           </div>
         </Themes>
