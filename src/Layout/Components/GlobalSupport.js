@@ -68,7 +68,7 @@ const GlobalSupport = () => {
                     target="_blank"
                     rel="noreferrer"
                     href="https://api.whatsapp.com/send?phone=1%20(254)%20244-0305&text=Hello,%20I%20have%20a%20question%20about%20http%3A%2F%2Flocalhost%3A3000%2F"
-                    className="group-hover:text-caramel"
+                    className="group-hover:text-green-500"
                   >
                     WhatsApp
                   </a>
