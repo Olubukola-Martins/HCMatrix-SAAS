@@ -50,11 +50,11 @@ const GlobalSupport = () => {
                   <span className="group-hover:text-caramel">Help Video</span>
                 </li>
                 <li className="flex items-center gap-x-5 border-b-2 pb-1 px-3 cursor-pointer group">
-                <i className="ri-book-line text-xl"></i>
+                  <i className="ri-book-line text-xl"></i>
                   <span className="group-hover:text-caramel">Read Article</span>
                 </li>
                 <li className="flex items-center gap-x-5 border-b-2 pb-1 px-3 cursor-pointer group">
-                <i className="ri-phone-line text-xl"></i>
+                  <i className="ri-phone-line text-xl"></i>
                   <a
                     href="tel: +1 (254) 244-0305"
                     className="group-hover:text-caramel"
@@ -63,14 +63,21 @@ const GlobalSupport = () => {
                   </a>
                 </li>
                 <li className="flex items-center gap-x-5 border-b-2 pb-1 px-3 cursor-pointer group">
-                <i className="ri-message-2-line text-xl"></i>
-                  <span className="group-hover:text-caramel">Chat</span>
+                  <i className="ri-whatsapp-line text-xl"></i>
+                  <a
+                    target="_blank"
+                    rel="noreferrer"
+                    href="https://api.whatsapp.com/send?phone=1%20(254)%20244-0305&text=Hello,%20I%20have%20a%20question%20about%20http%3A%2F%2Flocalhost%3A3000%2F"
+                    className="group-hover:text-caramel"
+                  >
+                    WhatsApp
+                  </a>
                 </li>
                 <li
                   onClick={() => setQueryModal(true)}
                   className="flex items-center gap-x-5 pb-1 px-3 cursor-pointer group"
                 >
-                 <i className="ri-mail-line text-xl"></i>
+                  <i className="ri-mail-line text-xl"></i>
                   <span className="group-hover:text-caramel">Drop Query</span>
                 </li>
               </ul>
@@ -137,7 +144,7 @@ const GlobalSupport = () => {
               <div>
                 <h5 className="font-medium pb-1">Attachment</h5>
                 <div className="border border-dotted border-caramel rounded py-5 bg-mainBg text-center">
-                <i className="ri-upload-cloud-2-line text-4xl"></i>
+                  <i className="ri-upload-cloud-2-line text-4xl"></i>
                   <div className="flex items-center justify-center gap-1 mt-4">
                     <span>Drag and Drop file or</span>
                     <label
@@ -152,8 +159,16 @@ const GlobalSupport = () => {
               </div>
 
               <div className="flex items-center justify-around mt-5">
-                  <button onClick={() => setQueryModal(false)} className="transparentButton" type="button">Cancel</button>
-                  <button className="button" type="submit">Submit</button>
+                <button
+                  onClick={() => setQueryModal(false)}
+                  className="transparentButton"
+                  type="button"
+                >
+                  Cancel
+                </button>
+                <button className="button" type="submit">
+                  Submit
+                </button>
               </div>
             </form>
           </div>

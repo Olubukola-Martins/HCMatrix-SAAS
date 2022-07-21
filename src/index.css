@@ -119,3 +119,9 @@ body {
 .custom-dropdown:hover .dropdown-menu {
   display: block;
 }
+
+
+/*  */
+#wa-widget-send-button{
+  display: none !important;
+}
