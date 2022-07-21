@@ -15,6 +15,8 @@ const TopBar = ({
   purple,
 }) => {
   const [anchorEl, setAnchorEl] = useState(null);
+  const [transferOwnershipModal, setTransferOwnershipModal] = useState(false)
+
   const open = Boolean(anchorEl);
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -96,16 +98,15 @@ const TopBar = ({
               </Link>
             </div>
 
-            <ul className="flex flex-col gap-2 pt-2 text-accent font-medium">
+            <ul className="flex flex-col gap-2 pt-2 text-accent font-medium text-sm">
               <li className="border-b-2 pb-2 cursor-pointer hover:text-caramel">
                 Transfer Ownership
               </li>
+              <TransferOwnership/>
               <li className="border-b-2 pb-2 cursor-pointer hover:text-caramel">
-                Delegate Leave
+                Delegate Role
               </li>
-              <li className="border-b-2 pb-2 cursor-pointer hover:text-caramel">
-                Delegate Payroll
-              </li>
+
               <li className="border-b-2 pb-2 cursor-pointer hover:text-caramel">
                 Advanced Settings
               </li>

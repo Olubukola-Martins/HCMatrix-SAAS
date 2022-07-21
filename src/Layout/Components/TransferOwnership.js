@@ -5,7 +5,9 @@ const TransferOwnership = ({open, handleClose}) => {
   return (
     <>
     <Modal open={open} onClose={handleClose}>
-         
+         <div>
+           hello
+         </div>
     </Modal>
     </>
   )
