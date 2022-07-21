@@ -60,7 +60,6 @@ const TopBar = ({
               ></i>
             </Link>
             <i
-              onClick={handleClick}
               className="ri-notification-3-line text-xl cursor-pointer text-white"
               title="Notifications"
             ></i>
@@ -111,9 +110,9 @@ const TopBar = ({
                 handleClose={() => setTransferOwnershipModal(false)}
               />
 
-              <li className="border-b-2 pb-2 cursor-pointer hover:text-caramel">
+              <Link to='/settings/delegations' className="border-b-2 pb-2 cursor-pointer hover:text-caramel">
                 Delegate Role
-              </li>
+              </Link>
 
               <li className="border-b-2 pb-2 cursor-pointer hover:text-caramel">
                 Advanced Settings
