@@ -4,6 +4,7 @@ import sun from "../Images/sun.svg";
 import { Link } from "react-router-dom";
 import { Menu } from "@mui/material";
 import Themes from "../../Themes/Themes";
+import TransferOwnership from "./TransferOwnership"
 
 const TopBar = ({
   switchTheme,
@@ -15,7 +16,7 @@ const TopBar = ({
   purple,
 }) => {
   const [anchorEl, setAnchorEl] = useState(null);
-  const [transferOwnershipModal, setTransferOwnershipModal] = useState(false)
+  const [transferOwnershipModal, setTransferOwnershipModal] = useState(false);
 
   const open = Boolean(anchorEl);
   const handleClick = (event) => {
@@ -99,10 +100,17 @@ const TopBar = ({
             </div>
 
             <ul className="flex flex-col gap-2 pt-2 text-accent font-medium text-sm">
-              <li className="border-b-2 pb-2 cursor-pointer hover:text-caramel">
+              <li
+                onClick={() => setTransferOwnershipModal(true)}
+                className="border-b-2 pb-2 cursor-pointer hover:text-caramel"
+              >
                 Transfer Ownership
               </li>
-              <TransferOwnership/>
+              <TransferOwnership
+                open={transferOwnershipModal}
+                handleClose={() => setTransferOwnershipModal(false)}
+              />
+
               <li className="border-b-2 pb-2 cursor-pointer hover:text-caramel">
                 Delegate Role
               </li>
