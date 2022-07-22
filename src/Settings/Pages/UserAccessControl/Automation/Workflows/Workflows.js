@@ -1,67 +1,39 @@
 import { AnimatePresence } from "framer-motion";
 import React, { useState } from "react";
-import DashboardLayout from "../../../../Layout/DashboardLayout";
+import DashboardLayout from "../../../../../Layout/DashboardLayout";
+import { Link } from "react-router-dom";
 
-import AddDelegationDrawer from "../../../Components/Organization/Delegations/AddDelegationDrawer";
-import { DelegationsGridView } from "../../../Components/Organization/Delegations/DelegationsGridView";
-import { DelegationsTableView } from "../../../Components/Organization/Delegations/DelegationsTableView";
+import { WorkflowsTableView } from "../../../../Components/UserAccessControl/Automation/Workflows/WorkflowsTableView";
+import CreateWorkflowDrawer from "../../../../Components/UserAccessControl/Automation/Workflows/CreateWorkflowDrawer";
 
-const delegations = [
+const workflows = [
   {
-    id: "2",
-    delegator: {
-      name: "Emeka Doe",
-      image: "",
-    },
-    delegatee: {
-      name: "Mary Doe",
-      image: "",
-    },
-    type: "permanent",
-    dateRange: "07/July/2022 - 16/July/2022",
-    status: "Upcoming",
-    function: "Payroll Approval",
-  },
-  {
-    id: "1",
-    delegator: {
-      name: "James Doe",
-      image: "",
-    },
-    delegatee: {
-      name: "Mary Doe",
-      image: "",
-    },
-    type: "temporary",
-    dateRange: "07/July/2022 - 16/July/2022",
-    status: "Upcoming",
-    function: "Leave Approval",
+    id: 90,
+    name: "Leave Approval",
+    noOfStages: 4,
+    updatedAt: "2 days ago",
+    lastModifiedBy: "James Logan",
   },
 ];
 
-const Departments = () => {
-  const [viewId, setViewId] = useState("list");
+const Roles = () => {
   const [showDraggableDrawer, setShowDraggableDrawer] = useState("");
-
-  // const handleViewId = (val) => {
-  //   setViewId(val);
-  // };
   return (
     <DashboardLayout>
       <div className="h-screen">
         {
           <div className="Container mt-4">
-            <h4 className="text-lg  mb-1">Delegations</h4>
+            <h4 className="text-lg  mb-1">Workflows</h4>
             <div className="flex flex-col gap-2 md:flex-row md:justify-between md:items-center bg-card p-2 rounded text-sm">
-              <p>Manage delegations</p>
+              <p>Manage workflows</p>
 
               <div className="flex gap-4 items-center">
                 <button
                   id="invite-button"
                   className="py-1 px-2 bg-caramel rounded text-sm text-white font-medium"
-                  onClick={() => setShowDraggableDrawer("add-delegation")}
+                  onClick={() => setShowDraggableDrawer("add-workflow")}
                 >
-                  Add delegation
+                  Add workflow
                 </button>
                 {/* <div className="view-toggler flex rounded overflow-hidden items-center">
                   <i
@@ -92,21 +64,25 @@ const Departments = () => {
                 </div>
               </div>
             </div>
+            {/* <div className="flex flex-col gap-2 md:flex-row md:justify-end md:items-center mt-2 p-2 rounded text-sm">
+              <div className="input-container w-1/4">
+                <input
+                  type="text"
+                  placeholder="Search workflows"
+                  className="w-full bg-transparent rounded-md p-2 border border-gray-400 focus:outline-none "
+                />
+              </div>
+            </div> */}
           </div>
         }
+        {/* adjust accordingly */}
 
         <div className="content overflow-y-hidden relative">
-          {showDraggableDrawer === "add-delegation" && (
-            <AddDelegationDrawer handleDrawer={setShowDraggableDrawer} />
-          )}
           <AnimatePresence exitBeforeEnter>
-            {viewId === "grid" && (
-              <DelegationsGridView delegations={delegations} />
+            {showDraggableDrawer === "add-workflow" && (
+              <CreateWorkflowDrawer handleDrawer={setShowDraggableDrawer} />
             )}
-
-            {viewId === "list" && (
-              <DelegationsTableView delegations={delegations} />
-            )}
+            <WorkflowsTableView workflows={workflows} />
           </AnimatePresence>
         </div>
       </div>
@@ -114,4 +90,4 @@ const Departments = () => {
   );
 };
 
-export default Departments;
+export default Roles;

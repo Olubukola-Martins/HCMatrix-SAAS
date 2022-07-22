@@ -24,8 +24,8 @@ export const DesignationsTableView = ({ designations }) => {
               </div>
             </th>
             <th className="p-3">Number of Employees</th>
-            <th className="p-3">Mail Alias</th>
-            <th className="opacity-0 p-3">Actions</th>
+            <th className="p-3">Department</th>
+            <th className="p-3">Actions</th>
           </tr>
         </thead>
 
@@ -39,7 +39,7 @@ export const DesignationsTableView = ({ designations }) => {
                 </div>
               </td>
               <td className="p-3 text-sm">{item.count}</td>
-              <td className="p-3 text-sm">{item.email}</td>
+              <td className="p-3 text-sm">{item.department}</td>
 
               <td className="p-3 text-lg">
                 <i className="ri-pencil-fill cursor-pointer hover:text-caramel"></i>{" "}

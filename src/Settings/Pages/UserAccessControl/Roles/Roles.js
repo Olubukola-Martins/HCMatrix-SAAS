@@ -1,15 +1,26 @@
 import { AnimatePresence } from "framer-motion";
 import React, { useState } from "react";
-import DashboardLayout from "../../../Layout/DashboardLayout";
+import DashboardLayout from "../../../../Layout/DashboardLayout";
+import { Link } from "react-router-dom";
 
-// import AddDelegationDrawer from "../../Components/AddDelegationDrawer";
-
-// import { RolesTableView } from "../../Components/RolesTableView";
+import { RolesTableView } from "../../../Components/UserAccessControl/Roles/RolesTableView";
 
 const roles = [
   {
+    id: 90,
+    name: "Line Manager",
+    lastModifiedBy: "John Doe",
+    updatedAt: "July 3, 2022",
+  },
+  {
     id: 1,
-    name: "Manager Manager",
+    name: "Department Head",
+    lastModifiedBy: "John Doe",
+    updatedAt: "July 3, 2022",
+  },
+  {
+    id: 0,
+    name: "IT Administrator",
     lastModifiedBy: "John Doe",
     updatedAt: "July 3, 2022",
   },
@@ -31,32 +42,34 @@ const roles = [
     lastModifiedBy: "John Doe",
     updatedAt: "July 3, 2022",
   },
+  {
+    id: 5,
+    name: "Branch Manager",
+    lastModifiedBy: "John Doe",
+    updatedAt: "July 3, 2022",
+  },
 ];
 
-const Departments = () => {
+const Roles = () => {
   const [viewId, setViewId] = useState("list");
-  const [showDraggableDrawer, setShowDraggableDrawer] = useState("");
 
-  // const handleViewId = (val) => {
-  //   setViewId(val);
-  // };
   return (
     <DashboardLayout>
       <div className="h-screen">
         {
           <div className="Container mt-4">
-            <h4 className="text-lg  mb-1">Roles</h4>
+            <h4 className="text-lg  mb-1">Roles and Permissions</h4>
             <div className="flex flex-col gap-2 md:flex-row md:justify-between md:items-center bg-card p-2 rounded text-sm">
-              <p>Manage roles</p>
+              <p>Manage roles and permissions</p>
 
               <div className="flex gap-4 items-center">
-                <button
+                <Link
                   id="invite-button"
                   className="py-1 px-2 bg-caramel rounded text-sm text-white font-medium"
-                  onClick={() => setShowDraggableDrawer("add-delegation")}
+                  to="/settings/roles/create"
                 >
                   Add role
-                </button>
+                </Link>
                 {/* <div className="view-toggler flex rounded overflow-hidden items-center">
                   <i
                     onClick={() => handleViewId("grid")}
@@ -99,17 +112,14 @@ const Departments = () => {
         }
         {/* adjust accordingly */}
 
-        {/* <div className="content overflow-y-hidden relative">
-          {showDraggableDrawer === "add-delegation" && (
-            <AddDelegationDrawer handleDrawer={setShowDraggableDrawer} />
-          )}
+        <div className="content overflow-y-hidden relative">
           <AnimatePresence exitBeforeEnter>
             {viewId === "list" && <RolesTableView roles={roles} />}
           </AnimatePresence>
-        </div> */}
+        </div>
       </div>
     </DashboardLayout>
   );
 };
 
-export default Departments;
+export default Roles;

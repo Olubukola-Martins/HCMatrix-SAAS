@@ -88,25 +88,58 @@ const Home = () => {
               </Link>
               <Link to="#!" className="dashboardLink">
                 <span className="text-caramel font-semibold text-lg">View</span>
-                <h6 className="text-xs font-semibold">HMO ID Details</h6>
+                <h6 className="text-xs font-semibold">Personal Information</h6>
               </Link>
               <Link to="#!" className="dashboardLink">
-                <span className="text-caramel font-semibold text-lg">NI34</span>
-                <h6 className="text-xs font-semibold">ID Number</h6>
+                <span className="text-caramel font-semibold text-lg">
+                  Customize
+                </span>
+                <h6 className="text-xs font-semibold">My dashboard</h6>
               </Link>
             </div>
           </div>
           <div className="bg-card rounded-xl px-5 py-4 text-accent w-full">
             <h5 className="font-semibold">Pending Setup</h5>
             <div className="flex flex-col gap-5 text-sm mt-4">
-              {settingNavItems.map((item) => (
-                <PendingItem
-                  key={item.title}
-                  handleClick={handlePendingClick}
-                  openId={openId}
-                  item={item}
-                />
-              ))}
+              {settingNavItems
+                .filter((item) => item.category === "basic")
+                .map((item) => (
+                  <PendingItem
+                    key={item.title}
+                    handleClick={handlePendingClick}
+                    openId={openId}
+                    item={item}
+                  />
+                ))}
+              <PendingItem
+                handleClick={handlePendingClick}
+                openId={openId}
+                item={{
+                  title: "Module Setup",
+                  category: "advanced",
+                  items: [
+                    { name: "Payroll", link: "/settings/company-details" },
+                    { name: "Performance", link: "/settings/domains" },
+                    { name: "Recruitment", link: "/settings/rebranding" },
+                    { name: "Attendance", link: "/settings/from-addresses" },
+                  ],
+                }}
+              />
+              {/* <Link
+                to="/settings"
+                className="text-caramel flex gap-6 text-sm underline mb-2 items-center"
+              >
+                <span>Module Setup</span>
+              </Link> */}
+              {/* <PendingItem
+                handleClick={handlePendingClick}
+                openId={openId}
+                item={{
+                  title: "More Settings",
+                  category: "advanced",
+                  items: [],
+                }}
+              /> */}
 
               {/* <div>
               // THE TEMPLATE
@@ -157,6 +190,10 @@ const Home = () => {
                 </div>
               </div> */}
               <div className="grid grid-cols-2 gap-x-2 gap-y-3 text-xs font-medium mt-3">
+                <div className="flex items-center gap-3 cursor-pointer">
+                  <i className="ri-settings-2-line text-2xl"></i>
+                  <span className="text-caramel">More Settings</span>
+                </div>
                 <div className="flex items-center gap-3 cursor-pointer">
                   <i className="ri-movie-line text-2xl"></i>
                   <span className="text-caramel">Video Guide</span>
@@ -224,6 +261,7 @@ const Home = () => {
             desc="No record found"
             subTitle="0 out of 0 results"
           />
+
           <HomeCard
             title="Work anniversary"
             image={birthDay}

@@ -2,9 +2,47 @@ import React, { useState } from "react";
 import logo from "../Images/logo.png";
 import sun from "../Images/sun.svg";
 import { Link } from "react-router-dom";
+
+import {
+  Autocomplete,
+  TextField as MuiTextField,
+  Box,
+  Avatar,
+} from "@mui/material";
+import SearchModal from "./Search/SearchModal";
+
+import { styled } from "@mui/material/styles";
+
+const companies = [
+  { name: "Dangote Oil", id: 1994, image: "https://picsum.photos/190" },
+  { name: "Google", id: 1992, image: "https://picsum.photos/201" },
+  { name: "General Electric", id: 1972, image: "https://picsum.photos/202" },
+  { name: "PgLang", id: 1974, image: "https://picsum.photos/203" },
+  { name: "Microsft", id: 1979, image: "https://picsum.photos/204" },
+  { name: "Apple", id: 1999, image: "https://picsum.photos/205" },
+  { name: "Amazon", id: 2001, image: "https://picsum.photos/207" },
+];
+
+const TextField = styled(MuiTextField)(({ theme }) => ({
+  width: 180,
+  height: 30,
+  color: theme.palette.success.main,
+
+  "& .MuiOutlinedInput-root": {
+    // padding: 0,
+    borderRadius: 100,
+    background: "#fff",
+  },
+  "& .MuiAutocomplete-input": {
+    // padding: 0,
+    background: "#fff",
+  },
+}));
+
 import { Menu } from "@mui/material";
 import Themes from "../../Themes/Themes";
 import TransferOwnership from "./TransferOwnership"
+
 
 const TopBar = ({
   switchTheme,
@@ -25,16 +63,127 @@ const TopBar = ({
   const handleClose = () => {
     setAnchorEl(null);
   };
+
+
+  const [companyId, setCompanyId] = useState(companies[0].image);
+  function changeCompanyId(id) {
+    if (companyId === id) {
+      setCompanyId("");
+      return;
+    }
+    setCompanyId(id);
+  }
+  const open = Boolean(anchorEl);
+  const [openSearchModal, setOpenSearchModal] = useState(false);
+
+  const id = open ? "simple-popover" : undefined;
+
   return (
     <>
       <div className="bg-caramel w-full py-2 sticky top-0 z-50">
         <div className="Container flex items-center justify-between">
           <Link to="/">
+
             <img src={logo} alt="logo" className="md:h-10 h-7" />
           </Link>
 
           <div className="flex gap-4 items-center">
-            <i className="fa-solid fa-magnifying-glass cursor-pointer text-base text-white"></i>
+
+            <i className="fa-solid fa-magnifying-glass lg:hidden cursor-pointer text-base text-white"></i>
+            <div className="lg:flex items-center gap-6 hidden mr-10">
+              <i
+                className="fa-solid fa-magnifying-glass cursor-pointer text-base text-white"
+                title="Search HcMatrix application"
+                onClick={() => setOpenSearchModal(true)}
+              ></i>
+              <SearchModal
+                open={openSearchModal}
+                handleClose={() => setOpenSearchModal(false)}
+              />
+              <div className="flex items-center gap-1">
+                <Avatar
+                  sx={{
+                    width: 35,
+                    height: 35,
+                    background: "none",
+                    border: "2px solid #fff",
+                  }}
+                  src={companyId}
+                ></Avatar>
+                <div className="relative bottom-1">
+                  {/* search omppz */}
+                  {companyId === "" && (
+                    <label className="text-gray-400 text-sm absolute z-10 pointer-events-none top-3 left-4">
+                      Switch Company
+                    </label>
+                  )}
+                  <Autocomplete
+                    disablePortal
+                    id="combo-box-demo"
+                    options={companies}
+                    onInputChange={(_, value, reason) => {
+                      reason === "input" && setCompanyId(() => value?.image);
+                      (reason === "clear" || value === "") &&
+                        setCompanyId(() => "");
+                    }}
+                    getOptionLabel={(option) => option.name}
+                    defaultValue={companies.find((v) => v.name[0])}
+                    onChange={(event, value, reason) =>
+                      reason === "selectOption" && changeCompanyId(value?.image)
+                    }
+                    renderOption={(props, option) => (
+                      <Box
+                        component="li"
+                        sx={{ "& > img": { mr: 1, flexShrink: 0 } }}
+                        {...props}
+                      >
+                        <Avatar
+                          sx={{ width: 24, height: 24, bgcolor: "#6E55FF" }}
+                          src={option.image}
+                        ></Avatar>
+
+                        <span className="text-sm ml-1">{option.name}</span>
+                      </Box>
+                    )}
+                    renderInput={(params) => (
+                      <TextField
+                        {...params}
+                        InputLabelProps={{
+                          shrink: false,
+                          placeholder: "Switch Company",
+                        }}
+                        size="small"
+                      />
+                    )}
+                  />
+                </div>
+              </div>
+
+              {/* <div className="relative w-full">
+                <div className="flex absolute inset-y-0 left-0 items-center pl-3 pointer-events-none">
+                  <svg
+                    className="w-4 h-4 text-gray-500"
+                    fill="currentColor"
+                    viewBox="0 0 20 20"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      fillRule="evenodd"
+                      d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z"
+                      clipRule="evenodd"
+                    ></path>
+                  </svg>
+                </div>
+                
+                <input
+                  type="text"
+                  className="bg-white border border-white text-sm rounded-2xl focus:outline-none block w-full pl-10 py-1 md:pr-16 lg:pr-24 text-slate-400"
+                  placeholder="Search..."
+                />
+              </div> */}
+
+              {/* <i className="ri-equalizer-fill cursor-pointer h-8 w-10 rounded-full bg-white flex items-center justify-center text-caramel"></i> */}
+            </div>
 
             {theme === "light" ? (
               <i
@@ -60,6 +209,9 @@ const TopBar = ({
               ></i>
             </Link>
             <i
+
+              onClick={handleClick}
+
               className="ri-notification-3-line text-xl cursor-pointer text-white"
               title="Notifications"
             ></i>
