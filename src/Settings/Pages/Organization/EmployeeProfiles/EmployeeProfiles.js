@@ -10,6 +10,7 @@ import AddEmployee from "../../../Components/Organization/EmployeeProfiles/AddEm
 import ExportModal from "../../../Components/ExportModal";
 import { Link } from "react-router-dom";
 import EmployeeActions from "../../../Components/Organization/EmployeeProfiles/EmployeeActions";
+import UploadFileModal from "../../../Components/UploadFileModal";
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
@@ -21,6 +22,7 @@ const EmployeeProfiles = () => {
   const [showDraggableDrawer, setShowDraggableDrawer] = useState("");
   const [openFullDialog, setOpenFullDialog] = useState(false);
   const [openExport, setOpenExport] = useState(false);
+  const [importEmployeeModal, setImportEmployeeModal] = useState(false);
   const [bulk, setBulk] = useState([]);
   const open = Boolean(anchorEl);
   const handleChange = (item) => {
@@ -85,9 +87,16 @@ const EmployeeProfiles = () => {
             >
               Add Employee Profile
             </button>
-            <button className="py-1 px-2 bg-transparent rounded text-sm text-accent border border-slate-200 hover:border-slate-400 font-medium transition ease-in-out duration-300">
+            <button
+              onClick={() => setImportEmployeeModal(true)}
+              className="py-1 px-2 bg-transparent rounded text-sm text-accent border border-slate-200 hover:border-slate-400 font-medium transition ease-in-out duration-300"
+            >
               Import Employee Profile
             </button>
+            <UploadFileModal
+              open={importEmployeeModal}
+              handleClose={() => setImportEmployeeModal(false)}
+            />
             <i
               className="ri-filter-line text-xl cursor-pointer"
               onClick={() => setShowDraggableDrawer("filter")}

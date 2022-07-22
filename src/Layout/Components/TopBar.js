@@ -153,31 +153,6 @@ const TopBar = ({
                   />
                 </div>
               </div>
-
-              {/* <div className="relative w-full">
-                <div className="flex absolute inset-y-0 left-0 items-center pl-3 pointer-events-none">
-                  <svg
-                    className="w-4 h-4 text-gray-500"
-                    fill="currentColor"
-                    viewBox="0 0 20 20"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path
-                      fillRule="evenodd"
-                      d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z"
-                      clipRule="evenodd"
-                    ></path>
-                  </svg>
-                </div>
-                
-                <input
-                  type="text"
-                  className="bg-white border border-white text-sm rounded-2xl focus:outline-none block w-full pl-10 py-1 md:pr-16 lg:pr-24 text-slate-400"
-                  placeholder="Search..."
-                />
-              </div> */}
-
-              {/* <i className="ri-equalizer-fill cursor-pointer h-8 w-10 rounded-full bg-white flex items-center justify-center text-caramel"></i> */}
             </div>
 
             {theme === "light" ? (
