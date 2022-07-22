@@ -48,7 +48,7 @@ const PersonalInformation = () => {
             </div>
             <div className="bg-card py-1 rounded font-medium text-sm hover:shadow cursor-pointer text-accent">
               <label htmlFor="file">
-                <span>Browse..</span>
+                <span>Upload...</span>
               </label>
               <input type="file" id="file" className="hidden" />
             </div>
