@@ -1,10 +1,6 @@
 import React, { useState } from "react";
 import { Modal, Popover, Tooltip } from "@mui/material";
-import helpVideo from "../Images/videoIcon.svg";
-import read from "../Images/ReadIcon.svg";
-import call from "../Images/callIcon.svg";
-import chat from "../Images/chatIcon.svg";
-import query from "../Images/queryIcon.svg";
+
 import Themes from "../../Themes/Themes";
 
 const GlobalSupport = () => {
