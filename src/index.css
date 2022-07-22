@@ -131,15 +131,13 @@ body {
   width: 90%
 }
   
-
 /* ==== Custom Dropdown Menu ==== */
 .custom-dropdown:hover .dropdown-menu {
   display: block;
 }
 
 
-
-/*  */
+/* whatsApp icon button  */
 #wa-widget-send-button{
   display: none !important;
 }
