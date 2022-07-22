@@ -26,6 +26,8 @@ export const DelegationsTableView = ({ delegations }) => {
               </th>
               <th className="p-3">Delegatee</th>
               <th className="p-3">Type</th>
+              <th className="p-3">Function</th>
+
               <th className="p-3">Date range</th>
               <th className="opacity-0 p-3">Actions</th>
             </tr>
@@ -66,6 +68,7 @@ export const DelegationsTableView = ({ delegations }) => {
                   </div>
                 </td>
                 <td className="p-3 text-sm capitalize">{item.type}</td>
+                <td className="p-3 text-sm capitalize">{item.function}</td>
                 <td className="p-3 text-sm">{item.dateRange}</td>
 
                 <td className="p-3 text-lg">

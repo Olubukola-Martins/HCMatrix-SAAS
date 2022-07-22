@@ -17,7 +17,14 @@ import Departments from "../Pages/Organization/Departments/Departments";
 import DepartmentDetail from "../Pages/Organization/Departments/DepartmentDetail";
 import Delegations from "../Pages/Organization/Delegations/Delegations";
 import DelegationDetail from "../Pages/Organization/Delegations/DelegationDetail";
-import Roles from "../Pages/UserAccessControl/Roles";
+import Grades from "../Pages/Organization/Grades/Grades";
+import ProbationPolicy from "../Pages/Organization/ProbationPolicy/ProbationPolicy";
+import GradeCategories from "../Pages/Organization/GradeCategories/GradeCategories";
+
+import Roles from "../Pages/UserAccessControl/Roles/Roles";
+import CreateRole from "../Pages/UserAccessControl/Roles/CreateRole";
+
+import Workflows from "../Pages/UserAccessControl/Automation/Workflows/Workflows";
 
 const SettingRoutes = () => {
   return (
@@ -56,6 +63,13 @@ const SettingRoutes = () => {
       <Route path="/settings/delegations/:id" element={<DelegationDetail />} />
 
       <Route path="/settings/roles" element={<Roles />} />
+      <Route path="/settings/roles/create" element={<CreateRole />} />
+      <Route path="/settings/automation/workflows" element={<Workflows />} />
+
+      <Route path="/settings/grades" element={<Grades />} />
+      <Route path="/settings/grade_categories" element={<GradeCategories />} />
+
+      <Route path="/settings/probation_policy" element={<ProbationPolicy />} />
     </Routes>
   );
 };

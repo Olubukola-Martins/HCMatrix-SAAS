@@ -18,6 +18,7 @@ import UploadFileModal from "../../../Components/UploadFileModal";
 import ExportModal from "../../../Components/ExportModal";
 import { AnimatePresence } from "framer-motion";
 import InviteUserDrawer from "../../../Components/Organization/Users/InviteUserDrawer";
+import UserActions from "../../../Components/Organization/Users/UserActions";
 import InviteMultipleUserDrawer from "../../../Components/Organization/Users/InviteMultipleUserDrawer";
 
 const UserProfiles = () => {
@@ -63,6 +64,15 @@ const UserProfiles = () => {
   const [openUploadFile, setOpenUploadFile] = useState(false);
 
   const [showDraggableDrawer, setShowDraggableDrawer] = useState("");
+  const [bulk, setBulk] = useState([]);
+  const handleChange = (item) => {
+    if (bulk.find((a) => a === item)) {
+      const result = bulk.filter((a) => a !== item);
+      setBulk(result);
+      return;
+    }
+    setBulk((items) => [...items, item]);
+  };
 
   return (
     <DashboardLayout>
@@ -72,9 +82,9 @@ const UserProfiles = () => {
         <div className="flex justify-between mt-5 Container">
           <h4
             // onClick={handleClick}
-            className="flex items-center gap-2  text-accent"
+            className="flex items-center gap-2 text-lg  text-accent"
           >
-            <span>Users</span>
+            <span>Users: {8}</span>
             {/* <i className="ri-arrow-down-s-line text-xl"></i> */}
           </h4>
 
@@ -94,11 +104,11 @@ const UserProfiles = () => {
             />
 
             <button
-              onClick={handleImportClick}
+              onClick={() => setOpenUploadFile(true)}
               className="py-1 px-2 bg-transparent rounded text-sm text-accent border border-slate-200 hover:border-slate-400 font-medium transition ease-in-out duration-300"
             >
               Import
-              <i class="fa fa-caret-down ml-2" aria-hidden="true"></i>
+              {/* <i class="fa fa-caret-down ml-2" aria-hidden="true"></i> */}
             </button>
             <ImportDropdown
               anchorEl={anchorImportEl}
@@ -186,24 +196,8 @@ const UserProfiles = () => {
               />
             </div>
           </div>
-          {/* resend info component */}
-          {/* <div className="Container">
-            <div
-              className="px-6 py-2  mb-4 flex items-end gap-4 text-sm"
-              style={{ background: "var(--card)" }}
-            >
-              <p className="text-caramel underline">Resend Information</p>
-              <p className="text-caramel underline">Change Login Status</p>
-              <p className="text-caramel underline">Trigger onboarding</p>
-              <p className="text-caramel underline">
-                Convert to employee profile
-              </p>
-              <div className="self-end mb-4 flex-1 flex justify-end ">
-                <p className="ml-auto">x</p>
-              </div>
-            </div>
-          </div> */}
-          {/* focus */}
+          {bulk.length > 0 && <UserActions />}
+
           <div className="Container">
             <div
               className="px-6 py-4  mb-2 flex items-center gap-4 text-sm"
@@ -249,7 +243,10 @@ const UserProfiles = () => {
                 {[1, 2, 3, 4, 5, 6, 7, 8].map((item) => (
                   <tr key={item}>
                     <td className="flex items-center justify-center gap-3">
-                      <input type="checkbox" />
+                      <input
+                        type="checkbox"
+                        onChange={() => handleChange(item)}
+                      />
                       <div className="flex items-center gap-2 justify-center">
                         <img
                           src="https://res.cloudinary.com/ddvaelej7/image/upload/v1656616707/samples/Ellipse_1915_maqdtn.png"

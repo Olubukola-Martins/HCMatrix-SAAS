@@ -7,7 +7,7 @@ const PendingItem = ({ handleClick, item, openId }) => {
   return (
     <div>
       <div className="cursor-pointer" onClick={() => handleClick(item.title)}>
-        <span>{item.title}(1/4)</span>
+        <span>{item.title}</span>
         <div className="setUp_progress2 general_setup">
           <div className="setUp_progress-bar2" />
         </div>

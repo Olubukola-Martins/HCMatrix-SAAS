@@ -41,12 +41,14 @@ const AddDesignationDrawer = ({ handleDrawer }) => {
             </div>
             <div>
               <div className="input-container w-full">
-                <label className="text-sm mb-2 block">Mail Alias</label>
-                <input
+                <label className="text-sm mb-2 block">Department</label>
+                <select
                   type="text"
                   placeholder="eg. johndoe@gmail.com"
                   className="w-full bg-transparent rounded-md p-2 border border-gray-400 focus:outline-none "
-                />
+                >
+                  <option>Department 1</option>
+                </select>
               </div>
             </div>
 
