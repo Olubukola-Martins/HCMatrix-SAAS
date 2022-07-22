@@ -1,10 +1,10 @@
 import { useState } from "react";
 import Modal from "@mui/material/Modal";
-import Themes from "../../Themes/Themes";
+import Themes from "../../../../Themes/Themes";
 import Stepper from "@mui/material/Stepper";
 import Step from "@mui/material/Step";
 import StepLabel from "@mui/material/StepLabel";
-import FramerAccordian from "./custom/FramerAccordian";
+import FramerAccordian from "../../custom/FramerAccordian";
 
 const steps = [
   "Upload File",
