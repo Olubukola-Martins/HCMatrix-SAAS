@@ -10,6 +10,9 @@ import {
   Avatar,
 } from "@mui/material";
 import SearchModal from "./Search/SearchModal";
+import { Menu } from "@mui/material";
+import Themes from "../../Themes/Themes";
+import TransferOwnership from "./TransferOwnership";
 
 import { styled } from "@mui/material/styles";
 
@@ -39,11 +42,6 @@ const TextField = styled(MuiTextField)(({ theme }) => ({
   },
 }));
 
-import { Menu } from "@mui/material";
-import Themes from "../../Themes/Themes";
-import TransferOwnership from "./TransferOwnership"
-
-
 const TopBar = ({
   switchTheme,
   theme,
@@ -64,7 +62,6 @@ const TopBar = ({
     setAnchorEl(null);
   };
 
-
   const [companyId, setCompanyId] = useState(companies[0].image);
   function changeCompanyId(id) {
     if (companyId === id) {
@@ -73,7 +70,7 @@ const TopBar = ({
     }
     setCompanyId(id);
   }
-  const open = Boolean(anchorEl);
+
   const [openSearchModal, setOpenSearchModal] = useState(false);
 
   const id = open ? "simple-popover" : undefined;
@@ -83,12 +80,10 @@ const TopBar = ({
       <div className="bg-caramel w-full py-2 sticky top-0 z-50">
         <div className="Container flex items-center justify-between">
           <Link to="/">
-
             <img src={logo} alt="logo" className="md:h-10 h-7" />
           </Link>
 
           <div className="flex gap-4 items-center">
-
             <i className="fa-solid fa-magnifying-glass lg:hidden cursor-pointer text-base text-white"></i>
             <div className="lg:flex items-center gap-6 hidden mr-10">
               <i
@@ -209,9 +204,7 @@ const TopBar = ({
               ></i>
             </Link>
             <i
-
               onClick={handleClick}
-
               className="ri-notification-3-line text-xl cursor-pointer text-white"
               title="Notifications"
             ></i>
@@ -262,7 +255,10 @@ const TopBar = ({
                 handleClose={() => setTransferOwnershipModal(false)}
               />
 
-              <Link to='/settings/delegations' className="border-b-2 pb-2 cursor-pointer hover:text-caramel">
+              <Link
+                to="/settings/delegations"
+                className="border-b-2 pb-2 cursor-pointer hover:text-caramel"
+              >
                 Delegate Role
               </Link>
 
