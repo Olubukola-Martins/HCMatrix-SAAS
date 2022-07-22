@@ -1,6 +1,6 @@
 import { useState } from "react";
 import DashboardLayout from "../../../Layout/DashboardLayout";
-import SettingNavItem from "../../Components/SettingNavItem";
+import SettingNavItem from "../../Components/custom/SettingNavItem";
 import { settingNavItems } from "../../Data";
 import FramerAccordian from "../../Components/custom/FramerAccordian";
 
