@@ -57,34 +57,40 @@ const InviteMultipleUserDrawer = ({ handleDrawer }) => {
             onSubmit={onSubmit}
             validateOnMount
           >
-            <Form className="text-accent mt-6 grid grid-cols-1 gap-4">
-              <p className="mb-3">
-                Enter multiple email ids separated by commas.
-              </p>
-              <div>
-                <div className="input-container w-full">
-                  <label className="text-sm mb-2 block">
-                    Employee emails/IDs
-                  </label>
-                  <Field
-                    rows={5}
-                    as="textarea"
-                    type="text"
-                    placeholder="isaac@gmail.com, emma@yahoo.com, ..................."
-                    className="w-full bg-transparent rounded-md p-2 border border-gray-400 focus:outline-none text-sm"
-                    name="email"
-                  />
-                </div>
-              </div>
-              <div className="form-buttons flex gap-4 mt-2">
-                <button
-                  type="submit"
-                  className="py-2 px-4 bg-caramel rounded text-sm text-white font-medium"
-                >
-                  Invite
-                </button>
-              </div>
-            </Form>
+            {(formik) => {
+              return (
+                <Form className="text-accent mt-6 grid grid-cols-1 gap-4">
+                  <p className="mb-3">
+                    Enter multiple email ids separated by commas.
+                  </p>
+                  <div>
+                    <div className="input-container w-full">
+                      <label className="text-sm mb-2 block">
+                        Employee emails/IDs
+                      </label>
+                      <Field
+                        rows={5}
+                        as="textarea"
+                        type="text"
+                        placeholder="isaac@gmail.com, emma@yahoo.com, ..................."
+                        className="w-full bg-transparent rounded-md p-2 border border-gray-400 focus:outline-none text-sm"
+                        name="email"
+                      />
+                      <ErrorMessage name="email" component="span" />
+                    </div>
+                  </div>
+                  <div className="form-buttons flex gap-4 mt-2">
+                    <button
+                      disabled={!formik.isValid || formik.isSubmitting}
+                      type="submit"
+                      className="py-2 px-4 bg-caramel rounded text-sm text-white font-medium"
+                    >
+                      Invite
+                    </button>
+                  </div>
+                </Form>
+              );
+            }}
           </Formik>
         </div>
       </div>
