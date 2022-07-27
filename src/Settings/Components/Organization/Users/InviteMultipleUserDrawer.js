@@ -51,7 +51,12 @@ const InviteMultipleUserDrawer = ({ handleDrawer }) => {
         </div>
         {/* form */}
         <div className="px-6 mt-4">
-          <Formik>
+          <Formik
+            initialValues={initialValues}
+            validationSchema={validationSchema}
+            onSubmit={onSubmit}
+            validateOnMount
+          >
             <Form className="text-accent mt-6 grid grid-cols-1 gap-4">
               <p className="mb-3">
                 Enter multiple email ids separated by commas.
@@ -67,6 +72,7 @@ const InviteMultipleUserDrawer = ({ handleDrawer }) => {
                     type="text"
                     placeholder="isaac@gmail.com, emma@yahoo.com, ..................."
                     className="w-full bg-transparent rounded-md p-2 border border-gray-400 focus:outline-none text-sm"
+                    name="email"
                   />
                 </div>
               </div>
