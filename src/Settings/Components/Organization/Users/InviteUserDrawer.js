@@ -7,6 +7,8 @@ const InviteUserDrawer = ({ handleDrawer }) => {
   // initial values
   const initialValues = {
     employeeId: "",
+    fullName: "",
+    email: "",
   };
 
   // onsubmit
@@ -18,9 +20,9 @@ const InviteUserDrawer = ({ handleDrawer }) => {
 
   // Validate form
   const validationSchema = Yup.object({
-    employeeId: Yup.string().required("Required!"),
-    // email: Yup.string().email("Invalid email format").required("Required"),
-    // channel: Yup.string().required("Required"),
+    employeeId: Yup.string().required("Please enter employee ID"),
+    fullName: Yup.string().required("Please enter full name"),
+    email: Yup.string().email("Invalid email format").required("Required"),
   });
 
   return (
@@ -73,16 +75,19 @@ const InviteUserDrawer = ({ handleDrawer }) => {
                         name="employeeId"
                         className="w-full bg-transparent rounded-md p-2 border border-gray-400 focus:outline-none "
                       />
+                      <ErrorMessage name="employeeId" component="span" />
                     </div>
                   </div>
                   <div>
                     <div className="input-container w-full">
                       <label className="text-sm mb-2 block">Full name</label>
-                      <input
+                      <Field
                         type="text"
+                        name="fullName"
                         placeholder="First Name                      Last Name"
                         className="w-full bg-transparent rounded-md p-2 border border-gray-400 focus:outline-none "
                       />
+                      <ErrorMessage name="fullName" component="span" />
                     </div>
                   </div>
                   <div>
@@ -90,11 +95,13 @@ const InviteUserDrawer = ({ handleDrawer }) => {
                       <label className="text-sm mb-2 block">
                         Email Address
                       </label>
-                      <input
+                      <Field
                         type="text"
+                        name="email"
                         placeholder="Email Address"
                         className="w-full bg-transparent rounded-md p-2 border border-gray-400 focus:outline-none "
                       />
+                      <ErrorMessage name="email" component="span" />
                     </div>
                   </div>
                   {/* ctrl btns */}
@@ -102,7 +109,7 @@ const InviteUserDrawer = ({ handleDrawer }) => {
                     <button
                       disabled={!formik.isValid || formik.isSubmitting}
                       type="submit"
-                      className="py-2 px-4 bg-caramel rounded text-sm text-white font-medium"
+                      className="button"
                     >
                       Invite
                     </button>

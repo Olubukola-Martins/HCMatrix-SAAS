@@ -149,3 +149,8 @@
 .medicalTableWrap table td{
   @apply pb-2;
 }
+
+/*error message  */
+.input-container span{
+  @apply text-xs text-red-600 pl-1; 
+}
