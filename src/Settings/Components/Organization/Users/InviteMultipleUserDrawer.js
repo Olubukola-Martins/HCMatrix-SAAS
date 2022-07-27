@@ -1,24 +1,39 @@
 import React from "react";
 import { motion } from "framer-motion";
-import { Formik, Form, Field, ErrorMessage } from "formik";
-import * as Yup from "yup";
+import { useFormik } from "formik";
+
+// Form management
+const initialValues = {
+  email: "",
+};
+
+const onSubmit = (values) => {
+  console.log("Form data", values);
+};
+
+const validate = (values) => {
+  let errors = {};
+
+  if (!values.email) {
+    errors.email = "Email is Required";
+  } else {
+    let emailList = values.email.split(",");
+    emailList.forEach((eachEmail) => {
+      if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,6}$/i.test(eachEmail)) {
+        errors.email =
+          "Please provide valid emails, separate them with a comma (,) and don't add space";
+      }
+    });
+  }
+
+  return errors;
+};
 
 const InviteMultipleUserDrawer = ({ handleDrawer }) => {
-  // initial values
-  const initialValues = {
-    email: "",
-  };
-
-  // onsubmit
-  const onSubmit = (values, onSubmitProps) => {
-    console.log("Form data", values);
-    onSubmitProps.setSubmitting(false);
-    onSubmitProps.resetForm();
-  };
-
-  // Validate form
-  const validationSchema = Yup.object({
-    email: Yup.string().email("Invalid email format").required("Required"),
+  const formik = useFormik({
+    initialValues,
+    onSubmit,
+    validate,
   });
 
   return (
@@ -51,47 +66,46 @@ const InviteMultipleUserDrawer = ({ handleDrawer }) => {
         </div>
         {/* form */}
         <div className="px-6 mt-4">
-          <Formik
-            initialValues={initialValues}
-            validationSchema={validationSchema}
-            onSubmit={onSubmit}
-            validateOnMount
+          <form
+            className="text-accent mt-6 grid grid-cols-1 gap-4"
+            onSubmit={formik.handleSubmit}
           >
-            {(formik) => {
-              return (
-                <Form className="text-accent mt-6 grid grid-cols-1 gap-4">
-                  <p className="mb-3">
-                    Enter multiple email ids separated by commas.
-                  </p>
-                  <div>
-                    <div className="input-container w-full">
-                      <label className="text-sm mb-2 block">
-                        Employee emails/IDs
-                      </label>
-                      <Field
-                        rows={5}
-                        as="textarea"
-                        type="text"
-                        placeholder="isaac@gmail.com, emma@yahoo.com, ..................."
-                        className="w-full bg-transparent rounded-md p-2 border border-gray-400 focus:outline-none text-sm"
-                        name="email"
-                      />
-                      <ErrorMessage name="email" component="span" />
-                    </div>
+            <p className="mb-3">
+              Enter multiple email ids separated by commas.
+            </p>
+            <div>
+              <div className="input-container w-full">
+                <label className="text-sm mb-2 block">
+                  Employee emails/IDs
+                </label>
+                <textarea
+                  rows={5}
+                  type="text"
+                  name="email"
+                  placeholder="isaac@gmail.com, emma@yahoo.com, ..................."
+                  className="w-full bg-transparent rounded-md p-2 border border-gray-400 focus:outline-none text-sm"
+                  onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
+                  value={formik.values.email}
+                />
+                {formik.touched.email && formik.errors.email ? (
+                  <div className="text-red-500 text-xs">
+                    {formik.errors.email}
                   </div>
-                  <div className="form-buttons flex gap-4 mt-2">
-                    <button
-                      disabled={!formik.isValid || formik.isSubmitting}
-                      type="submit"
-                      className="py-2 px-4 bg-caramel rounded text-sm text-white font-medium"
-                    >
-                      Invite
-                    </button>
-                  </div>
-                </Form>
-              );
-            }}
-          </Formik>
+                ) : null}
+              </div>
+            </div>
+
+            {/* ctrl btns */}
+            <div className="form-buttons flex gap-4 mt-2">
+              <button
+                type="submit"
+                className="py-2 px-4 bg-caramel rounded text-sm text-white font-medium"
+              >
+                Invite
+              </button>
+            </div>
+          </form>
         </div>
       </div>
     </motion.div>
