@@ -1,8 +1,28 @@
 import React from "react";
-
 import { motion } from "framer-motion";
+import { Formik, Form, Field, ErrorMessage } from "formik";
+import * as Yup from "yup";
 
 const InviteUserDrawer = ({ handleDrawer }) => {
+  // initial values
+  const initialValues = {
+    employeeId: "",
+  };
+
+  // onsubmit
+  const onSubmit = (values, onSubmitProps) => {
+    console.log("Form data", values);
+    onSubmitProps.setSubmitting(false);
+    onSubmitProps.resetForm();
+  };
+
+  // Validate form
+  const validationSchema = Yup.object({
+    employeeId: Yup.string().required("Required!"),
+    // email: Yup.string().email("Invalid email format").required("Required"),
+    // channel: Yup.string().required("Required"),
+  });
+
   return (
     <motion.div
       initial={{ x: 500 }}
@@ -31,50 +51,67 @@ const InviteUserDrawer = ({ handleDrawer }) => {
           <h6 className="text-sm">Employee Added: 2</h6>
           <h6 className="text-sm">License count left: 5</h6>
         </div>
-        {/* form */}
-        <div className="px-6 mt-4">
-          <form className="text-accent mt-6 grid grid-cols-1 gap-4">
-            <p className="mb-2">
-              Fill in the mandatory fields, and click invite.{" "}
-            </p>
-            <div>
-              <div className="input-container w-full">
-                <label className="text-sm mb-2 block">Employee ID</label>
-                <input
-                  type="text"
-                  placeholder="State/Province"
-                  className="w-full bg-transparent rounded-md p-2 border border-gray-400 focus:outline-none "
-                />
+        <Formik
+          initialValues={initialValues}
+          validationSchema={validationSchema}
+          onSubmit={onSubmit}
+          validateOnMount
+        >
+          {(formik) => {
+            return (
+              <div className="px-6 mt-4">
+                <Form className="text-accent mt-6 grid grid-cols-1 gap-4">
+                  <p className="mb-2">
+                    Fill in the mandatory fields, and click invite.
+                  </p>
+                  <div>
+                    <div className="input-container w-full">
+                      <label className="text-sm mb-2 block">Employee ID</label>
+                      <Field
+                        type="text"
+                        placeholder="State/Province"
+                        name="employeeId"
+                        className="w-full bg-transparent rounded-md p-2 border border-gray-400 focus:outline-none "
+                      />
+                    </div>
+                  </div>
+                  <div>
+                    <div className="input-container w-full">
+                      <label className="text-sm mb-2 block">Full name</label>
+                      <input
+                        type="text"
+                        placeholder="First Name                      Last Name"
+                        className="w-full bg-transparent rounded-md p-2 border border-gray-400 focus:outline-none "
+                      />
+                    </div>
+                  </div>
+                  <div>
+                    <div className="input-container w-full">
+                      <label className="text-sm mb-2 block">
+                        Email Address
+                      </label>
+                      <input
+                        type="text"
+                        placeholder="Email Address"
+                        className="w-full bg-transparent rounded-md p-2 border border-gray-400 focus:outline-none "
+                      />
+                    </div>
+                  </div>
+                  {/* ctrl btns */}
+                  <div className="form-buttons flex gap-4 mt-2">
+                    <button
+                      disabled={!formik.isValid || formik.isSubmitting}
+                      type="submit"
+                      className="py-2 px-4 bg-caramel rounded text-sm text-white font-medium"
+                    >
+                      Invite
+                    </button>
+                  </div>
+                </Form>
               </div>
-            </div>
-            <div>
-              <div className="input-container w-full">
-                <label className="text-sm mb-2 block">Full name</label>
-                <input
-                  type="text"
-                  placeholder="First Name                      Last Name"
-                  className="w-full bg-transparent rounded-md p-2 border border-gray-400 focus:outline-none "
-                />
-              </div>
-            </div>
-            <div>
-              <div className="input-container w-full">
-                <label className="text-sm mb-2 block">Email Address</label>
-                <input
-                  type="text"
-                  placeholder="Email Address"
-                  className="w-full bg-transparent rounded-md p-2 border border-gray-400 focus:outline-none "
-                />
-              </div>
-            </div>
-            {/* ctrl btns */}
-            <div className="form-buttons flex gap-4 mt-2">
-              <button className="py-2 px-4 bg-caramel rounded text-sm text-white font-medium">
-                Invite
-              </button>
-            </div>
-          </form>
-        </div>
+            );
+          }}
+        </Formik>
       </div>
     </motion.div>
   );
