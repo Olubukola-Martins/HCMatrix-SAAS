@@ -30,15 +30,35 @@ const CompanyInfoAccordion = () => {
 
   // manage form
   const initialValues = {
-    
-  }
+    name: "",
+    website: "",
+    industry: "",
+    phone: "",
+    email: "",
+    address: "",
+    city: "",
+    state: "",
+    country: "",
+  };
 
+  const validationSchema = Yup.object({
+    name: Yup.string().required("Company name is required"),
+    email: Yup.string().email("Invalid email format").required("Required"),
+    website: Yup.string().required("Website is required"),
+    industry: Yup.string().required("Industry is required"),
+    phone: Yup.string().required("Phone is required"),
+    address: Yup.string().required("Address is required"),
+    city: Yup.string().required("City is required"),
+    state: Yup.string().required("State is required"),
+    country: Yup.string().required("Country is required"),
+  });
 
   const onSubmit = (values, onSubmitProps) => {
     console.log("Form data", values);
     onSubmitProps.setSubmitting(false);
     onSubmitProps.resetForm();
   };
+
   return (
     <div className="">
       <Accordion
@@ -53,136 +73,116 @@ const CompanyInfoAccordion = () => {
           <h4 className="text-xl text-accent">Company Information</h4>
         </AccordionSummary>
         <AccordionDetails>
-        <Formik 
-         initialValues={initialValues}
-         validationSchema={validationSchema}
-         onSubmit={onSubmit}
-         validateOnMount
-        >
-          {(formik) => {
-            return (
-              <Form>
-                <div className="grid grid-cols-2 lg:grid-cols-3 gap-x-5 md:gap-x-10 gap-y-2 justify-between text-accent">
-                  <div className="input-container w-full">
-                    <label className="text-sm mb-4 block invisible">
-                      Company Name
-                    </label>
-                    <input
-                      type="text"
-                      placeholder="Company Name"
-                      className="w-full bg-transparent rounded-md py-3 px-3 border border-gray-400 focus:outline-none mb-6"
-                    />
-                  </div>
-                  <div className="input-container w-full">
-                    <label className="text-sm mb-4 block invisible">
-                      Website
-                    </label>
-                    <input
-                      type="text"
-                      placeholder="Website"
-                      className="w-full bg-transparent rounded-md py-3 px-3 border border-gray-400 focus:outline-none mb-6"
-                    />
-                  </div>
-                  <div className="input-container w-full">
-                    <label className="text-sm mb-4 block ">Industry</label>
-                    <select
-                      className="w-full bg-transparent rounded-md py-3 px-3 border border-gray-400 focus:outline-none mb-6"
-                      value={industry}
-                      onChange={handleIndustryChange}
-                    >
-                      {industries.map((item) => (
-                        <option value={item.value} key={item.value}>
-                          {item.label}
-                        </option>
-                      ))}
-                    </select>
-                  </div>
-                  <div className="input-container w-full">
-                    <label className="text-sm mb-4 block">Contact Person</label>
-                    <input
-                      type="text"
-                      placeholder="Contact Person"
-                      className="w-full bg-transparent rounded-md py-3 px-3 border border-gray-400 focus:outline-none mb-6"
-                    />
-                  </div>
-                  <div className="input-container w-full">
-                    <label className="text-sm mb-4 block">Phone</label>
-                    <input
-                      type="text"
-                      placeholder="Phone"
-                      className="w-full bg-transparent rounded-md py-3 px-3 border border-gray-400 focus:outline-none mb-6"
-                    />
-                  </div>
-                  <div className="input-container w-full">
-                    <label className="text-sm mb-4 block invisible">
-                      Email
-                    </label>
-                    <input
-                      type="email"
-                      placeholder="Email"
-                      className="w-full bg-transparent rounded-md py-3 px-3 border border-gray-400 focus:outline-none mb-6"
-                    />
-                  </div>
-                  <div className="input-container w-full">
-                    <label className="text-sm mb-4 block">
-                      Address Details
-                    </label>
-                    <input
-                      type="text"
-                      placeholder="Address 1"
-                      className="w-full bg-transparent rounded-md py-3 px-3 border border-gray-400 focus:outline-none mb-6"
-                    />
-                  </div>
-                  <div className="input-container w-full">
-                    <label className="text-sm mb-4 block invisible">City</label>
-                    <input
-                      type="text"
-                      placeholder="City"
-                      className="w-full bg-transparent rounded-md py-3 px-3 border border-gray-400 focus:outline-none mb-6"
-                    />
-                  </div>
-                  <div className="input-container w-full">
-                    <label className="text-sm mb-4 block invisible">
-                      State/Province
-                    </label>
-                    <input
-                      type="text"
-                      placeholder="State/Province"
-                      className="w-full bg-transparent rounded-md py-3 px-3 border border-gray-400 focus:outline-none mb-6"
-                    />
-                  </div>
-                  <div className="input-container w-full">
-                    <label className="text-sm mb-4 block invisible">
-                      Country
-                    </label>
-                    <select
-                      className="w-full bg-transparent rounded-md py-3 px-3 border border-gray-400 focus:outline-none mb-6"
-                      placeholder="Country"
-                    >
-                      {countries.map((item) => (
-                        <option value={item.value} key={item.value}>
-                          {item.label}
-                        </option>
-                      ))}
-                    </select>
-                  </div>
-                  <div className="input-container lg:w-2/4">
-                    <label className="text-sm mb-4 block invisible">
-                      Country
-                    </label>
+          <Formik
+            initialValues={initialValues}
+            validationSchema={validationSchema}
+            onSubmit={onSubmit}
+            validateOnMount
+          >
+            {(formik) => {
+              return (
+                <Form>
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-5 md:gap-x-10 gap-y-2 justify-between text-accent Company_Information_form">
+                    <div className="input-container">
+                      <label>Company Name</label>
+                      <Field
+                        type="text"
+                        name="name"
+                        placeholder="Enter company name"
+                      />
+                      <ErrorMessage name="name" component="span" />
+                    </div>
 
-                    <button
-                      type="submit"
-                      className="button"
-                      disabled={!formik.isValid || formik.isSubmitting}
-                    >
-                      Submit
-                    </button>
+                    <div className="input-container">
+                      <label>Website</label>
+                      <Field type="text" placeholder="Website" name="website" />
+                      <ErrorMessage name="website" component="span" />
+                    </div>
+
+                    <div className="input-container">
+                      <label>Industry</label>
+                      <Field component="select" name="industry">
+                        <option value="">Enter Industry</option>
+                        {industries.map((item) => (
+                          <option value={item.value} key={item.value}>
+                            {item.label}
+                          </option>
+                        ))}
+                      </Field>
+                      <ErrorMessage name="industry" component="span" />
+                    </div>
+
+                    <div className="input-container">
+                      <label>Contact Person</label>
+                      <Field
+                        type="tel"
+                        placeholder="Contact Person"
+                        name="phone"
+                      />
+                      <ErrorMessage name="phone" component="span" />
+                    </div>
+
+                    <div className="input-container w-full">
+                      <label>Email</label>
+                      <Field
+                        type="email"
+                        placeholder="Enter email"
+                        name="email"
+                      />
+                      <ErrorMessage name="email" component="span" />
+                    </div>
+                    <div className="input-container w-full">
+                      <label>Address Details</label>
+                      <Field
+                        type="text"
+                        placeholder="Enter address details"
+                        name="address"
+                      />
+                      <ErrorMessage name="address" component="span" />
+                    </div>
+                    <div className="input-container">
+                      <label>City</label>
+                      <Field type="text" placeholder="Enter city" name="city" />
+                      <ErrorMessage name="city" component="span" />
+                    </div>
+                    <div className="input-container">
+                      <label>State/Province</label>
+                      <Field
+                        type="text"
+                        placeholder="State/Province"
+                        name="state"
+                      />
+                      <ErrorMessage name="state" component="span" />
+                    </div>
+                    <div className="input-container w-full">
+                      <label>Country</label>
+                      <Field
+                        placeholder="Country"
+                        component="select"
+                        name="country"
+                      >
+                        <option value="">Select Country</option>
+                        {countries.map((item) => (
+                          <option value={item.value} key={item.value}>
+                            {item.label}
+                          </option>
+                        ))}
+                      </Field>
+                      <ErrorMessage name="country" component="span" />
+                    </div>
+                    <div className="">
+                      <button
+                        type="submit"
+                        className="button"
+                        disabled={!formik.isValid || formik.isSubmitting}
+                      >
+                        Submit
+                      </button>
+                    </div>
                   </div>
-                </div>
-              </Form>
-            );
-          }}
+                </Form>
+              );
+            }}
           </Formik>
         </AccordionDetails>
       </Accordion>
