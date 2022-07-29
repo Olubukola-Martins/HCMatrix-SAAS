@@ -4,13 +4,13 @@ import Menu from "@mui/material/Menu";
 import Themes from "../../../../Themes/Themes";
 import "../../../style/settingsStyle.css";
 import { AnimatePresence } from "framer-motion";
-import FilterDrawer from "../../../Components/FilterDrawer";
+import FilterDrawer from "../../../Components/Organization/EmployeeProfiles/FilterDrawer";
 import { Dialog, Slide } from "@mui/material";
 import AddEmployee from "../../../Components/Organization/EmployeeProfiles/AddEmployee";
-import ExportModal from "../../../Components/ExportModal";
+import ExportModal from "../../../Components/custom/ExportModal";
 import { Link } from "react-router-dom";
 import EmployeeActions from "../../../Components/Organization/EmployeeProfiles/EmployeeActions";
-import UploadFileModal from "../../../Components/UploadFileModal";
+import UploadFileModal from "../../../Components/Organization/EmployeeProfiles/UploadFileModal";
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;

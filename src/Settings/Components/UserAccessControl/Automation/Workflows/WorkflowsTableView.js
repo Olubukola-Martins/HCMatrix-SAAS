@@ -28,7 +28,7 @@ export const WorkflowsTableView = ({ workflows }) => {
               <th className="p-3 text-left">Last modified</th>
               <th className="p-3 text-left">Last modified by</th>
 
-              <th className="opacity-0 p-3">Actions</th>
+              <th className="p-3">Actions</th>
             </tr>
           </thead>
 

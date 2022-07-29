@@ -29,16 +29,20 @@ const companies = [
 const TextField = styled(MuiTextField)(({ theme }) => ({
   width: 180,
   height: 30,
-  color: theme.palette.success.main,
+  color: "var(--textColor)",
 
   "& .MuiOutlinedInput-root": {
     // padding: 0,
     borderRadius: 100,
-    background: "#fff",
+    background: "var(--background)",
+    color: "var(--textColor)",
+  },
+  "& .MuiSvgIcon-root": {
+    fill: "#aaa",
   },
   "& .MuiAutocomplete-input": {
     // padding: 0,
-    background: "#fff",
+    background: "var(--background)",
   },
 }));
 

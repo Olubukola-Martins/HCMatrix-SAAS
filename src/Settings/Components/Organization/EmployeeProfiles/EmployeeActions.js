@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import AssignDepartmentModal from "../Departments/AssignDepartmentModal";
-import MoveToCompanyModal from "../../MoveToCompanyModal";
-import MoveToCompanyDropdown from "../../MoveToCompanyDropdown";
+import MoveToCompanyModal from "./MoveToCompanyModal";
+import MoveToCompanyDropdown from "./MoveToCompanyDropdown";
 import ChangeEmployeeStatus from "./ChangeEmployeeStatus";
 
 const EmployeeActions = () => {

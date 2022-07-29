@@ -16,6 +16,7 @@ import Menu from "@mui/material/Menu";
 import { motion } from "framer-motion";
 import { settingNavItems } from "../../Settings/Data";
 import PendingItem from "../Components/PendingItem";
+import CustomizeDashboardModal from "../Components/CustomizeDashboardModal";
 
 const Home = () => {
   const [openId, setOpenId] = useState("");
@@ -32,6 +33,8 @@ const Home = () => {
   const handleClose = () => {
     setAnchorEl(null);
   };
+
+  const [openCustomModal, setOpenCustomModal] = useState(false);
 
   return (
     <DashboardLayout>
@@ -90,12 +93,19 @@ const Home = () => {
                 <span className="text-caramel font-semibold text-lg">View</span>
                 <h6 className="text-xs font-semibold">Personal Information</h6>
               </Link>
-              <Link to="#!" className="dashboardLink">
+              <button
+                className="dashboardLink"
+                onClick={() => setOpenCustomModal(true)}
+              >
                 <span className="text-caramel font-semibold text-lg">
                   Customize
                 </span>
                 <h6 className="text-xs font-semibold">My dashboard</h6>
-              </Link>
+              </button>
+              <CustomizeDashboardModal
+                open={openCustomModal}
+                handleClose={() => setOpenCustomModal(false)}
+              />
             </div>
           </div>
           <div className="bg-card rounded-xl px-5 py-4 text-accent w-full">
