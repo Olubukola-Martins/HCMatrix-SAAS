@@ -14,6 +14,27 @@ const workflows = [
     updatedAt: "2 days ago",
     lastModifiedBy: "James Logan",
   },
+  {
+    id: 90,
+    name: "Loan Approval",
+    noOfStages: 1,
+    updatedAt: "2 days ago",
+    lastModifiedBy: "James Logan",
+  },
+  {
+    id: 90,
+    name: "Payroll Approval",
+    noOfStages: 2,
+    updatedAt: "2 days ago",
+    lastModifiedBy: "James Logan",
+  },
+  {
+    id: 90,
+    name: "Performanece Appraisal",
+    noOfStages: 6,
+    updatedAt: "2 days ago",
+    lastModifiedBy: "James Logan",
+  },
 ];
 
 const Roles = () => {
@@ -23,8 +44,33 @@ const Roles = () => {
       <div className="h-screen">
         {
           <div className="Container mt-4">
-            <h4 className="text-lg  mb-1">Workflows</h4>
-            <div className="flex flex-col gap-2 md:flex-row md:justify-between md:items-center bg-card p-2 rounded text-sm">
+            <div className="flex flex-col gap-2 md:flex-row md:justify-between md:items-center p-2 rounded text-sm">
+              <h4 className="text-lg  mb-1">Workflows</h4>
+              <div className="flex gap-4 items-center">
+                <Link
+                  to="/settings/automation/workflows/create"
+                  className="py-1 px-2 bg-caramel rounded text-sm text-white font-medium"
+                >
+                  Create workflow
+                </Link>
+                <button
+                  id="invite-button"
+                  onClick={() => setShowDraggableDrawer("add-workflow")}
+                ></button>
+
+                <div className="question-icon flex items-center gap-2 ml-auto md:ml-0">
+                  <i
+                    className="ri-filter-line text-xl cursor-pointer"
+                    onClick={() => setShowDraggableDrawer("filter")}
+                  ></i>
+                  <i
+                    className="ri-question-fill text-xl cursor-pointer text-gray-400"
+                    title="Employee profile"
+                  ></i>
+                </div>
+              </div>
+            </div>
+            {/* <div className="flex flex-col gap-2 md:flex-row md:justify-between md:items-center bg-card p-2 rounded text-sm">
               <p>Manage workflows</p>
 
               <div className="flex gap-4 items-center">
@@ -35,42 +81,13 @@ const Roles = () => {
                 >
                   Add workflow
                 </button>
-                {/* <div className="view-toggler flex rounded overflow-hidden items-center">
-                  <i
-                    onClick={() => handleViewId("grid")}
-                    className={
-                      viewId === "grid"
-                        ? "ri-layout-grid-fill text-base text-white bg-caramel px-2 border cursor-pointer"
-                        : "ri-layout-grid-fill text-base text-black bg-white px-2 border cursor-pointer"
-                    }
-                    aria-hidden="true"
-                  ></i>
-
-                  <i
-                    className={
-                      viewId === "list"
-                        ? "ri-list-unordered text-base text-white bg-caramel px-2 border cursor-pointer"
-                        : "ri-list-unordered text-base text-black bg-white px-2 border cursor-pointer"
-                    }
-                    onClick={() => handleViewId("list")}
-                    aria-hidden="true"
-                  ></i>
-                </div> */}
+               
                 <div className="question-icon ml-auto md:ml-0">
                   <i
                     className="ri-question-fill text-xl cursor-pointer text-gray-400"
                     title="Employee profile"
                   ></i>
                 </div>
-              </div>
-            </div>
-            {/* <div className="flex flex-col gap-2 md:flex-row md:justify-end md:items-center mt-2 p-2 rounded text-sm">
-              <div className="input-container w-1/4">
-                <input
-                  type="text"
-                  placeholder="Search workflows"
-                  className="w-full bg-transparent rounded-md p-2 border border-gray-400 focus:outline-none "
-                />
               </div>
             </div> */}
           </div>

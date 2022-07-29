@@ -60,12 +60,12 @@ const SearchModal = ({ open, handleClose }) => {
             </div>
 
             {/* content */}
-            <div className="mt-2 text-accent border border-0 border-t overflow-y-auto h-80">
+            <div className="mt-2 text-accent border-0 border-t overflow-y-auto h-80">
               {searchResults.length > 0 ? (
                 <div className="flex flex-col gap-4 py-4">
                   {searchResults.map((item) => (
                     <div
-                      className="border border-0 border-b px-10 pb-2"
+                      className="border-0 border-b px-10 pb-2"
                       key={Date.toString()}
                     >
                       <Link
