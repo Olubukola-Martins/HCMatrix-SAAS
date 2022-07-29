@@ -4,6 +4,25 @@ import InfoIcon from "../../Assets/info_icon.svg";
 import Themes from "../../../Themes/Themes";
 import Modal from "@mui/material/Modal";
 import { Link } from "react-router-dom";
+import { Formik, Form, Field, ErrorMessage } from "formik";
+import * as Yup from "yup";
+
+// Handle form
+const initialValues = {
+  displayName: "",
+  fromAddress: "",
+};
+
+const validationSchema = Yup.object({
+  displayName: Yup.string().required("Display name is required!"),
+  fromAddress: Yup.string().required("From Address is required!"),
+});
+
+const onSubmit = (values, onSubmitProps) => {
+  console.log("Form data", values);
+  onSubmitProps.setSubmitting(false);
+  onSubmitProps.resetForm();
+};
 
 const FromAddresses = () => {
   const [openModal, setOpenModal] = useState(false);
@@ -22,9 +41,6 @@ const FromAddresses = () => {
         <Themes>
           <div className="CModal" style={{ maxWidth: 600 }}>
             <div className="flex flex-col items-center justify-center pb-12">
-              {/* <div className = 'w-64'>
-        <img src={emailIcon} alt="" className="max-w-full h-auto object-contain"/>
-        </div> */}
               <div className="flex items-center justify-end w-full mb-8">
                 <i
                   class="fas fa-times cursor-pointer text-2xl"
@@ -35,48 +51,71 @@ const FromAddresses = () => {
               <h4 className="font-bold text-2xl text-accent text-center">
                 Add From Address
               </h4>
-              <form className="mt-8 lg:mr-20 ">
-                <div className="flex items-center w-full mb-8">
-                  <label className="block text-slate-400 md:w-60 mr-4">
-                    Display Name
-                  </label>
-                  <input
-                    type="text"
-                    placeholder="Add display name"
-                    className="md:w-full bg-transparent rounded-md py-3 px-3 bg-white border border-gray-200 focus:outline-none"
-                  />
-                </div>
-                <div className="flex items-center w-full mb-8">
-                  <label className="block text-slate-400 md:w-60 mr-4">
-                    From Address
-                  </label>
-                  <input
-                    type="text"
-                    placeholder="john@gmail.com"
-                    className="md:w-full bg-transparent rounded-md py-3 px-3 bg-white border border-gray-200 focus:outline-none"
-                  />
-                </div>
-                <div className="flex items-center w-full mb-2">
-                  <label className="block text-slate-400 md:w-60 mr-4 invisible">
-                    From Address
-                  </label>
-                  <div className="flex justify-between items-center w-full">
-                    <button
-                      htmlType="submit"
-                      className="button"
-                      // className="bg-red-600 capitalize rounded hover:bg-opacity-70 transition ease-in duration-300 w-2/4 mr-2 text-white py-3 font-semibold"
-                    >
-                      Submit
-                    </button>
-                    <button
-                      onClick={handleClose}
-                      className="border border-1 border-slate-200 capitalize rounded hover:border-slate-400 hover:text-slate-400 transition ease-in duration-300 w-2/4 ml-2 text-slate-300 py-2 font-semibold"
-                    >
-                      Cancel
-                    </button>
-                  </div>
-                </div>
-              </form>
+              <Formik
+                initialValues={initialValues}
+                validationSchema={validationSchema}
+                onSubmit={onSubmit}
+                validateOnMount
+              >
+                {(formik) => {
+                  return (
+                    <Form className="mt-8 lg:mr-20 ">
+                      <div className="flex items-center w-full mb-8 showErrorMsg">
+                        <label className="block text-slate-400 md:w-60 mr-4">
+                          Display Name
+                        </label>
+                        <div className="w-full">
+                          <Field
+                            type="text"
+                            placeholder="Add display name"
+                            name="displayName"
+                            className="md:w-full rounded-md py-3 px-3 bg-white border border-gray-200 focus:outline-none bg-mainBg text-accent"
+                          />
+                          <ErrorMessage name="displayName" component="span" />
+                        </div>
+                      </div>
+                      <div className="flex items-center w-full mb-8 showErrorMsg">
+                        <label className="block text-slate-400 md:w-60 mr-4">
+                          From Address
+                        </label>
+                        <div className="w-full">
+                          <Field
+                            type="text"
+                            name="fromAddress"
+                            placeholder="john@gmail.com"
+                            className="md:w-full bg-mainBg rounded-md py-3 px-3 bg-white border border-gray-200 focus:outline-none text-accent"
+                          />
+                          <ErrorMessage
+                            name="fromAddress"
+                            component="fromAddress"
+                          />
+                        </div>
+                      </div>
+                      <div className="flex items-center w-full mb-2">
+                        <label className="block text-slate-400 md:w-60 mr-4 invisible">
+                          From Address
+                        </label>
+                        <div className="flex justify-between items-center w-full">
+                          <button
+                            disabled={!formik.isValid || formik.isSubmitting}
+                            type="submit"
+                            className="button"
+                          >
+                            Submit
+                          </button>
+                          <button
+                            type="button"
+                            onClick={handleClose}
+                            className="transparentButton"
+                          >
+                            Cancel
+                          </button>
+                        </div>
+                      </div>
+                    </Form>
+                  );
+                }}
+              </Formik>
             </div>
           </div>
         </Themes>
