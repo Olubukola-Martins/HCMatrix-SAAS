@@ -151,7 +151,7 @@
 }
 
 /*error message  */
-.input-container span, .showErrorMsg{
+.input-container span, .showErrorMsg, .whiteBg_form span{
   @apply text-xs text-red-600 pl-1; 
 }
 
