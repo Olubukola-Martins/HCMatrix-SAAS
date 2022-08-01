@@ -168,3 +168,12 @@
 .Company_Information_form .input-container input, .Company_Information_form .input-container select {
   @apply w-full bg-transparent rounded-md py-3 px-3 border border-gray-300 focus:outline-none bg-mainBg;
 }
+
+/* Add department form */
+.add-department-form .input-container input, .add-department-form .input-container select {
+  @apply w-full bg-transparent rounded-md p-2 border border-gray-400 focus:outline-none
+}
+
+.add-department-form .input-container label {
+ @apply text-sm mb-2 block;
+}
