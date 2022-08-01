@@ -11,7 +11,6 @@ import RedXIcon from "../../../Assets/red_x_icon.svg";
 import SyncIcon from "../../../Assets/sync.svg";
 import InviteDropdown from "../../../Components/Organization/Users/InviteDropdown";
 import ImportDropdown from "../../../Components/Organization/Users/ImportDropdown";
-import DisplayDropdown from "../../../Components/Organization/Users/DisplayDropdown";
 import SyncDropdown from "../../../Components/Organization/Users/SyncDropdown";
 import FilterDrawer from "../../../Components/Organization/Users/FilterDrawer";
 import UploadFileModal from "../../../Components/Organization/Users/UploadFileModal";
@@ -198,28 +197,7 @@ const UserProfiles = () => {
           </div>
           {bulk.length > 0 && <UserActions />}
 
-          <div className="Container">
-            <div
-              className="px-6 py-4  mb-2 flex items-center gap-4 text-sm"
-              style={{ background: "var(--card)" }}
-            >
-              <button className="bg-caramel flex items-center gap-2 capitalize  hover:bg-opacity-70 transition ease-in duration-300 text-white py-1 text-sm px-2">
-                <span>Focus</span>
-              </button>
-              <button
-                id="display-button"
-                onClick={handleDisplayClick}
-                className="bg-caramel flex items-center gap-2 capitalize  hover:bg-opacity-70 transition ease-in duration-300 text-white py-1 text-sm px-2"
-              >
-                Display
-                <i className="fa fa-caret-down" aria-hidden="true"></i>
-              </button>
-              <DisplayDropdown
-                anchorEl={anchorDisplayEl}
-                handleClose={handleDisplayClose}
-              />
-            </div>
-          </div>
+      
           {/* table */}
           <div className="Container">
             <table className="employee-profile-table">

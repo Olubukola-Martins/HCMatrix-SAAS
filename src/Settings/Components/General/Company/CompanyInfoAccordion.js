@@ -44,7 +44,6 @@ const CompanyInfoAccordion = () => {
   const validationSchema = Yup.object({
     name: Yup.string().required("Company name is required"),
     email: Yup.string().email("Incorrect email address").required("Email Required"),
-    website: Yup.string().required("Website is required"),
     industry: Yup.string().required("Industry is required"),
     phone: Yup.string().required("Phone is required"),
     address: Yup.string().required("Address is required"),
@@ -96,7 +95,6 @@ const CompanyInfoAccordion = () => {
                     <div className="input-container">
                       <label>Website (optional)</label>
                       <Field type="text" placeholder="Website" name="website" />
-                      <ErrorMessage name="website" component="span" />
                     </div>
 
                     <div className="input-container">

@@ -1,7 +1,27 @@
 import React from "react";
 import "../../../style/settingsStyle.css";
+import { Formik, Form, Field, ErrorMessage } from "formik";
+import * as Yup from "yup";
 
 const AddEmployee = ({ close }) => {
+// Handle form
+const initialValues = {
+  displayName: "",
+  fromAddress: "",
+};
+
+const validationSchema = Yup.object({
+  displayName: Yup.string().required("Display name is required!"),
+  fromAddress: Yup.string().required("From Address is required!"),
+});
+
+const onSubmit = (values, onSubmitProps) => {
+  console.log("Form data", values);
+  onSubmitProps.setSubmitting(false);
+  onSubmitProps.resetForm();
+};
+
+
   return (
     <div className="Container pb-10">
       <div className="bg-card pt-5 pb-10 px-5 rounded-md mt-5">
