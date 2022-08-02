@@ -3,6 +3,25 @@ import React from "react";
 import { motion } from "framer-motion";
 
 const AddDelegationDrawer = ({ handleDrawer }) => {
+  // Handle form
+  const initialValues = {
+    name: "",
+    department: "",
+  };
+
+  const validationSchema = Yup.object({
+    name: Yup.string().required("Field is required!"),
+    department: Yup.string().required("Field is required!"),
+  });
+
+  const onSubmit = (values, onSubmitProps) => {
+    console.log("Form data", values);
+    onSubmitProps.setSubmitting(false);
+    onSubmitProps.resetForm();
+  };
+
+
+
   return (
     <motion.div
       initial={{ x: 500 }}
