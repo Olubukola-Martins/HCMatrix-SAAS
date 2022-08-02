@@ -10,22 +10,25 @@ const AddGroupDrawer = ({ handleDrawer }) => {
     description: "",
     groupEmail: "",
     employee: { id: "", roleInGroupId: "" },
-    mailAlias: "",
   };
 
   const validationSchema = Yup.object({
-    groupName: Yup.string().required("Group name is required!"),
+    groupName: Yup.string()
+      .required("Group name is required!")
+      .min(5, "Must be 5 characters or more"),
 
     groupEmail: Yup.string()
       .email("Invalid email format")
       .required("Group email is required"),
 
-    description: Yup.string().required("Description is required!"),
+    description: Yup.string()
+      .required("Description is required!")
+      .min(40, "Must be 40 characters or more"),
+
     employee: Yup.object().shape({
       id: Yup.string("Name is a string!"),
       roleInGroupId: Yup.string("Role is a string!"),
     }),
-    timeZone: Yup.string().required("Time zone is required!"),
   });
 
   const onSubmit = (values, onSubmitProps) => {
@@ -165,7 +168,7 @@ const AddGroupDrawer = ({ handleDrawer }) => {
                   Cancel
                 </button>
                 <button
-                  className="py-2 px-4 bg-caramel rounded text-sm text-white font-medium"
+                  className="button"
                   type="submit"
                   disabled={!formik.isValid || formik.isSubmitting}
                 >
