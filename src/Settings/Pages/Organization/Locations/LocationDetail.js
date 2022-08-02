@@ -26,7 +26,8 @@ const LocationDetail = () => {
   });
 
   const onSubmit = (values, onSubmitProps) => {
-    console.log("Form data", values);
+    // the axios call will be made here
+    // alogside the notifications
     onSubmitProps.setSubmitting(false);
     onSubmitProps.resetForm();
   };
