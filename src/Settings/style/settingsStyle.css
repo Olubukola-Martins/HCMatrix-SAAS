@@ -153,7 +153,9 @@
 /*error message  */
 .input-container span,
 .showErrorMsg,
-.whiteBg_form span {
+.whiteBg_form span,
+.showErrorMsg span
+ {
   @apply text-xs text-red-600 pl-1;
 }
 
@@ -166,7 +168,7 @@
   @apply text-sm mb-2 block;
 }
 
-.Company_Information_form .input-container input,
+.Company_Information_form .input-container input, .input-container select, .input-container input, .input-container textarea,
 .Company_Information_form .input-container select {
   @apply w-full bg-transparent rounded-md py-3 px-3 border border-gray-300 focus:outline-none bg-mainBg;
 }

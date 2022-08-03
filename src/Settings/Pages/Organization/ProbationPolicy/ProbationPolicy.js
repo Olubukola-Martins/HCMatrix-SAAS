@@ -1,9 +1,31 @@
-import { AnimatePresence } from "framer-motion";
-import React, { useState } from "react";
+import React from "react";
 import DashboardLayout from "../../../../Layout/DashboardLayout";
 import { Link } from "react-router-dom";
+import { Formik, Form, Field, ErrorMessage } from "formik";
+import * as Yup from "yup";
 
 const ProbationPolicy = () => {
+  // Handle form
+  const initialValues = {
+    probationPeriod: "",
+    probationReminder: "",
+    notifyRole: "",
+    automaticProbation: "",
+  };
+
+  const validationSchema = Yup.object({
+    probationPeriod: Yup.string().required("Field is required!"),
+    notifyRole: Yup.string()
+      .email("Invalid email format")
+      .required("Field is required"),
+  });
+
+  const onSubmit = (values, onSubmitProps) => {
+    console.log("Form data", values);
+    onSubmitProps.setSubmitting(false);
+    onSubmitProps.resetForm();
+  };
+
   return (
     <DashboardLayout>
       <div className="Container mt-3 h-screen">
@@ -19,59 +41,82 @@ const ProbationPolicy = () => {
         <div className="bg-card mt-5 pt-4 pb-10 px-4 rounded-md">
           <h3 className="text-accent text-lg mb-4">Probation Policy:</h3>
           <div className="mt-4">
-            <form className="text-accent mt-6 grid grid-cols-2 gap-x-24 gap-y-5 w-4/5">
-              <div>
-                <div className="input-container w-full">
-                  <label className="text-sm mb-2 block">Probation period</label>
-                  <input
-                    type="text"
-                    placeholder="eg. UI/UX Designer"
-                    className="w-full bg-white rounded-md p-2 border border-gray-400 focus:outline-none "
-                  />
-                </div>
-              </div>
-              <div>
-                <div className="input-container w-full flex flex-col items-start justify-between  h-full">
-                  <label className="text-sm mb-2 block">
-                    Probation reminder
-                  </label>
-                  <input
-                    type="checkbox"
-                    placeholder=""
-                    className="mb-2 scale-150"
-                  />
-                </div>
-              </div>
-              <div>
-                <div className="input-container w-full">
-                  <label className="text-sm mb-2 block">Notify role</label>
-                  <input
-                    type="text"
-                    placeholder="eg. johndoe@gmail.com"
-                    className="w-full bg-white rounded-md p-2 border border-gray-400 focus:outline-none "
-                  />
-                </div>
-              </div>
-              <div>
-                <div className="input-container w-full flex flex-col items-start justify-between  h-full">
-                  <label className="text-sm mb-2 block">
-                    Automatic probation status change
-                  </label>
-                  <input
-                    type="checkbox"
-                    placeholder=""
-                    className="mb-2 scale-150"
-                  />
-                </div>
-              </div>
+            <Formik
+              initialValues={initialValues}
+              validationSchema={validationSchema}
+              onSubmit={onSubmit}
+              validateOnMount
+            >
+             {(formik) => {
+               return (
+                <Form>
+                <div className="text-accent mt-6 grid grid-cols-1 md:grid-cols-2 gap-x-24 gap-y-5">
+                  <div className="input-container w-full">
+                    <label className="text-sm mb-2 block">
+                      Probation period
+                    </label>
+                    <Field
+                      type="text"
+                      name="probationPeriod"
+                      placeholder="eg. UI/UX Designer"
+                      className="w-full bg-mainBg rounded-md p-2 border border-gray-400 focus:outline-none "
+                    />
+                    <ErrorMessage name="probationPeriod" component="span" />
+                  </div>
 
-              {/* ctrl btns - edit n delete */}
-              <div className="form-buttons flex justify-end mt-4 col-span-2">
-                <button className="py-3 px-4 bg-caramel text-white rounded text-sm hover:opacity-60  font-medium">
-                  Save Changes
-                </button>
-              </div>
-            </form>
+                  <div className="input-container w-full flex flex-col items-start justify-between  h-full">
+                    <label htmlFor="probation" className="text-sm mb-2 block">
+                      Probation reminder
+                    </label>
+                    <Field
+                      type="checkbox"
+                      placeholder=""
+                      id="probation"
+                      className="mb-2 scale-150"
+                      name="probationReminder"
+                      values="probation Reminder"
+                    />
+                  </div>
+
+                  <div className="input-container w-full">
+                    <label htmlFor="notify" className="text-sm mb-2 block">
+                      Notify role
+                    </label>
+                    <Field
+                      type="text"
+                      id="notify"
+                      name="notifyRole"
+                      placeholder="eg. johndoe@gmail.com"
+                      className="w-full bg-mainBg rounded-md p-2 border border-gray-400 focus:outline-none "
+                    />
+                    <ErrorMessage name="notifyRole" component="span" />
+                  </div>
+
+                  <div className="input-container w-full flex flex-col items-start justify-between  h-full">
+                    <label htmlFor="status" className="text-sm mb-2 block">
+                      Automatic probation status change
+                    </label>
+                    <Field
+                      type="checkbox"
+                      placeholder=""
+                      id="status"
+                      name="automaticProbation"
+                      className="mb-2 scale-150"
+                      values="Automatic probation"
+                    />
+                  </div>
+
+                  {/* ctrl btns - edit n delete */}
+                  <div className="form-buttons flex justify-end mt-4">
+                    <button  disabled={!formik.isValid || formik.isSubmitting} className="button">
+                      Save Changes
+                    </button>
+                  </div>
+                </div>
+              </Form>
+               )
+             }}
+            </Formik>
           </div>
         </div>
       </div>
