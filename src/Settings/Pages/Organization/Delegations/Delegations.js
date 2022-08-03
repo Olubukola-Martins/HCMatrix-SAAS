@@ -46,6 +46,7 @@ const Departments = () => {
   // const handleViewId = (val) => {
   //   setViewId(val);
   // };
+  
   return (
     <DashboardLayout>
       <div className="h-screen">

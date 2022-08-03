@@ -25,6 +25,7 @@ const Domains = () => {
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
+  
   return (
     <DashboardLayout>
       <div className="Container pb-36 pt-5">
