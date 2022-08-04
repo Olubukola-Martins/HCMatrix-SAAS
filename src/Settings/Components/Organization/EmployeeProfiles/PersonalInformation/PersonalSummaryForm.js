@@ -51,7 +51,7 @@ const PersonalSummaryForm = () => {
               <div>
                 <div className="P_Form_Group">
                   <label>Name</label>
-                  <div className="flex-1  self-start">
+                  <div className="">
                     <Field
                       type="text"
                       placeholder="Godswill Omenuko"

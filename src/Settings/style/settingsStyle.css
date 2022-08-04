@@ -58,6 +58,9 @@
 .P_Form_Group {
   @apply flex gap-2 lg:items-center flex-col lg:flex-row;
 }
+.P_Form_Group.col {
+  @apply flex gap-2 items-start items-stretch flex-col ;
+}
 
 .P_Form_Group input,
 .P_Form_Group textarea,

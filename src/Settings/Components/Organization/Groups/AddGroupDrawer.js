@@ -13,9 +13,7 @@ const AddGroupDrawer = ({ handleDrawer }) => {
   };
 
   const validationSchema = Yup.object({
-    groupName: Yup.string()
-      .required("Group name is required!")
-      .min(3, "Must be 3 characters or more"),
+    groupName: Yup.string().required("Group name is required!"),
 
     groupEmail: Yup.string()
       .email("Invalid email format")
