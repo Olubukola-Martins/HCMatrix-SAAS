@@ -4,7 +4,6 @@ export const settingNavItems = [
     items: [
       { name: "Company", link: "/settings/company-details" },
       { name: "Domain", link: "/settings/domains" },
-      { name: "Rebranding", link: "/settings/rebranding" },
       { name: "From Addresses", link: "/settings/from-addresses" },
     ],
     category: "basic",
@@ -31,8 +30,6 @@ export const settingNavItems = [
     items: [
       { name: "Roles & Permissions", link: "/settings/roles" },
       { name: "Delegation", link: "/settings/delegations" },
-
-      // { name: "Allowed IP's", link: "/settings/rebranding" },
       // { name: "Geo Restrictions", link: "/settings/from-addresses" },
     ],
     category: "basic",
@@ -43,7 +40,6 @@ export const settingNavItems = [
     items: [
       { name: "Workflows", link: "/settings/automation/workflows" },
       // { name: "Actions", link: "/settings/domain" },
-      // { name: "Approvals", link: "/settings/rebranding" },
       // { name: "Scheduler", link: "/settings/from-addresses" },
     ],
     category: "basic",
@@ -53,7 +49,6 @@ export const settingNavItems = [
   //   items: [
   //     { name: "Import History", link: "/settings/company-details" },
   //     { name: "Export History", link: "/settings/domain" },
-  //     { name: "Activity Log", link: "/settings/rebranding" },
   //     { name: "Files Usage", link: "/settings/from-addresses" },
   //     { name: "API Usage", link: "/settings/from-addresses" },
   //   ],
@@ -65,7 +60,6 @@ export const settingNavItems = [
     items: [
       { name: "Leave requests", link: "/settings/company-details" },
       { name: "Loan requests", link: "/settings/domain" },
-      { name: "Activity Log", link: "/settings/rebranding" },
       { name: "Files Usage", link: "/settings/from-addresses" },
     ],
     category: "self-service",

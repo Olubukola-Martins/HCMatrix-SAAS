@@ -3,7 +3,6 @@ import { Route, Routes } from "react-router-dom";
 import GeneralSettings from "../Pages/General/GeneralSettings";
 import CompanyDetails from "../Pages/General/CompanyDetails";
 import FromAddresses from "../Pages/General/FromAddresses";
-import Rebranding from "../Pages/General/Rebranding";
 import Domains from "../Pages/General/Domains";
 import EmployeeProfiles from "../Pages/Organization/EmployeeProfiles/EmployeeProfiles";
 import UserProfiles from "../Pages/Organization/UserProfiles/UserProfiles";
@@ -34,7 +33,6 @@ const SettingRoutes = () => {
       <Route path="/settings" element={<GeneralSettings />} />
       <Route path="/settings/company-details" element={<CompanyDetails />} />
       <Route path="/settings/domains" element={<Domains />} />
-      <Route path="/settings/rebranding" element={<Rebranding />} />
       <Route path="/settings/from-addresses" element={<FromAddresses />} />
       <Route path="/settings/locations" element={<Locations />} />
       <Route path="/settings/locations/:id" element={<LocationDetail />} />
