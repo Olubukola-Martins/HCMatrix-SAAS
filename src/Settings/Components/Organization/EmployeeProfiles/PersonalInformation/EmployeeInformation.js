@@ -4,6 +4,7 @@ import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 
 const EmployeeInformation = () => {
+  const validate = Yup.string().required("Field is required!")
   const initialValues = {
     expatriate: "",
     payrollType: "",
@@ -34,12 +35,12 @@ const EmployeeInformation = () => {
   };
 
   const validationSchema = Yup.object({
-    expatriate: Yup.string().required("expatriate is required!"),
-    payrollType: Yup.string().required("payrollType is required!"),
-    probationEndDate: Yup.string().required("probationEndDate is required!"),
-    lga: Yup.string().required("lga is required!"),
-    state: Yup.string().required("state is required!"),
-    country: Yup.string().required("country is required!"),
+    expatriate: validate,
+    payrollType: validate,
+    probationEndDate: validate,
+    lga: validate,
+    state: validate,
+    country: validate,
     company: Yup.string().required("company is required!"),
     branch: Yup.string().required("branch is required!"),
     department: Yup.string().required("department is required!"),
@@ -56,11 +57,11 @@ const EmployeeInformation = () => {
       admin: Yup.string().required("Administrator is a required!"),
       accNo: Yup.string()
         .required("Account Number is required!")
-        .test(
-          "len",
-          "Must be exactly 10 characters",
-          (val) => val && val.length === 10
-        ),
+        // .test(
+        //   "len",
+        //   "Must be exactly 10 characters",
+        //   (val) => val && val.length === 10
+        // ),
     }),
     bank: Yup.object().shape({
       name: Yup.string().required("Bank name is a required!"),
@@ -431,6 +432,7 @@ const EmployeeInformation = () => {
                   </div>
                 </div>
               </div>
+              <button className="button">Submit</button>
             </Form>
           );
         }}
