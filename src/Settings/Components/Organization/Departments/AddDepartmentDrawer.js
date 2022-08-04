@@ -14,7 +14,9 @@ const AddDepartmentDrawer = ({ handleDrawer }) => {
   };
 
   const validationSchema = Yup.object({
-    departmentName: Yup.string().required("Field is required!"),
+    departmentName: Yup.string()
+      .required("Field is required!")
+      .min(3, "Must be 3 characters or more"),
     mailAlias: Yup.string()
       .email("Invalid email format")
       .required("Field is required"),

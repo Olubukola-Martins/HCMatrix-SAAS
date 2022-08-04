@@ -4,6 +4,7 @@ import DashboardLayout from "../../../../Layout/DashboardLayout";
 import { Link } from "react-router-dom";
 
 import { GradesTableView } from "../../../Components/Organization/Grades/GradesTableView";
+import AddGradeDrawer from "../../../Components/Organization/Grades/AddGradeDrawer";
 
 const grades = [
   {
@@ -17,24 +18,25 @@ const grades = [
 
 const Roles = () => {
   const [viewId, setViewId] = useState("list");
+  const [showDraggableDrawer, setShowDraggableDrawer] = useState("");
 
   return (
     <DashboardLayout>
       <div className="h-screen">
         {
           <div className="Container mt-4">
-            <h4 className="text-lg  mb-1">Grades & Levels</h4>
+            <h4 className="text-lg  mb-1">Grades</h4>
             <div className="flex flex-col gap-2 md:flex-row md:justify-between md:items-center bg-card p-2 rounded text-sm">
               <p>Manage grades and levels</p>
 
               <div className="flex gap-4 items-center">
-                <Link
+                <button
                   id="invite-button"
                   className="py-1 px-2 bg-caramel rounded text-sm text-white font-medium"
-                  to="/settings/roles/create"
+                  onClick={() => setShowDraggableDrawer("add-grade")}
                 >
                   Add grade
-                </Link>
+                </button>
                 {/* <div className="view-toggler flex rounded overflow-hidden items-center">
                   <i
                     onClick={() => handleViewId("grid")}
@@ -79,6 +81,9 @@ const Roles = () => {
 
         <div className="content overflow-y-hidden relative">
           <AnimatePresence exitBeforeEnter>
+            {showDraggableDrawer === "add-grade" && (
+              <AddGradeDrawer handleDrawer={setShowDraggableDrawer} />
+            )}
             {viewId === "list" && <GradesTableView grades={grades} />}
           </AnimatePresence>
         </div>

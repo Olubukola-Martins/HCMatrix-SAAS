@@ -71,7 +71,7 @@ const InviteUserDrawer = ({ handleDrawer }) => {
                       <label className="text-sm mb-2 block">Employee ID</label>
                       <Field
                         type="text"
-                        placeholder="State/Province"
+                        placeholder="Employee Id"
                         name="employeeId"
                         className="w-full bg-transparent rounded-md p-2 border border-gray-400 focus:outline-none "
                       />
