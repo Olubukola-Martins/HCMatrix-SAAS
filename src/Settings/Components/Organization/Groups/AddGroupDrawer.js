@@ -15,7 +15,7 @@ const AddGroupDrawer = ({ handleDrawer }) => {
   const validationSchema = Yup.object({
     groupName: Yup.string()
       .required("Group name is required!")
-      .min(5, "Must be 5 characters or more"),
+      .min(3, "Must be 3 characters or more"),
 
     groupEmail: Yup.string()
       .email("Invalid email format")
@@ -127,10 +127,10 @@ const AddGroupDrawer = ({ handleDrawer }) => {
                       name="employee.id"
                       type="text"
                       placeholder="Add employee"
-                      className="w-full bg-white text-caramel rounded-full p-1  focus:outline-none "
+                      className="w-full bg-white text-caramel rounded-full p-.5  focus:outline-none "
                     >
-                      <option className="bg-card">Employee</option>
-                      <option className="bg-card">line manager</option>
+                      <option className="bg-card">Isaac</option>
+                      <option className="bg-card">James Dean</option>
                     </Field>
                     <ErrorMessage name="employee.id" component="span" />
                   </div>
@@ -142,8 +142,8 @@ const AddGroupDrawer = ({ handleDrawer }) => {
                       placeholder="Select"
                       className="w-full bg-white text-caramel rounded-full p-1  focus:outline-none "
                     >
-                      <option className="bg-card">Employee</option>
-                      <option className="bg-card">line manager</option>
+                      <option className="bg-card">member</option>
+                      <option className="bg-card">lead</option>
                     </Field>
                     <ErrorMessage
                       name="employee.roleInGroupId"

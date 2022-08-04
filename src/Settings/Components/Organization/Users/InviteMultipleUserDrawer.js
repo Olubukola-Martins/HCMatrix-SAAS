@@ -15,7 +15,7 @@ const validate = (values) => {
   let errors = {};
 
   if (!values.email) {
-    errors.email = "Email is Required";
+    errors.email = "A list of emails is Required";
   } else {
     let emailList = values.email.split(",");
     emailList.forEach((eachEmail) => {

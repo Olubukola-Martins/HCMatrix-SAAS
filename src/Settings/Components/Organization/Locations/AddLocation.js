@@ -15,7 +15,9 @@ const AddLocation = ({ handleDrawer }) => {
   };
 
   const validationSchema = Yup.object({
-    name: Yup.string().required("Field is required!"),
+    name: Yup.string()
+      .required("Field is required!")
+      .min(3, "Must be 3 characters or more"),
     mail: Yup.string()
       .email("Invalid email format")
       .required("Field is required"),
