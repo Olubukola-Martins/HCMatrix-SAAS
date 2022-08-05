@@ -4,7 +4,7 @@ import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 
 const EmployeeInformation = () => {
-  const validate = Yup.string().required("Field is required!")
+  const validate = Yup.string().required("Field is required!");
   const initialValues = {
     expatriate: "",
     payrollType: "",
@@ -16,8 +16,10 @@ const EmployeeInformation = () => {
     branch: "",
     department: "",
     currentRole: "",
+    hire_date: "",
     grade: "",
     hireDate: "",
+    probation_date: "",
     nextOfKin: {
       name: "",
       address: "",
@@ -41,27 +43,28 @@ const EmployeeInformation = () => {
     lga: validate,
     state: validate,
     country: validate,
-    company: Yup.string().required("company is required!"),
-    branch: Yup.string().required("branch is required!"),
-    department: Yup.string().required("department is required!"),
-    currentRole: Yup.string().required("currentRole is required!"),
-    grade: Yup.string().required("grade is required!"),
-    hireDate: Yup.string().required("hireDate is required!"),
+    company: validate,
+    branch: validate,
+    department: validate,
+    currentRole: validate,
+    grade: validate,
+    hireDate: validate,
+    hireDate: validate,
+    probation_date: validate,
     nextOfKin: Yup.object().shape({
-      name: Yup.string().required("Name is a required!"),
-      address: Yup.string().required("Address is a required!"),
-      relation: Yup.string().required("relation is a required!"),
-      phone: Yup.string().required("Phone is a required!"),
+      name: validate,
+      address: validate,
+      relation: validate,
+      phone: validate,
     }),
     pension: Yup.object().shape({
       admin: Yup.string().required("Administrator is a required!"),
-      accNo: Yup.string()
-        .required("Account Number is required!")
-        // .test(
-        //   "len",
-        //   "Must be exactly 10 characters",
-        //   (val) => val && val.length === 10
-        // ),
+      accNo: Yup.string().required("Account Number is required!"),
+      // .test(
+      //   "len",
+      //   "Must be exactly 10 characters",
+      //   (val) => val && val.length === 10
+      // ),
     }),
     bank: Yup.object().shape({
       name: Yup.string().required("Bank name is a required!"),
@@ -88,7 +91,7 @@ const EmployeeInformation = () => {
         onSubmit={onSubmit}
         validateOnMount
       >
-        {() => {
+        {(formik) => {
           return (
             <Form>
               {/* Personal Information section */}
@@ -223,18 +226,20 @@ const EmployeeInformation = () => {
                   <div className="P_Form_Group">
                     <label>Probation End Date</label>
                     <input
-                      type="text"
+                      type="date"
                       placeholder="23 - 09 - 2022"
                       onFocus={(e) => (e.target.type = "date")}
                       onBlur={(e) => (e.target.type = "text")}
+                      name="probation_date"
                     />
                   </div>
                   <div className="P_Form_Group my-4">
                     <label>Country</label>
-                    <select>
+                    <Field as="select">
+                      <option value="">Select county</option>
                       <option value="male">Nigeria</option>
                       <option value="male">Ghana</option>
-                    </select>
+                    </Field>
                   </div>
                   <div className="P_Form_Group">
                     <label>Department</label>
@@ -256,8 +261,9 @@ const EmployeeInformation = () => {
                   </div>
                   <div className="P_Form_Group mt-4">
                     <label>Hire Date</label>
-                    <input
+                    <Field
                       type="text"
+                      name="hire_date"
                       placeholder="23 - 09 - 2022"
                       onFocus={(e) => (e.target.type = "date")}
                       onBlur={(e) => (e.target.type = "text")}
