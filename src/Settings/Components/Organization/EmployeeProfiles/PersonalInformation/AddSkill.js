@@ -8,7 +8,7 @@ const AddSkill = ({ open, handleClose }) => {
   const validate = Yup.string().required("Field is Required!");
   const initialValues = {
     skill: "",
-    Competency: "",
+    competency: "",
   };
 
   const onSubmit = (values, onSubmitProps) => {
@@ -19,7 +19,7 @@ const AddSkill = ({ open, handleClose }) => {
 
   const validationSchema = Yup.object({
     skill: validate,
-    Competency: validate,
+    competency: validate,
   });
 
   return (
@@ -41,33 +41,54 @@ const AddSkill = ({ open, handleClose }) => {
               onSubmit={onSubmit}
               validateOnMount
             >
-              <Form>
-                <div className="whiteBg_form">
-                  <label>Skill</label>
-                  <Field type="text" name="Skill" placeholder="Enter skill"/>
-                  <ErrorMessage name="skill" component="" className="errorMsg"/>
-                </div>
-                <div className="whiteBg_form mt-4">
-                  <label>Competency</label>
-                  <Field name="competency" as="select" id="">
-                    <option value="">Select</option>
-                    <option value="great">Grade 1</option>
-                    <ErrorMessage name="competency" component="" className="errorMsg"/>
-                  </Field>
-                </div>
-                <div className="flex items-center justify-between mt-5">
-                  <button
-                    type="button"
-                    onClick={handleClose}
-                    className="transparentButton"
-                  >
-                    Cancel
-                  </button>
-                  <button type="submit" className="button">
-                    Submit
-                  </button>
-                </div>
-              </Form>
+              {(formik) => {
+                return (
+                  <Form>
+                    <div className="whiteBg_form">
+                      <label>Skill</label>
+                      <Field
+                        type="text"
+                        name="skill"
+                        placeholder="Enter skill"
+                      />
+                      <ErrorMessage
+                        name="skill"
+                        component="span"
+                        className="errorMsg"
+                      />
+                    </div>
+                    <div className="whiteBg_form mt-4">
+                      <label>Competency</label>
+                      <Field name="competency" as="select">
+                        <option value="">Select</option>
+                        <option value="grade_1">Grade 1</option>
+                        <option value="grade_2">Grade 2</option>
+                      </Field>
+                      <ErrorMessage
+                        name="competency"
+                        component="span"
+                        className="errorMsg"
+                      />
+                    </div>
+                    <div className="flex items-center justify-between mt-5">
+                      <button
+                        type="button"
+                        onClick={handleClose}
+                        className="transparentButton"
+                      >
+                        Cancel
+                      </button>
+                      <button
+                        disabled={!formik.isValid || formik.isSubmitting}
+                        type="submit"
+                        className="button"
+                      >
+                        Submit
+                      </button>
+                    </div>
+                  </Form>
+                );
+              }}
             </Formik>
           </div>
         </Themes>
