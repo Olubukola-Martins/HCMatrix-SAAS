@@ -1,8 +1,25 @@
 import React from "react";
 import Modal from "@mui/material/Modal";
 import Themes from "../../../../../Themes/Themes";
+import { ErrorMessage, Field, Form, Formik } from "formik";
+import * as Yup from "yup";
 
 const AddQualification = ({ open, handleClose }) => {
+  const initialValues = {
+    grade: "",
+    suspension_date: "",
+  };
+
+  const onSubmit = (values, onSubmitProps) => {
+    console.log("Form data", values);
+    onSubmitProps.setSubmitting(false);
+    onSubmitProps.resetForm();
+  };
+
+  const validationSchema = Yup.object({
+    grade: Yup.string().required("Field is Required!"),
+    suspension_date: Yup.string().required("Field is Required"),
+  });
   return (
     <>
       <Modal open={open} onClose={handleClose}>
@@ -15,36 +32,44 @@ const AddQualification = ({ open, handleClose }) => {
                 onClick={handleClose}
               ></i>
             </div>
-            <form>
+            <Formik>
+            <Form>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
                 <div className="whiteBg_form">
                   <label>Qualification</label>
-                  <select name="" id="">
+                  <Field as="select" name="qualification">
+                    <option value="">Select qualification</option>
                     <option value="bachelor">Bachelor</option>
                     <option value="phd">PHD</option>
-                  </select>
+                  </Field>
+                  <ErrorMessage name="qualification" component="span" className="errorMsg"/>
                 </div>
                 <div className="whiteBg_form">
                   <label>Title</label>
-                  <input type="text" placeholder="Qualification Title" />
+                  <Field type="text" name="title" placeholder="Qualification Title" />
+                  <ErrorMessage name="title" component="span" className="errorMsg"/>
                 </div>
 
                 <div className="whiteBg_form">
                   <label>Institution</label>
-                  <input type="text" placeholder="Institution" />
+                  <Field type="text" name="institution" placeholder="Institution" />
+                  <ErrorMessage name="institution" component="span" className="errorMsg"/>
                 </div>
                 <div className="whiteBg_form">
                   <label>Year</label>
-                  <input
+                  <Field
                     type="text"
+                    name="year"
                     placeholder="03 - 05 - 2021"
                     onFocus={(e) => (e.target.type = "date")}
                     onBlur={(e) => (e.target.type = "text")}
                   />
+                  <ErrorMessage name="year" component="span" className="errorMsg"/>
                 </div>
                 <div className="whiteBg_form">
                   <label>Course</label>
-                  <input type="text" placeholder="User experience design" />
+                  <Field type="text" name="course" placeholder="User experience design" />
+                  <ErrorMessage name="course" component="span" className="errorMsg"/>
                 </div>
 
                 <div className="whiteBg_form">
@@ -68,7 +93,8 @@ const AddQualification = ({ open, handleClose }) => {
                   Submit
                 </button>
               </div>
-            </form>
+            </Form>
+            </Formik>
           </div>
         </Themes>
       </Modal>
