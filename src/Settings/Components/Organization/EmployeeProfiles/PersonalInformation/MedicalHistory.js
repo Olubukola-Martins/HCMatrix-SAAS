@@ -1,6 +1,74 @@
 import React from "react";
+import { ErrorMessage, Field, Form, Formik } from "formik";
+import * as Yup from "yup";
 
 const MedicalHistory = () => {
+  const validate = Yup.string().required("Field is Required!");
+
+  //=== Handle Medical Condition ====//
+  const initialValues = {
+    name: "",
+    date: "",
+  };
+
+  const medicalConditionSubmit = (values, onSubmitProps) => {
+    console.log(values);
+    onSubmitProps.resetForm();
+  };
+
+  const validationSchema = Yup.object({
+    name: validate,
+    date: validate,
+  });
+
+  // == Pest Medical Condition == //
+  const pestMCinitialValues = {
+    name: "",
+    date: "",
+  };
+
+  const pestMCSubmit = (values, onSubmitProps) => {
+    console.log(values);
+    onSubmitProps.resetForm();
+  };
+
+  const pestMCvalidationSchema = Yup.object({
+    name: validate,
+    date: validate,
+  });
+
+  // == Surgeries Hospitalization == //
+  const HospitalizationInitialValues = {
+    name: "",
+    date: "",
+  };
+
+  const HospitalizationSubmit = (values, onSubmitProps) => {
+    console.log(values);
+    onSubmitProps.resetForm();
+  };
+
+  const HospitalizationValidationSchema = Yup.object({
+    name: validate,
+    date: validate,
+  });
+
+  // === Family history ====//
+   const FHistoryInitialValues = {
+    name: "",
+    date: "",
+  };
+
+  const FHistorySubmit = (values, onSubmitProps) => {
+    console.log(values);
+    onSubmitProps.resetForm();
+  };
+
+  const FHistoryValidationSchema = Yup.object({
+    name: validate,
+    date: validate,
+  });
+
   return (
     <div className="grid grid-cols-1 lg:grid-cols-2 gap-y-10 gap-x-8">
       {/* Current of Medical Condition */}
@@ -12,22 +80,47 @@ const MedicalHistory = () => {
           <i className="ri-information-line font-medium cursor-pointer"></i>
         </div>
         <div className="border border-gray-300 rounded-md">
-          <form className="p-5">
-            <div className="whiteBg_form">
-              <input type="text" placeholder="Name of medical condition" />
-            </div>
-            <div className="whiteBg_form mt-4">
-              <input
-                type="text"
-                placeholder="Date"
-                onFocus={(e) => (e.target.type = "date")}
-                onBlur={(e) => (e.target.type = "text")}
-              />
-            </div>
-            <div className="flex justify-end mt-5">
-              <button className="button">Submit</button>
-            </div>
-          </form>
+          <Formik
+            initialValues={initialValues}
+            onSubmit={medicalConditionSubmit}
+            validationSchema={validationSchema}
+          >
+            <Form className="p-5">
+              <div className="whiteBg_form">
+                <Field
+                  type="text"
+                  placeholder="Name of medical condition"
+                  name="name"
+                />
+                <ErrorMessage
+                  name="name"
+                  component="span"
+                  className="showErrorMsg"
+                />
+              </div>
+              <div className="whiteBg_form mt-4">
+                <Field
+                  type="text"
+                  placeholder="Date"
+                  name="date"
+                  onFocus={(e) => (e.target.type = "date")}
+                  onBlur={(e) => (e.target.type = "text")}
+                />
+                <ErrorMessage
+                  name="date"
+                  component="span"
+                  className="showErrorMsg"
+                />
+              </div>
+              <div className="flex justify-end mt-5">
+                <button type="submit" className="button">
+                  Submit
+                </button>
+              </div>
+            </Form>
+          </Formik>
+
+          {/* Fetch Medical Condition */}
           <div className="medicalTableWrap">
             <table>
               <thead>
@@ -65,22 +158,47 @@ const MedicalHistory = () => {
           <i className="ri-information-line font-medium cursor-pointer"></i>
         </div>
         <div className="border border-gray-300 rounded-md">
-          <form className="p-5">
-            <div className="whiteBg_form">
-              <input type="text" placeholder="Name of medical condition" />
-            </div>
-            <div className="whiteBg_form mt-4">
-              <input
-                type="text"
-                placeholder="Date"
-                onFocus={(e) => (e.target.type = "date")}
-                onBlur={(e) => (e.target.type = "text")}
-              />
-            </div>
-            <div className="flex justify-end mt-5">
-              <button className="button">Submit</button>
-            </div>
-          </form>
+          <Formik
+            initialValues={pestMCinitialValues}
+            onSubmit={pestMCSubmit}
+            validationSchema={pestMCvalidationSchema}
+          >
+            <Form className="p-5">
+              <div className="whiteBg_form">
+                <Field
+                  name="name"
+                  type="text"
+                  placeholder="Name of medical condition"
+                />
+                <ErrorMessage
+                  name="name"
+                  component="span"
+                  className="showErrorMsg"
+                />
+              </div>
+              <div className="whiteBg_form mt-4">
+                <Field
+                  type="text"
+                  name="date"
+                  placeholder="Date"
+                  onFocus={(e) => (e.target.type = "date")}
+                  onBlur={(e) => (e.target.type = "text")}
+                />
+                <ErrorMessage
+                  name="date"
+                  component="span"
+                  className="showErrorMsg"
+                />
+              </div>
+              <div className="flex justify-end mt-5">
+                <button type="submit" className="button">
+                  Submit
+                </button>
+              </div>
+            </Form>
+          </Formik>
+
+          {/* fetch Pest Medical Condition */}
           <div className="medicalTableWrap">
             <table>
               <thead>
@@ -118,22 +236,46 @@ const MedicalHistory = () => {
           <i className="ri-information-line font-medium cursor-pointer"></i>
         </div>
         <div className="border border-gray-300 rounded-md">
-          <form className="p-5">
-            <div className="whiteBg_form">
-              <input type="text" placeholder="Surgeries/Hospitalization" />
-            </div>
-            <div className="whiteBg_form mt-4">
-              <input
-                type="text"
-                placeholder="Date"
-                onFocus={(e) => (e.target.type = "date")}
-                onBlur={(e) => (e.target.type = "text")}
-              />
-            </div>
-            <div className="flex justify-end mt-5">
-              <button className="button">Submit</button>
-            </div>
-          </form>
+          <Formik
+            initialValues={HospitalizationInitialValues}
+            onSubmit={HospitalizationSubmit}
+            validationSchema={HospitalizationValidationSchema}
+          >
+            <Form className="p-5">
+              <div className="whiteBg_form">
+                <Field
+                  type="text"
+                  name="name"
+                  placeholder="Surgeries/Hospitalization"
+                />
+                <ErrorMessage
+                  name="name"
+                  component="span"
+                  className="showErrorMsg"
+                />
+              </div>
+              <div className="whiteBg_form mt-4">
+                <Field
+                  type="text"
+                  placeholder="Date"
+                  name="date"
+                  onFocus={(e) => (e.target.type = "date")}
+                  onBlur={(e) => (e.target.type = "text")}
+                />
+                <ErrorMessage
+                  name="name"
+                  component="span"
+                  className="showErrorMsg"
+                />
+              </div>
+              <div className="flex justify-end mt-5">
+                <button type="submit" className="button">
+                  Submit
+                </button>
+              </div>
+            </Form>
+          </Formik>
+          {/* Fetch Surgeries/Hospitalization */}
           <div className="medicalTableWrap">
             <table>
               <thead>
@@ -171,19 +313,44 @@ const MedicalHistory = () => {
           <i className="ri-information-line font-medium cursor-pointer"></i>
         </div>
         <div className="border border-gray-300 rounded-md">
-          <form className="p-5">
-            <div className="whiteBg_form">
-              <input type="text" placeholder="Name of Medical Condition" />
-            </div>
-            <div className="whiteBg_form mt-4">
-              <select name="" id="">
-                <option value="">Member</option>
-              </select>
-            </div>
-            <div className="flex justify-end mt-5">
-              <button className="button">Submit</button>
-            </div>
-          </form>
+          <Formik
+            initialValues={FHistoryInitialValues}
+            onSubmit={FHistorySubmit}
+            validationSchema={FHistoryValidationSchema}
+          >
+            <Form className="p-5">
+              <div className="whiteBg_form">
+                <Field
+                  type="text"
+                  name="name"
+                  placeholder="Name of Medical Condition"
+                />
+                <ErrorMessage
+                  name="name"
+                  component="span"
+                  className="showErrorMsg"
+                />
+              </div>
+              <div className="whiteBg_form mt-4">
+                <Field name="date" as="select">
+                  <option value="">Select</option>
+                  <option value="father">Father</option>
+                  <option value="mother">Mother</option>
+                  <option value="sister">Sister</option>
+                </Field>
+                <ErrorMessage
+                  name="date"
+                  component="span"
+                  className="showErrorMsg"
+                />
+              </div>
+              <div className="flex justify-end mt-5">
+                <button type="submit" className="button">
+                  Submit
+                </button>
+              </div>
+            </Form>
+          </Formik>
           <div className="medicalTableWrap">
             <table>
               <thead>
