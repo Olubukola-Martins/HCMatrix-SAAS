@@ -54,7 +54,7 @@ const MedicalHistory = () => {
   });
 
   // === Family history ====//
-   const FHistoryInitialValues = {
+  const FHistoryInitialValues = {
     name: "",
     date: "",
   };
@@ -67,6 +67,34 @@ const MedicalHistory = () => {
   const FHistoryValidationSchema = Yup.object({
     name: validate,
     date: validate,
+  });
+
+  // === Handle medication ====//
+  const medicationInitialValues = {
+    name: "",
+  };
+
+  const medicationSubmit = (values, onSubmitProps) => {
+    console.log(values);
+    onSubmitProps.resetForm();
+  };
+
+  const medicationValidationSchema = Yup.object({
+    name: validate,
+  });
+
+  // === Handle  Allergy ====//
+  const allergyInitialValues = {
+    name: "",
+  };
+
+  const allergySubmit = (values, onSubmitProps) => {
+    console.log(values);
+    onSubmitProps.resetForm();
+  };
+
+  const allergyValidationSchema = Yup.object({
+    name: validate,
   });
 
   return (
@@ -388,15 +416,32 @@ const MedicalHistory = () => {
           <i className="ri-information-line font-medium cursor-pointer"></i>
         </div>
         <div className="border border-gray-300 rounded-md">
-          <form className="p-5">
-            <div className="whiteBg_form">
-              <input type="text" placeholder="Name of Medication" />
-            </div>
+          <Formik
+            initialValues={medicationInitialValues}
+            onSubmit={medicationSubmit}
+            validationSchema={medicationValidationSchema}
+          >
+            <Form className="p-5">
+              <div className="whiteBg_form">
+                <Field
+                  name="name"
+                  type="text"
+                  placeholder="Name of Medication"
+                />
+                <ErrorMessage
+                  name="name"
+                  component="span"
+                  className="showErrorMsg"
+                />
+              </div>
 
-            <div className="flex justify-end mt-5">
-              <button className="button">Submit</button>
-            </div>
-          </form>
+              <div className="flex justify-end mt-5">
+                <button type="submit" className="button">
+                  Submit
+                </button>
+              </div>
+            </Form>
+          </Formik>
           <div className="medicalTableWrap">
             <table>
               <thead>
@@ -432,15 +477,28 @@ const MedicalHistory = () => {
           <i className="ri-information-line font-medium cursor-pointer"></i>
         </div>
         <div className="border border-gray-300 rounded-md">
-          <form className="p-5">
-            <div className="whiteBg_form">
-              <input type="text" placeholder="Name of Allergy" />
-            </div>
+          <Formik
+            initialValues={allergyInitialValues}
+            onSubmit={allergySubmit}
+            validationSchema={allergyValidationSchema}
+          >
+            <Form className="p-5">
+              <div className="whiteBg_form">
+                <Field type="text" name="name" placeholder="Name of Allergy" />
+                <ErrorMessage
+                  name="name"
+                  component="span"
+                  className="showErrorMsg"
+                />
+              </div>
 
-            <div className="flex justify-end mt-5">
-              <button className="button">Submit</button>
-            </div>
-          </form>
+              <div className="flex justify-end mt-5">
+                <button type="submit" className="button">
+                  Submit
+                </button>
+              </div>
+            </Form>
+          </Formik>
           <div className="medicalTableWrap">
             <table>
               <thead>
