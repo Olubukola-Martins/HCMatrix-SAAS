@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import Drawer from "@mui/material/Drawer";
 import Themes from "../../Themes/Themes";
+import { Link } from "react-router-dom";
 
 const SubTopBar = () => {
   const [hideOrShow, setHideOrShow] = useState(false);
@@ -66,6 +67,7 @@ const SubTopBar = () => {
               <i className="ri-honour-line text-base"></i>
               <span>Attendance</span>
             </div>
+
           </div>
         </div>
         </Themes>
@@ -174,6 +176,7 @@ const SubTopBar = () => {
             <i className="ri-honour-line text-base"></i>
             <span>Attendance</span>
           </div>
+            <Link to="/disciplinary">Disciplinary</Link>
         </div>
       </div>
       {hideOrShow ? (
