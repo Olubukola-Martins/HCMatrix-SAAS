@@ -171,7 +171,7 @@
 
 .Company_Information_form .input-container input, .input-container select, .input-container input, .input-container textarea,
 .Company_Information_form .input-container select {
-  @apply w-full bg-transparent rounded-md py-3 px-3 border border-gray-300 focus:outline-none bg-mainBg;
+  @apply w-full rounded-md py-3 px-3 border border-gray-300 focus:outline-none bg-mainBg;
 }
 
 /* Add department form */
