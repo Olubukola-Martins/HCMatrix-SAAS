@@ -41,42 +41,42 @@ const Disciplinary = () => {
 
           {/* Table */}
           <table className="w-full text-left text-accent mt-5">
-        <thead>
-          <tr className="border-b border-accent">
-            <th className="p-3">
-              <div className="flex gap-4 items-center">
-                <input type={"checkbox"} className="" />
-                <span>Name</span>
-              </div>
-            </th>
-            <th className="p-3">Department</th>
-            <th className="p-3">Date</th>
-            <th className="p-3">No of Occurrence</th>
-            <th className="p-3">Actions</th>
-          </tr>
-        </thead>
+            <thead>
+              <tr className="border-b border-accent">
+                <th className="p-3">
+                  <div className="flex gap-4 items-center">
+                    <input type={"checkbox"} className="" />
+                    <span>Name</span>
+                  </div>
+                </th>
+                <th className="p-3">Department</th>
+                <th className="p-3">Date</th>
+                <th className="p-3">No of Occurrence</th>
+                <th className="p-3">Actions</th>
+              </tr>
+            </thead>
 
-        <tbody>
-          {[1,2,3,4].map((item) => (
-            <tr key={item.id} className="border-b border-accent">
-              <td className="p-3 text-sm capitalize">
-                <div className="flex gap-4 items-center">
-                  <input type={"checkbox"} />
-                  <span>Francis terr</span>
-                </div>
-              </td>
-              <td className="p-3 text-sm">App dev</td>
-              <td className="p-3 text-sm">12/08/2022</td>
-              <td className="p-3 text-sm">2</td>
+            <tbody>
+              {[1, 2, 3, 4].map((item) => (
+                <tr key={item.id} className="border-b border-accent">
+                  <td className="p-3 text-sm capitalize">
+                    <div className="flex gap-4 items-center">
+                      <input type={"checkbox"} />
+                      <span>Francis terr</span>
+                    </div>
+                  </td>
+                  <td className="p-3 text-sm">App dev</td>
+                  <td className="p-3 text-sm">12/08/2022</td>
+                  <td className="p-3 text-sm">2</td>
 
-              <td className="p-3 text-lg">
-                <i className="ri-pencil-fill cursor-pointer hover:text-caramel"></i>{" "}
-                <i className="ri-delete-bin-line pl-2 cursor-pointer hover:text-caramel"></i>
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+                  <td className="p-3 text-lg">
+                    <i className="ri-pencil-fill cursor-pointer hover:text-caramel"></i>{" "}
+                    <i className="ri-delete-bin-line pl-2 cursor-pointer hover:text-caramel"></i>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
         </div>
       </DashboardLayout>
 
@@ -84,7 +84,10 @@ const Disciplinary = () => {
 
       <Modal open={openModal} onClose={() => setOpenModal(false)}>
         <Themes>
-          <div className="CModal scrollBar overflow-auto" style={{ maxWidth: 500, height: "85%" }}>
+          <div
+            className="CModal scrollBar overflow-auto"
+            style={{ maxWidth: 500, height: "85%" }}
+          >
             <div className="flex items-center justify-between w-full mb-5">
               <h5 className="text-base font-semibold">Add new fields</h5>
               <i
@@ -149,28 +152,9 @@ const Disciplinary = () => {
                   onFocus={(e) => (e.target.type = "date")}
                   onBlur={(e) => (e.target.type = "date")}
                 />
-                <FormControl fullWidth>
-                  <InputLabel id="department">Department</InputLabel>
-                  <Select
-                    labelId="department"
-                    id="department"
-                    label="Department"
-                  >
-                    <MenuItem
-                      style={{ background: "var(--background)" }}
-                      value="App Dev"
-                    >
-                      App Dev
-                    </MenuItem>
-                    <MenuItem
-                      style={{ background: "var(--background)" }}
-                      value="Finance"
-                    >
-                      Finance
-                    </MenuItem>
-                  </Select>
-                </FormControl>
+
                 <TextField type="number" label="Number of occurrence" />
+                <TextField type="text" label="Subject" />
               </div>
               <textarea
                 name=""
