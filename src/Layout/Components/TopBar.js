@@ -15,6 +15,7 @@ import Themes from "../../Themes/Themes";
 import TransferOwnership from "./TransferOwnership";
 
 import { styled } from "@mui/material/styles";
+import UserLicense from "../../Billing/Components/UserLicense";
 
 const companies = [
   { name: "Dangote Oil", id: 1994, image: "https://picsum.photos/190" },
@@ -57,7 +58,7 @@ const TopBar = ({
 }) => {
   const [anchorEl, setAnchorEl] = useState(null);
   const [transferOwnershipModal, setTransferOwnershipModal] = useState(false);
-
+  const [licenseModal, setLicenseModal] = useState(false);
   const open = Boolean(anchorEl);
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -79,8 +80,17 @@ const TopBar = ({
 
   const id = open ? "simple-popover" : undefined;
 
+  const openLicenseModal = () => {
+    setLicenseModal(true)
+    handleClose()
+  }
+
   return (
     <>
+      <UserLicense
+        open={licenseModal}
+        handleClose={() => setLicenseModal(false)}
+      />
       <div className="bg-caramel w-full py-2 sticky top-0 z-50">
         <div className="Container flex items-center justify-between">
           <Link to="/">
@@ -244,7 +254,10 @@ const TopBar = ({
               <li className="border-b-2 pb-2 cursor-pointer hover:text-caramel">
                 Advanced Settings
               </li>
-              <li className="border-b-2 pb-2 cursor-pointer hover:text-caramel">
+              <li
+                onClick={openLicenseModal}
+                className="border-b-2 pb-2 cursor-pointer hover:text-caramel"
+              >
                 Billings
               </li>
               <li className="border-b-2 pb-2 cursor-pointer hover:text-caramel">
