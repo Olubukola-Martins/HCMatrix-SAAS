@@ -20,6 +20,7 @@ const delegations = [
     type: "permanent",
     dateRange: "07/July/2022 - 16/July/2022",
     status: "Upcoming",
+    function: "Payroll Approval",
   },
   {
     id: "1",
@@ -34,6 +35,7 @@ const delegations = [
     type: "temporary",
     dateRange: "07/July/2022 - 16/July/2022",
     status: "Upcoming",
+    function: "Leave Approval",
   },
 ];
 
@@ -44,6 +46,7 @@ const Departments = () => {
   // const handleViewId = (val) => {
   //   setViewId(val);
   // };
+  
   return (
     <DashboardLayout>
       <div className="h-screen">

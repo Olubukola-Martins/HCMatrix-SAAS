@@ -1,9 +1,9 @@
 import React from "react";
-import Themes from "../../Themes/Themes";
+import Themes from "../../../../Themes/Themes";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 
-const SyncDropdown = ({ anchorEl, handleClose }) => {
+const ImportDropdown = ({ anchorEl, handleClose }) => {
   const open = Boolean(anchorEl);
 
   return (
@@ -23,4 +23,4 @@ const SyncDropdown = ({ anchorEl, handleClose }) => {
   );
 };
 
-export default SyncDropdown;
+export default ImportDropdown;

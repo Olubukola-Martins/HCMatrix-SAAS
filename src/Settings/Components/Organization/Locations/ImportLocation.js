@@ -10,7 +10,6 @@ const steps = [
 ];
 
 const ImportLocation = ({ handleDrawer }) => {
-
   return (
     <motion.div
       initial={{ x: 500 }}
@@ -37,7 +36,7 @@ const ImportLocation = ({ handleDrawer }) => {
           {steps.map((label) => (
             <Step key={label}>
               <StepLabel>
-              {label}
+                {label}
                 {/* <span className="text-xs">{label}</span> */}
               </StepLabel>
             </Step>

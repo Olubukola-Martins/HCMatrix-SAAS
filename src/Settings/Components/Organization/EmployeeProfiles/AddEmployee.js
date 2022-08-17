@@ -1,7 +1,49 @@
 import React from "react";
 import "../../../style/settingsStyle.css";
+import { Formik, Form, Field, ErrorMessage } from "formik";
+import * as Yup from "yup";
 
 const AddEmployee = ({ close }) => {
+  // Handle form
+  const initialValues = {
+    firstName: "",
+    middleName: "",
+    lastName: "",
+    email: "",
+    phone: "",
+    employeeNumber: "",
+    role: "",
+    gender: "",
+    dob: "",
+    grade: "",
+    branch: "",
+    department: "",
+    resumption: "",
+  };
+
+  const validationSchema = Yup.object({
+    firstName: Yup.string().required("First name is required!"),
+    lastName: Yup.string().required("Last name is required!"),
+    email: Yup.string()
+      .email("Invalid email format")
+      .required("Email is required"),
+    phone: Yup.string().required("Phone is required!"),
+    employeeNumber: Yup.string().required("Employee number is required!"),
+    role: Yup.string().required("Role is required!"),
+    gender: Yup.string().required("Gender is required!"),
+    dob: Yup.string().required("Field is required!"),
+    grade: Yup.string().required("grade is required!"),
+    branch: Yup.string().required("branch is required!"),
+    department: Yup.string().required("department is required!"),
+    resumption: Yup.string().required("resumption is required!"),
+  });
+
+  const onSubmit = (values, onSubmitProps) => {
+    console.log("Form data", values);
+    onSubmitProps.setSubmitting(false);
+    onSubmitProps.resetForm();
+  };
+
   return (
     <div className="Container pb-10">
       <div className="bg-card pt-5 pb-10 px-5 rounded-md mt-5">
@@ -12,101 +54,145 @@ const AddEmployee = ({ close }) => {
           ></i>
           <h5 className="font-semibold text-lg text-accent">Add Employee</h5>
         </div>
+        <Formik
+          initialValues={initialValues}
+          validationSchema={validationSchema}
+          onSubmit={onSubmit}
+          validateOnMount
+        >
+          {(formik) => {
+            return (
+              <Form className="whiteBg_form mt-7">
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 ">
+                  <div>
+                    <label>First Name</label>
+                    <Field
+                      type="text"
+                      name="firstName"
+                      placeholder="godswill"
+                    />
+                    <ErrorMessage name="firstName" component="span" />
+                  </div>
+                  <div>
+                    <label>Middle Name (optional)</label>
+                    <Field type="text" name="middleName" placeholder="smile" />
+                  </div>
+                  <div>
+                    <label>Last Name</label>
+                    <Field type="text" name="lastName" placeholder="walter" />
+                    <ErrorMessage name="lastName" component="span" />
+                  </div>
+                  <div>
+                    <label>Email</label>
+                    <Field
+                      type="email"
+                      name="email"
+                      placeholder="johndoe@email.com"
+                    />
+                    <ErrorMessage name="email" component="span" />
+                  </div>
+                  <div>
+                    <label>Phone</label>
+                    <Field
+                      type="tel"
+                      name="phone"
+                      placeholder="+234 | 90-456-54-299"
+                    />
+                    <ErrorMessage name="phone" component="span" />
+                  </div>
+                  <div>
+                    <label>Employee Number</label>
+                    <Field
+                      type="text"
+                      name="employeeNumber"
+                      placeholder="SNN 2345"
+                    />
+                    <ErrorMessage name="employeeNumber" component="span" />
+                  </div>
+                  <div>
+                    <label>Role</label>
+                    <Field name="role" as="select">
+                      <option value="">e.g Line manager</option>
+                      <option value="Line Manager">Line Manager</option>
+                      <option value="Team lead">Team lead</option>
+                    </Field>
+                    <ErrorMessage name="role" component="span" />
+                  </div>
+                  <div>
+                    <label>Gender</label>
+                    <Field name="gender" as="select">
+                      <option value="">e.g Male</option>
+                      <option value="male">Male</option>
+                      <option value="female">Female</option>
+                    </Field>
+                    <ErrorMessage name="gender" component="span" />
+                  </div>
+                  <div>
+                    <label>Date of Birth</label>
+                    <Field
+                      type="text"
+                      placeholder="23-07-2020"
+                      onFocus={(e) => (e.target.type = "date")}
+                      onBlur={(e) => (e.target.type = "text")}
+                      name="dob"
+                    />
+                    <ErrorMessage name="dob" component="span" />
+                  </div>
+                  <div>
+                    <label>Grade</label>
+                    <Field as="select" name="grade">
+                      <option value="">e.g Grade 1</option>
+                      <option value="1">Grade 1</option>
+                      <option value="2">Grade 2</option>
+                    </Field>
+                    <ErrorMessage name="grade" component="span" />
+                  </div>
+                  <div>
+                    <label>Branch</label>
+                    <Field type="text" name="branch" placeholder="New york" />
+                    <ErrorMessage name="branch" component="span" />
+                  </div>
+                  <div>
+                    <label>Department</label>
+                    <Field as="select" name="department">
+                      <option value="">e.g App dev</option>
+                      <option value="sales">Sales</option>
+                      <option value="CSI">CSI</option>
+                    </Field>
+                    <ErrorMessage name="department" component="span" />
+                  </div>
+                  <div>
+                    <label>Resumption Date</label>
+                    <Field
+                      type="text"
+                      name="resumption"
+                      placeholder="23-07-2020"
+                      onFocus={(e) => (e.target.type = "date")}
+                      onBlur={(e) => (e.target.type = "text")}
+                    />
+                    <ErrorMessage name="resumption" component="span" />
+                  </div>
+                </div>
 
-        <form className="whiteBg_form mt-7">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            <div>
-              <label>First Name</label>
-              <input type="text" required placeholder="godswill" />
-            </div>
-            <div>
-              <label>Middle Name</label>
-              <input type="text" required placeholder="smile" />
-            </div>
-            <div>
-              <label>Last Name</label>
-              <input type="text" required placeholder="walter" />
-            </div>
-            <div>
-              <label>Email</label>
-              <input type="email" required placeholder="johndoe@email.com" />
-            </div>
-            <div>
-              <label>Phone</label>
-              <input type="tel" required placeholder="+234 | 90-456-54-299" />
-            </div>
-            <div>
-              <label>Employee Number</label>
-              <input type="tel" required placeholder="SNN 2345" />
-            </div>
-            <div>
-              <label>Role</label>
-              <select required>
-                <option value="">e.g Line manager</option>
-                <option value="1">Line Manager</option>
-                <option value="2">Team lead</option>
-              </select>
-            </div>
-            <div>
-              <label>Gender</label>
-              <select required>
-                <option value="">e.g Male</option>
-                <option value="1">Male</option>
-                <option value="2">Female</option>
-              </select>
-            </div>
-            <div>
-              <label>Date of Birth</label>
-              <input
-                type="text"
-                required
-                placeholder="23-07-2020"
-                onFocus={(e) => (e.target.type = "date")}
-                onBlur={(e) => (e.target.type = "text")}
-              />
-            </div>
-            <div>
-              <label>Grade</label>
-              <select required>
-                <option value="">e.g Grade 1</option>
-                <option value="1">Grade 1</option>
-                <option value="2">Grade 2</option>
-              </select>
-            </div>
-            <div>
-              <label>Branch</label>
-              <input type="text" required placeholder="New york" />
-            </div>
-            <div>
-              <label>Department</label>
-              <select required>
-                <option value="">e.g App dev</option>
-                <option value="1">Sales</option>
-                <option value="2">CSI</option>
-              </select>
-            </div>
-            <div>
-              <label>Resumption Date</label>
-              <input
-                type="text"
-                required
-                placeholder="23-07-2020"
-                onFocus={(e) => (e.target.type = "date")}
-                onBlur={(e) => (e.target.type = "text")}
-              />
-            </div>
-          </div>
-
-          <div className="flex items-center gap-4 justify-center mt-4">
-            <h5
-              className="font-medium cursor-pointer hover:font-semibold"
-              onClick={close}
-            >
-              Cancel
-            </h5>
-            <button className="button">Save Changes</button>
-          </div>
-        </form>
+                <div className="flex items-center gap-4 justify-center mt-4">
+                  <h5
+                    className="font-medium cursor-pointer hover:font-semibold"
+                    onClick={close}
+                  >
+                    Cancel
+                  </h5>
+                  <button
+                    disabled={!formik.isValid || formik.isSubmitting}
+                    className="button"
+                    type="submit"
+                  >
+                    Save Changes
+                  </button>
+                </div>
+              </Form>
+            );
+          }}
+        </Formik>
       </div>
     </div>
   );

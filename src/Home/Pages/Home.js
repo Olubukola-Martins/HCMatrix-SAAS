@@ -16,6 +16,7 @@ import Menu from "@mui/material/Menu";
 import { motion } from "framer-motion";
 import { settingNavItems } from "../../Settings/Data";
 import PendingItem from "../Components/PendingItem";
+import CustomizeDashboardModal from "../Components/CustomizeDashboardModal";
 
 const Home = () => {
   const [openId, setOpenId] = useState("");
@@ -32,6 +33,8 @@ const Home = () => {
   const handleClose = () => {
     setAnchorEl(null);
   };
+
+  const [openCustomModal, setOpenCustomModal] = useState(false);
 
   return (
     <DashboardLayout>
@@ -82,81 +85,64 @@ const Home = () => {
                 <span className="text-caramel font-semibold text-lg">View</span>
                 <h6 className="text-xs font-semibold">Company Handbook</h6>
               </Link>
-              <Link to="#!" className="dashboardLink">
+              <Link to="/company-organogram" className="dashboardLink">
                 <span className="text-caramel font-semibold text-lg">View</span>
                 <h6 className="text-xs font-semibold">Company organogram</h6>
               </Link>
               <Link to="#!" className="dashboardLink">
                 <span className="text-caramel font-semibold text-lg">View</span>
-                <h6 className="text-xs font-semibold">HMO ID Details</h6>
+                <h6 className="text-xs font-semibold">Personal Information</h6>
               </Link>
-              <Link to="#!" className="dashboardLink">
-                <span className="text-caramel font-semibold text-lg">NI34</span>
-                <h6 className="text-xs font-semibold">ID Number</h6>
-              </Link>
+              <button
+                className="dashboardLink"
+                onClick={() => setOpenCustomModal(true)}
+              >
+                <span className="text-caramel font-semibold text-lg">
+                  Customize
+                </span>
+                <h6 className="text-xs font-semibold">My dashboard</h6>
+              </button>
+              <CustomizeDashboardModal
+                open={openCustomModal}
+                handleClose={() => setOpenCustomModal(false)}
+              />
             </div>
           </div>
           <div className="bg-card rounded-xl px-5 py-4 text-accent w-full">
             <h5 className="font-semibold">Pending Setup</h5>
             <div className="flex flex-col gap-5 text-sm mt-4">
-              {settingNavItems.map((item) => (
-                <PendingItem
-                  key={item.title}
-                  handleClick={handlePendingClick}
-                  openId={openId}
-                  item={item}
-                />
-              ))}
+              {settingNavItems
+                .filter((item) => item.category === "basic")
+                .map((item) => (
+                  <PendingItem
+                    key={item.title}
+                    handleClick={handlePendingClick}
+                    openId={openId}
+                    item={item}
+                  />
+                ))}
+              {/* <PendingItem
+                handleClick={handlePendingClick}
+                openId={openId}
+                item={{
+                  title: "Module Setup",
+                  category: "advanced",
+                  items: [
+                    { name: "Payroll", link: "/settings/company-details" },
+                    { name: "Performance", link: "/settings/domains" },
+                    { name: "Recruitment", link: "/settings/rebranding" },
+                    { name: "Attendance", link: "/settings/from-addresses" },
+                  ],
+                }}
+              /> */}
 
-              {/* <div>
-              // THE TEMPLATE
-                <div className = 'cursor-pointer' onClick={() => handleClick('company')}>
-                  <span>General Setup(1/4)</span>
-                  <div className="setUp_progress2 general_setup">
-                    <div className="setUp_progress-bar2" />
-                  </div>
-                </div>
-                <motion.div className={`other overflow-y-hidden flex flex-col justify-center pl-2 border ${ openId === 'company' ?'border-b' : ''} border-slate-400`} initial = {{height:0}} animate = {{height: openId === 'company' ?'100px' : '0'}}>
-                  <div className="item flex gap-6 text-xs mb-2 items-center">
-                    <span>Company</span>
-                    <ProgressBar width={'25%'}/>
-                  </div>
-                  <div className="item flex gap-6 text-xs mb-2 items-center">
-                    <span>Domain</span>
-                    <ProgressBar width={'25%'}/>
-                  </div>
-                  <div className="item flex gap-6 text-xs mb-2 items-center">
-                    <span>Rebranding</span>
-                    <ProgressBar width={'25%'}/>
-                  </div>
-
-                </motion.div>
-              </div> */}
-              {/* <div>
-                <span>Organization(1/7)</span>
-                <div className="setUp_progress2 video_setup">
-                  <div className="setUp_progress-bar2" />
-                </div>
-              </div>
-              <div>
-                <span>User Access Control(1/4)</span>
-                <div className="setUp_progress2 user-access">
-                  <div className="setUp_progress-bar2" />
-                </div>
-              </div>
-              <div>
-                <span>Data Administration(1/4)</span>
-                <div className="setUp_progress2 employee-profile">
-                  <div className="setUp_progress-bar2" />
-                </div>
-              </div>
-              <div>
-                <span>Automation(1/4)</span>
-                <div className="setUp_progress2 video">
-                  <div className="setUp_progress-bar2" />
-                </div>
-              </div> */}
               <div className="grid grid-cols-2 gap-x-2 gap-y-3 text-xs font-medium mt-3">
+                {/* below pending setup */}
+
+                {/* <div className="flex items-center gap-3 cursor-pointer">
+                  <i className="ri-settings-2-line text-2xl"></i>
+                  <span className="text-caramel">More Settings</span>
+                </div>
                 <div className="flex items-center gap-3 cursor-pointer">
                   <i className="ri-movie-line text-2xl"></i>
                   <span className="text-caramel">Video Guide</span>
@@ -171,7 +157,8 @@ const Home = () => {
                   <span className="text-caramel" onClick={handleClick}>
                     Contact Support
                   </span>
-                </div>
+                </div> */}
+                {/* below pending setup */}
 
                 {/* Contact Support menu */}
                 <Menu anchorEl={anchorEl} open={open} onClose={handleClose}>
@@ -224,6 +211,7 @@ const Home = () => {
             desc="No record found"
             subTitle="0 out of 0 results"
           />
+
           <HomeCard
             title="Work anniversary"
             image={birthDay}

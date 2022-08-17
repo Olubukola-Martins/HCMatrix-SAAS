@@ -4,12 +4,13 @@ import Menu from "@mui/material/Menu";
 import Themes from "../../../../Themes/Themes";
 import "../../../style/settingsStyle.css";
 import { AnimatePresence } from "framer-motion";
-import FilterDrawer from "../../../Components/FilterDrawer";
+import FilterDrawer from "../../../Components/Organization/EmployeeProfiles/FilterDrawer";
 import { Dialog, Slide } from "@mui/material";
 import AddEmployee from "../../../Components/Organization/EmployeeProfiles/AddEmployee";
-import ExportModal from "../../../Components/ExportModal";
+import ExportModal from "../../../Components/custom/ExportModal";
 import { Link } from "react-router-dom";
 import EmployeeActions from "../../../Components/Organization/EmployeeProfiles/EmployeeActions";
+import UploadFileModal from "../../../Components/Organization/EmployeeProfiles/UploadFileModal";
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
@@ -21,6 +22,7 @@ const EmployeeProfiles = () => {
   const [showDraggableDrawer, setShowDraggableDrawer] = useState("");
   const [openFullDialog, setOpenFullDialog] = useState(false);
   const [openExport, setOpenExport] = useState(false);
+  const [importEmployeeModal, setImportEmployeeModal] = useState(false);
   const [bulk, setBulk] = useState([]);
   const open = Boolean(anchorEl);
   const handleChange = (item) => {
@@ -54,8 +56,11 @@ const EmployeeProfiles = () => {
             <h5 className="flex items-center justify-between py-2 border-b">
               <span>Confirmed</span> <span>10</span>
             </h5>
+            <h5 className="flex items-center justify-between border-b pb-2">
+              <span>Separated</span> <span>8</span>
+            </h5>
             <h5 className="flex items-center justify-between">
-              <span>Disengaged</span> <span>8</span>
+              <span>Suspended</span> <span>10</span>
             </h5>
           </div>
         </Themes>
@@ -65,16 +70,14 @@ const EmployeeProfiles = () => {
       <div className="relative pb-10">
         <div className="flex justify-between mt-5 Container">
           <div className="flex items-center gap-3">
-            <h4 className="cursor-pointer text-accent font-medium">
-              Employee Status
-            </h4>
             <button
-              className="flex items-center gap-2 transition duration-300 ease-in-out hover:border-slate-400 text-slate-400 border rounded text-sm px-2"
+              className="flex items-center gap-2 transition duration-300 ease-in-out border-slate-400 text-slate-400 border rounded text-sm px-2 py-1 hover:border-caramel"
               onClick={handleClick}
             >
-              <span>Master record 24</span>
+              <span>Total Record</span>
               <i className="ri-arrow-down-s-line text-xl"></i>
             </button>
+            <button className="button">100</button>
           </div>
 
           <div className="flex items-center gap-3 text-accent">
@@ -84,9 +87,16 @@ const EmployeeProfiles = () => {
             >
               Add Employee Profile
             </button>
-            <button className="py-1 px-2 bg-transparent rounded text-sm text-accent border border-slate-200 hover:border-slate-400 font-medium transition ease-in-out duration-300">
+            <button
+              onClick={() => setImportEmployeeModal(true)}
+              className="py-1 px-2 bg-transparent rounded text-sm text-accent border border-slate-200 hover:border-slate-400 font-medium transition ease-in-out duration-300"
+            >
               Import Employee Profile
             </button>
+            <UploadFileModal
+              open={importEmployeeModal}
+              handleClose={() => setImportEmployeeModal(false)}
+            />
             <i
               className="ri-filter-line text-xl cursor-pointer"
               onClick={() => setShowDraggableDrawer("filter")}
@@ -146,60 +156,6 @@ const EmployeeProfiles = () => {
           </div>
         </div>
         {bulk.length > 0 && <EmployeeActions />}
-        {/* <div className="Container">
-          <div className="bg-card flex items-center justify-start gap-2 mb-2 p-3">
-            <button className="text-sm text-white bg-caramel px-2 py-1">
-              <span>FOCUS</span>
-            </button>
-            <button
-              onClick={(e) => setAnchorE2(e.currentTarget)}
-              className="flex items-center gap-2 text-sm text-white bg-caramel px-2 py-1"
-            >
-              <span>Display</span>
-              <i className="ri-arrow-down-s-line text-base"></i>
-            </button>
-            <Menu
-              anchorEl={anchorE2}
-              open={openDisplay}
-              onClose={() => setAnchorE2(null)}
-            >
-              <Themes>
-                <div className="bg-card w-32 px-2 text-sm py-3 text-accent">
-                  <h5 className="flex items-center gap-4 border-b">
-                    <input type="checkbox" /> <span>Display All</span>
-                  </h5>
-                  <h5 className="flex items-center gap-5 py-1 border-b">
-                    <input type="checkbox" /> <span>Name</span>
-                  </h5>
-                  <h5 className="flex items-center gap-4 py-1">
-                    <input type="checkbox" /> <span>Staff ID</span>
-                  </h5>
-                  <h5 className="flex items-center gap-5 py-1 border-b">
-                    <input type="checkbox" /> <span>Grade</span>
-                  </h5>
-                  <h5 className="flex items-center gap-5 py-1 border-b">
-                    <input type="checkbox" /> <span>Gender</span>
-                  </h5>
-                  <h5 className="flex items-center gap-5 py-1 border-b">
-                    <input type="checkbox" /> <span>Status</span>
-                  </h5>
-                  <h5 className="flex items-center gap-4 py-1">
-                    <input type="checkbox" /> <span>Department</span>
-                  </h5>
-                  <h5 className="flex items-center gap-5 py-1 border-b">
-                    <input type="checkbox" /> <span>Email</span>
-                  </h5>
-                  <h5 className="flex items-center gap-5 py-1 border-b">
-                    <input type="checkbox" /> <span>Role</span>
-                  </h5>
-                  <h5 className="flex items-center gap-5 pt-1">
-                    <input type="checkbox" /> <span>Options</span>
-                  </h5>
-                </div>
-              </Themes>
-            </Menu>
-          </div>
-        </div> */}
 
         <div className="Container">
           <table className="employee-profile-table">
@@ -248,8 +204,10 @@ const EmployeeProfiles = () => {
                   <td>johndoe@email.com</td>
                   <td>
                     <span className="flex items-center gap-2 text-xl justify-center">
-                      <i className="fa-solid fa-circle-user"></i>
-                      <i className="ri-pencil-line"></i>{" "}
+                      <Link to="/settings/employee-profile/id">
+                        <i className="fa-solid fa-circle-user"></i>
+                      </Link>
+                      <i className="ri-pencil-line"></i>
                       <i className="ri-delete-bin-line"></i>
                     </span>
                   </td>

@@ -9,15 +9,15 @@ import DummyIcon from "../../../Assets/dummy.svg";
 import PageXIcon from "../../../Assets/page_x_icon.svg";
 import RedXIcon from "../../../Assets/red_x_icon.svg";
 import SyncIcon from "../../../Assets/sync.svg";
-import InviteDropdown from "../../../Components/InviteDropdown";
-import ImportDropdown from "../../../Components/ImportDropdown";
-import DisplayDropdown from "../../../Components/DisplayDropdown";
-import SyncDropdown from "../../../Components/SyncDropdown";
-import FilterDrawer from "../../../Components/FilterDrawer";
-import UploadFileModal from "../../../Components/UploadFileModal";
-import ExportModal from "../../../Components/ExportModal";
+import InviteDropdown from "../../../Components/Organization/Users/InviteDropdown";
+import ImportDropdown from "../../../Components/Organization/Users/ImportDropdown";
+import SyncDropdown from "../../../Components/Organization/Users/SyncDropdown";
+import FilterDrawer from "../../../Components/Organization/Users/FilterDrawer";
+import UploadFileModal from "../../../Components/Organization/Users/UploadFileModal";
+import ExportModal from "../../../Components/custom/ExportModal";
 import { AnimatePresence } from "framer-motion";
 import InviteUserDrawer from "../../../Components/Organization/Users/InviteUserDrawer";
+import UserActions from "../../../Components/Organization/Users/UserActions";
 import InviteMultipleUserDrawer from "../../../Components/Organization/Users/InviteMultipleUserDrawer";
 
 const UserProfiles = () => {
@@ -63,6 +63,15 @@ const UserProfiles = () => {
   const [openUploadFile, setOpenUploadFile] = useState(false);
 
   const [showDraggableDrawer, setShowDraggableDrawer] = useState("");
+  const [bulk, setBulk] = useState([]);
+  const handleChange = (item) => {
+    if (bulk.find((a) => a === item)) {
+      const result = bulk.filter((a) => a !== item);
+      setBulk(result);
+      return;
+    }
+    setBulk((items) => [...items, item]);
+  };
 
   return (
     <DashboardLayout>
@@ -72,9 +81,9 @@ const UserProfiles = () => {
         <div className="flex justify-between mt-5 Container">
           <h4
             // onClick={handleClick}
-            className="flex items-center gap-2  text-accent"
+            className="flex items-center gap-2 text-lg  text-accent"
           >
-            <span>Total Users 1</span>
+            <span>Users: {8}</span>
             {/* <i className="ri-arrow-down-s-line text-xl"></i> */}
           </h4>
 
@@ -94,11 +103,11 @@ const UserProfiles = () => {
             />
 
             <button
-              onClick={handleImportClick}
+              onClick={() => setOpenUploadFile(true)}
               className="py-1 px-2 bg-transparent rounded text-sm text-accent border border-slate-200 hover:border-slate-400 font-medium transition ease-in-out duration-300"
             >
               Import
-              <i class="fa fa-caret-down ml-2" aria-hidden="true"></i>
+              {/* <i class="fa fa-caret-down ml-2" aria-hidden="true"></i> */}
             </button>
             <ImportDropdown
               anchorEl={anchorImportEl}
@@ -186,46 +195,9 @@ const UserProfiles = () => {
               />
             </div>
           </div>
-          {/* resend info component */}
-          {/* <div className="Container">
-            <div
-              className="px-6 py-2  mb-4 flex items-end gap-4 text-sm"
-              style={{ background: "var(--card)" }}
-            >
-              <p className="text-caramel underline">Resend Information</p>
-              <p className="text-caramel underline">Change Login Status</p>
-              <p className="text-caramel underline">Trigger onboarding</p>
-              <p className="text-caramel underline">
-                Convert to employee profile
-              </p>
-              <div className="self-end mb-4 flex-1 flex justify-end ">
-                <p className="ml-auto">x</p>
-              </div>
-            </div>
-          </div> */}
-          {/* focus */}
-          <div className="Container">
-            <div
-              className="px-6 py-4  mb-2 flex items-center gap-4 text-sm"
-              style={{ background: "var(--card)" }}
-            >
-              <button className="bg-caramel flex items-center gap-2 capitalize  hover:bg-opacity-70 transition ease-in duration-300 text-white py-1 text-sm px-2">
-                <span>Focus</span>
-              </button>
-              <button
-                id="display-button"
-                onClick={handleDisplayClick}
-                className="bg-caramel flex items-center gap-2 capitalize  hover:bg-opacity-70 transition ease-in duration-300 text-white py-1 text-sm px-2"
-              >
-                Display
-                <i className="fa fa-caret-down" aria-hidden="true"></i>
-              </button>
-              <DisplayDropdown
-                anchorEl={anchorDisplayEl}
-                handleClose={handleDisplayClose}
-              />
-            </div>
-          </div>
+          {bulk.length > 0 && <UserActions />}
+
+      
           {/* table */}
           <div className="Container">
             <table className="employee-profile-table">
@@ -249,7 +221,10 @@ const UserProfiles = () => {
                 {[1, 2, 3, 4, 5, 6, 7, 8].map((item) => (
                   <tr key={item}>
                     <td className="flex items-center justify-center gap-3">
-                      <input type="checkbox" />
+                      <input
+                        type="checkbox"
+                        onChange={() => handleChange(item)}
+                      />
                       <div className="flex items-center gap-2 justify-center">
                         <img
                           src="https://res.cloudinary.com/ddvaelej7/image/upload/v1656616707/samples/Ellipse_1915_maqdtn.png"
