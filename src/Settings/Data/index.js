@@ -18,7 +18,7 @@ export const settingNavItems = [
       { name: "Designations", link: "/settings/designations" },
       { name: "Locations", link: "/settings/locations" },
       { name: "Groups", link: "/settings/groups" },
-      { name: "Grades & Levels", link: "/settings/grades" },
+      { name: "Pay Grades", link: "/settings/grades" },
       { name: "Grade Categories", link: "/settings/grade_categories" },
       // { name: "Qualifications", link: "/settings/qualifications" },
       { name: "Probation Policy", link: "/settings/probation_policy" },

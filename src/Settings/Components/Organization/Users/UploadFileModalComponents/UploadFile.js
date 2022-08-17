@@ -31,8 +31,10 @@ const UploadFile = ({ handleActiveStep }) => {
           return (
             <Form className="text-accent mt-6 grid grid-cols-1 gap-5">
               <div>
-                <div className="input-container w-full">
-                  <label className="text-sm mb-2 block">Import data for:</label>
+                <div className="P_Form_Group col">
+                  <label className="text-sm mb-1 block capitalize font-semibold">
+                    Import data for:
+                  </label>
 
                   <Field
                     component="select"
@@ -43,12 +45,18 @@ const UploadFile = ({ handleActiveStep }) => {
                     <option className="bg-card">Employee</option>
                     <option className="bg-card">line manager</option>
                   </Field>
-                  <ErrorMessage name="dataFor" component="span" />
+                  <ErrorMessage
+                    name="dataFor"
+                    className="showErrorMsg"
+                    component="span"
+                  />
                 </div>
               </div>
               <div>
-                <div className="input-container w-full">
-                  <label className="text-sm mb-2 block">Import based on:</label>
+                <div className="P_Form_Group col">
+                  <label className="text-sm mb-1 block capitalize font-semibold">
+                    Import based on:
+                  </label>
 
                   <Field
                     component="select"
@@ -60,7 +68,11 @@ const UploadFile = ({ handleActiveStep }) => {
                     <option className="bg-card">Employee</option>
                     <option className="bg-card">line manager</option>
                   </Field>
-                  <ErrorMessage name="basedOn" component="span" />
+                  <ErrorMessage
+                    name="basedOn"
+                    component="span"
+                    className="showErrorMsg"
+                  />
                 </div>
               </div>
               <div>
@@ -93,7 +105,7 @@ const UploadFile = ({ handleActiveStep }) => {
                 <button
                   className="button"
                   type="submit"
-                  disabled={!formik.isValid || formik.isSubmitting}
+                  // disabled={!formik.isValid || formik.isSubmitting}
                   onClick={() => handleActiveStep((val) => val + 1)}
                 >
                   Save next

@@ -61,12 +61,23 @@
 .P_Form_Group.col {
   @apply flex gap-2 items-start items-stretch flex-col ;
 }
+.P_Form_Group.exclude input, .P_Form_Group  input[type="radio"]{
+  @apply appearance-none rounded-none h-4 w-4 border bg-gray-300 border-slate-100 checked:bg-caramel border-4 checked:border-white outline outline-1 outline-slate-500 focus:outline-1 transition duration-200 mt-1 align-top bg-no-repeat bg-center bg-contain float-left mr-2 cursor-pointer p-0;
 
+}
+.Company_Information_form.settings .P_Form_Group select, .Company_Information_form.settings .P_Form_Group input[type="text"]{
+  @apply py-4 px-3;
+}
+.P_Form_Group.exclude label {
+  @apply text-base font-medium text-accent;
+}
 .P_Form_Group input,
 .P_Form_Group textarea,
 .P_Form_Group select {
   @apply flex-1 rounded p-2 focus:outline-none text-sm placeholder:text-xs;
   background: var(--background);
+   width: 20px;
+  height: 20px;
 }
 
 .P_Form_Group select {
@@ -173,7 +184,7 @@
 }
 
 .Company_Information_form .input-container input, .input-container select, .input-container input, .input-container textarea,
-.Company_Information_form .input-container select {
+.Company_Information_form .input-container select, .P_Form_Group input, .P_Form_Group select, .P_Form_Group input:not( input[type="radio"]){
   @apply w-full bg-transparent rounded-md py-3 px-3 border border-gray-300 focus:outline-none bg-mainBg;
 }
 

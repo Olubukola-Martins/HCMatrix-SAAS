@@ -7,6 +7,7 @@ import StepLabel from "@mui/material/StepLabel";
 import UploadFile from "./UploadFileModalComponents/UploadFile";
 import MappingDetails from "./UploadFileModalComponents/MappingDetails";
 import HandleDuplicate from "./UploadFileModalComponents/HandleDuplicate";
+import ConfirmMapping from "./UploadFileModalComponents/ConfirmMapping";
 
 const steps = [
   "Upload File",
@@ -87,8 +88,12 @@ const UploadFileModal = ({ open, handleClose }) => {
               )}
               {/* mapping details */}
 
-              {(activeStep === 1 || activeStep === 2) && (
+              {activeStep === 1 && (
                 <MappingDetails handleActiveStep={setActiveStep} />
+              )}
+              {/* confirm mapping */}
+              {activeStep === 2 && (
+                <ConfirmMapping handleActiveStep={setActiveStep} />
               )}
 
               {/* handle duplicate */}
@@ -97,6 +102,11 @@ const UploadFileModal = ({ open, handleClose }) => {
                   handleActiveStep={setActiveStep}
                   handleClose={handleClose}
                 />
+              )}
+              {activeStep === 4 && (
+                <div className="text-center flex items-center justify-center py-12 text-lg">
+                  <h4>Data has been successfully imported!</h4>
+                </div>
               )}
             </div>
           </div>

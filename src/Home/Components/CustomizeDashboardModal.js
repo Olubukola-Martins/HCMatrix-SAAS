@@ -4,6 +4,9 @@ import { useState } from "react";
 import { settingNavItems } from "../../Settings/Data/index";
 import Autocomplete from "@mui/material/Autocomplete";
 import TextField from "@mui/material/TextField";
+import PreferenceCard from "../Assets/Images/preference_card.svg";
+import UserProfile from "../Assets/Images/user_profile.svg";
+import SubHeader from "../Assets/Images/subnavbar.svg";
 
 let links = [];
 
@@ -16,16 +19,19 @@ const areas = [
     title: "User Profile",
     capacity: 4,
     amountAdded: 1,
+    image: UserProfile,
   },
   {
     title: "Sub Header",
     capacity: 4,
     amountAdded: 1,
+    image: SubHeader,
   },
   {
-    title: "Cards",
+    title: "Quick Links Card",
     capacity: 4,
     amountAdded: 1,
+    image: PreferenceCard,
   },
 ];
 
@@ -33,6 +39,14 @@ const CustomizeDashboardModal = ({ open, handleClose }) => {
   console.log(links);
 
   const [step, setStep] = useState(0);
+  const [choosenArea, setChoosenArea] = useState("");
+
+  const handleMove = () => {
+    // this should be connected to a context for real time sync
+    // also should be saved in db under preferences - to enable persisting to db
+    // close Modal
+    handleClose();
+  };
   return (
     <Modal
       open={open}
@@ -108,19 +122,27 @@ const CustomizeDashboardModal = ({ open, handleClose }) => {
                   <div className="grid grid-cols-2 gap-2">
                     {areas.map((item) => (
                       <div
-                        className="bg-card rounded-xl  text-accent border"
+                        className={`bg-card rounded-xl cursor-pointer text-accent border ${
+                          choosenArea === item.title && "border-caramel"
+                        }`}
                         key={item.title}
+                        onClick={() => setChoosenArea(item.title)}
                       >
-                        <h5 className="py-4 px-3 font-medium">{item.title}</h5>
-                        <hr />
+                        <h5
+                          className={`pt-4  px-3 font-medium ${
+                            choosenArea === item.title && "text-caramel"
+                          }`}
+                        >
+                          {item.title}
+                        </h5>
                         <span className="text-xs pt-1 pb-4 pl-3">
                           {item.capacity - item.amountAdded} out of{" "}
                           {item.capacity} added
                         </span>
-                        <div className="px-3 pt-10">
+                        <div className="px-3 pt-6 pb-2">
                           <div className="flex justify-center">
                             <div className="cardImgBg p-4">
-                              <img src="{image}" alt="bg" className="h-8" />
+                              <img src={item.image} alt="bg" className="h-8" />
                             </div>
                           </div>
                         </div>
@@ -132,6 +154,7 @@ const CustomizeDashboardModal = ({ open, handleClose }) => {
                     <button
                       className="button"
                       title="Move to a new position on dashboard"
+                      onClick={handleMove}
                     >
                       Move here
                     </button>

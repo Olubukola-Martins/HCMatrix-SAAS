@@ -82,13 +82,15 @@ const MappingDetails = ({ handleActiveStep }) => {
     // the axios call will be made here
     // alogside the notifications
     onSubmitProps.setSubmitting(false);
-    onSubmitProps.resetForm();
+    // onSubmitProps.resetForm();
+    handleActiveStep((val) => val + 1);
   };
   return (
     <div className="mt-4 pb-6">
       <Formik
         initialValues={initialValues}
-        validationSchema={validationSchema}
+        // validationSchema={validationSchema}
+        // no need for validation
         onSubmit={onSubmit}
         validateOnMount
       >

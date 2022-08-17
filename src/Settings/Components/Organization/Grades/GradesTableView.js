@@ -24,10 +24,11 @@ export const GradesTableView = ({ grades }) => {
                   <span>Level</span>
                 </div>
               </th>
-              <th className="p-3 text-left">Grade Category</th>
+              <th className="p-3 text-left">Designation</th>
+              <th className="p-3 text-left">Department</th>
               <th className="p-3 text-left">Monthly Gross</th>
 
-              <th className="p-3 text-left">Leave Length</th>
+              {/* <th className="p-3 text-left">Leave Length</th> */}
               {/* <th className="opacity-0 p-3">Actions</th> */}
             </tr>
           </thead>
@@ -42,12 +43,10 @@ export const GradesTableView = ({ grades }) => {
                   </div>
                 </td>
                 <td className="p-3 text-sm text-left">{item.category}</td>
+                <td className="p-3 text-sm text-left">Department 1</td>
 
                 <td className="p-3 text-sm capitalize text-left">
                   {item.gross}
-                </td>
-                <td className="p-3 text-sm capitalize text-left">
-                  {item.leaveLength}
                 </td>
 
                 {/* <td className="p-3 text-lg">

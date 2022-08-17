@@ -45,7 +45,10 @@ const HandleDuplicate = ({ handleActiveStep, handleClose }) => {
         </div>
         {/* ctrl btns */}
         <div className="form-buttons flex justify-between mt-2 mb-4">
-          <button className="py-2 px-4  rounded text-sm  font-medium border border-black">
+          <button
+            className="py-2 px-4  rounded text-sm  font-medium border border-black"
+            onClick={() => handleActiveStep((val) => val + 1)}
+          >
             Close
           </button>
         </div>

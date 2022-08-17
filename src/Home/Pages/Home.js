@@ -85,7 +85,7 @@ const Home = () => {
                 <span className="text-caramel font-semibold text-lg">View</span>
                 <h6 className="text-xs font-semibold">Company Handbook</h6>
               </Link>
-              <Link to="#!" className="dashboardLink">
+              <Link to="/company-organogram" className="dashboardLink">
                 <span className="text-caramel font-semibold text-lg">View</span>
                 <h6 className="text-xs font-semibold">Company organogram</h6>
               </Link>
@@ -121,7 +121,7 @@ const Home = () => {
                     item={item}
                   />
                 ))}
-              <PendingItem
+              {/* <PendingItem
                 handleClick={handlePendingClick}
                 openId={openId}
                 item={{
@@ -134,73 +134,12 @@ const Home = () => {
                     { name: "Attendance", link: "/settings/from-addresses" },
                   ],
                 }}
-              />
-              {/* <Link
-                to="/settings"
-                className="text-caramel flex gap-6 text-sm underline mb-2 items-center"
-              >
-                <span>Module Setup</span>
-              </Link> */}
-              {/* <PendingItem
-                handleClick={handlePendingClick}
-                openId={openId}
-                item={{
-                  title: "More Settings",
-                  category: "advanced",
-                  items: [],
-                }}
               /> */}
 
-              {/* <div>
-              // THE TEMPLATE
-                <div className = 'cursor-pointer' onClick={() => handleClick('company')}>
-                  <span>General Setup(1/4)</span>
-                  <div className="setUp_progress2 general_setup">
-                    <div className="setUp_progress-bar2" />
-                  </div>
-                </div>
-                <motion.div className={`other overflow-y-hidden flex flex-col justify-center pl-2 border ${ openId === 'company' ?'border-b' : ''} border-slate-400`} initial = {{height:0}} animate = {{height: openId === 'company' ?'100px' : '0'}}>
-                  <div className="item flex gap-6 text-xs mb-2 items-center">
-                    <span>Company</span>
-                    <ProgressBar width={'25%'}/>
-                  </div>
-                  <div className="item flex gap-6 text-xs mb-2 items-center">
-                    <span>Domain</span>
-                    <ProgressBar width={'25%'}/>
-                  </div>
-                  <div className="item flex gap-6 text-xs mb-2 items-center">
-                    <span>Rebranding</span>
-                    <ProgressBar width={'25%'}/>
-                  </div>
-
-                </motion.div>
-              </div> */}
-              {/* <div>
-                <span>Organization(1/7)</span>
-                <div className="setUp_progress2 video_setup">
-                  <div className="setUp_progress-bar2" />
-                </div>
-              </div>
-              <div>
-                <span>User Access Control(1/4)</span>
-                <div className="setUp_progress2 user-access">
-                  <div className="setUp_progress-bar2" />
-                </div>
-              </div>
-              <div>
-                <span>Data Administration(1/4)</span>
-                <div className="setUp_progress2 employee-profile">
-                  <div className="setUp_progress-bar2" />
-                </div>
-              </div>
-              <div>
-                <span>Automation(1/4)</span>
-                <div className="setUp_progress2 video">
-                  <div className="setUp_progress-bar2" />
-                </div>
-              </div> */}
               <div className="grid grid-cols-2 gap-x-2 gap-y-3 text-xs font-medium mt-3">
-                <div className="flex items-center gap-3 cursor-pointer">
+                {/* below pending setup */}
+
+                {/* <div className="flex items-center gap-3 cursor-pointer">
                   <i className="ri-settings-2-line text-2xl"></i>
                   <span className="text-caramel">More Settings</span>
                 </div>
@@ -218,7 +157,8 @@ const Home = () => {
                   <span className="text-caramel" onClick={handleClick}>
                     Contact Support
                   </span>
-                </div>
+                </div> */}
+                {/* below pending setup */}
 
                 {/* Contact Support menu */}
                 <Menu anchorEl={anchorEl} open={open} onClose={handleClose}>
