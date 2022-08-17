@@ -60,7 +60,7 @@ const DashboardLayout = ({ children }) => {
 
         <div className="flex-1 lg:ml-24">
           <div className="w-full md:top-14 top-10 sticky z-40">
-            <SubTopBar />
+            {/* <SubTopBar /> */}
           </div>
           {children}
         </div>
