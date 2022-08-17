@@ -1,4 +1,4 @@
-import { Modal } from "@mui/material";
+import { Modal, TextField } from "@mui/material";
 import React from "react";
 import Themes from "../../Themes/Themes";
 import CheckBoxIcon from "@mui/icons-material/CheckBox";
@@ -9,11 +9,20 @@ import CheckBoxOutlineBlankIcon from "@mui/icons-material/CheckBoxOutlineBlank";
 const icon = <CheckBoxOutlineBlankIcon fontSize="small" />;
 const checkedIcon = <CheckBoxIcon fontSize="small" />;
 
+const employee = [
+  { id: 1, name: "Godswill Omenuko" },
+  { id: 2, name: "Isaac Odeh" },
+  { id: 3, name: "Peter Obi" },
+];
 const SendTo = ({ open, handleClose }) => {
   return (
     <Modal open={open} onClose={handleClose}>
       <Themes>
         <div className="CModal" style={{ maxWidth: 400 }}>
+          <i
+            className="fas fa-times cursor-pointer text-xl flex justify-end mb-8"
+            onClick={handleClose}
+          ></i>
           <form>
             <Autocomplete
               multiple
@@ -44,7 +53,7 @@ const SendTo = ({ open, handleClose }) => {
             <div className="flex items-center justify-around mt-5">
               <button
                 type="button"
-                //   onClick={() => setOpenModal(false)}
+                onClick={handleClose}
                 className="transparentButton"
               >
                 Cancel

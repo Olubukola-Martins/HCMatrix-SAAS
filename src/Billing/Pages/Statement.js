@@ -1,19 +1,21 @@
-import React from "react";
+import React, { useState } from "react";
 import DashboardLayout from "../../Layout/DashboardLayout";
+import CreateWalletPermission from "../Components/CreateWalletPermission";
+import SendTo from "../Components/SendTo";
 import "../style/style.css";
 
-const employee = [
-  { id: 1, name: "Godswill Omenuko" },
-  { id: 2, name: "Isaac Odeh" },
-  { id: 3, name: "Peter Obi" },
-  { id: 4, name: "Basil Ikpe" },
-  { id: 5, name: "Reuben Arinze" },
-  { id: 6, name: "Godspower Eze" },
-];
-
 const Statement = () => {
+  const [openSend, setOpenSend] = useState(false);
+  const [createWallet, setCreateWallet] = useState(false);
+
   return (
     <DashboardLayout>
+      <SendTo open={openSend} handleClose={() => setOpenSend(false)} />
+      <CreateWalletPermission
+        open={createWallet}
+        handleClose={() => setCreateWallet(false)}
+      />
+
       <div className="Container mt-4 text-sm text-accent">
         <div className="flex justify-between items-center">
           <span className="font-bold text-lg md:text-xl">Statement</span>
@@ -31,8 +33,15 @@ const Statement = () => {
           </div>
 
           <div className="flex items-center gap-3">
-            <button className="button">Pay Now</button>
-            <button className="transparentButton">Send To</button>
+            <button className="button" onClick={() => setCreateWallet(true)}>
+              Pay Now
+            </button>
+            <button
+              className="transparentButton"
+              onClick={() => setOpenSend(true)}
+            >
+              Send To
+            </button>
             <i className="ri-download-2-line text-xl font-bold"></i>
           </div>
         </div>
@@ -124,11 +133,11 @@ const Statement = () => {
             <span>$0</span>
           </div>
           <div className="flex items-center gap-x-10">
-          <span>VAT 0%</span>
+            <span>VAT 0%</span>
             <span>$0</span>
           </div>
           <div className="flex items-center gap-x-10">
-          <span>TOTAL INCLUDING VAT</span>
+            <span>TOTAL INCLUDING VAT</span>
             <span>$0</span>
           </div>
         </div>
