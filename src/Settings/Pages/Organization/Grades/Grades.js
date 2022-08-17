@@ -25,9 +25,9 @@ const Roles = () => {
       <div className="h-screen">
         {
           <div className="Container mt-4">
-            <h4 className="text-lg  mb-1">Grades</h4>
+            <h4 className="text-lg  mb-1">Pay Grades</h4>
             <div className="flex flex-col gap-2 md:flex-row md:justify-between md:items-center bg-card p-2 rounded text-sm">
-              <p>Manage grades and levels</p>
+              <p>Manage pay grades</p>
 
               <div className="flex gap-4 items-center">
                 <button
@@ -35,7 +35,7 @@ const Roles = () => {
                   className="py-1 px-2 bg-caramel rounded text-sm text-white font-medium"
                   onClick={() => setShowDraggableDrawer("add-grade")}
                 >
-                  Add grade
+                  Add pay grade
                 </button>
                 {/* <div className="view-toggler flex rounded overflow-hidden items-center">
                   <i

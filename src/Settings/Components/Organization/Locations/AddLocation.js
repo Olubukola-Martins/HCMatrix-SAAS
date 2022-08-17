@@ -7,7 +7,7 @@ const AddLocation = ({ handleDrawer }) => {
   // Handle form
   const initialValues = {
     name: "",
-    mail: "",
+    // mail: "",
     country: "",
     description: "",
     state: "",
@@ -18,9 +18,9 @@ const AddLocation = ({ handleDrawer }) => {
     name: Yup.string()
       .required("Field is required!")
       .min(3, "Must be 3 characters or more"),
-    mail: Yup.string()
-      .email("Invalid email format")
-      .required("Field is required"),
+    // mail: Yup.string()
+    //   .email("Invalid email format")
+    //   .required("Field is required"),
     country: Yup.string().required("Field is required!"),
     description: Yup.string().required("Field is required!"),
     state: Yup.string().required("Field is required!"),
@@ -68,11 +68,11 @@ const AddLocation = ({ handleDrawer }) => {
                 <Field type="text" name="name" />
                 <ErrorMessage name="name" component="span" />
               </div>
-              <div className="my-3">
+              {/* <div className="my-3">
                 <label>Mail Alias</label>
                 <Field type="email" name="mail" />
                 <ErrorMessage name="mail" component="span" />
-              </div>
+              </div> */}
               <div>
                 <label>Country</label>
                 <Field as="select" name="country">

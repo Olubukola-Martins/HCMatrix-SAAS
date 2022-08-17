@@ -463,7 +463,7 @@ const Departments = () => {
                 </div>
               </div>
               <div>
-                <div className="input-container w-full">
+                <div className="w-full">
                   <label className="text-base mb-2 block font-semibold">
                     Assign Permissions
                   </label>
@@ -499,13 +499,15 @@ const Departments = () => {
                     </div>
                     <div className="my-6 grid grid-cols-4 gap-4">
                       {fPermissions.map((item) => (
-                        <div
+                        <label
                           key={item.id}
+                          id={item.id}
                           className="flex items-center gap-2 capitalize"
                         >
-                          <input type={"checkbox"} />
-                          <span>{item.name}</span>
-                        </div>
+                          <input type={"checkbox"} id={item.id} />
+
+                          <span className="text-sm">{item.name}</span>
+                        </label>
                       ))}
                     </div>
                   </div>
