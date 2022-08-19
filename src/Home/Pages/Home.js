@@ -139,7 +139,7 @@ const Home = () => {
               <div className="grid grid-cols-2 gap-x-2 gap-y-3 text-xs font-medium mt-3">
                 {/* below pending setup */}
 
-                {/* <div className="flex items-center gap-3 cursor-pointer">
+                <div className="flex items-center gap-3 cursor-pointer">
                   <i className="ri-settings-2-line text-2xl"></i>
                   <span className="text-caramel">More Settings</span>
                 </div>
@@ -157,7 +157,7 @@ const Home = () => {
                   <span className="text-caramel" onClick={handleClick}>
                     Contact Support
                   </span>
-                </div> */}
+                </div>
                 {/* below pending setup */}
 
                 {/* Contact Support menu */}
