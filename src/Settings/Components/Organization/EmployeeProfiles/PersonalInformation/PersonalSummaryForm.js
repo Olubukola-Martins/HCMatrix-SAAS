@@ -70,7 +70,7 @@ const PersonalSummaryForm = () => {
                   <label>Address</label>
                   <div className="flex-1  self-start">
                     <Field
-                      component="textarea"
+                      // component="textarea"
                       name="address"
                       className="resize-none w-full"
                       placeholder="No 3 United Estate Ajah Lagos Nigeria"
@@ -160,21 +160,7 @@ const PersonalSummaryForm = () => {
                     />
                   </div>
                 </div>
-                <div className="P_Form_Group my-4">
-                  <label>Employee Number</label>
-                  <div className="flex-1  self-start">
-                    <Field
-                      className="w-full"
-                      name="employeeNumber"
-                      placeholder="SNN3764"
-                    />
-                    <ErrorMessage
-                      name="employeeNumber"
-                      component="span"
-                      className="showErrorMsg"
-                    />
-                  </div>
-                </div>
+
                 <div className="P_Form_Group my-4">
                   <label>Phone Number</label>
                   <div className="flex-1  self-start">
@@ -191,15 +177,41 @@ const PersonalSummaryForm = () => {
                   </div>
                 </div>
                 <div className="P_Form_Group my-4">
-                  <label>Confirmation Date</label>
-                  <div className="flex-1  self-start">
-                    <input
-                      className="w-full"
-                      name="confirmationDate"
-                      type="text"
-                      placeholder="23 - 09 - 2022"
-                      onFocus={(e) => (e.target.type = "date")}
-                      onBlur={(e) => (e.target.type = "text")}
+                  <label>Country</label>
+                  <div className="flex-1 self-start">
+                    <Field className="w-full" name="lga" component="select">
+                      <option value="male">lagos</option>
+                    </Field>
+                    <ErrorMessage
+                      name="lga"
+                      component="span"
+                      className="showErrorMsg"
+                    />
+                  </div>
+                </div>
+                <div className="P_Form_Group my-4">
+                  <label>State</label>
+                  <div className="flex-1 self-start">
+                    <Field className="w-full" name="lga" component="select">
+                      <option value="male">lagos</option>
+                    </Field>
+                    <ErrorMessage
+                      name="lga"
+                      component="span"
+                      className="showErrorMsg"
+                    />
+                  </div>
+                </div>
+                <div className="P_Form_Group my-4">
+                  <label>LGA</label>
+                  <div className="flex-1 self-start">
+                    <Field className="w-full" name="lga" component="select">
+                      <option value="male">lagos</option>
+                    </Field>
+                    <ErrorMessage
+                      name="lga"
+                      component="span"
+                      className="showErrorMsg"
                     />
                   </div>
                 </div>
