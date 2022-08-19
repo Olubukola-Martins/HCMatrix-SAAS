@@ -49,7 +49,6 @@ const EmployeeInformation = () => {
     currentRole: validate,
     grade: validate,
     hireDate: validate,
-    hireDate: validate,
     probation_date: validate,
     nextOfKin: Yup.object().shape({
       name: validate,
@@ -98,6 +97,22 @@ const EmployeeInformation = () => {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div className="P_Form_Group">
+                    <label>Employee Number</label>
+                    <div className="flex-1  self-start">
+                      <Field
+                        className="w-full"
+                        name="employeeNumber"
+                        placeholder="SNN3764"
+                      />
+                      <ErrorMessage
+                        name="employeeNumber"
+                        component="span"
+                        className="showErrorMsg"
+                      />
+                    </div>
+                  </div>
+
+                  <div className="P_Form_Group">
                     <label>Expatriate</label>
                     <div className="flex-1  self-start">
                       <Field
@@ -132,32 +147,7 @@ const EmployeeInformation = () => {
                       />
                     </div>
                   </div>
-                  <div className="P_Form_Group">
-                    <label>LGA</label>
-                    <div className="flex-1 self-start">
-                      <Field className="w-full" name="lga" component="select">
-                        <option value="male">Eteosa</option>
-                      </Field>
-                      <ErrorMessage
-                        name="lga"
-                        component="span"
-                        className="showErrorMsg"
-                      />
-                    </div>
-                  </div>
-                  <div className="P_Form_Group">
-                    <label>State</label>
-                    <div className="flex-1 self-start">
-                      <Field className="w-full" name="lga" component="select">
-                        <option value="male">lagos</option>
-                      </Field>
-                      <ErrorMessage
-                        name="lga"
-                        component="span"
-                        className="showErrorMsg"
-                      />
-                    </div>
-                  </div>
+
                   <div className="P_Form_Group">
                     <label>Company</label>
                     <div className="flex-1 self-start">
@@ -233,15 +223,8 @@ const EmployeeInformation = () => {
                       name="probation_date"
                     />
                   </div>
+
                   <div className="P_Form_Group my-4">
-                    <label>Country</label>
-                    <Field as="select">
-                      <option value="">Select county</option>
-                      <option value="male">Nigeria</option>
-                      <option value="male">Ghana</option>
-                    </Field>
-                  </div>
-                  <div className="P_Form_Group">
                     <label>Department</label>
                     <div className="flex-1 self-start">
                       <Field
@@ -268,6 +251,19 @@ const EmployeeInformation = () => {
                       onFocus={(e) => (e.target.type = "date")}
                       onBlur={(e) => (e.target.type = "text")}
                     />
+                  </div>
+                  <div className="P_Form_Group my-4">
+                    <label>Confirmation Date</label>
+                    <div className="flex-1  self-start">
+                      <input
+                        className="w-full"
+                        name="confirmationDate"
+                        type="text"
+                        placeholder="23 - 09 - 2022"
+                        onFocus={(e) => (e.target.type = "date")}
+                        onBlur={(e) => (e.target.type = "text")}
+                      />
+                    </div>
                   </div>
                 </div>
               </div>
@@ -301,7 +297,7 @@ const EmployeeInformation = () => {
                         <Field
                           className="w-full resize-none"
                           name="nextOfKin.address"
-                          component="textarea"
+                          // component="textarea"
                           placeholder="No 3 United Estate Ajah Lagos Nigeria"
                         />
                         <ErrorMessage
@@ -399,7 +395,7 @@ const EmployeeInformation = () => {
               {/* Bank Account Details */}
               <div className="my-12">
                 <h5 className="text-accent font-semibold pb-2">
-                  Bank Account Details
+                  Financial Details
                 </h5>
                 <div className="border-b mb-4" />
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-x-6 lg:gap-x-10  gap-y-3 lg:gap-y-10">

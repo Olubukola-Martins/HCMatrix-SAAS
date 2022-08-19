@@ -55,7 +55,7 @@ const SideBar = () => {
         <div className="sideBarItemWrap">
           <div className="flex justify-center">
             <span className="sideBarList">
-              <i className="ri-hard-drive-2-line"></i>
+              <i className="ri-time-line"></i>
             </span>
           </div>
           <span className="sideBarName">Time & Attendance</span>
@@ -63,7 +63,7 @@ const SideBar = () => {
         <div className="sideBarItemWrap">
           <div className="flex justify-center">
             <span className="sideBarList">
-              <i className="ri-hard-drive-2-line"></i>
+              <i className="ri-book-2-line"></i>
             </span>
           </div>
           <span className="sideBarName">Learning & Development</span>
@@ -71,7 +71,7 @@ const SideBar = () => {
         <div className="sideBarItemWrap">
           <div className="flex justify-center">
             <span className="sideBarList">
-              <i className="ri-customer-service-line"></i>
+              <i className="ri-bill-line"></i>
             </span>
           </div>
           <span className="sideBarName">Subscriptions</span>
