@@ -36,16 +36,9 @@ const UserLicense = ({ open, handleClose }) => {
                     Number of user license
                   </label>
                   <Field
-                    as="select"
                     name="userLicenseNumber"
                     className="w-full rounded-md py-3 px-3 border border-gray-300 focus:outline-none bg-mainBg"
-                  >
-                    <option value="">Select</option>
-                    <option value="1-49">1 - 49</option>
-                    <option value="50-999">50 - 999</option>
-                    <option value="1000+">1,000+ employees</option>
-                    <option value="ngo">Non Governmental Organization</option>
-                  </Field>
+                  />
                   <ErrorMessage
                     name="userLicenseNumber"
                     component="span"
@@ -65,7 +58,6 @@ const UserLicense = ({ open, handleClose }) => {
                     <option value="">Select</option>
                     <option value="1">1 Year</option>
                     <option value="2">2 Years</option>
-                    <option value="3">3 Years</option>
                   </Field>
                   <ErrorMessage
                     name="duration"
