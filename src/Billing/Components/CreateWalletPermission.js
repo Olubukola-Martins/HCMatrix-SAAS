@@ -3,6 +3,7 @@ import { ErrorMessage, Field, Form, Formik } from "formik";
 import React from "react";
 import Themes from "../../Themes/Themes";
 import * as Yup from "yup";
+import { Link } from "react-router-dom";
 
 const CreateWalletPermission = ({ open, handleClose }) => {
   const onSubmit = (values) => {};
@@ -56,12 +57,14 @@ const CreateWalletPermission = ({ open, handleClose }) => {
                 >
                   Create
                 </button>
-                <button
-                  type="button"
-                  className="text-sm border border-caramel rounded px-4 py-2 text-caramel font-medium"
-                >
-                  Ignore, Continue with other payment Method
-                </button>
+                <Link to="/billings">
+                  <button
+                    type="button"
+                    className="text-sm border border-caramel rounded px-4 py-2 text-caramel font-medium"
+                  >
+                    Ignore, Continue with other payment Method
+                  </button>
+                </Link>
               </div>
             </Form>
           </Formik>
