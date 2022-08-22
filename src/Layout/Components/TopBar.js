@@ -92,7 +92,7 @@ const TopBar = ({
         handleClose={() => setLicenseModal(false)}
       />
       <div className="bg-caramel w-full py-2 sticky top-0 z-50">
-        <div className="container w-full mx-auto md:px-6 lg:px-0 px-5 flex items-center justify-between">
+        <div className="px-5 lg:px-10 flex items-center justify-between">
           <Link to="/">
             <img src={logo} alt="logo" className="md:h-10 h-7" />
           </Link>
