@@ -5,10 +5,12 @@ import SendTo from "../Components/SendTo";
 import "../style/style.css";
 import logo from "../../Layout/Images/logo2.png";
 import { Link } from "react-router-dom";
+import UserLicense from "../Components/UserLicense";
 
 const Statement = () => {
   const [openSend, setOpenSend] = useState(false);
   const [createWallet, setCreateWallet] = useState(false);
+  const [licenseModal, setLicenseModal] = useState(false);
 
   return (
     <DashboardLayout>
@@ -18,10 +20,19 @@ const Statement = () => {
         handleClose={() => setCreateWallet(false)}
       />
 
+      <UserLicense
+        open={licenseModal}
+        handleClose={() => setLicenseModal(false)}
+      />
+
       <div className="Container -mt-6 pt-10 text-sm text-accent pb-10 bg-card">
         <div className="px-24">
           <div className="flex items-center justify-between mb-5">
-            <Link to="/">  <i className="ri-close-fill cursor-pointer text-2xl font-semibold"></i></Link>
+            <i
+              className="ri-close-fill cursor-pointer text-2xl font-semibold"
+              onClick={() => setLicenseModal(true)}
+            ></i>
+
             <div className="flex items-center gap-3">
               <button className="button" onClick={() => setCreateWallet(true)}>
                 Pay Now
@@ -38,15 +49,15 @@ const Statement = () => {
 
           {/* main */}
           <div
-            className="px-8 bg-mainBg rounded-md pb-5 pt-6"
+            className="px-10 bg-mainBg rounded-md pb-5 pt-10"
             style={{
               boxShadow:
                 "0 2px 5px rgba(0,0,0,0.12), 1px 1px 2px rgba(0,0,0,0.24)",
             }}
           >
-            <div className="flex justify-between items-center">
+            <div className="">
+              <img src={logo} alt="logo" className="h-10 mb-2 -ml-2" />
               <span className="font-bold text-lg md:text-xl">Statement</span>
-              <img src={logo} alt="logo" className="h-10" />
             </div>
 
             <div className="flex gap-4 flex-col-reverse md:flex-row justify-between mt-5">
