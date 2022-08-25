@@ -8,7 +8,8 @@
   --background: #ffffff;
   --text-color: #252526;
   --caramel: #ff6647;
-  --faded: rgb(255, 102, 71, .5);
+  --neutral: #FF221E;
+  --faded: rgb(255, 102, 71, 0.5);
   --card: #f6f7fb;
   --accent: #3a3a3a;
   --sideBar: #f6f7fb;
@@ -43,19 +44,19 @@
 }
 
 [color-theme="orange"] {
-  --faded: rgb(255, 102, 71, .5);
+  --faded: rgb(255, 102, 71, 0.5);
 }
 
 [color-theme="green"] {
-  --faded: rgb(1,150,107, .5);
+  --faded: rgb(1, 150, 107, 0.5);
 }
 
 [color-theme="blue"] {
-  --faded: rgb(52,156,228, .5);
+  --faded: rgb(52, 156, 228, 0.5);
 }
 
 [color-theme="purple"] {
-  --faded: rgb(110,85,255, .5);
+  --faded: rgb(110, 85, 255, 0.5);
 }
 
 html {
@@ -128,17 +129,15 @@ body {
 /* step */
 .css-1u4zpwo-MuiSvgIcon-root-MuiStepIcon-root {
   color: var(--caramel) !important;
-  width: 90%
+  width: 90%;
 }
-  
+
 /* ==== Custom Dropdown Menu ==== */
 .custom-dropdown:hover .dropdown-menu {
   display: block;
 }
 
-
 /* whatsApp icon button  */
-#wa-widget-send-button{
+#wa-widget-send-button {
   display: none !important;
 }
-
