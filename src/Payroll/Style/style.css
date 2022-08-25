@@ -1,0 +1,15 @@
+.payroll-review-table {
+    @apply w-full table-auto text-center;
+}
+
+.payroll-review-table tr {
+    @apply bg-card border-b-2 border-white text-sm;
+}
+
+.payroll-review-table th {
+    @apply p-3
+}
+
+.payroll-review-table td {
+    @apply p-2
+}

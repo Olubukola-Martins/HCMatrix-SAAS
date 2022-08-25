@@ -13,7 +13,7 @@ import files from "../Assets/Images/files.svg";
 import Themes from "../../Themes/Themes";
 import Menu from "@mui/material/Menu";
 
-import { motion } from "framer-motion";
+// import { motion } from "framer-motion";
 import { settingNavItems } from "../../Settings/Data";
 import PendingItem from "../Components/PendingItem";
 import CustomizeDashboardModal from "../Components/CustomizeDashboardModal";
