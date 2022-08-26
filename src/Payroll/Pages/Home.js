@@ -138,11 +138,11 @@ const Home = () => {
           <button className="button">Run Payroll</button>
         </div>
 
-        <div className="grid grid-cols-4 gap-x-4 gap-y-8">
+        <div className="grid grid-cols-4 gap-x-4 gap-y-12">
           {/* payroll history */}
 
-          <div className="border border-caramel rounded-lg flex flex-col gap-2 w-full  p-3 bg-slate-100">
-            <div className="bg-white rounded-lg p-2 flex flex-col gap-4 flex-1">
+          <div className="border border-caramel rounded-xl flex flex-col gap-2 w-full  p-3 bg-slate-100">
+            <div className="bg-white rounded-xl p-2 flex flex-col gap-4 flex-1">
               <div className="flex items-center gap-2">
                 <div className="bg-caramel p-2 rounded-full min-h-min min-w-min">
                   <img src={DollarBox} alt="bg" className="h-6 w-6" />
@@ -163,8 +163,8 @@ const Home = () => {
           </div>
           {/* employees */}
 
-          <div className="border border-caramel rounded-lg flex flex-col gap-2 w-full  p-3 bg-slate-100">
-            <div className="bg-white rounded-lg p-2 flex flex-col gap-4 flex-1">
+          <div className="border border-caramel rounded-xl flex flex-col gap-2 w-full  p-3 bg-slate-100">
+            <div className="bg-white rounded-xl p-2 flex flex-col gap-4 flex-1">
               <div className="flex items-center gap-2">
                 <div className="bg-caramel p-2 rounded-full min-h-min min-w-min">
                   <img src={Group} alt="bg" className="h-6 w-6" />
@@ -182,8 +182,8 @@ const Home = () => {
           </div>
           {/* payroll cycle */}
 
-          <div className="border border-caramel rounded-lg flex flex-col gap-2 w-full  p-3 bg-slate-100">
-            <div className="bg-white rounded-lg p-2 flex flex-col gap-4 flex-1">
+          <div className="border border-caramel rounded-xl flex flex-col gap-2 w-full  p-3 bg-slate-100">
+            <div className="bg-white rounded-xl p-2 flex flex-col gap-4 flex-1">
               <div className="flex items-center gap-2">
                 <div className="bg-caramel p-2 rounded-full min-h-min min-w-min">
                   <img src={PayrollCycle} alt="bg" className="h-6 w-6" />
@@ -204,10 +204,10 @@ const Home = () => {
           <div
             className={`cursor-pointer ${
               showItems && "row-span-3"
-            } border border-caramel rounded-lg flex flex-col gap-2 w-full  p-3 bg-slate-100`}
+            } border border-caramel rounded-xl flex flex-col gap-2 w-full  p-3 bg-slate-100`}
             onClick={() => setShowItems((val) => !val)}
           >
-            <div className="rounded-lg p-2 flex flex-col gap-8">
+            <div className="rounded-xl p-2 flex flex-col gap-8">
               <div className="flex items-center justify-between">
                 <h4 className="font-semibold text-base">Pending Setup</h4>
                 <i className="ri-arrow-down-s-line text-xl" title="view"></i>
@@ -255,7 +255,7 @@ const Home = () => {
                 <div className="flex gap-2 lg:items-center flex-col lg:flex-row">
                   <div className="flex-1  self-start">
                     <select
-                      className="w-full  border rounded px-4 border-black"
+                      className="w-full  border rounded px-2 py-2 border-black"
                       name="filterInfo"
                       component="select"
                       placeholder="Bar Chart"
@@ -271,12 +271,12 @@ const Home = () => {
                 <div className="flex gap-2 lg:items-center flex-col lg:flex-row">
                   <div className="flex-1  self-start">
                     <input
-                      className="w-full border rounded px-4 border-black"
+                      className="w-full border rounded px-2 py-2 border-black"
                       name="date"
                       type="text"
-                      placeholder="23 - 09 - 2022"
-                      onFocus={(e) => (e.target.type = "date")}
-                      onBlur={(e) => (e.target.type = "text")}
+                      placeholder="23-09-2022"
+                      // onFocus={(e) => (e.target.type = "date")}
+                      // onBlur={(e) => (e.target.type = "text")}
                     />
                   </div>
                 </div>
