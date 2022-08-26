@@ -2,7 +2,7 @@ import React from "react";
 import DashboardLayout from "../../Layout/DashboardLayout";
 import "../Style/style.css";
 
-const Review = () => {
+const PayrollReview = () => {
   return (
     <DashboardLayout>
       <div className="Container mt-10">
@@ -69,4 +69,4 @@ const Review = () => {
   );
 };
 
-export default Review;
+export default PayrollReview;
