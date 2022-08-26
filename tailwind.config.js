@@ -8,11 +8,13 @@ module.exports = {
         card: "var(--card)",
         faded: "var(--faded)",
         mainBg: "var(--background)",
+        neutral: "var(--neutral)",
       },
       colors: {
         caramel: "var(--caramel)",
         card: "var(--card)",
         accent: "var(--accent)",
+        neutral: "var(--neutral)",
       },
     },
   },

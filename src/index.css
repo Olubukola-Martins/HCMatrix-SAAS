@@ -85,6 +85,11 @@ body {
   padding: 6px 8.5px;
 }
 
+.neutralButton {
+  @apply border border-neutral rounded font-medium bg-neutral text-white transition ease-in-out duration-300 text-sm tracking-wider hover:opacity-70;
+  padding: 6px 8.5px;
+}
+
 .transparentButton {
   @apply border border-slate-400 hover:border-slate-800 rounded font-medium bg-transparent text-accent transition ease-in-out duration-500 text-sm tracking-wider;
   padding: 6px 8.5px;
