@@ -37,7 +37,12 @@ const PayrollBreakdown = () => {
             <button className="button" disabled>
               Deactivate
             </button>
-            <button className="neutralButton">Roll back</button>
+            <button
+              className="neutralButton"
+              onClick={() => setRollBack(true)}
+            >
+              Roll back
+            </button>
             <button className="button">Approve</button>
           </div>
           <div className="flex justify-end gap-5 font-medium">
@@ -101,7 +106,7 @@ const PayrollBreakdown = () => {
           handleClose={() => setBreakModal(false)}
         />
 
-        <RollbackModal open={rollBack} handleClose={() => setRollBack(false)}/>
+        <RollbackModal open={rollBack} handleClose={() => setRollBack(false)} />
         <Popover
           open={open}
           anchorEl={anchorEl}
