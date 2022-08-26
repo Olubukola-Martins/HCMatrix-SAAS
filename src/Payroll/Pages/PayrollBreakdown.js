@@ -3,12 +3,14 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import DashboardLayout from "../../Layout/DashboardLayout";
 import Themes from "../../Themes/Themes";
+import RollbackModal from "../Components/RollbackModal";
 import ViewPayrollBreakdown from "../Components/ViewPayrollBreakdown";
 import "../Style/style.css";
 
 const PayrollBreakdown = () => {
   const [anchorEl, setAnchorEl] = useState(null);
-  const [breakModal, setBreakModal] = useState(false)
+  const [breakModal, setBreakModal] = useState(false);
+  const [rollBack, setRollBack] = useState(false);
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -32,7 +34,9 @@ const PayrollBreakdown = () => {
 
         <div className="flex items-center justify-between mb-6">
           <div className="flex items-center gap-5">
-              <button className="button" disabled>Deactivate</button>
+            <button className="button" disabled>
+              Deactivate
+            </button>
             <button className="neutralButton">Roll back</button>
             <button className="button">Approve</button>
           </div>
@@ -92,7 +96,12 @@ const PayrollBreakdown = () => {
             ))}
           </tbody>
         </table>
-        <ViewPayrollBreakdown open={breakModal} handleClose={() => setBreakModal(false)}/>
+        <ViewPayrollBreakdown
+          open={breakModal}
+          handleClose={() => setBreakModal(false)}
+        />
+
+        <RollbackModal open={rollBack} handleClose={() => setRollBack(false)}/>
         <Popover
           open={open}
           anchorEl={anchorEl}
@@ -108,7 +117,10 @@ const PayrollBreakdown = () => {
         >
           <Themes>
             <div className="border border-red-300 py-3 px-2 text-xs font-medium rounded-md">
-              <span onClick={() => setBreakModal(true)} className="block pb-2 cursor-pointer hover:text-caramel">
+              <span
+                onClick={() => setBreakModal(true)}
+                className="block pb-2 cursor-pointer hover:text-caramel"
+              >
                 View
               </span>
               <span className="block pb-2 cursor-pointer hover:text-caramel">
