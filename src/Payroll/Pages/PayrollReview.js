@@ -23,19 +23,21 @@ const PayrollReview = () => {
       <div className="Container mt-10">
         <div className="flex items-center gap-1 mb-10">
           <Link to="#!">
-            {" "}
-            <i className="ri-arrow-left-s-line font-semibold"></i>
+            <i className="ri-arrow-left-s-line text-xl"></i>
           </Link>
-          <h5 className="font-black text-base">Payroll Review</h5>
+          <h5 className="font-black text-lg">Payroll Review</h5>
         </div>
 
         <div className="flex justify-end mb-6">
           <div className="flex justify-end gap-5 font-medium">
             <i className="ri-download-2-line text-xl"></i>
             <i className="ri-logout-box-r-line text-xl"></i>
-            <button className="border border-caramel rounded px-2 py-1 font-medium text-caramel text-sm">
+            <Link
+              to="/payroll-comparison"
+              className="border border-caramel rounded px-2 py-1 font-medium text-caramel text-sm"
+            >
               Compare
-            </button>
+            </Link>
             <button className="border border-caramel rounded px-2 py-1 font-medium text-caramel text-sm">
               Create Report
             </button>

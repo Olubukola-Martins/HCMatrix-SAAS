@@ -27,9 +27,9 @@ const PayrollBreakdown = () => {
       <div className="Container mt-10 pb-16">
         <div className="flex items-center gap-2 mb-10">
           <Link to="/payroll-review" className="hover:text-caramel">
-            <i className="ri-arrow-left-s-line text-xl font-semibold"></i>
+            <i className="ri-arrow-left-s-line text-xl"></i>
           </Link>
-          <h5 className="font-black text-base">Payroll Breakdown</h5>
+          <h5 className="font-black text-lg">Payroll Breakdown</h5>
         </div>
 
         <div className="flex items-center justify-between mb-6">
@@ -37,10 +37,7 @@ const PayrollBreakdown = () => {
             <button className="button" disabled>
               Deactivate
             </button>
-            <button
-              className="neutralButton"
-              onClick={() => setRollBack(true)}
-            >
+            <button className="neutralButton" onClick={() => setRollBack(true)}>
               Roll back
             </button>
             <button className="button">Approve</button>
