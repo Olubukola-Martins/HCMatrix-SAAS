@@ -56,7 +56,7 @@ const PayrollBreakdown = () => {
             </button>
           </div>
         </div>
-        <table className="payroll-table text-gray-600">
+        <table className="payroll-table text-accent">
           <thead>
             <tr>
               <th>
