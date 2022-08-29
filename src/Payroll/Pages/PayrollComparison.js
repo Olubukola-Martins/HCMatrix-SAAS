@@ -8,6 +8,7 @@ import FormControl from "@mui/material/FormControl";
 import ListItemText from "@mui/material/ListItemText";
 import Select from "@mui/material/Select";
 import Checkbox from "@mui/material/Checkbox";
+import TableComparison from "../Components/TableComparison";
 
 const ITEM_HEIGHT = 45;
 const ITEM_PADDING_TOP = 5;
@@ -49,7 +50,7 @@ const PayrollComparison = () => {
   };
   return (
     <DashboardLayout>
-      <div className="Container mt-10">
+      <div className="Container mt-10 pb-16">
         <div className="flex items-center gap-1 mb-10">
           <Link to="/payroll-review">
             <i className="ri-arrow-left-s-line text-xl"></i>
@@ -84,6 +85,17 @@ const PayrollComparison = () => {
             </FormControl>
           </div>
         </div>
+
+        <div className="flex items-center justify-center lg:px-20">
+          <button className="bg-caramel text-white text-sm py-1 w-full border-4 border-caramel rounded-md font-medium">
+            Table
+          </button>
+          <button className="bg-card text-sm text-accent py-1 w-full border-4 border-card rounded-md font-medium">
+            Graph
+          </button>
+        </div>
+
+        <TableComparison />
       </div>
     </DashboardLayout>
   );
