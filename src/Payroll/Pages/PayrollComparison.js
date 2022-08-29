@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import DashboardLayout from "../../Layout/DashboardLayout";
 import OutlinedInput from "@mui/material/OutlinedInput";
@@ -9,6 +9,7 @@ import ListItemText from "@mui/material/ListItemText";
 import Select from "@mui/material/Select";
 import Checkbox from "@mui/material/Checkbox";
 import TableComparison from "../Components/TableComparison";
+import GraphComparison from "../Components/GraphComparison";
 
 const ITEM_HEIGHT = 45;
 const ITEM_PADDING_TOP = 5;
@@ -38,6 +39,7 @@ const months = [
 
 const PayrollComparison = () => {
   const [personName, setPersonName] = React.useState([]);
+  const [switchView, setSwitchView] = useState(true);
 
   const handleChange = (event) => {
     const {
@@ -86,16 +88,22 @@ const PayrollComparison = () => {
           </div>
         </div>
 
-        <div className="flex items-center justify-center lg:px-20">
-          <button className="bg-caramel text-white text-sm py-1 w-full border-4 border-caramel rounded-md font-medium">
+        <div className="flex items-center justify-center gap-2 lg:px-20">
+          <button
+            onClick={() => setSwitchView(true)}
+            className="hover:opacity-70 transition ease-in-out duration-300 bg-caramel text-white text-sm py-1 w-full border-4 border-caramel rounded-md font-medium"
+          >
             Table
           </button>
-          <button className="bg-card text-sm text-accent py-1 w-full border-4 border-card rounded-md font-medium">
+          <button
+            onClick={() => setSwitchView(false)}
+            className="bg-card text-sm text-accent py-1 w-full border-4 border-card rounded-md font-medium"
+          >
             Graph
           </button>
         </div>
 
-        <TableComparison />
+        {switchView ? <TableComparison /> : <GraphComparison />}
       </div>
     </DashboardLayout>
   );

@@ -21,13 +21,15 @@ const TableComparison = () => {
             "Pension",
             "Total Deductions",
             "Total Allowances",
-          ]}
-          {/* <tr>
-            <td>Number of Employees</td>
-            <td>0</td>
-            <td>0</td>
-            <td>0</td>
-          </tr> */}
+          ].map((item) => (
+            <tr key={item}>
+              <td>{item}</td>
+              <td>0</td>
+              <td>0</td>
+              <td>0</td>
+            </tr>
+          ))}
+          {/* */}
         </tbody>
       </table>
     </div>
