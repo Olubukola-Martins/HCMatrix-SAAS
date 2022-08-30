@@ -38,7 +38,7 @@ const months = [
 ];
 
 const PayrollComparison = () => {
-  const [personName, setPersonName] = React.useState([]);
+  const [personName, setPersonName] = useState([]);
   const [switchView, setSwitchView] = useState(true);
 
   const handleChange = (event) => {
@@ -65,7 +65,7 @@ const PayrollComparison = () => {
             <i className="ri-download-2-line text-xl"></i>
             <i className="ri-logout-box-r-line text-xl"></i>
 
-            <FormControl sx={{ width: 220 }}>
+            <FormControl sx={{ width: 220}}>
               <InputLabel id="demo-multiple-checkbox-label">Month</InputLabel>
               <Select
                 labelId="demo-multiple-checkbox-label"
@@ -78,7 +78,7 @@ const PayrollComparison = () => {
                 MenuProps={MenuProps}
               >
                 {months.map((month) => (
-                  <MenuItem key={month} value={month}>
+                  <MenuItem key={month} value={month} sx={{background: "white"}}>
                     <Checkbox checked={personName.indexOf(month) > -1} />
                     <ListItemText primary={month} />
                   </MenuItem>
@@ -91,13 +91,21 @@ const PayrollComparison = () => {
         <div className="flex items-center justify-center gap-2 lg:px-20">
           <button
             onClick={() => setSwitchView(true)}
-            className="hover:opacity-70 transition ease-in-out duration-300 bg-caramel text-white text-sm py-1 w-full border-4 border-caramel rounded-md font-medium"
+            className={
+              switchView
+                ? `hover:opacity-70 transition ease-in-out duration-300 bg-caramel text-white text-sm py-1 w-full border-4 border-caramel rounded-md font-medium`
+                : `bg-card text-sm text-accent py-1 w-full border-4 border-card rounded-md font-medium`
+            }
           >
             Table
           </button>
           <button
             onClick={() => setSwitchView(false)}
-            className="bg-card text-sm text-accent py-1 w-full border-4 border-card rounded-md font-medium"
+            className={
+              switchView
+                ? `bg-card text-sm text-accent py-1 w-full border-4 border-card rounded-md font-medium`
+                : `hover:opacity-70 transition ease-in-out duration-300 bg-caramel text-white text-sm py-1 w-full border-4 border-caramel rounded-md font-medium`
+            }
           >
             Graph
           </button>

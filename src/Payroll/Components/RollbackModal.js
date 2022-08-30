@@ -13,7 +13,7 @@ const RollbackModal = ({ open, handleClose }) => {
     <Modal open={open} onClose={handleClose}>
       <Themes>
         <div className="CModal" style={{ maxWidth: 400 }}>
-          <div className="flex items-center justify-between mb-5">
+          <div className="flex items-center justify-between mb-7">
             <h5 className="font-semibold text-base">Payroll Roll back</h5>
             <i
               onClick={handleClose}
@@ -35,7 +35,7 @@ const RollbackModal = ({ open, handleClose }) => {
               <Field
                 name="email"
                 type="email"
-                className="w-full py-2 rounded-md px-2 placeholder:text-xs"
+                className="hidden w-full py-2 rounded-md px-2 placeholder:text-xs"
                 placeholder="Send to"
               />
               <div className="mt-2">

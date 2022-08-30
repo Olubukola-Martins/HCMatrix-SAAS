@@ -14,7 +14,7 @@ const PayrollHistory = () => {
         </div>
 
         <div className="flex justify-between items-center mb-6">
-          <button className="button">Create Payroll</button>
+          <Link to="/create-payroll" className="button">Create Payroll</Link>
           <div className="flex justify-end gap-5 font-medium">
             <i className="ri-download-2-line text-xl"></i>
             <i className="ri-logout-box-r-line text-xl"></i>

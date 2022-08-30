@@ -1,5 +1,6 @@
 import React from "react";
 import { Route, Routes } from "react-router-dom";
+import CreatePayroll from "../Pages/CreatePayroll";
 import PayrollBreakdown from "../Pages/PayrollBreakdown";
 import PayrollComparison from "../Pages/PayrollComparison";
 import PayrollHistory from "../Pages/PayrollHistory";
@@ -15,6 +16,7 @@ const PayrollRoutes = () => {
         <Route path="/payroll-history" element={<PayrollHistory />} />
         <Route path="/payroll-scheme" element={<PayrollScheme />} />
         <Route path="/payroll-comparison" element={<PayrollComparison />} />
+        <Route path="/create-payroll" element={<CreatePayroll />} />
       </Routes>
     </>
   );
