@@ -24,40 +24,70 @@ const CreatePayroll = () => {
         </div>
 
         <div className="bg-card px-5 py-7 rounded-md mt-7">
-          <div className="bg-mainBg flex justify-between items-center px-6 py-5 rounded">
+          <div className="bg-mainBg flex justify-between items-start md:items-center px-6 py-5 rounded lg:flex-row flex-col gap-y-5">
             <div>
               <h5 className="font-medium text-base pb-1">Pay Date</h5>
-              <p className="text-sm">
+              <p className="md:text-sm text-xs">
                 Choose the time frame for which you want to run payroll.
               </p>
             </div>
             <input
               type="date"
-              className="border rounded px-3 py-1 border-red-300"
+              className="border text-accent rounded px-3 py-1 border-red-300 bg-mainBg"
             />
           </div>
 
-          <div className="bg-mainBg flex justify-between items-center px-6 py-5 rounded my-5">
+          <div className="bg-mainBg flex justify-between items-start md:items-center px-6 py-5 rounded lg:flex-row flex-col gap-y-5 my-5">
             <div>
               <h5 className="font-medium text-base pb-1">Set Exchange Rates</h5>
-              <p className="text-sm">Set the foreign currency exchange rate.</p>
+              <p className="md:text-sm text-xs">Set the foreign currency exchange rate.</p>
             </div>
             <button className="border border-red-400 hover:text-caramel rounded px-5 py-1 font-medium text-sm text-accent">
               View rate
             </button>
           </div>
 
-          <div className="bg-mainBg flex justify-between items-center px-6 py-5 rounded">
+          <div className="bg-mainBg flex justify-between items-start md:items-center px-6 py-5 rounded lg:flex-row flex-col gap-y-5">
             <div>
               <h5 className="font-medium text-base pb-1">Add Timesheet</h5>
-              <p className="text-sm">
+              <p className="md:text-sm text-xs">
                 In this payroll cycle, update the time sheets and rates for the
                 employees.
               </p>
             </div>
             <button className="border border-red-400 hover:text-caramel rounded px-5 py-1 font-medium text-sm text-accent">
-            Add Timesheet
+              Add Timesheet
             </button>
+          </div>
+          <div className="bg-mainBg flex justify-between items-start md:items-center px-6 py-5 rounded lg:flex-row flex-col gap-y-5 my-5">
+            <div>
+              <h5 className="font-medium text-base pb-1">
+                Employee Payroll Updates
+              </h5>
+              <p className="md:text-sm text-xs">
+                In this payroll cycle, update the timesheets and rates for the
+                employees.
+              </p>
+            </div>
+            <button className="border border-red-400 hover:text-caramel rounded px-5 py-1 font-medium text-sm text-accent">
+              Add Updates
+            </button>
+          </div>
+
+          <div className="bg-mainBg flex justify-between items-start md:items-center px-6 py-5 rounded lg:flex-row flex-col gap-y-5 mb-5">
+            <div>
+              <h5 className="font-medium text-base pb-1">Payroll Approval</h5>
+              <p className="md:text-sm text-xs">Payroll approval for employees.</p>
+            </div>
+            <select
+              name=""
+              className="border text-accent rounded px-4 py-1 border-red-300 bg-mainBg focus:outline-none"
+            >
+              <option value="">Add Approval</option>
+              <option value="Approval_1">Approval 1</option>
+              <option value="Approval_2">Approval 2</option>
+              <option value="Approval_3">Approval 3</option>
+            </select>
           </div>
         </div>
       </div>
