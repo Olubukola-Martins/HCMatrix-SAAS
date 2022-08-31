@@ -147,3 +147,9 @@ body {
 #wa-widget-send-button {
   display: none !important;
 }
+
+
+/*== switch checked color ==*/
+.css-5ryogn-MuiButtonBase-root-MuiSwitch-switchBase.Mui-checked, .css-12wnr2w-MuiButtonBase-root-MuiCheckbox-root.Mui-checked {
+  color: var(--caramel) !important;
+}
