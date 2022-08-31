@@ -3,6 +3,7 @@ import DashboardLayout from "../../../Layout/DashboardLayout";
 import SettingNavItem from "../../Components/custom/SettingNavItem";
 import { settingNavItems } from "../../Data";
 import FramerAccordian from "../../Components/custom/FramerAccordian";
+import { Link } from "react-router-dom";
 
 const GeneralSettings = () => {
   const [navItems, setNavItems] = useState(settingNavItems);
@@ -98,6 +99,7 @@ const GeneralSettings = () => {
                     .map((item) => (
                       <SettingNavItem item={item} key={item.title} />
                     ))}
+                    {/* <Link to="/settings/payroll">Payroll settings</Link> */}
                 </div>
               </FramerAccordian>
               {/* Performance */}
