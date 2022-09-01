@@ -25,6 +25,7 @@ const initialState = {
   payPension: false,
   theMonth: false,
   salaryBreakdown: false,
+  tax: false,
 };
 
 function reducer(state, action) {
@@ -39,6 +40,8 @@ function reducer(state, action) {
       return { ...state, theMonth: !state.theMonth };
     case "salaryBreakdown":
       return { ...state, salaryBreakdown: !state.salaryBreakdown };
+    case "tax":
+      return { ...state, tax: !state.tax };
     default:
       return state;
   }
@@ -47,7 +50,8 @@ function reducer(state, action) {
 
 const PayrollSettings = () => {
   const [state, dispatch] = useReducer(reducer, initialState);
-  const { leaveA, overtimeS, payPension, theMonth, salaryBreakdown } = state;
+  const { leaveA, overtimeS, payPension, theMonth, salaryBreakdown, tax } =
+    state;
 
   const boxStyle = "px-4 py-3 shadow rounded-md bg-mainBg";
   const boxTitle = "font-medium text-base pb-1";
@@ -279,13 +283,66 @@ const PayrollSettings = () => {
 
             <div className={boxStyle}>
               <div className="flex items-center justify-between">
-                <h5 className={boxTitle}>TAX</h5> <Switch />
+                <h5 className={boxTitle}>TAX</h5>{" "}
+                <Switch
+                  value={tax}
+                  onChange={() => dispatch({ type: "tax" })}
+                />
               </div>
+
+              {tax && (
+                <div className="text-sm mt-3">
+                  <p className="">Select Tax Mode</p>
+                  <div className="flex items-center gap-5 -ml-3">
+                    <div className="flex items-center">
+                      <Checkbox checked id="monthly" />
+                      <label
+                        htmlFor="monthly"
+                        className="cursor-pointer hover:text-caramel"
+                      >
+                        Monthly
+                      </label>
+                    </div>
+                    <div className="flex items-center">
+                      <Checkbox id="annually" />
+                      <label
+                        htmlFor="annually"
+                        className="cursor-pointer hover:text-caramel"
+                      >
+                        Annually
+                      </label>
+                    </div>
+                  </div>
+                  <h5 className="text-caramel underline pt-3 cursor-pointer">
+                    View Tax Table
+                  </h5>
+                      {/* tax table */}
+                      <div>
+                        
+                      </div>
+                  <div>
+
+                  </div>
+
+                  <div className="flex justify-between items-center mt-5 pb-2">
+                    <button
+                      onClick={() => dispatch({ type: "tax" })}
+                      type="button"
+                      className="transparentButton"
+                    >
+                      Cancel
+                    </button>
+                    <button type="submit" className="button">
+                      Save
+                    </button>
+                  </div>
+                </div>
+              )}
             </div>
 
             <div className={boxStyle}>
               <div className="flex items-center justify-between">
-                <h5 className={boxTitle}>Salary Breakdown</h5>{" "}
+                <h5 className={boxTitle}>Salary Breakdown</h5>
                 <Switch
                   value={salaryBreakdown}
                   onChange={() => dispatch({ type: "salaryBreakdown" })}
