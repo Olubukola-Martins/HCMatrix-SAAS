@@ -4,9 +4,27 @@ import { Link } from "react-router-dom";
 import DashboardLayout from "../../../Layout/DashboardLayout";
 import OvertimeSetting from "../../Components/Payroll/OvertimeSetting";
 
+var months = [
+  "January",
+  "February",
+  "March",
+  "April",
+  "May",
+  "June",
+  "July",
+  "August",
+  "September",
+  "October",
+  "November",
+  "December",
+];
+
 const initialState = {
   leaveA: false,
   overtimeS: false,
+  payPension: false,
+  theMonth: false,
+  salaryBreakdown: false,
 };
 
 function reducer(state, action) {
@@ -15,14 +33,21 @@ function reducer(state, action) {
       return { ...state, leaveA: !state.leaveA };
     case "overtimeSetting":
       return { ...state, overtimeS: !state.overtimeS };
+    case "payPension":
+      return { ...state, payPension: !state.payPension };
+    case "13thMonth":
+      return { ...state, theMonth: !state.theMonth };
+    case "salaryBreakdown":
+      return { ...state, salaryBreakdown: !state.salaryBreakdown };
     default:
       return state;
   }
 }
+//
 
 const PayrollSettings = () => {
   const [state, dispatch] = useReducer(reducer, initialState);
-  const { leaveA, overtimeS } = state;
+  const { leaveA, overtimeS, payPension, theMonth, salaryBreakdown } = state;
 
   const boxStyle = "px-4 py-3 shadow rounded-md bg-mainBg";
   const boxTitle = "font-medium text-base pb-1";
@@ -89,28 +114,112 @@ const PayrollSettings = () => {
                   onChange={() => dispatch({ type: "overtimeSetting" })}
                 />
               </div>
-              {overtimeS && <OvertimeSetting inputStyle={inputStyle} close={() => dispatch({ type: "overtimeSetting" })}/>}
+              {overtimeS && (
+                <OvertimeSetting
+                  inputStyle={inputStyle}
+                  close={() => dispatch({ type: "overtimeSetting" })}
+                />
+              )}
             </div>
 
             <div className={boxStyle}>
               <div className="flex items-center justify-between">
                 <h5 className={boxTitle}>Pay Pension</h5>
-                <Switch />
+                <Switch
+                  checked={payPension}
+                  onChange={() => dispatch({ type: "payPension" })}
+                />
               </div>
 
-              <div>
-                
-              </div>
+              {payPension && (
+                <div className="mt-2">
+                  <label className="text-sm">Select pension plan</label>
+                  <div className="flex items-center lg:justify-between">
+                    <div className="flex items-center">
+                      <Checkbox defaultChecked id="8%" />
+                      <label
+                        className="text-xs lg:text-sm cursor-pointer hover:text-caramel"
+                        htmlFor="8%"
+                      >
+                        8% Employee Deduction
+                      </label>
+                    </div>
+                    <div className="flex items-center">
+                      <Checkbox id="20%" />
+                      <label
+                        className="text-xs lg:text-sm cursor-pointer hover:text-caramel"
+                        htmlFor="20%"
+                      >
+                        Group 20%
+                      </label>
+                    </div>
+                  </div>
+                  <div className="flex justify-between items-center mt-5 pb-3">
+                    <button
+                      onClick={() => dispatch({ type: "payPension" })}
+                      type="button"
+                      className="transparentButton"
+                    >
+                      cancel
+                    </button>
+                    <button type="submit" className="button">
+                      save
+                    </button>
+                  </div>
+                </div>
+              )}
             </div>
 
-            <div className={boxStyle}>
+            <div className={`${boxStyle} text-sm`}>
               <div className="flex items-center justify-between">
-                <h5 className={boxTitle}>13th Month Salary</h5> <Switch />
+                <h5 className={boxTitle}>13th Month Salary</h5>{" "}
+                <Switch
+                  checked={theMonth}
+                  onChange={() => dispatch({ type: "13thMonth" })}
+                />
               </div>
               <p className="text-sm">
                 This allows you to add a percentage of the employees' salary as
                 a 13th month bonus to be paid in the selected month
               </p>
+
+              {theMonth && (
+                <div>
+                  <div className="grid grid-cols-1 lg:grid-cols-2 gap-5 mt-5">
+                    <div>
+                      <label htmlFor="salary">Percentage of salary</label>
+                      <input
+                        type="text"
+                        placeholder="0%"
+                        className={inputStyle}
+                      />
+                    </div>
+                    <div>
+                      <label htmlFor="payment">Month of Payment</label>
+                      <select name="" id="" className={inputStyle}>
+                        <option value="">Select</option>
+                        {months.map((month) => (
+                          <option key={month} value={month}>
+                            {month}
+                          </option>
+                        ))}
+                      </select>
+                    </div>
+                  </div>
+                  <div className="flex justify-between items-center mt-5 pb-3">
+                    <button
+                      onClick={() => dispatch({ type: "13thMonth" })}
+                      type="button"
+                      className="transparentButton"
+                    >
+                      cancel
+                    </button>
+                    <button type="submit" className="button">
+                      save
+                    </button>
+                  </div>
+                </div>
+              )}
             </div>
           </div>
 
@@ -176,12 +285,88 @@ const PayrollSettings = () => {
 
             <div className={boxStyle}>
               <div className="flex items-center justify-between">
-                <h5 className={boxTitle}>Salary Breakdown</h5> <Switch />
+                <h5 className={boxTitle}>Salary Breakdown</h5>{" "}
+                <Switch
+                  value={salaryBreakdown}
+                  onChange={() => dispatch({ type: "salaryBreakdown" })}
+                />
               </div>
               <p className="text-sm">
                 This allows you to breakdown your employees' salaries (e.g
                 basic, housing, transport, etc). You can add custom items too.
               </p>
+              {salaryBreakdown && (
+                <div>
+                  <div className="grid grid-cols-2 gap-5 mt-6">
+                    <div>
+                      <p className="text-xs md:text-sm pb-2">Salary Item</p>
+                      <div className="flex flex-col gap-3">
+                        <input
+                          type="text"
+                          placeholder="Basic"
+                          disabled
+                          className={inputStyle}
+                        />
+                        <input
+                          type="text"
+                          placeholder="Housing"
+                          disabled
+                          className={inputStyle}
+                        />
+                        <input
+                          type="text"
+                          placeholder="Transport"
+                          disabled
+                          className={inputStyle}
+                        />
+                      </div>
+                    </div>
+
+                    <div>
+                      <p className="text-xs md:text-sm pb-2">
+                        Percentage of gross
+                      </p>
+                      <div className="flex flex-col gap-3">
+                        <input
+                          type="number"
+                          placeholder="0%"
+                          className={inputStyle}
+                        />
+                        <input
+                          type="number"
+                          placeholder="0%"
+                          className={inputStyle}
+                        />
+                        <input
+                          type="number"
+                          placeholder="0%"
+                          className={inputStyle}
+                        />
+                      </div>
+                    </div>
+                  </div>
+                  <div className="my-5">
+                    <h4 className="text-caramel text-sm underline pb-2 cursor-pointer">
+                      Add Item
+                    </h4>
+                    <p className="text-xs">
+                      Total breakdown is 0% and should be 100%
+                    </p>
+                  </div>
+                  <div className="flex justify-between items-center mt-5 pb-2">
+                    <button
+                      onClick={() => dispatch({ type: "salaryBreakdown" })}
+                      type="button"
+                      className="transparentButton"
+                    >
+                      Cancel
+                    </button>
+                    <button type="submit" className="button">
+                      Save Breakdown
+                    </button>
+                  </div>
+                </div>
+              )}
             </div>
           </div>
         </div>

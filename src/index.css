@@ -27,6 +27,16 @@
   --scrollBg: #808080;
 }
 
+/* [data-theme="dark"] {
+  --background: #1A202C;
+  --text-color: #ffffff;
+  --card: #011627;
+  --accent: rgba(247, 249, 252, 0.7);
+  --sideBar: #1A202C;
+  --sideBarIcon: #011627;
+  --scrollBg: #808080;
+} */
+
 [color-theme="orange"] {
   --caramel: #d69a00;
 }
@@ -151,4 +161,13 @@ body {
 /*== switch checked color ==*/
 .css-5ryogn-MuiButtonBase-root-MuiSwitch-switchBase.Mui-checked, .css-12wnr2w-MuiButtonBase-root-MuiCheckbox-root.Mui-checked {
   color: var(--caramel) !important;
+}
+
+.css-12wnr2w-MuiButtonBase-root-MuiCheckbox-root{
+  color: gray!important;
+ 
+}
+
+.css-1m9pwf3 {
+  font-size: 10px !important;
 }
