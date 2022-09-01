@@ -160,10 +160,10 @@ const PayrollSettings = () => {
                       type="button"
                       className="transparentButton"
                     >
-                      cancel
+                      Cancel
                     </button>
                     <button type="submit" className="button">
-                      save
+                      Save
                     </button>
                   </div>
                 </div>
@@ -212,10 +212,10 @@ const PayrollSettings = () => {
                       type="button"
                       className="transparentButton"
                     >
-                      cancel
+                      Cancel
                     </button>
                     <button type="submit" className="button">
-                      save
+                      Save
                     </button>
                   </div>
                 </div>
@@ -249,10 +249,10 @@ const PayrollSettings = () => {
                       type="button"
                       className="transparentButton"
                     >
-                      cancel
+                      Cancel
                     </button>
                     <button type="submit" className="button">
-                      save
+                      Save
                     </button>
                   </div>
                 </form>
