@@ -190,80 +190,53 @@ const Home = () => {
               <i className="ri-arrow-right-s-line text-xl" title="view"></i>
             </div>
           </div>
-          {/* payroll cycle */}
+
+          {/* approval */}
 
           <div className="border border-caramel rounded-xl flex flex-col gap-2 w-full  p-3 bg-slate-100">
             <div className="bg-white rounded-xl p-2 flex flex-col gap-4 flex-1">
               <div className="flex items-center gap-2">
                 <div className="bg-caramel p-2 rounded-full min-h-min min-w-min">
-                  <img src={PayrollCycle} alt="bg" className="h-6 w-6" />
+                  <img src={PayrollReview} alt="bg" className="h-6 w-6" />
                 </div>{" "}
-                <h4 className="font-light text-sm">Payroll Cycle</h4>
+                <h4 className="font-light text-sm">Review Payroll</h4>
               </div>
               {/* price */}
-              <span className="block font-bold text-xl">May 2022</span>
+              <div className="flex items-center justify-between">
+                <span className="block  text-lg">May 2022</span>
+                <span className="block font-bold text-lg">N 0.00</span>
+              </div>
             </div>
 
             <div className="flex items-center justify-between">
-              <span className="text-sm">View</span>
-              <i className="ri-arrow-right-s-line text-xl" title="view"></i>
+              <span className="text-sm">Click here to review payroll</span>
             </div>
           </div>
 
+          {/* approval */}
+
+          <div className="border border-caramel rounded-xl flex flex-col gap-2 w-full  p-3 bg-slate-100">
+            <div className="bg-caramel rounded-xl p-2 flex flex-col gap-4 flex-1 text-white">
+              <div className="flex items-center gap-2">
+                <div className="bg-white rounded-full h-8 w-8 text-caramel flex justify-center items-center">
+                  <i className="ri-check-double-line p-2 text-lg "></i>
+                </div>{" "}
+                <h4 className="font-light text-sm">Review Payroll</h4>
+              </div>
+              {/* price */}
+              <div className="flex items-center justify-between">
+                <span className="block  text-lg">May 2022</span>
+                <span className="block font-bold text-lg">N 0.00</span>
+              </div>
+              <span className="text-sm font-light flex-1 block mt-6">
+                Click here to approve payroll
+              </span>
+            </div>
+
+            <div className="flex items-center justify-between"></div>
+          </div>
           <AnimatePresence exitBeforeEnter>
             {/* pending set up */}
-
-            <motion.div
-              layout
-              transition={{
-                layout: {
-                  duration: showItems ? 0.5 : 0.1,
-                  ease: showItems ? "easeOut" : "easeIn",
-                },
-              }}
-              className={`cursor-pointer relative z-10 ${
-                showItems && "row-span-3"
-              } border border-caramel rounded-xl flex flex-col gap-2 w-full  p-3 bg-slate-100`}
-              onClick={() => setShowItems((val) => !val)}
-            >
-              <div className="rounded-xl p-2 flex flex-col gap-8">
-                <div className="flex items-center justify-between">
-                  <h4 className="font-semibold text-base">Pending Setup</h4>
-                  <motion.i
-                    animate={{ rotate: showItems ? 180 : 0 }}
-                    className="ri-arrow-down-s-line text-xl"
-                    title="view"
-                  ></motion.i>
-                </div>
-                <div className="flex flex-col gap-3">
-                  <div className="setUp_progress2 general_setup">
-                    <div className="setUp_progress-bar2" />
-                  </div>
-                  <span className="text-sm font-light">3/10 complete</span>
-                </div>
-                {/* items */}
-                <motion.div className="flex flex-col gap-4">
-                  {showItems &&
-                    pendingItems.map((item, index) => (
-                      <div
-                        className="flex gap-4 items-center text-xs"
-                        key={item.content}
-                      >
-                        <div
-                          className={`min-h-min min-w-min ${
-                            item.done ? "bg-caramel" : "bg-gray-400"
-                          } flex items-center justify-center  rounded-full text-white p-1 h-4 w-4`}
-                        >
-                          <span className={`block`}>{index + 1}</span>
-                        </div>
-                        <p className={`block ${item.done && "text-caramel"}`}>
-                          {item.content}
-                        </p>
-                      </div>
-                    ))}
-                </motion.div>
-              </div>
-            </motion.div>
 
             {/* Payroll graph & charts  */}
             <motion.div
