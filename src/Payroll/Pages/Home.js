@@ -148,10 +148,10 @@ const Home = () => {
           <button className="button">Run Payroll</button>
         </div>
 
-        <div className="grid grid-cols-4 gap-x-4 gap-y-12">
+        <div className="grid grid-cols-1 lg:grid-cols-4 md:grid-cols-2 gap-x-4 gap-y-12">
           {/* payroll history */}
 
-          <div className="border border-caramel rounded-xl flex flex-col gap-2 w-full  p-3 bg-slate-100">
+          <div className="border border-caramel col-span-3 md:col-span-1 rounded-xl flex flex-col gap-2 w-full  p-3 bg-slate-100">
             <div className="bg-white rounded-xl p-2 flex flex-col gap-4 flex-1">
               <div className="flex items-center gap-2">
                 <div className="bg-caramel p-2 rounded-full min-h-min min-w-min">
@@ -173,7 +173,7 @@ const Home = () => {
           </div>
           {/* employees */}
 
-          <div className="border border-caramel rounded-xl flex flex-col gap-2 w-full  p-3 bg-slate-100">
+          <div className="border border-caramel col-span-3 md:col-span-1 rounded-xl flex flex-col gap-2 w-full  p-3 bg-slate-100">
             <div className="bg-white rounded-xl p-2 flex flex-col gap-4 flex-1">
               <div className="flex items-center gap-2">
                 <div className="bg-caramel p-2 rounded-full min-h-min min-w-min">
@@ -192,7 +192,7 @@ const Home = () => {
           </div>
           {/* payroll cycle */}
 
-          <div className="border border-caramel rounded-xl flex flex-col gap-2 w-full  p-3 bg-slate-100">
+          <div className="border border-caramel col-span-3 md:col-span-1 rounded-xl flex flex-col gap-2 w-full  p-3 bg-slate-100">
             <div className="bg-white rounded-xl p-2 flex flex-col gap-4 flex-1">
               <div className="flex items-center gap-2">
                 <div className="bg-caramel p-2 rounded-full min-h-min min-w-min">
@@ -223,7 +223,7 @@ const Home = () => {
               }}
               className={`cursor-pointer relative z-10 ${
                 showItems && "row-span-3"
-              } border border-caramel rounded-xl flex flex-col gap-2 w-full  p-3 bg-slate-100`}
+              } border border-caramel col-span-3 lg:col-span-1 rounded-xl flex flex-col gap-2 w-full  p-3 bg-slate-100`}
               onClick={() => setShowItems((val) => !val)}
             >
               <div className="rounded-xl p-2 flex flex-col gap-8">
@@ -275,7 +275,9 @@ const Home = () => {
                 },
               }}
               className={`flex flex-col gap-4 w-full ${
-                showItems ? "col-span-3" : "col-span-4"
+                showItems
+                  ? "lg:col-span-3 col-span-3"
+                  : "lg:col-span-4 col-span-3"
               }`}
             >
               {/* top */}
@@ -326,7 +328,7 @@ const Home = () => {
                 {chartData.map((item) => (
                   <div
                     onClick={() => setActive(item.name)}
-                    className={`border border-r flex-1 h-12 hover:text-caramel flex capitalize items-center justify-center cursor-pointer bg-slate-100 text-xs ${
+                    className={`border border-r text-xs text-center flex-1 h-12 hover:text-caramel flex capitalize items-center justify-center cursor-pointer bg-slate-100 md:text-xs ${
                       active === item.name ? "text-caramel" : "text-gray-800"
                     }`}
                   >

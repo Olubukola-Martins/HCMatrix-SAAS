@@ -10,7 +10,6 @@ import PayrollComparison from "../Pages/PayrollComparison";
 import PayrollHistory from "../Pages/PayrollHistory";
 import PayrollReview from "../Pages/PayrollReview";
 import PayrollScheme from "../Pages/PayrollScheme";
-7;
 
 const PayrollRoutes = () => {
   return (

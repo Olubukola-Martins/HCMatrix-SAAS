@@ -148,7 +148,7 @@ const Home = () => {
           <button className="button">Run Payroll</button>
         </div>
 
-        <div className="grid grid-cols-4 gap-x-4 gap-y-12">
+        <div className="grid grid-cols-1 lg:grid-cols-4 gap-x-4 gap-y-12">
           {/* payroll history */}
 
           <div className="border border-caramel rounded-xl flex flex-col gap-2 w-full  p-3 bg-slate-100">
@@ -247,9 +247,7 @@ const Home = () => {
                   ease: showItems ? "easeIn" : "easeOut",
                 },
               }}
-              className={`flex flex-col gap-4 w-full ${
-                showItems ? "col-span-3" : "col-span-4"
-              }`}
+              className={`flex flex-col lg:col-span-4 gap-4 w-full `}
             >
               {/* top */}
               <div className="flex justify-between items-center">
