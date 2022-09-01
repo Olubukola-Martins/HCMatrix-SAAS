@@ -2,18 +2,19 @@ import { Checkbox, Switch } from "@mui/material";
 import React, { useReducer } from "react";
 import { Link } from "react-router-dom";
 import DashboardLayout from "../../../Layout/DashboardLayout";
+import OvertimeSetting from "../../Components/Payroll/OvertimeSetting";
 
 const initialState = {
   leaveA: false,
-  overtimeS: false
+  overtimeS: false,
 };
 
 function reducer(state, action) {
   switch (action.type) {
     case "leaveAllowance":
       return { ...state, leaveA: !state.leaveA };
-      case "overtimeSetting":
-        return { ...state, overtimeS: !state.overtimeS };
+    case "overtimeSetting":
+      return { ...state, overtimeS: !state.overtimeS };
     default:
       return state;
   }
@@ -21,7 +22,7 @@ function reducer(state, action) {
 
 const PayrollSettings = () => {
   const [state, dispatch] = useReducer(reducer, initialState);
-  const { leaveA } = state;
+  const { leaveA, overtimeS } = state;
 
   const boxStyle = "px-4 py-3 shadow rounded-md bg-mainBg";
   const boxTitle = "font-medium text-base pb-1";
@@ -83,19 +84,22 @@ const PayrollSettings = () => {
             <div className={boxStyle}>
               <div className="flex items-center justify-between">
                 <h5 className={boxTitle}>Overtime Settings</h5>
-                <Switch />
-
-
-
+                <Switch
+                  checked={overtimeS}
+                  onChange={() => dispatch({ type: "overtimeSetting" })}
+                />
               </div>
-
-             
+              {overtimeS && <OvertimeSetting inputStyle={inputStyle} close={() => dispatch({ type: "overtimeSetting" })}/>}
             </div>
 
             <div className={boxStyle}>
               <div className="flex items-center justify-between">
                 <h5 className={boxTitle}>Pay Pension</h5>
                 <Switch />
+              </div>
+
+              <div>
+                
               </div>
             </div>
 
