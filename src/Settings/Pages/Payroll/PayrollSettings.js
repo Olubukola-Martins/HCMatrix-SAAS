@@ -1,13 +1,33 @@
 import { Checkbox, Switch } from "@mui/material";
-import React from "react";
+import React, { useReducer } from "react";
 import { Link } from "react-router-dom";
 import DashboardLayout from "../../../Layout/DashboardLayout";
 
+const initialState = {
+  leaveA: false,
+  overtimeS: false
+};
+
+function reducer(state, action) {
+  switch (action.type) {
+    case "leaveAllowance":
+      return { ...state, leaveA: !state.leaveA };
+      case "overtimeSetting":
+        return { ...state, overtimeS: !state.overtimeS };
+    default:
+      return state;
+  }
+}
+
 const PayrollSettings = () => {
-  const boxStyle = "px-4 py-3 rounded-md bg-mainBg border border-red-300";
+  const [state, dispatch] = useReducer(reducer, initialState);
+  const { leaveA } = state;
+
+  const boxStyle = "px-4 py-3 shadow rounded-md bg-mainBg";
   const boxTitle = "font-medium text-base pb-1";
   const inputStyle =
-    "w-full rounded-md border border-red-300 py-2 px-2 text-sm bg-mainBg focus:outline-none placeholder:text-accent";
+    "w-full rounded-md border border-gray-300 py-2 px-2 text-sm bg-mainBg focus:outline-none placeholder:text-accent";
+
   return (
     <DashboardLayout>
       <div className="Container mt-10 pb-16">
@@ -22,7 +42,7 @@ const PayrollSettings = () => {
           <button className="button">Save Changes</button>
         </div>
 
-        <div className="bg-card px-5 py-7 rounded-md mt-7 grid grid-cols-1 md:grid-cols-2 gap-5 text-accent">
+        <div className="bg-card px-5 py-7  rounded-md mt-7 grid grid-cols-1 md:grid-cols-2 gap-5 text-accent">
           {/* first row */}
           <div className="flex flex-col gap-4">
             <div className={boxStyle}>
@@ -62,29 +82,14 @@ const PayrollSettings = () => {
 
             <div className={boxStyle}>
               <div className="flex items-center justify-between">
-                <h5 className={boxTitle}>Payroll day</h5>
+                <h5 className={boxTitle}>Overtime Settings</h5>
                 <Switch />
+
+
+
               </div>
-              <div className="flex justify-between gap-5">
-                <div className="flex items-center text-sm">
-                  <Checkbox id="hour-wise" />
-                  <label
-                    htmlFor="hour-wise"
-                    className="cursor-pointer hover:text-caramel"
-                  >
-                    Hour-wise Calculation
-                  </label>
-                </div>
-                <div className="flex items-center text-sm">
-                  <Checkbox id="day-wise" />
-                  <label
-                    htmlFor="day-wise"
-                    className="cursor-pointer hover:text-caramel"
-                  >
-                    Day-wise Calculation
-                  </label>
-                </div>
-              </div>
+
+             
             </div>
 
             <div className={boxStyle}>
@@ -109,12 +114,36 @@ const PayrollSettings = () => {
           <div className="flex flex-col gap-4">
             <div className={boxStyle}>
               <div className="flex items-center justify-between">
-                <h5 className={boxTitle}>Leave allowance</h5> <Switch />
+                <h5 className={boxTitle}>Leave allowance</h5>
+                <Switch
+                  checked={leaveA}
+                  onChange={() => dispatch({ type: "leaveAllowance" })}
+                />
               </div>
               <p className="text-sm">
                 This allows you add a percentage of your employees salary as
                 leave allowance to be paid when an employee goes on leave
               </p>
+
+              {leaveA && (
+                <form className="mt-6 mb-2">
+                  <p className="text-sm">Percentage of salary</p>
+                  <input type="text" placeholder="0%" className={inputStyle} />
+
+                  <div className="flex justify-between items-center mt-5">
+                    <button
+                      onClick={() => dispatch({ type: "leaveAllowance" })}
+                      type="button"
+                      className="transparentButton"
+                    >
+                      cancel
+                    </button>
+                    <button type="submit" className="button">
+                      save
+                    </button>
+                  </div>
+                </form>
+              )}
             </div>
 
             <div className={boxStyle}>
