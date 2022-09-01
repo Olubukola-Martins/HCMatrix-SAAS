@@ -11,7 +11,6 @@ settingNavItems.forEach((parent) => {
 });
 
 const SearchModal = ({ open, handleClose }) => {
-  console.log(links);
 
   const [searchResults, setSearchResults] = useState([]);
   const handleSearch = (e) => {

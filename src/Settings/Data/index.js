@@ -20,7 +20,6 @@ export const settingNavItems = [
       { name: "Groups", link: "/settings/groups" },
       { name: "Pay Grades", link: "/settings/grades" },
       { name: "Grade Categories", link: "/settings/grade_categories" },
-      // { name: "Qualifications", link: "/settings/qualifications" },
       { name: "Probation Policy", link: "/settings/probation_policy" },
     ],
     category: "basic",
@@ -30,31 +29,21 @@ export const settingNavItems = [
     items: [
       { name: "Roles & Permissions", link: "/settings/roles" },
       { name: "Delegation", link: "/settings/delegations" },
-      // { name: "Geo Restrictions", link: "/settings/from-addresses" },
     ],
     category: "basic",
   },
 
   {
     title: "Automation",
-    items: [
-      { name: "Workflows", link: "/settings/automation/workflows" },
-      // { name: "Actions", link: "/settings/domain" },
-      // { name: "Scheduler", link: "/settings/from-addresses" },
-    ],
+    items: [{ name: "Workflows", link: "/settings/automation/workflows" }],
     category: "basic",
   },
-  // {
-  //   title: "Data Administration",
-  //   items: [
-  //     { name: "Import History", link: "/settings/company-details" },
-  //     { name: "Export History", link: "/settings/domain" },
-  //     { name: "Files Usage", link: "/settings/from-addresses" },
-  //     { name: "API Usage", link: "/settings/from-addresses" },
-  //   ],
-  //   category: "basic",
-  // },
-  // next category goes here
+  {
+    title: "Payroll Settings",
+    items: [{ name: "Settings", link: "/settings/payroll" }],
+    category: "payroll",
+  },
+
   {
     title: "Leave",
     items: [
