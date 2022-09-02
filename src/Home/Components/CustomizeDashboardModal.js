@@ -36,7 +36,6 @@ const areas = [
 ];
 
 const CustomizeDashboardModal = ({ open, handleClose }) => {
-  console.log(links);
 
   const [step, setStep] = useState(0);
   const [choosenArea, setChoosenArea] = useState("");

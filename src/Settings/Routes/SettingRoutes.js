@@ -25,6 +25,7 @@ import CreateRole from "../Pages/UserAccessControl/Roles/CreateRole";
 
 import Workflows from "../Pages/UserAccessControl/Automation/Workflows/Workflows";
 import CreateWorkflow from "../Pages/UserAccessControl/Automation/Workflows/CreateWorkflow";
+import PayrollSettings from "../Pages/Payroll/PayrollSettings";
 
 const SettingRoutes = () => {
   return (
@@ -69,6 +70,7 @@ const SettingRoutes = () => {
         element={<CreateWorkflow />}
       />
 
+      <Route path="/settings/payroll" element={<PayrollSettings />} />
       <Route path="/settings/grades" element={<Grades />} />
       <Route path="/settings/grade_categories" element={<GradeCategories />} />
 

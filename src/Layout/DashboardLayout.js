@@ -1,13 +1,14 @@
-import React from "react";
+import React, { useState } from "react";
 import useLocalStorage from "use-local-storage";
 import TopBar from "./Components/TopBar";
 import SideBar from "./Components/SideBar";
-import SubTopBar from "./Components/SubTopBar";
+// import SubTopBar from "./Components/SubTopBar";
 import GlobalSupport from "./Components/GlobalSupport";
 
 const DashboardLayout = ({ children }) => {
   const [theme, setTheme] = useLocalStorage("theme" ? "dark" : "light");
   const [colorTheme, setColorThem] = useLocalStorage("");
+  const [sidebarToggle, setSidebarToggle] = useState(true);
 
   const switchTheme = () => {
     const newTheme = theme === "light" ? "dark" : "light";
@@ -39,8 +40,6 @@ const DashboardLayout = ({ children }) => {
     setColorThem(newTheme);
   };
 
-  // Material UI dark and light mode
-
   return (
     <div className="mode_color" data-theme={theme} color-theme={colorTheme}>
       <TopBar
@@ -51,14 +50,27 @@ const DashboardLayout = ({ children }) => {
         yellow={switchYellowColor}
         blue={switchBlueColor}
         purple={switchPurpleColor}
+        setSidebarToggle={() => setSidebarToggle(!sidebarToggle)}
       />
       <GlobalSupport />
       <div className="flex w-full relative">
-        <div className="w-32 fixed z-40 lg:flex hidden">
+        <div
+          className={
+            sidebarToggle
+              ? "w-32 fixed z-40 overflow-hidden lg:flex hidden transition-all duration-500 ease-in-out"
+              : "w-0 overflow-hidden "
+          }
+        >
           <SideBar />
         </div>
 
-        <div className="flex-1 lg:ml-32 pt-6">
+        <div
+          className={
+            sidebarToggle
+              ? "flex-1 lg:ml-32 "
+              : "lg:ml-0 transition-all duration-500 ease-in-out"
+          }
+        >
           <div className="w-full md:top-14 top-10 sticky z-40">
             {/* <SubTopBar /> */}
           </div>

@@ -98,6 +98,7 @@ const GeneralSettings = () => {
                     .map((item) => (
                       <SettingNavItem item={item} key={item.title} />
                     ))}
+                    {/* <Link to="/settings/payroll">Payroll settings</Link> */}
                 </div>
               </FramerAccordian>
               {/* Performance */}

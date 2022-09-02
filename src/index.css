@@ -17,13 +17,23 @@
   --scrollBg: rgba(0, 0, 0, 0.3);
 }
 
-[data-theme="dark"] {
+/* [data-theme="dark"] {
   --background: #000000;
   --text-color: #ffffff;
   --card: #28282b;
   --accent: rgba(247, 249, 252, 0.7);
   --sideBar: #121212;
   --sideBarIcon: #28282b;
+  --scrollBg: #808080;
+} */
+
+[data-theme="dark"] {
+  --background: #1A202C;
+  --text-color: #ffffff;
+  --card: #011627;
+  --accent: rgba(247, 249, 252, 0.7);
+  --sideBar: #1A202C;
+  --sideBarIcon: #011627;
   --scrollBg: #808080;
 }
 
@@ -85,6 +95,11 @@ body {
   padding: 6px 8.5px;
 }
 
+.neutralButton {
+  @apply border border-neutral rounded font-medium bg-neutral text-white transition ease-in-out duration-300 text-sm tracking-wider hover:opacity-70;
+  padding: 6px 8.5px;
+}
+
 .transparentButton {
   @apply border border-slate-400 hover:border-slate-800 rounded font-medium bg-transparent text-accent transition ease-in-out duration-500 text-sm tracking-wider;
   padding: 6px 8.5px;
@@ -140,4 +155,19 @@ body {
 /* whatsApp icon button  */
 #wa-widget-send-button {
   display: none !important;
+}
+
+
+/*== switch checked color ==*/
+.css-5ryogn-MuiButtonBase-root-MuiSwitch-switchBase.Mui-checked, .css-12wnr2w-MuiButtonBase-root-MuiCheckbox-root.Mui-checked {
+  color: var(--caramel) !important;
+}
+
+.css-12wnr2w-MuiButtonBase-root-MuiCheckbox-root{
+  color: gray!important;
+ 
+}
+
+.css-1m9pwf3 {
+  font-size: 10px !important;
 }

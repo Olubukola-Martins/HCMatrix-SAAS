@@ -55,6 +55,7 @@ const TopBar = ({
   orange,
   blue,
   purple,
+  setSidebarToggle,
 }) => {
   const [anchorEl, setAnchorEl] = useState(null);
   const [transferOwnershipModal, setTransferOwnershipModal] = useState(false);
@@ -78,8 +79,6 @@ const TopBar = ({
 
   const [openSearchModal, setOpenSearchModal] = useState(false);
 
-  const id = open ? "simple-popover" : undefined;
-
   const openLicenseModal = () => {
     setLicenseModal(true);
     handleClose();
@@ -92,10 +91,16 @@ const TopBar = ({
         handleClose={() => setLicenseModal(false)}
       />
       <div className="bg-caramel w-full py-2 sticky top-0 z-50">
-        <div className="px-5 lg:px-10 flex items-center justify-between">
-          <Link to="/">
-            <img src={logo} alt="logo" className="md:h-10 h-7" />
-          </Link>
+        <div className="px-5 lg:px-12 flex items-center justify-between">
+          <div className="flex items-center gap-3">
+            <i
+              onClick={setSidebarToggle}
+              className="ri-menu-line text-2xl text-white cursor-pointer"
+            ></i>
+            <Link to="/">
+              <img src={logo} alt="logo" className="md:h-10 h-7" />
+            </Link>
+          </div>
 
           <div className="flex gap-4 items-center">
             <i className="fa-solid fa-magnifying-glass lg:hidden cursor-pointer text-base text-white"></i>
