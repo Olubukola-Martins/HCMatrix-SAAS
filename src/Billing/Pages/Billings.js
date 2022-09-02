@@ -9,13 +9,13 @@ const Billings = () => {
   return (
     <DashboardLayout>
       <div className="Container mt-4 pb-8">
-        <div className="flex justify-between items-center mb-6">
+        <div className="flex justify-between items-center mb-6 ">
           <span className="font-bold text-xl">Billings</span>
         </div>
 
-        <div className="flex gap-6 flex-col-reverse md:flex-col justify-between mt-3">
+        <div className="flex gap-6 flex-col-reverse md:flex-col justify-between mt-3  w-full">
           {/* the wallet card */}
-          <div className="border rounded-md  w-full shadow-md">
+          <div className="border rounded-md  w-full shadow-md ">
             {/* heaader */}
             <div className="heading px-3 lg:px-6 py-2 border-0 border-b flex justify-between items-center cursor-pointer">
               <h4 className="font-semibold text-base">Wallet</h4>
