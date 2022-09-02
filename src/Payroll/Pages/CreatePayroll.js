@@ -3,7 +3,11 @@ import { Link } from "react-router-dom";
 import DashboardLayout from "../../Layout/DashboardLayout";
 
 const CreatePayroll = () => {
-  const divStyle = "";
+  const boxStyle =
+    "bg-mainBg flex justify-between items-start md:items-center px-6 py-5 rounded lg:flex-row flex-col gap-y-5";
+
+  const buttonStyle =
+    "border border-gray-400 hover:text-caramel rounded px-5 py-1 font-medium text-sm text-accent";
 
   return (
     <DashboardLayout>
@@ -23,8 +27,8 @@ const CreatePayroll = () => {
           </button>
         </div>
 
-        <div className="bg-card px-5 py-7 rounded-md mt-7">
-          <div className="bg-mainBg flex justify-between items-start md:items-center px-6 py-5 rounded lg:flex-row flex-col gap-y-5">
+        <div className="bg-card px-5 py-7 rounded-md mt-7 flex flex-col gap-4">
+          <div className={boxStyle}>
             <div>
               <h5 className="font-medium text-base pb-1">Pay Date</h5>
               <p className="md:text-sm text-xs">
@@ -33,21 +37,21 @@ const CreatePayroll = () => {
             </div>
             <input
               type="date"
-              className="border text-accent rounded px-3 py-1 border-red-300 bg-mainBg"
+              className="border text-accent rounded px-3 py-1 border-gray-400 bg-mainBg"
             />
           </div>
 
-          <div className="bg-mainBg flex justify-between items-start md:items-center px-6 py-5 rounded lg:flex-row flex-col gap-y-5 my-5">
+          <div className={boxStyle}>
             <div>
               <h5 className="font-medium text-base pb-1">Set Exchange Rates</h5>
-              <p className="md:text-sm text-xs">Set the foreign currency exchange rate.</p>
+              <p className="md:text-sm text-xs">
+                Set the foreign currency exchange rate.
+              </p>
             </div>
-            <button className="border border-red-400 hover:text-caramel rounded px-5 py-1 font-medium text-sm text-accent">
-              View rate
-            </button>
+            <button className={buttonStyle}>View rate</button>
           </div>
 
-          <div className="bg-mainBg flex justify-between items-start md:items-center px-6 py-5 rounded lg:flex-row flex-col gap-y-5">
+          <div className={boxStyle}>
             <div>
               <h5 className="font-medium text-base pb-1">Add Timesheet</h5>
               <p className="md:text-sm text-xs">
@@ -55,11 +59,9 @@ const CreatePayroll = () => {
                 employees.
               </p>
             </div>
-            <button className="border border-red-400 hover:text-caramel rounded px-5 py-1 font-medium text-sm text-accent">
-              Add Timesheet
-            </button>
+            <button className={buttonStyle}>Add Timesheet</button>
           </div>
-          <div className="bg-mainBg flex justify-between items-start md:items-center px-6 py-5 rounded lg:flex-row flex-col gap-y-5 my-5">
+          <div className={boxStyle}>
             <div>
               <h5 className="font-medium text-base pb-1">
                 Employee Payroll Updates
@@ -69,19 +71,19 @@ const CreatePayroll = () => {
                 employees.
               </p>
             </div>
-            <button className="border border-red-400 hover:text-caramel rounded px-5 py-1 font-medium text-sm text-accent">
-              Add Updates
-            </button>
+            <button className={buttonStyle}>Add Updates</button>
           </div>
 
-          <div className="bg-mainBg flex justify-between items-start md:items-center px-6 py-5 rounded lg:flex-row flex-col gap-y-5 mb-5">
+          <div className={boxStyle}>
             <div>
               <h5 className="font-medium text-base pb-1">Payroll Approval</h5>
-              <p className="md:text-sm text-xs">Payroll approval for employees.</p>
+              <p className="md:text-sm text-xs">
+                Payroll approval for employees.
+              </p>
             </div>
             <select
               name=""
-              className="border text-accent rounded px-4 py-1 border-red-300 bg-mainBg focus:outline-none"
+              className="border text-accent rounded px-4 py-1 border-gray-400 bg-mainBg focus:outline-none"
             >
               <option value="">Add Approval</option>
               <option value="Approval_1">Approval 1</option>

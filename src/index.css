@@ -17,7 +17,7 @@
   --scrollBg: rgba(0, 0, 0, 0.3);
 }
 
-[data-theme="dark"] {
+/* [data-theme="dark"] {
   --background: #000000;
   --text-color: #ffffff;
   --card: #28282b;
@@ -25,9 +25,9 @@
   --sideBar: #121212;
   --sideBarIcon: #28282b;
   --scrollBg: #808080;
-}
+} */
 
-/* [data-theme="dark"] {
+[data-theme="dark"] {
   --background: #1A202C;
   --text-color: #ffffff;
   --card: #011627;
@@ -35,7 +35,7 @@
   --sideBar: #1A202C;
   --sideBarIcon: #011627;
   --scrollBg: #808080;
-} */
+}
 
 [color-theme="orange"] {
   --caramel: #d69a00;
