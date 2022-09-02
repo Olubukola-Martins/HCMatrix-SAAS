@@ -7,14 +7,16 @@ const PayrollHistory = () => {
     <DashboardLayout>
       <div className="Container mt-10 pb-16">
         <div className="flex items-center gap-2 mb-10">
-          <Link to="#!" className="hover:text-caramel">
+          <Link to="/payroll/home" className="hover:text-caramel">
             <i className="ri-arrow-left-s-line text-xl"></i>
           </Link>
           <h5 className="font-black text-lg">Payroll History</h5>
         </div>
 
         <div className="flex justify-between items-center mb-6">
-          <Link to="/create-payroll" className="button">Create Payroll</Link>
+          <Link to="/create-payroll" className="button">
+            Create Payroll
+          </Link>
           <div className="flex justify-end gap-5 font-medium">
             <i className="ri-download-2-line text-xl"></i>
             <i className="ri-logout-box-r-line text-xl"></i>

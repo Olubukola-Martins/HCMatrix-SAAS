@@ -14,6 +14,12 @@
 .sideBarItemWrap {
   @apply mt-5 cursor-pointer;
 }
+.sideBarItemWrap.active .sideBarList {
+  @apply bg-caramel text-white;
+}
+.sideBarItemWrap.active .sideBarList i {
+  @apply text-white;
+}
 
 /* sub top bar */
 .module_list_item {
@@ -23,4 +29,3 @@
 .module_list_item_mobile {
   @apply flex items-center gap-3 cursor-pointer text-base;
 }
-

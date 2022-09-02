@@ -23,6 +23,21 @@ ChartJS.register(
 
 export const options = {
   responsive: true,
+  scales: {
+    y: {
+      beginAtZero: true,
+      grid: {
+        color: "#b2beb5",
+        colourClass: "var(--accent)",
+      },
+    },
+    x: {
+      beginAtZero: true,
+      grid: {
+        color: "#b2beb5",
+      },
+    },
+  },
   maintainAspectRatio: false,
   plugins: {
     legend: {

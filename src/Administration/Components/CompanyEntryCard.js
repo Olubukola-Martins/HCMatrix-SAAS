@@ -2,7 +2,7 @@ import React from "react";
 
 const CompanyEntryCard = () => {
   return (
-    <div className="flex justify-between rounded-md items-center px-3 py-4 bg-white">
+    <div className="flex justify-between rounded-md items-center px-3 py-4 bg-mainBg">
       <div className="flex gap-4">
         <div>
           {/* logo */}

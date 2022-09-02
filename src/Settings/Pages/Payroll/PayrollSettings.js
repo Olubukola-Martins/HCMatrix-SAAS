@@ -62,7 +62,7 @@ const PayrollSettings = () => {
     <DashboardLayout>
       <div className="Container mt-10 pb-16">
         <div className="flex items-center gap-1 mb-10">
-          <Link to="#!">
+          <Link to="/payroll/home">
             <i className="ri-arrow-left-s-line text-xl"></i>
           </Link>
           <h5 className="font-black text-lg">Payroll Settings</h5>
@@ -316,13 +316,9 @@ const PayrollSettings = () => {
                   <h5 className="text-caramel underline pt-3 cursor-pointer">
                     View Tax Table
                   </h5>
-                      {/* tax table */}
-                      <div>
-                        
-                      </div>
-                  <div>
-
-                  </div>
+                  {/* tax table */}
+                  <div></div>
+                  <div></div>
 
                   <div className="flex justify-between items-center mt-5 pb-2">
                     <button

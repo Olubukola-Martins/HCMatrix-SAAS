@@ -22,7 +22,7 @@ const PayrollReview = () => {
     <DashboardLayout>
       <div className="Container mt-10">
         <div className="flex items-center gap-1 mb-10">
-          <Link to="#!">
+          <Link to="/payroll/home">
             <i className="ri-arrow-left-s-line text-xl"></i>
           </Link>
           <h5 className="font-black text-lg">Payroll Review</h5>

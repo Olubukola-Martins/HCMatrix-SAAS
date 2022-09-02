@@ -19,7 +19,7 @@ const Home = () => {
           </div>
 
           {/* content */}
-          <div className="bg-slate-200 px-4 py-6 rounded-lg">
+          <div className="bg-card px-4 py-6 rounded-lg">
             <div className="flex flex-col text-center gap-2">
               <h4 className="text-xl font-bold">5 Companies managed by you</h4>
               <p className="text-sm font-light">

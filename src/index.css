@@ -8,7 +8,7 @@
   --background: #ffffff;
   --text-color: #252526;
   --caramel: #ff6647;
-  --neutral: #FF221E;
+  --neutral: #ff221e;
   --faded: rgb(255, 102, 71, 0.5);
   --card: #f6f7fb;
   --accent: #3a3a3a;
@@ -28,11 +28,11 @@
 } */
 
 [data-theme="dark"] {
-  --background: #1A202C;
+  --background: #1a202c;
   --text-color: #ffffff;
   --card: #011627;
   --accent: rgba(247, 249, 252, 0.7);
-  --sideBar: #1A202C;
+  --sideBar: #1a202c;
   --sideBarIcon: #011627;
   --scrollBg: #808080;
 }
@@ -157,15 +157,14 @@ body {
   display: none !important;
 }
 
-
 /*== switch checked color ==*/
-.css-5ryogn-MuiButtonBase-root-MuiSwitch-switchBase.Mui-checked, .css-12wnr2w-MuiButtonBase-root-MuiCheckbox-root.Mui-checked {
+.css-5ryogn-MuiButtonBase-root-MuiSwitch-switchBase.Mui-checked,
+.css-12wnr2w-MuiButtonBase-root-MuiCheckbox-root.Mui-checked {
   color: var(--caramel) !important;
 }
 
-.css-12wnr2w-MuiButtonBase-root-MuiCheckbox-root{
-  color: gray!important;
- 
+.css-12wnr2w-MuiButtonBase-root-MuiCheckbox-root {
+  color: gray !important;
 }
 
 .css-1m9pwf3 {
