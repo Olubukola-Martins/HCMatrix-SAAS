@@ -318,7 +318,7 @@ const PayrollSettings = () => {
                   </h5>
                       {/* tax table */}
                       <div>
-                        
+
                       </div>
                   <div>
 

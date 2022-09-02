@@ -12,7 +12,7 @@ const SideBar = () => {
           <div className="flex justify-center">
             <span
               className="sideBarList"
-              style={{ background: "var(--caramel)" }}
+              // style={{ background: "var(--caramel)" }}
             >
               <i className="ri-home-smile-line" style={{ color: "#fff" }}></i>
             </span>
