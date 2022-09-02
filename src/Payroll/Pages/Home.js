@@ -148,7 +148,7 @@ const Home = () => {
           <button className="button">Run Payroll</button>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-4 md:grid-cols-2 gap-x-4 gap-y-12">
+        <div className="grid grid-cols-1 lg:grid-cols-4 md:grid-cols-2 gap-x-4 gap-y-12 w-full ">
           {/* payroll history */}
 
           <div className="border border-caramel col-span-3 md:col-span-1 rounded-xl flex flex-col gap-2 w-full  p-3 bg-slate-100">

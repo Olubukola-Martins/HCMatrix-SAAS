@@ -1,4 +1,5 @@
 import { BrowserRouter as Router } from "react-router-dom";
+import AdminRoutes from "./Administration/Routes/AdminRoutes";
 import AuthRoutes from "./Auth/Routes/AuthRoutes";
 import BillingRoutes from "./Billing/Routes/BillingRoutes";
 import PayrollRoutes from "./Payroll/Routes/PayrollRoutes";
@@ -13,6 +14,7 @@ function App() {
       <SettingRoutes />
       <BillingRoutes />
       <PayrollRoutes />
+      <AdminRoutes />
 
       {/* <Routes>
       <Route path="*" element={<NotFoundPage /> }/>
