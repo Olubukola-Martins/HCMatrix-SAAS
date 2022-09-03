@@ -26,7 +26,7 @@ const initialState = {
   theMonth: false,
   salaryBreakdown: false,
   tax: false,
-  taxTable: false
+  taxTable: false,
 };
 
 function reducer(state, action) {
@@ -43,7 +43,8 @@ function reducer(state, action) {
       return { ...state, salaryBreakdown: !state.salaryBreakdown };
     case "tax":
       return { ...state, tax: !state.tax };
-      case "taxTable": return {...state, taxTable: action.payload}
+    case "taxTable":
+      return { ...state, taxTable: action.payload };
     default:
       return state;
   }
@@ -52,8 +53,15 @@ function reducer(state, action) {
 
 const PayrollSettings = () => {
   const [state, dispatch] = useReducer(reducer, initialState);
-  const { leaveA, overtimeS, payPension, theMonth, salaryBreakdown, tax } =
-    state;
+  const {
+    leaveA,
+    overtimeS,
+    payPension,
+    theMonth,
+    salaryBreakdown,
+    tax,
+    taxTable,
+  } = state;
 
   const boxStyle = "px-4 py-3 shadow rounded-md bg-mainBg";
   const boxTitle = "font-medium text-base pb-1";
@@ -317,50 +325,64 @@ const PayrollSettings = () => {
                       </label>
                     </div>
                   </div>
-                  <h5 className="text-caramel underline pt-3 cursor-pointer">
-                    View Tax Table
-                  </h5>
+                  {taxTable !== true && (
+                    <h5
+                      onClick={() =>
+                        dispatch({ type: "taxTable", payload: true })
+                      }
+                      className="text-caramel underline pt-3 cursor-pointer"
+                    >
+                      View Tax Table
+                    </h5>
+                  )}
                   {/* tax table */}
-                  <div className="bg-card px-2 py-3 mt-3 rounded font-medium">
-                    <i className="ri-close-fill text-lg flex justify-end pb-3 font-semibold"></i>
-                    <div className="flex flex-col gap-4">
-                      <div className="flex item-center text-xs justify-between gap-2 mb-4">
-                        <span className="text-sm">Taxation in Nigeria</span>
-                        <span className="text-caramel underline">
-                          Edit Tax Table
-                        </span>
-                      </div>
-                      <div className={taxTableWrap}>
-                        <span>Annual Income(NGN)</span>
-                        <span>Personal Income Tax Rate (%)</span>
-                      </div>
+                  {taxTable && (
+                    <div className="bg-card px-2 py-3 mt-3 rounded font-medium">
+                      <i
+                        onClick={() =>
+                          dispatch({ type: "taxTable", payload: false })
+                        }
+                        className="ri-close-fill cursor-pointer text-lg flex justify-end pb-3 font-semibold"
+                      ></i>
+                      <div className="flex flex-col gap-4">
+                        <div className="flex item-center text-xs justify-between gap-2 mb-4">
+                          <span className="text-sm">Taxation in Nigeria</span>
+                          <span className="text-caramel underline cursor-pointer">
+                            Edit Tax Table
+                          </span>
+                        </div>
+                        <div className={taxTableWrap}>
+                          <span>Annual Income(NGN)</span>
+                          <span>Personal Income Tax Rate (%)</span>
+                        </div>
 
-                      <div className={taxTableWrap}>
-                        <span>First 300000</span>
-                        <span>7</span>
-                      </div>
-                      <div className={taxTableWrap}>
-                        <span>Next 300000</span>
-                        <span>11</span>
-                      </div>
-                      <div className={taxTableWrap}>
-                        <span>Next 500000</span>
-                        <span>15</span>
-                      </div>
-                      <div className={taxTableWrap}>
-                        <span>Next 500000</span>
-                        <span>19</span>
-                      </div>
-                      <div className={taxTableWrap}>
-                        <span>Next 1600000</span>
-                        <span>21</span>
-                      </div>
-                      <div className={taxTableWrap}>
-                        <span> Next 3200000</span>
-                        <span>24</span>
+                        <div className={taxTableWrap}>
+                          <span>First 300000</span>
+                          <span>7</span>
+                        </div>
+                        <div className={taxTableWrap}>
+                          <span>Next 300000</span>
+                          <span>11</span>
+                        </div>
+                        <div className={taxTableWrap}>
+                          <span>Next 500000</span>
+                          <span>15</span>
+                        </div>
+                        <div className={taxTableWrap}>
+                          <span>Next 500000</span>
+                          <span>19</span>
+                        </div>
+                        <div className={taxTableWrap}>
+                          <span>Next 1600000</span>
+                          <span>21</span>
+                        </div>
+                        <div className={taxTableWrap}>
+                          <span> Next 3200000</span>
+                          <span>24</span>
+                        </div>
                       </div>
                     </div>
-                  </div>
+                  )}
 
                   <div className="flex justify-between items-center mt-5 pb-2">
                     <button
