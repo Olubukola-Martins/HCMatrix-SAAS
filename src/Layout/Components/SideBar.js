@@ -1,4 +1,5 @@
 import React from "react";
+import { NavLink } from "react-router-dom";
 import "../style/style.css";
 
 const SideBar = () => {
@@ -8,17 +9,15 @@ const SideBar = () => {
         className="h-screen overflow-y-auto flex-col flex items-center px-2 text-center pb-32 scrollBar"
         style={{ background: "var(--sideBar)" }}
       >
-        <div className="mt-10 cursor-pointer">
+        <NavLink to={`/`} className="sideBarItemWrap">
           <div className="flex justify-center">
-            <span
-              className="sideBarList"
-              // style={{ background: "var(--caramel)" }}
-            >
-              <i className="ri-home-smile-line" style={{ color: "#fff" }}></i>
+            <span className="sideBarList">
+              <i className="ri-home-smile-line"></i>
             </span>
           </div>
           <span className="sideBarName">Home</span>
-        </div>
+        </NavLink>
+
         <div className="sideBarItemWrap">
           <div className="flex justify-center">
             <span className="sideBarList">
@@ -28,14 +27,15 @@ const SideBar = () => {
           <span className="sideBarName">Self-service</span>
         </div>
 
-        <div className="sideBarItemWrap">
+        <NavLink className="sideBarItemWrap" to={`/payroll/home`}>
           <div className="flex justify-center">
             <span className="sideBarList">
               <i className="ri-check-double-line"></i>
             </span>
           </div>
+
           <span className="sideBarName">Payroll</span>
-        </div>
+        </NavLink>
         <div className="sideBarItemWrap">
           <div className="flex justify-center">
             <span className="sideBarList">
