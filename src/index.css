@@ -17,16 +17,6 @@
   --scrollBg: rgba(0, 0, 0, 0.3);
 }
 
-/* [data-theme="dark"] {
-  --background: #000000;
-  --text-color: #ffffff;
-  --card: #28282b;
-  --accent: rgba(247, 249, 252, 0.7);
-  --sideBar: #121212;
-  --sideBarIcon: #28282b;
-  --scrollBg: #808080;
-} */
-
 [data-theme="dark"] {
   --background: #1a202c;
   --text-color: #ffffff;
