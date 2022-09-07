@@ -28,7 +28,7 @@ const Domains = () => {
   
   return (
     <DashboardLayout>
-      <div className="Container pb-36 pt-5">
+      <div>
         <div className="flex flex-col md:flex-row md:items-center justify-between mb-12">
           <Link to="/settings">
             <i className="fa fa-arrow-left text-accent" aria-hidden="true"></i>

@@ -162,7 +162,7 @@ const UserProfiles = () => {
               <FilterDrawer handleDrawer={setShowDraggableDrawer} />
             )}
           </AnimatePresence>
-          <div className="Container">
+          <div className=" ">
             <div
               className="px-6 py-4  mb-6 flex items-center gap-4 text-sm"
               style={{ background: "var(--card)" }}
@@ -199,7 +199,7 @@ const UserProfiles = () => {
 
       
           {/* table */}
-          <div className="Container">
+          <div className=" ">
             <table className="employee-profile-table">
               <thead>
                 <tr>

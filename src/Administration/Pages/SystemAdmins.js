@@ -5,10 +5,10 @@ import DashboardLayout from "../../Layout/DashboardLayout";
 const SystemAdmins = () => {
   return (
     <DashboardLayout>
-      <div className="Container mt-10 pb-16">
+      <div className="  mt-10 pb-16">
         <div className="flex justify-between items-center mb-10">
           <div className="flex items-center gap-2 ">
-            <Link to="/payroll-review" className="hover:text-caramel">
+            <Link to="payroll/review" className="hover:text-caramel">
               <i className="ri-arrow-left-s-line text-xl"></i>
             </Link>
             <h5 className="font-black text-lg">System Administrators</h5>

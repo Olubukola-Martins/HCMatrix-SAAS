@@ -33,7 +33,7 @@ const GeneralSettings = () => {
   };
   return (
     <DashboardLayout>
-      <div className="Container pb-96 ">
+      <div>
         <h4 className="font-bold text-accent text-2xl mt-6">All Settings</h4>
         <div className="flex flex-col mt-8">
           {/* search */}

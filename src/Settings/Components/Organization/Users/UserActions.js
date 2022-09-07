@@ -2,7 +2,7 @@ import React from "react";
 
 const UserActions = () => {
   return (
-    <div className="Container">
+    <div className=" ">
       <div className="bg-card mb-2">
         {/* <div className="flex justify-end">
           <span className="pr-3 pb-2 cursor-pointer">x</span>

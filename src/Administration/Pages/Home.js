@@ -6,7 +6,7 @@ import CompanyEntryCards from "../Components/CompanyEntryCards";
 const Home = () => {
   return (
     <DashboardLayout>
-      <div className="Container pb-20 mt-4">
+      <div className="  pb-20 mt-4">
         <div className="flex flex-col gap-2">
           <div className="flex flex-col w-full gap-2 md:flex-row md:justify-end md:items-center mt-2 p-2 rounded text-sm">
             <div className="">

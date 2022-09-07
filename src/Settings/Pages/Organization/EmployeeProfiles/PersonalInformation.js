@@ -17,7 +17,7 @@ const PersonalInformation = () => {
 
   return (
     <DashboardLayout>
-      <div className="Container pb-20">
+      <div className="  pb-20">
         <div className="flex justify-between items-center mt-3">
           <div className="flex items-center gap-2 text-accent font-semibold mt-2 pb-1">
             <Link to="/settings/employee-profile">

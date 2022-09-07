@@ -25,7 +25,7 @@ const Statement = () => {
         handleClose={() => setLicenseModal(false)}
       />
 
-      <div className="Container -mt-6 pt-10 text-sm text-accent pb-10 bg-card">
+      <div className="  -mt-6 pt-10 text-sm text-accent pb-10 bg-card">
         <div className="px-24">
           <div className="flex items-center justify-between mb-5">
             <i

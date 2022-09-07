@@ -2,6 +2,7 @@ import { Checkbox, Switch } from "@mui/material";
 import React, { useReducer } from "react";
 import { Link } from "react-router-dom";
 import DashboardLayout from "../../../Layout/DashboardLayout";
+import PayrollSubNav from "../../../Payroll/Components/PayrollSubNav";
 import OvertimeSetting from "../../Components/Payroll/OvertimeSetting";
 
 var months = [
@@ -72,15 +73,15 @@ const PayrollSettings = () => {
 
   return (
     <DashboardLayout>
-      <div className="Container mt-10 pb-16">
-        <div className="flex items-center gap-1 mb-10">
-          <Link to="/payroll/home">
-            <i className="ri-arrow-left-s-line text-xl"></i>
-          </Link>
-          <h5 className="font-black text-lg">Payroll Settings</h5>
-        </div>
-
-        <div className="flex justify-end">
+      <PayrollSubNav />
+      <div>
+        <div className="flex justify-between items-center">
+          <div className="flex items-center gap-1">
+            <Link to="/payroll/home">
+              <i className="ri-arrow-left-s-line text-xl"></i>
+            </Link>
+            <h5 className="font-black text-lg">Payroll Settings</h5>
+          </div>
           <button className="button">Save Changes</button>
         </div>
 

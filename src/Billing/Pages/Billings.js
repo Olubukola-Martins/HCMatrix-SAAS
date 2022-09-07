@@ -8,7 +8,7 @@ const Billings = () => {
   const [banks, setBanks] = useState([]);
   return (
     <DashboardLayout>
-      <div className="Container mt-4 pb-8">
+      <div className="  mt-4 pb-8">
         <div className="flex justify-between items-center mb-6 ">
           <span className="font-bold text-xl">Billings</span>
         </div>

@@ -67,14 +67,16 @@ const DashboardLayout = ({ children }) => {
         <div
           className={
             sidebarToggle
-              ? "flex-1 lg:ml-32 "
-              : "lg:ml-0 transition-all duration-500 ease-in-out"
+              ? "w-full lg:ml-32 mt-7 pb-10"
+              : "lg:ml-0 w-full transition-all duration-500 ease-in-out mt-7 pb-10"
           }
         >
           <div className="w-full md:top-14 top-10 sticky z-40">
             {/* <SubTopBar /> */}
           </div>
-          {children}
+         <main className="Container">
+         {children}
+         </main>
         </div>
       </div>
     </div>

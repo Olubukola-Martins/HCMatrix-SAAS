@@ -3,7 +3,7 @@ import DashboardLayout from "../../Layout/DashboardLayout";
 import PayrollCycle from "../Assets/Images/payrollCycle.svg";
 import Group from "../Assets/Images/group.svg";
 import DollarBox from "../Assets/Images/dollarBox.svg";
-import PayrollReview from "../Assets/Images/payrollReview.svg";
+// import PayrollReview from "../Assets/Images/payrollReview.svg";
 import { LineChart } from "../Components/LineChart";
 import { BarChart } from "../Components/BarChart";
 import { ScatterChart } from "../Components/ScatterChart";
@@ -14,6 +14,7 @@ import { Histogram } from "../Components/Histogram";
 import { AnimatePresence, motion } from "framer-motion";
 import { SpiderChart } from "../Components/SpiderChart";
 import { Link } from "react-router-dom";
+import PayrollSubNav from "../Components/PayrollSubNav";
 
 const labels = [
   "January",
@@ -30,6 +31,7 @@ const labels = [
 ];
 
 const Home = () => {
+
   const chartData = [
     {
       name: "net income",
@@ -148,7 +150,8 @@ const Home = () => {
     "group-hover:shadow-md transition ease-in-out duration-500 bg-mainBg rounded-xl p-2 flex flex-col gap-4 flex-1";
   return (
     <DashboardLayout>
-      <div className="Container mt-10 pb-8 text-accent">
+      <PayrollSubNav/>
+      <div className="text-accent">
         <div className="flex justify-between items-center mb-6">
           <span className="font-bold text-xl">Payroll</span>
           <Link className="neutralButton" to="/create-payroll">
@@ -159,7 +162,7 @@ const Home = () => {
         <div className="grid grid-cols-1 lg:grid-cols-4 md:grid-cols-2 gap-x-4 gap-y-12 w-full ">
           {/* payroll history */}
 
-          <Link className={`${outerStyle}`} to="/payroll-history">
+          <div className={`${outerStyle} cursor-text`}>
             <div className={`${innerStyle}`}>
               <div className="flex items-center gap-2">
                 <div className="bg-caramel p-2 rounded-full min-h-min min-w-min">
@@ -169,16 +172,13 @@ const Home = () => {
               </div>
               {/* price */}
               <span className="block font-bold text-xl">N0.00</span>
-              <span className="block text-xs">
-                Compared to N0.00 last month{" "}
-              </span>
             </div>
 
-            <div className="flex items-center justify-between group-hover:text-caramel">
+            <div className="flex items-center justify-between group-hover:text-caramel invisible">
               <span className="text-sm">View</span>
               <i className="ri-arrow-right-s-line text-xl" title="view"></i>
             </div>
-          </Link>
+          </div>
           {/* employees */}
 
           <Link className={`${outerStyle}`} to="/settings/employee-profile">
@@ -189,8 +189,7 @@ const Home = () => {
                 </div>{" "}
                 <h4 className="font-light text-sm">Employees</h4>
               </div>
-              {/* price */}
-              <span className="block font-bold text-xl">N0.00</span>
+              <span className="block font-bold text-xl">125</span>
             </div>
 
             <div className="flex items-center justify-between group-hover:text-caramel">
@@ -198,9 +197,9 @@ const Home = () => {
               <i className="ri-arrow-right-s-line text-xl" title="view"></i>
             </div>
           </Link>
-          {/* payroll cycle */}
 
-          <Link className={`${outerStyle}`} to="/payroll-scheme">
+          {/* payroll cycle */}
+          <Link className={`${outerStyle}`} to="/payroll/cycle">
             <div className={`${innerStyle}`}>
               <div className="flex items-center gap-2">
                 <div className="bg-caramel p-2 rounded-full min-h-min min-w-min">
