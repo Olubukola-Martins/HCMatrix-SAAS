@@ -154,7 +154,7 @@ const Home = () => {
       <div className="text-accent">
         <div className="flex justify-between items-center mb-6">
           <span className="font-bold text-xl">Payroll</span>
-          <Link className="neutralButton" to="/create-payroll">
+          <Link className="neutralButton" to="/payroll/create">
             Create Payroll
           </Link>
         </div>
