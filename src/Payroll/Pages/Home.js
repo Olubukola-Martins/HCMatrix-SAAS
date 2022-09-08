@@ -168,7 +168,7 @@ const Home = () => {
                 <div className="bg-caramel p-2 rounded-full min-h-min min-w-min">
                   <img src={DollarBox} alt="bg" className="h-6 w-6" />
                 </div>{" "}
-                <h4 className="font-light text-sm">Payroll History</h4>
+                <h4 className="font-light text-sm">Payroll Burden</h4>
               </div>
               {/* price */}
               <span className="block font-bold text-xl">N0.00</span>

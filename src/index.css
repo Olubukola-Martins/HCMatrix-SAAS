@@ -160,3 +160,14 @@ body {
 .css-1m9pwf3 {
   font-size: 10px !important;
 }
+
+
+  .css-h8r51o-MuiButtonBase-root-MuiMenuItem-root:hover  {
+    background: var(--card) !important;
+  }
+
+  .css-h8r51o-MuiButtonBase-root-MuiMenuItem-root.Mui-selected  {
+      background: var(--background) !important;
+  }
+
+  /* .PrivateSwitchBase-input css-1m9pwf3  */

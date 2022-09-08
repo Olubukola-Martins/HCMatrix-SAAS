@@ -1,19 +1,32 @@
-import React from "react";
+import { Dialog, Slide } from "@mui/material";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import DashboardLayout from "../../Layout/DashboardLayout";
+import AddPayrollReport from "../Components/AddPayrollReport";
 import PayrollSubNav from "../Components/PayrollSubNav";
 
+const Transition = React.forwardRef(function Transition(props, ref) {
+  return <Slide direction="up" ref={ref} {...props} />;
+});
+
 const PayrollReport = () => {
+  const [openFullDialog, setOpenFullDialog] = useState(false);
   return (
     <DashboardLayout>
       <PayrollSubNav />
+
+      <Dialog fullScreen open={openFullDialog} TransitionComponent={Transition}>
+        <DashboardLayout>
+          <AddPayrollReport close={() => setOpenFullDialog(false)} />
+        </DashboardLayout>
+      </Dialog>
       <div>
         <div className="flex gap-2 text-accent">
           <Link to="#" className="hover:text-caramel">
             <i className="ri-arrow-left-s-line text-xl"></i>
           </Link>
           <div>
-            <h5 className="font-black text-lg">Payroll Cycle</h5>
+            <h5 className="font-black text-lg">Report</h5>
             <span className="text-xs">
               Control the information that should appear in your payroll
               reports.
@@ -22,18 +35,18 @@ const PayrollReport = () => {
         </div>
 
         <div className="flex justify-end">
-          <button className="button">Add a Report</button>
+          <button className="button" onClick={() => setOpenFullDialog(true)}>Add a Report</button>
         </div>
 
         <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-7 mt-5">
           {[1, 2, 3, 4].map((item) => (
             <div
               key={item}
-              className="bg-card p-4 rounded-md text-center text-accent"
+              className="bg-card p-4 rounded-md text-center text-accent shadow"
             >
               <span className="block text-xs">Payroll Report</span>
 
-              <h2 className="font-semibold py-8 text-base">
+              <h2 className="font-semibold py-14 text-base">
                 Report on Basic <br /> Allowances
               </h2>
 
