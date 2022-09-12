@@ -16,8 +16,11 @@ const Payslip = () => {
         </div>
 
         <div className="flex items-center justify-end gap-3">
-          <button className="button">Create Template</button>
-          <Link to="/payroll/employee-payslip"
+          <Link to="/payroll/create-payslip-template" className="button">
+            Create Template
+          </Link>
+          <Link
+            to="/payroll/employee-payslip"
             className="transparentButton"
             style={{ color: "var(--caramel)" }}
           >
