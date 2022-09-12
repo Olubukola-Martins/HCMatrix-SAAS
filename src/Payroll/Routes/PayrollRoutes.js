@@ -27,6 +27,7 @@ const PayrollRoutes = () => {
         <Route path="/payroll/create" element={<CreatePayroll />} />
         <Route path="/payroll/report" element={<PayrollReport />} />
         <Route path="/payroll/payslip" element={<Payslip />} />
+        <Route path="/payroll/employee-payslip" element={<Payslip />} />
       </Routes>
     </>
   );

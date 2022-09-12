@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import DashboardLayout from "../../Layout/DashboardLayout";
 import PayrollSubNav from "../Components/PayrollSubNav";
 
@@ -16,12 +17,12 @@ const Payslip = () => {
 
         <div className="flex items-center justify-end gap-3">
           <button className="button">Create Template</button>
-          <button
+          <Link to="/payroll/employee-payslip"
             className="transparentButton"
             style={{ color: "var(--caramel)" }}
           >
             View Payslips
-          </button>
+          </Link>
         </div>
 
         <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-7 mt-5">
@@ -30,11 +31,17 @@ const Payslip = () => {
               key={item}
               className="bg-card p-4 rounded-md text-center text-accent shadow"
             >
-              <span className="block text-xs">Payroll Report</span>
+              <div className="flex justify-end">
+                <button
+                  className="transparentButton"
+                  style={{ color: "var(--caramel)" }}
+                >
+                  Make Default
+                </button>
+              </div>
+              <span className="block text-xs pt-8 pb-2">Payslip</span>
 
-              <h2 className="font-semibold py-14 text-base">
-                Report on Basic <br /> Allowances
-              </h2>
+              <h2 className="font-semibold pb-20 text-base">Default Net Pay</h2>
 
               <div className="flex items-center justify-between text-sm">
                 <span className="text-caramel underline cursor-pointer">
