@@ -11,6 +11,7 @@ import PayrollReview from "../Pages/PayrollReview";
 import PayrollScheme from "../Pages/PayrollScheme";
 import PayrollReport from "../Pages/PayrollReport";
 import PayrollCycle from "../Pages/PayrollCycle";
+import Payslip from "../Pages/Payslip";
 
 const PayrollRoutes = () => {
   return (
@@ -25,6 +26,7 @@ const PayrollRoutes = () => {
         <Route path="/payroll/comparison" element={<PayrollComparison />} />
         <Route path="/payroll/create" element={<CreatePayroll />} />
         <Route path="/payroll/report" element={<PayrollReport />} />
+        <Route path="/payroll/payslip" element={<Payslip />} />
       </Routes>
     </>
   );

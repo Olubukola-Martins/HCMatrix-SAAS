@@ -13,6 +13,9 @@ const PayrollSubNav = () => {
       <NavLink to="/settings/payroll" className="hover:text-caramel">
         Payroll Settings
       </NavLink>
+       <NavLink to="/payroll/payslip" className="hover:text-caramel">
+        Payslip
+      </NavLink>
     </div>
   );
 };

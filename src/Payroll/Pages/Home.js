@@ -31,7 +31,6 @@ const labels = [
 ];
 
 const Home = () => {
-
   const chartData = [
     {
       name: "net income",
@@ -150,7 +149,7 @@ const Home = () => {
     "group-hover:shadow-md transition ease-in-out duration-500 bg-mainBg rounded-xl p-2 flex flex-col gap-4 flex-1";
   return (
     <DashboardLayout>
-      <PayrollSubNav/>
+      <PayrollSubNav />
       <div className="text-accent">
         <div className="flex justify-between items-center mb-6">
           <span className="font-bold text-xl">Payroll</span>
