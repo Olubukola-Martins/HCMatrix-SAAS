@@ -42,7 +42,8 @@ const DashboardLayout = ({ children }) => {
 
   return (
     <div className="mode_color" data-theme={theme} color-theme={colorTheme}>
-      <TopBar
+       <div className="h-screen overflow-auto">
+       <TopBar
         switchTheme={switchTheme}
         theme={theme}
         green={switchGreenColor}
@@ -79,7 +80,9 @@ const DashboardLayout = ({ children }) => {
          </main>
         </div>
       </div>
+       </div>
     </div>
+    
   );
 };
 
