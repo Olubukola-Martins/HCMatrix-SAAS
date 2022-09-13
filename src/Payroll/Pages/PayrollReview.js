@@ -5,10 +5,11 @@ import Themes from "../../Themes/Themes";
 import "../Style/style.css";
 import { Link } from "react-router-dom";
 import PayrollSubNav from "../Components/PayrollSubNav";
+import TotalSummary from "../Components/TotalSummary";
 
 const PayrollReview = () => {
   const [anchorEl, setAnchorEl] = useState(null);
-
+  const [totalSummaryModal, setTotalSummaryModal] = useState(false);
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
@@ -21,7 +22,11 @@ const PayrollReview = () => {
 
   return (
     <DashboardLayout>
-      <PayrollSubNav/>
+      <PayrollSubNav />
+      <TotalSummary
+        open={totalSummaryModal}
+        handleClose={() => setTotalSummaryModal(false)}
+      />
       <div>
         <div className="flex items-center gap-1 mb-10">
           <Link to="/payroll/home">
@@ -40,7 +45,10 @@ const PayrollReview = () => {
             >
               Compare
             </Link>
-            <Link to="/payroll/report" className="border border-caramel rounded px-2 py-1 font-medium text-caramel text-sm">
+            <Link
+              to="/payroll/report"
+              className="border border-caramel rounded px-2 py-1 font-medium text-caramel text-sm"
+            >
               Create Report
             </Link>
           </div>
@@ -120,7 +128,10 @@ const PayrollReview = () => {
               >
                 View Per Employee
               </Link>
-              <span className="cursor-pointer hover:text-caramel">
+              <span
+                onClick={() => setTotalSummaryModal(true)}
+                className="cursor-pointer hover:text-caramel"
+              >
                 View Total Summary
               </span>
             </div>

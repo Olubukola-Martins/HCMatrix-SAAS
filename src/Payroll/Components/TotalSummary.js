@@ -19,8 +19,6 @@ const TotalSummary = ({ open, handleClose }) => {
           </div>
 
           <div className="text-sm mt-5 font-medium">
-            
-
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-5 my-6">
               <div>
                 <table className="payroll-table view">
@@ -106,10 +104,7 @@ const TotalSummary = ({ open, handleClose }) => {
               <span> Total</span>
               <span>N0.00</span>
             </div>
-            <div className="bg-mainBg flex items-center justify-between px-5 py-2 mt-3">
-              <span>Account Number</span>
-              <span>xxxxxxxxxx</span>
-            </div>
+           
 
             <div className="flex items-center justify-around mt-6">
               <button className="neutralButton">Roll back</button>
