@@ -2,7 +2,7 @@ import { Modal } from "@mui/material";
 import React from "react";
 import Themes from "../../Themes/Themes";
 
-const ViewPayrollBreakdown = ({ open, handleClose }) => {
+const TotalSummary = ({ open, handleClose }) => {
   return (
     <Modal open={open} onClose={handleClose}>
       <Themes>
@@ -19,14 +19,7 @@ const ViewPayrollBreakdown = ({ open, handleClose }) => {
           </div>
 
           <div className="text-sm mt-5 font-medium">
-            <div className="bg-mainBg flex items-center justify-between px-5 py-2">
-              <span> Employee Name</span>
-              <span>Ruth Godwin</span>
-            </div>
-            <div className="bg-mainBg flex items-center justify-between px-5 py-2 mt-3">
-              <span> Employee ID</span>
-              <span>HC54321</span>
-            </div>
+            
 
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-5 my-6">
               <div>
@@ -129,4 +122,4 @@ const ViewPayrollBreakdown = ({ open, handleClose }) => {
   );
 };
 
-export default ViewPayrollBreakdown;
+export default TotalSummary;
