@@ -3,6 +3,7 @@ import AdminRoutes from "./Administration/Routes/AdminRoutes";
 import AuthRoutes from "./Auth/Routes/AuthRoutes";
 import BillingRoutes from "./Billing/Routes/BillingRoutes";
 import PayrollRoutes from "./Payroll/Routes/PayrollRoutes";
+import SelfServiceRoutes from "./Self_Service/Routes/SelfServiceRoutes";
 // import NotFoundPage from "./Layout/Components/NotFoundPage";
 import SettingRoutes from "./Settings/Routes/SettingRoutes";
 
@@ -15,6 +16,7 @@ function App() {
       <BillingRoutes />
       <PayrollRoutes />
       <AdminRoutes />
+      <SelfServiceRoutes />
 
       {/* <Routes>
       <Route path="*" element={<NotFoundPage /> }/>

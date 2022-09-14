@@ -17,14 +17,14 @@ const SideBar = () => {
           <span className="sideBarName">Home</span>
         </NavLink>
 
-        <div className="sideBarItemWrap">
+        <NavLink to="/self-service/home" className="sideBarItemWrap">
           <div className="flex justify-center">
             <span className="sideBarList">
               <i className="ri-organization-chart"></i>
             </span>
           </div>
           <span className="sideBarName">Self-service</span>
-        </div>
+        </NavLink>
 
         <NavLink className="sideBarItemWrap" to={`/payroll/home`}>
           <div className="flex justify-center">

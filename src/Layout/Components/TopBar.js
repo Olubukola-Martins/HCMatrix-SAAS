@@ -100,13 +100,23 @@ const TopBar = ({
               className="ri-menu-line cursor-pointer"
               style={{ fontSize: 23 }}
             ></i>
-            <Link to="/" className="lg:ml-16">
+            <Link
+              to="/"
+              className={
+                sidebarToggle
+                  ? "lg:ml-16 transition-all duration-500 ease-in-out"
+                  : "transition-all duration-500 ease-in-out"
+              }
+            >
               <img src={logo} alt="logo" className="md:h-8 h-7" />
             </Link>
           </div>
 
           <div className="flex gap-4 items-center">
-            <i  onClick={() => setOpenSearchModal(true)} className="fa-solid fa-magnifying-glass lg:hidden cursor-pointer text-base"></i>
+            <i
+              onClick={() => setOpenSearchModal(true)}
+              className="fa-solid fa-magnifying-glass lg:hidden cursor-pointer text-base"
+            ></i>
             <div className="lg:flex items-center gap-6 hidden mr-10">
               <i
                 className="fa-solid fa-magnifying-glass cursor-pointer text-base"
@@ -196,7 +206,6 @@ const TopBar = ({
             <Link to="/settings">
               {" "}
               <i
-              
                 className="ri-settings-3-line text-xl cursor-pointer"
                 title="Settings"
               ></i>
