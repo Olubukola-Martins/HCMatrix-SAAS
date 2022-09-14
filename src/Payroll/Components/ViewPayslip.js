@@ -6,6 +6,7 @@ import logo from "../../Layout/Images/logo2.png";
 const ViewPayslip = ({ open, handleClose }) => {
   const boxStyle =
     "bg-mainBg flex items-end justify-between rounded px-3 py-2 text-sm font-medium";
+    
   return (
     <Modal open={open} onClose={handleClose}>
       <Themes>

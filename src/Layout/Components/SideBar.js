@@ -6,8 +6,7 @@ const SideBar = () => {
   return (
     <>
       <div
-        className="h-screen overflow-y-auto flex-col flex items-center px-2 text-center pb-32 scrollBar"
-        style={{ background: "var(--sideBar)" }}
+        className="h-screen overflow-y-auto flex-col bg-card flex items-center px-2 text-center pb-32 scrollBar"
       >
         <NavLink to={`/`} className="sideBarItemWrap">
           <div className="flex justify-center">

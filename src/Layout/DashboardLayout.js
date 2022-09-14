@@ -51,6 +51,7 @@ const DashboardLayout = ({ children }) => {
         yellow={switchYellowColor}
         blue={switchBlueColor}
         purple={switchPurpleColor}
+        sidebarToggle={sidebarToggle}
         setSidebarToggle={() => setSidebarToggle(!sidebarToggle)}
       />
       <GlobalSupport />
@@ -58,7 +59,7 @@ const DashboardLayout = ({ children }) => {
         <div
           className={
             sidebarToggle
-              ? "w-32 fixed z-40 overflow-hidden lg:flex hidden transition-all duration-500 ease-in-out"
+              ? "w-28 fixed z-40 overflow-hidden lg:flex hidden transition-all duration-500 ease-in-out"
               : "w-0 overflow-hidden "
           }
         >
@@ -68,7 +69,7 @@ const DashboardLayout = ({ children }) => {
         <div
           className={
             sidebarToggle
-              ? "w-full lg:ml-32 mt-7 pb-10"
+              ? "w-full lg:ml-28 mt-7 pb-10"
               : "lg:ml-0 w-full transition-all duration-500 ease-in-out mt-7 pb-10"
           }
         >

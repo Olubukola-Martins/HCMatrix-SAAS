@@ -171,6 +171,10 @@ body {
       background: var(--background) !important;
   }
 
+  .css-106c1u2-MuiBadge-badge {
+    background-color: var(--caramel) !important;
+  }
+
   /* .PrivateSwitchBase-input css-1m9pwf3  */
 
 
