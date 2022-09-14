@@ -56,7 +56,7 @@ const PayrollComparison = () => {
       <PayrollSubNav/>
       <div>
         <div className="flex items-center gap-1 mb-10">
-          <Link to="payroll/review">
+          <Link to="/payroll/review">
             <i className="ri-arrow-left-s-line text-xl"></i>
           </Link>
           <h5 className="font-black text-lg">Payroll comparison </h5>

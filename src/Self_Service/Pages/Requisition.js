@@ -22,8 +22,39 @@ const Requisition = () => {
           </button>
         </div>
 
-
-        
+        <table className="payroll-table text-accent mt-6">
+          <thead>
+            <tr>
+              <th>
+                <input type="checkbox" />
+              </th>
+              <th>Requisition Date</th>
+              <th>Requisition Type</th>
+              <th>Title</th>
+              <th>Amount</th>
+              <th>Status</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            {[1, 2, 3, 4, 5].map((item) => (
+              <tr key={item}>
+                <td>
+                  <input type="checkbox" />
+                </td>
+                <td>DD/MM/YY</td>
+                <td>Asset Request</td>
+                <td>Laptop Request</td>
+                <td>HP EliteBook</td>
+                <td>Pending</td>
+                <td className="flex items-center justify-center gap-3">
+                  <i className="ri-eye-line text-lg"></i>
+                  <i className="ri-download-2-line text-lg"></i>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
       </div>
     </DashboardLayout>
   );
