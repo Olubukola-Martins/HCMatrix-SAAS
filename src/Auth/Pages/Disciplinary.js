@@ -31,7 +31,7 @@ const Disciplinary = () => {
   return (
     <>
       <DashboardLayout>
-        <div className="  mt-4">
+        <div className="Container mt-4">
           <div className="bg-card flex items-center justify-between px-5 rounded py-2">
             <span className="font-medium">Disciplinary</span>
             <button className="button" onClick={() => setOpenModal(true)}>

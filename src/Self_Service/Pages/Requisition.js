@@ -5,7 +5,7 @@ import DashboardLayout from "../../Layout/DashboardLayout";
 const Requisition = () => {
   return (
     <DashboardLayout>
-      <div>
+      <div className="Container">
         <div className="flex items-center gap-2">
           <Link to="/self-service/home" className="hover:text-caramel">
             <i className="ri-arrow-left-s-line text-xl"></i>
@@ -13,6 +13,8 @@ const Requisition = () => {
           <h5 className="font-black text-lg">Asset Requisition</h5>
         </div>
         <div className="flex items-center gap-3 mt-4 md:mt-0 justify-start md:justify-end">
+        <i className="ri-download-2-line text-xl cursor-pointer"></i>
+        <i className="fa-solid fa-file-export cursor-pointer"></i>
           <button className="button">New Requisition</button>
           <button
             className="transparentButton"

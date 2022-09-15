@@ -93,7 +93,7 @@ const TopBar = ({
         handleClose={() => setLicenseModal(false)}
       />
       <div className="bg-mainBg w-full py-3 sticky top-0 z-50 text-accent shadow-md">
-        <div className="px-5 lg:px-12 flex items-center justify-between">
+        <div className="px-5 lg:px-12 flex items-center justify-between Container">
           <div className="flex items-center gap-3">
             <i
               onClick={setSidebarToggle}

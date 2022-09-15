@@ -1,18 +1,17 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
 import DashboardLayout from "../../Layout/DashboardLayout";
 import CompanyEntryCards from "../Components/CompanyEntryCards";
 
 const Home = () => {
   return (
     <DashboardLayout>
-      <div className="  pb-20 mt-4">
+      <div className="Container pb-20 mt-4">
         <div className="flex flex-col gap-2">
           <div className="flex flex-col w-full gap-2 md:flex-row md:justify-end md:items-center mt-2 p-2 rounded text-sm">
             <div className="">
               <input
                 type="text"
-                placeholder="Search comapnies"
+                placeholder="Search Company"
                 className="w-full bg-transparent rounded-md p-2 border border-gray-400 focus:outline-none "
               />
             </div>
