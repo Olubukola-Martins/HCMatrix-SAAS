@@ -74,7 +74,7 @@ const PayrollSettings = () => {
   return (
     <DashboardLayout>
       <PayrollSubNav />
-      <div>
+      <div className="Container">
         <div className="flex justify-between items-center">
           <div className="flex items-center gap-1">
             <Link to="/payroll/home">

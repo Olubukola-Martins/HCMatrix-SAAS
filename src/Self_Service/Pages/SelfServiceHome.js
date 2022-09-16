@@ -87,7 +87,7 @@ const SelfServiceHome = () => {
           <SelfBox title="Hand Over Form" icon={handOver} link="#"/> */}
             </div>
             <div>
-              <div className="rounded-lg bg-mainBg border py-5 px-3">
+              <div className="rounded-lg bg-mainBg border py-5 px-3 shadow">
                 <p className="text-sm pb-5 font-medium">Assets Held by You</p>
                 <div className="flex items-center justify-between">
                   <h3 className="font-semibold text-lg">10</h3>
@@ -97,7 +97,7 @@ const SelfServiceHome = () => {
                 </div>
               </div>
 
-              <div className="bg-mainBg border mt-4 rounded-lg text-sm">
+              <div className="bg-mainBg border mt-4 rounded-lg text-sm shadow">
                 <div className="flex items-center justify-between px-3 py-3 border-b">
                   <p className="font-medium">Recent Requests </p>
                   <span className="text-xs">Status</span>

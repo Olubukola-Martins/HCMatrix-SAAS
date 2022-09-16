@@ -151,7 +151,7 @@ const Home = () => {
   return (
     <DashboardLayout>
       <PayrollSubNav/>
-      <div className="text-accent">
+      <div className="text-accent Container">
         <div className="flex justify-between items-center mb-6">
           <span className="font-bold text-xl">Payroll</span>
           <Link className="neutralButton" to="/payroll/create">
