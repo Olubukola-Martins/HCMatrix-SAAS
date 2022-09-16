@@ -4,58 +4,81 @@ import Themes from "../../../Themes/Themes";
 
 const RequisitionDetails = ({ open, handleClose }) => {
   const inputStyle =
-    "w-full rounded-md border border-gray-300 py-2 px-2 text-sm bg-mainBg focus:outline-none placeholder:text-accent";
+    "w-full rounded-md border border-gray-300 py-2 px-2 text-sm bg-mainBg focus:outline-none placeholder:text-accent mt-1";
+  const labelStyle = "font-medium text-sm";
   return (
     <Modal open={open} onClose={handleClose}>
       <Themes>
-        <div className="CModal" style={{ maxWidth: 400 }}>
+        <div className="CModal" style={{ maxWidth: 600 }}>
           <div className="flex items-center justify-between mb-6">
-            <h5 className="font-semibold text-base">New Requisition</h5>
+            <h5 className="font-semibold text-base">Requisition Date</h5>
             <i
               onClick={handleClose}
               className="ri-close-line font-semibold text-xl cursor-pointer hover:text-neutral"
             ></i>
           </div>
-          <form>
+          <form className="grid grid-cols-1 md:grid-cols-2 gap-5">
             <div className="flex flex-col gap-3">
-              <input
-                type="text"
-                onFocus={(e) => (e.target.type = "date")}
-                onBlur={(e) => (e.target.type = "text")}
-                placeholder="Requisition Date"
-                className={inputStyle}
-              />
-              <input type="text" placeholder="Title" className={inputStyle} />
+              <div>
+                <label className={labelStyle}>Requisition Date</label>
+                <input
+                  type="text"
+                  placeholder="10-08-2022"
+                  className={inputStyle}
+                  disabled
+                />
+              </div>
+              <div>
+                <label className={labelStyle}>Title</label>
+                <input
+                  type="text"
+                  placeholder="Laptop Request"
+                  className={inputStyle}
+                  disabled
+                />
+              </div>
 
-              <select name="" id="" className={inputStyle}>
-                <option value="">Requisition Type</option>
-                <option value="Requisition Type 1"> Requisition Type 1</option>
-              </select>
-
-              <textarea
-                rows="2"
-                placeholder="Description"
-                className={inputStyle}
-              />
-
-              <select name="" id="" className={inputStyle}>
-                <option value="">Item</option>
-                <option value="Item 1">Item 1</option>
-              </select>
-
-              <input
-                type="text"
-                onFocus={(e) => (e.target.type = "file")}
-                onBlur={(e) => (e.target.type = "text")}
-                placeholder="Attachment"
-                className={inputStyle}
-              />
+              <div>
+                <label className={labelStyle}>Requisition Type</label>
+                <input
+                  type="text"
+                  placeholder="Devices/ELectronics"
+                  className={inputStyle}
+                  disabled
+                />
+              </div>
             </div>
-            <div className="mt-7 flex items-center justify-between">
-              <button className="transparentButton">
-                Save And Add Another
-              </button>
-              <button className="button">Submit</button>
+
+            {/* second layer */}
+            <div className="flex flex-col gap-3">
+              <div>
+                <label className={labelStyle}>Item</label>
+                <input
+                  type="text"
+                  placeholder="HP EliteBook"
+                  className={inputStyle}
+                  disabled
+                />
+              </div>
+
+              <div>
+                <label className={labelStyle}>Status</label>
+                <input
+                  type="text"
+                  placeholder="Rejected"
+                  className={inputStyle}
+                  disabled
+                />
+              </div>
+
+              <div>
+                <label className={labelStyle}>Description</label>
+                <div className="bg-mainBg rounded-md p-3 text-sm">
+                  <p>
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                  </p>
+                </div>
+              </div>
             </div>
           </form>
         </div>
