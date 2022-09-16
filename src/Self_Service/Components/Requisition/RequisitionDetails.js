@@ -20,7 +20,7 @@ const RequisitionDetails = ({ open, handleClose }) => {
           <form className="grid grid-cols-1 md:grid-cols-2 gap-5">
             <div className="flex flex-col gap-3">
               <div>
-                <label className={labelStyle}>Requisition Date</label>
+                <label className={labelStyle}>Requisition Date:</label>
                 <input
                   type="text"
                   placeholder="10-08-2022"
@@ -29,7 +29,7 @@ const RequisitionDetails = ({ open, handleClose }) => {
                 />
               </div>
               <div>
-                <label className={labelStyle}>Title</label>
+                <label className={labelStyle}>Title:</label>
                 <input
                   type="text"
                   placeholder="Laptop Request"
@@ -39,7 +39,7 @@ const RequisitionDetails = ({ open, handleClose }) => {
               </div>
 
               <div>
-                <label className={labelStyle}>Requisition Type</label>
+                <label className={labelStyle}>Requisition Type:</label>
                 <input
                   type="text"
                   placeholder="Devices/ELectronics"
@@ -47,12 +47,17 @@ const RequisitionDetails = ({ open, handleClose }) => {
                   disabled
                 />
               </div>
+           <div>
+           <label className={labelStyle}>Attachment:</label>
+           <img src="https://via.placeholder.com/350x150" className="rounded-md"/>
+           </div>
+
             </div>
 
             {/* second layer */}
             <div className="flex flex-col gap-3">
               <div>
-                <label className={labelStyle}>Item</label>
+                <label className={labelStyle}>Item:</label>
                 <input
                   type="text"
                   placeholder="HP EliteBook"
@@ -60,9 +65,8 @@ const RequisitionDetails = ({ open, handleClose }) => {
                   disabled
                 />
               </div>
-
               <div>
-                <label className={labelStyle}>Status</label>
+                <label className={labelStyle}>Status:</label>
                 <input
                   type="text"
                   placeholder="Rejected"
@@ -72,7 +76,15 @@ const RequisitionDetails = ({ open, handleClose }) => {
               </div>
 
               <div>
-                <label className={labelStyle}>Description</label>
+                <label className={labelStyle}>Description:</label>
+                <div className="bg-mainBg rounded-md p-3 text-sm">
+                  <p>
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                  </p>
+                </div>
+              </div>
+              <div>
+                <label className={labelStyle}>Comment:</label>
                 <div className="bg-mainBg rounded-md p-3 text-sm">
                   <p>
                     Lorem ipsum dolor sit amet, consectetur adipiscing elit.
