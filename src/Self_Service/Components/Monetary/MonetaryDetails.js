@@ -11,7 +11,7 @@ const MonetaryDetails = ({ open, handleClose }) => {
       <Themes>
         <div className="CModal" style={{ maxWidth: 600 }}>
           <div className="flex items-center justify-between mb-6">
-            <h5 className="font-semibold text-base">Requisition Details</h5>
+            <h5 className="font-semibold text-base">Request Details</h5>
             <i
               onClick={handleClose}
               className="ri-close-line font-semibold text-xl cursor-pointer hover:text-neutral"
@@ -20,7 +20,7 @@ const MonetaryDetails = ({ open, handleClose }) => {
           <form className="grid grid-cols-1 md:grid-cols-2 gap-5">
             <div className="flex flex-col gap-3">
               <div>
-                <label className={labelStyle}>Requisition Date:</label>
+                <label className={labelStyle}>Date:</label>
                 <input
                   type="text"
                   placeholder="10-08-2022"
@@ -32,38 +32,31 @@ const MonetaryDetails = ({ open, handleClose }) => {
                 <label className={labelStyle}>Title:</label>
                 <input
                   type="text"
-                  placeholder="Laptop Request"
+                  placeholder="Lunch"
                   className={inputStyle}
                   disabled
                 />
               </div>
 
               <div>
-                <label className={labelStyle}>Requisition Type:</label>
+                <label className={labelStyle}>Purpose:</label>
                 <input
                   type="text"
-                  placeholder="Devices/ELectronics"
+                  placeholder="Lunch for Godswill"
                   className={inputStyle}
                   disabled
                 />
               </div>
-              <div>
-                <label className={labelStyle}>Attachment:</label>
-                <img
-                  src="https://via.placeholder.com/350x150"
-                  className="rounded-md"
-                  alt="Attachment"
-                />
-              </div>
+             
             </div>
 
             {/* second layer */}
             <div className="flex flex-col gap-3">
               <div>
-                <label className={labelStyle}>Item:</label>
+                <label className={labelStyle}>Amount:</label>
                 <input
                   type="text"
-                  placeholder="HP EliteBook"
+                  placeholder="N0.00"
                   className={inputStyle}
                   disabled
                 />
@@ -78,22 +71,8 @@ const MonetaryDetails = ({ open, handleClose }) => {
                 />
               </div>
 
-              <div>
-                <label className={labelStyle}>Description:</label>
-                <div className="bg-mainBg rounded-md p-3 text-sm">
-                  <p>
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                  </p>
-                </div>
-              </div>
-              <div>
-                <label className={labelStyle}>Comment:</label>
-                <div className="bg-mainBg rounded-md p-3 text-sm">
-                  <p>
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                  </p>
-                </div>
-              </div>
+             
+             
             </div>
           </form>
         </div>
