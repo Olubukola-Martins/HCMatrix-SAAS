@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import DashboardLayout from "../../Layout/DashboardLayout";
+import NewMonetary from "../Components/Monetary/NewMonetary";
 import Add_ReplaceAsset from "../Components/Requisition/Add_ReplaceAsset";
 import NewRequisition from "../Components/Requisition/NewRequisition";
 import RequisitionDetails from "../Components/Requisition/RequisitionDetails";
@@ -12,7 +13,7 @@ const Monetary = () => {
   return (
     <DashboardLayout>
       {/* modal components */}
-      <NewRequisition
+      <NewMonetary
         open={newMonetaryModal}
         handleClose={() => setNewMonetaryModal(false)}
       />

@@ -10,7 +10,7 @@ const NewMonetary = ({ open, handleClose }) => {
       <Themes>
         <div className="CModal" style={{ maxWidth: 400 }}>
           <div className="flex items-center justify-between mb-6">
-            <h5 className="font-semibold text-base">New Requisition</h5>
+            <h5 className="font-semibold text-base">New Request</h5>
             <i
               onClick={handleClose}
               className="ri-close-line font-semibold text-xl cursor-pointer hover:text-neutral"
@@ -22,26 +22,16 @@ const NewMonetary = ({ open, handleClose }) => {
                 type="text"
                 onFocus={(e) => (e.target.type = "date")}
                 onBlur={(e) => (e.target.type = "text")}
-                placeholder="Requisition Date"
+                placeholder="Date"
                 className={inputStyle}
               />
               <input type="text" placeholder="Title" className={inputStyle} />
-
-              <select name="" id="" className={inputStyle}>
-                <option value="">Requisition Type</option>
-                <option value="Requisition Type 1"> Requisition Type 1</option>
-              </select>
-
-              <textarea
-                rows="2"
-                placeholder="Description"
+              <input type="text" placeholder="Purpose" className={inputStyle} />
+              <input
+                type="number"
+                placeholder="Amount"
                 className={inputStyle}
               />
-
-              <select name="" id="" className={inputStyle}>
-                <option value="">Item</option>
-                <option value="Item 1">Item 1</option>
-              </select>
 
               <input
                 type="text"
