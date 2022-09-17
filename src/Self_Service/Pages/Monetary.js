@@ -1,14 +1,12 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import DashboardLayout from "../../Layout/DashboardLayout";
+import MonetaryDetails from "../Components/Monetary/MonetaryDetails";
 import NewMonetary from "../Components/Monetary/NewMonetary";
-import Add_ReplaceAsset from "../Components/Requisition/Add_ReplaceAsset";
-import NewRequisition from "../Components/Requisition/NewRequisition";
-import RequisitionDetails from "../Components/Requisition/RequisitionDetails";
 
 const Monetary = () => {
   const [newMonetaryModal, setNewMonetaryModal] = useState(false);
-  const [requisitionDetailModal, setRequisitionDetailModal] = useState(false);
+  const [monetaryDetailModal, setMonetaryDetailModal] = useState(false);
 
   return (
     <DashboardLayout>
@@ -19,10 +17,10 @@ const Monetary = () => {
       />
      
 
-      {/* <RequisitionDetails
-        open={requisitionDetailModal}
-        handleClose={() => setRequisitionDetailModal(false)}
-      /> */}
+      <MonetaryDetails
+        open={monetaryDetailModal}
+        handleClose={() => setMonetaryDetailModal(false)}
+      />
 
       <div className="Container">
         <div className="flex items-center gap-2">
@@ -70,7 +68,7 @@ const Monetary = () => {
                 <td>Pending</td>
                 <td className="flex items-center justify-center gap-3">
                   <i
-                    onClick={() => setRequisitionDetailModal(true)}
+                    onClick={() => setMonetaryDetailModal(true)}
                     className="ri-eye-line text-lg cursor-pointer hover:text-caramel"
                   ></i>
                   <i className="ri-download-2-line text-lg"></i>
