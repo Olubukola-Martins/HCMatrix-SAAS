@@ -7,19 +7,16 @@ import health from "../Assets/Images/health.svg";
 import payslip from "../Assets/Images/payslip.svg";
 import attendance from "../Assets/Images/attendance.svg";
 import vehicle from "../Assets/Images/vehicle.svg";
-import conference from "../Assets/Images/conference.svg";
 import requisition from "../Assets/Images/requisition.svg";
 import Onboarding from "../Assets/Images/Onboarding.svg";
-import documents from "../Assets/Images/documents.svg";
-import survey from "../Assets/Images/survey.svg";
-import handOver from "../Assets/Images/handOver.svg";
-import wave from "../../Layout/Images/wave.svg";
 import Themes from "../../Themes/Themes";
 import { Popover } from "@mui/material";
+import { Link } from "react-router-dom";
 
 const SelfServiceHome = () => {
   const [anchorEl, setAnchorEl] = useState(null);
   const [morePopover, setMorePopover] = useState(null);
+  const [requisitionPopover, setRequisitionPopover] = useState(null);
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -56,12 +53,30 @@ const SelfServiceHome = () => {
               <SelfBox title="Payslip" icon={payslip} link="#" />
               <SelfBox title="Attendance" icon={attendance} link="#" />
               <SelfBox title="Vehicle booking" icon={vehicle} link="#" />
-              {/* <SelfBox title="Conference Room Booking" icon={conference} /> */}
-              <SelfBox
-                title="requisition"
-                icon={requisition}
-                link="requisition"
-              />
+
+              <div
+                onClick={(event) => setRequisitionPopover(event.currentTarget)}
+                className="bg-card p-2 rounded-lg shadow cursor-pointer group text-accent"
+              >
+                <div className="bg-mainBg transition ease-in-out duration-300 py-2 px-3 rounded-lg group-hover:border-b-2 group-hover:border-caramel group-hover:shadow-md">
+                  <div className="flex items-center gap-2 justify-between">
+                    <div className="flex items-center gap-2">
+                      <div className="border rounded-full h-11 w-11 flex items-center justify-center">
+                        <img src={requisition} alt="requisition" />
+                      </div>
+                      <h5 className="font-medium capitalize text-sm md:text-base">
+                        Requisition
+                      </h5>
+                    </div>
+
+                    <i className="ri-more-fill text-lg"></i>
+                  </div>
+                  <p className="text-xs md:text-sm py-3">
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                  </p>
+                </div>
+              </div>
+
               <div
                 onClick={(event) => setMorePopover(event.currentTarget)}
                 className="bg-card p-2 rounded-lg shadow cursor-pointer group text-accent"
@@ -81,19 +96,18 @@ const SelfServiceHome = () => {
                   </p>
                 </div>
               </div>
-
-              {/* <SelfBox title="HR Letters & Documents" icon={documents} link="#"/>
-          <SelfBox title="Survey Form" icon={survey} link="#"/>
-          <SelfBox title="Hand Over Form" icon={handOver} link="#"/> */}
             </div>
             <div>
               <div className="rounded-lg bg-mainBg border py-5 px-3 shadow">
-                <p className="text-sm pb-5 font-medium">Assets Held by You</p>
+                <p className="text-sm pb-5 font-medium">Total Company Assets</p>
                 <div className="flex items-center justify-between">
                   <h3 className="font-semibold text-lg">10</h3>
-                  <span className="text-caramel underline cursor-pointer text-sm">
+                  <Link
+                    to="/self-service/assets"
+                    className="text-caramel underline cursor-pointer text-sm"
+                  >
                     View {">"}
-                  </span>
+                  </Link>
                 </div>
               </div>
 
@@ -154,14 +168,15 @@ const SelfServiceHome = () => {
                     ></i>
                   </div>
                 </div>
+                <h2 className="text-caramel text-center text-base font-semibold cursor-pointer hover:text-accent pb-2 pt-1">
+                  See All
+                </h2>
               </div>
-              <h2 className="text-caramel text-center text-base font-semibold pt-2 cursor-pointer hover:text-accent">
-                See All
-              </h2>
             </div>
           </div>
         </div>
       </div>
+
       {/* Requests popover */}
       <Popover
         open={Boolean(anchorEl)}
@@ -209,8 +224,48 @@ const SelfServiceHome = () => {
             <li className="cursor-pointer hover:text-caramel">HR Letters</li>
             <li className="cursor-pointer hover:text-caramel">Documents</li>
             <li className="cursor-pointer hover:text-caramel">Survey Forms</li>
-            <li className="cursor-pointer hover:text-caramel">Hand-over Forms</li>
+            <li className="cursor-pointer hover:text-caramel">
+              Hand-over Forms
+            </li>
           </ul>
+        </Themes>
+      </Popover>
+
+      {/* Requisition popover */}
+      <Popover
+        open={Boolean(requisitionPopover)}
+        anchorEl={requisitionPopover}
+        onClose={() => setRequisitionPopover(null)}
+        anchorOrigin={{
+          vertical: "top",
+          horizontal: "right",
+        }}
+        transformOrigin={{
+          vertical: "top",
+          horizontal: "left",
+        }}
+      >
+        <Themes>
+          <div className="py-3 px-4 text-sm font-medium rounded-md flex flex-col gap-3 bg-card">
+            <Link
+              to="/self-service/requisition"
+              className="cursor-pointer hover:text-caramel"
+            >
+              Asset Requisition
+            </Link>
+            <Link
+              to="/self-service/reimbursements"
+              className="cursor-pointer hover:text-caramel"
+            >
+              Reimbursement
+            </Link>
+            <Link
+              to="/self-service/monetary"
+              className="cursor-pointer hover:text-caramel"
+            >
+              Monetary Request
+            </Link>
+          </div>
         </Themes>
       </Popover>
     </DashboardLayout>

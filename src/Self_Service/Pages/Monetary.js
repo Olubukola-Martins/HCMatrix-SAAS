@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import DashboardLayout from "../../Layout/DashboardLayout";
 import MonetaryDetails from "../Components/Monetary/MonetaryDetails";
 import NewMonetary from "../Components/Monetary/NewMonetary";
+import SelfServiceSubNav from "../Components/SelfServiceSubNav";
 
 const Monetary = () => {
   const [newMonetaryModal, setNewMonetaryModal] = useState(false);
@@ -11,6 +12,8 @@ const Monetary = () => {
   return (
     <DashboardLayout>
       {/* modal components */}
+      <SelfServiceSubNav/>
+      
       <NewMonetary
         open={newMonetaryModal}
         handleClose={() => setNewMonetaryModal(false)}

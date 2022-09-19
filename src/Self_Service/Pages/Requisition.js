@@ -1,9 +1,10 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import DashboardLayout from "../../Layout/DashboardLayout";
-import Add_ReplaceAsset from "../Components/Requisition/Add_ReplaceAsset";
+import AddReplaceAsset from "../Components/Requisition/Add_ReplaceAsset";
 import NewRequisition from "../Components/Requisition/NewRequisition";
 import RequisitionDetails from "../Components/Requisition/RequisitionDetails";
+import SelfServiceSubNav from "../Components/SelfServiceSubNav";
 
 const Requisition = () => {
   const [newRequisitionModal, setNewRequisitionModal] = useState(false);
@@ -12,12 +13,13 @@ const Requisition = () => {
 
   return (
     <DashboardLayout>
+        <SelfServiceSubNav/>
       {/* modal components */}
       <NewRequisition
         open={newRequisitionModal}
         handleClose={() => setNewRequisitionModal(false)}
       />
-      <Add_ReplaceAsset
+      <AddReplaceAsset
         open={addAssets}
         handleClose={() => setAddAssets(false)}
       />
@@ -61,7 +63,7 @@ const Requisition = () => {
               <th>Requisition Date</th>
               <th>Requisition Type</th>
               <th>Title</th>
-              <th>Amount</th>
+              <th>Item</th>
               <th>Status</th>
               <th>Action</th>
             </tr>

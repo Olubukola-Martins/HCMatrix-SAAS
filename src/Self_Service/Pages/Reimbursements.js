@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import DashboardLayout from "../../Layout/DashboardLayout";
 import NewReimbursement from "../Components/Reimbursements/NewReimbursement";
 import ReimbursementDetails from "../Components/Reimbursements/ReimbursementDetails";
+import SelfServiceSubNav from "../Components/SelfServiceSubNav";
 
 const Reimbursements = () => {
   const [newReimbursement, setReimbursementModal] = useState(false);
@@ -10,6 +11,7 @@ const Reimbursements = () => {
 
   return (
     <DashboardLayout>
+          <SelfServiceSubNav/>
       {/* modal components */}
       <NewReimbursement
         open={newReimbursement}

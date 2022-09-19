@@ -1,5 +1,6 @@
 import React from 'react'
 import { Route, Routes } from 'react-router-dom'
+import Assets from '../Pages/Assets'
 import Monetary from '../Pages/Monetary'
 import Reimbursements from '../Pages/Reimbursements'
 import Requisition from '../Pages/Requisition'
@@ -13,6 +14,7 @@ const SelfServiceRoutes = () => {
           <Route path="/self-service/requisition" element={<Requisition />}/>
           <Route path="/self-service/reimbursements" element={<Reimbursements />}/>
           <Route path="/self-service/monetary" element={<Monetary />}/>
+          <Route path="/self-service/assets" element={<Assets />}/>
       </Routes>
     </>
   )
