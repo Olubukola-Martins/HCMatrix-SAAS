@@ -1,18 +1,74 @@
 import React from "react";
 import roundgraph from "../Assets/Images/roundgraph.svg";
+import {
+  Chart as ChartJS,
+  CategoryScale,
+  LinearScale,
+  BarElement,
+  Title,
+  Tooltip,
+  Legend,
+} from "chart.js";
+import { Line } from "react-chartjs-2";
+// import faker from "faker";
 
 const AssetOverview = () => {
+  ChartJS.register(
+    CategoryScale,
+    LinearScale,
+    BarElement,
+    // Title,
+    Tooltip,
+    Legend
+  );
+
+  const options = {
+    responsive: true,
+    plugins: {},
+  };
+
+  const labels = [
+    "Jan",
+    "Feb",
+    "Mar",
+    "Apr",
+    "May",
+    "Jun",
+    "Jul",
+    "Aug",
+    "Sep",
+    "Nov",
+    "Dec",
+  ];
+
+  const data = {
+    labels,
+    datasets: [
+      {
+        // label: "Dataset 1",
+        data: [1, 2, 5, 8, 10, 9, 7, 0, 5, 1, 12, 2, 30],
+        backgroundColor: "rgba(255, 99, 132, 0.5)",
+      },
+    ],
+  };
   const requestStyle =
     "flex items-center justify-between cursor-pointer group border-b pb-2";
 
   return (
     <div>
-        <div className="flex items-center gap-3 justify-end">
-            <button className="button">Add Asset</button>
-            <button className="transparentButton" style={{color: "var(--caramel)"}} >Add Asset Type</button>
+      <div className="flex items-center gap-3 justify-end">
+        <button className="button">Add Asset</button>
+        <button
+          className="transparentButton"
+          style={{ color: "var(--caramel)" }}
+        >
+          Add Asset Type
+        </button>
+      </div>
+      <div className="grid grid-cols-1 lg:grid-cols-4 gap-5">
+        <div className="col-span-3">
+          <Line options={options} data={data} />
         </div>
-      <div className="grid grid-cols-1 md:grid-cols-4">
-        <div className="col-span-3">graph</div>
         <div className="bg-mainBg border mt-4 rounded-lg text-sm shadow ">
           <div className="flex items-center justify-between px-3 py-3 border-b">
             <p className="font-medium">Recent Requests </p>
