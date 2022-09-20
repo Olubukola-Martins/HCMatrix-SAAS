@@ -4,7 +4,7 @@ import { NavLink } from "react-router-dom";
 const SelfServiceSubNav = () => {
   return (
    <div className="Container">
-      <div className="bg-card w-full py-4 px-3 text-accent rounded mb-7 shadow flex items-center gap-5 text-sm font-medium">
+      <div className="bg-card w-full py-4 px-3 text-accent rounded mb-9 shadow flex items-center gap-5 text-sm font-medium">
       <NavLink to="/payroll/review" className="hover:text-caramel">
         Loan
       </NavLink>
@@ -16,9 +16,6 @@ const SelfServiceSubNav = () => {
       </NavLink>
        <NavLink to="/" className="hover:text-caramel">
         Payslip
-      </NavLink>
-      <NavLink to="/" className="hover:text-caramel">
-        Settings
       </NavLink>
       <NavLink to="/" className="hover:text-caramel">
         Settings

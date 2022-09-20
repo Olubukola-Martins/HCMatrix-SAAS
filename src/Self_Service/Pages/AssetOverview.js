@@ -5,12 +5,10 @@ import {
   CategoryScale,
   LinearScale,
   BarElement,
-  Title,
   Tooltip,
   Legend,
 } from "chart.js";
 import { Line } from "react-chartjs-2";
-// import faker from "faker";
 
 const AssetOverview = () => {
   ChartJS.register(
