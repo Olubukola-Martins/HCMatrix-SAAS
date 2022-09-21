@@ -1,5 +1,5 @@
 import React from "react";
-import roundgraph from "../Assets/Images/roundgraph.svg";
+import roundgraph from "../../Assets/Images/roundgraph.svg";
 import {
   Chart as ChartJS,
   CategoryScale,

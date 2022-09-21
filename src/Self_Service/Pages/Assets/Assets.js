@@ -1,8 +1,8 @@
 import React, { useState } from "react";
-import DashboardLayout from "../../Layout/DashboardLayout";
-import SelfServiceSubNav from "../Components/SelfServiceSubNav";
-import AssetList from "./AssetList";
+import DashboardLayout from "../../../Layout/DashboardLayout";
+import SelfServiceSubNav from "../../Components/SelfServiceSubNav";
 import AssetOverview from "./AssetOverview";
+import AssetList from "./AssetList";
 import AssetType from "./AssetType";
 
 const Assets = () => {
@@ -51,7 +51,7 @@ const Assets = () => {
 
         {/* Display tap */}
         {tap === "overview" && <AssetOverview />}
-        {tap === "list" && <AssetList />}
+        {tap === "list" && <AssetList/>}
         {tap === "type" && <AssetType />}
       </div>
     </DashboardLayout>

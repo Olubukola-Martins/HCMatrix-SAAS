@@ -17,9 +17,6 @@ const SelfServiceSubNav = () => {
        <NavLink to="/" className="hover:text-caramel">
         Payslip
       </NavLink>
-      <NavLink to="/" className="hover:text-caramel">
-        Settings
-      </NavLink>
       <NavLink to="/self-service/home" className="hover:text-accent text-caramel">
         More..
       </NavLink>
