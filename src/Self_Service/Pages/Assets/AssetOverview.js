@@ -67,7 +67,7 @@ const AssetOverview = () => {
         <div className="col-span-3">
           <Line options={options} data={data} />
         </div>
-        <div className="bg-mainBg border mt-4 rounded-lg text-sm shadow ">
+        <div className="bg-mainBg border mt-4 rounded-lg text-sm shadow">
           <div className="flex items-center justify-between px-3 py-3 border-b">
             <p className="font-medium">Recent Requests </p>
             <span className="text-xs">Status</span>

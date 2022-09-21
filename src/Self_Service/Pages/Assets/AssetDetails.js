@@ -1,10 +1,13 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import DashboardLayout from "../../../Layout/DashboardLayout";
 import SelfServiceSubNav from "../../Components/SelfServiceSubNav";
-import placeholder from "../../Assets/Images/placeholder.png"
+import placeholder from "../../Assets/Images/placeholder.png";
 
 const AssetDetails = () => {
+    const [tap, setTap] = useState("overview");
+  const listStyle =
+    "flex items-center justify-between cursor-pointer group border-b pb-2 px-3";
   return (
     <DashboardLayout>
       <SelfServiceSubNav />
@@ -17,29 +20,116 @@ const AssetDetails = () => {
         </div>
 
         <div className="flex md:items-center flex-col md:flex-row justify-start md:justify-between mt-4">
-          <h3 className="font-medium text-lg">Hp EliteBook</h3>
+          <h3 className="font-medium text-lg pb-5 md:pb-0">Hp EliteBook</h3>
           <div className="flex items-center gap-3">
             <button className="button">Edit</button>
             <button
               className="transparentButton"
               style={{ color: "var(--neutral)" }}
             >
-            Delete
+              Delete
             </button>
             <button className="transparentButton">Add Document</button>
           </div>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
-           <div>
-           <img src="https://via.placeholder.com/350x150"/>
-           </div>
-           <div>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-8">
+          <div>
+            <img src={placeholder} alt="asset" className="" />
+          </div>
+          <div className="bg-mainBg border rounded-lg text-sm shadow py-4 flex flex-col gap-3">
+            <div className={listStyle}>
+              <h5 className="group-hover:text-caramel font-medium">Asset ID</h5>
+              <span className="text-sm">000</span>
+            </div>
+            <div className={listStyle}>
+              <h5 className="group-hover:text-caramel font-medium">Brand</h5>
+              <span className="text-sm">Hp</span>
+            </div>
 
-           </div>
-           <div>
+            <div className={listStyle}>
+              <h5 className="group-hover:text-caramel font-medium">Model</h5>
+              <span className="text-sm">EliteBook</span>
+            </div>
+            <div className={listStyle}>
+              <h5 className="group-hover:text-caramel font-medium">Color</h5>
+              <span className="text-sm">Red</span>
+            </div>
+            <div className={listStyle}>
+              <h5 className="group-hover:text-caramel font-medium">
+                Serial Number
+              </h5>
+              <span className="text-sm">000</span>
+            </div>
+            <div className={listStyle}>
+              <h5 className="group-hover:text-caramel font-medium">
+                Purchase Cost
+              </h5>
+              <span className="text-sm">N0</span>
+            </div>
+            <div className={listStyle}>
+              <h5 className="group-hover:text-caramel font-medium">
+                Purchase Date
+              </h5>
+              <span className="text-sm">14 Sep,2022</span>
+            </div>
+            <div className="px-3">
+              <h5 className="font-medium pb-2">Description</h5>
+              <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+            </div>
+          </div>
+          <div className="bg-mainBg border rounded-lg text-sm shadow py-4 px-3">
+            <h4 className="font-medium text-lg">Current Assignee</h4>
+            <div className="flex gap-4 pt-7">
+              <img
+                src="https://res.cloudinary.com/ddvaelej7/image/upload/v1639659955/HCmatrix/User-Icon_wdkmsf.png"
+                alt="user"
+                className="h-12"
+              />
+              <div className="flex flex-col gap-4">
+                <p>Name: Ruth Godwin</p>
+                <p>Job Role: Marketing Manager</p>
+                <p>ID: 000000</p>
+                <p>Department: Sale & Marketing </p>
+                <div />
+                <button className="button">Unassign</button>
+              </div>
+            </div>
+          </div>
+        </div>
 
-           </div>
+        {/* Taps */}
+        <div className="flex items-center gap-5 font-medium border-b-2 text-sm mt-4 mb-5">
+          <h5
+            onClick={() => setTap("overview")}
+            className={
+              tap === "overview"
+                ? "cursor-pointer hover:text-caramel pb-4 border-b-2 border-caramel"
+                : "cursor-pointer hover:text-caramel pb-4"
+            }
+          >
+            Asset Overview
+          </h5>
+          <h5
+            onClick={() => setTap("list")}
+            className={
+              tap === "list"
+                ? "cursor-pointer hover:text-caramel pb-4 border-b-2 border-caramel"
+                : "cursor-pointer hover:text-caramel pb-4"
+            }
+          >
+            Asset List
+          </h5>
+          <h5
+            onClick={() => setTap("type")}
+            className={
+              tap === "type"
+                ? "cursor-pointer hover:text-caramel pb-4 border-b-2 border-caramel"
+                : "cursor-pointer hover:text-caramel pb-4"
+            }
+          >
+            Asset Type
+          </h5>
         </div>
       </div>
     </DashboardLayout>
