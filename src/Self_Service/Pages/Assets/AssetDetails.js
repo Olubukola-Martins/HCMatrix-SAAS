@@ -121,6 +121,57 @@ const AssetDetails = () => {
             Documents
           </h5>
         </div>
+
+        {/* Assignee History */}
+        {tap === "History" && (
+          <>
+            <div className="my-5 flex justify-end">
+              <i className="ri-download-2-line text-lg"></i>
+            </div>
+            <table className="payroll-table text-accent">
+              <div></div>
+              <thead>
+                <tr>
+                  <th>
+                    <input type="checkbox" />
+                  </th>
+                  <th>Assignee Name</th>
+                  <th>Employee ID</th>
+                  <th>Job Role</th>
+                  <th>Department</th>
+                  <th>Start Date</th>
+                  <th>End Date</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                {[1, 2, 3].map((item) => (
+                  <tr key={item}>
+                    <td>
+                      <input type="checkbox" />
+                    </td>
+                    <td>
+                      <Link
+                        to="/self-service/assets-details"
+                        className="hover:text-caramel"
+                      >
+                        Ruth Godwin
+                      </Link>
+                    </td>
+                    <td>000</td>
+                    <td>Marketing Manager</td>
+                    <td>Sales & Marketing</td>
+                    <td>DD/MM/YY</td>
+                    <td>DD/MM/YY</td>
+                    <td>
+                      <i class="ri-more-2-fill text-lg cursor-pointer hover:text-caramel"></i>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </>
+        )}
       </div>
     </DashboardLayout>
   );
