@@ -125,7 +125,8 @@ const AssetDetails = () => {
         {/* Assignee History */}
         {tap === "History" && (
           <>
-            <div className="my-5 flex justify-end">
+            <div className="my-5 flex justify-end gap-3">
+              <i className="ri-download-2-line text-lg"></i>
               <i className="ri-download-2-line text-lg"></i>
             </div>
             <table className="payroll-table text-accent">
@@ -171,6 +172,13 @@ const AssetDetails = () => {
               </tbody>
             </table>
           </>
+        )}
+
+        {/* Document */}
+        {tap === "Documents" && (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
+            <div className="bg-card shadow py-3 px-2 rounded">Documents</div>
+          </div>
         )}
       </div>
     </DashboardLayout>
