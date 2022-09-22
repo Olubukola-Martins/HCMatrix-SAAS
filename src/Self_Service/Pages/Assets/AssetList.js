@@ -9,20 +9,36 @@ const AssetList = () => {
 
   return (
     <div>
-      <div className="flex justify-end items-center">
-        <button onClick={(e) => setAssetPopover(e.currentTarget)} className="button flex items-center gap-2">
-          <span>Add Asset</span>
-          <i className="ri-arrow-down-s-line text-base"></i>
-        </button>
+      <div className="flex justify-between items-center gap-3">
+        <div className="flex items-center gap-3">
+          <button className="flex items-center gap-2 transparentButton">
+            <span>Asset Type</span>
+            <i className="ri-arrow-down-s-line text-base"></i>
+          </button>
+          <button className="flex items-center gap-2 transparentButton">
+            <span>Status</span>
+            <i className="ri-arrow-down-s-line text-base"></i>
+          </button>
+        </div>
+        <div className="flex items-center gap-3">
+          <i className="ri-download-2-line text-lg"></i>
+          <button
+            onClick={(e) => setAssetPopover(e.currentTarget)}
+            className="button flex items-center gap-2"
+          >
+            <span>Add Asset</span>
+            <i className="ri-arrow-down-s-line text-base"></i>
+          </button>
+        </div>
       </div>
-
+      {/* Assets popover */}
       <Popover
         open={Boolean(assetPopover)}
         anchorEl={assetPopover}
         onClose={() => setAssetPopover(null)}
         anchorOrigin={{
           vertical: "bottom",
-          horizontal: "center",
+          horizontal: "left",
         }}
       >
         <Themes>
