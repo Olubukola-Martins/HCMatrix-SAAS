@@ -6,6 +6,7 @@ import placeholder from "../../Assets/Images/placeholder.png";
 
 const AssetDetails = () => {
   const [tap, setTap] = useState("History");
+  const [unassigned, setUnassigned] = useState(false)
   const listStyle =
     "flex items-center justify-between cursor-pointer group border-b pb-2 px-3";
   return (
@@ -177,7 +178,14 @@ const AssetDetails = () => {
         {/* Document */}
         {tap === "Documents" && (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
-            <div className="bg-card shadow py-3 px-2 rounded">Documents</div>
+            <div className="bg-card shadow py-3 px-2 rounded text-center flex flex-col gap-14">
+              <p className="text-sm">Asset Document</p>
+              <h4>Invoice</h4>
+              <div className="flex items-center justify-between text-sm">
+                <span className="text-neutral cursor-pointer">Delete</span>
+                <span className="text-caramel cursor-pointer">Download</span>
+              </div>
+            </div>
           </div>
         )}
       </div>
