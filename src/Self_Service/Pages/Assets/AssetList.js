@@ -2,13 +2,26 @@ import { Popover } from "@mui/material";
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import Themes from "../../../Themes/Themes";
+import AddMultipleAssets from "../../Components/Assets/AddMultipleAssets";
+import AddSingleAsset from "../../Components/Assets/AddSingleAsset";
 
 const AssetList = () => {
   const [anchorEl, setAnchorEl] = useState(null);
   const [assetPopover, setAssetPopover] = useState(null);
+  const [addSingleAsset, setAddSingleAsset] = useState(false);
+  const [addMultipleAsset, setAddMultipleAsset] = useState(false);
 
   return (
     <div>
+      <AddSingleAsset
+        open={addSingleAsset}
+        handleClose={() => setAddSingleAsset(false)}
+      />
+      <AddMultipleAssets
+        open={addMultipleAsset}
+        handleClose={() => setAddMultipleAsset(false)}
+      />
+
       <div className="flex justify-between items-center gap-3">
         <div className="flex items-center gap-3">
           <button className="flex items-center gap-2 transparentButton">
@@ -43,10 +56,16 @@ const AssetList = () => {
       >
         <Themes>
           <div className="py-3 px-4 text-sm font-medium rounded-md flex flex-col bg-card">
-            <span className="cursor-pointer hover:text-caramel">
+            <span
+              onClick={() => setAddSingleAsset(true)}
+              className="cursor-pointer hover:text-caramel"
+            >
               Add Singular
             </span>
-            <span className="cursor-pointer hover:text-caramel py-1">
+            <span
+              onClick={() => setAddMultipleAsset(true)}
+              className="cursor-pointer hover:text-caramel py-1"
+            >
               import in Bulk
             </span>
           </div>
