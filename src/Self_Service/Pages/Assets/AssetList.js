@@ -5,14 +5,37 @@ import Themes from "../../../Themes/Themes";
 
 const AssetList = () => {
   const [anchorEl, setAnchorEl] = useState(null);
+  const [assetPopover, setAssetPopover] = useState(null);
+
   return (
     <div>
       <div className="flex justify-end items-center">
-        <button className="button flex items-center gap-2">
-          <span>Add Asset</span>{" "}
+        <button onClick={(e) => setAssetPopover(e.currentTarget)} className="button flex items-center gap-2">
+          <span>Add Asset</span>
           <i className="ri-arrow-down-s-line text-base"></i>
         </button>
       </div>
+
+      <Popover
+        open={Boolean(assetPopover)}
+        anchorEl={assetPopover}
+        onClose={() => setAssetPopover(null)}
+        anchorOrigin={{
+          vertical: "bottom",
+          horizontal: "center",
+        }}
+      >
+        <Themes>
+          <div className="py-3 px-4 text-sm font-medium rounded-md flex flex-col bg-card">
+            <span className="cursor-pointer hover:text-caramel">
+              Add Singular
+            </span>
+            <span className="cursor-pointer hover:text-caramel py-1">
+              import in Bulk
+            </span>
+          </div>
+        </Themes>
+      </Popover>
       <table className="payroll-table text-accent mt-6">
         <thead>
           <tr>
