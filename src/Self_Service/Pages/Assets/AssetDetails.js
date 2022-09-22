@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import DashboardLayout from "../../../Layout/DashboardLayout";
 import SelfServiceSubNav from "../../Components/SelfServiceSubNav";
 import placeholder from "../../Assets/Images/placeholder.png";
+import UnassignedModal from "./UnassignedModal";
 
 const AssetDetails = () => {
   const [tap, setTap] = useState("History");
@@ -12,6 +13,7 @@ const AssetDetails = () => {
   return (
     <DashboardLayout>
       <SelfServiceSubNav />
+      <UnassignedModal open={unassigned} handleClose={() => setUnassigned(false)}/>
       <div className="Container">
         <div className="flex items-center gap-2">
           <Link to="/self-service/assets/1" className="hover:text-caramel">
@@ -93,7 +95,7 @@ const AssetDetails = () => {
                 <p>ID: 000000</p>
                 <p>Department: Sale & Marketing </p>
                 <div />
-                <button className="button">Unassign</button>
+                <button className="button" onClick={() => setUnassigned(true)}>Unassign</button>
               </div>
             </div>
           </div>
