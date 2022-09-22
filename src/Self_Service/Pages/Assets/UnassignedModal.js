@@ -18,11 +18,13 @@ const UnassignedModal = ({ open, handleClose }) => {
               id="date"
               placeholder="DD/MM/YY"
               className="w-full bg-mainBg px-2 py-2 rounded focus:outline-none mt-1 placeholder:text-sm placeholder:font-medium placeholder:text-accent"
+              onFocus={(e) => e.target.type ="date"}
+              onBlur={(e) => e.target.type ="text"}
             />
           </div>
 
           <div className="flex items-center justify-between mt-5">
-            <button className="transparentButton" type="button">
+            <button onClick={handleClose} className="transparentButton" type="button">
               Cancel
             </button>
             <button className="button" type="submit">
