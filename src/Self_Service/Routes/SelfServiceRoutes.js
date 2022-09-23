@@ -3,6 +3,7 @@ import { Route, Routes } from 'react-router-dom'
 import AssetDetails from '../Pages/Assets/AssetDetails'
 import Assets from '../Pages/Assets/Assets'
 import AssetTypeDetails from '../Pages/Assets/AssetTypeDetails'
+import LoanHome from '../Pages/Loan/LoanHome'
 import Monetary from '../Pages/Monetary'
 import Reimbursements from '../Pages/Reimbursements'
 import Requisition from '../Pages/Requisition'
@@ -19,6 +20,7 @@ const SelfServiceRoutes = () => {
           <Route path="/self-service/assets" element={<Assets />}/>
           <Route path="/self-service/assets/:id" element={<AssetTypeDetails/>}/>
           <Route path="/self-service/assets-details" element={<AssetDetails/>}/>
+          <Route path="/self-service/loan" element={<LoanHome/>}/>
       </Routes>
     </>
   )
