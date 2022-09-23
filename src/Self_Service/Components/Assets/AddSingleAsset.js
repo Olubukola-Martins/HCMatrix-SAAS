@@ -32,8 +32,10 @@ const AddSingleAsset = ({ open, handleClose }) => {
             </select>
             <select name="" id="" className={inputStyle}>
               <option value="">Status</option>
-              <option value="approve">Approve</option>
-              <option value="reject">Reject</option>
+              <option value="approve">Assigned</option>
+              <option value="reject">Unassigned</option>
+              <option value="reject">Repair</option>
+              <option value="reject">condemned</option>
             </select>
             <input
               type="text"
@@ -115,8 +117,9 @@ const AddSingleAsset = ({ open, handleClose }) => {
               {additionalInfo && (
                 <div className="pt-3 grid grid-cols-1 md:grid-cols-2 gap-4">
                   <select name="" id="" className={inputStyle}>
-                    <option value="">Select</option>
-                    <option value="Assignee">Assignee</option>
+                    <option value="">Assignee</option>
+                    <option value="godswill">Godswill</option>
+                    <option value="ruth">Ruth</option>
                   </select>
                   <input
                     type="text"

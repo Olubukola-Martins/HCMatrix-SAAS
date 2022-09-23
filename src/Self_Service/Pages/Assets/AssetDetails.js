@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import DashboardLayout from "../../../Layout/DashboardLayout";
 import SelfServiceSubNav from "../../Components/SelfServiceSubNav";
 import placeholder from "../../Assets/Images/placeholder.png";
-import UnassignedModal from "./UnassignedModal";
+import UnassignedModal from "../../Components/Assets/UnassignedModal";
 
 const AssetDetails = () => {
   const [tap, setTap] = useState("History");

@@ -51,7 +51,7 @@ const SelfServiceHome = () => {
               <SelfBox title="Leave" icon={leave} link="#" />
               <SelfBox title="Health access" icon={health} link="#" />
               <SelfBox title="Payslip" icon={payslip} link="#" />
-              <SelfBox title="Attendance" icon={attendance} link="#" />
+              <SelfBox title="My Attendance" icon={attendance} link="#" />
               <SelfBox title="Vehicle booking" icon={vehicle} link="#" />
 
               <div
