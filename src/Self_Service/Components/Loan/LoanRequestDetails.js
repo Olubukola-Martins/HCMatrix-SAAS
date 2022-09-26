@@ -29,31 +29,39 @@ const LoanRequestDetails = ({ open, handleClose }) => {
                 />
               </div>
               <div>
-                <label className={labelStyle}>Title:</label>
+                <label className={labelStyle}>Employee Name:</label>
                 <input
                   type="text"
-                  placeholder="Lunch"
+                  placeholder="Ruth Godwin"
                   className={inputStyle}
                   disabled
                 />
               </div>
 
               <div>
-                <label className={labelStyle}>Purpose:</label>
+                <label className={labelStyle}>Employee ID:</label>
                 <input
                   type="text"
-                  placeholder="Lunch for Godswill"
+                  placeholder="G123"
                   className={inputStyle}
                   disabled
                 />
               </div>
-             
+              <div>
+                <label className={labelStyle}>Amount:</label>
+                <input
+                  type="text"
+                  placeholder="000"
+                  className={inputStyle}
+                  disabled
+                />
+              </div>
             </div>
 
             {/* second layer */}
             <div className="flex flex-col gap-3">
               <div>
-                <label className={labelStyle}>Amount:</label>
+                <label className={labelStyle}>Employee ID:</label>
                 <input
                   type="text"
                   placeholder="N0.00"
@@ -62,17 +70,32 @@ const LoanRequestDetails = ({ open, handleClose }) => {
                 />
               </div>
               <div>
-                <label className={labelStyle}>Status:</label>
+                <label className={labelStyle}>Department:</label>
                 <input
                   type="text"
-                  placeholder="Rejected"
+                  placeholder="Sales & Marketing"
                   className={inputStyle}
                   disabled
                 />
               </div>
-
-             
-             
+              <div>
+                <label className={labelStyle}>Loan Type:</label>
+                <input
+                  type="text"
+                  placeholder="Car Loan"
+                  className={inputStyle}
+                  disabled
+                />
+              </div>
+              <div>
+                <label className={labelStyle}>Status:</label>
+                <input
+                  type="text"
+                  placeholder="Approved"
+                  className={inputStyle}
+                  disabled
+                />
+              </div>
             </div>
           </form>
         </div>

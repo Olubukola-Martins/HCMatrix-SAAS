@@ -3,16 +3,31 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import DashboardLayout from "../../../Layout/DashboardLayout";
 import Themes from "../../../Themes/Themes";
+import LoanRejectReason from "../../Components/Loan/LoanRejectReason";
+import LoanRequestDetails from "../../Components/Loan/LoanRequestDetails";
 import SelfServiceSubNav from "../../Components/SelfServiceSubNav";
 
 const LoanRequest = () => {
   const [anchorEl, setAnchorEl] = useState(null);
+  const [loanRequestDetailsModal, setLoanRequestDetailsModal] = useState(false);
+  const [loanRequestRejectReasonModal, setLoanRequestRejectReasonModal] = useState(false)
+
   return (
     <DashboardLayout>
       <SelfServiceSubNav />
+      <LoanRequestDetails
+        open={loanRequestDetailsModal}
+        handleClose={() => setLoanRequestDetailsModal(false)}
+      />
+         <LoanRejectReason
+        open={loanRequestDetailsModal}
+        handleClose={() => setLoanRequestDetailsModal(false)}
+      />
       <div className="Container">
         <div className="flex items-center gap-3 font-extrabold mb-7">
-        <Link to="/self-service/loan">  <i className="ri-arrow-left-s-line text-lg cursor-pointer hover:text-caramel"></i></Link>
+          <Link to="/self-service/loan">
+            <i className="ri-arrow-left-s-line text-lg cursor-pointer hover:text-caramel"></i>
+          </Link>
           <h2 className="text-xl md:text-2xl text-accent">Loan Request</h2>
         </div>
         <div className="flex justify-between items-center gap-3">
@@ -39,10 +54,10 @@ const LoanRequest = () => {
               </th>
               <th>Request Date</th>
               <th>Employee Name</th>
-              {/* <th>Employee ID</th> */}
+
               <th>Department</th>
               <th>Loan Type</th>
-              {/* <th>Loan Worthiness</th> */}
+
               <th>Amount</th>
               <th>Status</th>
               <th>Action</th>
@@ -56,9 +71,9 @@ const LoanRequest = () => {
                 </td>
                 <td>DD/MM/YY</td>
                 <td>Ruth Godwin</td>
-                {/* <td>000</td> */}
+
                 <td>Sales & Marketing</td>
-                {/* <td>app dev</td> */}
+
                 <td>Car Loan</td>
                 <td>N0</td>
                 <td>Pending</td>
@@ -88,7 +103,12 @@ const LoanRequest = () => {
         >
           <Themes>
             <div className="py-3 px-4 text-sm font-medium rounded-md flex flex-col bg-card">
-              <span className="cursor-pointer hover:text-caramel">View</span>
+              <span
+                className="cursor-pointer hover:text-caramel"
+                onClick={() => setLoanRequestDetailsModal(true)}
+              >
+                View
+              </span>
               <span className="cursor-pointer hover:text-caramel py-1">
                 Reject
               </span>
