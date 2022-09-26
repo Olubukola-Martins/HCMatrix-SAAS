@@ -7,7 +7,7 @@ const LoanRejectReason = ({ open, handleClose }) => {
     <Modal open={open} onClose={handleClose}>
       <Themes>
         <div className="CModal" style={{ maxWidth: 400 }}>
-          <h5 className="font-semibold pb-5">Loan Rejection Reason</h5>
+          <h5 className="font-semibold pb-5">Reason for Rejection</h5>
 
           <div>
             <label htmlFor="date" className="text-sm font-medium">
@@ -18,8 +18,6 @@ const LoanRejectReason = ({ open, handleClose }) => {
               id="date"
               rows="3"
               className="w-full bg-mainBg px-2 py-2 rounded focus:outline-none mt-1 text-sm border"
-              onFocus={(e) => (e.target.type = "date")}
-              onBlur={(e) => (e.target.type = "text")}
             />
           </div>
 
