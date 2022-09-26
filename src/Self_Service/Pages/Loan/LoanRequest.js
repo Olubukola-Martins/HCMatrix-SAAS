@@ -10,7 +10,8 @@ import SelfServiceSubNav from "../../Components/SelfServiceSubNav";
 const LoanRequest = () => {
   const [anchorEl, setAnchorEl] = useState(null);
   const [loanRequestDetailsModal, setLoanRequestDetailsModal] = useState(false);
-  const [loanRequestRejectReasonModal, setLoanRequestRejectReasonModal] = useState(false)
+  const [loanRequestRejectReasonModal, setLoanRequestRejectReasonModal] =
+    useState(false);
 
   return (
     <DashboardLayout>
@@ -19,7 +20,7 @@ const LoanRequest = () => {
         open={loanRequestDetailsModal}
         handleClose={() => setLoanRequestDetailsModal(false)}
       />
-         <LoanRejectReason
+      <LoanRejectReason
         open={loanRequestRejectReasonModal}
         handleClose={() => setLoanRequestRejectReasonModal(false)}
       />
@@ -109,7 +110,10 @@ const LoanRequest = () => {
               >
                 View
               </span>
-              <span className="cursor-pointer hover:text-caramel py-1">
+              <span
+                onClick={() => setLoanRequestRejectReasonModal(true)}
+                className="cursor-pointer hover:text-caramel py-1"
+              >
                 Reject
               </span>
               <span className="cursor-pointer hover:text-caramel py-1">
