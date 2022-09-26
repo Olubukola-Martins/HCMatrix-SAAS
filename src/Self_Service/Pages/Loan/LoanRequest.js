@@ -20,8 +20,8 @@ const LoanRequest = () => {
         handleClose={() => setLoanRequestDetailsModal(false)}
       />
          <LoanRejectReason
-        open={loanRequestDetailsModal}
-        handleClose={() => setLoanRequestDetailsModal(false)}
+        open={loanRequestRejectReasonModal}
+        handleClose={() => setLoanRequestRejectReasonModal(false)}
       />
       <div className="Container">
         <div className="flex items-center gap-3 font-extrabold mb-7">
