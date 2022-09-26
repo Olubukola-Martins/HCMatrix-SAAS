@@ -49,7 +49,7 @@ const Departments = () => {
   
   return (
     <DashboardLayout>
-      <div className="h-screen">
+      <div className="h-screen Container">
         {
           <div className="mt-4">
             <h4 className="text-lg  mb-1">Delegations</h4>

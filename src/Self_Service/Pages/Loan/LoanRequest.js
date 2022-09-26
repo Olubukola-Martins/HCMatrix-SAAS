@@ -1,5 +1,6 @@
 import { Popover } from "@mui/material";
 import React, { useState } from "react";
+import { Link } from "react-router-dom";
 import DashboardLayout from "../../../Layout/DashboardLayout";
 import Themes from "../../../Themes/Themes";
 import SelfServiceSubNav from "../../Components/SelfServiceSubNav";
@@ -10,6 +11,10 @@ const LoanRequest = () => {
     <DashboardLayout>
       <SelfServiceSubNav />
       <div className="Container">
+        <div className="flex items-center gap-3 font-extrabold mb-7">
+        <Link to="/self-service/loan">  <i className="ri-arrow-left-s-line text-lg cursor-pointer hover:text-caramel"></i></Link>
+          <h2 className="text-xl md:text-2xl text-accent">Loan Request</h2>
+        </div>
         <div className="flex justify-between items-center gap-3">
           <div className="flex items-center gap-3">
             <button className="flex items-center gap-2 transparentButton">
@@ -32,13 +37,14 @@ const LoanRequest = () => {
               <th>
                 <input type="checkbox" />
               </th>
-              <th>Asset Name</th>
-              <th>Asset ID</th>
-              <th>Asset Type</th>
+              <th>Request Date</th>
+              <th>Employee Name</th>
+              {/* <th>Employee ID</th> */}
+              <th>Department</th>
+              <th>Loan Type</th>
+              {/* <th>Loan Worthiness</th> */}
+              <th>Amount</th>
               <th>Status</th>
-              <th>Color</th>
-              <th>Serial No</th>
-              <th>Assigned to</th>
               <th>Action</th>
             </tr>
           </thead>
@@ -48,13 +54,14 @@ const LoanRequest = () => {
                 <td>
                   <input type="checkbox" />
                 </td>
-                <td>Hp EliteBook</td>
-                <td>000</td>
-                <td>Computer Accessories</td>
-                <td>Assigned</td>
-                <td>Red</td>
-                <td>0000</td>
+                <td>DD/MM/YY</td>
                 <td>Ruth Godwin</td>
+                {/* <td>000</td> */}
+                <td>Sales & Marketing</td>
+                {/* <td>app dev</td> */}
+                <td>Car Loan</td>
+                <td>N0</td>
+                <td>Pending</td>
                 <td>
                   <i
                     onClick={(e) => setAnchorEl(e.currentTarget)}

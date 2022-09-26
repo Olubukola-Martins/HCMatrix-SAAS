@@ -5,7 +5,7 @@ import { motion } from "framer-motion";
 
 const CustomDropdown = ({ text, id }) => {
   return (
-    <div className="">
+    <div className="Container">
       <div className="custom-dropdown inline-block relative">
         <div className="cursor-pointer flex">{text}</div>
 

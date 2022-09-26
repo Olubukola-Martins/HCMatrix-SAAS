@@ -76,7 +76,7 @@ export const EmployeeFullInfoAccordionWrap = () => {
       </FramerAccordian>
       <br />
       <FramerAccordian
-        heading={<h5 className="text-accent font-semibold">Query History</h5>}
+        heading={<h5 className="text-accent font-semibold">Disciplinary History</h5>}
         bgClassName="bg-card"
       >
         <QueryHistory />

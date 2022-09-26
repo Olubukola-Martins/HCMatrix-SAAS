@@ -57,7 +57,7 @@ const EmployeeGradeForm = ({ open, handleClose }) => {
                     </div>
 
                     <div className="whiteBg_form mt-4">
-                      <label>Suspension Ends</label>
+                      <label>Effective date</label>
                       <Field
                         type="date"
                         name="suspension_date"

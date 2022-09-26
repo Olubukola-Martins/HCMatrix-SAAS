@@ -121,7 +121,7 @@ const FromAddresses = () => {
         </Themes>
       </Modal>
       <DashboardLayout>
-        <div className="  pb-20 mt-10 mb-72">
+        <div className="Container pb-20 mt-10 mb-72">
           {/* heading container */}
           <div className="flex flex-col lg:flex-row lg:justify-between lg:items-start ">
             <Link to="/settings">
