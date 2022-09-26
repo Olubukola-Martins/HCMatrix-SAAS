@@ -13,7 +13,7 @@ const Requisition = () => {
 
   return (
     <DashboardLayout>
-        <SelfServiceSubNav/>
+      <SelfServiceSubNav />
       {/* modal components */}
       <NewRequisition
         open={newRequisitionModal}

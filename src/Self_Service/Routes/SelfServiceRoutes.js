@@ -9,6 +9,7 @@ import Monetary from '../Pages/Monetary'
 import Reimbursements from '../Pages/Reimbursements'
 import Requisition from '../Pages/Requisition'
 import SelfServiceHome from '../Pages/SelfServiceHome'
+import VehicleBookingHome from '../Pages/VehicleBooking/VehicleBookingHome'
 
 const SelfServiceRoutes = () => {
   return (
@@ -23,6 +24,7 @@ const SelfServiceRoutes = () => {
           <Route path="/self-service/assets-details" element={<AssetDetails/>}/>
           <Route path="/self-service/loan" element={<LoanHome/>}/>
           <Route path="/self-service/loan-request" element={<LoanRequest/>}/>
+          <Route path="/self-service/vehicle-booking" element={<VehicleBookingHome/>}/>
       </Routes>
     </>
   )

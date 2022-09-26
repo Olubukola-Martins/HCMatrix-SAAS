@@ -54,7 +54,7 @@ const SelfServiceHome = () => {
               <SelfBox title="Health access" icon={health} link="#" />
               <SelfBox title="Payslip" icon={payslip} link="#" />
               <SelfBox title="My Attendance" icon={attendance} link="#" />
-              <SelfBox title="Vehicle booking" icon={vehicle} link="#" />
+              <SelfBox title="Vehicle booking" icon={vehicle} link="vehicle-booking" />
 
               <div
                 onClick={(event) => setRequisitionPopover(event.currentTarget)}
