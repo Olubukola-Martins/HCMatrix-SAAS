@@ -1,5 +1,5 @@
 import React from "react";
-import roundgraph from "../../Assets/Images/roundgraph.svg";
+import roundgraph from "../../Assets/Images/roundGraph.svg";
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -54,7 +54,13 @@ const AssetOverview = () => {
 
   return (
     <div>
-      <div className="flex items-center gap-3 justify-end">
+     
+      <div className="grid grid-cols-1 lg:grid-cols-4 gap-5">
+        <div className="col-span-3">
+          <Line options={options} data={data} />
+        </div>
+         <div>
+         <div className="flex items-center gap-3 justify-end pt-5">
         <button className="button">Add Asset</button>
         <button
           className="transparentButton"
@@ -63,11 +69,7 @@ const AssetOverview = () => {
           Add Asset Type
         </button>
       </div>
-      <div className="grid grid-cols-1 lg:grid-cols-4 gap-5">
-        <div className="col-span-3">
-          <Line options={options} data={data} />
-        </div>
-        <div className="bg-mainBg border mt-4 rounded-lg text-sm shadow">
+         <div className="bg-mainBg border mt-4 rounded-lg text-sm shadow">
           <div className="flex items-center justify-between px-3 py-3 border-b">
             <p className="font-medium">Recent Requests </p>
             <span className="text-xs">Status</span>
@@ -86,6 +88,7 @@ const AssetOverview = () => {
             See All
           </h2>
         </div>
+         </div>
       </div>
 
       <h3 className="pt-10 pb-6 font-semibold">Asset Type</h3>
@@ -108,8 +111,8 @@ const AssetOverview = () => {
 
         <div className="border rounded-md p-2 shadow">
           <p>Asset by Status</p>
-          <div className="flex justify-center">
-            <img src={roundgraph} alt="graph" className="h-36" />
+          <div className="flex justify-center my-4">
+            <img src={roundgraph} alt="graph" className="h-28" />
           </div>
 
           <div className="flex justify-between">
@@ -139,6 +142,7 @@ const AssetOverview = () => {
             </div>
           </div>
         </div>
+        
       </div>
     </div>
   );

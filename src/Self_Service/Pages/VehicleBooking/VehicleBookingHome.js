@@ -1,6 +1,9 @@
 import React, { useState } from "react";
 import DashboardLayout from "../../../Layout/DashboardLayout";
 import SelfServiceSubNav from "../../Components/SelfServiceSubNav";
+import Reminder from "../../Components/VehicleBooking/Reminder";
+import VehicleList from "../../Components/VehicleBooking/VehicleList";
+import VehicleOverview from "../../Components/VehicleBooking/VehicleOverview";
 
 const VehicleBookingHome = () => {
   const [tap, setTap] = useState("overview");
@@ -35,9 +38,9 @@ const VehicleBookingHome = () => {
             Vehicle List
           </h5>
           <h5
-            onClick={() => setTap("type")}
+            onClick={() => setTap("reminder")}
             className={
-              tap === "type"
+              tap === "reminder"
                 ? "cursor-pointer hover:text-caramel pb-4 border-b-2 border-caramel"
                 : "cursor-pointer hover:text-caramel pb-4"
             }
@@ -45,6 +48,11 @@ const VehicleBookingHome = () => {
             Reminders
           </h5>
         </div>
+
+         {/* Display tap */}
+         {tap === "overview" && <VehicleOverview />}
+        {tap === "list" && <VehicleList/>}
+        {tap === "reminder" && <Reminder />}
       </div>
     </DashboardLayout>
   );
