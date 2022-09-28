@@ -1,5 +1,4 @@
 import React from "react";
-import roundgraph from "../../Assets/Images/roundGraph.svg";
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -15,7 +14,6 @@ const AssetOverview = () => {
     CategoryScale,
     LinearScale,
     BarElement,
-    // Title,
     Tooltip,
     Legend
   );
@@ -54,41 +52,40 @@ const AssetOverview = () => {
 
   return (
     <div>
-     
       <div className="grid grid-cols-1 lg:grid-cols-4 gap-5">
         <div className="col-span-3">
           <Line options={options} data={data} />
         </div>
-         <div>
-         <div className="flex items-center gap-3 justify-end pt-5">
-        <button className="button">Add Asset</button>
-        <button
-          className="transparentButton"
-          style={{ color: "var(--caramel)" }}
-        >
-          Add Asset Type
-        </button>
-      </div>
-         <div className="bg-mainBg border mt-4 rounded-lg text-sm shadow">
-          <div className="flex items-center justify-between px-3 py-3 border-b">
-            <p className="font-medium">Recent Requests </p>
-            <span className="text-xs">Status</span>
+        <div>
+          <div className="flex items-center gap-3 justify-end pt-5">
+            <button className="button">Add Asset</button>
+            <button
+              className="transparentButton"
+              style={{ color: "var(--caramel)" }}
+            >
+              Add Asset Type
+            </button>
           </div>
-          <div className="flex flex-col gap-3 px-3 py-2">
-            {[1, 2, 3, 4, 5].map((item) => (
-              <div key={item} className={requestStyle}>
-                <h5 className="group-hover:text-caramel font-medium">
-                  HP EliteBook
-                </h5>
-                <span className="text-xs">14 Sep,2022</span>
-              </div>
-            ))}
+          <div className="bg-mainBg border mt-4 rounded-lg text-sm shadow">
+            <div className="flex items-center justify-between px-3 py-3 border-b">
+              <p className="font-medium">Recent Requests </p>
+              <span className="text-xs">Status</span>
+            </div>
+            <div className="flex flex-col gap-3 px-3 py-2">
+              {[1, 2, 3, 4, 5].map((item) => (
+                <div key={item} className={requestStyle}>
+                  <h5 className="group-hover:text-caramel font-medium">
+                    HP EliteBook
+                  </h5>
+                  <span className="text-xs">14 Sep,2022</span>
+                </div>
+              ))}
+            </div>
+            <h2 className="text-caramel pr-3 text-sm font-semibold cursor-pointer underline text-right hover:text-accent pb-2 pt-1">
+              See All
+            </h2>
           </div>
-          <h2 className="text-caramel pr-3 text-sm font-semibold cursor-pointer underline text-right hover:text-accent pb-2 pt-1">
-            See All
-          </h2>
         </div>
-         </div>
       </div>
 
       <h3 className="pt-10 pb-6 font-semibold">Asset Type</h3>
@@ -112,7 +109,11 @@ const AssetOverview = () => {
         <div className="border rounded-md p-2 shadow">
           <p>Asset by Status</p>
           <div className="flex justify-center my-4">
-            <img src={roundgraph} alt="graph" className="h-28" />
+            <img
+              src="https://res.cloudinary.com/ddvaelej7/image/upload/v1664348855/roundGraph1_kz4hem.svg"
+              alt="graph"
+              className="h-28"
+            />
           </div>
 
           <div className="flex justify-between">
@@ -142,7 +143,6 @@ const AssetOverview = () => {
             </div>
           </div>
         </div>
-        
       </div>
     </div>
   );
