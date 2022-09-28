@@ -10,10 +10,13 @@ const AssetDetails = () => {
   const [unassigned, setUnassigned] = useState(false)
   const listStyle =
     "flex items-center justify-between cursor-pointer group border-b pb-2 px-3";
+
   return (
     <DashboardLayout>
+
       <SelfServiceSubNav />
       <UnassignedModal open={unassigned} handleClose={() => setUnassigned(false)}/>
+
       <div className="Container">
         <div className="flex items-center gap-2">
           <Link to="/self-service/assets/1" className="hover:text-caramel">
@@ -36,8 +39,8 @@ const AssetDetails = () => {
           </div>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-8">
-          <div>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mt-8">
+          <div className="flex justify-center">
             <img src={placeholder} alt="asset" className="" />
           </div>
           <div className="bg-mainBg border rounded-lg text-sm shadow py-4 flex flex-col gap-3">
