@@ -101,6 +101,10 @@ const ViewPayrollBreakdown = ({ open, handleClose }) => {
                     <td>Employers Tax</td>
                     <td>N0.00</td>
                   </tr>
+                  <tr>
+                    <td>Sub Total</td>
+                    <td>N0.00</td>
+                  </tr>
                 </tbody>
               </table>
             </div>

@@ -2,6 +2,7 @@ import { Checkbox, Switch } from "@mui/material";
 import React, { useReducer } from "react";
 import { Link } from "react-router-dom";
 import DashboardLayout from "../../../Layout/DashboardLayout";
+import PayrollSubNav from "../../../Payroll/Components/PayrollSubNav";
 import OvertimeSetting from "../../Components/Payroll/OvertimeSetting";
 
 var months = [
@@ -26,6 +27,7 @@ const initialState = {
   theMonth: false,
   salaryBreakdown: false,
   tax: false,
+  taxTable: false,
 };
 
 function reducer(state, action) {
@@ -42,6 +44,8 @@ function reducer(state, action) {
       return { ...state, salaryBreakdown: !state.salaryBreakdown };
     case "tax":
       return { ...state, tax: !state.tax };
+    case "taxTable":
+      return { ...state, taxTable: action.payload };
     default:
       return state;
   }
@@ -50,25 +54,34 @@ function reducer(state, action) {
 
 const PayrollSettings = () => {
   const [state, dispatch] = useReducer(reducer, initialState);
-  const { leaveA, overtimeS, payPension, theMonth, salaryBreakdown, tax } =
-    state;
+  const {
+    leaveA,
+    overtimeS,
+    payPension,
+    theMonth,
+    salaryBreakdown,
+    tax,
+    taxTable,
+  } = state;
 
   const boxStyle = "px-4 py-3 shadow rounded-md bg-mainBg";
   const boxTitle = "font-medium text-base pb-1";
   const inputStyle =
     "w-full rounded-md border border-gray-300 py-2 px-2 text-sm bg-mainBg focus:outline-none placeholder:text-accent";
+  const taxTableWrap =
+    "flex item-center text-xs justify-between gap-2 border-b border-slate-400 pb-1";
 
   return (
     <DashboardLayout>
-      <div className="Container mt-10 pb-16">
-        <div className="flex items-center gap-1 mb-10">
-          <Link to="/payroll/home">
-            <i className="ri-arrow-left-s-line text-xl"></i>
-          </Link>
-          <h5 className="font-black text-lg">Payroll Settings</h5>
-        </div>
-
-        <div className="flex justify-end">
+      <PayrollSubNav />
+      <div className="Container">
+        <div className="flex justify-between items-center">
+          <div className="flex items-center gap-1">
+            <Link to="/payroll/home">
+              <i className="ri-arrow-left-s-line text-xl"></i>
+            </Link>
+            <h5 className="font-black text-lg">Payroll Settings</h5>
+          </div>
           <button className="button">Save Changes</button>
         </div>
 
@@ -313,12 +326,64 @@ const PayrollSettings = () => {
                       </label>
                     </div>
                   </div>
-                  <h5 className="text-caramel underline pt-3 cursor-pointer">
-                    View Tax Table
-                  </h5>
+                  {taxTable !== true && (
+                    <h5
+                      onClick={() =>
+                        dispatch({ type: "taxTable", payload: true })
+                      }
+                      className="text-caramel underline pt-3 cursor-pointer"
+                    >
+                      View Tax Table
+                    </h5>
+                  )}
                   {/* tax table */}
-                  <div></div>
-                  <div></div>
+                  {taxTable && (
+                    <div className="bg-card px-2 py-3 mt-3 rounded font-medium">
+                      <i
+                        onClick={() =>
+                          dispatch({ type: "taxTable", payload: false })
+                        }
+                        className="ri-close-fill cursor-pointer text-lg flex justify-end pb-3 font-semibold"
+                      ></i>
+                      <div className="flex flex-col gap-4">
+                        <div className="flex item-center text-xs justify-between gap-2 mb-4">
+                          <span className="text-sm">Taxation in Nigeria</span>
+                          <span className="text-caramel underline cursor-pointer">
+                            Edit Tax Table
+                          </span>
+                        </div>
+                        <div className={taxTableWrap}>
+                          <span>Annual Income(NGN)</span>
+                          <span>Personal Income Tax Rate (%)</span>
+                        </div>
+
+                        <div className={taxTableWrap}>
+                          <span>First 300000</span>
+                          <span>7</span>
+                        </div>
+                        <div className={taxTableWrap}>
+                          <span>Next 300000</span>
+                          <span>11</span>
+                        </div>
+                        <div className={taxTableWrap}>
+                          <span>Next 500000</span>
+                          <span>15</span>
+                        </div>
+                        <div className={taxTableWrap}>
+                          <span>Next 500000</span>
+                          <span>19</span>
+                        </div>
+                        <div className={taxTableWrap}>
+                          <span>Next 1600000</span>
+                          <span>21</span>
+                        </div>
+                        <div className={taxTableWrap}>
+                          <span> Next 3200000</span>
+                          <span>24</span>
+                        </div>
+                      </div>
+                    </div>
+                  )}
 
                   <div className="flex justify-between items-center mt-5 pb-2">
                     <button

@@ -13,6 +13,7 @@ import { AreaGraph } from "../Components/AreaGraph";
 import { Histogram } from "../Components/Histogram";
 import { AnimatePresence, motion } from "framer-motion";
 import { SpiderChart } from "../Components/SpiderChart";
+import PayrollSubNav from "../Components/PayrollSubNav";
 
 const labels = [
   "January",
@@ -142,7 +143,8 @@ const Home = () => {
   const [showItems, setShowItems] = useState(false);
   return (
     <DashboardLayout>
-      <div className="Container mt-4 pb-8 text-accent">
+      <PayrollSubNav/>
+      <div className="text-accent">
         <div className="flex justify-between items-center mb-6">
           <span className="font-bold text-xl">Payroll</span>
           <button className="button">Run Payroll</button>

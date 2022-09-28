@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import logo from "../Images/logo.png";
+import logo from "../Images/logo2.png";
 import sun from "../Images/sun.svg";
 import { Link } from "react-router-dom";
 
@@ -8,6 +8,7 @@ import {
   TextField as MuiTextField,
   Box,
   Avatar,
+  Badge,
 } from "@mui/material";
 import SearchModal from "./Search/SearchModal";
 import { Menu } from "@mui/material";
@@ -55,6 +56,7 @@ const TopBar = ({
   orange,
   blue,
   purple,
+  sidebarToggle,
   setSidebarToggle,
 }) => {
   const [anchorEl, setAnchorEl] = useState(null);
@@ -90,23 +92,34 @@ const TopBar = ({
         open={licenseModal}
         handleClose={() => setLicenseModal(false)}
       />
-      <div className="bg-caramel w-full py-2 sticky top-0 z-50">
-        <div className="px-5 lg:px-12 flex items-center justify-between">
+      <div className="bg-mainBg w-full py-3 sticky top-0 z-50 text-accent shadow-md">
+        <div className="px-5 lg:px-12 flex items-center justify-between Container">
           <div className="flex items-center gap-3">
             <i
               onClick={setSidebarToggle}
-              className="ri-menu-line text-2xl text-white cursor-pointer"
+              className="ri-menu-line cursor-pointer"
+              style={{ fontSize: 23 }}
             ></i>
-            <Link to="/">
-              <img src={logo} alt="logo" className="md:h-10 h-7" />
+            <Link
+              to="/"
+              className={
+                sidebarToggle
+                  ? "lg:ml-16 transition-all duration-500 ease-in-out"
+                  : "transition-all duration-500 ease-in-out"
+              }
+            >
+              <img src={logo} alt="logo" className="md:h-8 h-7" />
             </Link>
           </div>
 
           <div className="flex gap-4 items-center">
-            <i className="fa-solid fa-magnifying-glass lg:hidden cursor-pointer text-base text-white"></i>
+            <i
+              onClick={() => setOpenSearchModal(true)}
+              className="fa-solid fa-magnifying-glass lg:hidden cursor-pointer text-base"
+            ></i>
             <div className="lg:flex items-center gap-6 hidden mr-10">
               <i
-                className="fa-solid fa-magnifying-glass cursor-pointer text-base text-white"
+                className="fa-solid fa-magnifying-glass cursor-pointer text-base"
                 title="Search HcMatrix application"
                 onClick={() => setOpenSearchModal(true)}
               ></i>
@@ -119,8 +132,8 @@ const TopBar = ({
                   sx={{
                     width: 35,
                     height: 35,
-                    background: "none",
-                    border: "2px solid #fff",
+                    background: "",
+                    border: "1px solid var(--card)",
                   }}
                   src={companyId}
                 ></Avatar>
@@ -193,19 +206,22 @@ const TopBar = ({
             <Link to="/settings">
               {" "}
               <i
-                className="ri-settings-3-line text-xl text-white cursor-pointer"
+                className="ri-settings-3-line text-xl cursor-pointer"
                 title="Settings"
               ></i>
             </Link>
-            <i
-              onClick={handleClick}
-              className="ri-notification-3-line text-xl cursor-pointer text-white"
-              title="Notifications"
-            ></i>
+
+            <Badge badgeContent={4} color="primary">
+              <i
+                className="ri-notification-3-line text-xl cursor-pointer"
+                title="Notifications"
+              ></i>
+            </Badge>
+
             <img
               src="https://res.cloudinary.com/ddvaelej7/image/upload/v1655735373/samples/Ellipse_4_j0womm.png"
               alt=""
-              className="h-6 md:h-8 cursor-pointer"
+              className="h-6 md:h-9 cursor-pointer border-2 border-slate-300 rounded-full ml-1"
               onClick={handleClick}
             />
           </div>

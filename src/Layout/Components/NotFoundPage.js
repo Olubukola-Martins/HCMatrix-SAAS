@@ -6,7 +6,7 @@ import DashboardLayout from "../DashboardLayout";
 const NotFoundPage = () => {
   return (
     <DashboardLayout>
-      <div className="Container mt-10 pb-10">
+      <div className="  mt-10 pb-10">
         <div className="flex justify-center items-center text-center">
           <div>
             <img src={errorPage} alt="not found page" />

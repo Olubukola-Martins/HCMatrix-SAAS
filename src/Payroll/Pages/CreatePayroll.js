@@ -1,6 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import DashboardLayout from "../../Layout/DashboardLayout";
+import PayrollSubNav from "../Components/PayrollSubNav";
 
 const CreatePayroll = () => {
   const boxStyle =
@@ -11,9 +12,10 @@ const CreatePayroll = () => {
 
   return (
     <DashboardLayout>
-      <div className="Container mt-10 pb-16 text-accent">
+      <PayrollSubNav/>
+      <div className="text-accent">
         <div className="flex items-center gap-2 mb-10">
-          <Link to="/payroll-history" className="hover:text-caramel">
+          <Link to="/payroll/cycle" className="hover:text-caramel">
             <i className="ri-arrow-left-s-line text-xl"></i>
           </Link>
           <h5 className="font-black text-lg">Create Payroll</h5>

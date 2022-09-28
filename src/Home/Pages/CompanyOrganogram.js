@@ -9,8 +9,8 @@ const CompanyOrganogram = () => {
 
   return (
     <DashboardLayout>
-      <div className="relative">
-        <div className="Container pb-12">
+      <div className="relative ">
+        <div className="pb-12">
           <div className="flex items-center gap-3 text-accent font-semibold mt-2 pb-1">
             <Link to="/settings">
               <i className="ri-arrow-left-line text-xl cursor-pointer hover:text-caramel"></i>

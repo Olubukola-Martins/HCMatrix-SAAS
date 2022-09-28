@@ -38,7 +38,7 @@ const Groups = () => {
     <DashboardLayout>
       <div className="h-screen">
         {headerId === "header2" && (
-          <div className="Container mt-4">
+          <div className="  mt-4">
             <div className="flex justify-between items-center bg-card p-2 rounded">
               <h4 className="text-lg ">
                 <i
@@ -59,7 +59,7 @@ const Groups = () => {
           </div>
         )}
         {headerId === "header1" && (
-          <div className="Container mt-4">
+          <div className="  mt-4">
             <div className="flex justify-between items-center bg-card p-2 rounded text-sm">
               <h4 className="text-lg ">Groups</h4>
               <div className="flex gap-4 items-center">
@@ -88,7 +88,7 @@ const Groups = () => {
           </div>
         )}
         {headerId === "header3" && (
-          <div className="Container mt-4">
+          <div className="  mt-4">
             <h4 className="text-lg  mb-1">Groups</h4>
             <div className="flex flex-col gap-2 md:flex-row md:justify-between md:items-center bg-card p-2 rounded text-sm">
               <p>Manage all the group details in your organization.</p>

@@ -5,6 +5,7 @@ import SystemAdmins from "../Pages/SystemAdmins";
 
 const AdminRoutes = () => {
   return (
+    
     <Routes>
       <Route path="/system-administration-login" element={<Home />} />
       <Route path="/system-administrators" element={<SystemAdmins />} />

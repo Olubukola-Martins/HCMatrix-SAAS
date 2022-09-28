@@ -45,7 +45,7 @@ const AddEmployee = ({ close }) => {
   };
 
   return (
-    <div className="Container pb-10">
+    <div className="  pb-10">
       <div className="bg-card pt-5 pb-10 px-5 rounded-md mt-5">
         <div className="flex items-center gap-3">
           <i

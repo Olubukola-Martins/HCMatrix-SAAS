@@ -24,7 +24,7 @@ const Roles = () => {
     <DashboardLayout>
       <div className="h-screen">
         {
-          <div className="Container mt-4">
+          <div className="  mt-4">
             <h4 className="text-lg  mb-1">Pay Grades</h4>
             <div className="flex flex-col gap-2 md:flex-row md:justify-between md:items-center bg-card p-2 rounded text-sm">
               <p>Manage pay grades</p>

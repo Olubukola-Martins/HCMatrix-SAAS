@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
 import DashboardLayout from "../../Layout/DashboardLayout";
 import CompanyEntryCards from "../Components/CompanyEntryCards";
 
@@ -12,7 +11,7 @@ const Home = () => {
             <div className="">
               <input
                 type="text"
-                placeholder="Search comapnies"
+                placeholder="Search Company"
                 className="w-full bg-transparent rounded-md p-2 border border-gray-400 focus:outline-none "
               />
             </div>

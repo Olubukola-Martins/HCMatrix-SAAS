@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import DashboardLayout from "../../Layout/DashboardLayout";
 import Themes from "../../Themes/Themes";
+import PayrollSubNav from "../Components/PayrollSubNav";
 import RollbackModal from "../Components/RollbackModal";
 import ViewPayrollBreakdown from "../Components/ViewPayrollBreakdown";
 import "../Style/style.css";
@@ -24,9 +25,10 @@ const PayrollBreakdown = () => {
 
   return (
     <DashboardLayout>
-      <div className="Container mt-10 pb-16">
+      <PayrollSubNav/>
+      <div>
         <div className="flex items-center gap-2 mb-10">
-          <Link to="/payroll-review" className="hover:text-caramel">
+          <Link to="/payroll/review" className="hover:text-caramel">
             <i className="ri-arrow-left-s-line text-xl"></i>
           </Link>
           <h5 className="font-black text-lg">Payroll Breakdown</h5>
@@ -51,9 +53,9 @@ const PayrollBreakdown = () => {
             <button className="border border-red-500 hover:text-caramel rounded px-2 py-1 font-medium text-sm">
               Compare
             </button>
-            <button className="border border-red-500 hover:text-caramel rounded px-2 py-1 font-medium text-sm">
+            <Link to="/payroll/report" className="border border-red-500 hover:text-caramel rounded px-2 py-1 font-medium text-sm">
               Create Report
-            </button>
+            </Link>
           </div>
         </div>
         <table className="payroll-table text-accent">
@@ -118,7 +120,7 @@ const PayrollBreakdown = () => {
           }}
         >
           <Themes>
-            <div className="border border-red-300 py-3 px-2 text-xs font-medium rounded-md">
+            <div className="py-3 px-2 text-xs font-medium rounded-md">
               <span
                 onClick={() => setBreakModal(true)}
                 className="block pb-2 cursor-pointer hover:text-caramel"
