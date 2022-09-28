@@ -8,7 +8,7 @@ import { Link } from "react-router-dom";
 const CompanyDetails = () => {
   return (
     <DashboardLayout>
-      <div className="Container pb-20 mt-10 mb-72">
+      <div className="">
         <Link to="/settings">
           <i
             className="fa fa-arrow-left text-accent text-lg"

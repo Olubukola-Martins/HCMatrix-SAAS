@@ -42,7 +42,8 @@ const DashboardLayout = ({ children }) => {
 
   return (
     <div className="mode_color" data-theme={theme} color-theme={colorTheme}>
-      <TopBar
+       <div className="h-screen overflow-auto">
+       <TopBar
         switchTheme={switchTheme}
         theme={theme}
         green={switchGreenColor}
@@ -50,6 +51,7 @@ const DashboardLayout = ({ children }) => {
         yellow={switchYellowColor}
         blue={switchBlueColor}
         purple={switchPurpleColor}
+        sidebarToggle={sidebarToggle}
         setSidebarToggle={() => setSidebarToggle(!sidebarToggle)}
       />
       <GlobalSupport />
@@ -57,7 +59,7 @@ const DashboardLayout = ({ children }) => {
         <div
           className={
             sidebarToggle
-              ? "w-32 fixed z-40 overflow-hidden lg:flex hidden transition-all duration-500 ease-in-out"
+              ? "w-28 fixed z-40 overflow-hidden lg:flex hidden transition-all duration-500 ease-in-out"
               : "w-0 overflow-hidden "
           }
         >
@@ -67,17 +69,21 @@ const DashboardLayout = ({ children }) => {
         <div
           className={
             sidebarToggle
-              ? "flex-1 lg:ml-32 "
-              : "lg:ml-0 transition-all duration-500 ease-in-out"
+              ? "w-full lg:ml-28 mt-7 pb-10"
+              : "lg:ml-0 w-full transition-all duration-500 ease-in-out mt-7 pb-10"
           }
         >
           <div className="w-full md:top-14 top-10 sticky z-40">
             {/* <SubTopBar /> */}
           </div>
-          {children}
+         <main className="Containe">
+         {children}
+         </main>
         </div>
       </div>
+       </div>
     </div>
+    
   );
 };
 

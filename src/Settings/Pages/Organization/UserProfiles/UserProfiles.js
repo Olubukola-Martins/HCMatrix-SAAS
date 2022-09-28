@@ -77,7 +77,7 @@ const UserProfiles = () => {
     <DashboardLayout>
       {/* Employee Status menu */}
 
-      <div className="">
+      <div className="Container">
         <div className="flex justify-between mt-5 Container">
           <h4
             // onClick={handleClick}
@@ -162,7 +162,7 @@ const UserProfiles = () => {
               <FilterDrawer handleDrawer={setShowDraggableDrawer} />
             )}
           </AnimatePresence>
-          <div className="Container">
+          <div className=" ">
             <div
               className="px-6 py-4  mb-6 flex items-center gap-4 text-sm"
               style={{ background: "var(--card)" }}
@@ -199,7 +199,7 @@ const UserProfiles = () => {
 
       
           {/* table */}
-          <div className="Container">
+          <div className=" ">
             <table className="employee-profile-table">
               <thead>
                 <tr>
@@ -243,45 +243,17 @@ const UserProfiles = () => {
                     <td>Inactive</td>
                     <td>Login Enabled</td>
                     <td>
-                      <span className="flex items-center gap-2 text-xl justify-center">
+                    <i className="ri-more-fill text-lg cursor-pointer"></i>
+                      {/* <span className="flex items-center gap-2 text-xl justify-center">
                         <img src={MailIcon} alt="mail" className="h-4" />{" "}
                         <img src={UserIcon} alt="user" className="h-4" />{" "}
                         <img src={PenIcon} alt="edit" className="h-4" />{" "}
                         <i className="ri-delete-bin-line text-slate-400"></i>
-                      </span>
+                      </span> */}
                     </td>
                   </tr>
                 ))}
-                <tr>
-                  <td className="flex items-center justify-center gap-3">
-                    <input type="checkbox" />
-                    <div className="flex items-center gap-2 justify-center">
-                      <img
-                        src="https://res.cloudinary.com/ddvaelej7/image/upload/v1656616707/samples/Ellipse_1915_maqdtn.png"
-                        alt="user"
-                      />
-                      <div className="flex flex-col">
-                        <h6 className="font-medium text-sm">Francis terr, 4</h6>
-                        <span className="text-xs">francis@gmail.com</span>
-                      </div>
-                    </div>
-                  </td>
-                  <td>Male</td>
-                  <td>24 - 06 - 2022</td>
-                  <td>234</td>
-                  <td>Admin</td>
-                  <td>francis@gmail.com</td>
-                  <td>Inactive</td>
-                  <td>Invited</td>
-                  <td>
-                    <span className="flex items-center gap-2 text-xl justify-center">
-                      <img src={DummyIcon} alt="edit" className="h-4 w-6" />{" "}
-                      <img src={UserIcon} alt="user" className="h-4" />{" "}
-                      <img src={PenIcon} alt="edit" className="h-4" />{" "}
-                      <i className="ri-delete-bin-line text-slate-400"></i>
-                    </span>
-                  </td>
-                </tr>
+            
               </tbody>
             </table>
           </div>

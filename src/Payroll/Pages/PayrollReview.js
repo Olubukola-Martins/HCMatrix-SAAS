@@ -4,10 +4,12 @@ import DashboardLayout from "../../Layout/DashboardLayout";
 import Themes from "../../Themes/Themes";
 import "../Style/style.css";
 import { Link } from "react-router-dom";
+import PayrollSubNav from "../Components/PayrollSubNav";
+import TotalSummary from "../Components/TotalSummary";
 
 const PayrollReview = () => {
   const [anchorEl, setAnchorEl] = useState(null);
-
+  const [totalSummaryModal, setTotalSummaryModal] = useState(false);
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
@@ -20,9 +22,14 @@ const PayrollReview = () => {
 
   return (
     <DashboardLayout>
-      <div className="Container mt-10">
+      <PayrollSubNav />
+      <TotalSummary
+        open={totalSummaryModal}
+        handleClose={() => setTotalSummaryModal(false)}
+      />
+      <div>
         <div className="flex items-center gap-1 mb-10">
-          <Link to="#!">
+          <Link to="/payroll/home">
             <i className="ri-arrow-left-s-line text-xl"></i>
           </Link>
           <h5 className="font-black text-lg">Payroll Review</h5>
@@ -33,14 +40,17 @@ const PayrollReview = () => {
             <i className="ri-download-2-line text-xl"></i>
             <i className="ri-logout-box-r-line text-xl"></i>
             <Link
-              to="/payroll-comparison"
+              to="/payroll/comparison"
               className="border border-caramel rounded px-2 py-1 font-medium text-caramel text-sm"
             >
               Compare
             </Link>
-            <button className="border border-caramel rounded px-2 py-1 font-medium text-caramel text-sm">
+            <Link
+              to="/payroll/report"
+              className="border border-caramel rounded px-2 py-1 font-medium text-caramel text-sm"
+            >
               Create Report
-            </button>
+            </Link>
           </div>
         </div>
         <table className="payroll-table text-gray-600">
@@ -111,14 +121,17 @@ const PayrollReview = () => {
           }}
         >
           <Themes>
-            <div className="border border-red-300 py-3 px-2 text-xs font-medium rounded-md">
+            <div className="py-3 px-2 text-xs font-medium rounded-md">
               <Link
-                to="/payroll-breakdown"
+                to="/payroll/breakdown"
                 className="block pb-2 cursor-pointer hover:text-caramel"
               >
                 View Per Employee
               </Link>
-              <span className="cursor-pointer hover:text-caramel">
+              <span
+                onClick={() => setTotalSummaryModal(true)}
+                className="cursor-pointer hover:text-caramel"
+              >
                 View Total Summary
               </span>
             </div>

@@ -3,7 +3,7 @@ import DashboardLayout from "../../Layout/DashboardLayout";
 import PayrollCycle from "../Assets/Images/payrollCycle.svg";
 import Group from "../Assets/Images/group.svg";
 import DollarBox from "../Assets/Images/dollarBox.svg";
-import PayrollReview from "../Assets/Images/payrollReview.svg";
+// import PayrollReview from "../Assets/Images/payrollReview.svg";
 import { LineChart } from "../Components/LineChart";
 import { BarChart } from "../Components/BarChart";
 import { ScatterChart } from "../Components/ScatterChart";
@@ -13,6 +13,8 @@ import { AreaGraph } from "../Components/AreaGraph";
 import { Histogram } from "../Components/Histogram";
 import { AnimatePresence, motion } from "framer-motion";
 import { SpiderChart } from "../Components/SpiderChart";
+import { Link } from "react-router-dom";
+import PayrollSubNav from "../Components/PayrollSubNav";
 
 const labels = [
   "January",
@@ -29,6 +31,7 @@ const labels = [
 ];
 
 const Home = () => {
+
   const chartData = [
     {
       name: "net income",
@@ -140,60 +143,64 @@ const Home = () => {
   const [currentChart, setCurrentChart] = useState("line-chart");
   const [active, setActive] = useState("gross income");
   const [showItems, setShowItems] = useState(false);
+
+  const outerStyle =
+    "group  transition ease-in-out duration-500 cursor-pointer shadow-md col-span-3 md:col-span-1 rounded-xl flex flex-col gap-2 w-full  p-3 bg-card";
+  const innerStyle =
+    "group-hover:shadow-md transition ease-in-out duration-500 bg-mainBg rounded-xl p-2 flex flex-col gap-4 flex-1";
   return (
     <DashboardLayout>
-      <div className="Container mt-4 pb-8 text-accent">
+      <PayrollSubNav/>
+      <div className="text-accent Container">
         <div className="flex justify-between items-center mb-6">
           <span className="font-bold text-xl">Payroll</span>
-          <button className="button">Run Payroll</button>
+          <Link className="neutralButton" to="/payroll/create">
+            Create Payroll
+          </Link>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-4 md:grid-cols-2 gap-x-4 gap-y-12 w-full ">
           {/* payroll history */}
 
-          <div className="border border-caramel col-span-3 md:col-span-1 rounded-xl flex flex-col gap-2 w-full  p-3 bg-slate-100">
-            <div className="bg-white rounded-xl p-2 flex flex-col gap-4 flex-1">
+          <div className={`${outerStyle} cursor-text`}>
+            <div className={`${innerStyle}`}>
               <div className="flex items-center gap-2">
                 <div className="bg-caramel p-2 rounded-full min-h-min min-w-min">
                   <img src={DollarBox} alt="bg" className="h-6 w-6" />
                 </div>{" "}
-                <h4 className="font-light text-sm">Payroll History</h4>
+                <h4 className="font-light text-sm">Payroll Burden</h4>
               </div>
               {/* price */}
               <span className="block font-bold text-xl">N0.00</span>
-              <span className="block text-xs">
-                Compared to N0.00 last month{" "}
-              </span>
             </div>
 
-            <div className="flex items-center justify-between">
+            <div className="flex items-center justify-between group-hover:text-caramel invisible">
               <span className="text-sm">View</span>
               <i className="ri-arrow-right-s-line text-xl" title="view"></i>
             </div>
           </div>
           {/* employees */}
 
-          <div className="border border-caramel col-span-3 md:col-span-1 rounded-xl flex flex-col gap-2 w-full  p-3 bg-slate-100">
-            <div className="bg-white rounded-xl p-2 flex flex-col gap-4 flex-1">
+          <Link className={`${outerStyle}`} to="/settings/employee-profile">
+            <div className={`${innerStyle}`}>
               <div className="flex items-center gap-2">
                 <div className="bg-caramel p-2 rounded-full min-h-min min-w-min">
                   <img src={Group} alt="bg" className="h-6 w-6" />
                 </div>{" "}
                 <h4 className="font-light text-sm">Employees</h4>
               </div>
-              {/* price */}
-              <span className="block font-bold text-xl">N0.00</span>
+              <span className="block font-bold text-xl">125</span>
             </div>
 
-            <div className="flex items-center justify-between">
+            <div className="flex items-center justify-between group-hover:text-caramel">
               <span className="text-sm">View</span>
               <i className="ri-arrow-right-s-line text-xl" title="view"></i>
             </div>
-          </div>
-          {/* payroll cycle */}
+          </Link>
 
-          <div className="border border-caramel col-span-3 md:col-span-1 rounded-xl flex flex-col gap-2 w-full  p-3 bg-slate-100">
-            <div className="bg-white rounded-xl p-2 flex flex-col gap-4 flex-1">
+          {/* payroll cycle */}
+          <Link className={`${outerStyle}`} to="/payroll/cycle">
+            <div className={`${innerStyle}`}>
               <div className="flex items-center gap-2">
                 <div className="bg-caramel p-2 rounded-full min-h-min min-w-min">
                   <img src={PayrollCycle} alt="bg" className="h-6 w-6" />
@@ -204,11 +211,11 @@ const Home = () => {
               <span className="block font-bold text-xl">May 2022</span>
             </div>
 
-            <div className="flex items-center justify-between">
+            <div className="flex items-center justify-between group-hover:text-caramel">
               <span className="text-sm">View</span>
               <i className="ri-arrow-right-s-line text-xl" title="view"></i>
             </div>
-          </div>
+          </Link>
 
           <AnimatePresence exitBeforeEnter>
             {/* pending set up */}
@@ -223,11 +230,11 @@ const Home = () => {
               }}
               className={`cursor-pointer relative z-10 ${
                 showItems && "row-span-3"
-              } border border-caramel col-span-3 lg:col-span-1 rounded-xl flex flex-col gap-2 w-full  p-3 bg-slate-100`}
+              } shadow-md hgrouphover:border-caramel col-span-3 lg:col-span-1 rounded-xl flex flex-col gap-2 w-full  p-3 bg-card`}
               onClick={() => setShowItems((val) => !val)}
             >
               <div className="rounded-xl p-2 flex flex-col gap-8">
-                <div className="flex items-center justify-between">
+                <div className="flex items-center justify-between group-hover:text-caramel">
                   <h4 className="font-semibold text-base">Pending Setup</h4>
                   <motion.i
                     animate={{ rotate: showItems ? 180 : 0 }}
@@ -288,7 +295,7 @@ const Home = () => {
                   <div className="flex gap-2 lg:items-center flex-col lg:flex-row">
                     <div className="flex-1  self-start">
                       <select
-                        className="w-full  border rounded px-2 py-2 border-black"
+                        className="w-full  border rounded px-2 py-2 border-black bg-mainBg"
                         name="filterInfo"
                         component="select"
                         placeholder="Bar Chart"
@@ -312,7 +319,7 @@ const Home = () => {
                   <div className="flex gap-2 lg:items-center flex-col lg:flex-row">
                     <div className="flex-1  self-start">
                       <input
-                        className="w-32 border rounded px-2 py-2 border-black"
+                        className="w-32 border rounded px-2 py-2 border-black bg-mainBg"
                         name="date"
                         type="text"
                         placeholder="23-09-2022"
@@ -324,12 +331,12 @@ const Home = () => {
                 </div>
               </div>
               {/* nav */}
-              <div className="flex rounded-md overflow-hidden">
+              <div className="flex rounded-md overflow-hidden shadow-sm">
                 {chartData.map((item) => (
                   <div
                     onClick={() => setActive(item.name)}
-                    className={`border border-r text-xs text-center flex-1 h-12 hover:text-caramel flex capitalize items-center justify-center cursor-pointer bg-slate-100 md:text-xs ${
-                      active === item.name ? "text-caramel" : "text-gray-800"
+                    className={`border border-r text-xs text-center flex-1 h-12 hover:text-caramel flex capitalize items-center justify-center cursor-pointer bg-mainBg md:text-xs ${
+                      active === item.name ? "text-caramel" : "text-accent"
                     }`}
                   >
                     <span>{item.name}</span>

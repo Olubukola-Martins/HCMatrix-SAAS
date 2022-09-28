@@ -36,7 +36,7 @@ const SubTopBar = () => {
       {/* Modules mobile drawer */}
       <Drawer open={moduleDrawer["left"]} onClose={toggleDrawer("left", false)}>
         <Themes>
-        <div className="Container flex justify-end">
+        <div className="  flex justify-end">
           <i
             className="ri-close-line text-right pt-5 text-xl cursor-pointer"
             onClick={toggleDrawer("left", false)}
@@ -46,7 +46,7 @@ const SubTopBar = () => {
           className="flex items-center overflow-auto"
           style={{ height: "97vh" }}
         >
-          <div className="Container flex gap-4 flex-col text-accent font-medium">
+          <div className="  flex gap-4 flex-col text-accent font-medium">
             <div className="module_list_item_mobile">
               <i className="ri-scales-line text-base"></i>
               <span>Performance</span>
@@ -80,7 +80,7 @@ const SubTopBar = () => {
        
       >
           <Themes>
-        <div className="Container flex justify-end">
+        <div className="  flex justify-end">
           <i
             className="ri-close-line text-right pt-5 text-xl cursor-pointer"
             onClick={toggleDrawerFeatures("left", false)}
@@ -91,7 +91,7 @@ const SubTopBar = () => {
           className="flex items-center overflow-auto"
           style={{ height: "97vh" }}
         >
-          <div className="Container flex gap-4 flex-col text-accent font-medium">
+          <div className="  flex gap-4 flex-col text-accent font-medium">
             <div className="module_list_item_mobile">
               <i className="ri-home-smile-line text-base"></i>
               <span>Home</span>
@@ -143,7 +143,7 @@ const SubTopBar = () => {
           boxShadow: "0px 15px 10px -15px var(--scrollBg)",
         }}
       >
-        <div className="Container lg:hidden flex justify-between ">
+        <div className="  lg:hidden flex justify-between ">
           <span
             className="text-accent font-medium cursor-pointer hover:text-caramel"
             onClick={toggleDrawer("left", true)}
@@ -155,7 +155,7 @@ const SubTopBar = () => {
             onClick={toggleDrawerFeatures("left", true)}
           ></i>
         </div>
-        <div className="Container hidden lg:flex  items-center md:flex-row flex-col gap-4 text-accent font-medium text-sm">
+        <div className="  hidden lg:flex  items-center md:flex-row flex-col gap-4 text-accent font-medium text-sm">
           <div className="module_list_item">
             <i className="ri-scales-line text-base"></i>
             <span>Performance</span>
@@ -182,7 +182,7 @@ const SubTopBar = () => {
       {hideOrShow ? (
         ""
       ) : (
-        <div className="Container text-right">
+        <div className="  text-right">
           <span className="text-xs text-caramel font-medium">
             Enjoy your free 30 days trial
           </span>

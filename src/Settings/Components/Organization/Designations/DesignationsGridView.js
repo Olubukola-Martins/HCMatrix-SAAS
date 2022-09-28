@@ -45,7 +45,7 @@ const CustomDropdown = ({ text, id }) => {
 export const DesignationsGridView = ({ designations }) => {
   return (
     <motion.div
-      className="Container mt-4"
+      className="  mt-4"
       initial={{ opacity: 0, y: 400 }}
       animate={{
         opacity: 1,

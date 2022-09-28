@@ -33,7 +33,7 @@ const LocationDetail = () => {
   };
   return (
     <DashboardLayout>
-      <div className="Container mt-3 h-screen">
+      <div className="  mt-3 h-screen">
         <div className="bg-card flex justify-between items-center py-2 px-4 rounded-md">
           <div className="flex items-center gap-2 text-accent font-semibold mt-2 pb-1">
             <Link to="/settings/locations">

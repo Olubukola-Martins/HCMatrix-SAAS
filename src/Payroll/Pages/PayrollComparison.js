@@ -10,6 +10,7 @@ import Select from "@mui/material/Select";
 import Checkbox from "@mui/material/Checkbox";
 import TableComparison from "../Components/TableComparison";
 import GraphComparison from "../Components/GraphComparison";
+import PayrollSubNav from "../Components/PayrollSubNav";
 
 const ITEM_HEIGHT = 45;
 const ITEM_PADDING_TOP = 5;
@@ -52,9 +53,10 @@ const PayrollComparison = () => {
   };
   return (
     <DashboardLayout>
-      <div className="Container mt-10 pb-16">
+      <PayrollSubNav/>
+      <div>
         <div className="flex items-center gap-1 mb-10">
-          <Link to="/payroll-review">
+          <Link to="/payroll/review">
             <i className="ri-arrow-left-s-line text-xl"></i>
           </Link>
           <h5 className="font-black text-lg">Payroll comparison </h5>

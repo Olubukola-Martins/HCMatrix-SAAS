@@ -5,7 +5,7 @@ import { motion } from "framer-motion";
 
 const CustomDropdown = ({ text, id }) => {
   return (
-    <div className="">
+    <div className="Container">
       <div className="custom-dropdown inline-block relative">
         <div className="cursor-pointer flex">{text}</div>
 
@@ -44,7 +44,7 @@ const CustomDropdown = ({ text, id }) => {
 export const DelegationsGridView = ({ delegations }) => {
   return (
     <motion.div
-      className="Container mt-4"
+      className="  mt-4"
       initial={{ opacity: 0, y: 400 }}
       animate={{
         opacity: 1,

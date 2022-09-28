@@ -1,20 +1,24 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import DashboardLayout from "../../Layout/DashboardLayout";
+import PayrollSubNav from "../Components/PayrollSubNav";
 
-const PayrollHistory = () => {
+const PayrollCycle = () => {
   return (
     <DashboardLayout>
-      <div className="Container mt-10 pb-16">
+      <PayrollSubNav/>
+      <div>
         <div className="flex items-center gap-2 mb-10">
-          <Link to="#!" className="hover:text-caramel">
+          <Link to="/payroll/home" className="hover:text-caramel">
             <i className="ri-arrow-left-s-line text-xl"></i>
           </Link>
-          <h5 className="font-black text-lg">Payroll History</h5>
+          <h5 className="font-black text-lg">Payroll Cycle</h5>
         </div>
 
         <div className="flex justify-between items-center mb-6">
-          <Link to="/create-payroll" className="button">Create Payroll</Link>
+          <Link to="/payroll/create" className="button">
+            Create Payroll
+          </Link>
           <div className="flex justify-end gap-5 font-medium">
             <i className="ri-download-2-line text-xl"></i>
             <i className="ri-logout-box-r-line text-xl"></i>
@@ -66,4 +70,4 @@ const PayrollHistory = () => {
   );
 };
 
-export default PayrollHistory;
+export default PayrollCycle;

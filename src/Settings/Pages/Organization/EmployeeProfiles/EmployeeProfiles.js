@@ -119,7 +119,7 @@ const EmployeeProfiles = () => {
           </AnimatePresence>
         </div>
 
-        <div className="Container">
+        <div className=" ">
           <div className="bg-card flex items-center justify-between p-3 mb-2 mt-7">
             <h5 className="font-medium">Employee Information</h5>
             <div className="flex items-center gap-5">
@@ -157,7 +157,7 @@ const EmployeeProfiles = () => {
         </div>
         {bulk.length > 0 && <EmployeeActions />}
 
-        <div className="Container">
+        <div className=" ">
           <table className="employee-profile-table">
             <thead>
               <tr>

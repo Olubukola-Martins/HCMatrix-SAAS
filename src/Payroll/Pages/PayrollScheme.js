@@ -5,9 +5,9 @@ import DashboardLayout from "../../Layout/DashboardLayout";
 const PayrollScheme = () => {
   return (
     <DashboardLayout>
-      <div className="Container mt-10 pb-16">
+      <div>
         <div className="flex items-center gap-2 mb-10">
-          <Link to="/payroll-review" className="hover:text-caramel">
+          <Link to="payroll/review" className="hover:text-caramel">
             <i className="ri-arrow-left-s-line text-xl"></i>
           </Link>
           <h5 className="font-black text-lg">Setup Type/ Scheme</h5>
@@ -31,7 +31,6 @@ const PayrollScheme = () => {
               <th>Scheme Name</th>
               <th>Scheme Type</th>
               <th>Date Created</th>
-
               <th>Action</th>
             </tr>
           </thead>
