@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import roundgraph from "../../Assets/Images/roundGraph.svg";
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -14,14 +13,7 @@ import Themes from "../../../Themes/Themes";
 
 const VehicleOverview = () => {
   // chart start
-  ChartJS.register(
-    CategoryScale,
-    LinearScale,
-    BarElement,
-    // Title,
-    Tooltip,
-    Legend
-  );
+  ChartJS.register(CategoryScale, LinearScale, BarElement, Tooltip, Legend);
 
   const options = {
     responsive: true,
@@ -194,7 +186,11 @@ const VehicleOverview = () => {
           <div className="border rounded-md px-4 py-2 shadow">
             <p>Reminders</p>
             <div className="flex justify-center my-6">
-              <img src={roundgraph} alt="graph" className="h-28" />
+              <img
+                src="https://res.cloudinary.com/ddvaelej7/image/upload/v1664348855/roundGraph1_kz4hem.svg"
+                alt="graph"
+                className="h-28"
+              />
             </div>
 
             <div className="flex justify-between">
