@@ -1,11 +1,19 @@
 import { Popover } from "@mui/material";
 import React, { useState } from "react";
+import { Link } from "react-router-dom";
 import Themes from "../../../Themes/Themes";
+import AddVehicle from "./AddVehicle";
 
 const VehicleList = () => {
   const [anchorEl, setAnchorEl] = useState(null);
+  const [addVehicleModal, setAddVehicleModal] = useState(false);
+
   return (
     <div>
+      <AddVehicle
+        open={addVehicleModal}
+        handleClose={() => setAddVehicleModal(false)}
+      />
       <div className="flex justify-between items-center gap-3">
         <div className="flex items-center gap-3">
           <button className="flex items-center gap-2 transparentButton">
@@ -19,7 +27,9 @@ const VehicleList = () => {
         </div>
         <div className="flex items-center gap-3">
           <i className="ri-download-2-line text-lg"></i>
-          <button className="button">Add Vehicle</button>
+          <button className="button" onClick={() => setAddVehicleModal(true)}>
+            Add Vehicle
+          </button>
         </div>
       </div>
       <table className="payroll-table text-accent mt-6">
@@ -43,7 +53,14 @@ const VehicleList = () => {
               <td>
                 <input type="checkbox" />
               </td>
-              <td>Toyota Camry</td>
+              <td>
+                <Link
+                  to="/self-service/vehicle-details"
+                  className="hover:text-caramel"
+                >
+                  Toyota Camry
+                </Link>
+              </td>
               <td>xxxxx</td>
               <td>Car</td>
               <td>Assigned</td>

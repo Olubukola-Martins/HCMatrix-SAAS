@@ -3,7 +3,6 @@ import React from "react";
 const Reminder = () => {
   return (
     <div>
-
       <div>
         <h3 className="text-base font-medium">Maintenance Reminders:</h3>
         <table className="payroll-table text-accent mt-4">
@@ -26,7 +25,12 @@ const Reminder = () => {
                 <td>DD/MM/YY</td>
                 <td>DD/MM/YY</td>
                 <td>
-                 <button style={{color: "var(--caramel)"}} className="transparentButton">Renew</button>
+                  <button
+                    style={{ color: "var(--caramel)" }}
+                    className="transparentButton"
+                  >
+                    Renew
+                  </button>
                 </td>
               </tr>
             ))}
@@ -56,7 +60,12 @@ const Reminder = () => {
                 <td>DD/MM/YY</td>
                 <td>DD/MM/YY</td>
                 <td>
-                 <button style={{color: "var(--caramel)"}} className="transparentButton">Renew</button>
+                  <button
+                    style={{ color: "var(--caramel)" }}
+                    className="transparentButton"
+                  >
+                    Renew
+                  </button>
                 </td>
               </tr>
             ))}
@@ -86,7 +95,12 @@ const Reminder = () => {
                 <td>DD/MM/YY</td>
                 <td>DD/MM/YY</td>
                 <td>
-                 <button style={{color: "var(--caramel)"}} className="transparentButton">Renew</button>
+                  <button
+                    style={{ color: "var(--caramel)" }}
+                    className="transparentButton"
+                  >
+                    Renew
+                  </button>
                 </td>
               </tr>
             ))}
