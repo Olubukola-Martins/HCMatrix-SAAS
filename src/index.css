@@ -86,9 +86,22 @@ body {
   /* @apply h-screen overflow-auto; */
 }
 
-.Container {
+/* .Container {
   @apply container w-full mx-auto md:px-6 lg:px-12 px-5;
+} */
+
+.Container {
+  padding-left: 1rem;
+  padding-right: 1rem;
 }
+
+@media (min-width: 768px) {
+  .Container {
+    padding-left: 2rem;
+    padding-right: 2rem;
+  }
+}
+
 
 /*=== General button ===*/
 .button {

@@ -4,9 +4,10 @@ import DashboardLayout from "../../../Layout/DashboardLayout";
 import SelfServiceSubNav from "../../Components/SelfServiceSubNav";
 import placeholder from "../../Assets/Images/placeholder.png";
 import UnassignedModal from "../../Components/Assets/UnassignedModal";
+import Maintenance from "./Maintenance";
 
 const VehicleDetails = () => {
-  const [tap, setTap] = useState("History");
+  const [tap, setTap] = useState("Maintenance");
   const [unassigned, setUnassigned] = useState(false)
   const listStyle =
     "flex items-center justify-between cursor-pointer group border-b pb-2 px-3";
@@ -157,10 +158,8 @@ const VehicleDetails = () => {
           </h5>
         </div>
 
-          {/* <div className="my-5 flex justify-end gap-3">
-              <i className="ri-download-2-line text-lg"></i>
-              <i className="ri-download-2-line text-lg"></i>
-            </div> */}
+
+            {  tap === "Maintenance" && <Maintenance/>}
       </div>
     </DashboardLayout>
   );
