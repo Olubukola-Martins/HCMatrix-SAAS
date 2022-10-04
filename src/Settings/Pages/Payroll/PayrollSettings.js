@@ -1,4 +1,5 @@
 import { Checkbox, Switch } from "@mui/material";
+import { Switch as ASwitch, Dropdown } from "antd";
 import React, { useReducer } from "react";
 import { Link } from "react-router-dom";
 import DashboardLayout from "../../../Layout/DashboardLayout";
@@ -74,6 +75,7 @@ const PayrollSettings = () => {
   return (
     <DashboardLayout>
       <PayrollSubNav />
+
       <div className="Container">
         <div className="flex justify-between items-center">
           <div className="flex items-center gap-1">
@@ -99,6 +101,7 @@ const PayrollSettings = () => {
 
             <div className={boxStyle}>
               <h5 className={boxTitle}>Payroll Frequency</h5>
+
               <select className={inputStyle}>
                 <option value="">Select</option>
                 <option value="monthly">Monthly</option>
