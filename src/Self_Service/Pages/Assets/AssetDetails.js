@@ -183,7 +183,7 @@ const AssetDetails = () => {
         {/* Document */}
         {tap === "Documents" && (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
-            <div className="bg-card shadow py-3 px-2 rounded text-center flex flex-col gap-14">
+            <div className="bg-card shadow py-3 px-2 rounded text-center flex flex-col gap-16">
               <p className="text-sm">Asset Document</p>
               <h4>Invoice</h4>
               <div className="flex items-center justify-between text-sm">

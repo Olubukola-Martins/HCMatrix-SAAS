@@ -36,7 +36,7 @@ const Maintenance = () => {
               <td>DD/MM/YY</td>
               <td>DD/MM/YY</td>
               <td>
-               <button className="transparentButton" style={{color: "var(--caramel)"}}>Renew</button>
+               <button className="transparentButton text-caramel">Renew</button>
               </td>
             </tr>
           ))}

@@ -4,7 +4,10 @@ import DashboardLayout from "../../../Layout/DashboardLayout";
 import SelfServiceSubNav from "../../Components/SelfServiceSubNav";
 import placeholder from "../../Assets/Images/placeholder.png";
 import UnassignedModal from "../../Components/Assets/UnassignedModal";
-import Maintenance from "./Maintenance";
+import Maintenance from "../../Components/VehicleBooking/Maintenance";
+import Repair from "../../Components/VehicleBooking/Repair";
+import RequiredDocuments from "../../Components/VehicleBooking/RequiredDocuments";
+import AssigneeHistory from "../../Components/VehicleBooking/AssigneeHistory";
 
 const VehicleDetails = () => {
   const [tap, setTap] = useState("Maintenance");
@@ -159,7 +162,10 @@ const VehicleDetails = () => {
         </div>
 
 
-            {  tap === "Maintenance" && <Maintenance/>}
+            {tap === "Maintenance" && <Maintenance/>}
+            {tap === "Repair" && <Repair/>}
+            {tap === "RequiredDocuments" && <RequiredDocuments/>}
+            {tap === "AssigneeHistory" && <AssigneeHistory/>}
       </div>
     </DashboardLayout>
   );
