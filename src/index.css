@@ -64,6 +64,16 @@ html {
   overscroll-behavior-y: none;
 }
 
+a:hover {
+  color: inherit;
+}
+.ant-switch {
+  background-color: rgba(0, 0, 0, 0.25) !important;
+}
+.ant-switch-checked {
+  background-color: var(--caramel) !important;
+}
+
 body {
   font-family: "Manrope", sans-serif;
   overflow-x: hidden;
@@ -162,20 +172,16 @@ body {
   font-size: 10px !important;
 }
 
+.css-h8r51o-MuiButtonBase-root-MuiMenuItem-root:hover {
+  background: var(--card) !important;
+}
 
-  .css-h8r51o-MuiButtonBase-root-MuiMenuItem-root:hover  {
-    background: var(--card) !important;
-  }
+.css-h8r51o-MuiButtonBase-root-MuiMenuItem-root.Mui-selected {
+  background: var(--background) !important;
+}
 
-  .css-h8r51o-MuiButtonBase-root-MuiMenuItem-root.Mui-selected  {
-      background: var(--background) !important;
-  }
+.css-106c1u2-MuiBadge-badge {
+  background-color: var(--caramel) !important;
+}
 
-  .css-106c1u2-MuiBadge-badge {
-    background-color: var(--caramel) !important;
-  }
-
-  /* .PrivateSwitchBase-input css-1m9pwf3  */
-
-
-
+/* .PrivateSwitchBase-input css-1m9pwf3  */
