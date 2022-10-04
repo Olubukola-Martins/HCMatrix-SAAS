@@ -116,7 +116,7 @@ const VehicleDetails = () => {
           <h5
             onClick={() => setTap("Maintenance")}
             className={
-              tap === "History"
+              tap === "Maintenance"
                 ? "cursor-pointer hover:text-caramel pb-4 border-b-2 border-caramel"
                 : "cursor-pointer hover:text-caramel pb-4"
             }
@@ -137,7 +137,7 @@ const VehicleDetails = () => {
           <h5
             onClick={() => setTap("RequiredDocuments")}
             className={
-              tap === "Documents"
+              tap === "RequiredDocuments"
                 ? "cursor-pointer hover:text-caramel pb-4 border-b-2 border-caramel"
                 : "cursor-pointer hover:text-caramel pb-4"
             }
@@ -148,7 +148,7 @@ const VehicleDetails = () => {
           <h5
             onClick={() => setTap("AssigneeHistory")}
             className={
-              tap === "Documents"
+              tap === "AssigneeHistory"
                 ? "cursor-pointer hover:text-caramel pb-4 border-b-2 border-caramel"
                 : "cursor-pointer hover:text-caramel pb-4"
             }
