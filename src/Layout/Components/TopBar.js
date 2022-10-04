@@ -203,10 +203,10 @@ const TopBar = ({
               />
             )}
 
-            <Link to="/settings">
+            <Link to="/settings" className="hover:text-black">
               {" "}
               <i
-                className="ri-settings-3-line text-xl cursor-pointer"
+                className="ri-settings-3-line text-xl cursor-pointer hover:text-black"
                 title="Settings"
               ></i>
             </Link>
