@@ -4,6 +4,7 @@ import AssetDetails from '../Pages/Assets/AssetDetails'
 import Assets from '../Pages/Assets/Assets'
 import AssetTypeDetails from '../Pages/Assets/AssetTypeDetails'
 import LoanHome from '../Pages/Loan/LoanHome'
+import LoanPolicies from '../Pages/Loan/LoanPolicies'
 import LoanRequest from '../Pages/Loan/LoanRequest'
 import Monetary from '../Pages/Monetary'
 import Reimbursements from '../Pages/Reimbursements'
@@ -25,7 +26,9 @@ const SelfServiceRoutes = () => {
           <Route path="/self-service/assets-details" element={<AssetDetails/>}/>
           <Route path="/self-service/loan" element={<LoanHome/>}/>
           <Route path="/self-service/loan-request" element={<LoanRequest/>}/>
+          <Route path="/self-service/loan-policies" element={<LoanPolicies/>}/>
           <Route path="/self-service/vehicle-booking" element={<VehicleBookingHome/>}/>
+          <Route path="/self-service/vehicle-details" element={<VehicleDetails/>}/>
           <Route path="/self-service/vehicle-details" element={<VehicleDetails/>}/>
       </Routes>
     </>
