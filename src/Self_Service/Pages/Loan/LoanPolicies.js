@@ -1,4 +1,4 @@
-import { Switch } from "antd";
+import { Radio, Switch } from "antd";
 import React, { useState } from "react";
 import DashboardLayout from "../../../Layout/DashboardLayout";
 import SelfServiceSubNav from "../../Components/SelfServiceSubNav";
@@ -19,7 +19,7 @@ const LoanPolicies = () => {
       <div className="Container">
         <div className="flex items-center gap-3 font-extrabold ">
           <i className="ri-arrow-left-s-line text-lg cursor-pointer hover:text-caramel"></i>
-          <h2 className="text-xl md:text-2xl text-accent">Loan Policies</h2>
+          <h5 className="text-xl md:text-2xl text-accent">Loan Policies</h5>
         </div>
 
         <div className="">
@@ -85,7 +85,7 @@ const LoanPolicies = () => {
                 <div className="flex items-center justify-between">
                   <h5 className={boxTitle}>Set Payment Plan</h5>
                   <Switch
-                    // checked={bankDSwitch}
+                    checked={paymentPlanSwitch}
                     onChange={(value) => {
                       setPaymentPlanSwitch(value);
                     }}
@@ -95,6 +95,30 @@ const LoanPolicies = () => {
                   Lorem ipsum dolor sit amet, consectetur adipiscing elit.
                   Tempor magna id fames cursus luctus scel
                 </p>
+                {paymentPlanSwitch && (
+                  <form className="mt-4">
+                    <input
+                      type="text"
+                      placeholder="E.g 3 - 6 months"
+                      className={inputStyle}
+                    />
+                    <span className="text-sm text-caramel font-medium text-right block pt-2 underline">
+                      + Add More
+                    </span>
+                    <div className="flex items-center justify-between mt-6 mb-2">
+                      <button
+                        type="button"
+                        onClick={() => setLoanTypeSwitch(false)}
+                        className="transparentButton"
+                      >
+                        Cancel
+                      </button>
+                      <button type="submit" className="button">
+                        Save
+                      </button>
+                    </div>
+                  </form>
+                )}
               </div>
             </div>
 
@@ -121,9 +145,20 @@ const LoanPolicies = () => {
                       placeholder="E.g Car Loan"
                       className={inputStyle}
                     />
+                    <span className="text-sm text-caramel font-medium text-right block pt-2 underline">
+                      + Add More
+                    </span>
                     <div className="flex items-center justify-between mt-6 mb-2">
-                      <button type="button" onClick={() =>  setLoanTypeSwitch(false)} className="transparentButton">Cancel</button>
-                      <button type="submit" className="button">Save</button>
+                      <button
+                        type="button"
+                        onClick={() => setLoanTypeSwitch(false)}
+                        className="transparentButton"
+                      >
+                        Cancel
+                      </button>
+                      <button type="submit" className="button">
+                        Save
+                      </button>
                     </div>
                   </form>
                 )}
@@ -133,7 +168,7 @@ const LoanPolicies = () => {
                 <div className="flex items-center justify-between">
                   <h5 className={boxTitle}>Set Maximum Loan Percentage</h5>
                   <Switch
-                    // checked={bankDSwitch}
+                    checked={loanPec}
                     onChange={(value) => {
                       setLoanPec(value);
                     }}
@@ -143,6 +178,61 @@ const LoanPolicies = () => {
                   Lorem ipsum dolor sit amet, consectetur adipiscing elit.
                   Tempor magna id fames cursus luctus scel
                 </p>
+
+                {loanPec && (
+                  <div>
+                    <form className="flex flex-col gap-4 mt-4">
+                      <input
+                        type="text"
+                        placeholder="Percentage"
+                        className={inputStyle}
+                      />
+
+                      <div className="flex items-center gap-4">
+                        <input
+                          type="radio"
+                          name="loan_limit"
+                          id="1"
+                          className="scale-150 accent-caramel"
+                        />
+                        <label
+                          htmlFor="1"
+                          className="hover:text-caramel cursor-pointer"
+                        >
+                          Employees can not exceed set loan percentage
+                        </label>
+                      </div>
+                      <div className="flex items-center gap-4">
+                        <input
+                          type="radio"
+                          name="loan_limit"
+                          id="2"
+                          className="scale-150 accent-caramel"
+                        />
+                        <label
+                          htmlFor="2"
+                          className="hover:text-caramel cursor-pointer"
+                        >
+                          If employees should apply for loans that exceed the
+                          set loan percentage, employees should fill guarantor's
+                          forms
+                        </label>
+                      </div>
+                      <div className="flex items-center justify-between mt-6 mb-2">
+                      <button
+                        type="button"
+                        onClick={() => setLoanPec(false)}
+                        className="transparentButton"
+                      >
+                        Cancel
+                      </button>
+                      <button type="submit" className="button">
+                        Save
+                      </button>
+                    </div>
+                    </form>
+                  </div>
+                )}
               </div>
             </div>
           </div>
