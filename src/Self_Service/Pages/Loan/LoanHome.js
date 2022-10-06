@@ -85,7 +85,7 @@ const LoanHome = () => {
               <i className="ri-arrow-left-s-line text-lg cursor-pointer hover:text-caramel"></i>
               <h2 className="text-xl md:text-2xl text-accent">Loan</h2>
             </div>
-            <button className="button">Set Loan Policies</button>
+            <Link to="/self-service/loan-policies" className="button">Set Loan Policies</Link>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mt-6">
