@@ -4,9 +4,13 @@ import DashboardLayout from "../../../Layout/DashboardLayout";
 import SelfServiceSubNav from "../../Components/SelfServiceSubNav";
 import placeholder from "../../Assets/Images/placeholder.png";
 import UnassignedModal from "../../Components/Assets/UnassignedModal";
+import Maintenance from "../../Components/VehicleBooking/Maintenance";
+import Repair from "../../Components/VehicleBooking/Repair";
+import RequiredDocuments from "../../Components/VehicleBooking/RequiredDocuments";
+import AssigneeHistory from "../../Components/VehicleBooking/AssigneeHistory";
 
-const AssetDetails = () => {
-  const [tap, setTap] = useState("History");
+const VehicleDetails = () => {
+  const [tap, setTap] = useState("Maintenance");
   const [unassigned, setUnassigned] = useState(false)
   const listStyle =
     "flex items-center justify-between cursor-pointer group border-b pb-2 px-3";
@@ -22,11 +26,11 @@ const AssetDetails = () => {
           <Link to="/self-service/assets/1" className="hover:text-caramel">
             <i className="ri-arrow-left-s-line text-xl"></i>
           </Link>
-          <h5 className="font-black text-lg">Asset Details</h5>
+          <h5 className="font-black text-lg">Vehicle Details</h5>
         </div>
 
         <div className="flex md:items-center flex-col md:flex-row justify-start md:justify-between mt-4">
-          <h3 className="font-medium text-lg pb-5 md:pb-0">Hp EliteBook</h3>
+          <h3 className="font-medium text-lg pb-5 md:pb-0">Toyota Camry</h3>
           <div className="flex items-center gap-3">
             <button className="button">Edit</button>
             <button
@@ -35,7 +39,6 @@ const AssetDetails = () => {
             >
               Delete
             </button>
-            <button className="transparentButton">Add Document</button>
           </div>
         </div>
 
@@ -45,8 +48,8 @@ const AssetDetails = () => {
           </div>
           <div className="bg-mainBg border rounded-lg text-sm shadow py-4 flex flex-col gap-3">
             <div className={listStyle}>
-              <h5 className="group-hover:text-caramel font-medium">Asset ID</h5>
-              <span className="text-sm">000</span>
+              <h5 className="group-hover:text-caramel font-medium">Vehicle Type </h5>
+              <span className="text-sm">Car</span>
             </div>
             <div className={listStyle}>
               <h5 className="group-hover:text-caramel font-medium">Brand</h5>
@@ -55,7 +58,7 @@ const AssetDetails = () => {
 
             <div className={listStyle}>
               <h5 className="group-hover:text-caramel font-medium">Model</h5>
-              <span className="text-sm">EliteBook</span>
+              <span className="text-sm">Toyota</span>
             </div>
             <div className={listStyle}>
               <h5 className="group-hover:text-caramel font-medium">Color</h5>
@@ -63,7 +66,7 @@ const AssetDetails = () => {
             </div>
             <div className={listStyle}>
               <h5 className="group-hover:text-caramel font-medium">
-                Serial Number
+              Plate Number
               </h5>
               <span className="text-sm">000</span>
             </div>
@@ -78,6 +81,12 @@ const AssetDetails = () => {
                 Purchase Date
               </h5>
               <span className="text-sm">14 Sep,2022</span>
+            </div>
+            <div className={listStyle}>
+              <h5 className="group-hover:text-caramel font-medium">
+              Status
+              </h5>
+              <span className="text-sm">Active</span>
             </div>
             <div className="px-3">
               <h5 className="font-medium pb-2">Description</h5>
@@ -97,6 +106,8 @@ const AssetDetails = () => {
                 <p>Job Role: Marketing Manager</p>
                 <p>ID: 000000</p>
                 <p>Department: Sale & Marketing </p>
+                <p>Location : Lagos Island</p>
+                <p>Estimated Journey Time: 0hrs</p>
                 <div />
                 <button className="button" onClick={() => setUnassigned(true)}>Unassign</button>
               </div>
@@ -107,95 +118,57 @@ const AssetDetails = () => {
         {/* Taps */}
         <div className="flex items-center gap-5 font-medium border-b-2 text-sm mb-5 mt-10">
           <h5
-            onClick={() => setTap("History")}
+            onClick={() => setTap("Maintenance")}
             className={
-              tap === "History"
+              tap === "Maintenance"
                 ? "cursor-pointer hover:text-caramel pb-4 border-b-2 border-caramel"
                 : "cursor-pointer hover:text-caramel pb-4"
             }
           >
-            Assignee History
+          Maintenance
           </h5>
           <h5
-            onClick={() => setTap("Documents")}
+            onClick={() => setTap("Repair")}
             className={
-              tap === "Documents"
+              tap === "Repair"
                 ? "cursor-pointer hover:text-caramel pb-4 border-b-2 border-caramel"
                 : "cursor-pointer hover:text-caramel pb-4"
             }
           >
-            Documents
+          Repair
+          </h5>
+
+          <h5
+            onClick={() => setTap("RequiredDocuments")}
+            className={
+              tap === "RequiredDocuments"
+                ? "cursor-pointer hover:text-caramel pb-4 border-b-2 border-caramel"
+                : "cursor-pointer hover:text-caramel pb-4"
+            }
+          >
+         Required Documents
+          </h5>
+
+          <h5
+            onClick={() => setTap("AssigneeHistory")}
+            className={
+              tap === "AssigneeHistory"
+                ? "cursor-pointer hover:text-caramel pb-4 border-b-2 border-caramel"
+                : "cursor-pointer hover:text-caramel pb-4"
+            }
+          >
+         Assignee History
           </h5>
         </div>
 
-        {/* Assignee History */}
-        {tap === "History" && (
-          <>
-            <div className="my-5 flex justify-end gap-3">
-              <i className="ri-download-2-line text-lg"></i>
-              <i className="ri-download-2-line text-lg"></i>
-            </div>
-            <table className="payroll-table text-accent">
-              <div></div>
-              <thead>
-                <tr>
-                  <th>
-                    <input type="checkbox" />
-                  </th>
-                  <th>Assignee Name</th>
-                  <th>Employee ID</th>
-                  <th>Job Role</th>
-                  <th>Department</th>
-                  <th>Start Date</th>
-                  <th>End Date</th>
-                  <th>Action</th>
-                </tr>
-              </thead>
-              <tbody>
-                {[1, 2, 3].map((item) => (
-                  <tr key={item}>
-                    <td>
-                      <input type="checkbox" />
-                    </td>
-                    <td>
-                      <Link
-                        to="/self-service/assets-details"
-                        className="hover:text-caramel"
-                      >
-                        Ruth Godwin
-                      </Link>
-                    </td>
-                    <td>000</td>
-                    <td>Marketing Manager</td>
-                    <td>Sales & Marketing</td>
-                    <td>DD/MM/YY</td>
-                    <td>DD/MM/YY</td>
-                    <td>
-                      <i class="ri-more-2-fill text-lg cursor-pointer hover:text-caramel"></i>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </>
-        )}
 
-        {/* Document */}
-        {tap === "Documents" && (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
-            <div className="bg-card shadow py-3 px-2 rounded text-center flex flex-col gap-16">
-              <p className="text-sm">Asset Document</p>
-              <h4>Invoice</h4>
-              <div className="flex items-center justify-between text-sm">
-                <span className="text-neutral cursor-pointer">Delete</span>
-                <span className="text-caramel cursor-pointer">Download</span>
-              </div>
-            </div>
-          </div>
-        )}
+            {tap === "Maintenance" && <Maintenance/>}
+            {tap === "Repair" && <Repair/>}
+            {tap === "RequiredDocuments" && <RequiredDocuments/>}
+            {tap === "AssigneeHistory" && <AssigneeHistory/>}
       </div>
     </DashboardLayout>
   );
 };
 
-export default AssetDetails;
+export default VehicleDetails;
