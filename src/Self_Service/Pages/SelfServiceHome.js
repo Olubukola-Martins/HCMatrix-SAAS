@@ -52,7 +52,7 @@ const SelfServiceHome = () => {
               <SelfBox title="Loan" icon={loan} link="loan" />
               <SelfBox title="Leave" icon={leave} link="#" />
               <SelfBox title="Health access" icon={health} link="#" />
-              <SelfBox title="Payslip" icon={payslip} link="#" />
+              <SelfBox title="My Payslip" icon={payslip} link="#" />
               <SelfBox title="My Attendance" icon={attendance} link="#" />
               <SelfBox title="Vehicle booking" icon={vehicle} link="vehicle-booking" />
 
@@ -220,12 +220,11 @@ const SelfServiceHome = () => {
       >
         <Themes>
           <ul className="py-3 px-4 text-sm font-medium rounded-md flex flex-col gap-3 bg-card">
-            <li className="cursor-pointer hover:text-caramel">My Attendance</li>
             <li className="cursor-pointer hover:text-caramel">My Trainings</li>
             <li className="cursor-pointer hover:text-caramel">Appraisal</li>
             <li className="cursor-pointer hover:text-caramel">HR Letters</li>
             <li className="cursor-pointer hover:text-caramel">Documents</li>
-            <li className="cursor-pointer hover:text-caramel">Survey Forms</li>
+            <Link to="/self-service/survey" className="cursor-pointer hover:text-caramel">Survey Forms</Link>
             <li className="cursor-pointer hover:text-caramel">
               Hand-over Forms
             </li>
