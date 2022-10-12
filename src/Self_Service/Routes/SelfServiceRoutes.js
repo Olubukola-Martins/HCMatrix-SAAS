@@ -10,6 +10,7 @@ import Monetary from '../Pages/Monetary'
 import Reimbursements from '../Pages/Reimbursements'
 import Requisition from '../Pages/Requisition'
 import SelfServiceHome from '../Pages/SelfServiceHome'
+import SurveyHome from '../Pages/Survey/SurveyHome'
 import VehicleBookingHome from '../Pages/VehicleBooking/VehicleBookingHome'
 import VehicleDetails from '../Pages/VehicleBooking/VehicleDetails'
 
@@ -18,6 +19,8 @@ const SelfServiceRoutes = () => {
     <>
       <Routes>
           <Route path="/self-service/home" element={<SelfServiceHome/>}/>
+           
+
           <Route path="/self-service/requisition" element={<Requisition />}/>
           <Route path="/self-service/reimbursements" element={<Reimbursements />}/>
           <Route path="/self-service/monetary" element={<Monetary />}/>
@@ -30,6 +33,9 @@ const SelfServiceRoutes = () => {
           <Route path="/self-service/vehicle-booking" element={<VehicleBookingHome/>}/>
           <Route path="/self-service/vehicle-details" element={<VehicleDetails/>}/>
           <Route path="/self-service/vehicle-details" element={<VehicleDetails/>}/>
+
+          {/* survey */}
+          <Route path="/self-service/survey" element={<SurveyHome/>}/>
       </Routes>
     </>
   )
