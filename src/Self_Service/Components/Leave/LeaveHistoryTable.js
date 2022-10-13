@@ -1,4 +1,4 @@
-import { Select } from "@mui/material";
+import { Select } from "antd";
 import React from "react";
 
 const LeaveHistoryTable = () => {
