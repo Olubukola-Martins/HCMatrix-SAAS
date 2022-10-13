@@ -215,6 +215,6 @@ body {
 
 .ant-table-cell-fix-left,
 .ant-table-cell-fix-right {
-  background: var(--card);
+  background: var(--background);
   color: var(--accent) !important;
 }
