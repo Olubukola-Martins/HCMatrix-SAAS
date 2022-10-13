@@ -102,7 +102,6 @@ body {
   }
 }
 
-
 /*=== General button ===*/
 .button {
   @apply border border-caramel rounded font-medium bg-caramel text-white transition ease-in-out duration-300 text-sm tracking-wider hover:opacity-70;
@@ -198,3 +197,24 @@ body {
 }
 
 /* .PrivateSwitchBase-input css-1m9pwf3  */
+
+/* antd customizations */
+.ant-table {
+  background: var(--background) !important;
+  color: var(--accent) !important;
+}
+.ant-table-thead > tr > th {
+  background: var(--card);
+  color: var(--accent) !important;
+}
+.ant-table-tbody > tr.ant-table-row:hover > td,
+.ant-table-tbody > tr > td.ant-table-cell-hover {
+  background: var(--caramel) !important;
+  color: var(--background) !important;
+}
+
+.ant-table-cell-fix-left,
+.ant-table-cell-fix-right {
+  background: var(--card);
+  color: var(--accent) !important;
+}
