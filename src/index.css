@@ -212,9 +212,12 @@ body {
   background: var(--caramel) !important;
   color: var(--background) !important;
 }
+.ant-table-tbody > tr.ant-table-row-selected > td {
+  background: var(--caramel) !important;
+}
 
 .ant-table-cell-fix-left,
 .ant-table-cell-fix-right {
-  background: var(--card);
+  background: var(--background);
   color: var(--accent) !important;
 }
