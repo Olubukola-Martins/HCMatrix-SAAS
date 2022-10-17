@@ -3,16 +3,15 @@ import DashboardLayout from "../../../Layout/DashboardLayout";
 import Themes from "../../../Themes/Themes";
 import SelfServiceSubNav from "../../Components/SelfServiceSubNav";
 import { useQuery } from "react-query";
-import EntryBoxes from "../../Components/Utilities/EntryBoxes";
-import LeaveHistoryTable from "../../Components/Leave/LeaveHistoryTable";
-import LeaveHomePageHeader from "../../Components/Leave/LeaveHomePageHeader";
+
 import { getUserLeaveRequests } from "../../EndPointHelpers/Leaves";
 import { REACT_APP_LEAVE_BASE_URL } from "../../../envVars";
 import { Drawer, Spin, Button } from "antd";
 import AddNewLeaveForm from "../../Components/Leave/AddNewLeaveForm";
 import { CloseOutlined } from "@ant-design/icons";
-import LeaveCards from "../../Components/Leave/LeaveCards";
-import LeaveRequestsTable from "../../Components/Leave/LeaveRequestsTable";
+
+import LeaveSettingsHeader from "../../Components/Leave/LeaveSettingsHeader";
+import LeaveSettingsAccordians from "../../Components/Leave/LeaveSettingsAccordians";
 
 const ECOMP = {
   ADD_NEW_LEAVE: "New Leave",
@@ -38,7 +37,7 @@ const showApproveRejectLeaveRequests = ({
   if (userDelegations.includes("approve/reject leaves")) state = true;
   if (requests.some((item) => item.currentStage.approverId === userId))
     state = true;
-  return false;
+  return state;
 };
 // You only use redux when you need  the same state in diff components, not that you just need in one place
 // In that case the groups the user belongs to is global
@@ -46,7 +45,7 @@ const showApproveRejectLeaveRequests = ({
 // In that case the delegations the user has (alongside its permissions) are  global
 // departments has to be global, as the id alone will be returned
 
-const LeaveHome = () => {
+const LeaveSettings = () => {
   console.log(process.env.NODE_ENV, "ENV var");
   console.log(REACT_APP_LEAVE_BASE_URL, "ENV var");
   const [showDrawer, setShowDrawer] = useState(false);
@@ -124,10 +123,7 @@ const LeaveHome = () => {
       <div>
         <div className="Container">
           {/* header */}
-          <LeaveHomePageHeader
-            handleShowNewLeave={handleShowNewLeave}
-            closeDrawer={() => setShowDrawer(false)}
-          />
+          <LeaveSettingsHeader />
 
           {isError && (
             <div className="flex w-full h-32 justify-center items-center">
@@ -139,26 +135,11 @@ const LeaveHome = () => {
               <Spin />
             </div>
           )}
-          {isSuccess && (
-            <div>
-              {/* cards */}
-
-              <LeaveCards />
-
-              {/* table section*/}
-              <div className="mt-12">
-                {showApproveRejectLeaveRequests({}) ? (
-                  <LeaveRequestsTable data={leaveRequests} />
-                ) : (
-                  <LeaveHistoryTable data={leaveRequests} />
-                )}
-              </div>
-            </div>
-          )}
+          {isSuccess && <LeaveSettingsAccordians />}
         </div>
       </div>
     </DashboardLayout>
   );
 };
 
-export default LeaveHome;
+export default LeaveSettings;

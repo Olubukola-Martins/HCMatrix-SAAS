@@ -5,6 +5,7 @@ export const settingNavItems = [
       { name: "Company", link: "/settings/company-details" },
       { name: "Domain", link: "/settings/domains" },
       { name: "From Addresses", link: "/settings/from-addresses" },
+      { name: "Holidays", link: "/settings/holidays" },
     ],
     category: "basic",
   },

@@ -15,6 +15,7 @@ import VehicleBookingHome from "../Pages/VehicleBooking/VehicleBookingHome";
 import VehicleDetails from "../Pages/VehicleBooking/VehicleDetails";
 // leave
 import LeaveHome from "../Pages/Leave/LeaveHome";
+import LeaveSettings from "../Pages/Leave/LeaveSettings";
 
 const SelfServiceRoutes = () => {
   return (
@@ -52,6 +53,10 @@ const SelfServiceRoutes = () => {
 
         {/* leave */}
         <Route path="/self-service/leave" element={<LeaveHome />} />
+        <Route
+          path="/self-service/leave/settings"
+          element={<LeaveSettings />}
+        />
       </Routes>
     </>
   );
