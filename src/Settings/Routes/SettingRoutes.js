@@ -26,6 +26,7 @@ import CreateRole from "../Pages/UserAccessControl/Roles/CreateRole";
 import Workflows from "../Pages/UserAccessControl/Automation/Workflows/Workflows";
 import CreateWorkflow from "../Pages/UserAccessControl/Automation/Workflows/CreateWorkflow";
 import PayrollSettings from "../Pages/Payroll/PayrollSettings";
+import Holidays from "../Pages/General/Holidays";
 
 const SettingRoutes = () => {
   return (
@@ -43,6 +44,7 @@ const SettingRoutes = () => {
         path="/settings/employee-profile/id"
         element={<PersonalInformation />}
       />
+      <Route path="/settings/holidays" element={<Holidays />} />
 
       {/* Organization */}
       <Route path="/settings/employee-profile" element={<EmployeeProfiles />} />

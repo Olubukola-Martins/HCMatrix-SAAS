@@ -1,11 +1,40 @@
-import { Select, Space, Dropdown, Menu, Table } from "antd";
-import { EllipsisOutlined, MoreOutlined } from "@ant-design/icons";
+import { Select, Space, Dropdown, Menu, Table, Drawer, Button } from "antd";
+import { MoreOutlined, CloseOutlined } from "@ant-design/icons";
+import Themes from "../../../Themes/Themes";
 
 import React, { useEffect, useState } from "react";
 import { leaveRequestStatusColor } from "../../UtilityHelpers/leaves";
+import ViewLeaveRequest from "./ViewLeaveRequest";
 
-const LeaveHistoryTable = ({ data = [] }) => {
+const LeaveRequestsTable = ({ data = [] }) => {
+  const [requestId, setRequestId] = useState("");
+  const [showD, setShowD] = useState(false);
+  const handleView = ({ id }) => {
+    setRequestId(id);
+    setShowD(true);
+  };
+
   const columns = [
+    {
+      title: "Name",
+      dataIndex: "name",
+      key: "name",
+      render: (val) => <span>{`Gloria Gbenga`}</span>,
+
+      // ellipsis: true,
+
+      // width: 100,
+    },
+    {
+      title: "Department",
+      dataIndex: "department",
+      key: "department",
+      render: (val) => <span>{`Marketing`}</span>,
+
+      // ellipsis: true,
+
+      // width: 100,
+    },
     {
       title: "Leave Type",
       dataIndex: "leaveType",
@@ -38,6 +67,11 @@ const LeaveHistoryTable = ({ data = [] }) => {
       render: (val) => <span>{val ? "Yes" : "No"}</span>,
     },
     {
+      title: "Stage",
+      dataIndex: "stage",
+      key: "stage",
+    },
+    {
       title: "Status",
       dataIndex: "status",
 
@@ -62,7 +96,9 @@ const LeaveHistoryTable = ({ data = [] }) => {
           <Dropdown
             overlay={
               <Menu>
-                <Menu.Item key="3">View</Menu.Item>
+                <Menu.Item key="3" onClick={() => handleView({ id: item.id })}>
+                  View
+                </Menu.Item>
                 <Menu.Item key="2">Approve</Menu.Item>
                 <Menu.Item key="1">Reject</Menu.Item>
               </Menu>
@@ -78,7 +114,34 @@ const LeaveHistoryTable = ({ data = [] }) => {
 
   return (
     <div>
-      <p className="text-lg mb-4">Leave History</p>
+      <Drawer
+        visible={showD}
+        onClose={() => setShowD(false)}
+        // className={`${isDark ? "custom-draw-dark" : ""}`}
+        // mask={false}
+        closeIcon={false}
+        title={
+          <Themes>
+            <div className="px-4 py-4 flex justify-between items-center">
+              <span className="text-accent">{`Leave Details`}</span>
+              <Button
+                type="text"
+                icon={<CloseOutlined />}
+                onClick={() => setShowD(false)}
+              />
+            </div>
+          </Themes>
+        }
+        // zIndex={10}
+        // contentWrapperStyle={{ top: 220, right: 70 }}
+        // contentWrapperStyle={{ background: "purple" }}
+        // getContainer={() => containerRef.current}
+      >
+        <Themes>
+          <div className="p-4">{<ViewLeaveRequest id={requestId} />}</div>
+        </Themes>
+      </Drawer>
+      <p className="text-lg mb-4">Leave Requests</p>
       <div className="flex flex-col gap-6">
         <div className="flex justify-between items-center">
           <Select size="middle" className="w-32" placeholder="Year">
@@ -106,4 +169,4 @@ const LeaveHistoryTable = ({ data = [] }) => {
   );
 };
 
-export default LeaveHistoryTable;
+export default LeaveRequestsTable;

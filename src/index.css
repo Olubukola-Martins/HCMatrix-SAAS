@@ -85,6 +85,12 @@ body {
   transition: all 0.5s;
   /* @apply h-screen overflow-auto; */
 }
+.mode_color_no_bg {
+  background-color: none;
+  color: var(--text-color);
+  transition: all 0.5s;
+  /* @apply h-screen overflow-auto; */
+}
 
 /* .Container {
   @apply container w-full mx-auto md:px-6 lg:px-12 px-5;
@@ -200,7 +206,7 @@ body {
 
 /* antd customizations */
 .ant-table {
-  background: var(--background) !important;
+  background: var(--card) !important;
   color: var(--accent) !important;
 }
 .ant-table-thead > tr > th {
@@ -209,15 +215,55 @@ body {
 }
 .ant-table-tbody > tr.ant-table-row:hover > td,
 .ant-table-tbody > tr > td.ant-table-cell-hover {
-  background: var(--caramel) !important;
-  color: var(--background) !important;
+  background: var(--background) !important;
+  color: var(--accent) !important;
 }
 .ant-table-tbody > tr.ant-table-row-selected > td {
-  background: var(--caramel) !important;
+  background: var(--background) !important;
 }
 
 .ant-table-cell-fix-left,
 .ant-table-cell-fix-right {
-  background: var(--background);
+  background: var(--card);
   color: var(--accent) !important;
+}
+
+.ant-table-tbody > tr > td,
+.ant-table-thead > tr > th {
+  border-bottom: 3px solid var(--background);
+}
+
+/* ant select */
+.ant-select,
+textarea.ant-input,
+input[type="text"].ant-input,
+.ant-form-item-label > label,
+.ant-btn-text,
+.ant-btn-ghost,
+.ant-picker,
+.ant-picker-suffix,
+.ant-picker-separator,
+.ant-picker-input > input {
+  color: var(--accent) !important;
+}
+.ant-select-selector,
+textarea.ant-input,
+input[type="text"].ant-input,
+.ant-picker,
+.ant-select-dropdown {
+  background: var(--background) !important;
+}
+
+.ant-select-arrow {
+  color: var(--accent) !important;
+}
+
+/* ant drawer custom */
+.ant-drawer-body,
+.ant-drawer-header {
+  padding: 0 !important;
+}
+
+.ant-drawer-close {
+  display: none;
 }

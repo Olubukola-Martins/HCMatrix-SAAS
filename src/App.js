@@ -6,22 +6,29 @@ import PayrollRoutes from "./Payroll/Routes/PayrollRoutes";
 import SelfServiceRoutes from "./Self_Service/Routes/SelfServiceRoutes";
 // import NotFoundPage from "./Layout/Components/NotFoundPage";
 import SettingRoutes from "./Settings/Routes/SettingRoutes";
+import { QueryClientProvider, QueryClient } from "react-query";
+import { ReactQueryDevtools } from "react-query/devtools";
+
+const queryClient = new QueryClient();
 
 function App() {
   return (
-    <Router>
-      <AuthRoutes />
+    <QueryClientProvider client={queryClient}>
+      <Router>
+        <AuthRoutes />
 
-      <SettingRoutes />
-      <BillingRoutes />
-      <PayrollRoutes />
-      <AdminRoutes />
-      <SelfServiceRoutes />
+        <SettingRoutes />
+        <BillingRoutes />
+        <PayrollRoutes />
+        <AdminRoutes />
+        <SelfServiceRoutes />
 
-      {/* <Routes>
+        {/* <Routes>
       <Route path="*" element={<NotFoundPage /> }/>
       </Routes> */}
-    </Router>
+      </Router>
+      <ReactQueryDevtools initialIsOpen={false} position="bottom-right" />
+    </QueryClientProvider>
   );
 }
 
