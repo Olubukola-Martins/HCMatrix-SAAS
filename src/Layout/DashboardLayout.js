@@ -13,6 +13,8 @@ const DashboardLayout = ({ children }) => {
   const switchTheme = () => {
     const newTheme = theme === "light" ? "dark" : "light";
     setTheme(newTheme);
+    // Temporary fix to dark mode
+    window.location.reload();
   };
 
   const switchGreenColor = () => {
@@ -42,48 +44,45 @@ const DashboardLayout = ({ children }) => {
 
   return (
     <div className="mode_color" data-theme={theme} color-theme={colorTheme}>
-       <div className="h-screen overflow-auto">
-       <TopBar
-        switchTheme={switchTheme}
-        theme={theme}
-        green={switchGreenColor}
-        orange={switchOrangeColor}
-        yellow={switchYellowColor}
-        blue={switchBlueColor}
-        purple={switchPurpleColor}
-        sidebarToggle={sidebarToggle}
-        setSidebarToggle={() => setSidebarToggle(!sidebarToggle)}
-      />
-      <GlobalSupport />
-      <div className="flex w-full relative">
-        <div
-          className={
-            sidebarToggle
-              ? "w-28 fixed z-40 overflow-hidden lg:flex hidden transition-all duration-500 ease-in-out"
-              : "w-0 overflow-hidden "
-          }
-        >
-          <SideBar />
-        </div>
-
-        <div
-          className={
-            sidebarToggle
-              ? "w-full lg:ml-28 mt-7 pb-10"
-              : "lg:ml-0 w-full transition-all duration-500 ease-in-out mt-7 pb-10"
-          }
-        >
-          <div className="w-full md:top-14 top-10 sticky z-40">
-            {/* <SubTopBar /> */}
+      <div className="h-screen overflow-auto">
+        <TopBar
+          switchTheme={switchTheme}
+          theme={theme}
+          green={switchGreenColor}
+          orange={switchOrangeColor}
+          yellow={switchYellowColor}
+          blue={switchBlueColor}
+          purple={switchPurpleColor}
+          sidebarToggle={sidebarToggle}
+          setSidebarToggle={() => setSidebarToggle(!sidebarToggle)}
+        />
+        <GlobalSupport />
+        <div className="flex w-full relative">
+          <div
+            className={
+              sidebarToggle
+                ? "w-28 fixed z-40 overflow-hidden lg:flex hidden transition-all duration-500 ease-in-out"
+                : "w-0 overflow-hidden "
+            }
+          >
+            <SideBar />
           </div>
-         <main className="Containe">
-         {children}
-         </main>
+
+          <div
+            className={
+              sidebarToggle
+                ? "w-full lg:ml-28 mt-7 pb-10"
+                : "lg:ml-0 w-full transition-all duration-500 ease-in-out mt-7 pb-10"
+            }
+          >
+            <div className="w-full md:top-14 top-10 sticky z-40">
+              {/* <SubTopBar /> */}
+            </div>
+            <main className="Containe">{children}</main>
+          </div>
         </div>
       </div>
-       </div>
     </div>
-    
   );
 };
 

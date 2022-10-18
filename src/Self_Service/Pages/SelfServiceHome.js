@@ -40,7 +40,6 @@ const SelfServiceHome = () => {
           ></path>
         </svg>
 
-    
         <div className="absolute top-4 Container mt-8">
           <h2 className="font-extrabold text-xl md:text-2xl text-accent">
             Self Service
@@ -50,11 +49,15 @@ const SelfServiceHome = () => {
             <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-5 col-span-3">
               <SelfBox title="Onboarding" icon={Onboarding} link="#" />
               <SelfBox title="Loan" icon={loan} link="loan" />
-              <SelfBox title="Leave" icon={leave} link="#" />
+              <SelfBox title="Leave" icon={leave} link="leave" />
               <SelfBox title="Health access" icon={health} link="#" />
               <SelfBox title="My Payslip" icon={payslip} link="#" />
               <SelfBox title="My Attendance" icon={attendance} link="#" />
-              <SelfBox title="Vehicle booking" icon={vehicle} link="vehicle-booking" />
+              <SelfBox
+                title="Vehicle booking"
+                icon={vehicle}
+                link="vehicle-booking"
+              />
 
               <div
                 onClick={(event) => setRequisitionPopover(event.currentTarget)}
@@ -224,7 +227,12 @@ const SelfServiceHome = () => {
             <li className="cursor-pointer hover:text-caramel">Appraisal</li>
             <li className="cursor-pointer hover:text-caramel">HR Letters</li>
             <li className="cursor-pointer hover:text-caramel">Documents</li>
-            <Link to="/self-service/survey" className="cursor-pointer hover:text-caramel">Survey Forms</Link>
+            <Link
+              to="/self-service/survey"
+              className="cursor-pointer hover:text-caramel"
+            >
+              Survey Forms
+            </Link>
             <li className="cursor-pointer hover:text-caramel">
               Hand-over Forms
             </li>
