@@ -16,6 +16,10 @@ const HolidaysWrapper = () => {
         <AddHolidayForm />
       </Modal>
       <div className="flex flex-col gap-4">
+        <div className="flex items-center gap-3 font-extrabold ">
+          <i className="ri-arrow-left-s-line text-lg cursor-pointer hover:text-caramel"></i>
+          <h2 className="text-xl md:text-2xl text-accent">Holidays</h2>
+        </div>
         <div className="flex justify-end">
           <button className="button" onClick={() => setShowM(true)}>
             Add Holiday

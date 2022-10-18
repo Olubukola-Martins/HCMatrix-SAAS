@@ -2,7 +2,10 @@ import { Select, Space, Dropdown, Menu, Table } from "antd";
 import { EllipsisOutlined, MoreOutlined } from "@ant-design/icons";
 
 const HolidaysTable = ({ data = [] }) => {
-  const fdata = [{ title: "Christmas", date: "25th, December,2020" }];
+  const fdata = [
+    { title: "Christmas", date: "25th, December,2020" },
+    { title: "Salah", date: "18th, March,2020" },
+  ];
   const columns = [
     {
       title: "Title",
