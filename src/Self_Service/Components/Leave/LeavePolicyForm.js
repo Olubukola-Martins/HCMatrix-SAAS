@@ -13,7 +13,10 @@ const LeavePolicyForm = () => {
         <div className="flex flex-col gap-4">
           <div className={gapStyle}>
             <Form.Item label="" className="flex-1">
-              <Input placeholder="Default Leave Length" />
+              <InputNumber
+                placeholder="Default Leave Length"
+                className="w-full"
+              />
             </Form.Item>
             <Form.Item label="" className="flex-1">
               <Select placeholder="Select Approval Workflow">
@@ -158,6 +161,11 @@ const LeavePolicyForm = () => {
                 />
               </Form.Item>
             </div>
+          </div>
+          <div className="flex justify-end">
+            <Form.Item>
+              <button className="button">Save</button>
+            </Form.Item>
           </div>
         </div>
       </Form>

@@ -47,8 +47,6 @@ const showApproveRejectLeaveRequests = ({
 // departments has to be global, as the id alone will be returned
 
 const LeaveHome = () => {
-  console.log(process.env.NODE_ENV, "ENV var");
-  console.log(REACT_APP_LEAVE_BASE_URL, "ENV var");
   const [showDrawer, setShowDrawer] = useState(false);
   const [comp, setComp] = useState("");
   const handleShowNewLeave = () => {
