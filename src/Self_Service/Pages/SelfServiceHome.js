@@ -50,7 +50,11 @@ const SelfServiceHome = () => {
               <SelfBox title="Onboarding" icon={Onboarding} link="#" />
               <SelfBox title="Loan" icon={loan} link="loan" />
               <SelfBox title="Leave" icon={leave} link="leave" />
-              <SelfBox title="Health access" icon={health} link="#" />
+              <SelfBox
+                title="Health access"
+                icon={health}
+                link="health-access"
+              />
               <SelfBox title="My Payslip" icon={payslip} link="#" />
               <SelfBox title="My Attendance" icon={attendance} link="#" />
               <SelfBox

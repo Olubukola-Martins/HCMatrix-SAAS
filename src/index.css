@@ -267,3 +267,18 @@ input[type="text"].ant-input,
 .ant-drawer-close {
   display: none;
 }
+
+/* ant card */
+.ant-card-head,
+.ant-card-body {
+  padding: 0 20px;
+}
+
+/* tab */
+.ant-tabs-tab.ant-tabs-tab-active .ant-tabs-tab-btn {
+  color: var(--caramel);
+}
+
+.ant-tabs-ink-bar {
+  background: var(--caramel);
+}

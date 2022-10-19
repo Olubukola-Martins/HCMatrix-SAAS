@@ -16,6 +16,8 @@ import VehicleDetails from "../Pages/VehicleBooking/VehicleDetails";
 // leave
 import LeaveHome from "../Pages/Leave/LeaveHome";
 import LeaveSettings from "../Pages/Leave/LeaveSettings";
+import HealthAccessHome from "../Pages/HealthAccess/HealthAccessHome";
+import HealthAccessSettings from "../Pages/HealthAccess/HealthAccessSettings";
 
 const SelfServiceRoutes = () => {
   return (
@@ -56,6 +58,15 @@ const SelfServiceRoutes = () => {
         <Route
           path="/self-service/leave/settings"
           element={<LeaveSettings />}
+        />
+        {/* health access */}
+        <Route
+          path="/self-service/health-access"
+          element={<HealthAccessHome />}
+        />
+        <Route
+          path="/self-service/health-access/settings"
+          element={<HealthAccessSettings />}
         />
       </Routes>
     </>

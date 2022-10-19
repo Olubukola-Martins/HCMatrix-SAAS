@@ -3,15 +3,20 @@ import DashboardLayout from "../../../Layout/DashboardLayout";
 import Themes from "../../../Themes/Themes";
 import SelfServiceSubNav from "../../Components/SelfServiceSubNav";
 import { useQuery } from "react-query";
-
+import EntryBoxes from "../../Components/Utilities/EntryBoxes";
+import LeaveHistoryTable from "../../Components/Leave/LeaveHistoryTable";
+import HealthAccessHomePageHeader from "../../Components/HealthAccess/HealthAccessHomePageHeader";
 import { getUserLeaveRequests } from "../../EndPointHelpers/Leaves";
 import { REACT_APP_LEAVE_BASE_URL } from "../../../envVars";
-import { Drawer, Spin, Button } from "antd";
+import { Drawer, Spin, Button, Tabs, Modal } from "antd";
 import AddNewLeaveForm from "../../Components/Leave/AddNewLeaveForm";
 import { CloseOutlined } from "@ant-design/icons";
-
-import LeaveSettingsHeader from "../../Components/Leave/LeaveSettingsHeader";
-import LeaveSettingsAccordians from "../../Components/Leave/LeaveSettingsAccordians";
+import LeaveCards from "../../Components/Leave/LeaveCards";
+import LeaveRequestsTable from "../../Components/Leave/LeaveRequestsTable";
+import HealthPlans from "../../Components/HealthAccess/HealthPlans";
+import AddHAForEmployee from "../../Components/HealthAccess/AddHAForEmployee";
+import HARegEmployees from "../../Components/HealthAccess/HARegEmployees";
+import HAExEmployees from "../../Components/HealthAccess/HAExEmployees";
 
 const ECOMP = {
   ADD_NEW_LEAVE: "New Leave",
@@ -37,7 +42,7 @@ const showApproveRejectLeaveRequests = ({
   if (userDelegations.includes("approve/reject leaves")) state = true;
   if (requests.some((item) => item.currentStage.approverId === userId))
     state = true;
-  return state;
+  return false;
 };
 // You only use redux when you need  the same state in diff components, not that you just need in one place
 // In that case the groups the user belongs to is global
@@ -45,7 +50,7 @@ const showApproveRejectLeaveRequests = ({
 // In that case the delegations the user has (alongside its permissions) are  global
 // departments has to be global, as the id alone will be returned
 
-const LeaveSettings = () => {
+const HealthAccessHome = () => {
   const [showDrawer, setShowDrawer] = useState(false);
   const [comp, setComp] = useState("");
   const handleShowNewLeave = () => {
@@ -88,40 +93,22 @@ const LeaveSettings = () => {
       <SelfServiceSubNav />
       {/* add new leave */}
 
-      <Drawer
+      <Modal
         open={showDrawer}
-        onClose={() => setShowDrawer(false)}
-        // className={`${isDark ? "custom-draw-dark" : ""}`}
-        // mask={false}
-        closeIcon={false}
-        title={
-          <Themes>
-            <div className="px-4 py-4 flex justify-between items-center">
-              <span className="text-accent">{comp}</span>
-              <Button
-                type="text"
-                icon={<CloseOutlined />}
-                onClick={() => setShowDrawer(false)}
-              />
-            </div>
-          </Themes>
-        }
-        // zIndex={10}
-        // contentWrapperStyle={{ top: 220, right: 70 }}
-        // contentWrapperStyle={{ background: "purple" }}
-        // getContainer={() => containerRef.current}
+        onCancel={() => setShowDrawer(false)}
+        title={"Add Employee"}
+        footer={null}
       >
-        <Themes>
-          <div className="p-4">
-            {comp === ECOMP.ADD_NEW_LEAVE && <AddNewLeaveForm />}
-          </div>
-        </Themes>
-      </Drawer>
+        <Themes>{comp === ECOMP.ADD_NEW_LEAVE && <AddHAForEmployee />}</Themes>
+      </Modal>
 
       <div>
         <div className="Container">
           {/* header */}
-          <LeaveSettingsHeader />
+          <HealthAccessHomePageHeader
+            handleAddEmp={handleShowNewLeave}
+            closeDrawer={() => setShowDrawer(false)}
+          />
 
           {isError && (
             <div className="flex w-full h-32 justify-center items-center">
@@ -133,11 +120,25 @@ const LeaveSettings = () => {
               <Spin />
             </div>
           )}
-          {isSuccess && <LeaveSettingsAccordians />}
+          {isSuccess && (
+            <div>
+              <Tabs className="mt-4">
+                <Tabs.TabPane tab="Health Plans" key="item-1">
+                  <HealthPlans />
+                </Tabs.TabPane>
+                <Tabs.TabPane tab="Registered Employees" key="item-2">
+                  <HARegEmployees />
+                </Tabs.TabPane>
+                <Tabs.TabPane tab="Excluded Employees" key="item-3">
+                  <HAExEmployees />
+                </Tabs.TabPane>
+              </Tabs>
+            </div>
+          )}
         </div>
       </div>
     </DashboardLayout>
   );
 };
 
-export default LeaveSettings;
+export default HealthAccessHome;
