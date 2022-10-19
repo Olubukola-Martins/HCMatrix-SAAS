@@ -1,0 +1,208 @@
+/* to remove the backgroud of list items */
+
+.MuiMenu-paper {
+  background: none !important;
+}
+.MuiList-root {
+  background: none !important;
+}
+/* to remove the backgroud of list items */
+.employee-profile-table {
+  @apply w-full text-center text-accent;
+}
+
+.employee-profile-table tr {
+  background: var(--card);
+  border-bottom: 5px solid var(--background);
+}
+
+.employee-profile-table td {
+  @apply text-sm;
+}
+
+.employee-profile-table th,
+.employee-profile-table td {
+  padding: 10px;
+}
+
+/*== employee details table ==*/
+.employee_info_table {
+  @apply border border-collapse w-full text-accent text-sm text-center;
+}
+
+.employee_info_table th,
+.employee_info_table td {
+  @apply border p-2;
+}
+
+/* Inputs with white background */
+.whiteBg_form label {
+  @apply block text-sm font-medium pb-1 text-accent;
+}
+.whiteBg_form input,
+.whiteBg_form select,
+.whiteBg_form textarea {
+  @apply w-full rounded p-2 focus:outline-none text-sm;
+  background: var(--background);
+}
+
+.whiteBg_form select {
+  @apply text-slate-400;
+}
+
+.whiteBg_form textarea {
+  background: var(--background);
+}
+
+/*=== Personal information page form  ===*/
+.P_Form_Group {
+  @apply flex gap-2 lg:items-center flex-col lg:flex-row;
+}
+.P_Form_Group.col {
+  @apply flex gap-2 items-start items-stretch flex-col ;
+}
+.P_Form_Group.exclude input, .P_Form_Group  input[type="radio"]{
+  @apply appearance-none rounded-none h-4 w-4 border bg-gray-300 border-slate-100 checked:bg-caramel border-4 checked:border-white outline outline-1 outline-slate-500 focus:outline-1 transition duration-200 mt-1 align-top bg-no-repeat bg-center bg-contain float-left mr-2 cursor-pointer p-0;
+
+}
+.Company_Information_form.settings .P_Form_Group select, .Company_Information_form.settings .P_Form_Group input[type="text"]{
+  @apply py-4 px-3;
+}
+.P_Form_Group.exclude label {
+  @apply text-base font-medium text-accent;
+}
+.P_Form_Group input,
+.P_Form_Group textarea,
+.P_Form_Group select {
+  @apply flex-1 rounded p-2 focus:outline-none text-sm placeholder:text-xs;
+  background: var(--background);
+   width: 20px;
+  height: 20px;
+}
+
+.P_Form_Group select {
+  @apply text-xs text-accent;
+}
+
+.P_Form_Group label {
+  @apply text-xs font-medium text-accent;
+}
+
+/*== checks button ==*/
+.radioBtn {
+  position: relative;
+  display: block;
+}
+.radioBtn label {
+  display: block;
+  background: transparent;
+  border-radius: 5px;
+  padding: 10px 20px;
+  margin-bottom: 5px;
+  cursor: pointer;
+  @apply border-2 text-accent my-4;
+}
+.radioBtn label:after,
+.radioBtn label:before {
+  content: "";
+  position: absolute;
+  right: 11px;
+  top: 11px;
+  width: 20px;
+  height: 20px;
+  border-radius: 3px;
+  @apply border-2;
+}
+.radioBtn label:before {
+  background: transparent;
+  z-index: 2;
+  overflow: hidden;
+  background-repeat: no-repeat;
+  background-size: 13px;
+  background-position: center;
+  width: 0;
+  height: 0;
+  background-image: url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxNS4zIDEzLjIiPiAgPHBhdGggZmlsbD0iI2ZmZiIgZD0iTTE0LjcuOGwtLjQtLjRhMS43IDEuNyAwIDAgMC0yLjMuMUw1LjIgOC4yIDMgNi40YTEuNyAxLjcgMCAwIDAtMi4zLjFMLjQgN2ExLjcgMS43IDAgMCAwIC4xIDIuM2wzLjggMy41YTEuNyAxLjcgMCAwIDAgMi40LS4xTDE1IDMuMWExLjcgMS43IDAgMCAwLS4yLTIuM3oiIGRhdGEtbmFtZT0iUGZhZCA0Ii8+PC9zdmc+);
+}
+.radioBtn input[type="radio"] {
+  display: none;
+  position: absolute;
+  width: 100%;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+}
+.radioBtn input[type="radio"]:checked + label {
+  background: var(--caramel);
+  border-color: var(--caramel);
+  color: var(--background);
+}
+.radioBtn input[type="radio"]:checked + label:after {
+  background: var(--caramel);
+  @apply border;
+}
+.radioBtn input[type="radio"]:checked + label:before {
+  width: 20px;
+  height: 20px;
+}
+
+/*== medical history table ==*/
+.medicalTableWrap {
+  @apply pb-6 px-5 pt-3 text-black;
+  background: #ffeded;
+}
+
+.medicalTableWrap table {
+  @apply w-full text-sm text-left;
+}
+
+.medicalTableWrap table th {
+  @apply pb-5;
+}
+
+.medicalTableWrap table td {
+  @apply pb-2;
+}
+
+/*error message  */
+.input-container span,
+.showErrorMsg,
+.whiteBg_form span,
+.showErrorMsg span
+ {
+  @apply text-xs text-red-600 pl-1 block;
+
+}
+
+/*== Company information form  ===*/
+.Company_Information_form .input-container {
+  @apply mb-4 w-full;
+}
+
+.Company_Information_form .input-container label {
+  @apply text-sm mb-2 block;
+}
+
+
+
+.Company_Information_form .input-container input, .input-container select, .input-container input, .input-container textarea, .Company_Information_form .input-container select, .P_Form_Group input, .P_Form_Group select, .P_Form_Group input:not( input[type="radio"]){
+  @apply w-full bg-transparent rounded-md py-3 px-3 border border-gray-300 focus:outline-none bg-mainBg;
+}
+
+.Company_Information_form .input-container select {
+  @apply w-full rounded-md py-3 px-3 border border-gray-300 focus:outline-none bg-mainBg;
+
+}
+
+/* Add department form */
+.add-department-form .input-container input,
+.add-department-form .input-container select,
+.add-designation-form input,
+.add-designation-form select {
+  @apply w-full bg-transparent rounded-md p-2 border border-gray-400 focus:outline-none;
+}
+
+.add-department-form .input-container label,
+.add-designation-form label {
+  @apply text-sm mb-2 block;
+}

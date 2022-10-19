@@ -1,0 +1,19 @@
+.billingTable {
+    @apply w-full text-left text-accent;
+}
+
+.billingTable tr {
+    @apply border-b;
+}
+
+.billingTable th {
+    @apply text-base
+}
+
+.billingTable th, .billingTable td {
+    @apply p-3;
+}
+
+.billingTable td {
+    @apply text-sm
+}
