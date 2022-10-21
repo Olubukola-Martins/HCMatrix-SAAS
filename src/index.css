@@ -275,7 +275,8 @@ input[type="text"].ant-input,
 }
 
 /* tab */
-.ant-tabs-tab.ant-tabs-tab-active .ant-tabs-tab-btn {
+.ant-tabs-tab.ant-tabs-tab-active .ant-tabs-tab-btn,
+.ant-tabs-tab:hover {
   color: var(--caramel);
 }
 

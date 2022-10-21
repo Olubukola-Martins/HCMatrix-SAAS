@@ -3,16 +3,10 @@ import DashboardLayout from "../../../Layout/DashboardLayout";
 import Themes from "../../../Themes/Themes";
 import SelfServiceSubNav from "../../Components/SelfServiceSubNav";
 import { useQuery } from "react-query";
-import EntryBoxes from "../../Components/Utilities/EntryBoxes";
-import LeaveHistoryTable from "../../Components/Leave/LeaveHistoryTable";
+
 import HealthAccessHomePageHeader from "../../Components/HealthAccess/HealthAccessHomePageHeader";
 import { getUserLeaveRequests } from "../../EndPointHelpers/Leaves";
-import { REACT_APP_LEAVE_BASE_URL } from "../../../envVars";
 import { Drawer, Spin, Button, Tabs, Modal } from "antd";
-import AddNewLeaveForm from "../../Components/Leave/AddNewLeaveForm";
-import { CloseOutlined } from "@ant-design/icons";
-import LeaveCards from "../../Components/Leave/LeaveCards";
-import LeaveRequestsTable from "../../Components/Leave/LeaveRequestsTable";
 import HealthPlans from "../../Components/HealthAccess/HealthPlans";
 import AddHAForEmployee from "../../Components/HealthAccess/AddHAForEmployee";
 import HARegEmployees from "../../Components/HealthAccess/HARegEmployees";
@@ -57,36 +51,6 @@ const HealthAccessHome = () => {
     setShowDrawer(true);
     setComp(ECOMP.ADD_NEW_LEAVE);
   };
-  const {
-    data: leaveRequests,
-    isLoading,
-    isError,
-    error,
-    isSuccess,
-  } = useQuery(
-    ["user-leave-requests"],
-    () => {
-      return getUserLeaveRequests({
-        token: "",
-        userId: "",
-      });
-    },
-    {
-      onError: (err) => {
-        console.log("The error =>", err);
-      },
-      onSuccess: (data) => {
-        console.log("The success(0) =>", data);
-      },
-      select: (res) => {
-        const leaveRequests = res.data.map((item) => ({
-          ...item,
-          key: item.id,
-        }));
-        return leaveRequests;
-      },
-    }
-  );
 
   return (
     <DashboardLayout>
@@ -110,17 +74,7 @@ const HealthAccessHome = () => {
             closeDrawer={() => setShowDrawer(false)}
           />
 
-          {isError && (
-            <div className="flex w-full h-32 justify-center items-center">
-              <p>Err occured</p>
-            </div>
-          )}
-          {isLoading && (
-            <div className="flex w-full h-32 justify-center items-center">
-              <Spin />
-            </div>
-          )}
-          {isSuccess && (
+          {
             <div>
               <Tabs className="mt-4">
                 <Tabs.TabPane tab="Health Plans" key="item-1">
@@ -134,7 +88,7 @@ const HealthAccessHome = () => {
                 </Tabs.TabPane>
               </Tabs>
             </div>
-          )}
+          }
         </div>
       </div>
     </DashboardLayout>

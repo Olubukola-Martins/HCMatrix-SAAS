@@ -60,7 +60,13 @@ const HAExEmployees = ({ data = [] }) => {
   ];
 
   return (
-    <div className="mt-4">
+    <div className="mt-4 flex flex-col gap-4">
+      <div className="flex justify-end items-center">
+        <div className="flex items-center gap-4">
+          <i className="ri-download-2-line text-xl"></i>
+          <i className="ri-logout-box-r-line text-xl"></i>
+        </div>
+      </div>
       <Table
         dataSource={fdata}
         columns={columns}

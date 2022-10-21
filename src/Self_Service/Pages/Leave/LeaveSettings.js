@@ -5,7 +5,7 @@ import SelfServiceSubNav from "../../Components/SelfServiceSubNav";
 import { useQuery } from "react-query";
 
 import { getUserLeaveRequests } from "../../EndPointHelpers/Leaves";
-import { REACT_APP_LEAVE_BASE_URL } from "../../../envVars";
+
 import { Drawer, Spin, Button } from "antd";
 import AddNewLeaveForm from "../../Components/Leave/AddNewLeaveForm";
 import { CloseOutlined } from "@ant-design/icons";

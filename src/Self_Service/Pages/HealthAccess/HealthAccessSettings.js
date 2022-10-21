@@ -1,50 +1,16 @@
 import React, { useState } from "react";
 import DashboardLayout from "../../../Layout/DashboardLayout";
-import Themes from "../../../Themes/Themes";
 import SelfServiceSubNav from "../../Components/SelfServiceSubNav";
-import { useQuery } from "react-query";
 
-import { getUserLeaveRequests } from "../../EndPointHelpers/Leaves";
+import { Button, Form, InputNumber, Select, Typography } from "antd";
 
-import { Drawer, Spin, Button, Tabs, Modal } from "antd";
-import AddHAForEmployee from "../../Components/HealthAccess/AddHAForEmployee";
-import HealthAccessHomePageHeader from "../../Components/HealthAccess/HealthAccessHomePageHeader";
 import HealthAccessSettHeader from "../../Components/HealthAccess/HealthAccessSettHeader";
+
+const gapStyle = "bg-white pt-4 px-3 flex  gap-16 align-center rounded-md";
 
 const HealthAccessSettings = () => {
   const [showDrawer, setShowDrawer] = useState(false);
   const [comp, setComp] = useState("");
-
-  const {
-    data: leaveRequests,
-    isLoading,
-    isError,
-    error,
-    isSuccess,
-  } = useQuery(
-    ["user-leave-requests"],
-    () => {
-      return getUserLeaveRequests({
-        token: "",
-        userId: "",
-      });
-    },
-    {
-      onError: (err) => {
-        console.log("The error =>", err);
-      },
-      onSuccess: (data) => {
-        console.log("The success(0) =>", data);
-      },
-      select: (res) => {
-        const leaveRequests = res.data.map((item) => ({
-          ...item,
-          key: item.id,
-        }));
-        return leaveRequests;
-      },
-    }
-  );
 
   return (
     <DashboardLayout>
@@ -55,18 +21,36 @@ const HealthAccessSettings = () => {
         <div className="Container">
           {/* header */}
           <HealthAccessSettHeader />
-
-          {isError && (
-            <div className="flex w-full h-32 justify-center items-center">
-              <p>Err occured</p>
+          <div className="mt-6 bg-card py-6 px-6 flex flex-col gap-6">
+            <div className="flex flex-col gap-2">
+              <h4 className="text-xl font-thin ">Payment Burden Setting</h4>
+              <p className="text-base text-slate-400 font-extralight">
+                Specify the monthly percentage you and your employees will pay.
+              </p>
             </div>
-          )}
-          {isLoading && (
-            <div className="flex w-full h-32 justify-center items-center">
-              <Spin />
+            <Form labelCol={{ span: 24 }}>
+              <div className="flex flex-col gap-4">
+                <div className={gapStyle}>
+                  <Form.Item label="Employer Burden" className="flex-1">
+                    <InputNumber
+                      placeholder="Employer Burden"
+                      className="w-full"
+                    />
+                  </Form.Item>
+                  <Form.Item label="Employee Burden" className="flex-1">
+                    <InputNumber
+                      placeholder="Employee Burden"
+                      className="w-full"
+                    />
+                  </Form.Item>
+                </div>
+              </div>
+            </Form>
+            <div className="flex items-center justify-between">
+              <Button type="text">Cancel</Button>
+              <button className="button">Save</button>
             </div>
-          )}
-          {isSuccess && <div>jjjjjjie</div>}
+          </div>
         </div>
       </div>
     </DashboardLayout>
