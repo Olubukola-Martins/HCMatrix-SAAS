@@ -2,6 +2,7 @@ import { Dropdown, Menu, Space, Table } from "antd";
 import React from "react";
 import { MoreOutlined } from "@ant-design/icons";
 import { ISFEntry } from "./SurveyFormsContainer";
+import { Link } from "react-router-dom";
 
 interface IProps {
   data?: ISFEntry[];
@@ -38,12 +39,14 @@ const SurveyFormsListView = ({ data = [] }: IProps) => {
       title: "Action",
       key: "action",
 
-      render: (val: string, item: any) => (
+      render: (val: string, item: ISFEntry) => (
         <Space align="center" className="cursor-pointer">
           <Dropdown
             overlay={
               <Menu>
-                <Menu.Item key="3">View</Menu.Item>
+                <Menu.Item key="3">
+                  <Link to={`/self-service/survey-form/${item.id}`}>View</Link>
+                </Menu.Item>
                 <Menu.Item key="2">Rename</Menu.Item>
                 <Menu.Item key="1">Delete</Menu.Item>
               </Menu>
@@ -58,7 +61,7 @@ const SurveyFormsListView = ({ data = [] }: IProps) => {
   ];
   return (
     <div>
-      <Table columns={columns} dataSource={data} />
+      <Table columns={columns} dataSource={data} size="small" />
     </div>
   );
 };

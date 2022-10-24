@@ -9,6 +9,7 @@ export interface ISFEntry {
   author: string;
   lastModified: string;
   description: string;
+  id: string;
 }
 
 const dummyData: ISFEntry[] = [
@@ -17,12 +18,14 @@ const dummyData: ISFEntry[] = [
     author: "Esther",
     lastModified: "6/07/2022",
     description: "This is to get data",
+    id: "90",
   },
   {
     name: "Dev Survey Form",
     author: "James",
     lastModified: "6/07/2022",
     description: "For productivity",
+    id: "89",
   },
 ];
 

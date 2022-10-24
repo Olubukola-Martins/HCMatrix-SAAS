@@ -19,6 +19,7 @@ import LeaveSettings from "../Pages/Leave/LeaveSettings";
 import HealthAccessHome from "../Pages/HealthAccess/HealthAccessHome";
 import HealthAccessSettings from "../Pages/HealthAccess/HealthAccessSettings";
 import NewSurveyForm from "../Pages/Survey/NewSurveyForm";
+import SingleSurveyForm from "../Pages/Survey/SingleSurveyForm";
 
 const SelfServiceRoutes = () => {
   return (
@@ -54,6 +55,10 @@ const SelfServiceRoutes = () => {
         {/* survey */}
         <Route path="/self-service/survey" element={<SurveyHome />} />
         <Route path="/self-service/survey/new" element={<NewSurveyForm />} />
+        <Route
+          path="/self-service/survey-form/:id"
+          element={<SingleSurveyForm />}
+        />
 
         {/* leave */}
         <Route path="/self-service/leave" element={<LeaveHome />} />

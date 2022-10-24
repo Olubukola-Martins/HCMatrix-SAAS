@@ -283,3 +283,16 @@ input[type="text"].ant-input,
 .ant-tabs-ink-bar {
   background: var(--caramel);
 }
+
+/* modal  */
+.ant-modal-content {
+  overflow: hidden;
+  border-radius: 8px;
+}
+
+/* for the copy text */
+.ant-typography-single-line {
+  white-space: nowrap;
+  display: flex;
+  justify-content: space-between;
+}
