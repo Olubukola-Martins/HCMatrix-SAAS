@@ -13,7 +13,6 @@ import ResetPassword from "../Pages/ResetPassword";
 const AuthRoutes = () => {
   return (
     <Routes>
-      <Route path="/" element={<Home />} />
       <Route path="/company-organogram" element={<CompanyOrganogram />} />
       <Route path="/login" element={<Login />} />
       <Route path="/register" element={<Register />} />
