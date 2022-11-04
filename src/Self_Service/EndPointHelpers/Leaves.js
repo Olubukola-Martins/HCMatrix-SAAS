@@ -1,5 +1,4 @@
 import axios from "axios";
-import { REACT_APP_BASE_URL } from "../../envVars";
 
 // should be users leave requests => getUserLeaveRequests
 // should also be leave requests pending users approval
@@ -11,7 +10,7 @@ export const getUserLeaveRequests = ({
   limit,
   page,
 }) => {
-  const url = `${REACT_APP_BASE_URL}/userLeaveRequests`;
+  const url = `${process.env.process.env.REACT_APP_BASE_URL}/userLeaveRequests`;
 
   const config = {
     headers: {
@@ -31,7 +30,7 @@ export const getUserLeaveDetails = ({
   limit,
   page,
 }) => {
-  const url = `${REACT_APP_BASE_URL}/userLeaveDetails`;
+  const url = `${process.env.REACT_APP_BASE_URL}/userLeaveDetails`;
 
   const config = {
     headers: {
@@ -57,7 +56,7 @@ export const createLeaveRequest = ({
   status,
   reason,
 }) => {
-  const url = `${REACT_APP_BASE_URL}/userLeaveRequests`;
+  const url = `${process.env.REACT_APP_BASE_URL}/userLeaveRequests`;
 
   const config = {
     headers: {

@@ -18,6 +18,9 @@ import LeaveHome from "../Pages/Leave/LeaveHome";
 import LeaveSettings from "../Pages/Leave/LeaveSettings";
 import HealthAccessHome from "../Pages/HealthAccess/HealthAccessHome";
 import HealthAccessSettings from "../Pages/HealthAccess/HealthAccessSettings";
+import NewSurveyForm from "../Pages/Survey/NewSurveyForm";
+import SingleSurveyForm from "../Pages/Survey/SingleSurveyForm";
+import CRBHome from "../Pages/ConferenceRoomBooking.js/CRBHome";
 
 const SelfServiceRoutes = () => {
   return (
@@ -52,6 +55,16 @@ const SelfServiceRoutes = () => {
 
         {/* survey */}
         <Route path="/self-service/survey" element={<SurveyHome />} />
+        <Route path="/self-service/survey/new" element={<NewSurveyForm />} />
+        <Route
+          path="/self-service/survey-form/:id"
+          element={<SingleSurveyForm />}
+        />
+        {/* conference room */}
+        <Route
+          path="self-service/conference-room-booking"
+          element={<CRBHome />}
+        />
 
         {/* leave */}
         <Route path="/self-service/leave" element={<LeaveHome />} />
@@ -63,6 +76,10 @@ const SelfServiceRoutes = () => {
         <Route
           path="/self-service/health-access"
           element={<HealthAccessHome />}
+        />
+        <Route
+          path="/self-service/health-access/settings"
+          element={<HealthAccessSettings />}
         />
         <Route
           path="/self-service/health-access/settings"

@@ -3,8 +3,13 @@
 @tailwind utilities;
 
 @import url("https://fonts.googleapis.com/css2?family=Manrope:wght@200;300;400;500;600;700;800&display=swap");
-
+/* antd */
+/* @import "~antd/dist/antd.dark.css";
+@import "~antd/dist/antd.compact.css"; */
+/* @import "./custom.css"; */
 :root {
+  --modal-content-bg: #ff6647;
+
   --background: #ffffff;
   --text-color: #252526;
   --caramel: #ff6647;
@@ -121,6 +126,10 @@ body {
 
 .transparentButton {
   @apply border border-slate-400 hover:border-slate-800 rounded font-medium bg-transparent transition ease-in-out duration-500 text-sm tracking-wider;
+  padding: 6px 8.5px;
+}
+.borderButton {
+  @apply border hover:border-caramel border-slate-800 rounded font-medium bg-transparent transition ease-in-out duration-500 text-sm hover:text-caramel tracking-wider;
   padding: 6px 8.5px;
 }
 
@@ -259,10 +268,10 @@ input[type="text"].ant-input,
 }
 
 /* ant drawer custom */
-.ant-drawer-body,
+/* .ant-drawer-body,
 .ant-drawer-header {
   padding: 0 !important;
-}
+} */
 
 .ant-drawer-close {
   display: none;
@@ -275,10 +284,53 @@ input[type="text"].ant-input,
 }
 
 /* tab */
-.ant-tabs-tab.ant-tabs-tab-active .ant-tabs-tab-btn {
+.ant-tabs-tab.ant-tabs-tab-active .ant-tabs-tab-btn,
+.ant-tabs-tab:hover {
   color: var(--caramel);
 }
 
 .ant-tabs-ink-bar {
+  background: var(--caramel);
+}
+
+/* modal  */
+.ant-modal-content {
+  overflow: hidden;
+  border-radius: 8px;
+}
+
+/* for the copy text */
+.ant-typography-single-line {
+  white-space: nowrap;
+  display: flex;
+  justify-content: space-between;
+}
+
+/* modal adjustments */
+.ant-modal-root .ant-modal-content .ant-modal-header {
+  background: var(--background);
+}
+
+/* ant btn primary */
+.ant-btn-primary {
+  background: #1890ff;
+}
+
+/* autocomplete */
+
+.top-autocomplete-company .ant-select-selector {
+  border-radius: 42px !important;
+}
+
+/* popover */
+.ant-popover {
+  padding-right: 20px;
+  padding-top: 280px;
+  width: max-content;
+}
+.ant-popover-arrow {
+  display: none;
+}
+.ant-popover-title {
   background: var(--caramel);
 }

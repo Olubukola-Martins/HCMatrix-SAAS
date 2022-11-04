@@ -3,11 +3,10 @@ import DashboardLayout from "../../../Layout/DashboardLayout";
 import Themes from "../../../Themes/Themes";
 import SelfServiceSubNav from "../../Components/SelfServiceSubNav";
 import { useQuery } from "react-query";
-import EntryBoxes from "../../Components/Utilities/EntryBoxes";
+
 import LeaveHistoryTable from "../../Components/Leave/LeaveHistoryTable";
 import LeaveHomePageHeader from "../../Components/Leave/LeaveHomePageHeader";
 import { getUserLeaveRequests } from "../../EndPointHelpers/Leaves";
-import { REACT_APP_LEAVE_BASE_URL } from "../../../envVars";
 import { Drawer, Spin, Button } from "antd";
 import AddNewLeaveForm from "../../Components/Leave/AddNewLeaveForm";
 import { CloseOutlined } from "@ant-design/icons";
