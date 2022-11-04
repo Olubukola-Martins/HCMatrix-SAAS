@@ -9,7 +9,7 @@ interface IProps {
   children: React.ReactNode;
 }
 
-const DashboardLayout = ({ children }: IProps) => {
+const DashboardLayout: React.FC<IProps> = ({ children }: IProps) => {
   const [theme, setTheme] = useLocalStorage("theme" ? "dark" : "light", "");
   const [colorTheme, setColorThem] = useLocalStorage("", "");
   const [sidebarToggle, setSidebarToggle] = useState(true);
