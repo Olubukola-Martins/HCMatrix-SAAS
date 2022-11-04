@@ -6,6 +6,7 @@ import CompanySettingsAccordion from "../../Components/General/Company/CompanySe
 import { Link } from "react-router-dom";
 import { Avatar } from "antd";
 import { EditOutlined } from "@ant-design/icons";
+import CompanyLogoForm from "../../Components/General/Company/CompanyLogoForm";
 
 const CompanyDetails = () => {
   return (
@@ -20,14 +21,9 @@ const CompanyDetails = () => {
         {/* img container */}
         <div className="img-container flex justify-center mb-20">
           {/* <img src={Logo} alt= 'logo' className="h-28"/> */}
-          <Avatar
-            alt="Remy Sharp"
-            src=""
-            size="large"
-            icon={<EditOutlined />}
-          />
+          <CompanyLogoForm />
         </div>
-        <div className="accordions grid grid-cols-1 lg:grid-cols-1 gap-12">
+        <div className="accordions grid grid-cols-1 lg:grid-cols-1 gap-4">
           {/* accordian 1 */}
           <CompanyInfoAccordion />
 
