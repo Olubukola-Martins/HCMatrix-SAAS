@@ -2,8 +2,6 @@
 
 # dependencies
 /node_modules
-/mock-backend/node_modules
-/mock-backend/yarn.lock
 /.pnp
 .pnp.js
 
