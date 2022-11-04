@@ -1,21 +1,27 @@
-import Modal from "@mui/material/Modal";
 import Themes from "../../../Themes/Themes";
 import { useState } from "react";
-import { settingNavItems } from "../../../Settings/Data/index";
+import {
+  ISettNavItem,
+  settingNavItems,
+  TLink,
+} from "../../../Settings/Data/index";
 import { Link } from "react-router-dom";
+import { Modal } from "antd";
 
-let links = [];
+let links: TLink[] = [];
 
 settingNavItems.forEach((parent) => {
   links = [...parent.items, ...links];
 });
 
-const SearchModal = ({ open, handleClose }) => {
+interface IProps {
+  open: boolean;
+  handleClose: Function;
+}
 
-  const [searchResults, setSearchResults] = useState([]);
-  const handleSearch = (e) => {
-    const val = e.target.value;
-
+const SearchModal = ({ open, handleClose }: IProps) => {
+  const [searchResults, setSearchResults] = useState<TLink[]>([]);
+  const handleSearch = (val: string) => {
     const result = links.filter(
       (item) => item.name.toLowerCase().indexOf(val.toLowerCase()) !== -1
     );
@@ -29,39 +35,33 @@ const SearchModal = ({ open, handleClose }) => {
   return (
     <Modal
       open={open}
-      onClose={handleClose}
+      onCancel={() => handleClose()}
       aria-labelledby="Email Verification"
       aria-describedby="Please verify your account by checking your inbox."
-      BackdropProps={{ invisible: false }}
+      closeIcon={false}
+      style={{ top: 60 }}
+      footer={null}
+      title={
+        <div className="active w-full flex items-center  notranslate">
+          <i className="fa-solid fa-magnifying-glass text-caramel text-lg cursor-pointer mr-10"></i>
+          <input
+            type="search"
+            name="search"
+            id="search"
+            placeholder="What are you looking for ?"
+            className="bg-transparent flex-1  focus:outline-none text-lg notranslate"
+            onChange={(e) => handleSearch(e.target.value)}
+          />
+        </div>
+      }
     >
       <Themes>
-        <div
-          className="CModal overflow-y-auto"
-          style={{
-            maxWidth: 600,
-            top: "20%",
-            transform: "translate(-50%, -20%)",
-            padding: 0,
-          }}
-        >
+        <div>
           <div className="overflow-hidden">
-            {/* filter heading */}
-            <div className="active w-full flex items-center md:px-5 px-10 h-12 notranslate">
-              <i className="fa-solid fa-magnifying-glass text-caramel text-lg cursor-pointer mr-10"></i>
-              <input
-                type="search"
-                name="search"
-                id="search"
-                placeholder="What are you looking for ?"
-                className="bg-transparent flex-1 py-5 focus:outline-none text-lg notranslate"
-                onChange={handleSearch}
-              />
-            </div>
-
             {/* content */}
-            <div className="mt-2 text-accent border-0 border-t overflow-y-auto h-80">
+            <div className=" text-accent h-44">
               {searchResults.length > 0 ? (
-                <div className="flex flex-col gap-4 py-4">
+                <div className="flex flex-col gap-4 py-2">
                   {searchResults.map((item) => (
                     <div
                       className="border-0 border-b px-10 pb-2"

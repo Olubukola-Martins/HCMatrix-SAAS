@@ -120,10 +120,10 @@ const SurveyQuestionsContainer = ({
           <div className="flex flex-col gap-4">
             <div className="bg-white py-3  px-4 grid md:grid-cols-1 gap-2 rounded-md">
               <Form.Item label="Form Title" name={"title"}>
-                <Input placeholder="Form Title" />
+                <Input placeholder="Form Title" className="w-2/4" />
               </Form.Item>
               <Form.Item label="Form Description" name={"description"}>
-                <Input.TextArea placeholder="Form Description" />
+                <Input.TextArea placeholder="Form Description" rows={6} />
               </Form.Item>
             </div>
             {/* dynamic form */}

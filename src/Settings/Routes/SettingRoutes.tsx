@@ -27,6 +27,7 @@ import Workflows from "../Pages/UserAccessControl/Automation/Workflows/Workflows
 import CreateWorkflow from "../Pages/UserAccessControl/Automation/Workflows/CreateWorkflow";
 import PayrollSettings from "../Pages/Payroll/PayrollSettings";
 import Holidays from "../Pages/General/Holidays";
+import ResignationPolicy from "../Pages/Policies/ResignationPolicy";
 
 const SettingRoutes = () => {
   return (
@@ -77,6 +78,10 @@ const SettingRoutes = () => {
       <Route path="/settings/grade_categories" element={<GradeCategories />} />
 
       <Route path="/settings/probation_policy" element={<ProbationPolicy />} />
+      <Route
+        path="/settings/resignation_policy"
+        element={<ResignationPolicy />}
+      />
     </Routes>
   );
 };

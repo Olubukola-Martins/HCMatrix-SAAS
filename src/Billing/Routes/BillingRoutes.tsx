@@ -1,7 +1,7 @@
 import React from "react";
-import { Route, Routes } from "react-router-dom";
 import Statement from "../Pages/Statement";
 import Billings from "../Pages/Billings";
+import { Routes, Route } from "react-router-dom";
 
 const BillingRoutes = () => {
   return (

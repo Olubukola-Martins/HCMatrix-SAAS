@@ -1,4 +1,15 @@
-export const settingNavItems = [
+export type TLink = {
+  name: string;
+  link: string;
+};
+
+export interface ISettNavItem {
+  title: string;
+  items: TLink[];
+  category: string;
+}
+
+export const settingNavItems: ISettNavItem[] = [
   {
     title: "General",
     items: [
@@ -21,7 +32,6 @@ export const settingNavItems = [
       { name: "Groups", link: "/settings/groups" },
       { name: "Pay Grades", link: "/settings/grades" },
       { name: "Grade Categories", link: "/settings/grade_categories" },
-      { name: "Probation Policy", link: "/settings/probation_policy" },
     ],
     category: "basic",
   },
@@ -37,6 +47,14 @@ export const settingNavItems = [
   {
     title: "Automation",
     items: [{ name: "Workflows", link: "/settings/automation/workflows" }],
+    category: "basic",
+  },
+  {
+    title: "Policies",
+    items: [
+      { name: "Probation Policy", link: "/settings/probation_policy" },
+      { name: "Resignation Policy", link: "/settings/resignation_policy" },
+    ],
     category: "basic",
   },
   {

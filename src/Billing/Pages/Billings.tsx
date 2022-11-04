@@ -4,8 +4,14 @@ import Wallet from "../Assets/wallet.svg";
 import Bank from "../Assets/bank.svg";
 import Card from "../Assets/card.png";
 
+interface IBank {
+  name: string;
+  bankName: string;
+  accNo: string;
+}
+
 const Billings = () => {
-  const [banks, setBanks] = useState([]);
+  const [banks, setBanks] = useState<IBank[]>([]);
   return (
     <DashboardLayout>
       <div className="Container mt-4 pb-8">

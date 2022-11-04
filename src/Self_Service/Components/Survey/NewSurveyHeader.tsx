@@ -35,6 +35,7 @@ const NewSurveyHeader = ({ handlePreview, showPreview }: IProps) => {
         title="Send Form"
         onCancel={() => setShowD(false)}
         footer={null}
+        style={{ top: "20px" }}
       >
         <Themes>
           <Tabs>

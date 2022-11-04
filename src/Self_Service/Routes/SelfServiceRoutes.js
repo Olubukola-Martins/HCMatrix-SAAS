@@ -20,6 +20,7 @@ import HealthAccessHome from "../Pages/HealthAccess/HealthAccessHome";
 import HealthAccessSettings from "../Pages/HealthAccess/HealthAccessSettings";
 import NewSurveyForm from "../Pages/Survey/NewSurveyForm";
 import SingleSurveyForm from "../Pages/Survey/SingleSurveyForm";
+import CRBHome from "../Pages/ConferenceRoomBooking.js/CRBHome";
 
 const SelfServiceRoutes = () => {
   return (
@@ -58,6 +59,11 @@ const SelfServiceRoutes = () => {
         <Route
           path="/self-service/survey-form/:id"
           element={<SingleSurveyForm />}
+        />
+        {/* conference room */}
+        <Route
+          path="self-service/conference-room-booking"
+          element={<CRBHome />}
         />
 
         {/* leave */}

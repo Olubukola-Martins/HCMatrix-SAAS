@@ -102,7 +102,6 @@ body {
   }
 }
 
-
 /*=== General button ===*/
 .button {
   @apply border border-caramel rounded font-medium bg-caramel text-white transition ease-in-out duration-300 text-sm tracking-wider hover:opacity-70;

@@ -5,16 +5,20 @@ import SideBar from "./Components/SideBar";
 // import SubTopBar from "./Components/SubTopBar";
 import GlobalSupport from "./Components/GlobalSupport";
 
-const DashboardLayout = ({ children }) => {
-  const [theme, setTheme] = useLocalStorage("theme" ? "dark" : "light");
-  const [colorTheme, setColorThem] = useLocalStorage("");
+interface IProps {
+  children: React.ReactNode;
+}
+
+const DashboardLayout = ({ children }: IProps) => {
+  const [theme, setTheme] = useLocalStorage("theme" ? "dark" : "light", "");
+  const [colorTheme, setColorThem] = useLocalStorage("", "");
   const [sidebarToggle, setSidebarToggle] = useState(true);
 
   const switchTheme = () => {
     const newTheme = theme === "light" ? "dark" : "light";
     setTheme(newTheme);
     // Temporary fix to dark mode
-    window.location.reload();
+    // window.location.reload();
   };
 
   const switchGreenColor = () => {
@@ -39,7 +43,7 @@ const DashboardLayout = ({ children }) => {
 
   const switchYellowColor = () => {
     const newTheme = colorTheme === "default";
-    setColorThem(newTheme);
+    setColorThem(newTheme as unknown as string);
   };
 
   return (
@@ -47,7 +51,7 @@ const DashboardLayout = ({ children }) => {
       <div className="h-screen overflow-auto">
         <TopBar
           switchTheme={switchTheme}
-          theme={theme}
+          theme={theme as unknown as string}
           green={switchGreenColor}
           orange={switchOrangeColor}
           yellow={switchYellowColor}

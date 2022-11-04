@@ -1,20 +1,22 @@
-import { Modal } from "@mui/material";
 import { ErrorMessage, Field, Form, Formik } from "formik";
 import React from "react";
 import Themes from "../../Themes/Themes";
 import * as Yup from "yup";
 import { Link } from "react-router-dom";
+import { Modal } from "antd";
 
-const CreateWalletPermission = ({ open, handleClose }) => {
-  const onSubmit = (values) => {};
+interface IProps {
+  open: boolean;
+  handleClose: Function;
+}
+
+const CreateWalletPermission = ({ open, handleClose }: IProps) => {
+  const handleSubmit = () => {};
+
   return (
-    <Modal open={open} onClose={handleClose}>
+    <Modal open={open} onCancel={() => handleClose()} footer={null}>
       <Themes>
-        <div className="CModal" style={{ maxWidth: 480 }}>
-          <i
-            className="fas fa-times cursor-pointer text-xl flex justify-end mb-4"
-            onClick={handleClose}
-          ></i>
+        <div style={{ maxWidth: 480 }}>
           <h3 className="font-semibold text-lg">Create Wallet</h3>
           <p className="text-sm pt-1 pb-14">
             System will automatically generate a NUBAN E-Wallet for you. You can
@@ -28,7 +30,7 @@ const CreateWalletPermission = ({ open, handleClose }) => {
             validationSchema={Yup.object({
               email: Yup.string().required("Field is Required!"),
             })}
-            onSubmit={onSubmit}
+            onSubmit={() => handleSubmit()}
           >
             <Form>
               <div className="flex gap-5 text-xs">
