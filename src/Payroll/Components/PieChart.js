@@ -4,7 +4,7 @@ import { Pie } from "react-chartjs-2";
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
-const labels = [
+const clabels = [
   "January",
   "February",
   "March",
@@ -18,34 +18,33 @@ const labels = [
   "December",
 ];
 
-export const options = {
-  maintainAspectRatio: false,
+export function PieChart({ dData, labels, title }) {
+  const options = {
+    maintainAspectRatio: false,
 
-  indexAxis: "y",
-  elements: {
-    bar: {
-      borderWidth: 2,
+    indexAxis: "y",
+    elements: {
+      bar: {
+        borderWidth: 2,
+      },
     },
-  },
-  responsive: true,
-  plugins: {
-    legend: {
-      position: "right",
+    responsive: true,
+    plugins: {
+      legend: {
+        position: "right",
+      },
+      title: {
+        display: title,
+        text: title,
+      },
     },
-    title: {
-      display: true,
-      text: "Pie Chart",
-    },
-  },
-};
-
-export function PieChart({ dData }) {
+  };
   const data = {
     labels,
     datasets: [
       {
         label: "# of Votes",
-        data: [12, 19, 3, 5, 2, 3],
+        data: dData,
         backgroundColor: [
           "rgba(255, 99, 132, 0.2)",
           "rgba(54, 162, 235, 0.2)",

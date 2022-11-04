@@ -3,13 +3,8 @@
 @tailwind utilities;
 
 @import url("https://fonts.googleapis.com/css2?family=Manrope:wght@200;300;400;500;600;700;800&display=swap");
-/* antd */
-/* @import "~antd/dist/antd.dark.css";
-@import "~antd/dist/antd.compact.css"; */
-/* @import "./custom.css"; */
-:root {
-  --modal-content-bg: #ff6647;
 
+:root {
   --background: #ffffff;
   --text-color: #252526;
   --caramel: #ff6647;
@@ -90,12 +85,6 @@ body {
   transition: all 0.5s;
   /* @apply h-screen overflow-auto; */
 }
-.mode_color_no_bg {
-  background-color: none;
-  color: var(--text-color);
-  transition: all 0.5s;
-  /* @apply h-screen overflow-auto; */
-}
 
 /* .Container {
   @apply container w-full mx-auto md:px-6 lg:px-12 px-5;
@@ -126,10 +115,6 @@ body {
 
 .transparentButton {
   @apply border border-slate-400 hover:border-slate-800 rounded font-medium bg-transparent transition ease-in-out duration-500 text-sm tracking-wider;
-  padding: 6px 8.5px;
-}
-.borderButton {
-  @apply border hover:border-caramel border-slate-800 rounded font-medium bg-transparent transition ease-in-out duration-500 text-sm hover:text-caramel tracking-wider;
   padding: 6px 8.5px;
 }
 
@@ -212,125 +197,3 @@ body {
 }
 
 /* .PrivateSwitchBase-input css-1m9pwf3  */
-
-/* antd customizations */
-.ant-table {
-  background: var(--card) !important;
-  color: var(--accent) !important;
-}
-.ant-table-thead > tr > th {
-  background: var(--card);
-  color: var(--accent) !important;
-}
-.ant-table-tbody > tr.ant-table-row:hover > td,
-.ant-table-tbody > tr > td.ant-table-cell-hover {
-  background: var(--background) !important;
-  color: var(--accent) !important;
-}
-.ant-table-tbody > tr.ant-table-row-selected > td {
-  background: var(--background) !important;
-}
-
-.ant-table-cell-fix-left,
-.ant-table-cell-fix-right {
-  background: var(--card);
-  color: var(--accent) !important;
-}
-
-.ant-table-tbody > tr > td,
-.ant-table-thead > tr > th {
-  border-bottom: 3px solid var(--background);
-}
-
-/* ant select */
-.ant-select,
-textarea.ant-input,
-input[type="text"].ant-input,
-.ant-form-item-label > label,
-.ant-btn-text,
-.ant-btn-ghost,
-.ant-picker,
-.ant-picker-suffix,
-.ant-picker-separator,
-.ant-picker-input > input {
-  color: var(--accent) !important;
-}
-.ant-select-selector,
-textarea.ant-input,
-input[type="text"].ant-input,
-.ant-picker,
-.ant-select-dropdown {
-  background: var(--background) !important;
-}
-
-.ant-select-arrow {
-  color: var(--accent) !important;
-}
-
-/* ant drawer custom */
-/* .ant-drawer-body,
-.ant-drawer-header {
-  padding: 0 !important;
-} */
-
-.ant-drawer-close {
-  display: none;
-}
-
-/* ant card */
-.ant-card-head,
-.ant-card-body {
-  padding: 0 20px;
-}
-
-/* tab */
-.ant-tabs-tab.ant-tabs-tab-active .ant-tabs-tab-btn,
-.ant-tabs-tab:hover {
-  color: var(--caramel);
-}
-
-.ant-tabs-ink-bar {
-  background: var(--caramel);
-}
-
-/* modal  */
-.ant-modal-content {
-  overflow: hidden;
-  border-radius: 8px;
-}
-
-/* for the copy text */
-.ant-typography-single-line {
-  white-space: nowrap;
-  display: flex;
-  justify-content: space-between;
-}
-
-/* modal adjustments */
-.ant-modal-root .ant-modal-content .ant-modal-header {
-  background: var(--background);
-}
-
-/* ant btn primary */
-.ant-btn-primary {
-  background: #1890ff;
-}
-
-/* autocomplete */
-
-.top-autocomplete-company .ant-select-selector {
-  border-radius: 42px !important;
-}
-
-/* popover */
-.ant-popover {
-  padding-right: 20px;
-  padding-top: 280px;
-  width: max-content;
-}
-.ant-popover-arrow {
-  display: none;
-}
-.ant-popover-title {
-  background: var(--caramel);
-}
