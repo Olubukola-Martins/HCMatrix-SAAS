@@ -1,15 +1,15 @@
 import React from "react";
 import { Tabs } from "antd";
-// import { PageIntro } from "../../Layout/Components/PageIntro";
+import { PageIntro } from "../../Layout/Components/PageIntro";
 import DashboardLayout from "../../Layout/DashboardLayout";
-// import { IncomingModules } from "../Components/IncomingModules";
 import { Link } from "react-router-dom";
+import { IncomingModules } from "../Components/IncomingModules";
 
 const BillingHome = () => {
   return (
     <DashboardLayout>
       <div className="Container mt-5">
-        {/* <PageIntro title="Billings" link="/" /> */}
+        <PageIntro title="Billings" link="/" />
         <Tabs defaultActiveKey="1" className="mt-5">
           <Tabs.TabPane tab="Your Plans" key="1">
             <div className="rounded-md border shadow mt-4 mb-6">
@@ -38,28 +38,32 @@ const BillingHome = () => {
             <div>
               <h3 className="font-medium text-base pb-3">Coming Soon</h3>
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-7">
-                {/* <IncomingModules
+                <IncomingModules
                   title="Recruitment"
                   color="#7987A5"
                   icon="ri-line-chart-line"
-                /> */}
-                {/* <IncomingModules
+                  description={""}
+                />
+                <IncomingModules
                   title="Performance"
                   color="#A76755"
                   icon="ri-creative-commons-sa-line"
-                /> */}
-                {/* <IncomingModules
+                  description={""}
+                />
+                <IncomingModules
                   title="Time and 
                   Attendance"
                   color="#FD8311D1"
                   icon="ri-time-line"
-                /> */}
-                {/* <IncomingModules
+                  description={""}
+                />
+                <IncomingModules
                   title="Learning and
                   Development"
                   color="#6547B8"
                   icon="ri-line-chart-line"
-                /> */}
+                  description={""}
+                />
               </div>
             </div>
           </Tabs.TabPane>

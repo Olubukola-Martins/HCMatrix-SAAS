@@ -9,6 +9,7 @@ import {
     Typography,
   } from "antd";
   import React from "react";
+import { Link } from "react-router-dom";
 //   import { PageIntro } from "../../Layout/Components/PageIntro";
   import DashboardLayout from "../../Layout/DashboardLayout";
   const { Text } = Typography;
@@ -100,9 +101,9 @@ import {
                 </div>
   
                 <div className="flex justify-between items-center mt-6">
-                  <button type="button" className="transparentButton">
+                  <Link to="/billings" type="button" className="transparentButton">
                     Cancel
-                  </button>
+                  </Link>
                   <button type="submit" className="button">
                     Submit
                   </button>
