@@ -7,7 +7,8 @@ const BillingRoutes = () => {
   return (
     <Routes>
       <Route path="/statement" element={<Statement />} />
-      <Route path="/billings" element={<Billings />} />
+      {/* <Route path="/billings" element={<Billings />} /> */}
+      
     </Routes>
   );
 };

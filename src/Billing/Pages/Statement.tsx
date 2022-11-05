@@ -5,12 +5,12 @@ import SendTo from "../Components/SendTo";
 import "../style/style.css";
 import logo from "../../Layout/Images/logo2.png";
 import { Link } from "react-router-dom";
-import UserLicense from "../Components/UserLicense";
+// import UserLicense from "../Components/UserLicense";
 
 const Statement = () => {
   const [openSend, setOpenSend] = useState(false);
   const [createWallet, setCreateWallet] = useState(false);
-  const [licenseModal, setLicenseModal] = useState(false);
+  // const [licenseModal, setLicenseModal] = useState(false);
 
   return (
     <DashboardLayout>
@@ -20,17 +20,17 @@ const Statement = () => {
         handleClose={() => setCreateWallet(false)}
       />
 
-      <UserLicense
+      {/* <UserLicense
         open={licenseModal}
         handleClose={() => setLicenseModal(false)}
-      />
+      /> */}
 
       <div className="Container -mt-6 pt-10 text-sm text-accent pb-10 bg-card">
         <div className="px-24">
           <div className="flex items-center justify-between mb-5">
             <i
               className="ri-close-fill cursor-pointer text-2xl font-semibold"
-              onClick={() => setLicenseModal(true)}
+              // onClick={() => setLicenseModal(true)}
             ></i>
 
             <div className="flex items-center gap-3">
