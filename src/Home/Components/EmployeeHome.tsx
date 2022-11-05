@@ -145,7 +145,7 @@ export const EmployeeHome = () => {
               <SelfBox title="Leave" icon={leave} link="leave" />
               <SelfBox title="Health access" icon={health} link="#" />
               <SelfBox title="My Payslip" icon={payslip} link="#" />
-              <div className="bg-card p-2 rounded-lg shadow cursor-pointer group text-accent">
+              <Link to="/self-service/home" className="bg-card p-2 rounded-lg shadow cursor-pointer group text-accent">
                 <div className="bg-mainBg transition ease-in-out duration-300 py-2 px-3 rounded-lg  group-hover:border-b-2 group-hover:border-caramel group-hover:shadow-md">
                   <div className="flex items-center justify-between">
                     <button
@@ -160,7 +160,7 @@ export const EmployeeHome = () => {
                     Lorem ipsum dolor sit amet, consectetur adipiscing elit.
                   </p>
                 </div>
-              </div>
+              </Link>
             </div>
           </div>
 
