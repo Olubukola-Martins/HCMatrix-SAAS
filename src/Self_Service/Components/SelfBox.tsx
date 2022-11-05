@@ -33,7 +33,12 @@ const moreContent = (
     <ul className="py-3 shadow-md px-4 text-sm font-medium rounded-md flex flex-col gap-3">
       <li className="cursor-pointer hover:text-caramel">My Trainings</li>
       <li className="cursor-pointer hover:text-caramel">Appraisal</li>
-      <li className="cursor-pointer hover:text-caramel">HR Letters</li>
+      <Link
+        to="/self-service/hr-letters"
+        className="cursor-pointer hover:text-caramel"
+      >
+        HR Letters
+      </Link>
       <li className="cursor-pointer hover:text-caramel">Documents</li>
       <Link
         to="/self-service/conference-room-booking"
@@ -47,7 +52,12 @@ const moreContent = (
       >
         Survey Forms
       </Link>
-      <Link to="/self-service/handover-form" className="cursor-pointer hover:text-caramel">Hand-over Forms</Link>
+      <Link
+        to="/self-service/handover-form"
+        className="cursor-pointer hover:text-caramel"
+      >
+        Hand-over Forms
+      </Link>
     </ul>
   </Themes>
 );

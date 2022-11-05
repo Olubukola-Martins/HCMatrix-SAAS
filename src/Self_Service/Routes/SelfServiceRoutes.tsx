@@ -26,6 +26,7 @@ import StartOnboarding from "../Pages/Onboarding/StartOnboarding";
 import HandOver from "../Pages/HandOver/HandOver";
 import NewForm from "../Pages/HandOver/NewForm";
 import HandOverDetails from "../Pages/HandOver/HandOverDetails";
+import HRLetters from "../Pages/HRLetters/HRLetters";
 
 const SelfServiceRoutes = () => {
   return (
@@ -105,6 +106,9 @@ const SelfServiceRoutes = () => {
           path="/self-service/handover-form/:id"
           element={<HandOverDetails />}
         />
+
+        {/* HR Letters */}
+        <Route path="/self-service/hr-letters" element={<HRLetters />} />
       </Routes>
     </>
   );
