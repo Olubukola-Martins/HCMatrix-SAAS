@@ -1,10 +1,11 @@
 import { Link } from "react-router-dom";
 
 type introProps = {
-    title: string,
-    link?: string,
-    close?: any
-}
+  title: string;
+  link?: string;
+  close?: any;
+  // close?: (event: React.MouseEvent<HTMLButtonElement>) => void
+};
 export const PageIntro = ({ title, link, close }: introProps) => {
   return (
     <div className="flex items-center gap-3 font-extrabold ">

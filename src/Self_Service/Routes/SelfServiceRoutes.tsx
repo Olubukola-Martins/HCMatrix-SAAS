@@ -21,6 +21,8 @@ import HealthAccessSettings from "../Pages/HealthAccess/HealthAccessSettings";
 import NewSurveyForm from "../Pages/Survey/NewSurveyForm";
 import SingleSurveyForm from "../Pages/Survey/SingleSurveyForm";
 import CRBHome from "../Pages/ConferenceRoomBooking.js/CRBHome";
+import Onboarding from "../Pages/Onboarding/Onboarding.js";
+import StartOnboarding from "../Pages/Onboarding/StartOnboarding";
 
 const SelfServiceRoutes = () => {
   return (
@@ -84,6 +86,16 @@ const SelfServiceRoutes = () => {
         <Route
           path="/self-service/health-access/settings"
           element={<HealthAccessSettings />}
+        />
+
+        {/* Onboarding */}
+        <Route
+          path="/self-service/onboarding"
+          element={<Onboarding />}
+        />
+         <Route
+          path="/self-service/onboarding/:id"
+          element={<StartOnboarding />}
         />
       </Routes>
     </>

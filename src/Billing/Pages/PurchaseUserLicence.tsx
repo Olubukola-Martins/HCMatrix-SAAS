@@ -10,7 +10,7 @@ import {
   } from "antd";
   import React from "react";
 import { Link } from "react-router-dom";
-//   import { PageIntro } from "../../Layout/Components/PageIntro";
+  import { PageIntro } from "../../Layout/Components/PageIntro";
   import DashboardLayout from "../../Layout/DashboardLayout";
   const { Text } = Typography;
   const { Option } = Select;
@@ -25,7 +25,7 @@ import { Link } from "react-router-dom";
     return (
       <DashboardLayout>
         <div className="Container mt-5">
-          {/* <PageIntro title="Purchase User License" link="/billings" /> */}
+          <PageIntro title="Purchase User License" link="/billings" />
   
           <div className="grid grid-cols-1 md:grid-cols-2 gap-x-16 mt-6">
             <div className="bg-card p-2 md:p-3 lg:p-5 rounded">
