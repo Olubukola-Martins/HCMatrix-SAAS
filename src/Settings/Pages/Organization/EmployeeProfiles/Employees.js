@@ -3,8 +3,8 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { PageIntro } from "../../../../Layout/Components/PageIntro";
 import DashboardLayout from "../../../../Layout/DashboardLayout";
-// import AddEmployee from "../../../Components/Organization/EmployeeProfiles/AddEmployee";
 import { AddEmployee } from "../../../Components/Organization/EmployeeProfiles/AddEmployee";
+import { ImportEmployee } from "../../../Components/Organization/EmployeeProfiles/ImportEmployee";
 // import { ImportEmployee } from "../../../Components/Organization/EmployeeProfiles/ImportEmployee";
 
 const Employees = () => {
@@ -74,10 +74,10 @@ const Employees = () => {
         open={addEmployeeDrawer}
         handleClose={() => setAddEmployeeDrawer(false)}
       />
-      {/* <ImportEmployee
+      <ImportEmployee
         open={importEmployeeDrawer}
         handleClose={() => setImportEmployeeDrawer(false)}
-      /> */}
+      />
       <div className="Container">
         <PageIntro title="Employees" link="/settings" />
 
