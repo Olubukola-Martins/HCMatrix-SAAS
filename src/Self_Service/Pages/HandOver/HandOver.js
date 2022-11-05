@@ -44,7 +44,7 @@ const HandOver = () => {
       fixed: "right",
       render: (val, item) => (
         <div className="cursor-pointer">
-          <Link to="/self-service/handover-details">
+          <Link to="/self-service/handover-form/1">
             <i className="ri-eye-line text-lg"></i>
           </Link>
         </div>

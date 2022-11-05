@@ -47,7 +47,7 @@ const moreContent = (
       >
         Survey Forms
       </Link>
-      <li className="cursor-pointer hover:text-caramel">Hand-over Forms</li>
+      <Link to="/self-service/handover-form" className="cursor-pointer hover:text-caramel">Hand-over Forms</Link>
     </ul>
   </Themes>
 );

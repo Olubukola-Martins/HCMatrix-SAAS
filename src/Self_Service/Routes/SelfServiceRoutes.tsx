@@ -102,7 +102,7 @@ const SelfServiceRoutes = () => {
         <Route path="/self-service/handover-form" element={<HandOver />} />
         <Route path="/self-service/handover-new-form" element={<NewForm />} />
         <Route
-          path="/self-service/handover-details"
+          path="/self-service/handover-form/:id"
           element={<HandOverDetails />}
         />
       </Routes>
