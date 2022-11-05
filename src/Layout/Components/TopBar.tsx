@@ -252,11 +252,12 @@ const TopBar = ({
                       <li className="border-b-2 pb-2 cursor-pointer hover:text-caramel">
                         Advanced Settings
                       </li>
-                      <li
+                      <Link
+                      to="/billings"
                         className="border-b-2 pb-2 cursor-pointer hover:text-caramel"
                       >
                         Billings
-                      </li>
+                      </Link>
                       <li className="border-b-2 pb-2 cursor-pointer hover:text-caramel">
                         Change language
                       </li>
