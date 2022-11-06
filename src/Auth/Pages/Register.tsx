@@ -10,7 +10,7 @@ export const Register = () => {
         style={{ backgroundImage: `url(${peachBg})` }}
       >
         <div>
-          <img src={logo} alt="logo" className="h-14" />
+          <img src={logo} alt="logo" className="h-16" />
           <div
             className="flex items-center justify-center"
             style={{ height: "80vh" }}
@@ -24,7 +24,7 @@ export const Register = () => {
                 please login with your personal information to stay
                 <br className="hidden md:flex" /> connected with us.
               </p>
-              <button className="border border-white rounded px-16 py-1 text-white font-medium text-base">
+              <button className="border border-white rounded px-16 py-1 text-white hover:border-gray-700 font-medium text-base transition duration-300 ease-in-out">
                 Sign In
               </button>
             </div>
