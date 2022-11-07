@@ -1,7 +1,7 @@
 import peachBg from "../Assets/Images/peachBg.png";
 import lightBg from "../Assets/Images/lightBg.png";
 import logo from "../Assets/Images/logo.png";
-import { Form, Input, Select } from "antd";
+import { Divider, Form, Input, Select } from "antd";
 
 import {
   LockOutlined,
@@ -43,7 +43,7 @@ export const Register = () => {
   return (
     <div className="flex">
       <div
-        className="Container w-full h-screen text-white py-2 overflow-auto bg-cover bg-no-repeat"
+        className="Container w-full h-screen text-white py-2 bg-cover bg-no-repeat"
         style={{ backgroundImage: `url(${peachBg})` }}
       >
         <div>
@@ -69,7 +69,7 @@ export const Register = () => {
         </div>
       </div>
       <div
-        className="Container w-full h-screen py-5 overflow-auto bg-cover bg-no-repeat flex items-center justify-center text-center"
+        className="Container w-full h-screen pb-10 pt-32 overflow-auto bg-cover bg-no-repeat flex items-center justify-center text-center"
         style={{ backgroundImage: `url(${lightBg})` }}
       >
         <div>
@@ -177,12 +177,12 @@ export const Register = () => {
                       min: 6,
                       message: "password must be at least 6 characters",
                     },
-                    {
-                      validator: (_, value) =>
-                        value && value.includes("A")
-                          ? Promise.resolve()
-                          : Promise.reject("Password does not match criteria."),
-                    },
+                    // {
+                    //   validator: (_, value) =>
+                    //     value && value.includes("A")
+                    //       ? Promise.resolve()
+                    //       : Promise.reject("Password does not match criteria."),
+                    // },
                   ]}
                   hasFeedback
                 >
@@ -225,8 +225,9 @@ export const Register = () => {
                     style={{ padding: "6px 5px" }}
                   />
                 </Form.Item>
-                <button className="button w-full mt-5">Sign Up</button>
+                <button className="button w-full mt-4 mb-3">Sign Up</button>
               </Form>
+              <Divider><span className="text-sm">Sign Up with</span></Divider>
             </div>
           </div>
         </div>
