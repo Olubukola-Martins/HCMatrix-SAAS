@@ -7,7 +7,7 @@ const Payslip = () => {
   return (
     <DashboardLayout>
       <PayrollSubNav />
-      <div>
+      <div className="Container">
         <div className="flex gap-2 text-accent">
           <i className="ri-arrow-left-s-line text-xl cursor-pointer"></i>
           <div>

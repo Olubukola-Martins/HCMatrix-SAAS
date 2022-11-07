@@ -31,21 +31,6 @@ const requisitionContent = (
 const moreContent = (
   <Themes>
     <ul className="py-3 shadow-md px-4 text-sm font-medium rounded-md flex flex-col gap-3">
-      <li className="cursor-pointer hover:text-caramel">My Trainings</li>
-      <li className="cursor-pointer hover:text-caramel">Appraisal</li>
-      <Link
-        to="/self-service/hr-letters"
-        className="cursor-pointer hover:text-caramel"
-      >
-        HR Letters
-      </Link>
-      <li className="cursor-pointer hover:text-caramel">Documents</li>
-      <Link
-        to="/self-service/conference-room-booking"
-        className="cursor-pointer hover:text-caramel"
-      >
-        Meeting Room Booking
-      </Link>
       <Link
         to="/self-service/survey"
         className="cursor-pointer hover:text-caramel"
@@ -57,6 +42,18 @@ const moreContent = (
         className="cursor-pointer hover:text-caramel"
       >
         Hand-over Forms
+      </Link>
+      <Link
+        to="/self-service/conference-room-booking"
+        className="cursor-pointer hover:text-caramel"
+      >
+        Meeting Room Booking
+      </Link>
+      <Link
+        to="/self-service/hr-letters"
+        className="cursor-pointer hover:text-caramel"
+      >
+        HR Letters & Documents
       </Link>
     </ul>
   </Themes>
