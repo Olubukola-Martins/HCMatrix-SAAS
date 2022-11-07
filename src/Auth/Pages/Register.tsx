@@ -1,4 +1,3 @@
-import { useEffect } from "react";
 import peachBg from "../Assets/Images/peachBg.png";
 // import greenBg from "../Assets/Images/greenBg.png";
 import lightBg from "../Assets/Images/lightBg.png";
@@ -18,6 +17,7 @@ import {
 } from "@ant-design/icons";
 import { generalValidationRules } from "../../FormHelpers/validation";
 import { Link } from "react-router-dom";
+import { useEffect } from "react";
 import Aos from "aos";
 import "aos/dist/aos.css";
 

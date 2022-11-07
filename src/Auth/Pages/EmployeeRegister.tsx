@@ -53,7 +53,7 @@ export const EmployeeRegister = () => {
         className="Container w-full h-screen py-10 bg-cover bg-no-repeat text-center relative overflow-y-auto overflow-x-hidden"
         style={{ backgroundImage: `url(${lightBg})` }}
       >
-        <div className="formWrap pt-24" style={{ maxWidth: 500 }}>
+        <div className="formWrap lg:pt-24" style={{ maxWidth: 500 }}>
           <div>
             <div
              data-aos="fade-left"
