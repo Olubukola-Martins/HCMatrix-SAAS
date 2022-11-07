@@ -38,20 +38,32 @@ const SelfServiceHome = () => {
 
           <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-6 mt-6 mb-10">
             <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-5 col-span-3">
-              <SelfBox title="Onboarding" icon={Onboarding} link="onboarding" />
-              <SelfBox title="Loan" icon={loan} link="loan" />
-              <SelfBox title="Leave" icon={leave} link="leave" />
+              <SelfBox
+                title="Onboarding"
+                icon={Onboarding}
+                link="/self-service/onboarding"
+              />
+              <SelfBox title="Loan" icon={loan} link="/self-service/loan" />
+              <SelfBox title="Leave" icon={leave} link="/self-service/leave" />
               <SelfBox
                 title="Health access"
                 icon={health}
-                link="health-access"
+                link="/self-service/health-access"
               />
-              <SelfBox title="My Payslip" icon={payslip} link="#" />
-              <SelfBox title="My Attendance" icon={attendance} link="#" />
+              <SelfBox
+                title="My Payslip"
+                icon={payslip}
+                link="/payroll/employee-payslip"
+              />
+              <SelfBox
+                title="Hand-over Forms"
+                icon={attendance}
+                link="/self-service/handover-form"
+              />
               <SelfBox
                 title="Vehicle booking"
                 icon={vehicle}
-                link="vehicle-booking"
+                link="/self-service/vehicle-booking"
               />
               <RequisitionBox icon={requisition} />
               <MoreBox />

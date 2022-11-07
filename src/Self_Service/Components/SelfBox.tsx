@@ -1,5 +1,4 @@
 import { Dropdown, Popover } from "antd";
-import React from "react";
 import { Link } from "react-router-dom";
 import Themes from "../../Themes/Themes";
 
@@ -36,12 +35,6 @@ const moreContent = (
         className="cursor-pointer hover:text-caramel"
       >
         Survey Forms
-      </Link>
-      <Link
-        to="/self-service/handover-form"
-        className="cursor-pointer hover:text-caramel"
-      >
-        Hand-over Forms
       </Link>
       <Link
         to="/self-service/conference-room-booking"
@@ -125,7 +118,7 @@ export const MoreBox = () => {
 const SelfBox = ({ title, desc, icon, link }: IProps) => {
   return (
     <Link
-      to={`/self-service/${link}`}
+      to={link}
       className="bg-card p-2 rounded-lg shadow cursor-pointer group text-accent"
     >
       <div className="bg-mainBg transition ease-in-out duration-300 py-2 px-3 rounded-lg group-hover:border-b-2 group-hover:border-caramel group-hover:shadow-md">
