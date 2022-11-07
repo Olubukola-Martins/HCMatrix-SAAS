@@ -11,8 +11,14 @@ import "../Style/style.css";
 import { LockOutlined, MailOutlined } from "@ant-design/icons";
 import { generalValidationRules } from "../../FormHelpers/validation";
 import { Link } from "react-router-dom";
+import { useEffect } from "react";
+import Aos from "aos";
+import "aos/dist/aos.css";
 
 export const EmployeeRegister = () => {
+  useEffect(() => {
+    Aos.init({ duration: 1500 });
+  }, []);
   return (
     <div className="grid grid-cols-1 lg:grid-cols-2">
       <div
@@ -23,7 +29,7 @@ export const EmployeeRegister = () => {
           <img src={logo} alt="logo" className="h-16" />
           <div className="flex items-center justify-center authIntroInner">
             <div className="text-center">
-              <h2 className="text-white text-xl font-bold">
+              <h2 data-aos="fade-down" className="text-white text-xl font-bold">
                 Welcome To HCMatrix!
               </h2>
               <p className="pt-6 pb-4">
@@ -44,12 +50,13 @@ export const EmployeeRegister = () => {
         </div>
       </div>
       <div
-        className="Container w-full h-screen py-10 bg-cover bg-no-repeat text-center relative overflow-auto"
+        className="Container w-full h-screen py-10 bg-cover bg-no-repeat text-center relative overflow-y-auto overflow-x-hidden"
         style={{ backgroundImage: `url(${lightBg})` }}
       >
         <div className="formWrap pt-24" style={{ maxWidth: 500 }}>
           <div>
             <div
+             data-aos="fade-left"
               style={{
                 boxShadow:
                   "0 2px 5px rgba(0,0,0,0.12), 1px 1px 2px rgba(0,0,0,0.24)",

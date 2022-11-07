@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import peachBg from "../Assets/Images/peachBg.png";
 // import greenBg from "../Assets/Images/greenBg.png";
 import lightBg from "../Assets/Images/lightBg.png";
@@ -17,8 +18,13 @@ import {
 } from "@ant-design/icons";
 import { generalValidationRules } from "../../FormHelpers/validation";
 import { Link } from "react-router-dom";
+import Aos from "aos";
+import "aos/dist/aos.css";
 
 export const Register = () => {
+  useEffect(() => {
+    Aos.init({ duration: 1500 });
+  }, []);
   const industryData = [
     "Advertising & marketing",
     " Agriculture",
@@ -51,7 +57,7 @@ export const Register = () => {
           <img src={logo} alt="logo" className="h-16" />
           <div className="flex items-center justify-center authIntroInner">
             <div className="text-center">
-              <h2 className="text-white text-xl font-bold">
+              <h2 data-aos="fade-down" className="text-white text-xl font-bold">
                 Welcome To HCMatrix!
               </h2>
               <p className="pt-6 pb-4">
@@ -72,12 +78,13 @@ export const Register = () => {
         </div>
       </div>
       <div
-        className="Container w-full h-screen py-10 bg-cover bg-no-repeat text-center relative overflow-auto"
+        className="Container w-full h-screen py-10 bg-cover bg-no-repeat text-center relative overflow-y-auto"
         style={{ backgroundImage: `url(${lightBg})` }}
       >
         <div className="formWrap pt-44 lg:pt-56" style={{ maxWidth: 500 }}>
           <div>
             <div
+              // data-aos="zoom-in"
               style={{
                 boxShadow:
                   "0 2px 5px rgba(0,0,0,0.12), 1px 1px 2px rgba(0,0,0,0.24)",
