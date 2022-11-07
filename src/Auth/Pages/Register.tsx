@@ -15,9 +15,7 @@ import {
   BankOutlined,
   MailOutlined,
 } from "@ant-design/icons";
-import {
-  generalValidationRules,
-} from "../../FormHelpers/validation";
+import { generalValidationRules } from "../../FormHelpers/validation";
 import { Link } from "react-router-dom";
 
 export const Register = () => {
@@ -62,7 +60,10 @@ export const Register = () => {
                 <br className="hidden md:flex" /> connected with us.
               </p>
               <div className="flex justify-center">
-                <Link to="/login" className="border justify-center flex items-center gap-3 border-white rounded px-16 py-1 text-white hover:border-gray-700 font-medium text-base transition duration-300 ease-in-out">
+                <Link
+                  to="/login"
+                  className="border justify-center flex items-center gap-3 border-white rounded px-16 py-1 text-white hover:border-gray-700 font-medium text-base transition duration-300 ease-in-out"
+                >
                   <i className="ri-arrow-left-line"></i> <span>Sign In</span>
                 </Link>
               </div>
@@ -266,7 +267,10 @@ export const Register = () => {
               </div>
             </div>
           </div>
-          <div className="flex items-center gap-2 justify-center text-xs py-5" style={{color: "var(--authPrimary)"}}>
+          <div
+            className="flex items-center gap-2 justify-center text-xs py-5"
+            style={{ color: "var(--authPrimary)" }}
+          >
             <span>Private Policy</span>
             <span className="text-black font-semibold text-xl">.</span>
             <span>Terms of service</span>
