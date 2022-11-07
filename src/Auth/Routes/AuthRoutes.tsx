@@ -8,7 +8,7 @@ const AuthRoutes = () => {
     <Routes>
       <Route path="/login" element={<Login />} />
       <Route path="/register" element={<Register />} />
-      <Route path="/register" element={<EmployeeRegister />} />
+      <Route path="/employee-registration" element={<EmployeeRegister />} />
     </Routes>
   );
 };

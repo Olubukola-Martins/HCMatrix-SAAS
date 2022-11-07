@@ -56,9 +56,7 @@ export const EmployeeRegister = () => {
               }}
               className="pb-5 pt-10 rounded-md px-6"
             >
-              <h2 className="text-xl md:text-2xl font-bold">
-                Login to your account
-              </h2>
+              <h2 className="text-xl md:text-2xl font-bold">Create Account</h2>
               <p className="pt-2 pb-7">Getting started made easy</p>
               <div className="lg:px-14">
                 <Form>
@@ -84,7 +82,22 @@ export const EmployeeRegister = () => {
                   </Form.Item>
                   <Form.Item
                     name="password"
-                    rules={generalValidationRules}
+                    rules={[
+                      {
+                        required: true,
+                        message: "Field is required",
+                      },
+                      {
+                        min: 6,
+                        message: "password must be at least 6 characters",
+                      },
+                      // {
+                      //   validator: (_, value) =>
+                      //     value && value.includes("A")
+                      //       ? Promise.resolve()
+                      //       : Promise.reject("Password does not match criteria."),
+                      // },
+                    ]}
                     hasFeedback
                   >
                     <Input
@@ -97,10 +110,41 @@ export const EmployeeRegister = () => {
                     />
                   </Form.Item>
 
-                  <button className="authBtn w-full mt-4 mb-3">Sign In</button>
+                  <Form.Item
+                    name="CPassword"
+                    dependencies={["password"]}
+                    rules={[
+                      {
+                        required: true,
+                        message: "Field is required",
+                      },
+                      ({ getFieldValue }) => ({
+                        validator(_, value) {
+                          if (!value || getFieldValue("password") === value) {
+                            return Promise.resolve();
+                          }
+                          return Promise.reject(
+                            "The two passwords that you entered does not match."
+                          );
+                        },
+                      }),
+                    ]}
+                    hasFeedback
+                  >
+                    <Input
+                      prefix={
+                        <LockOutlined className="site-form-item-icon pr-1" />
+                      }
+                      placeholder="Conform Password"
+                      className="rounded border-slate-400"
+                      style={{ padding: "6px 5px" }}
+                    />
+                  </Form.Item>
+
+                  <button className="authBtn w-full mt-4 mb-3">Sign Up</button>
                 </Form>
                 <Divider>
-                  <span className="text-sm">Sign In with</span>
+                  <span className="text-sm">Sign Up with</span>
                 </Divider>
                 <div className="flex items-center justify-center gap-6">
                   <img
