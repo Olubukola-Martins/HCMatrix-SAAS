@@ -1,4 +1,5 @@
 import peachBg from "../Assets/Images/peachBg.png";
+// import greenBg from "../Assets/Images/greenBg.png";
 import lightBg from "../Assets/Images/lightBg.png";
 import logo from "../Assets/Images/logo.png";
 import microsoft from "../Assets/Images/microsoft.svg";
@@ -15,7 +16,6 @@ import {
   MailOutlined,
 } from "@ant-design/icons";
 import {
-  emailValidationRules,
   generalValidationRules,
 } from "../../FormHelpers/validation";
 import { Link } from "react-router-dom";
@@ -87,7 +87,7 @@ export const Register = () => {
                 Create Company Account
               </h2>
               <p className="pt-2 pb-7">Getting started made easy</p>
-              <div className="px-4">
+              <div className="lg:px-14">
                 <Form>
                   <Form.Item
                     name="fullName"
@@ -232,7 +232,7 @@ export const Register = () => {
                       style={{ padding: "6px 5px" }}
                     />
                   </Form.Item>
-                  <button className="button w-full mt-4 mb-3">Sign Up</button>
+                  <button className="authBtn w-full mt-4 mb-3">Sign Up</button>
                 </Form>
                 <Divider>
                   <span className="text-sm">Sign Up with</span>
@@ -266,10 +266,10 @@ export const Register = () => {
               </div>
             </div>
           </div>
-          <div className="flex items-center gap-2 justify-center text-xs py-5">
-            <span className="text-caramel">Private Policy</span>
+          <div className="flex items-center gap-2 justify-center text-xs py-5" style={{color: "var(--authPrimary)"}}>
+            <span>Private Policy</span>
             <span className="text-black font-semibold text-xl">.</span>
-            <span className="text-caramel">Terms of service</span>
+            <span>Terms of service</span>
           </div>
         </div>
       </div>
