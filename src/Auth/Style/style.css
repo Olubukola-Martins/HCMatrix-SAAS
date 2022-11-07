@@ -5,3 +5,20 @@
   transform: translate(-50%, -50%);
   width: 90%;
 }
+
+.authIntro {
+  height: 100vh;
+}
+
+.authIntroInner {
+  height: 80vh;
+}
+
+@media (max-width: 768px) {
+  .authIntro {
+    height: 65vh;
+  }
+  .authIntroInner {
+    height: 50vh;
+  }
+}

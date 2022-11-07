@@ -45,15 +45,12 @@ export const Register = () => {
   return (
     <div className="grid grid-cols-1 lg:grid-cols-2">
       <div
-        className="Container w-full h-screen text-white py-2 bg-cover bg-no-repeat"
+        className="Container w-full text-white py-2 bg-cover bg-no-repeat authIntro"
         style={{ backgroundImage: `url(${peachBg})` }}
       >
         <div>
           <img src={logo} alt="logo" className="h-16" />
-          <div
-            className="flex items-center justify-center"
-            style={{ height: "80vh" }}
-          >
+          <div className="flex items-center justify-center authIntroInner">
             <div className="text-center">
               <h2 className="text-white text-xl font-bold">
                 Welcome To HCMatrix!
@@ -63,9 +60,11 @@ export const Register = () => {
                 please login with your personal information to stay
                 <br className="hidden md:flex" /> connected with us.
               </p>
-              <button className="border border-white rounded px-16 py-1 text-white hover:border-gray-700 font-medium text-base transition duration-300 ease-in-out">
-                Sign In
-              </button>
+              <div className="flex justify-center">
+                <button className="border justify-center flex items-center gap-3 border-white rounded px-16 py-1 text-white hover:border-gray-700 font-medium text-base transition duration-300 ease-in-out">
+                  <i className="ri-arrow-left-line"></i> <span>Sign In</span>
+                </button>
+              </div>
             </div>
           </div>
         </div>
@@ -74,7 +73,7 @@ export const Register = () => {
         className="Container w-full h-screen py-10 bg-cover bg-no-repeat text-center relative overflow-auto"
         style={{ backgroundImage: `url(${lightBg})` }}
       >
-        <div className="formWrap pt-52" style={{ maxWidth: 500 }}>
+        <div className="formWrap pt-44 lg:pt-56" style={{ maxWidth: 500 }}>
           <div>
             <div
               style={{
@@ -83,7 +82,9 @@ export const Register = () => {
               }}
               className="pb-5 pt-6 rounded-md px-6"
             >
-              <h2 className="text-2xl font-bold">Create Company Account</h2>
+              <h2 className="text-xl md:text-2xl font-bold">
+                Create Company Account
+              </h2>
               <p className="pt-2 pb-7">Getting started made easy</p>
               <div className="px-4">
                 <Form>
