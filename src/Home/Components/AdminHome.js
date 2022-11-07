@@ -18,7 +18,7 @@ import { settingNavItems } from "../../Settings/Data";
 import PendingItem from "../Components/PendingItem";
 import CustomizeDashboardModal from "../Components/CustomizeDashboardModal";
 
-const Home = () => {
+export const AdminHome = () => {
   const [openId, setOpenId] = useState("");
 
   const handlePendingClick = (val) => {
@@ -253,4 +253,3 @@ const Home = () => {
   );
 };
 
-export default Home;

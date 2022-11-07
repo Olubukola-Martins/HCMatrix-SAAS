@@ -6,8 +6,6 @@ import { Link } from "react-router-dom";
 import SearchModal from "./Search/SearchModal";
 import Themes from "../../Themes/Themes";
 import TransferOwnership from "./TransferOwnership";
-
-import UserLicense from "../../Billing/Components/UserLicense";
 import { AutoComplete, Avatar, Badge, Dropdown, Select } from "antd";
 
 const companies = [
@@ -103,7 +101,6 @@ const TopBar = ({
 }: IProps) => {
   const [anchorEl, setAnchorEl] = useState(null);
   const [transferOwnershipModal, setTransferOwnershipModal] = useState(false);
-  const [licenseModal, setLicenseModal] = useState(false);
   const open = Boolean(anchorEl);
   const handleClick = (event: any) => {
     setAnchorEl(event.currentTarget);
@@ -116,10 +113,6 @@ const TopBar = ({
 
   const [openSearchModal, setOpenSearchModal] = useState(false);
 
-  const openLicenseModal = () => {
-    setLicenseModal(true);
-    handleClose();
-  };
   const [options, setOptions] = useState(companies);
 
   const onSearch = (searchText: string) => {
@@ -135,10 +128,6 @@ const TopBar = ({
   };
   return (
     <>
-      <UserLicense
-        open={licenseModal}
-        handleClose={() => setLicenseModal(false)}
-      />
       <div className="bg-mainBg w-full py-3 sticky top-0 z-50 text-accent shadow-md">
         <div className="px-5 lg:px-12 flex items-center justify-between Container">
           <div className="flex items-center gap-3">
@@ -263,12 +252,12 @@ const TopBar = ({
                       <li className="border-b-2 pb-2 cursor-pointer hover:text-caramel">
                         Advanced Settings
                       </li>
-                      <li
-                        onClick={openLicenseModal}
+                      <Link
+                      to="/billings"
                         className="border-b-2 pb-2 cursor-pointer hover:text-caramel"
                       >
                         Billings
-                      </li>
+                      </Link>
                       <li className="border-b-2 pb-2 cursor-pointer hover:text-caramel">
                         Change language
                       </li>

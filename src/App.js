@@ -8,6 +8,7 @@ import SelfServiceRoutes from "./Self_Service/Routes/SelfServiceRoutes";
 import SettingRoutes from "./Settings/Routes/SettingRoutes";
 import { QueryClientProvider, QueryClient } from "react-query";
 import { ReactQueryDevtools } from "react-query/devtools";
+import HomeRoute from "./Home/HomeRoute";
 
 const queryClient = new QueryClient();
 
@@ -16,7 +17,7 @@ function App() {
     <QueryClientProvider client={queryClient}>
       <Router>
         <AuthRoutes />
-
+        <HomeRoute/>
         <SettingRoutes />
         <BillingRoutes />
         <PayrollRoutes />

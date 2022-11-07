@@ -70,7 +70,7 @@ const CompanyOrganogram = () => {
   const orgCard = ({ position, name, image, isPrimary }) => {
     return (
       <StyledNode>
-        <div className="  flex flex-col items-center gap-2 text-white">
+        <div className="flex flex-col items-center gap-2 text-white">
           <img
             class="w-10 h-10 rounded-full relative border-white border-2 bg-caramel shadow-sm"
             src="https://picsum.photos/190"

@@ -21,6 +21,12 @@ import HealthAccessSettings from "../Pages/HealthAccess/HealthAccessSettings";
 import NewSurveyForm from "../Pages/Survey/NewSurveyForm";
 import SingleSurveyForm from "../Pages/Survey/SingleSurveyForm";
 import CRBHome from "../Pages/ConferenceRoomBooking.js/CRBHome";
+import Onboarding from "../Pages/Onboarding/Onboarding.js";
+import StartOnboarding from "../Pages/Onboarding/StartOnboarding";
+import HandOver from "../Pages/HandOver/HandOver";
+import NewForm from "../Pages/HandOver/NewForm";
+import HandOverDetails from "../Pages/HandOver/HandOverDetails";
+import HRLetters from "../Pages/HRLetters/HRLetters";
 
 const SelfServiceRoutes = () => {
   return (
@@ -85,6 +91,24 @@ const SelfServiceRoutes = () => {
           path="/self-service/health-access/settings"
           element={<HealthAccessSettings />}
         />
+
+        {/* Onboarding */}
+        <Route path="/self-service/onboarding" element={<Onboarding />} />
+        <Route
+          path="/self-service/onboarding/:id"
+          element={<StartOnboarding />}
+        />
+
+        {/* Handover */}
+        <Route path="/self-service/handover-form" element={<HandOver />} />
+        <Route path="/self-service/handover-new-form" element={<NewForm />} />
+        <Route
+          path="/self-service/handover-form/:id"
+          element={<HandOverDetails />}
+        />
+
+        {/* HR Letters */}
+        <Route path="/self-service/hr-letters" element={<HRLetters />} />
       </Routes>
     </>
   );

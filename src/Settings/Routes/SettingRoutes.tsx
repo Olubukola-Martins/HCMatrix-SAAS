@@ -4,7 +4,6 @@ import GeneralSettings from "../Pages/General/GeneralSettings";
 import CompanyDetails from "../Pages/General/CompanyDetails";
 import FromAddresses from "../Pages/General/FromAddresses";
 import Domains from "../Pages/General/Domains";
-import EmployeeProfiles from "../Pages/Organization/EmployeeProfiles/EmployeeProfiles";
 import UserProfiles from "../Pages/Organization/UserProfiles/UserProfiles";
 import Locations from "../Pages/Organization/Locations/Locations";
 import LocationDetail from "../Pages/Organization/Locations/LocationDetail";
@@ -28,6 +27,7 @@ import CreateWorkflow from "../Pages/UserAccessControl/Automation/Workflows/Crea
 import PayrollSettings from "../Pages/Payroll/PayrollSettings";
 import Holidays from "../Pages/General/Holidays";
 import ResignationPolicy from "../Pages/Policies/ResignationPolicy";
+import Employees from "../Pages/Organization/EmployeeProfiles/Employees";
 
 const SettingRoutes = () => {
   return (
@@ -39,7 +39,6 @@ const SettingRoutes = () => {
       <Route path="/settings/from-addresses" element={<FromAddresses />} />
       <Route path="/settings/locations" element={<Locations />} />
       <Route path="/settings/locations/:id" element={<LocationDetail />} />
-      <Route path="/settings/employee-profile" element={<EmployeeProfiles />} />
       <Route path="/settings/user-profile" element={<UserProfiles />} />
       <Route
         path="/settings/employee-profile/id"
@@ -48,7 +47,8 @@ const SettingRoutes = () => {
       <Route path="/settings/holidays" element={<Holidays />} />
 
       {/* Organization */}
-      <Route path="/settings/employee-profile" element={<EmployeeProfiles />} />
+      {/* <Route path="/settings/employee-profile" element={<EmployeeProfiles />} /> */}
+      <Route path="/settings/employees" element={<Employees />} />
       <Route path="/settings/user-profile" element={<UserProfiles />} />
       <Route path="/settings/designations" element={<Designations />} />
       <Route
