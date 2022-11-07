@@ -7,9 +7,6 @@ import loan from "../../Self_Service/Assets/Images/loan.svg";
 import leave from "../../Self_Service/Assets/Images/leave.svg";
 import health from "../../Self_Service/Assets/Images/health.svg";
 import payslip from "../../Self_Service/Assets/Images/payslip.svg";
-import attendance from "../../Self_Service/Assets/Images/attendance.svg";
-import vehicle from "../../Self_Service/Assets/Images/vehicle.svg";
-import requisition from "../../Self_Service/Assets/Images/requisition.svg";
 import { Tabs } from "antd";
 import { Birthdays } from "./Celebrations/Birthdays";
 import { WorkAnniversary } from "./Celebrations/WorkAnniversary";
@@ -140,11 +137,11 @@ export const EmployeeHome = () => {
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mt-10">
           <div className="col-span-2">
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              <SelfBox title="Onboarding" icon={Onboarding} link="onboarding" />
-              <SelfBox title="Loan" icon={loan} link="loan" />
-              <SelfBox title="Leave" icon={leave} link="leave" />
-              <SelfBox title="Health access" icon={health} link="#" />
-              <SelfBox title="My Payslip" icon={payslip} link="#" />
+              <SelfBox title="Onboarding" icon={Onboarding} link="/self-service/onboarding" />
+              <SelfBox title="Loan" icon={loan} link="/self-service/loan" />
+              <SelfBox title="Leave" icon={leave} link="/self-service/leave" />
+              <SelfBox title="Health access" icon={health} link="/self-service/health-access" />
+              <SelfBox title="My Payslip" icon={payslip} link="/payroll/employee-payslip" />
               <Link to="/self-service/home" className="bg-card p-2 rounded-lg shadow cursor-pointer group text-accent">
                 <div className="bg-mainBg transition ease-in-out duration-300 py-2 px-3 rounded-lg  group-hover:border-b-2 group-hover:border-caramel group-hover:shadow-md">
                   <div className="flex items-center justify-between">

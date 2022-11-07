@@ -1,5 +1,4 @@
 import { Dropdown, Popover } from "antd";
-import React from "react";
 import { Link } from "react-router-dom";
 import Themes from "../../Themes/Themes";
 
@@ -31,21 +30,6 @@ const requisitionContent = (
 const moreContent = (
   <Themes>
     <ul className="py-3 shadow-md px-4 text-sm font-medium rounded-md flex flex-col gap-3">
-      <li className="cursor-pointer hover:text-caramel">My Trainings</li>
-      <li className="cursor-pointer hover:text-caramel">Appraisal</li>
-      <Link
-        to="/self-service/hr-letters"
-        className="cursor-pointer hover:text-caramel"
-      >
-        HR Letters
-      </Link>
-      <li className="cursor-pointer hover:text-caramel">Documents</li>
-      <Link
-        to="/self-service/conference-room-booking"
-        className="cursor-pointer hover:text-caramel"
-      >
-        Meeting Room Booking
-      </Link>
       <Link
         to="/self-service/survey"
         className="cursor-pointer hover:text-caramel"
@@ -53,10 +37,16 @@ const moreContent = (
         Survey Forms
       </Link>
       <Link
-        to="/self-service/handover-form"
+        to="/self-service/conference-room-booking"
         className="cursor-pointer hover:text-caramel"
       >
-        Hand-over Forms
+        Meeting Room Booking
+      </Link>
+      <Link
+        to="/self-service/hr-letters"
+        className="cursor-pointer hover:text-caramel"
+      >
+        HR Letters & Documents
       </Link>
     </ul>
   </Themes>
@@ -128,7 +118,7 @@ export const MoreBox = () => {
 const SelfBox = ({ title, desc, icon, link }: IProps) => {
   return (
     <Link
-      to={`/self-service/${link}`}
+      to={link}
       className="bg-card p-2 rounded-lg shadow cursor-pointer group text-accent"
     >
       <div className="bg-mainBg transition ease-in-out duration-300 py-2 px-3 rounded-lg group-hover:border-b-2 group-hover:border-caramel group-hover:shadow-md">

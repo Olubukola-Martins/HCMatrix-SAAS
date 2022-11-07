@@ -109,7 +109,7 @@ const EmployeePayslips = () => {
             </div>
           </div>
           <div className="flex items-center justify-end gap-2">
-            <button className="button">Download</button>
+            <button className="button">Export</button>
             <button className="transparentButton">September 2022</button>
           </div>
           <div className="mt-4">
