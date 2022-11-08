@@ -3,7 +3,7 @@ import { AdminHome } from "../Components/AdminHome";
 import { EmployeeHome } from "../Components/EmployeeHome";
 
 function Home() {
-  const [role, setRole] = useState("employee");
+  const [role, setRole] = useState("admin");
   return (
     <div>
       {role === "admin" && <AdminHome />}
