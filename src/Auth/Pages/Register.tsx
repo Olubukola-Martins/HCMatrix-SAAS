@@ -134,19 +134,20 @@ export const Register = () => {
                       showSearch
                       allowClear
                       optionLabelProp="label"
-                      className="border-red-400"
+                      className="authSelectTag"
                       placeholder={
                         <div className="flex justify-start items-center">
                           <BankOutlined className="site-form-item-icon pr-1 text-black" />
                           &nbsp; Industry
                         </div>
                       }
-                      style={{ width: "100%" }}
+                      style={{ width: "100%"}}
                     >
                       {industryData.map((data) => (
                         <Select.Option
                           key={data}
                           value={data}
+                           className="py-2"
                           label={
                             <div className="flex justify-start items-center">
                               <BankOutlined className="site-form-item-icon pr-1 text-black" />
@@ -188,7 +189,7 @@ export const Register = () => {
                         message: "Field is required",
                       },
                       {
-                        min: 6,
+                        min: 8,
                         message: "password must be at least 6 characters",
                       },
                       // {
