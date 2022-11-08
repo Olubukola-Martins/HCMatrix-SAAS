@@ -1,21 +1,41 @@
-.signCard {
-  background: rgba(255, 255, 255, 0.69);
-  border-radius: 16px;
-  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
-  backdrop-filter: blur(5.3px);
-  -webkit-backdrop-filter: blur(5.3px);
-  border: 1px solid rgba(255, 255, 255, 0.3);
-  padding: 15px;
+:root {
+  --authPrimary: #ff6647;
+  /* --authPrimary: #01966b; */
 }
 
-.landingBg {
-  @apply min-h-screen flex justify-center md:justify-end items-center px-4 md:px-10 lg:px-20 py-10;
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-  background-image: url("../Assets/Images/fullBg.jpg");
+.authBtn {
+  @apply border rounded font-medium text-white transition ease-in-out duration-300 text-sm tracking-wider hover:opacity-70;
+  padding: 7px 8.5px;
+  background: var(--authPrimary);
+  border-color: (var(--authPrimary));
 }
 
-.social_wrap img {
-  @apply h-10 cursor-pointer hover:shadow-md transition ease-in duration-200;
+.formWrap {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 90%;
+}
+
+.authIntro {
+  height: 100vh;
+}
+
+.authIntroInner {
+  height: 80vh;
+}
+
+.authSelectTag.ant-select:not(.ant-select-customize-input)
+  .ant-select-selector {
+  @apply rounded border-slate-400;
+}
+
+@media (max-width: 768px) {
+  .authIntro {
+    height: 65vh;
+  }
+  .authIntroInner {
+    height: 50vh;
+  }
 }
