@@ -293,6 +293,10 @@ input[type="text"].ant-input,
   background: var(--caramel);
 }
 
+.tabBlackActive .ant-tabs-tab.ant-tabs-tab-active .ant-tabs-tab-btn {
+  color: var(--accent);
+}
+
 /* modal  */
 .ant-modal-content {
   overflow: hidden;

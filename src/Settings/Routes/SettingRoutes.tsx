@@ -27,7 +27,7 @@ import PayrollSettings from "../Pages/Payroll/PayrollSettings";
 import Holidays from "../Pages/General/Holidays";
 import ResignationPolicy from "../Pages/Policies/ResignationPolicy";
 import Employees from "../Pages/Organization/EmployeeProfiles/Employees";
-import { Profile } from "../Pages/Organization/EmployeeProfiles/Profile";
+import { MyProfile } from "../Pages/Organization/EmployeeProfiles/MyProfile";
 
 const SettingRoutes = () => {
   return (
@@ -41,7 +41,7 @@ const SettingRoutes = () => {
       <Route path="/settings/locations/:id" element={<LocationDetail />} />
       <Route path="/settings/user-profile" element={<UserProfiles />} />
       <Route path="/settings/holidays" element={<Holidays />} />
-      <Route path="/settings/profile" element={<Profile />} />
+      <Route path="/settings/profile" element={<MyProfile />} />
 
       {/* Organization */}
       <Route path="/settings/employees" element={<Employees />} />
