@@ -1,7 +1,7 @@
 import { Tabs, Tooltip } from "antd";
 import { PageIntro } from "../../../../Layout/Components/PageIntro";
 import DashboardLayout from "../../../../Layout/DashboardLayout";
-import { Profile } from "../../../Components/Organization/EmployeeProfiles/MyProfile/Profile";
+import { Profile } from "../../../Components/Organization/EmployeeProfiles/MyProfile/Profile/Profile";
 
 export const MyProfile = () => {
   return (

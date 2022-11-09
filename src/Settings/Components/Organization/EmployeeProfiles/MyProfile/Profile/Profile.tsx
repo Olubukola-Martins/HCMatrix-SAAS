@@ -9,8 +9,8 @@ import {
 } from "antd";
 import moment from "moment";
 import { useState } from "react";
-import { countryList } from "../../../../../Helpers/countryList";
-import { stateList } from "../../../../../Helpers/stateList";
+import { countryList } from "../../../../../../Helpers/countryList";
+import { stateList } from "../../../../../../Helpers/stateList";
 const { Option } = Select;
 
 export const Profile = () => {
