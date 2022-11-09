@@ -1,4 +1,4 @@
-import { Tabs } from "antd";
+import { Tabs, Tooltip } from "antd";
 import { PageIntro } from "../../../../Layout/Components/PageIntro";
 import DashboardLayout from "../../../../Layout/DashboardLayout";
 import { Profile } from "../../../Components/Organization/EmployeeProfiles/MyProfile/Profile";
@@ -38,7 +38,9 @@ export const MyProfile = () => {
               </div>
             </div>
             <div className="flex gap-3 text-xl">
-              <i className="ri-pencil-line cursor-pointer hover:text-caramel"></i>
+              <Tooltip title="Edit">
+                <i className="ri-pencil-line cursor-pointer hover:text-caramel"></i>
+              </Tooltip>
               <i className="ri-more-2-fill cursor-pointer hover:text-caramel"></i>
             </div>
           </div>
@@ -46,11 +48,26 @@ export const MyProfile = () => {
             <Tabs.TabPane tab="Profile" key="1">
               <Profile />
             </Tabs.TabPane>
-            <Tabs.TabPane tab="Tab 2" key="2">
-              Content of Tab Pane 2
+            <Tabs.TabPane tab="Job Information" key="2">
+              Job Information
             </Tabs.TabPane>
-            <Tabs.TabPane tab="Tab 3" key="3">
-              Content of Tab Pane 3
+            <Tabs.TabPane tab="Finance" key="8">
+              Finance
+            </Tabs.TabPane>
+            <Tabs.TabPane tab="Background" key="3">
+              Background
+            </Tabs.TabPane>
+            <Tabs.TabPane tab="Manager(s)/Direct Report(s)" key="4">
+              Manager(s)/Direct Report(s)
+            </Tabs.TabPane>
+            <Tabs.TabPane tab="User Groups" key="5">
+              User Groups
+            </Tabs.TabPane>
+            <Tabs.TabPane tab="History" key="6">
+              History
+            </Tabs.TabPane>
+            <Tabs.TabPane tab="Finger Prints" key="7">
+              Finger Prints
             </Tabs.TabPane>
           </Tabs>
         </div>

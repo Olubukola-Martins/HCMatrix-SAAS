@@ -9,7 +9,6 @@ import linkedin from "../Assets/Images/linkedin.svg";
 import { Divider, Form, Input, Select } from "antd";
 import "../Style/style.css";
 import { LockOutlined, MailOutlined } from "@ant-design/icons";
-import { generalValidationRules } from "../../FormHelpers/validation";
 import { Link } from "react-router-dom";
 import { useEffect } from "react";
 import Aos from "aos";
@@ -56,7 +55,7 @@ export const EmployeeRegister = () => {
         <div className="formWrap lg:pt-24" style={{ maxWidth: 500 }}>
           <div>
             <div
-             data-aos="fade-left"
+              data-aos="fade-left"
               style={{
                 boxShadow:
                   "0 2px 5px rgba(0,0,0,0.12), 1px 1px 2px rgba(0,0,0,0.24)",
@@ -142,7 +141,7 @@ export const EmployeeRegister = () => {
                       prefix={
                         <LockOutlined className="site-form-item-icon pr-1" />
                       }
-                      placeholder="Conform Password"
+                      placeholder="Confirm Password"
                       className="rounded border-slate-400"
                       style={{ padding: "6px 5px" }}
                     />

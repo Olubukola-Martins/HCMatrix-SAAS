@@ -236,7 +236,7 @@ export const Register = () => {
                       prefix={
                         <LockOutlined className="site-form-item-icon pr-1" />
                       }
-                      placeholder="Conform Password"
+                      placeholder="Confirm Password"
                       className="rounded border-slate-400"
                       style={{ padding: "6px 5px" }}
                     />
