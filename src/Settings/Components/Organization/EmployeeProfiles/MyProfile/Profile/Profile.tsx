@@ -23,12 +23,7 @@ export const Profile = () => {
       disable ? "Editing enabled Successfully" : "Editing disabled successfully"
     );
   };
-  const inputStyle = {
-    padding: "7.3px 6px",
-    width: "100%",
-    borderRadius: "3px",
-    background: "#fff",
-  };
+
 
   const initialValues = {
     dateOfBirth: moment("2020-06-09T12:40:14+0000"),
@@ -72,7 +67,7 @@ export const Profile = () => {
             <Form.Item name="dateOfBirth" label="Date of Birth">
               <DatePicker
                 format="YYYY/MM/DD"
-                style={inputStyle}
+                 className="generalInputStyle"
                 disabled={disable}
               />
             </Form.Item>
@@ -97,18 +92,18 @@ export const Profile = () => {
                 name="passportExpirationDate"
                 label="Passport Expiration Date"
               >
-                <DatePicker format="YYYY/MM/DD" style={inputStyle} />
+                <DatePicker format="YYYY/MM/DD" className="generalInputStyle" />
               </Form.Item>
             )}
             {hiddenInputs === "NotCitizen" && (
               <Form.Item label="Upload valid document">
                 <Upload>
-                  <Input type="file" style={inputStyle} />
+                  <Input type="file" className="generalInputStyle" />
                 </Upload>
               </Form.Item>
             )}
             {/* <Form.Item name="document" className="hidden">
-              <Input style={inputStyle} disabled={disable} />
+              <Input className="generalInputStyle" disabled={disable} />
             </Form.Item> */}
 
             <Form.Item name="gender" label="Gender">
