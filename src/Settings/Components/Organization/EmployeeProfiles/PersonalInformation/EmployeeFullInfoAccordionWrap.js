@@ -1,6 +1,6 @@
 import React from "react";
 import FramerAccordian from "../../../custom/FramerAccordian";
-import Dependant from "./Dependant";
+import Dependant from "./DependantOld";
 import EmployeeInformation from "./EmployeeInformation";
 import FingerPrints from "./FingerPrints";
 import ManagerDirectReport from "./ManagerDirectReport";

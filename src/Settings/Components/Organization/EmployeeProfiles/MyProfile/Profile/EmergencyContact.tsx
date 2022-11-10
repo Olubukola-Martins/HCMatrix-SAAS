@@ -1,11 +1,10 @@
-import { Form, Input, InputNumber, message, Select, Tooltip } from "antd";
+import { Form, Input, message, Select, Tooltip } from "antd";
 import { useState } from "react";
 import { phoneCodeList } from "../../../../../../Helpers/phoneCodeList";
 const { Option } = Select;
 
 export const EmergencyContact = () => {
   const [disable, setDisable] = useState(true);
-  const [getPhoneCode, setGetPhoneCode] = useState("");
 
   const enableEdit = () => {
     setDisable(!disable);
@@ -14,20 +13,15 @@ export const EmergencyContact = () => {
     );
   };
 
-  const onsubmit = (values: {
-    name: any;
-    address: any;
-    relationship: any;
-    phone: any;
-  }) => {
-    const { name, address, relationship, phone } = values;
+  const onsubmit = (values: any) => {
+    const props = {
+      name: values.name,
+      address: values.address,
+      relationship: values.relationship,
+      phone: `${values.phoneCode} ${values.phone}`,
+    };
 
-    console.log(name, address, relationship, `${getPhoneCode} + ${phone}`);
-  };
-
-  const handlePhoneCode = (val: any) => {
-    // console.log(event);
-    setGetPhoneCode(val);
+    console.log(props);
   };
 
   const initialValues = {
@@ -38,21 +32,22 @@ export const EmergencyContact = () => {
   };
 
   const selectBefore = (
-    <Select
-      showSearch
-      allowClear
-      optionLabelProp="label"
-      disabled={disable}
-      defaultValue="+234"
-      style={{ width: 90 }}
-      onChange={handlePhoneCode}
-    >
-      {phoneCodeList.map((data) => (
-        <Option key={data.code} value={data.code} label={data.code}>
-          {data.code}
-        </Option>
-      ))}
-    </Select>
+    <Form.Item name="phoneCode" noStyle>
+      <Select
+        showSearch
+        allowClear
+        optionLabelProp="label"
+        disabled={disable}
+        defaultValue="+234"
+        style={{ width: 90 }}
+      >
+        {phoneCodeList.map((data) => (
+          <Option key={data.code} value={data.code} label={data.code}>
+            {data.code}
+          </Option>
+        ))}
+      </Select>
+    </Form.Item>
   );
   return (
     <div className="bg-mainBg shadow-sm rounded-md p-4 mt-5">
@@ -96,7 +91,7 @@ export const EmergencyContact = () => {
             </Select>
           </Form.Item>
           <Form.Item name="phone" label="Phone Number">
-            <InputNumber
+            <Input
               addonBefore={selectBefore}
               size="large"
               className="w-full"

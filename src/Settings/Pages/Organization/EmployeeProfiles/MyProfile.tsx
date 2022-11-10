@@ -1,6 +1,9 @@
 import { Tabs, Tooltip } from "antd";
 import { PageIntro } from "../../../../Layout/Components/PageIntro";
 import DashboardLayout from "../../../../Layout/DashboardLayout";
+import { Finance } from "../../../Components/Organization/EmployeeProfiles/MyProfile/Finance";
+import { JobInformation } from "../../../Components/Organization/EmployeeProfiles/MyProfile/JobInformation";
+import { Dependents } from "../../../Components/Organization/EmployeeProfiles/MyProfile/Profile/Dependents";
 import { EmergencyContact } from "../../../Components/Organization/EmployeeProfiles/MyProfile/Profile/EmergencyContact";
 import { Profile } from "../../../Components/Organization/EmployeeProfiles/MyProfile/Profile/Profile";
 
@@ -48,13 +51,14 @@ export const MyProfile = () => {
           <Tabs defaultActiveKey="1" className="mt-5 tabBlackActive">
             <Tabs.TabPane tab="Profile" key="1">
               <Profile />
-              <EmergencyContact/>
+              <EmergencyContact />
+              <Dependents />
             </Tabs.TabPane>
             <Tabs.TabPane tab="Job Information" key="2">
-              Job Information
+            <JobInformation />
             </Tabs.TabPane>
             <Tabs.TabPane tab="Finance" key="8">
-              Finance
+               <Finance/>
             </Tabs.TabPane>
             <Tabs.TabPane tab="Background" key="3">
               Background
