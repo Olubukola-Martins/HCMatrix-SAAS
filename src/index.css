@@ -351,3 +351,7 @@ input[type="text"].ant-input,
   border-radius: 3px;
   background: var(--background);
 }
+
+.drawerBg .ant-drawer-wrapper-body {
+ background: var(--card);
+}

@@ -1,14 +1,17 @@
 import { Drawer } from "antd";
+import { IDrawerProps } from "../../../../../../AppTypes/Component";
 
-export const AddDependents = (open: any, handleClose: any) => {
+export const AddDependents = ({ open, handleClose }: IDrawerProps) => {
   return (
     <Drawer
       title="Basic Drawer"
       placement="right"
-      onClose={handleClose}
+      onClose={() => handleClose()}
       open={open}
+      // style={{backgroundColor: "red"}}
+      className="drawerBg"
     >
-      <p>Some contents...</p>
+      <p onClick={() => handleClose()}>Some contents...</p>
       <p>Some contents...</p>
       <p>Some contents...</p>
     </Drawer>

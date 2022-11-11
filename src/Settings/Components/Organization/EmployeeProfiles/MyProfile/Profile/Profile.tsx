@@ -24,7 +24,6 @@ export const Profile = () => {
     );
   };
 
-
   const initialValues = {
     dateOfBirth: moment("2020-06-09T12:40:14+0000"),
     nationality: "Guatemala",
@@ -32,7 +31,7 @@ export const Profile = () => {
     maritalStatus: "married",
     state: "Abia",
     lga: "",
-    employmentEligibility: "",
+    employmentEligibility: "citizen",
     passportExpirationDate: "",
   };
 
@@ -67,7 +66,7 @@ export const Profile = () => {
             <Form.Item name="dateOfBirth" label="Date of Birth">
               <DatePicker
                 format="YYYY/MM/DD"
-                 className="generalInputStyle"
+                className="generalInputStyle"
                 disabled={disable}
               />
             </Form.Item>

@@ -1,6 +1,5 @@
 import Search from "antd/lib/input/Search";
 import { Space, Table } from "antd";
-// import type { ColumnsType } from "antd/es/table";
 import React, { useState } from "react";
 import { ColumnsType } from "antd/lib/table";
 import { AddDependents } from "./AddDependents";
@@ -73,13 +72,15 @@ export const Dependents = () => {
             style={{ width: 200 }}
             className="rounded"
           />
-          <button className="button">Add Dependents</button>
+          <button className="button" onClick={() => setOpenDrawer(true)}>
+            Add Dependents
+          </button>
         </div>
 
-        {/* <AddDependents
+        <AddDependents
           open={openDrawer}
           handleClose={() => setOpenDrawer(false)}
-        /> */}
+        />
 
         <Table
           columns={columns}

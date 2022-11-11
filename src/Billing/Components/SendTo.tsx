@@ -1,18 +1,15 @@
 import { Form, Input, Modal } from "antd";
 import { Rule } from "antd/lib/form";
 import React from "react";
+import { IDrawerProps } from "../../AppTypes/Component";
 import {
   emailValidationRules,
   generalValidationRules,
 } from "../../FormHelpers/validation";
 import Themes from "../../Themes/Themes";
 
-interface IProps {
-  open: boolean;
-  handleClose: Function;
-}
 
-const SendTo = ({ open, handleClose }: IProps) => {
+const SendTo = ({ open, handleClose }: IDrawerProps) => {
   return (
     <Modal
       open={open}
