@@ -56,7 +56,7 @@ export const Login = () => {
         <div className="formWrap pt-10" style={{ maxWidth: 500 }}>
           <div>
             <div
-            data-aos="fade-left"
+              data-aos="fade-left"
               style={{
                 boxShadow:
                   "0 2px 5px rgba(0,0,0,0.12), 1px 1px 2px rgba(0,0,0,0.24)",
@@ -104,8 +104,11 @@ export const Login = () => {
                     />
                   </Form.Item>
 
-                  <button className="authBtn w-full mt-4 mb-3">Sign In</button>
+                  <button className="authBtn w-full mt-4">Sign In</button>
                 </Form>
+                <span className="mb-3 flex justify-end cursor-pointer pt-2 text-sm hover:text-black">
+                  Forgot password ?
+                </span>
                 <Divider>
                   <span className="text-sm">Sign In with</span>
                 </Divider>

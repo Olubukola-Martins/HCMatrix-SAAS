@@ -1,16 +1,12 @@
 import { ErrorMessage, Field, Form, Formik } from "formik";
-import React from "react";
 import Themes from "../../Themes/Themes";
 import * as Yup from "yup";
 import { Link } from "react-router-dom";
 import { Modal } from "antd";
+import { IDrawerProps } from "../../AppTypes/Component";
 
-interface IProps {
-  open: boolean;
-  handleClose: Function;
-}
 
-const CreateWalletPermission = ({ open, handleClose }: IProps) => {
+const CreateWalletPermission = ({ open, handleClose }: IDrawerProps) => {
   const handleSubmit = () => {};
 
   return (

@@ -7,7 +7,6 @@ import Domains from "../Pages/General/Domains";
 import UserProfiles from "../Pages/Organization/UserProfiles/UserProfiles";
 import Locations from "../Pages/Organization/Locations/Locations";
 import LocationDetail from "../Pages/Organization/Locations/LocationDetail";
-import PersonalInformation from "../Pages/Organization/EmployeeProfiles/PersonalInformation";
 import Designations from "../Pages/Organization/Designations/Designations";
 import DesignationDetail from "../Pages/Organization/Designations/DesignationDetail";
 import Groups from "../Pages/Organization/Groups/Groups";
@@ -28,6 +27,7 @@ import PayrollSettings from "../Pages/Payroll/PayrollSettings";
 import Holidays from "../Pages/General/Holidays";
 import ResignationPolicy from "../Pages/Policies/ResignationPolicy";
 import Employees from "../Pages/Organization/EmployeeProfiles/Employees";
+import { MyProfile } from "../Pages/Organization/EmployeeProfiles/MyProfile";
 
 const SettingRoutes = () => {
   return (
@@ -40,14 +40,10 @@ const SettingRoutes = () => {
       <Route path="/settings/locations" element={<Locations />} />
       <Route path="/settings/locations/:id" element={<LocationDetail />} />
       <Route path="/settings/user-profile" element={<UserProfiles />} />
-      <Route
-        path="/settings/employee-profile/id"
-        element={<PersonalInformation />}
-      />
       <Route path="/settings/holidays" element={<Holidays />} />
+      <Route path="/settings/profile" element={<MyProfile />} />
 
       {/* Organization */}
-      {/* <Route path="/settings/employee-profile" element={<EmployeeProfiles />} /> */}
       <Route path="/settings/employees" element={<Employees />} />
       <Route path="/settings/user-profile" element={<UserProfiles />} />
       <Route path="/settings/designations" element={<Designations />} />

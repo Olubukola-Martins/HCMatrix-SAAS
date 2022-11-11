@@ -1,4 +1,6 @@
-export const calcDuration = (duration) => {
+import { Duration } from "moment";
+
+export const calcDuration = (duration: Duration) => {
   let ans = "";
 
   if (duration.asDays() > 0) {

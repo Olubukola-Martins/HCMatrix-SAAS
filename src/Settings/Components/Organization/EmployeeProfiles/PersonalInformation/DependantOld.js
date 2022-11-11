@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import "../../../../style/settingsStyle.css";
-import AddDependant from "./AddDependant";
+import AddDependant from "./AddDependantOld";
 
 const Dependant = () => {
   const [dependantModal, setDependantModal] = useState(false);

@@ -223,7 +223,7 @@ const TopBar = ({
                         todd@snapnetsolutions.com
                       </span>
                       <Link
-                        to="/settings/employee-profile/id"
+                        to="/settings/profile"
                         className="font-semibold border border-red-500 rounded bg-red-500 text-white transition ease-in-out duration-300 text-sm py-2 px-3 tracking-wider hover:opacity-70"
                       >
                         My Profile
@@ -253,7 +253,7 @@ const TopBar = ({
                         Advanced Settings
                       </li>
                       <Link
-                      to="/billings"
+                        to="/billings"
                         className="border-b-2 pb-2 cursor-pointer hover:text-caramel"
                       >
                         Billings
