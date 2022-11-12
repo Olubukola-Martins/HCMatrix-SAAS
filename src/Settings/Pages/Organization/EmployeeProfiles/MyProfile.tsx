@@ -1,21 +1,32 @@
-import { Tabs, Tooltip } from "antd";
+import { useState } from "react";
+import { Dropdown, Switch, Tabs, Tooltip } from "antd";
 import { PageIntro } from "../../../../Layout/Components/PageIntro";
 import DashboardLayout from "../../../../Layout/DashboardLayout";
 import { EducationDetails } from "../../../Components/Organization/EmployeeProfiles/MyProfile/Background/EducationDetails";
 import { EmploymentHistory } from "../../../Components/Organization/EmployeeProfiles/MyProfile/Background/EmploymentHistory";
 import { Skills } from "../../../Components/Organization/EmployeeProfiles/MyProfile/Background/Skills";
 import { Finance } from "../../../Components/Organization/EmployeeProfiles/MyProfile/Finance";
+import { FingerPrint } from "../../../Components/Organization/EmployeeProfiles/MyProfile/FingerPrint";
 import { JobInformation } from "../../../Components/Organization/EmployeeProfiles/MyProfile/JobInformation";
+import { DirectReports } from "../../../Components/Organization/EmployeeProfiles/MyProfile/ManagerDirectReport/DirectReports";
+import { Managers } from "../../../Components/Organization/EmployeeProfiles/MyProfile/ManagerDirectReport/Managers";
 import { Dependents } from "../../../Components/Organization/EmployeeProfiles/MyProfile/Profile/Dependents";
 import { EmergencyContact } from "../../../Components/Organization/EmployeeProfiles/MyProfile/Profile/EmergencyContact";
 import { Profile } from "../../../Components/Organization/EmployeeProfiles/MyProfile/Profile/Profile";
+import { UserGroups } from "../../../Components/Organization/EmployeeProfiles/MyProfile/UserGroups";
+import { EditMyProfile } from "../../../Components/Organization/EmployeeProfiles/MyProfile/EditMyProfile";
 
 export const MyProfile = () => {
+  const [role, setRole] = useState("admin");
+  const [openDrawer, setOpenDrawer] = useState(false);
   return (
     <DashboardLayout>
       <div className="Container mt-3">
         <PageIntro title="Profile" link="/" />
-
+        <EditMyProfile
+          open={openDrawer}
+          handleClose={() => setOpenDrawer(false)}
+        />
         <div className="bg-card p-5 mt-5">
           <div className="bg-mainBg shadow-sm rounded-md p-4 flex gap-3 justify-between">
             <div className="flex gap-3 items-center">
@@ -46,9 +57,43 @@ export const MyProfile = () => {
             </div>
             <div className="flex gap-3 text-xl">
               <Tooltip title="Edit">
-                <i className="ri-pencil-line cursor-pointer hover:text-caramel"></i>
+                <i
+                  className="ri-pencil-line cursor-pointer hover:text-caramel"
+                  onClick={() => setOpenDrawer(true)}
+                ></i>
               </Tooltip>
-              <i className="ri-more-2-fill cursor-pointer hover:text-caramel"></i>
+              <Dropdown
+                overlay={
+                  <div>
+                    {role === "admin" && (
+                      <ul className="bg-mainBg rounded border shadow-sm p-2 flex gap-1 flex-col mb-2">
+                        <li className="flex items-center gap-3">
+                          <span>Enable Self Service</span>
+                          <Switch size="small" defaultChecked />
+                        </li>
+                        <li className="cursor-pointer hover:text-caramel">
+                          Enable User
+                        </li>
+                        <li className="cursor-pointer hover:text-caramel">
+                          Suspend User
+                        </li>
+                      </ul>
+                    )}
+
+                    {role === "employee" && (
+                      <ul className="bg-mainBg rounded border shadow-sm p-2  mb-2">
+                        <li className="cursor-pointer hover:text-caramel">
+                          Submit Resignation
+                        </li>
+                      </ul>
+                    )}
+                  </div>
+                }
+                placement="topLeft"
+                trigger={["click"]}
+              >
+                <i className="ri-more-2-fill cursor-pointer hover:text-caramel"></i>
+              </Dropdown>
             </div>
           </div>
           <Tabs defaultActiveKey="1" className="mt-5 tabBlackActive">
@@ -66,21 +111,24 @@ export const MyProfile = () => {
             <Tabs.TabPane tab="Background" key="3">
               <div className="bg-mainBg shadow-sm rounded-md py-6 px-4 mt-5">
                 <EmploymentHistory />
-                <EducationDetails/>
-                 <Skills/>
+                <EducationDetails />
+                <Skills />
               </div>
             </Tabs.TabPane>
             <Tabs.TabPane tab="Manager(s)/Direct Report(s)" key="4">
-              Manager(s)/Direct Report(s)
+              <div className="bg-mainBg shadow-sm rounded-md py-6 px-4 mt-5">
+                <Managers />
+                <DirectReports />
+              </div>
             </Tabs.TabPane>
             <Tabs.TabPane tab="User Groups" key="5">
-              User Groups
+              <UserGroups />
             </Tabs.TabPane>
             <Tabs.TabPane tab="History" key="6">
               History
             </Tabs.TabPane>
             <Tabs.TabPane tab="Finger Prints" key="7">
-              Finger Prints
+              <FingerPrint />
             </Tabs.TabPane>
           </Tabs>
         </div>
