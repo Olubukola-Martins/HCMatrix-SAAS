@@ -15,10 +15,12 @@ import { EmergencyContact } from "../../../Components/Organization/EmployeeProfi
 import { Profile } from "../../../Components/Organization/EmployeeProfiles/MyProfile/Profile/Profile";
 import { UserGroups } from "../../../Components/Organization/EmployeeProfiles/MyProfile/UserGroups";
 import { EditMyProfile } from "../../../Components/Organization/EmployeeProfiles/MyProfile/EditMyProfile";
+import { Resignation } from "../../../Components/Organization/EmployeeProfiles/MyProfile/Resignation";
 
 export const MyProfile = () => {
-  const [role, setRole] = useState("admin");
+  const [role, setRole] = useState("employee");
   const [openDrawer, setOpenDrawer] = useState(false);
+  const [openResignation, setOpenResignation] = useState(false);
   return (
     <DashboardLayout>
       <div className="Container mt-3">
@@ -26,6 +28,10 @@ export const MyProfile = () => {
         <EditMyProfile
           open={openDrawer}
           handleClose={() => setOpenDrawer(false)}
+        />
+        <Resignation
+          open={openResignation}
+          handleClose={() => setOpenResignation(false)}
         />
         <div className="bg-card p-5 mt-5">
           <div className="bg-mainBg shadow-sm rounded-md p-4 flex gap-3 justify-between">
@@ -82,7 +88,10 @@ export const MyProfile = () => {
 
                     {role === "employee" && (
                       <ul className="bg-mainBg rounded border shadow-sm p-2  mb-2">
-                        <li className="cursor-pointer hover:text-caramel">
+                        <li
+                          onClick={() => setOpenResignation(true)}
+                          className="cursor-pointer hover:text-caramel"
+                        >
                           Submit Resignation
                         </li>
                       </ul>
