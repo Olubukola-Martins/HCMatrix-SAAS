@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import "../../../../style/settingsStyle.css";
-import AddSkill from "./AddSkill";
+import AddSkill from "./Old";
 
 const Skills = () => {
   const [newSkillFormModal, setNewSkillFormModal] = useState(false);

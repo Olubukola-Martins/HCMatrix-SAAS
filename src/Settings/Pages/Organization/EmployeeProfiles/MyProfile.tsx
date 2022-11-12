@@ -1,6 +1,9 @@
 import { Tabs, Tooltip } from "antd";
 import { PageIntro } from "../../../../Layout/Components/PageIntro";
 import DashboardLayout from "../../../../Layout/DashboardLayout";
+import { EducationDetails } from "../../../Components/Organization/EmployeeProfiles/MyProfile/Background/EducationDetails";
+import { EmploymentHistory } from "../../../Components/Organization/EmployeeProfiles/MyProfile/Background/EmploymentHistory";
+import { Skills } from "../../../Components/Organization/EmployeeProfiles/MyProfile/Background/Skills";
 import { Finance } from "../../../Components/Organization/EmployeeProfiles/MyProfile/Finance";
 import { JobInformation } from "../../../Components/Organization/EmployeeProfiles/MyProfile/JobInformation";
 import { Dependents } from "../../../Components/Organization/EmployeeProfiles/MyProfile/Profile/Dependents";
@@ -55,13 +58,17 @@ export const MyProfile = () => {
               <Dependents />
             </Tabs.TabPane>
             <Tabs.TabPane tab="Job Information" key="2">
-            <JobInformation />
+              <JobInformation />
             </Tabs.TabPane>
             <Tabs.TabPane tab="Finance" key="8">
-               <Finance/>
+              <Finance />
             </Tabs.TabPane>
             <Tabs.TabPane tab="Background" key="3">
-              Background
+              <div className="bg-mainBg shadow-sm rounded-md py-6 px-4 mt-5">
+                <EmploymentHistory />
+                <EducationDetails/>
+                 <Skills/>
+              </div>
             </Tabs.TabPane>
             <Tabs.TabPane tab="Manager(s)/Direct Report(s)" key="4">
               Manager(s)/Direct Report(s)

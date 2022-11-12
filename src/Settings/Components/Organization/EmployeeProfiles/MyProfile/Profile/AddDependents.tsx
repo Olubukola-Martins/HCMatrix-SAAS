@@ -1,19 +1,56 @@
-import { Drawer } from "antd";
+import { DatePicker, Drawer, Form, Input, InputNumber, Select } from "antd";
 import { IDrawerProps } from "../../../../../../AppTypes/Component";
+import { generalValidationRules } from "../../../../../../FormHelpers/validation";
+const { Option } = Select;
 
 export const AddDependents = ({ open, handleClose }: IDrawerProps) => {
   return (
     <Drawer
-      title="Basic Drawer"
+      title="Add Dependent"
       placement="right"
       onClose={() => handleClose()}
       open={open}
-      // style={{backgroundColor: "red"}}
       className="drawerBg"
     >
-      <p onClick={() => handleClose()}>Some contents...</p>
-      <p>Some contents...</p>
-      <p>Some contents...</p>
+      {/* <p onClick={() => handleClose()}>Some contents...</p> */}
+
+      <Form layout="vertical" className="mt-5">
+        <Form.Item name="name" label="Full Name" rules={generalValidationRules}>
+          <Input className="generalInputStyle" placeholder="Enter Name" />
+        </Form.Item>
+        <Form.Item
+          name="dateOfBirth"
+          label="Date of Birth"
+          rules={[{ required: true, message: "Field is required" }]}
+        >
+          <DatePicker format="YYYY/MM/DD" className="generalInputStyle" />
+        </Form.Item>
+        <Form.Item
+          name="phone"
+          label="Phone Number"
+          rules={generalValidationRules}
+        >
+          <Input className="generalInputStyle" placeholder="Enter Phone" />
+        </Form.Item>
+        <Form.Item
+          name="relationship"
+          label="Relationship"
+          rules={[{ required: true, message: "Field is required" }]}
+        >
+          <Select
+            className="SelectTag w-full"
+            size="large"
+            placeholder="Select"
+          >
+            <Option value="spouse">Spouse</Option>
+            <Option value="boyfriend">Boyfriend</Option>
+            <Option value="girlfriend">Girlfriend</Option>
+            <Option value="FamilyMember">Family member</Option>
+          </Select>
+        </Form.Item>
+
+        <button className="button">Submit</button>
+      </Form>
     </Drawer>
   );
 };

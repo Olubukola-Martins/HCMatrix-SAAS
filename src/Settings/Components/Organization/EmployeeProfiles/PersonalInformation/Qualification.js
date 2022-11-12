@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import "../../../../style/settingsStyle.css";
-import AddQualification from "./AddQualification";
+import AddQualification from "./AddQualificationOld";
 
 const Qualification = () => {
   const [qualificationModal, setQualificationModal] = useState(false);

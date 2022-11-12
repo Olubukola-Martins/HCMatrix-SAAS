@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import AssignJobRole from "./AssignJobRole";
 import EmployeeGradeForm from "./EmployeeGradeForm";
-import WorkExperienceForm from "./WorkExperienceForm";
+import WorkExperienceForm from "./WorkExperienceFormOld";
 
 const WorkHistory = () => {
   const [gradeModal, setGradeModal] = useState(false);
