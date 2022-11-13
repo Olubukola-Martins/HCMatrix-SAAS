@@ -17,6 +17,10 @@ import { UserGroups } from "../../../Components/Organization/EmployeeProfiles/My
 import { EditMyProfile } from "../../../Components/Organization/EmployeeProfiles/MyProfile/EditMyProfile";
 import { Resignation } from "../../../Components/Organization/EmployeeProfiles/MyProfile/Resignation";
 import { RoleHistory } from "../../../Components/Organization/EmployeeProfiles/MyProfile/History/RoleHistory";
+import { PromotionHistory } from "../../../Components/Organization/EmployeeProfiles/MyProfile/History/PromotionHistory";
+import { TrainingHistory } from "../../../Components/Organization/EmployeeProfiles/MyProfile/History/TrainingHistory";
+import { DisciplinaryHistory } from "../../../Components/Organization/EmployeeProfiles/MyProfile/History/DisciplinaryHistory";
+import { MedicalHistory } from "../../../Components/Organization/EmployeeProfiles/MyProfile/MedicalHistory/MedicalHistory";
 
 export const MyProfile = () => {
   const [role, setRole] = useState("employee");
@@ -137,6 +141,10 @@ export const MyProfile = () => {
             <Tabs.TabPane tab="History" key="6">
               <div className="bg-mainBg shadow-sm rounded-md py-6 px-4 mt-5">
                 <RoleHistory />
+                <PromotionHistory />
+                <TrainingHistory />
+                <DisciplinaryHistory />
+                <MedicalHistory/>
               </div>
             </Tabs.TabPane>
             <Tabs.TabPane tab="Finger Prints" key="7">
