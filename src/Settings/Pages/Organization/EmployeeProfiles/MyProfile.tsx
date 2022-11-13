@@ -16,6 +16,7 @@ import { Profile } from "../../../Components/Organization/EmployeeProfiles/MyPro
 import { UserGroups } from "../../../Components/Organization/EmployeeProfiles/MyProfile/UserGroups";
 import { EditMyProfile } from "../../../Components/Organization/EmployeeProfiles/MyProfile/EditMyProfile";
 import { Resignation } from "../../../Components/Organization/EmployeeProfiles/MyProfile/Resignation";
+import { RoleHistory } from "../../../Components/Organization/EmployeeProfiles/MyProfile/History/RoleHistory";
 
 export const MyProfile = () => {
   const [role, setRole] = useState("employee");
@@ -134,7 +135,9 @@ export const MyProfile = () => {
               <UserGroups />
             </Tabs.TabPane>
             <Tabs.TabPane tab="History" key="6">
-              History
+              <div className="bg-mainBg shadow-sm rounded-md py-6 px-4 mt-5">
+                <RoleHistory />
+              </div>
             </Tabs.TabPane>
             <Tabs.TabPane tab="Finger Prints" key="7">
               <FingerPrint />
