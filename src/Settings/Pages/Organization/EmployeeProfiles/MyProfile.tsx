@@ -40,7 +40,7 @@ export const MyProfile = () => {
         />
         <div className="bg-card p-1 md:p-5 mt-5">
           <div className="bg-mainBg shadow-sm rounded-md p-4 flex gap-3 justify-between">
-            <div className="flex gap-3 items-center">
+            <div className="flex gap-3 items-center md:flex-row flex-col">
               <img
                 src="https://res.cloudinary.com/ddvaelej7/image/upload/v1639659955/HCmatrix/User-Icon_wdkmsf.png"
                 alt="user"
@@ -50,7 +50,7 @@ export const MyProfile = () => {
                 <h3 className="text-lg font-medium text-accent">Isaac Temi</h3>
                 <h4 className="font-medium text-accent">UI Designer | CSI</h4>
                 <h5 className="text-sm text-accent">Manager</h5>
-                <div className="text-sm flex items-center gap-3">
+                <div className="text-sm flex md:items-center gap-3 md:flex-row flex-col mt-1">
                   <div className="flex items-center gap-2">
                     <i className="ri-mail-line text-caramel"></i>
                     <span>isaactemi@gmail.com | </span>
@@ -144,7 +144,7 @@ export const MyProfile = () => {
                 <PromotionHistory />
                 <TrainingHistory />
                 <DisciplinaryHistory />
-                <MedicalHistory/>
+                <MedicalHistory />
               </div>
             </Tabs.TabPane>
             <Tabs.TabPane tab="Finger Prints" key="7">
