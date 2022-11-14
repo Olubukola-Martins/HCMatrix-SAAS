@@ -1,7 +1,14 @@
-import React from 'react'
+import { Modal } from "antd";
+import { IModalProps } from "../../../../../../AppTypes/Component";
 
-export const AddCurrentMedicalCondition = () => {
+export const AddCurrentMedicalCondition = ({ open, handleClose }: IModalProps) => {
   return (
-    <div>AddCurrentMedicalCondition</div>
-  )
-}
+    <Modal
+      title="Basic Modal"
+      open={open}
+      onCancel={() => handleClose}
+    >
+      AddCurrentMedicalCondition
+    </Modal>
+  );
+};

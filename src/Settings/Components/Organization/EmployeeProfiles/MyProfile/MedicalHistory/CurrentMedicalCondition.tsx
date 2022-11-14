@@ -1,4 +1,7 @@
+import { useState } from "react";
+
 export const CurrentMedicalCondition = () => {
+  const [openModal, setOpenModal] = useState(false);
   return (
     <div>
       <div className="flex justify-between items-center">
