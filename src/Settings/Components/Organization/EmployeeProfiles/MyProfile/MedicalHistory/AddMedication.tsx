@@ -5,18 +5,14 @@ import {
   textInputValidationRules,
 } from "../../../../../../FormHelpers/validation";
 
-export const AddCurrentMedicalCondition = ({
-  open,
-  handleClose,
-}: IModalProps) => {
+export const AddMedication = ({ open, handleClose }: IModalProps) => {
   return (
     <Modal
-      title="Add Current Medical Condition"
+      title="Add Medication"
       open={open}
       onCancel={() => handleClose(false)}
       footer={null}
     >
-
       <Form layout="vertical">
         <Form.Item
           name="condition"
