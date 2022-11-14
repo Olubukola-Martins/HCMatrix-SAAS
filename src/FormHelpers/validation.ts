@@ -1,6 +1,11 @@
 export const generalValidationRules = [
-  { required: true, message: "Field is required!", whitespace: true },
-  // {  },
+  { required: true, message: "Field is required!" },
+];
+
+export const textInputValidationRules = [
+  ...generalValidationRules,
+
+  { whitespace: true },
 ];
 
 export const emailValidationRules = [
@@ -12,5 +17,6 @@ export const emailValidationRules = [
     type: "email",
     message: "Invalid Email Address",
   },
+
   { whitespace: true },
 ];

@@ -8,7 +8,7 @@ import MedicalHistory from "./MedicalHistory";
 import Qualification from "./Qualification";
 import QueryHistory from "./QueryHistory";
 import Salary from "./Salary";
-import Skills from "./Skills";
+import Skills from "./SkillsOld";
 import SocialHistory from "./SocialHistory";
 import TrainingHistory from "./TrainingHistory";
 import UserGroups from "./UserGroups";
