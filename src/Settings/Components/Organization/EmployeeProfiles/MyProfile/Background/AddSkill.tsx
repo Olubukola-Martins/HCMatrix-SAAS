@@ -1,6 +1,6 @@
 import { Drawer, Form, Input, Select } from "antd";
 import { IDrawerProps } from "../../../../../../AppTypes/Component";
-import { generalValidationRules } from "../../../../../../FormHelpers/validation";
+import { inputValidationRules } from "../../../../../../FormHelpers/validation";
 const { Option } = Select;
 
 export const AddSkill = ({ open, handleClose }: IDrawerProps) => {
@@ -13,7 +13,7 @@ export const AddSkill = ({ open, handleClose }: IDrawerProps) => {
       className="drawerBg"
     >
       <Form layout="vertical" className="mt-5">
-        <Form.Item name="skill" label="Skill" rules={generalValidationRules}>
+        <Form.Item name="skill" label="Skill" rules={inputValidationRules}>
           <Input className="generalInputStyle" placeholder="Enter Skill" />
         </Form.Item>
         <Form.Item

@@ -15,7 +15,7 @@ import {
   BankOutlined,
   MailOutlined,
 } from "@ant-design/icons";
-import { generalValidationRules } from "../../FormHelpers/validation";
+import { inputValidationRules } from "../../FormHelpers/validation";
 import { Link } from "react-router-dom";
 import { useEffect } from "react";
 import Aos from "aos";
@@ -99,7 +99,7 @@ export const Register = () => {
                 <Form>
                   <Form.Item
                     name="fullName"
-                    rules={generalValidationRules}
+                    rules={inputValidationRules}
                     hasFeedback
                   >
                     <Input
@@ -113,7 +113,7 @@ export const Register = () => {
                   </Form.Item>
                   <Form.Item
                     name="organization"
-                    rules={generalValidationRules}
+                    rules={inputValidationRules}
                     hasFeedback
                   >
                     <Input
@@ -127,7 +127,7 @@ export const Register = () => {
                   </Form.Item>
                   <Form.Item
                     name="industry"
-                    rules={generalValidationRules}
+                    rules={inputValidationRules}
                     hasFeedback
                   >
                     <Select

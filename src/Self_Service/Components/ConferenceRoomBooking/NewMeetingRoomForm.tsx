@@ -1,6 +1,6 @@
 import { Button, Form, Input } from "antd";
 import React from "react";
-import { generalValidationRules } from "../../../FormHelpers/validation";
+import { inputValidationRules } from "../../../FormHelpers/validation";
 import Themes from "../../../Themes/Themes";
 
 interface IProps {
@@ -13,7 +13,7 @@ const NewMeetingRoomForm = ({ handleClose }: IProps) => {
       <Form labelCol={{ span: 24 }} requiredMark={false}>
         <Form.Item
           name={"roomName"}
-          rules={generalValidationRules}
+          rules={inputValidationRules}
           label="Meeting Room Name"
         >
           <Input placeholder="Room name" />

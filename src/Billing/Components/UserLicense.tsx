@@ -2,7 +2,7 @@ import React from "react";
 import Themes from "../../Themes/Themes";
 import * as Yup from "yup";
 import { Form, Input, Modal, Select } from "antd";
-import { generalValidationRules } from "../../FormHelpers/validation";
+import { inputValidationRules } from "../../FormHelpers/validation";
 
 interface IProps {
   open: boolean;
@@ -38,7 +38,7 @@ const UserLicense = ({ open, handleClose }: IProps) => {
                 <Form.Item
                   label="Number of user license"
                   name={`userLicenseNumber`}
-                  rules={generalValidationRules}
+                  rules={inputValidationRules}
                 >
                   <Input />
                 </Form.Item>
@@ -48,7 +48,7 @@ const UserLicense = ({ open, handleClose }: IProps) => {
                 <Form.Item
                   name="duration"
                   label="Subscription Duration"
-                  rules={generalValidationRules}
+                  rules={inputValidationRules}
                 >
                   <Select>
                     <Select.Option value="1 Year">1 Year</Select.Option>

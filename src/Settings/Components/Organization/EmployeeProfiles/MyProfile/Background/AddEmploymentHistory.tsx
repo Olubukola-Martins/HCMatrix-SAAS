@@ -1,6 +1,6 @@
 import { DatePicker, Drawer, Form, Input } from "antd";
 import { IDrawerProps } from "../../../../../../AppTypes/Component";
-import { generalValidationRules } from "../../../../../../FormHelpers/validation";
+import { inputValidationRules } from "../../../../../../FormHelpers/validation";
 
 export const AddEmploymentHistory = ({ open, handleClose }: IDrawerProps) => {
   return (
@@ -15,7 +15,7 @@ export const AddEmploymentHistory = ({ open, handleClose }: IDrawerProps) => {
         <Form.Item
           name="organization"
           label="Organization"
-          rules={generalValidationRules}
+          rules={inputValidationRules}
         >
           <Input
             className="generalInputStyle"
@@ -25,7 +25,7 @@ export const AddEmploymentHistory = ({ open, handleClose }: IDrawerProps) => {
         <Form.Item
           name="position"
           label="Position"
-          rules={generalValidationRules}
+          rules={inputValidationRules}
         >
           <Input className="generalInputStyle" placeholder="Enter Position" />
         </Form.Item>

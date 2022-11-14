@@ -1,12 +1,17 @@
 import { useState } from "react";
+import { AddCurrentMedicalCondition } from "./AddCurrentMedicalCondition";
 
 export const CurrentMedicalCondition = () => {
   const [openModal, setOpenModal] = useState(false);
   return (
     <div>
+      <AddCurrentMedicalCondition
+        open={openModal}
+        handleClose={() => setOpenModal(false)}
+      />
       <div className="flex justify-between items-center">
         <h2 className="text-base text-accent">Current Medical Condition</h2>
-        <button className="button">Add</button>
+        <button className="button" onClick={() => setOpenModal(true)}>Add</button>
       </div>
 
       <div className="p-4 bg-gray-200 rounded mt-3">

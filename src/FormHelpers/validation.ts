@@ -1,6 +1,9 @@
-export const generalValidationRules = [
+export const inputValidationRules = [
   { required: true, message: "Field is required!", whitespace: true },
-  // {  },
+];
+
+export const generalValidationRules = [
+  { required: true, message: "Field is required!" },
 ];
 
 export const emailValidationRules = [

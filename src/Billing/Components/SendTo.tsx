@@ -4,7 +4,7 @@ import React from "react";
 import { IDrawerProps } from "../../AppTypes/Component";
 import {
   emailValidationRules,
-  generalValidationRules,
+  inputValidationRules,
 } from "../../FormHelpers/validation";
 import Themes from "../../Themes/Themes";
 

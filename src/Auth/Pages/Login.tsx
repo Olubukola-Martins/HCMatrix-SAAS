@@ -9,7 +9,7 @@ import linkedin from "../Assets/Images/linkedin.svg";
 import { Divider, Form, Input, Select } from "antd";
 import "../Style/style.css";
 import { LockOutlined, MailOutlined } from "@ant-design/icons";
-import { generalValidationRules } from "../../FormHelpers/validation";
+import { inputValidationRules } from "../../FormHelpers/validation";
 import { Link } from "react-router-dom";
 import { useEffect } from "react";
 import Aos from "aos";
@@ -91,7 +91,7 @@ export const Login = () => {
                   </Form.Item>
                   <Form.Item
                     name="password"
-                    rules={generalValidationRules}
+                    rules={inputValidationRules}
                     hasFeedback
                   >
                     <Input

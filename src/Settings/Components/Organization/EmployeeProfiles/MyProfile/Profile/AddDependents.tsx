@@ -1,6 +1,6 @@
 import { DatePicker, Drawer, Form, Input, InputNumber, Select } from "antd";
 import { IDrawerProps } from "../../../../../../AppTypes/Component";
-import { generalValidationRules } from "../../../../../../FormHelpers/validation";
+import { inputValidationRules } from "../../../../../../FormHelpers/validation";
 const { Option } = Select;
 
 export const AddDependents = ({ open, handleClose }: IDrawerProps) => {
@@ -15,7 +15,7 @@ export const AddDependents = ({ open, handleClose }: IDrawerProps) => {
       {/* <p onClick={() => handleClose()}>Some contents...</p> */}
 
       <Form layout="vertical" className="mt-5">
-        <Form.Item name="name" label="Full Name" rules={generalValidationRules}>
+        <Form.Item name="name" label="Full Name" rules={inputValidationRules}>
           <Input className="generalInputStyle" placeholder="Enter Name" />
         </Form.Item>
         <Form.Item
@@ -28,7 +28,7 @@ export const AddDependents = ({ open, handleClose }: IDrawerProps) => {
         <Form.Item
           name="phone"
           label="Phone Number"
-          rules={generalValidationRules}
+          rules={inputValidationRules}
         >
           <Input className="generalInputStyle" placeholder="Enter Phone" />
         </Form.Item>
