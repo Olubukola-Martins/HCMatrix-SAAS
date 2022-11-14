@@ -1,4 +1,8 @@
 import { CurrentMedicalCondition } from "./CurrentMedicalCondition"
+import { FamilyHistory } from "./FamilyHistory"
+import { Medication } from "./Medication"
+import { PastMedicalCondition } from "./PastMedicalCondition"
+import { Surgeries } from "./Surgeries"
 
 export const MedicalHistory = () => {
   return (
@@ -7,8 +11,12 @@ export const MedicalHistory = () => {
           <h2 className="text-accent text-base pb-1">Medical History</h2>
         </div>
     
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-y-3 gap-x-16">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-y-10 gap-x-10 lg:gap-x-24">
             <CurrentMedicalCondition/>
+            <PastMedicalCondition/>
+            <Surgeries/>
+            <FamilyHistory/>
+            <Medication/>
           </div>
     </div>
   )

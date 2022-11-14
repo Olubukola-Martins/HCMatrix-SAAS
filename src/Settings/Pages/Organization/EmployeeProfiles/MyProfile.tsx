@@ -38,7 +38,7 @@ export const MyProfile = () => {
           open={openResignation}
           handleClose={() => setOpenResignation(false)}
         />
-        <div className="bg-card p-5 mt-5">
+        <div className="bg-card p-1 md:p-5 mt-5">
           <div className="bg-mainBg shadow-sm rounded-md p-4 flex gap-3 justify-between">
             <div className="flex gap-3 items-center">
               <img
@@ -139,7 +139,7 @@ export const MyProfile = () => {
               <UserGroups />
             </Tabs.TabPane>
             <Tabs.TabPane tab="History" key="6">
-              <div className="bg-mainBg shadow-sm rounded-md py-6 px-4 mt-5">
+              <div className="bg-mainBg shadow-sm rounded-md py-6 md:px-4 mt-5">
                 <RoleHistory />
                 <PromotionHistory />
                 <TrainingHistory />

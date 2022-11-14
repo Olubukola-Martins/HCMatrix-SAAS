@@ -1,16 +1,17 @@
 import { useState } from "react";
-import { AddCurrentMedicalCondition } from "./AddCurrentMedicalCondition";
+import { AddFamilyHistory } from "./AddFamilyHistory";
+import { AddMedication } from "./AddMedication";
 
-export const CurrentMedicalCondition = () => {
+export const Medication = () => {
   const [openModal, setOpenModal] = useState(false);
   return (
     <div>
-      <AddCurrentMedicalCondition
+      <AddMedication
         open={openModal}
         handleClose={() => setOpenModal(false)}
       />
       <div className="flex justify-between items-center">
-        <h2 className="text-base text-accent">Current Medical Condition</h2>
+        <h2 className="text-base text-accent">Medication</h2>
         <button className="button" onClick={() => setOpenModal(true)}>Add</button>
       </div>
 
