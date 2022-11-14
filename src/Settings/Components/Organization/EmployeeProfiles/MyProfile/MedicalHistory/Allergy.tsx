@@ -1,16 +1,16 @@
 import { useState } from "react";
-import { AddMedication } from "./AddMedication";
+import { AddAllergy } from "./AddAllergy";
 
-export const Medication = () => {
+export const Allergy = () => {
   const [openModal, setOpenModal] = useState(false);
   return (
     <div>
-      <AddMedication
+      <AddAllergy
         open={openModal}
         handleClose={() => setOpenModal(false)}
       />
       <div className="flex justify-between items-center">
-        <h2 className="text-base text-accent">Medication</h2>
+        <h2 className="text-base text-accent">Allergy</h2>
         <button className="button" onClick={() => setOpenModal(true)}>Add</button>
       </div>
 
