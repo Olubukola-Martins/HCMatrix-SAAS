@@ -46,10 +46,10 @@ export const MyProfile = () => {
                 alt="user"
                 className="h-24"
               />
-              <div className="flex flex-col gap-1">
-                <h3 className="text-lg font-medium">Isaac Temi</h3>
-                <h4 className="font-medium">UI Designer | CSI</h4>
-                <h5 className="text-sm">Manager</h5>
+              <div className="flex flex-col gap-1 text-accent">
+                <h3 className="text-lg font-medium text-accent">Isaac Temi</h3>
+                <h4 className="font-medium text-accent">UI Designer | CSI</h4>
+                <h5 className="text-sm text-accent">Manager</h5>
                 <div className="text-sm flex items-center gap-3">
                   <div className="flex items-center gap-2">
                     <i className="ri-mail-line text-caramel"></i>

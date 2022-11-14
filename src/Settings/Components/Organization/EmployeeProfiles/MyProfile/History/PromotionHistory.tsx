@@ -46,7 +46,7 @@ const data: DataType[] = [];
 export const PromotionHistory = () => {
   return (
     <div>
-      <div className="bg-card p-3 rounded">
+      <div className="bg-card p-3">
         <div className="border-b border-gray-400 w-full mb-7">
           <h2 className="text-accent text-base pb-1">Promotion History</h2>
         </div>
