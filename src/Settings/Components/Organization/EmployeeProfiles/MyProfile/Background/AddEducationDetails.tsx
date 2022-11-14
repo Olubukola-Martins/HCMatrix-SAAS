@@ -1,6 +1,6 @@
 import { DatePicker, Drawer, Form, Input } from "antd";
 import { IDrawerProps } from "../../../../../../AppTypes/Component";
-import { inputValidationRules } from "../../../../../../FormHelpers/validation";
+import { generalValidationRules } from "../../../../../../FormHelpers/validation";
 
 export const AddEducationDetails = ({ open, handleClose }: IDrawerProps) => {
   return (
@@ -15,7 +15,7 @@ export const AddEducationDetails = ({ open, handleClose }: IDrawerProps) => {
         <Form.Item
           name="school"
           label="School"
-          rules={inputValidationRules}
+          rules={generalValidationRules}
         >
           <Input
             className="generalInputStyle"
@@ -25,14 +25,14 @@ export const AddEducationDetails = ({ open, handleClose }: IDrawerProps) => {
         <Form.Item
           name="degree"
           label="Degree"
-          rules={inputValidationRules}
+          rules={generalValidationRules}
         >
           <Input className="generalInputStyle" placeholder="Enter Degree" />
         </Form.Item>
         <Form.Item
           name="specialization"
           label="Specialization"
-          rules={inputValidationRules}
+          rules={generalValidationRules}
         >
           <Input className="generalInputStyle" placeholder="Enter Specialization" />
         </Form.Item>

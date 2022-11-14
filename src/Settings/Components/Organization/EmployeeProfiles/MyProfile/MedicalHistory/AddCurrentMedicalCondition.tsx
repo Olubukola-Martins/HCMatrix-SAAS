@@ -1,6 +1,6 @@
 import { Form, Modal } from "antd";
 import { IModalProps } from "../../../../../../AppTypes/Component";
-import { inputValidationRules } from "../../../../../../FormHelpers/validation";
+import { generalValidationRules } from "../../../../../../FormHelpers/validation";
 
 export const AddCurrentMedicalCondition = ({ open, handleClose }: IModalProps) => {
   return (
@@ -12,7 +12,7 @@ export const AddCurrentMedicalCondition = ({ open, handleClose }: IModalProps) =
     footer={null}
     >
      <Form>
-        <Form.Item name="condition" rules={inputValidationRules}>
+        <Form.Item name="condition" rules={generalValidationRules}>
                
         </Form.Item>
      </Form>
