@@ -14,6 +14,7 @@ import { Link } from "react-router-dom";
 import { useEffect } from "react";
 import Aos from "aos";
 import "aos/dist/aos.css";
+import BeatLoader from "react-spinners/BeatLoader";
 
 export const Login = () => {
   useEffect(() => {
@@ -104,7 +105,9 @@ export const Login = () => {
                     />
                   </Form.Item>
 
-                  <button className="authBtn w-full mt-4">Sign In</button>
+                  <button className="authBtn w-full mt-4 flex items-center justify-center">
+                    <BeatLoader size={12} color="#fff" />
+                  </button>
                 </Form>
                 <span className="mb-3 flex justify-end cursor-pointer pt-2 text-sm hover:text-black">
                   Forgot password ?
