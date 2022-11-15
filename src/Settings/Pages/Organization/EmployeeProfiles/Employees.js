@@ -3,11 +3,9 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { PageIntro } from "../../../../Layout/Components/PageIntro";
 import DashboardLayout from "../../../../Layout/DashboardLayout";
-import { AddEmployee } from "../../../Components/Organization/EmployeeProfiles/AddEmployee";
 import { ImportEmployee } from "../../../Components/Organization/EmployeeProfiles/ImportEmployee";
 
 const Employees = () => {
-  const [addEmployeeDrawer, setAddEmployeeDrawer] = useState(false);
   const [importEmployeeDrawer, setImportEmployeeDrawer] = useState(false);
   const columns = [
     {
@@ -69,10 +67,6 @@ const Employees = () => {
     .map((item, i) => ({ ...item, key: i }));
   return (
     <DashboardLayout>
-      <AddEmployee
-        open={addEmployeeDrawer}
-        handleClose={() => setAddEmployeeDrawer(false)}
-      />
       <ImportEmployee
         open={importEmployeeDrawer}
         handleClose={() => setImportEmployeeDrawer(false)}
@@ -87,12 +81,9 @@ const Employees = () => {
             </button>
           </div>
           <div className="flex items-center gap-3">
-            <button
-              className="button"
-              onClick={() => setAddEmployeeDrawer(true)}
-            >
+            <Link to="/settings/add-employee" className="button">
               Add Employees
-            </button>
+            </Link>
             <button
               className="transparentButton"
               onClick={() => setImportEmployeeDrawer(true)}

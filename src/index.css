@@ -273,10 +273,6 @@ input[type="text"].ant-input,
   padding: 0 !important;
 } */
 
-.ant-drawer-close {
-  display: none;
-}
-
 /* ant card */
 .ant-card-head,
 .ant-card-body {
@@ -354,4 +350,13 @@ input[type="text"].ant-input,
 
 .drawerBg .ant-drawer-wrapper-body {
  background: var(--card);
+}
+
+/* Accordion */
+.ghostCollapse.ant-collapse > .ant-collapse-item > .ant-collapse-header {
+  flex-flow: row-reverse;
+}
+
+.collapseHeader .ant-collapse-header-text {
+  @apply text-base font-medium;
 }

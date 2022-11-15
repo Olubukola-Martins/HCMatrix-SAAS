@@ -1,4 +1,3 @@
-import React from "react";
 import { Route, Routes } from "react-router-dom";
 import GeneralSettings from "../Pages/General/GeneralSettings";
 import CompanyDetails from "../Pages/General/CompanyDetails";
@@ -17,10 +16,8 @@ import DelegationDetail from "../Pages/Organization/Delegations/DelegationDetail
 import Grades from "../Pages/Organization/Grades/Grades";
 import ProbationPolicy from "../Pages/Organization/ProbationPolicy/ProbationPolicy";
 import GradeCategories from "../Pages/Organization/GradeCategories/GradeCategories";
-
 import Roles from "../Pages/UserAccessControl/Roles/Roles";
 import CreateRole from "../Pages/UserAccessControl/Roles/CreateRole";
-
 import Workflows from "../Pages/UserAccessControl/Automation/Workflows/Workflows";
 import CreateWorkflow from "../Pages/UserAccessControl/Automation/Workflows/CreateWorkflow";
 import PayrollSettings from "../Pages/Payroll/PayrollSettings";
@@ -28,6 +25,7 @@ import Holidays from "../Pages/General/Holidays";
 import ResignationPolicy from "../Pages/Policies/ResignationPolicy";
 import Employees from "../Pages/Organization/EmployeeProfiles/Employees";
 import { MyProfile } from "../Pages/Organization/EmployeeProfiles/MyProfile";
+import { AddEmployee } from "../Components/Organization/EmployeeProfiles/AddEmployee";
 
 const SettingRoutes = () => {
   return (
@@ -42,6 +40,7 @@ const SettingRoutes = () => {
       <Route path="/settings/user-profile" element={<UserProfiles />} />
       <Route path="/settings/holidays" element={<Holidays />} />
       <Route path="/settings/profile" element={<MyProfile />} />
+      <Route path="/settings/add-employee" element={<AddEmployee/>} />
 
       {/* Organization */}
       <Route path="/settings/employees" element={<Employees />} />
