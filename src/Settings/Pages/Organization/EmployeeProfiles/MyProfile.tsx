@@ -46,6 +46,7 @@ export const MyProfile = () => {
                 alt="user"
                 className="h-24"
               />
+
               <div className="flex flex-col gap-1 text-accent">
                 <h3 className="text-lg font-medium text-accent">Isaac Temi</h3>
                 <h4 className="font-medium text-accent">UI Designer | CSI</h4>
