@@ -86,7 +86,7 @@ export const Dependents = () => {
           columns={columns}
           dataSource={data}
           pagination={{ pageSize: 50 }}
-          scroll={{ y: 240 }}
+          scroll={{ x: "max-content", y: 240 }}
         />
       </div>
     </div>
