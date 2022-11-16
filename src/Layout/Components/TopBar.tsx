@@ -1,8 +1,7 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import logo from "../Images/logo2.png";
-import sun from "../Images/sun.svg";
+// import sun from "../Images/sun.svg";
 import { Link } from "react-router-dom";
-
 import SearchModal from "./Search/SearchModal";
 import Themes from "../../Themes/Themes";
 import TransferOwnership from "./TransferOwnership";
@@ -110,11 +109,8 @@ const TopBar = ({
   };
 
   const [companyId, setCompanyId] = useState(companies[0].value);
-
   const [openSearchModal, setOpenSearchModal] = useState(false);
-
   const [options, setOptions] = useState(companies);
-
   const onSearch = (searchText: string) => {
     const result = companies.filter(
       (item) =>
@@ -182,7 +178,8 @@ const TopBar = ({
               </div>
             </div>
 
-            {theme === "light" ? (
+            {/* Dark and Light */}
+            {/* {theme === "light" ? (
               <i
                 onClick={() => switchTheme()}
                 className="fas fa-moon text-lg cursor-pointer text-black"
@@ -196,7 +193,7 @@ const TopBar = ({
                 className="cursor-pointer h-5"
                 title="Light mode"
               />
-            )}
+            )} */}
 
             <Link to="/settings" className="hover:text-black">
               {" "}

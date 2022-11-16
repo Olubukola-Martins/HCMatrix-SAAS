@@ -5,7 +5,6 @@ export const EditMyProfile = ({ open, handleClose }: IDrawerProps) => {
   const initialValues = {
     image: "",
     firstName: "",
-    middleName: "",
     lastName: "",
     employeeId: "",
     designation: "",
@@ -53,19 +52,17 @@ export const EditMyProfile = ({ open, handleClose }: IDrawerProps) => {
             <Form.Item name="firstName" label="First Name">
               <Input className="generalInputStyle" placeholder="First Name" />
             </Form.Item>
-            <Form.Item name="middleName" label="Middle Name">
-              <Input className="generalInputStyle" placeholder="Middle Name" />
-            </Form.Item>
+
             <Form.Item name="lastName" label="Last Name">
               <Input className="generalInputStyle" placeholder="Last Name" />
+            </Form.Item>
+            <Form.Item name="employeeId" label="Employee ID">
+              <Input className="generalInputStyle" placeholder="Employee ID" />
             </Form.Item>
           </div>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-x-4 mt-2">
-          <Form.Item name="employeeId" label="Employee ID">
-            <Input className="generalInputStyle" placeholder="Employee ID" />
-          </Form.Item>
           <Form.Item name="designation" label="Designation">
             <Input className="generalInputStyle" placeholder="Designation" />
           </Form.Item>
