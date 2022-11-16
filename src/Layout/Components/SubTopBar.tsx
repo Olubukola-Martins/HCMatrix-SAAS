@@ -23,11 +23,11 @@ const SubTopBar = () => {
 
   window.addEventListener("scroll", hideTrial);
 
-  const toggleDrawer = (anchor, open) => () => {
+  const toggleDrawer = (anchor: string, open: boolean) => () => {
     setModuleDrawer({ ...moduleDrawer, [anchor]: open });
   };
 
-  const toggleDrawerFeatures = (anchor, open) => () => {
+  const toggleDrawerFeatures = (anchor: string, open: boolean) => () => {
     setFeaturesDrawer({ ...moduleDrawer, [anchor]: open });
   };
 
