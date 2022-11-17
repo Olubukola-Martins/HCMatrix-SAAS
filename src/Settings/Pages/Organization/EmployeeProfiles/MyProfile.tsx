@@ -1,31 +1,57 @@
-import { Tabs, Tooltip } from "antd";
+import { useState } from "react";
+import { Dropdown, Switch, Tabs, Tooltip } from "antd";
 import { PageIntro } from "../../../../Layout/Components/PageIntro";
 import DashboardLayout from "../../../../Layout/DashboardLayout";
+import { EducationDetails } from "../../../Components/Organization/EmployeeProfiles/MyProfile/Background/EducationDetails";
+import { EmploymentHistory } from "../../../Components/Organization/EmployeeProfiles/MyProfile/Background/EmploymentHistory";
+import { Skills } from "../../../Components/Organization/EmployeeProfiles/MyProfile/Background/Skills";
 import { Finance } from "../../../Components/Organization/EmployeeProfiles/MyProfile/Finance";
+import { FingerPrint } from "../../../Components/Organization/EmployeeProfiles/MyProfile/FingerPrint";
 import { JobInformation } from "../../../Components/Organization/EmployeeProfiles/MyProfile/JobInformation";
+import { DirectReports } from "../../../Components/Organization/EmployeeProfiles/MyProfile/ManagerDirectReport/DirectReports";
+import { Managers } from "../../../Components/Organization/EmployeeProfiles/MyProfile/ManagerDirectReport/Managers";
 import { Dependents } from "../../../Components/Organization/EmployeeProfiles/MyProfile/Profile/Dependents";
 import { EmergencyContact } from "../../../Components/Organization/EmployeeProfiles/MyProfile/Profile/EmergencyContact";
 import { Profile } from "../../../Components/Organization/EmployeeProfiles/MyProfile/Profile/Profile";
+import { UserGroups } from "../../../Components/Organization/EmployeeProfiles/MyProfile/UserGroups";
+import { EditMyProfile } from "../../../Components/Organization/EmployeeProfiles/MyProfile/EditMyProfile";
+import { Resignation } from "../../../Components/Organization/EmployeeProfiles/MyProfile/Resignation";
+import { RoleHistory } from "../../../Components/Organization/EmployeeProfiles/MyProfile/History/RoleHistory";
+import { PromotionHistory } from "../../../Components/Organization/EmployeeProfiles/MyProfile/History/PromotionHistory";
+import { TrainingHistory } from "../../../Components/Organization/EmployeeProfiles/MyProfile/History/TrainingHistory";
+import { DisciplinaryHistory } from "../../../Components/Organization/EmployeeProfiles/MyProfile/History/DisciplinaryHistory";
+import { MedicalHistory } from "../../../Components/Organization/EmployeeProfiles/MyProfile/MedicalHistory/MedicalHistory";
 
 export const MyProfile = () => {
+  const [role, setRole] = useState("employee");
+  const [openDrawer, setOpenDrawer] = useState(false);
+  const [openResignation, setOpenResignation] = useState(false);
   return (
     <DashboardLayout>
       <div className="Container mt-3">
         <PageIntro title="Profile" link="/" />
-
-        <div className="bg-card p-5 mt-5">
+        <EditMyProfile
+          open={openDrawer}
+          handleClose={() => setOpenDrawer(false)}
+        />
+        <Resignation
+          open={openResignation}
+          handleClose={() => setOpenResignation(false)}
+        />
+        <div className="bg-card p-1 md:p-5 mt-5">
           <div className="bg-mainBg shadow-sm rounded-md p-4 flex gap-3 justify-between">
-            <div className="flex gap-3 items-center">
+            <div className="flex gap-3 items-center md:flex-row flex-col">
               <img
                 src="https://res.cloudinary.com/ddvaelej7/image/upload/v1639659955/HCmatrix/User-Icon_wdkmsf.png"
                 alt="user"
                 className="h-24"
               />
-              <div className="flex flex-col gap-1">
-                <h3 className="text-lg font-medium">Isaac Temi</h3>
-                <h4 className="font-medium">UI Designer | CSI</h4>
-                <h5 className="text-sm">Manager</h5>
-                <div className="text-sm flex items-center gap-3">
+
+              <div className="flex flex-col gap-1 text-accent">
+                <h3 className="text-lg font-medium text-accent">Isaac Temi</h3>
+                <h4 className="font-medium text-accent">UI Designer | CSI</h4>
+                <h5 className="text-sm text-accent">Manager</h5>
+                <div className="text-sm flex md:items-center gap-3 md:flex-row flex-col mt-1">
                   <div className="flex items-center gap-2">
                     <i className="ri-mail-line text-caramel"></i>
                     <span>isaactemi@gmail.com | </span>
@@ -43,9 +69,46 @@ export const MyProfile = () => {
             </div>
             <div className="flex gap-3 text-xl">
               <Tooltip title="Edit">
-                <i className="ri-pencil-line cursor-pointer hover:text-caramel"></i>
+                <i
+                  className="ri-pencil-line cursor-pointer hover:text-caramel"
+                  onClick={() => setOpenDrawer(true)}
+                ></i>
               </Tooltip>
-              <i className="ri-more-2-fill cursor-pointer hover:text-caramel"></i>
+              <Dropdown
+                overlay={
+                  <div>
+                    {role === "admin" && (
+                      <ul className="bg-mainBg rounded border shadow-sm p-2 flex gap-1 flex-col mb-2">
+                        <li className="flex items-center gap-3">
+                          <span>Enable Self Service</span>
+                          <Switch size="small" defaultChecked />
+                        </li>
+                        <li className="cursor-pointer hover:text-caramel">
+                          Enable User
+                        </li>
+                        <li className="cursor-pointer hover:text-caramel">
+                          Suspend User
+                        </li>
+                      </ul>
+                    )}
+
+                    {role === "employee" && (
+                      <ul className="bg-mainBg rounded border shadow-sm p-2  mb-2">
+                        <li
+                          onClick={() => setOpenResignation(true)}
+                          className="cursor-pointer hover:text-caramel"
+                        >
+                          Submit Resignation
+                        </li>
+                      </ul>
+                    )}
+                  </div>
+                }
+                placement="topLeft"
+                trigger={["click"]}
+              >
+                <i className="ri-more-2-fill cursor-pointer hover:text-caramel"></i>
+              </Dropdown>
             </div>
           </div>
           <Tabs defaultActiveKey="1" className="mt-5 tabBlackActive">
@@ -55,25 +118,38 @@ export const MyProfile = () => {
               <Dependents />
             </Tabs.TabPane>
             <Tabs.TabPane tab="Job Information" key="2">
-            <JobInformation />
+              <JobInformation />
             </Tabs.TabPane>
             <Tabs.TabPane tab="Finance" key="8">
-               <Finance/>
+              <Finance />
             </Tabs.TabPane>
             <Tabs.TabPane tab="Background" key="3">
-              Background
+              <div className="bg-mainBg shadow-sm rounded-md py-6 px-4 mt-5">
+                <EmploymentHistory />
+                <EducationDetails />
+                <Skills />
+              </div>
             </Tabs.TabPane>
             <Tabs.TabPane tab="Manager(s)/Direct Report(s)" key="4">
-              Manager(s)/Direct Report(s)
+              <div className="bg-mainBg shadow-sm rounded-md py-6 px-4 mt-5">
+                <Managers />
+                <DirectReports />
+              </div>
             </Tabs.TabPane>
             <Tabs.TabPane tab="User Groups" key="5">
-              User Groups
+              <UserGroups />
             </Tabs.TabPane>
             <Tabs.TabPane tab="History" key="6">
-              History
+              <div className="bg-mainBg shadow-sm rounded-md py-6 md:px-4 mt-5">
+                <RoleHistory />
+                <PromotionHistory />
+                <TrainingHistory />
+                <DisciplinaryHistory />
+                <MedicalHistory />
+              </div>
             </Tabs.TabPane>
             <Tabs.TabPane tab="Finger Prints" key="7">
-              Finger Prints
+              <FingerPrint />
             </Tabs.TabPane>
           </Tabs>
         </div>

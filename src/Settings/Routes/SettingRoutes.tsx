@@ -1,4 +1,3 @@
-import React from "react";
 import { Route, Routes } from "react-router-dom";
 import GeneralSettings from "../Pages/General/GeneralSettings";
 import CompanyDetails from "../Pages/General/CompanyDetails";
@@ -17,10 +16,8 @@ import DelegationDetail from "../Pages/Organization/Delegations/DelegationDetail
 import Grades from "../Pages/Organization/Grades/Grades";
 import ProbationPolicy from "../Pages/Organization/ProbationPolicy/ProbationPolicy";
 import GradeCategories from "../Pages/Organization/GradeCategories/GradeCategories";
-
 import Roles from "../Pages/UserAccessControl/Roles/Roles";
 import CreateRole from "../Pages/UserAccessControl/Roles/CreateRole";
-
 import Workflows from "../Pages/UserAccessControl/Automation/Workflows/Workflows";
 import CreateWorkflow from "../Pages/UserAccessControl/Automation/Workflows/CreateWorkflow";
 import PayrollSettings from "../Pages/Payroll/PayrollSettings";
