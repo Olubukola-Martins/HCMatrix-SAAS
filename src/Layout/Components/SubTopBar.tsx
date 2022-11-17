@@ -36,40 +36,39 @@ const SubTopBar = () => {
       {/* Modules mobile drawer */}
       <Drawer open={moduleDrawer["left"]} onClose={toggleDrawer("left", false)}>
         <Themes>
-        <div className="  flex justify-end">
-          <i
-            className="ri-close-line text-right pt-5 text-xl cursor-pointer"
-            onClick={toggleDrawer("left", false)}
-          ></i>
-        </div>
-        <div
-          className="flex items-center overflow-auto"
-          style={{ height: "97vh" }}
-        >
-          <div className="  flex gap-4 flex-col text-accent font-medium">
-            <div className="module_list_item_mobile">
-              <i className="ri-scales-line text-base"></i>
-              <span>Performance</span>
-            </div>
-            <div className="module_list_item_mobile">
-              <i className="ri-money-dollar-circle-line text-base"></i>
-              <span>Payroll</span>
-            </div>
-            <div className="module_list_item_mobile">
-              <i className="ri-team-line text-base"></i>
-              <span>Manage employee</span>
-            </div>
-            <div className="module_list_item_mobile">
-              <i className="ri-user-shared-2-line text-base"></i>
-              <span>Recruitment</span>
-            </div>
-            <div className="module_list_item_mobile">
-              <i className="ri-honour-line text-base"></i>
-              <span>Attendance</span>
-            </div>
-
+          <div className="  flex justify-end">
+            <i
+              className="ri-close-line text-right pt-5 text-xl cursor-pointer"
+              onClick={toggleDrawer("left", false)}
+            ></i>
           </div>
-        </div>
+          <div
+            className="flex items-center overflow-auto"
+            style={{ height: "97vh" }}
+          >
+            <div className="  flex gap-4 flex-col text-accent font-medium">
+              <div className="module_list_item_mobile">
+                <i className="ri-scales-line text-base"></i>
+                <span>Performance</span>
+              </div>
+              <div className="module_list_item_mobile">
+                <i className="ri-money-dollar-circle-line text-base"></i>
+                <span>Payroll</span>
+              </div>
+              <div className="module_list_item_mobile">
+                <i className="ri-team-line text-base"></i>
+                <span>Manage employee</span>
+              </div>
+              <div className="module_list_item_mobile">
+                <i className="ri-user-shared-2-line text-base"></i>
+                <span>Recruitment</span>
+              </div>
+              <div className="module_list_item_mobile">
+                <i className="ri-honour-line text-base"></i>
+                <span>Attendance</span>
+              </div>
+            </div>
+          </div>
         </Themes>
       </Drawer>
 
@@ -77,61 +76,60 @@ const SubTopBar = () => {
       <Drawer
         open={featuresDrawer["left"]}
         onClose={toggleDrawerFeatures("left", false)}
-       
       >
-          <Themes>
-        <div className="  flex justify-end">
-          <i
-            className="ri-close-line text-right pt-5 text-xl cursor-pointer"
-            onClick={toggleDrawerFeatures("left", false)}
-          ></i>
-        </div>
+        <Themes>
+          <div className="  flex justify-end">
+            <i
+              className="ri-close-line text-right pt-5 text-xl cursor-pointer"
+              onClick={toggleDrawerFeatures("left", false)}
+            ></i>
+          </div>
 
-        <div
-          className="flex items-center overflow-auto"
-          style={{ height: "97vh" }}
-        >
-          <div className="  flex gap-4 flex-col text-accent font-medium">
-            <div className="module_list_item_mobile">
-              <i className="ri-home-smile-line text-base"></i>
-              <span>Home</span>
-            </div>
+          <div
+            className="flex items-center overflow-auto"
+            style={{ height: "97vh" }}
+          >
+            <div className="  flex gap-4 flex-col text-accent font-medium">
+              <div className="module_list_item_mobile">
+                <i className="ri-home-smile-line text-base"></i>
+                <span>Home</span>
+              </div>
 
-            <div className="module_list_item_mobile">
-              <i className="ri-check-double-line text-base"></i>
-              <span>Approval</span>
-            </div>
+              <div className="module_list_item_mobile">
+                <i className="ri-check-double-line text-base"></i>
+                <span>Approval</span>
+              </div>
 
-            <div className="module_list_item_mobile">
-              <i className="ri-line-chart-line text-base"></i>
-              <span>Evaluation</span>
-            </div>
+              <div className="module_list_item_mobile">
+                <i className="ri-line-chart-line text-base"></i>
+                <span>Evaluation</span>
+              </div>
 
-            <div className="module_list_item_mobile">
-              <i className="ri-organization-chart text-base"></i>
-              <span>Self-service</span>
-            </div>
+              <div className="module_list_item_mobile">
+                <i className="ri-organization-chart text-base"></i>
+                <span>Self-service</span>
+              </div>
 
-            <div className="module_list_item_mobile">
-              <i className="ri-creative-commons-sa-line text-base"></i>
-              <span>Review 360</span>
-            </div>
+              <div className="module_list_item_mobile">
+                <i className="ri-creative-commons-sa-line text-base"></i>
+                <span>Review 360</span>
+              </div>
 
-            <div className="module_list_item_mobile">
-              <i className="ri-hard-drive-2-line text-base"></i>
-              <span>Visitor Module</span>
-            </div>
+              <div className="module_list_item_mobile">
+                <i className="ri-hard-drive-2-line text-base"></i>
+                <span>Visitor Module</span>
+              </div>
 
-            <div className="module_list_item_mobile">
-              <i className="ri-customer-service-line text-base"></i>
-              <span>Support</span>
-            </div>
-            <div className="module_list_item_mobile">
-              <i className="ri-logout-circle-line text-base"></i>
-              <span>Logout</span>
+              <div className="module_list_item_mobile">
+                <i className="ri-customer-service-line text-base"></i>
+                <span>Support</span>
+              </div>
+              <div className="module_list_item_mobile">
+                <i className="ri-logout-circle-line text-base"></i>
+                <span>Logout</span>
+              </div>
             </div>
           </div>
-        </div>
         </Themes>
       </Drawer>
       {/* Features drawer mobile End*/}
@@ -176,7 +174,7 @@ const SubTopBar = () => {
             <i className="ri-honour-line text-base"></i>
             <span>Attendance</span>
           </div>
-            <Link to="/disciplinary">Disciplinary</Link>
+          <Link to="/disciplinary">Disciplinary</Link>
         </div>
       </div>
       {hideOrShow ? (
