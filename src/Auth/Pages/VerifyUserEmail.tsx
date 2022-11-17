@@ -9,13 +9,20 @@ import linkedin from "../Assets/Images/linkedin.svg";
 import { Divider, Form, Input, Select } from "antd";
 import "../Style/style.css";
 
-import { Link } from "react-router-dom";
+import { Link, useParams, useSearchParams } from "react-router-dom";
 import { useEffect } from "react";
 import Aos from "aos";
 import "aos/dist/aos.css";
-import CompanyRegistrationForm from "../Components/CompanyRegistrationForm";
+import VerificationStatus from "../Components/VerificationStatus";
 
-export const Register = () => {
+export const VerifyUserEmail = () => {
+  const [searchParams] = useSearchParams();
+  const token = searchParams.get("token") ?? "";
+  const uid = searchParams.get("uid") ?? "";
+
+  // validate the users token
+  // if correct proceed to login
+  // if it isnt notify and tell user to try login instead
   useEffect(() => {
     Aos.init({ duration: 1500 });
   }, []);
@@ -31,10 +38,11 @@ export const Register = () => {
           <div className="flex items-center justify-center authIntroInner">
             <div className="text-center">
               <h2 data-aos="fade-down" className="text-white text-xl font-bold">
-                Welcome To HCMatrix!
+                Welcome back to HCMatrix!
               </h2>
               <p className="pt-6 pb-4">
-                Already have an account? <br className="hidden md:flex" />
+                Unable to verify email address?{" "}
+                <br className="hidden md:flex" />
                 please login with your personal information to stay
                 <br className="hidden md:flex" /> connected with us.
               </p>
@@ -54,7 +62,7 @@ export const Register = () => {
         className="Container w-full h-screen py-10 bg-cover bg-no-repeat text-center relative overflow-y-auto"
         style={{ backgroundImage: `url(${lightBg})` }}
       >
-        <div className="formWrap pt-44 lg:pt-56" style={{ maxWidth: 500 }}>
+        <div className="formWrap pt-12 lg:pt-14" style={{ maxWidth: 500 }}>
           <div>
             <div
               // data-aos="zoom-in"
@@ -65,13 +73,16 @@ export const Register = () => {
               className="pb-5 pt-6 rounded-md px-6"
             >
               <h2 className="text-xl md:text-2xl font-bold">
-                Create Company Account
+                Verifying Email Address
               </h2>
-              <p className="pt-2 pb-7">Getting started made easy</p>
+              <p className="pt-2 pb-7">
+                Wait a second, while we verify your email
+              </p>
               <div className="lg:px-14">
-                <CompanyRegistrationForm />
+                <VerificationStatus token={token} uid={uid} />
+
                 <Divider>
-                  <span className="text-sm">Sign Up with</span>
+                  <span className="text-sm">Sign in with</span>
                 </Divider>
                 <div className="flex items-center justify-center gap-6">
                   <img

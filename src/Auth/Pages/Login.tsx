@@ -8,12 +8,11 @@ import office from "../Assets/Images/office.svg";
 import linkedin from "../Assets/Images/linkedin.svg";
 import { Divider, Form, Input, Select } from "antd";
 import "../Style/style.css";
-import { LockOutlined, MailOutlined } from "@ant-design/icons";
-import { generalValidationRules } from "../../FormHelpers/validation";
 import { Link } from "react-router-dom";
 import { useEffect } from "react";
 import Aos from "aos";
 import "aos/dist/aos.css";
+import UserLoginForm from "../Components/UserLoginForm";
 
 export const Login = () => {
   useEffect(() => {
@@ -68,44 +67,7 @@ export const Login = () => {
               </h2>
               <p className="pt-2 pb-7">Getting started made easy</p>
               <div className="lg:px-14">
-                <Form>
-                  <Form.Item
-                    name="email"
-                    rules={[
-                      {
-                        required: true,
-                        message: "Field is required",
-                      },
-                      { type: "email", message: "Invalid Email Address" },
-                    ]}
-                    hasFeedback
-                  >
-                    <Input
-                      prefix={
-                        <MailOutlined className="site-form-item-icon pr-1" />
-                      }
-                      placeholder="Employee ID or Work Email"
-                      className="rounded border-slate-400"
-                      style={{ padding: "6px 5px" }}
-                    />
-                  </Form.Item>
-                  <Form.Item
-                    name="password"
-                    rules={generalValidationRules}
-                    hasFeedback
-                  >
-                    <Input
-                      prefix={
-                        <LockOutlined className="site-form-item-icon pr-1" />
-                      }
-                      placeholder="Password"
-                      className="rounded border-slate-400"
-                      style={{ padding: "6px 5px" }}
-                    />
-                  </Form.Item>
-
-                  <button className="authBtn w-full mt-4">Sign In</button>
-                </Form>
+                <UserLoginForm />
                 <span className="mb-3 flex justify-end cursor-pointer pt-2 text-sm hover:text-black">
                   Forgot password ?
                 </span>
