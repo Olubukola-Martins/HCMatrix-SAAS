@@ -17,6 +17,4 @@ export const emailValidationRules = [
     type: "email",
     message: "Invalid Email Address",
   },
-
-  { whitespace: true },
 ];

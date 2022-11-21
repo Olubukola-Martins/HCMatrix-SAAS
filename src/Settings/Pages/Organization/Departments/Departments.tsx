@@ -1,8 +1,7 @@
 import { AnimatePresence } from "framer-motion";
 import React, { useState } from "react";
 import DashboardLayout from "../../../../Layout/DashboardLayout";
-
-import AddDepartmentDrawer from "../../../Components/Organization/Departments/AddDepartmentDrawer";
+import { AddDepartment } from "../../../Components/Organization/Departments/AddDepartment";
 import { DepartmentsGridView } from "../../../Components/Organization/Departments/DepartmentsGridView";
 import { DepartmentsTableView } from "../../../Components/Organization/Departments/DepartmentsTableView";
 
@@ -45,15 +44,19 @@ const departments = [
 ];
 
 const Departments = () => {
-  const [viewId, setViewId] = useState("list");
-  const [showDraggableDrawer, setShowDraggableDrawer] = useState("");
+  const [addDepartmentModal, setAddDepartmentModal] = useState(false);
 
-  const handleViewId = (val) => {
+  const [viewId, setViewId] = useState("list");
+  const handleViewId = (val: React.SetStateAction<string>) => {
     setViewId(val);
   };
   return (
     <DashboardLayout>
-      <div className="h-screen">
+      <AddDepartment
+        open={addDepartmentModal}
+        handleClose={() => setAddDepartmentModal(false)}
+      />
+      <div className="Container">
         {
           <div className="  mt-4">
             <h4 className="text-lg  mb-1">Departments</h4>
@@ -67,7 +70,7 @@ const Departments = () => {
                 <button
                   id="invite-button"
                   className="py-1 px-2 bg-caramel rounded text-sm text-white font-medium"
-                  onClick={() => setShowDraggableDrawer("add-department")}
+                  onClick={() => setAddDepartmentModal(true)}
                 >
                   Add department
                 </button>
@@ -104,9 +107,6 @@ const Departments = () => {
         }
 
         <div className="content overflow-y-hidden relative">
-          {showDraggableDrawer === "add-department" && (
-            <AddDepartmentDrawer handleDrawer={setShowDraggableDrawer} />
-          )}
           <AnimatePresence exitBeforeEnter>
             {viewId === "grid" && (
               <DepartmentsGridView departments={departments} />
