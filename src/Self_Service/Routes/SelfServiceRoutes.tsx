@@ -1,5 +1,7 @@
 import React from "react";
 import { Route, Routes } from "react-router-dom";
+import { RequireAuth } from "react-auth-kit";
+
 import AssetDetails from "../Pages/Assets/AssetDetails";
 import Assets from "../Pages/Assets/Assets";
 import AssetTypeDetails from "../Pages/Assets/AssetTypeDetails";
@@ -32,83 +34,243 @@ const SelfServiceRoutes = () => {
   return (
     <>
       <Routes>
-        <Route path="/self-service/home" element={<SelfServiceHome />} />
+        <Route
+          path="/self-service/home"
+          element={
+            <RequireAuth loginPath={"/login"}>
+              <SelfServiceHome />
+            </RequireAuth>
+          }
+        />
 
-        <Route path="/self-service/requisition" element={<Requisition />} />
+        <Route
+          path="/self-service/requisition"
+          element={
+            <RequireAuth loginPath={"/login"}>
+              <Requisition />
+            </RequireAuth>
+          }
+        />
         <Route
           path="/self-service/reimbursements"
-          element={<Reimbursements />}
+          element={
+            <RequireAuth loginPath={"/login"}>
+              <Reimbursements />
+            </RequireAuth>
+          }
         />
-        <Route path="/self-service/monetary" element={<Monetary />} />
-        <Route path="/self-service/assets" element={<Assets />} />
-        <Route path="/self-service/assets/:id" element={<AssetTypeDetails />} />
-        <Route path="/self-service/assets-details" element={<AssetDetails />} />
-        <Route path="/self-service/loan" element={<LoanHome />} />
-        <Route path="/self-service/loan-request" element={<LoanRequest />} />
-        <Route path="/self-service/loan-policies" element={<LoanPolicies />} />
+        <Route
+          path="/self-service/monetary"
+          element={
+            <RequireAuth loginPath={"/login"}>
+              <Monetary />
+            </RequireAuth>
+          }
+        />
+        <Route
+          path="/self-service/assets"
+          element={
+            <RequireAuth loginPath={"/login"}>
+              <Assets />
+            </RequireAuth>
+          }
+        />
+        <Route
+          path="/self-service/assets/:id"
+          element={
+            <RequireAuth loginPath={"/login"}>
+              <AssetTypeDetails />
+            </RequireAuth>
+          }
+        />
+        <Route
+          path="/self-service/assets-details"
+          element={
+            <RequireAuth loginPath={"/login"}>
+              <AssetDetails />
+            </RequireAuth>
+          }
+        />
+        <Route
+          path="/self-service/loan"
+          element={
+            <RequireAuth loginPath={"/login"}>
+              <LoanHome />
+            </RequireAuth>
+          }
+        />
+        <Route
+          path="/self-service/loan-request"
+          element={
+            <RequireAuth loginPath={"/login"}>
+              <LoanRequest />
+            </RequireAuth>
+          }
+        />
+        <Route
+          path="/self-service/loan-policies"
+          element={
+            <RequireAuth loginPath={"/login"}>
+              <LoanPolicies />
+            </RequireAuth>
+          }
+        />
         <Route
           path="/self-service/vehicle-booking"
-          element={<VehicleBookingHome />}
+          element={
+            <RequireAuth loginPath={"/login"}>
+              <VehicleBookingHome />
+            </RequireAuth>
+          }
         />
         <Route
           path="/self-service/vehicle-details"
-          element={<VehicleDetails />}
+          element={
+            <RequireAuth loginPath={"/login"}>
+              <VehicleDetails />
+            </RequireAuth>
+          }
         />
         <Route
           path="/self-service/vehicle-details"
-          element={<VehicleDetails />}
+          element={
+            <RequireAuth loginPath={"/login"}>
+              <VehicleDetails />
+            </RequireAuth>
+          }
         />
 
         {/* survey */}
-        <Route path="/self-service/survey" element={<SurveyHome />} />
-        <Route path="/self-service/survey/new" element={<NewSurveyForm />} />
+        <Route
+          path="/self-service/survey"
+          element={
+            <RequireAuth loginPath={"/login"}>
+              <SurveyHome />
+            </RequireAuth>
+          }
+        />
+        <Route
+          path="/self-service/survey/new"
+          element={
+            <RequireAuth loginPath={"/login"}>
+              <NewSurveyForm />
+            </RequireAuth>
+          }
+        />
         <Route
           path="/self-service/survey-form/:id"
-          element={<SingleSurveyForm />}
+          element={
+            <RequireAuth loginPath={"/login"}>
+              <SingleSurveyForm />
+            </RequireAuth>
+          }
         />
         {/* conference room */}
         <Route
           path="self-service/conference-room-booking"
-          element={<CRBHome />}
+          element={
+            <RequireAuth loginPath={"/login"}>
+              <CRBHome />
+            </RequireAuth>
+          }
         />
 
         {/* leave */}
-        <Route path="/self-service/leave" element={<LeaveHome />} />
+        <Route
+          path="/self-service/leave"
+          element={
+            <RequireAuth loginPath={"/login"}>
+              <LeaveHome />
+            </RequireAuth>
+          }
+        />
         <Route
           path="/self-service/leave/settings"
-          element={<LeaveSettings />}
+          element={
+            <RequireAuth loginPath={"/login"}>
+              <LeaveSettings />
+            </RequireAuth>
+          }
         />
         {/* health access */}
         <Route
           path="/self-service/health-access"
-          element={<HealthAccessHome />}
+          element={
+            <RequireAuth loginPath={"/login"}>
+              <HealthAccessHome />
+            </RequireAuth>
+          }
         />
         <Route
           path="/self-service/health-access/settings"
-          element={<HealthAccessSettings />}
+          element={
+            <RequireAuth loginPath={"/login"}>
+              <HealthAccessSettings />
+            </RequireAuth>
+          }
         />
         <Route
           path="/self-service/health-access/settings"
-          element={<HealthAccessSettings />}
+          element={
+            <RequireAuth loginPath={"/login"}>
+              <HealthAccessSettings />
+            </RequireAuth>
+          }
         />
 
         {/* Onboarding */}
-        <Route path="/self-service/onboarding" element={<Onboarding />} />
+        <Route
+          path="/self-service/onboarding"
+          element={
+            <RequireAuth loginPath={"/login"}>
+              <Onboarding />
+            </RequireAuth>
+          }
+        />
         <Route
           path="/self-service/onboarding/:id"
-          element={<StartOnboarding />}
+          element={
+            <RequireAuth loginPath={"/login"}>
+              <StartOnboarding />
+            </RequireAuth>
+          }
         />
 
         {/* Handover */}
-        <Route path="/self-service/handover-form" element={<HandOver />} />
-        <Route path="/self-service/handover-new-form" element={<NewForm />} />
+        <Route
+          path="/self-service/handover-form"
+          element={
+            <RequireAuth loginPath={"/login"}>
+              <HandOver />
+            </RequireAuth>
+          }
+        />
+        <Route
+          path="/self-service/handover-new-form"
+          element={
+            <RequireAuth loginPath={"/login"}>
+              <NewForm />
+            </RequireAuth>
+          }
+        />
         <Route
           path="/self-service/handover-form/:id"
-          element={<HandOverDetails />}
+          element={
+            <RequireAuth loginPath={"/login"}>
+              <HandOverDetails />
+            </RequireAuth>
+          }
         />
 
         {/* HR Letters */}
-        <Route path="/self-service/hr-letters" element={<HRLetters />} />
+        <Route
+          path="/self-service/hr-letters"
+          element={
+            <RequireAuth loginPath={"/login"}>
+              <HRLetters />
+            </RequireAuth>
+          }
+        />
       </Routes>
     </>
   );

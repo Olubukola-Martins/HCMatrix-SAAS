@@ -4,13 +4,35 @@ import Statement from "../Pages/Statement";
 import { Routes, Route } from "react-router-dom";
 import BillingHome from "../Pages/BillingHome";
 import PurchaseUserLicense from "../Pages/PurchaseUserLicence";
+import { RequireAuth } from "react-auth-kit";
 
 const BillingRoutes = () => {
   return (
     <Routes>
-      <Route path="/statement" element={<Statement />} />
-      <Route path="/billings" element={<BillingHome />} />
-      <Route path="/purchase-user-license" element={<PurchaseUserLicense />} />
+      <Route
+        path="/statement"
+        element={
+          <RequireAuth loginPath={"/login"}>
+            <Statement />
+          </RequireAuth>
+        }
+      />
+      <Route
+        path="/billings"
+        element={
+          <RequireAuth loginPath={"/login"}>
+            <BillingHome />
+          </RequireAuth>
+        }
+      />
+      <Route
+        path="/purchase-user-license"
+        element={
+          <RequireAuth loginPath={"/login"}>
+            <PurchaseUserLicense />
+          </RequireAuth>
+        }
+      />
     </Routes>
   );
 };

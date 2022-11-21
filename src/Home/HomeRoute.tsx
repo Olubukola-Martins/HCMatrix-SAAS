@@ -1,15 +1,35 @@
-import React from 'react'
-import { Route, Routes } from 'react-router-dom'
-import CompanyOrganogram from './Components/CompanyOrganogram'
-import Home from './Pages/Home'
+import React from "react";
+import { RequireAuth } from "react-auth-kit";
+import { Route, Routes } from "react-router-dom";
+import CompanyOrganogram from "./Components/CompanyOrganogram";
+import Home from "./Pages/Home";
 
 function HomeRoute() {
   return (
     <Routes>
-        <Route path='/' element={<Home/>}/>
-        <Route path="/company-organogram" element={<CompanyOrganogram />} />
+      {/* <Route
+        path="/"
+        
+      > */}
+      <Route
+        path="/"
+        element={
+          <RequireAuth loginPath={"/login"}>
+            <Home />
+          </RequireAuth>
+        }
+      />
+      <Route
+        path="/company-organogram"
+        element={
+          <RequireAuth loginPath={"/login"}>
+            <CompanyOrganogram />
+          </RequireAuth>
+        }
+      />
+      {/* </Route> */}
     </Routes>
-  )
+  );
 }
 
-export default HomeRoute
+export default HomeRoute;

@@ -93,29 +93,14 @@ const LeaveHome = () => {
         onClose={() => setShowDrawer(false)}
         // className={`${isDark ? "custom-draw-dark" : ""}`}
         // mask={false}
-        closeIcon={false}
-        title={
-          <Themes>
-            <div className="px-4 py-4 flex justify-between items-center">
-              <span className="text-accent">{comp}</span>
-              <Button
-                type="text"
-                icon={<CloseOutlined />}
-                onClick={() => setShowDrawer(false)}
-              />
-            </div>
-          </Themes>
-        }
+
+        title={comp}
         // zIndex={10}
         // contentWrapperStyle={{ top: 220, right: 70 }}
         // contentWrapperStyle={{ background: "purple" }}
         // getContainer={() => containerRef.current}
       >
-        <Themes>
-          <div className="p-4">
-            {comp === ECOMP.ADD_NEW_LEAVE && <AddNewLeaveForm />}
-          </div>
-        </Themes>
+        <Themes>{comp === ECOMP.ADD_NEW_LEAVE && <AddNewLeaveForm />}</Themes>
       </Drawer>
 
       <div>

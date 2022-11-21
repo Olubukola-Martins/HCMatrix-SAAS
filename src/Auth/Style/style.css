@@ -3,6 +3,7 @@
   /* --authPrimary: #01966b; */
 }
 
+.authBtn[type="submit"],
 .authBtn {
   @apply border rounded font-medium text-white transition ease-in-out duration-300 text-sm tracking-wider hover:opacity-70;
   padding: 7px 8.5px;

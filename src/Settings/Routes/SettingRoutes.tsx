@@ -25,57 +25,237 @@ import Holidays from "../Pages/General/Holidays";
 import ResignationPolicy from "../Pages/Policies/ResignationPolicy";
 import Employees from "../Pages/Organization/EmployeeProfiles/Employees";
 import { MyProfile } from "../Pages/Organization/EmployeeProfiles/MyProfile";
-import { AddEmployee } from "../Components/Organization/EmployeeProfiles/AddEmployee";
+import { RequireAuth } from "react-auth-kit";
 
 const SettingRoutes = () => {
   return (
     <Routes>
       {/* General */}
-      <Route path="/settings" element={<GeneralSettings />} />
-      <Route path="/settings/company-details" element={<CompanyDetails />} />
-      <Route path="/settings/domains" element={<Domains />} />
-      <Route path="/settings/from-addresses" element={<FromAddresses />} />
-      <Route path="/settings/locations" element={<Locations />} />
-      <Route path="/settings/locations/:id" element={<LocationDetail />} />
-      <Route path="/settings/user-profile" element={<UserProfiles />} />
-      <Route path="/settings/holidays" element={<Holidays />} />
-      <Route path="/settings/profile" element={<MyProfile />} />
-      <Route path="/settings/add-employee" element={<AddEmployee/>} />
+      <Route
+        path="/settings"
+        element={
+          <RequireAuth loginPath={"/login"}>
+            <GeneralSettings />
+          </RequireAuth>
+        }
+      />
+      <Route
+        path="/settings/company-details"
+        element={
+          <RequireAuth loginPath={"/login"}>
+            <CompanyDetails />
+          </RequireAuth>
+        }
+      />
+      <Route
+        path="/settings/domains"
+        element={
+          <RequireAuth loginPath={"/login"}>
+            <Domains />
+          </RequireAuth>
+        }
+      />
+      <Route
+        path="/settings/from-addresses"
+        element={
+          <RequireAuth loginPath={"/login"}>
+            <FromAddresses />
+          </RequireAuth>
+        }
+      />
+      <Route
+        path="/settings/locations"
+        element={
+          <RequireAuth loginPath={"/login"}>
+            <Locations />
+          </RequireAuth>
+        }
+      />
+      <Route
+        path="/settings/locations/:id"
+        element={
+          <RequireAuth loginPath={"/login"}>
+            <LocationDetail />
+          </RequireAuth>
+        }
+      />
+      <Route
+        path="/settings/user-profile"
+        element={
+          <RequireAuth loginPath={"/login"}>
+            <UserProfiles />
+          </RequireAuth>
+        }
+      />
+      <Route
+        path="/settings/holidays"
+        element={
+          <RequireAuth loginPath={"/login"}>
+            <Holidays />
+          </RequireAuth>
+        }
+      />
+      <Route
+        path="/settings/profile"
+        element={
+          <RequireAuth loginPath={"/login"}>
+            <MyProfile />
+          </RequireAuth>
+        }
+      />
 
       {/* Organization */}
-      <Route path="/settings/employees" element={<Employees />} />
-      <Route path="/settings/user-profile" element={<UserProfiles />} />
-      <Route path="/settings/designations" element={<Designations />} />
+      <Route
+        path="/settings/employees"
+        element={
+          <RequireAuth loginPath={"/login"}>
+            <Employees />
+          </RequireAuth>
+        }
+      />
+      <Route
+        path="/settings/user-profile"
+        element={
+          <RequireAuth loginPath={"/login"}>
+            <UserProfiles />
+          </RequireAuth>
+        }
+      />
+      <Route
+        path="/settings/designations"
+        element={
+          <RequireAuth loginPath={"/login"}>
+            <Designations />
+          </RequireAuth>
+        }
+      />
       <Route
         path="/settings/designations/:id"
-        element={<DesignationDetail />}
+        element={
+          <RequireAuth loginPath={"/login"}>
+            <DesignationDetail />
+          </RequireAuth>
+        }
       />
-      <Route path="/settings/groups" element={<Groups />} />
+      <Route
+        path="/settings/groups"
+        element={
+          <RequireAuth loginPath={"/login"}>
+            <Groups />
+          </RequireAuth>
+        }
+      />
       {/* not in figma - ask Emma */}
-      {/* <Route path="/settings/groups/:id" element={<DesignationDetail />} /> */}
+      {/* <Route path="/settings/groups/:id" element={ <RequireAuth loginPath={"/login"}><DesignationDetail   /></RequireAuth>
+        }
+      /> */}
 
-      <Route path="/settings/departments" element={<Departments />} />
-      <Route path="/settings/departments/:id" element={<DepartmentDetail />} />
+      <Route
+        path="/settings/departments"
+        element={
+          <RequireAuth loginPath={"/login"}>
+            <Departments />
+          </RequireAuth>
+        }
+      />
+      <Route
+        path="/settings/departments/:id"
+        element={
+          <RequireAuth loginPath={"/login"}>
+            <DepartmentDetail />
+          </RequireAuth>
+        }
+      />
 
-      <Route path="/settings/delegations" element={<Delegations />} />
-      <Route path="/settings/delegations/:id" element={<DelegationDetail />} />
+      <Route
+        path="/settings/delegations"
+        element={
+          <RequireAuth loginPath={"/login"}>
+            <Delegations />
+          </RequireAuth>
+        }
+      />
+      <Route
+        path="/settings/delegations/:id"
+        element={
+          <RequireAuth loginPath={"/login"}>
+            <DelegationDetail />
+          </RequireAuth>
+        }
+      />
 
-      <Route path="/settings/roles" element={<Roles />} />
-      <Route path="/settings/roles/create" element={<CreateRole />} />
-      <Route path="/settings/automation/workflows" element={<Workflows />} />
+      <Route
+        path="/settings/roles"
+        element={
+          <RequireAuth loginPath={"/login"}>
+            <Roles />
+          </RequireAuth>
+        }
+      />
+      <Route
+        path="/settings/roles/create"
+        element={
+          <RequireAuth loginPath={"/login"}>
+            <CreateRole />
+          </RequireAuth>
+        }
+      />
+      <Route
+        path="/settings/automation/workflows"
+        element={
+          <RequireAuth loginPath={"/login"}>
+            <Workflows />
+          </RequireAuth>
+        }
+      />
       <Route
         path="/settings/automation/workflows/create"
-        element={<CreateWorkflow />}
+        element={
+          <RequireAuth loginPath={"/login"}>
+            <CreateWorkflow />
+          </RequireAuth>
+        }
+      />
+      <Route
+        path="/settings/payroll"
+        element={
+          <RequireAuth loginPath={"/login"}>
+            <PayrollSettings />
+          </RequireAuth>
+        }
+      />
+      <Route
+        path="/settings/grades"
+        element={
+          <RequireAuth loginPath={"/login"}>
+            <Grades />
+          </RequireAuth>
+        }
+      />
+      <Route
+        path="/settings/grade_categories"
+        element={
+          <RequireAuth loginPath={"/login"}>
+            <GradeCategories />
+          </RequireAuth>
+        }
       />
 
-      <Route path="/settings/payroll" element={<PayrollSettings />} />
-      <Route path="/settings/grades" element={<Grades />} />
-      <Route path="/settings/grade_categories" element={<GradeCategories />} />
-
-      <Route path="/settings/probation_policy" element={<ProbationPolicy />} />
+      <Route
+        path="/settings/probation_policy"
+        element={
+          <RequireAuth loginPath={"/login"}>
+            <ProbationPolicy />
+          </RequireAuth>
+        }
+      />
       <Route
         path="/settings/resignation_policy"
-        element={<ResignationPolicy />}
+        element={
+          <RequireAuth loginPath={"/login"}>
+            <ResignationPolicy />
+          </RequireAuth>
+        }
       />
     </Routes>
   );

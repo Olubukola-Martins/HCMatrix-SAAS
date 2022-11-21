@@ -5,9 +5,7 @@ import "../style/style.css";
 const SideBar = () => {
   return (
     <>
-      <div
-        className="h-screen overflow-y-auto flex-col bg-card flex items-center px-2 text-center pb-32 scrollBar"
-      >
+      <div className="h-screen overflow-y-auto flex-col bg-card flex items-center px-2 text-center pb-32 scrollBar">
         <NavLink to={`/`} className="sideBarItemWrap">
           <div className="flex justify-center">
             <span className="sideBarList">
@@ -17,7 +15,7 @@ const SideBar = () => {
           <span className="sideBarName">Home</span>
         </NavLink>
 
-        <NavLink to="/self-service/home" className="sideBarItemWrap">
+        <NavLink to="/self-service/home" className="sideBarItemWrap active">
           <div className="flex justify-center">
             <span className="sideBarList">
               <i className="ri-organization-chart"></i>

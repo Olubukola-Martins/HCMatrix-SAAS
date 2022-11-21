@@ -349,7 +349,7 @@ input[type="text"].ant-input,
 }
 
 .drawerBg .ant-drawer-wrapper-body {
- background: var(--card);
+  background: var(--card);
 }
 
 /* Accordion */

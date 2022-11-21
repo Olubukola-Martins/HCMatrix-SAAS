@@ -8,44 +8,17 @@ import office from "../Assets/Images/office.svg";
 import linkedin from "../Assets/Images/linkedin.svg";
 import { Divider, Form, Input, Select } from "antd";
 import "../Style/style.css";
-import {
-  LockOutlined,
-  ReconciliationOutlined,
-  UserOutlined,
-  BankOutlined,
-  MailOutlined,
-} from "@ant-design/icons";
-import { generalValidationRules } from "../../FormHelpers/validation";
+
 import { Link } from "react-router-dom";
 import { useEffect } from "react";
 import Aos from "aos";
 import "aos/dist/aos.css";
+import CompanyRegistrationForm from "../Components/CompanyRegistrationForm";
 
 export const Register = () => {
   useEffect(() => {
     Aos.init({ duration: 1500 });
   }, []);
-  const industryData = [
-    "Advertising & marketing",
-    " Agriculture",
-    "Chemicals & Resources",
-    " Construction",
-    "Consumer Goods & FMCG",
-    "E-COMMERCE",
-    "Health, Pharmacy & Medtech",
-    "Internet",
-    "Life",
-    " Media",
-    "Metals & Electronics",
-    "Real Estate",
-    " Retail and Trade",
-    "Services",
-    "Society",
-    " Sports & Recreation",
-    "Technology & Telecommunications",
-    "transportation and Logistics",
-    "Travel, Tourism & Hospitality",
-  ];
 
   return (
     <div className="grid grid-cols-1 lg:grid-cols-2">
@@ -81,7 +54,7 @@ export const Register = () => {
         className="Container w-full h-screen py-10 bg-cover bg-no-repeat text-center relative overflow-y-auto"
         style={{ backgroundImage: `url(${lightBg})` }}
       >
-        <div className="formWrap pt-44 lg:pt-56" style={{ maxWidth: 500 }}>
+        <div className="formWrap pt-44 lg:pt-64" style={{ maxWidth: 500 }}>
           <div>
             <div
               // data-aos="zoom-in"
@@ -96,153 +69,7 @@ export const Register = () => {
               </h2>
               <p className="pt-2 pb-7">Getting started made easy</p>
               <div className="lg:px-14">
-                <Form>
-                  <Form.Item
-                    name="fullName"
-                    rules={generalValidationRules}
-                    hasFeedback
-                  >
-                    <Input
-                      prefix={
-                        <UserOutlined className="site-form-item-icon pr-1" />
-                      }
-                      placeholder="Full Name"
-                      className="rounded border-slate-400"
-                      style={{ padding: "6px 5px" }}
-                    />
-                  </Form.Item>
-                  <Form.Item
-                    name="organization"
-                    rules={generalValidationRules}
-                    hasFeedback
-                  >
-                    <Input
-                      prefix={
-                        <ReconciliationOutlined className="site-form-item-icon pr-1" />
-                      }
-                      placeholder="Organization Name"
-                      className="rounded border-slate-400"
-                      style={{ padding: "6px 5px" }}
-                    />
-                  </Form.Item>
-                  <Form.Item
-                    name="industry"
-                    rules={generalValidationRules}
-                    hasFeedback
-                  >
-                    <Select
-                      showSearch
-                      allowClear
-                      optionLabelProp="label"
-                      className="authSelectTag"
-                      placeholder={
-                        <div className="flex justify-start items-center">
-                          <BankOutlined className="site-form-item-icon pr-1 text-black" />
-                          &nbsp; Industry
-                        </div>
-                      }
-                      style={{ width: "100%" }}
-                    >
-                      {industryData.map((data) => (
-                        <Select.Option
-                          key={data}
-                          value={data}
-                          className="py-2"
-                          label={
-                            <div className="flex justify-start items-center">
-                              <BankOutlined className="site-form-item-icon pr-1 text-black" />
-                              &nbsp;
-                              {data}
-                            </div>
-                          }
-                        >
-                          {data}
-                        </Select.Option>
-                      ))}
-                    </Select>
-                  </Form.Item>
-                  <Form.Item
-                    name="email"
-                    rules={[
-                      {
-                        required: true,
-                        message: "Field is required",
-                      },
-                      { type: "email", message: "Invalid Email Address" },
-                    ]}
-                    hasFeedback
-                  >
-                    <Input
-                      prefix={
-                        <MailOutlined className="site-form-item-icon pr-1" />
-                      }
-                      placeholder="Business Email"
-                      className="rounded border-slate-400"
-                      style={{ padding: "6px 5px" }}
-                    />
-                  </Form.Item>
-                  <Form.Item
-                    name="password"
-                    rules={[
-                      {
-                        required: true,
-                        message: "Field is required",
-                      },
-                      {
-                        min: 8,
-                        message: "password must be at least 6 characters",
-                      },
-                      // {
-                      //   validator: (_, value) =>
-                      //     value && value.includes("A")
-                      //       ? Promise.resolve()
-                      //       : Promise.reject("Password does not match criteria."),
-                      // },
-                    ]}
-                    hasFeedback
-                  >
-                    <Input
-                      prefix={
-                        <LockOutlined className="site-form-item-icon pr-1" />
-                      }
-                      placeholder="Password"
-                      className="rounded border-slate-400"
-                      style={{ padding: "6px 5px" }}
-                    />
-                  </Form.Item>
-
-                  <Form.Item
-                    name="CPassword"
-                    dependencies={["password"]}
-                    rules={[
-                      {
-                        required: true,
-                        message: "Field is required",
-                      },
-                      ({ getFieldValue }) => ({
-                        validator(_, value) {
-                          if (!value || getFieldValue("password") === value) {
-                            return Promise.resolve();
-                          }
-                          return Promise.reject(
-                            "The two passwords that you entered does not match."
-                          );
-                        },
-                      }),
-                    ]}
-                    hasFeedback
-                  >
-                    <Input
-                      prefix={
-                        <LockOutlined className="site-form-item-icon pr-1" />
-                      }
-                      placeholder="Confirm Password"
-                      className="rounded border-slate-400"
-                      style={{ padding: "6px 5px" }}
-                    />
-                  </Form.Item>
-                  <button className="authBtn w-full mt-4 mb-3">Sign Up</button>
-                </Form>
+                <CompanyRegistrationForm />
                 <Divider>
                   <span className="text-sm">Sign Up with</span>
                 </Divider>
