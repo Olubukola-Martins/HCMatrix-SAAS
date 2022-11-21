@@ -7,6 +7,7 @@ import {
 } from "../../../Settings/Data/index";
 import { Link } from "react-router-dom";
 import { Modal } from "antd";
+import { IModalProps } from "../../../AppTypes/Component";
 
 let links: TLink[] = [];
 
@@ -14,12 +15,7 @@ settingNavItems.forEach((parent) => {
   links = [...parent.items, ...links];
 });
 
-interface IProps {
-  open: boolean;
-  handleClose: Function;
-}
-
-const SearchModal = ({ open, handleClose }: IProps) => {
+const SearchModal = ({ open, handleClose }: IModalProps) => {
   const [searchResults, setSearchResults] = useState<TLink[]>([]);
   const handleSearch = (val: string) => {
     const result = links.filter(

@@ -6,7 +6,7 @@ import microsoft from "../Assets/Images/microsoft.svg";
 import google from "../Assets/Images/google.svg";
 import office from "../Assets/Images/office.svg";
 import linkedin from "../Assets/Images/linkedin.svg";
-import { Divider, Form, Input, Select } from "antd";
+import { Divider, Form, Input } from "antd";
 import "../Style/style.css";
 import { Link } from "react-router-dom";
 import { useEffect } from "react";

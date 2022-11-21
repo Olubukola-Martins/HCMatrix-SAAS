@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { Link } from "react-router-dom";
 import DashboardLayout from "../../Layout/DashboardLayout";
 import HomeCard from "../Components/HomeCard";
@@ -10,31 +10,17 @@ import interviews from "../Assets/Images/interviews.svg";
 import timesheets from "../Assets/Images/timesheets.svg";
 import attendance from "../Assets/Images/attendance.svg";
 import files from "../Assets/Images/files.svg";
-import Themes from "../../Themes/Themes";
-import Menu from "@mui/material/Menu";
-
-// import { motion } from "framer-motion";
 import { settingNavItems } from "../../Settings/Data";
 import PendingItem from "../Components/PendingItem";
-import CustomizeDashboardModal from "../Components/CustomizeDashboardModal";
+import { Dropdown } from "antd";
+// import CustomizeDashboardModal from "../Components/CustomizeDashboardModal";
 
 export const AdminHome = () => {
   const [openId, setOpenId] = useState("");
-
-  const handlePendingClick = (val) => {
+  // const [openCustomModal, setOpenCustomModal] = useState(false);
+  const handlePendingClick = (val: string) => {
     setOpenId((preVal) => (preVal === val ? "" : val));
   };
-  const [anchorEl, setAnchorEl] = useState(null);
-  const open = Boolean(anchorEl);
-
-  const handleClick = (event) => {
-    setAnchorEl(event.currentTarget);
-  };
-  const handleClose = () => {
-    setAnchorEl(null);
-  };
-
-  const [openCustomModal, setOpenCustomModal] = useState(false);
 
   return (
     <DashboardLayout>
@@ -95,17 +81,17 @@ export const AdminHome = () => {
               </Link>
               <button
                 className="dashboardLink"
-                onClick={() => setOpenCustomModal(true)}
+                // onClick={() => setOpenCustomModal(true)}
               >
                 <span className="text-caramel font-semibold text-lg">
                   Customize
                 </span>
                 <h6 className="text-xs font-semibold">My dashboard</h6>
               </button>
-              <CustomizeDashboardModal
+              {/* <CustomizeDashboardModal
                 open={openCustomModal}
                 handleClose={() => setOpenCustomModal(false)}
-              />
+              /> */}
             </div>
           </div>
           <div className="bg-card rounded-xl px-5 py-4 text-accent w-full">
@@ -121,6 +107,7 @@ export const AdminHome = () => {
                     item={item}
                   />
                 ))}
+                
               {/* <PendingItem
                 handleClick={handlePendingClick}
                 openId={openId}
@@ -152,26 +139,18 @@ export const AdminHome = () => {
                   <span className="text-caramel">Set-up Guide</span>
                 </div>
 
-                <div className="flex items-center gap-3 cursor-pointer">
-                  <i className="ri-customer-service-2-line text-2xl"></i>
-                  <span className="text-caramel" onClick={handleClick}>
-                    Contact Support
-                  </span>
-                </div>
-                {/* below pending setup */}
-
-                {/* Contact Support menu */}
-                <Menu anchorEl={anchorEl} open={open} onClose={handleClose}>
-                  <Themes>
-                    <div className="bg-card w-38 px-3 text-xs py-1 text-accent">
-                      <h5 className="cursor-pointer group">
+                <Dropdown
+                  trigger={["click"]}
+                  overlay={
+                    <div className="bg-mainBg  px-3 text-xs py-2 text-accent shadow rounded">
+                      <h5 className="cursor-pointer group flex items-center gap-2">
                         <i className="ri-whatsapp-fill text-base text-green-500 block"></i>
                         <span className="group-hover:text-caramel">
                           WhatsApp support
                         </span>
                       </h5>
 
-                      <h5 className="my-2 cursor-pointer group">
+                      <h5 className="my-2 cursor-pointer group flex items-center gap-2">
                         <i className="ri-phone-line text-base block"></i>
                         <a
                           href="tel: +1 (254) 244-0305"
@@ -181,7 +160,7 @@ export const AdminHome = () => {
                         </a>
                       </h5>
 
-                      <h5 className="my-1 cursor-pointer group">
+                      <h5 className="my-1 cursor-pointer group flex items-center gap-2">
                         <i className="ri-mail-line text-base block"></i>
                         <a
                           href="mailto: support@hcmatrix.com"
@@ -191,8 +170,13 @@ export const AdminHome = () => {
                         </a>
                       </h5>
                     </div>
-                  </Themes>
-                </Menu>
+                  }
+                >
+                  <div className="flex items-center gap-3 cursor-pointer">
+                    <i className="ri-customer-service-2-line text-2xl"></i>
+                    <span className="text-caramel">Contact Support</span>
+                  </div>
+                </Dropdown>
               </div>
             </div>
           </div>
@@ -252,4 +236,3 @@ export const AdminHome = () => {
     </DashboardLayout>
   );
 };
-

@@ -1,11 +1,11 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { Link } from "react-router-dom";
 import DashboardLayout from "../../Layout/DashboardLayout";
 import CompanyOrganogramComp from "../Components/CompanyOrganogram";
 
 const CompanyOrganogram = () => {
-  const [showDraggableDrawer, setShowDraggableDrawer] = useState("");
-  const [switchView, setSwitchView] = useState(true);
+  // const [showDraggableDrawer, setShowDraggableDrawer] = useState("");
+  // const [switchView, setSwitchView] = useState(true);
 
   return (
     <DashboardLayout>

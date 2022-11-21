@@ -25,7 +25,7 @@ const PayrollBreakdown = () => {
 
   return (
     <DashboardLayout>
-      <PayrollSubNav/>
+      <PayrollSubNav />
       <div>
         <div className="flex items-center gap-2 mb-10">
           <Link to="/payroll/review" className="hover:text-caramel">
