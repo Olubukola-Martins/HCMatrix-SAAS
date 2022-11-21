@@ -353,9 +353,9 @@ input[type="text"].ant-input,
 }
 
 /* Accordion */
-.ghostCollapse.ant-collapse > .ant-collapse-item > .ant-collapse-header {
+/* .ghostCollapse.ant-collapse > .ant-collapse-item > .ant-collapse-header {
   flex-flow: row-reverse;
-}
+} */
 
 .collapseHeader .ant-collapse-header-text {
   @apply text-base font-medium;

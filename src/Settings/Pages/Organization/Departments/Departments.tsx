@@ -95,12 +95,7 @@ const Departments = () => {
                     aria-hidden="true"
                   ></i>
                 </div>
-                <div className="question-icon ml-auto md:ml-0">
-                  <i
-                    className="ri-question-fill text-xl cursor-pointer text-gray-400"
-                    title="Employee profile"
-                  ></i>
-                </div>
+              
               </div>
             </div>
           </div>

@@ -1,16 +1,19 @@
-export const generalValidationRules = [
+
+import { Rule } from "antd/lib/form";
+
+export const generalValidationRules: Rule[] = [
   { required: true, message: "Field is required!" },
 ];
 
-export const textInputValidationRules = [
+export const textInputValidationRules: Rule[] = [
   ...generalValidationRules,
-
   { whitespace: true },
 ];
 
-export const emailValidationRules = [
+export const emailValidationRules: Rule[] = [
   {
     required: true,
+
     message: "Field is required",
   },
   {

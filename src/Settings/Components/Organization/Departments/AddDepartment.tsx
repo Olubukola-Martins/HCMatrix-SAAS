@@ -1,6 +1,6 @@
 import { Form, Input, Modal } from "antd";
 import { IModalProps } from "../../../../AppTypes/Component";
-import { textInputValidationRules } from "../../../../FormHelpers/validation";
+import { emailValidationRules, textInputValidationRules } from "../../../../FormHelpers/validation";
 
 export const AddDepartment = ({ open, handleClose }: IModalProps) => {
   return (
@@ -21,16 +21,7 @@ export const AddDepartment = ({ open, handleClose }: IModalProps) => {
         <Form.Item
           name="mail"
           label="Mail Alias"
-          rules={[
-            {
-              required: true,
-              message: "Field is required",
-            },
-            {
-              type: "email",
-              message: "Enter a valid email",
-            },
-          ]}
+          rules={emailValidationRules}
         >
           <Input placeholder="john@gmail.com" className="generalInputStyle" />
         </Form.Item>
