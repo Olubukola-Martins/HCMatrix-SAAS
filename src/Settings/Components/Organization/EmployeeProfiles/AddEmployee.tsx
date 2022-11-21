@@ -30,13 +30,9 @@ export const AddEmployee = () => {
             <span>Employees Added: 2</span>
             <span>License count left: 5</span>
           </div>
-          <Form layout="vertical" onFinish={(val) => console.log(val)}>
+          <Form layout="vertical" requiredMark={false} onFinish={(val) => console.log(val)}>
             <div className="bg-mainBg rounded-md md:px-4 pt-4 pb-4 shadow-sm mt-8">
-              <Collapse
-                defaultActiveKey={["1"]}
-                ghost
-                className="ghostCollapse"
-              >
+              <Collapse defaultActiveKey={["1"]} ghost expandIconPosition="end">
                 <Panel
                   header="Basic Information"
                   key="1"
@@ -98,11 +94,7 @@ export const AddEmployee = () => {
             </div>
 
             <div className="bg-mainBg rounded-md md:px-4 pt-4 pb-3 shadow-sm mt-8">
-              <Collapse
-                defaultActiveKey={["1"]}
-                ghost
-                className="ghostCollapse"
-              >
+              <Collapse defaultActiveKey={["1"]} ghost expandIconPosition="end">
                 <Panel
                   header="Job Information"
                   key="1"
@@ -236,11 +228,7 @@ export const AddEmployee = () => {
             </div>
 
             <div className="bg-mainBg rounded-md md:px-4 pt-4 pb-3 shadow-sm mt-8">
-              <Collapse
-                defaultActiveKey={["1"]}
-                ghost
-                className="ghostCollapse"
-              >
+              <Collapse defaultActiveKey={["1"]} ghost expandIconPosition="end">
                 <Panel
                   header="Grant Self Service Access"
                   key="1"

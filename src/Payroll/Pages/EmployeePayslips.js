@@ -125,51 +125,6 @@ const EmployeePayslips = () => {
             />
           </div>
         </div>
-        {/* <table className="payroll-table text-accent mt-7">
-          <thead>
-            <tr>
-              <th>
-                <input type="checkbox" name="" id="" />
-              </th>
-              <th>Pay Date</th>
-              <th>Name</th>
-              <th>Employee ID</th>
-              <th>Pay Type</th>
-              <th>Net Pay</th>
-              <th>Gross Pay</th>
-              <th>Total Deductions</th>
-              <th>Total Bonuses</th>
-              <th>Tax</th>
-              <th>Action</th>
-            </tr>
-          </thead>
-
-          <tbody>
-            {[1, 2, 3, 4].map((item) => (
-              <tr key={item}>
-                <td>
-                  <input type="checkbox" name="" id="" />
-                </td>
-                <td>DD/MM/YY</td>
-                <td>Ruth Godwin</td>
-                <td>xxxx</td>
-                <td>Salary</td>
-                <td>N0.00</td>
-                <td>N0.00</td>
-                <td>N0.00</td>
-                <td>N0.00</td>
-                <td>N0.00</td>
-                <td className="flex items-center gap-3">
-                  <i
-                    className="ri-eye-line text-lg cursor-pointer hover:text-caramel"
-                    onClick={() => setView(true)}
-                  ></i>
-                  <i className="ri-download-2-line text-lg cursor-pointer hover:text-caramel"></i>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table> */}
       </div>
     </DashboardLayout>
   );

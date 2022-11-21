@@ -141,13 +141,13 @@ export const Register = () => {
                           &nbsp; Industry
                         </div>
                       }
-                      style={{ width: "100%"}}
+                      style={{ width: "100%" }}
                     >
                       {industryData.map((data) => (
                         <Select.Option
                           key={data}
                           value={data}
-                           className="py-2"
+                          className="py-2"
                           label={
                             <div className="flex justify-start items-center">
                               <BankOutlined className="site-form-item-icon pr-1 text-black" />
