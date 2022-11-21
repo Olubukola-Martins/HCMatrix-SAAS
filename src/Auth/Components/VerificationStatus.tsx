@@ -4,9 +4,12 @@ import { IVerifyUserProps, verifyUserToken } from "../../ApiRequesHelpers/Auth";
 import { useQuery } from "react-query";
 import { openNotification } from "../../NotificationHelpers";
 import { Typography } from "antd";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { useSignIn } from "react-auth-kit";
 
 const VerificationStatus = ({ token, uid }: IVerifyUserProps) => {
+  const navigate = useNavigate();
+  const signIn = useSignIn();
   const { data, isError, isFetching, isSuccess } = useQuery(
     "validate-user-token",
     () => verifyUserToken({ token, uid }),
@@ -23,14 +26,27 @@ const VerificationStatus = ({ token, uid }: IVerifyUserProps) => {
             err?.response.data.message ?? err?.response.data.error.message,
         });
       },
-      onSuccess: (data: any) => {
-        openNotification({
-          state: "success",
+      onSuccess: (res: any) => {
+        const result = res.data.data;
+        console.log("user", result);
+        if (
+          signIn({
+            token: result.token,
+            expiresIn: 120000000000,
+            tokenType: "Bearer",
+            authState: result.user,
+          })
+        ) {
+          openNotification({
+            state: "success",
 
-          title: "Success",
-          description: "Email address verified !",
-          // duration: 0.4,
-        });
+            title: "Success",
+            description: "Logged in successfully!",
+          });
+          // the company information has to be saved in a general state to be accessible accross the app
+          // result.payload has the companies
+          navigate("/");
+        }
       },
     }
   );

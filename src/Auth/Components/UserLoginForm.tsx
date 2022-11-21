@@ -16,7 +16,7 @@ const UserLoginForm = () => {
   const handleSignIn = (data: any) => {
     console.log(data, "pop");
     const props: IUserLoginProps = {
-      email: data.email,
+      emailOrEmpUid: data.emailOrEmpUid,
 
       password: data.password,
     };
@@ -60,14 +60,8 @@ const UserLoginForm = () => {
   return (
     <Form onFinish={handleSignIn}>
       <Form.Item
-        name="email"
-        rules={[
-          {
-            required: true,
-            message: "Field is required",
-          },
-          { type: "email", message: "Invalid Email Address" },
-        ]}
+        name="emailOrEmpUid"
+        rules={textInputValidationRules}
         hasFeedback
       >
         <Input

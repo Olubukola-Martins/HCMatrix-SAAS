@@ -1,6 +1,7 @@
 import { Form, Input, Modal, Progress, Result, Select } from "antd";
 import React, { useRef, useState } from "react";
 import {
+  emailValidationRules,
   generalValidationRules,
   textInputValidationRules,
 } from "../../FormHelpers/validation";
@@ -10,16 +11,21 @@ import {
   UserOutlined,
   BankOutlined,
   MailOutlined,
+  PhoneOutlined,
 } from "@ant-design/icons";
 import { useMutation, useQuery } from "react-query";
 import {
   createCompany,
-  getIndustries,
   ICreateCompProps,
-} from "../../ApiRequesHelpers/Utility";
+} from "../../ApiRequesHelpers/Utility/company";
+import { getIndustries } from "../../ApiRequesHelpers/Utility/industry";
 import { openNotification } from "../../NotificationHelpers";
 import { TIndustry } from "../../AppTypes/DataEntitities";
 import { LoadingOutlined } from "@ant-design/icons";
+import { Rule } from "antd/lib/form";
+import { PhoneCodePrefix } from "../../GeneralComps/FormComps";
+import { phoneCodeList } from "../../Helpers/phoneCodeList";
+import { BeatLoader } from "react-spinners";
 
 const CompanyRegistrationForm = () => {
   const [showM, setShowM] = useState(false);
@@ -54,7 +60,7 @@ const CompanyRegistrationForm = () => {
     },
     select: (res: any) => {
       const result = res.data.data;
-      console.log("result", result);
+      console.log("resultx", result);
 
       const data: TIndustry[] = result.map(
         (item: any): TIndustry => ({
@@ -66,13 +72,14 @@ const CompanyRegistrationForm = () => {
       return data;
     },
   });
-  const { mutate } = useMutation(createCompany);
+  const { mutate, isLoading } = useMutation(createCompany);
 
   const handleSignUp = (data: any) => {
     console.log(data, "pop");
     const props: ICreateCompProps = {
       name: data.organization,
       email: data.email,
+      phoneNumber: `${data.phone.code}-${data.phone.number}`,
       industryId: data.industry,
       customerFullName: data.fullName,
       password: data.password,
@@ -93,6 +100,7 @@ const CompanyRegistrationForm = () => {
             err?.response.data.message ?? err?.response.data.error.message,
         });
       },
+
       onSuccess: (res) => {
         const result = res.data.data;
         console.log("company", result);
@@ -113,7 +121,7 @@ const CompanyRegistrationForm = () => {
   };
   return (
     <>
-      <Modal footer={null} visible={showM} onCancel={() => setShowM(false)}>
+      <Modal footer={null} open={showM} onCancel={() => setShowM(false)}>
         <Result
           status="success"
           title="Company created successfully!"
@@ -130,15 +138,16 @@ const CompanyRegistrationForm = () => {
               to verify your account
             </span>
           }
-          // extra={[
-          //   <Button type="primary" key="console">
-          //     Go Console
-          //   </Button>,
-          //   <Button key="buy">Buy Again</Button>,
-          // ]}
         />
       </Modal>
-      <Form onFinish={handleSignUp} form={form}>
+      <Form
+        onFinish={handleSignUp}
+        form={form}
+        size="middle"
+        initialValues={{
+          phone: { code: "+234" },
+        }}
+      >
         <Form.Item name="fullName" rules={textInputValidationRules} hasFeedback>
           <Input
             prefix={<UserOutlined className="site-form-item-icon pr-1" />}
@@ -196,13 +205,7 @@ const CompanyRegistrationForm = () => {
         </Form.Item>
         <Form.Item
           name="email"
-          rules={[
-            {
-              required: true,
-              message: "Field is required",
-            },
-            { type: "email", message: "Invalid Email Address" },
-          ]}
+          rules={emailValidationRules as Rule[]}
           hasFeedback
         >
           <Input
@@ -212,6 +215,44 @@ const CompanyRegistrationForm = () => {
             style={{ padding: "6px 5px" }}
             autoComplete="username"
           />
+        </Form.Item>
+        <Form.Item name="phone" hasFeedback>
+          <Input.Group compact>
+            <Form.Item
+              noStyle
+              rules={generalValidationRules}
+              name={["phone", "code"]}
+            >
+              <Select
+                optionLabelProp="label"
+                disabled={false}
+                className="rounded border-slate-400"
+                style={{ width: "25%" }}
+              >
+                {phoneCodeList.map((data) => (
+                  <Select.Option
+                    key={data.code}
+                    value={data.code}
+                    label={data.code}
+                  >
+                    {data.code}
+                  </Select.Option>
+                ))}
+              </Select>
+            </Form.Item>
+            <Form.Item
+              noStyle
+              rules={textInputValidationRules}
+              name={["phone", "number"]}
+            >
+              <Input
+                style={{ width: "75%" }}
+                placeholder="Business Phone"
+                className="rounded border-slate-400 text-left"
+                autoComplete="phone"
+              />
+            </Form.Item>
+          </Input.Group>
         </Form.Item>
         <Form.Item
           name="password"
@@ -272,8 +313,12 @@ const CompanyRegistrationForm = () => {
           />
         </Form.Item>
         <Form.Item>
-          <button className="authBtn w-full mt-4 mb-3" type="submit">
-            Sign Up
+          <button
+            className="authBtn w-full mt-4 mb-3"
+            type="submit"
+            disabled={isLoading}
+          >
+            {isLoading ? <BeatLoader /> : "Sign Up"}
           </button>
         </Form.Item>
       </Form>

@@ -12,7 +12,7 @@ export const verifyUserToken = async ({ token, uid }: IVerifyUserProps) => {
 };
 
 export interface IUserLoginProps {
-  email: string;
+  emailOrEmpUid: string;
   password: string;
 }
 export const loginUser = async (props: IUserLoginProps) => {

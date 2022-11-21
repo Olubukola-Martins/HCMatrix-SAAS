@@ -30,73 +30,52 @@ import { RequireAuth } from "react-auth-kit";
 const SettingRoutes = () => {
   return (
     <Routes>
+      {/* General */}
+      <Route path="/settings" element={<GeneralSettings />} />
+      <Route path="/settings/company-details" element={<CompanyDetails />} />
+      <Route path="/settings/domains" element={<Domains />} />
+      <Route path="/settings/from-addresses" element={<FromAddresses />} />
+      <Route path="/settings/locations" element={<Locations />} />
+      <Route path="/settings/locations/:id" element={<LocationDetail />} />
+      <Route path="/settings/user-profile" element={<UserProfiles />} />
+      <Route path="/settings/holidays" element={<Holidays />} />
+      <Route path="/settings/profile" element={<MyProfile />} />
+
+      {/* Organization */}
+      <Route path="/settings/employees" element={<Employees />} />
+      <Route path="/settings/user-profile" element={<UserProfiles />} />
+      <Route path="/settings/designations" element={<Designations />} />
       <Route
-        path="/"
-        element={
-          <RequireAuth loginPath={"/register"}>
-            <div />
-          </RequireAuth>
-        }
-      >
-        {/* General */}
-        <Route path="/settings" element={<GeneralSettings />} />
-        <Route path="/settings/company-details" element={<CompanyDetails />} />
-        <Route path="/settings/domains" element={<Domains />} />
-        <Route path="/settings/from-addresses" element={<FromAddresses />} />
-        <Route path="/settings/locations" element={<Locations />} />
-        <Route path="/settings/locations/:id" element={<LocationDetail />} />
-        <Route path="/settings/user-profile" element={<UserProfiles />} />
-        <Route path="/settings/holidays" element={<Holidays />} />
-        <Route path="/settings/profile" element={<MyProfile />} />
+        path="/settings/designations/:id"
+        element={<DesignationDetail />}
+      />
+      <Route path="/settings/groups" element={<Groups />} />
+      {/* not in figma - ask Emma */}
+      {/* <Route path="/settings/groups/:id" element={<DesignationDetail />} /> */}
 
-        {/* Organization */}
-        <Route path="/settings/employees" element={<Employees />} />
-        <Route path="/settings/user-profile" element={<UserProfiles />} />
-        <Route path="/settings/designations" element={<Designations />} />
-        <Route
-          path="/settings/designations/:id"
-          element={<DesignationDetail />}
-        />
-        <Route path="/settings/groups" element={<Groups />} />
-        {/* not in figma - ask Emma */}
-        {/* <Route path="/settings/groups/:id" element={<DesignationDetail />} /> */}
+      <Route path="/settings/departments" element={<Departments />} />
+      <Route path="/settings/departments/:id" element={<DepartmentDetail />} />
 
-        <Route path="/settings/departments" element={<Departments />} />
-        <Route
-          path="/settings/departments/:id"
-          element={<DepartmentDetail />}
-        />
+      <Route path="/settings/delegations" element={<Delegations />} />
+      <Route path="/settings/delegations/:id" element={<DelegationDetail />} />
 
-        <Route path="/settings/delegations" element={<Delegations />} />
-        <Route
-          path="/settings/delegations/:id"
-          element={<DelegationDetail />}
-        />
+      <Route path="/settings/roles" element={<Roles />} />
+      <Route path="/settings/roles/create" element={<CreateRole />} />
+      <Route path="/settings/automation/workflows" element={<Workflows />} />
+      <Route
+        path="/settings/automation/workflows/create"
+        element={<CreateWorkflow />}
+      />
 
-        <Route path="/settings/roles" element={<Roles />} />
-        <Route path="/settings/roles/create" element={<CreateRole />} />
-        <Route path="/settings/automation/workflows" element={<Workflows />} />
-        <Route
-          path="/settings/automation/workflows/create"
-          element={<CreateWorkflow />}
-        />
+      <Route path="/settings/payroll" element={<PayrollSettings />} />
+      <Route path="/settings/grades" element={<Grades />} />
+      <Route path="/settings/grade_categories" element={<GradeCategories />} />
 
-        <Route path="/settings/payroll" element={<PayrollSettings />} />
-        <Route path="/settings/grades" element={<Grades />} />
-        <Route
-          path="/settings/grade_categories"
-          element={<GradeCategories />}
-        />
-
-        <Route
-          path="/settings/probation_policy"
-          element={<ProbationPolicy />}
-        />
-        <Route
-          path="/settings/resignation_policy"
-          element={<ResignationPolicy />}
-        />
-      </Route>
+      <Route path="/settings/probation_policy" element={<ProbationPolicy />} />
+      <Route
+        path="/settings/resignation_policy"
+        element={<ResignationPolicy />}
+      />
     </Routes>
   );
 };
