@@ -7,11 +7,18 @@ import { LoadingOutlined } from "@ant-design/icons";
 import { openNotification } from "../../NotificationHelpers";
 import { useSignIn } from "react-auth-kit";
 import { useNavigate } from "react-router-dom";
+import { useContext } from "react";
+import {
+  EGlobalOps,
+  GlobalContext,
+} from "../../Contexts/GlobalContextProvider";
 
 const UserLoginForm = () => {
   const navigate = useNavigate();
   const signIn = useSignIn();
   const { mutate } = useMutation(loginUser);
+  const globalCtx = useContext(GlobalContext);
+  const { state: globalState, dispatch: globalDispatch } = globalCtx;
 
   const handleSignIn = (data: any) => {
     console.log(data, "pop");
@@ -38,12 +45,16 @@ const UserLoginForm = () => {
       onSuccess: (res) => {
         const result = res.data.data;
         console.log("user", result);
+        const authUserDetails = {
+          user: result.user,
+          companies: result?.payload,
+        };
         if (
           signIn({
             token: result.token,
             expiresIn: 120000000000,
             tokenType: "Bearer",
-            authState: result.user,
+            authState: authUserDetails,
           })
         ) {
           openNotification({
@@ -52,6 +63,15 @@ const UserLoginForm = () => {
             title: "Success",
             description: "Logged in successfully!",
           });
+          if (!globalState.currentCompany) {
+            globalDispatch({
+              type: EGlobalOps.setCurrentCompanyId,
+              payload: {
+                id: authUserDetails.companies[0].id,
+                name: authUserDetails.companies[0].name,
+              },
+            });
+          }
           navigate("/");
         }
       },
