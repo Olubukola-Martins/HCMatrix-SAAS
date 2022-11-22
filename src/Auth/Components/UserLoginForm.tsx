@@ -38,12 +38,16 @@ const UserLoginForm = () => {
       onSuccess: (res) => {
         const result = res.data.data;
         console.log("user", result);
+        const authUserDetails = {
+          user: result.user,
+          companies: result?.payload,
+        };
         if (
           signIn({
             token: result.token,
             expiresIn: 120000000000,
             tokenType: "Bearer",
-            authState: result.user,
+            authState: authUserDetails,
           })
         ) {
           openNotification({

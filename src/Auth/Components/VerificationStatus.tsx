@@ -11,7 +11,7 @@ const VerificationStatus = ({ token, uid }: IVerifyUserProps) => {
   const navigate = useNavigate();
   const signIn = useSignIn();
   const { data, isError, isFetching, isSuccess } = useQuery(
-    "validate-user-token",
+    "user-auth-details",
     () => verifyUserToken({ token, uid }),
     {
       refetchInterval: false,
@@ -29,12 +29,16 @@ const VerificationStatus = ({ token, uid }: IVerifyUserProps) => {
       onSuccess: (res: any) => {
         const result = res.data.data;
         console.log("user", result);
+        const authUserDetails = {
+          user: result.user,
+          companies: result?.payload,
+        };
         if (
           signIn({
             token: result.token,
             expiresIn: 120000000000,
             tokenType: "Bearer",
-            authState: result.user,
+            authState: authUserDetails,
           })
         ) {
           openNotification({

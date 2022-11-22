@@ -6,75 +6,14 @@ import SearchModal from "./Search/SearchModal";
 import Themes from "../../Themes/Themes";
 import TransferOwnership from "./TransferOwnership";
 import { AutoComplete, Avatar, Badge, Dropdown, Select } from "antd";
+import { useAuthUser } from "react-auth-kit";
 
-const companies = [
-  {
-    value: "Dangote Oil",
-    id: 1994,
-    image: "https://picsum.photos/190",
-    label: (
-      <div className="flex gap-2 items-center">
-        <Avatar src="https://picsum.photos/190" />
-        <span>Dangote Oil</span>
-      </div>
-    ),
-  },
-  {
-    value: "Google",
-    id: 1992,
-    image: "https://picsum.photos/201",
-    label: (
-      <div className="flex gap-2 items-center">
-        <Avatar src="https://picsum.photos/201" />
-        <span>Google</span>
-      </div>
-    ),
-  },
-  {
-    value: "General Electric",
-    id: 1972,
-    image: "https://picsum.photos/202",
-    label: (
-      <div className="flex gap-2 items-center">
-        <Avatar src="https://picsum.photos/202" />
-        <span>General Electric</span>
-      </div>
-    ),
-  },
-  {
-    value: "PgLang",
-    id: 1974,
-    image: "https://picsum.photos/203",
-    label: (
-      <div className="flex gap-2 items-center">
-        <Avatar src="https://picsum.photos/203" />
-        <span>PgLang</span>
-      </div>
-    ),
-  },
-  {
-    value: "Microsft",
-    id: 1979,
-    image: "https://picsum.photos/204",
-    label: (
-      <div className="flex gap-2 items-center">
-        <Avatar src="https://picsum.photos/204" />
-        <span>Microsft</span>
-      </div>
-    ),
-  },
-  {
-    value: "Apple",
-    id: 1999,
-    image: "https://picsum.photos/205",
-    label: (
-      <div className="flex gap-2 items-center">
-        <Avatar src="https://picsum.photos/205" />
-        <span>Apple</span>
-      </div>
-    ),
-  },
-];
+type TCompany = {
+  value: string;
+  label: React.ReactNode;
+  image?: string;
+  id: string;
+};
 
 interface IProps {
   switchTheme: Function;
@@ -98,9 +37,31 @@ const TopBar = ({
   sidebarToggle,
   setSidebarToggle,
 }: IProps) => {
+  // auth
+  const auth = useAuthUser();
+
+  const authDetails = auth();
+
+  const user = authDetails?.user;
+  const companies: TCompany[] = authDetails?.companies
+    ? authDetails?.companies.map((item: any) => ({
+        value: item.name,
+        id: item.id,
+        image: item?.logoUrl ?? "https://picsum.photos/190",
+
+        label: (
+          <div className="flex gap-2 items-center">
+            <Avatar src={item?.logoUrl ?? "https://picsum.photos/190"} />
+            <span>{item.name}</span>
+          </div>
+        ),
+      }))
+    : [];
+  console.log("auth", authDetails);
   const [anchorEl, setAnchorEl] = useState(null);
+  const [options, setOptions] = useState<TCompany[]>(companies);
   const [transferOwnershipModal, setTransferOwnershipModal] = useState(false);
-  const open = Boolean(anchorEl);
+
   const handleClick = (event: any) => {
     setAnchorEl(event.currentTarget);
   };
@@ -110,7 +71,7 @@ const TopBar = ({
 
   const [companyId, setCompanyId] = useState(companies[0].value);
   const [openSearchModal, setOpenSearchModal] = useState(false);
-  const [options, setOptions] = useState(companies);
+
   const onSearch = (searchText: string) => {
     const result = companies.filter(
       (item) =>
@@ -121,6 +82,8 @@ const TopBar = ({
 
   const onSelect = (data: string) => {
     setCompanyId(data);
+    // save company id to Global Context
+    // also on login setCurrentCompId also save in local storage to keep track
   };
   return (
     <>
@@ -159,23 +122,25 @@ const TopBar = ({
                 open={openSearchModal}
                 handleClose={() => setOpenSearchModal(false)}
               />
-              <div className="flex items-center gap-2">
-                <Avatar
-                  src={
-                    companies.find((item) => item.value === companyId)?.image
-                  }
-                />
-                <AutoComplete
-                  options={options}
-                  defaultValue={companyId}
-                  style={{ width: 200, borderRadius: "100px" }}
-                  onSelect={onSelect}
-                  onSearch={onSearch}
-                  placeholder="Search Company"
-                  className="top-autocomplete-company"
-                  size="middle"
-                />
-              </div>
+              {user?.isAdmin && (
+                <div className="flex items-center gap-2">
+                  <Avatar
+                    src={
+                      companies.find((item) => item.value === companyId)?.image
+                    }
+                  />
+                  <AutoComplete
+                    options={options}
+                    defaultValue={companyId}
+                    style={{ width: 200, borderRadius: "100px" }}
+                    onSelect={onSelect}
+                    onSearch={onSearch}
+                    placeholder="Search Company"
+                    className="top-autocomplete-company"
+                    size="middle"
+                  />
+                </div>
+              )}
             </div>
 
             {/* Dark and Light */}
