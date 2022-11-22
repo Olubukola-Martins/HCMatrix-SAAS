@@ -1,4 +1,3 @@
-import React from "react";
 import { Tabs } from "antd";
 import { PageIntro } from "../../Layout/Components/PageIntro";
 import DashboardLayout from "../../Layout/DashboardLayout";

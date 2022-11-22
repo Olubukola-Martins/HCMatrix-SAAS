@@ -1,4 +1,4 @@
-import { BrowserRouter as Router, Route } from "react-router-dom";
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import AdminRoutes from "./Administration/Routes/AdminRoutes";
 import AuthRoutes from "./Auth/Routes/AuthRoutes";
 import BillingRoutes from "./Billing/Routes/BillingRoutes";
@@ -11,6 +11,8 @@ import { ReactQueryDevtools } from "react-query/devtools";
 import HomeRoute from "./Home/HomeRoute";
 import { AuthProvider } from "react-auth-kit";
 import NotFoundPage from "./Layout/Components/NotFoundPage";
+import { NotFound } from "./Layout/Components/NotFound/NotFound";
+import { Notification } from "./Notifications/Notification";
 
 const queryClient = new QueryClient();
 
@@ -31,8 +33,11 @@ function App() {
           <PayrollRoutes />
           <AdminRoutes />
           <SelfServiceRoutes />
-
-          {/* <Route path="*" element={<NotFoundPage />} /> */}
+          <HomeRoute />
+          <Routes>
+            <Route path="/notifications" element={<Notification />} />
+            <Route path="*" element={<NotFound />} />
+          </Routes>
         </Router>
         <ReactQueryDevtools initialIsOpen={false} position="bottom-right" />
       </QueryClientProvider>
