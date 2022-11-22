@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import { LoadingOutlined } from "@ant-design/icons";
 import { IVerifyUserProps, verifyUserToken } from "../../ApiRequesHelpers/Auth";
 import { useQuery } from "react-query";
@@ -6,8 +6,15 @@ import { openNotification } from "../../NotificationHelpers";
 import { Typography } from "antd";
 import { Link, useNavigate } from "react-router-dom";
 import { useSignIn } from "react-auth-kit";
+import {
+  GlobalContext,
+  EGlobalOps,
+} from "../../Contexts/GlobalContextProvider";
 
 const VerificationStatus = ({ token, uid }: IVerifyUserProps) => {
+  const globalCtx = useContext(GlobalContext);
+  const { state: globalState, dispatch: globalDispatch } = globalCtx;
+
   const navigate = useNavigate();
   const signIn = useSignIn();
   const { data, isError, isFetching, isSuccess } = useQuery(
@@ -49,6 +56,15 @@ const VerificationStatus = ({ token, uid }: IVerifyUserProps) => {
           });
           // the company information has to be saved in a general state to be accessible accross the app
           // result.payload has the companies
+          if (!globalState.currentCompany) {
+            globalDispatch({
+              type: EGlobalOps.setCurrentCompanyId,
+              payload: {
+                id: authUserDetails.companies[0].id,
+                name: authUserDetails.companies[0].name,
+              },
+            });
+          }
           navigate("/");
         }
       },

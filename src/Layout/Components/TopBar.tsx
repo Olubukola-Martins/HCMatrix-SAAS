@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import logo from "../Images/logo2.png";
 // import sun from "../Images/sun.svg";
 import { Link } from "react-router-dom";
@@ -7,6 +7,10 @@ import Themes from "../../Themes/Themes";
 import TransferOwnership from "./TransferOwnership";
 import { AutoComplete, Avatar, Badge, Dropdown, Select } from "antd";
 import { useAuthUser, useSignOut } from "react-auth-kit";
+import {
+  EGlobalOps,
+  GlobalContext,
+} from "../../Contexts/GlobalContextProvider";
 
 type TCompany = {
   value: string;
@@ -43,6 +47,9 @@ const TopBar = ({
   const authDetails = auth();
 
   const user = authDetails?.user;
+  const globalCtx = useContext(GlobalContext);
+  const { state: globalState, dispatch: globalDispatch } = globalCtx;
+
   const companies: TCompany[] = authDetails?.companies
     ? authDetails?.companies.map((item: any) => ({
         value: item.name,
@@ -69,7 +76,6 @@ const TopBar = ({
     setAnchorEl(null);
   };
 
-  const [companyId, setCompanyId] = useState(companies[0].value);
   const [openSearchModal, setOpenSearchModal] = useState(false);
 
   const onSearch = (searchText: string) => {
@@ -80,8 +86,11 @@ const TopBar = ({
     setOptions(() => result);
   };
 
-  const onSelect = (data: string) => {
-    setCompanyId(data);
+  const onSelect = (val: string, data: any) => {
+    globalDispatch({
+      type: EGlobalOps.setCurrentCompanyId,
+      payload: { id: data.id, name: data.value },
+    });
     // save company id to Global Context
     // also on login setCurrentCompId also save in local storage to keep track
   };
@@ -128,12 +137,14 @@ const TopBar = ({
                 <div className="flex items-center gap-2">
                   <Avatar
                     src={
-                      companies.find((item) => item.value === companyId)?.image
+                      companies.find(
+                        (item) => item.id === globalState.currentCompany?.id
+                      )?.image
                     }
                   />
                   <AutoComplete
                     options={options}
-                    defaultValue={companyId}
+                    defaultValue={globalState.currentCompany?.name}
                     style={{ width: 200, borderRadius: "100px" }}
                     onSelect={onSelect}
                     onSearch={onSearch}
