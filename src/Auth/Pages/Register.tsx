@@ -18,7 +18,6 @@ import { useIsAuthenticated } from "react-auth-kit";
 
 export const Register = () => {
   const isAuthenticated = useIsAuthenticated();
-  const navigate = useNavigate();
 
   useEffect(() => {
     Aos.init({ duration: 1500 });

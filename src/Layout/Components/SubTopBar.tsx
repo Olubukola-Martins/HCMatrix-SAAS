@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import Drawer from "@mui/material/Drawer";
 import Themes from "../../Themes/Themes";
 import { Link } from "react-router-dom";
-import { useSignOut } from "react-auth-kit";
 
 const SubTopBar = () => {
   const [hideOrShow, setHideOrShow] = useState(false);
@@ -31,8 +30,6 @@ const SubTopBar = () => {
   const toggleDrawerFeatures = (anchor: string, open: boolean) => () => {
     setFeaturesDrawer({ ...moduleDrawer, [anchor]: open });
   };
-  const signOut = useSignOut();
-  const handleLogOut = () => signOut();
 
   return (
     <>
@@ -127,10 +124,7 @@ const SubTopBar = () => {
                 <i className="ri-customer-service-line text-base"></i>
                 <span>Support</span>
               </div>
-              <div
-                className="module_list_item_mobile"
-                onClick={() => handleLogOut()}
-              >
+              <div className="module_list_item_mobile">
                 <i className="ri-logout-circle-line text-base"></i>
                 <span>Logout</span>
               </div>

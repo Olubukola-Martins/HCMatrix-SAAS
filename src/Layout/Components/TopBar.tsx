@@ -6,7 +6,7 @@ import SearchModal from "./Search/SearchModal";
 import Themes from "../../Themes/Themes";
 import TransferOwnership from "./TransferOwnership";
 import { AutoComplete, Avatar, Badge, Dropdown, Select } from "antd";
-import { useAuthUser } from "react-auth-kit";
+import { useAuthUser, useSignOut } from "react-auth-kit";
 
 type TCompany = {
   value: string;
@@ -85,6 +85,8 @@ const TopBar = ({
     // save company id to Global Context
     // also on login setCurrentCompId also save in local storage to keep track
   };
+  const signOut = useSignOut();
+  const handleLogOut = () => signOut();
   return (
     <>
       <div className="bg-mainBg w-full py-3 sticky top-0 z-50 text-accent shadow-md">
@@ -254,7 +256,10 @@ const TopBar = ({
                         onClick={() => purple()}
                       />
                     </div>
-                    <div className="flex items-center gap-2 mt-7 cursor-pointer font-medium text-gray-500 group">
+                    <div
+                      onClick={handleLogOut}
+                      className="flex items-center gap-2 mt-7 cursor-pointer font-medium text-gray-500 group"
+                    >
                       <i className="ri-logout-box-r-line group-hover:text-caramel"></i>
                       <span className="group-hover:text-caramel">Logout</span>
                     </div>
