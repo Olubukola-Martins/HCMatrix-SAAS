@@ -153,34 +153,34 @@ const SettingRoutes = () => {
       <Route
         path="/settings/departments"
         element={
-          <RequireAuth loginPath={"/login"}>
+          // <RequireAuth loginPath={"/login"}>
             <Departments />
-          </RequireAuth>
+          // </RequireAuth>
         }
       />
       <Route
         path="/settings/departments/:id"
         element={
-          <RequireAuth loginPath={"/login"}>
+          // <RequireAuth loginPath={"/login"}>
             <DepartmentDetail />
-          </RequireAuth>
+          // </RequireAuth>
         }
       />
 
       <Route
         path="/settings/delegations"
         element={
-          // <RequireAuth loginPath={"/login"}>
-          <Delegations />
-          // </RequireAuth>
+          <RequireAuth loginPath={"/login"}>
+            <Delegations />
+          </RequireAuth>
         }
       />
       <Route
         path="/settings/delegations/:id"
         element={
-          // <RequireAuth loginPath={"/login"}>
-          <DelegationDetail />
-          // </RequireAuth>
+          <RequireAuth loginPath={"/login"}>
+            <DelegationDetail />
+          </RequireAuth>
         }
       />
 
