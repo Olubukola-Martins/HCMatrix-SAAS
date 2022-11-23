@@ -1,5 +1,4 @@
 import { Badge, Dropdown } from "antd";
-import React from "react";
 import { PageIntro } from "../Layout/Components/PageIntro";
 import DashboardLayout from "../Layout/DashboardLayout";
 
@@ -8,8 +7,11 @@ export const Notification = () => {
     <DashboardLayout>
       <div className="Container">
         <PageIntro title="Notifications" link="/" />
-        <br />
-
+        <div className="flex justify-end mt-3">
+          <h5 className="cursor-pointer font-medium hover:text-caramel pb-1">
+            Clear All
+          </h5>
+        </div>
         {[1, 2, 3, 4, 5, 6, 7].map(() => (
           <div className="border rounded mt-4 px-3 py-3 cursor-pointer hover:bg-card flex md:justify-between gap-x-5">
             <div className="flex items-center gap-3">
@@ -17,10 +19,10 @@ export const Notification = () => {
                 <i className="ri-notification-3-line text-lg"></i>
               </Badge>
               <div>
-              <h5 className="text-xs md:text-sm">
-                Loan Request : Your loan request has been approved
-              </h5>
-              <span className="text-xs md:hidden pt-2 block">4h ago</span>
+                <h5 className="text-xs md:text-sm">
+                  Loan Request : Your loan request has been approved
+                </h5>
+                <span className="text-xs md:hidden pt-2 block">4h ago</span>
               </div>
             </div>
             <div className="flex items-center gap-3 text-xs">

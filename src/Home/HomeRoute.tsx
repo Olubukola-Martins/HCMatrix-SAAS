@@ -29,7 +29,7 @@ function HomeRoute() {
         }
       />
       {/* </Route> */}
-     
+      {/* <Route path="*" element={<NotFound />} /> */}
     </Routes>
   );
 }
