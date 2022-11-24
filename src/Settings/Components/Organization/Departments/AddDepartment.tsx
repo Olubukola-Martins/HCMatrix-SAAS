@@ -1,6 +1,9 @@
-import { Form, Input, Modal } from "antd";
+import { Form, Input, Modal, Select } from "antd";
 import { IModalProps } from "../../../../AppTypes/Component";
-import { emailValidationRules, textInputValidationRules } from "../../../../FormHelpers/validation";
+import {
+  generalValidationRules,
+  textInputValidationRules,
+} from "../../../../FormHelpers/validation";
 
 export const AddDepartment = ({ open, handleClose }: IModalProps) => {
   return (
@@ -19,18 +22,37 @@ export const AddDepartment = ({ open, handleClose }: IModalProps) => {
           <Input placeholder="Department" className="generalInputStyle" />
         </Form.Item>
         <Form.Item
+          rules={[
+            {
+              type: "email",
+              message: "Wrong email format",
+            },
+          ]}
           name="mail"
           label="Mail Alias"
-          rules={emailValidationRules}
+          requiredMark="optional"
         >
           <Input placeholder="john@gmail.com" className="generalInputStyle" />
         </Form.Item>
         <Form.Item
           name="departmentHead"
           label="Department Head"
-          rules={textInputValidationRules}
+          rules={generalValidationRules}
         >
-          <Input placeholder="Department head" className="generalInputStyle" />
+          <Select
+            showSearch
+            allowClear
+            optionLabelProp="label"
+            className="SelectTag w-full"
+            size="large"
+            placeholder="Select Department Head"
+          >
+            {["Faith John", "Godswill Smile"].map((data) => (
+              <Select.Option key={data} value={data} label={data}>
+                {data}
+              </Select.Option>
+            ))}
+          </Select>
         </Form.Item>
 
         <button className="button">Submit</button>

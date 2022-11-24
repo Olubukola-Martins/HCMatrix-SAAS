@@ -34,9 +34,9 @@ const SettingRoutes = () => {
       <Route
         path="/settings"
         element={
-          <RequireAuth loginPath={"/login"}>
-            <GeneralSettings />
-          </RequireAuth>
+          // <RequireAuth loginPath={"/login"}>
+          <GeneralSettings />
+          // </RequireAuth>
         }
       />
       <Route
@@ -50,9 +50,9 @@ const SettingRoutes = () => {
       <Route
         path="/settings/domains"
         element={
-          <RequireAuth loginPath={"/login"}>
+          // <RequireAuth loginPath={"/login"}>
             <Domains />
-          </RequireAuth>
+          // </RequireAuth>
         }
       />
       <Route
@@ -153,17 +153,17 @@ const SettingRoutes = () => {
       <Route
         path="/settings/departments"
         element={
-          <RequireAuth loginPath={"/login"}>
+          // <RequireAuth loginPath={"/login"}>
             <Departments />
-          </RequireAuth>
+          // </RequireAuth>
         }
       />
       <Route
         path="/settings/departments/:id"
         element={
-          <RequireAuth loginPath={"/login"}>
+          // <RequireAuth loginPath={"/login"}>
             <DepartmentDetail />
-          </RequireAuth>
+          // </RequireAuth>
         }
       />
 

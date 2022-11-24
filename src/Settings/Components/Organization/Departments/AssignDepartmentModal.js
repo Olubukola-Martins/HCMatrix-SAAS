@@ -1,9 +1,7 @@
 import { useState } from "react";
 import Themes from "../../../../Themes/Themes";
 import { motion } from "framer-motion";
-
 import Modal from "@mui/material/Modal";
-
 const departments = [
   {
     name: "Marketing",

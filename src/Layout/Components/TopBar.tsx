@@ -182,10 +182,12 @@ const TopBar = ({
             </Link>
 
             <Badge size="small" count={5}>
-              <i
+             <Link to="/notifications">
+             <i
                 className="ri-notification-3-line text-xl cursor-pointer"
                 title="Notifications"
               ></i>
+             </Link>
             </Badge>
 
             <Dropdown

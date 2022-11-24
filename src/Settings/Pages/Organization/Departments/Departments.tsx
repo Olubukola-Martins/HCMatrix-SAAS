@@ -1,47 +1,11 @@
+import { Tooltip } from "antd";
 import { AnimatePresence } from "framer-motion";
 import React, { useState } from "react";
+import { PageIntro } from "../../../../Layout/Components/PageIntro";
 import DashboardLayout from "../../../../Layout/DashboardLayout";
 import { AddDepartment } from "../../../Components/Organization/Departments/AddDepartment";
 import { DepartmentsGridView } from "../../../Components/Organization/Departments/DepartmentsGridView";
 import { DepartmentsTableView } from "../../../Components/Organization/Departments/DepartmentsTableView";
-
-const departments = [
-  {
-    id: "1",
-    name: "Human Resource",
-    email: "isaac@snapnet.com",
-    noOfEmployees: 4,
-    head: "Emeka Chukwu",
-  },
-  {
-    id: "3",
-    name: "App development",
-    email: "isaac@snapnet.com",
-    noOfEmployees: 2,
-    head: "Emeka Chukwu",
-  },
-  {
-    id: "2",
-    name: "Marketing",
-    email: "isaac@snapnet.com",
-    noOfEmployees: 15,
-    head: "Emeka Chukwu",
-  },
-  {
-    id: "4",
-    name: "Devops",
-    email: "isaac@snapnet.com",
-    noOfEmployees: 15,
-    head: "Emeka Chukwu",
-  },
-  {
-    id: "12",
-    name: "Graphic Design",
-    email: "isaac@snapnet.com",
-    noOfEmployees: 15,
-    head: "Emeka Chukwu",
-  },
-];
 
 const Departments = () => {
   const [addDepartmentModal, setAddDepartmentModal] = useState(false);
@@ -57,24 +21,12 @@ const Departments = () => {
         handleClose={() => setAddDepartmentModal(false)}
       />
       <div className="Container">
-        {
-          <div className="  mt-4">
-            <h4 className="text-lg  mb-1">Departments</h4>
-            <div className="flex flex-col gap-2 md:flex-row md:justify-between md:items-center bg-card p-2 rounded text-sm">
-              <p>
-                Manage all the department details and the departments settings
-                in your organization.
-              </p>
-
-              <div className="flex gap-4 items-center">
-                <button
-                  id="invite-button"
-                  className="py-1 px-2 bg-caramel rounded text-sm text-white font-medium"
-                  onClick={() => setAddDepartmentModal(true)}
-                >
-                  Add department
-                </button>
-                <div className="view-toggler flex rounded overflow-hidden items-center">
+        <PageIntro title="Departments" link="/settings" />
+        <div className="mt-5">
+          <div className="">
+            <div className="flex justify-between items-center">
+              <div className="view-toggler flex rounded overflow-hidden items-center bg-card p-1">
+                <Tooltip title="Grid View">
                   <i
                     onClick={() => handleViewId("grid")}
                     className={
@@ -84,7 +36,8 @@ const Departments = () => {
                     }
                     aria-hidden="true"
                   ></i>
-
+                </Tooltip>
+                <Tooltip title="List View">
                   <i
                     className={
                       viewId === "list"
@@ -94,22 +47,23 @@ const Departments = () => {
                     onClick={() => handleViewId("list")}
                     aria-hidden="true"
                   ></i>
-                </div>
-              
+                </Tooltip>
               </div>
+              <button
+                className="button"
+                onClick={() => setAddDepartmentModal(true)}
+              >
+                Add department
+              </button>
             </div>
           </div>
-        }
+        </div>
 
-        <div className="content overflow-y-hidden relative">
+        <div className="content overflow-hidden relative mt-5">
           <AnimatePresence exitBeforeEnter>
-            {viewId === "grid" && (
-              <DepartmentsGridView departments={departments} />
-            )}
+            {viewId === "grid" && <DepartmentsGridView />}
 
-            {viewId === "list" && (
-              <DepartmentsTableView departments={departments} />
-            )}
+            {viewId === "list" && <DepartmentsTableView />}
           </AnimatePresence>
         </div>
       </div>
