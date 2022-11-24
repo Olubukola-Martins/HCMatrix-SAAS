@@ -1,12 +1,33 @@
 import React from "react";
-import { NavLink } from "react-router-dom";
+import { NavLink, useLocation, useParams } from "react-router-dom";
 import "../style/style.css";
 
 const SideBar = () => {
+  const { pathname } = useLocation();
+
+  const isActiveRoute = ({
+    routeName,
+    pathName,
+  }: {
+    routeName: string;
+    pathName: string;
+  }) => {
+    return pathName.toLowerCase().indexOf(routeName.toLowerCase()) !== -1;
+  };
+  const appBaseRoutes = {
+    home: "/",
+    selfService: "/self-service",
+    payroll: "/payroll",
+  };
   return (
     <>
       <div className="h-screen overflow-y-auto flex-col bg-card flex items-center px-2 text-center pb-32 scrollBar">
-        <NavLink to={`/`} className="sideBarItemWrap">
+        <NavLink
+          to={appBaseRoutes.home}
+          className={`sideBarItemWrap ${
+            appBaseRoutes.home === pathname && "active"
+          }`}
+        >
           <div className="flex justify-center">
             <span className="sideBarList">
               <i className="ri-home-smile-line"></i>
@@ -15,7 +36,15 @@ const SideBar = () => {
           <span className="sideBarName">Home</span>
         </NavLink>
 
-        <NavLink to="/self-service/home" className="sideBarItemWrap active">
+        <NavLink
+          to={`${appBaseRoutes.selfService}/home`}
+          className={`sideBarItemWrap ${
+            isActiveRoute({
+              pathName: pathname,
+              routeName: appBaseRoutes.selfService,
+            }) && "active"
+          }`}
+        >
           <div className="flex justify-center">
             <span className="sideBarList">
               <i className="ri-organization-chart"></i>
@@ -24,7 +53,15 @@ const SideBar = () => {
           <span className="sideBarName">Self-service</span>
         </NavLink>
 
-        <NavLink className="sideBarItemWrap" to={`/payroll/home`}>
+        <NavLink
+          className={`sideBarItemWrap ${
+            isActiveRoute({
+              pathName: pathname,
+              routeName: appBaseRoutes.payroll,
+            }) && "active"
+          }`}
+          to={`${appBaseRoutes.payroll}/home`}
+        >
           <div className="flex justify-center">
             <span className="sideBarList">
               <i className="ri-check-double-line"></i>
