@@ -50,9 +50,9 @@ const SettingRoutes = () => {
       <Route
         path="/settings/domains"
         element={
-          <RequireAuth loginPath={"/login"}>
+          // <RequireAuth loginPath={"/login"}>
             <Domains />
-          </RequireAuth>
+          // </RequireAuth>
         }
       />
       <Route

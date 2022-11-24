@@ -4,8 +4,7 @@ import DashboardLayout from "../../../Layout/DashboardLayout";
 import { AddDomain } from "../../Components/General/Company/AddDomain";
 
 const Domains = () => {
-  const [open, setOpen] = useState(false);
-
+  const [open, setOpen] = useState(false)
   return (
     <DashboardLayout>
       <AddDomain open={open} handleClose={() => setOpen(false)} />

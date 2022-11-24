@@ -27,7 +27,11 @@ const FramerAccordian = ({ heading, children, bgClassName }) => {
         </motion.div>
       </motion.div>
       <AnimatePresence>
-        {<motion.div className="content py-6 px-3 lg:px-6">{children}</motion.div>}
+        {
+          <motion.div className="content py-6 px-3 lg:px-6">
+            {children}
+          </motion.div>
+        }
       </AnimatePresence>
     </motion.div>
   );
