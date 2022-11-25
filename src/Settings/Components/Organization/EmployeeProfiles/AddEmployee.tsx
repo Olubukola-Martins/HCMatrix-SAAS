@@ -1,18 +1,29 @@
 import {
+  Button,
   Collapse,
   DatePicker,
   Dropdown,
   Form,
   Input,
+  InputNumber,
   Radio,
   Select,
+  Spin,
 } from "antd";
+import { useContext } from "react";
+import { useMutation } from "react-query";
+import {
+  createEmployee,
+  ICreateEmpProps,
+} from "../../../../ApiRequesHelpers/Utility/employee";
+import { GlobalContext } from "../../../../Contexts/GlobalContextProvider";
 import {
   generalValidationRules,
   textInputValidationRules,
 } from "../../../../FormHelpers/validation";
 import { PageIntro } from "../../../../Layout/Components/PageIntro";
 import DashboardLayout from "../../../../Layout/DashboardLayout";
+import { openNotification } from "../../../../NotificationHelpers";
 const { Panel } = Collapse;
 const { Option } = Select;
 
@@ -20,6 +31,67 @@ const jobRoles = ["Payroll Approval"];
 const lineMgt = ["Godswill Omenuko", "Isaac Odeh"];
 
 export const AddEmployee = () => {
+  const globalCtx = useContext(GlobalContext);
+  const { state: globalState } = globalCtx;
+  const companyId = globalState.currentCompany?.id;
+  const [form] = Form.useForm();
+  const { mutate, isLoading } = useMutation(createEmployee);
+
+  const handleSubmit = (data: any) => {
+    if (companyId) {
+      const props: ICreateEmpProps = {
+        companyId,
+        firstName: data.firstName,
+        lastName: data.lastName,
+        email: data.email,
+        hasSelfService: data.hasSelfService,
+        empUid: data.empUid,
+        roleId: data.roleId,
+        designationId: data.designationId,
+        jobInformation: {
+          startDate: data.startDate.format("YYYY-MM-DD"),
+          jobTitle: data.jobTitle,
+          monthlyGross: data.monthlyGross,
+          employmentType: data.employmentType,
+          workModel: data.workModel,
+          numberOfDaysPerWeek: data.numberOfDaysPerWeek,
+          departmentId: data.departmentId,
+        },
+      };
+      console.log("prps", props, data);
+      // return;
+      openNotification({
+        state: "info",
+        title: "Wait a second ...",
+        // description: <Progress percent={80} status="active" />,
+        description: <Spin />,
+      });
+      mutate(props, {
+        onError: (err: any) => {
+          openNotification({
+            state: "error",
+            title: "Error Occured",
+            description:
+              err?.response.data.message ?? err?.response.data.error.message,
+          });
+        },
+        onSuccess: (res: any) => {
+          const result = res.data.data;
+
+          openNotification({
+            state: "success",
+
+            title: "Success",
+            description: res.data.message,
+            // duration: 0.4,
+          });
+
+          form.resetFields();
+        },
+      });
+    }
+  };
+
   return (
     <DashboardLayout>
       <div className="Container">
@@ -30,7 +102,15 @@ export const AddEmployee = () => {
             <span>Employees Added: 2</span>
             <span>License count left: 5</span>
           </div>
-          <Form layout="vertical" requiredMark={false} onFinish={(val) => console.log(val)}>
+          <Form
+            onFinish={handleSubmit}
+            layout="vertical"
+            requiredMark={false}
+            initialValues={{
+              hasSelfService: true,
+            }}
+            form={form}
+          >
             <div className="bg-mainBg rounded-md md:px-4 pt-4 pb-4 shadow-sm mt-8">
               <Collapse defaultActiveKey={["1"]} ghost expandIconPosition="end">
                 <Panel
@@ -60,7 +140,7 @@ export const AddEmployee = () => {
                       />
                     </Form.Item>
                     <Form.Item
-                      name="EmployeeID"
+                      name="empUid"
                       label="Employee ID"
                       requiredMark="optional"
                     >
@@ -113,7 +193,7 @@ export const AddEmployee = () => {
                     </Form.Item>
 
                     <Form.Item
-                      name="role"
+                      name="roleId"
                       label="Role"
                       rules={generalValidationRules}
                     >
@@ -193,7 +273,7 @@ export const AddEmployee = () => {
                       </Select>
                     </Form.Item>
                     <Form.Item
-                      name="designation"
+                      name="designationId"
                       label="Designation"
                       rules={generalValidationRules}
                     >
@@ -213,11 +293,12 @@ export const AddEmployee = () => {
                       </Select>
                     </Form.Item>
                     <Form.Item
-                      name="numberOfDays"
+                      name="numberOfDaysPerWeek"
                       label="Number of Days in the Week"
-                      rules={textInputValidationRules}
                     >
-                      <Input
+                      <InputNumber
+                        min={1}
+                        max={7}
                         className="generalInputStyle"
                         placeholder="Enter..."
                       />
@@ -234,21 +315,19 @@ export const AddEmployee = () => {
                   key="1"
                   className="collapseHeader"
                 >
-                  <Form.Item name="selfServiceAccess">
-                    <Radio.Group name="selfServiceAccess">
-                      <Radio value="yes" defaultChecked>
-                        Yes
-                      </Radio>
-                      <Radio value="no">No</Radio>
+                  <Form.Item name="hasSelfService">
+                    <Radio.Group name="hasSelfService">
+                      <Radio value={true}>Yes</Radio>
+                      <Radio value={false}>No</Radio>
                     </Radio.Group>
                   </Form.Item>
                 </Panel>
               </Collapse>
             </div>
             <div className="flex items-center gap-3 justify-end mt-5">
-              <button type="submit" className="button">
-                Proceed to Onboarding
-              </button>
+              <Button type="text" htmlType="submit">
+                Proceed to onboarding
+              </Button>
               <Dropdown
                 placement="top"
                 overlay={
@@ -257,7 +336,7 @@ export const AddEmployee = () => {
                       Save and add Another
                     </li>
                     <li className=" cursor-pointer hover:text-caramel">
-                      Save and Complete Profile
+                      <Button type="text">Save and Complete Profile</Button>
                     </li>
                   </ul>
                 }

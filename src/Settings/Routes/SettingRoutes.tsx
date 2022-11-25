@@ -96,6 +96,15 @@ const SettingRoutes = () => {
           </RequireAuth>
         }
       />
+      {/* QUICK FIX */}
+      <Route
+        path="/settings/add-employee"
+        element={
+          <RequireAuth loginPath={"/login"}>
+            <AddEmployee />
+          </RequireAuth>
+        }
+      />
 
       {/* Organization */}
       <Route

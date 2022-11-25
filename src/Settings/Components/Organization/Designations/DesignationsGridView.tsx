@@ -2,51 +2,65 @@ import React from "react";
 
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
-import { TDepartment } from "../../../../AppTypes/DataEntitities";
-import { Pagination, TableProps, TablePaginationConfig } from "antd";
+import { TDepartment, TDesignation } from "../../../../AppTypes/DataEntitities";
+import {
+  Pagination,
+  PaginationProps,
+  TablePaginationConfig,
+  TableProps,
+} from "antd";
 
 interface IProps {
-  departments: TDepartment[];
+  data: TDesignation[];
   loading: boolean;
   pagination?: TablePaginationConfig;
-  onChange?: TableProps<TDepartment>["onChange"];
+  onChange?: TableProps<TDesignation>["onChange"];
 }
 
-export const DepartmentsGridView = ({
-  departments,
+export const DesignationsGridView = ({
+  data,
   loading,
   pagination,
   onChange,
 }: IProps) => {
   return (
-    <div>
+    <motion.div
+      className="mt-4 flex flex-col gap-4"
+      initial={{ opacity: 0, y: 400 }}
+      animate={{
+        opacity: 1,
+        y: 0,
+      }}
+      key={0}
+      transition={{ ease: "easeIn" }}
+      exit={{ opacity: 0, y: 400 }}
+    >
       <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6">
-        {departments.map((item) => (
-          <DepartmentBox key={item.id} department={item} />
+        {data.map((item) => (
+          <Box key={item.id} data={item} />
         ))}
       </div>
-      <div className="mt-4 flex justify-end">
+      <div className="flex justify-end">
         <Pagination {...pagination} />
       </div>
-    </div>
+    </motion.div>
   );
 };
 
-const DepartmentBox = ({ department }: { department: TDepartment }) => {
+const Box = ({ data }: { data: TDesignation }) => {
   return (
     <>
       {/* view */}
 
       <div className="border px-4 py-2 rounded-lg grid grid-cols-1 gap-4 border-caramel">
         <div className="flex justify-between">
-          <h6 className="text-xl font-thin capitalize">{department.name}</h6>
+          <h6 className="text-xl font-thin capitalize">{data.name}</h6>
 
           <i className="fa-solid fa-ellipsis"></i>
         </div>
         <div className="flex justify-between items-center">
-          <p className="text-sm">{department.email}</p>
           <div className="rounded-full bg-caramel h-6 w-6 flex items-center justify-center ">
-            <span className="text-sm">{department.employeeCount}</span>
+            <span className="text-sm">{data.employeeCount}</span>
           </div>
         </div>
       </div>
