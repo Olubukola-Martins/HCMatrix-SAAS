@@ -102,7 +102,7 @@ const Employees = () => {
               rowSelection: () => {},
             }}
             scroll={{ x: "max-content" }}
-            // scroll={{ x: 500 }}
+            size="small"
           />
         </div>
       </div>

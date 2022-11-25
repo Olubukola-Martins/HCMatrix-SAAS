@@ -10,6 +10,8 @@ import { ReactQueryDevtools } from "react-query/devtools";
 import HomeRoute from "./Home/HomeRoute";
 import { AuthProvider } from "react-auth-kit";
 import { Notification } from "./Notifications/Notification";
+import NotFoundPage from "./Layout/Components/NotFoundPage";
+import GlobalContextProvider from "./Contexts/GlobalContextProvider";
 const queryClient = new QueryClient();
 
 function App() {
@@ -21,18 +23,21 @@ function App() {
       cookieSecure={window.location.protocol === "https:"}
     >
       <QueryClientProvider client={queryClient}>
-        <Router>
-          <AuthRoutes />
-          <HomeRoute />
-          <SettingRoutes />
-          <BillingRoutes />
-          <PayrollRoutes />
-          <AdminRoutes />
-          <SelfServiceRoutes />
-          <Routes>
+        <GlobalContextProvider>
+          <Router>
+            <AuthRoutes />
+            <HomeRoute />
+            <SettingRoutes />
+            <BillingRoutes />
+            <PayrollRoutes />
+            <AdminRoutes />
+            <SelfServiceRoutes />
+              <Routes>
             <Route path="/notifications" element={<Notification />} />
           </Routes>
-        </Router>
+            {/* <Route path="*" element={<NotFoundPage />} /> */}
+          </Router>
+        </GlobalContextProvider>
         <ReactQueryDevtools initialIsOpen={false} position="bottom-right" />
       </QueryClientProvider>
     </AuthProvider>
