@@ -3,7 +3,6 @@ import GeneralSettings from "../Pages/General/GeneralSettings";
 import CompanyDetails from "../Pages/General/CompanyDetails";
 import FromAddresses from "../Pages/General/FromAddresses";
 import Domains from "../Pages/General/Domains";
-import UserProfiles from "../Pages/Organization/UserProfiles/UserProfiles";
 import Locations from "../Pages/Organization/Locations/Locations";
 import LocationDetail from "../Pages/Organization/Locations/LocationDetail";
 import Designations from "../Pages/Organization/Designations/Designations";
@@ -35,9 +34,9 @@ const SettingRoutes = () => {
       <Route
         path="/settings"
         element={
-          <RequireAuth loginPath={"/login"}>
-            <GeneralSettings />
-          </RequireAuth>
+          //  <RequireAuth loginPath={"/login"}>
+          <GeneralSettings />
+          //  </RequireAuth>
         }
       />
       <Route
@@ -80,14 +79,7 @@ const SettingRoutes = () => {
           </RequireAuth>
         }
       />
-      <Route
-        path="/settings/user-profile"
-        element={
-          <RequireAuth loginPath={"/login"}>
-            <UserProfiles />
-          </RequireAuth>
-        }
-      />
+
       <Route
         path="/settings/holidays"
         element={
@@ -118,19 +110,20 @@ const SettingRoutes = () => {
       <Route
         path="/settings/employees"
         element={
-          <RequireAuth loginPath={"/login"}>
-            <Employees />
-          </RequireAuth>
+          //  <RequireAuth loginPath={"/login"}>
+          <Employees />
+          //  </RequireAuth>
         }
       />
       <Route
-        path="/settings/user-profile"
+        path="/settings/add-employee"
         element={
-          <RequireAuth loginPath={"/login"}>
-            <UserProfiles />
-          </RequireAuth>
+          // <RequireAuth loginPath={"/login"}>
+            <AddEmployee />
+          // </RequireAuth>
         }
       />
+
       <Route
         path="/settings/designations"
         element={

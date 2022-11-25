@@ -11,6 +11,13 @@ const DepartmentDetail = () => {
       disable ? "Editing enabled Successfully" : "Editing disabled successfully"
     );
   };
+
+  const initialValues = {
+    name: "App dev",
+    email: "dev@snapnetsolutions.com",
+    Employees: "10",
+    departmentHead: "Basil Ikpe",
+  };
   return (
     <DashboardLayout>
       <div className="Container  mt-3 h-screen">
@@ -24,11 +31,7 @@ const DepartmentDetail = () => {
           <div>
             <Tooltip title={disable ? "Enable editing" : "Disable editing"}>
               <i
-                className={
-                  disable
-                    ? `ri-pencil-line cursor-pointer hover:text-caramel text-xl`
-                    : `ri-lock-line cursor-pointer hover:text-caramel text-xl`
-                }
+                className="ri-pencil-line cursor-pointer hover:text-caramel text-xl"
                 onClick={enableEdit}
               ></i>
             </Tooltip>
@@ -41,10 +44,12 @@ const DepartmentDetail = () => {
           </h3>
           <Form
             layout="vertical"
+            initialValues={initialValues}
             className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-5"
+            disabled={disable}
           >
             <Form.Item name="name" label="Department Name">
-              <Input className="generalInputStyle" disabled={disable} />
+              <Input className="generalInputStyle" />
             </Form.Item>
             <Form.Item
               name="email"
@@ -55,13 +60,13 @@ const DepartmentDetail = () => {
                 },
               ]}
             >
-              <Input className="generalInputStyle" disabled={disable} />
+              <Input className="generalInputStyle" />
             </Form.Item>
             <Form.Item name="departmentHead" label="Department Head">
-              <Input className="generalInputStyle" disabled={disable} />
+              <Input className="generalInputStyle" />
             </Form.Item>
             <Form.Item name="Employees" label="Number of Employee">
-              <Input className="generalInputStyle" defaultValue={10} disabled />
+              <Input className="generalInputStyle" disabled />
             </Form.Item>
 
             {!disable && (
@@ -70,45 +75,6 @@ const DepartmentDetail = () => {
               </div>
             )}
           </Form>
-
-          {/* <div className="mt-4">
-            <form className="text-accent mt-6 grid grid-cols-2 gap-x-24 gap-y-5 w-4/5">
-              <div>
-                <div className="input-container w-full">
-                  <label className="text-sm mb-2 block">Department Name</label>
-                  <input
-                    type="text"
-                    placeholder="eg. UI/UX Designer"
-                    className="w-full bg-white rounded-md p-2 border border-gray-400 focus:outline-none "
-                  />
-                </div>
-              </div>
-
-              <div>
-                <div className="input-container w-full">
-                  <label className="text-sm mb-2 block">Mail Alias</label>
-                  <input
-                    type="text"
-                    placeholder="eg. johndoe@gmail.com"
-                    className="w-full bg-white rounded-md p-2 border border-gray-400 focus:outline-none "
-                  />
-                </div>
-              </div>
-
-              <div>
-                <div className="input-container w-full">
-                  <label className="text-sm mb-2 block">Department Lead</label>
-                  <select
-                    placeholder="Select"
-                    className="w-full bg-white text-black rounded-md p-2 border border-gray-400 focus:outline-none "
-                  >
-                    <option className="bg-card">Emeka</option>
-                    <option className="bg-card">Chinyere</option>
-                  </select>
-                </div>
-              </div>
-            </form>
-          </div> */}
         </div>
       </div>
     </DashboardLayout>

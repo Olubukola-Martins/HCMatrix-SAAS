@@ -1,5 +1,6 @@
 import { Table } from "antd";
 import React, { useState } from "react";
+import type { ColumnsType } from "antd/es/table";
 import { Link } from "react-router-dom";
 import { PageIntro } from "../../../../Layout/Components/PageIntro";
 import DashboardLayout from "../../../../Layout/DashboardLayout";
@@ -7,13 +8,23 @@ import { ImportEmployee } from "../../../Components/Organization/EmployeeProfile
 
 const Employees = () => {
   const [importEmployeeDrawer, setImportEmployeeDrawer] = useState(false);
-  const columns = [
+
+  interface DataType {
+    key: React.Key;
+    name: string;
+    EmployeeID: string;
+    department: string;
+    Role: string;
+    Email: string;
+    Status: string;
+  }
+
+  const columns: ColumnsType<DataType> = [
     {
       title: "Name",
       dataIndex: "name",
       key: "name",
     },
-
     {
       title: "Employee ID",
       dataIndex: "EmployeeID",
@@ -44,7 +55,7 @@ const Employees = () => {
       key: "Action",
       width: 100,
       fixed: "right",
-      render: (val, item) => (
+      render: () => (
         <div className="flex items-center gap-3">
           <Link to="#!">
             <i className="ri-eye-line text-lg cursor-pointer hover:text-caramel"></i>
@@ -55,16 +66,38 @@ const Employees = () => {
     },
   ];
 
-  const dataSource = Array(5)
-    .fill({
-      name: "Godwin Ruth",
-      EmployeeID: "ES_23",
-      Role: "UI/UX Designer",
-      department: "Dev Team",
-      Email: "ruth@snapnetsolutions.com",
-      Status: "Active",
-    })
-    .map((item, i) => ({ ...item, key: i }));
+  const data: DataType[] = [
+    {
+      key: "1",
+      name: "Godswill Onyeka",
+      EmployeeID: "123",
+      department: "Dev team",
+      Role: "Front dev",
+      Email: "godswill@snapnetsolution.com",
+      Status: "confirm",
+    },
+    {
+      key: "2",
+      name: "Godswill Onyeka",
+      EmployeeID: "123",
+      department: "Dev team",
+      Role: "Front dev",
+      Email: "godswill@snapnetsolution.com",
+      Status: "confirm",
+    },
+  ];
+
+  // rowSelection object indicates the need for row selection
+  const rowSelection = {
+    onChange: (selectedRowKeys: React.Key[], selectedRows: DataType[]) => {
+      console.log(
+        `selectedRowKeys: ${selectedRowKeys}`,
+        "selectedRows: ",
+        selectedRows
+      );
+    },
+  };
+
   return (
     <DashboardLayout>
       <ImportEmployee
@@ -73,7 +106,6 @@ const Employees = () => {
       />
       <div className="Container">
         <PageIntro title="Employees" link="/settings" />
-
         <div className="flex justify-between md:flex-row flex-col gap-3 md:gap-0 md:items-center mt-7">
           <div>
             <button className="transparentButton flex items-center gap-3">
@@ -95,13 +127,14 @@ const Employees = () => {
 
         <div className="mt-7">
           <Table
-            dataSource={dataSource}
-            columns={columns}
             rowSelection={{
               type: "checkbox",
-              rowSelection: () => {},
+              ...rowSelection,
             }}
+            columns={columns}
+            dataSource={data}
             scroll={{ x: "max-content" }}
+            className="mt-5"
             size="small"
           />
         </div>
