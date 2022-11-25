@@ -407,33 +407,7 @@ const permissions = [
   },
 ];
 
-const Departments = () => {
-  const [fPermissions, setFPermissions] = useState(permissions);
-  const [category, setCategory] = useState("all");
-  const handleSearch = (e) => {
-    const val = e.target.value;
-
-    const result = permissions.filter(
-      (item) => item.name.toLowerCase().indexOf(val.toLowerCase()) !== -1
-    );
-
-    if (val !== "") {
-      setFPermissions(() => result);
-    } else {
-      setFPermissions(permissions);
-    }
-  };
-
-  const handleClick = (val) => {
-    setCategory(val);
-
-    if (val === "all") {
-      setFPermissions(permissions);
-      return;
-    }
-    const result = permissions.filter((item) => item.category === val);
-    setFPermissions(result);
-  };
+const CreateRole = () => {
   return (
     <DashboardLayout>
       <div className="Container">
@@ -453,4 +427,4 @@ const Departments = () => {
   );
 };
 
-export default Departments;
+export default CreateRole;
