@@ -25,6 +25,7 @@ import ResignationPolicy from "../Pages/Policies/ResignationPolicy";
 import Employees from "../Pages/Organization/EmployeeProfiles/Employees";
 import { MyProfile } from "../Pages/Organization/EmployeeProfiles/MyProfile";
 import { RequireAuth } from "react-auth-kit";
+import { AddEmployee } from "../Components/Organization/EmployeeProfiles/AddEmployee";
 
 const SettingRoutes = () => {
   return (
@@ -33,9 +34,9 @@ const SettingRoutes = () => {
       <Route
         path="/settings"
         element={
-          // <RequireAuth loginPath={"/login"}>
+          //  <RequireAuth loginPath={"/login"}>
           <GeneralSettings />
-          // </RequireAuth>
+          //  </RequireAuth>
         }
       />
       <Route
@@ -49,9 +50,9 @@ const SettingRoutes = () => {
       <Route
         path="/settings/domains"
         element={
-          // <RequireAuth loginPath={"/login"}>
+          <RequireAuth loginPath={"/login"}>
             <Domains />
-          // </RequireAuth>
+          </RequireAuth>
         }
       />
       <Route
@@ -78,7 +79,7 @@ const SettingRoutes = () => {
           </RequireAuth>
         }
       />
-     
+
       <Route
         path="/settings/holidays"
         element={
@@ -100,12 +101,20 @@ const SettingRoutes = () => {
       <Route
         path="/settings/employees"
         element={
-          <RequireAuth loginPath={"/login"}>
-            <Employees />
-          </RequireAuth>
+          //  <RequireAuth loginPath={"/login"}>
+          <Employees />
+          //  </RequireAuth>
         }
       />
-     
+      <Route
+        path="/settings/add-employee"
+        element={
+          // <RequireAuth loginPath={"/login"}>
+            <AddEmployee />
+          // </RequireAuth>
+        }
+      />
+
       <Route
         path="/settings/designations"
         element={
@@ -138,17 +147,17 @@ const SettingRoutes = () => {
       <Route
         path="/settings/departments"
         element={
-          // <RequireAuth loginPath={"/login"}>
+          <RequireAuth loginPath={"/login"}>
             <Departments />
-          // </RequireAuth>
+          </RequireAuth>
         }
       />
       <Route
         path="/settings/departments/:id"
         element={
-          // <RequireAuth loginPath={"/login"}>
+          <RequireAuth loginPath={"/login"}>
             <DepartmentDetail />
-          // </RequireAuth>
+          </RequireAuth>
         }
       />
 
