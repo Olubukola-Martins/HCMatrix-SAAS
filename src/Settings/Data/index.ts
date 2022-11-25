@@ -24,7 +24,6 @@ export const settingNavItems: ISettNavItem[] = [
   {
     title: "Organization",
     items: [
-      { name: "Users", link: "/settings/user-profile" },
       { name: "Employees", link: "/settings/employees" },
       { name: "Departments", link: "/settings/departments" },
       { name: "Designations", link: "/settings/designations" },
