@@ -1,12 +1,48 @@
-import { Tooltip } from "antd";
 import { AnimatePresence } from "framer-motion";
 import React, { useState } from "react";
-import { PageIntro } from "../../../../Layout/Components/PageIntro";
 import DashboardLayout from "../../../../Layout/DashboardLayout";
 import { AddDepartmentModal } from "../../../Components/Organization/Departments/AddDepartmentModal";
 import { DepartmentsGridView } from "../../../Components/Organization/Departments/DepartmentsGridView";
 import { DepartmentsTableView } from "../../../Components/Organization/Departments/DepartmentsTableView";
 import DepartmentsViewContainer from "../../../Components/Organization/Departments/DepartmentsViewContainer";
+
+const departments = [
+  {
+    id: "1",
+    name: "Human Resource",
+    email: "isaac@snapnet.com",
+    noOfEmployees: 4,
+    head: "Emeka Chukwu",
+  },
+  {
+    id: "3",
+    name: "App development",
+    email: "isaac@snapnet.com",
+    noOfEmployees: 2,
+    head: "Emeka Chukwu",
+  },
+  {
+    id: "2",
+    name: "Marketing",
+    email: "isaac@snapnet.com",
+    noOfEmployees: 15,
+    head: "Emeka Chukwu",
+  },
+  {
+    id: "4",
+    name: "Devops",
+    email: "isaac@snapnet.com",
+    noOfEmployees: 15,
+    head: "Emeka Chukwu",
+  },
+  {
+    id: "12",
+    name: "Graphic Design",
+    email: "isaac@snapnet.com",
+    noOfEmployees: 15,
+    head: "Emeka Chukwu",
+  },
+];
 
 const Departments = () => {
   const [showM, setShowM] = useState(false);
@@ -33,28 +69,10 @@ const Departments = () => {
                   Add department
                 </button>
               </div>
-              <button
-                className="button"
-                onClick={() => setAddDepartmentModal(true)}
-              >
-                Add department
-              </button>
             </div>
             <DepartmentsViewContainer />
           </div>
         }
-
-        <div className="content overflow-y-hidden relative">
-          <AnimatePresence exitBeforeEnter>
-            {viewId === "grid" && (
-              <DepartmentsGridView departments={departments} />
-            )}
-
-            {viewId === "list" && (
-              <DepartmentsTableView departments={departments} />
-            )}
-          </AnimatePresence>
-        </div>
       </div>
     </DashboardLayout>
   );

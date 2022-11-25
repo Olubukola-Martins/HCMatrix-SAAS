@@ -58,54 +58,6 @@ export const Register = () => {
             </div>
           </div>
         </div>
-      </div>
-      <div
-        className="Container w-full h-screen py-10 bg-cover bg-no-repeat text-center relative overflow-y-auto"
-        style={{ backgroundImage: `url(${lightBg})` }}
-      >
-        <div className="formWrap pt-44 lg:pt-64" style={{ maxWidth: 500 }}>
-          <div>
-            <div
-              style={{
-                boxShadow:
-                  "0 2px 5px rgba(0,0,0,0.12), 1px 1px 2px rgba(0,0,0,0.24)",
-              }}
-              className="pb-5 pt-6 rounded-md px-6"
-            >
-              <h2 className="text-xl md:text-2xl font-bold">
-                Create Company Account
-              </h2>
-              <p className="pt-2 pb-7">Getting started made easy</p>
-              <div className="lg:px-14">
-                <CompanyRegistrationForm />
-                <Divider>
-                  <span className="text-sm">Sign Up with</span>
-                </Divider>
-                <div className="flex items-center justify-center gap-6">
-                  <img
-                    src={microsoft}
-                    alt="microsoft"
-                    className="cursor-pointer"
-                    title="Microsoft"
-                  />
-                  <img
-                    src={google}
-                    alt="google"
-                    className="cursor-pointer"
-                    title="Google"
-                  />
-                  <img
-                    src={linkedin}
-                    alt="microsoft"
-                    className="cursor-pointer"
-                    title="Linkedin"
-                  />
-                  <img
-                    src={office}
-                    alt="microsoft"
-                    className="-ml-4 cursor-pointer"
-                    title="Microsoft"
-                  />
         <div
           className="Container w-full h-screen py-10 bg-cover bg-no-repeat text-center relative overflow-y-auto"
           style={{ backgroundImage: `url(${lightBg})` }}
