@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import DashboardLayout from "../../../../Layout/DashboardLayout";
 import { Link } from "react-router-dom";
+import CreateRoleForm from "../../../Components/UserAccessControl/Roles/CreateRoleForm";
 
 const permissionCategories = [
   "all",
@@ -435,92 +436,16 @@ const Departments = () => {
   };
   return (
     <DashboardLayout>
-      <div className="  mt-3 h-screen">
-        <div className="bg-card flex justify-between items-center py-2 px-4 rounded-md">
+      <div className="Container">
+        <div className="mt-4 flex flex-col gap-4">
           <div className="flex items-center gap-2 text-accent font-semibold mt-2 pb-1">
             <Link to="/settings/roles">
               <i className="ri-arrow-left-line text-lg cursor-pointer hover:text-caramel"></i>
             </Link>
-            <h5 className="text-sm">Roles</h5>
+            <h4 className="text-lg  mb-1">Create Role</h4>
           </div>
-          <div className="flex items-center gap-3">
-            <i className="ri-question-fill text-xl text-slate-400"></i>
-          </div>
-        </div>
-
-        <div className="bg-card mt-5 pt-4 pb-10 px-4 rounded-md">
-          <h3 className="text-accent font-bold text-lg mb-4">Create Role </h3>
-          <div className="mt-4">
-            <form className="text-accent mt-6 grid grid-cols-1 gap-x-24 gap-y-5 w-full">
-              <div>
-                <div className="input-container w-full">
-                  <label className="text-sm mb-2 block">Role Name</label>
-                  <input
-                    type="text"
-                    placeholder="eg. Line manager"
-                    className="w-full bg-transparent rounded-md p-2 border border-gray-400 focus:outline-none "
-                  />
-                </div>
-              </div>
-              <div>
-                <div className="w-full">
-                  <label className="text-base mb-2 block font-semibold">
-                    Assign Permissions
-                  </label>
-                  {/* permission categories */}
-                  <div className="flex flex-wrap gap-4 pb-3 border-b ">
-                    {permissionCategories.map((item) => (
-                      <div className="" key={item}>
-                        <button
-                          type="button"
-                          className={` capitalize hover:bg-caramel hover:border-0 focus:bg-caramel active:bg-caramel text-white block rounded-full text-sm cursor-pointer px-2 py-1 hover:text-white ${
-                            item === category
-                              ? "bg-caramel"
-                              : "bg-transparent border border-slate-400 text-slate-400"
-                          }`}
-                          onClick={() => handleClick(item)}
-                        >
-                          {item}
-                        </button>
-                      </div>
-                    ))}
-                  </div>
-                  {/* permissions */}
-                  <div>
-                    <div className="flex flex-col gap-2 md:flex-row md:justify-end md:items-center mt-2 p-2 rounded text-sm">
-                      <div className="input-container w-1/4">
-                        <input
-                          onChange={handleSearch}
-                          type="text"
-                          placeholder="Search permissions"
-                          className="w-full bg-transparent rounded-md p-1 border border-gray-400 focus:outline-none "
-                        />
-                      </div>
-                    </div>
-                    <div className="my-6 grid grid-cols-4 gap-4">
-                      {fPermissions.map((item) => (
-                        <label
-                          key={item.id}
-                          id={item.id}
-                          className="flex items-center gap-2 capitalize"
-                        >
-                          <input type={"checkbox"} id={item.id} />
-
-                          <span className="text-sm">{item.name}</span>
-                        </label>
-                      ))}
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              {/* ctrl btns - edit n delete */}
-              <div className="form-buttons flex justify-between mt-2">
-                <button className="py-2 px-4 border border-black rounded text-sm hover:opacity-60  font-medium">
-                  Close
-                </button>
-              </div>
-            </form>
+          <div className="bg-card px-4 py-4 rounded-md">
+            <CreateRoleForm />
           </div>
         </div>
       </div>

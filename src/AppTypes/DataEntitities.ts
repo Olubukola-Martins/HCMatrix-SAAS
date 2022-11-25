@@ -21,3 +21,16 @@ export type TDesignation = {
   department: { id: number; name: string };
   employeeCount: number;
 };
+export type TPermission = {
+  id: number;
+  name: string;
+  label: string;
+  categoryId: number;
+  description?: string;
+};
+export type TPermissionCategory = {
+  id: number;
+  name: string;
+
+  description?: string;
+};
