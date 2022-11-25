@@ -74,7 +74,7 @@ const Designations = () => {
   };
   return (
     <DashboardLayout>
-      <div className="h-screen">
+      <div className="Container">
         {headerId === "header2" && (
           <div className="  mt-4">
             <div className="flex justify-between items-center bg-card p-2 rounded">
