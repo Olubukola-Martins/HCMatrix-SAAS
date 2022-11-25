@@ -37,9 +37,11 @@ const CompanyRegistrationForm = () => {
     isFetching: isIFetchingErr,
     isSuccess: isISuccess,
   } = useQuery("industries", () => getIndustries(), {
-    refetchInterval: false,
-    refetchIntervalInBackground: false,
-    refetchOnWindowFocus: false,
+    ...{
+      refetchInterval: false,
+      refetchIntervalInBackground: false,
+      refetchOnWindowFocus: false,
+    },
     onError: (err: any) => {
       // show notification
       openNotification({
@@ -75,7 +77,6 @@ const CompanyRegistrationForm = () => {
   const { mutate, isLoading } = useMutation(createCompany);
 
   const handleSignUp = (data: any) => {
-    console.log(data, "pop");
     const props: ICreateCompProps = {
       name: data.organization,
       email: data.email,
@@ -125,19 +126,7 @@ const CompanyRegistrationForm = () => {
         <Result
           status="success"
           title="Company created successfully!"
-          subTitle={
-            <span>
-              Please check your{" "}
-              <a
-                href={`mailto:${email}`}
-                target={"_blank"}
-                className="text-caramel"
-              >
-                email
-              </a>{" "}
-              to verify your account
-            </span>
-          }
+          subTitle={<span>Please check {email} to verify your account</span>}
         />
       </Modal>
       <Form

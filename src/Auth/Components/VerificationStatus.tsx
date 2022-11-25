@@ -24,6 +24,7 @@ const VerificationStatus = ({ token, uid }: IVerifyUserProps) => {
       refetchInterval: false,
       refetchIntervalInBackground: false,
       refetchOnWindowFocus: false,
+
       onError: (err: any) => {
         // show notification
         openNotification({
@@ -65,7 +66,7 @@ const VerificationStatus = ({ token, uid }: IVerifyUserProps) => {
               },
             });
           }
-          navigate("/");
+          // navigate("/");
         }
       },
     }

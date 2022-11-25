@@ -1,8 +1,9 @@
 import axios from "axios";
+import { ICurrentCompany } from "../../AppTypes/DataEntitities";
 
 const token = localStorage.getItem("hcmatrix_app") as unknown as string;
 
-export interface ICreateEmpProps {
+export interface ICreateEmpProps extends ICurrentCompany {
   firstName: string;
   lastName: string;
   email: string;
@@ -22,11 +23,18 @@ export interface ICreateEmpProps {
 }
 export const createEmployee = async (props: ICreateEmpProps) => {
   const url = `${process.env.REACT_APP_UTILITY_BASE_URL}/employee`;
+  const config = {
+    headers: {
+      // Accept: "application/json",
+      Authorization: `Bearer ${token}`,
+      "x-company-id": props.companyId,
+    },
+  };
 
   // necessary to make immediate changes when in  a central place when schema changes
   const data = props;
 
-  const response = await axios.post(url, data);
+  const response = await axios.post(url, data, config);
   return response;
 };
 

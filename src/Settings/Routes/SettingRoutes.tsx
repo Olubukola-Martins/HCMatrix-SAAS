@@ -26,6 +26,7 @@ import ResignationPolicy from "../Pages/Policies/ResignationPolicy";
 import Employees from "../Pages/Organization/EmployeeProfiles/Employees";
 import { MyProfile } from "../Pages/Organization/EmployeeProfiles/MyProfile";
 import { RequireAuth } from "react-auth-kit";
+import { AddEmployee } from "../Components/Organization/EmployeeProfiles/AddEmployee";
 
 const SettingRoutes = () => {
   return (
@@ -100,6 +101,15 @@ const SettingRoutes = () => {
         element={
           <RequireAuth loginPath={"/login"}>
             <MyProfile />
+          </RequireAuth>
+        }
+      />
+      {/* QUICK FIX */}
+      <Route
+        path="/settings/add-employee"
+        element={
+          <RequireAuth loginPath={"/login"}>
+            <AddEmployee />
           </RequireAuth>
         }
       />

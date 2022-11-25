@@ -1,9 +1,10 @@
 import { AnimatePresence } from "framer-motion";
 import React, { useState } from "react";
 import DashboardLayout from "../../../../Layout/DashboardLayout";
-import { AddDepartment } from "../../../Components/Organization/Departments/AddDepartment";
+import { AddDepartmentModal } from "../../../Components/Organization/Departments/AddDepartmentModal";
 import { DepartmentsGridView } from "../../../Components/Organization/Departments/DepartmentsGridView";
 import { DepartmentsTableView } from "../../../Components/Organization/Departments/DepartmentsTableView";
+import DepartmentsViewContainer from "../../../Components/Organization/Departments/DepartmentsViewContainer";
 
 const departments = [
   {
@@ -44,18 +45,11 @@ const departments = [
 ];
 
 const Departments = () => {
-  const [addDepartmentModal, setAddDepartmentModal] = useState(false);
+  const [showM, setShowM] = useState(false);
 
-  const [viewId, setViewId] = useState("list");
-  const handleViewId = (val: React.SetStateAction<string>) => {
-    setViewId(val);
-  };
   return (
     <DashboardLayout>
-      <AddDepartment
-        open={addDepartmentModal}
-        handleClose={() => setAddDepartmentModal(false)}
-      />
+      <AddDepartmentModal open={showM} handleClose={() => setShowM(false)} />
       <div className="Container">
         {
           <div className="  mt-4">
@@ -70,48 +64,15 @@ const Departments = () => {
                 <button
                   id="invite-button"
                   className="py-1 px-2 bg-caramel rounded text-sm text-white font-medium"
-                  onClick={() => setAddDepartmentModal(true)}
+                  onClick={() => setShowM(true)}
                 >
                   Add department
                 </button>
-                <div className="view-toggler flex rounded overflow-hidden items-center">
-                  <i
-                    onClick={() => handleViewId("grid")}
-                    className={
-                      viewId === "grid"
-                        ? "ri-layout-grid-fill text-base text-white bg-caramel px-2 border cursor-pointer"
-                        : "ri-layout-grid-fill text-base text-black bg-white px-2 border cursor-pointer"
-                    }
-                    aria-hidden="true"
-                  ></i>
-
-                  <i
-                    className={
-                      viewId === "list"
-                        ? "ri-list-unordered text-base text-white bg-caramel px-2 border cursor-pointer"
-                        : "ri-list-unordered text-base text-black bg-white px-2 border cursor-pointer"
-                    }
-                    onClick={() => handleViewId("list")}
-                    aria-hidden="true"
-                  ></i>
-                </div>
-              
               </div>
             </div>
+            <DepartmentsViewContainer />
           </div>
         }
-
-        <div className="content overflow-y-hidden relative">
-          <AnimatePresence exitBeforeEnter>
-            {viewId === "grid" && (
-              <DepartmentsGridView departments={departments} />
-            )}
-
-            {viewId === "list" && (
-              <DepartmentsTableView departments={departments} />
-            )}
-          </AnimatePresence>
-        </div>
       </div>
     </DashboardLayout>
   );
