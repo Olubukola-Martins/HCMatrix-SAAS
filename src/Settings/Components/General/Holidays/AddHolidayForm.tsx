@@ -18,7 +18,7 @@ const AddHolidayForm = () => {
           <div className="flex flex-row gap-4">
             <Button type="ghost">Save And Add Another</Button>
             <Themes isBg={false}>
-              <button className="button w-full" htmlType="submit">
+              <button className="button w-full">
                 Submit
               </button>
             </Themes>

@@ -224,6 +224,8 @@ const CompanyRegistrationForm = () => {
               name={["phone", "code"]}
             >
               <Select
+                showSearch
+                allowClear
                 optionLabelProp="label"
                 disabled={false}
                 className="rounded border-slate-400"
