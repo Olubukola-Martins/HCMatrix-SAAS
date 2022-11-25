@@ -135,6 +135,7 @@ const Employees = () => {
             dataSource={data}
             scroll={{ x: "max-content" }}
             className="mt-5"
+            size="small"
           />
         </div>
       </div>
