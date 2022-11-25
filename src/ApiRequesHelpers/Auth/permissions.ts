@@ -49,3 +49,26 @@ export const getPermissions = async (props: IGetPemProps) => {
   const response = await axios.get(url, config);
   return response;
 };
+
+interface IGetRolesProps extends ICurrentCompany {
+  pagination?: IPaginationProps;
+  searchParams?: ISearchParams;
+}
+export const getRoles = async (props: IGetRolesProps) => {
+  const { pagination } = props;
+  const limit = pagination?.limit ?? 10;
+  const offset = pagination?.offset ?? 0;
+
+  const url = `${process.env.REACT_APP_AUTHENTICATION_BASE_URL}/permission/role?limit=${limit}&offset=${offset}`;
+
+  const config = {
+    headers: {
+      Accept: "application/json",
+      Authorization: `Bearer ${token}`,
+      "x-company-id": props.companyId,
+    },
+  };
+
+  const response = await axios.get(url, config);
+  return response;
+};
