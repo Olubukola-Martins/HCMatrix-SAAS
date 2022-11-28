@@ -7,6 +7,11 @@ export interface ICurrentCompany {
   companyId: string;
 }
 
+export type THoliday = {
+  id: number;
+  name: string;
+  date: string;
+};
 export type TDepartment = {
   id: number;
   name: string;
