@@ -24,7 +24,6 @@ const UploadFileModal = ({ open, handleClose }) => {
   const handleSubmit = (e) => {
     e.preventDefault();
     setActiveStep((val) => val + 1);
-    console.log(activeStep);
   };
   return (
     <Modal

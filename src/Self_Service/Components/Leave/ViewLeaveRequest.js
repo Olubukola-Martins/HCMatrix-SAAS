@@ -14,8 +14,6 @@ const ViewLeaveRequest = ({ id }) => {
   // should be from global state - user leave days left
   const [leaveLength, setLeaveLength] = useState(0);
   const handleSubmit = (data) => {
-    // console.log(data, data.period[0].format("YYYY-MM-DD"));
-
     // return;s
     const props = {
       token: "",
@@ -29,13 +27,9 @@ const ViewLeaveRequest = ({ id }) => {
       status: "pending",
       reason: data.reason,
     };
-    console.log("loading ...");
     mutate(props, {
-      onError: (err) => {
-        console.log(err);
-      },
+      onError: (err) => {},
       onSuccess: (res) => {
-        console.log(res);
         queryClient.invalidateQueries("user-leave-requests");
       },
     });

@@ -24,9 +24,7 @@ export const JobInformation = () => {
     confirmationDate: moment("2020-06-09T12:40:14+0000"),
   };
 
-  const onsubmit = (values: any) => {
-    console.log(values);
-  };
+  const onsubmit = (values: any) => {};
 
   return (
     <div className="bg-mainBg shadow-sm rounded-md p-4 mt-5">

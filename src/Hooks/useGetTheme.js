@@ -8,7 +8,6 @@ function useGetTheme() {
     isDark: val === "dark" ? true : false,
     value: val,
   };
-  console.log(theme, "THEME");
 
   return theme;
 }

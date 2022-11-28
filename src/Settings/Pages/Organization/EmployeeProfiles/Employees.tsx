@@ -89,13 +89,7 @@ const Employees = () => {
 
   // rowSelection object indicates the need for row selection
   const rowSelection = {
-    onChange: (selectedRowKeys: React.Key[], selectedRows: DataType[]) => {
-      console.log(
-        `selectedRowKeys: ${selectedRowKeys}`,
-        "selectedRows: ",
-        selectedRows
-      );
-    },
+    onChange: (selectedRowKeys: React.Key[], selectedRows: DataType[]) => {},
   };
 
   return (

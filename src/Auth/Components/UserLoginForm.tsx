@@ -22,7 +22,6 @@ const UserLoginForm = () => {
   const { state: globalState, dispatch: globalDispatch } = globalCtx;
 
   const handleSignIn = (data: any) => {
-    console.log(data, "pop");
     const props: IUserLoginProps = {
       emailOrEmpUid: data.emailOrEmpUid,
 
@@ -45,7 +44,7 @@ const UserLoginForm = () => {
       },
       onSuccess: (res) => {
         const result = res.data.data;
-        console.log("user", result);
+
         const authUserDetails = {
           user: result.user,
           companies: result?.payload,

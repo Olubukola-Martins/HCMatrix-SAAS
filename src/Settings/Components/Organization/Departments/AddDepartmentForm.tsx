@@ -20,7 +20,6 @@ const AddDepartmentForm = ({ handleClose }: { handleClose: Function }) => {
   const authDetails = auth();
 
   const user = authDetails?.user;
-  console.log(user, "_______");
   const globalCtx = useContext(GlobalContext);
   const { state: globalState } = globalCtx;
   const companyId = globalState.currentCompany?.id;
@@ -36,7 +35,6 @@ const AddDepartmentForm = ({ handleClose }: { handleClose: Function }) => {
         departmentHeadId: data.departmentHeadId,
         parentDepartmentId: data.parentDepartmentId,
       };
-      console.log("prps", props, data);
       // return;
       openNotification({
         state: "info",

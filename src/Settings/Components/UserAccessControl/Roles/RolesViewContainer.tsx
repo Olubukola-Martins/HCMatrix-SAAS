@@ -69,7 +69,6 @@ const RolesViewContainer = () => {
 
       select: (res: any) => {
         const result = res.data.data;
-        console.log("resultx", result);
 
         const data: TRole[] = result.map(
           (item: any): TRole => ({

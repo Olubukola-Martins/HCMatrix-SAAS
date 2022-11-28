@@ -62,7 +62,6 @@ const CompanyRegistrationForm = () => {
     },
     select: (res: any) => {
       const result = res.data.data;
-      console.log("resultx", result);
 
       const data: TIndustry[] = result.map(
         (item: any): TIndustry => ({
@@ -104,7 +103,6 @@ const CompanyRegistrationForm = () => {
 
       onSuccess: (res) => {
         const result = res.data.data;
-        console.log("company", result);
 
         openNotification({
           state: "success",

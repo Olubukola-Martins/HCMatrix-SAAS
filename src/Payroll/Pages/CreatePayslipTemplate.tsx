@@ -42,7 +42,7 @@ const CreatePayslipTemplate = () => {
         </div>
 
         <div className="bg-card px-2 md:px-5 py-3 rounded-md mt-7 text-accent">
-          <Form layout="vertical" onFinish={(val) => console.log(val)}>
+          <Form layout="vertical">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
               <div className="flex flex-col">
                 <Form.Item
