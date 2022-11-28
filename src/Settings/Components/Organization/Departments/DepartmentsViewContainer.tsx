@@ -3,6 +3,7 @@ import { AnimatePresence } from "framer-motion";
 import React, { useContext, useState } from "react";
 import { useQuery } from "react-query";
 import { getDepartments } from "../../../../ApiRequesHelpers/Utility/departments";
+import { useFetchDepartments } from "../../../../APIRQHooks/Utility/departmentHooks";
 import { TDepartment } from "../../../../AppTypes/DataEntitities";
 import { GlobalContext } from "../../../../Contexts/GlobalContextProvider";
 import { openNotification } from "../../../../NotificationHelpers";
@@ -36,48 +37,18 @@ const DepartmentsViewContainer = () => {
     }));
   };
   const {
-    data: departments,
+    data: departmentData,
     isError,
     isFetching,
     isSuccess,
-  } = useQuery(
-    ["departments", pagination.current],
-    () =>
-      getDepartments({
-        companyId,
-        pagination: { limit: pagination.pageSize, offset },
-      }),
-    {
-      refetchInterval: false,
-      refetchIntervalInBackground: false,
-      refetchOnWindowFocus: false,
-      onError: (err: any) => {
-        // show notification
-        openNotification({
-          state: "error",
-          title: "Error Occured",
-          description:
-            err?.response.data.message ?? err?.response.data.error.message,
-        });
-      },
-
-      select: (res: any) => {
-        const result = res.data.data;
-        console.log("resultx", result);
-
-        const data: TDepartment[] = result.map(
-          (item: any): TDepartment => ({
-            id: item.id,
-            name: item.name,
-            email: item.email,
-            employeeCount: item.employeeCount ?? 0,
-          })
-        );
-
-        return data;
-      },
-    }
-  );
+  } = useFetchDepartments({
+    companyId,
+    pagination: {
+      limit: pagination.pageSize,
+      offset,
+      current: pagination.current,
+    },
+  });
 
   return (
     <div className="mt-4 flex flex-col gap-4">
@@ -105,7 +76,7 @@ const DepartmentsViewContainer = () => {
       <div className="content overflow-y-hidden relative">
         {viewId === "grid" && isSuccess && (
           <DepartmentsGridView
-            departments={departments}
+            departments={departmentData.data}
             loading={isFetching}
             pagination={pagination}
             onChange={onChange}
@@ -114,7 +85,7 @@ const DepartmentsViewContainer = () => {
 
         {viewId === "list" && isSuccess && (
           <DepartmentsTableView
-            departments={departments}
+            departments={departmentData.data}
             loading={isFetching}
             pagination={pagination}
             onChange={onChange}

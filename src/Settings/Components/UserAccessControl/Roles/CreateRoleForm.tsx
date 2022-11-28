@@ -16,6 +16,7 @@ import {
   getPermissions,
   ICreatePemProps,
 } from "../../../../ApiRequesHelpers/Auth/permissions";
+import { useFetchPermissions } from "../../../../APIRQHooks/Auth/permissionHooks";
 import {
   TPermission,
   TPermissionCategory,
@@ -49,49 +50,14 @@ const CreateRoleForm = () => {
   const [selectedCategory, setSelectedCategory] = useState(0);
   const [form] = Form.useForm();
   const {
-    data: permissions,
+    data: permissionsData,
     isError: isPError,
     isFetching: isPFetching,
     isSuccess: isPSuccess,
-  } = useQuery(
-    ["permissions"],
-    () =>
-      getPermissions({
-        companyId,
-      }),
-    {
-      refetchInterval: false,
-      refetchIntervalInBackground: false,
-      refetchOnWindowFocus: false,
-      onError: (err: any) => {
-        // show notification
-        openNotification({
-          state: "error",
-          title: "Error Occured",
-          description:
-            err?.response.data.message ?? err?.response.data.error.message,
-        });
-      },
+  } = useFetchPermissions({
+    companyId,
+  });
 
-      select: (res: any) => {
-        // for all for now
-        const result = res.data.data[0].permissions;
-        console.log("resultx", result);
-
-        const data: TPermission[] = result.map(
-          (item: any): TPermission => ({
-            id: item.id,
-            name: item.name,
-            label: item.label,
-            categoryId: item.categoryId,
-            description: item?.description,
-          })
-        );
-
-        return data;
-      },
-    }
-  );
   const handleSearch = (e: any) => {
     const val = e.target.value;
     console.log("pp", val);
@@ -200,7 +166,7 @@ const CreateRoleForm = () => {
             <Form.Item name="permissionIds" rules={generalValidationRules}>
               <Checkbox.Group style={{ width: "100%" }}>
                 <div className="my-6 grid grid-cols-4 gap-4">
-                  {permissions.map((item) => (
+                  {permissionsData.data.map((item) => (
                     <Checkbox
                       key={item.id}
                       value={item.id}
