@@ -10,6 +10,7 @@ import {
 import { CheckboxValueType } from "antd/es/checkbox/Group";
 import React, { useContext, useState } from "react";
 import { useMutation, useQuery, useQueryClient } from "react-query";
+import { BeatLoader } from "react-spinners";
 import {
   createPermission,
   getPermissions,
@@ -25,39 +26,6 @@ import {
   generalValidationRules,
 } from "../../../../FormHelpers/validation";
 import { openNotification } from "../../../../NotificationHelpers";
-
-const options = [
-  { label: "Apple", value: "Apple" },
-  { label: "Pear", value: "Pear" },
-  { label: "Orange", value: "Orange" },
-];
-
-const dbPermissions: TPermission[] = [
-  {
-    id: 16,
-    name: "cat",
-    label: "create/edit/delete-groups",
-    categoryId: 13,
-  },
-  {
-    id: 14,
-    name: "rst",
-    label: "create/edit/delete-groups",
-    categoryId: 13,
-  },
-  {
-    id: 34,
-    name: "sad",
-    label: "create/edit/delete-groups",
-    categoryId: 31,
-  },
-  {
-    id: 13,
-    name: "fat",
-    label: "test",
-    categoryId: 12,
-  },
-];
 
 const allPermissionCategory: TPermissionCategory = {
   id: 0,
@@ -255,8 +223,8 @@ const CreateRoleForm = () => {
             </Form.Item>
           </div>
 
-          <button className="button" type="submit">
-            Submit
+          <button className="button" type="submit" disabled={isLoading}>
+            {isLoading ? <BeatLoader /> : "Sign Up"}
           </button>
         </Form>
       )}

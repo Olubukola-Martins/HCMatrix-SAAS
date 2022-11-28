@@ -34,3 +34,9 @@ export type TPermissionCategory = {
 
   description?: string;
 };
+
+export type TRole = {
+  id: number;
+  name: string;
+  userCount: number;
+};
