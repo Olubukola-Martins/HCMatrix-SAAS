@@ -11,6 +11,7 @@ import {
   EGlobalOps,
   GlobalContext,
 } from "../../Contexts/GlobalContextProvider";
+import { AddCompanyForm } from "./AddSisterCompany/AddCompanyForm";
 
 type TCompany = {
   value: string;
@@ -64,10 +65,10 @@ const TopBar = ({
         ),
       }))
     : [];
-  console.log("auth", authDetails);
   const [anchorEl, setAnchorEl] = useState(null);
   const [options, setOptions] = useState<TCompany[]>(companies);
   const [transferOwnershipModal, setTransferOwnershipModal] = useState(false);
+  const [addCompanyModal, setAddCompanyModal] = useState(false);
 
   const handleClick = (event: any) => {
     setAnchorEl(event.currentTarget);
@@ -98,6 +99,10 @@ const TopBar = ({
   const handleLogOut = () => signOut();
   return (
     <>
+      <AddCompanyForm
+        open={addCompanyModal}
+        handleClose={() => setAddCompanyModal(false)}
+      />
       <div className="bg-mainBg w-full py-3 sticky top-0 z-50 text-accent shadow-md">
         <div className="px-5 lg:px-12 flex items-center justify-between Container">
           <div className="flex items-center gap-3">
@@ -154,6 +159,12 @@ const TopBar = ({
                   />
                 </div>
               )}
+              <span
+                className="font-medium text-lg cursor-pointer"
+                onClick={() => setAddCompanyModal(true)}
+              >
+                +
+              </span>
             </div>
 
             {/* Dark and Light */}
@@ -182,22 +193,24 @@ const TopBar = ({
             </Link>
 
             <Badge size="small" count={5}>
-             <Link to="/notifications">
-             <i
-                className="ri-notification-3-line text-xl cursor-pointer"
-                title="Notifications"
-              ></i>
-             </Link>
+              <Link to="/notifications">
+                <i
+                  className="ri-notification-3-line text-xl cursor-pointer"
+                  title="Notifications"
+                ></i>
+              </Link>
             </Badge>
 
             <Dropdown
               overlay={
                 <Themes>
-                  <div className="rounded-md pt-5 pb-2 px-5 text-center bg-card shadow-md">
+                  <div className="rounded-md py-5 px-5 text-center bg-card shadow-md">
                     <div className="border-b-2 border-slate-600 pb-4">
-                      <h4 className="font-extrabold text-lg">Todd Cantley</h4>
+                      <h4 className="font-extrabold text-lg">
+                        {user.fullName}
+                      </h4>
                       <span className="block text-xs pb-3 pt-1 text-gray-500">
-                        todd@snapnetsolutions.com
+                        {user.email}
                       </span>
                       <Link
                         to="/settings/profile"

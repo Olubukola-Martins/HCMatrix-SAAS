@@ -34,9 +34,9 @@ const SettingRoutes = () => {
       <Route
         path="/settings"
         element={
-          //  <RequireAuth loginPath={"/login"}>
-          <GeneralSettings />
-          //  </RequireAuth>
+          <RequireAuth loginPath={"/login"}>
+            <GeneralSettings />
+          </RequireAuth>
         }
       />
       <Route
