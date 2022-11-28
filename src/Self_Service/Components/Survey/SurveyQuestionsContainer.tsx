@@ -56,20 +56,11 @@ const SurveyQuestionsContainer = ({
   );
   const [questionOptions, setQuestionOptions] = useState<IQOption[]>([]);
 
-  const onFinish = (values: any) => {
-    console.log("Received values of form:", values);
-    console.log(
-      "The answer =>",
-      form.getFieldValue("title"),
-      form.getFieldsValue(true),
-      formRef.current!.getFieldsValue(true)
-    );
-  };
+  const onFinish = (values: any) => {};
 
   const handleSelect = (val: EInputType, option: any) => {
     const id = option.key.split(":")[1];
     const type = option.key.split(":")[0];
-    console.log("option =>", option.key.split(":"));
     setSelectedType(val);
     let items;
     if (questionOptions.find((item) => item.id === id)) {
@@ -86,16 +77,9 @@ const SurveyQuestionsContainer = ({
       ];
     }
     setQuestionOptions(items);
-    console.log("option =>", option.key.split(":"), questionOptions);
   };
 
   useEffect(() => {
-    console.log(
-      "Welcome =>",
-      form.getFieldValue("title"),
-      form.getFieldsValue(true),
-      formRef.current!.getFieldValue("title")
-    );
     const formDetail: IFormDetails = {
       title: formRef.current!.getFieldValue("title"),
       ...form.getFieldsValue(true),

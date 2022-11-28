@@ -19,7 +19,6 @@ const SurveyQuestionsPreviewContainer = ({
   formDetail,
   showPreview,
 }: IProps) => {
-  console.log(formDetail, "reached");
   return (
     <div className={`bg-card p-4 rounded-md ${!showPreview ? "hidden" : ""}`}>
       {formDetail ? (

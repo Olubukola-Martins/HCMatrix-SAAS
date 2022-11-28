@@ -33,12 +33,8 @@ const LeaveCards = () => {
       });
     },
     {
-      onError: (err) => {
-        console.log("The error =>", err);
-      },
-      onSuccess: (data) => {
-        console.log("The success =>", data);
-      },
+      onError: (err) => {},
+      onSuccess: (data) => {},
       select: (res) => {
         const data = res.data;
         const formattedData = Object.entries(data).map((item) => {
@@ -53,7 +49,6 @@ const LeaveCards = () => {
             info: item[1],
           };
         });
-        // console.log(formattedData, "pop", data);
 
         return formattedData;
       },

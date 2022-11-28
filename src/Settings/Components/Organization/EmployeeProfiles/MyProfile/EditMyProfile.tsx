@@ -24,11 +24,7 @@ export const EditMyProfile = ({ open, handleClose }: IDrawerProps) => {
       className="drawerBg"
       width="45%"
     >
-      <Form
-        layout="vertical"
-        initialValues={initialValues}
-        onFinish={(val) => console.log(val)}
-      >
+      <Form layout="vertical" initialValues={initialValues}>
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
           <div className="flex justify-center">
             <div>

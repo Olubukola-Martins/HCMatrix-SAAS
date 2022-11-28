@@ -62,7 +62,6 @@ const AddDesignationForm = ({ handleClose }: { handleClose: Function }) => {
 
       select: (res: any) => {
         const result = res.data.data;
-        console.log("resultx", result);
 
         const data: TDepartment[] = result.map(
           (item: any): TDepartment => ({
@@ -86,7 +85,6 @@ const AddDesignationForm = ({ handleClose }: { handleClose: Function }) => {
         name: data.name,
         departmentId: data.departmentId,
       };
-      console.log("prps", props, data);
       // return;
       openNotification({
         state: "info",

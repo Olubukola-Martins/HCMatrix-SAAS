@@ -17,9 +17,7 @@ const App: React.FC = () => {
     );
   };
 
-  const onSelect = (data: string) => {
-    console.log("onSelect", data);
-  };
+  const onSelect = (data: string) => {};
 
   const onChange = (data: string) => {
     setValue(data);

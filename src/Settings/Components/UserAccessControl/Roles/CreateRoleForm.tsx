@@ -60,7 +60,6 @@ const CreateRoleForm = () => {
 
   const handleSearch = (e: any) => {
     const val = e.target.value;
-    console.log("pp", val);
     setSearchTerm(val);
   };
 
@@ -77,7 +76,6 @@ const CreateRoleForm = () => {
         name: data.name,
         permissionIds: data.permissionIds,
       };
-      console.log("prps", props, data);
       // return;
       openNotification({
         state: "info",

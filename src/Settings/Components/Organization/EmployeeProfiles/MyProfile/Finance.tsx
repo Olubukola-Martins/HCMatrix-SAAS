@@ -18,12 +18,10 @@ export const Finance = () => {
     accountNumber: "",
     AccountName: "",
     pensionFundAdministrator: "",
-    pensionAccountNumber: ""
+    pensionAccountNumber: "",
   };
 
-  const onsubmit = (values: any) => {
-    console.log(values);
-  };
+  const onsubmit = (values: any) => {};
 
   return (
     <div className="bg-mainBg shadow-sm rounded-md p-4 mt-5">

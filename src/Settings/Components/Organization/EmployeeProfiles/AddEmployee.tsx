@@ -58,7 +58,6 @@ export const AddEmployee = () => {
           departmentId: data.departmentId,
         },
       };
-      console.log("prps", props, data);
       // return;
       openNotification({
         state: "info",
