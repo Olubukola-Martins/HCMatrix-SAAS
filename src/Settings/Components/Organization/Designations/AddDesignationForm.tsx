@@ -27,12 +27,7 @@ import { openNotification } from "../../../../NotificationHelpers";
 
 const AddDesignationForm = ({ handleClose }: { handleClose: Function }) => {
   const queryClient = useQueryClient();
-  const auth = useAuthUser();
 
-  const authDetails = auth();
-
-  const user = authDetails?.user;
-  console.log(user, "_______");
   const globalCtx = useContext(GlobalContext);
   const { state: globalState } = globalCtx;
   const companyId = globalState.currentCompany?.id as unknown as string;

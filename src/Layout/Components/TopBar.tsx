@@ -91,6 +91,7 @@ const TopBar = ({
       type: EGlobalOps.setCurrentCompanyId,
       payload: { id: data.id, name: data.value },
     });
+    window.location.reload();
     // save company id to Global Context
     // also on login setCurrentCompId also save in local storage to keep track
   };
@@ -182,12 +183,12 @@ const TopBar = ({
             </Link>
 
             <Badge size="small" count={5}>
-             <Link to="/notifications">
-             <i
-                className="ri-notification-3-line text-xl cursor-pointer"
-                title="Notifications"
-              ></i>
-             </Link>
+              <Link to="/notifications">
+                <i
+                  className="ri-notification-3-line text-xl cursor-pointer"
+                  title="Notifications"
+                ></i>
+              </Link>
             </Badge>
 
             <Dropdown

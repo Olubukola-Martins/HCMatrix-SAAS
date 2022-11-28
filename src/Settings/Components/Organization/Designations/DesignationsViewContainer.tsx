@@ -4,6 +4,7 @@ import React, { useContext, useState } from "react";
 import { useQuery } from "react-query";
 import { getDepartments } from "../../../../ApiRequesHelpers/Utility/departments";
 import { getDesignations } from "../../../../ApiRequesHelpers/Utility/designations";
+import { useFetchDesignations } from "../../../../APIRQHooks/Utility/designationHooks";
 import { TDepartment, TDesignation } from "../../../../AppTypes/DataEntitities";
 import { GlobalContext } from "../../../../Contexts/GlobalContextProvider";
 import { openNotification } from "../../../../NotificationHelpers";
@@ -37,51 +38,18 @@ const DesignationsViewContainer = () => {
     }));
   };
   const {
-    data: designations,
+    data: designationData,
     isError,
     isFetching,
     isSuccess,
-  } = useQuery(
-    ["designations", pagination.current],
-    () =>
-      getDesignations({
-        companyId,
-        pagination: { limit: pagination.pageSize, offset },
-      }),
-    {
-      refetchInterval: false,
-      refetchIntervalInBackground: false,
-      refetchOnWindowFocus: false,
-      onError: (err: any) => {
-        // show notification
-        openNotification({
-          state: "error",
-          title: "Error Occured",
-          description:
-            err?.response.data.message ?? err?.response.data.error.message,
-        });
-      },
-
-      select: (res: any) => {
-        const result = res.data.data;
-        console.log("resultx", result);
-
-        const data: TDesignation[] = result.map(
-          (item: any): TDesignation => ({
-            id: item.id,
-            name: item.name,
-            department: {
-              id: item.department.id ?? "",
-              name: item.department.name ?? "",
-            },
-            employeeCount: item.employeeCount ?? 0,
-          })
-        );
-
-        return data;
-      },
-    }
-  );
+  } = useFetchDesignations({
+    companyId,
+    pagination: {
+      limit: pagination.pageSize,
+      offset,
+      current: pagination.current,
+    },
+  });
 
   return (
     <div className="mt-4 flex flex-col gap-4">
@@ -110,7 +78,7 @@ const DesignationsViewContainer = () => {
         <AnimatePresence exitBeforeEnter>
           {viewId === "grid" && isSuccess && (
             <DesignationsGridView
-              data={designations}
+              data={designationData.data}
               loading={isFetching}
               pagination={pagination}
               onChange={onChange}
@@ -119,7 +87,7 @@ const DesignationsViewContainer = () => {
 
           {viewId === "list" && isSuccess && (
             <DesignationsTableView
-              data={designations}
+              data={designationData.data}
               loading={isFetching}
               pagination={pagination}
               onChange={onChange}

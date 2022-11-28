@@ -12,11 +12,12 @@ import {
   EGlobalOps,
   GlobalContext,
 } from "../../Contexts/GlobalContextProvider";
+import { BeatLoader } from "react-spinners";
 
 const UserLoginForm = () => {
   const navigate = useNavigate();
   const signIn = useSignIn();
-  const { mutate } = useMutation(loginUser);
+  const { mutate, isLoading } = useMutation(loginUser);
   const globalCtx = useContext(GlobalContext);
   const { state: globalState, dispatch: globalDispatch } = globalCtx;
 
@@ -100,8 +101,12 @@ const UserLoginForm = () => {
         />
       </Form.Item>
 
-      <button className="authBtn w-full mt-4" type="submit">
-        Sign In
+      <button
+        className="authBtn w-full mt-4 mb-3"
+        type="submit"
+        disabled={isLoading}
+      >
+        {isLoading ? <BeatLoader /> : "Sign In"}
       </button>
     </Form>
   );

@@ -1,16 +1,18 @@
 import { Select, Space, Dropdown, Menu, Table } from "antd";
 import { EllipsisOutlined, MoreOutlined } from "@ant-design/icons";
+import { ColumnsType, TablePaginationConfig, TableProps } from "antd/lib/table";
+import { THoliday } from "../../../../AppTypes/DataEntitities";
 
 const HolidaysTable = ({ data = [] }) => {
-  const fdata = [
-    { title: "Christmas", date: "25th, December,2020" },
-    { title: "Salah", date: "18th, March,2020" },
+  const fdata: THoliday[] = [
+    { id: 1, name: "Christmas", date: "25th, December,2020" },
+    { id: 2, name: "Salah", date: "18th, March,2020" },
   ];
-  const columns = [
+  const columns: ColumnsType<THoliday> = [
     {
       title: "Title",
-      dataIndex: "title",
-      key: "title",
+      dataIndex: "name",
+      key: "name",
       // ellipsis: true,
 
       // width: 100,
@@ -51,10 +53,6 @@ const HolidaysTable = ({ data = [] }) => {
       <Table
         dataSource={fdata}
         columns={columns}
-        rowSelection={{
-          type: "checkbox",
-          rowSelection: () => {},
-        }}
         scroll={{ x: "max-content" }}
         // scroll={{ x: 500 }}
       />
