@@ -7,7 +7,6 @@ import { WorkAnniversary } from "./WorkAnniversary";
 export const Celebrations = () => {
   return (
     <div>
-  
       <h3 className="pb-1 font-medium">Celebrations & Holidays</h3>
       <Tabs defaultActiveKey="1">
         <Tabs.TabPane tab="Birthdays" key="1">

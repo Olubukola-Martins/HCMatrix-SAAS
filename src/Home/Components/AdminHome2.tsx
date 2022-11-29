@@ -6,6 +6,7 @@ import DashboardLayout from "../../Layout/DashboardLayout";
 import { settingNavItems } from "../../Settings/Data";
 import { Celebrations } from "./Celebrations/Celebrations";
 import PendingItem from "./PendingItem";
+import "../style/style.css";
 
 export const AdminHome2 = () => {
   const auth = useAuthUser();

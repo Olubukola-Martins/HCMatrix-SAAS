@@ -43,7 +43,6 @@ const CompanyRegistrationForm = () => {
       refetchOnWindowFocus: false,
     },
     onError: (err: any) => {
-      // show notification
       openNotification({
         state: "error",
         title: "Error Occured",
@@ -51,18 +50,8 @@ const CompanyRegistrationForm = () => {
           err?.response.data.message ?? err?.response.data.error.message,
       });
     },
-    onSuccess: (data: any) => {
-      openNotification({
-        state: "success",
-
-        title: "Success",
-        description: "Industries fetched successfully",
-        // duration: 0.4,
-      });
-    },
     select: (res: any) => {
       const result = res.data.data;
-
       const data: TIndustry[] = result.map(
         (item: any): TIndustry => ({
           id: item.id,

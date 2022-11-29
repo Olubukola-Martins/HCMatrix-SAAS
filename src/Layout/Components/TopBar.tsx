@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 import SearchModal from "./Search/SearchModal";
 import Themes from "../../Themes/Themes";
 import TransferOwnership from "./TransferOwnership";
-import { AutoComplete, Avatar, Badge, Button, Dropdown, Select } from "antd";
+import { AutoComplete, Avatar, Badge, Button, Dropdown,} from "antd";
 import { useAuthUser, useSignOut } from "react-auth-kit";
 import {
   EGlobalOps,
@@ -108,7 +108,7 @@ const TopBar = ({
 
   const onSelect = (val: string, data: any) => {
     if (val === "add-company") {
-      // modal logic
+      setAddCompanyModal(true)
       return;
     }
     globalDispatch({
@@ -116,8 +116,6 @@ const TopBar = ({
       payload: { id: data.id, name: data.value },
     });
     window.location.reload();
-    // save company id to Global Context
-    // also on login setCurrentCompId also save in local storage to keep track
   };
 
   const signOut = useSignOut();
@@ -184,12 +182,7 @@ const TopBar = ({
                   />
                 </div>
               )}
-              <span
-                className="font-medium text-lg cursor-pointer"
-                onClick={() => setAddCompanyModal(true)}
-              >
-                +
-              </span>
+             
             </div>
 
             {/* Dark and Light */}
