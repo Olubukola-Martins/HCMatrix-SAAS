@@ -41,7 +41,6 @@ export const useFetchPermissions = ({
       select: (res: any) => {
         // for all for now
         const result = res.data.data[0].permissions;
-        console.log("resultx", result);
 
         const data: TPermission[] = result.map(
           (item: any): TPermission => ({

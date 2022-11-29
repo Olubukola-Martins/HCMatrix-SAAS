@@ -4,12 +4,13 @@ import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { TDepartment } from "../../../../AppTypes/DataEntitities";
 import { Pagination, TableProps, TablePaginationConfig } from "antd";
+import type { PaginationProps } from "antd";
 
 interface IProps {
   departments: TDepartment[];
   loading: boolean;
   pagination?: TablePaginationConfig;
-  onChange?: TableProps<TDepartment>["onChange"];
+  onChange: PaginationProps["onChange"];
 }
 
 export const DepartmentsGridView = ({
@@ -26,7 +27,7 @@ export const DepartmentsGridView = ({
         ))}
       </div>
       <div className="mt-4 flex justify-end">
-        <Pagination {...pagination} />
+        <Pagination {...pagination} onChange={onChange} />
       </div>
     </div>
   );
