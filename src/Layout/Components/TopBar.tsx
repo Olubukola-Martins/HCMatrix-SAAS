@@ -56,7 +56,6 @@ const TopBar = ({
         value: item.name,
         id: item.id,
         image: item?.logoUrl ?? "https://picsum.photos/190",
-
         label: (
           <div className="flex gap-2 items-center">
             <Avatar src={item?.logoUrl ?? "https://picsum.photos/190"} />

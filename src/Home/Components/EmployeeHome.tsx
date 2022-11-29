@@ -11,6 +11,7 @@ import { Tabs } from "antd";
 import { Birthdays } from "./Celebrations/Birthdays";
 import { WorkAnniversary } from "./Celebrations/WorkAnniversary";
 import { Holidays } from "./Celebrations/Holidays";
+import { Celebrations } from "./Celebrations/Celebrations";
 
 export const EmployeeHome = () => {
   return (
@@ -162,18 +163,7 @@ export const EmployeeHome = () => {
           </div>
 
           <div className="shadow px-2 py-3 rounded border">
-            <h3 className="pb-1 font-medium">Celebrations & Holidays</h3>
-            <Tabs defaultActiveKey="1">
-              <Tabs.TabPane tab="Birthdays" key="1">
-                <Birthdays />
-              </Tabs.TabPane>
-              <Tabs.TabPane tab="Work Anniversaries" key="2">
-                <WorkAnniversary />
-              </Tabs.TabPane>
-              <Tabs.TabPane tab="Holidays" key="3">
-                <Holidays />
-              </Tabs.TabPane>
-            </Tabs>
+              <Celebrations/>
           </div>
         </div>
       </div>
