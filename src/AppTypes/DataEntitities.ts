@@ -7,6 +7,11 @@ export interface ICurrentCompany {
   companyId: string;
 }
 
+export type THoliday = {
+  id: number;
+  name: string;
+  date: string;
+};
 export type TDepartment = {
   id: number;
   name: string;
@@ -20,4 +25,23 @@ export type TDesignation = {
   name: string;
   department: { id: number; name: string };
   employeeCount: number;
+};
+export type TPermission = {
+  id: number;
+  name: string;
+  label: string;
+  categoryId: number;
+  description?: string;
+};
+export type TPermissionCategory = {
+  id: number;
+  name: string;
+
+  description?: string;
+};
+
+export type TRole = {
+  id: number;
+  name: string;
+  userCount: number;
 };

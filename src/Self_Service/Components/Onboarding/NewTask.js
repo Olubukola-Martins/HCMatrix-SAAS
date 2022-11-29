@@ -46,11 +46,7 @@ export const NewTask = ({ open, handleClose }) => {
             ></i>
           </div>
           <div className="px-3 mt-7">
-            <Form
-              onFinish={(values) => {
-                console.log({ values });
-              }}
-            >
+            <Form onFinish={(values) => {}}>
               <Form.Item name="name" rules={FormRules}>
                 <Input className={inputStyle} placeholder="Task Name" />
               </Form.Item>

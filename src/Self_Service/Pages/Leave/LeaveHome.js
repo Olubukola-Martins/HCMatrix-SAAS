@@ -67,12 +67,8 @@ const LeaveHome = () => {
       });
     },
     {
-      onError: (err) => {
-        console.log("The error =>", err);
-      },
-      onSuccess: (data) => {
-        console.log("The success(0) =>", data);
-      },
+      onError: (err) => {},
+      onSuccess: (data) => {},
       select: (res) => {
         const leaveRequests = res.data.map((item) => ({
           ...item,

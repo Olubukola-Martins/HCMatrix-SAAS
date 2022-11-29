@@ -61,7 +61,6 @@ export const Profile = () => {
             layout="vertical"
             className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5"
             initialValues={initialValues}
-            onFinish={(val) => console.log(val)}
           >
             <Form.Item name="dateOfBirth" label="Date of Birth">
               <DatePicker

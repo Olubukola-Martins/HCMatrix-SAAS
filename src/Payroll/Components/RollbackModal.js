@@ -5,9 +5,7 @@ import Themes from "../../Themes/Themes";
 import * as Yup from "yup";
 
 const RollbackModal = ({ open, handleClose }) => {
-  const onSubmit = (values) => {
-    console.log(values);
-  };
+  const onSubmit = (values) => {};
 
   return (
     <Modal open={open} onClose={handleClose}>

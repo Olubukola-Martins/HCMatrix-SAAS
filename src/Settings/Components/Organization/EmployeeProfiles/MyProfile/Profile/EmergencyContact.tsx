@@ -20,8 +20,6 @@ export const EmergencyContact = () => {
       relationship: values.relationship,
       phone: `${values.phoneCode} ${values.phone}`,
     };
-
-    console.log(props);
   };
 
   const initialValues = {

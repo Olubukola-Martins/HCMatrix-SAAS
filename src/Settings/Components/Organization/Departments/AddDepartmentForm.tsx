@@ -1,15 +1,11 @@
 import { Form, Input, Select, Spin } from "antd";
-import React, { useContext } from "react";
+import { useContext } from "react";
 import { useAuthUser } from "react-auth-kit";
 import { useMutation, useQueryClient } from "react-query";
 import {
   createDepartment,
   ICreateDepProps,
 } from "../../../../ApiRequesHelpers/Utility/departments";
-import {
-  createEmployee,
-  ICreateEmpProps,
-} from "../../../../ApiRequesHelpers/Utility/employee";
 import { GlobalContext } from "../../../../Contexts/GlobalContextProvider";
 import {
   textInputValidationRules,
@@ -24,7 +20,6 @@ const AddDepartmentForm = ({ handleClose }: { handleClose: Function }) => {
   const authDetails = auth();
 
   const user = authDetails?.user;
-  console.log(user, "_______");
   const globalCtx = useContext(GlobalContext);
   const { state: globalState } = globalCtx;
   const companyId = globalState.currentCompany?.id;
@@ -40,7 +35,6 @@ const AddDepartmentForm = ({ handleClose }: { handleClose: Function }) => {
         departmentHeadId: data.departmentHeadId,
         parentDepartmentId: data.parentDepartmentId,
       };
-      console.log("prps", props, data);
       // return;
       openNotification({
         state: "info",
@@ -90,25 +84,17 @@ const AddDepartmentForm = ({ handleClose }: { handleClose: Function }) => {
         label="Department Name"
         rules={textInputValidationRules}
       >
-        <Input placeholder="Department" className="generalInputStyle" />
+        <Input placeholder="Department" />
       </Form.Item>
       <Form.Item name="email" label="Mail Alias" rules={emailValidationRules}>
-        <Input placeholder="john@gmail.com" className="generalInputStyle" />
+        <Input placeholder="john@gmail.com" />
       </Form.Item>
 
       <Form.Item name="departmentHeadId" label="Department Head">
-        <Select
-          placeholder="Department head"
-          className="generalInputStyle"
-          options={[]}
-        />
+        <Select placeholder="Department head" options={[]} />
       </Form.Item>
       <Form.Item name="parentDepartmentId" label="Parent Department">
-        <Select
-          placeholder="Parent Department"
-          className="generalInputStyle"
-          options={[]}
-        />
+        <Select placeholder="Parent Department" options={[]} />
       </Form.Item>
 
       <button className="button" type="submit">

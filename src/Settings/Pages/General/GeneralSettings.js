@@ -10,7 +10,7 @@ const GeneralSettings = () => {
 
   const handleSearch = (e) => {
     const val = e.target.value;
-    console.log("val =>", val);
+
     const doChildrenMatch = (children) => {
       return children.some(
         (child) => child.name.toLowerCase().indexOf(val.toLowerCase()) !== -1
@@ -98,7 +98,7 @@ const GeneralSettings = () => {
                     .map((item) => (
                       <SettingNavItem item={item} key={item.title} />
                     ))}
-                    {/* <Link to="/settings/payroll">Payroll settings</Link> */}
+                  {/* <Link to="/settings/payroll">Payroll settings</Link> */}
                 </div>
               </FramerAccordian>
               {/* Performance */}

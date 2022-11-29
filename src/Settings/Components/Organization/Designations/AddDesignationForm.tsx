@@ -27,12 +27,7 @@ import { openNotification } from "../../../../NotificationHelpers";
 
 const AddDesignationForm = ({ handleClose }: { handleClose: Function }) => {
   const queryClient = useQueryClient();
-  const auth = useAuthUser();
 
-  const authDetails = auth();
-
-  const user = authDetails?.user;
-  console.log(user, "_______");
   const globalCtx = useContext(GlobalContext);
   const { state: globalState } = globalCtx;
   const companyId = globalState.currentCompany?.id as unknown as string;
@@ -67,7 +62,6 @@ const AddDesignationForm = ({ handleClose }: { handleClose: Function }) => {
 
       select: (res: any) => {
         const result = res.data.data;
-        console.log("resultx", result);
 
         const data: TDepartment[] = result.map(
           (item: any): TDepartment => ({
@@ -91,7 +85,6 @@ const AddDesignationForm = ({ handleClose }: { handleClose: Function }) => {
         name: data.name,
         departmentId: data.departmentId,
       };
-      console.log("prps", props, data);
       // return;
       openNotification({
         state: "info",

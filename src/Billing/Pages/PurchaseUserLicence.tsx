@@ -24,7 +24,7 @@ const PurchaseUserLicense = () => {
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-x-16 mt-6">
           <div className="bg-card p-2 md:p-3 lg:p-5 rounded">
-            <Form layout="vertical" onFinishFailed={(val) => console.log(val)}>
+            <Form layout="vertical">
               <div className="bg-mainBg p-3 shadow-sm rounded">
                 <h2 className="font-medium text-base pb-4">
                   Number of User License

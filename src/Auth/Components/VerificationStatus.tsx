@@ -36,7 +36,7 @@ const VerificationStatus = ({ token, uid }: IVerifyUserProps) => {
       },
       onSuccess: (res: any) => {
         const result = res.data.data;
-        console.log("user", result);
+
         const authUserDetails = {
           user: result.user,
           companies: result?.payload,

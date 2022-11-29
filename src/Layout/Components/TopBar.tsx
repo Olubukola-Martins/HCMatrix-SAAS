@@ -5,13 +5,15 @@ import { Link } from "react-router-dom";
 import SearchModal from "./Search/SearchModal";
 import Themes from "../../Themes/Themes";
 import TransferOwnership from "./TransferOwnership";
-import { AutoComplete, Avatar, Badge, Dropdown, Select } from "antd";
+import { AutoComplete, Avatar, Badge, Button, Dropdown, Select } from "antd";
 import { useAuthUser, useSignOut } from "react-auth-kit";
 import {
   EGlobalOps,
   GlobalContext,
 } from "../../Contexts/GlobalContextProvider";
 import { AddCompanyForm } from "./AddSisterCompany/AddCompanyForm";
+
+import { PlusOutlined } from "@ant-design/icons";
 
 type TCompany = {
   value: string;
@@ -51,18 +53,36 @@ const TopBar = ({
   const globalCtx = useContext(GlobalContext);
   const { state: globalState, dispatch: globalDispatch } = globalCtx;
 
+  const defaultCompanies = authDetails?.companies.map((item: any) => ({
+    value: item.name,
+    id: item.id,
+    image: item?.logoUrl ?? "https://picsum.photos/190",
+
+    label: (
+      <div className="flex gap-2 items-center">
+        <Avatar src={item?.logoUrl ?? "https://picsum.photos/190"} />
+        <span>{item.name}</span>
+      </div>
+    ),
+  }));
+
   const companies: TCompany[] = authDetails?.companies
-    ? authDetails?.companies.map((item: any) => ({
-        value: item.name,
-        id: item.id,
-        image: item?.logoUrl ?? "https://picsum.photos/190",
-        label: (
-          <div className="flex gap-2 items-center">
-            <Avatar src={item?.logoUrl ?? "https://picsum.photos/190"} />
-            <span>{item.name}</span>
-          </div>
-        ),
-      }))
+    ? [
+        ...defaultCompanies,
+        {
+          value: "add-company",
+          id: "add-company",
+          image: "add-company",
+
+          label: (
+            <div className="flex gap-2 items-center">
+              <Button type="text" icon={<PlusOutlined />}>
+                Add Company
+              </Button>
+            </div>
+          ),
+        },
+      ]
     : [];
   const [anchorEl, setAnchorEl] = useState(null);
   const [options, setOptions] = useState<TCompany[]>(companies);
@@ -87,13 +107,19 @@ const TopBar = ({
   };
 
   const onSelect = (val: string, data: any) => {
+    if (val === "add-company") {
+      // modal logic
+      return;
+    }
     globalDispatch({
       type: EGlobalOps.setCurrentCompanyId,
       payload: { id: data.id, name: data.value },
     });
+    window.location.reload();
     // save company id to Global Context
     // also on login setCurrentCompId also save in local storage to keep track
   };
+
   const signOut = useSignOut();
   const handleLogOut = () => signOut();
   return (
