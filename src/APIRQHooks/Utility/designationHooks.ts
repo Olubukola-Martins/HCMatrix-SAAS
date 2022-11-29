@@ -18,7 +18,7 @@ export const useFetchDesignations = ({
   companyId,
 }: IFRQDesignationsProps) => {
   const queryData = useQuery(
-    ["designations", pagination?.current],
+    ["designations", pagination?.current, pagination?.limit],
     () =>
       getDesignations({
         companyId,
@@ -39,8 +39,8 @@ export const useFetchDesignations = ({
       },
 
       select: (res: any) => {
-        const result = res.data.data;
-        console.log("resultx", result);
+        const fetchedData = res.data.data;
+        const result = fetchedData.result;
 
         const data: TDesignation[] = result.map(
           (item: any): TDesignation => ({
@@ -56,7 +56,7 @@ export const useFetchDesignations = ({
 
         const ans: IFRQDesignationsReturnProps = {
           data,
-          total: res?.data?.totalCount,
+          total: fetchedData.totalCount,
         };
 
         return ans;

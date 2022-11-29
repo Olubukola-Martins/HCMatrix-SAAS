@@ -5,6 +5,7 @@ import { useQuery } from "react-query";
 import { getRoles } from "../../../../ApiRequesHelpers/Auth/permissions";
 import { getDepartments } from "../../../../ApiRequesHelpers/Utility/departments";
 import { getDesignations } from "../../../../ApiRequesHelpers/Utility/designations";
+import { useFetchRoles } from "../../../../APIRQHooks/Auth/roleHooks";
 import {
   TDepartment,
   TDesignation,
@@ -42,47 +43,18 @@ const RolesViewContainer = () => {
     }));
   };
   const {
-    data: roles,
+    data: rolesData,
     isError,
     isFetching,
     isSuccess,
-  } = useQuery(
-    ["roles", pagination.current],
-    () =>
-      getRoles({
-        companyId,
-        pagination: { limit: pagination.pageSize, offset },
-      }),
-    {
-      refetchInterval: false,
-      refetchIntervalInBackground: false,
-      refetchOnWindowFocus: false,
-      onError: (err: any) => {
-        // show notification
-        openNotification({
-          state: "error",
-          title: "Error Occured",
-          description:
-            err?.response.data.message ?? err?.response.data.error.message,
-        });
-      },
-
-      select: (res: any) => {
-        const result = res.data.data;
-
-        const data: TRole[] = result.map(
-          (item: any): TRole => ({
-            id: item.id,
-            name: item.name,
-
-            userCount: item.userCount ?? 0,
-          })
-        );
-
-        return data;
-      },
-    }
-  );
+  } = useFetchRoles({
+    companyId,
+    pagination: {
+      limit: pagination.pageSize,
+      offset,
+      current: pagination.current,
+    },
+  });
 
   return (
     <div className="mt-4 flex flex-col gap-4">
@@ -109,16 +81,14 @@ const RolesViewContainer = () => {
         ></i>
       </div> */}
       <div className="content overflow-y-hidden relative">
-        <AnimatePresence exitBeforeEnter>
-          {viewId === "list" && isSuccess && (
-            <RolesTableView
-              data={roles}
-              loading={isFetching}
-              pagination={pagination}
-              onChange={onChange}
-            />
-          )}
-        </AnimatePresence>
+        {viewId === "list" && isSuccess && (
+          <RolesTableView
+            data={rolesData.data}
+            loading={isFetching}
+            pagination={{ ...pagination, total: rolesData.total }}
+            onChange={onChange}
+          />
+        )}
       </div>
     </div>
   );

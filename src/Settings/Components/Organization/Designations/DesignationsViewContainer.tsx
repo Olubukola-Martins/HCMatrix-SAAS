@@ -1,10 +1,11 @@
 import { TablePaginationConfig } from "antd";
 import { AnimatePresence } from "framer-motion";
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { useQuery } from "react-query";
 import { getDepartments } from "../../../../ApiRequesHelpers/Utility/departments";
 import { getDesignations } from "../../../../ApiRequesHelpers/Utility/designations";
 import { useFetchDesignations } from "../../../../APIRQHooks/Utility/designationHooks";
+import { TDataView } from "../../../../AppTypes/Component";
 import { TDepartment, TDesignation } from "../../../../AppTypes/DataEntitities";
 import { GlobalContext } from "../../../../Contexts/GlobalContextProvider";
 import { openNotification } from "../../../../NotificationHelpers";
@@ -12,8 +13,8 @@ import { DesignationsGridView } from "./DesignationsGridView";
 import { DesignationsTableView } from "./DesignationsTableView";
 
 const DesignationsViewContainer = () => {
-  const [viewId, setViewId] = useState("list");
-  const handleViewId = (val: React.SetStateAction<string>) => {
+  const [viewId, setViewId] = useState<TDataView>("list");
+  const handleViewId = (val: TDataView) => {
     setViewId(val);
   };
   const globalCtx = useContext(GlobalContext);
@@ -32,11 +33,20 @@ const DesignationsViewContainer = () => {
       ? (pagination.pageSize ?? 4) * (pagination.current - 1)
       : 0;
 
-  const onChange = (newPagination: TablePaginationConfig) => {
-    setPagination(() => ({
-      ...newPagination,
-    }));
+  const onChange = (newPagination: TablePaginationConfig | number) => {
+    if (typeof newPagination === "number") {
+      setPagination((val) => ({
+        ...val,
+        current: newPagination,
+      }));
+    } else {
+      setPagination((val) => ({
+        ...val,
+        current: newPagination.current,
+      }));
+    }
   };
+
   const {
     data: designationData,
     isError,
@@ -50,6 +60,15 @@ const DesignationsViewContainer = () => {
       current: pagination.current,
     },
   });
+
+  // to be able to maitain diff page size per diff view
+  useEffect(() => {
+    if (viewId === "grid") {
+      setPagination((val) => ({ ...val, pageSize: 10, current: 1 }));
+    } else {
+      setPagination((val) => ({ ...val, pageSize: 5, current: 1 }));
+    }
+  }, [viewId]);
 
   return (
     <div className="mt-4 flex flex-col gap-4">
@@ -75,25 +94,23 @@ const DesignationsViewContainer = () => {
         ></i>
       </div>
       <div className="content overflow-y-hidden relative">
-        <AnimatePresence exitBeforeEnter>
-          {viewId === "grid" && isSuccess && (
-            <DesignationsGridView
-              data={designationData.data}
-              loading={isFetching}
-              pagination={pagination}
-              onChange={onChange}
-            />
-          )}
+        {viewId === "grid" && isSuccess && (
+          <DesignationsGridView
+            data={designationData.data}
+            loading={isFetching}
+            pagination={{ ...pagination, total: designationData.total }}
+            onChange={onChange}
+          />
+        )}
 
-          {viewId === "list" && isSuccess && (
-            <DesignationsTableView
-              data={designationData.data}
-              loading={isFetching}
-              pagination={pagination}
-              onChange={onChange}
-            />
-          )}
-        </AnimatePresence>
+        {viewId === "list" && isSuccess && (
+          <DesignationsTableView
+            data={designationData.data}
+            loading={isFetching}
+            pagination={{ ...pagination, total: designationData.total }}
+            onChange={onChange}
+          />
+        )}
       </div>
     </div>
   );

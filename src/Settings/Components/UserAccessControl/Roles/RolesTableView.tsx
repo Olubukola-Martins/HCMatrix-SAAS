@@ -43,17 +43,7 @@ export const RolesTableView = ({
     },
   ];
   return (
-    <motion.div
-      className="  mt-4"
-      initial={{ opacity: 0, y: 400 }}
-      animate={{
-        opacity: 1,
-        y: 0,
-      }}
-      key={2}
-      transition={{ ease: "easeIn" }}
-      exit={{ opacity: 0, y: 400 }}
-    >
+    <div>
       <Table
         columns={columns}
         size="small"
@@ -62,6 +52,6 @@ export const RolesTableView = ({
         pagination={pagination}
         onChange={onChange}
       />
-    </motion.div>
+    </div>
   );
 };

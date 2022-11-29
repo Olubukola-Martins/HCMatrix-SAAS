@@ -14,7 +14,7 @@ interface IProps {
   data: TDesignation[];
   loading: boolean;
   pagination?: TablePaginationConfig;
-  onChange?: TableProps<TDesignation>["onChange"];
+  onChange: PaginationProps["onChange"];
 }
 
 export const DesignationsGridView = ({
@@ -41,7 +41,7 @@ export const DesignationsGridView = ({
         ))}
       </div>
       <div className="flex justify-end">
-        <Pagination {...pagination} />
+        <Pagination {...pagination} onChange={onChange} />
       </div>
     </motion.div>
   );
