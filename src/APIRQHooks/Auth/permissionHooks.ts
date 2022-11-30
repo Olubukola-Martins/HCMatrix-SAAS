@@ -1,6 +1,9 @@
 import pagination from "antd/lib/pagination";
-import { useQuery } from "react-query";
-import { getPermissions } from "../../ApiRequesHelpers/Auth/permissions";
+import { useMutation, useQuery } from "react-query";
+import {
+  createRole,
+  getPermissions,
+} from "../../ApiRequesHelpers/Auth/permissions";
 import { TPermission } from "../../AppTypes/DataEntitities";
 import { IPaginationProps } from "../../AppTypes/Pagination";
 import { openNotification } from "../../NotificationHelpers";
@@ -75,4 +78,8 @@ export const useFetchPermissions = ({ companyId }: IFRQDepartmentsProps) => {
   );
 
   return queryData;
+};
+
+export const useCreateRole = () => {
+  return useMutation(createRole);
 };

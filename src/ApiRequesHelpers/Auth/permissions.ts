@@ -4,11 +4,11 @@ import { IPaginationProps } from "../../AppTypes/Pagination";
 import { ISearchParams } from "../../AppTypes/Search";
 
 const token = localStorage.getItem("hcmatrix_app") as unknown as string;
-export interface ICreatePemProps extends ICurrentCompany {
+export interface ICreateRoleProps extends ICurrentCompany {
   name: string;
   permissionIds: number[];
 }
-export const createPermission = async (props: ICreatePemProps) => {
+export const createRole = async (props: ICreateRoleProps) => {
   const url = `${process.env.REACT_APP_AUTHENTICATION_BASE_URL}/permission/role`;
   const config = {
     headers: {

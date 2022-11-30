@@ -12,11 +12,13 @@ import React, { useContext, useState } from "react";
 import { useMutation, useQuery, useQueryClient } from "react-query";
 import { BeatLoader } from "react-spinners";
 import {
-  createPermission,
   getPermissions,
-  ICreatePemProps,
+  ICreateRoleProps,
 } from "../../../../ApiRequesHelpers/Auth/permissions";
-import { useFetchPermissions } from "../../../../APIRQHooks/Auth/permissionHooks";
+import {
+  useCreateRole,
+  useFetchPermissions,
+} from "../../../../APIRQHooks/Auth/permissionHooks";
 import {
   TPermission,
   TPermissionCategory,
@@ -55,11 +57,11 @@ const CreateRoleForm = () => {
     setSelectedCategory(val);
   };
 
-  const { mutate, isLoading } = useMutation(createPermission);
+  const { mutate, isLoading } = useCreateRole();
 
   const handleSubmit = (data: any) => {
     if (companyId) {
-      const props: ICreatePemProps = {
+      const props: ICreateRoleProps = {
         companyId,
         name: data.name,
         permissionIds: data.permissionIds,
