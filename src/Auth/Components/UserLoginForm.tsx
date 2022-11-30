@@ -105,7 +105,7 @@ const UserLoginForm = () => {
         type="submit"
         disabled={isLoading}
       >
-        {isLoading ? <BeatLoader /> : "Sign In"}
+        {isLoading ? <BeatLoader color="#fff" /> : "Sign In"}
       </button>
     </Form>
   );

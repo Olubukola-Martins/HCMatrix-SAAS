@@ -114,12 +114,12 @@ const TopBar = ({
       payload: { id: data.id, name: data.value },
     });
     window.location.reload();
-    // save company id to Global Context
-    // also on login setCurrentCompId also save in local storage to keep track
   };
 
   const signOut = useSignOut();
-  const handleLogOut = () => signOut();
+  const handleLogOut = () => {
+    signOut();
+  };
   return (
     <>
       <div className="bg-mainBg w-full py-3 sticky top-0 z-50 text-accent shadow-md">

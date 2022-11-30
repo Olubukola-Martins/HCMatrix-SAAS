@@ -28,18 +28,6 @@ import {
 } from "../../../../FormHelpers/validation";
 import { openNotification } from "../../../../NotificationHelpers";
 
-const allPermissionCategory: TPermissionCategory = {
-  id: 0,
-  name: "all",
-};
-const dbPermissionCategories: TPermissionCategory[] = [
-  { ...allPermissionCategory },
-  {
-    id: 1,
-    name: "No Categories created",
-  },
-];
-
 const CreateRoleForm = () => {
   const queryClient = useQueryClient();
 
@@ -50,7 +38,7 @@ const CreateRoleForm = () => {
   const [selectedCategory, setSelectedCategory] = useState(0);
   const [form] = Form.useForm();
   const {
-    data: permissionsData,
+    data,
     isError: isPError,
     isFetching: isPFetching,
     isSuccess: isPSuccess,
@@ -137,7 +125,7 @@ const CreateRoleForm = () => {
             <Typography.Title level={5}>Assign Permissions</Typography.Title>
             {/* permission categories */}
             <div className="flex flex-wrap gap-4 pb-3 border-b ">
-              {dbPermissionCategories.map((item) => (
+              {data.categories.map((item) => (
                 <div className="" key={item.id}>
                   <button
                     type="button"
@@ -164,7 +152,7 @@ const CreateRoleForm = () => {
             <Form.Item name="permissionIds" rules={generalValidationRules}>
               <Checkbox.Group style={{ width: "100%" }}>
                 <div className="my-6 grid grid-cols-4 gap-4">
-                  {permissionsData.data.map((item) => (
+                  {data.permissions.map((item) => (
                     <Checkbox
                       key={item.id}
                       value={item.id}

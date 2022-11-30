@@ -27,7 +27,7 @@ export const DepartmentsGridView = ({
         ))}
       </div>
       <div className="mt-4 flex justify-end">
-        <Pagination {...pagination} onChange={onChange} />
+        <Pagination {...pagination} onChange={onChange} size="small" />
       </div>
     </div>
   );

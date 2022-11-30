@@ -2,6 +2,12 @@ export type TIndustry = {
   id: number;
   name: string;
 };
+export type TCountry = {
+  id: number;
+  name: string;
+  sortName: string;
+  code: string;
+};
 
 export interface ICurrentCompany {
   companyId: string;

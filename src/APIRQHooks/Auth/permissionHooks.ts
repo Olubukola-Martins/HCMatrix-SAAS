@@ -6,23 +6,24 @@ import { IPaginationProps } from "../../AppTypes/Pagination";
 import { openNotification } from "../../NotificationHelpers";
 
 interface IFRQDepartmentsProps {
-  pagination?: IPaginationProps;
   companyId: string;
 }
-interface IFRQDepartmentsReturnProps {
-  data: TPermission[];
-  total: number;
+
+interface ICategory {
+  id: number;
+  name: string;
 }
-export const useFetchPermissions = ({
-  pagination,
-  companyId,
-}: IFRQDepartmentsProps) => {
+
+interface IFRQDepartmentsReturnProps {
+  permissions: TPermission[];
+  categories: ICategory[];
+}
+export const useFetchPermissions = ({ companyId }: IFRQDepartmentsProps) => {
   const queryData = useQuery(
-    ["permissions", pagination?.current],
+    ["permissions"],
     () =>
       getPermissions({
         companyId,
-        pagination: { limit: pagination?.limit, offset: pagination?.offset },
       }),
     {
       // refetchInterval: false,
@@ -40,20 +41,32 @@ export const useFetchPermissions = ({
 
       select: (res: any) => {
         // for all for now
-        const result = res.data.data[0].permissions;
+        const result = res.data.data;
 
-        const data: TPermission[] = result.map(
-          (item: any): TPermission => ({
-            id: item.id,
-            name: item.name,
-            label: item.label,
-            categoryId: item.categoryId,
-            description: item?.description,
-          })
-        );
+        const categories: ICategory[] = [];
+        const permissions: TPermission[] = [];
+
+        result.forEach((category: any) => {
+          categories.push({ id: category.id, name: category.name });
+          category.permissions.forEach((item: any) => {
+            permissions.push({
+              id: item.id,
+              name: item.name,
+              label: item.label,
+              categoryId: item.categoryId,
+              description: item?.description,
+            });
+          });
+        });
         const ans: IFRQDepartmentsReturnProps = {
-          data,
-          total: res?.data?.totalCount,
+          permissions,
+          categories: [
+            {
+              id: 0,
+              name: "all",
+            },
+            ...categories,
+          ],
         };
 
         return ans;

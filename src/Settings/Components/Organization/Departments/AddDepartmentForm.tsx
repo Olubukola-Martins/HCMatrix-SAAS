@@ -1,11 +1,9 @@
 import { Form, Input, Select, Spin } from "antd";
 import { useContext } from "react";
 import { useAuthUser } from "react-auth-kit";
-import { useMutation, useQueryClient } from "react-query";
-import {
-  createDepartment,
-  ICreateDepProps,
-} from "../../../../ApiRequesHelpers/Utility/departments";
+import { useQueryClient } from "react-query";
+import { ICreateDepProps } from "../../../../ApiRequesHelpers/Utility/departments";
+import { useCreateDepartment } from "../../../../APIRQHooks/Utility/departmentHooks";
 import { GlobalContext } from "../../../../Contexts/GlobalContextProvider";
 import {
   textInputValidationRules,
@@ -24,7 +22,7 @@ const AddDepartmentForm = ({ handleClose }: { handleClose: Function }) => {
   const { state: globalState } = globalCtx;
   const companyId = globalState.currentCompany?.id;
   const [form] = Form.useForm();
-  const { mutate, isLoading } = useMutation(createDepartment);
+  const { mutate } = useCreateDepartment();
 
   const handleSubmit = (data: any) => {
     if (companyId) {
