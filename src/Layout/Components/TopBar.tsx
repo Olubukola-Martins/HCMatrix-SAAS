@@ -5,12 +5,13 @@ import { Link } from "react-router-dom";
 import SearchModal from "./Search/SearchModal";
 import Themes from "../../Themes/Themes";
 import TransferOwnership from "./TransferOwnership";
-import { AutoComplete, Avatar, Badge, Button, Dropdown, Select } from "antd";
+import { AutoComplete, Avatar, Badge, Button, Dropdown,} from "antd";
 import { useAuthUser, useSignOut } from "react-auth-kit";
 import {
   EGlobalOps,
   GlobalContext,
 } from "../../Contexts/GlobalContextProvider";
+import { AddCompanyForm } from "./AddSisterCompany/AddCompanyForm";
 
 import { PlusOutlined } from "@ant-design/icons";
 
@@ -86,6 +87,7 @@ const TopBar = ({
   const [anchorEl, setAnchorEl] = useState(null);
   const [options, setOptions] = useState<TCompany[]>(companies);
   const [transferOwnershipModal, setTransferOwnershipModal] = useState(false);
+  const [addCompanyModal, setAddCompanyModal] = useState(false);
 
   const handleClick = (event: any) => {
     setAnchorEl(event.currentTarget);
@@ -106,7 +108,7 @@ const TopBar = ({
 
   const onSelect = (val: string, data: any) => {
     if (val === "add-company") {
-      // modal logic
+      setAddCompanyModal(true)
       return;
     }
     globalDispatch({
@@ -122,6 +124,10 @@ const TopBar = ({
   };
   return (
     <>
+      <AddCompanyForm
+        open={addCompanyModal}
+        handleClose={() => setAddCompanyModal(false)}
+      />
       <div className="bg-mainBg w-full py-3 sticky top-0 z-50 text-accent shadow-md">
         <div className="px-5 lg:px-12 flex items-center justify-between Container">
           <div className="flex items-center gap-3">
@@ -178,6 +184,7 @@ const TopBar = ({
                   />
                 </div>
               )}
+             
             </div>
 
             {/* Dark and Light */}
@@ -217,11 +224,13 @@ const TopBar = ({
             <Dropdown
               overlay={
                 <Themes>
-                  <div className="rounded-md pt-5 pb-2 px-5 text-center bg-card shadow-md">
+                  <div className="rounded-md py-5 px-5 text-center bg-card shadow-md">
                     <div className="border-b-2 border-slate-600 pb-4">
-                      <h4 className="font-extrabold text-lg">Todd Cantley</h4>
+                      <h4 className="font-extrabold text-lg">
+                        {user.fullName}
+                      </h4>
                       <span className="block text-xs pb-3 pt-1 text-gray-500">
-                        todd@snapnetsolutions.com
+                        {user.email}
                       </span>
                       <Link
                         to="/settings/profile"
