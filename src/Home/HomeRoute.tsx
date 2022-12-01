@@ -8,24 +8,21 @@ import Home from "./Pages/Home";
 function HomeRoute() {
   return (
     <Routes>
-      {/* <Route
-        path="/"
-        
-      > */}
+    
       <Route
         path="/"
         element={
-          // <RequireAuth loginPath={"/login"}>
+          <RequireAuth loginPath={"/login"}>
           <Home />
-          // </RequireAuth>
+           </RequireAuth>
         }
       />
       <Route
         path="/company-organogram"
         element={
-          // <RequireAuth loginPath={"/login"}>
+           <RequireAuth loginPath={"/login"}>
           <CompanyOrganogram />
-          // </RequireAuth>
+          </RequireAuth>
         }
       />
       {/* </Route> */}
