@@ -72,7 +72,8 @@ const UserLoginForm = () => {
               },
             });
           }
-          navigate("/");
+          window.location.reload(); //temp fix for token
+          // navigate("/");
         }
       },
     });
@@ -105,7 +106,7 @@ const UserLoginForm = () => {
         type="submit"
         disabled={isLoading}
       >
-        {isLoading ? <BeatLoader /> : "Sign In"}
+        {isLoading ? <BeatLoader color="#fff" /> : "Sign In"}
       </button>
     </Form>
   );

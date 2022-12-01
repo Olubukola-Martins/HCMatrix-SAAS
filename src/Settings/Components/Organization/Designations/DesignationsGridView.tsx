@@ -41,7 +41,7 @@ export const DesignationsGridView = ({
         ))}
       </div>
       <div className="flex justify-end">
-        <Pagination {...pagination} onChange={onChange} />
+        <Pagination {...pagination} onChange={onChange} size="small" />
       </div>
     </motion.div>
   );

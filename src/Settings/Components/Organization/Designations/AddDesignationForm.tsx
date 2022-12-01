@@ -1,4 +1,5 @@
 import { Form, Input, Select, Skeleton, Spin } from "antd";
+import pagination from "antd/lib/pagination";
 import React, { useContext, useState } from "react";
 import { useAuthUser } from "react-auth-kit";
 import { useMutation, useQuery, useQueryClient } from "react-query";
@@ -15,6 +16,8 @@ import {
   createEmployee,
   ICreateEmpProps,
 } from "../../../../ApiRequesHelpers/Utility/employee";
+import { useFetchDepartments } from "../../../../APIRQHooks/Utility/departmentHooks";
+import { useCreateDesignation } from "../../../../APIRQHooks/Utility/designationHooks";
 import { TDepartment } from "../../../../AppTypes/DataEntitities";
 import { ISearchParams } from "../../../../AppTypes/Search";
 import { GlobalContext } from "../../../../Contexts/GlobalContextProvider";
@@ -36,47 +39,19 @@ const AddDesignationForm = ({ handleClose }: { handleClose: Function }) => {
   const [depSearch, setDepSearch] = useState<ISearchParams | null>(null);
 
   const {
-    data: departments,
+    data: departmentData,
     isError,
     isFetching,
     isSuccess,
-  } = useQuery(
-    ["departments"],
-    () =>
-      getDepartments({
-        companyId,
-      }),
-    {
-      refetchInterval: false,
-      refetchIntervalInBackground: false,
-      refetchOnWindowFocus: false,
-      onError: (err: any) => {
-        // show notification
-        openNotification({
-          state: "error",
-          title: "Error Occured",
-          description:
-            err?.response.data.message ?? err?.response.data.error.message,
-        });
-      },
+  } = useFetchDepartments({
+    companyId,
+    pagination: {
+      limit: 100, //temp suppose to allow search
+      offset: 0,
+    },
+  });
 
-      select: (res: any) => {
-        const result = res.data.data;
-
-        const data: TDepartment[] = result.map(
-          (item: any): TDepartment => ({
-            id: item.id,
-            name: item.name,
-            email: item.email,
-            employeeCount: item.employeeCount ?? 0,
-          })
-        );
-
-        return data;
-      },
-    }
-  );
-  const { mutate, isLoading } = useMutation(createDesignation);
+  const { mutate } = useCreateDesignation();
 
   const handleSubmit = (data: any) => {
     if (companyId) {
@@ -89,7 +64,6 @@ const AddDesignationForm = ({ handleClose }: { handleClose: Function }) => {
       openNotification({
         state: "info",
         title: "Wait a second ...",
-        // description: <Progress percent={80} status="active" />,
         description: <Spin />,
       });
       mutate(props, {
@@ -123,42 +97,46 @@ const AddDesignationForm = ({ handleClose }: { handleClose: Function }) => {
   };
   return (
     <>
-      {(!isSuccess || isFetching) && <Skeleton active />}
-      {isSuccess && (
-        <Form
-          layout="vertical"
-          requiredMark={false}
-          form={form}
-          onFinish={handleSubmit}
-        >
-          <Form.Item
-            name="name"
-            label="Designation Name"
-            rules={textInputValidationRules}
+      <Skeleton loading={!isSuccess || isFetching} active>
+        {isSuccess && (
+          <Form
+            layout="vertical"
+            requiredMark={false}
+            form={form}
+            onFinish={handleSubmit}
           >
-            <Input placeholder="Designation" className="generalInputStyle" />
-          </Form.Item>
+            <Form.Item
+              name="name"
+              label="Designation Name"
+              rules={textInputValidationRules}
+            >
+              <Input placeholder="Designation" />
+            </Form.Item>
 
-          <Form.Item
-            name="departmentId"
-            label="Department"
-            rules={generalValidationRules}
-          >
-            <Select
-              placeholder="Department"
-              className="generalInputStyle"
-              options={departments.map((item) => ({
-                label: item.name,
-                value: item.id,
-              }))}
-            />
-          </Form.Item>
+            <Form.Item
+              name="departmentId"
+              label="Department"
+              rules={generalValidationRules}
+            >
+              <Select
+                showSearch
+                allowClear
+                optionLabelProp="label"
+                placeholder="Department"
+                options={departmentData.data.map((item) => ({
+                  label: item.name,
+                  value: item.id,
+                }))}
+              />
+            </Form.Item>
 
-          <button className="button" type="submit">
-            Submit
-          </button>
-        </Form>
-      )}
+            <button className="button" type="submit">
+              Submit
+            </button>
+          </Form>
+        )}
+      </Skeleton>
+
       {isError && "error illustration"}
     </>
   );

@@ -1,6 +1,9 @@
 import pagination from "antd/lib/pagination";
-import { useQuery } from "react-query";
-import { getDesignations } from "../../ApiRequesHelpers/Utility/designations";
+import { useMutation, useQuery } from "react-query";
+import {
+  createDesignation,
+  getDesignations,
+} from "../../ApiRequesHelpers/Utility/designations";
 import { TDesignation } from "../../AppTypes/DataEntitities";
 import { IPaginationProps } from "../../AppTypes/Pagination";
 import { openNotification } from "../../NotificationHelpers";
@@ -65,4 +68,8 @@ export const useFetchDesignations = ({
   );
 
   return queryData;
+};
+
+export const useCreateDesignation = () => {
+  return useMutation(createDesignation);
 };

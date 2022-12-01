@@ -119,7 +119,9 @@ const TopBar = ({
   };
 
   const signOut = useSignOut();
-  const handleLogOut = () => signOut();
+  const handleLogOut = () => {
+    signOut();
+  };
   return (
     <>
       <AddCompanyForm

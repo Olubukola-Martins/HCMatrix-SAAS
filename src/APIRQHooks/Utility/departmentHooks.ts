@@ -1,6 +1,11 @@
+import { Spin } from "antd";
 import pagination from "antd/lib/pagination";
-import { useQuery } from "react-query";
-import { getDepartments } from "../../ApiRequesHelpers/Utility/departments";
+import { useMutation, useQuery, useQueryClient } from "react-query";
+import {
+  createDepartment,
+  getDepartments,
+  ICreateDepProps,
+} from "../../ApiRequesHelpers/Utility/departments";
 import { TDepartment } from "../../AppTypes/DataEntitities";
 import { IPaginationProps } from "../../AppTypes/Pagination";
 import { openNotification } from "../../NotificationHelpers";
@@ -62,4 +67,8 @@ export const useFetchDepartments = ({
   );
 
   return queryData;
+};
+
+export const useCreateDepartment = () => {
+  return useMutation(createDepartment);
 };

@@ -1,14 +1,10 @@
 import { TablePaginationConfig } from "antd";
-import { AnimatePresence } from "framer-motion";
-import React, { useContext, useEffect, useState } from "react";
-import { useQuery } from "react-query";
-import { getDepartments } from "../../../../ApiRequesHelpers/Utility/departments";
-import { getDesignations } from "../../../../ApiRequesHelpers/Utility/designations";
+import { useContext, useEffect, useState } from "react";
 import { useFetchDesignations } from "../../../../APIRQHooks/Utility/designationHooks";
 import { TDataView } from "../../../../AppTypes/Component";
-import { TDepartment, TDesignation } from "../../../../AppTypes/DataEntitities";
 import { GlobalContext } from "../../../../Contexts/GlobalContextProvider";
-import { openNotification } from "../../../../NotificationHelpers";
+import { ErrorComponent } from "../../../../GeneralComps/ErrorComps";
+import { DataContainerLoader } from "../../../../GeneralComps/LoaderComps";
 import { DesignationsGridView } from "./DesignationsGridView";
 import { DesignationsTableView } from "./DesignationsTableView";
 
@@ -94,6 +90,13 @@ const DesignationsViewContainer = () => {
         ></i>
       </div>
       <div className="content overflow-y-hidden relative">
+        {!isSuccess && !isError && <DataContainerLoader />}
+        {isError && (
+          <ErrorComponent
+            message="Oops! Something went wrong."
+            supportText="Please check back in a minute"
+          />
+        )}
         {viewId === "grid" && isSuccess && (
           <DesignationsGridView
             data={designationData.data}

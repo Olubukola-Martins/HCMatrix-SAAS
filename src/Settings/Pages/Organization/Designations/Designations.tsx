@@ -1,11 +1,6 @@
-import { AnimatePresence } from "framer-motion";
-import React, { useState } from "react";
+import { useState } from "react";
 import DashboardLayout from "../../../../Layout/DashboardLayout";
-import PenIcon from "../../../Assets/pen_icon.svg";
-import AddDesignationDrawer from "../../../Components/Organization/Designations/AddDesignationDrawer";
 import { AddDesignationModal } from "../../../Components/Organization/Designations/AddDesignationModal";
-import { DesignationsGridView } from "../../../Components/Organization/Designations/DesignationsGridView";
-import { DesignationsTableView } from "../../../Components/Organization/Designations/DesignationsTableView";
 import DesignationsViewContainer from "../../../Components/Organization/Designations/DesignationsViewContainer";
 
 const Designations = () => {
