@@ -72,7 +72,8 @@ const UserLoginForm = () => {
               },
             });
           }
-          navigate("/");
+          window.location.reload(); //temp fix for token
+          // navigate("/");
         }
       },
     });

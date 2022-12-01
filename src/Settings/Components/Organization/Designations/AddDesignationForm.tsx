@@ -64,7 +64,6 @@ const AddDesignationForm = ({ handleClose }: { handleClose: Function }) => {
       openNotification({
         state: "info",
         title: "Wait a second ...",
-        // description: <Progress percent={80} status="active" />,
         description: <Spin />,
       });
       mutate(props, {
@@ -98,41 +97,46 @@ const AddDesignationForm = ({ handleClose }: { handleClose: Function }) => {
   };
   return (
     <>
-      {(!isSuccess || isFetching) && <Skeleton active />}
-      {isSuccess && (
-        <Form
-          layout="vertical"
-          requiredMark={false}
-          form={form}
-          onFinish={handleSubmit}
-        >
-          <Form.Item
-            name="name"
-            label="Designation Name"
-            rules={textInputValidationRules}
+      <Skeleton loading={!isSuccess || isFetching} active>
+        {isSuccess && (
+          <Form
+            layout="vertical"
+            requiredMark={false}
+            form={form}
+            onFinish={handleSubmit}
           >
-            <Input placeholder="Designation" />
-          </Form.Item>
+            <Form.Item
+              name="name"
+              label="Designation Name"
+              rules={textInputValidationRules}
+            >
+              <Input placeholder="Designation" />
+            </Form.Item>
 
-          <Form.Item
-            name="departmentId"
-            label="Department"
-            rules={generalValidationRules}
-          >
-            <Select
-              placeholder="Department"
-              options={departmentData.data.map((item) => ({
-                label: item.name,
-                value: item.id,
-              }))}
-            />
-          </Form.Item>
+            <Form.Item
+              name="departmentId"
+              label="Department"
+              rules={generalValidationRules}
+            >
+              <Select
+                showSearch
+                allowClear
+                optionLabelProp="label"
+                placeholder="Department"
+                options={departmentData.data.map((item) => ({
+                  label: item.name,
+                  value: item.id,
+                }))}
+              />
+            </Form.Item>
 
-          <button className="button" type="submit">
-            Submit
-          </button>
-        </Form>
-      )}
+            <button className="button" type="submit">
+              Submit
+            </button>
+          </Form>
+        )}
+      </Skeleton>
+
       {isError && "error illustration"}
     </>
   );

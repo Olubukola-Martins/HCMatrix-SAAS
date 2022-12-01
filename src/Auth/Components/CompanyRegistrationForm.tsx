@@ -26,6 +26,7 @@ import { Rule } from "antd/lib/form";
 import { BeatLoader } from "react-spinners";
 import { useFetchIndustries } from "../../APIRQHooks/Utility/industryHooks";
 import { useFetchCountries } from "../../APIRQHooks/Utility/countryHooks";
+import CompanySucess from "../Assets/SVGComponents/CompanySucess";
 
 const CompanyRegistrationForm = () => {
   const [showM, setShowM] = useState(false);
@@ -92,7 +93,7 @@ const CompanyRegistrationForm = () => {
     <>
       <Modal footer={null} open={showM} onCancel={() => setShowM(false)}>
         <Result
-          status="success"
+          icon={<CompanySucess />}
           title="Company created successfully!"
           subTitle={<span>Please check {email} to verify your account</span>}
         />

@@ -7,6 +7,8 @@ import { useFetchDepartments } from "../../../../APIRQHooks/Utility/departmentHo
 import { TDataView } from "../../../../AppTypes/Component";
 import { TDepartment } from "../../../../AppTypes/DataEntitities";
 import { GlobalContext } from "../../../../Contexts/GlobalContextProvider";
+import { ErrorComponent } from "../../../../GeneralComps/ErrorComps";
+import { DataContainerLoader } from "../../../../GeneralComps/LoaderComps";
 import { openNotification } from "../../../../NotificationHelpers";
 import { DepartmentsGridView } from "./DepartmentsGridView";
 import { DepartmentsTableView } from "./DepartmentsTableView";
@@ -92,6 +94,13 @@ const DepartmentsViewContainer = () => {
         ></i>
       </div>
       <div className="content overflow-y-hidden relative">
+        {!isSuccess && !isError && <DataContainerLoader />}
+        {isError && (
+          <ErrorComponent
+            message="Oops! Something went wrong."
+            supportText="Please check back in a minute"
+          />
+        )}
         {viewId === "grid" && isSuccess && (
           <DepartmentsGridView
             departments={departmentData.data}

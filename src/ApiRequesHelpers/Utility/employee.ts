@@ -32,7 +32,21 @@ export const createEmployee = async (props: ICreateEmpProps) => {
   };
 
   // necessary to make immediate changes when in  a central place when schema changes
-  const data = props;
+  const data = {
+    firstName: props.firstName,
+    lastName: props.lastName,
+    email: props.email,
+    hasSelfService: props.hasSelfService,
+    roleId: props.roleId,
+    designationId: props.designationId,
+    jobInformation: {
+      startDate: props.jobInformation.startDate,
+      monthlyGross: props.jobInformation.monthlyGross,
+      employmentType: props.jobInformation.employmentType,
+      workModel: props.jobInformation.workModel,
+      numberOfDaysPerWeek: props.jobInformation.numberOfDaysPerWeek,
+    },
+  };
 
   const response = await axios.post(url, data, config);
   return response;
