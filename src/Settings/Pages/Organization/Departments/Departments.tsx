@@ -1,5 +1,6 @@
 import { AnimatePresence } from "framer-motion";
 import React, { useState } from "react";
+import { PageIntro } from "../../../../Layout/Components/PageIntro";
 import DashboardLayout from "../../../../Layout/DashboardLayout";
 import { AddDepartmentModal } from "../../../Components/Organization/Departments/AddDepartmentModal";
 import { DepartmentsGridView } from "../../../Components/Organization/Departments/DepartmentsGridView";
@@ -52,9 +53,9 @@ const Departments = () => {
       <AddDepartmentModal open={showM} handleClose={() => setShowM(false)} />
       <div className="Container">
         {
-          <div className="  mt-4">
-            <h4 className="text-lg  mb-1">Departments</h4>
-            <div className="flex flex-col gap-2 md:flex-row md:justify-between md:items-center bg-card p-2 rounded text-sm">
+          <div className="mt-4">
+            <PageIntro title="Departments" link="/settings" />
+            <div className="flex flex-col mt-5 gap-2 md:flex-row md:justify-between md:items-center bg-card p-2 rounded text-sm">
               <p>
                 Manage all the department details and the departments settings
                 in your organization.

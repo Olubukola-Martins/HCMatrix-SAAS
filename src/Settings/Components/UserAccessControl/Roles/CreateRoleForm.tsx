@@ -181,7 +181,7 @@ const CreateRoleForm = () => {
             </div>
 
             <button className="button" type="submit" disabled={isLoading}>
-              {isLoading ? <BeatLoader /> : "Sign Up"}
+              {isLoading ? <BeatLoader color="#fff" /> : "Submit"}
             </button>
           </Form>
         )}

@@ -88,10 +88,10 @@ const AddDepartmentForm = ({ handleClose }: { handleClose: Function }) => {
         <Input placeholder="john@gmail.com" />
       </Form.Item>
 
-      <Form.Item name="departmentHeadId" label="Department Head">
+      <Form.Item name="departmentHeadId" label="Department Head (Optional)">
         <Select placeholder="Department head" options={[]} />
       </Form.Item>
-      <Form.Item name="parentDepartmentId" label="Parent Department">
+      <Form.Item name="parentDepartmentId" label="Parent Department (Optional)">
         <Select placeholder="Parent Department" options={[]} />
       </Form.Item>
 

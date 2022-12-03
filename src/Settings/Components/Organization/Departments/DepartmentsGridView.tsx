@@ -3,7 +3,13 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { TDepartment } from "../../../../AppTypes/DataEntitities";
-import { Pagination, TableProps, TablePaginationConfig } from "antd";
+import {
+  Pagination,
+  TableProps,
+  TablePaginationConfig,
+  Dropdown,
+  Menu,
+} from "antd";
 import type { PaginationProps } from "antd";
 
 interface IProps {
@@ -42,7 +48,18 @@ const DepartmentBox = ({ department }: { department: TDepartment }) => {
         <div className="flex justify-between">
           <h6 className="text-xl font-thin capitalize">{department.name}</h6>
 
-          <i className="fa-solid fa-ellipsis"></i>
+          <Dropdown
+            overlay={
+              <Menu>
+                <Menu.Item>View</Menu.Item>
+                <Menu.Item>Edit</Menu.Item>
+                <Menu.Item>Delete</Menu.Item>
+              </Menu>
+            }
+            trigger={["click"]}
+          >
+            <i className="fa-solid fa-ellipsis cursor-pointer"></i>
+          </Dropdown>
         </div>
         <div className="flex justify-between items-center">
           <p className="text-sm">{department.email}</p>
