@@ -17,7 +17,7 @@ export const AddDelegation = ({ open, handleClose }: IModalProps) => {
       onCancel={() => handleClose(false)}
       footer={null}
     >
-      <Form layout="vertical">
+      <Form layout="vertical" requiredMark={false}>
         <Form.Item name="delegator" label="Delegator">
           <Input
             defaultValue="Godswill Smile"
@@ -94,7 +94,7 @@ export const AddDelegation = ({ open, handleClose }: IModalProps) => {
         </Form.Item>
         <Form.Item
           name="description"
-          label="Description"
+          label="Description (Optional)"
           requiredMark="optional"
         >
           <TextArea

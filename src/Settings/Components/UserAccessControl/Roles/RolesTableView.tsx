@@ -31,14 +31,12 @@ export const RolesTableView = ({
     },
     {
       title: "Action",
-      key: "action",
-      width: 70,
-      fixed: "right",
-      render: (val, item) => (
-        <Space align="center" size={"small"}>
-          <i className="ri-pencil-fill cursor-pointer hover:text-caramel"></i>{" "}
-          <i className="ri-delete-bin-line pl-2 cursor-pointer hover:text-caramel"></i>
-        </Space>
+      dataIndex: "action",
+      render: () => (
+        <div className="flex items-center gap-3 text-lg">
+          <i className="ri-pencil-line cursor-pointer hover:text-caramel"></i>
+          <i className="ri-delete-bin-line cursor-pointer hover:text-caramel"></i>
+        </div>
       ),
     },
   ];

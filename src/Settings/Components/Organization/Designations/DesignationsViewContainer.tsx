@@ -1,4 +1,4 @@
-import { TablePaginationConfig } from "antd";
+import { TablePaginationConfig, Tooltip } from "antd";
 import { useContext, useEffect, useState } from "react";
 import { useFetchDesignations } from "../../../../APIRQHooks/Utility/designationHooks";
 import { TDataView } from "../../../../AppTypes/Component";
@@ -67,9 +67,10 @@ const DesignationsViewContainer = () => {
   }, [viewId]);
 
   return (
-    <div className="mt-4 flex flex-col gap-4">
+    <div className="mt-5 flex flex-col gap-4">
       <div className="view-toggler flex rounded overflow-hidden items-center">
-        <i
+       <Tooltip title="Grid View">
+       <i
           onClick={() => handleViewId("grid")}
           className={
             viewId === "grid"
@@ -78,8 +79,10 @@ const DesignationsViewContainer = () => {
           }
           aria-hidden="true"
         ></i>
+       </Tooltip>
 
-        <i
+      <Tooltip title="List View">
+      <i
           className={
             viewId === "list"
               ? "ri-list-unordered text-base text-white bg-caramel px-2 border cursor-pointer"
@@ -88,6 +91,7 @@ const DesignationsViewContainer = () => {
           onClick={() => handleViewId("list")}
           aria-hidden="true"
         ></i>
+      </Tooltip>
       </div>
       <div className="content overflow-y-hidden relative">
         {!isSuccess && !isError && <DataContainerLoader />}

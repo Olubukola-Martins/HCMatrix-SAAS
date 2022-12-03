@@ -43,6 +43,14 @@ export const DepartmentsTableView = ({
       dataIndex: "employeeCount",
       key: "employeeCount",
     },
+    {
+      title: "Action",
+      dataIndex: "action",
+      render: () => <div className="flex items-center gap-3 text-lg">
+        <i className="ri-pencil-line cursor-pointer hover:text-caramel"></i>
+        <i className="ri-delete-bin-line cursor-pointer hover:text-caramel"></i>
+      </div>,
+    }
   ];
   return (
     <div>

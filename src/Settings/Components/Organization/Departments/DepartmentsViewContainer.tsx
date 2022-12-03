@@ -1,4 +1,4 @@
-import { TablePaginationConfig } from "antd";
+import { TablePaginationConfig, Tooltip } from "antd";
 import { AnimatePresence } from "framer-motion";
 import React, { useContext, useEffect, useState } from "react";
 import { useQuery, useQueryClient } from "react-query";
@@ -71,27 +71,31 @@ const DepartmentsViewContainer = () => {
   }, [viewId]);
 
   return (
-    <div className="mt-4 flex flex-col gap-4">
+    <div className="mt-5 flex flex-col gap-4">
       <div className="view-toggler flex rounded overflow-hidden items-center">
-        <i
-          onClick={() => handleViewId("grid")}
-          className={
-            viewId === "grid"
-              ? "ri-layout-grid-fill text-base text-white bg-caramel px-2 border cursor-pointer"
-              : "ri-layout-grid-fill text-base text-black bg-white px-2 border cursor-pointer"
-          }
-          aria-hidden="true"
-        ></i>
+        <Tooltip title="Grid View">
+          <i
+            onClick={() => handleViewId("grid")}
+            className={
+              viewId === "grid"
+                ? "ri-layout-grid-fill text-base text-white bg-caramel px-2 border cursor-pointer"
+                : "ri-layout-grid-fill text-base text-black bg-white px-2 border cursor-pointer"
+            }
+            aria-hidden="true"
+          ></i>
+        </Tooltip>
 
-        <i
-          className={
-            viewId === "list"
-              ? "ri-list-unordered text-base text-white bg-caramel px-2 border cursor-pointer"
-              : "ri-list-unordered text-base text-black bg-white px-2 border cursor-pointer"
-          }
-          onClick={() => handleViewId("list")}
-          aria-hidden="true"
-        ></i>
+        <Tooltip title="List View">
+          <i
+            className={
+              viewId === "list"
+                ? "ri-list-unordered text-base text-white bg-caramel px-2 border cursor-pointer"
+                : "ri-list-unordered text-base text-black bg-white px-2 border cursor-pointer"
+            }
+            onClick={() => handleViewId("list")}
+            aria-hidden="true"
+          ></i>
+        </Tooltip>
       </div>
       <div className="content overflow-y-hidden relative">
         {!isSuccess && !isError && <DataContainerLoader />}
