@@ -14,6 +14,7 @@ import { useEffect } from "react";
 import Aos from "aos";
 import "aos/dist/aos.css";
 import { useIsAuthenticated } from "react-auth-kit";
+import { EmployeeRegistrationForm } from "../Components/EmployeeRegistrationForm";
 
 export const EmployeeRegister = () => {
   const isAuthenticated = useIsAuthenticated();
@@ -23,7 +24,6 @@ export const EmployeeRegister = () => {
   }, []);
   return (
     <>
-
       {isAuthenticated() && <Navigate to="/" replace={true} />}
       <div className="grid grid-cols-1 lg:grid-cols-2">
         <div
@@ -76,92 +76,7 @@ export const EmployeeRegister = () => {
                 </h2>
                 <p className="pt-2 pb-7">Getting started made easy</p>
                 <div className="lg:px-14">
-                  <Form>
-                    <Form.Item
-                      name="email"
-                      rules={[
-                        {
-                          required: true,
-                          message: "Field is required",
-                        },
-                        { type: "email", message: "Invalid Email Address" },
-                      ]}
-                      hasFeedback
-                    >
-                      <Input
-                        prefix={
-                          <MailOutlined className="site-form-item-icon pr-1" />
-                        }
-                        placeholder="Employee ID or Work Email"
-                        className="rounded border-slate-400"
-                        style={{ padding: "6px 5px" }}
-                      />
-                    </Form.Item>
-                    <Form.Item
-                      name="password"
-                      rules={[
-                        {
-                          required: true,
-                          message: "Field is required",
-                        },
-                        {
-                          min: 6,
-                          message: "password must be at least 6 characters",
-                        },
-                        // {
-                        //   validator: (_, value) =>
-                        //     value && value.includes("A")
-                        //       ? Promise.resolve()
-                        //       : Promise.reject("Password does not match criteria."),
-                        // },
-                      ]}
-                      hasFeedback
-                    >
-                      <Input
-                        prefix={
-                          <LockOutlined className="site-form-item-icon pr-1" />
-                        }
-                        placeholder="Password"
-                        className="rounded border-slate-400"
-                        style={{ padding: "6px 5px" }}
-                      />
-                    </Form.Item>
-
-                    <Form.Item
-                      name="CPassword"
-                      dependencies={["password"]}
-                      rules={[
-                        {
-                          required: true,
-                          message: "Field is required",
-                        },
-                        ({ getFieldValue }) => ({
-                          validator(_, value) {
-                            if (!value || getFieldValue("password") === value) {
-                              return Promise.resolve();
-                            }
-                            return Promise.reject(
-                              "The two passwords that you entered does not match."
-                            );
-                          },
-                        }),
-                      ]}
-                      hasFeedback
-                    >
-                      <Input
-                        prefix={
-                          <LockOutlined className="site-form-item-icon pr-1" />
-                        }
-                        placeholder="Confirm Password"
-                        className="rounded border-slate-400"
-                        style={{ padding: "6px 5px" }}
-                      />
-                    </Form.Item>
-
-                    <button className="authBtn w-full mt-4 mb-3">
-                      Sign Up
-                    </button>
-                  </Form>
+                  <EmployeeRegistrationForm />
                   <Divider>
                     <span className="text-sm">Sign Up with</span>
                   </Divider>
