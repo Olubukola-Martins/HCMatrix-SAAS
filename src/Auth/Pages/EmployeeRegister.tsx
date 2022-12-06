@@ -8,8 +8,7 @@ import office from "../Assets/Images/office.svg";
 import linkedin from "../Assets/Images/linkedin.svg";
 import { Divider, Form, Input, Select } from "antd";
 import "../Style/style.css";
-import { LockOutlined, MailOutlined } from "@ant-design/icons";
-import { Link, Navigate } from "react-router-dom";
+import { Link, Navigate, useParams, useSearchParams } from "react-router-dom";
 import { useEffect } from "react";
 import Aos from "aos";
 import "aos/dist/aos.css";
@@ -18,6 +17,11 @@ import { EmployeeRegistrationForm } from "../Components/EmployeeRegistrationForm
 
 export const EmployeeRegister = () => {
   const isAuthenticated = useIsAuthenticated();
+  const [searchParams] = useSearchParams();
+  const token = searchParams.get("token") ?? "";
+  const uid = searchParams.get("uid") ?? "";
+  const email = searchParams.get("email") ?? "";
+  console.log({ email, token, uid });
 
   useEffect(() => {
     Aos.init({ duration: 1500 });
@@ -76,7 +80,11 @@ export const EmployeeRegister = () => {
                 </h2>
                 <p className="pt-2 pb-7">Getting started made easy</p>
                 <div className="lg:px-14">
-                  <EmployeeRegistrationForm />
+                  <EmployeeRegistrationForm
+                    token={token}
+                    uid={uid}
+                    email={email}
+                  />
                   <Divider>
                     <span className="text-sm">Sign Up with</span>
                   </Divider>
