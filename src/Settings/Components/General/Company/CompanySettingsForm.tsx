@@ -7,15 +7,33 @@ import {
   Switch,
   Typography,
 } from "antd";
-import React from "react";
+import React, { useContext } from "react";
+import { useAuthUser } from "react-auth-kit";
+import { GlobalContext } from "../../../../Contexts/GlobalContextProvider";
 
 const parentCompStyle = "grid md:grid-cols-2 border-0 border-b gap-4 py-2";
 const compStyle = "flex flex-col gap-2 items-start";
 
 const CompanySettingsForm = () => {
+  const auth = useAuthUser();
+
+  const authDetails = auth();
+
+  const companies = authDetails?.companies;
+  const globalCtx = useContext(GlobalContext);
+  const { state: globalState } = globalCtx;
+  const currentCompanyId = globalState.currentCompany?.id;
+  const currentCompany = companies.find(
+    (item: any) => (item.id = currentCompanyId)
+  );
   return (
     <div>
-      <Form className="flex flex-col gap-4">
+      <Form
+        className="flex flex-col gap-4"
+        initialValues={{
+          adminEmail: currentCompany.email,
+        }}
+      >
         <div className="flex flex-col gap-y-12 py-4">
           {/* 1 */}
           <div className={parentCompStyle}>
@@ -23,10 +41,10 @@ const CompanySettingsForm = () => {
               <Typography.Title level={5}>Administrator</Typography.Title>
               <Form.Item
                 label="Admin Email"
-                name={`administratorEmail`}
+                name={`adminEmail`}
                 className="w-3/4"
               >
-                <Input />
+                <Input disabled />
               </Form.Item>
               <Button type="text" className="items-start">
                 <span className="text-caramel text-xs">

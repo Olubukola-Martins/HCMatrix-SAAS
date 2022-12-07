@@ -245,7 +245,6 @@ body {
 /* ant select */
 .ant-select,
 textarea.ant-input,
-input[type="text"].ant-input,
 .ant-form-item-label > label,
 .ant-btn-text,
 .ant-btn-ghost,
@@ -257,7 +256,6 @@ input[type="text"].ant-input,
 }
 .ant-select-selector,
 textarea.ant-input,
-input[type="text"].ant-input,
 .ant-picker,
 .ant-select-dropdown {
   background: var(--background) !important;
