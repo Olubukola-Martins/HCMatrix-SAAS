@@ -11,7 +11,7 @@ import {
   EGlobalOps,
   GlobalContext,
 } from "../../Contexts/GlobalContextProvider";
-import { AddCompanyForm } from "./AddSisterCompany/AddCompanyForm";
+import { AddSisterCompanyForm } from "./AddSisterCompany/AddSisterCompanyForm";
 
 import { PlusOutlined } from "@ant-design/icons";
 
@@ -123,7 +123,7 @@ const TopBar = ({
   };
   return (
     <>
-      <AddCompanyForm
+      <AddSisterCompanyForm
         open={addCompanyModal}
         handleClose={() => setAddCompanyModal(false)}
       />
