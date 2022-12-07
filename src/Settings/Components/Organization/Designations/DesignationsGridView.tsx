@@ -4,6 +4,8 @@ import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { TDepartment, TDesignation } from "../../../../AppTypes/DataEntitities";
 import {
+  Dropdown,
+  Menu,
   Pagination,
   PaginationProps,
   TablePaginationConfig,
@@ -53,10 +55,21 @@ const Box = ({ data }: { data: TDesignation }) => {
       {/* view */}
 
       <div className="border px-4 py-2 rounded-lg grid grid-cols-1 gap-4 border-caramel">
-        <div className="flex justify-between">
-          <h6 className="text-xl font-thin capitalize">{data.name}</h6>
+        <div className="flex justify-between items-center gap-3">
+          <h6 className="text-base font-thin capitalize">{data.name}</h6>
 
-          <i className="fa-solid fa-ellipsis"></i>
+          <Dropdown
+            overlay={
+              <Menu>
+                <Menu.Item>View</Menu.Item>
+                <Menu.Item>Edit</Menu.Item>
+                <Menu.Item>Delete</Menu.Item>
+              </Menu>
+            }
+            trigger={["click"]}
+          >
+            <i className="fa-solid fa-ellipsis cursor-pointer"></i>
+          </Dropdown>
         </div>
         <div className="flex justify-between items-center">
           <div className="rounded-full bg-caramel h-6 w-6 flex items-center justify-center ">

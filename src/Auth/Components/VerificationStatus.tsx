@@ -29,7 +29,7 @@ const VerificationStatus = ({ token, uid }: IVerifyUserProps) => {
         // show notification
         openNotification({
           state: "error",
-          title: "Error Occured",
+          title: "Error Occurred",
           description:
             err?.response.data.message ?? err?.response.data.error.message,
         });
@@ -80,7 +80,7 @@ const VerificationStatus = ({ token, uid }: IVerifyUserProps) => {
         <div>
           <Typography.Title level={4}>Invalid token !</Typography.Title>
           <p>
-            Please try to{" "}
+            Please try to
             <Link to="/login" className="text-caramel">
               Login
             </Link>

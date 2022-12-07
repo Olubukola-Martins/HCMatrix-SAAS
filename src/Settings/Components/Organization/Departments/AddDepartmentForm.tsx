@@ -37,14 +37,13 @@ const AddDepartmentForm = ({ handleClose }: { handleClose: Function }) => {
       openNotification({
         state: "info",
         title: "Wait a second ...",
-        // description: <Progress percent={80} status="active" />,
         description: <Spin />,
       });
       mutate(props, {
         onError: (err: any) => {
           openNotification({
             state: "error",
-            title: "Error Occured",
+            title: "Error Occurred",
             description:
               err?.response.data.message ?? err?.response.data.error.message,
           });
@@ -88,10 +87,10 @@ const AddDepartmentForm = ({ handleClose }: { handleClose: Function }) => {
         <Input placeholder="john@gmail.com" />
       </Form.Item>
 
-      <Form.Item name="departmentHeadId" label="Department Head">
+      <Form.Item name="departmentHeadId" label="Department Head (Optional)">
         <Select placeholder="Department head" options={[]} />
       </Form.Item>
-      <Form.Item name="parentDepartmentId" label="Parent Department">
+      <Form.Item name="parentDepartmentId" label="Parent Department (Optional)">
         <Select placeholder="Parent Department" options={[]} />
       </Form.Item>
 

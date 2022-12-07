@@ -69,6 +69,6 @@ export const useFetchDepartments = ({
   return queryData;
 };
 
-export const useCreateDepartment = () => {
+export const  useCreateDepartment = () => {
   return useMutation(createDepartment);
 };

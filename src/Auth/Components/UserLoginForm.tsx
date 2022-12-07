@@ -83,7 +83,6 @@ const UserLoginForm = () => {
       <Form.Item
         name="emailOrEmpUid"
         rules={textInputValidationRules}
-        hasFeedback
       >
         <Input
           prefix={<MailOutlined className="site-form-item-icon pr-1" />}
@@ -92,8 +91,8 @@ const UserLoginForm = () => {
           style={{ padding: "6px 5px" }}
         />
       </Form.Item>
-      <Form.Item name="password" rules={textInputValidationRules} hasFeedback>
-        <Input
+      <Form.Item name="password" rules={textInputValidationRules}>
+        <Input.Password
           prefix={<LockOutlined className="site-form-item-icon pr-1" />}
           placeholder="Password"
           className="rounded border-slate-400"

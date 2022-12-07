@@ -3,6 +3,7 @@ import axios from "axios";
 export interface IVerifyUserProps {
   token: string;
   uid: string;
+  email?: string;
 }
 export const verifyUserToken = async ({ token, uid }: IVerifyUserProps) => {
   const url = `${process.env.REACT_APP_AUTHENTICATION_BASE_URL}/user/verification?token=${token}&uid=${uid}`;

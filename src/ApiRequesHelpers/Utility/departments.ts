@@ -30,6 +30,7 @@ export const createDepartment = async (props: ICreateDepProps) => {
   if (props.departmentHeadId) data.departmentHeadId = props.departmentHeadId;
   if (props.parentDepartmentId)
     data.parentDepartmentId = props.parentDepartmentId;
+    
   const response = await axios.post(url, data, config);
   return response;
 };

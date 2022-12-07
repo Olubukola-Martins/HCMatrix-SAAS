@@ -321,6 +321,7 @@ export const AddEmployee = () => {
                         <Form.Item
                           name="numberOfDaysPerWeek"
                           label="Number of Days in the Week"
+                          rules={generalValidationRules}
                         >
                           <InputNumber
                             min={1}

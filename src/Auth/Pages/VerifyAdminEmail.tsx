@@ -8,27 +8,32 @@ import office from "../Assets/Images/office.svg";
 import linkedin from "../Assets/Images/linkedin.svg";
 import { Divider, Form, Input, Select } from "antd";
 import "../Style/style.css";
+
 import { Link, Navigate, useParams, useSearchParams } from "react-router-dom";
 import { useEffect } from "react";
 import Aos from "aos";
 import "aos/dist/aos.css";
+import VerificationStatus from "../Components/VerificationStatus";
 import { useIsAuthenticated } from "react-auth-kit";
-import { EmployeeRegistrationForm } from "../Components/EmployeeRegistrationForm";
 
-export const EmployeeRegister = () => {
+export const VerifyAdminEmail = () => {
   const isAuthenticated = useIsAuthenticated();
+
   const [searchParams] = useSearchParams();
   const token = searchParams.get("token") ?? "";
   const uid = searchParams.get("uid") ?? "";
-  const email = searchParams.get("email") ?? "";
-  console.log({ email, token, uid });
 
+  // validate the users token
+  // if correct proceed to login
+  // if it isnt notify and tell user to try login instead
   useEffect(() => {
     Aos.init({ duration: 1500 });
   }, []);
+
   return (
     <>
       {isAuthenticated() && <Navigate to="/" replace={true} />}
+
       <div className="grid grid-cols-1 lg:grid-cols-2">
         <div
           className="Container w-full text-white py-2 bg-cover bg-no-repeat authIntro"
@@ -42,10 +47,11 @@ export const EmployeeRegister = () => {
                   data-aos="fade-down"
                   className="text-white text-xl font-bold"
                 >
-                  Welcome To HCMatrix!
+                  Welcome back to HCMatrix!
                 </h2>
                 <p className="pt-6 pb-4">
-                  Already have an account? <br className="hidden md:flex" />
+                  Unable to verify email address?{" "}
+                  <br className="hidden md:flex" />
                   please login with your personal information to stay
                   <br className="hidden md:flex" /> connected with us.
                 </p>
@@ -62,13 +68,13 @@ export const EmployeeRegister = () => {
           </div>
         </div>
         <div
-          className="Container w-full h-screen py-10 bg-cover bg-no-repeat text-center relative overflow-y-auto overflow-x-hidden"
+          className="Container w-full h-screen py-10 bg-cover bg-no-repeat text-center relative overflow-y-auto"
           style={{ backgroundImage: `url(${lightBg})` }}
         >
-          <div className="formWrap lg:pt-24" style={{ maxWidth: 500 }}>
+          <div className="formWrap pt-12 lg:pt-14" style={{ maxWidth: 500 }}>
             <div>
               <div
-                data-aos="fade-left"
+                // data-aos="zoom-in"
                 style={{
                   boxShadow:
                     "0 2px 5px rgba(0,0,0,0.12), 1px 1px 2px rgba(0,0,0,0.24)",
@@ -76,17 +82,16 @@ export const EmployeeRegister = () => {
                 className="pb-5 pt-6 rounded-md px-6"
               >
                 <h2 className="text-xl md:text-2xl font-bold">
-                  Create Account
+                  Verifying Email Address
                 </h2>
-                <p className="pt-2 pb-7">Getting started made easy</p>
+                <p className="pt-2 pb-7">
+                  Wait a second, while we verify your email
+                </p>
                 <div className="lg:px-14">
-                  <EmployeeRegistrationForm
-                    token={token}
-                    uid={uid}
-                    email={email}
-                  />
+                  <VerificationStatus token={token} uid={uid} />
+
                   <Divider>
-                    <span className="text-sm">Sign Up with</span>
+                    <span className="text-sm">Sign in with</span>
                   </Divider>
                   <div className="flex items-center justify-center gap-6">
                     <img

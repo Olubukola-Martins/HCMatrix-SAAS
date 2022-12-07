@@ -57,7 +57,7 @@ const RolesViewContainer = () => {
   });
 
   return (
-    <div className="mt-4 flex flex-col gap-4">
+    <div className="mt-5 flex flex-col gap-4">
       {/* uncomment when needed */}
       {/* <div className="view-toggler flex rounded overflow-hidden items-center">
         <i

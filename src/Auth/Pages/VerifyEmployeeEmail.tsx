@@ -6,17 +6,15 @@ import microsoft from "../Assets/Images/microsoft.svg";
 import google from "../Assets/Images/google.svg";
 import office from "../Assets/Images/office.svg";
 import linkedin from "../Assets/Images/linkedin.svg";
-import { Divider, Form, Input, Select } from "antd";
+import { Divider } from "antd";
 import "../Style/style.css";
-
-import { Link, Navigate, useParams, useSearchParams } from "react-router-dom";
+import { Link, Navigate, useSearchParams } from "react-router-dom";
 import { useEffect } from "react";
 import Aos from "aos";
 import "aos/dist/aos.css";
-import VerificationStatus from "../Components/VerificationStatus";
 import { useIsAuthenticated } from "react-auth-kit";
 
-export const VerifyUserEmail = () => {
+export const VerifyEmployeeEmail = () => {
   const isAuthenticated = useIsAuthenticated();
 
   const [searchParams] = useSearchParams();
@@ -32,7 +30,9 @@ export const VerifyUserEmail = () => {
 
   return (
     <>
-      {isAuthenticated() && <Navigate to="/" replace={true} />}
+      {isAuthenticated() && (
+        <Navigate to="/employee-registration" replace={true} />
+      )}
 
       <div className="grid grid-cols-1 lg:grid-cols-2">
         <div
@@ -88,8 +88,8 @@ export const VerifyUserEmail = () => {
                   Wait a second, while we verify your email
                 </p>
                 <div className="lg:px-14">
-                  <VerificationStatus token={token} uid={uid} />
-
+                  {/* <VerificationEmployeeStatus token={token} uid={uid} /> */}
+                  
                   <Divider>
                     <span className="text-sm">Sign in with</span>
                   </Divider>

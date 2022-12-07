@@ -1,4 +1,3 @@
-import React from "react";
 import { Link } from "react-router-dom";
 import DashboardLayout from "../../Layout/DashboardLayout";
 import SelfBox from "../../Self_Service/Components/SelfBox";
@@ -7,13 +6,11 @@ import loan from "../../Self_Service/Assets/Images/loan.svg";
 import leave from "../../Self_Service/Assets/Images/leave.svg";
 import health from "../../Self_Service/Assets/Images/health.svg";
 import payslip from "../../Self_Service/Assets/Images/payslip.svg";
-import { Tabs } from "antd";
-import { Birthdays } from "./Celebrations/Birthdays";
-import { WorkAnniversary } from "./Celebrations/WorkAnniversary";
-import { Holidays } from "./Celebrations/Holidays";
 import { Celebrations } from "./Celebrations/Celebrations";
 
-export const EmployeeHome = () => {
+export const EmployeeHome = ({ user }: any) => {
+  console.log(user);
+
   return (
     <DashboardLayout>
       <div className="Container">
@@ -21,7 +18,7 @@ export const EmployeeHome = () => {
           <div className="col-span-2">
             <div className="bg-mainBg shadow border rounded-md px-5 pt-4 pb-6">
               <h5 className="font-semibold text-accent text-lg">
-                Welcome Godswill Smile 🖐
+                Welcome {user.fullName} 🖐
               </h5>
               <div className="flex items-center gap-3 mt-3">
                 <span className="flex items-center gap-2 text-xs text-accent">
@@ -38,8 +35,8 @@ export const EmployeeHome = () => {
                 <div>
                   <ul className="flex flex-col gap-2 text-xs text-accent">
                     <li>ID Number: Line manager</li>
-                    <li>Line manager: 000000</li>
-                    <li>Email: Gworld@gmail.com</li>
+                    <li>Line manager: {user.id}</li>
+                    <li>Email: {user.email}</li>
                     <li>phone: +1-9034-463- 80</li>
                   </ul>
                   <p className="text-xs mt-3 pb-5 leading-5 text-accent text-justify">
@@ -78,7 +75,7 @@ export const EmployeeHome = () => {
                 <div className="flex items-center justify-between">
                   <h2 className="text-lg font-semibold">0</h2>
                   <Link to="/" className="underline text-caramel text-sm">
-                    View {'>'}
+                    View {">"}
                   </Link>
                 </div>
               </div>
@@ -138,12 +135,27 @@ export const EmployeeHome = () => {
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mt-10">
           <div className="col-span-2">
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              <SelfBox title="Onboarding" icon={Onboarding} link="/self-service/onboarding" />
+              <SelfBox
+                title="Onboarding"
+                icon={Onboarding}
+                link="/self-service/onboarding"
+              />
               <SelfBox title="Loan" icon={loan} link="/self-service/loan" />
               <SelfBox title="Leave" icon={leave} link="/self-service/leave" />
-              <SelfBox title="Health access" icon={health} link="/self-service/health-access" />
-              <SelfBox title="My Payslip" icon={payslip} link="/payroll/employee-payslip" />
-              <Link to="/self-service/home" className="bg-card p-2 rounded-lg shadow cursor-pointer group text-accent">
+              <SelfBox
+                title="Health access"
+                icon={health}
+                link="/self-service/health-access"
+              />
+              <SelfBox
+                title="My Payslip"
+                icon={payslip}
+                link="/payroll/employee-payslip"
+              />
+              <Link
+                to="/self-service/home"
+                className="bg-card p-2 rounded-lg shadow cursor-pointer group text-accent"
+              >
                 <div className="bg-mainBg transition ease-in-out duration-300 py-2 px-3 rounded-lg  group-hover:border-b-2 group-hover:border-caramel group-hover:shadow-md">
                   <div className="flex items-center justify-between">
                     <button
@@ -163,7 +175,7 @@ export const EmployeeHome = () => {
           </div>
 
           <div className="shadow px-2 py-3 rounded border">
-              <Celebrations/>
+            <Celebrations />
           </div>
         </div>
       </div>
