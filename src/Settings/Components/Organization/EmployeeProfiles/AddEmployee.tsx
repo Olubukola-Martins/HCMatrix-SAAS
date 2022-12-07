@@ -311,7 +311,7 @@ export const AddEmployee = () => {
                             allowClear
                             optionLabelProp="label"
                             className="SelectTag w-full"
-                            placeholder="Select Role"
+                            placeholder="Select Designation"
                             options={degData.data.map((item) => ({
                               label: item.name,
                               value: item.id,
