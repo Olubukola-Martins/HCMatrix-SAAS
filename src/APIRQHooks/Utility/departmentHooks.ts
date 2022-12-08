@@ -13,6 +13,7 @@ import { openNotification } from "../../NotificationHelpers";
 interface IFRQDepartmentsProps {
   pagination?: IPaginationProps;
   companyId: string;
+  onSuccess?: Function;
 }
 interface IFRQDepartmentsReturnProps {
   data: TDepartment[];
@@ -21,6 +22,7 @@ interface IFRQDepartmentsReturnProps {
 export const useFetchDepartments = ({
   pagination,
   companyId,
+  onSuccess,
 }: IFRQDepartmentsProps) => {
   const queryData = useQuery(
     ["departments", pagination?.current, pagination?.limit],
@@ -41,6 +43,9 @@ export const useFetchDepartments = ({
           description:
             err?.response.data.message ?? err?.response.data.error.message,
         });
+      },
+      onSuccess: (data) => {
+        onSuccess && onSuccess(data);
       },
 
       select: (res: any) => {
@@ -69,6 +74,6 @@ export const useFetchDepartments = ({
   return queryData;
 };
 
-export const  useCreateDepartment = () => {
+export const useCreateDepartment = () => {
   return useMutation(createDepartment);
 };
