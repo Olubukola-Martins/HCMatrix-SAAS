@@ -20,7 +20,10 @@ import { useFetchDepartments } from "../../../../APIRQHooks/Utility/departmentHo
 import { useCreateDesignation } from "../../../../APIRQHooks/Utility/designationHooks";
 import { TDepartment } from "../../../../AppTypes/DataEntitities";
 import { ISearchParams } from "../../../../AppTypes/Search";
-import { GlobalContext } from "../../../../Contexts/GlobalContextProvider";
+import {
+  EGlobalOps,
+  GlobalContext,
+} from "../../../../Contexts/GlobalContextProvider";
 import {
   textInputValidationRules,
   emailValidationRules,
@@ -32,7 +35,7 @@ const AddDesignationForm = ({ handleClose }: { handleClose: Function }) => {
   const queryClient = useQueryClient();
 
   const globalCtx = useContext(GlobalContext);
-  const { state: globalState } = globalCtx;
+  const { state: globalState, dispatch } = globalCtx;
   const companyId = globalState.currentCompany?.id as unknown as string;
   const [form] = Form.useForm();
 
@@ -88,6 +91,8 @@ const AddDesignationForm = ({ handleClose }: { handleClose: Function }) => {
 
           form.resetFields();
           handleClose();
+          dispatch({ type: EGlobalOps.setShowInitialSetup, payload: true });
+
           queryClient.invalidateQueries({
             queryKey: ["designations"],
           });

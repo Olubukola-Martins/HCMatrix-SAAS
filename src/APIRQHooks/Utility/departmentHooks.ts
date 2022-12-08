@@ -15,7 +15,7 @@ interface IFRQDepartmentsProps {
   companyId: string;
   onSuccess?: Function;
 }
-interface IFRQDepartmentsReturnProps {
+export interface IFRQDepartmentsReturnProps {
   data: TDepartment[];
   total: number;
 }

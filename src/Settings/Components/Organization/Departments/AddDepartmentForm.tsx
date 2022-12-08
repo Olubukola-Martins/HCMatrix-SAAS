@@ -4,7 +4,10 @@ import { useAuthUser } from "react-auth-kit";
 import { useQueryClient } from "react-query";
 import { ICreateDepProps } from "../../../../ApiRequesHelpers/Utility/departments";
 import { useCreateDepartment } from "../../../../APIRQHooks/Utility/departmentHooks";
-import { GlobalContext } from "../../../../Contexts/GlobalContextProvider";
+import {
+  EGlobalOps,
+  GlobalContext,
+} from "../../../../Contexts/GlobalContextProvider";
 import {
   textInputValidationRules,
   emailValidationRules,
@@ -19,7 +22,7 @@ const AddDepartmentForm = ({ handleClose }: { handleClose: Function }) => {
 
   const user = authDetails?.user;
   const globalCtx = useContext(GlobalContext);
-  const { state: globalState } = globalCtx;
+  const { state: globalState, dispatch } = globalCtx;
   const companyId = globalState.currentCompany?.id;
   const [form] = Form.useForm();
   const { mutate } = useCreateDepartment();
@@ -61,6 +64,8 @@ const AddDepartmentForm = ({ handleClose }: { handleClose: Function }) => {
 
           form.resetFields();
           handleClose();
+          dispatch({ type: EGlobalOps.setShowInitialSetup, payload: true });
+
           queryClient.invalidateQueries({
             queryKey: ["departments"],
             exact: true,

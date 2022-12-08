@@ -11,14 +11,16 @@ import { openNotification } from "../../NotificationHelpers";
 interface IFRQDesignationsProps {
   pagination?: IPaginationProps;
   companyId: string;
+  onSuccess?: Function;
 }
-interface IFRQDesignationsReturnProps {
+export interface IFRQDesignationsReturnProps {
   data: TDesignation[];
   total: number;
 }
 export const useFetchDesignations = ({
   pagination,
   companyId,
+  onSuccess,
 }: IFRQDesignationsProps) => {
   const queryData = useQuery(
     ["designations", pagination?.current, pagination?.limit],
@@ -39,6 +41,9 @@ export const useFetchDesignations = ({
           description:
             err?.response.data.message ?? err?.response.data.error.message,
         });
+      },
+      onSuccess: (data) => {
+        onSuccess && onSuccess(data);
       },
 
       select: (res: any) => {

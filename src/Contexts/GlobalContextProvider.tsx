@@ -7,10 +7,12 @@ type TCCompany = {
 
 export interface IGlobalState {
   currentCompany: TCCompany | null;
+  showInitialSetUp: boolean;
 }
 
 const initState: IGlobalState = {
   currentCompany: null,
+  showInitialSetUp: true,
 };
 
 interface IGlobalContext {
@@ -20,6 +22,7 @@ interface IGlobalContext {
 
 export enum EGlobalOps {
   setCurrentCompanyId,
+  setShowInitialSetup,
 }
 
 interface IAction {
@@ -46,6 +49,11 @@ const GlobalReducer = (state: IGlobalState, action: IAction): IGlobalState => {
       });
 
       return newState;
+    case EGlobalOps.setShowInitialSetup:
+      return {
+        ...state,
+        showInitialSetUp: action.payload,
+      };
 
     default:
       return state;
@@ -73,6 +81,7 @@ const GlobalContextProvider = ({ children }: IProps) => {
           : null;
       return {
         currentCompany,
+        showInitialSetUp: true,
       };
     }
   );
