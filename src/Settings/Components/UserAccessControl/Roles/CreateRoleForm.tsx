@@ -23,7 +23,10 @@ import {
   TPermission,
   TPermissionCategory,
 } from "../../../../AppTypes/DataEntitities";
-import { GlobalContext } from "../../../../Contexts/GlobalContextProvider";
+import {
+  EGlobalOps,
+  GlobalContext,
+} from "../../../../Contexts/GlobalContextProvider";
 import {
   textInputValidationRules,
   generalValidationRules,
@@ -34,7 +37,7 @@ const CreateRoleForm = () => {
   const queryClient = useQueryClient();
 
   const globalCtx = useContext(GlobalContext);
-  const { state: globalState } = globalCtx;
+  const { state: globalState, dispatch } = globalCtx;
   const companyId = globalState.currentCompany?.id as unknown as string;
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedCategory, setSelectedCategory] = useState(0);
@@ -94,6 +97,7 @@ const CreateRoleForm = () => {
           });
 
           form.resetFields();
+          dispatch({ type: EGlobalOps.setShowInitialSetup, payload: true });
 
           queryClient.invalidateQueries({
             queryKey: ["roles"],

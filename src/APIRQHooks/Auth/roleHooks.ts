@@ -8,12 +8,17 @@ import { openNotification } from "../../NotificationHelpers";
 interface IFRQDataProps {
   pagination?: IPaginationProps;
   companyId: string;
+  onSuccess?: Function;
 }
-interface IFRQDataReturnProps {
+export interface IFRQRoleReturnProps {
   data: TRole[];
   total: number;
 }
-export const useFetchRoles = ({ pagination, companyId }: IFRQDataProps) => {
+export const useFetchRoles = ({
+  pagination,
+  companyId,
+  onSuccess,
+}: IFRQDataProps) => {
   const queryData = useQuery(
     ["roles", pagination?.current],
     () =>
@@ -34,6 +39,9 @@ export const useFetchRoles = ({ pagination, companyId }: IFRQDataProps) => {
             err?.response.data.message ?? err?.response.data.error.message,
         });
       },
+      onSuccess: (data) => {
+        onSuccess && onSuccess(data);
+      },
 
       select: (res: any) => {
         // for all for now
@@ -49,7 +57,7 @@ export const useFetchRoles = ({ pagination, companyId }: IFRQDataProps) => {
           })
         );
 
-        const ans: IFRQDataReturnProps = {
+        const ans: IFRQRoleReturnProps = {
           data,
           total: fetchedData.totalCount,
         };
