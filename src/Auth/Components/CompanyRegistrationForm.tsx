@@ -28,9 +28,7 @@ import { useFetchIndustries } from "../../APIRQHooks/Utility/industryHooks";
 import { useFetchCountries } from "../../APIRQHooks/Utility/countryHooks";
 import CompanySucess from "../Assets/SVGComponents/CompanySucess";
 
-
 const CompanyRegistrationForm = () => {
-
   const [showM, setShowM] = useState(false);
   const [email, setEmail] = useState("");
   const [form] = Form.useForm();
@@ -68,7 +66,7 @@ const CompanyRegistrationForm = () => {
       onError: (err: any) => {
         openNotification({
           state: "error",
-          title: "Error Occured",
+          title: "Error Occurred",
           description:
             err?.response.data.message ?? err?.response.data.error.message,
         });

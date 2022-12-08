@@ -1,23 +1,16 @@
 import peachBg from "../Assets/Images/peachBg.png";
-// import greenBg from "../Assets/Images/greenBg.png";
 import lightBg from "../Assets/Images/lightBg.png";
 import logo from "../Assets/Images/logo.png";
-import microsoft from "../Assets/Images/microsoft.svg";
-import google from "../Assets/Images/google.svg";
-import office from "../Assets/Images/office.svg";
-import linkedin from "../Assets/Images/linkedin.svg";
-import { Divider, Form, Input } from "antd";
 import "../Style/style.css";
 import { Link, Navigate } from "react-router-dom";
 import { useEffect } from "react";
 import Aos from "aos";
 import "aos/dist/aos.css";
-import UserLoginForm from "../Components/UserLoginForm";
 import { useIsAuthenticated } from "react-auth-kit";
+import { ForgotPasswordForm } from "../Components/ForgotPasswordForm";
 
-export const Login = () => {
+export const ForgotPassword = () => {
   const isAuthenticated = useIsAuthenticated();
-
   useEffect(() => {
     Aos.init({ duration: 1500 });
   }, []);
@@ -50,7 +43,7 @@ export const Login = () => {
                     to="/register"
                     className="border justify-center flex items-center gap-3 border-white rounded px-16 py-1 text-white hover:border-gray-700 font-medium text-base transition duration-300 ease-in-out"
                   >
-                    <i className="ri-arrow-left-line"></i> <span>Sign Up</span>
+                    <i className="ri-arrow-left-line"></i> <span>Sign In</span>
                   </Link>
                 </div>
               </div>
@@ -72,43 +65,14 @@ export const Login = () => {
                 className="pb-5 pt-10 rounded-md px-6"
               >
                 <h2 className="text-xl md:text-2xl font-bold">
-                  Login to your account
+                  Forgot Password
                 </h2>
-                <p className="pt-2 pb-7">Getting started made easy</p>
+                <p className="pt-2 pb-7">
+                  Fill in your email and we will send you a link to reset your
+                  password.
+                </p>
                 <div className="lg:px-14">
-                  <UserLoginForm />
-                  <Link to="/forgot-password" className="mb-3 flex justify-end cursor-pointer pt-2 text-sm hover:text-black">
-                    Forgot password ?
-                  </Link>
-                  <Divider>
-                    <span className="text-sm">Sign In with</span>
-                  </Divider>
-                  <div className="flex items-center justify-center gap-6">
-                    <img
-                      src={microsoft}
-                      alt="microsoft"
-                      className="cursor-pointer"
-                      title="Microsoft"
-                    />
-                    <img
-                      src={google}
-                      alt="google"
-                      className="cursor-pointer"
-                      title="Google"
-                    />
-                    <img
-                      src={linkedin}
-                      alt="microsoft"
-                      className="cursor-pointer"
-                      title="Linkedin"
-                    />
-                    <img
-                      src={office}
-                      alt="microsoft"
-                      className="-ml-4 cursor-pointer"
-                      title="Microsoft"
-                    />
-                  </div>
+                  <ForgotPasswordForm />
                 </div>
               </div>
             </div>
