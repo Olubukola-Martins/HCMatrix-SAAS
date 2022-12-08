@@ -166,7 +166,7 @@ const UserFeedbackComp = () => {
                   >
                     <span className={`block`}>{index + 1}</span>
                   </div>
-                  <Link to={item.link}>
+                  <Link to={item.link} onClick={() => dismissFeedback()}>
                     <p
                       className={`block hover:text-caramel ${
                         item.completed && "text-[#006600] line-through"
