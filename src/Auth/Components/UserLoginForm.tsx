@@ -49,10 +49,11 @@ const UserLoginForm = () => {
           user: result.user,
           companies: result?.payload,
         };
+
         if (
           signIn({
             token: result.token,
-            expiresIn: 120000000000,
+            expiresIn: process.env.REACT_APP_SESSION_TIME as unknown as number,
             tokenType: "Bearer",
             authState: authUserDetails,
           })
@@ -73,17 +74,13 @@ const UserLoginForm = () => {
             });
           }
           window.location.reload(); //temp fix for token
-          // navigate("/");
         }
       },
     });
   };
   return (
     <Form onFinish={handleSignIn}>
-      <Form.Item
-        name="emailOrEmpUid"
-        rules={textInputValidationRules}
-      >
+      <Form.Item name="emailOrEmpUid" rules={textInputValidationRules}>
         <Input
           prefix={<MailOutlined className="site-form-item-icon pr-1" />}
           placeholder="Employee ID or Work Email"

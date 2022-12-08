@@ -1,48 +1,94 @@
 import { Form, Input, Modal, Select } from "antd";
-import { useQuery } from "react-query";
+import { useContext, useState } from "react";
+import { useMutation, useQuery } from "react-query";
+import { BeatLoader } from "react-spinners";
 import { getIndustries } from "../../../ApiRequesHelpers/Utility/industry";
+import {
+  createSisterCompany,
+  ICreateSisterCompProps,
+} from "../../../ApiRequesHelpers/Utility/sisterCompany";
 import { IModalProps } from "../../../AppTypes/Component";
 import { TIndustry } from "../../../AppTypes/DataEntitities";
+import { GlobalContext } from "../../../Contexts/GlobalContextProvider";
 import {
   generalValidationRules,
   textInputValidationRules,
 } from "../../../FormHelpers/validation";
 import { phoneCodeList } from "../../../Helpers/phoneCodeList";
 import { openNotification } from "../../../NotificationHelpers";
-export const AddCompanyForm = ({ open, handleClose }: IModalProps) => {
-  const {
-    data: industries,
-    isSuccess: isISuccess,
-  } = useQuery("industries", () => getIndustries(), {
-    ...{
-      refetchInterval: false,
-      refetchIntervalInBackground: false,
-      refetchOnWindowFocus: false,
-    },
-    onError: (err: any) => {
-      openNotification({
-        state: "error",
-        title: "Error Occurred",
-        description:
-          err?.response.data.message ?? err?.response.data.error.message,
-      });
-    },
-    select: (res: any) => {
-      const result = res.data.data;
-      const data: TIndustry[] = result.map(
-        (item: any): TIndustry => ({
-          id: item.id,
-          name: item.name,
-        })
-      );
+export const AddSisterCompanyForm = ({ open, handleClose }: IModalProps) => {
+  const globalCtx = useContext(GlobalContext);
+  const { state: globalState } = globalCtx;
+  const parentCompanyName = globalState.currentCompany?.name;
+  const companyId = globalState.currentCompany?.id;
+  const [form] = Form.useForm();
+  const { mutate, isLoading } = useMutation(createSisterCompany);
 
-      return data;
-    },
-  });
+  const { data: industries, isSuccess: isISuccess } = useQuery(
+    "industries",
+    () => getIndustries(),
+    {
+      ...{
+        refetchInterval: false,
+        refetchIntervalInBackground: false,
+        refetchOnWindowFocus: false,
+      },
+      onError: (err: any) => {
+        openNotification({
+          state: "error",
+          title: "Error Occurred",
+          description:
+            err?.response.data.message ?? err?.response.data.error.message,
+        });
+      },
+      select: (res: any) => {
+        const result = res.data.data;
+        const data: TIndustry[] = result.map(
+          (item: any): TIndustry => ({
+            id: item.id,
+            name: item.name,
+          })
+        );
+        return data;
+      },
+    }
+  );
 
   const handleSubmit = (data: any) => {
-    console.log(data);
+    if (companyId) {
+      const props: ICreateSisterCompProps = {
+        companyId,
+        name: data.name,
+        email: data.email,
+        phoneNumber: `${data.phone.code}-${data.phone.number}`,
+        industryId: data.industry,
+      };
+
+      mutate(props, {
+        onError: (err: any) => {
+          openNotification({
+            state: "error",
+            title: "Error Occurred",
+            description:
+              err?.response.data.message ?? err?.response.data.error.message,
+          });
+        },
+
+        onSuccess: (res) => {
+          const result = res.data.data;
+          openNotification({
+            state: "success",
+            title: "Success",
+            description: "Sister company created successfully",
+            duration: 0.4,
+          });
+          form.resetFields();
+          handleClose(false);
+        },
+      });
+    }
   };
+
   return (
     <Modal
       title="Add Sister Company"
@@ -56,22 +102,18 @@ export const AddCompanyForm = ({ open, handleClose }: IModalProps) => {
         requiredMark={false}
         onFinish={handleSubmit}
         size="middle"
+        form={form}
       >
+        <Form.Item name="fullName" label="Parent Company">
+          <Input disabled defaultValue={parentCompanyName} />
+        </Form.Item>
         <Form.Item
-          name="fullName"
-          label="Full Name"
+          label="Company Name"
+          name="name"
           rules={textInputValidationRules}
           hasFeedback
         >
           <Input placeholder="Enter Company Name" />
-        </Form.Item>
-        <Form.Item
-          label="Organization"
-          name="organization"
-          rules={textInputValidationRules}
-          hasFeedback
-        >
-          <Input placeholder="Enter Organization" />
         </Form.Item>
         <Form.Item
           name="industry"
@@ -91,7 +133,7 @@ export const AddCompanyForm = ({ open, handleClose }: IModalProps) => {
               industries.map(({ id, name }) => (
                 <Select.Option
                   key={id}
-                  value={name}
+                  value={id}
                   className="py-2"
                   label={name}
                 >
@@ -148,7 +190,9 @@ export const AddCompanyForm = ({ open, handleClose }: IModalProps) => {
 
         <div className="flex justify-between items-center">
           <button className="transparentButton">Save And add another</button>
-          <button className="button">Add Company</button>
+          <button className="button">
+            {isLoading ? <BeatLoader color="#fff" /> : "Add Company"}
+          </button>
         </div>
       </Form>
     </Modal>

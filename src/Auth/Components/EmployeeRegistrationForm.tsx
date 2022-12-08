@@ -1,64 +1,56 @@
 import { MailOutlined, LockOutlined } from "@mui/icons-material";
-import { Form, Input, Spin } from "antd";
-import axios from "axios";
-import { useContext } from "react";
+import { Form, Input} from "antd";
+import { useSignIn } from "react-auth-kit";
 import { useQueryClient, useMutation } from "react-query";
 import { IVerifyUserProps } from "../../ApiRequesHelpers/Auth";
-import { ICreateEmpProps } from "../../ApiRequesHelpers/Auth/employees";
-import { GlobalContext } from "../../Contexts/GlobalContextProvider";
+import {
+  createEmployeeAccount,
+  ICreateEmpProps,
+} from "../../ApiRequesHelpers/Auth/employees";
 import { openNotification } from "../../NotificationHelpers";
 
 export const EmployeeRegistrationForm = ({
   token,
   email,
+  uid,
 }: IVerifyUserProps) => {
-  const globalCtx = useContext(GlobalContext);
-  const { state: globalState } = globalCtx;
-  const companyId = globalState.currentCompany?.id;
-
-  const createEmployeeAccount = async (props: ICreateEmpProps) => {
-    const url = `${process.env.REACT_APP_UTILITY_BASE_URL}/user/verification/employee`;
-    const config = {
-      headers: {
-        Accept: "application/json",
-        Authorization: `Bearer ${token}`,
-        "x-company-id": props.companyId,
-      },
-    };
-
-    const data: any = {
-      password: props.password,
-      confirmPassword: props.confirmPassword,
-    };
-
-    const response = await axios.post(url, data, config);
-    return response;
-  };
-
   const { mutate, isLoading } = useMutation(createEmployeeAccount);
 
   const queryClient = useQueryClient();
   const [form] = Form.useForm();
+  const signIn = useSignIn();
 
   const onFormSubmit = (data: any) => {
-    if (companyId) {
-      const props: ICreateEmpProps = {
-        companyId,
-        password: data.password,
-        confirmPassword: data.confirmPassword,
-      };
+    const props: ICreateEmpProps = {
+      password: data.password,
+      confirmPassword: data.confirmPassword,
+      token,
+      uid,
+    };
 
-      mutate(props, {
-        onError: (err: any) => {
-          openNotification({
-            state: "error",
-            title: "Error Occurred",
-            description:
-              err?.response.data.message ?? err?.response.data.error.message,
-          });
-        },
-        onSuccess: (res: any) => {
-          const result = res.data.data;
+    mutate(props, {
+      onError: (err: any) => {
+        openNotification({
+          state: "error",
+          title: "Error Occurred",
+          description:
+            err?.response.data.message ?? err?.response.data.error.message,
+        });
+      },
+      onSuccess: (res: any) => {
+        const result = res.data.data;
+        const authUserDetails = {
+          user: result.user,
+          companies: result?.payload,
+        };
+        if (
+          signIn({
+            token: result.token,
+            expiresIn: process.env.REACT_APP_SESSION_TIME as unknown as number,
+            tokenType: "Bearer",
+            authState: authUserDetails,
+          })
+        )
           openNotification({
             state: "success",
             title: "Success",
@@ -66,14 +58,13 @@ export const EmployeeRegistrationForm = ({
             // duration: 0.4,
           });
 
-          form.resetFields();
-          queryClient.invalidateQueries({
-            queryKey: ["employeeAccount"],
-            exact: true,
-          });
-        },
-      });
-    }
+        form.resetFields();
+        queryClient.invalidateQueries({
+          queryKey: ["employeeAccount"],
+          exact: true,
+        });
+      },
+    });
   };
 
   return (
@@ -102,7 +93,7 @@ export const EmployeeRegistrationForm = ({
           ]}
           hasFeedback
         >
-          <Input
+          <Input.Password
             prefix={<LockOutlined className="site-form-item-icon pr-1" />}
             placeholder="Password"
             className="rounded border-slate-400"
@@ -131,7 +122,7 @@ export const EmployeeRegistrationForm = ({
           ]}
           hasFeedback
         >
-          <Input
+          <Input.Password
             prefix={<LockOutlined className="site-form-item-icon pr-1" />}
             placeholder="Confirm Password"
             className="rounded border-slate-400"
