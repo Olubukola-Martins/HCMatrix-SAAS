@@ -5,14 +5,13 @@ import { Link } from "react-router-dom";
 import SearchModal from "./Search/SearchModal";
 import Themes from "../../Themes/Themes";
 import TransferOwnership from "./TransferOwnership";
-import { AutoComplete, Avatar, Badge, Button, Dropdown,} from "antd";
+import { AutoComplete, Avatar, Badge, Button, Dropdown } from "antd";
 import { useAuthUser, useSignOut } from "react-auth-kit";
 import {
   EGlobalOps,
   GlobalContext,
 } from "../../Contexts/GlobalContextProvider";
 import { AddSisterCompanyForm } from "./AddSisterCompany/AddSisterCompanyForm";
-
 import { PlusOutlined } from "@ant-design/icons";
 
 type TCompany = {
@@ -48,7 +47,7 @@ const TopBar = ({
   const auth = useAuthUser();
   const authDetails = auth();
   const user = authDetails?.user;
-  
+
   const globalCtx = useContext(GlobalContext);
   const { state: globalState, dispatch: globalDispatch } = globalCtx;
 
@@ -107,7 +106,7 @@ const TopBar = ({
 
   const onSelect = (val: string, data: any) => {
     if (val === "add-company") {
-      setAddCompanyModal(true)
+      setAddCompanyModal(true);
       return;
     }
     globalDispatch({
@@ -152,7 +151,7 @@ const TopBar = ({
               onClick={() => setOpenSearchModal(true)}
               className="fa-solid fa-magnifying-glass lg:hidden cursor-pointer text-base"
             ></i>
-            <div className="lg:flex items-center gap-6 hidden mr-10">
+            <div className="lg:flex items-center gap-6 hidden">
               <i
                 className="fa-solid fa-magnifying-glass cursor-pointer text-base"
                 title="Search HcMatrix application"
@@ -183,7 +182,6 @@ const TopBar = ({
                   />
                 </div>
               )}
-             
             </div>
 
             {/* Dark and Light */}
@@ -203,8 +201,10 @@ const TopBar = ({
               />
             )} */}
 
-            <Link to="/settings" className="hover:text-black">
-              {" "}
+            <Link
+              to="/settings"
+              className={user.isAdmin ? "hover:text-black" : "hidden"}
+            >
               <i
                 className="ri-settings-3-line text-xl cursor-pointer hover:text-black"
                 title="Settings"
@@ -228,7 +228,7 @@ const TopBar = ({
                       <h4 className="font-extrabold text-lg">
                         {user.fullName}
                       </h4>
-                      <span className="block text-xs pb-3 pt-1 text-gray-500">
+                      <span className="block text-xs pb-5 pt-1 text-gray-500">
                         {user.email}
                       </span>
                       <Link
@@ -242,7 +242,11 @@ const TopBar = ({
                     <ul className="flex flex-col gap-2 pt-2 text-accent font-medium text-sm">
                       <li
                         onClick={() => setTransferOwnershipModal(true)}
-                        className="border-b-2 pb-2 cursor-pointer hover:text-caramel"
+                        className={
+                          user.isAdmin
+                            ? "border-b-2 pb-2 cursor-pointer hover:text-caramel"
+                            : "hidden"
+                        }
                       >
                         Transfer Ownership
                       </li>
@@ -253,17 +257,31 @@ const TopBar = ({
 
                       <Link
                         to="/settings/delegations"
-                        className="border-b-2 pb-2 cursor-pointer hover:text-caramel"
+                        className={
+                          user.isAdmin
+                            ? "border-b-2 pb-2 cursor-pointer hover:text-caramel"
+                            : "hidden"
+                        }
                       >
                         Delegate Role
                       </Link>
 
-                      <li className="border-b-2 pb-2 cursor-pointer hover:text-caramel">
+                      <li
+                        className={
+                          user.isAdmin
+                            ? "border-b-2 pb-2 cursor-pointer hover:text-caramel"
+                            : "hidden"
+                        }
+                      >
                         Advanced Settings
                       </li>
                       <Link
                         to="/billings"
-                        className="border-b-2 pb-2 cursor-pointer hover:text-caramel"
+                        className={
+                          user.isAdmin
+                            ? "border-b-2 pb-2 cursor-pointer hover:text-caramel"
+                            : "hidden"
+                        }
                       >
                         Billings
                       </Link>
