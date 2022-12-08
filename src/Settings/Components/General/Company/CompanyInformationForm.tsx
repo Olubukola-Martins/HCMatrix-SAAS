@@ -1,12 +1,35 @@
 import { Form, Input, Select } from "antd";
-import React from "react";
+import React, { useContext } from "react";
+import { useAuthUser } from "react-auth-kit";
+import { useFetchCountries } from "../../../../APIRQHooks/Utility/countryHooks";
+import { useFetchIndustries } from "../../../../APIRQHooks/Utility/industryHooks";
+import { GlobalContext } from "../../../../Contexts/GlobalContextProvider";
 import { generalValidationRules } from "../../../../FormHelpers/validation";
-import { industries } from "../../../Data";
 
 const CompanyInformationForm = () => {
+  const auth = useAuthUser();
+
+  const authDetails = auth();
+
+  const companies = authDetails?.companies;
+  const globalCtx = useContext(GlobalContext);
+  const { state: globalState } = globalCtx;
+  const currentCompanyId = globalState.currentCompany?.id;
+  const currentCompany = companies.find(
+    (item: any) => (item.id = currentCompanyId)
+  );
+  const { data: industries, isSuccess: isISuccess } = useFetchIndustries();
+  const { data: countries, isSuccess: isCSuccess } = useFetchCountries();
   return (
     <div>
-      <Form requiredMark={false} labelCol={{ span: 24 }}>
+      <Form
+        requiredMark={false}
+        labelCol={{ span: 24 }}
+        initialValues={{
+          companyName: currentCompany?.name,
+          industryId: currentCompany?.industryId,
+        }}
+      >
         <div className="flex flex-col gap-4">
           <div className="grid md:grid-cols-3 gap-4">
             <Form.Item
@@ -14,7 +37,7 @@ const CompanyInformationForm = () => {
               rules={generalValidationRules}
               name="companyName"
             >
-              <Input placeholder="Enter Company name" />
+              <Input placeholder="Enter Company name" disabled />
             </Form.Item>
             <Form.Item label="Website (optional)" name="website">
               <Input placeholder="Enter Company website" />
@@ -22,13 +45,20 @@ const CompanyInformationForm = () => {
             <Form.Item
               label="Industry"
               rules={generalValidationRules}
-              name="industry"
+              name="industryId"
             >
-              <Select placeholder="Enter industry">
-                {industries.map((item) => (
-                  <Select.Option value={item.value}>{item.value}</Select.Option>
-                ))}
-              </Select>
+              <Select
+                disabled
+                placeholder="Enter industry"
+                options={
+                  isISuccess
+                    ? industries.map((item) => ({
+                        label: item.name,
+                        value: item.id,
+                      }))
+                    : []
+                }
+              />
             </Form.Item>
             <Form.Item
               label="Contact Phone"
@@ -66,11 +96,17 @@ const CompanyInformationForm = () => {
               rules={generalValidationRules}
               name="country"
             >
-              <Select placeholder="Select Country">
-                {industries.map((item) => (
-                  <Select.Option value={item.value}>{item.value}</Select.Option>
-                ))}
-              </Select>
+              <Select
+                placeholder="Select Country"
+                options={
+                  isCSuccess
+                    ? countries.map((item) => ({
+                        label: item.name,
+                        value: item.id,
+                      }))
+                    : []
+                }
+              />
             </Form.Item>
           </div>
           <div className="flex justify-end">

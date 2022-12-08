@@ -12,6 +12,8 @@ import { AuthProvider } from "react-auth-kit";
 import { Notification } from "./Notifications/Notification";
 import NotFoundPage from "./Layout/Components/NotFoundPage";
 import GlobalContextProvider from "./Contexts/GlobalContextProvider";
+import { Modal } from "antd";
+import UserFeedbackComp from "./GeneralComps/UserFeedbackComp";
 const queryClient = new QueryClient();
 
 function App() {
@@ -32,10 +34,11 @@ function App() {
             <PayrollRoutes />
             <AdminRoutes />
             <SelfServiceRoutes />
-              <Routes>
-            <Route path="/notifications" element={<Notification />} />
-          </Routes>
+            <Routes>
+              <Route path="/notifications" element={<Notification />} />
+            </Routes>
             {/* <Route path="*" element={<NotFoundPage />} /> */}
+            <UserFeedbackComp />
           </Router>
         </GlobalContextProvider>
         <ReactQueryDevtools initialIsOpen={false} position="bottom-right" />
