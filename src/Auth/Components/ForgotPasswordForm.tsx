@@ -1,6 +1,5 @@
 import { MailOutlined } from "@mui/icons-material";
 import { Form, Input } from "antd";
-import { useState } from "react";
 import { useMutation, useQueryClient } from "react-query";
 import { BeatLoader } from "react-spinners";
 import {
@@ -34,8 +33,7 @@ export const ForgotPasswordForm = () => {
         openNotification({
           state: "success",
           title: "Success",
-          description: `Successful. Please check ${data.email} to reset your password!1`,
-          // duration: 0.4,
+          description: `Successful. Please check ${data.email} to reset your password!`,
         });
         queryClient.invalidateQueries({
             queryKey: ["forgotPassword"],
