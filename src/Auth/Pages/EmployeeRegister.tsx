@@ -21,7 +21,6 @@ export const EmployeeRegister = () => {
   const token = searchParams.get("token") ?? "";
   const uid = searchParams.get("uid") ?? "";
   const email = searchParams.get("email") ?? "";
-  console.log({ email, token, uid });
 
   useEffect(() => {
     Aos.init({ duration: 1500 });

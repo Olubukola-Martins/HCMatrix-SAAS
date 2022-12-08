@@ -83,6 +83,7 @@ export const AddSisterCompanyForm = ({ open, handleClose }: IModalProps) => {
             duration: 0.4,
           });
           form.resetFields();
+          handleClose(false);
         },
       });
     }

@@ -28,9 +28,7 @@ import { useFetchIndustries } from "../../APIRQHooks/Utility/industryHooks";
 import { useFetchCountries } from "../../APIRQHooks/Utility/countryHooks";
 import CompanySucess from "../Assets/SVGComponents/CompanySucess";
 
-
 const CompanyRegistrationForm = () => {
-
   const [showM, setShowM] = useState(false);
   const [email, setEmail] = useState("");
   const [form] = Form.useForm();
