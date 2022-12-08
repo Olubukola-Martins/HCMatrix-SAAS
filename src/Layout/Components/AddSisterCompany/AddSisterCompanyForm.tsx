@@ -102,6 +102,7 @@ export const AddSisterCompanyForm = ({ open, handleClose }: IModalProps) => {
         requiredMark={false}
         onFinish={handleSubmit}
         size="middle"
+        form={form}
       >
         <Form.Item name="fullName" label="Parent Company">
           <Input disabled defaultValue={parentCompanyName} />

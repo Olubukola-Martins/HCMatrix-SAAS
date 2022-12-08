@@ -63,7 +63,7 @@ export const ResetPasswordForm = ({ token, uid }: IVerifyUserProps) => {
   };
 
   return (
-    <Form onFinish={handleSubmit}>
+    <Form onFinish={handleSubmit} form={form}>
       <Form.Item
         name="password"
         rules={[

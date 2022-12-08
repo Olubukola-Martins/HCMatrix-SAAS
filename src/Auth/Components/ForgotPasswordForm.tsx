@@ -1,6 +1,5 @@
 import { MailOutlined } from "@mui/icons-material";
 import { Form, Input } from "antd";
-import { useState } from "react";
 import { useMutation, useQueryClient } from "react-query";
 import { BeatLoader } from "react-spinners";
 import {
@@ -11,7 +10,7 @@ import { emailValidationRules } from "../../FormHelpers/validation";
 import { openNotification } from "../../NotificationHelpers";
 
 export const ForgotPasswordForm = () => {
-    const queryClient = useQueryClient();
+  const queryClient = useQueryClient();
   const [form] = Form.useForm();
   const { mutate, isLoading } = useMutation(forgetPassword);
 
@@ -34,19 +33,19 @@ export const ForgotPasswordForm = () => {
         openNotification({
           state: "success",
           title: "Success",
-          description: `Successful. Please check ${data.email} to reset your password!1`,
-          // duration: 0.4,
+          description: `Successful. Please check ${data.email} to reset your password!`,
         });
         queryClient.invalidateQueries({
-            queryKey: ["forgotPassword"],
-            exact: true,
-          });
+          queryKey: ["forgotPassword"],
+          exact: true,
+        });
         form.resetFields();
       },
     });
   };
+
   return (
-    <Form onFinish={handleSubmit}>
+    <Form onFinish={handleSubmit} form={form}>
       <Form.Item name="email" rules={emailValidationRules}>
         <Input
           prefix={<MailOutlined className="site-form-item-icon pr-1" />}
