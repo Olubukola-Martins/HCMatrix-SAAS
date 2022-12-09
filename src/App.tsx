@@ -12,11 +12,15 @@ import { AuthProvider } from "react-auth-kit";
 import { Notification } from "./Notifications/Notification";
 import NotFoundPage from "./Layout/Components/NotFoundPage";
 import GlobalContextProvider from "./Contexts/GlobalContextProvider";
-import { Modal } from "antd";
-import UserFeedbackComp from "./GeneralComps/UserFeedbackComp";
+import { useEffect } from "react";
+import UserFeedbackContainer from "./GeneralComps/UserFeedbackContainer";
 const queryClient = new QueryClient();
 
 function App() {
+  // clear darkmode
+  useEffect(() => {
+    localStorage.removeItem("dark");
+  }, []);
   return (
     <AuthProvider
       authType={"localstorage"}
@@ -27,6 +31,8 @@ function App() {
       <QueryClientProvider client={queryClient}>
         <GlobalContextProvider>
           <Router>
+            <UserFeedbackContainer />
+
             <AuthRoutes />
             <HomeRoute />
             <SettingRoutes />
@@ -38,7 +44,6 @@ function App() {
               <Route path="/notifications" element={<Notification />} />
             </Routes>
             {/* <Route path="*" element={<NotFoundPage />} /> */}
-            <UserFeedbackComp />
           </Router>
         </GlobalContextProvider>
         <ReactQueryDevtools initialIsOpen={false} position="bottom-right" />
