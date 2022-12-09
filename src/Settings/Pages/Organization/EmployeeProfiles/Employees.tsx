@@ -1,5 +1,5 @@
-import { Button, Table, Select } from "antd";
-import React, { useState } from "react";
+import { Button, Table, Select, TablePaginationConfig } from "antd";
+import React, { useContext, useState } from "react";
 import type { ColumnsType } from "antd/es/table";
 import { Link } from "react-router-dom";
 import {
@@ -11,10 +11,36 @@ import { PageIntro } from "../../../../Layout/Components/PageIntro";
 import DashboardLayout from "../../../../Layout/DashboardLayout";
 import UploadFileModal from "../../../Components/Organization/EmployeeProfiles/UploadFileModal";
 import FilterEmployeeDrawer from "../../../Components/Organization/EmployeeProfiles/FilterEmployeeDrawer";
+import { useFetchEmployees } from "../../../../APIRQHooks/Utility/employeeHooks";
+import { GlobalContext } from "../../../../Contexts/GlobalContextProvider";
+import { TEmployee } from "../../../../AppTypes/DataEntitities";
 
 const Employees = () => {
   const [importEmployeeDrawer, setImportEmployeeDrawer] = useState(false);
   const [openF, setOpenF] = useState(false);
+  const globalCtx = useContext(GlobalContext);
+  const { state: globalState } = globalCtx;
+  const companyId = globalState.currentCompany?.id as unknown as string;
+
+  const [pagination, setPagination] = useState<TablePaginationConfig>({
+    current: 1,
+    pageSize: 4,
+    total: 0,
+    showSizeChanger: false,
+  });
+
+  const offset =
+    pagination.current && pagination.current !== 1
+      ? (pagination.pageSize ?? 4) * (pagination.current - 1)
+      : 0;
+  const { data: employeeData, isSuccess } = useFetchEmployees({
+    companyId,
+    pagination: {
+      limit: pagination.pageSize,
+      offset,
+      current: pagination.current,
+    },
+  });
 
   const employeeStatus = [
     { label: "Total (100)", value: "total" },
@@ -49,7 +75,7 @@ const Employees = () => {
     designation: string;
   }
 
-  const columns: ColumnsType<DataType> = [
+  const columns: ColumnsType<TEmployee> = [
     {
       title: "Name",
       dataIndex: "name",
@@ -62,8 +88,8 @@ const Employees = () => {
     },
     {
       title: "Employee ID",
-      dataIndex: "EmployeeID",
-      key: "EmployeeID",
+      dataIndex: "employeeID",
+      key: "employeeID",
     },
     {
       title: "Department",
@@ -77,20 +103,20 @@ const Employees = () => {
     },
     {
       title: "Role",
-      dataIndex: "Role",
-      key: "Role",
+      dataIndex: "role",
+      key: "role",
     },
     {
       title: "Email",
-      dataIndex: "Email",
-      key: "Email",
+      dataIndex: "email",
+      key: "email",
       ellipsis: true,
       width: 20,
     },
     {
       title: "Status",
-      dataIndex: "Status",
-      key: "Status",
+      dataIndex: "status",
+      key: "status",
     },
     {
       title: "Action",
@@ -109,34 +135,9 @@ const Employees = () => {
     },
   ];
 
-  const data: DataType[] = [
-    {
-      key: "1",
-      name: "Godswill Onyeka",
-      EmployeeID: "123",
-      department: "Dev team",
-      gender: "male",
-      designation: "Front dev",
-      Email: "godswill@snapnetsolution.com",
-      Status: "confirmed",
-      Role: "Employee",
-    },
-    {
-      key: "2",
-      name: "Godswill Onyeka",
-      EmployeeID: "123",
-      department: "Dev team",
-      gender: "male",
-      Role: "Employee",
-      designation: "Front dev",
-      Email: "godswill@snapnetsolution.com",
-      Status: "probation",
-    },
-  ];
-
   // rowSelection object indicates the need for row selection
   const rowSelection = {
-    onChange: (selectedRowKeys: React.Key[], selectedRows: DataType[]) => {},
+    onChange: (selectedRowKeys: React.Key[], selectedRows: TEmployee[]) => {},
   };
 
   return (
@@ -198,7 +199,7 @@ const Employees = () => {
               ...rowSelection,
             }}
             columns={columns}
-            dataSource={data}
+            dataSource={isSuccess ? employeeData.data : []}
             scroll={{ x: "max-content" }}
             className="mt-5"
             size="small"
