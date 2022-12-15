@@ -1,3 +1,6 @@
+
+import { Button, Table, Select, Dropdown, Menu } from "antd";
+import React, { useState } from "react";
 import { Button, Table, Select, TablePaginationConfig } from "antd";
 import React, { useContext, useState } from "react";
 import type { ColumnsType } from "antd/es/table";
@@ -11,13 +14,20 @@ import { PageIntro } from "../../../../Layout/Components/PageIntro";
 import DashboardLayout from "../../../../Layout/DashboardLayout";
 import UploadFileModal from "../../../Components/Organization/EmployeeProfiles/UploadFileModal";
 import FilterEmployeeDrawer from "../../../Components/Organization/EmployeeProfiles/FilterEmployeeDrawer";
+
+import { EmployeeDataType } from "../../../../AppTypes/DataEntitities";
+import { AddMultipleEmployees } from "../../../Components/Organization/EmployeeProfiles/AddMultipleEmployees";
+=======
 import { useFetchEmployees } from "../../../../APIRQHooks/Utility/employeeHooks";
 import { GlobalContext } from "../../../../Contexts/GlobalContextProvider";
 import { TEmployee } from "../../../../AppTypes/DataEntitities";
 
+
 const Employees = () => {
   const [importEmployeeDrawer, setImportEmployeeDrawer] = useState(false);
   const [openF, setOpenF] = useState(false);
+
+  const [addMEmployees, setAddMEmployees] = useState(false);
   const globalCtx = useContext(GlobalContext);
   const { state: globalState } = globalCtx;
   const companyId = globalState.currentCompany?.id as unknown as string;
@@ -42,6 +52,7 @@ const Employees = () => {
     },
   });
 
+
   const employeeStatus = [
     { label: "Total (100)", value: "total" },
     { label: "Confirmed(20)", value: "confirmed" },
@@ -54,6 +65,7 @@ const Employees = () => {
     // { label: "off-contract", value: "off-contract" },
   ];
 
+  const columns: ColumnsType<EmployeeDataType> = [
   interface DataType {
     key: React.Key;
     name: string;
@@ -76,6 +88,7 @@ const Employees = () => {
   }
 
   const columns: ColumnsType<TEmployee> = [
+
     {
       title: "Name",
       dataIndex: "name",
@@ -135,6 +148,38 @@ const Employees = () => {
     },
   ];
 
+
+  const data: EmployeeDataType[] = [
+    {
+      key: "1",
+      name: "Godswill Onyeka",
+      EmployeeID: "123",
+      department: "Dev team",
+      gender: "male",
+      designation: "Front dev",
+      Email: "godswill@snapnetsolution.com",
+      Status: "confirmed",
+      Role: "Employee",
+    },
+    {
+      key: "2",
+      name: "Godswill Onyeka",
+      EmployeeID: "123",
+      department: "Dev team",
+      gender: "male",
+      Role: "Employee",
+      designation: "Front dev",
+      Email: "godswill@snapnetsolution.com",
+      Status: "probation",
+    },
+  ];
+
+  // rowSelection object indicates the need for row selection
+  const rowSelection = {
+    onChange: (
+      selectedRowKeys: React.Key[],
+      selectedRows: EmployeeDataType[]
+    ) => {},
   // rowSelection object indicates the need for row selection
   const rowSelection = {
     onChange: (selectedRowKeys: React.Key[], selectedRows: TEmployee[]) => {},
@@ -147,6 +192,10 @@ const Employees = () => {
         handleClose={() => setImportEmployeeDrawer(false)}
       />
       <FilterEmployeeDrawer open={openF} handleClose={() => setOpenF(false)} />
+      <AddMultipleEmployees
+        open={addMEmployees}
+        handleClose={() => setAddMEmployees(false)}
+      />
       <div className="Container">
         <PageIntro title="Employees" link="/settings" />
         <div className="flex justify-between md:flex-row flex-col gap-3 md:gap-0 md:items-center mt-12">
@@ -164,15 +213,43 @@ const Employees = () => {
             </button>
           </div>
           <div className="flex items-center gap-3">
-            <Link to="/settings/add-employee" className="button">
-              Add Employees
-            </Link>
+            <Dropdown
+              overlay={
+                <Menu>
+                  <Menu.Item>
+                    <Link to="/settings/add-employee">Add Employee</Link>
+                  </Menu.Item>
+                  <Menu.Item onClick={() => setAddMEmployees(true)}>
+                    Add Multiple Users
+                  </Menu.Item>
+                </Menu>
+              }
+              trigger={["click"]}
+            >
+              <button className="button flex items-center gap-2">
+                <span>Add</span> <i className="fa-solid fa-chevron-down"></i>
+              </button>
+            </Dropdown>
+
             <button
               className="transparentButton"
               onClick={() => setImportEmployeeDrawer(true)}
             >
               Import Employees
             </button>
+            <Dropdown
+              overlay={
+                <Menu>
+                  <Menu.Item>Import from GApps</Menu.Item>
+                  <Menu.Item>Import from Office 365</Menu.Item>
+                </Menu>
+              }
+              trigger={["click"]}
+            >
+              <button className="transparentButton flex items-center gap-2">
+                <span>Sync</span> <i className="fa-solid fa-chevron-down"></i>
+              </button>
+            </Dropdown>
             <Button
               icon={<FilterOutlined />}
               type="text"

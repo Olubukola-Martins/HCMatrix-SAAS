@@ -19,6 +19,7 @@ export interface IFRQDepartmentsReturnProps {
   data: TDepartment[];
   total: number;
 }
+
 export const useFetchDepartments = ({
   pagination,
   companyId,
@@ -39,7 +40,7 @@ export const useFetchDepartments = ({
         // show notification
         openNotification({
           state: "error",
-          title: "Error Occured",
+          title: "Error Occurred",
           description:
             err?.response.data.message ?? err?.response.data.error.message,
         });

@@ -39,7 +39,7 @@ export const DepartmentsTableView = ({
       key: "parentDepartmentId",
     },
     {
-      title: "Emloyee Count",
+      title: "Employee Count",
       dataIndex: "employeeCount",
       key: "employeeCount",
     },
