@@ -13,6 +13,7 @@ import {
 } from "../../../../AppTypes/DataEntitities";
 import { GlobalContext } from "../../../../Contexts/GlobalContextProvider";
 import { openNotification } from "../../../../NotificationHelpers";
+import { RolesGridView } from "./RolesGridView";
 
 import { RolesTableView } from "./RolesTableView";
 
@@ -80,7 +81,9 @@ const RolesViewContainer = () => {
           aria-hidden="true"
         ></i>
       </div> */}
-      <div className="content overflow-y-hidden relative">
+
+      {/*Table view is hidden for now */}
+      <div className="content overflow-y-hidden relative hidden">
         {viewId === "list" && isSuccess && (
           <RolesTableView
             data={rolesData.data}
@@ -90,6 +93,14 @@ const RolesViewContainer = () => {
           />
         )}
       </div>
+      {isSuccess && (
+        <RolesGridView
+          data={rolesData.data}
+          loading={isFetching}
+          pagination={{ ...pagination, total: rolesData.total }}
+          onChange={onChange}
+        />
+      )}
     </div>
   );
 };

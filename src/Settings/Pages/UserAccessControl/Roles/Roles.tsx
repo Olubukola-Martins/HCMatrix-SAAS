@@ -2,10 +2,10 @@ import { AnimatePresence } from "framer-motion";
 import React, { useState } from "react";
 import DashboardLayout from "../../../../Layout/DashboardLayout";
 import { Link } from "react-router-dom";
-
 import { RolesTableView } from "../../../Components/UserAccessControl/Roles/RolesTableView";
 import RolesViewContainer from "../../../Components/UserAccessControl/Roles/RolesViewContainer";
 import { PageIntro } from "../../../../Layout/Components/PageIntro";
+import { AddRole } from "../../../Components/UserAccessControl/Roles/AddRole";
 
 const roles = [
   {
@@ -54,26 +54,20 @@ const roles = [
 
 const Roles = () => {
   const [viewId, setViewId] = useState("list");
-
+  const [addRoleModal, setAddRoleModal] = useState(false);
   return (
     <DashboardLayout>
       <div className="Container">
+        <AddRole
+          open={addRoleModal}
+          handleClose={() => setAddRoleModal(false)}
+        />
         {
-          <div className="  mt-4">
+          <div className="mt-4">
             <h4 className="text-lg  mb-1"></h4>
-            <PageIntro title="Role & Permissions" link="/settings" />
-            <div className="flex flex-col mt-4 gap-2 md:flex-row md:justify-between md:items-center bg-card p-2 rounded text-sm">
-              <p>Manage all the roles and permissions in your organization.</p>
-
-              <div className="flex gap-4 items-center">
-                <Link
-                  id="invite-button"
-                  className="py-1 px-2 bg-caramel rounded text-sm text-white font-medium"
-                  to="/settings/roles/create"
-                >
-                  Add role
-                </Link>
-              </div>
+            <PageIntro title="Roles" link="/settings" />
+            <div className="flex justify-end">
+              <button className="button" onClick={() => setAddRoleModal(true)}>Add Role</button>
             </div>
             <RolesViewContainer />
           </div>
