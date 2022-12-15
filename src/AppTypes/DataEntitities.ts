@@ -51,3 +51,26 @@ export type TRole = {
   name: string;
   userCount: number;
 };
+
+
+
+export type EmployeeDataType = {
+  key: React.Key;
+  name: string;
+  EmployeeID: string;
+  department: string;
+  Role: string;
+  Email: string;
+  Status:
+    | "confirmed"
+    | "probation"
+    | "on-leave"
+    | "suspended"
+    | "dismissed"
+    | "resigned"
+    | "on-contract"
+    | "off-contract";
+  gender: "male" | "female";
+  paygrade?: string;
+  designation: string;
+}

@@ -1,4 +1,4 @@
-import { Button, Table, Select } from "antd";
+import { Button, Table, Select, Dropdown, Menu } from "antd";
 import React, { useState } from "react";
 import type { ColumnsType } from "antd/es/table";
 import { Link } from "react-router-dom";
@@ -11,10 +11,13 @@ import { PageIntro } from "../../../../Layout/Components/PageIntro";
 import DashboardLayout from "../../../../Layout/DashboardLayout";
 import UploadFileModal from "../../../Components/Organization/EmployeeProfiles/UploadFileModal";
 import FilterEmployeeDrawer from "../../../Components/Organization/EmployeeProfiles/FilterEmployeeDrawer";
+import { EmployeeDataType } from "../../../../AppTypes/DataEntitities";
+import { AddMultipleEmployees } from "../../../Components/Organization/EmployeeProfiles/AddMultipleEmployees";
 
 const Employees = () => {
   const [importEmployeeDrawer, setImportEmployeeDrawer] = useState(false);
   const [openF, setOpenF] = useState(false);
+  const [addMEmployees, setAddMEmployees] = useState(false);
 
   const employeeStatus = [
     { label: "Total (100)", value: "total" },
@@ -28,28 +31,7 @@ const Employees = () => {
     // { label: "off-contract", value: "off-contract" },
   ];
 
-  interface DataType {
-    key: React.Key;
-    name: string;
-    EmployeeID: string;
-    department: string;
-    Role: string;
-    Email: string;
-    Status:
-      | "confirmed"
-      | "probation"
-      | "on-leave"
-      | "suspended"
-      | "dismissed"
-      | "resigned"
-      | "on-contract"
-      | "off-contract";
-    gender: "male" | "female";
-    paygrade?: string;
-    designation: string;
-  }
-
-  const columns: ColumnsType<DataType> = [
+  const columns: ColumnsType<EmployeeDataType> = [
     {
       title: "Name",
       dataIndex: "name",
@@ -109,7 +91,7 @@ const Employees = () => {
     },
   ];
 
-  const data: DataType[] = [
+  const data: EmployeeDataType[] = [
     {
       key: "1",
       name: "Godswill Onyeka",
@@ -136,7 +118,10 @@ const Employees = () => {
 
   // rowSelection object indicates the need for row selection
   const rowSelection = {
-    onChange: (selectedRowKeys: React.Key[], selectedRows: DataType[]) => {},
+    onChange: (
+      selectedRowKeys: React.Key[],
+      selectedRows: EmployeeDataType[]
+    ) => {},
   };
 
   return (
@@ -146,6 +131,10 @@ const Employees = () => {
         handleClose={() => setImportEmployeeDrawer(false)}
       />
       <FilterEmployeeDrawer open={openF} handleClose={() => setOpenF(false)} />
+      <AddMultipleEmployees
+        open={addMEmployees}
+        handleClose={() => setAddMEmployees(false)}
+      />
       <div className="Container">
         <PageIntro title="Employees" link="/settings" />
         <div className="flex justify-between md:flex-row flex-col gap-3 md:gap-0 md:items-center mt-12">
@@ -163,15 +152,43 @@ const Employees = () => {
             </button>
           </div>
           <div className="flex items-center gap-3">
-            <Link to="/settings/add-employee" className="button">
-              Add Employees
-            </Link>
+            <Dropdown
+              overlay={
+                <Menu>
+                  <Menu.Item>
+                    <Link to="/settings/add-employee">Add Employee</Link>
+                  </Menu.Item>
+                  <Menu.Item onClick={() => setAddMEmployees(true)}>
+                    Add Multiple Users
+                  </Menu.Item>
+                </Menu>
+              }
+              trigger={["click"]}
+            >
+              <button className="button flex items-center gap-2">
+                <span>Add</span> <i className="fa-solid fa-chevron-down"></i>
+              </button>
+            </Dropdown>
+
             <button
               className="transparentButton"
               onClick={() => setImportEmployeeDrawer(true)}
             >
               Import Employees
             </button>
+            <Dropdown
+              overlay={
+                <Menu>
+                  <Menu.Item>Import from GApps</Menu.Item>
+                  <Menu.Item>Import from Office 365</Menu.Item>
+                </Menu>
+              }
+              trigger={["click"]}
+            >
+              <button className="transparentButton flex items-center gap-2">
+                <span>Sync</span> <i className="fa-solid fa-chevron-down"></i>
+              </button>
+            </Dropdown>
             <Button
               icon={<FilterOutlined />}
               type="text"
