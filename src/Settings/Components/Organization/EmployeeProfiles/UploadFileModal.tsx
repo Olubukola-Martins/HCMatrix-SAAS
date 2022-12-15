@@ -12,7 +12,7 @@ const steps = [
   "Upload File",
   "Mapping details",
   "Confirm mapping",
-  "Handle Duplicate",
+  "View Result",
 ];
 const successInfo = [
   { title: "Number of records added", count: 20 },
@@ -22,7 +22,11 @@ const successInfo = [
 ];
 
 const UploadFileModal = ({ open, handleClose }: IModalProps) => {
+  const [importBasedOn, setImportBasedOn] = useState<"email | employeeId">();
+  const [importDataFor, setImportDataFor] = useState<string[]>([]);
   const [columns, setColumns] = useState<string[]>([]);
+  const [retrievedData, setRetrievedData] = useState<any[]>([]);
+  const [formattedData, setFormattedData] = useState<any[]>([]);
 
   const [activeStep, setActiveStep] = useState(0);
   const handleNext = () => {
@@ -69,6 +73,7 @@ const UploadFileModal = ({ open, handleClose }: IModalProps) => {
             {activeStep === 0 && (
               <UploadExcelForm
                 setColumns={setColumns}
+                setRetrievedData={setRetrievedData}
                 handleNext={handleNext}
                 activeStep={activeStep}
               />
@@ -80,6 +85,8 @@ const UploadFileModal = ({ open, handleClose }: IModalProps) => {
                 handleNext={handleNext}
                 handlePrev={handlePrev}
                 activeStep={activeStep}
+                retrievedData={retrievedData}
+                setFormattedData={setFormattedData}
               />
             )}
             {/* handle duplicate */}
@@ -105,7 +112,7 @@ const UploadFileModal = ({ open, handleClose }: IModalProps) => {
                   {/* info section */}
                   <div className="grid grid-cols-2 gap-4">
                     {successInfo.map((item) => (
-                      <div>
+                      <div key={item.title}>
                         <div
                           key={item.title}
                           className="info-container py-2 px-3 flex items-center justify-between rounded-md bg-white"
