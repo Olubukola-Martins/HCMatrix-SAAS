@@ -218,10 +218,10 @@ body {
   background: var(--card) !important;
   color: var(--accent) !important;
 }
-.ant-table-thead > tr > th {
+/* .ant-table-thead > tr > th {
   background: var(--card);
   color: var(--accent) !important;
-}
+} */
 .ant-table-tbody > tr.ant-table-row:hover > td,
 .ant-table-tbody > tr > td.ant-table-cell-hover {
   background: var(--background) !important;
