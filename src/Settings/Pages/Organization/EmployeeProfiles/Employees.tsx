@@ -1,5 +1,8 @@
+
 import { Button, Table, Select, Dropdown, Menu } from "antd";
 import React, { useState } from "react";
+import { Button, Table, Select, TablePaginationConfig } from "antd";
+import React, { useContext, useState } from "react";
 import type { ColumnsType } from "antd/es/table";
 import { Link } from "react-router-dom";
 import {
@@ -11,13 +14,44 @@ import { PageIntro } from "../../../../Layout/Components/PageIntro";
 import DashboardLayout from "../../../../Layout/DashboardLayout";
 import UploadFileModal from "../../../Components/Organization/EmployeeProfiles/UploadFileModal";
 import FilterEmployeeDrawer from "../../../Components/Organization/EmployeeProfiles/FilterEmployeeDrawer";
+
 import { EmployeeDataType } from "../../../../AppTypes/DataEntitities";
 import { AddMultipleEmployees } from "../../../Components/Organization/EmployeeProfiles/AddMultipleEmployees";
+=======
+import { useFetchEmployees } from "../../../../APIRQHooks/Utility/employeeHooks";
+import { GlobalContext } from "../../../../Contexts/GlobalContextProvider";
+import { TEmployee } from "../../../../AppTypes/DataEntitities";
+
 
 const Employees = () => {
   const [importEmployeeDrawer, setImportEmployeeDrawer] = useState(false);
   const [openF, setOpenF] = useState(false);
+
   const [addMEmployees, setAddMEmployees] = useState(false);
+  const globalCtx = useContext(GlobalContext);
+  const { state: globalState } = globalCtx;
+  const companyId = globalState.currentCompany?.id as unknown as string;
+
+  const [pagination, setPagination] = useState<TablePaginationConfig>({
+    current: 1,
+    pageSize: 4,
+    total: 0,
+    showSizeChanger: false,
+  });
+
+  const offset =
+    pagination.current && pagination.current !== 1
+      ? (pagination.pageSize ?? 4) * (pagination.current - 1)
+      : 0;
+  const { data: employeeData, isSuccess } = useFetchEmployees({
+    companyId,
+    pagination: {
+      limit: pagination.pageSize,
+      offset,
+      current: pagination.current,
+    },
+  });
+
 
   const employeeStatus = [
     { label: "Total (100)", value: "total" },
@@ -32,6 +66,29 @@ const Employees = () => {
   ];
 
   const columns: ColumnsType<EmployeeDataType> = [
+  interface DataType {
+    key: React.Key;
+    name: string;
+    EmployeeID: string;
+    department: string;
+    Role: string;
+    Email: string;
+    Status:
+      | "confirmed"
+      | "probation"
+      | "on-leave"
+      | "suspended"
+      | "dismissed"
+      | "resigned"
+      | "on-contract"
+      | "off-contract";
+    gender: "male" | "female";
+    paygrade?: string;
+    designation: string;
+  }
+
+  const columns: ColumnsType<TEmployee> = [
+
     {
       title: "Name",
       dataIndex: "name",
@@ -44,8 +101,8 @@ const Employees = () => {
     },
     {
       title: "Employee ID",
-      dataIndex: "EmployeeID",
-      key: "EmployeeID",
+      dataIndex: "employeeID",
+      key: "employeeID",
     },
     {
       title: "Department",
@@ -59,20 +116,20 @@ const Employees = () => {
     },
     {
       title: "Role",
-      dataIndex: "Role",
-      key: "Role",
+      dataIndex: "role",
+      key: "role",
     },
     {
       title: "Email",
-      dataIndex: "Email",
-      key: "Email",
+      dataIndex: "email",
+      key: "email",
       ellipsis: true,
       width: 20,
     },
     {
       title: "Status",
-      dataIndex: "Status",
-      key: "Status",
+      dataIndex: "status",
+      key: "status",
     },
     {
       title: "Action",
@@ -90,6 +147,7 @@ const Employees = () => {
       ),
     },
   ];
+
 
   const data: EmployeeDataType[] = [
     {
@@ -122,6 +180,9 @@ const Employees = () => {
       selectedRowKeys: React.Key[],
       selectedRows: EmployeeDataType[]
     ) => {},
+  // rowSelection object indicates the need for row selection
+  const rowSelection = {
+    onChange: (selectedRowKeys: React.Key[], selectedRows: TEmployee[]) => {},
   };
 
   return (
@@ -215,7 +276,7 @@ const Employees = () => {
               ...rowSelection,
             }}
             columns={columns}
-            dataSource={data}
+            dataSource={isSuccess ? employeeData.data : []}
             scroll={{ x: "max-content" }}
             className="mt-5"
             size="small"

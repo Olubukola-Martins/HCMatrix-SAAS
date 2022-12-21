@@ -1,5 +1,7 @@
 import axios from "axios";
 import { ICurrentCompany } from "../../AppTypes/DataEntitities";
+import { IPaginationProps } from "../../AppTypes/Pagination";
+import { ISearchParams } from "../../AppTypes/Search";
 
 const token = localStorage.getItem("hcmatrix_app") as unknown as string;
 
@@ -52,9 +54,26 @@ export const createEmployee = async (props: ICreateEmpProps) => {
   return response;
 };
 
-export const getEmployees = async () => {
-  const url = `${process.env.REACT_APP_UTILITY_BASE_URL}/employee`;
+interface IGetEmpsProps extends ICurrentCompany {
+  pagination?: IPaginationProps;
+  searchParams?: ISearchParams;
+}
+export const getEmployees = async (props: IGetEmpsProps) => {
+  const { pagination } = props;
+  const limit = pagination?.limit ?? 10;
+  const offset = pagination?.offset ?? 0;
+  const name = props.searchParams?.name ?? "";
 
-  const response = await axios.get(url);
+  const url = `${process.env.REACT_APP_UTILITY_BASE_URL}/employee?limit=${limit}&offset=${offset}`;
+
+  const config = {
+    headers: {
+      Accept: "application/json",
+      Authorization: `Bearer ${token}`,
+      "x-company-id": props.companyId,
+    },
+  };
+
+  const response = await axios.get(url, config);
   return response;
 };

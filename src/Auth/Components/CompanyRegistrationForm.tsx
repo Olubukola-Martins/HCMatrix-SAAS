@@ -46,7 +46,7 @@ const CompanyRegistrationForm = () => {
 
   const handleSignUp = (data: any) => {
     const countryPhoneCode =
-      countries?.find((item) => item.id == data.phone.code) ?? "";
+      countries?.find((item) => item.id == data.phone.code)?.code ?? "";
     const props: ICreateCompProps = {
       name: data.organization,
       email: data.email,

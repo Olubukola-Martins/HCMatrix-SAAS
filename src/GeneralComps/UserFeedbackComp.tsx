@@ -11,6 +11,10 @@ import {
   IFRQDesignationsReturnProps,
   useFetchDesignations,
 } from "../APIRQHooks/Utility/designationHooks";
+import {
+  IFRQEmpsReturnProps,
+  useFetchEmployees,
+} from "../APIRQHooks/Utility/employeeHooks";
 import { EGlobalOps, GlobalContext } from "../Contexts/GlobalContextProvider";
 import Themes from "../Themes/Themes";
 
@@ -50,7 +54,6 @@ const initialsetUpSteps = [
 
 const UserFeedbackComp = () => {
   // in a rq hooks on success here make the appropiate calls adjust the state with a reducer
-  const isAuthenticated = useIsAuthenticated();
   const [progress, setProgress] = useState(0);
 
   const [steps, setSteps] = useState(initialsetUpSteps);
@@ -121,6 +124,24 @@ const UserFeedbackComp = () => {
       }
     },
   });
+  const { isSuccess: isEmpSuccess } = useFetchEmployees({
+    companyId,
+    pagination: {
+      limit: 100, //temp suppose to allow search
+      offset: 0,
+    },
+    onSuccess: (data: IFRQEmpsReturnProps) => {
+      if (data.total > 0) {
+        setSteps((steps) =>
+          steps.map((item) =>
+            item.text === EInitialSetUp.ADD_EMPLOYEES
+              ? { ...item, completed: true }
+              : item
+          )
+        );
+      }
+    },
+  });
 
   useEffect(() => {
     const totalSteps = steps.length;
@@ -129,59 +150,67 @@ const UserFeedbackComp = () => {
     setProgress(progress);
   }, [steps]);
 
-  if (!isAuthenticated()) {
-    return null;
-  }
-  if (isAuthenticated() && user.isAdmin === false) {
-    return null;
-  }
+  const showModal =
+    isDepSuccess && isDegSuccess && isRoleSuccess && isEmpSuccess;
 
   return (
-    <Modal
-      open={provideFeedback}
-      //   open={false}
-      title={`Hello, ${user.fullName}`}
-      onCancel={() => dismissFeedback()}
-      footer={null}
-    >
-      <Themes>
-        <div className="flex flex-col gap-4">
-          <Progress percent={progress} strokeColor={"#006600"} />
-          <div className="flex flex-col gap-2">
-            <h6 className="text-sm font-semibold italic mb-2">
-              You are to complete the following steps, in order to utilize the
-              system:
-            </h6>
+    <>
+      {showModal ? (
+        <Modal
+          open={provideFeedback}
+          //   open={false}
+          title={`Hello, ${user.fullName}`}
+          onCancel={() => dismissFeedback()}
+          footer={null}
+        >
+          <Themes>
+            <div className="flex flex-col gap-4">
+              <Progress percent={progress} strokeColor={"#006600"} />
+              <div className="flex flex-col gap-2">
+                <h6 className="text-sm font-semibold italic mb-2">
+                  {progress !== 100 ? (
+                    <span>
+                      You are to complete the following steps, in order to
+                      utilize the system" :
+                    </span>
+                  ) : (
+                    <span>
+                      Congratulations, on completing the required steps!
+                    </span>
+                  )}
+                </h6>
 
-            {provideFeedback &&
-              steps.map((item, index) => (
-                <div
-                  className="flex gap-4 items-center text-sm"
-                  key={item.text}
-                >
-                  <div
-                    className={`min-h-min min-w-min ${
-                      item.completed ? "bg-[#006600]" : "bg-gray-400"
-                    } flex items-center justify-center  rounded-full text-white p-1 h-4 w-4`}
-                  >
-                    <span className={`block`}>{index + 1}</span>
-                  </div>
-                  <Link to={item.link} onClick={() => dismissFeedback()}>
-                    <p
-                      className={`block hover:text-caramel ${
-                        item.completed && "text-[#006600] line-through"
-                      }`}
-                      title={item.hint}
+                {provideFeedback &&
+                  steps.map((item, index) => (
+                    <div
+                      className="flex gap-4 items-center text-sm"
+                      key={item.text}
                     >
-                      {item.text}
-                    </p>
-                  </Link>
-                </div>
-              ))}
-          </div>
-        </div>
-      </Themes>
-    </Modal>
+                      <div
+                        className={`min-h-min min-w-min ${
+                          item.completed ? "bg-[#006600]" : "bg-gray-400"
+                        } flex items-center justify-center  rounded-full text-white p-1 h-4 w-4`}
+                      >
+                        <span className={`block`}>{index + 1}</span>
+                      </div>
+                      <Link to={item.link} onClick={() => dismissFeedback()}>
+                        <p
+                          className={`block hover:text-caramel ${
+                            item.completed && "text-[#006600] line-through"
+                          }`}
+                          title={item.hint}
+                        >
+                          {item.text}
+                        </p>
+                      </Link>
+                    </div>
+                  ))}
+              </div>
+            </div>
+          </Themes>
+        </Modal>
+      ) : null}
+    </>
   );
 };
 
