@@ -52,4 +52,14 @@ export type TRole = {
   userCount: number;
 };
 
-
+export type TEmployee = {
+  id: number;
+  name: string;
+  gender: "male" | "female";
+  employeeID: string;
+  designation: TDesignation | string;
+  role: TRole | string;
+  status: string;
+  email: string;
+  department: TDepartment | string;
+};

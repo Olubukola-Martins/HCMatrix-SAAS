@@ -5,6 +5,7 @@ import {
   Select,
   Skeleton,
   Spin,
+  Table,
   Typography,
 } from "antd";
 import { CheckboxValueType } from "antd/es/checkbox/Group";
@@ -106,6 +107,135 @@ const CreateRoleForm = () => {
       });
     }
   };
+
+  const columns = [
+    {
+      title: "Permission/Priviledges",
+      dataIndex: "name",
+      key: "name",
+    },
+
+    {
+      title: "Record Permission",
+      dataIndex: "Record Permission",
+      key: "Record Permission",
+      children: [
+        {
+          title: "View",
+          dataIndex: "View",
+          key: "View",
+        },
+        {
+          title: "Add",
+          dataIndex: "Add",
+          key: "Add",
+        },
+        {
+          title: "Edit",
+          dataIndex: "Edit",
+          key: "Edit",
+        },
+        {
+          title: "Delete",
+          dataIndex: "Delete",
+          key: "Delete",
+        },
+      ],
+    },
+
+    {
+      title: "Field Permission",
+      dataIndex: "Field Permission",
+      key: "Field Permission",
+      children: [
+        {
+          title: "Fill",
+          dataIndex: "Fill",
+          key: "Fill",
+        },
+      ],
+    },
+    {
+      title: "Action Permission",
+      dataIndex: "Action Permission",
+      key: "Action Permission",
+      children: [
+        {
+          title: "Import",
+          dataIndex: "Import",
+          key: "Import",
+        },
+        {
+          title: "Export",
+          dataIndex: "Export",
+          key: "Export",
+        },
+        {
+          title: "Activate",
+          dataIndex: "Activate",
+          key: "Activate",
+        },
+      ],
+    },
+  ];
+
+  const ans: any[] = [
+    {
+      name: "Company Details",
+      View: <Checkbox />,
+      Edit: <Checkbox />,
+      Add: <Checkbox />,
+      Fill: <Checkbox />,
+      Import: <Checkbox />,
+      Export: <Checkbox />,
+      Activate: <Checkbox />,
+      Delete: <Checkbox />,
+    },
+    {
+      name: "Department Details",
+      View: <Checkbox />,
+      Edit: <Checkbox />,
+      Add: <Checkbox />,
+      Fill: <Checkbox />,
+      Import: <Checkbox />,
+      Export: <Checkbox />,
+      Activate: <Checkbox />,
+      Delete: <Checkbox />,
+    },
+    {
+      name: "Group Details",
+      View: <Checkbox />,
+      Edit: <Checkbox />,
+      Add: <Checkbox />,
+      Fill: <Checkbox />,
+      Import: <Checkbox />,
+      Export: <Checkbox />,
+      Activate: <Checkbox />,
+      Delete: <Checkbox />,
+    },
+    {
+      name: "Payroll Details",
+      View: <Checkbox />,
+      Edit: <Checkbox />,
+      Add: <Checkbox />,
+      Fill: <Checkbox />,
+      Import: <Checkbox />,
+      Export: <Checkbox />,
+      Activate: <Checkbox />,
+      Delete: <Checkbox />,
+    },
+    {
+      name: "Wallet Details",
+      View: <Checkbox />,
+      Edit: <Checkbox />,
+      Add: <Checkbox />,
+      Fill: <Checkbox />,
+      Import: <Checkbox />,
+      Export: <Checkbox />,
+      Activate: <Checkbox />,
+      Delete: <Checkbox />,
+    },
+  ];
   return (
     <div>
       <Skeleton
@@ -158,7 +288,10 @@ const CreateRoleForm = () => {
                   disabled
                 />
               </div>
-              <Form.Item name="permissionIds" rules={generalValidationRules}>
+              <div className="bg-white p-4 rounded-md mb-4">
+                <Table columns={columns} dataSource={ans} size="small" />
+              </div>
+              {/* <Form.Item name="permissionIds" rules={generalValidationRules}>
                 <Checkbox.Group style={{ width: "100%" }}>
                   <div className="my-6 grid grid-cols-4 gap-4">
                     {data.permissions.map((item) => (
@@ -181,7 +314,7 @@ const CreateRoleForm = () => {
                     ))}
                   </div>
                 </Checkbox.Group>
-              </Form.Item>
+              </Form.Item> */}
             </div>
 
             <button className="button" type="submit" disabled={isLoading}>

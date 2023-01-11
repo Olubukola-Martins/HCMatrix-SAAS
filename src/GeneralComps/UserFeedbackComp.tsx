@@ -1,4 +1,4 @@
-import { Modal, Progress } from "antd";
+import { Modal, Progress, Steps } from "antd";
 import React, { useContext, useEffect, useState } from "react";
 import { useAuthUser, useIsAuthenticated } from "react-auth-kit";
 import { Link } from "react-router-dom";
@@ -158,16 +158,15 @@ const UserFeedbackComp = () => {
       {showModal ? (
         <Modal
           open={provideFeedback}
-          //   open={false}
-          title={`Hello, ${user.fullName}`}
           onCancel={() => dismissFeedback()}
           footer={null}
+          style={{ top: 30 }}
         >
           <Themes>
             <div className="flex flex-col gap-4">
-              <Progress percent={progress} strokeColor={"#006600"} />
-              <div className="flex flex-col gap-2">
-                <h6 className="text-sm font-semibold italic mb-2">
+              <div className="flex flex-col gap-4">
+                <h3>Get Started</h3>
+                <h6 className="text-sm  mb-2">
                   {progress !== 100 ? (
                     <span>
                       You are to complete the following steps, in order to
@@ -179,32 +178,44 @@ const UserFeedbackComp = () => {
                     </span>
                   )}
                 </h6>
-
-                {provideFeedback &&
-                  steps.map((item, index) => (
-                    <div
-                      className="flex gap-4 items-center text-sm"
-                      key={item.text}
-                    >
-                      <div
-                        className={`min-h-min min-w-min ${
-                          item.completed ? "bg-[#006600]" : "bg-gray-400"
-                        } flex items-center justify-center  rounded-full text-white p-1 h-4 w-4`}
-                      >
-                        <span className={`block`}>{index + 1}</span>
-                      </div>
-                      <Link to={item.link} onClick={() => dismissFeedback()}>
-                        <p
-                          className={`block hover:text-caramel ${
-                            item.completed && "text-[#006600] line-through"
-                          }`}
-                          title={item.hint}
-                        >
-                          {item.text}
-                        </p>
-                      </Link>
-                    </div>
-                  ))}
+              </div>
+              <Progress percent={progress} strokeColor={"#006600"} />
+              <div className="flex flex-col gap-2">
+                {provideFeedback && (
+                  <Steps size="small" direction="vertical">
+                    {steps.map((item, index) => (
+                      <Steps.Step
+                        description="Watch Video Tutorial"
+                        key={index}
+                        title={
+                          <div className="flex gap-4 items-center text-sm">
+                            {/* <div
+                              className={`min-h-min min-w-min ${
+                                item.completed ? "bg-[#006600]" : "bg-gray-400"
+                              } flex items-center justify-center  rounded-full text-white p-1 h-4 w-4`}
+                            >
+                              <span className={`block`}>{index + 1}</span>
+                            </div> */}
+                            <Link
+                              to={item.link}
+                              onClick={() => dismissFeedback()}
+                            >
+                              <p
+                                className={`block hover:text-caramel ${
+                                  item.completed &&
+                                  "text-[#006600] line-through"
+                                }`}
+                                title={item.hint}
+                              >
+                                {item.text}
+                              </p>
+                            </Link>
+                          </div>
+                        }
+                      />
+                    ))}
+                  </Steps>
+                )}
               </div>
             </div>
           </Themes>
