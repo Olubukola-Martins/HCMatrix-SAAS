@@ -123,7 +123,6 @@ const SettingRoutes = () => {
           // </RequireAuth>
         }
       />
-
       <Route
         path="/settings/designations"
         element={
