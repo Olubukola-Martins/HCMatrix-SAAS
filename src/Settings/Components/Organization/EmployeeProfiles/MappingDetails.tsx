@@ -36,7 +36,7 @@ const MappingDetails = ({
     const formattedData = retrievedData.map((item) => {
       let ans: any = {};
       formattedColumns.forEach((col, i) => {
-        ans[col] = item[i];
+        ans[col] = item[i] ? item[i] : null;
       });
       return ans;
     });
