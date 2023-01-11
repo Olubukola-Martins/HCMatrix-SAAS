@@ -1,0 +1,12 @@
+{
+  "extends": ["react-app", "react-app/jest"],
+  "rules": {
+    "max-lines": [
+      1,
+      {
+        "max": 200
+      }
+    ],
+    "no-unused-vars": "off"
+  }
+}
