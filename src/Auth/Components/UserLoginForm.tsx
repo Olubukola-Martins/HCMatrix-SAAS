@@ -53,7 +53,8 @@ const UserLoginForm = () => {
         if (
           signIn({
             token: result.token,
-            expiresIn: process.env.REACT_APP_SESSION_TIME as unknown as number,
+            expiresIn: 0,
+            // expiresIn: process.env.REACT_APP_SESSION_TIME as unknown as number,
             tokenType: "Bearer",
             authState: authUserDetails,
           })
