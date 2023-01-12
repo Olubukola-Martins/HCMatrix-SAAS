@@ -14,6 +14,7 @@ import NotFoundPage from "./Layout/Components/NotFoundPage";
 import GlobalContextProvider from "./Contexts/GlobalContextProvider";
 import { useEffect } from "react";
 import UserFeedbackContainer from "./GeneralComps/UserFeedbackContainer";
+import refreshApi from "./Config/refreshTokenApi";
 const queryClient = new QueryClient();
 
 function App() {
@@ -27,6 +28,7 @@ function App() {
       authName={"hcmatrix_app"}
       cookieDomain={window.location.hostname}
       cookieSecure={window.location.protocol === "https:"}
+      refresh={refreshApi}
     >
       <QueryClientProvider client={queryClient}>
         <GlobalContextProvider>
