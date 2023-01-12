@@ -5,6 +5,25 @@ import { ISearchParams } from "../../AppTypes/Search";
 
 const token = localStorage.getItem("hcmatrix_app") as unknown as string;
 
+export type TBulkEmployeeImport = {
+  firstName: string;
+  lastName: string;
+  email: string;
+  hasSelfService: boolean;
+  empUid: string;
+  roleId: number;
+  designationId: number;
+  jobInformation: {
+    startDate: string;
+    jobTitle: string;
+    monthlyGross: number;
+    employmentType: string;
+    workModel: string;
+    numberOfDaysPerWeek: number;
+    departmentId: string;
+  };
+};
+
 export interface ICreateEmpProps extends ICurrentCompany {
   firstName: string;
   lastName: string;

@@ -53,6 +53,7 @@ const beforeUpload = (file: RcFile) => {
 
 interface IProps {
   setColumns: Function;
+  setRetrievedData: Function;
   handleNext: Function;
   activeStep: number;
 }
@@ -61,6 +62,7 @@ export const UploadExcelForm = ({
   setColumns,
   handleNext,
   activeStep,
+  setRetrievedData,
 }: IProps) => {
   const [loading, setLoading] = useState(false);
   const [imageUrl, setImageUrl] = useState<string>();
@@ -81,7 +83,14 @@ export const UploadExcelForm = ({
         header: 1,
       }) as unknown as string[][];
       console.log(dataParse[0], "reader");
-      setColumns(dataParse[0]);
+      console.log("Data", dataParse);
+      const columns: string[] = dataParse[0];
+      const retrievedData: any[] = dataParse.splice(1);
+
+      console.log("FData", retrievedData);
+
+      setColumns(columns);
+      setRetrievedData(retrievedData);
     };
     reader.readAsBinaryString(info.file as unknown as any);
     if (info.file.status === "uploading") {
@@ -96,8 +105,12 @@ export const UploadExcelForm = ({
       });
     }
   };
+
+  const handleSubmit = () => {
+    handleNext();
+  };
   return (
-    <Form className="" requiredMark={false}>
+    <Form className="" requiredMark={false} onFinish={handleSubmit}>
       <Form.Item label="Import for:">
         <Select
           options={importForOptions.map((item) => ({
@@ -138,16 +151,10 @@ export const UploadExcelForm = ({
       </div>
       {/* buttons */}
       <div className="flex flex-row justify-between w-full mt-4">
-        {/* {activeStep !== 0 && (
-            <Button onClick={() => handlePrev()}>Previous</Button>
-          )} */}
         <div className="ml-auto">
-          {activeStep !== 3 && (
-            <button className="button" onClick={() => handleNext()}>
-              Next
-            </button>
-          )}
-          {activeStep === 3 && <button className="button">Done</button>}
+          <button className="button" type="submit">
+            Next
+          </button>
         </div>
       </div>
     </Form>

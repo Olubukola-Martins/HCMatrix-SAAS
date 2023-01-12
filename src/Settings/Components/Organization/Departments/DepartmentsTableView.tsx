@@ -1,7 +1,6 @@
 import React from "react";
-import { motion } from "framer-motion";
 import { TDepartment } from "../../../../AppTypes/DataEntitities";
-import { PaginationProps, Table } from "antd";
+import { Table } from "antd";
 import { ColumnsType, TablePaginationConfig, TableProps } from "antd/lib/table";
 
 interface IProps {
@@ -46,11 +45,13 @@ export const DepartmentsTableView = ({
     {
       title: "Action",
       dataIndex: "action",
-      render: () => <div className="flex items-center gap-3 text-lg">
-        <i className="ri-pencil-line cursor-pointer hover:text-caramel"></i>
-        <i className="ri-delete-bin-line cursor-pointer hover:text-caramel"></i>
-      </div>,
-    }
+      render: () => (
+        <div className="flex items-center gap-3 text-lg">
+          <i className="ri-pencil-line cursor-pointer hover:text-caramel"></i>
+          <i className="ri-delete-bin-line cursor-pointer hover:text-caramel"></i>
+        </div>
+      ),
+    },
   ];
   return (
     <div>
