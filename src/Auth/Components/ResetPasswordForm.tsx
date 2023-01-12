@@ -41,8 +41,10 @@ export const ResetPasswordForm = ({ token, uid }: IVerifyUserProps) => {
         };
         if (
           signIn({
-            token: result.token,
+            token: result.accessToken,
+            refreshToken: result.refreshToken,
             expiresIn: process.env.REACT_APP_SESSION_TIME as unknown as number,
+            refreshTokenExpireIn: 10,
             tokenType: "Bearer",
             authState: authUserDetails,
           })

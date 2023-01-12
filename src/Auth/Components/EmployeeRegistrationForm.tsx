@@ -1,5 +1,5 @@
 import { MailOutlined, LockOutlined } from "@mui/icons-material";
-import { Form, Input} from "antd";
+import { Form, Input } from "antd";
 import { useSignIn } from "react-auth-kit";
 import { useQueryClient, useMutation } from "react-query";
 import { IVerifyUserProps } from "../../ApiRequesHelpers/Auth";
@@ -45,8 +45,10 @@ export const EmployeeRegistrationForm = ({
         };
         if (
           signIn({
-            token: result.token,
+            token: result.accessToken,
+            refreshToken: result.refreshToken,
             expiresIn: process.env.REACT_APP_SESSION_TIME as unknown as number,
+            refreshTokenExpireIn: 10,
             tokenType: "Bearer",
             authState: authUserDetails,
           })
