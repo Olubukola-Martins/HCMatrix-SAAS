@@ -43,12 +43,15 @@ export const InvitedEmployeeForm = () => {
       return accountDetails === null || profileDetails === null;
     }
   };
+console.log(accountDetails);
+console.log(profileDetails);
+
 
   return (
     <div className="Container">
       <div className="flex justify-center">
         <div
-          className="bg-white rounded-md my-5 p-5"
+          className="bg-white rounded-md my-7 p-5"
           style={{
             boxShadow:
               "0 2px 5px rgba(0,0,0,0.12), 1px 1px 2px rgba(0,0,0,0.24)",
