@@ -1,7 +1,5 @@
 import { Modal, Progress, Steps } from "antd";
 import React, { useContext, useEffect, useState } from "react";
-import { useAuthUser } from "react-auth-kit";
-import { Link } from "react-router-dom";
 import { useFetchRoles } from "../APIRQHooks/Auth/roleHooks";
 import {
   IFRQDepartmentsReturnProps,
@@ -17,16 +15,9 @@ import {
 } from "../APIRQHooks/Utility/employeeHooks";
 import { EGlobalOps, GlobalContext } from "../Contexts/GlobalContextProvider";
 import Themes from "../Themes/Themes";
-import { RightOutlined } from "@ant-design/icons";
+import FeedBackTitle, { EInitialSetUp, TSetupStep } from "./FeedBackTitle";
 
-enum EInitialSetUp {
-  SET_UP_ROLES = "Set up roles",
-  SET_UP_DEPTS = "Set up departments",
-  SET_UP_DESGS = "Set up designations",
-  ADD_EMPLOYEES = "Add employees",
-}
-
-const initialsetUpSteps = [
+const initialsetUpSteps: TSetupStep[] = [
   {
     text: EInitialSetUp.SET_UP_ROLES,
     link: "/settings/roles",
@@ -54,15 +45,8 @@ const initialsetUpSteps = [
 ];
 
 const UserFeedbackComp = () => {
-  // in a rq hooks on success here make the appropiate calls adjust the state with a reducer
   const [progress, setProgress] = useState(0);
-
   const [steps, setSteps] = useState(initialsetUpSteps);
-  const auth = useAuthUser();
-
-  const authDetails = auth();
-
-  const user = authDetails?.user;
   const globalCtx = useContext(GlobalContext);
   const { state: globalState, dispatch } = globalCtx;
   const companyId = globalState.currentCompany?.id as unknown as string;
@@ -195,22 +179,10 @@ const UserFeedbackComp = () => {
                           description="Watch Video Tutorial"
                           key={index}
                           title={
-                            <div className="flex justify-between  text-sm">
-                              <Link
-                                to={item.link}
-                                onClick={() => dismissFeedback()}
-                              >
-                                <p
-                                  className={`block hover:text-caramel ${
-                                    item.completed &&
-                                    "text-caramel line-through"
-                                  }`}
-                                  title={item.hint}
-                                >
-                                  {item.text}
-                                </p>
-                              </Link>
-                            </div>
+                            <FeedBackTitle
+                              item={item}
+                              handleClick={dismissFeedback}
+                            />
                           }
                         />
                       ))}
@@ -224,5 +196,4 @@ const UserFeedbackComp = () => {
     </>
   );
 };
-
 export default UserFeedbackComp;

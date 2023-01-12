@@ -2,8 +2,8 @@ import axios from "axios";
 import { createRefresh } from "react-auth-kit";
 import { refreshUserToken } from "../ApiRequesHelpers/Auth";
 
-export const TOKEN_EXPIRES_IN = 9;
-export const REFRESH_TOKEN_EXPIRES_IN = 120;
+export const TOKEN_EXPIRES_IN = 120;
+export const REFRESH_TOKEN_EXPIRES_IN = 9;
 const REFRESH_TOKEN_INTERVAL = 8;
 const NEW_AUTH_TOKEN_EXPIRES_IN = 9;
 
