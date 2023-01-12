@@ -26,8 +26,8 @@ function App() {
     <AuthProvider
       authType={"localstorage"}
       authName={"hcmatrix_app"}
-      cookieDomain={window.location.hostname}
-      cookieSecure={window.location.protocol === "https:"}
+      // cookieDomain={window.location.hostname}
+      // cookieSecure={window.location.protocol === "https:"}
       refresh={refreshApi}
     >
       <QueryClientProvider client={queryClient}>

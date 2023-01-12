@@ -1,5 +1,5 @@
 import { Tabs } from "antd";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { useAuthUser } from "react-auth-kit";
 import { Link } from "react-router-dom";
 import DashboardLayout from "../../Layout/DashboardLayout";
@@ -9,6 +9,11 @@ import PendingItem from "./PendingItem";
 import "../style/style.css";
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
 import { Doughnut } from "react-chartjs-2";
+import {
+  useFetchEmployees,
+  IFRQEmpsReturnProps,
+} from "../../APIRQHooks/Utility/employeeHooks";
+import { GlobalContext } from "../../Contexts/GlobalContextProvider";
 
 export const AdminHome = () => {
   const auth = useAuthUser();
@@ -37,7 +42,16 @@ export const AdminHome = () => {
 
     maintainAspectRatio: false,
   };
-
+  const globalCtx = useContext(GlobalContext);
+  const { state: globalState } = globalCtx;
+  const companyId = globalState.currentCompany?.id as unknown as string;
+  const { isSuccess: isEmpSuccess, data: empData } = useFetchEmployees({
+    companyId,
+    pagination: {
+      limit: 100, //temp suppose to allow search
+      offset: 0,
+    },
+  });
   return (
     <DashboardLayout>
       <div className="Container">
@@ -53,7 +67,10 @@ export const AdminHome = () => {
               <div className="flex items-center justify-between">
                 <h4 className="text-base text-gray-500">Total Employee</h4>
                 <h2 className="font-semibold text-base md:text-lg">
-                  33 People
+                  {isEmpSuccess &&
+                    `${
+                      empData.total > 1 ? empData.total + " people" : "1 person"
+                    }`}
                 </h2>
               </div>
               <div className="flex justify-center">

@@ -3,6 +3,7 @@ import React, { useRef, useState } from "react";
 import {
   emailValidationRules,
   generalValidationRules,
+  passwordValidationRules,
   textInputValidationRules,
 } from "../../FormHelpers/validation";
 import {
@@ -220,22 +221,7 @@ const CompanyRegistrationForm = () => {
           </Form.Item>
           <Form.Item
             name="password"
-            rules={[
-              {
-                required: true,
-                message: "Field is required",
-              },
-              {
-                min: 8,
-                message: "password must be at least 6 characters",
-              },
-              // {
-              //   validator: (_, value) =>
-              //     value && value.includes("A")
-              //       ? Promise.resolve()
-              //       : Promise.reject("Password does not match criteria."),
-              // },
-            ]}
+            rules={passwordValidationRules}
             hasFeedback
           >
             <Input.Password

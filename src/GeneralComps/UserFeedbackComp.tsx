@@ -1,6 +1,6 @@
 import { Modal, Progress, Steps } from "antd";
 import React, { useContext, useEffect, useState } from "react";
-import { useAuthUser, useIsAuthenticated } from "react-auth-kit";
+import { useAuthUser } from "react-auth-kit";
 import { Link } from "react-router-dom";
 import { useFetchRoles } from "../APIRQHooks/Auth/roleHooks";
 import {

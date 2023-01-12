@@ -2,7 +2,10 @@ import { LockOutlined, MailOutlined } from "@ant-design/icons";
 import { Form, Input } from "antd";
 import { useMutation } from "react-query";
 import { IUserLoginProps, loginUser } from "../../ApiRequesHelpers/Auth";
-import { textInputValidationRules } from "../../FormHelpers/validation";
+import {
+  passwordValidationRules,
+  textInputValidationRules,
+} from "../../FormHelpers/validation";
 import { LoadingOutlined } from "@ant-design/icons";
 import { openNotification } from "../../NotificationHelpers";
 import { useSignIn } from "react-auth-kit";
@@ -44,6 +47,7 @@ const UserLoginForm = () => {
       },
       onSuccess: (res) => {
         const result = res.data.data;
+        console.log("RESSSSS", res);
 
         const authUserDetails = {
           user: result.user,
@@ -54,9 +58,10 @@ const UserLoginForm = () => {
           signIn({
             token: result.accessToken,
             refreshToken: result.refreshToken,
-            expiresIn: process.env.REACT_APP_SESSION_TIME as unknown as number,
+            expiresIn: process.env
+              .REACT_APP_TOKEN_EXPIRY_TIME as unknown as number,
             refreshTokenExpireIn: process.env
-              .REACT_APP_REFRESH_TOKEN_EXPIRY_TIME as unknown as number,
+              .REACT_APP_SESSION_TIME as unknown as number,
             tokenType: "Bearer",
             authState: authUserDetails,
           })
@@ -76,7 +81,7 @@ const UserLoginForm = () => {
               },
             });
           }
-          window.location.reload(); //temp fix for token
+          // window.location.reload(); //temp fix for token
         }
       },
     });
