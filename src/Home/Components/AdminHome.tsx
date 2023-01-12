@@ -14,6 +14,8 @@ import {
   IFRQEmpsReturnProps,
 } from "../../APIRQHooks/Utility/employeeHooks";
 import { GlobalContext } from "../../Contexts/GlobalContextProvider";
+import { LineChart } from "../../Payroll/Components/LineChart";
+import EmployeeInfoChart from "../../GeneralComps/EmployeeInfoChart";
 
 export const AdminHome = () => {
   const auth = useAuthUser();
@@ -26,6 +28,19 @@ export const AdminHome = () => {
   };
 
   ChartJS.register(ArcElement, Tooltip, Legend);
+  const labels = [
+    "January",
+    "February",
+    "March",
+    "April",
+    "May",
+    "June",
+    "July",
+    "August",
+    "September",
+    "November",
+    "December",
+  ];
 
   const data = {
     // labels: ["Male", "Female", "Other"],
@@ -130,7 +145,9 @@ export const AdminHome = () => {
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 mt-7 gap-y-7 gap-x-5">
-          <div className="col-span-2">Graph</div>
+          <div className="col-span-2 bg-mainBg shadow border rounded-lg p-3 ">
+            <EmployeeInfoChart />
+          </div>
           <div>
             <div className="bg-mainBg shadow border rounded-lg p-3 mb-6 font-medium">
               <h5 className="">Assets Held by You</h5>
