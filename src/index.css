@@ -353,3 +353,29 @@ textarea.ant-input,
 .collapseHeader .ant-collapse-header-text {
   @apply text-base font-medium;
 }
+
+/* Stepper */
+.ant-steps-item-process > .ant-steps-item-container > .ant-steps-item-icon {
+  background: var(--caramel);
+}
+.ant-steps-item-process .ant-steps-item-icon {
+  border-color: var(--caramel);
+}
+.ant-steps-item-finish .ant-steps-item-icon {
+  border-color: var(--caramel);
+}
+.ant-steps-item-finish
+  > .ant-steps-item-container
+  > .ant-steps-item-tail:after {
+  border-color: var(--caramel);
+}
+
+.ant-steps-item-finish
+  > .ant-steps-item-container
+  > .ant-steps-item-tail:after {
+  background-color: var(--caramel);
+}
+
+.ant-steps-item-finish .ant-steps-item-icon > .ant-steps-icon {
+  color: var(--caramel);
+}

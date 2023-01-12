@@ -8,6 +8,11 @@ import {
   IResetUserPProps,
   resetUserPassword,
 } from "../../ApiRequesHelpers/Auth/resetPassword";
+import {
+  REFRESH_TOKEN_EXPIRES_IN,
+  TOKEN_EXPIRES_IN,
+} from "../../Config/refreshTokenApi";
+import { passwordValidationRules } from "../../FormHelpers/validation";
 import { openNotification } from "../../NotificationHelpers";
 
 export const ResetPasswordForm = ({ token, uid }: IVerifyUserProps) => {
@@ -43,9 +48,11 @@ export const ResetPasswordForm = ({ token, uid }: IVerifyUserProps) => {
           signIn({
             token: result.accessToken,
             refreshToken: result.refreshToken,
-            expiresIn: process.env.REACT_APP_SESSION_TIME as unknown as number,
-            refreshTokenExpireIn: process.env
-              .REACT_APP_REFRESH_TOKEN_EXPIRY_TIME as unknown as number,
+            expiresIn: TOKEN_EXPIRES_IN, //log person out after 2 hrs
+            refreshTokenExpireIn: REFRESH_TOKEN_EXPIRES_IN, //should not expire
+            // expiresIn: process.env.REACT_APP_SESSION_TIME as unknown as number,
+            // refreshTokenExpireIn: process.env
+            //   .REACT_APP_SESSION_TIME as unknown as number,
             tokenType: "Bearer",
             authState: authUserDetails,
           })
@@ -67,20 +74,7 @@ export const ResetPasswordForm = ({ token, uid }: IVerifyUserProps) => {
 
   return (
     <Form onFinish={handleSubmit} form={form}>
-      <Form.Item
-        name="password"
-        rules={[
-          {
-            required: true,
-            message: "Field is required",
-          },
-          {
-            min: 6,
-            message: "password must be at least 6 characters",
-          },
-        ]}
-        hasFeedback
-      >
+      <Form.Item name="password" rules={passwordValidationRules} hasFeedback>
         <Input.Password
           prefix={<LockOutlined className="site-form-item-icon pr-1" />}
           placeholder="New Password"
@@ -103,7 +97,7 @@ export const ResetPasswordForm = ({ token, uid }: IVerifyUserProps) => {
                 return Promise.resolve();
               }
               return Promise.reject(
-                "The two passwords that you entered does not match."
+                "The two passwords that you entered do not match."
               );
             },
           }),

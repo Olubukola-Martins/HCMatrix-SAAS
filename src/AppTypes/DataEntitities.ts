@@ -59,7 +59,13 @@ export type TEmployee = {
   employeeID: string;
   designation: TDesignation | string;
   role: TRole | string;
-  status: string;
+  status: TEmployeeStatus;
   email: string;
   department: TDepartment | string;
 };
+
+export type TEmployeeStatus =
+  | "confirmed"
+  | "terminated"
+  | "suspended"
+  | "probation";

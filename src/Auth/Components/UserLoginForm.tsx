@@ -13,6 +13,10 @@ import {
   GlobalContext,
 } from "../../Contexts/GlobalContextProvider";
 import { BeatLoader } from "react-spinners";
+import {
+  TOKEN_EXPIRES_IN,
+  REFRESH_TOKEN_EXPIRES_IN,
+} from "../../Config/refreshTokenApi";
 
 const UserLoginForm = () => {
   const navigate = useNavigate();
@@ -44,6 +48,7 @@ const UserLoginForm = () => {
       },
       onSuccess: (res) => {
         const result = res.data.data;
+        console.log("RESSSSS", res);
 
         const authUserDetails = {
           user: result.user,
@@ -54,9 +59,11 @@ const UserLoginForm = () => {
           signIn({
             token: result.accessToken,
             refreshToken: result.refreshToken,
-            expiresIn: process.env.REACT_APP_SESSION_TIME as unknown as number,
-            refreshTokenExpireIn: process.env
-              .REACT_APP_REFRESH_TOKEN_EXPIRY_TIME as unknown as number,
+            expiresIn: TOKEN_EXPIRES_IN, //log person out after 2 hrs
+            refreshTokenExpireIn: REFRESH_TOKEN_EXPIRES_IN, //should not expire
+            // expiresIn: process.env.REACT_APP_SESSION_TIME as unknown as number,
+            // refreshTokenExpireIn: process.env
+            //   .REACT_APP_SESSION_TIME as unknown as number,
             tokenType: "Bearer",
             authState: authUserDetails,
           })

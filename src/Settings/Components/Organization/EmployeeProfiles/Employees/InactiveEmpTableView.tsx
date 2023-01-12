@@ -3,6 +3,7 @@ import { TEmployee } from "../../../../../AppTypes/DataEntitities";
 import { ColumnsType, TablePaginationConfig } from "antd/lib/table";
 import { TableRowSelection } from "antd/lib/table/interface";
 import { MoreOutlined } from "@ant-design/icons";
+import { employeeStatusColor } from "../../../../../GeneralHelpers/employeeHelpers";
 
 interface IProps {
   employees: TEmployee[];
@@ -23,11 +24,7 @@ const InactiveEmpTableView = ({
       dataIndex: "name",
       key: "name",
     },
-    {
-      title: "Gender",
-      dataIndex: "gender",
-      key: "gender",
-    },
+
     {
       title: "Employee ID",
       dataIndex: "employeeID",
@@ -38,11 +35,7 @@ const InactiveEmpTableView = ({
       dataIndex: "department",
       key: "department",
     },
-    {
-      title: "Designation",
-      dataIndex: "designation",
-      key: "designation",
-    },
+
     {
       title: "Role",
       dataIndex: "role",
@@ -56,9 +49,14 @@ const InactiveEmpTableView = ({
       width: 20,
     },
     {
-      title: "Status",
+      title: "Employee Status",
       dataIndex: "status",
       key: "status",
+      render: (status) => (
+        <span className={`capitalize ${employeeStatusColor(status)}`}>
+          {status}
+        </span>
+      ),
     },
     {
       title: "Action",
@@ -86,7 +84,7 @@ const InactiveEmpTableView = ({
           ...rowSelection,
         }}
         columns={columns}
-        dataSource={employees}
+        dataSource={employees.map((item) => ({ ...item, key: item.id }))}
         scroll={{ x: "max-content" }}
         loading={loading}
         className="mt-5"
