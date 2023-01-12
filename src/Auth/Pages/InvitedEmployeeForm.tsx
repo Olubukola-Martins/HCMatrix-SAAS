@@ -43,9 +43,6 @@ export const InvitedEmployeeForm = () => {
       return accountDetails === null || profileDetails === null;
     }
   };
-console.log(accountDetails);
-console.log(profileDetails);
-
 
   return (
     <div className="Container">
