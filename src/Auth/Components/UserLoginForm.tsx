@@ -17,7 +17,7 @@ import { BeatLoader } from "react-spinners";
 const UserLoginForm = () => {
   const navigate = useNavigate();
   const signIn = useSignIn();
-  const { mutate, isLoading } = useMutation(loginUser);
+  const { mutate, isLoading, isSuccess } = useMutation(loginUser);
   const globalCtx = useContext(GlobalContext);
   const { state: globalState, dispatch: globalDispatch } = globalCtx;
 
@@ -52,9 +52,11 @@ const UserLoginForm = () => {
 
         if (
           signIn({
-            token: result.token,
-            expiresIn: 0,
-            // expiresIn: process.env.REACT_APP_SESSION_TIME as unknown as number,
+            token: result.accessToken,
+            refreshToken: result.refreshToken,
+            expiresIn: process.env.REACT_APP_SESSION_TIME as unknown as number,
+            refreshTokenExpireIn: process.env
+              .REACT_APP_REFRESH_TOKEN_EXPIRY_TIME as unknown as number,
             tokenType: "Bearer",
             authState: authUserDetails,
           })
