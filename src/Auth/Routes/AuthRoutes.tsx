@@ -1,3 +1,4 @@
+import { InvitedEmployeeForm } from "Auth/Pages/InvitedEmployeeForm";
 import { Route, Routes } from "react-router-dom";
 import { EmployeeRegister } from "../Pages/EmployeeRegister";
 import { ForgotPassword } from "../Pages/ForgotPassword";
@@ -14,6 +15,7 @@ const AuthRoutes = () => {
       <Route path="/verify-employee" element={<EmployeeRegister />} />
       <Route path="/forgot-password" element={<ForgotPassword />} />
       <Route path="/reset-password" element={<ResetPassword />} />
+      <Route path="/invited-employee-form" element={<InvitedEmployeeForm />} />
     </Routes>
   );
 };
