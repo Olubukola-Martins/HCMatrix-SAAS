@@ -63,3 +63,9 @@ export type TEmployee = {
   email: string;
   department: TDepartment | string;
 };
+
+export type EmployeeStatus =
+  | "confirmed"
+  | "terminated"
+  | "suspended"
+  | "probation";
