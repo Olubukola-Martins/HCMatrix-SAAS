@@ -43,8 +43,11 @@ const VerificationStatus = ({ token, uid }: IVerifyUserProps) => {
         };
         if (
           signIn({
-            token: result.token,
-            expiresIn: 120000000000,
+            token: result.accessToken,
+            refreshToken: result.refreshToken,
+            expiresIn: process.env.REACT_APP_SESSION_TIME as unknown as number,
+            refreshTokenExpireIn: process.env
+              .REACT_APP_REFRESH_TOKEN_EXPIRY_TIME as unknown as number,
             tokenType: "Bearer",
             authState: authUserDetails,
           })
