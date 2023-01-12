@@ -17,6 +17,7 @@ const refreshApi = createRefresh({
       refreshToken: refreshToken as string,
     })
       .then(({ data }) => {
+        console.log(data, "AUTH");
         return {
           isSuccess: true, // For successful network request isSuccess is true
           newAuthToken: data.newAuthToken,

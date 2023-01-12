@@ -4,6 +4,7 @@ import { useFetchEmployees } from "../../../../../APIRQHooks/Utility/employeeHoo
 import { TEmployee } from "../../../../../AppTypes/DataEntitities";
 import { GlobalContext } from "../../../../../Contexts/GlobalContextProvider";
 import ActiveEmpTableView from "./ActiveEmpTableView";
+import InactiveEmpTableView from "./InactiveEmpTableView";
 
 const InactiveEmployeesContainer = () => {
   const globalCtx = useContext(GlobalContext);
@@ -40,7 +41,7 @@ const InactiveEmployeesContainer = () => {
 
   return (
     <div>
-      <ActiveEmpTableView
+      <InactiveEmpTableView
         rowSelection={{
           type: "checkbox",
           ...rowSelection,
