@@ -91,7 +91,7 @@ export const ResetPasswordForm = ({ token, uid }: IVerifyUserProps) => {
                 return Promise.resolve();
               }
               return Promise.reject(
-                "The two passwords that you entered does not match."
+                "The two passwords that you entered do not match."
               );
             },
           }),

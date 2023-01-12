@@ -58,10 +58,11 @@ const UserLoginForm = () => {
           signIn({
             token: result.accessToken,
             refreshToken: result.refreshToken,
-            expiresIn: process.env
-              .REACT_APP_TOKEN_EXPIRY_TIME as unknown as number,
-            refreshTokenExpireIn: process.env
-              .REACT_APP_SESSION_TIME as unknown as number,
+            expiresIn: 5,
+            refreshTokenExpireIn: 2,
+            // expiresIn: process.env.REACT_APP_SESSION_TIME as unknown as number,
+            // refreshTokenExpireIn: process.env
+            //   .REACT_APP_SESSION_TIME as unknown as number,
             tokenType: "Bearer",
             authState: authUserDetails,
           })

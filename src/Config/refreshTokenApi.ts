@@ -3,8 +3,7 @@ import { createRefresh } from "react-auth-kit";
 import { refreshUserToken } from "../ApiRequesHelpers/Auth";
 
 const refreshApi = createRefresh({
-  interval: process.env
-    .REACT_APP_REFRESH_TOKEN_INTERVAL_TIME as unknown as number, // Refreshs the token in every 10 minutes -> as per env varaiable set
+  interval: 8, // Refreshs the token in every 10 minutes -> as per env varaiable set
   refreshApiCallback: ({
     authToken,
     authTokenExpireAt,
@@ -22,8 +21,7 @@ const refreshApi = createRefresh({
         return {
           isSuccess: true, // For successful network request isSuccess is true
           newAuthToken: result.accessToken,
-          newAuthTokenExpireIn: process.env
-            .REACT_APP_TOKEN_EXPIRY_TIME as unknown as number,
+          newAuthTokenExpireIn: 9,
           // You can also add new refresh token ad new user state
         };
       })
