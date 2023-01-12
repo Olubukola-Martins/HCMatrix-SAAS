@@ -55,7 +55,8 @@ const UserLoginForm = () => {
             token: result.accessToken,
             refreshToken: result.refreshToken,
             expiresIn: process.env.REACT_APP_SESSION_TIME as unknown as number,
-            refreshTokenExpireIn: 10,
+            refreshTokenExpireIn: process.env
+              .REACT_APP_REFRESH_TOKEN_EXPIRY_TIME as unknown as number,
             tokenType: "Bearer",
             authState: authUserDetails,
           })
