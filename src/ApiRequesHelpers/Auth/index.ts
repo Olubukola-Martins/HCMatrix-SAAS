@@ -1,4 +1,5 @@
 import axios from "axios";
+import { ICurrentCompany } from "../../AppTypes/DataEntitities";
 
 export interface IVerifyUserProps {
   token: string;
@@ -12,6 +13,26 @@ export const verifyUserToken = async ({ token, uid }: IVerifyUserProps) => {
   return response;
 };
 
+export interface IRefreshTokenProps {
+  refreshToken: string;
+  token: string;
+}
+export const refreshUserToken = async ({
+  refreshToken,
+  token,
+}: IRefreshTokenProps) => {
+  const url = `${process.env.REACT_APP_AUTHENTICATION_BASE_URL}/authenticate/token/refresh?refreshToken=${refreshToken}
+  `;
+  const config = {
+    headers: {
+      Accept: "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+  };
+  const response = await axios.get(url, config);
+  return response;
+};
+
 export interface IUserLoginProps {
   emailOrEmpUid: string;
   password: string;
@@ -20,7 +41,7 @@ export const loginUser = async (props: IUserLoginProps) => {
   const url = `${process.env.REACT_APP_AUTHENTICATION_BASE_URL}/authenticate`;
 
   // necessary to make immediate changes when in  a central place when schema changes
-  const data = props;
+  const data = { ...props };
 
   const response = await axios.post(url, data);
   return response;
