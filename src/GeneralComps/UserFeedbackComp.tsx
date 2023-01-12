@@ -17,6 +17,7 @@ import {
 } from "../APIRQHooks/Utility/employeeHooks";
 import { EGlobalOps, GlobalContext } from "../Contexts/GlobalContextProvider";
 import Themes from "../Themes/Themes";
+import { RightOutlined } from "@ant-design/icons";
 
 enum EInitialSetUp {
   SET_UP_ROLES = "Set up roles",
@@ -160,60 +161,59 @@ const UserFeedbackComp = () => {
           open={provideFeedback}
           onCancel={() => dismissFeedback()}
           footer={null}
-          style={{ top: 30 }}
+          style={{ top: 30, left: 10 }}
         >
           <Themes>
             <div className="flex flex-col gap-4">
               <div className="flex flex-col gap-4">
-                <h3>Get Started</h3>
-                <h6 className="text-sm  mb-2">
+                <h3 className="text-xl ">Get Started</h3>
+                <p className="text-normal mb-2">
                   {progress !== 100 ? (
                     <span>
                       You are to complete the following steps, in order to
-                      utilize the system" :
+                      utilize the system
                     </span>
                   ) : (
                     <span>
                       Congratulations, on completing the required steps!
                     </span>
                   )}
-                </h6>
+                </p>
               </div>
-              <Progress percent={progress} strokeColor={"#006600"} />
+              <Progress percent={progress} strokeColor={"var(--caramel)"} />
               <div className="flex flex-col gap-2">
                 {provideFeedback && (
-                  <Steps size="small" direction="vertical">
-                    {steps.map((item, index) => (
-                      <Steps.Step
-                        description="Watch Video Tutorial"
-                        key={index}
-                        title={
-                          <div className="flex gap-4 items-center text-sm">
-                            {/* <div
-                              className={`min-h-min min-w-min ${
-                                item.completed ? "bg-[#006600]" : "bg-gray-400"
-                              } flex items-center justify-center  rounded-full text-white p-1 h-4 w-4`}
-                            >
-                              <span className={`block`}>{index + 1}</span>
-                            </div> */}
-                            <Link
-                              to={item.link}
-                              onClick={() => dismissFeedback()}
-                            >
-                              <p
-                                className={`block hover:text-caramel ${
-                                  item.completed &&
-                                  "text-[#006600] line-through"
-                                }`}
-                                title={item.hint}
+                  <Steps
+                    size="small"
+                    direction="vertical"
+                    current={steps.filter((item) => item.completed).length}
+                  >
+                    {steps
+                      .sort((item) => (item.completed ? -1 : 1))
+                      .map((item, index) => (
+                        <Steps.Step
+                          description="Watch Video Tutorial"
+                          key={index}
+                          title={
+                            <div className="flex justify-between  text-sm">
+                              <Link
+                                to={item.link}
+                                onClick={() => dismissFeedback()}
                               >
-                                {item.text}
-                              </p>
-                            </Link>
-                          </div>
-                        }
-                      />
-                    ))}
+                                <p
+                                  className={`block hover:text-caramel ${
+                                    item.completed &&
+                                    "text-caramel line-through"
+                                  }`}
+                                  title={item.hint}
+                                >
+                                  {item.text}
+                                </p>
+                              </Link>
+                            </div>
+                          }
+                        />
+                      ))}
                   </Steps>
                 )}
               </div>

@@ -2,8 +2,13 @@ import axios from "axios";
 import { createRefresh } from "react-auth-kit";
 import { refreshUserToken } from "../ApiRequesHelpers/Auth";
 
+export const TOKEN_EXPIRES_IN = 9;
+export const REFRESH_TOKEN_EXPIRES_IN = 120;
+const REFRESH_TOKEN_INTERVAL = 8;
+const NEW_AUTH_TOKEN_EXPIRES_IN = 9;
+
 const refreshApi = createRefresh({
-  interval: 8, // Refreshs the token in every 10 minutes -> as per env varaiable set
+  interval: REFRESH_TOKEN_INTERVAL, // Refreshs the token in every 10 minutes -> as per env varaiable set
   refreshApiCallback: ({
     authToken,
     authTokenExpireAt,
@@ -21,7 +26,7 @@ const refreshApi = createRefresh({
         return {
           isSuccess: true, // For successful network request isSuccess is true
           newAuthToken: result.accessToken,
-          newAuthTokenExpireIn: 9,
+          newAuthTokenExpireIn: NEW_AUTH_TOKEN_EXPIRES_IN,
           // You can also add new refresh token ad new user state
         };
       })

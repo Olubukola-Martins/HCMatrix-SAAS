@@ -2,10 +2,7 @@ import { LockOutlined, MailOutlined } from "@ant-design/icons";
 import { Form, Input } from "antd";
 import { useMutation } from "react-query";
 import { IUserLoginProps, loginUser } from "../../ApiRequesHelpers/Auth";
-import {
-  passwordValidationRules,
-  textInputValidationRules,
-} from "../../FormHelpers/validation";
+import { textInputValidationRules } from "../../FormHelpers/validation";
 import { LoadingOutlined } from "@ant-design/icons";
 import { openNotification } from "../../NotificationHelpers";
 import { useSignIn } from "react-auth-kit";
@@ -16,6 +13,10 @@ import {
   GlobalContext,
 } from "../../Contexts/GlobalContextProvider";
 import { BeatLoader } from "react-spinners";
+import {
+  TOKEN_EXPIRES_IN,
+  REFRESH_TOKEN_EXPIRES_IN,
+} from "../../Config/refreshTokenApi";
 
 const UserLoginForm = () => {
   const navigate = useNavigate();
@@ -58,8 +59,8 @@ const UserLoginForm = () => {
           signIn({
             token: result.accessToken,
             refreshToken: result.refreshToken,
-            expiresIn: 5,
-            refreshTokenExpireIn: 2,
+            expiresIn: TOKEN_EXPIRES_IN, //log person out after 2 hrs
+            refreshTokenExpireIn: REFRESH_TOKEN_EXPIRES_IN, //should not expire
             // expiresIn: process.env.REACT_APP_SESSION_TIME as unknown as number,
             // refreshTokenExpireIn: process.env
             //   .REACT_APP_SESSION_TIME as unknown as number,
@@ -82,7 +83,7 @@ const UserLoginForm = () => {
               },
             });
           }
-          // window.location.reload(); //temp fix for token
+          window.location.reload(); //temp fix for token
         }
       },
     });

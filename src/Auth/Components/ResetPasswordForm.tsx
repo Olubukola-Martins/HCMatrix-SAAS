@@ -8,6 +8,10 @@ import {
   IResetUserPProps,
   resetUserPassword,
 } from "../../ApiRequesHelpers/Auth/resetPassword";
+import {
+  REFRESH_TOKEN_EXPIRES_IN,
+  TOKEN_EXPIRES_IN,
+} from "../../Config/refreshTokenApi";
 import { passwordValidationRules } from "../../FormHelpers/validation";
 import { openNotification } from "../../NotificationHelpers";
 
@@ -44,9 +48,11 @@ export const ResetPasswordForm = ({ token, uid }: IVerifyUserProps) => {
           signIn({
             token: result.accessToken,
             refreshToken: result.refreshToken,
-            expiresIn: process.env.REACT_APP_SESSION_TIME as unknown as number,
-            refreshTokenExpireIn: process.env
-              .REACT_APP_REFRESH_TOKEN_EXPIRY_TIME as unknown as number,
+            expiresIn: TOKEN_EXPIRES_IN, //log person out after 2 hrs
+            refreshTokenExpireIn: REFRESH_TOKEN_EXPIRES_IN, //should not expire
+            // expiresIn: process.env.REACT_APP_SESSION_TIME as unknown as number,
+            // refreshTokenExpireIn: process.env
+            //   .REACT_APP_SESSION_TIME as unknown as number,
             tokenType: "Bearer",
             authState: authUserDetails,
           })
