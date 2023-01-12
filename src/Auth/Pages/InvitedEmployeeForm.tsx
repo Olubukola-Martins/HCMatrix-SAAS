@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import logo from "Layout/Images/logo2.png";
 import { Steps } from "antd";
 import { CreatePassword } from "Auth/Components/InvitedEmployee/CreatePassword";
-import { PersonalInfo } from "Auth/Components/InvitedEmployee/PersonalInfoOne";
+import { PersonalInfo } from "Auth/Components/InvitedEmployee/PersonalInfo";
 export interface stepperInputProps {
   onFinished: any;
   initialValues: any;
