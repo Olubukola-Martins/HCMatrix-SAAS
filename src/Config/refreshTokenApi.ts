@@ -16,11 +16,13 @@ const refreshApi = createRefresh({
       token: authToken as string,
       refreshToken: refreshToken as string,
     })
-      .then(({ data }) => {
+      .then((res) => {
+        const result = res.data.data;
         return {
           isSuccess: true, // For successful network request isSuccess is true
-          newAuthToken: data.newAuthToken,
-          newAuthTokenExpireIn: data.newAuthTokenExpireIn,
+          newAuthToken: result.accessToken,
+          newAuthTokenExpireIn: process.env
+            .REACT_APP_REFRESH_TOKEN_EXPIRY_TIME as unknown as number,
           // You can also add new refresh token ad new user state
         };
       })
