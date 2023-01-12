@@ -86,7 +86,7 @@ const ActiveEmpTableView = ({
           ...rowSelection,
         }}
         columns={columns}
-        dataSource={employees}
+        dataSource={employees.map((item) => ({ ...item, key: item.id }))}
         scroll={{ x: "max-content" }}
         loading={loading}
         className="mt-5"
