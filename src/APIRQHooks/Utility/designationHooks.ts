@@ -12,6 +12,7 @@ interface IFRQDesignationsProps {
   pagination?: IPaginationProps;
   companyId: string;
   onSuccess?: Function;
+  token: string;
 }
 export interface IFRQDesignationsReturnProps {
   data: TDesignation[];
@@ -21,6 +22,7 @@ export const useFetchDesignations = ({
   pagination,
   companyId,
   onSuccess,
+  token,
 }: IFRQDesignationsProps) => {
   const queryData = useQuery(
     ["designations", pagination?.current, pagination?.limit],
@@ -28,6 +30,7 @@ export const useFetchDesignations = ({
       getDesignations({
         companyId,
         pagination: { limit: pagination?.limit, offset: pagination?.offset },
+        token,
       }),
     {
       // refetchInterval: false,
