@@ -3,8 +3,6 @@ import { ICurrentCompany } from "../../AppTypes/DataEntitities";
 import { IPaginationProps } from "../../AppTypes/Pagination";
 import { ISearchParams } from "../../AppTypes/Search";
 
-const token = localStorage.getItem("hcmatrix_app") as unknown as string;
-
 export type TBulkEmployeeImport = {
   firstName: string;
   lastName: string;
@@ -47,7 +45,7 @@ export const createEmployee = async (props: ICreateEmpProps) => {
   const config = {
     headers: {
       // Accept: "application/json",
-      Authorization: `Bearer ${token}`,
+      Authorization: `Bearer ${props.token}`,
       "x-company-id": props.companyId,
     },
   };
@@ -88,7 +86,7 @@ export const getEmployees = async (props: IGetEmpsProps) => {
   const config = {
     headers: {
       Accept: "application/json",
-      Authorization: `Bearer ${token}`,
+      Authorization: `Bearer ${props.token}`,
       "x-company-id": props.companyId,
     },
   };
