@@ -1,7 +1,5 @@
 import axios from "axios";
 
-const token = localStorage.getItem("hcmatrix_app") as unknown as string;
-
 export interface ICreateCompProps {
   name: string;
   email: string;

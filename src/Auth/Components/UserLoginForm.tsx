@@ -6,7 +6,6 @@ import { textInputValidationRules } from "../../FormHelpers/validation";
 import { LoadingOutlined } from "@ant-design/icons";
 import { openNotification } from "../../NotificationHelpers";
 import { useSignIn } from "react-auth-kit";
-import { useNavigate } from "react-router-dom";
 import { useContext } from "react";
 import {
   EGlobalOps,
@@ -19,9 +18,8 @@ import {
 } from "../../Config/refreshTokenApi";
 
 const UserLoginForm = () => {
-  const navigate = useNavigate();
   const signIn = useSignIn();
-  const { mutate, isLoading, isSuccess } = useMutation(loginUser);
+  const { mutate, isLoading } = useMutation(loginUser);
   const globalCtx = useContext(GlobalContext);
   const { state: globalState, dispatch: globalDispatch } = globalCtx;
 
@@ -48,7 +46,6 @@ const UserLoginForm = () => {
       },
       onSuccess: (res) => {
         const result = res.data.data;
-        console.log("RESSSSS", res);
 
         const authUserDetails = {
           user: result.user,
