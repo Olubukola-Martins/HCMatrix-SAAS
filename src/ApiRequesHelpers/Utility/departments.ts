@@ -3,8 +3,6 @@ import { ICurrentCompany } from "../../AppTypes/DataEntitities";
 import { IPaginationProps } from "../../AppTypes/Pagination";
 import { ISearchParams } from "../../AppTypes/Search";
 
-const token = localStorage.getItem("hcmatrix_app") as unknown as string;
-
 export interface ICreateDepProps extends ICurrentCompany {
   name: string;
   email: string;
@@ -16,7 +14,7 @@ export const createDepartment = async (props: ICreateDepProps) => {
   const config = {
     headers: {
       Accept: "application/json",
-      Authorization: `Bearer ${token}`,
+      Authorization: `Bearer ${props.token}`,
       "x-company-id": props.companyId,
     },
   };
@@ -30,7 +28,7 @@ export const createDepartment = async (props: ICreateDepProps) => {
   if (props.departmentHeadId) data.departmentHeadId = props.departmentHeadId;
   if (props.parentDepartmentId)
     data.parentDepartmentId = props.parentDepartmentId;
-    
+
   const response = await axios.post(url, data, config);
   return response;
 };
@@ -50,7 +48,7 @@ export const getDepartments = async (props: IGetDepsProps) => {
   const config = {
     headers: {
       Accept: "application/json",
-      Authorization: `Bearer ${token}`,
+      Authorization: `Bearer ${props.token}`,
       "x-company-id": props.companyId,
     },
   };
