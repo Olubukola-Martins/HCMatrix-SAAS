@@ -3,8 +3,6 @@ import { ICurrentCompany } from "../../AppTypes/DataEntitities";
 import { IPaginationProps } from "../../AppTypes/Pagination";
 import { ISearchParams } from "../../AppTypes/Search";
 
-const token = localStorage.getItem("hcmatrix_app") as unknown as string;
-
 export interface ICreateDegProps extends ICurrentCompany {
   name: string;
   departmentId: string;
@@ -14,7 +12,7 @@ export const createDesignation = async (props: ICreateDegProps) => {
   const config = {
     headers: {
       Accept: "application/json",
-      Authorization: `Bearer ${token}`,
+      Authorization: `Bearer ${props.token}`,
       "x-company-id": props.companyId,
     },
   };
@@ -43,7 +41,7 @@ export const getDesignations = async (props: IGetDegsProps) => {
   const config = {
     headers: {
       Accept: "application/json",
-      Authorization: `Bearer ${token}`,
+      Authorization: `Bearer ${props.token}`,
       "x-company-id": props.companyId,
     },
   };
