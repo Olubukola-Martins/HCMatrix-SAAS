@@ -7,6 +7,7 @@ import {
   createEmployeeAccount,
   ICreateEmpProps,
 } from "../../ApiRequesHelpers/Auth/employees";
+import { IAuthDets } from "../../AppTypes/Auth";
 import {
   REFRESH_TOKEN_EXPIRES_IN,
   TOKEN_EXPIRES_IN,
@@ -43,7 +44,7 @@ export const EmployeeRegistrationForm = ({
       },
       onSuccess: (res: any) => {
         const result = res.data.data;
-        const authUserDetails = {
+        const authUserDetails: IAuthDets = {
           user: result.user,
           companies: result?.payload,
           userToken: result.accessToken,

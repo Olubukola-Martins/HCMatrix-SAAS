@@ -1,5 +1,5 @@
-import { Form, Input, Modal, Progress, Result, Select, Skeleton } from "antd";
-import React, { useRef, useState } from "react";
+import { Form, Input, Modal, Result, Select, Skeleton } from "antd";
+import { useState } from "react";
 import {
   emailValidationRules,
   generalValidationRules,
@@ -12,16 +12,13 @@ import {
   UserOutlined,
   BankOutlined,
   MailOutlined,
-  PhoneOutlined,
 } from "@ant-design/icons";
-import { useMutation, useQuery } from "react-query";
+import { useMutation } from "react-query";
 import {
   createCompany,
   ICreateCompProps,
 } from "../../ApiRequesHelpers/Utility/company";
-import { getIndustries } from "../../ApiRequesHelpers/Utility/industry";
 import { openNotification } from "../../NotificationHelpers";
-import { TIndustry } from "../../AppTypes/DataEntitities";
 import { LoadingOutlined } from "@ant-design/icons";
 import { Rule } from "antd/lib/form";
 import { BeatLoader } from "react-spinners";
