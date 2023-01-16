@@ -18,6 +18,7 @@ import {
 } from "../../../../ApiRequesHelpers/Utility/employee";
 import { useFetchDepartments } from "../../../../APIRQHooks/Utility/departmentHooks";
 import { useCreateDesignation } from "../../../../APIRQHooks/Utility/designationHooks";
+import { IAuthDets } from "../../../../AppTypes/Auth";
 import { TDepartment } from "../../../../AppTypes/DataEntitities";
 import { ISearchParams } from "../../../../AppTypes/Search";
 import {
@@ -33,7 +34,11 @@ import { openNotification } from "../../../../NotificationHelpers";
 
 const AddDesignationForm = ({ handleClose }: { handleClose: Function }) => {
   const queryClient = useQueryClient();
+  const auth = useAuthUser();
 
+  const authDetails = auth() as unknown as IAuthDets;
+
+  const token = authDetails.userToken;
   const globalCtx = useContext(GlobalContext);
   const { state: globalState, dispatch } = globalCtx;
   const companyId = globalState.currentCompany?.id as unknown as string;
@@ -52,6 +57,7 @@ const AddDesignationForm = ({ handleClose }: { handleClose: Function }) => {
       limit: 100, //temp suppose to allow search
       offset: 0,
     },
+    token,
   });
 
   const { mutate } = useCreateDesignation();
@@ -62,6 +68,7 @@ const AddDesignationForm = ({ handleClose }: { handleClose: Function }) => {
         companyId,
         name: data.name,
         departmentId: data.departmentId,
+        token,
       };
       // return;
       openNotification({

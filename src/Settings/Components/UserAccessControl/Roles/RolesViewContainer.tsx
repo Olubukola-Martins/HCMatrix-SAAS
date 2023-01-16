@@ -1,11 +1,13 @@
 import { TablePaginationConfig } from "antd";
 import { AnimatePresence } from "framer-motion";
 import React, { useContext, useState } from "react";
+import { useAuthUser } from "react-auth-kit";
 import { useQuery } from "react-query";
 import { getRoles } from "../../../../ApiRequesHelpers/Auth/permissions";
 import { getDepartments } from "../../../../ApiRequesHelpers/Utility/departments";
 import { getDesignations } from "../../../../ApiRequesHelpers/Utility/designations";
 import { useFetchRoles } from "../../../../APIRQHooks/Auth/roleHooks";
+import { IAuthDets } from "../../../../AppTypes/Auth";
 import {
   TDepartment,
   TDesignation,
@@ -22,6 +24,11 @@ const RolesViewContainer = () => {
   const handleViewId = (val: React.SetStateAction<string>) => {
     setViewId(val);
   };
+  const auth = useAuthUser();
+
+  const authDetails = auth() as unknown as IAuthDets;
+
+  const token = authDetails.userToken;
   const globalCtx = useContext(GlobalContext);
   const { state: globalState } = globalCtx;
   const companyId = globalState.currentCompany?.id as unknown as string;
@@ -55,6 +62,7 @@ const RolesViewContainer = () => {
       offset,
       current: pagination.current,
     },
+    token,
   });
 
   return (

@@ -1,6 +1,8 @@
 import { TablePaginationConfig, Tooltip } from "antd";
 import { useContext, useEffect, useState } from "react";
+import { useAuthUser } from "react-auth-kit";
 import { useFetchDesignations } from "../../../../APIRQHooks/Utility/designationHooks";
+import { IAuthDets } from "../../../../AppTypes/Auth";
 import { TDataView } from "../../../../AppTypes/Component";
 import { GlobalContext } from "../../../../Contexts/GlobalContextProvider";
 import { ErrorComponent } from "../../../../GeneralComps/ErrorComps";
@@ -13,6 +15,11 @@ const DesignationsViewContainer = () => {
   const handleViewId = (val: TDataView) => {
     setViewId(val);
   };
+  const auth = useAuthUser();
+
+  const authDetails = auth() as unknown as IAuthDets;
+
+  const token = authDetails.userToken;
   const globalCtx = useContext(GlobalContext);
   const { state: globalState } = globalCtx;
   const companyId = globalState.currentCompany?.id as unknown as string;
@@ -55,6 +62,7 @@ const DesignationsViewContainer = () => {
       offset,
       current: pagination.current,
     },
+    token,
   });
 
   // to be able to maitain diff page size per diff view
@@ -69,29 +77,29 @@ const DesignationsViewContainer = () => {
   return (
     <div className="mt-5 flex flex-col gap-4">
       <div className="view-toggler flex rounded overflow-hidden items-center">
-       <Tooltip title="Grid View">
-       <i
-          onClick={() => handleViewId("grid")}
-          className={
-            viewId === "grid"
-              ? "ri-layout-grid-fill text-base text-white bg-caramel px-2 border cursor-pointer"
-              : "ri-layout-grid-fill text-base text-black bg-white px-2 border cursor-pointer"
-          }
-          aria-hidden="true"
-        ></i>
-       </Tooltip>
+        <Tooltip title="Grid View">
+          <i
+            onClick={() => handleViewId("grid")}
+            className={
+              viewId === "grid"
+                ? "ri-layout-grid-fill text-base text-white bg-caramel px-2 border cursor-pointer"
+                : "ri-layout-grid-fill text-base text-black bg-white px-2 border cursor-pointer"
+            }
+            aria-hidden="true"
+          ></i>
+        </Tooltip>
 
-      <Tooltip title="List View">
-      <i
-          className={
-            viewId === "list"
-              ? "ri-list-unordered text-base text-white bg-caramel px-2 border cursor-pointer"
-              : "ri-list-unordered text-base text-black bg-white px-2 border cursor-pointer"
-          }
-          onClick={() => handleViewId("list")}
-          aria-hidden="true"
-        ></i>
-      </Tooltip>
+        <Tooltip title="List View">
+          <i
+            className={
+              viewId === "list"
+                ? "ri-list-unordered text-base text-white bg-caramel px-2 border cursor-pointer"
+                : "ri-list-unordered text-base text-black bg-white px-2 border cursor-pointer"
+            }
+            onClick={() => handleViewId("list")}
+            aria-hidden="true"
+          ></i>
+        </Tooltip>
       </div>
       <div className="content overflow-y-hidden relative">
         {!isSuccess && !isError && <DataContainerLoader />}
