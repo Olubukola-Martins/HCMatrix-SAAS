@@ -10,6 +10,7 @@ import {
 } from "antd";
 import { CheckboxValueType } from "antd/es/checkbox/Group";
 import React, { useContext, useState } from "react";
+import { useAuthUser } from "react-auth-kit";
 import { useMutation, useQuery, useQueryClient } from "react-query";
 import { BeatLoader } from "react-spinners";
 import {
@@ -20,6 +21,7 @@ import {
   useCreateRole,
   useFetchPermissions,
 } from "../../../../APIRQHooks/Auth/permissionHooks";
+import { IAuthDets } from "../../../../AppTypes/Auth";
 import {
   TPermission,
   TPermissionCategory,
@@ -36,6 +38,11 @@ import { openNotification } from "../../../../NotificationHelpers";
 
 const CreateRoleForm = () => {
   const queryClient = useQueryClient();
+  const auth = useAuthUser();
+
+  const authDetails = auth() as unknown as IAuthDets;
+
+  const token = authDetails.userToken;
 
   const globalCtx = useContext(GlobalContext);
   const { state: globalState, dispatch } = globalCtx;
@@ -50,6 +57,7 @@ const CreateRoleForm = () => {
     isSuccess: isPSuccess,
   } = useFetchPermissions({
     companyId,
+    token,
   });
 
   const handleSearch = (e: any) => {
@@ -69,6 +77,7 @@ const CreateRoleForm = () => {
         companyId,
         name: data.name,
         permissionIds: data.permissionIds,
+        token,
       };
       // return;
       openNotification({
