@@ -3,9 +3,9 @@ import { createRefresh } from "react-auth-kit";
 import { refreshUserToken } from "../ApiRequesHelpers/Auth";
 
 export const TOKEN_EXPIRES_IN = 120;
-export const REFRESH_TOKEN_EXPIRES_IN = 120;
-const REFRESH_TOKEN_INTERVAL = 8;
-const NEW_AUTH_TOKEN_EXPIRES_IN = 9;
+export const REFRESH_TOKEN_EXPIRES_IN = 5;
+const REFRESH_TOKEN_INTERVAL = 2;
+const NEW_AUTH_TOKEN_EXPIRES_IN = 9; // exprmnt -  but should be what determines how long user stays if there is/isn't active
 
 const refreshApi = createRefresh({
   interval: REFRESH_TOKEN_INTERVAL, // Refreshs the token in every 10 minutes -> as per env varaiable set
@@ -22,7 +22,6 @@ const refreshApi = createRefresh({
     })
       .then((res) => {
         const result = res.data.data;
-        console.log("REFRESH", res);
         return {
           isSuccess: true, // For successful network request isSuccess is true
           newAuthToken: result.accessToken,
