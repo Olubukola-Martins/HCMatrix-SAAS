@@ -50,6 +50,7 @@ const UserLoginForm = () => {
         const authUserDetails = {
           user: result.user,
           companies: result?.payload,
+          userToken: result.accessToken,
         };
 
         if (
