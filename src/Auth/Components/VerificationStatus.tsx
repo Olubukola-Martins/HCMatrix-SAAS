@@ -44,6 +44,7 @@ const VerificationStatus = ({ token, uid }: IVerifyUserProps) => {
         const authUserDetails = {
           user: result.user,
           companies: result?.payload,
+          userToken: result.accessToken,
         };
         if (
           signIn({
