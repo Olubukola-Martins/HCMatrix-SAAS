@@ -70,7 +70,9 @@ const RoleBox = ({ data }: { data: TRole }) => {
                   Lorem, ipsum dolor sit amet consectetur adipisicing elit. Unde
                   sequi maiores .
                 </p>
-                <Link to="/settings/roles/create" className="button">Next</Link>
+                <Link to="/settings/roles/create" className="button">
+                  Next
+                </Link>
               </div>
             }
           >
