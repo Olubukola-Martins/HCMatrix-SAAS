@@ -16,6 +16,7 @@ import {
   TOKEN_EXPIRES_IN,
   REFRESH_TOKEN_EXPIRES_IN,
 } from "../../Config/refreshTokenApi";
+import { IAuthDets } from "../../AppTypes/Auth";
 
 const UserLoginForm = () => {
   const signIn = useSignIn();
@@ -47,7 +48,7 @@ const UserLoginForm = () => {
       onSuccess: (res) => {
         const result = res.data.data;
 
-        const authUserDetails = {
+        const authUserDetails: IAuthDets = {
           user: result.user,
           companies: result?.payload,
           userToken: result.accessToken,
