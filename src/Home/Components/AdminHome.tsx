@@ -17,6 +17,7 @@ import { GlobalContext } from "../../Contexts/GlobalContextProvider";
 import { LineChart } from "../../Payroll/Components/LineChart";
 import EmployeeInfoChart from "../../GeneralComps/EmployeeInfoChart";
 import { IAuthDets } from "../../AppTypes/Auth";
+import { pluralOrSingular } from "../../GeneralHelpers";
 
 export const AdminHome = () => {
   const auth = useAuthUser();
@@ -88,9 +89,11 @@ export const AdminHome = () => {
                 <h4 className="text-base text-gray-500">Total Employee</h4>
                 <h2 className="font-semibold text-base md:text-lg">
                   {isEmpSuccess &&
-                    `${
-                      empData.total > 1 ? empData.total + " people" : "1 person"
-                    }`}
+                    `${pluralOrSingular({
+                      amount: empData.total,
+                      singular: "employee",
+                      plural: "employees",
+                    })}`}
                 </h2>
               </div>
               <div className="flex justify-center">

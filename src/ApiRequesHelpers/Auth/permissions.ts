@@ -3,7 +3,6 @@ import { ICurrentCompany } from "../../AppTypes/DataEntitities";
 import { IPaginationProps } from "../../AppTypes/Pagination";
 import { ISearchParams } from "../../AppTypes/Search";
 
-const token = localStorage.getItem("hcmatrix_app") as unknown as string;
 export interface ICreateRoleProps extends ICurrentCompany {
   name: string;
   permissionIds: number[];
@@ -13,7 +12,7 @@ export const createRole = async (props: ICreateRoleProps) => {
   const config = {
     headers: {
       Accept: "application/json",
-      Authorization: `Bearer ${token}`,
+      Authorization: `Bearer ${props.token}`,
       "x-company-id": props.companyId,
     },
   };
@@ -41,7 +40,7 @@ export const getPermissions = async (props: IGetPemProps) => {
   const config = {
     headers: {
       Accept: "application/json",
-      Authorization: `Bearer ${token}`,
+      Authorization: `Bearer ${props.token}`,
       "x-company-id": props.companyId,
     },
   };
@@ -64,7 +63,7 @@ export const getRoles = async (props: IGetRolesProps) => {
   const config = {
     headers: {
       Accept: "application/json",
-      Authorization: `Bearer ${token}`,
+      Authorization: `Bearer ${props.token}`,
       "x-company-id": props.companyId,
     },
   };

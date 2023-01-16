@@ -82,7 +82,7 @@ const UserLoginForm = () => {
               },
             });
           }
-          window.location.reload(); //temp fix for token
+          // window.location.reload(); //temp fix for token -> fix done(refactored to use token not local storage)
         }
       },
     });
