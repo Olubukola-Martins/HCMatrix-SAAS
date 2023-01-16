@@ -12,12 +12,14 @@ import {
   Spin,
 } from "antd";
 import { useContext } from "react";
+import { useAuthUser } from "react-auth-kit";
 import { useMutation } from "react-query";
 import { ICreateEmpProps } from "../../../../ApiRequesHelpers/Utility/employee";
 import { useFetchRoles } from "../../../../APIRQHooks/Auth/roleHooks";
 import { useFetchDepartments } from "../../../../APIRQHooks/Utility/departmentHooks";
 import { useFetchDesignations } from "../../../../APIRQHooks/Utility/designationHooks";
 import { useCreateEmployee } from "../../../../APIRQHooks/Utility/employees";
+import { IAuthDets } from "../../../../AppTypes/Auth";
 import { GlobalContext } from "../../../../Contexts/GlobalContextProvider";
 import {
   generalValidationRules,
@@ -33,6 +35,11 @@ const jobRoles = ["Payroll Approval"];
 const lineMgt = ["Godswill Omenuko", "Isaac Odeh"];
 
 export const AddEmployee = () => {
+  const auth = useAuthUser();
+
+  const authDetails = auth() as unknown as IAuthDets;
+
+  const token = authDetails.userToken;
   const globalCtx = useContext(GlobalContext);
   const { state: globalState } = globalCtx;
   const companyId = globalState.currentCompany?.id as unknown as string;
@@ -48,6 +55,7 @@ export const AddEmployee = () => {
       limit: 100, //temp suppose to allow search
       offset: 0,
     },
+    token,
   });
   const {
     data: roleData,
@@ -59,6 +67,7 @@ export const AddEmployee = () => {
       limit: 100, //temp suppose to allow search
       offset: 0,
     },
+    token,
   });
 
   const handleAction = (
@@ -86,6 +95,7 @@ export const AddEmployee = () => {
   const handleSubmit = (data: any) => {
     if (companyId) {
       const props: ICreateEmpProps = {
+        token,
         companyId,
         firstName: data.firstName,
         lastName: data.lastName,
