@@ -8,6 +8,7 @@ import { openNotification } from "../../NotificationHelpers";
 interface IFRQDataProps {
   pagination?: IPaginationProps;
   companyId: string;
+  token: string;
   onSuccess?: Function;
 }
 export interface IFRQRoleReturnProps {
@@ -18,6 +19,7 @@ export const useFetchRoles = ({
   pagination,
   companyId,
   onSuccess,
+  token,
 }: IFRQDataProps) => {
   const queryData = useQuery(
     ["roles", pagination?.current],
@@ -25,6 +27,7 @@ export const useFetchRoles = ({
       getRoles({
         companyId,
         pagination: { limit: pagination?.limit, offset: pagination?.offset },
+        token,
       }),
     {
       // refetchInterval: false,

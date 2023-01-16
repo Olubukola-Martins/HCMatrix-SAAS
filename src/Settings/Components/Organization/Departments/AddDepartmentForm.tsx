@@ -4,6 +4,7 @@ import { useAuthUser } from "react-auth-kit";
 import { useQueryClient } from "react-query";
 import { ICreateDepProps } from "../../../../ApiRequesHelpers/Utility/departments";
 import { useCreateDepartment } from "../../../../APIRQHooks/Utility/departmentHooks";
+import { IAuthDets } from "../../../../AppTypes/Auth";
 import {
   EGlobalOps,
   GlobalContext,
@@ -18,9 +19,9 @@ const AddDepartmentForm = ({ handleClose }: { handleClose: Function }) => {
   const queryClient = useQueryClient();
   const auth = useAuthUser();
 
-  const authDetails = auth();
+  const authDetails = auth() as unknown as IAuthDets;
 
-  const user = authDetails?.user;
+  const token = authDetails.userToken;
   const globalCtx = useContext(GlobalContext);
   const { state: globalState, dispatch } = globalCtx;
   const companyId = globalState.currentCompany?.id;
@@ -35,6 +36,7 @@ const AddDepartmentForm = ({ handleClose }: { handleClose: Function }) => {
         email: data.email,
         departmentHeadId: data.departmentHeadId,
         parentDepartmentId: data.parentDepartmentId,
+        token,
       };
       // return;
       openNotification({

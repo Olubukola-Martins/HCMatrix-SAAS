@@ -16,10 +16,15 @@ import {
 import { GlobalContext } from "../../Contexts/GlobalContextProvider";
 import { LineChart } from "../../Payroll/Components/LineChart";
 import EmployeeInfoChart from "../../GeneralComps/EmployeeInfoChart";
+import { IAuthDets } from "../../AppTypes/Auth";
+import { pluralOrSingular } from "../../GeneralHelpers";
 
 export const AdminHome = () => {
   const auth = useAuthUser();
-  const authDetails = auth();
+
+  const authDetails = auth() as unknown as IAuthDets;
+
+  const token = authDetails.userToken;
   const user = authDetails?.user;
   const [openId, setOpenId] = useState("");
 
@@ -62,6 +67,7 @@ export const AdminHome = () => {
   const companyId = globalState.currentCompany?.id as unknown as string;
   const { isSuccess: isEmpSuccess, data: empData } = useFetchEmployees({
     companyId,
+    token,
     pagination: {
       limit: 100, //temp suppose to allow search
       offset: 0,
@@ -83,9 +89,11 @@ export const AdminHome = () => {
                 <h4 className="text-base text-gray-500">Total Employee</h4>
                 <h2 className="font-semibold text-base md:text-lg">
                   {isEmpSuccess &&
-                    `${
-                      empData.total > 1 ? empData.total + " people" : "1 person"
-                    }`}
+                    `${pluralOrSingular({
+                      amount: empData.total,
+                      singular: "employee",
+                      plural: "employees",
+                    })}`}
                 </h2>
               </div>
               <div className="flex justify-center">

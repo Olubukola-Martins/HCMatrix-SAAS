@@ -14,6 +14,7 @@ import {
   TOKEN_EXPIRES_IN,
   REFRESH_TOKEN_EXPIRES_IN,
 } from "../../Config/refreshTokenApi";
+import { IAuthDets } from "../../AppTypes/Auth";
 
 const VerificationStatus = ({ token, uid }: IVerifyUserProps) => {
   const globalCtx = useContext(GlobalContext);
@@ -21,7 +22,7 @@ const VerificationStatus = ({ token, uid }: IVerifyUserProps) => {
 
   const navigate = useNavigate();
   const signIn = useSignIn();
-  const { data, isError, isFetching, isSuccess } = useQuery(
+  const { isError, isSuccess } = useQuery(
     "user-auth-details",
     () => verifyUserToken({ token, uid }),
     {
@@ -41,9 +42,10 @@ const VerificationStatus = ({ token, uid }: IVerifyUserProps) => {
       onSuccess: (res: any) => {
         const result = res.data.data;
 
-        const authUserDetails = {
+        const authUserDetails: IAuthDets = {
           user: result.user,
           companies: result?.payload,
+          userToken: result.accessToken,
         };
         if (
           signIn({

@@ -1,6 +1,6 @@
 import axios from "axios";
 import { ICurrentCompany } from "../../AppTypes/DataEntitities";
-const token = localStorage.getItem("hcmatrix_app") as unknown as string;
+
 export interface ICreateSisterCompProps extends ICurrentCompany {
   name: string;
   email: string;
@@ -12,7 +12,7 @@ export const createSisterCompany = async (props: ICreateSisterCompProps) => {
   const config = {
     headers: {
       Accept: "application/json",
-      Authorization: `Bearer ${token}`,
+      Authorization: `Bearer ${props.token}`,
       "x-company-id": props.companyId,
     },
   };

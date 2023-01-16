@@ -14,6 +14,7 @@ interface IFRQDepartmentsProps {
   pagination?: IPaginationProps;
   companyId: string;
   onSuccess?: Function;
+  token: string;
 }
 export interface IFRQDepartmentsReturnProps {
   data: TDepartment[];
@@ -24,6 +25,7 @@ export const useFetchDepartments = ({
   pagination,
   companyId,
   onSuccess,
+  token,
 }: IFRQDepartmentsProps) => {
   const queryData = useQuery(
     ["departments", pagination?.current, pagination?.limit],
@@ -31,6 +33,7 @@ export const useFetchDepartments = ({
       getDepartments({
         companyId,
         pagination: { limit: pagination?.limit, offset: pagination?.offset },
+        token,
       }),
     {
       // refetchInterval: false,

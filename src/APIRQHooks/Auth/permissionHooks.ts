@@ -10,6 +10,7 @@ import { openNotification } from "../../NotificationHelpers";
 
 interface IFRQDepartmentsProps {
   companyId: string;
+  token: string;
 }
 
 interface ICategory {
@@ -21,12 +22,16 @@ interface IFRQDepartmentsReturnProps {
   permissions: TPermission[];
   categories: ICategory[];
 }
-export const useFetchPermissions = ({ companyId }: IFRQDepartmentsProps) => {
+export const useFetchPermissions = ({
+  companyId,
+  token,
+}: IFRQDepartmentsProps) => {
   const queryData = useQuery(
     ["permissions"],
     () =>
       getPermissions({
         companyId,
+        token,
       }),
     {
       // refetchInterval: false,

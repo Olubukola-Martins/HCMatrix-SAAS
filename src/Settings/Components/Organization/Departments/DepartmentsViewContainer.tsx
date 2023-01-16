@@ -1,9 +1,11 @@
 import { TablePaginationConfig, Tooltip } from "antd";
 import { AnimatePresence } from "framer-motion";
 import React, { useContext, useEffect, useState } from "react";
+import { useAuthUser } from "react-auth-kit";
 import { useQuery, useQueryClient } from "react-query";
 import { getDepartments } from "../../../../ApiRequesHelpers/Utility/departments";
 import { useFetchDepartments } from "../../../../APIRQHooks/Utility/departmentHooks";
+import { IAuthDets } from "../../../../AppTypes/Auth";
 import { TDataView } from "../../../../AppTypes/Component";
 import { TDepartment } from "../../../../AppTypes/DataEntitities";
 import { GlobalContext } from "../../../../Contexts/GlobalContextProvider";
@@ -18,6 +20,11 @@ const DepartmentsViewContainer = () => {
   const handleViewId = (val: TDataView) => {
     setViewId(val);
   };
+  const auth = useAuthUser();
+
+  const authDetails = auth() as unknown as IAuthDets;
+
+  const token = authDetails.userToken;
   const globalCtx = useContext(GlobalContext);
   const { state: globalState } = globalCtx;
   const companyId = globalState.currentCompany?.id as unknown as string;
@@ -53,6 +60,7 @@ const DepartmentsViewContainer = () => {
     isFetching,
     isSuccess,
   } = useFetchDepartments({
+    token,
     companyId,
     pagination: {
       limit: pagination.pageSize,

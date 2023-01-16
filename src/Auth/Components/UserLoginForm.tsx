@@ -6,7 +6,6 @@ import { textInputValidationRules } from "../../FormHelpers/validation";
 import { LoadingOutlined } from "@ant-design/icons";
 import { openNotification } from "../../NotificationHelpers";
 import { useSignIn } from "react-auth-kit";
-import { useNavigate } from "react-router-dom";
 import { useContext } from "react";
 import {
   EGlobalOps,
@@ -17,11 +16,11 @@ import {
   TOKEN_EXPIRES_IN,
   REFRESH_TOKEN_EXPIRES_IN,
 } from "../../Config/refreshTokenApi";
+import { IAuthDets } from "../../AppTypes/Auth";
 
 const UserLoginForm = () => {
-  const navigate = useNavigate();
   const signIn = useSignIn();
-  const { mutate, isLoading, isSuccess } = useMutation(loginUser);
+  const { mutate, isLoading } = useMutation(loginUser);
   const globalCtx = useContext(GlobalContext);
   const { state: globalState, dispatch: globalDispatch } = globalCtx;
 
@@ -48,11 +47,11 @@ const UserLoginForm = () => {
       },
       onSuccess: (res) => {
         const result = res.data.data;
-        console.log("RESSSSS", res);
 
-        const authUserDetails = {
+        const authUserDetails: IAuthDets = {
           user: result.user,
           companies: result?.payload,
+          userToken: result.accessToken,
         };
 
         if (
@@ -83,7 +82,7 @@ const UserLoginForm = () => {
               },
             });
           }
-          window.location.reload(); //temp fix for token
+          // window.location.reload(); //temp fix for token -> fix done(refactored to use token not local storage)
         }
       },
     });

@@ -10,7 +10,6 @@ import { ReactQueryDevtools } from "react-query/devtools";
 import HomeRoute from "./Home/HomeRoute";
 import { AuthProvider } from "react-auth-kit";
 import { Notification } from "./Notifications/Notification";
-import NotFoundPage from "./Layout/Components/NotFoundPage";
 import GlobalContextProvider from "./Contexts/GlobalContextProvider";
 import { useEffect } from "react";
 import UserFeedbackContainer from "./GeneralComps/UserFeedbackContainer";

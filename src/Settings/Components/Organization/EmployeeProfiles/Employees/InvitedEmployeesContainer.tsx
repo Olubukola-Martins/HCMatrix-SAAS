@@ -1,12 +1,19 @@
 import { TablePaginationConfig } from "antd";
 import React, { useContext, useState } from "react";
+import { useAuthUser } from "react-auth-kit";
 import { useFetchEmployees } from "../../../../../APIRQHooks/Utility/employeeHooks";
+import { IAuthDets } from "../../../../../AppTypes/Auth";
 import { TEmployee } from "../../../../../AppTypes/DataEntitities";
 import { GlobalContext } from "../../../../../Contexts/GlobalContextProvider";
 import ActiveEmpTableView from "./ActiveEmpTableView";
 import InvitedEmpTableView from "./InvitedEmpTableView";
 
 const InvitedEmployeesContainer = () => {
+  const auth = useAuthUser();
+
+  const authDetails = auth() as unknown as IAuthDets;
+
+  const token = authDetails.userToken;
   const globalCtx = useContext(GlobalContext);
   const { state: globalState } = globalCtx;
   const companyId = globalState.currentCompany?.id as unknown as string;
@@ -33,6 +40,7 @@ const InvitedEmployeesContainer = () => {
       offset,
       current: pagination.current,
     },
+    token,
   });
 
   const rowSelection = {

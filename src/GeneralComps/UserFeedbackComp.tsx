@@ -1,5 +1,6 @@
 import { Modal, Progress, Steps } from "antd";
 import React, { useContext, useEffect, useState } from "react";
+import { useAuthUser } from "react-auth-kit";
 import { useFetchRoles } from "../APIRQHooks/Auth/roleHooks";
 import {
   IFRQDepartmentsReturnProps,
@@ -13,6 +14,7 @@ import {
   IFRQEmpsReturnProps,
   useFetchEmployees,
 } from "../APIRQHooks/Utility/employeeHooks";
+import { IAuthDets } from "../AppTypes/Auth";
 import { EGlobalOps, GlobalContext } from "../Contexts/GlobalContextProvider";
 import Themes from "../Themes/Themes";
 import FeedBackTitle, { EInitialSetUp, TSetupStep } from "./FeedBackTitle";
@@ -45,6 +47,11 @@ const initialsetUpSteps: TSetupStep[] = [
 ];
 
 const UserFeedbackComp = () => {
+  const auth = useAuthUser();
+
+  const authDetails = auth() as unknown as IAuthDets;
+
+  const token = authDetails.userToken;
   const [progress, setProgress] = useState(0);
   const [steps, setSteps] = useState(initialsetUpSteps);
   const globalCtx = useContext(GlobalContext);
@@ -57,6 +64,7 @@ const UserFeedbackComp = () => {
 
   const { isSuccess: isDepSuccess } = useFetchDepartments({
     companyId,
+    token,
     pagination: {
       limit: 100, //temp suppose to allow search
       offset: 0,
@@ -75,6 +83,7 @@ const UserFeedbackComp = () => {
   });
   const { isSuccess: isDegSuccess } = useFetchDesignations({
     companyId,
+    token,
     pagination: {
       limit: 100, //temp suppose to allow search
       offset: 0,
@@ -93,6 +102,7 @@ const UserFeedbackComp = () => {
   });
   const { isSuccess: isRoleSuccess } = useFetchRoles({
     companyId,
+    token,
     pagination: {
       limit: 100, //temp suppose to allow search
       offset: 0,
@@ -111,6 +121,7 @@ const UserFeedbackComp = () => {
   });
   const { isSuccess: isEmpSuccess } = useFetchEmployees({
     companyId,
+    token,
     pagination: {
       limit: 100, //temp suppose to allow search
       offset: 0,

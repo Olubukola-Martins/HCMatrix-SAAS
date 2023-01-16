@@ -11,6 +11,7 @@ export type TCountry = {
 
 export interface ICurrentCompany {
   companyId: string;
+  token: string;
 }
 
 export type THoliday = {

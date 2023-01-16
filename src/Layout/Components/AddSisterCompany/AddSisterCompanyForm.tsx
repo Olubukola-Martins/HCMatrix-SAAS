@@ -1,5 +1,6 @@
 import { Form, Input, Modal, Select } from "antd";
 import { useContext, useState } from "react";
+import { useAuthUser } from "react-auth-kit";
 import { useMutation, useQuery } from "react-query";
 import { BeatLoader } from "react-spinners";
 import { getIndustries } from "../../../ApiRequesHelpers/Utility/industry";
@@ -7,6 +8,7 @@ import {
   createSisterCompany,
   ICreateSisterCompProps,
 } from "../../../ApiRequesHelpers/Utility/sisterCompany";
+import { IAuthDets } from "../../../AppTypes/Auth";
 import { IModalProps } from "../../../AppTypes/Component";
 import { TIndustry } from "../../../AppTypes/DataEntitities";
 import { GlobalContext } from "../../../Contexts/GlobalContextProvider";
@@ -16,7 +18,13 @@ import {
 } from "../../../FormHelpers/validation";
 import { phoneCodeList } from "../../../Helpers/phoneCodeList";
 import { openNotification } from "../../../NotificationHelpers";
+
 export const AddSisterCompanyForm = ({ open, handleClose }: IModalProps) => {
+  const auth = useAuthUser();
+
+  const authDetails = auth() as unknown as IAuthDets;
+
+  const token = authDetails.userToken;
   const globalCtx = useContext(GlobalContext);
   const { state: globalState } = globalCtx;
   const parentCompanyName = globalState.currentCompany?.name;
@@ -57,6 +65,7 @@ export const AddSisterCompanyForm = ({ open, handleClose }: IModalProps) => {
   const handleSubmit = (data: any) => {
     if (companyId) {
       const props: ICreateSisterCompProps = {
+        token,
         companyId,
         name: data.name,
         email: data.email,
