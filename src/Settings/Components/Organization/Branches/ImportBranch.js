@@ -9,7 +9,7 @@ const steps = [
   "Handle duplicate",
 ];
 
-const ImportLocation = ({ handleDrawer }) => {
+const ImportBranch = ({ handleDrawer }) => {
   return (
     <motion.div
       initial={{ x: 500 }}
@@ -48,7 +48,7 @@ const ImportLocation = ({ handleDrawer }) => {
         <div>
           <label style={{ fontSize: 17 }}>Import data for:</label>
           <select required>
-            <option value="">Location</option>
+            <option value="">Branch</option>
             <option value="1">Nigeria</option>
             <option value="2">Ghana</option>
           </select>
@@ -56,7 +56,7 @@ const ImportLocation = ({ handleDrawer }) => {
         <div className="my-3">
           <label style={{ fontSize: 17 }}>Import based on:</label>
           <select required>
-            <option value="">Location Name</option>
+            <option value="">Branch Name</option>
             <option value="1">Nigeria</option>
             <option value="2">Ghana</option>
           </select>
@@ -102,4 +102,4 @@ const ImportLocation = ({ handleDrawer }) => {
   );
 };
 
-export default ImportLocation;
+export default ImportBranch;

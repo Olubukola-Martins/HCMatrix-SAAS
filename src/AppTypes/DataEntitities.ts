@@ -9,6 +9,19 @@ export type TCountry = {
   code: string;
 };
 
+export type TState = {
+  id: number;
+  name: string;
+  countryId: number;
+};
+
+export type TLga = {
+  id: number;
+  name: string;
+  stateId: number;
+};
+
+
 export interface ICurrentCompany {
   companyId: string;
   token: string;

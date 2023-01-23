@@ -1,13 +1,13 @@
 import { AnimatePresence } from "framer-motion";
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
+import AddBranch from "Settings/Components/Organization/Branches/AddBranch";
+import { BranchGridView } from "Settings/Components/Organization/Branches/BranchGridView";
+import { BranchTableView } from "Settings/Components/Organization/Branches/BranchTableView";
+import ImportBranch from "Settings/Components/Organization/Branches/ImportBranch";
 import DashboardLayout from "../../../../Layout/DashboardLayout";
-import AddLocation from "../../../Components/Organization/Locations/AddLocation";
-import ImportLocation from "../../../Components/Organization/Locations/ImportLocation";
-import { LocationGridView } from "../../../Components/Organization/Locations/LocationGridView";
-import { LocationTableView } from "../../../Components/Organization/Locations/LocationTableView";
 
-const Location = () => {
+const Branches = () => {
   const [showDraggableDrawer, setShowDraggableDrawer] = useState("");
   const [switchView, setSwitchView] = useState(true);
 
@@ -19,23 +19,23 @@ const Location = () => {
             <Link to="/settings">
               <i className="ri-arrow-left-line text-xl cursor-pointer hover:text-caramel"></i>
             </Link>
-            <h5 className="text-lg">Work Location</h5>
+            <h5 className="text-lg">Work Branch</h5>
           </div>
 
           <div className="bg-card flex flex-col lg:flex-row gap-4 lg:justify-between lg:items-center p-3 rounded-md">
             <p className="text-sm md:text-base text-accent">
-              Create multiple locations for your organization and manage
-              location details
+              Create multiple branches for your organization and manage
+              branch details
             </p>
             <div className="flex items-center gap-3">
               <button
                 onClick={() => setShowDraggableDrawer("filter")}
                 className="py-1 px-2 bg-caramel rounded text-sm text-white font-medium"
               >
-                Add location
+                Add branch
               </button>
               <button
-                onClick={() => setShowDraggableDrawer("importLocation")}
+                onClick={() => setShowDraggableDrawer("importBranch")}
                 className="py-1 px-2 bg-transparent rounded text-sm text-accent border border-slate-200 hover:border-slate-400 font-medium transition ease-in-out duration-300"
               >
                 Import
@@ -66,16 +66,16 @@ const Location = () => {
           </div>
           <AnimatePresence>
             {showDraggableDrawer === "filter" && (
-              <AddLocation handleDrawer={() => setShowDraggableDrawer("")} />
+              <AddBranch handleDrawer={() => setShowDraggableDrawer("")} />
             )}
-            {showDraggableDrawer === "importLocation" && (
-              <ImportLocation handleDrawer={() => setShowDraggableDrawer("")} />
+            {showDraggableDrawer === "importBranch" && (
+              <ImportBranch handleDrawer={() => setShowDraggableDrawer("")} />
             )}
           </AnimatePresence>
 
           {/* main body */}
           <div className="mt-10 min-h-screen">
-            {switchView ? <LocationGridView /> : <LocationTableView />}
+            {switchView ? <BranchGridView /> : <BranchTableView />}
           </div>
         </div>
       </div>
@@ -83,4 +83,4 @@ const Location = () => {
   );
 };
 
-export default Location;
+export default Branches;

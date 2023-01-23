@@ -1,12 +1,12 @@
 import React from "react";
 
-export const LocationTableView = () => {
+export const BranchTableView = () => {
   return (
     <div>
       <table className="w-full text-center text-accent;">
         <thead>
           <tr className="border-b border-accent">
-            <th className="p-3">Location Name</th>
+            <th className="p-3">Branch Name</th>
             <th className="p-3">Number of employee</th>
             <th className="p-3">Country</th>
             <th className="p-3">Mail Alias</th>

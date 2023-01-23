@@ -181,6 +181,8 @@ const CompanyRegistrationForm = () => {
               autoComplete="username"
             />
           </Form.Item>
+
+
           <Form.Item name="phone" hasFeedback>
             <Input.Group compact>
               <Form.Item
@@ -216,6 +218,9 @@ const CompanyRegistrationForm = () => {
               </Form.Item>
             </Input.Group>
           </Form.Item>
+
+
+          
           <Form.Item
             name="password"
             rules={passwordValidationRules}

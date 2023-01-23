@@ -21,6 +21,9 @@ export const InvitedEmployeeForm = () => {
   const onFinishProfileForm = (values: React.SetStateAction<null>) => {
     setProfileDetails(values);
   };
+
+  console.log(profileDetails);
+  
   const forms = [
     <CreatePassword
       onFinished={onFinishLoginForm}
