@@ -7,7 +7,8 @@ import {
   Switch,
   Typography,
 } from "antd";
-import React, { useContext } from "react";
+import TransferOwnership from "Layout/Components/TransferOwnership";
+import React, { useContext, useState } from "react";
 import { useAuthUser } from "react-auth-kit";
 import { GlobalContext } from "../../../../Contexts/GlobalContextProvider";
 
@@ -15,10 +16,9 @@ const parentCompStyle = "grid md:grid-cols-2 border-0 border-b gap-4 py-2";
 const compStyle = "flex flex-col gap-2 items-start";
 
 const CompanySettingsForm = () => {
+  const [transferOwnershipModal, setTransferOwnershipModal] = useState(false);
   const auth = useAuthUser();
-
   const authDetails = auth();
-
   const companies = authDetails?.companies;
   const globalCtx = useContext(GlobalContext);
   const { state: globalState } = globalCtx;
@@ -28,6 +28,11 @@ const CompanySettingsForm = () => {
   );
   return (
     <div>
+      {/* transfer ownership */}
+      <TransferOwnership
+        open={transferOwnershipModal}
+        handleClose={() => setTransferOwnershipModal(false)}
+      />
       <Form
         className="flex flex-col gap-4"
         initialValues={{
@@ -46,7 +51,11 @@ const CompanySettingsForm = () => {
               >
                 <Input disabled />
               </Form.Item>
-              <Button type="text" className="items-start">
+              <Button
+                type="text"
+                className="items-start"
+                onClick={() => setTransferOwnershipModal(true)}
+              >
                 <span className="text-caramel text-xs">
                   TRANSFER ADMIN RIGHTS
                 </span>
@@ -162,7 +171,7 @@ const CompanySettingsForm = () => {
                 name={`notificationChannels`}
               >
                 <Checkbox.Group
-                  options={["email", "in-app", "sms"]}
+                  options={["email", "in-app"]}
                   defaultValue={["in-app"]}
                 />
               </Form.Item>

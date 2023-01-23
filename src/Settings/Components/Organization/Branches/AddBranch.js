@@ -3,7 +3,7 @@ import { motion } from "framer-motion";
 import * as Yup from "yup";
 import { ErrorMessage, Field, Form, Formik } from "formik";
 
-const AddLocation = ({ handleDrawer }) => {
+const AddBranch = ({ handleDrawer }) => {
   // Handle form
   const initialValues = {
     name: "",
@@ -46,7 +46,7 @@ const AddLocation = ({ handleDrawer }) => {
     >
       {/* filter heading */}
       <div className="flex justify-between text-xl items-center font-light">
-        <h5 className="text-accent font-medium text-md">Add Location</h5>
+        <h5 className="text-accent font-medium text-md">Add Branch</h5>
         <i
           className="fa fa-times cursor-pointer"
           aria-hidden="true"
@@ -63,7 +63,7 @@ const AddLocation = ({ handleDrawer }) => {
           return (
             <Form className="whiteBg_form mt-4">
               <div>
-                <label>Location Name</label>
+                <label>Branch Name</label>
                 <Field type="text" name="name" />
                 <ErrorMessage name="name" component="span" />
               </div>
@@ -82,7 +82,7 @@ const AddLocation = ({ handleDrawer }) => {
                 <ErrorMessage name="country" component="span" />
               </div>
               <div className="my-3">
-                <label>Location Description</label>
+                <label>Branch Description</label>
                 <Field
                   as="textarea"
                   name="description"
@@ -132,4 +132,4 @@ const AddLocation = ({ handleDrawer }) => {
   );
 };
 
-export default AddLocation;
+export default AddBranch;

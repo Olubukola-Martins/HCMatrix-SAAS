@@ -1,10 +1,10 @@
 import { Route, Routes } from "react-router-dom";
 import GeneralSettings from "../Pages/General/GeneralSettings";
 import CompanyDetails from "../Pages/General/CompanyDetails";
-import FromAddresses from "../Pages/General/FromAddresses";
-import Domains from "../Pages/General/Domains";
-import Locations from "../Pages/Organization/Locations/Locations";
-import LocationDetail from "../Pages/Organization/Locations/LocationDetail";
+// import FromAddresses from "../Pages/General/FromAddresses";
+// import Domains from "../Pages/General/Domains";
+import Locations from "../Pages/Organization/Branches/Branches";
+import LocationDetail from "../Pages/Organization/Branches/BranchDetail";
 import Designations from "../Pages/Organization/Designations/Designations";
 import DesignationDetail from "../Pages/Organization/Designations/DesignationDetail";
 import Groups from "../Pages/Organization/Groups/Groups";
@@ -47,22 +47,22 @@ const SettingRoutes = () => {
           </RequireAuth>
         }
       />
-      <Route
+      {/* <Route
         path="/settings/domains"
         element={
           <RequireAuth loginPath={"/login"}>
             <Domains />
           </RequireAuth>
         }
-      />
-      <Route
+      /> */}
+      {/* <Route
         path="/settings/from-addresses"
         element={
           <RequireAuth loginPath={"/login"}>
             <FromAddresses />
           </RequireAuth>
         }
-      />
+      /> */}
       <Route
         path="/settings/locations"
         element={

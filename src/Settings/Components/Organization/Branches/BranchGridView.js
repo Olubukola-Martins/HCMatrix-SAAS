@@ -3,19 +3,19 @@ import Menu from "@mui/material/Menu";
 import Themes from "../../../../Themes/Themes";
 import { Link } from "react-router-dom";
 
-export const LocationGridView = () => {
+export const BranchGridView = () => {
   return (
     <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6">
       {[
         1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20,
       ].map((index) => (
-        <LocationBox key={index} />
+        <BranchBox key={index} />
       ))}
     </div>
   );
 };
 
-const LocationBox = () => {
+const BranchBox = () => {
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
 
@@ -26,7 +26,7 @@ const LocationBox = () => {
         <Themes>
           <div className="px-6 py-4 rounded-md bg-card">
             <Link
-              to="/settings/locations/id"
+              to="/settings/branchs/id"
               className="cursor-pointer font-medium hover:text-caramel"
             >
               View

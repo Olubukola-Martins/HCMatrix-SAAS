@@ -1,12 +1,17 @@
 import { DatePicker, Form, Input, Select, Upload } from "antd";
+import {
+  useFetchCountries,
+  useFetchLgas,
+  useFetchStates,
+} from "APIRQHooks/Utility/countryHooks";
 import { stepperInputProps } from "Auth/Pages/InvitedEmployeeForm";
+import { GlobalContext } from "Contexts/GlobalContextProvider";
 import {
   generalValidationRules,
   textInputValidationRules,
 } from "FormHelpers/validation";
-import { countryList } from "Helpers/countryList";
-import { stateList } from "Helpers/stateList";
-import { useState } from "react";
+import { FileUpload } from "GeneralComps/FileUpload";
+import { useContext, useState } from "react";
 const { Option } = Select;
 
 export const PersonalInfo = ({
@@ -14,11 +19,23 @@ export const PersonalInfo = ({
   initialValues,
   setCurrent,
 }: stepperInputProps) => {
+  const globalCtx = useContext(GlobalContext);
+  const { state: globalState } = globalCtx;
+  const fileUrl = globalState.upLoadFileString;
+
+  const [stateId, setStateId] = useState("");
+  const [countryId, setCountryId] = useState("");
+  const { data: countries, isSuccess } = useFetchCountries();
+  const { data: states, isSuccess: stateSuccess } = useFetchStates({
+    countryId,
+  });
+  const { data: lga, isSuccess: lgaSuccess } = useFetchLgas({ stateId });
   const [hiddenInputs, setHiddenInputs] = useState("");
   const handleCitizen = (val: string) => {
     setHiddenInputs(val);
   };
   const citizenCheck = hiddenInputs === "NotCitizen" ? false : true;
+
   return (
     <div>
       <Form
@@ -33,22 +50,59 @@ export const PersonalInfo = ({
             label="First Name"
             rules={textInputValidationRules}
           >
-            <Input />
+            <Input placeholder="Enter first name" />
           </Form.Item>
           <Form.Item
             name="lastName"
             label="last Name"
             rules={textInputValidationRules}
           >
-            <Input />
+            <Input placeholder="Enter last name" />
           </Form.Item>
           <Form.Item
-            name="phone"
-            label="Phone Number"
+            name="address"
+            label="Street address"
             rules={textInputValidationRules}
           >
             <Input placeholder="Enter phone" />
           </Form.Item>
+
+          {/* <Form.Item name="phone" hasFeedback>
+            <Input.Group compact>
+              <Form.Item
+                noStyle
+                rules={generalValidationRules}
+                name={["phone", "code"]}
+              >
+                {isCSuccess && (
+                  <Select
+                    // showSearch
+                    // allowClear
+                    // optionLabelProp="label"
+                    className="rounded border-slate-400"
+                    style={{ width: "25%" }}
+                    options={countries.map((item) => ({
+                      label: `+${item.code}`,
+                      value: item.id,
+                    }))}
+                  />
+                )}
+              </Form.Item>
+              <Form.Item
+                noStyle
+                rules={textInputValidationRules}
+                name={["phone", "number"]}
+              >
+                <Input
+                  style={{ width: "75%" }}
+                  placeholder="Business Phone"
+                  className="rounded border-slate-400 text-left"
+                  autoComplete="phone"
+                />
+              </Form.Item>
+            </Input.Group>
+          </Form.Item> */}
+
           <Form.Item
             name="dateOfBirth"
             label="Date of Birth"
@@ -102,15 +156,20 @@ export const PersonalInfo = ({
             />
           </Form.Item>
 
-          <Form.Item label="Upload valid document">
-            <Upload>
-              <Input
-                type="file"
-                className="generalInputStyle"
-                disabled={citizenCheck}
-              />
-            </Upload>
+          <Form.Item label="Upload valid document" name="validDocument">
+            <Input
+              type="hidden"
+              className="generalInputStyle"
+              defaultValue={fileUrl}
+            />
+            <FileUpload
+              allowedFileTypes={[
+                "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+                "image/png"
+              ]}
+            />
           </Form.Item>
+
           <Form.Item
             name="nationality"
             label="Nationality"
@@ -121,10 +180,11 @@ export const PersonalInfo = ({
               allowClear
               optionLabelProp="label"
               placeholder="Select"
+              onChange={(val) => setCountryId(val)}
             >
-              {countryList.map((data) => (
-                <Option key={data} value={data} label={data}>
-                  {data}
+              {countries?.map((data) => (
+                <Option key={data.id} value={data.id} label={data.name}>
+                  {data.name}
                 </Option>
               ))}
             </Select>
@@ -135,28 +195,31 @@ export const PersonalInfo = ({
               allowClear
               optionLabelProp="label"
               placeholder="Select state"
+              onChange={(val) => setStateId(val)}
             >
-              {stateList.map((data) => (
-                <Option key={data} value={data} label={data}>
-                  {data}
+              {states?.map((data) => (
+                <Option key={data.id} value={data.id} label={data.name}>
+                  {data.name}
                 </Option>
               ))}
             </Select>
           </Form.Item>
-          <Form.Item name="lga" label="LGA" rules={generalValidationRules}>
-            <Select
-              showSearch
-              allowClear
-              optionLabelProp="label"
-              placeholder="Select"
-            >
-              {stateList.map((data) => (
-                <Option key={data} value={data} label={data}>
-                  {data}
-                </Option>
-              ))}
-            </Select>
-          </Form.Item>
+          {lgaSuccess && lga.length > 0 && (
+            <Form.Item name="lga" label="LGA" rules={generalValidationRules}>
+              <Select
+                showSearch
+                allowClear
+                optionLabelProp="label"
+                placeholder="Select"
+              >
+                {lga?.map((data) => (
+                  <Option key={data.id} value={data.id} label={data.name}>
+                    {data.name}
+                  </Option>
+                ))}
+              </Select>
+            </Form.Item>
+          )}
         </div>
         <div className="flex justify-between mt-3">
           <button

@@ -9,9 +9,7 @@ import ActiveEmpTableView from "./ActiveEmpTableView";
 
 const ActiveEmployeesContainer = () => {
   const auth = useAuthUser();
-
   const authDetails = auth() as unknown as IAuthDets;
-
   const token = authDetails.userToken;
   const globalCtx = useContext(GlobalContext);
   const { state: globalState } = globalCtx;

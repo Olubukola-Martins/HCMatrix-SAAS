@@ -1,8 +1,10 @@
-import { AutoComplete, Avatar, Modal } from "antd";
-import React, { useState } from "react";
+import { AutoComplete, Avatar, Form, Modal, Select } from "antd";
+import { useFetchEmployees } from "APIRQHooks/Utility/employeeHooks";
+import { IAuthDets } from "AppTypes/Auth";
+import { GlobalContext } from "Contexts/GlobalContextProvider";
+import { useContext, useState } from "react";
+import { useAuthUser } from "react-auth-kit";
 import Themes from "../../Themes/Themes";
-
-const emailList = Array(3).fill("godswill@snapnetsolution.com");
 
 interface IProps {
   open: boolean;
@@ -11,44 +13,35 @@ interface IProps {
 
 const users = [
   {
-    value: "godswill@snapnetsolution.com",
-    id: 1994,
-    image: "https://picsum.photos/140",
-    label: (
-      <div className="flex gap-2 items-center">
-        <Avatar src="https://picsum.photos/140" />
-        <span>Godswill</span>
-      </div>
-    ),
+    id: 1,
+    name: "Godswill Omenuko",
+    email: "godswill@snapnetsolutions.com",
   },
   {
-    value: "isaac@snapnetsolution.com",
-    id: 1904,
-    image: "https://picsum.photos/180",
-    label: (
-      <div className="flex gap-2 items-center">
-        <Avatar src="https://picsum.photos/180" />
-        <span>Isaac</span>
-      </div>
-    ),
+    id: 2,
+    name: "Isaac Odeh",
+    email: " Odeh@snapnetsolutions.com",
   },
 ];
 const TransferOwnership = ({ open, handleClose }: IProps) => {
-  const [showSubmit, setShowSubmit] = useState(false);
-  const [options, setOptions] = useState(users);
-  const [userId, setUserId] = useState("");
-  const onSearch = (searchText: string) => {
-    const result = users.filter(
-      (item) =>
-        item.value.toLowerCase().indexOf(searchText.toLowerCase()) !== -1
-    );
-    setOptions(() => result);
-  };
+  const auth = useAuthUser();
+  const authDetails = auth() as unknown as IAuthDets;
+  const token = authDetails.userToken;
+  const globalCtx = useContext(GlobalContext);
+  const { state: globalState } = globalCtx;
+  const companyId = globalState.currentCompany?.id as unknown as string;
 
-  const onSelect = (data: string) => {
-    setUserId(data);
-    setShowSubmit(true);
-  };
+  const [showSubmit, setShowSubmit] = useState(false);
+  const [checkValueLength, setCheckValueLength] = useState("");
+  const {
+    data: employeeData,
+    isSuccess,
+    isFetching,
+  } = useFetchEmployees({
+    companyId,
+    token,
+  });
+  console.log(checkValueLength,);
 
   return (
     <>
@@ -64,28 +57,41 @@ const TransferOwnership = ({ open, handleClose }: IProps) => {
       >
         <Themes>
           <div>
-            <div className="">
+            <Form layout="vertical">
               {/* first phase */}
               <div className={showSubmit ? `hidden` : `""`}>
-                <h4 className="font-semibold mb-3">Select a user</h4>
-                <AutoComplete
-                  options={options}
-                  defaultValue={userId}
-                  onSelect={onSelect}
-                  onSearch={onSearch}
-                  placeholder="Search users"
-                  size="middle"
-                  className="w-full"
-                />
-                <br />
-
-                <button
-                  onClick={() => setShowSubmit(true)}
-                  type="button"
-                  className="button mt-4"
-                >
-                  Transfer ownership
-                </button>
+                <Form.Item label="Select User">
+                  <Select
+                    showSearch
+                    allowClear
+                    optionLabelProp="label"
+                    placeholder="Select"
+                    onChange={(val) => setCheckValueLength(val)}
+                  >
+                    {employeeData?.data.map((data) => (
+                      <Select.Option
+                        key={data.id}
+                        value={data.id}
+                        label={data.name}
+                      >
+                        {data.name}
+                      </Select.Option>
+                    ))}
+                  </Select>
+                </Form.Item>
+                {checkValueLength === undefined || "" ? (
+                  <button type="button" className="button mt-4" disabled>
+                    Transfer ownership
+                  </button>
+                ) : (
+                  <button
+                    onClick={() => setShowSubmit(true)}
+                    type="button"
+                    className="button mt-4"
+                  >
+                    Transfer ownership
+                  </button>
+                )}
               </div>
 
               {/* second phase */}
@@ -107,7 +113,7 @@ const TransferOwnership = ({ open, handleClose }: IProps) => {
                   </button>
                 </div>
               </div>
-            </div>
+            </Form>
           </div>
         </Themes>
       </Modal>
