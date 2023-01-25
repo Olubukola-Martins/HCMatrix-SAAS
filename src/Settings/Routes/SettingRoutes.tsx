@@ -222,7 +222,7 @@ const SettingRoutes = () => {
         path="/settings/payroll"
         element={
           // <RequireAuth loginPath={"/login"}>
-            <PayrollSettings />
+          <PayrollSettings />
           // </RequireAuth>
         }
       />

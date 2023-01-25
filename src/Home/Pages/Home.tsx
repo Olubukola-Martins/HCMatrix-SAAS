@@ -7,9 +7,10 @@ function Home() {
   const auth = useAuthUser();
   const authDetails = auth();
   const user = authDetails?.user;
-  
-  const [role] = useState(user.isAdmin);
-  return <div>{role ? <AdminHome /> : <EmployeeHome user={user} />}</div>;
+
+  return (
+    <div>{user.isAdmin ? <AdminHome /> : <EmployeeHome user={user} />}</div>
+  );
 }
 
 export default Home;
