@@ -52,6 +52,8 @@ const UserFeedbackComp = () => {
   const authDetails = auth() as unknown as IAuthDets;
 
   const token = authDetails.userToken;
+  const user = authDetails?.user;
+
   const [progress, setProgress] = useState(0);
   const [steps, setSteps] = useState(initialsetUpSteps);
   const globalCtx = useContext(GlobalContext);
@@ -147,7 +149,11 @@ const UserFeedbackComp = () => {
   }, [steps]);
 
   const showModal =
-    isDepSuccess && isDegSuccess && isRoleSuccess && isEmpSuccess;
+    user.isAdmin &&
+    isDepSuccess &&
+    isDegSuccess &&
+    isRoleSuccess &&
+    isEmpSuccess;
 
   return (
     <>
