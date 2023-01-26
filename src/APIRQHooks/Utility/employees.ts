@@ -1,6 +1,11 @@
 import { useMutation } from "react-query";
-import { createEmployee } from "../../ApiRequesHelpers/Utility/employee";
+import { createEmployee, employeeInvite } from "../../ApiRequesHelpers/Utility/employee";
 
 export const useCreateEmployee = () => {
   return useMutation(createEmployee);
 };
+
+export const useInviteEmployees = () => {
+  return useMutation(employeeInvite);
+};
+
