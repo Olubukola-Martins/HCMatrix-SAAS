@@ -18,3 +18,5 @@ export const createCompany = async (props: ICreateCompProps) => {
   const response = await axios.post(url, data);
   return response;
 };
+
+

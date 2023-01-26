@@ -40,6 +40,12 @@ export interface ICreateEmpProps extends ICurrentCompany {
     departmentId: string;
   };
 }
+
+export interface IEmpInviteProps extends ICurrentCompany {
+  emails: string;
+}
+
+
 export const createEmployee = async (props: ICreateEmpProps) => {
   const url = `${process.env.REACT_APP_UTILITY_BASE_URL}/employee`;
   const config = {
@@ -71,10 +77,31 @@ export const createEmployee = async (props: ICreateEmpProps) => {
   return response;
 };
 
+
+
+export const employeeInvite = async (props: IEmpInviteProps) => {
+  const url = `${process.env.REACT_APP_UTILITY_BASE_URL}/employee/invite`;
+  const config = {
+    headers: {
+      // Accept: "application/json",
+      Authorization: `Bearer ${props.token}`,
+      "x-company-id": props.companyId,
+    },
+  };
+
+  const data: any = {
+    emails: props.emails.split(","),
+  };
+
+  const response = await axios.post(url, data, config);
+  return response;
+};
+
 interface IGetEmpsProps extends ICurrentCompany {
   pagination?: IPaginationProps;
   searchParams?: ISearchParams;
 }
+
 export const getEmployees = async (props: IGetEmpsProps) => {
   const { pagination } = props;
   const limit = pagination?.limit ?? 10;
