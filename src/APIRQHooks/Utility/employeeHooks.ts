@@ -1,13 +1,9 @@
 import { Spin } from "antd";
-import pagination from "antd/lib/pagination";
-import { useMutation, useQuery, useQueryClient } from "react-query";
-import {
-  createDepartment,
-  getDepartments,
-  ICreateDepProps,
-} from "../../ApiRequesHelpers/Utility/departments";
+
+import { useMutation, useQuery } from "react-query";
+import { createDepartment } from "../../ApiRequesHelpers/Utility/departments";
 import { getEmployees } from "../../ApiRequesHelpers/Utility/employee";
-import { TDepartment, TEmployee } from "../../AppTypes/DataEntitities";
+import { TEmployee } from "../../AppTypes/DataEntitities";
 import { IPaginationProps } from "../../AppTypes/Pagination";
 import { openNotification } from "../../NotificationHelpers";
 
