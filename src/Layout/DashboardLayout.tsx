@@ -1,15 +1,27 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import useLocalStorage from "use-local-storage";
 import TopBar from "./Components/TopBar";
 import SideBar from "./Components/SideBar";
 // import SubTopBar from "./Components/SubTopBar";
 import GlobalSupport from "./Components/GlobalSupport";
+import { useIsAuthenticated } from "react-auth-kit";
+import { Navigate, useNavigate } from "react-router-dom";
 
 interface IProps {
   children: React.ReactNode;
 }
 
 const DashboardLayout: React.FC<IProps> = ({ children }: IProps) => {
+  const isAuthenticated = useIsAuthenticated();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (isAuthenticated()) {
+      // Redirect to Dashboard
+    } else {
+      navigate("/login", { replace: true });
+    }
+  }, [isAuthenticated, navigate]);
   const [theme, setTheme] = useLocalStorage("theme" ? "dark" : "light", "");
   const [colorTheme, setColorThem] = useLocalStorage("", "");
   const [sidebarToggle, setSidebarToggle] = useState(true);

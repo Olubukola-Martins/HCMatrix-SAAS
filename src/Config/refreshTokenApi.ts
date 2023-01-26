@@ -1,11 +1,13 @@
-import axios from "axios";
 import { createRefresh } from "react-auth-kit";
 import { refreshUserToken } from "../ApiRequesHelpers/Auth";
 
-export const TOKEN_EXPIRES_IN = 120;
-export const REFRESH_TOKEN_EXPIRES_IN = 5;
+// export const TOKEN_EXPIRES_IN = 120;
+// export const REFRESH_TOKEN_EXPIRES_IN = 5;
+
+export const TOKEN_EXPIRES_IN = 8;
+export const REFRESH_TOKEN_EXPIRES_IN = 15;
 const REFRESH_TOKEN_INTERVAL = 2;
-const NEW_AUTH_TOKEN_EXPIRES_IN = 9; // exprmnt -  but should be what determines how long user stays if there is/isn't active
+const NEW_AUTH_TOKEN_EXPIRES_IN = 8; // exprmnt -  but should be what determines how long user stays if there is/isn't active
 
 const refreshApi = createRefresh({
   interval: REFRESH_TOKEN_INTERVAL, // Refreshs the token in every 10 minutes -> as per env varaiable set
@@ -26,15 +28,20 @@ const refreshApi = createRefresh({
           isSuccess: true, // For successful network request isSuccess is true
           newAuthToken: result.accessToken,
           newAuthTokenExpireIn: NEW_AUTH_TOKEN_EXPIRES_IN,
+          newRefreshToken: result.refreshToken,
+          newRefreshTokenExpiresIn: REFRESH_TOKEN_EXPIRES_IN,
+          authUserState: { ...authUserState, userToken: result.accessToken },
+
           // You can also add new refresh token ad new user state
         };
       })
       .catch((e) => {
         console.error(e, "REFRESK");
+
         // log person out
         return {
           isSuccess: false, // For unsuccessful network request isSuccess is false
-          newAuthToken: authToken as string,
+          newAuthToken: "",
         };
       });
   },

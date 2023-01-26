@@ -1,13 +1,10 @@
 import { Spin } from "antd";
-import pagination from "antd/lib/pagination";
-import { useMutation, useQuery, useQueryClient } from "react-query";
-import {
-  createDepartment,
-  getDepartments,
-  ICreateDepProps,
-} from "../../ApiRequesHelpers/Utility/departments";
+import { useSignOut } from "react-auth-kit";
+
+import { useMutation, useQuery } from "react-query";
+import { createDepartment } from "../../ApiRequesHelpers/Utility/departments";
 import { getEmployees } from "../../ApiRequesHelpers/Utility/employee";
-import { TDepartment, TEmployee } from "../../AppTypes/DataEntitities";
+import { TEmployee } from "../../AppTypes/DataEntitities";
 import { IPaginationProps } from "../../AppTypes/Pagination";
 import { openNotification } from "../../NotificationHelpers";
 
@@ -27,6 +24,8 @@ export const useFetchEmployees = ({
   onSuccess,
   token,
 }: IFRQDepartmentsProps) => {
+  const signOut = useSignOut();
+
   const queryData = useQuery(
     ["employees", pagination?.current, pagination?.limit],
     () =>
@@ -40,13 +39,7 @@ export const useFetchEmployees = ({
       // refetchIntervalInBackground: false,
       // refetchOnWindowFocus: false,
       onError: (err: any) => {
-        // show notification
-        openNotification({
-          state: "error",
-          title: "Error Occured",
-          description:
-            err?.response.data.message ?? err?.response.data.error.message,
-        });
+        signOut();
       },
       onSuccess: (data) => {
         onSuccess && onSuccess(data);
