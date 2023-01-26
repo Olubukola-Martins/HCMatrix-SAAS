@@ -55,7 +55,6 @@ export const useFetchEmployees = ({
       select: (res: any) => {
         const fetchedData = res.data.data;
         const result = fetchedData.result;
-        console.log("RESSS", res);
 
         const data: TEmployee[] = result.map(
           (item: any): TEmployee => ({

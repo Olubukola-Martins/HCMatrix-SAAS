@@ -36,13 +36,13 @@ const lineMgt = ["Godswill Omenuko", "Isaac Odeh"];
 
 export const AddEmployee = () => {
   const auth = useAuthUser();
-
   const authDetails = auth() as unknown as IAuthDets;
-
   const token = authDetails.userToken;
   const globalCtx = useContext(GlobalContext);
   const { state: globalState } = globalCtx;
   const companyId = globalState.currentCompany?.id as unknown as string;
+
+  
   const [form] = Form.useForm();
   const { mutate } = useCreateEmployee();
   const {

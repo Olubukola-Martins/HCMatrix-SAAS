@@ -11,7 +11,7 @@ import {
   textInputValidationRules,
 } from "FormHelpers/validation";
 import { FileUpload } from "GeneralComps/FileUpload";
-import { useContext, useState } from "react";
+import { JSXElementConstructor, Key, ReactElement, ReactFragment, ReactPortal, useContext, useState } from "react";
 const { Option } = Select;
 
 export const PersonalInfo = ({
@@ -22,7 +22,6 @@ export const PersonalInfo = ({
   const globalCtx = useContext(GlobalContext);
   const { state: globalState } = globalCtx;
   const fileUrl = globalState.upLoadFileString;
-
   const [stateId, setStateId] = useState("");
   const [countryId, setCountryId] = useState("");
   const { data: countries, isSuccess } = useFetchCountries();
@@ -36,6 +35,8 @@ export const PersonalInfo = ({
   };
   const citizenCheck = hiddenInputs === "NotCitizen" ? false : true;
 
+
+  
   return (
     <div>
       <Form
@@ -180,10 +181,10 @@ export const PersonalInfo = ({
               allowClear
               optionLabelProp="label"
               placeholder="Select"
-              onChange={(val) => setCountryId(val)}
+              onChange={(val) => setCountryId(val.id)}
             >
-              {countries?.map((data) => (
-                <Option key={data.id} value={data.id} label={data.name}>
+              {countries?.map((data: { id: Key | null | undefined; name: string | number | boolean | ReactElement<any, string | JSXElementConstructor<any>> | ReactFragment | ReactPortal | null | undefined; }) => (
+                <Option key={data.id} value={data} label={data.name}>
                   {data.name}
                 </Option>
               ))}
