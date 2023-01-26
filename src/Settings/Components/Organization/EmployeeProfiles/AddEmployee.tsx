@@ -38,6 +38,7 @@ export const AddEmployee = () => {
   const auth = useAuthUser();
 
   const authDetails = auth() as unknown as IAuthDets;
+  console.log(auth(), "XXXXXXXXXX");
 
   const token = authDetails.userToken;
   const globalCtx = useContext(GlobalContext);

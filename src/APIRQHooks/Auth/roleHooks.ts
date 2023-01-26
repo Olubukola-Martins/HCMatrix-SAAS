@@ -1,4 +1,5 @@
 import pagination from "antd/lib/pagination";
+import { useSignOut } from "react-auth-kit";
 import { useQuery } from "react-query";
 import { getRoles } from "../../ApiRequesHelpers/Auth/permissions";
 import { TRole } from "../../AppTypes/DataEntitities";
@@ -21,6 +22,8 @@ export const useFetchRoles = ({
   onSuccess,
   token,
 }: IFRQDataProps) => {
+  const signOut = useSignOut();
+
   const queryData = useQuery(
     ["roles", pagination?.current],
     () =>
@@ -34,13 +37,7 @@ export const useFetchRoles = ({
       // refetchIntervalInBackground: false,
       // refetchOnWindowFocus: false,
       onError: (err: any) => {
-        // show notification
-        openNotification({
-          state: "error",
-          title: "Error Occured",
-          description:
-            err?.response.data.message ?? err?.response.data.error.message,
-        });
+        signOut();
       },
       onSuccess: (data) => {
         onSuccess && onSuccess(data);
