@@ -52,14 +52,14 @@ const TopBar = ({
   const { state: globalState, dispatch: globalDispatch } = globalCtx;
 
   const defaultCompanies = authDetails?.companies.map((item: any) => ({
-    value: item.name,
-    id: item.id,
-    image: item?.logoUrl ?? "https://picsum.photos/190",
+    value: item.company.name,
+    id: item.company.id,
+    image: item.company?.logoUrl ?? "https://picsum.photos/190",
 
     label: (
       <div className="flex gap-2 items-center">
-        <Avatar src={item?.logoUrl ?? "https://picsum.photos/190"} />
-        <span>{item.name}</span>
+        <Avatar src={item.company?.logoUrl ?? "https://picsum.photos/190"} />
+        <span>{item.company.name}</span>
       </div>
     ),
   }));

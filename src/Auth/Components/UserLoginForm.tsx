@@ -47,6 +47,7 @@ const UserLoginForm = () => {
       },
       onSuccess: (res) => {
         const result = res.data.data;
+        console.log("NEW AU", result);
 
         const authUserDetails: IAuthDets = {
           user: result.user,
@@ -77,8 +78,8 @@ const UserLoginForm = () => {
             globalDispatch({
               type: EGlobalOps.setCurrentCompanyId,
               payload: {
-                id: authUserDetails.companies[0].id,
-                name: authUserDetails.companies[0].name,
+                id: authUserDetails.companies[0].company.id,
+                name: authUserDetails.companies[0].company.name,
               },
             });
           }

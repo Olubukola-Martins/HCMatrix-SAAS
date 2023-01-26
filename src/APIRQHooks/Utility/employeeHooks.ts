@@ -55,6 +55,7 @@ export const useFetchEmployees = ({
       select: (res: any) => {
         const fetchedData = res.data.data;
         const result = fetchedData.result;
+        console.log("RESSS", res);
 
         const data: TEmployee[] = result.map(
           (item: any): TEmployee => ({
@@ -62,7 +63,7 @@ export const useFetchEmployees = ({
             name: `${item.firstName} ${item.lastName}`,
             gender: item?.gender ?? "nil",
             employeeID: item?.empUid,
-            designation: item.designation.name,
+            designation: item?.designation?.name,
             department: item?.department?.name ?? "nil",
             status: item?.status ?? "nil",
             role: item?.role?.name,
