@@ -11,16 +11,15 @@ import {
   textInputValidationRules,
 } from "FormHelpers/validation";
 import { FileUpload } from "GeneralComps/FileUpload";
-import {
-  useContext,
-  useState,
-} from "react";
+import { BeatLoader } from "react-spinners";
+import { useContext, useState } from "react";
 const { Option } = Select;
 
 export const PersonalInfo = ({
   onFinished,
   initialValues,
   setCurrent,
+  isLoading
 }: stepperInputProps) => {
   const globalCtx = useContext(GlobalContext);
   const { state: globalState } = globalCtx;
@@ -75,13 +74,10 @@ export const PersonalInfo = ({
                 noStyle
                 rules={generalValidationRules}
                 name={["phone", "code"]}
+                initialValue="+234"
               >
                 {isSuccess && (
                   <Select
-                    // showSearch
-                    // allowClear
-                    // optionLabelProp="label"
-                    defaultValue="+234"
                     className="rounded border-slate-400"
                     style={{ width: "30%" }}
                     options={countries?.map((item) => ({
@@ -111,7 +107,7 @@ export const PersonalInfo = ({
             label="Date of Birth"
             rules={generalValidationRules}
           >
-            <DatePicker className="w-full" format="YYYY-MM-DD"/>
+            <DatePicker className="w-full" format="YYYY-MM-DD" />
           </Form.Item>
 
           <Form.Item
@@ -159,19 +155,19 @@ export const PersonalInfo = ({
             />
           </Form.Item>
 
-          <Form.Item label="Upload valid document" name="validDocumentUrl">
+          {/* <Form.Item label="Upload valid document" name="validDocumentUrl">
             <Input
               type="hidden"
               className="generalInputStyle"
               defaultValue={fileUrl}
             />
-            {/* <FileUpload
+            <FileUpload
               allowedFileTypes={[
                 "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
                 "image/png",
               ]}
-            /> */}
-          </Form.Item>
+            />
+          </Form.Item> */}
 
           <Form.Item
             name="countryId"
@@ -192,7 +188,11 @@ export const PersonalInfo = ({
               ))}
             </Select>
           </Form.Item>
-          <Form.Item name="stateId" label="State" rules={generalValidationRules}>
+          <Form.Item
+            name="stateId"
+            label="State"
+            rules={generalValidationRules}
+          >
             <Select
               showSearch
               allowClear
@@ -233,7 +233,7 @@ export const PersonalInfo = ({
             Prev
           </button>
           <button type="submit" className="button">
-            Continue
+           {isLoading ? <BeatLoader color="#fff" /> : "Continue"} 
           </button>
         </div>
       </Form>
