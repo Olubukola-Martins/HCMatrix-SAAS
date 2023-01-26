@@ -22,6 +22,7 @@ export interface stepperInputProps {
   initialValues: any;
   setCurrent?: any;
   email?: string
+  isLoading? : boolean
 }
 export const InvitedEmployeeForm = () => {
   const isAuthenticated = useIsAuthenticated();
@@ -120,6 +121,7 @@ export const InvitedEmployeeForm = () => {
       setCurrent={setCurrent}
       onFinished={onFinishProfileForm}
       initialValues={profileDetails}
+      isLoading={isLoading}
     />,
   ];
   const isStepDisabled = (stepNumber: number) => {
