@@ -4,7 +4,7 @@ export const employeeStatusColor = (status: TEmployeeStatus) => {
   let color;
   switch (status) {
     case "confirmed":
-      color = "text-[#ffa]";
+      color = "text-[#097969]";
       break;
     case "terminated":
       color = "text-[#ffa]";
