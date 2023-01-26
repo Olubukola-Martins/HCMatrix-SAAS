@@ -5,6 +5,7 @@ import { generalValidationRules } from "FormHelpers/validation";
 export const CreatePassword = ({
   onFinished,
   initialValues,
+  email
 }: stepperInputProps) => {
   return (
     <div>
@@ -17,7 +18,7 @@ export const CreatePassword = ({
         <Form.Item
           label="Email Address"
           name="email"
-          initialValue="godswill@snapnetsolutions.com"
+          initialValue={email}
         >
           <Input disabled />
         </Form.Item>
@@ -30,7 +31,7 @@ export const CreatePassword = ({
         </Form.Item>
 
         <Form.Item
-          name="cPassword"
+          name="confirmPassword"
           label="Confirm Password"
           dependencies={["password"]}
           rules={[

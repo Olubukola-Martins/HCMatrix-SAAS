@@ -47,8 +47,6 @@ const UserLoginForm = () => {
       },
       onSuccess: (res) => {
         const result = res.data.data;
-        console.log("NEW AU", result);
-
         const authUserDetails: IAuthDets = {
           user: result.user,
           companies: result?.payload,

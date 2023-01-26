@@ -16,11 +16,12 @@ import {
   ICreateInvitedEmpProps,
   verifyEmployeeInvite,
 } from "ApiRequesHelpers/Auth/employees";
-import { useSearchParams } from "react-router-dom";
+import { Navigate, useSearchParams } from "react-router-dom";
 export interface stepperInputProps {
   onFinished: any;
   initialValues: any;
   setCurrent?: any;
+  email?: string
 }
 export const InvitedEmployeeForm = () => {
   const isAuthenticated = useIsAuthenticated();
@@ -29,97 +30,91 @@ export const InvitedEmployeeForm = () => {
   const uid = searchParams.get("uid") ?? "";
   const email = searchParams.get("email") ?? "";
   const [current, setCurrent] = useState(0);
-  const [accountDetails, setAccountDetails] = useState<null>(null);
+  const [accountDetails, setAccountDetails] = useState<any>({});
   const [profileDetails, setProfileDetails] = useState<null>(null);
   const [form] = Form.useForm();
   const signIn = useSignIn();
   const queryClient = useQueryClient();
   const { mutate, isLoading } = useMutation(verifyEmployeeInvite);
 
-  const onFinishLoginForm = (values: React.SetStateAction<null>) => {
+  const onFinishLoginForm = (values: any) => {
     setAccountDetails(values);
     setCurrent(1);
   };
-  const onFinishProfileForm = (values: React.SetStateAction<null>) => {
-    setProfileDetails(values);
-    console.log(profileDetails);
-    
-    // const props: ICreateInvitedEmpProps = {
-    //   token,
-    //   uid,
-    //   password: data.password,
-    //   confirmPassword: data.confirmPassword,
-    //   firstName: data.firstName,
-    //   lastName: data.lastName,
-    //   personalInformation: {
-    //     dob: data.personalInformation.dob,
-    //     gender: data.personalInformation.gender,
-    //     phoneNumber: data.personalInformation.phoneNumber,
-    //     eligibility: data.personalInformation.eligibility,
-    //     maritalStatus: data.personalInformation.maritalStatus,
-    //     nationality: data.personalInformation.nationality,
-    //     address: {
-    //       streetAddress: data.personalInformation.address.streetAddress,
-    //       countryId: data.personalInformation.address.countryId,
-    //       stateId: data.personalInformation.address.stateId,
-    //       lgaId: data.personalInformation.address.lgaId,
-    //       timezone: data.personalInformation.address.timezone,
-    //     },
-    //     passportExpirationDate: data.personalInformation.passportExpirationDate,
-    //     validDocumentUrl: data.personalInformation.validDocumentUrl,
-    //   },
-    // };
+  const onFinishProfileForm = (data: any) => {
+       
+    const props: ICreateInvitedEmpProps = {
+      token,
+      uid,
+      password: accountDetails.password,
+      confirmPassword: accountDetails.confirmPassword,
+      firstName: data.firstName,
+      lastName: data.lastName,
+      personalInformation: {
+        dob: data.dob.format("YYYY-MM-DD"),
+        gender: data.gender,
+        phoneNumber: `+${data.phone.code}-${data.phone.number}`,
+        eligibility: data.eligibility,
+        maritalStatus: data.maritalStatus,
+        nationality: "Nigeria",
+        address: {
+          streetAddress: data.streetAddress,
+          countryId: data.countryId,
+          stateId: data.stateId,
+          lgaId: data.lgaId,
+          timezone: data.timezone,
+        },
+        passportExpirationDate: data.passportExpirationDate,
+        validDocumentUrl: data.validDocumentUrl,
+      },
+    };
 
-    // mutate(props, {
-    //   onError: (err: any) => {
-    //     openNotification({
-    //       state: "error",
-    //       title: "Error Occurred",
-    //       description:
-    //         err?.response.data.message ?? err?.response.data.error.message,
-    //     });
-    //   },
-    //   onSuccess: (res: any) => {
-    //     const result = res.data.data;
-    //     const authUserDetails: IAuthDets = {
-    //       user: result.user,
-    //       companies: result?.payload,
-    //       userToken: result.accessToken,
-    //     };
-    //     if (
-    //       signIn({
-    //         token: result.accessToken,
-    //         refreshToken: result.refreshToken,
-    //         expiresIn: TOKEN_EXPIRES_IN, //log person out after 2 hrs
-    //         refreshTokenExpireIn: REFRESH_TOKEN_EXPIRES_IN, //should not expire
-    //         tokenType: "Bearer",
-    //         authState: authUserDetails,
-    //       })
-    //     )
-    //       openNotification({
-    //         state: "success",
-    //         title: "Success",
-    //         description: res.data.message,
-    //         // duration: 0.4,
-    //       });
+    mutate(props, {
+      onError: (err: any) => {
+        openNotification({
+          state: "error",
+          title: "Error Occurred",
+          description:
+            err?.response.data.message ?? err?.response.data.error.message,
+        });
+      },
+      onSuccess: (res: any) => {
+        const result = res.data.data;
+        const authUserDetails: IAuthDets = {
+          user: result.user,
+          companies: result?.payload,
+          userToken: result.accessToken,
+        };
+        if (
+          signIn({
+            token: result.accessToken,
+            refreshToken: result.refreshToken,
+            expiresIn: TOKEN_EXPIRES_IN, //log person out after 2 hrs
+            refreshTokenExpireIn: REFRESH_TOKEN_EXPIRES_IN, //should not expire
+            tokenType: "Bearer",
+            authState: authUserDetails,
+          })
+        )
+          openNotification({
+            state: "success",
+            title: "Success",
+            description: res.data.message,
+          });
 
-    //     form.resetFields();
-    //     queryClient.invalidateQueries({
-    //       queryKey: ["invitedEmployeeAccount"],
-    //       exact: true,
-    //     });
-    //   },
-    // });
+        form.resetFields();
+        queryClient.invalidateQueries({
+          queryKey: ["invitedEmployeeAccount"],
+          exact: true,
+        });
+      },
+    });
   };
-
-  // const onFormSubmit = (data: any) => {
-
-  // };
 
   const forms = [
     <CreatePassword
       onFinished={onFinishLoginForm}
       initialValues={accountDetails}
+      email={email}
     />,
     <PersonalInfo
       setCurrent={setCurrent}
@@ -140,6 +135,9 @@ export const InvitedEmployeeForm = () => {
   };
 
   return (
+    <>
+     {isAuthenticated() && <Navigate to="/" replace={true} />}
+   
     <div className="Container">
       <div className="flex justify-center">
         <div
@@ -169,5 +167,6 @@ export const InvitedEmployeeForm = () => {
         </div>
       </div>
     </div>
+    </>
   );
 };
