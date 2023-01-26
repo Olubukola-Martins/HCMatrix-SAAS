@@ -29,16 +29,19 @@ const refreshApi = createRefresh({
           newAuthToken: result.accessToken,
           newAuthTokenExpireIn: NEW_AUTH_TOKEN_EXPIRES_IN,
           newRefreshToken: result.refreshToken,
+          newRefreshTokenExpiresIn: REFRESH_TOKEN_EXPIRES_IN,
+          authUserState: { ...authUserState, userToken: result.accessToken },
 
           // You can also add new refresh token ad new user state
         };
       })
       .catch((e) => {
         console.error(e, "REFRESK");
+
         // log person out
         return {
           isSuccess: false, // For unsuccessful network request isSuccess is false
-          newAuthToken: authToken as string,
+          newAuthToken: "",
         };
       });
   },

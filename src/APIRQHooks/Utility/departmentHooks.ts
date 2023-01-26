@@ -1,5 +1,6 @@
 import { Spin } from "antd";
 import pagination from "antd/lib/pagination";
+import { useSignOut } from "react-auth-kit";
 import { useMutation, useQuery, useQueryClient } from "react-query";
 import {
   createDepartment,
@@ -27,6 +28,8 @@ export const useFetchDepartments = ({
   onSuccess,
   token,
 }: IFRQDepartmentsProps) => {
+  const signOut = useSignOut();
+
   const queryData = useQuery(
     ["departments", pagination?.current, pagination?.limit],
     () =>
@@ -40,13 +43,7 @@ export const useFetchDepartments = ({
       // refetchIntervalInBackground: false,
       // refetchOnWindowFocus: false,
       onError: (err: any) => {
-        // show notification
-        openNotification({
-          state: "error",
-          title: "Error Occurred",
-          description:
-            err?.response.data.message ?? err?.response.data.error.message,
-        });
+        signOut();
       },
       onSuccess: (data) => {
         onSuccess && onSuccess(data);
