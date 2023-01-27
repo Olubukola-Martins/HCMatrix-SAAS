@@ -8,7 +8,7 @@ import office from "../Assets/Images/office.svg";
 import linkedin from "../Assets/Images/linkedin.svg";
 import { Divider, Form, Input } from "antd";
 import "../Style/style.css";
-import { Link, Navigate } from "react-router-dom";
+import { Link, Navigate, useSearchParams } from "react-router-dom";
 import { useEffect } from "react";
 import Aos from "aos";
 import "aos/dist/aos.css";
@@ -17,6 +17,9 @@ import { useIsAuthenticated } from "react-auth-kit";
 
 export const Login = () => {
   const isAuthenticated = useIsAuthenticated();
+  const [searchParams] = useSearchParams();
+  const email = searchParams.get("email");
+  const password = searchParams.get("password");
 
   useEffect(() => {
     Aos.init({ duration: 1500 });
@@ -76,8 +79,15 @@ export const Login = () => {
                 </h2>
                 <p className="pt-2 pb-7">Getting started made easy</p>
                 <div className="lg:px-14">
-                  <UserLoginForm />
-                  <Link to="/forgot-password" className="mb-3 flex justify-end cursor-pointer pt-2 text-sm hover:text-black">
+                  {email && password ? (
+                    <UserLoginForm autoLoginDetails={{ email, password }} />
+                  ) : (
+                    <UserLoginForm />
+                  )}
+                  <Link
+                    to="/forgot-password"
+                    className="mb-3 flex justify-end cursor-pointer pt-2 text-sm hover:text-black"
+                  >
                     Forgot password ?
                   </Link>
                   <Divider>
