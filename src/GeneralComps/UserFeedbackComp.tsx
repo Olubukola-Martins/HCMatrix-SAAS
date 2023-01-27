@@ -162,7 +162,8 @@ const UserFeedbackComp = () => {
           open={provideFeedback}
           onCancel={() => dismissFeedback()}
           footer={null}
-          style={{ top: 30, left: 10 }}
+          width={380}
+          style={{ top: 160, left: -320 }}
         >
           <Themes>
             <div className="flex flex-col gap-4">
