@@ -21,7 +21,6 @@ export type TLga = {
   stateId: number;
 };
 
-
 export interface ICurrentCompany {
   companyId: string;
   token: string;
@@ -76,6 +75,11 @@ export type TEmployee = {
   status: TEmployeeStatus;
   email: string;
   department: TDepartment | string;
+};
+export type TInvitedEmployee = {
+  id: number;
+  lastSent: string;
+  email: string;
 };
 
 export type TEmployeeStatus =

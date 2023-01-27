@@ -1,15 +1,15 @@
 import { Button, Dropdown, Menu, Table } from "antd";
-import { TEmployee } from "../../../../../AppTypes/DataEntitities";
+import { TInvitedEmployee } from "../../../../../AppTypes/DataEntitities";
 import { ColumnsType, TablePaginationConfig } from "antd/lib/table";
 import { TableRowSelection } from "antd/lib/table/interface";
 import { MoreOutlined } from "@ant-design/icons";
 import { employeeStatusColor } from "../../../../../GeneralHelpers/employeeHelpers";
 
 interface IProps {
-  employees: TEmployee[];
+  employees: TInvitedEmployee[];
   loading: boolean;
   pagination?: TablePaginationConfig;
-  rowSelection: TableRowSelection<TEmployee>;
+  rowSelection: TableRowSelection<TInvitedEmployee>;
 }
 
 const InvitedEmpTableView = ({
@@ -18,13 +18,8 @@ const InvitedEmpTableView = ({
   pagination,
   rowSelection,
 }: IProps) => {
-  const columns: ColumnsType<TEmployee> = [
-    {
-      title: "Name",
-      dataIndex: "name",
-      key: "name",
-    },
-
+  const resendInvite = (id: number) => {};
+  const columns: ColumnsType<TInvitedEmployee> = [
     {
       title: "Email",
       dataIndex: "email",
@@ -34,7 +29,7 @@ const InvitedEmpTableView = ({
       title: "Last Sent",
       dataIndex: "lastSent",
       key: "lastSent",
-      width: 80,
+      width: 120,
     },
 
     {
@@ -42,11 +37,13 @@ const InvitedEmpTableView = ({
       key: "Action",
       width: 100,
       fixed: "right",
-      render: () => (
+      render: (_: any, record) => (
         <Dropdown
           overlay={
             <Menu>
-              <Menu.Item>Edit</Menu.Item>
+              <Menu.Item onClick={() => resendInvite(record.id)}>
+                Resend Invite
+              </Menu.Item>
             </Menu>
           }
         >

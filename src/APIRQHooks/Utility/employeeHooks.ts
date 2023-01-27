@@ -1,10 +1,14 @@
 import { Spin } from "antd";
+import moment from "moment";
 import { useSignOut } from "react-auth-kit";
 
 import { useMutation, useQuery } from "react-query";
 import { createDepartment } from "../../ApiRequesHelpers/Utility/departments";
-import { getEmployees } from "../../ApiRequesHelpers/Utility/employee";
-import { TEmployee } from "../../AppTypes/DataEntitities";
+import {
+  getEmployees,
+  getInvitedEmployees,
+} from "../../ApiRequesHelpers/Utility/employee";
+import { TEmployee, TInvitedEmployee } from "../../AppTypes/DataEntitities";
 import { IPaginationProps } from "../../AppTypes/Pagination";
 import { openNotification } from "../../NotificationHelpers";
 
@@ -14,10 +18,66 @@ interface IFRQDepartmentsProps {
   onSuccess?: Function;
   token: string;
 }
+export interface IFRQInvEmpsReturnProps {
+  data: TInvitedEmployee[];
+  total: number;
+}
 export interface IFRQEmpsReturnProps {
   data: TEmployee[];
   total: number;
 }
+export const useFetchInvitedEmployees = ({
+  pagination,
+  companyId,
+  onSuccess,
+  token,
+}: IFRQDepartmentsProps) => {
+  const signOut = useSignOut();
+
+  const queryData = useQuery(
+    ["invited-employees", pagination?.current, pagination?.limit],
+    () =>
+      getInvitedEmployees({
+        companyId,
+        pagination: { limit: pagination?.limit, offset: pagination?.offset },
+        token,
+      }),
+    {
+      // refetchInterval: false,
+      // refetchIntervalInBackground: false,
+      // refetchOnWindowFocus: false,
+      onError: (err: any) => {
+        signOut();
+      },
+      onSuccess: (data) => {
+        onSuccess && onSuccess(data);
+      },
+
+      select: (res: any) => {
+        const fetchedData = res.data.data;
+        const result = fetchedData.result;
+
+        const data: TInvitedEmployee[] = result.map(
+          (item: any): TInvitedEmployee => ({
+            id: item.id,
+            lastSent: moment(item.updatedAt).format("YYYY-MM-DD"),
+
+            email: item?.email,
+          })
+        );
+
+        const ans: IFRQInvEmpsReturnProps = {
+          data,
+          total: fetchedData.totalCount,
+        };
+
+        return ans;
+      },
+    }
+  );
+
+  return queryData;
+};
 export const useFetchEmployees = ({
   pagination,
   companyId,
