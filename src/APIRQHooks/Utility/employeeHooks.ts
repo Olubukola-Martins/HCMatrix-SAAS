@@ -9,7 +9,11 @@ import {
   getInvitedEmployees,
   resendEmployeeInvite,
 } from "../../ApiRequesHelpers/Utility/employee";
-import { TEmployee, TInvitedEmployee } from "../../AppTypes/DataEntitities";
+import {
+  TEmployee,
+  TEmployeeStatus,
+  TInvitedEmployee,
+} from "../../AppTypes/DataEntitities";
 import { IPaginationProps } from "../../AppTypes/Pagination";
 import { openNotification } from "../../NotificationHelpers";
 
@@ -22,6 +26,7 @@ interface IFRQResendInviteProps {
 interface IFRQDepartmentsProps {
   pagination?: IPaginationProps;
   companyId: string;
+  status?: TEmployeeStatus[];
   onSuccess?: Function;
   token: string;
 }
@@ -91,16 +96,18 @@ export const useFetchEmployees = ({
   companyId,
   onSuccess,
   token,
+  status,
 }: IFRQDepartmentsProps) => {
   const signOut = useSignOut();
 
   const queryData = useQuery(
-    ["employees", pagination?.current, pagination?.limit],
+    ["employees", pagination?.current, pagination?.limit, status],
     () =>
       getEmployees({
         companyId,
         pagination: { limit: pagination?.limit, offset: pagination?.offset },
         token,
+        status,
       }),
     {
       // refetchInterval: false,

@@ -1,5 +1,8 @@
 import axios from "axios";
-import { ICurrentCompany } from "../../AppTypes/DataEntitities";
+import {
+  ICurrentCompany,
+  TEmployeeStatus,
+} from "../../AppTypes/DataEntitities";
 import { IPaginationProps } from "../../AppTypes/Pagination";
 import { ISearchParams } from "../../AppTypes/Search";
 
@@ -97,6 +100,7 @@ export const employeeInvite = async (props: IEmpInviteProps) => {
 interface IGetEmpsProps extends ICurrentCompany {
   pagination?: IPaginationProps;
   searchParams?: ISearchParams;
+  status?: TEmployeeStatus[];
 }
 interface IResendInviteProps extends ICurrentCompany {
   id: number;
@@ -108,7 +112,7 @@ export const getInvitedEmployees = async (props: IGetEmpsProps) => {
   const offset = pagination?.offset ?? 0;
   const name = props.searchParams?.name ?? "";
 
-  const url = `${process.env.REACT_APP_UTILITY_BASE_URL}/employee/invite?limit=${limit}&offset=${offset}`;
+  let url = `${process.env.REACT_APP_UTILITY_BASE_URL}/employee/invite?limit=${limit}&offset=${offset}`;
 
   const config = {
     headers: {
@@ -141,7 +145,10 @@ export const getEmployees = async (props: IGetEmpsProps) => {
   const offset = pagination?.offset ?? 0;
   const name = props.searchParams?.name ?? "";
 
-  const url = `${process.env.REACT_APP_UTILITY_BASE_URL}/employee?limit=${limit}&offset=${offset}`;
+  let url = `${process.env.REACT_APP_UTILITY_BASE_URL}/employee?limit=${limit}&offset=${offset}`;
+  if (props.status) {
+    url += "&status=" + props.status.toString();
+  }
 
   const config = {
     headers: {
