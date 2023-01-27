@@ -72,18 +72,17 @@ const UserLoginForm = () => {
             title: "Success",
             description: "Logged in successfully!",
           });
-          console.log("ROSE", authUserDetails.companies);
-          if (!globalState.currentCompany) {
-            console.log("ROSE INNER", authUserDetails.companies);
 
-            globalDispatch({
-              type: EGlobalOps.setCurrentCompanyId,
-              payload: {
-                id: authUserDetails.companies[0].company.id,
-                name: authUserDetails.companies[0].company.name,
-              },
-            });
-          }
+          // if (!globalState.currentCompany) {
+
+          globalDispatch({
+            type: EGlobalOps.setCurrentCompanyId,
+            payload: {
+              id: authUserDetails.companies[0].company.id,
+              name: authUserDetails.companies[0].company.name,
+            },
+          });
+          // }
           // window.location.reload(); //temp fix for token -> fix done(refactored to use token not local storage)
         }
       },

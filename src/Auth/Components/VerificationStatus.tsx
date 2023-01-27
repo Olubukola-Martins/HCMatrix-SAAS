@@ -68,15 +68,15 @@ const VerificationStatus = ({ token, uid }: IVerifyUserProps) => {
           });
           // the company information has to be saved in a general state to be accessible accross the app
           // result.payload has the companies
-          if (!globalState.currentCompany) {
-            globalDispatch({
-              type: EGlobalOps.setCurrentCompanyId,
-              payload: {
-                id: authUserDetails.companies[0].id,
-                name: authUserDetails.companies[0].name,
-              },
-            });
-          }
+          // if (!globalState.currentCompany) {
+          globalDispatch({
+            type: EGlobalOps.setCurrentCompanyId,
+            payload: {
+              id: authUserDetails.companies[0].id,
+              name: authUserDetails.companies[0].name,
+            },
+          });
+          // }
           // navigate("/");
         }
       },
