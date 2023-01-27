@@ -35,6 +35,7 @@ const InactiveEmployeesContainer = () => {
   } = useFetchEmployees({
     companyId,
     token,
+    status: ["suspended", "terminated"],
     pagination: {
       limit: pagination.pageSize,
       offset,

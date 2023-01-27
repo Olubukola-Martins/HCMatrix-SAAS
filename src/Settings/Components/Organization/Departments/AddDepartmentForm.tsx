@@ -70,7 +70,7 @@ const AddDepartmentForm = ({ handleClose }: { handleClose: Function }) => {
 
           queryClient.invalidateQueries({
             queryKey: ["departments"],
-            exact: true,
+            // exact: true,
           });
         },
       });

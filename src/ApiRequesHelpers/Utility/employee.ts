@@ -1,5 +1,8 @@
 import axios from "axios";
-import { ICurrentCompany } from "../../AppTypes/DataEntitities";
+import {
+  ICurrentCompany,
+  TEmployeeStatus,
+} from "../../AppTypes/DataEntitities";
 import { IPaginationProps } from "../../AppTypes/Pagination";
 import { ISearchParams } from "../../AppTypes/Search";
 
@@ -45,7 +48,6 @@ export interface IEmpInviteProps extends ICurrentCompany {
   emails: string;
 }
 
-
 export const createEmployee = async (props: ICreateEmpProps) => {
   const url = `${process.env.REACT_APP_UTILITY_BASE_URL}/employee`;
   const config = {
@@ -77,8 +79,6 @@ export const createEmployee = async (props: ICreateEmpProps) => {
   return response;
 };
 
-
-
 export const employeeInvite = async (props: IEmpInviteProps) => {
   const url = `${process.env.REACT_APP_UTILITY_BASE_URL}/employee/invite`;
   const config = {
@@ -100,15 +100,55 @@ export const employeeInvite = async (props: IEmpInviteProps) => {
 interface IGetEmpsProps extends ICurrentCompany {
   pagination?: IPaginationProps;
   searchParams?: ISearchParams;
+  status?: TEmployeeStatus[];
+}
+interface IResendInviteProps extends ICurrentCompany {
+  id: number;
 }
 
+export const getInvitedEmployees = async (props: IGetEmpsProps) => {
+  const { pagination } = props;
+  const limit = pagination?.limit ?? 10;
+  const offset = pagination?.offset ?? 0;
+  const name = props.searchParams?.name ?? "";
+
+  let url = `${process.env.REACT_APP_UTILITY_BASE_URL}/employee/invite?limit=${limit}&offset=${offset}`;
+
+  const config = {
+    headers: {
+      Accept: "application/json",
+      Authorization: `Bearer ${props.token}`,
+      "x-company-id": props.companyId,
+    },
+  };
+
+  const response = await axios.get(url, config);
+  return response;
+};
+export const resendEmployeeInvite = async (props: IResendInviteProps) => {
+  const url = `${process.env.REACT_APP_UTILITY_BASE_URL}/employee/invite/${props.id}`;
+
+  const config = {
+    headers: {
+      Accept: "application/json",
+      Authorization: `Bearer ${props.token}`,
+      "x-company-id": props.companyId,
+    },
+  };
+
+  const response = await axios.get(url, config);
+  return response;
+};
 export const getEmployees = async (props: IGetEmpsProps) => {
   const { pagination } = props;
   const limit = pagination?.limit ?? 10;
   const offset = pagination?.offset ?? 0;
   const name = props.searchParams?.name ?? "";
 
-  const url = `${process.env.REACT_APP_UTILITY_BASE_URL}/employee?limit=${limit}&offset=${offset}`;
+  let url = `${process.env.REACT_APP_UTILITY_BASE_URL}/employee?limit=${limit}&offset=${offset}`;
+  if (props.status) {
+    url += "&status=" + props.status.toString();
+  }
 
   const config = {
     headers: {

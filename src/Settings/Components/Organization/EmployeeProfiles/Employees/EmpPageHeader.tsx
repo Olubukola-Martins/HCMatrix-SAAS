@@ -1,6 +1,4 @@
-import {
-  ExportOutlined,
-} from "@ant-design/icons";
+import { ExportOutlined } from "@ant-design/icons";
 import { Dropdown, Menu, Button } from "antd";
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
@@ -40,7 +38,7 @@ const EmpPageHeader = () => {
                   <Link to="/settings/add-employee">Add Single Employee</Link>
                 </Menu.Item>
                 <Menu.Item onClick={() => setAddMEmployees(true)}>
-                  Add Multiple Users
+                  Invite Multiple Users
                 </Menu.Item>
                 <Menu.Item onClick={() => setImportEmployeeDrawer(true)}>
                   Import Employees

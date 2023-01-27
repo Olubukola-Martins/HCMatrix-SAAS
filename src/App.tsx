@@ -20,7 +20,7 @@ function App() {
   // clear darkmode
   useEffect(() => {
     localStorage.removeItem("dark");
-    // localStorage.clear()//to clear all changes tommorow
+    // localStorage.clear(); //to clear all changes tommorow
   }, []);
   return (
     <AuthProvider
