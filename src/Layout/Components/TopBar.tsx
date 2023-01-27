@@ -43,11 +43,9 @@ const TopBar = ({
   sidebarToggle,
   setSidebarToggle,
 }: IProps) => {
-  // auth
   const auth = useAuthUser();
   const authDetails = auth();
   const user = authDetails?.user;
-
   const globalCtx = useContext(GlobalContext);
   const { state: globalState, dispatch: globalDispatch } = globalCtx;
 

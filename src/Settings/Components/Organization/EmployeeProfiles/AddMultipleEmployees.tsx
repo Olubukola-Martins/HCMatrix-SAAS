@@ -81,7 +81,7 @@ export const AddMultipleEmployees = ({ open, handleClose }: IDrawerProps) => {
           via email and will become members of the organization once they accept
           the invitation.
         </p>
-        <Form onFinish={handleSubmit}>
+        <Form onFinish={handleSubmit} form={form}>
           <Form.Item name="emails" rules={textInputValidationRules}>
             <TextArea
               className="rounded"

@@ -19,7 +19,8 @@ export const PersonalInfo = ({
   onFinished,
   initialValues,
   setCurrent,
-  isLoading
+  isLoading,
+  form
 }: stepperInputProps) => {
   const globalCtx = useContext(GlobalContext);
   const { state: globalState } = globalCtx;
@@ -44,6 +45,7 @@ export const PersonalInfo = ({
         initialValues={initialValues}
         layout="vertical"
         requiredMark={false}
+        form={form}
       >
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-5">
           <Form.Item
