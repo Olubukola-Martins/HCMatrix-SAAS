@@ -98,6 +98,9 @@ interface IGetEmpsProps extends ICurrentCompany {
   pagination?: IPaginationProps;
   searchParams?: ISearchParams;
 }
+interface IResendInviteProps extends ICurrentCompany {
+  id: number;
+}
 
 export const getInvitedEmployees = async (props: IGetEmpsProps) => {
   const { pagination } = props;
@@ -106,6 +109,20 @@ export const getInvitedEmployees = async (props: IGetEmpsProps) => {
   const name = props.searchParams?.name ?? "";
 
   const url = `${process.env.REACT_APP_UTILITY_BASE_URL}/employee/invite?limit=${limit}&offset=${offset}`;
+
+  const config = {
+    headers: {
+      Accept: "application/json",
+      Authorization: `Bearer ${props.token}`,
+      "x-company-id": props.companyId,
+    },
+  };
+
+  const response = await axios.get(url, config);
+  return response;
+};
+export const resendEmployeeInvite = async (props: IResendInviteProps) => {
+  const url = `${process.env.REACT_APP_UTILITY_BASE_URL}/employee/invite/${props.id}`;
 
   const config = {
     headers: {

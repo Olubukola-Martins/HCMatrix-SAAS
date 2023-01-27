@@ -7,11 +7,18 @@ import { createDepartment } from "../../ApiRequesHelpers/Utility/departments";
 import {
   getEmployees,
   getInvitedEmployees,
+  resendEmployeeInvite,
 } from "../../ApiRequesHelpers/Utility/employee";
 import { TEmployee, TInvitedEmployee } from "../../AppTypes/DataEntitities";
 import { IPaginationProps } from "../../AppTypes/Pagination";
 import { openNotification } from "../../NotificationHelpers";
 
+interface IFRQResendInviteProps {
+  companyId: string;
+  onSuccess?: Function;
+  token: string;
+  id: number;
+}
 interface IFRQDepartmentsProps {
   pagination?: IPaginationProps;
   companyId: string;
@@ -136,6 +143,35 @@ export const useFetchEmployees = ({
   return queryData;
 };
 
-export const useCreateDepartment = () => {
-  return useMutation(createDepartment);
+export const useResendEmployeeInvite = ({
+  id,
+  companyId,
+  token,
+  onSuccess,
+}: IFRQResendInviteProps) => {
+  const signOut = useSignOut();
+
+  const queryData = useQuery(
+    ["resend-invite", id],
+    () =>
+      resendEmployeeInvite({
+        companyId,
+        id,
+        token,
+      }),
+    {
+      enabled: id === 0 ? false : true,
+      refetchInterval: false,
+      refetchIntervalInBackground: false,
+      refetchOnWindowFocus: false,
+      onError: (err: any) => {
+        signOut();
+      },
+      onSuccess: (data) => {
+        onSuccess && onSuccess(data);
+      },
+    }
+  );
+
+  return queryData;
 };
