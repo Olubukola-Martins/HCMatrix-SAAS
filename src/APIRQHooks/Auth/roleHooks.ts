@@ -38,6 +38,7 @@ export const useFetchRoles = ({
       // refetchOnWindowFocus: false,
       onError: (err: any) => {
         signOut();
+        localStorage.clear();
       },
       onSuccess: (data) => {
         onSuccess && onSuccess(data);

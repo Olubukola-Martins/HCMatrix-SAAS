@@ -55,6 +55,7 @@ export const useFetchInvitedEmployees = ({
       // refetchOnWindowFocus: false,
       onError: (err: any) => {
         signOut();
+        localStorage.clear();
       },
       onSuccess: (data) => {
         onSuccess && onSuccess(data);
@@ -107,6 +108,7 @@ export const useFetchEmployees = ({
       // refetchOnWindowFocus: false,
       onError: (err: any) => {
         signOut();
+        localStorage.clear();
       },
       onSuccess: (data) => {
         onSuccess && onSuccess(data);
@@ -166,6 +168,7 @@ export const useResendEmployeeInvite = ({
       refetchOnWindowFocus: false,
       onError: (err: any) => {
         signOut();
+        localStorage.clear();
       },
       onSuccess: (data) => {
         onSuccess && onSuccess(data);

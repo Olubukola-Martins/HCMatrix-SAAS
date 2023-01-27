@@ -42,6 +42,7 @@ export const useFetchDesignations = ({
       onError: (err: any) => {
         // show notification
         signOut();
+        localStorage.clear();
       },
       onSuccess: (data) => {
         onSuccess && onSuccess(data);

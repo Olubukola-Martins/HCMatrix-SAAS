@@ -72,7 +72,10 @@ const UserLoginForm = () => {
             title: "Success",
             description: "Logged in successfully!",
           });
+          console.log("ROSE", authUserDetails.companies);
           if (!globalState.currentCompany) {
+            console.log("ROSE INNER", authUserDetails.companies);
+
             globalDispatch({
               type: EGlobalOps.setCurrentCompanyId,
               payload: {

@@ -119,6 +119,7 @@ const TopBar = ({
   const signOut = useSignOut();
   const handleLogOut = () => {
     signOut();
+    localStorage.clear();
   };
   return (
     <>
