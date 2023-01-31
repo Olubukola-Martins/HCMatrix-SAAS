@@ -102,6 +102,7 @@ const UserLoginForm = ({ autoLoginDetails }: ILoginProps) => {
           placeholder="Employee ID or Work Email"
           className="rounded border-slate-400"
           style={{ padding: "6px 5px" }}
+          autoComplete="email"
         />
       </Form.Item>
       <Form.Item name="password" rules={textInputValidationRules}>
@@ -110,6 +111,7 @@ const UserLoginForm = ({ autoLoginDetails }: ILoginProps) => {
           placeholder="Password"
           className="rounded border-slate-400"
           style={{ padding: "6px 5px" }}
+          autoComplete="password"
         />
       </Form.Item>
 

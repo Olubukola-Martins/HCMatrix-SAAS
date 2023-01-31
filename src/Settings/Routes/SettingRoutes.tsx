@@ -26,23 +26,24 @@ import Employees from "../Pages/Organization/EmployeeProfiles/Employees";
 import { MyProfile } from "../Pages/Organization/EmployeeProfiles/MyProfile";
 import { RequireAuth } from "react-auth-kit";
 import { AddEmployee } from "../Components/Organization/EmployeeProfiles/AddEmployee";
+import { appRoutes } from "AppRoutes";
 
 const SettingRoutes = () => {
   return (
     <Routes>
       {/* General */}
       <Route
-        path="/settings"
+        path={appRoutes.settings}
         element={
-          <RequireAuth loginPath={"/login"}>
+          <RequireAuth loginPath={appRoutes.login}>
             <GeneralSettings />
           </RequireAuth>
         }
       />
       <Route
-        path="/settings/company-details"
+        path={appRoutes.companyDetailsSettings}
         element={
-          <RequireAuth loginPath={"/login"}>
+          <RequireAuth loginPath={appRoutes.login}>
             <CompanyDetails />
           </RequireAuth>
         }
@@ -50,7 +51,7 @@ const SettingRoutes = () => {
       {/* <Route
         path="/settings/domains"
         element={
-          <RequireAuth loginPath={"/login"}>
+          <RequireAuth loginPath={appRoutes.login}>
             <Domains />
           </RequireAuth>
         }
@@ -58,49 +59,49 @@ const SettingRoutes = () => {
       {/* <Route
         path="/settings/from-addresses"
         element={
-          <RequireAuth loginPath={"/login"}>
+          <RequireAuth loginPath={appRoutes.login}>
             <FromAddresses />
           </RequireAuth>
         }
       /> */}
       <Route
-        path="/settings/locations"
+        path={appRoutes.locationSettings}
         element={
-          <RequireAuth loginPath={"/login"}>
+          <RequireAuth loginPath={appRoutes.login}>
             <Locations />
           </RequireAuth>
         }
       />
       <Route
-        path="/settings/locations/:id"
+        path={appRoutes.singleLocation().format}
         element={
-          <RequireAuth loginPath={"/login"}>
+          <RequireAuth loginPath={appRoutes.login}>
             <LocationDetail />
           </RequireAuth>
         }
       />
 
       <Route
-        path="/settings/holidays"
+        path={appRoutes.holidaySettings}
         element={
-          <RequireAuth loginPath={"/login"}>
+          <RequireAuth loginPath={appRoutes.login}>
             <Holidays />
           </RequireAuth>
         }
       />
       <Route
-        path="/settings/profile"
+        path={appRoutes.userProfileSettings}
         element={
-          <RequireAuth loginPath={"/login"}>
+          <RequireAuth loginPath={appRoutes.login}>
             <MyProfile />
           </RequireAuth>
         }
       />
       {/* QUICK FIX */}
       <Route
-        path="/settings/add-employee"
+        path={appRoutes.addEmployee}
         element={
-          <RequireAuth loginPath={"/login"}>
+          <RequireAuth loginPath={appRoutes.login}>
             <AddEmployee />
           </RequireAuth>
         }
@@ -108,79 +109,72 @@ const SettingRoutes = () => {
 
       {/* Organization */}
       <Route
-        path="/settings/employees"
+        path={appRoutes.employeeSettings}
         element={
-          <RequireAuth loginPath={"/login"}>
+          <RequireAuth loginPath={appRoutes.login}>
             <Employees />
           </RequireAuth>
         }
       />
+
       <Route
-        path="/settings/add-employee"
+        path={appRoutes.designationSettings}
         element={
-          <RequireAuth loginPath={"/login"}>
-            <AddEmployee />
-          </RequireAuth>
-        }
-      />
-      <Route
-        path="/settings/designations"
-        element={
-          <RequireAuth loginPath={"/login"}>
+          <RequireAuth loginPath={appRoutes.login}>
             <Designations />
           </RequireAuth>
         }
       />
       <Route
-        path="/settings/designations/:id"
+        path={appRoutes.singleDesignation().format}
         element={
-          <RequireAuth loginPath={"/login"}>
+          <RequireAuth loginPath={appRoutes.login}>
             <DesignationDetail />
           </RequireAuth>
         }
       />
       <Route
-        path="/settings/groups"
+        path={appRoutes.groupSettings}
         element={
-          <RequireAuth loginPath={"/login"}>
+          <RequireAuth loginPath={appRoutes.login}>
             <Groups />
           </RequireAuth>
         }
       />
       {/* not in figma - ask Emma */}
-      {/* <Route path="/settings/groups/:id" element={ <RequireAuth loginPath={"/login"}><DesignationDetail   /></RequireAuth>
+      {/* <Route path="/settings/groups/:id" element={ <RequireAuth loginPath={appRoutes.login}><DesignationDetail   /></RequireAuth>
         }
       /> */}
 
       <Route
-        path="/settings/departments"
+        path={appRoutes.departmentSettings}
         element={
-          <RequireAuth loginPath={"/login"}>
+          <RequireAuth loginPath={appRoutes.login}>
             <Departments />
           </RequireAuth>
         }
       />
       <Route
-        path="/settings/departments/:id"
+        path={appRoutes.singleDepartment().format}
         element={
-          <RequireAuth loginPath={"/login"}>
+          <RequireAuth loginPath={appRoutes.login}>
             <DepartmentDetail />
           </RequireAuth>
         }
       />
 
       <Route
-        path="/settings/delegations"
+        path={appRoutes.delegationSettings}
         element={
-          <RequireAuth loginPath={"/login"}>
+          <RequireAuth loginPath={appRoutes.login}>
             <Delegations />
           </RequireAuth>
         }
       />
       <Route
-        path="/settings/delegations/:id"
+        path={appRoutes.singleDelegation().format}
         element={
-          <RequireAuth loginPath={"/login"}>
+          <RequireAuth loginPath={appRoutes.login}>
             <DelegationDetail />
           </RequireAuth>
         }
@@ -189,7 +183,7 @@ const SettingRoutes = () => {
       <Route
         path="/settings/roles"
         element={
-          <RequireAuth loginPath={"/login"}>
+          <RequireAuth loginPath={appRoutes.login}>
             <Roles />
           </RequireAuth>
         }
@@ -197,7 +191,7 @@ const SettingRoutes = () => {
       <Route
         path="/settings/roles/create"
         element={
-          <RequireAuth loginPath={"/login"}>
+          <RequireAuth loginPath={appRoutes.login}>
             <CreateRole />
           </RequireAuth>
         }
@@ -205,7 +199,7 @@ const SettingRoutes = () => {
       <Route
         path="/settings/automation/workflows"
         element={
-          <RequireAuth loginPath={"/login"}>
+          <RequireAuth loginPath={appRoutes.login}>
             <Workflows />
           </RequireAuth>
         }
@@ -213,7 +207,7 @@ const SettingRoutes = () => {
       <Route
         path="/settings/automation/workflows/create"
         element={
-          <RequireAuth loginPath={"/login"}>
+          <RequireAuth loginPath={appRoutes.login}>
             <CreateWorkflow />
           </RequireAuth>
         }
@@ -221,7 +215,7 @@ const SettingRoutes = () => {
       <Route
         path="/settings/payroll"
         element={
-          <RequireAuth loginPath={"/login"}>
+          <RequireAuth loginPath={appRoutes.login}>
             <PayrollSettings />
           </RequireAuth>
         }
@@ -229,7 +223,7 @@ const SettingRoutes = () => {
       <Route
         path="/settings/grades"
         element={
-          <RequireAuth loginPath={"/login"}>
+          <RequireAuth loginPath={appRoutes.login}>
             <Grades />
           </RequireAuth>
         }
@@ -237,7 +231,7 @@ const SettingRoutes = () => {
       <Route
         path="/settings/grade_categories"
         element={
-          <RequireAuth loginPath={"/login"}>
+          <RequireAuth loginPath={appRoutes.login}>
             <GradeCategories />
           </RequireAuth>
         }
@@ -246,7 +240,7 @@ const SettingRoutes = () => {
       <Route
         path="/settings/probation_policy"
         element={
-          <RequireAuth loginPath={"/login"}>
+          <RequireAuth loginPath={appRoutes.login}>
             <ProbationPolicy />
           </RequireAuth>
         }
@@ -254,7 +248,7 @@ const SettingRoutes = () => {
       <Route
         path="/settings/resignation_policy"
         element={
-          <RequireAuth loginPath={"/login"}>
+          <RequireAuth loginPath={appRoutes.login}>
             <ResignationPolicy />
           </RequireAuth>
         }
