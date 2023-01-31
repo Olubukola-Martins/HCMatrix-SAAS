@@ -48,12 +48,9 @@ const initialsetUpSteps: TSetupStep[] = [
 
 const UserFeedbackComp = () => {
   const auth = useAuthUser();
-
   const authDetails = auth() as unknown as IAuthDets;
-
   const token = authDetails.userToken;
   const user = authDetails?.user;
-
   const [progress, setProgress] = useState(0);
   const [steps, setSteps] = useState(initialsetUpSteps);
   const globalCtx = useContext(GlobalContext);
@@ -63,7 +60,6 @@ const UserFeedbackComp = () => {
   const dismissFeedback = () => {
     dispatch({ type: EGlobalOps.setShowInitialSetup, payload: false });
   };
-
   const { isSuccess: isDepSuccess } = useFetchDepartments({
     companyId,
     token,
@@ -182,10 +178,17 @@ const UserFeedbackComp = () => {
                   )}
                 </p>
               </div>
-              <Progress percent={progress} strokeColor={"var(--caramel)"} />
-              <div className="flex flex-col gap-2">
+              <div className="flex flex-col gap-1  relative bottom-4">
+                <Progress percent={progress} strokeColor={"var(--caramel)"} />
+                <span>
+                  {steps.filter((item) => item.completed).length}/{steps.length}{" "}
+                  complete
+                </span>
+              </div>
+              <div className="flex flex-col gap-2 w-full">
                 {provideFeedback && (
                   <Steps
+                    className="w-full"
                     size="small"
                     direction="vertical"
                     current={steps.filter((item) => item.completed).length}
@@ -194,7 +197,11 @@ const UserFeedbackComp = () => {
                       .sort((item) => (item.completed ? -1 : 1))
                       .map((item, index) => (
                         <Steps.Step
-                          description="Watch Video Tutorial"
+                          description={
+                            <span className="text-caramel text-xs">
+                              Watch Video Tutorial
+                            </span>
+                          }
                           key={index}
                           title={
                             <FeedBackTitle

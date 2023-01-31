@@ -21,18 +21,20 @@ interface IProps {
 
 const FeedBackTitle = ({ handleClick, item }: IProps) => {
   return (
-    <div className="flex justify-between  text-sm">
-      <Link to={item.link} onClick={handleClick}>
-        <p
-          className={`block hover:text-caramel ${
-            item.completed ? "text-caramel line-through" : "font-semibold"
-          }`}
-          title={item.hint}
-        >
+    <Link
+      to={item.link}
+      onClick={handleClick}
+      className="flex justify-between hover:text-caramel  w-full text-sm"
+    >
+      <div className="flex-1">
+        <p className={`block `} title={item.hint}>
           {item.text}
         </p>
-      </Link>
-    </div>
+      </div>
+      <div>
+        <i className="ri-arrow-right-s-line text-lg cursor-pointer"></i>
+      </div>
+    </Link>
   );
 };
 
