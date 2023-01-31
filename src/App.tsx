@@ -8,7 +8,7 @@ import SettingRoutes from "./Settings/Routes/SettingRoutes";
 import { QueryClientProvider, QueryClient } from "react-query";
 import { ReactQueryDevtools } from "react-query/devtools";
 import HomeRoute from "./Home/HomeRoute";
-import { AuthProvider } from "react-auth-kit";
+import { AuthProvider, RequireAuth } from "react-auth-kit";
 import { Notification } from "./Notifications/Notification";
 import GlobalContextProvider from "./Contexts/GlobalContextProvider";
 import { useEffect } from "react";
@@ -43,7 +43,16 @@ function App() {
             <AdminRoutes />
             <SelfServiceRoutes />
             <Routes>
-              <Route path="/notifications" element={<Notification />} />
+              {/* TO DO auth guard should be added */}
+
+              <Route
+                path="/notifications"
+                element={
+                  <RequireAuth loginPath={"/login"}>
+                    <Notification />
+                  </RequireAuth>
+                }
+              />
             </Routes>
             {/* <Route path="*" element={<NotFoundPage />} /> */}
           </Router>
