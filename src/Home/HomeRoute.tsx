@@ -1,3 +1,4 @@
+import { appRoutes } from "AppRoutes";
 import React from "react";
 import { RequireAuth } from "react-auth-kit";
 import { Route, Routes } from "react-router-dom";
@@ -8,20 +9,19 @@ import Home from "./Pages/Home";
 function HomeRoute() {
   return (
     <Routes>
-    
       <Route
         path="/"
         element={
-          <RequireAuth loginPath={"/login"}>
-          <Home />
-           </RequireAuth>
+          <RequireAuth loginPath={appRoutes.login}>
+            <Home />
+          </RequireAuth>
         }
       />
       <Route
         path="/company-organogram"
         element={
-           <RequireAuth loginPath={"/login"}>
-          <CompanyOrganogram />
+          <RequireAuth loginPath={appRoutes.login}>
+            <CompanyOrganogram />
           </RequireAuth>
         }
       />
