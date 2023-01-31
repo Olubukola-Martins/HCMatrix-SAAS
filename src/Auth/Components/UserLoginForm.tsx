@@ -111,7 +111,7 @@ const UserLoginForm = ({ autoLoginDetails }: ILoginProps) => {
           placeholder="Password"
           className="rounded border-slate-400"
           style={{ padding: "6px 5px" }}
-          autoComplete="password"
+          autoComplete="new-password"
         />
       </Form.Item>
 
