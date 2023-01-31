@@ -1,6 +1,7 @@
-import { Modal, Progress, Steps } from "antd";
+import { Button, Modal, Progress, Steps } from "antd";
 import React, { useContext, useEffect, useState } from "react";
 import { useAuthUser } from "react-auth-kit";
+import { Link } from "react-router-dom";
 import { useFetchRoles } from "../APIRQHooks/Auth/roleHooks";
 import {
   IFRQDepartmentsReturnProps,
@@ -149,7 +150,8 @@ const UserFeedbackComp = () => {
     isDepSuccess &&
     isDegSuccess &&
     isRoleSuccess &&
-    isEmpSuccess;
+    isEmpSuccess &&
+    steps.filter((item) => item.completed).length !== steps.length;
 
   return (
     <>
@@ -213,6 +215,25 @@ const UserFeedbackComp = () => {
                       ))}
                   </Steps>
                 )}
+              </div>
+              <div className="mt-3 flex justify-between">
+                <button
+                  disabled={
+                    steps.filter((item) => item.completed === false).length !==
+                    steps.length
+                  }
+                  onClick={() => dismissFeedback()}
+                >
+                  <span className="text-green-700 underline text-sm">
+                    Done with onboarding
+                  </span>
+                </button>
+                <Link
+                  to="/"
+                  className="underline text-caramel hover:text-black"
+                >
+                  Get Help
+                </Link>
               </div>
             </div>
           </Themes>
