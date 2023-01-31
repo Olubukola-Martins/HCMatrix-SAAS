@@ -11,4 +11,5 @@ export const appRoutes = {
   invitedEmployee: `/invited-employee-form`,
   //home routes
   home: `/`,
+  companyOrganogram: `/company-organogram`,
 };

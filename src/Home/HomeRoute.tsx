@@ -10,7 +10,7 @@ function HomeRoute() {
   return (
     <Routes>
       <Route
-        path="/"
+        path={appRoutes.home}
         element={
           <RequireAuth loginPath={appRoutes.login}>
             <Home />
@@ -18,7 +18,7 @@ function HomeRoute() {
         }
       />
       <Route
-        path="/company-organogram"
+        path={appRoutes.companyOrganogram}
         element={
           <RequireAuth loginPath={appRoutes.login}>
             <CompanyOrganogram />
