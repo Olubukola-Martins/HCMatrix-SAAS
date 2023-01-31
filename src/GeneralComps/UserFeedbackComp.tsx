@@ -222,9 +222,10 @@ const UserFeedbackComp = () => {
                     steps.filter((item) => item.completed === false).length !==
                     steps.length
                   }
+                  className={`disabled:cursor-not-allowed text-green-700 disabled:text-slate-300`}
                   onClick={() => dismissFeedback()}
                 >
-                  <span className="text-green-700 underline text-sm">
+                  <span className=" underline text-sm">
                     Done with onboarding
                   </span>
                 </button>
