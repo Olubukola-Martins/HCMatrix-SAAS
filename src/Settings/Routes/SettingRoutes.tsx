@@ -110,17 +110,17 @@ const SettingRoutes = () => {
       <Route
         path="/settings/employees"
         element={
-          //  <RequireAuth loginPath={"/login"}>
-          <Employees />
-          //  </RequireAuth>
+          <RequireAuth loginPath={"/login"}>
+            <Employees />
+          </RequireAuth>
         }
       />
       <Route
         path="/settings/add-employee"
         element={
-          // <RequireAuth loginPath={"/login"}>
-          <AddEmployee />
-          // </RequireAuth>
+          <RequireAuth loginPath={"/login"}>
+            <AddEmployee />
+          </RequireAuth>
         }
       />
       <Route
@@ -221,9 +221,9 @@ const SettingRoutes = () => {
       <Route
         path="/settings/payroll"
         element={
-          // <RequireAuth loginPath={"/login"}>
-          <PayrollSettings />
-          // </RequireAuth>
+          <RequireAuth loginPath={"/login"}>
+            <PayrollSettings />
+          </RequireAuth>
         }
       />
       <Route
