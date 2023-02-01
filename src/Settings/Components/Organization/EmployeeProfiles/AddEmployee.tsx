@@ -43,7 +43,6 @@ export const AddEmployee = () => {
   const { state: globalState } = globalCtx;
   const companyId = globalState.currentCompany?.id as unknown as string;
 
-  
   const [form] = Form.useForm();
   const { mutate } = useCreateEmployee();
   const {

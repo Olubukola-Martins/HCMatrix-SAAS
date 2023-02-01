@@ -8,12 +8,14 @@ type TCCompany = {
 export interface IGlobalState {
   currentCompany: TCCompany | null;
   showInitialSetUp: boolean;
+  showAdminWelcomeMessage: boolean;
   upLoadFileString: string;
 }
 
 const initState: IGlobalState = {
   currentCompany: null,
-  showInitialSetUp: true,
+  showInitialSetUp: false,
+  showAdminWelcomeMessage: true,
   upLoadFileString: "",
 };
 
@@ -24,6 +26,7 @@ interface IGlobalContext {
 
 export enum EGlobalOps {
   setCurrentCompanyId,
+  setAdminWelcomeMessage,
   setShowInitialSetup,
   setUploadFileString,
 }
@@ -62,6 +65,11 @@ const GlobalReducer = (state: IGlobalState, action: IAction): IGlobalState => {
         ...state,
         showInitialSetUp: action.payload,
       };
+    case EGlobalOps.setAdminWelcomeMessage:
+      return {
+        ...state,
+        showAdminWelcomeMessage: action.payload,
+      };
 
     default:
       return state;
@@ -89,8 +97,9 @@ const GlobalContextProvider = ({ children }: IProps) => {
           : null;
       return {
         currentCompany,
-        showInitialSetUp: true,
+        showInitialSetUp: false,
         upLoadFileString: "",
+        showAdminWelcomeMessage: true,
       };
     }
   );
