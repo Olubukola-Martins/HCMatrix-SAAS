@@ -76,13 +76,6 @@ const UserLoginForm = ({ autoLoginDetails }: ILoginProps) => {
             authState: authUserDetails,
           })
         ) {
-          openNotification({
-            state: "success",
-
-            title: "Success",
-            description: "Logged in successfully!",
-          });
-
           globalDispatch({
             type: EGlobalOps.setCurrentCompanyId,
             payload: {
