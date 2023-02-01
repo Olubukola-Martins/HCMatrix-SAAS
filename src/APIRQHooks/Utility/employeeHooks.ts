@@ -7,6 +7,8 @@ import { createDepartment } from "../../ApiRequesHelpers/Utility/departments";
 import {
   getEmployees,
   getInvitedEmployees,
+  getSingleEmployee,
+  IGetSingleEmpProps,
   resendEmployeeInvite,
 } from "../../ApiRequesHelpers/Utility/employee";
 import {
@@ -145,6 +147,53 @@ export const useFetchEmployees = ({
         };
 
         return ans;
+      },
+    }
+  );
+
+  return queryData;
+};
+export const useFetchSingleEmployee = ({
+  employeeId,
+  companyId,
+
+  token,
+}: IGetSingleEmpProps) => {
+  const signOut = useSignOut();
+
+  const queryData = useQuery(
+    ["single-employee", employeeId],
+    () =>
+      getSingleEmployee({
+        companyId,
+        token,
+        employeeId,
+      }),
+
+    {
+      enabled: employeeId === 0 ? false : true,
+      onError: (err: any) => {
+        signOut();
+        localStorage.clear();
+      },
+
+      select: (res: any) => {
+        const item = res.data.data;
+        // const item = fetchedData.result;
+
+        const data: TEmployee = {
+          id: item.id,
+          name: `${item.firstName} ${item.lastName}`,
+          gender: item?.gender ?? "nil",
+          employeeID: item?.empUid,
+          designation: item?.designation?.name,
+          department: item?.department?.name ?? "nil",
+          status: item?.status ?? "nil",
+          role: item?.role?.name,
+          email: item?.email,
+        };
+
+        return data;
       },
     }
   );

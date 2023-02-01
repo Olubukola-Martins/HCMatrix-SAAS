@@ -4,6 +4,8 @@ import { ColumnsType, TablePaginationConfig } from "antd/lib/table";
 import { TableRowSelection } from "antd/lib/table/interface";
 import { MoreOutlined } from "@ant-design/icons";
 import { employeeStatusColor } from "../../../../../GeneralHelpers/employeeHelpers";
+import { Link } from "react-router-dom";
+import { appRoutes } from "AppRoutes";
 
 interface IProps {
   employees: TEmployee[];
@@ -23,6 +25,14 @@ const ActiveEmpTableView = ({
       title: "Name",
       dataIndex: "name",
       key: "name",
+      render: (val, item) => (
+        <Link
+          to={`${appRoutes.singleEmployee(item.id).path}`}
+          className="text-caramel hover:underline hover:text-caramel"
+        >
+          {item.name}
+        </Link>
+      ),
     },
 
     {

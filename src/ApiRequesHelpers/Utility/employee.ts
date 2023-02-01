@@ -102,6 +102,9 @@ interface IGetEmpsProps extends ICurrentCompany {
   searchParams?: ISearchParams;
   status?: TEmployeeStatus[];
 }
+export interface IGetSingleEmpProps extends ICurrentCompany {
+  employeeId: number;
+}
 interface IResendInviteProps extends ICurrentCompany {
   id: number;
 }
@@ -149,6 +152,20 @@ export const getEmployees = async (props: IGetEmpsProps) => {
   if (props.status) {
     url += "&status=" + props.status.toString();
   }
+
+  const config = {
+    headers: {
+      Accept: "application/json",
+      Authorization: `Bearer ${props.token}`,
+      "x-company-id": props.companyId,
+    },
+  };
+
+  const response = await axios.get(url, config);
+  return response;
+};
+export const getSingleEmployee = async (props: IGetSingleEmpProps) => {
+  let url = `${process.env.REACT_APP_UTILITY_BASE_URL}/employee/${props.employeeId}`;
 
   const config = {
     headers: {

@@ -24,11 +24,15 @@ import { MedicalHistory } from "../../../Components/Organization/EmployeeProfile
 import { useAuthUser } from "react-auth-kit";
 import { IAuthDets } from "AppTypes/Auth";
 import { GlobalContext } from "Contexts/GlobalContextProvider";
+import { useFetchSingleEmployee } from "APIRQHooks/Utility/employeeHooks";
+import { useParams } from "react-router-dom";
 
-export const MyProfile = () => {
+export const EmployeeProfile = () => {
+  const params = useParams();
+  const employeeId = params.id;
   const auth = useAuthUser();
   const authDetails = auth() as unknown as IAuthDets;
-  const user = authDetails?.user;
+  const userToken = authDetails?.userToken;
   const companies = authDetails?.companies;
   const globalCtx = useContext(GlobalContext);
   const { state: globalState } = globalCtx;
@@ -36,12 +40,17 @@ export const MyProfile = () => {
   const currentCompany = companies.find(
     (item) => `${item.companyId}` === currentCompanyId
   );
+  const { data: employee } = useFetchSingleEmployee({
+    token: userToken,
+    companyId: currentCompanyId,
+    employeeId: employeeId as unknown as number,
+  });
   const [openDrawer, setOpenDrawer] = useState(false);
   const [openResignation, setOpenResignation] = useState(false);
   return (
     <DashboardLayout>
       <div className="Container mt-3">
-        <PageIntro title="Profile" link="/" />
+        <PageIntro title="Employee Profile" link="/" />
         <EditMyProfile
           open={openDrawer}
           handleClose={() => setOpenDrawer(false)}
@@ -54,21 +63,25 @@ export const MyProfile = () => {
           <div className="bg-mainBg shadow-sm rounded-md p-4 flex gap-3 justify-between">
             <div className="flex gap-3 items-center md:flex-row flex-col">
               <img
-                src="https://res.cloudinary.com/ddvaelej7/image/upload/v1639659955/HCmatrix/User-Icon_wdkmsf.png"
-                alt="user"
+                src={`https://res.cloudinary.com/ddvaelej7/image/upload/v1639659955/HCmatrix/User-Icon_wdkmsf.png`}
+                alt={employee?.name}
                 className="h-24"
               />
 
               <div className="flex flex-col gap-1 text-accent">
                 <h3 className="text-lg font-medium text-accent">
-                  {user.fullName}
+                  {employee?.name}
                 </h3>
                 <h4 className="font-medium text-accent">UI Designer | CSI</h4>
-                <h5 className="text-sm text-accent">Manager</h5>
+                <h5 className="text-sm text-accent">
+                  {typeof employee?.role === "string"
+                    ? employee?.role
+                    : employee?.role.name}
+                </h5>
                 <div className="text-sm flex md:items-center gap-3 md:flex-row flex-col mt-1">
                   <div className="flex items-center gap-2">
                     <i className="ri-mail-line text-caramel"></i>
-                    <span>{user.email} | </span>
+                    <span>{employee?.email} | </span>
                   </div>
                   <div className="flex items-center gap-2">
                     <i className="ri-phone-line text-caramel"></i>
