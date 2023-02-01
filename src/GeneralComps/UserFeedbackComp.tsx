@@ -142,6 +142,7 @@ const UserFeedbackComp = () => {
     const totalSteps = steps.length;
     const completedSteps = steps.filter((item) => item.completed).length;
     const progress = (completedSteps / totalSteps) * 100;
+    // This will prevent the welcome admin from showing if all steps are completed
     // don't show welcome message if all steps complete
     if (progress === 100) {
       dispatch({ type: EGlobalOps.setAdminWelcomeMessage, payload: false });
