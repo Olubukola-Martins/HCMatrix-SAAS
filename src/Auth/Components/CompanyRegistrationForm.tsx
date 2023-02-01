@@ -4,6 +4,7 @@ import {
   emailValidationRules,
   generalValidationRules,
   passwordValidationRules,
+  phoneNumberValidationRule,
   textInputValidationRules,
 } from "../../FormHelpers/validation";
 import {
@@ -182,8 +183,7 @@ const CompanyRegistrationForm = () => {
             />
           </Form.Item>
 
-
-          <Form.Item name="phone" hasFeedback>
+          <Form.Item name="phone">
             <Input.Group compact>
               <Form.Item
                 noStyle
@@ -206,7 +206,7 @@ const CompanyRegistrationForm = () => {
               </Form.Item>
               <Form.Item
                 noStyle
-                rules={textInputValidationRules}
+                rules={[...textInputValidationRules, phoneNumberValidationRule]}
                 name={["phone", "number"]}
               >
                 <Input
@@ -219,8 +219,6 @@ const CompanyRegistrationForm = () => {
             </Input.Group>
           </Form.Item>
 
-
-          
           <Form.Item
             name="password"
             rules={passwordValidationRules}

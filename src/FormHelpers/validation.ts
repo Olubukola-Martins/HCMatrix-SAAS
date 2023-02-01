@@ -49,3 +49,13 @@ export const passwordValidationRules: Rule[] = [
     },
   },
 ];
+
+export const phoneNumberValidationRule: Rule = {
+  validator: async (rule, value) => {
+    let paswd = /^[0-9]*$/;
+
+    if (!value.match(paswd)) throw new Error("Only digits are allowed");
+    // if (false) throw new Error("Something wrong!");
+    return true;
+  },
+};
