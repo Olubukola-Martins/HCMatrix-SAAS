@@ -153,7 +153,13 @@ export const AdminHome = () => {
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 mt-7 gap-y-7 gap-x-5">
-          <div className="col-span-2 bg-mainBg shadow border rounded-lg p-3 ">
+          <div className="col-span-2 bg-mainBg shadow border rounded-lg p-3 relative h-80">
+            <div className="absolute top-36 left-0">
+              <button className="button flex gap-2 align-center">
+                <i className="ri-checkbox-circle-fill" />
+                <span>Get Started</span>
+              </button>
+            </div>
             <EmployeeInfoChart />
           </div>
           <div>
