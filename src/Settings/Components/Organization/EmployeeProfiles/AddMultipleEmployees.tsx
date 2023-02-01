@@ -8,10 +8,13 @@ import { GlobalContext } from "Contexts/GlobalContextProvider";
 import { openNotification } from "NotificationHelpers";
 import { useContext } from "react";
 import { useAuthUser } from "react-auth-kit";
+import { useQueryClient } from "react-query";
 import { IDrawerProps } from "../../../../AppTypes/Component";
 import { textInputValidationRules } from "../../../../FormHelpers/validation";
 
 export const AddMultipleEmployees = ({ open, handleClose }: IDrawerProps) => {
+  const queryClient = useQueryClient();
+
   const auth = useAuthUser();
   const authDetails = auth() as unknown as IAuthDets;
   const token = authDetails.userToken;
@@ -51,6 +54,10 @@ export const AddMultipleEmployees = ({ open, handleClose }: IDrawerProps) => {
             description: res.data.message,
           });
           form.resetFields();
+          queryClient.invalidateQueries({
+            queryKey: ["invited-employees"],
+            // exact: true,
+          });
         },
       });
     }
@@ -74,7 +81,7 @@ export const AddMultipleEmployees = ({ open, handleClose }: IDrawerProps) => {
           via email and will become members of the organization once they accept
           the invitation.
         </p>
-        <Form onFinish={handleSubmit}>
+        <Form onFinish={handleSubmit} form={form}>
           <Form.Item name="emails" rules={textInputValidationRules}>
             <TextArea
               className="rounded"
@@ -91,5 +98,3 @@ export const AddMultipleEmployees = ({ open, handleClose }: IDrawerProps) => {
     </Drawer>
   );
 };
-
-

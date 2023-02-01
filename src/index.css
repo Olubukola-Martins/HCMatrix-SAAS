@@ -379,3 +379,10 @@ textarea.ant-input,
 .ant-steps-item-finish .ant-steps-item-icon > .ant-steps-icon {
   color: var(--caramel);
 }
+
+/* customization to allow userfeedbackComp to have side icon*/
+.ant-steps-vertical.ant-steps-small
+  .ant-steps-item-container
+  .ant-steps-item-title {
+  width: 100%;
+}

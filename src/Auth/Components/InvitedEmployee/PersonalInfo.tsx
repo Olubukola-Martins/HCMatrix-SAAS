@@ -11,13 +11,16 @@ import {
   textInputValidationRules,
 } from "FormHelpers/validation";
 import { FileUpload } from "GeneralComps/FileUpload";
-import { JSXElementConstructor, Key, ReactElement, ReactFragment, ReactPortal, useContext, useState } from "react";
+import { BeatLoader } from "react-spinners";
+import { useContext, useState } from "react";
 const { Option } = Select;
 
 export const PersonalInfo = ({
   onFinished,
   initialValues,
   setCurrent,
+  isLoading,
+  form
 }: stepperInputProps) => {
   const globalCtx = useContext(GlobalContext);
   const { state: globalState } = globalCtx;
@@ -35,8 +38,6 @@ export const PersonalInfo = ({
   };
   const citizenCheck = hiddenInputs === "NotCitizen" ? false : true;
 
-
-  
   return (
     <div>
       <Form
@@ -44,6 +45,7 @@ export const PersonalInfo = ({
         initialValues={initialValues}
         layout="vertical"
         requiredMark={false}
+        form={form}
       >
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-5">
           <Form.Item
@@ -61,28 +63,26 @@ export const PersonalInfo = ({
             <Input placeholder="Enter last name" />
           </Form.Item>
           <Form.Item
-            name="address"
+            name="streetAddress"
             label="Street address"
             rules={textInputValidationRules}
           >
-            <Input placeholder="Enter phone" />
+            <Input placeholder="No 2 United Estate" />
           </Form.Item>
 
-          {/* <Form.Item name="phone" hasFeedback>
+          <Form.Item name="phone" label="Business phone">
             <Input.Group compact>
               <Form.Item
                 noStyle
                 rules={generalValidationRules}
                 name={["phone", "code"]}
+                initialValue="+234"
               >
-                {isCSuccess && (
+                {isSuccess && (
                   <Select
-                    // showSearch
-                    // allowClear
-                    // optionLabelProp="label"
                     className="rounded border-slate-400"
-                    style={{ width: "25%" }}
-                    options={countries.map((item) => ({
+                    style={{ width: "30%" }}
+                    options={countries?.map((item) => ({
                       label: `+${item.code}`,
                       value: item.id,
                     }))}
@@ -95,21 +95,21 @@ export const PersonalInfo = ({
                 name={["phone", "number"]}
               >
                 <Input
-                  style={{ width: "75%" }}
-                  placeholder="Business Phone"
+                  style={{ width: "70%" }}
+                  placeholder="9036849235"
                   className="rounded border-slate-400 text-left"
                   autoComplete="phone"
                 />
               </Form.Item>
             </Input.Group>
-          </Form.Item> */}
+          </Form.Item>
 
           <Form.Item
-            name="dateOfBirth"
+            name="dob"
             label="Date of Birth"
             rules={generalValidationRules}
           >
-            <DatePicker className="w-full" />
+            <DatePicker className="w-full" format="YYYY-MM-DD" />
           </Form.Item>
 
           <Form.Item
@@ -136,7 +136,7 @@ export const PersonalInfo = ({
             </Select>
           </Form.Item>
           <Form.Item
-            name="employmentEligibility"
+            name="eligibility"
             label="Employment Eligibility"
             rules={generalValidationRules}
           >
@@ -157,7 +157,7 @@ export const PersonalInfo = ({
             />
           </Form.Item>
 
-          <Form.Item label="Upload valid document" name="validDocument">
+          {/* <Form.Item label="Upload valid document" name="validDocumentUrl">
             <Input
               type="hidden"
               className="generalInputStyle"
@@ -166,13 +166,13 @@ export const PersonalInfo = ({
             <FileUpload
               allowedFileTypes={[
                 "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
-                "image/png"
+                "image/png",
               ]}
             />
-          </Form.Item>
+          </Form.Item> */}
 
           <Form.Item
-            name="nationality"
+            name="countryId"
             label="Nationality"
             rules={generalValidationRules}
           >
@@ -181,16 +181,20 @@ export const PersonalInfo = ({
               allowClear
               optionLabelProp="label"
               placeholder="Select"
-              onChange={(val) => setCountryId(val.id)}
+              onChange={(val) => setCountryId(val)}
             >
-              {countries?.map((data: { id: Key | null | undefined; name: string | number | boolean | ReactElement<any, string | JSXElementConstructor<any>> | ReactFragment | ReactPortal | null | undefined; }) => (
-                <Option key={data.id} value={data} label={data.name}>
+              {countries?.map((data) => (
+                <Option key={data.id} value={data.id} label={data.name}>
                   {data.name}
                 </Option>
               ))}
             </Select>
           </Form.Item>
-          <Form.Item name="state" label="State" rules={generalValidationRules}>
+          <Form.Item
+            name="stateId"
+            label="State"
+            rules={generalValidationRules}
+          >
             <Select
               showSearch
               allowClear
@@ -206,7 +210,7 @@ export const PersonalInfo = ({
             </Select>
           </Form.Item>
           {lgaSuccess && lga.length > 0 && (
-            <Form.Item name="lga" label="LGA" rules={generalValidationRules}>
+            <Form.Item name="lgaId" label="LGA" rules={generalValidationRules}>
               <Select
                 showSearch
                 allowClear
@@ -231,7 +235,7 @@ export const PersonalInfo = ({
             Prev
           </button>
           <button type="submit" className="button">
-            Continue
+           {isLoading ? <BeatLoader color="#fff" /> : "Continue"} 
           </button>
         </div>
       </Form>

@@ -33,6 +33,8 @@ const ActiveEmployeesContainer = () => {
   } = useFetchEmployees({
     companyId,
     token,
+    status: ["probation", "confirmed"],
+
     pagination: {
       limit: pagination.pageSize,
       offset,

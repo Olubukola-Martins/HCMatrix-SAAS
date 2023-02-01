@@ -1,3 +1,4 @@
+import { appRoutes } from "AppRoutes";
 import { InvitedEmployeeForm } from "Auth/Pages/InvitedEmployeeForm";
 import { Route, Routes } from "react-router-dom";
 import { EmployeeRegister } from "../Pages/EmployeeRegister";
@@ -9,13 +10,16 @@ import { VerifyAdminEmail } from "../Pages/VerifyAdminEmail";
 const AuthRoutes = () => {
   return (
     <Routes>
-      <Route path="/login" element={<Login />} />
-      <Route path="/register" element={<Register />} />
-      <Route path="/verify" element={<VerifyAdminEmail />} />
-      <Route path="/verify-employee" element={<EmployeeRegister />} />
-      <Route path="/forgot-password" element={<ForgotPassword />} />
-      <Route path="/reset-password" element={<ResetPassword />} />
-      <Route path="/invited-employee-form" element={<InvitedEmployeeForm />} />
+      <Route path={appRoutes.login} element={<Login />} />
+      <Route path={appRoutes.register} element={<Register />} />
+      <Route path={appRoutes.verify} element={<VerifyAdminEmail />} />
+      <Route path={appRoutes.verifyEmployee} element={<EmployeeRegister />} />
+      <Route path={appRoutes.forgotPassword} element={<ForgotPassword />} />
+      <Route path={appRoutes.resetPassword} element={<ResetPassword />} />
+      <Route
+        path={appRoutes.invitedEmployee}
+        element={<InvitedEmployeeForm />}
+      />
     </Routes>
   );
 };

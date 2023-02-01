@@ -1,9 +1,15 @@
 import { TablePaginationConfig } from "antd";
 import React, { useContext, useState } from "react";
 import { useAuthUser } from "react-auth-kit";
-import { useFetchEmployees } from "../../../../../APIRQHooks/Utility/employeeHooks";
+import {
+  useFetchEmployees,
+  useFetchInvitedEmployees,
+} from "../../../../../APIRQHooks/Utility/employeeHooks";
 import { IAuthDets } from "../../../../../AppTypes/Auth";
-import { TEmployee } from "../../../../../AppTypes/DataEntitities";
+import {
+  TEmployee,
+  TInvitedEmployee,
+} from "../../../../../AppTypes/DataEntitities";
 import { GlobalContext } from "../../../../../Contexts/GlobalContextProvider";
 import ActiveEmpTableView from "./ActiveEmpTableView";
 import InvitedEmpTableView from "./InvitedEmpTableView";
@@ -33,7 +39,7 @@ const InvitedEmployeesContainer = () => {
     data: employeeData,
     isSuccess,
     isFetching,
-  } = useFetchEmployees({
+  } = useFetchInvitedEmployees({
     companyId,
     pagination: {
       limit: pagination.pageSize,
@@ -44,7 +50,10 @@ const InvitedEmployeesContainer = () => {
   });
 
   const rowSelection = {
-    onChange: (selectedRowKeys: React.Key[], selectedRows: TEmployee[]) => {},
+    onChange: (
+      selectedRowKeys: React.Key[],
+      selectedRows: TInvitedEmployee[]
+    ) => {},
   };
 
   return (

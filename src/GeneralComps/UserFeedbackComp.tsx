@@ -1,6 +1,7 @@
-import { Modal, Progress, Steps } from "antd";
+import { Button, Modal, Progress, Steps } from "antd";
 import React, { useContext, useEffect, useState } from "react";
 import { useAuthUser } from "react-auth-kit";
+import { Link } from "react-router-dom";
 import { useFetchRoles } from "../APIRQHooks/Auth/roleHooks";
 import {
   IFRQDepartmentsReturnProps,
@@ -48,12 +49,9 @@ const initialsetUpSteps: TSetupStep[] = [
 
 const UserFeedbackComp = () => {
   const auth = useAuthUser();
-
   const authDetails = auth() as unknown as IAuthDets;
-
   const token = authDetails.userToken;
   const user = authDetails?.user;
-
   const [progress, setProgress] = useState(0);
   const [steps, setSteps] = useState(initialsetUpSteps);
   const globalCtx = useContext(GlobalContext);
@@ -63,7 +61,6 @@ const UserFeedbackComp = () => {
   const dismissFeedback = () => {
     dispatch({ type: EGlobalOps.setShowInitialSetup, payload: false });
   };
-
   const { isSuccess: isDepSuccess } = useFetchDepartments({
     companyId,
     token,
@@ -153,7 +150,8 @@ const UserFeedbackComp = () => {
     isDepSuccess &&
     isDegSuccess &&
     isRoleSuccess &&
-    isEmpSuccess;
+    isEmpSuccess &&
+    steps.filter((item) => item.completed).length !== steps.length;
 
   return (
     <>
@@ -162,7 +160,8 @@ const UserFeedbackComp = () => {
           open={provideFeedback}
           onCancel={() => dismissFeedback()}
           footer={null}
-          style={{ top: 30, left: 10 }}
+          width={380}
+          style={{ top: 160, left: -320 }}
         >
           <Themes>
             <div className="flex flex-col gap-4">
@@ -181,10 +180,17 @@ const UserFeedbackComp = () => {
                   )}
                 </p>
               </div>
-              <Progress percent={progress} strokeColor={"var(--caramel)"} />
-              <div className="flex flex-col gap-2">
+              <div className="flex flex-col gap-1  relative bottom-4">
+                <Progress percent={progress} strokeColor={"var(--caramel)"} />
+                <span>
+                  {steps.filter((item) => item.completed).length}/{steps.length}{" "}
+                  complete
+                </span>
+              </div>
+              <div className="flex flex-col gap-2 w-full">
                 {provideFeedback && (
                   <Steps
+                    className="w-full"
                     size="small"
                     direction="vertical"
                     current={steps.filter((item) => item.completed).length}
@@ -193,7 +199,11 @@ const UserFeedbackComp = () => {
                       .sort((item) => (item.completed ? -1 : 1))
                       .map((item, index) => (
                         <Steps.Step
-                          description="Watch Video Tutorial"
+                          description={
+                            <span className="text-caramel text-xs">
+                              Watch Video Tutorial
+                            </span>
+                          }
                           key={index}
                           title={
                             <FeedBackTitle
@@ -205,6 +215,26 @@ const UserFeedbackComp = () => {
                       ))}
                   </Steps>
                 )}
+              </div>
+              <div className="mt-3 flex justify-between">
+                <button
+                  disabled={
+                    steps.filter((item) => item.completed === false).length !==
+                    steps.length
+                  }
+                  className={`disabled:cursor-not-allowed text-green-700 disabled:text-slate-300`}
+                  onClick={() => dismissFeedback()}
+                >
+                  <span className=" underline text-sm">
+                    Done with onboarding
+                  </span>
+                </button>
+                <Link
+                  to="/"
+                  className="underline text-caramel hover:text-black"
+                >
+                  Get Help
+                </Link>
               </div>
             </div>
           </Themes>
