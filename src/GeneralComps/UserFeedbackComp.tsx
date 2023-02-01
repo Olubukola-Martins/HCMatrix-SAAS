@@ -142,10 +142,15 @@ const UserFeedbackComp = () => {
     const totalSteps = steps.length;
     const completedSteps = steps.filter((item) => item.completed).length;
     const progress = (completedSteps / totalSteps) * 100;
+    // don't show welcome message if all steps complete
+    if (progress === 100) {
+      dispatch({ type: EGlobalOps.setAdminWelcomeMessage, payload: false });
+    }
     setProgress(progress);
   }, [steps]);
 
   const showModal =
+    globalState.showInitialSetUp &&
     user.isAdmin &&
     isDepSuccess &&
     isDegSuccess &&

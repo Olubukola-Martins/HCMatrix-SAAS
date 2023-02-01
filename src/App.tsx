@@ -14,6 +14,7 @@ import GlobalContextProvider from "./Contexts/GlobalContextProvider";
 import { useEffect } from "react";
 import UserFeedbackContainer from "./GeneralComps/UserFeedbackContainer";
 import refreshApi from "./Config/refreshTokenApi";
+import AdminWelcomeContainer from "GeneralComps/AdminWelcomeContainer";
 const queryClient = new QueryClient();
 
 function App() {
@@ -34,6 +35,7 @@ function App() {
         <GlobalContextProvider>
           <Router>
             <UserFeedbackContainer />
+            <AdminWelcomeContainer />
 
             <AuthRoutes />
             <HomeRoute />
