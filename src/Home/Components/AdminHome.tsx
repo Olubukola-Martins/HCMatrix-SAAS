@@ -13,7 +13,10 @@ import {
   useFetchEmployees,
   IFRQEmpsReturnProps,
 } from "../../APIRQHooks/Utility/employeeHooks";
-import { GlobalContext } from "../../Contexts/GlobalContextProvider";
+import {
+  EGlobalOps,
+  GlobalContext,
+} from "../../Contexts/GlobalContextProvider";
 import { LineChart } from "../../Payroll/Components/LineChart";
 import EmployeeInfoChart from "../../GeneralComps/EmployeeInfoChart";
 import { IAuthDets } from "../../AppTypes/Auth";
@@ -73,6 +76,10 @@ export const AdminHome = () => {
       offset: 0,
     },
   });
+  const { dispatch: globalDispatch } = globalCtx;
+  const handleGetStarted = () => {
+    globalDispatch({ type: EGlobalOps.setShowInitialSetup, payload: true });
+  };
   return (
     <DashboardLayout>
       <div className="Container">
@@ -155,15 +162,18 @@ export const AdminHome = () => {
         <div className="grid grid-cols-1 lg:grid-cols-3 mt-7 gap-y-7 gap-x-5">
           <div className="col-span-2 bg-mainBg shadow border rounded-lg p-3 relative h-80">
             <div className="absolute top-36 left-0">
-              <button className="button flex gap-2 align-center">
+              <button
+                className="button flex gap-2 align-center"
+                onClick={handleGetStarted}
+              >
                 <i className="ri-checkbox-circle-fill" />
                 <span>Get Started</span>
               </button>
             </div>
             <EmployeeInfoChart />
           </div>
-          <div>
-            <div className="bg-mainBg shadow border rounded-lg p-3 mb-6 font-medium">
+          <div className="flex flex-col gap-6">
+            <div className="bg-mainBg shadow border rounded-lg p-3 font-medium">
               <h5 className="">Assets Held by You</h5>
               <div className="flex items-center justify-between mt-2">
                 <span>0</span>
@@ -172,7 +182,7 @@ export const AdminHome = () => {
                 </Link>
               </div>
             </div>
-            <div className="bg-mainBg shadow border rounded-lg p-3">
+            <div className="bg-mainBg shadow border rounded-lg p-3 flex-1">
               <h3 className="text-base font-medium pb-2">Pending Approval</h3>
               <hr />
               <p className="text-center py-5 text-gray-500">
