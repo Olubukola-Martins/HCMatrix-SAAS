@@ -34,7 +34,7 @@ const AdminWelcomeComp = () => {
               <Avatar
                 size={80}
                 src={
-                  user.photo ??
+                  user.avatarUrl ??
                   "https://res.cloudinary.com/ddvaelej7/image/upload/v1655735373/samples/Ellipse_4_j0womm.png"
                 }
               />
