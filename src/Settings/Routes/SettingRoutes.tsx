@@ -27,6 +27,7 @@ import { MyProfile } from "../Pages/Organization/EmployeeProfiles/MyProfile";
 import { RequireAuth } from "react-auth-kit";
 import { AddEmployee } from "../Components/Organization/EmployeeProfiles/AddEmployee";
 import { appRoutes } from "AppRoutes";
+import { EmployeeProfile } from "Settings/Pages/Organization/EmployeeProfiles/EmployeeProfile";
 
 const SettingRoutes = () => {
   return (
@@ -98,6 +99,14 @@ const SettingRoutes = () => {
         }
       />
       {/* QUICK FIX */}
+      <Route
+        path={appRoutes.singleEmployee().format}
+        element={
+          <RequireAuth loginPath={appRoutes.login}>
+            <EmployeeProfile />
+          </RequireAuth>
+        }
+      />
       <Route
         path={appRoutes.addEmployee}
         element={

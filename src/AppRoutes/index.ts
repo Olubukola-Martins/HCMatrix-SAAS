@@ -24,6 +24,10 @@ export const appRoutes = {
   userProfileSettings: `/settings/profile`,
   addEmployee: `/settings/add-employee`,
   employeeSettings: `/settings/employees`,
+  singleEmployee: (id?: number) => ({
+    format: `/settings/employees/:id`,
+    path: `/settings/employees/${id}`,
+  }),
   designationSettings: `/settings/designations`,
   singleDesignation: (id?: number) => ({
     format: `/settings/designations/:id`,
