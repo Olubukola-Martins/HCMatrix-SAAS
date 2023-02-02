@@ -180,7 +180,9 @@ export const useFetchSingleEmployee = ({
       select: (res: any) => {
         const item = res.data.data;
         // const item = fetchedData.result;
-
+        // TO DO -> update employee type and populate with neccessary data
+        // TO DO -> default image to be shown 4 user -> use first letter url (laravel)
+        // To Do -> updating employee info
         const data: TEmployee = {
           id: item.id,
           name: `${item.firstName} ${item.lastName}`,
