@@ -24,6 +24,18 @@ const userLeaveDetails = {
 };
 
 const LeaveCards = () => {
+  const formattedData = Object.entries(userLeaveDetails).map((item) => {
+    if (item[0].indexOf("equests") === -1) {
+      return {
+        ...userLeaveDetails[item[0]],
+        // info: item[1] + " days",
+      };
+    }
+    return {
+      ...userLeaveDetails[item[0]],
+      // info: item[1],
+    };
+  });
   const { data, isLoading, isError, error, isSuccess } = useQuery(
     ["user-leave-details"],
     () => {
@@ -54,12 +66,12 @@ const LeaveCards = () => {
       },
     }
   );
-  if (isLoading || isError) {
-    return <p>issue</p>;
-  }
+  // if (isLoading || isError) {
+  //   return <p>issue</p>;
+  // }
   return (
     <div>
-      <EntryBoxes entries={data} />
+      <EntryBoxes entries={formattedData} />
     </div>
   );
 };
