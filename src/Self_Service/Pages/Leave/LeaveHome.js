@@ -107,7 +107,7 @@ const LeaveHome = () => {
             closeDrawer={() => setShowDrawer(false)}
           />
 
-          {isError && (
+          {/* {isError && (
             <div className="flex w-full h-32 justify-center items-center">
               <p>Err occured</p>
             </div>
@@ -116,8 +116,8 @@ const LeaveHome = () => {
             <div className="flex w-full h-32 justify-center items-center">
               <Spin />
             </div>
-          )}
-          {isSuccess && (
+          )} */}
+          {
             <div>
               {/* cards */}
 
@@ -126,13 +126,13 @@ const LeaveHome = () => {
               {/* table section*/}
               <div className="mt-12">
                 {showApproveRejectLeaveRequests({}) ? (
-                  <LeaveRequestsTable data={leaveRequests} />
+                  <LeaveRequestsTable data={[]} />
                 ) : (
-                  <LeaveHistoryTable data={leaveRequests} />
+                  <LeaveHistoryTable data={[]} />
                 )}
               </div>
             </div>
-          )}
+          }
         </div>
       </div>
     </DashboardLayout>
