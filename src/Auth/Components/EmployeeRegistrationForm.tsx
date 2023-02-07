@@ -155,6 +155,7 @@ export const EmployeeRegistrationForm = ({
             className="rounded border-slate-400"
             style={{ padding: "6px 5px" }}
             disabled
+            autoFocus
           />
         </Form.Item>
         <Form.Item
