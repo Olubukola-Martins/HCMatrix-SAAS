@@ -59,4 +59,18 @@ export const appRoutes = {
   billingStatement: `/statement`,
   billings: `/billings`,
   purchaseUserLicense: `/purchase-user-license`,
+
+  // payroll routes
+  payrollHome: `/payroll/home`,
+  payrollHome4Approver: `/payroll/home-approver`,
+  payrollReview: `/payroll/review`,
+  payrollBreakdown: `/payroll/breakdown`,
+  payrollCycle: `/payroll/cycle`,
+  payrollScheme: `/payroll/scheme`,
+  payrollComparison: `/payroll/comparison`,
+  createPayroll: `/payroll/create`,
+  payrollReport: `/payroll/report`,
+  payslips: `/payroll/payslip`,
+  employeePayslips: `/payroll/employee-payslip`,
+  createPayslipTemplate: `/payroll/create-payslip-template`,
 };

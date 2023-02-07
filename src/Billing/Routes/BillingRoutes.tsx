@@ -13,7 +13,7 @@ const BillingRoutes = () => {
       <Route
         path={appRoutes.billingStatement}
         element={
-          <RequireAuth loginPath={"/login"}>
+          <RequireAuth loginPath={appRoutes.login}>
             <Statement />
           </RequireAuth>
         }
@@ -21,7 +21,7 @@ const BillingRoutes = () => {
       <Route
         path={appRoutes.billings}
         element={
-          <RequireAuth loginPath={"/login"}>
+          <RequireAuth loginPath={appRoutes.login}>
             <BillingHome />
           </RequireAuth>
         }
@@ -29,7 +29,7 @@ const BillingRoutes = () => {
       <Route
         path={appRoutes.purchaseUserLicense}
         element={
-          <RequireAuth loginPath={"/login"}>
+          <RequireAuth loginPath={appRoutes.login}>
             <PurchaseUserLicense />
           </RequireAuth>
         }
