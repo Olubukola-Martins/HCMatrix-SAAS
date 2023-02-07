@@ -44,4 +44,14 @@ export const appRoutes = {
     path: `/settings/delegations/${id}`,
   }),
   delegationSettings: `/settings/delegations`,
+
+  roleSettings: `/settings/roles`,
+  createRole: `/settings/roles/create`,
+  workflowSettings: `/settings/automation/workflows`,
+  createWorkflow: `/settings/automation/workflows/create`,
+  payrollSettings: `/settings/payroll`,
+  payGradeSettings: `/settings/grades`,
+  gradeCategorySettings: `/settings/grade_categories`,
+  payrollPolicySettings: `/settings/probation_policy`,
+  resignationPolicySettings: `/settings/resignation_policy`,
 };
