@@ -167,7 +167,8 @@ const UserFeedbackComp = () => {
           onCancel={() => dismissFeedback()}
           footer={null}
           width={380}
-          style={{ top: 160, left: "-20vw" }}
+          // style={{ top: 160, left: "-20vw" }}
+          style={{ top: 160, right: "calc(100vw - 77%)" }}
         >
           <Themes>
             <div className="flex flex-col gap-4">

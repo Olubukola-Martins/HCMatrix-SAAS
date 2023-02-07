@@ -164,6 +164,7 @@ const UserLoginForm = ({ autoLoginDetails }: ILoginProps) => {
           className="rounded border-slate-400"
           style={{ padding: "6px 5px" }}
           autoComplete="email"
+          autoFocus
         />
       </Form.Item>
       <Form.Item name="password" rules={textInputValidationRules}>

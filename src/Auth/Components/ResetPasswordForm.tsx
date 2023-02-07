@@ -149,6 +149,7 @@ export const ResetPasswordForm = ({ token, uid }: IVerifyUserProps) => {
           placeholder="New Password"
           className="rounded border-slate-400"
           style={{ padding: "6px 5px" }}
+          autoFocus
         />
       </Form.Item>
 

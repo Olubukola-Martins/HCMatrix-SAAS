@@ -1,7 +1,5 @@
-import React from 'react'
+import React from "react";
 
 export const VerifyEmployeeStatus = () => {
-  return (
-    <div>VerifyEmployeeStatus</div>
-  )
-}
+  return <div>VerifyEmployeeStatus</div>;
+};
