@@ -45,8 +45,6 @@ const LeaveCards = () => {
       });
     },
     {
-      onError: (err) => {},
-      onSuccess: (data) => {},
       select: (res) => {
         const data = res.data;
         const formattedData = Object.entries(data).map((item) => {
