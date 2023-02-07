@@ -14,7 +14,9 @@ The codebase is primarily written in typescript. The following technologies were
 - ChartJs was used for data visualization
 
 
-## Project Overview & Architecture
+## Project Overview & Architecture & Guide
+- The Project follows the [Container/Presentational Pattern](https://www.patterns.dev/posts/presentational-container-pattern/) that fetches data that is fed to at most two components (listView & gridView). This components get their pageSize values from the src/Constants/index.ts (so as to prevent reptition and enforce consistency). This pattern should be followed whenever any sought of paginated data is fetched.
+- 
 
 
 ## Coding Style & Folder Structure
