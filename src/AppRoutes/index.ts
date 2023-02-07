@@ -77,4 +77,45 @@ export const appRoutes = {
   // admin routes
   systemAdminLogin: `/system-administration-login`,
   systemAdmins: `/system-administrators`,
+
+  // self service routes
+  selfServiceHome: `/self-service/home`,
+  selfServiceRequisition: `/self-service/requisition`,
+  selfServiceReimbursement: `/self-service/reimbursements`,
+  selfServiceMonetary: `/self-service/monetary`,
+  selfServiceAssets: `/self-service/assets`,
+  assetTypeDetails: (id?: number) => ({
+    format: `/self-service/assets/:id`,
+    path: `/self-service/assets/${id}`,
+  }),
+  assetDetails: `/self-service/assets-details`,
+  loans: `/self-service/loan`,
+  loanRequests: `/self-service/loan-request`,
+  loanPolicies: `/self-service/loan-policies`,
+  vehicleBooking: `/self-service/vehicle-booking`,
+  vehicleDetails: `/self-service/vehicle-details`,
+  surveyHome: `/self-service/survey`,
+  newSurvey: `/self-service/survey/new`,
+  singleSurveyForm: (id?: number) => ({
+    format: `/self-service/survey-form/:id`,
+    path: `/self-service/survey-form/${id}`,
+  }),
+  conferenceRoomBooking: `self-service/conference-room-booking`,
+  leaveHome: `/self-service/leave`,
+  leaveSettings: `/self-service/leave/settings`,
+  healthAccessHome: `/self-service/health-access`,
+  healthAccessSettings: `/self-service/health-access/settings`,
+  onbording: `/self-service/onboarding`,
+  startOnBoarding: (id?: number) => ({
+    format: `/self-service/onboarding/:id`,
+    path: `/self-service/onboarding/${id}`,
+  }),
+  handOver: `/self-service/handover-form`,
+  newHandOverForm: `/self-service/handover-new-form`,
+
+  handOverDetails: (id?: number) => ({
+    format: ` /self-service/handover-form/:id`,
+    path: ` /self-service/handover-form/${id}`,
+  }),
+  hRLetters: `/self-service/hr-letters`,
 };

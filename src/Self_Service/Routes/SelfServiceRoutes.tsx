@@ -36,7 +36,7 @@ const SelfServiceRoutes = () => {
     <>
       <Routes>
         <Route
-          path="/self-service/home"
+          path={appRoutes.selfServiceHome}
           element={
             <RequireAuth loginPath={appRoutes.login}>
               <SelfServiceHome />
@@ -45,7 +45,7 @@ const SelfServiceRoutes = () => {
         />
 
         <Route
-          path="/self-service/requisition"
+          path={appRoutes.selfServiceRequisition}
           element={
             <RequireAuth loginPath={appRoutes.login}>
               <Requisition />
@@ -53,7 +53,7 @@ const SelfServiceRoutes = () => {
           }
         />
         <Route
-          path="/self-service/reimbursements"
+          path={appRoutes.selfServiceReimbursement}
           element={
             <RequireAuth loginPath={appRoutes.login}>
               <Reimbursements />
@@ -61,7 +61,7 @@ const SelfServiceRoutes = () => {
           }
         />
         <Route
-          path="/self-service/monetary"
+          path={appRoutes.selfServiceMonetary}
           element={
             <RequireAuth loginPath={appRoutes.login}>
               <Monetary />
@@ -69,7 +69,7 @@ const SelfServiceRoutes = () => {
           }
         />
         <Route
-          path="/self-service/assets"
+          path={appRoutes.selfServiceAssets}
           element={
             <RequireAuth loginPath={appRoutes.login}>
               <Assets />
@@ -77,7 +77,7 @@ const SelfServiceRoutes = () => {
           }
         />
         <Route
-          path="/self-service/assets/:id"
+          path={appRoutes.assetTypeDetails().format}
           element={
             <RequireAuth loginPath={appRoutes.login}>
               <AssetTypeDetails />
@@ -85,7 +85,7 @@ const SelfServiceRoutes = () => {
           }
         />
         <Route
-          path="/self-service/assets-details"
+          path={appRoutes.assetDetails}
           element={
             <RequireAuth loginPath={appRoutes.login}>
               <AssetDetails />
@@ -93,7 +93,7 @@ const SelfServiceRoutes = () => {
           }
         />
         <Route
-          path="/self-service/loan"
+          path={appRoutes.loans}
           element={
             <RequireAuth loginPath={appRoutes.login}>
               <LoanHome />
@@ -101,7 +101,7 @@ const SelfServiceRoutes = () => {
           }
         />
         <Route
-          path="/self-service/loan-request"
+          path={appRoutes.loanRequests}
           element={
             <RequireAuth loginPath={appRoutes.login}>
               <LoanRequest />
@@ -109,7 +109,7 @@ const SelfServiceRoutes = () => {
           }
         />
         <Route
-          path="/self-service/loan-policies"
+          path={appRoutes.loanPolicies}
           element={
             <RequireAuth loginPath={appRoutes.login}>
               <LoanPolicies />
@@ -117,7 +117,7 @@ const SelfServiceRoutes = () => {
           }
         />
         <Route
-          path="/self-service/vehicle-booking"
+          path={appRoutes.vehicleBooking}
           element={
             <RequireAuth loginPath={appRoutes.login}>
               <VehicleBookingHome />
@@ -125,15 +125,7 @@ const SelfServiceRoutes = () => {
           }
         />
         <Route
-          path="/self-service/vehicle-details"
-          element={
-            <RequireAuth loginPath={appRoutes.login}>
-              <VehicleDetails />
-            </RequireAuth>
-          }
-        />
-        <Route
-          path="/self-service/vehicle-details"
+          path={appRoutes.vehicleDetails}
           element={
             <RequireAuth loginPath={appRoutes.login}>
               <VehicleDetails />
@@ -143,7 +135,7 @@ const SelfServiceRoutes = () => {
 
         {/* survey */}
         <Route
-          path="/self-service/survey"
+          path={appRoutes.surveyHome}
           element={
             <RequireAuth loginPath={appRoutes.login}>
               <SurveyHome />
@@ -151,7 +143,7 @@ const SelfServiceRoutes = () => {
           }
         />
         <Route
-          path="/self-service/survey/new"
+          path={appRoutes.newSurvey}
           element={
             <RequireAuth loginPath={appRoutes.login}>
               <NewSurveyForm />
@@ -159,7 +151,7 @@ const SelfServiceRoutes = () => {
           }
         />
         <Route
-          path="/self-service/survey-form/:id"
+          path={appRoutes.singleSurveyForm().format}
           element={
             <RequireAuth loginPath={appRoutes.login}>
               <SingleSurveyForm />
@@ -168,7 +160,7 @@ const SelfServiceRoutes = () => {
         />
         {/* conference room */}
         <Route
-          path="self-service/conference-room-booking"
+          path={appRoutes.conferenceRoomBooking}
           element={
             <RequireAuth loginPath={appRoutes.login}>
               <CRBHome />
@@ -178,7 +170,7 @@ const SelfServiceRoutes = () => {
 
         {/* leave */}
         <Route
-          path="/self-service/leave"
+          path={appRoutes.leaveHome}
           element={
             <RequireAuth loginPath={appRoutes.login}>
               <LeaveHome />
@@ -186,7 +178,7 @@ const SelfServiceRoutes = () => {
           }
         />
         <Route
-          path="/self-service/leave/settings"
+          path={appRoutes.leaveSettings}
           element={
             <RequireAuth loginPath={appRoutes.login}>
               <LeaveSettings />
@@ -195,7 +187,7 @@ const SelfServiceRoutes = () => {
         />
         {/* health access */}
         <Route
-          path="/self-service/health-access"
+          path={appRoutes.healthAccessHome}
           element={
             <RequireAuth loginPath={appRoutes.login}>
               <HealthAccessHome />
@@ -203,15 +195,7 @@ const SelfServiceRoutes = () => {
           }
         />
         <Route
-          path="/self-service/health-access/settings"
-          element={
-            <RequireAuth loginPath={appRoutes.login}>
-              <HealthAccessSettings />
-            </RequireAuth>
-          }
-        />
-        <Route
-          path="/self-service/health-access/settings"
+          path={appRoutes.healthAccessSettings}
           element={
             <RequireAuth loginPath={appRoutes.login}>
               <HealthAccessSettings />
@@ -221,7 +205,7 @@ const SelfServiceRoutes = () => {
 
         {/* Onboarding */}
         <Route
-          path="/self-service/onboarding"
+          path={appRoutes.onbording}
           element={
             <RequireAuth loginPath={appRoutes.login}>
               <Onboarding />
@@ -229,7 +213,7 @@ const SelfServiceRoutes = () => {
           }
         />
         <Route
-          path="/self-service/onboarding/:id"
+          path={appRoutes.startOnBoarding().format}
           element={
             <RequireAuth loginPath={appRoutes.login}>
               <StartOnboarding />
@@ -239,7 +223,7 @@ const SelfServiceRoutes = () => {
 
         {/* Handover */}
         <Route
-          path="/self-service/handover-form"
+          path={appRoutes.handOver}
           element={
             <RequireAuth loginPath={appRoutes.login}>
               <HandOver />
@@ -247,7 +231,7 @@ const SelfServiceRoutes = () => {
           }
         />
         <Route
-          path="/self-service/handover-new-form"
+          path={appRoutes.newHandOverForm}
           element={
             <RequireAuth loginPath={appRoutes.login}>
               <NewForm />
@@ -255,7 +239,7 @@ const SelfServiceRoutes = () => {
           }
         />
         <Route
-          path="/self-service/handover-form/:id"
+          path={appRoutes.handOverDetails().format}
           element={
             <RequireAuth loginPath={appRoutes.login}>
               <HandOverDetails />
@@ -265,7 +249,7 @@ const SelfServiceRoutes = () => {
 
         {/* HR Letters */}
         <Route
-          path="/self-service/hr-letters"
+          path={appRoutes.hRLetters}
           element={
             <RequireAuth loginPath={appRoutes.login}>
               <HRLetters />
