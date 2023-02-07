@@ -73,4 +73,8 @@ export const appRoutes = {
   payslips: `/payroll/payslip`,
   employeePayslips: `/payroll/employee-payslip`,
   createPayslipTemplate: `/payroll/create-payslip-template`,
+
+  // admin routes
+  systemAdminLogin: `/system-administration-login`,
+  systemAdmins: `/system-administrators`,
 };
