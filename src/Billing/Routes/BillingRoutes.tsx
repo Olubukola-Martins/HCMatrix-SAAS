@@ -5,12 +5,13 @@ import { Routes, Route } from "react-router-dom";
 import BillingHome from "../Pages/BillingHome";
 import PurchaseUserLicense from "../Pages/PurchaseUserLicence";
 import { RequireAuth } from "react-auth-kit";
+import { appRoutes } from "AppRoutes";
 
 const BillingRoutes = () => {
   return (
     <Routes>
       <Route
-        path="/statement"
+        path={appRoutes.billingStatement}
         element={
           <RequireAuth loginPath={"/login"}>
             <Statement />
@@ -18,7 +19,7 @@ const BillingRoutes = () => {
         }
       />
       <Route
-        path="/billings"
+        path={appRoutes.billings}
         element={
           <RequireAuth loginPath={"/login"}>
             <BillingHome />
@@ -26,7 +27,7 @@ const BillingRoutes = () => {
         }
       />
       <Route
-        path="/purchase-user-license"
+        path={appRoutes.purchaseUserLicense}
         element={
           <RequireAuth loginPath={"/login"}>
             <PurchaseUserLicense />

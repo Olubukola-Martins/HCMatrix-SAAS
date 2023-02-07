@@ -54,4 +54,9 @@ export const appRoutes = {
   gradeCategorySettings: `/settings/grade_categories`,
   payrollPolicySettings: `/settings/probation_policy`,
   resignationPolicySettings: `/settings/resignation_policy`,
+
+  // Billing routes
+  billingStatement: `/statement`,
+  billings: `/billings`,
+  purchaseUserLicense: `/purchase-user-license`,
 };
