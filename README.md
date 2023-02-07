@@ -1,6 +1,6 @@
 # Hcmatrix v3.0 App Frontend
 
-This project is a human resource solution that is created using react.
+This project is a human resource solution that is created using react for the frontend. For more information on project, visit [https://www.hcmatrix.com/](https://www.hcmatrix.com/)
 
 ## Tech Stack
 The codebase is primarily written in typescript. The following technologies were integral to the creation of the application
