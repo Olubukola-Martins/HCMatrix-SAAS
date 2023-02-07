@@ -118,4 +118,5 @@ export const appRoutes = {
     path: ` /self-service/handover-form/${id}`,
   }),
   hRLetters: `/self-service/hr-letters`,
+  notifications: `/notifications`,
 };
