@@ -43,6 +43,7 @@ export interface ICreateEmpProps extends ICurrentCompany {
     workModel: string;
     numberOfDaysPerWeek: number;
     departmentId: string;
+    lineManagerId: number;
   };
 }
 
@@ -68,7 +69,7 @@ export const createEmployee = async (props: ICreateEmpProps) => {
     hasSelfService: props.hasSelfService,
     roleId: props.roleId,
     designationId: props.designationId,
-    empUid: props.empUid,
+    // empUid: props.empUid,
     jobInformation: {
       startDate: props.jobInformation.startDate,
       monthlyGross: props.jobInformation.monthlyGross,

@@ -11,6 +11,7 @@ import {
   Skeleton,
   Spin,
 } from "antd";
+import { employmentTypes, workModels } from "Constants";
 import { useContext } from "react";
 import { useAuthUser } from "react-auth-kit";
 import { useMutation } from "react-query";
@@ -18,7 +19,10 @@ import { ICreateEmpProps } from "../../../../ApiRequesHelpers/Utility/employee";
 import { useFetchRoles } from "../../../../APIRQHooks/Auth/roleHooks";
 import { useFetchDepartments } from "../../../../APIRQHooks/Utility/departmentHooks";
 import { useFetchDesignations } from "../../../../APIRQHooks/Utility/designationHooks";
-import { useCreateEmployee } from "../../../../APIRQHooks/Utility/employeeHooks";
+import {
+  useCreateEmployee,
+  useFetchEmployees,
+} from "../../../../APIRQHooks/Utility/employeeHooks";
 import { IAuthDets } from "../../../../AppTypes/Auth";
 import { GlobalContext } from "../../../../Contexts/GlobalContextProvider";
 import {
@@ -50,6 +54,18 @@ export const AddEmployee = () => {
     isSuccess: isDSuccess,
     isFetching: isDFetching,
   } = useFetchDesignations({
+    companyId,
+    pagination: {
+      limit: 100, //temp suppose to allow search
+      offset: 0,
+    },
+    token,
+  });
+  const {
+    data: empData,
+    isSuccess: isEmpSuccess,
+    isFetching: isEmpFetching,
+  } = useFetchEmployees({
     companyId,
     pagination: {
       limit: 100, //temp suppose to allow search
@@ -112,6 +128,7 @@ export const AddEmployee = () => {
           workModel: data.workModel,
           numberOfDaysPerWeek: data.numberOfDaysPerWeek,
           departmentId: data.departmentId,
+          lineManagerId: data.lineManagerId,
         },
       };
 
@@ -227,10 +244,15 @@ export const AddEmployee = () => {
                   <Skeleton
                     active
                     loading={
-                      !isDSuccess || isDFetching || !isRSuccess || isRFetching
+                      !isDSuccess ||
+                      isDFetching ||
+                      !isRSuccess ||
+                      isRFetching ||
+                      !isEmpSuccess ||
+                      isEmpFetching
                     }
                   >
-                    {isDSuccess && isRSuccess && (
+                    {isDSuccess && isRSuccess && isEmpSuccess && (
                       <div className="bg-card px-3 py-4 rounded-md grid grid-cols-1 md:grid-cols-2 gap-x-5">
                         <Form.Item
                           name="startDate"
@@ -272,11 +294,8 @@ export const AddEmployee = () => {
                           <Select
                             className="SelectTag w-full"
                             placeholder="Select Employment Type"
-                          >
-                            <Option value="full-time">Full time</Option>
-                            <Option value="part-time">Part time</Option>
-                            <Option value="contract">Contract</Option>
-                          </Select>
+                            options={employmentTypes}
+                          />
                         </Form.Item>
                         <Form.Item
                           name="workModel"
@@ -286,14 +305,11 @@ export const AddEmployee = () => {
                           <Select
                             className="SelectTag w-full"
                             placeholder="Select Work Model"
-                          >
-                            <Option value="on-Site">On-Site</Option>
-                            <Option value="hybrid">Hybrid</Option>
-                            <Option value="remote">Remote</Option>
-                          </Select>
+                            options={workModels}
+                          />
                         </Form.Item>
                         <Form.Item
-                          name="lineManager"
+                          name="lineManagerId"
                           label="Line Manager"
                           requiredMark="optional"
                         >
@@ -303,13 +319,11 @@ export const AddEmployee = () => {
                             optionLabelProp="label"
                             className="SelectTag w-full"
                             placeholder="Select Line Manager"
-                          >
-                            {lineMgt.map((data) => (
-                              <Option key={data} value={data} label={data}>
-                                {data}
-                              </Option>
-                            ))}
-                          </Select>
+                            options={empData.data.map((item) => ({
+                              label: `${item.firstName} ${item.lastName}`,
+                              value: item.id,
+                            }))}
+                          />
                         </Form.Item>
                         <Form.Item
                           name="designationId"

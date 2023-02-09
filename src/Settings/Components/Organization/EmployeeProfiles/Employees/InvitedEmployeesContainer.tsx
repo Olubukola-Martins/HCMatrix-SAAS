@@ -59,6 +59,7 @@ const InvitedEmployeesContainer = () => {
           ...rowSelection,
         }}
         loading={isFetching}
+        pagination={{ ...pagination, total: employeeData?.total }}
         employees={isSuccess ? employeeData.data : []}
       />
     </div>

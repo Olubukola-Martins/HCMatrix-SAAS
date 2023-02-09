@@ -11,6 +11,7 @@ import {
 import { ICreateEmpJobInfoProps } from "ApiRequesHelpers/Utility/employee";
 import {
   useCreateEmployeeJobInfo,
+  useFetchEmployees,
   useUpdateEmployeeJobInfo,
 } from "APIRQHooks/Utility/employeeHooks";
 import { IAuthDets } from "AppTypes/Auth";
@@ -23,6 +24,7 @@ import { openNotification } from "NotificationHelpers";
 import React, { useContext, useEffect, useState } from "react";
 import { useAuthUser } from "react-auth-kit";
 import { useQueryClient } from "react-query";
+import { BeatLoader } from "react-spinners";
 const { Option } = Select;
 
 interface IProps {
@@ -47,6 +49,14 @@ export const JobInformation = ({ employee }: IProps) => {
       disable ? "Editing enabled Successfully" : "Editing disabled successfully"
     );
   };
+  const { data: employees, isSuccess } = useFetchEmployees({
+    companyId,
+    token,
+    pagination: {
+      limit: 100,
+      offset: 0,
+    },
+  });
 
   useEffect(() => {
     const jobInfo = employee?.jobInformation;
@@ -180,6 +190,7 @@ export const JobInformation = ({ employee }: IProps) => {
           form={form}
           onFinish={handleFinish}
           requiredMark={false}
+          disabled={disable}
         >
           <Form.Item
             name="monthlyGross"
@@ -200,32 +211,21 @@ export const JobInformation = ({ employee }: IProps) => {
             label="Resumption Date"
             rules={generalValidationRules}
           >
-            <DatePicker
-              format="YYYY/MM/DD"
-              className="generalInputStyle"
-              disabled={disable}
-            />
+            <DatePicker format="YYYY/MM/DD" className="w-full" />
           </Form.Item>
           <Form.Item
             name="hireDate"
             label="Hire Date"
             rules={generalValidationRules}
           >
-            <DatePicker
-              format="YYYY/MM/DD"
-              className="generalInputStyle"
-              disabled={disable}
-            />
+            <DatePicker format="YYYY/MM/DD" className="w-full" />
           </Form.Item>
           <Form.Item name="branch" label="Branch">
             <Select
               showSearch
               allowClear
               optionLabelProp="label"
-              className="SelectTag w-full"
-              size="large"
-              disabled={disable}
-              placeholder="Select Nationality"
+              placeholder="Select Branch"
             >
               {branchList.map((data) => (
                 <Option key={data} value={data} label={data}>
@@ -234,62 +234,60 @@ export const JobInformation = ({ employee }: IProps) => {
               ))}
             </Select>
           </Form.Item>
+          <Form.Item
+            name="lineManagerId"
+            label="Line Manager"
+            rules={generalValidationRules}
+          >
+            <Select
+              showSearch
+              allowClear
+              optionLabelProp="label"
+              placeholder="Select"
+            >
+              {isSuccess &&
+                employees?.data?.map((data) => (
+                  <Option
+                    key={data.id}
+                    value={data.id}
+                    label={`${data.firstName} ${data.lastName}`}
+                  >
+                    {data.firstName} {data.lastName}
+                  </Option>
+                ))}
+            </Select>
+          </Form.Item>
 
           <Form.Item
             name="employmentType"
             label="Employment Type"
             rules={generalValidationRules}
           >
-            <Select
-              className="SelectTag w-full"
-              size="large"
-              disabled={disable}
-              placeholder="Select"
-              options={employmentTypes}
-            />
+            <Select placeholder="Select" options={employmentTypes} />
           </Form.Item>
           <Form.Item
             name="probationEndDate"
             label="Probation End Date"
             rules={generalValidationRules}
           >
-            <DatePicker
-              format="YYYY/MM/DD"
-              className="generalInputStyle"
-              disabled={disable}
-            />
+            <DatePicker format="YYYY/MM/DD" className="w-full" />
           </Form.Item>
           <Form.Item
             name="workModel"
             label="Work Model"
             rules={generalValidationRules}
           >
-            <Select
-              className="SelectTag w-full"
-              size="large"
-              disabled={disable}
-              placeholder="Select"
-              options={workModels}
-            />
+            <Select placeholder="Select" options={workModels} />
           </Form.Item>
           <Form.Item
             name="confirmationDate"
             label="Confirmation Date"
             rules={generalValidationRules}
           >
-            <DatePicker
-              format="YYYY/MM/DD"
-              className="generalInputStyle"
-              disabled={disable}
-            />
+            <DatePicker format="YYYY/MM/DD" className="w-full" />
           </Form.Item>
           <Form.Item name="payGradeId" label="Pay Grade">
-            <Select
-              className="SelectTag w-full"
-              size="large"
-              disabled={disable}
-              placeholder="Select"
-            >
+            <Select placeholder="Select">
               <Option value="grade 1">Grade 1</Option>
               <Option value="grade 2">Grade 2</Option>
               <Option value="grade 2">Grade 2</Option>
@@ -298,7 +296,11 @@ export const JobInformation = ({ employee }: IProps) => {
           {!disable && (
             <div className="flex items-center">
               <button className="button" type="submit">
-                Save changes
+                {createLoading || updateLoading ? (
+                  <BeatLoader color="#fff" />
+                ) : (
+                  "Save changes"
+                )}
               </button>
             </div>
           )}

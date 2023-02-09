@@ -92,6 +92,7 @@ export type TJobInfo = {
   hireDate: string;
   probationEndDate: string;
   confirmationDate: string;
+  lineManagerId?: number;
 };
 
 export type TEmployee = {

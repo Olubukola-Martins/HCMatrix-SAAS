@@ -26,6 +26,7 @@ import { IAuthDets } from "AppTypes/Auth";
 import { GlobalContext } from "Contexts/GlobalContextProvider";
 import { useFetchSingleEmployee } from "APIRQHooks/Utility/employeeHooks";
 import { useParams } from "react-router-dom";
+import { appRoutes } from "AppRoutes";
 
 export const EmployeeProfile = () => {
   const params = useParams();
@@ -50,7 +51,7 @@ export const EmployeeProfile = () => {
   return (
     <DashboardLayout>
       <div className="Container mt-3">
-        <PageIntro title="Employee Profile" link="/" />
+        <PageIntro title="Employee Profile" link={appRoutes.employeeSettings} />
         <EditMyProfile
           open={openDrawer}
           employee={employee}

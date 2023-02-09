@@ -54,6 +54,7 @@ const ActiveEmployeesContainer = () => {
           type: "checkbox",
           ...rowSelection,
         }}
+        pagination={{ ...pagination, total: employeeData?.total }}
         loading={isFetching}
         employees={isSuccess ? employeeData.data : []}
       />
