@@ -144,7 +144,7 @@ export const EmployeeProfile = () => {
           </div>
           <Tabs defaultActiveKey="1" className="mt-5 tabBlackActive">
             <Tabs.TabPane tab="Profile" key="1">
-              <Profile />
+              <Profile employee={employee} />
               <EmergencyContact />
               <Dependents />
             </Tabs.TabPane>

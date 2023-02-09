@@ -9,10 +9,29 @@ import {
   Upload,
 } from "antd";
 import { ICreateEmpPersonalInfoProps } from "ApiRequesHelpers/Utility/employee";
-import { useCreateEmployeePersonalInfo } from "APIRQHooks/Utility/employeeHooks";
+import {
+  useFetchCountries,
+  useFetchStates,
+  useFetchLgas,
+} from "APIRQHooks/Utility/countryHooks";
+import {
+  useCreateEmployeePersonalInfo,
+  useUpdateEmployeePersonalInfo,
+} from "APIRQHooks/Utility/employeeHooks";
 import { IAuthDets } from "AppTypes/Auth";
 import { TEmployee, TPersonalInfo } from "AppTypes/DataEntitities";
+import {
+  employmentEligibilities,
+  genders,
+  maritalStatuses,
+  timeZones,
+} from "Constants";
 import { GlobalContext } from "Contexts/GlobalContextProvider";
+import {
+  generalValidationRules,
+  phoneNumberValidationRule,
+  textInputValidationRules,
+} from "FormHelpers/validation";
 import moment from "moment";
 import { openNotification } from "NotificationHelpers";
 import { useContext, useEffect, useState } from "react";
@@ -32,15 +51,26 @@ export const Profile = ({ employee }: IProps) => {
   const queryClient = useQueryClient();
 
   const auth = useAuthUser();
-
   const authDetails = auth() as unknown as IAuthDets;
-
   const token = authDetails.userToken;
   const globalCtx = useContext(GlobalContext);
   const { state: globalState } = globalCtx;
   const companyId = globalState.currentCompany?.id as unknown as string;
   const [disable, setDisable] = useState(true);
   const [hiddenInputs, setHiddenInputs] = useState("");
+  const [stateId, setStateId] = useState(
+    employee?.personalInformation?.address.stateId ?? 0
+  );
+  const [countryId, setCountryId] = useState(
+    employee?.personalInformation?.address.countryId ?? 0
+  );
+  const { data: countries, isSuccess } = useFetchCountries();
+  const { data: states, isSuccess: stateSuccess } = useFetchStates({
+    countryId: countryId as unknown as string,
+  });
+  const { data: lga, isSuccess: lgaSuccess } = useFetchLgas({
+    stateId: stateId as unknown as string,
+  });
 
   const enableEdit = () => {
     setDisable(!disable);
@@ -53,13 +83,21 @@ export const Profile = ({ employee }: IProps) => {
     const personalInfo = employee?.personalInformation;
     if (personalInfo) {
       form.setFieldsValue({
-        dateOfBirth: moment(personalInfo.dob),
+        dob: moment(personalInfo.dob),
         nationality: personalInfo.nationality,
         gender: personalInfo.gender,
         maritalStatus: personalInfo.maritalStatus,
         state: personalInfo.address.stateId,
         lga: personalInfo.address.lgaId,
-        employmentEligibility: personalInfo.eligibility,
+        eligibility: personalInfo.eligibility,
+        timezone: personalInfo.address.timezone,
+        countryId: personalInfo.address.countryId,
+        stateId: personalInfo.address.stateId,
+        phone: {
+          number: personalInfo.phoneNumber.split("-")[1],
+          code: personalInfo.phoneNumber.split("-")[0].slice(1), //remove the plus
+        },
+        lgaId: personalInfo.address.lgaId,
         streetAddress: personalInfo.address.streetAddress,
         passportExpirationDate: personalInfo.passportExpirationDate,
       });
@@ -70,9 +108,14 @@ export const Profile = ({ employee }: IProps) => {
     setHiddenInputs(val);
   };
 
-  const { mutate, isLoading } = useCreateEmployeePersonalInfo();
+  const { mutate: createMutate, isLoading: createLoading } =
+    useCreateEmployeePersonalInfo();
+  const { mutate: updateMutate, isLoading: updateLoading } =
+    useUpdateEmployeePersonalInfo();
 
   const handleFinish = (data: any) => {
+    const countryPhoneCode =
+      countries?.find((item) => item.id === data.phone.code)?.code ?? "";
     if (companyId && employee && !employee.personalInformation) {
       //if the personal info doesnt exist, then create
       const props: ICreateEmpPersonalInfoProps = {
@@ -80,7 +123,7 @@ export const Profile = ({ employee }: IProps) => {
         companyId,
         dob: data.dob,
         gender: data.gender,
-        phoneNumber: data.phoneNumber,
+        phoneNumber: `+${countryPhoneCode}-${data.phone.number}`,
         eligibility: data.eligibility,
         maritalStatus: data.maritalStatus,
         nationality: data.nationality,
@@ -96,13 +139,12 @@ export const Profile = ({ employee }: IProps) => {
         employeeId: employee.id,
       };
 
-      // return;
       openNotification({
         state: "info",
         title: "Wait a second ...",
         description: <Spin />,
       });
-      mutate(props, {
+      createMutate(props, {
         onError: (err: any) => {
           openNotification({
             state: "error",
@@ -131,7 +173,7 @@ export const Profile = ({ employee }: IProps) => {
         companyId,
         dob: data.dob,
         gender: data.gender,
-        phoneNumber: data.phoneNumber,
+        phoneNumber: `+${countryPhoneCode}-${data.phone.number}`,
         eligibility: data.eligibility,
         maritalStatus: data.maritalStatus,
         nationality: data.nationality,
@@ -153,7 +195,7 @@ export const Profile = ({ employee }: IProps) => {
         title: "Wait a second ...",
         description: <Spin />,
       });
-      mutate(props, {
+      updateMutate(props, {
         onError: (err: any) => {
           openNotification({
             state: "error",
@@ -196,117 +238,187 @@ export const Profile = ({ employee }: IProps) => {
 
         <div className="bg-card p-3 rounded">
           <Form
+            requiredMark={false}
             form={form}
             layout="vertical"
             className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5"
             onFinish={handleFinish}
             disabled={disable}
           >
-            <Form.Item name="dateOfBirth" label="Date of Birth">
-              <DatePicker format="YYYY/MM/DD" className="generalInputStyle" />
+            <Form.Item
+              name="dob"
+              label="Date of Birth"
+              rules={[{ required: true }]}
+            >
+              <DatePicker format="YYYY/MM/DD" className="w-full" />
+            </Form.Item>
+            <Form.Item name="phone" label="Phone Number">
+              <Input.Group compact>
+                <Form.Item
+                  noStyle
+                  rules={generalValidationRules}
+                  name={["phone", "code"]}
+                >
+                  {isSuccess && (
+                    <Select
+                      // showSearch
+                      // allowClear
+                      // optionLabelProp="label"
+                      className="rounded border-slate-400"
+                      style={{ width: "35%" }}
+                      options={countries.map((item) => ({
+                        label: `+${item.code}`,
+                        value: item.id,
+                      }))}
+                    />
+                  )}
+                </Form.Item>
+                <Form.Item
+                  noStyle
+                  rules={[
+                    ...textInputValidationRules,
+                    phoneNumberValidationRule,
+                  ]}
+                  name={["phone", "number"]}
+                >
+                  <Input
+                    style={{ width: "65%" }}
+                    placeholder="Business Phone"
+                    className="rounded border-slate-400 text-left"
+                    autoComplete="phone"
+                  />
+                </Form.Item>
+              </Input.Group>
             </Form.Item>
             <Form.Item
-              name="employmentEligibility"
+              name="eligibility"
               label="Employment Eligibility"
+              rules={generalValidationRules}
             >
               <Select
-                className="SelectTag w-full"
-                size="large"
                 placeholder="Select"
                 onChange={handleCitizen}
-              >
-                <Option value="citizen">Citizen</Option>
-                <Option value="NotCitizen">Not a citizen</Option>
-              </Select>
+                options={employmentEligibilities}
+              />
+            </Form.Item>
+            <Form.Item
+              name="timezone"
+              label="Time Zone"
+              rules={generalValidationRules}
+            >
+              <Select placeholder="Select" options={timeZones} />
             </Form.Item>
 
-            {hiddenInputs === "NotCitizen" && (
+            {hiddenInputs === "not a citizen" && (
               <Form.Item
                 name="passportExpirationDate"
                 label="Passport Expiration Date"
               >
-                <DatePicker format="YYYY/MM/DD" className="generalInputStyle" />
+                <DatePicker format="YYYY/MM/DD" className="w-full" />
               </Form.Item>
             )}
             {hiddenInputs === "NotCitizen" && (
               <Form.Item label="Upload valid document">
                 <Upload>
-                  <Input type="file" className="generalInputStyle" />
+                  <Input type="file" />
                 </Upload>
               </Form.Item>
             )}
-            {/* <Form.Item name="document" className="hidden">
-              <Input className="generalInputStyle"  />
-            </Form.Item> */}
-
-            <Form.Item name="gender" label="Gender">
-              <Select className="SelectTag w-full" size="large">
-                <Option value="male">Male</Option>
-                <Option value="female">Female</Option>
-              </Select>
+            <Form.Item
+              name="gender"
+              label="Gender"
+              rules={generalValidationRules}
+            >
+              <Select options={genders} />
             </Form.Item>
-            <Form.Item name="maritalStatus" label="Marital Status">
-              <Select className="SelectTag w-full" size="large">
-                <Option value="married">Married</Option>
-                <Option value="single">Single</Option>
-                <Option value="widowed">Widowed</Option>
-                <Option value="divorced">Divorced</Option>
-                <Option value="separated">Separated</Option>
-              </Select>
+            <Form.Item
+              name="maritalStatus"
+              label="Marital Status"
+              rules={generalValidationRules}
+            >
+              <Select options={maritalStatuses} />
             </Form.Item>
-
-            <Form.Item name="nationality" label="Nationality">
+            <Form.Item
+              name="nationality"
+              label="Nationality"
+              rules={generalValidationRules}
+            >
               <Select
                 showSearch
                 allowClear
                 optionLabelProp="label"
-                className="SelectTag w-full"
-                size="large"
-                placeholder="Select Nationality"
+                placeholder="Select"
               >
-                {countryList.map((data) => (
-                  <Option key={data} value={data} label={data}>
-                    {data}
-                  </Option>
-                ))}
-              </Select>
-            </Form.Item>
-            <Form.Item name="state" label="State">
-              <Select
-                showSearch
-                allowClear
-                optionLabelProp="label"
-                className="SelectTag w-full"
-                size="large"
-                placeholder="Select state"
-              >
-                {stateList.map((data) => (
-                  <Option key={data} value={data} label={data}>
-                    {data}
-                  </Option>
-                ))}
-              </Select>
-            </Form.Item>
-            <Form.Item name="lga" label="LGA">
-              <Select
-                showSearch
-                allowClear
-                optionLabelProp="label"
-                className="SelectTag w-full"
-                size="large"
-                placeholder="Select lga"
-              >
-                {stateList.map((data) => (
-                  <Option key={data} value={data} label={data}>
-                    {data}
+                {countries?.map((data) => (
+                  <Option key={data.id} value={data.name} label={data.name}>
+                    {data.name}
                   </Option>
                 ))}
               </Select>
             </Form.Item>
             <Form.Item
+              name="countryId"
+              label="Country"
+              rules={generalValidationRules}
+            >
+              <Select
+                showSearch
+                allowClear
+                optionLabelProp="label"
+                placeholder="Select"
+                onChange={(val) => setCountryId(val)}
+              >
+                {countries?.map((data) => (
+                  <Option key={data.id} value={data.id} label={data.name}>
+                    {data.name}
+                  </Option>
+                ))}
+              </Select>
+            </Form.Item>
+            <Form.Item
+              name="stateId"
+              label="State"
+              rules={generalValidationRules}
+            >
+              <Select
+                showSearch
+                allowClear
+                optionLabelProp="label"
+                placeholder="Select state"
+                onChange={(val) => setStateId(val)}
+              >
+                {states?.map((data) => (
+                  <Option key={data.id} value={data.id} label={data.name}>
+                    {data.name}
+                  </Option>
+                ))}
+              </Select>
+            </Form.Item>
+            {lgaSuccess && lga.length > 0 && (
+              <Form.Item
+                name="lgaId"
+                label="LGA"
+                rules={generalValidationRules}
+              >
+                <Select
+                  showSearch
+                  allowClear
+                  optionLabelProp="label"
+                  placeholder="Select"
+                >
+                  {lga?.map((data) => (
+                    <Option key={data.id} value={data.id} label={data.name}>
+                      {data.name}
+                    </Option>
+                  ))}
+                </Select>
+              </Form.Item>
+            )}
+            <Form.Item
               name="streetAddress"
               label="Street Address"
               className="col-span-3"
+              rules={textInputValidationRules}
             >
               <Input.TextArea rows={3} />
             </Form.Item>
@@ -314,7 +426,11 @@ export const Profile = ({ employee }: IProps) => {
             {!disable && (
               <div className="flex items-center">
                 <button className="button" type="submit">
-                  {isLoading ? <BeatLoader color="#fff" /> : "Save changes"}
+                  {createLoading || updateLoading ? (
+                    <BeatLoader color="#fff" />
+                  ) : (
+                    "Save changes"
+                  )}
                 </button>
               </div>
             )}
