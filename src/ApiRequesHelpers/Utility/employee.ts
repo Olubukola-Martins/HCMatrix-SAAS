@@ -32,7 +32,7 @@ export interface ICreateEmpProps extends ICurrentCompany {
   lastName: string;
   email: string;
   hasSelfService: boolean;
-  empUid: string;
+  empUid?: string;
   roleId: number;
   designationId: number;
   jobInformation: {
@@ -42,8 +42,8 @@ export interface ICreateEmpProps extends ICurrentCompany {
     employmentType: string;
     workModel: string;
     numberOfDaysPerWeek: number;
-    departmentId: string;
-    lineManagerId: number;
+
+    lineManagerId?: number;
   };
 }
 
@@ -69,15 +69,19 @@ export const createEmployee = async (props: ICreateEmpProps) => {
     hasSelfService: props.hasSelfService,
     roleId: props.roleId,
     designationId: props.designationId,
-    // empUid: props.empUid,
+    empUid: props.empUid,
     jobInformation: {
       startDate: props.jobInformation.startDate,
       monthlyGross: props.jobInformation.monthlyGross,
       employmentType: props.jobInformation.employmentType,
       workModel: props.jobInformation.workModel,
       numberOfDaysPerWeek: props.jobInformation.numberOfDaysPerWeek,
+      lineManagerId: props.jobInformation.lineManagerId,
     },
   };
+  if (!props.empUid) delete data["empUid"];
+  if (!props.jobInformation.lineManagerId)
+    delete data["jobInformation"]["lineManagerId"];
 
   const response = await axios.post(url, data, config);
   return response;

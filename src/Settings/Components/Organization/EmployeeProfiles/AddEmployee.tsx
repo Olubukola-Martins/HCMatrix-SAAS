@@ -127,7 +127,7 @@ export const AddEmployee = () => {
           employmentType: data.employmentType,
           workModel: data.workModel,
           numberOfDaysPerWeek: data.numberOfDaysPerWeek,
-          departmentId: data.departmentId,
+
           lineManagerId: data.lineManagerId,
         },
       };
@@ -206,11 +206,7 @@ export const AddEmployee = () => {
                     >
                       <Input placeholder="Enter Last Name" />
                     </Form.Item>
-                    <Form.Item
-                      name="empUid"
-                      label="Employee ID"
-                      requiredMark="optional"
-                    >
+                    <Form.Item name="empUid" label="Employee ID (optional)">
                       <Input placeholder="Employee ID" />
                     </Form.Item>
                     <Form.Item
@@ -282,9 +278,16 @@ export const AddEmployee = () => {
                         <Form.Item
                           name="monthlyGross"
                           label="Monthly Gross"
-                          rules={textInputValidationRules}
+                          rules={[
+                            ...generalValidationRules,
+                            { type: "number" },
+                          ]}
                         >
-                          <Input placeholder="Enter monthly gross" />
+                          <InputNumber
+                            placeholder="Enter monthly gross"
+                            min={1}
+                            className="w-full"
+                          />
                         </Form.Item>
                         <Form.Item
                           name="employmentType"
@@ -310,8 +313,7 @@ export const AddEmployee = () => {
                         </Form.Item>
                         <Form.Item
                           name="lineManagerId"
-                          label="Line Manager"
-                          requiredMark="optional"
+                          label="Line Manager (optional)"
                         >
                           <Select
                             showSearch

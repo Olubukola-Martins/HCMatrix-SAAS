@@ -83,12 +83,11 @@ export const Profile = ({ employee }: IProps) => {
     const personalInfo = employee?.personalInformation;
     if (personalInfo) {
       form.setFieldsValue({
-        dob: moment(personalInfo.dob),
+        dob: personalInfo.dob ? moment(personalInfo.dob) : null,
         nationality: personalInfo.nationality,
         gender: personalInfo.gender,
         maritalStatus: personalInfo.maritalStatus,
-        state: personalInfo.address.stateId,
-        lga: personalInfo.address.lgaId,
+
         eligibility: personalInfo.eligibility,
         timezone: personalInfo.address.timezone,
         countryId: personalInfo.address.countryId,
@@ -99,7 +98,9 @@ export const Profile = ({ employee }: IProps) => {
         },
         lgaId: personalInfo.address.lgaId,
         streetAddress: personalInfo.address.streetAddress,
-        passportExpirationDate: personalInfo.passportExpirationDate,
+        passportExpirationDate: personalInfo.passportExpirationDate
+          ? moment(personalInfo.passportExpirationDate)
+          : null,
       });
     }
   }, [employee]);
@@ -121,7 +122,7 @@ export const Profile = ({ employee }: IProps) => {
       const props: ICreateEmpPersonalInfoProps = {
         token,
         companyId,
-        dob: data.dob,
+        dob: data.dob.format("YYYY-MM-DD"),
         gender: data.gender,
         phoneNumber: `+${countryPhoneCode}-${data.phone.number}`,
         eligibility: data.eligibility,
@@ -134,7 +135,8 @@ export const Profile = ({ employee }: IProps) => {
           lgaId: data.lgaId,
           timezone: data.timezone,
         },
-        passportExpirationDate: data.passportExpirationDate,
+        passportExpirationDate:
+          data.passportExpirationDate.format("YYYY-MM-DD"),
         validDocumentUrl: data.validDocumentUrl,
         employeeId: employee.id,
       };
@@ -171,7 +173,7 @@ export const Profile = ({ employee }: IProps) => {
       const props: ICreateEmpPersonalInfoProps = {
         token,
         companyId,
-        dob: data.dob,
+        dob: data.dob.format("YYYY-MM-DD"),
         gender: data.gender,
         phoneNumber: `+${countryPhoneCode}-${data.phone.number}`,
         eligibility: data.eligibility,
@@ -184,7 +186,8 @@ export const Profile = ({ employee }: IProps) => {
           lgaId: data.lgaId,
           timezone: data.timezone,
         },
-        passportExpirationDate: data.passportExpirationDate,
+        passportExpirationDate:
+          data.passportExpirationDate.format("YYYY-MM-DD"),
         validDocumentUrl: data.validDocumentUrl,
         employeeId: employee.id,
       };

@@ -62,14 +62,19 @@ export const JobInformation = ({ employee }: IProps) => {
     const jobInfo = employee?.jobInformation;
     if (jobInfo) {
       form.setFieldsValue({
-        startDate: moment(jobInfo.startDate),
+        lineManagerId: jobInfo.lineManagerId,
+        startDate: jobInfo.startDate ? moment(jobInfo.startDate) : null,
         monthlyGross: +jobInfo.monthlyGross, // to covert to number
         employmentType: jobInfo.employmentType,
         workModel: jobInfo.workModel,
         numberOfDaysPerWeek: jobInfo.numberOfDaysPerWeek,
-        hireDate: moment(jobInfo.hireDate),
-        probationEndDate: moment(jobInfo.probationEndDate),
-        confirmationDate: moment(jobInfo.confirmationDate),
+        hireDate: jobInfo.hireDate ? moment(jobInfo.hireDate) : null,
+        probationEndDate: jobInfo.probationEndDate
+          ? moment(jobInfo.probationEndDate)
+          : null,
+        confirmationDate: jobInfo.confirmationDate
+          ? moment(jobInfo.confirmationDate)
+          : null,
       });
     }
   }, [employee]);
@@ -84,14 +89,15 @@ export const JobInformation = ({ employee }: IProps) => {
       const props: ICreateEmpJobInfoProps = {
         token,
         companyId,
-        startDate: data.startDate,
+        startDate: data.startDate.format("YYYY-MM-DD"),
         monthlyGross: data.monthlyGross,
         employmentType: data.employmentType,
         workModel: data.workModel,
         numberOfDaysPerWeek: data.numberOfDaysPerWeek,
-        hireDate: data.hireDate,
-        probationEndDate: data.probationEndDate,
-        confirmationDate: data.confirmationDate,
+        hireDate: data.hireDate.format("YYYY-MM-DD"),
+        probationEndDate: data.probationEndDate.format("YYYY-MM-DD"),
+        confirmationDate: data.confirmationDate.format("YYYY-MM-DD"),
+        lineManagerId: data.lineManagerId,
         employeeId: employee.id,
       };
 
@@ -118,6 +124,7 @@ export const JobInformation = ({ employee }: IProps) => {
           });
           queryClient.invalidateQueries({
             queryKey: ["single-employee", employee?.id],
+            exact: true,
           });
         },
       });
@@ -127,14 +134,16 @@ export const JobInformation = ({ employee }: IProps) => {
       const props: ICreateEmpJobInfoProps = {
         token,
         companyId,
-        startDate: data.startDate,
+        startDate: data.startDate.format("YYYY-MM-DD"),
         monthlyGross: data.monthlyGross,
         employmentType: data.employmentType,
         workModel: data.workModel,
         numberOfDaysPerWeek: data.numberOfDaysPerWeek,
-        hireDate: data.hireDate,
-        probationEndDate: data.probationEndDate,
-        confirmationDate: data.confirmationDate,
+        hireDate: data.hireDate.format("YYYY-MM-DD"),
+        probationEndDate: data.probationEndDate.format("YYYY-MM-DD"),
+        confirmationDate: data.confirmationDate.format("YYYY-MM-DD"),
+        lineManagerId: data.lineManagerId,
+
         employeeId: employee.id,
       };
 
@@ -162,6 +171,7 @@ export const JobInformation = ({ employee }: IProps) => {
           });
           queryClient.invalidateQueries({
             queryKey: ["single-employee", employee?.id],
+            exact: true,
           });
         },
       });
