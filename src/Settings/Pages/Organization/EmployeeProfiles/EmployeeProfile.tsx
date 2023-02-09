@@ -84,16 +84,25 @@ export const EmployeeProfile = () => {
                 </h5>
                 <div className="text-sm flex md:items-center gap-3 md:flex-row flex-col mt-1">
                   <div className="flex items-center gap-2">
+                    <i className="ri-profile-line text-caramel"></i>
+                    <span>{employee?.empUid} | </span>
+                  </div>
+                  <div className="flex items-center gap-2">
                     <i className="ri-mail-line text-caramel"></i>
                     <span>{employee?.email} | </span>
                   </div>
                   <div className="flex items-center gap-2">
                     <i className="ri-phone-line text-caramel"></i>
-                    <span> 09023865543 | </span>
+                    <span>
+                      {" "}
+                      {employee?.personalInformation?.phoneNumber} |{" "}
+                    </span>
                   </div>
                   <div className="flex items-center gap-2">
                     <i className="ri-map-pin-line text-caramel"></i>
-                    <span>1B Ayobami Shonuga </span>
+                    <span>
+                      {employee?.personalInformation?.address.streetAddress}{" "}
+                    </span>
                   </div>
                 </div>
               </div>
@@ -149,7 +158,7 @@ export const EmployeeProfile = () => {
               <Dependents />
             </Tabs.TabPane>
             <Tabs.TabPane tab="Job Information" key="2">
-              <JobInformation />
+              <JobInformation employee={employee} />
             </Tabs.TabPane>
             <Tabs.TabPane tab="Finance" key="8">
               <Finance />

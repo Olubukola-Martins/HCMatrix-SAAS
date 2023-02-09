@@ -4,6 +4,7 @@ import { useSignOut } from "react-auth-kit";
 import { useMutation, useQuery } from "react-query";
 import {
   createEmployee,
+  createEmployeeJobInfo,
   createEmployeePersonalInfo,
   employeeInvite,
   getEmployees,
@@ -12,6 +13,7 @@ import {
   IGetSingleEmpProps,
   resendEmployeeInvite,
   updateEmployee,
+  updateEmployeeJobInfo,
   updateEmployeePersonalInfo,
 } from "../../ApiRequesHelpers/Utility/employee";
 import {
@@ -239,6 +241,12 @@ export const useCreateEmployeePersonalInfo = () => {
 };
 export const useUpdateEmployeePersonalInfo = () => {
   return useMutation(updateEmployeePersonalInfo);
+};
+export const useCreateEmployeeJobInfo = () => {
+  return useMutation(createEmployeeJobInfo);
+};
+export const useUpdateEmployeeJobInfo = () => {
+  return useMutation(updateEmployeeJobInfo);
 };
 
 export const useInviteEmployees = () => {

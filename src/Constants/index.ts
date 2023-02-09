@@ -50,3 +50,32 @@ export const timeZones = [
     value: "Africa/Lagos",
   },
 ];
+
+export const workModels = [
+  {
+    label: "On Site",
+    value: "on-site",
+  },
+  {
+    label: "Hybrid",
+    value: "hybrid",
+  },
+  {
+    label: "Remote",
+    value: "remote",
+  },
+];
+export const employmentTypes = [
+  {
+    label: "Contract",
+    value: "contract",
+  },
+  {
+    value: "full-time",
+    label: "Full Time",
+  },
+  {
+    value: "part-time",
+    label: "Part Time",
+  },
+];

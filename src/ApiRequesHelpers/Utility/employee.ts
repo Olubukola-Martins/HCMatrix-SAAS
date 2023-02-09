@@ -2,6 +2,7 @@ import axios from "axios";
 import {
   ICurrentCompany,
   TEmployeeStatus,
+  TJobInfo,
   TPersonalInfo,
 } from "../../AppTypes/DataEntitities";
 import { IPaginationProps } from "../../AppTypes/Pagination";
@@ -91,6 +92,57 @@ export interface IUpdateEmpProps extends ICurrentCompany {
   designationId?: number;
 }
 
+export interface ICreateEmpJobInfoProps extends ICurrentCompany, TJobInfo {
+  employeeId: number;
+}
+export const createEmployeeJobInfo = async (props: ICreateEmpJobInfoProps) => {
+  const url = `${process.env.REACT_APP_UTILITY_BASE_URL}/employee/${props.employeeId}/job-information`;
+  const config = {
+    headers: {
+      // Accept: "application/json",
+      Authorization: `Bearer ${props.token}`,
+      "x-company-id": props.companyId,
+    },
+  };
+
+  // necessary to make immediate changes when in  a central place when schema changes
+
+  // made the data any so that the props that are not needed can be deleted
+  const data: any = {
+    ...props,
+  };
+  // delete the props that are not needed as the will result in an error
+  delete data["token"]; //not needed
+  delete data["companyId"]; //not needed
+  delete data["employeeId"]; //not needed
+
+  const response = await axios.post(url, data, config);
+  return response;
+};
+export const updateEmployeeJobInfo = async (props: ICreateEmpJobInfoProps) => {
+  const url = `${process.env.REACT_APP_UTILITY_BASE_URL}/employee/${props.employeeId}/job-information`;
+  const config = {
+    headers: {
+      // Accept: "application/json",
+      Authorization: `Bearer ${props.token}`,
+      "x-company-id": props.companyId,
+    },
+  };
+
+  // necessary to make immediate changes when in  a central place when schema changes
+
+  // made the data any so that the props that are not needed can be deleted
+  const data: any = {
+    ...props,
+  };
+  // delete the props that are not needed as the will result in an error
+  delete data["token"]; //not needed
+  delete data["companyId"]; //not needed
+  delete data["employeeId"]; //not needed
+
+  const response = await axios.put(url, data, config);
+  return response;
+};
 export interface ICreateEmpPersonalInfoProps
   extends ICurrentCompany,
     TPersonalInfo {
