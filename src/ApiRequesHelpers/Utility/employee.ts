@@ -2,6 +2,8 @@ import axios from "axios";
 import {
   ICurrentCompany,
   TEmployeeStatus,
+  TJobInfo,
+  TPersonalInfo,
 } from "../../AppTypes/DataEntitities";
 import { IPaginationProps } from "../../AppTypes/Pagination";
 import { ISearchParams } from "../../AppTypes/Search";
@@ -30,7 +32,7 @@ export interface ICreateEmpProps extends ICurrentCompany {
   lastName: string;
   email: string;
   hasSelfService: boolean;
-  empUid: string;
+  empUid?: string;
   roleId: number;
   designationId: number;
   jobInformation: {
@@ -40,7 +42,8 @@ export interface ICreateEmpProps extends ICurrentCompany {
     employmentType: string;
     workModel: string;
     numberOfDaysPerWeek: number;
-    departmentId: string;
+
+    lineManagerId?: number;
   };
 }
 
@@ -66,16 +69,165 @@ export const createEmployee = async (props: ICreateEmpProps) => {
     hasSelfService: props.hasSelfService,
     roleId: props.roleId,
     designationId: props.designationId,
+    empUid: props.empUid,
     jobInformation: {
       startDate: props.jobInformation.startDate,
       monthlyGross: props.jobInformation.monthlyGross,
       employmentType: props.jobInformation.employmentType,
       workModel: props.jobInformation.workModel,
       numberOfDaysPerWeek: props.jobInformation.numberOfDaysPerWeek,
+      lineManagerId: props.jobInformation.lineManagerId,
+    },
+  };
+  if (!props.empUid) delete data["empUid"];
+  if (!props.jobInformation.lineManagerId)
+    delete data["jobInformation"]["lineManagerId"];
+
+  const response = await axios.post(url, data, config);
+  return response;
+};
+export interface IUpdateEmpProps extends ICurrentCompany {
+  employeeId: number;
+  firstName?: string;
+  lastName?: string;
+  email?: string;
+  hasSelfService?: boolean;
+  empUid?: string;
+  roleId?: number;
+  designationId?: number;
+}
+
+export interface ICreateEmpJobInfoProps extends ICurrentCompany, TJobInfo {
+  employeeId: number;
+}
+export const createEmployeeJobInfo = async (props: ICreateEmpJobInfoProps) => {
+  const url = `${process.env.REACT_APP_UTILITY_BASE_URL}/employee/${props.employeeId}/job-information`;
+  const config = {
+    headers: {
+      // Accept: "application/json",
+      Authorization: `Bearer ${props.token}`,
+      "x-company-id": props.companyId,
     },
   };
 
+  // necessary to make immediate changes when in  a central place when schema changes
+
+  // made the data any so that the props that are not needed can be deleted
+  const data: any = {
+    ...props,
+  };
+  // delete the props that are not needed as the will result in an error
+  delete data["token"]; //not needed
+  delete data["companyId"]; //not needed
+  delete data["employeeId"]; //not needed
+
   const response = await axios.post(url, data, config);
+  return response;
+};
+export const updateEmployeeJobInfo = async (props: ICreateEmpJobInfoProps) => {
+  const url = `${process.env.REACT_APP_UTILITY_BASE_URL}/employee/${props.employeeId}/job-information`;
+  const config = {
+    headers: {
+      // Accept: "application/json",
+      Authorization: `Bearer ${props.token}`,
+      "x-company-id": props.companyId,
+    },
+  };
+
+  // necessary to make immediate changes when in  a central place when schema changes
+
+  // made the data any so that the props that are not needed can be deleted
+  const data: any = {
+    ...props,
+  };
+  // delete the props that are not needed as the will result in an error
+  delete data["token"]; //not needed
+  delete data["companyId"]; //not needed
+  delete data["employeeId"]; //not needed
+
+  const response = await axios.put(url, data, config);
+  return response;
+};
+export interface ICreateEmpPersonalInfoProps
+  extends ICurrentCompany,
+    TPersonalInfo {
+  employeeId: number;
+}
+export const createEmployeePersonalInfo = async (
+  props: ICreateEmpPersonalInfoProps
+) => {
+  const url = `${process.env.REACT_APP_UTILITY_BASE_URL}/employee/${props.employeeId}/personal-information`;
+  const config = {
+    headers: {
+      // Accept: "application/json",
+      Authorization: `Bearer ${props.token}`,
+      "x-company-id": props.companyId,
+    },
+  };
+
+  // necessary to make immediate changes when in  a central place when schema changes
+
+  // made the data any so that the props that are not needed can be deleted
+  const data: any = {
+    ...props,
+  };
+  // delete the props that are not needed as the will result in an error
+  delete data["token"]; //not needed
+  delete data["companyId"]; //not needed
+  delete data["employeeId"]; //not needed
+
+  const response = await axios.post(url, data, config);
+  return response;
+};
+export const updateEmployeePersonalInfo = async (
+  props: ICreateEmpPersonalInfoProps
+) => {
+  const url = `${process.env.REACT_APP_UTILITY_BASE_URL}/employee/${props.employeeId}/personal-information`;
+  const config = {
+    headers: {
+      // Accept: "application/json",
+      Authorization: `Bearer ${props.token}`,
+      "x-company-id": props.companyId,
+    },
+  };
+
+  // necessary to make immediate changes when in  a central place when schema changes
+
+  // made the data any so that the props that are not needed can be deleted
+  const data: any = {
+    ...props,
+  };
+  // delete the props that are not needed as the will result in an error
+  delete data["token"]; //not needed
+  delete data["companyId"]; //not needed
+  delete data["employeeId"]; //not needed
+
+  const response = await axios.put(url, data, config);
+  return response;
+};
+export const updateEmployee = async (props: IUpdateEmpProps) => {
+  const url = `${process.env.REACT_APP_UTILITY_BASE_URL}/employee/${props.employeeId}`;
+  const config = {
+    headers: {
+      // Accept: "application/json",
+      Authorization: `Bearer ${props.token}`,
+      "x-company-id": props.companyId,
+    },
+  };
+
+  // necessary to make immediate changes when in  a central place when schema changes
+
+  // made the data any so that the props that are not needed can be deleted
+  const data: any = {
+    ...props,
+  };
+  // delete the props that are not needed as the will result in an error
+  delete data["token"]; //not needed
+  delete data["companyId"]; //not needed
+  delete data["employeeId"]; //not needed
+  delete data["email"]; //not needed
+
+  const response = await axios.patch(url, data, config);
   return response;
 };
 

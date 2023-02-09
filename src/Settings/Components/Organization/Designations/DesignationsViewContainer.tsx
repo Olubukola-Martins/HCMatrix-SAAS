@@ -1,4 +1,5 @@
 import { TablePaginationConfig, Tooltip } from "antd";
+import { gridPageSize, listPageSize } from "Constants";
 import { useContext, useEffect, useState } from "react";
 import { useAuthUser } from "react-auth-kit";
 import { useFetchDesignations } from "../../../../APIRQHooks/Utility/designationHooks";
@@ -26,14 +27,14 @@ const DesignationsViewContainer = () => {
 
   const [pagination, setPagination] = useState<TablePaginationConfig>({
     current: 1,
-    pageSize: 4,
+    pageSize: listPageSize,
     total: 0,
     showSizeChanger: false,
   });
 
   const offset =
     pagination.current && pagination.current !== 1
-      ? (pagination.pageSize ?? 4) * (pagination.current - 1)
+      ? (pagination.pageSize ?? listPageSize) * (pagination.current - 1)
       : 0;
 
   const onChange = (newPagination: TablePaginationConfig | number) => {
@@ -68,9 +69,9 @@ const DesignationsViewContainer = () => {
   // to be able to maitain diff page size per diff view
   useEffect(() => {
     if (viewId === "grid") {
-      setPagination((val) => ({ ...val, pageSize: 10, current: 1 }));
+      setPagination((val) => ({ ...val, pageSize: gridPageSize, current: 1 }));
     } else {
-      setPagination((val) => ({ ...val, pageSize: 5, current: 1 }));
+      setPagination((val) => ({ ...val, pageSize: listPageSize, current: 1 }));
     }
   }, [viewId]);
 

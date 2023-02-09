@@ -1,6 +1,6 @@
 import { Button, Dropdown, Menu, Table } from "antd";
 import { TEmployee } from "../../../../../AppTypes/DataEntitities";
-import { ColumnsType, TablePaginationConfig } from "antd/lib/table";
+import { ColumnsType, TablePaginationConfig, TableProps } from "antd/lib/table";
 import { TableRowSelection } from "antd/lib/table/interface";
 import { MoreOutlined } from "@ant-design/icons";
 import { employeeStatusColor } from "../../../../../GeneralHelpers/employeeHelpers";
@@ -12,6 +12,7 @@ interface IProps {
   loading: boolean;
   pagination?: TablePaginationConfig;
   rowSelection: TableRowSelection<TEmployee>;
+  onChange?: TableProps<TEmployee>["onChange"];
 }
 
 const InactiveEmpTableView = ({
@@ -19,6 +20,7 @@ const InactiveEmpTableView = ({
   loading,
   pagination,
   rowSelection,
+  onChange,
 }: IProps) => {
   const columns: ColumnsType<TEmployee> = [
     {
@@ -30,26 +32,28 @@ const InactiveEmpTableView = ({
           to={`${appRoutes.singleEmployee(item.id).path}`}
           className="text-caramel hover:underline hover:text-caramel"
         >
-          {item.name}
+          {item.firstName} {item.lastName}
         </Link>
       ),
     },
-
     {
       title: "Employee ID",
       dataIndex: "employeeID",
       key: "employeeID",
+      render: (_, item) => item.empUid,
     },
     {
       title: "Department",
       dataIndex: "department",
       key: "department",
+      render: (_, item) => item.designation?.department?.name ?? "none",
     },
 
     {
       title: "Role",
       dataIndex: "role",
       key: "role",
+      render: (_, item) => item.role.name,
     },
     {
       title: "Email",
@@ -100,6 +104,7 @@ const InactiveEmpTableView = ({
         className="mt-5"
         size="small"
         pagination={pagination}
+        onChange={onChange}
       />
     </div>
   );

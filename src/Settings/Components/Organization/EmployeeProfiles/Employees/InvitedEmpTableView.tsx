@@ -1,6 +1,6 @@
 import { Button, Dropdown, Menu, Spin, Table } from "antd";
 import { TInvitedEmployee } from "../../../../../AppTypes/DataEntitities";
-import { ColumnsType, TablePaginationConfig } from "antd/lib/table";
+import { ColumnsType, TablePaginationConfig, TableProps } from "antd/lib/table";
 import { TableRowSelection } from "antd/lib/table/interface";
 import { MoreOutlined } from "@ant-design/icons";
 import { employeeStatusColor } from "../../../../../GeneralHelpers/employeeHelpers";
@@ -16,6 +16,7 @@ interface IProps {
   loading: boolean;
   pagination?: TablePaginationConfig;
   rowSelection: TableRowSelection<TInvitedEmployee>;
+  onChange?: TableProps<TInvitedEmployee>["onChange"];
 }
 
 const InvitedEmpTableView = ({
@@ -23,6 +24,7 @@ const InvitedEmpTableView = ({
   loading,
   pagination,
   rowSelection,
+  onChange,
 }: IProps) => {
   const auth = useAuthUser();
 
@@ -103,6 +105,7 @@ const InvitedEmpTableView = ({
         className="mt-5"
         size="small"
         pagination={pagination}
+        onChange={onChange}
       />
     </div>
   );
