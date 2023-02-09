@@ -16,7 +16,7 @@ const ActiveEmployeesContainer = () => {
   const { state: globalState } = globalCtx;
   const companyId = globalState.currentCompany?.id as unknown as string;
 
-  const [pagination] = useState<TablePaginationConfig>({
+  const [pagination, setPagination] = useState<TablePaginationConfig>({
     current: 1,
     pageSize: listPageSize,
     total: 0,
@@ -46,6 +46,19 @@ const ActiveEmployeesContainer = () => {
   const rowSelection = {
     onChange: (selectedRowKeys: React.Key[], selectedRows: TEmployee[]) => {},
   };
+  const onChange = (newPagination: TablePaginationConfig | number) => {
+    if (typeof newPagination === "number") {
+      setPagination((val) => ({
+        ...val,
+        current: newPagination,
+      }));
+    } else {
+      setPagination((val) => ({
+        ...val,
+        current: newPagination.current,
+      }));
+    }
+  };
 
   return (
     <div>
@@ -57,6 +70,7 @@ const ActiveEmployeesContainer = () => {
         pagination={{ ...pagination, total: employeeData?.total }}
         loading={isFetching}
         employees={isSuccess ? employeeData.data : []}
+        onChange={onChange}
       />
     </div>
   );
