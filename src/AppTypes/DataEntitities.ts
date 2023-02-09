@@ -65,16 +65,56 @@ export type TRole = {
   userCount: number;
 };
 
+export type TPersonalInfo = {
+  dob: string;
+  gender: string;
+  phoneNumber: string;
+  eligibility: string;
+  maritalStatus: string;
+  nationality: string;
+  address: {
+    streetAddress: string;
+    countryId: number;
+    stateId: number;
+    lgaId: number;
+    timezone: string;
+  };
+  passportExpirationDate: string;
+  validDocumentUrl: string;
+};
+
+export type TJobInfo = {
+  startDate: string;
+  monthlyGross: number;
+  employmentType: string;
+  workModel: string;
+  numberOfDaysPerWeek: number;
+  hireDate: string;
+  probationEndDate: string;
+  confirmationDate: string;
+};
+
 export type TEmployee = {
-  id: number;
-  name: string;
-  gender: "male" | "female";
-  employeeID: string;
-  designation: TDesignation | string;
-  role: TRole | string;
-  status: TEmployeeStatus;
+  companyId: number;
+
+  createdAt: string;
+  deletedAt?: string;
+  designation?: TDesignation;
+  designationId?: string;
   email: string;
-  department: TDepartment | string;
+  empUid: string;
+  firstName: string;
+  hasSelfService: boolean;
+  id: number;
+  jobInformation?: TJobInfo;
+  lastName: string;
+  personalInformation?: TPersonalInfo;
+  role: TRole;
+  roleId: number;
+  status: TEmployeeStatus;
+  updatedAt: string;
+  userId: number;
+  // --------------
 };
 export type TInvitedEmployee = {
   id: number;

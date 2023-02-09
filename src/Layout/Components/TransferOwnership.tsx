@@ -41,7 +41,7 @@ const TransferOwnership = ({ open, handleClose }: IProps) => {
     companyId,
     token,
   });
-  console.log(checkValueLength,);
+  console.log(checkValueLength);
 
   return (
     <>
@@ -72,9 +72,9 @@ const TransferOwnership = ({ open, handleClose }: IProps) => {
                       <Select.Option
                         key={data.id}
                         value={data.id}
-                        label={data.name}
+                        label={data.firstName}
                       >
-                        {data.name}
+                        {data.firstName}
                       </Select.Option>
                     ))}
                   </Select>

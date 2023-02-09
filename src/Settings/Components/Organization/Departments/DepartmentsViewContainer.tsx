@@ -1,17 +1,13 @@
 import { TablePaginationConfig, Tooltip } from "antd";
-import { AnimatePresence } from "framer-motion";
+import { gridPageSize, listPageSize } from "Constants";
 import React, { useContext, useEffect, useState } from "react";
 import { useAuthUser } from "react-auth-kit";
-import { useQuery, useQueryClient } from "react-query";
-import { getDepartments } from "../../../../ApiRequesHelpers/Utility/departments";
 import { useFetchDepartments } from "../../../../APIRQHooks/Utility/departmentHooks";
 import { IAuthDets } from "../../../../AppTypes/Auth";
 import { TDataView } from "../../../../AppTypes/Component";
-import { TDepartment } from "../../../../AppTypes/DataEntitities";
 import { GlobalContext } from "../../../../Contexts/GlobalContextProvider";
 import { ErrorComponent } from "../../../../GeneralComps/ErrorComps";
 import { DataContainerLoader } from "../../../../GeneralComps/LoaderComps";
-import { openNotification } from "../../../../NotificationHelpers";
 import { DepartmentsGridView } from "./DepartmentsGridView";
 import { DepartmentsTableView } from "./DepartmentsTableView";
 
@@ -31,14 +27,14 @@ const DepartmentsViewContainer = () => {
 
   const [pagination, setPagination] = useState<TablePaginationConfig>({
     current: 1,
-    pageSize: 5,
+    pageSize: listPageSize,
     total: 0,
     showSizeChanger: false,
   });
 
   const offset =
     pagination.current && pagination.current !== 1
-      ? (pagination.pageSize ?? 4) * (pagination.current - 1)
+      ? (pagination.pageSize ?? listPageSize) * (pagination.current - 1)
       : 0;
 
   const onChange = (newPagination: TablePaginationConfig | number) => {
@@ -72,9 +68,9 @@ const DepartmentsViewContainer = () => {
   // to be able to maitain diff page size per diff view
   useEffect(() => {
     if (viewId === "grid") {
-      setPagination((val) => ({ ...val, pageSize: 10, current: 1 }));
+      setPagination((val) => ({ ...val, pageSize: gridPageSize, current: 1 }));
     } else {
-      setPagination((val) => ({ ...val, pageSize: 5, current: 1 }));
+      setPagination((val) => ({ ...val, pageSize: listPageSize, current: 1 }));
     }
   }, [viewId]);
 

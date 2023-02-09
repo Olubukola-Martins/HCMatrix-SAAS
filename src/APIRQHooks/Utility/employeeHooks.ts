@@ -1,15 +1,17 @@
-import { Spin } from "antd";
 import moment from "moment";
 import { useSignOut } from "react-auth-kit";
 
 import { useMutation, useQuery } from "react-query";
-import { createDepartment } from "../../ApiRequesHelpers/Utility/departments";
 import {
+  createEmployee,
+  createEmployeePersonalInfo,
+  employeeInvite,
   getEmployees,
   getInvitedEmployees,
   getSingleEmployee,
   IGetSingleEmpProps,
   resendEmployeeInvite,
+  updateEmployee,
 } from "../../ApiRequesHelpers/Utility/employee";
 import {
   TEmployee,
@@ -128,16 +130,9 @@ export const useFetchEmployees = ({
         const result = fetchedData.result;
 
         const data: TEmployee[] = result.map(
-          (item: any): TEmployee => ({
-            id: item.id,
-            name: `${item.firstName} ${item.lastName}`,
-            gender: item?.gender ?? "nil",
-            employeeID: item?.empUid,
-            designation: item?.designation?.name,
-            department: item?.department?.name ?? "nil",
-            status: item?.status ?? "nil",
-            role: item?.role?.name,
-            email: item?.email,
+          (item: TEmployee): TEmployee => ({
+            ...item,
+            // No need as we adhere to same type as backend
           })
         );
 
@@ -178,21 +173,16 @@ export const useFetchSingleEmployee = ({
       },
 
       select: (res: any) => {
-        const item = res.data.data;
+        const item = res.data.data as TEmployee;
         // const item = fetchedData.result;
         // TO DO -> update employee type and populate with neccessary data
         // TO DO -> default image to be shown 4 user -> use first letter url (laravel)
         // To Do -> updating employee info
+
         const data: TEmployee = {
-          id: item.id,
-          name: `${item.firstName} ${item.lastName}`,
-          gender: item?.gender ?? "nil",
-          employeeID: item?.empUid,
-          designation: item?.designation?.name,
-          department: item?.department?.name ?? "nil",
-          status: item?.status ?? "nil",
-          role: item?.role?.name,
-          email: item?.email,
+          ...item,
+
+          // no need to breakdown as we adhere to Backend Schema sent from respone
         };
 
         return data;
@@ -235,4 +225,18 @@ export const useResendEmployeeInvite = ({
   );
 
   return queryData;
+};
+
+export const useCreateEmployee = () => {
+  return useMutation(createEmployee);
+};
+export const useUpdateEmployee = () => {
+  return useMutation(updateEmployee);
+};
+export const useCreateEmployeePersonalInfo = () => {
+  return useMutation(createEmployeePersonalInfo);
+};
+
+export const useInviteEmployees = () => {
+  return useMutation(employeeInvite);
 };

@@ -53,6 +53,7 @@ export const EmployeeProfile = () => {
         <PageIntro title="Employee Profile" link="/" />
         <EditMyProfile
           open={openDrawer}
+          employee={employee}
           handleClose={() => setOpenDrawer(false)}
         />
         <Resignation
@@ -64,15 +65,18 @@ export const EmployeeProfile = () => {
             <div className="flex gap-3 items-center md:flex-row flex-col">
               <img
                 src={`https://res.cloudinary.com/ddvaelej7/image/upload/v1639659955/HCmatrix/User-Icon_wdkmsf.png`}
-                alt={employee?.name}
+                alt={employee?.firstName}
                 className="h-24"
               />
 
               <div className="flex flex-col gap-1 text-accent">
                 <h3 className="text-lg font-medium text-accent">
-                  {employee?.name}
+                  {employee?.firstName} {employee?.lastName}
                 </h3>
-                <h4 className="font-medium text-accent">UI Designer | CSI</h4>
+                <h4 className="font-medium text-accent">
+                  {employee?.designation?.name ?? "_"} |{" "}
+                  {employee?.designation?.department?.name ?? "_"}
+                </h4>
                 <h5 className="text-sm text-accent">
                   {typeof employee?.role === "string"
                     ? employee?.role

@@ -2,7 +2,7 @@ import { Input } from "@material-ui/core";
 import { Drawer, Form, Spin } from "antd";
 import TextArea from "antd/lib/input/TextArea";
 import { IEmpInviteProps } from "ApiRequesHelpers/Utility/employee";
-import { useInviteEmployees } from "APIRQHooks/Utility/employees";
+import { useInviteEmployees } from "APIRQHooks/Utility/employeeHooks";
 import { IAuthDets } from "AppTypes/Auth";
 import { GlobalContext } from "Contexts/GlobalContextProvider";
 import { openNotification } from "NotificationHelpers";

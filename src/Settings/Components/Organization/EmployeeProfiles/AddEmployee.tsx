@@ -18,7 +18,7 @@ import { ICreateEmpProps } from "../../../../ApiRequesHelpers/Utility/employee";
 import { useFetchRoles } from "../../../../APIRQHooks/Auth/roleHooks";
 import { useFetchDepartments } from "../../../../APIRQHooks/Utility/departmentHooks";
 import { useFetchDesignations } from "../../../../APIRQHooks/Utility/designationHooks";
-import { useCreateEmployee } from "../../../../APIRQHooks/Utility/employees";
+import { useCreateEmployee } from "../../../../APIRQHooks/Utility/employeeHooks";
 import { IAuthDets } from "../../../../AppTypes/Auth";
 import { GlobalContext } from "../../../../Contexts/GlobalContextProvider";
 import {

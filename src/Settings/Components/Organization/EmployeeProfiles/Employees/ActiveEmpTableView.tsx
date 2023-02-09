@@ -30,7 +30,7 @@ const ActiveEmpTableView = ({
           to={`${appRoutes.singleEmployee(item.id).path}`}
           className="text-caramel hover:underline hover:text-caramel"
         >
-          {item.name}
+          {item.firstName} {item.lastName}
         </Link>
       ),
     },
@@ -39,17 +39,20 @@ const ActiveEmpTableView = ({
       title: "Employee ID",
       dataIndex: "employeeID",
       key: "employeeID",
+      render: (_, item) => item.empUid,
     },
     {
       title: "Department",
       dataIndex: "department",
       key: "department",
+      render: (_, item) => item.designation?.department?.name ?? "none",
     },
 
     {
       title: "Role",
       dataIndex: "role",
       key: "role",
+      render: (_, item) => item.role.name,
     },
     {
       title: "Email",

@@ -1,17 +1,12 @@
 import { TablePaginationConfig } from "antd";
+import { listPageSize } from "Constants";
 import React, { useContext, useState } from "react";
 import { useAuthUser } from "react-auth-kit";
-import {
-  useFetchEmployees,
-  useFetchInvitedEmployees,
-} from "../../../../../APIRQHooks/Utility/employeeHooks";
+import { useFetchInvitedEmployees } from "../../../../../APIRQHooks/Utility/employeeHooks";
 import { IAuthDets } from "../../../../../AppTypes/Auth";
-import {
-  TEmployee,
-  TInvitedEmployee,
-} from "../../../../../AppTypes/DataEntitities";
+import { TInvitedEmployee } from "../../../../../AppTypes/DataEntitities";
 import { GlobalContext } from "../../../../../Contexts/GlobalContextProvider";
-import ActiveEmpTableView from "./ActiveEmpTableView";
+
 import InvitedEmpTableView from "./InvitedEmpTableView";
 
 const InvitedEmployeesContainer = () => {
@@ -26,14 +21,14 @@ const InvitedEmployeesContainer = () => {
 
   const [pagination] = useState<TablePaginationConfig>({
     current: 1,
-    pageSize: 4,
+    pageSize: listPageSize,
     total: 0,
     showSizeChanger: false,
   });
 
   const offset =
     pagination.current && pagination.current !== 1
-      ? (pagination.pageSize ?? 4) * (pagination.current - 1)
+      ? (pagination.pageSize ?? listPageSize) * (pagination.current - 1)
       : 0;
   const {
     data: employeeData,
