@@ -12,6 +12,7 @@ import {
   IGetSingleEmpProps,
   resendEmployeeInvite,
   updateEmployee,
+  updateEmployeePersonalInfo,
 } from "../../ApiRequesHelpers/Utility/employee";
 import {
   TEmployee,
@@ -235,6 +236,9 @@ export const useUpdateEmployee = () => {
 };
 export const useCreateEmployeePersonalInfo = () => {
   return useMutation(createEmployeePersonalInfo);
+};
+export const useUpdateEmployeePersonalInfo = () => {
+  return useMutation(updateEmployeePersonalInfo);
 };
 
 export const useInviteEmployees = () => {
