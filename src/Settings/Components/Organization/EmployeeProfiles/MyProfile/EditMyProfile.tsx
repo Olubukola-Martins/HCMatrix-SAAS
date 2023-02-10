@@ -6,6 +6,7 @@ import { useFetchDesignations } from "APIRQHooks/Utility/designationHooks";
 import { useUpdateEmployee } from "APIRQHooks/Utility/employeeHooks";
 import { IAuthDets } from "AppTypes/Auth";
 import { TEmployee } from "AppTypes/DataEntitities";
+import { defaultImage } from "Constants";
 import { GlobalContext } from "Contexts/GlobalContextProvider";
 import {
   emailValidationRules,
@@ -23,9 +24,6 @@ import { IDrawerProps } from "../../../../../AppTypes/Component";
 interface IProps extends IDrawerProps {
   employee?: TEmployee;
 }
-
-const defaultImage =
-  "https://res.cloudinary.com/ddvaelej7/image/upload/v1639659955/HCmatrix/User-Icon_wdkmsf.png";
 
 export const EditMyProfile = ({ open, handleClose, employee }: IProps) => {
   const queryClient = useQueryClient();

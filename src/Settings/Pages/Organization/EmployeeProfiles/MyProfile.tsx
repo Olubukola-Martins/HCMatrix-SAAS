@@ -26,6 +26,7 @@ import { IAuthDets } from "AppTypes/Auth";
 import { GlobalContext } from "Contexts/GlobalContextProvider";
 import { useFetchSingleEmployee } from "APIRQHooks/Utility/employeeHooks";
 import { appRoutes } from "AppRoutes";
+import { defaultImage } from "Constants";
 
 export const MyProfile = () => {
   const auth = useAuthUser();
@@ -52,7 +53,7 @@ export const MyProfile = () => {
   return (
     <DashboardLayout>
       <div className="Container mt-3">
-        <PageIntro title="Employee Profile" link={appRoutes.employeeSettings} />
+        <PageIntro title="My Profile" link={appRoutes.home} />
         <EditMyProfile
           open={openDrawer}
           employee={employee}
@@ -66,7 +67,7 @@ export const MyProfile = () => {
           <div className="bg-mainBg shadow-sm rounded-md p-4 flex gap-3 justify-between">
             <div className="flex gap-3 items-center md:flex-row flex-col">
               <img
-                src={employee?.avatarUrl}
+                src={!!employee?.avatarUrl ? employee?.avatarUrl : defaultImage}
                 alt={employee?.firstName}
                 className="h-24"
               />

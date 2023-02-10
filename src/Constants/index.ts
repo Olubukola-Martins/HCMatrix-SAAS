@@ -65,6 +65,8 @@ export const workModels = [
     value: "remote",
   },
 ];
+export const defaultImage =
+  "https://res.cloudinary.com/ddvaelej7/image/upload/v1639659955/HCmatrix/User-Icon_wdkmsf.png";
 export const employmentTypes = [
   {
     label: "Contract",

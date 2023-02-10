@@ -14,6 +14,7 @@ import {
 import { AddSisterCompanyForm } from "./AddSisterCompany/AddSisterCompanyForm";
 import { PlusOutlined } from "@ant-design/icons";
 import { IAuthDets } from "AppTypes/Auth";
+import { defaultImage } from "Constants";
 
 type TCompany = {
   value: string;
@@ -340,7 +341,7 @@ const TopBar = ({
               trigger={["click"]}
             >
               <Avatar
-                src={avatarUrl}
+                src={!!avatarUrl ? avatarUrl : defaultImage}
                 alt=""
                 className="h-6 md:h-9 cursor-pointer border-2 border-slate-300 rounded-full ml-1"
                 onClick={(e) => handleClick(e)}
