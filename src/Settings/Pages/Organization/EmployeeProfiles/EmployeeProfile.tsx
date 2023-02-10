@@ -94,17 +94,14 @@ export const EmployeeProfile = () => {
                   </div>
                   <div className="flex items-center gap-2">
                     <i className="ri-phone-line text-caramel"></i>
-                    <span>
-                      {" "}
-                      {employee?.personalInformation?.phoneNumber} |{" "}
-                    </span>
+                    <span> {employee?.personalInformation?.phoneNumber}</span>
                   </div>
-                  <div className="flex items-center gap-2">
-                    <i className="ri-map-pin-line text-caramel"></i>
-                    <span>
-                      {employee?.personalInformation?.address.streetAddress}{" "}
-                    </span>
-                  </div>
+                </div>
+                <div className="flex items-center gap-2 mt-2">
+                  <i className="ri-map-pin-line text-caramel"></i>
+                  <span>
+                    {employee?.personalInformation?.address.streetAddress}{" "}
+                  </span>
                 </div>
               </div>
             </div>

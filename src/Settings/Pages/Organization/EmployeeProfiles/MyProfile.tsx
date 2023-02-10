@@ -24,26 +24,38 @@ import { MedicalHistory } from "../../../Components/Organization/EmployeeProfile
 import { useAuthUser } from "react-auth-kit";
 import { IAuthDets } from "AppTypes/Auth";
 import { GlobalContext } from "Contexts/GlobalContextProvider";
+import { useFetchSingleEmployee } from "APIRQHooks/Utility/employeeHooks";
+import { appRoutes } from "AppRoutes";
 
 export const MyProfile = () => {
   const auth = useAuthUser();
   const authDetails = auth() as unknown as IAuthDets;
-  const user = authDetails?.user;
+
+  const userToken = authDetails?.userToken;
   const companies = authDetails?.companies;
   const globalCtx = useContext(GlobalContext);
   const { state: globalState } = globalCtx;
   const currentCompanyId = globalState.currentCompany?.id as unknown as string;
   const currentCompany = companies.find(
-    (item) => `${item.companyId}` === currentCompanyId
+    (item) => item.companyId === +currentCompanyId
   );
+  console.log("CURR", currentCompany, currentCompanyId);
+  const employeeId = currentCompany?.id;
+
+  const { data: employee } = useFetchSingleEmployee({
+    token: userToken,
+    companyId: currentCompanyId,
+    employeeId: employeeId as unknown as number,
+  });
   const [openDrawer, setOpenDrawer] = useState(false);
   const [openResignation, setOpenResignation] = useState(false);
   return (
     <DashboardLayout>
       <div className="Container mt-3">
-        <PageIntro title="Profile" link="/" />
+        <PageIntro title="Employee Profile" link={appRoutes.employeeSettings} />
         <EditMyProfile
           open={openDrawer}
+          employee={employee}
           handleClose={() => setOpenDrawer(false)}
         />
         <Resignation
@@ -54,30 +66,43 @@ export const MyProfile = () => {
           <div className="bg-mainBg shadow-sm rounded-md p-4 flex gap-3 justify-between">
             <div className="flex gap-3 items-center md:flex-row flex-col">
               <img
-                src="https://res.cloudinary.com/ddvaelej7/image/upload/v1639659955/HCmatrix/User-Icon_wdkmsf.png"
-                alt="user"
+                src={`https://res.cloudinary.com/ddvaelej7/image/upload/v1639659955/HCmatrix/User-Icon_wdkmsf.png`}
+                alt={employee?.firstName}
                 className="h-24"
               />
 
               <div className="flex flex-col gap-1 text-accent">
                 <h3 className="text-lg font-medium text-accent">
-                  {user.fullName}
+                  {employee?.firstName} {employee?.lastName}
                 </h3>
-                <h4 className="font-medium text-accent">UI Designer | CSI</h4>
-                <h5 className="text-sm text-accent">Manager</h5>
+                <h4 className="font-medium text-accent">
+                  {employee?.designation?.name ?? "_"} |{" "}
+                  {employee?.designation?.department?.name ?? "_"}
+                </h4>
+                <h5 className="text-sm text-accent">
+                  {typeof employee?.role === "string"
+                    ? employee?.role
+                    : employee?.role.name}
+                </h5>
                 <div className="text-sm flex md:items-center gap-3 md:flex-row flex-col mt-1">
                   <div className="flex items-center gap-2">
+                    <i className="ri-profile-line text-caramel"></i>
+                    <span>{employee?.empUid} | </span>
+                  </div>
+                  <div className="flex items-center gap-2">
                     <i className="ri-mail-line text-caramel"></i>
-                    <span>{user.email} | </span>
+                    <span>{employee?.email} | </span>
                   </div>
                   <div className="flex items-center gap-2">
                     <i className="ri-phone-line text-caramel"></i>
-                    <span> 09023865543 | </span>
+                    <span> {employee?.personalInformation?.phoneNumber}</span>
                   </div>
-                  <div className="flex items-center gap-2">
-                    <i className="ri-map-pin-line text-caramel"></i>
-                    <span>1B Ayobami Shonuga </span>
-                  </div>
+                </div>
+                <div className="flex items-center gap-2 mt-2">
+                  <i className="ri-map-pin-line text-caramel"></i>
+                  <span>
+                    {employee?.personalInformation?.address.streetAddress}{" "}
+                  </span>
                 </div>
               </div>
             </div>
@@ -127,12 +152,12 @@ export const MyProfile = () => {
           </div>
           <Tabs defaultActiveKey="1" className="mt-5 tabBlackActive">
             <Tabs.TabPane tab="Profile" key="1">
-              <Profile />
+              <Profile employee={employee} />
               <EmergencyContact />
               <Dependents />
             </Tabs.TabPane>
             <Tabs.TabPane tab="Job Information" key="2">
-              <JobInformation />
+              <JobInformation employee={employee} />
             </Tabs.TabPane>
             <Tabs.TabPane tab="Finance" key="8">
               <Finance />

@@ -84,6 +84,7 @@ export const EditMyProfile = ({ open, handleClose, employee }: IProps) => {
         designationId: data.designationId,
         employeeId: employee?.id as number,
       };
+      if (props.empUid === employee?.empUid) delete props.empUid;
 
       // return;
       openNotification({
