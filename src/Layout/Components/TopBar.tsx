@@ -13,6 +13,7 @@ import {
 } from "../../Contexts/GlobalContextProvider";
 import { AddSisterCompanyForm } from "./AddSisterCompany/AddSisterCompanyForm";
 import { PlusOutlined } from "@ant-design/icons";
+import { IAuthDets } from "AppTypes/Auth";
 
 type TCompany = {
   value: string;
@@ -44,10 +45,18 @@ const TopBar = ({
   setSidebarToggle,
 }: IProps) => {
   const auth = useAuthUser();
-  const authDetails = auth();
+  const authDetails = auth() as unknown as IAuthDets;
+
   const user = authDetails?.user;
   const globalCtx = useContext(GlobalContext);
   const { state: globalState, dispatch: globalDispatch } = globalCtx;
+
+  const currentCompanyId = globalState.currentCompany?.id as unknown as string;
+  const currentCompany = authDetails?.companies.find(
+    (item) => item.companyId === +currentCompanyId
+  );
+
+  const avatarUrl = currentCompany?.avatarUrl;
 
   const defaultCompanies = authDetails?.companies.map((item: any) => ({
     value: item.company.name,
@@ -331,7 +340,7 @@ const TopBar = ({
               trigger={["click"]}
             >
               <Avatar
-                src="https://res.cloudinary.com/ddvaelej7/image/upload/v1655735373/samples/Ellipse_4_j0womm.png"
+                src={avatarUrl}
                 alt=""
                 className="h-6 md:h-9 cursor-pointer border-2 border-slate-300 rounded-full ml-1"
                 onClick={(e) => handleClick(e)}

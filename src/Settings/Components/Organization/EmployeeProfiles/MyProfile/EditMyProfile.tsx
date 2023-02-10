@@ -12,6 +12,7 @@ import {
   generalValidationRules,
   textInputValidationRules,
 } from "FormHelpers/validation";
+import { FileUpload } from "GeneralComps/FileUpload";
 import { openNotification } from "NotificationHelpers";
 import { useContext, useEffect } from "react";
 import { useAuthUser } from "react-auth-kit";
@@ -23,6 +24,9 @@ interface IProps extends IDrawerProps {
   employee?: TEmployee;
 }
 
+const defaultImage =
+  "https://res.cloudinary.com/ddvaelej7/image/upload/v1639659955/HCmatrix/User-Icon_wdkmsf.png";
+
 export const EditMyProfile = ({ open, handleClose, employee }: IProps) => {
   const queryClient = useQueryClient();
   const [form] = Form.useForm();
@@ -33,12 +37,13 @@ export const EditMyProfile = ({ open, handleClose, employee }: IProps) => {
   const token = authDetails.userToken;
   const globalCtx = useContext(GlobalContext);
   const { state: globalState } = globalCtx;
+  const avatarUrl = globalState.upLoadFileString;
   const companyId = globalState.currentCompany?.id as unknown as string;
 
   useEffect(() => {
     if (employee) {
       form.setFieldsValue({
-        image: "",
+        avatarUrl: avatarUrl,
         firstName: employee.firstName,
         lastName: employee.lastName,
         empUid: employee.empUid,
@@ -83,7 +88,9 @@ export const EditMyProfile = ({ open, handleClose, employee }: IProps) => {
         roleId: data.roleId,
         designationId: data.designationId,
         employeeId: employee?.id as number,
+        avatarUrl,
       };
+      if (props.empUid === employee?.empUid) delete props.empUid;
 
       // return;
       openNotification({
@@ -136,16 +143,15 @@ export const EditMyProfile = ({ open, handleClose, employee }: IProps) => {
           <div className="flex justify-center">
             <div>
               <img
-                src="https://res.cloudinary.com/ddvaelej7/image/upload/v1639659955/HCmatrix/User-Icon_wdkmsf.png"
+                src={!!avatarUrl ? avatarUrl : defaultImage}
                 alt="user"
                 className="h-28"
               />
-              <Upload>
-                <button className="flex items-center gap-2 border border-slate-400 rounded-md px-3 py-1 mt-4">
-                  <i className="ri-camera-line text-lg"></i>
-                  <span>Edit Image</span>
-                </button>
-              </Upload>
+              <div className="mt-4">
+                <FileUpload
+                  allowedFileTypes={["image/png", "image/jpeg", "image/jpg"]}
+                />
+              </div>
               <Form.Item name="image" noStyle>
                 <Input type="hidden" />
               </Form.Item>

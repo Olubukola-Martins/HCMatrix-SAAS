@@ -8,7 +8,6 @@ interface DataType {
   name: string;
   type: string;
   email: string;
-  action: any;
 }
 
 const columns: ColumnsType<DataType> = [
@@ -18,31 +17,35 @@ const columns: ColumnsType<DataType> = [
     // width: 150,
   },
   {
-    title: "Type",
-    dataIndex: "type",
-    // width: 150,
-  },
-  {
     title: "Email",
     dataIndex: "email",
     // width: 150,
   },
-
   {
-    title: "Action",
-    key: "action",
-    render: (_, record) => (
-      <Space size="middle">
-        <i className="ri-delete-bin-line text-lg cursor-pointer"></i>
-        <a>
-          <i className="ri-pencil-line text-xl cursor-pointer"></i>
-        </a>
-      </Space>
-    ),
+    title: "From",
+    dataIndex: "from",
+    // width: 150,
+  },
+  {
+    title: "To",
+    dataIndex: "to",
+    // width: 150,
+  },
+  {
+    title: "Current Manager",
+    dataIndex: "type",
+    // width: 150,
   },
 ];
 
-const data: DataType[] = [];
+const data: DataType[] = [
+  {
+    name: "John",
+    email: "jo@ho.vo",
+    type: "Yes",
+    key: "2",
+  },
+];
 // for (let i = 0; i < 10; i++) {
 //   data.push({
 //     key: i,
@@ -57,9 +60,9 @@ export const Managers = () => {
   return (
     <div className="bg-card p-3 rounded">
       <div className="border-b border-gray-400 w-full mb-7">
-        <h2 className="text-accent text-base pb-1">Managers</h2>
+        <h2 className="text-accent text-base pb-1">Manager History</h2>
       </div>
-      <div className="my-3">
+      <div className="my-3 flex justify-end">
         <Search
           placeholder="input search text"
           style={{ width: 200 }}
@@ -70,7 +73,7 @@ export const Managers = () => {
       <Table
         columns={columns}
         dataSource={data}
-        pagination={{ pageSize: 50 }}
+        size="small"
         scroll={{ y: 240 }}
       />
     </div>
