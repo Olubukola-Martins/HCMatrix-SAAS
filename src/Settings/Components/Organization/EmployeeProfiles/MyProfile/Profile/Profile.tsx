@@ -119,7 +119,7 @@ export const Profile = ({ employee }: IProps) => {
       countries?.find((item) => item.id === data.phone.code)?.code ?? "";
     if (companyId && employee && !employee.personalInformation) {
       //if the personal info doesnt exist, then create
-      const props: ICreateEmpPersonalInfoProps = {
+      let props: ICreateEmpPersonalInfoProps = {
         token,
         companyId,
         dob: data.dob.format("YYYY-MM-DD"),
@@ -135,11 +135,17 @@ export const Profile = ({ employee }: IProps) => {
           lgaId: data.lgaId,
           timezone: data.timezone,
         },
-        passportExpirationDate:
-          data.passportExpirationDate.format("YYYY-MM-DD"),
+
         validDocumentUrl: data.validDocumentUrl,
         employeeId: employee.id,
       };
+      if (data?.passportExpirationDate) {
+        props = {
+          ...props,
+          passportExpirationDate:
+            data?.passportExpirationDate?.format("YYYY-MM-DD"),
+        };
+      }
 
       openNotification({
         state: "info",
@@ -170,10 +176,10 @@ export const Profile = ({ employee }: IProps) => {
     }
     if (companyId && employee && employee.personalInformation) {
       //if the personal info exist, then update
-      const props: ICreateEmpPersonalInfoProps = {
+      let props: ICreateEmpPersonalInfoProps = {
         token,
         companyId,
-        dob: data.dob.format("YYYY-MM-DD"),
+        dob: data?.dob?.format("YYYY-MM-DD"),
         gender: data.gender,
         phoneNumber: `+${countryPhoneCode}-${data.phone.number}`,
         eligibility: data.eligibility,
@@ -186,11 +192,17 @@ export const Profile = ({ employee }: IProps) => {
           lgaId: data.lgaId,
           timezone: data.timezone,
         },
-        passportExpirationDate:
-          data.passportExpirationDate.format("YYYY-MM-DD"),
+
         validDocumentUrl: data.validDocumentUrl,
         employeeId: employee.id,
       };
+      if (data?.passportExpirationDate) {
+        props = {
+          ...props,
+          passportExpirationDate:
+            data?.passportExpirationDate?.format("YYYY-MM-DD"),
+        };
+      }
 
       // return;
       openNotification({

@@ -4,9 +4,10 @@ import { refreshUserToken } from "../ApiRequesHelpers/Auth";
 // export const TOKEN_EXPIRES_IN = 120;
 // export const REFRESH_TOKEN_EXPIRES_IN = 5;
 
+// NEXT REMOVE THE SIGN OUTS ON THE ERR CATCH Of func
 export const TOKEN_EXPIRES_IN = 1200;
 export const REFRESH_TOKEN_EXPIRES_IN = 10;
-const REFRESH_TOKEN_INTERVAL = 4;
+const REFRESH_TOKEN_INTERVAL = 4; // AFTER 4 minutes of inactivity you are automatically logged out => MAIN SOLN
 const NEW_AUTH_TOKEN_EXPIRES_IN = 8; // exprmnt -  but should be what determines how long user stays if there is/isn't active
 
 const refreshApi = createRefresh({

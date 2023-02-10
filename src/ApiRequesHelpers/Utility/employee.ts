@@ -120,6 +120,7 @@ export const createEmployeeJobInfo = async (props: ICreateEmpJobInfoProps) => {
   delete data["token"]; //not needed
   delete data["companyId"]; //not needed
   delete data["employeeId"]; //not needed
+  if (!props.lineManagerId) delete data["lineManagerId"];
 
   const response = await axios.post(url, data, config);
   return response;
@@ -144,6 +145,7 @@ export const updateEmployeeJobInfo = async (props: ICreateEmpJobInfoProps) => {
   delete data["token"]; //not needed
   delete data["companyId"]; //not needed
   delete data["employeeId"]; //not needed
+  if (!props.lineManagerId) delete data["lineManagerId"];
 
   const response = await axios.put(url, data, config);
   return response;

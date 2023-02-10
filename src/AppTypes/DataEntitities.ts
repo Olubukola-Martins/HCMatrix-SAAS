@@ -79,7 +79,7 @@ export type TPersonalInfo = {
     lgaId: number;
     timezone: string;
   };
-  passportExpirationDate: string;
+  passportExpirationDate?: string;
   validDocumentUrl: string;
 };
 

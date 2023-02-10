@@ -244,11 +244,7 @@ export const JobInformation = ({ employee }: IProps) => {
               ))}
             </Select>
           </Form.Item>
-          <Form.Item
-            name="lineManagerId"
-            label="Line Manager"
-            rules={generalValidationRules}
-          >
+          <Form.Item name="lineManagerId" label="Line Manager (optional)">
             <Select
               showSearch
               allowClear
