@@ -65,7 +65,7 @@ export const EmployeeProfile = () => {
           <div className="bg-mainBg shadow-sm rounded-md p-4 flex gap-3 justify-between">
             <div className="flex gap-3 items-center md:flex-row flex-col">
               <img
-                src={`https://res.cloudinary.com/ddvaelej7/image/upload/v1639659955/HCmatrix/User-Icon_wdkmsf.png`}
+                src={employee?.avatarUrl}
                 alt={employee?.firstName}
                 className="h-24"
               />

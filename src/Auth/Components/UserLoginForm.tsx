@@ -70,6 +70,7 @@ const UserLoginForm = ({ autoLoginDetails }: ILoginProps) => {
             isVerified: result?.user?.isVerified,
           },
           companies: result?.payload?.map((item: any) => ({
+            avatarUrl: item?.avatarUrl,
             id: item?.id,
             firstName: item?.firstName,
             lastName: item?.lastName,

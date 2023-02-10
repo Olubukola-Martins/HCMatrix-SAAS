@@ -15,6 +15,7 @@ export interface IAuthDets {
   userToken: string;
 
   companies: {
+    avatarUrl?: string;
     id: number;
     firstName: string;
     lastName: string;

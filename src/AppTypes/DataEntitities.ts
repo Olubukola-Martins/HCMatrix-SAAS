@@ -97,6 +97,7 @@ export type TJobInfo = {
 
 export type TEmployee = {
   companyId: number;
+  avatarUrl?: string;
 
   createdAt: string;
   deletedAt?: string;

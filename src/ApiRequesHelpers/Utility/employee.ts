@@ -95,6 +95,7 @@ export interface IUpdateEmpProps extends ICurrentCompany {
   empUid?: string;
   roleId?: number;
   designationId?: number;
+  avatarUrl?: string;
 }
 
 export interface ICreateEmpJobInfoProps extends ICurrentCompany, TJobInfo {
