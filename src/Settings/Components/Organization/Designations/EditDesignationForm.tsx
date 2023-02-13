@@ -1,6 +1,6 @@
 import { Form, Input, Select, Skeleton, Spin } from "antd";
 import pagination from "antd/lib/pagination";
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { useAuthUser } from "react-auth-kit";
 import { useMutation, useQuery, useQueryClient } from "react-query";
 import { BeatLoader } from "react-spinners";
@@ -12,13 +12,18 @@ import {
 import {
   createDesignation,
   ICreateDegProps,
+  IUpdateDegProps,
 } from "../../../../ApiRequesHelpers/Utility/designations";
 import {
   createEmployee,
   ICreateEmpProps,
 } from "../../../../ApiRequesHelpers/Utility/employee";
 import { useFetchDepartments } from "../../../../APIRQHooks/Utility/departmentHooks";
-import { useCreateDesignation } from "../../../../APIRQHooks/Utility/designationHooks";
+import {
+  useCreateDesignation,
+  useFetchSingleDesignation,
+  useUpdateDesignation,
+} from "../../../../APIRQHooks/Utility/designationHooks";
 import { IAuthDets } from "../../../../AppTypes/Auth";
 import { TDepartment } from "../../../../AppTypes/DataEntitities";
 import { ISearchParams } from "../../../../AppTypes/Search";
@@ -33,7 +38,13 @@ import {
 } from "../../../../FormHelpers/validation";
 import { openNotification } from "../../../../NotificationHelpers";
 
-const AddDesignationForm = ({ handleClose }: { handleClose: Function }) => {
+const EditDesignationForm = ({
+  handleClose,
+  id,
+}: {
+  handleClose: Function;
+  id: number;
+}) => {
   const queryClient = useQueryClient();
   const auth = useAuthUser();
 
@@ -43,9 +54,12 @@ const AddDesignationForm = ({ handleClose }: { handleClose: Function }) => {
   const globalCtx = useContext(GlobalContext);
   const { state: globalState, dispatch } = globalCtx;
   const companyId = globalState.currentCompany?.id as unknown as string;
-  const [form] = Form.useForm();
 
-  const [depSearch, setDepSearch] = useState<ISearchParams | null>(null);
+  const { data, isSuccess: isDesgSuccess } = useFetchSingleDesignation({
+    token,
+    companyId,
+    designationId: id,
+  });
 
   const {
     data: departmentData,
@@ -61,15 +75,26 @@ const AddDesignationForm = ({ handleClose }: { handleClose: Function }) => {
     token,
   });
 
-  const { mutate, isLoading } = useCreateDesignation();
+  useEffect(() => {
+    if (isDesgSuccess) {
+      form.setFieldsValue({
+        name: data.name,
+        departmentId: data.department.id,
+      });
+    }
+  }, [isDesgSuccess, data, isSuccess]);
+  const [form] = Form.useForm();
+
+  const { mutate, isLoading } = useUpdateDesignation();
 
   const handleSubmit = (data: any) => {
     if (companyId) {
-      const props: ICreateDegProps = {
+      const props: IUpdateDegProps = {
         companyId,
         name: data.name,
         departmentId: data.departmentId,
         token,
+        id,
       };
       // return;
       openNotification({
@@ -103,6 +128,9 @@ const AddDesignationForm = ({ handleClose }: { handleClose: Function }) => {
 
           queryClient.invalidateQueries({
             queryKey: ["designations"],
+          });
+          queryClient.invalidateQueries({
+            queryKey: ["single-designation", id],
           });
         },
       });
@@ -155,4 +183,4 @@ const AddDesignationForm = ({ handleClose }: { handleClose: Function }) => {
   );
 };
 
-export default AddDesignationForm;
+export default EditDesignationForm;

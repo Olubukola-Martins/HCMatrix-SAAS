@@ -14,7 +14,7 @@ export const EditDepartmentModal = ({
 }: IProps) => {
   return (
     <Modal
-      title="Add Department"
+      title="Edit Department"
       open={open}
       onCancel={() => handleClose()}
       footer={null}
