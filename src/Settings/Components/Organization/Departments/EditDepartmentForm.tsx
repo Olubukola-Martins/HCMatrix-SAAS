@@ -1,10 +1,17 @@
 import { Form, Input, Select, Spin } from "antd";
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import { useAuthUser } from "react-auth-kit";
 import { useQueryClient } from "react-query";
 import { BeatLoader } from "react-spinners";
-import { ICreateDepProps } from "../../../../ApiRequesHelpers/Utility/departments";
-import { useCreateDepartment } from "../../../../APIRQHooks/Utility/departmentHooks";
+import {
+  ICreateDepProps,
+  IUpdateDeptProps,
+} from "../../../../ApiRequesHelpers/Utility/departments";
+import {
+  useCreateDepartment,
+  useFetchSingleDepartment,
+  useUpdateDepartment,
+} from "../../../../APIRQHooks/Utility/departmentHooks";
 import { IAuthDets } from "../../../../AppTypes/Auth";
 import {
   EGlobalOps,
@@ -16,7 +23,13 @@ import {
 } from "../../../../FormHelpers/validation";
 import { openNotification } from "../../../../NotificationHelpers";
 
-const AddDepartmentForm = ({ handleClose }: { handleClose: Function }) => {
+const EditDepartmentForm = ({
+  handleClose,
+  departmentId,
+}: {
+  handleClose: Function;
+  departmentId: number;
+}) => {
   const queryClient = useQueryClient();
   const auth = useAuthUser();
 
@@ -25,19 +38,36 @@ const AddDepartmentForm = ({ handleClose }: { handleClose: Function }) => {
   const token = authDetails.userToken;
   const globalCtx = useContext(GlobalContext);
   const { state: globalState, dispatch } = globalCtx;
-  const companyId = globalState.currentCompany?.id;
+  const companyId = globalState.currentCompany?.id as unknown as string;
   const [form] = Form.useForm();
-  const { mutate, isLoading } = useCreateDepartment();
+  const { data, isSuccess } = useFetchSingleDepartment({
+    token,
+    companyId,
+    departmentId,
+  });
+
+  useEffect(() => {
+    if (isSuccess) {
+      form.setFieldsValue({
+        name: data.name,
+        email: data.email,
+        departmentHeadId: data?.departmentHeadId,
+        parentDepartmentId: data?.parentDepartmentId,
+      });
+    }
+  }, [isSuccess, data]);
+  const { mutate, isLoading } = useUpdateDepartment();
 
   const handleSubmit = (data: any) => {
     if (companyId) {
-      const props: ICreateDepProps = {
+      const props: IUpdateDeptProps = {
         companyId,
         name: data.name,
         email: data.email,
         departmentHeadId: data.departmentHeadId,
         parentDepartmentId: data.parentDepartmentId,
         token,
+        id: departmentId,
       };
       // return;
       openNotification({
@@ -71,6 +101,10 @@ const AddDepartmentForm = ({ handleClose }: { handleClose: Function }) => {
 
           queryClient.invalidateQueries({
             queryKey: ["departments"],
+            // exact: true,
+          });
+          queryClient.invalidateQueries({
+            queryKey: ["single-department", departmentId],
             // exact: true,
           });
         },
@@ -109,4 +143,4 @@ const AddDepartmentForm = ({ handleClose }: { handleClose: Function }) => {
   );
 };
 
-export default AddDepartmentForm;
+export default EditDepartmentForm;

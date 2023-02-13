@@ -15,6 +15,7 @@ interface IProps {
   loading: boolean;
   pagination?: TablePaginationConfig;
   onChange: PaginationProps["onChange"];
+  editDepartment: (val: number) => void;
 }
 
 export const DepartmentsGridView = ({
@@ -22,12 +23,17 @@ export const DepartmentsGridView = ({
   loading,
   pagination,
   onChange,
+  editDepartment,
 }: IProps) => {
   return (
     <div>
-      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6">
+      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4  gap-6">
         {departments.map((item) => (
-          <DepartmentBox key={item.id} department={item} />
+          <DepartmentBox
+            key={item.id}
+            department={item}
+            editDepartment={editDepartment}
+          />
         ))}
       </div>
       <div className="mt-4 flex justify-end">
@@ -37,7 +43,13 @@ export const DepartmentsGridView = ({
   );
 };
 
-const DepartmentBox = ({ department }: { department: TDepartment }) => {
+const DepartmentBox = ({
+  department,
+  editDepartment,
+}: {
+  department: TDepartment;
+  editDepartment: (val: number) => void;
+}) => {
   return (
     <>
       {/* view */}
@@ -49,8 +61,9 @@ const DepartmentBox = ({ department }: { department: TDepartment }) => {
           <Dropdown
             overlay={
               <Menu>
-                <Menu.Item>View</Menu.Item>
-                <Menu.Item>Edit</Menu.Item>
+                <Menu.Item onClick={() => editDepartment(department.id)}>
+                  Edit
+                </Menu.Item>
                 <Menu.Item>Delete</Menu.Item>
               </Menu>
             }

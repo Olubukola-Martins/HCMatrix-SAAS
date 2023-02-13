@@ -5,7 +5,10 @@ import { useMutation, useQuery, useQueryClient } from "react-query";
 import {
   createDepartment,
   getDepartments,
+  getSingleDepartment,
   ICreateDepProps,
+  IGetSingleDeptProps,
+  updateDepartment,
 } from "../../ApiRequesHelpers/Utility/departments";
 import { TDepartment } from "../../AppTypes/DataEntitities";
 import { IPaginationProps } from "../../AppTypes/Pagination";
@@ -75,7 +78,55 @@ export const useFetchDepartments = ({
 
   return queryData;
 };
+export const useFetchSingleDepartment = ({
+  departmentId,
+  companyId,
+
+  token,
+}: IGetSingleDeptProps) => {
+  const signOut = useSignOut();
+
+  const queryData = useQuery(
+    ["single-department", departmentId],
+    () =>
+      getSingleDepartment({
+        companyId,
+        departmentId,
+
+        token,
+      }),
+    {
+      // refetchInterval: false,
+      // refetchIntervalInBackground: false,
+      // refetchOnWindowFocus: false,
+      onError: (err: any) => {
+        signOut();
+        localStorage.clear();
+      },
+
+      select: (res: any) => {
+        const item = res.data.data;
+
+        const data: TDepartment = {
+          id: item.id,
+          name: item.name,
+          email: item.email,
+          employeeCount: item.employeeCount ?? 0,
+          departmentHeadId: item?.departmentHeadId,
+          parentDepartmentId: item?.parentDepartmentId,
+        };
+
+        return data;
+      },
+    }
+  );
+
+  return queryData;
+};
 
 export const useCreateDepartment = () => {
   return useMutation(createDepartment);
+};
+export const useUpdateDepartment = () => {
+  return useMutation(updateDepartment);
 };
