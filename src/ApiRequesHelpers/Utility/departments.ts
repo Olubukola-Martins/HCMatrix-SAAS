@@ -32,10 +32,38 @@ export const createDepartment = async (props: ICreateDepProps) => {
   const response = await axios.post(url, data, config);
   return response;
 };
+export interface IUpdateDeptProps extends ICreateDepProps {
+  id: number;
+}
+export const updateDepartment = async (props: IUpdateDeptProps) => {
+  const url = `${process.env.REACT_APP_UTILITY_BASE_URL}/company/department/${props.id}`;
+  const config = {
+    headers: {
+      Accept: "application/json",
+      Authorization: `Bearer ${props.token}`,
+      "x-company-id": props.companyId,
+    },
+  };
+
+  // necessary to make immediate changes when in  a central place when schema changes
+  const data: any = props;
+
+  delete data["companyId"];
+  delete data["token"];
+  delete data["id"];
+  if (!props.departmentHeadId) delete data["departmentHeadId"];
+  if (!props.parentDepartmentId) delete data["parentDepartmentId"];
+
+  const response = await axios.put(url, data, config);
+  return response;
+};
 
 interface IGetDepsProps extends ICurrentCompany {
   pagination?: IPaginationProps;
   searchParams?: ISearchParams;
+}
+export interface IGetSingleDeptProps extends ICurrentCompany {
+  departmentId: number;
 }
 export const getDepartments = async (props: IGetDepsProps) => {
   const { pagination } = props;
@@ -44,6 +72,22 @@ export const getDepartments = async (props: IGetDepsProps) => {
   const name = props.searchParams?.name ?? "";
 
   const url = `${process.env.REACT_APP_UTILITY_BASE_URL}/company/department?limit=${limit}&offset=${offset}`;
+
+  const config = {
+    headers: {
+      Accept: "application/json",
+      Authorization: `Bearer ${props.token}`,
+      "x-company-id": props.companyId,
+    },
+  };
+
+  const response = await axios.get(url, config);
+  return response;
+};
+export const getSingleDepartment = async (props: IGetSingleDeptProps) => {
+  const id = props.departmentId;
+
+  const url = `${process.env.REACT_APP_UTILITY_BASE_URL}/company/department/${id}`;
 
   const config = {
     headers: {

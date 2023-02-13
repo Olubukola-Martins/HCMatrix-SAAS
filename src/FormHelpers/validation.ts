@@ -30,16 +30,7 @@ export const passwordValidationRules: Rule[] = [
     validator: async (rule, value) => {
       let paswd =
         /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!"#$%&'()*+,-./:;<=>?@[\]^_`{|}~])[A-Za-z\d!"#$%&'()*+,-./:;<=>?@[\]^_`{|}~]{8,}$/;
-      // let paswd = /^(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]/;
-      // let paswd = /^(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{7,15}$/;
 
-      // value && value.match(paswd)
-      //   ? Promise.resolve()
-      //   : Promise.reject(
-      //       "To check a password between 8 to 15 characters which contain at least one lowercase letter, one uppercase letter, one numeric digit, and one special character."
-      //     );
-
-      // if (value === "cats are here to stay here") throw new Error("Something wrong!");
       if (!paswd.test(value))
         throw new Error(
           "Password should contain at least one digit and special character and a letter in uppercase, and least 8 characters"

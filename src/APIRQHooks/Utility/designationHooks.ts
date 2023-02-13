@@ -4,6 +4,9 @@ import { useMutation, useQuery } from "react-query";
 import {
   createDesignation,
   getDesignations,
+  getSingleDesignation,
+  IGetSingleDesgProps,
+  updateDesignation,
 } from "../../ApiRequesHelpers/Utility/designations";
 import { TDesignation } from "../../AppTypes/DataEntitities";
 import { IPaginationProps } from "../../AppTypes/Pagination";
@@ -19,6 +22,52 @@ export interface IFRQDesignationsReturnProps {
   data: TDesignation[];
   total: number;
 }
+export const useFetchSingleDesignation = ({
+  designationId,
+  companyId,
+
+  token,
+}: IGetSingleDesgProps) => {
+  const signOut = useSignOut();
+
+  const queryData = useQuery(
+    ["single-designation", designationId],
+    () =>
+      getSingleDesignation({
+        companyId,
+        designationId,
+        token,
+      }),
+    {
+      // refetchInterval: false,
+      // refetchIntervalInBackground: false,
+      // refetchOnWindowFocus: false,
+      onError: (err: any) => {
+        // show notification
+        signOut();
+        localStorage.clear();
+      },
+
+      select: (res: any) => {
+        const item = res.data.data;
+
+        const data: TDesignation = {
+          id: item.id,
+          name: item.name,
+          department: {
+            id: item.department.id ?? "",
+            name: item.department.name ?? "",
+          },
+          employeeCount: item.employeeCount ?? 0,
+        };
+
+        return data;
+      },
+    }
+  );
+
+  return queryData;
+};
 export const useFetchDesignations = ({
   pagination,
   companyId,
@@ -79,4 +128,7 @@ export const useFetchDesignations = ({
 
 export const useCreateDesignation = () => {
   return useMutation(createDesignation);
+};
+export const useUpdateDesignation = () => {
+  return useMutation(updateDesignation);
 };

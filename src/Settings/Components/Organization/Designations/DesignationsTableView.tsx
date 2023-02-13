@@ -9,6 +9,7 @@ interface IProps {
   loading: boolean;
   pagination?: TablePaginationConfig;
   onChange?: TableProps<TDesignation>["onChange"];
+  editDesignation: (val: number) => void;
 }
 
 export const DesignationsTableView = ({
@@ -16,6 +17,7 @@ export const DesignationsTableView = ({
   loading,
   pagination,
   onChange,
+  editDesignation,
 }: IProps) => {
   const columns: ColumnsType<TDesignation> = [
     {
@@ -38,11 +40,16 @@ export const DesignationsTableView = ({
     {
       title: "Action",
       dataIndex: "action",
-      render: () => <div className="flex items-center gap-3 text-lg">
-        <i className="ri-pencil-line cursor-pointer hover:text-caramel"></i>
-        <i className="ri-delete-bin-line cursor-pointer hover:text-caramel"></i>
-      </div>,
-    }
+      render: (_, item) => (
+        <div className="flex items-center gap-3 text-lg">
+          <i
+            className="ri-pencil-line cursor-pointer hover:text-caramel"
+            onClick={() => editDesignation(item.id)}
+          ></i>
+          <i className="ri-delete-bin-line cursor-pointer hover:text-caramel"></i>
+        </div>
+      ),
+    },
   ];
   return (
     <motion.div
