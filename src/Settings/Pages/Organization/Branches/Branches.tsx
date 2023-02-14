@@ -1,16 +1,21 @@
+import { Dropdown, Menu } from "antd";
 import { appRoutes } from "AppRoutes";
 import { useState } from "react";
+import { Link } from "react-router-dom";
 import { AddBranchModal } from "Settings/Components/Organization/Branches/AddBranchModal";
 import BranchesViewContainer from "Settings/Components/Organization/Branches/BranchesViewContainer";
+import { ImportBranchModal } from "Settings/Components/Organization/Branches/ImportBranchModal";
 import { PageIntro } from "../../../../Layout/Components/PageIntro";
 import DashboardLayout from "../../../../Layout/DashboardLayout";
 
 const Branches = () => {
-  const [showM, setShowM] = useState(false);
+  const [showA, setShowA] = useState(false);
+  const [showI, setShowI] = useState(false);
 
   return (
     <DashboardLayout>
-      <AddBranchModal open={showM} handleClose={() => setShowM(false)} />
+      <AddBranchModal open={showA} handleClose={() => setShowA(false)} />
+      <ImportBranchModal open={showI} handleClose={() => setShowI(false)} />
 
       <div className="Container">
         {
@@ -20,13 +25,24 @@ const Branches = () => {
               <p>Manage all the branches in your organization.</p>
 
               <div className="flex gap-4 items-center">
-                <button
-                  id="invite-button"
-                  className="py-1 px-2 bg-caramel rounded text-sm text-white font-medium"
-                  onClick={() => setShowM(true)}
+                <Dropdown
+                  overlay={
+                    <Menu>
+                      <Menu.Item onClick={() => setShowA(true)}>
+                        Add Branch
+                      </Menu.Item>
+                      <Menu.Item onClick={() => setShowI(true)}>
+                        Import Branches
+                      </Menu.Item>
+                    </Menu>
+                  }
+                  trigger={["click"]}
                 >
-                  Add Branch
-                </button>
+                  <button className="py-1 px-2 bg-caramel rounded text-sm text-white font-medium flex items-center gap-2">
+                    <span>Add Branch(es)</span>{" "}
+                    <i className="fa-solid fa-chevron-down"></i>
+                  </button>
+                </Dropdown>
               </div>
             </div>
             <BranchesViewContainer />
