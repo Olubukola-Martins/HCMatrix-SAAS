@@ -8,6 +8,13 @@ export type TCountry = {
   sortName: string;
   code: string;
 };
+export type TAddress = {
+  streetAddress: string;
+  countryId: number;
+  stateId: number;
+  lgaId: number;
+  timezone: string;
+};
 
 export type TState = {
   id: number;
@@ -45,6 +52,13 @@ export type TDesignation = {
   department: { id: number; name: string };
   employeeCount: number;
 };
+export type TBranch = {
+  id: number;
+  name: string;
+  description: string;
+  address: TAddress;
+  employeeCount: number;
+};
 export type TPermission = {
   id: number;
   name: string;
@@ -72,13 +86,7 @@ export type TPersonalInfo = {
   eligibility: string;
   maritalStatus: string;
   nationality: string;
-  address: {
-    streetAddress: string;
-    countryId: number;
-    stateId: number;
-    lgaId: number;
-    timezone: string;
-  };
+  address: TAddress;
   passportExpirationDate?: string;
   validDocumentUrl: string;
 };
