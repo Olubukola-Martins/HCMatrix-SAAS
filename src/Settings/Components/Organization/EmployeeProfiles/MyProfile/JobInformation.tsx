@@ -228,7 +228,19 @@ export const JobInformation = ({ employee }: IProps) => {
             label="Hire Date"
             rules={generalValidationRules}
           >
-            <DatePicker format="YYYY/MM/DD" className="w-full" />
+            <DatePicker
+              className="w-full"
+              format={"DD/MM/YYYY"}
+              disabledDate={(d) =>
+                !d ||
+                d.isAfter(
+                  //hire date should be before or on current date, and not a future date
+                  moment(new Date().toLocaleDateString())
+                    .add(1, "day")
+                    .format("YYYY-MM-DD")
+                )
+              }
+            />
           </Form.Item>
           <Form.Item name="branch" label="Branch">
             <Select
