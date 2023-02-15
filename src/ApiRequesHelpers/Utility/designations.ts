@@ -62,7 +62,10 @@ export const getDesignations = async (props: IGetDegsProps) => {
   const limit = pagination?.limit ?? 10;
   const offset = pagination?.offset ?? 0;
 
-  const url = `${process.env.REACT_APP_UTILITY_BASE_URL}/company/designation?limit=${limit}&offset=${offset}`;
+  let url = `${process.env.REACT_APP_UTILITY_BASE_URL}/company/designation?limit=${limit}&offset=${offset}`;
+  if (props.searchParams?.name) {
+    url += `&search=${props.searchParams.name}`;
+  }
 
   const config = {
     headers: {

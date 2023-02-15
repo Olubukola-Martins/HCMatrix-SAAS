@@ -20,7 +20,7 @@ export const PersonalInfo = ({
   initialValues,
   setCurrent,
   isLoading,
-  form
+  form,
 }: stepperInputProps) => {
   const globalCtx = useContext(GlobalContext);
   const { state: globalState } = globalCtx;
@@ -235,7 +235,7 @@ export const PersonalInfo = ({
             Prev
           </button>
           <button type="submit" className="button">
-           {isLoading ? <BeatLoader color="#fff" /> : "Continue"} 
+            {isLoading ? <BeatLoader color="#fff" /> : "Continue"}
           </button>
         </div>
       </Form>

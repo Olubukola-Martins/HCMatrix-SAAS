@@ -71,7 +71,7 @@ export const getDepartments = async (props: IGetDepsProps) => {
   const offset = pagination?.offset ?? 0;
 
   let url = `${process.env.REACT_APP_UTILITY_BASE_URL}/company/department?limit=${limit}&offset=${offset}`;
-  if (props.searchParams) {
+  if (props.searchParams?.name) {
     url += `&search=${props.searchParams.name}`;
   }
 

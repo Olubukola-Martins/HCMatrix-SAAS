@@ -178,6 +178,7 @@ export const createEmployeePersonalInfo = async (
   delete data["token"]; //not needed
   delete data["companyId"]; //not needed
   delete data["employeeId"]; //not needed
+  if (!props.address.lgaId) delete data["address"]["lgaId"];
 
   const response = await axios.post(url, data, config);
   return response;
@@ -204,6 +205,7 @@ export const updateEmployeePersonalInfo = async (
   delete data["token"]; //not needed
   delete data["companyId"]; //not needed
   delete data["employeeId"]; //not needed
+  if (!props.address.lgaId) delete data["address"]["lgaId"];
 
   const response = await axios.put(url, data, config);
   return response;
@@ -301,11 +303,13 @@ export const getEmployees = async (props: IGetEmpsProps) => {
   const { pagination } = props;
   const limit = pagination?.limit ?? 10;
   const offset = pagination?.offset ?? 0;
-  const name = props.searchParams?.name ?? "";
 
   let url = `${process.env.REACT_APP_UTILITY_BASE_URL}/employee?limit=${limit}&offset=${offset}`;
   if (props.status) {
     url += "&status=" + props.status.toString();
+  }
+  if (props.searchParams?.name) {
+    url += `&search=${props.searchParams.name}`;
   }
 
   const config = {

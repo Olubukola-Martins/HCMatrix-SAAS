@@ -58,8 +58,10 @@ export const getRoles = async (props: IGetRolesProps) => {
   const limit = pagination?.limit ?? 10;
   const offset = pagination?.offset ?? 0;
 
-  const url = `${process.env.REACT_APP_AUTHENTICATION_BASE_URL}/permission/role?limit=${limit}&offset=${offset}`;
-
+  let url = `${process.env.REACT_APP_AUTHENTICATION_BASE_URL}/permission/role?limit=${limit}&offset=${offset}`;
+  if (props.searchParams) {
+    url += `&search=${props.searchParams.name}`;
+  }
   const config = {
     headers: {
       Accept: "application/json",

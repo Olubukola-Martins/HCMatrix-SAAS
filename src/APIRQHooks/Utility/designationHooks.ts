@@ -1,4 +1,5 @@
 import pagination from "antd/lib/pagination";
+import { ISearchParams } from "AppTypes/Search";
 import { useSignOut } from "react-auth-kit";
 import { useMutation, useQuery } from "react-query";
 import {
@@ -14,6 +15,8 @@ import { openNotification } from "../../NotificationHelpers";
 
 interface IFRQDesignationsProps {
   pagination?: IPaginationProps;
+  searchParams?: ISearchParams;
+
   companyId: string;
   onSuccess?: Function;
   token: string;
@@ -70,6 +73,8 @@ export const useFetchSingleDesignation = ({
 };
 export const useFetchDesignations = ({
   pagination,
+  searchParams,
+
   companyId,
   onSuccess,
   token,
@@ -77,11 +82,18 @@ export const useFetchDesignations = ({
   const signOut = useSignOut();
 
   const queryData = useQuery(
-    ["designations", pagination?.current, pagination?.limit],
+    [
+      "designations",
+      pagination?.current,
+      pagination?.limit,
+      searchParams?.name,
+    ],
     () =>
       getDesignations({
         companyId,
         pagination: { limit: pagination?.limit, offset: pagination?.offset },
+        searchParams: { name: searchParams?.name },
+
         token,
       }),
     {

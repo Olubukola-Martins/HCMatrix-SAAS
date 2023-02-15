@@ -1,19 +1,15 @@
-import { Spin } from "antd";
-import pagination from "antd/lib/pagination";
 import { ISearchParams } from "AppTypes/Search";
 import { useSignOut } from "react-auth-kit";
-import { useMutation, useQuery, useQueryClient } from "react-query";
+import { useMutation, useQuery } from "react-query";
 import {
   createDepartment,
   getDepartments,
   getSingleDepartment,
-  ICreateDepProps,
   IGetSingleDeptProps,
   updateDepartment,
 } from "../../ApiRequesHelpers/Utility/departments";
 import { TDepartment } from "../../AppTypes/DataEntitities";
 import { IPaginationProps } from "../../AppTypes/Pagination";
-import { openNotification } from "../../NotificationHelpers";
 
 interface IFRQDepartmentsProps {
   pagination?: IPaginationProps;

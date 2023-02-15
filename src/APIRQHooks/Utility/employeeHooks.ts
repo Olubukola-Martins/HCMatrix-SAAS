@@ -1,3 +1,4 @@
+import { ISearchParams } from "AppTypes/Search";
 import moment from "moment";
 import { useSignOut } from "react-auth-kit";
 
@@ -32,6 +33,8 @@ interface IFRQResendInviteProps {
 }
 interface IFRQDepartmentsProps {
   pagination?: IPaginationProps;
+  searchParams?: ISearchParams;
+
   companyId: string;
   status?: TEmployeeStatus[];
   onSuccess?: Function;
@@ -100,6 +103,7 @@ export const useFetchInvitedEmployees = ({
 };
 export const useFetchEmployees = ({
   pagination,
+  searchParams,
   companyId,
   onSuccess,
   token,
@@ -108,11 +112,19 @@ export const useFetchEmployees = ({
   const signOut = useSignOut();
 
   const queryData = useQuery(
-    ["employees", pagination?.current, pagination?.limit, status],
+    [
+      "employees",
+      pagination?.current,
+      pagination?.limit,
+      status,
+      searchParams?.name,
+    ],
     () =>
       getEmployees({
         companyId,
         pagination: { limit: pagination?.limit, offset: pagination?.offset },
+        searchParams: { name: searchParams?.name },
+
         token,
         status,
       }),

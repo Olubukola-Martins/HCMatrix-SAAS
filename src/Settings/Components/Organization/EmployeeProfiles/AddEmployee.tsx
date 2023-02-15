@@ -12,7 +12,7 @@ import {
   Spin,
 } from "antd";
 import { employmentTypes, workModels } from "Constants";
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { useAuthUser } from "react-auth-kit";
 import { useMutation } from "react-query";
 import { ICreateEmpProps } from "../../../../ApiRequesHelpers/Utility/employee";
@@ -46,6 +46,9 @@ export const AddEmployee = () => {
   const globalCtx = useContext(GlobalContext);
   const { state: globalState } = globalCtx;
   const companyId = globalState.currentCompany?.id as unknown as string;
+  const [degSearch, setDegSearch] = useState<string>("");
+  const [empSearch, setEmpSearch] = useState<string>("");
+  const [roleSearch, setRoleSearch] = useState<string>("");
 
   const [form] = Form.useForm();
   const { mutate } = useCreateEmployee();
@@ -59,6 +62,9 @@ export const AddEmployee = () => {
       limit: 100, //temp suppose to allow search
       offset: 0,
     },
+    searchParams: {
+      name: degSearch,
+    },
     token,
   });
   const {
@@ -71,6 +77,10 @@ export const AddEmployee = () => {
       limit: 100, //temp suppose to allow search
       offset: 0,
     },
+    searchParams: {
+      name: empSearch,
+    },
+
     token,
   });
   const {
@@ -83,6 +93,10 @@ export const AddEmployee = () => {
       limit: 100, //temp suppose to allow search
       offset: 0,
     },
+    searchParams: {
+      name: roleSearch,
+    },
+
     token,
   });
 
@@ -237,128 +251,144 @@ export const AddEmployee = () => {
                   key="1"
                   className="collapseHeader"
                 >
-                  <Skeleton
-                    active
-                    loading={
-                      !isDSuccess ||
-                      isDFetching ||
-                      !isRSuccess ||
-                      isRFetching ||
-                      !isEmpSuccess ||
-                      isEmpFetching
-                    }
-                  >
-                    {isDSuccess && isRSuccess && isEmpSuccess && (
-                      <div className="bg-card px-3 py-4 rounded-md grid grid-cols-1 md:grid-cols-2 gap-x-5">
-                        <Form.Item
-                          name="startDate"
-                          label="Start Date"
-                          rules={generalValidationRules}
-                        >
-                          <DatePicker format="YYYY/MM/DD" className="w-full" />
-                        </Form.Item>
+                  <div className="bg-card px-3 py-4 rounded-md grid grid-cols-1 md:grid-cols-2 gap-x-5">
+                    <Form.Item
+                      name="startDate"
+                      label="Start Date"
+                      rules={generalValidationRules}
+                    >
+                      <DatePicker format="YYYY/MM/DD" className="w-full" />
+                    </Form.Item>
 
-                        <Form.Item
-                          name="roleId"
-                          label="Role"
-                          rules={generalValidationRules}
-                        >
-                          <Select
-                            showSearch
-                            allowClear
-                            optionLabelProp="label"
-                            className="SelectTag w-full"
-                            placeholder="Select Role"
-                            options={roleData.data.map((item) => ({
-                              label: item.name,
-                              value: item.id,
-                            }))}
-                          />
-                        </Form.Item>
-                        <Form.Item
-                          name="monthlyGross"
-                          label="Monthly Gross"
-                          rules={[
-                            ...generalValidationRules,
-                            { type: "number" },
-                          ]}
-                        >
-                          <InputNumber
-                            placeholder="Enter monthly gross"
-                            min={1}
-                            className="w-full"
-                          />
-                        </Form.Item>
-                        <Form.Item
-                          name="employmentType"
-                          label="Employment Type"
-                          rules={generalValidationRules}
-                        >
-                          <Select
-                            className="SelectTag w-full"
-                            placeholder="Select Employment Type"
-                            options={employmentTypes}
-                          />
-                        </Form.Item>
-                        <Form.Item
-                          name="workModel"
-                          label="Work Model"
-                          rules={generalValidationRules}
-                        >
-                          <Select
-                            className="SelectTag w-full"
-                            placeholder="Select Work Model"
-                            options={workModels}
-                          />
-                        </Form.Item>
-                        <Form.Item
-                          name="lineManagerId"
-                          label="Line Manager (optional)"
-                        >
-                          <Select
-                            showSearch
-                            allowClear
-                            optionLabelProp="label"
-                            className="SelectTag w-full"
-                            placeholder="Select Line Manager"
-                            options={empData.data.map((item) => ({
-                              label: `${item.firstName} ${item.lastName}`,
-                              value: item.id,
-                            }))}
-                          />
-                        </Form.Item>
-                        <Form.Item
-                          name="designationId"
-                          label="Designation"
-                          rules={generalValidationRules}
-                        >
-                          <Select
-                            showSearch
-                            allowClear
-                            optionLabelProp="label"
-                            className="SelectTag w-full"
-                            placeholder="Select Designation"
-                            options={degData.data.map((item) => ({
-                              label: item.name,
-                              value: item.id,
-                            }))}
-                          />
-                        </Form.Item>
-                        <Form.Item
-                          name="numberOfDaysPerWeek"
-                          label="Number of Days in the Week"
-                          rules={generalValidationRules}
-                        >
-                          <InputNumber
-                            min={1}
-                            max={7}
-                            className="w-full"
-                            placeholder="Enter..."
-                          />
-                        </Form.Item>
-                      </div>
-                    )}
-                  </Skeleton>
+                    <Form.Item
+                      name="roleId"
+                      label="Role"
+                      rules={generalValidationRules}
+                    >
+                      <Select
+                        onSearch={(val) => setRoleSearch(val)}
+                        showSearch
+                        value={roleSearch}
+                        defaultActiveFirstOption={false}
+                        showArrow={false}
+                        filterOption={false}
+                        // onChange={handleChange}
+                        notFoundContent={null}
+                      >
+                        {isRSuccess ? (
+                          roleData.data.map((item) => (
+                            <Select.Option key={item.id} value={item.id}>
+                              {item.name}
+                            </Select.Option>
+                          ))
+                        ) : (
+                          <div className="flex justify-center items-center w-full">
+                            <Spin size="small" />
+                          </div>
+                        )}
+                      </Select>
+                    </Form.Item>
+                    <Form.Item
+                      name="monthlyGross"
+                      label="Monthly Gross"
+                      rules={[...generalValidationRules, { type: "number" }]}
+                    >
+                      <InputNumber
+                        placeholder="Enter monthly gross"
+                        min={1}
+                        className="w-full"
+                      />
+                    </Form.Item>
+                    <Form.Item
+                      name="employmentType"
+                      label="Employment Type"
+                      rules={generalValidationRules}
+                    >
+                      <Select
+                        className="SelectTag w-full"
+                        placeholder="Select Employment Type"
+                        options={employmentTypes}
+                      />
+                    </Form.Item>
+                    <Form.Item
+                      name="workModel"
+                      label="Work Model"
+                      rules={generalValidationRules}
+                    >
+                      <Select
+                        className="SelectTag w-full"
+                        placeholder="Select Work Model"
+                        options={workModels}
+                      />
+                    </Form.Item>
+                    <Form.Item
+                      name="lineManagerId"
+                      label="Line Manager (optional)"
+                    >
+                      <Select
+                        onSearch={(val) => setEmpSearch(val)}
+                        showSearch
+                        value={empSearch}
+                        defaultActiveFirstOption={false}
+                        showArrow={false}
+                        filterOption={false}
+                        // onChange={handleChange}
+                        notFoundContent={null}
+                      >
+                        {isEmpSuccess ? (
+                          empData.data.map((item) => (
+                            <Select.Option key={item.id} value={item.id}>
+                              {item.firstName} {item.lastName}
+                            </Select.Option>
+                          ))
+                        ) : (
+                          <div className="flex justify-center items-center w-full">
+                            <Spin size="small" />
+                          </div>
+                        )}
+                      </Select>
+                    </Form.Item>
+                    <Form.Item
+                      name="designationId"
+                      label="Designation"
+                      rules={generalValidationRules}
+                    >
+                      <Select
+                        onSearch={(val) => setDegSearch(val)}
+                        showSearch
+                        value={degSearch}
+                        defaultActiveFirstOption={false}
+                        showArrow={false}
+                        filterOption={false}
+                        // onChange={handleChange}
+                        notFoundContent={null}
+                      >
+                        {isDSuccess ? (
+                          degData.data.map((item) => (
+                            <Select.Option key={item.id} value={item.id}>
+                              {item.name}
+                            </Select.Option>
+                          ))
+                        ) : (
+                          <div className="flex justify-center items-center w-full">
+                            <Spin size="small" />
+                          </div>
+                        )}
+                      </Select>
+                    </Form.Item>
+                    <Form.Item
+                      name="numberOfDaysPerWeek"
+                      label="Number of Days in the Week"
+                      rules={generalValidationRules}
+                    >
+                      <InputNumber
+                        min={1}
+                        max={7}
+                        className="w-full"
+                        placeholder="Enter..."
+                      />
+                    </Form.Item>
+                  </div>
                 </Panel>
               </Collapse>
             </div>
