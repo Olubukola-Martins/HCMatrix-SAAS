@@ -292,7 +292,16 @@ export const Profile = ({ employee }: IProps) => {
               label="Date of Birth"
               rules={[{ required: true }]}
             >
-              <DatePicker format="YYYY/MM/DD" className="w-full" />
+              <DatePicker
+                className="w-full"
+                format={"DD/MM/YYYY"}
+                disabledDate={(d) =>
+                  !d ||
+                  d.isSameOrAfter(
+                    moment(new Date().toLocaleDateString()).format("YYYY-MM-DD")
+                  )
+                }
+              />
             </Form.Item>
             <Form.Item name="phone" label="Phone Number">
               <Input.Group compact>
