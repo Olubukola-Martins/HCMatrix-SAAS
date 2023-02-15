@@ -1,26 +1,17 @@
 import { Form, Input, Select, Skeleton, Spin } from "antd";
-import pagination from "antd/lib/pagination";
 import React, { useContext, useState } from "react";
 import { useAuthUser } from "react-auth-kit";
-import { useMutation, useQuery, useQueryClient } from "react-query";
+import { useQueryClient } from "react-query";
 import { BeatLoader } from "react-spinners";
-import {
-  createDepartment,
-  getDepartments,
-  ICreateDepProps,
-} from "../../../../ApiRequesHelpers/Utility/departments";
+
 import {
   createDesignation,
   ICreateDegProps,
 } from "../../../../ApiRequesHelpers/Utility/designations";
-import {
-  createEmployee,
-  ICreateEmpProps,
-} from "../../../../ApiRequesHelpers/Utility/employee";
+
 import { useFetchDepartments } from "../../../../APIRQHooks/Utility/departmentHooks";
 import { useCreateDesignation } from "../../../../APIRQHooks/Utility/designationHooks";
 import { IAuthDets } from "../../../../AppTypes/Auth";
-import { TDepartment } from "../../../../AppTypes/DataEntitities";
 import { ISearchParams } from "../../../../AppTypes/Search";
 import {
   EGlobalOps,
@@ -45,7 +36,7 @@ const AddDesignationForm = ({ handleClose }: { handleClose: Function }) => {
   const companyId = globalState.currentCompany?.id as unknown as string;
   const [form] = Form.useForm();
 
-  const [depSearch, setDepSearch] = useState<ISearchParams | null>(null);
+  const [depSearch, setDepSearch] = useState<string>("");
 
   const {
     data: departmentData,
@@ -58,6 +49,10 @@ const AddDesignationForm = ({ handleClose }: { handleClose: Function }) => {
       limit: 100, //temp suppose to allow search
       offset: 0,
     },
+    searchParams: {
+      name: depSearch,
+    },
+
     token,
   });
 
@@ -110,47 +105,53 @@ const AddDesignationForm = ({ handleClose }: { handleClose: Function }) => {
   };
   return (
     <>
-      <Skeleton loading={!isSuccess || isFetching} active>
-        {isSuccess && (
-          <Form
-            layout="vertical"
-            requiredMark={false}
-            form={form}
-            onFinish={handleSubmit}
+      <Form
+        layout="vertical"
+        requiredMark={false}
+        form={form}
+        onFinish={handleSubmit}
+      >
+        <Form.Item
+          name="name"
+          label="Designation Name"
+          rules={textInputValidationRules}
+        >
+          <Input placeholder="Designation" />
+        </Form.Item>
+
+        <Form.Item
+          name="departmentId"
+          label="Department"
+          rules={generalValidationRules}
+        >
+          <Select
+            onSearch={(val) => setDepSearch(val)}
+            showSearch
+            value={depSearch}
+            defaultActiveFirstOption={false}
+            showArrow={false}
+            filterOption={false}
+            // onChange={handleChange}
+            notFoundContent={null}
           >
-            <Form.Item
-              name="name"
-              label="Designation Name"
-              rules={textInputValidationRules}
-            >
-              <Input placeholder="Designation" />
-            </Form.Item>
+            {isSuccess ? (
+              departmentData.data.map((item) => (
+                <Select.Option key={item.id} value={item.id}>
+                  {item.name}
+                </Select.Option>
+              ))
+            ) : (
+              <div className="flex justify-center items-center w-full">
+                <Spin size="small" />
+              </div>
+            )}
+          </Select>
+        </Form.Item>
 
-            <Form.Item
-              name="departmentId"
-              label="Department"
-              rules={generalValidationRules}
-            >
-              <Select
-                showSearch
-                allowClear
-                optionLabelProp="label"
-                placeholder="Department"
-                options={departmentData.data.map((item) => ({
-                  label: item.name,
-                  value: item.id,
-                }))}
-              />
-            </Form.Item>
-
-            <button className="button" type="submit">
-              {isLoading ? <BeatLoader color="#fff" /> : "Submit"}
-            </button>
-          </Form>
-        )}
-      </Skeleton>
-
-      {isError && "error illustration"}
+        <button className="button" type="submit">
+          {isLoading ? <BeatLoader color="#fff" /> : "Submit"}
+        </button>
+      </Form>
     </>
   );
 };
