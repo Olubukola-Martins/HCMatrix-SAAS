@@ -169,6 +169,7 @@ export type TEmployee = {
   };
   skills?: TSkill[];
   employmentHistory?: TEmployementHistory[];
+  educationDetails?: TEducationDetail[];
 };
 export type TInvitedEmployee = {
   id: number;

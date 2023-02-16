@@ -1,27 +1,29 @@
-import { Drawer, Form, Input, Select } from "antd";
-import { useSaveEmployeeSkill } from "APIRQHooks/Utility/employeeHooks";
+import { DatePicker, Drawer, Form, Input } from "antd";
+import { useSaveEmployeeEducationDetail } from "APIRQHooks/Utility/employeeHooks";
 import { IAuthDets } from "AppTypes/Auth";
-import { TSkill } from "AppTypes/DataEntitities";
-import { competencies } from "Constants";
+import { TEducationDetail } from "AppTypes/DataEntitities";
 import { GlobalContext } from "Contexts/GlobalContextProvider";
+import moment from "moment";
 import { openNotification } from "NotificationHelpers";
 import { useContext, useEffect } from "react";
 import { useAuthUser } from "react-auth-kit";
 import { useQueryClient } from "react-query";
 import { BeatLoader } from "react-spinners";
 import { IDrawerProps } from "../../../../../../AppTypes/Component";
-import {
-  generalValidationRules,
-  textInputValidationRules,
-} from "../../../../../../FormHelpers/validation";
+import { generalValidationRules } from "../../../../../../FormHelpers/validation";
 
 interface IProps extends IDrawerProps {
   employeeId?: number;
-  skill?: TSkill;
+  educationDetail?: TEducationDetail;
 }
 
-export const SaveSkill = ({ open, handleClose, employeeId, skill }: IProps) => {
-  const { mutate, isLoading } = useSaveEmployeeSkill();
+export const SaveEducationDetails = ({
+  open,
+  handleClose,
+  employeeId,
+  educationDetail,
+}: IProps) => {
+  const { mutate, isLoading } = useSaveEmployeeEducationDetail();
   const [form] = Form.useForm();
   const queryClient = useQueryClient();
 
@@ -32,24 +34,33 @@ export const SaveSkill = ({ open, handleClose, employeeId, skill }: IProps) => {
   const { state: globalState } = globalCtx;
   const companyId = globalState.currentCompany?.id as unknown as string;
   useEffect(() => {
-    if (skill) {
+    if (educationDetail) {
       form.setFieldsValue({
-        ...skill,
+        ...educationDetail,
+        duration: [
+          moment(educationDetail.startDate),
+          moment(educationDetail.endDate),
+        ],
       });
     } else {
       form.resetFields();
     }
-  }, [skill, form]);
+  }, [educationDetail, form]);
   const handleFinish = (data: any) => {
     if (companyId && employeeId) {
       mutate(
         {
           companyId,
-          competency: data.competency,
-          skill: data.skill,
+
           token,
           employeeId: employeeId,
-          skillId: skill?.id,
+
+          endDate: data.duration[1].format("YYYY/MM/DD"),
+          specialization: data.specialization,
+          degree: data.degree,
+          school: data.school,
+          startDate: data.duration[0].format("YYYY/MM/DD"),
+          detailId: educationDetail?.id,
         },
         {
           onError: (err: any) => {
@@ -71,7 +82,7 @@ export const SaveSkill = ({ open, handleClose, employeeId, skill }: IProps) => {
               queryKey: ["single-employee", employeeId],
               // exact: true,
             });
-            if (!skill) form.resetFields();
+            if (!educationDetail) form.resetFields();
             handleClose();
           },
         }
@@ -80,7 +91,7 @@ export const SaveSkill = ({ open, handleClose, employeeId, skill }: IProps) => {
   };
   return (
     <Drawer
-      title={skill ? "Edit Skill" : "Add Skill"}
+      title={educationDetail ? "Edit Education Detail" : "Add Education Detail"}
       placement="right"
       onClose={() => handleClose()}
       open={open}
@@ -93,19 +104,31 @@ export const SaveSkill = ({ open, handleClose, employeeId, skill }: IProps) => {
         onFinish={handleFinish}
         form={form}
       >
-        <Form.Item name="skill" label="Skill" rules={textInputValidationRules}>
-          <Input className="generalInputStyle" placeholder="Enter Skill" />
+        <Form.Item name="school" label="School" rules={generalValidationRules}>
+          <Input className="generalInputStyle" placeholder="Enter School" />
+        </Form.Item>
+        <Form.Item name="degree" label="Degree" rules={generalValidationRules}>
+          <Input className="generalInputStyle" placeholder="Enter Degree" />
         </Form.Item>
         <Form.Item
-          name="competency"
-          label="Competency"
+          name="specialization"
+          label="Specialization"
           rules={generalValidationRules}
         >
-          <Select
-            className="SelectTag w-full"
-            size="large"
-            placeholder="Select Competency"
-            options={competencies}
+          <Input
+            className="generalInputStyle"
+            placeholder="Enter Specialization"
+          />
+        </Form.Item>
+        <Form.Item
+          name="duration"
+          label="Duration"
+          rules={generalValidationRules}
+        >
+          <DatePicker.RangePicker
+            placeholder={["Start Date", "End Date"]}
+            format="YYYY/MM/DD"
+            className="generalInputStyle"
           />
         </Form.Item>
 

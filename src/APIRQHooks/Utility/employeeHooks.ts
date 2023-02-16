@@ -10,6 +10,9 @@ import {
   createEmployeePension,
   createEmployeePersonalInfo,
   createEmployeeWallet,
+  deleteEmployeeEducationDetail,
+  deleteEmployeeEmploymentHistory,
+  deleteEmployeeSkill,
   employeeInvite,
   getEmployees,
   getInvitedEmployees,
@@ -25,6 +28,7 @@ import {
 } from "../../ApiRequesHelpers/Utility/employee";
 import {
   TBank,
+  TEducationDetail,
   TEmployee,
   TEmployeeStatus,
   TEmployementHistory,
@@ -226,6 +230,16 @@ export const useFetchSingleEmployee = ({
             position: item.position,
           })
         );
+        const educationDetails = fetchedData?.educationDetails?.map(
+          (item: any): TEducationDetail => ({
+            specialization: item.specialization,
+            startDate: item.startDate,
+            endDate: item.endDate,
+            id: item.id,
+            degree: item.degree,
+            school: item.school,
+          })
+        );
 
         // const item = fetchedData.result;
         // TO DO -> update employee type and populate with neccessary data
@@ -262,6 +276,7 @@ export const useFetchSingleEmployee = ({
           },
           skills,
           employmentHistory,
+          educationDetails,
 
           // no need to breakdown as we adhere to Backend Schema sent from respone
         };
@@ -348,4 +363,14 @@ export const useSaveEmployeeEducationDetail = () => {
 };
 export const useSaveEmployeeEmployementHistory = () => {
   return useMutation(saveEmployeeEmployementHistory);
+};
+
+export const useDeleteEmployeeSkill = () => {
+  return useMutation(deleteEmployeeSkill);
+};
+export const useDeleteEmployeeEmploymentHistory = () => {
+  return useMutation(deleteEmployeeEmploymentHistory);
+};
+export const useDeleteEmployeeEducationDetail = () => {
+  return useMutation(deleteEmployeeEducationDetail);
 };

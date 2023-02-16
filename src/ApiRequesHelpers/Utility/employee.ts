@@ -185,6 +185,64 @@ export const createEmployeePension = async (props: ICreateEmpPensionProps) => {
   const response = await axios.post(url, data, config);
   return response;
 };
+export interface IDelEmpEmploymentHistoryProps extends ICurrentCompany {
+  employeeId: number;
+  historyId: number;
+}
+export const deleteEmployeeEmploymentHistory = async (
+  props: IDelEmpEmploymentHistoryProps
+) => {
+  let url = `${process.env.REACT_APP_UTILITY_BASE_URL}/employee/${props.employeeId}/employment-history/${props.historyId}`;
+
+  const config = {
+    headers: {
+      // Accept: "application/json",
+      Authorization: `Bearer ${props.token}`,
+      "x-company-id": props.companyId,
+    },
+  };
+
+  const response = await axios.delete(url, config);
+  return response;
+};
+export interface IDelEmpEducationDetailProps extends ICurrentCompany {
+  employeeId: number;
+  detailId: number;
+}
+export const deleteEmployeeEducationDetail = async (
+  props: IDelEmpEducationDetailProps
+) => {
+  let url = `${process.env.REACT_APP_UTILITY_BASE_URL}/employee/${props.employeeId}/education-detail/${props.detailId}`;
+
+  const config = {
+    headers: {
+      // Accept: "application/json",
+      Authorization: `Bearer ${props.token}`,
+      "x-company-id": props.companyId,
+    },
+  };
+
+  const response = await axios.delete(url, config);
+  return response;
+};
+export interface IDelEmpSkillProps extends ICurrentCompany {
+  employeeId: number;
+  skillId: number;
+}
+export const deleteEmployeeSkill = async (props: IDelEmpSkillProps) => {
+  let url = `${process.env.REACT_APP_UTILITY_BASE_URL}/employee/${props.employeeId}/skill/${props.skillId}`;
+
+  const config = {
+    headers: {
+      // Accept: "application/json",
+      Authorization: `Bearer ${props.token}`,
+      "x-company-id": props.companyId,
+    },
+  };
+
+  const response = await axios.delete(url, config);
+  return response;
+};
 export interface ISaveEmpSkillProps extends ICurrentCompany, TSkill {
   employeeId: number;
   skillId?: number;

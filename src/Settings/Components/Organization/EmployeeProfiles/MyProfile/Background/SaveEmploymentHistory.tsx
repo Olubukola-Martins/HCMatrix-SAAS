@@ -42,6 +42,8 @@ export const SaveEmploymentHistory = ({
           moment(employmentHistory.endDate),
         ],
       });
+    } else {
+      form.resetFields();
     }
   }, [employmentHistory, form]);
   const handleFinish = (data: any) => {
@@ -126,6 +128,7 @@ export const SaveEmploymentHistory = ({
           rules={generalValidationRules}
         >
           <DatePicker.RangePicker
+            placeholder={["Start Date", "End Date"]}
             format="YYYY/MM/DD"
             className="generalInputStyle"
           />
