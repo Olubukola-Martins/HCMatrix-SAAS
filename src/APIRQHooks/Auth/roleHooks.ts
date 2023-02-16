@@ -1,4 +1,5 @@
 import pagination from "antd/lib/pagination";
+import { ISearchParams } from "AppTypes/Search";
 import { useSignOut } from "react-auth-kit";
 import { useQuery } from "react-query";
 import { getRoles } from "../../ApiRequesHelpers/Auth/permissions";
@@ -8,6 +9,8 @@ import { openNotification } from "../../NotificationHelpers";
 
 interface IFRQDataProps {
   pagination?: IPaginationProps;
+  searchParams?: ISearchParams;
+
   companyId: string;
   token: string;
   onSuccess?: Function;
@@ -18,6 +21,7 @@ export interface IFRQRoleReturnProps {
 }
 export const useFetchRoles = ({
   pagination,
+  searchParams,
   companyId,
   onSuccess,
   token,
@@ -25,11 +29,13 @@ export const useFetchRoles = ({
   const signOut = useSignOut();
 
   const queryData = useQuery(
-    ["roles", pagination?.current],
+    ["roles", pagination?.current, pagination?.limit, searchParams?.name],
     () =>
       getRoles({
         companyId,
         pagination: { limit: pagination?.limit, offset: pagination?.offset },
+        searchParams: { name: searchParams?.name },
+
         token,
       }),
     {

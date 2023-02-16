@@ -45,10 +45,11 @@ export const EmployeeProfile = () => {
   const { data: employee } = useFetchSingleEmployee({
     token: userToken,
     companyId: currentCompanyId,
-    employeeId: employeeId as unknown as number,
+    employeeId: employeeId ? +employeeId : 0,
   });
   const [openDrawer, setOpenDrawer] = useState(false);
   const [openResignation, setOpenResignation] = useState(false);
+  console.log("EMPLOYEE", employee, employeeId);
   return (
     <DashboardLayout>
       <div className="Container mt-3">
@@ -160,13 +161,13 @@ export const EmployeeProfile = () => {
               <JobInformation employee={employee} />
             </Tabs.TabPane>
             <Tabs.TabPane tab="Finance" key="8">
-              <Finance />
+              <Finance employee={employee} />
             </Tabs.TabPane>
             <Tabs.TabPane tab="Background" key="3">
               <div className="bg-mainBg shadow-sm rounded-md py-6 px-4 mt-5">
-                <EmploymentHistory />
+                <EmploymentHistory employee={employee} />
                 <EducationDetails />
-                <Skills />
+                <Skills employee={employee} />
               </div>
             </Tabs.TabPane>
             <Tabs.TabPane tab="Manager(s)/Direct Report(s)" key="4">

@@ -19,7 +19,7 @@ import {
   useUpdateEmployeePersonalInfo,
 } from "APIRQHooks/Utility/employeeHooks";
 import { IAuthDets } from "AppTypes/Auth";
-import { TEmployee, TPersonalInfo } from "AppTypes/DataEntitities";
+import { TCountry, TEmployee, TPersonalInfo } from "AppTypes/DataEntitities";
 import {
   employmentEligibilities,
   genders,
@@ -47,6 +47,9 @@ interface IProps {
 }
 
 export const Profile = ({ employee }: IProps) => {
+  const [countrySearch, setCountrySearch] = useState(0);
+  const [stateSearch, setStateSearch] = useState("");
+  const [lgaSearch, setLgaSearch] = useState("");
   const [form] = Form.useForm();
   const queryClient = useQueryClient();
 
@@ -64,12 +67,36 @@ export const Profile = ({ employee }: IProps) => {
   const [countryId, setCountryId] = useState(
     employee?.personalInformation?.address.countryId ?? 0
   );
-  const { data: countries, isSuccess } = useFetchCountries();
-  const { data: states, isSuccess: stateSuccess } = useFetchStates({
+  const { data: countries, isSuccess: isCountrySuccess } = useFetchCountries();
+  const [searchedCountries, setSearchedCountries] = useState<TCountry[]>([]);
+  useEffect(() => {
+    if (isCountrySuccess) {
+      setSearchedCountries(countries);
+    }
+  }, [isCountrySuccess, countries]);
+  const handleCountrySearch = (val: string) => {
+    if (isCountrySuccess) {
+      if (val.length > 0) {
+        const sCountries = countries.filter(
+          (item) => item.name.toLowerCase().indexOf(val.toLowerCase()) !== -1
+        );
+        setSearchedCountries(sCountries);
+      } else {
+        setSearchedCountries(countries);
+      }
+    }
+  };
+  const { data: states, isSuccess: isStateSuccess } = useFetchStates({
     countryId: countryId as unknown as string,
+    searchParams: {
+      name: stateSearch,
+    },
   });
-  const { data: lga, isSuccess: lgaSuccess } = useFetchLgas({
+  const { data: lga, isSuccess: isLgaSuccess } = useFetchLgas({
     stateId: stateId as unknown as string,
+    searchParams: {
+      name: lgaSearch,
+    },
   });
 
   const enableEdit = () => {
@@ -265,7 +292,16 @@ export const Profile = ({ employee }: IProps) => {
               label="Date of Birth"
               rules={[{ required: true }]}
             >
-              <DatePicker format="YYYY/MM/DD" className="w-full" />
+              <DatePicker
+                className="w-full"
+                format={"DD/MM/YYYY"}
+                disabledDate={(d) =>
+                  !d ||
+                  d.isSameOrAfter(
+                    moment(new Date().toLocaleDateString()).format("YYYY-MM-DD")
+                  )
+                }
+              />
             </Form.Item>
             <Form.Item name="phone" label="Phone Number">
               <Input.Group compact>
@@ -274,7 +310,7 @@ export const Profile = ({ employee }: IProps) => {
                   rules={generalValidationRules}
                   name={["phone", "code"]}
                 >
-                  {isSuccess && (
+                  {isCountrySuccess && (
                     <Select
                       // showSearch
                       // allowClear
@@ -377,58 +413,94 @@ export const Profile = ({ employee }: IProps) => {
               rules={generalValidationRules}
             >
               <Select
+                onSearch={handleCountrySearch}
                 showSearch
                 allowClear
-                optionLabelProp="label"
-                placeholder="Select"
-                onChange={(val) => setCountryId(val)}
+                defaultActiveFirstOption={false}
+                showArrow={false}
+                filterOption={false}
+                notFoundContent={null}
+                onSelect={(val: number) => setCountryId(val)}
               >
-                {countries?.map((data) => (
-                  <Option key={data.id} value={data.id} label={data.name}>
-                    {data.name}
-                  </Option>
-                ))}
+                {isCountrySuccess ? (
+                  searchedCountries.map((data) => (
+                    <Option key={data.id} value={data.id} label={data.name}>
+                      {data.name}
+                    </Option>
+                  ))
+                ) : (
+                  <div className="flex justify-center items-center w-full">
+                    <Spin size="small" />
+                  </div>
+                )}
               </Select>
             </Form.Item>
             <Form.Item
               name="stateId"
               label="State"
               rules={generalValidationRules}
+              dependencies={["countryId"]}
             >
               <Select
+                onSearch={(val) => setStateSearch(val)}
                 showSearch
-                allowClear
-                optionLabelProp="label"
-                placeholder="Select state"
-                onChange={(val) => setStateId(val)}
+                value={stateSearch}
+                defaultActiveFirstOption={false}
+                showArrow={false}
+                filterOption={false}
+                notFoundContent={null}
+                onSelect={(val: string) => setStateId(+val)}
               >
-                {states?.map((data) => (
-                  <Option key={data.id} value={data.id} label={data.name}>
-                    {data.name}
-                  </Option>
-                ))}
-              </Select>
-            </Form.Item>
-            {lgaSuccess && lga.length > 0 && (
-              <Form.Item
-                name="lgaId"
-                label="LGA"
-                rules={generalValidationRules}
-              >
-                <Select
-                  showSearch
-                  allowClear
-                  optionLabelProp="label"
-                  placeholder="Select"
-                >
-                  {lga?.map((data) => (
+                {isStateSuccess ? (
+                  states?.map((data) => (
                     <Option key={data.id} value={data.id} label={data.name}>
                       {data.name}
                     </Option>
-                  ))}
-                </Select>
-              </Form.Item>
-            )}
+                  ))
+                ) : (
+                  <div className="flex justify-center items-center w-full">
+                    <Spin size="small" />
+                  </div>
+                )}
+              </Select>
+            </Form.Item>
+
+            <Form.Item
+              name="lgaId"
+              label="LGA"
+              rules={[
+                {
+                  required: isLgaSuccess && lga.length > 0,
+                  message: "Field is required!",
+                },
+              ]}
+              dependencies={["stateId"]}
+            >
+              <Select
+                disabled={!(isLgaSuccess && lga.length > 0)}
+                onSearch={(val) => setLgaSearch(val)}
+                showSearch
+                allowClear
+                value={lgaSearch}
+                defaultActiveFirstOption={false}
+                showArrow={false}
+                filterOption={false}
+                notFoundContent={null}
+              >
+                {isLgaSuccess ? (
+                  lga?.map((data) => (
+                    <Option key={data.id} value={data.id} label={data.name}>
+                      {data.name}
+                    </Option>
+                  ))
+                ) : (
+                  <div className="flex justify-center items-center w-full">
+                    <Spin size="small" />
+                  </div>
+                )}
+              </Select>
+            </Form.Item>
+
             <Form.Item
               name="streetAddress"
               label="Street Address"

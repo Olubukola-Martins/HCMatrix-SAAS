@@ -1,21 +1,19 @@
-import { Spin } from "antd";
-import pagination from "antd/lib/pagination";
+import { ISearchParams } from "AppTypes/Search";
 import { useSignOut } from "react-auth-kit";
-import { useMutation, useQuery, useQueryClient } from "react-query";
+import { useMutation, useQuery } from "react-query";
 import {
   createDepartment,
   getDepartments,
   getSingleDepartment,
-  ICreateDepProps,
   IGetSingleDeptProps,
   updateDepartment,
 } from "../../ApiRequesHelpers/Utility/departments";
 import { TDepartment } from "../../AppTypes/DataEntitities";
 import { IPaginationProps } from "../../AppTypes/Pagination";
-import { openNotification } from "../../NotificationHelpers";
 
 interface IFRQDepartmentsProps {
   pagination?: IPaginationProps;
+  searchParams?: ISearchParams;
   companyId: string;
   onSuccess?: Function;
   token: string;
@@ -30,15 +28,17 @@ export const useFetchDepartments = ({
   companyId,
   onSuccess,
   token,
+  searchParams,
 }: IFRQDepartmentsProps) => {
   const signOut = useSignOut();
 
   const queryData = useQuery(
-    ["departments", pagination?.current, pagination?.limit],
+    ["departments", pagination?.current, pagination?.limit, searchParams?.name],
     () =>
       getDepartments({
         companyId,
         pagination: { limit: pagination?.limit, offset: pagination?.offset },
+        searchParams: { name: searchParams?.name },
         token,
       }),
     {

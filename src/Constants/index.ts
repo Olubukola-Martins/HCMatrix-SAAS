@@ -13,6 +13,20 @@ export const genders = [
     value: "female",
   },
 ];
+export const competencies = [
+  {
+    label: "Advanced",
+    value: "advanced",
+  },
+  {
+    label: "Average",
+    value: "average",
+  },
+  {
+    label: "Basic",
+    value: "basic",
+  },
+];
 
 export const maritalStatuses = [
   {

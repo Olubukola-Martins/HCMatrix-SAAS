@@ -2,64 +2,56 @@ import Search from "antd/lib/input/Search";
 import { Space, Table } from "antd";
 import React, { useState } from "react";
 import { ColumnsType } from "antd/lib/table";
-import { AddEmploymentHistory } from "./AddEmploymentHistory";
+import { SaveEmploymentHistory } from "./SaveEmploymentHistory";
+import { TEmployee, TEmployementHistory } from "AppTypes/DataEntitities";
+import moment from "moment";
 
-interface DataType {
-  key: React.Key;
-  organization: string;
-  position: string;
-  startedOn: string;
-  ended: string;
-  action: any;
+interface IProps {
+  employee?: TEmployee;
 }
-
-const columns: ColumnsType<DataType> = [
-  {
-    title: "Organization",
-    dataIndex: "organization",
-    // width: 150,
-  },
-  {
-    title: "Position",
-    dataIndex: "position",
-    // width: 150,
-  },
-  {
-    title: "Started On",
-    dataIndex: "startedOn",
-  },
-  {
-    title: "Ended",
-    dataIndex: "ended",
-  },
-  {
-    title: "Action",
-    key: "action",
-    render: (_, record) => (
-      <Space size="middle">
-        <i className="ri-delete-bin-line text-lg cursor-pointer"></i>
-        <a>
-          <i className="ri-pencil-line text-xl cursor-pointer"></i>
-        </a>
-      </Space>
-    ),
-  },
-];
-
-const data: DataType[] = [];
-for (let i = 0; i < 10; i++) {
-  data.push({
-    key: i,
-    organization: "Micro soft",
-    position: "Front end",
-    startedOn: "20/2/2015",
-    ended: "20/2/2020",
-    action: "action",
-  });
-}
-
-export const EmploymentHistory = () => {
+export const EmploymentHistory = ({ employee }: IProps) => {
+  const [employmentHistory, setEmploymentHistory] =
+    useState<TEmployementHistory>();
   const [openDrawer, setOpenDrawer] = useState(false);
+  const editEmploymentHistory = (val: TEmployementHistory) => {
+    setEmploymentHistory(val);
+    setOpenDrawer(true);
+  };
+  const columns: ColumnsType<TEmployementHistory> = [
+    {
+      title: "Organization",
+      dataIndex: "organization",
+      // width: 150,
+    },
+    {
+      title: "Position",
+      dataIndex: "position",
+      // width: 150,
+    },
+    {
+      title: "Started On",
+      dataIndex: "startDate",
+      render: (val) => moment(val).format("DD/MM/YYYY"),
+    },
+    {
+      title: "Ended",
+      dataIndex: "endDate",
+      render: (val) => moment(val).format("DD/MM/YYYY"),
+    },
+    {
+      title: "Action",
+      key: "action",
+      render: (_, record) => (
+        <Space size="middle">
+          <i
+            className="ri-pencil-line text-xl cursor-pointer"
+            onClick={() => editEmploymentHistory(record)}
+          />
+          <i className="ri-delete-bin-line text-lg cursor-pointer" />
+        </Space>
+      ),
+    },
+  ];
   return (
     <div>
       <div className="bg-card p-3 rounded">
@@ -79,16 +71,22 @@ export const EmploymentHistory = () => {
           </div>
         </div>
 
-        <AddEmploymentHistory
+        <SaveEmploymentHistory
           open={openDrawer}
           handleClose={() => setOpenDrawer(false)}
+          employmentHistory={employmentHistory}
+          employeeId={employee?.id}
         />
 
         <Table
           columns={columns}
-          dataSource={data}
-          pagination={{ pageSize: 50 }}
+          dataSource={employee?.employmentHistory}
+          pagination={{
+            pageSize: 4,
+            total: employee?.employmentHistory?.length,
+          }}
           scroll={{ y: 240 }}
+          size={"small"}
         />
       </div>
     </div>

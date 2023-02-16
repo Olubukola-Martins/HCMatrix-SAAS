@@ -1,9 +1,15 @@
 import axios from "axios";
 import {
   ICurrentCompany,
+  TBank,
+  TEducationDetail,
   TEmployeeStatus,
+  TEmployementHistory,
   TJobInfo,
+  TPension,
   TPersonalInfo,
+  TSkill,
+  TWallet,
 } from "../../AppTypes/DataEntitities";
 import { IPaginationProps } from "../../AppTypes/Pagination";
 import { ISearchParams } from "../../AppTypes/Search";
@@ -97,7 +103,208 @@ export interface IUpdateEmpProps extends ICurrentCompany {
   designationId?: number;
   avatarUrl?: string;
 }
+// serves 4 both update n create
+export interface ICreateEmpWalletProps extends ICurrentCompany, TWallet {
+  employeeId: number;
+}
+export const createEmployeeWallet = async (props: ICreateEmpWalletProps) => {
+  const url = `${process.env.REACT_APP_UTILITY_BASE_URL}/employee/${props.employeeId}/finance/wallet`;
+  const config = {
+    headers: {
+      // Accept: "application/json",
+      Authorization: `Bearer ${props.token}`,
+      "x-company-id": props.companyId,
+    },
+  };
 
+  // necessary to make immediate changes when in  a central place when schema changes
+
+  // made the data any so that the props that are not needed can be deleted
+  const data: any = {
+    ...props,
+  };
+  // delete the props that are not needed as the will result in an error
+  delete data["token"]; //not needed
+  delete data["companyId"]; //not needed
+  delete data["employeeId"]; //not needed
+
+  const response = await axios.post(url, data, config);
+  return response;
+};
+export interface ICreateEmpBankProps extends ICurrentCompany, TBank {
+  employeeId: number;
+}
+export const createEmployeeBank = async (props: ICreateEmpBankProps) => {
+  const url = `${process.env.REACT_APP_UTILITY_BASE_URL}/employee/${props.employeeId}/finance/bank`;
+  const config = {
+    headers: {
+      // Accept: "application/json",
+      Authorization: `Bearer ${props.token}`,
+      "x-company-id": props.companyId,
+    },
+  };
+
+  // necessary to make immediate changes when in  a central place when schema changes
+
+  // made the data any so that the props that are not needed can be deleted
+  const data: any = {
+    ...props,
+  };
+  // delete the props that are not needed as the will result in an error
+  delete data["token"]; //not needed
+  delete data["companyId"]; //not needed
+  delete data["employeeId"]; //not needed
+
+  const response = await axios.post(url, data, config);
+  return response;
+};
+export interface ICreateEmpPensionProps extends ICurrentCompany, TPension {
+  employeeId: number;
+}
+export const createEmployeePension = async (props: ICreateEmpPensionProps) => {
+  const url = `${process.env.REACT_APP_UTILITY_BASE_URL}/employee/${props.employeeId}/finance/pension`;
+  const config = {
+    headers: {
+      // Accept: "application/json",
+      Authorization: `Bearer ${props.token}`,
+      "x-company-id": props.companyId,
+    },
+  };
+
+  // necessary to make immediate changes when in  a central place when schema changes
+
+  // made the data any so that the props that are not needed can be deleted
+  const data: any = {
+    ...props,
+  };
+  // delete the props that are not needed as the will result in an error
+  delete data["token"]; //not needed
+  delete data["companyId"]; //not needed
+  delete data["employeeId"]; //not needed
+
+  const response = await axios.post(url, data, config);
+  return response;
+};
+export interface ISaveEmpSkillProps extends ICurrentCompany, TSkill {
+  employeeId: number;
+  skillId?: number;
+}
+export const saveEmployeeSkill = async (props: ISaveEmpSkillProps) => {
+  let url = `${process.env.REACT_APP_UTILITY_BASE_URL}/employee/${props.employeeId}/skill`;
+  if (props.skillId) {
+    url = `${process.env.REACT_APP_UTILITY_BASE_URL}/employee/${props.employeeId}/skill/${props.skillId}`;
+  }
+  const config = {
+    headers: {
+      // Accept: "application/json",
+      Authorization: `Bearer ${props.token}`,
+      "x-company-id": props.companyId,
+    },
+  };
+
+  // necessary to make immediate changes when in  a central place when schema changes
+
+  // made the data any so that the props that are not needed can be deleted
+  const data: any = {
+    ...props,
+  };
+  // delete the props that are not needed as the will result in an error
+  delete data["token"]; //not needed
+  delete data["companyId"]; //not needed
+  delete data["employeeId"]; //not needed
+
+  if (props.skillId) {
+    delete data["skillId"];
+    const response = await axios.patch(url, data, config);
+    return response;
+  } else {
+    const response = await axios.post(url, data, config);
+    return response;
+  }
+};
+export interface ISaveEmpEducationDetailProps
+  extends ICurrentCompany,
+    TEducationDetail {
+  employeeId: number;
+  detailId?: number;
+}
+export const saveEmployeeEducationDetail = async (
+  props: ISaveEmpEducationDetailProps
+) => {
+  let url = `${process.env.REACT_APP_UTILITY_BASE_URL}/employee/${props.employeeId}/education-detail`;
+  if (props.detailId) {
+    url = `${process.env.REACT_APP_UTILITY_BASE_URL}/employee/${props.employeeId}/education-detail/${props.detailId}`;
+  }
+  const config = {
+    headers: {
+      // Accept: "application/json",
+      Authorization: `Bearer ${props.token}`,
+      "x-company-id": props.companyId,
+    },
+  };
+
+  // necessary to make immediate changes when in  a central place when schema changes
+
+  // made the data any so that the props that are not needed can be deleted
+  const data: any = {
+    ...props,
+  };
+  // delete the props that are not needed as the will result in an error
+  delete data["token"]; //not needed
+  delete data["companyId"]; //not needed
+  delete data["employeeId"]; //not needed
+  if (props.detailId) {
+    delete data["detailId"];
+
+    const response = await axios.patch(url, data, config);
+    return response;
+  } else {
+    const response = await axios.post(url, data, config);
+    return response;
+  }
+};
+export interface ISaveEmpEmployementHistoryProps
+  extends ICurrentCompany,
+    TEmployementHistory {
+  employeeId: number;
+  historyId?: number;
+}
+export const saveEmployeeEmployementHistory = async (
+  props: ISaveEmpEmployementHistoryProps
+) => {
+  let url = `${process.env.REACT_APP_UTILITY_BASE_URL}/employee/${props.employeeId}/employment-history`;
+  if (props.historyId) {
+    url = `${process.env.REACT_APP_UTILITY_BASE_URL}/employee/${props.employeeId}/employment-history/${props.historyId}`;
+  }
+  const config = {
+    headers: {
+      // Accept: "application/json",
+      Authorization: `Bearer ${props.token}`,
+      "x-company-id": props.companyId,
+    },
+  };
+
+  // necessary to make immediate changes when in  a central place when schema changes
+
+  // made the data any so that the props that are not needed can be deleted
+  const data: any = {
+    ...props,
+  };
+  // delete the props that are not needed as the will result in an error
+  delete data["token"]; //not needed
+  delete data["companyId"]; //not needed
+  delete data["employeeId"]; //not needed
+  if (props.historyId) {
+    delete data["historyId"];
+
+    const response = await axios.patch(url, data, config);
+    return response;
+  } else {
+    const response = await axios.post(url, data, config);
+    return response;
+  }
+};
+// serves 4 both update n create
 export interface ICreateEmpJobInfoProps extends ICurrentCompany, TJobInfo {
   employeeId: number;
 }
@@ -178,6 +385,7 @@ export const createEmployeePersonalInfo = async (
   delete data["token"]; //not needed
   delete data["companyId"]; //not needed
   delete data["employeeId"]; //not needed
+  if (!props.address.lgaId) delete data["address"]["lgaId"];
 
   const response = await axios.post(url, data, config);
   return response;
@@ -204,6 +412,7 @@ export const updateEmployeePersonalInfo = async (
   delete data["token"]; //not needed
   delete data["companyId"]; //not needed
   delete data["employeeId"]; //not needed
+  if (!props.address.lgaId) delete data["address"]["lgaId"];
 
   const response = await axios.put(url, data, config);
   return response;
@@ -301,11 +510,13 @@ export const getEmployees = async (props: IGetEmpsProps) => {
   const { pagination } = props;
   const limit = pagination?.limit ?? 10;
   const offset = pagination?.offset ?? 0;
-  const name = props.searchParams?.name ?? "";
 
   let url = `${process.env.REACT_APP_UTILITY_BASE_URL}/employee?limit=${limit}&offset=${offset}`;
   if (props.status) {
     url += "&status=" + props.status.toString();
+  }
+  if (props.searchParams?.name) {
+    url += `&search=${props.searchParams.name}`;
   }
 
   const config = {

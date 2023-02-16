@@ -8,6 +8,13 @@ export type TCountry = {
   sortName: string;
   code: string;
 };
+export type TAddress = {
+  streetAddress: string;
+  countryId: number;
+  stateId: number;
+  lgaId: number;
+  timezone: string;
+};
 
 export type TState = {
   id: number;
@@ -45,6 +52,13 @@ export type TDesignation = {
   department: { id: number; name: string };
   employeeCount: number;
 };
+export type TBranch = {
+  id: number;
+  name: string;
+  description: string;
+  address: TAddress;
+  employeeCount: number;
+};
 export type TPermission = {
   id: number;
   name: string;
@@ -72,13 +86,7 @@ export type TPersonalInfo = {
   eligibility: string;
   maritalStatus: string;
   nationality: string;
-  address: {
-    streetAddress: string;
-    countryId: number;
-    stateId: number;
-    lgaId: number;
-    timezone: string;
-  };
+  address: TAddress;
   passportExpirationDate?: string;
   validDocumentUrl: string;
 };
@@ -93,6 +101,43 @@ export type TJobInfo = {
   probationEndDate: string;
   confirmationDate: string;
   lineManagerId?: number;
+};
+
+export type TWallet = {
+  accountNumber: string;
+  accountProvider: string;
+};
+export type TBank = {
+  bvn: string;
+  bankName: string;
+  accountNumber: string;
+};
+export type TPension = {
+  fundAdministrator: string;
+  accountNumber: string;
+  pensionType: string;
+};
+export type TSkill = {
+  id?: number;
+  skill: string;
+  competency: string;
+};
+export type TEducationDetail = {
+  id?: number;
+
+  school: string;
+  degree: string;
+  specialization: string;
+  startDate: string;
+  endDate: string;
+};
+export type TEmployementHistory = {
+  id?: number;
+
+  organization: string;
+  position: string;
+  startDate: string;
+  endDate: string;
 };
 
 export type TEmployee = {
@@ -117,6 +162,13 @@ export type TEmployee = {
   updatedAt: string;
   userId: number;
   // --------------
+  finance?: {
+    wallet: TWallet;
+    bank: TBank;
+    pension: TPension;
+  };
+  skills?: TSkill[];
+  employmentHistory?: TEmployementHistory[];
 };
 export type TInvitedEmployee = {
   id: number;

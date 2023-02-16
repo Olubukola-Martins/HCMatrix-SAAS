@@ -2,53 +2,47 @@ import Search from "antd/lib/input/Search";
 import { Space, Table } from "antd";
 import React, { useState } from "react";
 import { ColumnsType } from "antd/lib/table";
-import { AddSkill } from "./AddSkill";
+import { SaveSkill } from "./SaveSkill";
+import { TEmployee, TSkill } from "AppTypes/DataEntitities";
 
-interface DataType {
-  key: React.Key;
-  skill: string;
-  competency: string;
-  action: any;
+interface IProps {
+  employee?: TEmployee;
 }
 
-const columns: ColumnsType<DataType> = [
-  {
-    title: "Skill",
-    dataIndex: "skill",
-    // width: 150,
-  },
-  {
-    title: "Competency",
-    dataIndex: "competency",
-    // width: 150,
-  },
-
-  {
-    title: "Action",
-    key: "action",
-    render: (_, record) => (
-      <Space size="middle">
-        <i className="ri-delete-bin-line text-lg cursor-pointer"></i>
-        <a>
-          <i className="ri-pencil-line text-xl cursor-pointer"></i>
-        </a>
-      </Space>
-    ),
-  },
-];
-
-const data: DataType[] = [];
-// for (let i = 0; i < 10; i++) {
-//   data.push({
-//     key: i,
-//     skill: "",
-//     competency: "",
-//     action: "action",
-//   });
-// }
-
-export const Skills = () => {
+export const Skills = ({ employee }: IProps) => {
+  const [skill, setSkill] = useState<TSkill>();
   const [openDrawer, setOpenDrawer] = useState(false);
+  const editSkill = (val: TSkill) => {
+    setSkill(val);
+    setOpenDrawer(true);
+  };
+  const columns: ColumnsType<TSkill> = [
+    {
+      title: "Skill",
+      dataIndex: "skill",
+      // width: 150,
+    },
+    {
+      title: "Competency",
+      dataIndex: "competency",
+      // width: 150,
+    },
+
+    {
+      title: "Action",
+      key: "action",
+      render: (_, record) => (
+        <Space size="middle">
+          <i
+            className="ri-pencil-line text-xl cursor-pointer"
+            onClick={() => editSkill(record)}
+          />
+          <i className="ri-delete-bin-line text-lg cursor-pointer" />
+        </Space>
+      ),
+    },
+  ];
+
   return (
     <div>
       <div className="bg-card p-3 rounded">
@@ -68,16 +62,19 @@ export const Skills = () => {
           </div>
         </div>
 
-        <AddSkill
+        <SaveSkill
           open={openDrawer}
           handleClose={() => setOpenDrawer(false)}
+          employeeId={employee?.id}
+          skill={skill}
         />
 
         <Table
           columns={columns}
-          dataSource={data}
-          pagination={{ pageSize: 50 }}
+          dataSource={employee?.skills}
+          pagination={{ pageSize: 4, total: employee?.skills?.length }}
           scroll={{ y: 240 }}
+          size="small"
         />
       </div>
     </div>

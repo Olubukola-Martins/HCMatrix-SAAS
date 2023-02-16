@@ -1,25 +1,37 @@
+import { ISearchParams } from "AppTypes/Search";
 import moment from "moment";
 import { useSignOut } from "react-auth-kit";
 
 import { useMutation, useQuery } from "react-query";
 import {
   createEmployee,
+  createEmployeeBank,
   createEmployeeJobInfo,
+  createEmployeePension,
   createEmployeePersonalInfo,
+  createEmployeeWallet,
   employeeInvite,
   getEmployees,
   getInvitedEmployees,
   getSingleEmployee,
   IGetSingleEmpProps,
   resendEmployeeInvite,
+  saveEmployeeEducationDetail,
+  saveEmployeeEmployementHistory,
+  saveEmployeeSkill,
   updateEmployee,
   updateEmployeeJobInfo,
   updateEmployeePersonalInfo,
 } from "../../ApiRequesHelpers/Utility/employee";
 import {
+  TBank,
   TEmployee,
   TEmployeeStatus,
+  TEmployementHistory,
   TInvitedEmployee,
+  TPension,
+  TSkill,
+  TWallet,
 } from "../../AppTypes/DataEntitities";
 import { IPaginationProps } from "../../AppTypes/Pagination";
 import { openNotification } from "../../NotificationHelpers";
@@ -32,6 +44,8 @@ interface IFRQResendInviteProps {
 }
 interface IFRQDepartmentsProps {
   pagination?: IPaginationProps;
+  searchParams?: ISearchParams;
+
   companyId: string;
   status?: TEmployeeStatus[];
   onSuccess?: Function;
@@ -100,6 +114,7 @@ export const useFetchInvitedEmployees = ({
 };
 export const useFetchEmployees = ({
   pagination,
+  searchParams,
   companyId,
   onSuccess,
   token,
@@ -108,11 +123,19 @@ export const useFetchEmployees = ({
   const signOut = useSignOut();
 
   const queryData = useQuery(
-    ["employees", pagination?.current, pagination?.limit, status],
+    [
+      "employees",
+      pagination?.current,
+      pagination?.limit,
+      status,
+      searchParams?.name,
+    ],
     () =>
       getEmployees({
         companyId,
         pagination: { limit: pagination?.limit, offset: pagination?.offset },
+        searchParams: { name: searchParams?.name },
+
         token,
         status,
       }),
@@ -169,7 +192,7 @@ export const useFetchSingleEmployee = ({
       }),
 
     {
-      enabled: employeeId === 0 ? false : true,
+      // enabled: employeeId === 0 ? false : true,
       onError: (err: any) => {
         signOut();
         localStorage.clear();
@@ -177,6 +200,33 @@ export const useFetchSingleEmployee = ({
 
       select: (res: any) => {
         const item = res.data.data as TEmployee;
+        const fetchedData = res.data.data;
+        const wallet = fetchedData?.finance?.find(
+          (item: any) => item.key === "wallet"
+        )?.value as TWallet;
+        const bank = fetchedData?.finance?.find(
+          (item: any) => item.key === "bank"
+        )?.value as TBank;
+        const pension = fetchedData?.finance?.find(
+          (item: any) => item.key === "pension"
+        )?.value as TPension;
+        const skills = fetchedData?.skills?.map(
+          (item: any): TSkill => ({
+            competency: item.competency,
+            skill: item.skill,
+            id: item.id,
+          })
+        );
+        const employmentHistory = fetchedData?.employmentHistory?.map(
+          (item: any): TEmployementHistory => ({
+            organization: item.organization,
+            startDate: item.startDate,
+            endDate: item.endDate,
+            id: item.id,
+            position: item.position,
+          })
+        );
+
         // const item = fetchedData.result;
         // TO DO -> update employee type and populate with neccessary data
         // TO DO -> default image to be shown 4 user -> use first letter url (laravel)
@@ -184,6 +234,34 @@ export const useFetchSingleEmployee = ({
 
         const data: TEmployee = {
           ...item,
+          companyId: item.companyId,
+          avatarUrl: item.avatarUrl,
+
+          createdAt: item.createdAt,
+          deletedAt: item.deletedAt,
+          designation: item.designation, //adhered to backend
+          designationId: item.designationId,
+          email: item.email,
+          empUid: item.empUid,
+          firstName: item.firstName,
+          hasSelfService: item.hasSelfService,
+          id: item.id,
+          jobInformation: item.jobInformation,
+          lastName: item.lastName,
+          personalInformation: item.personalInformation,
+          role: item.role,
+          roleId: item.roleId,
+          status: item.status,
+          updatedAt: item.updatedAt,
+          userId: item.userId,
+          // --------------
+          finance: {
+            wallet,
+            bank,
+            pension,
+          },
+          skills,
+          employmentHistory,
 
           // no need to breakdown as we adhere to Backend Schema sent from respone
         };
@@ -239,6 +317,15 @@ export const useUpdateEmployee = () => {
 export const useCreateEmployeePersonalInfo = () => {
   return useMutation(createEmployeePersonalInfo);
 };
+export const useCreateEmployeeWallet = () => {
+  return useMutation(createEmployeeWallet);
+};
+export const useCreateEmployeeBank = () => {
+  return useMutation(createEmployeeBank);
+};
+export const useCreateEmployeePension = () => {
+  return useMutation(createEmployeePension);
+};
 export const useUpdateEmployeePersonalInfo = () => {
   return useMutation(updateEmployeePersonalInfo);
 };
@@ -251,4 +338,14 @@ export const useUpdateEmployeeJobInfo = () => {
 
 export const useInviteEmployees = () => {
   return useMutation(employeeInvite);
+};
+
+export const useSaveEmployeeSkill = () => {
+  return useMutation(saveEmployeeSkill);
+};
+export const useSaveEmployeeEducationDetail = () => {
+  return useMutation(saveEmployeeEducationDetail);
+};
+export const useSaveEmployeeEmployementHistory = () => {
+  return useMutation(saveEmployeeEmployementHistory);
 };
