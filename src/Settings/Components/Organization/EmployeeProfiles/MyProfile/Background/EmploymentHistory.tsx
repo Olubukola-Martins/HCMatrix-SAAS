@@ -1,21 +1,74 @@
-import Search from "antd/lib/input/Search";
-import { Space, Table } from "antd";
-import React, { useState } from "react";
+import { Input, Space, Table } from "antd";
+import React, { useContext, useState } from "react";
 import { ColumnsType } from "antd/lib/table";
 import { SaveEmploymentHistory } from "./SaveEmploymentHistory";
 import { TEmployee, TEmployementHistory } from "AppTypes/DataEntitities";
 import moment from "moment";
+import { useDeleteEmployeeEmploymentHistory } from "APIRQHooks/Utility/employeeHooks";
+import { IAuthDets } from "AppTypes/Auth";
+import { GlobalContext } from "Contexts/GlobalContextProvider";
+import { openNotification } from "NotificationHelpers";
+import { useAuthUser } from "react-auth-kit";
+import { useQueryClient } from "react-query";
+import { LoadingOutlined } from "@ant-design/icons";
 
 interface IProps {
   employee?: TEmployee;
 }
 export const EmploymentHistory = ({ employee }: IProps) => {
+  const queryClient = useQueryClient();
+
   const [employmentHistory, setEmploymentHistory] =
     useState<TEmployementHistory>();
   const [openDrawer, setOpenDrawer] = useState(false);
   const editEmploymentHistory = (val: TEmployementHistory) => {
     setEmploymentHistory(val);
     setOpenDrawer(true);
+  };
+  const auth = useAuthUser();
+  const authDetails = auth() as unknown as IAuthDets;
+  const token = authDetails.userToken;
+  const globalCtx = useContext(GlobalContext);
+  const { state: globalState } = globalCtx;
+  const companyId = globalState.currentCompany?.id as unknown as string;
+  const { mutate, isLoading } = useDeleteEmployeeEmploymentHistory();
+  const [deleteId, setDeleteId] = useState(0);
+  const deleteHistory = (historyId: number) => {
+    setDeleteId(historyId);
+    if (companyId && employee) {
+      mutate(
+        {
+          companyId,
+
+          token,
+          employeeId: employee.id,
+          historyId,
+        },
+        {
+          onError: (err: any) => {
+            openNotification({
+              state: "error",
+              title: "Error Occured",
+              description:
+                err?.response.data.message ?? err?.response.data.error.message,
+            });
+          },
+          onSuccess: (res: any) => {
+            openNotification({
+              state: "success",
+
+              title: "Success",
+              description: res?.data?.message,
+            });
+            queryClient.invalidateQueries({
+              queryKey: ["single-employee", employee.id],
+              // exact: true,
+            });
+            setDeleteId(0);
+          },
+        }
+      );
+    }
   };
   const columns: ColumnsType<TEmployementHistory> = [
     {
@@ -47,11 +100,22 @@ export const EmploymentHistory = ({ employee }: IProps) => {
             className="ri-pencil-line text-xl cursor-pointer"
             onClick={() => editEmploymentHistory(record)}
           />
-          <i className="ri-delete-bin-line text-lg cursor-pointer" />
+          {isLoading && deleteId === record.id ? (
+            <LoadingOutlined />
+          ) : (
+            <i
+              className="ri-delete-bin-line text-lg cursor-pointer"
+              onClick={() => deleteHistory(record.id as number)}
+            />
+          )}
         </Space>
       ),
     },
   ];
+  const handleClose = () => {
+    setOpenDrawer(false);
+    setEmploymentHistory(undefined);
+  };
   return (
     <div>
       <div className="bg-card p-3 rounded">
@@ -59,7 +123,7 @@ export const EmploymentHistory = ({ employee }: IProps) => {
           <h2 className="text-accent text-base pb-1">Employment History</h2>
         </div>
         <div className="flex md:items-center gap-5  flex-col-reverse md:flex-row md:justify-between my-3">
-          <Search
+          <Input.Search
             placeholder="input search text"
             style={{ width: 200 }}
             className="rounded"
@@ -73,7 +137,7 @@ export const EmploymentHistory = ({ employee }: IProps) => {
 
         <SaveEmploymentHistory
           open={openDrawer}
-          handleClose={() => setOpenDrawer(false)}
+          handleClose={handleClose}
           employmentHistory={employmentHistory}
           employeeId={employee?.id}
         />
