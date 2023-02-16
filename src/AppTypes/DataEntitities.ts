@@ -103,6 +103,43 @@ export type TJobInfo = {
   lineManagerId?: number;
 };
 
+export type TWallet = {
+  accountNumber: string;
+  accountProvider: string;
+};
+export type TBank = {
+  bvn: string;
+  bankName: string;
+  accountNumber: string;
+};
+export type TPension = {
+  fundAdministrator: string;
+  accountNumber: string;
+  pensionType: string;
+};
+export type TSkill = {
+  id?: number;
+  skill: string;
+  competency: string;
+};
+export type TEducationDetail = {
+  id?: number;
+
+  school: string;
+  degree: string;
+  specialization: string;
+  startDate: string;
+  endDate: string;
+};
+export type TEmployementHistory = {
+  id?: number;
+
+  organization: string;
+  position: string;
+  startDate: string;
+  endDate: string;
+};
+
 export type TEmployee = {
   companyId: number;
   avatarUrl?: string;
@@ -125,6 +162,12 @@ export type TEmployee = {
   updatedAt: string;
   userId: number;
   // --------------
+  finance?: {
+    wallet: TWallet;
+    bank: TBank;
+    pension: TPension;
+  };
+  skills?: TSkill[];
 };
 export type TInvitedEmployee = {
   id: number;

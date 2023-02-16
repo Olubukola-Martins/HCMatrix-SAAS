@@ -101,11 +101,6 @@ export const JobInformation = ({ employee }: IProps) => {
         employeeId: employee.id,
       };
 
-      openNotification({
-        state: "info",
-        title: "Wait a second ...",
-        description: <Spin />,
-      });
       createMutate(props, {
         onError: (err: any) => {
           openNotification({

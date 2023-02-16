@@ -2,7 +2,7 @@ import { DatePicker, Drawer, Form, Input } from "antd";
 import { IDrawerProps } from "../../../../../../AppTypes/Component";
 import { generalValidationRules } from "../../../../../../FormHelpers/validation";
 
-export const AddEmploymentHistory = ({ open, handleClose }: IDrawerProps) => {
+export const SaveEmploymentHistory = ({ open, handleClose }: IDrawerProps) => {
   return (
     <Drawer
       title="Add Employment History"
