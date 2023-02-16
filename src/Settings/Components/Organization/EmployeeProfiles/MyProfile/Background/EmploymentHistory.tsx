@@ -3,9 +3,13 @@ import { Space, Table } from "antd";
 import React, { useState } from "react";
 import { ColumnsType } from "antd/lib/table";
 import { SaveEmploymentHistory } from "./SaveEmploymentHistory";
-import { TEmployementHistory } from "AppTypes/DataEntitities";
+import { TEmployee, TEmployementHistory } from "AppTypes/DataEntitities";
+import moment from "moment";
 
-export const EmploymentHistory = () => {
+interface IProps {
+  employee?: TEmployee;
+}
+export const EmploymentHistory = ({ employee }: IProps) => {
   const [employmentHistory, setEmploymentHistory] =
     useState<TEmployementHistory>();
   const [openDrawer, setOpenDrawer] = useState(false);
@@ -26,21 +30,24 @@ export const EmploymentHistory = () => {
     },
     {
       title: "Started On",
-      dataIndex: "startedOn",
+      dataIndex: "startDate",
+      render: (val) => moment(val).format("DD/MM/YYYY"),
     },
     {
       title: "Ended",
-      dataIndex: "ended",
+      dataIndex: "endDate",
+      render: (val) => moment(val).format("DD/MM/YYYY"),
     },
     {
       title: "Action",
       key: "action",
       render: (_, record) => (
         <Space size="middle">
-          <i className="ri-delete-bin-line text-lg cursor-pointer"></i>
-          <a>
-            <i className="ri-pencil-line text-xl cursor-pointer"></i>
-          </a>
+          <i
+            className="ri-pencil-line text-xl cursor-pointer"
+            onClick={() => editEmploymentHistory(record)}
+          />
+          <i className="ri-delete-bin-line text-lg cursor-pointer" />
         </Space>
       ),
     },
@@ -67,13 +74,19 @@ export const EmploymentHistory = () => {
         <SaveEmploymentHistory
           open={openDrawer}
           handleClose={() => setOpenDrawer(false)}
+          employmentHistory={employmentHistory}
+          employeeId={employee?.id}
         />
 
         <Table
           columns={columns}
-          dataSource={[]}
-          pagination={{ pageSize: 4, total: 8 }}
+          dataSource={employee?.employmentHistory}
+          pagination={{
+            pageSize: 4,
+            total: employee?.employmentHistory?.length,
+          }}
           scroll={{ y: 240 }}
+          size={"small"}
         />
       </div>
     </div>

@@ -27,6 +27,7 @@ import {
   TBank,
   TEmployee,
   TEmployeeStatus,
+  TEmployementHistory,
   TInvitedEmployee,
   TPension,
   TSkill,
@@ -216,6 +217,15 @@ export const useFetchSingleEmployee = ({
             id: item.id,
           })
         );
+        const employmentHistory = fetchedData?.employmentHistory?.map(
+          (item: any): TEmployementHistory => ({
+            organization: item.organization,
+            startDate: item.startDate,
+            endDate: item.endDate,
+            id: item.id,
+            position: item.position,
+          })
+        );
 
         // const item = fetchedData.result;
         // TO DO -> update employee type and populate with neccessary data
@@ -250,7 +260,8 @@ export const useFetchSingleEmployee = ({
             bank,
             pension,
           },
-          skills: skills,
+          skills,
+          employmentHistory,
 
           // no need to breakdown as we adhere to Backend Schema sent from respone
         };

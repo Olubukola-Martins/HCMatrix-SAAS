@@ -165,7 +165,7 @@ export const EmployeeProfile = () => {
             </Tabs.TabPane>
             <Tabs.TabPane tab="Background" key="3">
               <div className="bg-mainBg shadow-sm rounded-md py-6 px-4 mt-5">
-                <EmploymentHistory />
+                <EmploymentHistory employee={employee} />
                 <EducationDetails />
                 <Skills employee={employee} />
               </div>

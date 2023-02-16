@@ -168,6 +168,7 @@ export type TEmployee = {
     pension: TPension;
   };
   skills?: TSkill[];
+  employmentHistory?: TEmployementHistory[];
 };
 export type TInvitedEmployee = {
   id: number;
