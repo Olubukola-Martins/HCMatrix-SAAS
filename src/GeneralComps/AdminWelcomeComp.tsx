@@ -38,7 +38,7 @@ const AdminWelcomeComp = () => {
                   "https://res.cloudinary.com/ddvaelej7/image/upload/v1655735373/samples/Ellipse_4_j0womm.png"
                 }
               />
-              <p className="font-bold text-lg ">
+              <p className="font-bold text-lg tracking-wider">
                 Good day, {user.fullName}! I'm Basil, the HCMatrix onboarding
                 specialist, and I'd love to walk you through the onboarding
                 process.{" "}
