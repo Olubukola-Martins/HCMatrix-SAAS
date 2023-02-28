@@ -1,6 +1,62 @@
+import { IPaginationProps } from "./Pagination";
+import { ISearchParams } from "./Search";
+
+export interface IGetDataProps extends ICurrentCompany {
+  pagination?: IPaginationProps;
+  searchParams?: ISearchParams;
+}
+
 export type TIndustry = {
   id: number;
   name: string;
+};
+export type TGroupMember = {
+  id: number;
+  employeeId: number;
+  isLead?: boolean;
+  firstName?: string;
+  lastName?: string;
+  empUid?: string;
+  email: string;
+};
+export type TGroup = {
+  id?: number;
+  name: string;
+  description: string;
+  email: string;
+  employees?: TGroupMember[];
+};
+export type TCompanyParameter = {
+  administrator?: {
+    adminEmail: string;
+  };
+  emailSettings?: {
+    defaultFromAddress: string;
+  };
+  locationSettings?: {
+    country: string;
+    timezone: string;
+  };
+  dateAndTimeSettings?: {
+    dateFormat: string;
+    timeFormat: string;
+  };
+  profilePhotoSettings?: {
+    modifyUsersProfile?: {
+      administrator: boolean;
+      employee: boolean;
+    };
+  };
+  notificationSettings?: {
+    email: boolean;
+    inApp: boolean;
+    sms: boolean;
+  };
+  employeeSettings?: {
+    hideBirthday: boolean;
+    hidePhoneNumber: boolean;
+    hideWorkAnniversary: boolean;
+  };
 };
 export type TCountry = {
   id: number;

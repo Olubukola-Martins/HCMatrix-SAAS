@@ -1,31 +1,27 @@
 import { Pagination, TablePaginationConfig, Dropdown, Menu } from "antd";
 import type { PaginationProps } from "antd";
-import { TDepartment } from "AppTypes/DataEntitities";
+import { TGroup } from "AppTypes/DataEntitities";
 
 interface IProps {
-  departments: TDepartment[];
+  groups: TGroup[];
   loading: boolean;
   pagination?: TablePaginationConfig;
   onChange: PaginationProps["onChange"];
-  editDepartment: (val: number) => void;
+  editGroup: (val: number) => void;
 }
 
-export const DepartmentsGridView = ({
-  departments,
+const GroupsGridView = ({
+  groups,
   loading,
   pagination,
   onChange,
-  editDepartment,
+  editGroup,
 }: IProps) => {
   return (
     <div>
       <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4  gap-6">
-        {departments.map((item) => (
-          <DepartmentBox
-            key={item.id}
-            department={item}
-            editDepartment={editDepartment}
-          />
+        {groups.map((item) => (
+          <GroupBox key={item.id} group={item} editGroup={editGroup} />
         ))}
       </div>
       <div className="mt-4 flex justify-end">
@@ -35,12 +31,12 @@ export const DepartmentsGridView = ({
   );
 };
 
-const DepartmentBox = ({
-  department,
-  editDepartment,
+const GroupBox = ({
+  group,
+  editGroup,
 }: {
-  department: TDepartment;
-  editDepartment: (val: number) => void;
+  group: TGroup;
+  editGroup: (val: number) => void;
 }) => {
   return (
     <>
@@ -48,12 +44,12 @@ const DepartmentBox = ({
 
       <div className="border px-4 py-2 rounded-lg grid grid-cols-1 gap-4 border-caramel">
         <div className="flex justify-between">
-          <h6 className="text-xl font-thin capitalize">{department.name}</h6>
+          <h6 className="text-xl font-thin capitalize">{group.name}</h6>
 
           <Dropdown
             overlay={
               <Menu>
-                <Menu.Item onClick={() => editDepartment(department.id)}>
+                <Menu.Item onClick={() => editGroup(group?.id as number)}>
                   Edit
                 </Menu.Item>
                 <Menu.Item>Delete</Menu.Item>
@@ -65,12 +61,14 @@ const DepartmentBox = ({
           </Dropdown>
         </div>
         <div className="flex justify-between items-center">
-          <p className="text-sm">{department.email}</p>
+          <p className="text-sm">{group.email}</p>
           <div className="rounded-full bg-caramel h-6 w-6 flex items-center justify-center ">
-            <span className="text-sm">{department.employeeCount}</span>
+            <span className="text-sm">{group.employees?.length}</span>
           </div>
         </div>
       </div>
     </>
   );
 };
+
+export default GroupsGridView;
