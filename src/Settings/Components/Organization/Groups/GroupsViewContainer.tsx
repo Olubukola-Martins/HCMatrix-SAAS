@@ -72,7 +72,7 @@ const GroupsViewContainer = () => {
       setPagination((val) => ({ ...val, pageSize: listPageSize, current: 1 }));
     }
   }, [viewId]);
-  const [entityId, setEntityId] = useState(0);
+  const [entityId, setEntityId] = useState<number>();
   const [openEditModal, setOpenEditModal] = useState(false);
   const editDepartment = (id: number) => {
     setEntityId(id);
@@ -85,11 +85,13 @@ const GroupsViewContainer = () => {
 
   return (
     <>
-      <EditGroupDrawer
-        entityId={entityId}
-        open={openEditModal}
-        handleClose={handleClose}
-      />
+      {entityId && (
+        <EditGroupDrawer
+          entityId={entityId}
+          open={openEditModal}
+          handleClose={handleClose}
+        />
+      )}
       <div className="mt-5 flex flex-col gap-4">
         <div className="view-toggler flex rounded overflow-hidden items-center">
           <Tooltip title="Grid View">
