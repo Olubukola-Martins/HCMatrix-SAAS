@@ -12,7 +12,7 @@ export const appRoutes = {
   //home routes
   home: `/`,
   companyOrganogram: `/company-organogram`,
-  //   setting routes
+  // setting routes
   settings: "/settings",
   companyDetailsSettings: `/settings/company-details`,
   locationSettings: `/settings/locations`,
