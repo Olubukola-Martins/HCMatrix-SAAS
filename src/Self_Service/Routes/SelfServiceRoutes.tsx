@@ -1,35 +1,32 @@
-import React from "react";
-import { Route, Routes } from "react-router-dom";
-import { RequireAuth } from "react-auth-kit";
-
-import AssetDetails from "../Pages/Assets/AssetDetails";
-import Assets from "../Pages/Assets/Assets";
-import AssetTypeDetails from "../Pages/Assets/AssetTypeDetails";
-import LoanHome from "../Pages/Loan/LoanHome";
-import LoanPolicies from "../Pages/Loan/LoanPolicies";
-import LoanRequest from "../Pages/Loan/LoanRequest";
-import Monetary from "../Pages/Monetary";
-import Reimbursements from "../Pages/Reimbursements";
-import Requisition from "../Pages/Requisition";
-import SelfServiceHome from "../Pages/SelfServiceHome";
-import SurveyHome from "../Pages/Survey/SurveyHome";
-import VehicleBookingHome from "../Pages/VehicleBooking/VehicleBookingHome";
-import VehicleDetails from "../Pages/VehicleBooking/VehicleDetails";
-// leave
-import LeaveHome from "../Pages/Leave/LeaveHome";
-import LeaveSettings from "../Pages/Leave/LeaveSettings";
-import HealthAccessHome from "../Pages/HealthAccess/HealthAccessHome";
-import HealthAccessSettings from "../Pages/HealthAccess/HealthAccessSettings";
-import NewSurveyForm from "../Pages/Survey/NewSurveyForm";
-import SingleSurveyForm from "../Pages/Survey/SingleSurveyForm";
-import CRBHome from "../Pages/ConferenceRoomBooking.js/CRBHome";
-import Onboarding from "../Pages/Onboarding/Onboarding.js";
-import StartOnboarding from "../Pages/Onboarding/StartOnboarding";
-import HandOver from "../Pages/HandOver/HandOver";
-import NewForm from "../Pages/HandOver/NewForm";
-import HandOverDetails from "../Pages/HandOver/HandOverDetails";
-import HRLetters from "../Pages/HRLetters/HRLetters";
 import { appRoutes } from "AppRoutes";
+import { RequireAuth } from "react-auth-kit";
+import { Routes, Route } from "react-router-dom";
+import AssetDetails from "Self_Service/Pages/Assets/AssetDetails";
+import Assets from "Self_Service/Pages/Assets/Assets";
+import AssetTypeDetails from "Self_Service/Pages/Assets/AssetTypeDetails";
+import CRBHome from "Self_Service/Pages/ConferenceRoomBooking.js/CRBHome";
+import HandOver from "Self_Service/Pages/HandOver/HandOver";
+import HandOverDetails from "Self_Service/Pages/HandOver/HandOverDetails";
+import NewForm from "Self_Service/Pages/HandOver/NewForm";
+import HealthAccessHome from "Self_Service/Pages/HealthAccess/HealthAccessHome";
+import HealthAccessSettings from "Self_Service/Pages/HealthAccess/HealthAccessSettings";
+import HRLetters from "Self_Service/Pages/HRLetters/HRLetters";
+import LeaveHome from "Self_Service/Pages/Leave/LeaveHome";
+import LeaveSettings from "Self_Service/Pages/Leave/LeaveSettings";
+import LoanHome from "Self_Service/Pages/Loan/LoanHome";
+import LoanPolicies from "Self_Service/Pages/Loan/LoanPolicies";
+import LoanRequest from "Self_Service/Pages/Loan/LoanRequest";
+import Monetary from "Self_Service/Pages/Monetary";
+import Onboarding from "Self_Service/Pages/Onboarding/Onboarding";
+import StartOnboarding from "Self_Service/Pages/Onboarding/StartOnboarding";
+import Reimbursements from "Self_Service/Pages/Reimbursements";
+import Requisition from "Self_Service/Pages/Requisition";
+import SelfServiceHome from "Self_Service/Pages/SelfServiceHome";
+import NewSurveyForm from "Self_Service/Pages/Survey/NewSurveyForm";
+import SingleSurveyForm from "Self_Service/Pages/Survey/SingleSurveyForm";
+import SurveyHome from "Self_Service/Pages/Survey/SurveyHome";
+import VehicleBookingHome from "Self_Service/Pages/VehicleBooking/VehicleBookingHome";
+import VehicleDetails from "Self_Service/Pages/VehicleBooking/VehicleDetails";
 
 const SelfServiceRoutes = () => {
   return (
