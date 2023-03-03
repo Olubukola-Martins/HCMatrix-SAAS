@@ -99,6 +99,7 @@ export const deleteSingleGroup = async (props: IGetSingleGroupProps) => {
 };
 export interface IAddMemberToGroupProps extends IGetSingleGroupProps {
   employeeId: number;
+  isLead?: boolean;
 }
 // managementId is same as memberId
 export const addMemberToGroup = async (props: IAddMemberToGroupProps) => {
@@ -119,7 +120,7 @@ export const addMemberToGroup = async (props: IAddMemberToGroupProps) => {
 
   delete data["companyId"];
   delete data["token"];
-  delete data["employeeId"];
+  delete data["id"];
 
   const response = await axios.post(url, data, config);
   return response;
@@ -129,7 +130,7 @@ export interface IUpdateMemberToGroupProps extends IAddMemberToGroupProps {
   managementId: number;
   isLead?: boolean;
 }
-export const updateMemberToGroup = async (props: IUpdateMemberToGroupProps) => {
+export const updateMemberInGroup = async (props: IUpdateMemberToGroupProps) => {
   let url = `${process.env.REACT_APP_UTILITY_BASE_URL}/company/group/${props.id}/management/${props.managementId}`;
 
   const config = {
@@ -148,6 +149,7 @@ export const updateMemberToGroup = async (props: IUpdateMemberToGroupProps) => {
   delete data["companyId"];
   delete data["token"];
   delete data["managementId"];
+  delete data["id"];
 
   const response = await axios.put(url, data, config);
   return response;
