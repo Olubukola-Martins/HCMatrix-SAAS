@@ -6,6 +6,7 @@ import { useContext } from "react";
 import { useAuthUser } from "react-auth-kit";
 import { IModalProps } from "../../../../AppTypes/Component";
 import AddGroupForm from "./AddGroupForm";
+import { ManageGroupMembership } from "./ManageGroupMembership";
 
 interface IProps extends IModalProps {
   entityId: number;
@@ -33,14 +34,16 @@ export const EditGroupDrawer = ({ open, handleClose, entityId }: IProps) => {
       onClose={() => handleClose()}
       footer={null}
     >
-      <Collapse>
-        <Collapse.Panel key={1} header="Group Information">
-          <AddGroupForm handleClose={handleClose} group={group} />
-        </Collapse.Panel>
-        <Collapse.Panel key={2} header="Manage Members">
-          <div>span</div>
-        </Collapse.Panel>
-      </Collapse>
+      {group && (
+        <Collapse>
+          <Collapse.Panel key={1} header="Group Information">
+            <AddGroupForm handleClose={handleClose} group={group} />
+          </Collapse.Panel>
+          <Collapse.Panel key={2} header="Manage Members">
+            <ManageGroupMembership group={group} />
+          </Collapse.Panel>
+        </Collapse>
+      )}
     </Drawer>
   );
 };
