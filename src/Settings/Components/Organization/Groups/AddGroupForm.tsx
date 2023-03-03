@@ -35,7 +35,6 @@ const AddGroupForm = ({
   const { state: globalState } = globalCtx;
   const companyId = globalState.currentCompany?.id as unknown as string;
   const [form] = Form.useForm();
-  const { mutate, isLoading } = useSaveGroup();
   useEffect(() => {
     if (group) {
       form.setFieldsValue({
@@ -46,6 +45,7 @@ const AddGroupForm = ({
       });
     }
   }, [group, form]);
+  const { mutate, isLoading } = useSaveGroup();
 
   const { data: empData, isSuccess: isEmpSuccess } = useFetchEmployees({
     companyId,
