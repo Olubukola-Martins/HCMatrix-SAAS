@@ -18,6 +18,7 @@ export type TGroupMember = {
   lastName?: string;
   empUid?: string;
   email: string;
+  avatarUrl?: string;
 };
 export type TGroup = {
   id?: number;
