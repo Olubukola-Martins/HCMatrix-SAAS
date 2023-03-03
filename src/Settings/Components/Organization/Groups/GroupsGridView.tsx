@@ -62,9 +62,6 @@ const GroupBox = ({
         </div>
         <div className="flex justify-between items-center">
           <p className="text-sm">{group.email}</p>
-          <div className="rounded-full bg-caramel h-6 w-6 flex items-center justify-center ">
-            <span className="text-sm">{group.employees?.length}</span>
-          </div>
         </div>
       </div>
     </>

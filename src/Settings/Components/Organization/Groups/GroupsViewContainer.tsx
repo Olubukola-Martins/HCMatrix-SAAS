@@ -1,5 +1,4 @@
 import { TablePaginationConfig, Tooltip } from "antd";
-import { useFetchDepartments } from "APIRQHooks/Utility/departmentHooks";
 import { useFetchGroups } from "APIRQHooks/Utility/groupHooks";
 import { IAuthDets } from "AppTypes/Auth";
 import { TDataView } from "AppTypes/Component";
@@ -10,10 +9,9 @@ import { DataContainerLoader } from "GeneralComps/LoaderComps";
 import React, { useContext, useEffect, useState } from "react";
 import { useAuthUser } from "react-auth-kit";
 
-import { EditDepartmentModal } from "../Departments/EditDepartmentModal";
 import { EditGroupDrawer } from "./EditGroupDrawer";
 import GroupsTableView from "./GroupsTableView";
-import GroupsGridView from "./GroupsTableView";
+import GroupsGridView from "./GroupsGridView";
 
 const GroupsViewContainer = () => {
   const [viewId, setViewId] = useState<TDataView>("list");
@@ -85,13 +83,14 @@ const GroupsViewContainer = () => {
 
   return (
     <>
-      {entityId && (
+      {entityId ? (
         <EditGroupDrawer
           entityId={entityId}
           open={openEditModal}
           handleClose={handleClose}
         />
-      )}
+      ) : null}
+
       <div className="mt-5 flex flex-col gap-4">
         <div className="view-toggler flex rounded overflow-hidden items-center">
           <Tooltip title="Grid View">
