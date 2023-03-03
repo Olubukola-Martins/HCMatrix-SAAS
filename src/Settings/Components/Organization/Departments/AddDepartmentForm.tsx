@@ -1,20 +1,17 @@
 import { Form, Input, Select, Spin } from "antd";
+import { ICreateDepProps } from "ApiRequesHelpers/Utility/departments";
+import { useCreateDepartment } from "APIRQHooks/Utility/departmentHooks";
+import { IAuthDets } from "AppTypes/Auth";
+import { GlobalContext, EGlobalOps } from "Contexts/GlobalContextProvider";
+import {
+  textInputValidationRules,
+  emailValidationRules,
+} from "FormHelpers/validation";
+import { openNotification } from "NotificationHelpers";
 import { useContext } from "react";
 import { useAuthUser } from "react-auth-kit";
 import { useQueryClient } from "react-query";
 import { BeatLoader } from "react-spinners";
-import { ICreateDepProps } from "../../../../ApiRequesHelpers/Utility/departments";
-import { useCreateDepartment } from "../../../../APIRQHooks/Utility/departmentHooks";
-import { IAuthDets } from "../../../../AppTypes/Auth";
-import {
-  EGlobalOps,
-  GlobalContext,
-} from "../../../../Contexts/GlobalContextProvider";
-import {
-  textInputValidationRules,
-  emailValidationRules,
-} from "../../../../FormHelpers/validation";
-import { openNotification } from "../../../../NotificationHelpers";
 
 const AddDepartmentForm = ({ handleClose }: { handleClose: Function }) => {
   const queryClient = useQueryClient();

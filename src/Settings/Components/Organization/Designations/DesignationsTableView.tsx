@@ -1,7 +1,7 @@
 import React from "react";
 import { motion } from "framer-motion";
-import { TDepartment, TDesignation } from "../../../../AppTypes/DataEntitities";
-import { PaginationProps, Table } from "antd";
+import { TDesignation } from "../../../../AppTypes/DataEntitities";
+import { Table } from "antd";
 import { ColumnsType, TablePaginationConfig, TableProps } from "antd/lib/table";
 
 interface IProps {

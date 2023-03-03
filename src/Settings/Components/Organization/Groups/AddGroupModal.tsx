@@ -1,17 +1,17 @@
 import { Modal } from "antd";
 import { IModalProps } from "AppTypes/Component";
-import AddDepartmentForm from "./AddDepartmentForm";
+import AddGroupForm from "./AddGroupForm";
 
-export const AddDepartmentModal = ({ open, handleClose }: IModalProps) => {
+export const AddGroupModal = ({ open, handleClose }: IModalProps) => {
   return (
     <Modal
-      title="Add Department"
+      title="Add Group"
       open={open}
       onCancel={() => handleClose()}
       footer={null}
       style={{ top: 20 }}
     >
-      <AddDepartmentForm handleClose={handleClose} />
+      <AddGroupForm handleClose={handleClose} />
     </Modal>
   );
 };

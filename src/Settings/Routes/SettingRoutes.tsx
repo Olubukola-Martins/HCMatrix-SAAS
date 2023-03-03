@@ -98,6 +98,7 @@ const SettingRoutes = () => {
           </RequireAuth>
         }
       />
+
       {/* QUICK FIX */}
       <Route
         path={appRoutes.singleEmployee().format}

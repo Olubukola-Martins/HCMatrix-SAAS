@@ -1,5 +1,5 @@
 import { TablePaginationConfig, Tooltip } from "antd";
-import { useFetchDepartments } from "APIRQHooks/Utility/departmentHooks";
+import { useFetchGroups } from "APIRQHooks/Utility/groupHooks";
 import { IAuthDets } from "AppTypes/Auth";
 import { TDataView } from "AppTypes/Component";
 import { gridPageSize, listPageSize } from "Constants";
@@ -8,11 +8,12 @@ import { ErrorComponent } from "GeneralComps/ErrorComps";
 import { DataContainerLoader } from "GeneralComps/LoaderComps";
 import React, { useContext, useEffect, useState } from "react";
 import { useAuthUser } from "react-auth-kit";
-import { DepartmentsGridView } from "./DepartmentsGridView";
-import { DepartmentsTableView } from "./DepartmentsTableView";
-import { EditDepartmentModal } from "./EditDepartmentModal";
 
-const DepartmentsViewContainer = () => {
+import { EditGroupDrawer } from "./EditGroupDrawer";
+import GroupsTableView from "./GroupsTableView";
+import GroupsGridView from "./GroupsGridView";
+
+const GroupsViewContainer = () => {
   const [viewId, setViewId] = useState<TDataView>("list");
   const handleViewId = (val: TDataView) => {
     setViewId(val);
@@ -51,12 +52,7 @@ const DepartmentsViewContainer = () => {
       }));
     }
   };
-  const {
-    data: departmentData,
-    isError,
-    isFetching,
-    isSuccess,
-  } = useFetchDepartments({
+  const { data, isError, isFetching, isSuccess } = useFetchGroups({
     token,
     companyId,
     pagination: {
@@ -74,24 +70,27 @@ const DepartmentsViewContainer = () => {
       setPagination((val) => ({ ...val, pageSize: listPageSize, current: 1 }));
     }
   }, [viewId]);
-  const [departmentId, setDepartmentId] = useState(0);
+  const [entityId, setEntityId] = useState<number>();
   const [openEditModal, setOpenEditModal] = useState(false);
   const editDepartment = (id: number) => {
-    setDepartmentId(id);
+    setEntityId(id);
     setOpenEditModal(true);
   };
   const handleClose = () => {
-    setDepartmentId(0);
+    setEntityId(0);
     setOpenEditModal(false);
   };
 
   return (
     <>
-      <EditDepartmentModal
-        departmentId={departmentId}
-        open={openEditModal}
-        handleClose={handleClose}
-      />
+      {entityId ? (
+        <EditGroupDrawer
+          entityId={entityId}
+          open={openEditModal}
+          handleClose={handleClose}
+        />
+      ) : null}
+
       <div className="mt-5 flex flex-col gap-4">
         <div className="view-toggler flex rounded overflow-hidden items-center">
           <Tooltip title="Grid View">
@@ -127,22 +126,22 @@ const DepartmentsViewContainer = () => {
             />
           )}
           {viewId === "grid" && isSuccess && (
-            <DepartmentsGridView
-              departments={departmentData.data}
+            <GroupsGridView
+              groups={data.data}
               loading={isFetching}
-              pagination={{ ...pagination, total: departmentData.total }}
+              pagination={{ ...pagination, total: data.total }}
               onChange={onChange}
-              editDepartment={editDepartment}
+              editGroup={editDepartment}
             />
           )}
 
           {viewId === "list" && isSuccess && (
-            <DepartmentsTableView
-              departments={departmentData.data}
+            <GroupsTableView
+              groups={data.data}
               loading={isFetching}
-              pagination={{ ...pagination, total: departmentData.total }}
+              pagination={{ ...pagination, total: data.total }}
               onChange={onChange}
-              editDepartment={editDepartment}
+              editGroup={editDepartment}
             />
           )}
         </div>
@@ -151,4 +150,4 @@ const DepartmentsViewContainer = () => {
   );
 };
 
-export default DepartmentsViewContainer;
+export default GroupsViewContainer;
