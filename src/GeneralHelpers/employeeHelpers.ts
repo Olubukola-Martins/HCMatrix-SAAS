@@ -7,15 +7,15 @@ export const employeeStatusColor = (status: TEmployeeStatus) => {
       color = "text-[#097969]";
       break;
     case "terminated":
-      color = "text-[#ffa]";
+      color = "text-[#F6350C]";
 
       break;
     case "probation":
-      color = "text-[#ffa]";
+      color = "text-[#FFC300]";
 
       break;
     case "suspended":
-      color = "text-[#ffa]";
+      color = "text-[#FFC300]";
 
       break;
 
