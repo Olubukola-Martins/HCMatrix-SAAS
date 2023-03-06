@@ -157,7 +157,7 @@ export const EmployeeProfileContainer = ({
             <Tabs.TabPane tab="Profile" key="1">
               <Profile employee={employee} />
               <EmergencyContact />
-              <Dependents />
+              <Dependents employee={employee} />
             </Tabs.TabPane>
             <Tabs.TabPane tab="Job Information" key="2">
               <JobInformation employee={employee} />

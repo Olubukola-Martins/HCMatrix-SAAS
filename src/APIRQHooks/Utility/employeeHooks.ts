@@ -4,12 +4,14 @@ import { useSignOut } from "react-auth-kit";
 
 import { useMutation, useQuery } from "react-query";
 import {
+  addDependantToEmployee,
   createEmployee,
   createEmployeeBank,
   createEmployeeJobInfo,
   createEmployeePension,
   createEmployeePersonalInfo,
   createEmployeeWallet,
+  deleteDependantOfEmployee,
   deleteEmployeeEducationDetail,
   deleteEmployeeEmploymentHistory,
   deleteEmployeeSkill,
@@ -22,6 +24,7 @@ import {
   saveEmployeeEducationDetail,
   saveEmployeeEmployementHistory,
   saveEmployeeSkill,
+  updateDependantOfEmployee,
   updateEmployee,
   updateEmployeeJobInfo,
   updateEmployeePersonalInfo,
@@ -30,6 +33,7 @@ import {
   TBank,
   TEducationDetail,
   TEmployee,
+  TEmployeeDependant,
   TEmployeeStatus,
   TEmployementHistory,
   TInvitedEmployee,
@@ -240,6 +244,15 @@ export const useFetchSingleEmployee = ({
             school: item.school,
           })
         );
+        const dependents = fetchedData?.dependents?.map(
+          (item: any): TEmployeeDependant => ({
+            id: item.id,
+            fullName: item.fullName,
+            dob: item.dob,
+            relationship: item.relationship,
+            phoneNumber: item.phoneNumber,
+          })
+        );
 
         // const item = fetchedData.result;
         // TO DO -> update employee type and populate with neccessary data
@@ -277,6 +290,7 @@ export const useFetchSingleEmployee = ({
           skills,
           employmentHistory,
           educationDetails,
+          dependents,
 
           // no need to breakdown as we adhere to Backend Schema sent from respone
         };
@@ -373,4 +387,15 @@ export const useDeleteEmployeeEmploymentHistory = () => {
 };
 export const useDeleteEmployeeEducationDetail = () => {
   return useMutation(deleteEmployeeEducationDetail);
+};
+
+// dependant
+export const useDeleteDependantOfEmployee = () => {
+  return useMutation(deleteDependantOfEmployee);
+};
+export const useUpdateDependantOfEmployee = () => {
+  return useMutation(updateDependantOfEmployee);
+};
+export const useAddDependantToEmployee = () => {
+  return useMutation(addDependantToEmployee);
 };

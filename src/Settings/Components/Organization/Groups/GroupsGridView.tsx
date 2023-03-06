@@ -8,6 +8,7 @@ interface IProps {
   pagination?: TablePaginationConfig;
   onChange: PaginationProps["onChange"];
   editGroup: (val: number) => void;
+  deleteGroup: (val: number) => void;
 }
 
 const GroupsGridView = ({
@@ -16,12 +17,18 @@ const GroupsGridView = ({
   pagination,
   onChange,
   editGroup,
+  deleteGroup,
 }: IProps) => {
   return (
     <div>
       <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4  gap-6">
         {groups.map((item) => (
-          <GroupBox key={item.id} group={item} editGroup={editGroup} />
+          <GroupBox
+            key={item.id}
+            group={item}
+            editGroup={editGroup}
+            deleteGroup={deleteGroup}
+          />
         ))}
       </div>
       <div className="mt-4 flex justify-end">
@@ -34,9 +41,11 @@ const GroupsGridView = ({
 const GroupBox = ({
   group,
   editGroup,
+  deleteGroup,
 }: {
   group: TGroup;
   editGroup: (val: number) => void;
+  deleteGroup: (val: number) => void;
 }) => {
   return (
     <>
@@ -52,7 +61,9 @@ const GroupBox = ({
                 <Menu.Item onClick={() => editGroup(group?.id as number)}>
                   Edit
                 </Menu.Item>
-                <Menu.Item>Delete</Menu.Item>
+                <Menu.Item onClick={() => deleteGroup(group?.id as number)}>
+                  Delete
+                </Menu.Item>
               </Menu>
             }
             trigger={["click"]}

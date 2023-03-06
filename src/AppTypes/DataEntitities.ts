@@ -20,6 +20,13 @@ export type TGroupMember = {
   email: string;
   avatarUrl?: string;
 };
+export type TEmployeeDependant = {
+  id: number;
+  fullName: string;
+  dob: string;
+  phoneNumber: string;
+  relationship: string;
+};
 export type TGroup = {
   id?: number;
   name: string;
@@ -227,6 +234,7 @@ export type TEmployee = {
   skills?: TSkill[];
   employmentHistory?: TEmployementHistory[];
   educationDetails?: TEducationDetail[];
+  dependents?: TEmployeeDependant[];
 };
 export type TInvitedEmployee = {
   id: number;

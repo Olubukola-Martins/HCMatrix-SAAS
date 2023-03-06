@@ -1,8 +1,12 @@
 import { DatePicker, Drawer, Form, Input, Select, Spin } from "antd";
 
-import { useAddDependantToEmployee } from "APIRQHooks/Utility/employeeHooks";
+import {
+  useAddDependantToEmployee,
+  useUpdateDependantOfEmployee,
+} from "APIRQHooks/Utility/employeeHooks";
 import { IAuthDets } from "AppTypes/Auth";
 import { IDrawerProps } from "AppTypes/Component";
+import { TEmployeeDependant } from "AppTypes/DataEntitities";
 import { relationships } from "Constants";
 import { GlobalContext } from "Contexts/GlobalContextProvider";
 import {
@@ -10,16 +14,23 @@ import {
   phoneNumberValidationRule,
 } from "FormHelpers/validation";
 import Button from "GeneralComps/Button";
+import moment from "moment";
 import { openNotification } from "NotificationHelpers";
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import { useAuthUser } from "react-auth-kit";
 import { useQueryClient } from "react-query";
 
 interface IProps extends IDrawerProps {
   employeeId: number;
+  dependent: TEmployeeDependant;
 }
 
-export const AddDependents = ({ open, handleClose, employeeId }: IProps) => {
+export const EditDependant = ({
+  open,
+  handleClose,
+  employeeId,
+  dependent,
+}: IProps) => {
   const queryClient = useQueryClient();
   const [form] = Form.useForm();
 
@@ -31,7 +42,15 @@ export const AddDependents = ({ open, handleClose, employeeId }: IProps) => {
   const globalCtx = useContext(GlobalContext);
   const { state: globalState } = globalCtx;
   const companyId = globalState.currentCompany?.id as unknown as string;
-  const { mutate, isLoading } = useAddDependantToEmployee();
+  useEffect(() => {
+    form.setFieldsValue({
+      dob: moment(dependent.dob),
+      fullName: dependent.fullName,
+      phoneNumber: dependent.phoneNumber,
+      relationship: dependent.relationship,
+    });
+  }, [form, dependent]);
+  const { mutate, isLoading } = useUpdateDependantOfEmployee();
 
   const handleSubmit = (data: any) => {
     if (companyId) {
@@ -43,6 +62,7 @@ export const AddDependents = ({ open, handleClose, employeeId }: IProps) => {
       });
       mutate(
         {
+          id: dependent.id,
           employeeId,
           companyId,
           token,
@@ -85,7 +105,7 @@ export const AddDependents = ({ open, handleClose, employeeId }: IProps) => {
   };
   return (
     <Drawer
-      title="Add Dependent"
+      title="Edit Dependent"
       placement="right"
       onClose={() => handleClose()}
       open={open}
