@@ -79,6 +79,32 @@ export const workModels = [
     value: "remote",
   },
 ];
+export const relationships = [
+  {
+    label: "Brother",
+    value: "brother",
+  },
+  {
+    label: "Sister",
+    value: "sister",
+  },
+  {
+    label: "Girlfriend",
+    value: "girlfriend",
+  },
+  {
+    label: "Nephew",
+    value: "nephew",
+  },
+  {
+    label: "Niece",
+    value: "niece",
+  },
+  {
+    label: "Cousin",
+    value: "cousin",
+  },
+];
 export const defaultImage =
   "https://res.cloudinary.com/ddvaelej7/image/upload/v1639659955/HCmatrix/User-Icon_wdkmsf.png";
 export const employmentTypes = [
