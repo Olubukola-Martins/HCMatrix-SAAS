@@ -3,6 +3,7 @@ import {
   ICurrentCompany,
   TBank,
   TEducationDetail,
+  TEmployeeDependant,
   TEmployeeStatus,
   TEmployementHistory,
   TJobInfo,
@@ -600,5 +601,101 @@ export const getSingleEmployee = async (props: IGetSingleEmpProps) => {
   };
 
   const response = await axios.get(url, config);
+  return response;
+};
+
+// dependants
+
+type Omit<T, K extends keyof T> = Pick<T, Exclude<keyof T, K>>;
+type PartialBy<T, K extends keyof T> = Omit<T, K> & Partial<Pick<T, K>>;
+type MakeDependantInput = PartialBy<TEmployeeDependant, "id">;
+export interface IAddDependantToEmployeeProps
+  extends ICurrentCompany,
+    MakeDependantInput {
+  employeeId: number;
+}
+export const addDependantToEmployee = async (
+  props: IAddDependantToEmployeeProps
+) => {
+  let url = `${process.env.REACT_APP_UTILITY_BASE_URL}/employee/${props.employeeId}/dependent`;
+
+  const config = {
+    headers: {
+      Accept: "application/json",
+      Authorization: `Bearer ${props.token}`,
+      "x-company-id": props.companyId,
+    },
+  };
+
+  // necessary to make immediate changes when in  a central place when schema changes
+  const data: any = {
+    ...props,
+  };
+
+  delete data["companyId"];
+  delete data["token"];
+  delete data["id"];
+  delete data["employeeId"];
+
+  const response = await axios.post(url, data, config);
+  return response;
+};
+export interface IUpdateDependantOfEmployeeProps
+  extends ICurrentCompany,
+    TEmployeeDependant {
+  employeeId: number;
+}
+export const updateDependantOfEmployee = async (
+  props: IUpdateDependantOfEmployeeProps
+) => {
+  let url = `${process.env.REACT_APP_UTILITY_BASE_URL}/employee/${props.employeeId}/dependent/${props.id}`;
+
+  const config = {
+    headers: {
+      Accept: "application/json",
+      Authorization: `Bearer ${props.token}`,
+      "x-company-id": props.companyId,
+    },
+  };
+
+  // necessary to make immediate changes when in  a central place when schema changes
+  const data: any = {
+    ...props,
+  };
+
+  delete data["companyId"];
+  delete data["token"];
+  delete data["id"];
+  delete data["employeeId"];
+
+  const response = await axios.patch(url, data, config);
+  return response;
+};
+export interface IDeleteDependantOfEmployeeProps extends ICurrentCompany {
+  employeeId: number;
+  dependantId: number;
+}
+export const deleteDependantOfEmployee = async (
+  props: IDeleteDependantOfEmployeeProps
+) => {
+  let url = `${process.env.REACT_APP_UTILITY_BASE_URL}/employee/${props.employeeId}/dependent/${props.dependantId}`;
+
+  const config = {
+    headers: {
+      Accept: "application/json",
+      Authorization: `Bearer ${props.token}`,
+      "x-company-id": props.companyId,
+    },
+  };
+
+  // necessary to make immediate changes when in  a central place when schema changes
+  const data: any = {
+    ...props,
+  };
+
+  delete data["companyId"];
+  delete data["token"];
+
+  const response = await axios.delete(url, config);
   return response;
 };
