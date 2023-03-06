@@ -1,5 +1,5 @@
 import { TablePaginationConfig, Tooltip } from "antd";
-import { useFetchGroups } from "APIRQHooks/Utility/groupHooks";
+import { useDeleteGroup, useFetchGroups } from "APIRQHooks/Utility/groupHooks";
 import { IAuthDets } from "AppTypes/Auth";
 import { TDataView } from "AppTypes/Component";
 import { gridPageSize, listPageSize } from "Constants";
@@ -12,8 +12,13 @@ import { useAuthUser } from "react-auth-kit";
 import { EditGroupDrawer } from "./EditGroupDrawer";
 import GroupsTableView from "./GroupsTableView";
 import GroupsGridView from "./GroupsGridView";
+import { TGroup } from "AppTypes/DataEntitities";
+import { openNotification } from "NotificationHelpers";
+import { useQueryClient } from "react-query";
 
 const GroupsViewContainer = () => {
+  const queryClient = useQueryClient();
+
   const [viewId, setViewId] = useState<TDataView>("list");
   const handleViewId = (val: TDataView) => {
     setViewId(val);
@@ -80,6 +85,46 @@ const GroupsViewContainer = () => {
     setEntityId(0);
     setOpenEditModal(false);
   };
+  const { mutate: deleteMutate } = useDeleteGroup();
+
+  const handleDeleteGroup = (id: number) => {
+    if (companyId) {
+      deleteMutate(
+        {
+          id: id,
+          companyId,
+
+          token,
+        },
+        {
+          onError: (err: any) => {
+            openNotification({
+              state: "error",
+              title: "Error Occurred",
+              description:
+                err?.response.data.message ?? err?.response.data.error.message,
+            });
+          },
+          onSuccess: (res: any) => {
+            openNotification({
+              state: "success",
+
+              title: "Success",
+              description: res.data.message,
+              // duration: 0.4,
+            });
+
+            // form.resetFields(); //will be added if it was empty vals under to prevent it from being used in the row below on edit
+
+            queryClient.invalidateQueries({
+              queryKey: ["groups"],
+              // exact: true,
+            });
+          },
+        }
+      );
+    }
+  };
 
   return (
     <>
@@ -132,6 +177,7 @@ const GroupsViewContainer = () => {
               pagination={{ ...pagination, total: data.total }}
               onChange={onChange}
               editGroup={editDepartment}
+              deleteGroup={handleDeleteGroup}
             />
           )}
 
@@ -142,6 +188,7 @@ const GroupsViewContainer = () => {
               pagination={{ ...pagination, total: data.total }}
               onChange={onChange}
               editGroup={editDepartment}
+              deleteGroup={handleDeleteGroup}
             />
           )}
         </div>

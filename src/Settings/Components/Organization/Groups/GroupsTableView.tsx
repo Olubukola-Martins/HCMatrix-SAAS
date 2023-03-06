@@ -8,6 +8,7 @@ interface IProps {
   pagination?: TablePaginationConfig;
   onChange?: TableProps<TGroup>["onChange"];
   editGroup: (val: number) => void;
+  deleteGroup: (val: number) => void;
 }
 const GroupsGridView = ({
   groups,
@@ -15,6 +16,7 @@ const GroupsGridView = ({
   pagination,
   onChange,
   editGroup,
+  deleteGroup,
 }: IProps) => {
   const columns: ColumnsType<TGroup> = [
     {
@@ -44,8 +46,11 @@ const GroupsGridView = ({
           <i
             className="ri-pencil-line cursor-pointer hover:text-caramel"
             onClick={() => editGroup(item.id as number)}
-          ></i>
-          <i className="ri-delete-bin-line cursor-pointer hover:text-caramel"></i>
+          />
+          <i
+            className="ri-delete-bin-line cursor-pointer hover:text-caramel"
+            onClick={() => deleteGroup(item.id as number)}
+          />
         </div>
       ),
     },
