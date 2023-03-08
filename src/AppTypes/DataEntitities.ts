@@ -10,6 +10,12 @@ export type TIndustry = {
   id: number;
   name: string;
 };
+export type TEmergencyContact = {
+  fullName: string;
+  address: string;
+  relationship: string;
+  phoneNumber: string;
+};
 export type TGroupMember = {
   id: number;
   employeeId: number;
@@ -235,6 +241,7 @@ export type TEmployee = {
   employmentHistory?: TEmployementHistory[];
   educationDetails?: TEducationDetail[];
   dependents?: TEmployeeDependant[];
+  emergencyContact?: TEmergencyContact;
 };
 export type TInvitedEmployee = {
   id: number;

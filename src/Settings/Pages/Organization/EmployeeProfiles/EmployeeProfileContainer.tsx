@@ -25,7 +25,6 @@ import { useAuthUser } from "react-auth-kit";
 import { IAuthDets } from "AppTypes/Auth";
 import { GlobalContext } from "Contexts/GlobalContextProvider";
 import { useFetchSingleEmployee } from "APIRQHooks/Utility/employeeHooks";
-import { useParams } from "react-router-dom";
 import { appRoutes } from "AppRoutes";
 import { defaultImage } from "Constants";
 
@@ -51,7 +50,7 @@ export const EmployeeProfileContainer = ({
   });
   const [openDrawer, setOpenDrawer] = useState(false);
   const [openResignation, setOpenResignation] = useState(false);
-  console.log("EMPLOYEE", employee, employeeId);
+
   return (
     <DashboardLayout>
       <div className="Container mt-3">
@@ -156,7 +155,7 @@ export const EmployeeProfileContainer = ({
           <Tabs defaultActiveKey="1" className="mt-5 tabBlackActive">
             <Tabs.TabPane tab="Profile" key="1">
               <Profile employee={employee} />
-              <EmergencyContact />
+              <EmergencyContact employee={employee} />
               <Dependents employee={employee} />
             </Tabs.TabPane>
             <Tabs.TabPane tab="Job Information" key="2">

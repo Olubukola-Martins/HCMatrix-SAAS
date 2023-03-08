@@ -43,7 +43,6 @@ import {
   TWallet,
 } from "../../AppTypes/DataEntitities";
 import { IPaginationProps } from "../../AppTypes/Pagination";
-import { openNotification } from "../../NotificationHelpers";
 
 interface IFRQResendInviteProps {
   companyId: string;
@@ -292,6 +291,7 @@ export const useFetchSingleEmployee = ({
           employmentHistory,
           educationDetails,
           dependents,
+          emergencyContact: item?.emergencyContact,
 
           // no need to breakdown as we adhere to Backend Schema sent from respone
         };
