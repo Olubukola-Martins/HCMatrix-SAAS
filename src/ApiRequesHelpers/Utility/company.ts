@@ -3,6 +3,30 @@ import { IPaginationProps } from "AppTypes/Pagination";
 import { ISearchParams } from "AppTypes/Search";
 import axios from "axios";
 
+export interface ICreateCompSocialAuthProps {
+  name: string;
+  phoneNumber: string;
+  industryId: number;
+  token: string;
+}
+export const createCompanyFromSocialAuth = async (
+  props: ICreateCompSocialAuthProps
+) => {
+  const url = `${process.env.REACT_APP_UTILITY_BASE_URL}/company/auth`;
+  const config = {
+    headers: {
+      Accept: "application/json",
+      Authorization: `Bearer ${props.token}`,
+    },
+  };
+
+  // necessary to make immediate changes when in  a central place when schema changes
+  const data: any = props;
+  delete data["token"];
+
+  const response = await axios.post(url, data, config);
+  return response;
+};
 export interface ICreateCompProps {
   name: string;
   email: string;

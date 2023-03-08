@@ -15,6 +15,7 @@ import { AddSisterCompanyForm } from "./AddSisterCompany/AddSisterCompanyForm";
 import { PlusOutlined } from "@ant-design/icons";
 import { IAuthDets } from "AppTypes/Auth";
 import { defaultImage } from "Constants";
+import { useFetchSingleEmployee } from "APIRQHooks/Utility/employeeHooks";
 
 type TCompany = {
   value: string;
@@ -49,6 +50,7 @@ const TopBar = ({
   const authDetails = auth() as unknown as IAuthDets;
 
   const user = authDetails?.user;
+  const userToken = authDetails?.userToken;
   const globalCtx = useContext(GlobalContext);
   const { state: globalState, dispatch: globalDispatch } = globalCtx;
 
@@ -56,8 +58,16 @@ const TopBar = ({
   const currentCompany = authDetails?.companies.find(
     (item) => item.companyId === +currentCompanyId
   );
+  // done to make changes to user employee profile real-time
 
-  const avatarUrl = currentCompany?.avatarUrl;
+  const employeeId = currentCompany?.id as number;
+  const { data: employee } = useFetchSingleEmployee({
+    token: userToken,
+    companyId: currentCompanyId,
+    employeeId: employeeId,
+  });
+  const avatarUrl = employee?.avatarUrl;
+  // done to make changes to user employee profile real-time
 
   const defaultCompanies = authDetails?.companies.map((item: any) => ({
     value: item.company.name,

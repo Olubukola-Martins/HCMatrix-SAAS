@@ -1,4 +1,5 @@
 import {
+  createCompanyFromSocialAuth,
   getCompanyParameters,
   saveCompanyParameter,
 } from "ApiRequesHelpers/Utility/company";
@@ -10,6 +11,9 @@ import { useMutation, useQuery } from "react-query";
 
 export const useSaveCompanyParameter = () => {
   return useMutation(saveCompanyParameter);
+};
+export const useCreateCompanyFromSocialAuth = () => {
+  return useMutation(createCompanyFromSocialAuth);
 };
 
 interface IFRQDataProps {
