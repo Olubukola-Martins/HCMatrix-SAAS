@@ -6,39 +6,31 @@ import microsoft from "../Assets/Images/microsoft.svg";
 import google from "../Assets/Images/google.svg";
 import office from "../Assets/Images/office.svg";
 import linkedin from "../Assets/Images/linkedin.svg";
-import { Divider, Form, Input } from "antd";
+import { Divider, Form, Input, Select } from "antd";
 import "../Style/style.css";
-import { Link, Navigate, useSearchParams } from "react-router-dom";
+
+import { Link, Navigate, useParams, useSearchParams } from "react-router-dom";
 import { useEffect } from "react";
 import Aos from "aos";
 import "aos/dist/aos.css";
-import UserLoginForm from "../Components/UserLoginForm";
 import { useIsAuthenticated } from "react-auth-kit";
-import { useMutation } from "react-query";
-import {
-  loginUserWithMicrosoft,
-  o365MicrosoftRedirectUrl,
-} from "ApiRequesHelpers/Auth";
+import MicrosoftVerificationStatus from "Auth/Components/MicrosoftVerificationStatus";
 
-export const Login = () => {
+export const VerifyMicrosoftAuthentication = () => {
   const isAuthenticated = useIsAuthenticated();
-  // const { mutate } = useMutation(loginUserWithMicrosoft);
 
-  const handleMicro = () => {
-    loginUserWithMicrosoft()
-      .then((res) => {
-        const link = res.data.data;
-        window.location.replace(link);
-      })
-      .catch((err) => console.log("Micro ERR", err));
-  };
   const [searchParams] = useSearchParams();
-  const email = searchParams.get("email");
-  const password = searchParams.get("password");
+  const code = searchParams.get("code") ?? "";
+  const client_info = searchParams.get("client_info") ?? "";
+  const session_state = searchParams.get("session_state") ?? "";
 
+  // validate the users token
+  // if correct proceed to login
+  // if it isnt notify and tell user to try login instead
   useEffect(() => {
     Aos.init({ duration: 1500 });
   }, []);
+
   return (
     <>
       {isAuthenticated() && <Navigate to="/" replace={true} />}
@@ -56,19 +48,20 @@ export const Login = () => {
                   data-aos="fade-down"
                   className="text-white text-xl font-bold"
                 >
-                  Great To Have You Back!
+                  Welcome back to HCMatrix!
                 </h2>
                 <p className="pt-6 pb-4">
-                  We provide you with a better and more dependable approach to
-                  <br className="hidden md:flex" /> operating your business to
-                  boost profits and productivity.
+                  Unable to verify email address?{" "}
+                  <br className="hidden md:flex" />
+                  Please login with your personal information to stay
+                  <br className="hidden md:flex" /> connected with us.
                 </p>
                 <div className="flex justify-center">
                   <Link
-                    to="/register"
+                    to="/login"
                     className="border justify-center flex items-center gap-3 border-white rounded px-16 py-1 text-white hover:border-gray-700 font-medium text-base transition duration-300 ease-in-out"
                   >
-                    <i className="ri-arrow-left-line"></i> <span>Sign Up</span>
+                    <i className="ri-arrow-left-line"></i> <span>Sign In</span>
                   </Link>
                 </div>
               </div>
@@ -76,37 +69,32 @@ export const Login = () => {
           </div>
         </div>
         <div
-          className="Container w-full h-screen py-10 bg-cover bg-no-repeat text-center relative overflow-x-hidden overflow-y-auto"
+          className="Container w-full h-screen py-10 bg-cover bg-no-repeat text-center relative overflow-y-auto"
           style={{ backgroundImage: `url(${lightBg})` }}
         >
-          <div className="formWrap pt-10" style={{ maxWidth: 500 }}>
+          <div className="formWrap pt-12 lg:pt-14" style={{ maxWidth: 500 }}>
             <div>
               <div
-                data-aos="fade-left"
+                // data-aos="zoom-in"
                 style={{
                   boxShadow:
                     "0 2px 5px rgba(0,0,0,0.12), 1px 1px 2px rgba(0,0,0,0.24)",
                 }}
-                className="pb-5 pt-10 rounded-md px-6"
+                className="pb-5 pt-6 rounded-md px-6"
               >
                 <h2 className="text-xl md:text-2xl font-bold">
-                  Login to your account
+                  Verifying Email Address
                 </h2>
-                <p className="pt-2 pb-7">Getting started made easy</p>
+                <p className="pt-2 pb-7">
+                  Wait a second, while we verify your email
+                </p>
                 <div className="lg:px-14">
-                  {email && password ? (
-                    <UserLoginForm autoLoginDetails={{ email, password }} />
-                  ) : (
-                    <UserLoginForm />
-                  )}
-                  <Link
-                    to="/forgot-password"
-                    className="mb-3 flex justify-end cursor-pointer pt-2 text-sm hover:text-black"
-                  >
-                    Forgot password ?
-                  </Link>
+                  <MicrosoftVerificationStatus
+                    {...{ client_info, code, session_state }}
+                  />
+
                   <Divider>
-                    <span className="text-sm">Sign In with</span>
+                    <span className="text-sm">Sign in with</span>
                   </Divider>
                   <div className="flex items-center justify-center gap-6">
                     <img
@@ -114,9 +102,7 @@ export const Login = () => {
                       alt="microsoft"
                       className="cursor-pointer"
                       title="Microsoft"
-                      onClick={handleMicro}
                     />
-
                     <img
                       src={google}
                       alt="google"

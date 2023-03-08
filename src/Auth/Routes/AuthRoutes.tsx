@@ -1,5 +1,6 @@
 import { appRoutes } from "AppRoutes";
 import { InvitedEmployeeForm } from "Auth/Pages/InvitedEmployeeForm";
+import { VerifyMicrosoftAuthentication } from "Auth/Pages/VerifyMicrosoftAuthentication";
 import { Route, Routes } from "react-router-dom";
 import { EmployeeRegister } from "../Pages/EmployeeRegister";
 import { ForgotPassword } from "../Pages/ForgotPassword";
@@ -10,6 +11,10 @@ import { VerifyAdminEmail } from "../Pages/VerifyAdminEmail";
 const AuthRoutes = () => {
   return (
     <Routes>
+      <Route
+        path={appRoutes.microsoftCallback}
+        element={<VerifyMicrosoftAuthentication />}
+      />
       <Route path={appRoutes.login} element={<Login />} />
       <Route path={appRoutes.register} element={<Register />} />
       <Route path={appRoutes.verify} element={<VerifyAdminEmail />} />

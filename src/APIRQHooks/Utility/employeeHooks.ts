@@ -22,6 +22,7 @@ import {
   IGetSingleEmpProps,
   resendEmployeeInvite,
   saveEmployeeEducationDetail,
+  saveEmployeeEmergencyContact,
   saveEmployeeEmployementHistory,
   saveEmployeeSkill,
   updateDependantOfEmployee,
@@ -398,4 +399,10 @@ export const useUpdateDependantOfEmployee = () => {
 };
 export const useAddDependantToEmployee = () => {
   return useMutation(addDependantToEmployee);
+};
+
+// emergency contact
+
+export const useSaveEmployeeEmergencyContact = () => {
+  return useMutation(saveEmployeeEmergencyContact);
 };
