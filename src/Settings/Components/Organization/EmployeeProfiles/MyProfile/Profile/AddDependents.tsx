@@ -61,8 +61,6 @@ export const AddDependents = ({ open, handleClose, employeeId }: IProps) => {
             });
           },
           onSuccess: (res: any) => {
-            const result = res.data.data;
-
             openNotification({
               state: "success",
 
