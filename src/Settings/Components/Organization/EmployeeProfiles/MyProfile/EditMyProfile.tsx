@@ -1,4 +1,13 @@
-import { Drawer, Form, Input, Select, Spin, Switch, Upload } from "antd";
+import {
+  Avatar,
+  Drawer,
+  Form,
+  Input,
+  Select,
+  Spin,
+  Switch,
+  Upload,
+} from "antd";
 import { IUpdateEmpProps } from "ApiRequesHelpers/Utility/employee";
 import { useFetchRoles } from "APIRQHooks/Auth/roleHooks";
 import { useFetchDepartments } from "APIRQHooks/Utility/departmentHooks";
@@ -51,7 +60,7 @@ export const EditMyProfile = ({ open, handleClose, employee }: IProps) => {
         hasSelfService: employee.hasSelfService,
       });
     }
-  }, [employee]);
+  }, [employee, form, avatarUrl]);
 
   const { data: designations, isFetching: isDesgFetching } =
     useFetchDesignations({
@@ -140,10 +149,10 @@ export const EditMyProfile = ({ open, handleClose, employee }: IProps) => {
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
           <div className="flex justify-center">
             <div>
-              <img
-                src={!!avatarUrl ? avatarUrl : defaultImage}
-                alt="user"
-                className="h-28"
+              <Avatar
+                src={!!avatarUrl ? avatarUrl : employee?.avatarUrl}
+                size={110}
+                shape="circle"
               />
               <div className="mt-4">
                 <FileUpload
