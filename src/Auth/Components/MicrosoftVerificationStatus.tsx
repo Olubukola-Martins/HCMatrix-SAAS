@@ -316,13 +316,13 @@ const MicrosoftVerificationStatus = ({
         closable={false}
       >
         <Form layout="vertical" onFinish={handleFinish}>
-          <Form.Item name={"name"}>
-            <Input />
+          <Form.Item name={"name"} label="Company name">
+            <Input placeholder="name" />
           </Form.Item>
-          <Form.Item name={"phoneNumber"}>
-            <Input />
+          <Form.Item name={"phoneNumber"} label="Phone">
+            <Input placeholder="phone" />
           </Form.Item>
-          <Form.Item name={"industryId"}>
+          <Form.Item name={"industryId"} label="Industry">
             <Select
               showSearch
               allowClear
