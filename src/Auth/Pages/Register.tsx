@@ -15,6 +15,7 @@ import Aos from "aos";
 import "aos/dist/aos.css";
 import CompanyRegistrationForm from "../Components/CompanyRegistrationForm";
 import { useIsAuthenticated } from "react-auth-kit";
+import { loginUserWithMicrosoft } from "ApiRequesHelpers/Auth";
 
 export const Register = () => {
   const isAuthenticated = useIsAuthenticated();
@@ -22,6 +23,14 @@ export const Register = () => {
   useEffect(() => {
     Aos.init({ duration: 1500 });
   }, []);
+  const handleMicro = () => {
+    loginUserWithMicrosoft()
+      .then((res) => {
+        const link = res.data.data;
+        window.location.replace(link);
+      })
+      .catch((err) => console.log("Micro ERR", err));
+  };
 
   return (
     <>
@@ -87,8 +96,9 @@ export const Register = () => {
                       alt="microsoft"
                       className="cursor-pointer"
                       title="Microsoft"
+                      onClick={handleMicro}
                     />
-                    <img
+                    {/* <img
                       src={google}
                       alt="google"
                       className="cursor-pointer"
@@ -105,7 +115,7 @@ export const Register = () => {
                       alt="microsoft"
                       className="-ml-4 cursor-pointer"
                       title="Microsoft"
-                    />
+                    /> */}
                   </div>
                 </div>
               </div>

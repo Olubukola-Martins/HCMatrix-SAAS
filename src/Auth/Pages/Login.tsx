@@ -117,7 +117,7 @@ export const Login = () => {
                       onClick={handleMicro}
                     />
 
-                    <img
+                    {/* <img
                       src={google}
                       alt="google"
                       className="cursor-pointer"
@@ -134,7 +134,7 @@ export const Login = () => {
                       alt="microsoft"
                       className="-ml-4 cursor-pointer"
                       title="Microsoft"
-                    />
+                    /> */}
                   </div>
                 </div>
               </div>
