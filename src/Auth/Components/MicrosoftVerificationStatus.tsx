@@ -312,15 +312,16 @@ const MicrosoftVerificationStatus = ({
       <Modal
         open={showCreateCompanyModal && isISuccess}
         footer={null}
+        style={{ top: 10 }}
         title={`Create a company`}
         closable={false}
       >
         <Form layout="vertical" onFinish={handleFinish}>
           <Form.Item name={"name"} label="Company name">
-            <Input placeholder="name" />
+            <Input placeholder="Company name" />
           </Form.Item>
           <Form.Item name={"phoneNumber"} label="Phone">
-            <Input placeholder="phone" />
+            <Input placeholder="Phone Number" />
           </Form.Item>
           <Form.Item name={"industryId"} label="Industry">
             <Select
