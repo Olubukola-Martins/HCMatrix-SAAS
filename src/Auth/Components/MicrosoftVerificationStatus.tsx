@@ -310,9 +310,10 @@ const MicrosoftVerificationStatus = ({
   return (
     <div>
       <Modal
-        open={showCreateCompanyModal && isISuccess}
+        open={true}
+        // open={showCreateCompanyModal && isISuccess}
         footer={null}
-        style={{ top: 10 }}
+        style={{ top: 20 }}
         title={`Create a company`}
         closable={false}
       >
@@ -356,7 +357,7 @@ const MicrosoftVerificationStatus = ({
                 ))}
             </Select>
           </Form.Item>
-          <Form.Item>
+          <Form.Item className="flex justify-end">
             <Button isLoading={isLoading} type="submit" />
           </Form.Item>
         </Form>
