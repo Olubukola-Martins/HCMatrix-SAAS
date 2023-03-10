@@ -310,8 +310,7 @@ const MicrosoftVerificationStatus = ({
   return (
     <div>
       <Modal
-        open={true}
-        // open={showCreateCompanyModal && isISuccess}
+        open={showCreateCompanyModal && isISuccess}
         footer={null}
         style={{ top: 20 }}
         title={`Create a company`}
