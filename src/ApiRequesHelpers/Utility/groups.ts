@@ -1,5 +1,9 @@
 import axios from "axios";
-import { ICurrentCompany, TGroup } from "../../AppTypes/DataEntitities";
+import {
+  ICurrentCompany,
+  TGroup,
+  TGroupMember,
+} from "../../AppTypes/DataEntitities";
 import { IPaginationProps } from "../../AppTypes/Pagination";
 import { ISearchParams } from "../../AppTypes/Search";
 
@@ -44,7 +48,9 @@ interface IGetDataProps extends ICurrentCompany {
 export interface IGetSingleGroupProps extends ICurrentCompany {
   id: number;
 }
-export const getGroups = async (props: IGetDataProps) => {
+export const getGroups = async (
+  props: IGetDataProps
+): Promise<{ data: TGroup[]; total: number }> => {
   const { pagination } = props;
   const limit = pagination?.limit ?? 10;
   const offset = pagination?.offset ?? 0;
@@ -62,10 +68,40 @@ export const getGroups = async (props: IGetDataProps) => {
     },
   };
 
-  const response = await axios.get(url, config);
-  return response;
+  const res = await axios.get(url, config);
+  const fetchedData = res.data.data;
+  const result = fetchedData.result;
+
+  const data: TGroup[] = result.map(
+    (item: any): TGroup => ({
+      id: item.id,
+      name: item.name,
+      email: item.email,
+      description: item.description,
+      employees: item?.employees?.map(
+        (item: any): TGroupMember => ({
+          id: item.id,
+          firstName: item.employee.firstName,
+          isLead: item.isLead,
+          lastName: item.employee.lastName,
+          employeeId: item.employeeId,
+          empUid: item.empUid,
+          email: item.employee.email,
+        })
+      ),
+    })
+  );
+
+  const ans = {
+    data,
+    total: fetchedData.totalCount,
+  };
+
+  return ans;
 };
-export const getSingleGroup = async (props: IGetSingleGroupProps) => {
+export const getSingleGroup = async (
+  props: IGetSingleGroupProps
+): Promise<TGroup> => {
   const id = props.id;
 
   const url = `${process.env.REACT_APP_UTILITY_BASE_URL}/company/group/${id}`;
@@ -78,8 +114,28 @@ export const getSingleGroup = async (props: IGetSingleGroupProps) => {
     },
   };
 
-  const response = await axios.get(url, config);
-  return response;
+  const res = await axios.get(url, config);
+  const item = res.data.data;
+
+  const data: TGroup = {
+    id: item.id,
+    name: item.name,
+    email: item.email,
+    description: item.description,
+    employees: item?.employees.map(
+      (item: any): TGroupMember => ({
+        id: item.id,
+
+        firstName: item.employee.firstName,
+        isLead: item.isLead,
+        lastName: item.employee.lastName,
+        employeeId: item.employeeId,
+        empUid: item.empUid,
+        email: item.employee.email,
+      })
+    ),
+  };
+  return data;
 };
 export const deleteSingleGroup = async (props: IGetSingleGroupProps) => {
   const id = props.id;
@@ -177,7 +233,7 @@ interface IGetSingleGroupMembersProps
     IGetDataProps {}
 export const getSingleGroupMembers = async (
   props: IGetSingleGroupMembersProps
-) => {
+): Promise<{ total: number; data: TGroupMember[] }> => {
   const id = props.id;
   const { pagination, searchParams } = props;
   const limit = pagination?.limit ?? 10;
@@ -203,6 +259,27 @@ export const getSingleGroupMembers = async (
     },
   };
 
-  const response = await axios.get(url, config);
-  return response;
+  const res = await axios.get(url, config);
+  const fetchedData = res.data.data;
+  const result = fetchedData.result;
+
+  const data: TGroupMember[] = result.map(
+    (item: any): TGroupMember => ({
+      id: item.id,
+      firstName: item.employee.firstName,
+      isLead: item.isLead,
+      lastName: item.employee.lastName,
+      employeeId: item.employeeId,
+      empUid: item.empUid,
+      email: item.employee.email,
+      avatarUrl: item.employee?.avatarUrl,
+    })
+  );
+
+  const ans = {
+    data,
+    total: fetchedData.totalCount,
+  };
+
+  return ans;
 };
