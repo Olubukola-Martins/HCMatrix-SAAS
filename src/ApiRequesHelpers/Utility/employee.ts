@@ -3,6 +3,7 @@ import {
   ICurrentCompany,
   TBank,
   TEducationDetail,
+  TEmployee,
   TEmployeeDependant,
   TEmployeeStatus,
   TEmployementHistory,
@@ -565,7 +566,9 @@ export const resendEmployeeInvite = async (props: IResendInviteProps) => {
   const response = await axios.get(url, config);
   return response;
 };
-export const getEmployees = async (props: IGetEmpsProps) => {
+export const getEmployees = async (
+  props: IGetEmpsProps
+): Promise<{ data: TEmployee[]; total: number }> => {
   const { pagination } = props;
   const limit = pagination?.limit ?? 10;
   const offset = pagination?.offset ?? 0;
@@ -586,10 +589,27 @@ export const getEmployees = async (props: IGetEmpsProps) => {
     },
   };
 
-  const response = await axios.get(url, config);
-  return response;
+  const res = await axios.get(url, config);
+  const fetchedData = res.data.data;
+  const result = fetchedData.result;
+
+  const data: TEmployee[] = result.map(
+    (item: TEmployee): TEmployee => ({
+      ...item,
+      // No need as we adhere to same type as backend
+    })
+  );
+
+  const ans = {
+    data,
+    total: fetchedData.totalCount,
+  };
+
+  return ans;
 };
-export const getSingleEmployee = async (props: IGetSingleEmpProps) => {
+export const getSingleEmployee = async (
+  props: IGetSingleEmpProps
+): Promise<TEmployee> => {
   let url = `${process.env.REACT_APP_UTILITY_BASE_URL}/employee/${props.employeeId}`;
 
   const config = {
@@ -600,8 +620,96 @@ export const getSingleEmployee = async (props: IGetSingleEmpProps) => {
     },
   };
 
-  const response = await axios.get(url, config);
-  return response;
+  const res = await axios.get(url, config);
+  const item = res.data.data as TEmployee;
+  const fetchedData = res.data.data;
+  const wallet = fetchedData?.finance?.find(
+    (item: any) => item.key === "wallet"
+  )?.value as TWallet;
+  const bank = fetchedData?.finance?.find((item: any) => item.key === "bank")
+    ?.value as TBank;
+  const pension = fetchedData?.finance?.find(
+    (item: any) => item.key === "pension"
+  )?.value as TPension;
+  const skills = fetchedData?.skills?.map(
+    (item: any): TSkill => ({
+      competency: item.competency,
+      skill: item.skill,
+      id: item.id,
+    })
+  );
+  const employmentHistory = fetchedData?.employmentHistory?.map(
+    (item: any): TEmployementHistory => ({
+      organization: item.organization,
+      startDate: item.startDate,
+      endDate: item.endDate,
+      id: item.id,
+      position: item.position,
+    })
+  );
+  const educationDetails = fetchedData?.educationDetails?.map(
+    (item: any): TEducationDetail => ({
+      specialization: item.specialization,
+      startDate: item.startDate,
+      endDate: item.endDate,
+      id: item.id,
+      degree: item.degree,
+      school: item.school,
+    })
+  );
+  const dependents = fetchedData?.dependents?.map(
+    (item: any): TEmployeeDependant => ({
+      id: item.id,
+      fullName: item.fullName,
+      dob: item.dob,
+      relationship: item.relationship,
+      phoneNumber: item.phoneNumber,
+    })
+  );
+
+  // const item = fetchedData.result;
+  // TO DO -> update employee type and populate with neccessary data
+  // TO DO -> default image to be shown 4 user -> use first letter url (laravel)
+  // To Do -> updating employee info
+
+  const data: TEmployee = {
+    ...item,
+    companyId: item.companyId,
+    avatarUrl: item.avatarUrl,
+
+    createdAt: item.createdAt,
+    deletedAt: item.deletedAt,
+    designation: item.designation, //adhered to backend
+    designationId: item.designationId,
+    email: item.email,
+    empUid: item.empUid,
+    firstName: item.firstName,
+    hasSelfService: item.hasSelfService,
+    id: item.id,
+    jobInformation: item.jobInformation,
+    lastName: item.lastName,
+    personalInformation: item.personalInformation,
+    role: item.role,
+    roleId: item.roleId,
+    status: item.status,
+    updatedAt: item.updatedAt,
+    userId: item.userId,
+    // --------------
+    finance: {
+      wallet,
+      bank,
+      pension,
+    },
+    skills,
+    employmentHistory,
+    educationDetails,
+    dependents,
+    emergencyContact: item?.emergencyContact,
+
+    // no need to breakdown as we adhere to Backend Schema sent from respone
+  };
+
+  return data;
 };
 
 // dependants
