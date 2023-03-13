@@ -3,10 +3,84 @@ import { Button, Divider, Modal, Steps } from "antd";
 
 import Themes from "../../../../Themes/Themes";
 
-import FramerAccordian from "../../custom/FramerAccordian";
 import { UploadExcelForm } from "./UploadExcelForm";
 import { IModalProps } from "../../../../AppTypes/Component";
-import MappingDetails from "./MappingDetails";
+import MappingDetails, { TMappingSection } from "./MappingDetails";
+
+const bulkEmployeeUploadSections: TMappingSection[] = [
+  {
+    title: "Personal Information",
+    inputs: [
+      { name: "firstName", label: "First Name" },
+      { name: "lastName", label: "Last Name" },
+      { name: "dob", label: "Date of Birth" },
+      { name: "gender", label: "Gender" },
+      { name: "eligibility", label: "Citizenship" },
+      { name: "maritalStatus", label: "Marital Status" },
+      { name: "nationality", label: "Nationality" },
+      {
+        name: "passportExpirationDate",
+        label: "Passport Expiration Date",
+        optional: false,
+      },
+      { name: "alternativeEmail", label: "Alternative Email" },
+      {
+        name: "alternativePhoneNumber",
+        label: "Alternative Phone Number",
+      },
+      { name: "nin", label: "National Identity Number" },
+      { name: "taxAuthority", label: "Tax Authority" },
+      { name: "taxId", label: "Tax ID" },
+    ],
+  },
+  {
+    title: "Wallet Information",
+    inputs: [
+      {
+        name: "walletAccountProvider",
+        label: "Nubian Account Provider",
+      },
+      {
+        name: "walletAccountNumber",
+        label: "Nubian Account Number",
+      },
+    ],
+  },
+  {
+    title: "Bank Information",
+    inputs: [
+      { name: "bankName", label: "Bank Name" },
+      { name: "bankAccountNumber", label: "Account Number" },
+      { name: "bvn", label: "Bank Verification Number" },
+    ],
+  },
+  {
+    title: "Pension Information",
+    inputs: [
+      {
+        name: "pensionFundAdministrator",
+        label: "Pension Fund Administrator",
+      },
+      {
+        name: "pensionAccountNumber",
+        label: "Pension Account Number",
+      },
+      { name: "pensionType", label: "Pension Type" },
+    ],
+  },
+  {
+    title: "Emergency Contact",
+    inputs: [
+      {
+        name: "ecFullName",
+        label: "Full Name",
+      },
+      { name: "ecAddress", label: "Address" },
+      { name: "ecRelationship", label: "Relationship" },
+      { name: "ecPhoneNumber", label: "Phone" },
+    ],
+  },
+];
 
 const steps = [
   "Upload File",
@@ -27,6 +101,9 @@ const UploadFileModal = ({ open, handleClose }: IModalProps) => {
   const [columns, setColumns] = useState<string[]>([]);
   const [retrievedData, setRetrievedData] = useState<any[]>([]);
   const [formattedData, setFormattedData] = useState<any[]>([]);
+  const [selectedSections, setSelectedSections] = useState<TMappingSection[]>(
+    []
+  );
 
   const [activeStep, setActiveStep] = useState(0);
   const handleNext = () => {
@@ -76,6 +153,10 @@ const UploadFileModal = ({ open, handleClose }: IModalProps) => {
                 setRetrievedData={setRetrievedData}
                 handleNext={handleNext}
                 activeStep={activeStep}
+                sections={bulkEmployeeUploadSections}
+                handleSections={(val: TMappingSection[]) =>
+                  setSelectedSections(val)
+                }
               />
             )}
             {/* mapping details */}
@@ -87,6 +168,7 @@ const UploadFileModal = ({ open, handleClose }: IModalProps) => {
                 activeStep={activeStep}
                 retrievedData={retrievedData}
                 setFormattedData={setFormattedData}
+                sections={selectedSections}
               />
             )}
             {/* handle duplicate */}

@@ -19,24 +19,47 @@ import { IPaginationProps } from "../../AppTypes/Pagination";
 import { ISearchParams } from "../../AppTypes/Search";
 
 export type TBulkEmployeeImport = {
-  firstName: string;
-  lastName: string;
-  email: string;
-  hasSelfService: boolean;
-  empUid: string;
-  roleId: number;
-  designationId: number;
-  jobInformation: {
-    startDate: string;
-    jobTitle: string;
-    monthlyGross: number;
-    employmentType: string;
-    workModel: string;
-    numberOfDaysPerWeek: number;
-    departmentId: string;
+  employeeInformation: {
+    email: string;
+    empUid: string;
+    hasSelfService: boolean;
+  };
+  personalInformation?: {
+    firstName: string;
+    lastName: string;
+    dob: string;
+    gender: string;
+    eligibility: string;
+    maritalStatus: string;
+    nationality: string;
+    passportExpirationDate: string;
+    alternativeEmail: string;
+    alternativePhoneNumber: string;
+    nin: string;
+    taxAuthority: string;
+    taxId: string;
+  };
+  walletInformation?: {
+    accountProvider: string;
+    accountNumber: string;
+  };
+  bankInformation?: {
+    bankName: string;
+    accountNumber: string;
+    bvn: string;
+  };
+  pensionInformation?: {
+    fundAdministrator: string;
+    accountNumber: string;
+    pensionType: string;
+  };
+  emergencyContact?: {
+    fullName: string;
+    address: string;
+    relationship: string;
+    phoneNumber: string;
   };
 };
-
 export interface ICreateEmpProps extends ICurrentCompany {
   firstName: string;
   lastName: string;

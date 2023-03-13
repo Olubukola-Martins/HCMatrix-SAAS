@@ -7,25 +7,17 @@ import {
   Typography,
   Upload,
 } from "antd";
-import { IDrawerProps } from "../../../../AppTypes/Component";
-import Themes from "../../../../Themes/Themes";
 import type { UploadChangeParam } from "antd/es/upload";
 import type { RcFile, UploadFile, UploadProps } from "antd/es/upload/interface";
 import { useState } from "react";
 import * as XLSX from "xlsx";
+import { TMappingSection } from "./MappingDetails";
+import { generalValidationRules } from "FormHelpers/validation";
 
-const importForOptions = [
-  "Personal Information",
-  "Job Information",
-  "Financial Information",
-  "Medical Information",
-  "Hierarchy Information",
-  "Contact Details",
-];
 const importBasedOnOptions = [
   {
-    label: "Staff Id",
-    value: "Staff Id",
+    label: "Employee Id",
+    value: "empUid",
   },
   {
     label: "Email",
@@ -56,6 +48,8 @@ interface IProps {
   setRetrievedData: Function;
   handleNext: Function;
   activeStep: number;
+  sections: TMappingSection[];
+  handleSections: (val: TMappingSection[]) => void;
 }
 
 export const UploadExcelForm = ({
@@ -63,6 +57,8 @@ export const UploadExcelForm = ({
   handleNext,
   activeStep,
   setRetrievedData,
+  sections,
+  handleSections,
 }: IProps) => {
   const [loading, setLoading] = useState(false);
   const [imageUrl, setImageUrl] = useState<string>();
@@ -106,22 +102,35 @@ export const UploadExcelForm = ({
     }
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = (data: any) => {
+    console.log("QW", data);
+    const selectedSections = sections.filter((section) =>
+      data.sections.find((item: string) => item === section.title)
+    );
+    handleSections(selectedSections);
     handleNext();
   };
   return (
     <Form className="" requiredMark={false} onFinish={handleSubmit}>
-      <Form.Item label="Import for:">
+      <Form.Item
+        label="Import for:"
+        name="sections"
+        rules={generalValidationRules}
+      >
         <Select
-          options={importForOptions.map((item) => ({
-            label: item,
-            value: item,
+          options={sections.map((item) => ({
+            label: item.title,
+            value: item.title,
           }))}
           mode="multiple"
           placeholder="What data are you importing"
         />
       </Form.Item>
-      <Form.Item label="Import based on:">
+      <Form.Item
+        label="Import based on:"
+        name="basedOn"
+        rules={generalValidationRules}
+      >
         <Select
           options={importBasedOnOptions}
           placeholder="What is this import based on"

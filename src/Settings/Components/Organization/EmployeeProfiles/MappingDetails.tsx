@@ -1,8 +1,12 @@
-import { Button, Collapse, Form, Select } from "antd";
-import React from "react";
+import { Button, Collapse, Form } from "antd";
 import { TBulkEmployeeImport } from "../../../../ApiRequesHelpers/Utility/employee";
-import { generalValidationRules } from "../../../../FormHelpers/validation";
-import PersonalInfoMapping from "./PersonalInfoMapping";
+
+import MappingFormGroup, { TFormMappingInput } from "./MappingFormGroup";
+
+export type TMappingSection = {
+  title: string;
+  inputs: TFormMappingInput[];
+};
 
 interface IProps {
   handleNext: Function;
@@ -11,6 +15,7 @@ interface IProps {
   columns: string[];
   retrievedData: any[];
   setFormattedData: Function;
+  sections: TMappingSection[];
 }
 
 const { Panel } = Collapse;
@@ -21,22 +26,20 @@ const MappingDetails = ({
   columns,
   retrievedData,
   setFormattedData,
+  sections,
 }: IProps) => {
   const [form] = Form.useForm();
   const handleSubmit = (data: any) => {
     console.log("mapping", data);
     const mappedColumns = Object.entries(data);
-    const formattedColumns = columns.map((col) => {
-      const equivalentCol = mappedColumns.find((mcol) => mcol[1] === col);
-      const ans = equivalentCol ? (equivalentCol[0] as unknown as string) : col;
-      return ans;
-    });
-    console.log("fcols", formattedColumns, mappedColumns);
 
+    console.log(retrievedData, ">>>");
     const formattedData = retrievedData.map((item) => {
       let ans: any = {};
-      formattedColumns.forEach((col, i) => {
-        ans[col] = item[i] ? item[i] : null;
+      mappedColumns.forEach((col, i) => {
+        const equiv = col[1] as string;
+        const index = columns.indexOf(equiv);
+        ans[col[0]] = item[index] ? item[index] : null;
       });
       return ans;
     });
@@ -47,25 +50,53 @@ const MappingDetails = ({
     // make call to api here
     const dataToBeSubmitted: TBulkEmployeeImport[] = formattedData.map(
       (item) => ({
-        firstName: item?.firstName,
-        lastName: item?.lastName,
-        email: item?.email,
-        hasSelfService: item?.hasSelfService,
-        empUid: item?.empUid,
-        roleId: item?.roleId,
-        designationId: item?.designationId,
-        jobInformation: {
-          startDate: item?.startDate,
-          jobTitle: item?.jobTitle,
-          monthlyGross: item?.monthlyGross,
-          employmentType: item?.employmentType,
-          workModel: item?.workModel,
-          numberOfDaysPerWeek: item?.numberOfDaysPerWeek,
-          departmentId: item?.departmentId,
+        employeeInformation: {
+          email: item?.email,
+          empUid: item?.empUid,
+          hasSelfService: item?.hasSelfService,
+        },
+        personalInformation: {
+          alternativeEmail: item?.alternativeEmail,
+          alternativePhoneNumber: item?.alternativePhoneNumber,
+          dob: item?.dob,
+          eligibility: item?.eligibility,
+          firstName: item?.firstName,
+          gender: item?.gender,
+          lastName: item?.lastName,
+          maritalStatus: item?.maritalStatus,
+          nationality: item?.nationality,
+          nin: item?.nin,
+          passportExpirationDate: item?.passportExpirationDate,
+          taxAuthority: item?.taxAuthority,
+          taxId: item?.taxId,
+        },
+        walletInformation: {
+          accountProvider: item?.walletAccountProvider,
+          accountNumber: item?.walletAccountNumber,
+        },
+        bankInformation: {
+          bankName: item?.bankName,
+          accountNumber: item?.bankAccountNumber,
+          bvn: item?.bvn,
+        },
+        pensionInformation: {
+          fundAdministrator: item?.pensionFundAdministrator,
+          accountNumber: item?.pensionAccountNumber,
+          pensionType: item?.pensionType,
+        },
+        emergencyContact: {
+          fullName: item?.ecFullName,
+          address: item?.ecAddress,
+          relationship: item?.ecRelationship,
+          phoneNumber: item?.ecPhoneNumber,
         },
       })
     );
+
+    // delete sections not used
+
     console.log("data to be submitted", dataToBeSubmitted);
+
     // convert to json also
     const jsonData = JSON.stringify(dataToBeSubmitted);
     handleNext();
@@ -81,14 +112,29 @@ const MappingDetails = ({
         form={form}
       >
         <Collapse defaultActiveKey={["1"]} accordion>
-          <Panel header="Personal Information" key="1">
-            <PersonalInfoMapping columns={columns} Form={Form} />
+          <Panel header="Employee Information" key="1">
+            <MappingFormGroup
+              columns={columns}
+              Form={Form}
+              formInputs={[
+                { name: "empUid", label: "Employee ID" },
+                { name: "email", label: "Email" },
+                {
+                  name: "hasSelfService",
+                  label: "Self Service (Should be a yes or no)",
+                },
+              ]}
+            />
           </Panel>
-          <Panel header="Job Information" key="2"></Panel>
-          <Panel header="Financial Information" key="3"></Panel>
-          <Panel header="Medical Information" key="4"></Panel>
-          <Panel header="Hierarchy Information" key="5"></Panel>
-          <Panel header="Contact Details" key="6"></Panel>
+          {sections.map((item) => (
+            <Panel header={item.title} key={item.title}>
+              <MappingFormGroup
+                columns={columns}
+                Form={Form}
+                formInputs={item.inputs}
+              />
+            </Panel>
+          ))}
         </Collapse>
       </Form>
 
