@@ -27,7 +27,6 @@ import {
   generalValidationRules,
 } from "../../../../FormHelpers/validation";
 import { openNotification } from "../../../../NotificationHelpers";
-import FramerAccordian from "Settings/Components/custom/FramerAccordian";
 
 const { Option } = Select;
 

@@ -1,4 +1,4 @@
-import { ICurrentCompany } from "AppTypes/DataEntitities";
+import { ICurrentCompany, TBranch } from "AppTypes/DataEntitities";
 import { IPaginationProps } from "AppTypes/Pagination";
 import { ISearchParams } from "AppTypes/Search";
 import axios from "axios";
@@ -61,7 +61,9 @@ export interface IGetSingleBranchProps extends ICurrentCompany {
   branchId: number;
 }
 
-export const getSingleBranch = async (props: IGetSingleBranchProps) => {
+export const getSingleBranch = async (
+  props: IGetSingleBranchProps
+): Promise<TBranch> => {
   const id = props.branchId;
 
   const url = `${process.env.REACT_APP_UTILITY_BASE_URL}/company/branch/${id}`;
@@ -74,8 +76,23 @@ export const getSingleBranch = async (props: IGetSingleBranchProps) => {
     },
   };
 
-  const response = await axios.get(url, config);
-  return response;
+  const res = await axios.get(url, config);
+  const item = res.data.data;
+
+  const data: TBranch = {
+    id: item.id,
+    name: item.name,
+    description: item.description,
+    address: {
+      streetAddress: item.address.streetAddress,
+      countryId: item.address.countryId,
+      stateId: item.address.stateId,
+      lgaId: item.address.lgaId,
+      timezone: item.address.timezone,
+    },
+    employeeCount: item?.employeeCount,
+  };
+  return data;
 };
 
 interface IGetDataProps extends ICurrentCompany {
@@ -83,7 +100,9 @@ interface IGetDataProps extends ICurrentCompany {
   searchParams?: ISearchParams;
 }
 
-export const getBranches = async (props: IGetDataProps) => {
+export const getBranches = async (
+  props: IGetDataProps
+): Promise<{ data: TBranch[]; total: number }> => {
   const { pagination } = props;
   const limit = pagination?.limit ?? 10;
   const offset = pagination?.offset ?? 0;
@@ -99,6 +118,30 @@ export const getBranches = async (props: IGetDataProps) => {
     },
   };
 
-  const response = await axios.get(url, config);
-  return response;
+  const res = await axios.get(url, config);
+  const fetchedData = res.data.data;
+  const result = fetchedData.result;
+
+  const data: TBranch[] = result.map(
+    (item: any): TBranch => ({
+      id: item.id,
+      name: item.name,
+      description: item.description,
+      address: {
+        streetAddress: item.address.streetAddress,
+        countryId: item.address.countryId,
+        stateId: item.address.stateId,
+        lgaId: item.address.lgaId,
+        timezone: item.address.timezone,
+      },
+      employeeCount: item?.employeeCount,
+    })
+  );
+
+  const ans = {
+    data,
+    total: fetchedData.totalCount,
+  };
+
+  return ans;
 };
