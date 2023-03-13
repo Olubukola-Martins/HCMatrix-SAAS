@@ -1,4 +1,3 @@
-import pagination from "antd/lib/pagination";
 import { ISearchParams } from "AppTypes/Search";
 import { useSignOut } from "react-auth-kit";
 import { useMutation, useQuery } from "react-query";
@@ -11,7 +10,6 @@ import {
 } from "../../ApiRequesHelpers/Utility/designations";
 import { TDesignation } from "../../AppTypes/DataEntitities";
 import { IPaginationProps } from "../../AppTypes/Pagination";
-import { openNotification } from "../../NotificationHelpers";
 
 interface IFRQDesignationsProps {
   pagination?: IPaginationProps;
@@ -42,11 +40,7 @@ export const useFetchSingleDesignation = ({
         token,
       }),
     {
-      // refetchInterval: false,
-      // refetchIntervalInBackground: false,
-      // refetchOnWindowFocus: false,
       onError: (err: any) => {
-        // show notification
         signOut();
         localStorage.clear();
       },
