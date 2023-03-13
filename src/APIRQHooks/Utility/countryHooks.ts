@@ -26,21 +26,6 @@ export const useFetchCountries = (search?: string) => {
             err?.response.data.message ?? err?.response.data.error.message,
         });
       },
-
-      // select: (res: any) => {
-      //   const result = res.data.data;
-
-      //   const data: TCountry[] = result.map(
-      //     (item: any): TCountry => ({
-      //       id: item.id,
-      //       name: item.name,
-      //       sortName: item.sortName,
-      //       code: item.code,
-      //     })
-      //   );
-
-      //   return data;
-      // },
     }
   );
 
@@ -66,20 +51,6 @@ export const useFetchStates = ({ countryId, searchParams }: IStateProps) => {
             err?.response.data.message ?? err?.response.data.error.message,
         });
       },
-
-      // select: (res: any) => {
-      //   const result = res.data.data;
-
-      //   const data: TState[] = result.map(
-      //     (item: any): TState => ({
-      //       id: item.id,
-      //       name: item.name,
-      //       countryId: item.countryId,
-      //     })
-      //   );
-
-      //   return data;
-      // },
     }
   );
 
@@ -105,20 +76,6 @@ export const useFetchLgas = ({ stateId, searchParams }: ILgaProps) => {
             err?.response.data.message ?? err?.response.data.error.message,
         });
       },
-
-      // select: (res: any) => {
-      //   const result = res.data.data;
-
-      //   const data: TLga[] = result.map(
-      //     (item: any): TLga => ({
-      //       id: item.id,
-      //       name: item.name,
-      //       stateId: item.stateId,
-      //     })
-      //   );
-
-      //   return data;
-      // },
     }
   );
 

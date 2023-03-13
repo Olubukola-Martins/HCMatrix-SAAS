@@ -44,22 +44,6 @@ export const useFetchSingleDesignation = ({
         signOut();
         localStorage.clear();
       },
-
-      select: (res: any) => {
-        const item = res.data.data;
-
-        const data: TDesignation = {
-          id: item.id,
-          name: item.name,
-          department: {
-            id: item.department.id ?? "",
-            name: item.department.name ?? "",
-          },
-          employeeCount: item.employeeCount ?? 0,
-        };
-
-        return data;
-      },
     }
   );
 
@@ -101,30 +85,6 @@ export const useFetchDesignations = ({
       },
       onSuccess: (data) => {
         onSuccess && onSuccess(data);
-      },
-
-      select: (res: any) => {
-        const fetchedData = res.data.data;
-        const result = fetchedData.result;
-
-        const data: TDesignation[] = result.map(
-          (item: any): TDesignation => ({
-            id: item.id,
-            name: item.name,
-            department: {
-              id: item.department.id ?? "",
-              name: item.department.name ?? "",
-            },
-            employeeCount: item.employeeCount ?? 0,
-          })
-        );
-
-        const ans: IFRQDesignationsReturnProps = {
-          data,
-          total: fetchedData.totalCount,
-        };
-
-        return ans;
       },
     }
   );

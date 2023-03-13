@@ -52,27 +52,6 @@ export const useFetchDepartments = ({
       onSuccess: (data) => {
         onSuccess && onSuccess(data);
       },
-
-      select: (res: any) => {
-        const fetchedData = res.data.data;
-        const result = fetchedData.result;
-
-        const data: TDepartment[] = result.map(
-          (item: any): TDepartment => ({
-            id: item.id,
-            name: item.name,
-            email: item.email,
-            employeeCount: item.employeeCount ?? 0,
-          })
-        );
-
-        const ans: IFRQDepartmentsReturnProps = {
-          data,
-          total: fetchedData.totalCount,
-        };
-
-        return ans;
-      },
     }
   );
 
