@@ -103,21 +103,6 @@ export const useFetchSingleDepartment = ({
         signOut();
         localStorage.clear();
       },
-
-      select: (res: any) => {
-        const item = res.data.data;
-
-        const data: TDepartment = {
-          id: item.id,
-          name: item.name,
-          email: item.email,
-          employeeCount: item.employeeCount ?? 0,
-          departmentHeadId: item?.departmentHeadId,
-          parentDepartmentId: item?.parentDepartmentId,
-        };
-
-        return data;
-      },
     }
   );
 
