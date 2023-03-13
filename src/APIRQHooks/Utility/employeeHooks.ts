@@ -1,5 +1,4 @@
 import { ISearchParams } from "AppTypes/Search";
-import moment from "moment";
 import { useSignOut } from "react-auth-kit";
 
 import { useMutation, useQuery } from "react-query";
@@ -31,16 +30,9 @@ import {
   updateEmployeePersonalInfo,
 } from "../../ApiRequesHelpers/Utility/employee";
 import {
-  TBank,
-  TEducationDetail,
   TEmployee,
-  TEmployeeDependant,
   TEmployeeStatus,
-  TEmployementHistory,
   TInvitedEmployee,
-  TPension,
-  TSkill,
-  TWallet,
 } from "../../AppTypes/DataEntitities";
 import { IPaginationProps } from "../../AppTypes/Pagination";
 
@@ -93,27 +85,6 @@ export const useFetchInvitedEmployees = ({
       },
       onSuccess: (data) => {
         onSuccess && onSuccess(data);
-      },
-
-      select: (res: any) => {
-        const fetchedData = res.data.data;
-        const result = fetchedData.result;
-
-        const data: TInvitedEmployee[] = result.map(
-          (item: any): TInvitedEmployee => ({
-            id: item.id,
-            lastSent: moment(item.updatedAt).format("YYYY-MM-DD"),
-
-            email: item?.email,
-          })
-        );
-
-        const ans: IFRQInvEmpsReturnProps = {
-          data,
-          total: fetchedData.totalCount,
-        };
-
-        return ans;
       },
     }
   );

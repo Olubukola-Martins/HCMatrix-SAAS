@@ -1,4 +1,5 @@
 import axios from "axios";
+import moment from "moment";
 import {
   ICurrentCompany,
   TBank,
@@ -7,6 +8,7 @@ import {
   TEmployeeDependant,
   TEmployeeStatus,
   TEmployementHistory,
+  TInvitedEmployee,
   TJobInfo,
   TPension,
   TPersonalInfo,
@@ -533,7 +535,9 @@ interface IResendInviteProps extends ICurrentCompany {
   id: number;
 }
 
-export const getInvitedEmployees = async (props: IGetEmpsProps) => {
+export const getInvitedEmployees = async (
+  props: IGetEmpsProps
+): Promise<{ data: TInvitedEmployee[]; total: number }> => {
   const { pagination } = props;
   const limit = pagination?.limit ?? 10;
   const offset = pagination?.offset ?? 0;
@@ -549,8 +553,25 @@ export const getInvitedEmployees = async (props: IGetEmpsProps) => {
     },
   };
 
-  const response = await axios.get(url, config);
-  return response;
+  const res = await axios.get(url, config);
+  const fetchedData = res.data.data;
+  const result = fetchedData.result;
+
+  const data: TInvitedEmployee[] = result.map(
+    (item: any): TInvitedEmployee => ({
+      id: item.id,
+      lastSent: moment(item.updatedAt).format("YYYY-MM-DD"),
+
+      email: item?.email,
+    })
+  );
+
+  const ans = {
+    data,
+    total: fetchedData.totalCount,
+  };
+
+  return ans;
 };
 export const resendEmployeeInvite = async (props: IResendInviteProps) => {
   const url = `${process.env.REACT_APP_UTILITY_BASE_URL}/employee/invite/${props.id}`;
