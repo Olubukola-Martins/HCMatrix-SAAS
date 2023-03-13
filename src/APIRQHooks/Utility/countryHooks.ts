@@ -5,7 +5,6 @@ import {
   ILgaProps,
   IStateProps,
 } from "ApiRequesHelpers/Utility/countries";
-import { TCountry, TLga, TState } from "AppTypes/DataEntitities";
 import { useQuery } from "react-query";
 import { openNotification } from "../../NotificationHelpers";
 
@@ -28,20 +27,20 @@ export const useFetchCountries = (search?: string) => {
         });
       },
 
-      select: (res: any) => {
-        const result = res.data.data;
+      // select: (res: any) => {
+      //   const result = res.data.data;
 
-        const data: TCountry[] = result.map(
-          (item: any): TCountry => ({
-            id: item.id,
-            name: item.name,
-            sortName: item.sortName,
-            code: item.code,
-          })
-        );
+      //   const data: TCountry[] = result.map(
+      //     (item: any): TCountry => ({
+      //       id: item.id,
+      //       name: item.name,
+      //       sortName: item.sortName,
+      //       code: item.code,
+      //     })
+      //   );
 
-        return data;
-      },
+      //   return data;
+      // },
     }
   );
 
@@ -68,19 +67,19 @@ export const useFetchStates = ({ countryId, searchParams }: IStateProps) => {
         });
       },
 
-      select: (res: any) => {
-        const result = res.data.data;
+      // select: (res: any) => {
+      //   const result = res.data.data;
 
-        const data: TState[] = result.map(
-          (item: any): TState => ({
-            id: item.id,
-            name: item.name,
-            countryId: item.countryId,
-          })
-        );
+      //   const data: TState[] = result.map(
+      //     (item: any): TState => ({
+      //       id: item.id,
+      //       name: item.name,
+      //       countryId: item.countryId,
+      //     })
+      //   );
 
-        return data;
-      },
+      //   return data;
+      // },
     }
   );
 
@@ -107,19 +106,19 @@ export const useFetchLgas = ({ stateId, searchParams }: ILgaProps) => {
         });
       },
 
-      select: (res: any) => {
-        const result = res.data.data;
+      // select: (res: any) => {
+      //   const result = res.data.data;
 
-        const data: TLga[] = result.map(
-          (item: any): TLga => ({
-            id: item.id,
-            name: item.name,
-            stateId: item.stateId,
-          })
-        );
+      //   const data: TLga[] = result.map(
+      //     (item: any): TLga => ({
+      //       id: item.id,
+      //       name: item.name,
+      //       stateId: item.stateId,
+      //     })
+      //   );
 
-        return data;
-      },
+      //   return data;
+      // },
     }
   );
 
