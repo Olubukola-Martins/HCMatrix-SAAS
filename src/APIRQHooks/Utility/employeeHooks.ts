@@ -158,25 +158,6 @@ export const useFetchEmployees = ({
       onSuccess: (data) => {
         onSuccess && onSuccess(data);
       },
-
-      select: (res: any) => {
-        const fetchedData = res.data.data;
-        const result = fetchedData.result;
-
-        const data: TEmployee[] = result.map(
-          (item: TEmployee): TEmployee => ({
-            ...item,
-            // No need as we adhere to same type as backend
-          })
-        );
-
-        const ans: IFRQEmpsReturnProps = {
-          data,
-          total: fetchedData.totalCount,
-        };
-
-        return ans;
-      },
     }
   );
 
