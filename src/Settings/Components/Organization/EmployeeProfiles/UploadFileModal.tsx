@@ -5,12 +5,15 @@ import Themes from "../../../../Themes/Themes";
 
 import { UploadExcelForm } from "./UploadExcelForm";
 import { IModalProps } from "../../../../AppTypes/Component";
-import MappingDetails, { TMappingSection } from "./MappingDetails";
+import MappingDetails, {
+  EmployeeSectionEnum,
+  TMappingSection,
+} from "./MappingDetails";
 import ErrorBoundary from "GeneralComps/ErrorBoundary";
 
 const bulkEmployeeUploadSections: TMappingSection[] = [
   {
-    title: "Personal Information",
+    title: EmployeeSectionEnum.PERSONAL_INFORMATION,
     inputs: [
       { name: "firstName", label: "First Name" },
       { name: "lastName", label: "Last Name" },
@@ -35,7 +38,7 @@ const bulkEmployeeUploadSections: TMappingSection[] = [
     ],
   },
   {
-    title: "Wallet Information",
+    title: EmployeeSectionEnum.WALLET_INFORMATION,
     inputs: [
       {
         name: "walletAccountProvider",
@@ -48,7 +51,7 @@ const bulkEmployeeUploadSections: TMappingSection[] = [
     ],
   },
   {
-    title: "Bank Information",
+    title: EmployeeSectionEnum.BANK_INFORMATION,
     inputs: [
       { name: "bankName", label: "Bank Name" },
       { name: "bankAccountNumber", label: "Account Number" },
@@ -56,7 +59,7 @@ const bulkEmployeeUploadSections: TMappingSection[] = [
     ],
   },
   {
-    title: "Pension Information",
+    title: EmployeeSectionEnum.PENSION_INFORMATION,
     inputs: [
       {
         name: "pensionFundAdministrator",
@@ -70,7 +73,7 @@ const bulkEmployeeUploadSections: TMappingSection[] = [
     ],
   },
   {
-    title: "Emergency Contact",
+    title: EmployeeSectionEnum.EMERGENCY_CONTACT,
     inputs: [
       {
         name: "ecFullName",
@@ -113,11 +116,16 @@ const UploadFileModal = ({ open, handleClose }: IModalProps) => {
   const handlePrev = () => {
     setActiveStep((val) => val - 1);
   };
+
+  const onCancel = () => {
+    setActiveStep(0);
+    handleClose();
+  };
   return (
     <Modal
       title="Import Employees"
       open={open}
-      onCancel={() => handleClose()}
+      onCancel={() => onCancel()}
       footer={null}
       style={{ top: 20 }}
       width={680}

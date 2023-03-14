@@ -3,8 +3,16 @@ import { TBulkEmployeeImport } from "../../../../ApiRequesHelpers/Utility/employ
 
 import MappingFormGroup, { TFormMappingInput } from "./MappingFormGroup";
 
+export enum EmployeeSectionEnum {
+  PERSONAL_INFORMATION = "Personal Information",
+  WALLET_INFORMATION = "Wallet Information",
+  BANK_INFORMATION = "Bank Information",
+  PENSION_INFORMATION = "Pension Information",
+  EMERGENCY_CONTACT = "Emergency Contact",
+}
+
 export type TMappingSection = {
-  title: string;
+  title: EmployeeSectionEnum;
   inputs: TFormMappingInput[];
 };
 
@@ -49,53 +57,85 @@ const MappingDetails = ({
     setFormattedData(formattedData);
     // make call to api here
     const dataToBeSubmitted: TBulkEmployeeImport[] = formattedData.map(
-      (item) => ({
-        employeeInformation: {
-          email: item?.email,
-          empUid: item?.empUid,
-          hasSelfService: item?.hasSelfService,
-        },
-        personalInformation: {
-          alternativeEmail: item?.alternativeEmail,
-          alternativePhoneNumber: item?.alternativePhoneNumber,
-          dob: item?.dob,
-          eligibility: item?.eligibility,
-          firstName: item?.firstName,
-          gender: item?.gender,
-          lastName: item?.lastName,
-          maritalStatus: item?.maritalStatus,
-          nationality: item?.nationality,
-          nin: item?.nin,
-          passportExpirationDate: item?.passportExpirationDate,
-          taxAuthority: item?.taxAuthority,
-          taxId: item?.taxId,
-        },
-        walletInformation: {
-          accountProvider: item?.walletAccountProvider,
-          accountNumber: item?.walletAccountNumber,
-        },
-        bankInformation: {
-          bankName: item?.bankName,
-          accountNumber: item?.bankAccountNumber,
-          bvn: item?.bvn,
-        },
-        pensionInformation: {
-          fundAdministrator: item?.pensionFundAdministrator,
-          accountNumber: item?.pensionAccountNumber,
-          pensionType: item?.pensionType,
-        },
-        emergencyContact: {
-          fullName: item?.ecFullName,
-          address: item?.ecAddress,
-          relationship: item?.ecRelationship,
-          phoneNumber: item?.ecPhoneNumber,
-        },
-      })
+      (item) => {
+        const employeeData: TBulkEmployeeImport = {
+          employeeInformation: {
+            email: item?.email,
+            empUid: item?.empUid,
+            hasSelfService: item?.hasSelfService,
+          },
+          personalInformation: {
+            alternativeEmail: item?.alternativeEmail,
+            alternativePhoneNumber: item?.alternativePhoneNumber,
+            dob: item?.dob,
+            eligibility: item?.eligibility,
+            firstName: item?.firstName,
+            gender: item?.gender,
+            lastName: item?.lastName,
+            maritalStatus: item?.maritalStatus,
+            nationality: item?.nationality,
+            nin: item?.nin,
+            passportExpirationDate: item?.passportExpirationDate,
+            taxAuthority: item?.taxAuthority,
+            taxId: item?.taxId,
+          },
+          walletInformation: {
+            accountProvider: item?.walletAccountProvider,
+            accountNumber: item?.walletAccountNumber,
+          },
+          bankInformation: {
+            bankName: item?.bankName,
+            accountNumber: item?.bankAccountNumber,
+            bvn: item?.bvn,
+          },
+          pensionInformation: {
+            fundAdministrator: item?.pensionFundAdministrator,
+            accountNumber: item?.pensionAccountNumber,
+            pensionType: item?.pensionType,
+          },
+          emergencyContact: {
+            fullName: item?.ecFullName,
+            address: item?.ecAddress,
+            relationship: item?.ecRelationship,
+            phoneNumber: item?.ecPhoneNumber,
+          },
+        };
+        // delete sections not used
+        if (
+          !sections.find(
+            (item) => item.title === EmployeeSectionEnum.PERSONAL_INFORMATION
+          )
+        )
+          delete employeeData["personalInformation"];
+        if (
+          !sections.find(
+            (item) => item.title === EmployeeSectionEnum.WALLET_INFORMATION
+          )
+        )
+          delete employeeData["walletInformation"];
+        if (
+          !sections.find(
+            (item) => item.title === EmployeeSectionEnum.BANK_INFORMATION
+          )
+        )
+          delete employeeData["bankInformation"];
+        if (
+          !sections.find(
+            (item) => item.title === EmployeeSectionEnum.PENSION_INFORMATION
+          )
+        )
+          delete employeeData["pensionInformation"];
+        if (
+          !sections.find(
+            (item) => item.title === EmployeeSectionEnum.EMERGENCY_CONTACT
+          )
+        )
+          delete employeeData["emergencyContact"];
+        return employeeData;
+      }
     );
 
-    // delete sections not used
-
-    console.log("data to be submitted", dataToBeSubmitted);
+    console.log("data to be submitted", dataToBeSubmitted, sections);
 
     // convert to json also
     const jsonData = JSON.stringify(dataToBeSubmitted);
