@@ -386,3 +386,11 @@ textarea.ant-input,
   .ant-steps-item-title {
   width: 100%;
 }
+
+/* steps progress dot */
+.ant-steps-item-process
+  .ant-steps-item-icon
+  > .ant-steps-icon
+  .ant-steps-icon-dot {
+  background: var(--caramel);
+}
