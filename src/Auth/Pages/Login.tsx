@@ -99,7 +99,7 @@ export const Login = () => {
                   ) : (
                     <UserLoginForm />
                   )}
-                  <div className="flex justify-between mb-6 pt-2">
+                  <div className="flex justify-between mb-6 pt-2 text-slate-500">
                     <Link
                       to="/register"
                       className="cursor-pointer text-sm hover:text-caramel hover:underline"
