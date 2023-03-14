@@ -26,6 +26,7 @@ import { BeatLoader } from "react-spinners";
 import { useFetchIndustries } from "../../APIRQHooks/Utility/industryHooks";
 import { useFetchCountries } from "../../APIRQHooks/Utility/countryHooks";
 import CompanySucess from "../Assets/SVGComponents/CompanySucess";
+import { FormPhoneInput } from "GeneralComps/FormPhoneInput";
 
 const CompanyRegistrationForm = () => {
   const [showM, setShowM] = useState(false);
@@ -44,12 +45,11 @@ const CompanyRegistrationForm = () => {
   const { mutate, isLoading } = useMutation(createCompany);
 
   const handleSignUp = (data: any) => {
-    const countryPhoneCode =
-      countries?.find((item) => item.id === data.phone.code)?.code ?? "";
+    const phoneNumber = `+${data.phone.code}-${data.phone.number}`;
     const props: ICreateCompProps = {
       name: data.organization,
       email: data.email,
-      phoneNumber: `+${countryPhoneCode}-${data.phone.number}`,
+      phoneNumber,
       industryId: data.industry,
       customerFullName: data.fullName,
       password: data.password,
@@ -72,8 +72,6 @@ const CompanyRegistrationForm = () => {
       },
 
       onSuccess: (res) => {
-        const result = res.data.data;
-
         openNotification({
           state: "success",
 
@@ -107,7 +105,7 @@ const CompanyRegistrationForm = () => {
           form={form}
           size="middle"
           initialValues={{
-            phone: { code: 160 }, //nigerian id -> phone code as default
+            phone: { code: "234" }, //nigerian id -> phone code as default
           }}
         >
           <Form.Item
@@ -184,42 +182,7 @@ const CompanyRegistrationForm = () => {
             />
           </Form.Item>
 
-          <Form.Item name="phone">
-            <Input.Group compact>
-              <Form.Item
-                noStyle
-                rules={generalValidationRules}
-                name={["phone", "code"]}
-              >
-                {isCSuccess && (
-                  <Select
-                    // showSearch
-                    // allowClear
-                    // optionLabelProp="label"
-                    className="rounded border-slate-400"
-                    style={{ width: "25%" }}
-                    options={countries.map((item) => ({
-                      label: `+${item.code}`,
-                      value: item.id,
-                    }))}
-                  />
-                )}
-              </Form.Item>
-              <Form.Item
-                noStyle
-                rules={[...textInputValidationRules, phoneNumberValidationRule]}
-                name={["phone", "number"]}
-              >
-                <Input
-                  style={{ width: "75%" }}
-                  placeholder="Business Phone"
-                  className="rounded border-slate-400 text-left"
-                  autoComplete="phone"
-                />
-              </Form.Item>
-            </Input.Group>
-          </Form.Item>
-
+          <FormPhoneInput Form={Form} showLabel={false} />
           <Form.Item
             name="password"
             rules={passwordValidationRules}

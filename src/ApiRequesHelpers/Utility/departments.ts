@@ -1,5 +1,5 @@
 import axios from "axios";
-import { ICurrentCompany } from "../../AppTypes/DataEntitities";
+import { ICurrentCompany, TDepartment } from "../../AppTypes/DataEntitities";
 import { IPaginationProps } from "../../AppTypes/Pagination";
 import { ISearchParams } from "../../AppTypes/Search";
 
@@ -65,7 +65,9 @@ interface IGetDepsProps extends ICurrentCompany {
 export interface IGetSingleDeptProps extends ICurrentCompany {
   departmentId: number;
 }
-export const getDepartments = async (props: IGetDepsProps) => {
+export const getDepartments = async (
+  props: IGetDepsProps
+): Promise<{ data: TDepartment[]; total: number }> => {
   const { pagination } = props;
   const limit = pagination?.limit ?? 10;
   const offset = pagination?.offset ?? 0;
@@ -83,10 +85,29 @@ export const getDepartments = async (props: IGetDepsProps) => {
     },
   };
 
-  const response = await axios.get(url, config);
-  return response;
+  const res = await axios.get(url, config);
+  const fetchedData = res.data.data;
+  const result = fetchedData.result;
+
+  const data: TDepartment[] = result.map(
+    (item: any): TDepartment => ({
+      id: item.id,
+      name: item.name,
+      email: item.email,
+      employeeCount: item.employeeCount ?? 0,
+    })
+  );
+
+  const ans = {
+    data,
+    total: fetchedData.totalCount,
+  };
+
+  return ans;
 };
-export const getSingleDepartment = async (props: IGetSingleDeptProps) => {
+export const getSingleDepartment = async (
+  props: IGetSingleDeptProps
+): Promise<TDepartment> => {
   const id = props.departmentId;
 
   const url = `${process.env.REACT_APP_UTILITY_BASE_URL}/company/department/${id}`;
@@ -99,6 +120,17 @@ export const getSingleDepartment = async (props: IGetSingleDeptProps) => {
     },
   };
 
-  const response = await axios.get(url, config);
-  return response;
+  const res = await axios.get(url, config);
+  const item = res.data.data;
+
+  const data: TDepartment = {
+    id: item.id,
+    name: item.name,
+    email: item.email,
+    employeeCount: item.employeeCount ?? 0,
+    departmentHeadId: item?.departmentHeadId,
+    parentDepartmentId: item?.parentDepartmentId,
+  };
+
+  return data;
 };

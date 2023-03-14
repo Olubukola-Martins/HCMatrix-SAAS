@@ -14,6 +14,7 @@ import {
   phoneNumberValidationRule,
 } from "FormHelpers/validation";
 import Button from "GeneralComps/Button";
+import { FormPhoneInput } from "GeneralComps/FormPhoneInput";
 import moment from "moment";
 import { openNotification } from "NotificationHelpers";
 import { useContext, useEffect } from "react";
@@ -46,13 +47,17 @@ export const EditDependant = ({
     form.setFieldsValue({
       dob: moment(dependent.dob),
       fullName: dependent.fullName,
-      phoneNumber: dependent.phoneNumber,
+      phone: {
+        number: dependent.phoneNumber.split("-")[1],
+        code: dependent.phoneNumber.split("-")[0].slice(1),
+      },
       relationship: dependent.relationship,
     });
   }, [form, dependent]);
   const { mutate, isLoading } = useUpdateDependantOfEmployee();
 
   const handleSubmit = (data: any) => {
+    const phoneNumber = `+${data.phone.code}-${data.phone.number}`;
     if (companyId) {
       // return;
       openNotification({
@@ -68,7 +73,7 @@ export const EditDependant = ({
           token,
           dob: data.dob,
           fullName: data.fullName,
-          phoneNumber: data.phoneNumber,
+          phoneNumber: phoneNumber,
           relationship: data.relationship,
         },
         {
@@ -81,8 +86,6 @@ export const EditDependant = ({
             });
           },
           onSuccess: (res: any) => {
-            const result = res.data.data;
-
             openNotification({
               state: "success",
 
@@ -132,13 +135,7 @@ export const EditDependant = ({
         >
           <DatePicker format="YYYY/MM/DD" className="generalInputStyle" />
         </Form.Item>
-        <Form.Item
-          name="phoneNumber"
-          label="Phone Number"
-          rules={[phoneNumberValidationRule]}
-        >
-          <Input className="generalInputStyle" placeholder="Enter Phone" />
-        </Form.Item>
+        <FormPhoneInput Form={Form} />
         <Form.Item
           name="relationship"
           label="Relationship"

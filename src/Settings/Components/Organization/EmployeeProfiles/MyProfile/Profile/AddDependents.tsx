@@ -10,6 +10,7 @@ import {
   phoneNumberValidationRule,
 } from "FormHelpers/validation";
 import Button from "GeneralComps/Button";
+import { FormPhoneInput } from "GeneralComps/FormPhoneInput";
 import { openNotification } from "NotificationHelpers";
 import { useContext } from "react";
 import { useAuthUser } from "react-auth-kit";
@@ -34,6 +35,7 @@ export const AddDependents = ({ open, handleClose, employeeId }: IProps) => {
   const { mutate, isLoading } = useAddDependantToEmployee();
 
   const handleSubmit = (data: any) => {
+    const phoneNumber = `+${data.phone.code}-${data.phone.number}`;
     if (companyId) {
       // return;
       openNotification({
@@ -48,7 +50,7 @@ export const AddDependents = ({ open, handleClose, employeeId }: IProps) => {
           token,
           dob: data.dob,
           fullName: data.fullName,
-          phoneNumber: data.phoneNumber,
+          phoneNumber: phoneNumber,
           relationship: data.relationship,
         },
         {
@@ -110,13 +112,8 @@ export const AddDependents = ({ open, handleClose, employeeId }: IProps) => {
         >
           <DatePicker format="YYYY/MM/DD" className="generalInputStyle" />
         </Form.Item>
-        <Form.Item
-          name="phoneNumber"
-          label="Phone Number"
-          rules={[phoneNumberValidationRule]}
-        >
-          <Input className="generalInputStyle" placeholder="Enter Phone" />
-        </Form.Item>
+        <FormPhoneInput Form={Form} />
+
         <Form.Item
           name="relationship"
           label="Relationship"

@@ -32,6 +32,7 @@ import {
   phoneNumberValidationRule,
   textInputValidationRules,
 } from "FormHelpers/validation";
+import { FormPhoneInput } from "GeneralComps/FormPhoneInput";
 import moment from "moment";
 import { openNotification } from "NotificationHelpers";
 import { useContext, useEffect, useState } from "react";
@@ -142,8 +143,6 @@ export const Profile = ({ employee }: IProps) => {
     useUpdateEmployeePersonalInfo();
 
   const handleFinish = (data: any) => {
-    const countryPhoneCode =
-      countries?.find((item) => item.id === data.phone.code)?.code ?? "";
     if (companyId && employee && !employee.personalInformation) {
       //if the personal info doesnt exist, then create
       let props: ICreateEmpPersonalInfoProps = {
@@ -151,7 +150,7 @@ export const Profile = ({ employee }: IProps) => {
         companyId,
         dob: data.dob.format("YYYY-MM-DD"),
         gender: data.gender,
-        phoneNumber: `+${countryPhoneCode}-${data.phone.number}`,
+        phoneNumber: `+${data.phone.code}-${data.phone.number}`,
         eligibility: data.eligibility,
         maritalStatus: data.maritalStatus,
         nationality: data.nationality,
@@ -208,7 +207,7 @@ export const Profile = ({ employee }: IProps) => {
         companyId,
         dob: data?.dob?.format("YYYY-MM-DD"),
         gender: data.gender,
-        phoneNumber: `+${countryPhoneCode}-${data.phone.number}`,
+        phoneNumber: `+${data.phone.code}-${data.phone.number}`,
         eligibility: data.eligibility,
         maritalStatus: data.maritalStatus,
         nationality: data.nationality,
@@ -303,44 +302,7 @@ export const Profile = ({ employee }: IProps) => {
                 }
               />
             </Form.Item>
-            <Form.Item name="phone" label="Phone Number">
-              <Input.Group compact>
-                <Form.Item
-                  noStyle
-                  rules={generalValidationRules}
-                  name={["phone", "code"]}
-                >
-                  {isCountrySuccess && (
-                    <Select
-                      // showSearch
-                      // allowClear
-                      // optionLabelProp="label"
-                      className="rounded border-slate-400"
-                      style={{ width: "35%" }}
-                      options={countries.map((item) => ({
-                        label: `+${item.code}`,
-                        value: item.id,
-                      }))}
-                    />
-                  )}
-                </Form.Item>
-                <Form.Item
-                  noStyle
-                  rules={[
-                    ...textInputValidationRules,
-                    phoneNumberValidationRule,
-                  ]}
-                  name={["phone", "number"]}
-                >
-                  <Input
-                    style={{ width: "65%" }}
-                    placeholder="Business Phone"
-                    className="rounded border-slate-400 text-left"
-                    autoComplete="phone"
-                  />
-                </Form.Item>
-              </Input.Group>
-            </Form.Item>
+            <FormPhoneInput Form={Form} />
             <Form.Item
               name="eligibility"
               label="Employment Eligibility"

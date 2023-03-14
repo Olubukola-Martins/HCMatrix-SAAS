@@ -99,12 +99,20 @@ export const Login = () => {
                   ) : (
                     <UserLoginForm />
                   )}
-                  <Link
-                    to="/forgot-password"
-                    className="mb-3 flex justify-end cursor-pointer pt-2 text-sm hover:text-black"
-                  >
-                    Forgot password ?
-                  </Link>
+                  <div className="flex justify-between mb-6 pt-2">
+                    <Link
+                      to="/register"
+                      className="cursor-pointer text-sm hover:text-caramel hover:underline"
+                    >
+                      Sign up
+                    </Link>
+                    <Link
+                      to="/forgot-password"
+                      className="cursor-pointer text-sm hover:text-caramel hover:underline"
+                    >
+                      Forgot password ?
+                    </Link>
+                  </div>
                   <Divider>
                     <span className="text-sm">Sign In with</span>
                   </Divider>

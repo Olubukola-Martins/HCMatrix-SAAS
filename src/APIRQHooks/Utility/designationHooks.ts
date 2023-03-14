@@ -1,4 +1,3 @@
-import pagination from "antd/lib/pagination";
 import { ISearchParams } from "AppTypes/Search";
 import { useSignOut } from "react-auth-kit";
 import { useMutation, useQuery } from "react-query";
@@ -11,7 +10,6 @@ import {
 } from "../../ApiRequesHelpers/Utility/designations";
 import { TDesignation } from "../../AppTypes/DataEntitities";
 import { IPaginationProps } from "../../AppTypes/Pagination";
-import { openNotification } from "../../NotificationHelpers";
 
 interface IFRQDesignationsProps {
   pagination?: IPaginationProps;
@@ -42,29 +40,9 @@ export const useFetchSingleDesignation = ({
         token,
       }),
     {
-      // refetchInterval: false,
-      // refetchIntervalInBackground: false,
-      // refetchOnWindowFocus: false,
       onError: (err: any) => {
-        // show notification
         signOut();
         localStorage.clear();
-      },
-
-      select: (res: any) => {
-        const item = res.data.data;
-
-        const data: TDesignation = {
-          id: item.id,
-          name: item.name,
-          department: {
-            id: item.department.id ?? "",
-            name: item.department.name ?? "",
-          },
-          employeeCount: item.employeeCount ?? 0,
-        };
-
-        return data;
       },
     }
   );
@@ -107,30 +85,6 @@ export const useFetchDesignations = ({
       },
       onSuccess: (data) => {
         onSuccess && onSuccess(data);
-      },
-
-      select: (res: any) => {
-        const fetchedData = res.data.data;
-        const result = fetchedData.result;
-
-        const data: TDesignation[] = result.map(
-          (item: any): TDesignation => ({
-            id: item.id,
-            name: item.name,
-            department: {
-              id: item.department.id ?? "",
-              name: item.department.name ?? "",
-            },
-            employeeCount: item.employeeCount ?? 0,
-          })
-        );
-
-        const ans: IFRQDesignationsReturnProps = {
-          data,
-          total: fetchedData.totalCount,
-        };
-
-        return ans;
       },
     }
   );

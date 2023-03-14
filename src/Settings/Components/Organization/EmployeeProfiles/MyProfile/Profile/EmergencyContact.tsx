@@ -11,6 +11,7 @@ import {
   phoneNumberValidationRule,
 } from "FormHelpers/validation";
 import Button from "GeneralComps/Button";
+import { FormPhoneInput } from "GeneralComps/FormPhoneInput";
 import { openNotification } from "NotificationHelpers";
 import { useContext, useEffect, useState } from "react";
 import { useAuthUser } from "react-auth-kit";
@@ -48,9 +49,7 @@ export const EmergencyContact: React.FC<IProps> = ({ employee }) => {
   const { mutate, isLoading } = useMutation(saveEmployeeEmergencyContact);
 
   const handleSubmit = (data: any) => {
-    const countryPhoneCode =
-      countries?.find((item) => item.code === data.phone.code)?.code ?? "";
-    const phoneNumber = `+${countryPhoneCode}-${data.phone.number}`;
+    const phoneNumber = `+${data.phone.code}-${data.phone.number}`;
 
     if (companyId && employee) {
       mutate(
@@ -95,8 +94,8 @@ export const EmergencyContact: React.FC<IProps> = ({ employee }) => {
       form.setFieldsValue({
         ...employee.emergencyContact,
         phone: {
-          code: employee.emergencyContact.phoneNumber.split("-")[0],
           number: employee.emergencyContact.phoneNumber.split("-")[1],
+          code: employee.emergencyContact.phoneNumber.split("-")[0].slice(1), //remove the plus
         },
       });
     }
@@ -125,53 +124,18 @@ export const EmergencyContact: React.FC<IProps> = ({ employee }) => {
             className="grid grid-cols-1 md:grid-cols-2 gap-5"
             onFinish={handleSubmit}
             form={form}
+            disabled={disable}
           >
             <Form.Item name="fullName" label="Full Name">
-              <Input disabled={disable} />
+              <Input />
             </Form.Item>
             <Form.Item name="address" label="Address">
-              <Input disabled={disable} />
+              <Input />
             </Form.Item>
             <Form.Item name="relationship" label="Relationship">
-              <Select disabled={disable} options={relationships} />
+              <Select options={relationships} />
             </Form.Item>
-            <Form.Item name="phone" label="Phone">
-              <Input.Group compact>
-                <Form.Item
-                  noStyle
-                  rules={generalValidationRules}
-                  name={["phone", "code"]}
-                >
-                  {isCSuccess && (
-                    <Select
-                      disabled={disable}
-                      className="rounded border-slate-400"
-                      style={{ width: "25%" }}
-                      options={countries.map((item) => ({
-                        label: `+${item.code}`,
-                        value: item.code,
-                      }))}
-                    />
-                  )}
-                </Form.Item>
-                <Form.Item
-                  noStyle
-                  rules={[
-                    ...textInputValidationRules,
-                    phoneNumberValidationRule,
-                  ]}
-                  name={["phone", "number"]}
-                >
-                  <Input
-                    disabled={disable}
-                    style={{ width: "75%" }}
-                    placeholder="Contact Phone"
-                    className="rounded border-slate-400 text-left"
-                    autoComplete="phone"
-                  />
-                </Form.Item>
-              </Input.Group>
-            </Form.Item>
+            <FormPhoneInput Form={Form} />
             {!disable && (
               <div className="flex items-center">
                 <Button isLoading={isLoading} type="submit" />

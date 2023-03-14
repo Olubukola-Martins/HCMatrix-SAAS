@@ -5,7 +5,6 @@ import {
   IGetSingleBranchProps,
   updateBranch,
 } from "ApiRequesHelpers/Utility/branches";
-import { TBranch } from "AppTypes/DataEntitities";
 import { IPaginationProps } from "AppTypes/Pagination";
 import { useSignOut } from "react-auth-kit";
 import { useMutation, useQuery } from "react-query";
@@ -43,25 +42,25 @@ export const useFetchSingleBranch = ({
         localStorage.clear();
       },
 
-      select: (res: any) => {
-        const item = res.data.data;
+      // select: (res: any) => {
+      //   const item = res.data.data;
 
-        const data: TBranch = {
-          id: item.id,
-          name: item.name,
-          description: item.description,
-          address: {
-            streetAddress: item.address.streetAddress,
-            countryId: item.address.countryId,
-            stateId: item.address.stateId,
-            lgaId: item.address.lgaId,
-            timezone: item.address.timezone,
-          },
-          employeeCount: item?.employeeCount,
-        };
+      //   const data: TBranch = {
+      //     id: item.id,
+      //     name: item.name,
+      //     description: item.description,
+      //     address: {
+      //       streetAddress: item.address.streetAddress,
+      //       countryId: item.address.countryId,
+      //       stateId: item.address.stateId,
+      //       lgaId: item.address.lgaId,
+      //       timezone: item.address.timezone,
+      //     },
+      //     employeeCount: item?.employeeCount,
+      //   };
 
-        return data;
-      },
+      //   return data;
+      // },
     }
   );
 
@@ -73,10 +72,6 @@ interface IFRQDataProps {
   companyId: string;
   onSuccess?: Function;
   token: string;
-}
-interface IFRQDataReturnProps {
-  data: TBranch[];
-  total: number;
 }
 
 export const useFetchBranches = ({
@@ -105,34 +100,6 @@ export const useFetchBranches = ({
       },
       onSuccess: (data) => {
         onSuccess && onSuccess(data);
-      },
-
-      select: (res: any) => {
-        const fetchedData = res.data.data;
-        const result = fetchedData.result;
-
-        const data: TBranch[] = result.map(
-          (item: any): TBranch => ({
-            id: item.id,
-            name: item.name,
-            description: item.description,
-            address: {
-              streetAddress: item.address.streetAddress,
-              countryId: item.address.countryId,
-              stateId: item.address.stateId,
-              lgaId: item.address.lgaId,
-              timezone: item.address.timezone,
-            },
-            employeeCount: item?.employeeCount,
-          })
-        );
-
-        const ans: IFRQDataReturnProps = {
-          data,
-          total: fetchedData.totalCount,
-        };
-
-        return ans;
       },
     }
   );

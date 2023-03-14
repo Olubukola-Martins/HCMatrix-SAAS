@@ -1,5 +1,5 @@
 import axios from "axios";
-import { ICurrentCompany } from "../../AppTypes/DataEntitities";
+import { ICurrentCompany, TDesignation } from "../../AppTypes/DataEntitities";
 import { IPaginationProps } from "../../AppTypes/Pagination";
 import { ISearchParams } from "../../AppTypes/Search";
 
@@ -57,7 +57,9 @@ interface IGetDegsProps extends ICurrentCompany {
 export interface IGetSingleDesgProps extends ICurrentCompany {
   designationId: number;
 }
-export const getDesignations = async (props: IGetDegsProps) => {
+export const getDesignations = async (
+  props: IGetDegsProps
+): Promise<{ data: TDesignation[]; total: number }> => {
   const { pagination } = props;
   const limit = pagination?.limit ?? 10;
   const offset = pagination?.offset ?? 0;
@@ -75,11 +77,33 @@ export const getDesignations = async (props: IGetDegsProps) => {
     },
   };
 
-  const response = await axios.get(url, config);
-  return response;
+  const res = await axios.get(url, config);
+  const fetchedData = res.data.data;
+  const result = fetchedData.result;
+
+  const data: TDesignation[] = result.map(
+    (item: any): TDesignation => ({
+      id: item.id,
+      name: item.name,
+      department: {
+        id: item.department.id ?? "",
+        name: item.department.name ?? "",
+      },
+      employeeCount: item.employeeCount ?? 0,
+    })
+  );
+
+  const ans = {
+    data,
+    total: fetchedData.totalCount,
+  };
+
+  return ans;
 };
 
-export const getSingleDesignation = async (props: IGetSingleDesgProps) => {
+export const getSingleDesignation = async (
+  props: IGetSingleDesgProps
+): Promise<TDesignation> => {
   const id = props.designationId;
 
   const url = `${process.env.REACT_APP_UTILITY_BASE_URL}/company/designation/${id}`;
@@ -92,6 +116,18 @@ export const getSingleDesignation = async (props: IGetSingleDesgProps) => {
     },
   };
 
-  const response = await axios.get(url, config);
-  return response;
+  const res = await axios.get(url, config);
+  const item = res.data.data;
+
+  const data: TDesignation = {
+    id: item.id,
+    name: item.name,
+    department: {
+      id: item.department.id ?? "",
+      name: item.department.name ?? "",
+    },
+    employeeCount: item.employeeCount ?? 0,
+  };
+
+  return data;
 };

@@ -52,27 +52,6 @@ export const useFetchDepartments = ({
       onSuccess: (data) => {
         onSuccess && onSuccess(data);
       },
-
-      select: (res: any) => {
-        const fetchedData = res.data.data;
-        const result = fetchedData.result;
-
-        const data: TDepartment[] = result.map(
-          (item: any): TDepartment => ({
-            id: item.id,
-            name: item.name,
-            email: item.email,
-            employeeCount: item.employeeCount ?? 0,
-          })
-        );
-
-        const ans: IFRQDepartmentsReturnProps = {
-          data,
-          total: fetchedData.totalCount,
-        };
-
-        return ans;
-      },
     }
   );
 
@@ -102,21 +81,6 @@ export const useFetchSingleDepartment = ({
       onError: (err: any) => {
         signOut();
         localStorage.clear();
-      },
-
-      select: (res: any) => {
-        const item = res.data.data;
-
-        const data: TDepartment = {
-          id: item.id,
-          name: item.name,
-          email: item.email,
-          employeeCount: item.employeeCount ?? 0,
-          departmentHeadId: item?.departmentHeadId,
-          parentDepartmentId: item?.parentDepartmentId,
-        };
-
-        return data;
       },
     }
   );
