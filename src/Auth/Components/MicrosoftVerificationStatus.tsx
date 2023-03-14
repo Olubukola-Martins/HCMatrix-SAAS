@@ -19,6 +19,7 @@ import { useFetchIndustries } from "APIRQHooks/Utility/industryHooks";
 import { BankOutlined } from "@ant-design/icons";
 import { useCreateCompanyFromSocialAuth } from "APIRQHooks/Utility/companyHooks";
 import Button from "GeneralComps/Button";
+import { FormPhoneInput } from "GeneralComps/FormPhoneInput";
 
 const MicrosoftVerificationStatus = ({
   code,
@@ -185,12 +186,14 @@ const MicrosoftVerificationStatus = ({
     isSuccess: isISuccess,
   } = useFetchIndustries();
   const handleFinish = (data: any) => {
+    const phoneNumber = `+${data.phone.code}-${data.phone.number}`;
+
     if (tempAuthState) {
       mutate(
         {
           industryId: data.industryId,
           name: data.name,
-          phoneNumber: data.phoneNumber,
+          phoneNumber: phoneNumber,
           token: tempAuthState.state.userToken,
         },
         {
@@ -294,8 +297,6 @@ const MicrosoftVerificationStatus = ({
             }
           },
           onError: (err: any) => {
-            console.log("SOCIAL ERR", err);
-
             openNotification({
               state: "error",
               title: "Error Occurred",
@@ -320,9 +321,7 @@ const MicrosoftVerificationStatus = ({
           <Form.Item name={"name"} label="Company name">
             <Input placeholder="Company name" />
           </Form.Item>
-          <Form.Item name={"phoneNumber"} label="Phone">
-            <Input placeholder="Phone Number" />
-          </Form.Item>
+          <FormPhoneInput Form={Form} />
           <Form.Item name={"industryId"} label="Industry">
             <Select
               showSearch
