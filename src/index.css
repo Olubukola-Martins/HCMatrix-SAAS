@@ -394,3 +394,10 @@ textarea.ant-input,
   .ant-steps-icon-dot {
   background: var(--caramel);
 }
+
+.ant-steps-item-finish
+  .ant-steps-item-icon
+  > .ant-steps-icon
+  .ant-steps-icon-dot {
+  background: var(--caramel);
+}
