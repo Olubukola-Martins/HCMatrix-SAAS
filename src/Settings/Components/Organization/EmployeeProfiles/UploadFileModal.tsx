@@ -6,6 +6,7 @@ import Themes from "../../../../Themes/Themes";
 import { UploadExcelForm } from "./UploadExcelForm";
 import { IModalProps } from "../../../../AppTypes/Component";
 import MappingDetails, { TMappingSection } from "./MappingDetails";
+import ErrorBoundary from "GeneralComps/ErrorBoundary";
 
 const bulkEmployeeUploadSections: TMappingSection[] = [
   {
@@ -144,6 +145,7 @@ const UploadFileModal = ({ open, handleClose }: IModalProps) => {
           </div>
 
           {/* content */}
+
           <div className="w-full">
             {" "}
             {/* upload file*/}
@@ -161,15 +163,20 @@ const UploadFileModal = ({ open, handleClose }: IModalProps) => {
             )}
             {/* mapping details */}
             {(activeStep === 1 || activeStep === 2) && (
-              <MappingDetails
-                columns={columns}
-                handleNext={handleNext}
-                handlePrev={handlePrev}
-                activeStep={activeStep}
-                retrievedData={retrievedData}
-                setFormattedData={setFormattedData}
-                sections={selectedSections}
-              />
+              <ErrorBoundary
+                message="Invalid File Type (consider using our template)"
+                action={handlePrev}
+              >
+                <MappingDetails
+                  columns={columns}
+                  handleNext={handleNext}
+                  handlePrev={handlePrev}
+                  activeStep={activeStep}
+                  retrievedData={retrievedData}
+                  setFormattedData={setFormattedData}
+                  sections={selectedSections}
+                />
+              </ErrorBoundary>
             )}
             {/* handle duplicate */}
             {activeStep === 3 && (
