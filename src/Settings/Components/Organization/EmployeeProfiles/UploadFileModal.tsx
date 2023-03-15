@@ -131,7 +131,6 @@ const UploadFileModal = ({ open, handleClose }: IModalProps) => {
       width={680}
     >
       <Themes>
-        <p>{activeStep}</p>
         <div className="text-accent flex flex-col items-center gap-12">
           <div className="w-full flex flex-col gap-8">
             {/* liscence */}
