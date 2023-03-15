@@ -162,9 +162,12 @@ const MappingDetails = ({
           onError: (err: any) => {
             openNotification({
               state: "error",
-              title: "Error Occurred",
+              title: "Error Occurred !",
               description:
-                err?.response.data.message ?? err?.response.data.error.message,
+                err?.response.data.error[0]?.message ??
+                err?.response.data.message ??
+                err?.response.data.error.message,
+              duration: 0,
             });
           },
           onSuccess: (res: any) => {

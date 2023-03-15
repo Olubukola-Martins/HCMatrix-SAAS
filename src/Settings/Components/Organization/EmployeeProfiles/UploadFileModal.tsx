@@ -129,6 +129,7 @@ const UploadFileModal = ({ open, handleClose }: IModalProps) => {
       footer={null}
       style={{ top: 20 }}
       width={680}
+      closable={false}
     >
       <Themes>
         <div className="text-accent flex flex-col items-center gap-12">
