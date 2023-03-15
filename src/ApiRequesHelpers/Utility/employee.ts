@@ -3,6 +3,7 @@ import moment from "moment";
 import {
   ICurrentCompany,
   TBank,
+  TDirectReport,
   TEducationDetail,
   TEmployee,
   TEmployeeDependant,
@@ -10,9 +11,11 @@ import {
   TEmployementHistory,
   TInvitedEmployee,
   TJobInfo,
+  TManagerHistory,
   TPension,
   TPersonalInfo,
   TSkill,
+  TUserGroup,
   TWallet,
 } from "../../AppTypes/DataEntitities";
 import { IPaginationProps } from "../../AppTypes/Pagination";
@@ -751,6 +754,43 @@ export const getSingleEmployee = async (
       id: item.id,
     })
   );
+  const managerHistory = fetchedData?.managerHistory?.map(
+    (item: any): TManagerHistory => ({
+      id: item.id,
+      currentManager: item.currentManager,
+      from: item.from,
+      to: item.to,
+      lineManager: {
+        id: item.lineManager.id,
+        firstName: item.lineManager.firstName,
+        lastName: item.lineManager.lastName,
+        email: item.lineManager.email,
+      },
+    })
+  );
+  const directReports = fetchedData?.directReport?.map(
+    (item: any): TDirectReport => ({
+      id: item.id,
+      currentManager: item.currentManager,
+      from: item.from,
+      to: item.to,
+      employee: {
+        id: item.lineManager.id,
+        firstName: item.lineManager.firstName,
+        lastName: item.lineManager.lastName,
+        email: item.lineManager.email,
+      },
+    })
+  );
+  const userGroups = fetchedData?.userGroups?.map(
+    (item: any): TUserGroup => ({
+      id: item.id,
+
+      name: item.name,
+      description: item.description,
+      isLead: item.isLead,
+    })
+  );
   const employmentHistory = fetchedData?.employmentHistory?.map(
     (item: any): TEmployementHistory => ({
       organization: item.organization,
@@ -807,6 +847,9 @@ export const getSingleEmployee = async (
     status: item.status,
     updatedAt: item.updatedAt,
     userId: item.userId,
+    userGroups,
+    managerHistory,
+    directReports,
     // --------------
     finance: {
       wallet,

@@ -209,6 +209,36 @@ export type TEmployementHistory = {
   startDate: string;
   endDate: string;
 };
+export type TUserGroup = {
+  id: number;
+  name: string;
+  description: string;
+  isLead: boolean;
+};
+export type TDirectReport = {
+  id: number;
+  currentManager: boolean;
+  from: string;
+  to: string;
+  employee: {
+    id: number;
+    firstName: string;
+    lastName: string;
+    email: string;
+  };
+};
+export type TManagerHistory = {
+  id: number;
+  currentManager: boolean;
+  from: string;
+  to: string;
+  lineManager: {
+    id: number;
+    firstName: string;
+    lastName: string;
+    email: string;
+  };
+};
 
 export type TEmployee = {
   companyId: number;
@@ -231,6 +261,9 @@ export type TEmployee = {
   status: TEmployeeStatus;
   updatedAt: string;
   userId: number;
+  userGroups?: TUserGroup[];
+  directReports?: TDirectReport[];
+  managerHistory?: TManagerHistory[];
   // --------------
   finance?: {
     wallet: TWallet;
