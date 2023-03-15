@@ -1,50 +1,43 @@
-import Search from "antd/lib/input/Search";
-import { Space, Table } from "antd";
-import React, { useState } from "react";
+import { Input, Table } from "antd";
+import React from "react";
 import { ColumnsType } from "antd/lib/table";
+import { TEmployee, TUserGroup } from "AppTypes/DataEntitities";
+import moment from "moment";
 
-interface DataType {
-  key: React.Key;
-  name: string;
-  action: any;
+interface IProps {
+  employee?: TEmployee;
 }
 
-const columns: ColumnsType<DataType> = [
+const columns: ColumnsType<TUserGroup> = [
   {
     title: "Name",
     dataIndex: "name",
+    render: (_, item) => <span className="capitalize">{item.name}</span>,
     // width: 150,
   },
 
   {
-    title: "Action",
-    key: "action",
-    render: (_, record) => (
-      <Space size="middle">
-        <i className="ri-delete-bin-line text-lg cursor-pointer"></i>
-        <a>
-          <i className="ri-pencil-line text-xl cursor-pointer"></i>
-        </a>
-      </Space>
-    ),
+    title: "Description",
+    dataIndex: "description",
+  },
+  {
+    title: "Is Lead",
+    dataIndex: "isLead",
+    render: (val) => <span className="capitalize">{val ? "Yes" : "No"}</span>,
+
+    // width: 150,
   },
 ];
 
-const data: DataType[] = [];
-// for (let i = 0; i < 10; i++) {
-//   data.push({
-//     key: i,
-//     name: "",
-//     action: "action",
-//   });
-// }
-
-export const UserGroups = () => {
-  return (
-    <div className="bg-mainBg shadow-sm rounded-md py-6 px-4 mt-5">
+export const UserGroups: React.FC<IProps> = ({ employee }) => {
+  if (employee) {
+    return (
       <div className="bg-card p-3 rounded">
-        <div className="my-3">
-          <Search
+        <div className="border-b border-gray-400 w-full mb-7">
+          <h2 className="text-accent text-base pb-1">User Groups</h2>
+        </div>
+        <div className="my-3 flex justify-end">
+          <Input.Search
             placeholder="input search text"
             style={{ width: 200 }}
             className="rounded"
@@ -53,11 +46,13 @@ export const UserGroups = () => {
 
         <Table
           columns={columns}
-          dataSource={data}
-          pagination={{ pageSize: 50 }}
+          dataSource={employee.userGroups}
+          size="small"
+          pagination={{ pageSize: 4, total: employee?.userGroups?.length }}
           scroll={{ y: 240 }}
         />
       </div>
-    </div>
-  );
+    );
+  }
+  return null;
 };

@@ -1,5 +1,13 @@
-import { Button, Collapse, Form } from "antd";
+import { Collapse, Form } from "antd";
+import { IAuthDets } from "AppTypes/Auth";
+import { GlobalContext } from "Contexts/GlobalContextProvider";
+import Button from "GeneralComps/Button";
+import { openNotification } from "NotificationHelpers";
+import { useContext } from "react";
+import { useAuthUser } from "react-auth-kit";
+import { useQueryClient } from "react-query";
 import { TBulkEmployeeImport } from "../../../../ApiRequesHelpers/Utility/employee";
+import { useEmployeeBulkUpload } from "../../../../APIRQHooks/Utility/employeeHooks";
 
 import MappingFormGroup, { TFormMappingInput } from "./MappingFormGroup";
 
@@ -36,12 +44,21 @@ const MappingDetails = ({
   setFormattedData,
   sections,
 }: IProps) => {
+  const queryClient = useQueryClient();
+  const auth = useAuthUser();
+
+  const authDetails = auth() as unknown as IAuthDets;
+
+  const token = authDetails.userToken;
+  const globalCtx = useContext(GlobalContext);
+  const { state: globalState } = globalCtx;
+  const companyId = globalState.currentCompany?.id;
+
+  const { mutate, isLoading } = useEmployeeBulkUpload();
   const [form] = Form.useForm();
   const handleSubmit = (data: any) => {
-    console.log("mapping", data);
     const mappedColumns = Object.entries(data);
 
-    console.log(retrievedData, ">>>");
     const formattedData = retrievedData.map((item) => {
       let ans: any = {};
       mappedColumns.forEach((col, i) => {
@@ -52,17 +69,18 @@ const MappingDetails = ({
       return ans;
     });
 
-    console.log("fDATA", formattedData);
-
     setFormattedData(formattedData);
+
     // make call to api here
+    console.log(formattedData, "FM");
     const dataToBeSubmitted: TBulkEmployeeImport[] = formattedData.map(
       (item) => {
         const employeeData: TBulkEmployeeImport = {
           employeeInformation: {
             email: item?.email,
             empUid: item?.empUid,
-            hasSelfService: item?.hasSelfService,
+            hasSelfService:
+              `${item?.hasSelfService}`.toLowerCase() === "yes" ? true : false,
           },
           personalInformation: {
             alternativeEmail: item?.alternativeEmail,
@@ -100,6 +118,7 @@ const MappingDetails = ({
             phoneNumber: item?.ecPhoneNumber,
           },
         };
+
         // delete sections not used
         if (
           !sections.find(
@@ -136,10 +155,46 @@ const MappingDetails = ({
     );
 
     console.log("data to be submitted", dataToBeSubmitted, sections);
+    if (companyId) {
+      mutate(
+        { data: dataToBeSubmitted, token, companyId },
+        {
+          onError: (err: any) => {
+            openNotification({
+              state: "error",
+              title: "Error Occurred !",
+              description:
+                err?.response.data.error[0]?.message ??
+                err?.response.data.message ??
+                err?.response.data.error.message,
+              duration: 0,
+            });
+          },
+          onSuccess: (res: any) => {
+            openNotification({
+              state: "success",
 
-    // convert to json also
-    const jsonData = JSON.stringify(dataToBeSubmitted);
-    handleNext();
+              title: "Success",
+              description: res.data.message,
+              // duration: 0.4,
+            });
+
+            form.resetFields();
+            handleNext();
+
+            queryClient.invalidateQueries({
+              queryKey: ["departments"],
+              // exact: true,
+            });
+          },
+        }
+      );
+    }
+  };
+  const handleConfirm = () => {
+    form.validateFields().then(() => {
+      handleNext();
+    });
   };
   return (
     <div className="flex flex-col gap-4">
@@ -180,23 +235,24 @@ const MappingDetails = ({
 
       {/* buttons */}
       <div className="flex flex-row justify-between w-full mt-4">
-        {activeStep !== 0 && (
-          <Button onClick={() => handlePrev()} type="text">
-            Previous
-          </Button>
+        {activeStep === 1 && (
+          <>
+            <Button handleClick={() => handlePrev()} label="previous" />
+            <Button label="Confirm" handleClick={() => handleConfirm()} />
+          </>
         )}
-        <div className="ml-auto">
-          {activeStep !== 3 && (
-            <button
-              className="button"
-              type="submit"
-              onClick={() => form.submit()}
-            >
-              Save
-            </button>
-          )}
-          {activeStep === 3 && <button className="button">Done</button>}
-        </div>
+
+        {activeStep === 2 && (
+          <>
+            <Button handleClick={() => handlePrev()} label="previous" />
+
+            <Button
+              label="Done"
+              handleClick={() => form.submit()}
+              isLoading={isLoading}
+            />
+          </>
+        )}
       </div>
     </div>
   );

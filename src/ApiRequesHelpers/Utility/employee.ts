@@ -3,6 +3,7 @@ import moment from "moment";
 import {
   ICurrentCompany,
   TBank,
+  TDirectReport,
   TEducationDetail,
   TEmployee,
   TEmployeeDependant,
@@ -10,9 +11,11 @@ import {
   TEmployementHistory,
   TInvitedEmployee,
   TJobInfo,
+  TManagerHistory,
   TPension,
   TPersonalInfo,
   TSkill,
+  TUserGroup,
   TWallet,
 } from "../../AppTypes/DataEntitities";
 import { IPaginationProps } from "../../AppTypes/Pagination";
@@ -83,7 +86,76 @@ export interface ICreateEmpProps extends ICurrentCompany {
 export interface IEmpInviteProps extends ICurrentCompany {
   emails: string;
 }
+export interface IBulkEmployeeUploadProps extends ICurrentCompany {
+  data: TBulkEmployeeImport[];
+}
 
+export const employeeBulkUpload = async (props: IBulkEmployeeUploadProps) => {
+  const url = `${process.env.REACT_APP_UTILITY_BASE_URL}/employee/bulk`;
+  const config = {
+    headers: {
+      // Accept: "application/json",
+      Authorization: `Bearer ${props.token}`,
+      "x-company-id": props.companyId,
+    },
+  };
+
+  const data = props.data.map((item) => ({
+    firstName: item.personalInformation?.firstName,
+    lastName: item.personalInformation?.lastName,
+    email: item.employeeInformation.email,
+    hasSelfService: item.employeeInformation.hasSelfService,
+    empUid: item.employeeInformation.empUid,
+    personalInformation: {
+      dob: item.personalInformation?.dob,
+      gender: item.personalInformation?.gender,
+      phoneNumber: item.personalInformation?.alternativePhoneNumber,
+      eligibility: item.personalInformation?.eligibility,
+      maritalStatus: item.personalInformation?.maritalStatus,
+      nationality: item.personalInformation?.nationality,
+      passportExpirationDate: item.personalInformation?.passportExpirationDate,
+      alternativeEmail: item.personalInformation?.alternativeEmail,
+      alternativePhoneNumber: item.personalInformation?.alternativePhoneNumber,
+      nin: item.personalInformation?.nin,
+      taxId: item.personalInformation?.taxId,
+      taxAuthority: item.personalInformation?.taxAuthority,
+    },
+    finance: [
+      {
+        key: "wallet",
+        wallet: {
+          accountProvider: item.walletInformation?.accountProvider,
+          accountNumber: item.walletInformation?.accountNumber,
+        },
+      },
+      {
+        key: "bank",
+        bank: {
+          bankName: item.bankInformation?.bankName,
+          accountNumber: item.bankInformation?.accountNumber,
+          bvn: item.bankInformation?.bvn,
+        },
+      },
+      {
+        key: "pension",
+        pension: {
+          fundAdministrator: item.pensionInformation?.fundAdministrator,
+          accountNumber: item.pensionInformation?.accountNumber,
+          pensionType: item.pensionInformation?.pensionType,
+        },
+      },
+    ],
+    emergencyContact: {
+      fullName: item.emergencyContact?.fullName,
+      address: item.emergencyContact?.address,
+      relationship: item.emergencyContact?.relationship,
+      phoneNumber: item.emergencyContact?.phoneNumber,
+    },
+  }));
+
+  const response = await axios.post(url, data, config);
+  return response;
+};
 export const createEmployee = async (props: ICreateEmpProps) => {
   const url = `${process.env.REACT_APP_UTILITY_BASE_URL}/employee`;
   const config = {
@@ -682,6 +754,43 @@ export const getSingleEmployee = async (
       id: item.id,
     })
   );
+  const managerHistory = fetchedData?.managerHistory?.map(
+    (item: any): TManagerHistory => ({
+      id: item.id,
+      currentManager: item.currentManager,
+      from: item.from,
+      to: item.to,
+      lineManager: {
+        id: item.lineManager.id,
+        firstName: item.lineManager.firstName,
+        lastName: item.lineManager.lastName,
+        email: item.lineManager.email,
+      },
+    })
+  );
+  const directReports = fetchedData?.directReport?.map(
+    (item: any): TDirectReport => ({
+      id: item.id,
+      currentManager: item.currentManager,
+      from: item.from,
+      to: item.to,
+      employee: {
+        id: item.employee.id,
+        firstName: item.employee.firstName,
+        lastName: item.employee.lastName,
+        email: item.employee.email,
+      },
+    })
+  );
+  const userGroups = fetchedData?.userGroups?.map(
+    (item: any): TUserGroup => ({
+      id: item.id,
+
+      name: item.group.name,
+      description: item.group.description,
+      isLead: item.isLead,
+    })
+  );
   const employmentHistory = fetchedData?.employmentHistory?.map(
     (item: any): TEmployementHistory => ({
       organization: item.organization,
@@ -738,6 +847,9 @@ export const getSingleEmployee = async (
     status: item.status,
     updatedAt: item.updatedAt,
     userId: item.userId,
+    userGroups,
+    managerHistory,
+    directReports,
     // --------------
     finance: {
       wallet,

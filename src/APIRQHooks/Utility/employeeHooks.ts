@@ -14,6 +14,7 @@ import {
   deleteEmployeeEducationDetail,
   deleteEmployeeEmploymentHistory,
   deleteEmployeeSkill,
+  employeeBulkUpload,
   employeeInvite,
   getEmployees,
   getInvitedEmployees,
@@ -140,8 +141,6 @@ export const useFetchSingleEmployee = ({
 
   token,
 }: IGetSingleEmpProps) => {
-  const signOut = useSignOut();
-
   const queryData = useQuery(
     ["single-employee", employeeId],
     () =>
@@ -154,8 +153,7 @@ export const useFetchSingleEmployee = ({
     {
       // enabled: employeeId === 0 ? false : true,
       onError: (err: any) => {
-        signOut();
-        localStorage.clear();
+        console.log(err, "single-emplo");
       },
     }
   );
@@ -264,4 +262,9 @@ export const useAddDependantToEmployee = () => {
 
 export const useSaveEmployeeEmergencyContact = () => {
   return useMutation(saveEmployeeEmergencyContact);
+};
+// employee bulk upload
+
+export const useEmployeeBulkUpload = () => {
+  return useMutation(employeeBulkUpload);
 };

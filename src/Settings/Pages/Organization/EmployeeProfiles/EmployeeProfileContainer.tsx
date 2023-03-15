@@ -173,12 +173,12 @@ export const EmployeeProfileContainer = ({
             </Tabs.TabPane>
             <Tabs.TabPane tab="Manager(s)/Direct Report(s)" key="4">
               <div className="bg-mainBg shadow-sm rounded-md py-6 px-4 mt-5">
-                <Managers />
-                <DirectReports />
+                <Managers employee={employee} />
+                <DirectReports employee={employee} />
               </div>
             </Tabs.TabPane>
             <Tabs.TabPane tab="User Groups" key="5">
-              <UserGroups />
+              <UserGroups employee={employee} />
             </Tabs.TabPane>
             <Tabs.TabPane tab="History" key="6">
               <div className="bg-mainBg shadow-sm rounded-md py-6 md:px-4 mt-5">

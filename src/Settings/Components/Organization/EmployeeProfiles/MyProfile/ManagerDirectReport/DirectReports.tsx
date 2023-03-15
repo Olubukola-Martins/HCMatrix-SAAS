@@ -1,71 +1,82 @@
-import Search from "antd/lib/input/Search";
-import { Space, Table } from "antd";
-import React, { useState } from "react";
+import { Input, Table } from "antd";
+import React from "react";
 import { ColumnsType } from "antd/lib/table";
+import { TDirectReport, TEmployee } from "AppTypes/DataEntitities";
+import moment from "moment";
 
-interface DataType {
-  key: React.Key;
-  name: string;
-  type: string;
-  email: string;
+interface IProps {
+  employee?: TEmployee;
 }
 
-const columns: ColumnsType<DataType> = [
+const columns: ColumnsType<TDirectReport> = [
   {
     title: "Name",
     dataIndex: "name",
+    render: (_, item) => (
+      <span className="capitalize">
+        {item.employee.firstName} {item.employee.lastName}
+      </span>
+    ),
     // width: 150,
   },
   {
     title: "Email",
     dataIndex: "email",
+    render: (_, item) => <span className="">{item.employee.email} </span>,
+
     // width: 150,
   },
   {
     title: "From",
     dataIndex: "from",
-    // width: 150,
+    render: (val) => (
+      <span className="capitalize">
+        {val && moment(val).format("DD/MM/YY")}
+      </span>
+    ),
   },
   {
     title: "To",
     dataIndex: "to",
-    // width: 150,
+    render: (val) => (
+      <span className="capitalize">
+        {val && moment(val).format("DD/MM/YY")}
+      </span>
+    ),
   },
   {
     title: "Currently reports to you",
-    dataIndex: "type",
-    width: 300,
+    dataIndex: "currentManager",
+    render: (val) => <span className="capitalize">{val ? "Yes" : "No"}</span>,
+
+    // width: 150,
   },
 ];
 
-const data: DataType[] = [
-  {
-    name: "John",
-    email: "jo@ho.vo",
-    type: "Yes",
-    key: "2",
-  },
-];
-export const DirectReports = () => {
-  return (
-    <div className="bg-card p-3 rounded">
-      <div className="border-b border-gray-400 w-full mb-7">
-        <h2 className="text-accent text-base pb-1">Direct Report Records</h2>
-      </div>
-      <div className="my-3 flex justify-end">
-        <Search
-          placeholder="input search text"
-          style={{ width: 200 }}
-          className="rounded"
+export const DirectReports: React.FC<IProps> = ({ employee }) => {
+  if (employee) {
+    return (
+      <div className="bg-card p-3 rounded">
+        <div className="border-b border-gray-400 w-full mb-7">
+          <h2 className="text-accent text-base pb-1">Direct Reports</h2>
+        </div>
+        <div className="my-3 flex justify-end">
+          <Input.Search
+            placeholder="input search text"
+            style={{ width: 200 }}
+            className="rounded"
+          />
+        </div>
+
+        <Table
+          columns={columns}
+          dataSource={employee.directReports}
+          size="small"
+          pagination={{ pageSize: 4, total: employee?.directReports?.length }}
+          scroll={{ y: 240 }}
         />
       </div>
-
-      <Table
-        columns={columns}
-        dataSource={data}
-        size="small"
-        scroll={{ y: 240 }}
-      />
-    </div>
-  );
+    );
+  }
+  return null;
 };
