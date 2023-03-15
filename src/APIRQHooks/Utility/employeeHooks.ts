@@ -14,6 +14,7 @@ import {
   deleteEmployeeEducationDetail,
   deleteEmployeeEmploymentHistory,
   deleteEmployeeSkill,
+  employeeBulkUpload,
   employeeInvite,
   getEmployees,
   getInvitedEmployees,
@@ -264,4 +265,9 @@ export const useAddDependantToEmployee = () => {
 
 export const useSaveEmployeeEmergencyContact = () => {
   return useMutation(saveEmployeeEmergencyContact);
+};
+// employee bulk upload
+
+export const useEmployeeBulkUpload = () => {
+  return useMutation(employeeBulkUpload);
 };
