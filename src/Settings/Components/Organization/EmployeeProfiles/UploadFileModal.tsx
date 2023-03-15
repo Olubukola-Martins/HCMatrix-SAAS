@@ -131,6 +131,7 @@ const UploadFileModal = ({ open, handleClose }: IModalProps) => {
       width={680}
     >
       <Themes>
+        <p>{activeStep}</p>
         <div className="text-accent flex flex-col items-center gap-12">
           <div className="w-full flex flex-col gap-8">
             {/* liscence */}
@@ -170,7 +171,7 @@ const UploadFileModal = ({ open, handleClose }: IModalProps) => {
               />
             )}
             {/* mapping details */}
-            {(activeStep === 1 || activeStep === 2) && (
+            {(activeStep === 1 || activeStep === 2 || activeStep === 3) && (
               <ErrorBoundary
                 message="Invalid File Type (consider using our template)"
                 action={handlePrev}
