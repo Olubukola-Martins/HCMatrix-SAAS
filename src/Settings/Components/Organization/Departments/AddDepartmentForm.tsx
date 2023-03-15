@@ -36,12 +36,7 @@ const AddDepartmentForm = ({ handleClose }: { handleClose: Function }) => {
         parentDepartmentId: data.parentDepartmentId,
         token,
       };
-      // return;
-      openNotification({
-        state: "info",
-        title: "Wait a second ...",
-        description: <Spin />,
-      });
+     
       mutate(props, {
         onError: (err: any) => {
           openNotification({
