@@ -775,10 +775,10 @@ export const getSingleEmployee = async (
       from: item.from,
       to: item.to,
       employee: {
-        id: item.lineManager.id,
-        firstName: item.lineManager.firstName,
-        lastName: item.lineManager.lastName,
-        email: item.lineManager.email,
+        id: item.employee.id,
+        firstName: item.employee.firstName,
+        lastName: item.employee.lastName,
+        email: item.employee.email,
       },
     })
   );
@@ -786,8 +786,8 @@ export const getSingleEmployee = async (
     (item: any): TUserGroup => ({
       id: item.id,
 
-      name: item.name,
-      description: item.description,
+      name: item.group.name,
+      description: item.group.description,
       isLead: item.isLead,
     })
   );
