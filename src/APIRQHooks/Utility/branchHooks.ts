@@ -6,6 +6,7 @@ import {
   updateBranch,
 } from "ApiRequesHelpers/Utility/branches";
 import { IPaginationProps } from "AppTypes/Pagination";
+import { ISearchParams } from "AppTypes/Search";
 import { useSignOut } from "react-auth-kit";
 import { useMutation, useQuery } from "react-query";
 
@@ -69,6 +70,8 @@ export const useFetchSingleBranch = ({
 
 interface IFRQDataProps {
   pagination?: IPaginationProps;
+  searchParams?: ISearchParams;
+
   companyId: string;
   onSuccess?: Function;
   token: string;
@@ -79,15 +82,17 @@ export const useFetchBranches = ({
   companyId,
   onSuccess,
   token,
+  searchParams,
 }: IFRQDataProps) => {
   const signOut = useSignOut();
 
   const queryData = useQuery(
-    ["branches", pagination?.current, pagination?.limit],
+    ["branches", pagination?.current, pagination?.limit, searchParams?.name],
     () =>
       getBranches({
         companyId,
         pagination: { limit: pagination?.limit, offset: pagination?.offset },
+        searchParams,
         token,
       }),
     {
