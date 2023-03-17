@@ -152,9 +152,7 @@ export const useFetchSingleEmployee = ({
 
     {
       // enabled: employeeId === 0 ? false : true,
-      onError: (err: any) => {
-        console.log(err, "single-emplo");
-      },
+      onError: (err: any) => {},
     }
   );
 
