@@ -183,7 +183,7 @@ const MappingDetails = ({
             handleNext();
 
             queryClient.invalidateQueries({
-              queryKey: ["departments"],
+              queryKey: ["employees"],
               // exact: true,
             });
           },

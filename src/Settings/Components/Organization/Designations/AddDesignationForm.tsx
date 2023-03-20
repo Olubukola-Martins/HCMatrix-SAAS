@@ -1,4 +1,5 @@
 import { Form, Input, Select, Skeleton, Spin } from "antd";
+import { FormDepartmentInput } from "GeneralComps/FormDepartmentInput";
 import React, { useContext, useState } from "react";
 import { useAuthUser } from "react-auth-kit";
 import { useQueryClient } from "react-query";
@@ -119,34 +120,7 @@ const AddDesignationForm = ({ handleClose }: { handleClose: Function }) => {
           <Input placeholder="Designation" />
         </Form.Item>
 
-        <Form.Item
-          name="departmentId"
-          label="Department"
-          rules={generalValidationRules}
-        >
-          <Select
-            onSearch={(val) => setDepSearch(val)}
-            showSearch
-            value={depSearch}
-            defaultActiveFirstOption={false}
-            showArrow={false}
-            filterOption={false}
-            // onChange={handleChange}
-            notFoundContent={null}
-          >
-            {isSuccess ? (
-              departmentData.data.map((item) => (
-                <Select.Option key={item.id} value={item.id}>
-                  {item.name}
-                </Select.Option>
-              ))
-            ) : (
-              <div className="flex justify-center items-center w-full">
-                <Spin size="small" />
-              </div>
-            )}
-          </Select>
-        </Form.Item>
+        <FormDepartmentInput Form={Form} />
 
         <button className="button" type="submit">
           {isLoading ? <BeatLoader color="#fff" /> : "Submit"}

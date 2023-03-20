@@ -23,6 +23,8 @@ import {
   textInputValidationRules,
 } from "FormHelpers/validation";
 import { FileUpload } from "GeneralComps/FileUpload";
+import { FormDesignationInput } from "GeneralComps/FormDesignationInput";
+import { FormRoleInput } from "GeneralComps/FormRoleInput";
 import { openNotification } from "NotificationHelpers";
 import { useContext, useEffect } from "react";
 import { useAuthUser } from "react-auth-kit";
@@ -191,29 +193,9 @@ export const EditMyProfile = ({ open, handleClose, employee }: IProps) => {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-x-4 mt-2">
-          <Form.Item
-            name="designationId"
-            label="Designation"
-            rules={generalValidationRules}
-          >
-            <Select
-              options={designations?.data.map((item) => ({
-                label: item.name,
-                value: item.id,
-              }))}
-              loading={isDesgFetching}
-            />
-          </Form.Item>
+          <FormDesignationInput Form={Form} />
 
-          <Form.Item name="roleId" label="Role">
-            <Select
-              options={roles?.data.map((item) => ({
-                label: item.name,
-                value: item.id,
-              }))}
-              loading={isRoleFetching}
-            />
-          </Form.Item>
+          <FormRoleInput Form={Form} />
           <Form.Item
             name="email"
             label="Work/Official Email"

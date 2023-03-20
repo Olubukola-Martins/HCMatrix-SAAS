@@ -108,13 +108,18 @@ export const getBranches = async (
   const offset = pagination?.offset ?? 0;
   const name = props.searchParams?.name ?? "";
 
-  const url = `${process.env.REACT_APP_UTILITY_BASE_URL}/company/branch?limit=${limit}&offset=${offset}`;
+  const url = `${process.env.REACT_APP_UTILITY_BASE_URL}/company/branch`;
 
   const config = {
     headers: {
       Accept: "application/json",
       Authorization: `Bearer ${props.token}`,
       "x-company-id": props.companyId,
+    },
+    params: {
+      limit,
+      offset,
+      search: name,
     },
   };
 

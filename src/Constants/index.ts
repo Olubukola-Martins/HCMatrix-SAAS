@@ -2,7 +2,11 @@
 
 export const listPageSize = 5;
 export const gridPageSize = 10;
-
+export const priorities = [
+  { label: "High", value: "high" },
+  { label: "Low", value: "low" },
+  { label: "Medium", value: "medium" },
+];
 export const genders = [
   {
     label: "Male",

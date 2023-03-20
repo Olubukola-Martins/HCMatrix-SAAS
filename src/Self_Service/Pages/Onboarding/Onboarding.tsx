@@ -1,37 +1,64 @@
 import { Table } from "antd";
-import React from "react";
+import {
+  TOnboarding,
+  useFetchAllOnboarding,
+} from "ApiRequesHelpers/Utility/onboarding/useFetchAllOnboarding";
+import { IAuthDets } from "AppTypes/Auth";
+import { GlobalContext } from "Contexts/GlobalContextProvider";
+import React, { useContext } from "react";
+import { useAuthUser } from "react-auth-kit";
 import { Link } from "react-router-dom";
+import { ColumnsType } from "antd/lib/table";
+
 import { PageIntro } from "../../../Layout/Components/PageIntro";
 import DashboardLayout from "../../../Layout/DashboardLayout";
 import SelfServiceSubNav from "../../Components/SelfServiceSubNav";
+import { appRoutes } from "AppRoutes";
 
 const Onboarding = () => {
-  const columns = [
+  const columns: ColumnsType<TOnboarding> = [
     {
       title: "Name",
       dataIndex: "name",
       key: "name",
+      render: (_, item) => (
+        <span className="capitalize">
+          {item.employee.firstName} {item.employee.lastName}
+        </span>
+      ),
     },
 
     {
       title: "Employee ID",
       dataIndex: "EmployeeID",
       key: "EmployeeID",
+      render: (_, item) => (
+        <span className="uppercase">{item.employee.empUid}</span>
+      ),
     },
     {
       title: "Department",
       dataIndex: "department",
       key: "department",
+      render: (_, item) => (
+        <span className="capitalize">
+          {item.employee.designation?.department.name}
+        </span>
+      ),
     },
     {
       title: "Email",
       dataIndex: "Email",
       key: "Email",
+      render: (_, item) => (
+        <span className="lowercase">{item.employee.email}</span>
+      ),
     },
     {
       title: "Status",
-      dataIndex: "Status",
-      key: "Status",
+      dataIndex: "status",
+      key: "status",
+      render: (val) => <span className="capitalize">{val}</span>,
     },
     {
       title: "Action",
@@ -40,7 +67,7 @@ const Onboarding = () => {
       fixed: "right",
       render: (val, item) => (
         <div className="cursor-pointer">
-          <Link to="/self-service/onboarding/1">
+          <Link to={appRoutes.startOnBoarding(item.id).path}>
             <button className="transparentButton text-caramel">Start</button>
           </Link>
         </div>
@@ -48,15 +75,19 @@ const Onboarding = () => {
     },
   ];
 
-  const dataSource = Array(5)
-    .fill({
-      name: "Godwin Ruth",
-      EmployeeID: "ES_23",
-      department: "Dev Team",
-      Email: "ruth@snapnetsolutions.com",
-      Status: "Not Start",
-    })
-    .map((item, i) => ({ ...item, key: i }));
+  const auth = useAuthUser();
+
+  const authDetails = auth() as unknown as IAuthDets;
+
+  const token = authDetails.userToken;
+  const globalCtx = useContext(GlobalContext);
+  const { state: globalState } = globalCtx;
+  const companyId = globalState.currentCompany?.id as unknown as string;
+  const { data, isLoading } = useFetchAllOnboarding({
+    companyId,
+
+    token,
+  });
   return (
     <DashboardLayout>
       <SelfServiceSubNav />
@@ -72,14 +103,10 @@ const Onboarding = () => {
 
         <div className="mt-7">
           <Table
-            dataSource={dataSource}
+            dataSource={data?.data}
+            loading={isLoading}
             columns={columns}
-            rowSelection={{
-              type: "checkbox",
-              rowSelection: () => {},
-            }}
             scroll={{ x: "max-content" }}
-            scroll={{ x: 500 }}
           />
         </div>
       </div>
