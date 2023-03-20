@@ -1,15 +1,14 @@
 import { Skeleton } from "antd";
 import { useFetchSingleOnboarding } from "ApiRequesHelpers/Utility/onboarding/useFetchSingleOnboarding";
-import { IAuthDets } from "AppTypes/Auth";
-import { GlobalContext } from "Contexts/GlobalContextProvider";
+
 import { useApiAuth } from "Hooks/useApiAuth";
-import React, { useContext, useState } from "react";
-import { useAuthUser } from "react-auth-kit";
+import React, { useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import DashboardLayout from "../../../Layout/DashboardLayout";
-import { NewTask } from "../../Components/Onboarding/NewTask";
 import SelfServiceSubNav from "../../Components/SelfServiceSubNav";
+import { NewTask } from "./components/NewTask";
 import { ResumptionInformation } from "./components/ResumptionInformation";
+import Tasks from "./components/Tasks";
 
 const StartOnboarding = () => {
   const { id } = useParams();
@@ -24,11 +23,13 @@ const StartOnboarding = () => {
   return (
     <DashboardLayout>
       <SelfServiceSubNav />
-      <NewTask
-        open={newTaskDrawer}
-        handleClose={() => setNewTaskDrawer(false)}
-      />
-
+      {isSuccess && (
+        <NewTask
+          open={newTaskDrawer}
+          handleClose={() => setNewTaskDrawer(false)}
+          onboarding={data}
+        />
+      )}
       <div className="Container">
         <div className="flex items-center gap-3 font-extrabold ">
           <Link to="/self-service/onboarding">
@@ -53,12 +54,13 @@ const StartOnboarding = () => {
                 onboarding={data}
               />
             </div>
+            {data.tasks && <Tasks data={data.tasks} />}
           </>
         )}
         {/* TO DO: Create a container component to be used on all pages/components that will account 4 data fetching &&  err, so you dont repeat this logic */}
         {isError && !isFetching && "Error Occured: not found"}
         {isFetching && (
-          <Skeleton active paragraph={{ rows: 20 }} className="mt-8" />
+          <Skeleton active paragraph={{ rows: 10 }} className="mt-8" />
         )}
       </div>
     </DashboardLayout>

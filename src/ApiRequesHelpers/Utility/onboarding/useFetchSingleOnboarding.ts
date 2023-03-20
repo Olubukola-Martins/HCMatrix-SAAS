@@ -2,7 +2,7 @@ import { ICurrentCompany } from "AppTypes/DataEntitities";
 
 import axios from "axios";
 import { useQuery } from "react-query";
-import { TOnboarding } from "./useFetchAllOnboarding";
+import { TOnboarding, TOnboardingTask } from "./useFetchAllOnboarding";
 
 // TO DO : need to exist in the general data entities and refactored
 interface IGetDataProps extends ICurrentCompany {
@@ -25,9 +25,26 @@ const getSingleOnboarding = async (
   const res = await axios.get(url, config);
   const item = res.data.data;
 
+  const tasks = item?.tasks?.map(
+    (item: any): TOnboardingTask => ({
+      id: item.id,
+      name: item.name,
+      description: item.description,
+      priority: item.priority,
+      supervisor: {
+        id: item.supervisor.id,
+        firstName: item.supervisor.firstName,
+        lastName: item.supervisor.lastName,
+      },
+      startDate: item.startDate,
+      endDate: item.endDate,
+    })
+  );
+
   const data: TOnboarding = {
     id: item.id,
     status: item.status,
+    tasks,
     resumptionInformation: item.resumptionInformation
       ? {
           branchId: item.resumptionInformation?.branchId,
