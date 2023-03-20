@@ -12,6 +12,9 @@ import {
   Spin,
 } from "antd";
 import { employmentTypes, workModels } from "Constants";
+import { FormDesignationInput } from "GeneralComps/FormDesignationInput";
+import { FormEmployeeInput } from "GeneralComps/FormEmployeeInput";
+import { FormRoleInput } from "GeneralComps/FormRoleInput";
 import { useContext, useState } from "react";
 import { useAuthUser } from "react-auth-kit";
 import { useMutation } from "react-query";
@@ -260,34 +263,7 @@ export const AddEmployee = () => {
                       <DatePicker format="YYYY/MM/DD" className="w-full" />
                     </Form.Item>
 
-                    <Form.Item
-                      name="roleId"
-                      label="Role"
-                      rules={generalValidationRules}
-                    >
-                      <Select
-                        onSearch={(val) => setRoleSearch(val)}
-                        showSearch
-                        value={roleSearch}
-                        defaultActiveFirstOption={false}
-                        showArrow={false}
-                        filterOption={false}
-                        // onChange={handleChange}
-                        notFoundContent={null}
-                      >
-                        {isRSuccess ? (
-                          roleData.data.map((item) => (
-                            <Select.Option key={item.id} value={item.id}>
-                              {item.name}
-                            </Select.Option>
-                          ))
-                        ) : (
-                          <div className="flex justify-center items-center w-full">
-                            <Spin size="small" />
-                          </div>
-                        )}
-                      </Select>
-                    </Form.Item>
+                    <FormRoleInput Form={Form} />
                     <Form.Item
                       name="monthlyGross"
                       label="Monthly Gross"
@@ -321,61 +297,15 @@ export const AddEmployee = () => {
                         options={workModels}
                       />
                     </Form.Item>
-                    <Form.Item
-                      name="lineManagerId"
-                      label="Line Manager (optional)"
-                    >
-                      <Select
-                        onSearch={(val) => setEmpSearch(val)}
-                        showSearch
-                        value={empSearch}
-                        defaultActiveFirstOption={false}
-                        showArrow={false}
-                        filterOption={false}
-                        // onChange={handleChange}
-                        notFoundContent={null}
-                      >
-                        {isEmpSuccess ? (
-                          empData.data.map((item) => (
-                            <Select.Option key={item.id} value={item.id}>
-                              {item.firstName} {item.lastName}
-                            </Select.Option>
-                          ))
-                        ) : (
-                          <div className="flex justify-center items-center w-full">
-                            <Spin size="small" />
-                          </div>
-                        )}
-                      </Select>
-                    </Form.Item>
-                    <Form.Item
-                      name="designationId"
-                      label="Designation"
-                      rules={generalValidationRules}
-                    >
-                      <Select
-                        onSearch={(val) => setDegSearch(val)}
-                        showSearch
-                        value={degSearch}
-                        defaultActiveFirstOption={false}
-                        showArrow={false}
-                        filterOption={false}
-                        // onChange={handleChange}
-                        notFoundContent={null}
-                      >
-                        {isDSuccess ? (
-                          degData.data.map((item) => (
-                            <Select.Option key={item.id} value={item.id}>
-                              {item.name}
-                            </Select.Option>
-                          ))
-                        ) : (
-                          <div className="flex justify-center items-center w-full">
-                            <Spin size="small" />
-                          </div>
-                        )}
-                      </Select>
-                    </Form.Item>
+
+                    <FormEmployeeInput
+                      Form={Form}
+                      control={{
+                        name: "lineManagerId",
+                        label: "Line Manager (optional)",
+                      }}
+                    />
+                    <FormDesignationInput Form={Form} />
                     <Form.Item
                       name="numberOfDaysPerWeek"
                       label="Number of Days in the Week"
