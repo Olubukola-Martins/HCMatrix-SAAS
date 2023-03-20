@@ -1,4 +1,4 @@
-import { Select } from "antd";
+import { Select, Spin } from "antd";
 import { useFetchEmployees } from "APIRQHooks/Utility/employeeHooks";
 import { IAuthDets } from "AppTypes/Auth";
 import { GlobalContext } from "Contexts/GlobalContextProvider";
@@ -24,7 +24,7 @@ export const FormEmployeeInput: React.FC<{
   const [searchTerm, setSearchTerm] = useState<string>("");
   const debouncedSearchTerm: string = useDebounce<string>(searchTerm);
 
-  const { data } = useFetchEmployees({
+  const { data, isSuccess } = useFetchEmployees({
     companyId,
     searchParams: {
       name: debouncedSearchTerm,
@@ -57,7 +57,19 @@ export const FormEmployeeInput: React.FC<{
           label: `${item.firstName} ${item.lastName}`,
           value: item.id,
         }))}
-      />
+      >
+        {isSuccess ? (
+          data.data.map((item) => (
+            <Select.Option key={item.id} value={item.id}>
+              {item.firstName} {item.lastName}
+            </Select.Option>
+          ))
+        ) : (
+          <div className="flex justify-center items-center w-full">
+            <Spin size="small" />
+          </div>
+        )}
+      </Select>
     </Form.Item>
   );
 };

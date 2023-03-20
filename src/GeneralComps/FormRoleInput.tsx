@@ -1,5 +1,5 @@
 import { Select, Spin } from "antd";
-import { useFetchBranches } from "APIRQHooks/Utility/branchHooks";
+import { useFetchRoles } from "APIRQHooks/Auth/roleHooks";
 import { IAuthDets } from "AppTypes/Auth";
 import { GlobalContext } from "Contexts/GlobalContextProvider";
 import { generalValidationRules } from "FormHelpers/validation";
@@ -7,7 +7,7 @@ import { useDebounce } from "Hooks/useDebounce";
 import React, { useContext, useState } from "react";
 import { useAuthUser } from "react-auth-kit";
 
-export const FormBranchInput: React.FC<{ Form: any; showLabel?: boolean }> = ({
+export const FormRoleInput: React.FC<{ Form: any; showLabel?: boolean }> = ({
   Form,
   showLabel = true,
 }) => {
@@ -23,7 +23,7 @@ export const FormBranchInput: React.FC<{ Form: any; showLabel?: boolean }> = ({
   const [searchTerm, setSearchTerm] = useState<string>("");
   const debouncedSearchTerm: string = useDebounce<string>(searchTerm);
 
-  const { data, isFetching, isSuccess } = useFetchBranches({
+  const { data, isFetching, isSuccess } = useFetchRoles({
     companyId,
     searchParams: {
       name: debouncedSearchTerm,
@@ -38,12 +38,12 @@ export const FormBranchInput: React.FC<{ Form: any; showLabel?: boolean }> = ({
 
   return (
     <Form.Item
-      name="branchId"
-      label={showLabel ? "Branch" : null}
+      name="roleId"
+      label={showLabel ? "Role" : null}
       rules={generalValidationRules}
     >
       <Select
-        placeholder="Select branch"
+        placeholder="Select role"
         loading={isFetching} //TO DO : this should be added to all custom Fetch Form Inputs
         showSearch
         allowClear
