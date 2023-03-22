@@ -47,10 +47,10 @@ const AddBranchForm = ({ handleClose }: { handleClose: Function }) => {
   const [countryId, setCountryId] = useState(0);
   const { data: countries, isSuccess, isFetching } = useFetchCountries();
   const { data: states, isSuccess: stateSuccess } = useFetchStates({
-    countryId: countryId as unknown as string,
+    countryId: countryId as unknown as number,
   });
   const { data: lga, isSuccess: lgaSuccess } = useFetchLgas({
-    stateId: stateId as unknown as string,
+    stateId: stateId as unknown as number,
   });
 
   const { mutate, isLoading } = useCreateBranch();

@@ -32,7 +32,10 @@ import {
   phoneNumberValidationRule,
   textInputValidationRules,
 } from "FormHelpers/validation";
+import { FormCountryInput } from "GeneralComps/FormCountryInput";
+import { FormLGAInput } from "GeneralComps/FormLGAInput";
 import { FormPhoneInput } from "GeneralComps/FormPhoneInput";
+import { FormStateInput } from "GeneralComps/FormStateInput";
 import moment from "moment";
 import { openNotification } from "NotificationHelpers";
 import { useContext, useEffect, useState } from "react";
@@ -62,43 +65,8 @@ export const Profile = ({ employee }: IProps) => {
   const companyId = globalState.currentCompany?.id as unknown as string;
   const [disable, setDisable] = useState(true);
   const [hiddenInputs, setHiddenInputs] = useState("");
-  const [stateId, setStateId] = useState(
-    employee?.personalInformation?.address.stateId ?? 0
-  );
-  const [countryId, setCountryId] = useState(
-    employee?.personalInformation?.address.countryId ?? 0
-  );
-  const { data: countries, isSuccess: isCountrySuccess } = useFetchCountries();
-  const [searchedCountries, setSearchedCountries] = useState<TCountry[]>([]);
-  useEffect(() => {
-    if (isCountrySuccess) {
-      setSearchedCountries(countries);
-    }
-  }, [isCountrySuccess, countries]);
-  const handleCountrySearch = (val: string) => {
-    if (isCountrySuccess) {
-      if (val.length > 0) {
-        const sCountries = countries.filter(
-          (item) => item.name.toLowerCase().indexOf(val.toLowerCase()) !== -1
-        );
-        setSearchedCountries(sCountries);
-      } else {
-        setSearchedCountries(countries);
-      }
-    }
-  };
-  const { data: states, isSuccess: isStateSuccess } = useFetchStates({
-    countryId: countryId as unknown as string,
-    searchParams: {
-      name: stateSearch,
-    },
-  });
-  const { data: lga, isSuccess: isLgaSuccess } = useFetchLgas({
-    stateId: stateId as unknown as string,
-    searchParams: {
-      name: lgaSearch,
-    },
-  });
+  const [stateId, setStateId] = useState<number>();
+  const [countryId, setCountryId] = useState<number>();
 
   const enableEdit = () => {
     setDisable(!disable);
@@ -110,6 +78,8 @@ export const Profile = ({ employee }: IProps) => {
   useEffect(() => {
     const personalInfo = employee?.personalInformation;
     if (personalInfo) {
+      setCountryId(personalInfo.address.countryId);
+      setStateId(personalInfo.address.stateId);
       form.setFieldsValue({
         dob: personalInfo.dob ? moment(personalInfo.dob) : null,
         nationality: personalInfo.nationality,
@@ -131,7 +101,7 @@ export const Profile = ({ employee }: IProps) => {
           : null,
       });
     }
-  }, [employee]);
+  }, [employee, form]);
 
   const handleCitizen = (val: string) => {
     setHiddenInputs(val);
@@ -194,6 +164,7 @@ export const Profile = ({ employee }: IProps) => {
             title: "Success",
             description: res?.data?.message,
           });
+          setDisable(true);
           queryClient.invalidateQueries({
             queryKey: ["single-employee", employee?.id],
           });
@@ -252,6 +223,8 @@ export const Profile = ({ employee }: IProps) => {
             title: "Success",
             description: res?.data?.message,
           });
+          setDisable(true);
+
           queryClient.invalidateQueries({
             queryKey: ["single-employee", employee?.id],
           });
@@ -351,118 +324,25 @@ export const Profile = ({ employee }: IProps) => {
             >
               <Select options={maritalStatuses} />
             </Form.Item>
-            <Form.Item
-              name="nationality"
-              label="Nationality"
-              rules={generalValidationRules}
-            >
-              <Select
-                showSearch
-                allowClear
-                optionLabelProp="label"
-                placeholder="Select"
-              >
-                {countries?.map((data) => (
-                  <Option key={data.id} value={data.name} label={data.name}>
-                    {data.name}
-                  </Option>
-                ))}
-              </Select>
-            </Form.Item>
-            <Form.Item
-              name="countryId"
-              label="Country"
-              rules={generalValidationRules}
-            >
-              <Select
-                onSearch={handleCountrySearch}
-                showSearch
-                allowClear
-                defaultActiveFirstOption={false}
-                showArrow={false}
-                filterOption={false}
-                notFoundContent={null}
-                onSelect={(val: number) => setCountryId(val)}
-              >
-                {isCountrySuccess ? (
-                  searchedCountries.map((data) => (
-                    <Option key={data.id} value={data.id} label={data.name}>
-                      {data.name}
-                    </Option>
-                  ))
-                ) : (
-                  <div className="flex justify-center items-center w-full">
-                    <Spin size="small" />
-                  </div>
-                )}
-              </Select>
-            </Form.Item>
-            <Form.Item
-              name="stateId"
-              label="State"
-              rules={generalValidationRules}
-              dependencies={["countryId"]}
-            >
-              <Select
-                onSearch={(val) => setStateSearch(val)}
-                showSearch
-                value={stateSearch}
-                defaultActiveFirstOption={false}
-                showArrow={false}
-                filterOption={false}
-                notFoundContent={null}
-                onSelect={(val: string) => setStateId(+val)}
-              >
-                {isStateSuccess ? (
-                  states?.map((data) => (
-                    <Option key={data.id} value={data.id} label={data.name}>
-                      {data.name}
-                    </Option>
-                  ))
-                ) : (
-                  <div className="flex justify-center items-center w-full">
-                    <Spin size="small" />
-                  </div>
-                )}
-              </Select>
-            </Form.Item>
 
-            <Form.Item
-              name="lgaId"
-              label="LGA"
-              rules={[
-                {
-                  required: isLgaSuccess && lga.length > 0,
-                  message: "Field is required!",
-                },
-              ]}
-              dependencies={["stateId"]}
-            >
-              <Select
-                disabled={!(isLgaSuccess && lga.length > 0)}
-                onSearch={(val) => setLgaSearch(val)}
-                showSearch
-                allowClear
-                value={lgaSearch}
-                defaultActiveFirstOption={false}
-                showArrow={false}
-                filterOption={false}
-                notFoundContent={null}
-              >
-                {isLgaSuccess ? (
-                  lga?.map((data) => (
-                    <Option key={data.id} value={data.id} label={data.name}>
-                      {data.name}
-                    </Option>
-                  ))
-                ) : (
-                  <div className="flex justify-center items-center w-full">
-                    <Spin size="small" />
-                  </div>
-                )}
-              </Select>
-            </Form.Item>
+            <FormCountryInput
+              Form={Form}
+              control={{ label: "Nationality", name: "nationality" }}
+            />
+            <FormCountryInput
+              Form={Form}
+              control={{ label: "Country", name: "countryId" }}
+              handleSelect={(val) => setCountryId(val)}
+            />
+            {countryId && (
+              <FormStateInput
+                countryId={countryId}
+                Form={Form}
+                handleSelect={(val) => setStateId(val)}
+              />
+            )}
 
+            {stateId && <FormLGAInput stateId={stateId} Form={Form} />}
             <Form.Item
               name="streetAddress"
               label="Street Address"
