@@ -26,8 +26,6 @@ export const useFetchRoles = ({
   onSuccess,
   token,
 }: IFRQDataProps) => {
-  const signOut = useSignOut();
-
   const queryData = useQuery(
     ["roles", pagination?.current, pagination?.limit, searchParams?.name],
     () =>
@@ -42,10 +40,7 @@ export const useFetchRoles = ({
       // refetchInterval: false,
       // refetchIntervalInBackground: false,
       // refetchOnWindowFocus: false,
-      onError: (err: any) => {
-        signOut();
-        localStorage.clear();
-      },
+      onError: (err: any) => {},
       onSuccess: (data) => {
         onSuccess && onSuccess(data);
       },
@@ -61,6 +56,8 @@ export const useFetchRoles = ({
             name: item.name,
 
             userCount: item.userCount ?? 0,
+            createdAt: item.createdAt,
+            updatedAt: item.updatedAt,
           })
         );
 

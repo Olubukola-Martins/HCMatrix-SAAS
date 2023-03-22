@@ -27,6 +27,9 @@ import {
   generalValidationRules,
 } from "../../../../FormHelpers/validation";
 import { openNotification } from "../../../../NotificationHelpers";
+import { FormCountryInput } from "GeneralComps/FormCountryInput";
+import { FormLGAInput } from "GeneralComps/FormLGAInput";
+import { FormStateInput } from "GeneralComps/FormStateInput";
 
 const { Option } = Select;
 
@@ -57,20 +60,15 @@ const EditBranchForm = ({
   const companyId = globalState.currentCompany?.id as unknown as string;
 
   const [form] = Form.useForm();
-  const [stateId, setStateId] = useState(0);
-  const [countryId, setCountryId] = useState(0);
+  const [stateId, setStateId] = useState<number>();
+  const [countryId, setCountryId] = useState<number>();
+
   const { data: branch } = useFetchSingleBranch({
     companyId,
     token,
     branchId: id,
   });
-  const { data: countries, isSuccess, isFetching } = useFetchCountries();
-  const { data: states, isSuccess: isStateSuccess } = useFetchStates({
-    countryId: countryId as unknown as string,
-  });
-  const { data: lga, isSuccess: lgaSuccess } = useFetchLgas({
-    stateId: stateId as unknown as string,
-  });
+
   useEffect(() => {
     if (branch) {
       form.setFieldsValue({
@@ -150,149 +148,88 @@ const EditBranchForm = ({
   };
   return (
     <>
-      <Skeleton loading={!isSuccess || isFetching} active>
-        {isSuccess && (
-          <Form
-            layout="vertical"
-            requiredMark={false}
-            form={form}
-            onFinish={handleSubmit}
-            size="small"
-            disabled={disabled}
+      <Form
+        layout="vertical"
+        requiredMark={false}
+        form={form}
+        onFinish={handleSubmit}
+        size="small"
+        disabled={disabled}
+      >
+        <Collapse
+          bordered={false}
+          defaultActiveKey={["1", "2"]} //so that the items in both will be in the form => consider upgrading to antd
+          expandIcon={({ isActive }) => (
+            <CaretRightOutlined rotate={isActive ? 90 : 0} />
+          )}
+          // this cannot be an accordian , will block form
+          // consider upgrading antd
+        >
+          <Collapse.Panel
+            header={<span className="font-semibold">Branch Information</span>}
+            key="1"
+            style={panelStyle}
           >
-            <Collapse
-              bordered={false}
-              defaultActiveKey={["1", "2"]} //so that the items in both will be in the form => consider upgrading to antd
-              expandIcon={({ isActive }) => (
-                <CaretRightOutlined rotate={isActive ? 90 : 0} />
+            <div>
+              <Form.Item
+                name="name"
+                label="Branch Name"
+                rules={textInputValidationRules}
+              >
+                <Input placeholder="Branch name" />
+              </Form.Item>
+
+              <Form.Item
+                name="description"
+                label="Description"
+                rules={textInputValidationRules}
+                className="col-span-2"
+              >
+                <Input.TextArea />
+              </Form.Item>
+            </div>
+          </Collapse.Panel>
+          {/* address */}
+          <Collapse.Panel
+            header={<span className="font-semibold">Address Information</span>}
+            key="2"
+            style={panelStyle}
+          >
+            <div className="grid grid-cols-3 gap-x-4">
+              <FormCountryInput
+                Form={Form}
+                control={{ label: "Country", name: "countryId" }}
+                handleSelect={(val) => setCountryId(val)}
+              />
+              {countryId && (
+                <FormStateInput
+                  countryId={countryId}
+                  Form={Form}
+                  handleSelect={(val) => setStateId(val)}
+                />
               )}
-              // this cannot be an accordian , will block form
-              // consider upgrading antd
-            >
-              <Collapse.Panel
-                header={
-                  <span className="font-semibold">Branch Information</span>
-                }
-                key="1"
-                style={panelStyle}
-              >
-                <div>
-                  <Form.Item
-                    name="name"
-                    label="Branch Name"
-                    rules={textInputValidationRules}
-                  >
-                    <Input placeholder="Branch name" />
-                  </Form.Item>
 
-                  <Form.Item
-                    name="description"
-                    label="Description"
-                    rules={textInputValidationRules}
-                    className="col-span-2"
-                  >
-                    <Input.TextArea />
-                  </Form.Item>
-                </div>
-              </Collapse.Panel>
-              {/* address */}
-              <Collapse.Panel
-                header={
-                  <span className="font-semibold">Address Information</span>
-                }
-                key="2"
-                style={panelStyle}
+              {stateId && <FormLGAInput stateId={stateId} Form={Form} />}
+              <Form.Item
+                name="streetAddress"
+                label="Street Address"
+                className="col-span-3"
+                rules={textInputValidationRules}
               >
-                <div className="grid grid-cols-3 gap-x-4">
-                  <Form.Item
-                    name="countryId"
-                    label="Country"
-                    rules={generalValidationRules}
-                  >
-                    <Select
-                      showSearch
-                      allowClear
-                      optionLabelProp="label"
-                      placeholder="Select"
-                      onChange={(val) => setCountryId(val)}
-                    >
-                      {countries?.map((data) => (
-                        <Option key={data.id} value={data.id} label={data.name}>
-                          {data.name}
-                        </Option>
-                      ))}
-                    </Select>
-                  </Form.Item>
-                  <Form.Item
-                    name="stateId"
-                    label="State"
-                    rules={generalValidationRules}
-                  >
-                    <Select
-                      showSearch
-                      allowClear
-                      optionLabelProp="label"
-                      placeholder="Select state"
-                      onChange={(val) => setStateId(val)}
-                    >
-                      {isStateSuccess &&
-                        states?.map((data) => (
-                          <Option
-                            key={data.id}
-                            value={data.id}
-                            label={data.name}
-                          >
-                            {data.name}
-                          </Option>
-                        ))}
-                    </Select>
-                  </Form.Item>
-                  {lgaSuccess && lga.length > 0 && (
-                    <Form.Item
-                      name="lgaId"
-                      label="LGA"
-                      rules={generalValidationRules}
-                    >
-                      <Select
-                        showSearch
-                        allowClear
-                        optionLabelProp="label"
-                        placeholder="Select"
-                      >
-                        {lga?.map((data) => (
-                          <Option
-                            key={data.id}
-                            value={data.id}
-                            label={data.name}
-                          >
-                            {data.name}
-                          </Option>
-                        ))}
-                      </Select>
-                    </Form.Item>
-                  )}
-                  <Form.Item
-                    name="streetAddress"
-                    label="Street Address"
-                    className="col-span-3"
-                    rules={textInputValidationRules}
-                  >
-                    <Input.TextArea rows={3} />
-                  </Form.Item>
-                </div>
-              </Collapse.Panel>
-            </Collapse>
+                <Input.TextArea rows={3} />
+              </Form.Item>
+            </div>
+          </Collapse.Panel>
+        </Collapse>
 
-            {!disabled && (
-              <div className="mt-4">
-                <button className="button" type="submit">
-                  {isLoading ? <BeatLoader color="#fff" /> : "Submit"}
-                </button>
-              </div>
-            )}
-          </Form>
+        {!disabled && (
+          <div className="mt-4">
+            <button className="button" type="submit">
+              {isLoading ? <BeatLoader color="#fff" /> : "Submit"}
+            </button>
+          </div>
         )}
-      </Skeleton>
+      </Form>
     </>
   );
 };

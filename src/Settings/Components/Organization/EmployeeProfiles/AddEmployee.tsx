@@ -11,6 +11,7 @@ import {
   Skeleton,
   Spin,
 } from "antd";
+import { appRoutes } from "AppRoutes";
 import { employmentTypes, workModels } from "Constants";
 import { FormDesignationInput } from "GeneralComps/FormDesignationInput";
 import { FormEmployeeInput } from "GeneralComps/FormEmployeeInput";
@@ -18,6 +19,7 @@ import { FormRoleInput } from "GeneralComps/FormRoleInput";
 import { useContext, useState } from "react";
 import { useAuthUser } from "react-auth-kit";
 import { useMutation } from "react-query";
+import { useNavigate } from "react-router-dom";
 import { ICreateEmpProps } from "../../../../ApiRequesHelpers/Utility/employee";
 import { useFetchRoles } from "../../../../APIRQHooks/Auth/roleHooks";
 import { useFetchDepartments } from "../../../../APIRQHooks/Utility/departmentHooks";
@@ -38,10 +40,10 @@ import { openNotification } from "../../../../NotificationHelpers";
 const { Panel } = Collapse;
 const { Option } = Select;
 
-const jobRoles = ["Payroll Approval"];
-const lineMgt = ["Godswill Omenuko", "Isaac Odeh"];
+type TNextAction = "onboarding" | "complete-profile" | "add-another";
 
 export const AddEmployee = () => {
+  const [nextAction, setNextAction] = useState<TNextAction>();
   const auth = useAuthUser();
   const authDetails = auth() as unknown as IAuthDets;
 
@@ -102,27 +104,36 @@ export const AddEmployee = () => {
 
     token,
   });
+  const navigate = useNavigate();
+  const [successData, setSuccessData] = useState<{
+    employeeId: number;
+    onboardingId: number;
+  }>();
 
-  const handleAction = (
-    action: "onboarding" | "complete-profile" | "add-another"
-  ) => {
-    switch (action) {
-      case "complete-profile":
-        form.submit();
+  const handleNextAction = () => {
+    if (successData) {
+      switch (nextAction) {
+        case "complete-profile":
+          navigate(appRoutes.singleEmployee(successData.employeeId).path);
 
-        break;
-      case "add-another":
-        form.submit();
+          break;
+        case "add-another":
+          form.resetFields();
 
-        break;
-      case "onboarding":
-        form.submit();
+          break;
+        case "onboarding":
+          navigate(appRoutes.startOnBoarding(successData.onboardingId).path);
 
-        break;
+          break;
 
-      default:
-        break;
+        default:
+          break;
+      }
     }
+  };
+  const handleCurrentAction = (action: TNextAction) => {
+    setNextAction(action);
+    form.submit();
   };
 
   const handleSubmit = (data: any) => {
@@ -167,6 +178,12 @@ export const AddEmployee = () => {
         },
         onSuccess: (res: any) => {
           const result = res.data.data;
+          setSuccessData({
+            employeeId: result.id,
+            onboardingId: result?.onboarding.id,
+          });
+
+          handleNextAction();
 
           openNotification({
             state: "success",
@@ -175,8 +192,6 @@ export const AddEmployee = () => {
             description: res.data.message,
             // duration: 0.4,
           });
-
-          form.resetFields();
         },
       });
     }
@@ -340,7 +355,10 @@ export const AddEmployee = () => {
               </Collapse>
             </div>
             <div className="flex items-center gap-3 justify-end mt-5">
-              <Button type="text" onClick={() => handleAction("onboarding")}>
+              <Button
+                type="text"
+                onClick={() => handleCurrentAction("onboarding")}
+              >
                 Proceed to onboarding
               </Button>
               <Dropdown
@@ -349,13 +367,13 @@ export const AddEmployee = () => {
                   <ul className="bg-mainBg text-sm rounded-md font-medium shadow-md px-2 py-3 border-2">
                     <li
                       className="pb-2 cursor-pointer hover:text-caramel"
-                      onClick={() => handleAction("onboarding")}
+                      onClick={() => handleCurrentAction("add-another")}
                     >
                       Save and add Another
                     </li>
                     <li
                       className=" cursor-pointer hover:text-caramel"
-                      onClick={() => handleAction("onboarding")}
+                      onClick={() => handleCurrentAction("complete-profile")}
                     >
                       Save and Complete Profile
                     </li>

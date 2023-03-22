@@ -147,6 +147,8 @@ export type TRole = {
   id: number;
   name: string;
   userCount: number;
+  createdAt: string;
+  updatedAt: string;
 };
 
 export type TPersonalInfo = {

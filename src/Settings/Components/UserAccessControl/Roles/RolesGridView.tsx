@@ -1,15 +1,7 @@
 import { Link } from "react-router-dom";
-import { motion } from "framer-motion";
 import { TRole } from "../../../../AppTypes/DataEntitities";
-import {
-  Pagination,
-  TableProps,
-  TablePaginationConfig,
-  Dropdown,
-  Menu,
-  Tooltip,
-} from "antd";
-import type { PaginationProps } from "antd";
+import { TableProps, TablePaginationConfig, Tooltip } from "antd";
+import moment from "moment";
 
 interface IProps {
   data: TRole[];
@@ -44,18 +36,24 @@ const RoleBox = ({ data }: { data: TRole }) => {
       {/* view */}
       <div className="rounded border shadow bg-mainBg">
         <div className="bg-card p-3">
-          <h4 className="font-medium text-lg">Account Owner</h4>
+          <h4 className="font-medium text-lg">{data.name}</h4>
         </div>
         <div className="px-3">
           <div className="border-b flex gap-5 text-sm">
             <div className="py-7">
-              <p className="pb-2">Date Created: 01 January 2022</p>
-              <p>Last Modified: 31 March 2022</p>
+              <p className="pb-2">
+                Date Created: {moment(data.createdAt).format("YYYY/MM/DD")}
+              </p>
+              <p>
+                Last Modified: {moment(data.updatedAt).format("YYYY/MM/DD")}
+              </p>
             </div>
             <div className="border-r-2" />
             <div className="py-7">
               <p className="pb-2">Number of Record</p>
-              <span className="bg-card px-3 rounded-lg font-medium">0</span>
+              <span className="bg-card px-3 rounded-lg font-medium">
+                {data.userCount}
+              </span>
             </div>
           </div>
           <Tooltip
@@ -80,32 +78,6 @@ const RoleBox = ({ data }: { data: TRole }) => {
               Set-up Permission
             </button>
           </Tooltip>
-        </div>
-      </div>
-
-      <div className="rounded border shadow bg-mainBg">
-        <div className="bg-card p-3 flex justify-between items-center">
-          <h4 className="font-medium text-lg">Line Manager</h4>
-          <div className="flex gap-2">
-            <i className="ri-pencil-line text-lg cursor-pointer"></i>
-            <i className="ri-delete-bin-line text-lg cursor-pointer"></i>
-          </div>
-        </div>
-        <div className="px-3">
-          <div className="border-b flex gap-5 text-sm">
-            <div className="py-7">
-              <p className="pb-2">Date Created: 01 January 2022</p>
-              <p>Last Modified: 31 March 2022</p>
-            </div>
-            <div className="border-r-2" />
-            <div className="py-7">
-              <p className="pb-2">Number of Record</p>
-              <span className="bg-card px-3 rounded-lg font-medium">0</span>
-            </div>
-          </div>
-          <button className="rounded-xl font-medium py-1 px-2 my-5 text-green-700 text-xs bg-green-100">
-            Set-up Permission
-          </button>
         </div>
       </div>
     </>

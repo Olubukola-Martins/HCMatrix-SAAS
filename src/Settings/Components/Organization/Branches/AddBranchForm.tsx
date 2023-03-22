@@ -23,6 +23,9 @@ import {
   generalValidationRules,
 } from "../../../../FormHelpers/validation";
 import { openNotification } from "../../../../NotificationHelpers";
+import { FormCountryInput } from "GeneralComps/FormCountryInput";
+import { FormLGAInput } from "GeneralComps/FormLGAInput";
+import { FormStateInput } from "GeneralComps/FormStateInput";
 
 const { Option } = Select;
 const { Panel } = Collapse;
@@ -43,15 +46,8 @@ const AddBranchForm = ({ handleClose }: { handleClose: Function }) => {
   const { state: globalState, dispatch } = globalCtx;
   const companyId = globalState.currentCompany?.id as unknown as string;
   const [form] = Form.useForm();
-  const [stateId, setStateId] = useState(0);
-  const [countryId, setCountryId] = useState(0);
-  const { data: countries, isSuccess, isFetching } = useFetchCountries();
-  const { data: states, isSuccess: stateSuccess } = useFetchStates({
-    countryId: countryId as unknown as string,
-  });
-  const { data: lga, isSuccess: lgaSuccess } = useFetchLgas({
-    stateId: stateId as unknown as string,
-  });
+  const [stateId, setStateId] = useState<number>();
+  const [countryId, setCountryId] = useState<number>();
 
   const { mutate, isLoading } = useCreateBranch();
 
@@ -109,141 +105,85 @@ const AddBranchForm = ({ handleClose }: { handleClose: Function }) => {
   };
   return (
     <>
-      <Skeleton loading={!isSuccess || isFetching} active>
-        {isSuccess && (
-          <Form
-            requiredMark={false}
-            form={form}
-            onFinish={handleSubmit}
-            size="small"
-            labelCol={{ span: 24 }}
+      <Form
+        requiredMark={false}
+        form={form}
+        onFinish={handleSubmit}
+        size="small"
+        labelCol={{ span: 24 }}
+      >
+        <Collapse
+          bordered={false}
+          defaultActiveKey={["1"]}
+          expandIcon={({ isActive }) => (
+            <CaretRightOutlined rotate={isActive ? 90 : 0} />
+          )}
+          accordion
+        >
+          <Panel
+            header={<span className="font-semibold">Branch Information</span>}
+            key="1"
+            style={panelStyle}
           >
-            <Collapse
-              bordered={false}
-              defaultActiveKey={["1"]}
-              expandIcon={({ isActive }) => (
-                <CaretRightOutlined rotate={isActive ? 90 : 0} />
-              )}
-              accordion
-            >
-              <Panel
-                header={
-                  <span className="font-semibold">Branch Information</span>
-                }
-                key="1"
-                style={panelStyle}
+            <div>
+              <Form.Item
+                name="name"
+                label="Branch Name"
+                rules={textInputValidationRules}
+                className="col-span-2"
               >
-                <div>
-                  <Form.Item
-                    name="name"
-                    label="Branch Name"
-                    rules={textInputValidationRules}
-                    className="col-span-2"
-                  >
-                    <Input placeholder="Branch" />
-                  </Form.Item>
+                <Input placeholder="Branch" />
+              </Form.Item>
 
-                  <Form.Item
-                    name="description"
-                    label="Description"
-                    rules={textInputValidationRules}
-                    className="col-span-2"
-                  >
-                    <Input.TextArea />
-                  </Form.Item>
-                </div>
-              </Panel>
-              <Panel
-                header={
-                  <span className="font-semibold">Address Information</span>
-                }
-                key="2"
-                style={panelStyle}
+              <Form.Item
+                name="description"
+                label="Description"
+                rules={textInputValidationRules}
+                className="col-span-2"
               >
-                <div className="grid grid-cols-3 gap-x-4">
-                  {/* address */}
-
-                  <Form.Item
-                    name="countryId"
-                    label="Country"
-                    rules={generalValidationRules}
-                  >
-                    <Select
-                      showSearch
-                      allowClear
-                      optionLabelProp="label"
-                      placeholder="Select"
-                      onChange={(val) => setCountryId(val)}
-                    >
-                      {countries?.map((data) => (
-                        <Option key={data.id} value={data.id} label={data.name}>
-                          {data.name}
-                        </Option>
-                      ))}
-                    </Select>
-                  </Form.Item>
-                  <Form.Item
-                    name="stateId"
-                    label="State"
-                    rules={generalValidationRules}
-                  >
-                    <Select
-                      showSearch
-                      allowClear
-                      optionLabelProp="label"
-                      placeholder="Select state"
-                      onChange={(val) => setStateId(val)}
-                    >
-                      {states?.map((data) => (
-                        <Option key={data.id} value={data.id} label={data.name}>
-                          {data.name}
-                        </Option>
-                      ))}
-                    </Select>
-                  </Form.Item>
-                  {lgaSuccess && lga.length > 0 && (
-                    <Form.Item
-                      name="lgaId"
-                      label="LGA"
-                      rules={generalValidationRules}
-                    >
-                      <Select
-                        showSearch
-                        allowClear
-                        optionLabelProp="label"
-                        placeholder="Select"
-                      >
-                        {lga?.map((data) => (
-                          <Option
-                            key={data.id}
-                            value={data.id}
-                            label={data.name}
-                          >
-                            {data.name}
-                          </Option>
-                        ))}
-                      </Select>
-                    </Form.Item>
-                  )}
-                  <Form.Item
-                    name="streetAddress"
-                    label="Street Address"
-                    className="col-span-3"
-                    rules={textInputValidationRules}
-                  >
-                    <Input.TextArea rows={3} />
-                  </Form.Item>
-                </div>
-              </Panel>
-            </Collapse>
-            <div className="mt-4">
-              <button className="button" type="submit">
-                {isLoading ? <BeatLoader color="#fff" /> : "Submit"}
-              </button>
+                <Input.TextArea />
+              </Form.Item>
             </div>
-          </Form>
-        )}
-      </Skeleton>
+          </Panel>
+          <Panel
+            header={<span className="font-semibold">Address Information</span>}
+            key="2"
+            style={panelStyle}
+          >
+            <div className="grid grid-cols-3 gap-x-4">
+              {/* address */}
+
+              <FormCountryInput
+                Form={Form}
+                control={{ label: "Country", name: "countryId" }}
+                handleSelect={(val) => setCountryId(val)}
+              />
+              {countryId && (
+                <FormStateInput
+                  countryId={countryId}
+                  Form={Form}
+                  handleSelect={(val) => setStateId(val)}
+                />
+              )}
+
+              {stateId && <FormLGAInput stateId={stateId} Form={Form} />}
+              <Form.Item
+                name="streetAddress"
+                label="Street Address"
+                className="col-span-3"
+                rules={textInputValidationRules}
+              >
+                <Input.TextArea rows={3} />
+              </Form.Item>
+            </div>
+          </Panel>
+        </Collapse>
+        <div className="mt-4">
+          <button className="button" type="submit">
+            {isLoading ? <BeatLoader color="#fff" /> : "Submit"}
+          </button>
+        </div>
+      </Form>
     </>
   );
 };

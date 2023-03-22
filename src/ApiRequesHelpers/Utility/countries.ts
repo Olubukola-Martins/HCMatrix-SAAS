@@ -3,12 +3,12 @@ import { ISearchParams } from "AppTypes/Search";
 import axios from "axios";
 
 export interface IStateProps {
-  countryId: string;
+  countryId: number;
   searchParams?: ISearchParams;
 }
 
 export interface ILgaProps {
-  stateId: string;
+  stateId: number;
   searchParams?: ISearchParams;
 }
 

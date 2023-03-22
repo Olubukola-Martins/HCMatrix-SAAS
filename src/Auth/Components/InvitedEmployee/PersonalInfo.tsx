@@ -25,8 +25,8 @@ export const PersonalInfo = ({
   const globalCtx = useContext(GlobalContext);
   const { state: globalState } = globalCtx;
   const fileUrl = globalState.upLoadFileString;
-  const [stateId, setStateId] = useState("");
-  const [countryId, setCountryId] = useState("");
+  const [stateId, setStateId] = useState(0);
+  const [countryId, setCountryId] = useState(0);
   const { data: countries, isSuccess } = useFetchCountries();
   const { data: states, isSuccess: stateSuccess } = useFetchStates({
     countryId,
