@@ -53,10 +53,6 @@ export const FormEmployeeInput: React.FC<{
         defaultActiveFirstOption={false}
         showArrow={false}
         filterOption={false}
-        options={data?.data.map((item) => ({
-          label: `${item.firstName} ${item.lastName}`,
-          value: item.id,
-        }))}
       >
         {isSuccess ? (
           data.data.map((item) => (
