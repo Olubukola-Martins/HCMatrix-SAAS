@@ -20,8 +20,8 @@ import { RolesGridView } from "./RolesGridView";
 import { RolesTableView } from "./RolesTableView";
 
 const RolesViewContainer = () => {
-  const [viewId, setViewId] = useState("list");
-  const handleViewId = (val: React.SetStateAction<string>) => {
+  const [viewId, setViewId] = useState<"list" | "grid">("grid");
+  const handleViewId = (val: "list" | "grid") => {
     setViewId(val);
   };
   const auth = useAuthUser();
@@ -52,7 +52,6 @@ const RolesViewContainer = () => {
   };
   const {
     data: rolesData,
-    isError,
     isFetching,
     isSuccess,
   } = useFetchRoles({
@@ -92,16 +91,16 @@ const RolesViewContainer = () => {
 
       {/*Table view is hidden for now */}
       <div className="content overflow-y-hidden relative hidden">
-        {viewId === "list" && isSuccess && (
+        {/* {viewId === "list" && isSuccess && (
           <RolesTableView
             data={rolesData.data}
             loading={isFetching}
             pagination={{ ...pagination, total: rolesData.total }}
             onChange={onChange}
           />
-        )}
+        )} */}
       </div>
-      {isSuccess && (
+      {isSuccess && viewId === "grid" && (
         <RolesGridView
           data={rolesData.data}
           loading={isFetching}
