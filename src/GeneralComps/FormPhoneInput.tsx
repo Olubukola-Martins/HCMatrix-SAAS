@@ -21,7 +21,7 @@ export const FormPhoneInput: React.FC<{ Form: any; showLabel?: boolean }> = ({
         const sCountries = countries.filter(
           (item) =>
             item.name.toLowerCase().indexOf(val.toLowerCase()) !== -1 ||
-            `+${item.code}`.toLowerCase().indexOf(`${val.toLowerCase()}`)
+            `+${item.code}`.toLowerCase().indexOf(`${val.toLowerCase()}`) !== -1
         );
         console.log(sCountries);
         setSearchedCountries(sCountries);
