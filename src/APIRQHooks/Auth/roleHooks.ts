@@ -54,6 +54,7 @@ export const useFetchRoles = ({
           (item: any): TRole => ({
             id: item.id,
             name: item.name,
+            label: item.label,
 
             userCount: item.userCount ?? 0,
             createdAt: item.createdAt,

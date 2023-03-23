@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import { TRole } from "../../../../AppTypes/DataEntitities";
 import { TableProps, TablePaginationConfig, Tooltip } from "antd";
 import moment from "moment";
+import { appRoutes } from "AppRoutes";
 
 interface IProps {
   data: TRole[];
@@ -31,12 +32,23 @@ export const RolesGridView = ({
 };
 
 const RoleBox = ({ data }: { data: TRole }) => {
+  const hideDeleteBtn = data.label === "employee" || data.label === "admin";
+  const hideEditBtn = data.label === "admin";
+  // TO DO : apply logic to edit Role page
   return (
     <>
       {/* view */}
       <div className="rounded border shadow bg-mainBg">
-        <div className="bg-card p-3">
+        <div className="bg-card p-3 flex justify-between items-center">
           <h4 className="font-medium text-lg">{data.name}</h4>
+          <div className="flex gap-2 text-lg">
+            {hideEditBtn ? (
+              <i className="ri-pencil-line  cursor-pointer" />
+            ) : null}
+            {hideDeleteBtn ? (
+              <i className="ri-delete-bin-6-line  cursor-pointer" />
+            ) : null}
+          </div>
         </div>
         <div className="px-3">
           <div className="border-b flex gap-5 text-sm">
@@ -60,17 +72,22 @@ const RoleBox = ({ data }: { data: TRole }) => {
             trigger={["click"]}
             overlayInnerStyle={{ background: "var(--card)", padding: "10px" }}
             title={
-              <div className="">
+              <div className="flex flex-col gap-4">
                 <h4 className="text-sm font-semibold">
                   You can set-up permissions from here
                 </h4>
-                <p className="text-xs pt-2 pb-3 text-gray-600">
+                {/* <p className="text-xs pt-2 pb-3 text-gray-600">
                   Lorem, ipsum dolor sit amet consectetur adipisicing elit. Unde
                   sequi maiores .
-                </p>
-                <Link to="/settings/roles/create" className="button">
-                  Next
-                </Link>
+                </p> */}
+                <div>
+                  <Link
+                    to={appRoutes.editRole(data.id).path}
+                    className="button"
+                  >
+                    Next
+                  </Link>
+                </div>
               </div>
             }
           >

@@ -10,7 +10,8 @@ import { useAuthUser } from "react-auth-kit";
 export const FormDepartmentInput: React.FC<{
   Form: any;
   showLabel?: boolean;
-}> = ({ Form, showLabel = true }) => {
+  control?: { label: string; name: string; multiple?: boolean };
+}> = ({ Form, showLabel = true, control }) => {
   const auth = useAuthUser();
 
   const authDetails = auth() as unknown as IAuthDets;
@@ -38,11 +39,12 @@ export const FormDepartmentInput: React.FC<{
 
   return (
     <Form.Item
-      name="departmentId"
-      label={showLabel ? "Department" : null}
+      name={control?.name ?? "departmentId"}
+      label={showLabel ? control?.label ?? "Department" : null}
       rules={generalValidationRules}
     >
       <Select
+        mode={control?.multiple ? "multiple" : undefined}
         placeholder="Select department"
         loading={isFetching} //TO DO : this should be added to all custom Fetch Form Inputs
         showSearch

@@ -11,7 +11,6 @@ import Groups from "../Pages/Organization/Groups/Groups";
 import Departments from "../Pages/Organization/Departments/Departments";
 import DepartmentDetail from "../Pages/Organization/Departments/DepartmentDetail";
 import Delegations from "../Pages/Organization/Delegations/Delegations";
-import DelegationDetail from "../Pages/Organization/Delegations/DelegationDetail";
 import Grades from "../Pages/Organization/Grades/Grades";
 import ProbationPolicy from "../Pages/Organization/ProbationPolicy/ProbationPolicy";
 import GradeCategories from "../Pages/Organization/GradeCategories/GradeCategories";
@@ -28,6 +27,7 @@ import { RequireAuth } from "react-auth-kit";
 import { AddEmployee } from "../Components/Organization/EmployeeProfiles/AddEmployee";
 import { appRoutes } from "AppRoutes";
 import { EmployeeProfile } from "Settings/Pages/Organization/EmployeeProfiles/EmployeeProfile";
+import { EditRole } from "Settings/Pages/UserAccessControl/Roles/EditRole";
 
 const SettingRoutes = () => {
   return (
@@ -181,14 +181,6 @@ const SettingRoutes = () => {
           </RequireAuth>
         }
       />
-      <Route
-        path={appRoutes.singleDelegation().format}
-        element={
-          <RequireAuth loginPath={appRoutes.login}>
-            <DelegationDetail />
-          </RequireAuth>
-        }
-      />
 
       <Route
         path={appRoutes.roleSettings}
@@ -203,6 +195,14 @@ const SettingRoutes = () => {
         element={
           <RequireAuth loginPath={appRoutes.login}>
             <CreateRole />
+          </RequireAuth>
+        }
+      />
+      <Route
+        path={appRoutes.editRole().format}
+        element={
+          <RequireAuth loginPath={appRoutes.login}>
+            <EditRole />
           </RequireAuth>
         }
       />

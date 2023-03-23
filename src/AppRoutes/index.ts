@@ -40,14 +40,18 @@ export const appRoutes = {
     format: `/settings/departments/:id`,
     path: `/settings/departments/${id}`,
   }),
-  singleDelegation: (id?: number) => ({
-    format: `/settings/delegations/:id`,
-    path: `/settings/delegations/${id}`,
-  }),
+  // singleDelegation: (id?: number) => ({
+  //   format: `/settings/delegations/:id`,
+  //   path: `/settings/delegations/${id}`,
+  // }),
   delegationSettings: `/settings/delegations`,
 
   roleSettings: `/settings/roles`,
   createRole: `/settings/roles/create`,
+  editRole: (id?: number) => ({
+    format: `/settings/roles/edit/:id`,
+    path: `/settings/roles/edit/${id}`,
+  }),
   workflowSettings: `/settings/automation/workflows`,
   createWorkflow: `/settings/automation/workflows/create`,
   payrollSettings: `/settings/payroll`,

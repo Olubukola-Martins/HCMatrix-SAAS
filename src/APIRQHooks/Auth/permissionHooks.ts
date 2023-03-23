@@ -58,6 +58,7 @@ export const useFetchPermissions = ({
           categories.push({ id: category.id, name: category.name });
           category.permissions.forEach((item: any) => {
             permissions.push({
+              permissionId: item.id,
               id: item.id,
               name: item.name,
               label: item.label,
