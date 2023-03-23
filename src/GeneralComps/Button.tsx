@@ -6,6 +6,7 @@ interface IProps {
   label?: string;
   type?: "submit" | "reset" | "button";
   handleClick?: () => void;
+  additionalClassNames?: string[];
 }
 
 const Button: React.FunctionComponent<IProps> = ({
@@ -13,9 +14,14 @@ const Button: React.FunctionComponent<IProps> = ({
   label = "submit",
   type = "button",
   handleClick,
+  additionalClassNames = ["button"],
 }) => {
   return (
-    <button className="button capitalize" type={type} onClick={handleClick}>
+    <button
+      className={`${additionalClassNames?.join(" ")} capitalize`}
+      type={type}
+      onClick={handleClick}
+    >
       {isLoading ? <BeatLoader color="#fff" /> : label}
     </button>
   );

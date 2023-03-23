@@ -64,10 +64,11 @@ const Roles = () => {
         />
         {
           <div className="mt-4">
-            <h4 className="text-lg  mb-1"></h4>
             <PageIntro title="Roles" link="/settings" />
             <div className="flex justify-end">
-              <button className="button" onClick={() => setAddRoleModal(true)}>Add Role</button>
+              <button className="button" onClick={() => setAddRoleModal(true)}>
+                Add Role
+              </button>
             </div>
             <RolesViewContainer />
           </div>

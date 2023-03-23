@@ -1,6 +1,7 @@
 import { Select, Spin } from "antd";
 import { useFetchEmployees } from "APIRQHooks/Utility/employeeHooks";
 import { IAuthDets } from "AppTypes/Auth";
+import { TEmployee } from "AppTypes/DataEntitities";
 import { GlobalContext } from "Contexts/GlobalContextProvider";
 import { generalValidationRules } from "FormHelpers/validation";
 import { useDebounce } from "Hooks/useDebounce";
@@ -8,10 +9,12 @@ import React, { useContext, useState } from "react";
 import { useAuthUser } from "react-auth-kit";
 
 export const FormEmployeeInput: React.FC<{
+  handleSelect?: (val: number, employee?: TEmployee) => void;
+
   Form: any;
   showLabel?: boolean;
   control?: { label: string; name: string };
-}> = ({ Form, showLabel = true, control }) => {
+}> = ({ Form, showLabel = true, control, handleSelect }) => {
   const auth = useAuthUser();
 
   const authDetails = auth() as unknown as IAuthDets;
@@ -29,7 +32,6 @@ export const FormEmployeeInput: React.FC<{
     searchParams: {
       name: debouncedSearchTerm,
     },
-
     token,
   });
 
@@ -44,6 +46,12 @@ export const FormEmployeeInput: React.FC<{
       rules={generalValidationRules}
     >
       <Select
+        onSelect={(val: number) => {
+          if (handleSelect) {
+            const employee = data?.data.find((emp) => emp.id === val);
+            handleSelect(val, employee);
+          }
+        }}
         placeholder="Select user"
         showSearch
         allowClear

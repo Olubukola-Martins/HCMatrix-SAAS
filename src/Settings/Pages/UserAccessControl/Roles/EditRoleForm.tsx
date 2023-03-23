@@ -10,7 +10,8 @@ import {
 } from "antd";
 import { CheckboxValueType } from "antd/es/checkbox/Group";
 import Button from "GeneralComps/Button";
-import React, { useContext, useState } from "react";
+import { useApiAuth } from "Hooks/useApiAuth";
+import React, { useContext, useEffect, useState } from "react";
 import { useAuthUser } from "react-auth-kit";
 import { useMutation, useQuery, useQueryClient } from "react-query";
 import { BeatLoader } from "react-spinners";
@@ -36,21 +37,28 @@ import {
   generalValidationRules,
 } from "../../../../FormHelpers/validation";
 import { openNotification } from "../../../../NotificationHelpers";
+import { useFetchSingleRole } from "./hooks/useFetchSingleRole";
 
-const CreateRoleForm = () => {
+export const EditRoleForm: React.FC<{ id: number }> = ({ id }) => {
   const queryClient = useQueryClient();
-  const auth = useAuthUser();
-
-  const authDetails = auth() as unknown as IAuthDets;
-
-  const token = authDetails.userToken;
-
-  const globalCtx = useContext(GlobalContext);
-  const { state: globalState, dispatch } = globalCtx;
-  const companyId = globalState.currentCompany?.id as unknown as string;
+  const { companyId, token } = useApiAuth();
+  const { data: roleData, isFetching } = useFetchSingleRole({
+    companyId,
+    id,
+    token,
+  });
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedCategory, setSelectedCategory] = useState(0);
   const [form] = Form.useForm();
+  useEffect(() => {
+    if (roleData) {
+      form.setFieldsValue({
+        name: roleData?.name,
+        permissionIds: roleData?.permissions?.map((item) => item.id),
+      });
+    }
+  }, [form, roleData]);
+
   const {
     data,
     isError: isPError,
@@ -108,7 +116,6 @@ const CreateRoleForm = () => {
           });
 
           form.resetFields();
-          dispatch({ type: EGlobalOps.setShowInitialSetup, payload: true });
 
           queryClient.invalidateQueries({
             queryKey: ["roles"],
@@ -299,8 +306,8 @@ const CreateRoleForm = () => {
                 />
               </div>
               {/* <div className="bg-white p-4 rounded-md mb-4">
-                <Table columns={columns} dataSource={ans} size="small" />
-              </div> */}
+                  <Table columns={columns} dataSource={ans} size="small" />
+                </div> */}
               <Form.Item name="permissionIds" rules={generalValidationRules}>
                 <Checkbox.Group style={{ width: "100%" }}>
                   <div className="my-6 grid grid-cols-4 gap-4">
@@ -334,5 +341,3 @@ const CreateRoleForm = () => {
     </div>
   );
 };
-
-export default CreateRoleForm;

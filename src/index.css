@@ -410,3 +410,8 @@ textarea.ant-input,
 .ant-radio-button-wrapper-disabled.ant-radio-button-wrapper-checked {
   color: rgba(18, 18, 18, 0.838);
 }
+
+/* pop over arrow */
+.ant-tooltip-arrow-content {
+  --antd-arrow-background-color: var(--card);
+}

@@ -135,6 +135,7 @@ export type TPermission = {
   label: string;
   categoryId: number;
   description?: string;
+  permissionId: number;
 };
 export type TPermissionCategory = {
   id: number;
@@ -149,6 +150,8 @@ export type TRole = {
   userCount: number;
   createdAt: string;
   updatedAt: string;
+  label?: string;
+  permissions?: TPermission[];
 };
 
 export type TPersonalInfo = {
