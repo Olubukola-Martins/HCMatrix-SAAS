@@ -1,23 +1,12 @@
 import { TablePaginationConfig } from "antd";
-import { AnimatePresence } from "framer-motion";
 import React, { useContext, useState } from "react";
 import { useAuthUser } from "react-auth-kit";
-import { useQuery } from "react-query";
-import { getRoles } from "../../../../ApiRequesHelpers/Auth/permissions";
-import { getDepartments } from "../../../../ApiRequesHelpers/Utility/departments";
-import { getDesignations } from "../../../../ApiRequesHelpers/Utility/designations";
+
 import { useFetchRoles } from "../../../../APIRQHooks/Auth/roleHooks";
 import { IAuthDets } from "../../../../AppTypes/Auth";
-import {
-  TDepartment,
-  TDesignation,
-  TRole,
-} from "../../../../AppTypes/DataEntitities";
-import { GlobalContext } from "../../../../Contexts/GlobalContextProvider";
-import { openNotification } from "../../../../NotificationHelpers";
-import { RolesGridView } from "./RolesGridView";
 
-import { RolesTableView } from "./RolesTableView";
+import { GlobalContext } from "../../../../Contexts/GlobalContextProvider";
+import { RolesGridView } from "./RolesGridView";
 
 const RolesViewContainer = () => {
   const [viewId, setViewId] = useState<"list" | "grid">("grid");

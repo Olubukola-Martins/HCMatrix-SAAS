@@ -20,7 +20,7 @@ const Button: React.FunctionComponent<IProps> = ({
     <button
       className={`${additionalClassNames?.join(" ")} capitalize`}
       type={type}
-      onClick={handleClick}
+      onClick={() => handleClick?.()}
     >
       {isLoading ? <BeatLoader color="#fff" /> : label}
     </button>

@@ -9,11 +9,13 @@ import {
   Typography,
 } from "antd";
 import { CheckboxValueType } from "antd/es/checkbox/Group";
+import { appRoutes } from "AppRoutes";
 import Button from "GeneralComps/Button";
 import { useApiAuth } from "Hooks/useApiAuth";
 import React, { useContext, useEffect, useState } from "react";
 import { useAuthUser } from "react-auth-kit";
 import { useMutation, useQuery, useQueryClient } from "react-query";
+import { Navigate } from "react-router-dom";
 import { BeatLoader } from "react-spinners";
 import {
   getPermissions,
@@ -50,14 +52,25 @@ export const EditRoleForm: React.FC<{ id: number }> = ({ id }) => {
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedCategory, setSelectedCategory] = useState(0);
   const [form] = Form.useForm();
+  const notAbleToEditRole = roleData?.label === "admin";
+
   useEffect(() => {
+    // notify user of inablity to edit 'admin' role
+    if (notAbleToEditRole)
+      openNotification({
+        state: "info",
+        title: "Action not allowed!",
+        description:
+          "You cannot modify the admin role, try creating a new role instead!",
+        duration: 8,
+      });
     if (roleData) {
       form.setFieldsValue({
         name: roleData?.name,
         permissionIds: roleData?.permissions?.map((item) => item.id),
       });
     }
-  }, [form, roleData]);
+  }, [form, roleData, notAbleToEditRole]);
 
   const {
     data,
@@ -253,91 +266,99 @@ export const EditRoleForm: React.FC<{ id: number }> = ({ id }) => {
       Delete: <Checkbox />,
     },
   ];
+
   return (
-    <div>
-      <Skeleton
-        active
-        loading={!isPSuccess || isPFetching}
-        paragraph={{ rows: 40 }}
-      >
-        {isPSuccess && (
-          <Form
-            layout="vertical"
-            requiredMark={false}
-            form={form}
-            onFinish={handleSubmit}
-          >
-            <div className="flex flex-col gap-4">
-              <Typography.Title level={5}>Role name</Typography.Title>
-              <Form.Item
-                name="name"
-                rules={textInputValidationRules}
-                className="w-1/5"
-              >
-                <Input placeholder="role name" />
-              </Form.Item>
-            </div>
-            <div className="flex flex-col gap-4">
-              <Typography.Title level={5}>Assign Permissions</Typography.Title>
-              {/* permission categories */}
-              <div className="flex flex-wrap gap-4 pb-3 border-b ">
-                {data.categories.map((item) => (
-                  <div className="" key={item.id}>
-                    <button
-                      type="button"
-                      className={` capitalize hover:bg-caramel hover:border-caramel focus:bg-caramel active:bg-caramel text-white block rounded-full text-sm cursor-pointer px-2 py-1 hover:text-white ${
-                        item.id === selectedCategory
-                          ? "bg-caramel"
-                          : "bg-transparent border border-slate-400 text-slate-400"
-                      }`}
-                      onClick={() => handleCategoryClick(item.id)}
-                    >
-                      {item.name}
-                    </button>
-                  </div>
-                ))}
+    <>
+      {notAbleToEditRole && (
+        <Navigate to={appRoutes.roleSettings} replace={true} />
+      )}
+      <div>
+        <Skeleton
+          active
+          loading={!isPSuccess || isPFetching}
+          paragraph={{ rows: 40 }}
+        >
+          {isPSuccess && (
+            <Form
+              layout="vertical"
+              requiredMark={false}
+              form={form}
+              onFinish={handleSubmit}
+            >
+              <div className="flex flex-col gap-4">
+                <Typography.Title level={5}>Role name</Typography.Title>
+                <Form.Item
+                  name="name"
+                  rules={textInputValidationRules}
+                  className="w-1/5"
+                >
+                  <Input placeholder="role name" />
+                </Form.Item>
               </div>
-              <div className="flex justify-end my-2">
-                <Input
-                  onChange={handleSearch}
-                  className="w-48"
-                  placeholder="Search permissions"
-                  disabled
-                />
-              </div>
-              {/* <div className="bg-white p-4 rounded-md mb-4">
-                  <Table columns={columns} dataSource={ans} size="small" />
-                </div> */}
-              <Form.Item name="permissionIds" rules={generalValidationRules}>
-                <Checkbox.Group style={{ width: "100%" }}>
-                  <div className="my-6 grid grid-cols-4 gap-4">
-                    {data.permissions.map((item) => (
-                      <Checkbox
-                        key={item.id}
-                        value={item.id}
-                        className={`${
-                          item.categoryId === selectedCategory ||
-                          selectedCategory === 0
-                            ? //   ||
-                              //   searchTerm
-                              //     .toLowerCase()
-                              //     .search(item.name.toLowerCase()) !== -1
-                              "flex"
-                            : "hidden"
+              <div className="flex flex-col gap-4">
+                <Typography.Title level={5}>
+                  Assign Permissions
+                </Typography.Title>
+                {/* permission categories */}
+                <div className="flex flex-wrap gap-4 pb-3 border-b ">
+                  {data.categories.map((item) => (
+                    <div className="" key={item.id}>
+                      <button
+                        type="button"
+                        className={` capitalize hover:bg-caramel hover:border-caramel focus:bg-caramel active:bg-caramel text-white block rounded-full text-sm cursor-pointer px-2 py-1 hover:text-white ${
+                          item.id === selectedCategory
+                            ? "bg-caramel"
+                            : "bg-transparent border border-slate-400 text-slate-400"
                         }`}
+                        onClick={() => handleCategoryClick(item.id)}
                       >
                         {item.name}
-                      </Checkbox>
-                    ))}
-                  </div>
-                </Checkbox.Group>
-              </Form.Item>
-            </div>
+                      </button>
+                    </div>
+                  ))}
+                </div>
+                <div className="flex justify-end my-2">
+                  <Input
+                    onChange={handleSearch}
+                    className="w-48"
+                    placeholder="Search permissions"
+                    disabled
+                  />
+                </div>
+                {/* <div className="bg-white p-4 rounded-md mb-4">
+                  <Table columns={columns} dataSource={ans} size="small" />
+                </div> */}
+                <Form.Item name="permissionIds" rules={generalValidationRules}>
+                  <Checkbox.Group style={{ width: "100%" }}>
+                    <div className="my-6 grid grid-cols-4 gap-4">
+                      {data.permissions.map((item) => (
+                        <Checkbox
+                          key={item.id}
+                          value={item.id}
+                          className={`${
+                            item.categoryId === selectedCategory ||
+                            selectedCategory === 0
+                              ? //   ||
+                                //   searchTerm
+                                //     .toLowerCase()
+                                //     .search(item.name.toLowerCase()) !== -1
+                                "flex"
+                              : "hidden"
+                          }`}
+                        >
+                          {item.name}
+                        </Checkbox>
+                      ))}
+                    </div>
+                  </Checkbox.Group>
+                </Form.Item>
+              </div>
 
-            <Button type="submit" isLoading={isLoading} />
-          </Form>
-        )}
-      </Skeleton>
-    </div>
+              <Button type="submit" isLoading={isLoading} />
+            </Form>
+          )}
+        </Skeleton>
+      </div>
+    </>
   );
 };

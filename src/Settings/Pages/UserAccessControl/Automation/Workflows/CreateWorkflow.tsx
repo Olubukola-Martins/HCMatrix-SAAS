@@ -1,8 +1,9 @@
 import { AnimatePresence, motion } from "framer-motion";
 import React, { useState } from "react";
 import DashboardLayout from "../../../../../Layout/DashboardLayout";
-import { Link } from "react-router-dom";
+
 import { useEffect } from "react";
+import useCreateBasicWorkflow from "./hooks/useCreateBasicWorkflow";
 
 const criterias = [
   {
@@ -22,8 +23,9 @@ const criterias = [
 ];
 
 const Roles = () => {
+  const { mutate } = useCreateBasicWorkflow();
   const [workflowType, setWorkflowType] = useState("basic");
-  const [criteria, setCriteria] = useState(criterias[0]);
+  const [criteria, setCriteria] = useState<any>(criterias[0]);
   const [condition, setCondition] = useState("");
   const [appectanceCriterias, setAppectanceCriterias] = useState([]);
   const [sentence, setSentence] = useState("");
@@ -39,10 +41,10 @@ const Roles = () => {
     }
   }, [criteria]);
 
-  const handleCSelect = (e) => {
+  const handleCSelect = (e: any) => {
     setCondition(e.target.value);
   };
-  const handleSelect = (e) => {
+  const handleSelect = (e: any) => {
     const choosen = criterias.find((item) => item.approver === e.target.value);
     setCriteria(choosen);
     setCondition("");
@@ -87,11 +89,6 @@ const Roles = () => {
               {workflowType === "basic" && (
                 <motion.div
                   initial={{ opacity: 0 }}
-                  animate={{
-                    opacity: 1,
-                    transition: "easeIn",
-                  }}
-                  exit={{ opacity: 0, transition: "easeOut" }}
                   className="bg-card rounded py-2"
                   key="basic"
                 >
@@ -175,11 +172,6 @@ const Roles = () => {
               {workflowType === "advanced" && (
                 <motion.div
                   initial={{ opacity: 0 }}
-                  animate={{
-                    opacity: 1,
-                    transition: "easeIn",
-                  }}
-                  exit={{ opacity: 0, transition: "easeOut" }}
                   className="bg-card rounded py-2"
                   key="advanced"
                 >
@@ -227,12 +219,12 @@ const Roles = () => {
                                     <span
                                       className="cursor-pointer text-caramel text-sm underline mt-4 block"
                                       title="This allows you to add criterias that need to be met before proceeding to the next stage"
-                                      onClick={() =>
-                                        setAppectanceCriterias((val) => [
-                                          ...val,
-                                          sentence,
-                                        ])
-                                      }
+                                      // onClick={() =>
+                                      //   setAppectanceCriterias((val) => [
+                                      //     ...val,
+                                      //     sentence,
+                                      //   ])
+                                      // }
                                     >
                                       + Add acceptance criteria
                                     </span>
@@ -265,9 +257,11 @@ const Roles = () => {
                                             placeholder="stage name"
                                             className="w-full text-sm bg-transparent rounded-md p-1 border border-gray-400 focus:outline-none capitalize "
                                           >
-                                            {criteria.options.map((item) => (
-                                              <option>{item}</option>
-                                            ))}
+                                            {criteria.options.map(
+                                              (item: any) => (
+                                                <option>{item}</option>
+                                              )
+                                            )}
                                           </select>
                                         </div>
                                       )}
@@ -283,7 +277,7 @@ const Roles = () => {
                                               onChange={handleCSelect}
                                             >
                                               {criteria.conditions.map(
-                                                (item) => (
+                                                (item: any) => (
                                                   <option>{item}</option>
                                                 )
                                               )}

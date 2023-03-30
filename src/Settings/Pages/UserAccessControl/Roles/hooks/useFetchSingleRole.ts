@@ -27,7 +27,9 @@ const getSingleRole = async (props: IGetDataProps): Promise<TRole> => {
     name: item.name,
     createdAt: item.createdAt,
     updatedAt: item.updatedAt,
-    userCount: item.userCount ?? 0,
+    label: item.label,
+
+    userCount: item.employeeCount ?? 0,
     permissions: item?.permissions.map(
       (item: any): TPermission => ({
         permissionId: item.permissionId,
