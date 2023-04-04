@@ -85,7 +85,7 @@ export const AdminHome = () => {
       <div className="Container">
         <div className="flex items-center justify-between mt-2">
           <h1 className="text-xl md:text-2xl font-black">
-            Welcome {user.fullName}
+            Welcome {user.fullName} ,
           </h1>
           <button className="transparentButton">Upload Handbook</button>
         </div>

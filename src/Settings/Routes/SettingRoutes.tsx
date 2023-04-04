@@ -28,6 +28,7 @@ import { AddEmployee } from "../Components/Organization/EmployeeProfiles/AddEmpl
 import { appRoutes } from "AppRoutes";
 import { EmployeeProfile } from "Settings/Pages/Organization/EmployeeProfiles/EmployeeProfile";
 import { EditRole } from "Settings/Pages/UserAccessControl/Roles/EditRole";
+import EditWorkflow from "Settings/Pages/UserAccessControl/Automation/Workflows/EditWorkflow";
 
 const SettingRoutes = () => {
   return (
@@ -219,6 +220,14 @@ const SettingRoutes = () => {
         element={
           <RequireAuth loginPath={appRoutes.login}>
             <CreateWorkflow />
+          </RequireAuth>
+        }
+      />
+      <Route
+        path={appRoutes.editWorkflow().format}
+        element={
+          <RequireAuth loginPath={appRoutes.login}>
+            <EditWorkflow />
           </RequireAuth>
         }
       />

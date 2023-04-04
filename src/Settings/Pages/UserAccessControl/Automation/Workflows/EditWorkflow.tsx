@@ -1,12 +1,13 @@
-import React from "react";
 import DashboardLayout from "../../../../../Layout/DashboardLayout";
 
 import { appRoutes } from "AppRoutes";
 import { PageIntro } from "Layout/Components/PageIntro";
 import PageSubHeader from "Layout/Components/PageSubHeader";
-import { CreateBasicWorkflow } from "./CreateBasicWorkflow";
+import { EditBasicWorkflow } from "./EditBasicWorkflow";
+import { useParams } from "react-router-dom";
 
-const CreateWorklow = () => {
+const EditWorkflow = () => {
+  const { id } = useParams();
   return (
     <DashboardLayout>
       <div className="Container">
@@ -14,14 +15,21 @@ const CreateWorklow = () => {
           // TO DO : Refactor to also accomodate for advanced workflow
           <div className="mt-4">
             <PageIntro
-              title="Create Workflow"
+              title="Edit Workflow"
               link={appRoutes.workflowSettings}
             />
 
-            <PageSubHeader description="Create a workflow to handle your organizations approval process" />
+            <PageSubHeader description="Edit this workflow to handle your organizations approval process" />
 
             <div className="mt-6">
-              <CreateBasicWorkflow />
+              {id ? (
+                <EditBasicWorkflow id={+id} />
+              ) : (
+                <div className="flex items-center justify-center">
+                  {" "}
+                  Not Found
+                </div>
+              )}
             </div>
           </div>
         }
@@ -30,4 +38,4 @@ const CreateWorklow = () => {
   );
 };
 
-export default CreateWorklow;
+export default EditWorkflow;

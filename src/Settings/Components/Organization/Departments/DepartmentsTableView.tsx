@@ -1,4 +1,3 @@
-import React from "react";
 import { TDepartment } from "../../../../AppTypes/DataEntitities";
 import { Table } from "antd";
 import { ColumnsType, TablePaginationConfig, TableProps } from "antd/lib/table";

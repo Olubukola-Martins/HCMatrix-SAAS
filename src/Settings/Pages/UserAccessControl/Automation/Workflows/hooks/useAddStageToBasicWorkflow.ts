@@ -8,18 +8,11 @@ import axios from "axios";
 
 import { useApiAuth } from "Hooks/useApiAuth";
 import { useMutation } from "react-query";
+import { TBasicWorkflowStage } from "./useCreateBasicWorkflow";
 
-export type TBasicWorkflowStage = {
-  id?: number;
-  name: string;
-  roleId?: number;
-  employeeId?: number;
-  groupId?: number;
-  departmentHeadId?: number;
-};
 type TCreateProps = {
-  name: string;
-  stages: TBasicWorkflowStage[];
+  id: number;
+  stage: TBasicWorkflowStage;
 };
 
 export type TBasicWorkflow = {
@@ -29,8 +22,8 @@ export type TBasicWorkflow = {
   employee?: TEmployee;
 } & TCreateProps;
 
-const createWorkflow = async (props: TCreateProps & ICurrentCompany) => {
-  const url = `${process.env.REACT_APP_UTILITY_BASE_URL}/workflow/basic`;
+const addStage = async (props: TCreateProps & ICurrentCompany) => {
+  const url = `${process.env.REACT_APP_UTILITY_BASE_URL}/workflow/${props.id}/stage/basic`;
   const config = {
     headers: {
       Accept: "application/json",
@@ -40,7 +33,7 @@ const createWorkflow = async (props: TCreateProps & ICurrentCompany) => {
   };
 
   // necessary to make immediate changes when in  a central place when schema changes
-  const data: any = props;
+  const data: any = props.stage;
 
   delete data["companyId"];
   delete data["token"];
@@ -49,11 +42,11 @@ const createWorkflow = async (props: TCreateProps & ICurrentCompany) => {
   const response = await axios.post(url, data, config);
   return response;
 };
-export const useCreateBasicWorkflow = () => {
+export const useAddStageToBasicWorkflow = () => {
   const { token, companyId } = useApiAuth();
   return useMutation((props: TCreateProps) =>
-    createWorkflow({ ...props, token, companyId })
+    addStage({ ...props, token, companyId })
   );
 };
 
-export default useCreateBasicWorkflow;
+export default useAddStageToBasicWorkflow;

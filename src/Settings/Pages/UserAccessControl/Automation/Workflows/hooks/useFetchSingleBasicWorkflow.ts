@@ -4,15 +4,19 @@ import axios from "axios";
 import { useApiAuth } from "Hooks/useApiAuth";
 import { useQuery } from "react-query";
 import { TBasicWorkflow, TBasicWorkflowStage } from "./useCreateBasicWorkflow";
+import { preventUnnecessaryRefresh } from "Config/reactQueryReusables";
 
 // TO DO : need to exist in the general data entities and refactored
 interface IGetDataProps {
   id: number;
 }
-
+export type TSingleBasicWorkflowStage = TBasicWorkflowStage & { id: number };
+type TSingleBasicWorkflow = Omit<TBasicWorkflow, "stages"> & {
+  stages: TSingleBasicWorkflowStage[];
+};
 const getSingleBasicWorkflow = async (
   props: IGetDataProps & ICurrentCompany
-): Promise<TBasicWorkflow> => {
+): Promise<TSingleBasicWorkflow> => {
   const url = `${process.env.REACT_APP_UTILITY_BASE_URL}/workflow/${props.id}`;
 
   const config = {
@@ -27,12 +31,16 @@ const getSingleBasicWorkflow = async (
   const item = res.data.data;
 
   const stages = item?.stages?.map(
-    (item: any): TBasicWorkflowStage => ({
+    (item: any): TSingleBasicWorkflowStage => ({
       name: item.name,
+      id: item.id,
+      employeeId: item.employeeId,
+      roleId: item.roleId,
+      groupId: item.groupId,
     })
   );
 
-  const data: TBasicWorkflow = {
+  const data: TSingleBasicWorkflow = {
     id: item.id,
     name: item.name,
     stages,
@@ -44,7 +52,7 @@ export const useFetchSingleBasicWorkflow = (props: IGetDataProps) => {
   const { token, companyId } = useApiAuth();
 
   const queryData = useQuery(
-    ["single-basic-workflow", props.id],
+    ["basic-workflow", props.id],
     () =>
       getSingleBasicWorkflow({
         ...props,
@@ -54,6 +62,10 @@ export const useFetchSingleBasicWorkflow = (props: IGetDataProps) => {
     {
       onError: (err: any) => {},
       onSuccess: (data) => {},
+      refetchInterval: false,
+      refetchIntervalInBackground: false,
+      refetchOnWindowFocus: false,
+      // ...preventUnnecessaryRefresh
     }
   );
 

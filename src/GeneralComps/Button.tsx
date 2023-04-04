@@ -7,9 +7,11 @@ interface IProps {
   type?: "submit" | "reset" | "button";
   handleClick?: () => void;
   additionalClassNames?: string[];
+  disabled?: boolean;
 }
 
 const Button: React.FunctionComponent<IProps> = ({
+  disabled = false,
   isLoading = false,
   label = "submit",
   type = "button",
@@ -21,6 +23,7 @@ const Button: React.FunctionComponent<IProps> = ({
       className={`${additionalClassNames?.join(" ")} capitalize`}
       type={type}
       onClick={() => handleClick?.()}
+      disabled={disabled}
     >
       {isLoading ? <BeatLoader color="#fff" /> : label}
     </button>
