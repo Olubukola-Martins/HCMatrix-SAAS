@@ -10,11 +10,11 @@ import { useAuthUser } from "react-auth-kit";
 
 export const FormEmployeeInput: React.FC<{
   handleSelect?: (val: number, employee?: TEmployee) => void;
-
+  fieldKey?: number;
   Form: any;
   showLabel?: boolean;
-  control?: { label: string; name: string };
-}> = ({ Form, showLabel = true, control, handleSelect }) => {
+  control?: { label: string; name: string | (string | number)[] };
+}> = ({ Form, showLabel = true, control, handleSelect, fieldKey }) => {
   const auth = useAuthUser();
 
   const authDetails = auth() as unknown as IAuthDets;
@@ -41,6 +41,7 @@ export const FormEmployeeInput: React.FC<{
 
   return (
     <Form.Item
+      fieldKey={fieldKey}
       name={control?.name ?? "employeeId"}
       label={showLabel ? control?.label ?? "Employee" : null}
       rules={generalValidationRules}

@@ -1,5 +1,5 @@
 import { Select, Spin } from "antd";
-import { useFetchRoles } from "APIRQHooks/Auth/roleHooks";
+import { useFetchGroups } from "APIRQHooks/Utility/groupHooks";
 import { IAuthDets } from "AppTypes/Auth";
 import { GlobalContext } from "Contexts/GlobalContextProvider";
 import { generalValidationRules } from "FormHelpers/validation";
@@ -7,7 +7,7 @@ import { useDebounce } from "Hooks/useDebounce";
 import React, { useContext, useState } from "react";
 import { useAuthUser } from "react-auth-kit";
 
-export const FormRoleInput: React.FC<{
+export const FormGroupInput: React.FC<{
   Form: any;
   showLabel?: boolean;
   control?: { label: string; name: string | (string | number)[] };
@@ -24,7 +24,7 @@ export const FormRoleInput: React.FC<{
   const [searchTerm, setSearchTerm] = useState<string>("");
   const debouncedSearchTerm: string = useDebounce<string>(searchTerm);
 
-  const { data, isFetching, isSuccess } = useFetchRoles({
+  const { data, isFetching, isSuccess } = useFetchGroups({
     companyId,
     searchParams: {
       name: debouncedSearchTerm,
@@ -40,11 +40,11 @@ export const FormRoleInput: React.FC<{
   return (
     <Form.Item
       rules={generalValidationRules}
-      name={control?.name ?? "roleId"}
-      label={showLabel ? control?.label ?? "Role" : null}
+      name={control?.name ?? "groupId"}
+      label={showLabel ? control?.label ?? "Group" : null}
     >
       <Select
-        placeholder="Select role"
+        placeholder="Select group"
         loading={isFetching} //TO DO : this should be added to all custom Fetch Form Inputs
         showSearch
         allowClear

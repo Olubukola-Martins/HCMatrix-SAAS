@@ -1,4 +1,4 @@
-import { Form, Input, Select, Spin } from "antd";
+import { Form, Input, Select } from "antd";
 import { ICreateDepProps } from "ApiRequesHelpers/Utility/departments";
 import { useCreateDepartment } from "APIRQHooks/Utility/departmentHooks";
 import { IAuthDets } from "AppTypes/Auth";
@@ -36,7 +36,7 @@ const AddDepartmentForm = ({ handleClose }: { handleClose: Function }) => {
         parentDepartmentId: data.parentDepartmentId,
         token,
       };
-     
+
       mutate(props, {
         onError: (err: any) => {
           openNotification({

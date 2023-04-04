@@ -32,7 +32,8 @@ export const RolesGridView = ({
 };
 
 const RoleBox = ({ data }: { data: TRole }) => {
-  const hideDeleteBtn = data.label === "employee" || data.label === "admin";
+  const hideDeleteBtn =
+    data.label === "employee" || data.label === "admin" || data.userCount > 0;
   const hideEditBtn = data.label === "admin";
   // TO DO : apply logic to edit Role page
   return (
@@ -42,12 +43,12 @@ const RoleBox = ({ data }: { data: TRole }) => {
         <div className="bg-card p-3 flex justify-between items-center">
           <h4 className="font-medium text-lg">{data.name}</h4>
           <div className="flex gap-2 text-lg">
-            {hideEditBtn ? (
+            {hideEditBtn ? null : (
               <i className="ri-pencil-line  cursor-pointer" />
-            ) : null}
-            {hideDeleteBtn ? (
+            )}
+            {hideDeleteBtn ? null : (
               <i className="ri-delete-bin-6-line  cursor-pointer" />
-            ) : null}
+            )}
           </div>
         </div>
         <div className="px-3">

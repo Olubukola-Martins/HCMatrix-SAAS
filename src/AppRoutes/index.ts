@@ -54,6 +54,10 @@ export const appRoutes = {
   }),
   workflowSettings: `/settings/automation/workflows`,
   createWorkflow: `/settings/automation/workflows/create`,
+  editWorkflow: (id?: number) => ({
+    format: `/settings/workflows/:id`,
+    path: `/settings/workflows/${id}`,
+  }),
   payrollSettings: `/settings/payroll`,
   payGradeSettings: `/settings/grades`,
   gradeCategorySettings: `/settings/grade_categories`,

@@ -1,11 +1,8 @@
-import pagination from "antd/lib/pagination";
 import { ISearchParams } from "AppTypes/Search";
-import { useSignOut } from "react-auth-kit";
 import { useQuery } from "react-query";
 import { getRoles } from "../../ApiRequesHelpers/Auth/permissions";
 import { TRole } from "../../AppTypes/DataEntitities";
 import { IPaginationProps } from "../../AppTypes/Pagination";
-import { openNotification } from "../../NotificationHelpers";
 
 interface IFRQDataProps {
   pagination?: IPaginationProps;
@@ -56,7 +53,7 @@ export const useFetchRoles = ({
             name: item.name,
             label: item.label,
 
-            userCount: item.userCount ?? 0,
+            userCount: item.employeeCount ?? 0,
             createdAt: item.createdAt,
             updatedAt: item.updatedAt,
           })
