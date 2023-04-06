@@ -1,4 +1,3 @@
-import React from "react";
 import EntryBoxes from "../Utilities/EntryBoxes";
 import { useFetchAllConferenceRooms } from "./hooks/useFetchAllConferenceRooms";
 
