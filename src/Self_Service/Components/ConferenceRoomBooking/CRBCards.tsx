@@ -1,5 +1,5 @@
-import React from "react";
 import EntryBoxes from "../Utilities/EntryBoxes";
+import { useFetchAllConferenceRooms } from "./hooks/useFetchAllConferenceRooms";
 
 const data = [
   {
@@ -22,24 +22,29 @@ const requestStyle =
   "flex items-center justify-between cursor-pointer group border-b pb-2";
 
 const AvailableRoomsCard = () => {
+  const { data } = useFetchAllConferenceRooms({
+    pagination: {
+      limit: 3,
+      offset: 0,
+    },
+    searchParams: {},
+  });
   return (
     <div className="bg-mainBg border rounded-lg text-sm shadow">
       <div className="flex items-center justify-between px-3 py-3 border-b">
         <p className="font-medium">Available Conference Rooms</p>
       </div>
       <div className="flex flex-col gap-3 px-3 py-2">
-        {Array(2)
-          .fill(0)
-          .map((item, i) => (
-            <div className={requestStyle} key={i}>
-              <div>
-                <h5 className="group-hover:text-caramel font-medium mb-2">
-                  Board Room
-                </h5>
-              </div>
-              <i className="ri-more-fill text-lg"></i>
+        {data?.data.map((item, i) => (
+          <div className={requestStyle} key={i}>
+            <div>
+              <h5 className="group-hover:text-caramel font-medium mb-2">
+                {item.name}
+              </h5>
             </div>
-          ))}
+            <i className="ri-more-fill text-lg"></i>
+          </div>
+        ))}
       </div>
       <h2 className="text-caramel text-center text-base font-semibold cursor-pointer hover:text-accent pb-2 pt-1">
         See All

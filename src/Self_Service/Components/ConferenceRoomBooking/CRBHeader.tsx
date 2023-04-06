@@ -13,7 +13,7 @@ enum EAction {
   NO_ACTION = "",
 }
 
-const CRBHeader = ({ title = "Survey" }: IProps) => {
+const CRBHeader = ({ title = "Meeting Rooms" }: IProps) => {
   const [showD, setShowD] = useState(false);
   const [action, setAction] = useState<EAction>(EAction.NO_ACTION);
   const handleAction = (val: EAction) => {
