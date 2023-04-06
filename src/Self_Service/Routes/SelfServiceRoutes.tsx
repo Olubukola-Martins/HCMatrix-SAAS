@@ -1,10 +1,10 @@
 import { appRoutes } from "AppRoutes";
 import { RequireAuth } from "react-auth-kit";
 import { Routes, Route } from "react-router-dom";
+import { CRBHomePage } from "Self_Service/Components/ConferenceRoomBooking/CRBHomePage";
 import AssetDetails from "Self_Service/Pages/Assets/AssetDetails";
 import Assets from "Self_Service/Pages/Assets/Assets";
 import AssetTypeDetails from "Self_Service/Pages/Assets/AssetTypeDetails";
-import CRBHome from "Self_Service/Pages/ConferenceRoomBooking.js/CRBHome";
 import HandOver from "Self_Service/Pages/HandOver/HandOver";
 import HandOverDetails from "Self_Service/Pages/HandOver/HandOverDetails";
 import NewForm from "Self_Service/Pages/HandOver/NewForm";
@@ -160,7 +160,7 @@ const SelfServiceRoutes = () => {
           path={appRoutes.conferenceRoomBooking}
           element={
             <RequireAuth loginPath={appRoutes.login}>
-              <CRBHome />
+              <CRBHomePage />
             </RequireAuth>
           }
         />

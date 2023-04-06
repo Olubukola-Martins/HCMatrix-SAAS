@@ -2,10 +2,10 @@ import { Select } from "antd";
 
 import CRBBookingsList from "./CRBBookingsList";
 
-const CRBHistoryTable = () => {
+const CRBMyRequestsTable = () => {
   return (
     <div>
-      <p className="text-lg mb-4">Booking History</p>
+      <p className="text-lg mb-4">My Booking Requests</p>
       <div className="flex flex-col gap-6">
         <div className="flex justify-between items-center">
           <Select size="middle" className="w-32" placeholder="Filter">
@@ -24,4 +24,4 @@ const CRBHistoryTable = () => {
   );
 };
 
-export default CRBHistoryTable;
+export default CRBMyRequestsTable;

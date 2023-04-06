@@ -1,62 +1,119 @@
-import { Button, DatePicker, Form, Input, Select, TimePicker } from "antd";
-import React from "react";
+import {
+  Button as AntBtn,
+  DatePicker,
+  Form,
+  Input,
+  Select,
+  TimePicker,
+} from "antd";
+
 import Themes from "../../../Themes/Themes";
+import { QUERY_KEY_FOR_ALL_CONFERENCE_ROOM_BOOKINGS } from "./hooks/useFetchAllConferenceRoomBookings";
+import { useCreateConferenceRoomBooking } from "./hooks/useCreateConferenceRoomBooking";
+import { openNotification } from "NotificationHelpers";
+import { useQueryClient } from "react-query";
+import { priorities } from "Constants";
+import {
+  generalValidationRules,
+  textInputValidationRules,
+} from "FormHelpers/validation";
+import Button from "GeneralComps/Button";
+import { FormMeetingRoomsInput } from "./FormMeetingRoomsInput";
+import { useApiAuth } from "Hooks/useApiAuth";
 
 interface IProps {
   handleClose: Function;
 }
 
 const NewCRBBooking = ({ handleClose }: IProps) => {
+  const queryClient = useQueryClient();
+
+  const [form] = Form.useForm();
+  const { mutate, isLoading } = useCreateConferenceRoomBooking();
+  const { currentUserEmployeeId } = useApiAuth();
+
+  const handleSubmit = (data: any) => {
+    mutate(
+      {
+        conferenceRoomId: data.roomId,
+        date: data.date.toString(),
+        employeeId: currentUserEmployeeId,
+        endTime: data.duration[0].toString(),
+        startTime: data.duration[1].toString(),
+        priority: data.priority,
+        reason: data.reason,
+        departmentId: data.departmentId,
+      },
+      {
+        onError: (err: any) => {
+          openNotification({
+            state: "error",
+            title: "Error Occurred",
+            description:
+              err?.response.data.message ?? err?.response.data.error.message,
+          });
+        },
+        onSuccess: (res: any) => {
+          openNotification({
+            state: "success",
+
+            title: "Success",
+            description: res.data.message,
+            // duration: 0.4,
+          });
+
+          form.resetFields();
+          handleClose();
+
+          queryClient.invalidateQueries({
+            queryKey: [QUERY_KEY_FOR_ALL_CONFERENCE_ROOM_BOOKINGS],
+            // exact: true,
+          });
+        },
+      }
+    );
+  };
   return (
     <div>
-      <Form labelCol={{ span: 24 }} requiredMark={false}>
+      <Form
+        labelCol={{ span: 24 }}
+        requiredMark={false}
+        onFinish={handleSubmit}
+        form={form}
+      >
+        <FormMeetingRoomsInput
+          Form={Form}
+          control={{ label: "Meeting Room", name: "roomId" }}
+        />
         <Form.Item
-          name={"roomName"}
-          rules={[{ required: true, message: "Room name is required!" }]}
-        >
-          <Select placeholder="Conference Room Name">
-            <Select.Option value="Apple Room">Apple Room</Select.Option>
-          </Select>
-        </Form.Item>
-        <Form.Item
-          name="meetingDate"
+          name="date"
           rules={[{ required: true, message: "Meeting Date is required!" }]}
         >
           <DatePicker className="w-full" />
         </Form.Item>
         <Form.Item
-          name="Duration"
+          name="duration"
           rules={[{ required: true, message: "Duration is required!" }]}
         >
           <TimePicker.RangePicker className="w-full" use12Hours />
         </Form.Item>
-        <Form.Item
-          name="reason"
-          rules={[{ required: true, message: "Reason is required!" }]}
-        >
+        <Form.Item name="reason" rules={textInputValidationRules}>
           <Input placeholder="Reason" />
         </Form.Item>
-        <Form.Item
-          name={"priority"}
-          rules={[{ required: true, message: "Priority is required!" }]}
-        >
-          <Select placeholder="Priority">
-            <Select.Option value="High">High</Select.Option>
-            <Select.Option value="Mid">Mid</Select.Option>
-            <Select.Option value="Low">Low</Select.Option>
-          </Select>
+        <Form.Item name={"priority"} rules={generalValidationRules}>
+          <Select placeholder="Priority" options={priorities} />
         </Form.Item>
         <Themes>
           <div className="flex justify-between items-center">
-            <Button type="text" onClick={() => handleClose()}>
+            <AntBtn type="text" onClick={() => handleClose()}>
               Cancel
-            </Button>
+            </AntBtn>
             <div className="flex gap-3">
               {/* <button className="transparentButton">
                 Save And Add Another
               </button> */}
-              <Button type="ghost">Save And Add Another</Button>
-              <button className="button">Submit</button>
+              <AntBtn type="ghost">Save And Add Another</AntBtn>
+              <Button type="submit" label="Submit" isLoading={isLoading} />
             </div>
           </div>
         </Themes>
