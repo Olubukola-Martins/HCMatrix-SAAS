@@ -1,5 +1,4 @@
 import { Typography } from "antd";
-import { BeatLoader } from "react-spinners";
 
 interface IErrProps {
   message: string;

@@ -2,6 +2,8 @@ import { appRoutes } from "AppRoutes";
 import { RequireAuth } from "react-auth-kit";
 import { Routes, Route } from "react-router-dom";
 import { CRBHomePage } from "Self_Service/Components/ConferenceRoomBooking/CRBHomePage";
+import VehicleBookingHome from "Self_Service/Components/VehicleBooking/pages/VehicleBookingHome";
+import VehicleDetails from "Self_Service/Components/VehicleBooking/pages/VehicleDetails";
 import AssetDetails from "Self_Service/Pages/Assets/AssetDetails";
 import Assets from "Self_Service/Pages/Assets/Assets";
 import AssetTypeDetails from "Self_Service/Pages/Assets/AssetTypeDetails";
@@ -25,8 +27,6 @@ import SelfServiceHome from "Self_Service/Pages/SelfServiceHome";
 import NewSurveyForm from "Self_Service/Pages/Survey/NewSurveyForm";
 import SingleSurveyForm from "Self_Service/Pages/Survey/SingleSurveyForm";
 import SurveyHome from "Self_Service/Pages/Survey/SurveyHome";
-import VehicleBookingHome from "Self_Service/Pages/VehicleBooking/VehicleBookingHome";
-import VehicleDetails from "Self_Service/Pages/VehicleBooking/VehicleDetails";
 
 const SelfServiceRoutes = () => {
   return (

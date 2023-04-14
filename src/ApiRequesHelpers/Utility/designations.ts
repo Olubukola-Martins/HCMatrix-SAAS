@@ -57,6 +57,11 @@ interface IGetDegsProps extends ICurrentCompany {
 export interface IGetSingleDesgProps extends ICurrentCompany {
   designationId: number;
 }
+
+interface IGetDegsProps extends ICurrentCompany {
+  pagination?: IPaginationProps;
+  searchParams?: ISearchParams;
+}
 export const getDesignations = async (
   props: IGetDegsProps
 ): Promise<{ data: TDesignation[]; total: number }> => {

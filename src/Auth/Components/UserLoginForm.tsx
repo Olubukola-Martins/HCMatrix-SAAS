@@ -16,7 +16,6 @@ import {
   REFRESH_TOKEN_EXPIRES_IN,
 } from "../../Config/refreshTokenApi";
 import { IAuthDets } from "../../AppTypes/Auth";
-import { number } from "yup/lib/locale";
 
 interface ILoginProps {
   autoLoginDetails?: {

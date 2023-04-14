@@ -62,9 +62,6 @@ interface IGetDepsProps extends ICurrentCompany {
   pagination?: IPaginationProps;
   searchParams?: ISearchParams;
 }
-export interface IGetSingleDeptProps extends ICurrentCompany {
-  departmentId: number;
-}
 export const getDepartments = async (
   props: IGetDepsProps
 ): Promise<{ data: TDepartment[]; total: number }> => {
@@ -105,6 +102,9 @@ export const getDepartments = async (
 
   return ans;
 };
+export interface IGetSingleDeptProps extends ICurrentCompany {
+  departmentId: number;
+}
 export const getSingleDepartment = async (
   props: IGetSingleDeptProps
 ): Promise<TDepartment> => {
