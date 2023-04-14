@@ -17,7 +17,7 @@ interface IGetDataProps {
 
 export const QUERY_KEY_FOR_ALL_CONFERENCE_ROOMS = "conference-rooms";
 
-const getBAllConferenceRooms = async (
+const getAllConferenceRooms = async (
   props: IGetDataProps & ICurrentCompany
 ): Promise<{ data: TSingleConferenceRoom[]; total: number }> => {
   const url = `${process.env.REACT_APP_UTILITY_BASE_URL}/self-service/conference-room`;
@@ -65,7 +65,7 @@ export const useFetchAllConferenceRooms = (props: IGetDataProps) => {
   const queryData = useQuery(
     [QUERY_KEY_FOR_ALL_CONFERENCE_ROOMS, props.pagination],
     () =>
-      getBAllConferenceRooms({
+      getAllConferenceRooms({
         ...props,
         token,
         companyId,

@@ -1,6 +1,6 @@
 import { Modal, Switch } from "@mui/material";
 import React, { useState } from "react";
-import Themes from "../../../Themes/Themes";
+import Themes from "../../../../Themes/Themes";
 
 const AddVehicle = ({ open, handleClose }) => {
   const [moreInfo, setMoreInfo] = useState(false);
@@ -74,7 +74,6 @@ const AddVehicle = ({ open, handleClose }) => {
                       onBlur={(e) => (e.target.type = "text")}
                     />
                   </div>
-                
                 </div>
               )}
             </div>

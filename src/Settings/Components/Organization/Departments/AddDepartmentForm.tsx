@@ -15,6 +15,8 @@ import { BeatLoader } from "react-spinners";
 
 const AddDepartmentForm = ({ handleClose }: { handleClose: Function }) => {
   const queryClient = useQueryClient();
+  const [form] = Form.useForm();
+
   const auth = useAuthUser();
 
   const authDetails = auth() as unknown as IAuthDets;
@@ -23,7 +25,6 @@ const AddDepartmentForm = ({ handleClose }: { handleClose: Function }) => {
   const globalCtx = useContext(GlobalContext);
   const { state: globalState, dispatch } = globalCtx;
   const companyId = globalState.currentCompany?.id;
-  const [form] = Form.useForm();
   const { mutate, isLoading } = useCreateDepartment();
 
   const handleSubmit = (data: any) => {

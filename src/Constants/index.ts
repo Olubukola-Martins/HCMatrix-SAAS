@@ -1,4 +1,18 @@
 // The purpose of this file to prevent repettion
+export const MONTH_CHART_LABELS = [
+  "Jan",
+  "Feb",
+  "Mar",
+  "Apr",
+  "May",
+  "Jun",
+  "Jul",
+  "Aug",
+  "Sep",
+  "Nov",
+  "Dec",
+];
+// NEW K's
 
 export const listPageSize = 5;
 export const gridPageSize = 10;

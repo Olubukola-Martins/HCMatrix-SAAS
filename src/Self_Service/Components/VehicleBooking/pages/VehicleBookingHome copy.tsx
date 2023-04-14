@@ -1,9 +1,9 @@
+import DashboardLayout from "Layout/DashboardLayout";
+import SelfServiceSubNav from "Self_Service/Components/SelfServiceSubNav";
 import React, { useState } from "react";
-import DashboardLayout from "../../../Layout/DashboardLayout";
-import SelfServiceSubNav from "../../Components/SelfServiceSubNav";
-import Reminder from "../../Components/VehicleBooking/Reminder";
-import VehicleList from "../../Components/VehicleBooking/VehicleList";
-import VehicleOverview from "../../Components/VehicleBooking/VehicleOverview";
+import Reminder from "../components/Reminder";
+import VehicleList from "../components/VehicleList";
+import VehicleOverview from "../components/VehicleOverview";
 
 const VehicleBookingHome = () => {
   const [tap, setTap] = useState("overview");
@@ -49,9 +49,9 @@ const VehicleBookingHome = () => {
           </h5>
         </div>
 
-         {/* Display tap */}
-         {tap === "overview" && <VehicleOverview />}
-        {tap === "list" && <VehicleList/>}
+        {/* Display tap */}
+        {tap === "overview" && <VehicleOverview />}
+        {tap === "list" && <VehicleList />}
         {tap === "reminder" && <Reminder />}
       </div>
     </DashboardLayout>

@@ -1,25 +1,27 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import DashboardLayout from "../../../Layout/DashboardLayout";
-import SelfServiceSubNav from "../../Components/SelfServiceSubNav";
-import placeholder from "../../Assets/Images/placeholder.png";
-import UnassignedModal from "../../Components/Assets/UnassignedModal";
-import Maintenance from "../../Components/VehicleBooking/Maintenance";
-import Repair from "../../Components/VehicleBooking/Repair";
-import RequiredDocuments from "../../Components/VehicleBooking/RequiredDocuments";
-import AssigneeHistory from "../../Components/VehicleBooking/AssigneeHistory";
+import placeholder from "../../../Assets/Images/placeholder.png";
+import DashboardLayout from "Layout/DashboardLayout";
+import UnassignedModal from "Self_Service/Components/Assets/UnassignedModal";
+import SelfServiceSubNav from "Self_Service/Components/SelfServiceSubNav";
+import AssigneeHistory from "../components/AssigneeHistory";
+import Maintenance from "../components/Maintenance";
+import Repair from "../components/Repair";
+import RequiredDocuments from "../components/RequiredDocuments";
 
 const VehicleDetails = () => {
   const [tap, setTap] = useState("Maintenance");
-  const [unassigned, setUnassigned] = useState(false)
+  const [unassigned, setUnassigned] = useState(false);
   const listStyle =
     "flex items-center justify-between cursor-pointer group border-b pb-2 px-3";
 
   return (
     <DashboardLayout>
-
       <SelfServiceSubNav />
-      <UnassignedModal open={unassigned} handleClose={() => setUnassigned(false)}/>
+      <UnassignedModal
+        open={unassigned}
+        handleClose={() => setUnassigned(false)}
+      />
 
       <div className="Container">
         <div className="flex items-center gap-2">
@@ -48,7 +50,9 @@ const VehicleDetails = () => {
           </div>
           <div className="bg-mainBg border rounded-lg text-sm shadow py-4 flex flex-col gap-3">
             <div className={listStyle}>
-              <h5 className="group-hover:text-caramel font-medium">Vehicle Type </h5>
+              <h5 className="group-hover:text-caramel font-medium">
+                Vehicle Type{" "}
+              </h5>
               <span className="text-sm">Car</span>
             </div>
             <div className={listStyle}>
@@ -66,7 +70,7 @@ const VehicleDetails = () => {
             </div>
             <div className={listStyle}>
               <h5 className="group-hover:text-caramel font-medium">
-              Plate Number
+                Plate Number
               </h5>
               <span className="text-sm">000</span>
             </div>
@@ -83,9 +87,7 @@ const VehicleDetails = () => {
               <span className="text-sm">14 Sep,2022</span>
             </div>
             <div className={listStyle}>
-              <h5 className="group-hover:text-caramel font-medium">
-              Status
-              </h5>
+              <h5 className="group-hover:text-caramel font-medium">Status</h5>
               <span className="text-sm">Active</span>
             </div>
             <div className="px-3">
@@ -109,7 +111,9 @@ const VehicleDetails = () => {
                 <p>Location : Lagos Island</p>
                 <p>Estimated Journey Time: 0hrs</p>
                 <div />
-                <button className="button" onClick={() => setUnassigned(true)}>Unassign</button>
+                <button className="button" onClick={() => setUnassigned(true)}>
+                  Unassign
+                </button>
               </div>
             </div>
           </div>
@@ -125,7 +129,7 @@ const VehicleDetails = () => {
                 : "cursor-pointer hover:text-caramel pb-4"
             }
           >
-          Maintenance
+            Maintenance
           </h5>
           <h5
             onClick={() => setTap("Repair")}
@@ -135,7 +139,7 @@ const VehicleDetails = () => {
                 : "cursor-pointer hover:text-caramel pb-4"
             }
           >
-          Repair
+            Repair
           </h5>
 
           <h5
@@ -146,7 +150,7 @@ const VehicleDetails = () => {
                 : "cursor-pointer hover:text-caramel pb-4"
             }
           >
-         Required Documents
+            Required Documents
           </h5>
 
           <h5
@@ -157,15 +161,14 @@ const VehicleDetails = () => {
                 : "cursor-pointer hover:text-caramel pb-4"
             }
           >
-         Assignee History
+            Assignee History
           </h5>
         </div>
 
-
-            {tap === "Maintenance" && <Maintenance/>}
-            {tap === "Repair" && <Repair/>}
-            {tap === "RequiredDocuments" && <RequiredDocuments/>}
-            {tap === "AssigneeHistory" && <AssigneeHistory/>}
+        {tap === "Maintenance" && <Maintenance />}
+        {tap === "Repair" && <Repair />}
+        {tap === "RequiredDocuments" && <RequiredDocuments />}
+        {tap === "AssigneeHistory" && <AssigneeHistory />}
       </div>
     </DashboardLayout>
   );

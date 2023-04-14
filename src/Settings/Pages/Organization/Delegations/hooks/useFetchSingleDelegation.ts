@@ -1,10 +1,5 @@
-import {
-  ICurrentCompany,
-  TEmployee,
-  TPermission,
-} from "AppTypes/DataEntitities";
-import { IPaginationProps } from "AppTypes/Pagination";
-import { ISearchParams } from "AppTypes/Search";
+import { ICurrentCompany, TPermission } from "AppTypes/DataEntitities";
+
 import axios from "axios";
 import { useQuery } from "react-query";
 import { TDelegation } from "./useFetchDelegations";
