@@ -24,7 +24,6 @@ export const GridItem: React.FC<TGridItem> = ({
       <div className="border px-4 py-2 rounded-lg grid grid-cols-1 gap-4 border-caramel">
         <div className="flex justify-between">
           <h6 className="text-xl font-thin capitalize">{title}</h6>
-
           {actions && actions.length > 0 && (
             <Dropdown
               overlay={

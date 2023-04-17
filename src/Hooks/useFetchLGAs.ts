@@ -5,7 +5,7 @@ import { ISearchParams } from "types";
 import { TLga } from "types/lgas";
 import { openNotification } from "utils/notifications";
 
-const QUERY_KEY_FOR_LGA = "lga";
+export const QUERY_KEY_FOR_LGA = "lga";
 
 export interface ILgaProps {
   stateId: number;

@@ -38,6 +38,7 @@ interface IAction {
 const updateLocalStorage = ({ key, val }: { key: string; val: string }) => {
   localStorage.setItem(key, JSON.stringify(val));
 };
+
 const removeAuthLocalStorage = ({ key }: { key: string }) => {
   localStorage.removeItem("currentCompany");
 };
