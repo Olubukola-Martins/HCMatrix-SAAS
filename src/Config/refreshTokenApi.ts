@@ -1,5 +1,5 @@
+import { refreshUserToken } from "features/authentication/utils/refreshUserToken";
 import { createRefresh, useSignOut } from "react-auth-kit";
-import { refreshUserToken } from "../ApiRequesHelpers/Auth";
 
 // export const TOKEN_EXPIRES_IN = 120;
 // export const REFRESH_TOKEN_EXPIRES_IN = 5;
