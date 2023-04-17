@@ -29,17 +29,17 @@ export interface IAuthDets {
     email: string;
     hasSelfService: true;
     empUid: string;
-    roleId: 1;
+    roleId: number;
     status: string; // suppose be 'confirmed' n all
-    companyId: 1;
+    companyId: number;
     designationId?: number;
-    userId: 1;
+    userId: number;
     createdAt: string;
     updatedAt: string;
     deletedAt?: string;
     departmentId?: number;
     company: {
-      id: 1;
+      id: number;
       name: string;
       label: string;
       email: string;
@@ -48,7 +48,7 @@ export interface IAuthDets {
       isActive: true;
       color: string;
       industryId: 2;
-      userId: 1;
+      userId: number;
       addressId?: string;
       logoUrl?: string;
       website?: string;
