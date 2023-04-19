@@ -18,7 +18,9 @@ const Router = () => {
             key={path}
             path={`${path}`}
             element={
-              <RequireAuth loginPath={appRoutes.login}>{element}</RequireAuth>
+              // <RequireAuth loginPath={appRoutes.login}>
+              element
+              // {/* </RequireAuth> */}
             }
           />
         </Route>

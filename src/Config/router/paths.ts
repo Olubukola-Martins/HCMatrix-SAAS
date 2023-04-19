@@ -128,5 +128,13 @@ export const appRoutes = {
   }),
   hRLetters: `/self-service/hr-letters`,
   notifications: `/notifications`,
+
+  // Performance route
+  balanceScorecard: `/performance/balance-scorecard`,
+  degreeEvaluation: `/performance/360-degree-evaluation`,
+  behavioralCoreValue: `/performance/behavioral-core-value`,
+  goalsObjective: `/performance/goal-objective`,
+  nineBox: `/performance/9box`,
+  performance: `/performance/report`,
   notFound: "*",
 };
