@@ -12,7 +12,6 @@ const Router = () => {
       if (category === "doesnt-require-authentication") {
         return <Route key={path} path={`${path}`} element={element} />;
       }
-
       return (
         <Route path="/" element={<DashboardLayout />}>
           <Route

@@ -21,7 +21,6 @@ export class ErrorBoundary extends Component {
           <div>
             <img src={ErrorImage} alt="error" className="object-contain h-40" />
           </div>
-
           <h1>
             {this.props?.message ? this.props?.message : "Something went wrong"}
           </h1>

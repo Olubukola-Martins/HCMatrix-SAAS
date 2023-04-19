@@ -1,5 +1,4 @@
 import { BrowserRouter } from "react-router-dom";
-
 import { QueryClientProvider, QueryClient } from "react-query";
 import { ReactQueryDevtools } from "react-query/devtools";
 import { AuthProvider } from "react-auth-kit";
