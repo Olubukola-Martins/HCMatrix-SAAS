@@ -18,7 +18,7 @@ const SideBar = () => {
     home: "/",
     selfService: "/self-service",
     payroll: "/payroll",
-    performance: appRoutes.balanceScorecard,
+    performance: "/performance",
   };
   return (
     <>
@@ -88,7 +88,7 @@ const SideBar = () => {
               routeName: appBaseRoutes.performance,
             }) && "active"
           }`}
-          to={appBaseRoutes.performance}
+          to={`${appBaseRoutes.performance}/balance-scorecard`}
         >
           <div className="flex justify-center">
             <span className="sideBarList">

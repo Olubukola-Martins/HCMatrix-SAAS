@@ -135,6 +135,6 @@ export const appRoutes = {
   behavioralCoreValue: `/performance/behavioral-core-value`,
   goalsObjective: `/performance/goal-objective`,
   nineBox: `/performance/9box`,
-  performance: `/performance/report`,
+  performanceReport: `/performance/report`,
   notFound: "*",
 };
