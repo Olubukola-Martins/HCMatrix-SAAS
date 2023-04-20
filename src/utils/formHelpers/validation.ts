@@ -9,6 +9,11 @@ export const textInputValidationRules: Rule[] = [
   { whitespace: true },
 ];
 
+export const textInputValidationRulesOpt: Rule[] = [
+  { whitespace: true },
+  { required: false },
+];
+
 export const emailValidationRules: Rule[] = [
   {
     required: true,

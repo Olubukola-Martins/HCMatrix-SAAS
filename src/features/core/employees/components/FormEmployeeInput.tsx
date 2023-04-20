@@ -10,8 +10,9 @@ export const FormEmployeeInput: React.FC<{
   fieldKey?: number;
   Form: any;
   showLabel?: boolean;
+  mode?: "tags" | "multiple";
   control?: { label: string; name: string | (string | number)[] };
-}> = ({ Form, showLabel = true, control, handleSelect, fieldKey }) => {
+}> = ({ Form, showLabel = true, control, handleSelect, fieldKey, mode }) => {
   const [searchTerm, setSearchTerm] = useState<string>("");
   const debouncedSearchTerm: string = useDebounce<string>(searchTerm);
 
@@ -33,6 +34,7 @@ export const FormEmployeeInput: React.FC<{
       rules={generalValidationRules}
     >
       <Select
+        mode={mode}
         onSelect={(val: number) => {
           if (handleSelect) {
             const employee = data?.data.find((emp) => emp.id === val);
