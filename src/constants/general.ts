@@ -1,4 +1,17 @@
 // The purpose of this file to prevent repetition
+export const MONTH_CHART_LABELS = [
+  "Jan",
+  "Feb",
+  "Mar",
+  "Apr",
+  "May",
+  "Jun",
+  "Jul",
+  "Aug",
+  "Sep",
+  "Nov",
+  "Dec",
+];
 export const DEFAULT_PAGINATION_LIMIT = 5;
 export const DEFAULT_PAGINATION_OFFSET = 0;
 export const DEFAULT_PAGE_SIZE = 5;

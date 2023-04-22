@@ -9,7 +9,7 @@ export interface IPaginationProps {
 }
 
 export interface ISearchParams {
-  name: string;
+  name?: string;
   //   other params can be optional
 }
 export type TFetchListDataExtraProps = {

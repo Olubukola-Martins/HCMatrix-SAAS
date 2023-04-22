@@ -102,7 +102,10 @@ export const appRoutes = {
   loanRequests: `/self-service/loan-request`,
   loanPolicies: `/self-service/loan-policies`,
   vehicleBooking: `/self-service/vehicle-booking`,
-  vehicleDetails: `/self-service/vehicle-details`,
+  vehicleDetails: (id?: number) => ({
+    format: `/self-service/vehicle-details/:id`,
+    path: `/self-service/vehicle-details/${id}`,
+  }),
   surveyHome: `/self-service/survey`,
   newSurvey: `/self-service/survey/new`,
   singleSurveyForm: (id?: number) => ({

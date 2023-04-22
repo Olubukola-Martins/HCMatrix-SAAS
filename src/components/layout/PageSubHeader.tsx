@@ -1,55 +1,43 @@
-import { Dropdown, Menu } from "antd";
-import React from "react";
+import { AppButton, TBtnVariant } from "components/button/AppButton";
 
 // Define a btn component
 
 interface IProps {
-  description: string;
-  actions?: { name: string; handleClick: Function }[];
-  variant?: "drop-down" | "side-by-side";
-  dropDownText?: string;
+  description: string | { content: string; className: string };
+  hideBackground?: boolean;
+  actions?: {
+    name: string;
+    handleClick: Function;
+    btnVariant?: TBtnVariant;
+    loading?: boolean;
+  }[];
 }
 
 const PageSubHeader = ({
   description,
   actions,
-  variant = "side-by-side",
-  dropDownText,
+  hideBackground = false,
 }: IProps) => {
   return (
-    <div className="flex flex-col mt-5 gap-2 md:flex-row md:justify-between md:items-center bg-card p-2 rounded text-sm">
-      <p>{description}</p>
+    <div
+      className={`flex flex-col mt-5 gap-2 md:flex-row md:justify-between md:items-center  p-2 rounded text-sm ${
+        hideBackground === false ? "bg-card" : ""
+      }`}
+    >
+      {typeof description === "string" && <p>{description}</p>}
+      {typeof description === "object" && (
+        <p className={description.className}>{description.content}</p>
+      )}
 
       <div className="flex gap-4 items-center">
-        {variant === "side-by-side" &&
-          actions?.map((item) => (
-            <button
-              className="py-1 px-2 bg-caramel rounded text-sm text-white font-medium"
-              onClick={() => item.handleClick()}
-            >
-              {item.name}
-            </button>
-          ))}
-
-        {variant === "drop-down" && (
-          <Dropdown
-            overlay={
-              <Menu>
-                {actions?.map((item) => (
-                  <Menu.Item onClick={() => item.handleClick()}>
-                    {item.name}
-                  </Menu.Item>
-                ))}
-              </Menu>
-            }
-            trigger={["click"]}
-          >
-            <button className="py-1 px-2 bg-caramel rounded text-sm text-white font-medium flex items-center gap-2">
-              <span>{dropDownText}</span>{" "}
-              <i className="fa-solid fa-chevron-down"></i>
-            </button>
-          </Dropdown>
-        )}
+        {actions?.map((item) => (
+          <AppButton
+            label={item.name}
+            handleClick={() => item.handleClick()}
+            variant={item.btnVariant}
+            isLoading={item.loading}
+          />
+        ))}
       </div>
     </div>
   );

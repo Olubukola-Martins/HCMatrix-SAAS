@@ -9,14 +9,14 @@ export interface IGlobalState {
   currentCompany: TCCompany | null;
   showInitialSetUp: boolean;
   showAdminWelcomeMessage: boolean;
-  upLoadFileString: string;
+  upLoadFileString: { key: string; value: string }[];
 }
 
 const initState: IGlobalState = {
   currentCompany: null,
   showInitialSetUp: false,
   showAdminWelcomeMessage: true,
-  upLoadFileString: "",
+  upLoadFileString: [],
 };
 
 interface IGlobalContext {
@@ -99,7 +99,7 @@ const GlobalContextProvider = ({ children }: IProps) => {
       return {
         currentCompany,
         showInitialSetUp: false,
-        upLoadFileString: "",
+        upLoadFileString: [],
         showAdminWelcomeMessage: true,
       };
     }
