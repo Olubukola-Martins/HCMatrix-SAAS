@@ -1,9 +1,20 @@
 import { IAuthDets } from "features/authentication/types";
-import { useContext } from "react";
-import { useAuthUser } from "react-auth-kit";
+import { useContext, useEffect } from "react";
+import { useAuthUser, useIsAuthenticated } from "react-auth-kit";
+import { useNavigate } from "react-router-dom";
 import { GlobalContext } from "stateManagers/GlobalContextProvider";
 
 export const useApiAuth = () => {
+  const navigate = useNavigate();
+  const isAuthenticated = useIsAuthenticated();
+
+  useEffect(() => {
+    if (isAuthenticated() || localStorage.getItem("hcmatrix_app")) {
+      // Redirect to Dashboard
+    } else {
+      navigate("/login", { replace: true });
+    }
+  }, [navigate, isAuthenticated]);
   const auth = useAuthUser();
 
   const authDetails = auth() as unknown as IAuthDets;
@@ -16,7 +27,7 @@ export const useApiAuth = () => {
 
   const currentCompanyId = globalState.currentCompany?.id as unknown as string;
 
-  const currentCompany = companies.find(
+  const currentCompany = companies?.find(
     (item) => item.companyId === +currentCompanyId
   );
 

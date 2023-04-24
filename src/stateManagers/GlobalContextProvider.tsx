@@ -56,9 +56,16 @@ const GlobalReducer = (state: IGlobalState, action: IAction): IGlobalState => {
       });
       return newState;
     case EGlobalOps.setUploadFileString:
+      // delete the key if it exists
+      const updatedFileString = state.upLoadFileString.filter(
+        (item) => item.key === action.payload.key
+      );
       return {
         ...state,
-        upLoadFileString: action.payload,
+        upLoadFileString: [
+          ...updatedFileString,
+          { key: action.payload.key, value: action.payload.value },
+        ],
       };
 
     case EGlobalOps.setShowInitialSetup:
