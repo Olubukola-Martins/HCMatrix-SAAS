@@ -22,6 +22,10 @@ import HealthAccessHome from "features/self-service/features/health-access/pages
 import HealthAccessSettings from "features/self-service/features/health-access/pages/HealthAccessSettings";
 import Onboarding from "features/self-service/features/onboarding/pages/Onboarding";
 import StartOnboarding from "features/self-service/features/onboarding/pages/StartOnboarding";
+import HandOver from "features/self-service/features/handover-forms/pages/HandOver";
+import HandOverDetails from "features/self-service/features/handover-forms/pages/HandOverDetails";
+import { HandOverNewForm } from "features/self-service/features/handover-forms/pages/HandOverNewForm";
+import HRLetters from "features/self-service/features/hr-letters-and-documents/pages/HRLetters";
 
 export const selfServiceRoutes: TRouteData[] = [
   {
@@ -92,7 +96,7 @@ export const selfServiceRoutes: TRouteData[] = [
   {
     element: <VehicleDetails />,
     path: appRoutes.vehicleDetails().format,
-    isSearchable: true,
+    isSearchable: false,
     title: "Vehicle Details",
   },
   {
@@ -154,25 +158,25 @@ export const selfServiceRoutes: TRouteData[] = [
     isSearchable: false,
   },
   {
-    element: <div />,
+    element: <HandOver />,
     path: appRoutes.handOver,
     isSearchable: true,
     title: "HandOver",
   },
   {
-    element: <div />,
+    element: <HandOverNewForm />,
     path: appRoutes.newHandOverForm,
     isSearchable: true,
     title: "New Handover Form",
   },
   {
-    element: <div />,
+    element: <HandOverDetails />,
     path: appRoutes.handOverDetails().format,
     isSearchable: true,
     title: "Handover Details",
   },
   {
-    element: <div />,
+    element: <HRLetters />,
     path: appRoutes.hRLetters,
     isSearchable: true,
     title: "HR Letters",

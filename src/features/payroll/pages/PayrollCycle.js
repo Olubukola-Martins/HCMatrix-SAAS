@@ -6,7 +6,7 @@ const PayrollCycle = () => {
   return (
     <>
       <PayrollSubNav />
-      <div>
+      <div className="Container">
         <div className="flex items-center gap-2 mb-10">
           <Link to="/payroll/home" className="hover:text-caramel">
             <i className="ri-arrow-left-s-line text-xl"></i>

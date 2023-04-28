@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 const PayrollScheme = () => {
   return (
     <>
-      <div>
+      <div className="Container">
         <div className="flex items-center gap-2 mb-10">
           <Link to="payroll/review" className="hover:text-caramel">
             <i className="ri-arrow-left-s-line text-xl"></i>

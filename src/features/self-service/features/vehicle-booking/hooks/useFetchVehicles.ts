@@ -3,6 +3,7 @@ import { MICROSERVICE_ENDPOINTS } from "config/enviroment";
 import { useQuery } from "react-query";
 import { ICurrentCompany, IPaginationProps, ISearchParams } from "types";
 import { TVehicleType, TVehicleStatus } from "./useCreateVehicle";
+import { DEFAULT_PAGE_SIZE } from "constants/general";
 
 // TO DO : need to exist in the general data entities and refactored
 interface IGetDataProps extends ICurrentCompany {
@@ -102,7 +103,7 @@ const getVehicles = async (
   props: IGetDataProps
 ): Promise<{ data: TVehicle[]; total: number }> => {
   const { pagination } = props;
-  const limit = pagination?.limit ?? 10;
+  const limit = pagination?.limit ?? DEFAULT_PAGE_SIZE;
   const offset = pagination?.offset ?? 0;
   const name = props.searchParams?.name ?? "";
 
@@ -140,7 +141,7 @@ const getVehicles = async (
 export const useFetchVehicles = (props: IGetDataProps) => {
   const { pagination, searchParams } = props;
   const queryData = useQuery(
-    [QUERY_KEY_FOR_VEHICLES, pagination?.limit, searchParams?.name],
+    [QUERY_KEY_FOR_VEHICLES, pagination, searchParams],
     () =>
       getVehicles({
         ...props,

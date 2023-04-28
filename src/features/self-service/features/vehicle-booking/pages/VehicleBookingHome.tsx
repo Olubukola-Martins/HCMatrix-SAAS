@@ -39,7 +39,15 @@ const VehicleBookingHome = () => {
             items={tabItems.map((item) => ({
               ...item,
 
-              children: <VehicleWrapper>{item.children}</VehicleWrapper>,
+              children: (
+                <VehicleWrapper
+                  showAddVehicleAndDownlaod={
+                    item.key === "My Bookings" ? false : true
+                  }
+                >
+                  {item.children}
+                </VehicleWrapper>
+              ),
             }))}
           />
         </div>

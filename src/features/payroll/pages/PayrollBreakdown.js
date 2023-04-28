@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import PayrollSubNav from "../components/PayrollSubNav";
 import RollbackModal from "../components/RollbackModal";
 import ViewPayrollBreakdown from "../components/ViewPayrollBreakdown";
-import "../Style/style.css";
+import "../style/style.css";
 
 const PayrollBreakdown = () => {
   const [anchorEl, setAnchorEl] = useState(null);

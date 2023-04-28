@@ -12,7 +12,7 @@ const CreatePayroll = () => {
   return (
     <>
       <PayrollSubNav />
-      <div className="text-accent">
+      <div className="text-accent Container">
         <div className="flex items-center gap-2 mb-10">
           <Link to="/payroll/cycle" className="hover:text-caramel">
             <i className="ri-arrow-left-s-line text-xl"></i>

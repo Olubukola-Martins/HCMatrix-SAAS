@@ -11,8 +11,7 @@ import { IAuthDets } from "features/authentication/types";
 import { AddSisterCompanyForm } from "features/core/company/components/AddSisterCompanyForm";
 import { useFetchSingleEmployee } from "features/core/employees/hooks/useFetchSingleEmployee";
 import { GlobalContext, EGlobalOps } from "stateManagers/GlobalContextProvider";
-
-const logo = "";
+import logo from "../../assets/images/logo2.png";
 
 type TCompany = {
   value: string;

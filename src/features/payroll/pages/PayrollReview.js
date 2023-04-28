@@ -25,7 +25,7 @@ const PayrollReview = () => {
         open={totalSummaryModal}
         handleClose={() => setTotalSummaryModal(false)}
       />
-      <div>
+      <div className="Container">
         <div className="flex items-center gap-1 mb-10">
           <Link to="/payroll/home">
             <i className="ri-arrow-left-s-line text-xl"></i>

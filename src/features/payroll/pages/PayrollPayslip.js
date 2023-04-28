@@ -2,7 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import PayrollSubNav from "../components/PayrollSubNav";
 
-const Payslip = () => {
+export const PayrollPayslip = () => {
   return (
     <>
       <PayrollSubNav />
@@ -60,5 +60,3 @@ const Payslip = () => {
     </>
   );
 };
-
-export default Payslip;

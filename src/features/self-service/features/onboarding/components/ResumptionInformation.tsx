@@ -121,7 +121,7 @@ export const ResumptionInformation = ({
                 "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
                 "image/jpeg",
               ]}
-              key="documentUrl"
+              fileKey="documentUrl"
             />
             {onboarding?.resumptionInformation?.documentUrl && (
               <a

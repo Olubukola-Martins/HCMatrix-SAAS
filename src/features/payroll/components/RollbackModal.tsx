@@ -1,20 +1,20 @@
 import React from "react";
-import { Modal } from "@mui/material";
 import { ErrorMessage, Field, Form, Formik } from "formik";
-import Themes from "../../Themes/Themes";
-import * as Yup from "yup";
+import { IModalProps } from "types";
+import { Modal } from "antd";
+import Themes from "components/Themes";
 
-const RollbackModal = ({ open, handleClose }) => {
-  const onSubmit = (values) => {};
+const RollbackModal: React.FC<IModalProps> = ({ open, handleClose }) => {
+  const onSubmit = (values: any) => {};
 
   return (
-    <Modal open={open} onClose={handleClose}>
+    <Modal open={open} onCancel={() => handleClose()}>
       <Themes>
         <div className="CModal" style={{ maxWidth: 400 }}>
           <div className="flex items-center justify-between mb-7">
             <h5 className="font-semibold text-base">Payroll Roll back</h5>
             <i
-              onClick={handleClose}
+              onClick={() => handleClose}
               className="ri-close-line font-semibold text-xl cursor-pointer hover:text-neutral"
             ></i>
           </div>
@@ -24,9 +24,6 @@ const RollbackModal = ({ open, handleClose }) => {
               email: "",
               reason: "",
             }}
-            validationSchema={Yup.object({
-              reason: Yup.string().required("Field is required!"),
-            })}
             onSubmit={onSubmit}
           >
             <Form>
@@ -57,7 +54,7 @@ const RollbackModal = ({ open, handleClose }) => {
                 <button
                   type="button"
                   className="transparentButton"
-                  onClick={handleClose}
+                  onClick={() => handleClose()}
                 >
                   Cancel
                 </button>

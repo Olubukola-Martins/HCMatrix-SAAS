@@ -65,12 +65,7 @@ export const useFetchEmployees = ({
   const { token, companyId } = useApiAuth();
 
   const queryData = useQuery(
-    [
-      QUERY_KEY_FOR_LIST_OF_EMPLOYEES,
-      pagination?.limit,
-      status,
-      searchParams?.name,
-    ],
+    [QUERY_KEY_FOR_LIST_OF_EMPLOYEES, pagination, status, searchParams?.name],
     () =>
       getEmployees({
         companyId,

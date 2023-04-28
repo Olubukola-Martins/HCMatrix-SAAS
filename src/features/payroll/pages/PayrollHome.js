@@ -29,7 +29,7 @@ const labels = [
   "December",
 ];
 
-const Home = () => {
+const PayrollHome = () => {
   const chartData = [
     {
       name: "net income",
@@ -392,4 +392,4 @@ const Home = () => {
   );
 };
 
-export default Home;
+export default PayrollHome;

@@ -1,14 +1,15 @@
 import React from "react";
-import { Modal } from "@mui/material";
-import Themes from "../../Themes/Themes";
-import logo from "../../Layout/Images/logo2.png";
+import { Modal } from "antd";
+import logo from "../../../assets/images/logo2.png";
+import Themes from "components/Themes";
+import { IModalProps } from "types";
 
-const ViewPayslip = ({ open, handleClose }) => {
+const ViewPayslip: React.FC<IModalProps> = ({ open, handleClose }) => {
   const boxStyle =
     "bg-mainBg flex items-end justify-between rounded px-3 py-2 text-sm font-medium";
-    
+
   return (
-    <Modal open={open} onClose={handleClose}>
+    <Modal open={open} onCancel={() => handleClose()}>
       <Themes>
         <div
           className="CModal border scrollBar overflow-auto"
@@ -17,7 +18,7 @@ const ViewPayslip = ({ open, handleClose }) => {
           <div className="flex items-center justify-between">
             <img src={logo} alt="logo" className="h-8" />
             <i
-              onClick={handleClose}
+              onClick={() => handleClose()}
               className="ri-close-line font-semibold text-xl cursor-pointer hover:text-neutral"
             ></i>
           </div>

@@ -142,7 +142,7 @@ export const EditMyProfile = ({ open, handleClose, employee }: IProps) => {
               <div className="mt-4">
                 <FileUpload
                   allowedFileTypes={["image/png", "image/jpeg", "image/jpg"]}
-                  key={"avatarUrl"}
+                  fileKey={"avatarUrl"}
                 />
               </div>
               <Form.Item name="image" noStyle>

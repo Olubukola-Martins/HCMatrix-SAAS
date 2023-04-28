@@ -19,7 +19,7 @@ const PayrollReport = () => {
           <AddPayrollReport close={() => setOpenFullDialog(false)} />
         </>
       </Dialog>
-      <div>
+      <div className="Container">
         <div className="flex gap-2 text-accent">
           <Link to="#" className="hover:text-caramel">
             <i className="ri-arrow-left-s-line text-xl"></i>

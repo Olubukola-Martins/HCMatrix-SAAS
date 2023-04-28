@@ -1,9 +1,9 @@
 import React from "react";
 import { BeatLoader } from "react-spinners";
 
-export type TBtnVariant = "default" | "transparent";
+export type TBtnVariant = "default" | "transparent" | "style-with-class";
 
-interface IProps {
+export interface IAppBtnProps {
   isLoading?: boolean;
   label?: string;
   type?: "submit" | "reset" | "button";
@@ -13,7 +13,7 @@ interface IProps {
   variant?: TBtnVariant;
 }
 
-export const AppButton: React.FunctionComponent<IProps> = ({
+export const AppButton: React.FunctionComponent<IAppBtnProps> = ({
   disabled = false,
   isLoading = false,
   label = "submit",
@@ -22,10 +22,25 @@ export const AppButton: React.FunctionComponent<IProps> = ({
   handleClick,
   additionalClassNames = ["button"],
 }) => {
+  if (variant === "style-with-class") {
+    return (
+      <button
+        className={`${[...additionalClassNames]?.join(" ")} capitalize`}
+        type={type}
+        onClick={() => handleClick?.()}
+        disabled={disabled}
+        // style={{ color: "var(--neutral)" }}
+      >
+        {isLoading ? <BeatLoader color="#aaa" /> : label}
+      </button>
+    );
+  }
   if (variant === "transparent") {
     return (
       <button
-        className={`${["transparentButton"]?.join(" ")} capitalize`}
+        className={`${[...additionalClassNames, "transparentButton"]?.join(
+          " "
+        )} capitalize`}
         type={type}
         onClick={() => handleClick?.()}
         disabled={disabled}

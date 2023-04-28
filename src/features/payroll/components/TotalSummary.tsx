@@ -1,10 +1,11 @@
-import { Modal } from "@mui/material";
+import { Modal } from "antd";
+import Themes from "components/Themes";
 import React from "react";
-import Themes from "../../Themes/Themes";
+import { IModalProps } from "types";
 
-const ViewPayrollBreakdown = ({ open, handleClose }) => {
+const TotalSummary: React.FC<IModalProps> = ({ open, handleClose }) => {
   return (
-    <Modal open={open} onClose={handleClose}>
+    <Modal open={open} onCancel={() => handleClose()}>
       <Themes>
         <div
           className="CModal border scrollBar overflow-auto"
@@ -13,21 +14,12 @@ const ViewPayrollBreakdown = ({ open, handleClose }) => {
           <div className="flex items-center justify-between">
             <h5 className="font-semibold text-lg">Payroll breakdown</h5>
             <i
-              onClick={handleClose}
+              onClick={() => handleClose()}
               className="ri-close-line font-semibold text-xl cursor-pointer hover:text-neutral"
             ></i>
           </div>
 
           <div className="text-sm mt-5 font-medium">
-            <div className="bg-mainBg flex items-center justify-between px-5 py-2">
-              <span> Employee Name</span>
-              <span>Ruth Godwin</span>
-            </div>
-            <div className="bg-mainBg flex items-center justify-between px-5 py-2 mt-3">
-              <span> Employee ID</span>
-              <span>HC54321</span>
-            </div>
-
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-5 my-6">
               <div>
                 <table className="payroll-table view">
@@ -113,10 +105,6 @@ const ViewPayrollBreakdown = ({ open, handleClose }) => {
               <span> Total</span>
               <span>N0.00</span>
             </div>
-            <div className="bg-mainBg flex items-center justify-between px-5 py-2 mt-3">
-              <span>Account Number</span>
-              <span>xxxxxxxxxx</span>
-            </div>
 
             <div className="flex items-center justify-around mt-6">
               <button className="neutralButton">Roll back</button>
@@ -129,4 +117,4 @@ const ViewPayrollBreakdown = ({ open, handleClose }) => {
   );
 };
 
-export default ViewPayrollBreakdown;
+export default TotalSummary;

@@ -9,8 +9,7 @@ import {
   Select,
   Switch,
 } from "@mui/material";
-
-import Themes from "../../Themes/Themes";
+import Themes from "components/Themes";
 import PayrollSubNav from "./PayrollSubNav";
 
 const ITEM_HEIGHT = 48;
@@ -39,7 +38,7 @@ const reportFields = [
   "Marital Status",
 ];
 
-const AddPayrollReport = ({ close }) => {
+const AddPayrollReport: React.FC<any> = ({ close }) => {
   const reportInput =
     "bg-mainBg shadow-sm w-full text-sm font-medium placeholder:font-medium focus:outline-none placeholder:text-accent py-3 rounded px-3 my-2";
   const boxStyle = "px-4 py-3 shadow rounded-md bg-mainBg";
@@ -47,7 +46,7 @@ const AddPayrollReport = ({ close }) => {
 
   const [field, setField] = useState([]);
 
-  const handleChange = (event) => {
+  const handleChange = (event: any) => {
     const {
       target: { value },
     } = event;
@@ -85,7 +84,6 @@ const AddPayrollReport = ({ close }) => {
             <textarea
               name=""
               id=""
-              rows="2"
               className={`${reportInput} resize-x-none`}
               placeholder="Report Description "
             />
@@ -151,7 +149,7 @@ const AddPayrollReport = ({ close }) => {
                       key={reportField}
                       value={reportField}
                     >
-                      <Checkbox checked={field.indexOf(reportField) > -1} />
+                      <Checkbox />
                       <ListItemText primary={reportField} />
                     </MenuItem>
                   ))}
