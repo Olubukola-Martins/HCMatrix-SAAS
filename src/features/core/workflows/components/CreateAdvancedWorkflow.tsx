@@ -5,14 +5,16 @@ import { CreateBasicStage } from "./CreateBasicStage";
 import { useQueryClient } from "react-query";
 import { textInputValidationRules } from "utils/formHelpers/validation";
 import { openNotification } from "utils/notifications";
-import useCreateBasicWorkflow, {
-  TBasicWorkflowStage,
-} from "../hooks/useCreateBasicWorkflow";
+
 import { AppButton } from "components/button/AppButton";
 import { TStage } from "../types";
 import { OptionalTypeParams } from "types/optionalTypes";
+import useCreateAdvancedWorkflow, {
+  TAdvancedWorkflowStage,
+} from "../hooks/useCreateAdvancedWorkflow";
+import { CreateAdvancedStage } from "./CreateAdvancedStage";
 
-export const CreateBasicWorkflow = () => {
+export const CreateAdvancedWorkflow = () => {
   const queryClient = useQueryClient();
   const [stages, setStages] = useState<
     ({ editable: boolean } & OptionalTypeParams<TStage, "entityId" | "type">)[]
@@ -28,30 +30,40 @@ export const CreateBasicWorkflow = () => {
     });
   };
 
-  const { mutate, isLoading } = useCreateBasicWorkflow();
+  const { mutate, isLoading } = useCreateAdvancedWorkflow();
 
   const handleSubmit = (data: any) => {
-    const workflowStages: TBasicWorkflowStage[] = stages
-      .map(({ name, entityId, type }): TBasicWorkflowStage => {
-        if (!!entityId && !!type) {
+    const workflowStages: TAdvancedWorkflowStage[] = stages
+      .map(
+        ({
+          name,
+          entityId,
+          type,
+          condition,
+          count,
+        }): TAdvancedWorkflowStage => {
+          if (!!entityId && !!type) {
+            return {
+              entityId: entityId,
+              type,
+              name,
+              condition,
+              count,
+            };
+          }
           return {
-            entityId: entityId,
-            type,
+            entityId: 0,
+            type: "employee",
             name,
           };
         }
-        return {
-          entityId: 0,
-          type: "employee",
-          name,
-        };
-      })
+      )
       .filter((item) => item.entityId !== 0);
 
     mutate(
       {
         name: data.name,
-        basicStages: workflowStages,
+        advancedStages: workflowStages,
       },
       {
         onError: (err: any) => {
@@ -93,17 +105,17 @@ export const CreateBasicWorkflow = () => {
       >
         <Form.Item
           name="name"
-          label="Basic Workflow Name"
+          label="Advanced Workflow Name"
           rules={textInputValidationRules}
         >
           <Input placeholder="Workflow name" className="w-40" />
         </Form.Item>
       </Form>
       <div className="flex flex-col gap-3">
-        <Typography.Text>Basic Workflow Stages</Typography.Text>
+        <Typography.Text>Advanced Workflow Stages</Typography.Text>
         {stages.map((stage, id) => (
           <div className="flex gap-4" key={id}>
-            <CreateBasicStage
+            <CreateAdvancedStage
               stage={stage}
               removeStage={removeStage}
               enableEdit={(id) => {
@@ -128,6 +140,8 @@ export const CreateBasicWorkflow = () => {
                           type: data.type,
                           name: data.name,
                           entityId: data.entityId,
+                          condition: data.condition,
+                          count: data.count,
                           editable: false,
                         }
                       : stage

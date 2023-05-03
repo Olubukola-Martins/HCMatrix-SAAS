@@ -28,11 +28,11 @@ const editWorkflow = async (props: TEditProps & ICurrentCompany) => {
   const response = await axios.patch(url, data, config);
   return response;
 };
-export const useEditBasicWorkflow = () => {
+export const useUpdateSingleWorkflow = () => {
   const { token, companyId } = useApiAuth();
   return useMutation((props: TEditProps) =>
     editWorkflow({ ...props, token, companyId })
   );
 };
 
-export default useEditBasicWorkflow;
+export default useUpdateSingleWorkflow;

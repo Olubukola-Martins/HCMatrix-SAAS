@@ -9,7 +9,7 @@ type TDelProps = {
 };
 
 const deleteStage = async (props: TDelProps & ICurrentCompany) => {
-  const url = `${process.env.REACT_APP_UTILITY_BASE_URL}/workflow/${props.workflowId}/stage/basic/${props.id}`;
+  const url = `${process.env.REACT_APP_UTILITY_BASE_URL}/workflow/${props.workflowId}/stage/advanced/${props.id}`;
   const config = {
     headers: {
       Accept: "application/json",
@@ -21,11 +21,11 @@ const deleteStage = async (props: TDelProps & ICurrentCompany) => {
   const response = await axios.delete(url, config);
   return response;
 };
-export const useDeleteBasicStage = () => {
+export const useDeleteAdvancedStage = () => {
   const { token, companyId } = useApiAuth();
   return useMutation((props: TDelProps) =>
     deleteStage({ ...props, token, companyId })
   );
 };
 
-export default useDeleteBasicStage;
+export default useDeleteAdvancedStage;

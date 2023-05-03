@@ -12,8 +12,6 @@ export const CurrentVehicleAssignee: React.FC<{ vehicle: TVehicle }> = ({
 }) => {
   const queryClient = useQueryClient();
 
-  console.log("single veh", vehicle);
-
   const { mutate, isLoading } = useUpdateVehicleAssigneeReturnDate();
 
   const handleUnassignVehicle = () => {

@@ -14,19 +14,13 @@ import { openNotification } from "utils/notifications";
 import { TBasicWorkflowStage } from "../hooks/useCreateBasicWorkflow";
 import useDeleteBasicStage from "../hooks/useDeleteBasicStage";
 import useEditBasicStage from "../hooks/useEditBasicStage";
-import { TSingleBasicWorkflowStage } from "../hooks/useFetchSingleBasicWorkflow";
+import { TStage, TStagingType } from "../types";
+import { WORKFLOW_STAGE_TYPE_OPTIONS } from "../constants";
+import { QUERY_KEY_FOR_SINGLE_WORKFLOW } from "../hooks/useFetchSingleWorkflow";
 
-export type TStagingType = "employee" | "role" | "group" | "department-head";
-export type TStage = {
-  id: number;
-  name: string;
-  type?: TStagingType;
-  concernedId?: number;
-};
-
-export const EditStage: React.FC<{
+export const EditBasicStage: React.FC<{
   workflowId: number;
-  stage: TSingleBasicWorkflowStage;
+  stage: TStage;
 }> = ({ stage, workflowId }) => {
   const queryClient = useQueryClient();
 
@@ -34,34 +28,23 @@ export const EditStage: React.FC<{
   const [stagingType, setStagingType] = useState<TStagingType>();
   const [edit, setEdit] = useState(false);
 
-  const determineStageType = (stage: TBasicWorkflowStage): TStagingType => {
-    let ans: TStagingType = "employee";
-    if (typeof stage["roleId"] === "number") ans = "role";
-    if (typeof stage["employeeId"] === "number") ans = "employee";
-    if (typeof stage["groupId"] === "number") ans = "group";
-    if (typeof stage["departmentHeadId"] === "number") ans = "department-head";
-    return ans;
-  };
   useEffect(() => {
     form.setFieldsValue({
       name: stage.name,
-      type: determineStageType(stage),
-      employeeId: stage.employeeId,
-      roleId: stage.roleId,
-      groupId: stage.groupId,
+      type: stage.type,
+      entityId: stage.entityId,
     });
-    setStagingType(determineStageType(stage));
+    setStagingType(stage.type);
   }, [form, stage]);
   const { mutate, isLoading } = useEditBasicStage();
 
   const handleFinish = (data: any) => {
-    const workflowStage: TBasicWorkflowStage = { name: data.name };
-    if (stagingType === "role") workflowStage["roleId"] = data.roleId;
-    if (stagingType === "employee")
-      workflowStage["employeeId"] = data.employeeId;
-    if (stagingType === "group") workflowStage["groupId"] = data.groupId;
-    // if (stagingType === "department-head")
-    //   workflowStage["departmentHeadId"] = data.departmentHeadId;
+    const workflowStage: TBasicWorkflowStage = {
+      name: data.name,
+      type: data.type,
+      entityId: data.entityId,
+    };
+
     mutate(
       {
         workflowId,
@@ -87,7 +70,8 @@ export const EditStage: React.FC<{
           });
           setEdit(false);
           queryClient.invalidateQueries({
-            queryKey: ["basic-workflow", workflowId],
+            queryKey: [QUERY_KEY_FOR_SINGLE_WORKFLOW, workflowId],
+
             // exact: true,
           });
         },
@@ -122,7 +106,8 @@ export const EditStage: React.FC<{
           });
 
           queryClient.invalidateQueries({
-            queryKey: ["basic-workflow", workflowId],
+            queryKey: [QUERY_KEY_FOR_SINGLE_WORKFLOW, workflowId],
+
             // exact: true,
           });
         },
@@ -153,15 +138,7 @@ export const EditStage: React.FC<{
           >
             <Select
               placeholder="Staging Type"
-              options={[
-                { label: "employee", value: "employee" },
-                { label: "role", value: "role" },
-                { label: "group", value: "group" },
-                {
-                  label: "Department Head",
-                  value: "department-head",
-                },
-              ]}
+              options={WORKFLOW_STAGE_TYPE_OPTIONS}
               onSelect={(val: TStagingType) => {
                 setStagingType(val);
               }}
@@ -170,19 +147,19 @@ export const EditStage: React.FC<{
           {stagingType === "employee" && (
             <FormEmployeeInput
               Form={Form}
-              control={{ label: "Employee", name: "employeeId" }}
+              control={{ label: "Employee", name: "entityId" }}
             />
           )}
           {stagingType === "role" && (
             <FormRoleInput
               Form={Form}
-              control={{ label: "Role", name: "roleId" }}
+              control={{ label: "Role", name: "entityId" }}
             />
           )}
           {stagingType === "group" && (
             <FormGroupInput
               Form={Form}
-              control={{ label: "Group", name: "groupId" }}
+              control={{ label: "Group", name: "entityId" }}
             />
           )}
         </div>

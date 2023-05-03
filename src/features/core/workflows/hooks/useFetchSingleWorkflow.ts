@@ -2,19 +2,18 @@ import axios from "axios";
 import { useApiAuth } from "hooks/useApiAuth";
 import { useQuery } from "react-query";
 import { ICurrentCompany } from "types";
-import { TBasicWorkflowStage, TBasicWorkflow } from "./useCreateBasicWorkflow";
+import { TSingleWorkflow } from "../types";
+
+export const QUERY_KEY_FOR_SINGLE_WORKFLOW = "single-workflow";
 
 // TO DO : need to exist in the general data entities and refactored
 interface IGetDataProps {
-  id: number;
+  id?: number;
 }
-export type TSingleBasicWorkflowStage = TBasicWorkflowStage & { id: number };
-type TSingleBasicWorkflow = Omit<TBasicWorkflow, "stages"> & {
-  stages: TSingleBasicWorkflowStage[];
-};
-const getSingleBasicWorkflow = async (
+
+const getSingleWorkflow = async (
   props: IGetDataProps & ICurrentCompany
-): Promise<TSingleBasicWorkflow> => {
+): Promise<TSingleWorkflow> => {
   const url = `${process.env.REACT_APP_UTILITY_BASE_URL}/workflow/${props.id}`;
 
   const config = {
@@ -26,33 +25,18 @@ const getSingleBasicWorkflow = async (
   };
 
   const res = await axios.get(url, config);
-  const item = res.data.data;
+  const item: TSingleWorkflow = res.data.data;
 
-  const stages = item?.stages?.map(
-    (item: any): TSingleBasicWorkflowStage => ({
-      name: item.name,
-      id: item.id,
-      employeeId: item.employeeId,
-      roleId: item.roleId,
-      groupId: item.groupId,
-    })
-  );
-
-  const data: TSingleBasicWorkflow = {
-    id: item.id,
-    name: item.name,
-    stages,
-  };
-  return data;
+  return item;
 };
 
-export const useFetchSingleBasicWorkflow = (props: IGetDataProps) => {
+export const useFetchSingleWorkflow = (props: IGetDataProps) => {
   const { token, companyId } = useApiAuth();
 
   const queryData = useQuery(
-    ["basic-workflow", props.id],
+    [QUERY_KEY_FOR_SINGLE_WORKFLOW, props.id],
     () =>
-      getSingleBasicWorkflow({
+      getSingleWorkflow({
         ...props,
         token,
         companyId,

@@ -5,20 +5,22 @@ import { TRole } from "features/core/roles-and-permissions/types";
 import { useApiAuth } from "hooks/useApiAuth";
 import { useMutation } from "react-query";
 import { ICurrentCompany } from "types";
-import { TStagingType } from "../types";
+import { TStageCondition, TStagingType } from "../types";
 
-export type TBasicWorkflowStage = {
+export type TAdvancedWorkflowStage = {
   id?: number;
   name: string;
   type: TStagingType;
   entityId: number;
+  condition?: TStageCondition;
+  count?: number;
 };
 type TCreateProps = {
   name: string;
-  basicStages: TBasicWorkflowStage[];
+  advancedStages: TAdvancedWorkflowStage[];
 };
 
-export type TBasicWorkflow = {
+export type TAdvancedWorkflow = {
   id: number;
   role?: TRole;
   group?: TGroup;
@@ -26,7 +28,7 @@ export type TBasicWorkflow = {
 } & TCreateProps;
 
 const createWorkflow = async (data: TCreateProps, auth: ICurrentCompany) => {
-  const url = `${process.env.REACT_APP_UTILITY_BASE_URL}/workflow/basic`;
+  const url = `${process.env.REACT_APP_UTILITY_BASE_URL}/workflow/advanced`;
   const config = {
     headers: {
       Accept: "application/json",
@@ -38,11 +40,11 @@ const createWorkflow = async (data: TCreateProps, auth: ICurrentCompany) => {
   const response = await axios.post(url, data, config);
   return response;
 };
-export const useCreateBasicWorkflow = () => {
+export const useCreateAdvancedWorkflow = () => {
   const { token, companyId } = useApiAuth();
   return useMutation((props: TCreateProps) =>
     createWorkflow({ ...props }, { companyId, token })
   );
 };
 
-export default useCreateBasicWorkflow;
+export default useCreateAdvancedWorkflow;

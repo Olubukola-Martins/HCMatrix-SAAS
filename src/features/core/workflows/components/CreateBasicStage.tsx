@@ -3,30 +3,41 @@ import { Form, Input, Select, Button } from "antd";
 import { useEffect, useState } from "react";
 import { EditOutlined, DeleteOutlined, SaveOutlined } from "@ant-design/icons";
 import { FormEmployeeInput } from "features/core/employees/components/FormEmployeeInput";
+import { FormGroupInput } from "features/core/groups/components/FormGroupInput";
 import { FormRoleInput } from "features/core/roles-and-permissions/components/FormRoleInput";
 import {
   textInputValidationRules,
   generalValidationRules,
 } from "utils/formHelpers/validation";
-import { FormGroupInput } from "features/core/groups/components/FormGroupInput";
-import { TStagingType } from "../types";
+import { TStage, TStagingType } from "../types";
+import { OptionalTypeParams } from "types/optionalTypes";
 import { WORKFLOW_STAGE_TYPE_OPTIONS } from "../constants";
 
-export const AddBasicStage: React.FC<{
-  editable: boolean;
+export const CreateBasicStage: React.FC<{
+  stage: OptionalTypeParams<TStage, "entityId" | "type"> & {
+    editable: boolean;
+  };
   handleFinish: (data: any) => void;
-  enableEdit: () => void;
-  removeStage: () => void;
-}> = ({ editable, handleFinish, enableEdit, removeStage }) => {
+  enableEdit: (id: number) => void;
+  removeStage: (id: number) => void;
+}> = ({ stage, handleFinish, enableEdit, removeStage }) => {
   const [form] = Form.useForm();
   const [stagingType, setStagingType] = useState<TStagingType>();
-
+  useEffect(() => {
+    if (stage) {
+      form.setFieldsValue({
+        name: stage.name,
+        type: stage.type,
+        entityId: stage.entityId,
+      });
+    }
+  }, [form, stage]);
   return (
     <div className="flex gap-4 items-end">
       <Form
         form={form}
         onFinish={handleFinish}
-        disabled={!editable}
+        disabled={!stage.editable}
         labelCol={{ span: 24 }}
         requiredMark={false}
       >
@@ -72,8 +83,8 @@ export const AddBasicStage: React.FC<{
         </div>
       </Form>
       <div className="flex gap-4 mb-6">
-        {!editable ? (
-          <Button icon={<EditOutlined />} onClick={() => enableEdit()}>
+        {!stage.editable ? (
+          <Button icon={<EditOutlined />} onClick={() => enableEdit(stage.id)}>
             Edit
           </Button>
         ) : (
@@ -85,7 +96,7 @@ export const AddBasicStage: React.FC<{
             Save
           </Button>
         )}
-        <Button icon={<DeleteOutlined />} onClick={() => removeStage()}>
+        <Button icon={<DeleteOutlined />} onClick={() => removeStage(stage.id)}>
           Delete
         </Button>
       </div>

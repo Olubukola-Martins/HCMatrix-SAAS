@@ -1,17 +1,17 @@
 import { useMutation } from "react-query";
-import { TBasicWorkflowStage } from "./useCreateBasicWorkflow";
 import axios from "axios";
 import { useApiAuth } from "hooks/useApiAuth";
 import { ICurrentCompany } from "types";
+import { TAdvancedWorkflowStage } from "./useCreateAdvancedWorkflow";
 
 type TEditProps = {
   workflowId: number;
   id: number;
-  stage: TBasicWorkflowStage;
+  stage: TAdvancedWorkflowStage;
 };
 
 const editStage = async (data: TEditProps, auth: ICurrentCompany) => {
-  const url = `${process.env.REACT_APP_UTILITY_BASE_URL}/workflow/${data.workflowId}/stage/basic/${data.id}`;
+  const url = `${process.env.REACT_APP_UTILITY_BASE_URL}/workflow/${data.workflowId}/stage/advanced/${data.id}`;
   const config = {
     headers: {
       Accept: "application/json",
@@ -20,14 +20,14 @@ const editStage = async (data: TEditProps, auth: ICurrentCompany) => {
     },
   };
 
-  const response = await axios.put(url, {...data.stage}, config);
+  const response = await axios.put(url, { ...data.stage }, config);
   return response;
 };
-export const useEditBasicStage = () => {
+export const useEditAdvancedStage = () => {
   const { token, companyId } = useApiAuth();
   return useMutation((props: TEditProps) =>
     editStage({ ...props }, { token, companyId })
   );
 };
 
-export default useEditBasicStage;
+export default useEditAdvancedStage;

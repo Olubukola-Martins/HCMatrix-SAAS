@@ -10,11 +10,16 @@ import { AddBasicStage } from "./AddBasicStage";
 import { textInputValidationRules } from "utils/formHelpers/validation";
 import { openNotification } from "utils/notifications";
 import useAddStageToBasicWorkflow from "../hooks/useAddStageToBasicWorkflow";
+import useEditBasicWorkflow, {
+  useUpdateSingleWorkflow,
+} from "../hooks/useUpdateSingleWorkflow";
 import { QUERY_KEY_FOR_SINGLE_WORKFLOW } from "../hooks/useFetchSingleWorkflow";
 import { TSingleWorkflow, TStage } from "../types";
-import useUpdateSingleWorkflow from "../hooks/useUpdateSingleWorkflow";
+import { EditAdvancedStage } from "./EditAdvancedStage";
+import useAddStageToAdvancedWorkflow from "../hooks/useAddStageToAdvancedWorkflow";
+import { AddAdvancedStage } from "./AddAdvancedStage";
 
-export const EditBasicWorkflow: React.FC<{ data: TSingleWorkflow }> = ({
+export const EditAdvancedWorkflow: React.FC<{ data: TSingleWorkflow }> = ({
   data,
 }) => {
   const queryClient = useQueryClient();
@@ -28,8 +33,10 @@ export const EditBasicWorkflow: React.FC<{ data: TSingleWorkflow }> = ({
     }
   }, [data, form]);
 
-  const { mutate: stageMutate } = useAddStageToBasicWorkflow();
-  const addStage = (stage: Pick<TStage, "name" | "entityId" | "type">) => {
+  const { mutate: stageMutate } = useAddStageToAdvancedWorkflow();
+  const addStage = (
+    stage: Pick<TStage, "name" | "entityId" | "type" | "condition" | "count">
+  ) => {
     stageMutate(
       {
         id: data.id,
@@ -110,7 +117,7 @@ export const EditBasicWorkflow: React.FC<{ data: TSingleWorkflow }> = ({
           <div className="flex gap-4">
             <Form.Item
               name="name"
-              label={<span className="font-bold">Basic Workflow Name</span>}
+              label={<span className="font-bold">Advanced Workflow Name</span>}
               rules={textInputValidationRules}
             >
               <Input
@@ -143,14 +150,14 @@ export const EditBasicWorkflow: React.FC<{ data: TSingleWorkflow }> = ({
         </Form>
 
         <div className="flex flex-col gap-3">
-          <span className="font-bold">Basic Workflow Stages</span>
+          <span className="font-bold">Advanced Workflow Stages</span>
           {data?.stages.map((stage) => (
             <div className="flex gap-4" key={stage.id}>
-              <EditBasicStage stage={stage} workflowId={data.id} />
+              <EditAdvancedStage stage={stage} workflowId={data.id} />
             </div>
           ))}
           {showCreate && (
-            <AddBasicStage
+            <AddAdvancedStage
               editable={showCreate}
               removeStage={() => setShowCreate(false)}
               enableEdit={() => setShowCreate(true)}
@@ -159,6 +166,8 @@ export const EditBasicWorkflow: React.FC<{ data: TSingleWorkflow }> = ({
                   name: data.name,
                   entityId: data.entityId,
                   type: data.type,
+                  condition: data.condition,
+                  count: data.count,
                 });
               }}
             />
