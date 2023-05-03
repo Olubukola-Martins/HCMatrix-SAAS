@@ -72,7 +72,7 @@ export const AddRepair: React.FC<IProps> = ({
       open={open}
       onCancel={() => handleClose()}
       footer={null}
-      title={"Add Maintenance"}
+      title={"Add Repair"}
     >
       <Form
         layout="vertical"
