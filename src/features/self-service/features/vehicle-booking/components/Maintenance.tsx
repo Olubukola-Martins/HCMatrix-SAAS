@@ -18,7 +18,11 @@ const Maintenance: React.FC<{ vehicle: TVehicle }> = ({ vehicle }) => {
           <div className="my-5 flex justify-end gap-3">
             <i className="ri-download-2-line text-lg"></i>
           </div>
-          <AppButton label="Add New Maintenance" variant="transparent" />
+          <AppButton
+            label="Add New Maintenance"
+            variant="transparent"
+            handleClick={() => setShowM(true)}
+          />
         </div>
         <VehicleMaintenanceList vehicle={vehicle} />
       </div>

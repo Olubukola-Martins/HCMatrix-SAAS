@@ -72,7 +72,7 @@ export const AddVehicleDocument: React.FC<IProps> = ({
       open={open}
       onCancel={() => handleClose()}
       footer={null}
-      title={"Add Maintenance"}
+      title={"Add Document"}
     >
       <Form
         layout="vertical"
