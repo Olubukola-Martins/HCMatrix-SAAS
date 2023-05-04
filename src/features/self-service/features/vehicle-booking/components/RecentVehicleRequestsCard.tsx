@@ -6,7 +6,7 @@ import { useApiAuth } from "hooks/useApiAuth";
 export const requestStyle =
   "flex items-center justify-between cursor-pointer group border-b pb-2";
 
-export const LIMIT_OF_ITEMS_TO_DISPLAY = 4;
+export const LIMIT_OF_ITEMS_TO_DISPLAY = 3;
 
 export const RecentVehicleRequestsCard = () => {
   const { token, companyId } = useApiAuth();

@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { TablePaginationConfig } from "antd/es/table";
-import { DEFAULT_PAGE_SIZE } from "constants/general";
+
+const DEFAULT_PAGE_SIZE = 4;
 
 export const usePagination = ({
   pageSize = DEFAULT_PAGE_SIZE,

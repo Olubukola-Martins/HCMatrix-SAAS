@@ -1,7 +1,7 @@
 import { Button, Form, Input, Typography } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
 import { useState } from "react";
-import { CreateStage, TStage, TStagingType } from "./CreateStage";
+import { CreateBasicStage } from "./CreateBasicStage";
 import { useQueryClient } from "react-query";
 import { textInputValidationRules } from "utils/formHelpers/validation";
 import { openNotification } from "utils/notifications";
@@ -9,11 +9,14 @@ import useCreateBasicWorkflow, {
   TBasicWorkflowStage,
 } from "../hooks/useCreateBasicWorkflow";
 import { AppButton } from "components/button/AppButton";
+import { TStage } from "../types";
+import { OptionalTypeParams } from "types/optionalTypes";
 
 export const CreateBasicWorkflow = () => {
   const queryClient = useQueryClient();
-
-  const [stages, setStages] = useState<({ editable: boolean } & TStage)[]>([]);
+  const [stages, setStages] = useState<
+    ({ editable: boolean } & OptionalTypeParams<TStage, "entityId" | "type">)[]
+  >([]);
   const [form] = Form.useForm();
   const addStage = (id: number) => {
     setStages((prev) => [...prev, { id, name: "", editable: true }]);
@@ -28,22 +31,27 @@ export const CreateBasicWorkflow = () => {
   const { mutate, isLoading } = useCreateBasicWorkflow();
 
   const handleSubmit = (data: any) => {
-    const workflowStages: TBasicWorkflowStage[] = stages.map(
-      ({ name, type, concernedId }): TBasicWorkflowStage => {
-        const workflowStage: TBasicWorkflowStage = { name };
-        if (type === "role") workflowStage["roleId"] = concernedId;
-        if (type === "employee") workflowStage["employeeId"] = concernedId;
-        if (type === "group") workflowStage["groupId"] = concernedId;
-        if (type === "department-head")
-          workflowStage["departmentHeadId"] = concernedId;
-        return workflowStage;
-      }
-    );
+    const workflowStages: TBasicWorkflowStage[] = stages
+      .map(({ name, entityId, type }): TBasicWorkflowStage => {
+        if (!!entityId && !!type) {
+          return {
+            entityId: entityId,
+            type,
+            name,
+          };
+        }
+        return {
+          entityId: 0,
+          type: "employee",
+          name,
+        };
+      })
+      .filter((item) => item.entityId !== 0);
 
     mutate(
       {
         name: data.name,
-        stages: workflowStages,
+        basicStages: workflowStages,
       },
       {
         onError: (err: any) => {
@@ -74,36 +82,7 @@ export const CreateBasicWorkflow = () => {
       }
     );
   };
-  type TStagingTypeKey =
-    | "employeeId"
-    | "groupId"
-    | "roleId"
-    | "departmentHeadId";
-  const transalateConcernedIdKey = (val: TStagingType): TStagingTypeKey => {
-    let key: TStagingTypeKey = "employeeId";
-    switch (val) {
-      case "employee":
-        key = "employeeId";
 
-        break;
-      case "group":
-        key = "groupId";
-
-        break;
-      case "role":
-        key = "roleId";
-
-        break;
-      case "department-head":
-        key = "departmentHeadId";
-
-        break;
-
-      default:
-        break;
-    }
-    return key;
-  };
   return (
     <div className="flex flex-col gap-4">
       <Form
@@ -114,17 +93,17 @@ export const CreateBasicWorkflow = () => {
       >
         <Form.Item
           name="name"
-          label="Workflow Name"
+          label="Basic Workflow Name"
           rules={textInputValidationRules}
         >
           <Input placeholder="Workflow name" className="w-40" />
         </Form.Item>
       </Form>
       <div className="flex flex-col gap-3">
-        <Typography.Text>Workflow Stages</Typography.Text>
+        <Typography.Text>Basic Workflow Stages</Typography.Text>
         {stages.map((stage, id) => (
           <div className="flex gap-4" key={id}>
-            <CreateStage
+            <CreateBasicStage
               stage={stage}
               removeStage={removeStage}
               enableEdit={(id) => {
@@ -148,8 +127,7 @@ export const CreateBasicWorkflow = () => {
                           ...stage,
                           type: data.type,
                           name: data.name,
-                          concernedId:
-                            data[transalateConcernedIdKey(data.type)],
+                          entityId: data.entityId,
                           editable: false,
                         }
                       : stage

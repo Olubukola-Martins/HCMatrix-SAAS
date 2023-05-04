@@ -62,7 +62,7 @@ interface IGetDataProps extends ICurrentCompany {
   searchParams?: ISearchParams;
 }
 
-const QUERY_KEY_FOR_VEHICLE_BOOKINGS = "vehicle-bookings";
+export const QUERY_KEY_FOR_VEHICLE_BOOKINGS = "vehicle-bookings";
 
 const getVehicleBookings = async (
   props: IGetDataProps

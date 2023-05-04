@@ -1,11 +1,12 @@
+import Home from "features/home/pages/Home";
 import { appRoutes } from "../paths";
 import { TRouteData } from "../types";
 
 export const homeRoutes: TRouteData[] = [
   {
-    element: <div />,
+    element: <Home />,
     path: appRoutes.home,
-    isSearchable: false,
+    isSearchable: true,
     title: "Home",
   },
   {

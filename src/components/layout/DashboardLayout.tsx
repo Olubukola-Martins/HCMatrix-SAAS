@@ -10,13 +10,13 @@ const DashboardLayout = () => {
   const isAuthenticated = useIsAuthenticated();
   const navigate = useNavigate();
 
-  // useEffect(() => {
-  //   if (isAuthenticated()) {
-  //     // Redirect to Dashboard
-  //   } else {
-  //     navigate("/login", { replace: true });
-  //   }
-  // }, [isAuthenticated, navigate]);
+  useEffect(() => {
+    if (isAuthenticated() || localStorage.getItem("hcmatrix_app")) {
+      // Redirect to Dashboard
+    } else {
+      navigate("/login", { replace: true });
+    }
+  }, [isAuthenticated, navigate]);
   const [theme, setTheme] = useLocalStorage("theme" ? "dark" : "light", "");
   const [colorTheme, setColorThem] = useLocalStorage("", "");
   const [sidebarToggle, setSidebarToggle] = useState(true);

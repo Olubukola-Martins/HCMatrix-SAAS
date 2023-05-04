@@ -1,16 +1,33 @@
 import Branches from "features/core/branches/pages/Branches";
 import { appRoutes } from "../paths";
 import { TRouteData } from "../types";
+import GeneralCompanySettings from "features/settings/pages/GeneralCompanySettings";
+import CompanyDetails from "features/core/company/pages/CompanyDetails";
+import { Holidays } from "features/home/components/Holidays";
+import { MyProfile } from "features/core/employees/pages/MyProfile";
+import { EmployeeProfile } from "features/core/employees/pages/EmployeeProfile";
+import { AddEmployee } from "features/core/employees/pages/AddEmployee";
+import Employees from "features/core/employees/pages/Employees";
+import Designations from "features/core/designations/pages/Designations";
+import Groups from "features/core/groups/pages/Groups";
+import Departments from "features/core/departments/pages/Departments";
+import Delegations from "features/core/delegations/pages/Delegations";
+import Roles from "features/core/roles-and-permissions/pages/Roles";
+import CreateRole from "features/core/roles-and-permissions/pages/CreateRole";
+import { EditRole } from "features/core/roles-and-permissions/pages/EditRole";
+import Workflows from "features/core/workflows/pages/Workflows";
+import CreateWorklow from "features/core/workflows/pages/CreateWorkflow";
+import EditWorkflow from "features/core/workflows/pages/EditWorkflow";
 
 export const settingRoutes: TRouteData[] = [
   {
-    element: <div />,
+    element: <GeneralCompanySettings />,
     path: appRoutes.settings,
     isSearchable: true,
     title: "Settings",
   },
   {
-    element: <div />,
+    element: <CompanyDetails />,
     path: appRoutes.companyDetailsSettings,
     isSearchable: true,
     title: "Company Details",
@@ -27,36 +44,36 @@ export const settingRoutes: TRouteData[] = [
     isSearchable: false,
   },
   {
-    element: <div />,
+    element: <Holidays />,
     path: appRoutes.holidaySettings,
     isSearchable: true,
     title: "Holidays",
   },
   {
-    element: <div />,
+    element: <MyProfile />,
     path: appRoutes.userProfileSettings,
     isSearchable: true,
     title: "User Profile",
   },
   {
-    element: <div />,
+    element: <EmployeeProfile />,
     path: appRoutes.singleEmployee().format,
     isSearchable: false,
   },
   {
-    element: <div />,
+    element: <AddEmployee />,
     path: appRoutes.addEmployee,
     isSearchable: true,
     title: "Add Employee",
   },
   {
-    element: <div />,
+    element: <Employees />,
     path: appRoutes.employeeSettings,
     isSearchable: true,
     title: "Employees",
   },
   {
-    element: <div />,
+    element: <Designations />,
     path: appRoutes.designationSettings,
     isSearchable: true,
     title: "Designations",
@@ -67,10 +84,15 @@ export const settingRoutes: TRouteData[] = [
     isSearchable: false,
   },
   {
-    element: <div />,
+    element: <Groups />,
     path: appRoutes.groupSettings,
     isSearchable: true,
     title: "Groups",
+  },
+  {
+    element: <Departments />,
+    path: appRoutes.departmentSettings,
+    isSearchable: false,
   },
   {
     element: <div />,
@@ -78,47 +100,47 @@ export const settingRoutes: TRouteData[] = [
     isSearchable: false,
   },
   {
-    element: <div />,
+    element: <Delegations />,
     path: appRoutes.delegationSettings,
     isSearchable: true,
     title: "Delegations",
   },
   {
-    element: <div />,
+    element: <Roles />,
     path: appRoutes.roleSettings,
     isSearchable: true,
     title: "Roles",
   },
   {
-    element: <div />,
+    element: <CreateRole />,
     path: appRoutes.createRole,
     isSearchable: true,
     title: "Create Role",
   },
   {
-    element: <div />,
+    element: <EditRole />,
     path: appRoutes.editRole().format,
     isSearchable: false,
   },
   {
-    element: <div />,
+    element: <Workflows />,
     path: appRoutes.workflowSettings,
     isSearchable: true,
     title: "Workflows",
   },
   {
-    element: <div />,
+    element: <CreateWorklow />,
     path: appRoutes.createWorkflow,
     isSearchable: true,
     title: "Create Workflow",
   },
   {
-    element: <div />,
+    element: <EditWorkflow />,
     path: appRoutes.editWorkflow().format,
     isSearchable: false,
   },
   {
-    element: <div />,
+    element: <div>Resignation policy </div>,
     path: appRoutes.resignationPolicySettings,
     isSearchable: true,
     title: "Resignation Policy",

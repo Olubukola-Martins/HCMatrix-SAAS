@@ -20,7 +20,11 @@ export const RequiredDocuments: React.FC<{ vehicle: TVehicle }> = ({
           <div className="my-5 flex justify-end gap-3">
             <i className="ri-download-2-line text-lg"></i>
           </div>
-          <AppButton label="Add New Repair" variant="transparent" />
+          <AppButton
+            label="Add Document"
+            variant="transparent"
+            handleClick={() => setShowM(true)}
+          />
         </div>
         <VehicleDocumentList vehicle={vehicle} />
       </div>

@@ -71,7 +71,11 @@ const VehicleList = () => {
       title: "Assigned to",
       dataIndex: "Assigned to",
       key: "Assigned to",
-      render: (_, item) => item.assigneeId,
+      render: (_, item) => (
+        <span className="capitalize">
+          {item.assignee?.firstName} {item.assignee?.lastName} N/A
+        </span>
+      ),
     },
     {
       title: "Action",
@@ -120,7 +124,7 @@ const VehicleList = () => {
         size="small"
         dataSource={data?.data}
         loading={isFetching}
-        pagination={{ pageSize: pagination.limit, total: data?.total }}
+        pagination={{ ...pagination, total: data?.total }}
         onChange={onChange}
       />
     </div>

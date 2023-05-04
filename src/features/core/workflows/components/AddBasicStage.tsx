@@ -9,14 +9,8 @@ import {
   generalValidationRules,
 } from "utils/formHelpers/validation";
 import { FormGroupInput } from "features/core/groups/components/FormGroupInput";
-
-export type TStagingType = "employee" | "role" | "group" | "department-head";
-export type TStage = {
-  id: number;
-  name: string;
-  type?: TStagingType;
-  concernedId?: number;
-};
+import { TStagingType } from "../types";
+import { WORKFLOW_STAGE_TYPE_OPTIONS } from "../constants";
 
 export const AddBasicStage: React.FC<{
   editable: boolean;
@@ -51,15 +45,7 @@ export const AddBasicStage: React.FC<{
           >
             <Select
               placeholder="Staging Type"
-              options={[
-                { label: "employee", value: "employee" },
-                { label: "role", value: "role" },
-                { label: "group", value: "group" },
-                {
-                  label: "Department Head",
-                  value: "department-head",
-                },
-              ]}
+              options={WORKFLOW_STAGE_TYPE_OPTIONS}
               onSelect={(val: TStagingType) => {
                 setStagingType(val);
               }}
@@ -68,19 +54,19 @@ export const AddBasicStage: React.FC<{
           {stagingType === "employee" && (
             <FormEmployeeInput
               Form={Form}
-              control={{ label: "Employee", name: "concernedId" }}
+              control={{ label: "Employee", name: "entityId" }}
             />
           )}
           {stagingType === "role" && (
             <FormRoleInput
               Form={Form}
-              control={{ label: "Role", name: "concernedId" }}
+              control={{ label: "Role", name: "entityId" }}
             />
           )}
           {stagingType === "group" && (
             <FormGroupInput
               Form={Form}
-              control={{ label: "Group", name: "concernedId" }}
+              control={{ label: "Group", name: "entityId" }}
             />
           )}
         </div>

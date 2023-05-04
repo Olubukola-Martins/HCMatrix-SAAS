@@ -11,6 +11,8 @@ import {
 } from "utils/formHelpers/validation";
 import { openNotification } from "utils/notifications";
 import { AppButton } from "components/button/AppButton";
+import { useCurrentFileUploadUrl } from "hooks/useCurrentFileUploadUrl";
+import { FileUpload } from "components/FileUpload";
 
 interface IProps extends IModalProps {
   vehicleId: number;
@@ -24,6 +26,7 @@ export const AddRepair: React.FC<IProps> = ({
   const queryClient = useQueryClient();
   const [form] = Form.useForm();
   const { mutate, isLoading } = useCreateVehicleRepair();
+  const documentUrl = useCurrentFileUploadUrl("documentUrl");
 
   const handleSubmit = (data: any) => {
     mutate(
@@ -34,7 +37,7 @@ export const AddRepair: React.FC<IProps> = ({
           nextDueDate: data.nextDueDate,
           reminderDays: data.reminderDays,
           cost: data.cost,
-          // documentUrls: data.documentUrls,
+          documentUrls: !!documentUrl ? [documentUrl] : [],
         },
         vehicleId,
       },
@@ -72,7 +75,8 @@ export const AddRepair: React.FC<IProps> = ({
       open={open}
       onCancel={() => handleClose()}
       footer={null}
-      title={"Add Maintenance"}
+      title={"Add Repair"}
+      style={{ top: 20 }}
     >
       <Form
         layout="vertical"
@@ -81,19 +85,32 @@ export const AddRepair: React.FC<IProps> = ({
         onFinish={handleSubmit}
       >
         <Form.Item name="description" rules={textInputValidationRules}>
-          <Input placeholder="Description" />
+          <Input.TextArea placeholder="Description" />
         </Form.Item>
         <Form.Item name="serviceDate" rules={generalValidationRules}>
-          <DatePicker placeholder="Service Date" />
+          <DatePicker placeholder="Service Date" className="w-full" />
         </Form.Item>
         <Form.Item name="nextDueDate" rules={generalValidationRules}>
-          <DatePicker placeholder="Next Due Date" />
+          <DatePicker placeholder="Next Due Date" className="w-full" />
         </Form.Item>
         <Form.Item name="reminderDays" rules={generalValidationRules}>
-          <InputNumber placeholder="Reminder Days" />
+          <InputNumber placeholder="Reminder Days" className="w-full" />
         </Form.Item>
         <Form.Item name="cost" rules={generalValidationRules}>
-          <InputNumber placeholder="Cost" />
+          <InputNumber placeholder="Cost" className="w-full" />
+        </Form.Item>
+
+        <Form.Item label="Documents">
+          <FileUpload
+            allowedFileTypes={[
+              "image/jpeg",
+              "image/png",
+              "image/jpg",
+              "application/pdf",
+            ]}
+            fileKey="documentUrl"
+            textToDisplay="Upload Related Documents"
+          />
         </Form.Item>
 
         <AppButton isLoading={isLoading} type="submit" />

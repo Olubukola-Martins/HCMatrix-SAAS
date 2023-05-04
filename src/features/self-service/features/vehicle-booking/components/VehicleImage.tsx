@@ -1,5 +1,5 @@
 import React from "react";
-import placeholder from "../../../Assets/Images/placeholder.png";
+import placeholder from "../../../assets/images/placeholder.png";
 
 interface IProps {
   src?: string;

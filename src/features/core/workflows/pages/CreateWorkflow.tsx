@@ -2,6 +2,21 @@ import { PageIntro } from "components/layout/PageIntro";
 import PageSubHeader from "components/layout/PageSubHeader";
 import { appRoutes } from "config/router/paths";
 import { CreateBasicWorkflow } from "../components/CreateBasicWorkflow";
+import { CreateAdvancedWorkflow } from "../components/CreateAdvancedWorkflow";
+import { Tabs } from "antd";
+
+const tabItems = [
+  {
+    label: "Basic Workflow",
+    children: <CreateBasicWorkflow />,
+    key: "Basic Workflow",
+  },
+  {
+    label: "Advanced Workflow",
+    children: <CreateAdvancedWorkflow />,
+    key: "Advanced Workflow",
+  },
+];
 
 const CreateWorklow = () => {
   return (
@@ -15,10 +30,8 @@ const CreateWorklow = () => {
               link={appRoutes.workflowSettings}
             />
 
-            <PageSubHeader description="Create a workflow to handle your organizations approval process" />
-
             <div className="mt-6">
-              <CreateBasicWorkflow />
+              <Tabs items={tabItems} type="card" centered />
             </div>
           </div>
         }

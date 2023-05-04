@@ -24,10 +24,12 @@ const Branches = () => {
               description="Manage all the branches in your organization."
               actions={[
                 { name: "Add Branch", handleClick: () => setShowA(true) },
-                { name: "Import Branches", handleClick: () => setShowI(true) },
+                {
+                  name: "Import Branches",
+                  handleClick: () => setShowI(true),
+                  btnVariant: "transparent",
+                },
               ]}
-              variant="drop-down"
-              dropDownText="Add Branch(es)"
             />
 
             <BranchesViewContainer />

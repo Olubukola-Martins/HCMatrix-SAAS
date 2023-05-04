@@ -4,12 +4,7 @@ import { useMutation } from "react-query";
 import { ICurrentCompany } from "types";
 
 type TCreateProps = {
-  type: string;
-  issueDate: string;
-  expiryDate: string;
-  reminderDays: number;
-  cost: number;
-  documentUrls: string[];
+  dateReturned: string;
 };
 
 const updateVehicleAssigneeReturnDate = async (props: {

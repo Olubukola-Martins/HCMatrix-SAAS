@@ -8,7 +8,7 @@ type TDelProps = {
   id: number;
 };
 
-const editStage = async (props: TDelProps & ICurrentCompany) => {
+const deleteStage = async (props: TDelProps & ICurrentCompany) => {
   const url = `${process.env.REACT_APP_UTILITY_BASE_URL}/workflow/${props.workflowId}/stage/basic/${props.id}`;
   const config = {
     headers: {
@@ -24,7 +24,7 @@ const editStage = async (props: TDelProps & ICurrentCompany) => {
 export const useDeleteBasicStage = () => {
   const { token, companyId } = useApiAuth();
   return useMutation((props: TDelProps) =>
-    editStage({ ...props, token, companyId })
+    deleteStage({ ...props, token, companyId })
   );
 };
 

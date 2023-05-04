@@ -13,7 +13,7 @@ const Router = () => {
         return <Route key={path} path={`${path}`} element={element} />;
       }
       return (
-        <Route path="/" element={<DashboardLayout />}>
+        <Route element={<DashboardLayout />}>
           <Route
             key={path}
             path={`${path}`}

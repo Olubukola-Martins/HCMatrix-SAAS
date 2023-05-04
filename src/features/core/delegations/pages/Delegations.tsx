@@ -4,7 +4,7 @@ import { useState } from "react";
 import { AddDelegation } from "../components/AddDelegation";
 import DelegationsViewContainer from "../components/DelegationsViewContainer";
 
-const Delegation = () => {
+const Delegations = () => {
   const [addDelegationModal, setAddDelegationModal] = useState(false);
   return (
     <>
@@ -30,4 +30,4 @@ const Delegation = () => {
   );
 };
 
-export default Delegation;
+export default Delegations;

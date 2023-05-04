@@ -26,7 +26,7 @@ import { AppButton } from "components/button/AppButton";
 
 interface IProps extends IModalProps {}
 
-const boxStyle = "px-4 py-3 shadow rounded-md bg-mainBg";
+const boxStyle = "px-4 py-3 shadow rounded-md bg-mainBg mb-4";
 const boxTitle = "font-medium text-sm pb-1";
 
 export const AddSingleVehicle: React.FC<IProps> = ({ handleClose, open }) => {
@@ -90,6 +90,7 @@ export const AddSingleVehicle: React.FC<IProps> = ({ handleClose, open }) => {
       onCancel={() => handleClose()}
       footer={null}
       title={"Add Vehicle"}
+      style={{ top: 20 }}
     >
       <Form
         layout="vertical"
@@ -112,12 +113,14 @@ export const AddSingleVehicle: React.FC<IProps> = ({ handleClose, open }) => {
         <Form.Item name="model" rules={textInputValidationRules}>
           <Input placeholder="Vehicle Model" />
         </Form.Item>
-        <Form.Item>
+        <div className={boxStyle}>
           <FileUpload
             allowedFileTypes={["image/jpeg", "image/png", "image/jpg"]}
-            key="imageUrl"
+            fileKey="imageUrl"
+            textToDisplay="Upload Vehicle Image"
+            displayType="form-space-between"
           />
-        </Form.Item>
+        </div>
         <Form.Item name="status" rules={generalValidationRules}>
           <Select
             placeholder="Status"
@@ -141,15 +144,18 @@ export const AddSingleVehicle: React.FC<IProps> = ({ handleClose, open }) => {
           </div>
 
           {moreInfo && (
-            <div className="grid grid-cols-2">
+            <div className="grid grid-cols-2 gap-4 mt-4">
               <Form.Item name="cost">
-                <InputNumber placeholder="Cost(optional)" />
+                <InputNumber placeholder="Cost(optional)" className="w-full" />
               </Form.Item>
               <Form.Item name="color">
                 <Input placeholder="Color(optional)" />
               </Form.Item>
               <Form.Item name="purchaseDate">
-                <DatePicker placeholder="Purchase Date (optional)" />
+                <DatePicker
+                  placeholder="Purchase Date (optional)"
+                  className="w-full"
+                />
               </Form.Item>
             </div>
           )}
@@ -165,19 +171,22 @@ export const AddSingleVehicle: React.FC<IProps> = ({ handleClose, open }) => {
           </div>
 
           {assigneeInfo && (
-            <div className="grid grid-cols-2">
+            <div className="grid grid-cols-2 gap-4 mt-4">
               <FormEmployeeInput
                 Form={Form}
-                control={{ name: "assigneeId", label: "Assignee" }}
+                control={{ name: "assigneeId", label: "" }}
               />
 
               <Form.Item name="dateAssigned">
-                <DatePicker placeholder="Date Assigned (optional)" />
+                <DatePicker
+                  placeholder="Date Assigned (optional)"
+                  className="w-full"
+                />
               </Form.Item>
             </div>
           )}
         </div>
-        <div>
+        <Form.Item label="Documents">
           <FileUpload
             allowedFileTypes={[
               "image/jpeg",
@@ -185,9 +194,10 @@ export const AddSingleVehicle: React.FC<IProps> = ({ handleClose, open }) => {
               "image/jpg",
               "application/pdf",
             ]}
-            key="documentUrl"
+            fileKey="documentUrl"
+            textToDisplay="Upload Related Documents"
           />
-        </div>
+        </Form.Item>
         <AppButton isLoading={isLoading} type="submit" />
       </Form>
     </Modal>

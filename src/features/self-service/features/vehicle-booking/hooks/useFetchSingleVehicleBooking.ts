@@ -2,6 +2,7 @@ import axios from "axios";
 import { useQuery } from "react-query";
 import { TVehicleBooking } from "./useFetchVehicleBookings";
 import { ICurrentCompany } from "types";
+import { MICROSERVICE_ENDPOINTS } from "config/enviroment";
 
 // TO DO : need to exist in the general data entities and refactored
 interface IGetDataProps extends ICurrentCompany {
@@ -11,7 +12,7 @@ const QUERY_KEY_FOR_SINGLE_VEHICLE_BOOKING = "single-vehicle-booking";
 const getVehicleBooking = async (
   props: IGetDataProps
 ): Promise<TVehicleBooking> => {
-  const url = `${process.env.REACT_APP_AUTHENTICATION_BASE_URL}/self-service/vehicle/booking/${props.id}`;
+  const url = `${MICROSERVICE_ENDPOINTS.UTILITY}/self-service/vehicle/booking/${props.id}`;
 
   const config = {
     headers: {
@@ -31,7 +32,7 @@ const getVehicleBooking = async (
   return data;
 };
 
-export const useFetchSingleDelegation = (props: IGetDataProps) => {
+export const useFetchSingleVehicleBooking = (props: IGetDataProps) => {
   const queryData = useQuery(
     [QUERY_KEY_FOR_SINGLE_VEHICLE_BOOKING, props.id],
     () =>

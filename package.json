@@ -26,7 +26,7 @@
     "framer-motion": "^6.3.11",
     "moment": "^2.29.4",
     "react": "^18.2.0",
-    "react-auth-kit": "^2.4.0",
+    "react-auth-kit": "^2.12.2",
     "react-chartjs-2": "^4.3.1",
     "react-dom": "^18.2.0",
     "react-form-builder2": "^0.14.0",

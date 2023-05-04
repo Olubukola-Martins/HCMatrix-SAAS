@@ -30,7 +30,7 @@ const VehicleDetails = () => {
       <SelfServiceSubNav />
 
       <div className="Container">
-        {isFetching && <Skeleton paragraph={{ rows: 20 }} />}
+        {isFetching && !isSuccess && <Skeleton paragraph={{ rows: 20 }} />}
         {isSuccess ? (
           <>
             <PageIntro
