@@ -119,7 +119,7 @@ const LeaveSettings = () => {
           {/* header */}
           <LeaveSettingsHeader />
 
-          {isError && (
+          {/* {isError && (
             <div className="flex w-full h-32 justify-center items-center">
               <p>Err occured</p>
             </div>
@@ -128,8 +128,8 @@ const LeaveSettings = () => {
             <div className="flex w-full h-32 justify-center items-center">
               <Spin />
             </div>
-          )}
-          {isSuccess && <LeaveSettingsAccordians />}
+          )} */}
+          {<LeaveSettingsAccordians />}
         </div>
       </div>
     </DashboardLayout>

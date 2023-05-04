@@ -13,103 +13,104 @@ import Payslip from "../Pages/Payslip";
 import EmployeePayslips from "../Pages/EmployeePayslips";
 import CreatePayslipTemplate from "../Pages/CreatePayslipTemplate";
 import { RequireAuth } from "react-auth-kit";
+import { appRoutes } from "AppRoutes";
 
 const PayrollRoutes = () => {
   return (
     <>
       <Routes>
         <Route
-          path="/payroll/home"
+          path={appRoutes.payrollHome}
           element={
-            <RequireAuth loginPath={"/login"}>
+            <RequireAuth loginPath={appRoutes.login}>
               <Home />
             </RequireAuth>
           }
         />
         <Route
-          path="/payroll/home-approver"
+          path={appRoutes.payrollHome4Approver}
           element={
-            <RequireAuth loginPath={"/login"}>
+            <RequireAuth loginPath={appRoutes.login}>
               <HomeForApprover />
             </RequireAuth>
           }
         />
         <Route
-          path="/payroll/review"
+          path={appRoutes.payrollReview}
           element={
-            <RequireAuth loginPath={"/login"}>
+            <RequireAuth loginPath={appRoutes.login}>
               <PayrollReview />
             </RequireAuth>
           }
         />
         <Route
-          path="/payroll/breakdown"
+          path={appRoutes.payrollBreakdown}
           element={
-            <RequireAuth loginPath={"/login"}>
+            <RequireAuth loginPath={appRoutes.login}>
               <PayrollBreakdown />
             </RequireAuth>
           }
         />
         <Route
-          path="/payroll/cycle"
+          path={appRoutes.payrollCycle}
           element={
-            <RequireAuth loginPath={"/login"}>
+            <RequireAuth loginPath={appRoutes.login}>
               <PayrollCycle />
             </RequireAuth>
           }
         />
         <Route
-          path="/payroll/scheme"
+          path={appRoutes.payrollScheme}
           element={
-            <RequireAuth loginPath={"/login"}>
+            <RequireAuth loginPath={appRoutes.login}>
               <PayrollScheme />
             </RequireAuth>
           }
         />
         <Route
-          path="/payroll/comparison"
+          path={appRoutes.payrollComparison}
           element={
-            <RequireAuth loginPath={"/login"}>
+            <RequireAuth loginPath={appRoutes.login}>
               <PayrollComparison />
             </RequireAuth>
           }
         />
         <Route
-          path="/payroll/create"
+          path={appRoutes.createPayroll}
           element={
-            <RequireAuth loginPath={"/login"}>
+            <RequireAuth loginPath={appRoutes.login}>
               <CreatePayroll />
             </RequireAuth>
           }
         />
         <Route
-          path="/payroll/report"
+          path={appRoutes.payrollReport}
           element={
-            <RequireAuth loginPath={"/login"}>
+            <RequireAuth loginPath={appRoutes.login}>
               <PayrollReport />
             </RequireAuth>
           }
         />
         <Route
-          path="/payroll/payslip"
+          path={appRoutes.payslips}
           element={
-            <RequireAuth loginPath={"/login"}>
+            <RequireAuth loginPath={appRoutes.login}>
               <Payslip />
             </RequireAuth>
           }
         />
         <Route
-          path="/payroll/employee-payslip"
+          path={appRoutes.employeePayslips}
           element={
-            <RequireAuth loginPath={"/login"}>
+            <RequireAuth loginPath={appRoutes.login}>
               <EmployeePayslips />
             </RequireAuth>
           }
         />
         <Route
-          path="/payroll/create-payslip-template"
+          path={appRoutes.createPayslipTemplate}
           element={
-            <RequireAuth loginPath={"/login"}>
+            <RequireAuth loginPath={appRoutes.login}>
               <CreatePayslipTemplate />
             </RequireAuth>
           }

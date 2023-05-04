@@ -20,13 +20,13 @@ export const PersonalInfo = ({
   initialValues,
   setCurrent,
   isLoading,
-  form
+  form,
 }: stepperInputProps) => {
   const globalCtx = useContext(GlobalContext);
   const { state: globalState } = globalCtx;
   const fileUrl = globalState.upLoadFileString;
-  const [stateId, setStateId] = useState("");
-  const [countryId, setCountryId] = useState("");
+  const [stateId, setStateId] = useState(0);
+  const [countryId, setCountryId] = useState(0);
   const { data: countries, isSuccess } = useFetchCountries();
   const { data: states, isSuccess: stateSuccess } = useFetchStates({
     countryId,
@@ -235,7 +235,7 @@ export const PersonalInfo = ({
             Prev
           </button>
           <button type="submit" className="button">
-           {isLoading ? <BeatLoader color="#fff" /> : "Continue"} 
+            {isLoading ? <BeatLoader color="#fff" /> : "Continue"}
           </button>
         </div>
       </Form>

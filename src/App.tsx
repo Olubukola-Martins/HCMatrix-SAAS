@@ -14,6 +14,8 @@ import GlobalContextProvider from "./Contexts/GlobalContextProvider";
 import { useEffect } from "react";
 import UserFeedbackContainer from "./GeneralComps/UserFeedbackContainer";
 import refreshApi from "./Config/refreshTokenApi";
+import AdminWelcomeContainer from "GeneralComps/AdminWelcomeContainer";
+import { appRoutes } from "AppRoutes";
 const queryClient = new QueryClient();
 
 function App() {
@@ -34,6 +36,7 @@ function App() {
         <GlobalContextProvider>
           <Router>
             <UserFeedbackContainer />
+            <AdminWelcomeContainer />
 
             <AuthRoutes />
             <HomeRoute />
@@ -46,9 +49,9 @@ function App() {
               {/* TO DO auth guard should be added */}
 
               <Route
-                path="/notifications"
+                path={appRoutes.notifications}
                 element={
-                  <RequireAuth loginPath={"/login"}>
+                  <RequireAuth loginPath={appRoutes.login}>
                     <Notification />
                   </RequireAuth>
                 }

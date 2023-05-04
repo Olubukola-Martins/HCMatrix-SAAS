@@ -11,7 +11,6 @@ import Groups from "../Pages/Organization/Groups/Groups";
 import Departments from "../Pages/Organization/Departments/Departments";
 import DepartmentDetail from "../Pages/Organization/Departments/DepartmentDetail";
 import Delegations from "../Pages/Organization/Delegations/Delegations";
-import DelegationDetail from "../Pages/Organization/Delegations/DelegationDetail";
 import Grades from "../Pages/Organization/Grades/Grades";
 import ProbationPolicy from "../Pages/Organization/ProbationPolicy/ProbationPolicy";
 import GradeCategories from "../Pages/Organization/GradeCategories/GradeCategories";
@@ -27,6 +26,9 @@ import { MyProfile } from "../Pages/Organization/EmployeeProfiles/MyProfile";
 import { RequireAuth } from "react-auth-kit";
 import { AddEmployee } from "../Components/Organization/EmployeeProfiles/AddEmployee";
 import { appRoutes } from "AppRoutes";
+import { EmployeeProfile } from "Settings/Pages/Organization/EmployeeProfiles/EmployeeProfile";
+import { EditRole } from "Settings/Pages/UserAccessControl/Roles/EditRole";
+import EditWorkflow from "Settings/Pages/UserAccessControl/Automation/Workflows/EditWorkflow";
 
 const SettingRoutes = () => {
   return (
@@ -97,7 +99,16 @@ const SettingRoutes = () => {
           </RequireAuth>
         }
       />
+
       {/* QUICK FIX */}
+      <Route
+        path={appRoutes.singleEmployee().format}
+        element={
+          <RequireAuth loginPath={appRoutes.login}>
+            <EmployeeProfile />
+          </RequireAuth>
+        }
+      />
       <Route
         path={appRoutes.addEmployee}
         element={
@@ -171,17 +182,9 @@ const SettingRoutes = () => {
           </RequireAuth>
         }
       />
-      <Route
-        path={appRoutes.singleDelegation().format}
-        element={
-          <RequireAuth loginPath={appRoutes.login}>
-            <DelegationDetail />
-          </RequireAuth>
-        }
-      />
 
       <Route
-        path="/settings/roles"
+        path={appRoutes.roleSettings}
         element={
           <RequireAuth loginPath={appRoutes.login}>
             <Roles />
@@ -189,7 +192,7 @@ const SettingRoutes = () => {
         }
       />
       <Route
-        path="/settings/roles/create"
+        path={appRoutes.createRole}
         element={
           <RequireAuth loginPath={appRoutes.login}>
             <CreateRole />
@@ -197,7 +200,15 @@ const SettingRoutes = () => {
         }
       />
       <Route
-        path="/settings/automation/workflows"
+        path={appRoutes.editRole().format}
+        element={
+          <RequireAuth loginPath={appRoutes.login}>
+            <EditRole />
+          </RequireAuth>
+        }
+      />
+      <Route
+        path={appRoutes.workflowSettings}
         element={
           <RequireAuth loginPath={appRoutes.login}>
             <Workflows />
@@ -205,7 +216,7 @@ const SettingRoutes = () => {
         }
       />
       <Route
-        path="/settings/automation/workflows/create"
+        path={appRoutes.createWorkflow}
         element={
           <RequireAuth loginPath={appRoutes.login}>
             <CreateWorkflow />
@@ -213,7 +224,15 @@ const SettingRoutes = () => {
         }
       />
       <Route
-        path="/settings/payroll"
+        path={appRoutes.editWorkflow().format}
+        element={
+          <RequireAuth loginPath={appRoutes.login}>
+            <EditWorkflow />
+          </RequireAuth>
+        }
+      />
+      <Route
+        path={appRoutes.payrollSettings}
         element={
           <RequireAuth loginPath={appRoutes.login}>
             <PayrollSettings />
@@ -221,7 +240,7 @@ const SettingRoutes = () => {
         }
       />
       <Route
-        path="/settings/grades"
+        path={appRoutes.payGradeSettings}
         element={
           <RequireAuth loginPath={appRoutes.login}>
             <Grades />
@@ -229,7 +248,7 @@ const SettingRoutes = () => {
         }
       />
       <Route
-        path="/settings/grade_categories"
+        path={appRoutes.gradeCategorySettings}
         element={
           <RequireAuth loginPath={appRoutes.login}>
             <GradeCategories />
@@ -238,7 +257,7 @@ const SettingRoutes = () => {
       />
 
       <Route
-        path="/settings/probation_policy"
+        path={appRoutes.payrollPolicySettings}
         element={
           <RequireAuth loginPath={appRoutes.login}>
             <ProbationPolicy />
@@ -246,7 +265,7 @@ const SettingRoutes = () => {
         }
       />
       <Route
-        path="/settings/resignation_policy"
+        path={appRoutes.resignationPolicySettings}
         element={
           <RequireAuth loginPath={appRoutes.login}>
             <ResignationPolicy />

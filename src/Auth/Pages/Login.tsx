@@ -14,9 +14,24 @@ import Aos from "aos";
 import "aos/dist/aos.css";
 import UserLoginForm from "../Components/UserLoginForm";
 import { useIsAuthenticated } from "react-auth-kit";
+import { useMutation } from "react-query";
+import {
+  loginUserWithMicrosoft,
+  o365MicrosoftRedirectUrl,
+} from "ApiRequesHelpers/Auth";
 
 export const Login = () => {
   const isAuthenticated = useIsAuthenticated();
+  // const { mutate } = useMutation(loginUserWithMicrosoft);
+
+  const handleMicro = () => {
+    loginUserWithMicrosoft()
+      .then((res) => {
+        const link = res.data.data;
+        window.location.replace(link);
+      })
+      .catch((err) => console.log("Micro ERR", err));
+  };
   const [searchParams] = useSearchParams();
   const email = searchParams.get("email");
   const password = searchParams.get("password");
@@ -84,12 +99,20 @@ export const Login = () => {
                   ) : (
                     <UserLoginForm />
                   )}
-                  <Link
-                    to="/forgot-password"
-                    className="mb-3 flex justify-end cursor-pointer pt-2 text-sm hover:text-black"
-                  >
-                    Forgot password ?
-                  </Link>
+                  <div className="flex justify-between mb-6 pt-2 text-slate-500">
+                    <Link
+                      to="/register"
+                      className="cursor-pointer text-sm hover:text-caramel hover:underline"
+                    >
+                      Sign up
+                    </Link>
+                    <Link
+                      to="/forgot-password"
+                      className="cursor-pointer text-sm hover:text-caramel hover:underline"
+                    >
+                      Forgot password ?
+                    </Link>
+                  </div>
                   <Divider>
                     <span className="text-sm">Sign In with</span>
                   </Divider>
@@ -99,8 +122,10 @@ export const Login = () => {
                       alt="microsoft"
                       className="cursor-pointer"
                       title="Microsoft"
+                      onClick={handleMicro}
                     />
-                    <img
+
+                    {/* <img
                       src={google}
                       alt="google"
                       className="cursor-pointer"
@@ -117,7 +142,7 @@ export const Login = () => {
                       alt="microsoft"
                       className="-ml-4 cursor-pointer"
                       title="Microsoft"
-                    />
+                    /> */}
                   </div>
                 </div>
               </div>

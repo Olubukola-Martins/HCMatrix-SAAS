@@ -58,13 +58,18 @@ export const getRoles = async (props: IGetRolesProps) => {
   const limit = pagination?.limit ?? 10;
   const offset = pagination?.offset ?? 0;
 
-  const url = `${process.env.REACT_APP_AUTHENTICATION_BASE_URL}/permission/role?limit=${limit}&offset=${offset}`;
+  let url = `${process.env.REACT_APP_AUTHENTICATION_BASE_URL}/permission/role`;
 
   const config = {
     headers: {
       Accept: "application/json",
       Authorization: `Bearer ${props.token}`,
       "x-company-id": props.companyId,
+    },
+    params: {
+      limit,
+      offset,
+      search: props?.searchParams?.name,
     },
   };
 

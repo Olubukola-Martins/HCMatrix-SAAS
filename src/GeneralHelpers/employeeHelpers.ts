@@ -1,21 +1,21 @@
 import { TEmployeeStatus } from "../AppTypes/DataEntitities";
 
-export const employeeStatusColor = (status: TEmployeeStatus) => {
-  let color;
+export const employeeStatusColor = (status: TEmployeeStatus): string => {
+  let color = "";
   switch (status) {
     case "confirmed":
       color = "text-[#097969]";
       break;
     case "terminated":
-      color = "text-[#ffa]";
+      color = "text-[#F6350C]";
 
       break;
     case "probation":
-      color = "text-[#ffa]";
+      color = "text-[#FFC300]";
 
       break;
     case "suspended":
-      color = "text-[#ffa]";
+      color = "text-[#FFC300]";
 
       break;
 

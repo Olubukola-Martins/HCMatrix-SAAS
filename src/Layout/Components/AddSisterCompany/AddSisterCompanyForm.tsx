@@ -1,16 +1,15 @@
 import { Form, Input, Modal, Select } from "antd";
+import { useFetchIndustries } from "APIRQHooks/Utility/industryHooks";
 import { useContext, useState } from "react";
 import { useAuthUser } from "react-auth-kit";
 import { useMutation, useQuery } from "react-query";
 import { BeatLoader } from "react-spinners";
-import { getIndustries } from "../../../ApiRequesHelpers/Utility/industry";
 import {
   createSisterCompany,
   ICreateSisterCompProps,
 } from "../../../ApiRequesHelpers/Utility/sisterCompany";
 import { IAuthDets } from "../../../AppTypes/Auth";
 import { IModalProps } from "../../../AppTypes/Component";
-import { TIndustry } from "../../../AppTypes/DataEntitities";
 import { GlobalContext } from "../../../Contexts/GlobalContextProvider";
 import {
   generalValidationRules,
@@ -32,35 +31,7 @@ export const AddSisterCompanyForm = ({ open, handleClose }: IModalProps) => {
   const [form] = Form.useForm();
   const { mutate, isLoading } = useMutation(createSisterCompany);
 
-  const { data: industries, isSuccess: isISuccess } = useQuery(
-    "industries",
-    () => getIndustries(),
-    {
-      ...{
-        refetchInterval: false,
-        refetchIntervalInBackground: false,
-        refetchOnWindowFocus: false,
-      },
-      onError: (err: any) => {
-        openNotification({
-          state: "error",
-          title: "Error Occurred",
-          description:
-            err?.response.data.message ?? err?.response.data.error.message,
-        });
-      },
-      select: (res: any) => {
-        const result = res.data.data;
-        const data: TIndustry[] = result.map(
-          (item: any): TIndustry => ({
-            id: item.id,
-            name: item.name,
-          })
-        );
-        return data;
-      },
-    }
-  );
+  const { data: industries, isSuccess: isISuccess } = useFetchIndustries();
 
   const handleSubmit = (data: any) => {
     if (companyId) {
@@ -84,13 +55,14 @@ export const AddSisterCompanyForm = ({ open, handleClose }: IModalProps) => {
         },
 
         onSuccess: (res) => {
-          const result = res.data.data;
           openNotification({
             state: "success",
+
             title: "Success",
-            description: "Sister company created successfully",
-            duration: 0.4,
+            description: res.data.message,
+            // duration: 0.4,
           });
+
           form.resetFields();
           handleClose(false);
         },

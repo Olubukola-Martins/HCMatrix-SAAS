@@ -1,13 +1,13 @@
-import pagination from "antd/lib/pagination";
-import { useSignOut } from "react-auth-kit";
+import { ISearchParams } from "AppTypes/Search";
 import { useQuery } from "react-query";
 import { getRoles } from "../../ApiRequesHelpers/Auth/permissions";
 import { TRole } from "../../AppTypes/DataEntitities";
 import { IPaginationProps } from "../../AppTypes/Pagination";
-import { openNotification } from "../../NotificationHelpers";
 
 interface IFRQDataProps {
   pagination?: IPaginationProps;
+  searchParams?: ISearchParams;
+
   companyId: string;
   token: string;
   onSuccess?: Function;
@@ -18,28 +18,26 @@ export interface IFRQRoleReturnProps {
 }
 export const useFetchRoles = ({
   pagination,
+  searchParams,
   companyId,
   onSuccess,
   token,
 }: IFRQDataProps) => {
-  const signOut = useSignOut();
-
   const queryData = useQuery(
-    ["roles", pagination?.current],
+    ["roles", pagination?.current, pagination?.limit, searchParams?.name],
     () =>
       getRoles({
         companyId,
         pagination: { limit: pagination?.limit, offset: pagination?.offset },
+        searchParams: { name: searchParams?.name },
+
         token,
       }),
     {
       // refetchInterval: false,
       // refetchIntervalInBackground: false,
       // refetchOnWindowFocus: false,
-      onError: (err: any) => {
-        signOut();
-        localStorage.clear();
-      },
+      onError: (err: any) => {},
       onSuccess: (data) => {
         onSuccess && onSuccess(data);
       },
@@ -53,8 +51,11 @@ export const useFetchRoles = ({
           (item: any): TRole => ({
             id: item.id,
             name: item.name,
+            label: item.label,
 
-            userCount: item.userCount ?? 0,
+            userCount: item.employeeCount ?? 0,
+            createdAt: item.createdAt,
+            updatedAt: item.updatedAt,
           })
         );
 

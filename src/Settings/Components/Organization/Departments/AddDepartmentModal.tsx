@@ -1,6 +1,5 @@
 import { Modal } from "antd";
-import { IModalProps } from "../../../../AppTypes/Component";
-
+import { IModalProps } from "AppTypes/Component";
 import AddDepartmentForm from "./AddDepartmentForm";
 
 export const AddDepartmentModal = ({ open, handleClose }: IModalProps) => {

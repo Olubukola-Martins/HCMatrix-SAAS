@@ -1,3 +1,4 @@
+import { appRoutes } from "AppRoutes";
 import { RequireAuth } from "react-auth-kit";
 import { Route, Routes } from "react-router-dom";
 import Home from "../Pages/Home";
@@ -7,17 +8,17 @@ const AdminRoutes = () => {
   return (
     <Routes>
       <Route
-        path="/system-administration-login"
+        path={appRoutes.systemAdminLogin}
         element={
-          <RequireAuth loginPath={"/login"}>
+          <RequireAuth loginPath={appRoutes.login}>
             <Home />
           </RequireAuth>
         }
       />
       <Route
-        path="/system-administrators"
+        path={appRoutes.systemAdmins}
         element={
-          <RequireAuth loginPath={"/login"}>
+          <RequireAuth loginPath={appRoutes.login}>
             <SystemAdmins />
           </RequireAuth>
         }

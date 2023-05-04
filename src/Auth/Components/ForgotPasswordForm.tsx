@@ -52,6 +52,7 @@ export const ForgotPasswordForm = () => {
           placeholder="Employee ID or Work Email"
           className="rounded border-slate-400"
           style={{ padding: "6px 5px" }}
+          autoFocus
         />
       </Form.Item>
       <button

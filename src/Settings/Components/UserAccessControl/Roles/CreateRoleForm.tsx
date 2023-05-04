@@ -9,6 +9,7 @@ import {
   Typography,
 } from "antd";
 import { CheckboxValueType } from "antd/es/checkbox/Group";
+import Button from "GeneralComps/Button";
 import React, { useContext, useState } from "react";
 import { useAuthUser } from "react-auth-kit";
 import { useMutation, useQuery, useQueryClient } from "react-query";
@@ -297,10 +298,10 @@ const CreateRoleForm = () => {
                   disabled
                 />
               </div>
-              <div className="bg-white p-4 rounded-md mb-4">
+              {/* <div className="bg-white p-4 rounded-md mb-4">
                 <Table columns={columns} dataSource={ans} size="small" />
-              </div>
-              {/* <Form.Item name="permissionIds" rules={generalValidationRules}>
+              </div> */}
+              <Form.Item name="permissionIds" rules={generalValidationRules}>
                 <Checkbox.Group style={{ width: "100%" }}>
                   <div className="my-6 grid grid-cols-4 gap-4">
                     {data.permissions.map((item) => (
@@ -323,12 +324,10 @@ const CreateRoleForm = () => {
                     ))}
                   </div>
                 </Checkbox.Group>
-              </Form.Item> */}
+              </Form.Item>
             </div>
 
-            <button className="button" type="submit" disabled={isLoading}>
-              {isLoading ? <BeatLoader color="#fff" /> : "Submit"}
-            </button>
+            <Button type="submit" isLoading={isLoading} />
           </Form>
         )}
       </Skeleton>

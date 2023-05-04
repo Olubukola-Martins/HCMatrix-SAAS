@@ -11,14 +11,23 @@ import {
   Skeleton,
   Spin,
 } from "antd";
-import { useContext } from "react";
+import { appRoutes } from "AppRoutes";
+import { employmentTypes, workModels } from "Constants";
+import { FormDesignationInput } from "GeneralComps/FormDesignationInput";
+import { FormEmployeeInput } from "GeneralComps/FormEmployeeInput";
+import { FormRoleInput } from "GeneralComps/FormRoleInput";
+import { useContext, useState } from "react";
 import { useAuthUser } from "react-auth-kit";
 import { useMutation } from "react-query";
+import { useNavigate } from "react-router-dom";
 import { ICreateEmpProps } from "../../../../ApiRequesHelpers/Utility/employee";
 import { useFetchRoles } from "../../../../APIRQHooks/Auth/roleHooks";
 import { useFetchDepartments } from "../../../../APIRQHooks/Utility/departmentHooks";
 import { useFetchDesignations } from "../../../../APIRQHooks/Utility/designationHooks";
-import { useCreateEmployee } from "../../../../APIRQHooks/Utility/employees";
+import {
+  useCreateEmployee,
+  useFetchEmployees,
+} from "../../../../APIRQHooks/Utility/employeeHooks";
 import { IAuthDets } from "../../../../AppTypes/Auth";
 import { GlobalContext } from "../../../../Contexts/GlobalContextProvider";
 import {
@@ -31,10 +40,10 @@ import { openNotification } from "../../../../NotificationHelpers";
 const { Panel } = Collapse;
 const { Option } = Select;
 
-const jobRoles = ["Payroll Approval"];
-const lineMgt = ["Godswill Omenuko", "Isaac Odeh"];
+type TNextAction = "onboarding" | "complete-profile" | "add-another";
 
 export const AddEmployee = () => {
+  const [nextAction, setNextAction] = useState<TNextAction>();
   const auth = useAuthUser();
   const authDetails = auth() as unknown as IAuthDets;
 
@@ -42,8 +51,10 @@ export const AddEmployee = () => {
   const globalCtx = useContext(GlobalContext);
   const { state: globalState } = globalCtx;
   const companyId = globalState.currentCompany?.id as unknown as string;
+  const [degSearch, setDegSearch] = useState<string>("");
+  const [empSearch, setEmpSearch] = useState<string>("");
+  const [roleSearch, setRoleSearch] = useState<string>("");
 
-  
   const [form] = Form.useForm();
   const { mutate } = useCreateEmployee();
   const {
@@ -56,6 +67,25 @@ export const AddEmployee = () => {
       limit: 100, //temp suppose to allow search
       offset: 0,
     },
+    searchParams: {
+      name: degSearch,
+    },
+    token,
+  });
+  const {
+    data: empData,
+    isSuccess: isEmpSuccess,
+    isFetching: isEmpFetching,
+  } = useFetchEmployees({
+    companyId,
+    pagination: {
+      limit: 100, //temp suppose to allow search
+      offset: 0,
+    },
+    searchParams: {
+      name: empSearch,
+    },
+
     token,
   });
   const {
@@ -68,29 +98,42 @@ export const AddEmployee = () => {
       limit: 100, //temp suppose to allow search
       offset: 0,
     },
+    searchParams: {
+      name: roleSearch,
+    },
+
     token,
   });
+  const navigate = useNavigate();
+  const [successData, setSuccessData] = useState<{
+    employeeId: number;
+    onboardingId: number;
+  }>();
 
-  const handleAction = (
-    action: "onboarding" | "complete-profile" | "add-another"
-  ) => {
-    switch (action) {
-      case "complete-profile":
-        form.submit();
+  const handleNextAction = () => {
+    if (successData) {
+      switch (nextAction) {
+        case "complete-profile":
+          navigate(appRoutes.singleEmployee(successData.employeeId).path);
 
-        break;
-      case "add-another":
-        form.submit();
+          break;
+        case "add-another":
+          form.resetFields();
 
-        break;
-      case "onboarding":
-        form.submit();
+          break;
+        case "onboarding":
+          navigate(appRoutes.startOnBoarding(successData.onboardingId).path);
 
-        break;
+          break;
 
-      default:
-        break;
+        default:
+          break;
+      }
     }
+  };
+  const handleCurrentAction = (action: TNextAction) => {
+    setNextAction(action);
+    form.submit();
   };
 
   const handleSubmit = (data: any) => {
@@ -112,7 +155,8 @@ export const AddEmployee = () => {
           employmentType: data.employmentType,
           workModel: data.workModel,
           numberOfDaysPerWeek: data.numberOfDaysPerWeek,
-          departmentId: data.departmentId,
+
+          lineManagerId: data.lineManagerId,
         },
       };
 
@@ -134,6 +178,12 @@ export const AddEmployee = () => {
         },
         onSuccess: (res: any) => {
           const result = res.data.data;
+          setSuccessData({
+            employeeId: result.id,
+            onboardingId: result?.onboarding.id,
+          });
+
+          handleNextAction();
 
           openNotification({
             state: "success",
@@ -142,8 +192,6 @@ export const AddEmployee = () => {
             description: res.data.message,
             // duration: 0.4,
           });
-
-          form.resetFields();
         },
       });
     }
@@ -190,11 +238,7 @@ export const AddEmployee = () => {
                     >
                       <Input placeholder="Enter Last Name" />
                     </Form.Item>
-                    <Form.Item
-                      name="empUid"
-                      label="Employee ID"
-                      requiredMark="optional"
-                    >
+                    <Form.Item name="empUid" label="Employee ID (optional)">
                       <Input placeholder="Employee ID" />
                     </Form.Item>
                     <Form.Item
@@ -225,125 +269,71 @@ export const AddEmployee = () => {
                   key="1"
                   className="collapseHeader"
                 >
-                  <Skeleton
-                    active
-                    loading={
-                      !isDSuccess || isDFetching || !isRSuccess || isRFetching
-                    }
-                  >
-                    {isDSuccess && isRSuccess && (
-                      <div className="bg-card px-3 py-4 rounded-md grid grid-cols-1 md:grid-cols-2 gap-x-5">
-                        <Form.Item
-                          name="startDate"
-                          label="Start Date"
-                          rules={generalValidationRules}
-                        >
-                          <DatePicker format="YYYY/MM/DD" className="w-full" />
-                        </Form.Item>
+                  <div className="bg-card px-3 py-4 rounded-md grid grid-cols-1 md:grid-cols-2 gap-x-5">
+                    <Form.Item
+                      name="startDate"
+                      label="Start Date"
+                      rules={generalValidationRules}
+                    >
+                      <DatePicker format="YYYY/MM/DD" className="w-full" />
+                    </Form.Item>
 
-                        <Form.Item
-                          name="roleId"
-                          label="Role"
-                          rules={generalValidationRules}
-                        >
-                          <Select
-                            showSearch
-                            allowClear
-                            optionLabelProp="label"
-                            className="SelectTag w-full"
-                            placeholder="Select Role"
-                            options={roleData.data.map((item) => ({
-                              label: item.name,
-                              value: item.id,
-                            }))}
-                          />
-                        </Form.Item>
-                        <Form.Item
-                          name="monthlyGross"
-                          label="Monthly Gross"
-                          rules={textInputValidationRules}
-                        >
-                          <Input placeholder="Enter monthly gross" />
-                        </Form.Item>
-                        <Form.Item
-                          name="employmentType"
-                          label="Employment Type"
-                          rules={generalValidationRules}
-                        >
-                          <Select
-                            className="SelectTag w-full"
-                            placeholder="Select Employment Type"
-                          >
-                            <Option value="full-time">Full time</Option>
-                            <Option value="part-time">Part time</Option>
-                            <Option value="contract">Contract</Option>
-                          </Select>
-                        </Form.Item>
-                        <Form.Item
-                          name="workModel"
-                          label="Work Model"
-                          rules={generalValidationRules}
-                        >
-                          <Select
-                            className="SelectTag w-full"
-                            placeholder="Select Work Model"
-                          >
-                            <Option value="on-Site">On-Site</Option>
-                            <Option value="hybrid">Hybrid</Option>
-                            <Option value="remote">Remote</Option>
-                          </Select>
-                        </Form.Item>
-                        <Form.Item
-                          name="lineManager"
-                          label="Line Manager"
-                          requiredMark="optional"
-                        >
-                          <Select
-                            showSearch
-                            allowClear
-                            optionLabelProp="label"
-                            className="SelectTag w-full"
-                            placeholder="Select Line Manager"
-                          >
-                            {lineMgt.map((data) => (
-                              <Option key={data} value={data} label={data}>
-                                {data}
-                              </Option>
-                            ))}
-                          </Select>
-                        </Form.Item>
-                        <Form.Item
-                          name="designationId"
-                          label="Designation"
-                          rules={generalValidationRules}
-                        >
-                          <Select
-                            showSearch
-                            allowClear
-                            optionLabelProp="label"
-                            className="SelectTag w-full"
-                            placeholder="Select Designation"
-                            options={degData.data.map((item) => ({
-                              label: item.name,
-                              value: item.id,
-                            }))}
-                          />
-                        </Form.Item>
-                        <Form.Item
-                          name="numberOfDaysPerWeek"
-                          label="Number of Days in the Week"
-                          rules={generalValidationRules}
-                        >
-                          <InputNumber
-                            min={1}
-                            max={7}
-                            className="w-full"
-                            placeholder="Enter..."
-                          />
-                        </Form.Item>
-                      </div>
-                    )}
-                  </Skeleton>
+                    <FormRoleInput Form={Form} />
+                    <Form.Item
+                      name="monthlyGross"
+                      label="Monthly Gross"
+                      rules={[...generalValidationRules, { type: "number" }]}
+                    >
+                      <InputNumber
+                        placeholder="Enter monthly gross"
+                        min={1}
+                        className="w-full"
+                      />
+                    </Form.Item>
+                    <Form.Item
+                      name="employmentType"
+                      label="Employment Type"
+                      rules={generalValidationRules}
+                    >
+                      <Select
+                        className="SelectTag w-full"
+                        placeholder="Select Employment Type"
+                        options={employmentTypes}
+                      />
+                    </Form.Item>
+                    <Form.Item
+                      name="workModel"
+                      label="Work Model"
+                      rules={generalValidationRules}
+                    >
+                      <Select
+                        className="SelectTag w-full"
+                        placeholder="Select Work Model"
+                        options={workModels}
+                      />
+                    </Form.Item>
+
+                    <FormEmployeeInput
+                      Form={Form}
+                      control={{
+                        name: "lineManagerId",
+                        label: "Line Manager (optional)",
+                      }}
+                    />
+                    <FormDesignationInput Form={Form} />
+                    <Form.Item
+                      name="numberOfDaysPerWeek"
+                      label="Number of Days in the Week"
+                      rules={generalValidationRules}
+                    >
+                      <InputNumber
+                        min={1}
+                        max={7}
+                        className="w-full"
+                        placeholder="Enter..."
+                      />
+                    </Form.Item>
+                  </div>
                 </Panel>
               </Collapse>
             </div>
@@ -356,7 +346,10 @@ export const AddEmployee = () => {
                   className="collapseHeader"
                 >
                   <Form.Item name="hasSelfService">
-                    <Radio.Group name="hasSelfService">
+                    <Radio.Group
+                      name="hasSelfService"
+                      onChange={(val) => console.log(val, "...")}
+                    >
                       <Radio value={true}>Yes</Radio>
                       <Radio value={false}>No</Radio>
                     </Radio.Group>
@@ -365,7 +358,10 @@ export const AddEmployee = () => {
               </Collapse>
             </div>
             <div className="flex items-center gap-3 justify-end mt-5">
-              <Button type="text" onClick={() => handleAction("onboarding")}>
+              <Button
+                type="text"
+                onClick={() => handleCurrentAction("onboarding")}
+              >
                 Proceed to onboarding
               </Button>
               <Dropdown
@@ -374,13 +370,13 @@ export const AddEmployee = () => {
                   <ul className="bg-mainBg text-sm rounded-md font-medium shadow-md px-2 py-3 border-2">
                     <li
                       className="pb-2 cursor-pointer hover:text-caramel"
-                      onClick={() => handleAction("onboarding")}
+                      onClick={() => handleCurrentAction("add-another")}
                     >
                       Save and add Another
                     </li>
                     <li
                       className=" cursor-pointer hover:text-caramel"
-                      onClick={() => handleAction("onboarding")}
+                      onClick={() => handleCurrentAction("complete-profile")}
                     >
                       Save and Complete Profile
                     </li>

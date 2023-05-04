@@ -17,6 +17,7 @@ interface IProps {
   loading: boolean;
   pagination?: TablePaginationConfig;
   onChange: PaginationProps["onChange"];
+  editDesignation: (val: number) => void;
 }
 
 export const DesignationsGridView = ({
@@ -24,6 +25,7 @@ export const DesignationsGridView = ({
   loading,
   pagination,
   onChange,
+  editDesignation,
 }: IProps) => {
   return (
     <motion.div
@@ -37,9 +39,9 @@ export const DesignationsGridView = ({
       transition={{ ease: "easeIn" }}
       exit={{ opacity: 0, y: 400 }}
     >
-      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6">
+      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
         {data.map((item) => (
-          <Box key={item.id} data={item} />
+          <Box key={item.id} data={item} editDesignation={editDesignation} />
         ))}
       </div>
       <div className="flex justify-end">
@@ -49,7 +51,13 @@ export const DesignationsGridView = ({
   );
 };
 
-const Box = ({ data }: { data: TDesignation }) => {
+const Box = ({
+  data,
+  editDesignation,
+}: {
+  data: TDesignation;
+  editDesignation: (val: number) => void;
+}) => {
   return (
     <>
       {/* view */}
@@ -61,8 +69,9 @@ const Box = ({ data }: { data: TDesignation }) => {
           <Dropdown
             overlay={
               <Menu>
-                <Menu.Item>View</Menu.Item>
-                <Menu.Item>Edit</Menu.Item>
+                <Menu.Item onClick={() => editDesignation(data.id)}>
+                  Edit
+                </Menu.Item>
                 <Menu.Item>Delete</Menu.Item>
               </Menu>
             }

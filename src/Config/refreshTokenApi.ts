@@ -1,13 +1,14 @@
-import { createRefresh } from "react-auth-kit";
+import { createRefresh, useSignOut } from "react-auth-kit";
 import { refreshUserToken } from "../ApiRequesHelpers/Auth";
 
 // export const TOKEN_EXPIRES_IN = 120;
 // export const REFRESH_TOKEN_EXPIRES_IN = 5;
 
-export const TOKEN_EXPIRES_IN = 8;
-export const REFRESH_TOKEN_EXPIRES_IN = 15;
-const REFRESH_TOKEN_INTERVAL = 2;
-const NEW_AUTH_TOKEN_EXPIRES_IN = 8; // exprmnt -  but should be what determines how long user stays if there is/isn't active
+// NEXT REMOVE THE SIGN OUTS ON THE ERR CATCH Of func
+export const TOKEN_EXPIRES_IN = 1200;
+export const REFRESH_TOKEN_EXPIRES_IN = 10;
+const REFRESH_TOKEN_INTERVAL = 8; // AFTER 4 minutes of inactivity you are automatically logged out => MAIN SOLN
+const NEW_AUTH_TOKEN_EXPIRES_IN = 9; // exprmnt -  but should be what determines how long user stays if there is/isn't active
 
 const refreshApi = createRefresh({
   interval: REFRESH_TOKEN_INTERVAL, // Refreshs the token in every 10 minutes -> as per env varaiable set
@@ -37,8 +38,10 @@ const refreshApi = createRefresh({
       })
       .catch((e) => {
         console.error(e, "REFRESK");
+        const signOut = useSignOut();
 
         // log person out
+        signOut();
         return {
           isSuccess: false, // For unsuccessful network request isSuccess is false
           newAuthToken: "",

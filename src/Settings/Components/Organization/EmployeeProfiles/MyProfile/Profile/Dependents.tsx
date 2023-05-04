@@ -1,94 +1,175 @@
-import Search from "antd/lib/input/Search";
-import { Space, Table } from "antd";
-import React, { useState } from "react";
+import { Input, Space, Spin, Table } from "antd";
+import React, { useContext, useState } from "react";
 import { ColumnsType } from "antd/lib/table";
 import { AddDependents } from "./AddDependents";
+import { TEmployee, TEmployeeDependant } from "AppTypes/DataEntitities";
+import moment from "moment";
+import { useDeleteDependantOfEmployee } from "APIRQHooks/Utility/employeeHooks";
+import { EditDependant } from "./EditDependent";
+import { IAuthDets } from "AppTypes/Auth";
+import { GlobalContext } from "Contexts/GlobalContextProvider";
+import { openNotification } from "NotificationHelpers";
+import { useAuthUser } from "react-auth-kit";
+import { useQueryClient } from "react-query";
 
-interface DataType {
-  key: React.Key;
-  name: string;
-  dateOfBirth: string;
-  phone: any;
-  address: string;
-  relationship: string;
-  action: any;
+interface IProps {
+  employee?: TEmployee;
 }
+export const Dependents: React.FC<IProps> = ({ employee }) => {
+  const queryClient = useQueryClient();
+  const auth = useAuthUser();
 
-const columns: ColumnsType<DataType> = [
-  {
-    title: "Name",
-    dataIndex: "name",
-  },
-  {
-    title: "Date Of Birth",
-    dataIndex: "dateOfBirth",
-  },
-  {
-    title: "Phone Number",
-    dataIndex: "phone",
-  },
-  {
-    title: "Relationship",
-    dataIndex: "relationship",
-  },
-  {
-    title: "Action",
-    key: "action",
-    render: (_, record) => (
-      <Space size="middle">
-        <i className="ri-delete-bin-line text-lg cursor-pointer"></i>
-        <a>
-          <i className="ri-pencil-line text-xl cursor-pointer"></i>
-        </a>
-      </Space>
-    ),
-  },
-];
+  const authDetails = auth() as unknown as IAuthDets;
 
-const data: DataType[] = [];
-for (let i = 0; i < 10; i++) {
-  data.push({
-    key: i,
-    name: "Edward King",
-    dateOfBirth: "10/7/1994",
-    phone: "+234 090888995",
-    address: "London, Park Lane no.",
-    relationship: "Father",
-    action: "action",
-  });
-}
+  const token = authDetails.userToken;
+  const globalCtx = useContext(GlobalContext);
+  const { state: globalState } = globalCtx;
+  const companyId = globalState.currentCompany?.id as unknown as string;
 
-export const Dependents = () => {
-  const [openDrawer, setOpenDrawer] = useState(false);
-  return (
-    <div className="bg-mainBg shadow-sm rounded-md p-4 mt-5">
-      <h2 className="font-medium text-lg mb-4">Dependents</h2>
-      <div className="bg-card p-3 rounded">
-        <div className="flex md:items-center gap-5  flex-col-reverse md:flex-row md:justify-between my-3">
-          <Search
-            placeholder="input search text"
-            style={{ width: 200 }}
-            className="rounded"
+  const [action, setAction] = useState<"edit" | "add">();
+  const [dependent, setDependent] = useState<TEmployeeDependant>();
+  const { mutate } = useDeleteDependantOfEmployee();
+  const handleDelete = (dependentId: number) => {
+    if (companyId && employee && dependentId) {
+      // return;
+      openNotification({
+        state: "info",
+        title: "Wait a second ...",
+        description: <Spin />,
+      });
+      mutate(
+        {
+          employeeId: employee.id,
+          companyId,
+          token,
+          dependantId: dependentId,
+        },
+        {
+          onError: (err: any) => {
+            openNotification({
+              state: "error",
+              title: "Error Occurred",
+              description:
+                err?.response.data.message ?? err?.response.data.error.message,
+            });
+          },
+          onSuccess: (res: any) => {
+            const result = res.data.data;
+
+            openNotification({
+              state: "success",
+
+              title: "Success",
+              description: res.data.message,
+              // duration: 0.4,
+            });
+
+            queryClient.invalidateQueries({
+              queryKey: ["single-employee", employee.id],
+              // exact: true,
+            });
+          },
+        }
+      );
+    }
+  };
+  const [searchResult, setSearchResult] = useState<TEmployeeDependant[]>();
+  const handleSearch = (val: string) => {
+    const searchTerm = val.toLowerCase();
+    if (val === "") {
+      //onClear
+      setSearchResult(undefined);
+    }
+    if (employee?.dependents) {
+      const data = employee.dependents.filter(
+        (item) => item.fullName.toLowerCase().indexOf(searchTerm) !== -1
+      );
+      setSearchResult(data);
+    }
+  };
+  const columns: ColumnsType<TEmployeeDependant> = [
+    {
+      title: "Name",
+      dataIndex: "fullName",
+    },
+    {
+      title: "Date Of Birth",
+      dataIndex: "dob",
+      render: (val) => moment(val).format("YYYY/MM/DD"),
+    },
+    {
+      title: "Phone Number",
+      dataIndex: "phoneNumber",
+    },
+    {
+      title: "Relationship",
+      dataIndex: "relationship",
+      render: (val) => <span className="capitalize">{val}</span>,
+    },
+    {
+      title: "Action",
+      key: "action",
+      render: (_, record) => (
+        <Space size="middle">
+          <i
+            className="ri-pencil-line text-lg cursor-pointer"
+            onClick={() => {
+              setDependent(record);
+              setAction("edit");
+            }}
           />
-          <div>
-            <button className="button" onClick={() => setOpenDrawer(true)}>
-              Add Dependents
-            </button>
+          <i
+            className="ri-delete-bin-line text-xl cursor-pointer"
+            onClick={() => handleDelete(record.id)}
+          />
+        </Space>
+      ),
+    },
+  ];
+  if (employee) {
+    return (
+      <div className="bg-mainBg shadow-sm rounded-md p-4 mt-5">
+        <h2 className="font-medium text-lg mb-4">Dependents</h2>
+        <div className="bg-card p-3 rounded">
+          <div className="flex md:items-center gap-5  flex-col-reverse md:flex-row md:justify-between my-3">
+            <Input
+              placeholder="Search dependants"
+              style={{ width: 200 }}
+              className="rounded"
+              onChange={(e) => handleSearch(e.target.value)}
+              allowClear
+            />
+            <div>
+              <button className="button" onClick={() => setAction("add")}>
+                Add Dependent
+              </button>
+            </div>
           </div>
+
+          <AddDependents
+            open={action === "add"}
+            handleClose={() => setAction(undefined)}
+            employeeId={employee.id}
+          />
+          {dependent && (
+            <EditDependant
+              open={action === "edit"}
+              handleClose={() => setAction(undefined)}
+              employeeId={employee.id}
+              dependent={dependent}
+            />
+          )}
+
+          <Table
+            columns={columns}
+            dataSource={searchResult ? searchResult : employee?.dependents}
+            pagination={{ pageSize: 5 }}
+            scroll={{ x: "max-content", y: 240 }}
+            size={"small"}
+          />
         </div>
-
-        <AddDependents
-          open={openDrawer}
-          handleClose={() => setOpenDrawer(false)}
-        />
-
-        <Table
-          columns={columns}
-          dataSource={data}
-          pagination={{ pageSize: 50 }}
-          scroll={{ x: "max-content", y: 240 }}
-        />
       </div>
-    </div>
-  );
+    );
+  }
+  return null;
 };

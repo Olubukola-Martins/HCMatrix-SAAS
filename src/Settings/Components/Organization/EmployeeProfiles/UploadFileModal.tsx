@@ -1,12 +1,90 @@
 import { useState } from "react";
-import { Button, Divider, Modal, Steps } from "antd";
+import { Modal, Steps } from "antd";
 
 import Themes from "../../../../Themes/Themes";
 
-import FramerAccordian from "../../custom/FramerAccordian";
 import { UploadExcelForm } from "./UploadExcelForm";
 import { IModalProps } from "../../../../AppTypes/Component";
-import MappingDetails from "./MappingDetails";
+import MappingDetails, {
+  EmployeeSectionEnum,
+  TMappingSection,
+} from "./MappingDetails";
+import ErrorBoundary from "GeneralComps/ErrorBoundary";
+
+const bulkEmployeeUploadSections: TMappingSection[] = [
+  {
+    title: EmployeeSectionEnum.PERSONAL_INFORMATION,
+    inputs: [
+      { name: "firstName", label: "First Name" },
+      { name: "lastName", label: "Last Name" },
+      { name: "dob", label: "Date of Birth" },
+      { name: "gender", label: "Gender" },
+      { name: "eligibility", label: "Citizenship" },
+      { name: "maritalStatus", label: "Marital Status" },
+      { name: "nationality", label: "Nationality" },
+      {
+        name: "passportExpirationDate",
+        label: "Passport Expiration Date",
+        optional: false,
+      },
+      { name: "alternativeEmail", label: "Alternative Email" },
+      {
+        name: "alternativePhoneNumber",
+        label: "Alternative Phone Number",
+      },
+      { name: "nin", label: "National Identity Number" },
+      { name: "taxAuthority", label: "Tax Authority" },
+      { name: "taxId", label: "Tax ID" },
+    ],
+  },
+  {
+    title: EmployeeSectionEnum.WALLET_INFORMATION,
+    inputs: [
+      {
+        name: "walletAccountProvider",
+        label: "Nubian Account Provider",
+      },
+      {
+        name: "walletAccountNumber",
+        label: "Nubian Account Number",
+      },
+    ],
+  },
+  {
+    title: EmployeeSectionEnum.BANK_INFORMATION,
+    inputs: [
+      { name: "bankName", label: "Bank Name" },
+      { name: "bankAccountNumber", label: "Account Number" },
+      { name: "bvn", label: "Bank Verification Number" },
+    ],
+  },
+  {
+    title: EmployeeSectionEnum.PENSION_INFORMATION,
+    inputs: [
+      {
+        name: "pensionFundAdministrator",
+        label: "Pension Fund Administrator",
+      },
+      {
+        name: "pensionAccountNumber",
+        label: "Pension Account Number",
+      },
+      { name: "pensionType", label: "Pension Type" },
+    ],
+  },
+  {
+    title: EmployeeSectionEnum.EMERGENCY_CONTACT,
+    inputs: [
+      {
+        name: "ecFullName",
+        label: "Full Name",
+      },
+      { name: "ecAddress", label: "Address" },
+      { name: "ecRelationship", label: "Relationship" },
+      { name: "ecPhoneNumber", label: "Phone" },
+    ],
+  },
+];
 
 const steps = [
   "Upload File",
@@ -27,6 +105,9 @@ const UploadFileModal = ({ open, handleClose }: IModalProps) => {
   const [columns, setColumns] = useState<string[]>([]);
   const [retrievedData, setRetrievedData] = useState<any[]>([]);
   const [formattedData, setFormattedData] = useState<any[]>([]);
+  const [selectedSections, setSelectedSections] = useState<TMappingSection[]>(
+    []
+  );
 
   const [activeStep, setActiveStep] = useState(0);
   const handleNext = () => {
@@ -35,14 +116,20 @@ const UploadFileModal = ({ open, handleClose }: IModalProps) => {
   const handlePrev = () => {
     setActiveStep((val) => val - 1);
   };
+
+  const onCancel = () => {
+    setActiveStep(0);
+    handleClose();
+  };
   return (
     <Modal
       title="Import Employees"
       open={open}
-      onCancel={() => handleClose()}
+      onCancel={() => onCancel()}
       footer={null}
       style={{ top: 20 }}
       width={680}
+      closable={false}
     >
       <Themes>
         <div className="text-accent flex flex-col items-center gap-12">
@@ -67,6 +154,7 @@ const UploadFileModal = ({ open, handleClose }: IModalProps) => {
           </div>
 
           {/* content */}
+
           <div className="w-full">
             {" "}
             {/* upload file*/}
@@ -76,18 +164,28 @@ const UploadFileModal = ({ open, handleClose }: IModalProps) => {
                 setRetrievedData={setRetrievedData}
                 handleNext={handleNext}
                 activeStep={activeStep}
+                sections={bulkEmployeeUploadSections}
+                handleSections={(val: TMappingSection[]) =>
+                  setSelectedSections(val)
+                }
               />
             )}
             {/* mapping details */}
-            {(activeStep === 1 || activeStep === 2) && (
-              <MappingDetails
-                columns={columns}
-                handleNext={handleNext}
-                handlePrev={handlePrev}
-                activeStep={activeStep}
-                retrievedData={retrievedData}
-                setFormattedData={setFormattedData}
-              />
+            {(activeStep === 1 || activeStep === 2 || activeStep === 3) && (
+              <ErrorBoundary
+                message="Invalid File Type (consider using our template)"
+                action={handlePrev}
+              >
+                <MappingDetails
+                  columns={columns}
+                  handleNext={handleNext}
+                  handlePrev={handlePrev}
+                  activeStep={activeStep}
+                  retrievedData={retrievedData}
+                  setFormattedData={setFormattedData}
+                  sections={selectedSections}
+                />
+              </ErrorBoundary>
             )}
             {/* handle duplicate */}
             {activeStep === 3 && (

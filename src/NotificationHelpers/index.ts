@@ -18,7 +18,7 @@ export const openNotification = ({
     key: NOTIFICATION_KEY,
     message: title,
     description,
-    duration: duration ?? 0,
+    duration: duration ?? 0.8,
     onClick: () => {},
   });
 };

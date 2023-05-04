@@ -1,22 +1,22 @@
-import { Form, Input, Select, Spin } from "antd";
-import { useContext } from "react";
-import { useAuthUser } from "react-auth-kit";
-import { useQueryClient } from "react-query";
-import { ICreateDepProps } from "../../../../ApiRequesHelpers/Utility/departments";
-import { useCreateDepartment } from "../../../../APIRQHooks/Utility/departmentHooks";
-import { IAuthDets } from "../../../../AppTypes/Auth";
-import {
-  EGlobalOps,
-  GlobalContext,
-} from "../../../../Contexts/GlobalContextProvider";
+import { Form, Input, Select } from "antd";
+import { ICreateDepProps } from "ApiRequesHelpers/Utility/departments";
+import { useCreateDepartment } from "APIRQHooks/Utility/departmentHooks";
+import { IAuthDets } from "AppTypes/Auth";
+import { GlobalContext, EGlobalOps } from "Contexts/GlobalContextProvider";
 import {
   textInputValidationRules,
   emailValidationRules,
-} from "../../../../FormHelpers/validation";
-import { openNotification } from "../../../../NotificationHelpers";
+} from "FormHelpers/validation";
+import { openNotification } from "NotificationHelpers";
+import { useContext } from "react";
+import { useAuthUser } from "react-auth-kit";
+import { useQueryClient } from "react-query";
+import { BeatLoader } from "react-spinners";
 
 const AddDepartmentForm = ({ handleClose }: { handleClose: Function }) => {
   const queryClient = useQueryClient();
+  const [form] = Form.useForm();
+
   const auth = useAuthUser();
 
   const authDetails = auth() as unknown as IAuthDets;
@@ -25,8 +25,7 @@ const AddDepartmentForm = ({ handleClose }: { handleClose: Function }) => {
   const globalCtx = useContext(GlobalContext);
   const { state: globalState, dispatch } = globalCtx;
   const companyId = globalState.currentCompany?.id;
-  const [form] = Form.useForm();
-  const { mutate } = useCreateDepartment();
+  const { mutate, isLoading } = useCreateDepartment();
 
   const handleSubmit = (data: any) => {
     if (companyId) {
@@ -38,12 +37,7 @@ const AddDepartmentForm = ({ handleClose }: { handleClose: Function }) => {
         parentDepartmentId: data.parentDepartmentId,
         token,
       };
-      // return;
-      openNotification({
-        state: "info",
-        title: "Wait a second ...",
-        description: <Spin />,
-      });
+
       mutate(props, {
         onError: (err: any) => {
           openNotification({
@@ -102,7 +96,7 @@ const AddDepartmentForm = ({ handleClose }: { handleClose: Function }) => {
       </Form.Item>
 
       <button className="button" type="submit">
-        Submit
+        {isLoading ? <BeatLoader color="#fff" /> : "Submit"}
       </button>
     </Form>
   );

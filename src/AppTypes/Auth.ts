@@ -1,10 +1,21 @@
 export interface IAuthDets {
   // TO DO
   // To properly define the user object regardless of role
-  user: any;
+  user: {
+    avatarUrl?: string;
+
+    email: string;
+    fullName: string;
+    id: number;
+    isAdmin: boolean;
+    isSocial: boolean;
+    isVerified: boolean;
+    lastLogin: string;
+  };
   userToken: string;
-  companies: any[];
-  companie?: {
+
+  companies: {
+    avatarUrl?: string;
     id: number;
     firstName: string;
     lastName: string;

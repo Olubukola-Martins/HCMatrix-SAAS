@@ -1,4 +1,3 @@
-import React from "react";
 import { TDepartment } from "../../../../AppTypes/DataEntitities";
 import { Table } from "antd";
 import { ColumnsType, TablePaginationConfig, TableProps } from "antd/lib/table";
@@ -8,6 +7,7 @@ interface IProps {
   loading: boolean;
   pagination?: TablePaginationConfig;
   onChange?: TableProps<TDepartment>["onChange"];
+  editDepartment: (val: number) => void;
 }
 
 export const DepartmentsTableView = ({
@@ -15,6 +15,7 @@ export const DepartmentsTableView = ({
   loading,
   pagination,
   onChange,
+  editDepartment,
 }: IProps) => {
   const columns: ColumnsType<TDepartment> = [
     {
@@ -45,9 +46,12 @@ export const DepartmentsTableView = ({
     {
       title: "Action",
       dataIndex: "action",
-      render: () => (
+      render: (_, item) => (
         <div className="flex items-center gap-3 text-lg">
-          <i className="ri-pencil-line cursor-pointer hover:text-caramel"></i>
+          <i
+            className="ri-pencil-line cursor-pointer hover:text-caramel"
+            onClick={() => editDepartment(item.id)}
+          ></i>
           <i className="ri-delete-bin-line cursor-pointer hover:text-caramel"></i>
         </div>
       ),
