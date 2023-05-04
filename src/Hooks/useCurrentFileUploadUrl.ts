@@ -1,9 +1,9 @@
-import { GlobalContext } from "Contexts/GlobalContextProvider";
 import { useContext } from "react";
+import { GlobalContext } from "stateManagers/GlobalContextProvider";
 
-export const useCurrentFileUploadUrl = () => {
+export const useCurrentFileUploadUrl = (key: string) => {
   const globalCtx = useContext(GlobalContext);
   const { state: globalState } = globalCtx;
-  const url = globalState.upLoadFileString;
-  return url;
+  const url = globalState.upLoadFileString.find((item) => item.key === key);
+  return url?.value;
 };

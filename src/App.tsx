@@ -1,21 +1,13 @@
-import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
-import AdminRoutes from "./Administration/Routes/AdminRoutes";
-import AuthRoutes from "./Auth/Routes/AuthRoutes";
-import BillingRoutes from "./Billing/Routes/BillingRoutes";
-import PayrollRoutes from "./Payroll/Routes/PayrollRoutes";
-import SelfServiceRoutes from "./Self_Service/Routes/SelfServiceRoutes";
-import SettingRoutes from "./Settings/Routes/SettingRoutes";
+import { BrowserRouter } from "react-router-dom";
 import { QueryClientProvider, QueryClient } from "react-query";
 import { ReactQueryDevtools } from "react-query/devtools";
-import HomeRoute from "./Home/HomeRoute";
-import { AuthProvider, RequireAuth } from "react-auth-kit";
-import { Notification } from "./Notifications/Notification";
-import GlobalContextProvider from "./Contexts/GlobalContextProvider";
+import { AuthProvider } from "react-auth-kit";
 import { useEffect } from "react";
-import UserFeedbackContainer from "./GeneralComps/UserFeedbackContainer";
-import refreshApi from "./Config/refreshTokenApi";
-import AdminWelcomeContainer from "GeneralComps/AdminWelcomeContainer";
-import { appRoutes } from "AppRoutes";
+import Router from "config/router";
+import refreshApi from "config/refreshTokenApi";
+import GlobalContextProvider from "stateManagers/GlobalContextProvider";
+import UserFeedbackContainer from "components/UserFeedbackContainer";
+import AdminWelcomeContainer from "components/AdminWelcomeContainer";
 const queryClient = new QueryClient();
 
 function App() {
@@ -34,31 +26,12 @@ function App() {
     >
       <QueryClientProvider client={queryClient}>
         <GlobalContextProvider>
-          <Router>
+          <BrowserRouter>
             <UserFeedbackContainer />
             <AdminWelcomeContainer />
 
-            <AuthRoutes />
-            <HomeRoute />
-            <SettingRoutes />
-            <BillingRoutes />
-            <PayrollRoutes />
-            <AdminRoutes />
-            <SelfServiceRoutes />
-            <Routes>
-              {/* TO DO auth guard should be added */}
-
-              <Route
-                path={appRoutes.notifications}
-                element={
-                  <RequireAuth loginPath={appRoutes.login}>
-                    <Notification />
-                  </RequireAuth>
-                }
-              />
-            </Routes>
-            {/* <Route path="*" element={<NotFoundPage />} /> */}
-          </Router>
+            <Router />
+          </BrowserRouter>
         </GlobalContextProvider>
         <ReactQueryDevtools initialIsOpen={false} position="bottom-right" />
       </QueryClientProvider>

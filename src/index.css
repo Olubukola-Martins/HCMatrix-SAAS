@@ -415,3 +415,8 @@ textarea.ant-input,
 .ant-tooltip-arrow-content {
   --antd-arrow-background-color: var(--card);
 }
+
+/* allow upload to occupy entire width */
+.resusable-file-upload .ant-upload {
+  width: 100%;
+}
