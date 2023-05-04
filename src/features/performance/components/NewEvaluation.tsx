@@ -41,7 +41,7 @@ export const NewEvaluation = ({ open, handleClose }: IModalProps) => {
           control={{ name: "employee", label: "Select Employee" }}
           mode="multiple"
         />
-        
+
         <AppButton label="Set Evaluation" type="submit" />
       </Form>
     </Modal>
