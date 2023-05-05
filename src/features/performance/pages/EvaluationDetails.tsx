@@ -4,10 +4,7 @@ import type { ColumnsType } from "antd/es/table";
 import { Link } from "react-router-dom";
 import { Dropdown, Menu, Table } from "antd";
 
-const items = [
-  { key: "1", label: "Action 1" },
-  { key: "2", label: "Action 2" },
-];
+
 interface DataType {
   name: string;
   employeeId: number | string;
