@@ -15,12 +15,16 @@ type TFileType =
   | "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
 interface IFilesProps {
   allowedFileTypes: TFileType[];
-  displayType?: "icon" | "button";
+  displayType?: "icon" | "button" | "form-space-between";
+  textToDisplay?: string;
+  fileKey: string;
 }
 
 export const FileUpload = ({
   allowedFileTypes,
   displayType = "button",
+  textToDisplay = "Click to Upload",
+  fileKey,
 }: IFilesProps) => {
   const auth = useAuthUser();
   const authDetails = auth() as unknown as IAuthDets;
@@ -55,7 +59,7 @@ export const FileUpload = ({
       if (info.file.status === "done") {
         dispatch({
           type: EGlobalOps.setUploadFileString,
-          payload: info.file.response.data,
+          payload: { value: info.file.response.data, key: fileKey },
         });
         message.success(`${info.file.name} file uploaded successfully`);
       } else if (info.file.status === "error") {
@@ -65,10 +69,16 @@ export const FileUpload = ({
   };
 
   return (
-    <div>
+    <div className="resusable-file-upload">
       <Upload {...props}>
         {displayType === "button" && (
-          <Button icon={<UploadOutlined />}>Click to Upload</Button>
+          <Button icon={<UploadOutlined />}>{textToDisplay}</Button>
+        )}
+        {displayType === "form-space-between" && (
+          <div className="flex justify-between items-center w-full">
+            <span>{textToDisplay}</span>
+            <UploadOutlined />
+          </div>
         )}
         {displayType === "icon" && <div>Test file +</div>}
       </Upload>

@@ -1,6 +1,6 @@
 import React, { Component } from "react";
-import ErrorImage from "../Assets/err.png";
-import Button from "./Button";
+import ErrorImage from "../../assets/images/err.png";
+import { AppButton } from "components/button/AppButton";
 
 export class ErrorBoundary extends Component {
   constructor(props) {
@@ -25,7 +25,7 @@ export class ErrorBoundary extends Component {
             {this.props?.message ? this.props?.message : "Something went wrong"}
           </h1>
           {this.props?.action && (
-            <Button label="Go back" handleClick={this.props.action} />
+            <AppButton label="Go back" handleClick={this.props.action} />
           )}
         </div>
       );

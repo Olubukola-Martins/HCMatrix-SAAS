@@ -1,7 +1,7 @@
 import { Button, Form, Input } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
 import { useEffect, useState } from "react";
-import { EditStage, TStage } from "./EditStage";
+import { EditBasicStage } from "./EditBasicStage";
 
 import { useQueryClient } from "react-query";
 import { EditOutlined, SaveOutlined } from "@ant-design/icons";
@@ -10,40 +10,30 @@ import { AddBasicStage } from "./AddBasicStage";
 import { textInputValidationRules } from "utils/formHelpers/validation";
 import { openNotification } from "utils/notifications";
 import useAddStageToBasicWorkflow from "../hooks/useAddStageToBasicWorkflow";
-import { TBasicWorkflowStage } from "../hooks/useCreateBasicWorkflow";
-import useEditBasicWorkflow from "../hooks/useEditBasicWorkflow";
-import { useFetchSingleBasicWorkflow } from "../hooks/useFetchSingleBasicWorkflow";
+import { QUERY_KEY_FOR_SINGLE_WORKFLOW } from "../hooks/useFetchSingleWorkflow";
+import { TSingleWorkflow, TStage } from "../types";
+import useUpdateSingleWorkflow from "../hooks/useUpdateSingleWorkflow";
 
-export const EditBasicWorkflow: React.FC<{ id: number }> = ({ id }) => {
+export const EditBasicWorkflow: React.FC<{ data: TSingleWorkflow }> = ({
+  data,
+}) => {
   const queryClient = useQueryClient();
   const [form] = Form.useForm();
   const [editName, setEditName] = useState(false);
   const [showCreate, setShowCreate] = useState(false);
 
-  const { data, isSuccess } = useFetchSingleBasicWorkflow({ id });
-
   useEffect(() => {
-    if (isSuccess) {
+    if (data) {
       form.setFieldsValue({ name: data.name });
     }
-  }, [data, isSuccess, form]);
+  }, [data, form]);
 
   const { mutate: stageMutate } = useAddStageToBasicWorkflow();
-  const addStage = (stage: Pick<TStage, "name" | "concernedId" | "type">) => {
-    const { type, name, concernedId } = stage;
-
-    const workflowStage: TBasicWorkflowStage = { name };
-    if (type === "role") workflowStage["roleId"] = concernedId;
-    if (type === "employee") workflowStage["employeeId"] = concernedId;
-    if (type === "group") workflowStage["groupId"] = concernedId;
-    if (type === "department-head")
-      workflowStage["departmentHeadId"] = concernedId;
+  const addStage = (stage: Pick<TStage, "name" | "entityId" | "type">) => {
     stageMutate(
       {
-        id,
-        stage: {
-          ...workflowStage,
-        },
+        id: data.id,
+        stage,
       },
       {
         onError: (err: any) => {
@@ -63,7 +53,7 @@ export const EditBasicWorkflow: React.FC<{ id: number }> = ({ id }) => {
             // duration: 0.4,
           });
           queryClient.invalidateQueries({
-            queryKey: ["basic-workflow", id],
+            queryKey: [QUERY_KEY_FOR_SINGLE_WORKFLOW, data.id],
             // exact: true,
           });
           setShowCreate(false);
@@ -72,13 +62,13 @@ export const EditBasicWorkflow: React.FC<{ id: number }> = ({ id }) => {
     );
   };
 
-  const { mutate, isLoading } = useEditBasicWorkflow();
+  const { mutate, isLoading } = useUpdateSingleWorkflow();
 
   const handleSubmit = (data: any) => {
     mutate(
       {
         name: data.name,
-        id,
+        id: data.id,
       },
       {
         onError: (err: any) => {
@@ -100,7 +90,7 @@ export const EditBasicWorkflow: React.FC<{ id: number }> = ({ id }) => {
 
           setEditName(false);
           queryClient.invalidateQueries({
-            queryKey: ["basic-workflow", id],
+            queryKey: [QUERY_KEY_FOR_SINGLE_WORKFLOW, data.id],
             // exact: true,
           });
         },
@@ -110,70 +100,75 @@ export const EditBasicWorkflow: React.FC<{ id: number }> = ({ id }) => {
 
   return (
     <div className="flex flex-col gap-4">
-      <Form
-        layout="vertical"
-        requiredMark={false}
-        form={form}
-        onFinish={handleSubmit}
-      >
-        <div className="flex gap-4">
-          <Form.Item
-            name="name"
-            label={<span className="font-bold">Workflow Name</span>}
-            rules={textInputValidationRules}
-          >
-            <Input
-              placeholder="Workflow name"
-              className="w-40"
-              disabled={!editName}
+      <>
+        <Form
+          layout="vertical"
+          requiredMark={false}
+          form={form}
+          onFinish={handleSubmit}
+        >
+          <div className="flex gap-4">
+            <Form.Item
+              name="name"
+              label={<span className="font-bold">Basic Workflow Name</span>}
+              rules={textInputValidationRules}
+            >
+              <Input
+                placeholder="Workflow name"
+                className="w-40"
+                disabled={!editName}
+              />
+            </Form.Item>
+            <div className="flex gap-4 mt-8 relative bottom-1">
+              {!editName && (
+                <Button
+                  icon={<EditOutlined />}
+                  onClick={() => setEditName(true)}
+                >
+                  Edit
+                </Button>
+              )}
+              {editName && (
+                <Button
+                  icon={<SaveOutlined />}
+                  type="primary"
+                  loading={isLoading}
+                  onClick={() => form.submit()}
+                >
+                  Save
+                </Button>
+              )}
+            </div>
+          </div>
+        </Form>
+
+        <div className="flex flex-col gap-3">
+          <span className="font-bold">Basic Workflow Stages</span>
+          {data?.stages.map((stage) => (
+            <div className="flex gap-4" key={stage.id}>
+              <EditBasicStage stage={stage} workflowId={data.id} />
+            </div>
+          ))}
+          {showCreate && (
+            <AddBasicStage
+              editable={showCreate}
+              removeStage={() => setShowCreate(false)}
+              enableEdit={() => setShowCreate(true)}
+              handleFinish={(data: any) => {
+                addStage({
+                  name: data.name,
+                  entityId: data.entityId,
+                  type: data.type,
+                });
+              }}
             />
-          </Form.Item>
-          <div className="flex gap-4 mt-8 relative bottom-1">
-            {!editName && (
-              <Button icon={<EditOutlined />} onClick={() => setEditName(true)}>
-                Edit
-              </Button>
-            )}
-            {editName && (
-              <Button
-                icon={<SaveOutlined />}
-                type="primary"
-                loading={isLoading}
-                onClick={() => form.submit()}
-              >
-                Save
-              </Button>
-            )}
-          </div>
+          )}
+
+          <Button icon={<PlusOutlined />} onClick={() => setShowCreate(true)}>
+            Add Stage
+          </Button>
         </div>
-      </Form>
-
-      <div className="flex flex-col gap-3">
-        <span className="font-bold">Workflow Stages</span>
-        {data?.stages.map((stage) => (
-          <div className="flex gap-4" key={stage.id}>
-            <EditStage stage={stage} workflowId={id} />
-          </div>
-        ))}
-        {showCreate && (
-          <AddBasicStage
-            editable={showCreate}
-            removeStage={() => setShowCreate(false)}
-            enableEdit={() => setShowCreate(true)}
-            handleFinish={(data: any) => {
-              addStage({
-                name: data.name,
-                concernedId: data.concernedId,
-                type: data.type,
-              });
-            }}
-          />
-        )}
-
-        <Button icon={<PlusOutlined />} onClick={() => setShowCreate(true)}>
-          Add Stage
-        </Button>
-      </div>
+      </>
     </div>
   );
 };

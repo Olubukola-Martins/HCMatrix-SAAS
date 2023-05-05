@@ -4,19 +4,20 @@ type TCCompany = {
   id: string;
   name: string;
 };
+type TUploadFile = { key: string; value: string };
 
 export interface IGlobalState {
   currentCompany: TCCompany | null;
   showInitialSetUp: boolean;
   showAdminWelcomeMessage: boolean;
-  upLoadFileString: string;
+  upLoadFileString: TUploadFile[];
 }
 
 const initState: IGlobalState = {
   currentCompany: null,
   showInitialSetUp: false,
   showAdminWelcomeMessage: true,
-  upLoadFileString: "",
+  upLoadFileString: [],
 };
 
 interface IGlobalContext {
@@ -29,6 +30,7 @@ export enum EGlobalOps {
   setAdminWelcomeMessage,
   setShowInitialSetup,
   setUploadFileString,
+  clearUploadFileString,
 }
 
 interface IAction {
@@ -56,11 +58,29 @@ const GlobalReducer = (state: IGlobalState, action: IAction): IGlobalState => {
       });
       return newState;
     case EGlobalOps.setUploadFileString:
+      // delete the key if it exists
+      const updatedFileString = state.upLoadFileString.filter(
+        (item) => item.key !== (action.payload as TUploadFile).key
+      );
       return {
         ...state,
-        upLoadFileString: action.payload,
+        upLoadFileString: [
+          ...updatedFileString,
+          {
+            key: (action.payload as TUploadFile).key,
+            value: (action.payload as TUploadFile).value,
+          },
+        ],
       };
-
+    case EGlobalOps.clearUploadFileString:
+      // delete the key if it exists
+      const clearedFileString = state.upLoadFileString.filter(
+        (item) => item.key !== (action.payload as TUploadFile).key
+      );
+      return {
+        ...state,
+        upLoadFileString: [...clearedFileString],
+      };
     case EGlobalOps.setShowInitialSetup:
       return {
         ...state,
@@ -99,7 +119,7 @@ const GlobalContextProvider = ({ children }: IProps) => {
       return {
         currentCompany,
         showInitialSetUp: false,
-        upLoadFileString: "",
+        upLoadFileString: [],
         showAdminWelcomeMessage: true,
       };
     }

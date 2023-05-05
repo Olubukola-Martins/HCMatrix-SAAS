@@ -57,18 +57,15 @@ export const getEmployees = async (
 export const useFetchEmployees = ({
   pagination,
   searchParams,
-
+  onSuccess,
   status,
-}: TFetchListDataExtraProps & { status?: TEmployeeStatus[] } = {}) => {
+}: TFetchListDataExtraProps & { status?: TEmployeeStatus[] } & {
+  onSuccess?: Function;
+} = {}) => {
   const { token, companyId } = useApiAuth();
 
   const queryData = useQuery(
-    [
-      QUERY_KEY_FOR_LIST_OF_EMPLOYEES,
-      pagination?.limit,
-      status,
-      searchParams?.name,
-    ],
+    [QUERY_KEY_FOR_LIST_OF_EMPLOYEES, pagination, status, searchParams?.name],
     () =>
       getEmployees({
         companyId,
@@ -83,7 +80,9 @@ export const useFetchEmployees = ({
       // refetchIntervalInBackground: false,
       // refetchOnWindowFocus: false,
       onError: (err: any) => {},
-      onSuccess: (data) => {},
+      onSuccess: (data) => {
+        onSuccess && onSuccess(data);
+      },
     }
   );
 

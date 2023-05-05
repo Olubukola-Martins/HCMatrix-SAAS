@@ -17,6 +17,7 @@ import { useUpdateEmployee } from "../../hooks/useUpdateEmployee";
 import { TEmployee, IUpdateEmpProps } from "../../types";
 import { useApiAuth } from "hooks/useApiAuth";
 import { FileUpload } from "components/FileUpload";
+import { useCurrentFileUploadUrl } from "hooks/useCurrentFileUploadUrl";
 
 interface IProps extends IDrawerProps {
   employee?: TEmployee;
@@ -29,7 +30,7 @@ export const EditMyProfile = ({ open, handleClose, employee }: IProps) => {
 
   const globalCtx = useContext(GlobalContext);
   const { state: globalState } = globalCtx;
-  const avatarUrl = globalState.upLoadFileString;
+  const avatarUrl = useCurrentFileUploadUrl("avatarUrl");
 
   useEffect(() => {
     if (employee) {
@@ -141,6 +142,7 @@ export const EditMyProfile = ({ open, handleClose, employee }: IProps) => {
               <div className="mt-4">
                 <FileUpload
                   allowedFileTypes={["image/png", "image/jpeg", "image/jpg"]}
+                  fileKey={"avatarUrl"}
                 />
               </div>
               <Form.Item name="image" noStyle>
