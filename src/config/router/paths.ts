@@ -139,5 +139,13 @@ export const appRoutes = {
   goalsObjective: `/performance/goal-objective`,
   nineBox: `/performance/9box`,
   performanceReport: `/performance/report`,
+  evaluationDetails: (id?: number) => ({
+    format: `/performance/evaluation/:id`,
+    path: `/performance/evaluation/${id}`,
+  }),
+  evaluationReport: (id?: number) => ({
+    format: `/performance/evaluation-report/:id`,
+    path: `/performance/evaluation-report/${id}`,
+  }),
   notFound: "*",
 };

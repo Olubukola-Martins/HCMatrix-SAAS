@@ -4,13 +4,14 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import { NewEvaluation } from "../components/NewEvaluation";
 import { PerformanceNav } from "../components/PerformanceNav";
+import { appRoutes } from "config/router/paths";
 
 export const BalanceScorecard = () => {
-    const [open, setOpen] = useState(false)
+  const [open, setOpen] = useState(false);
 
   return (
     <div className="Container">
-        <NewEvaluation open={open} handleClose={() => setOpen(false)}/>
+      <NewEvaluation open={open} handleClose={() => setOpen(false)} />
       <h2 className="lg:text-xl text-lg pb-5 font-bold">Performance</h2>
       <div className="shadow-md rounded border px-3 pb-5">
         <PerformanceNav active="balance scorecard" />
@@ -22,7 +23,10 @@ export const BalanceScorecard = () => {
               evaluation.
             </p>
           </div>
-          <AppButton label="Set New Evaluation" handleClick={() => setOpen(true)}/>
+          <AppButton
+            label="Set New Evaluation"
+            handleClick={() => setOpen(true)}
+          />
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-6 mt-8">
@@ -59,7 +63,7 @@ export const BalanceScorecard = () => {
             <div className="w-full bg-slate-400" style={{ height: 1.7 }} />
             <div className="px-4 my-5 flex justify-end">
               <Link
-                to="/"
+                to={appRoutes.evaluationDetails(1).path}
                 className="text-caramel text-right text-base underline font-semibold"
               >
                 View
