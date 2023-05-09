@@ -1,26 +1,23 @@
+// useFetchAllConferenceRooms
+
 import axios from "axios";
 import { useQuery } from "react-query";
-
 import { useApiAuth } from "hooks/useApiAuth";
 import { IPaginationProps, ISearchParams, ICurrentCompany } from "types";
-import { TSingleConferenceRoomBooking } from "../types";
+import { TSingleConferenceRoom } from "../types";
 
-export type TCRBookingStatus = "pending" | "approved" | "rejected";
-
+// TO DO : need to exist in the general data entities and refactored
 interface IGetDataProps {
   pagination?: IPaginationProps;
   searchParams?: ISearchParams;
-  employeeId?: number;
-  status?: TCRBookingStatus;
 }
 
-export const QUERY_KEY_FOR_ALL_CONFERENCE_ROOM_BOOKINGS =
-  "conference-room-bookings";
+export const QUERY_KEY_FOR_ALL_CONFERENCE_ROOMS = "conference-rooms";
 
 const getBAllConferenceRooms = async (
   props: IGetDataProps & ICurrentCompany
-): Promise<{ data: TSingleConferenceRoomBooking[]; total: number }> => {
-  const url = `${process.env.REACT_APP_UTILITY_BASE_URL}/self-service/conference-room/booking`;
+): Promise<{ data: TSingleConferenceRoom[]; total: number }> => {
+  const url = `${process.env.REACT_APP_UTILITY_BASE_URL}/self-service/conference-room/available`;
 
   const config = {
     headers: {
@@ -33,8 +30,6 @@ const getBAllConferenceRooms = async (
       limit: props?.pagination?.limit,
       offset: props?.pagination?.offset,
       search: props?.searchParams?.name,
-      employeeId: props.employeeId,
-      status: props.status,
     },
   };
 
@@ -42,10 +37,14 @@ const getBAllConferenceRooms = async (
   const fetchedData = res.data.data;
   const result = fetchedData.result;
 
-  const data: TSingleConferenceRoomBooking[] = result.map(
-    (item: any): TSingleConferenceRoomBooking => ({
-      ...item,
-      // Adheres to backend
+  const data: TSingleConferenceRoom[] = result.map(
+    (item: any): TSingleConferenceRoom => ({
+      id: item.id,
+      name: item.name,
+      label: item.label,
+      companyId: item.companyId,
+      createdAt: item.createdAt,
+      updatedAt: item.updatedAt,
     })
   );
 
@@ -57,11 +56,11 @@ const getBAllConferenceRooms = async (
   return ans;
 };
 
-export const useFetchAllConferenceRoomBookings = (props: IGetDataProps) => {
+export const useFetchAllAvailableConferenceRooms = (props: IGetDataProps) => {
   const { token, companyId } = useApiAuth();
-  // TO DO: Add searchPArams to useQuery hook
+
   const queryData = useQuery(
-    [QUERY_KEY_FOR_ALL_CONFERENCE_ROOM_BOOKINGS, props],
+    [QUERY_KEY_FOR_ALL_CONFERENCE_ROOMS, props.pagination],
     () =>
       getBAllConferenceRooms({
         ...props,

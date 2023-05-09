@@ -1,18 +1,15 @@
 import { Select } from "antd";
 
 import CRBBookingsList from "./CRBBookingsList";
-import { useApiAuth } from "hooks/useApiAuth";
+import { CR_BOOKING_STATUS_OPTIONS } from "../constants";
 import { useState } from "react";
 import { TCRBookingStatus } from "../hooks/useFetchAllConferenceRoomBookings";
-import { CR_BOOKING_STATUS_OPTIONS } from "../constants";
 
-const CRBHistoryTable = () => {
-  const { currentUserEmployeeId } = useApiAuth();
+export const CRBRequestsTable = () => {
   const [status, setStatus] = useState<TCRBookingStatus>();
-
   return (
     <div>
-      <p className="text-lg mb-4">My Booking History</p>
+      <p className="text-lg mb-4">Booking Requests</p>
       <div className="flex flex-col gap-6">
         <div className="flex justify-between items-center">
           <Select
@@ -30,10 +27,8 @@ const CRBHistoryTable = () => {
             <i className="ri-logout-box-r-line text-xl"></i>
           </div>
         </div>
-        <CRBBookingsList employeeId={currentUserEmployeeId} status={status} />
+        <CRBBookingsList status={status} />
       </div>
     </div>
   );
 };
-
-export default CRBHistoryTable;

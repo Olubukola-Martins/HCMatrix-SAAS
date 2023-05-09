@@ -1,4 +1,4 @@
-import { Space, Dropdown, Menu, Table, Drawer } from "antd";
+import { Space, Dropdown, Menu, Table, Drawer, Modal } from "antd";
 import { MoreOutlined } from "@ant-design/icons";
 
 import React, { useState } from "react";
@@ -6,12 +6,20 @@ import { ColumnsType, TablePaginationConfig } from "antd/lib/table";
 
 import moment from "moment";
 import { DEFAULT_PAGE_SIZE } from "constants/general";
-import { useFetchAllConferenceRoomBookings } from "../hooks/useFetchAllConferenceRoomBookings";
+import {
+  TCRBookingStatus,
+  useFetchAllConferenceRoomBookings,
+} from "../hooks/useFetchAllConferenceRoomBookings";
 import { TSingleConferenceRoomBooking } from "../types";
 import { getAppropriateColorForStatus } from "utils/colorHelpers/getAppropriateColorForStatus";
+import CRBBookingDetails from "./CRBBookingDetails";
 
-const CRBBookingsList = () => {
+const CRBBookingsList: React.FC<{
+  status?: TCRBookingStatus;
+  employeeId?: number;
+}> = ({ status, employeeId }) => {
   const [showD, setShowD] = useState(false);
+  const [bookingId, setBookingId] = useState<number>();
   const [pagination, setPagination] = useState<TablePaginationConfig>({
     current: 1,
     pageSize: DEFAULT_PAGE_SIZE,
@@ -42,6 +50,8 @@ const CRBBookingsList = () => {
       limit: pagination.pageSize,
       offset,
     },
+    status,
+    employeeId,
   });
 
   const columns: ColumnsType<TSingleConferenceRoomBooking> = [
@@ -113,17 +123,25 @@ const CRBBookingsList = () => {
       title: "Action",
       key: "action",
       width: 100,
-      render: (val: string, item: any) => (
+      render: (_, item) => (
         <Space align="center" className="cursor-pointer">
           <Dropdown
             overlay={
               <Menu>
-                <Menu.Item key="3">View</Menu.Item>
-                <Menu.Item key="2">Approve</Menu.Item>
-                <Menu.Item key="1">Reject</Menu.Item>
+                <Menu.Item
+                  key="3"
+                  onClick={() => {
+                    setShowD(true);
+                    setBookingId(item.id);
+                  }}
+                >
+                  View
+                </Menu.Item>
+                {/* <Menu.Item key="2">Approve</Menu.Item>
+                <Menu.Item key="1">Reject</Menu.Item> */}
               </Menu>
             }
-            trigger={["click", "hover"]}
+            trigger={["click"]}
           >
             <MoreOutlined />
           </Dropdown>
@@ -134,12 +152,16 @@ const CRBBookingsList = () => {
 
   return (
     <div>
-      <Drawer
-        visible={showD}
-        onClose={() => setShowD(false)}
+      <Modal
+        open={showD}
+        onCancel={() => setShowD(false)}
         closeIcon={false}
-        title={"Edit Request"}
-      ></Drawer>
+        title={"Booking Details"}
+        style={{ top: 10 }}
+        footer={null}
+      >
+        {bookingId && <CRBBookingDetails id={bookingId} />}
+      </Modal>
 
       <Table
         columns={columns}

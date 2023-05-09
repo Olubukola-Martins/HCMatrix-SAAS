@@ -1,3 +1,4 @@
+import { Skeleton } from "antd";
 import { AppButton, IAppBtnProps } from "components/button/AppButton";
 import React from "react";
 import { Link } from "react-router-dom";
@@ -8,6 +9,7 @@ export interface ISimpleCard {
   url?: string;
   action?: IAppBtnProps;
   center?: boolean;
+  loading?: boolean;
 }
 
 export const SimpleCard: React.FC<ISimpleCard> = ({
@@ -16,6 +18,7 @@ export const SimpleCard: React.FC<ISimpleCard> = ({
   url,
   action,
   center = false,
+  loading,
 }) => {
   if (url) {
     return (
@@ -28,8 +31,12 @@ export const SimpleCard: React.FC<ISimpleCard> = ({
             center && "items-center"
           }`}
         >
-          <p className="text-sm font-medium py-3 capitalize">{title}</p>
-          <h2 className="font-semibold text-lg">{highlight}</h2>
+          <Skeleton loading={loading} paragraph={{ rows: 3 }}>
+            <>
+              <p className="text-sm font-medium py-3 capitalize">{title}</p>
+              <h2 className="font-semibold text-lg">{highlight}</h2>
+            </>
+          </Skeleton>
         </div>
       </Link>
     );
@@ -41,9 +48,15 @@ export const SimpleCard: React.FC<ISimpleCard> = ({
           center && "items-center"
         }`}
       >
-        <p className="text-sm font-medium py-3 capitalize">{title}</p>
-        {highlight && <h2 className="font-semibold text-lg">{highlight}</h2>}
-        {action && <AppButton {...action} />}
+        <Skeleton loading={loading} paragraph={{ rows: 3 }}>
+          <>
+            <p className="text-sm font-medium py-3 capitalize">{title}</p>
+            {highlight && (
+              <h2 className="font-semibold text-lg">{highlight}</h2>
+            )}
+            {action && <AppButton {...action} />}
+          </>
+        </Skeleton>
       </div>
     </div>
   );

@@ -1,11 +1,11 @@
 import { TablePaginationConfig } from "antd";
 
 import React, { useState } from "react";
-import { useFetchAllBasicWorkflows } from "../hooks/useFetchAllBasicWorkflows";
 import { WorkflowsTable } from "./WorkflowsTable";
 import { DEFAULT_PAGE_SIZE } from "constants/general";
 import { ErrorComponent } from "components/errorHandlers/ErrorComponent";
 import { DataContainerLoader } from "components/loaders/DataContainerLoader";
+import { useFetchAllWorkflows } from "../hooks/useFetchAllWorkflows";
 
 export const WorkflowsViewContainer = () => {
   const [pagination, setPagination] = useState<TablePaginationConfig>({
@@ -33,7 +33,7 @@ export const WorkflowsViewContainer = () => {
       }));
     }
   };
-  const { data, isError, isFetching, isSuccess } = useFetchAllBasicWorkflows({
+  const { data, isError, isFetching, isSuccess } = useFetchAllWorkflows({
     pagination: {
       limit: pagination.pageSize,
       offset,

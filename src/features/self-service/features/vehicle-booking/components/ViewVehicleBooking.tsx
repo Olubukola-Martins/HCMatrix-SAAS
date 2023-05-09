@@ -1,4 +1,12 @@
-import { DatePicker, Form, Input, InputNumber, Modal } from "antd";
+import {
+  DatePicker,
+  Form,
+  Input,
+  InputNumber,
+  Modal,
+  Select,
+  Skeleton,
+} from "antd";
 import React, { useEffect } from "react";
 import { IModalProps } from "types";
 import {
@@ -9,6 +17,8 @@ import { FormVehicleInput } from "./FormVehicleInput";
 import { useFetchSingleVehicleBooking } from "../hooks/useFetchSingleVehicleBooking";
 import { useApiAuth } from "hooks/useApiAuth";
 import moment from "moment";
+import { AppButton } from "components/button/AppButton";
+import { APPROVAL_STATUS_OPTIONS } from "constants/statustes";
 
 interface IProps extends IModalProps {
   bookingId: number;
@@ -21,7 +31,7 @@ export const ViewVehicleBooking: React.FC<IProps> = ({
 }) => {
   const { token, companyId } = useApiAuth();
   const [form] = Form.useForm();
-  const { data, isSuccess } = useFetchSingleVehicleBooking({
+  const { data, isSuccess, isFetching } = useFetchSingleVehicleBooking({
     companyId,
     token,
     id: bookingId,
@@ -34,7 +44,7 @@ export const ViewVehicleBooking: React.FC<IProps> = ({
         employeeId: data.employeeId,
         destination: data.destination,
         duration: data.duration,
-        vehicleId: data.vehicleId,
+        vehicle: `${data.vehicle.brand} ${data.vehicle.type} (${data.vehicle.plateNumber}),`,
       });
     }
   }, [isSuccess, data, form]);
@@ -44,34 +54,62 @@ export const ViewVehicleBooking: React.FC<IProps> = ({
       onCancel={() => handleClose()}
       footer={null}
       title={"View Vehicle Booking"}
-      style={{ top: 20 }}
+      style={{ top: 10 }}
     >
-      <Form layout="vertical" requiredMark={false} form={form} disabled>
-        <Form.Item
-          name="date"
-          rules={generalValidationRules}
-          label="Booking Date"
-        >
-          <DatePicker placeholder="Booking Date" className="w-full" />
-        </Form.Item>
-        <FormVehicleInput Form={Form} />
-        {/* TO DO: This needs to be  from retrieved vehicle data, as they will be an issue if pagination of FormVehicleInput doesnt include selected vehicle */}
+      <Skeleton loading={isFetching} active paragraph={{ rows: 12 }}>
+        <Form layout="vertical" requiredMark={false} form={form}>
+          <Form.Item
+            name="date"
+            rules={generalValidationRules}
+            label="Booking Date"
+          >
+            <DatePicker
+              placeholder="Booking Date"
+              className="w-full"
+              disabled
+            />
+          </Form.Item>
+          <Form.Item
+            name="vehicle"
+            rules={generalValidationRules}
+            label="Vehicle"
+          >
+            <Input placeholder="Vehicle" className="w-full" disabled />
+          </Form.Item>
 
-        <Form.Item
-          label="Duration(hrs)"
-          name="duration"
-          rules={generalValidationRules}
-        >
-          <InputNumber placeholder="duration" className="w-full" />
-        </Form.Item>
-        <Form.Item
-          label="Destination"
-          name="destination"
-          rules={textInputValidationRules}
-        >
-          <Input.TextArea placeholder="destination" />
-        </Form.Item>
-      </Form>
+          <Form.Item
+            label="Duration(hrs)"
+            name="duration"
+            rules={generalValidationRules}
+          >
+            <InputNumber placeholder="duration" className="w-full" disabled />
+          </Form.Item>
+          <Form.Item
+            label="Destination"
+            name="destination"
+            rules={textInputValidationRules}
+          >
+            <Input.TextArea placeholder="destination" disabled />
+          </Form.Item>
+
+          <Form.Item name={"status"} label="Status">
+            <Select
+              placeholder="status"
+              options={APPROVAL_STATUS_OPTIONS.filter(
+                (item) => item.value !== "pending"
+              )}
+            />
+          </Form.Item>
+
+          <div className="flex justify-end gap-2">
+            {<AppButton label="Download" variant="transparent" type="button" />}
+
+            {data?.status === "pending" && (
+              <AppButton label="Approve/Reject" type="submit" />
+            )}
+          </div>
+        </Form>
+      </Skeleton>
     </Modal>
   );
 };
