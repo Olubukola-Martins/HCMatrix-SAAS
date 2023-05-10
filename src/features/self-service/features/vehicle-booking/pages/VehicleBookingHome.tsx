@@ -6,6 +6,7 @@ import { VehicleWrapper } from "../components/VehicleWrapper";
 import { EmployeeVehicleBooking } from "../components/EmployeeVehicleBooking";
 import { PageIntro } from "components/layout/PageIntro";
 import { appRoutes } from "config/router/paths";
+import { VehicleSetting } from "../components/VehicleSetting";
 
 const VehicleBookingHome = () => {
   const tabItems = [
@@ -23,6 +24,11 @@ const VehicleBookingHome = () => {
       label: "Reminders",
       children: <Reminder />,
       key: "Reminders",
+    },
+    {
+      label: "Settings",
+      children: <VehicleSetting />,
+      key: "Settings",
     },
     {
       label: "My Bookings",

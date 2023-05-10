@@ -17,12 +17,7 @@ const LeaveTypeAccordian = () => {
       >
         <AddLeaveTypeForm />
       </Modal>
-      <Collapse
-        collapsible="header"
-        defaultActiveKey={["1"]}
-        expandIconPosition="end"
-        accordion
-      >
+      <Collapse defaultActiveKey={["1"]} expandIconPosition="end" accordion>
         <Panel
           header={<Typography.Title level={5}>Leave Types</Typography.Title>}
           key="1"

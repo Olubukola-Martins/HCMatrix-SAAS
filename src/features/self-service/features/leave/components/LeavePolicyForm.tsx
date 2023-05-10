@@ -1,4 +1,5 @@
 import { Form, Select, Switch, Typography, InputNumber } from "antd";
+import { FormWorkflowInput } from "features/core/workflows/components/FormWorkflowInput";
 import { useState } from "react";
 
 const btwnStyle =
@@ -7,9 +8,16 @@ const gapStyle = "bg-card pt-4 px-3 flex  gap-16 align-center rounded-md";
 const LeavePolicyForm = () => {
   const [showMaxCODays, setShowMaxCODays] = useState(false);
   const [showCasualLLen, setShowCasualLLen] = useState(false);
+  const [form] = Form.useForm();
+
   return (
     <div>
-      <Form labelCol={{ span: 24 }}>
+      <Form
+        labelCol={{ span: 24 }}
+        form={form}
+        requiredMark={false}
+        // onFinish={handleSubmit}
+      >
         <div className="flex flex-col gap-4">
           <div className={gapStyle}>
             <Form.Item label="" className="flex-1">
@@ -18,13 +26,12 @@ const LeavePolicyForm = () => {
                 className="w-full"
               />
             </Form.Item>
-            <Form.Item label="" className="flex-1">
-              <Select placeholder="Select Approval Workflow">
-                <Select.Option key={`1`} value={`2`}>
-                  Leave Workflow
-                </Select.Option>
-              </Select>
-            </Form.Item>
+            <div className="flex-1">
+              <FormWorkflowInput
+                Form={Form}
+                control={{ label: "", name: "workflowId" }}
+              />
+            </div>
           </div>
           <div className={btwnStyle}>
             <div>

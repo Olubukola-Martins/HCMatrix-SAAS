@@ -2,6 +2,8 @@ import { Modal } from "antd";
 import React, { useState } from "react";
 import NewCRBBooking from "./NewCRBBooking";
 import NewMeetingRoomForm from "./NewMeetingRoomForm";
+import { Link } from "react-router-dom";
+import { appRoutes } from "config/router/paths";
 
 interface IProps {
   title?: string;
@@ -40,7 +42,7 @@ const CRBHeader = ({ title = "Meeting Rooms" }: IProps) => {
           <i className="ri-arrow-left-s-line text-lg cursor-pointer hover:text-caramel"></i>
           <h2 className="text-xl md:text-2xl text-accent">{title}</h2>
         </div>
-        <div className="flex gap-2">
+        <div className="flex gap-2 items-center">
           <button
             className="button"
             onClick={() => handleAction(EAction.NEW_BOOKING)}
@@ -53,6 +55,12 @@ const CRBHeader = ({ title = "Meeting Rooms" }: IProps) => {
           >
             Add Meeting Room
           </button>
+          <Link
+            to={appRoutes.conferenceRoomBookingSetting}
+            className="text-caramel underline"
+          >
+            Setting
+          </Link>
         </div>
       </div>
     </>

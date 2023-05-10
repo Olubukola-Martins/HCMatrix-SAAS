@@ -26,6 +26,7 @@ import HandOver from "features/self-service/features/handover-forms/pages/HandOv
 import HandOverDetails from "features/self-service/features/handover-forms/pages/HandOverDetails";
 import { HandOverNewForm } from "features/self-service/features/handover-forms/pages/HandOverNewForm";
 import HRLetters from "features/self-service/features/hr-letters-and-documents/pages/HRLetters";
+import { CRBHomeSettings } from "features/self-service/features/conference-room-booking/pages/CRBHomeSettings";
 
 export const selfServiceRoutes: TRouteData[] = [
   {
@@ -121,6 +122,12 @@ export const selfServiceRoutes: TRouteData[] = [
     path: appRoutes.conferenceRoomBooking,
     isSearchable: true,
     title: "Conference Room Booking",
+  },
+  {
+    element: <CRBHomeSettings />,
+    path: appRoutes.conferenceRoomBookingSetting,
+    isSearchable: true,
+    title: "Conference Room Booking Setting",
   },
   {
     element: <LeaveHome />,
