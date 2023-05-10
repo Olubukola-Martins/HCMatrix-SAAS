@@ -1,4 +1,4 @@
-import { Form, Select, Switch, Typography, InputNumber } from "antd";
+import { Form, Switch, Typography, InputNumber } from "antd";
 import { FormWorkflowInput } from "features/core/workflows/components/FormWorkflowInput";
 import { useState } from "react";
 
