@@ -9,3 +9,14 @@ export const APP_AUTHENTICATION_PARAMETERS = {
   TOKEN_EXPIRY_TIME: process.env.REACT_APP_TOKEN_EXPIRY_TIME,
   TOKEN_INTERVAL_TIME: process.env.REACT_APP_TOKEN_INTERVAL_TIME,
 };
+
+export const FIREBASE_PARAMETERS = {
+  apiKey: process.env.REACT_APP_FIREBASE_apiKey,
+  authDomain: process.env.REACT_APP_FIREBASE_authDomain,
+  projectId: process.env.REACT_APP_FIREBASE_projectId,
+  storageBucket: process.env.REACT_APP_FIREBASE_storageBucket,
+  messagingSenderId: process.env.REACT_APP_FIREBASE_messagingSenderId,
+  appId: process.env.REACT_APP_FIREBASE_appId,
+  measurementId: process.env.REACT_APP_FIREBASE_measurementId,
+  vapidKey: process.env.REACT_APP_FIREBASE_vapidKey,
+};

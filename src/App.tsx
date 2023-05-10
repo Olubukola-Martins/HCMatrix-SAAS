@@ -8,25 +8,20 @@ import refreshApi from "config/refreshTokenApi";
 import GlobalContextProvider from "stateManagers/GlobalContextProvider";
 import UserFeedbackContainer from "components/UserFeedbackContainer";
 import AdminWelcomeContainer from "components/AdminWelcomeContainer";
-import { getFirebaseToken, onMessageListener } from "config/router/firebase";
+import { getFirebaseToken } from "config/firebase";
 import { openNotification } from "utils/notifications";
+import { getMessaging, onMessage } from "firebase/messaging";
 const queryClient = new QueryClient();
 
 function App() {
   const [isTokenFound, setTokenFound] = useState<boolean>();
   getFirebaseToken(setTokenFound);
-  onMessageListener()
-    .then((payload: any) => {
-      console.log(payload);
-      openNotification({
-        state: "success",
+  const messaging = getMessaging();
 
-        title: payload?.notification?.title,
-        description: payload?.notification?.body,
-        duration: 0,
-      });
-    })
-    .catch((err) => console.log("failed: ", err));
+  onMessage(messaging, (payload) => {
+    console.log("payload...", payload);
+  });
+
   // TO DO: any time there is an auth action or a company is switched make a call to backend notifications endpoint to populate the notifications page OR alternatively just make the call on the notifications component, or the hook should have token, n useApiAuth handled within to prevent repitition, params(along side pagination) passed to this endpoint should be the notification type => this will enable the hook to be used for different approval types
   useEffect(() => {
     if (isTokenFound === true) {
