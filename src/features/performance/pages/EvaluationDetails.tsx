@@ -3,6 +3,7 @@ import { appRoutes } from "config/router/paths";
 import type { ColumnsType } from "antd/es/table";
 import { Link } from "react-router-dom";
 import { Dropdown, Menu, Table } from "antd";
+import { PerformanceNav } from "../components/PerformanceNav";
 
 
 interface DataType {
@@ -72,6 +73,7 @@ const data: DataType[] = [
 export const EvaluationDetails = () => {
   return (
     <div className="Container">
+         <PerformanceNav active="balance scorecard" />
       <div className="flex justify-between items-center">
         <PageIntro title="Q1 Template" link={appRoutes.balanceScorecard} />
         <Link className="button" to={appRoutes.performanceReport}>

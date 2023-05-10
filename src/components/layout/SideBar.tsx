@@ -1,4 +1,3 @@
-import { appRoutes } from "config/router/paths";
 import { NavLink, useLocation } from "react-router-dom";
 import "./style/style.css";
 
@@ -19,6 +18,7 @@ const SideBar = () => {
     selfService: "/self-service",
     payroll: "/payroll",
     performance: "/performance",
+    attendance: "/attendance",
   };
   return (
     <>
@@ -80,7 +80,6 @@ const SideBar = () => {
           <span className="sideBarName">Recruitment</span>
         </div>
 
-
         <NavLink
           className={`sideBarItemWrap ${
             isActiveRoute({
@@ -99,14 +98,24 @@ const SideBar = () => {
           <span className="sideBarName">Performance</span>
         </NavLink>
 
-        <div className="sideBarItemWrap">
+        <NavLink
+          className={`sideBarItemWrap ${
+            isActiveRoute({
+              pathName: pathname,
+              routeName: appBaseRoutes.attendance,
+            }) && "active"
+          }`}
+          to={`${appBaseRoutes.attendance}/home`}
+        >
           <div className="flex justify-center">
             <span className="sideBarList">
-              <i className="ri-time-line"></i>
+              <i className="ri-check-double-line"></i>
             </span>
           </div>
+
           <span className="sideBarName">Time & Attendance</span>
-        </div>
+        </NavLink>
+
         <div className="sideBarItemWrap">
           <div className="flex justify-center">
             <span className="sideBarList">

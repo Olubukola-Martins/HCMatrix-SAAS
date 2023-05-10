@@ -148,4 +148,14 @@ export const appRoutes = {
     path: `/performance/evaluation-report/${id}`,
   }),
   notFound: "*",
+
+  // Time and Attendance routes
+  attendanceHome: `/attendance/home`,
+  timeSheet: `/attendance/time-sheet`,
+  timeSheetDetails: (id?: number) => ({
+    format: `/attendance/time-sheet/:id`,
+    path: `/attendance/time-sheet/${id}`,
+  }),
+  timeOff: `/attendance/time-off`,
+  attendanceReport: `/attendance/reports`,
 };

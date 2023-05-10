@@ -1,14 +1,20 @@
-import { Progress } from "antd";
+import { Progress, TableColumnsType } from "antd";
 import Table, { ColumnsType } from "antd/lib/table";
 import { PageIntro } from "components/layout/PageIntro";
 import { appRoutes } from "config/router/paths";
+import React from "react";
 
 interface DataType {
+  key: React.Key;
   reviewer: string;
   financial: number;
   customer: number;
   business: number;
   learning: number;
+}
+
+interface ExpandedDataType {
+  comment: string;
 }
 
 const columns: ColumnsType<DataType> = [
@@ -40,15 +46,41 @@ const columns: ColumnsType<DataType> = [
 
 const data: DataType[] = [
   {
+    key: 1,
     reviewer: "Line Manager",
     financial: 5,
     customer: 3,
     business: 10,
     learning: 20,
   },
+  {
+    key: 2,
+    reviewer: "Staff",
+    financial: 2,
+    customer: 10,
+    business: 15,
+    learning: 20,
+  },
 ];
 
 export const EvaluationReport = () => {
+  const expandedRowRender = () => {
+    const columns: TableColumnsType<ExpandedDataType> = [
+      {
+        title: "Comment",
+        dataIndex: "comment",
+      },
+    ];
+
+    const data: ExpandedDataType[] = [
+      {
+        comment:
+          "In publishing and graphic design, Lorem ipsum is a placeholder text.",
+      },
+    ];
+
+    return <Table columns={columns} dataSource={data} />;
+  };
   return (
     <div className="Container">
       <PageIntro
@@ -116,7 +148,11 @@ export const EvaluationReport = () => {
         <h3>Entire Cycle</h3>
         <p>Click on + icon to view comment</p>
       </div>
-      <Table columns={columns} dataSource={data} />
+      <Table
+        columns={columns}
+        dataSource={data}
+        expandable={{ expandedRowRender, defaultExpandedRowKeys: ["0"] }}
+      />
     </div>
   );
 };

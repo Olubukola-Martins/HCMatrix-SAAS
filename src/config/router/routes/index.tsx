@@ -1,3 +1,4 @@
+import { attendanceRoutes } from "./attendance";
 import { authRoutesDontRequireAuthentication } from "./auth";
 import { billingRoutes } from "./billing";
 import { homeRoutes } from "./home";
@@ -20,4 +21,5 @@ export const appPagesData = [
   ...settingRoutes,
   ...systemAdminRoutes,
   ...performanceRoutes,
+  ...attendanceRoutes,
 ];
