@@ -15,7 +15,7 @@ const LeaveTypeAccordian = () => {
         title="Add Leave Type"
         footer={null}
       >
-        <AddLeaveTypeForm />
+        <AddLeaveTypeForm handleClose={() => setShowM(false)} />
       </Modal>
       <Collapse defaultActiveKey={["1"]} expandIconPosition="end" accordion>
         <Panel

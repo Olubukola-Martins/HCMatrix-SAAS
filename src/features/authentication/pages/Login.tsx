@@ -27,7 +27,7 @@ export const Login = () => {
         window.location.replace(link);
       })
       .catch((err) => {
-        console.log("Micro ERR", err.data.response.data.message);
+        console.log("Micro ERR", err);
       });
   };
   const [searchParams] = useSearchParams();
