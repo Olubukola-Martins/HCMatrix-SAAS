@@ -66,8 +66,9 @@ const LeavePolicyForm = () => {
   };
   useEffect(() => {
     if (data) {
-      setShowMaxCODays(!!data.maxLengthCarryover);
+      setShowMaxCODays(data.maxLengthCarryover > 0);
       setShowCasualLLen(!!data.casualLeaveLength);
+
       form.setFieldsValue({
         defaultLength: data.defaultLength,
         workflowId: data.workflowId,
