@@ -36,5 +36,6 @@ export const useApiAuth = () => {
     token,
     companyId,
     currentUserEmployeeId,
+    currentCompanyEmployeeDetails: currentCompany,
   };
 };

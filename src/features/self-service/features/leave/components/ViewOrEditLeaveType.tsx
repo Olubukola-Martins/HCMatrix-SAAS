@@ -1,32 +1,58 @@
-import { Form, Switch, Input, InputNumber, Button, Select } from "antd";
-import { useCreateLeaveType } from "../hooks/useCreateLeaveType";
-import { AppButton } from "components/button/AppButton";
+import React, { useEffect, useState } from "react";
+import { TLeaveType } from "../types";
 import { QUERY_KEY_FOR_LEAVE_TYPES } from "../hooks/useFetchLeaveTypes";
-import { useQueryClient } from "react-query";
-import { openNotification } from "utils/notifications";
-import {
-  generalValidationRules,
-  textInputValidationRules,
-} from "utils/formHelpers/validation";
+import { Form, Modal, Input, InputNumber, Switch, Select, Button } from "antd";
+import { AppButton } from "components/button/AppButton";
 import { GENDERS } from "constants/general";
-import { useState } from "react";
+import { useQueryClient } from "react-query";
+import { IModalProps } from "types";
+import {
+  textInputValidationRules,
+  generalValidationRules,
+} from "utils/formHelpers/validation";
+import { openNotification } from "utils/notifications";
+import { useCreateLeaveType } from "../hooks/useCreateLeaveType";
+import { useUpdateLeaveType } from "../hooks/useUpdateLeaveType";
 
-const AddLeaveTypeForm = ({ handleClose }: { handleClose: Function }) => {
+interface IProps extends IModalProps {
+  data: TLeaveType;
+  type?: "view" | "edit";
+}
+const ViewOrEditLeaveType: React.FC<IProps> = ({
+  handleClose,
+  open,
+  data,
+  type = "view",
+}) => {
   const queryClient = useQueryClient();
   const [form] = Form.useForm();
-  const { mutate, isLoading } = useCreateLeaveType();
+  const { mutate, isLoading } = useUpdateLeaveType();
   const [employeesGetAllowance, setEmployeesGetAllowance] = useState(false);
-
-  const handleSubmit = (data: any) => {
+  useEffect(() => {
+    setEmployeesGetAllowance(!!data.employeesGetAllowance);
+    form.setFieldsValue({
+      name: data.name,
+      employeesGetAllowance: !!data.employeesGetAllowance,
+      calculation: data.calculation,
+      percentageAmount: data.percentageAmount,
+      gender: data.gender,
+      length: data.length,
+    });
+  }, [form, data]);
+  const handleSubmit = (formData: any) => {
     mutate(
       {
-        name: data.name,
-        employeesGetAllowance: !!data.employeesGetAllowance,
-        calculation: data.calculation,
-        percentageAmount: data.percentageAmount,
-        gender: data.gender,
-        length: data.length,
+        data: {
+          name: formData.name,
+          employeesGetAllowance: !!formData.employeesGetAllowance,
+          calculation: formData.calculation,
+          percentageAmount: formData.percentageAmount,
+          gender: formData.gender,
+          length: formData.length,
+        },
+        id: data.id,
       },
+
       {
         onError: (err: any) => {
           openNotification({
@@ -57,12 +83,19 @@ const AddLeaveTypeForm = ({ handleClose }: { handleClose: Function }) => {
     );
   };
   return (
-    <div>
+    <Modal
+      open={open}
+      style={{ top: 10 }}
+      onCancel={() => handleClose()}
+      footer={null}
+      title={<span className="capitalize">{type} leave type</span>}
+    >
       <Form
         labelCol={{ span: 24 }}
         requiredMark={false}
         form={form}
         onFinish={handleSubmit}
+        disabled={type === "view"}
       >
         <Form.Item
           label="Type Name"
@@ -83,6 +116,7 @@ const AddLeaveTypeForm = ({ handleClose }: { handleClose: Function }) => {
             unCheckedChildren="Yes"
             checkedChildren="No"
             onChange={setEmployeesGetAllowance}
+            defaultChecked={!!data?.employeesGetAllowance}
           />
         </Form.Item>
         {employeesGetAllowance && (
@@ -116,12 +150,14 @@ const AddLeaveTypeForm = ({ handleClose }: { handleClose: Function }) => {
             Cancel
           </Button>
           <div className="flex flex-row gap-4">
-            <AppButton type="submit" isLoading={isLoading} label="Submit" />
+            {type === "edit" && (
+              <AppButton type="submit" isLoading={isLoading} label="Submit" />
+            )}
           </div>
         </div>
       </Form>
-    </div>
+    </Modal>
   );
 };
 
-export default AddLeaveTypeForm;
+export default ViewOrEditLeaveType;

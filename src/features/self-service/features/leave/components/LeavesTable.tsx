@@ -4,31 +4,29 @@ import { MoreOutlined } from "@ant-design/icons";
 import React, { useState } from "react";
 import { ColumnsType } from "antd/lib/table";
 
-import moment from "moment";
-import {
-  TCRBookingStatus,
-  useFetchAllConferenceRoomBookings,
-} from "../hooks/useFetchAllConferenceRoomBookings";
-import { TSingleConferenceRoomBooking } from "../types";
 import { getAppropriateColorForStatus } from "utils/colorHelpers/getAppropriateColorForStatus";
-import CRBBookingDetails from "./CRBBookingDetails";
 import { usePagination } from "hooks/usePagination";
+import { useFetchLeaves } from "../hooks/useFetchLeaves";
+import { TApprovalStatus } from "types/statuses";
+import { TLeave } from "../types";
+import { LeaveDetails } from "./LeaveDetails";
+import moment from "moment";
 
-const CRBBookingsList: React.FC<{
-  status?: TCRBookingStatus;
+const LeavesTable: React.FC<{
+  status?: TApprovalStatus;
   employeeId?: number;
 }> = ({ status, employeeId }) => {
   const [showD, setShowD] = useState(false);
-  const [bookingId, setBookingId] = useState<number>();
+  const [requestId, setRequestId] = useState<number>();
   const { pagination, onChange } = usePagination();
 
-  const { data, isFetching } = useFetchAllConferenceRoomBookings({
+  const { data, isFetching } = useFetchLeaves({
     pagination,
     status,
     employeeId,
   });
 
-  const originalColumns: ColumnsType<TSingleConferenceRoomBooking> = [
+  const originalColumns: ColumnsType<TLeave> = [
     {
       title: "Name",
       dataIndex: "name",
@@ -44,52 +42,58 @@ const CRBBookingsList: React.FC<{
       // width: 100,
     },
     {
-      title: "Date",
-      dataIndex: "createdAt",
-      key: "createdAt",
-      render: (val) => moment(val).format("YYYY-MM-DD"),
-    },
-    {
-      title: "Room Name",
-      dataIndex: "roomName",
-      key: "roomName",
-      render: (val: string) => <span>{`Marketing`}</span>,
+      title: "Department",
+      dataIndex: "department",
+      key: "department",
+      render: (val, item) => <span>{item.department.name}</span>,
 
       // ellipsis: true,
 
       // width: 100,
     },
     {
-      title: "Reason",
-      dataIndex: "reason",
-      key: "reason",
-      ellipsis: true,
+      title: "Leave Type",
+      dataIndex: "leaveType",
+      key: "leaveType",
+      render: (val, item) => <span>{item.leaveType.name}</span>,
+
+      // ellipsis: true,
 
       // width: 100,
     },
     {
-      title: "Department",
-      dataIndex: "department",
-      key: "department",
+      title: "Start Date",
+      dataIndex: "startDate",
+      key: "startDate",
+      render: (val, item) => (
+        <span>{moment(item.startDate).format("YYYY/MM/DD")}</span>
+      ),
     },
     {
-      title: "Meeting Date",
-      dataIndex: "date",
-      key: "date",
-      render: (val) => moment(val).format("YYYY-MM-DD"),
-    },
-    {
-      title: "Start Time",
-      dataIndex: "startTime",
-      key: "startTime",
-      render: (val) => moment(val).format("h:mm:ss"),
+      title: "End Date",
+      dataIndex: "endDate",
+      key: "endDate",
+      render: (val, item) => (
+        <span>{moment(item.endDate).format("YYYY/MM/DD")}</span>
+      ),
     },
 
     {
-      title: "End Time",
-      dataIndex: "endTime",
-      key: "endTime",
-      render: (val) => moment(val).format("h:mm:ss"),
+      title: "Leave Length",
+      dataIndex: "leaveLength",
+      key: "leaveLength",
+      render: (val, item) => (
+        <span>{moment(item.length).format("YYYY/MM/DD")}</span>
+      ),
+    },
+    {
+      title: "With Pay",
+      dataIndex: "withPay",
+
+      key: "withPay",
+      render: (val, item) => (
+        <span>{item.requestAllowance ? "Yes" : "No"}</span>
+      ),
     },
 
     {
@@ -97,7 +101,7 @@ const CRBBookingsList: React.FC<{
       dataIndex: "status",
 
       key: "status",
-      render: (val: string) => (
+      render: (val) => (
         <span
           className="capitalize"
           style={{ color: getAppropriateColorForStatus(val) }}
@@ -120,13 +124,13 @@ const CRBBookingsList: React.FC<{
                   key="3"
                   onClick={() => {
                     setShowD(true);
-                    setBookingId(item.id);
+                    setRequestId(item.id);
                   }}
                 >
                   View
                 </Menu.Item>
                 {/* <Menu.Item key="2">Approve</Menu.Item>
-                <Menu.Item key="1">Reject</Menu.Item> */}
+                  <Menu.Item key="1">Reject</Menu.Item> */}
               </Menu>
             }
             trigger={["click"]}
@@ -137,9 +141,11 @@ const CRBBookingsList: React.FC<{
       ),
     },
   ];
+
   const columns = employeeId
     ? originalColumns.filter((item) => item.key !== "name")
     : originalColumns;
+
   return (
     <div>
       <Modal
@@ -150,7 +156,7 @@ const CRBBookingsList: React.FC<{
         style={{ top: 10 }}
         footer={null}
       >
-        {bookingId && <CRBBookingDetails id={bookingId} />}
+        {requestId && <LeaveDetails id={requestId} />}
       </Modal>
 
       <Table
@@ -165,4 +171,4 @@ const CRBBookingsList: React.FC<{
   );
 };
 
-export default CRBBookingsList;
+export default LeavesTable;

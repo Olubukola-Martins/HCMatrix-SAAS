@@ -4,17 +4,21 @@ import { useQuery } from "react-query";
 import { ICurrentCompany, IPaginationProps, ISearchParams } from "types";
 import { DEFAULT_PAGE_SIZE } from "constants/general";
 import { TLeave } from "../types";
+import { TApprovalStatus } from "types/statuses";
+import { useApiAuth } from "hooks/useApiAuth";
 
 // TO DO : need to exist in the general data entities and refactored
-interface IGetDataProps extends ICurrentCompany {
+interface IGetDataProps {
   pagination?: IPaginationProps;
   searchParams?: ISearchParams;
+  employeeId?: number;
+  status?: TApprovalStatus;
 }
 
 export const QUERY_KEY_FOR_LEAVES = "leaves";
 
 const getLeaves = async (
-  props: IGetDataProps
+  props: IGetDataProps & ICurrentCompany
 ): Promise<{ data: TLeave[]; total: number }> => {
   const { pagination } = props;
   const limit = pagination?.limit ?? DEFAULT_PAGE_SIZE;
@@ -33,6 +37,8 @@ const getLeaves = async (
       limit,
       offset,
       search: name,
+      employeeId: props.employeeId,
+      status: props.status,
     },
   };
 
@@ -51,12 +57,15 @@ const getLeaves = async (
 };
 
 export const useFetchLeaves = (props: IGetDataProps) => {
-  const { pagination, searchParams } = props;
+  const { token, companyId } = useApiAuth();
+
   const queryData = useQuery(
-    [QUERY_KEY_FOR_LEAVES, pagination, searchParams],
+    [QUERY_KEY_FOR_LEAVES, props],
     () =>
       getLeaves({
         ...props,
+        token,
+        companyId,
       }),
     {
       onError: (err: any) => {},
