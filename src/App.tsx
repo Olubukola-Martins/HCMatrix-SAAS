@@ -2,17 +2,22 @@ import { BrowserRouter } from "react-router-dom";
 import { QueryClientProvider, QueryClient } from "react-query";
 import { ReactQueryDevtools } from "react-query/devtools";
 import { AuthProvider } from "react-auth-kit";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import Router from "config/router";
 import refreshApi from "config/refreshTokenApi";
 import GlobalContextProvider from "stateManagers/GlobalContextProvider";
 import UserFeedbackContainer from "components/UserFeedbackContainer";
 import AdminWelcomeContainer from "components/AdminWelcomeContainer";
-import { requestFirebaseToken } from "config/firebase";
-import { openNotification } from "utils/notifications";
-import { getMessaging, onMessage } from "firebase/messaging";
-import { Notification } from "features/notifications/components/Notification";
-const queryClient = new QueryClient();
+
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      refetchInterval: false,
+      refetchIntervalInBackground: false,
+      refetchOnWindowFocus: false,
+    },
+  },
+});
 
 function App() {
   // const [isTokenFound, setTokenFound] = useState<boolean>();
@@ -60,7 +65,6 @@ function App() {
       <QueryClientProvider client={queryClient}>
         <GlobalContextProvider>
           <BrowserRouter>
-            <Notification />
             <UserFeedbackContainer />
             <AdminWelcomeContainer />
 
