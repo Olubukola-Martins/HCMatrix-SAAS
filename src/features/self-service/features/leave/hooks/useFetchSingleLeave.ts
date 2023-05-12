@@ -3,13 +3,16 @@ import { MICROSERVICE_ENDPOINTS } from "config/enviroment";
 import { useQuery } from "react-query";
 import { ICurrentCompany } from "types";
 import { TLeave } from "../types";
+import { useApiAuth } from "hooks/useApiAuth";
 
 // TO DO : need to exist in the general data entities and refactored
-interface IGetDataProps extends ICurrentCompany {
+interface IGetDataProps {
   id: number;
 }
 export const QUERY_KEY_FOR_SINGLE_LEAVE = "single-leave";
-const getLeave = async (props: IGetDataProps): Promise<TLeave> => {
+const getLeave = async (
+  props: IGetDataProps & ICurrentCompany
+): Promise<TLeave> => {
   const url = `${MICROSERVICE_ENDPOINTS.UTILITY}/self-service/leave/${props.id}`;
 
   const config = {
@@ -31,11 +34,14 @@ const getLeave = async (props: IGetDataProps): Promise<TLeave> => {
 };
 
 export const useFetchSingleLeave = (props: IGetDataProps) => {
+  const { companyId, token } = useApiAuth();
   const queryData = useQuery(
     [QUERY_KEY_FOR_SINGLE_LEAVE, props.id],
     () =>
       getLeave({
         ...props,
+        companyId,
+        token,
       }),
     {
       onError: (err: any) => {},

@@ -40,29 +40,34 @@ export const selfServiceRoutes: TRouteData[] = [
     path: appRoutes.selfServiceRequisition,
     isSearchable: true,
     title: "Requisitions",
+    isPrimaryFeature: true,
   },
   {
     element: <Reimbursements />,
     path: appRoutes.selfServiceReimbursement,
     isSearchable: true,
     title: "Reimbursements",
+    isPrimaryFeature: true,
   },
   {
     element: <Monetary />,
     path: appRoutes.selfServiceMonetary,
     isSearchable: true,
     title: "Monetary Requests",
+    isPrimaryFeature: true,
   },
   {
     element: <Assets />,
     path: appRoutes.selfServiceAssets,
     isSearchable: true,
     title: "Assets",
+    isPrimaryFeature: true,
   },
   {
     element: <AssetTypeDetails />,
     path: appRoutes.assetTypeDetails().format,
     isSearchable: false,
+    isPrimaryFeature: true,
   },
   {
     element: <AssetDetails />,
@@ -75,6 +80,7 @@ export const selfServiceRoutes: TRouteData[] = [
     path: appRoutes.loans,
     isSearchable: true,
     title: "Loans",
+    isPrimaryFeature: true,
   },
   {
     element: <LoanRequest />,
@@ -93,6 +99,7 @@ export const selfServiceRoutes: TRouteData[] = [
     path: appRoutes.vehicleBooking,
     isSearchable: true,
     title: "Vehicle Booking",
+    isPrimaryFeature: true,
   },
   {
     element: <VehicleDetails />,
@@ -105,6 +112,7 @@ export const selfServiceRoutes: TRouteData[] = [
     path: appRoutes.surveyHome,
     isSearchable: true,
     title: "Surveys",
+    isPrimaryFeature: true,
   },
   {
     element: <NewSurveyForm />,
@@ -122,6 +130,7 @@ export const selfServiceRoutes: TRouteData[] = [
     path: appRoutes.conferenceRoomBooking,
     isSearchable: true,
     title: "Conference Room Booking",
+    isPrimaryFeature: true,
   },
   {
     element: <CRBHomeSettings />,
@@ -134,6 +143,7 @@ export const selfServiceRoutes: TRouteData[] = [
     path: appRoutes.leaveHome,
     isSearchable: true,
     title: "Leave",
+    isPrimaryFeature: true,
   },
   {
     element: <LeaveSettings />,
@@ -146,6 +156,7 @@ export const selfServiceRoutes: TRouteData[] = [
     path: appRoutes.healthAccessHome,
     isSearchable: true,
     title: "Health Access",
+    isPrimaryFeature: true,
   },
   {
     element: <HealthAccessSettings />,
@@ -158,6 +169,7 @@ export const selfServiceRoutes: TRouteData[] = [
     path: appRoutes.onboarding,
     isSearchable: true,
     title: "Onboarding",
+    isPrimaryFeature: true,
   },
   {
     element: <StartOnboarding />,
@@ -169,12 +181,14 @@ export const selfServiceRoutes: TRouteData[] = [
     path: appRoutes.handOver,
     isSearchable: true,
     title: "HandOver",
+    isPrimaryFeature: true,
   },
   {
     element: <HandOverNewForm />,
     path: appRoutes.newHandOverForm,
     isSearchable: true,
     title: "New Handover Form",
+    isPrimaryFeature: true,
   },
   {
     element: <HandOverDetails />,

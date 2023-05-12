@@ -6,4 +6,5 @@ export type TRouteData = {
   category?: TRouteDataCategory;
   title?: string;
   isSearchable: boolean;
+  isPrimaryFeature?: boolean;
 };

@@ -55,7 +55,7 @@ const DashboardLayout = () => {
 
   return (
     <div className="mode_color" data-theme={theme} color-theme={colorTheme}>
-      <div className="h-screen overflow-auto">
+      <div className="h-screen overflow-y-auto">
         <TopBar
           switchTheme={switchTheme}
           theme={theme as unknown as string}
@@ -82,8 +82,8 @@ const DashboardLayout = () => {
           <div
             className={
               sidebarToggle
-                ? "w-full lg:ml-28 mt-7 pb-10"
-                : "lg:ml-0 w-full transition-all duration-500 ease-in-out mt-7 pb-10"
+                ? "w-full lg:pl-28 mt-7 pb-10"
+                : "lg:pl-0 w-full transition-all duration-500 ease-in-out mt-7 pb-10"
             }
           >
             <div className="w-full md:top-14 top-10 sticky z-40">
