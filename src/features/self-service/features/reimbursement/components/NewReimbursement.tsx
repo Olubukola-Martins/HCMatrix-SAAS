@@ -1,68 +1,112 @@
-import { Modal } from "antd";
-import Themes from "components/Themes";
+import { DatePicker, Form, Input, InputNumber, Modal } from "antd";
+import { FileUpload } from "components/FileUpload";
+import { AppButton } from "components/button/AppButton";
+import { FormEmployeeInput } from "features/core/employees/components/FormEmployeeInput";
 import React from "react";
+import { boxStyle } from "styles/reused";
 import { IModalProps } from "types";
+import {
+  generalValidationRules,
+  textInputValidationRules,
+} from "utils/formHelpers/validation";
+import { useCreateReimbursementRequisition } from "../../requisitions/hooks/reimbursement/useCreateReimbursementRequisition";
+import { useCurrentFileUploadUrl } from "hooks/useCurrentFileUploadUrl";
+import { openNotification } from "utils/notifications";
+import { useQueryClient } from "react-query";
+import { QUERY_KEY_FOR_REIMBURSEMENT_REQUISITIONS } from "../../requisitions/hooks/reimbursement/useGetReimbursementRequisitions";
+import { useApiAuth } from "hooks/useApiAuth";
 
-const NewReimbursement: React.FC<IModalProps> = ({ open, handleClose }) => {
-  const inputStyle =
-    "w-full rounded-md border border-gray-300 py-2 px-2 text-sm bg-mainBg focus:outline-none placeholder:text-accent";
+export const NewReimbursement: React.FC<IModalProps> = ({
+  open,
+  handleClose,
+}) => {
+  const queryClient = useQueryClient();
+  const { currentUserEmployeeId } = useApiAuth();
 
+  const [form] = Form.useForm();
+  const { mutate, isLoading } = useCreateReimbursementRequisition();
+
+  const documentUrl = useCurrentFileUploadUrl("documentUrl");
+  const handleSubmit = (data: any) => {
+    mutate(
+      {
+        amount: data.amount,
+        date: data.date.toString(),
+        description: data.description,
+        employeeId: currentUserEmployeeId,
+        title: data.title,
+        attachmentUrls: !!documentUrl ? [documentUrl] : [],
+      },
+      {
+        onError: (err: any) => {
+          openNotification({
+            state: "error",
+            title: "Error Occurred",
+            description:
+              err?.response.data.message ?? err?.response.data.error.message,
+          });
+        },
+        onSuccess: (res: any) => {
+          openNotification({
+            state: "success",
+
+            title: "Success",
+            description: res.data.message,
+            // duration: 0.4,
+          });
+          form.resetFields();
+          handleClose();
+
+          queryClient.invalidateQueries({
+            queryKey: [QUERY_KEY_FOR_REIMBURSEMENT_REQUISITIONS],
+            // exact: true,
+          });
+        },
+      }
+    );
+  };
   return (
-    <Modal open={open} onCancel={() => handleClose()} footer={null}>
-      <Themes>
-        <div className="CModal" style={{ maxWidth: 400 }}>
-          <div className="flex items-center justify-between mb-6">
-            <h5 className="font-semibold text-base">New Reimbursement</h5>
-            <i
-              onClick={() => handleClose()}
-              className="ri-close-line font-semibold text-xl cursor-pointer hover:text-neutral"
-            ></i>
-          </div>
-          <form>
-            <div className="flex flex-col gap-3">
-              <input
-                type="text"
-                onFocus={(e) => (e.target.type = "date")}
-                onBlur={(e) => (e.target.type = "text")}
-                placeholder="Requisition Date"
-                className={inputStyle}
-              />
-              <input type="text" placeholder="Title" className={inputStyle} />
-
-              <select name="" id="" className={inputStyle}>
-                <option value="">Reimbursement Type</option>
-                <option value="Reimbursement Type 1">
-                  Reimbursement Type 1
-                </option>
-              </select>
-
-              <textarea placeholder="Description" className={inputStyle} />
-
-              <input
-                type="number"
-                placeholder="Amount"
-                className={inputStyle}
-              />
-
-              <input
-                type="text"
-                onFocus={(e) => (e.target.type = "file")}
-                onBlur={(e) => (e.target.type = "text")}
-                placeholder="Attachment"
-                className={inputStyle}
-              />
-            </div>
-            <div className="mt-7 flex items-center justify-between">
-              <button className="transparentButton">
-                Save And Add Another
-              </button>
-              <button className="button">Submit</button>
-            </div>
-          </form>
+    <Modal
+      open={open}
+      onCancel={() => handleClose()}
+      footer={null}
+      title={"New Reimbursement"}
+      style={{ top: 20 }}
+    >
+      <Form layout="vertical" form={form} onFinish={handleSubmit}>
+        <Form.Item rules={generalValidationRules}>
+          <DatePicker placeholder="Date" />
+        </Form.Item>
+        <FormEmployeeInput
+          Form={Form}
+          control={{ name: "employeeId", label: "" }}
+        />
+        <Form.Item rules={textInputValidationRules}>
+          <Input placeholder="title" />
+        </Form.Item>
+        <Form.Item rules={textInputValidationRules}>
+          <Input.TextArea placeholder="description" />
+        </Form.Item>
+        <Form.Item rules={generalValidationRules}>
+          <InputNumber placeholder="amount" />
+        </Form.Item>
+        <div className={boxStyle}>
+          <FileUpload
+            allowedFileTypes={[
+              "image/jpeg",
+              "image/png",
+              "image/jpg",
+              "application/pdf",
+            ]}
+            fileKey="attachmentUrls"
+            textToDisplay="Upload Attachments"
+            displayType="form-space-between"
+          />
         </div>
-      </Themes>
+        <div className="flex justify-end">
+          <AppButton type="submit" isLoading={isLoading} />
+        </div>
+      </Form>
     </Modal>
   );
 };
-
-export default NewReimbursement;
