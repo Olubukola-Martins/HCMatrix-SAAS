@@ -13,6 +13,7 @@ import { GlobalContext, EGlobalOps } from "stateManagers/GlobalContextProvider";
 import { textInputValidationRules } from "utils/formHelpers/validation";
 import { openNotification } from "utils/notifications";
 import { IAuthDets, ILoginProps } from "../types";
+import { saveMessagingDeviceToken } from "config/firebase/messaging";
 
 const UserLoginForm = ({ autoLoginDetails }: ILoginProps) => {
   const signIn = useSignIn();
@@ -139,6 +140,9 @@ const UserLoginForm = ({ autoLoginDetails }: ILoginProps) => {
                 id: authUserDetails.companies[0].company.id,
                 name: authUserDetails.companies[0].company.name,
               },
+            });
+            saveMessagingDeviceToken({
+              employeeId: authUserDetails.companies[0].company.id,
             });
           }
         },

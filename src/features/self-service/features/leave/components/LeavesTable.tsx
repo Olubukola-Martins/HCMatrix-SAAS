@@ -82,9 +82,7 @@ const LeavesTable: React.FC<{
       title: "Leave Length",
       dataIndex: "leaveLength",
       key: "leaveLength",
-      render: (val, item) => (
-        <span>{moment(item.length).format("YYYY/MM/DD")}</span>
-      ),
+      render: (val, item) => <span>{item.length}</span>,
     },
     {
       title: "With Pay",

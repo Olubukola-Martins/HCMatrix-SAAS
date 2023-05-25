@@ -8,9 +8,47 @@ import refreshApi from "config/refreshTokenApi";
 import GlobalContextProvider from "stateManagers/GlobalContextProvider";
 import UserFeedbackContainer from "components/UserFeedbackContainer";
 import AdminWelcomeContainer from "components/AdminWelcomeContainer";
-const queryClient = new QueryClient();
+
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      refetchInterval: false,
+      refetchIntervalInBackground: false,
+      refetchOnWindowFocus: false,
+    },
+  },
+});
 
 function App() {
+  // const [isTokenFound, setTokenFound] = useState<boolean>();
+  // requestFirebaseToken(setTokenFound);
+  // const messaging = getMessaging();
+
+  // onMessage(messaging, (payload) => {
+  //   console.log("payload...", payload);
+  // });
+
+  // // TO DO: any time there is an auth action or a company is switched make a call to backend notifications endpoint to populate the notifications page OR alternatively just make the call on the notifications component, or the hook should have token, n useApiAuth handled within to prevent repitition, params(along side pagination) passed to this endpoint should be the notification type => this will enable the hook to be used for different approval types
+  // useEffect(() => {
+  //   if (isTokenFound === true) {
+  //     openNotification({
+  //       state: "success",
+
+  //       title: "Success",
+  //       description: "FB Token exists ",
+  //       duration: 0,
+  //     });
+  //   }
+  //   if (isTokenFound === false) {
+  //     openNotification({
+  //       state: "error",
+
+  //       title: "Error",
+  //       description: "FB token has not been set",
+  //       duration: 0,
+  //     });
+  //   }
+  // }, [isTokenFound]);
   // clear darkmode
   useEffect(() => {
     localStorage.removeItem("dark");
