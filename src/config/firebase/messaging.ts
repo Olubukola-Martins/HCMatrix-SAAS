@@ -5,7 +5,7 @@ import axios from "axios";
 
 const VAPID_KEY =
   "BNksQuoGE7iAnui3NM6TeLKazyCTI25mwZzNMPTqmWu9vRDfl-19AeyxAoS7z9tVfl14tJob9bLVNNFhof9kcSc";
-const APP_AUTHORIZATION_TOKEN_FOR_FCM_TOKEN_ENDPOINT =
+export const APP_AUTHORIZATION_TOKEN_FOR_FCM_TOKEN_ENDPOINT =
   "6e964d49fbb3a02748ee80e5b42346d3cedd460cda2c3292c946607b5b8a953e";
 const handleFCMToken = async (props: {
   employeeId: number;

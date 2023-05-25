@@ -5,17 +5,15 @@ import { ICurrentCompany, IPaginationProps, ISearchParams } from "types";
 import { DEFAULT_PAGE_SIZE } from "constants/general";
 import { TNotification, TNotificationType } from "../types";
 import { useApiAuth } from "hooks/useApiAuth";
-
-// get the token from localStorage
-const fireBaseToken = localStorage.getItem("fireBaseToken") ?? "";
+import { APP_AUTHORIZATION_TOKEN_FOR_FCM_TOKEN_ENDPOINT } from "config/firebase/messaging";
 
 // TO DO : need to exist in the general data entities and refactored
 interface IGetDataProps extends ICurrentCompany {
   pagination?: IPaginationProps;
   searchParams?: ISearchParams;
   type?: TNotificationType;
-  fireBaseToken: string; //might just need to exist in getNotifications on its own so need
-  companyEmployeeId: number;
+  // fireBaseToken: string; //might just need to exist in getNotifications on its own so need
+  employeeId: number;
 }
 
 export const QUERY_KEY_FOR_NOTIFICATIONS = "notifications";
@@ -28,12 +26,12 @@ const getNotifications = async (
   const offset = pagination?.offset ?? 0;
   const name = props.searchParams?.name ?? "";
 
-  const url = `${MICROSERVICE_ENDPOINTS.NOTIFICATION}/notifications`;
+  const url = `${MICROSERVICE_ENDPOINTS.NOTIFICATION}/alert`;
 
   const config = {
     headers: {
       Accept: "application/json",
-      Authorization: `Bearer ${props.token}`,
+      Authorization: `Bearer ${APP_AUTHORIZATION_TOKEN_FOR_FCM_TOKEN_ENDPOINT}`,
       "x-company-id": props.companyId,
     },
     params: {
@@ -41,11 +39,13 @@ const getNotifications = async (
       offset,
       search: name,
       type: props.type,
-      fireBaseToken: props.fireBaseToken,
+      employeeId: props.employeeId,
+      // fireBaseToken: props.fireBaseToken,
     },
   };
 
   const res = await axios.get(url, config);
+  console.log("NOTIF", res);
   const fetchedData = res.data.data;
   const result = fetchedData.result;
 
@@ -71,9 +71,9 @@ export const useFetchNotifications = (
     () =>
       getNotifications({
         token,
-        companyEmployeeId: currentUserEmployeeId,
+        employeeId: currentUserEmployeeId,
         companyId,
-        fireBaseToken,
+        // fireBaseToken,
         ...props,
       }),
     {

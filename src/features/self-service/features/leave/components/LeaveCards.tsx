@@ -20,6 +20,7 @@ const LeaveCards = () => {
         <>
           <LeaveRequestCard
             title="My Approved Requests"
+            status="approved"
             employeeId={currentUserEmployeeId}
           />
           <LeaveRequestCard

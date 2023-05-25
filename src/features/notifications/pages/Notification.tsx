@@ -1,7 +1,9 @@
 import { Badge, Dropdown } from "antd";
 import { PageIntro } from "components/layout/PageIntro";
+import { useFetchNotifications } from "../hooks/useFetchNotifications";
 
 export const Notification = () => {
+  const { data } = useFetchNotifications({});
   return (
     <>
       <div className="Container">
