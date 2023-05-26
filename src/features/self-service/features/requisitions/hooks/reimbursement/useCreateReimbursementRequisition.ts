@@ -8,7 +8,7 @@ type TCreateProps = {
   date: string;
   employeeId: number;
   title: string;
-  purpose: string;
+  description: string;
   amount: number;
   attachmentUrls: string[];
 };
@@ -17,7 +17,7 @@ const createData = async (props: {
   data: TCreateProps;
   auth: ICurrentCompany;
 }) => {
-  const url = `${MICROSERVICE_ENDPOINTS.UTILITY}/self-service/requisition/money`;
+  const url = `${MICROSERVICE_ENDPOINTS.UTILITY}/self-service/requisition/reimbursement`;
   const config = {
     headers: {
       Accept: "application/json",
@@ -33,7 +33,7 @@ const createData = async (props: {
   const response = await axios.post(url, data, config);
   return response;
 };
-export const useCreateMoneyRequisition = () => {
+export const useCreateReimbursementRequisition = () => {
   const { token, companyId } = useApiAuth();
   return useMutation((props: TCreateProps) =>
     createData({ data: props, auth: { token, companyId } })

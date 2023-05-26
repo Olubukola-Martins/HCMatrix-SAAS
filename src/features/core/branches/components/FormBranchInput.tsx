@@ -5,10 +5,11 @@ import { useState } from "react";
 import { generalValidationRules } from "utils/formHelpers/validation";
 import { useFetchBranches } from "../hooks/useFetchBranches";
 
-export const FormBranchInput: React.FC<{ Form: any; showLabel?: boolean }> = ({
-  Form,
-  showLabel = true,
-}) => {
+export const FormBranchInput: React.FC<{
+  Form: any;
+  showLabel?: boolean;
+  control?: { label: string; name: string | (string | number)[] };
+}> = ({ Form, showLabel = true, control }) => {
   const { companyId, token } = useApiAuth();
 
   const [searchTerm, setSearchTerm] = useState<string>("");
@@ -29,8 +30,8 @@ export const FormBranchInput: React.FC<{ Form: any; showLabel?: boolean }> = ({
 
   return (
     <Form.Item
-      name="branchId"
-      label={showLabel ? "Branch" : null}
+      name={control?.name ?? "branchId"}
+      label={showLabel ? control?.label ?? "Branch" : null}
       rules={generalValidationRules}
     >
       <Select

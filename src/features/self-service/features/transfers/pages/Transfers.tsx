@@ -1,19 +1,19 @@
 import { PageIntro } from "components/layout/PageIntro";
 import { appRoutes } from "config/router/paths";
 import SelfServiceSubNav from "features/self-service/components/SelfServiceSubNav";
-import ReimbursementsContainer from "../components/ReimbursementsContainer";
+import { TransfersContainer } from "../components/TransfersContainer";
 
-const Reimbursements = () => {
+const Transfers = () => {
   return (
     <>
       <SelfServiceSubNav />
 
       <div className="Container ">
-        <PageIntro title="Reimbursements" link={appRoutes.selfServiceHome} />
-        <ReimbursementsContainer />
+        <PageIntro title="Transfers" link={appRoutes.selfServiceHome} />
+        <TransfersContainer />
       </div>
     </>
   );
 };
 
-export default Reimbursements;
+export default Transfers;
