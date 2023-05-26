@@ -38,7 +38,7 @@ const refreshApi = createRefresh({
         newAuthToken: result.accessToken ?? "",
         newAuthTokenExpireIn: TOKEN_EXPIRES_IN,
         newRefreshTokenExpiresIn: REFRESH_TOKEN_EXPIRES_IN, // below
-        authUserState: {
+        newAuthUserState: {
           ...authUserState,
           userToken: result.accessToken ?? "",
         },
