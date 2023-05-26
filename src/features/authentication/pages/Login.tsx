@@ -26,9 +26,7 @@ export const Login = () => {
         const link = res.data.data;
         window.location.replace(link);
       })
-      .catch((err) => {
-        console.log("Micro ERR", err);
-      });
+      .catch((err) => {});
   };
   const [searchParams] = useSearchParams();
   const email = searchParams.get("email");

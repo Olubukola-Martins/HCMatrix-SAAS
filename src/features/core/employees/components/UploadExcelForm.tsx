@@ -66,7 +66,6 @@ export const UploadExcelForm = ({
   const handleChange: UploadProps["onChange"] = (
     info: UploadChangeParam<UploadFile>
   ) => {
-    console.log("FILE", info.file);
     var reader = new FileReader();
     reader.onload = function (e: any) {
       var data = e.target.result;

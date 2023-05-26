@@ -29,13 +29,12 @@ export const RequestForLeave: React.FC<IProps> = ({ handleClose, open }) => {
   const queryClient = useQueryClient();
   const [form] = Form.useForm();
   const { mutate, isLoading } = useCreateLeave();
-  const { currentCompanyEmployeeDetails, currentUserEmployeeId } = useApiAuth();
+  const { currentUserEmployeeId } = useApiAuth();
   const { data: employee } = useFetchSingleEmployee({
     employeeId: currentUserEmployeeId,
   });
 
   const documentUrl = useCurrentFileUploadUrl("documentUrl");
-  console.log("DEP", currentCompanyEmployeeDetails, employee);
   const handleSubmit = (data: any) => {
     const departmentId = employee?.designation?.department.id;
     if (departmentId) {

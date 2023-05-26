@@ -194,7 +194,6 @@ const MicrosoftVerificationStatus = ({
         {
           onSuccess: (res) => {
             const item = res.data.data;
-            console.log("SOCIAL COMP", res);
             const authUserDetails: IAuthDets = {
               ...tempAuthState.state,
               companies: [
