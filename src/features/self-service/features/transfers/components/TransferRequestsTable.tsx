@@ -2,16 +2,16 @@ import React, { useState } from "react";
 import { TApprovalStatus } from "types/statuses";
 import { MoreOutlined } from "@ant-design/icons";
 import type { ColumnsType } from "antd/es/table";
-import { useGetReimbursementRequisitions } from "../../requisitions/hooks/reimbursement/useGetReimbursementRequisitions";
 import { usePagination } from "hooks/usePagination";
-import { TReimbursementRequisition } from "../../requisitions/types/reimbursement";
 import { Button, Dropdown, Menu, Table } from "antd";
 import { useApiAuth } from "hooks/useApiAuth";
-import moment from "moment";
 import { getAppropriateColorForStatus } from "utils/colorHelpers/getAppropriateColorForStatus";
-import { ReimbursementDetails } from "./ReimbursementDetails";
 
-export const ReimbursementRequestsTable: React.FC<{
+import { TransferDetails } from "./TransferDetails";
+import { TTransferRequisition } from "../../requisitions/types/transfer";
+import { useGetTransferRequisitions } from "../../requisitions/hooks/transfer/useGetTransferRequisitions";
+
+export const TransferRequestsTable: React.FC<{
   status?: TApprovalStatus;
   employeeId?: number;
 }> = ({ status, employeeId }) => {
@@ -20,7 +20,7 @@ export const ReimbursementRequestsTable: React.FC<{
   const { pagination, onChange } = usePagination({
     pageSize: 4,
   });
-  const { data, isFetching } = useGetReimbursementRequisitions({
+  const { data, isFetching } = useGetTransferRequisitions({
     companyId,
     token,
     status,
@@ -31,35 +31,63 @@ export const ReimbursementRequestsTable: React.FC<{
     },
   });
 
-  const columns: ColumnsType<TReimbursementRequisition> = [
+  const columns: ColumnsType<TTransferRequisition> = [
     {
-      title: "Date",
-      dataIndex: "date",
-      key: "date",
+      title: "Name",
+      dataIndex: "name",
+      key: "name",
       render: (_, item) => (
-        <span>{moment(item.date).format("YYYY/MM/DD")} </span>
+        <span className="capitalize">
+          {item.employee.firstName} {item.employee.lastName}
+        </span>
       ),
     },
     {
-      title: "Title",
-      dataIndex: "title",
-      key: "title",
-      render: (_, item) => <span className="capitalize">{item.title} </span>,
+      title: "Employee ID",
+      dataIndex: "Employee ID",
+      key: "Employee ID",
+      render: (_, item) => (
+        <span className="capitalize">{item.employee.empUid} </span>
+      ),
     },
     {
-      title: "Description",
-      dataIndex: "desc",
-      key: "desc",
-      render: (_, item) => (
-        <span className="capitalize">{item.description} </span>
-      ),
+      title: "Current Designation",
+      dataIndex: "Current Designation",
+      key: "Current Designation",
+      render: (_, item) => <span className="capitalize">N/A </span>,
     },
 
     {
-      title: "Amount",
-      dataIndex: "amnt",
-      key: "amnt",
-      render: (_, item) => <span>{item.amount} </span>,
+      title: "Current Department",
+      dataIndex: "Current Department",
+      key: "Current Department",
+      render: (_, item) => <span>N/A</span>,
+    },
+    {
+      title: "Current Location",
+      dataIndex: "Current Location",
+      key: "Current Location",
+      render: (_, item) => <span>N/A</span>,
+    },
+    {
+      title: "Proposed Designation",
+      dataIndex: "Proposed Designation",
+      key: "Proposed Designation",
+      render: (_, item) => <span>{item.proposedDesignation.name}</span>,
+    },
+    {
+      title: "Proposed Department",
+      dataIndex: "Proposed Department",
+      key: "Proposed Department",
+      render: (_, item) => (
+        <span>{item.proposedDesignation.department.name}</span>
+      ),
+    },
+    {
+      title: "Proposed Location",
+      dataIndex: "Proposed Location",
+      key: "Proposed Location",
+      render: (_, item) => <span>{"N/A"}</span>,
     },
     {
       title: "Status",
@@ -105,7 +133,7 @@ export const ReimbursementRequestsTable: React.FC<{
   return (
     <div>
       {requestId && (
-        <ReimbursementDetails
+        <TransferDetails
           open={!!requestId}
           handleClose={() => setRequestId(undefined)}
           id={requestId}

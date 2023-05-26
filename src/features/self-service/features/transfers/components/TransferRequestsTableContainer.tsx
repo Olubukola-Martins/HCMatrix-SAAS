@@ -1,9 +1,9 @@
 import { SelectApprovalStatus } from "features/core/workflows/components/SelectApprovalStatus";
 import React, { useState } from "react";
 import { TApprovalStatus } from "types/statuses";
-import { ReimbursementRequestsTable } from "./ReimbursementRequestsTable";
+import { TransferRequestsTable } from "./TransferRequestsTable";
 
-export const ReimbursmentsRequestsTableContainer = () => {
+export const TransferRequestsTableContainer = () => {
   const [status, setStatus] = useState<TApprovalStatus>();
 
   return (
@@ -21,7 +21,7 @@ export const ReimbursmentsRequestsTableContainer = () => {
           />
         </div>
       </div>
-      <ReimbursementRequestsTable status={status} />
+      <TransferRequestsTable status={status} />
     </div>
   );
 };

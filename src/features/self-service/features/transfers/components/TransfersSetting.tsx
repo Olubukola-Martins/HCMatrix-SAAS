@@ -12,32 +12,32 @@ import { FormWorkflowInput } from "features/core/workflows/components/FormWorkfl
 import { useApiAuth } from "hooks/useApiAuth";
 import { openNotification } from "utils/notifications";
 
-export const ReimbursmentSetting = () => {
+export const TransferSetting = () => {
   return (
     <div className="flex flex-col gap-4">
       <PageSubHeader
-        description={`You can now select the workflow approval for reimbursement requisition`}
+        description={`You can now select the workflow approval for transfer requisition`}
       />
-      <ReimbursementPolicy />
+      <TransferPolicy />
     </div>
   );
 };
 
-const ReimbursementPolicy = () => {
+const TransferPolicy = () => {
   return (
     <div className="mt-4 bg-card py-6 px-6 flex flex-col gap-4">
-      <ReimbursementPolicyForm />
+      <TransferPolicyForm />
     </div>
   );
 };
 
-const ReimbursementPolicyForm = () => {
+const TransferPolicyForm = () => {
   const queryClient = useQueryClient();
   const { companyId, token } = useApiAuth();
   const [form] = Form.useForm();
 
   const { data, isFetching } = useGetSingleRequisitionSetting({
-    type: "reimbursement",
+    type: "transfer",
     companyId,
     token,
   });
@@ -54,7 +54,7 @@ const ReimbursementPolicyForm = () => {
   const handleSubmit = (data: any) => {
     mutate(
       {
-        type: "reimbursement",
+        type: "transfer",
         body: {
           isActive: true,
           workflowId: data.workflowId,

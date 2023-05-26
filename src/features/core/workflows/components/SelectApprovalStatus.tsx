@@ -16,17 +16,19 @@ export const SelectApprovalStatus: React.FC<IProps> = ({
   return (
     <div>
       <Select
+        size="small"
         value={value}
-        placeholder="Select Estate"
+        placeholder="Select Status"
         options={APPROVAL_STATUS_OPTIONS}
         allowClear
-        className="rounded border-slate-400 w-full"
+        className="rounded border-slate-400 w-full capitalize"
         defaultActiveFirstOption={false}
         showArrow={false}
         filterOption={false}
         onSelect={(val: TApprovalStatus) => {
           onSelect?.(val);
         }}
+        onClear={onClear}
       />
     </div>
   );

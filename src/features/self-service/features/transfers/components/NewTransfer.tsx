@@ -1,41 +1,35 @@
-import { DatePicker, Form, Input, InputNumber, Modal } from "antd";
-import { FileUpload } from "components/FileUpload";
+import { DatePicker, Form, Input, Modal } from "antd";
 import { AppButton } from "components/button/AppButton";
-import { FormEmployeeInput } from "features/core/employees/components/FormEmployeeInput";
 import React from "react";
-import { boxStyle } from "styles/reused";
 import { IModalProps } from "types";
 import {
   generalValidationRules,
   textInputValidationRules,
 } from "utils/formHelpers/validation";
-import { useCreateReimbursementRequisition } from "../../requisitions/hooks/reimbursement/useCreateReimbursementRequisition";
-import { useCurrentFileUploadUrl } from "hooks/useCurrentFileUploadUrl";
 import { openNotification } from "utils/notifications";
 import { useQueryClient } from "react-query";
-import { QUERY_KEY_FOR_REIMBURSEMENT_REQUISITIONS } from "../../requisitions/hooks/reimbursement/useGetReimbursementRequisitions";
 import { useApiAuth } from "hooks/useApiAuth";
+import { useCreateTranferRequisition } from "../../requisitions/hooks/transfer/useCreateTransferRequisition";
+import { FormBranchInput } from "features/core/branches/components/FormBranchInput";
+import { FormDesignationInput } from "features/core/designations/components/FormDesignationInput";
+import { QUERY_KEY_FOR_TRANSFER_REQUISITIONS } from "../../requisitions/hooks/transfer/useGetTransferRequisitions";
 
-export const NewReimbursement: React.FC<IModalProps> = ({
-  open,
-  handleClose,
-}) => {
+export const NewTransfer: React.FC<IModalProps> = ({ open, handleClose }) => {
   const queryClient = useQueryClient();
   const { currentUserEmployeeId } = useApiAuth();
 
   const [form] = Form.useForm();
-  const { mutate, isLoading } = useCreateReimbursementRequisition();
+  const { mutate, isLoading } = useCreateTranferRequisition();
 
-  const documentUrl = useCurrentFileUploadUrl("documentUrl");
   const handleSubmit = (data: any) => {
     mutate(
       {
-        amount: data.amount,
         date: data.date.toString(),
-        description: data.description,
+        proposedBranchId: data.proposedBranchId,
+        proposedDesignationId: data.proposedDesignationId,
+        skillsAndQualifications: data.skillsAndQualifications,
+        reason: data.reason,
         employeeId: currentUserEmployeeId,
-        title: data.title,
-        attachmentUrls: !!documentUrl ? [documentUrl] : [],
       },
       {
         onError: (err: any) => {
@@ -58,7 +52,7 @@ export const NewReimbursement: React.FC<IModalProps> = ({
           handleClose();
 
           queryClient.invalidateQueries({
-            queryKey: [QUERY_KEY_FOR_REIMBURSEMENT_REQUISITIONS],
+            queryKey: [QUERY_KEY_FOR_TRANSFER_REQUISITIONS],
             // exact: true,
           });
         },
@@ -70,7 +64,7 @@ export const NewReimbursement: React.FC<IModalProps> = ({
       open={open}
       onCancel={() => handleClose()}
       footer={null}
-      title={"New Reimbursement"}
+      title={"New Transfer"}
       style={{ top: 20 }}
     >
       <Form
@@ -83,32 +77,32 @@ export const NewReimbursement: React.FC<IModalProps> = ({
           <DatePicker placeholder="Date" className="w-full" />
         </Form.Item>
 
-        <Form.Item rules={textInputValidationRules} name="title" label="Title">
-          <Input placeholder="title" />
+        <FormBranchInput
+          Form={Form}
+          control={{ name: "proposedBranchId", label: "Proposed Branch" }}
+        />
+        <FormDesignationInput
+          Form={Form}
+          control={{
+            name: "proposedDesignationId",
+            label: "Proposed Designation",
+          }}
+        />
+        <Form.Item
+          rules={textInputValidationRules}
+          name="skillsAndQualifications"
+          label="Skills and Qualifications"
+        >
+          <Input.TextArea placeholder="Skills and Qualifications" />
         </Form.Item>
         <Form.Item
           rules={textInputValidationRules}
-          name="description"
-          label="Description"
+          name="reason"
+          label="Reason"
         >
-          <Input.TextArea placeholder="description" />
+          <Input.TextArea placeholder="Reason" />
         </Form.Item>
-        <Form.Item rules={generalValidationRules} name="amount" label="Amount">
-          <InputNumber placeholder="amount" className="w-full" />
-        </Form.Item>
-        <div className={boxStyle}>
-          <FileUpload
-            allowedFileTypes={[
-              "image/jpeg",
-              "image/png",
-              "image/jpg",
-              "application/pdf",
-            ]}
-            fileKey="documentUrl"
-            textToDisplay="Upload Attachments"
-            displayType="form-space-between"
-          />
-        </div>
+
         <div className="flex justify-end">
           <AppButton type="submit" isLoading={isLoading} />
         </div>

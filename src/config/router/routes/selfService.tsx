@@ -27,6 +27,9 @@ import HandOverDetails from "features/self-service/features/handover-forms/pages
 import { HandOverNewForm } from "features/self-service/features/handover-forms/pages/HandOverNewForm";
 import HRLetters from "features/self-service/features/hr-letters-and-documents/pages/HRLetters";
 import { CRBHomeSettings } from "features/self-service/features/conference-room-booking/pages/CRBHomeSettings";
+import ReimbursementSettingPage from "features/self-service/features/reimbursement/pages/ReimbursementSettingPage";
+import TransfersSettingPage from "features/self-service/features/transfers/pages/TransferSettingsPage";
+import Transfers from "features/self-service/features/transfers/pages/Transfers";
 
 export const selfServiceRoutes: TRouteData[] = [
   {
@@ -41,6 +44,27 @@ export const selfServiceRoutes: TRouteData[] = [
     isSearchable: true,
     title: "Requisitions",
     isPrimaryFeature: true,
+  },
+  {
+    element: <TransfersSettingPage />,
+    path: appRoutes.selfServiceTransferSetting,
+    isSearchable: true,
+    title: "Transfer Setting",
+    isPrimaryFeature: false,
+  },
+  {
+    element: <Transfers />,
+    path: appRoutes.selfServiceTransfer,
+    isSearchable: true,
+    title: "Transfers",
+    isPrimaryFeature: true,
+  },
+  {
+    element: <ReimbursementSettingPage />,
+    path: appRoutes.selfServiceReimbursementSetting,
+    isSearchable: true,
+    title: "Reimbursement Setting",
+    isPrimaryFeature: false,
   },
   {
     element: <Reimbursements />,
