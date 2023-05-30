@@ -122,7 +122,6 @@ const UserLoginForm = ({ autoLoginDetails }: ILoginProps) => {
             })),
             userToken: result.accessToken,
           };
-          console.log("AUTH", authUserDetails);
 
           if (
             signIn({

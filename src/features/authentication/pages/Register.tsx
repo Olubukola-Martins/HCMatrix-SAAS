@@ -29,7 +29,7 @@ export const Register = () => {
         const link = res.data.data;
         window.location.replace(link);
       })
-      .catch((err) => console.log("Micro ERR", err));
+      .catch((err) => {});
   };
 
   return (

@@ -37,7 +37,6 @@ const getAllOnboarding = async (
   const res = await axios.get(url, config);
   const fetchedData = res.data.data;
   const result = fetchedData.result;
-  console.log("result", result);
 
   const data: TOnboarding[] = result.map(
     (item: any): TOnboarding => ({

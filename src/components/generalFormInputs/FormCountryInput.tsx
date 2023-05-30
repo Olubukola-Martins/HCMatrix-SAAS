@@ -22,7 +22,6 @@ export const FormCountryInput: React.FC<{
             item.name.toLowerCase().indexOf(val.toLowerCase()) !== -1 ||
             `+${item.code}`.toLowerCase().indexOf(`${val.toLowerCase()}`) !== -1
         );
-        console.log(sCountries);
         setSearchedCountries(sCountries);
       } else {
         setSearchedCountries([]);

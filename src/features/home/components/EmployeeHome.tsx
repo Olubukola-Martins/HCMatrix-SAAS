@@ -8,8 +8,6 @@ import SelfBox from "features/self-service/components/SelfBox";
 import { Celebrations } from "./Celebrations";
 
 export const EmployeeHome = ({ user }: any) => {
-  console.log(user);
-
   return (
     <>
       <div className="Container">

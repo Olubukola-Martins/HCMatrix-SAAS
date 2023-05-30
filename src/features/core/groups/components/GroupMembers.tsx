@@ -141,9 +141,7 @@ export const GroupMembers = ({
           }
         );
       }
-    } catch (errInfo) {
-      console.log("Validate Failed:", errInfo);
-    }
+    } catch (errInfo) {}
   };
   const columns: ColumnsType<TGroupMember> = [
     {

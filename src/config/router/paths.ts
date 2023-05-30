@@ -59,9 +59,10 @@ export const appRoutes = {
     path: `/settings/workflows/${id}`,
   }),
   payrollSettings: `/settings/payroll`,
+  payrollPolicySettings: `/settings/probation_policy_PENDING`,
   payGradeSettings: `/settings/grades`,
   gradeCategorySettings: `/settings/grade_categories`,
-  payrollPolicySettings: `/settings/probation_policy`,
+  probationPolicySettings: `/settings/probation_policy`,
   resignationPolicySettings: `/settings/resignation_policy`,
 
   // Billing routes

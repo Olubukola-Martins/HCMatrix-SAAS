@@ -45,7 +45,6 @@ const refreshApi = createRefresh({
         newRefreshToken: result.refreshToken ?? "",
       };
     } catch (error) {
-      console.error(error);
       return {
         isSuccess: false,
         newAuthToken: "",

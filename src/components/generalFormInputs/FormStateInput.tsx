@@ -21,7 +21,6 @@ export const FormStateInput: React.FC<{
         const sData = data.filter(
           (item) => item.name.toLowerCase().indexOf(val.toLowerCase()) !== -1
         );
-        console.log(sData);
         setSearchedData(sData);
       } else {
         setSearchedData([]);

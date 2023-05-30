@@ -45,7 +45,6 @@ const getNotifications = async (
   };
 
   const res = await axios.get(url, config);
-  console.log("NOTIF", res);
   const fetchedData = res.data.data;
   const result = fetchedData.result;
 

@@ -329,10 +329,7 @@ export const AddEmployee = () => {
                   className="collapseHeader"
                 >
                   <Form.Item name="hasSelfService">
-                    <Radio.Group
-                      name="hasSelfService"
-                      onChange={(val) => console.log(val, "...")}
-                    >
+                    <Radio.Group name="hasSelfService">
                       <Radio value={true}>Yes</Radio>
                       <Radio value={false}>No</Radio>
                     </Radio.Group>
