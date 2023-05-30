@@ -1,3 +1,5 @@
+import { appRoutes } from "config/router/paths";
+
 export type TLink = {
   name: string;
   link: string;
@@ -13,10 +15,10 @@ export const settingNavItems: ISettNavItem[] = [
   {
     title: "General",
     items: [
-      { name: "Company", link: "/settings/company-details" },
+      { name: "Company", link: appRoutes.companyDetailsSettings },
       // { name: "Domain", link: "/settings/domains" },
       // { name: "From Addresses", link: "/settings/from-addresses" },
-      { name: "Holidays", link: "/settings/holidays" },
+      { name: "Holidays", link: appRoutes.holidaySettings },
     ],
     category: "basic",
   },
@@ -24,11 +26,11 @@ export const settingNavItems: ISettNavItem[] = [
   {
     title: "Organization",
     items: [
-      { name: "Employees", link: "/settings/employees" },
-      { name: "Departments", link: "/settings/departments" },
-      { name: "Designations", link: "/settings/designations" },
-      { name: "Branches", link: "/settings/locations" },
-      { name: "Groups", link: "/settings/groups" },
+      { name: "Employees", link: appRoutes.employeeSettings },
+      { name: "Departments", link: appRoutes.departmentSettings },
+      { name: "Designations", link: appRoutes.designationSettings },
+      { name: "Branches", link: appRoutes.locationSettings },
+      { name: "Groups", link: appRoutes.groupSettings },
       { name: "Pay Grades", link: "/settings/grades" },
       { name: "Grade Categories", link: "/settings/grade_categories" },
     ],
@@ -37,35 +39,35 @@ export const settingNavItems: ISettNavItem[] = [
   {
     title: "User Access Control",
     items: [
-      { name: "Roles & Permissions", link: "/settings/roles" },
-      { name: "Delegation", link: "/settings/delegations" },
+      { name: "Roles & Permissions", link: appRoutes.roleSettings },
+      { name: "Delegation", link: appRoutes.delegationSettings },
     ],
     category: "basic",
   },
 
   {
     title: "Automation",
-    items: [{ name: "Workflows", link: "/settings/automation/workflows" }],
+    items: [{ name: "Workflows", link: appRoutes.workflowSettings }],
     category: "basic",
   },
   {
     title: "Policies",
     items: [
-      { name: "Probation Policy", link: "/settings/probation_policy" },
-      { name: "Resignation Policy", link: "/settings/resignation_policy" },
+      { name: "Probation Policy", link: appRoutes.probationPolicySettings },
+      { name: "Resignation Policy", link: appRoutes.resignationPolicySettings },
     ],
     category: "basic",
   },
   {
     title: "Payroll Settings",
-    items: [{ name: "Settings", link: "/settings/payroll" }],
+    items: [{ name: "Settings", link: appRoutes.payrollSettings }],
     category: "payroll",
   },
 
   {
     title: "Leave",
     items: [
-      { name: "Leave requests", link: "/settings/company-details" },
+      { name: "Leave Policy", link: appRoutes.leaveSettings },
       { name: "Loan requests", link: "/settings/domain" },
       { name: "Files Usage", link: "/settings/from-addresses" },
     ],
