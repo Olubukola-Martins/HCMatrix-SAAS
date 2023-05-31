@@ -35,6 +35,7 @@ const getData = async (
       limit,
       offset,
       search: name,
+      status: props.status,
       employeeId: props.employeeId,
     },
   };

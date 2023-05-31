@@ -2,6 +2,7 @@ import { getToken, onMessage } from "firebase/messaging";
 import { messaging } from "./firebase";
 import { MICROSERVICE_ENDPOINTS } from "config/enviroment";
 import axios from "axios";
+import { openNotification } from "utils/notifications";
 
 const VAPID_KEY =
   "BNksQuoGE7iAnui3NM6TeLKazyCTI25mwZzNMPTqmWu9vRDfl-19AeyxAoS7z9tVfl14tJob9bLVNNFhof9kcSc";
@@ -71,6 +72,16 @@ export const saveMessagingDeviceToken = async ({
       const notification = message.notification;
       notification?.title &&
         new Notification(notification?.title, { body: notification.body });
+
+      if (notification) {
+        openNotification({
+          state: "success",
+
+          title: notification?.title ?? "",
+          description: notification.body,
+          // duration: 0.4,
+        });
+      }
     });
   } else {
     console.log("Permission needed");

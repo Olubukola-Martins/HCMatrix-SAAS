@@ -4,8 +4,8 @@ import SelfServiceSubNav from "features/self-service/components/SelfServiceSubNa
 import { RequestForLeave } from "../components/RequestForLeave";
 import LeaveCards from "../components/LeaveCards";
 import LeaveHomePageHeader from "../components/LeaveHomePageHeader";
-import LeaveRequestsContainer from "../components/LeaveRequestsContainer";
 import LeaveHistoryContainer from "../components/LeaveHistoryContainer";
+import LeaveApprovalRequestsContainer from "../components/LeaveApprovalRequestsContainer";
 
 const ECOMP = {
   ADD_NEW_LEAVE: "New Leave",
@@ -46,7 +46,7 @@ const LeaveHome = () => {
 
             {/* table section*/}
             <div className="mt-12 flex flex-col gap-4">
-              <LeaveRequestsContainer />
+              <LeaveApprovalRequestsContainer />
               <LeaveHistoryContainer />
             </div>
           </div>

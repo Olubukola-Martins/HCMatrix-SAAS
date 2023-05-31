@@ -141,7 +141,7 @@ const UserLoginForm = ({ autoLoginDetails }: ILoginProps) => {
               },
             });
             saveMessagingDeviceToken({
-              employeeId: authUserDetails.companies[0].company.id,
+              employeeId: authUserDetails.companies[0].id,
             });
           }
         },

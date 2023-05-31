@@ -6,54 +6,66 @@ import { ColumnsType } from "antd/lib/table";
 
 import moment from "moment";
 import {
+  QUERY_KEY_FOR_ALL_CONFERENCE_ROOM_BOOKINGS,
   TCRBookingStatus,
-  useFetchAllConferenceRoomBookings,
 } from "../hooks/useFetchAllConferenceRoomBookings";
-import { TSingleConferenceRoomBooking } from "../types";
 import { getAppropriateColorForStatus } from "utils/colorHelpers/getAppropriateColorForStatus";
 import CRBBookingDetails from "./CRBBookingDetails";
 import { usePagination } from "hooks/usePagination";
+import { useQueryClient } from "react-query";
+import { useFetchApprovalRequests } from "features/core/workflows/hooks/useFetchApprovalRequests";
+import { useApproveORReject } from "hooks/useApproveORReject";
+import { TApprovalRequest } from "features/core/workflows/types/approval-requests";
 
-const CRBBookingsList: React.FC<{
+const CRBApprovalRequestsTable: React.FC<{
   status?: TCRBookingStatus;
   employeeId?: number;
 }> = ({ status, employeeId }) => {
-  const [showD, setShowD] = useState(false);
-  const [bookingId, setBookingId] = useState<number>();
-  const { pagination, onChange } = usePagination();
+  const queryClient = useQueryClient();
 
-  const { data, isFetching } = useFetchAllConferenceRoomBookings({
+  const [showD, setShowD] = useState(false);
+  const [requestId, setRequestId] = useState<number>();
+  const { pagination, onChange } = usePagination();
+  const { data, isFetching } = useFetchApprovalRequests({
     pagination,
-    status,
-    employeeId,
+    type: "conferenceRoom",
   });
 
-  const originalColumns: ColumnsType<TSingleConferenceRoomBooking> = [
+  const { confirmApprovalAction } = useApproveORReject({
+    handleSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: [QUERY_KEY_FOR_ALL_CONFERENCE_ROOM_BOOKINGS],
+        // exact: true,
+      });
+    },
+  });
+
+  const originalColumns: ColumnsType<TApprovalRequest> = [
     {
       title: "Name",
       dataIndex: "name",
       key: "name",
       render: (val, item) => (
         <span>
-          {item.employee.firstName} {item.employee.lastName}
+          {item.conferenceRoomBooking?.employee.firstName}{" "}
+          {item.conferenceRoomBooking?.employee.lastName}
         </span>
       ),
-
-      // ellipsis: true,
-
-      // width: 100,
     },
     {
       title: "Date",
       dataIndex: "createdAt",
       key: "createdAt",
-      render: (val) => moment(val).format("YYYY-MM-DD"),
+      render: (val, item) =>
+        moment(item.conferenceRoomBooking?.createdAt).format("YYYY-MM-DD"),
     },
     {
       title: "Room Name",
       dataIndex: "roomName",
       key: "roomName",
-      render: (val: string) => <span>{`Marketing`}</span>,
+      render: (_, item) => (
+        <span>{item.conferenceRoomBooking?.conferenceRoom.name}</span>
+      ),
 
       // ellipsis: true,
 
@@ -64,6 +76,7 @@ const CRBBookingsList: React.FC<{
       dataIndex: "reason",
       key: "reason",
       ellipsis: true,
+      render: (_, item) => <span>{item.conferenceRoomBooking?.reason}</span>,
 
       // width: 100,
     },
@@ -71,25 +84,31 @@ const CRBBookingsList: React.FC<{
       title: "Department",
       dataIndex: "department",
       key: "department",
+      render: (_, item) => (
+        <span>{item.conferenceRoomBooking?.department?.name ?? "N/A"}</span>
+      ),
     },
     {
       title: "Meeting Date",
       dataIndex: "date",
       key: "date",
-      render: (val) => moment(val).format("YYYY-MM-DD"),
+      render: (val, item) =>
+        moment(item.conferenceRoomBooking?.date).format("YYYY-MM-DD"),
     },
     {
       title: "Start Time",
       dataIndex: "startTime",
       key: "startTime",
-      render: (val) => moment(val).format("h:mm:ss"),
+      render: (_, item) =>
+        moment(item.conferenceRoomBooking?.startTime).format("h:mm:ss"),
     },
 
     {
       title: "End Time",
       dataIndex: "endTime",
       key: "endTime",
-      render: (val) => moment(val).format("h:mm:ss"),
+      render: (_, item) =>
+        moment(item.conferenceRoomBooking?.endTime).format("h:mm:ss"),
     },
 
     {
@@ -120,13 +139,37 @@ const CRBBookingsList: React.FC<{
                   key="3"
                   onClick={() => {
                     setShowD(true);
-                    setBookingId(item.id);
+                    setRequestId(item.conferenceRoomBooking?.id);
                   }}
                 >
                   View
                 </Menu.Item>
-                {/* <Menu.Item key="2">Approve</Menu.Item>
-                <Menu.Item key="1">Reject</Menu.Item> */}
+                <Menu.Item
+                  hidden={item.conferenceRoomBooking?.status !== "pending"}
+                  key="2"
+                  onClick={() =>
+                    confirmApprovalAction({
+                      approvalStageId: item?.id,
+                      status: "approved",
+                      workflowType: !!item?.basicStageId ? "basic" : "advanced",
+                    })
+                  }
+                >
+                  Approve
+                </Menu.Item>
+                <Menu.Item
+                  hidden={item.conferenceRoomBooking?.status !== "pending"}
+                  key="1"
+                  onClick={() =>
+                    confirmApprovalAction({
+                      approvalStageId: item?.id,
+                      status: "rejected",
+                      workflowType: !!item?.basicStageId ? "basic" : "advanced",
+                    })
+                  }
+                >
+                  Reject
+                </Menu.Item>
               </Menu>
             }
             trigger={["click"]}
@@ -150,7 +193,7 @@ const CRBBookingsList: React.FC<{
         style={{ top: 10 }}
         footer={null}
       >
-        {bookingId && <CRBBookingDetails id={bookingId} />}
+        {requestId && <CRBBookingDetails id={requestId} />}
       </Modal>
 
       <Table
@@ -165,4 +208,4 @@ const CRBBookingsList: React.FC<{
   );
 };
 
-export default CRBBookingsList;
+export default CRBApprovalRequestsTable;

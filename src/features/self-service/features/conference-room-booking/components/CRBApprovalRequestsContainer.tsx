@@ -1,16 +1,15 @@
 import { Select } from "antd";
 
+import { CR_BOOKING_STATUS_OPTIONS } from "../constants";
 import { useState } from "react";
+import { TCRBookingStatus } from "../hooks/useFetchAllConferenceRoomBookings";
+import CRBApprovalRequestsTable from "./CRBApprovalRequestsTable";
 
-import { TApprovalStatus } from "types/statuses";
-import LeavesTable from "./LeavesTable";
-import { APPROVAL_STATUS_OPTIONS } from "constants/statustes";
-
-const LeaveRequestsContainer = () => {
-  const [status, setStatus] = useState<TApprovalStatus>();
+export const CRBApprovalRequestsContainer = () => {
+  const [status, setStatus] = useState<TCRBookingStatus>();
   return (
     <div>
-      <p className="text-lg mb-4">Leave Requests</p>
+      <p className="text-lg mb-4">Booking Request Approvals</p>
       <div className="flex flex-col gap-6">
         <div className="flex justify-between items-center">
           <Select
@@ -20,18 +19,16 @@ const LeaveRequestsContainer = () => {
             size="middle"
             className="w-32"
             placeholder="Filter"
-            onSelect={(val: TApprovalStatus) => setStatus(val)}
-            options={APPROVAL_STATUS_OPTIONS}
+            onSelect={(val: TCRBookingStatus) => setStatus(val)}
+            options={CR_BOOKING_STATUS_OPTIONS}
           />
           <div className="flex items-center gap-4">
             <i className="ri-download-2-line text-xl"></i>
             <i className="ri-logout-box-r-line text-xl"></i>
           </div>
         </div>
-        <LeavesTable status={status} />
+        <CRBApprovalRequestsTable status={status} />
       </div>
     </div>
   );
 };
-
-export default LeaveRequestsContainer;
