@@ -3,7 +3,7 @@ import { useApiAuth } from "hooks/useApiAuth";
 import { useQuery } from "react-query";
 import { IPaginationProps, ICurrentCompany, ISearchParams } from "types";
 import { DEFAULT_PAGE_SIZE } from "constants/general";
-// import { TWorkflowApprovalType } from "../types";
+import { TWorkflowApprovalType } from "../types";
 import { TApprovalRequest } from "../types/approval-requests";
 
 export const QUERY_KEY_FOR_APPROVAL_REQUESTS = "approval-requests";
@@ -12,8 +12,7 @@ export const QUERY_KEY_FOR_APPROVAL_REQUESTS = "approval-requests";
 interface IGetDataProps {
   pagination?: IPaginationProps;
   searchParams?: ISearchParams;
-  // type: TWorkflowApprovalType;
-  type: "vehicle" | "conferenceRoom" | "leave";
+  type: TWorkflowApprovalType;
 }
 
 const getData = async (

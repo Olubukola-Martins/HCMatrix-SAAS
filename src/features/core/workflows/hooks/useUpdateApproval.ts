@@ -3,7 +3,6 @@ import { MICROSERVICE_ENDPOINTS } from "config/enviroment";
 import { useApiAuth } from "hooks/useApiAuth";
 import { useMutation } from "react-query";
 import { ICurrentCompany } from "types";
-import { TWorkflowApprovalType } from "../types";
 
 type TCreateProps = {
   status: "approved" | "rejected";
