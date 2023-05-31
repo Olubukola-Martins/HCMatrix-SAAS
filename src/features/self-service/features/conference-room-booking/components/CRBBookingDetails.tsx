@@ -17,7 +17,7 @@ const CRBBookingDetails = ({ id }: IProps) => {
       form.setFieldsValue({
         date: data.date ? moment(data.date) : null,
         bookedBy: `${data.employee.firstName} ${data.employee.lastName}`,
-        employeeID: data.employeeId,
+        employeeID: data.employee.empUid,
         department: data.department?.name,
         roomName: data.conferenceRoom.name,
         priority: data.priority,

@@ -1,37 +1,166 @@
-import { Select } from "antd";
+import { Space, Dropdown, Menu, Table, Modal } from "antd";
+import { MoreOutlined } from "@ant-design/icons";
 
-import CRBBookingsList from "./CRBBookingsList";
-import { useApiAuth } from "hooks/useApiAuth";
-import { useState } from "react";
-import { TCRBookingStatus } from "../hooks/useFetchAllConferenceRoomBookings";
-import { CR_BOOKING_STATUS_OPTIONS } from "../constants";
+import React, { useState } from "react";
+import { ColumnsType } from "antd/lib/table";
 
-const CRBHistoryTable = () => {
-  const { currentUserEmployeeId } = useApiAuth();
-  const [status, setStatus] = useState<TCRBookingStatus>();
+import moment from "moment";
+import {
+  TCRBookingStatus,
+  useFetchAllConferenceRoomBookings,
+} from "../hooks/useFetchAllConferenceRoomBookings";
+import { TSingleConferenceRoomBooking } from "../types";
+import { getAppropriateColorForStatus } from "utils/colorHelpers/getAppropriateColorForStatus";
+import CRBBookingDetails from "./CRBBookingDetails";
+import { usePagination } from "hooks/usePagination";
 
+const CRBHistoryTable: React.FC<{
+  status?: TCRBookingStatus;
+  employeeId?: number;
+}> = ({ status, employeeId }) => {
+  const [showD, setShowD] = useState(false);
+  const [bookingId, setBookingId] = useState<number>();
+  const { pagination, onChange } = usePagination();
+
+  const { data, isFetching } = useFetchAllConferenceRoomBookings({
+    pagination,
+    status,
+    employeeId,
+  });
+
+  const originalColumns: ColumnsType<TSingleConferenceRoomBooking> = [
+    {
+      title: "Name",
+      dataIndex: "name",
+      key: "name",
+      render: (val, item) => (
+        <span>
+          {item.employee.firstName} {item.employee.lastName}
+        </span>
+      ),
+
+      // ellipsis: true,
+
+      // width: 100,
+    },
+    {
+      title: "Date",
+      dataIndex: "createdAt",
+      key: "createdAt",
+      render: (val) => moment(val).format("YYYY-MM-DD"),
+    },
+    {
+      title: "Room Name",
+      dataIndex: "roomName",
+      key: "roomName",
+      render: (val: string) => <span>{`Marketing`}</span>,
+
+      // ellipsis: true,
+
+      // width: 100,
+    },
+    {
+      title: "Reason",
+      dataIndex: "reason",
+      key: "reason",
+      ellipsis: true,
+
+      // width: 100,
+    },
+    {
+      title: "Department",
+      dataIndex: "department",
+      key: "department",
+    },
+    {
+      title: "Meeting Date",
+      dataIndex: "date",
+      key: "date",
+      render: (val) => moment(val).format("YYYY-MM-DD"),
+    },
+    {
+      title: "Start Time",
+      dataIndex: "startTime",
+      key: "startTime",
+      render: (val) => moment(val).format("h:mm:ss"),
+    },
+
+    {
+      title: "End Time",
+      dataIndex: "endTime",
+      key: "endTime",
+      render: (val) => moment(val).format("h:mm:ss"),
+    },
+
+    {
+      title: "Status",
+      dataIndex: "status",
+
+      key: "status",
+      render: (val: string) => (
+        <span
+          className="capitalize"
+          style={{ color: getAppropriateColorForStatus(val) }}
+        >
+          {val}
+        </span>
+      ),
+    },
+
+    {
+      title: "Action",
+      key: "action",
+      width: 100,
+      render: (_, item) => (
+        <Space align="center" className="cursor-pointer">
+          <Dropdown
+            overlay={
+              <Menu>
+                <Menu.Item
+                  key="3"
+                  onClick={() => {
+                    setShowD(true);
+                    setBookingId(item.id);
+                  }}
+                >
+                  View
+                </Menu.Item>
+                {/* <Menu.Item key="2">Approve</Menu.Item>
+                <Menu.Item key="1">Reject</Menu.Item> */}
+              </Menu>
+            }
+            trigger={["click"]}
+          >
+            <MoreOutlined />
+          </Dropdown>
+        </Space>
+      ),
+    },
+  ];
+  const columns = employeeId
+    ? originalColumns.filter((item) => item.key !== "name")
+    : originalColumns;
   return (
     <div>
-      <p className="text-lg mb-4">My Booking History</p>
-      <div className="flex flex-col gap-6">
-        <div className="flex justify-between items-center">
-          <Select
-            allowClear
-            onClear={() => setStatus(undefined)}
-            value={status}
-            size="middle"
-            className="w-32"
-            placeholder="Filter"
-            onSelect={(val: TCRBookingStatus) => setStatus(val)}
-            options={CR_BOOKING_STATUS_OPTIONS}
-          />
-          <div className="flex items-center gap-4">
-            <i className="ri-download-2-line text-xl"></i>
-            <i className="ri-logout-box-r-line text-xl"></i>
-          </div>
-        </div>
-        <CRBBookingsList employeeId={currentUserEmployeeId} status={status} />
-      </div>
+      <Modal
+        open={showD}
+        onCancel={() => setShowD(false)}
+        closeIcon={false}
+        title={"Booking Details"}
+        style={{ top: 10 }}
+        footer={null}
+      >
+        {bookingId && <CRBBookingDetails id={bookingId} />}
+      </Modal>
+
+      <Table
+        columns={columns}
+        size="small"
+        dataSource={data?.data}
+        loading={isFetching}
+        pagination={{ ...pagination, total: data?.total }}
+        onChange={onChange}
+      />
     </div>
   );
 };

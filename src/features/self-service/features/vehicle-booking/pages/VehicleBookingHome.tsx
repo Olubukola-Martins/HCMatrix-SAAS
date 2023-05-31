@@ -7,6 +7,7 @@ import { EmployeeVehicleBooking } from "../components/EmployeeVehicleBooking";
 import { PageIntro } from "components/layout/PageIntro";
 import { appRoutes } from "config/router/paths";
 import { VehicleSetting } from "../components/VehicleSetting";
+import { VBApprovalRequestsContainer } from "../components/VBApprovalRequestsContainer";
 
 const VehicleBookingHome = () => {
   const tabItems = [
@@ -35,6 +36,11 @@ const VehicleBookingHome = () => {
       children: <EmployeeVehicleBooking />,
       key: "My Bookings",
     },
+    {
+      label: "Approvals",
+      children: <VBApprovalRequestsContainer />,
+      key: "Approvals",
+    },
   ];
   return (
     <>
@@ -48,7 +54,9 @@ const VehicleBookingHome = () => {
               children: (
                 <VehicleWrapper
                   showAddVehicleAndDownlaod={
-                    item.key === "My Bookings" ? false : true
+                    item.key === "My Bookings" || item.key === "Approvals"
+                      ? false
+                      : true
                   }
                 >
                   {item.children}

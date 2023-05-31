@@ -44,6 +44,7 @@ export const ViewVehicleBooking: React.FC<IProps> = ({
         employeeId: data.employeeId,
         destination: data.destination,
         duration: data.duration,
+        status: data.status,
         vehicle: `${data.vehicle.brand} ${data.vehicle.type} (${data.vehicle.plateNumber}),`,
       });
     }
@@ -93,21 +94,8 @@ export const ViewVehicleBooking: React.FC<IProps> = ({
           </Form.Item>
 
           <Form.Item name={"status"} label="Status">
-            <Select
-              placeholder="status"
-              options={APPROVAL_STATUS_OPTIONS.filter(
-                (item) => item.value !== "pending"
-              )}
-            />
+            <Input disabled />
           </Form.Item>
-
-          <div className="flex justify-end gap-2">
-            {<AppButton label="Download" variant="transparent" type="button" />}
-
-            {data?.status === "pending" && (
-              <AppButton label="Approve/Reject" type="submit" />
-            )}
-          </div>
         </Form>
       </Skeleton>
     </Modal>

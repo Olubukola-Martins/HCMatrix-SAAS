@@ -82,7 +82,7 @@ const NewCRBBooking = ({ handleClose }: IProps) => {
       >
         <FormMeetingRoomsInput
           Form={Form}
-          control={{ label: "Meeting Room", name: "roomId" }}
+          control={{ label: "", name: "roomId" }}
         />
         <Form.Item
           name="date"

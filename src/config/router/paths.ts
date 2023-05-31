@@ -96,6 +96,7 @@ export const appRoutes = {
   selfServiceTransfer: `/self-service/transfers`,
   selfServiceTransferSetting: `/self-service/transfer-setting`,
   selfServiceMonetary: `/self-service/monetary`,
+  selfServiceMonetarySetting: `/self-service/monetary-setting`,
   selfServiceAssets: `/self-service/assets`,
   assetTypeDetails: (id?: number) => ({
     format: `/self-service/assets/:id`,

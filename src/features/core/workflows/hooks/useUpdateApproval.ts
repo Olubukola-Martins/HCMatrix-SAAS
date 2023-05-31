@@ -12,7 +12,7 @@ type TCreateProps = {
 const updateApproval = async (props: {
   data: TCreateProps;
   auth: ICurrentCompany;
-  workflowType: TWorkflowApprovalType;
+  workflowType: "basic" | "advanced";
   approvalStageId: number;
 }) => {
   const url = `${MICROSERVICE_ENDPOINTS.UTILITY}/workflow/approval/${props.workflowType}/${props.approvalStageId}`;
@@ -36,7 +36,7 @@ export const useUpdateApproval = () => {
   return useMutation(
     (props: {
       data: TCreateProps;
-      workflowType: TWorkflowApprovalType;
+      workflowType: "basic" | "advanced";
       approvalStageId: number;
     }) =>
       updateApproval({

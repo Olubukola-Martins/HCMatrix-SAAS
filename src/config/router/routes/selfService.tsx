@@ -3,7 +3,6 @@ import { appRoutes } from "../paths";
 import { TRouteData } from "../types";
 import Requisition from "features/self-service/features/requisitions/pages/Requisition";
 import Reimbursements from "features/self-service/features/reimbursement/pages/Reimbursements";
-import Monetary from "features/self-service/features/monetary-requests/pages/Monetary";
 import Assets from "features/self-service/features/assets/pages/Assets";
 import AssetTypeDetails from "features/self-service/features/assets/pages/AssetTypeDetails";
 import AssetDetails from "features/self-service/features/assets/pages/AssetDetails";
@@ -30,6 +29,8 @@ import { CRBHomeSettings } from "features/self-service/features/conference-room-
 import ReimbursementSettingPage from "features/self-service/features/reimbursement/pages/ReimbursementSettingPage";
 import TransfersSettingPage from "features/self-service/features/transfers/pages/TransferSettingsPage";
 import Transfers from "features/self-service/features/transfers/pages/Transfers";
+import MonetaryRequests from "features/self-service/features/monetary-requests/pages/MonetaryRequests";
+import MonetaryRequestsSettingPage from "features/self-service/features/monetary-requests/pages/MonetaryRequestsSettingPage";
 
 export const selfServiceRoutes: TRouteData[] = [
   {
@@ -74,7 +75,14 @@ export const selfServiceRoutes: TRouteData[] = [
     isPrimaryFeature: true,
   },
   {
-    element: <Monetary />,
+    element: <MonetaryRequestsSettingPage />,
+    path: appRoutes.selfServiceMonetarySetting,
+    isSearchable: true,
+    title: "Monetary Request Setting",
+    isPrimaryFeature: false,
+  },
+  {
+    element: <MonetaryRequests />,
     path: appRoutes.selfServiceMonetary,
     isSearchable: true,
     title: "Monetary Requests",
