@@ -28,7 +28,7 @@ const CRBApprovalRequestsTable: React.FC<{
   const { pagination, onChange } = usePagination();
   const { data, isFetching } = useFetchApprovalRequests({
     pagination,
-    type: "conferenceRoom",
+    type: "conference-room",
   });
 
   const { confirmApprovalAction } = useApproveORReject({
