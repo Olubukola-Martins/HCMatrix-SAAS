@@ -81,7 +81,7 @@ export const RequisitionBox = ({ icon }: { icon: string }) => {
             overlayStyle={{ top: 1000 }}
             overlay={requisitionContent}
             trigger={["click"]}
-            placement="bottomCenter"
+            placement="bottom"
           >
             <i className="ri-more-fill text-lg"></i>
           </Dropdown>
@@ -107,7 +107,7 @@ export const MoreBox = () => {
           <Dropdown
             overlay={moreContent}
             trigger={["click"]}
-            placement="bottomCenter"
+            placement="bottom"
           >
             <i className="ri-more-fill text-lg"></i>
           </Dropdown>

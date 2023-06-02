@@ -1,21 +1,22 @@
 {
   "short_name": "HCMatrix",
   "name": "HCMatrix",
+
   "icons": [
     {
       "src": "matrix_logo.png",
-      "sizes": "64x64 32x32 24x24 16x16",
-      "type": "image/x-icon"
+      "sizes": "48x48",
+      "type": "image/png"
     },
     {
       "src": "matrix_logo.png",
-      "type": "image/png",
-      "sizes": "192x192"
+      "sizes": "72x72",
+      "type": "image/png"
     },
     {
       "src": "matrix_logo.png",
-      "type": "image/png",
-      "sizes": "512x512"
+      "sizes": "96x96",
+      "type": "image/png"
     }
   ],
   "start_url": ".",

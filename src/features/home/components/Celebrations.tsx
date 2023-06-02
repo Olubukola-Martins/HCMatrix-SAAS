@@ -8,17 +8,18 @@ export const Celebrations = () => {
   return (
     <div>
       <h3 className="pb-1 font-medium">Celebrations & Holidays</h3>
-      <Tabs defaultActiveKey="1">
-        <Tabs.TabPane tab="Birthdays" key="1">
-          <Birthdays />
-        </Tabs.TabPane>
-        <Tabs.TabPane tab="Work Anniversaries" key="2">
-          <WorkAnniversary />
-        </Tabs.TabPane>
-        <Tabs.TabPane tab="Holidays" key="3">
-          <Holidays />
-        </Tabs.TabPane>
-      </Tabs>
+      <Tabs
+        defaultActiveKey="1"
+        items={[
+          { key: "Birthdays", label: "Birthdays", children: <Birthdays /> },
+          {
+            key: "Work Anniversaries",
+            label: "Work Anniversaries",
+            children: <WorkAnniversary />,
+          },
+          { key: "Holidays", label: "Holidays", children: <Holidays /> },
+        ]}
+      />
     </div>
   );
 };

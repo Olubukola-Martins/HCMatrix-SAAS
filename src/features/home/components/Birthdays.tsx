@@ -9,8 +9,11 @@ export const Birthdays = () => {
       <Collapse defaultActiveKey={["1"]}>
         <Panel header="Upcoming Birthdays" key="1">
           <div className="grid grid-cols-2 gap-3">
-            {[1, 2].map(() => (
-              <div className="shadow border p-2 rounded flex items-center gap-2">
+            {[1, 2].map((item) => (
+              <div
+                className="shadow border p-2 rounded flex items-center gap-2"
+                key={item}
+              >
                 <img
                   src="https://res.cloudinary.com/ddvaelej7/image/upload/v1639659955/HCmatrix/User-Icon_wdkmsf.png"
                   alt="user"

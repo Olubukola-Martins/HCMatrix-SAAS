@@ -181,14 +181,29 @@ export const AdminHome = () => {
           <div className="col-span-2 bg-mainBg shadow border rounded-lg p-3">
             <h3 className="text-base">Who is out?</h3>
 
-            <Tabs defaultActiveKey="1">
-              <Tabs.TabPane tab="Leave (0)" key="1">
-                <h4>No One is Currently on Leave</h4>
-              </Tabs.TabPane>
-              <Tabs.TabPane tab="Remote Work (0)" key="2">
-                <h4>No Remote Worker</h4>
-              </Tabs.TabPane>
-            </Tabs>
+            <Tabs
+              defaultActiveKey="1"
+              items={[
+                {
+                  key: "1",
+                  label: "Leave (0)",
+                  children: (
+                    <>
+                      <h4>No One is Currently on Leave</h4>
+                    </>
+                  ),
+                },
+                {
+                  key: "2",
+                  label: "Remote Work (0)",
+                  children: (
+                    <>
+                      <h4>No Remote Worker</h4>
+                    </>
+                  ),
+                },
+              ]}
+            />
           </div>
           <div className="bg-mainBg shadow border rounded-lg p-3">
             <Celebrations />

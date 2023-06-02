@@ -1,12 +1,13 @@
 import React from "react";
 import { motion } from "framer-motion";
-import { Link, To } from "react-router-dom";
+import { Link } from "react-router-dom";
 import ProgressBar from "./ProgressBar";
+import { TSettNavItem } from "features/settings/constants/settingNavItems";
 
 interface Iprops {
   handleClick: Function;
   openId: string;
-  item: any;
+  item: TSettNavItem;
 }
 
 export const PendingItem = ({ handleClick, item, openId }: Iprops) => {
@@ -27,30 +28,16 @@ export const PendingItem = ({ handleClick, item, openId }: Iprops) => {
           height: openId === item.title ? item.items.length * 43 : "0",
         }}
       >
-        {item.items.map(
-          (child: {
-            link: To;
-            name:
-              | boolean
-              | React.ReactElement<
-                  any,
-                  string | React.JSXElementConstructor<any>
-                >
-              | React.ReactFragment
-              | React.Key
-              | null
-              | undefined;
-          }) => (
-            <Link
-              to={child.link}
-              // key={child.name}
-              className="item flex gap-6 text-xs mb-2 items-center"
-            >
-              <span>{child.name}</span>
-              <ProgressBar width="25%" />
-            </Link>
-          )
-        )}
+        {item.items.map((child) => (
+          <Link
+            to={child.link}
+            key={child.name}
+            className="item flex gap-6 text-xs mb-2 items-center"
+          >
+            <span>{child.name}</span>
+            <ProgressBar width="25%" />
+          </Link>
+        ))}
       </motion.div>
     </div>
   );
