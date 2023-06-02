@@ -31,6 +31,12 @@ import TransfersSettingPage from "features/self-service/features/transfers/pages
 import Transfers from "features/self-service/features/transfers/pages/Transfers";
 import MonetaryRequests from "features/self-service/features/monetary-requests/pages/MonetaryRequests";
 import MonetaryRequestsSettingPage from "features/self-service/features/monetary-requests/pages/MonetaryRequestsSettingPage";
+import JobRequestsSettingPage from "features/self-service/features/jobs/pages/JobRequestsSettingPage";
+import JobRequests from "features/self-service/features/jobs/pages/JobRequests";
+import PositionChangeRequests from "features/self-service/features/position-change/pages/PositionChangeRequests";
+import PositionChangeRequestsSettingPage from "features/self-service/features/position-change/pages/PositionChangeRequestsSettingPage";
+import PromotionRequests from "features/self-service/features/promotions/pages/PromotionRequests";
+import PromotionRequestsSettingPage from "features/self-service/features/promotions/pages/PromotionRequestsSettingPage";
 
 export const selfServiceRoutes: TRouteData[] = [
   {
@@ -86,6 +92,48 @@ export const selfServiceRoutes: TRouteData[] = [
     path: appRoutes.selfServiceMonetary,
     isSearchable: true,
     title: "Monetary Requests",
+    isPrimaryFeature: true,
+  },
+  {
+    element: <JobRequestsSettingPage />,
+    path: appRoutes.selfServiceJobSetting,
+    isSearchable: true,
+    title: "Job Request Setting",
+    isPrimaryFeature: false,
+  },
+  {
+    element: <JobRequests />,
+    path: appRoutes.selfServiceJob,
+    isSearchable: true,
+    title: "Job Requests",
+    isPrimaryFeature: true,
+  },
+  {
+    element: <PositionChangeRequestsSettingPage />,
+    path: appRoutes.selfServicePositionChangeSetting,
+    isSearchable: true,
+    title: "Position Change Request Setting",
+    isPrimaryFeature: false,
+  },
+  {
+    element: <PositionChangeRequests />,
+    path: appRoutes.selfServicePositionChange,
+    isSearchable: true,
+    title: "Position Change Requests",
+    isPrimaryFeature: true,
+  },
+  {
+    element: <PromotionRequestsSettingPage />,
+    path: appRoutes.selfServicePromotionSetting,
+    isSearchable: true,
+    title: "Promotion Request Setting",
+    isPrimaryFeature: false,
+  },
+  {
+    element: <PromotionRequests />,
+    path: appRoutes.selfServicePromotion,
+    isSearchable: true,
+    title: "Promotion Requests",
     isPrimaryFeature: true,
   },
   {
