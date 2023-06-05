@@ -104,11 +104,15 @@ export const appRoutes = {
   selfServicePromotion: `/self-service/promotion`,
   selfServicePromotionSetting: `/self-service/promotion-setting`,
   selfServiceAssets: `/self-service/assets`,
+  selfServiceAssetSetting: `/self-service/asset-setting`,
   assetTypeDetails: (id?: number) => ({
+    format: `/self-service/asset-types/:id`,
+    path: `/self-service/asset-types/${id}`,
+  }),
+  assetDetails: (id?: number) => ({
     format: `/self-service/assets/:id`,
     path: `/self-service/assets/${id}`,
   }),
-  assetDetails: `/self-service/assets-details`,
   loans: `/self-service/loan`,
   loanRequests: `/self-service/loan-request`,
   loanPolicies: `/self-service/loan-policies`,

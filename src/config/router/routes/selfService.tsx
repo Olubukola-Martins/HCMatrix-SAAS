@@ -37,6 +37,7 @@ import PositionChangeRequests from "features/self-service/features/position-chan
 import PositionChangeRequestsSettingPage from "features/self-service/features/position-change/pages/PositionChangeRequestsSettingPage";
 import PromotionRequests from "features/self-service/features/promotions/pages/PromotionRequests";
 import PromotionRequestsSettingPage from "features/self-service/features/promotions/pages/PromotionRequestsSettingPage";
+import AssetRequestSettingsPage from "features/self-service/features/assets/pages/AssetRequestSettingsPage";
 
 export const selfServiceRoutes: TRouteData[] = [
   {
@@ -144,15 +145,22 @@ export const selfServiceRoutes: TRouteData[] = [
     isPrimaryFeature: true,
   },
   {
+    element: <AssetRequestSettingsPage />,
+    path: appRoutes.selfServiceAssetSetting,
+    isSearchable: true,
+    title: "Asset Settings",
+    isPrimaryFeature: false,
+  },
+  {
     element: <AssetTypeDetails />,
     path: appRoutes.assetTypeDetails().format,
     isSearchable: false,
-    isPrimaryFeature: true,
+    isPrimaryFeature: false,
   },
   {
     element: <AssetDetails />,
-    path: appRoutes.assetDetails,
-    isSearchable: true,
+    path: appRoutes.assetDetails().format,
+    isSearchable: false,
     title: "Asset Details",
   },
   {

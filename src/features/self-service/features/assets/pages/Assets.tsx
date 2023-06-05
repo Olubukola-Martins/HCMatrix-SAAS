@@ -3,55 +3,44 @@ import React, { useState } from "react";
 import AssetList from "../components/AssetList";
 import AssetOverview from "../components/AssetOverview";
 import AssetType from "../components/AssetType";
+import { PageIntro } from "components/layout/PageIntro";
+import { appRoutes } from "config/router/paths";
+import PageSubHeader from "components/layout/PageSubHeader";
+import { Tabs } from "antd";
 
 const Assets = () => {
   const [tap, setTap] = useState("overview");
+  const tabItems = [
+    {
+      label: "Asset Overview",
+      children: <AssetOverview />,
+      key: "Asset Overview",
+    },
+    {
+      label: "Asset List",
+      children: <AssetList />,
+      key: "Asset List",
+    },
+    {
+      label: "Asset Type",
+      children: <AssetType />,
+      key: "Asset Type",
+    },
+  ];
 
   return (
     <>
       <SelfServiceSubNav />
       <div className="Container">
-        <h2 className="font-extrabold text-xl md:text-2xl text-accent">
-          <i className="ri-arrow-left-s-line text-lg"></i> <span>Assets</span>
-        </h2>
-
-        <div className="flex items-center gap-5 font-medium border-b-2 text-sm mt-4 mb-5">
-          <h5
-            onClick={() => setTap("overview")}
-            className={
-              tap === "overview"
-                ? "cursor-pointer hover:text-caramel pb-4 border-b-2 border-caramel"
-                : "cursor-pointer hover:text-caramel pb-4"
-            }
-          >
-            Asset Overview
-          </h5>
-          <h5
-            onClick={() => setTap("list")}
-            className={
-              tap === "list"
-                ? "cursor-pointer hover:text-caramel pb-4 border-b-2 border-caramel"
-                : "cursor-pointer hover:text-caramel pb-4"
-            }
-          >
-            Asset List
-          </h5>
-          <h5
-            onClick={() => setTap("type")}
-            className={
-              tap === "type"
-                ? "cursor-pointer hover:text-caramel pb-4 border-b-2 border-caramel"
-                : "cursor-pointer hover:text-caramel pb-4"
-            }
-          >
-            Asset Type
-          </h5>
+        <div className="flex flex-col gap-6">
+          <div>
+            <PageIntro title="Assets" link={appRoutes.selfServiceHome} />
+            <PageSubHeader
+              description={`You can now add assets and asset type, view asset requests and request for assets`}
+            />
+          </div>
+          <Tabs items={tabItems} />
         </div>
-
-        {/* Display tap */}
-        {tap === "overview" && <AssetOverview />}
-        {tap === "list" && <AssetList />}
-        {tap === "type" && <AssetType />}
       </div>
     </>
   );

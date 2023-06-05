@@ -1,35 +1,27 @@
 import { Select, Spin } from "antd";
+import { useApiAuth } from "hooks/useApiAuth";
 import { useDebounce } from "hooks/useDebounce";
 import { useState } from "react";
-import {
-  generalValidationRules,
-  generalValidationRulesOp,
-} from "utils/formHelpers/validation";
-import { useFetchEmployees } from "../hooks/useFetchEmployees";
-import { TEmployee } from "../types";
+import { generalValidationRules } from "utils/formHelpers/validation";
+import { useGetAssetTypes } from "../hooks/useGetAssetTypes";
 
-export const FormEmployeeInput: React.FC<{
-  handleSelect?: (val: number, employee?: TEmployee) => void;
-  fieldKey?: number;
+export const FormAssetTypeInput: React.FC<{
   Form: any;
   showLabel?: boolean;
-  optional?: boolean;
   control?: { label: string; name: string | (string | number)[] };
-}> = ({
-  Form,
-  showLabel = true,
-  control,
-  handleSelect,
-  fieldKey,
-  optional = false,
-}) => {
+}> = ({ Form, showLabel = true, control }) => {
+  const { token, companyId } = useApiAuth();
+
   const [searchTerm, setSearchTerm] = useState<string>("");
   const debouncedSearchTerm: string = useDebounce<string>(searchTerm);
 
-  const { data, isSuccess } = useFetchEmployees({
+  const { data, isFetching, isSuccess } = useGetAssetTypes({
+    companyId,
     searchParams: {
       name: debouncedSearchTerm,
     },
+
+    token,
   });
 
   const handleSearch = (val: string) => {
@@ -38,19 +30,13 @@ export const FormEmployeeInput: React.FC<{
 
   return (
     <Form.Item
-      fieldKey={fieldKey}
-      name={control?.name ?? "employeeId"}
-      label={showLabel ? control?.label ?? "Employee" : null}
-      rules={optional ? generalValidationRulesOp : generalValidationRules}
+      name={control?.name ?? "assetTypeId"}
+      label={showLabel ? control?.label ?? "Asset Type" : null}
+      rules={generalValidationRules}
     >
       <Select
-        onSelect={(val: number) => {
-          if (handleSelect) {
-            const employee = data?.data.find((emp) => emp.id === val);
-            handleSelect(val, employee);
-          }
-        }}
-        placeholder="Select user"
+        placeholder="Select Asset Type"
+        loading={isFetching} //TO DO : this should be added to all custom Fetch Form Inputs
         showSearch
         allowClear
         onClear={() => setSearchTerm("")}
@@ -63,7 +49,7 @@ export const FormEmployeeInput: React.FC<{
         {isSuccess ? (
           data.data.map((item) => (
             <Select.Option key={item.id} value={item.id}>
-              {item.firstName} {item.lastName}
+              {item.name}
             </Select.Option>
           ))
         ) : (

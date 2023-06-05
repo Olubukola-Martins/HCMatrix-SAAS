@@ -12,9 +12,12 @@ const PositionChangeRequestsContainer = () => {
         handleClose={() => setShowM(false)}
       />
       <PageSubHeader
-        description={`You can now approve and request for monetary requests.`}
+        description={`You can now approve and request for position change requests.`}
         actions={[
-          { name: "New Monetary Request", handleClick: () => setShowM(true) },
+          {
+            name: "New Position Change Request",
+            handleClick: () => setShowM(true),
+          },
         ]}
       />
       <PositionChangeRequestsTableContainer />

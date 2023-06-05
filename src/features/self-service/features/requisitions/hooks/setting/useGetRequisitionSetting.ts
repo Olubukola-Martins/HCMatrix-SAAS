@@ -12,7 +12,7 @@ interface IGetDataProps extends ICurrentCompany {
 
 export const QUERY_KEY_FOR_REQUISITION_SETTING = "requisition-setting";
 
-const getVehicles = async (
+const getData = async (
   props: IGetDataProps
 ): Promise<{ data: TRequisitionSetting[]; total: number }> => {
   const { pagination } = props;
@@ -36,8 +36,7 @@ const getVehicles = async (
   };
 
   const res = await axios.get(url, config);
-  const fetchedData = res.data.data;
-  const result = fetchedData.result;
+  const result = res.data.data;
 
   const data: TRequisitionSetting[] = result.map(
     (item: TRequisitionSetting): TRequisitionSetting => ({ ...item })
@@ -45,7 +44,7 @@ const getVehicles = async (
 
   const ans = {
     data,
-    total: fetchedData.totalCount,
+    total: data.length,
   };
 
   return ans;
@@ -56,7 +55,7 @@ export const useGeTRequisitionSettings = (props: IGetDataProps) => {
   const queryData = useQuery(
     [QUERY_KEY_FOR_REQUISITION_SETTING, pagination, searchParams],
     () =>
-      getVehicles({
+      getData({
         ...props,
       }),
     {

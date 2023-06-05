@@ -11,7 +11,7 @@ const PromotionRequestsContainer = () => {
       <PageSubHeader
         description={`You can now approve and request for promotion requests.`}
         actions={[
-          { name: "New Monetary Request", handleClick: () => setShowM(true) },
+          { name: "New Promotion Request", handleClick: () => setShowM(true) },
         ]}
       />
       <PromotionRequestsTableContainer />

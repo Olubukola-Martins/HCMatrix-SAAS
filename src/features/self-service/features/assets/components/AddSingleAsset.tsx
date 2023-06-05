@@ -1,159 +1,196 @@
-import { Modal, Switch } from "antd";
-import Themes from "components/Themes";
-import { useState } from "react";
+import { DatePicker, Form, Input, InputNumber, Modal } from "antd";
+import { AppButton } from "components/button/AppButton";
+import React from "react";
 import { IModalProps } from "types";
+import {
+  generalValidationRulesOp,
+  textInputValidationRules,
+  textInputValidationRulesOp,
+} from "utils/formHelpers/validation";
+import { openNotification } from "utils/notifications";
+import { useQueryClient } from "react-query";
+
+import { useCreateAsset } from "../hooks/useCreateAsset";
+import { FormAssetTypeInput } from "./FormAssetTypeInput";
+import { FileUpload } from "components/FileUpload";
+import { boxStyle } from "styles/reused";
+import { useCurrentFileUploadUrl } from "hooks/useCurrentFileUploadUrl";
+import { FormEmployeeInput } from "features/core/employees/components/FormEmployeeInput";
+import { QUERY_KEY_FOR_ASSETS } from "../hooks/useGetAssets";
 
 const AddSingleAsset: React.FC<IModalProps> = ({ open, handleClose }) => {
-  const [moreInfo, setMoreInfo] = useState(false);
-  const [additionalInfo, setAdditionalInfo] = useState(false);
+  const queryClient = useQueryClient();
 
-  const inputStyle =
-    "w-full rounded-md border border-gray-300 py-2 px-2 text-sm bg-mainBg focus:outline-none placeholder:text-accent placeholder:font-medium";
-  const boxStyle = "px-4 py-3 shadow rounded-md bg-mainBg";
-  const boxTitle = "font-medium text-sm pb-1";
+  const [form] = Form.useForm();
+  const { mutate, isLoading } = useCreateAsset();
+  const imageUrl = useCurrentFileUploadUrl("imageUrl");
+  const documentUrl = useCurrentFileUploadUrl("documentUrl");
+
+  const handleSubmit = (data: any) => {
+    mutate(
+      {
+        name: data.name,
+        typeId: data.typeId,
+        dateAssigned: data.dateAssigned,
+        assigneeId: data.assigneeId,
+        description: data.description,
+        color: data.color,
+        cost: data.cost,
+        model: data.model,
+        brand: data.brand,
+        serialNumber: data.serialNumber,
+        uid: data.uid,
+        purchaseDate: data.purchaseDate,
+        imageUrl: imageUrl,
+        documentUrls: !!documentUrl ? [documentUrl] : [],
+      },
+      {
+        onError: (err: any) => {
+          openNotification({
+            state: "error",
+            title: "Error Occurred",
+            description:
+              err?.response.data.message ?? err?.response.data.error.message,
+          });
+        },
+        onSuccess: (res: any) => {
+          openNotification({
+            state: "success",
+
+            title: "Success",
+            description: res.data.message,
+            // duration: 0.4,
+          });
+          form.resetFields();
+          handleClose();
+
+          queryClient.invalidateQueries({
+            queryKey: [QUERY_KEY_FOR_ASSETS],
+            // exact: true,
+          });
+        },
+      }
+    );
+  };
   return (
-    <Modal open={open} onCancel={() => handleClose()} footer={null}>
-      <Themes>
-        <div
-          className="CModal overflow-auto scrollBar"
-          style={{ maxWidth: 500, height: 500 }}
+    <Modal
+      open={open}
+      onCancel={() => handleClose()}
+      footer={null}
+      title={"Add Asset"}
+      style={{ top: 20 }}
+    >
+      <Form
+        layout="vertical"
+        form={form}
+        onFinish={handleSubmit}
+        requiredMark={false}
+      >
+        <FormAssetTypeInput
+          Form={Form}
+          control={{ name: "typeId", label: "Asset Type" }}
+        />
+        <Form.Item rules={textInputValidationRules} name="name" label="Name">
+          <Input placeholder="Name" className="w-full" />
+        </Form.Item>
+        <Form.Item
+          rules={textInputValidationRulesOp}
+          name="uid"
+          label="Unique Identifier"
         >
-          <h5 className="text-lg font-semibold pb-5">Add Assets</h5>
-
-          <form className="flex flex-col gap-3">
-            <input
-              type="text"
-              placeholder="Asset Name"
-              className={inputStyle}
-            />
-            <select name="" id="" className={inputStyle}>
-              <option value="">Asset Type</option>
-              <option value="asset 1">Asset 1</option>
-              <option value="asset 2">Asset 2</option>
-            </select>
-            <select name="" id="" className={inputStyle}>
-              <option value="">Status</option>
-              <option value="approve">Assigned</option>
-              <option value="reject">Unassigned</option>
-              <option value="reject">Repair</option>
-              <option value="reject">condemned</option>
-            </select>
-            <input
-              type="text"
-              placeholder="Asset ID (Optional)"
-              className={inputStyle}
-            />
-            <input
-              type="text"
-              placeholder="Serial Number (Optional)"
-              className={inputStyle}
-            />
-
-            <div className={boxStyle}>
-              <div className="flex items-center justify-between">
-                <h5 className={boxTitle}>More Information (Optional)</h5>
-                <Switch
-                  size="small"
-                  checked={moreInfo}
-                  onChange={(val) => setMoreInfo(val)}
-                />
-              </div>
-              {moreInfo && (
-                <div className="pt-3">
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <input
-                      type="text"
-                      placeholder="Brand (Optional)"
-                      className={inputStyle}
-                    />
-                    <input
-                      type="text"
-                      placeholder="Model (Optional)"
-                      className={inputStyle}
-                    />
-                    <input
-                      type="text"
-                      placeholder="Cost (Optional)"
-                      className={inputStyle}
-                    />
-                    <input
-                      type="text"
-                      placeholder="Vendor (Optional)"
-                      className={inputStyle}
-                    />
-                    <input
-                      type="text"
-                      placeholder="Purchase Date (Optional)"
-                      className={inputStyle}
-                      onFocus={(e) => (e.target.type = "date")}
-                      onBlur={(e) => (e.target.type = "text")}
-                    />
-                    <input
-                      type="text"
-                      placeholder="Color (Optional)"
-                      className={inputStyle}
-                    />
-                  </div>
-                  <textarea
-                    name=""
-                    id=""
-                    placeholder="Description (Optional)"
-                    className={`${inputStyle} mt-4`}
-                  />
-                </div>
-              )}
-            </div>
-
-            <div className={boxStyle}>
-              <div className="flex items-center justify-between">
-                <h5 className={boxTitle}>Additional Information (Optional)</h5>
-                <Switch
-                  size="small"
-                  checked={additionalInfo}
-                  onChange={(val) => setAdditionalInfo(val)}
-                />
-              </div>
-
-              {additionalInfo && (
-                <div className="pt-3 grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <select name="" id="" className={inputStyle}>
-                    <option value="">Assignee</option>
-                    <option value="godswill">Godswill</option>
-                    <option value="ruth">Ruth</option>
-                  </select>
-                  <input
-                    type="text"
-                    placeholder="Start Date"
-                    className={inputStyle}
-                    onFocus={(e) => (e.target.type = "date")}
-                    onBlur={(e) => (e.target.type = "text")}
-                  />
-                </div>
-              )}
-            </div>
-
-            <input
-              type="text"
-              placeholder="Upload Asset Document"
-              className={inputStyle}
-              onFocus={(e) => (e.target.type = "file")}
-              onBlur={(e) => (e.target.type = "text")}
-            />
-            <div className="flex items-center justify-between mt-5">
-              <button
-                onClick={() => handleClose()}
-                type="button"
-                className="transparentButton"
-              >
-                Cancel
-              </button>
-              <button type="submit" className="button">
-                Submit
-              </button>
-            </div>
-          </form>
+          <Input placeholder="Unique Identifier" className="w-full" />
+        </Form.Item>
+        <Form.Item
+          rules={textInputValidationRulesOp}
+          name="serialNumber"
+          label="Serial Number"
+        >
+          <Input placeholder="Serial Number" className="w-full" />
+        </Form.Item>
+        <Form.Item
+          rules={textInputValidationRulesOp}
+          name="brand"
+          label="Brand"
+        >
+          <Input placeholder="Brand" className="w-full" />
+        </Form.Item>
+        <Form.Item
+          rules={textInputValidationRulesOp}
+          name="color"
+          label="Color"
+        >
+          <Input placeholder="Color" className="w-full" />
+        </Form.Item>
+        <Form.Item
+          rules={textInputValidationRulesOp}
+          name="vendor"
+          label="Vendor"
+        >
+          <Input placeholder="Vendor" className="w-full" />
+        </Form.Item>
+        <Form.Item
+          rules={textInputValidationRulesOp}
+          name="model"
+          label="Model"
+        >
+          <Input placeholder="Model" className="w-full" />
+        </Form.Item>
+        <Form.Item rules={generalValidationRulesOp} name="cost" label="Cost">
+          <InputNumber step={0.2} placeholder="Cost" className="w-full" />
+        </Form.Item>
+        <div className={boxStyle}>
+          <FileUpload
+            allowedFileTypes={["image/jpeg", "image/png", "image/jpg"]}
+            fileKey="imageUrl"
+            textToDisplay="Upload Image"
+            displayType="form-space-between"
+          />
         </div>
-      </Themes>
+        <Form.Item
+          rules={generalValidationRulesOp}
+          name="purchaseDate"
+          label="Purchase Date"
+        >
+          <DatePicker placeholder="Purchase Date" className="w-full" />
+        </Form.Item>
+        <FormEmployeeInput
+          Form={Form}
+          control={{ name: "assigneeId", label: "Assignee" }}
+          optional
+        />
+        <Form.Item
+          rules={generalValidationRulesOp}
+          name="dateAssigned"
+          label="Date Assigned"
+        >
+          <DatePicker placeholder="Date Assigned" className="w-full" />
+        </Form.Item>
+        <Form.Item
+          rules={textInputValidationRulesOp}
+          name="description"
+          label="Description"
+        >
+          <Input placeholder="Description" className="w-full" />
+        </Form.Item>
+
+        <div className={boxStyle}>
+          <FileUpload
+            allowedFileTypes={[
+              "image/jpeg",
+              "image/png",
+              "image/jpg",
+              "application/pdf",
+            ]}
+            fileKey="documentUrl"
+            textToDisplay="Upload Documents"
+            displayType="form-space-between"
+          />
+        </div>
+
+        <div className="flex justify-end">
+          <AppButton type="submit" isLoading={isLoading} />
+        </div>
+      </Form>
     </Modal>
   );
 };

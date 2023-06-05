@@ -99,7 +99,7 @@ export const NewJobRequest: React.FC<IModalProps> = ({ open, handleClose }) => {
           name="salaryRange"
           label="Salary Range"
         >
-          <Input placeholder="Salary Range (Nfrom - Nto)" />
+          <Input placeholder="Salary Range (from - to)" />
         </Form.Item>
         <Form.Item
           rules={textInputValidationRules}
