@@ -64,16 +64,18 @@ export const LeaveDetails = ({ id }: IProps) => {
             unCheckedChildren="No"
           />
         </Form.Item>
-        <div className={boxStyle}>
-          {data?.documentUrls.map((item, i) => (
-            <a
-              href={item}
-              className="mb-2 text-sm underline text-caramel hover:no-underline"
-            >
-              Document {i + 1}
-            </a>
-          ))}
-        </div>
+        {data?.documentUrls && data?.documentUrls.length > 0 && (
+          <div className={boxStyle}>
+            {data?.documentUrls.map((item, i) => (
+              <a
+                href={item}
+                className="mb-2 text-sm underline text-caramel hover:no-underline"
+              >
+                Document {i + 1}
+              </a>
+            ))}
+          </div>
+        )}
         {/* <div className="flex justify-end">
           <AppButton isLoading={isLoading} type="submit" />
         </div> */}
