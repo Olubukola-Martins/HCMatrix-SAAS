@@ -147,5 +147,31 @@ export const appRoutes = {
   }),
   hRLetters: `/self-service/hr-letters`,
   notifications: `/notifications`,
+
+  // Performance route
+  balanceScorecard: `/performance/balance-scorecard`,
+  degreeEvaluation: `/performance/360-degree-evaluation`,
+  behavioralCoreValue: `/performance/behavioral-core-value`,
+  goalsObjective: `/performance/goal-objective`,
+  nineBox: `/performance/9box`,
+  performanceReport: `/performance/report`,
+  evaluationDetails: (id?: number) => ({
+    format: `/performance/evaluation/:id`,
+    path: `/performance/evaluation/${id}`,
+  }),
+  evaluationReport: (id?: number) => ({
+    format: `/performance/evaluation-report/:id`,
+    path: `/performance/evaluation-report/${id}`,
+  }),
   notFound: "*",
+
+  // Time and Attendance routes
+  attendanceHome: `/attendance/home`,
+  timeSheet: `/attendance/time-sheet`,
+  timeSheetDetails: (id?: number) => ({
+    format: `/attendance/time-sheet/:id`,
+    path: `/attendance/time-sheet/${id}`,
+  }),
+  timeOff: `/attendance/time-off`,
+  attendanceReport: `/attendance/reports`,
 };

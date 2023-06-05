@@ -1,4 +1,3 @@
-import React from "react";
 import { NavLink, useLocation } from "react-router-dom";
 import "./style/style.css";
 
@@ -18,6 +17,8 @@ const SideBar = () => {
     home: "/",
     selfService: "/self-service",
     payroll: "/payroll",
+    performance: "/performance",
+    attendance: "/attendance",
   };
   return (
     <>
@@ -78,22 +79,43 @@ const SideBar = () => {
           </div>
           <span className="sideBarName">Recruitment</span>
         </div>
-        <div className="sideBarItemWrap">
+
+        <NavLink
+          className={`sideBarItemWrap ${
+            isActiveRoute({
+              pathName: pathname,
+              routeName: appBaseRoutes.performance,
+            }) && "active"
+          }`}
+          to={`${appBaseRoutes.performance}/balance-scorecard`}
+        >
           <div className="flex justify-center">
             <span className="sideBarList">
-              <i className="ri-creative-commons-sa-line"></i>
+              <i className="ri-check-double-line"></i>
             </span>
           </div>
+
           <span className="sideBarName">Performance</span>
-        </div>
-        <div className="sideBarItemWrap">
+        </NavLink>
+
+        <NavLink
+          className={`sideBarItemWrap ${
+            isActiveRoute({
+              pathName: pathname,
+              routeName: appBaseRoutes.attendance,
+            }) && "active"
+          }`}
+          to={`${appBaseRoutes.attendance}/home`}
+        >
           <div className="flex justify-center">
             <span className="sideBarList">
-              <i className="ri-time-line"></i>
+              <i className="ri-check-double-line"></i>
             </span>
           </div>
+
           <span className="sideBarName">Time & Attendance</span>
-        </div>
+        </NavLink>
+
         <div className="sideBarItemWrap">
           <div className="flex justify-center">
             <span className="sideBarList">
