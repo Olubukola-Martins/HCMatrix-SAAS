@@ -9,9 +9,9 @@ import { useApiAuth } from "hooks/useApiAuth";
 import { CurrentVehicleAssignee } from "../components/CurrentVehicleAssignee";
 import { SingleVehicleTabs } from "../components/SingleVehicleTabs";
 import { VehicleDetailsSubHeader } from "../components/VehicleDetailsSubHeader";
-import { VehicleImage } from "../components/VehicleImage";
 import { VehicleInfo } from "../components/VehicleInfo";
 import { useFetchSingleVehicle } from "../hooks/useFetchSingleVehicle";
+import { EntityImageCard } from "components/cards/EntityImageCard";
 
 const VehicleDetails = () => {
   const params = useParams();
@@ -40,7 +40,7 @@ const VehicleDetails = () => {
             <VehicleDetailsSubHeader vehicle={data} />
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mt-8">
-              <VehicleImage src={data.imageUrl} />
+              <EntityImageCard src={data.imageUrl} />
               <VehicleInfo vehicle={data} />
 
               <CurrentVehicleAssignee vehicle={data} />

@@ -119,6 +119,7 @@ export const EditSingleVehicle: React.FC<IProps> = ({
       onCancel={() => handleClose()}
       footer={null}
       title={"Edit Vehicle"}
+      style={{ top: 10 }}
     >
       <Form
         layout="vertical"

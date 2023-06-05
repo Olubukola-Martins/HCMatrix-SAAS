@@ -1,51 +1,48 @@
 import React from "react";
-import { TVehicle } from "../hooks/useFetchVehicles";
 
 import { EntityInfoCard } from "components/cards/EntityInfoCard";
 import moment from "moment";
+import { TAsset } from "../types";
 
-export const VehicleInfo: React.FC<{ vehicle: TVehicle }> = ({ vehicle }) => {
+export const AssetInfo: React.FC<{ asset: TAsset }> = ({ asset }) => {
   return (
     <EntityInfoCard
       data={[
         {
-          name: "Vehicle Type",
-          value: vehicle.type,
+          name: "Asset Type",
+          value: asset.type.name,
         },
         {
           name: "Brand",
-          value: vehicle.brand,
+          value: asset.brand,
         },
         {
           name: "Model",
-          value: vehicle.model,
+          value: asset.model,
         },
         {
           name: "Color",
-          value: vehicle.color,
+          value: asset.color,
         },
-        {
-          name: "Plate Number",
-          value: vehicle.plateNumber,
-        },
+
         {
           name: "Purchase Cost",
-          value: vehicle.cost,
+          value: asset.cost,
         },
         {
           name: "Purchase Date",
-          value: vehicle.purchaseDate
-            ? moment(vehicle.purchaseDate).format("YYYY/MM/DD")
+          value: asset.purchaseDate
+            ? moment(asset.purchaseDate).format("YYYY/MM/DD")
             : "",
         },
 
         {
           name: "Status",
-          value: vehicle.status,
+          value: asset.status,
         },
         {
           name: "Description",
-          value: vehicle.description,
+          value: asset.description,
           collapse: true,
         },
       ]}
