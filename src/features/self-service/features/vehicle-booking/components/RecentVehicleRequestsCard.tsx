@@ -1,17 +1,20 @@
 import React from "react";
 import { useFetchVehicleBookings } from "../hooks/useFetchVehicleBookings";
-import { Empty } from "antd";
 import { useApiAuth } from "hooks/useApiAuth";
+import { RecentCard } from "components/cards/RecentCard";
 
+// TO DO: Remove this export and if need be move to styles/reused
 export const requestStyle =
   "flex items-center justify-between cursor-pointer group border-b pb-2";
 
 export const LIMIT_OF_ITEMS_TO_DISPLAY = 3;
 
-export const RecentVehicleRequestsCard = () => {
+export const RecentVehicleRequestsCard: React.FC<{
+  handleSeeAll?: () => void;
+}> = ({ handleSeeAll }) => {
   const { token, companyId } = useApiAuth();
 
-  const { data, isSuccess } = useFetchVehicleBookings({
+  const { data, isLoading } = useFetchVehicleBookings({
     token,
     companyId,
     pagination: {
@@ -20,36 +23,32 @@ export const RecentVehicleRequestsCard = () => {
     },
   });
   return (
-    <div className="bg-mainBg border mt-4 rounded-lg text-sm shadow">
-      <div className="text-left px-3 py-3 border-b">
-        <p className="font-medium">Recent Requests </p>
-      </div>
-      <div className="flex flex-col gap-3 px-3 py-2">
-        {isSuccess && data?.data.length > 0 ? (
-          data.data.map((item) => (
-            <div className={requestStyle} key={item.id}>
-              <div className="flex flex-col gap-1">
-                <h5 className="group-hover:text-caramel font-medium">
-                  {item.employee.firstName} {item.employee.lastName}
-                </h5>
-                <span className="text-xs">ID: {item.vehicleId}</span>
-                <span className="text-xs">
-                  Vehicle Name: {item.vehicle.model} ({item.vehicle.brand})
-                </span>
-                <span className="text-xs">Duration: {item.duration}hrs</span>
-              </div>
-              <i className="ri-more-fill text-lg"></i>
-            </div>
-          ))
-        ) : (
-          <Empty description="No Vehicle Requests" />
-        )}
-      </div>
-      {isSuccess && data.total > LIMIT_OF_ITEMS_TO_DISPLAY ? (
-        <h2 className="text-caramel text-right px-3 text-sm font-semibold cursor-pointer hover:text-accent pb-2 pt-1">
-          See All
-        </h2>
-      ) : null}
-    </div>
+    <RecentCard
+      title="Recent Requests"
+      total={data?.total}
+      loading={isLoading}
+      data={data?.data.map((item) => ({
+        title: `${item.employee.firstName} ${item.employee.lastName}`,
+        features: [
+          {
+            name: "ID",
+            value: `${item.id}`,
+          },
+          {
+            name: "Vehicle Name",
+            value: `${item.vehicle.model} (${item.vehicle.brand})`,
+          },
+          {
+            name: "Duration",
+            value: `${item.duration} hrs`,
+          },
+        ],
+        secondaryCol: {
+          type: "options",
+          options: [],
+        },
+      }))}
+      handleViewMore={handleSeeAll}
+    />
   );
 };

@@ -1,53 +1,58 @@
 import { Dropdown } from "antd";
 import Themes from "components/Themes";
+import { appRoutes } from "config/router/paths";
 import { Link } from "react-router-dom";
+
+const requisitions = [
+  { link: appRoutes.selfServiceAssets, title: "Asset Requisition" },
+  { link: appRoutes.selfServiceJob, title: "Job Requisition" },
+  {
+    link: appRoutes.selfServicePositionChange,
+    title: "Position Change Requisition",
+  },
+  { link: appRoutes.selfServicePromotion, title: "Promotion Requisition" },
+  {
+    link: appRoutes.selfServiceReimbursement,
+    title: "Reimbursement Requisition",
+  },
+  { link: appRoutes.selfServiceTransfer, title: "Transfer Requisition" },
+  { link: appRoutes.selfServiceMonetary, title: "Monetary Requisition" },
+];
 
 const requisitionContent = (
   <Themes>
     <div className="py-3 shadow-md px-4 text-sm font-medium rounded-md flex flex-col gap-3">
-      <Link
-        to="/self-service/requisition"
-        className="cursor-pointer hover:text-caramel"
-      >
-        Asset Requisition
-      </Link>
-      <Link
-        to="/self-service/reimbursements"
-        className="cursor-pointer hover:text-caramel"
-      >
-        Reimbursement
-      </Link>
-      <Link
-        to="/self-service/monetary"
-        className="cursor-pointer hover:text-caramel"
-      >
-        Monetary Request
-      </Link>
+      {requisitions.map((item) => (
+        <Link
+          key={item.title}
+          to={item.link}
+          className="cursor-pointer hover:text-caramel"
+        >
+          {item.title}
+        </Link>
+      ))}
     </div>
   </Themes>
 );
 
+const moreItems = [
+  { link: appRoutes.hRLetters, title: "HR Letters & Documents" },
+  { link: appRoutes.surveyHome, title: "Survey Forms" },
+  { link: appRoutes.conferenceRoomBooking, title: "Meeting Room Booking" },
+];
+
 const moreContent = (
   <Themes>
     <ul className="py-3 shadow-md px-4 text-sm font-medium rounded-md flex flex-col gap-3">
-      <Link
-        to="/self-service/survey"
-        className="cursor-pointer hover:text-caramel"
-      >
-        Survey Forms
-      </Link>
-      <Link
-        to="/self-service/conference-room-booking"
-        className="cursor-pointer hover:text-caramel"
-      >
-        Meeting Room Booking
-      </Link>
-      <Link
-        to="/self-service/hr-letters"
-        className="cursor-pointer hover:text-caramel"
-      >
-        HR Letters & Documents
-      </Link>
+      {moreItems.map((item) => (
+        <Link
+          to={item.link}
+          key={item.title}
+          className="cursor-pointer hover:text-caramel"
+        >
+          {item.title}
+        </Link>
+      ))}
     </ul>
   </Themes>
 );
@@ -76,7 +81,7 @@ export const RequisitionBox = ({ icon }: { icon: string }) => {
             overlayStyle={{ top: 1000 }}
             overlay={requisitionContent}
             trigger={["click"]}
-            placement="bottomCenter"
+            placement="bottom"
           >
             <i className="ri-more-fill text-lg"></i>
           </Dropdown>
@@ -102,7 +107,7 @@ export const MoreBox = () => {
           <Dropdown
             overlay={moreContent}
             trigger={["click"]}
-            placement="bottomCenter"
+            placement="bottom"
           >
             <i className="ri-more-fill text-lg"></i>
           </Dropdown>

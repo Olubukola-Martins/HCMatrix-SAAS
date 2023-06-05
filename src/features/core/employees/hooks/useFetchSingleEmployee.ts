@@ -180,7 +180,7 @@ export const useFetchSingleEmployee = ({
       }),
 
     {
-      // enabled: employeeId === 0 ? false : true,
+      enabled: !!employeeId,
       onError: (err: any) => {},
     }
   );

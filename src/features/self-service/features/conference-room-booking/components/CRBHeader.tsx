@@ -2,6 +2,8 @@ import { Modal } from "antd";
 import React, { useState } from "react";
 import NewCRBBooking from "./NewCRBBooking";
 import NewMeetingRoomForm from "./NewMeetingRoomForm";
+import { Link } from "react-router-dom";
+import { appRoutes } from "config/router/paths";
 
 interface IProps {
   title?: string;
@@ -23,10 +25,11 @@ const CRBHeader = ({ title = "Meeting Rooms" }: IProps) => {
   return (
     <>
       <Modal
-        visible={showD}
+        open={showD}
         onCancel={() => setShowD(false)}
         title={action}
         footer={null}
+        style={{ top: 10 }}
       >
         {action === EAction.NEW_BOOKING && (
           <NewCRBBooking handleClose={() => setShowD(false)} />
@@ -35,12 +38,14 @@ const CRBHeader = ({ title = "Meeting Rooms" }: IProps) => {
           <NewMeetingRoomForm handleClose={() => setShowD(false)} />
         )}
       </Modal>
+
+      {/* TO DO: Refactor to use the comp header */}
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-3 font-extrabold ">
           <i className="ri-arrow-left-s-line text-lg cursor-pointer hover:text-caramel"></i>
           <h2 className="text-xl md:text-2xl text-accent">{title}</h2>
         </div>
-        <div className="flex gap-2">
+        <div className="flex gap-2 items-center">
           <button
             className="button"
             onClick={() => handleAction(EAction.NEW_BOOKING)}
@@ -53,6 +58,12 @@ const CRBHeader = ({ title = "Meeting Rooms" }: IProps) => {
           >
             Add Meeting Room
           </button>
+          <Link
+            to={appRoutes.conferenceRoomBookingSetting}
+            className="text-caramel underline"
+          >
+            Setting
+          </Link>
         </div>
       </div>
     </>

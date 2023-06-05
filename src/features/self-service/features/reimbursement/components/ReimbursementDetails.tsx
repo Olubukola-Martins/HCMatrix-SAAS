@@ -1,105 +1,97 @@
-import { Modal } from "antd";
-import Themes from "components/Themes";
+import { DatePicker, Form, Input, Modal, Skeleton } from "antd";
+import React, { useEffect } from "react";
 import { IModalProps } from "types";
+import { useGetSingleReimbursementRequisition } from "../../requisitions/hooks/reimbursement/useGetSingleReimbursementRequisition";
+import { useApiAuth } from "hooks/useApiAuth";
+import { AppButton } from "components/button/AppButton";
+import { boxStyle } from "styles/reused";
+import { getAppropriateColorForStatus } from "utils/colorHelpers/getAppropriateColorForStatus";
+import moment from "moment";
 
-const ReimbursementDetails: React.FC<IModalProps> = ({ open, handleClose }) => {
-  const inputStyle =
-    "w-full rounded-md border border-gray-300 py-2 px-2 text-sm bg-mainBg focus:outline-none placeholder:text-accent mt-1";
-  const labelStyle = "font-medium text-sm";
+interface IProps extends IModalProps {
+  id: number;
+}
+
+export const ReimbursementDetails: React.FC<IProps> = ({
+  open,
+  handleClose,
+  id,
+}) => {
+  const { companyId, token } = useApiAuth();
+  const [form] = Form.useForm();
+  const { data, isFetching } = useGetSingleReimbursementRequisition({
+    id,
+    companyId,
+    token,
+  });
+  useEffect(() => {
+    if (data) {
+      form.setFieldsValue({
+        date: data.date ? moment(data.date) : null,
+        employeeName: `${data.employee.firstName} ${data.employee.lastName}`,
+        employeeID: data.employee.empUid,
+        department: "N/A",
+        description: data.description,
+        status: data.status,
+        amount: data.amount,
+      });
+    }
+  }, [id, form, data]);
   return (
-    <Modal open={open} onCancel={() => handleClose()} footer={null}>
-      <Themes>
-        <div className="CModal" style={{ maxWidth: 600 }}>
-          <div className="flex items-center justify-between mb-6">
-            <h5 className="font-semibold text-base">Reimbursement Details</h5>
-            <i
-              onClick={() => handleClose()}
-              className="ri-close-line font-semibold text-xl cursor-pointer hover:text-neutral"
-            ></i>
-          </div>
-          <form className="grid grid-cols-1 md:grid-cols-2 gap-5">
-            <div className="flex flex-col gap-3">
-              <div>
-                <label className={labelStyle}>Date:</label>
-                <input
-                  type="text"
-                  placeholder="10-08-2022"
-                  className={inputStyle}
-                  disabled
-                />
+    <Modal
+      open={open}
+      onCancel={() => handleClose()}
+      footer={null}
+      title={"Reimbursement Details"}
+      style={{ top: 20 }}
+    >
+      <Skeleton active loading={isFetching} paragraph={{ rows: 8 }}>
+        <Form form={form} disabled layout="vertical">
+          <Form.Item name={"date"} label="Date">
+            <DatePicker className="w-full" />
+          </Form.Item>
+          <Form.Item name={"employeeName"} label="Employee Name">
+            <Input />
+          </Form.Item>
+          <Form.Item name={"employeeID"} label="Employee ID">
+            <Input />
+          </Form.Item>
+          <Form.Item name={"amount"} label="Amount">
+            <Input />
+          </Form.Item>
+          <Form.Item name={"department"} label="Department">
+            <Input />
+          </Form.Item>
+          <Form.Item name={"description"} label="Description">
+            <Input.TextArea />
+          </Form.Item>
+          {data && data?.attachmentUrls?.length > 0 && (
+            <Form.Item name={"attachment"} label="Attachment">
+              <div className={boxStyle}>
+                {data?.attachmentUrls.map((item, i) => (
+                  <a
+                    href={item}
+                    className="mb-2 text-sm underline text-caramel hover:no-underline"
+                  >
+                    Document {i + 1}
+                  </a>
+                ))}
               </div>
-              <div>
-                <label className={labelStyle}>Title:</label>
-                <input
-                  type="text"
-                  placeholder="Uber Fare"
-                  className={inputStyle}
-                  disabled
-                />
-              </div>
-
-              <div>
-                <label className={labelStyle}>Reimbursement Type:</label>
-                <input
-                  type="text"
-                  placeholder="Devices/ELectronics"
-                  className={inputStyle}
-                  disabled
-                />
-              </div>
-              <div>
-                <label className={labelStyle}>Attachment:</label>
-                <img
-                  src="https://via.placeholder.com/350x150"
-                  className="rounded-md"
-                  alt="Attachment"
-                />
-              </div>
-            </div>
-
-            {/* second layer */}
-            <div className="flex flex-col gap-3">
-              <div>
-                <label className={labelStyle}>Amount:</label>
-                <input
-                  type="text"
-                  placeholder="N0.00"
-                  className={inputStyle}
-                  disabled
-                />
-              </div>
-              <div>
-                <label className={labelStyle}>Status:</label>
-                <input
-                  type="text"
-                  placeholder="Rejected"
-                  className={inputStyle}
-                  disabled
-                />
-              </div>
-
-              <div>
-                <label className={labelStyle}>Description:</label>
-                <div className="bg-mainBg rounded-md p-3 text-sm">
-                  <p>
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                  </p>
-                </div>
-              </div>
-              <div>
-                <label className={labelStyle}>Comment:</label>
-                <div className="bg-mainBg rounded-md p-3 text-sm">
-                  <p>
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                  </p>
-                </div>
-              </div>
-            </div>
-          </form>
+            </Form.Item>
+          )}
+          <Form.Item name={"status"} label="Status">
+            <Input
+              className="capitalize"
+              style={{
+                color: getAppropriateColorForStatus(data?.status ?? ""),
+              }}
+            />
+          </Form.Item>
+        </Form>
+        <div className="flex justify-end">
+          <AppButton label="Download" type="button" />
         </div>
-      </Themes>
+      </Skeleton>
     </Modal>
   );
 };
-
-export default ReimbursementDetails;

@@ -2,6 +2,7 @@ import { Collapse, Space, Typography, Modal } from "antd";
 import { MoreOutlined, CloseOutlined } from "@ant-design/icons";
 import { useState } from "react";
 import AddLeaveTypeForm from "./AddLeaveTypeForm";
+import LeaveTypeCardList from "./LeaveTypeCardList";
 
 const { Panel } = Collapse;
 
@@ -15,14 +16,9 @@ const LeaveTypeAccordian = () => {
         title="Add Leave Type"
         footer={null}
       >
-        <AddLeaveTypeForm />
+        <AddLeaveTypeForm handleClose={() => setShowM(false)} />
       </Modal>
-      <Collapse
-        collapsible="header"
-        defaultActiveKey={["1"]}
-        expandIconPosition="end"
-        accordion
-      >
+      <Collapse defaultActiveKey={["1"]} expandIconPosition="end" accordion>
         <Panel
           header={<Typography.Title level={5}>Leave Types</Typography.Title>}
           key="1"
@@ -33,14 +29,7 @@ const LeaveTypeAccordian = () => {
                 Add Leave Type
               </button>
             </div>
-            <div className="bg-card py-4 px-3 flex justify-between align-center rounded-md">
-              <h5 className="text-base ">Maternity Leave</h5>
-              <MoreOutlined />
-            </div>
-            <div className="bg-card py-4 px-3 flex justify-between align-center rounded-md">
-              <h5 className="text-base ">Maternity Leave</h5>
-              <MoreOutlined />
-            </div>
+            <LeaveTypeCardList />
           </div>
         </Panel>
       </Collapse>

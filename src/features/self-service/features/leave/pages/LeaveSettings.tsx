@@ -3,9 +3,9 @@ import { Drawer, Button } from "antd";
 import { CloseOutlined } from "@ant-design/icons";
 import Themes from "components/Themes";
 import SelfServiceSubNav from "features/self-service/components/SelfServiceSubNav";
-import AddNewLeaveForm from "../components/AddNewLeaveForm";
 import LeaveSettingsAccordians from "../components/LeaveSettingsAccordians";
 import LeaveSettingsHeader from "../components/LeaveSettingsHeader";
+import { RequestForLeave } from "../components/RequestForLeave";
 
 const ECOMP = {
   ADD_NEW_LEAVE: "New Leave",
@@ -51,36 +51,12 @@ const LeaveSettings = () => {
     <>
       <SelfServiceSubNav />
       {/* add new leave */}
-
-      <Drawer
-        open={showDrawer}
-        onClose={() => setShowDrawer(false)}
-        // className={`${isDark ? "custom-draw-dark" : ""}`}
-        // mask={false}
-        closeIcon={false}
-        title={
-          <Themes>
-            <div className="px-4 py-4 flex justify-between items-center">
-              <span className="text-accent">{comp}</span>
-              <Button
-                type="text"
-                icon={<CloseOutlined />}
-                onClick={() => setShowDrawer(false)}
-              />
-            </div>
-          </Themes>
-        }
-        // zIndex={10}
-        // contentWrapperStyle={{ top: 220, right: 70 }}
-        // contentWrapperStyle={{ background: "purple" }}
-        // getContainer={() => containerRef.current}
-      >
-        <Themes>
-          <div className="p-4">
-            {comp === ECOMP.ADD_NEW_LEAVE && <AddNewLeaveForm />}
-          </div>
-        </Themes>
-      </Drawer>
+      {comp === ECOMP.ADD_NEW_LEAVE && (
+        <RequestForLeave
+          open={showDrawer}
+          handleClose={() => setShowDrawer(false)}
+        />
+      )}
 
       <div>
         <div className="Container">

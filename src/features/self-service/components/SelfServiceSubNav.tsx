@@ -1,27 +1,24 @@
+import { Menu } from "antd";
+import { selfServiceRoutes } from "config/router/routes/selfService";
 import React from "react";
-import { NavLink } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 const SelfServiceSubNav = () => {
+  const navigate = useNavigate();
   return (
-   <div className="Container">
-      <div className="bg-card w-full py-4 px-3 text-accent rounded mb-9 shadow flex items-center gap-5 text-sm font-medium">
-      <NavLink to="/payroll/review" className="hover:text-caramel">
-        Loan
-      </NavLink>
-      <NavLink to="/" className="hover:text-caramel">
-        Leave
-      </NavLink>
-      <NavLink to="/" className="hover:text-caramel">
-        Health Access
-      </NavLink>
-       <NavLink to="/" className="hover:text-caramel">
-        Payslip
-      </NavLink>
-      <NavLink to="/self-service/home" className="hover:text-accent text-caramel">
-        More..
-      </NavLink>
+    <div className="">
+      <Menu
+        className="bg-white  py-4 px-3 text-accent rounded mb-9 shadow-md  text-sm font-medium"
+        mode="horizontal"
+        items={selfServiceRoutes
+          .filter((item) => item.isPrimaryFeature)
+          .map((item) => ({
+            label: item.title,
+            key: item.path,
+            onClick: () => navigate(item.path),
+          }))}
+      />
     </div>
-   </div>
   );
 };
 

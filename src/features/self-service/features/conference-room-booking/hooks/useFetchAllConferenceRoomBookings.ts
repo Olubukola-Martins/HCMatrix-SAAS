@@ -5,9 +5,13 @@ import { useApiAuth } from "hooks/useApiAuth";
 import { IPaginationProps, ISearchParams, ICurrentCompany } from "types";
 import { TSingleConferenceRoomBooking } from "../types";
 
+export type TCRBookingStatus = "pending" | "approved" | "rejected";
+
 interface IGetDataProps {
   pagination?: IPaginationProps;
   searchParams?: ISearchParams;
+  employeeId?: number;
+  status?: TCRBookingStatus;
 }
 
 export const QUERY_KEY_FOR_ALL_CONFERENCE_ROOM_BOOKINGS =
@@ -29,6 +33,8 @@ const getBAllConferenceRooms = async (
       limit: props?.pagination?.limit,
       offset: props?.pagination?.offset,
       search: props?.searchParams?.name,
+      employeeId: props.employeeId,
+      status: props.status,
     },
   };
 
@@ -55,11 +61,7 @@ export const useFetchAllConferenceRoomBookings = (props: IGetDataProps) => {
   const { token, companyId } = useApiAuth();
   // TO DO: Add searchPArams to useQuery hook
   const queryData = useQuery(
-    [
-      QUERY_KEY_FOR_ALL_CONFERENCE_ROOM_BOOKINGS,
-      props.pagination,
-      props.searchParams,
-    ],
+    [QUERY_KEY_FOR_ALL_CONFERENCE_ROOM_BOOKINGS, props],
     () =>
       getBAllConferenceRooms({
         ...props,

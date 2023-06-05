@@ -8,7 +8,8 @@ import { useFetchDesignations } from "../hooks/useFetchDesignations";
 export const FormDesignationInput: React.FC<{
   Form: any;
   showLabel?: boolean;
-}> = ({ Form, showLabel = true }) => {
+  control?: { label: string; name: string | (string | number)[] };
+}> = ({ Form, showLabel = true, control }) => {
   const { token, companyId } = useApiAuth();
 
   const [searchTerm, setSearchTerm] = useState<string>("");
@@ -29,8 +30,8 @@ export const FormDesignationInput: React.FC<{
 
   return (
     <Form.Item
-      name="designationId"
-      label={showLabel ? "Designation" : null}
+      name={control?.name ?? "designationId"}
+      label={showLabel ? control?.label ?? "Designation" : null}
       rules={generalValidationRules}
     >
       <Select

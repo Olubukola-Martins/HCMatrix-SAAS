@@ -1,7 +1,10 @@
 import { Select, Spin } from "antd";
 import { useDebounce } from "hooks/useDebounce";
 import { useState } from "react";
-import { generalValidationRules } from "utils/formHelpers/validation";
+import {
+  generalValidationRules,
+  generalValidationRulesOp,
+} from "utils/formHelpers/validation";
 import { useFetchEmployees } from "../hooks/useFetchEmployees";
 import { TEmployee } from "../types";
 
@@ -10,9 +13,16 @@ export const FormEmployeeInput: React.FC<{
   fieldKey?: number;
   Form: any;
   showLabel?: boolean;
-  mode?: "tags" | "multiple";
+  optional?: boolean;
   control?: { label: string; name: string | (string | number)[] };
-}> = ({ Form, showLabel = true, control, handleSelect, fieldKey, mode }) => {
+}> = ({
+  Form,
+  showLabel = true,
+  control,
+  handleSelect,
+  fieldKey,
+  optional = false,
+}) => {
   const [searchTerm, setSearchTerm] = useState<string>("");
   const debouncedSearchTerm: string = useDebounce<string>(searchTerm);
 
@@ -31,10 +41,9 @@ export const FormEmployeeInput: React.FC<{
       fieldKey={fieldKey}
       name={control?.name ?? "employeeId"}
       label={showLabel ? control?.label ?? "Employee" : null}
-      rules={generalValidationRules}
+      rules={optional ? generalValidationRulesOp : generalValidationRules}
     >
       <Select
-        mode={mode}
         onSelect={(val: number) => {
           if (handleSelect) {
             const employee = data?.data.find((emp) => emp.id === val);

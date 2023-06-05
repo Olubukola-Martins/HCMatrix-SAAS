@@ -3,10 +3,9 @@ import { appRoutes } from "../paths";
 import { TRouteData } from "../types";
 import Requisition from "features/self-service/features/requisitions/pages/Requisition";
 import Reimbursements from "features/self-service/features/reimbursement/pages/Reimbursements";
-import Monetary from "features/self-service/features/monetary-requests/pages/Monetary";
-import Assets from "features/self-service/features/asset-requisition/pages/Assets";
-import AssetTypeDetails from "features/self-service/features/asset-requisition/pages/AssetTypeDetails";
-import AssetDetails from "features/self-service/features/asset-requisition/pages/AssetDetails";
+import Assets from "features/self-service/features/assets/pages/Assets";
+import AssetTypeDetails from "features/self-service/features/assets/pages/AssetTypeDetails";
+import AssetDetails from "features/self-service/features/assets/pages/AssetDetails";
 import LoanHome from "features/self-service/features/loan/pages/LoanHome";
 import LoanRequest from "features/self-service/features/loan/pages/LoanRequest";
 import LoanPolicies from "features/self-service/features/loan/pages/LoanPolicies";
@@ -26,6 +25,19 @@ import HandOver from "features/self-service/features/handover-forms/pages/HandOv
 import HandOverDetails from "features/self-service/features/handover-forms/pages/HandOverDetails";
 import { HandOverNewForm } from "features/self-service/features/handover-forms/pages/HandOverNewForm";
 import HRLetters from "features/self-service/features/hr-letters-and-documents/pages/HRLetters";
+import { CRBHomeSettings } from "features/self-service/features/conference-room-booking/pages/CRBHomeSettings";
+import ReimbursementSettingPage from "features/self-service/features/reimbursement/pages/ReimbursementSettingPage";
+import TransfersSettingPage from "features/self-service/features/transfers/pages/TransferSettingsPage";
+import Transfers from "features/self-service/features/transfers/pages/Transfers";
+import MonetaryRequests from "features/self-service/features/monetary-requests/pages/MonetaryRequests";
+import MonetaryRequestsSettingPage from "features/self-service/features/monetary-requests/pages/MonetaryRequestsSettingPage";
+import JobRequestsSettingPage from "features/self-service/features/jobs/pages/JobRequestsSettingPage";
+import JobRequests from "features/self-service/features/jobs/pages/JobRequests";
+import PositionChangeRequests from "features/self-service/features/position-change/pages/PositionChangeRequests";
+import PositionChangeRequestsSettingPage from "features/self-service/features/position-change/pages/PositionChangeRequestsSettingPage";
+import PromotionRequests from "features/self-service/features/promotions/pages/PromotionRequests";
+import PromotionRequestsSettingPage from "features/self-service/features/promotions/pages/PromotionRequestsSettingPage";
+import AssetRequestSettingsPage from "features/self-service/features/assets/pages/AssetRequestSettingsPage";
 
 export const selfServiceRoutes: TRouteData[] = [
   {
@@ -39,34 +51,116 @@ export const selfServiceRoutes: TRouteData[] = [
     path: appRoutes.selfServiceRequisition,
     isSearchable: true,
     title: "Requisitions",
+    isPrimaryFeature: true,
+  },
+  {
+    element: <TransfersSettingPage />,
+    path: appRoutes.selfServiceTransferSetting,
+    isSearchable: true,
+    title: "Transfer Setting",
+    isPrimaryFeature: false,
+  },
+  {
+    element: <Transfers />,
+    path: appRoutes.selfServiceTransfer,
+    isSearchable: true,
+    title: "Transfers",
+    isPrimaryFeature: true,
+  },
+  {
+    element: <ReimbursementSettingPage />,
+    path: appRoutes.selfServiceReimbursementSetting,
+    isSearchable: true,
+    title: "Reimbursement Setting",
+    isPrimaryFeature: false,
   },
   {
     element: <Reimbursements />,
     path: appRoutes.selfServiceReimbursement,
     isSearchable: true,
     title: "Reimbursements",
+    isPrimaryFeature: true,
   },
   {
-    element: <Monetary />,
+    element: <MonetaryRequestsSettingPage />,
+    path: appRoutes.selfServiceMonetarySetting,
+    isSearchable: true,
+    title: "Monetary Request Setting",
+    isPrimaryFeature: false,
+  },
+  {
+    element: <MonetaryRequests />,
     path: appRoutes.selfServiceMonetary,
     isSearchable: true,
     title: "Monetary Requests",
+    isPrimaryFeature: true,
+  },
+  {
+    element: <JobRequestsSettingPage />,
+    path: appRoutes.selfServiceJobSetting,
+    isSearchable: true,
+    title: "Job Request Setting",
+    isPrimaryFeature: false,
+  },
+  {
+    element: <JobRequests />,
+    path: appRoutes.selfServiceJob,
+    isSearchable: true,
+    title: "Job Requests",
+    isPrimaryFeature: true,
+  },
+  {
+    element: <PositionChangeRequestsSettingPage />,
+    path: appRoutes.selfServicePositionChangeSetting,
+    isSearchable: true,
+    title: "Position Change Request Setting",
+    isPrimaryFeature: false,
+  },
+  {
+    element: <PositionChangeRequests />,
+    path: appRoutes.selfServicePositionChange,
+    isSearchable: true,
+    title: "Position Change Requests",
+    isPrimaryFeature: true,
+  },
+  {
+    element: <PromotionRequestsSettingPage />,
+    path: appRoutes.selfServicePromotionSetting,
+    isSearchable: true,
+    title: "Promotion Request Setting",
+    isPrimaryFeature: false,
+  },
+  {
+    element: <PromotionRequests />,
+    path: appRoutes.selfServicePromotion,
+    isSearchable: true,
+    title: "Promotion Requests",
+    isPrimaryFeature: true,
   },
   {
     element: <Assets />,
     path: appRoutes.selfServiceAssets,
     isSearchable: true,
     title: "Assets",
+    isPrimaryFeature: true,
+  },
+  {
+    element: <AssetRequestSettingsPage />,
+    path: appRoutes.selfServiceAssetSetting,
+    isSearchable: true,
+    title: "Asset Settings",
+    isPrimaryFeature: false,
   },
   {
     element: <AssetTypeDetails />,
     path: appRoutes.assetTypeDetails().format,
     isSearchable: false,
+    isPrimaryFeature: false,
   },
   {
     element: <AssetDetails />,
-    path: appRoutes.assetDetails,
-    isSearchable: true,
+    path: appRoutes.assetDetails().format,
+    isSearchable: false,
     title: "Asset Details",
   },
   {
@@ -74,6 +168,7 @@ export const selfServiceRoutes: TRouteData[] = [
     path: appRoutes.loans,
     isSearchable: true,
     title: "Loans",
+    isPrimaryFeature: true,
   },
   {
     element: <LoanRequest />,
@@ -92,6 +187,7 @@ export const selfServiceRoutes: TRouteData[] = [
     path: appRoutes.vehicleBooking,
     isSearchable: true,
     title: "Vehicle Booking",
+    isPrimaryFeature: true,
   },
   {
     element: <VehicleDetails />,
@@ -104,6 +200,7 @@ export const selfServiceRoutes: TRouteData[] = [
     path: appRoutes.surveyHome,
     isSearchable: true,
     title: "Surveys",
+    isPrimaryFeature: true,
   },
   {
     element: <NewSurveyForm />,
@@ -121,12 +218,20 @@ export const selfServiceRoutes: TRouteData[] = [
     path: appRoutes.conferenceRoomBooking,
     isSearchable: true,
     title: "Conference Room Booking",
+    isPrimaryFeature: true,
+  },
+  {
+    element: <CRBHomeSettings />,
+    path: appRoutes.conferenceRoomBookingSetting,
+    isSearchable: true,
+    title: "Conference Room Booking Setting",
   },
   {
     element: <LeaveHome />,
     path: appRoutes.leaveHome,
     isSearchable: true,
     title: "Leave",
+    isPrimaryFeature: true,
   },
   {
     element: <LeaveSettings />,
@@ -139,6 +244,7 @@ export const selfServiceRoutes: TRouteData[] = [
     path: appRoutes.healthAccessHome,
     isSearchable: true,
     title: "Health Access",
+    isPrimaryFeature: true,
   },
   {
     element: <HealthAccessSettings />,
@@ -151,6 +257,7 @@ export const selfServiceRoutes: TRouteData[] = [
     path: appRoutes.onboarding,
     isSearchable: true,
     title: "Onboarding",
+    isPrimaryFeature: true,
   },
   {
     element: <StartOnboarding />,
@@ -162,12 +269,14 @@ export const selfServiceRoutes: TRouteData[] = [
     path: appRoutes.handOver,
     isSearchable: true,
     title: "HandOver",
+    isPrimaryFeature: true,
   },
   {
     element: <HandOverNewForm />,
     path: appRoutes.newHandOverForm,
     isSearchable: true,
     title: "New Handover Form",
+    isPrimaryFeature: true,
   },
   {
     element: <HandOverDetails />,

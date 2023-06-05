@@ -48,19 +48,22 @@ const EmployeeInfoChart = () => {
         <div className="flex-1">
           <ChartTabHeader items={tabItems} />
         </div>
-        <Select
-          placeholder="Yearly Report"
-          options={[
-            {
-              label: "Last 12 months",
-              value: "2022",
-            },
-            {
-              label: "2021",
-              value: "2021",
-            },
-          ]}
-        />
+        <div>
+          <Select
+            placeholder="Yearly Report"
+            options={[
+              {
+                label: "Last 12 months",
+                value: "2022",
+              },
+              {
+                label: "2021",
+                value: "2021",
+              },
+            ]}
+            size="small"
+          />
+        </div>
       </div>
       <div style={{ height: "100%" }}>
         <Line

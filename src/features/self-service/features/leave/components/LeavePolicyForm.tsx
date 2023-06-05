@@ -1,30 +1,112 @@
-import { Form, Select, Switch, Typography, InputNumber } from "antd";
-import { useState } from "react";
+import { Form, Switch, Typography, InputNumber, Skeleton } from "antd";
+import { FormWorkflowInput } from "features/core/workflows/components/FormWorkflowInput";
+import { useEffect, useState } from "react";
+import { useCreateOrUpdateLeavePolicy } from "../hooks/useCreateOrUpdateLeavePolicy";
+import {
+  QUERY_KEY_FOR_LEAVE_POLICY,
+  useFetchLeavePolicy,
+} from "../hooks/useFetchLeavePolicy";
+import { useQueryClient } from "react-query";
+import { openNotification } from "utils/notifications";
+import { useApiAuth } from "hooks/useApiAuth";
+import { AppButton } from "components/button/AppButton";
 
 const btwnStyle =
   "bg-card pt-4 px-3 flex flex-row w-full justify-between align-center rounded-md";
 const gapStyle = "bg-card pt-4 px-3 flex  gap-16 align-center rounded-md";
 const LeavePolicyForm = () => {
+  const queryClient = useQueryClient();
+  const { companyId, token } = useApiAuth();
+
   const [showMaxCODays, setShowMaxCODays] = useState(false);
   const [showCasualLLen, setShowCasualLLen] = useState(false);
+  const [form] = Form.useForm();
+  const { data, isFetching } = useFetchLeavePolicy({ companyId, token });
+  const { mutate, isLoading } = useCreateOrUpdateLeavePolicy();
+  const handleSubmit = (data: any) => {
+    mutate(
+      {
+        defaultLength: data.defaultLength,
+        workflowId: data.workflowId,
+        includeWeekends: data.includeWeekends,
+        includeHolidays: data.includeHolidays,
+        carryover: data.carryover,
+        maxLengthCarryover: data.maxLengthCarryover,
+        casualLeave: data.casualLeave,
+        casualLeaveLength: data.casualLeaveLength,
+        probationersApply: data.probationersApply,
+        probationersUseCasualLeave: data.probationersUseCasualLeave,
+      },
+
+      {
+        onError: (err: any) => {
+          openNotification({
+            state: "error",
+            title: "Error Occurred",
+            description:
+              err?.response.data.message ?? err?.response.data.error.message,
+          });
+        },
+        onSuccess: (res: any) => {
+          openNotification({
+            state: "success",
+
+            title: "Success",
+            description: res.data.message,
+            // duration: 0.4,
+          });
+
+          queryClient.invalidateQueries({
+            queryKey: [QUERY_KEY_FOR_LEAVE_POLICY],
+            // exact: true,
+          });
+        },
+      }
+    );
+  };
+  useEffect(() => {
+    if (data) {
+      setShowMaxCODays(data.maxLengthCarryover > 0);
+      setShowCasualLLen(!!data.casualLeaveLength);
+
+      form.setFieldsValue({
+        defaultLength: data.defaultLength,
+        workflowId: data.workflowId,
+        includeWeekends: data.includeWeekends,
+        includeHolidays: data.includeHolidays,
+        carryover: data.carryover,
+        maxLengthCarryover: data.maxLengthCarryover,
+        casualLeave: data.casualLeave,
+        casualLeaveLength: data.casualLeaveLength,
+        probationersApply: data.probationersApply,
+        probationersUseCasualLeave: data.probationersUseCasualLeave,
+      });
+    }
+  }, [form, data]);
+
   return (
-    <div>
-      <Form labelCol={{ span: 24 }}>
+    <Skeleton active loading={isFetching}>
+      <Form
+        labelCol={{ span: 24 }}
+        form={form}
+        requiredMark={false}
+        onFinish={handleSubmit}
+      >
         <div className="flex flex-col gap-4">
           <div className={gapStyle}>
-            <Form.Item label="" className="flex-1">
+            <Form.Item label="" className="flex-1" name="defaultLength">
               <InputNumber
                 placeholder="Default Leave Length"
                 className="w-full"
+                min={1}
               />
             </Form.Item>
-            <Form.Item label="" className="flex-1">
-              <Select placeholder="Select Approval Workflow">
-                <Select.Option key={`1`} value={`2`}>
-                  Leave Workflow
-                </Select.Option>
-              </Select>
-            </Form.Item>
+            <div className="flex-1">
+              <FormWorkflowInput
+                Form={Form}
+                control={{ label: "", name: "workflowId" }}
+              />
+            </div>
           </div>
           <div className={btwnStyle}>
             <div>
@@ -34,10 +116,11 @@ const LeavePolicyForm = () => {
               </Typography.Text>
             </div>
             <div>
-              <Form.Item label="" className="flex-1">
+              <Form.Item label="" className="flex-1" name="includeWeekends">
                 <Switch
-                  unCheckedChildren="Yes"
-                  checkedChildren="No"
+                  checkedChildren="Yes"
+                  unCheckedChildren="No"
+                  defaultChecked={!!data?.includeWeekends}
                   // size="small"
                 />
               </Form.Item>
@@ -51,10 +134,11 @@ const LeavePolicyForm = () => {
               </Typography.Text>
             </div>
             <div>
-              <Form.Item label="" className="flex-1">
+              <Form.Item label="" className="flex-1" name="includeHolidays">
                 <Switch
-                  unCheckedChildren="Yes"
-                  checkedChildren="No"
+                  checkedChildren="Yes"
+                  unCheckedChildren="No"
+                  defaultChecked={!!data?.includeHolidays}
 
                   // size="small"
                 />
@@ -67,10 +151,12 @@ const LeavePolicyForm = () => {
               <Typography.Text>Do you carry leave over?</Typography.Text>
             </div>
             <div>
-              <Form.Item label="" className="flex-1">
+              <Form.Item label="" className="flex-1" name="carryover">
                 <Switch
-                  unCheckedChildren="Yes"
-                  checkedChildren="No"
+                  checkedChildren="Yes"
+                  unCheckedChildren="No"
+                  defaultChecked={!!data?.carryover}
+
                   // size="small"
                 />
               </Form.Item>
@@ -83,20 +169,29 @@ const LeavePolicyForm = () => {
                 Do you have a maximum number of days when carrying leave over?
               </Typography.Text>
               {showMaxCODays && (
-                <Form.Item label="" className="flex-1 ">
+                <Form.Item
+                  label=""
+                  className="flex-1 "
+                  name="maxLengthCarryover"
+                >
                   <InputNumber
                     placeholder="What is your Maximum Leave Carryover Length"
                     className="w-full"
+                    min={1}
                   />
                 </Form.Item>
               )}
             </div>
             <div>
-              <Form.Item label="" className="flex-1">
+              <Form.Item
+                label=""
+                className="flex-1"
+                name="just-toshow-max-leave-len-days"
+              >
                 <Switch
-                  unCheckedChildren="Yes"
-                  checkedChildren="No"
-                  // value={showMaxCODays}
+                  checkedChildren="Yes"
+                  unCheckedChildren="No"
+                  defaultChecked={showMaxCODays}
                   onChange={() => setShowMaxCODays((val) => !val)}
                   // size="small"
                 />
@@ -108,19 +203,21 @@ const LeavePolicyForm = () => {
               {" "}
               <Typography.Text>Do you have casual leave?</Typography.Text>
               {showCasualLLen && (
-                <Form.Item label="" className="flex-1">
+                <Form.Item label="" className="flex-1" name="casualLeaveLength">
                   <InputNumber
                     placeholder="What is your Casual Leave Length"
                     className="w-full"
+                    min={1}
                   />
                 </Form.Item>
               )}
             </div>
             <div>
-              <Form.Item label="" className="flex-1">
+              <Form.Item label="" className="flex-1" name="casualLeave">
                 <Switch
-                  unCheckedChildren="Yes"
-                  checkedChildren="No"
+                  checkedChildren="Yes"
+                  unCheckedChildren="No"
+                  defaultChecked={!!data?.casualLeave}
                   // value={showCasualLLen}
                   onChange={() => setShowCasualLLen((val) => !val)}
                   // size="small"
@@ -134,10 +231,11 @@ const LeavePolicyForm = () => {
               <Typography.Text>Does your probationers apply?</Typography.Text>
             </div>
             <div>
-              <Form.Item label="" className="flex-1">
+              <Form.Item label="" className="flex-1" name="probationersApply">
                 <Switch
-                  unCheckedChildren="Yes"
-                  checkedChildren="No"
+                  checkedChildren="Yes"
+                  unCheckedChildren="No"
+                  defaultChecked={!!data?.probationersApply}
 
                   // size="small"
                 />
@@ -152,10 +250,15 @@ const LeavePolicyForm = () => {
               </Typography.Text>
             </div>
             <div>
-              <Form.Item label="" className="flex-1">
+              <Form.Item
+                label=""
+                className="flex-1"
+                name="probationersUseCasualLeave"
+              >
                 <Switch
-                  unCheckedChildren="Yes"
-                  checkedChildren="No"
+                  checkedChildren="Yes"
+                  unCheckedChildren="No"
+                  defaultChecked={!!data?.probationersUseCasualLeave}
 
                   // size="small"
                 />
@@ -164,12 +267,12 @@ const LeavePolicyForm = () => {
           </div>
           <div className="flex justify-end">
             <Form.Item>
-              <button className="button">Save</button>
+              <AppButton type="submit" isLoading={isLoading} label="Submit" />
             </Form.Item>
           </div>
         </div>
       </Form>
-    </div>
+    </Skeleton>
   );
 };
 

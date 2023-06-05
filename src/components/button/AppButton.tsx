@@ -3,7 +3,7 @@ import { BeatLoader } from "react-spinners";
 
 export type TBtnVariant = "default" | "transparent" | "style-with-class";
 
-export interface IAppBtnProps {
+export type IAppBtnProps = {
   isLoading?: boolean;
   label?: string;
   type?: "submit" | "reset" | "button";
@@ -11,7 +11,7 @@ export interface IAppBtnProps {
   additionalClassNames?: string[];
   disabled?: boolean;
   variant?: TBtnVariant;
-}
+};
 
 export const AppButton: React.FunctionComponent<IAppBtnProps> = ({
   disabled = false,

@@ -30,7 +30,7 @@ export const payrollRoutes: TRouteData[] = [
   },
   {
     element: <div />,
-    path: appRoutes.payrollPolicySettings,
+    path: appRoutes.payrollSettings,
     isSearchable: true,
     title: "Payroll Policy",
   },

@@ -1,15 +1,15 @@
 import { Table } from "antd";
 import { ColumnsType, TablePaginationConfig, TableProps } from "antd/lib/table";
-import { TListBasicWorkflow } from "../hooks/useFetchAllBasicWorkflows";
 import moment from "moment";
 import { Link } from "react-router-dom";
 import { appRoutes } from "config/router/paths";
+import { TAllWorkflow } from "../types/allWorkflows";
 
 interface IProps {
-  data: TListBasicWorkflow[];
+  data: TAllWorkflow[];
   loading: boolean;
   pagination?: TablePaginationConfig;
-  onChange?: TableProps<TListBasicWorkflow>["onChange"];
+  onChange?: TableProps<TAllWorkflow>["onChange"];
 }
 
 export const WorkflowsTable = ({
@@ -18,7 +18,7 @@ export const WorkflowsTable = ({
   pagination,
   onChange,
 }: IProps) => {
-  const columns: ColumnsType<TListBasicWorkflow> = [
+  const columns: ColumnsType<TAllWorkflow> = [
     {
       title: "Name",
       dataIndex: "name",

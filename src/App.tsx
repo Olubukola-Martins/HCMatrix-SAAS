@@ -8,7 +8,16 @@ import refreshApi from "config/refreshTokenApi";
 import GlobalContextProvider from "stateManagers/GlobalContextProvider";
 import UserFeedbackContainer from "components/UserFeedbackContainer";
 import AdminWelcomeContainer from "components/AdminWelcomeContainer";
-const queryClient = new QueryClient();
+
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      refetchInterval: false,
+      refetchIntervalInBackground: false,
+      refetchOnWindowFocus: false,
+    },
+  },
+});
 
 function App() {
   // clear darkmode

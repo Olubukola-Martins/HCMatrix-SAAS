@@ -64,7 +64,6 @@ const MappingDetails = ({
     setFormattedData(formattedData);
 
     // make call to api here
-    console.log(formattedData, "FM");
     const dataToBeSubmitted: TBulkEmployeeImport[] = formattedData.map(
       (item) => {
         const employeeData: TBulkEmployeeImport = {
