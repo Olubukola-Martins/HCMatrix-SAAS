@@ -10,9 +10,9 @@ const JobRequestsContainer = () => {
     <div className="flex flex-col gap-6">
       <NewJobRequest open={showM} handleClose={() => setShowM(false)} />
       <PageSubHeader
-        description={`You can now approve and request for monetary requests.`}
+        description={`You can now approve and request for job requests.`}
         actions={[
-          { name: "New Monetary Request", handleClick: () => setShowM(true) },
+          { name: "New Job Request", handleClick: () => setShowM(true) },
         ]}
       />
       <JobRequestsTableContainer />

@@ -1,22 +1,11 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import useLocalStorage from "use-local-storage";
-import { useIsAuthenticated } from "react-auth-kit";
-import { Outlet, useNavigate } from "react-router-dom";
+import { Outlet } from "react-router-dom";
 import GlobalSupport from "components/GlobalSupport";
 import SideBar from "./SideBar";
 import TopBar from "./TopBar";
 
 const DashboardLayout = () => {
-  const isAuthenticated = useIsAuthenticated();
-  const navigate = useNavigate();
-
-  useEffect(() => {
-    if (isAuthenticated() || localStorage.getItem("hcmatrix_app")) {
-      // Redirect to Dashboard
-    } else {
-      navigate("/login", { replace: true });
-    }
-  }, [isAuthenticated, navigate]);
   const [theme, setTheme] = useLocalStorage("theme" ? "dark" : "light", "");
   const [colorTheme, setColorThem] = useLocalStorage("", "");
   const [sidebarToggle, setSidebarToggle] = useState(true);
@@ -82,13 +71,10 @@ const DashboardLayout = () => {
           <div
             className={
               sidebarToggle
-                ? "w-full lg:pl-28 mt-7 pb-10"
-                : "lg:pl-0 w-full transition-all duration-500 ease-in-out mt-7 pb-10"
+                ? "w-full lg:pl-28 mt-1 pb-10"
+                : "lg:pl-0 w-full transition-all duration-500 ease-in-out mt-1 pb-10"
             }
           >
-            <div className="w-full md:top-14 top-10 sticky z-40">
-              {/* <SubTopBar /> */}
-            </div>
             <main className="Containe">
               <Outlet />
             </main>

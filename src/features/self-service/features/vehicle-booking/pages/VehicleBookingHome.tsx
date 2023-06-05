@@ -8,6 +8,7 @@ import { PageIntro } from "components/layout/PageIntro";
 import { appRoutes } from "config/router/paths";
 import { VehicleSetting } from "../components/VehicleSetting";
 import { VBApprovalRequestsContainer } from "../components/VBApprovalRequestsContainer";
+import SelfServiceSubNav from "features/self-service/components/SelfServiceSubNav";
 
 const VehicleBookingHome = () => {
   const tabItems = [
@@ -44,6 +45,8 @@ const VehicleBookingHome = () => {
   ];
   return (
     <>
+      <SelfServiceSubNav />
+
       <div className="Container">
         <div className="flex flex-col gap-4">
           <PageIntro title="Vehicle Booking" link={appRoutes.selfServiceHome} />

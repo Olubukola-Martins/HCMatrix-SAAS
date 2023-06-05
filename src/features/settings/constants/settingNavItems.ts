@@ -5,13 +5,13 @@ export type TLink = {
   link: string;
 };
 
-export interface ISettNavItem {
+export type TSettNavItem = {
   title: string;
   items: TLink[];
   category: string;
-}
+};
 
-export const settingNavItems: ISettNavItem[] = [
+export const settingNavItems: TSettNavItem[] = [
   {
     title: "General",
     items: [

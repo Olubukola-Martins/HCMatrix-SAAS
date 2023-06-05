@@ -1,7 +1,7 @@
 import React from "react";
-import { useFetchVehicleBookings } from "../hooks/useFetchVehicleBookings";
 import { useApiAuth } from "hooks/useApiAuth";
 import { RecentCard } from "components/cards/RecentCard";
+import { useGetAssetRequisitions } from "../../requisitions/hooks/asset/useGetAssetRequisitions";
 
 // TO DO: Remove this export and if need be move to styles/reused
 export const requestStyle =
@@ -9,12 +9,12 @@ export const requestStyle =
 
 export const LIMIT_OF_ITEMS_TO_DISPLAY = 3;
 
-export const RecentVehicleRequestsCard: React.FC<{
+export const RecentAssetRequestsCard: React.FC<{
   handleSeeAll?: () => void;
 }> = ({ handleSeeAll }) => {
   const { token, companyId } = useApiAuth();
 
-  const { data, isLoading } = useFetchVehicleBookings({
+  const { data, isLoading } = useGetAssetRequisitions({
     token,
     companyId,
     pagination: {
@@ -35,12 +35,8 @@ export const RecentVehicleRequestsCard: React.FC<{
             value: `${item.id}`,
           },
           {
-            name: "Vehicle Name",
-            value: `${item.vehicle.model} (${item.vehicle.brand})`,
-          },
-          {
-            name: "Duration",
-            value: `${item.duration} hrs`,
+            name: "Asset Name",
+            value: `${item.asset.name}`,
           },
         ],
         secondaryCol: {

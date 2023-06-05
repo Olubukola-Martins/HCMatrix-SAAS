@@ -13,7 +13,7 @@ const Router = () => {
         return <Route key={path} path={`${path}`} element={element} />;
       }
       return (
-        <Route element={<DashboardLayout />}>
+        <Route element={<DashboardLayout />} key={path}>
           <Route
             key={path}
             path={`${path}`}
@@ -26,7 +26,7 @@ const Router = () => {
     }
   );
 
-  return <Routes>{pageRoutes}</Routes>;
+  return <Routes key={"app"}>{pageRoutes}</Routes>;
 };
 
 export default Router;

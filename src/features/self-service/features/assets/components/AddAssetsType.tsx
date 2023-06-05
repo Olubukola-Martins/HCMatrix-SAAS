@@ -1,36 +1,84 @@
-import { Modal } from "antd";
-import Themes from "components/Themes";
+import { DatePicker, Form, Input, Modal, Select } from "antd";
+import { AppButton } from "components/button/AppButton";
+import React from "react";
 import { IModalProps } from "types";
+import {
+  generalValidationRules,
+  textInputValidationRules,
+} from "utils/formHelpers/validation";
+import { openNotification } from "utils/notifications";
+import { useQueryClient } from "react-query";
 
-const AddAssetsType: React.FC<IModalProps> = ({ open, handleClose }) => {
+import { useCreateAssetType } from "../hooks/useCreateAssetType";
+import { QUERY_KEY_FOR_ASSET_TYPES } from "../hooks/useGetAssetTypes";
+
+const AddAssetType: React.FC<IModalProps> = ({ open, handleClose }) => {
+  const queryClient = useQueryClient();
+
+  const [form] = Form.useForm();
+  const { mutate, isLoading } = useCreateAssetType();
+
+  const handleSubmit = (data: any) => {
+    mutate(
+      {
+        name: data.name,
+      },
+      {
+        onError: (err: any) => {
+          openNotification({
+            state: "error",
+            title: "Error Occurred",
+            description:
+              err?.response.data.message ?? err?.response.data.error.message,
+          });
+        },
+        onSuccess: (res: any) => {
+          openNotification({
+            state: "success",
+
+            title: "Success",
+            description: res.data.message,
+            // duration: 0.4,
+          });
+          form.resetFields();
+          handleClose();
+
+          queryClient.invalidateQueries({
+            queryKey: [QUERY_KEY_FOR_ASSET_TYPES],
+            // exact: true,
+          });
+        },
+      }
+    );
+  };
   return (
-    <Modal open={open} onCancel={() => handleClose()} footer={null}>
-      <Themes>
-        <div className="CModal" style={{ maxWidth: 400 }}>
-          <h5 className="font-semibold text-base pb-5">Add Asset Type</h5>
+    <Modal
+      open={open}
+      onCancel={() => handleClose()}
+      footer={null}
+      title={"Add Asset Type"}
+      style={{ top: 20 }}
+    >
+      <Form
+        layout="vertical"
+        form={form}
+        onFinish={handleSubmit}
+        requiredMark={false}
+      >
+        <Form.Item
+          rules={textInputValidationRules}
+          name="name"
+          label="Asset Name"
+        >
+          <Input placeholder="Asset Name" />
+        </Form.Item>
 
-          <form>
-            <input
-              type="text"
-              placeholder="Asset Type Name"
-              className="w-full rounded-md border border-gray-300 py-2 px-2 text-sm bg-mainBg focus:outline-none placeholder:text-accent"
-            />
-
-            <div className="mt-7 flex items-center justify-between">
-              <button
-                onClick={() => handleClose()}
-                type="button"
-                className="transparentButton"
-              >
-                Cancel
-              </button>
-              <button className="button">Submit</button>
-            </div>
-          </form>
+        <div className="flex justify-end">
+          <AppButton type="submit" isLoading={isLoading} />
         </div>
-      </Themes>
+      </Form>
     </Modal>
   );
 };
 
-export default AddAssetsType;
+export default AddAssetType;
