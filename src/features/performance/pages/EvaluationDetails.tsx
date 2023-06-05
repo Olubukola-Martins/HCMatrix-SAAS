@@ -5,7 +5,6 @@ import { Link } from "react-router-dom";
 import { Dropdown, Menu, Table } from "antd";
 import { PerformanceNav } from "../components/PerformanceNav";
 
-
 interface DataType {
   name: string;
   employeeId: number | string;
@@ -48,7 +47,9 @@ const columns: ColumnsType<DataType> = [
         overlay={
           <Menu>
             <Menu.Item key="1">Download</Menu.Item>
-            <Menu.Item key="2"><Link to={appRoutes.evaluationReport(1).path}>View Details</Link></Menu.Item>
+            <Menu.Item key="2">
+              <Link to={appRoutes.evaluationReport(1).path}>View Details</Link>
+            </Menu.Item>
           </Menu>
         }
         trigger={["click"]}
@@ -73,7 +74,7 @@ const data: DataType[] = [
 export const EvaluationDetails = () => {
   return (
     <div className="Container">
-         <PerformanceNav active="balance scorecard" />
+      <PerformanceNav active="balance scorecard" />
       <div className="flex justify-between items-center">
         <PageIntro title="Q1 Template" link={appRoutes.balanceScorecard} />
         <Link className="button" to={appRoutes.performanceReport}>
