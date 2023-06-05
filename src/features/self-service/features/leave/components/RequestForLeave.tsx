@@ -21,7 +21,6 @@ import { useFetchSingleEmployee } from "features/core/employees/hooks/useFetchSi
 interface IProps extends IModalProps {}
 
 const boxStyle = "px-4 py-3 shadow rounded-md bg-mainBg mb-4";
-const boxTitle = "font-medium text-sm pb-1";
 
 export const RequestForLeave: React.FC<IProps> = ({ handleClose, open }) => {
   // should be from global state - user leave days left
@@ -45,7 +44,7 @@ export const RequestForLeave: React.FC<IProps> = ({ handleClose, open }) => {
           startDate: data.duration[0].toString(),
           endDate: data.duration[1].toString(),
           length: leaveLength,
-          leaveTypeId: 1,
+          leaveTypeId: data.leaveTypeId,
           reason: data.reason,
           requestAllowance: data.requestAllowance,
           workAssigneeId: data.workAssigneeId,
