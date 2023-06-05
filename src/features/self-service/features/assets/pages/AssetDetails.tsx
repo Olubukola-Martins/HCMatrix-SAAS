@@ -1,5 +1,4 @@
 import SelfServiceSubNav from "features/self-service/components/SelfServiceSubNav";
-import React, { useState } from "react";
 import { useParams } from "react-router-dom";
 
 import { useApiAuth } from "hooks/useApiAuth";

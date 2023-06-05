@@ -38,13 +38,13 @@ const RequisitionPolicy = () => {
 const RequisitionPolicyFormList = () => {
   const { companyId, token } = useApiAuth();
 
-  const { data, isFetching } = useGeTRequisitionSettings({
+  const { data, isLoading } = useGeTRequisitionSettings({
     companyId,
     token,
   });
 
   return (
-    <Skeleton loading={isFetching} active paragraph={{ rows: 14 }}>
+    <Skeleton loading={isLoading} active paragraph={{ rows: 14 }}>
       {data?.data.map((item) => (
         <RequisitionPolicyForm key={item.id} data={item} />
       ))}
