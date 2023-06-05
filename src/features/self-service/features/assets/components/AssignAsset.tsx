@@ -1,24 +1,36 @@
-import { Form, Input, Modal } from "antd";
+import { DatePicker, Form, Modal } from "antd";
 import { AppButton } from "components/button/AppButton";
 import React from "react";
 import { IModalProps } from "types";
-import { textInputValidationRules } from "utils/formHelpers/validation";
 import { openNotification } from "utils/notifications";
 import { useQueryClient } from "react-query";
+import { QUERY_KEY_FOR_SINGLE_ASSET } from "../hooks/useGetSingleAsset";
+import { useUpdateAsset } from "../hooks/useUpdateAsset";
+import { TAsset } from "../types";
+import { generalValidationRules } from "utils/formHelpers/validation";
+import { FormEmployeeInput } from "features/core/employees/components/FormEmployeeInput";
 
-import { useCreateAssetType } from "../hooks/useCreateAssetType";
-import { QUERY_KEY_FOR_ASSET_TYPES } from "../hooks/useGetAssetTypes";
+interface IProps extends IModalProps {
+  asset: TAsset;
+}
 
-const AddAssetType: React.FC<IModalProps> = ({ open, handleClose }) => {
+export const AssignAsset: React.FC<IProps> = ({ open, handleClose, asset }) => {
   const queryClient = useQueryClient();
 
   const [form] = Form.useForm();
-  const { mutate, isLoading } = useCreateAssetType();
+  const { mutate, isLoading } = useUpdateAsset();
 
-  const handleSubmit = (data: any) => {
+  const handleSubmit = (values: any) => {
+    const data = asset;
     mutate(
       {
-        name: data.name,
+        body: {
+          name: data.name,
+          typeId: data.typeId,
+          dateAssigned: values.dateAssigned,
+          assigneeId: values.assigneeId,
+        },
+        id: asset.id,
       },
       {
         onError: (err: any) => {
@@ -37,11 +49,12 @@ const AddAssetType: React.FC<IModalProps> = ({ open, handleClose }) => {
             description: res.data.message,
             // duration: 0.4,
           });
+
           form.resetFields();
           handleClose();
 
           queryClient.invalidateQueries({
-            queryKey: [QUERY_KEY_FOR_ASSET_TYPES],
+            queryKey: [QUERY_KEY_FOR_SINGLE_ASSET],
             // exact: true,
           });
         },
@@ -53,7 +66,7 @@ const AddAssetType: React.FC<IModalProps> = ({ open, handleClose }) => {
       open={open}
       onCancel={() => handleClose()}
       footer={null}
-      title={"Add Asset Type"}
+      title={"Assign User"}
       style={{ top: 20 }}
     >
       <Form
@@ -62,14 +75,17 @@ const AddAssetType: React.FC<IModalProps> = ({ open, handleClose }) => {
         onFinish={handleSubmit}
         requiredMark={false}
       >
+        <FormEmployeeInput
+          Form={Form}
+          control={{ label: "Assignee", name: "assigneeId" }}
+        />
         <Form.Item
-          rules={textInputValidationRules}
-          name="name"
-          label="Asset Name"
+          rules={generalValidationRules}
+          name="dateAssigned"
+          label="Date assigned"
         >
-          <Input placeholder="Asset Name" />
+          <DatePicker placeholder="Date assigned" className="w-full" />
         </Form.Item>
-
         <div className="flex justify-end">
           <AppButton type="submit" isLoading={isLoading} />
         </div>
@@ -77,5 +93,3 @@ const AddAssetType: React.FC<IModalProps> = ({ open, handleClose }) => {
     </Modal>
   );
 };
-
-export default AddAssetType;

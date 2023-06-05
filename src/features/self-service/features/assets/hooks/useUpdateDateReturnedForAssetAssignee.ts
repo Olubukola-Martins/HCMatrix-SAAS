@@ -14,7 +14,7 @@ const updateData = async (props: {
   data: TCreateProps;
   auth: ICurrentCompany;
 }) => {
-  const url = `${MICROSERVICE_ENDPOINTS.UTILITY}}/self-service/asset/${props.data.assetId}/assignee-history/${props.data.assigneeHistoryId}`;
+  const url = `${MICROSERVICE_ENDPOINTS.UTILITY}/self-service/asset/${props.data.assetId}/assignee-history/${props.data.assigneeHistoryId}`;
   const config = {
     headers: {
       Accept: "application/json",
@@ -28,7 +28,7 @@ const updateData = async (props: {
   const response = await axios.patch(url, data, config);
   return response;
 };
-export const useUpdateDateReturnedForAssignee = () => {
+export const useUpdateDateReturnedForAssetAssignee = () => {
   const { token, companyId } = useApiAuth();
   return useMutation((props: TCreateProps) =>
     updateData({ data: props, auth: { token, companyId } })
