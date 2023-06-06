@@ -346,6 +346,7 @@ export type TManagerHistory = {
   };
 };
 
+// TO DO: refactor types to match api exactly - employee, authData, ..............
 export type TEmployee = {
   companyId: number;
   avatarUrl?: string;
