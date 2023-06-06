@@ -1,6 +1,7 @@
-import SelfServiceHome from "features/self-service/pages/SelfServiceHome";
 import { appRoutes } from "../paths";
 import { TRouteData } from "../types";
+import React, { lazy } from "react";
+import SelfServiceHome from "features/self-service/pages/SelfServiceHome";
 import Requisition from "features/self-service/features/requisitions/pages/Requisition";
 import Reimbursements from "features/self-service/features/reimbursement/pages/Reimbursements";
 import Assets from "features/self-service/features/assets/pages/Assets";
@@ -38,6 +39,8 @@ import PositionChangeRequestsSettingPage from "features/self-service/features/po
 import PromotionRequests from "features/self-service/features/promotions/pages/PromotionRequests";
 import PromotionRequestsSettingPage from "features/self-service/features/promotions/pages/PromotionRequestsSettingPage";
 import AssetRequestSettingsPage from "features/self-service/features/assets/pages/AssetRequestSettingsPage";
+import TravelRequests from "features/self-service/features/travels/pages/TravelRequests";
+import TravelRequestsSettingPage from "features/self-service/features/travels/pages/TravelRequestsSettingPage";
 
 export const selfServiceRoutes: TRouteData[] = [
   {
@@ -136,6 +139,20 @@ export const selfServiceRoutes: TRouteData[] = [
     isSearchable: true,
     title: "Promotion Requests",
     isPrimaryFeature: true,
+  },
+  {
+    element: <TravelRequests />,
+    path: appRoutes.selfServiceTravels,
+    isSearchable: true,
+    title: "Travel Requests",
+    isPrimaryFeature: true,
+  },
+  {
+    element: <TravelRequestsSettingPage />,
+    path: appRoutes.selfServiceTravelSetting,
+    isSearchable: true,
+    title: "Travel Request Settings",
+    isPrimaryFeature: false,
   },
   {
     element: <Assets />,

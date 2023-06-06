@@ -4,6 +4,7 @@ import { appRoutes } from "config/router/paths";
 import { Link } from "react-router-dom";
 
 const requisitions = [
+  { link: appRoutes.selfServiceTravels, title: "Travel Requests" },
   { link: appRoutes.selfServiceAssets, title: "Asset Requisition" },
   { link: appRoutes.selfServiceJob, title: "Job Requisition" },
   {
