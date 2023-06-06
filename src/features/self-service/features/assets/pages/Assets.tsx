@@ -1,5 +1,4 @@
 import SelfServiceSubNav from "features/self-service/components/SelfServiceSubNav";
-import React, { useState } from "react";
 import AssetList from "../components/AssetList";
 import AssetOverview from "../components/AssetOverview";
 import AssetType from "../components/AssetType";
@@ -7,9 +6,9 @@ import { PageIntro } from "components/layout/PageIntro";
 import { appRoutes } from "config/router/paths";
 import PageSubHeader from "components/layout/PageSubHeader";
 import { Tabs } from "antd";
+import AssetRequestsContainer from "../components/AssetRequestsContainer";
 
 const Assets = () => {
-  const [tap, setTap] = useState("overview");
   const tabItems = [
     {
       label: "Asset Overview",
@@ -25,6 +24,11 @@ const Assets = () => {
       label: "Asset Type",
       children: <AssetType />,
       key: "Asset Type",
+    },
+    {
+      label: "Requisitions",
+      children: <AssetRequestsContainer />,
+      key: "Requisitions",
     },
   ];
 
