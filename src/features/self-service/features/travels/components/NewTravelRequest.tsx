@@ -106,7 +106,7 @@ export const NewTravelRequest: React.FC<IModalProps> = ({
         <Form.Item
           rules={generalValidationRules}
           name="duration"
-          label="Duration"
+          label="Duration (days)"
         >
           <InputNumber placeholder="Duration" className="w-full" />
         </Form.Item>

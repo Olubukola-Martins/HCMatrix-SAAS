@@ -8,7 +8,7 @@ import PageSubHeader from "components/layout/PageSubHeader";
 import { Tabs } from "antd";
 import AssetRequestsContainer from "../components/AssetRequestsContainer";
 
-const Assets = () => {
+const Assets: React.FC = () => {
   const tabItems = [
     {
       label: "Asset Overview",

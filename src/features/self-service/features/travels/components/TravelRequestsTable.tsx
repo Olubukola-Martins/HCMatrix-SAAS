@@ -33,6 +33,14 @@ export const TravelRequestsTable: React.FC<{
 
   const columns: ColumnsType<TTravelRequest> = [
     {
+      title: "Date",
+      dataIndex: "date",
+      key: "date",
+      render: (_, item) => (
+        <span>{moment(item.createdAt).format("YYYY/MM/DD")} </span>
+      ),
+    },
+    {
       title: "Arrival Date",
       dataIndex: "adate",
       key: "adate",
