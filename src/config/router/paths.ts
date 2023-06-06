@@ -107,10 +107,6 @@ export const appRoutes = {
   selfServiceAssetSetting: `/self-service/asset-setting`,
   selfServiceTravels: `/self-service/travels`,
   selfServiceTravelSetting: `/self-service/travel-setting`,
-  assetTypeDetails: (id?: number) => ({
-    format: `/self-service/asset-types/:id`,
-    path: `/self-service/asset-types/${id}`,
-  }),
   assetDetails: (id?: number) => ({
     format: `/self-service/assets/:id`,
     path: `/self-service/assets/${id}`,

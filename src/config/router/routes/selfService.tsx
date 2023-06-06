@@ -2,10 +2,8 @@ import { appRoutes } from "../paths";
 import { TRouteData } from "../types";
 import React, { lazy } from "react";
 import SelfServiceHome from "features/self-service/pages/SelfServiceHome";
-import Requisition from "features/self-service/features/requisitions/pages/Requisition";
 import Reimbursements from "features/self-service/features/reimbursement/pages/Reimbursements";
 import Assets from "features/self-service/features/assets/pages/Assets";
-import AssetTypeDetails from "features/self-service/features/assets/pages/AssetTypeDetails";
 import AssetDetails from "features/self-service/features/assets/pages/AssetDetails";
 import LoanHome from "features/self-service/features/loan/pages/LoanHome";
 import LoanRequest from "features/self-service/features/loan/pages/LoanRequest";
@@ -41,6 +39,11 @@ import PromotionRequestsSettingPage from "features/self-service/features/promoti
 import AssetRequestSettingsPage from "features/self-service/features/assets/pages/AssetRequestSettingsPage";
 import TravelRequests from "features/self-service/features/travels/pages/TravelRequests";
 import TravelRequestsSettingPage from "features/self-service/features/travels/pages/TravelRequestsSettingPage";
+
+// TO DO: This lazy loading might not be needed consider rethinking this, so just temporary
+const Requisition = lazy(
+  () => import("features/self-service/features/requisitions/pages/Requisition")
+);
 
 export const selfServiceRoutes: TRouteData[] = [
   {
@@ -168,12 +171,7 @@ export const selfServiceRoutes: TRouteData[] = [
     title: "Asset Settings",
     isPrimaryFeature: false,
   },
-  {
-    element: <AssetTypeDetails />,
-    path: appRoutes.assetTypeDetails().format,
-    isSearchable: false,
-    isPrimaryFeature: false,
-  },
+
   {
     element: <AssetDetails />,
     path: appRoutes.assetDetails().format,
