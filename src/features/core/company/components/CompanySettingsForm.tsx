@@ -4,41 +4,145 @@ import {
   Form,
   Input,
   Select,
+  Skeleton,
   Switch,
   Typography,
 } from "antd";
 import TransferOwnership from "components/transferOwnership/TransferOwnership";
-import React, { useContext, useState } from "react";
-import { useAuthUser } from "react-auth-kit";
-import { GlobalContext } from "stateManagers/GlobalContextProvider";
+import { useEffect, useState } from "react";
+import {
+  QUERY_KEY_FOR_COMPANY_PARAMETERS,
+  useGetCompanyParams,
+} from "../hooks/useGetCompanyParams";
+
+import { useSaveCompanyParams } from "../hooks/useSaveCompanyParams";
+import { useQueryClient } from "react-query";
+import { openNotification } from "utils/notifications";
+import { AppButton } from "components/button/AppButton";
+import { useFetchCountries } from "hooks/useFetchCountries";
+import { TIME_ZONES } from "constants/timeZones";
+import { DATE_FORMATS } from "constants/dateFormats";
+import { TIME_FORMATS } from "constants/timeFormats";
 
 const parentCompStyle = "grid md:grid-cols-2 border-0 border-b gap-4 py-2";
 const compStyle = "flex flex-col gap-2 items-start";
 
 const CompanySettingsForm = () => {
   const [transferOwnershipModal, setTransferOwnershipModal] = useState(false);
-  const auth = useAuthUser();
-  const authDetails = auth();
-  const companies = authDetails?.companies;
-  const globalCtx = useContext(GlobalContext);
-  const { state: globalState } = globalCtx;
-  const currentCompanyId = globalState.currentCompany?.id;
-  const currentCompany = companies.find(
-    (item: any) => (item.id = currentCompanyId)
-  );
+  const queryClient = useQueryClient();
+  const { data: countries, isFetching: isFetchingCountries } =
+    useFetchCountries();
+  const [adminEmail, setAdminValue] = useState("");
+
+  const { data: companyParams, isFetching: isFetchingCompanyParams } =
+    useGetCompanyParams();
+
+  const [form] = Form.useForm();
+  const { mutate, isLoading } = useSaveCompanyParams();
+
+  const handleSubmit = (data: any) => {
+    console.log(data);
+    mutate(
+      {
+        administrator: {
+          adminEmail: adminEmail,
+        },
+        emailSettings: {
+          defaultFromAddress: data.defaultFromAddress,
+        },
+        locationSettings: {
+          country: data.country,
+          timezone: data.timezone,
+        },
+        dateAndTimeSettings: {
+          dateFormat: data.dateFormat,
+          timeFormat: data.timeFormat,
+        },
+        profilePhotoSettings: {
+          modifyUsersProfile: {
+            administrator: data.modifyUsersProfile.includes("administrator"),
+            employee: data.modifyUsersProfile.includes("employee"),
+          },
+        },
+        notificationSettings: {
+          email: data.notificationSettings.includes("email"),
+          inApp: data.notificationSettings.includes("inApp"),
+          sms: data.notificationSettings.includes("sms"),
+        },
+        employeeSettings: {
+          hideBirthday: !!data.hideBirthday,
+          hidePhoneNumber: !!data.hidePhoneNumber,
+          hideWorkAnniversary: !!data.hideWorkAnniversary,
+        },
+      },
+      {
+        onError: (err: any) => {
+          openNotification({
+            state: "error",
+            title: "Error Occurred",
+            description:
+              err?.response.data.message ?? err?.response.data.error.message,
+          });
+        },
+        onSuccess: (res: any) => {
+          openNotification({
+            state: "success",
+
+            title: "Success",
+            description: res.data.message,
+            // duration: 0.4,
+          });
+          form.resetFields();
+
+          queryClient.invalidateQueries({
+            queryKey: [QUERY_KEY_FOR_COMPANY_PARAMETERS],
+            // exact: true,
+          });
+        },
+      }
+    );
+  };
+  useEffect(() => {
+    if (companyParams) {
+      const data = companyParams.value;
+      setAdminValue(data.administrator.adminEmail);
+      form.setFieldsValue({
+        adminEmail: data.administrator.adminEmail,
+        defaultFromAddress: data.emailSettings.defaultFromAddress,
+        country: data.locationSettings.country,
+        timezone: data.locationSettings.timezone,
+        dateFormat: data.dateAndTimeSettings.dateFormat,
+        timeFormat: data.dateAndTimeSettings.timeFormat,
+        modifyUsersProfile: [
+          data.profilePhotoSettings.modifyUsersProfile.administrator
+            ? "administrator"
+            : "",
+          data.profilePhotoSettings.modifyUsersProfile.employee
+            ? "employee"
+            : "",
+        ].filter((item) => item !== ""),
+        enableChatFeature: true,
+        notificationSettings: [
+          data.notificationSettings.email ? "email" : "",
+          data.notificationSettings.inApp ? "inApp" : "",
+          data.notificationSettings.sms ? "sms" : "",
+        ].filter((item) => item !== ""),
+      });
+    }
+  }, [form, companyParams]);
+
   return (
-    <div>
+    <Skeleton
+      active
+      loading={isFetchingCompanyParams || isFetchingCountries}
+      paragraph={{ rows: 8 }}
+    >
       {/* transfer ownership */}
       <TransferOwnership
         open={transferOwnershipModal}
         handleClose={() => setTransferOwnershipModal(false)}
       />
-      <Form
-        className="flex flex-col gap-4"
-        initialValues={{
-          adminEmail: currentCompany.email,
-        }}
-      >
+      <Form className="flex flex-col gap-4" form={form} onFinish={handleSubmit}>
         <div className="flex flex-col gap-y-12 py-4">
           {/* 1 */}
           <div className={parentCompStyle}>
@@ -49,7 +153,7 @@ const CompanySettingsForm = () => {
                 name={`adminEmail`}
                 className="w-3/4"
               >
-                <Input disabled />
+                <Input disabled value={adminEmail} />
               </Form.Item>
               <Button
                 type="text"
@@ -68,11 +172,7 @@ const CompanySettingsForm = () => {
                 name={`defaultFromAddress`}
                 className="w-3/4"
               >
-                <Select>
-                  <Select.Option value="cars@tfml.com">
-                    cars@tfml.com
-                  </Select.Option>
-                </Select>
+                <Input />
               </Form.Item>
             </div>
           </div>
@@ -84,18 +184,17 @@ const CompanySettingsForm = () => {
 
             <div className={compStyle}>
               <Form.Item label="Country" name={`country`} className="w-3/4">
-                <Select>
-                  <Select.Option value="Tanzania">Tanzania</Select.Option>
-                </Select>
+                <Select
+                  options={countries?.map((item) => ({
+                    label: item.name,
+                    value: item.name,
+                  }))}
+                />
               </Form.Item>
             </div>
             <div className={compStyle}>
-              <Form.Item label="Time Zone" name={`timeZone`} className="w-2/4">
-                <Select>
-                  <Select.Option value="cars@tfml.com">
-                    West Africa
-                  </Select.Option>
-                </Select>
+              <Form.Item label="Time Zone" name={`timezone`} className="w-2/4">
+                <Select options={TIME_ZONES} />
               </Form.Item>
             </div>
           </div>
@@ -111,10 +210,7 @@ const CompanySettingsForm = () => {
                 name={`dateFormat`}
                 className="w-2/4"
               >
-                <Select>
-                  <Select.Option value="YYYY/MM/DD">YYYY/MM/DD</Select.Option>
-                  <Select.Option value="YYYY-MM-DD">YYYY-MM-DD</Select.Option>
-                </Select>
+                <Select options={DATE_FORMATS} />
               </Form.Item>
             </div>
             <div className={compStyle}>
@@ -123,10 +219,7 @@ const CompanySettingsForm = () => {
                 name={`timeFormat`}
                 className="w-2/4"
               >
-                <Select>
-                  <Select.Option value="12hrs">12 - Hour(s)</Select.Option>
-                  <Select.Option value="24hrs">24 - Hour(s)</Select.Option>
-                </Select>
+                <Select options={TIME_FORMATS} />
               </Form.Item>
             </div>
           </div>
@@ -139,14 +232,16 @@ const CompanySettingsForm = () => {
               <Form.Item
                 labelCol={{ span: 24 }}
                 label="Who is able to modify user's profile?"
-                name={`ableToModifyUserProfile`}
+                name={`modifyUsersProfile`}
               >
                 <Checkbox.Group
-                  options={["Administator", "Employee"]}
-                  defaultValue={["Employee"]}
+                  className="capitalize"
+                  options={["administrator", "employee"]}
+                  defaultValue={["employee"]}
                 />
               </Form.Item>
             </div>
+
             <div className={compStyle}>
               <Typography.Title level={5}>Chat Settings</Typography.Title>
               <Form.Item
@@ -168,10 +263,10 @@ const CompanySettingsForm = () => {
               <Form.Item
                 labelCol={{ span: 24 }}
                 label="Select the channels you would like to receive notifications through?"
-                name={`notificationChannels`}
+                name={`notificationSettings`}
               >
                 <Checkbox.Group
-                  options={["email", "in-app"]}
+                  options={["email", "inApp", "sms"]}
                   defaultValue={["in-app"]}
                 />
               </Form.Item>
@@ -184,39 +279,55 @@ const CompanySettingsForm = () => {
             </Typography.Title>
             <Form.Item
               label="Allow users to hide birthday?"
-              name={`allowUserToHideBirthday`}
+              name={`hideBirthday`}
               colon={false}
               className="w-3/4"
             >
-              <Switch unCheckedChildren="No" checkedChildren="Yes" />
+              <Switch
+                unCheckedChildren="No"
+                checkedChildren="Yes"
+                defaultChecked={
+                  companyParams?.value.employeeSettings.hideBirthday
+                }
+              />
             </Form.Item>
             <Form.Item
               label="Allow users to hide mobile number?"
-              name={`allowUserToHideMobileNo`}
+              name={`hidePhoneNumber`}
               colon={false}
               className="w-3/4"
             >
-              <Switch unCheckedChildren="No" checkedChildren="Yes" />
+              <Switch
+                unCheckedChildren="No"
+                checkedChildren="Yes"
+                defaultChecked={
+                  companyParams?.value.employeeSettings.hidePhoneNumber
+                }
+              />
             </Form.Item>
             <Form.Item
               label="Allow users to hide work anniversary?"
-              name={`allowUserToHideWorkAnniversary`}
+              name={`hideWorkAnniversary`}
               colon={false}
               className="w-3/4"
             >
-              <Switch unCheckedChildren="No" checkedChildren="Yes" />
+              <Switch
+                unCheckedChildren="No"
+                checkedChildren="Yes"
+                defaultChecked={
+                  companyParams?.value.employeeSettings.hideWorkAnniversary
+                }
+              />
             </Form.Item>
           </div>
         </div>
         <div className="flex justify-end">
           <Form.Item>
-            <button className="button" type="submit">
-              Save
-            </button>
+            <AppButton label="Save" type="submit" isLoading={isLoading} />
           </Form.Item>
         </div>
       </Form>
-    </div>
+    </Skeleton>
   );
 };
 

@@ -8,6 +8,7 @@ import { TAsset } from "../types";
 interface IGetDataProps extends ICurrentCompany {
   pagination?: IPaginationProps;
   searchParams?: ISearchParams;
+  employeeId?: number;
 }
 
 export const QUERY_KEY_FOR_ASSETS = "assets";
@@ -15,7 +16,7 @@ export const QUERY_KEY_FOR_ASSETS = "assets";
 const getVehicles = async (
   props: IGetDataProps
 ): Promise<{ data: TAsset[]; total: number }> => {
-  const { pagination } = props;
+  const { pagination, employeeId } = props;
   const limit = pagination?.limit ?? DEFAULT_PAGE_SIZE;
   const offset = pagination?.offset ?? 0;
   const name = props.searchParams?.name ?? "";
@@ -32,6 +33,7 @@ const getVehicles = async (
       limit,
       offset,
       search: name,
+      employeeId,
     },
   };
 

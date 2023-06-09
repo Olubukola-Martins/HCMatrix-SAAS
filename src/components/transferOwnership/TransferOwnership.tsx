@@ -7,7 +7,7 @@ interface IProps {
   open: boolean;
   handleClose: Function;
 }
-
+// TO DO: Add Transfer ownership logic to component && make it in sync with current practices
 const TransferOwnership = ({ open, handleClose }: IProps) => {
   const [showSubmit, setShowSubmit] = useState(false);
   const [checkValueLength, setCheckValueLength] = useState("");

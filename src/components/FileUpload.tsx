@@ -5,6 +5,8 @@ import { useContext } from "react";
 import { useAuthUser } from "react-auth-kit";
 import { GlobalContext, EGlobalOps } from "stateManagers/GlobalContextProvider";
 
+// TO DO: HANDLE And account for the delete of a file from context
+
 type TFileType =
   | "image/png"
   | "image/jpeg"

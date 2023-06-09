@@ -1,10 +1,11 @@
-import { Form, Input, Select } from "antd";
+import { Form, Input, Select, Skeleton } from "antd";
 import { useFetchCountries } from "hooks/useFetchCountries";
 import { useFetchIndustries } from "hooks/useFetchIndutries";
 import React, { useContext } from "react";
 import { useAuthUser } from "react-auth-kit";
 import { GlobalContext } from "stateManagers/GlobalContextProvider";
 import { generalValidationRules } from "utils/formHelpers/validation";
+import { useGetCompanyParams } from "../hooks/useGetCompanyParams";
 
 const CompanyInformationForm = () => {
   const auth = useAuthUser();
@@ -18,10 +19,23 @@ const CompanyInformationForm = () => {
   const currentCompany = companies.find(
     (item: any) => (item.id = currentCompanyId)
   );
-  const { data: industries, isSuccess: isISuccess } = useFetchIndustries();
-  const { data: countries, isSuccess: isCSuccess } = useFetchCountries();
+  const {
+    data: industries,
+    isSuccess: isISuccess,
+    isFetching: isFetchingIndustries,
+  } = useFetchIndustries();
+  const {
+    data: countries,
+    isSuccess: isCSuccess,
+    isFetching: isFetchingCountries,
+  } = useFetchCountries();
+
   return (
-    <div>
+    <Skeleton
+      active
+      loading={isFetchingIndustries || isFetchingCountries}
+      paragraph={{ rows: 8 }}
+    >
       <Form
         requiredMark={false}
         labelCol={{ span: 24 }}
@@ -118,7 +132,7 @@ const CompanyInformationForm = () => {
           </div>
         </div>
       </Form>
-    </div>
+    </Skeleton>
   );
 };
 

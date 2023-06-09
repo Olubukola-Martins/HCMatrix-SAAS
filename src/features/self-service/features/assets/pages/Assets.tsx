@@ -7,6 +7,7 @@ import { appRoutes } from "config/router/paths";
 import PageSubHeader from "components/layout/PageSubHeader";
 import { Tabs } from "antd";
 import AssetRequestsContainer from "../components/AssetRequestsContainer";
+import { AssetApprovalRequestsContainer } from "../components/AssetApprovalRequestsContainer";
 
 const Assets: React.FC = () => {
   const tabItems = [
@@ -29,6 +30,11 @@ const Assets: React.FC = () => {
       label: "Requisitions",
       children: <AssetRequestsContainer />,
       key: "Requisitions",
+    },
+    {
+      label: "Approvals",
+      children: <AssetApprovalRequestsContainer />,
+      key: "Approvals",
     },
   ];
 

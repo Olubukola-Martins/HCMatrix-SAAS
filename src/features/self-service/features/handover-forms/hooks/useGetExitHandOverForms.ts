@@ -3,27 +3,27 @@ import { MICROSERVICE_ENDPOINTS } from "config/enviroment";
 import { useQuery } from "react-query";
 import { ICurrentCompany, IPaginationProps, ISearchParams } from "types";
 import { DEFAULT_PAGE_SIZE } from "constants/general";
-import { TAssetRequisition } from "../../types/asset";
+import { TTHandOverForm } from "../types";
 import { TApprovalStatus } from "types/statuses";
 
 interface IGetDataProps extends ICurrentCompany {
   pagination?: IPaginationProps;
   searchParams?: ISearchParams;
-  status?: TApprovalStatus;
   employeeId?: number;
+  status?: TApprovalStatus;
 }
 
-export const QUERY_KEY_FOR_ASSET_REQUISITIONS = "asset-requisitions";
+export const QUERY_KEY_FOR_EXIT_HAND_OVER_FORMS = "exit-handover-forms";
 
 const getData = async (
   props: IGetDataProps
-): Promise<{ data: TAssetRequisition[]; total: number }> => {
+): Promise<{ data: TTHandOverForm[]; total: number }> => {
   const { pagination, employeeId, status } = props;
   const limit = pagination?.limit ?? DEFAULT_PAGE_SIZE;
   const offset = pagination?.offset ?? 0;
   const name = props.searchParams?.name ?? "";
 
-  const url = `${MICROSERVICE_ENDPOINTS.UTILITY}/self-service/requisition/asset`;
+  const url = `${MICROSERVICE_ENDPOINTS.UTILITY}/self-service/exit-handover-form`;
 
   const config = {
     headers: {
@@ -44,8 +44,8 @@ const getData = async (
   const fetchedData = res.data.data;
   const result = fetchedData.result;
 
-  const data: TAssetRequisition[] = result.map(
-    (item: TAssetRequisition): TAssetRequisition => ({ ...item })
+  const data: TTHandOverForm[] = result.map(
+    (item: TTHandOverForm): TTHandOverForm => ({ ...item })
   );
 
   const ans = {
@@ -56,9 +56,10 @@ const getData = async (
   return ans;
 };
 
-export const useGetAssetRequisitions = (props: IGetDataProps) => {
+export const useGetExitHandOverForms = (props: IGetDataProps) => {
+  const { pagination, searchParams } = props;
   const queryData = useQuery(
-    [QUERY_KEY_FOR_ASSET_REQUISITIONS, props],
+    [QUERY_KEY_FOR_EXIT_HAND_OVER_FORMS, pagination, searchParams],
     () =>
       getData({
         ...props,
