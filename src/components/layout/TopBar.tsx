@@ -79,9 +79,9 @@ const TopBar = ({
     ? [
         ...defaultCompanies,
         {
-          value: "add-company",
-          id: "add-company",
-          image: "add-company",
+          value: "",
+          id: "",
+          image: "",
 
           label: (
             <div className="flex gap-2 items-center">
@@ -116,7 +116,7 @@ const TopBar = ({
   };
 
   const onSelect = (val: string, data: any) => {
-    if (val === "add-company") {
+    if (val === "") {
       setAddCompanyModal(true);
       return;
     }
