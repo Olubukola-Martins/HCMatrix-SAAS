@@ -1,18 +1,17 @@
 import { Select } from "antd";
-import { useFetchLgas } from "hooks/useFetchLGAs";
+import { useFetchIndustries } from "hooks/useFetchIndutries";
 import { useState } from "react";
-import { TLga } from "types/lgas";
+import { TIndustry } from "types/industry";
 import { generalValidationRules } from "utils/formHelpers/validation";
 
-export const FormLGAInput: React.FC<{
-  stateId: number;
+export const FormIndustryInput: React.FC<{
   Form: any;
   showLabel?: boolean;
   control?: { label: string; name: string };
-}> = ({ Form, showLabel = true, control, stateId }) => {
-  const [searchedData, setSearchedData] = useState<TLga[]>();
+}> = ({ Form, showLabel = true, control }) => {
+  const [searchedData, setSearchedData] = useState<TIndustry[]>();
 
-  const { data, isSuccess } = useFetchLgas({ stateId });
+  const { data, isSuccess } = useFetchIndustries();
 
   const handleDataSearch = (val: string) => {
     if (isSuccess) {
@@ -34,16 +33,13 @@ export const FormLGAInput: React.FC<{
 
   return (
     <Form.Item
-      name={control?.name ?? "lgaId"}
-      label={showLabel ? control?.label ?? "LGA" : null}
+      name={control?.name ?? "industryId"}
+      label={showLabel ? control?.label ?? "Industry" : null}
       rules={generalValidationRules}
-      dependencies={["stateId"]}
     >
       <Select
         showSearch
         allowClear
-        // TO DO: Fix this bug onClear there is no data to select from
-        onClear={() => setSearchedData([])}
         onSearch={handleDataSearch}
         className="rounded border-slate-400"
         defaultActiveFirstOption={false}
