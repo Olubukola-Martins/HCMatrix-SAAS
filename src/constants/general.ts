@@ -78,13 +78,6 @@ export const EMPLOYMENT_ELIGIBILITIES = [
   },
 ];
 
-export const TIME_ZONES = [
-  {
-    label: "Africa/Lagos",
-    value: "Africa/Lagos",
-  },
-];
-
 export const WORK_MODELS = [
   {
     label: "On Site",
