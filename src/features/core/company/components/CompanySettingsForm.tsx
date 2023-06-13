@@ -138,10 +138,13 @@ const CompanySettingsForm = () => {
       paragraph={{ rows: 8 }}
     >
       {/* transfer ownership */}
-      <TransferOwnership
-        open={transferOwnershipModal}
-        handleClose={() => setTransferOwnershipModal(false)}
-      />
+      {companyParams && (
+        <TransferOwnership
+          open={transferOwnershipModal}
+          handleClose={() => setTransferOwnershipModal(false)}
+          companyParams={companyParams}
+        />
+      )}
       <Form className="flex flex-col gap-4" form={form} onFinish={handleSubmit}>
         <div className="flex flex-col gap-y-12 py-4">
           {/* 1 */}

@@ -2,23 +2,23 @@ import {
   TApprovalStatusContainerProps,
   withApprovalStatusContainer,
 } from "components/containers/ApprovalStatusContainer";
-import { TransferRequestsTable } from "./TransferRequestsTable";
+import JobApprovalRequestsTable from "./JobApprovalRequestsTable";
 
-interface ComponentProps {
-  export: () => void;
-}
+interface ComponentProps {}
 
 const Component: React.FC<ComponentProps & TApprovalStatusContainerProps> = ({
   status,
 }) => {
   return (
     <div>
-      <TransferRequestsTable status={status} />
+      <JobApprovalRequestsTable status={status} />
     </div>
   );
 };
 const ComponentWithHOC = withApprovalStatusContainer(Component);
 
-export const TransferRequestsTableContainer: React.FC = () => {
-  return <ComponentWithHOC export={() => {}} />;
+const JobApprovalRequestsContainer: React.FC = () => {
+  return <ComponentWithHOC />;
 };
+
+export default JobApprovalRequestsContainer;

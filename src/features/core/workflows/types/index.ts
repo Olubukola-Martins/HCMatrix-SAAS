@@ -24,7 +24,13 @@ export type TWorkflowApprovalType =
   | "vehicle"
   | "conference-room"
   | "leave"
-  | "asset";
+  | "asset"
+  | "job"
+  | "money"
+  | "position-change"
+  | "promotion"
+  | "reimbursement"
+  | "transfer";
 
 export type TStagingType = "employee" | "role" | "group" | "department-head";
 export type TStageCondition = "specific" | "at-least-one" | "everyone";

@@ -1,133 +1,151 @@
-import { Form, Input, Select, Skeleton } from "antd";
-import { useFetchCountries } from "hooks/useFetchCountries";
-import { useFetchIndustries } from "hooks/useFetchIndutries";
-import React, { useContext } from "react";
-import { useAuthUser } from "react-auth-kit";
-import { GlobalContext } from "stateManagers/GlobalContextProvider";
-import { generalValidationRules } from "utils/formHelpers/validation";
-import { useGetCompanyParams } from "../hooks/useGetCompanyParams";
+import { Form, Input, Skeleton } from "antd";
+
+import {
+  generalValidationRules,
+  textInputValidationRulesOp,
+} from "utils/formHelpers/validation";
+import {
+  QUERY_KEY_FOR_SINGLE_COMPANY,
+  useGetCompany,
+} from "../hooks/useGetCompany";
+import { useUpdateCompany } from "../hooks/useUpdateCompany";
+import { AppButton } from "components/button/AppButton";
+import { useQueryClient } from "react-query";
+import { openNotification } from "utils/notifications";
+import { useEffect, useState } from "react";
+import { FormCountryInput } from "components/generalFormInputs/FormCountryInput";
+import { FormStateInput } from "components/generalFormInputs/FormStateInput";
+import { FormLGAInput } from "components/generalFormInputs/FormLGAInput";
+import { FormIndustryInput } from "components/generalFormInputs/FormIndustryInput";
+import { useCurrentFileUploadUrl } from "hooks/useCurrentFileUploadUrl";
 
 const CompanyInformationForm = () => {
-  const auth = useAuthUser();
+  const queryClient = useQueryClient();
 
-  const authDetails = auth();
+  const { data: company, isFetching: isFetchingCompany } = useGetCompany();
 
-  const companies = authDetails?.companies;
-  const globalCtx = useContext(GlobalContext);
-  const { state: globalState } = globalCtx;
-  const currentCompanyId = globalState.currentCompany?.id;
-  const currentCompany = companies.find(
-    (item: any) => (item.id = currentCompanyId)
-  );
-  const {
-    data: industries,
-    isSuccess: isISuccess,
-    isFetching: isFetchingIndustries,
-  } = useFetchIndustries();
-  const {
-    data: countries,
-    isSuccess: isCSuccess,
-    isFetching: isFetchingCountries,
-  } = useFetchCountries();
+  const [form] = Form.useForm();
+  const { mutate, isLoading } = useUpdateCompany();
+  const [countryId, setCountryId] = useState<number>();
+  const [stateId, setStateId] = useState<number>();
+  const logoUrl = useCurrentFileUploadUrl("logoUrl");
+
+  const handleSubmit = (data: any) => {
+    console.log(data);
+    mutate(
+      {
+        name: data.name,
+        phoneNumber: data.phoneNumber,
+        industryId: data.industryId,
+        color: data.color,
+        addressId: data.addressId,
+        logoUrl,
+        website: data.website,
+      },
+      {
+        onError: (err: any) => {
+          openNotification({
+            state: "error",
+            title: "Error Occurred",
+            description:
+              err?.response.data.message ?? err?.response.data.error.message,
+          });
+        },
+        onSuccess: (res: any) => {
+          openNotification({
+            state: "success",
+
+            title: "Success",
+            description: res.data.message,
+            // duration: 0.4,
+          });
+          form.resetFields();
+
+          queryClient.invalidateQueries({
+            queryKey: [QUERY_KEY_FOR_SINGLE_COMPANY],
+            // exact: true,
+          });
+        },
+      }
+    );
+  };
+  useEffect(() => {
+    if (company) {
+      form.setFieldsValue({
+        name: company.name,
+        phoneNumber: company.phoneNumber,
+        industryId: company.industryId,
+        color: company.color,
+        addressId: company.addressId,
+        logoUrl: company.logoUrl,
+        website: company.website,
+      });
+    }
+  }, [form, company]);
 
   return (
-    <Skeleton
-      active
-      loading={isFetchingIndustries || isFetchingCountries}
-      paragraph={{ rows: 8 }}
-    >
+    <Skeleton active loading={isFetchingCompany} paragraph={{ rows: 8 }}>
       <Form
         requiredMark={false}
         labelCol={{ span: 24 }}
-        initialValues={{
-          companyName: currentCompany?.name,
-          industryId: currentCompany?.industryId,
-        }}
+        form={form}
+        onFinish={handleSubmit}
       >
         <div className="flex flex-col gap-4">
           <div className="grid md:grid-cols-3 gap-4">
             <Form.Item
               label="Company Name"
               rules={generalValidationRules}
-              name="companyName"
+              name="name"
             >
-              <Input placeholder="Enter Company name" disabled />
-            </Form.Item>
-            <Form.Item label="Website (optional)" name="website">
-              <Input placeholder="Enter Company website" />
+              <Input placeholder="Enter Company name" />
             </Form.Item>
             <Form.Item
-              label="Industry"
-              rules={generalValidationRules}
-              name="industryId"
+              label="Website (optional)"
+              name="website"
+              rules={textInputValidationRulesOp}
             >
-              <Select
-                disabled
-                placeholder="Enter industry"
-                options={
-                  isISuccess
-                    ? industries.map((item) => ({
-                        label: item.name,
-                        value: item.id,
-                      }))
-                    : []
-                }
-              />
+              <Input placeholder="Enter Company website" />
             </Form.Item>
+            <FormIndustryInput
+              Form={Form}
+              control={{ name: "industryId", label: "Industry" }}
+            />
             <Form.Item
               label="Contact Phone"
               rules={generalValidationRules}
-              name="contactPhone"
+              name="phoneNumber"
             >
               <Input placeholder="contact phone" />
             </Form.Item>
+
             <Form.Item
-              label="Contact Email"
+              label="Company Location"
               rules={generalValidationRules}
-              name="contactEmail"
-            >
-              <Input placeholder="contact Email" />
-            </Form.Item>
-            <Form.Item
-              label="Company Address"
-              rules={generalValidationRules}
-              name="companyAddress"
+              name="location"
             >
               <Input placeholder="Enter Address Details" />
             </Form.Item>
-            <Form.Item label="City" rules={generalValidationRules} name="city">
-              <Input placeholder="Enter city" />
-            </Form.Item>
-            <Form.Item
-              label="State/Province"
-              rules={generalValidationRules}
-              name="state"
-            >
-              <Input placeholder="Enter city" />
-            </Form.Item>
-            <Form.Item
-              label="Country"
-              rules={generalValidationRules}
-              name="country"
-            >
-              <Select
-                placeholder="Select Country"
-                options={
-                  isCSuccess
-                    ? countries.map((item) => ({
-                        label: item.name,
-                        value: item.id,
-                      }))
-                    : []
-                }
-              />
-            </Form.Item>
+            <FormCountryInput
+              Form={Form}
+              control={{ label: "Country", name: "countryId" }}
+              handleSelect={(id) => setCountryId(id)}
+            />
+            <FormStateInput
+              Form={Form}
+              countryId={countryId ?? 0}
+              control={{ name: "stateId", label: "State" }}
+              handleSelect={(id) => setStateId(id)}
+            />
+            <FormLGAInput
+              Form={Form}
+              stateId={stateId ?? 0}
+              control={{ name: "lgaId", label: "Local Government" }}
+            />
           </div>
           <div className="flex justify-end">
             <Form.Item>
-              <button className="button" type="submit">
-                Save
-              </button>
+              <AppButton label="Save" isLoading={isLoading} type="submit" />
             </Form.Item>
           </div>
         </div>

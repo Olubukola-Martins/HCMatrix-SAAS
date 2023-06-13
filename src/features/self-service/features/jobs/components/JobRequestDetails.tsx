@@ -30,6 +30,7 @@ export const JobRequestDetails: React.FC<IProps> = ({
         designation: data.designation.name,
         employmentType: data.employmentType,
         salaryRange: data.salaryRange,
+        status: data.status,
         educationRequirements: data.educationRequirements,
         skillsAndQualifications: data.skillsAndQualifications,
         preferredStartDate: data.preferredStartDate
@@ -43,7 +44,7 @@ export const JobRequestDetails: React.FC<IProps> = ({
       open={open}
       onCancel={() => handleClose()}
       footer={null}
-      title={"Monetary Request Details"}
+      title={"Job Request Details"}
       style={{ top: 20 }}
     >
       <Skeleton active loading={isFetching} paragraph={{ rows: 8 }}>

@@ -69,7 +69,10 @@ export const JobRequestsTable: React.FC<{
       dataIndex: "status",
       key: "status",
       render: (_, item) => (
-        <span style={{ color: getAppropriateColorForStatus(item.status) }}>
+        <span
+          className="capitalize"
+          style={{ color: getAppropriateColorForStatus(item.status) }}
+        >
           {item.status}{" "}
         </span>
       ),

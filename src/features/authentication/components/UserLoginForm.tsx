@@ -49,6 +49,7 @@ const UserLoginForm = ({ autoLoginDetails }: ILoginProps) => {
         },
         onSuccess: (res) => {
           const result = res.data.data;
+          console.log("login", res);
           const authUserDetails: IAuthDets = {
             user: {
               avatarUrl: result?.user?.avatarUrl,
