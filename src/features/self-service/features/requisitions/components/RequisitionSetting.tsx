@@ -124,7 +124,7 @@ const RequisitionPolicyForm: React.FC<{ type: TRequistionType }> = ({
           <div className="flex flex-col gap-2">
             <div className="flex justify-between">
               <h6 className="capitalize mb-4 font-semibold">
-                {data?.type.split("-").join(" ")}
+                {data?.type ? data?.type.split("-").join(" ") : type}
               </h6>
               <Form.Item name={"isActive"}>
                 <Switch
