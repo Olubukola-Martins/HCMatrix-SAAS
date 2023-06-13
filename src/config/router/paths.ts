@@ -174,4 +174,5 @@ export const appRoutes = {
   }),
   timeOff: `/attendance/time-off`,
   attendanceReport: `/attendance/reports`,
+  uploadAttendance: `/attendance/upload-attendance`,
 };

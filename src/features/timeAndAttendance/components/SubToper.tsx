@@ -2,14 +2,15 @@ import { Link } from "react-router-dom";
 import onIndicator from "../assets/images/indicatorOn.svg";
 import offIndicator from "../assets/images/offIndicator.svg";
 import breakIndicator from "../assets/images/breakIndicate.svg";
+import { appRoutes } from "config/router/paths";
 
 export const SubToper = () => {
   return (
     <div className="flex items-start justify-between my-5">
       <div className="flex items-center gap-x-4 text-sm font-medium">
-        <Link to="">Timesheet</Link>
-        <Link to="">Timeoff</Link>
-        <Link to="">Reports</Link>
+        <Link to={appRoutes.timeSheet}>Timesheet</Link>
+        <Link to={appRoutes.timeOff}>Timeoff</Link>
+        <Link to={appRoutes.attendanceReport}>Reports</Link>
       </div>
       <div className="flex items-center gap-x-4 mt-2">
         <span>2:24:32</span>
