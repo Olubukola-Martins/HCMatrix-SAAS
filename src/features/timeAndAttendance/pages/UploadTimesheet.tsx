@@ -4,6 +4,8 @@ import { appRoutes } from "config/router/paths";
 import { Input, Select } from "antd";
 import { AppButton } from "components/button/AppButton";
 import Table, { ColumnsType } from "antd/lib/table";
+import { useState } from "react";
+import { NewAttendanceModal } from "../components/NewAttendanceModal";
 
 interface DataType {
   key: string;
@@ -37,8 +39,14 @@ const columns: ColumnsType<DataType> = [
 ];
 
 export const UploadTimesheet = () => {
+  const [addNewModal, setAddNewModal] = useState(false);
+
   return (
     <div className="Container">
+      <NewAttendanceModal
+        open={addNewModal}
+        handleClose={() => setAddNewModal(false)}
+      />
       <SubToper />
       <PageIntro title="Upload Attendance" link={appRoutes.attendanceHome} />
       <p className="pt-2 pb-6">Welcome on board, upload attendance manually</p>
@@ -49,8 +57,8 @@ export const UploadTimesheet = () => {
         allowClear
       />
 
-      <div className="flex items-center justify-between mt-6 mb-8">
-        <div className="flex gap-3">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-3 mt-6 mb-8">
+        <div className="flex gap-3 md:justify-start justify-between">
           <Select
             defaultValue="Daily"
             style={{ width: 120 }}
@@ -61,8 +69,12 @@ export const UploadTimesheet = () => {
             additionalClassNames={["transparentButton"]}
           />
         </div>
-        <div className="flex gap-3">
-          <AppButton variant="transparent" label="Add new" />
+        <div className="flex gap-3 md:justify-end justify-between">
+          <AppButton
+            variant="transparent"
+            label="Add new"
+            handleClick={() => setAddNewModal(true)}
+          />
           <AppButton label="Add bulk" />
         </div>
       </div>
