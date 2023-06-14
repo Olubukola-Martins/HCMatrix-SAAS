@@ -2,6 +2,7 @@ import { AssetRequestEntity } from "./approvalRequestEntities/assetRequestEntity
 import { ConferenceRoomBookingEntity } from "./approvalRequestEntities/conferenceRoomBookingEntity";
 import { JobRequestEnitity } from "./approvalRequestEntities/jobRequestEntity";
 import { LeaveEntity } from "./approvalRequestEntities/leaveEntity";
+import { PromotionRequestEntity } from "./approvalRequestEntities/promotionRequestEntity";
 import { TransferRequestEntity } from "./approvalRequestEntities/transferRequestEntity";
 import { VehicleBookingEntity } from "./approvalRequestEntities/vehicleBookingEntity";
 
@@ -20,4 +21,5 @@ export type TApprovalRequest = {
   assetRequisition?: AssetRequestEntity;
   jobRequisition?: JobRequestEnitity;
   transferRequisition?: TransferRequestEntity;
+  promotionRequisition?: PromotionRequestEntity;
 };

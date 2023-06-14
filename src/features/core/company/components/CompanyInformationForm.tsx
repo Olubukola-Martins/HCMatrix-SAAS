@@ -31,16 +31,27 @@ const CompanyInformationForm = () => {
   const logoUrl = useCurrentFileUploadUrl("logoUrl");
 
   const handleSubmit = (data: any) => {
-    console.log(data);
+    // as per patch
     mutate(
       {
-        name: data.name,
-        phoneNumber: data.phoneNumber,
-        industryId: data.industryId,
-        color: data.color,
-        addressId: data.addressId,
-        logoUrl,
-        website: data.website,
+        name: company?.name === data.name ? undefined : data.name,
+        phoneNumber:
+          company?.phoneNumber === data.phoneNumber
+            ? undefined
+            : data.phoneNumber,
+        industryId:
+          company?.industryId === data.industryId ? undefined : data.industryId,
+        color: company?.color === data.color ? undefined : data.color,
+        address: {
+          streetAddress: data.streetAddress,
+          countryId,
+          stateId,
+          lgaId: data.lgaId,
+          timezone: "Africa/Lagos", //TO DO: Make this changeable
+        },
+
+        logoUrl: company?.logoUrl === logoUrl ? undefined : logoUrl,
+        website: company?.website === data.website ? undefined : data.website,
       },
       {
         onError: (err: any) => {
@@ -76,10 +87,16 @@ const CompanyInformationForm = () => {
         phoneNumber: company.phoneNumber,
         industryId: company.industryId,
         color: company.color,
-        addressId: company.addressId,
         logoUrl: company.logoUrl,
         website: company.website,
+        streetAddress: company.address?.streetAddress,
+        countryId: company.address?.countryId,
+        stateId: company.address?.stateId,
+        lgaId: company.address?.lgaId,
+        timezone: company.address?.timezone,
       });
+      setCountryId(company.address?.countryId);
+      setStateId(company.address?.stateId);
     }
   }, [form, company]);
 
@@ -120,9 +137,9 @@ const CompanyInformationForm = () => {
             </Form.Item>
 
             <Form.Item
-              label="Company Location"
+              label="Street Address"
               rules={generalValidationRules}
-              name="location"
+              name="streetAddress"
             >
               <Input placeholder="Enter Address Details" />
             </Form.Item>

@@ -31,6 +31,16 @@ export const emailValidationRules: Rule[] = [
     message: "Invalid Email Address",
   },
 ];
+export const emailValidationRulesOp: Rule[] = [
+  {
+    required: false,
+    message: "Field is required",
+  },
+  {
+    type: "email",
+    message: "Invalid Email Address",
+  },
+];
 
 export const passwordValidationRules: Rule[] = [
   {
