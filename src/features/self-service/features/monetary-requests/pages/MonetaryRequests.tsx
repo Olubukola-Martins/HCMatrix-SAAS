@@ -9,7 +9,7 @@ const MonetaryRequests = () => {
       <SelfServiceSubNav />
 
       <div className="Container ">
-        <PageIntro title="MonetaryRequests" link={appRoutes.selfServiceHome} />
+        <PageIntro title="Monetary Requests" link={appRoutes.selfServiceHome} />
         <MonetaryRequestsContainer />
       </div>
     </>
