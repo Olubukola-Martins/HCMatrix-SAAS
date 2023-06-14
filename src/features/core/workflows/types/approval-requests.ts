@@ -3,6 +3,7 @@ import { ConferenceRoomBookingEntity } from "./approvalRequestEntities/conferenc
 import { JobRequestEnitity } from "./approvalRequestEntities/jobRequestEntity";
 import { LeaveEntity } from "./approvalRequestEntities/leaveEntity";
 import { PromotionRequestEntity } from "./approvalRequestEntities/promotionRequestEntity";
+import { ReimbursementRequestEntity } from "./approvalRequestEntities/reimbursementRequestEntity";
 import { TransferRequestEntity } from "./approvalRequestEntities/transferRequestEntity";
 import { VehicleBookingEntity } from "./approvalRequestEntities/vehicleBookingEntity";
 
@@ -22,4 +23,5 @@ export type TApprovalRequest = {
   jobRequisition?: JobRequestEnitity;
   transferRequisition?: TransferRequestEntity;
   promotionRequisition?: PromotionRequestEntity;
+  reimbursementRequisition?: ReimbursementRequestEntity;
 };

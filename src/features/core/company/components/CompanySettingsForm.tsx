@@ -37,7 +37,7 @@ const CompanySettingsForm = () => {
   const queryClient = useQueryClient();
   const { data: countries, isFetching: isFetchingCountries } =
     useFetchCountries();
-  const [adminEmail, setAdminValue] = useState("");
+  const [adminEmail, setAdminEmail] = useState("");
 
   const { data: companyParams, isFetching: isFetchingCompanyParams } =
     useGetCompanyParams();
@@ -46,7 +46,6 @@ const CompanySettingsForm = () => {
   const { mutate, isLoading } = useSaveCompanyParams();
 
   const handleSubmit = (data: any) => {
-    console.log(data);
     mutate(
       {
         administrator: {
@@ -109,7 +108,7 @@ const CompanySettingsForm = () => {
   useEffect(() => {
     if (companyParams) {
       const data = companyParams.value;
-      setAdminValue(data.administrator.adminEmail);
+      setAdminEmail(data.administrator.adminEmail);
       form.setFieldsValue({
         adminEmail: data.administrator.adminEmail,
         defaultFromAddress: data.emailSettings.defaultFromAddress,
@@ -170,6 +169,7 @@ const CompanySettingsForm = () => {
                 }
               >
                 <Input
+                  onChange={(e) => setAdminEmail(e.target.value)}
                   disabled={!!companyParams?.value.administrator.adminEmail}
                   value={adminEmail}
                 />
