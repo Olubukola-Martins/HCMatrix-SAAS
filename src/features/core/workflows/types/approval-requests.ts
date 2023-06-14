@@ -2,9 +2,12 @@ import { AssetRequestEntity } from "./approvalRequestEntities/assetRequestEntity
 import { ConferenceRoomBookingEntity } from "./approvalRequestEntities/conferenceRoomBookingEntity";
 import { JobRequestEnitity } from "./approvalRequestEntities/jobRequestEntity";
 import { LeaveEntity } from "./approvalRequestEntities/leaveEntity";
+import { MoneyRequestEntity } from "./approvalRequestEntities/moneyRequestEntity";
+import { PositionChangeRequestEntity } from "./approvalRequestEntities/positionChangeRequestEntity";
 import { PromotionRequestEntity } from "./approvalRequestEntities/promotionRequestEntity";
 import { ReimbursementRequestEntity } from "./approvalRequestEntities/reimbursementRequestEntity";
 import { TransferRequestEntity } from "./approvalRequestEntities/transferRequestEntity";
+import { TravelRequestEntity } from "./approvalRequestEntities/travelRequestEntity";
 import { VehicleBookingEntity } from "./approvalRequestEntities/vehicleBookingEntity";
 
 export type TApprovalRequest = {
@@ -24,4 +27,7 @@ export type TApprovalRequest = {
   transferRequisition?: TransferRequestEntity;
   promotionRequisition?: PromotionRequestEntity;
   reimbursementRequisition?: ReimbursementRequestEntity;
+  travelRequisition?: TravelRequestEntity;
+  positionChangeRequisition?: PositionChangeRequestEntity;
+  moneyRequisition?: MoneyRequestEntity;
 };

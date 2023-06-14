@@ -3,9 +3,23 @@ import React, { useState } from "react";
 
 import { NewTravelRequest } from "./NewTravelRequest";
 import { TravelRequestsTableContainer } from "./TravelRequestsTableContainer";
+import { Tabs } from "antd";
+import TravelApprovalRequestsContainer from "./TravelApprovalRequestsContainer";
 
 const TravelRequestsContainer = () => {
   const [showM, setShowM] = useState(false);
+  const tabItems = [
+    {
+      key: "My Requests",
+      label: "My Requests",
+      children: <TravelRequestsTableContainer />,
+    },
+    {
+      key: "Approval Requests",
+      label: "Approval Requests",
+      children: <TravelApprovalRequestsContainer />,
+    },
+  ];
   return (
     <div className="flex flex-col gap-6">
       <NewTravelRequest open={showM} handleClose={() => setShowM(false)} />
@@ -15,7 +29,7 @@ const TravelRequestsContainer = () => {
           { name: "New Travel Request", handleClick: () => setShowM(true) },
         ]}
       />
-      <TravelRequestsTableContainer />
+      <Tabs items={tabItems} />
     </div>
   );
 };

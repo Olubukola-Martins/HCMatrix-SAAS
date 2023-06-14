@@ -30,7 +30,8 @@ export type TWorkflowApprovalType =
   | "position-change"
   | "promotion"
   | "reimbursement"
-  | "transfer";
+  | "transfer"
+  | "travel";
 
 export type TStagingType = "employee" | "role" | "group" | "department-head";
 export type TStageCondition = "specific" | "at-least-one" | "everyone";

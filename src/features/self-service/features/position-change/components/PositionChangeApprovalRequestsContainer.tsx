@@ -2,23 +2,23 @@ import {
   TApprovalStatusContainerProps,
   withApprovalStatusContainer,
 } from "components/containers/ApprovalStatusContainer";
-import { MonetaryRequestsTable } from "./MonetaryRequestsTable";
+import PositionChangeApprovalRequestsTable from "./PositionChangeApprovalRequestsTable";
 
-interface ComponentProps {
-  export: () => void;
-}
+interface ComponentProps {}
 
 const Component: React.FC<ComponentProps & TApprovalStatusContainerProps> = ({
   status,
 }) => {
   return (
     <div>
-      <MonetaryRequestsTable status={status} />
+      <PositionChangeApprovalRequestsTable status={status} />
     </div>
   );
 };
 const ComponentWithHOC = withApprovalStatusContainer(Component);
 
-export const MonetaryRequestsTableContainer: React.FC = () => {
-  return <ComponentWithHOC export={() => {}} />;
+const PositionChangeApprovalRequestsContainer: React.FC = () => {
+  return <ComponentWithHOC />;
 };
+
+export default PositionChangeApprovalRequestsContainer;
