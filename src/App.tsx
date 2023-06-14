@@ -26,26 +26,26 @@ function App() {
     // localStorage.clear(); //to clear all changes tommorow
   }, []);
   return (
-    <AuthProvider
-      authType={"localstorage"}
-      authName={"hcmatrix_app"}
-      // cookieDomain={window.location.hostname}
-      // cookieSecure={window.location.protocol === "https:"}
-      refresh={refreshApi}
-    >
-      <QueryClientProvider client={queryClient}>
-        <GlobalContextProvider>
-          <BrowserRouter>
+    <BrowserRouter>
+      <AuthProvider
+        authType={"localstorage"}
+        authName={"hcmatrix_app"}
+        // cookieDomain={window.location.hostname}
+        // cookieSecure={window.location.protocol === "https:"}
+        refresh={refreshApi}
+      >
+        <QueryClientProvider client={queryClient}>
+          <GlobalContextProvider>
             <UserFeedbackContainer />
             <AdminWelcomeContainer />
-            <Suspense fallback={<div>Loading...</div>}>
+            <Suspense fallback={<div>temporary Loading...</div>}>
               <Router />
             </Suspense>
-          </BrowserRouter>
-        </GlobalContextProvider>
-        <ReactQueryDevtools initialIsOpen={false} position="bottom-right" />
-      </QueryClientProvider>
-    </AuthProvider>
+          </GlobalContextProvider>
+          <ReactQueryDevtools initialIsOpen={false} position="bottom-right" />
+        </QueryClientProvider>
+      </AuthProvider>
+    </BrowserRouter>
   );
 }
 
