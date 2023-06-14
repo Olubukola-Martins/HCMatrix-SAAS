@@ -61,7 +61,7 @@ const AssetOverview = () => {
           <div className="col-span-3">
             <AssetMonthlyInsightsCard />
           </div>
-          <div>
+          <div className="lg:col-span-1 col-span-4">
             <RecentAssetRequestsCard />
           </div>
         </div>

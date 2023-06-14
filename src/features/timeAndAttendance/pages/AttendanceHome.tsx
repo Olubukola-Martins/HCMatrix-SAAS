@@ -1,8 +1,10 @@
 import React from "react";
 import { SubToper } from "../components/SubToper";
 import { SimpleCard } from "components/cards/SimpleCard";
+import { ChartSwitcher } from "components/controls/ChartSwitcher";
 
 export const AttendanceHome = () => {
+  const items = ["Days", "Week", "Month"];
   const today = new Date();
   const month = today.toLocaleString("default", { month: "long" });
   const year = today.getFullYear();
@@ -33,6 +35,18 @@ export const AttendanceHome = () => {
         <SimpleCard title="Break" highlight="0" />
         <SimpleCard title="Remote workers" highlight="0" />
       </div>
+
+
+      <div className="grid grid-cols-1 lg:grid-cols-4 gap-5">
+          <div className="col-span-3">
+            {/* <AssetMonthlyInsightsCard /> */}
+        
+          </div>
+          <div className="lg:col-span-1 col-span-4">
+            {/* <RecentAssetRequestsCard /> */}
+          </div>
+        </div>
+
     </div>
   );
 };
