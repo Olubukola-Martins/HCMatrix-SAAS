@@ -11,6 +11,8 @@ import useCreateBasicWorkflow, {
 import { AppButton } from "components/button/AppButton";
 import { TStage } from "../types";
 import { OptionalTypeParams } from "types/optionalTypes";
+import { useNavigate } from "react-router-dom";
+import { appRoutes } from "config/router/paths";
 
 export const CreateBasicWorkflow = () => {
   const queryClient = useQueryClient();
@@ -29,7 +31,7 @@ export const CreateBasicWorkflow = () => {
   };
 
   const { mutate, isLoading } = useCreateBasicWorkflow();
-
+  const navigate = useNavigate();
   const handleSubmit = (data: any) => {
     const workflowStages: TBasicWorkflowStage[] = stages
       .map(({ name, entityId, type }): TBasicWorkflowStage => {
@@ -78,6 +80,7 @@ export const CreateBasicWorkflow = () => {
             queryKey: ["workflows"],
             // exact: true,
           });
+          navigate(appRoutes.workflowSettings);
         },
       }
     );

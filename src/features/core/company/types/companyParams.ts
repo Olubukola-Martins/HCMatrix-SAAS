@@ -27,7 +27,6 @@ interface ModifyUsersProfile {
 }
 
 interface NotificationSettings {
-  sms: boolean;
   email: boolean;
   inApp: boolean;
 }

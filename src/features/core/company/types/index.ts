@@ -18,14 +18,21 @@ export type TCompany = {
   color: string;
   industryId: number;
   userId: number;
-  addressId?: any;
+  address?: Address;
   logoUrl: string;
   website: string;
   parentId?: any;
   createdAt: string;
   updatedAt: string;
-  deletedAt?: any;
+  deletedAt?: string;
 };
+interface Address {
+  streetAddress: string;
+  countryId?: number;
+  stateId?: number;
+  lgaId?: number;
+  timezone?: string;
+}
 
 interface EmployeeSettings {
   hideBirthday: boolean;
@@ -36,7 +43,6 @@ interface EmployeeSettings {
 interface NotificationSettings {
   email: boolean;
   inApp: boolean;
-  sms: boolean;
 }
 
 interface ProfilePhotoSettings {

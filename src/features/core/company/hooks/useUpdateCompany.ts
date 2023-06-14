@@ -9,9 +9,16 @@ interface TUpdateCompParams {
   phoneNumber?: string;
   industryId?: number;
   color?: string;
-  addressId?: number;
+  address: Address;
   logoUrl?: string;
   website?: string;
+}
+interface Address {
+  streetAddress: string;
+  countryId?: number;
+  stateId?: number;
+  lgaId?: number;
+  timezone?: string;
 }
 
 const createData = async (props: {

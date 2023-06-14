@@ -25,8 +25,8 @@ export const WORKFLOW_STAGE_TYPE_OPTIONS: {
   { label: "employee", value: "employee" },
   { label: "role", value: "role" },
   { label: "group", value: "group" },
-  {
-    label: "Department Head",
-    value: "department-head",
-  },
+  // {
+  //   label: "Department Head",
+  //   value: "department-head",
+  // },
 ];

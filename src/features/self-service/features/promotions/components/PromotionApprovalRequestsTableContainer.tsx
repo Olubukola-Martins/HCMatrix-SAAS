@@ -2,23 +2,23 @@ import {
   TApprovalStatusContainerProps,
   withApprovalStatusContainer,
 } from "components/containers/ApprovalStatusContainer";
-import { PromotionRequestsTable } from "./PromotionRequestsTable";
+import PromotionApprovalRequestsTable from "./PromotionApprovalRequestsTable";
 
-interface ComponentProps {
-  export: () => void;
-}
+interface ComponentProps {}
 
 const Component: React.FC<ComponentProps & TApprovalStatusContainerProps> = ({
   status,
 }) => {
   return (
     <div>
-      <PromotionRequestsTable status={status} />
+      <PromotionApprovalRequestsTable status={status} />
     </div>
   );
 };
 const ComponentWithHOC = withApprovalStatusContainer(Component);
 
-export const PromotionRequestsTableContainer: React.FC = () => {
-  return <ComponentWithHOC export={() => {}} />;
+const PromotionApprovalRequestsTableContainer: React.FC = () => {
+  return <ComponentWithHOC />;
 };
+
+export default PromotionApprovalRequestsTableContainer;

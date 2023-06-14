@@ -23,6 +23,11 @@ import { useFetchCountries } from "hooks/useFetchCountries";
 import { TIME_ZONES } from "constants/timeZones";
 import { DATE_FORMATS } from "constants/dateFormats";
 import { TIME_FORMATS } from "constants/timeFormats";
+import {
+  emailValidationRules,
+  emailValidationRulesOp,
+  generalValidationRules,
+} from "utils/formHelpers/validation";
 
 const parentCompStyle = "grid md:grid-cols-2 border-0 border-b gap-4 py-2";
 const compStyle = "flex flex-col gap-2 items-start";
@@ -67,7 +72,6 @@ const CompanySettingsForm = () => {
         notificationSettings: {
           email: data.notificationSettings.includes("email"),
           inApp: data.notificationSettings.includes("inApp"),
-          sms: data.notificationSettings.includes("sms"),
         },
         employeeSettings: {
           hideBirthday: !!data.hideBirthday,
@@ -125,7 +129,6 @@ const CompanySettingsForm = () => {
         notificationSettings: [
           data.notificationSettings.email ? "email" : "",
           data.notificationSettings.inApp ? "inApp" : "",
-          data.notificationSettings.sms ? "sms" : "",
         ].filter((item) => item !== ""),
       });
     }
@@ -145,7 +148,12 @@ const CompanySettingsForm = () => {
           companyParams={companyParams}
         />
       )}
-      <Form className="flex flex-col gap-4" form={form} onFinish={handleSubmit}>
+      <Form
+        className="flex flex-col gap-4"
+        form={form}
+        onFinish={handleSubmit}
+        requiredMark={false}
+      >
         <div className="flex flex-col gap-y-12 py-4">
           {/* 1 */}
           <div className={parentCompStyle}>
@@ -155,18 +163,28 @@ const CompanySettingsForm = () => {
                 label="Admin Email"
                 name={`adminEmail`}
                 className="w-3/4"
+                rules={
+                  !!companyParams?.value.administrator.adminEmail
+                    ? emailValidationRulesOp
+                    : [{ required: false }]
+                }
               >
-                <Input disabled value={adminEmail} />
+                <Input
+                  disabled={!!companyParams?.value.administrator.adminEmail}
+                  value={adminEmail}
+                />
               </Form.Item>
-              <Button
-                type="text"
-                className="items-start"
-                onClick={() => setTransferOwnershipModal(true)}
-              >
-                <span className="text-caramel text-xs">
-                  TRANSFER ADMIN RIGHTS
-                </span>
-              </Button>
+              {!!companyParams?.value.administrator.adminEmail && (
+                <Button
+                  type="text"
+                  className="items-start"
+                  onClick={() => setTransferOwnershipModal(true)}
+                >
+                  <span className="text-caramel text-xs">
+                    TRANSFER ADMIN RIGHTS
+                  </span>
+                </Button>
+              )}
             </div>
             <div className={compStyle}>
               <Typography.Title level={5}>Email Settings</Typography.Title>
@@ -174,6 +192,7 @@ const CompanySettingsForm = () => {
                 label="Default From Address"
                 name={`defaultFromAddress`}
                 className="w-3/4"
+                rules={emailValidationRules}
               >
                 <Input />
               </Form.Item>
@@ -186,7 +205,12 @@ const CompanySettingsForm = () => {
             </Typography.Title>
 
             <div className={compStyle}>
-              <Form.Item label="Country" name={`country`} className="w-3/4">
+              <Form.Item
+                label="Country"
+                name={`country`}
+                className="w-3/4"
+                rules={generalValidationRules}
+              >
                 <Select
                   options={countries?.map((item) => ({
                     label: item.name,
@@ -196,7 +220,12 @@ const CompanySettingsForm = () => {
               </Form.Item>
             </div>
             <div className={compStyle}>
-              <Form.Item label="Time Zone" name={`timezone`} className="w-2/4">
+              <Form.Item
+                label="Time Zone"
+                name={`timezone`}
+                className="w-2/4"
+                rules={generalValidationRules}
+              >
                 <Select options={TIME_ZONES} />
               </Form.Item>
             </div>
@@ -212,6 +241,7 @@ const CompanySettingsForm = () => {
                 label="Date Format"
                 name={`dateFormat`}
                 className="w-2/4"
+                rules={generalValidationRules}
               >
                 <Select options={DATE_FORMATS} />
               </Form.Item>
@@ -221,6 +251,7 @@ const CompanySettingsForm = () => {
                 label="Time Format"
                 name={`timeFormat`}
                 className="w-2/4"
+                rules={generalValidationRules}
               >
                 <Select options={TIME_FORMATS} />
               </Form.Item>
@@ -268,10 +299,7 @@ const CompanySettingsForm = () => {
                 label="Select the channels you would like to receive notifications through?"
                 name={`notificationSettings`}
               >
-                <Checkbox.Group
-                  options={["email", "inApp", "sms"]}
-                  defaultValue={["in-app"]}
-                />
+                <Checkbox.Group options={["email", "inApp"]} />
               </Form.Item>
             </div>
           </div>
