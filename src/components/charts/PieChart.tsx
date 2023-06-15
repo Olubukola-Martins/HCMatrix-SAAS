@@ -1,22 +1,16 @@
-import {
-  Chart as ChartJS,
-  CategoryScale,
-  LinearScale,
-  BarElement,
-  Title,
-  Tooltip,
-} from "chart.js";
-import { Line } from "react-chartjs-2";
+import React from "react";
+import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
+import { Pie } from "react-chartjs-2";
 
-ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip);
+ChartJS.register(ArcElement, Tooltip, Legend);
 
 export const options = {
   responsive: true,
 
   plugins: {
-    legend: {
-      position: "top" as const,
-    },
+    // legend: {
+    //   position: "top" as const,
+    // },
     title: {
       display: false,
       text: "Data",
@@ -26,12 +20,12 @@ export const options = {
 
 interface IProps {
   labels: string[];
-  data?: number[];
+  data: number[];
   axis?: "x" | "y";
   bgColors?: string | string[];
   dataEntityLabel?: string;
 }
-export const LineChart: React.FC<IProps> = ({
+export const PieChart: React.FC<IProps> = ({
   labels,
   data = [],
   axis = "x",
@@ -50,23 +44,24 @@ export const LineChart: React.FC<IProps> = ({
     ],
   };
   return (
-    <Line
+    <Pie
       options={{
         ...options,
-        indexAxis: axis,
 
-        scales: {
-          x: {
-            grid: {
-              display: false,
-            },
-          },
-          y: {
-            grid: {
-              display: false,
-            },
-          },
-        },
+        // indexAxis: axis,
+
+        // scales: {
+        //   x: {
+        //     grid: {
+        //       display: false,
+        //     },
+        //   },
+        //   y: {
+        //     grid: {
+        //       display: false,
+        //     },
+        //   },
+        // },
       }}
       data={dataSrc}
     />

@@ -6,6 +6,7 @@ import { openNotification } from "utils/notifications";
 import { QUERY_KEY_FOR_SINGLE_VEHICLE } from "../hooks/useFetchSingleVehicle";
 import { useUpdateVehicleAssigneeReturnDate } from "../hooks/useUpdateVehicleAssigneeReturnDate";
 import { AssigneeCard } from "components/cards/AssigneeCard";
+import moment from "moment";
 
 export const CurrentVehicleAssignee: React.FC<{ vehicle: TVehicle }> = ({
   vehicle,
@@ -16,13 +17,13 @@ export const CurrentVehicleAssignee: React.FC<{ vehicle: TVehicle }> = ({
 
   const handleUnassignVehicle = () => {
     if (vehicle.assigneeId) {
-      const currentDate = new Date();
+      const currentDate = moment();
       mutate(
         {
           assigneeId: vehicle.assigneeId,
           vehicleId: vehicle.id,
           data: {
-            dateReturned: currentDate.toDateString(),
+            dateReturned: currentDate.format("YYYY/DD/MM"),
           },
         },
         {

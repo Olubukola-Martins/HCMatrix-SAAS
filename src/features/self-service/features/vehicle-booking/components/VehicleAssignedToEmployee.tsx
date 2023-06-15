@@ -1,15 +1,21 @@
 import React from "react";
 import { SimpleCard } from "components/cards/SimpleCard";
+import { TVehicleInUse } from "../types";
 
 interface IProps {
-  employeeId: number;
+  data?: TVehicleInUse;
 }
 
-export const VehicleAssignedToEmployee: React.FC<IProps> = ({ employeeId }) => {
-  //  TO DO: endpoint needed to retrieve vehicle assigned to the employee
+export const VehicleAssignedToEmployee: React.FC<IProps> = ({ data }) => {
+  const title = data
+    ? `Vehicle in Use: ${data?.color ? data.color : ""} ${data.model} ${
+        data.brand
+      }  ${data.type} `
+    : "No Vehicle is currently assigned to you!";
   return (
     <SimpleCard
-      title={`Vehicle in Use: Dynamic`}
+      title={title}
+      highlight={`${data?.plateNumber}`}
       center
       action={{
         label: "Return",
