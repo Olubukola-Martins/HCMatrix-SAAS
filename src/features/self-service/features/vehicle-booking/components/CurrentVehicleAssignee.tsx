@@ -61,7 +61,7 @@ export const CurrentVehicleAssignee: React.FC<{ vehicle: TVehicle }> = ({
         name: `${vehicle.assignee?.firstName} ${vehicle.assignee?.lastName}`,
       }}
       isAssigned={!!vehicle.assigneeId}
-      handleAssign={{ loading: isLoading, fn: handleUnassignVehicle }}
+      handleAssign={{ loading: isLoading, fn: () => {} }}
       handleUnAssign={{ loading: isLoading, fn: handleUnassignVehicle }}
     />
   );
