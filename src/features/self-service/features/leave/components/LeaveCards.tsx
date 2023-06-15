@@ -2,66 +2,60 @@ import React from "react";
 import { TApprovalStatus } from "types/statuses";
 import { useFetchLeaves } from "../hooks/useFetchLeaves";
 import { ISimpleCard, SimpleCard } from "components/cards/SimpleCard";
-import { useApiAuth } from "hooks/useApiAuth";
+import { useGetLeaveAnalytics } from "../hooks/useGetLeaveAnalytics";
 
 const LeaveCards = () => {
-  const { currentUserEmployeeId } = useApiAuth();
+  const { data, isLoading } = useGetLeaveAnalytics();
   return (
     <div>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mt-6">
         <>
-          {/* TO DO: calculate for above with one api call and pass the values here */}
-          <SimpleCard title="Spill Over" highlight="0 days" />
-          <SimpleCard title="Leave Bank" highlight="0 days" />
-          <SimpleCard title="Used Leave" highlight="0 days" />
-          <SimpleCard title="Leave Balance" highlight="0 days" />
+          <SimpleCard
+            title="Spill Over"
+            highlight={`${data?.spillOver}`}
+            loading={isLoading}
+          />
+          <SimpleCard
+            title="Leave Bank"
+            highlight={`${data?.leaveBank}`}
+            loading={isLoading}
+          />
+          <SimpleCard
+            title="Used Leave"
+            highlight={`${data?.usedLeave}`}
+            loading={isLoading}
+          />
+          <SimpleCard
+            title="Leave Balance"
+            highlight={`${data?.leaveBalance}`}
+            loading={isLoading}
+          />
         </>
 
         <>
-          <LeaveRequestCard
+          <SimpleCard
             title="My Approved Requests"
-            status="approved"
-            employeeId={currentUserEmployeeId}
+            highlight={`${data?.approved}`}
+            loading={isLoading}
           />
-          <LeaveRequestCard
+          <SimpleCard
             title="My Pending Requests"
-            status="pending"
-            employeeId={currentUserEmployeeId}
+            highlight={`${data?.pending}`}
+            loading={isLoading}
           />
-          <LeaveRequestCard
+          <SimpleCard
             title="My Rejected Requests"
-            status="rejected"
-            employeeId={currentUserEmployeeId}
+            highlight={`${data?.rejected}`}
+            loading={isLoading}
           />
-          <PublicHolidaysCard />
+          <SimpleCard
+            title="Recognised Public Holidays"
+            highlight={`${data?.holiday}`}
+            loading={isLoading}
+          />
         </>
       </div>
     </div>
-  );
-};
-
-const LeaveRequestCard: React.FC<
-  ISimpleCard & { status?: TApprovalStatus; employeeId?: number }
-> = ({ title, status }) => {
-  const { data, isFetching } = useFetchLeaves({
-    status,
-  });
-  return (
-    <SimpleCard
-      title={title}
-      highlight={`${data?.total}`}
-      loading={isFetching}
-    />
-  );
-};
-const PublicHolidaysCard = () => {
-  const data = { total: 0 };
-  return (
-    <SimpleCard
-      title={`Recognised Public Holidays`}
-      highlight={`${data?.total} holidays`}
-      // loading={isFetching}
-    />
   );
 };
 
