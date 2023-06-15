@@ -19,6 +19,7 @@ export const REQUISITION_TYPES: TRequistionType[] = [
   "reimbursement",
   "transfer",
   "money",
+  "travel",
 ];
 
 export const RequisitionSetting = () => {
