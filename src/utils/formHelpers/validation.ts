@@ -63,6 +63,16 @@ export const passwordValidationRules: Rule[] = [
   },
 ];
 
+export const urlValidationRule: Rule = {
+  validator: async (rule, value) => {
+    let paswd = /^(https?:\/\/)?([\da-z.-]+)\.([a-z.]{2,6})([/\w .-]*)*\/?$/;
+
+    if (!value.match(paswd)) throw new Error("Please enter a valid url");
+    // if (false) throw new Error("Something wrong!");
+    return true;
+  },
+};
+
 export const phoneNumberValidationRule: Rule = {
   validator: async (rule, value) => {
     let paswd = /^[0-9]*$/;
