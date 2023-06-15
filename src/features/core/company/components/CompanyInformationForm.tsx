@@ -2,7 +2,7 @@ import { Form, Input, Skeleton } from "antd";
 
 import {
   generalValidationRules,
-  textInputValidationRulesOp,
+  urlValidationRule,
 } from "utils/formHelpers/validation";
 import {
   QUERY_KEY_FOR_SINGLE_COMPANY,
@@ -120,7 +120,7 @@ const CompanyInformationForm = () => {
             <Form.Item
               label="Website (optional)"
               name="website"
-              rules={textInputValidationRulesOp}
+              rules={[{ required: false }, urlValidationRule]}
             >
               <Input placeholder="Enter Company website" />
             </Form.Item>
