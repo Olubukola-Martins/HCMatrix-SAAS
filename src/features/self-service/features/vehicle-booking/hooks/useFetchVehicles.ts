@@ -11,6 +11,7 @@ interface IGetDataProps extends ICurrentCompany {
   searchParams?: ISearchParams;
 }
 
+// TO DO: Refactor this types to exist in the types folder
 export type TVehicle = {
   id: number;
   label: string;

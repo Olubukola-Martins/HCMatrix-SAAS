@@ -6,7 +6,7 @@ import { MONTH_CHART_LABELS } from "constants/general";
 const items = ["Total Assets Cost", "Total Assets Issued Out"];
 export const AssetMonthlyInsightsCard = () => {
   return (
-    <div className="col-span-3 bg-mainBg border flex flex-col gap-4 mt-4 rounded-lg text-sm shadow p-3">
+    <div className="col-span-3 bg-mainBg border flex flex-col gap-4 rounded-lg text-sm shadow p-3">
       <div className="flex justify-between">
         <ChartSwitcher
           items={items}

@@ -28,9 +28,10 @@ export const RecentCard: React.FC<IProps> = ({
   data,
   total,
   loading,
+  handleViewMore,
 }) => {
   return (
-    <div className="bg-mainBg border mt-4 rounded-lg text-sm shadow">
+    <div className="bg-mainBg border rounded-lg text-sm shadow">
       <div className="flex items-center justify-between px-3 py-3 border-b">
         <p className="font-medium">{title}</p>
         <span className="text-xs">{secondaryColTitle}</span>
@@ -64,7 +65,10 @@ export const RecentCard: React.FC<IProps> = ({
         </Skeleton>
       </div>
       {total && total > LIMIT_OF_ITEMS_TO_DISPLAY ? (
-        <h2 className="text-caramel text-right px-3 text-sm font-semibold cursor-pointer hover:text-accent pb-2 pt-1">
+        <h2
+          onClick={() => handleViewMore?.()}
+          className="text-caramel text-right px-3 text-sm font-semibold cursor-pointer hover:text-accent pb-2 pt-1"
+        >
           See All
         </h2>
       ) : null}

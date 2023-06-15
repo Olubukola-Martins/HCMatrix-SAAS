@@ -52,7 +52,7 @@ export const SimpleCard: React.FC<ISimpleCard> = ({
           <>
             <p className="text-sm font-medium py-3 capitalize">{title}</p>
             {highlight && (
-              <h2 className="font-semibold text-lg">{highlight}</h2>
+              <h2 className="font-semibold text-lg mb-2">{highlight}</h2>
             )}
             {action && <AppButton {...action} />}
           </>
