@@ -2,10 +2,7 @@ import { Form, Input, Modal, TimePicker } from "antd";
 import { AppButton } from "components/button/AppButton";
 import { FormEmployeeInput } from "features/core/employees/components/FormEmployeeInput";
 import { IModalProps } from "types";
-import {
-  generalValidationRules,
-  textInputValidationRules,
-} from "utils/formHelpers/validation";
+import { generalValidationRules } from "utils/formHelpers/validation";
 
 export const NewAttendanceModal = ({ open, handleClose }: IModalProps) => {
   return (

@@ -6,7 +6,7 @@ import { appRoutes } from "config/router/paths";
 
 export const SubToper = () => {
   return (
-    <div className="flex items-start justify-between my-5">
+    <div className="flex items-center justify-between py-3 mb-5 bg-card Container">
       <div className="flex items-center gap-x-4 text-sm font-medium">
         <Link to={appRoutes.timeSheet}>Timesheet</Link>
         <Link to={appRoutes.timeOff}>Timeoff</Link>

@@ -1,16 +1,19 @@
-import React from "react";
 import { SubToper } from "../components/SubToper";
 import { SimpleCard } from "components/cards/SimpleCard";
-import { ChartSwitcher } from "components/controls/ChartSwitcher";
+import { AttendanceMonthCard } from "../components/AttendanceMonthCard";
+import { TimesheetCard } from "../components/TimesheetCard";
+import { Tabs } from "antd";
+import { TimeOffRequestCard } from "../components/TimeOffRequestCard";
 
 export const AttendanceHome = () => {
-  const items = ["Days", "Week", "Month"];
   const today = new Date();
   const month = today.toLocaleString("default", { month: "long" });
   const year = today.getFullYear();
   return (
+    <>
+     <SubToper />
     <div className="Container">
-      <SubToper />
+     
       <div className="flex justify-between">
         <div>
           <h2 className="font-medium text-lg pb-2">Good morning Esther</h2>
@@ -36,17 +39,46 @@ export const AttendanceHome = () => {
         <SimpleCard title="Remote workers" highlight="0" />
       </div>
 
-
-      <div className="grid grid-cols-1 lg:grid-cols-4 gap-5">
-          <div className="col-span-3">
-            {/* <AssetMonthlyInsightsCard /> */}
-        
-          </div>
-          <div className="lg:col-span-1 col-span-4">
-            {/* <RecentAssetRequestsCard /> */}
-          </div>
+      <div className="grid grid-cols-1 lg:grid-cols-6 gap-5">
+        <div className="col-span-4">
+          <AttendanceMonthCard />
+        </div>
+        <div className="lg:col-span-2 col-span-6">
+          <TimesheetCard />
         </div>
 
+        <div className="col-span-4 bg-mainBg shadow border rounded-lg p-3">
+          <h3 className="text-base">Who is out?</h3>
+
+          <Tabs
+            defaultActiveKey="1"
+            items={[
+              {
+                key: "1",
+                label: "Leave (0)",
+                children: (
+                  <>
+                    <h4>No One is Currently on Leave</h4>
+                  </>
+                ),
+              },
+              {
+                key: "2",
+                label: "Remote Work (0)",
+                children: (
+                  <>
+                    <h4>No Remote Worker</h4>
+                  </>
+                ),
+              },
+            ]}
+          />
+        </div>
+        <div className="lg:col-span-2 col-span-6">
+          <TimeOffRequestCard />
+        </div>
+      </div>
     </div>
+    </>
   );
 };

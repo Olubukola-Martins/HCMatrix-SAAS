@@ -23,47 +23,41 @@ const columns: ColumnsType<DataType> = [
   {
     title: "Name",
     dataIndex: "name",
-    key: "name",
+    render: (_, val) => (
+      <Link to={appRoutes.timeSheetDetails(1).path}>{val.name}</Link>
+    ),
   },
   {
     title: "Monday",
     dataIndex: "monday",
-    key: "monday",
   },
   {
     title: "Tuesday",
     dataIndex: "tuesday",
-    key: "tuesday",
   },
   {
     title: "Wednesday",
     dataIndex: "wednesday",
-    key: "wednesday",
   },
   {
     title: "Thursday",
     dataIndex: "thursday",
-    key: "thursday",
   },
   {
     title: "Friday",
     dataIndex: "friday",
-    key: "friday",
   },
   {
     title: "Saturday",
     dataIndex: "saturday",
-    key: "saturday",
   },
   {
     title: "Sunday",
     dataIndex: "sunday",
-    key: "sunday",
   },
   {
     title: "Total",
     dataIndex: "total",
-    key: "total",
   },
 ];
 
@@ -96,8 +90,10 @@ const data: DataType[] = [
 
 export const TimeSheet = () => {
   return (
-    <div className="Container">
+    <>
       <SubToper />
+    <div className="Container">
+    
       <PageIntro title="Timesheet" link={appRoutes.attendanceHome} />
       <p className="pt-2">
         Welcome on board, here is a detailed list of clocked work hours and
@@ -110,7 +106,9 @@ export const TimeSheet = () => {
           style={{ width: "35%" }}
           allowClear
         />
-        <Link className="button" to={appRoutes.uploadAttendance}>Upload Timesheet</Link>
+        <Link className="button" to={appRoutes.uploadAttendance}>
+          Upload Timesheet
+        </Link>
       </div>
 
       <div className="flex items-center justify-between mb-6">
@@ -146,5 +144,6 @@ export const TimeSheet = () => {
 
       <Table columns={columns} dataSource={data} scroll={{ x: 500 }} />
     </div>
+    </>
   );
 };
