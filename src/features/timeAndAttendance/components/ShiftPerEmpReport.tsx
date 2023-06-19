@@ -14,6 +14,7 @@ export const ShiftPerEmpReport = () => {
           <div>
             <Form.Item name="department" label="Select Department">
               <Select
+                allowClear
                 placeholder="Select"
                 options={[{ label: "Department", value: "department" }]}
               />
@@ -21,6 +22,7 @@ export const ShiftPerEmpReport = () => {
 
             <Form.Item name="status" label="Status">
               <Select
+                allowClear
                 placeholder="Select"
                 options={[
                   { label: "All", value: "all" },
@@ -31,6 +33,7 @@ export const ShiftPerEmpReport = () => {
             </Form.Item>
             <Form.Item name="time" label="Schedule Time">
               <Select
+                allowClear
                 placeholder="Select"
                 options={[
                   { label: "All", value: "all" },
@@ -62,6 +65,7 @@ export const ShiftPerEmpReport = () => {
             <Form.Item name="shift_type" label="Include Normal Types">
               <Select
                 placeholder="Select"
+                allowClear
                 options={[
                   { label: "Arrived Late", value: 1 },
                   { label: "Absent", value: 2 },
@@ -87,6 +91,7 @@ export const ShiftPerEmpReport = () => {
             >
               <Select
                 placeholder="Select"
+                allowClear
                 options={[
                   { label: "Specified", value: 1 },
                   { label: "Not specified", value: 2 },
