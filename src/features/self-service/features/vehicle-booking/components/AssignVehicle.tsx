@@ -42,7 +42,7 @@ export const AssignVehicle: React.FC<IProps> = ({
           cost: data?.cost,
           status: data.status,
           assigneeId: values.assigneeId,
-          documentUrls: data.documentUrls,
+          documentUrls: data.documentUrls ?? [],
         },
         id: vehicle.id,
       },
