@@ -1,8 +1,10 @@
+import { TAssetStatus } from "./assetStatus";
+
 export interface TAsset {
   id: number;
   name: string;
   typeId: number;
-  status: string;
+  status: TAssetStatus;
   imageUrl: string;
   uid: string;
   serialNumber: string;

@@ -28,7 +28,7 @@ export const SimpleCard: React.FC<ISimpleCard> = ({
       >
         <div
           className={`rounded-md bg-mainBg shadow p-3 group-hover:border-b-2 group-hover:border-caramel flex flex-col ${
-            center && "items-center"
+            center && "items-center text-center"
           }`}
         >
           <Skeleton loading={loading} paragraph={{ rows: 3 }}>
@@ -45,7 +45,7 @@ export const SimpleCard: React.FC<ISimpleCard> = ({
     <div className="border rounded-md p-2 shadow-sm bg-card hover:shadow-md cursor-pointer group">
       <div
         className={`rounded-md bg-mainBg shadow p-3 group-hover:border-b-2 group-hover:border-caramel flex flex-col ${
-          center && "items-center"
+          center && "items-center text-center"
         }`}
       >
         <Skeleton loading={loading} paragraph={{ rows: 3 }}>

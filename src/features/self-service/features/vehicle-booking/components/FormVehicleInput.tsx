@@ -4,6 +4,7 @@ import { useDebounce } from "hooks/useDebounce";
 import { useState } from "react";
 import { generalValidationRules } from "utils/formHelpers/validation";
 import { useFetchVehicles } from "../hooks/useFetchVehicles";
+import { VEHICLE_STATUSES } from "./SelectVehicleStatus";
 
 export const FormVehicleInput: React.FC<{
   Form: any;
@@ -23,6 +24,8 @@ export const FormVehicleInput: React.FC<{
       limit: 100,
       offset: 0,
     },
+    // status: VEHICLE_STATUSES.filter((val) => val !== "assigned"), // TO DO: should this be only unassigned vehhicles, make sense like that
+    status: "unassigned", // TO DO: should this be only unassigned vehhicles, make sense like that
 
     token,
   });

@@ -7,9 +7,9 @@ import {
   Select,
   Switch,
 } from "antd";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useQueryClient } from "react-query";
-import { useCreateVehicle } from "../hooks/useCreateVehicle";
+import { TVehicleStatus, useCreateVehicle } from "../hooks/useCreateVehicle";
 import { QUERY_KEY_FOR_VEHICLES } from "../hooks/useFetchVehicles";
 import { VEHICLE_TYPES } from "./VehicleTypeCardList";
 import { VEHICLE_STATUSES } from "./SelectVehicleStatus";
@@ -31,10 +31,11 @@ const boxTitle = "font-medium text-sm pb-1";
 
 export const AddSingleVehicle: React.FC<IProps> = ({ handleClose, open }) => {
   const queryClient = useQueryClient();
+  const [vehicleStatus, setVehicleStatus] =
+    useState<TVehicleStatus>("unassigned");
   const [form] = Form.useForm();
   const { mutate, isLoading } = useCreateVehicle();
   const [moreInfo, setMoreInfo] = useState(false);
-  const [assigneeInfo, setAssigneeInfo] = useState(false);
   const documentUrl = useCurrentFileUploadUrl("documentUrl");
   const imageUrl = useCurrentFileUploadUrl("imageUrl");
 
@@ -51,7 +52,7 @@ export const AddSingleVehicle: React.FC<IProps> = ({ handleClose, open }) => {
         purchaseDate: data?.purchaseDate,
         dateAssigned: data?.dateAssigned,
         cost: data?.cost,
-        status: data?.status,
+        status: vehicleStatus,
         assigneeId: data?.assigneeId,
         documentUrls: !!documentUrl ? [documentUrl] : [],
       },
@@ -84,6 +85,7 @@ export const AddSingleVehicle: React.FC<IProps> = ({ handleClose, open }) => {
       }
     );
   };
+
   return (
     <Modal
       open={open}
@@ -98,6 +100,14 @@ export const AddSingleVehicle: React.FC<IProps> = ({ handleClose, open }) => {
         form={form}
         onFinish={handleSubmit}
       >
+        <div className={boxStyle}>
+          <FileUpload
+            allowedFileTypes={["image/jpeg", "image/png", "image/jpg"]}
+            fileKey="imageUrl"
+            textToDisplay="Upload Vehicle Image"
+            displayType="icon"
+          />
+        </div>
         <Form.Item name="type" rules={generalValidationRules}>
           <Select
             placeholder="Vehicle Type"
@@ -113,26 +123,47 @@ export const AddSingleVehicle: React.FC<IProps> = ({ handleClose, open }) => {
         <Form.Item name="model" rules={textInputValidationRules}>
           <Input placeholder="Vehicle Model" />
         </Form.Item>
-        <div className={boxStyle}>
-          <FileUpload
-            allowedFileTypes={["image/jpeg", "image/png", "image/jpg"]}
-            fileKey="imageUrl"
-            textToDisplay="Upload Vehicle Image"
-            displayType="form-space-between"
-          />
-        </div>
-        <Form.Item name="status" rules={generalValidationRules}>
+        <Form.Item name="plateNumber" rules={textInputValidationRules}>
+          <Input placeholder="Plate Number" />
+        </Form.Item>
+
+        <Form.Item
+          name="status"
+          rules={generalValidationRules}
+          initialValue={vehicleStatus}
+        >
           <Select
+            value={vehicleStatus}
             placeholder="Status"
             options={VEHICLE_STATUSES.map((item) => ({
               label: item,
               value: item,
             }))}
+            onSelect={(val: TVehicleStatus) => setVehicleStatus(val)}
           />
         </Form.Item>
-        <Form.Item name="plateNumber" rules={textInputValidationRules}>
-          <Input placeholder="Plate Number" />
-        </Form.Item>
+        {vehicleStatus === "assigned" && (
+          <div className={boxStyle}>
+            <div className="flex items-center justify-between">
+              <h5 className={boxTitle}>Assignee Information</h5>
+            </div>
+
+            <div className="grid grid-cols-2 gap-4 mt-4">
+              <FormEmployeeInput
+                Form={Form}
+                control={{ name: "assigneeId", label: "" }}
+              />
+
+              <Form.Item name="dateAssigned">
+                <DatePicker
+                  placeholder="Date Assigned (optional)"
+                  className="w-full"
+                />
+              </Form.Item>
+            </div>
+          </div>
+        )}
+
         <div className={boxStyle}>
           <div className="flex items-center justify-between">
             <h5 className={boxTitle}>Additional Information (Optional)</h5>
@@ -160,32 +191,7 @@ export const AddSingleVehicle: React.FC<IProps> = ({ handleClose, open }) => {
             </div>
           )}
         </div>
-        <div className={boxStyle}>
-          <div className="flex items-center justify-between">
-            <h5 className={boxTitle}>Assignee Information (Optional)</h5>
-            <Switch
-              size="small"
-              checked={assigneeInfo}
-              onClick={() => setAssigneeInfo((val) => !val)}
-            />
-          </div>
 
-          {assigneeInfo && (
-            <div className="grid grid-cols-2 gap-4 mt-4">
-              <FormEmployeeInput
-                Form={Form}
-                control={{ name: "assigneeId", label: "" }}
-              />
-
-              <Form.Item name="dateAssigned">
-                <DatePicker
-                  placeholder="Date Assigned (optional)"
-                  className="w-full"
-                />
-              </Form.Item>
-            </div>
-          )}
-        </div>
         <Form.Item label="Documents">
           <FileUpload
             allowedFileTypes={[

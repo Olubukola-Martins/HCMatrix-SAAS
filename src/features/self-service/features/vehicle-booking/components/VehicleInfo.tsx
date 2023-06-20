@@ -30,7 +30,7 @@ export const VehicleInfo: React.FC<{ vehicle: TVehicle }> = ({ vehicle }) => {
         },
         {
           name: "Purchase Cost",
-          value: vehicle.cost,
+          value: `${vehicle.cost}`,
         },
         {
           name: "Purchase Date",

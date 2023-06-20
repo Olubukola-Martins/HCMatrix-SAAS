@@ -9,6 +9,7 @@ import { DEFAULT_PAGE_SIZE } from "constants/general";
 interface IGetDataProps extends ICurrentCompany {
   pagination?: IPaginationProps;
   searchParams?: ISearchParams;
+  status?: TVehicleStatus | TVehicleStatus[];
 }
 
 // TO DO: Refactor this types to exist in the types folder
@@ -21,7 +22,7 @@ export type TVehicle = {
   plateNumber: string;
   status: TVehicleStatus;
   imageUrl: string;
-  cost: string;
+  cost: number;
   color: string;
   description: string;
   purchaseDate: string;
@@ -103,10 +104,14 @@ export const QUERY_KEY_FOR_VEHICLES = "vehicles";
 const getVehicles = async (
   props: IGetDataProps
 ): Promise<{ data: TVehicle[]; total: number }> => {
-  const { pagination } = props;
+  const { pagination, status } = props;
   const limit = pagination?.limit ?? DEFAULT_PAGE_SIZE;
   const offset = pagination?.offset ?? 0;
   const name = props.searchParams?.name ?? "";
+  let formattedStatus = status;
+  if (typeof formattedStatus === "object") {
+    formattedStatus.join(",");
+  }
 
   const url = `${MICROSERVICE_ENDPOINTS.UTILITY}/self-service/vehicle`;
 
@@ -120,6 +125,7 @@ const getVehicles = async (
       limit,
       offset,
       search: name,
+      status: formattedStatus,
     },
   };
 
@@ -140,9 +146,9 @@ const getVehicles = async (
 };
 
 export const useFetchVehicles = (props: IGetDataProps) => {
-  const { pagination, searchParams } = props;
+  const { pagination, searchParams, status } = props;
   const queryData = useQuery(
-    [QUERY_KEY_FOR_VEHICLES, pagination, searchParams],
+    [QUERY_KEY_FOR_VEHICLES, pagination, searchParams, status],
     () =>
       getVehicles({
         ...props,

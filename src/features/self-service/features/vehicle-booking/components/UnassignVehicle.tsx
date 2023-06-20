@@ -4,46 +4,44 @@ import React from "react";
 import { IModalProps } from "types";
 import { openNotification } from "utils/notifications";
 import { useQueryClient } from "react-query";
-import { QUERY_KEY_FOR_SINGLE_ASSET } from "../hooks/useGetSingleAsset";
-import { TAsset } from "../types";
-import { useUpdateAsset } from "../hooks/useUpdateAsset";
+import { TVehicle } from "../hooks/useFetchVehicles";
+import { useEditVehicle } from "../hooks/useEditVehicle";
+import { QUERY_KEY_FOR_SINGLE_VEHICLE } from "../hooks/useFetchSingleVehicle";
 
 interface IProps extends IModalProps {
-  asset: TAsset;
+  vehicle: TVehicle;
 }
-export const UnassignAsset: React.FC<IProps> = ({
+export const UnassignVehicle: React.FC<IProps> = ({
   open,
   handleClose,
-  asset,
+  vehicle,
 }) => {
   const queryClient = useQueryClient();
 
   const [form] = Form.useForm();
 
-  const { mutate, isLoading } = useUpdateAsset();
+  const { mutate, isLoading } = useEditVehicle();
 
   const handleSubmit = (values: any) => {
-    const data = asset;
+    const data = vehicle;
     mutate(
       {
-        body: {
-          name: data.name,
-          typeId: data.typeId,
+        data: {
+          type: data?.type,
+          brand: data?.brand,
+          model: data?.model,
+          plateNumber: data?.plateNumber,
+          imageUrl: data.imageUrl,
+          color: data?.color,
+          description: data?.description,
+          purchaseDate: data?.purchaseDate,
           dateAssigned: null,
-          assigneeId: null,
-          description: data.description ?? undefined,
-          color: data.color,
-          cost: +data.cost,
-          model: data.model,
-          brand: data.brand,
-          serialNumber: data.serialNumber,
-          uid: data.uid,
+          cost: data?.cost,
           status: "unassigned",
-          purchaseDate: data.purchaseDate,
-          imageUrl: data?.imageUrl ?? undefined,
+          assigneeId: null,
           documentUrls: data.documentUrls,
         },
-        id: asset.id,
+        id: vehicle.id,
       },
       {
         onError: (err: any) => {
@@ -67,7 +65,7 @@ export const UnassignAsset: React.FC<IProps> = ({
           handleClose();
 
           queryClient.invalidateQueries({
-            queryKey: [QUERY_KEY_FOR_SINGLE_ASSET],
+            queryKey: [QUERY_KEY_FOR_SINGLE_VEHICLE],
             // exact: true,
           });
         },
@@ -91,7 +89,7 @@ export const UnassignAsset: React.FC<IProps> = ({
         <div className="flex flex-col gap-3">
           <div>
             <span className="text-center text-base">
-              Are you sure you want to unassign this asset?
+              Are you sure you want to unassign this vehicle?
             </span>
           </div>
 

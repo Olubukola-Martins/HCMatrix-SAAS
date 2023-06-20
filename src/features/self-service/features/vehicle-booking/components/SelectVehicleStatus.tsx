@@ -3,7 +3,7 @@ import { TVehicleStatus } from "../hooks/useCreateVehicle";
 import { Select } from "antd";
 
 export const VEHICLE_STATUSES: TVehicleStatus[] = [
-  // "assigned",
+  "assigned",
   "in-repair",
   "condemned",
   "unassigned",

@@ -3,11 +3,12 @@ import { MICROSERVICE_ENDPOINTS } from "config/enviroment";
 import { useApiAuth } from "hooks/useApiAuth";
 import { useMutation } from "react-query";
 import { ICurrentCompany } from "types";
+import { TAssetStatus } from "../types";
 
 type TBody = {
   name: string;
   typeId: number;
-  status?: "assigned" | "unassigned" | "under-repair" | "condemned";
+  status?: TAssetStatus;
   imageUrl?: string;
   uid?: string;
   serialNumber?: string;
@@ -15,9 +16,9 @@ type TBody = {
   model?: string;
   vendor?: string;
   color?: string;
-  assigneeId?: string;
+  assigneeId?: string | null;
   documentUrls?: string[];
-  dateAssigned?: string;
+  dateAssigned?: string | null;
   description?: string;
   purchaseDate?: string;
   cost?: number;
