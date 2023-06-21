@@ -351,6 +351,40 @@ const CompanySettingsForm = () => {
               />
             </Form.Item>
           </div>
+          {/* 7*/}
+          <div className={parentCompStyle}>
+            <Typography.Title level={5} className="mb-4 md:col-span-2">
+              Currency Settings
+            </Typography.Title>
+            <Form.Item
+              label="Do you want to show currency symbol ?"
+              name={`showCurrency`}
+              colon={false}
+              className="w-3/4"
+            >
+              <Switch
+                unCheckedChildren="No"
+                checkedChildren="Yes"
+                defaultChecked={
+                  companyParams?.value.employeeSettings.hideBirthday
+                }
+              />
+            </Form.Item>
+            <Form.Item
+              label="What is your base currency ?"
+              name={`baseCurrency`}
+              colon={false}
+              className="w-3/4"
+            >
+              <Select
+                placeholder="Base Currency"
+                options={["Naira", "Dollar"].map((item) => ({
+                  label: item,
+                  value: item,
+                }))}
+              />
+            </Form.Item>
+          </div>
         </div>
         <div className="flex justify-end">
           <Form.Item>
