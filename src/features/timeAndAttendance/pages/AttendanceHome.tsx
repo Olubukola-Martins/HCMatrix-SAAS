@@ -1,4 +1,4 @@
-import { SubToper } from "../components/SubToper";
+import { AttendanceSubToper } from "../components/AttendanceSubToper";
 import { SimpleCard } from "components/cards/SimpleCard";
 import { AttendanceMonthCard } from "../components/AttendanceMonthCard";
 import { TimesheetCard } from "../components/TimesheetCard";
@@ -11,7 +11,7 @@ export const AttendanceHome = () => {
   const year = today.getFullYear();
   return (
     <>
-     <SubToper />
+     <AttendanceSubToper />
     <div className="Container">
      
       <div className="flex justify-between">

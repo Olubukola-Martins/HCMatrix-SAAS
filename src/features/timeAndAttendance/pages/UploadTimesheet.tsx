@@ -1,5 +1,5 @@
 import { PageIntro } from "components/layout/PageIntro";
-import { SubToper } from "../components/SubToper";
+import { AttendanceSubToper } from "../components/AttendanceSubToper";
 import { appRoutes } from "config/router/paths";
 import { Dropdown, Input, Menu, Select } from "antd";
 import { AppButton } from "components/button/AppButton";
@@ -58,7 +58,7 @@ export const UploadTimesheet = () => {
 
   return (
     <>
-      <SubToper />
+      <AttendanceSubToper />
       <div className="Container">
         <NewAttendanceModal
           open={addNewModal}

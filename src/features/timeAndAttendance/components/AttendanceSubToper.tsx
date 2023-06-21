@@ -4,7 +4,7 @@ import offIndicator from "../assets/images/offIndicator.svg";
 import breakIndicator from "../assets/images/breakIndicate.svg";
 import { appRoutes } from "config/router/paths";
 
-export const SubToper = () => {
+export const AttendanceSubToper = () => {
   return (
     <div className="flex items-center justify-between py-3 mb-5 bg-card Container">
       <div className="flex items-center gap-x-4 text-sm font-medium">

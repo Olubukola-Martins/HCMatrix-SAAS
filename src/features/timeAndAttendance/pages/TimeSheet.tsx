@@ -1,5 +1,5 @@
 import Table, { ColumnsType } from "antd/lib/table";
-import { SubToper } from "../components/SubToper";
+import { AttendanceSubToper } from "../components/AttendanceSubToper";
 import { PageIntro } from "components/layout/PageIntro";
 import { appRoutes } from "config/router/paths";
 import { AppButton } from "components/button/AppButton";
@@ -91,7 +91,7 @@ const data: DataType[] = [
 export const TimeSheet = () => {
   return (
     <>
-      <SubToper />
+      <AttendanceSubToper />
     <div className="Container">
     
       <PageIntro title="Timesheet" link={appRoutes.attendanceHome} />

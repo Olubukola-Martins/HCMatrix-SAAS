@@ -1,5 +1,6 @@
 import { DatePicker, Form, Select, Switch, TimePicker } from "antd";
 import { AppButton } from "components/button/AppButton";
+import { appRoutes } from "config/router/paths";
 import { Link } from "react-router-dom";
 
 export const ShiftPerEmpReport = () => {
@@ -117,7 +118,10 @@ export const ShiftPerEmpReport = () => {
         </div>
       </div>
       <div className="flex items-center justify-end gap-3 mt-5">
-        <Link to="#" className="transparentButton">
+        <Link
+          to={appRoutes.attendanceReportDetails(1).path}
+          className="transparentButton"
+        >
           View Report
         </Link>
         <a href="#" className="button">

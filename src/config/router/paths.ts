@@ -174,5 +174,9 @@ export const appRoutes = {
   }),
   timeOff: `/attendance/time-off`,
   attendanceReport: `/attendance/reports`,
+  attendanceReportDetails: (id?: number) => ({
+    format: `/attendance/reports/:id`,
+    path: `/attendance/reports/${id}`,
+  }),
   uploadAttendance: `/attendance/upload-attendance`,
 };

@@ -1,11 +1,14 @@
 import { PageIntro } from "components/layout/PageIntro";
-import { SubToper } from "../components/SubToper";
+import { AttendanceSubToper } from "../components/AttendanceSubToper";
 import { appRoutes } from "config/router/paths";
+import { SimpleCard } from "components/cards/SimpleCard";
+import { AppButton } from "components/button/AppButton";
+import { DatePicker } from "antd";
 
 export const TimeSheetDetails = () => {
   return (
     <>
-      <SubToper />
+      <AttendanceSubToper />
       <div className="Container">
         <PageIntro
           title="Back to Employee Timesheet"
@@ -61,6 +64,16 @@ export const TimeSheetDetails = () => {
               </h3>
             </div>
           </div>
+        </div>
+        <div className="flex items-center justify-between my-5">
+          <DatePicker />
+          <AppButton label="Add Time Entry" />
+        </div>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
+          <SimpleCard title="Clocked in" highlight="7:20am" />
+          <SimpleCard title="Clocked out" highlight="5:00pm" />
+          <SimpleCard title="Break" highlight="1hr" />
+          <SimpleCard title="Total worked hours" highlight="8hr" />
         </div>
       </div>
     </>

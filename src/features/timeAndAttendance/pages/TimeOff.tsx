@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { SubToper } from "../components/SubToper";
+import { AttendanceSubToper } from "../components/AttendanceSubToper";
 import { PageIntro } from "components/layout/PageIntro";
 import { appRoutes } from "config/router/paths";
 import { AppButton } from "components/button/AppButton";
@@ -92,7 +92,7 @@ export const TimeOff = () => {
   ];
   return (
     <>
-      <SubToper />
+      <AttendanceSubToper />
       <AddTimeOff
         open={newTimeOffModal}
         handleClose={() => setNewTimeOffModal(false)}

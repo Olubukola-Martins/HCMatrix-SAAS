@@ -1,5 +1,5 @@
 import { PageIntro } from "components/layout/PageIntro";
-import { SubToper } from "../components/SubToper";
+import { AttendanceSubToper } from "../components/AttendanceSubToper";
 import { appRoutes } from "config/router/paths";
 import { useState } from "react";
 import { ShiftPerEmpReport } from "../components/ShiftPerEmpReport";
@@ -10,7 +10,7 @@ export const TimeReport = () => {
   const [switchTabs, setSwitchTabs] = useState("Shift_Per_Employee");
   return (
     <>
-      <SubToper />
+      <AttendanceSubToper />
       <div className="Container">
         <PageIntro title="Report" link={appRoutes.attendanceHome} />
         <p className="pt-2 pb-5">Welcome on board, set your time off policy</p>

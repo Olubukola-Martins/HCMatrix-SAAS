@@ -6,6 +6,7 @@ import { TimeOff } from "features/timeAndAttendance/pages/TimeOff";
 import { TimeReport } from "features/timeAndAttendance/pages/TimeReport";
 import { UploadTimesheet } from "features/timeAndAttendance/pages/UploadTimesheet";
 import { TimeSheetDetails } from "features/timeAndAttendance/pages/TimeSheetDetails";
+import { TimeReportDetails } from "features/timeAndAttendance/pages/TimeReportDetails";
 
 export const attendanceRoutes: TRouteData[] = [
   {
@@ -41,6 +42,11 @@ export const attendanceRoutes: TRouteData[] = [
   {
     element: <TimeSheetDetails />,
     path: appRoutes.timeSheetDetails().format,
+    isSearchable: false,
+  },
+  {
+    element: <TimeReportDetails />,
+    path: appRoutes.attendanceReportDetails().format,
     isSearchable: false,
   },
 ];
