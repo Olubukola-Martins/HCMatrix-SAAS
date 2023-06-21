@@ -1,4 +1,3 @@
-import { ChartSwitcher } from "components/controls/ChartSwitcher";
 import { AttendanceSubToper } from "../components/AttendanceSubToper";
 import { LineChart } from "components/charts/LineChart";
 import { MONTH_CHART_LABELS } from "constants/general";
@@ -6,6 +5,7 @@ import { PageIntro } from "components/layout/PageIntro";
 import { useState } from "react";
 import { appRoutes } from "config/router/paths";
 import { DatePicker } from "antd";
+import { AttendanceReportDetailsTable } from "../components/AttendanceReportDetailsTable";
 
 export const TimeReportDetails = () => {
   const [switchTabs, setSwitchTabs] = useState("Shift_Per_Employee");
@@ -65,7 +65,7 @@ export const TimeReportDetails = () => {
             />
           </div>
         </div>
-        <div className="px-5">
+        <div className="px-5 mb-7">
           <DatePicker />
           <LineChart
             data={Array(12).fill(12)}
@@ -74,6 +74,8 @@ export const TimeReportDetails = () => {
             bgColors={"#aaa"}
           />
         </div>
+
+        <AttendanceReportDetailsTable />
       </div>
     </>
   );

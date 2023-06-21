@@ -4,11 +4,19 @@ import { appRoutes } from "config/router/paths";
 import { SimpleCard } from "components/cards/SimpleCard";
 import { AppButton } from "components/button/AppButton";
 import { DatePicker } from "antd";
+import { useState } from "react";
+import { AddTimeEntry } from "../components/AddTimeEntry/AddTimeEntry";
 
 export const TimeSheetDetails = () => {
+  const [addTimeEntryModal, setAddTimeEntryModal] = useState(false);
+
   return (
     <>
       <AttendanceSubToper />
+      <AddTimeEntry
+        open={addTimeEntryModal}
+        handleClose={() => setAddTimeEntryModal(false)}
+      />
       <div className="Container">
         <PageIntro
           title="Back to Employee Timesheet"
@@ -67,7 +75,10 @@ export const TimeSheetDetails = () => {
         </div>
         <div className="flex items-center justify-between my-5">
           <DatePicker />
-          <AppButton label="Add Time Entry" />
+          <AppButton
+            label="Add Time Entry"
+            handleClick={() => setAddTimeEntryModal(true)}
+          />
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
           <SimpleCard title="Clocked in" highlight="7:20am" />

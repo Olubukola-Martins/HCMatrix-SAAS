@@ -73,4 +73,10 @@ export const settingNavItems: TSettNavItem[] = [
     ],
     category: "self-service",
   },
+
+  {
+    title: "General",
+    items: [{ name: "Time Tracking Rules", link: "/attendance" }],
+    category: "attendance",
+  },
 ];
