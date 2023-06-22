@@ -7,6 +7,12 @@ import { TimeReport } from "features/timeAndAttendance/pages/TimeReport";
 import { UploadTimesheet } from "features/timeAndAttendance/pages/UploadTimesheet";
 import { TimeSheetDetails } from "features/timeAndAttendance/pages/TimeSheetDetails";
 import { TimeReportDetails } from "features/timeAndAttendance/pages/TimeReportDetails";
+import { TimeTrackingRules } from "features/timeAndAttendance/pages/settings/TimeTrackingRules";
+import { WorkSchedule } from "features/timeAndAttendance/pages/settings/WorkSchedule";
+import { TimeOffPolicy } from "features/timeAndAttendance/pages/settings/TimeOffPolicy";
+import { ClockIn } from "features/timeAndAttendance/pages/settings/ClockIn";
+import { AddLocation } from "features/timeAndAttendance/pages/settings/AddLocation";
+import { Other } from "features/timeAndAttendance/pages/settings/Other";
 
 export const attendanceRoutes: TRouteData[] = [
   {
@@ -47,6 +53,37 @@ export const attendanceRoutes: TRouteData[] = [
   {
     element: <TimeReportDetails />,
     path: appRoutes.attendanceReportDetails().format,
+    isSearchable: false,
+  },
+
+  {
+    element: <TimeTrackingRules />,
+    path: appRoutes.timeTrackingRules,
+    isSearchable: false,
+  },
+  {
+    element: <WorkSchedule />,
+    path: appRoutes.workSchedule,
+    isSearchable: false,
+  },
+  {
+    element: <TimeOffPolicy />,
+    path: appRoutes.timeOffPolicy,
+    isSearchable: false,
+  },
+  {
+    element: <ClockIn />,
+    path: appRoutes.clockInSettings,
+    isSearchable: false,
+  },
+  {
+    element: <AddLocation />,
+    path: appRoutes.addLocation,
+    isSearchable: false,
+  },
+  {
+    element: <Other />,
+    path: appRoutes.otherSettings,
     isSearchable: false,
   },
 ];

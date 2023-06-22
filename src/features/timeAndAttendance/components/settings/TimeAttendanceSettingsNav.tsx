@@ -3,79 +3,79 @@ import { Link } from "react-router-dom";
 
 interface NProps {
   active:
-    | "balance scorecard"
-    | "behavioral core value"
-    | "goals/object"
-    | "360 degree"
-    | "9box"
-    | "report";
+    | "time tracking rules"
+    | "Create Work Schedule"
+    | "clock in settings"
+    | "time off policy"
+    | "other settings"
+    | "add location";
 }
 
-export const PerformanceNav = (props: NProps) => {
-  const applyStyle = "border-b-2 text-caramel border-caramel pb-3";
+export const TimeAttendanceSettingsNav = (props: NProps) => {
+  const applyStyle = "text-caramel pb-3";
 
   return (
     <div>
-      <div className="flex items-center justify-evenly text-base border-b mb-6 mt-2">
+      <div className="flex items-center justify-evenly text-base py-2 border-b mb-6 mt-3">
         <Link
-          to={appRoutes.balanceScorecard}
+          to={appRoutes.timeTrackingRules}
           className={
-            props.active === "balance scorecard"
+            props.active === "time tracking rules"
               ? `${applyStyle}`
               : "pb-3 hover:text-caramel"
           }
         >
-          Balance Scorecard
+          Time Tracking Rules
         </Link>
         <Link
-          to={appRoutes.degreeEvaluation}
+          to={appRoutes.timeOffPolicy}
           className={
-            props.active === "360 degree"
+            props.active === "time off policy"
               ? `${applyStyle}`
               : "pb-3 hover:text-caramel"
           }
         >
-          360 Degree Evaluation
+          Time Off Policy
         </Link>
         <Link
-          to={appRoutes.behavioralCoreValue}
+          to={appRoutes.workSchedule}
           className={
-            props.active === "behavioral core value"
+            props.active === "Create Work Schedule"
               ? `${applyStyle}`
               : "pb-3 hover:text-caramel"
           }
         >
-          Behavioral Core value
+          Create Work Schedule
         </Link>
         <Link
-          to={appRoutes.goalsObjective}
+          to={appRoutes.clockInSettings}
           className={
-            props.active === "goals/object"
+            props.active === "clock in settings"
               ? `${applyStyle}`
               : "pb-3 hover:text-caramel"
           }
         >
-          Goals/Objectives
+          Clock In Settings
         </Link>
         <Link
-          to={appRoutes.nineBox}
+          to={appRoutes.addLocation}
           className={
-            props.active === "9box"
+            props.active === "add location"
               ? `${applyStyle}`
               : "pb-3 hover:text-caramel"
           }
         >
-          9box
+          Add Location
         </Link>
         <Link
-          to={appRoutes.performanceReport}
+          to={appRoutes.otherSettings}
           className={
-            props.active === "report"
+            props.active === "other settings"
               ? `${applyStyle}`
               : "pb-3 hover:text-caramel"
           }
         >
-          Report
+          Other Settings
         </Link>
       </div>
     </div>

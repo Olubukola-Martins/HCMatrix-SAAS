@@ -179,4 +179,11 @@ export const appRoutes = {
     path: `/attendance/reports/${id}`,
   }),
   uploadAttendance: `/attendance/upload-attendance`,
+  timeTrackingRules: `/attendance/time-tracking-rules`,
+  workSchedule: `/attendance/work-schedule`,
+  timeOffPolicy: `/attendance/time-off-policy`,
+  clockInSettings: `/attendance/clock-in-settings`,
+  addLocation: `/attendance/add-location`,
+  otherSettings: `/attendance/other-settings`
+
 };
