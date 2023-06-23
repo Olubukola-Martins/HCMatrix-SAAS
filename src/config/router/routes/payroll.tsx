@@ -14,19 +14,70 @@ import EmployeePayslips from "features/payroll/pages/EmployeePayslips";
 import CreatePayslipTemplate from "features/payroll/pages/CreatePayslipTemplate";
 import PayrollSettings from "features/payroll/pages/PayrollSettings";
 import PayGrades from "features/payroll/pages/PayGrades";
+import PayrollCostCentresPage from "features/payroll/pages/PayrollCostCentresPage";
+import PayrollTaxPoliciesPage from "features/payroll/pages/PayrollTaxPoliciesPage";
+import CreateTaxPolicyPage from "features/payroll/pages/CreateTaxPolicyPage";
+import ExchangeRatesPage from "features/payroll/pages/ExchangeRatesPage";
+import PayrollSchemesPage from "features/payroll/pages/PayrollSchemesPage";
+import SetupGradePayrollSchemePage from "features/payroll/pages/SetupGradePayrollSchemePage";
 
 export const payrollRoutes: TRouteData[] = [
+  {
+    element: <PayrollCostCentresPage />,
+    path: appRoutes.payrollCostCentres,
+    isSearchable: true,
+    title: "Cost Centres",
+    isPrimaryFeature: true,
+  },
+  {
+    element: <PayrollTaxPoliciesPage />,
+    path: appRoutes.payrollTaxPolicies,
+    isSearchable: true,
+    title: "Tax Policies",
+    isPrimaryFeature: true,
+  },
+  {
+    element: <CreateTaxPolicyPage />,
+    path: appRoutes.createTaxPolicy,
+    isSearchable: true,
+    title: "Create Tax Policy",
+    isPrimaryFeature: false,
+  },
+  {
+    element: <ExchangeRatesPage />,
+    path: appRoutes.payrollExchangeRates,
+    isSearchable: true,
+    title: "Exchange Rates",
+    isPrimaryFeature: true,
+  },
+
+  {
+    element: <PayrollSchemesPage />,
+    path: appRoutes.payrollSchemes,
+    isSearchable: true,
+    title: "Payroll Schemes",
+    isPrimaryFeature: true,
+  },
+  {
+    element: <SetupGradePayrollSchemePage />,
+    path: appRoutes.setupGradePayrollScheme,
+    isSearchable: true,
+    title: "Office Payroll Scheme",
+    isPrimaryFeature: false,
+  },
   {
     element: <PayrollSettings />,
     path: appRoutes.payrollSettings,
     isSearchable: true,
     title: "Payroll Settings",
+    isPrimaryFeature: true,
   },
   {
     element: <PayGrades />,
     path: appRoutes.payGradeSettings,
     title: "Payroll Grade Setting",
     isSearchable: true,
+    isPrimaryFeature: true,
   },
   {
     element: <div />,
@@ -99,11 +150,13 @@ export const payrollRoutes: TRouteData[] = [
     path: appRoutes.employeePayslips,
     isSearchable: true,
     title: "Employee Payslips",
+    isPrimaryFeature: true,
   },
   {
     element: <CreatePayslipTemplate />,
     path: appRoutes.createPayslipTemplate,
     isSearchable: true,
     title: "Payslips Template",
+    isPrimaryFeature: true,
   },
 ];

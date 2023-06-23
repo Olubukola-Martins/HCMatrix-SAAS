@@ -1,8 +1,8 @@
 # This is to provide a breakdown of how payroll will be implemented/used
 
-- Cost centres (accounts for payments to be made from) need to be set up if they plan on disbursing payments
-- Admin has to first create a tax policy (other tax policies can be created later), this tax policy will be based of taxable_income, and will be responsible for creating a deductible salary component called PAYE(TAX). The UI to create tax policy will be user friendly but what will be sent to the backend will be an eval expression
-- Then create different exchange rates that will be used by expatriates && admin will have to set his payroll currency in company params
+- Cost centres (accounts for payments to be made from) need to be set up if they plan on disbursing payments [Done]
+- Admin has to first create a tax policy (other tax policies can be created later), this tax policy will be based of taxable_income, and will be responsible for creating a deductible salary component called PAYE(TAX). The UI to create tax policy will be user friendly but what will be sent to the backend will be an eval expression [Done]
+- Then create different exchange rates that will be used by expatriates && admin will have to set his payroll currency in company params [Done]
 - Then the admin can proceed to set up the differnt payroll schemes (Direct Salary, ...)
 - After which the admin can then create payroll and run it as well , review and send for appoval
 

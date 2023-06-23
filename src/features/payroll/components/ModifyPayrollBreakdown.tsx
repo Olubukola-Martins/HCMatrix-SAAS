@@ -1,9 +1,12 @@
-import { Modal } from "antd";
+import { Modal, Switch } from "antd";
 import Themes from "components/Themes";
 import React from "react";
 import { IModalProps } from "types";
 
-const ViewPayrollBreakdown: React.FC<IModalProps> = ({ open, handleClose }) => {
+const ModifyPayrollBreakdown: React.FC<IModalProps> = ({
+  open,
+  handleClose,
+}) => {
   return (
     <Modal
       open={open}
@@ -13,7 +16,7 @@ const ViewPayrollBreakdown: React.FC<IModalProps> = ({ open, handleClose }) => {
       width={`65%`}
       title={
         <div className="flex items-center justify-between">
-          <h5 className="font-semibold text-lg">Payroll breakdown</h5>
+          <h5 className="font-semibold text-lg">Modify Employee Payroll</h5>
         </div>
       }
     >
@@ -36,20 +39,28 @@ const ViewPayrollBreakdown: React.FC<IModalProps> = ({ open, handleClose }) => {
                     <tr>
                       <th>Earnings</th>
                       <th>Amount</th>
+                      <th>Action</th>
                     </tr>
                   </thead>
                   <tbody>
                     {Array(4)
                       .fill({ label: "Meal Allowance", value: 2000 })
                       .map((item, i) => (
-                        <tr>
+                        <tr key={i}>
                           <td>{item.label}</td>
                           <td>N{item.value}</td>
+                          <td>
+                            <Switch
+                              unCheckedChildren={"inactive"}
+                              size="small"
+                              checkedChildren={`active`}
+                            />
+                          </td>
                         </tr>
                       ))}
                     <tr>
                       <td>Sub Total</td>
-                      <td>N0.00</td>
+                      <td colSpan={2}>N0.00</td>
                     </tr>
                   </tbody>
                 </table>
@@ -59,52 +70,113 @@ const ViewPayrollBreakdown: React.FC<IModalProps> = ({ open, handleClose }) => {
                   <tr>
                     <th>Deductions</th>
                     <th>Amount</th>
+                    <th>Actions</th>
                   </tr>
                 </thead>
                 <tbody>
                   <tr>
                     <td>NSSF-employees deduction</td>
                     <td>N0.00</td>
+                    <td>
+                      <Switch
+                        unCheckedChildren={"inactive"}
+                        size="small"
+                        checkedChildren={`active`}
+                      />
+                    </td>
                   </tr>
                   <tr>
                     <td>NSSF-employer deduction</td>
                     <td>N0.00</td>
+                    <td>
+                      <Switch
+                        unCheckedChildren={"inactive"}
+                        size="small"
+                        checkedChildren={`active`}
+                      />
+                    </td>
                   </tr>
                   <tr>
                     <td>NHIF-employees deduction</td>
                     <td>N0.00</td>
+                    <td>
+                      <Switch
+                        unCheckedChildren={"inactive"}
+                        size="small"
+                        checkedChildren={`active`}
+                      />
+                    </td>
                   </tr>
                   <tr>
                     <td>NHIF-employers deduction</td>
                     <td>N0.00</td>
+                    <td>
+                      <Switch
+                        unCheckedChildren={"inactive"}
+                        size="small"
+                        checkedChildren={`active`}
+                      />
+                    </td>
                   </tr>
                   <tr>
                     <td>SDL-employees deduction</td>
                     <td>N0.00</td>
+                    <td>
+                      <Switch
+                        unCheckedChildren={"inactive"}
+                        size="small"
+                        checkedChildren={`active`}
+                      />
+                    </td>
                   </tr>
                   <tr>
                     <td>SDL-employers deduction</td>
                     <td>N0.00</td>
+                    <td>
+                      <Switch
+                        unCheckedChildren={"inactive"}
+                        size="small"
+                        checkedChildren={`active`}
+                      />
+                    </td>
                   </tr>
                   <tr>
                     <td>WCF-employees deduction</td>
                     <td>N0.00</td>
+                    <td>
+                      <Switch
+                        unCheckedChildren={"inactive"}
+                        size="small"
+                        checkedChildren={`active`}
+                      />
+                    </td>
                   </tr>
                   <tr>
                     <td>WCF-employers deduction</td>
                     <td>N0.00</td>
+                    <td>
+                      <Switch
+                        unCheckedChildren={"inactive"}
+                        size="small"
+                        checkedChildren={`active`}
+                      />
+                    </td>
                   </tr>
                   <tr>
                     <td>Employees Tax</td>
                     <td>N0.00</td>
+                    <td>
+                      <Switch
+                        unCheckedChildren={"inactive"}
+                        size="small"
+                        checkedChildren={`active`}
+                      />
+                    </td>
                   </tr>
-                  <tr>
-                    <td>Employers Tax</td>
-                    <td>N0.00</td>
-                  </tr>
+
                   <tr>
                     <td>Sub Total</td>
-                    <td>N0.00</td>
+                    <td colSpan={2}>N0.00</td>
                   </tr>
                 </tbody>
               </table>
@@ -130,4 +202,4 @@ const ViewPayrollBreakdown: React.FC<IModalProps> = ({ open, handleClose }) => {
   );
 };
 
-export default ViewPayrollBreakdown;
+export default ModifyPayrollBreakdown;

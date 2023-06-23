@@ -28,6 +28,7 @@ import {
   emailValidationRulesOp,
   generalValidationRules,
 } from "utils/formHelpers/validation";
+import { CURRENCY_OPTIONS } from "constants/currencies";
 
 const parentCompStyle = "grid md:grid-cols-2 border-0 border-b gap-4 py-2";
 const compStyle = "flex flex-col gap-2 items-start";
@@ -376,13 +377,7 @@ const CompanySettingsForm = () => {
               colon={false}
               className="w-3/4"
             >
-              <Select
-                placeholder="Base Currency"
-                options={["Naira", "Dollar"].map((item) => ({
-                  label: item,
-                  value: item,
-                }))}
-              />
+              <Select placeholder="Base Currency" options={CURRENCY_OPTIONS} />
             </Form.Item>
           </div>
         </div>

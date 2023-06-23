@@ -14,6 +14,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import { SpiderChart } from "../components/SpiderChart";
 import { Link } from "react-router-dom";
 import PayrollSubNav from "../components/PayrollSubNav";
+import { Dropdown, Menu } from "antd";
 
 const labels = [
   "January",
@@ -152,9 +153,30 @@ const PayrollHome = () => {
       <div className="text-accent Container">
         <div className="flex justify-between items-center mb-6">
           <span className="font-bold text-xl">Payroll</span>
-          <Link className="neutralButton" to="/payroll/create">
-            Create Payroll
-          </Link>
+          <Dropdown
+            overlay={
+              <Menu>
+                <Menu.Item>
+                  <Link to="/payroll/create">Create Office Payroll</Link>
+                </Menu.Item>
+                <Menu.Item>
+                  <Link to="/payroll/create">Create Direct Salary Payroll</Link>
+                </Menu.Item>
+                <Menu.Item>
+                  <Link to="/payroll/create">Create Wages Payroll</Link>
+                </Menu.Item>
+                <Menu.Item>
+                  <Link to="/payroll/create">Create Project Payroll</Link>
+                </Menu.Item>
+              </Menu>
+            }
+            trigger={["click"]}
+          >
+            <button className="button flex items-center gap-2">
+              <span>Create Payroll</span>{" "}
+              <i className="fa-solid fa-chevron-down"></i>
+            </button>
+          </Dropdown>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-4 md:grid-cols-2 gap-x-4 gap-y-12 w-full ">

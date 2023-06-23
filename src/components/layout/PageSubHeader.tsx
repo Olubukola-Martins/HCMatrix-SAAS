@@ -30,8 +30,9 @@ const PageSubHeader = ({
       )}
 
       <div className="flex gap-4 items-center">
-        {actions?.map((item) => (
+        {actions?.map((item, i) => (
           <AppButton
+            key={i}
             label={item.name}
             handleClick={() => item.handleClick()}
             variant={item.btnVariant}

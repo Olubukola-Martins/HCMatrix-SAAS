@@ -1,6 +1,9 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import PayrollSubNav from "../components/PayrollSubNav";
+import { ExchangeRateContainer } from "../components/exchangeRates/ExchangeRateContainer";
+import { SalaryComponentsContainer } from "../components/salaryComponents/SalaryComponentsContainer";
+import { EmployeePayrollUpdatesContainer } from "../components/employeePayrollUpdates/EmployeePayrollUpdatesContainer";
 
 const CreatePayroll = () => {
   const boxStyle =
@@ -17,7 +20,7 @@ const CreatePayroll = () => {
           <Link to="/payroll/cycle" className="hover:text-caramel">
             <i className="ri-arrow-left-s-line text-xl"></i>
           </Link>
-          <h5 className="font-black text-lg">Create Payroll</h5>
+          <h5 className="font-black text-lg">Create Office Payroll</h5>
         </div>
 
         <div className="flex items-center justify-end gap-5">
@@ -31,66 +34,143 @@ const CreatePayroll = () => {
         <div className="bg-card px-5 py-7 rounded-md mt-7 flex flex-col gap-4">
           <div className={boxStyle}>
             <div>
-              <h5 className="font-medium text-base pb-1">Pay Date</h5>
+              <h5 className="font-medium text-base pb-1">Payroll Name</h5>
               <p className="md:text-sm text-xs">
-                Choose the time frame for which you want to run payroll.
+                Choose the name you which to describe the payroll.
               </p>
             </div>
             <input
-              type="date"
+              type="text"
+              className="border text-accent rounded px-3 py-1 border-gray-400 bg-mainBg"
+              placeholder="Payroll Name"
+            />
+          </div>
+          <div className={boxStyle}>
+            <div>
+              <h5 className="font-medium text-base pb-1">Payroll Month</h5>
+              <p className="md:text-sm text-xs">
+                Choose the month of the year you wish to run this payroll for.
+              </p>
+            </div>
+            <input
+              type="month"
               className="border text-accent rounded px-3 py-1 border-gray-400 bg-mainBg"
             />
           </div>
 
           <div className={boxStyle}>
-            <div>
-              <h5 className="font-medium text-base pb-1">Set Exchange Rates</h5>
-              <p className="md:text-sm text-xs">
-                Set the foreign currency exchange rate.
-              </p>
+            <div className="w-full">
+              <div className="flex justify-between">
+                <div>
+                  <h5 className="font-medium text-base pb-1">
+                    Set Exchange Rates
+                  </h5>
+                  <p className="md:text-sm text-xs">
+                    Set the foreign currency exchange rate that will be used for
+                    expatriates
+                  </p>
+                </div>
+                <div>
+                  <button className={buttonStyle}>View rates</button>
+                </div>
+              </div>
+              <div className="mt-4">
+                <ExchangeRateContainer />
+              </div>
             </div>
-            <button className={buttonStyle}>View rate</button>
           </div>
 
-          <div className={boxStyle}>
-            <div>
-              <h5 className="font-medium text-base pb-1">Add Timesheet</h5>
-              <p className="md:text-sm text-xs">
-                In this payroll cycle, update the time sheets and rates for the
-                employees.
-              </p>
-            </div>
-            <button className={buttonStyle}>Add Timesheet</button>
-          </div>
           <div className={boxStyle}>
             <div>
               <h5 className="font-medium text-base pb-1">
-                Employee Payroll Updates
+                Add Overtime Timesheet
               </h5>
               <p className="md:text-sm text-xs">
-                In this payroll cycle, update the timesheets and rates for the
-                employees.
+                Upload the overtime sheet that will be used to add overtime pay
+                to employee.
               </p>
             </div>
-            <button className={buttonStyle}>Add Updates</button>
           </div>
 
           <div className={boxStyle}>
-            <div>
-              <h5 className="font-medium text-base pb-1">Payroll Approval</h5>
-              <p className="md:text-sm text-xs">
-                Payroll approval for employees.
-              </p>
+            <div className="w-full">
+              <div className="flex justify-between">
+                <div>
+                  <h5 className="font-medium text-base pb-1">Allowances</h5>
+                  <p className="md:text-sm text-xs">
+                    Enable/disable the allowances that you want to be applied
+                    generally to employees
+                  </p>
+                </div>
+                <div>
+                  <button className={buttonStyle}>View Allowances</button>
+                </div>
+              </div>
+              <div className="mt-4">
+                <SalaryComponentsContainer showControlBtns={false} />
+              </div>
             </div>
-            <select
-              name=""
-              className="border text-accent rounded px-4 py-1 border-gray-400 bg-mainBg focus:outline-none"
-            >
-              <option value="">Add Approval</option>
-              <option value="Approval_1">Approval 1</option>
-              <option value="Approval_2">Approval 2</option>
-              <option value="Approval_3">Approval 3</option>
-            </select>
+          </div>
+          <div className={boxStyle}>
+            <div className="w-full">
+              <div className="flex justify-between">
+                <div>
+                  <h5 className="font-medium text-base pb-1">Deductions</h5>
+                  <p className="md:text-sm text-xs">
+                    Enable/disable the deductions that you want to be applied
+                    generally to employees
+                  </p>
+                </div>
+                <div>
+                  <button className={buttonStyle}>View Allowances</button>
+                </div>
+              </div>
+              <div className="mt-4">
+                <SalaryComponentsContainer showControlBtns={false} />
+              </div>
+            </div>
+          </div>
+          <div className={boxStyle}>
+            <div className="w-full">
+              <div className="flex justify-between">
+                <div>
+                  <h5 className="font-medium text-base pb-1">
+                    Employee Payroll Updates(Non Expatriates)
+                  </h5>
+                  <p className="md:text-sm text-xs">
+                    Modify the payroll by adding/removing salary components of
+                    employees or exluding employees from payroll
+                  </p>
+                </div>
+                <div>
+                  <button className={buttonStyle}>Make Updates</button>
+                </div>
+              </div>
+              <div className="mt-4">
+                <EmployeePayrollUpdatesContainer expatriate={false} />
+              </div>
+            </div>
+          </div>
+          <div className={boxStyle}>
+            <div className="w-full">
+              <div className="flex justify-between">
+                <div>
+                  <h5 className="font-medium text-base pb-1">
+                    Employee Payroll Updates(Expatriates)
+                  </h5>
+                  <p className="md:text-sm text-xs">
+                    Modify the payroll by adding/removing salary components of
+                    employees or exluding employees from payroll
+                  </p>
+                </div>
+                <div>
+                  <button className={buttonStyle}>Make Updates</button>
+                </div>
+              </div>
+              <div className="mt-4">
+                <EmployeePayrollUpdatesContainer expatriate={true} />
+              </div>
+            </div>
           </div>
         </div>
       </div>

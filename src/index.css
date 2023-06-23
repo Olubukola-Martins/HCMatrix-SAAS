@@ -375,6 +375,17 @@ textarea.ant-input,
   background: var(--card);
 }
 
+/* antd customization for menu horizontal sub nav */
+.ant-menu-horizontal > .ant-menu-item a:hover {
+  color: var(--caramel);
+}
+.ant-menu-item-active {
+  color: var(--caramel);
+}
+.ant-menu-horizontal:not(.ant-menu-dark) > .ant-menu-item:hover:after {
+  border-color: var(--caramel);
+}
+
 /* Accordion */
 .collapseHeader .ant-collapse-header-text {
   @apply text-base font-medium;

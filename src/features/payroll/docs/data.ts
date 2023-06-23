@@ -38,6 +38,16 @@ export const employeePayrollEntry = {
         "gross_pay_with_exchange_rate_accounted",
       ], //this indicates the components this component is dependent
     },
+    {
+      name: "tranport allowance",
+      identifier: "transport_allowance",
+      formula:
+        "meal_allowance * 2 * (0.08 * gross_pay_with_exchange_rate_accounted)",
+      dependencies: [
+        "meal_allowance",
+        "gross_pay_with_exchange_rate_accounted",
+      ],
+    },
   ],
   deductions: [
     {
