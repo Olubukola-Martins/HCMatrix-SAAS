@@ -8,6 +8,7 @@ interface AProps {
 
 export const AttendanceSettingsIntro = ({ title }: AProps) => {
   return (
+    <div>
     <div className="flex items-center justify-between Container">
       <PageIntro title={title} link={appRoutes.settings} />
 
@@ -17,6 +18,7 @@ export const AttendanceSettingsIntro = ({ title }: AProps) => {
         </span>
         <AppButton label="Next" />
       </div>
+    </div>
     </div>
   );
 };
