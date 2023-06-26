@@ -3,10 +3,8 @@ import { TRouteData } from "../types";
 import { appRoutes } from "../paths";
 import { TimeSheet } from "features/timeAndAttendance/pages/TimeSheet";
 import { TimeOff } from "features/timeAndAttendance/pages/TimeOff";
-import { TimeReport } from "features/timeAndAttendance/pages/TimeReport";
 import { UploadTimesheet } from "features/timeAndAttendance/pages/UploadTimesheet";
 import { TimeSheetDetails } from "features/timeAndAttendance/pages/TimeSheetDetails";
-import { TimeReportDetails } from "features/timeAndAttendance/pages/TimeReportDetails";
 import { TimeTrackingRules } from "features/timeAndAttendance/pages/settings/TimeTrackingRules";
 import { WorkSchedule } from "features/timeAndAttendance/pages/settings/WorkSchedule";
 import { TimeOffPolicy } from "features/timeAndAttendance/pages/settings/TimeOffPolicy";
@@ -38,12 +36,6 @@ export const attendanceRoutes: TRouteData[] = [
     title: "Time-off",
   },
   {
-    element: <TimeReport />,
-    path: appRoutes.attendanceReport,
-    isSearchable: true,
-    title: "attendance report",
-  },
-  {
     element: <UploadTimesheet />,
     path: appRoutes.uploadAttendance,
     isSearchable: false,
@@ -53,12 +45,6 @@ export const attendanceRoutes: TRouteData[] = [
     path: appRoutes.timeSheetDetails().format,
     isSearchable: false,
   },
-  {
-    element: <TimeReportDetails />,
-    path: appRoutes.attendanceReportDetails().format,
-    isSearchable: false,
-  },
-
   {
     element: <TimeTrackingRules />,
     path: appRoutes.timeTrackingRules,
