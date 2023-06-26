@@ -1,27 +1,24 @@
-import { SelectApprovalStatus } from "features/core/workflows/components/SelectApprovalStatus";
-import React, { useState } from "react";
-import { TApprovalStatus } from "types/statuses";
+import {
+  TApprovalStatusContainerProps,
+  withApprovalStatusContainer,
+} from "components/containers/ApprovalStatusContainer";
 import { PromotionRequestsTable } from "./PromotionRequestsTable";
 
-export const PromotionRequestsTableContainer = () => {
-  const [status, setStatus] = useState<TApprovalStatus>();
+interface ComponentProps {
+  export: () => void;
+}
 
+const Component: React.FC<ComponentProps & TApprovalStatusContainerProps> = ({
+  status,
+}) => {
   return (
-    <div className="flex flex-col gap-4">
-      <div className="flex justify-between">
-        <div className="flex justify-between">
-          <SelectApprovalStatus
-            value={status}
-            onSelect={(id) => {
-              setStatus(id);
-            }}
-            onClear={() => {
-              setStatus(undefined);
-            }}
-          />
-        </div>
-      </div>
+    <div>
       <PromotionRequestsTable status={status} />
     </div>
   );
+};
+const ComponentWithHOC = withApprovalStatusContainer(Component);
+
+export const PromotionRequestsTableContainer: React.FC = () => {
+  return <ComponentWithHOC export={() => {}} />;
 };

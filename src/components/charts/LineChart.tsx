@@ -26,14 +26,14 @@ export const options = {
 
 interface IProps {
   labels: string[];
-  data: number[];
+  data?: number[];
   axis?: "x" | "y";
   bgColors?: string | string[];
   dataEntityLabel?: string;
 }
 export const LineChart: React.FC<IProps> = ({
   labels,
-  data,
+  data = [],
   axis = "x",
   bgColors = "#1B59F8CC",
   dataEntityLabel = "items",

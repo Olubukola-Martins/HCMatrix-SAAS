@@ -20,7 +20,18 @@ interface Workflow {
   updatedAt: string;
   deletedAt?: any;
 }
-export type TWorkflowApprovalType = "vehicle" | "conference-room" | "leave";
+export type TWorkflowApprovalType =
+  | "vehicle"
+  | "conference-room"
+  | "leave"
+  | "asset"
+  | "job"
+  | "money"
+  | "position-change"
+  | "promotion"
+  | "reimbursement"
+  | "transfer"
+  | "travel";
 
 export type TStagingType = "employee" | "role" | "group" | "department-head";
 export type TStageCondition = "specific" | "at-least-one" | "everyone";

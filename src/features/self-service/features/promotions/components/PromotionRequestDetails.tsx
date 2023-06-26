@@ -1,12 +1,12 @@
-import { DatePicker, Form, Input, Modal, Skeleton } from "antd";
+import { Form, Input, Modal, Skeleton } from "antd";
 import React, { useEffect } from "react";
 import { IModalProps } from "types";
 import { useApiAuth } from "hooks/useApiAuth";
 import { AppButton } from "components/button/AppButton";
 import { boxStyle } from "styles/reused";
 import { getAppropriateColorForStatus } from "utils/colorHelpers/getAppropriateColorForStatus";
-import moment from "moment";
 import { useGetSinglePromotionRequisition } from "../../requisitions/hooks/promotion/useGetSinglePromotionRequisition";
+import moment from "moment";
 
 interface IProps extends IModalProps {
   id: number;
@@ -27,11 +27,15 @@ export const PromotionRequestDetails: React.FC<IProps> = ({
   useEffect(() => {
     if (data) {
       form.setFieldsValue({
-        date: data.date ? moment(data.date) : null,
+        date: moment(data.date).format("YYYY-MM-DD"),
         employeeName: `${data.employee.firstName} ${data.employee.lastName}`,
-        preferredStartDate: data.preferredStartDate.toString(),
+        preferredStartDate: moment(data.preferredStartDate).format(
+          "YYYY-MM-DD"
+        ),
+        employeeID: data.employee.empUid,
         proposedDesignation: data.proposedDesignation.name,
         justification: data.justification,
+        status: data.status,
       });
     }
   }, [id, form, data]);
@@ -46,10 +50,10 @@ export const PromotionRequestDetails: React.FC<IProps> = ({
       <Skeleton active loading={isFetching} paragraph={{ rows: 8 }}>
         <Form form={form} disabled layout="vertical">
           <Form.Item name={"date"} label="Date">
-            <DatePicker className="w-full" />
+            <Input className="w-full" />
           </Form.Item>
           <Form.Item name={"preferredStartDate"} label="Preferred Start Date">
-            <DatePicker className="w-full" />
+            <Input className="w-full" />
           </Form.Item>
           <Form.Item name={"employeeName"} label="Employee Name">
             <Input />

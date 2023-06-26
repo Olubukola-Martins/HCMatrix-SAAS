@@ -2,9 +2,23 @@ import PageSubHeader from "components/layout/PageSubHeader";
 import React, { useState } from "react";
 import { NewPositionChangeRequest } from "./NewPositionChangeRequest";
 import { PositionChangeRequestsTableContainer } from "./PositionChangeRequestsTableContainer";
+import { Tabs } from "antd";
+import PositionChangeApprovalRequestsContainer from "./PositionChangeApprovalRequestsContainer";
 
 const PositionChangeRequestsContainer = () => {
   const [showM, setShowM] = useState(false);
+  const tabItems = [
+    {
+      key: "My Requests",
+      label: "My Requests",
+      children: <PositionChangeRequestsTableContainer />,
+    },
+    {
+      key: "Approval Requests",
+      label: "Approval Requests",
+      children: <PositionChangeApprovalRequestsContainer />,
+    },
+  ];
   return (
     <div className="flex flex-col gap-6">
       <NewPositionChangeRequest
@@ -20,7 +34,7 @@ const PositionChangeRequestsContainer = () => {
           },
         ]}
       />
-      <PositionChangeRequestsTableContainer />
+      <Tabs items={tabItems} />
     </div>
   );
 };

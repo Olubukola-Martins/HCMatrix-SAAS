@@ -1,7 +1,6 @@
 import SelfServiceSubNav from "features/self-service/components/SelfServiceSubNav";
 import CRBCards from "../components/CRBCards";
 import CRBHeader from "../components/CRBHeader";
-import CRBHistoryTable from "../components/CRBHistoryContainer";
 import { CRBApprovalRequestsContainer } from "../components/CRBApprovalRequestsContainer";
 import CRBHistoryContainer from "../components/CRBHistoryContainer";
 

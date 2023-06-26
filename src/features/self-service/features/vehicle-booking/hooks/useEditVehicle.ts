@@ -15,10 +15,10 @@ type TEditProps = {
   color?: string;
   description?: string;
   purchaseDate?: string;
-  dateAssigned?: string;
+  dateAssigned?: string | null;
   cost?: number;
   status: TVehicleStatus;
-  assigneeId?: number;
+  assigneeId?: number | null;
   documentUrls?: string[];
 };
 

@@ -32,6 +32,7 @@ export const PositionChangeRequestDetails: React.FC<IProps> = ({
         skillsAndQualifications: data.skillsAndQualifications,
         reason: data.reason,
         justification: data.justification,
+        status: data.status,
       });
     }
   }, [id, form, data]);
@@ -40,7 +41,7 @@ export const PositionChangeRequestDetails: React.FC<IProps> = ({
       open={open}
       onCancel={() => handleClose()}
       footer={null}
-      title={"Monetary Request Details"}
+      title={"Position Change Details"}
       style={{ top: 20 }}
     >
       <Skeleton active loading={isFetching} paragraph={{ rows: 8 }}>

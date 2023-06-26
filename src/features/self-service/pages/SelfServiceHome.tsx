@@ -11,7 +11,7 @@ import { Dropdown } from "antd";
 import Themes from "components/Themes";
 import SelfBox, { RequisitionBox, MoreBox } from "../components/SelfBox";
 
-const SelfServiceHome = () => {
+const SelfServiceHome: React.FC = () => {
   const requestStyle =
     "flex items-center justify-between cursor-pointer group border-b pb-2";
 

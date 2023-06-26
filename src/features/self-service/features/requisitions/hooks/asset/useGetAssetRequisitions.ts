@@ -18,7 +18,7 @@ export const QUERY_KEY_FOR_ASSET_REQUISITIONS = "asset-requisitions";
 const getData = async (
   props: IGetDataProps
 ): Promise<{ data: TAssetRequisition[]; total: number }> => {
-  const { pagination } = props;
+  const { pagination, employeeId, status } = props;
   const limit = pagination?.limit ?? DEFAULT_PAGE_SIZE;
   const offset = pagination?.offset ?? 0;
   const name = props.searchParams?.name ?? "";
@@ -35,6 +35,8 @@ const getData = async (
       limit,
       offset,
       search: name,
+      employeeId,
+      status,
     },
   };
 

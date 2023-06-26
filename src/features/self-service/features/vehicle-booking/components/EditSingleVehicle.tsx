@@ -15,7 +15,6 @@ import { VEHICLE_TYPES } from "./VehicleTypeCardList";
 import { VEHICLE_STATUSES } from "./SelectVehicleStatus";
 
 import { useEditVehicle } from "../hooks/useEditVehicle";
-import { FormEmployeeInput } from "features/core/employees/components/FormEmployeeInput";
 import { useCurrentFileUploadUrl } from "hooks/useCurrentFileUploadUrl";
 import { IModalProps } from "types";
 import {
@@ -26,6 +25,7 @@ import { openNotification } from "utils/notifications";
 import { FileUpload } from "components/FileUpload";
 import { AppButton } from "components/button/AppButton";
 import moment from "moment";
+import { data } from "features/payroll/components/WaterFallChart";
 
 interface IProps extends IModalProps {
   vehicle: TVehicle;
@@ -43,7 +43,6 @@ export const EditSingleVehicle: React.FC<IProps> = ({
   const [form] = Form.useForm();
   const { mutate, isLoading } = useEditVehicle();
   const [moreInfo, setMoreInfo] = useState(false);
-  const [assigneeInfo, setAssigneeInfo] = useState(false);
   const documentUrl = useCurrentFileUploadUrl("documentUrl");
   const imageUrl = useCurrentFileUploadUrl("imageUrl");
 
@@ -56,8 +55,7 @@ export const EditSingleVehicle: React.FC<IProps> = ({
       imageUrl: vehicle.imageUrl,
       color: vehicle.color,
       description: vehicle.description,
-      purchaseDate: moment(vehicle.purchaseDate),
-      dateAssigned: moment(vehicle.dateAssigned),
+      purchaseDate: vehicle.purchaseDate ? moment(vehicle.purchaseDate) : null,
       cost: vehicle.cost,
       status: vehicle.status,
       assigneeId: vehicle.assigneeId,
@@ -76,10 +74,9 @@ export const EditSingleVehicle: React.FC<IProps> = ({
           color: data?.color,
           description: data?.description,
           purchaseDate: data?.purchaseDate,
-          dateAssigned: data?.dateAssigned,
           cost: data?.cost,
-          status: data?.status,
-          assigneeId: data?.assigneeId,
+          status: data?.status ?? vehicle?.status,
+
           documentUrls: !!documentUrl ? [documentUrl] : [],
         },
         id: vehicle.id,
@@ -127,7 +124,15 @@ export const EditSingleVehicle: React.FC<IProps> = ({
         form={form}
         onFinish={handleSubmit}
       >
-        <Form.Item name="type" rules={generalValidationRules}>
+        <div className={boxStyle}>
+          <FileUpload
+            allowedFileTypes={["image/jpeg", "image/png", "image/jpg"]}
+            fileKey="imageUrl"
+            textToDisplay="Upload Vehicle Image"
+            displayType="icon"
+          />
+        </div>
+        <Form.Item name="type" label="Type" rules={generalValidationRules}>
           <Select
             placeholder="Vehicle Type"
             options={VEHICLE_TYPES.map((item) => ({
@@ -136,30 +141,32 @@ export const EditSingleVehicle: React.FC<IProps> = ({
             }))}
           />
         </Form.Item>
-        <Form.Item name="brand" rules={textInputValidationRules}>
+        <Form.Item name="brand" label="Brand" rules={textInputValidationRules}>
           <Input placeholder="Vehicle Brand" />
         </Form.Item>
-        <Form.Item name="model" rules={textInputValidationRules}>
+        <Form.Item name="model" label="Model" rules={textInputValidationRules}>
           <Input placeholder="Vehicle Model" />
         </Form.Item>
-        <div className={boxStyle}>
-          <FileUpload
-            allowedFileTypes={["image/jpeg", "image/png", "image/jpg"]}
-            fileKey="imageUrl"
-            textToDisplay="Upload Vehicle Image"
-            displayType="form-space-between"
-          />
-        </div>
-        <Form.Item name="status" rules={generalValidationRules}>
-          <Select
-            placeholder="Status"
-            options={VEHICLE_STATUSES.map((item) => ({
-              label: item,
-              value: item,
-            }))}
-          />
-        </Form.Item>
-        <Form.Item name="plateNumber" rules={textInputValidationRules}>
+
+        {/* This code ensures that a vehicle status can only be changed when it is unassigned, and it can only be changed to in-repair or codendemed, but not assigned cos there is ui that does this already and user will have to assign a user */}
+        {vehicle.status !== "assigned" && (
+          <Form.Item name="status" rules={generalValidationRules}>
+            <Select
+              placeholder="Status"
+              options={VEHICLE_STATUSES.filter(
+                (val) => val === "in-repair" || val === "condemned"
+              ).map((item) => ({
+                label: item,
+                value: item,
+              }))}
+            />
+          </Form.Item>
+        )}
+        <Form.Item
+          name="plateNumber"
+          label="Plate Number"
+          rules={textInputValidationRules}
+        >
           <Input placeholder="Plate Number" />
         </Form.Item>
         <div className={boxStyle}>
@@ -174,13 +181,13 @@ export const EditSingleVehicle: React.FC<IProps> = ({
 
           {moreInfo && (
             <div className="grid grid-cols-2 gap-4 mt-4">
-              <Form.Item name="cost">
+              <Form.Item name="cost" label="Cost">
                 <InputNumber placeholder="Cost(optional)" className="w-full" />
               </Form.Item>
-              <Form.Item name="color">
+              <Form.Item name="color" label="Color">
                 <Input placeholder="Color(optional)" />
               </Form.Item>
-              <Form.Item name="purchaseDate">
+              <Form.Item name="purchaseDate" label="Purchase Date">
                 <DatePicker
                   placeholder="Purchase Date (optional)"
                   className="w-full"
@@ -189,32 +196,7 @@ export const EditSingleVehicle: React.FC<IProps> = ({
             </div>
           )}
         </div>
-        <div className={boxStyle}>
-          <div className="flex items-center justify-between">
-            <h5 className={boxTitle}>Assignee Information (Optional)</h5>
-            <Switch
-              size="small"
-              checked={assigneeInfo}
-              onClick={() => setAssigneeInfo((val) => !val)}
-            />
-          </div>
 
-          {assigneeInfo && (
-            <div className="grid grid-cols-2 gap-4 mt-4">
-              <FormEmployeeInput
-                Form={Form}
-                control={{ name: "assigneeId", label: "" }}
-              />
-
-              <Form.Item name="dateAssigned">
-                <DatePicker
-                  placeholder="Date Assigned (optional)"
-                  className="w-full"
-                />
-              </Form.Item>
-            </div>
-          )}
-        </div>
         <Form.Item label="Documents">
           <FileUpload
             allowedFileTypes={[

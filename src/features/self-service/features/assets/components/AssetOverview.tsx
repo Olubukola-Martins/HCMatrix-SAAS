@@ -8,8 +8,14 @@ import AddAssetType from "./AddAssetsType";
 import { NewAssetRequest } from "./NewAssetRequest";
 import { RecentAssetRequestsCard } from "./RecentAssetRequestsCard";
 import { AssetTypeCardList } from "./AssetTypeCardList";
+import { AssetsByStatusCard } from "./AssetsByStatusCard";
+import { TAssetTabKey } from "../pages/Assets";
 
-const AssetOverview = () => {
+interface IProps {
+  handleTabKey: (val: TAssetTabKey) => void;
+}
+
+const AssetOverview: React.FC<IProps> = ({ handleTabKey }) => {
   type TAction = "add-asset" | "add-asset-type" | "request-asset";
   const [action, setAction] = useState<TAction>();
 
@@ -57,12 +63,16 @@ const AssetOverview = () => {
             ]}
           />
         </div>
-        <div className="grid grid-cols-1 lg:grid-cols-4 gap-5">
+        <div className="grid grid-cols-1 lg:grid-cols-4 gap-5  mt-4">
           <div className="col-span-3">
             <AssetMonthlyInsightsCard />
           </div>
-          <div className="lg:col-span-1 col-span-4">
-            <RecentAssetRequestsCard />
+
+          <div>
+            <RecentAssetRequestsCard
+              handleSeeAll={() => handleTabKey("My Requests")}
+            />
+
           </div>
         </div>
 
@@ -72,42 +82,8 @@ const AssetOverview = () => {
             <AssetTypeCardList />
           </div>
 
-          <div className="border rounded-md p-2 shadow">
-            <p>Asset by Status[Create PieCha reusable]</p>
-            <div className="flex justify-center my-4">
-              <img
-                src="https://res.cloudinary.com/ddvaelej7/image/upload/v1664348855/roundGraph1_kz4hem.svg"
-                alt="graph"
-                className="h-28"
-              />
-            </div>
-
-            <div className="flex justify-between">
-              <div className="flex items-center gap-2">
-                <div className="w-3 h-3 rounded bg-caramel" />
-                <span className="text-sm">0 Assigned</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <div
-                  className="w-3 h-3 rounded"
-                  style={{ background: "#FFA600" }}
-                />
-                <span className="text-sm">0 Unassigned</span>
-              </div>
-            </div>
-            <div className="flex justify-between mt-1">
-              <div className="flex items-center gap-2">
-                <div
-                  className="w-3 h-3 rounded"
-                  style={{ background: "#FFF0F0" }}
-                />
-                <span className="text-sm">0 Under Repair</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <div className="w-3 h-3 rounded bg-card" />
-                <span className="text-sm">0 Condemned</span>
-              </div>
-            </div>
+          <div>
+            <AssetsByStatusCard />
           </div>
         </div>
       </div>

@@ -1,9 +1,11 @@
 import { UploadOutlined } from "@ant-design/icons";
-import { UploadProps, message, Upload, Button } from "antd";
+import { UploadProps, message, Upload, Button, Typography } from "antd";
 import { IAuthDets } from "features/authentication/types";
 import { useContext } from "react";
 import { useAuthUser } from "react-auth-kit";
 import { GlobalContext, EGlobalOps } from "stateManagers/GlobalContextProvider";
+
+// TO DO: HANDLE And account for the delete of a file from context
 
 type TFileType =
   | "image/png"
@@ -80,7 +82,17 @@ export const FileUpload = ({
             <UploadOutlined />
           </div>
         )}
-        {displayType === "icon" && <div>Test file +</div>}
+        {displayType === "icon" && (
+          <div className="flex flex-col items-center">
+            <Button
+              shape="circle"
+              size={"large"}
+              icon={<UploadOutlined />}
+              className="text-3xl"
+            />
+            <Typography.Text>{textToDisplay}</Typography.Text>
+          </div>
+        )}
       </Upload>
     </div>
   );

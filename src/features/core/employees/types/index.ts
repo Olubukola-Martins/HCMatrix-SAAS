@@ -209,38 +209,6 @@ export type TEmployeeDependant = {
   relationship: string;
 };
 
-export type TCompanyParameter = {
-  administrator?: {
-    adminEmail: string;
-  };
-  emailSettings?: {
-    defaultFromAddress: string;
-  };
-  locationSettings?: {
-    country: string;
-    timezone: string;
-  };
-  dateAndTimeSettings?: {
-    dateFormat: string;
-    timeFormat: string;
-  };
-  profilePhotoSettings?: {
-    modifyUsersProfile?: {
-      administrator: boolean;
-      employee: boolean;
-    };
-  };
-  notificationSettings?: {
-    email: boolean;
-    inApp: boolean;
-    sms: boolean;
-  };
-  employeeSettings?: {
-    hideBirthday: boolean;
-    hidePhoneNumber: boolean;
-    hideWorkAnniversary: boolean;
-  };
-};
 export type TCountry = {
   id: number;
   name: string;
@@ -346,6 +314,7 @@ export type TManagerHistory = {
   };
 };
 
+// TO DO: refactor types to match api exactly - employee, authData, ..............
 export type TEmployee = {
   companyId: number;
   avatarUrl?: string;

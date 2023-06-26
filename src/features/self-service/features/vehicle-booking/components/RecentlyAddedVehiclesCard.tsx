@@ -1,30 +1,21 @@
 import React from "react";
-import { LIMIT_OF_ITEMS_TO_DISPLAY } from "./RecentVehicleRequestsCard";
-import { useFetchVehicles } from "../hooks/useFetchVehicles";
+
 import moment from "moment";
-import { useApiAuth } from "hooks/useApiAuth";
 import { RecentCard } from "components/cards/RecentCard";
+import { useGetVehicleOverviewAnalytics } from "../hooks/useGetVehicleOverviewAnalytics";
 
 export const RecentlyAddedVehiclesCard: React.FC<{
   handleSeeAll?: () => void;
 }> = ({ handleSeeAll }) => {
-  const { token, companyId } = useApiAuth();
+  const { data, isLoading } = useGetVehicleOverviewAnalytics();
 
-  const { data, isLoading } = useFetchVehicles({
-    token,
-    companyId,
-    pagination: {
-      limit: LIMIT_OF_ITEMS_TO_DISPLAY,
-      offset: 0,
-    },
-  });
   return (
     <RecentCard
       title="Recently Added Vehicles"
-      total={data?.total}
       loading={isLoading}
+      total={data?.recentlyAddedVehicles.length} //might not be needed cos this might not be total count when using analytics endpoint
       secondaryColTitle="Date"
-      data={data?.data.map((item) => ({
+      data={data?.recentlyAddedVehicles.map((item) => ({
         title: `${item.brand} ${item.model}`,
         secondaryCol: {
           type: "text",

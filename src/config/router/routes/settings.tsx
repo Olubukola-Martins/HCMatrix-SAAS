@@ -3,7 +3,6 @@ import { appRoutes } from "../paths";
 import { TRouteData } from "../types";
 import GeneralCompanySettings from "features/settings/pages/GeneralCompanySettings";
 import CompanyDetails from "features/core/company/pages/CompanyDetails";
-import { Holidays } from "features/home/components/Holidays";
 import { MyProfile } from "features/core/employees/pages/MyProfile";
 import { EmployeeProfile } from "features/core/employees/pages/EmployeeProfile";
 import { AddEmployee } from "features/core/employees/pages/AddEmployee";
@@ -18,6 +17,8 @@ import { EditRole } from "features/core/roles-and-permissions/pages/EditRole";
 import Workflows from "features/core/workflows/pages/Workflows";
 import CreateWorklow from "features/core/workflows/pages/CreateWorkflow";
 import EditWorkflow from "features/core/workflows/pages/EditWorkflow";
+import Holidays from "features/core/holidays/pages/Holidays";
+import ResignationSettingsPage from "features/core/policies/pages/ResignationSettingsPage";
 
 export const settingRoutes: TRouteData[] = [
   {
@@ -49,6 +50,7 @@ export const settingRoutes: TRouteData[] = [
     isSearchable: true,
     title: "Holidays",
   },
+
   {
     element: <MyProfile />,
     path: appRoutes.userProfileSettings,
@@ -140,9 +142,9 @@ export const settingRoutes: TRouteData[] = [
     isSearchable: false,
   },
   {
-    element: <div>Resignation policy </div>,
+    element: <ResignationSettingsPage />,
     path: appRoutes.resignationPolicySettings,
     isSearchable: true,
-    title: "Resignation Policy",
+    title: "Resignation Setting",
   },
 ];

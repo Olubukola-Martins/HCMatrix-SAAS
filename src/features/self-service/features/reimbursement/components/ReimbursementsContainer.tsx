@@ -2,9 +2,23 @@ import PageSubHeader from "components/layout/PageSubHeader";
 import React, { useState } from "react";
 import { NewReimbursement } from "./NewReimbursement";
 import { ReimbursmentsRequestsTableContainer } from "./ReimbursmentsRequestsTableContainer";
+import { Tabs } from "antd";
+import ReimbursementApprovalRequestsContainer from "./ReimbursementApprovalRequestsContainer";
 
 const ReimbursementsContainer = () => {
   const [showM, setShowM] = useState(false);
+  const tabItems = [
+    {
+      key: "My Requests",
+      label: "My Requests",
+      children: <ReimbursmentsRequestsTableContainer />,
+    },
+    {
+      key: "Approval Requests",
+      label: "Approval Requests",
+      children: <ReimbursementApprovalRequestsContainer />,
+    },
+  ];
   return (
     <div className="flex flex-col gap-6">
       <NewReimbursement open={showM} handleClose={() => setShowM(false)} />
@@ -14,7 +28,7 @@ const ReimbursementsContainer = () => {
           { name: "New Reimbursement", handleClick: () => setShowM(true) },
         ]}
       />
-      <ReimbursmentsRequestsTableContainer />
+      <Tabs items={tabItems} />
     </div>
   );
 };

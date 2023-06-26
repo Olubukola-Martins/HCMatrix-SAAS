@@ -25,7 +25,8 @@ export const NewAssetRequest: React.FC<IModalProps> = ({
 
   const [form] = Form.useForm();
   const { mutate, isLoading } = useCreateAssetRequisition();
-  const { currentUserEmployeeId } = useApiAuth();
+  const { currentUserEmployeeId, currentCompanyEmployeeDetails } = useApiAuth();
+  console.log(currentCompanyEmployeeDetails, "ppp");
   const documentUrl = useCurrentFileUploadUrl("documentUrl");
 
   const handleSubmit = (data: any) => {

@@ -2,7 +2,7 @@ import { BrowserRouter } from "react-router-dom";
 import { QueryClientProvider, QueryClient } from "react-query";
 import { ReactQueryDevtools } from "react-query/devtools";
 import { AuthProvider } from "react-auth-kit";
-import { useEffect } from "react";
+import { Suspense, useEffect } from "react";
 import Router from "config/router";
 import refreshApi from "config/refreshTokenApi";
 import GlobalContextProvider from "stateManagers/GlobalContextProvider";
@@ -26,25 +26,26 @@ function App() {
     // localStorage.clear(); //to clear all changes tommorow
   }, []);
   return (
-    <AuthProvider
-      authType={"localstorage"}
-      authName={"hcmatrix_app"}
-      // cookieDomain={window.location.hostname}
-      // cookieSecure={window.location.protocol === "https:"}
-      refresh={refreshApi}
-    >
-      <QueryClientProvider client={queryClient}>
-        <GlobalContextProvider>
-          <BrowserRouter>
+    <BrowserRouter>
+      <AuthProvider
+        authType={"localstorage"}
+        authName={"hcmatrix_app"}
+        // cookieDomain={window.location.hostname}
+        // cookieSecure={window.location.protocol === "https:"}
+        refresh={refreshApi}
+      >
+        <QueryClientProvider client={queryClient}>
+          <GlobalContextProvider>
             <UserFeedbackContainer />
             <AdminWelcomeContainer />
-
-            <Router />
-          </BrowserRouter>
-        </GlobalContextProvider>
-        <ReactQueryDevtools initialIsOpen={false} position="bottom-right" />
-      </QueryClientProvider>
-    </AuthProvider>
+            <Suspense fallback={<div>temporary Loading...</div>}>
+              <Router />
+            </Suspense>
+          </GlobalContextProvider>
+          <ReactQueryDevtools initialIsOpen={false} position="bottom-right" />
+        </QueryClientProvider>
+      </AuthProvider>
+    </BrowserRouter>
   );
 }
 

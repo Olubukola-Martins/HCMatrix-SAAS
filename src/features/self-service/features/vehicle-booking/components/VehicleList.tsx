@@ -26,6 +26,7 @@ const VehicleList = () => {
     searchParams: {
       name: type,
     },
+    status,
   });
 
   const columns: ColumnsType<TVehicle> = [
@@ -115,7 +116,7 @@ const VehicleList = () => {
           />
           <SelectVehicleStatus
             onSelect={(val) => setStatus(val)}
-            onClear={() => setType(undefined)}
+            onClear={() => setStatus(undefined)}
           />
         </div>
       </div>

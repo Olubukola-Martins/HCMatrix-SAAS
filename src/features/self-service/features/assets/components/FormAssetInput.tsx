@@ -20,6 +20,7 @@ export const FormAssetInput: React.FC<{
     searchParams: {
       name: debouncedSearchTerm,
     },
+    status: "unassigned", //only unassigned assets should be displayed
 
     token,
   });
@@ -35,7 +36,7 @@ export const FormAssetInput: React.FC<{
       rules={generalValidationRules}
     >
       <Select
-        placeholder="Select Asset Type"
+        placeholder="Select Asset"
         loading={isFetching} //TO DO : this should be added to all custom Fetch Form Inputs
         showSearch
         allowClear

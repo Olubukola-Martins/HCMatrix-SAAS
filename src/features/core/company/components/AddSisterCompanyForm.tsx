@@ -1,9 +1,51 @@
 import { Form, Modal, Input } from "antd";
 import { IModalProps } from "types";
-import { textInputValidationRules } from "utils/formHelpers/validation";
+import {
+  emailValidationRules,
+  phoneNumberValidationRule,
+  textInputValidationRules,
+} from "utils/formHelpers/validation";
+import { useCreateSisterCompany } from "../hooks/useCreateSisterCompany";
+import { AppButton } from "components/button/AppButton";
+import { openNotification } from "utils/notifications";
+import { FormIndustryInput } from "components/generalFormInputs/FormIndustryInput";
 
 export const AddSisterCompanyForm = ({ open, handleClose }: IModalProps) => {
   const [form] = Form.useForm();
+
+  const { mutate, isLoading } = useCreateSisterCompany();
+
+  const handleSubmit = (data: any) => {
+    mutate(
+      {
+        name: data.name,
+        email: data.email,
+        phoneNumber: data.phoneNumber,
+        industryId: data.industryId,
+      },
+      {
+        onError: (err: any) => {
+          openNotification({
+            state: "error",
+            title: "Error Occurred",
+            description:
+              err?.response.data.message ?? err?.response.data.error.message,
+          });
+        },
+        onSuccess: (res: any) => {
+          openNotification({
+            state: "success",
+
+            title: "Success",
+            description: res.data.message,
+            // duration: 0.4,
+          });
+          form.resetFields();
+          handleClose();
+        },
+      }
+    );
+  };
 
   return (
     <Modal
@@ -13,10 +55,13 @@ export const AddSisterCompanyForm = ({ open, handleClose }: IModalProps) => {
       footer={null}
       style={{ top: 10 }}
     >
-      <Form layout="vertical" requiredMark={false} size="middle" form={form}>
-        <Form.Item name="fullName" label="Parent Company">
-          <Input disabled />
-        </Form.Item>
+      <Form
+        layout="vertical"
+        requiredMark={false}
+        size="middle"
+        form={form}
+        onFinish={handleSubmit}
+      >
         <Form.Item
           label="Company Name"
           name="name"
@@ -28,12 +73,28 @@ export const AddSisterCompanyForm = ({ open, handleClose }: IModalProps) => {
 
         <Form.Item
           name="email"
-          label="Email"
-          rules={textInputValidationRules}
+          label="Company Email"
+          rules={emailValidationRules}
           hasFeedback
         >
-          <Input placeholder="Business Email" />
+          <Input placeholder="Company Email" />
         </Form.Item>
+        <Form.Item
+          name="phoneNumber"
+          label="Phone Number"
+          rules={[phoneNumberValidationRule]}
+          hasFeedback
+        >
+          <Input placeholder="Phone Number" />
+        </Form.Item>
+        <FormIndustryInput
+          Form={Form}
+          control={{ name: "industryId", label: "Industry" }}
+        />
+
+        <div className="flex justify-end">
+          <AppButton label="Add" type="submit" isLoading={isLoading} />{" "}
+        </div>
       </Form>
     </Modal>
   );

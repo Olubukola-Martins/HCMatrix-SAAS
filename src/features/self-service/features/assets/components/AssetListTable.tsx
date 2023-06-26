@@ -7,14 +7,15 @@ import { ColumnsType } from "antd/lib/table";
 import { usePagination } from "hooks/usePagination";
 import { useGetAssets } from "../hooks/useGetAssets";
 import { useApiAuth } from "hooks/useApiAuth";
-import { TAsset } from "../types";
+import { TAsset, TAssetStatus } from "../types";
 import { Link } from "react-router-dom";
 import { appRoutes } from "config/router/paths";
 
 const AssetListTable: React.FC<{
-  type?: string;
+  typeId?: number;
   employeeId?: number;
-}> = ({ type, employeeId }) => {
+  status?: TAssetStatus;
+}> = ({ typeId, employeeId, status }) => {
   const { token, companyId } = useApiAuth();
   const { pagination, onChange } = usePagination();
 
@@ -22,6 +23,8 @@ const AssetListTable: React.FC<{
     pagination,
     companyId,
     token,
+    status,
+    typeId,
   });
 
   const originalColumns: ColumnsType<TAsset> = [
