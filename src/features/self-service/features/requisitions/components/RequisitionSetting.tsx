@@ -7,11 +7,20 @@ import { AppButton } from "components/button/AppButton";
 import { FormWorkflowInput } from "features/core/workflows/components/FormWorkflowInput";
 import { useApiAuth } from "hooks/useApiAuth";
 import { openNotification } from "utils/notifications";
-import {
-  QUERY_KEY_FOR_REQUISITION_SETTING,
-  useGeTRequisitionSettings,
-} from "../hooks/setting/useGetRequisitionSetting";
-import { TRequisitionSetting } from "../types";
+import { QUERY_KEY_FOR_REQUISITION_SETTING } from "../hooks/setting/useGetRequisitionSetting";
+import { TRequistionType } from "../types";
+import { useGetSingleRequisitionSetting } from "../hooks/setting/useGetSingleRequisitionSetting";
+
+export const REQUISITION_TYPES: TRequistionType[] = [
+  "asset",
+  "job",
+  "position-change",
+  "promotion",
+  "reimbursement",
+  "transfer",
+  "money",
+  "travel",
+];
 
 export const RequisitionSetting = () => {
   return (
@@ -36,26 +45,26 @@ const RequisitionPolicy = () => {
 };
 
 const RequisitionPolicyFormList = () => {
-  const { companyId, token } = useApiAuth();
-
-  const { data, isLoading } = useGeTRequisitionSettings({
-    companyId,
-    token,
-  });
-
   return (
-    <Skeleton loading={isLoading} active paragraph={{ rows: 14 }}>
-      {data?.data.map((item) => (
-        <RequisitionPolicyForm key={item.id} data={item} />
+    <>
+      {REQUISITION_TYPES.map((item) => (
+        <RequisitionPolicyForm key={item} type={item} />
       ))}
-    </Skeleton>
+    </>
   );
 };
-const RequisitionPolicyForm: React.FC<{ data: TRequisitionSetting }> = ({
-  data,
+const RequisitionPolicyForm: React.FC<{ type: TRequistionType }> = ({
+  type,
 }) => {
   const queryClient = useQueryClient();
   const [form] = Form.useForm();
+  const { companyId, token } = useApiAuth();
+
+  const { data, isFetching } = useGetSingleRequisitionSetting({
+    type,
+    companyId,
+    token,
+  });
 
   useEffect(() => {
     if (data) {
@@ -70,7 +79,7 @@ const RequisitionPolicyForm: React.FC<{ data: TRequisitionSetting }> = ({
   const handleSubmit = (values: any) => {
     mutate(
       {
-        type: data.type,
+        type,
         body: {
           isActive: !!values.isActive,
           workflowId: values.workflowId,
@@ -106,39 +115,41 @@ const RequisitionPolicyForm: React.FC<{ data: TRequisitionSetting }> = ({
   };
   return (
     <div className="px-4 py-2 bg-card  rounded-md">
-      <Form
-        labelCol={{ span: 24 }}
-        form={form}
-        requiredMark={false}
-        onFinish={handleSubmit}
-      >
-        <div className="flex flex-col gap-2">
-          <div className="flex justify-between">
-            <h6 className="capitalize mb-4 font-semibold">
-              {data.type.split("-").join(" ")}
-            </h6>
-            <Form.Item name={"isActive"}>
-              <Switch
-                unCheckedChildren="No"
-                checkedChildren="Yes"
-                defaultChecked={data.isActive}
+      <Skeleton loading={isFetching} active paragraph={{ rows: 3 }}>
+        <Form
+          labelCol={{ span: 24 }}
+          form={form}
+          requiredMark={false}
+          onFinish={handleSubmit}
+        >
+          <div className="flex flex-col gap-2">
+            <div className="flex justify-between">
+              <h6 className="capitalize mb-4 font-semibold">
+                {data?.type ? data?.type.split("-").join(" ") : type}
+              </h6>
+              <Form.Item name={"isActive"}>
+                <Switch
+                  unCheckedChildren="No"
+                  checkedChildren="Yes"
+                  defaultChecked={data?.isActive}
+                />
+              </Form.Item>
+            </div>
+            <div className="w-1/2">
+              <FormWorkflowInput
+                Form={Form}
+                control={{ label: "", name: "workflowId" }}
               />
-            </Form.Item>
-          </div>
-          <div className="w-1/2">
-            <FormWorkflowInput
-              Form={Form}
-              control={{ label: "", name: "workflowId" }}
-            />
-          </div>
+            </div>
 
-          <div className="flex justify-end">
-            <Form.Item>
-              <AppButton label="Save" type="submit" isLoading={isLoading} />
-            </Form.Item>
+            <div className="flex justify-end">
+              <Form.Item>
+                <AppButton label="Save" type="submit" isLoading={isLoading} />
+              </Form.Item>
+            </div>
           </div>
-        </div>
-      </Form>
+        </Form>
+      </Skeleton>
     </div>
   );
 };

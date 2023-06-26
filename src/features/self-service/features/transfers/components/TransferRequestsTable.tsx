@@ -10,6 +10,7 @@ import { getAppropriateColorForStatus } from "utils/colorHelpers/getAppropriateC
 import { TransferDetails } from "./TransferDetails";
 import { TTransferRequisition } from "../../requisitions/types/transfer";
 import { useGetTransferRequisitions } from "../../requisitions/hooks/transfer/useGetTransferRequisitions";
+import { getEmployeeFullName } from "features/core/employees/utils/getEmployeeFullName";
 
 export const TransferRequestsTable: React.FC<{
   status?: TApprovalStatus;
@@ -38,7 +39,7 @@ export const TransferRequestsTable: React.FC<{
       key: "name",
       render: (_, item) => (
         <span className="capitalize">
-          {item.employee.firstName} {item.employee.lastName}
+          {item ? getEmployeeFullName(item.employee) : ""}
         </span>
       ),
     },
@@ -94,7 +95,10 @@ export const TransferRequestsTable: React.FC<{
       dataIndex: "status",
       key: "status",
       render: (_, item) => (
-        <span style={{ color: getAppropriateColorForStatus(item.status) }}>
+        <span
+          className="capitalize"
+          style={{ color: getAppropriateColorForStatus(item.status) }}
+        >
           {item.status}{" "}
         </span>
       ),

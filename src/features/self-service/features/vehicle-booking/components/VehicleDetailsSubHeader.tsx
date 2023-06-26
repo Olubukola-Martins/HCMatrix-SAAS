@@ -6,11 +6,14 @@ import { QUERY_KEY_FOR_SINGLE_VEHICLE } from "../hooks/useFetchSingleVehicle";
 import { EditSingleVehicle } from "./EditSingleVehicle";
 import PageSubHeader from "components/layout/PageSubHeader";
 import { openNotification } from "utils/notifications";
+import { useNavigate } from "react-router-dom";
+import { appRoutes } from "config/router/paths";
 
 export const VehicleDetailsSubHeader: React.FC<{ vehicle: TVehicle }> = ({
   vehicle,
 }) => {
   const queryClient = useQueryClient();
+  const navigate = useNavigate();
 
   const { mutate, isLoading } = useDeleteVehicle();
 
@@ -39,6 +42,7 @@ export const VehicleDetailsSubHeader: React.FC<{ vehicle: TVehicle }> = ({
           queryClient.invalidateQueries({
             queryKey: [QUERY_KEY_FOR_SINGLE_VEHICLE],
           });
+          navigate(appRoutes.vehicleBooking);
         },
       }
     );

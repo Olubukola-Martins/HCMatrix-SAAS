@@ -6,17 +6,9 @@ import { SimpleCard } from "components/cards/SimpleCard";
 
 interface IProps {
   type: TVehicleType;
+  total: number;
 }
 
-export const VehicleTypeCard: React.FC<IProps> = ({ type }) => {
-  const { token, companyId } = useApiAuth();
-
-  const { data } = useFetchVehicles({
-    token,
-    companyId,
-    searchParams: {
-      name: type,
-    },
-  });
-  return <SimpleCard title={type} highlight={`${data?.total}`} />;
+export const VehicleTypeCard: React.FC<IProps> = ({ type, total }) => {
+  return <SimpleCard title={type} highlight={`${total}`} />;
 };

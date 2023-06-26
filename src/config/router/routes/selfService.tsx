@@ -1,10 +1,9 @@
-import SelfServiceHome from "features/self-service/pages/SelfServiceHome";
 import { appRoutes } from "../paths";
 import { TRouteData } from "../types";
-import Requisition from "features/self-service/features/requisitions/pages/Requisition";
+import React, { lazy } from "react";
+import SelfServiceHome from "features/self-service/pages/SelfServiceHome";
 import Reimbursements from "features/self-service/features/reimbursement/pages/Reimbursements";
 import Assets from "features/self-service/features/assets/pages/Assets";
-import AssetTypeDetails from "features/self-service/features/assets/pages/AssetTypeDetails";
 import AssetDetails from "features/self-service/features/assets/pages/AssetDetails";
 import LoanHome from "features/self-service/features/loan/pages/LoanHome";
 import LoanRequest from "features/self-service/features/loan/pages/LoanRequest";
@@ -38,6 +37,13 @@ import PositionChangeRequestsSettingPage from "features/self-service/features/po
 import PromotionRequests from "features/self-service/features/promotions/pages/PromotionRequests";
 import PromotionRequestsSettingPage from "features/self-service/features/promotions/pages/PromotionRequestsSettingPage";
 import AssetRequestSettingsPage from "features/self-service/features/assets/pages/AssetRequestSettingsPage";
+import TravelRequests from "features/self-service/features/travels/pages/TravelRequests";
+import TravelRequestsSettingPage from "features/self-service/features/travels/pages/TravelRequestsSettingPage";
+
+// TO DO: This lazy loading might not be needed consider rethinking this, so just temporary
+const Requisition = lazy(
+  () => import("features/self-service/features/requisitions/pages/Requisition")
+);
 
 export const selfServiceRoutes: TRouteData[] = [
   {
@@ -138,6 +144,20 @@ export const selfServiceRoutes: TRouteData[] = [
     isPrimaryFeature: true,
   },
   {
+    element: <TravelRequests />,
+    path: appRoutes.selfServiceTravels,
+    isSearchable: true,
+    title: "Travel Requests",
+    isPrimaryFeature: true,
+  },
+  {
+    element: <TravelRequestsSettingPage />,
+    path: appRoutes.selfServiceTravelSetting,
+    isSearchable: true,
+    title: "Travel Request Settings",
+    isPrimaryFeature: false,
+  },
+  {
     element: <Assets />,
     path: appRoutes.selfServiceAssets,
     isSearchable: true,
@@ -151,12 +171,7 @@ export const selfServiceRoutes: TRouteData[] = [
     title: "Asset Settings",
     isPrimaryFeature: false,
   },
-  {
-    element: <AssetTypeDetails />,
-    path: appRoutes.assetTypeDetails().format,
-    isSearchable: false,
-    isPrimaryFeature: false,
-  },
+
   {
     element: <AssetDetails />,
     path: appRoutes.assetDetails().format,

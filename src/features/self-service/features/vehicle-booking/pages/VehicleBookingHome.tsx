@@ -9,12 +9,29 @@ import { appRoutes } from "config/router/paths";
 import { VehicleSetting } from "../components/VehicleSetting";
 import { VBApprovalRequestsContainer } from "../components/VBApprovalRequestsContainer";
 import SelfServiceSubNav from "features/self-service/components/SelfServiceSubNav";
+import { useState } from "react";
+
+export type TVehicleTabKey =
+  | "Vehicle Overview"
+  | "Vehicle List"
+  | "Reminders"
+  | "Settings"
+  | "Approvals"
+  | "My Bookings";
 
 const VehicleBookingHome = () => {
-  const tabItems = [
+  const [key, setKey] = useState<TVehicleTabKey>("Vehicle Overview");
+  const handleTabKey = (val: TVehicleTabKey) => {
+    setKey(val);
+  };
+  const tabItems: {
+    label: TVehicleTabKey;
+    key: TVehicleTabKey;
+    children: React.ReactNode;
+  }[] = [
     {
       label: "Vehicle Overview",
-      children: <VehicleOverview />,
+      children: <VehicleOverview handleTabKey={handleTabKey} />,
       key: "Vehicle Overview",
     },
     {
@@ -51,6 +68,8 @@ const VehicleBookingHome = () => {
         <div className="flex flex-col gap-4">
           <PageIntro title="Vehicle Booking" link={appRoutes.selfServiceHome} />
           <Tabs
+            activeKey={key}
+            onChange={(val) => setKey(val as unknown as TVehicleTabKey)}
             items={tabItems.map((item) => ({
               ...item,
 

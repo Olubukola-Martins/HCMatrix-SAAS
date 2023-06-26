@@ -49,7 +49,7 @@ export const EditSingleAsset: React.FC<IProps> = ({
       serialNumber: asset.serialNumber,
       uid: asset.uid,
 
-      purchaseDate: moment(asset.purchaseDate),
+      purchaseDate: asset.purchaseDate ? moment(asset.purchaseDate) : null,
       imageUrl: asset.imageUrl,
     });
   }, [form, asset]);
@@ -61,9 +61,8 @@ export const EditSingleAsset: React.FC<IProps> = ({
         body: {
           name: data.name,
           typeId: data.typeId,
-          dateAssigned: data.dateAssigned,
-          assigneeId: data.assigneeId,
-          description: data.description,
+          status: data?.status ?? asset?.status,
+          description: data.description ?? undefined,
           color: data.color,
           cost: data.cost,
           model: data.model,
@@ -119,6 +118,14 @@ export const EditSingleAsset: React.FC<IProps> = ({
         onFinish={handleSubmit}
         requiredMark={false}
       >
+        <div className={boxStyle}>
+          <FileUpload
+            allowedFileTypes={["image/jpeg", "image/png", "image/jpg"]}
+            fileKey="imageUrl"
+            textToDisplay="Upload Image"
+            displayType="icon"
+          />
+        </div>
         <FormAssetTypeInput
           Form={Form}
           control={{ name: "typeId", label: "Asset Type" }}
@@ -165,14 +172,7 @@ export const EditSingleAsset: React.FC<IProps> = ({
         <Form.Item rules={generalValidationRulesOp} name="cost" label="Cost">
           <InputNumber step={0.2} placeholder="Cost" className="w-full" />
         </Form.Item>
-        <div className={boxStyle}>
-          <FileUpload
-            allowedFileTypes={["image/jpeg", "image/png", "image/jpg"]}
-            fileKey="imageUrl"
-            textToDisplay="Upload Image"
-            displayType="form-space-between"
-          />
-        </div>
+
         <Form.Item
           rules={generalValidationRulesOp}
           name="purchaseDate"

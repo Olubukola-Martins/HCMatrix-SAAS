@@ -1,3 +1,5 @@
+import { TPriority } from "types/priorities";
+
 // The purpose of this file to prevent repetition
 export const MONTH_CHART_LABELS = [
   "Jan",
@@ -16,7 +18,7 @@ export const DEFAULT_PAGINATION_LIMIT = 5;
 export const DEFAULT_PAGINATION_OFFSET = 0;
 export const DEFAULT_PAGE_SIZE = 5;
 export const DEFAULT_GRID_PAGE_SIZE = 10;
-export const PRIORITIES = [
+export const PRIORITIES: { value: TPriority; label: string }[] = [
   { label: "High", value: "high" },
   { label: "Low", value: "low" },
   { label: "Medium", value: "medium" },
@@ -73,13 +75,6 @@ export const EMPLOYMENT_ELIGIBILITIES = [
   {
     label: "Not a citizen",
     value: "not a citizen",
-  },
-];
-
-export const TIME_ZONES = [
-  {
-    label: "Africa/Lagos",
-    value: "Africa/Lagos",
   },
 ];
 

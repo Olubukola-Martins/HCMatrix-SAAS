@@ -12,14 +12,14 @@ export const EntityInfoCard: React.FC<{
         item.collapse ? (
           <div className="px-3" key={i}>
             <h5 className="font-medium pb-2 capitalize">{item.name}</h5>
-            <p>{item.value}</p>
+            <p className="">{item.value}</p>
           </div>
         ) : (
           <div className={listStyle} key={i}>
             <h5 className="group-hover:text-caramel font-medium">
               {item.name}
             </h5>
-            <span className="text-sm">{item.value}</span>
+            <span className="text-sm capitalize">{item.value}</span>
           </div>
         )
       )}

@@ -1,7 +1,6 @@
 import { Button, Form, Input, Typography } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
 import { useState } from "react";
-import { CreateBasicStage } from "./CreateBasicStage";
 import { useQueryClient } from "react-query";
 import { textInputValidationRules } from "utils/formHelpers/validation";
 import { openNotification } from "utils/notifications";
@@ -13,6 +12,8 @@ import useCreateAdvancedWorkflow, {
   TAdvancedWorkflowStage,
 } from "../hooks/useCreateAdvancedWorkflow";
 import { CreateAdvancedStage } from "./CreateAdvancedStage";
+import { appRoutes } from "config/router/paths";
+import { useNavigate } from "react-router-dom";
 
 export const CreateAdvancedWorkflow = () => {
   const queryClient = useQueryClient();
@@ -31,6 +32,7 @@ export const CreateAdvancedWorkflow = () => {
   };
 
   const { mutate, isLoading } = useCreateAdvancedWorkflow();
+  const navigate = useNavigate();
 
   const handleSubmit = (data: any) => {
     const workflowStages: TAdvancedWorkflowStage[] = stages
@@ -90,6 +92,7 @@ export const CreateAdvancedWorkflow = () => {
             queryKey: ["workflows"],
             // exact: true,
           });
+          navigate(appRoutes.workflowSettings);
         },
       }
     );

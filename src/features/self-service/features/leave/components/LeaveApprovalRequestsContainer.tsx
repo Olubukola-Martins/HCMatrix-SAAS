@@ -4,7 +4,7 @@ import { useState } from "react";
 
 import { TApprovalStatus } from "types/statuses";
 import { APPROVAL_STATUS_OPTIONS } from "constants/statustes";
-import LeavesRequestsTable from "./LeavesApprovalRequestsTable";
+import LeavesApprovalRequestsTable from "./LeavesApprovalRequestsTable";
 
 const LeaveApprovalRequestsContainer = () => {
   const [status, setStatus] = useState<TApprovalStatus>();
@@ -28,7 +28,7 @@ const LeaveApprovalRequestsContainer = () => {
             <i className="ri-logout-box-r-line text-xl"></i>
           </div>
         </div>
-        <LeavesRequestsTable status={status} />
+        <LeavesApprovalRequestsTable status={status} />
       </div>
     </div>
   );

@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 
 import { Link, useNavigate } from "react-router-dom";
 import { Modal } from "antd";
@@ -15,7 +15,7 @@ const SearchModal = ({ open, handleClose }: IModalProps) => {
   const navigate = useNavigate();
   const [value, setValue] = useState<string>("");
   const [searchResults, setSearchResults] = useState<TSearchLink[]>([]);
-  const handleSearch = (val: string) => {
+  const handleSearch = useCallback((val: string) => {
     const result: TSearchLink[] = links
       .filter(
         (item) => item.path.toLowerCase().indexOf(val.toLowerCase()) !== -1
@@ -28,20 +28,18 @@ const SearchModal = ({ open, handleClose }: IModalProps) => {
       );
 
     if (val !== "") {
-      setSearchResults(() => result);
-    } else {
-      setSearchResults([]);
+      return result;
     }
-  };
+    return [];
+  }, []);
   useEffect(() => {
-    handleSearch(value);
-  }, [value]);
+    const result = handleSearch(value);
+    setSearchResults(() => result);
+  }, [value, handleSearch]);
   return (
     <Modal
       open={open}
       onCancel={() => handleClose()}
-      aria-labelledby="Email Verification"
-      aria-describedby="Please verify your account by checking your inbox."
       closeIcon={false}
       style={{ top: 60 }}
       footer={null}
@@ -68,11 +66,8 @@ const SearchModal = ({ open, handleClose }: IModalProps) => {
               {/* TO DO: Refactor code to use list and list item components */}
               {searchResults.length > 0 ? (
                 <div className="flex flex-col gap-4 py-2">
-                  {searchResults.map((item) => (
-                    <div
-                      className="border-0 border-b px-10 pb-2"
-                      key={item.link}
-                    >
+                  {searchResults.map((item, i) => (
+                    <div className="border-0 border-b px-10 pb-2" key={i}>
                       <Link
                         to={item.link}
                         className="hover:text-caramel text-sm"

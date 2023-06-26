@@ -31,7 +31,7 @@ export const useApiAuth = () => {
     (item) => item.companyId === +currentCompanyId
   );
 
-  const currentUserEmployeeId = currentCompany?.id as number;
+  const currentUserEmployeeId = currentCompany?.userId as number;
   return {
     token,
     companyId,

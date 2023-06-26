@@ -12,6 +12,7 @@ import { AddSisterCompanyForm } from "features/core/company/components/AddSister
 import { useFetchSingleEmployee } from "features/core/employees/hooks/useFetchSingleEmployee";
 import { GlobalContext, EGlobalOps } from "stateManagers/GlobalContextProvider";
 import logo from "../../assets/images/logo2.png";
+import { useGetCompanyParams } from "features/core/company/hooks/useGetCompanyParams";
 
 type TCompany = {
   value: string;
@@ -62,6 +63,8 @@ const TopBar = ({
   const avatarUrl = employee?.avatarUrl;
   // done to make changes to user employee profile real-time
 
+  console.log(authDetails?.companies, "TEST");
+
   const defaultCompanies = authDetails?.companies.map((item: any) => ({
     value: item.company.name,
     id: item.company.id,
@@ -79,9 +82,9 @@ const TopBar = ({
     ? [
         ...defaultCompanies,
         {
-          value: "add-company",
-          id: "add-company",
-          image: "add-company",
+          value: "",
+          id: "",
+          image: "",
 
           label: (
             <div className="flex gap-2 items-center">
@@ -116,7 +119,7 @@ const TopBar = ({
   };
 
   const onSelect = (val: string, data: any) => {
-    if (val === "add-company") {
+    if (val === "") {
       setAddCompanyModal(true);
       return;
     }
@@ -126,7 +129,7 @@ const TopBar = ({
     });
     window.location.reload();
   };
-
+  const { data: companyParams } = useGetCompanyParams();
   const signOut = useSignOut();
   const handleLogOut = () => {
     signOut();
@@ -262,10 +265,13 @@ const TopBar = ({
                       >
                         Transfer Ownership
                       </li>
-                      <TransferOwnership
-                        open={transferOwnershipModal}
-                        handleClose={() => setTransferOwnershipModal(false)}
-                      />
+                      {companyParams && (
+                        <TransferOwnership
+                          open={transferOwnershipModal}
+                          handleClose={() => setTransferOwnershipModal(false)}
+                          companyParams={companyParams}
+                        />
+                      )}
 
                       <Link
                         to="/settings/delegations"

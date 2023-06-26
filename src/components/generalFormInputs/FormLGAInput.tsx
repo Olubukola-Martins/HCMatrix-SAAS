@@ -42,6 +42,7 @@ export const FormLGAInput: React.FC<{
       <Select
         showSearch
         allowClear
+        // TO DO: Fix this bug onClear there is no data to select from
         onClear={() => setSearchedData([])}
         onSearch={handleDataSearch}
         className="rounded border-slate-400"

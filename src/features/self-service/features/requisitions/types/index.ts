@@ -5,7 +5,8 @@ export type TRequistionType =
   | "position-change"
   | "promotion"
   | "reimbursement"
-  | "transfer";
+  | "transfer"
+  | "travel";
 
 export interface TRequisitionSetting {
   id: number;

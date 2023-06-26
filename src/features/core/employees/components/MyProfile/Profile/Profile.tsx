@@ -16,8 +16,8 @@ import {
   EMPLOYMENT_ELIGIBILITIES,
   GENDERS,
   MARITAL_STATUSES,
-  TIME_ZONES,
 } from "constants/general";
+import { TIME_ZONES } from "constants/timeZones";
 import { IAuthDets } from "features/authentication/types";
 import { useCreateEmployeePersonalInfo } from "features/core/employees/hooks/useCreateEmployeePersonalInfo";
 import { useUpdateEmployeePersonalInfo } from "features/core/employees/hooks/useUpdateEmployeePersonalInfo";

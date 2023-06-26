@@ -28,7 +28,7 @@ export const CurrentAssetAssignee: React.FC<{ asset: TAsset }> = ({
           department: `N?A`,
           name: `${asset.assignee?.firstName} ${asset.assignee?.lastName}`,
         }}
-        isAssigned={!!asset.assigneeId}
+        isAssigned={asset.status === "assigned"}
         handleAssign={{ fn: () => setShowD("assign") }}
         handleUnAssign={{ fn: () => setShowD("unassign") }}
       />

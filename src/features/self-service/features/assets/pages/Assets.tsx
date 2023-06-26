@@ -1,5 +1,4 @@
 import SelfServiceSubNav from "features/self-service/components/SelfServiceSubNav";
-import React, { useState } from "react";
 import AssetList from "../components/AssetList";
 import AssetOverview from "../components/AssetOverview";
 import AssetType from "../components/AssetType";
@@ -7,13 +6,31 @@ import { PageIntro } from "components/layout/PageIntro";
 import { appRoutes } from "config/router/paths";
 import PageSubHeader from "components/layout/PageSubHeader";
 import { Tabs } from "antd";
+import AssetRequestsContainer from "../components/AssetRequestsContainer";
+import { AssetApprovalRequestsContainer } from "../components/AssetApprovalRequestsContainer";
+import { useState } from "react";
 
-const Assets = () => {
-  const [tap, setTap] = useState("overview");
-  const tabItems = [
+export type TAssetTabKey =
+  | "Asset Overview"
+  | "Asset List"
+  | "Asset Type"
+  | "Settings"
+  | "Approvals"
+  | "My Requests";
+
+const Assets: React.FC = () => {
+  const [key, setKey] = useState<TAssetTabKey>("Asset Overview");
+  const handleTabKey = (val: TAssetTabKey) => {
+    setKey(val);
+  };
+  const tabItems: {
+    label: TAssetTabKey;
+    key: TAssetTabKey;
+    children: React.ReactNode;
+  }[] = [
     {
       label: "Asset Overview",
-      children: <AssetOverview />,
+      children: <AssetOverview handleTabKey={handleTabKey} />,
       key: "Asset Overview",
     },
     {
@@ -25,6 +42,16 @@ const Assets = () => {
       label: "Asset Type",
       children: <AssetType />,
       key: "Asset Type",
+    },
+    {
+      label: "My Requests",
+      children: <AssetRequestsContainer />,
+      key: "My Requests",
+    },
+    {
+      label: "Approvals",
+      children: <AssetApprovalRequestsContainer />,
+      key: "Approvals",
     },
   ];
 
@@ -39,7 +66,11 @@ const Assets = () => {
               description={`You can now add assets and asset type, view asset requests and request for assets`}
             />
           </div>
-          <Tabs items={tabItems} />
+          <Tabs
+            activeKey={key}
+            onChange={(val) => setKey(val as unknown as TAssetTabKey)}
+            items={tabItems}
+          />
         </div>
       </div>
     </>
