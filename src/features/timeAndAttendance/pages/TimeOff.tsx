@@ -92,29 +92,44 @@ export const TimeOff = () => {
   ];
   return (
     <>
-      <AttendanceSubToper active="time-off"/>
+      <AttendanceSubToper active="time-off" />
       <AddTimeOff
         open={newTimeOffModal}
         handleClose={() => setNewTimeOffModal(false)}
       />
       <div className="Container">
-        <PageIntro title="Timeoff Request" link={appRoutes.attendanceHome} />
-        <p className="pt-2 pb-5">Welcome on board, set your time off policy</p>
+        <div className="flex items-center justify-between">
+          <div>
+            <PageIntro
+              title="Timeoff Request"
+              link={appRoutes.attendanceHome}
+            />
+            <p className="pt-2 pb-5">
+              Welcome on board, set your time off policy
+            </p>
+          </div>
 
-        <div className="flex items-center justify-between mb-5">
-          <AppButton label="Filter" />
-          {hasSelected && (
-            <div className="flex gap-3">
-              <AppButton label="Reject" variant="transparent" />
-              <AppButton label="Approve" variant="transparent" />
-            </div>
-          )}
-          <AppButton
-            label="Add Time off"
-            handleClick={() => setNewTimeOffModal(true)}
-          />
+          <div className="flex items-center gap-x-3">
+            <button className="flex items-center gap-x-2 transparentButton">
+              <span className="text-caramel font-medium">Filter</span>
+              <i className="ri-filter-2-line text-caramel"></i>
+            </button>
+            <AppButton
+              label="Add Time off"
+              handleClick={() => setNewTimeOffModal(true)}
+            />
+          </div>
         </div>
+
+        {hasSelected && (
+          <div className="flex gap-3 mb-5">
+            <AppButton label="Reject" variant="transparent" />
+            <AppButton label="Approve" variant="transparent" />
+          </div>
+        )}
+
         <Table
+        className="mt-3"
           columns={columns}
           dataSource={data}
           rowSelection={rowSelection}
