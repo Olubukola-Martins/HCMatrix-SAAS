@@ -5,27 +5,27 @@ type TReportDetails = {
   key: React.Key;
   employee: string;
   trackedTime: string;
-  daysOfWeek: string;
-  approved: string;
-  notApproved: string;
+  department: string;
+  status: string;
+  shiftType: string;
 };
 
 const data: TReportDetails[] = [
   {
     key: 1,
     employee: "Godswill Omenuko",
-    approved: "Approved",
-    daysOfWeek: "---",
-    notApproved: "NIL",
-    trackedTime: "---",
+    status: "Approved",
+    department: "Dev Team",
+    shiftType: "night",
+    trackedTime: "--",
   },
   {
     key: 2,
     employee: "Godswill Omenuko",
-    approved: "Approved",
-    daysOfWeek: "---",
-    notApproved: "NIL",
-    trackedTime: "---",
+    status: "Approved",
+    department: "Dev Team",
+    shiftType: "night",
+    trackedTime: "--",
   },
 ];
 
@@ -35,20 +35,20 @@ const columns: ColumnsType<TReportDetails> = [
     dataIndex: "employee",
   },
   {
+    title: "Department",
+    dataIndex: "department",
+  },
+  {
     title: "Tracked time",
     dataIndex: "trackedTime",
   },
   {
-    title: "Days of the week",
-    dataIndex: "daysOfWeek",
+    title: "Status",
+    dataIndex: "status",
   },
   {
-    title: "Approved",
-    dataIndex: "approved",
-  },
-  {
-    title: "Approved",
-    dataIndex: "approved",
+    title: "Shift Type",
+    dataIndex: "shiftType",
   },
 ];
 
@@ -56,9 +56,9 @@ export const ShiftPerEmployee = () => {
   return (
     <>
       <ReportNav active="Shift_Per_Employee" />
-     <div className="Container">
-     <Table columns={columns} dataSource={data} />
-     </div>
+      <div className="Container">
+        <Table columns={columns} dataSource={data} />
+      </div>
     </>
   );
 };
