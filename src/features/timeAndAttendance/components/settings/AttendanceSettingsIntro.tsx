@@ -10,7 +10,7 @@ interface AProps {
 export const AttendanceSettingsIntro = ({ title, description }: AProps) => {
   return (
     <div className="Container">
-      <div className="flex items-center justify-between">
+      <div className="flex md:items-center flex-col md:flex-row gap-3 justify-between">
         <PageIntro title={title} link={appRoutes.settings} />
 
         <div className="flex items-center gap-x-4">

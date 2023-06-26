@@ -13,6 +13,9 @@ import { TimeOffPolicy } from "features/timeAndAttendance/pages/settings/TimeOff
 import { ClockIn } from "features/timeAndAttendance/pages/settings/ClockIn";
 import { AddLocation } from "features/timeAndAttendance/pages/settings/AddLocation";
 import { Other } from "features/timeAndAttendance/pages/settings/Other";
+import { ShiftPerEmployee } from "features/timeAndAttendance/pages/report/ShiftPerEmployee";
+import { HoursPerEmployee } from "features/timeAndAttendance/pages/report/HoursPerEmployee";
+import { EmployeesPerShift } from "features/timeAndAttendance/pages/report/EmployeesPerShift";
 
 export const attendanceRoutes: TRouteData[] = [
   {
@@ -84,6 +87,22 @@ export const attendanceRoutes: TRouteData[] = [
   {
     element: <Other />,
     path: appRoutes.otherSettings,
+    isSearchable: false,
+  },
+
+  {
+    element: <ShiftPerEmployee/>,
+    path: appRoutes.shiftPerEmployee,
+    isSearchable: false,
+  },
+  {
+    element: <HoursPerEmployee/>,
+    path: appRoutes.hoursPerEmployee,
+    isSearchable: false,
+  },
+  {
+    element: <EmployeesPerShift/>,
+    path: appRoutes.employeesPerShift,
     isSearchable: false,
   },
 ];
