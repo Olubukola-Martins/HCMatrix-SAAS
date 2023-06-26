@@ -172,4 +172,20 @@ export const appRoutes = {
   }),
   timeOff: `/attendance/time-off`,
   attendanceReport: `/attendance/reports`,
+  attendanceReportDetails: (id?: number) => ({
+    format: `/attendance/reports/:id`,
+    path: `/attendance/reports/${id}`,
+  }),
+  shiftPerEmployee: `/attendance/shift-per-employee`,
+  hoursPerEmployee: `/attendance/hours-per-employee`,
+  employeesPerShift: `/attendance/employees-per-shift`,
+
+  uploadAttendance: `/attendance/upload-attendance`,
+  timeTrackingRules: `/attendance/time-tracking-rules`,
+  workSchedule: `/attendance/work-schedule`,
+  timeOffPolicy: `/attendance/time-off-policy`,
+  clockInSettings: `/attendance/clock-in-settings`,
+  addLocation: `/attendance/add-location`,
+  otherSettings: `/attendance/other-settings`
+
 };
