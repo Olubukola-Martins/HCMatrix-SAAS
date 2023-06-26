@@ -11,7 +11,7 @@ export const TimeReportDetails = () => {
   const [switchTabs, setSwitchTabs] = useState("Shift_Per_Employee");
   return (
     <>
-      <AttendanceSubToper />
+      <AttendanceSubToper active="reports"/>
 
       <div className="Container">
         <PageIntro

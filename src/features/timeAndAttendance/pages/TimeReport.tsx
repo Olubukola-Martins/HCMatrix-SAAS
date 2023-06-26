@@ -8,9 +8,10 @@ import { EmpPerShift } from "../components/EmpPerShift";
 
 export const TimeReport = () => {
   const [switchTabs, setSwitchTabs] = useState("Shift_Per_Employee");
+  
   return (
     <>
-      <AttendanceSubToper />
+      <AttendanceSubToper active="reports"/>
       <div className="Container">
         <PageIntro title="Report" link={appRoutes.attendanceHome} />
         <p className="pt-2 pb-5">Welcome on board, set your time off policy</p>

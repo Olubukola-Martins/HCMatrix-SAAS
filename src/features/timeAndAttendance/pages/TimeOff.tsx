@@ -92,7 +92,7 @@ export const TimeOff = () => {
   ];
   return (
     <>
-      <AttendanceSubToper />
+      <AttendanceSubToper active="time-off"/>
       <AddTimeOff
         open={newTimeOffModal}
         handleClose={() => setNewTimeOffModal(false)}

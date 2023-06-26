@@ -12,7 +12,7 @@ export const TimeSheetDetails = () => {
 
   return (
     <>
-      <AttendanceSubToper />
+      <AttendanceSubToper active="time-sheet"/>
       <AddTimeEntry
         open={addTimeEntryModal}
         handleClose={() => setAddTimeEntryModal(false)}
