@@ -2,8 +2,7 @@ import Table, { ColumnsType } from "antd/lib/table";
 import { AttendanceSubToper } from "../components/AttendanceSubToper";
 import { PageIntro } from "components/layout/PageIntro";
 import { appRoutes } from "config/router/paths";
-import { AppButton } from "components/button/AppButton";
-import { Input, Select } from "antd";
+import { Input,} from "antd";
 import { Link } from "react-router-dom";
 
 interface DataType {
@@ -91,27 +90,32 @@ const data: DataType[] = [
 export const TimeSheet = () => {
   return (
     <>
-      <AttendanceSubToper active="time-sheet"/>
-    <div className="Container">
-    
-      <PageIntro title="Timesheet" link={appRoutes.attendanceHome} />
-      <p className="pt-2">
-        Welcome on board, here is a detailed list of clocked work hours and
-        breaks of all employee.
-      </p>
+      <AttendanceSubToper active="time-sheet" />
+      <div className="Container">
+        <PageIntro title="Timesheet" link={appRoutes.attendanceHome} />
+        <p className="pt-2">
+          Welcome on board, here is a detailed list of clocked work hours and
+          breaks of all employee.
+        </p>
 
-      <div className="flex justify-between items-center mt-10 mb-5">
-        <Input.Search
-          placeholder="Search branch"
-          style={{ width: "35%" }}
-          allowClear
-        />
-        <Link className="button" to={appRoutes.uploadAttendance}>
-          Upload Timesheet
-        </Link>
-      </div>
+        <div className="flex justify-between items-center mt-10 mb-7">
+          <Input.Search
+            placeholder="Search branch"
+            style={{ width: "35%" }}
+            allowClear
+          />
+          <div className="flex items-center gap-x-3">
+            <button className="flex items-center gap-x-2 transparentButton">
+              <span className="text-caramel font-medium">Filter</span>
+              <i className="ri-filter-2-line text-caramel"></i>
+            </button>
+            <Link className="button" to={appRoutes.uploadAttendance}>
+              Upload Timesheet
+            </Link>
+          </div>
+        </div>
 
-      <div className="flex items-center justify-between mb-6">
+        {/* <div className="flex items-center justify-between mb-6">
         <div className="flex gap-3">
           <Select
             defaultValue="Weekly"
@@ -140,10 +144,10 @@ export const TimeSheet = () => {
             options={[{ value: "hours", label: "hours" }]}
           />
         </div>
-      </div>
+      </div> */}
 
-      <Table columns={columns} dataSource={data} scroll={{ x: 500 }} />
-    </div>
+        <Table columns={columns} dataSource={data} scroll={{ x: 500 }} />
+      </div>
     </>
   );
 };
