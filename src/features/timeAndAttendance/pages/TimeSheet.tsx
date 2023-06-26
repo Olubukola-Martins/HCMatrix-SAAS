@@ -2,8 +2,7 @@ import Table, { ColumnsType } from "antd/lib/table";
 import { AttendanceSubToper } from "../components/AttendanceSubToper";
 import { PageIntro } from "components/layout/PageIntro";
 import { appRoutes } from "config/router/paths";
-import { AppButton } from "components/button/AppButton";
-import { Input, Select } from "antd";
+import { Input,} from "antd";
 import { Link } from "react-router-dom";
 
 interface DataType {
