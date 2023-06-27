@@ -3,6 +3,7 @@ const CURRENCIES = [
   { name: "United Kingdom", currency: "British Pound", currencySymbol: "£" },
   { name: "Japan", currency: "Japanese Yen", currencySymbol: "¥" },
   { name: "Eurozone", currency: "Euro", currencySymbol: "€" },
+  { name: "Nigeria", currency: "Naira", currencySymbol: "₦" },
   // Add more countries as needed
 ];
 
