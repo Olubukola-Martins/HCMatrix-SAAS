@@ -36,7 +36,7 @@ const createData = async (props: {
   const response = await axios.post(url, data, config);
   return response;
 };
-export const useCreateFolder = () => {
+export const useCreateFile = () => {
   const { token, companyId } = useApiAuth();
   return useMutation(
     ({ data, folderId }: { data: TFileData; folderId: number }) =>

@@ -39,6 +39,7 @@ import PromotionRequestsSettingPage from "features/self-service/features/promoti
 import AssetRequestSettingsPage from "features/self-service/features/assets/pages/AssetRequestSettingsPage";
 import TravelRequests from "features/self-service/features/travels/pages/TravelRequests";
 import TravelRequestsSettingPage from "features/self-service/features/travels/pages/TravelRequestsSettingPage";
+import DocumentsPage from "features/self-service/features/documents/pages/DocumentsPage";
 
 // TO DO: This lazy loading might not be needed consider rethinking this, so just temporary
 const Requisition = lazy(
@@ -304,5 +305,12 @@ export const selfServiceRoutes: TRouteData[] = [
     path: appRoutes.hRLetters,
     isSearchable: true,
     title: "HR Letters",
+  },
+  {
+    element: <DocumentsPage />,
+    path: appRoutes.documents,
+    isSearchable: true,
+    title: "Files",
+    isPrimaryFeature: true,
   },
 ];

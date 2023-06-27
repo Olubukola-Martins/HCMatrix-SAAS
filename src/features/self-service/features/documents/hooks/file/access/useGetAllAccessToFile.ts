@@ -55,7 +55,7 @@ const getData = async (props: {
   return ans;
 };
 
-export const useGetFolders = (props: {
+export const useGetAllAccessToFile = (props: {
   data: IGetDataProps;
   folderId: number;
   fileId: number;
@@ -82,6 +82,7 @@ export const useGetFolders = (props: {
     {
       onError: (err: any) => {},
       onSuccess: (data) => {},
+      enabled: !!props.fileId && !!props.folderId,
     }
   );
 

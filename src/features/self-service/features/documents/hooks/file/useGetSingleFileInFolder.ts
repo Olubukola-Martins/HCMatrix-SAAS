@@ -34,7 +34,7 @@ const getData = async (props: {
   return data;
 };
 
-export const useGetCompany = (props: IDataProps) => {
+export const useGetSingleFileInFolder = (props: IDataProps) => {
   const { token, companyId } = useApiAuth();
   const queryData = useQuery(
     [QUERY_KEY_FOR_SINGLE_FILE_IN_A_FOLDER],
@@ -49,6 +49,7 @@ export const useGetCompany = (props: IDataProps) => {
     {
       onError: (err: any) => {},
       onSuccess: (data) => {},
+      enabled: !!props.fileId && !!props.folderId,
     }
   );
 

@@ -23,7 +23,7 @@ const getData = async (props: {
   const offset = pagination?.offset ?? 0;
   const name = props.data.searchParams?.name ?? "";
 
-  const url = `${MICROSERVICE_ENDPOINTS.UTILITY}/self-service/folder/${props.folderId}`;
+  const url = `${MICROSERVICE_ENDPOINTS.UTILITY}/self-service/folder/${props.folderId}/file`;
 
   const config = {
     headers: {
@@ -54,7 +54,7 @@ const getData = async (props: {
   return ans;
 };
 
-export const useGetFolders = (props: {
+export const useGetFilesInFolder = (props: {
   data: IGetDataProps;
   folderId: number;
 }) => {
@@ -74,6 +74,7 @@ export const useGetFolders = (props: {
     {
       onError: (err: any) => {},
       onSuccess: (data) => {},
+      enabled: !!props.folderId,
     }
   );
 

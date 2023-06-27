@@ -37,7 +37,8 @@ const requisitionContent = (
 );
 
 const moreItems = [
-  { link: appRoutes.hRLetters, title: "HR Letters & Documents" },
+  // { link: appRoutes.hRLetters, title: "HR Letters & Documents" },
+  { link: appRoutes.documents, title: "Documents" },
   { link: appRoutes.surveyHome, title: "Survey Forms" },
   { link: appRoutes.conferenceRoomBooking, title: "Meeting Room Booking" },
 ];

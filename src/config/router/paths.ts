@@ -144,6 +144,7 @@ export const appRoutes = {
     path: ` /self-service/handover-form/${id}`,
   }),
   hRLetters: `/self-service/hr-letters`,
+  documents: `/self-service/documents`,
   notifications: `/notifications`,
 
   // Performance route
@@ -186,6 +187,5 @@ export const appRoutes = {
   timeOffPolicy: `/attendance/time-off-policy`,
   clockInSettings: `/attendance/clock-in-settings`,
   addLocation: `/attendance/add-location`,
-  otherSettings: `/attendance/other-settings`
-
+  otherSettings: `/attendance/other-settings`,
 };
