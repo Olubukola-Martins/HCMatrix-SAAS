@@ -67,6 +67,7 @@ export const appRoutes = {
   setupGradePayrollScheme: `/settings/payroll/schemes/grade/set-up/`,
   payrollPolicySettings: `/settings/probation_policy_PENDING`,
   payGradeSettings: `/settings/grades`,
+  payGradeAndCategorySettings: `/settings/grades-and-settings`,
   gradeCategorySettings: `/settings/grade_categories`,
   probationPolicySettings: `/settings/probation_policy`,
   resignationPolicySettings: `/settings/resignation_policy`,

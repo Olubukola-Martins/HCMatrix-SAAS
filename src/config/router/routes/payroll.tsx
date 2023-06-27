@@ -20,6 +20,7 @@ import CreateTaxPolicyPage from "features/payroll/pages/CreateTaxPolicyPage";
 import ExchangeRatesPage from "features/payroll/pages/ExchangeRatesPage";
 import PayrollSchemesPage from "features/payroll/pages/PayrollSchemesPage";
 import SetupGradePayrollSchemePage from "features/payroll/pages/SetupGradePayrollSchemePage";
+import PayGradesAndCategoriesPage from "features/payroll/pages/PayGradesAndCategoriesPage";
 
 export const payrollRoutes: TRouteData[] = [
   {
@@ -70,12 +71,19 @@ export const payrollRoutes: TRouteData[] = [
     path: appRoutes.payrollSettings,
     isSearchable: true,
     title: "Payroll Settings",
-    isPrimaryFeature: true,
+    isPrimaryFeature: false,
   },
+  // {
+  //   element: <PayGrades />,
+  //   path: appRoutes.payGradeSettings,
+  //   title: "Payroll Grade Setting",
+  //   isSearchable: true,
+  //   isPrimaryFeature: true,
+  // },
   {
-    element: <PayGrades />,
-    path: appRoutes.payGradeSettings,
-    title: "Payroll Grade Setting",
+    element: <PayGradesAndCategoriesPage />,
+    path: appRoutes.payGradeAndCategorySettings,
+    title: "Grade & Categories",
     isSearchable: true,
     isPrimaryFeature: true,
   },

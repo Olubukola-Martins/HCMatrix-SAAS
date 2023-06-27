@@ -1,3 +1,8 @@
+import { TPayGradeCategory } from "./payGradeCategories";
+import { TPayGrade } from "./payGrades";
+
+export { type TPayGrade, type TPayGradeCategory };
+
 export type TSalaryComponent = {
   name: string;
   identifier: string;
