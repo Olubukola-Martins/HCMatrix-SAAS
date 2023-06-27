@@ -60,7 +60,7 @@ export const RecentCard: React.FC<IProps> = ({
               </div>
             ))
           ) : (
-            <Empty description="No Vehicle Requests" />
+            <Empty description="No Request" />
           )}
         </Skeleton>
       </div>

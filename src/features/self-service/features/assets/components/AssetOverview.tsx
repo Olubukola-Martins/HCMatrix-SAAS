@@ -67,10 +67,12 @@ const AssetOverview: React.FC<IProps> = ({ handleTabKey }) => {
           <div className="col-span-3">
             <AssetMonthlyInsightsCard />
           </div>
+
           <div>
             <RecentAssetRequestsCard
               handleSeeAll={() => handleTabKey("My Requests")}
             />
+
           </div>
         </div>
 

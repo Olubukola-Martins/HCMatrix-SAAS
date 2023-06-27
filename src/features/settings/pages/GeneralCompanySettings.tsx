@@ -100,6 +100,24 @@ const GeneralCompanySettings = () => {
                   {/* <Link to="/settings/payroll">Payroll settings</Link> */}
                 </div>
               </FramerAccordian>
+
+              <FramerAccordian
+                heading={
+                  <h5 className="text-caramel  text-base lg:text-xl  font-semibold">
+                    Time & Attendance
+                  </h5>
+                }
+              >
+                <div className="grid grid-cols-2 lg:grid-cols-5 gap-4">
+                  {/* item */}
+                  {settingNavItems
+                    .filter((item) => item.category === "attendance")
+                    .map((item) => (
+                      <SettingNavItem item={item} key={item.title} />
+                    ))}
+                  {/* <Link to="/settings/payroll">Payroll settings</Link> */}
+                </div>
+              </FramerAccordian>
               {/* Performance */}
               <FramerAccordian
                 heading={
