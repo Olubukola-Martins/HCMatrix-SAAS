@@ -33,7 +33,7 @@ interface AccessOption {
 const displayRender = (
   labels: string[],
   //   selectedOptions?: AccessOption[]
-  selectedOptions?: any
+  selectedOptions?: any //TO DO Refactor this code or might be no need as the use of showStrategy
 ) => {
   const options = selectedOptions ?? [];
   return labels.map((label, i) => {
