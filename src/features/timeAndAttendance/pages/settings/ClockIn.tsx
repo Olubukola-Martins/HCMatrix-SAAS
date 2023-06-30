@@ -4,23 +4,18 @@ import { AttendanceSettingsIntro } from "features/timeAndAttendance/components/s
 import { TimeAttendanceSettingsNav } from "features/timeAndAttendance/components/settings/TimeAttendanceSettingsNav";
 import { generalValidationRules } from "utils/formHelpers/validation";
 
-interface FormData {
-  biometricsName: string;
-  serialNumber: string;
-}
-
 export const ClockIn = () => {
   const formWrapStyle =
     "bg-card px-4 pt-4 rounded grid grid-cols-1 md:grid-cols-2 gap-x-10 mb-5 shadow-sm";
   const [form] = Form.useForm();
 
-  const handleFormSubmit = (values: FormData[]) => {
+  const handleFormSubmit = (values: any) => {
     console.log("Form submitted:", values);
   };
 
   const handleAddField = () => {
     const fields = form.getFieldValue("fields") || [];
-    const newField = { biometricsName: "", serialNumber: "" };
+    const newField = { biometricsName: "", serialNumber: null };
     form.setFieldsValue({ fields: [...fields, newField] });
   };
 
@@ -99,6 +94,7 @@ export const ClockIn = () => {
                           >
                             <InputNumber className="w-full" />
                           </Form.Item>
+                         
                           <i
                             className="ri-delete-bin-line text-xl cursor-pointer hover:text-caramel"
                             onClick={() => handleRemoveField(index)}

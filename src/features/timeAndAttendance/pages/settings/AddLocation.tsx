@@ -5,10 +5,6 @@ import { useEffect } from "react";
 import { AppButton } from "components/button/AppButton";
 import { generalValidationRules } from "utils/formHelpers/validation";
 
-interface FormData {
-  branch: string;
-  biometrics: string;
-}
 export const AddLocation = () => {
   const formWrapStyle =
     "bg-card px-4 pt-4 rounded grid grid-cols-1 md:grid-cols-2 gap-x-10 mb-5 shadow-sm";
@@ -18,7 +14,7 @@ export const AddLocation = () => {
     const defaultField = { branch: "", biometrics: "" };
     form.setFieldsValue({ fields: [defaultField] });
   }, []);
-  const handleFormSubmit = (values: FormData[]) => {
+  const handleFormSubmit = (values: any) => {
     console.log("Form submitted:", values);
   };
 

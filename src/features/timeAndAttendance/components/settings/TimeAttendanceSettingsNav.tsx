@@ -27,16 +27,7 @@ export const TimeAttendanceSettingsNav = (props: NProps) => {
         >
           Time Tracking Rules
         </Link>
-        <Link
-          to={appRoutes.timeOffPolicy}
-          className={
-            props.active === "time off policy"
-              ? `${applyStyle}`
-              : "pb-3 hover:text-caramel"
-          }
-        >
-          Time Off Policy
-        </Link>
+      
         <Link
           to={appRoutes.workSchedule}
           className={
@@ -46,6 +37,16 @@ export const TimeAttendanceSettingsNav = (props: NProps) => {
           }
         >
           Create Work Schedule
+        </Link>
+        <Link
+          to={appRoutes.timeOffPolicy}
+          className={
+            props.active === "time off policy"
+              ? `${applyStyle}`
+              : "pb-3 hover:text-caramel"
+          }
+        >
+          Time Off Policy
         </Link>
         <Link
           to={appRoutes.clockInSettings}
