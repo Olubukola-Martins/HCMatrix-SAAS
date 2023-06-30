@@ -3,6 +3,7 @@ import TextArea from "antd/lib/input/TextArea";
 import { AppButton } from "components/button/AppButton";
 import { AttendanceSettingsIntro } from "features/timeAndAttendance/components/settings/AttendanceSettingsIntro";
 import { TimeAttendanceSettingsNav } from "features/timeAndAttendance/components/settings/TimeAttendanceSettingsNav";
+import { useEffect } from "react";
 import { generalValidationRules } from "utils/formHelpers/validation";
 
 export const TimeOffPolicy = () => {
@@ -11,6 +12,11 @@ export const TimeOffPolicy = () => {
   const handleFormSubmit = (values: FormData[]) => {
     console.log("Form submitted:", values);
   };
+
+  useEffect(() => {
+    const defaultField = { policy: "", duration: "", comment: "" };
+    form.setFieldsValue({ fields: [defaultField] });
+  }, []);
 
   const handleAddField = () => {
     const fields = form.getFieldValue("fields") || [];
@@ -73,7 +79,7 @@ export const TimeOffPolicy = () => {
                       </Form.Item>
                       <div className="flex justify-end">
                         <i
-                          className="ri-delete-bin-line text-xl text-red-400 cursor-pointer hover:text-caramel"
+                          className="ri-delete-bin-line -mt-3 text-xl text-red-400 cursor-pointer hover:text-caramel"
                           onClick={() => handleRemoveField(index)}
                         ></i>
                       </div>
