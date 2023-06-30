@@ -21,6 +21,10 @@ import ExchangeRatesPage from "features/payroll/pages/ExchangeRatesPage";
 import PayrollSchemesPage from "features/payroll/pages/PayrollSchemesPage";
 import SetupGradePayrollSchemePage from "features/payroll/pages/SetupGradePayrollSchemePage";
 import PayGradesAndCategoriesPage from "features/payroll/pages/PayGradesAndCategoriesPage";
+import SetupDirectSalaryPayrollSchemePage from "features/payroll/pages/SetupDirectSalaryPayrollSchemePage";
+import SetupWagesPayrollSchemePage from "features/payroll/pages/SetupWagesPayrollSchemePage";
+import SetupProjectPayrollSchemePage from "features/payroll/pages/SetupProjectPayrollSchemePage";
+import SetupSingleProjectPayrollSchemePage from "features/payroll/pages/SetupSingleProjectPayrollSchemePage";
 
 export const payrollRoutes: TRouteData[] = [
   {
@@ -64,6 +68,34 @@ export const payrollRoutes: TRouteData[] = [
     path: appRoutes.setupGradePayrollScheme,
     isSearchable: true,
     title: "Office Payroll Scheme",
+    isPrimaryFeature: false,
+  },
+  {
+    element: <SetupDirectSalaryPayrollSchemePage />,
+    path: appRoutes.setupDirectSalaryPayrollScheme,
+    isSearchable: true,
+    title: "Direct Salary Payroll Scheme",
+    isPrimaryFeature: false,
+  },
+  {
+    element: <SetupProjectPayrollSchemePage />,
+    path: appRoutes.setupProjectPayrollScheme,
+    isSearchable: true,
+    title: "Project Payroll Scheme",
+    isPrimaryFeature: false,
+  },
+  {
+    element: <SetupSingleProjectPayrollSchemePage />,
+    path: appRoutes.setupSingleProjectPayrollScheme().format,
+    isSearchable: false,
+    title: "Single Project Payroll Scheme",
+    isPrimaryFeature: false,
+  },
+  {
+    element: <SetupWagesPayrollSchemePage />,
+    path: appRoutes.setupWagesPayrollScheme,
+    isSearchable: true,
+    title: "Wages Payroll Scheme",
     isPrimaryFeature: false,
   },
   {

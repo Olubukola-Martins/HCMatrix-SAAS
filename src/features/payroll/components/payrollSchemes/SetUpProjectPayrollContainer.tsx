@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 
 import { Pagination } from "antd";
 import { usePagination } from "hooks/usePagination";
@@ -7,12 +7,19 @@ import { AppButton } from "components/button/AppButton";
 import PageSubHeader from "components/layout/PageSubHeader";
 import { appRoutes } from "config/router/paths";
 import { Link } from "react-router-dom";
+import AddProject from "features/core/projects/components/AddProject";
 
-export const PayrollSchemeContainer = () => {
+const SetUpProjectPayrollContainer = () => {
+  const [showM, setShowM] = useState(false);
   return (
     <>
+      <AddProject open={showM} handleClose={() => setShowM(false)} />
       <div className="flex flex-col gap-8">
-        <PageSubHeader description={`Set up different payroll schemes`} />
+        <PageSubHeader
+          description={`Set up payroll for projects`}
+          actions={[{ handleClick: () => setShowM(true), name: `Add Project` }]}
+          hideBackground
+        />
 
         <PayrollSchemeCardList />
       </div>
@@ -20,36 +27,36 @@ export const PayrollSchemeContainer = () => {
   );
 };
 
-type TScheme = {
+type TProject = {
+  id: number;
   name: string;
   createdAt: string;
   updatedAt: string;
-  setUpLink: string;
 };
-const PAYROLL_SCHEMES: TScheme[] = [
+const DUMMY_PROJECTS: TProject[] = [
   {
-    name: "Office/Grade Payroll",
+    id: 1,
+    name: "HcMatrix v3",
     createdAt: "Not needed",
     updatedAt: "Not Needed",
-    setUpLink: appRoutes.setupGradePayrollScheme,
   },
   {
-    name: "Direct Salary Payroll",
+    id: 2,
+    name: "Bi Collaboration",
     createdAt: "03/07/2020",
     updatedAt: "03/07/2020",
-    setUpLink: appRoutes.setupDirectSalaryPayrollScheme,
   },
   {
-    name: "Timesheet/Wages Payroll",
+    id: 3,
+    name: "Marketing Optimization",
     createdAt: "03/07/2020",
     updatedAt: "03/07/2020",
-    setUpLink: appRoutes.setupWagesPayrollScheme,
   },
   {
-    name: "Project/Contract Payroll",
+    id: 4,
+    name: "Artificial Intelligence Integration",
     createdAt: "03/07/2020",
     updatedAt: "03/07/2020",
-    setUpLink: appRoutes.setupProjectPayrollScheme,
   },
 ];
 const PayrollSchemeCardList = () => {
@@ -57,13 +64,13 @@ const PayrollSchemeCardList = () => {
   return (
     <div>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-x-5 lg:gap-x-10 gap-y-10">
-        {PAYROLL_SCHEMES.map((item, i) => (
+        {DUMMY_PROJECTS.map((item, i) => (
           <PayrollSchemeCard key={i} {...item} />
         ))}
       </div>
       <div className="mt-4 flex justify-end">
         <Pagination
-          {...{ ...pagination, total: PAYROLL_SCHEMES.length }}
+          {...{ ...pagination, total: DUMMY_PROJECTS.length }}
           onChange={onChange}
           size="small"
         />
@@ -71,11 +78,11 @@ const PayrollSchemeCardList = () => {
     </div>
   );
 };
-const PayrollSchemeCard: React.FC<TScheme> = ({
+const PayrollSchemeCard: React.FC<TProject> = ({
   name,
   createdAt,
   updatedAt,
-  setUpLink,
+  id,
 }) => {
   return (
     <>
@@ -84,7 +91,7 @@ const PayrollSchemeCard: React.FC<TScheme> = ({
         <div className="bg-card p-3 flex justify-between items-center">
           <h4 className="font-medium text-lg">{name}</h4>
           <div className="flex gap-2 ">
-            <Link to={setUpLink}>
+            <Link to={appRoutes.setupSingleProjectPayrollScheme(id).path}>
               <AppButton label="Set up Payroll" variant="transparent" />
             </Link>
           </div>
@@ -101,3 +108,4 @@ const PayrollSchemeCard: React.FC<TScheme> = ({
     </>
   );
 };
+export default SetUpProjectPayrollContainer;

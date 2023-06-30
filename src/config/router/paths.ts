@@ -15,6 +15,7 @@ export const appRoutes = {
   companyOrganogram: `/company-organogram`,
   // setting routes
   settings: "/settings",
+  projectSettings: "/settings/projects",
   companyDetailsSettings: `/settings/company-details`,
   locationSettings: `/settings/locations`,
   singleLocation: (id?: number) => ({
@@ -65,6 +66,13 @@ export const appRoutes = {
   payrollExchangeRates: `/settings/payroll/exhange-rates`,
   payrollSchemes: `/settings/payroll/schemes`,
   setupGradePayrollScheme: `/settings/payroll/schemes/grade/set-up/`,
+  setupDirectSalaryPayrollScheme: `/settings/payroll/schemes/direct-salary/set-up/`,
+  setupProjectPayrollScheme: `/settings/payroll/schemes/project/set-up/`,
+  setupSingleProjectPayrollScheme: (id?: number) => ({
+    format: `/settings/payroll/schemes/project/set-up/:id`,
+    path: `/settings/payroll/schemes/project/set-up/${id}`,
+  }),
+  setupWagesPayrollScheme: `/settings/payroll/schemes/wages/set-up/`,
   payrollPolicySettings: `/settings/probation_policy_PENDING`,
   payGradeSettings: `/settings/grades`,
   payGradeAndCategorySettings: `/settings/grades-and-settings`,

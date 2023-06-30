@@ -59,13 +59,13 @@ function reducer(state: any, action: any) {
       return state;
   }
 }
-export const SetUpGradePayrollContainer = () => {
+export const SetUpWagesPayrollContainer = () => {
   return (
     <>
       <div className="flex flex-col gap-4">
         <PageSubHeader
           hideBackground
-          description={`Set up payroll based on the pay grades assigned to employees`}
+          description={`Set up payroll`}
           actions={[
             {
               name: "Save Changes",
@@ -104,7 +104,7 @@ const SetUpForm = () => {
       <div className="flex flex-col gap-4">
         <div className={boxStyle}>
           <h5 className={boxTitle}>Payroll Scheme Type</h5>
-          <input className={inputStyle} value="Grade Payroll Scheme" disabled />
+          <input className={inputStyle} value="Wages Payroll Scheme" disabled />
         </div>
 
         <div className={boxStyle}>

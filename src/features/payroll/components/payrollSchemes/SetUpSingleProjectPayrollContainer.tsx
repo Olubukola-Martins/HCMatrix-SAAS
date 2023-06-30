@@ -7,6 +7,7 @@ import { SalaryComponentsContainer } from "../salaryComponents/SalaryComponentsC
 import { AddSalaryComponentForm } from "../salaryComponents/AddSalaryComponent";
 import { ALLOWANNCES } from "features/payroll/constants";
 import { TaxPolicyCreator } from "../taxPolicies";
+import { PayrollSingleProjectParticipantsContainer } from "../projectParticipants/PayrollSingleProjectParticipantsContainer";
 
 const boxStyle = "px-4 py-3 shadow rounded-md bg-mainBg";
 const boxTitle = "font-medium text-base pb-1";
@@ -59,13 +60,13 @@ function reducer(state: any, action: any) {
       return state;
   }
 }
-export const SetUpGradePayrollContainer = () => {
+export const SetUpSingleProjectPayrollContainer = () => {
   return (
     <>
       <div className="flex flex-col gap-4">
         <PageSubHeader
           hideBackground
-          description={`Set up payroll based on the pay grades assigned to employees`}
+          description={`Set up payroll for this project`}
           actions={[
             {
               name: "Save Changes",
@@ -104,14 +105,135 @@ const SetUpForm = () => {
       <div className="flex flex-col gap-4">
         <div className={boxStyle}>
           <h5 className={boxTitle}>Payroll Scheme Type</h5>
-          <input className={inputStyle} value="Grade Payroll Scheme" disabled />
+          <input
+            className={inputStyle}
+            value="Project/Contract Payroll Scheme"
+            disabled
+          />
         </div>
 
         <div className={boxStyle}>
-          <h5 className={boxTitle}>Payroll Frequency</h5>
+          <div className="flex items-center justify-between">
+            <h5
+              className={boxTitle}
+              title="How many split payments would you like to make ?"
+            >
+              Payroll Frequency
+            </h5>
+          </div>
+          <p className="text-sm">
+            How many split payments would you like to make ?
+          </p>
 
-          <input className={inputStyle} value="Monthly" disabled />
+          <div className="mt-2">
+            <div className="flex items-center lg:justify-between">
+              <div className="w-2/5">
+                <input
+                  className={inputStyle}
+                  type="number"
+                  min={1}
+                  max={28}
+                  placeholder="Amount of split payments"
+                />
+              </div>
+            </div>
+          </div>
         </div>
+        <div className={boxStyle}>
+          <div className="flex items-center justify-between">
+            <h5
+              className={boxTitle}
+              title="Set up the gross pay of each project participant "
+            >
+              Project Participants(Non - Expatriates)
+            </h5>
+            <Button
+              icon={<DownOutlined />}
+              type="text"
+              onClick={() => dispatch({ type: "displayAllowances" })}
+            />
+          </div>
+          <p className="text-sm">
+            Set up the gross pay of each project participant
+          </p>
+          {displayAllowances && (
+            <div className="mt-2">
+              <PayrollSingleProjectParticipantsContainer
+                participants={[
+                  {
+                    key: "0",
+                    name: "James Kaladin",
+                    empuid: "EMP009",
+                    amount: 330000,
+                    exchangeRate: {
+                      currency: "Naira(N)",
+                      rate: 1,
+                    },
+                  },
+                  {
+                    key: "1",
+                    name: "Deborah Tully",
+                    empuid: "EMP007",
+
+                    amount: 700000,
+                    exchangeRate: {
+                      currency: "Naira(N)",
+                      rate: 1,
+                    },
+                  },
+                ]}
+              />
+            </div>
+          )}
+        </div>
+        <div className={boxStyle}>
+          <div className="flex items-center justify-between">
+            <h5
+              className={boxTitle}
+              title="Set up the gross pay of each project participant "
+            >
+              Project Participants(Expatriates)
+            </h5>
+            <Button
+              icon={<DownOutlined />}
+              type="text"
+              onClick={() => dispatch({ type: "displayAllowances" })}
+            />
+          </div>
+          <p className="text-sm">
+            Set up the gross pay of each project participant
+          </p>
+          {displayAllowances && (
+            <div className="mt-2">
+              <PayrollSingleProjectParticipantsContainer
+                participants={[
+                  {
+                    key: "0",
+                    name: "James Kaladin",
+                    empuid: "EMP009",
+                    amount: 330000,
+                    exchangeRate: {
+                      currency: "Dollar($)",
+                      rate: 0.05,
+                    },
+                  },
+                  {
+                    key: "1",
+                    name: "Deborah Tully",
+                    empuid: "EMP007",
+
+                    amount: 700000,
+                    exchangeRate: {
+                      currency: "Dollar($)",
+                      rate: 0.05,
+                    },
+                  },
+                ]}
+              />
+            </div>
+          )}
+        </div>
+
         <div className={boxStyle}>
           <div className="flex items-center justify-between">
             <h5
@@ -128,24 +250,6 @@ const SetUpForm = () => {
           <p className="text-sm">
             Do you want to disburse payment after approval/confirmation?
           </p>
-          {disbursePayment && (
-            <div className="mt-2">
-              {/* <label className="text-sm">
-                What day would you like to disburse payment
-              </label> */}
-              <div className="flex items-center lg:justify-between">
-                <div className="w-2/5">
-                  <input
-                    className={inputStyle}
-                    type="number"
-                    min={20}
-                    max={28}
-                    placeholder="What day would you like to disburse payment"
-                  />
-                </div>
-              </div>
-            </div>
-          )}
         </div>
         <div className={boxStyle}>
           <div className="flex items-center justify-between">
@@ -244,48 +348,6 @@ const SetUpForm = () => {
           <p className="text-sm">
             Do you want to issue payslip, when payroll is approved/disbursed?
           </p>
-        </div>
-
-        <div className={`${boxStyle} text-sm`}>
-          <div className="flex items-center justify-between">
-            <h5 className={boxTitle}>13th Month Salary</h5>{" "}
-            <Switch
-              checked={theMonth}
-              onChange={() => dispatch({ type: "13thMonth" })}
-            />
-          </div>
-          <p className="text-sm">
-            This allows you to add a percentage of the employees' salary as a
-            13th month bonus to be paid in the selected month
-          </p>
-
-          {theMonth && (
-            <div>
-              <div className="grid grid-cols-1 lg:grid-cols-1 gap-5 mt-5">
-                {/* <div>
-                  <label htmlFor="payment">Month of Payment</label>
-                  <select name="" id="" className={inputStyle}>
-                    <option value="">Select</option>
-                    {months.map((month) => (
-                      <option key={month} value={month}>
-                        {month}
-                      </option>
-                    ))}
-                  </select>
-                </div> */}
-                <div>
-                  {/* <label htmlFor="salary">Percentage of salary</label>
-                  <input type="text" placeholder="0%" className={inputStyle} /> */}
-                  <AddSalaryComponentForm
-                    handleSave={() => {}}
-                    dependencies={ALLOWANNCES.map((item) => item.identifier)}
-                    monthsApplicable={{ mode: "single" }}
-                    componentName="thirteenth_month_salary" //make this a constant so its not a magic variable
-                  />
-                </div>
-              </div>
-            </div>
-          )}
         </div>
       </div>
 
@@ -476,90 +538,6 @@ const SetUpForm = () => {
                 </button>
                 <button type="submit" className="button">
                   Save
-                </button>
-              </div>
-            </div>
-          )}
-        </div>
-
-        <div className={boxStyle}>
-          <div className="flex items-center justify-between">
-            <h5 className={boxTitle}>Salary Breakdown</h5>
-            <Switch
-              checked={salaryBreakdown}
-              onChange={() => dispatch({ type: "salaryBreakdown" })}
-            />
-          </div>
-          <p className="text-sm">
-            This allows you to breakdown your employees' salaries (e.g basic,
-            housing, transport, etc). You can add custom items too.
-          </p>
-          {salaryBreakdown && (
-            <div>
-              <div className="grid grid-cols-2 gap-5 mt-6">
-                <div>
-                  <p className="text-xs md:text-sm pb-2">Salary Item</p>
-                  <div className="flex flex-col gap-3">
-                    <input
-                      type="text"
-                      placeholder="Basic"
-                      disabled
-                      className={inputStyle}
-                    />
-                    <input
-                      type="text"
-                      placeholder="Housing"
-                      disabled
-                      className={inputStyle}
-                    />
-                    <input
-                      type="text"
-                      placeholder="Transport"
-                      disabled
-                      className={inputStyle}
-                    />
-                  </div>
-                </div>
-
-                <div>
-                  <p className="text-xs md:text-sm pb-2">Percentage of gross</p>
-                  <div className="flex flex-col gap-3">
-                    <input
-                      type="number"
-                      placeholder="0%"
-                      className={inputStyle}
-                    />
-                    <input
-                      type="number"
-                      placeholder="0%"
-                      className={inputStyle}
-                    />
-                    <input
-                      type="number"
-                      placeholder="0%"
-                      className={inputStyle}
-                    />
-                  </div>
-                </div>
-              </div>
-              <div className="my-5">
-                <h4 className="text-caramel text-sm underline pb-2 cursor-pointer">
-                  Add Item
-                </h4>
-                <p className="text-xs">
-                  Total breakdown is 0% and should be 100%
-                </p>
-              </div>
-              <div className="flex justify-between items-center mt-5 pb-2">
-                <button
-                  onClick={() => dispatch({ type: "salaryBreakdown" })}
-                  type="button"
-                  className="transparentButton"
-                >
-                  Cancel
-                </button>
-                <button type="submit" className="button">
-                  Save Breakdown
                 </button>
               </div>
             </div>
