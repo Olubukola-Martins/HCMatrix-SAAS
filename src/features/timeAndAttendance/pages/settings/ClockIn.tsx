@@ -1,4 +1,4 @@
-import { Form, Input, InputNumber, Select, Switch } from "antd";
+import { Form, Input, InputNumber, Switch } from "antd";
 import { AppButton } from "components/button/AppButton";
 import { AttendanceSettingsIntro } from "features/timeAndAttendance/components/settings/AttendanceSettingsIntro";
 import { TimeAttendanceSettingsNav } from "features/timeAndAttendance/components/settings/TimeAttendanceSettingsNav";
@@ -8,6 +8,7 @@ interface FormData {
   biometricsName: string;
   serialNumber: string;
 }
+
 export const ClockIn = () => {
   const formWrapStyle =
     "bg-card px-4 pt-4 rounded grid grid-cols-1 md:grid-cols-2 gap-x-10 mb-5 shadow-sm";
