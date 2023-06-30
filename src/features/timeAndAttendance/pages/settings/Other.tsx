@@ -2,7 +2,6 @@ import { Form, InputNumber, Select, Switch } from "antd";
 import { AppButton } from "components/button/AppButton";
 import { AttendanceSettingsIntro } from "features/timeAndAttendance/components/settings/AttendanceSettingsIntro";
 import { TimeAttendanceSettingsNav } from "features/timeAndAttendance/components/settings/TimeAttendanceSettingsNav";
-import React from "react";
 
 export const Other = () => {
   const formWrapStyle =
@@ -43,10 +42,10 @@ export const Other = () => {
               </div>
               <div className={formWrapStyle}>
                 <Form.Item name="longitude" label="Company longitude">
-                  <InputNumber placeholder="00.00" className="w-full"/>
+                  <InputNumber placeholder="00.00" className="w-full" />
                 </Form.Item>
                 <Form.Item name="latitude" label="Company latitude">
-                  <InputNumber placeholder="0.0" className="w-full"/>
+                  <InputNumber placeholder="0.0" className="w-full" />
                 </Form.Item>
               </div>
 
@@ -75,9 +74,9 @@ export const Other = () => {
                   <Switch defaultChecked />
                 </Form.Item>
               </div>
-               <div className="flex justify-end my-2">
-               <AppButton label="Save" type="submit" />
-               </div>
+              <div className="flex justify-end my-2">
+                <AppButton label="Save" type="submit" />
+              </div>
             </Form>
           </div>
         </div>
