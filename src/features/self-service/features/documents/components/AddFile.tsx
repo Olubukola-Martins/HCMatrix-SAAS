@@ -52,15 +52,6 @@ export const AddFile: React.FC<IProps> = ({ open, handleClose }) => {
   const documentUrl = useCurrentFileUploadUrl("documentUrl");
 
   const handleSubmit = (data: any) => {
-    console.log(
-      data,
-      "GO >>>",
-      data.access.map((item: [string, number], i: number) => ({
-        type: item[0],
-        entityId: item[1],
-      }))
-    );
-
     if (documentUrl) {
       mutate(
         {
@@ -102,6 +93,12 @@ export const AddFile: React.FC<IProps> = ({ open, handleClose }) => {
           },
         }
       );
+    } else {
+      openNotification({
+        state: "error",
+        title: "No File Uploaded",
+        description: `Please upload a file to proceed!`,
+      });
     }
   };
 

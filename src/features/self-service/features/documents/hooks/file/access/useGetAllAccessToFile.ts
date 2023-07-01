@@ -49,7 +49,7 @@ const getData = async (props: {
 
   const ans = {
     data,
-    total: fetchedData.totalCount,
+    total: data.length,
   };
 
   return ans;

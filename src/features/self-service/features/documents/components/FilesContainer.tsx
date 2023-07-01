@@ -1,16 +1,38 @@
-import { Dropdown, Menu, Pagination, Select, Skeleton, Table } from "antd";
+import {
+  Dropdown,
+  Empty,
+  Menu,
+  Modal,
+  Pagination,
+  Select,
+  Skeleton,
+  Table,
+} from "antd";
 import { usePagination } from "hooks/usePagination";
 import React, { useState } from "react";
 import { useGetFolders } from "../hooks/useGetFolders";
 import { TListDataTypeView } from "types";
 import { TFileListItem } from "../types";
 import { ColumnsType, TablePaginationConfig } from "antd/es/table";
-import { useGetFilesInFolder } from "../hooks/file/useGetFilesInFolder";
-import { MoreOutlined } from "@ant-design/icons";
+import {
+  QUERY_KEY_FOR_FILES_IN_A_FOLDER,
+  useGetFilesInFolder,
+} from "../hooks/file/useGetFilesInFolder";
+import { MoreOutlined, ExclamationCircleFilled } from "@ant-design/icons";
 import moment from "moment";
+import { noFiles } from "../assets";
+import { FileDetails } from "./FileDetails";
+import { EditFile } from "./EditFile";
+import { useDeleteFile } from "../hooks/file/useDeleteFile";
+import { openNotification } from "utils/notifications";
+import { useQueryClient } from "react-query";
 
+interface IFolderState {
+  id: number;
+  name: string;
+}
 export const FilesContainer = () => {
-  const [folderId, setFolderId] = useState<number>();
+  const [folder, setFolder] = useState<IFolderState>();
   const { data: folders, isFetching: isFetchingFolders } = useGetFolders({
     pagination: {
       limit: 200,
@@ -29,25 +51,32 @@ export const FilesContainer = () => {
             {/* TO DO : Refactor to debounce component */}
             <Select
               placeholder={`Select Folder`}
-              value={folderId}
+              value={folder?.id}
+              getPopupContainer={(triggerNode) => triggerNode.parentElement} //Fix for select following on scroll
               options={folders?.data?.map((item) => ({
-                label: item.name,
+                label: <span>{item.name}</span>,
+
                 value: item.id,
               }))}
-              onSelect={(val: number) => setFolderId(val)}
+              onSelect={(val: number) =>
+                setFolder({
+                  id: val,
+                  name: folders?.data.find((a) => a.id === val)?.name ?? "",
+                })
+              }
               allowClear
-              onClear={() => setFolderId(undefined)}
+              onClear={() => setFolder(undefined)}
               className="w-full"
             />
           </div>
           <div>
-            {view === "list" && folderId && (
+            {view === "list" && folder && (
               <i
                 className="ri-list-unordered text-2xl cursor-pointer"
                 onClick={() => setView("grid")}
               ></i>
             )}
-            {view === "grid" && folderId && (
+            {view === "grid" && folder && (
               <i
                 className="ri-layout-grid-line text-2xl cursor-pointer"
                 onClick={() => setView("list")}
@@ -56,7 +85,8 @@ export const FilesContainer = () => {
           </div>
         </div>
         {/* content */}
-        {folderId && <FilesViewWrapper folderId={folderId} view={view} />}
+        {folder && <FilesViewWrapper folder={folder} view={view} />}
+        {!folder && <Empty description={`Select a Folder`} />}
       </div>
     </Skeleton>
   );
@@ -64,22 +94,105 @@ export const FilesContainer = () => {
 
 const FilesViewWrapper: React.FC<{
   view?: TListDataTypeView;
-  folderId: number;
-}> = ({ view = "grid", folderId }) => {
+  folder: IFolderState;
+}> = ({ view = "grid", folder }) => {
+  const queryClient = useQueryClient();
+
   const { pagination, onChange } = usePagination();
 
   const { data: files, isFetching: isFetchingFiles } = useGetFilesInFolder({
     data: { pagination },
-    folderId,
+    folderId: folder.id,
   });
+  type TAction = "view" | "edit";
+  const [action, setAction] = useState<TAction>();
+  const [fileId, setFileId] = useState<number>();
+  const handleClose = () => {
+    setFileId(undefined);
+    setAction(undefined);
+  };
+  const handleAction = (props: { id: number; action: TAction }) => {
+    setFileId(props.id);
+    setAction(props.action);
+  };
+  const { mutate, isLoading } = useDeleteFile();
+  const onDelete = ({ fileId }: { fileId: number }) => {
+    mutate(
+      {
+        fileId,
+        folderId: folder.id,
+      },
+      {
+        onError: (err: any) => {
+          openNotification({
+            state: "error",
+            title: "Error Occurred",
+            description:
+              err?.response.data.message ?? err?.response.data.error.message,
+          });
+        },
+        onSuccess: (res: any) => {
+          openNotification({
+            state: "success",
+
+            title: "Success",
+            description: res.data.message,
+            // duration: 0.4,
+          });
+
+          queryClient.invalidateQueries({
+            queryKey: [QUERY_KEY_FOR_FILES_IN_A_FOLDER],
+            // exact: true,
+          });
+        },
+      }
+    );
+  };
+  const handleDelete = (props: { id: number }) => {
+    Modal.confirm({
+      title: `Are you sure you want to delete file ?`,
+      icon: <ExclamationCircleFilled />,
+      content: `This will delete this file!`,
+      width: 600,
+      okButtonProps: { loading: isLoading },
+      onOk() {
+        onDelete({ fileId: props.id });
+      },
+    });
+  };
   if (files?.total === 0) {
-    // TO DO: Add no files svg here
-    return <>No files in selected folder</>;
+    return (
+      <div className="flex flex-col items-center">
+        <div className="w-72">
+          <img src={noFiles} alt="No File" className="object-contain" />
+        </div>
+        <span className="relative mt-4">No files in selected folder</span>
+      </div>
+    );
   }
   return (
     <>
+      {fileId && (
+        <FileDetails
+          folder={folder}
+          open={action === "view"}
+          fileId={fileId}
+          handleClose={handleClose}
+        />
+      )}
+      {fileId && (
+        <EditFile
+          folder={folder}
+          open={action === "edit"}
+          fileId={fileId}
+          handleClose={handleClose}
+        />
+      )}
       {view === "list" && (
         <FileListTable
+          handleView={({ id }) => handleAction({ id, action: "view" })}
+          handleEdit={({ id }) => handleAction({ id, action: "edit" })}
+          handleDelete={({ id }) => handleDelete({ id })}
           data={files?.data}
           pagination={pagination}
           onChange={onChange}
@@ -88,6 +201,9 @@ const FilesViewWrapper: React.FC<{
       )}
       {view === "grid" && (
         <FileListGrids
+          handleView={({ id }) => handleAction({ id, action: "view" })}
+          handleEdit={({ id }) => handleAction({ id, action: "edit" })}
+          handleDelete={({ id }) => handleDelete({ id })}
           data={files?.data}
           pagination={pagination}
           onChange={onChange}
@@ -101,6 +217,10 @@ interface IProps {
   data?: TFileListItem[];
   loading: boolean;
   pagination?: TablePaginationConfig;
+  handleView: (props: { id: number }) => void;
+  handleEdit: (props: { id: number }) => void;
+  handleDelete: (props: { id: number }) => void;
+
   //   onChange?: TableProps<TFolderListItem>["onChange"];
   onChange?: any;
 }
@@ -109,6 +229,9 @@ const FileListTable: React.FC<IProps> = ({
   loading,
   pagination,
   onChange,
+  handleView,
+  handleEdit,
+  handleDelete,
 }) => {
   const columns: ColumnsType<TFileListItem> = [
     {
@@ -151,9 +274,21 @@ const FileListTable: React.FC<IProps> = ({
                   ),
                   key: "Download",
                 },
-                { label: "View", key: "View", onClick: () => {} },
-                { label: "Edit", key: "Edit", onClick: () => {} },
-                { label: "Delete", key: "Delete", onClick: () => {} },
+                {
+                  label: "View",
+                  key: "View",
+                  onClick: () => handleView({ id: file.id }),
+                },
+                {
+                  label: "Edit",
+                  key: "Edit",
+                  onClick: () => handleEdit({ id: file.id }),
+                },
+                {
+                  label: "Delete",
+                  key: "Delete",
+                  onClick: () => handleDelete({ id: file.id }),
+                },
               ]}
             />
           }
@@ -181,12 +316,21 @@ const FileListGrids: React.FC<IProps> = ({
   loading,
   pagination,
   onChange,
+  handleView,
+  handleEdit,
+  handleDelete,
 }) => {
   return (
     <Skeleton active loading={loading} paragraph={{ rows: 4 }}>
       <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4  gap-6">
         {data.map((item) => (
-          <FileGridCard key={item.id} file={item} />
+          <FileGridCard
+            key={item.id}
+            file={item}
+            handleView={handleView}
+            handleEdit={handleEdit}
+            handleDelete={handleDelete}
+          />
         ))}
       </div>
       <div className="mt-4 flex justify-end">
@@ -196,7 +340,17 @@ const FileListGrids: React.FC<IProps> = ({
   );
 };
 
-const FileGridCard = ({ file }: { file: TFileListItem }) => {
+const FileGridCard = ({
+  file,
+  handleView,
+  handleEdit,
+  handleDelete,
+}: {
+  file: TFileListItem;
+  handleView: (props: { id: number }) => void;
+  handleEdit: (props: { id: number }) => void;
+  handleDelete: (props: { id: number }) => void;
+}) => {
   return (
     <>
       {/* view */}
@@ -225,9 +379,21 @@ const FileGridCard = ({ file }: { file: TFileListItem }) => {
                     ),
                     key: "Download",
                   },
-                  { label: "View", key: "View", onClick: () => {} },
-                  { label: "Edit", key: "Edit", onClick: () => {} },
-                  { label: "Delete", key: "Delete", onClick: () => {} },
+                  {
+                    label: "View",
+                    key: "View",
+                    onClick: () => handleView({ id: file.id }),
+                  },
+                  {
+                    label: "Edit",
+                    key: "Edit",
+                    onClick: () => handleEdit({ id: file.id }),
+                  },
+                  {
+                    label: "Delete",
+                    key: "Delete",
+                    onClick: () => handleDelete({ id: file.id }),
+                  },
                 ]}
               />
             }
