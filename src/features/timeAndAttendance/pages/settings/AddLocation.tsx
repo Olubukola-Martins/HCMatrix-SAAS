@@ -22,6 +22,7 @@ export const AddLocation = () => {
     const fields = form.getFieldValue("fields") || [];
     const newField = { branch: "", biometrics: "" };
     form.setFieldsValue({ fields: [...fields, newField] });
+    console.log("hhh");
   };
 
   const handleRemoveField = (index: number) => {

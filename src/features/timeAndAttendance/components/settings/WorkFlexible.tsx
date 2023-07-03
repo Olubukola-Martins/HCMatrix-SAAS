@@ -1,7 +1,7 @@
 import { Checkbox, Form, TimePicker } from "antd";
 import { AppButton } from "components/button/AppButton";
 
-export const WorkFixed = () => {
+export const WorkFlexible = () => {
   const boxStyle = "border py-3 px-7 text-accent font-medium text-base";
   return (
     <div>
@@ -57,15 +57,7 @@ export const WorkFixed = () => {
             <TimePicker.RangePicker className="w-full md:ml-20 py-2" />
           </Form.Item>
 
-          <div className="flex justify-between items-start">
-            <div className="flex items-start gap-2 md:gap-5">
-              <h4 className="pt-1">Payroll hours</h4>
-              <Form.Item>
-                <Checkbox>
-                  Include time tracked before scheduled start time
-                </Checkbox>
-              </Form.Item>
-            </div>
+          <div className="flex justify-end mt-4">
             <AppButton label="Save" type="submit" />
           </div>
         </Form>

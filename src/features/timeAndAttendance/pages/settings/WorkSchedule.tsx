@@ -1,7 +1,10 @@
 import { AttendanceSettingsIntro } from "features/timeAndAttendance/components/settings/AttendanceSettingsIntro";
 import { TimeAttendanceSettingsNav } from "features/timeAndAttendance/components/settings/TimeAttendanceSettingsNav";
+import { WeeklyWork } from "features/timeAndAttendance/components/settings/WeeklyWork";
+import { WorkBreak } from "features/timeAndAttendance/components/settings/WorkBreak";
 import { WorkFixed } from "features/timeAndAttendance/components/settings/WorkFixed";
-import React, { useState } from "react";
+import { WorkFlexible } from "features/timeAndAttendance/components/settings/WorkFlexible";
+import { useState } from "react";
 
 export const WorkSchedule = () => {
   const [switchWorkArr, setSwitchWorkArr] = useState("fixed");
@@ -16,7 +19,7 @@ export const WorkSchedule = () => {
       />
 
       <div className="Container mt-7">
-        <div className="border rounded-md md:p-4 p-2">
+        <div className="border rounded-md px-3 md:pl-5 py-4">
           <h3 className="font-semibold text-lg">Schedule</h3>
 
           <div className="flex items-center flex-wrap gap-3 mb-5">
@@ -66,17 +69,20 @@ export const WorkSchedule = () => {
                 onClick={() => setSwitchWorkArr("break")}
                 className={
                   switchWorkArr === "break"
-                    ? `${boxStyle} bg-caramel rounded-r`
-                    : `${boxStyle} rounded-r`
+                    ? `${boxStyle} rounded-r bg-card shadow`
+                    : `${boxStyle} rounded-r bg-card shadow`
                 }
               >
-                <h5>Break</h5>
+                <h5 className="text-caramel">Break</h5>
               </div>
             </div>
           </div>
           {/* Initialization of the components */}
           {switchWorkArr === "fixed" && <WorkFixed />}
+          {switchWorkArr === "flexible" && <WorkFlexible />}
+          {switchWorkArr === "weekly" && <WeeklyWork />}
         </div>
+        {switchWorkArr === "break" && <WorkBreak />}
       </div>
     </>
   );
