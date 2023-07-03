@@ -7,7 +7,6 @@ import PayrollBreakdown from "features/payroll/pages/PayrollBreakdown";
 import PayrollCycle from "features/payroll/pages/PayrollCycle";
 import PayrollScheme from "features/payroll/pages/PayrollScheme";
 import PayrollComparison from "features/payroll/pages/PayrollComparison";
-import CreatePayroll from "features/payroll/pages/CreatePayroll";
 import PayrollReport from "features/payroll/pages/PayrollReport";
 import { PayrollPayslip } from "features/payroll/pages/PayrollPayslip";
 import EmployeePayslips from "features/payroll/pages/EmployeePayslips";
@@ -25,6 +24,13 @@ import SetupDirectSalaryPayrollSchemePage from "features/payroll/pages/SetupDire
 import SetupWagesPayrollSchemePage from "features/payroll/pages/SetupWagesPayrollSchemePage";
 import SetupProjectPayrollSchemePage from "features/payroll/pages/SetupProjectPayrollSchemePage";
 import SetupSingleProjectPayrollSchemePage from "features/payroll/pages/SetupSingleProjectPayrollSchemePage";
+import CreateOfficePayroll from "features/payroll/pages/CreateOfficePayroll";
+import CreateDirectSalaryPayroll from "features/payroll/pages/CreateDirectSalaryPayroll";
+import CreateWagePayroll from "features/payroll/pages/CreateWagePayroll";
+import CreateProjectPayroll from "features/payroll/pages/CreateProjectPayroll";
+import SetupDailyWagesPayrollSchemePage from "features/payroll/pages/SetupDailyWagesPayrollSchemePage";
+import SetupMonthlyWagesPayrollSchemePage from "features/payroll/pages/SetupMonthlyWagesPayrollSchemePage";
+import ListOfPayrollsPage from "features/payroll/pages/ListOfPayrollsPage";
 
 export const payrollRoutes: TRouteData[] = [
   {
@@ -99,6 +105,27 @@ export const payrollRoutes: TRouteData[] = [
     isPrimaryFeature: false,
   },
   {
+    element: <SetupDailyWagesPayrollSchemePage />,
+    path: appRoutes.setupDailyWagesPayrollScheme,
+    isSearchable: true,
+    title: "Daily Wages Payroll Scheme",
+    isPrimaryFeature: false,
+  },
+  {
+    element: <SetupMonthlyWagesPayrollSchemePage />,
+    path: appRoutes.setupMonthlyWagesPayrollScheme,
+    isSearchable: true,
+    title: "Monthly Wages Payroll Scheme",
+    isPrimaryFeature: false,
+  },
+  {
+    element: <ListOfPayrollsPage />,
+    path: appRoutes.listOfPayrolls,
+    isSearchable: true,
+    title: "Monthly Wages Payroll Scheme",
+    isPrimaryFeature: false,
+  },
+  {
     element: <PayrollSettings />,
     path: appRoutes.payrollSettings,
     isSearchable: true,
@@ -168,10 +195,28 @@ export const payrollRoutes: TRouteData[] = [
     title: "Payroll Comparison",
   },
   {
-    element: <CreatePayroll />,
-    path: appRoutes.createPayroll,
+    element: <CreateOfficePayroll />,
+    path: appRoutes.createOfficePayroll,
     isSearchable: true,
-    title: "Create Payroll",
+    title: "Create Office Payroll",
+  },
+  {
+    element: <CreateDirectSalaryPayroll />,
+    path: appRoutes.createDirectSalaryPayroll,
+    isSearchable: true,
+    title: "Create Direct Salary Payroll",
+  },
+  {
+    element: <CreateWagePayroll />,
+    path: appRoutes.createWagesPayroll,
+    isSearchable: true,
+    title: "Create Wages Payroll",
+  },
+  {
+    element: <CreateProjectPayroll />,
+    path: appRoutes.createProjectPayroll,
+    isSearchable: true,
+    title: "Create Project Payroll",
   },
   {
     element: <PayrollReport />,

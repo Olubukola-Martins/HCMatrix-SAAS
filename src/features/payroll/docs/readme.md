@@ -49,7 +49,7 @@
 
 - Select the project you wish to run payroll for (as opposed to name)
 - Payment Description: will help provide context for admin in future when he needs to understand y payment differs
-- Also showcase the monthly budget of project(non-editable)
+- Also showcase the monthly budget of project(non-editable)[Not to be used]
 - Selecting the month will be based on project start date and the duration, hence will be a dropdown
 - No overtime is accounted for
 - No allowances or deductions

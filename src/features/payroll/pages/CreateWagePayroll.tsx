@@ -1,17 +1,20 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import PayrollSubNav from "../components/PayrollSubNav";
 import { ExchangeRateContainer } from "../components/exchangeRates/ExchangeRateContainer";
 import { SalaryComponentsContainer } from "../components/salaryComponents/SalaryComponentsContainer";
 import { EmployeePayrollUpdatesContainer } from "../components/employeePayrollUpdates/EmployeePayrollUpdatesContainer";
+import { Input, Select } from "antd";
 
-const CreatePayroll = () => {
+const CreateWagePayroll = () => {
   const boxStyle =
     "bg-mainBg flex justify-between items-start md:items-center px-6 py-5 rounded lg:flex-row flex-col gap-y-5";
 
   const buttonStyle =
     "border border-gray-400 hover:text-caramel rounded px-5 py-1 font-medium text-sm text-accent";
 
+  type TType = "daily" | "monthly";
+  const [type, setType] = useState<TType>("monthly");
   return (
     <>
       <PayrollSubNav />
@@ -20,7 +23,7 @@ const CreatePayroll = () => {
           <Link to="/payroll/cycle" className="hover:text-caramel">
             <i className="ri-arrow-left-s-line text-xl"></i>
           </Link>
-          <h5 className="font-black text-lg">Create Office Payroll</h5>
+          <h5 className="font-black text-lg">Create Wage Payroll</h5>
         </div>
 
         <div className="flex items-center justify-end gap-5">
@@ -46,18 +49,63 @@ const CreatePayroll = () => {
             />
           </div>
           <div className={boxStyle}>
-            <div>
-              <h5 className="font-medium text-base pb-1">Payroll Month</h5>
-              <p className="md:text-sm text-xs">
-                Choose the month of the year you wish to run this payroll for.
-              </p>
+            <div className="w-full">
+              <div className="flex justify-between">
+                <div>
+                  <h5 className="font-medium text-base pb-1">
+                    Select payment type
+                  </h5>
+                  <p className="md:text-sm text-xs">
+                    Would you like to run a monthly or daily hours worked
+                    payroll
+                  </p>
+                </div>
+                <div>
+                  <Select
+                    value={type}
+                    options={["daily", "monthly"].map((item) => ({
+                      label: item,
+                      value: item,
+                    }))}
+                    onSelect={(val: TType) => setType(val)}
+                  />
+                </div>
+              </div>
+              <div className="mt-4">
+                {type === "daily" && (
+                  <input
+                    type="date"
+                    placeholder="Select day"
+                    className="border text-accent rounded px-3 py-1 border-gray-400 bg-mainBg"
+                  />
+                )}
+                {type === "monthly" && (
+                  <input
+                    type="month"
+                    placeholder="Select month"
+                    className="border text-accent rounded px-3 py-1 border-gray-400 bg-mainBg"
+                  />
+                )}
+              </div>
             </div>
-            <input
-              type="month"
-              className="border text-accent rounded px-3 py-1 border-gray-400 bg-mainBg"
-            />
           </div>
-
+          <div className={boxStyle}>
+            <div className="w-full">
+              <div className="flex justify-between">
+                <div>
+                  <h5 className="font-medium text-base pb-1">
+                    Payment Description
+                  </h5>
+                  <p className="md:text-sm text-xs">
+                    A brief decription of payment
+                  </p>
+                </div>
+              </div>
+              <div className="mt-4">
+                <Input.TextArea />
+              </div>
+            </div>
+          </div>
           <div className={boxStyle}>
             <div className="w-full">
               <div className="flex justify-between">
@@ -77,18 +125,6 @@ const CreatePayroll = () => {
               <div className="mt-4">
                 <ExchangeRateContainer />
               </div>
-            </div>
-          </div>
-
-          <div className={boxStyle}>
-            <div>
-              <h5 className="font-medium text-base pb-1">
-                Add Overtime Timesheet
-              </h5>
-              <p className="md:text-sm text-xs">
-                Upload the overtime sheet that will be used to add overtime pay
-                to employee.
-              </p>
             </div>
           </div>
 
@@ -178,4 +214,4 @@ const CreatePayroll = () => {
   );
 };
 
-export default CreatePayroll;
+export default CreateWagePayroll;

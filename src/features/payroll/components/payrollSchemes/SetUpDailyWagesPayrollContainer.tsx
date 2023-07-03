@@ -59,13 +59,13 @@ function reducer(state: any, action: any) {
       return state;
   }
 }
-export const SetUpGradePayrollContainer = () => {
+export const SetUpDailyWagesPayrollContainer = () => {
   return (
     <>
       <div className="flex flex-col gap-4">
         <PageSubHeader
           hideBackground
-          description={`Set up payroll based on the pay grades assigned to employees`}
+          description={`Set up payroll based on hours worked by employee on a daily basis`}
           actions={[
             {
               name: "Save Changes",
@@ -104,13 +104,13 @@ const SetUpForm = () => {
       <div className="flex flex-col gap-4">
         <div className={boxStyle}>
           <h5 className={boxTitle}>Payroll Scheme Type</h5>
-          <input className={inputStyle} value="Grade Payroll Scheme" disabled />
+          <input className={inputStyle} value="Wages Payroll Scheme" disabled />
         </div>
 
         <div className={boxStyle}>
           <h5 className={boxTitle}>Payroll Frequency</h5>
 
-          <input className={inputStyle} value="Monthly" disabled />
+          <input className={inputStyle} value="Daily" disabled />
         </div>
         <div className={boxStyle}>
           <div className="flex items-center justify-between">
@@ -335,27 +335,6 @@ const SetUpForm = () => {
             )}
           </div>
         ))}
-        <div className={boxStyle}>
-          <div className="flex items-center justify-between">
-            <h5 className={boxTitle}>Overtime Settings</h5>
-            <Switch
-              checked={overtimeS}
-              onChange={() => dispatch({ type: "overtimeSetting" })}
-            />
-          </div>
-          <p className="text-sm">
-            Set the amount that will be applied to each overtime hour worked
-          </p>
-          {overtimeS && (
-            <div className="mt-6">
-              <AddSalaryComponentForm
-                handleSave={() => {}}
-                dependencies={ALLOWANNCES.map((item) => item.identifier)}
-                componentName="overtime" //make this a constant so its not a magic variable
-              />
-            </div>
-          )}
-        </div>
 
         <div className={boxStyle}>
           <div className="flex items-center justify-between">
