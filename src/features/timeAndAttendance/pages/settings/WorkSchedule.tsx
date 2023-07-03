@@ -1,5 +1,6 @@
 import { AttendanceSettingsIntro } from "features/timeAndAttendance/components/settings/AttendanceSettingsIntro";
 import { TimeAttendanceSettingsNav } from "features/timeAndAttendance/components/settings/TimeAttendanceSettingsNav";
+import { WorkFixed } from "features/timeAndAttendance/components/settings/WorkFixed";
 import React, { useState } from "react";
 
 export const WorkSchedule = () => {
@@ -18,9 +19,9 @@ export const WorkSchedule = () => {
         <div className="border rounded-md md:p-4 p-2">
           <h3 className="font-semibold text-lg">Schedule</h3>
 
-          <div className="flex items-center gap-x-3">
-            <h4 className="text-base">Work arrangement</h4>
-            <div className="flex items-center">
+          <div className="flex items-center flex-wrap gap-3 mb-5">
+            <h4 className="text-base font-medium">Work arrangement</h4>
+            <div className="flex items-center flex-wrap">
               <div
                 onClick={() => setSwitchWorkArr("fixed")}
                 className={
@@ -41,14 +42,40 @@ export const WorkSchedule = () => {
               >
                 <h5>Flexible</h5>
               </div>
-              <div className={boxStyle}>
+              <div
+                onClick={() => setSwitchWorkArr("weekly")}
+                className={
+                  switchWorkArr === "weekly"
+                    ? `${boxStyle} bg-caramel`
+                    : `${boxStyle}`
+                }
+              >
                 <h5>Weekly</h5>
               </div>
-              <div className={`${boxStyle} rounded-r`}>
+              <div
+                onClick={() => setSwitchWorkArr("shift")}
+                className={
+                  switchWorkArr === "shift"
+                    ? `${boxStyle} bg-caramel`
+                    : `${boxStyle}`
+                }
+              >
                 <h5>Shift</h5>
+              </div>
+              <div
+                onClick={() => setSwitchWorkArr("break")}
+                className={
+                  switchWorkArr === "break"
+                    ? `${boxStyle} bg-caramel rounded-r`
+                    : `${boxStyle} rounded-r`
+                }
+              >
+                <h5>Break</h5>
               </div>
             </div>
           </div>
+          {/* Initialization of the components */}
+          {switchWorkArr === "fixed" && <WorkFixed />}
         </div>
       </div>
     </>

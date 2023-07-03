@@ -15,8 +15,8 @@ export const TimeAttendanceSettingsNav = (props: NProps) => {
   const applyStyle = "text-caramel pb-3";
 
   return (
-    <div>
-      <div className="flex items-center justify-evenly text-base py-2 border-b mb-6 mt-3">
+    <div className="flex justify-center">
+      <div className="grid grid-cols-2 text-center md:grid-cols-3 lg:grid-cols-6 gap-x-5 gap-y-2 Container text-base py-2 border-b mb-6 mt-3">
         <Link
           to={appRoutes.timeTrackingRules}
           className={
@@ -27,7 +27,7 @@ export const TimeAttendanceSettingsNav = (props: NProps) => {
         >
           Time Tracking Rules
         </Link>
-      
+
         <Link
           to={appRoutes.workSchedule}
           className={
