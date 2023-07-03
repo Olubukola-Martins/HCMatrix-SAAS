@@ -6,7 +6,7 @@ import React, { useState } from "react";
 export const WorkSchedule = () => {
   const [switchWorkArr, setSwitchWorkArr] = useState("fixed");
   const boxStyle =
-    "border py-3 px-5 text-accent font-medium text-base cursor-pointer";
+    "border py-3 px-6 text-accent font-medium text-base cursor-pointer";
   return (
     <>
       <TimeAttendanceSettingsNav active="Create Work Schedule" />
