@@ -1,5 +1,5 @@
 import PageSubHeader from "components/layout/PageSubHeader";
-import { Button, Checkbox, Form, Select, Switch } from "antd";
+import { Button, Checkbox, Form, InputNumber, Select, Switch } from "antd";
 import { useReducer, useState } from "react";
 import { DownOutlined } from "@ant-design/icons";
 import { FormWorkflowInput } from "features/core/workflows/components/FormWorkflowInput";
@@ -335,6 +335,7 @@ const SetUpForm = () => {
             )}
           </div>
         ))}
+
         <div className={boxStyle}>
           <div className="flex items-center justify-between">
             <h5 className={boxTitle}>Overtime Settings</h5>
@@ -465,6 +466,18 @@ const SetUpForm = () => {
                   </div>
                 </div>
               )}
+              {!!taxpol && taxTable && (
+                <div className="bg-card px-2 py-3 mt-3 rounded font-medium">
+                  <div className="flex justify-end">
+                    <i
+                      onClick={() =>
+                        dispatch({ type: "taxTable", payload: false })
+                      }
+                      className="ri-close-fill cursor-pointer text-lg  pb-3 font-semibold"
+                    />
+                  </div>
+                </div>
+              )}
 
               <div className="flex justify-between items-center mt-5 pb-2">
                 <button
@@ -478,6 +491,30 @@ const SetUpForm = () => {
                   Save
                 </button>
               </div>
+            </div>
+          )}
+        </div>
+
+        <div className={boxStyle}>
+          <div className="flex items-center justify-between">
+            <h5 className={boxTitle}>Run Payroll automatically</h5>
+            <Switch
+              checked={overtimeS}
+              onChange={() => dispatch({ type: "overtimeSetting" })}
+            />
+          </div>
+          <p className="text-sm">
+            This will enable payroll to be run automatically every month with
+            the scheme's default settings
+          </p>
+          {overtimeS && (
+            <div className="mt-6">
+              <InputNumber
+                placeholder="Select the day of execution in month"
+                min={1}
+                max={28}
+                className="w-2/5"
+              />
             </div>
           )}
         </div>

@@ -543,6 +543,36 @@ const SetUpForm = () => {
             </div>
           )}
         </div>
+        <div className={boxStyle}>
+          <div className="flex items-center justify-between">
+            <h5 className={boxTitle}>Run Payroll automatically</h5>
+            <Switch
+              checked={overtimeS}
+              onChange={() => dispatch({ type: "overtimeSetting" })}
+            />
+          </div>
+          <p className="text-sm">
+            This will enable payroll to be run automatically for each payment
+            with the scheme's default settings at the time specified
+          </p>
+          {overtimeS && (
+            <div className="mt-6 flex flex-col gap-4 w-3/5">
+              {Array(4)
+                .fill(0)
+                .map((item, i) => (
+                  <div key={i} className="flex gap-4">
+                    <input
+                      className={inputStyle}
+                      value={`${i + 1} Payment`}
+                      disabled
+                    />
+
+                    <input className={inputStyle} type="date" />
+                  </div>
+                ))}
+            </div>
+          )}
+        </div>
       </div>
     </div>
   );

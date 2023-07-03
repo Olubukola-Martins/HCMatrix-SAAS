@@ -93,6 +93,7 @@ const ListOfPayrollsContainer = () => {
       label: "Project",
       children: (
         <PayrolTable
+          isProject
           data={[
             {
               createdAt: "02/02/2028",

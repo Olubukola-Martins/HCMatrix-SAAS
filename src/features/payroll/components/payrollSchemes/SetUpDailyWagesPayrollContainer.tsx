@@ -1,5 +1,5 @@
 import PageSubHeader from "components/layout/PageSubHeader";
-import { Button, Checkbox, Form, Select, Switch } from "antd";
+import { Button, Checkbox, Form, InputNumber, Select, Switch } from "antd";
 import { useReducer, useState } from "react";
 import { DownOutlined } from "@ant-design/icons";
 import { FormWorkflowInput } from "features/core/workflows/components/FormWorkflowInput";
@@ -457,6 +457,29 @@ const SetUpForm = () => {
                   Save
                 </button>
               </div>
+            </div>
+          )}
+        </div>
+        <div className={boxStyle}>
+          <div className="flex items-center justify-between">
+            <h5 className={boxTitle}>Run Payroll automatically</h5>
+            <Switch
+              checked={overtimeS}
+              onChange={() => dispatch({ type: "overtimeSetting" })}
+            />
+          </div>
+          <p className="text-sm">
+            This will enable payroll to be run automatically every day with the
+            scheme's default settings
+          </p>
+          {overtimeS && (
+            <div className="mt-6">
+              <InputNumber
+                placeholder="Select the hour of execution in day"
+                min={1}
+                max={28}
+                className="w-2/5"
+              />
             </div>
           )}
         </div>
