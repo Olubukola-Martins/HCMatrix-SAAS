@@ -1,4 +1,4 @@
-import { Checkbox, Form, TimePicker } from "antd";
+import { Checkbox, Form, InputNumber, TimePicker } from "antd";
 import { AppButton } from "components/button/AppButton";
 
 export const WorkFlexible = () => {
@@ -36,25 +36,25 @@ export const WorkFlexible = () => {
       <div>
         <Form className="mt-6 lg:w-1/2 md:w-4/5">
           <Form.Item label="Monday" name="monday">
-            <TimePicker.RangePicker className="w-full md:ml-20 py-2" />
+            <InputNumber className="w-full md:ml-20" placeholder="0h: 0min"/>
           </Form.Item>
           <Form.Item label="Tuesday" name="tuesday">
-            <TimePicker.RangePicker className="md:ml-20 w-full py-2" />
+            <InputNumber className="w-full md:ml-20" placeholder="0h: 0min"/>
           </Form.Item>
           <Form.Item label="Wednesday" name="wednesday">
-            <TimePicker.RangePicker className="w-full md:ml-20 py-2" />
+            <InputNumber className="w-full md:ml-20" placeholder="0h: 0min"/>
           </Form.Item>
           <Form.Item label="Thursday" name="thursday">
-            <TimePicker.RangePicker className="w-full md:ml-20 py-2" />
+            <InputNumber className="w-full md:ml-20" placeholder="0h: 0min"/>
           </Form.Item>
           <Form.Item label="Friday" name="friday">
-            <TimePicker.RangePicker className="w-full md:ml-20 py-2" />
+            <InputNumber className="w-full md:ml-20" placeholder="0h: 0min"/>
           </Form.Item>
           <Form.Item label="Saturday" name="saturday">
-            <TimePicker.RangePicker className="w-full md:ml-20 py-2" />
+            <InputNumber className="w-full md:ml-20" placeholder="0h: 0min"/>
           </Form.Item>
           <Form.Item label="Sunday" name="sunday">
-            <TimePicker.RangePicker className="w-full md:ml-20 py-2" />
+            <InputNumber className="w-full md:ml-20" placeholder="0h: 0min"/>
           </Form.Item>
 
           <div className="flex justify-end mt-4">
