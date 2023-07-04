@@ -4,6 +4,7 @@ import { WeeklyWork } from "features/timeAndAttendance/components/settings/Weekl
 import { WorkBreak } from "features/timeAndAttendance/components/settings/WorkBreak";
 import { WorkFixed } from "features/timeAndAttendance/components/settings/WorkFixed";
 import { WorkFlexible } from "features/timeAndAttendance/components/settings/WorkFlexible";
+import { WorkShift } from "features/timeAndAttendance/components/settings/WorkShift";
 import { useState } from "react";
 
 export const WorkSchedule = () => {
@@ -81,6 +82,7 @@ export const WorkSchedule = () => {
           {switchWorkArr === "fixed" && <WorkFixed />}
           {switchWorkArr === "flexible" && <WorkFlexible />}
           {switchWorkArr === "weekly" && <WeeklyWork />}
+          {switchWorkArr === "shift" && <WorkShift />}
         </div>
         {switchWorkArr === "break" && <WorkBreak />}
       </div>
