@@ -1,13 +1,15 @@
-import HolidaysWrapper from "../components/HolidaysWrapper";
+import { PageIntro } from "components/layout/PageIntro";
+import { HolidaysContainer } from "../components/HolidaysContainer";
 
-const Holidays = () => {
+const DocumentsPage = () => {
   return (
     <>
-      <div className="Container">
-        <HolidaysWrapper />
+      <div className="Container ">
+        <PageIntro title="Holidays" />
+        <HolidaysContainer />
       </div>
     </>
   );
 };
 
-export default Holidays;
+export default DocumentsPage;
