@@ -6,30 +6,24 @@ import { ColumnsType } from "antd/lib/table";
 import { usePagination } from "hooks/usePagination";
 
 import { TPayGrade } from "features/payroll/types";
+import { useGetPayGrades } from "features/payroll/hooks/payGrades/useGetPayGrades";
+import moment from "moment";
 
 const PayGradesTable: React.FC<{
   categoryId?: number;
 }> = ({ categoryId }) => {
   const { pagination, onChange } = usePagination();
 
-  //   const { data, isFetching } = useGetAssets({
-  //     pagination,
-  //     companyId,
-  //     token,
-  //     status,
-  //     typeId,
-  //   });
+  const { data, isFetching } = useGetPayGrades({
+    pagination,
+  });
 
   const columns: ColumnsType<TPayGrade> = [
     {
-      title: "Level",
+      title: "Name",
       dataIndex: "name",
       key: "name",
-      render: (val, item) => (
-        <span className="capitalize text-caramel hover:underline">
-          {item?.name}
-        </span>
-      ),
+      render: (val, item) => <span className="capitalize">{item?.name}</span>,
 
       // ellipsis: true,
 
@@ -37,27 +31,27 @@ const PayGradesTable: React.FC<{
     },
     {
       title: "Category",
-      dataIndex: "uid",
-      key: "uid",
-      render: (_, item) => item.uid,
+      dataIndex: "cat",
+      key: "cat",
+      render: (_, item) => item.category.name,
     },
     {
       title: "Gross pay",
-      dataIndex: "uid",
-      key: "uid",
-      render: (_, item) => item.uid,
+      dataIndex: "pay",
+      key: "pay",
+      render: (_, item) => item.grossPay,
     },
     {
       title: "Created At",
-      dataIndex: "uid",
-      key: "uid",
-      render: (_, item) => item.uid,
+      dataIndex: "createAr",
+      key: "createAr",
+      render: (_, item) => moment(item.createdAt).format(`YYYY-MM-DD`),
     },
     {
       title: "Updated At",
-      dataIndex: "uid",
-      key: "uid",
-      render: (_, item) => item.uid,
+      dataIndex: "update",
+      key: "update",
+      render: (_, item) => moment(item.updatedAt).format(`YYYY-MM-DD`),
     },
   ];
 
@@ -66,9 +60,9 @@ const PayGradesTable: React.FC<{
       <Table
         columns={columns}
         size="small"
-        dataSource={[]}
-        // loading={isFetching}
-        // pagination={{ ...pagination, total: data?.total }}
+        dataSource={data?.data}
+        loading={isFetching}
+        pagination={{ ...pagination, total: data?.total }}
         onChange={onChange}
       />
     </div>

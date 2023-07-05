@@ -5,29 +5,23 @@ import { ColumnsType } from "antd/lib/table";
 
 import { usePagination } from "hooks/usePagination";
 
-import { TPayGrade, TPayGradeCategory } from "features/payroll/types";
+import { TPayGradeCategory } from "features/payroll/types";
+import { useGetPayGradeCategories } from "features/payroll/hooks/payGrades/category/useGetPayGradeCategories";
+import moment from "moment";
 
 const PayGradeCategoriesTable: React.FC = () => {
   const { pagination, onChange } = usePagination();
 
-  //   const { data, isFetching } = useGetAssets({
-  //     pagination,
-  //     companyId,
-  //     token,
-  //     status,
-  //     typeId,
-  //   });
+  const { data, isFetching } = useGetPayGradeCategories({
+    pagination,
+  });
 
   const columns: ColumnsType<TPayGradeCategory> = [
     {
       title: "Name",
       dataIndex: "name",
       key: "name",
-      render: (val, item) => (
-        <span className="capitalize text-caramel hover:underline">
-          {item?.name}
-        </span>
-      ),
+      render: (val, item) => <span className="capitalize">{item?.name}</span>,
 
       // ellipsis: true,
 
@@ -35,27 +29,27 @@ const PayGradeCategoriesTable: React.FC = () => {
     },
     {
       title: "Maximum Gross Pay",
-      dataIndex: "uid",
-      key: "uid",
-      render: (_, item) => item.uid,
+      dataIndex: "max",
+      key: "max",
+      render: (_, item) => item.minGrossPay,
     },
     {
       title: "Minimum Gross pay",
-      dataIndex: "uid",
-      key: "uid",
-      render: (_, item) => item.uid,
+      dataIndex: "min",
+      key: "min",
+      render: (_, item) => item.maxGrossPay,
     },
     {
       title: "Created At",
-      dataIndex: "uid",
-      key: "uid",
-      render: (_, item) => item.uid,
+      dataIndex: "createAr",
+      key: "createAr",
+      render: (_, item) => moment(item.createdAt).format(`YYYY-MM-DD`),
     },
     {
       title: "Updated At",
-      dataIndex: "uid",
-      key: "uid",
-      render: (_, item) => item.uid,
+      dataIndex: "update",
+      key: "update",
+      render: (_, item) => moment(item.updatedAt).format(`YYYY-MM-DD`),
     },
   ];
 
@@ -64,9 +58,9 @@ const PayGradeCategoriesTable: React.FC = () => {
       <Table
         columns={columns}
         size="small"
-        dataSource={[]}
-        // loading={isFetching}
-        // pagination={{ ...pagination, total: data?.total }}
+        dataSource={data?.data}
+        loading={isFetching}
+        pagination={{ ...pagination, total: data?.total }}
         onChange={onChange}
       />
     </div>

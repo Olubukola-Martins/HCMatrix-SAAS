@@ -231,8 +231,9 @@ export type TPersonalInfo = {
   maritalStatus: string;
   nationality: string;
   address: TAddress;
+  exchangeRateId?: number;
   passportExpirationDate?: string;
-  validDocumentUrl: string;
+  validDocumentUrl?: string;
 };
 
 export type TJobInfo = {
@@ -245,6 +246,8 @@ export type TJobInfo = {
   probationEndDate: string;
   confirmationDate: string;
   lineManagerId?: number;
+  payGradeId?: number;
+  branchId?: number;
 };
 
 export type TWallet = {

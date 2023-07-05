@@ -1,9 +1,8 @@
-export type TPayGradeCategory = {
+export type TExchangeRateListItem = {
   id: number;
-  name: string;
+  currency: string;
   label: string;
-  minGrossPay: string;
-  maxGrossPay: string;
+  rate: string;
   companyId: number;
   createdAt: string;
   updatedAt: string;

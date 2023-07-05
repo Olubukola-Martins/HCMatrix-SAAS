@@ -1,6 +1,7 @@
 import { UploadOutlined } from "@ant-design/icons";
 import { UploadProps, message, Upload, Button, Typography } from "antd";
 import { IAuthDets } from "features/authentication/types";
+import { useApiAuth } from "hooks/useApiAuth";
 import { useContext } from "react";
 import { useAuthUser } from "react-auth-kit";
 import { GlobalContext, EGlobalOps } from "stateManagers/GlobalContextProvider";
@@ -28,9 +29,7 @@ export const FileUpload = ({
   textToDisplay = "Click to Upload",
   fileKey,
 }: IFilesProps) => {
-  const auth = useAuthUser();
-  const authDetails = auth() as unknown as IAuthDets;
-  const token = authDetails.userToken;
+  const { token } = useApiAuth();
   const globalCtx = useContext(GlobalContext);
   const { state: globalState, dispatch } = globalCtx;
   const companyId = globalState.currentCompany?.id;

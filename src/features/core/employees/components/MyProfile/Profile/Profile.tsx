@@ -1,58 +1,49 @@
-import {
-  DatePicker,
-  Form,
-  Input,
-  message,
-  Select,
-  Spin,
-  Tooltip,
-  Upload,
-} from "antd";
+import { DatePicker, Form, Input, message, Select, Spin, Tooltip } from "antd";
+import { FileUpload } from "components/FileUpload";
 import { FormCountryInput } from "components/generalFormInputs/FormCountryInput";
 import { FormLGAInput } from "components/generalFormInputs/FormLGAInput";
 import { FormPhoneInput } from "components/generalFormInputs/FormPhoneInput";
 import { FormStateInput } from "components/generalFormInputs/FormStateInput";
 import {
-  EMPLOYMENT_ELIGIBILITIES,
+  EMPLOYMENT_ELIGIBILITIES_OPTIONS,
   GENDERS,
   MARITAL_STATUSES,
 } from "constants/general";
 import { TIME_ZONES } from "constants/timeZones";
-import { IAuthDets } from "features/authentication/types";
 import { useCreateEmployeePersonalInfo } from "features/core/employees/hooks/useCreateEmployeePersonalInfo";
 import { useUpdateEmployeePersonalInfo } from "features/core/employees/hooks/useUpdateEmployeePersonalInfo";
 import {
   TEmployee,
   ICreateEmpPersonalInfoProps,
 } from "features/core/employees/types";
+import { FormExchangeRateInput } from "features/payroll/components/exchangeRates/FormExchangeRateInput";
 import { useApiAuth } from "hooks/useApiAuth";
+import { useCurrentFileUploadUrl } from "hooks/useCurrentFileUploadUrl";
 import moment from "moment";
 import { useState, useEffect } from "react";
 import { useQueryClient } from "react-query";
 import { BeatLoader } from "react-spinners";
+import { TEmploymentEligibity } from "types/employementEligibilities";
 import {
   generalValidationRules,
   textInputValidationRules,
 } from "utils/formHelpers/validation";
 import { openNotification } from "utils/notifications";
 
-const { Option } = Select;
-
 interface IProps {
   employee?: TEmployee;
 }
 
 export const Profile = ({ employee }: IProps) => {
-  const [countrySearch, setCountrySearch] = useState(0);
-  const [stateSearch, setStateSearch] = useState("");
-  const [lgaSearch, setLgaSearch] = useState("");
   const [form] = Form.useForm();
   const queryClient = useQueryClient();
   const { token, companyId } = useApiAuth();
   const [disable, setDisable] = useState(true);
-  const [hiddenInputs, setHiddenInputs] = useState("");
+  const [selectedEligibility, setSelectedEligibility] =
+    useState<TEmploymentEligibity>();
   const [stateId, setStateId] = useState<number>();
   const [countryId, setCountryId] = useState<number>();
+  const documentUrl = useCurrentFileUploadUrl("documentUrl");
 
   const enableEdit = () => {
     setDisable(!disable);
@@ -86,12 +77,11 @@ export const Profile = ({ employee }: IProps) => {
           ? moment(personalInfo.passportExpirationDate)
           : null,
       });
+      setSelectedEligibility(
+        personalInfo.eligibility as unknown as TEmploymentEligibity
+      );
     }
   }, [employee, form]);
-
-  const handleCitizen = (val: string) => {
-    setHiddenInputs(val);
-  };
 
   const { mutate: createMutate, isLoading: createLoading } =
     useCreateEmployeePersonalInfo();
@@ -118,7 +108,7 @@ export const Profile = ({ employee }: IProps) => {
           timezone: data.timezone,
         },
 
-        validDocumentUrl: data.validDocumentUrl,
+        validDocumentUrl: documentUrl,
         employeeId: employee.id,
       };
       if (data?.passportExpirationDate) {
@@ -166,6 +156,7 @@ export const Profile = ({ employee }: IProps) => {
         gender: data.gender,
         phoneNumber: `+${data.phone.code}-${data.phone.number}`,
         eligibility: data.eligibility,
+        exchangeRateId: data.exchangeRateId,
         maritalStatus: data.maritalStatus,
         nationality: data.nationality,
         address: {
@@ -268,9 +259,12 @@ export const Profile = ({ employee }: IProps) => {
               rules={generalValidationRules}
             >
               <Select
+                className="capitalize"
                 placeholder="Select"
-                onChange={handleCitizen}
-                options={EMPLOYMENT_ELIGIBILITIES}
+                onChange={(val: TEmploymentEligibity) =>
+                  setSelectedEligibility(val)
+                }
+                options={EMPLOYMENT_ELIGIBILITIES_OPTIONS}
               />
             </Form.Item>
             <Form.Item
@@ -281,7 +275,13 @@ export const Profile = ({ employee }: IProps) => {
               <Select placeholder="Select" options={TIME_ZONES} />
             </Form.Item>
 
-            {hiddenInputs === "not a citizen" && (
+            {selectedEligibility === "expatriate" && (
+              <FormExchangeRateInput
+                Form={Form}
+                control={{ label: "Exchange Rate", name: "exchangeRateId" }}
+              />
+            )}
+            {selectedEligibility === "expatriate" && (
               <Form.Item
                 name="passportExpirationDate"
                 label="Passport Expiration Date"
@@ -289,11 +289,21 @@ export const Profile = ({ employee }: IProps) => {
                 <DatePicker format="YYYY/MM/DD" className="w-full" />
               </Form.Item>
             )}
-            {hiddenInputs === "NotCitizen" && (
-              <Form.Item label="Upload valid document">
-                <Upload>
-                  <Input type="file" />
-                </Upload>
+            {selectedEligibility === "expatriate" && (
+              <Form.Item label="Supporting Document">
+                <div className={`px-3 py-2 shadow rounded-sm bg-mainBg`}>
+                  <FileUpload
+                    allowedFileTypes={[
+                      "image/jpeg",
+                      "image/png",
+                      "image/jpg",
+                      "application/pdf",
+                    ]}
+                    fileKey="documentUrl"
+                    textToDisplay="Upload file"
+                    displayType="form-space-between"
+                  />
+                </div>
               </Form.Item>
             )}
             <Form.Item

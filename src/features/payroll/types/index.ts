@@ -1,7 +1,8 @@
+import { TExchangeRateListItem } from "./exchangeRateList";
 import { TPayGradeCategory } from "./payGradeCategories";
 import { TPayGrade } from "./payGrades";
 
-export { type TPayGrade, type TPayGradeCategory };
+export { type TPayGrade, type TPayGradeCategory, type TExchangeRateListItem };
 
 export type TSalaryComponent = {
   name: string;

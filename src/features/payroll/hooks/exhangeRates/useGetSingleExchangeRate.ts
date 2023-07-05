@@ -3,17 +3,17 @@ import { MICROSERVICE_ENDPOINTS } from "config/enviroment";
 import { useQuery } from "react-query";
 import { ICurrentCompany } from "types";
 import { useApiAuth } from "hooks/useApiAuth";
-import { TSingleFolder } from "../types";
+import { TExchangeRateListItem } from "features/payroll/types";
 
 interface IDataProps {
   id: number;
 }
-export const QUERY_KEY_FOR_SINGLE_FOLDER = "single-folder";
+export const QUERY_KEY_FOR_SINGLE_EXCHANGE_RATE = "single-exchange-rate";
 const getData = async (props: {
   data: IDataProps;
   auth: ICurrentCompany;
-}): Promise<TSingleFolder> => {
-  const url = `${MICROSERVICE_ENDPOINTS.UTILITY}/self-service/folder/${props.data.id}`;
+}): Promise<TExchangeRateListItem> => {
+  const url = `${MICROSERVICE_ENDPOINTS.PAYROLL}/exchange-rate/${props.data.id}`;
 
   const config = {
     headers: {
@@ -24,19 +24,19 @@ const getData = async (props: {
   };
 
   const res = await axios.get(url, config);
-  const item: TSingleFolder = res.data.data;
+  const item: TExchangeRateListItem = res.data.data;
 
-  const data: TSingleFolder = {
+  const data: TExchangeRateListItem = {
     ...item,
   };
 
   return data;
 };
 
-export const useGetSingleFolder = (props: IDataProps) => {
+export const useGetSingleExchangeRate = (props: IDataProps) => {
   const { token, companyId } = useApiAuth();
   const queryData = useQuery(
-    [QUERY_KEY_FOR_SINGLE_FOLDER],
+    [QUERY_KEY_FOR_SINGLE_EXCHANGE_RATE],
     () =>
       getData({
         auth: {

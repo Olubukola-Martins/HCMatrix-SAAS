@@ -191,6 +191,9 @@ export const EmployeeProfileContainer = ({
             <Tabs.TabPane tab="Finger Prints" key="7">
               <FingerPrint />
             </Tabs.TabPane>
+            <Tabs.TabPane tab="Projects" key="90">
+              <div>Show Case a list of projects for user</div>
+            </Tabs.TabPane>
           </Tabs>
         </div>
       </div>

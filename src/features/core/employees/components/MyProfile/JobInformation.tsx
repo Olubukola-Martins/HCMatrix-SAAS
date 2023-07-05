@@ -23,14 +23,24 @@ import { useUpdateEmployeeJobInfo } from "../../hooks/useUpdateEmployeeJobInfo";
 import { TEmployee, ICreateEmpJobInfoProps } from "../../types";
 import { useApiAuth } from "hooks/useApiAuth";
 import { EMPLOYMENT_TYPES, WORK_MODELS } from "constants/general";
+import { FormPayGradeInput } from "features/payroll/components/payGrades/FormPayGradeInput";
+import { FormBranchInput } from "features/core/branches/components/FormBranchInput";
 const { Option } = Select;
 
 interface IProps {
   employee?: TEmployee;
 }
 
-const branchList = ["Branch 1", "Branch 2", "Branch 3"];
+type TPayrollType = "direct-salary" | "office" | "wages";
+const PAYROLL_TYPES: TPayrollType[] = ["direct-salary", "office", "wages"];
+const PAYROLL_TYPES_OPTIONS = PAYROLL_TYPES.map((item) => ({
+  label: <span className="capitalize">{item.split("-").join(" ")}</span>,
+  value: item,
+}));
 export const JobInformation = ({ employee }: IProps) => {
+  const [payrollType, setPayrollType] = useState<
+    "direct-salary" | "office" | "wages"
+  >("direct-salary");
   const [form] = Form.useForm();
   const queryClient = useQueryClient();
   const { token, companyId } = useApiAuth();
@@ -54,6 +64,8 @@ export const JobInformation = ({ employee }: IProps) => {
     if (jobInfo) {
       form.setFieldsValue({
         lineManagerId: jobInfo.lineManagerId,
+        branchId: jobInfo.branchId,
+        payGradeId: jobInfo?.payGradeId,
         startDate: jobInfo.startDate ? moment(jobInfo.startDate) : null,
         monthlyGross: +jobInfo.monthlyGross, // to covert to number
         employmentType: jobInfo.employmentType,
@@ -68,7 +80,7 @@ export const JobInformation = ({ employee }: IProps) => {
           : null,
       });
     }
-  }, [employee]);
+  }, [employee, form]);
   const { mutate: createMutate, isLoading: createLoading } =
     useCreateEmployeeJobInfo();
   const { mutate: updateMutate, isLoading: updateLoading } =
@@ -89,6 +101,8 @@ export const JobInformation = ({ employee }: IProps) => {
         probationEndDate: data.probationEndDate.format("YYYY-MM-DD"),
         confirmationDate: data.confirmationDate.format("YYYY-MM-DD"),
         lineManagerId: data.lineManagerId,
+        payGradeId: data.payGradeId,
+        branchId: data.branchId,
         employeeId: employee.id,
       };
 
@@ -129,6 +143,8 @@ export const JobInformation = ({ employee }: IProps) => {
         probationEndDate: data.probationEndDate.format("YYYY-MM-DD"),
         confirmationDate: data.confirmationDate.format("YYYY-MM-DD"),
         lineManagerId: data.lineManagerId,
+        payGradeId: data.payGradeId,
+        branchId: data.branchId,
 
         employeeId: employee.id,
       };
@@ -188,13 +204,38 @@ export const JobInformation = ({ employee }: IProps) => {
           requiredMark={false}
           disabled={disable}
         >
-          <Form.Item
-            name="monthlyGross"
-            label="Monthly Gross"
-            rules={[...generalValidationRules, { type: "number" }]}
-          >
-            <InputNumber min={1} className="w-full" />
+          <Form.Item label="Payroll Type" rules={[...generalValidationRules]}>
+            <Select
+              value={payrollType}
+              className="capitalize"
+              options={PAYROLL_TYPES_OPTIONS}
+              onSelect={(val: TPayrollType) => setPayrollType(val)}
+            />
           </Form.Item>
+          {payrollType === "wages" && (
+            <Form.Item
+              name="hourlyGrossPay"
+              label="Hourly Gross"
+              rules={[...generalValidationRules, { type: "number" }]}
+            >
+              <InputNumber min={1} className="w-full" />
+            </Form.Item>
+          )}
+          {payrollType === "direct-salary" && (
+            <Form.Item
+              name="monthlyGross"
+              label="Monthly Gross"
+              rules={[...generalValidationRules, { type: "number" }]}
+            >
+              <InputNumber min={1} className="w-full" />
+            </Form.Item>
+          )}
+          {payrollType === "office" && (
+            <FormPayGradeInput
+              Form={Form}
+              control={{ name: "payGradeId", label: "Pay Grade" }}
+            />
+          )}
           <Form.Item
             name="numberOfDaysPerWeek"
             label="Number of days per week"
@@ -228,20 +269,10 @@ export const JobInformation = ({ employee }: IProps) => {
               }
             />
           </Form.Item>
-          <Form.Item name="branch" label="Branch">
-            <Select
-              showSearch
-              allowClear
-              optionLabelProp="label"
-              placeholder="Select Branch"
-            >
-              {branchList.map((data) => (
-                <Option key={data} value={data} label={data}>
-                  {data}
-                </Option>
-              ))}
-            </Select>
-          </Form.Item>
+          <FormBranchInput
+            Form={Form}
+            control={{ label: "Branch", name: "branchId" }}
+          />
           <Form.Item name="lineManagerId" label="Line Manager (optional)">
             <Select
               showSearch
@@ -290,13 +321,7 @@ export const JobInformation = ({ employee }: IProps) => {
           >
             <DatePicker format="YYYY/MM/DD" className="w-full" />
           </Form.Item>
-          <Form.Item name="payGradeId" label="Pay Grade">
-            <Select placeholder="Select">
-              <Option value="grade 1">Grade 1</Option>
-              <Option value="grade 2">Grade 2</Option>
-              <Option value="grade 2">Grade 2</Option>
-            </Select>
-          </Form.Item>
+
           {!disable && (
             <div className="flex items-center">
               <button className="button" type="submit">
