@@ -2,7 +2,7 @@ import { Modal, Form } from "antd";
 import Themes from "components/Themes";
 import { AppButton } from "components/button/AppButton";
 import { QUERY_KEY_FOR_COMPANY_PARAMETERS } from "features/core/company/hooks/useGetCompanyParams";
-import { useSaveCompanyParams } from "features/core/company/hooks/useSaveCompanyParams";
+import { useTransferOwnership } from "features/core/company/hooks/useTransferOwnership";
 import { TCompanyParams } from "features/core/company/types/companyParams";
 import { FormEmployeeInput } from "features/core/employees/components/FormEmployeeInput";
 import { getEmployeeFullName } from "features/core/employees/utils/getEmployeeFullName";
@@ -20,7 +20,7 @@ const TransferOwnership = ({ open, handleClose, companyParams }: IProps) => {
   const [formState, setFormState] = useState<"fill-form" | "form-filled">(
     "fill-form"
   );
-  const [user, setUser] = useState<{ name: string; email: string }>();
+  const [user, setUser] = useState<{ name: string; id: number }>();
   const onFinish = () => {
     // move to next state
 
@@ -53,9 +53,10 @@ const TransferOwnership = ({ open, handleClose, companyParams }: IProps) => {
                     Form={Form}
                     control={{ name: "employeeId", label: "Select user" }}
                     handleSelect={(_, person) =>
+                      person &&
                       setUser({
                         name: person ? getEmployeeFullName(person) : "",
-                        email: person?.email ?? "",
+                        id: person?.id,
                       })
                     }
                   />
@@ -78,50 +79,45 @@ const TransferOwnership = ({ open, handleClose, companyParams }: IProps) => {
   );
 };
 const Confimation: React.FC<{
-  data: { name: string; email: string };
+  data: { name: string; id: number };
   onCancel: () => void;
   handleClose: () => void;
   companyParams: TCompanyParams;
-}> = ({ data, onCancel, companyParams, handleClose }) => {
+}> = ({ data, onCancel, handleClose }) => {
   const queryClient = useQueryClient();
 
-  const { mutate, isLoading } = useSaveCompanyParams();
+  const { mutate, isLoading } = useTransferOwnership();
 
   const handleSubmit = () => {
-    if (companyParams) {
-      mutate(
-        {
-          ...companyParams?.value,
-          administrator: {
-            adminEmail: data.email,
-          },
+    mutate(
+      {
+        employeeId: data.id,
+      },
+      {
+        onError: (err: any) => {
+          openNotification({
+            state: "error",
+            title: "Error Occurred",
+            description:
+              err?.response.data.message ?? err?.response.data.error.message,
+          });
         },
-        {
-          onError: (err: any) => {
-            openNotification({
-              state: "error",
-              title: "Error Occurred",
-              description:
-                err?.response.data.message ?? err?.response.data.error.message,
-            });
-          },
-          onSuccess: (res: any) => {
-            openNotification({
-              state: "success",
+        onSuccess: (res: any) => {
+          openNotification({
+            state: "success",
 
-              title: "Success",
-              description: res.data.message,
-              // duration: 0.4,
-            });
-            handleClose();
-            queryClient.invalidateQueries({
-              queryKey: [QUERY_KEY_FOR_COMPANY_PARAMETERS],
-              // exact: true,
-            });
-          },
-        }
-      );
-    }
+            title: "Success",
+            description: res.data.message,
+            // duration: 0.4,
+          });
+          handleClose();
+          queryClient.invalidateQueries({
+            queryKey: [QUERY_KEY_FOR_COMPANY_PARAMETERS],
+            // exact: true,
+          });
+        },
+      }
+    );
   };
   return (
     <div>

@@ -1,5 +1,8 @@
 export type THoliday = {
   id: number;
-  name: string;
+  title: string;
   date: string;
+  companyId: number;
+  createdAt: string;
+  updatedAt: string;
 };

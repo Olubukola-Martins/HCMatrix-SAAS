@@ -178,6 +178,7 @@ export const AdminHome = () => {
               </p>
             </div>
           </div>
+          
           <div className="col-span-2 bg-mainBg shadow border rounded-lg p-3">
             <h3 className="text-base">Who is out?</h3>
 

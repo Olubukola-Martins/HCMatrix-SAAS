@@ -5,7 +5,7 @@ export const ChartSwitcher: React.FC<{
   handleClick: (val: string) => void;
 }> = ({ items, handleClick }) => {
   return (
-    <div className="flex px-2 bg-card shadow-sm rounded-md">
+    <div className="flex px-2 bg-card justify-between shadow-sm rounded-md">
       {items.map((item, i) => (
         <div
           key={i}

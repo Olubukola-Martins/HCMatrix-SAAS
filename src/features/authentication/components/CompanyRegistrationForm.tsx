@@ -92,7 +92,6 @@ const CompanyRegistrationForm = () => {
         loading={!isCSuccess || !isISuccess}
         paragraph={{ rows: 15, width: 100 }}
       >
-        {" "}
         <Form
           onFinish={handleSignUp}
           form={form}
