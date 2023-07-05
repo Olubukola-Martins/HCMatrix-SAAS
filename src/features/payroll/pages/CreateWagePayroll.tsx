@@ -127,6 +127,29 @@ const CreateWagePayroll = () => {
               </div>
             </div>
           </div>
+          <div className={boxStyle}>
+            <div className="w-full">
+              <div className="flex justify-between">
+                <div>
+                  <h5 className="font-medium text-base pb-1">
+                    Add Employees' Timesheet
+                  </h5>
+                  <p className="md:text-sm text-xs">
+                    Upload the time sheet that will be used to calculate the
+                    amount to be paid to each employee based on the hours
+                    worked.
+                  </p>
+                  <p className="md:text-sm text-xs mt-4">
+                    Developer Note: This timesheet will typically be produced
+                    from the time & attendance module
+                  </p>
+                </div>
+                <div>
+                  <button className={buttonStyle}>Upload Timesheet</button>
+                </div>
+              </div>
+            </div>
+          </div>
 
           <div className={boxStyle}>
             <div className="w-full">
