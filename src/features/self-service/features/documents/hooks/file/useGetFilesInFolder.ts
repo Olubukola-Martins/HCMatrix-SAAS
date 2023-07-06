@@ -60,9 +60,8 @@ export const useGetFilesInFolder = (props: {
 }) => {
   const { token, companyId } = useApiAuth();
 
-  const { pagination, searchParams } = props.data;
   const queryData = useQuery(
-    [QUERY_KEY_FOR_FILES_IN_A_FOLDER, props.folderId, pagination, searchParams],
+    [QUERY_KEY_FOR_FILES_IN_A_FOLDER, props],
     () =>
       getData({
         folderId: props.folderId,

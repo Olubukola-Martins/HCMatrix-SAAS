@@ -5,10 +5,7 @@ import axios from "axios";
 import { useQuery } from "react-query";
 import { useApiAuth } from "hooks/useApiAuth";
 import { MICROSERVICE_ENDPOINTS } from "config/enviroment";
-import {
-  DEFAULT_PAGINATION_LIMIT,
-  DEFAULT_PAGINATION_OFFSET,
-} from "constants/general";
+import { DEFAULT_PAGE_SIZE } from "constants/general";
 
 export const QUERY_KEY_FOR_LIST_OF_EMPLOYEES = "employees";
 
@@ -16,8 +13,8 @@ export const getEmployees = async (
   props: TFetchListDataProps & { status?: TEmployeeStatus[] }
 ): Promise<{ data: TEmployee[]; total: number }> => {
   const { pagination } = props;
-  const limit = pagination?.limit ?? DEFAULT_PAGINATION_LIMIT;
-  const offset = pagination?.offset ?? DEFAULT_PAGINATION_OFFSET;
+  const limit = pagination?.limit ?? DEFAULT_PAGE_SIZE;
+  const offset = pagination?.offset ?? 0;
 
   let url = `${MICROSERVICE_ENDPOINTS.UTILITY}/employee`;
 
