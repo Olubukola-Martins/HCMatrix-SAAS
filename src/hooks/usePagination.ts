@@ -21,7 +21,7 @@ export const usePagination = ({
 
   const offset =
     pagination.current && pagination.current !== 1
-      ? (pagination.pageSize ?? 4) * (pagination.current - 1)
+      ? (pagination.pageSize ?? DEFAULT_PAGE_SIZE) * (pagination.current - 1)
       : 0;
   const onChange = (newPagination: TablePaginationConfig | number) => {
     if (typeof newPagination === "number") {
