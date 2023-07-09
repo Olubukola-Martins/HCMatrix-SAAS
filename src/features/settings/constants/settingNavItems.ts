@@ -89,4 +89,20 @@ export const settingNavItems: TSettNavItem[] = [
     ],
     category: "attendance",
   },
+
+  {
+    title: "General",
+    items: [
+      { name: "Training", link: appRoutes.training },
+
+      { name: "Gamification", link: appRoutes.gamification },
+
+      { name: "Notification", link: appRoutes.notification },
+      {
+        name: "Feedback Template",
+        link: appRoutes.feedbackTemplate,
+      },
+    ],
+    category: "leaning",
+  },
 ];

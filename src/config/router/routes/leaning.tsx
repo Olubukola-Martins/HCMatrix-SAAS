@@ -6,7 +6,7 @@ import { FeedbackTemplate } from "features/leaningAndDev/pages/settings/Feedback
 import { Gamification } from "features/leaningAndDev/pages/settings/Gamification";
 import { Notification } from "features/leaningAndDev/pages/settings/Notification";
 
-export const attendanceRoutes: TRouteData[] = [
+export const leaningRoutes: TRouteData[] = [
   {
     element: <LeaningHome />,
     path: appRoutes.leaningHome,

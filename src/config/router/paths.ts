@@ -189,7 +189,7 @@ export const appRoutes = {
   otherSettings: `/attendance/other-settings`,
  
   // Leaning and development
-  leaningHome: `/leaning`,
+  leaningHome: `/leaning/home`,
   training: `/leaning/training`,
   feedbackTemplate: `/leaning/feedback-template`,
   gamification: `/leaning/gamification`,

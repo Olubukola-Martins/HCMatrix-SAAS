@@ -1,7 +1,5 @@
-import React from 'react'
+import React from "react";
 
 export const LeaningHome = () => {
-  return (
-    <div>LeaningHome</div>
-  )
-}
+  return <div className="Container">LeaningHome </div>;
+};
