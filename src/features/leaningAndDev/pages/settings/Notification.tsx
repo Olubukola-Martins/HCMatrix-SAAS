@@ -15,7 +15,7 @@ export const Notification = () => {
     <>
       <LeaningSettingsNav active="notification" />
       <div className="Container">
-        <div className="flex items-center justify-between">
+        <div className="flex items-center justify-between mb-5">
           <h3 className="font-medium text-lg">Notification Settings</h3>
           <AppButton label="Next setting" />
         </div>
