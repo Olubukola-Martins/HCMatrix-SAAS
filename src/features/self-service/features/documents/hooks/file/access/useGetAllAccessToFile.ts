@@ -41,7 +41,7 @@ const getData = async (props: {
 
   const res = await axios.get(url, config);
   const fetchedData = res.data.data;
-  const result = fetchedData.result;
+  const result = fetchedData.data;
 
   const data: TFileAccessListItem[] = result.map(
     (item: TFileAccessListItem): TFileAccessListItem => ({ ...item })

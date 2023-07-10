@@ -15,8 +15,7 @@ export const MONTH_CHART_LABELS = [
   "Nov",
   "Dec",
 ];
-export const DEFAULT_PAGINATION_LIMIT = 5;
-export const DEFAULT_PAGINATION_OFFSET = 0;
+
 export const DEFAULT_PAGE_SIZE = 5;
 export const DEFAULT_GRID_PAGE_SIZE = 10;
 export const PRIORITIES: { value: TPriority; label: string }[] = [

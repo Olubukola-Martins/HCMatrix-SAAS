@@ -4,12 +4,14 @@ import {
   Menu,
   Modal,
   Pagination,
+  PaginationProps,
   Select,
   Skeleton,
   Table,
+  TableProps,
 } from "antd";
 import { usePagination } from "hooks/usePagination";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useGetFolders } from "../hooks/useGetFolders";
 import { TListDataTypeView } from "types";
 import { TFileListItem } from "../types";
@@ -98,7 +100,7 @@ const FilesViewWrapper: React.FC<{
 }> = ({ view = "grid", folder }) => {
   const queryClient = useQueryClient();
 
-  const { pagination, onChange } = usePagination();
+  const { pagination, onChange, resetPagination } = usePagination();
 
   const { data: files, isFetching: isFetchingFiles } = useGetFilesInFolder({
     data: { pagination },
@@ -160,6 +162,10 @@ const FilesViewWrapper: React.FC<{
       },
     });
   };
+  //Reset Pagination any time the view changes
+  useEffect(() => {
+    resetPagination();
+  }, [view, resetPagination]);
   if (files?.total === 0) {
     return (
       <div className="flex flex-col items-center">
@@ -170,6 +176,7 @@ const FilesViewWrapper: React.FC<{
       </div>
     );
   }
+
   return (
     <>
       {fileId && (
@@ -194,6 +201,7 @@ const FilesViewWrapper: React.FC<{
           handleEdit={({ id }) => handleAction({ id, action: "edit" })}
           handleDelete={({ id }) => handleDelete({ id })}
           data={files?.data}
+          total={files?.total}
           pagination={pagination}
           onChange={onChange}
           loading={isFetchingFiles}
@@ -205,6 +213,7 @@ const FilesViewWrapper: React.FC<{
           handleEdit={({ id }) => handleAction({ id, action: "edit" })}
           handleDelete={({ id }) => handleDelete({ id })}
           data={files?.data}
+          total={files?.total}
           pagination={pagination}
           onChange={onChange}
           loading={isFetchingFiles}
@@ -215,17 +224,18 @@ const FilesViewWrapper: React.FC<{
 };
 interface IProps {
   data?: TFileListItem[];
+  total?: number;
   loading: boolean;
   pagination?: TablePaginationConfig;
   handleView: (props: { id: number }) => void;
   handleEdit: (props: { id: number }) => void;
   handleDelete: (props: { id: number }) => void;
-
-  //   onChange?: TableProps<TFolderListItem>["onChange"];
-  onChange?: any;
 }
-const FileListTable: React.FC<IProps> = ({
+const FileListTable: React.FC<
+  IProps & { onChange: TableProps<TFileListItem>["onChange"] }
+> = ({
   data = [],
+  total,
   loading,
   pagination,
   onChange,
@@ -305,14 +315,17 @@ const FileListTable: React.FC<IProps> = ({
         size="small"
         dataSource={data}
         loading={loading}
-        pagination={pagination}
+        pagination={{ ...pagination, total }}
         onChange={onChange}
       />
     </div>
   );
 };
-const FileListGrids: React.FC<IProps> = ({
+const FileListGrids: React.FC<
+  IProps & { onChange: PaginationProps["onChange"] }
+> = ({
   data = [],
+  total,
   loading,
   pagination,
   onChange,
@@ -334,7 +347,11 @@ const FileListGrids: React.FC<IProps> = ({
         ))}
       </div>
       <div className="mt-4 flex justify-end">
-        <Pagination {...pagination} onChange={onChange} size="small" />
+        <Pagination
+          {...{ ...pagination, total }}
+          onChange={onChange}
+          size="small"
+        />
       </div>
     </Skeleton>
   );
