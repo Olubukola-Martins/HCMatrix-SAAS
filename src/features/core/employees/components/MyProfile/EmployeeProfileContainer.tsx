@@ -27,6 +27,7 @@ import { IAuthDets } from "features/authentication/types";
 import { useAuthUser } from "react-auth-kit";
 import { GlobalContext } from "stateManagers/GlobalContextProvider";
 import { useApiAuth } from "hooks/useApiAuth";
+import { EmployeeProjects } from "./EmployeeProjects";
 
 export const EmployeeProfileContainer = ({
   employeeId,
@@ -192,7 +193,19 @@ export const EmployeeProfileContainer = ({
               <FingerPrint />
             </Tabs.TabPane>
             <Tabs.TabPane tab="Projects" key="90">
-              <div>Show Case a list of projects for user</div>
+              <EmployeeProjects
+                data={[
+                  {
+                    endDate: "3/7/2023",
+                    startDate: "3/7/2023",
+                    grossIncome: 505000,
+                    id: 1,
+                    name: "HcMatrix",
+                    noOfPaymentsMade: "2 out of 4",
+                    totalPaid: 2 * 505000,
+                  },
+                ]}
+              />
             </Tabs.TabPane>
           </Tabs>
         </div>

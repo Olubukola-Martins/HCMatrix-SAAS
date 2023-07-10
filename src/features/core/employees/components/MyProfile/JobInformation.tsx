@@ -70,6 +70,7 @@ export const JobInformation = ({ employee }: IProps) => {
         monthlyGross: +jobInfo.monthlyGross, // to covert to number
         employmentType: jobInfo.employmentType,
         workModel: jobInfo.workModel,
+        payrollType: jobInfo?.payrollType,
         numberOfDaysPerWeek: jobInfo.numberOfDaysPerWeek,
         hireDate: jobInfo.hireDate ? moment(jobInfo.hireDate) : null,
         probationEndDate: jobInfo.probationEndDate
@@ -79,6 +80,7 @@ export const JobInformation = ({ employee }: IProps) => {
           ? moment(jobInfo.confirmationDate)
           : null,
       });
+      jobInfo.payrollType && setPayrollType(jobInfo.payrollType);
     }
   }, [employee, form]);
   const { mutate: createMutate, isLoading: createLoading } =
@@ -102,6 +104,8 @@ export const JobInformation = ({ employee }: IProps) => {
         confirmationDate: data.confirmationDate.format("YYYY-MM-DD"),
         lineManagerId: data.lineManagerId,
         payGradeId: data.payGradeId,
+        payrollType: data.payrollType,
+
         branchId: data.branchId,
         employeeId: employee.id,
       };
@@ -144,6 +148,7 @@ export const JobInformation = ({ employee }: IProps) => {
         confirmationDate: data.confirmationDate.format("YYYY-MM-DD"),
         lineManagerId: data.lineManagerId,
         payGradeId: data.payGradeId,
+        payrollType: data.payrollType,
         branchId: data.branchId,
 
         employeeId: employee.id,
@@ -204,7 +209,11 @@ export const JobInformation = ({ employee }: IProps) => {
           requiredMark={false}
           disabled={disable}
         >
-          <Form.Item label="Payroll Type" rules={[...generalValidationRules]}>
+          <Form.Item
+            label="Payroll Type"
+            name={`payrollType`}
+            rules={[...generalValidationRules]}
+          >
             <Select
               value={payrollType}
               className="capitalize"

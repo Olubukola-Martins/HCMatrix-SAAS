@@ -1,6 +1,6 @@
 import { Form, Input, InputNumber, Modal } from "antd";
 import { AppButton } from "components/button/AppButton";
-import React from "react";
+import React, { useEffect } from "react";
 import { IModalProps } from "types";
 import {
   generalValidationRules,
@@ -8,24 +8,39 @@ import {
 } from "utils/formHelpers/validation";
 import { openNotification } from "utils/notifications";
 import { useQueryClient } from "react-query";
-import { useCreatePayGradeCategory } from "features/payroll/hooks/payGrades/category/useCreatePayGradeCategory";
 import { QUERY_KEY_FOR_PAY_GRADE_CATEGORIES } from "features/payroll/hooks/payGrades/category/useGetPayGradeCategories";
+import { useUpdatePayGradeCategory } from "features/payroll/hooks/payGrades/category/useUpdatePayGradeCategory";
+import { TPayGradeCategory } from "features/payroll/types";
 
-const CreatePayGradeCategory: React.FC<IModalProps> = ({
+interface IProps extends IModalProps {
+  category: TPayGradeCategory;
+}
+const EditPayGradeCategory: React.FC<IProps> = ({
   open,
   handleClose,
+  category,
 }) => {
   const queryClient = useQueryClient();
 
   const [form] = Form.useForm();
-  const { mutate, isLoading } = useCreatePayGradeCategory();
+  const { mutate, isLoading } = useUpdatePayGradeCategory();
+  useEffect(() => {
+    form.setFieldsValue({
+      name: category.name,
+      maxGrossPay: category.maxGrossPay,
+      minGrossPay: category.minGrossPay,
+    });
+  }, [form, category]);
 
   const handleSubmit = (data: any) => {
     mutate(
       {
-        name: data.name,
-        maxGrossPay: data.maxGrossPay,
-        minGrossPay: data.minGrossPay,
+        id: category.id,
+        body: {
+          name: data.name,
+          maxGrossPay: data.maxGrossPay,
+          minGrossPay: data.minGrossPay,
+        },
       },
       {
         onError: (err: any) => {
@@ -60,7 +75,7 @@ const CreatePayGradeCategory: React.FC<IModalProps> = ({
       open={open}
       onCancel={() => handleClose()}
       footer={null}
-      title={"Create Pay Grade Category"}
+      title={"Edit Pay Grade Category"}
       style={{ top: 20 }}
     >
       <Form
@@ -95,4 +110,4 @@ const CreatePayGradeCategory: React.FC<IModalProps> = ({
   );
 };
 
-export default CreatePayGradeCategory;
+export default EditPayGradeCategory;

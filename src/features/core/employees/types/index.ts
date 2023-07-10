@@ -248,6 +248,7 @@ export type TJobInfo = {
   lineManagerId?: number;
   payGradeId?: number;
   branchId?: number;
+  payrollType?: "direct-salary" | "office" | "wages";
 };
 
 export type TWallet = {

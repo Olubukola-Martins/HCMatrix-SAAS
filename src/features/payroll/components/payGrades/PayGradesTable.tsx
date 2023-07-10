@@ -1,6 +1,6 @@
-import { Table } from "antd";
+import { Button, Table } from "antd";
 
-import React from "react";
+import React, { useState } from "react";
 import { ColumnsType } from "antd/lib/table";
 
 import { usePagination } from "hooks/usePagination";
@@ -9,9 +9,31 @@ import { TPayGrade } from "features/payroll/types";
 import { useGetPayGrades } from "features/payroll/hooks/payGrades/useGetPayGrades";
 import moment from "moment";
 
+import { DeleteFilled, EditFilled } from "@ant-design/icons";
+import EditPayGrade from "./EditPayGrade";
+import DeletePayGrade from "./DeletePayGrade";
+
+type TAction = "edit" | "delete";
+
 const PayGradesTable: React.FC<{
   categoryId?: number;
 }> = ({ categoryId }) => {
+  const [action, setAction] = useState<TAction>();
+  const [grade, setGrade] = useState<TPayGrade>();
+  const handleAction = ({
+    action,
+    grade,
+  }: {
+    action: TAction;
+    grade: TPayGrade;
+  }) => {
+    setAction(action);
+    setGrade(grade);
+  };
+  const cancelAction = () => {
+    setAction(undefined);
+    setGrade(undefined);
+  };
   const { pagination, onChange } = usePagination();
 
   const { data, isFetching } = useGetPayGrades({
@@ -53,10 +75,43 @@ const PayGradesTable: React.FC<{
       key: "update",
       render: (_, item) => moment(item.updatedAt).format(`YYYY-MM-DD`),
     },
+    {
+      title: "",
+      dataIndex: "actions",
+      key: "actions",
+      render: (_, item) => (
+        <div>
+          <Button
+            icon={<EditFilled />}
+            type="text"
+            onClick={() => handleAction({ action: "edit", grade: item })}
+          />
+          <Button
+            icon={<DeleteFilled />}
+            type="text"
+            onClick={() => handleAction({ action: "delete", grade: item })}
+          />
+        </div>
+      ),
+    },
   ];
 
   return (
-    <div>
+    <>
+      {grade && (
+        <EditPayGrade
+          grade={grade}
+          open={action === "edit"}
+          handleClose={() => cancelAction()}
+        />
+      )}
+      {grade && (
+        <DeletePayGrade
+          grade={grade}
+          open={action === "delete"}
+          handleClose={() => cancelAction()}
+        />
+      )}
       <Table
         columns={columns}
         size="small"
@@ -65,7 +120,7 @@ const PayGradesTable: React.FC<{
         pagination={{ ...pagination, total: data?.total }}
         onChange={onChange}
       />
-    </div>
+    </>
   );
 };
 

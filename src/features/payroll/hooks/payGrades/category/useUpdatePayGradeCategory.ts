@@ -8,6 +8,8 @@ type TCategoryData = {
   id: number;
   body: {
     name: string;
+    minGrossPay: number;
+    maxGrossPay: number;
   };
 };
 const createData = async (props: {
