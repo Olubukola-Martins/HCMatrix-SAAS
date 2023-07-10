@@ -4,11 +4,11 @@ import { LeaningSettingsNav } from "features/leaningAndDev/components/settings/L
 import "../../assets/style.css";
 
 export const Notification = () => {
-  const [form] = Form.useForm();
+const [form] = Form.useForm();
 
   const handleFormSubmit = (values: any) => {
     console.log("Form submitted:", values);
-  };
+  };  
 
   return (
     <>

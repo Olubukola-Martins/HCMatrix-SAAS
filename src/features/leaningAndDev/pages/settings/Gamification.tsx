@@ -4,8 +4,6 @@ import { LeaningSettingsNav } from "features/leaningAndDev/components/settings/L
 import "../../assets/style.css";
 
 export const Gamification = () => {
-  const formWrapStyle1 =
-    "bg-card px-4 pt-4 rounded grid grid-cols-1 md:grid-cols-2 gap-x-10 mb-5 shadow-sm";
   const [form] = Form.useForm();
 
   const handleFormSubmit = (values: any) => {
