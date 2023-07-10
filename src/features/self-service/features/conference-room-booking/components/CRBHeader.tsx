@@ -1,9 +1,11 @@
-import { Modal } from "antd";
+import { Button, Modal } from "antd";
 import React, { useState } from "react";
 import NewCRBBooking from "./NewCRBBooking";
 import NewMeetingRoomForm from "./NewMeetingRoomForm";
 import { Link } from "react-router-dom";
 import { appRoutes } from "config/router/paths";
+
+import { SettingFilled } from "@ant-design/icons";
 
 interface IProps {
   title?: string;
@@ -42,7 +44,9 @@ const CRBHeader = ({ title = "Meeting Rooms" }: IProps) => {
       {/* TO DO: Refactor to use the comp header */}
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-3 font-extrabold ">
-          <i className="ri-arrow-left-s-line text-lg cursor-pointer hover:text-caramel"></i>
+          <Link to={appRoutes.selfServiceHome}>
+            <i className="ri-arrow-left-s-line text-lg cursor-pointer hover:text-caramel" />
+          </Link>
           <h2 className="text-xl md:text-2xl text-accent">{title}</h2>
         </div>
         <div className="flex gap-2 items-center">
@@ -58,11 +62,8 @@ const CRBHeader = ({ title = "Meeting Rooms" }: IProps) => {
           >
             Add Meeting Room
           </button>
-          <Link
-            to={appRoutes.conferenceRoomBookingSetting}
-            className="text-caramel underline"
-          >
-            Setting
+          <Link to={appRoutes.conferenceRoomBookingSetting}>
+            <Button icon={<SettingFilled />} type="text" />
           </Link>
         </div>
       </div>
