@@ -34,6 +34,7 @@ export const EmployeeProfileContainer = ({
 }: {
   employeeId: number;
 }) => {
+  // TO DO: ADD a 404 or errr boundary when employee exists
   const { data: employee } = useFetchSingleEmployee({
     employeeId: employeeId ? +employeeId : 0,
   });
