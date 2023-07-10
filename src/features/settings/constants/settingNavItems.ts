@@ -19,7 +19,7 @@ export const settingNavItems: TSettNavItem[] = [
       // { name: "Domain", link: "/settings/domains" },
       // { name: "From Addresses", link: "/settings/from-addresses" },
       { name: "Holidays", link: appRoutes.holidaySettings },
-      { name: "Projects", link: "" }, //when merged update this
+      { name: "Projects", link: appRoutes.projectSettings }, //when merged update this
     ],
     category: "basic",
   },
