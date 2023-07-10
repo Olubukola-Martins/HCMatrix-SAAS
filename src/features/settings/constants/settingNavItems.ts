@@ -57,12 +57,43 @@ export const settingNavItems: TSettNavItem[] = [
     ],
     category: "basic",
   },
+  // payroll
   {
-    title: "Payroll Settings",
-    items: [{ name: "Settings", link: appRoutes.payrollSettings }],
+    title: "General",
+    items: [
+      { name: "Cost Centres", link: appRoutes.payrollCostCentres },
+      { name: "Exchange Rates", link: appRoutes.payrollExchangeRates },
+      { name: "Tax Policies", link: appRoutes.payrollTaxPolicies },
+      {
+        name: "Pay Grade & Categories",
+        link: appRoutes.payGradeAndCategorySettings,
+      },
+      { name: "Settings", link: appRoutes.payrollSettings },
+    ],
     category: "payroll",
   },
-
+  {
+    title: "Schemes",
+    items: [
+      { name: "Office Scheme", link: appRoutes.setupGradePayrollScheme },
+      {
+        name: "Direct Salary Scheme",
+        link: appRoutes.setupDirectSalaryPayrollScheme,
+      },
+      { name: "Project Scheme", link: appRoutes.setupProjectPayrollScheme },
+      { name: "Wages Scheme", link: appRoutes.setupWagesPayrollScheme },
+    ],
+    category: "payroll",
+  },
+  {
+    title: "Templates",
+    items: [
+      { name: "Payslips", link: appRoutes.createPayslipTemplate },
+      { name: "Reports", link: appRoutes.payrollReport },
+    ],
+    category: "payroll",
+  },
+  // self service
   {
     title: "Onboarding",
     items: [{ name: "Onboarding", link: appRoutes.onboarding }],
