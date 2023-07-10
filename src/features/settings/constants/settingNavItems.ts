@@ -63,7 +63,6 @@ export const settingNavItems: TSettNavItem[] = [
     items: [
       { name: "Cost Centres", link: appRoutes.payrollCostCentres },
       { name: "Exchange Rates", link: appRoutes.payrollExchangeRates },
-      { name: "Tax Policies", link: appRoutes.payrollTaxPolicies },
       {
         name: "Pay Grade & Categories",
         link: appRoutes.payGradeAndCategorySettings,
@@ -72,6 +71,7 @@ export const settingNavItems: TSettNavItem[] = [
     ],
     category: "payroll",
   },
+
   {
     title: "Schemes",
     items: [
@@ -83,6 +83,19 @@ export const settingNavItems: TSettNavItem[] = [
       { name: "Project Scheme", link: appRoutes.setupProjectPayrollScheme },
       { name: "Wages Scheme", link: appRoutes.setupWagesPayrollScheme },
     ],
+    category: "payroll",
+  },
+  {
+    title: "Tax",
+    items: [
+      { name: "Authorities", link: "" },
+      { name: "Policies", link: appRoutes.payrollTaxPolicies },
+    ],
+    category: "payroll",
+  },
+  {
+    title: "Pension",
+    items: [{ name: "Administrators", link: "" }],
     category: "payroll",
   },
   {
