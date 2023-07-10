@@ -1,9 +1,10 @@
 import { Form, Select, Switch } from "antd";
 import { AppButton } from "components/button/AppButton";
 import { LeaningSettingsNav } from "features/leaningAndDev/components/settings/LeaningSettingsNav";
+import "../../assets/style.css";
 
 export const Gamification = () => {
-  const formWrapStyle =
+  const formWrapStyle1 =
     "bg-card px-4 pt-4 rounded grid grid-cols-1 md:grid-cols-2 gap-x-10 mb-5 shadow-sm";
   const [form] = Form.useForm();
 
@@ -27,34 +28,28 @@ export const Gamification = () => {
               layout="vertical"
               requiredMark={false}
             >
-              <div
-                className={`${formWrapStyle} flex justify-between items-center`}
-              >
+              <div className={`formWrapper`}>
                 <h3 className="font-medium">
                   Allow employee view their badges
                 </h3>
-                <Form.Item
-                  name="allowBadge"
-                  className="flex justify-end items-end"
-                >
-                  <Switch defaultChecked />
-                </Form.Item>
+                <div className="flex justify-end">
+                  <Form.Item name="allowBadge" noStyle>
+                    <Switch defaultChecked />
+                  </Form.Item>
+                </div>
               </div>
-              <div
-                className={`${formWrapStyle} flex justify-between items-center`}
-              >
+              <div className={`formWrapper`}>
                 <h3 className="font-medium">
                   Allow rearrangement of leader board
                 </h3>
-                <Form.Item
-                  name="leaderBoard"
-                  className="flex justify-end items-end"
-                >
-                  <Switch defaultChecked />
-                </Form.Item>
+                <div className="flex justify-end">
+                  <Form.Item name="leaderBoard" noStyle>
+                    <Switch defaultChecked />
+                  </Form.Item>
+                </div>
               </div>
 
-              <div className={`${formWrapStyle}`}>
+              <div className={`formWrapper`}>
                 <Form.Item
                   name="level"
                   label="Level settings"

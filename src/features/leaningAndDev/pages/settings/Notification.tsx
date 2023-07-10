@@ -1,10 +1,9 @@
 import { Form, Switch } from "antd";
 import { AppButton } from "components/button/AppButton";
 import { LeaningSettingsNav } from "features/leaningAndDev/components/settings/LeaningSettingsNav";
+import "../../assets/style.css";
 
 export const Notification = () => {
-  const formWrapStyle =
-    "bg-card px-4 pt-4 rounded grid grid-cols-1 md:grid-cols-2 gap-x-10 mb-5 shadow-sm";
   const [form] = Form.useForm();
 
   const handleFormSubmit = (values: any) => {
@@ -28,72 +27,56 @@ export const Notification = () => {
               layout="vertical"
               requiredMark={false}
             >
-              <div
-                className={`${formWrapStyle} flex justify-between items-center`}
-              >
+              <div className={`formWrapper`}>
                 <h3 className="font-medium">
                   Allow notification for all accepted trainings
                 </h3>
-                <Form.Item
-                  name="allowTraining"
-                  className="flex justify-end items-end"
-                >
-                  <Switch defaultChecked />
-                </Form.Item>
+                <div className="flex justify-end">
+                  <Form.Item name="allowTraining" noStyle>
+                    <Switch defaultChecked />
+                  </Form.Item>
+                </div>
               </div>
-              <div
-                className={`${formWrapStyle} flex justify-between items-center`}
-              >
+              <div className={`formWrapper`}>
                 <h3 className="font-medium">
                   Allow notifications for all rejected trainings
                 </h3>
-                <Form.Item
-                  name="allowRejectedTraining"
-                  className="flex justify-end items-end"
-                >
-                  <Switch defaultChecked />
-                </Form.Item>
+                <div className="flex justify-end">
+                  <Form.Item name="allowRejectedTraining" noStyle>
+                    <Switch defaultChecked />
+                  </Form.Item>
+                </div>
               </div>
 
-              {/*  */}
-              <div
-                className={`${formWrapStyle} flex justify-between items-center`}
-              >
+              <div className={`formWrapper`}>
                 <h3 className="font-medium">
                   Allow notifications for all completed trainings
                 </h3>
-                <Form.Item
-                  name="allowCompletedTraining"
-                  className="flex justify-end items-end"
-                >
-                  <Switch defaultChecked />
-                </Form.Item>
+                <div className="flex justify-end">
+                  <Form.Item name="allowCompletedTraining" noStyle>
+                    <Switch defaultChecked />
+                  </Form.Item>
+                </div>
               </div>
-              <div
-                className={`${formWrapStyle} flex justify-between items-center`}
-              >
+              <div className={`formWrapper`}>
                 <h3 className="font-medium">
                   Allow notifications for all overdue trainings
                 </h3>
-                <Form.Item
-                  name="allowOverdueTraining"
-                  className="flex justify-end items-end"
-                >
-                  <Switch defaultChecked />
-                </Form.Item>
+                <div className="flex justify-end">
+                  <Form.Item name="allowOverdueTraining" noStyle>
+                    <Switch defaultChecked />
+                  </Form.Item>
+                </div>
               </div>
-              <div
-                className={`${formWrapStyle} flex justify-between items-center`}
-              >
+              <div className={`formWrapper`}>
                 <h3 className="font-medium">
                   Allow notifications for all feedback trainings
                 </h3>
-                <Form.Item
-                  name="allowFeedbackTraining"
-                  className="flex justify-end items-end"
-                >
-                  <Switch defaultChecked />
-                </Form.Item>
+                <div className="flex justify-end">
+                  <Form.Item name="allowFeedbackTraining" noStyle>
+                    <Switch defaultChecked />
+                  </Form.Item>
+                </div>
               </div>
               <div className="flex justify-end">
                 <AppButton label="Save" type="submit" />
