@@ -1,8 +1,13 @@
 import PageSubHeader from "components/layout/PageSubHeader";
 import React, { useState } from "react";
 import { AddCostCentre } from "./AddCostCentre";
-import { Pagination } from "antd";
+import { Empty, Pagination, Skeleton } from "antd";
 import { usePagination } from "hooks/usePagination";
+import { useGetCostCentres } from "features/payroll/hooks/costCentres/useGetCostCentres";
+import { TCostCentre } from "features/payroll/types";
+import moment from "moment";
+import { EditCostCentre } from "./EditCostCentre";
+import { DeleteCostCentre } from "./DeleteCostCentre";
 
 export const CostCentreContainer = () => {
   const [showD, setShowD] = useState(false);
@@ -24,24 +29,29 @@ export const CostCentreContainer = () => {
     </>
   );
 };
-const DUMMY_DATA = Array(12).fill({
-  name: "Abuja Branch Cost Centre",
-  createdAt: "03/07/2020",
-  updatedAt: "03/07/2020",
-  accountNo: "00090872780",
-});
+
 const CostCentreCardList = () => {
   const { pagination, onChange } = usePagination();
+  const { data, isFetching } = useGetCostCentres({
+    pagination,
+  });
   return (
     <div>
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-x-5 lg:gap-x-10 gap-y-10">
-        {DUMMY_DATA.map((item, i) => (
-          <CostCentreCard key={i} {...item} />
-        ))}
-      </div>
+      <Skeleton loading={isFetching} paragraph={{ rows: 8 }}>
+        {data?.data && data?.data.length > 0 && (
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-x-5 lg:gap-x-10 gap-y-10">
+            {data?.data.map((item) => (
+              <CostCentreCard key={item.id} data={item} />
+            ))}
+          </div>
+        )}
+        {data?.data && data?.data.length === 0 && (
+          <Empty description="No Cost Centres" />
+        )}
+      </Skeleton>
       <div className="mt-4 flex justify-end">
         <Pagination
-          {...{ ...pagination, total: DUMMY_DATA.length }}
+          {...{ ...pagination, total: data?.total }}
           onChange={onChange}
           size="small"
         />
@@ -49,36 +59,68 @@ const CostCentreCardList = () => {
     </div>
   );
 };
-const CostCentreCard: React.FC<{
-  name: string;
-  createdAt: string;
-  updatedAt: string;
-  accountNo: string;
-}> = ({ name, createdAt, updatedAt, accountNo }) => {
+
+type TAction = "edit" | "delete";
+const CostCentreCard: React.FC<{ data: TCostCentre }> = ({ data }) => {
+  const [action, setAction] = useState<TAction>();
   return (
     <>
-      {/* view */}
+      <EditCostCentre
+        open={action === "edit"}
+        handleClose={() => setAction(undefined)}
+        costCentre={data}
+      />
+      <DeleteCostCentre
+        open={action === "delete"}
+        handleClose={() => setAction(undefined)}
+        costCentre={data}
+      />
+
       <div className="rounded border shadow bg-mainBg">
         <div className="bg-card p-3 flex justify-between items-center">
-          <h4 className="font-medium text-lg">{name}</h4>
+          <h4 className="font-medium text-lg">{data.name}</h4>
           <div className="flex gap-2 text-lg">
-            <i className="ri-pencil-line  cursor-pointer" />
+            <i
+              className="ri-pencil-line  cursor-pointer"
+              onClick={() => setAction("edit")}
+            />
 
-            <i className="ri-delete-bin-6-line  cursor-pointer" />
+            <i
+              className="ri-delete-bin-6-line  cursor-pointer"
+              onClick={() => setAction("delete")}
+            />
           </div>
         </div>
         <div className="px-3">
-          <div className="border-b flex gap-5 text-sm">
-            <div className="py-7">
-              <p className="pb-2">Date Created: {createdAt}</p>
-              <p>Last Modified: {updatedAt}</p>
+          <div className="border-b flex  gap-5 text-sm">
+            <div className="py-7 ">
+              <p className="pb-2">
+                Date Created: {moment(data.createdAt).format("YYYY-MM-DD")}
+              </p>
+              <p>
+                Last Modified: {moment(data.updatedAt).format("YYYY-MM-DD")}
+              </p>
             </div>
             <div className="border-r-2" />
-            <div className="py-7">
-              <p className="pb-2">Account Details</p>
-              <span className="bg-card px-3 rounded-lg font-medium">
-                {accountNo}
-              </span>
+            <div className="py-7 flex flex-col gap-4">
+              <div className="flex gap-2 items-center">
+                <p className="pb-2">Amount Entered:</p>
+                <span className="bg-card px-3 rounded-lg font-medium flex items-center">
+                  {data.amountEntered}
+                </span>
+              </div>
+              <div className="flex gap-2 items-center">
+                <p className="pb-2">Amount Paid:</p>
+                <span className="bg-card px-3 rounded-lg font-medium flex items-center">
+                  {data.amountPaid}
+                </span>
+              </div>
+              <div className="flex gap-2 items-center">
+                <p className="pb-2">Balance:</p>
+                <span className="bg-card px-3 rounded-lg font-medium flex items-center">
+                  {data.balance}
+                </span>
+              </div>
             </div>
           </div>
         </div>
