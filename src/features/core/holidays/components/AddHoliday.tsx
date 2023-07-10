@@ -65,7 +65,7 @@ export const AddHoliday: React.FC<IModalProps> = ({ open, handleClose }) => {
         onFinish={handleSubmit}
         requiredMark={false}
       >
-        <Form.Item rules={textInputValidationRules} name="name" label="Name">
+        <Form.Item rules={textInputValidationRules} name="title" label="Title">
           <Input placeholder="Holiday Name" />
         </Form.Item>
         <Form.Item rules={generalValidationRules} name="date" label="Date">

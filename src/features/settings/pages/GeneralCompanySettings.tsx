@@ -40,7 +40,7 @@ const GeneralCompanySettings = () => {
             <input
               className="border-none mb-2 flex-1 outline-0 outline-none bg-transparent"
               onChange={handleSearch}
-              placeholder="Search in company details, roles ................"
+              placeholder="Search settings"
             ></input>
             <i className="fas fa-search"></i>
           </div>
@@ -60,8 +60,8 @@ const GeneralCompanySettings = () => {
                   {/* item */}
                   {settingNavItems
                     .filter((item) => item.category === "basic")
-                    .map((item) => (
-                      <SettingNavItem item={item} key={item.title} />
+                    .map((item, i) => (
+                      <SettingNavItem item={item} key={i} />
                     ))}
                 </div>
               </FramerAccordian>
@@ -77,8 +77,8 @@ const GeneralCompanySettings = () => {
                   {/* item */}
                   {settingNavItems
                     .filter((item) => item.category === "self-service")
-                    .map((item) => (
-                      <SettingNavItem item={item} key={item.title} />
+                    .map((item, i) => (
+                      <SettingNavItem item={item} key={i} />
                     ))}
                 </div>
               </FramerAccordian>
@@ -94,8 +94,8 @@ const GeneralCompanySettings = () => {
                   {/* item */}
                   {settingNavItems
                     .filter((item) => item.category === "payroll")
-                    .map((item) => (
-                      <SettingNavItem item={item} key={item.title} />
+                    .map((item, i) => (
+                      <SettingNavItem item={item} key={i} />
                     ))}
                   {/* <Link to="/settings/payroll">Payroll settings</Link> */}
                 </div>
@@ -112,8 +112,8 @@ const GeneralCompanySettings = () => {
                   {/* item */}
                   {settingNavItems
                     .filter((item) => item.category === "attendance")
-                    .map((item) => (
-                      <SettingNavItem item={item} key={item.title} />
+                    .map((item, i) => (
+                      <SettingNavItem item={item} key={i} />
                     ))}
                   {/* <Link to="/settings/payroll">Payroll settings</Link> */}
                 </div>
@@ -130,8 +130,8 @@ const GeneralCompanySettings = () => {
                   {/* item */}
                   {settingNavItems
                     .filter((item) => item.category === "performance")
-                    .map((item) => (
-                      <SettingNavItem item={item} key={item.title} />
+                    .map((item, i) => (
+                      <SettingNavItem item={item} key={i} />
                     ))}
                 </div>
               </FramerAccordian>
@@ -142,8 +142,8 @@ const GeneralCompanySettings = () => {
                 <div className="grid grid-cols-2 lg:grid-cols-5 gap-4">
                   {/* item */}
                   {navItems &&
-                    navItems.map((item) => (
-                      <SettingNavItem item={item} key={item.title} />
+                    navItems.map((item, i) => (
+                      <SettingNavItem item={item} key={i} />
                     ))}
                 </div>
               ) : (

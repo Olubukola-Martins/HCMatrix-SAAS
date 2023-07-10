@@ -89,7 +89,9 @@ export const HolidaysTable: React.FC = () => {
       dataIndex: "name",
       key: "name",
       render: (val, item) => (
-        <span className="capitalize">{moment(item.date).format("DD-MM")}</span>
+        <span className="capitalize">
+          {moment(item.date).format("DD, MMMM")}
+        </span>
       ),
     },
     {

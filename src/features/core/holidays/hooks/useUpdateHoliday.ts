@@ -28,7 +28,7 @@ const createData = async (props: {
     ...props.data.body,
   };
 
-  const response = await axios.patch(url, data, config);
+  const response = await axios.put(url, data, config);
   return response;
 };
 export const useUpdateHoliday = () => {

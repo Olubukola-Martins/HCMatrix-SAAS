@@ -11,9 +11,7 @@ export const HolidaysContainer = () => {
       <AddHoliday open={showM} handleClose={() => setShowM(false)} />
       <PageSubHeader
         description={`You can now create/update holidays recognized by your organization`}
-        actions={[
-          { name: "New Job Request", handleClick: () => setShowM(true) },
-        ]}
+        actions={[{ name: "Add Holiday", handleClick: () => setShowM(true) }]}
       />
       <HolidaysTable />
     </div>
