@@ -19,6 +19,7 @@ export const settingNavItems: TSettNavItem[] = [
       // { name: "Domain", link: "/settings/domains" },
       // { name: "From Addresses", link: "/settings/from-addresses" },
       { name: "Holidays", link: appRoutes.holidaySettings },
+      { name: "Projects", link: "" }, //when merged update this
     ],
     category: "basic",
   },
@@ -31,8 +32,6 @@ export const settingNavItems: TSettNavItem[] = [
       { name: "Designations", link: appRoutes.designationSettings },
       { name: "Branches", link: appRoutes.locationSettings },
       { name: "Groups", link: appRoutes.groupSettings },
-      { name: "Pay Grades", link: "/settings/grades" },
-      { name: "Grade Categories", link: "/settings/grade_categories" },
     ],
     category: "basic",
   },
@@ -65,11 +64,97 @@ export const settingNavItems: TSettNavItem[] = [
   },
 
   {
+    title: "Onboarding",
+    items: [{ name: "Onboarding", link: appRoutes.onboarding }],
+    category: "self-service",
+  },
+  {
+    title: "Vehicle",
+    items: [{ name: "Booking", link: appRoutes.vehicleBooking }],
+    category: "self-service",
+  },
+  {
+    title: "Conference Rooms",
+    items: [
+      {
+        name: "Conference Rooms",
+        link: appRoutes.conferenceRoomBookingSetting,
+      },
+    ],
+    category: "self-service",
+  },
+  {
+    title: "Documents",
+    items: [
+      {
+        name: "Files & Folders",
+        link: appRoutes.documents,
+      },
+    ],
+    category: "self-service",
+  },
+  {
+    title: "Health Access",
+    items: [
+      {
+        name: "Configuration",
+        link: appRoutes.healthAccessSettings,
+      },
+    ],
+    category: "self-service",
+  },
+  {
+    title: "Payslips",
+    items: [
+      {
+        name: "Create Template",
+        link: appRoutes.createPayslipTemplate,
+      },
+      {
+        name: "Payslip Templates",
+        link: appRoutes.payslips,
+      },
+      {
+        name: "User Payslips",
+        link: appRoutes.employeePayslips,
+      },
+    ],
+    category: "self-service",
+  },
+  {
+    title: "Loan",
+    items: [
+      { name: "Policies", link: appRoutes.loanPolicies },
+      { name: "Home", link: appRoutes.loans },
+    ],
+    category: "self-service",
+  },
+  {
     title: "Leave",
     items: [
-      { name: "Leave Policy", link: appRoutes.leaveSettings },
-      { name: "Loan requests", link: "/settings/domain" },
-      { name: "Files Usage", link: "/settings/from-addresses" },
+      { name: "Types & Policy", link: appRoutes.leaveSettings },
+      { name: "Home", link: appRoutes.leaveHome },
+    ],
+    category: "self-service",
+  },
+  {
+    title: "Requisition",
+    items: [
+      { name: "Asset", link: appRoutes.selfServiceAssetSetting },
+      { name: "Job", link: appRoutes.selfServiceJobSetting },
+      { name: "Money", link: appRoutes.selfServiceMonetarySetting },
+      {
+        name: "Position Change",
+        link: appRoutes.selfServicePositionChangeSetting,
+      },
+      { name: "Promotion", link: appRoutes.selfServicePromotionSetting },
+      {
+        name: "Reimbursement",
+        link: appRoutes.selfServiceReimbursementSetting,
+      },
+      { name: "Transfer", link: appRoutes.selfServiceTransferSetting },
+      { name: "Travel", link: appRoutes.selfServiceTravelSetting },
+      { name: "Settings", link: appRoutes.selfServiceRequisition },
     ],
     category: "self-service",
   },
