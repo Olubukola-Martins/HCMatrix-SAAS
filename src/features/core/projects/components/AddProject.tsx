@@ -8,6 +8,7 @@ import {
 } from "utils/formHelpers/validation";
 import { openNotification } from "utils/notifications";
 import { useQueryClient } from "react-query";
+import { FormEmployeeInput } from "features/core/employees/components/FormEmployeeInput";
 
 const AddProject: React.FC<IModalProps> = ({ open, handleClose }) => {
   const queryClient = useQueryClient();
@@ -88,16 +89,12 @@ const AddProject: React.FC<IModalProps> = ({ open, handleClose }) => {
         >
           <Input.TextArea placeholder="Description" />
         </Form.Item>
-        <Form.Item
-          rules={textInputValidationRules}
-          name="participants"
-          label="Participants"
-        >
-          <span>
-            should contain a form with participant name and role [project
-            manager, member,]
-          </span>
-        </Form.Item>
+
+        <FormEmployeeInput
+          Form={Form}
+          mode="multiple"
+          control={{ name: "participants", label: "Participants" }}
+        />
 
         <div className="flex justify-end">
           <AppButton
