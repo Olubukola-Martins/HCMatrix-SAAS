@@ -1,4 +1,4 @@
-const style = "border border-slate-400 rounded-lg p-2";
+const style = "border border-slate-400 rounded-lg p-2 text-sm";
 export const TrainingEvaluation = () => {
   return (
     <div className="font-medium flex flex-col gap-y-3">

@@ -2,7 +2,12 @@ import { Collapse, Form, Switch } from "antd";
 import { AppButton } from "components/button/AppButton";
 import { LeaningSettingsNav } from "features/leaningAndDev/components/settings/LeaningSettingsNav";
 import "../../assets/style.css";
-import { TrainingEvaluation } from "features/leaningAndDev/components/settings/FeedbackTemplates";
+import {
+  Instructor,
+  OverallBenefit,
+  TrainingEvaluation,
+  TrainingTool,
+} from "features/leaningAndDev/components/settings/FeedbackTemplates";
 const { Panel } = Collapse;
 
 export const FeedbackTemplate = () => {
@@ -44,6 +49,49 @@ export const FeedbackTemplate = () => {
               <div>
                 <div className="flex justify-end items-center mt-3">
                   <Form.Item name="allowTraining" noStyle>
+                    <Switch defaultChecked />
+                  </Form.Item>
+                </div>
+              </div>
+            </div>
+            <div className={`formWrapper`}>
+              <Collapse ghost>
+                <Panel header="Training Tool" key="1">
+                  <TrainingTool />
+                </Panel>
+              </Collapse>
+              <div>
+                <div className="flex justify-end items-center mt-3">
+                  <Form.Item name="allowTrainingTool" noStyle>
+                    <Switch defaultChecked />
+                  </Form.Item>
+                </div>
+              </div>
+            </div>
+            <div className={`formWrapper`}>
+              <Collapse ghost>
+                <Panel header="Instructor & Enrollment" key="1">
+                  <Instructor />
+                </Panel>
+              </Collapse>
+              <div>
+                <div className="flex justify-end items-center mt-3">
+                  <Form.Item name="allowTrainingTool" noStyle>
+                    <Switch defaultChecked />
+                  </Form.Item>
+                </div>
+              </div>
+            </div>
+
+            <div className={`formWrapper`}>
+              <Collapse ghost>
+                <Panel header="Overall Benefit" key="1">
+                  <OverallBenefit />
+                </Panel>
+              </Collapse>
+              <div>
+                <div className="flex justify-end items-center mt-3">
+                  <Form.Item name="allowTrainingTool" noStyle>
                     <Switch defaultChecked />
                   </Form.Item>
                 </div>
