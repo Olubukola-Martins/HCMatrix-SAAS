@@ -3,6 +3,7 @@ import { LeaningNavbar } from "../components/LeaningNavbar";
 import { appRoutes } from "config/router/paths";
 import { Dropdown, Input, Menu, Select } from "antd";
 import Table, { ColumnsType } from "antd/lib/table";
+import { Link } from "react-router-dom";
 
 type TTrackP = {
   key: React.Key;
@@ -55,7 +56,11 @@ export const TrackProgress = () => {
             trigger={["click"]}
             overlay={
               <Menu>
-                <Menu.Item key="1">View Training</Menu.Item>
+                <Menu.Item key="1">
+                  <Link to={appRoutes.trackProgressDetails(1).path}>
+                    View Training
+                  </Link>
+                </Menu.Item>
                 <Menu.Item key="2">View Employee</Menu.Item>
               </Menu>
             }

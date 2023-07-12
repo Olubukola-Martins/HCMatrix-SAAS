@@ -196,4 +196,8 @@ export const appRoutes = {
   gamification: `/leaning/gamification`,
   notification: `/leaning/notification`,
   trackProgress: `/leaning/track-progress`,
+  trackProgressDetails: (id?: number) => ({
+    format: `/leaning/track-progress/:id`,
+    path: `/leaning/track-progress/${id}`,
+  }),
 };
