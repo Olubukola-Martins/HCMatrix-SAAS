@@ -1,6 +1,21 @@
 import { TDesignation } from "features/core/designations/types";
 import { TRole } from "features/core/roles-and-permissions/types";
 import { ICurrentCompany, IPaginationProps, ISearchParams } from "types";
+import {
+  Finance,
+  TBankValue,
+  TPensionValue,
+  TSingleEmployee,
+  TWalletValue,
+} from "./singleEmployee";
+
+export {
+  type TSingleEmployee,
+  type TPensionValue,
+  type TWalletValue,
+  type TBankValue,
+  type Finance,
+};
 
 export type TBulkEmployeeImport = {
   employeeInformation: {
