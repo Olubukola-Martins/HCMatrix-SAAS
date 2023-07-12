@@ -19,6 +19,7 @@ const SideBar = () => {
     payroll: "/payroll",
     performance: "/performance",
     attendance: "/attendance",
+    leaning: "/leaning",
   };
   return (
     <>
@@ -115,15 +116,23 @@ const SideBar = () => {
 
           <span className="sideBarName">Time & Attendance</span>
         </NavLink>
-
-        <div className="sideBarItemWrap">
+        <NavLink
+          className={`sideBarItemWrap ${
+            isActiveRoute({
+              pathName: pathname,
+              routeName: appBaseRoutes.leaning,
+            }) && "active"
+          }`}
+          to={`${appBaseRoutes.leaning}/home`}
+        >
           <div className="flex justify-center">
             <span className="sideBarList">
-              <i className="ri-book-2-line"></i>
+              <i className="ri-check-double-line"></i>
             </span>
           </div>
           <span className="sideBarName">Learning & Development</span>
-        </div>
+        </NavLink>
+
         <div className="sideBarItemWrap">
           <div className="flex justify-center">
             <span className="sideBarList">
