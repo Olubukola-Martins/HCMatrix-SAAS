@@ -134,28 +134,22 @@ const GeneralCompanySettings = () => {
                     ))}
                 </div>
               </FramerAccordian>
-              {/* <FramerAccordian
+              <FramerAccordian
                 heading={
-                  <h5 className="text-caramel text-base lg:text-xl font-semibold">
+                  <h5 className="text-caramel  text-base lg:text-xl  font-semibold">
                     Leaning & Development
                   </h5>
                 }
               >
                 <div className="grid grid-cols-2 lg:grid-cols-5 gap-4">
-               
+                  {/* item */}
                   {settingNavItems
-
                     .filter((item) => item.category === "leaning")
-                    .map((item) => (
-                      <SettingNavItem item={item} key={item.title} />
-
-                    .filter((item) => item.category === "performance")
                     .map((item, i) => (
                       <SettingNavItem item={item} key={i} />
-
                     ))}
                 </div>
-              </FramerAccordian> */}
+              </FramerAccordian>
             </div>
           ) : (
             <div className="mt-12">
