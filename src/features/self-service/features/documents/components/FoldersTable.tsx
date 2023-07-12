@@ -6,28 +6,25 @@ import { ColumnsType } from "antd/lib/table";
 
 import { usePagination } from "hooks/usePagination";
 
-import { THoliday } from "../types";
+import { QUERY_KEY_FOR_FOLDERS, useGetFolders } from "../hooks/useGetFolders";
+import { TFolderListItem } from "../types";
 import moment from "moment";
+import { EditFolder } from "./EditFolder";
+import { useDeleteFolder } from "../hooks/useDeleteFolder";
 import { openNotification } from "utils/notifications";
 import { useQueryClient } from "react-query";
 import { ExclamationCircleFilled } from "@ant-design/icons";
-import { useDeleteHoliday } from "../hooks/useDeleteHoliday";
-import {
-  QUERY_KEY_FOR_HOLIDAYS,
-  useGetHolidays,
-} from "../hooks/useGetHolidays";
-import { EditHoliday } from "./EditHoliday";
 
-export const HolidaysTable: React.FC = () => {
+export const FoldersTable: React.FC = () => {
   const queryClient = useQueryClient();
 
   const [showM, setShowM] = useState(false);
-  const [holiday, setHoliday] = useState<THoliday>();
-  const handleEdit = (data: THoliday) => {
+  const [folder, setFolder] = useState<TFolderListItem>();
+  const handleEdit = (data: TFolderListItem) => {
     setShowM(true);
-    setHoliday(data);
+    setFolder(data);
   };
-  const { mutate, isLoading } = useDeleteHoliday();
+  const { mutate, isLoading } = useDeleteFolder();
   const onDelete = (folderId: number) => {
     mutate(
       {
@@ -52,7 +49,7 @@ export const HolidaysTable: React.FC = () => {
           });
 
           queryClient.invalidateQueries({
-            queryKey: [QUERY_KEY_FOR_HOLIDAYS],
+            queryKey: [QUERY_KEY_FOR_FOLDERS],
             // exact: true,
           });
         },
@@ -61,9 +58,9 @@ export const HolidaysTable: React.FC = () => {
   };
   const handleDelete = (id: number) => {
     Modal.confirm({
-      title: `Are you sure you want to delete holiday ?`,
+      title: `Are you sure you want to delete folder ?`,
       icon: <ExclamationCircleFilled />,
-      content: `This will delete this holiday!`,
+      content: `This will delete this folder!`,
       width: 600,
       okButtonProps: { loading: isLoading },
       onOk() {
@@ -73,26 +70,16 @@ export const HolidaysTable: React.FC = () => {
   };
   const { pagination, onChange } = usePagination();
 
-  const { data, isFetching } = useGetHolidays({
+  const { data, isFetching } = useGetFolders({
     pagination,
   });
 
-  const columns: ColumnsType<THoliday> = [
+  const columns: ColumnsType<TFolderListItem> = [
     {
-      title: "Holiday Name",
+      title: "Folder Name",
       dataIndex: "name",
       key: "name",
-      render: (val, item) => <span className="capitalize">{item.title}</span>,
-    },
-    {
-      title: "Date",
-      dataIndex: "name",
-      key: "name",
-      render: (val, item) => (
-        <span className="capitalize">
-          {moment(item.date).format("DD, MMMM")}
-        </span>
-      ),
+      render: (val, item) => <span className="capitalize">{item.name}</span>,
     },
     {
       title: "Created At",
@@ -142,10 +129,10 @@ export const HolidaysTable: React.FC = () => {
 
   return (
     <div>
-      {holiday && (
-        <EditHoliday
+      {folder && (
+        <EditFolder
           open={showM}
-          holiday={holiday}
+          folder={folder}
           handleClose={() => setShowM(false)}
         />
       )}

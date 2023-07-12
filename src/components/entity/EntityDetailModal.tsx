@@ -4,7 +4,7 @@ import React, { useEffect } from "react";
 import { boxStyle } from "styles/reused";
 import { IModalProps } from "types";
 
-type FormStrInputType = "text";
+type FormStrInputType = "text" | "text-area";
 type FormArrInputType = "date-range-picker";
 type FormUrlInputType = "url";
 type FormBoolInputType = "switch";
@@ -51,7 +51,10 @@ export const EntityDetailModal: React.FC<IProps> = ({
           moment(field.render.value[1]),
         ];
       }
-      if (field.render.component === "text") {
+      if (
+        field.render.component === "text" ||
+        field.render.component === "text-area"
+      ) {
         values[field.name] = field.render.value;
       }
       return values;
@@ -81,6 +84,17 @@ export const EntityDetailModal: React.FC<IProps> = ({
                     checkedChildren="Yes"
                     unCheckedChildren="No"
                   />
+                </Form.Item>
+              );
+            }
+            if (field.render.component === "text-area") {
+              return (
+                <Form.Item
+                  key={field.name}
+                  label={field.label}
+                  name={field.name}
+                >
+                  <Input.TextArea value={field.render.value} />
                 </Form.Item>
               );
             }

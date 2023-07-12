@@ -1,10 +1,11 @@
+import SelfServiceSubNav from "features/self-service/components/SelfServiceSubNav";
 import CRBHeader from "../components/CRBHeader";
 import CRBSettingsAccordian from "../components/CRBSettingsAccordian";
 
 export const CRBHomeSettings = () => {
   return (
     <>
-      {/* <SelfServiceSubNav /> */}
+      <SelfServiceSubNav />
 
       <div>
         <div className="Container">

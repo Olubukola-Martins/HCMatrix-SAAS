@@ -144,6 +144,7 @@ export const appRoutes = {
     path: ` /self-service/handover-form/${id}`,
   }),
   hRLetters: `/self-service/hr-letters`,
+  documents: `/self-service/documents`,
   notifications: `/notifications`,
 
   // Performance route
@@ -194,4 +195,5 @@ export const appRoutes = {
   feedbackTemplate: `/leaning/feedback-template`,
   gamification: `/leaning/gamification`,
   notification: `/leaning/notification`,
+
 };

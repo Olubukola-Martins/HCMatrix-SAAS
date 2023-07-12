@@ -68,7 +68,7 @@ export const JobInformation = ({ employee }: IProps) => {
           : null,
       });
     }
-  }, [employee]);
+  }, [employee, form]);
   const { mutate: createMutate, isLoading: createLoading } =
     useCreateEmployeeJobInfo();
   const { mutate: updateMutate, isLoading: updateLoading } =
