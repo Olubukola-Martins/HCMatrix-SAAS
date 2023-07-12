@@ -81,5 +81,5 @@ export const useApproveORReject = ({ handleSuccess }: IProps = {}) => {
     });
   };
 
-  return { confirmApprovalAction, handleSuccess };
+  return { confirmApprovalAction };
 };

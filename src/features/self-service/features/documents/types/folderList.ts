@@ -1,7 +1,7 @@
-export type THoliday = {
+export type TFolderListItem = {
   id: number;
-  title: string;
-  date: string;
+  name: string;
+  label: string;
   companyId: number;
   createdAt: string;
   updatedAt: string;
