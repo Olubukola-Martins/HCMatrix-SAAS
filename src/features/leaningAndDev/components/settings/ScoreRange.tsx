@@ -1,5 +1,3 @@
-import React from "react";
-
 export const ScoreRange = () => {
   return (
     <div className="flex flex-col gap-4">
