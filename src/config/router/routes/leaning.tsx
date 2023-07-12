@@ -5,6 +5,7 @@ import { Training } from "features/leaningAndDev/pages/settings/Training";
 import { FeedbackTemplate } from "features/leaningAndDev/pages/settings/FeedbackTemplate";
 import { Gamification } from "features/leaningAndDev/pages/settings/Gamification";
 import { Notification } from "features/leaningAndDev/pages/settings/Notification";
+import { TrackProgress } from "features/leaningAndDev/pages/TrackProgress";
 
 export const leaningRoutes: TRouteData[] = [
   {
@@ -31,6 +32,11 @@ export const leaningRoutes: TRouteData[] = [
   {
     element: <Notification />,
     path: appRoutes.notification,
+    isSearchable: false,
+  },
+  {
+    element: <TrackProgress />,
+    path: appRoutes.trackProgress,
     isSearchable: false,
   },
 ];

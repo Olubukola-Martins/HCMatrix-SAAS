@@ -2,20 +2,22 @@ import { appRoutes } from "config/router/paths";
 import { Link } from "react-router-dom";
 
 interface IProps {
-  active: "time-sheet" | "time-off" | "reports" | "none-active";
+  active: "tracking-progress" | "time-off" | "reports" | "none-active";
 }
 
 export const LeaningNavbar = ({ active }: IProps) => {
   const applyStyle = "text-caramel pb-3";
   return (
-    <div className="flex items-center gap-x-4 text-sm font-medium py-3 mb-5 bg-card Container">
+    <div className="flex items-center gap-x-4 text-sm font-medium pb-3 pt-5 mb-5 bg-card Container">
       <Link
-        to={appRoutes.timeSheet}
+        to={appRoutes.trackProgress}
         className={
-          active === "time-sheet" ? `${applyStyle}` : "pb-3 hover:text-caramel"
+          active === "tracking-progress"
+            ? `${applyStyle}`
+            : "pb-3 hover:text-caramel"
         }
       >
-        Timesheet
+        Tracking Progress
       </Link>
       <Link
         to={appRoutes.timeOff}
