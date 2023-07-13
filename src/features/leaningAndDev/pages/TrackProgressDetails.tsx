@@ -2,6 +2,8 @@ import { Tabs } from "antd";
 import { LeaningNavbar } from "../components/LeaningNavbar";
 import { PageIntro } from "components/layout/PageIntro";
 import { LeaningProgressHeader } from "../components/trackProgress/LeaningProgressHeader";
+import { TrainingProgress } from "../components/trackProgress/TrainingProgress";
+import { Certificate } from "../components/trackProgress/Certificate";
 
 export const TrackProgressDetails = () => {
   return (
@@ -28,7 +30,8 @@ export const TrackProgressDetails = () => {
               label: "Trainings",
               children: (
                 <>
-                  <h4>No Point</h4>
+                  <LeaningProgressHeader />
+                  <TrainingProgress />
                 </>
               ),
             },
@@ -37,7 +40,8 @@ export const TrackProgressDetails = () => {
               label: "Certificates",
               children: (
                 <>
-                  <h4>No Point</h4>
+                  <LeaningProgressHeader />
+                  <Certificate />
                 </>
               ),
             },
