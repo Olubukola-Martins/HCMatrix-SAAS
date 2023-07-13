@@ -4,6 +4,7 @@ import { PageIntro } from "components/layout/PageIntro";
 import { LeaningProgressHeader } from "../components/trackProgress/LeaningProgressHeader";
 import { TrainingProgress } from "../components/trackProgress/TrainingProgress";
 import { Certificate } from "../components/trackProgress/Certificate";
+import { Overview } from "../components/trackProgress/Overview";
 
 export const TrackProgressDetails = () => {
   return (
@@ -22,6 +23,7 @@ export const TrackProgressDetails = () => {
               children: (
                 <>
                   <LeaningProgressHeader />
+                  <Overview />
                 </>
               ),
             },
