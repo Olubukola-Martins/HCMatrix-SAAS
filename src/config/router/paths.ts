@@ -16,6 +16,10 @@ export const appRoutes = {
   // setting routes
   settings: "/settings",
   projectSettings: "/settings/projects",
+  singleProject: (id?: number) => ({
+    format: `/settings/projects/:id`,
+    path: `/settings/projects/${id}`,
+  }),
   companyDetailsSettings: `/settings/company-details`,
   locationSettings: `/settings/locations`,
   singleLocation: (id?: number) => ({

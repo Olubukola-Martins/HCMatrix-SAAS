@@ -1,43 +1,46 @@
-import React, { useState } from "react";
-import { MoreOutlined } from "@ant-design/icons";
+import React from "react";
 import type { ColumnsType } from "antd/es/table";
 import { usePagination } from "hooks/usePagination";
-import { Button, Dropdown, Menu, Table } from "antd";
-import { useApiAuth } from "hooks/useApiAuth";
+import {  Table } from "antd";
 import moment from "moment";
-
-import { TProject } from "../types";
-import { ProjectDetails } from "./ProjectDetails";
-
-export const ProjectsTable: React.FC = () => {
-  const [requestId, setRequestId] = useState<number>();
-  const { companyId, token } = useApiAuth();
+import { TProjectListItem, TProjectStatus } from "../types";
+import { useGetProjects } from "../hooks/useGetProjects";
+import { appRoutes } from "config/router/paths";
+import { Link } from "react-router-dom";
+interface IProps {
+  status?: TProjectStatus;
+}
+export const ProjectsTable: React.FC<IProps> = ({ status }) => {
   const { pagination, onChange } = usePagination({
     pageSize: 4,
   });
-  //   const { data, isFetching } = useGeTJobRequisitions({
-  //     companyId,
-  //     token,
-  //     status,
-  //     pagination: {
-  //       limit: pagination.limit,
-  //       offset: pagination.offset,
-  //     },
-  //   });
+  const { data, isFetching } = useGetProjects({
+    status,
+    pagination: {
+      limit: pagination.limit,
+      offset: pagination.offset,
+    },
+  });
 
-  const columns: ColumnsType<TProject> = [
+  const columns: ColumnsType<TProjectListItem> = [
     {
       title: "Name",
       dataIndex: "desc",
       key: "desc",
-      render: (_, item) => <span className="capitalize">{"02/05/2020"} </span>,
+      render: (_, item) => (
+        <Link to={appRoutes.singleProject(item.id).path}>
+          <span className="capitalize text-caramel hover:underline">
+            {item.name}
+          </span>
+        </Link>
+      ),
     },
 
     {
       title: "Participant Count",
       dataIndex: "emptype",
       key: "emptype",
-      render: (_, item) => <span>{item.participantCount} </span>,
+      render: (_, item) => <span>{item.employeeCount} </span>,
     },
     {
       title: "Project Status",
@@ -45,77 +48,32 @@ export const ProjectsTable: React.FC = () => {
       key: "emptype",
       render: (_, item) => <span>{item.status} </span>,
     },
-
     {
-      title: "Action",
-      key: "action",
+      title: "Start Date",
+      dataIndex: "startD",
+      key: "startD",
       render: (_, item) => (
-        <Dropdown
-          overlay={
-            <Menu>
-              <Menu.Item
-                key="3"
-                onClick={() => {
-                  setRequestId(item.id);
-                }}
-              >
-                View Details
-              </Menu.Item>
-              <Menu.Item
-                key="4"
-                onClick={() => {
-                  setRequestId(item.id);
-                }}
-              >
-                Edit
-              </Menu.Item>
-              <Menu.Item
-                key="40"
-                onClick={() => {
-                  setRequestId(item.id);
-                }}
-              >
-                Close Project
-              </Menu.Item>
-            </Menu>
-          }
-          trigger={["click"]}
-        >
-          <Button
-            title="Actions"
-            icon={<MoreOutlined />}
-            type="text"
-            // onClick={() => handleEdit(item._id)}
-          />
-        </Dropdown>
+        <span>{moment(item.startDate).format("YYYY-MM-DD")} </span>
+      ),
+    },
+    {
+      title: "End Date",
+      dataIndex: "endD",
+      key: "endD",
+      render: (_, item) => (
+        <span>{moment(item.endDate).format("YYYY-MM-DD")} </span>
       ),
     },
   ];
 
   return (
     <div>
-      {requestId && (
-        <ProjectDetails
-          open={!!requestId}
-          handleClose={() => setRequestId(undefined)}
-          id={requestId}
-        />
-      )}
       <Table
         size="small"
-        dataSource={[
-          {
-            closed: true,
-            status: "active",
-            description: "",
-            id: 1,
-            name: "Hc Matrix v3",
-            participantCount: 30,
-          },
-        ]}
-        // loading={isFetching}
+        dataSource={data?.data}
+        loading={isFetching}
         columns={columns}
-        // pagination={{ ...pagination, total: data?.total }}
+        pagination={{ ...pagination, total: data?.total }}
         onChange={onChange}
       />
     </div>

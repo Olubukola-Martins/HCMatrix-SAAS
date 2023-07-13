@@ -41,11 +41,12 @@ export const payrollRoutes: TRouteData[] = [
     isPrimaryFeature: true,
   },
   {
+    // This is made false cos this feature will not be used in mvp, so the tax will simply be set in the corresponding payroll schemes
     element: <PayrollTaxPoliciesPage />,
     path: appRoutes.payrollTaxPolicies,
-    isSearchable: true,
+    isSearchable: false,
     title: "Tax Policies",
-    isPrimaryFeature: true,
+    isPrimaryFeature: false,
   },
   {
     element: <CreateTaxPolicyPage />,

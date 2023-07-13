@@ -1,21 +1,12 @@
 import { UploadOutlined } from "@ant-design/icons";
 import { UploadProps, message, Upload, Button, Typography } from "antd";
-import { IAuthDets } from "features/authentication/types";
 import { useApiAuth } from "hooks/useApiAuth";
 import { useContext } from "react";
-import { useAuthUser } from "react-auth-kit";
 import { GlobalContext, EGlobalOps } from "stateManagers/GlobalContextProvider";
+import { TFileType } from "types/files";
 
 // TO DO: HANDLE And account for the delete of a file from context
 
-type TFileType =
-  | "image/png"
-  | "image/jpeg"
-  | "image/jpg"
-  | "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
-  | "text/plain"
-  | "application/pdf"
-  | "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
 interface IFilesProps {
   allowedFileTypes: TFileType[];
   displayType?: "icon" | "button" | "form-space-between";

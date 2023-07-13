@@ -1,6 +1,5 @@
 import { Badge, Dropdown, Pagination, Skeleton } from "antd";
 import moment from "moment";
-import React from "react";
 import { useFetchNotifications } from "../hooks/useFetchNotifications";
 import { usePagination } from "hooks/usePagination";
 

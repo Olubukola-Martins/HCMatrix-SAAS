@@ -9,46 +9,56 @@ import {
 import { openNotification } from "utils/notifications";
 import { useQueryClient } from "react-query";
 import { FormEmployeeInput } from "features/core/employees/components/FormEmployeeInput";
+import { useAddProject } from "../hooks/useAddProject";
+import { QUERY_KEY_FOR_PROJECTS } from "../hooks/useGetProjects";
 
 const AddProject: React.FC<IModalProps> = ({ open, handleClose }) => {
   const queryClient = useQueryClient();
 
   const [form] = Form.useForm();
-  //   const { mutate, isLoading } = useCreateAssetType(); -> add projects
+  const { mutate, isLoading } = useAddProject();
 
-  //   const handleSubmit = (data: any) => {
-  //     mutate(
-  //       {
-  //         name: data.name,
-  //       },
-  //       {
-  //         onError: (err: any) => {
-  //           openNotification({
-  //             state: "error",
-  //             title: "Error Occurred",
-  //             description:
-  //               err?.response.data.message ?? err?.response.data.error.message,
-  //           });
-  //         },
-  //         onSuccess: (res: any) => {
-  //           openNotification({
-  //             state: "success",
+  const handleSubmit = (data: any) => {
+    mutate(
+      {
+        data: {
+          name: data.name,
+          startDate: data.duration[0].toString(),
+          endDate: data.duration[1].toString(),
+          description: data.description,
+          employees: data.employees.map((item: number) => ({
+            employeeId: item,
+          })),
+        },
+      },
+      {
+        onError: (err: any) => {
+          openNotification({
+            state: "error",
+            title: "Error Occurred",
+            description:
+              err?.response.data.message ?? err?.response.data.error.message,
+          });
+        },
+        onSuccess: (res: any) => {
+          openNotification({
+            state: "success",
 
-  //             title: "Success",
-  //             description: res.data.message,
-  //             // duration: 0.4,
-  //           });
-  //           form.resetFields();
-  //           handleClose();
+            title: "Success",
+            description: res.data.message,
+            // duration: 0.4,
+          });
+          form.resetFields();
+          handleClose();
 
-  //           queryClient.invalidateQueries({
-  //             queryKey: [QUERY_KEY_FOR_ASSET_TYPES],
-  //             // exact: true,
-  //           });
-  //         },
-  //       }
-  //     );
-  //   };
+          queryClient.invalidateQueries({
+            queryKey: [QUERY_KEY_FOR_PROJECTS],
+            // exact: true,
+          });
+        },
+      }
+    );
+  };
   return (
     <Modal
       open={open}
@@ -60,7 +70,7 @@ const AddProject: React.FC<IModalProps> = ({ open, handleClose }) => {
       <Form
         layout="vertical"
         form={form}
-        // onFinish={handleSubmit}
+        onFinish={handleSubmit}
         requiredMark={false}
       >
         <Form.Item
@@ -70,18 +80,17 @@ const AddProject: React.FC<IModalProps> = ({ open, handleClose }) => {
         >
           <Input placeholder="Project Name" />
         </Form.Item>
-        <div className="grid grid-cols-2 gap-4">
-          <Form.Item
-            rules={generalValidationRules}
-            name="sta"
-            label="Start Date"
-          >
-            <DatePicker placeholder="Start Date" className="w-full" />
-          </Form.Item>
-          <Form.Item rules={generalValidationRules} name="end" label="End Date">
-            <DatePicker placeholder="End Date" className="w-full" />
-          </Form.Item>
-        </div>
+        <Form.Item
+          rules={generalValidationRules}
+          name="duration"
+          label="Duration"
+        >
+          <DatePicker.RangePicker
+            placeholder={["Start Date", "End Date"]}
+            className="w-full"
+          />
+        </Form.Item>
+
         <Form.Item
           rules={textInputValidationRules}
           name="description"
@@ -93,14 +102,11 @@ const AddProject: React.FC<IModalProps> = ({ open, handleClose }) => {
         <FormEmployeeInput
           Form={Form}
           mode="multiple"
-          control={{ name: "participants", label: "Participants" }}
+          control={{ name: "employees", label: "Participants" }}
         />
 
         <div className="flex justify-end">
-          <AppButton
-            type="submit"
-            //   isLoading={isLoading}
-          />
+          <AppButton type="submit" isLoading={isLoading} />
         </div>
       </Form>
     </Modal>

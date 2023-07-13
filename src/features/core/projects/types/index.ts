@@ -1,8 +1,11 @@
-export type TProject = {
-  id: number;
-  name: string;
-  status: "active" | "inactive";
-  closed: boolean;
-  description: string;
-  participantCount: number;
+import { TProjectListItem } from "./projectList";
+import { TProjectMember } from "./projectMember";
+import { TProjectStatus } from "./projectStatus";
+import { TSingleProject } from "./singleProject";
+
+export {
+  type TProjectListItem,
+  type TSingleProject,
+  type TProjectStatus,
+  type TProjectMember,
 };
