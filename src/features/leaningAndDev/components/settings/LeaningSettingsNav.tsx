@@ -12,7 +12,7 @@ export const LeaningSettingsNav = (props: NProps) => {
     <div className="flex justify-center">
       <div className="grid grid-cols-2 text-center md:grid-cols-3 lg:grid-cols-4 gap-x-5 gap-y-2 Container text-base py-2 border-b mb-6 mt-3">
         <Link
-          to={appRoutes.training}
+          to={appRoutes.trainingSettings}
           className={
             props.active === "training"
               ? `${applyStyle}`

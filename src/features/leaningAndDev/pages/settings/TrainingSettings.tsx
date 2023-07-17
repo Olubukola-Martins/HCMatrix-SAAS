@@ -4,7 +4,7 @@ import { LeaningSettingsNav } from "features/leaningAndDev/components/settings/L
 import { ScoreRange } from "features/leaningAndDev/components/settings/ScoreRange";
 const { Panel } = Collapse;
 
-export const Training = () => {
+export const TrainingSettings = () => {
   const [form] = Form.useForm();
 
   const handleFormSubmit = (values: any) => {

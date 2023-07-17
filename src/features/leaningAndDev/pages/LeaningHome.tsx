@@ -35,7 +35,7 @@ export const LeaningHome = () => {
                 </div>
                 <Link
                   to="/"
-                  className="font-medium text-sm text-right text-caramel underline"
+                  className="font-medium text-sm text-right text-caramel pt-3 underline"
                 >
                   View Report
                 </Link>

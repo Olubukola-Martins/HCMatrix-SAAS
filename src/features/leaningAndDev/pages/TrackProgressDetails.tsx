@@ -5,6 +5,7 @@ import { LeaningProgressHeader } from "../components/trackProgress/LeaningProgre
 import { TrainingProgress } from "../components/trackProgress/TrainingProgress";
 import { Certificate } from "../components/trackProgress/Certificate";
 import { Overview } from "../components/trackProgress/Overview";
+import { Badges } from "../components/trackProgress/Badges/Badges";
 
 export const TrackProgressDetails = () => {
   return (
@@ -52,19 +53,12 @@ export const TrackProgressDetails = () => {
               label: "Badges",
               children: (
                 <>
-                  <h4>No Point</h4>
+                 <LeaningProgressHeader />
+                 <Badges/>
                 </>
               ),
             },
-            {
-              key: "5",
-              label: "Timeline",
-              children: (
-                <>
-                  <h4>No Point</h4>
-                </>
-              ),
-            },
+           
           ]}
         />
       </div>

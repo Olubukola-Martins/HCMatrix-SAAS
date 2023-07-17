@@ -1,12 +1,14 @@
 import { LeaningHome } from "features/leaningAndDev/pages/LeaningHome";
 import { TRouteData } from "../types";
 import { appRoutes } from "../paths";
-import { Training } from "features/leaningAndDev/pages/settings/Training";
+import { TrainingSettings } from "features/leaningAndDev/pages/settings/TrainingSettings";
 import { FeedbackTemplate } from "features/leaningAndDev/pages/settings/FeedbackTemplate";
 import { Gamification } from "features/leaningAndDev/pages/settings/Gamification";
 import { Notification } from "features/leaningAndDev/pages/settings/Notification";
 import { TrackProgress } from "features/leaningAndDev/pages/TrackProgress";
 import { TrackProgressDetails } from "features/leaningAndDev/pages/TrackProgressDetails";
+import { Training } from "features/leaningAndDev/pages/Training";
+import { TrainingDetails } from "features/leaningAndDev/pages/TrainingDetails";
 
 export const leaningRoutes: TRouteData[] = [
   {
@@ -16,8 +18,8 @@ export const leaningRoutes: TRouteData[] = [
     title: "Leaning & development",
   },
   {
-    element: <Training />,
-    path: appRoutes.training,
+    element: <TrainingSettings />,
+    path: appRoutes.trainingSettings,
     isSearchable: false,
   },
   {
@@ -43,6 +45,16 @@ export const leaningRoutes: TRouteData[] = [
   {
     element: <TrackProgressDetails />,
     path: appRoutes.trackProgressDetails().format,
+    isSearchable: false,
+  },
+  {
+    element: <Training />,
+    path: appRoutes.training,
+    isSearchable: false,
+  },
+  {
+    element: <TrainingDetails />,
+    path: appRoutes.trainingDetails().format,
     isSearchable: false,
   },
 ];

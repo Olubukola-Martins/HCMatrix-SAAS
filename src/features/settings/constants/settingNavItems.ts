@@ -178,7 +178,7 @@ export const settingNavItems: TSettNavItem[] = [
   {
     title: "General",
     items: [
-      { name: "Training", link: appRoutes.training },
+      { name: "Training", link: appRoutes.trainingSettings },
 
       { name: "Gamification", link: appRoutes.gamification },
 

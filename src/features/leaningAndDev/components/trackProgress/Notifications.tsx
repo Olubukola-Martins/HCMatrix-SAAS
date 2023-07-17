@@ -1,6 +1,6 @@
 import React from 'react'
 
-export const Timeline = () => {
+export const Notifications = () => {
   return (
     <div>Timeline</div>
   )
