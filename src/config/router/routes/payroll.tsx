@@ -31,6 +31,8 @@ import CreateProjectPayroll from "features/payroll/pages/CreateProjectPayroll";
 import SetupDailyWagesPayrollSchemePage from "features/payroll/pages/SetupDailyWagesPayrollSchemePage";
 import SetupMonthlyWagesPayrollSchemePage from "features/payroll/pages/SetupMonthlyWagesPayrollSchemePage";
 import ListOfPayrollsPage from "features/payroll/pages/ListOfPayrollsPage";
+import TaxAuthPage from "features/payroll/pages/TaxAuthPage";
+import PensionAdminsPage from "features/payroll/pages/PensionAdminsPage";
 
 export const payrollRoutes: TRouteData[] = [
   {
@@ -144,6 +146,20 @@ export const payrollRoutes: TRouteData[] = [
     element: <PayGradesAndCategoriesPage />,
     path: appRoutes.payGradeAndCategorySettings,
     title: "Grade & Categories",
+    isSearchable: true,
+    isPrimaryFeature: true,
+  },
+  {
+    element: <TaxAuthPage />,
+    path: appRoutes.taxAuthorities,
+    title: "Tax Authorities",
+    isSearchable: true,
+    isPrimaryFeature: true,
+  },
+  {
+    element: <PensionAdminsPage />,
+    path: appRoutes.pensionAdministrators,
+    title: "Pension Administrators",
     isSearchable: true,
     isPrimaryFeature: true,
   },

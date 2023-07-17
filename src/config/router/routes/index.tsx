@@ -17,11 +17,7 @@ export const appPagesData = [
   ...homeRoutes,
   ...notFoundRoutes,
   ...notificationRoutes,
-  ...payrollRoutes.map((item) => ({
-    ...item,
-    category: "doesnt-require-authentication" as TRouteDataCategory,
-    isSearchable: false,
-  })),
+  ...payrollRoutes,
   ...selfServiceRoutes,
   ...settingRoutes,
   ...systemAdminRoutes,
