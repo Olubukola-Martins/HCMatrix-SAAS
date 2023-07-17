@@ -206,5 +206,6 @@ export const appRoutes = {
     path: `/leaning/training/${id}`,
   }),
   gamification: `/leaning/gamification`,
-
+  paidTraining: `/leaning/paid-training`,
+  budgets: `/leaning/budgets`,
 };

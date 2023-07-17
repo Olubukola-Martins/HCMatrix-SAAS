@@ -16,7 +16,7 @@ export const Training = () => {
           <PageIntro title="Training" link={appRoutes.leaningHome} />
           <div className="flex items-center gap-4">
             <Link
-              to="/"
+              to={appRoutes.paidTraining}
               className="text-caramel font-medium text-base hover:text-accent"
             >
               Paid Training

@@ -12,7 +12,7 @@ export const TrackProgressDetails = () => {
     <>
       <LeaningNavbar active="tracking-progress" />
       <div className="Container">
-        <PageIntro title="Track Progress / Godswill Omenuko" />
+        <PageIntro title="Gamification / Godswill Omenuko" />
 
         <Tabs
           defaultActiveKey="1"
@@ -53,12 +53,11 @@ export const TrackProgressDetails = () => {
               label: "Badges",
               children: (
                 <>
-                 <LeaningProgressHeader />
-                 <Badges/>
+                  <LeaningProgressHeader />
+                  <Badges />
                 </>
               ),
             },
-           
           ]}
         />
       </div>

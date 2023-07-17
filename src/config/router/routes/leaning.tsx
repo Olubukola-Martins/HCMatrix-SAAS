@@ -10,6 +10,8 @@ import { TrackProgressDetails } from "features/leaningAndDev/pages/TrackProgress
 import { Training } from "features/leaningAndDev/pages/Training";
 import { TrainingDetails } from "features/leaningAndDev/pages/TrainingDetails";
 import { Gamification } from "features/leaningAndDev/pages/Gamification";
+import { Budgets } from "features/leaningAndDev/pages/Budgets";
+import { PaidTraining } from "features/leaningAndDev/pages/PaidTraining";
 
 export const leaningRoutes: TRouteData[] = [
   {
@@ -63,5 +65,16 @@ export const leaningRoutes: TRouteData[] = [
     path: appRoutes.gamification,
     isSearchable: true,
     title: "Gamification",
+  },
+  {
+    element: <Budgets />,
+    path: appRoutes.budgets,
+    isSearchable: true,
+    title: "Training budgets",
+  },
+  {
+    element: <PaidTraining />,
+    path: appRoutes.paidTraining,
+    isSearchable: false,
   },
 ];
