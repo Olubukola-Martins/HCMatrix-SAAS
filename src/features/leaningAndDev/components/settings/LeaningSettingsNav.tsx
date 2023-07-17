@@ -33,7 +33,7 @@ export const LeaningSettingsNav = (props: NProps) => {
           Feedback Template Settings
         </Link>
         <Link
-          to={appRoutes.gamification}
+          to={appRoutes.gamificationSettings}
           className={
             props.active === "gamification"
               ? `${applyStyle}`

@@ -3,7 +3,7 @@ import { TRouteData } from "../types";
 import { appRoutes } from "../paths";
 import { TrainingSettings } from "features/leaningAndDev/pages/settings/TrainingSettings";
 import { FeedbackTemplate } from "features/leaningAndDev/pages/settings/FeedbackTemplate";
-import { Gamification } from "features/leaningAndDev/pages/settings/Gamification";
+import { GamificationSettings } from "features/leaningAndDev/pages/settings/GamificationSettings";
 import { Notification } from "features/leaningAndDev/pages/settings/Notification";
 import { TrackProgress } from "features/leaningAndDev/pages/TrackProgress";
 import { TrackProgressDetails } from "features/leaningAndDev/pages/TrackProgressDetails";
@@ -28,8 +28,8 @@ export const leaningRoutes: TRouteData[] = [
     isSearchable: false,
   },
   {
-    element: <Gamification />,
-    path: appRoutes.gamification,
+    element: <GamificationSettings />,
+    path: appRoutes.gamificationSettings,
     isSearchable: false,
   },
   {

@@ -193,7 +193,7 @@ export const appRoutes = {
   leaningHome: `/leaning/home`,
   trainingSettings: `/leaning/training-settings`,
   feedbackTemplate: `/leaning/feedback-template`,
-  gamification: `/leaning/gamification`,
+  gamificationSettings: `/leaning/gamification-settings`,
   notification: `/leaning/notification`,
   trackProgress: `/leaning/track-progress`,
   trackProgressDetails: (id?: number) => ({
@@ -205,4 +205,5 @@ export const appRoutes = {
     format: `/leaning/training/:id`,
     path: `/leaning/training/${id}`,
   }),
+
 };

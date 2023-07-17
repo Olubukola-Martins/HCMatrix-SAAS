@@ -2,7 +2,7 @@ import { appRoutes } from "config/router/paths";
 import { Link } from "react-router-dom";
 
 interface IProps {
-  active: "tracking-progress" | "time-off" | "reports" | "none-active";
+  active: "tracking-progress" | "training" | "reports" | "none-active";
 }
 
 export const LeaningNavbar = ({ active }: IProps) => {
@@ -20,12 +20,12 @@ export const LeaningNavbar = ({ active }: IProps) => {
         Tracking Progress
       </Link>
       <Link
-        to={appRoutes.timeOff}
+        to={appRoutes.training}
         className={
-          active === "time-off" ? `${applyStyle}` : "pb-3 hover:text-caramel"
+          active === "training" ? `${applyStyle}` : "pb-3 hover:text-caramel"
         }
       >
-        Timeoff
+        Trainings
       </Link>
       <Link
         to={appRoutes.shiftPerEmployee}

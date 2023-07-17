@@ -3,7 +3,7 @@ import { AppButton } from "components/button/AppButton";
 import { LeaningSettingsNav } from "features/leaningAndDev/components/settings/LeaningSettingsNav";
 import "../../assets/style.css";
 
-export const Gamification = () => {
+export const GamificationSettings = () => {
   const [form] = Form.useForm();
 
   const handleFormSubmit = (values: any) => {
