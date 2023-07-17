@@ -205,5 +205,6 @@ export const appRoutes = {
     format: `/leaning/training/:id`,
     path: `/leaning/training/${id}`,
   }),
+  gamification: `/leaning/gamification`,
 
 };

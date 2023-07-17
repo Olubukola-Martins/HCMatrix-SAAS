@@ -2,7 +2,12 @@ import { appRoutes } from "config/router/paths";
 import { Link } from "react-router-dom";
 
 interface IProps {
-  active: "tracking-progress" | "training" | "reports" | "none-active";
+  active:
+    | "tracking-progress"
+    | "training"
+    | "reports"
+    | "gamification"
+    | "none-active";
 }
 
 export const LeaningNavbar = ({ active }: IProps) => {
@@ -26,6 +31,16 @@ export const LeaningNavbar = ({ active }: IProps) => {
         }
       >
         Trainings
+      </Link>
+      <Link
+        to={appRoutes.gamification}
+        className={
+          active === "gamification"
+            ? `${applyStyle}`
+            : "pb-3 hover:text-caramel"
+        }
+      >
+        Gamification
       </Link>
       <Link
         to={appRoutes.shiftPerEmployee}
