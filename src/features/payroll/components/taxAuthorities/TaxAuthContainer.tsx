@@ -19,7 +19,7 @@ export const TaxAuthContainer = () => {
           description={`You can now create/edit tax authorities`}
           actions={[
             {
-              name: "Add Administrator",
+              name: "Add Authority",
               handleClick: () => setComp("add-tax-auth"),
             },
           ]}
