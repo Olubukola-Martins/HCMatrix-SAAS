@@ -1,10 +1,15 @@
-import { Form, InputNumber, Popconfirm, Table, Tag } from "antd";
+import { Form, Input, InputNumber, Popconfirm, Table, Tag } from "antd";
 import type { FormInstance } from "antd/es/form";
 import { AppButton } from "components/button/AppButton";
 import { DeleteFilled } from "@ant-design/icons";
 import React, { useContext, useEffect, useRef, useState } from "react";
 import { TTaxPolicyCreatorProps } from "./TaxPolicyCreator";
 import { AddSalaryComponentForm } from "../salaryComponents/AddSalaryComponent";
+import {
+  TTaxCondition,
+  createTaxyearlyTaxableIncomeComponentFormula,
+  dummyConditions,
+} from "features/payroll/utils/createTaxSalaryComponentFormula";
 
 const EditableContext = React.createContext<FormInstance<any> | null>(null);
 
@@ -13,6 +18,7 @@ interface Item {
   name: string;
   amount: number;
   taxRate: number;
+  taxAmountPayablePerYear: number;
 }
 
 interface EditableRowProps {
@@ -112,27 +118,36 @@ interface DataType {
   name: string;
   amount: number;
   taxRate: number;
+  taxAmountPayablePerYear: number;
 }
 
 type ColumnTypes = Exclude<EditableTableProps["columns"], undefined>;
 
-export const TaxUIFormulaForm: React.FC<TTaxPolicyCreatorProps> = ({
-  dependencies = [],
-}) => {
-  const [dataSource, setDataSource] = useState<DataType[]>([
-    {
-      key: "0",
-      name: "First",
-      amount: 300000,
-      taxRate: 7,
-    },
-    {
-      key: "1",
-      name: "Next",
-      amount: 300000,
-      taxRate: 11,
-    },
-  ]);
+export const TaxUIFormulaForm: React.FC<
+  TTaxPolicyCreatorProps & {
+    handleFormula: (val: string) => void;
+    taxableIncome?: string;
+  }
+> = ({ dependencies = [], handleFormula, taxableIncome }) => {
+  const convertedConditions = dummyConditions.map((condition, index) => {
+    let name = "";
+    if (index === 0) {
+      name = "First";
+    } else {
+      name = "Next";
+    }
+    return {
+      key: index.toString(),
+      name: name,
+      amount: condition.max,
+      taxRate: condition.rate,
+      taxAmountPayablePerYear: condition.yearlyTaxableIncome,
+    };
+  });
+
+  console.log(convertedConditions);
+
+  const [dataSource, setDataSource] = useState<DataType[]>(convertedConditions);
 
   const [count, setCount] = useState(2);
 
@@ -150,13 +165,18 @@ export const TaxUIFormulaForm: React.FC<TTaxPolicyCreatorProps> = ({
       dataIndex: "name",
     },
     {
-      title: "Annual Income (NGN)",
-      dataIndex: "amount",
+      title: "Yearly Taxable Income",
+      dataIndex: "yearlyTaxableIncome",
       width: "60%",
       editable: true,
     },
     {
-      title: "Income Tax Rate",
+      title: "Tax Amount Payable Per Year",
+      dataIndex: "taxAmountPayablePerYear",
+      editable: true,
+    },
+    {
+      title: "Tax Rate",
       dataIndex: "taxRate",
       editable: true,
     },
@@ -181,6 +201,7 @@ export const TaxUIFormulaForm: React.FC<TTaxPolicyCreatorProps> = ({
       name: `Next`,
       amount: 0,
       taxRate: 0,
+      taxAmountPayablePerYear: 0,
     };
     setDataSource([...dataSource, newData]);
     setCount(count + 1);
@@ -194,6 +215,7 @@ export const TaxUIFormulaForm: React.FC<TTaxPolicyCreatorProps> = ({
       ...item,
       ...row,
     });
+
     setDataSource(newData);
   };
 
@@ -204,6 +226,24 @@ export const TaxUIFormulaForm: React.FC<TTaxPolicyCreatorProps> = ({
     },
   };
 
+  useEffect(() => {
+    // every time datasource is updated ensure to update the formula
+    const conditions: TTaxCondition[] = dataSource.map(
+      (item, i, items): TTaxCondition => ({
+        min: i === 0 ? 0 : items[i - 1].amount,
+        max: i === items.length - 1 ? Infinity : item.amount,
+        yearlyTaxableIncome: i === 0 ? 0 : item.taxAmountPayablePerYear,
+        rate: item.taxRate / 100,
+      })
+    );
+    const result = createTaxyearlyTaxableIncomeComponentFormula({
+      conditions,
+      taxableIncome: taxableIncome ?? "taxable_income",
+      divisor: 1,
+    });
+    console.log("first", result);
+    handleFormula(result);
+  }, [dataSource, handleFormula, taxableIncome]);
   const columns = defaultColumns.map((col) => {
     if (!col.editable) {
       return col;
@@ -219,14 +259,8 @@ export const TaxUIFormulaForm: React.FC<TTaxPolicyCreatorProps> = ({
       }),
     };
   });
-
   return (
     <div className="flex flex-col gap-4">
-      <div className="mb-6 flex flex-col gap-4 px-4 border rounded-md">
-        <h4 className="">
-          Taxable Income : 0 (add btn to add/edi taxable_income)
-        </h4>
-      </div>
       <Table
         components={components}
         rowClassName={() => "editable-row"}

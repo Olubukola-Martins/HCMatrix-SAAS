@@ -1,3 +1,4 @@
+import { TRouteDataCategory } from "../types";
 import { attendanceRoutes } from "./attendance";
 import { authRoutesDontRequireAuthentication } from "./auth";
 import { billingRoutes } from "./billing";
@@ -16,7 +17,11 @@ export const appPagesData = [
   ...homeRoutes,
   ...notFoundRoutes,
   ...notificationRoutes,
-  ...payrollRoutes,
+  ...payrollRoutes.map((item) => ({
+    ...item,
+    category: "doesnt-require-authentication" as TRouteDataCategory,
+    isSearchable: false,
+  })),
   ...selfServiceRoutes,
   ...settingRoutes,
   ...systemAdminRoutes,

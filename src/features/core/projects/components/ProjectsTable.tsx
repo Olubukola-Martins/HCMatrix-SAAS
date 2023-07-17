@@ -1,7 +1,7 @@
-import React from "react";
+import React, { useEffect } from "react";
 import type { ColumnsType } from "antd/es/table";
 import { usePagination } from "hooks/usePagination";
-import {  Table } from "antd";
+import { Table } from "antd";
 import moment from "moment";
 import { TProjectListItem, TProjectStatus } from "../types";
 import { useGetProjects } from "../hooks/useGetProjects";
@@ -11,7 +11,7 @@ interface IProps {
   status?: TProjectStatus;
 }
 export const ProjectsTable: React.FC<IProps> = ({ status }) => {
-  const { pagination, onChange } = usePagination({
+  const { pagination, onChange, resetPagination } = usePagination({
     pageSize: 4,
   });
   const { data, isFetching } = useGetProjects({
@@ -21,6 +21,9 @@ export const ProjectsTable: React.FC<IProps> = ({ status }) => {
       offset: pagination.offset,
     },
   });
+  useEffect(() => {
+    resetPagination();
+  }, [status, resetPagination]);
 
   const columns: ColumnsType<TProjectListItem> = [
     {
