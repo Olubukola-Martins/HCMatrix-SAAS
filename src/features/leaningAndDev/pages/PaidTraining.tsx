@@ -62,7 +62,14 @@ export const PaidTraining = () => {
     },
     {
       title: "Action",
-      render: (_, val) => <span className="text-sm text-caramel underline">View</span>,
+      render: (_, val) => (
+        <Link
+          to={appRoutes.trainingDetails(1).path}
+          className="text-sm text-caramel underline cursor-pointer"
+        >
+          View
+        </Link>
+      ),
     },
   ];
   return (
