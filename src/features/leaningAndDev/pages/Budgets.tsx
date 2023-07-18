@@ -4,6 +4,8 @@ import { PageIntro } from "components/layout/PageIntro";
 import { appRoutes } from "config/router/paths";
 import { Dropdown, Menu } from "antd";
 import Table, { ColumnsType } from "antd/lib/table";
+import { useState } from "react";
+import { SetBudget } from "../components/SetBudget";
 
 type TBudget = {
   key: React.Key;
@@ -22,6 +24,8 @@ const data: TBudget[] = [
 ];
 
 export const Budgets = () => {
+  const [openAddBudget, setOpenAddBudget] = useState(false);
+
   const columns: ColumnsType<TBudget> = [
     {
       title: "Department",
@@ -59,10 +63,17 @@ export const Budgets = () => {
   return (
     <>
       <LeaningNavbar active="training" />
+      <SetBudget
+        open={openAddBudget}
+        handleClose={() => setOpenAddBudget(false)}
+      />
       <div className="Container">
         <div className="flex items-center justify-between">
           <PageIntro link={appRoutes.paidTraining} title="Budgets" />
-          <AppButton label="Set Budget" />
+          <AppButton
+            label="Set Budget"
+            handleClick={() => setOpenAddBudget(true)}
+          />
         </div>
 
         <Table

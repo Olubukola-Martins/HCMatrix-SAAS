@@ -24,4 +24,11 @@ export const appPagesData = [
   ...performanceRoutes,
   ...attendanceRoutes,
   ...leaningRoutes,
+  // ...leaningRoutes.map((item) => {
+  //   return {
+  //     ...item,
+  //     category:
+  //       "doesnt-require-authentication" as "doesnt-require-authentication",
+  //   };
+  // }),
 ];

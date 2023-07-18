@@ -208,4 +208,5 @@ export const appRoutes = {
   gamification: `/leaning/gamification`,
   paidTraining: `/leaning/paid-training`,
   budgets: `/leaning/budgets`,
+  addTraining: `/leaning/add-training`
 };

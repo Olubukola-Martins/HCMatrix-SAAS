@@ -22,7 +22,9 @@ export const Training = () => {
               Paid Training
             </Link>
             <AppButton variant="transparent" label="Bulk Upload" />
-            <AppButton label="Add Training" />
+            <Link className="button" to={appRoutes.addTraining}>
+              Add Training
+            </Link>
           </div>
         </div>
 

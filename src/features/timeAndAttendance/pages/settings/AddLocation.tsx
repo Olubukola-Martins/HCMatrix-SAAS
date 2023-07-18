@@ -38,7 +38,6 @@ export const AddLocation = () => {
         title={"Add Location"}
         description="Add your offices or places where your team members will be clocking in and out."
       />
-
       <div className="Container mt-7">
         <div className="bg-card rounded md:p-5 p-3">
           <div className="bg-mainBg py-4 px-4 rounded">

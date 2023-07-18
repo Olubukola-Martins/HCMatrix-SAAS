@@ -12,6 +12,7 @@ import { TrainingDetails } from "features/leaningAndDev/pages/TrainingDetails";
 import { Gamification } from "features/leaningAndDev/pages/Gamification";
 import { Budgets } from "features/leaningAndDev/pages/Budgets";
 import { PaidTraining } from "features/leaningAndDev/pages/PaidTraining";
+import { AddTraining } from "features/leaningAndDev/pages/AddTraining";
 
 export const leaningRoutes: TRouteData[] = [
   {
@@ -19,6 +20,7 @@ export const leaningRoutes: TRouteData[] = [
     path: appRoutes.leaningHome,
     isSearchable: true,
     title: "Leaning & development",
+    // category: "doesnt-require-authentication"
   },
   {
     element: <TrainingSettings />,
@@ -75,6 +77,11 @@ export const leaningRoutes: TRouteData[] = [
   {
     element: <PaidTraining />,
     path: appRoutes.paidTraining,
+    isSearchable: false,
+  },
+  {
+    element: <AddTraining />,
+    path: appRoutes.addTraining,
     isSearchable: false,
   },
 ];
