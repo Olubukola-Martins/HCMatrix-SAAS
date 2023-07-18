@@ -215,4 +215,12 @@ export const appRoutes = {
   clockInSettings: `/attendance/clock-in-settings`,
   addLocation: `/attendance/add-location`,
   otherSettings: `/attendance/other-settings`,
+ 
+  // Leaning and development
+  leaningHome: `/leaning/home`,
+  training: `/leaning/training`,
+  feedbackTemplate: `/leaning/feedback-template`,
+  gamification: `/leaning/gamification`,
+  notification: `/leaning/notification`,
+
 };

@@ -3,6 +3,7 @@ import { attendanceRoutes } from "./attendance";
 import { authRoutesDontRequireAuthentication } from "./auth";
 import { billingRoutes } from "./billing";
 import { homeRoutes } from "./home";
+import { leaningRoutes } from "./leaning";
 import { notFoundRoutes } from "./notFound";
 import { notificationRoutes } from "./notifications";
 import { payrollRoutes } from "./payroll";
@@ -23,4 +24,5 @@ export const appPagesData = [
   ...systemAdminRoutes,
   ...performanceRoutes,
   ...attendanceRoutes,
+  ...leaningRoutes,
 ];

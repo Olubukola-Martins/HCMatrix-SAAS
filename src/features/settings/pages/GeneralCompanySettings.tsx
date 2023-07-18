@@ -100,6 +100,23 @@ const GeneralCompanySettings = () => {
                   {/* <Link to="/settings/payroll">Payroll settings</Link> */}
                 </div>
               </FramerAccordian>
+              {/* Performance */}
+              <FramerAccordian
+                heading={
+                  <h5 className="text-caramel  text-base lg:text-xl  font-semibold">
+                    Performance
+                  </h5>
+                }
+              >
+                <div className="grid grid-cols-2 lg:grid-cols-5 gap-4">
+                  {/* item */}
+                  {settingNavItems
+                    .filter((item) => item.category === "performance")
+                    .map((item) => (
+                      <SettingNavItem item={item} key={item.title} />
+                    ))}
+                </div>
+              </FramerAccordian>
 
               <FramerAccordian
                 heading={
@@ -115,21 +132,19 @@ const GeneralCompanySettings = () => {
                     .map((item, i) => (
                       <SettingNavItem item={item} key={i} />
                     ))}
-                  {/* <Link to="/settings/payroll">Payroll settings</Link> */}
                 </div>
               </FramerAccordian>
-              {/* Performance */}
               <FramerAccordian
                 heading={
                   <h5 className="text-caramel  text-base lg:text-xl  font-semibold">
-                    Performance
+                    Leaning & Development
                   </h5>
                 }
               >
                 <div className="grid grid-cols-2 lg:grid-cols-5 gap-4">
                   {/* item */}
                   {settingNavItems
-                    .filter((item) => item.category === "performance")
+                    .filter((item) => item.category === "leaning")
                     .map((item, i) => (
                       <SettingNavItem item={item} key={i} />
                     ))}
