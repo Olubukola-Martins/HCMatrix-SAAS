@@ -1,8 +1,9 @@
 import { Dropdown, Menu, Select } from "antd";
 import Table, { ColumnsType } from "antd/lib/table";
 import { appRoutes } from "config/router/paths";
-import React from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
+import { AssignTraining } from "./AssignTraining";
 
 type TTrackP = {
   key: React.Key;
@@ -27,6 +28,7 @@ const data: TTrackP[] = [
 ];
 
 export const MandatoryTraining = () => {
+  const [openAssign, setOpenAssign] = useState(false);
   const columns: ColumnsType<TTrackP> = [
     {
       title: "Training",
@@ -53,7 +55,10 @@ export const MandatoryTraining = () => {
                     View Training
                   </Link>
                 </Menu.Item>
-                <Menu.Item key="2">View Employee</Menu.Item>
+                <Menu.Item key="2" onClick={() => setOpenAssign(true)}>
+                  Assign Training
+                </Menu.Item>
+                <Menu.Item key="3">View Feedbacks</Menu.Item>
               </Menu>
             }
           >
@@ -66,6 +71,10 @@ export const MandatoryTraining = () => {
 
   return (
     <div>
+      <AssignTraining
+        open={openAssign}
+        handleClose={() => setOpenAssign(false)}
+      />
       <div className="flex justify-end gap-3">
         <Select
           placeholder="Pending Training"
