@@ -4,6 +4,8 @@ import { LeaningNavbar } from "../components/LeaningNavbar";
 import { Tabs } from "antd";
 import { Overview } from "../components/trainings/Overview";
 import { UpdateTraining } from "../components/trainings/UpdateTraining";
+import { TrainingUsers } from "../components/trainings/TrainingUsers";
+import { TrainingContent } from "../components/trainings/TrainingContent";
 
 export const TrainingDetails = () => {
   return (
@@ -28,12 +30,20 @@ export const TrainingDetails = () => {
             {
               key: "2",
               label: "Training Content",
-              children: <>Training Content</>,
+              children: (
+                <>
+                  <TrainingContent />
+                </>
+              ),
             },
             {
               key: "3",
               label: "Users",
-              children: <>Users</>,
+              children: (
+                <>
+                  <TrainingUsers />
+                </>
+              ),
             },
             {
               key: "4",
