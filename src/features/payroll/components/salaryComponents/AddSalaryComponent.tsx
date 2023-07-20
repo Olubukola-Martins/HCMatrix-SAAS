@@ -2,7 +2,7 @@ import { Form, Input, InputNumber, Modal, Select, Tag } from "antd";
 import { AppButton } from "components/button/AppButton";
 import { MONTH_CHART_LABELS } from "constants/general";
 import { TSalaryComponentInput } from "features/payroll/types/salaryComponents";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { IModalProps } from "types";
 import {
   generalValidationRules,
@@ -19,7 +19,11 @@ type IFormProps = {
     mode: "multiple" | "single";
   };
 };
-type IProps = IFormProps & IModalProps;
+
+type ExtraProps = {
+  title?: string;
+};
+type IProps = IFormProps & IModalProps & ExtraProps;
 
 type TCalculationMode = "formula" | "percentage of gross" | "fixed amount";
 
@@ -28,13 +32,14 @@ export const AddSalaryComponent: React.FC<IProps> = ({
   handleClose,
   dependencies,
   componentName,
+  title = "Add Allowance",
 }) => {
   return (
     <Modal
       open={open}
       onCancel={() => handleClose()}
       footer={null}
-      title={"Add Allowance"}
+      title={title}
       style={{ top: 20 }}
     >
       <AddSalaryComponentForm
@@ -58,6 +63,11 @@ export const AddSalaryComponentForm: React.FC<IFormProps> = ({
   const handleSubmit = (vals: any) => {
     console.log(vals, "salary");
   };
+  useEffect(() => {
+    form.setFieldsValue({
+      name: componentName,
+    });
+  }, [form, componentName]);
   return (
     <Form
       layout="vertical"
@@ -65,11 +75,10 @@ export const AddSalaryComponentForm: React.FC<IFormProps> = ({
       requiredMark={false}
       onFinish={handleSubmit}
     >
-      {typeof componentName === "undefined" && (
-        <Form.Item label="Name" rules={textInputValidationRules} name={`name`}>
-          <Input placeholder="Salary Component Name" />
-        </Form.Item>
-      )}
+      <Form.Item label="Name" rules={textInputValidationRules} name={`name`}>
+        <Input placeholder="Salary Component Name" disabled={!!componentName} />
+      </Form.Item>
+
       <Form.Item label="Select calculation mode">
         <Select
           className="capitalize"

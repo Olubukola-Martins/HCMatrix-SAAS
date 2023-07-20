@@ -1,10 +1,115 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import PayrollSubNav from "../components/PayrollSubNav";
 import { ExchangeRateContainer } from "../components/exchangeRates/ExchangeRateContainer";
 import { SalaryComponentsContainer } from "../components/salaryComponents/SalaryComponentsContainer";
 import { EmployeePayrollUpdatesContainer } from "../components/employeePayrollUpdates/EmployeePayrollUpdatesContainer";
-import { Input } from "antd";
+import { DatePicker, Form, Input, Modal, Typography } from "antd";
+import { IModalProps } from "types";
+import { textInputValidationRules } from "utils/formHelpers/validation";
+import { AppButton } from "components/button/AppButton";
+import { FileUpload } from "components/FileUpload";
+interface IFormProps extends IModalProps {
+  handleSave: (props: {
+    name: string;
+    description: string;
+    month: string;
+  }) => void;
+}
+export const UploadTimesheet: React.FC<IModalProps> = ({
+  open,
+  handleClose,
+}) => {
+  const handleSubmit = (data: any) => {
+    handleClose();
+  };
+  return (
+    <Modal
+      open={open}
+      footer={null}
+      title={"Upload Timesheet"}
+      style={{ top: 20 }}
+      onCancel={() => handleClose()}
+    >
+      <div className="border border-dotted border-slate-500 rounded flex flex-col items-center gap-2 py-3 px-2">
+        <p>Select file to be Imported</p>
+        <Typography.Text title="Please Download template and populate">
+          <span className="text-sm pt-1 font-medium cursor-pointer hover:text-caramel underline">
+            Download template
+          </span>
+        </Typography.Text>
+
+        <div className="flex justify-center w-3/5">
+          <FileUpload
+            allowedFileTypes={[
+              "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+            ]}
+            fileKey="documentUrl"
+            textToDisplay="Upload File"
+            displayType="dotted-box"
+          />
+        </div>
+      </div>
+    </Modal>
+  );
+};
+export const CreatePayrollInitialForm: React.FC<IFormProps> = ({
+  open,
+  handleClose,
+  handleSave,
+}) => {
+  const handleSubmit = (data: any) => {
+    handleSave({
+      name: data.name,
+      month: data.month.format("YYYY-MM"),
+      description: data.description,
+    });
+    handleClose();
+  };
+  const [form] = Form.useForm();
+  return (
+    <Modal
+      open={open}
+      footer={null}
+      title={"Enter Payroll Details"}
+      style={{ top: 20 }}
+      closable={false}
+    >
+      <Form
+        layout="vertical"
+        form={form}
+        onFinish={handleSubmit}
+        requiredMark={false}
+      >
+        <Form.Item
+          rules={textInputValidationRules}
+          name="name"
+          label="Payroll Name"
+        >
+          <Input placeholder="Payroll Name" />
+        </Form.Item>
+        <Form.Item name="month" label="Month">
+          <DatePicker
+            picker={"month"}
+            className="w-full"
+            placeholder="Payroll Month"
+          />
+        </Form.Item>
+        <Form.Item
+          rules={textInputValidationRules}
+          name="description"
+          label="Description"
+        >
+          <Input.TextArea placeholder="Description" />
+        </Form.Item>
+
+        <div className="flex justify-end">
+          <AppButton type="submit" />
+        </div>
+      </Form>
+    </Modal>
+  );
+};
 
 const CreateOfficePayroll = () => {
   const boxStyle =
@@ -12,9 +117,21 @@ const CreateOfficePayroll = () => {
 
   const buttonStyle =
     "border border-gray-400 hover:text-caramel rounded px-5 py-1 font-medium text-sm text-accent";
-
+  const [open, setOpen] = useState(true);
+  const [openT, setOpenT] = useState(false);
+  const [payrollD, setPayrollD] = useState({
+    name: "",
+    month: "",
+    description: "",
+  });
   return (
     <>
+      <UploadTimesheet open={openT} handleClose={() => setOpenT(false)} />
+      <CreatePayrollInitialForm
+        open={open}
+        handleSave={(props) => setPayrollD({ ...props })}
+        handleClose={() => setOpen(false)}
+      />
       <PayrollSubNav />
       <div className="text-accent Container">
         <div className="flex items-center gap-2 mb-10">
@@ -42,6 +159,7 @@ const CreateOfficePayroll = () => {
             </div>
             <input
               type="text"
+              value={payrollD.name}
               className="border text-accent rounded px-3 py-1 border-gray-400 bg-mainBg"
               placeholder="Payroll Name"
             />
@@ -55,6 +173,7 @@ const CreateOfficePayroll = () => {
             </div>
             <input
               type="month"
+              value={payrollD.month}
               className="border text-accent rounded px-3 py-1 border-gray-400 bg-mainBg"
             />
           </div>
@@ -71,7 +190,7 @@ const CreateOfficePayroll = () => {
                 </div>
               </div>
               <div className="mt-4">
-                <Input.TextArea />
+                <Input.TextArea value={payrollD.description} />
               </div>
             </div>
           </div>
@@ -99,14 +218,21 @@ const CreateOfficePayroll = () => {
           </div>
 
           <div className={boxStyle}>
-            <div>
-              <h5 className="font-medium text-base pb-1">
-                Add Overtime Timesheet
-              </h5>
-              <p className="md:text-sm text-xs">
-                Upload the overtime sheet that will be used to add overtime pay
-                to employee.
-              </p>
+            <div className="flex justify-between w-full">
+              <div>
+                <h5 className="font-medium text-base pb-1">
+                  Add Overtime Timesheet
+                </h5>
+                <p className="md:text-sm text-xs">
+                  Upload the overtime sheet that will be used to add overtime
+                  pay to employee.
+                </p>
+              </div>
+              <div>
+                <button className={buttonStyle} onClick={() => setOpenT(true)}>
+                  Upload Timesheet
+                </button>
+              </div>
             </div>
           </div>
 

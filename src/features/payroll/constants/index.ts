@@ -1,6 +1,4 @@
-import { TSalaryComponent } from "../types";
-
-export const ALLOWANNCES: TSalaryComponent[] = [
+export const ALLOWANNCES = [
   {
     name: "thirthenth_month", //name of component && should be unique
     identifier: "thirthenth_month",

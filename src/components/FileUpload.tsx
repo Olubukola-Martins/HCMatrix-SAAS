@@ -9,7 +9,7 @@ import { TFileType } from "types/files";
 
 interface IFilesProps {
   allowedFileTypes: TFileType[];
-  displayType?: "icon" | "button" | "form-space-between";
+  displayType?: "icon" | "button" | "form-space-between" | "dotted-box";
   textToDisplay?: string;
   fileKey: string;
 }
@@ -81,6 +81,12 @@ export const FileUpload = ({
               className="text-3xl"
             />
             <Typography.Text>{textToDisplay}</Typography.Text>
+          </div>
+        )}
+        {displayType === "dotted-box" && (
+          <div className="w-full border border-dotted border-caramel px-2 py-1 rounded text-caramel text-sm flex flex-col gap-1 items-center justify-center">
+            <i className="ri-download-2-line text-2xl"></i>
+            <span className="text-xs font-medium">Upload File</span>
           </div>
         )}
       </Upload>
