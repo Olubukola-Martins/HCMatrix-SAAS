@@ -11,7 +11,6 @@ export const TrainingDetails = () => {
   return (
     <>
       <LeaningNavbar active="training" />
-
       <div className="Container">
         <PageIntro title="Training Details" link={appRoutes.training} />
         <Tabs

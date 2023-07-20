@@ -1,8 +1,15 @@
-import React from "react";
+import { AppButton } from "components/button/AppButton";
+import { useState } from "react";
+import { AddContent } from "./AddContent";
 
 export const TrainingContent = () => {
+  const [openAddContent, setOpenAddContent] = useState(false);
   return (
     <>
+      <AddContent
+        open={openAddContent}
+        handleClose={() => setOpenAddContent(false)}
+      />
       <div className="bg-card rounded p-3 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 mt-3">
         <div className="bg-mainBg rounded-l-md px-2 py-3 flex lg:justify-center gap-3">
           <div>
@@ -17,7 +24,6 @@ export const TrainingContent = () => {
             <h3 className="font-semibold">Training Description:</h3>
           </div>
         </div>
-
         <div className="bg-mainBg rounded-r-md px-2 py-3 gap-2 lg:col-span-2">
           <div className="flex flex-col gap-2">
             <p>
@@ -37,6 +43,13 @@ export const TrainingContent = () => {
             </p>
           </div>
         </div>
+      </div>
+
+      <div className="flex justify-end my-3">
+        <AppButton label="Add Content" handleClick={() => setOpenAddContent(true)}/>
+      </div>
+      <div className="bg-card p-2">
+        <h2 className="font-semibold text-base">Introduction to Angular</h2>
       </div>
     </>
   );
