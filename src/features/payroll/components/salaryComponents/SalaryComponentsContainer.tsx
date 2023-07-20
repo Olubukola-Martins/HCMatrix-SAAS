@@ -5,15 +5,18 @@ import { usePagination } from "hooks/usePagination";
 import { DeleteFilled, EditFilled } from "@ant-design/icons";
 import React, { useState } from "react";
 import { AddSalaryComponent } from "./AddSalaryComponent";
-import { TSalaryComponent } from "features/payroll/types";
-import { ALLOWANNCES } from "features/payroll/constants";
+
+import { TSalaryComponent } from "features/payroll/types/salaryComponents";
 
 interface IProps {
   showControlBtns?: boolean;
+  components?: TSalaryComponent[];
+  handleAddAllowance?: () => void; // TODO: START HERE
 }
 
 export const SalaryComponentsContainer: React.FC<IProps> = ({
   showControlBtns = true,
+  components = [],
 }) => {
   const { pagination, onChange } = usePagination();
   const columns: ColumnsType<TSalaryComponent> = [
@@ -33,11 +36,7 @@ export const SalaryComponentsContainer: React.FC<IProps> = ({
       title: "Calculation Type",
       dataIndex: "asty",
       key: "asty",
-      render: (_, item) => (
-        <span className="capitalize">
-          {+item.formula >= 0 || +item.formula < 0 ? "Fixed Amount" : "Formula"}
-        </span>
-      ),
+      render: (_, item) => <span className="capitalize">{item.mode}</span>,
 
       // ellipsis: true,
 
@@ -48,7 +47,7 @@ export const SalaryComponentsContainer: React.FC<IProps> = ({
       dataIndex: "State",
       key: "State",
       ellipsis: true,
-      render: (_, item) => <span className="">{item.formula}</span>,
+      render: (_, item) => <span className="">{item.amount}</span>,
     },
     {
       title: "Action",
@@ -87,7 +86,7 @@ export const SalaryComponentsContainer: React.FC<IProps> = ({
         open={showD}
         handleClose={() => setShowD(false)}
         handleSave={() => {}}
-        dependencies={ALLOWANNCES.map((item) => item.identifier)}
+        dependencies={components.map((item) => item.label)}
       />
       <div className="flex flex-col gap-4">
         {/* btns */}
@@ -107,8 +106,8 @@ export const SalaryComponentsContainer: React.FC<IProps> = ({
         <Table
           columns={columns}
           size="small"
-          dataSource={ALLOWANNCES}
-          pagination={{ ...pagination, total: ALLOWANNCES.length }}
+          dataSource={components}
+          pagination={{ ...pagination, total: components.length }}
           onChange={onChange}
         />
       </div>

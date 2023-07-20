@@ -1,12 +1,15 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 
-import { Pagination } from "antd";
+import { Pagination, Skeleton } from "antd";
 import { usePagination } from "hooks/usePagination";
 
 import { AppButton } from "components/button/AppButton";
 import PageSubHeader from "components/layout/PageSubHeader";
 import { appRoutes } from "config/router/paths";
 import { Link } from "react-router-dom";
+import { useGetPayrollSchemes } from "features/payroll/hooks/scheme/useGetPayrollSchemes";
+import { TPayrollSchemeType } from "features/payroll/types/payrollSchemes";
+import moment from "moment";
 
 export const PayrollSchemeContainer = () => {
   return (
@@ -22,42 +25,77 @@ export const PayrollSchemeContainer = () => {
 
 type TScheme = {
   name: string;
-  createdAt: string;
-  updatedAt: string;
+  type: TPayrollSchemeType;
+  createdAt?: string;
+  updatedAt?: string;
+  projectCount?: number;
   setUpLink: string;
 };
 const PAYROLL_SCHEMES: TScheme[] = [
   {
     name: "Office/Grade Payroll",
-    createdAt: "Not needed",
-    updatedAt: "Not Needed",
+    type: "office",
+
     setUpLink: appRoutes.setupGradePayrollScheme,
   },
   {
     name: "Direct Salary Payroll",
-    createdAt: "03/07/2020",
-    updatedAt: "03/07/2020",
+    type: "direct-salary",
+
     setUpLink: appRoutes.setupDirectSalaryPayrollScheme,
   },
   {
     name: "Timesheet/Wages Payroll",
-    createdAt: "03/07/2020",
-    updatedAt: "03/07/2020",
+    type: "wages",
+
     setUpLink: appRoutes.setupWagesPayrollScheme,
   },
   {
     name: "Project/Contract Payroll",
-    createdAt: "03/07/2020",
-    updatedAt: "03/07/2020",
+    type: "project",
+
     setUpLink: appRoutes.setupProjectPayrollScheme,
   },
 ];
 const PayrollSchemeCardList = () => {
   const { pagination, onChange } = usePagination();
+  const { data, isLoading, isSuccess } = useGetPayrollSchemes();
+  const [schemes, setSchemes] = useState<TScheme[]>(PAYROLL_SCHEMES);
+  useEffect(() => {
+    // TODO: Replicate this logic for requisition settings
+    if (data && isSuccess) {
+      setSchemes((prevSchemes) => {
+        return prevSchemes.map((scheme) => {
+          const schemeFoundInFetchedData = data.data.find(
+            (val) => val.type === scheme.type
+          );
+          if (schemeFoundInFetchedData) {
+            const modifiedScheme: TScheme = {
+              ...scheme,
+              name: schemeFoundInFetchedData.name,
+              createdAt: moment(schemeFoundInFetchedData.createdAt).format(
+                "DD-MM-YYYY"
+              ),
+              updatedAt: moment(schemeFoundInFetchedData.updatedAt).format(
+                "DD-MM-YYYY"
+              ),
+              projectCount:
+                scheme.type === "project"
+                  ? data.data.filter((item) => item.type === "project").length
+                  : undefined,
+            };
+            return modifiedScheme;
+          }
+          return scheme;
+        });
+      });
+    }
+  }, [data, isSuccess]);
+
   return (
-    <div>
+    <Skeleton loading={isLoading} active paragraph={{ rows: 8 }}>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-x-5 lg:gap-x-10 gap-y-10">
-        {PAYROLL_SCHEMES.map((item, i) => (
+        {schemes.map((item, i) => (
           <PayrollSchemeCard key={i} {...item} />
         ))}
       </div>
@@ -68,7 +106,7 @@ const PayrollSchemeCardList = () => {
           size="small"
         />
       </div>
-    </div>
+    </Skeleton>
   );
 };
 const PayrollSchemeCard: React.FC<TScheme> = ({
@@ -76,6 +114,7 @@ const PayrollSchemeCard: React.FC<TScheme> = ({
   createdAt,
   updatedAt,
   setUpLink,
+  projectCount,
 }) => {
   return (
     <>
@@ -92,8 +131,13 @@ const PayrollSchemeCard: React.FC<TScheme> = ({
         <div className="px-3">
           <div className="border-b flex gap-5 text-sm">
             <div className="py-7">
-              <p className="pb-2">Date Created: {createdAt}</p>
-              <p>Last Modified: {updatedAt}</p>
+              {projectCount && (
+                <p className="pb-2">
+                  No of Payroll projects set up: {projectCount}
+                </p>
+              )}
+              <p className="pb-2">Date Created: {createdAt ?? "Pending"}</p>
+              <p>Last Modified: {updatedAt ?? "Pending"}</p>
             </div>
           </div>
         </div>

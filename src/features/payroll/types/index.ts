@@ -10,7 +10,7 @@ export {
   type TCostCentre,
 };
 
-export type TSalaryComponent = {
+type TfakeSalaryComponent = {
   name: string;
   identifier: string;
   formula: string;
@@ -21,7 +21,7 @@ export type TSalaryComponent = {
 };
 
 type TPayrollSchemeSetting = {
-  components: TSalaryComponent;
+  components: TfakeSalaryComponent;
   overtimeSetting: {
     active: boolean;
     hourlyRateFormula: string | number;

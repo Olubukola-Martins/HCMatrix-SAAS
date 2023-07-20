@@ -10,6 +10,7 @@ interface IProps {
     handleClick: Function;
     btnVariant?: TBtnVariant;
     loading?: boolean;
+    type?: "submit" | "reset" | "button";
   }[];
 }
 

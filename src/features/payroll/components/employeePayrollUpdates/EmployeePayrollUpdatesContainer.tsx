@@ -1,14 +1,12 @@
-import { Button, Table, Switch, Dropdown, Menu } from "antd";
+import {  Table,  Dropdown, Menu } from "antd";
 import { ColumnsType } from "antd/lib/table";
 import { AppButton } from "components/button/AppButton";
 import { usePagination } from "hooks/usePagination";
 import { MoreOutlined } from "@ant-design/icons";
 import React, { useState } from "react";
-import { TSalaryComponent } from "features/payroll/types";
-import { ALLOWANNCES } from "features/payroll/constants";
-import { AddSalaryComponent } from "../salaryComponents/AddSalaryComponent";
 import ViewPayrollBreakdown from "../ViewPayrollBreakdown";
 import ModifyPayrollBreakdown from "../ModifyPayrollBreakdown";
+import { AddSalaryComponent } from "../salaryComponents/AddSalaryComponent";
 
 interface IProps {
   expatriate: boolean;
@@ -152,7 +150,7 @@ export const EmployeePayrollUpdatesContainer: React.FC<IProps> = ({
         open={showD}
         handleClose={() => setShowD(false)}
         handleSave={() => {}}
-        dependencies={ALLOWANNCES.map((item) => item.identifier)}
+        dependencies={[]}
       />
       <ViewPayrollBreakdown
         open={showBreak}
@@ -210,7 +208,7 @@ export const EmployeePayrollUpdatesContainer: React.FC<IProps> = ({
             tax: 2000,
             payrollScheme: "Grade",
           })}
-          pagination={{ ...pagination, total: ALLOWANNCES.length }}
+          pagination={{ ...pagination, total: 0 }}
           onChange={onChange}
         />
       </div>

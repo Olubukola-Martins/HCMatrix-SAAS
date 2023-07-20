@@ -1,6 +1,7 @@
 import { Form, Input, InputNumber, Modal, Select, Tag } from "antd";
 import { AppButton } from "components/button/AppButton";
 import { MONTH_CHART_LABELS } from "constants/general";
+import { TSalaryComponentInput } from "features/payroll/types/salaryComponents";
 import React, { useState } from "react";
 import { IModalProps } from "types";
 import {
@@ -11,7 +12,7 @@ import {
 type IFormProps = {
   dependencies: string[];
   amountRestriction?: "negative" | "positive" | "neutral";
-  handleSave: () => void;
+  handleSave: (props: TSalaryComponentInput) => void;
   componentName?: string;
 
   monthsApplicable?: {
