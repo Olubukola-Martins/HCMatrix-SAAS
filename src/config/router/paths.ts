@@ -213,5 +213,5 @@ export const appRoutes = {
   paidTraining: `/leaning/paid-training`,
   budgets: `/leaning/budgets`,
   addTraining: `/leaning/add-training`,
-
+  lAndDReport: `/leaning/report`
 };

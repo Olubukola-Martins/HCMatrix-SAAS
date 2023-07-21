@@ -14,6 +14,7 @@ import { Budgets } from "features/leaningAndDev/pages/Budgets";
 import { PaidTraining } from "features/leaningAndDev/pages/PaidTraining";
 import { AddTraining } from "features/leaningAndDev/pages/AddTraining";
 import { TrainingFeedback } from "features/leaningAndDev/pages/TrainingFeedback";
+import { LAndDReport } from "features/leaningAndDev/pages/LAndDReport";
 
 export const leaningRoutes: TRouteData[] = [
   {
@@ -89,5 +90,11 @@ export const leaningRoutes: TRouteData[] = [
     element: <TrainingFeedback />,
     path: appRoutes.trainingFeedback().format,
     isSearchable: false,
+  },
+  {
+    element: <LAndDReport />,
+    path: appRoutes.lAndDReport,
+    isSearchable: true,
+    title: "Leaning & Development Report",
   },
 ];

@@ -15,8 +15,8 @@ type TFileType =
   | "text/plain"
   | "application/pdf"
   | "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
-  | "video/*"
-  | "audio/*";
+  | "video/mp4"
+  | "audio/mpeg";
 interface IFilesProps {
   allowedFileTypes: TFileType[];
   displayType?: "icon" | "button" | "form-space-between";

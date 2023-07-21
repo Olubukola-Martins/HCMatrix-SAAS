@@ -35,7 +35,7 @@ export const AddContent = ({ open, handleClose }: IModalProps) => {
               children: (
                 <FileUpload
                   displayType="icon"
-                  allowedFileTypes={["video/*"]}
+                  allowedFileTypes={["video/mp4"]}
                   fileKey={""}
                 />
               ),
@@ -46,7 +46,7 @@ export const AddContent = ({ open, handleClose }: IModalProps) => {
               children: (
                 <FileUpload
                   displayType="icon"
-                  allowedFileTypes={["audio/*"]}
+                  allowedFileTypes={["audio/mpeg"]}
                   fileKey={""}
                 />
               ),

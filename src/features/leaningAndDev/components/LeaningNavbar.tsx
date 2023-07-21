@@ -43,7 +43,7 @@ export const LeaningNavbar = ({ active }: IProps) => {
         Gamification
       </Link>
       <Link
-        to={appRoutes.shiftPerEmployee}
+        to={appRoutes.lAndDReport}
         className={
           active === "reports" ? `${applyStyle}` : "pb-3 hover:text-caramel"
         }
