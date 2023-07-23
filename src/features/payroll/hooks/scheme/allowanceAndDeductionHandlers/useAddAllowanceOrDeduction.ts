@@ -1,6 +1,10 @@
 import axios from "axios";
 import { MICROSERVICE_ENDPOINTS } from "config/enviroment";
-import { TSalaryComponentCalculationMode } from "features/payroll/types/salaryComponents";
+import {
+  TSalaryComponent,
+  TSalaryComponentCalculationMode,
+  TSalaryComponentInput,
+} from "features/payroll/types/salaryComponents";
 import { useApiAuth } from "hooks/useApiAuth";
 import { useMutation } from "react-query";
 import { ICurrentCompany } from "types";
@@ -13,14 +17,14 @@ type TData = {
   body: IBody;
 };
 
-interface IBody {
+type IBody = {
   name: string;
   label: string;
   mode: TSalaryComponentCalculationMode;
   amount: number | string;
-}
+} & Pick<TSalaryComponentInput, "isActive" | "isDefault">;
 const createData = async (props: { data: TData; auth: ICurrentCompany }) => {
-  const url = `${MICROSERVICE_ENDPOINTS.UTILITY}/scheme/${props.data.schemeId}/${props.data.type}`;
+  const url = `${MICROSERVICE_ENDPOINTS.PAYROLL}/scheme/${props.data.schemeId}/${props.data.type}`;
   const config = {
     headers: {
       Accept: "application/json",
@@ -33,7 +37,7 @@ const createData = async (props: { data: TData; auth: ICurrentCompany }) => {
     ...props.data.body,
   };
 
-  const response = await axios.patch(url, data, config);
+  const response = await axios.post(url, data, config);
   return response;
 };
 export const useAddAllowanceOrDeduction = () => {

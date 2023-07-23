@@ -1,23 +1,43 @@
 import { Form, Input, InputNumber, Modal, Select, Tag } from "antd";
 import { AppButton } from "components/button/AppButton";
-import { MONTH_CHART_LABELS } from "constants/general";
-import { TSalaryComponentInput } from "features/payroll/types/salaryComponents";
+import { useAddAllowanceOrDeduction } from "features/payroll/hooks/scheme/allowanceAndDeductionHandlers/useAddAllowanceOrDeduction";
+import { QUERY_KEY_FOR_PAYROLL_SCHEME_BY_TYPE_OR_ID } from "features/payroll/hooks/scheme/useGetPayrollSchemeByTypeOrId";
+import { TPayrollScheme } from "features/payroll/types/payrollSchemes";
+import {
+  TSalaryComponent,
+  TSalaryComponentCalculationMode,
+  TSalaryComponentInput,
+} from "features/payroll/types/salaryComponents";
 import React, { useState, useEffect } from "react";
+import { useQueryClient } from "react-query";
 import { IModalProps } from "types";
 import {
-  generalValidationRules,
-  textInputValidationRules,
+  isFormulaValid,
+  isValidEvalExpression,
+  jsVariableNameValidationRule,
+  numberInputValidationRules,
 } from "utils/formHelpers/validation";
+import { openNotification } from "utils/notifications";
+import { TaxPolicyCreator } from "../taxPolicies";
+import { useUpdateAllowanceOrDeduction } from "features/payroll/hooks/scheme/allowanceAndDeductionHandlers/useUpdateAllowanceOrDeduction";
 
+const defaultCalculationModes: (TSalaryComponentCalculationMode | "table")[] = [
+  "formula",
+  "percentage",
+  "fixed",
+];
 type IFormProps = {
+  formMode?: "add" | "edit";
   dependencies: string[];
-  amountRestriction?: "negative" | "positive" | "neutral";
-  handleSave: (props: TSalaryComponentInput) => void;
+  type?: "allowance" | "deduction";
+  isDefault?: boolean;
+  isActive?: boolean;
+  handleSave?: (props: TSalaryComponentInput) => void;
   componentName?: string;
-
-  monthsApplicable?: {
-    mode: "multiple" | "single";
-  };
+  schemeId?: number;
+  handleClose?: () => void;
+  isTax?: boolean;
+  salaryComponent?: TSalaryComponent;
 };
 
 type ExtraProps = {
@@ -25,27 +45,40 @@ type ExtraProps = {
 };
 type IProps = IFormProps & IModalProps & ExtraProps;
 
-type TCalculationMode = "formula" | "percentage of gross" | "fixed amount";
-
 export const AddSalaryComponent: React.FC<IProps> = ({
   open,
   handleClose,
   dependencies,
   componentName,
-  title = "Add Allowance",
+  schemeId,
+  handleSave,
+  isTax,
+  type,
+  title,
+  salaryComponent,
+  formMode = "add",
 }) => {
+  const defaultTitle =
+    type === "allowance" ? `${formMode} allowance` : `${formMode} deduction`;
+
   return (
     <Modal
       open={open}
       onCancel={() => handleClose()}
       footer={null}
-      title={title}
+      title={<span className="capitalize">{title ?? defaultTitle}</span>}
       style={{ top: 20 }}
     >
       <AddSalaryComponentForm
         dependencies={dependencies}
-        handleSave={() => {}}
+        handleSave={handleSave}
         componentName={componentName}
+        schemeId={schemeId}
+        handleClose={handleClose}
+        type={type}
+        isTax={isTax}
+        salaryComponent={salaryComponent}
+        formMode={formMode}
       />
     </Modal>
   );
@@ -53,21 +86,200 @@ export const AddSalaryComponent: React.FC<IProps> = ({
 
 export const AddSalaryComponentForm: React.FC<IFormProps> = ({
   dependencies,
-  amountRestriction = "neutral",
-  monthsApplicable,
+  formMode = "add",
+  type = "allowance",
+  handleSave,
+  isDefault = false,
+  isActive = true,
+  schemeId,
+  handleClose,
   componentName,
+  salaryComponent,
+  isTax,
 }) => {
-  const [mode, setMode] = useState<TCalculationMode>("percentage of gross");
+  const queryClient = useQueryClient();
+
+  const [mode, setMode] = useState<TSalaryComponentCalculationMode | "table">(
+    "percentage"
+  );
   const [form] = Form.useForm();
-  //   TO DO write a function that makes use of amntRestrict to set max/min of inputNumber
-  const handleSubmit = (vals: any) => {
-    console.log(vals, "salary");
+  const { mutate: createMutate, isLoading: isCreateLoading } =
+    useAddAllowanceOrDeduction();
+  const { mutate: updateMutate, isLoading: isUpdateLoading } =
+    useUpdateAllowanceOrDeduction();
+
+  //TODO: write a function that makes use of amntRestrict to set max/min of inputNumber
+  const handleUpdate = (vals: any) => {
+    salaryComponent &&
+      updateMutate(
+        {
+          schemeId: salaryComponent.schemeId,
+          allowanceOrDeductionId: salaryComponent.id,
+
+          type,
+          body: {
+            name: (vals.name as string).toLocaleLowerCase(),
+            mode: vals.mode,
+            isDefault,
+            isActive,
+            amount: vals.amount,
+            label: (vals.name as string)
+              .toLocaleLowerCase()
+              .split(" ")
+              .join("_"),
+          },
+        },
+        {
+          onError: (err: any) => {
+            openNotification({
+              state: "error",
+              title: "Error Occurred",
+              duration: 2,
+              description:
+                err?.response.data.message ?? err?.response.data.error.message,
+            });
+          },
+          onSuccess: (res: any) => {
+            openNotification({
+              state: "success",
+
+              title: "Success",
+              description: res.data.message,
+              // duration: 0.4,
+            });
+            const newComp: TSalaryComponent = res.data.data as TSalaryComponent;
+            queryClient.setQueryData(
+              [QUERY_KEY_FOR_PAYROLL_SCHEME_BY_TYPE_OR_ID],
+              (vals: unknown): TPayrollScheme => {
+                const data = vals as TPayrollScheme;
+                if (data && !Array.isArray(data) && type === "allowance") {
+                  return {
+                    ...data,
+                    allowances: data.allowances.map((item) =>
+                      item.id === newComp.id ? newComp : item
+                    ),
+                  };
+                }
+                if (data && !Array.isArray(data) && type === "deduction") {
+                  return {
+                    ...data,
+                    deductions: data.deductions.map((item) =>
+                      item.id === newComp.id ? newComp : item
+                    ),
+                  };
+                }
+                return data;
+              }
+            );
+            handleClose?.();
+          },
+        }
+      );
+  };
+  const handleCreate = (vals: any) => {
+    if (handleSave) {
+      handleSave({
+        name: (vals.name as string).toLocaleLowerCase(),
+
+        mode: vals.mode,
+        isDefault,
+        isActive,
+        amount: vals.amount,
+        label: (vals.name as string).toLocaleLowerCase().split(" ").join("_"),
+      });
+      return;
+    }
+    schemeId &&
+      createMutate(
+        {
+          schemeId,
+          type,
+          body: {
+            name: (vals.name as string).toLocaleLowerCase(),
+            mode: vals.mode,
+            isDefault,
+            isActive,
+            amount: vals.amount,
+            label: (vals.name as string)
+              .toLocaleLowerCase()
+              .split(" ")
+              .join("_"),
+          },
+        },
+        {
+          onError: (err: any) => {
+            openNotification({
+              state: "error",
+              title: "Error Occurred",
+              duration: 2,
+              description:
+                err?.response.data.message ?? err?.response.data.error.message,
+            });
+          },
+          onSuccess: (res: any) => {
+            openNotification({
+              state: "success",
+
+              title: "Success",
+              description: res.data.message,
+              // duration: 0.4,
+            });
+            const newComp: TSalaryComponent = res.data.data as TSalaryComponent;
+            queryClient.setQueryData(
+              [QUERY_KEY_FOR_PAYROLL_SCHEME_BY_TYPE_OR_ID],
+              (vals: unknown): TPayrollScheme => {
+                const data = vals as TPayrollScheme;
+                if (data && !Array.isArray(data) && type === "allowance") {
+                  return {
+                    ...data,
+                    allowances: [...data.allowances, { ...newComp }],
+                  };
+                }
+                if (data && !Array.isArray(data) && type === "deduction") {
+                  return {
+                    ...data,
+                    deductions: [...data.deductions, { ...newComp }],
+                  };
+                }
+                return data;
+              }
+            );
+            handleClose?.();
+            form.resetFields();
+          },
+        }
+      );
+  };
+
+  const handleSubmit = (data: any): void => {
+    if (salaryComponent) {
+      handleUpdate(data);
+      return;
+    }
+    handleCreate(data);
   };
   useEffect(() => {
+    if (salaryComponent) {
+      form.setFieldsValue({
+        name: salaryComponent.name?.split("_").join(" "),
+        amount: salaryComponent.amount,
+        mode: salaryComponent.mode,
+      });
+
+      setMode(salaryComponent.mode); //TODO: Account for the tabular mode
+
+      return;
+    }
     form.setFieldsValue({
-      name: componentName,
+      name: componentName?.split("_").join(" "),
     });
-  }, [form, componentName]);
+  }, [form, componentName, salaryComponent]);
+  // useEffect(() => {
+  //   form.setFieldValue("amount", undefined);
+  // }, [form, mode]);
+  const calculationModes = isTax
+    ? [...defaultCalculationModes, "table"]
+    : defaultCalculationModes;
   return (
     <Form
       layout="vertical"
@@ -75,28 +287,33 @@ export const AddSalaryComponentForm: React.FC<IFormProps> = ({
       requiredMark={false}
       onFinish={handleSubmit}
     >
-      <Form.Item label="Name" rules={textInputValidationRules} name={`name`}>
+      <Form.Item
+        label="Name"
+        rules={[jsVariableNameValidationRule]}
+        name={`name`}
+      >
+        {/* TODO: Add Validation against comp name begining in with number or a name that is not compatible with js */}
         <Input placeholder="Salary Component Name" disabled={!!componentName} />
       </Form.Item>
 
-      <Form.Item label="Select calculation mode">
+      <Form.Item name={`mode`} label="Select calculation mode">
         <Select
           className="capitalize"
           value={mode}
-          onSelect={(val: TCalculationMode) => setMode(val)}
-          options={["formula", "percentage of gross", "fixed amount"].map(
-            (item) => ({
-              label: <span className="capitalize">{item}</span>,
-              value: item,
-            })
-          )}
+          onSelect={(val: TSalaryComponentCalculationMode | "table") =>
+            setMode(val)
+          }
+          options={calculationModes.map((item) => ({
+            label: <span className="capitalize">{item}</span>,
+            value: item,
+          }))}
         />
       </Form.Item>
-      {mode === "percentage of gross" && (
+      {mode === "percentage" && (
         <Form.Item
           label="What percentage of gross pay?"
-          rules={generalValidationRules}
-          name="percentage"
+          name="amount"
+          rules={numberInputValidationRules}
         >
           <InputNumber
             min={0}
@@ -105,8 +322,12 @@ export const AddSalaryComponentForm: React.FC<IFormProps> = ({
           />
         </Form.Item>
       )}
-      {mode === "fixed amount" && (
-        <Form.Item label="Amount" rules={generalValidationRules} name="amount">
+      {mode === "fixed" && (
+        <Form.Item
+          label="Amount"
+          rules={numberInputValidationRules}
+          name="amount"
+        >
           <InputNumber min={0} placeholder="Amount" className="w-full" />
         </Form.Item>
       )}
@@ -114,36 +335,62 @@ export const AddSalaryComponentForm: React.FC<IFormProps> = ({
       {mode === "formula" && (
         <>
           {" "}
-          <Form.Item label="Available Variables" name="formula">
+          <Form.Item label="Available Variables">
             <div className="flex gap-2 flex-wrap">
               {dependencies.map((item, i) => (
-                <Tag key={item} children={item} color="#01966b" />
+                <Tag
+                  key={item}
+                  children={item}
+                  color="#01966b"
+                  className="cursor-pointer"
+                  onClick={() =>
+                    form.setFieldValue(
+                      "amount",
+                      (form.getFieldValue("amount") ?? "") + `${item}`
+                    )
+                  }
+                />
               ))}
             </div>
           </Form.Item>
-          <Form.Item label="Formula" rules={textInputValidationRules}>
-            <Input.TextArea placeholder="Please make use of only variables" />
+          <Form.Item
+            label="Formula"
+            name="amount"
+            rules={[
+              {
+                required: true,
+                whitespace: true,
+                validator: async (rule, value = "") => {
+                  // Convert the value to its label equivalent
+                  const parsedValue = value as string;
+                  if (!isFormulaValid(parsedValue, dependencies))
+                    throw new Error("Please enter a valid formula");
+                  if (!isValidEvalExpression(parsedValue, dependencies))
+                    throw new Error("Please enter a valid formula");
+                  return true;
+                },
+              },
+            ]}
+          >
+            <Input.TextArea
+              placeholder="Please make use of only variables"
+              allowClear
+            />
           </Form.Item>
         </>
       )}
-      {monthsApplicable && (
-        <Form.Item
-          label={`What month${
-            monthsApplicable.mode === "multiple" ? "s" : ""
-          } is this component applicable to ?`}
-          rules={generalValidationRules} //TO DO: write a custom validation rule for this
-        >
-          <Select
-            options={MONTH_CHART_LABELS.map((item) => ({
-              label: item,
-              value: item,
-            }))}
-            mode={monthsApplicable.mode === "multiple" ? "tags" : undefined}
-          />
-        </Form.Item>
+      {mode === "table" && (
+        <>
+          <TaxPolicyCreator dependencies={dependencies} />
+        </>
       )}
+
       <div className="flex justify-end">
-        <AppButton label="Save" type="submit" />
+        <AppButton
+          label="Save"
+          type="submit"
+          isLoading={isCreateLoading || isUpdateLoading}
+        />
       </div>
     </Form>
   );

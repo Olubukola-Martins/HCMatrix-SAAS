@@ -1,6 +1,19 @@
-import { TWagesPayrollScheme } from "./wages";
-
-export type TSingleWagePayrollScheme = TWagesPayrollScheme & {
+export type TSingleWagePayrollScheme = {
+  id: number;
+  name: string;
+  type: "wages";
+  frequency: "monthly" | "daily";
+  allowDisbursement: boolean;
+  disbursement?: any;
+  allowApproval: boolean;
+  workflowId: number;
+  issuePayslip: boolean;
+  projectId?: any;
+  runAutomatically: boolean;
+  automaticRunDay: string;
+  companyId: number;
+  createdAt: string;
+  updatedAt: string;
   allowances: SalaryComponent[];
   deductions: SalaryComponent[];
   workflow: Workflow;

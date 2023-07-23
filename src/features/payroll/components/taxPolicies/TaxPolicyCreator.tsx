@@ -9,6 +9,7 @@ type TFormulaMode = "raw" | "ui";
 const FORMULA_MODES: TFormulaMode[] = ["raw", "ui"];
 export interface TTaxPolicyCreatorProps {
   dependencies?: string[];
+  taxableIncome?: string;
 }
 export const TaxPolicyCreator: React.FC<TTaxPolicyCreatorProps> = ({
   dependencies = ["taxable_income", "gross_pay"],
@@ -61,6 +62,7 @@ export const TaxPolicyCreator: React.FC<TTaxPolicyCreatorProps> = ({
           <TaxUIFormulaForm
             dependencies={dependencies}
             handleFormula={handleFormula}
+            taxableIncome={taxableIncome}
           />
         )}
         {mode === "raw" && (

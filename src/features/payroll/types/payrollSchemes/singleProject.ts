@@ -1,6 +1,6 @@
 import { TProjectPayrollScheme } from "./project";
 
-export type TSingleProjectPayrollScheme = TProjectPayrollScheme & {
+export type TSingleProjectPayrollScheme = TProjectPayrollScheme[0] & {
   allowances: SalaryComponent[];
   deductions: SalaryComponent[];
   workflow: Workflow;

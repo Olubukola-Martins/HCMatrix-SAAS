@@ -1,23 +1,29 @@
 import axios from "axios";
 import { MICROSERVICE_ENDPOINTS } from "config/enviroment";
+import {
+  TSalaryComponentCalculationMode,
+  TSalaryComponentInput,
+} from "features/payroll/types/salaryComponents";
 import { useApiAuth } from "hooks/useApiAuth";
 import { useMutation } from "react-query";
 import { ICurrentCompany } from "types";
 
 type TDelData = {
   allowanceOrDeductionId: number;
+  type: "allowance" | "deduction";
+
   schemeId: number;
-  body: TBody;
+  body: IBody;
 };
-interface TBody {
+
+type IBody = {
   name: string;
   label: string;
-  mode: string;
-  amount: number;
-  isActive: boolean;
-}
+  mode: TSalaryComponentCalculationMode;
+  amount: number | string;
+} & Pick<TSalaryComponentInput, "isActive" | "isDefault">;
 const delData = async (props: { data: TDelData; auth: ICurrentCompany }) => {
-  const url = `${MICROSERVICE_ENDPOINTS.UTILITY}/scheme/${props.data.schemeId}/type/${props.data.allowanceOrDeductionId}`;
+  const url = `${MICROSERVICE_ENDPOINTS.PAYROLL}/scheme/${props.data.schemeId}/${props.data.type}/${props.data.allowanceOrDeductionId}`;
   const config = {
     headers: {
       Accept: "application/json",

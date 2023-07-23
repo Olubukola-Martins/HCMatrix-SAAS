@@ -12,6 +12,11 @@ export type TPayrollScheme =
   | TSingleWagePayrollScheme
   | TProjectPayrollScheme
   | TSingleProjectPayrollScheme;
+export type TSinglePayrollScheme =
+  | TDirectSalaryPayrollScheme
+  | TOfficePayrollScheme
+  | TSingleWagePayrollScheme
+  | TSingleProjectPayrollScheme;
 
 export type TPayrollSchemeType =
   | "office"

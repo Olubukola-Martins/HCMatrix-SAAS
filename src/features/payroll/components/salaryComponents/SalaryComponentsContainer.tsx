@@ -6,25 +6,45 @@ import { DeleteFilled, EditFilled } from "@ant-design/icons";
 import React, { useState } from "react";
 import { AddSalaryComponent } from "./AddSalaryComponent";
 
-import { TSalaryComponent } from "features/payroll/types/salaryComponents";
+import {
+  TSalaryComponent,
+  TSalaryComponentInput,
+} from "features/payroll/types/salaryComponents";
+import DeleteSalaryComponent from "./DeleteSalaryComponent";
+import { EditSalaryComponent } from "./EditSalaryComponent";
 
 interface IProps {
+  type?: "allowance" | "deduction";
+  schemeId?: number;
   showControlBtns?: boolean;
   components?: TSalaryComponent[];
-  handleAddAllowance?: () => void; // TODO: START HERE
+  dependencies?: TSalaryComponent[];
+  handleAddSalaryComponent?: (props: TSalaryComponentInput) => void; // TODO: START HERE
+  handleDeleteSalaryComponent?: (props: TSalaryComponent) => void;
+  handleEditSalaryComponent?: (props: TSalaryComponent) => void;
 }
 
 export const SalaryComponentsContainer: React.FC<IProps> = ({
   showControlBtns = true,
   components = [],
+  dependencies = [],
+  handleAddSalaryComponent,
+  handleDeleteSalaryComponent,
+  handleEditSalaryComponent,
+  schemeId,
+  type = "allowance",
 }) => {
   const { pagination, onChange } = usePagination();
+  const [showD, setShowD] = useState<
+    "add-comp" | "delete-comp" | "edit-comp"
+  >();
+  const [salaryComponent, setSalaryComponent] = useState<TSalaryComponent>();
   const columns: ColumnsType<TSalaryComponent> = [
     {
       title: "Name",
       dataIndex: "uid",
       key: "uid",
-      render: (_, item) => item.name,
+      render: (_, item) => <span className="capitalize">{item.name}</span>,
     },
     {
       title: "Identifier",
@@ -60,12 +80,18 @@ export const SalaryComponentsContainer: React.FC<IProps> = ({
             <Button
               icon={<EditFilled />}
               type="text"
-              // onClick={() => handleEdit(item._id)}
+              onClick={() => {
+                setShowD("edit-comp");
+                setSalaryComponent(item);
+              }}
             />
             <Button
               icon={<DeleteFilled />}
               type="text"
-              // onClick={() => handleEdit(item._id)}
+              onClick={() => {
+                setShowD("delete-comp");
+                setSalaryComponent(item);
+              }}
             />
           </div>
         ) : (
@@ -79,15 +105,37 @@ export const SalaryComponentsContainer: React.FC<IProps> = ({
         ),
     },
   ];
-  const [showD, setShowD] = useState(false);
+
   return (
     <>
       <AddSalaryComponent
-        open={showD}
-        handleClose={() => setShowD(false)}
-        handleSave={() => {}}
-        dependencies={components.map((item) => item.label)}
+        open={showD === "add-comp"}
+        handleClose={() => setShowD(undefined)}
+        handleSave={handleAddSalaryComponent}
+        dependencies={dependencies.map((item) => item.label)}
+        schemeId={schemeId}
+        type={type}
       />
+      {salaryComponent && (
+        <DeleteSalaryComponent
+          type={type}
+          open={showD === "delete-comp"}
+          salaryComponent={salaryComponent}
+          handleClose={() => setShowD(undefined)}
+          handleDelete={handleDeleteSalaryComponent}
+        />
+      )}
+      {salaryComponent && (
+        <AddSalaryComponent
+          formMode="edit"
+          type={type}
+          open={showD === "edit-comp"}
+          salaryComponent={salaryComponent}
+          handleClose={() => setShowD(undefined)}
+          handleSave={undefined}
+          dependencies={dependencies.map((item) => item.label)}
+        />
+      )}
       <div className="flex flex-col gap-4">
         {/* btns */}
         {showControlBtns && (
@@ -96,8 +144,8 @@ export const SalaryComponentsContainer: React.FC<IProps> = ({
             <div className="flex gap-2">
               <AppButton label="Bulk Upload" variant="transparent" />
               <AppButton
-                label="Add Allowance"
-                handleClick={() => setShowD(true)}
+                label={`Add ${type}`}
+                handleClick={() => setShowD("add-comp")}
               />
             </div>
           </div>
@@ -106,8 +154,11 @@ export const SalaryComponentsContainer: React.FC<IProps> = ({
         <Table
           columns={columns}
           size="small"
-          dataSource={components}
-          pagination={{ ...pagination, total: components.length }}
+          dataSource={components.filter((item) => !item.isDefault)}
+          pagination={{
+            ...pagination,
+            total: components.filter((item) => !item.isDefault).length,
+          }}
           onChange={onChange}
         />
       </div>

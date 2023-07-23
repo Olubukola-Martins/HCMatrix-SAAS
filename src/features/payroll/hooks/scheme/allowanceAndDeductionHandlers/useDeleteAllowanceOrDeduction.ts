@@ -5,11 +5,12 @@ import { useMutation } from "react-query";
 import { ICurrentCompany } from "types";
 
 type TDelData = {
+  type: "allowance" | "deduction";
   allowanceOrDeductionId: number;
   schemeId: number;
 };
 const delData = async (props: { data: TDelData; auth: ICurrentCompany }) => {
-  const url = `${MICROSERVICE_ENDPOINTS.UTILITY}/scheme/${props.data.schemeId}/type/${props.data.allowanceOrDeductionId}`;
+  const url = `${MICROSERVICE_ENDPOINTS.PAYROLL}/scheme/${props.data.schemeId}/${props.data.type}/${props.data.allowanceOrDeductionId}`;
   const config = {
     headers: {
       Accept: "application/json",

@@ -1,17 +1,29 @@
 import axios from "axios";
 import { MICROSERVICE_ENDPOINTS } from "config/enviroment";
-import { TSetupPayrollSchemeData } from "features/payroll/types/setUpSchemeInputData";
+import { TPayrollSchemeType } from "features/payroll/types/payrollSchemes";
 import { useApiAuth } from "hooks/useApiAuth";
 import { useMutation } from "react-query";
 import { ICurrentCompany } from "types";
 
-type TSchemeData = Omit<TSetupPayrollSchemeData, "allowances" | "deductions">;
+type TSchemeData = {
+  name: string;
+  type: TPayrollSchemeType;
+  frequency: "monthly" | "daily" | number;
+  allowDisbursement: boolean;
+  disbursement: number;
+  allowApproval: boolean;
+  workflowId: number;
+  issuePayslip: boolean;
+  runAutomatically: boolean;
+  automaticRunDay: number;
+};
 
 const createData = async (props: {
+  schemeId: number;
   data: TSchemeData;
   auth: ICurrentCompany;
 }) => {
-  const url = `${MICROSERVICE_ENDPOINTS.PAYROLL}/scheme`;
+  const url = `${MICROSERVICE_ENDPOINTS.PAYROLL}/scheme/${props.schemeId}`;
   const config = {
     headers: {
       Accept: "application/json",
@@ -29,7 +41,11 @@ const createData = async (props: {
 };
 export const useUpdatePayrollScheme = () => {
   const { token, companyId } = useApiAuth();
-  return useMutation((props: TSchemeData) =>
-    createData({ data: props, auth: { token, companyId } })
+  return useMutation((props: { body: TSchemeData; schemeId: number }) =>
+    createData({
+      data: props.body,
+      schemeId: props.schemeId,
+      auth: { token, companyId },
+    })
   );
 };

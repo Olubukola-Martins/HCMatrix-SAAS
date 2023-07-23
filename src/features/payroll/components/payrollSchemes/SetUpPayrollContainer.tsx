@@ -20,6 +20,10 @@ import {
 } from "features/payroll/types/salaryComponents";
 import { TOfficePayrollScheme } from "features/payroll/types/payrollSchemes/office";
 import { useUpdatePayrollScheme } from "features/payroll/hooks/scheme/useUpdatePayrollScheme";
+import {
+  TPayrollScheme,
+  TSinglePayrollScheme,
+} from "features/payroll/types/payrollSchemes";
 
 const DEFAULT_COMPONENT_LABELS = {
   thirteenthMonthSalary: "thirteenth_month_salary",
@@ -202,7 +206,7 @@ function reducer(
       return state;
   }
 }
-export const SetUpGradePayrollContainer = () => {
+export const SetUpPayrollContainer = () => {
   const { data: payrollScheme, isFetching } = useGetPayrollSchemeByTypeOrId({
     typeOrId: "office",
   });
@@ -215,11 +219,9 @@ export const SetUpGradePayrollContainer = () => {
 };
 
 const SetUpForm: React.FC<{
-  scheme?: TOfficePayrollScheme;
+  scheme?: TSinglePayrollScheme;
   isFetching: boolean;
 }> = ({ scheme, isFetching }) => {
-  const [taxpol, setTaxPol] = useState("");
-  const [taxCreate, setTaxCreate] = useState(false);
   const [state, dispatch] = useReducer(reducer, initialState);
   const {
     allowApproval,
@@ -940,246 +942,9 @@ const SetUpForm: React.FC<{
                 )}
               </div>
             ))}
-
-            <div className={boxStyle}>
-              <div className="flex items-center justify-between">
-                <h5 className={boxTitle}>TAX</h5>{" "}
-                <Switch
-                  checked={displayTax}
-                  onChange={() => dispatch({ type: "displayTax" })}
-                />
-              </div>
-
-              {displayTax && (
-                <div className="text-sm mt-3">
-                  <div className="flex flex-col gap-1">
-                    <p className="">Select Tax Mode</p>
-                    <div className="w-1/5">
-                      <Select
-                        allowClear
-                        onClear={() => {
-                          setTaxPol("");
-                          dispatch({ type: "displayTax" });
-                        }}
-                        value={taxpol}
-                        onSelect={(val: string) => setTaxPol(val)}
-                        size="small"
-                        placeholder="Select an existing tax policy"
-                        options={["Nigeria", "Canada"].map((item) => ({
-                          label: <span>{item} tax policy</span>,
-                          value: item,
-                        }))}
-                        className="w-full"
-                      />
-                    </div>
-                    {taxpol ? (
-                      <h5
-                        onClick={() => dispatch({ type: "displayTax" })}
-                        className="text-caramel text-xs underline pt-3 cursor-pointer"
-                      >
-                        View Tax Table
-                      </h5>
-                    ) : (
-                      <span
-                        className="text-caramel text-xs underline cursor-pointer"
-                        onClick={() => {
-                          setTaxCreate(true);
-                          setTaxPol("");
-                        }}
-                      >
-                        Creat Tax Policy
-                      </span>
-                    )}
-                  </div>
-                  {displayTax && (
-                    <TaxPolicyCreator
-                      dependencies={ALLOWANNCES.map((item) => item.identifier)}
-                    />
-                  )}
-
-                  {/* tax table */}
-                  {!!taxpol && displayTax && (
-                    <div className="bg-card px-2 py-3 mt-3 rounded font-medium">
-                      <div className="flex justify-end">
-                        <i
-                          onClick={() => dispatch({ type: "displayTax" })}
-                          className="ri-close-fill cursor-pointer text-lg  pb-3 font-semibold"
-                        />
-                      </div>
-
-                      <div className="flex flex-col gap-4">
-                        <div className="flex item-center text-xs justify-between gap-2 mb-4">
-                          <span className="text-sm capitalize">
-                            {taxpol} tax policy
-                          </span>
-                          <span className="text-caramel underline cursor-pointer">
-                            Edit Tax Policy
-                          </span>
-                        </div>
-                        <div className={taxTableWrap}>
-                          <span>Annual Income(NGN)</span>
-                          <span>Personal Income Tax Rate (%)</span>
-                        </div>
-
-                        <div className={taxTableWrap}>
-                          <span>First 300000</span>
-                          <span>7</span>
-                        </div>
-                        <div className={taxTableWrap}>
-                          <span>Next 300000</span>
-                          <span>11</span>
-                        </div>
-                        <div className={taxTableWrap}>
-                          <span>Next 500000</span>
-                          <span>15</span>
-                        </div>
-                        <div className={taxTableWrap}>
-                          <span>Next 500000</span>
-                          <span>19</span>
-                        </div>
-                        <div className={taxTableWrap}>
-                          <span>Next 1600000</span>
-                          <span>21</span>
-                        </div>
-                        <div className={taxTableWrap}>
-                          <span> Next 3200000</span>
-                          <span>24</span>
-                        </div>
-                      </div>
-                    </div>
-                  )}
-                  {!!taxpol && displayTax && (
-                    <div className="bg-card px-2 py-3 mt-3 rounded font-medium">
-                      <div className="flex justify-end">
-                        <i
-                          onClick={() => dispatch({ type: "displayTax" })}
-                          className="ri-close-fill cursor-pointer text-lg  pb-3 font-semibold"
-                        />
-                      </div>
-                    </div>
-                  )}
-
-                  <div className="flex justify-between items-center mt-5 pb-2">
-                    <button
-                      onClick={() => dispatch({ type: "displayTax" })}
-                      type="button"
-                      className="transparentButton"
-                    >
-                      Cancel
-                    </button>
-                    <button type="submit" className="button">
-                      Save
-                    </button>
-                  </div>
-                </div>
-              )}
-            </div>
           </div>
         </div>
       </Skeleton>
-    </div>
-  );
-};
-
-const OvertimeSetting: React.FC<{ close: () => void }> = ({ close }) => {
-  return (
-    <div>
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-        <div className="flex flex-col gap-3">
-          <div className="flex items-center text-sm">
-            <Checkbox id="hour-wise" />
-            <label
-              htmlFor="hour-wise"
-              className="cursor-pointer hover:text-caramel"
-            >
-              Hour-wise Calculation
-            </label>
-          </div>
-
-          <div>
-            <label className="text-xs">
-              Minimum (daily) Hours Eligible for OT
-            </label>
-            <input
-              type="number"
-              placeholder="0"
-              className={`${inputStyle} mt-1`}
-            />
-          </div>
-          <div>
-            <label className="text-xs">Minimum OT Hours Required</label>
-            <input
-              type="number"
-              placeholder="0"
-              className={`${inputStyle} mt-1`}
-            />
-          </div>
-
-          <div>
-            <label className="text-xs">Apply Extra OT</label>
-            <select className={`${inputStyle} mt-1`}>
-              <option value="">select</option>
-              <option value="yes">Yes</option>
-              <option value="no">No</option>
-            </select>
-          </div>
-          <div>
-            <label className="text-xs">OT Paid On </label>
-            <select className={`${inputStyle} mt-1`}>
-              <option value="">select</option>
-              <option value="yes">Gross Salary</option>
-              <option value="no">Net Pay</option>
-            </select>
-          </div>
-        </div>
-
-        <div className="flex flex-col gap-3">
-          <div className="flex items-center text-sm">
-            <Checkbox id="day-wise" />
-            <label
-              htmlFor="day-wise"
-              className="cursor-pointer hover:text-caramel"
-            >
-              Day-wise Calculation
-            </label>
-          </div>
-
-          <div>
-            <label className="text-xs">
-              Minimum (daily) Hours Eligible for OT
-            </label>
-            <input
-              type="number"
-              placeholder="0"
-              className={`${inputStyle} mt-1`}
-            />
-          </div>
-          <div>
-            <label className="text-xs">Maximum OT Hours Payable</label>
-            <input
-              type="number"
-              placeholder="0"
-              className={`${inputStyle} mt-1`}
-            />
-          </div>
-          <div>
-            <label className="text-xs">Payment Percent</label>
-            <input
-              type="number"
-              placeholder="0%"
-              className={`${inputStyle} mt-1`}
-            />
-          </div>
-        </div>
-      </div>
-      <div className="flex justify-between items-center mb-3 mt-5">
-        <button onClick={close} type="button" className="transparentButton">
-          cancel
-        </button>
-        <button type="submit" className="button">
-          save
-        </button>
-      </div>
     </div>
   );
 };

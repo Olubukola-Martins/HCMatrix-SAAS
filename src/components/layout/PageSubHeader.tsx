@@ -6,6 +6,7 @@ interface IProps {
   description: string | { content: string; className: string };
   hideBackground?: boolean;
   actions?: {
+    hidden?: boolean;
     name: string;
     handleClick: Function;
     btnVariant?: TBtnVariant;
@@ -31,15 +32,17 @@ const PageSubHeader = ({
       )}
 
       <div className="flex gap-4 items-center">
-        {actions?.map((item, i) => (
-          <AppButton
-            key={i}
-            label={item.name}
-            handleClick={() => item.handleClick()}
-            variant={item.btnVariant}
-            isLoading={item.loading}
-          />
-        ))}
+        {actions
+          ?.filter((item) => item.hidden === true)
+          .map((item, i) => (
+            <AppButton
+              key={i}
+              label={item.name}
+              handleClick={() => item.handleClick()}
+              variant={item.btnVariant}
+              isLoading={item.loading}
+            />
+          ))}
       </div>
     </div>
   );

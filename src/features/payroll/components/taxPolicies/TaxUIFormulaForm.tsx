@@ -59,10 +59,14 @@ const EditableCell: React.FC<EditableCellProps> = ({
   const form = useContext(EditableContext)!;
 
   useEffect(() => {
-    if (editing) {
-      inputRef.current!.focus();
+    if (
+      editing &&
+      editing &&
+      record?.name.toLowerCase().indexOf("over") === -1
+    ) {
+      inputRef?.current!.focus();
     }
-  }, [editing]);
+  }, [editing, record]);
 
   const toggleEdit = () => {
     setEditing(!editing);
@@ -83,29 +87,30 @@ const EditableCell: React.FC<EditableCellProps> = ({
   let childNode = children;
 
   if (editable) {
-    childNode = editing ? (
-      <Form.Item
-        style={{ margin: 0 }}
-        name={dataIndex}
-        rules={[
-          {
-            required: true,
-            message: `${title} is required.`,
-            type: "number",
-          },
-        ]}
-      >
-        <InputNumber ref={inputRef} onPressEnter={save} onBlur={save} />
-      </Form.Item>
-    ) : (
-      <div
-        className="editable-cell-value-wrap"
-        style={{ paddingRight: 24 }}
-        onClick={toggleEdit}
-      >
-        {children}
-      </div>
-    );
+    childNode =
+      editing && record?.name.toLowerCase().indexOf("over") === -1 ? (
+        <Form.Item
+          style={{ margin: 0 }}
+          name={dataIndex}
+          rules={[
+            {
+              required: true,
+              message: `${title} is required.`,
+              type: "number",
+            },
+          ]}
+        >
+          <InputNumber ref={inputRef} onPressEnter={save} onBlur={save} />
+        </Form.Item>
+      ) : (
+        <div
+          className="editable-cell-value-wrap"
+          style={{ paddingRight: 24 }}
+          onClick={toggleEdit}
+        >
+          {children}
+        </div>
+      );
   }
 
   return <td {...restProps}>{childNode}</td>;
@@ -129,21 +134,29 @@ export const TaxUIFormulaForm: React.FC<
     taxableIncome?: string;
   }
 > = ({ dependencies = [], handleFormula, taxableIncome }) => {
-  const convertedConditions = dummyConditions.map((condition, index) => {
-    let name = "";
-    if (index === 0) {
-      name = "First";
-    } else {
-      name = "Next";
+  const convertedConditions = dummyConditions.map(
+    (condition, index, conditions) => {
+      let name = "";
+      if (index === 0) {
+        name = "First";
+      } else {
+        name = "Next";
+      }
+      if (index === conditions.length - 1) {
+        name = `Over `;
+      }
+      return {
+        key: index.toString(),
+        name: name,
+        amount:
+          index === conditions.length - 1
+            ? conditions[index - 1].max
+            : condition.max,
+        taxRate: condition.rate,
+        taxAmountPayablePerYear: condition.yearlyTaxableIncome,
+      };
     }
-    return {
-      key: index.toString(),
-      name: name,
-      amount: condition.max,
-      taxRate: condition.rate,
-      taxAmountPayablePerYear: condition.yearlyTaxableIncome,
-    };
-  });
+  );
 
   console.log(convertedConditions);
 
@@ -166,7 +179,7 @@ export const TaxUIFormulaForm: React.FC<
     },
     {
       title: "Yearly Taxable Income",
-      dataIndex: "yearlyTaxableIncome",
+      dataIndex: "amount",
       width: "60%",
       editable: true,
     },
@@ -215,6 +228,10 @@ export const TaxUIFormulaForm: React.FC<
       ...item,
       ...row,
     });
+    // Fix code below let it update last row based on the previous row amount
+    // if (newData.length - 2 === index) {
+    //   newData[newData.length - 1].amount = row.amount;
+    // }
 
     setDataSource(newData);
   };
