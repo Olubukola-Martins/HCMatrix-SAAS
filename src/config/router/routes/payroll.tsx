@@ -110,15 +110,30 @@ export const payrollRoutes: TRouteData[] = [
   {
     element: <SetupDailyWagesPayrollSchemePage />,
     path: appRoutes.setupDailyWagesPayrollScheme,
-    isSearchable: true,
+    isSearchable: false,
     title: "Daily Wages Payroll Scheme",
+    isPrimaryFeature: false,
+  },
+  {
+    element: <SetupDailyWagesPayrollSchemePage />,
+    path: appRoutes.setupWagesPayrollSchemeById({ frequency: "daily" }).format,
+    isSearchable: false,
+    title: "Daily Wages Payroll Scheme(done-setup)",
     isPrimaryFeature: false,
   },
   {
     element: <SetupMonthlyWagesPayrollSchemePage />,
     path: appRoutes.setupMonthlyWagesPayrollScheme,
-    isSearchable: true,
+    isSearchable: false,
     title: "Monthly Wages Payroll Scheme",
+    isPrimaryFeature: false,
+  },
+  {
+    element: <SetupMonthlyWagesPayrollSchemePage />,
+    path: appRoutes.setupWagesPayrollSchemeById({ frequency: "monthly" })
+      .format,
+    isSearchable: false,
+    title: "Monthly Wages Payroll Scheme(done-setup)",
     isPrimaryFeature: false,
   },
   {

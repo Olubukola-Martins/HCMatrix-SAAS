@@ -22,6 +22,7 @@ import { TOfficePayrollScheme } from "features/payroll/types/payrollSchemes/offi
 import { useUpdatePayrollScheme } from "features/payroll/hooks/scheme/useUpdatePayrollScheme";
 import {
   TPayrollScheme,
+  TPayrollSchemeType,
   TSinglePayrollScheme,
 } from "features/payroll/types/payrollSchemes";
 
@@ -206,22 +207,14 @@ function reducer(
       return state;
   }
 }
-export const SetUpPayrollContainer = () => {
-  const { data: payrollScheme, isFetching } = useGetPayrollSchemeByTypeOrId({
-    typeOrId: "office",
-  });
-  const scheme = payrollScheme as TOfficePayrollScheme;
-  return (
-    <>
-      <SetUpForm scheme={scheme} isFetching={isFetching} />
-    </>
-  );
-};
 
-const SetUpForm: React.FC<{
+export const SetUpPayrollForm: React.FC<{
   scheme?: TSinglePayrollScheme;
+  frequency: "monthly" | "daily";
   isFetching: boolean;
-}> = ({ scheme, isFetching }) => {
+  name: string;
+  type: TPayrollSchemeType;
+}> = ({ scheme, isFetching, frequency = "monthly", name, type }) => {
   const [state, dispatch] = useReducer(reducer, initialState);
   const {
     allowApproval,
@@ -259,12 +252,12 @@ const SetUpForm: React.FC<{
               allowApproval,
               allowDisbursement,
               automaticRunDay: data.automaticRunDay,
-              frequency: "monthly",
+              frequency,
               issuePayslip,
-              name: "Office Payroll Scheme",
+              name,
 
               runAutomatically,
-              type: "office",
+              type,
               disbursement: data.disbursement,
               workflowId: data.workflowId,
             },
@@ -300,13 +293,16 @@ const SetUpForm: React.FC<{
     },
     [
       scheme,
+      mutateUpdate,
       allowApproval,
       allowDisbursement,
-      form,
+      frequency,
       issuePayslip,
-      mutateUpdate,
-      queryClient,
+      name,
       runAutomatically,
+      type,
+      form,
+      queryClient,
     ]
   );
   const handleSetup = useCallback(
@@ -318,12 +314,12 @@ const SetUpForm: React.FC<{
           allowApproval,
           allowDisbursement,
           automaticRunDay: data.automaticRunDay,
-          frequency: "monthly",
+          frequency,
           issuePayslip,
-          name: "Office Payroll Scheme",
+          name,
 
           runAutomatically,
-          type: "office",
+          type,
           disbursement: data.disbursement,
           workflowId: data.workflowId,
         },
@@ -360,10 +356,13 @@ const SetUpForm: React.FC<{
       allowances,
       deductions,
       form,
+      frequency,
       issuePayslip,
       mutateSetup,
+      name,
       queryClient,
       runAutomatically,
+      type,
     ]
   );
   const handleSubmit = useCallback(
@@ -455,9 +454,13 @@ const SetUpForm: React.FC<{
       ),
     });
   };
+  const [editScheme, setEditScheme] = useState(false);
 
   useEffect(() => {
     if (scheme) {
+      const ogAllowances = scheme?.allowances ?? [];
+      const ogDeductions = scheme?.deductions ?? [];
+      const ogSalaryComponents = [...ogAllowances, ...ogDeductions];
       dispatch({
         type: "setInitialData",
         state: {
@@ -465,38 +468,38 @@ const SetUpForm: React.FC<{
           allowDisbursement: scheme?.allowDisbursement,
           allowApproval: scheme?.allowApproval,
           runAutomatically: scheme?.runAutomatically,
-          display13thMonth: !!scheme?.allowances.find(
+          display13thMonth: !!ogSalaryComponents.find(
             (item) =>
               item.label === DEFAULT_COMPONENT_LABELS.thirteenthMonthSalary
           )?.isActive,
-          displayTax: !!scheme?.allowances.find(
+          displayTax: !!ogSalaryComponents.find(
             (item) => item.label === DEFAULT_COMPONENT_LABELS.tax
           )?.isActive,
-          displayNSITF: !!scheme?.allowances.find(
+          displayNSITF: !!ogSalaryComponents.find(
             (item) => item.label === DEFAULT_COMPONENT_LABELS.nsitf
           )?.isActive,
-          displayNIF: !!scheme?.allowances.find(
+          displayNIF: !!ogSalaryComponents.find(
             (item) => item.label === DEFAULT_COMPONENT_LABELS.nif
           )?.isActive,
-          displayOvertime: !!scheme?.allowances.find(
+          displayOvertime: !!ogSalaryComponents.find(
             (item) => item.label === DEFAULT_COMPONENT_LABELS.overtime
           )?.isActive,
-          displayPension: !!scheme?.allowances.find(
+          displayPension: !!ogSalaryComponents.find(
             (item) => item.label === DEFAULT_COMPONENT_LABELS.pension
           )?.isActive,
-          displayLeaveAllowance: !!scheme?.allowances.find(
+          displayLeaveAllowance: !!ogSalaryComponents.find(
             (item) => item.label === DEFAULT_COMPONENT_LABELS.leaveAllowance
           )?.isActive,
-          displayITF: !!scheme?.allowances.find(
+          displayITF: !!ogSalaryComponents.find(
             (item) => item.label === DEFAULT_COMPONENT_LABELS.itf
           )?.isActive,
 
           issuePayslip: scheme?.issuePayslip,
-          displayAllowances: scheme?.allowances.length > 0,
-          displayDeductions: scheme?.deductions.length > 0,
+          displayAllowances: ogAllowances.length > 0,
+          displayDeductions: ogDeductions.length > 0,
 
-          allowances: scheme?.allowances,
-          deductions: scheme?.deductions,
+          allowances: ogAllowances,
+          deductions: ogDeductions,
         },
       });
       form.setFieldsValue({
@@ -504,11 +507,11 @@ const SetUpForm: React.FC<{
         workflowId: scheme?.workflowId,
         automaticRunDay: scheme?.automaticRunDay,
       });
+      setEditScheme(false);
     } else {
       setEditScheme(true);
     }
   }, [scheme, dispatch, form]);
-  const [editScheme, setEditScheme] = useState(false);
 
   type TDefaultSalaryComp = {
     title: string;
@@ -710,7 +713,7 @@ const SetUpForm: React.FC<{
                 <h5 className={boxTitle}>Payroll Scheme Type</h5>
                 <input
                   className={inputStyle}
-                  value={scheme?.name ?? "Office Payroll Scheme"}
+                  value={scheme?.name ?? name}
                   disabled
                 />
               </div>
@@ -718,7 +721,7 @@ const SetUpForm: React.FC<{
               <div className={boxStyle}>
                 <h5 className={boxTitle}>Payroll Frequency</h5>
 
-                <input className={inputStyle} value="Monthly" disabled />
+                <input className={inputStyle} value={frequency} disabled />
               </div>
               <div className={boxStyle}>
                 <div className="flex items-center justify-between">

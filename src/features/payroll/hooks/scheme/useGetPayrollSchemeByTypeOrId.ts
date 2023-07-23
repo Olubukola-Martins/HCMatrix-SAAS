@@ -11,7 +11,7 @@ import { TSingleProjectPayrollScheme } from "features/payroll/types/payrollSchem
 import { TSingleWagePayrollScheme } from "features/payroll/types/payrollSchemes/singleWage";
 
 interface IDataProps {
-  typeOrId: "office" | "direct-salary" | "wages" | number;
+  typeOrId?: "office" | "direct-salary" | "wages" | number;
 }
 
 export const QUERY_KEY_FOR_PAYROLL_SCHEME_BY_TYPE_OR_ID =
@@ -32,10 +32,7 @@ const getData = async (props: {
 
   const res = await axios.get(url, config);
   const item: TPayrollScheme = res.data.data;
-
-  let data: TPayrollScheme = {
-    ...item,
-  };
+  let data: TPayrollScheme = item;
   let dataToBeReturned = data;
   if (props.data.typeOrId === "direct-salary") {
     dataToBeReturned = data as TDirectSalaryPayrollScheme;
@@ -43,13 +40,13 @@ const getData = async (props: {
   if (props.data.typeOrId === "office") {
     dataToBeReturned = data as TOfficePayrollScheme;
   }
-  if (props.data.typeOrId === "wages") {
-    dataToBeReturned = data as TWagesPayrollScheme;
-  }
   if (typeof props.data.typeOrId === "number") {
     dataToBeReturned = data as
       | TSingleProjectPayrollScheme
       | TSingleWagePayrollScheme;
+  }
+  if (props.data.typeOrId === "wages") {
+    dataToBeReturned = data as TWagesPayrollScheme;
   }
 
   return dataToBeReturned;
@@ -58,7 +55,7 @@ const getData = async (props: {
 export const useGetPayrollSchemeByTypeOrId = (props: IDataProps) => {
   const { token, companyId } = useApiAuth();
   const queryData = useQuery(
-    [QUERY_KEY_FOR_PAYROLL_SCHEME_BY_TYPE_OR_ID],
+    [QUERY_KEY_FOR_PAYROLL_SCHEME_BY_TYPE_OR_ID, props.typeOrId],
     () =>
       getData({
         auth: {
@@ -68,6 +65,7 @@ export const useGetPayrollSchemeByTypeOrId = (props: IDataProps) => {
         data: { ...props },
       }),
     {
+      enabled: props.typeOrId !== undefined,
       onError: (err: any) => {},
       onSuccess: (data) => {},
     }

@@ -65,7 +65,7 @@ const PayrollSchemeCardList = () => {
     // TODO: Replicate this logic for requisition settings
     if (data && isSuccess) {
       setSchemes((prevSchemes) => {
-        return prevSchemes.map((scheme) => {
+        const parsedSchemes = prevSchemes.map((scheme) => {
           const schemeFoundInFetchedData = data.data.find(
             (val) => val.type === scheme.type
           );
@@ -87,6 +87,56 @@ const PayrollSchemeCardList = () => {
             return modifiedScheme;
           }
           return scheme;
+        });
+        let currentSchemes: TScheme[][] = [];
+        // group schemes by type
+        const directSalarySchemes: TScheme[] = parsedSchemes.filter(
+          (scheme) => scheme.type === "direct-salary"
+        );
+        const officeSalarySchemes: TScheme[] = parsedSchemes.filter(
+          (scheme) => scheme.type === "office"
+        );
+        const wagesSalarySchemes: TScheme[] = parsedSchemes.filter(
+          (scheme) => scheme.type === "wages"
+        );
+        const projectSalarySchemes: TScheme[] = parsedSchemes.filter(
+          (scheme) => scheme.type === "project"
+        );
+        currentSchemes = [
+          officeSalarySchemes,
+          directSalarySchemes,
+          wagesSalarySchemes,
+          projectSalarySchemes,
+        ];
+        return currentSchemes.map((schemeGroup) => {
+          const schemeFoundInFetchedData = data.data.find(
+            (val) => val.type === schemeGroup[0].type
+          );
+          if (schemeFoundInFetchedData) {
+            let name = schemeFoundInFetchedData.name;
+            if (schemeFoundInFetchedData.type === "wages") {
+              name = "Timesheet/Wages Payroll";
+            }
+            if (schemeFoundInFetchedData.type === "project") {
+              name = "Project/Contract Payroll";
+            }
+            const modifiedScheme: TScheme = {
+              ...schemeGroup[0],
+              name,
+              createdAt: moment(schemeFoundInFetchedData.createdAt).format(
+                "DD-MM-YYYY"
+              ),
+              updatedAt: moment(schemeFoundInFetchedData.updatedAt).format(
+                "DD-MM-YYYY"
+              ),
+              projectCount:
+                schemeGroup[0].type === "project"
+                  ? data.data.filter((item) => item.type === "project").length
+                  : undefined,
+            };
+            return modifiedScheme;
+          }
+          return schemeGroup[0];
         });
       });
     }

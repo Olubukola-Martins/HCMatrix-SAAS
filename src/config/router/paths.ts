@@ -78,7 +78,18 @@ export const appRoutes = {
   }),
   setupWagesPayrollScheme: `/settings/payroll/schemes/wages/set-up/`,
   setupDailyWagesPayrollScheme: `/settings/payroll/schemes/wages/set-up/daily`,
+
   setupMonthlyWagesPayrollScheme: `/settings/payroll/schemes/wages/set-up/monthly`,
+  setupWagesPayrollSchemeById: ({
+    frequency,
+    id,
+  }: {
+    frequency: "monthly" | "daily";
+    id?: number;
+  }) => ({
+    format: `/settings/payroll/schemes/wages/set-up/${frequency}/:id`,
+    path: `/settings/payroll/schemes/wages/set-up/${frequency}/${id}`,
+  }),
   listOfPayrolls: `/settings/payroll/list`,
   payrollPolicySettings: `/settings/probation_policy_PENDING`,
   payGradeSettings: `/settings/grades`,
@@ -215,12 +226,11 @@ export const appRoutes = {
   clockInSettings: `/attendance/clock-in-settings`,
   addLocation: `/attendance/add-location`,
   otherSettings: `/attendance/other-settings`,
- 
+
   // Leaning and development
   leaningHome: `/leaning/home`,
   training: `/leaning/training`,
   feedbackTemplate: `/leaning/feedback-template`,
   gamification: `/leaning/gamification`,
   notification: `/leaning/notification`,
-
 };

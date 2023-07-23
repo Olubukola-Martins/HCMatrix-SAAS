@@ -1,6 +1,6 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
-import { Pagination } from "antd";
+import { Pagination, Skeleton } from "antd";
 import { usePagination } from "hooks/usePagination";
 
 import { AppButton } from "components/button/AppButton";
@@ -8,6 +8,8 @@ import PageSubHeader from "components/layout/PageSubHeader";
 import { appRoutes } from "config/router/paths";
 import { Link } from "react-router-dom";
 import AddProject from "features/core/projects/components/AddProject";
+import { useGetPayrollSchemeByTypeOrId } from "features/payroll/hooks/scheme/useGetPayrollSchemeByTypeOrId";
+import { TWagesPayrollScheme } from "features/payroll/types/payrollSchemes/wages";
 
 export const SetUpWagesPayrollContainer = () => {
   const [showM, setShowM] = useState(false);
@@ -27,23 +29,22 @@ export const SetUpWagesPayrollContainer = () => {
   );
 };
 
-type TWagePayrollSetup = {
-  id: number;
-  name: string;
+type TScheme = {
+  id?: number;
+  frequency: "daily" | "monthly";
+
   description: string;
   link: string;
 };
-const DUMMY_PROJECTS: TWagePayrollSetup[] = [
+const WAGE_PAYROLL_SCHEMES: TScheme[] = [
   {
-    id: 1,
-    name: "Daily",
+    frequency: "daily",
     link: appRoutes.setupDailyWagesPayrollScheme,
     description:
       "This will calculate payroll based on the amount of hours of work an employee puts in daily",
   },
   {
-    id: 2,
-    name: "Monthly",
+    frequency: "monthly",
     link: appRoutes.setupMonthlyWagesPayrollScheme,
     description:
       "This will calculate payroll based on the amount of hours of work an employee puts in monthly",
@@ -51,25 +52,60 @@ const DUMMY_PROJECTS: TWagePayrollSetup[] = [
 ];
 const PayrollSchemeCardList = () => {
   const { pagination, onChange } = usePagination();
+  const {
+    data: payrollScheme,
+    isLoading,
+    isSuccess,
+  } = useGetPayrollSchemeByTypeOrId({
+    typeOrId: "wages",
+  });
+  const fetchedWageSchemes = payrollScheme
+    ? (payrollScheme as TWagesPayrollScheme)
+    : undefined;
+  const [schemes, setSchemes] = useState<TScheme[]>(WAGE_PAYROLL_SCHEMES);
+  useEffect(() => {
+    // TODO: Replicate this logic for requisition settings
+    if (
+      Array.isArray(fetchedWageSchemes) &&
+      fetchedWageSchemes?.length > 0 &&
+      isSuccess
+    ) {
+      setSchemes((prevSchemes) => {
+        return prevSchemes.map((scheme) => {
+          const schemeFoundInFetchedData = fetchedWageSchemes.find(
+            (val) => val.frequency === scheme.frequency
+          );
+          if (schemeFoundInFetchedData) {
+            const modifiedScheme: TScheme = {
+              ...scheme,
+              id: schemeFoundInFetchedData.id,
+            };
+            return modifiedScheme;
+          }
+          return scheme;
+        });
+      });
+    }
+  }, [fetchedWageSchemes, isSuccess]);
   return (
-    <div>
+    <Skeleton loading={isLoading} active paragraph={{ rows: 8 }}>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-x-5 lg:gap-x-10 gap-y-10">
-        {DUMMY_PROJECTS.map((item, i) => (
+        {schemes.map((item, i) => (
           <PayrollSchemeCard key={i} {...item} />
         ))}
       </div>
       <div className="mt-4 flex justify-end">
         <Pagination
-          {...{ ...pagination, total: DUMMY_PROJECTS.length }}
+          {...{ ...pagination, total: schemes.length }}
           onChange={onChange}
           size="small"
         />
       </div>
-    </div>
+    </Skeleton>
   );
 };
-const PayrollSchemeCard: React.FC<TWagePayrollSetup> = ({
-  name,
+const PayrollSchemeCard: React.FC<TScheme> = ({
+  frequency,
   description,
   link,
   id,
@@ -79,9 +115,16 @@ const PayrollSchemeCard: React.FC<TWagePayrollSetup> = ({
       {/* view */}
       <div className="rounded border shadow bg-mainBg">
         <div className="bg-card p-3 flex justify-between items-center">
-          <h4 className="font-medium text-lg">{name}</h4>
+          <h4 className="font-medium text-lg capitalize">{frequency}</h4>
           <div className="flex gap-2 ">
-            <Link to={link}>
+            <Link
+              to={
+                id
+                  ? appRoutes.setupWagesPayrollSchemeById({ frequency, id })
+                      .path
+                  : link
+              }
+            >
               <AppButton label="Set up Payroll" variant="transparent" />
             </Link>
           </div>
