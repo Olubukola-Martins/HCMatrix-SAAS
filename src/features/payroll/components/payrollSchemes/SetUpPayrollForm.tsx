@@ -1,30 +1,25 @@
 import PageSubHeader from "components/layout/PageSubHeader";
-import { Checkbox, Form, InputNumber, Select, Skeleton, Switch } from "antd";
+import { Form, InputNumber, Skeleton, Switch } from "antd";
 import { useCallback, useEffect, useMemo, useReducer, useState } from "react";
 import { FormWorkflowInput } from "features/core/workflows/components/FormWorkflowInput";
 import { SalaryComponentsContainer } from "../salaryComponents/SalaryComponentsContainer";
 import { AddSalaryComponentForm } from "../salaryComponents/AddSalaryComponent";
-import { ALLOWANNCES } from "features/payroll/constants";
-import { TaxPolicyCreator } from "../taxPolicies";
+
 import { useQueryClient } from "react-query";
 import { useSetupPayrollScheme } from "features/payroll/hooks/scheme/useSetupPayrollScheme";
 import { openNotification } from "utils/notifications";
-import {
-  QUERY_KEY_FOR_PAYROLL_SCHEME_BY_TYPE_OR_ID,
-  useGetPayrollSchemeByTypeOrId,
-} from "features/payroll/hooks/scheme/useGetPayrollSchemeByTypeOrId";
+import { QUERY_KEY_FOR_PAYROLL_SCHEME_BY_TYPE_OR_ID } from "features/payroll/hooks/scheme/useGetPayrollSchemeByTypeOrId";
 import { TOfficeSetupSchemeInputData } from "features/payroll/types/setUpSchemeInputData/office";
 import {
   TSalaryComponent,
   TSalaryComponentInput,
 } from "features/payroll/types/salaryComponents";
-import { TOfficePayrollScheme } from "features/payroll/types/payrollSchemes/office";
 import { useUpdatePayrollScheme } from "features/payroll/hooks/scheme/useUpdatePayrollScheme";
 import {
-  TPayrollScheme,
   TPayrollSchemeType,
   TSinglePayrollScheme,
 } from "features/payroll/types/payrollSchemes";
+import { PayrollSingleProjectParticipantsContainer } from "../projectParticipants/PayrollSingleProjectParticipantsContainer";
 
 const DEFAULT_COMPONENT_LABELS = {
   thirteenthMonthSalary: "thirteenth_month_salary",
@@ -59,6 +54,8 @@ const initialState: TActionState = {
   displayPension: false,
   displayOvertime: false,
   displayTax: false,
+  displayProjectParticipantsExpatriate: false,
+  displayProjectParticipantsNonExpatriate: false,
   allowances: [],
   deductions: [],
 };
@@ -78,6 +75,8 @@ interface TActionState {
   displayPension: boolean;
   displayOvertime: boolean;
   displayTax: boolean;
+  displayProjectParticipantsExpatriate: boolean;
+  displayProjectParticipantsNonExpatriate: boolean;
   allowances: TSalaryComponent[];
   deductions: TSalaryComponent[];
 }
@@ -96,7 +95,9 @@ type TActionType =
   | "displayITF"
   | "displayPension"
   | "displayOvertime"
-  | "displayTax";
+  | "displayTax"
+  | "displayProjectParticipantsExpatriate"
+  | "displayProjectParticipantsNonExpatriate";
 
 type TAllowanceActionType = "setAllowance";
 type TDeducutionActionType = "setDeduction";
@@ -178,6 +179,16 @@ function reducer(
         ...state,
         displayTax: !state.displayTax,
       };
+    case "displayProjectParticipantsExpatriate":
+      return {
+        ...state,
+        displayTax: !state.displayProjectParticipantsExpatriate,
+      };
+    case "displayProjectParticipantsNonExpatriate":
+      return {
+        ...state,
+        displayTax: !state.displayProjectParticipantsNonExpatriate,
+      };
     case "displayOvertime":
       return {
         ...state,
@@ -210,11 +221,12 @@ function reducer(
 
 export const SetUpPayrollForm: React.FC<{
   scheme?: TSinglePayrollScheme;
-  frequency: "monthly" | "daily";
+  frequency: "monthly" | "daily" | number;
   isFetching: boolean;
   name: string;
   type: TPayrollSchemeType;
-}> = ({ scheme, isFetching, frequency = "monthly", name, type }) => {
+  projectId?: number;
+}> = ({ scheme, isFetching, frequency = "monthly", name, type, projectId }) => {
   const [state, dispatch] = useReducer(reducer, initialState);
   const {
     allowApproval,
@@ -231,6 +243,8 @@ export const SetUpPayrollForm: React.FC<{
     displayPension,
     displayOvertime,
     displayTax,
+    displayProjectParticipantsNonExpatriate,
+    displayProjectParticipantsExpatriate,
     allowances,
     deductions,
   } = state;
@@ -252,7 +266,8 @@ export const SetUpPayrollForm: React.FC<{
               allowApproval,
               allowDisbursement,
               automaticRunDay: data.automaticRunDay,
-              frequency,
+              frequency: type === "project" ? data.frequency : frequency,
+
               issuePayslip,
               name,
 
@@ -314,7 +329,8 @@ export const SetUpPayrollForm: React.FC<{
           allowApproval,
           allowDisbursement,
           automaticRunDay: data.automaticRunDay,
-          frequency,
+          frequency: type === "project" ? data.frequency : frequency,
+          projectId: projectId,
           issuePayslip,
           name,
 
@@ -351,6 +367,7 @@ export const SetUpPayrollForm: React.FC<{
       );
     },
     [
+      projectId,
       allowApproval,
       allowDisbursement,
       allowances,
@@ -721,8 +738,131 @@ export const SetUpPayrollForm: React.FC<{
               <div className={boxStyle}>
                 <h5 className={boxTitle}>Payroll Frequency</h5>
 
-                <input className={inputStyle} value={frequency} disabled />
+                {type !== "project" && (
+                  <input className={inputStyle} value={frequency} disabled />
+                )}
+                {type === "project" && (
+                  <>
+                    <p className="text-sm mb-2">
+                      How many split payments would you like to make ?
+                    </p>
+                    <div className="w-2/5">
+                      <input
+                        className={inputStyle}
+                        type="number"
+                        value={frequency}
+                        min={1}
+                        placeholder="Amount of split payments"
+                      />
+                    </div>
+                  </>
+                )}
               </div>
+              {type === "project" && (
+                <>
+                  {" "}
+                  <div className={boxStyle}>
+                    <div className="flex items-center justify-between">
+                      <h5
+                        className={boxTitle}
+                        title="Set up the gross pay of each project participant "
+                      >
+                        Project Participants(Non - Expatriates)
+                      </h5>
+                      <Switch
+                        checked={displayProjectParticipantsNonExpatriate}
+                        onChange={() =>
+                          dispatch({
+                            type: "displayProjectParticipantsNonExpatriate",
+                          })
+                        }
+                      />
+                    </div>
+                    <p className="text-sm">
+                      Set up the gross pay of each project participant
+                    </p>
+                    {displayProjectParticipantsNonExpatriate && (
+                      <div className="mt-2">
+                        <PayrollSingleProjectParticipantsContainer
+                          participants={[
+                            {
+                              key: "0",
+                              name: "James Kaladin",
+                              empuid: "EMP009",
+                              amount: 330000,
+                              exchangeRate: {
+                                currency: "Naira(N)",
+                                rate: 1,
+                              },
+                            },
+                            {
+                              key: "1",
+                              name: "Deborah Tully",
+                              empuid: "EMP007",
+
+                              amount: 700000,
+                              exchangeRate: {
+                                currency: "Naira(N)",
+                                rate: 1,
+                              },
+                            },
+                          ]}
+                        />
+                      </div>
+                    )}
+                  </div>
+                  <div className={boxStyle}>
+                    <div className="flex items-center justify-between">
+                      <h5
+                        className={boxTitle}
+                        title="Set up the gross pay of each project participant "
+                      >
+                        Project Participants(Expatriates)
+                      </h5>
+                      <Switch
+                        checked={displayProjectParticipantsExpatriate}
+                        onChange={() =>
+                          dispatch({
+                            type: "displayProjectParticipantsExpatriate",
+                          })
+                        }
+                      />
+                    </div>
+                    <p className="text-sm">
+                      Set up the gross pay of each project participant
+                    </p>
+                    {displayProjectParticipantsExpatriate && (
+                      <div className="mt-2">
+                        <PayrollSingleProjectParticipantsContainer
+                          participants={[
+                            {
+                              key: "0",
+                              name: "James Kaladin",
+                              empuid: "EMP009",
+                              amount: 330000,
+                              exchangeRate: {
+                                currency: "Dollar($)",
+                                rate: 0.05,
+                              },
+                            },
+                            {
+                              key: "1",
+                              name: "Deborah Tully",
+                              empuid: "EMP007",
+
+                              amount: 700000,
+                              exchangeRate: {
+                                currency: "Dollar($)",
+                                rate: 0.05,
+                              },
+                            },
+                          ]}
+                        />
+                      </div>
+                    )}
+                  </div>
+                </>
+              )}
               <div className={boxStyle}>
                 <div className="flex items-center justify-between">
                   <h5

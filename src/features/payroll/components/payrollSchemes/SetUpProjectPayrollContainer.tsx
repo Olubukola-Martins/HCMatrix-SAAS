@@ -27,13 +27,14 @@ const SetUpProjectPayrollContainer = () => {
   );
 };
 
-type TProject = {
+type TScheme = {
   id: number;
+  schemeId?: number;
   name: string;
   createdAt: string;
   updatedAt: string;
 };
-const DUMMY_PROJECTS: TProject[] = [
+const DUMMY_PROJECTS: TScheme[] = [
   {
     id: 1,
     name: "HcMatrix v3",
@@ -78,11 +79,12 @@ const PayrollSchemeCardList = () => {
     </div>
   );
 };
-const PayrollSchemeCard: React.FC<TProject> = ({
+const PayrollSchemeCard: React.FC<TScheme> = ({
   name,
   createdAt,
   updatedAt,
   id,
+  schemeId,
 }) => {
   return (
     <>
@@ -91,7 +93,14 @@ const PayrollSchemeCard: React.FC<TProject> = ({
         <div className="bg-card p-3 flex justify-between items-center">
           <h4 className="font-medium text-lg">{name}</h4>
           <div className="flex gap-2 ">
-            <Link to={appRoutes.setupSingleProjectPayrollScheme(id).path}>
+            <Link
+              to={
+                appRoutes.setupSingleProjectPayrollScheme({
+                  projectId: id,
+                  schemeId,
+                }).path
+              }
+            >
               <AppButton label="Set up Payroll" variant="transparent" />
             </Link>
           </div>

@@ -6,7 +6,7 @@ import { useApiAuth } from "hooks/useApiAuth";
 import { TSingleProject } from "../types";
 
 interface IDataProps {
-  id: number;
+  id?: number;
 }
 export const QUERY_KEY_FOR_SINGLE_PROJECT = "single-project";
 const getData = async (props: {
@@ -36,7 +36,7 @@ const getData = async (props: {
 export const useGetSingleProject = (props: IDataProps) => {
   const { token, companyId } = useApiAuth();
   const queryData = useQuery(
-    [QUERY_KEY_FOR_SINGLE_PROJECT],
+    [QUERY_KEY_FOR_SINGLE_PROJECT, props.id],
     () =>
       getData({
         auth: {
@@ -46,6 +46,7 @@ export const useGetSingleProject = (props: IDataProps) => {
         data: { ...props },
       }),
     {
+      enabled: typeof props.id !== "undefined",
       onError: (err: any) => {},
       onSuccess: (data) => {},
     }
