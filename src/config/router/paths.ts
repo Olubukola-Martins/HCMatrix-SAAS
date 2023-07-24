@@ -205,13 +205,10 @@ export const appRoutes = {
     format: `/leaning/training/:id`,
     path: `/leaning/training/${id}`,
   }),
-  trainingFeedback: (id?: number) => ({
-    format: `/leaning/training/:id/feedback`,
-    path: `/leaning/training/${id}/feedback`,
-  }),
+
   gamification: `/leaning/gamification`,
   paidTraining: `/leaning/paid-training`,
   budgets: `/leaning/budgets`,
   addTraining: `/leaning/add-training`,
-  lAndDReport: `/leaning/report`
+  lAndDReport: `/leaning/report`,
 };

@@ -6,6 +6,8 @@ import { Overview } from "../components/trainings/Overview";
 import { UpdateTraining } from "../components/trainings/UpdateTraining";
 import { TrainingUsers } from "../components/trainings/TrainingUsers";
 import { TrainingContent } from "../components/trainings/TrainingContent";
+import { AllFeedbackReport } from "../components/trainings/AllFeedbackReport";
+import { IndividualFeedback } from "../components/trainings/IndividualFeedback";
 
 export const TrainingDetails = () => {
   return (
@@ -55,10 +57,19 @@ export const TrainingDetails = () => {
             },
             {
               key: "5",
-              label: "All feedback Report",
+              label: "Individual Feedback",
               children: (
                 <>
-                  <UpdateTraining />
+                  <IndividualFeedback />
+                </>
+              ),
+            },
+            {
+              key: "6",
+              label: "All Feedback Report",
+              children: (
+                <>
+                  <AllFeedbackReport />
                 </>
               ),
             },

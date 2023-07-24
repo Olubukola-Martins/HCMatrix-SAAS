@@ -58,11 +58,7 @@ export const MandatoryTraining = () => {
                 <Menu.Item key="2" onClick={() => setOpenAssign(true)}>
                   Assign Training
                 </Menu.Item>
-                <Menu.Item key="3">
-                  <Link to={appRoutes.trainingFeedback(2).path}>
-                    View Feedbacks
-                  </Link>
-                </Menu.Item>
+               
               </Menu>
             }
           >
