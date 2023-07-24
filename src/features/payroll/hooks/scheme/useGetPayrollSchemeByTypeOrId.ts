@@ -9,9 +9,10 @@ import { TOfficePayrollScheme } from "features/payroll/types/payrollSchemes/offi
 import { TWagesPayrollScheme } from "features/payroll/types/payrollSchemes/wages";
 import { TSingleProjectPayrollScheme } from "features/payroll/types/payrollSchemes/singleProject";
 import { TSingleWagePayrollScheme } from "features/payroll/types/payrollSchemes/singleWage";
+import { TProjectPayrollScheme } from "features/payroll/types/payrollSchemes/project";
 
 interface IDataProps {
-  typeOrId?: "office" | "direct-salary" | "wages" | number;
+  typeOrId?: "office" | "direct-salary" | "wages" | "project" | number;
 }
 
 export const QUERY_KEY_FOR_PAYROLL_SCHEME_BY_TYPE_OR_ID =
@@ -47,6 +48,9 @@ const getData = async (props: {
   }
   if (props.data.typeOrId === "wages") {
     dataToBeReturned = data as TWagesPayrollScheme;
+  }
+  if (props.data.typeOrId === "project") {
+    dataToBeReturned = data as TProjectPayrollScheme;
   }
 
   return dataToBeReturned;

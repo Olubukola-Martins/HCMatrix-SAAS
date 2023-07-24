@@ -22,5 +22,20 @@ interface Employee {
   avatarUrl: string;
   createdAt: string;
   updatedAt: string;
-  deletedAt?: any;
+  deletedAt?: string;
+  personalInformation: PersonalInformation;
+}
+
+interface PersonalInformation {
+  eligibility: string;
+  exchangeRateId: number;
+  exchangeRate: ExchangeRate;
+}
+
+interface ExchangeRate {
+  id: number;
+  currency: string;
+  label: string;
+  rate: number;
+  companyId: number;
 }

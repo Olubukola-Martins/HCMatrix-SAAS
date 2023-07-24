@@ -5,12 +5,13 @@ import { ProjectMembersTableContainer } from "./management/ProjectMembersTableCo
 import moment from "moment";
 import { EditProject } from "./EditProject";
 import { AddMemberToProject } from "./management/AddMemberToProject";
+import DeleteProject from "./DeleteProject";
 
 interface IProps {
   project?: TSingleProject;
 }
 
-type TAction = "add-member" | "edit-project";
+type TAction = "add-member" | "edit-project" | "delete-project";
 export const ProjectDetailsContainer: React.FC<IProps> = ({ project }) => {
   const [action, setAction] = useState<TAction>();
   const handleAction = (props: { action: TAction }) => {
@@ -25,6 +26,13 @@ export const ProjectDetailsContainer: React.FC<IProps> = ({ project }) => {
       {project && (
         <EditProject
           open={action === "edit-project"}
+          project={project}
+          handleClose={clearAction}
+        />
+      )}
+      {project && (
+        <DeleteProject
+          open={action === "delete-project"}
           project={project}
           handleClose={clearAction}
         />
@@ -49,6 +57,7 @@ export const ProjectDetailsContainer: React.FC<IProps> = ({ project }) => {
             },
             handleAddMember: () => handleAction({ action: "add-member" }),
             handleEdit: () => handleAction({ action: "edit-project" }),
+            handleDelete: () => handleAction({ action: "delete-project" }),
           }}
         />
         <ProjectMembersTableContainer projectId={project?.id} />

@@ -1,6 +1,6 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
-import { Pagination } from "antd";
+import { Pagination, Skeleton } from "antd";
 import { usePagination } from "hooks/usePagination";
 
 import { AppButton } from "components/button/AppButton";
@@ -8,6 +8,10 @@ import PageSubHeader from "components/layout/PageSubHeader";
 import { appRoutes } from "config/router/paths";
 import { Link } from "react-router-dom";
 import AddProject from "features/core/projects/components/AddProject";
+import { useGetProjects } from "features/core/projects/hooks/useGetProjects";
+import { useGetPayrollSchemeByTypeOrId } from "features/payroll/hooks/scheme/useGetPayrollSchemeByTypeOrId";
+import { TProjectPayrollScheme } from "features/payroll/types/payrollSchemes/project";
+import moment from "moment";
 
 const SetUpProjectPayrollContainer = () => {
   const [showM, setShowM] = useState(false);
@@ -28,62 +32,96 @@ const SetUpProjectPayrollContainer = () => {
 };
 
 type TScheme = {
-  id: number;
+  projectId: number;
   schemeId?: number;
   name: string;
   createdAt: string;
   updatedAt: string;
 };
-const DUMMY_PROJECTS: TScheme[] = [
-  {
-    id: 1,
-    name: "HcMatrix v3",
-    createdAt: "Not needed",
-    updatedAt: "Not Needed",
-  },
-  {
-    id: 2,
-    name: "Bi Collaboration",
-    createdAt: "03/07/2020",
-    updatedAt: "03/07/2020",
-  },
-  {
-    id: 3,
-    name: "Marketing Optimization",
-    createdAt: "03/07/2020",
-    updatedAt: "03/07/2020",
-  },
-  {
-    id: 4,
-    name: "Artificial Intelligence Integration",
-    createdAt: "03/07/2020",
-    updatedAt: "03/07/2020",
-  },
-];
+
 const PayrollSchemeCardList = () => {
-  const { pagination, onChange } = usePagination();
+  const { pagination, onChange } = usePagination({ pageSize: 4 });
+  const {
+    data: projects,
+    isSuccess: isSuccessProjects,
+    isFetching: isFetchingProjects,
+  } = useGetProjects({
+    pagination,
+  });
+  const {
+    data: payrollScheme,
+    isFetching: isFecthingScheme,
+    isSuccess: isSuccessScheme,
+  } = useGetPayrollSchemeByTypeOrId({
+    typeOrId: "project",
+  });
+  const fetchedProjectSchemes = payrollScheme
+    ? (payrollScheme as TProjectPayrollScheme)
+    : undefined;
+  const [schemes, setSchemes] = useState<TScheme[]>([]);
+  useEffect(() => {
+    if (
+      isSuccessProjects &&
+      projects &&
+      isSuccessScheme &&
+      Array.isArray(fetchedProjectSchemes)
+    ) {
+      setSchemes(() => {
+        return projects.data.map((project) => {
+          const schemeFoundInFetchedData = fetchedProjectSchemes.find(
+            (val) => val.projectId === project.id
+          );
+          if (schemeFoundInFetchedData) {
+            const modifiedScheme: TScheme = {
+              projectId: schemeFoundInFetchedData.projectId,
+              schemeId: schemeFoundInFetchedData.id,
+              name: project.name,
+              createdAt: moment(schemeFoundInFetchedData.createdAt).format(
+                "YYYY-MM-DD"
+              ),
+              updatedAt: moment(schemeFoundInFetchedData.updatedAt).format(
+                "YYYY-MM-DD"
+              ),
+            };
+            return modifiedScheme;
+          }
+          return {
+            projectId: project.id,
+            name: project.name,
+            createdAt: "Pending",
+            updatedAt: "Pending",
+          };
+        });
+      });
+    }
+  }, [fetchedProjectSchemes, isSuccessProjects, isSuccessScheme, projects]);
+
   return (
-    <div>
+    <Skeleton
+      loading={isFecthingScheme || isFetchingProjects}
+      active
+      paragraph={{ rows: 8 }}
+    >
       <div className="grid grid-cols-1 md:grid-cols-2 gap-x-5 lg:gap-x-10 gap-y-10">
-        {DUMMY_PROJECTS.map((item, i) => (
+        {schemes.map((item, i) => (
           <PayrollSchemeCard key={i} {...item} />
         ))}
       </div>
       <div className="mt-4 flex justify-end">
         <Pagination
-          {...{ ...pagination, total: DUMMY_PROJECTS.length }}
+          {...{ ...pagination, total: projects?.total }}
           onChange={onChange}
           size="small"
         />
       </div>
-    </div>
+    </Skeleton>
   );
 };
 const PayrollSchemeCard: React.FC<TScheme> = ({
   name,
   createdAt,
   updatedAt,
-  id,
+  projectId,
   schemeId,
 }) => {
   return (
@@ -96,7 +134,7 @@ const PayrollSchemeCard: React.FC<TScheme> = ({
             <Link
               to={
                 appRoutes.setupSingleProjectPayrollScheme({
-                  projectId: id,
+                  projectId,
                   schemeId,
                 }).path
               }

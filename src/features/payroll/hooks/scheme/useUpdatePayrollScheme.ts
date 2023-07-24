@@ -15,7 +15,7 @@ type TSchemeData = {
   workflowId: number;
   issuePayslip: boolean;
   runAutomatically: boolean;
-  automaticRunDay: number;
+  automaticRunDay: number | string;
 };
 
 const createData = async (props: {

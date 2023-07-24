@@ -78,7 +78,9 @@ export const appRoutes = {
   }) => {
     return {
       format: `/settings/payroll/schemes/project/set-up/:projectId/scheme/`,
-      path: `/settings/payroll/schemes/project/set-up/${props?.projectId}/scheme/${props?.schemeId}`,
+      path: `/settings/payroll/schemes/project/set-up/${
+        props?.projectId
+      }/scheme/${props?.schemeId ?? ""}`,
     };
   },
   setupWagesPayrollScheme: `/settings/payroll/schemes/wages/set-up/`,

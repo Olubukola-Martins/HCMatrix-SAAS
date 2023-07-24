@@ -1,5 +1,5 @@
 import PageSubHeader from "components/layout/PageSubHeader";
-import { Form, InputNumber, Skeleton, Switch } from "antd";
+import { DatePicker, Form, InputNumber, Skeleton, Switch } from "antd";
 import { useCallback, useEffect, useMemo, useReducer, useState } from "react";
 import { FormWorkflowInput } from "features/core/workflows/components/FormWorkflowInput";
 import { SalaryComponentsContainer } from "../salaryComponents/SalaryComponentsContainer";
@@ -20,6 +20,7 @@ import {
   TSinglePayrollScheme,
 } from "features/payroll/types/payrollSchemes";
 import { PayrollSingleProjectParticipantsContainer } from "../projectParticipants/PayrollSingleProjectParticipantsContainer";
+import { TSetupPayrollSchemeData } from "features/payroll/types/setUpSchemeInputData";
 
 const DEFAULT_COMPONENT_LABELS = {
   thirteenthMonthSalary: "thirteenth_month_salary",
@@ -182,12 +183,14 @@ function reducer(
     case "displayProjectParticipantsExpatriate":
       return {
         ...state,
-        displayTax: !state.displayProjectParticipantsExpatriate,
+        displayProjectParticipantsExpatriate:
+          !state.displayProjectParticipantsExpatriate,
       };
     case "displayProjectParticipantsNonExpatriate":
       return {
         ...state,
-        displayTax: !state.displayProjectParticipantsNonExpatriate,
+        displayProjectParticipantsNonExpatriate:
+          !state.displayProjectParticipantsNonExpatriate,
       };
     case "displayOvertime":
       return {
@@ -257,7 +260,7 @@ export const SetUpPayrollForm: React.FC<{
     useUpdatePayrollScheme();
 
   const handleUpdate = useCallback(
-    (data: TOfficeSetupSchemeInputData) => {
+    (data: TSetupPayrollSchemeData) => {
       if (scheme) {
         mutateUpdate(
           {
@@ -265,7 +268,19 @@ export const SetUpPayrollForm: React.FC<{
             body: {
               allowApproval,
               allowDisbursement,
-              automaticRunDay: data.automaticRunDay,
+              automaticRunDay:
+                type === "project"
+                  ? JSON.stringify(
+                      Array(frequencyAmount)
+                        .fill(0)
+                        .reduce((values, item, i) => {
+                          values[`Payment${i + 1}`] = (data as unknown as any)[
+                            `Payment${i + 1}`
+                          ];
+                          return values;
+                        }, {})
+                    )
+                  : data.automaticRunDay,
               frequency: type === "project" ? data.frequency : frequency,
 
               issuePayslip,
@@ -321,15 +336,27 @@ export const SetUpPayrollForm: React.FC<{
     ]
   );
   const handleSetup = useCallback(
-    (data: TOfficeSetupSchemeInputData) => {
+    (data: TSetupPayrollSchemeData) => {
       mutateSetup(
         {
           allowances,
           deductions,
           allowApproval,
           allowDisbursement,
-          automaticRunDay: data.automaticRunDay,
-          frequency: type === "project" ? data.frequency : frequency,
+          automaticRunDay:
+            type === "project"
+              ? JSON.stringify(
+                  Array(frequencyAmount)
+                    .fill(0)
+                    .reduce((values, item, i) => {
+                      values[`Payment${i + 1}`] = (data as unknown as any)[
+                        `Payment${i + 1}`
+                      ];
+                      return values;
+                    }, {})
+                )
+              : data.automaticRunDay,
+          frequency: type === "project" ? data?.frequency : frequency,
           projectId: projectId,
           issuePayslip,
           name,
@@ -694,6 +721,7 @@ export const SetUpPayrollForm: React.FC<{
       scheme,
     ]
   );
+  const [frequencyAmount, setFrequencyAmount] = useState<number>(0);
   return (
     <div className="flex flex-col gap-4">
       <PageSubHeader
@@ -747,13 +775,16 @@ export const SetUpPayrollForm: React.FC<{
                       How many split payments would you like to make ?
                     </p>
                     <div className="w-2/5">
-                      <input
-                        className={inputStyle}
-                        type="number"
-                        value={frequency}
-                        min={1}
-                        placeholder="Amount of split payments"
-                      />
+                      <Form.Item name="frequency" noStyle>
+                        <input
+                          className={inputStyle}
+                          type="number"
+                          onChange={(e) => setFrequencyAmount(+e.target.value)}
+                          value={frequencyAmount}
+                          min={1}
+                          placeholder="Amount of split payments"
+                        />
+                      </Form.Item>
                     </div>
                   </>
                 )}
@@ -1020,7 +1051,7 @@ export const SetUpPayrollForm: React.FC<{
                   This will enable payroll to be run automatically every month
                   with the scheme's default settings
                 </p>
-                {runAutomatically && (
+                {runAutomatically && type !== "project" && (
                   <div className="mt-6">
                     <Form.Item name={`automaticRunDay`} noStyle>
                       <InputNumber
@@ -1030,6 +1061,22 @@ export const SetUpPayrollForm: React.FC<{
                         className="w-2/5"
                       />
                     </Form.Item>
+                  </div>
+                )}
+                {runAutomatically && type === "project" && (
+                  <div className="mt-6 items-start flex flex-col gap-1">
+                    {Array(frequencyAmount)
+                      .fill(0)
+                      .map((item, i) => (
+                        <Form.Item
+                          key={i}
+                          name={`Payment${i + 1}`}
+                          label={`Payment ${i + 1}`}
+                          labelCol={{ span: 12 }}
+                        >
+                          <DatePicker />
+                        </Form.Item>
+                      ))}
                   </div>
                 )}
               </div>
