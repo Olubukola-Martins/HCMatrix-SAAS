@@ -53,6 +53,15 @@ export const TrainingDetails = () => {
                 </>
               ),
             },
+            {
+              key: "5",
+              label: "All feedback Report",
+              children: (
+                <>
+                  <UpdateTraining />
+                </>
+              ),
+            },
           ]}
         />
       </div>

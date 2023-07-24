@@ -9,7 +9,6 @@ type TTestReport = {
   users: string;
   submission: string;
   passed: string;
-
   averageGrade: string;
 };
 
