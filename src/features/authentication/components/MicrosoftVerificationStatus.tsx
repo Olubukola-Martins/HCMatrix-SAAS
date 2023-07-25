@@ -144,10 +144,7 @@ const MicrosoftVerificationStatus = ({
         if (
           signIn({
             token: result.accessToken,
-            refreshToken: result.refreshToken,
-            expiresIn: TOKEN_EXPIRES_IN, //log person out after 2 hrs
-            refreshTokenExpireIn: REFRESH_TOKEN_EXPIRES_IN, //should not expire
-
+            expiresIn: TOKEN_EXPIRES_IN, //indicates how long the auth token is valid for
             tokenType: "Bearer",
             authState: authUserDetails,
           })
@@ -261,9 +258,7 @@ const MicrosoftVerificationStatus = ({
             if (
               signIn({
                 token: authUserDetails.userToken,
-                refreshToken: tempAuthState.refreshToken,
-                expiresIn: TOKEN_EXPIRES_IN, //log person out after 2 hrs
-                refreshTokenExpireIn: REFRESH_TOKEN_EXPIRES_IN, //should not expire
+                expiresIn: TOKEN_EXPIRES_IN, //indicates how long the auth token is valid for
                 tokenType: "Bearer",
                 authState: authUserDetails,
               })

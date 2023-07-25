@@ -32,7 +32,7 @@ function App() {
         authName={"hcmatrix_app"}
         // cookieDomain={window.location.hostname}
         // cookieSecure={window.location.protocol === "https:"}
-        refresh={refreshApi}
+        // refresh={refreshApi}
       >
         <QueryClientProvider client={queryClient}>
           <GlobalContextProvider>
