@@ -127,9 +127,9 @@ const UserLoginForm = ({ autoLoginDetails }: ILoginProps) => {
           if (
             signIn({
               token: result.accessToken,
-              refreshToken: result.refreshToken,
+              // refreshToken: result.refreshToken,
               expiresIn: TOKEN_EXPIRES_IN, //indicates how long the auth token is valid for
-              refreshTokenExpireIn: REFRESH_TOKEN_EXPIRES_IN, //user will be unauthenticated if token expires and is not refreshed
+              // refreshTokenExpireIn: REFRESH_TOKEN_EXPIRES_IN, //user will be unauthenticated if token expires and is not refreshed
               tokenType: "Bearer",
               authState: authUserDetails,
             })
