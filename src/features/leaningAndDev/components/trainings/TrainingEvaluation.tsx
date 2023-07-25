@@ -1,4 +1,4 @@
-import { Checkbox, Form, Table } from "antd";
+import { Radio, Table } from "antd";
 import React from "react";
 
 const columns = [
@@ -10,27 +10,27 @@ const columns = [
   {
     title: "Unsatisfactory",
     dataIndex: "unsatisfactory",
-    render: () => <Checkbox />,
+    render: () => <Radio />,
   },
   {
     title: "Poor",
     dataIndex: "poor",
-    render: () => <Checkbox />,
+    render: () => <Radio />,
   },
   {
     title: "Average",
     dataIndex: "average",
-    render: () => <Checkbox />,
+    render: () => <Radio />,
   },
   {
     title: "Good",
     dataIndex: "good",
-    render: () => <Checkbox />,
+    render: () => <Radio />,
   },
   {
     title: "Excellent",
     dataIndex: "excellent",
-    render: () => <Checkbox />,
+    render: () => <Radio />,
   },
   {
     title: "Score",
@@ -74,6 +74,17 @@ const data = [
     key: 4,
     comment:
       "The course provided opportunities to practice and reinforce what was taught.",
+    unsatisfactory: "",
+    poor: "",
+    average: "",
+    good: "",
+    excellent: "",
+    score: "40%",
+  },
+  {
+    key: 5,
+    comment:
+      "The course information was at an appropriate level to understand the learning objectives.",
     unsatisfactory: "",
     poor: "",
     average: "",

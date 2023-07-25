@@ -2,9 +2,19 @@ import { Select, Tabs } from "antd";
 import { TrainingEvaluation } from "./TrainingEvaluation";
 
 export const IndividualFeedback = () => {
+  const topDes = (
+    <div>
+      <h3 className="font-medium text-base block">Score Range: </h3>
+      <div className="flex gap-3">
+        <h5>Excellent 100%</h5> <h5>Good 80% </h5> <h5> Average 60%</h5>
+        <h5>Poor 50% </h5> <h5>Unsatisfactory 40% </h5>
+      </div>
+    </div>
+  );
+
   return (
     <>
-      <div className="flex justify-between items-center">
+      <div className="flex justify-between items-center mb-1">
         <h2 className="font-semibold text-base">Ruth Godwin Feedback</h2>
 
         <Select
@@ -81,12 +91,21 @@ export const IndividualFeedback = () => {
           {
             key: "2",
             label: "Training Evaluation",
-            children: <TrainingEvaluation />,
+            children: (
+              <>
+                {topDes} <TrainingEvaluation />
+              </>
+            ),
           },
           {
             key: "3",
             label: "Training Tools",
-            children: <span>Training Tools</span>,
+            children: (
+              <>
+                {topDes}
+                Training Tools
+              </>
+            ),
           },
           {
             key: "4",

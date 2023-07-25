@@ -280,10 +280,10 @@ const CreateRoleForm = () => {
                   disabled
                 />
               </div>
-              {/* commented div */}
-              <div className="bg-white p-4 rounded-md mb-4">
+
+              {/* <div className="bg-white p-4 rounded-md mb-4">
                 <Table columns={columns} dataSource={ans} size="small" />
-              </div>
+              </div> */}
               <Form.Item name="permissionIds" rules={generalValidationRules}>
                 <Checkbox.Group style={{ width: "100%" }}>
                   <div className="my-6 grid grid-cols-4 gap-4">
