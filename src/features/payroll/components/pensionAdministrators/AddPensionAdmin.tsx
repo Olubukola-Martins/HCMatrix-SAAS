@@ -1,32 +1,22 @@
-import { Form, Input, InputNumber, Modal, Slider } from "antd";
+import { Form, Input, Modal } from "antd";
 import { AppButton } from "components/button/AppButton";
-import React, { useState } from "react";
+import React from "react";
 import { IModalProps } from "types";
-import {
-  generalValidationRules,
-  textInputValidationRules,
-} from "utils/formHelpers/validation";
+import { textInputValidationRules } from "utils/formHelpers/validation";
 import { openNotification } from "utils/notifications";
 import { useQueryClient } from "react-query";
-import { useCreatePayGrade } from "features/payroll/hooks/payGrades/useCreatePayGrade";
-import { QUERY_KEY_FOR_PAY_GRADES } from "features/payroll/hooks/payGrades/useGetPayGrades";
-import { FormPayGradeCategoryInput } from "../payGradeCategories/FormPayGradeCategoryInput";
+import { useAddPensionAdmin } from "features/payroll/hooks/pensionAdministrators/useAddPensionAdmin";
+import { QUERY_KEY_FOR_PENSION_ADMINS } from "features/payroll/hooks/pensionAdministrators/useGetPensionAdmins";
 
 const AddPensionAdmin: React.FC<IModalProps> = ({ open, handleClose }) => {
   const queryClient = useQueryClient();
-  const [categoryRange, setCategoryRange] = useState<{
-    min: number;
-    max: number;
-  }>({ min: 0, max: 0 });
 
   const [form] = Form.useForm();
-  const { mutate, isLoading } = useCreatePayGrade();
+  const { mutate, isLoading } = useAddPensionAdmin();
 
   const handleSubmit = (data: any) => {
     mutate(
       {
-        categoryId: data.categoryId,
-        grossPay: data.grossPay,
         name: data.name,
       },
       {
@@ -51,7 +41,7 @@ const AddPensionAdmin: React.FC<IModalProps> = ({ open, handleClose }) => {
           handleClose();
 
           queryClient.invalidateQueries({
-            queryKey: [QUERY_KEY_FOR_PAY_GRADES],
+            queryKey: [QUERY_KEY_FOR_PENSION_ADMINS],
             // exact: true,
           });
         },

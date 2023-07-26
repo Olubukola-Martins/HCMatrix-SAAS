@@ -1,51 +1,38 @@
-import { Form, Input, InputNumber, Modal, Slider } from "antd";
+import { Form, Input, Modal } from "antd";
 import { AppButton } from "components/button/AppButton";
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { IModalProps } from "types";
-import {
-  generalValidationRules,
-  textInputValidationRules,
-} from "utils/formHelpers/validation";
+import { textInputValidationRules } from "utils/formHelpers/validation";
 import { openNotification } from "utils/notifications";
 import { useQueryClient } from "react-query";
-import { useCreatePayGrade } from "features/payroll/hooks/payGrades/useCreatePayGrade";
-import { QUERY_KEY_FOR_PAY_GRADES } from "features/payroll/hooks/payGrades/useGetPayGrades";
-import { FormPayGradeCategoryInput } from "../payGradeCategories/FormPayGradeCategoryInput";
-import { TPayGrade } from "features/payroll/types";
-import { useUpdatePayGrade } from "features/payroll/hooks/payGrades/useUpdatePayGrade";
+import { TPensionAdministrator } from "features/payroll/types";
+import { QUERY_KEY_FOR_PENSION_ADMINS } from "features/payroll/hooks/pensionAdministrators/useGetPensionAdmins";
+import { useUpdatePensionAdmin } from "features/payroll/hooks/pensionAdministrators/useUpdatePensionAdmin";
 
 interface IProps extends IModalProps {
-  grade: TPayGrade;
+  pensionAdmin: TPensionAdministrator;
 }
-const EditPensionAdmin: React.FC<IProps> = ({ open, handleClose, grade }) => {
+const EditPensionAdmin: React.FC<IProps> = ({
+  open,
+  handleClose,
+  pensionAdmin,
+}) => {
   const queryClient = useQueryClient();
-  const [categoryRange, setCategoryRange] = useState<{
-    min: number;
-    max: number;
-  }>({ min: 0, max: 0 });
 
   const [form] = Form.useForm();
-  const { mutate, isLoading } = useUpdatePayGrade();
+  const { mutate, isLoading } = useUpdatePensionAdmin();
 
   useEffect(() => {
     form.setFieldsValue({
-      categoryId: grade.categoryId,
-      grossPay: grade.grossPay,
-      name: grade.name,
+      name: pensionAdmin.name,
     });
-    setCategoryRange({
-      max: +grade.category.maxGrossPay,
-      min: +grade.category.minGrossPay,
-    });
-  }, [form, grade]);
+  }, [form, pensionAdmin]);
 
   const handleSubmit = (data: any) => {
     mutate(
       {
-        id: grade.id,
+        id: pensionAdmin.id,
         body: {
-          categoryId: data.categoryId,
-          grossPay: data.grossPay,
           name: data.name,
         },
       },
@@ -71,7 +58,7 @@ const EditPensionAdmin: React.FC<IProps> = ({ open, handleClose, grade }) => {
           handleClose();
 
           queryClient.invalidateQueries({
-            queryKey: [QUERY_KEY_FOR_PAY_GRADES],
+            queryKey: [QUERY_KEY_FOR_PENSION_ADMINS],
             // exact: true,
           });
         },
@@ -83,7 +70,7 @@ const EditPensionAdmin: React.FC<IProps> = ({ open, handleClose, grade }) => {
       open={open}
       onCancel={() => handleClose()}
       footer={null}
-      title={"Edit Pay Grade"}
+      title={"Edit Pension Administrator"}
       style={{ top: 20 }}
     >
       <Form

@@ -5,13 +5,13 @@ import { ColumnsType } from "antd/lib/table";
 
 import { usePagination } from "hooks/usePagination";
 
-import { TPayGrade } from "features/payroll/types";
-import { useGetPayGrades } from "features/payroll/hooks/payGrades/useGetPayGrades";
 import moment from "moment";
 
 import { DeleteFilled, EditFilled } from "@ant-design/icons";
+import { TPensionAdministrator } from "features/payroll/types";
 import EditPensionAdmin from "./EditPensionAdmin";
 import DeletePensionAdmin from "./DeletePensionAdmin";
+import { useGetPensionAdmins } from "features/payroll/hooks/pensionAdministrators/useGetPensionAdmins";
 
 type TAction = "edit" | "delete";
 
@@ -19,44 +19,40 @@ const PensionAdminTable: React.FC<{
   categoryId?: number;
 }> = ({ categoryId }) => {
   const [action, setAction] = useState<TAction>();
-  const [grade, setGrade] = useState<TPayGrade>();
+  const [pensionAdmin, setPensionAdmin] = useState<TPensionAdministrator>();
   const handleAction = ({
     action,
-    grade,
+    data,
   }: {
     action: TAction;
-    grade: TPayGrade;
+    data: TPensionAdministrator;
   }) => {
     setAction(action);
-    setGrade(grade);
+    setPensionAdmin(data);
   };
   const cancelAction = () => {
     setAction(undefined);
-    setGrade(undefined);
+    setPensionAdmin(undefined);
   };
   const { pagination, onChange } = usePagination();
 
-  const { data, isFetching } = useGetPayGrades({
+  const { data, isFetching } = useGetPensionAdmins({
     pagination,
   });
 
-  const columns: ColumnsType<TPayGrade> = [
+  const columns: ColumnsType<TPensionAdministrator> = [
     {
       title: "Name",
       dataIndex: "name",
       key: "name",
       render: (val, item) => <span className="capitalize">{item?.name}</span>,
-
-      // ellipsis: true,
-
-      // width: 100,
     },
 
     {
       title: "Employee Count",
       dataIndex: "pay",
       key: "pay",
-      render: (_, item) => item.grossPay,
+      render: (_, item) => 0,
     },
     {
       title: "Created At",
@@ -79,12 +75,12 @@ const PensionAdminTable: React.FC<{
           <Button
             icon={<EditFilled />}
             type="text"
-            onClick={() => handleAction({ action: "edit", grade: item })}
+            onClick={() => handleAction({ action: "edit", data: item })}
           />
           <Button
             icon={<DeleteFilled />}
             type="text"
-            onClick={() => handleAction({ action: "delete", grade: item })}
+            onClick={() => handleAction({ action: "delete", data: item })}
           />
         </div>
       ),
@@ -93,16 +89,16 @@ const PensionAdminTable: React.FC<{
 
   return (
     <>
-      {grade && (
+      {pensionAdmin && (
         <EditPensionAdmin
-          grade={grade}
+          pensionAdmin={pensionAdmin}
           open={action === "edit"}
           handleClose={() => cancelAction()}
         />
       )}
-      {grade && (
+      {pensionAdmin && (
         <DeletePensionAdmin
-          grade={grade}
+          pensionAdmin={pensionAdmin}
           open={action === "delete"}
           handleClose={() => cancelAction()}
         />

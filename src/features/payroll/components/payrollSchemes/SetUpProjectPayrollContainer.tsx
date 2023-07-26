@@ -47,6 +47,7 @@ const PayrollSchemeCardList = () => {
     isFetching: isFetchingProjects,
   } = useGetProjects({
     pagination,
+    status: "active",
   });
   const {
     data: payrollScheme,

@@ -5,13 +5,13 @@ import { ColumnsType } from "antd/lib/table";
 
 import { usePagination } from "hooks/usePagination";
 
-import { TPayGrade } from "features/payroll/types";
-import { useGetPayGrades } from "features/payroll/hooks/payGrades/useGetPayGrades";
+import { TTaxAuthority } from "features/payroll/types";
 import moment from "moment";
 
 import { DeleteFilled, EditFilled } from "@ant-design/icons";
 import DeleteTaxAuth from "./DeleteTaxAuth";
 import EditTaxAuth from "./EditTaxAuth";
+import { useGetTaxAuthorities } from "features/payroll/hooks/taxAuthorities/useGetTaxAuthorities";
 
 type TAction = "edit" | "delete";
 
@@ -19,44 +19,40 @@ const TaxAuthTable: React.FC<{
   categoryId?: number;
 }> = ({ categoryId }) => {
   const [action, setAction] = useState<TAction>();
-  const [grade, setGrade] = useState<TPayGrade>();
+  const [taxAuth, setTaxAuth] = useState<TTaxAuthority>();
   const handleAction = ({
     action,
-    grade,
+    data,
   }: {
     action: TAction;
-    grade: TPayGrade;
+    data: TTaxAuthority;
   }) => {
     setAction(action);
-    setGrade(grade);
+    setTaxAuth(data);
   };
   const cancelAction = () => {
     setAction(undefined);
-    setGrade(undefined);
+    setTaxAuth(undefined);
   };
   const { pagination, onChange } = usePagination();
 
-  const { data, isFetching } = useGetPayGrades({
+  const { data, isFetching } = useGetTaxAuthorities({
     pagination,
   });
 
-  const columns: ColumnsType<TPayGrade> = [
+  const columns: ColumnsType<TTaxAuthority> = [
     {
       title: "Name",
       dataIndex: "name",
       key: "name",
       render: (val, item) => <span className="capitalize">{item?.name}</span>,
-
-      // ellipsis: true,
-
-      // width: 100,
     },
 
     {
       title: "Employee Count",
       dataIndex: "pay",
       key: "pay",
-      render: (_, item) => item.grossPay,
+      render: (_, item) => 0,
     },
     {
       title: "Created At",
@@ -79,12 +75,12 @@ const TaxAuthTable: React.FC<{
           <Button
             icon={<EditFilled />}
             type="text"
-            onClick={() => handleAction({ action: "edit", grade: item })}
+            onClick={() => handleAction({ action: "edit", data: item })}
           />
           <Button
             icon={<DeleteFilled />}
             type="text"
-            onClick={() => handleAction({ action: "delete", grade: item })}
+            onClick={() => handleAction({ action: "delete", data: item })}
           />
         </div>
       ),
@@ -93,16 +89,16 @@ const TaxAuthTable: React.FC<{
 
   return (
     <>
-      {grade && (
+      {taxAuth && (
         <EditTaxAuth
-          grade={grade}
+          taxAuth={taxAuth}
           open={action === "edit"}
           handleClose={() => cancelAction()}
         />
       )}
-      {grade && (
+      {taxAuth && (
         <DeleteTaxAuth
-          grade={grade}
+          taxAuth={taxAuth}
           open={action === "delete"}
           handleClose={() => cancelAction()}
         />

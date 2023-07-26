@@ -1,46 +1,34 @@
 import { Form, Input, Modal } from "antd";
 import { AppButton } from "components/button/AppButton";
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { IModalProps } from "types";
 import { textInputValidationRules } from "utils/formHelpers/validation";
 import { openNotification } from "utils/notifications";
 import { useQueryClient } from "react-query";
-import { QUERY_KEY_FOR_PAY_GRADES } from "features/payroll/hooks/payGrades/useGetPayGrades";
-import { TPayGrade } from "features/payroll/types";
-import { useUpdatePayGrade } from "features/payroll/hooks/payGrades/useUpdatePayGrade";
+import { useUpdateTaxAuthority } from "features/payroll/hooks/taxAuthorities/useUpdateTaxAuthority";
+import { QUERY_KEY_FOR_TAX_AUTHOTITY } from "features/payroll/hooks/taxAuthorities/useGetTaxAuthorities";
+import { TTaxAuthority } from "features/payroll/types";
 
 interface IProps extends IModalProps {
-  grade: TPayGrade;
+  taxAuth: TTaxAuthority;
 }
-const EditTaxAuth: React.FC<IProps> = ({ open, handleClose, grade }) => {
+const EditTaxAuth: React.FC<IProps> = ({ open, handleClose, taxAuth }) => {
   const queryClient = useQueryClient();
-  const [categoryRange, setCategoryRange] = useState<{
-    min: number;
-    max: number;
-  }>({ min: 0, max: 0 });
 
   const [form] = Form.useForm();
-  const { mutate, isLoading } = useUpdatePayGrade();
+  const { mutate, isLoading } = useUpdateTaxAuthority();
 
   useEffect(() => {
     form.setFieldsValue({
-      categoryId: grade.categoryId,
-      grossPay: grade.grossPay,
-      name: grade.name,
+      name: taxAuth.name,
     });
-    setCategoryRange({
-      max: +grade.category.maxGrossPay,
-      min: +grade.category.minGrossPay,
-    });
-  }, [form, grade]);
+  }, [form, taxAuth]);
 
   const handleSubmit = (data: any) => {
     mutate(
       {
-        id: grade.id,
+        id: taxAuth.id,
         body: {
-          categoryId: data.categoryId,
-          grossPay: data.grossPay,
           name: data.name,
         },
       },
@@ -66,7 +54,7 @@ const EditTaxAuth: React.FC<IProps> = ({ open, handleClose, grade }) => {
           handleClose();
 
           queryClient.invalidateQueries({
-            queryKey: [QUERY_KEY_FOR_PAY_GRADES],
+            queryKey: [QUERY_KEY_FOR_TAX_AUTHOTITY],
             // exact: true,
           });
         },
@@ -78,7 +66,7 @@ const EditTaxAuth: React.FC<IProps> = ({ open, handleClose, grade }) => {
       open={open}
       onCancel={() => handleClose()}
       footer={null}
-      title={"Edit Pay Grade"}
+      title={"Edit Tax Authority"}
       style={{ top: 20 }}
     >
       <Form

@@ -1,6 +1,6 @@
 import { Select, Spin } from "antd";
-import { useGetPayGrades } from "features/payroll/hooks/payGrades/useGetPayGrades";
-import { TPayGrade } from "features/payroll/types";
+import { useGetPensionAdmins } from "features/payroll/hooks/pensionAdministrators/useGetPensionAdmins";
+import { TTaxAuthority } from "features/payroll/types";
 import { useDebounce } from "hooks/useDebounce";
 import { useState } from "react";
 import { generalValidationRules } from "utils/formHelpers/validation";
@@ -8,13 +8,13 @@ import { generalValidationRules } from "utils/formHelpers/validation";
 export const FormPensionAdminInput: React.FC<{
   Form: any;
   showLabel?: boolean;
-  onSelect?: (val: number, option: TPayGrade) => void;
+  onSelect?: (val: number, option: TTaxAuthority) => void;
   control?: { label: string; name: string | (string | number)[] };
 }> = ({ Form, showLabel = true, control, onSelect }) => {
   const [searchTerm, setSearchTerm] = useState<string>("");
   const debouncedSearchTerm: string = useDebounce<string>(searchTerm);
 
-  const { data, isFetching, isSuccess } = useGetPayGrades({
+  const { data, isFetching, isSuccess } = useGetPensionAdmins({
     searchParams: {
       name: debouncedSearchTerm,
     },
@@ -27,11 +27,11 @@ export const FormPensionAdminInput: React.FC<{
   return (
     <Form.Item
       name={control?.name ?? "pensionAdminId"}
-      label={showLabel ? control?.label ?? "Pension Admin " : null}
+      label={showLabel ? control?.label ?? "Pension Administrator " : null}
       rules={generalValidationRules}
     >
       <Select
-        placeholder="Select Pension Admin"
+        placeholder="Select Pension Administrator"
         loading={isFetching} //TO DO : this should be added to all custom Fetch Form Inputs
         showSearch
         allowClear

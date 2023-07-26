@@ -8,25 +8,19 @@ import {
 } from "utils/formHelpers/validation";
 import { openNotification } from "utils/notifications";
 import { useQueryClient } from "react-query";
-import { useCreatePayGrade } from "features/payroll/hooks/payGrades/useCreatePayGrade";
 import { QUERY_KEY_FOR_PAY_GRADES } from "features/payroll/hooks/payGrades/useGetPayGrades";
-import { FormPayGradeCategoryInput } from "../payGradeCategories/FormPayGradeCategoryInput";
+import { useAddTaxAuthority } from "features/payroll/hooks/taxAuthorities/useAddTaxAuthority";
+import { QUERY_KEY_FOR_TAX_AUTHOTITY } from "features/payroll/hooks/taxAuthorities/useGetTaxAuthorities";
 
 const AddTaxAuth: React.FC<IModalProps> = ({ open, handleClose }) => {
   const queryClient = useQueryClient();
-  const [categoryRange, setCategoryRange] = useState<{
-    min: number;
-    max: number;
-  }>({ min: 0, max: 0 });
 
   const [form] = Form.useForm();
-  const { mutate, isLoading } = useCreatePayGrade();
+  const { mutate, isLoading } = useAddTaxAuthority();
 
   const handleSubmit = (data: any) => {
     mutate(
       {
-        categoryId: data.categoryId,
-        grossPay: data.grossPay,
         name: data.name,
       },
       {
@@ -51,7 +45,7 @@ const AddTaxAuth: React.FC<IModalProps> = ({ open, handleClose }) => {
           handleClose();
 
           queryClient.invalidateQueries({
-            queryKey: [QUERY_KEY_FOR_PAY_GRADES],
+            queryKey: [QUERY_KEY_FOR_TAX_AUTHOTITY],
             // exact: true,
           });
         },

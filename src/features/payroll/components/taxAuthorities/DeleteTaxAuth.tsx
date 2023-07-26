@@ -1,25 +1,24 @@
 import React from "react";
 import { IModalProps } from "types";
-
 import { openNotification } from "utils/notifications";
 import { useQueryClient } from "react-query";
-import { QUERY_KEY_FOR_PAY_GRADES } from "features/payroll/hooks/payGrades/useGetPayGrades";
-import { TPayGrade } from "features/payroll/types";
-import { useDeletePayGrade } from "features/payroll/hooks/payGrades/useDeletePayGrade";
+import { TTaxAuthority } from "features/payroll/types";
 import DeleteEntityModal from "components/entity/DeleteEntityModal";
+import { useDeleteTaxAuthority } from "features/payroll/hooks/taxAuthorities/useDeleteTaxAuthority";
+import { QUERY_KEY_FOR_TAX_AUTHOTITY } from "features/payroll/hooks/taxAuthorities/useGetTaxAuthorities";
 
 interface IProps extends IModalProps {
-  grade: TPayGrade;
+  taxAuth: TTaxAuthority;
 }
-const DeleteTaxAuth: React.FC<IProps> = ({ open, handleClose, grade }) => {
+const DeleteTaxAuth: React.FC<IProps> = ({ open, handleClose, taxAuth }) => {
   const queryClient = useQueryClient();
 
-  const { mutate, isLoading } = useDeletePayGrade();
+  const { mutate, isLoading } = useDeleteTaxAuthority();
 
   const handleDelete = () => {
     mutate(
       {
-        id: grade.id,
+        id: taxAuth.id,
       },
       {
         onError: (err: any) => {
@@ -41,7 +40,7 @@ const DeleteTaxAuth: React.FC<IProps> = ({ open, handleClose, grade }) => {
           });
 
           queryClient.invalidateQueries({
-            queryKey: [QUERY_KEY_FOR_PAY_GRADES],
+            queryKey: [QUERY_KEY_FOR_TAX_AUTHOTITY],
             // exact: true,
           });
           handleClose();
@@ -52,7 +51,7 @@ const DeleteTaxAuth: React.FC<IProps> = ({ open, handleClose, grade }) => {
   return (
     <DeleteEntityModal
       title="Delete Tax Authority"
-      entity={{ type: "pension administrator", name: grade.name }}
+      entity={{ type: "tax authority", name: taxAuth.name }}
       handleClose={handleClose}
       open={open}
       handleDelete={{ fn: handleDelete, isLoading: isLoading }}

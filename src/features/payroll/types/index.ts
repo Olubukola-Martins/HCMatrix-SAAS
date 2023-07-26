@@ -2,12 +2,16 @@ import { TCostCentre } from "./costCentres";
 import { TExchangeRateListItem } from "./exchangeRateList";
 import { TPayGradeCategory } from "./payGradeCategories";
 import { TPayGrade } from "./payGrades";
+import { TPensionAdministrator } from "./pensionAdministrators";
+import { TTaxAuthority } from "./taxAuthorities";
 
 export {
   type TPayGrade,
   type TPayGradeCategory,
   type TExchangeRateListItem,
   type TCostCentre,
+  type TTaxAuthority,
+  type TPensionAdministrator,
 };
 
 type TfakeSalaryComponent = {

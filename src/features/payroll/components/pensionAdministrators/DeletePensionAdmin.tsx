@@ -1,25 +1,29 @@
 import React from "react";
 import { IModalProps } from "types";
-
 import { openNotification } from "utils/notifications";
 import { useQueryClient } from "react-query";
-import { QUERY_KEY_FOR_PAY_GRADES } from "features/payroll/hooks/payGrades/useGetPayGrades";
-import { TPayGrade } from "features/payroll/types";
-import { useDeletePayGrade } from "features/payroll/hooks/payGrades/useDeletePayGrade";
+import { TPensionAdministrator } from "features/payroll/types";
 import DeleteEntityModal from "components/entity/DeleteEntityModal";
+import { QUERY_KEY_FOR_TAX_AUTHOTITY } from "features/payroll/hooks/taxAuthorities/useGetTaxAuthorities";
+import { useDeletePensionAdmin } from "features/payroll/hooks/pensionAdministrators/useDeletePensionAdmin";
+import { QUERY_KEY_FOR_PENSION_ADMINS } from "features/payroll/hooks/pensionAdministrators/useGetPensionAdmins";
 
 interface IProps extends IModalProps {
-  grade: TPayGrade;
+  pensionAdmin: TPensionAdministrator;
 }
-const DeletePensionAdmin: React.FC<IProps> = ({ open, handleClose, grade }) => {
+const DeletePensionAdmin: React.FC<IProps> = ({
+  open,
+  handleClose,
+  pensionAdmin,
+}) => {
   const queryClient = useQueryClient();
 
-  const { mutate, isLoading } = useDeletePayGrade();
+  const { mutate, isLoading } = useDeletePensionAdmin();
 
   const handleDelete = () => {
     mutate(
       {
-        id: grade.id,
+        id: pensionAdmin.id,
       },
       {
         onError: (err: any) => {
@@ -41,7 +45,7 @@ const DeletePensionAdmin: React.FC<IProps> = ({ open, handleClose, grade }) => {
           });
 
           queryClient.invalidateQueries({
-            queryKey: [QUERY_KEY_FOR_PAY_GRADES],
+            queryKey: [QUERY_KEY_FOR_PENSION_ADMINS],
             // exact: true,
           });
           handleClose();
@@ -51,8 +55,8 @@ const DeletePensionAdmin: React.FC<IProps> = ({ open, handleClose, grade }) => {
   };
   return (
     <DeleteEntityModal
-      title="Delete Pension Admininistrator"
-      entity={{ type: "pension administrator", name: grade.name }}
+      title="Delete Pension Administrator"
+      entity={{ type: "pension administrator", name: pensionAdmin.name }}
       handleClose={handleClose}
       open={open}
       handleDelete={{ fn: handleDelete, isLoading: isLoading }}

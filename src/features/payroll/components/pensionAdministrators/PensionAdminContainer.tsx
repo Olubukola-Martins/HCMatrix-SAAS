@@ -1,7 +1,5 @@
 import PageSubHeader from "components/layout/PageSubHeader";
 import React, { useState } from "react";
-import { Tabs } from "antd";
-
 import AddPensionAdmin from "./AddPensionAdmin";
 import PensionAdminTable from "./PensionAdminsTable";
 
@@ -20,7 +18,7 @@ export const PensionAdminContainer = () => {
           description={`You can now create/edit pension administrators`}
           actions={[
             {
-              name: "Add Administrator",
+              name: "Add Authority",
               handleClick: () => setComp("add-pension-admin"),
             },
           ]}
