@@ -32,17 +32,27 @@ const PageSubHeader = ({
       )}
 
       <div className="flex gap-4 items-center">
-        {actions
-          ?.filter((item) => item.hidden === true)
-          .map((item, i) => (
-            <AppButton
-              key={i}
-              label={item.name}
-              handleClick={() => item.handleClick()}
-              variant={item.btnVariant}
-              isLoading={item.loading}
-            />
-          ))}
+        {actions?.some((item) => item.hidden)
+          ? actions
+              ?.filter((item) => item.hidden === true)
+              .map((item, i) => (
+                <AppButton
+                  key={i}
+                  label={item.name}
+                  handleClick={() => item.handleClick()}
+                  variant={item.btnVariant}
+                  isLoading={item.loading}
+                />
+              ))
+          : actions?.map((item, i) => (
+              <AppButton
+                key={i}
+                label={item.name}
+                handleClick={() => item.handleClick()}
+                variant={item.btnVariant}
+                isLoading={item.loading}
+              />
+            ))}
       </div>
     </div>
   );
