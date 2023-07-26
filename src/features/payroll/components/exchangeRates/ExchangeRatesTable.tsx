@@ -1,6 +1,5 @@
 import { Avatar, Button, Form, Input, InputNumber, Switch, Table } from "antd";
 import { ColumnsType, TablePaginationConfig, TableProps } from "antd/lib/table";
-import { LoadingOutlined } from "@ant-design/icons";
 import { useState } from "react";
 import { useQueryClient } from "react-query";
 import { openNotification } from "utils/notifications";
@@ -11,6 +10,7 @@ import { QUERY_KEY_FOR_EXCHANGE_RATES } from "features/payroll/hooks/exhangeRate
 interface IProps {
   data?: TExchangeRateListItem[];
   loading?: boolean;
+  defaultCompanyParams?: string;
 }
 
 interface EditableCellProps extends React.HTMLAttributes<HTMLElement> {
@@ -61,7 +61,11 @@ const EditableCell: React.FC<EditableCellProps> = ({
   );
 };
 
-export const ExchangeRatesTable = ({ data = [], loading }: IProps) => {
+export const ExchangeRatesTable = ({
+  data = [],
+  loading,
+  defaultCompanyParams,
+}: IProps) => {
   const queryClient = useQueryClient();
 
   const [form] = Form.useForm();
@@ -162,13 +166,15 @@ export const ExchangeRatesTable = ({ data = [], loading }: IProps) => {
           </div>
         ) : (
           <div className="flex items-center gap-3 text-lg">
-            {!editingKey ? (
+            {!editingKey && defaultCompanyParams !== item.currency ? (
               <i
                 className="ri-pencil-line cursor-pointer hover:text-caramel"
                 onClick={() => edit(item)}
               />
             ) : (
-              <i className="ri-pencil-line cursor-not-allowed text-slate-200" />
+              <>
+                <i className="ri-pencil-line cursor-not-allowed text-slate-200" />
+              </>
             )}
           </div>
         );

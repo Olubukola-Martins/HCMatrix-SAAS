@@ -36,9 +36,9 @@ const ExchangeRateForm: React.FC = () => {
     { label: string; value: string }[]
   >([]);
   const navigate = useNavigate();
+  const baseCurrency = companyParams?.value.currencySettings?.baseCurrency;
 
   useEffect(() => {
-    const baseCurrency = companyParams?.value.currencySettings?.baseCurrency;
     if (!baseCurrency && !isFetchingCompanyParams) {
       navigate(appRoutes.companyDetailsSettings);
       openNotification({
@@ -56,7 +56,7 @@ const ExchangeRateForm: React.FC = () => {
       );
       setParsedCurrencyOptions(options);
     }
-  }, [companyParams, navigate, rates, isFetchingCompanyParams]);
+  }, [companyParams, navigate, rates, isFetchingCompanyParams, baseCurrency]);
   const [add, setAdd] = useState(false);
 
   return (
@@ -78,7 +78,11 @@ const ExchangeRateForm: React.FC = () => {
           )}
           {/* list of rates and ability to edit */}
           {rates && (
-            <ExchangeRatesTable data={rates.data} loading={isFetchingRates} />
+            <ExchangeRatesTable
+              data={rates.data}
+              loading={isFetchingRates}
+              defaultCompanyParams={baseCurrency}
+            />
           )}
         </div>
       </div>
