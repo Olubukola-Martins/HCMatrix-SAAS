@@ -6,7 +6,7 @@ import axios from "axios";
 // export const REFRESH_TOKEN_EXPIRES_IN = 5;
 
 // NEXT REMOVE THE SIGN OUTS ON THE ERR CATCH Of func
-export const TOKEN_EXPIRES_IN = 10;
+export const TOKEN_EXPIRES_IN = 60 * 24 * 60; //60 days
 export const REFRESH_TOKEN_EXPIRES_IN = 8;
 const REFRESH_TOKEN_INTERVAL = 7; // refresh token after every 7 min
 
