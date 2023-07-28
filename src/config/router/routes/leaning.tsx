@@ -14,6 +14,7 @@ import { Budgets } from "features/leaningAndDev/pages/Budgets";
 import { PaidTraining } from "features/leaningAndDev/pages/PaidTraining";
 import { AddTraining } from "features/leaningAndDev/pages/AddTraining";
 import { LAndDReport } from "features/leaningAndDev/pages/LAndDReport";
+import { Udemy } from "features/leaningAndDev/pages/Udemy";
 
 export const leaningRoutes: TRouteData[] = [
   {
@@ -91,5 +92,11 @@ export const leaningRoutes: TRouteData[] = [
     path: appRoutes.lAndDReport,
     isSearchable: true,
     title: "Leaning & Development Report",
+  },
+  {
+    element: <Udemy />,
+    path: appRoutes.udemy,
+    isSearchable: true,
+    title: "Udemy Report",
   },
 ];

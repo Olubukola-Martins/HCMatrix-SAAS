@@ -211,4 +211,5 @@ export const appRoutes = {
   budgets: `/leaning/budgets`,
   addTraining: `/leaning/add-training`,
   lAndDReport: `/leaning/report`,
+  udemy: `/leaning/udemy-report`,
 };

@@ -6,6 +6,7 @@ import { Tabs } from "antd";
 import { LeaningMonthCard } from "../components/LeaningMonthCard";
 import { TrackProgressCard } from "../components/TrackProgressCard";
 import { TrainingCard } from "../components/TrainingCard";
+import { appRoutes } from "config/router/paths";
 
 export const LeaningHome = () => {
   return (
@@ -34,7 +35,7 @@ export const LeaningHome = () => {
                   <img src={udemyLogo} alt="udemy" />
                 </div>
                 <Link
-                  to="/"
+                  to={appRoutes.udemy}
                   className="font-medium text-sm text-right text-caramel pt-3 underline"
                 >
                   View Report
