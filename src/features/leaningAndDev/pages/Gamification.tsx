@@ -71,7 +71,7 @@ export const Gamification = () => {
     <>
       <LeaningNavbar active="gamification" />
       <div className="Container">
-        <PageIntro link={appRoutes.leaningHome} title="Gamification" />
+        <PageIntro link={appRoutes.learningHome} title="Gamification" />
         <div className="flex justify-between items-center mt-10 mb-7">
           <Input.Search
             placeholder="Search branch"

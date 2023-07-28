@@ -8,7 +8,7 @@ import { TrackProgressCard } from "../components/TrackProgressCard";
 import { TrainingCard } from "../components/TrainingCard";
 import { appRoutes } from "config/router/paths";
 
-export const LeaningHome = () => {
+export const learningHome = () => {
   return (
     <>
       <LeaningNavbar active="none-active" />

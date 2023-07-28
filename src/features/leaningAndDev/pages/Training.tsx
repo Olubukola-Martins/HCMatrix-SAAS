@@ -13,7 +13,7 @@ export const Training = () => {
       <LeaningNavbar active="training" />
       <div className="Container">
         <div className="flex items-center justify-between">
-          <PageIntro title="Training" link={appRoutes.leaningHome} />
+          <PageIntro title="Training" link={appRoutes.learningHome} />
           <div className="flex items-center gap-4">
             <Link
               to={appRoutes.paidTraining}

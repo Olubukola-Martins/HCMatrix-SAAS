@@ -77,7 +77,7 @@ export const PaidTraining = () => {
       <LeaningNavbar active="training" />
       <div className="Container">
         <div className="flex justify-between items-center">
-          <PageIntro link={appRoutes.leaningHome} title="Paid Training" />
+          <PageIntro link={appRoutes.learningHome} title="Paid Training" />
 
           <Link to={appRoutes.budgets} className="button">
             Budget

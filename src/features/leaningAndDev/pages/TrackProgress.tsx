@@ -75,7 +75,7 @@ export const TrackProgress = () => {
     <>
       <LeaningNavbar active="tracking-progress" />
       <div className="Container">
-        <PageIntro link={appRoutes.leaningHome} title="Tracking Progress" />
+        <PageIntro link={appRoutes.learningHome} title="Tracking Progress" />
 
         <div className="flex justify-between items-center mt-10 mb-7">
           <Input.Search

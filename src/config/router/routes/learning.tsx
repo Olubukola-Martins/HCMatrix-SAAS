@@ -1,4 +1,4 @@
-import { LeaningHome } from "features/leaningAndDev/pages/LeaningHome";
+import { learningHome } from "features/leaningAndDev/pages/learningHome";
 import { TRouteData } from "../types";
 import { appRoutes } from "../paths";
 import { TrainingSettings } from "features/leaningAndDev/pages/settings/TrainingSettings";
@@ -18,10 +18,10 @@ import { Udemy } from "features/leaningAndDev/pages/Udemy";
 
 export const leaningRoutes: TRouteData[] = [
   {
-    element: <LeaningHome />,
-    path: appRoutes.leaningHome,
+    element: <learningHome />,
+    path: appRoutes.learningHome,
     isSearchable: true,
-    title: "Leaning & development",
+    title: "Learning & development",
     // category: "doesnt-require-authentication"
   },
   {
@@ -91,7 +91,7 @@ export const leaningRoutes: TRouteData[] = [
     element: <LAndDReport />,
     path: appRoutes.lAndDReport,
     isSearchable: true,
-    title: "Leaning & Development Report",
+    title: "Learning & Development Report",
   },
   {
     element: <Udemy />,

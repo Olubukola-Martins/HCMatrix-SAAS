@@ -11,7 +11,7 @@ export const LAndDReport = () => {
     <>
       <LeaningNavbar active="reports" />
       <div className="Container">
-        <PageIntro link={appRoutes.leaningHome} title="Report" />
+        <PageIntro link={appRoutes.learningHome} title="Report" />
         <Tabs
           defaultActiveKey="1"
           items={[

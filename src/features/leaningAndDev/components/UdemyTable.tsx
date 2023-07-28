@@ -1,4 +1,4 @@
-import { ColumnsType } from "antd/lib/table";
+import Table, { ColumnsType } from "antd/lib/table";
 
 type TUdemy = {
   key: React.Key;
@@ -47,6 +47,27 @@ const columns: ColumnsType<TUdemy> = [
   },
 ];
 
+const data: TUdemy[] = [
+  {
+    key: "1",
+    name: "Omenuko Godswill",
+    role: "Employee",
+    email: "example@example.com",
+    joinedDate: "2020-01-01",
+    coursesEnrolled: 2,
+    AssignedCourses: 2,
+    completedCourses: 2,
+    lastDateVisit: "2020-01-01",
+  },
+];
+
 export const UdemyTable = () => {
-  return <div>UdemyTable</div>;
+  return (
+    <Table
+      className="mt-3"
+      columns={columns}
+      dataSource={data}
+      scroll={{ x: 600 }}
+    />
+  );
 };
