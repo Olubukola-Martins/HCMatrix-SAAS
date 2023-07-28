@@ -1,4 +1,4 @@
-import { learningHome } from "features/leaningAndDev/pages/learningHome";
+import { LearningHome } from "features/leaningAndDev/pages/LearningHome";
 import { TRouteData } from "../types";
 import { appRoutes } from "../paths";
 import { TrainingSettings } from "features/leaningAndDev/pages/settings/TrainingSettings";
@@ -18,7 +18,7 @@ import { Udemy } from "features/leaningAndDev/pages/Udemy";
 
 export const leaningRoutes: TRouteData[] = [
   {
-    element: <learningHome />,
+    element: <LearningHome />,
     path: appRoutes.learningHome,
     isSearchable: true,
     title: "Learning & development",
