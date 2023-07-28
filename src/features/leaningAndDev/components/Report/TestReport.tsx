@@ -9,7 +9,6 @@ type TTestReport = {
   totalTest: string;
   completed: string;
   pass: string;
-
   averageScore: string;
 };
 
