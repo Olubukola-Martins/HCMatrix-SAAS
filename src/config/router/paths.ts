@@ -188,12 +188,16 @@ export const appRoutes = {
   clockInSettings: `/attendance/clock-in-settings`,
   addLocation: `/attendance/add-location`,
   otherSettings: `/attendance/other-settings`,
- 
+  // Recruitment
+  recruitmentSettings: `/recruitment/settings`,
+  recruitmentDashboard: `/recruitment/dashboard`,
+  recruitmentReport: `/recruitment/report`,
+  recruitmentAddJobOpening: `/recruitment/add-job-opening`,
+
   // Leaning and development
   leaningHome: `/leaning/home`,
   training: `/leaning/training`,
   feedbackTemplate: `/leaning/feedback-template`,
   gamification: `/leaning/gamification`,
   notification: `/leaning/notification`,
-
 };

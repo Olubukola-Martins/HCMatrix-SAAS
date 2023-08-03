@@ -20,6 +20,7 @@ const SideBar = () => {
     performance: "/performance",
     attendance: "/attendance",
     leaning: "/leaning",
+    recruitment: "/recruitment",
   };
   return (
     <>
@@ -72,15 +73,24 @@ const SideBar = () => {
 
           <span className="sideBarName">Payroll</span>
         </NavLink>
-        <div className="sideBarItemWrap">
+
+        <NavLink
+          className={`sideBarItemWrap ${
+            isActiveRoute({
+              pathName: pathname,
+              routeName: appBaseRoutes.recruitment,
+            }) && "active"
+          }`}
+          to={`${appBaseRoutes.recruitment}/dashboard`}
+        >
           <div className="flex justify-center">
             <span className="sideBarList">
-              <i className="ri-line-chart-line"></i>
+              <i className="ri-check-double-line"></i>
             </span>
           </div>
-          <span className="sideBarName">Recruitment</span>
-        </div>
 
+          <span className="sideBarName">Recruitment</span>
+        </NavLink>
         <NavLink
           className={`sideBarItemWrap ${
             isActiveRoute({
