@@ -1,7 +1,6 @@
 import axios from "axios";
 import { MICROSERVICE_ENDPOINTS } from "config/enviroment";
 import {
-  TSalaryComponent,
   TSalaryComponentCalculationMode,
   TSalaryComponentInput,
 } from "features/payroll/types/salaryComponents";
