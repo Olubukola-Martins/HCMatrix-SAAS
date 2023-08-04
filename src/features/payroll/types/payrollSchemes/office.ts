@@ -15,7 +15,6 @@ export type TOfficePayrollScheme = {
   createdAt: string;
   updatedAt: string;
   salaryComponents: SalaryComponent[];
-
   workflow: Workflow;
   costCentreId?: number;
 };
