@@ -8,7 +8,7 @@ import {
   TSalaryComponentCalculationMode,
   TSalaryComponentInput,
 } from "features/payroll/types/salaryComponents";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { useQueryClient } from "react-query";
 import { IModalProps } from "types";
 import {
@@ -109,78 +109,84 @@ export const AddSalaryComponentForm: React.FC<IFormProps> = ({
     useUpdateAllowanceOrDeduction();
 
   //TODO: write a function that makes use of amntRestrict to set max/min of inputNumber
-  const handleUpdate = (vals: any) => {
-    salaryComponent &&
-      updateMutate(
-        {
-          schemeId: salaryComponent.schemeId,
-          allowanceOrDeductionId: salaryComponent.id,
+  const handleUpdate = useCallback(
+    (vals: any) => {
+      salaryComponent &&
+        updateMutate(
+          {
+            schemeId: salaryComponent.schemeId,
+            allowanceOrDeductionId: salaryComponent.id,
 
-          type,
-          body: {
-            name: (vals.name as string).toLocaleLowerCase(),
-            mode: vals.mode,
-            isDefault,
-            isActive,
-            amount: vals.amount,
-            label: (vals.name as string)
-              .toLocaleLowerCase()
-              .split(" ")
-              .join("_"),
+            type,
+            body: {
+              name: (vals.name as string).toLocaleLowerCase(),
+              mode: vals.mode,
+              isDefault,
+              isActive,
+              amount: vals.amount,
+              label: (vals.name as string)
+                .toLocaleLowerCase()
+                .split(" ")
+                .join("_"),
+            },
           },
-        },
-        {
-          onError: (err: any) => {
-            openNotification({
-              state: "error",
-              title: "Error Occurred",
-              duration: 2,
-              description:
-                err?.response.data.message ?? err?.response.data.error.message,
-            });
-          },
-          onSuccess: (res: any) => {
-            openNotification({
-              state: "success",
+          {
+            onError: (err: any) => {
+              openNotification({
+                state: "error",
+                title: "Error Occurred",
+                duration: 2,
+                description:
+                  err?.response.data.message ??
+                  err?.response.data.error.message,
+              });
+            },
+            onSuccess: (res: any) => {
+              openNotification({
+                state: "success",
 
-              title: "Success",
-              description: res.data.message,
-              // duration: 0.4,
-            });
-            const newComp: TSalaryComponent = res.data.data as TSalaryComponent;
-            queryClient.setQueryData(
-              [QUERY_KEY_FOR_PAYROLL_SCHEME_BY_TYPE_OR_ID],
-              (vals: unknown): TPayrollScheme => {
-                const data = vals as TPayrollScheme;
-                if (data && !Array.isArray(data) && type === "allowance") {
-                  return {
-                    ...data,
-                    allowances: data.allowances.map((item) =>
-                      item.id === newComp.id ? newComp : item
-                    ),
-                  };
+                title: "Success",
+                description: res.data.message,
+                // duration: 0.4,
+              });
+              const newComp: TSalaryComponent = res.data
+                .data as TSalaryComponent;
+              queryClient.setQueriesData(
+                [QUERY_KEY_FOR_PAYROLL_SCHEME_BY_TYPE_OR_ID],
+                (vals: unknown): TPayrollScheme => {
+                  const data = vals as TPayrollScheme;
+                  if (data && !Array.isArray(data)) {
+                    return {
+                      ...data,
+                      salaryComponents: data.salaryComponents.map((item) =>
+                        item.id === newComp.id ? newComp : item
+                      ),
+                    };
+                  }
+
+                  return data;
                 }
-                if (data && !Array.isArray(data) && type === "deduction") {
-                  return {
-                    ...data,
-                    deductions: data.deductions.map((item) =>
-                      item.id === newComp.id ? newComp : item
-                    ),
-                  };
-                }
-                return data;
-              }
-            );
-            handleClose?.();
-          },
-        }
-      );
-  };
+              );
+              handleClose?.();
+            },
+          }
+        );
+    },
+    [
+      handleClose,
+      isActive,
+      isDefault,
+      queryClient,
+      salaryComponent,
+      type,
+      updateMutate,
+    ]
+  );
   const handleCreate = (vals: any) => {
     if (handleSave) {
       handleSave({
         name: (vals.name as string).toLocaleLowerCase(),
-
+        type,
         mode: vals.mode,
         isDefault,
         isActive,
@@ -225,22 +231,20 @@ export const AddSalaryComponentForm: React.FC<IFormProps> = ({
               // duration: 0.4,
             });
             const newComp: TSalaryComponent = res.data.data as TSalaryComponent;
-            queryClient.setQueryData(
+            queryClient.setQueriesData(
               [QUERY_KEY_FOR_PAYROLL_SCHEME_BY_TYPE_OR_ID],
               (vals: unknown): TPayrollScheme => {
                 const data = vals as TPayrollScheme;
-                if (data && !Array.isArray(data) && type === "allowance") {
+                if (data && !Array.isArray(data)) {
                   return {
                     ...data,
-                    allowances: [...data.allowances, { ...newComp }],
+                    salaryComponents: [
+                      ...data.salaryComponents,
+                      { ...newComp },
+                    ],
                   };
                 }
-                if (data && !Array.isArray(data) && type === "deduction") {
-                  return {
-                    ...data,
-                    deductions: [...data.deductions, { ...newComp }],
-                  };
-                }
+
                 return data;
               }
             );
@@ -258,6 +262,16 @@ export const AddSalaryComponentForm: React.FC<IFormProps> = ({
     }
     handleCreate(data);
   };
+  useEffect(() => {
+    // This is done so that when the switch is toggled off it updates the default salary component appropriately
+    if (
+      isDefault &&
+      salaryComponent?.isActive === !isActive &&
+      isActive === false
+    ) {
+      handleUpdate({ ...salaryComponent, isActive: false });
+    }
+  }, [isDefault, isActive, salaryComponent, handleUpdate]);
   useEffect(() => {
     if (salaryComponent) {
       form.setFieldsValue({

@@ -21,6 +21,7 @@ import {
 } from "features/payroll/types/payrollSchemes";
 import { PayrollSingleProjectParticipantsContainer } from "../projectParticipants/PayrollSingleProjectParticipantsContainer";
 import { TSetupPayrollSchemeData } from "features/payroll/types/setUpSchemeInputData";
+import { FormCostCentreInput } from "../costCentres/FormCostCentreInput";
 
 const DEFAULT_COMPONENT_LABELS = {
   thirteenthMonthSalary: "thirteenth_month_salary",
@@ -252,6 +253,7 @@ export const SetUpPayrollForm: React.FC<{
     deductions,
   } = state;
   const queryClient = useQueryClient();
+  const [frequencyAmount, setFrequencyAmount] = useState<number>(0);
 
   const [form] = Form.useForm();
   const { mutate: mutateSetup, isLoading: isLoadingSetup } =
@@ -290,6 +292,7 @@ export const SetUpPayrollForm: React.FC<{
               type,
               disbursement: data.disbursement,
               workflowId: data.workflowId,
+              costCentreId: data.costCentreId,
             },
           },
           {
@@ -326,11 +329,12 @@ export const SetUpPayrollForm: React.FC<{
       mutateUpdate,
       allowApproval,
       allowDisbursement,
+      type,
+      frequencyAmount,
       frequency,
       issuePayslip,
       name,
       runAutomatically,
-      type,
       form,
       queryClient,
     ]
@@ -339,8 +343,14 @@ export const SetUpPayrollForm: React.FC<{
     (data: TSetupPayrollSchemeData) => {
       mutateSetup(
         {
-          allowances,
-          deductions,
+          salaryComponents: [
+            ...allowances.map(
+              (item): TSalaryComponentInput => ({ ...item, type: "allowance" })
+            ),
+            ...deductions.map(
+              (item): TSalaryComponentInput => ({ ...item, type: "deduction" })
+            ),
+          ],
           allowApproval,
           allowDisbursement,
           automaticRunDay:
@@ -365,6 +375,7 @@ export const SetUpPayrollForm: React.FC<{
           type,
           disbursement: data.disbursement,
           workflowId: data.workflowId,
+          costCentreId: data.costCentreId,
         },
         {
           onError: (err: any) => {
@@ -394,19 +405,20 @@ export const SetUpPayrollForm: React.FC<{
       );
     },
     [
-      projectId,
-      allowApproval,
-      allowDisbursement,
+      mutateSetup,
       allowances,
       deductions,
-      form,
-      frequency,
-      issuePayslip,
-      mutateSetup,
-      name,
-      queryClient,
-      runAutomatically,
+      allowApproval,
+      allowDisbursement,
       type,
+      frequencyAmount,
+      frequency,
+      projectId,
+      issuePayslip,
+      name,
+      runAutomatically,
+      form,
+      queryClient,
     ]
   );
   const handleSubmit = useCallback(
@@ -502,8 +514,12 @@ export const SetUpPayrollForm: React.FC<{
 
   useEffect(() => {
     if (scheme) {
-      const ogAllowances = scheme?.allowances ?? [];
-      const ogDeductions = scheme?.deductions ?? [];
+      const ogAllowances =
+        scheme?.salaryComponents.filter((item) => item.type === "allowance") ??
+        [];
+      const ogDeductions =
+        scheme?.salaryComponents.filter((item) => item.type === "deduction") ??
+        [];
       const ogSalaryComponents = [...ogAllowances, ...ogDeductions];
       dispatch({
         type: "setInitialData",
@@ -550,6 +566,7 @@ export const SetUpPayrollForm: React.FC<{
         disbursement: scheme?.disbursement,
         workflowId: scheme?.workflowId,
         automaticRunDay: scheme?.automaticRunDay,
+        costCentreId: scheme?.costCentreId,
       });
       setEditScheme(false);
     } else {
@@ -721,7 +738,6 @@ export const SetUpPayrollForm: React.FC<{
       scheme,
     ]
   );
-  const [frequencyAmount, setFrequencyAmount] = useState<number>(0);
   return (
     <div className="flex flex-col gap-4">
       <PageSubHeader
@@ -933,6 +949,22 @@ export const SetUpPayrollForm: React.FC<{
                 )}
               </div>
               <div className={boxStyle}>
+                <h5 className={boxTitle}>Default Cost Centre</h5>
+                <p className="text-sm">
+                  This is the default cost centre that will be used when payroll
+                  runs automatically
+                </p>
+                <div className="w-2/4 mt-4">
+                  <FormCostCentreInput
+                    Form={Form}
+                    control={{
+                      label: "",
+                      name: "costCentreId",
+                    }}
+                  />
+                </div>
+              </div>
+              <div className={boxStyle}>
                 <div className="flex items-center justify-between">
                   <h5
                     className={boxTitle}
@@ -1111,8 +1143,8 @@ export const SetUpPayrollForm: React.FC<{
                 </div>
                 <p className="text-sm">{item.description}</p>
 
-                {item.isActive && (
-                  <div>
+                {
+                  <div className={`${item.isActive ? "block" : "hidden"}`}>
                     <div className="grid grid-cols-1 lg:grid-cols-1 gap-5 mt-5">
                       <div>
                         <AddSalaryComponentForm
@@ -1129,7 +1161,7 @@ export const SetUpPayrollForm: React.FC<{
                       </div>
                     </div>
                   </div>
-                )}
+                }
               </div>
             ))}
           </div>

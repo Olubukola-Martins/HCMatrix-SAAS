@@ -56,26 +56,19 @@ const DeleteSalaryComponent: React.FC<IProps> = ({
             // duration: 0.4,
           });
 
-          queryClient.setQueryData(
+          queryClient.setQueriesData(
             [QUERY_KEY_FOR_PAYROLL_SCHEME_BY_TYPE_OR_ID],
             (vals: unknown): TPayrollScheme => {
               const data = vals as TPayrollScheme;
-              if (data && !Array.isArray(data) && type === "allowance") {
+              if (data && !Array.isArray(data)) {
                 return {
                   ...data,
-                  allowances: data.allowances.filter(
+                  salaryComponents: data.salaryComponents.filter(
                     (item) => item.id !== salaryComponent.id
                   ),
                 };
               }
-              if (data && !Array.isArray(data) && type === "deduction") {
-                return {
-                  ...data,
-                  deductions: data.deductions.filter(
-                    (item) => item.id !== salaryComponent.id
-                  ),
-                };
-              }
+
               return data;
             }
           );

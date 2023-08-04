@@ -1,4 +1,8 @@
-import { TAllowanceInput, TDeductionInput } from "../salaryComponents";
+import {
+  TAllowanceInput,
+  TDeductionInput,
+  TSalaryComponentInput,
+} from "../salaryComponents";
 
 export type TOfficeSetupSchemeInputData = {
   name: string;
@@ -8,9 +12,9 @@ export type TOfficeSetupSchemeInputData = {
   disbursement: number;
   allowApproval: boolean;
   workflowId: number;
+  costCentreId: number;
   issuePayslip: boolean;
   runAutomatically: boolean;
   automaticRunDay: number;
-  allowances: TAllowanceInput[];
-  deductions: TDeductionInput[];
+  salaryComponents: TSalaryComponentInput[];
 };

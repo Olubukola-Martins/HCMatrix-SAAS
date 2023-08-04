@@ -1,5 +1,9 @@
 import { TPayrollSchemeType } from "../payrollSchemes";
-import { TAllowanceInput, TDeductionInput } from "../salaryComponents";
+import {
+  TAllowanceInput,
+  TDeductionInput,
+  TSalaryComponentInput,
+} from "../salaryComponents";
 // import { TDirectSalarySetupSchemeInputData } from "./directSalary";
 // import { TOfficeSetupSchemeInputData } from "./office";
 // import { TProjectSetupSchemeInputData } from "./project";
@@ -20,11 +24,11 @@ export type TSetupPayrollSchemeData = {
   allowDisbursement: boolean;
   allowApproval: boolean;
   workflowId: number;
+  costCentreId: number;
   issuePayslip: boolean;
   runAutomatically: boolean;
   automaticRunDay: string | number; //{\"1-Payment\": \"2023-07-27\",\"2-Payment\": \"2023-10-27\",\"3-Payment\": \"2024-02-01\"} OR day of month
-  allowances: TAllowanceInput[];
-  deductions: TDeductionInput[];
+  salaryComponents: TSalaryComponentInput[];
   disbursement: number; // might not apply to project
 
   projectParticipants?: ProjectParticipant[];

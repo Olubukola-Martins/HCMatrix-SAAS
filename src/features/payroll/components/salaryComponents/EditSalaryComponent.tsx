@@ -141,26 +141,19 @@ export const EditSalaryComponentForm: React.FC<IFormProps> = ({
             // duration: 0.4,
           });
           const newComp: TSalaryComponent = res.data.data as TSalaryComponent;
-          queryClient.setQueryData(
+          queryClient.setQueriesData(
             [QUERY_KEY_FOR_PAYROLL_SCHEME_BY_TYPE_OR_ID],
             (vals: unknown): TPayrollScheme => {
               const data = vals as TPayrollScheme;
-              if (data && !Array.isArray(data) && type === "allowance") {
+              if (data && !Array.isArray(data)) {
                 return {
                   ...data,
-                  allowances: data.allowances.map((item) =>
+                  salaryComponents: data.salaryComponents.map((item) =>
                     item.id === newComp.id ? newComp : item
                   ),
                 };
               }
-              if (data && !Array.isArray(data) && type === "deduction") {
-                return {
-                  ...data,
-                  deductions: data.deductions.map((item) =>
-                    item.id === newComp.id ? newComp : item
-                  ),
-                };
-              }
+
               return data;
             }
           );

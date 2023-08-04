@@ -21,6 +21,14 @@ const createData = async (props: {
 
   const data: TSetupPayrollSchemeData = {
     ...props.data,
+    salaryComponents: props.data.salaryComponents.map((item) => ({
+      type: item.type,
+      name: item.name,
+      label: item.label,
+      mode: item.mode,
+      isDefault: item.isDefault,
+      amount: item.amount,
+    })),
   };
 
   const response = await axios.post(url, data, config);

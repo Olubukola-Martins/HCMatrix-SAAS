@@ -1,9 +1,10 @@
 import { TProjectPayrollScheme } from "./project";
 
 export type TSingleProjectPayrollScheme = TProjectPayrollScheme[0] & {
-  allowances: SalaryComponent[];
-  deductions: SalaryComponent[];
+  salaryComponents: SalaryComponent[];
+
   workflow: Workflow;
+  costCentreId?: number;
 };
 
 interface Workflow {
@@ -14,28 +15,16 @@ interface Workflow {
   companyId: number;
 }
 
-type SalaryComponent =
-  | {
-      id: number;
-      schemeId: number;
-      name: string;
-      label: string;
-      mode: "fixed" | "percentage";
-      isDefault?: boolean;
-      isActive?: boolean;
-      amount: number;
-      createdAt: string;
-      updatedAt: string;
-    }
-  | {
-      id: number;
-      schemeId: number;
-      name: string;
-      label: string;
-      mode: "formula";
-      isDefault?: boolean;
-      isActive?: boolean;
-      amount: string;
-      createdAt: string;
-      updatedAt: string;
-    };
+type SalaryComponent = {
+  id: number;
+  schemeId: number;
+  name: string;
+  label: string;
+  type: "allowance" | "deduction";
+  mode: "fixed" | "percentage" | "formula";
+  isDefault?: boolean;
+  isActive?: boolean;
+  amount: number | string;
+  createdAt: string;
+  updatedAt: string;
+};
