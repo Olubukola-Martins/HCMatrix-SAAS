@@ -49,15 +49,15 @@ export const EmployeeProfileContainer = ({
                 {...{
                   data: {
                     fullName: getEmployeeFullName(employee),
-                    designation: employee?.designation.name,
-                    department: employee?.designation.department.name,
+                    designation: employee?.designation?.name,
+                    department: employee?.designation?.department.name,
                     empuid: employee?.empUid,
                     email: employee?.email,
-                    phone: employee?.personalInformation.phoneNumber,
+                    phone: employee?.personalInformation?.phoneNumber,
                     address:
-                      employee?.personalInformation.address.streetAddress,
+                      employee?.personalInformation?.address?.streetAddress,
                     avatarUrl: employee?.avatarUrl,
-                    role: employee?.role.name,
+                    role: employee?.role?.name,
                   },
                   isLoading: isFetching,
                   handleEdit: () => {},

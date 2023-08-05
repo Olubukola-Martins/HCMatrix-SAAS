@@ -10,7 +10,7 @@ const CreateDirectSalaryPayroll = () => {
       <div className="Container">
         <PageIntro
           title="Create Direct Salary Payroll"
-          link={appRoutes.payrollSchemes}
+          link={appRoutes.payrollHome}
         />
         <CreatePayrollContainer type="direct-salary" />
       </div>

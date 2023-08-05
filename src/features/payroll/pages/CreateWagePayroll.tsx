@@ -8,10 +8,7 @@ const CreateWagePayroll = () => {
     <>
       <PayrollSubNav />
       <div className="Container">
-        <PageIntro
-          title="Create Wages Payroll"
-          link={appRoutes.payrollSchemes}
-        />
+        <PageIntro title="Create Wages Payroll" link={appRoutes.payrollHome} />
         <CreatePayrollContainer type="wages" />
       </div>
     </>

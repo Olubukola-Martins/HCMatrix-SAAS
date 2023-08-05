@@ -1,9 +1,11 @@
+import { TEmploymentEligibity } from "types/employementEligibilities";
+
 export interface TEmployeesInPayrollData {
   id: number;
   payrollId: number;
   employeeId: number;
   empUid: string;
-  eligibility: string;
+  eligibility: TEmploymentEligibity;
   fullName: string;
   netPay: string;
   grossPay: string;

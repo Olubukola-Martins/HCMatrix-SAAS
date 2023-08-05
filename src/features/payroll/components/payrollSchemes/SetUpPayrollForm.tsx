@@ -996,7 +996,7 @@ export const SetUpPayrollForm: React.FC<{
                         scheme ? undefined : handleEditAllowance
                       }
                       dependencies={[...allowances, ...deductions]}
-                      components={allowances}
+                      components={allowances.filter((item) => !item.isDefault)}
                     />
                   </div>
                 )}
@@ -1033,7 +1033,7 @@ export const SetUpPayrollForm: React.FC<{
                         scheme ? undefined : handleEditDeduction
                       }
                       dependencies={[...allowances, ...deductions]}
-                      components={deductions}
+                      components={deductions.filter((item) => !item.isDefault)}
                     />
                   </div>
                 )}

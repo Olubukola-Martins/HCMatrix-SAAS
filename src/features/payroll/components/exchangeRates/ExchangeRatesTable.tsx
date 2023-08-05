@@ -11,6 +11,7 @@ interface IProps {
   data?: TExchangeRateListItem[];
   loading?: boolean;
   defaultCompanyParams?: string;
+  onlyView?: boolean;
 }
 
 interface EditableCellProps extends React.HTMLAttributes<HTMLElement> {
@@ -65,6 +66,7 @@ export const ExchangeRatesTable = ({
   data = [],
   loading,
   defaultCompanyParams,
+  onlyView,
 }: IProps) => {
   const queryClient = useQueryClient();
 
@@ -130,7 +132,7 @@ export const ExchangeRatesTable = ({
       console.log(errInfo, "ERRO");
     }
   };
-  const columns: ColumnsType<TExchangeRateListItem> = [
+  const ogColumns: ColumnsType<TExchangeRateListItem> = [
     {
       title: "Currency",
       dataIndex: "curr",
@@ -147,6 +149,7 @@ export const ExchangeRatesTable = ({
     {
       title: "Action",
       dataIndex: "action",
+      key: "action",
       render: (_, item) => {
         const editable = isEditing(item);
         return editable ? (
@@ -181,6 +184,9 @@ export const ExchangeRatesTable = ({
       },
     },
   ];
+  const columns = onlyView
+    ? ogColumns.filter((item) => item.key !== "action")
+    : ogColumns;
   const mergedColumns = columns.map((col) => {
     if (col.key !== "rate") {
       return col;

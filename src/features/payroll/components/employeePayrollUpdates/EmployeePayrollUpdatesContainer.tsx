@@ -8,23 +8,28 @@ import ViewPayrollBreakdown from "../ViewPayrollBreakdown";
 import ModifyPayrollBreakdown from "../ModifyPayrollBreakdown";
 import { AddSalaryComponent } from "../salaryComponents/AddSalaryComponent";
 import DeleteEntityModal from "components/entity/DeleteEntityModal";
+import { TEmployeesInPayrollData } from "features/payroll/types";
 
 interface IProps {
   expatriate: boolean;
+  isLoading?: boolean;
+  employees?: TEmployeesInPayrollData[];
 }
 
-type TEmpPayrollDetail = {
-  name: string;
-  grossPay: number;
-  netPay: number; // sum of allowances and deductions
-  totalDeductions: number;
-  totalAllowances: number;
-  tax: number;
-  payrollScheme: "direct-salary" | "grade" | "wages" | "project"; //project just means that the employee is part of a project(should not be used really cos the project consultant will handle this)
-};
+// type TEmployeesInPayrollData = {
+//   name: string;
+//   grossPay: number;
+//   netPay: number; // sum of allowances and deductions
+//   totalDeductions: number;
+//   totalAllowances: number;
+//   tax: number;
+//   payrollScheme: "direct-salary" | "grade" | "wages" | "project"; //project just means that the employee is part of a project(should not be used really cos the project consultant will handle this)
+// };
 
 export const EmployeePayrollUpdatesContainer: React.FC<IProps> = ({
   expatriate = false,
+  isLoading,
+  employees,
 }) => {
   const actionItems = [
     {
@@ -65,19 +70,14 @@ export const EmployeePayrollUpdatesContainer: React.FC<IProps> = ({
   const { pagination, onChange } = usePagination();
   const [showBreak, setShowBreak] = useState(false);
   const [showMod, setShowMod] = useState(false);
-  const columns: ColumnsType<TEmpPayrollDetail> = [
+  const columns: ColumnsType<TEmployeesInPayrollData> = [
     {
       title: "Name",
       dataIndex: "uid",
       key: "uid",
-      render: (_, item) => item.name,
+      render: (_, item) => item.fullName,
     },
-    {
-      title: "Payroll Scheme",
-      dataIndex: "ps",
-      key: "ps",
-      render: (_, item) => item.payrollScheme,
-    },
+
     {
       title: "Net Pay",
       dataIndex: "np",
@@ -150,7 +150,7 @@ export const EmployeePayrollUpdatesContainer: React.FC<IProps> = ({
   const rowSelection = {
     onChange: (
       selectedRowKeys: React.Key[],
-      selectedRows: TEmpPayrollDetail[]
+      selectedRows: TEmployeesInPayrollData[]
     ) => {
       console.log(
         `selectedRowKeys: ${selectedRowKeys}`,
@@ -159,9 +159,9 @@ export const EmployeePayrollUpdatesContainer: React.FC<IProps> = ({
       );
       setSelectedKeys(selectedRows.map((item, i) => i));
     },
-    getCheckboxProps: (record: TEmpPayrollDetail) => ({
-      disabled: record.name === "Disabled User", // Column configuration not to be checked , would be deactivated users
-      name: record.name,
+    getCheckboxProps: (record: TEmployeesInPayrollData) => ({
+      disabled: record.isActive, // Column configuration not to be checked , would be deactivated users
+      name: record.fullName,
     }),
   };
   const [compName, setCompName] = useState<string>();
@@ -242,17 +242,8 @@ export const EmployeePayrollUpdatesContainer: React.FC<IProps> = ({
           }}
           columns={columns}
           size="small"
-          dataSource={Array(4)
-            .fill({
-              name: "James Kaladin",
-              grossPay: 5000000,
-              netPay: 350000, // sum of allowances and deductions
-              totalDeductions: 200000,
-              totalAllowances: 30000,
-              tax: 2000,
-              payrollScheme: "Grade",
-            })
-            .map((item, i) => ({ ...item, key: i }))}
+          loading={isLoading}
+          dataSource={employees?.map((item, i) => ({ ...item, key: i }))}
           pagination={{ ...pagination, total: 0 }}
           onChange={onChange}
         />

@@ -12,18 +12,23 @@ import { AddExchangeRate } from "./AddExchangeRate";
 import { useGetExchangeRates } from "features/payroll/hooks/exhangeRates/useGetExchangeRates";
 import { ExchangeRatesTable } from "./ExchangeRatesTable";
 
-export const ExchangeRateContainer = () => {
+interface IProps {
+  onlyView?: boolean;
+}
+export const ExchangeRateContainer: React.FC<IProps> = ({
+  onlyView = false,
+}) => {
   // There should be view and edit state for conditional ui
   return (
     <div className="mt-4 bg-card py-6 px-6 flex justify-center gap-4">
       <div className="flex flex-col gap-4 w-3/4 items-stretch ">
-        <ExchangeRateForm />
+        <ExchangeRateForm onlyView={onlyView} />
       </div>
     </div>
   );
 };
 
-const ExchangeRateForm: React.FC = () => {
+const ExchangeRateForm: React.FC<IProps> = ({ onlyView }) => {
   const onFinish = (values: any) => {
     console.log("Received values of form:", values);
   };
@@ -67,9 +72,11 @@ const ExchangeRateForm: React.FC = () => {
       <div className="w-full">
         <div className="flex flex-col gap-4">
           {/* add member to group form */}
-          <div className="flex justify-end">
-            <AppButton label="Add Rate" handleClick={() => setAdd(true)} />
-          </div>
+          {!onlyView && (
+            <div className="flex justify-end">
+              <AppButton label="Add Rate" handleClick={() => setAdd(true)} />
+            </div>
+          )}
           {add && (
             <AddExchangeRate
               currencyOptions={parsedCurrencyOptions}
@@ -82,6 +89,7 @@ const ExchangeRateForm: React.FC = () => {
               data={rates.data}
               loading={isFetchingRates}
               defaultCompanyParams={baseCurrency}
+              onlyView={onlyView}
             />
           )}
         </div>

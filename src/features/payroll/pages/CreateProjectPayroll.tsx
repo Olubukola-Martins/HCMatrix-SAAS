@@ -10,7 +10,7 @@ const CreateProjectPayroll = () => {
       <div className="Container">
         <PageIntro
           title="Create Project Payroll"
-          link={appRoutes.payrollSchemes}
+          link={appRoutes.payrollHome}
         />
         <CreatePayrollContainer type="project" />
       </div>

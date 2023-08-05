@@ -39,7 +39,7 @@ export const SalaryComponentsContainer: React.FC<IProps> = ({
     "add-comp" | "delete-comp" | "edit-comp"
   >();
   const [salaryComponent, setSalaryComponent] = useState<TSalaryComponent>();
-  const columns: ColumnsType<TSalaryComponent> = [
+  const ogColumns: ColumnsType<TSalaryComponent> = [
     {
       title: "Name",
       dataIndex: "uid",
@@ -105,6 +105,9 @@ export const SalaryComponentsContainer: React.FC<IProps> = ({
         ),
     },
   ];
+  const columns = showControlBtns
+    ? ogColumns
+    : ogColumns.filter((item) => item.key !== "action");
 
   return (
     <>
@@ -154,10 +157,10 @@ export const SalaryComponentsContainer: React.FC<IProps> = ({
         <Table
           columns={columns}
           size="small"
-          dataSource={components.filter((item) => !item.isDefault)}
+          dataSource={components}
           pagination={{
             ...pagination,
-            total: components.filter((item) => !item.isDefault).length,
+            total: components.length,
           }}
           onChange={onChange}
         />
