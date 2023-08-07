@@ -12,7 +12,6 @@ import { PayrollPayslip } from "features/payroll/pages/PayrollPayslip";
 import EmployeePayslips from "features/payroll/pages/EmployeePayslips";
 import CreatePayslipTemplate from "features/payroll/pages/CreatePayslipTemplate";
 import PayrollSettings from "features/payroll/pages/PayrollSettings";
-import PayGrades from "features/payroll/pages/PayGrades";
 import PayrollCostCentresPage from "features/payroll/pages/PayrollCostCentresPage";
 import PayrollTaxPoliciesPage from "features/payroll/pages/PayrollTaxPoliciesPage";
 import CreateTaxPolicyPage from "features/payroll/pages/CreateTaxPolicyPage";
@@ -24,15 +23,14 @@ import SetupDirectSalaryPayrollSchemePage from "features/payroll/pages/SetupDire
 import SetupWagesPayrollSchemePage from "features/payroll/pages/SetupWagesPayrollSchemePage";
 import SetupProjectPayrollSchemePage from "features/payroll/pages/SetupProjectPayrollSchemePage";
 import SetupSingleProjectPayrollSchemePage from "features/payroll/pages/SetupSingleProjectPayrollSchemePage";
-import CreateOfficePayroll from "features/payroll/pages/CreateOfficePayroll";
-import CreateDirectSalaryPayroll from "features/payroll/pages/CreateDirectSalaryPayroll";
-import CreateWagePayroll from "features/payroll/pages/CreateWagePayroll";
-import CreateProjectPayroll from "features/payroll/pages/CreateProjectPayroll";
+import CreatePayroll from "features/payroll/pages/CreatePayroll";
 import SetupDailyWagesPayrollSchemePage from "features/payroll/pages/SetupDailyWagesPayrollSchemePage";
 import SetupMonthlyWagesPayrollSchemePage from "features/payroll/pages/SetupMonthlyWagesPayrollSchemePage";
 import ListOfPayrollsPage from "features/payroll/pages/ListOfPayrollsPage";
 import TaxAuthPage from "features/payroll/pages/TaxAuthPage";
 import PensionAdminsPage from "features/payroll/pages/PensionAdminsPage";
+import EditPayslipTemplate from "features/payroll/pages/EditPayslipTemplate";
+import SinglePayroll from "features/payroll/pages/SinglePayroll";
 
 export const payrollRoutes: TRouteData[] = [
   {
@@ -150,13 +148,7 @@ export const payrollRoutes: TRouteData[] = [
     title: "Payroll Settings",
     isPrimaryFeature: false,
   },
-  // {
-  //   element: <PayGrades />,
-  //   path: appRoutes.payGradeSettings,
-  //   title: "Payroll Grade Setting",
-  //   isSearchable: true,
-  //   isPrimaryFeature: true,
-  // },
+
   {
     element: <PayGradesAndCategoriesPage />,
     path: appRoutes.payGradeAndCategorySettings,
@@ -227,28 +219,36 @@ export const payrollRoutes: TRouteData[] = [
     title: "Payroll Comparison",
   },
   {
-    element: <CreateOfficePayroll />,
+    element: <CreatePayroll scheme={"office"} />,
+
     path: appRoutes.createOfficePayroll,
     isSearchable: true,
     title: "Create Office Payroll",
   },
   {
-    element: <CreateDirectSalaryPayroll />,
+    element: <CreatePayroll scheme={"direct-salary"} />,
+
     path: appRoutes.createDirectSalaryPayroll,
     isSearchable: true,
     title: "Create Direct Salary Payroll",
   },
   {
-    element: <CreateWagePayroll />,
+    element: <CreatePayroll scheme={"wages"} />,
+
     path: appRoutes.createWagesPayroll,
     isSearchable: true,
     title: "Create Wages Payroll",
   },
   {
-    element: <CreateProjectPayroll />,
+    element: <CreatePayroll scheme={"project"} />,
     path: appRoutes.createProjectPayroll,
     isSearchable: true,
     title: "Create Project Payroll",
+  },
+  {
+    element: <SinglePayroll />,
+    path: appRoutes.singlePayroll().format,
+    isSearchable: false,
   },
   {
     element: <PayrollReport />,
@@ -261,19 +261,24 @@ export const payrollRoutes: TRouteData[] = [
     path: appRoutes.payslips,
     isSearchable: true,
     title: "Payslips",
+    isPrimaryFeature: true,
   },
   {
     element: <EmployeePayslips />,
     path: appRoutes.employeePayslips,
     isSearchable: true,
     title: "Employee Payslips",
-    isPrimaryFeature: true,
   },
   {
     element: <CreatePayslipTemplate />,
     path: appRoutes.createPayslipTemplate,
     isSearchable: true,
-    title: "Payslips Template",
-    isPrimaryFeature: true,
+    title: "Create Payslip Template",
+  },
+  {
+    element: <EditPayslipTemplate />,
+    path: appRoutes.editPayslipTemplate().format,
+    isSearchable: true,
+    title: "Create Payslip Template",
   },
 ];

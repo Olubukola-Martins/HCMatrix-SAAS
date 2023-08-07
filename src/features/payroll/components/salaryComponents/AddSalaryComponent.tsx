@@ -28,7 +28,7 @@ const defaultCalculationModes: (TSalaryComponentCalculationMode | "table")[] = [
 ];
 type IFormProps = {
   formMode?: "add" | "edit";
-  dependencies: string[];
+  dependencies?: string[];
   type?: "allowance" | "deduction";
   isDefault?: boolean;
   isActive?: boolean;
@@ -38,6 +38,7 @@ type IFormProps = {
   handleClose?: () => void;
   isTax?: boolean;
   salaryComponent?: TSalaryComponent;
+  loading?: boolean;
 };
 
 type ExtraProps = {
@@ -48,7 +49,7 @@ type IProps = IFormProps & IModalProps & ExtraProps;
 export const AddSalaryComponent: React.FC<IProps> = ({
   open,
   handleClose,
-  dependencies,
+  dependencies = [],
   componentName,
   schemeId,
   handleSave,
@@ -57,6 +58,7 @@ export const AddSalaryComponent: React.FC<IProps> = ({
   title,
   salaryComponent,
   formMode = "add",
+  loading,
 }) => {
   const defaultTitle =
     type === "allowance" ? `${formMode} allowance` : `${formMode} deduction`;
@@ -79,13 +81,14 @@ export const AddSalaryComponent: React.FC<IProps> = ({
         isTax={isTax}
         salaryComponent={salaryComponent}
         formMode={formMode}
+        loading={loading}
       />
     </Modal>
   );
 };
 
 export const AddSalaryComponentForm: React.FC<IFormProps> = ({
-  dependencies,
+  dependencies = [],
   formMode = "add",
   type = "allowance",
   handleSave,
@@ -96,13 +99,15 @@ export const AddSalaryComponentForm: React.FC<IFormProps> = ({
   componentName,
   salaryComponent,
   isTax,
+  loading,
 }) => {
+  const [form] = Form.useForm();
+
   const queryClient = useQueryClient();
 
   const [mode, setMode] = useState<TSalaryComponentCalculationMode | "table">(
     "percentage"
   );
-  const [form] = Form.useForm();
   const { mutate: createMutate, isLoading: isCreateLoading } =
     useAddAllowanceOrDeduction();
   const { mutate: updateMutate, isLoading: isUpdateLoading } =
@@ -193,6 +198,7 @@ export const AddSalaryComponentForm: React.FC<IFormProps> = ({
         amount: vals.amount,
         label: (vals.name as string).toLocaleLowerCase().split(" ").join("_"),
       });
+
       return;
     }
     schemeId &&
@@ -403,7 +409,7 @@ export const AddSalaryComponentForm: React.FC<IFormProps> = ({
         <AppButton
           label="Save"
           type="submit"
-          isLoading={isCreateLoading || isUpdateLoading}
+          isLoading={loading || isCreateLoading || isUpdateLoading}
         />
       </div>
     </Form>

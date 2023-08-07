@@ -2,17 +2,13 @@ import { useState } from "react";
 import { PageIntro } from "components/layout/PageIntro";
 import { appRoutes } from "config/router/paths";
 import { useFetchSingleEmployee } from "../../hooks/useFetchSingleEmployee";
-
 import { EditMyProfile } from "./EditMyProfile";
-
 import { Resignation } from "./Resignation";
-
 import { EmployeeOverviewCard } from "./EmployeeOverviewCard";
 import { getEmployeeFullName } from "../../utils/getEmployeeFullName";
 import { EmployeeTabs } from "./EmployeeTabs";
 import { ErrorWrapper } from "components/errorHandlers/ErrorWrapper";
 
-type TAction = "suspend" | "edit" | "resign";
 export const EmployeeProfileContainer = ({
   employeeId,
 }: {

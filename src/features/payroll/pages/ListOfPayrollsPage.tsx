@@ -3,29 +3,14 @@ import PayrollSubNav from "../components/PayrollSubNav";
 import { appRoutes } from "config/router/paths";
 import { Button, Dropdown, Menu, Table, Tabs } from "antd";
 import { Link } from "react-router-dom";
-import { ColumnsType } from "antd/lib/table";
+import { ColumnsType, TablePaginationConfig, TableProps } from "antd/lib/table";
 import { EyeFilled } from "@ant-design/icons";
-
-type TPayrollItem = {
-  createdAt: string;
-  type: "office" | "direct-salary" | "project" | "wage";
-  allowances: number;
-  deductions: number;
-  grossPay: number;
-  netPay: number;
-  tax: number;
-  name: string;
-  project?: string;
-  ranFor: string;
-  frequency: "monthly" | "daily" | "project-duration";
-  status:
-    | "create"
-    | "in-review"
-    | "ongoing-approval"
-    | "confirmed"
-    | "disbursed"
-    | "closed";
-};
+import { TPayrollSchemeType } from "../types/payrollSchemes";
+import { useState } from "react";
+import { useGetAllPayrollsByScheme } from "../hooks/payroll/useGetAllPayrollsByScheme";
+import { usePagination } from "hooks/usePagination";
+import { TPayrollListData } from "../types/payroll";
+import moment from "moment";
 
 const ListOfPayrollsPage = () => {
   return (
@@ -39,120 +24,42 @@ const ListOfPayrollsPage = () => {
   );
 };
 const ListOfPayrollsContainer = () => {
+  const [scheme, setScheme] = useState<TPayrollSchemeType>("office");
+  const { pagination, onChange } = usePagination();
+  const { data, isFetching } = useGetAllPayrollsByScheme({
+    data: { pagination },
+    schemeType: scheme,
+  });
   const tabItems = [
     {
-      key: "Office",
+      key: "office",
       label: "Office",
-      children: (
-        <PayrolTable
-          data={[
-            {
-              createdAt: "02/02/2028",
-              type: "office",
-              allowances: 40004040004,
-              deductions: 300003,
-              grossPay: 3400040404045,
-              netPay: 40404040550,
-              tax: 204900,
-              name: "May Pay",
-
-              ranFor: "05/2023",
-              frequency: "monthly",
-              status: "in-review",
-            },
-          ]}
-        />
-      ),
     },
     {
-      key: "Direct Salary",
+      key: "direct-salary",
       label: "Direct Salary",
-      children: (
-        <PayrolTable
-          data={[
-            {
-              createdAt: "02/02/2028",
-              type: "direct-salary",
-              allowances: 40004040004,
-              deductions: 300003,
-              grossPay: 3400040404045,
-              netPay: 40404040550,
-              tax: 204900,
-              name: "May Pay",
-
-              ranFor: "05/2023",
-              frequency: "monthly",
-              status: "in-review",
-            },
-          ]}
-        />
-      ),
     },
     {
-      key: "Project",
+      key: "project",
       label: "Project",
-      children: (
-        <PayrolTable
-          isProject
-          data={[
-            {
-              createdAt: "02/02/2028",
-              type: "project",
-              allowances: 40004040004,
-              deductions: 300003,
-              grossPay: 3400040404045,
-              netPay: 40404040550,
-              tax: 204900,
-              name: "May Pay",
-              project: "HCM V3",
-
-              ranFor: "1st Payment",
-              frequency: "project-duration",
-              status: "ongoing-approval",
-            },
-          ]}
-        />
-      ),
     },
     {
-      key: "Wages",
+      key: "wages",
       label: "Wages",
-      children: (
-        <PayrolTable
-          data={[
-            {
-              createdAt: "02/02/2028",
-              type: "wage",
-              allowances: 40004040004,
-              deductions: 300003,
-              grossPay: 3400040404045,
-              netPay: 40404040550,
-              tax: 204900,
-              name: "May Pay",
-
-              ranFor: "05/2023",
-              frequency: "monthly",
-              status: "in-review",
-            },
-            {
-              createdAt: "02/02/2028",
-              type: "wage",
-              allowances: 40004040004,
-              deductions: 300003,
-              grossPay: 3400040404045,
-              netPay: 40404040550,
-              tax: 204900,
-              name: "Wednesday Pay",
-
-              ranFor: "05/2023",
-              frequency: "daily",
-              status: "confirmed",
-            },
-          ]}
-        />
-      ),
     },
-  ];
+  ].map((item) => ({
+    ...item,
+    children: (
+      <PayrollTable
+        data={data?.data}
+        total={data?.total}
+        onChange={onChange}
+        loading={isFetching}
+        pagination={pagination}
+        isProject={item.key === "project"}
+      />
+    ),
+  }));
   return (
     <div className="flex flex-col gap-6">
       <div className="flex flex-col mt-5 gap-2 md:flex-row md:justify-between md:items-center  p-2 rounded text-sm">
@@ -190,21 +97,38 @@ const ListOfPayrollsContainer = () => {
           </button>
         </Dropdown>
       </div>
-      <Tabs items={tabItems} />
+      <Tabs
+        activeKey={scheme}
+        onChange={(val) => setScheme(val as unknown as TPayrollSchemeType)}
+        items={tabItems}
+      />
     </div>
   );
 };
 
-const PayrolTable: React.FC<{ isProject?: boolean; data?: TPayrollItem[] }> = ({
+const PayrollTable: React.FC<{
+  isProject?: boolean;
+  data?: TPayrollListData[];
+  loading?: boolean;
+  onChange?: TableProps<TPayrollListData>["onChange"];
+  total?: number;
+  pagination?: TablePaginationConfig;
+}> = ({
   isProject = false,
   data = [],
+  loading,
+  onChange,
+  total,
+  pagination,
 }) => {
-  let ogColumns: ColumnsType<TPayrollItem> = [
+  let ogColumns: ColumnsType<TPayrollListData> = [
     {
       title: "Created At",
       dataIndex: "date",
       key: "date",
-      render: (_, item) => <span>{item.createdAt} </span>,
+      render: (_, item) => (
+        <span>{moment(item.createdAt).format("YYYY-MM-DD")} </span>
+      ),
     },
     {
       title: "Name",
@@ -222,43 +146,43 @@ const PayrolTable: React.FC<{ isProject?: boolean; data?: TPayrollItem[] }> = ({
       title: "Type",
       dataIndex: "Type",
       key: "Type",
-      render: (_, item) => <span>{item.type} </span>,
+      render: (_, item) => <span>{item.scheme.type} </span>,
     },
     {
-      title: "Ran For",
-      dataIndex: "Ran For",
-      key: "Ran For",
-      render: (_, item) => <span>{item.ranFor} </span>,
+      title: "Date",
+      dataIndex: "Date",
+      key: "Date",
+      render: (_, item) => <span>{item.date} </span>,
     },
     {
       title: "allowances",
       dataIndex: "allowances",
       key: "allowances",
-      render: (_, item) => <span>{item.allowances} </span>,
+      render: (_, item) => <span>{0} </span>,
     },
     {
       title: "deductions",
       dataIndex: "deductions",
       key: "deductions",
-      render: (_, item) => <span>{item.deductions} </span>,
+      render: (_, item) => <span>{0} </span>,
     },
     {
       title: "tax",
       dataIndex: "tax",
       key: "tax",
-      render: (_, item) => <span>{item.tax} </span>,
+      render: (_, item) => <span>{0} </span>,
     },
     {
       title: "grossPay",
       dataIndex: "grossPay",
       key: "grossPay",
-      render: (_, item) => <span>{item.grossPay} </span>,
+      render: (_, item) => <span>{0} </span>,
     },
     {
       title: "netPay",
       dataIndex: "netPay",
       key: "netPay",
-      render: (_, item) => <span>{item.netPay} </span>,
+      render: (_, item) => <span>{0} </span>,
     },
     {
       title: "status",
@@ -271,31 +195,47 @@ const PayrolTable: React.FC<{ isProject?: boolean; data?: TPayrollItem[] }> = ({
       title: "",
       key: "action",
       render: (_, item) => (
-        <Button
-          title="View"
-          icon={<EyeFilled />}
-          type="text"
-          // onClick={() => handleEdit(item._id)}
-        />
+        <Link
+          to={
+            appRoutes.singlePayroll({
+              scheme: item.scheme.type as TPayrollSchemeType,
+              id: item.id,
+            }).path
+          }
+        >
+          <Button
+            title="View"
+            icon={<EyeFilled />}
+            type="text"
+            // onClick={() => handleEdit(item._id)}
+          />
+        </Link>
       ),
     },
   ];
 
-  const columns: ColumnsType<TPayrollItem> = isProject
+  const columns: ColumnsType<TPayrollListData> = isProject
     ? [
         ...ogColumns,
         {
           title: "Project",
           dataIndex: "project",
           key: "project",
-          render: (_, item) => <span>{item?.project} </span>,
+          render: (_, item) => <span>{`Project?`} </span>,
         },
       ]
     : ogColumns;
 
   return (
     <>
-      <Table size="small" dataSource={data} columns={columns} />
+      <Table
+        size="small"
+        dataSource={data}
+        columns={columns}
+        loading={loading}
+        pagination={{ ...pagination, total }}
+        onChange={onChange}
+      />
     </>
   );
 };

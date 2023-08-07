@@ -1,4 +1,7 @@
 // These object helps to ensure that the routes in the application are not manually hardcorded and littered everywhere
+
+import { TPayrollSchemeType } from "features/payroll/types/payrollSchemes";
+
 // rather they are managed by a single file
 export const appRoutes = {
   // auth routes
@@ -98,6 +101,16 @@ export const appRoutes = {
     path: `/settings/payroll/schemes/wages/set-up/${frequency}/${id}`,
   }),
   listOfPayrolls: `/settings/payroll/list`,
+  singlePayroll: ({
+    scheme,
+    id,
+  }: {
+    scheme?: TPayrollSchemeType;
+    id?: number;
+  } = {}) => ({
+    format: `/settings/scheme/:scheme/payroll/:id`,
+    path: `/settings/scheme/${scheme}/payroll/${id}`,
+  }),
   payrollPolicySettings: `/settings/probation_policy_PENDING`,
   payGradeSettings: `/settings/grades`,
   payGradeAndCategorySettings: `/settings/grades-and-settings`,
@@ -128,6 +141,10 @@ export const appRoutes = {
   payslips: `/payroll/payslip`,
   employeePayslips: `/payroll/employee-payslip`,
   createPayslipTemplate: `/payroll/create-payslip-template`,
+  editPayslipTemplate: (id?: number) => ({
+    format: `/payroll/create-payslip-template/:id`,
+    path: `/payroll/create-payslip-template/${id}`,
+  }),
 
   // admin routes
   systemAdminLogin: `/system-administration-login`,

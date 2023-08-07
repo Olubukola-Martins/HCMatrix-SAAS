@@ -32,6 +32,7 @@ const createData = async (props: {
 
   const data: TData = {
     ...props.data,
+    amount: `${props.data.amount}`,
   };
 
   const response = await axios.post(url, data, config);

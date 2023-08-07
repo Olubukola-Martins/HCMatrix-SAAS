@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import {
   DatePicker,
@@ -27,6 +27,7 @@ import { useGetPayrollSchemeByTypeOrId } from "features/payroll/hooks/scheme/use
 import { TSalaryComponent } from "features/payroll/types/salaryComponents";
 import { openNotification } from "utils/notifications";
 import { useGetSinglePayroll } from "features/payroll/hooks/payroll/useGetSinglePayroll";
+import moment from "moment";
 
 type TPayrollFrequency = "monthly" | "daily";
 type TIntialPayrollDetails = {
@@ -98,7 +99,7 @@ export const CreatePayrollInitialForm: React.FC<IFormProps> = ({
           data: {
             costCentreId: data.costCentreId,
             date:
-              payrollFrequency === "daily"
+              payrollFrequency === "monthly"
                 ? `${data.date?.format("YYYY-MM")}-01`
                 : data.date?.format("YYYY-MM-DD"),
             description: data.description,
@@ -211,15 +212,25 @@ export const CreatePayrollInitialForm: React.FC<IFormProps> = ({
   );
 };
 
-const CreatePayrollContainer: React.FC<{ type: TPayrollSchemeType }> = ({
-  type,
-}) => {
+const CreatePayrollContainer: React.FC<{
+  type: TPayrollSchemeType;
+  payrollId?: number;
+}> = ({ type, payrollId }) => {
   const boxStyle =
     "bg-mainBg flex justify-between items-start md:items-center px-6 py-5 rounded lg:flex-row flex-col gap-y-5";
 
   const buttonStyle =
     "border border-gray-400 hover:text-caramel rounded px-5 py-1 font-medium text-sm text-accent";
-  const [open, setOpen] = useState(true);
+  const [open, setOpen] = useState(false);
+  useEffect(() => {
+    if (payrollId) {
+      setPayrollD((item) => ({ ...item, payrollId }));
+
+      setOpen(false);
+    } else {
+      setOpen(true);
+    }
+  }, [payrollId]);
   const [openT, setOpenT] = useState(false);
   const [payrollD, setPayrollD] = useState<TIntialPayrollDetails>({
     name: "",
@@ -273,11 +284,7 @@ const CreatePayrollContainer: React.FC<{ type: TPayrollSchemeType }> = ({
           )}
         </div>
 
-        <Skeleton
-          loading={isSchemeLoading || isPayrollLoading}
-          active
-          paragraph={{ rows: 20 }}
-        >
+        <Skeleton loading={isPayrollLoading} active paragraph={{ rows: 20 }}>
           <div className="bg-card px-5 py-7 rounded-md mt-7 flex flex-col gap-4">
             <div className={boxStyle}>
               <div>
@@ -289,7 +296,7 @@ const CreatePayrollContainer: React.FC<{ type: TPayrollSchemeType }> = ({
               <input
                 disabled
                 type="text"
-                value={payrollD.name}
+                value={payroll?.name}
                 className="bg-slate-100 cursor-not-allowed  border text-accent rounded px-3 py-1 border-gray-400 bg-mainBg"
                 placeholder="Payroll Name"
               />
@@ -309,25 +316,25 @@ const CreatePayrollContainer: React.FC<{ type: TPayrollSchemeType }> = ({
                   <div>
                     <input
                       disabled
-                      value={payrollD.frequency}
+                      value={payroll?.frequency}
                       className="capitalize bg-slate-100 cursor-not-allowed border text-accent rounded px-3 py-1 border-gray-400 bg-mainBg"
                     />
                   </div>
                 </div>
                 <div className="mt-4">
-                  {payrollD.frequency === "daily" && (
+                  {payroll?.frequency === "daily" && (
                     <input
                       disabled
-                      value={payrollD.date}
+                      value={moment(payroll?.date).format("YYYY-MM-DD")}
                       type="date"
                       placeholder="Select day"
                       className=" bg-slate-100 cursor-not-allowed border text-accent rounded px-3 py-1 border-gray-400 bg-mainBg"
                     />
                   )}
-                  {payrollD.frequency === "monthly" && (
+                  {payroll?.frequency === "monthly" && (
                     <input
                       disabled
-                      value={payrollD.date}
+                      value={moment(payroll?.date).format("YYYY-MM")}
                       type="month"
                       placeholder="Select month"
                       className=" bg-slate-100 cursor-not-allowed border text-accent rounded px-3 py-1 border-gray-400 bg-mainBg"
@@ -349,7 +356,7 @@ const CreatePayrollContainer: React.FC<{ type: TPayrollSchemeType }> = ({
                   </div>
                 </div>
                 <div className="mt-4">
-                  <Input.TextArea disabled value={payrollD.description} />
+                  <Input.TextArea disabled value={payroll?.description} />
                 </div>
               </div>
             </div>
@@ -364,7 +371,7 @@ const CreatePayrollContainer: React.FC<{ type: TPayrollSchemeType }> = ({
                   </div>
                 </div>
                 <div className="mt-4">
-                  <Input value={payrollD.costCentre} disabled />
+                  <Input value={payroll?.costCentre.name} disabled />
                 </div>
               </div>
             </div>
@@ -455,6 +462,7 @@ const CreatePayrollContainer: React.FC<{ type: TPayrollSchemeType }> = ({
                   <SalaryComponentsContainer
                     showControlBtns={false}
                     components={allowances}
+                    loading={isSchemeLoading}
                   />
                 </div>
               </div>
@@ -476,6 +484,7 @@ const CreatePayrollContainer: React.FC<{ type: TPayrollSchemeType }> = ({
                   <SalaryComponentsContainer
                     showControlBtns={false}
                     components={deductions}
+                    loading={isSchemeLoading}
                   />
                 </div>
               </div>
@@ -502,6 +511,8 @@ const CreatePayrollContainer: React.FC<{ type: TPayrollSchemeType }> = ({
                     employees={payroll?.employeePayrolls.filter(
                       (item) => item.eligibility === "citizen"
                     )}
+                    generalSalaryComponents={[...allowances, ...deductions]}
+                    payrollId={payroll?.id}
                   />
                 </div>
               </div>
@@ -528,6 +539,8 @@ const CreatePayrollContainer: React.FC<{ type: TPayrollSchemeType }> = ({
                     employees={payroll?.employeePayrolls.filter(
                       (item) => item.eligibility === "expatriate"
                     )}
+                    generalSalaryComponents={[...allowances, ...deductions]}
+                    payrollId={payroll?.id}
                   />
                 </div>
               </div>

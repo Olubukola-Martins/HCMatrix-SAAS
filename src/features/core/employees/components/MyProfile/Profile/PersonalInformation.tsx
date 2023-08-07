@@ -87,10 +87,10 @@ export const PersonalInformation: React.FC<IProps> = ({
   const { mutate, isLoading } = useSaveEmployeePersonalInformation();
 
   const handleFinish = (data: any) => {
-    if (!employeeId) {
+    if (employeeId) {
       mutate(
         {
-          employeeId: 24,
+          employeeId,
           data: {
             dob: data?.dob?.format("YYYY-MM-DD"),
             gender: data.gender,

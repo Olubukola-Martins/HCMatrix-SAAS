@@ -36,7 +36,7 @@ const getData = async (props: {
 export const useGetSinglePayroll = (props: IDataProps) => {
   const { token, companyId } = useApiAuth();
   const queryData = useQuery(
-    [QUERY_KEY_FOR_SINGLE_PAYROLL],
+    [QUERY_KEY_FOR_SINGLE_PAYROLL, props.id],
     () =>
       getData({
         auth: {

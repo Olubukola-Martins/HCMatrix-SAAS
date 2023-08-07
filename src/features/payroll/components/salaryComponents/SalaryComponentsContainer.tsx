@@ -14,6 +14,7 @@ import DeleteSalaryComponent from "./DeleteSalaryComponent";
 import { EditSalaryComponent } from "./EditSalaryComponent";
 
 interface IProps {
+  loading?: boolean;
   type?: "allowance" | "deduction";
   schemeId?: number;
   showControlBtns?: boolean;
@@ -25,6 +26,7 @@ interface IProps {
 }
 
 export const SalaryComponentsContainer: React.FC<IProps> = ({
+  loading,
   showControlBtns = true,
   components = [],
   dependencies = [],
@@ -163,6 +165,7 @@ export const SalaryComponentsContainer: React.FC<IProps> = ({
             total: components.length,
           }}
           onChange={onChange}
+          loading={loading}
         />
       </div>
     </>
