@@ -19,6 +19,7 @@
   --sideBar: #f6f7fb;
   --sideBarIcon: #ffffff;
   --scrollBg: rgba(0, 0, 0, 0.3);
+  --greyBg: #F6F7FB
 }
 
 [data-theme="dark"] {
@@ -406,34 +407,6 @@ textarea.ant-input,
   color: var(--caramel);
 }
 
-
-/* antd custom css for addJobOpening  START*/
-.ant-steps{
-  width: 93%;
-}
-.ant-steps-label-vertical .ant-steps-item-tail {
-  padding: 3.5px 28px;
-}
-.ant-steps-item-tail:after {
-  height: 4px;
-}
-.ant-steps-item-content {
-  margin-top: 27px;
-  width: fit-content;
-}
-.ant-steps-item-content>.ant-steps-item-description {
-  margin: auto;
-  width: max-content;
-  color: #3A3A3A;
-font-size: 18px;
-font-weight: 400;
-}
-
-.ant-steps-item-icon {
-  width: 2.63rem;
-  height: 2.63rem;
-}
-/* antd custom css for addJobOpening  STOP*/
 
 
 /* customization to allow userfeedbackComp to have side icon*/

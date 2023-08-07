@@ -1,4 +1,5 @@
 import React from "react";
+import "../../style/addJobOpening.css";
 import { Steps, Form, Input, Select, Button, Checkbox } from "antd";
 import "antd/dist/antd.min.css";
 
@@ -40,8 +41,8 @@ export const AddJobOpeningContainer = () => {
       </div>
 
       {/* STEPPER */}
-      <div className="w-[82.1vw] h-36 mx-auto my-6 rounded-2xl shadow shadow-[rgba(0, 0, 0, 0.08)] ">
-        <Steps current={1} labelPlacement="vertical" className="py-6 h-auto">
+      <div className="w-[82.1vw] h-36 mx-auto my-6 rounded-2xl shadow shadow-[rgba(0, 0, 0, 0.08)] add-job-opening">
+        <Steps current={1} labelPlacement="vertical" className="py-6 h-auto ">
           <Step description="Job details" />
           <Step description="Application Questions" />
           <Step description="Additional Questions" />
@@ -49,11 +50,10 @@ export const AddJobOpeningContainer = () => {
       </div>
 
       {/* FORM */}
-      <section className="">
+      <section className="w-[83.3vw] bg-[var(--greyBg)] pt-7 pb-16 ml-auto mr-1 ">
         <Form
+          className="w-11/12 bg-[var(--background)]  mx-auto py-8 px-6 rounded-lg flex flex-col gap-6"
           layout="vertical"
-          // labelCol={{ span: 8 }}
-          // wrapperCol={{ span: 16 }}
           initialValues={{ remember: true }}
         >
           <div>
@@ -192,7 +192,7 @@ export const AddJobOpeningContainer = () => {
           <div>
             <Form.Item label="Compensation" name="Compensation">
               <Input placeholder="e.g  NGN 200,000 Monthly"></Input>
-              <Form.Item name="Not Specified" >
+              <Form.Item name="Not Specified">
                 <Checkbox>Not Specified</Checkbox>
               </Form.Item>
             </Form.Item>
@@ -219,21 +219,30 @@ export const AddJobOpeningContainer = () => {
             </Form.Item>
           </div>
 
-          <div>
+          <div id="job-Description">
             <Form.Item label="Job Description" name="Job Description">
               <TextArea
-                placeholder="Input description"
-                autoSize={{ minRows: 3 }}
+                placeholder="Input Description"
+                autoSize={{ minRows: 10 }}
               />
             </Form.Item>
           </div>
 
-          <div>
+          <div
+            id="buttons"
+            className=" flex flex-row justify-between items-center"
+          >
             <Form.Item>
-              <Button type="text">Cancel</Button>
+              <Button type="text" className="pl-0 ">
+                Cancel
+              </Button>
             </Form.Item>
             <Form.Item>
-              <Button type="primary" htmlType="submit">
+              <Button
+                type="primary"
+                htmlType="submit"
+                className="py-3 px-[69px] flex flex-col justify-center bg-[var(--caramel)]"
+              >
                 Next
               </Button>
             </Form.Item>
