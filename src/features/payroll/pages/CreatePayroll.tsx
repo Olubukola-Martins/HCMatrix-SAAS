@@ -16,7 +16,7 @@ const CreatePayroll: React.FC<{ scheme: TPayrollSchemeType }> = ({
           title={`Create ${scheme?.split("-").join(" ")} Payroll`}
           link={appRoutes.payrollHome}
         />
-        <CreatePayrollContainer type="office" />
+        <CreatePayrollContainer type={scheme} />
       </div>
     </>
   );
