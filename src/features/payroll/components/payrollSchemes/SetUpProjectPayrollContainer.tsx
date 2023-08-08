@@ -35,8 +35,8 @@ type TScheme = {
   projectId: number;
   schemeId?: number;
   name: string;
-  createdAt: string;
-  updatedAt: string;
+  createdAt?: string;
+  updatedAt?: string;
 };
 
 const PayrollSchemeCardList = () => {
@@ -89,8 +89,6 @@ const PayrollSchemeCardList = () => {
           return {
             projectId: project.id,
             name: project.name,
-            createdAt: "Pending",
-            updatedAt: "Pending",
           };
         });
       });
@@ -128,11 +126,14 @@ const PayrollSchemeCardList = () => {
 };
 const PayrollSchemeCard: React.FC<TScheme> = ({
   name,
-  createdAt,
-  updatedAt,
+  createdAt = "Pending",
+  updatedAt = "Pending",
   projectId,
   schemeId,
 }) => {
+  const btnLabel =
+    createdAt === "Pending" ? "Set Up Payroll" : "Modify Payroll";
+  const btnVariant = createdAt === "Pending" ? "transparent" : "default";
   return (
     <>
       {/* view */}
@@ -148,7 +149,7 @@ const PayrollSchemeCard: React.FC<TScheme> = ({
                 }).path
               }
             >
-              <AppButton label="Set up Payroll" variant="transparent" />
+              <AppButton label={btnLabel} variant={btnVariant} />
             </Link>
           </div>
         </div>

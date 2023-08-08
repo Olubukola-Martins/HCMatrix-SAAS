@@ -168,6 +168,7 @@ const PayrollSchemeCard: React.FC<TScheme> = ({
 }) => {
   const btnLabel =
     createdAt === "Pending" ? "Set Up Payroll" : "Modify Payroll";
+  const btnVariant = createdAt === "Pending" ? "transparent" : "default";
   return (
     <>
       {/* view */}
@@ -176,10 +177,7 @@ const PayrollSchemeCard: React.FC<TScheme> = ({
           <h4 className="font-medium text-lg">{name}</h4>
           <div className="flex gap-2 ">
             <Link to={setUpLink}>
-              <AppButton
-                label={btnLabel}
-                variant={createdAt === "Pending" ? "transparent" : "default"}
-              />
+              <AppButton label={btnLabel} variant={btnVariant} />
             </Link>
           </div>
         </div>

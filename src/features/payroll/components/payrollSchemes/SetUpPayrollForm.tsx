@@ -708,7 +708,7 @@ export const SetUpPayrollForm: React.FC<{
       },
       {
         title: "Pension",
-        type: "allowance",
+        type: "deduction",
         handleSave: handleAddAllowance,
         isActive: displayPension,
         isDefault: true,
@@ -1135,7 +1135,12 @@ export const SetUpPayrollForm: React.FC<{
 
           {/* second */}
           <div className="flex flex-col gap-4">
-            {DEFAULT_SALARY_COMPONENTS.map((item, i) => (
+            {(type === "wages"
+              ? DEFAULT_SALARY_COMPONENTS.filter(
+                  (item) => item.componentName !== "overtime"
+                )
+              : DEFAULT_SALARY_COMPONENTS
+            ).map((item, i) => (
               <div key={i} className={`${boxStyle} text-sm`}>
                 <div className="flex items-center justify-between">
                   <h5 className={boxTitle}>{item.title}</h5>{" "}

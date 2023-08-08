@@ -109,6 +109,10 @@ const PayrollSchemeCard: React.FC<TScheme> = ({
   link,
   id,
 }) => {
+  const btnLabel =
+    typeof id === "undefined" ? "Set Up Payroll" : "Modify Payroll";
+  const btnVariant = typeof id === "undefined" ? "transparent" : "default";
+
   return (
     <>
       {/* view */}
@@ -124,7 +128,7 @@ const PayrollSchemeCard: React.FC<TScheme> = ({
                   : link
               }
             >
-              <AppButton label="Set up Payroll" variant="transparent" />
+              <AppButton label={btnLabel} variant={btnVariant} />
             </Link>
           </div>
         </div>
