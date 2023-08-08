@@ -99,8 +99,8 @@ export const CreatePayrollInitialForm: React.FC<IFormProps> = ({
         name: data.name,
         date:
           payrollFrequency === "monthly"
-            ? data?.date.format("YYYY-MM")
-            : data?.date.format("YYYY-MM-DD"),
+            ? data?.date?.format("YYYY-MM")
+            : data?.date?.format("YYYY-MM-DD"),
         description: data.description,
         frequency: payrollFrequency,
         costCentre: costCentre,
@@ -174,11 +174,7 @@ export const CreatePayrollInitialForm: React.FC<IFormProps> = ({
         requiredMark={false}
       >
         {type === "project" && (
-          <Form.Item
-            name="project"
-            label="Select Project"
-            dependencies={["frequency"]}
-          >
+          <Form.Item name="project" label="Select Project">
             <Select
               placeholder="Select project"
               getPopupContainer={(triggerNode) => triggerNode.parentElement}
@@ -193,9 +189,9 @@ export const CreatePayrollInitialForm: React.FC<IFormProps> = ({
         )}
         {type === "project" && (
           <Form.Item
-            name="project"
+            name="payment"
             label="Select Payment"
-            dependencies={["frequency"]}
+            dependencies={["project"]}
           >
             <Select
               getPopupContainer={(triggerNode) => triggerNode.parentElement}
