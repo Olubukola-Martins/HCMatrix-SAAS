@@ -1,16 +1,12 @@
 import React, { useEffect, useState } from "react";
-import { MinusCircleOutlined } from "@ant-design/icons";
-import { Button, Form, InputNumber, Select, Skeleton } from "antd";
-import { generalValidationRules } from "utils/formHelpers/validation";
+import { Skeleton } from "antd";
 import { CURRENCY_OPTIONS } from "constants/currencies";
 import { AppButton } from "components/button/AppButton";
-import { useGetCompanyParams } from "features/core/company/hooks/useGetCompanyParams";
-import { useNavigate } from "react-router-dom";
-import { appRoutes } from "config/router/paths";
-import { openNotification } from "utils/notifications";
+
 import { AddExchangeRate } from "./AddExchangeRate";
 import { useGetExchangeRates } from "features/payroll/hooks/exhangeRates/useGetExchangeRates";
 import { ExchangeRatesTable } from "./ExchangeRatesTable";
+import { useGetCompanyBaseCurrency } from "hooks/useGetCompanyBaseCurrency";
 
 interface IProps {
   onlyView?: boolean;
@@ -29,31 +25,17 @@ export const ExchangeRateContainer: React.FC<IProps> = ({
 };
 
 const ExchangeRateForm: React.FC<IProps> = ({ onlyView }) => {
-  const onFinish = (values: any) => {
-    console.log("Received values of form:", values);
-  };
-
-  const { data: companyParams, isFetching: isFetchingCompanyParams } =
-    useGetCompanyParams();
   const { data: rates, isFetching: isFetchingRates } = useGetExchangeRates();
 
   const [parsedCurrencyOptions, setParsedCurrencyOptions] = useState<
     { label: string; value: string }[]
   >([]);
-  const navigate = useNavigate();
-  const baseCurrency = companyParams?.value.currencySettings?.baseCurrency;
+
+  const { baseCurrency, loading: isBaseCurrencyLoading } =
+    useGetCompanyBaseCurrency();
 
   useEffect(() => {
-    if (!baseCurrency && !isFetchingCompanyParams) {
-      navigate(appRoutes.companyDetailsSettings);
-      openNotification({
-        description: `Please set your company's base currency before setting up exhange rates`,
-        title: "Missing Base Currency",
-        duration: 5,
-        state: "error",
-      });
-    }
-    if (baseCurrency && rates && !isFetchingCompanyParams) {
+    if (baseCurrency && rates && !isBaseCurrencyLoading) {
       const options = CURRENCY_OPTIONS.filter(
         (item) => item.value !== baseCurrency
       ).filter((item) =>
@@ -61,14 +43,16 @@ const ExchangeRateForm: React.FC<IProps> = ({ onlyView }) => {
       );
       setParsedCurrencyOptions(options);
     }
-  }, [companyParams, navigate, rates, isFetchingCompanyParams, baseCurrency]);
+  }, [rates, isBaseCurrencyLoading, baseCurrency]);
   const [add, setAdd] = useState(false);
 
   return (
-    <Skeleton active paragraph={{ rows: 5 }} loading={isFetchingCompanyParams}>
-      <p className="text-center">
-        Base Currency - {companyParams?.value.currencySettings?.baseCurrency}
-      </p>
+    <Skeleton active paragraph={{ rows: 5 }} loading={isBaseCurrencyLoading}>
+      <div className="flex justify-center">
+        <p className="text-center font-bold px-6 py-2 shadow-md  bg-white rounded-md">
+          Base Currency - {baseCurrency}
+        </p>
+      </div>
       <div className="w-full">
         <div className="flex flex-col gap-4">
           {/* add member to group form */}
@@ -88,7 +72,7 @@ const ExchangeRateForm: React.FC<IProps> = ({ onlyView }) => {
             <ExchangeRatesTable
               data={rates.data}
               loading={isFetchingRates}
-              defaultCompanyParams={baseCurrency}
+              defaultCompanyCurrency={baseCurrency}
               onlyView={onlyView}
             />
           )}

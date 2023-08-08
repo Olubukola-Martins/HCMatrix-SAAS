@@ -11,6 +11,7 @@ const SetupSingleProjectPayrollSchemePage = () => {
   const params = useParams();
   const schemeId = params.schemeId;
   const projectId = params.projectId;
+  console.log("schem", schemeId, projectId);
   const {
     data: project,
     isFetching,
@@ -35,7 +36,7 @@ const SetupSingleProjectPayrollSchemePage = () => {
               />
               <SetUpSingleProjectPayrollContainer
                 schemeId={schemeId ? +schemeId : undefined}
-                projectId={projectId ? +projectId : undefined}
+                project={project ? project : undefined}
               />
             </div>
           </>

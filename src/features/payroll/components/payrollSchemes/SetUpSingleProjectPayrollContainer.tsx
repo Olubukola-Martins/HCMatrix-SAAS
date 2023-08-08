@@ -2,24 +2,28 @@ import { useGetPayrollSchemeByTypeOrId } from "features/payroll/hooks/scheme/use
 
 import { SetUpPayrollForm } from "./SetUpPayrollForm";
 import { TSingleProjectPayrollScheme } from "features/payroll/types/payrollSchemes/singleProject";
+import { TSingleProject } from "features/core/projects/types";
+import { useGetCompanyBaseCurrency } from "hooks/useGetCompanyBaseCurrency";
 
 export const SetUpSingleProjectPayrollContainer: React.FC<{
   schemeId?: number;
-  projectId?: number;
-}> = ({ schemeId, projectId }) => {
+  project?: TSingleProject;
+}> = ({ schemeId, project }) => {
   const { data: payrollScheme, isFetching } = useGetPayrollSchemeByTypeOrId({
     typeOrId: schemeId,
   });
   const scheme = payrollScheme as TSingleProjectPayrollScheme;
+  const { baseCurrency, loading } = useGetCompanyBaseCurrency();
   return (
     <>
       <SetUpPayrollForm
         name="Project Payroll Scheme"
-        frequency={0}
+        frequency={+scheme?.frequency}
         type="project"
-        projectId={projectId}
+        project={project}
         scheme={scheme}
-        isFetching={isFetching}
+        isFetching={isFetching || loading}
+        baseCurrency={baseCurrency}
       />
     </>
   );

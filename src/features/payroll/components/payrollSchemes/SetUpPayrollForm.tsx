@@ -4,12 +4,10 @@ import { useCallback, useEffect, useMemo, useReducer, useState } from "react";
 import { FormWorkflowInput } from "features/core/workflows/components/FormWorkflowInput";
 import { SalaryComponentsContainer } from "../salaryComponents/SalaryComponentsContainer";
 import { AddSalaryComponentForm } from "../salaryComponents/AddSalaryComponent";
-
 import { useQueryClient } from "react-query";
 import { useSetupPayrollScheme } from "features/payroll/hooks/scheme/useSetupPayrollScheme";
 import { openNotification } from "utils/notifications";
 import { QUERY_KEY_FOR_PAYROLL_SCHEME_BY_TYPE_OR_ID } from "features/payroll/hooks/scheme/useGetPayrollSchemeByTypeOrId";
-import { TOfficeSetupSchemeInputData } from "features/payroll/types/setUpSchemeInputData/office";
 import {
   TSalaryComponent,
   TSalaryComponentInput,
@@ -17,11 +15,17 @@ import {
 import { useUpdatePayrollScheme } from "features/payroll/hooks/scheme/useUpdatePayrollScheme";
 import {
   TPayrollSchemeType,
+  TProjectParticipantTableEntry,
   TSinglePayrollScheme,
 } from "features/payroll/types/payrollSchemes";
 import { PayrollSingleProjectParticipantsContainer } from "../projectParticipants/PayrollSingleProjectParticipantsContainer";
 import { TSetupPayrollSchemeData } from "features/payroll/types/setUpSchemeInputData";
 import { FormCostCentreInput } from "../costCentres/FormCostCentreInput";
+import { TSingleProject } from "features/core/projects/types";
+import { getEmployeeFullName } from "features/core/employees/utils/getEmployeeFullName";
+import { TSingleProjectPayrollScheme } from "features/payroll/types/payrollSchemes/singleProject";
+import { Moment } from "moment";
+import { convertObjectToKeyMomentValues } from "features/payroll/utils/convertObjectToKeyMomentValues";
 
 const DEFAULT_COMPONENT_LABELS = {
   thirteenthMonthSalary: "thirteenth_month_salary",
@@ -60,6 +64,7 @@ const initialState: TActionState = {
   displayProjectParticipantsNonExpatriate: false,
   allowances: [],
   deductions: [],
+  projectParticipants: [],
 };
 
 interface TActionState {
@@ -81,6 +86,7 @@ interface TActionState {
   displayProjectParticipantsNonExpatriate: boolean;
   allowances: TSalaryComponent[];
   deductions: TSalaryComponent[];
+  projectParticipants?: TProjectParticipantTableEntry[];
 }
 
 type TActionType =
@@ -104,6 +110,7 @@ type TActionType =
 type TAllowanceActionType = "setAllowance";
 type TDeducutionActionType = "setDeduction";
 type TInitializeActionType = "setInitialData";
+type TProjectParticipantsActionType = "handleProjectParticipants";
 
 function reducer(
   state: TActionState,
@@ -120,6 +127,10 @@ function reducer(
     | {
         type: TInitializeActionType;
         state: TActionState;
+      }
+    | {
+        type: TProjectParticipantsActionType;
+        projectParticipants: TProjectParticipantTableEntry[];
       }
 ): TActionState {
   switch (action.type) {
@@ -218,6 +229,11 @@ function reducer(
         ...state,
         displayNIF: !state.displayNIF,
       };
+    case "handleProjectParticipants":
+      return {
+        ...state,
+        projectParticipants: action.projectParticipants,
+      };
     default:
       return state;
   }
@@ -225,13 +241,41 @@ function reducer(
 
 export const SetUpPayrollForm: React.FC<{
   scheme?: TSinglePayrollScheme;
-  frequency: "monthly" | "daily" | number;
+  frequency?: "monthly" | "daily" | number;
   isFetching: boolean;
   name: string;
   type: TPayrollSchemeType;
-  projectId?: number;
-}> = ({ scheme, isFetching, frequency = "monthly", name, type, projectId }) => {
-  const [state, dispatch] = useReducer(reducer, initialState);
+  project?: TSingleProject;
+  baseCurrency?: string;
+  description?: string;
+}> = ({
+  scheme,
+  isFetching,
+  frequency = "monthly",
+  name,
+  type,
+  project,
+  baseCurrency,
+  description = `Set up payroll based on the gross pay assigned to employees`,
+}) => {
+  const [state, dispatch] = useReducer(reducer, {
+    ...initialState,
+    projectParticipants: project?.employees.map((item) => ({
+      key: item.employee.empUid,
+
+      name: getEmployeeFullName(item.employee),
+      empuid: item.employee.empUid,
+      amount: 0,
+      employeeId: item.employeeId,
+      grossPay: 0,
+      exchangeRate: {
+        currency: item.employee.personalInformation.exchangeRate.currency,
+        rate: item.employee.personalInformation.exchangeRate.rate,
+      },
+      expatriate:
+        item.employee.personalInformation.eligibility === "expatriate",
+    })),
+  });
   const {
     allowApproval,
     allowDisbursement,
@@ -251,7 +295,16 @@ export const SetUpPayrollForm: React.FC<{
     displayProjectParticipantsExpatriate,
     allowances,
     deductions,
+    projectParticipants,
   } = state;
+  const handleProjectParticipants = (
+    participants: TProjectParticipantTableEntry[]
+  ) => {
+    dispatch({
+      type: "handleProjectParticipants",
+      projectParticipants: participants,
+    });
+  };
   const queryClient = useQueryClient();
   const [frequencyAmount, setFrequencyAmount] = useState<number>(0);
 
@@ -278,13 +331,20 @@ export const SetUpPayrollForm: React.FC<{
                         .reduce((values, item, i) => {
                           values[`Payment${i + 1}`] = (data as unknown as any)[
                             `Payment${i + 1}`
-                          ];
+                          ].format("YYYY-MM-DD");
                           return values;
                         }, {})
                     )
                   : data.automaticRunDay,
-              frequency: type === "project" ? data.frequency : frequency,
-
+              frequency: type === "project" ? data?.frequency : frequency,
+              projectId: type === "project" ? scheme?.projectId : undefined,
+              projectParticipants:
+                type === "project"
+                  ? projectParticipants?.map((item) => ({
+                      employeeId: item.employeeId,
+                      grossPay: item.grossPay,
+                    }))
+                  : undefined,
               issuePayslip,
               name,
 
@@ -361,13 +421,20 @@ export const SetUpPayrollForm: React.FC<{
                     .reduce((values, item, i) => {
                       values[`Payment${i + 1}`] = (data as unknown as any)[
                         `Payment${i + 1}`
-                      ];
+                      ].format("YYYY-MM-DD");
                       return values;
                     }, {})
                 )
               : data.automaticRunDay,
           frequency: type === "project" ? data?.frequency : frequency,
-          projectId: projectId,
+          projectParticipants:
+            type === "project"
+              ? projectParticipants?.map((item) => ({
+                  employeeId: item.employeeId,
+                  grossPay: item.grossPay,
+                }))
+              : undefined,
+          projectId: project?.id,
           issuePayslip,
           name,
 
@@ -413,7 +480,7 @@ export const SetUpPayrollForm: React.FC<{
       type,
       frequencyAmount,
       frequency,
-      projectId,
+      project,
       issuePayslip,
       name,
       runAutomatically,
@@ -422,7 +489,7 @@ export const SetUpPayrollForm: React.FC<{
     ]
   );
   const handleSubmit = useCallback(
-    (data: TOfficeSetupSchemeInputData) => {
+    (data: TSetupPayrollSchemeData) => {
       if (scheme) {
         handleUpdate(data);
         setEditScheme(false);
@@ -514,6 +581,8 @@ export const SetUpPayrollForm: React.FC<{
 
   useEffect(() => {
     if (scheme) {
+      console.log("freq", scheme.frequency);
+      type === "project" && setFrequencyAmount(+scheme.frequency);
       const ogAllowances =
         scheme?.salaryComponents.filter((item) => item.type === "allowance") ??
         [];
@@ -560,6 +629,28 @@ export const SetUpPayrollForm: React.FC<{
 
           allowances: ogAllowances,
           deductions: ogDeductions,
+          projectParticipants:
+            type === "project"
+              ? (
+                  scheme as TSingleProjectPayrollScheme
+                )?.projectParticipants.map((item) => ({
+                  key: item.employee.empUid,
+
+                  name: getEmployeeFullName(item.employee),
+                  empuid: item.employee.empUid,
+
+                  employeeId: item.employeeId,
+                  grossPay: +item.grossPay,
+                  exchangeRate: {
+                    currency:
+                      item.employee.personalInformation.exchangeRate.currency,
+                    rate: item.employee.personalInformation.exchangeRate.rate,
+                  },
+                  expatriate:
+                    item.employee.personalInformation.eligibility ===
+                    "expatriate",
+                }))
+              : undefined,
         },
       });
       form.setFieldsValue({
@@ -567,12 +658,15 @@ export const SetUpPayrollForm: React.FC<{
         workflowId: scheme?.workflowId,
         automaticRunDay: scheme?.automaticRunDay,
         costCentreId: scheme?.costCentreId,
+        frequency: +scheme?.frequency,
+        ...convertObjectToKeyMomentValues(JSON.parse(scheme.automaticRunDay)),
       });
+
       setEditScheme(false);
     } else {
       setEditScheme(true);
     }
-  }, [scheme, dispatch, form]);
+  }, [scheme, dispatch, form, project, type]);
 
   type TDefaultSalaryComp = {
     title: string;
@@ -742,7 +836,7 @@ export const SetUpPayrollForm: React.FC<{
     <div className="flex flex-col gap-4">
       <PageSubHeader
         hideBackground
-        description={`Set up payroll based on the pay grades assigned to employees`}
+        description={description}
         actions={[
           {
             hidden: !editScheme,
@@ -797,7 +891,7 @@ export const SetUpPayrollForm: React.FC<{
                           type="number"
                           onChange={(e) => setFrequencyAmount(+e.target.value)}
                           value={frequencyAmount}
-                          min={1}
+                          min={frequencyAmount}
                           placeholder="Amount of split payments"
                         />
                       </Form.Item>
@@ -831,29 +925,11 @@ export const SetUpPayrollForm: React.FC<{
                     {displayProjectParticipantsNonExpatriate && (
                       <div className="mt-2">
                         <PayrollSingleProjectParticipantsContainer
-                          participants={[
-                            {
-                              key: "0",
-                              name: "James Kaladin",
-                              empuid: "EMP009",
-                              amount: 330000,
-                              exchangeRate: {
-                                currency: "Naira(N)",
-                                rate: 1,
-                              },
-                            },
-                            {
-                              key: "1",
-                              name: "Deborah Tully",
-                              empuid: "EMP007",
-
-                              amount: 700000,
-                              exchangeRate: {
-                                currency: "Naira(N)",
-                                rate: 1,
-                              },
-                            },
-                          ]}
+                          data={projectParticipants?.filter(
+                            (item) => !item.expatriate
+                          )}
+                          handleParticipants={handleProjectParticipants}
+                          baseCurrency={baseCurrency}
                         />
                       </div>
                     )}
@@ -881,29 +957,11 @@ export const SetUpPayrollForm: React.FC<{
                     {displayProjectParticipantsExpatriate && (
                       <div className="mt-2">
                         <PayrollSingleProjectParticipantsContainer
-                          participants={[
-                            {
-                              key: "0",
-                              name: "James Kaladin",
-                              empuid: "EMP009",
-                              amount: 330000,
-                              exchangeRate: {
-                                currency: "Dollar($)",
-                                rate: 0.05,
-                              },
-                            },
-                            {
-                              key: "1",
-                              name: "Deborah Tully",
-                              empuid: "EMP007",
-
-                              amount: 700000,
-                              exchangeRate: {
-                                currency: "Dollar($)",
-                                rate: 0.05,
-                              },
-                            },
-                          ]}
+                          data={projectParticipants?.filter(
+                            (item) => item.expatriate
+                          )}
+                          handleParticipants={handleProjectParticipants}
+                          baseCurrency={baseCurrency}
                         />
                       </div>
                     )}
@@ -1101,12 +1159,13 @@ export const SetUpPayrollForm: React.FC<{
                       .fill(0)
                       .map((item, i) => (
                         <Form.Item
+                          className="w-full flex"
                           key={i}
                           name={`Payment${i + 1}`}
                           label={`Payment ${i + 1}`}
-                          labelCol={{ span: 12 }}
+                          labelCol={{ span: 10 }}
                         >
-                          <DatePicker />
+                          <DatePicker className="w-full" />
                         </Form.Item>
                       ))}
                   </div>

@@ -23,3 +23,18 @@ export type TPayrollSchemeType =
   | "direct-salary"
   | "wages"
   | "project";
+
+export interface TProjectParticipantTableEntry {
+  key: string;
+  name: string;
+  empuid: string;
+  exchangeRate: ExchangeRate;
+  employeeId: number;
+  grossPay: number;
+  expatriate: boolean;
+}
+
+interface ExchangeRate {
+  currency: string;
+  rate: number;
+}

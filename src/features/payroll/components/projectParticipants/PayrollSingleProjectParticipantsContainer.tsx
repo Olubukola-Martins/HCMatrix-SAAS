@@ -1,236 +1,206 @@
-import { Form, InputNumber, Popconfirm, Table } from "antd";
-import type { FormInstance } from "antd/es/form";
+import { Button, Form, Input, InputNumber, Table } from "antd";
+import { ColumnsType } from "antd/lib/table";
+import { useState } from "react";
 
-import React, { useContext, useEffect, useRef, useState } from "react";
+import { TProjectParticipantTableEntry } from "features/payroll/types/payrollSchemes";
 
 interface IProps {
-  participants?: DataType[];
+  data?: TProjectParticipantTableEntry[];
+  loading?: boolean;
+  handleParticipants: (participants: TProjectParticipantTableEntry[]) => void;
+  baseCurrency?: string;
 }
 
-const EditableContext = React.createContext<FormInstance<any> | null>(null);
-
-interface Item {
-  key: string;
-  name: string;
-  amount: number;
-  exchangeRate: { currency: string; rate: number };
-  equivalent?: number;
-}
-
-interface EditableRowProps {
+interface EditableCellProps extends React.HTMLAttributes<HTMLElement> {
+  editing: boolean;
+  dataIndex: string;
+  title: any;
+  inputType: "number";
+  record: TProjectParticipantTableEntry;
   index: number;
+  children: React.ReactNode;
 }
+const EditableCell: React.FC<EditableCellProps> = ({
+  editing,
+  dataIndex,
+  title,
+  inputType,
+  record,
+  index,
+  children,
+  ...restProps
+}) => {
+  const inputNode =
+    inputType === "number" ? (
+      <InputNumber
+        value={record.grossPay}
+        placeholder="Gross Pay"
+        className="w-full"
+      />
+    ) : (
+      <Input />
+    );
 
-const EditableRow: React.FC<EditableRowProps> = ({ index, ...props }) => {
-  const [form] = Form.useForm();
   return (
-    <Form form={form} component={false}>
-      <EditableContext.Provider value={form}>
-        <tr {...props} />
-      </EditableContext.Provider>
-    </Form>
+    <td {...restProps}>
+      {editing ? (
+        <Form.Item
+          name={dataIndex}
+          style={{ margin: 0 }}
+          rules={[
+            {
+              required: true,
+              message: `Please Input ${title}!`,
+            },
+          ]}
+        >
+          {inputNode}
+        </Form.Item>
+      ) : (
+        children
+      )}
+    </td>
   );
 };
 
-interface EditableCellProps {
-  title: React.ReactNode;
-  editable: boolean;
-  children: React.ReactNode;
-  dataIndex: keyof Item;
-  record: Item;
-  handleSave: (record: Item) => void;
-}
+export const PayrollSingleProjectParticipantsContainer = ({
+  data = [],
+  loading,
+  handleParticipants,
+  baseCurrency,
+}: IProps) => {
+  const [form] = Form.useForm();
 
-const EditableCell: React.FC<EditableCellProps> = ({
-  title,
-  editable,
-  children,
-  dataIndex,
-  record,
-  handleSave,
-  ...restProps
-}) => {
-  const [editing, setEditing] = useState(false);
-  const inputRef = useRef<any>(null);
-  const form = useContext(EditableContext)!;
-
-  useEffect(() => {
-    if (editing) {
-      inputRef.current!.focus();
-    }
-  }, [editing]);
-
-  const toggleEdit = () => {
-    setEditing(!editing);
-    form.setFieldsValue({ [dataIndex]: record[dataIndex] });
+  const [editingKey, setEditingKey] = useState<number>();
+  const isEditing = (record: TProjectParticipantTableEntry) =>
+    record.employeeId === editingKey;
+  const edit = (record: Partial<TProjectParticipantTableEntry>) => {
+    form.setFieldsValue({ ...record });
+    setEditingKey(record.employeeId);
   };
 
-  const save = async () => {
+  const cancel = () => {
+    setEditingKey(undefined);
+  };
+  const save = async (key: React.Key) => {
     try {
-      const values = await form.validateFields();
+      const row =
+        (await form.validateFields()) as TProjectParticipantTableEntry;
 
-      toggleEdit();
-      handleSave({
-        ...record,
-        ...values,
-        equivalent: record.exchangeRate.rate * values.amount,
-      });
+      const member = data?.find(
+        (item) => item.employeeId === key
+      ) as unknown as TProjectParticipantTableEntry;
+
+      handleParticipants(
+        data.map((item) =>
+          item.employeeId === member.employeeId
+            ? { ...item, grossPay: row.grossPay }
+            : item
+        )
+      );
+      cancel();
     } catch (errInfo) {
-      console.log("Save failed:", errInfo);
+      console.log(errInfo, "ERRO");
     }
   };
-
-  let childNode = children;
-
-  if (editable) {
-    childNode = editing ? (
-      <Form.Item
-        style={{ margin: 0 }}
-        name={dataIndex}
-        rules={[
-          {
-            required: true,
-            message: `${title} is required.`,
-            type: "number",
-          },
-        ]}
-      >
-        <InputNumber ref={inputRef} onPressEnter={save} onBlur={save} />
-      </Form.Item>
-    ) : (
-      <div
-        className="editable-cell-value-wrap"
-        style={{ paddingRight: 24 }}
-        onClick={toggleEdit}
-      >
-        {children}
-      </div>
-    );
-  }
-
-  return <td {...restProps}>{childNode}</td>;
-};
-
-type EditableTableProps = Parameters<typeof Table>[0];
-
-interface DataType {
-  key: React.Key;
-  empuid: string;
-  name: string;
-  amount: number;
-  exchangeRate: { currency: string; rate: number };
-  equivalent?: number;
-}
-
-type ColumnTypes = Exclude<EditableTableProps["columns"], undefined>;
-
-export const PayrollSingleProjectParticipantsContainer: React.FC<IProps> = ({
-  participants = [],
-}) => {
-  const [dataSource, setDataSource] = useState<DataType[]>([]); //TO DO: Refactor to useEffect popultion
-  useEffect(() => {
-    const data = participants.map((item) => ({
-      ...item,
-      equivalent: item.amount * item.exchangeRate.rate,
-    }));
-    setDataSource(data);
-  }, [participants]);
-  const [count, setCount] = useState(2);
-
-  const handleDelete = (key: React.Key) => {
-    const newData = dataSource.filter((item) => item.key !== key);
-    setDataSource(newData);
-  };
-
-  const defaultColumns: (ColumnTypes[number] & {
-    editable?: boolean;
-    dataIndex: string;
-  })[] = [
+  const columns: ColumnsType<TProjectParticipantTableEntry> = [
     {
-      title: "Emp Num",
+      title: "Emp UID",
       dataIndex: "empuid",
+      key: "empuid",
+      render: (_, item) => item.empuid,
     },
     {
       title: "Name",
       dataIndex: "name",
+      key: "name",
+      render: (_, item) => item.name,
     },
     {
-      title: "Gross Income (NGN)",
-      dataIndex: "amount",
-      width: "40%",
-      editable: true,
+      title: `Gross Income (${baseCurrency ?? ""})`,
+      dataIndex: "grossPay",
+      key: "grossPay",
+      width: "25%",
+      render: (_, item) => item.grossPay,
     },
     {
       title: "Exchange Rate",
       dataIndex: "exchangeRate",
-      render: (_, val) => (val as DataType).exchangeRate.currency,
-      editable: false,
+      key: "exchangeRate",
+      render: (_, item) => item.exchangeRate.currency,
     },
     {
       title: "Currency Equivalent",
       dataIndex: "equivalent",
-      editable: false,
+      key: "equivalent",
+      render: (_, item) => item.grossPay * item.exchangeRate.rate,
     },
+
     {
-      title: "",
-      dataIndex: "operation",
-      render: (_, record: unknown) =>
-        dataSource.length >= 1 ? (
-          <Popconfirm
-            title=""
-            onConfirm={() => handleDelete((record as DataType).key)}
-          >
-            <span>Edit by clickin on row</span>
-          </Popconfirm>
-        ) : null,
+      title: "Action",
+      dataIndex: "action",
+      key: "action",
+      render: (_, item) => {
+        const editable = isEditing(item);
+        return editable ? (
+          <div className="flex gap-4">
+            <Button onClick={() => save(item.employeeId)} type="text">
+              <span className="capitalize text-caramel cursor-pointer">
+                Save
+              </span>
+            </Button>
+            <Button onClick={() => cancel()} type="text">
+              <span>Cancel</span>
+            </Button>
+          </div>
+        ) : (
+          <div className="flex items-center gap-3 text-lg">
+            {!editingKey ? (
+              <i
+                className="ri-pencil-line cursor-pointer hover:text-caramel"
+                onClick={() => edit(item)}
+              />
+            ) : (
+              <>
+                <i className="ri-pencil-line cursor-not-allowed text-slate-200" />
+              </>
+            )}
+          </div>
+        );
+      },
     },
   ];
 
-  const handleSave = (row: DataType) => {
-    const newData = [...dataSource];
-    const index = newData.findIndex((item) => row.key === item.key);
-    const item = newData[index];
-    newData.splice(index, 1, {
-      ...item,
-      ...row,
-    });
-    setDataSource(newData);
-  };
-
-  const components = {
-    body: {
-      row: EditableRow,
-      cell: EditableCell,
-    },
-  };
-
-  const columns = defaultColumns.map((col) => {
-    if (!col.editable) {
+  const mergedColumns = columns.map((col) => {
+    if (col.key !== "grossPay") {
       return col;
     }
     return {
       ...col,
-      onCell: (record: DataType) => ({
+      onCell: (record: TProjectParticipantTableEntry) => ({
         record,
-        editable: col.editable,
-        dataIndex: col.dataIndex,
+        inputType: col.key === "grossPay" ? "number" : null,
+        dataIndex: col.key,
         title: col.title,
-        handleSave,
+        editing: isEditing(record),
       }),
     };
   });
 
   return (
-    <div className="flex flex-col gap-4">
+    <Form form={form} component={false}>
       <Table
-        size={"small"}
-        components={components}
-        rowClassName={() => "editable-row"}
+        components={{
+          body: {
+            cell: EditableCell,
+          },
+        }}
         bordered
-        pagination={false}
-        dataSource={dataSource}
-        columns={columns as ColumnTypes}
+        columns={mergedColumns as any}
+        size="small"
+        dataSource={data}
+        loading={loading}
       />
-    </div>
+    </Form>
   );
 };

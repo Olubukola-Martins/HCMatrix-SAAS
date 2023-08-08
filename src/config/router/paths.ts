@@ -80,7 +80,7 @@ export const appRoutes = {
     schemeId?: number;
   }) => {
     return {
-      format: `/settings/payroll/schemes/project/set-up/:projectId/scheme/`,
+      format: `/settings/payroll/schemes/project/set-up/:projectId/scheme/:schemeId`,
       path: `/settings/payroll/schemes/project/set-up/${
         props?.projectId
       }/scheme/${props?.schemeId ?? ""}`,

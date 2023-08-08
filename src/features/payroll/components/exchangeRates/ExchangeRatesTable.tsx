@@ -10,7 +10,7 @@ import { QUERY_KEY_FOR_EXCHANGE_RATES } from "features/payroll/hooks/exhangeRate
 interface IProps {
   data?: TExchangeRateListItem[];
   loading?: boolean;
-  defaultCompanyParams?: string;
+  defaultCompanyCurrency?: string;
   onlyView?: boolean;
 }
 
@@ -65,7 +65,7 @@ const EditableCell: React.FC<EditableCellProps> = ({
 export const ExchangeRatesTable = ({
   data = [],
   loading,
-  defaultCompanyParams,
+  defaultCompanyCurrency,
   onlyView,
 }: IProps) => {
   const queryClient = useQueryClient();
@@ -169,7 +169,7 @@ export const ExchangeRatesTable = ({
           </div>
         ) : (
           <div className="flex items-center gap-3 text-lg">
-            {!editingKey && defaultCompanyParams !== item.currency ? (
+            {!editingKey && defaultCompanyCurrency !== item.currency ? (
               <i
                 className="ri-pencil-line cursor-pointer hover:text-caramel"
                 onClick={() => edit(item)}

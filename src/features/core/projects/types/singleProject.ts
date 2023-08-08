@@ -33,8 +33,23 @@ interface Employee {
   companyId: number;
   designationId: number;
   userId: number;
-  avatarUrl?: string;
+  avatarUrl: string;
   createdAt: string;
   updatedAt: string;
   deletedAt?: any;
+  personalInformation: PersonalInformation;
+}
+
+interface PersonalInformation {
+  eligibility: string;
+  exchangeRateId: number;
+  exchangeRate: ExchangeRate;
+}
+
+interface ExchangeRate {
+  id: number;
+  currency: string;
+  label: string;
+  rate: number;
+  companyId: number;
 }
