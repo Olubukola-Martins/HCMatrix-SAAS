@@ -87,6 +87,7 @@ export const AddSalaryComponent: React.FC<IProps> = ({
   );
 };
 
+const DEFAULT_DEPENDENCIES_FROM_API = ["gross_pay"];
 export const AddSalaryComponentForm: React.FC<IFormProps> = ({
   dependencies = [],
   formMode = "add",
@@ -103,6 +104,7 @@ export const AddSalaryComponentForm: React.FC<IFormProps> = ({
 }) => {
   const [form] = Form.useForm();
 
+  dependencies = [...DEFAULT_DEPENDENCIES_FROM_API, ...dependencies];
   const queryClient = useQueryClient();
 
   const [mode, setMode] = useState<TSalaryComponentCalculationMode | "table">(
