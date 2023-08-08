@@ -19,7 +19,6 @@ export const SetUpWagesPayrollContainer = () => {
       <div className="flex flex-col gap-8">
         <PageSubHeader
           description={`Set up payroll for projects`}
-          actions={[{ handleClick: () => setShowM(true), name: `Add Project` }]}
           hideBackground
         />
 

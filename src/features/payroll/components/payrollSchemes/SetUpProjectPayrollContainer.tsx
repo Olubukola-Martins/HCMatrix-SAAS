@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 
-import { Pagination, Skeleton } from "antd";
+import { Empty, Pagination, Skeleton } from "antd";
 import { usePagination } from "hooks/usePagination";
 
 import { AppButton } from "components/button/AppButton";
@@ -103,18 +103,26 @@ const PayrollSchemeCardList = () => {
       active
       paragraph={{ rows: 8 }}
     >
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-x-5 lg:gap-x-10 gap-y-10">
-        {schemes.map((item, i) => (
-          <PayrollSchemeCard key={i} {...item} />
-        ))}
-      </div>
-      <div className="mt-4 flex justify-end">
-        <Pagination
-          {...{ ...pagination, total: projects?.total }}
-          onChange={onChange}
-          size="small"
-        />
-      </div>
+      <>
+        {schemes.length > 0 ? (
+          <>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-x-5 lg:gap-x-10 gap-y-10">
+              {schemes.map((item, i) => (
+                <PayrollSchemeCard key={i} {...item} />
+              ))}
+            </div>
+            <div className="mt-4 flex justify-end">
+              <Pagination
+                {...{ ...pagination, total: projects?.total }}
+                onChange={onChange}
+                size="small"
+              />
+            </div>
+          </>
+        ) : (
+          <Empty description="No active projects available" />
+        )}
+      </>
     </Skeleton>
   );
 };

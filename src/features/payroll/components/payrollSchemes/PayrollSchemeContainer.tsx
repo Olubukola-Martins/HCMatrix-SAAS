@@ -161,11 +161,13 @@ const PayrollSchemeCardList = () => {
 };
 const PayrollSchemeCard: React.FC<TScheme> = ({
   name,
-  createdAt,
-  updatedAt,
+  createdAt = "Pending",
+  updatedAt = "Pending",
   setUpLink,
   projectCount,
 }) => {
+  const btnLabel =
+    createdAt === "Pending" ? "Set Up Payroll" : "Modify Payroll";
   return (
     <>
       {/* view */}
@@ -174,7 +176,10 @@ const PayrollSchemeCard: React.FC<TScheme> = ({
           <h4 className="font-medium text-lg">{name}</h4>
           <div className="flex gap-2 ">
             <Link to={setUpLink}>
-              <AppButton label="Set up Payroll" variant="transparent" />
+              <AppButton
+                label={btnLabel}
+                variant={createdAt === "Pending" ? "transparent" : "default"}
+              />
             </Link>
           </div>
         </div>
@@ -186,8 +191,8 @@ const PayrollSchemeCard: React.FC<TScheme> = ({
                   No of Payroll projects set up: {projectCount}
                 </p>
               )}
-              <p className="pb-2">Date Created: {createdAt ?? "Pending"}</p>
-              <p>Last Modified: {updatedAt ?? "Pending"}</p>
+              <p className="pb-2">Date Created: {createdAt}</p>
+              <p>Last Modified: {updatedAt}</p>
             </div>
           </div>
         </div>
