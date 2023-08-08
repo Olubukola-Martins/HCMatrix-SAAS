@@ -28,8 +28,9 @@ import { TSalaryComponent } from "features/payroll/types/salaryComponents";
 import { openNotification } from "utils/notifications";
 import { useGetSinglePayroll } from "features/payroll/hooks/payroll/useGetSinglePayroll";
 import moment from "moment";
+import { EmployeeTimesheet } from "./EmployeeTimesheet";
 
-type TPayrollFrequency = "monthly" | "daily";
+type TPayrollFrequency = "monthly" | "daily" | "none";
 type TIntialPayrollDetails = {
   name: string;
   description: string;
@@ -89,10 +90,24 @@ export const CreatePayrollInitialForm: React.FC<IFormProps> = ({
   const [form] = Form.useForm();
   const navigate = useNavigate();
   const [payrollFrequency, setPayrollFrequency] =
-    useState<TPayrollFrequency>("monthly");
+    useState<TPayrollFrequency>("none");
   const [costCentre, setCostCentre] = useState("");
   const { mutate, isLoading } = useCreatePayroll();
   const handleSubmit = (data: any) => {
+    if (type === "project" || type === "wages") {
+      handleSave({
+        name: data.name,
+        date:
+          payrollFrequency === "monthly"
+            ? data?.date.format("YYYY-MM")
+            : data?.date.format("YYYY-MM-DD"),
+        description: data.description,
+        frequency: payrollFrequency,
+        costCentre: costCentre,
+      });
+      handleClose();
+      return;
+    }
     if (type) {
       mutate(
         {
@@ -158,6 +173,42 @@ export const CreatePayrollInitialForm: React.FC<IFormProps> = ({
         onFinish={handleSubmit}
         requiredMark={false}
       >
+        {type === "project" && (
+          <Form.Item
+            name="project"
+            label="Select Project"
+            dependencies={["frequency"]}
+          >
+            <Select
+              placeholder="Select project"
+              getPopupContainer={(triggerNode) => triggerNode.parentElement}
+              options={Array(4)
+                .fill("Project")
+                .map((item, i) => ({
+                  label: item + `${i + 1}`,
+                  value: item,
+                }))}
+            />
+          </Form.Item>
+        )}
+        {type === "project" && (
+          <Form.Item
+            name="project"
+            label="Select Payment"
+            dependencies={["frequency"]}
+          >
+            <Select
+              getPopupContainer={(triggerNode) => triggerNode.parentElement}
+              placeholder="Select payment"
+              options={Array(4)
+                .fill("Payment 1(09/12/23)")
+                .map((item) => ({
+                  label: item,
+                  value: item,
+                }))}
+            />
+          </Form.Item>
+        )}
         <Form.Item
           rules={textInputValidationRules}
           name="name"
@@ -172,6 +223,7 @@ export const CreatePayrollInitialForm: React.FC<IFormProps> = ({
             label="Payroll Frequency"
           >
             <Select
+              getPopupContainer={(triggerNode) => triggerNode.parentElement}
               onSelect={(val: TPayrollFrequency) => setPayrollFrequency(val)}
               placeholder="Payroll Frequency"
               options={[
@@ -181,21 +233,40 @@ export const CreatePayrollInitialForm: React.FC<IFormProps> = ({
             />
           </Form.Item>
         )}
+        {type === "wages" && (
+          <Form.Item
+            rules={generalValidationRules}
+            name="frequency"
+            label="Upload Employees' Timesheet"
+          >
+            <div className={`px-3 py-2 shadow rounded-sm bg-mainBg`}>
+              <FileUpload
+                allowedFileTypes={[
+                  "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+                ]}
+                fileKey="documentUrl"
+                textToDisplay="Upload file"
+                displayType="form-space-between"
+              />
+            </div>
+          </Form.Item>
+        )}
         <FormCostCentreInput
           Form={Form}
           control={{ name: "costCentreId", label: "Cost Centre" }}
           onSelect={(_, data) => setCostCentre(data.name)}
         />
         {payrollFrequency === "daily" && (
-          <Form.Item name="date" label="Date">
+          <Form.Item name="date" label="Date" dependencies={["frequency"]}>
             <DatePicker className="w-full" placeholder="Date" />
           </Form.Item>
         )}
         {payrollFrequency === "monthly" && (
-          <Form.Item name="date" label="Date">
+          <Form.Item name="date" label="Date" dependencies={["frequency"]}>
             <DatePicker picker="month" className="w-full" placeholder="Date" />
           </Form.Item>
         )}
+
         <Form.Item
           rules={textInputValidationRules}
           name="description"
@@ -398,26 +469,33 @@ const CreatePayrollContainer: React.FC<{
             </div>
             {type === "wages" && (
               <div className={boxStyle}>
-                <div className="flex justify-between w-full">
-                  <div>
-                    <h5 className="font-medium text-base pb-1">
-                      Add Employees' Timesheet
-                    </h5>
-                    <p className="md:text-sm text-xs">
-                      Upload the time sheet that will be used to calculate the
-                      amount to be paid to each employee based on the hours
-                      worked. <br />
-                      Developer Note: This timesheet will typically be produced
-                      from the time & attendance module
-                    </p>
+                <div className="w-full">
+                  <div className="flex justify-between w-full">
+                    <div>
+                      <h5 className="font-medium text-base pb-1">
+                        Employees' Timesheet
+                      </h5>
+                      <p className="md:text-sm text-xs">
+                        Time sheet that will be used to calculate the amount to
+                        be paid to each employee based on the hours worked.{" "}
+                        <br />
+                        Developer Note: This timesheet will typically be
+                        produced from the time & attendance module
+                      </p>
+                    </div>
+                    <div>
+                      <button
+                        className={buttonStyle}
+                        onClick={() => setOpenT(true)}
+                      >
+                        View Timesheet
+                      </button>
+                    </div>
                   </div>
-                  <div>
-                    <button
-                      className={buttonStyle}
-                      onClick={() => setOpenT(true)}
-                    >
-                      Upload Timesheet
-                    </button>
+                  <div className="mt-4">
+                    {payrollD.frequency !== "none" && (
+                      <EmployeeTimesheet type={payrollD.frequency} />
+                    )}
                   </div>
                 </div>
               </div>
