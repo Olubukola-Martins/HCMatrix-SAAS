@@ -1,7 +1,9 @@
 import { appRoutes } from "config/router/paths";
+import { CURRENCIES } from "constants/currencies";
 import { useGetCompanyParams } from "features/core/company/hooks/useGetCompanyParams";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { TCurrency } from "types/currencies";
 import { openNotification } from "utils/notifications";
 
 export const useGetCompanyBaseCurrency = () => {
@@ -9,9 +11,16 @@ export const useGetCompanyBaseCurrency = () => {
   const { data: companyParams, isFetching: isFetchingCompanyParams } =
     useGetCompanyParams();
 
-  const baseCurrency = companyParams?.value.currencySettings?.baseCurrency;
+  const [baseCurrency, setBaseCurrency] = useState<TCurrency>();
+
   useEffect(() => {
-    if (!baseCurrency && !isFetchingCompanyParams) {
+    const currency = CURRENCIES.find(
+      (item) =>
+        item.currency === companyParams?.value.currencySettings?.baseCurrency
+    );
+    setBaseCurrency(currency);
+
+    if (!currency && !isFetchingCompanyParams) {
       navigate(appRoutes.companyDetailsSettings);
       openNotification({
         description: `Please set your company's base currency before setting up exhange rates`,
@@ -20,7 +29,7 @@ export const useGetCompanyBaseCurrency = () => {
         state: "error",
       });
     }
-  }, [baseCurrency, isFetchingCompanyParams, navigate]);
+  }, [baseCurrency, companyParams, isFetchingCompanyParams, navigate]);
 
   return {
     baseCurrency,

@@ -4,7 +4,6 @@ import { AppButton } from "components/button/AppButton";
 import { usePagination } from "hooks/usePagination";
 import { MoreOutlined } from "@ant-design/icons";
 import React, { useState } from "react";
-import ViewPayrollBreakdown from "../ViewPayrollBreakdown";
 import ModifyPayrollBreakdown from "../ModifyPayrollBreakdown";
 import { AddSalaryComponent } from "../salaryComponents/AddSalaryComponent";
 import DeleteEntityModal from "components/entity/DeleteEntityModal";
@@ -16,6 +15,9 @@ import {
 import { useAddAllowanceOrDeductionToEmployees } from "features/payroll/hooks/payroll/employee/salaryComponent/useAddAllowanceOrDeductionToEmployees";
 import { openNotification } from "utils/notifications";
 import { pluralOrSingular } from "utils/dataHelpers/pluralOrSingular";
+import { useActivateOrDeactivateEmployeesInPayroll } from "features/payroll/hooks/payroll/employee/useActivateOrDeactivateEmployeesInPayroll";
+import ViewEmployeePayrollBreakdown from "../employeeReports/ViewEmployeePayrollBreakdown";
+import ConfirmationModal from "components/modals/ConfirmationModal";
 
 interface IProps {
   expatriate: boolean;
@@ -31,8 +33,17 @@ type TAction =
   | "modify-details"
   | "view-details"
   | "deactivate"
+  | "activate"
   | "exempt-from-tax"
   | "configure-tax";
+
+const salaryCompTypes: {
+  actionType: "add-allowance" | "add-deduction";
+  component: "allowance" | "deduction";
+}[] = [
+  { actionType: "add-allowance", component: "allowance" },
+  { actionType: "add-deduction", component: "deduction" },
+];
 
 export const EmployeePayrollUpdatesContainer: React.FC<IProps> = ({
   expatriate = false,
@@ -49,27 +60,16 @@ export const EmployeePayrollUpdatesContainer: React.FC<IProps> = ({
     action: TAction;
     data?: { employee?: TEmployeesInPayrollData };
   }) => {
-    const addSalaryComp = () => {
+    const initEmployee = () => {
       setEmployee(props?.data?.employee);
     };
-    switch (props.action) {
-      case "add-allowance":
-        addSalaryComp();
-        break;
-      case "add-deduction":
-        addSalaryComp();
 
-        break;
-
-      default:
-        break;
-    }
+    initEmployee();
     setAction(props.action);
   };
 
   const clearAction = () => {
     setAction(undefined);
-    setEmployeeIds([]);
     setEmployee(undefined);
   };
   const actionItems = (props: { employee: TEmployeesInPayrollData }) => {
@@ -93,35 +93,38 @@ export const EmployeePayrollUpdatesContainer: React.FC<IProps> = ({
         label: "View Details",
         key: "View Details",
         onClick: () => {
-          handleAction({ action: "view-details" });
+          handleAction({ action: "view-details", data: { employee } });
         },
       },
       {
         label: "Modify Details",
         key: "Modify Details",
         onClick: () => {
-          handleAction({ action: "modify-details" });
+          handleAction({ action: "modify-details", data: { employee } });
         },
       },
       {
-        label: "Deactivate",
-        key: "Deactivate",
+        label: `${employee.isActive ? "Deactivate" : "Activate"}`,
+        key: "ActivateOrDeactivate",
         onClick: () => {
-          handleAction({ action: "deactivate" });
+          handleAction({
+            action: employee.isActive ? "deactivate" : "activate",
+            data: { employee },
+          });
         },
       },
       {
         label: "Exempt From Tax",
         key: "Exempt From Tax",
         onClick: () => {
-          handleAction({ action: "exempt-from-tax" });
+          handleAction({ action: "exempt-from-tax", data: { employee } });
         },
       },
       {
         label: "Configure Tax",
         key: "Configure Tax",
         onClick: () => {
-          handleAction({ action: "configure-tax" });
+          handleAction({ action: "configure-tax", data: { employee } });
         },
       },
     ];
@@ -181,7 +184,7 @@ export const EmployeePayrollUpdatesContainer: React.FC<IProps> = ({
       render: (_, employee) => (
         <div className="flex gap-4">
           <Dropdown
-            disabled={!employee.isActive}
+            disabled={!employee.isActive || employeeIds.length > 0}
             overlay={
               <Menu
                 items={
@@ -209,22 +212,59 @@ export const EmployeePayrollUpdatesContainer: React.FC<IProps> = ({
       selectedRowKeys: React.Key[],
       selectedRows: TEmployeesInPayrollData[]
     ) => {
-      console.log(
-        `selectedRowKeys: ${selectedRowKeys}`,
-        "selectedRows: ",
-        selectedRows
-      );
       setEmployeeIds(selectedRows.map((item) => item.employeeId));
     },
-    getCheckboxProps: (record: TEmployeesInPayrollData) => ({
-      disabled: !record.isActive, // Column configuration not to be checked , would be deactivated users
-      name: record.fullName,
-    }),
   };
 
-  const { mutate, isLoading: isSalaryCompLoading } =
-    useAddAllowanceOrDeductionToEmployees();
+  const {
+    mutate: mutateActivateOrDeactivateEmployees,
+    isLoading: isActivateOrDeactivateEmployeesLoading,
+  } = useActivateOrDeactivateEmployeesInPayroll();
 
+  const handleActivateOrDeactivateEmployees = () => {
+    if (
+      (payrollId && action === "activate") ||
+      (payrollId && action === "deactivate")
+    ) {
+      mutateActivateOrDeactivateEmployees(
+        {
+          employeeIds: employee ? [employee.employeeId] : employeeIds,
+          payrollId,
+          data: {
+            isActive: action === "activate" ? true : false,
+          },
+        },
+        {
+          onError: (err: any) => {
+            openNotification({
+              state: "error",
+              title: "Error Occurred",
+              description:
+                err?.response.data.message ?? err?.response.data.error.message,
+            });
+          },
+          onSuccess: (res: any) => {
+            openNotification({
+              state: "success",
+
+              title: "Success",
+              description: res.data.message,
+              // duration: 0.4,
+            });
+            clearAction();
+            setEmployeeIds([]);
+
+            // queryClient.invalidateQueries({
+            //   queryKey: [QUERY_KEY_FOR_FOLDERS],
+            //   // exact: true,
+            // });
+          },
+        }
+      );
+    }
+  };
+  const { mutate: mutateAddSalaryComp, isLoading: isSalaryCompLoading } =
+    useAddAllowanceOrDeductionToEmployees();
   const handleAddSalaryComponent = (data: {
     amount: number | string;
     label: string;
@@ -236,7 +276,7 @@ export const EmployeePayrollUpdatesContainer: React.FC<IProps> = ({
       (payrollId && action === "add-allowance") ||
       (payrollId && action === "add-deduction")
     ) {
-      mutate(
+      mutateAddSalaryComp(
         {
           salaryComponentType:
             action === "add-allowance" ? "allowance" : "deduction",
@@ -267,6 +307,7 @@ export const EmployeePayrollUpdatesContainer: React.FC<IProps> = ({
               // duration: 0.4,
             });
             clearAction();
+            setEmployeeIds([]);
 
             // queryClient.invalidateQueries({
             //   queryKey: [QUERY_KEY_FOR_FOLDERS],
@@ -277,13 +318,7 @@ export const EmployeePayrollUpdatesContainer: React.FC<IProps> = ({
       );
     }
   };
-  const salaryCompTypes: {
-    actionType: "add-allowance" | "add-deduction";
-    component: "allowance" | "deduction";
-  }[] = [
-    { actionType: "add-allowance", component: "allowance" },
-    { actionType: "add-deduction", component: "deduction" },
-  ];
+
   return (
     <>
       {salaryCompTypes.map((item) => (
@@ -307,17 +342,65 @@ export const EmployeePayrollUpdatesContainer: React.FC<IProps> = ({
         />
       ))}
 
-      <DeleteEntityModal
-        title="Exclude Employee"
-        entity={{ type: "employees", name: `${employeeIds.length}` }}
+      <ConfirmationModal
+        title={
+          employeeIds.length > 0
+            ? `Deactivate ${pluralOrSingular({
+                amount: employeeIds.length,
+                singular: "employee",
+                plural: "employees",
+              })}`
+            : `Deactivate ${employee?.fullName}`
+        }
+        description={
+          employeeIds.length > 0
+            ? `Are you sure you want to deactivate ${pluralOrSingular({
+                amount: employeeIds.length,
+                singular: "employee",
+                plural: "employees",
+              })}`
+            : `Are you sure you want to deactivate ${employee?.fullName}`
+        }
         handleClose={() => clearAction()}
         open={action === "deactivate"}
-        handleDelete={{ fn: () => {}, isLoading: false }}
+        handleConfirm={{
+          fn: () => handleActivateOrDeactivateEmployees(),
+          isLoading: isActivateOrDeactivateEmployeesLoading,
+        }}
       />
-      <ViewPayrollBreakdown
+      <ConfirmationModal
+        title={
+          employeeIds.length > 0
+            ? `Activate ${pluralOrSingular({
+                amount: employeeIds.length,
+                singular: "employee",
+                plural: "employees",
+              })}`
+            : `Activate ${employee?.fullName}`
+        }
+        description={
+          employeeIds.length > 0
+            ? `Are you sure you want to activate ${pluralOrSingular({
+                amount: employeeIds.length,
+                singular: "employee",
+                plural: "employees",
+              })}`
+            : `Are you sure you want to activate ${employee?.fullName}`
+        }
         handleClose={() => clearAction()}
-        open={action === "view-details"}
+        open={action === "activate"}
+        handleConfirm={{
+          fn: () => handleActivateOrDeactivateEmployees(),
+          isLoading: isActivateOrDeactivateEmployeesLoading,
+        }}
       />
+      {payrollId && employee && (
+        <ViewEmployeePayrollBreakdown
+          data={{ payrollId, employeeId: employee.employeeId }}
+          handleClose={() => clearAction()}
+          open={action === "view-details"}
+        />
+      )}
       <ModifyPayrollBreakdown
         handleClose={() => clearAction()}
         open={action === "modify-details"}
@@ -351,9 +434,14 @@ export const EmployeePayrollUpdatesContainer: React.FC<IProps> = ({
                 handleClick={() => handleAction({ action: "add-deduction" })}
               />
               <AppButton
-                label="Deactivate Users"
+                label="Deactivate"
                 variant="transparent"
                 handleClick={() => handleAction({ action: "deactivate" })}
+              />
+              <AppButton
+                label="Activate"
+                variant="transparent"
+                handleClick={() => handleAction({ action: "activate" })}
               />
             </div>
           )}
@@ -362,7 +450,15 @@ export const EmployeePayrollUpdatesContainer: React.FC<IProps> = ({
         {/* table */}
         <Table
           rowSelection={{
+            selectedRowKeys: employeeIds,
             type: "checkbox",
+
+            getCheckboxProps: (record) => ({
+              // className: record.isActive ? "bg-red-200" : "bg-red-400",
+              // disabled: !record.isActive, // Column configuration not to be checked , would be deactivated users
+              name: record.fullName,
+            }),
+
             ...rowSelection,
           }}
           columns={columns}
@@ -374,6 +470,9 @@ export const EmployeePayrollUpdatesContainer: React.FC<IProps> = ({
           }))}
           pagination={{ ...pagination, total: employees?.length }}
           onChange={onChange}
+          rowClassName={({ isActive }) =>
+            !isActive ? `bg-gray-200 text-slate-400` : ""
+          }
         />
       </div>
     </>

@@ -18,7 +18,7 @@ export const SetUpGradePayrollContainer = () => {
         type="office"
         scheme={scheme}
         isFetching={isFetching || loading}
-        baseCurrency={baseCurrency}
+        baseCurrency={baseCurrency?.currency}
         description={`Set up  payroll based on the pay grade assigned to employees`}
       />
     </>

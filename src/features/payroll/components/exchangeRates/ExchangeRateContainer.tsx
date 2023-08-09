@@ -37,7 +37,7 @@ const ExchangeRateForm: React.FC<IProps> = ({ onlyView }) => {
   useEffect(() => {
     if (baseCurrency && rates && !isBaseCurrencyLoading) {
       const options = CURRENCY_OPTIONS.filter(
-        (item) => item.value !== baseCurrency
+        (item) => item.value !== baseCurrency.currency
       ).filter((item) =>
         rates.data.find((rate) => rate.currency === item.value) ? false : true
       );
@@ -50,7 +50,7 @@ const ExchangeRateForm: React.FC<IProps> = ({ onlyView }) => {
     <Skeleton active paragraph={{ rows: 5 }} loading={isBaseCurrencyLoading}>
       <div className="flex justify-center">
         <p className="text-center font-bold px-6 py-2 shadow-md  bg-white rounded-md">
-          Base Currency - {baseCurrency}
+          Base Currency - {baseCurrency?.currency}
         </p>
       </div>
       <div className="w-full">
@@ -72,7 +72,7 @@ const ExchangeRateForm: React.FC<IProps> = ({ onlyView }) => {
             <ExchangeRatesTable
               data={rates.data}
               loading={isFetchingRates}
-              defaultCompanyCurrency={baseCurrency}
+              defaultCompanyCurrency={baseCurrency?.currency}
               onlyView={onlyView}
             />
           )}

@@ -25,6 +25,7 @@ export type TPayrollSchemeType =
   | "project";
 
 export interface TProjectParticipantTableEntry {
+  id: number;
   key: string;
   name: string;
   empuid: string;

@@ -1,4 +1,4 @@
-const CURRENCIES = [
+export const CURRENCIES = [
   { name: "United States", currency: "US Dollar", currencySymbol: "$" },
   { name: "United Kingdom", currency: "British Pound", currencySymbol: "£" },
   { name: "Japan", currency: "Japanese Yen", currencySymbol: "¥" },

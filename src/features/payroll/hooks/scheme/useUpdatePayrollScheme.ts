@@ -18,13 +18,7 @@ type TSchemeData = {
   runAutomatically: boolean;
   automaticRunDay: number | string;
   projectId?: number;
-  projectParticipants?: ProjectParticipant[];
 };
-
-interface ProjectParticipant {
-  employeeId: number;
-  grossPay: number;
-}
 
 const createData = async (props: {
   schemeId: number;

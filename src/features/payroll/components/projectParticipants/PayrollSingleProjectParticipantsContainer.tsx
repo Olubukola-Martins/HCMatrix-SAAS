@@ -7,7 +7,14 @@ import { TProjectParticipantTableEntry } from "features/payroll/types/payrollSch
 interface IProps {
   data?: TProjectParticipantTableEntry[];
   loading?: boolean;
-  handleParticipants: (participants: TProjectParticipantTableEntry[]) => void;
+  handleParticipants: {
+    fn: (props: {
+      projectParticipantId: number;
+      employeeId: number;
+      grossPay: number;
+    }) => void;
+    loading?: boolean;
+  };
   baseCurrency?: string;
 }
 
@@ -91,13 +98,11 @@ export const PayrollSingleProjectParticipantsContainer = ({
         (item) => item.employeeId === key
       ) as unknown as TProjectParticipantTableEntry;
 
-      handleParticipants(
-        data.map((item) =>
-          item.employeeId === member.employeeId
-            ? { ...item, grossPay: row.grossPay }
-            : item
-        )
-      );
+      handleParticipants.fn({
+        employeeId: member.employeeId,
+        grossPay: row.grossPay,
+        projectParticipantId: member.id,
+      });
       cancel();
     } catch (errInfo) {
       console.log(errInfo, "ERRO");
@@ -144,7 +149,13 @@ export const PayrollSingleProjectParticipantsContainer = ({
         const editable = isEditing(item);
         return editable ? (
           <div className="flex gap-4">
-            <Button onClick={() => save(item.employeeId)} type="text">
+            <Button
+              onClick={() => save(item.employeeId)}
+              type="text"
+              loading={
+                handleParticipants.loading && editingKey === item.employeeId
+              }
+            >
               <span className="capitalize text-caramel cursor-pointer">
                 Save
               </span>

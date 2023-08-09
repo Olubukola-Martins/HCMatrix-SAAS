@@ -23,7 +23,7 @@ export const SetUpSingleProjectPayrollContainer: React.FC<{
         project={project}
         scheme={scheme}
         isFetching={isFetching || loading}
-        baseCurrency={baseCurrency}
+        baseCurrency={baseCurrency?.currency}
       />
     </>
   );

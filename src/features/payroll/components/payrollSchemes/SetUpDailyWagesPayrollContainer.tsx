@@ -20,7 +20,7 @@ export const SetUpDailyWagesPayrollContainer: React.FC<{
         type="wages"
         scheme={scheme}
         isFetching={isFetching || loading}
-        baseCurrency={baseCurrency}
+        baseCurrency={baseCurrency?.currency}
         description={`Set up daily payroll based on the hourly rate assigned to employees`}
       />
     </>

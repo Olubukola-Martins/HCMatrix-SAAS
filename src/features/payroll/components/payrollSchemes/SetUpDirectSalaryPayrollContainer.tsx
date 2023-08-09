@@ -18,7 +18,7 @@ export const SetUpDirectSalaryPayrollContainer = () => {
         type="direct-salary"
         scheme={scheme}
         isFetching={isFetching || loading}
-        baseCurrency={baseCurrency}
+        baseCurrency={baseCurrency?.currency}
         description={`Set up  payroll based on the gross pay assigned to employees`}
       />
     </>

@@ -14,7 +14,7 @@ interface IBody {
   grossPay: number;
 }
 const createData = async (props: { data: TData; auth: ICurrentCompany }) => {
-  const url = `${MICROSERVICE_ENDPOINTS.UTILITY}/scheme/${props.data.schemeId}/project/participant/${props.data.projectParticipantId}`;
+  const url = `${MICROSERVICE_ENDPOINTS.PAYROLL}/scheme/${props.data.schemeId}/project/participant/${props.data.projectParticipantId}`;
   const config = {
     headers: {
       Accept: "application/json",
