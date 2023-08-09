@@ -224,3 +224,17 @@
   }
   
 }
+
+
+
+/* APPLICATION QUESTIONS STYLING */
+section .ant-list-split .ant-list-header{
+  border-bottom: none;
+  padding: 0;
+}
+.ant-spin-container .ant-list-items .ant-list-item .ant-select .ant-select-selector{
+  height: 53px;
+  border: 0.3px solid #686868;
+  padding: 12px auto;
+  border-radius: 8px;
+}

@@ -5,6 +5,7 @@ import "antd/dist/antd.min.css";
 import { textInputValidationRules } from "utils/formHelpers/validation";
 import { AppButton } from "components/button/AppButton";
 import { JobDetails } from "features/recruitment/components/JobDetails";
+import { ApplicationQuestions } from "features/recruitment/components/ApplicationQuestions";
 
 export const AddJobOpeningContainer = () => {
   const { Step } = Steps;
@@ -53,7 +54,11 @@ export const AddJobOpeningContainer = () => {
           <Step description="Additional Questions" />
         </Steps>
       </div>
-<JobDetails />
+
+      <section className="w-[83.3vw] bg-card pt-7 pb-16 mx-auto lg-ml-auto lg-mr-1 ">
+        {/* <JobDetails /> */}
+        <ApplicationQuestions/>
+      </section>
     </>
   );
 };

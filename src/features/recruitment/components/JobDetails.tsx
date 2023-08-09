@@ -5,16 +5,14 @@ export const JobDetails = () => {
   const { TextArea } = Input;
 
     return (
-        <>
-        {/* FORM */ }
-      <section className="w-[83.3vw] bg-card pt-7 pb-16 mx-auto lg-ml-auto lg-mr-1 ">
+      <>
+        {/* FORM */}
         <Form
           onFinishFailed={(val) => {
             console.log("Error");
           }}
-          className="w-11/12 bg-[var(--background)]  mx-auto px-3 py-8 md-px-6 rounded-lg flex flex-col gap-6"
- 
-         layout="vertical"
+          className="w-11/12 bg-mainBg mx-auto md-px-3 py-8 px-6 rounded-lg flex flex-col gap-6"
+          layout="vertical"
           initialValues={{ remember: true }}
         >
           <div>
@@ -30,7 +28,7 @@ export const JobDetails = () => {
           <div>
             <Form.Item
               label="Department"
-              name="Department"
+              name="department"
               rules={textInputValidationRules}
             >
               <Select
@@ -55,7 +53,7 @@ export const JobDetails = () => {
                 ]}
               />
             </Form.Item>
-            <Form.Item label="Hiring Lead" name="Hiring Lead">
+            <Form.Item label="Hiring Lead" name="hiringLead">
               <Select
                 defaultValue="Basil Ikpe (Product Manager)"
                 options={[
@@ -73,7 +71,7 @@ export const JobDetails = () => {
           </div>
 
           <div>
-            <Form.Item label="Employment Type" name="Employment Type">
+            <Form.Item label="Employment Type" name="employmentType">
               <Select
                 defaultValue="Full-Time"
                 options={[
@@ -96,7 +94,7 @@ export const JobDetails = () => {
                 ]}
               />
             </Form.Item>
-            <Form.Item label="Minimum Experience" name="Minimum Experience">
+            <Form.Item label="Minimum Experience" name="minimumExperience">
               <Select
                 defaultValue="Entry Level"
                 options={[
@@ -134,7 +132,7 @@ export const JobDetails = () => {
           </div>
 
           <div>
-            <Form.Item label="Job Location" name="Job Location">
+            <Form.Item label="Job Location" name="jobLocation">
               <Select
                 defaultValue="Onsite"
                 options={[
@@ -153,25 +151,25 @@ export const JobDetails = () => {
                 ]}
               />
             </Form.Item>
-            <Form.Item label="Location" name="Location">
+            <Form.Item label="Location" name="location">
               <Input placeholder="e.g Charles Okorocha Lekki Phase 1"></Input>
             </Form.Item>
           </div>
 
           <div>
-            <Form.Item label="Compensation" name="Compensation">
+            <Form.Item label="Compensation" name="compensation">
               <Input placeholder="e.g  NGN 200,000 Monthly"></Input>
               <Form.Item name="Not Specified">
                 <Checkbox>Not Specified</Checkbox>
               </Form.Item>
             </Form.Item>
-            <Form.Item label="" name="">
+            <Form.Item label="" name="payRange">
               <Input placeholder="Add pay range e.g NGN 200,000 to NGN 500,0000"></Input>
             </Form.Item>
           </div>
 
           <div>
-            <Form.Item label="Job Template" name="Job Template">
+            <Form.Item label="Job Template" name="jobTemplate">
               <Select
                 defaultValue="Search job template"
                 options={[
@@ -189,7 +187,7 @@ export const JobDetails = () => {
           </div>
 
           <div id="job-Description">
-            <Form.Item label="Job Description" name="Job Description">
+            <Form.Item label="Job Description" name="jobDescription">
               <TextArea
                 placeholder="Input Description"
                 autoSize={{ minRows: 10 }}
@@ -213,19 +211,18 @@ export const JobDetails = () => {
               <Button
                 type="primary"
                 htmlType="submit"
-                className="py-2 lg-py-3 px-10 md-px-16 lg-px-[69px]  flex flex-col justify-center bg-[var(--caramel)]  transition duration-300 ease-in-out hover:border-[var(--caramel)] hover:bg-[var(--caramel)] hover:opacity-70"
+                className="lg-py-2 py-3 md-px-10 lg-px-16 px-[69px]  flex flex-col justify-center bg-[var(--caramel)]  transition duration-300 ease-in-out hover:border-[var(--caramel)] hover:bg-[var(--caramel)] hover:opacity-70"
               >
                 Next
               </Button>
             </Form.Item>
 
             {/* <AppButton
-              additionalClassNames={["bg-slate-800"]}
+              additionalClassNames={["bg-caramel"]}
               variant="style-with-class"
             /> */}
           </div>
         </Form>
-        </section>
-        </>
-)
+      </>
+    );
 }
