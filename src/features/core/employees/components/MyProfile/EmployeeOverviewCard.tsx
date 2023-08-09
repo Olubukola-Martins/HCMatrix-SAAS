@@ -20,6 +20,7 @@ interface IProps {
   handleResignation: () => void;
   handleSuspension: () => void;
   handleEdit: () => void;
+  handleActivate: () => void;
 }
 
 export const EmployeeOverviewCard: React.FC<IProps> = ({
@@ -28,6 +29,7 @@ export const EmployeeOverviewCard: React.FC<IProps> = ({
   handleEdit,
   handleResignation,
   handleSuspension,
+  handleActivate,
 }) => {
   const {
     fullName = "No name",
@@ -82,16 +84,23 @@ export const EmployeeOverviewCard: React.FC<IProps> = ({
               <i
                 title="Edit Employee"
                 className="ri-pencil-line cursor-pointer hover:text-caramel"
-              ></i>
+                onClick={handleEdit}
+              />
               <Dropdown
                 overlay={
                   <div>
                     {
                       <ul className="bg-mainBg rounded border shadow-sm p-2 flex gap-1 flex-col mb-2">
-                        <li className="cursor-pointer hover:text-caramel">
+                        <li
+                          className="cursor-pointer hover:text-caramel"
+                          onClick={handleActivate}
+                        >
                           Enable User
                         </li>
-                        <li className="cursor-pointer hover:text-caramel">
+                        <li
+                          className="cursor-pointer hover:text-caramel"
+                          onClick={handleSuspension}
+                        >
                           Suspend User
                         </li>
                       </ul>
@@ -99,7 +108,10 @@ export const EmployeeOverviewCard: React.FC<IProps> = ({
 
                     {
                       <ul className="bg-mainBg rounded border shadow-sm p-2  mb-2">
-                        <li className="cursor-pointer hover:text-caramel">
+                        <li
+                          className="cursor-pointer hover:text-caramel"
+                          onClick={handleResignation}
+                        >
                           Submit Resignation
                         </li>
                       </ul>

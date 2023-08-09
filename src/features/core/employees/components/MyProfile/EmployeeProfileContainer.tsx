@@ -22,8 +22,12 @@ export const EmployeeProfileContainer = ({
   } = useFetchSingleEmployee({
     employeeId: employeeId ? +employeeId : 0,
   });
-  const [openDrawer, setOpenDrawer] = useState(false);
-  const [openResignation, setOpenResignation] = useState(false);
+  const [action, setAction] = useState<
+    "edit-user" | "resign-user" | "suspend-user" | "activate-user"
+  >();
+  const clearAction = () => {
+    setAction(undefined);
+  };
 
   return (
     <>
@@ -32,13 +36,13 @@ export const EmployeeProfileContainer = ({
         <ErrorWrapper isError={isError} backLink={appRoutes.employeeSettings}>
           <div>
             <EditMyProfile
-              open={openDrawer}
+              open={action === "edit-user"}
               employee={employee}
-              handleClose={() => setOpenDrawer(false)}
+              handleClose={clearAction}
             />
             <Resignation
-              open={openResignation}
-              handleClose={() => setOpenResignation(false)}
+              open={action === "resign-user"}
+              handleClose={clearAction}
             />
             <div className="bg-card p-1 md:p-5 mt-5  flex flex-col gap-5">
               <EmployeeOverviewCard
@@ -56,9 +60,18 @@ export const EmployeeProfileContainer = ({
                     role: employee?.role?.name,
                   },
                   isLoading: isFetching,
-                  handleEdit: () => {},
-                  handleResignation: () => {},
-                  handleSuspension: () => {},
+                  handleEdit: () => {
+                    setAction("edit-user");
+                  },
+                  handleResignation: () => {
+                    setAction("resign-user");
+                  },
+                  handleSuspension: () => {
+                    setAction("suspend-user");
+                  },
+                  handleActivate: () => {
+                    setAction("activate-user");
+                  },
                 }}
               />
               <EmployeeTabs isLoading={isFetching} employee={employee} />
