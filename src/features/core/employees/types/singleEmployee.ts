@@ -197,9 +197,11 @@ interface JobInformation {
   lineManagerId: number;
   branchId: number;
   payrollType: "direct-salary" | "office" | "wages";
+  frequency: "monthly" | "daily";
+
   monthlyGross?: any;
   payGradeId: number;
-  hourlyRate?: any;
+  hourlyRate?: number;
   createdAt: string;
   updatedAt: string;
   lineManager: LineManager;

@@ -22,7 +22,9 @@ import { useState, useEffect } from "react";
 import { useQueryClient } from "react-query";
 import { TEmploymentEligibity } from "types/employementEligibilities";
 import {
+  emailValidationRulesOp,
   generalValidationRules,
+  phoneNumberValidationRule,
   textInputValidationRules,
 } from "utils/formHelpers/validation";
 import { openNotification } from "utils/notifications";
@@ -31,7 +33,7 @@ interface IProps {
   personalInfo?: TSingleEmployee["personalInformation"];
   employeeId?: number;
 }
-// TO DO: Ensure all data is accounted for in the schema like them, nin, tax authurity, ....
+
 export const PersonalInformation: React.FC<IProps> = ({
   personalInfo,
   employeeId,
@@ -77,6 +79,11 @@ export const PersonalInformation: React.FC<IProps> = ({
         passportExpirationDate: personalInfo.passportExpirationDate
           ? moment(personalInfo.passportExpirationDate)
           : null,
+        alternativeEmail: personalInfo?.alternativeEmail,
+        alternativePhoneNumber: personalInfo?.alternativePhoneNumber,
+        nin: personalInfo?.nin,
+        taxId: personalInfo?.taxId,
+        taxAuthority: personalInfo?.taxAuthority,
       });
       setSelectedEligibility(
         personalInfo.eligibility as unknown as TEmploymentEligibity
@@ -292,6 +299,27 @@ export const PersonalInformation: React.FC<IProps> = ({
             )}
 
             {stateId && <FormLGAInput stateId={stateId} Form={Form} />}
+            <Form.Item
+              name="nin"
+              label="National Identification Number"
+              rules={generalValidationRules}
+            >
+              <Input className="w-full" />
+            </Form.Item>
+            <Form.Item
+              name="alternativeEmail"
+              rules={emailValidationRulesOp}
+              label="Alternative Email"
+            >
+              <Input className="w-full" />
+            </Form.Item>
+            <Form.Item
+              name="alternativePhoneNumber"
+              label="Alternative Phone Number"
+              rules={[{ ...phoneNumberValidationRule, required: false }]}
+            >
+              <Input className="w-full" />
+            </Form.Item>
             <Form.Item
               name="streetAddress"
               label="Street Address"

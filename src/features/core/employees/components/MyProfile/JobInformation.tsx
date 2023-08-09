@@ -16,7 +16,13 @@ import { QUERY_KEY_FOR_SINGLE_EMPLOYEE } from "../../hooks/useFetchSingleEmploye
 const { Option } = Select;
 
 type TPayrollType = "direct-salary" | "office" | "wages";
+type TPayrollFrequency = "daily" | "monthly";
+const PAYROLL_FREQUENCIES: TPayrollFrequency[] = ["daily", "monthly"];
 const PAYROLL_TYPES: TPayrollType[] = ["direct-salary", "office", "wages"];
+const PAYROLL_FREQUENCIES_OPTIONS = PAYROLL_FREQUENCIES.map((item) => ({
+  label: <span className="capitalize">{item.split("-").join(" ")}</span>,
+  value: item,
+}));
 const PAYROLL_TYPES_OPTIONS = PAYROLL_TYPES.map((item) => ({
   label: <span className="capitalize">{item.split("-").join(" ")}</span>,
   value: item,
@@ -62,8 +68,10 @@ export const JobInformation: React.FC<IProps> = ({
         employmentType: jobInfo.employmentType,
         workModel: jobInfo.workModel,
         payrollType: jobInfo?.payrollType,
+        frequency: jobInfo?.frequency,
+        hourlyRate: jobInfo?.hourlyRate ? +jobInfo?.hourlyRate : 0,
         numberOfDaysPerWeek: jobInfo.numberOfDaysPerWeek,
-        hireDate: jobInfo.hireDate ? moment(jobInfo.hireDate) : null,
+        hireDate: jobInfo?.hireDate ? moment(jobInfo?.hireDate) : null,
         probationEndDate: jobInfo.probationEndDate
           ? moment(jobInfo.probationEndDate)
           : null,
@@ -72,9 +80,11 @@ export const JobInformation: React.FC<IProps> = ({
           : null,
       });
       jobInfo.payrollType && setPayrollType(jobInfo.payrollType);
+      jobInfo.frequency && setFrequency(jobInfo.frequency);
     }
   }, [jobInformation, form]);
   const { mutate, isLoading } = useSaveEmployeeJobInformation();
+  const [frequency, setFrequency] = useState<TPayrollFrequency>("monthly");
 
   const handleFinish = (data: any) => {
     if (employeeId) {
@@ -96,6 +106,7 @@ export const JobInformation: React.FC<IProps> = ({
             payrollType: data.payrollType,
             branchId: data.branchId,
             hourlyRate: data.hourlyRate,
+            frequency: payrollType === "wages" ? frequency : "monthly",
           },
         },
         {
@@ -161,6 +172,20 @@ export const JobInformation: React.FC<IProps> = ({
           </Form.Item>
           {payrollType === "wages" && (
             <Form.Item
+              name="frequency"
+              label="Type of Wage"
+              rules={[...generalValidationRules]}
+            >
+              <Select
+                value={frequency}
+                className="capitalize"
+                options={PAYROLL_FREQUENCIES_OPTIONS}
+                onSelect={(val: TPayrollFrequency) => setFrequency(val)}
+              />
+            </Form.Item>
+          )}
+          {payrollType === "wages" && (
+            <Form.Item
               name="hourlyRate"
               label="Hourly Gross"
               rules={[...generalValidationRules, { type: "number" }]}
@@ -168,6 +193,7 @@ export const JobInformation: React.FC<IProps> = ({
               <InputNumber min={1} className="w-full" />
             </Form.Item>
           )}
+
           {payrollType === "direct-salary" && (
             <Form.Item
               name="monthlyGross"

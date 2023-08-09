@@ -17,6 +17,7 @@ type TData = {
   payrollType?: "direct-salary" | "office" | "wages";
   monthlyGross: number;
   payGradeId: number;
+  frequency?: "daily" | "monthly";
   hourlyRate: number;
 };
 const createData = async (props: {
