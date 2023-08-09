@@ -15,7 +15,7 @@ module.exports = {
         card: "var(--card)",
         accent: "var(--accent)",
         neutral: "var(--neutral)",
-      },
+      }, 
     },
   },
   plugins: [],

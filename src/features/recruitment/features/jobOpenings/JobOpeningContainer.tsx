@@ -1,7 +1,7 @@
 import React from "react";
 import { Menu, Space, Select, Button, Table, Typography, Dropdown } from "antd";
 import { MoreOutlined } from "@ant-design/icons";
-import { useState } from "react";
+import { AppButton } from "components/button/AppButton";
 
 // INTERFACE/TYPES
 interface Item {
@@ -17,26 +17,6 @@ interface DataSourceItem {
   status: string;
   action: string;
 }
-
-// ITEMS ARRAY FOR DROPDOWN INPUT
-// const items: Item[] = [
-//   {
-//     label: "Job Opening",
-//     key: "jobOpening",
-//   },
-//   {
-//     label: "Candidates",
-//     key: "candidates",
-//   },
-//   {
-//     label: "Application Pool",
-//     key: "applicationPool",
-//   },
-//   {
-//     label: "Users",
-//     key: "users",
-//   },
-// ];
 
 export const JobOpeningContainer = () => {
   // FUNCTION TO HANDLE DROPDOWN CHANGES
@@ -61,16 +41,8 @@ export const JobOpeningContainer = () => {
       </Menu>
     );
     return (
-      <Dropdown overlay={menu}>
-        <Button
-          style={{
-            border: "none",
-            boxShadow: "none",
-            backgroundColor: "transparent",
-          }}
-        >
-          <MoreOutlined />
-        </Button>
+      <Dropdown overlay={menu} className="cursor-pointer">
+        <MoreOutlined />
       </Dropdown>
     );
   };
@@ -197,13 +169,11 @@ export const JobOpeningContainer = () => {
   return (
     <>
       {/* INPUTS BELOW NAVIGATION */}
-      <Space wrap>
-        <div>
+      <Space wrap className="flex justify-between mb-6 mt-10 ">
+        <div className="inline-flex gap-6">
           <Select
             defaultValue="open"
-            style={{
-              width: 120,
-            }}
+            className="w-44 border rounded-md hover:border-none important-hover text-[var(--accent)]"
             onChange={handleChange}
             options={[
               {
@@ -234,9 +204,7 @@ export const JobOpeningContainer = () => {
           />
           <Select
             defaultValue="department"
-            style={{
-              width: 120,
-            }}
+            className="w-44 border rounded-md hover:border-none important-hover text-[var(--accent)] "
             options={[
               {
                 value: "department",
@@ -245,7 +213,7 @@ export const JobOpeningContainer = () => {
             ]}
           />
         </div>
-        <Button>Add Job Opening</Button>
+        <AppButton label="Add Job Opening" />
       </Space>
 
       {/* TABLE */}
