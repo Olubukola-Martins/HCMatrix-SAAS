@@ -1,19 +1,20 @@
 import axios from "axios";
 import { MICROSERVICE_ENDPOINTS } from "config/enviroment";
-import { useQuery } from "react-query";
+import { useMutation } from "react-query";
 import { ICurrentCompany } from "types";
 import { useApiAuth } from "hooks/useApiAuth";
+import download from "js-file-download";
 
 type TResponse = any;
 interface IDataProps {
-  id?: number;
+  payrollId?: number;
 }
-export const QUERY_KEY_FOR_PAYROLL_OVERTIME_SHEET = "payroll-overtime-sheet";
-const getData = async (props: {
+const OVERTIME_TEMPLATE_NAME = "overtime-template.csv";
+const createData = async (props: {
   data: IDataProps;
   auth: ICurrentCompany;
 }): Promise<TResponse> => {
-  const url = `${MICROSERVICE_ENDPOINTS.PAYROLL}/payroll/${props.data.id}/overtime-sheet`;
+  const url = `${MICROSERVICE_ENDPOINTS.PAYROLL}/payroll/${props.data.payrollId}/overtime-sheet`;
 
   const config = {
     headers: {
@@ -24,33 +25,17 @@ const getData = async (props: {
   };
 
   const res = await axios.get(url, config);
-  const item: TResponse = res.data.data;
 
-  const data: TResponse = {
-    ...item,
-  };
-
-  return data;
+  download(res.data, OVERTIME_TEMPLATE_NAME);
 };
 
-export const useGetOvertimeSheetTemplate = (props: IDataProps) => {
+export const useGetOvertimeSheetTemplate = () => {
   const { token, companyId } = useApiAuth();
-  const queryData = useQuery(
-    [QUERY_KEY_FOR_PAYROLL_OVERTIME_SHEET, props.id],
-    () =>
-      getData({
-        auth: {
-          companyId,
-          token,
-        },
-        data: { ...props },
-      }),
-    {
-      enabled: props.id === undefined ? false : true,
-      onError: (err: any) => {},
-      onSuccess: (data) => {},
-    }
-  );
+  return useMutation((props: { data: IDataProps }) =>
+    createData({
+      data: props.data,
 
-  return queryData;
+      auth: { token, companyId },
+    })
+  );
 };

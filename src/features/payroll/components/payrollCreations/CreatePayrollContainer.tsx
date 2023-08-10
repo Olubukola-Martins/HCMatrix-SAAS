@@ -9,6 +9,7 @@ import {
   Skeleton,
   Tag,
   Typography,
+  message,
 } from "antd";
 import { IModalProps } from "types";
 import {
@@ -37,6 +38,9 @@ import { useRollbackPayroll } from "features/payroll/hooks/payroll/rollback/useR
 import { useQueryClient } from "react-query";
 import { useDeletePayroll } from "features/payroll/hooks/payroll/useDeletePayroll";
 import ConfirmationModal from "components/modals/ConfirmationModal";
+import Upload, { RcFile } from "antd/lib/upload";
+import { useAddOvertimeSheet } from "features/payroll/hooks/payroll/overtimeSheet/useAddOvertimeSheet";
+import { useGetOvertimeSheetTemplate } from "features/payroll/hooks/payroll/overtimeSheet/useGetOvertimeSheetTemplate";
 
 const boxStyle =
   "bg-mainBg flex justify-between items-start md:items-center px-6 py-5 rounded lg:flex-row flex-col gap-y-5";
@@ -58,13 +62,96 @@ interface IFormProps extends IModalProps {
 
   handleSave: (props: TIntialPayrollDetails) => void;
 }
-export const UploadTimesheet: React.FC<IModalProps> = ({
+interface ITimesheetProps extends IModalProps {
+  payrollId: number;
+}
+export const UploadTimesheet: React.FC<ITimesheetProps> = ({
   open,
   handleClose,
+  payrollId,
 }) => {
-  const handleSubmit = (data: any) => {
-    handleClose();
+  const [form] = Form.useForm();
+  const { mutate: mutateGetTemplate } = useGetOvertimeSheetTemplate();
+  const { mutate, isLoading } = useAddOvertimeSheet();
+  const [fileList, setFilelist] = useState<any>([]);
+  const handleUpload = (val: any) => {
+    setFilelist(val.fileList);
   };
+  const beforeUpload = (file: RcFile) => {
+    const isSpreadSheetFile = file.type === "text/csv";
+    if (!isSpreadSheetFile) {
+      message.error("You can only upload CSV file!");
+    }
+    const isLt2M = file.size / 1024 / 1024 < 2;
+    if (!isLt2M) {
+      message.error("File must smaller than 2MB!");
+    }
+    return false;
+  };
+  const handleGetTemplate = () => {
+    mutateGetTemplate(
+      {
+        data: {
+          payrollId,
+        },
+      },
+      {
+        onError: (err: any) => {
+          openNotification({
+            state: "error",
+            title: "Error Occurred",
+            description:
+              err?.response.data.message ?? err?.response.data.error.message,
+          });
+        },
+        onSuccess: (res: any) => {
+          openNotification({
+            state: "success",
+
+            title: "Success",
+            description: res.data.message,
+            // duration: 0.4,
+          });
+          form.resetFields();
+
+          handleClose();
+        },
+      }
+    );
+  };
+  const handleSubmit = (data: any) => {
+    mutate(
+      {
+        payrollId,
+        data: {
+          csvFile: fileList[0],
+        },
+      },
+      {
+        onError: (err: any) => {
+          openNotification({
+            state: "error",
+            title: "Error Occurred",
+            description:
+              err?.response.data.message ?? err?.response.data.error.message,
+          });
+        },
+        onSuccess: (res: any) => {
+          openNotification({
+            state: "success",
+
+            title: "Success",
+            description: res.data.message,
+            // duration: 0.4,
+          });
+          form.resetFields();
+
+          handleClose();
+        },
+      }
+    );
+  };
+
   return (
     <Modal
       open={open}
@@ -73,25 +160,48 @@ export const UploadTimesheet: React.FC<IModalProps> = ({
       style={{ top: 20 }}
       onCancel={() => handleClose()}
     >
-      <div className="border border-dotted border-slate-500 rounded flex flex-col items-center gap-2 py-3 px-2">
-        <p>Select file to be Imported</p>
-        <Typography.Text title="Please Download template and populate">
-          <span className="text-sm pt-1 font-medium cursor-pointer hover:text-caramel underline">
-            Download template
-          </span>
-        </Typography.Text>
+      <Form form={form} onFinish={handleSubmit} requiredMark={false}>
+        <div className="border border-dotted border-slate-500 rounded flex flex-col items-center gap-2 py-3 px-2">
+          <p>Select file to be Imported</p>
+          <Typography.Text title="Please Download template and populate">
+            <span
+              className="text-sm pt-1 font-medium cursor-pointer hover:text-caramel underline"
+              onClick={() => handleGetTemplate()}
+            >
+              Download template
+            </span>
+          </Typography.Text>
 
-        <div className="flex justify-center w-3/5">
-          <FileUpload
-            allowedFileTypes={[
-              "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-            ]}
-            fileKey="documentUrl"
-            textToDisplay="Upload File"
-            displayType="dotted-box"
+          <div className="flex justify-center w-3/5">
+            <Upload
+              fileList={fileList}
+              onChange={handleUpload}
+              onRemove={(file) => {
+                const index = fileList.indexOf(file);
+                const newFileList = fileList.slice();
+                newFileList.splice(index, 1);
+                setFilelist(newFileList);
+              }}
+              beforeUpload={beforeUpload} // return false so that antd doesn't upload the picture right away
+            >
+              {fileList.length !== 1 && (
+                <div className="w-full border border-dotted border-caramel px-2 py-1 rounded text-caramel text-sm flex flex-col gap-1 items-center justify-center">
+                  <i className="ri-download-2-line text-2xl"></i>
+                  <span className="text-xs font-medium">Upload File</span>
+                </div>
+              )}
+            </Upload>
+          </div>
+        </div>
+        <div className="mt-4 flex justify-end">
+          <AppButton
+            label="Upload"
+            type="submit"
+            isLoading={isLoading}
+            disabled={fileList.length <= 0}
           />
         </div>
-      </div>
+      </Form>
     </Modal>
   );
 };
@@ -309,7 +419,6 @@ const CreatePayrollContainer: React.FC<{
       setOpen(true);
     }
   }, [payrollId]);
-  const [openT, setOpenT] = useState(false);
   const [payrollD, setPayrollD] = useState<TIntialPayrollDetails>({
     name: "",
     date: "",
@@ -336,7 +445,9 @@ const CreatePayrollContainer: React.FC<{
           (item) => item.type === "deduction"
         )
       : [];
-  const [action, setAction] = useState<"rollback-payroll" | "delete-payroll">();
+  const [action, setAction] = useState<
+    "rollback-payroll" | "delete-payroll" | "upload-overtime-sheet"
+  >();
   const clearAction = () => {
     setAction(undefined);
   };
@@ -413,7 +524,13 @@ const CreatePayrollContainer: React.FC<{
   };
   return (
     <>
-      <UploadTimesheet open={openT} handleClose={() => setOpenT(false)} />
+      {payroll && (
+        <UploadTimesheet
+          open={action === "upload-overtime-sheet"}
+          handleClose={() => clearAction()}
+          payrollId={payroll?.id}
+        />
+      )}
       <CreatePayrollInitialForm
         open={open}
         handleSave={(props) => setPayrollD({ ...props })}
@@ -607,12 +724,7 @@ const CreatePayrollContainer: React.FC<{
                       </p>
                     </div>
                     <div>
-                      <button
-                        className={buttonStyle}
-                        onClick={() => setOpenT(true)}
-                      >
-                        View Timesheet
-                      </button>
+                      <button className={buttonStyle}>View Timesheet</button>
                     </div>
                   </div>
                   <div className="mt-4">
@@ -638,7 +750,7 @@ const CreatePayrollContainer: React.FC<{
                   <div>
                     <button
                       className={buttonStyle}
-                      onClick={() => setOpenT(true)}
+                      onClick={() => setAction("upload-overtime-sheet")}
                     >
                       Upload Timesheet
                     </button>
