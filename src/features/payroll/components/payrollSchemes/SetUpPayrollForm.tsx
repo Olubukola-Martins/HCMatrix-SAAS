@@ -529,7 +529,8 @@ export const SetUpPayrollForm: React.FC<{
       type,
       frequencyAmount,
       frequency,
-      project,
+      projectParticipants,
+      project?.id,
       issuePayslip,
       name,
       runAutomatically,
@@ -630,7 +631,6 @@ export const SetUpPayrollForm: React.FC<{
 
   useEffect(() => {
     if (scheme) {
-      console.log("freq", scheme.frequency);
       type === "project" && setFrequencyAmount(+scheme.frequency);
       const ogAllowances =
         scheme?.salaryComponents.filter((item) => item.type === "allowance") ??

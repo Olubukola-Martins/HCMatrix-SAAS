@@ -182,7 +182,7 @@ const PayrollSchemeCard: React.FC<TScheme> = ({
           </div>
         </div>
         <div className="px-3">
-          <div className="border-b flex gap-5 text-sm">
+          <div className="flex gap-5 text-sm">
             <div className="py-7">
               {projectCount && (
                 <p className="pb-2">

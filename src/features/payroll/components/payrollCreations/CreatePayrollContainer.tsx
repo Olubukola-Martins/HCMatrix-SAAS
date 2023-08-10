@@ -17,7 +17,6 @@ import {
   textInputValidationRules,
 } from "utils/formHelpers/validation";
 import { AppButton } from "components/button/AppButton";
-import { FileUpload } from "components/FileUpload";
 import { EmployeePayrollUpdatesContainer } from "../employeePayrollUpdates/EmployeePayrollUpdatesContainer";
 import { ExchangeRateContainer } from "../exchangeRates/ExchangeRateContainer";
 import { SalaryComponentsContainer } from "../salaryComponents/SalaryComponentsContainer";
@@ -41,6 +40,7 @@ import ConfirmationModal from "components/modals/ConfirmationModal";
 import Upload, { RcFile } from "antd/lib/upload";
 import { useAddOvertimeSheet } from "features/payroll/hooks/payroll/overtimeSheet/useAddOvertimeSheet";
 import { useGetOvertimeSheetTemplate } from "features/payroll/hooks/payroll/overtimeSheet/useGetOvertimeSheetTemplate";
+import { FormPayrollProjectSchemeInput } from "../payrollSchemes/FormPayrollProjectSchemeInput";
 
 const boxStyle =
   "bg-mainBg flex justify-between items-start md:items-center px-6 py-5 rounded lg:flex-row flex-col gap-y-5";
@@ -48,7 +48,7 @@ const boxStyle =
 const buttonStyle =
   "border border-gray-400 hover:text-caramel rounded px-5 py-1 font-medium text-sm text-accent";
 
-type TPayrollFrequency = "monthly" | "daily";
+type TPayrollFrequency = "monthly" | "daily" | number;
 type TIntialPayrollDetails = {
   name: string;
   description: string;
@@ -223,24 +223,13 @@ export const CreatePayrollInitialForm: React.FC<IFormProps> = ({
   }, [type]);
   const [costCentre, setCostCentre] = useState("");
   const { mutate, isLoading } = useCreatePayroll();
+  const [projectName, setProjectName] = useState("");
   const handleSubmit = (data: any) => {
-    if (type === "project") {
-      handleSave({
-        name: data.name,
-        date:
-          payrollFrequency === "monthly"
-            ? data?.date?.format("YYYY-MM")
-            : data?.date?.format("YYYY-MM-DD"),
-        description: data.description,
-        frequency: payrollFrequency,
-        costCentre: costCentre,
-      });
-      handleClose();
-      return;
-    }
     if (type) {
       mutate(
         {
+          projectId: type === "project" ? data.projectId : undefined,
+
           data: {
             costCentreId: data.costCentreId,
             date:
@@ -248,8 +237,11 @@ export const CreatePayrollInitialForm: React.FC<IFormProps> = ({
                 ? `${data.date?.format("YYYY-MM")}-01`
                 : data.date?.format("YYYY-MM-DD"),
             description: data.description,
-            frequency: payrollFrequency,
-            name: data.name,
+            frequency: type === "project" ? data.frequency : payrollFrequency,
+            name:
+              type === "project"
+                ? `${projectName} (Payment ${data.frequency})`
+                : data.name,
             csvFile:
               fileList.length > 0 ? fileList[0]?.originFileObj : undefined,
           },
@@ -280,7 +272,8 @@ export const CreatePayrollInitialForm: React.FC<IFormProps> = ({
                   ? data?.date.format("YYYY-MM")
                   : data?.date.format("YYYY-MM-DD"),
               description: data.description,
-              frequency: payrollFrequency,
+              frequency: type === "project" ? data.frequency : payrollFrequency,
+
               costCentre: costCentre,
               payrollId: res.data.data.id,
             });
@@ -354,45 +347,43 @@ export const CreatePayrollInitialForm: React.FC<IFormProps> = ({
         requiredMark={false}
       >
         {type === "project" && (
-          <Form.Item name="project" label="Select Project">
-            <Select
-              placeholder="Select project"
-              getPopupContainer={(triggerNode) => triggerNode.parentElement}
-              options={Array(4)
-                .fill("Project")
-                .map((item, i) => ({
-                  label: item + `${i + 1}`,
-                  value: item,
-                }))}
-            />
+          <FormPayrollProjectSchemeInput
+            control={{ label: "Select Project", name: "projectId" }}
+            Form={Form}
+            onSelect={(_, scheme) => {
+              setPayrollFrequency(+scheme.frequency);
+              setProjectName(scheme.name);
+            }}
+          />
+        )}
+
+        {type !== "project" && (
+          <Form.Item
+            rules={textInputValidationRules}
+            name="name"
+            label="Payroll Name"
+          >
+            <Input placeholder="Payroll Name" />
           </Form.Item>
         )}
-        {/* TODO: Get the schemes and display the project && payments appropriately */}
-        {type === "project" && (
+        {type === "project" && typeof payrollFrequency === "number" && (
           <Form.Item
-            name="payment"
+            rules={generalValidationRules}
+            name="frequency"
             label="Select Payment"
-            dependencies={["project"]}
           >
             <Select
               getPopupContainer={(triggerNode) => triggerNode.parentElement}
               placeholder="Select payment"
-              options={Array(4)
-                .fill("Payment 1(09/12/23)")
-                .map((item) => ({
-                  label: item,
-                  value: item,
+              options={Array(payrollFrequency)
+                .fill(0)
+                .map((_, i) => ({
+                  label: `Payment ${i + 1}`,
+                  value: i + 1,
                 }))}
             />
           </Form.Item>
         )}
-        <Form.Item
-          rules={textInputValidationRules}
-          name="name"
-          label="Payroll Name"
-        >
-          <Input placeholder="Payroll Name" />
-        </Form.Item>
         {type === "wages" && (
           <Form.Item
             rules={generalValidationRules}
@@ -455,13 +446,18 @@ export const CreatePayrollInitialForm: React.FC<IFormProps> = ({
           control={{ name: "costCentreId", label: "Cost Centre" }}
           onSelect={(_, data) => setCostCentre(data.name)}
         />
+        {type === "project" && (
+          <Form.Item name="date" label="Date">
+            <DatePicker className="w-full" placeholder="Date" />
+          </Form.Item>
+        )}
         {payrollFrequency === "daily" && type !== "project" && (
-          <Form.Item name="date" label="Date" dependencies={["frequency"]}>
+          <Form.Item name="date" label="Date">
             <DatePicker className="w-full" placeholder="Date" />
           </Form.Item>
         )}
         {payrollFrequency === "monthly" && type !== "project" && (
-          <Form.Item name="date" label="Date" dependencies={["frequency"]}>
+          <Form.Item name="date" label="Date">
             <DatePicker picker="month" className="w-full" placeholder="Date" />
           </Form.Item>
         )}
@@ -710,12 +706,25 @@ const CreatePayrollContainer: React.FC<{
                   <div>
                     <input
                       disabled
-                      value={payroll?.frequency}
+                      value={
+                        type === "project"
+                          ? `Payment ${payroll?.frequency}`
+                          : payroll?.frequency
+                      }
                       className="capitalize bg-slate-100 cursor-not-allowed border text-accent rounded px-3 py-1 border-gray-400 bg-mainBg"
                     />
                   </div>
                 </div>
                 <div className="mt-4">
+                  {typeof payroll?.frequency === "number" && (
+                    <input
+                      disabled
+                      value={moment(payroll?.date).format("YYYY-MM-DD")}
+                      type="date"
+                      placeholder="Select day"
+                      className=" bg-slate-100 cursor-not-allowed border text-accent rounded px-3 py-1 border-gray-400 bg-mainBg"
+                    />
+                  )}
                   {payroll?.frequency === "daily" && (
                     <input
                       disabled
@@ -811,7 +820,9 @@ const CreatePayrollContainer: React.FC<{
                     </div>
                   </div>
                   <div className="mt-4">
-                    <EmployeeTimesheet type={payrollD.frequency} />
+                    {typeof payrollD.frequency !== "number" && (
+                      <EmployeeTimesheet type={payrollD.frequency} />
+                    )}
                   </div>
                 </div>
               </div>

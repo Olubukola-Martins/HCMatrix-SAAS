@@ -124,8 +124,8 @@ const PayrollTable: React.FC<{
   let ogColumns: ColumnsType<TPayrollListData> = [
     {
       title: "Created At",
-      dataIndex: "date",
-      key: "date",
+      dataIndex: "crt",
+      key: "crt",
       render: (_, item) => (
         <span>{moment(item.createdAt).format("YYYY-MM-DD")} </span>
       ),
@@ -134,19 +134,20 @@ const PayrollTable: React.FC<{
       title: "Name",
       dataIndex: "Name",
       key: "Name",
-      render: (_, item) => <span>{item.name} </span>,
+      ellipsis: true,
+      render: (_, item) => <span className="capitalize">{item.name} </span>,
     },
     {
-      title: "frequency",
+      title: "Frequency",
       dataIndex: "frequency",
       key: "frequency",
-      render: (_, item) => <span>{item.frequency} </span>,
-    },
-    {
-      title: "Type",
-      dataIndex: "Type",
-      key: "Type",
-      render: (_, item) => <span>{item.scheme.type} </span>,
+      render: (_, item) => (
+        <span className="capitalize">
+          {item.scheme.type === "project"
+            ? `Payment ${item.frequency}`
+            : item.frequency}{" "}
+        </span>
+      ),
     },
     {
       title: "Date",
@@ -155,40 +156,40 @@ const PayrollTable: React.FC<{
       render: (_, item) => <span>{item.date} </span>,
     },
     {
-      title: "allowances",
+      title: "Allowances",
       dataIndex: "allowances",
       key: "allowances",
-      render: (_, item) => <span>{0} </span>,
+      render: (_, item) => <span>{item.totalAllowances} </span>,
     },
     {
-      title: "deductions",
+      title: "Deductions",
       dataIndex: "deductions",
       key: "deductions",
-      render: (_, item) => <span>{0} </span>,
+      render: (_, item) => <span>{item.totalDeductions} </span>,
     },
     {
-      title: "tax",
+      title: "Tax",
       dataIndex: "tax",
       key: "tax",
-      render: (_, item) => <span>{0} </span>,
+      render: (_, item) => <span>{item.totalTax} </span>,
     },
     {
-      title: "grossPay",
+      title: "Gross Pay",
       dataIndex: "grossPay",
       key: "grossPay",
-      render: (_, item) => <span>{0} </span>,
+      render: (_, item) => <span>{item.totalGrossPay} </span>,
     },
     {
-      title: "netPay",
+      title: "Net Pay",
       dataIndex: "netPay",
       key: "netPay",
-      render: (_, item) => <span>{0} </span>,
+      render: (_, item) => <span>{item.totalNetPay} </span>,
     },
     {
-      title: "status",
+      title: "Status",
       dataIndex: "status",
       key: "status",
-      render: (_, item) => <span>{item.status} </span>,
+      render: (_, item) => <span className="capitalize">{item.status} </span>,
     },
 
     {
@@ -217,12 +218,12 @@ const PayrollTable: React.FC<{
   const columns: ColumnsType<TPayrollListData> = isProject
     ? [
         ...ogColumns,
-        {
-          title: "Project",
-          dataIndex: "project",
-          key: "project",
-          render: (_, item) => <span>{`Project?`} </span>,
-        },
+        // {
+        //   title: "Project",
+        //   dataIndex: "project",
+        //   key: "project",
+        //   render: (_, item) => <span>{`Project?`} </span>,
+        // },
       ]
     : ogColumns;
 

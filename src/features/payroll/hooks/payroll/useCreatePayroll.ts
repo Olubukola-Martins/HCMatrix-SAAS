@@ -9,11 +9,12 @@ type TPayrollData = {
   name: string;
   date: string;
   description: string;
-  frequency: string;
+  frequency: "monthly" | "daily" | number;
   costCentreId: number;
   csvFile?: any;
 };
 const createData = async (props: {
+  projectId?: number;
   data: TPayrollData;
   auth: ICurrentCompany;
   schemeType: TPayrollSchemeType;
@@ -25,6 +26,7 @@ const createData = async (props: {
       Authorization: `Bearer ${props.auth.token}`,
       "x-company-id": props.auth.companyId,
     },
+    params: { projectId: props.projectId },
   };
 
   const data: TPayrollData = {
@@ -37,8 +39,13 @@ const createData = async (props: {
 export const useCreatePayroll = () => {
   const { token, companyId } = useApiAuth();
   return useMutation(
-    (props: { data: TPayrollData; schemeType: TPayrollSchemeType }) =>
+    (props: {
+      data: TPayrollData;
+      schemeType: TPayrollSchemeType;
+      projectId?: number;
+    }) =>
       createData({
+        projectId: props.projectId,
         data: props.data,
         schemeType: props.schemeType,
         auth: { token, companyId },

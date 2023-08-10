@@ -17,7 +17,7 @@ export const SetUpSingleProjectPayrollContainer: React.FC<{
   return (
     <>
       <SetUpPayrollForm
-        name="Project Payroll Scheme"
+        name={`${project?.name}`}
         frequency={+scheme?.frequency}
         type="project"
         project={project}
