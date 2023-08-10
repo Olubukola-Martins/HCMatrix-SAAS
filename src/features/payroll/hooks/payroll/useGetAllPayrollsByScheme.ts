@@ -10,6 +10,7 @@ import { TPayrollListData } from "features/payroll/types/payroll";
 interface IGetDataProps {
   pagination?: IPaginationProps;
   searchParams?: ISearchParams;
+  projectId?: number;
 }
 
 export const QUERY_KEY_FOR_PAYROLLS_BY_SCHEME = "payrolls-by-scheme";
@@ -37,6 +38,7 @@ const getData = async (props: {
       offset,
       search: name,
       schemeType: props.schemeType,
+      projectId: props?.data?.projectId,
     },
   };
 
@@ -67,6 +69,7 @@ export const useGetAllPayrollsByScheme = (props: {
     [
       QUERY_KEY_FOR_PAYROLLS_BY_SCHEME,
       props.schemeType,
+      props.data.projectId,
       pagination,
       searchParams,
     ],
