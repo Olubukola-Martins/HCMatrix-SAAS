@@ -48,7 +48,7 @@ const boxStyle =
 const buttonStyle =
   "border border-gray-400 hover:text-caramel rounded px-5 py-1 font-medium text-sm text-accent";
 
-type TPayrollFrequency = "monthly" | "daily" | "none";
+type TPayrollFrequency = "monthly" | "daily";
 type TIntialPayrollDetails = {
   name: string;
   description: string;
@@ -71,7 +71,6 @@ export const UploadTimesheet: React.FC<ITimesheetProps> = ({
   payrollId,
 }) => {
   const [form] = Form.useForm();
-  const { mutate: mutateGetTemplate } = useGetOvertimeSheetTemplate();
   const { mutate, isLoading } = useAddOvertimeSheet();
   const [fileList, setFilelist] = useState<any>([]);
   const handleUpload = (val: any) => {
@@ -88,6 +87,8 @@ export const UploadTimesheet: React.FC<ITimesheetProps> = ({
     }
     return false;
   };
+  const { mutate: mutateGetTemplate } = useGetOvertimeSheetTemplate();
+
   const handleGetTemplate = () => {
     mutateGetTemplate(
       {
@@ -124,7 +125,7 @@ export const UploadTimesheet: React.FC<ITimesheetProps> = ({
       {
         payrollId,
         data: {
-          csvFile: fileList[0],
+          csvFile: fileList[0]?.originFileObj,
         },
       },
       {
@@ -182,7 +183,7 @@ export const UploadTimesheet: React.FC<ITimesheetProps> = ({
                 newFileList.splice(index, 1);
                 setFilelist(newFileList);
               }}
-              beforeUpload={beforeUpload} // return false so that antd doesn't upload the picture right away
+              beforeUpload={beforeUpload}
             >
               {fileList.length !== 1 && (
                 <div className="w-full border border-dotted border-caramel px-2 py-1 rounded text-caramel text-sm flex flex-col gap-1 items-center justify-center">
@@ -214,11 +215,16 @@ export const CreatePayrollInitialForm: React.FC<IFormProps> = ({
   const [form] = Form.useForm();
   const navigate = useNavigate();
   const [payrollFrequency, setPayrollFrequency] =
-    useState<TPayrollFrequency>("none");
+    useState<TPayrollFrequency>("monthly");
+  useEffect(() => {
+    if (type === "direct-salary" || type === "office") {
+      setPayrollFrequency("monthly");
+    }
+  }, [type]);
   const [costCentre, setCostCentre] = useState("");
   const { mutate, isLoading } = useCreatePayroll();
   const handleSubmit = (data: any) => {
-    if (type === "project" || type === "wages") {
+    if (type === "project") {
       handleSave({
         name: data.name,
         date:
@@ -244,6 +250,8 @@ export const CreatePayrollInitialForm: React.FC<IFormProps> = ({
             description: data.description,
             frequency: payrollFrequency,
             name: data.name,
+            csvFile:
+              fileList.length > 0 ? fileList[0]?.originFileObj : undefined,
           },
           schemeType: type,
         },
@@ -282,6 +290,54 @@ export const CreatePayrollInitialForm: React.FC<IFormProps> = ({
       );
     }
   };
+  const [fileList, setFilelist] = useState<any>([]);
+  const handleUpload = (val: any) => {
+    setFilelist(val.fileList);
+  };
+  const beforeUpload = (file: RcFile) => {
+    const isSpreadSheetFile = file.type === "text/csv";
+    if (!isSpreadSheetFile) {
+      message.error("You can only upload CSV file!");
+    }
+    const isLt2M = file.size / 1024 / 1024 < 2;
+    if (!isLt2M) {
+      message.error("File must smaller than 2MB!");
+    }
+    return false;
+  };
+  const { mutate: mutateGetTemplate } = useGetOvertimeSheetTemplate();
+
+  const handleGetTemplate = () => {
+    mutateGetTemplate(
+      {
+        data: {
+          payrollId: 0,
+        },
+      },
+      {
+        onError: (err: any) => {
+          openNotification({
+            state: "error",
+            title: "Error Occurred",
+            description:
+              err?.response.data.message ?? err?.response.data.error.message,
+          });
+        },
+        onSuccess: (res: any) => {
+          openNotification({
+            state: "success",
+
+            title: "Success",
+            description: res.data.message,
+            // duration: 0.4,
+          });
+          form.resetFields();
+
+          handleClose();
+        },
+      }
+    );
+  };
 
   return (
     <Modal
@@ -311,6 +367,7 @@ export const CreatePayrollInitialForm: React.FC<IFormProps> = ({
             />
           </Form.Item>
         )}
+        {/* TODO: Get the schemes and display the project && payments appropriately */}
         {type === "project" && (
           <Form.Item
             name="payment"
@@ -356,18 +413,40 @@ export const CreatePayrollInitialForm: React.FC<IFormProps> = ({
         {type === "wages" && (
           <Form.Item
             rules={generalValidationRules}
-            name="frequency"
+            name="csvFile"
             label="Upload Employees' Timesheet"
           >
-            <div className={`px-3 py-2 shadow rounded-sm bg-mainBg`}>
-              <FileUpload
-                allowedFileTypes={[
-                  "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-                ]}
-                fileKey="documentUrl"
-                textToDisplay="Upload file"
-                displayType="form-space-between"
-              />
+            <div className="border border-dotted border-slate-500 rounded flex flex-col items-center gap-2 py-3 px-2">
+              <p>Select file to be Imported</p>
+              <Typography.Text title="Please Download template and populate">
+                <span
+                  className="text-sm pt-1 font-medium cursor-pointer hover:text-caramel underline"
+                  onClick={() => handleGetTemplate()}
+                >
+                  Download template
+                </span>
+              </Typography.Text>
+
+              <div className="flex justify-center w-3/5">
+                <Upload
+                  fileList={fileList}
+                  onChange={handleUpload}
+                  onRemove={(file) => {
+                    const index = fileList.indexOf(file);
+                    const newFileList = fileList.slice();
+                    newFileList.splice(index, 1);
+                    setFilelist(newFileList);
+                  }}
+                  beforeUpload={beforeUpload}
+                >
+                  {fileList.length !== 1 && (
+                    <div className="w-full border border-dotted border-caramel px-2 py-1 rounded text-caramel text-sm flex flex-col gap-1 items-center justify-center">
+                      <i className="ri-download-2-line text-2xl"></i>
+                      <span className="text-xs font-medium">Upload File</span>
+                    </div>
+                  )}
+                </Upload>
+              </div>
             </div>
           </Form.Item>
         )}
@@ -376,12 +455,12 @@ export const CreatePayrollInitialForm: React.FC<IFormProps> = ({
           control={{ name: "costCentreId", label: "Cost Centre" }}
           onSelect={(_, data) => setCostCentre(data.name)}
         />
-        {payrollFrequency === "daily" && (
+        {payrollFrequency === "daily" && type !== "project" && (
           <Form.Item name="date" label="Date" dependencies={["frequency"]}>
             <DatePicker className="w-full" placeholder="Date" />
           </Form.Item>
         )}
-        {payrollFrequency === "monthly" && (
+        {payrollFrequency === "monthly" && type !== "project" && (
           <Form.Item name="date" label="Date" dependencies={["frequency"]}>
             <DatePicker picker="month" className="w-full" placeholder="Date" />
           </Form.Item>
@@ -396,7 +475,11 @@ export const CreatePayrollInitialForm: React.FC<IFormProps> = ({
         </Form.Item>
 
         <div className="flex justify-end">
-          <AppButton type="submit" isLoading={isLoading} />
+          <AppButton
+            type="submit"
+            isLoading={isLoading}
+            disabled={type === "wages" && fileList.length <= 0}
+          />
         </div>
       </Form>
     </Modal>
@@ -728,9 +811,7 @@ const CreatePayrollContainer: React.FC<{
                     </div>
                   </div>
                   <div className="mt-4">
-                    {payrollD.frequency !== "none" && (
-                      <EmployeeTimesheet type={payrollD.frequency} />
-                    )}
+                    <EmployeeTimesheet type={payrollD.frequency} />
                   </div>
                 </div>
               </div>

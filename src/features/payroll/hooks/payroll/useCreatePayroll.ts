@@ -11,6 +11,7 @@ type TPayrollData = {
   description: string;
   frequency: string;
   costCentreId: number;
+  csvFile?: any;
 };
 const createData = async (props: {
   data: TPayrollData;
@@ -30,7 +31,7 @@ const createData = async (props: {
     ...props.data,
   };
 
-  const response = await axios.post(url, data, config);
+  const response = await axios.postForm(url, data, config);
   return response;
 };
 export const useCreatePayroll = () => {
