@@ -7,6 +7,7 @@ import {
   Modal,
   Select,
   Skeleton,
+  Tag,
   Typography,
 } from "antd";
 import { IModalProps } from "types";
@@ -26,9 +27,22 @@ import { useCreatePayroll } from "features/payroll/hooks/payroll/useCreatePayrol
 import { useGetPayrollSchemeByTypeOrId } from "features/payroll/hooks/scheme/useGetPayrollSchemeByTypeOrId";
 import { TSalaryComponent } from "features/payroll/types/salaryComponents";
 import { openNotification } from "utils/notifications";
-import { useGetSinglePayroll } from "features/payroll/hooks/payroll/useGetSinglePayroll";
+import {
+  QUERY_KEY_FOR_SINGLE_PAYROLL,
+  useGetSinglePayroll,
+} from "features/payroll/hooks/payroll/useGetSinglePayroll";
 import moment from "moment";
 import { EmployeeTimesheet } from "./EmployeeTimesheet";
+import { useRollbackPayroll } from "features/payroll/hooks/payroll/rollback/useRollbackPayroll";
+import { useQueryClient } from "react-query";
+import { useDeletePayroll } from "features/payroll/hooks/payroll/useDeletePayroll";
+import ConfirmationModal from "components/modals/ConfirmationModal";
+
+const boxStyle =
+  "bg-mainBg flex justify-between items-start md:items-center px-6 py-5 rounded lg:flex-row flex-col gap-y-5";
+
+const buttonStyle =
+  "border border-gray-400 hover:text-caramel rounded px-5 py-1 font-medium text-sm text-accent";
 
 type TPayrollFrequency = "monthly" | "daily" | "none";
 type TIntialPayrollDetails = {
@@ -283,11 +297,8 @@ const CreatePayrollContainer: React.FC<{
   type: TPayrollSchemeType;
   payrollId?: number;
 }> = ({ type, payrollId }) => {
-  const boxStyle =
-    "bg-mainBg flex justify-between items-start md:items-center px-6 py-5 rounded lg:flex-row flex-col gap-y-5";
+  const queryClient = useQueryClient();
 
-  const buttonStyle =
-    "border border-gray-400 hover:text-caramel rounded px-5 py-1 font-medium text-sm text-accent";
   const [open, setOpen] = useState(false);
   useEffect(() => {
     if (payrollId) {
@@ -325,7 +336,81 @@ const CreatePayrollContainer: React.FC<{
           (item) => item.type === "deduction"
         )
       : [];
+  const [action, setAction] = useState<"rollback-payroll" | "delete-payroll">();
+  const clearAction = () => {
+    setAction(undefined);
+  };
+  const { mutate: mutateRollback, isLoading: isRollbackLoading } =
+    useRollbackPayroll();
 
+  const handleRollback = () => {
+    if (payrollId) {
+      mutateRollback(
+        {
+          id: payrollId,
+        },
+        {
+          onError: (err: any) => {
+            openNotification({
+              state: "error",
+              title: "Error Occurred",
+              description:
+                err?.response.data.message ?? err?.response.data.error.message,
+            });
+          },
+          onSuccess: (res: any) => {
+            openNotification({
+              state: "success",
+
+              title: "Success",
+              description: res.data.message,
+              // duration: 0.4,
+            });
+            clearAction();
+
+            queryClient.invalidateQueries({
+              queryKey: [QUERY_KEY_FOR_SINGLE_PAYROLL],
+              // exact: true,
+            });
+          },
+        }
+      );
+    }
+  };
+  const { mutate: mutateDelete, isLoading: isDeleteLoading } =
+    useDeletePayroll();
+  const navigate = useNavigate();
+
+  const handleDelete = () => {
+    if (payrollId) {
+      mutateDelete(
+        {
+          id: payrollId,
+        },
+        {
+          onError: (err: any) => {
+            openNotification({
+              state: "error",
+              title: "Error Occurred",
+              description:
+                err?.response.data.message ?? err?.response.data.error.message,
+            });
+          },
+          onSuccess: (res: any) => {
+            openNotification({
+              state: "success",
+
+              title: "Success",
+              description: res.data.message,
+              // duration: 0.4,
+            });
+            clearAction();
+            navigate(appRoutes.listOfPayrolls);
+          },
+        }
+      );
+    }
+  };
   return (
     <>
       <UploadTimesheet open={openT} handleClose={() => setOpenT(false)} />
@@ -335,20 +420,62 @@ const CreatePayrollContainer: React.FC<{
         handleClose={() => setOpen(false)}
         type={type}
       />
+      <ConfirmationModal
+        key="delete"
+        title={`Delete Payroll`}
+        description={`Are you sure you want to delete ${payroll?.name}`}
+        handleClose={() => clearAction()}
+        open={action === "delete-payroll"}
+        handleConfirm={{
+          fn: () => handleDelete(),
+          isLoading: isDeleteLoading,
+        }}
+      />
+      <ConfirmationModal
+        key="rollback"
+        title={`Rollback Payroll`}
+        description={`Are you sure you want to rollback ${payroll?.name}`}
+        handleClose={() => clearAction()}
+        open={action === "rollback-payroll"}
+        handleConfirm={{
+          fn: () => handleRollback(),
+          isLoading: isRollbackLoading,
+        }}
+      />
 
       <div className="text-accent">
-        <div className="flex items-center justify-end gap-5">
-          {payroll?.status === "draft" && (
-            <button className="neutralButton">Run Payroll</button>
-          )}
-          {payroll?.status === "in-review" && (
-            <button className="button">RollBack</button>
-          )}
-          {payroll?.status === "confirmed" && (
-            <button className="border border-red-400 hover:text-caramel rounded px-2 py-1 font-medium text-sm text-neutral">
-              Delete
-            </button>
-          )}
+        <div className="flex items-center justify-between ">
+          <div className="ml-8">
+            <Tag
+              children={<span className="capitalize">{payroll?.status}</span>}
+            />
+          </div>
+          <div className="flex gap-5">
+            {payroll?.status === "in-review" && (
+              <button className="neutralButton">Run Payroll</button>
+            )}
+            {payroll?.status === "draft" && (
+              <AppButton
+                label="Rollback"
+                handleClick={() => setAction("rollback-payroll")}
+              />
+            )}
+            {payroll?.status === "draft" && (
+              <AppButton
+                label="Delete Payroll"
+                variant="style-with-class"
+                additionalClassNames={[
+                  "border border-red-400 hover:text-caramel rounded px-2 py-1 font-medium text-sm text-neutral",
+                ]}
+                handleClick={() => setAction("delete-payroll")}
+              />
+            )}
+            {payroll?.status === "confirmed" && (
+              <button className="border border-red-400 hover:text-caramel rounded px-2 py-1 font-medium text-sm text-neutral">
+                Delete
+              </button>
+            )}
+          </div>
         </div>
 
         <Skeleton loading={isPayrollLoading} active paragraph={{ rows: 20 }}>
