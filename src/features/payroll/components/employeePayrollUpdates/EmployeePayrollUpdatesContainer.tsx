@@ -1,12 +1,10 @@
-import { Table, Dropdown, Menu } from "antd";
+import { Table, Dropdown, Menu, Select } from "antd";
 import { ColumnsType } from "antd/lib/table";
 import { AppButton } from "components/button/AppButton";
 import { usePagination } from "hooks/usePagination";
 import { MoreOutlined } from "@ant-design/icons";
 import React, { useState } from "react";
-import ModifyPayrollBreakdown from "../ModifyPayrollBreakdown";
 import { AddSalaryComponent } from "../salaryComponents/AddSalaryComponent";
-import DeleteEntityModal from "components/entity/DeleteEntityModal";
 import { TEmployeesInPayrollData } from "features/payroll/types";
 import {
   TSalaryComponent,
@@ -18,12 +16,17 @@ import { pluralOrSingular } from "utils/dataHelpers/pluralOrSingular";
 import { useActivateOrDeactivateEmployeesInPayroll } from "features/payroll/hooks/payroll/employee/useActivateOrDeactivateEmployeesInPayroll";
 import ViewEmployeePayrollBreakdown from "../employeeReports/ViewEmployeePayrollBreakdown";
 import ConfirmationModal from "components/modals/ConfirmationModal";
+import {
+  QUERY_KEY_FOR_EMPLOYEES_IN_PAYROLL,
+  useGetEmployeesInPayroll,
+} from "features/payroll/hooks/payroll/employee/useGetEmployeesInPayroll";
+import { useQueryClient } from "react-query";
+import { useConfigureTaxForAnExapatriate } from "features/payroll/hooks/payroll/employee/salaryComponent/configureTax/useConfigureTaxForAnExapatriate";
 
 interface IProps {
   expatriate: boolean;
-  isLoading?: boolean;
-  employees?: TEmployeesInPayrollData[];
   generalSalaryComponents?: TSalaryComponent[];
+  eligibility?: "citizen" | "expatriate";
   payrollId?: number;
 }
 
@@ -34,7 +37,6 @@ type TAction =
   | "view-details"
   | "deactivate"
   | "activate"
-  | "exempt-from-tax"
   | "configure-tax";
 
 const salaryCompTypes: {
@@ -47,11 +49,29 @@ const salaryCompTypes: {
 
 export const EmployeePayrollUpdatesContainer: React.FC<IProps> = ({
   expatriate = false,
-  isLoading,
-  employees,
   generalSalaryComponents,
+  eligibility,
   payrollId,
 }) => {
+  const queryClient = useQueryClient();
+
+  const { pagination, onChange } = usePagination();
+  const [search, setSearch] = useState<{
+    term?: string;
+    action: "apply-search" | "clear-search";
+  }>({ action: "clear-search" });
+  const [isActive, setIsActive] = useState<boolean>();
+  const { data, isFetching } = useGetEmployeesInPayroll({
+    payrollId,
+    data: {
+      pagination,
+      eligibility,
+      searchParams: {
+        name: search.action === "apply-search" ? search.term : undefined,
+      },
+      isActive: isActive,
+    },
+  });
   const [action, setAction] = useState<TAction>();
   const [employee, setEmployee] = useState<TEmployeesInPayrollData>();
   const [employeeIds, setEmployeeIds] = useState<number[]>([]);
@@ -113,13 +133,7 @@ export const EmployeePayrollUpdatesContainer: React.FC<IProps> = ({
           });
         },
       },
-      {
-        label: "Exempt From Tax",
-        key: "Exempt From Tax",
-        onClick: () => {
-          handleAction({ action: "exempt-from-tax", data: { employee } });
-        },
-      },
+
       {
         label: "Configure Tax",
         key: "Configure Tax",
@@ -129,7 +143,6 @@ export const EmployeePayrollUpdatesContainer: React.FC<IProps> = ({
       },
     ];
   };
-  const { pagination, onChange } = usePagination();
 
   const columns: ColumnsType<TEmployeesInPayrollData> = [
     {
@@ -184,16 +197,20 @@ export const EmployeePayrollUpdatesContainer: React.FC<IProps> = ({
       render: (_, employee) => (
         <div className="flex gap-4">
           <Dropdown
+            getPopupContainer={(triggerNode) =>
+              triggerNode.parentElement as HTMLElement
+            }
             disabled={!employee.isActive || employeeIds.length > 0}
             overlay={
               <Menu
+                getPopupContainer={(triggerNode) =>
+                  triggerNode.parentElement as HTMLElement
+                }
                 items={
                   expatriate
                     ? actionItems({ employee })
                     : actionItems({ employee }).filter(
-                        (item) =>
-                          item.label !== "Configure Tax" &&
-                          item.label !== "Exempt From Tax"
+                        (item) => item.label !== "Configure Tax"
                       )
                 }
               />
@@ -254,10 +271,10 @@ export const EmployeePayrollUpdatesContainer: React.FC<IProps> = ({
             clearAction();
             setEmployeeIds([]);
 
-            // queryClient.invalidateQueries({
-            //   queryKey: [QUERY_KEY_FOR_FOLDERS],
-            //   // exact: true,
-            // });
+            queryClient.invalidateQueries({
+              queryKey: [QUERY_KEY_FOR_EMPLOYEES_IN_PAYROLL],
+              // exact: true,
+            });
           },
         }
       );
@@ -309,10 +326,60 @@ export const EmployeePayrollUpdatesContainer: React.FC<IProps> = ({
             clearAction();
             setEmployeeIds([]);
 
-            // queryClient.invalidateQueries({
-            //   queryKey: [QUERY_KEY_FOR_FOLDERS],
-            //   // exact: true,
-            // });
+            queryClient.invalidateQueries({
+              queryKey: [QUERY_KEY_FOR_EMPLOYEES_IN_PAYROLL],
+              // exact: true,
+            });
+          },
+        }
+      );
+    }
+  };
+  const { mutate: mutateTaxConfig, isLoading: isTaxConfigLoading } =
+    useConfigureTaxForAnExapatriate();
+  const handleTaxConfiguration = (data: {
+    amount: number | string;
+    label: string;
+    mode: TSalaryComponentCalculationMode;
+    name: string;
+  }) => {
+    const { amount, label, mode, name } = data;
+    if (payrollId && employee && action === "configure-tax") {
+      mutateTaxConfig(
+        {
+          employeeId: employee.employeeId,
+          payrollId,
+          data: {
+            amount,
+            label,
+            mode,
+            name,
+          },
+        },
+        {
+          onError: (err: any) => {
+            openNotification({
+              state: "error",
+              title: "Error Occurred",
+              description:
+                err?.response.data.message ?? err?.response.data.error.message,
+            });
+          },
+          onSuccess: (res: any) => {
+            openNotification({
+              state: "success",
+
+              title: "Success",
+              description: res.data.message,
+              // duration: 0.4,
+            });
+            clearAction();
+            setEmployeeIds([]);
+
+            queryClient.invalidateQueries({
+              queryKey: [QUERY_KEY_FOR_EMPLOYEES_IN_PAYROLL],
+              // exact: true,
+            });
           },
         }
       );
@@ -341,8 +408,20 @@ export const EmployeePayrollUpdatesContainer: React.FC<IProps> = ({
           loading={isSalaryCompLoading}
         />
       ))}
+      <AddSalaryComponent
+        key={"configure-tax"}
+        title={`Configure tax for ${employee?.fullName}`}
+        open={action === "configure-tax"}
+        handleClose={() => clearAction()}
+        handleSave={(data) => handleTaxConfiguration(data)}
+        dependencies={generalSalaryComponents?.map((item) => item.label)}
+        type={"deduction"}
+        componentName="tax"
+        loading={isTaxConfigLoading}
+      />
 
       <ConfirmationModal
+        key="deactivate"
         title={
           employeeIds.length > 0
             ? `Deactivate ${pluralOrSingular({
@@ -369,6 +448,7 @@ export const EmployeePayrollUpdatesContainer: React.FC<IProps> = ({
         }}
       />
       <ConfirmationModal
+        key="activate"
         title={
           employeeIds.length > 0
             ? `Activate ${pluralOrSingular({
@@ -396,30 +476,71 @@ export const EmployeePayrollUpdatesContainer: React.FC<IProps> = ({
       />
       {payrollId && employee && (
         <ViewEmployeePayrollBreakdown
-          data={{ payrollId, employeeId: employee.employeeId }}
+          params={{ payrollId, employeeId: employee.employeeId }}
           handleClose={() => clearAction()}
           open={action === "view-details"}
+          showControls={false}
         />
       )}
-      <ModifyPayrollBreakdown
-        handleClose={() => clearAction()}
-        open={action === "modify-details"}
-      />
+      {payrollId && employee && (
+        <ViewEmployeePayrollBreakdown
+          params={{ payrollId, employeeId: employee.employeeId }}
+          handleClose={() => clearAction()}
+          open={action === "modify-details"}
+        />
+      )}
+
       <div className="flex flex-col gap-4">
         {/* btns */}
 
         <div className="flex justify-between">
-          <div className="flex gap-2">
-            <input
-              type="text"
-              className="border text-accent rounded px-3 py-1 border-gray-400 bg-mainBg"
-              placeholder="Search for Employee"
-            />
-            <AppButton
-              label="Filter"
-              variant="transparent"
-              handleClick={() => {}}
-            />
+          <div className="flex gap-6">
+            <div className="flex gap-2">
+              <input
+                value={search.term}
+                onChange={(e) =>
+                  setSearch((val) => ({ ...val, term: e.target.value }))
+                }
+                type="text"
+                className="border text-accent rounded px-3 py-1 border-gray-400 bg-mainBg"
+                placeholder="Search for Employee"
+              />
+              {search.action === "clear-search" && (
+                <AppButton
+                  variant="transparent"
+                  label="Search"
+                  disabled={!search.term}
+                  handleClick={() =>
+                    setSearch((val) => ({ ...val, action: "apply-search" }))
+                  }
+                />
+              )}
+              {search.action === "apply-search" && (
+                <AppButton
+                  variant="default"
+                  label="Clear"
+                  handleClick={() =>
+                    setSearch((val) => ({
+                      term: "",
+                      action: "clear-search",
+                    }))
+                  }
+                />
+              )}
+            </div>
+            <div className="w-full">
+              <Select
+                className="w-full"
+                placeholder="Select Employee Status "
+                options={[
+                  { label: "Only Active", value: "activated" },
+                  { label: "Only Deactivated", value: "deactivated" },
+                ]}
+                onClear={() => setIsActive(undefined)}
+                allowClear
+                onSelect={(val: string) => setIsActive(val === "activated")}
+              />
+            </div>
           </div>
           {employeeIds.length > 0 && (
             <div className="flex gap-2">
@@ -463,12 +584,12 @@ export const EmployeePayrollUpdatesContainer: React.FC<IProps> = ({
           }}
           columns={columns}
           size="small"
-          loading={isLoading}
-          dataSource={employees?.map((item) => ({
+          loading={isFetching}
+          dataSource={data?.data?.map((item) => ({
             ...item,
             key: item.employeeId,
           }))}
-          pagination={{ ...pagination, total: employees?.length }}
+          pagination={{ ...pagination, total: data?.total }}
           onChange={onChange}
           rowClassName={({ isActive }) =>
             !isActive ? `bg-gray-200 text-slate-400` : ""

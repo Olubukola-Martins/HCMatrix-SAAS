@@ -1,29 +1,93 @@
-import { Modal, Skeleton } from "antd";
+import { Modal, Skeleton, Switch } from "antd";
 import Themes from "components/Themes";
-import { useGetSingleEmployeePayroll } from "features/payroll/hooks/payroll/employee/useGetSingleEmployeePayroll";
+import { useActivateOrDeactivateEmployeeSalaryComponent } from "features/payroll/hooks/payroll/employee/salaryComponent/useActivateOrDeactivateEmployeeSalaryComponent";
+import {
+  QUERY_KEY_FOR_SINGLE_EMPLOYEE_PAYROLL,
+  useGetSingleEmployeePayroll,
+} from "features/payroll/hooks/payroll/employee/useGetSingleEmployeePayroll";
+import { TEmployeesInPayrollData } from "features/payroll/types";
 import { useGetCompanyBaseCurrency } from "hooks/useGetCompanyBaseCurrency";
-import React from "react";
+import React, { useState } from "react";
+import { useQueryClient } from "react-query";
 import { IModalProps } from "types";
+import { openNotification } from "utils/notifications";
 
 interface IProps extends IModalProps {
-  data: {
+  params: {
     payrollId: number;
     employeeId: number;
   };
+  showControls?: boolean;
 }
 
 const ViewEmployeePayrollBreakdown: React.FC<IProps> = ({
   open,
   handleClose,
-  data,
+  params,
+  showControls = true,
 }) => {
+  const queryClient = useQueryClient();
+
   const { baseCurrency, loading: baseCurrLoading } =
     useGetCompanyBaseCurrency();
-  const { payrollId, employeeId } = data;
+  const { payrollId, employeeId } = params;
   const { data: employeePayroll, isLoading } = useGetSingleEmployeePayroll({
     employeeId,
     payrollId,
   });
+  const [selectedCompId, setSelectedCompId] = useState<number>();
+  const { mutate: mutateSalaryComp, isLoading: isSalaryCompLoading } =
+    useActivateOrDeactivateEmployeeSalaryComponent();
+  const handleSalaryComponent = (data: {
+    salaryComponentId: number;
+    isActive: boolean;
+  }) => {
+    const { salaryComponentId, isActive } = data;
+
+    mutateSalaryComp(
+      {
+        employeeId,
+        payrollId,
+        salaryComponentId,
+        data: { isActive },
+      },
+      {
+        onError: (err: any) => {
+          openNotification({
+            state: "error",
+            title: "Error Occurred",
+            description:
+              err?.response.data.message ?? err?.response.data.error.message,
+          });
+        },
+        onSuccess: (res: any) => {
+          openNotification({
+            state: "success",
+
+            title: "Success",
+            description: res.data.message,
+            // duration: 0.4,
+          });
+
+          queryClient.setQueriesData(
+            [QUERY_KEY_FOR_SINGLE_EMPLOYEE_PAYROLL],
+            (vals: unknown) => {
+              const data = vals as TEmployeesInPayrollData;
+
+              return {
+                ...data,
+                employeeSalaryComponents: data.employeeSalaryComponents.map(
+                  (item) =>
+                    item.id === salaryComponentId ? { ...item, isActive } : item
+                ),
+              };
+            }
+          );
+          setSelectedCompId(undefined);
+        },
+      }
+    );
+  };
   return (
     <Modal
       open={open}
@@ -55,64 +119,64 @@ const ViewEmployeePayrollBreakdown: React.FC<IProps> = ({
               </div>
 
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-5 my-6">
-                <div>
-                  <table className="payroll-table view">
-                    <thead>
-                      <tr>
-                        <th>Allowances</th>
-                        <th>Amount</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {employeePayroll?.employeeSalaryComponents
-                        .filter((item) => item.type === "allowance")
-                        .map((item, i) => (
-                          <tr>
-                            <td>{item.name}</td>
-                            <td>
-                              {baseCurrency?.currencySymbol}
-                              {item.calculatedAmount}
-                            </td>
-                          </tr>
-                        ))}
-                      <tr>
-                        <td>Sub Total</td>
-                        <td>
-                          {baseCurrency?.currencySymbol}
-                          {employeePayroll?.totalAllowances}
-                        </td>
-                      </tr>
-                    </tbody>
-                  </table>
-                </div>
-                <table className="payroll-table view">
-                  <thead>
-                    <tr>
-                      <th>Deductions</th>
-                      <th>Amount</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {employeePayroll?.employeeSalaryComponents
-                      .filter((item) => item.type === "deduction")
-                      .map((item, i) => (
+                {[
+                  { name: "Allowance", type: "allowance" },
+                  { name: "Deduction", type: "deduction" },
+                ].map((comp) => (
+                  <div key={comp.type}>
+                    <table className="payroll-table view">
+                      <thead>
                         <tr>
-                          <td>{item.name}</td>
-                          <td>
+                          <th className="capitalize">{comp.name}</th>
+                          <th>Amount</th>
+                          {showControls && <th>Active</th>}
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {employeePayroll?.employeeSalaryComponents
+                          .filter((item) => item.type === comp.type)
+                          .map((item, i) => (
+                            <tr key={i}>
+                              <td>{item.name}</td>
+                              <td>
+                                {baseCurrency?.currencySymbol}
+                                {item.calculatedAmount}
+                              </td>
+                              {showControls && (
+                                <td>
+                                  <Switch
+                                    loading={
+                                      isSalaryCompLoading &&
+                                      item.id === selectedCompId
+                                    }
+                                    defaultChecked={item.isActive}
+                                    onChange={(val) =>
+                                      handleSalaryComponent({
+                                        salaryComponentId: item.id,
+                                        isActive: val,
+                                      })
+                                    }
+                                    unCheckedChildren={"No"}
+                                    size="small"
+                                    checkedChildren={`Yes`}
+                                  />
+                                </td>
+                              )}
+                            </tr>
+                          ))}
+                        <tr>
+                          <td>Sub Total</td>
+                          <td colSpan={showControls ? 2 : 1}>
                             {baseCurrency?.currencySymbol}
-                            {item.calculatedAmount}
+                            {comp.type === "allowance"
+                              ? employeePayroll?.totalAllowances
+                              : employeePayroll?.totalDeductions}
                           </td>
                         </tr>
-                      ))}
-                    <tr>
-                      <td>Sub Total</td>
-                      <td>
-                        {baseCurrency?.currencySymbol}
-                        {employeePayroll?.totalDeductions}
-                      </td>
-                    </tr>
-                  </tbody>
-                </table>
+                      </tbody>
+                    </table>
+                  </div>
+                ))}
               </div>
 
               <div className="bg-mainBg flex items-center justify-between px-5 py-2">

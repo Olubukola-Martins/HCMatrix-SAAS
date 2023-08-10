@@ -582,9 +582,7 @@ const CreatePayrollContainer: React.FC<{
                 <div className="mt-4">
                   <EmployeePayrollUpdatesContainer
                     expatriate={false}
-                    employees={payroll?.employeePayrolls.filter(
-                      (item) => item.eligibility === "citizen"
-                    )}
+                    eligibility="citizen"
                     generalSalaryComponents={[...allowances, ...deductions]}
                     payrollId={payroll?.id}
                   />
@@ -610,9 +608,7 @@ const CreatePayrollContainer: React.FC<{
                 <div className="mt-4">
                   <EmployeePayrollUpdatesContainer
                     expatriate={true}
-                    employees={payroll?.employeePayrolls.filter(
-                      (item) => item.eligibility === "expatriate"
-                    )}
+                    eligibility="expatriate"
                     generalSalaryComponents={[...allowances, ...deductions]}
                     payrollId={payroll?.id}
                   />

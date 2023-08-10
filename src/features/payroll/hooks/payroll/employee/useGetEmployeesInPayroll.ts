@@ -18,7 +18,7 @@ export const QUERY_KEY_FOR_EMPLOYEES_IN_PAYROLL = "employees-in-payroll";
 const getData = async (props: {
   data: IGetDataProps;
   auth: ICurrentCompany;
-  payrollId: number;
+  payrollId?: number;
 }): Promise<{ data: TEmployeesInPayrollData[]; total: number }> => {
   const { pagination } = props.data;
   const limit = pagination?.limit ?? DEFAULT_PAGE_SIZE;
@@ -60,7 +60,7 @@ const getData = async (props: {
 
 export const useGetEmployeesInPayroll = (props: {
   data: IGetDataProps;
-  payrollId: number;
+  payrollId?: number;
 }) => {
   const { token, companyId } = useApiAuth();
 
@@ -69,6 +69,8 @@ export const useGetEmployeesInPayroll = (props: {
     [
       QUERY_KEY_FOR_EMPLOYEES_IN_PAYROLL,
       props.payrollId,
+      props.data.eligibility,
+      props.data.isActive,
       pagination,
       searchParams,
     ],
@@ -81,6 +83,7 @@ export const useGetEmployeesInPayroll = (props: {
         payrollId: props.payrollId,
       }),
     {
+      enabled: !!props.payrollId,
       onError: (err: any) => {},
       onSuccess: (data) => {},
     }
