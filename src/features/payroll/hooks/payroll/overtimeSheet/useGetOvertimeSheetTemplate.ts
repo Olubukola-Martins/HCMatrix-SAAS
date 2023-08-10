@@ -9,7 +9,7 @@ type TResponse = any;
 interface IDataProps {
   payrollId?: number;
 }
-const OVERTIME_TEMPLATE_NAME = "overtime-template.csv";
+const OVERTIME_TEMPLATE_NAME = "timesheet-template.csv";
 const createData = async (props: {
   data: IDataProps;
   auth: ICurrentCompany;
