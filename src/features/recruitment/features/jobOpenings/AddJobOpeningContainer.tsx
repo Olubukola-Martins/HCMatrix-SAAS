@@ -6,6 +6,7 @@ import { textInputValidationRules } from "utils/formHelpers/validation";
 import { AppButton } from "components/button/AppButton";
 import { JobDetails } from "features/recruitment/components/JobDetails";
 import { ApplicationQuestions } from "features/recruitment/components/ApplicationQuestions";
+import { DynamicForm } from "features/recruitment/components/test";
 
 export const AddJobOpeningContainer = () => {
   const { Step } = Steps;
@@ -57,7 +58,8 @@ export const AddJobOpeningContainer = () => {
 
       <section className="w-[83.3vw] bg-card pt-7 pb-16 mx-auto lg-ml-auto lg-mr-1 ">
         {/* <JobDetails /> */}
-        <ApplicationQuestions/>
+        {/* <ApplicationQuestions/> */}
+        <DynamicForm/>
       </section>
     </>
   );

@@ -1,114 +1,214 @@
-import { List, Switch, Select, SelectProps, DatePicker, Checkbox } from "antd";
+import {
+  List,
+  Switch,
+  Select,
+  SelectProps,
+  DatePicker,
+  Checkbox,
+  Form,
+  Button,
+  Input,
+} from "antd";
+import { MinusCircleOutlined, PlusOutlined } from "@ant-design/icons";
+import { CheckboxChangeEvent } from "antd/lib/checkbox";
 import { useState } from "react";
 
 const { Option } = Select;
-type OptionType = {
-  key: string;
-  value: string;
-};
 export const ApplicationQuestions = () => {
-  type MixedArray = (number | string | undefined | null)[];
-  const [selectedQuestions, setSelectedQuestions] = useState<MixedArray>([]);
-
-  const handleQuestionSelection = (
-    item: string | number | null | undefined
-  ) => {
-    setSelectedQuestions((prevSelectedQuestions: MixedArray) => {
-      if (prevSelectedQuestions.includes(item)) {
-        return prevSelectedQuestions.filter((Question) => Question !== item);
-      } else {
-        prevSelectedQuestions = [...prevSelectedQuestions, item];
-        console.log(prevSelectedQuestions);
-        return prevSelectedQuestions;
-      }
-    });
-  };
-  const data = [
-    "Upload Resume",
-    "Address",
-    "LinkedIn URL",
-    "Date Available",
-    "Desired Salary",
-    "Cover Letter",
-    "Referred By",
-    "Link to Website, Blog or Portfolio",
-    "Twitter Username",
-    "Education",
-    "Experience",
-    "References",
-    "Add benefit",
-    "Expiry date",
-  ];
-  const handleOptionSelect = (value: string | number | null | undefined) => {
-    setSelectedQuestions((prevSelectedQuestions) => {
-      if (prevSelectedQuestions.includes(value)) {
-        prevSelectedQuestions.filter((Question) => Question !== value);
-        return prevSelectedQuestions;
-      } else {
-        prevSelectedQuestions = [...prevSelectedQuestions, value];
-        // console.log(prevSelectedQuestions);
-        return prevSelectedQuestions;
-      }
-    });
+  const onFinish = (values: any) => {
+    console.log(values);
   };
 
-  const handleOptionDeselect = (value: string | number | null | undefined) => {
-    let NewArray: MixedArray;
-    setSelectedQuestions((prevSelectedQuestions) => {
-      if (prevSelectedQuestions.includes(value))
-        NewArray = prevSelectedQuestions.filter(
-          (Question) => Question !== value
-        );
-      prevSelectedQuestions = NewArray;
-      //   console.log(prevSelectedQuestions);
-      return prevSelectedQuestions;
-    });
+  // handling datepicker check
+  const [disableDatePicker, setDisableDatePicker] = useState(false);
+
+  const handleCheckboxChange = (e: CheckboxChangeEvent) => {
+    setDisableDatePicker(e.target.checked);
   };
   return (
     <>
-      <List
-        className="w-11/12 bg-mainBg  mx-auto md-px-3 py-8 px-6 rounded-lg flex flex-col gap-6"
-        size="small"
-        header={<div>Application Questions</div>}
-        dataSource={data}
-        renderItem={(item) => (
-          <List.Item className="pl-5 pt-6 bg-card border-none mb-6">
-            {item}
-            {item === "Add benefit" ? (
-              <Select
-                className="mt-2"
-                mode="multiple"
-                style={{ width: "100%" }}
-                placeholder="Please select"
-                onSelect={handleOptionSelect}
-                onDeselect={handleOptionDeselect}
-              >
-                <Option value="Dental Insurance">Dental Insurance</Option>
-                <Option value="Flexibility Schedule">
-                  Flexibility Schedule
-                </Option>
-                <Option value="Paid Time Off">Paid Time Off</Option>
-                <Option value="Health Insurance">Health Insurance</Option>
-                <Option value="Vision Insurance">Vision Insurance</Option>
-              </Select>
-            ) : item === "Expiry date" ? (
-              <div className="mt-2 gap-[22px] flex flex-row sm-flex-col sm-gap-5 items-center">
-                <DatePicker className="h-[53px] rounded-lg border-[0.3px] border-[#686868] py-4 px-6 sm-w-[60%] md-w-80 w-[31.25vw] " />
-                <Checkbox>Not Specified</Checkbox>
-              </div>
-            ) : (
-              <Switch
-                className="float-right"
-                size="small"
-                checked={selectedQuestions.includes(item)}
-                onChange={() => {
-                  handleQuestionSelection(item);
-                }}
-              />
-            )}
-          </List.Item>
-        )}
-      />
+      <Form name="applicationQuestions" onFinish={onFinish}>
+
+        {/* ############### */}
+        <div>
+          Upload Resume
+          <Form.Item name="uploadResume" valuePropName="checked">
+            <Switch
+              className="float-right"
+              size="small"
+              defaultChecked={false}
+            />
+          </Form.Item>
+        </div>
+
+        <div>
+          Address
+          <Form.Item name="address" valuePropName="checked">
+            <Switch
+              className="float-right"
+              size="small"
+              defaultChecked={false}
+            />
+          </Form.Item>
+        </div>
+
+        <div>
+          LinkedIn URL
+          <Form.Item name="linkedInURL" valuePropName="checked">
+            <Switch
+              className="float-right"
+              size="small"
+              defaultChecked={false}
+            />
+          </Form.Item>
+        </div>
+
+        <div>
+          Date Available
+          <Form.Item name="dateAvailable" valuePropName="checked">
+            <Switch
+              className="float-right"
+              size="small"
+              defaultChecked={false}
+            />
+          </Form.Item>
+        </div>
+
+        <div>
+          Desired Salary
+          <Form.Item name="desiredSalary" valuePropName="checked">
+            <Switch
+              className="float-right"
+              size="small"
+              defaultChecked={false}
+            />
+          </Form.Item>
+        </div>
+
+        <div>
+          Cover Letter
+          <Form.Item name="coverLetter" valuePropName="checked">
+            <Switch
+              className="float-right"
+              size="small"
+              defaultChecked={false}
+            />
+          </Form.Item>
+        </div>
+
+        <div>
+          Referred By
+          <Form.Item name="referredBy" valuePropName="checked">
+            <Switch
+              className="float-right"
+              size="small"
+              defaultChecked={false}
+            />
+          </Form.Item>
+        </div>
+
+        <div>
+          Link to Website, Blog or Portfolio
+          <Form.Item
+            name="linkToWebsiteBlogOrPortfolio"
+            valuePropName="checked"
+          >
+            <Switch
+              className="float-right"
+              size="small"
+              defaultChecked={false}
+            />
+          </Form.Item>
+        </div>
+
+        <div>
+          Twitter Username
+          <Form.Item name="twitterUsername" valuePropName="checked">
+            <Switch
+              className="float-right"
+              size="small"
+              defaultChecked={false}
+            />
+          </Form.Item>
+        </div>
+
+        <div>
+          Education
+          <Form.Item name="education" valuePropName="checked">
+            <Switch
+              className="float-right"
+              size="small"
+              defaultChecked={false}
+            />
+          </Form.Item>
+        </div>
+
+        <div>
+          Experience
+          <Form.Item name="experience" valuePropName="checked">
+            <Switch
+              className="float-right"
+              size="small"
+              defaultChecked={false}
+            />
+          </Form.Item>
+        </div>
+
+        <div>
+          <Form.Item name="references" valuePropName="checked">
+            References
+            <Switch
+              className="float-right"
+              size="small"
+              defaultChecked={false}
+            />
+          </Form.Item>
+        </div>
+
+        <div>
+          Add benefit
+          <Form.Item name="addBenefit" valuePropName="checked">
+            <Select
+              className="mt-2"
+              mode="multiple"
+              style={{ width: "100%" }}
+              placeholder="Please select"
+            >
+              <Option value="Dental Insurance">Dental Insurance</Option>
+              <Option value="Flexibility Schedule">Flexibility Schedule</Option>
+              <Option value="Paid Time Off">Paid Time Off</Option>
+              <Option value="Health Insurance">Health Insurance</Option>
+              <Option value="Vision Insurance">Vision Insurance</Option>
+            </Select>
+          </Form.Item>
+        </div>
+
+        <div>
+          Expiry Date
+          <Form.Item name="expiryDate" valuePropName="checked">
+            {/* <div className="mt-2 gap-[22px] flex flex-row sm-flex-col sm-gap-5 items-center"> */}
+            <DatePicker
+              format="YYYY-MM-DD"
+              disabled={disableDatePicker}
+              className="h-[53px] rounded-lg border-[0.3px] border-[#686868] py-4 px-6 sm-w-[60%] md-w-80 w-[31.25vw] "
+            />
+            {/* </div> */}
+          </Form.Item>
+          <Form.Item>
+            <Checkbox onChange={handleCheckboxChange}>Not Specified</Checkbox>
+          </Form.Item>
+        </div>
+
+        <Form.Item>
+          <Button
+            type="primary"
+            htmlType="submit"
+            className="lg-py-2 py-3 md-px-10 lg-px-16 px-[69px]  flex flex-col justify-center bg-[var(--caramel)]  transition duration-300 ease-in-out hover:border-[var(--caramel)] hover:bg-[var(--caramel)] hover:opacity-70"
+          >
+            Next
+          </Button>
+        </Form.Item>
+      </Form>
     </>
   );
 };
