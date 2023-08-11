@@ -1,22 +1,17 @@
 import React from "react";
-import { Menu, Space, Select, Button, Table, Typography, Dropdown } from "antd";
-import { MoreOutlined } from "@ant-design/icons";
+import { Menu, Space, Select, Table, Typography, Dropdown } from "antd";
 import { AppButton } from "components/button/AppButton";
+import { ColumnsType } from "antd/es/table";
 
 // INTERFACE/TYPES
-interface Item {
-  label: string;
-  key: string;
-}
-interface DataSourceItem {
-  key: string;
+type DataSourceItem = {
+  key: React.Key;
   title: string;
   candidate: string;
   hiringLead: string;
   createdOn: string;
   status: string;
-  action: string;
-}
+};
 
 export const JobOpeningContainer = () => {
   // FUNCTION TO HANDLE DROPDOWN CHANGES
@@ -24,35 +19,12 @@ export const JobOpeningContainer = () => {
     console.log(`selected ${value}`);
   };
 
-  // ARRAY FOR ACTIONS COLUMN OPTIONS
-  const actions: string[] = ["Edit", "View", "Expired", "Delete"];
-
-  // FUNCTION TO HANDLE ACTIONS DROPDOWN
-  const renderActionsDropdown = (): JSX.Element => {
-    const menu = (
-      <Menu>
-        {actions.map((action) => (
-          <Menu.Item key={action}>
-            <a target="_blank" rel="noopener noreferrer" href="#">
-              {action}
-            </a>
-          </Menu.Item>
-        ))}
-      </Menu>
-    );
-    return (
-      <Dropdown overlay={menu} className="cursor-pointer">
-        <MoreOutlined />
-      </Dropdown>
-    );
-  };
-
   // COLUMS OF TABLE
-  const columns = [
+  const columns: ColumnsType<DataSourceItem> = [
     {
+      key: "1",
       title: "Job Opening",
       dataIndex: "title",
-      key: "1",
     },
     {
       title: "Candidate",
@@ -81,90 +53,42 @@ export const JobOpeningContainer = () => {
         );
       },
     },
+
     {
       title: "Action",
-      key: "6",
-      render: () => {
-        return renderActionsDropdown();
-      },
+      dataIndex: "action",
+      render: (_, val) => (
+        <div>
+          <Dropdown
+            trigger={["click"]}
+            overlay={
+              <Menu>
+                <Menu.Item key="1">Edit</Menu.Item>
+                <Menu.Item key="2">View </Menu.Item>
+                <Menu.Item key="3">Delete</Menu.Item>
+                <Menu.Item key="4">Expired</Menu.Item>
+              </Menu>
+            }
+          >
+            <i className="ri-more-2-fill text-lg cursor-pointer"></i>
+          </Dropdown>
+        </div>
+      ),
     },
   ];
 
   // DATASOURCE FOR TABLE
-  const dataSource: DataSourceItem[] = [
-    {
-      key: "1",
+  const dataSource: DataSourceItem[] = [];
+  for (let i = 0; i < 8; i++) {
+    dataSource.push({
+      key: i,
       title: "Software Engineer",
       candidate: "5 candidates",
       hiringLead: "Basil Ikpe",
       createdOn: "--:--",
       status: "Open",
-      action: "",
-    },
-    {
-      key: "2",
-      title: "Software Engineer",
-      candidate: "5 candidates",
-      hiringLead: "Basil Ikpe",
-      createdOn: "--:--",
-      status: "Open",
-      action: "",
-    },
-    {
-      key: "3",
-      title: "Software Engineer",
-      candidate: "5 candidates",
-      hiringLead: "Basil Ikpe",
-      createdOn: "--:--",
-      status: "Open",
-      action: "",
-    },
-    {
-      key: "4",
-      title: "Software Engineer",
-      candidate: "5 candidates",
-      hiringLead: "Basil Ikpe",
-      createdOn: "--:--",
-      status: "Open",
-      action: "",
-    },
-    {
-      key: "5",
-      title: "Software Engineer",
-      candidate: "5 candidates",
-      hiringLead: "Basil Ikpe",
-      createdOn: "--:--",
-      status: "Open",
-      action: "",
-    },
-    {
-      key: "6",
-      title: "Software Engineer",
-      candidate: "5 candidates",
-      hiringLead: "Basil Ikpe",
-      createdOn: "--:--",
-      status: "Open",
-      action: "",
-    },
-    {
-      key: "7",
-      title: "Software Engineer",
-      candidate: "5 candidates",
-      hiringLead: "Basil Ikpe",
-      createdOn: "--:--",
-      status: "Open",
-      action: "",
-    },
-    {
-      key: "8",
-      title: "Software Engineer",
-      candidate: "5 candidates",
-      hiringLead: "Basil Ikpe",
-      createdOn: "--:--",
-      status: "Open",
-      action: "",
-    },
-  ];
+    });
+  }
 
   return (
     <>
@@ -217,20 +141,7 @@ export const JobOpeningContainer = () => {
       </Space>
 
       {/* TABLE */}
-      <Table columns={columns} dataSource={dataSource} />
+      <Table columns={columns} dataSource={dataSource} scroll={{ x: 600 }} />
     </>
-
-    // <div>
-    //   JobOpeningContainer: The design for this component can be found in this
-    //   link{" "}
-    //   <a
-    //     className="text-caramel underline"
-    //     target="_blank"
-    //     rel="noreferrer"
-    //     href="https://www.figma.com/proto/G8Ts28WXoXmzNbW1YnR4wd/Hcmatrix-Third-Iteration?type=design&node-id=403-1253&t=z9e48neZNOxv0wr5-0&scaling=min-zoom&page-id=402%3A1251&starting-point-node-id=463%3A24778"
-    //   >
-    //     figma
-    //   </a>
-    // </div>
   );
 };
