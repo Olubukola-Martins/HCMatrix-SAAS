@@ -159,10 +159,6 @@ const PayrollHome = () => {
           <span className="font-bold text-xl">Payroll</span>
           <div className="flex gap-4">
             <CreatePayrollButton />
-
-            <Link to={appRoutes.listOfPayrolls}>
-              <AppButton label="Payroll List" variant="transparent" />
-            </Link>
           </div>
         </div>
 
@@ -188,6 +184,7 @@ const PayrollHome = () => {
               title: "Payroll Cycle",
               highlight: "N0.00",
               link: appRoutes.listOfPayrolls,
+              content: "View the list of payrolls",
             }}
           />
 
