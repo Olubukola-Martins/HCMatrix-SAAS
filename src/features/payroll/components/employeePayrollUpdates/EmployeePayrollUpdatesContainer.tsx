@@ -197,9 +197,6 @@ export const EmployeePayrollUpdatesContainer: React.FC<IProps> = ({
       render: (_, employee) => (
         <div className="flex gap-4">
           <Dropdown
-            getPopupContainer={(triggerNode) =>
-              triggerNode.parentElement as HTMLElement
-            }
             disabled={!employee.isActive || employeeIds.length > 0}
             overlay={
               <Menu
