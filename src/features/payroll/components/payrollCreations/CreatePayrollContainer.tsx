@@ -41,6 +41,7 @@ import Upload, { RcFile } from "antd/lib/upload";
 import { useAddOvertimeSheet } from "features/payroll/hooks/payroll/overtimeSheet/useAddOvertimeSheet";
 import { useGetOvertimeSheetTemplate } from "features/payroll/hooks/payroll/overtimeSheet/useGetOvertimeSheetTemplate";
 import { FormPayrollProjectSchemeInput } from "../payrollSchemes/FormPayrollProjectSchemeInput";
+import { useRunPayroll } from "features/payroll/hooks/payroll/useRunPayroll";
 
 const boxStyle =
   "bg-mainBg flex justify-between items-start md:items-center px-6 py-5 rounded lg:flex-row flex-col gap-y-5";
@@ -525,10 +526,52 @@ const CreatePayrollContainer: React.FC<{
         )
       : [];
   const [action, setAction] = useState<
-    "rollback-payroll" | "delete-payroll" | "upload-overtime-sheet"
+    | "rollback-payroll"
+    | "delete-payroll"
+    | "upload-overtime-sheet"
+    | "run-payroll"
   >();
   const clearAction = () => {
     setAction(undefined);
+  };
+  const { mutate: mutateRunPayroll, isLoading: isRunPayrollLoading } =
+    useRunPayroll();
+
+  const handleRunPayroll = () => {
+    if (payrollId) {
+      mutateRunPayroll(
+        {
+          data: {
+            id: payrollId,
+          },
+        },
+        {
+          onError: (err: any) => {
+            openNotification({
+              state: "error",
+              title: "Error Occurred",
+              description:
+                err?.response.data.message ?? err?.response.data.error.message,
+            });
+          },
+          onSuccess: (res: any) => {
+            openNotification({
+              state: "success",
+
+              title: "Success",
+              description: res.data.message,
+              // duration: 0.4,
+            });
+            clearAction();
+
+            queryClient.invalidateQueries({
+              queryKey: [QUERY_KEY_FOR_SINGLE_PAYROLL],
+              // exact: true,
+            });
+          },
+        }
+      );
+    }
   };
   const { mutate: mutateRollback, isLoading: isRollbackLoading } =
     useRollbackPayroll();
@@ -619,7 +662,7 @@ const CreatePayrollContainer: React.FC<{
       <ConfirmationModal
         key="delete"
         title={`Delete Payroll`}
-        description={`Are you sure you want to delete ${payroll?.name}`}
+        description={`Are you sure you want to delete ${payroll?.name} payroll?`}
         handleClose={() => clearAction()}
         open={action === "delete-payroll"}
         handleConfirm={{
@@ -630,12 +673,23 @@ const CreatePayrollContainer: React.FC<{
       <ConfirmationModal
         key="rollback"
         title={`Rollback Payroll`}
-        description={`Are you sure you want to rollback ${payroll?.name}`}
+        description={`Are you sure you want to rollback ${payroll?.name} payroll?`}
         handleClose={() => clearAction()}
         open={action === "rollback-payroll"}
         handleConfirm={{
           fn: () => handleRollback(),
           isLoading: isRollbackLoading,
+        }}
+      />
+      <ConfirmationModal
+        key="run-payroll"
+        title={`Run Payroll`}
+        description={`Are you sure you want to run ${payroll?.name} payroll?`}
+        handleClose={() => clearAction()}
+        open={action === "run-payroll"}
+        handleConfirm={{
+          fn: () => handleRunPayroll(),
+          isLoading: isRunPayrollLoading,
         }}
       />
 
@@ -647,8 +701,13 @@ const CreatePayrollContainer: React.FC<{
             />
           </div>
           <div className="flex gap-5">
-            {payroll?.status === "in-review" && (
-              <button className="neutralButton">Run Payroll</button>
+            {payroll?.status === "draft" && (
+              <AppButton
+                label="Run Payroll"
+                variant="style-with-class"
+                additionalClassNames={["neutralButton"]}
+                handleClick={() => setAction("run-payroll")}
+              />
             )}
             {payroll?.status === "draft" && (
               <AppButton
@@ -658,18 +717,13 @@ const CreatePayrollContainer: React.FC<{
             )}
             {payroll?.status === "draft" && (
               <AppButton
-                label="Delete Payroll"
+                label="Delete"
                 variant="style-with-class"
                 additionalClassNames={[
                   "border border-red-400 hover:text-caramel rounded px-2 py-1 font-medium text-sm text-neutral",
                 ]}
                 handleClick={() => setAction("delete-payroll")}
               />
-            )}
-            {payroll?.status === "confirmed" && (
-              <button className="border border-red-400 hover:text-caramel rounded px-2 py-1 font-medium text-sm text-neutral">
-                Delete
-              </button>
             )}
           </div>
         </div>
