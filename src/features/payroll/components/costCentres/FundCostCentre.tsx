@@ -16,7 +16,7 @@ interface IProps extends IModalProps {
   costCentre: TCostCentre;
 }
 
-export const EditCostCentre: React.FC<IProps> = ({
+export const FundCostCentre: React.FC<IProps> = ({
   open,
   handleClose,
   costCentre,
@@ -74,7 +74,7 @@ export const EditCostCentre: React.FC<IProps> = ({
       open={open}
       onCancel={() => handleClose()}
       footer={null}
-      title={"Add Cost Centre"}
+      title={"Fund Cost Centre"}
       style={{ top: 20 }}
     >
       <Form
@@ -84,7 +84,7 @@ export const EditCostCentre: React.FC<IProps> = ({
         requiredMark={false}
       >
         <Form.Item rules={textInputValidationRules} name="name" label="Name">
-          <Input placeholder="Category Name" />
+          <Input placeholder="" disabled />
         </Form.Item>
         <Form.Item
           rules={generalValidationRules}

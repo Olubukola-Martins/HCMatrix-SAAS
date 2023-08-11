@@ -6,8 +6,9 @@ import { usePagination } from "hooks/usePagination";
 import { useGetCostCentres } from "features/payroll/hooks/costCentres/useGetCostCentres";
 import { TCostCentre } from "features/payroll/types";
 import moment from "moment";
-import { EditCostCentre } from "./EditCostCentre";
+import { FundCostCentre } from "./FundCostCentre";
 import { DeleteCostCentre } from "./DeleteCostCentre";
+import { AppButton } from "components/button/AppButton";
 
 export const CostCentreContainer = () => {
   const [showD, setShowD] = useState(false);
@@ -60,13 +61,13 @@ const CostCentreCardList = () => {
   );
 };
 
-type TAction = "edit" | "delete";
+type TAction = "fund" | "delete";
 const CostCentreCard: React.FC<{ data: TCostCentre }> = ({ data }) => {
   const [action, setAction] = useState<TAction>();
   return (
     <>
-      <EditCostCentre
-        open={action === "edit"}
+      <FundCostCentre
+        open={action === "fund"}
         handleClose={() => setAction(undefined)}
         costCentre={data}
       />
@@ -79,14 +80,11 @@ const CostCentreCard: React.FC<{ data: TCostCentre }> = ({ data }) => {
       <div className="rounded border shadow bg-mainBg">
         <div className="bg-card p-3 flex justify-between items-center">
           <h4 className="font-medium text-lg">{data.name}</h4>
-          <div className="flex gap-2 text-lg">
-            <i
-              className="ri-pencil-line  cursor-pointer"
-              onClick={() => setAction("edit")}
-            />
+          <div className="flex gap-4 items-center">
+            <AppButton label="Fund" handleClick={() => setAction("fund")} />
 
             <i
-              className="ri-delete-bin-6-line  cursor-pointer"
+              className="ri-delete-bin-6-line text-lg cursor-pointer"
               onClick={() => setAction("delete")}
             />
           </div>

@@ -21,7 +21,13 @@ const SetUpProjectPayrollContainer = () => {
       <div className="flex flex-col gap-8">
         <PageSubHeader
           description={`Set up payroll for projects`}
-          actions={[{ handleClick: () => setShowM(true), name: `Add Project` }]}
+          actions={[
+            {
+              handleClick: () => setShowM(true),
+              name: `Add Project`,
+              btnVariant: "transparent",
+            },
+          ]}
           hideBackground
         />
 

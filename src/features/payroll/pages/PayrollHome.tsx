@@ -256,6 +256,7 @@ const PayrollHome = () => {
                 title: "Review Payroll",
                 highlight: "N 0.00",
                 content: "Click here to review payroll",
+                link: appRoutes.payrollReview,
               }}
             />
 

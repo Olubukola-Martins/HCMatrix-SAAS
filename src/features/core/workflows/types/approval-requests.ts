@@ -1,3 +1,4 @@
+import { TPayrollListData } from "features/payroll/types/payroll";
 import { AssetRequestEntity } from "./approvalRequestEntities/assetRequestEntity";
 import { ConferenceRoomBookingEntity } from "./approvalRequestEntities/conferenceRoomBookingEntity";
 import { JobRequestEnitity } from "./approvalRequestEntities/jobRequestEntity";
@@ -30,4 +31,5 @@ export type TApprovalRequest = {
   travelRequisition?: TravelRequestEntity;
   positionChangeRequisition?: PositionChangeRequestEntity;
   moneyRequisition?: MoneyRequestEntity;
+  payroll?: TPayrollListData;
 };

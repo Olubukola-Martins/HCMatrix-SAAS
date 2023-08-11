@@ -1,6 +1,6 @@
 import { AddCostCentre } from "./AddCostCentre";
 import { CostCentreContainer } from "./CostCentreContainer";
 import { DeleteCostCentre } from "./DeleteCostCentre";
-import { EditCostCentre } from "./EditCostCentre";
+import { FundCostCentre } from "./FundCostCentre";
 
-export { CostCentreContainer, AddCostCentre, EditCostCentre, DeleteCostCentre };
+export { CostCentreContainer, AddCostCentre, FundCostCentre, DeleteCostCentre };

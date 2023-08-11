@@ -13,12 +13,14 @@ interface IProps {
     loading?: boolean;
     type?: "submit" | "reset" | "button";
   }[];
+  comps?: React.ReactNode[];
 }
 
 const PageSubHeader = ({
   description,
   actions,
   hideBackground = false,
+  comps,
 }: IProps) => {
   return (
     <div
@@ -31,7 +33,7 @@ const PageSubHeader = ({
         <p className={description.className}>{description.content}</p>
       )}
 
-      <div className="flex gap-4 items-center">
+      <div className="flex gap-4 items-center ">
         {actions?.some((item) => item.hidden)
           ? actions
               ?.filter((item) => item.hidden === true)
@@ -53,6 +55,9 @@ const PageSubHeader = ({
                 isLoading={item.loading}
               />
             ))}
+        {comps?.map((item, i) => (
+          <div key={i ** 23 + "09"}>{item}</div>
+        ))}
       </div>
     </div>
   );
