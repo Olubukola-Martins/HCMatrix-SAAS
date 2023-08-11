@@ -110,7 +110,7 @@ export const PayrollSingleProjectParticipantsContainer = ({
   };
   const columns: ColumnsType<TProjectParticipantTableEntry> = [
     {
-      title: "Emp UID",
+      title: "Employee Id",
       dataIndex: "empuid",
       key: "empuid",
       render: (_, item) => item.empuid,
