@@ -28,6 +28,8 @@ interface IProps {
   generalSalaryComponents?: TSalaryComponent[];
   eligibility?: "citizen" | "expatriate";
   payrollId?: number;
+  allowMultipleSelect?: boolean;
+  allowedEmployeeActions?: TAction[];
 }
 
 type TAction =
@@ -52,6 +54,18 @@ export const EmployeePayrollUpdatesContainer: React.FC<IProps> = ({
   generalSalaryComponents,
   eligibility,
   payrollId,
+  allowMultipleSelect = true,
+  allowedEmployeeActions = [
+    "activate",
+    "deactivate",
+    "add-allowance",
+    "add-deduction",
+    "activate",
+    "deactivate",
+    "configure-tax",
+    "modify-details",
+    "view-details",
+  ],
 }) => {
   const queryClient = useQueryClient();
 
@@ -92,40 +106,44 @@ export const EmployeePayrollUpdatesContainer: React.FC<IProps> = ({
     setAction(undefined);
     setEmployee(undefined);
   };
-  const actionItems = (props: { employee: TEmployeesInPayrollData }) => {
+
+  type TActionItem = { label: string; key: TAction; onClick: () => void };
+  const actionItems = (props: {
+    employee: TEmployeesInPayrollData;
+  }): TActionItem[] => {
     const { employee } = props;
-    return [
+    const items: TActionItem[] = [
       {
         label: "Add Allowance",
-        key: "Add Allowance",
+        key: "add-allowance",
         onClick: () => {
           handleAction({ action: "add-allowance", data: { employee } });
         },
       },
       {
         label: "Add Deduction",
-        key: "Add Deduction",
+        key: "add-deduction",
         onClick: () => {
           handleAction({ action: "add-deduction", data: { employee } });
         },
       },
       {
         label: "View Details",
-        key: "View Details",
+        key: "view-details",
         onClick: () => {
           handleAction({ action: "view-details", data: { employee } });
         },
       },
       {
         label: "Modify Details",
-        key: "Modify Details",
+        key: "modify-details",
         onClick: () => {
           handleAction({ action: "modify-details", data: { employee } });
         },
       },
       {
         label: `${employee.isActive ? "Deactivate" : "Activate"}`,
-        key: "ActivateOrDeactivate",
+        key: `${employee.isActive ? "deactivate" : "activate"}`,
         onClick: () => {
           handleAction({
             action: employee.isActive ? "deactivate" : "activate",
@@ -136,12 +154,13 @@ export const EmployeePayrollUpdatesContainer: React.FC<IProps> = ({
 
       {
         label: "Configure Tax",
-        key: "Configure Tax",
+        key: "configure-tax",
         onClick: () => {
           handleAction({ action: "configure-tax", data: { employee } });
         },
       },
     ];
+    return items.filter((item) => allowedEmployeeActions.includes(item.key));
   };
 
   const columns: ColumnsType<TEmployeesInPayrollData> = [
@@ -192,6 +211,7 @@ export const EmployeePayrollUpdatesContainer: React.FC<IProps> = ({
     {
       title: "Action",
       key: "action",
+      dataIndex: "action",
       width: 100,
 
       render: (_, employee) => (
@@ -567,18 +587,22 @@ export const EmployeePayrollUpdatesContainer: React.FC<IProps> = ({
 
         {/* table */}
         <Table
-          rowSelection={{
-            selectedRowKeys: employeeIds,
-            type: "checkbox",
+          rowSelection={
+            allowMultipleSelect
+              ? {
+                  selectedRowKeys: employeeIds,
+                  type: "checkbox",
 
-            getCheckboxProps: (record) => ({
-              // className: record.isActive ? "bg-red-200" : "bg-red-400",
-              // disabled: !record.isActive, // Column configuration not to be checked , would be deactivated users
-              name: record.fullName,
-            }),
+                  getCheckboxProps: (record) => ({
+                    // className: record.isActive ? "bg-red-200" : "bg-red-400",
+                    // disabled: !record.isActive, // Column configuration not to be checked , would be deactivated users
+                    name: record.fullName,
+                  }),
 
-            ...rowSelection,
-          }}
+                  ...rowSelection,
+                }
+              : undefined
+          }
           columns={columns}
           size="small"
           loading={isFetching}

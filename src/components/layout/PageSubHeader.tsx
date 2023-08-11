@@ -12,6 +12,7 @@ interface IProps {
     btnVariant?: TBtnVariant;
     loading?: boolean;
     type?: "submit" | "reset" | "button";
+    additionalClassNames?: string[];
   }[];
   comps?: React.ReactNode[];
 }
@@ -44,6 +45,7 @@ const PageSubHeader = ({
                   handleClick={() => item.handleClick()}
                   variant={item.btnVariant}
                   isLoading={item.loading}
+                  additionalClassNames={item.additionalClassNames}
                 />
               ))
           : actions?.map((item, i) => (
@@ -53,6 +55,7 @@ const PageSubHeader = ({
                 handleClick={() => item.handleClick()}
                 variant={item.btnVariant}
                 isLoading={item.loading}
+                additionalClassNames={item.additionalClassNames}
               />
             ))}
         {comps?.map((item, i) => (

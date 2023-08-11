@@ -9,6 +9,7 @@ import { appRoutes } from "config/router/paths";
 import { TPayrollSchemeType } from "features/payroll/types/payrollSchemes";
 import { Dropdown, Select } from "antd";
 import { AppButton } from "components/button/AppButton";
+import { getAppropriateColorForStatus } from "utils/colorHelpers/getAppropriateColorForStatus";
 
 let OG_COLUMNS: ColumnsType<TPayrollListData> = [
   {
@@ -68,14 +69,6 @@ let OG_COLUMNS: ColumnsType<TPayrollListData> = [
     key: "netPay",
     render: (_, item) => <span>{item.totalNetPay} </span>,
   },
-  {
-    title: "Status",
-    dataIndex: "status",
-    key: "status",
-    render: (_, item) => (
-      <span className="capitalize">{item.status.split("-").join(" ")} </span>
-    ),
-  },
 ];
 export const PayrollReviewContainer = () => {
   const [selectedColumns, setSelectedColumns] =
@@ -124,6 +117,21 @@ export const PayrollReviewContainer = () => {
               ),
             },
             ...selectedColumns,
+            {
+              title: "Status",
+              dataIndex: "status",
+              key: "status",
+              render: (_, item) => (
+                <span
+                  className="capitalize"
+                  style={{
+                    color: getAppropriateColorForStatus(item?.status ?? ""),
+                  }}
+                >
+                  {item.status.split("-").join(" ")}{" "}
+                </span>
+              ),
+            },
           ]}
         />
       </div>
