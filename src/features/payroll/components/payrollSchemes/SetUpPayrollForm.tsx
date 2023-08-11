@@ -272,7 +272,7 @@ export const SetUpPayrollForm: React.FC<{
       employeeId: item.employeeId,
       grossPay: 0,
       exchangeRate: {
-        currency: item.employee.personalInformation.exchangeRate.currency,
+        currency: item.employee.personalInformation.exchangeRate?.currency,
         rate: item.employee.personalInformation.exchangeRate.rate,
       },
       expatriate:
@@ -691,7 +691,7 @@ export const SetUpPayrollForm: React.FC<{
                   grossPay: +item.grossPay,
                   exchangeRate: {
                     currency:
-                      item.employee.personalInformation.exchangeRate.currency,
+                      item.employee.personalInformation.exchangeRate?.currency,
                     rate: item.employee.personalInformation.exchangeRate.rate,
                   },
                   expatriate:
