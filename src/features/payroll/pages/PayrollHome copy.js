@@ -18,6 +18,11 @@ import { Dropdown, Menu } from "antd";
 import { appRoutes } from "config/router/paths";
 import { AppButton } from "components/button/AppButton";
 
+const outerStyle =
+  "group  transition ease-in-out duration-500 cursor-pointer shadow-md col-span-3 md:col-span-1 rounded-xl flex flex-col gap-2 w-full  p-3 bg-card";
+const innerStyle =
+  "group-hover:shadow-md transition ease-in-out duration-500 bg-mainBg rounded-xl p-2 flex flex-col gap-4 flex-1";
+
 const labels = [
   "January",
   "February",
@@ -145,10 +150,6 @@ const PayrollHome = () => {
   const [active, setActive] = useState("gross income");
   const [showItems, setShowItems] = useState(false);
 
-  const outerStyle =
-    "group  transition ease-in-out duration-500 cursor-pointer shadow-md col-span-3 md:col-span-1 rounded-xl flex flex-col gap-2 w-full  p-3 bg-card";
-  const innerStyle =
-    "group-hover:shadow-md transition ease-in-out duration-500 bg-mainBg rounded-xl p-2 flex flex-col gap-4 flex-1";
   return (
     <>
       <PayrollSubNav />

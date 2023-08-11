@@ -15,13 +15,14 @@ import PageSubHeader from "components/layout/PageSubHeader";
 import { Pagination, Skeleton } from "antd";
 import { useGetPayslipTemplates } from "../hooks/payslips/templates/useGetPayslipTemplates";
 import { usePagination } from "hooks/usePagination";
+import ViewPayslipTemplate from "../components/payslips/templates/ViewPayslipTemplate";
 
 export const PayrollPayslip = () => {
   return (
     <>
       <PayrollSubNav />
       <div className="Container flex flex-col gap-2">
-        <PageIntro title="Payslips" />
+        <PageIntro title="Payslips" link={appRoutes.payrollHome} />
         <PageSubHeader
           description={
             "You can manage payslip templates and view employee payslips"
@@ -35,7 +36,7 @@ export const PayrollPayslip = () => {
 };
 
 const PayslipContainer = () => {
-  //TO DO: add pagination, and hook for fetching templates, as well as skeleton
+  //TODO: add pagination, and hook for fetching templates, as well as skeleton
   const { pagination, onChange } = usePagination();
   const { data, isFetching } = useGetPayslipTemplates({
     pagination,
@@ -85,14 +86,21 @@ const PayslipTemplateCard: React.FC<{
   isDefault: boolean;
 }> = ({ data, isDefault }) => {
   const { name, id } = data;
-  const [action, setAction] = useState<"delete">();
-  const handleDelete = () => {
-    setAction("delete");
+  type TAction = "delete" | "view";
+  const [action, setAction] = useState<TAction>();
+  const handleAction = (props: { action: TAction }) => {
+    const { action } = props;
+    setAction(action);
   };
   return (
     <>
       <DeletePayslipTemplate
         open={action === "delete"}
+        template={{ name, id }}
+        handleClose={() => setAction(undefined)}
+      />
+      <ViewPayslipTemplate
+        open={action === "view"}
         template={{ name, id }}
         handleClose={() => setAction(undefined)}
       />
@@ -106,7 +114,12 @@ const PayslipTemplateCard: React.FC<{
         </div>
         <span className="block text-xs pt-8 pb-2">Payslip</span>
 
-        <h2 className="font-semibold pb-20 text-base">{name}</h2>
+        <h2
+          className="font-semibold pb-20  text-base text-caramel cursor-pointer hover:text-black"
+          onClick={() => handleAction({ action: "view" })}
+        >
+          {name}
+        </h2>
 
         <div className="flex items-center justify-between text-sm">
           <Link to={appRoutes.editPayslipTemplate(id).path}>
@@ -114,7 +127,7 @@ const PayslipTemplateCard: React.FC<{
           </Link>
           <span
             className="text-neutral underline cursor-pointer"
-            onClick={handleDelete}
+            onClick={() => handleAction({ action: "delete" })}
           >
             Delete
           </span>

@@ -123,13 +123,7 @@ const CreatePayslipTemplate = () => {
                     </div>
                   </div>
                 </Form.Item>
-                <Form.Item name="showExtraTax">
-                  <div className={boxStyle}>
-                    <div className="flex items-center justify-between">
-                      <h5 className={boxTitle}>Show Extra Tax</h5> <Switch />
-                    </div>
-                  </div>
-                </Form.Item>
+
                 <Form.Item name="showExtraDeduction">
                   <div className={boxStyle}>
                     <div className="flex items-center justify-between">

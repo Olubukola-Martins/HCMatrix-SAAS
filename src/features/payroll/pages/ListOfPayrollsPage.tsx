@@ -11,13 +11,14 @@ import { useGetAllPayrollsByScheme } from "../hooks/payroll/useGetAllPayrollsByS
 import { usePagination } from "hooks/usePagination";
 import { TPayrollListData } from "../types/payroll";
 import moment from "moment";
+import { CreatePayrollButton } from "../components/payrollCreations/CreatePayrollButton";
 
 const ListOfPayrollsPage = () => {
   return (
     <>
       <PayrollSubNav />
       <div className="Container">
-        <PageIntro title="List of Payrolls" link={appRoutes.payrollHome} />
+        <PageIntro title="Payroll Cycle" link={appRoutes.payrollHome} />
         <ListOfPayrollsContainer />
       </div>
     </>
@@ -64,38 +65,7 @@ const ListOfPayrollsContainer = () => {
     <div className="flex flex-col gap-6">
       <div className="flex flex-col mt-5 gap-2 md:flex-row md:justify-between md:items-center  p-2 rounded text-sm">
         <p>{`You can create and manage payrolls`}</p>
-        <Dropdown
-          overlay={
-            <Menu>
-              <Menu.Item>
-                <Link to={appRoutes.createOfficePayroll}>
-                  Create Office Payroll
-                </Link>
-              </Menu.Item>
-              <Menu.Item>
-                <Link to={appRoutes.createDirectSalaryPayroll}>
-                  Create Direct Salary Payroll
-                </Link>
-              </Menu.Item>
-              <Menu.Item>
-                <Link to={appRoutes.createWagesPayroll}>
-                  Create Wages Payroll
-                </Link>
-              </Menu.Item>
-              <Menu.Item>
-                <Link to={appRoutes.createProjectPayroll}>
-                  Create Project Payroll
-                </Link>
-              </Menu.Item>
-            </Menu>
-          }
-          trigger={["click"]}
-        >
-          <button className="button flex items-center gap-2">
-            <span>Create Payroll</span>{" "}
-            <i className="fa-solid fa-chevron-down"></i>
-          </button>
-        </Dropdown>
+        <CreatePayrollButton />
       </div>
       <Tabs
         activeKey={scheme}
@@ -135,10 +105,22 @@ const PayrollTable: React.FC<{
       dataIndex: "Name",
       key: "Name",
       ellipsis: true,
-      render: (_, item) => <span className="capitalize">{item.name} </span>,
+      render: (_, item) => (
+        <Link
+          to={
+            appRoutes.singlePayroll({
+              scheme: item.scheme.type as TPayrollSchemeType,
+              id: item.id,
+            }).path
+          }
+          className="capitalize text-caramel hover:underline"
+        >
+          <span>{item.name} </span>
+        </Link>
+      ),
     },
     {
-      title: "Frequency",
+      title: "Cycle",
       dataIndex: "frequency",
       key: "frequency",
       render: (_, item) => (
@@ -189,28 +171,8 @@ const PayrollTable: React.FC<{
       title: "Status",
       dataIndex: "status",
       key: "status",
-      render: (_, item) => <span className="capitalize">{item.status} </span>,
-    },
-
-    {
-      title: "",
-      key: "action",
       render: (_, item) => (
-        <Link
-          to={
-            appRoutes.singlePayroll({
-              scheme: item.scheme.type as TPayrollSchemeType,
-              id: item.id,
-            }).path
-          }
-        >
-          <Button
-            title="View"
-            icon={<EyeFilled />}
-            type="text"
-            // onClick={() => handleEdit(item._id)}
-          />
-        </Link>
+        <span className="capitalize">{item.status.split("-").join(" ")} </span>
       ),
     },
   ];
