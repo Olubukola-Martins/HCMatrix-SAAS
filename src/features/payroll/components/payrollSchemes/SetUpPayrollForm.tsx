@@ -935,7 +935,8 @@ export const SetUpPayrollForm: React.FC<{
                     <div className="w-2/5">
                       <Form.Item name="frequency" noStyle>
                         <input
-                          className={inputStyle}
+                          disabled={!editScheme}
+                          className={`${inputStyle} disabled:cursor-not-allowed`}
                           type="number"
                           onChange={(e) => setFrequencyAmount(+e.target.value)}
                           value={frequencyAmount}
