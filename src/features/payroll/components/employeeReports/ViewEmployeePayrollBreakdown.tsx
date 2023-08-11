@@ -1,6 +1,7 @@
 import { Modal, Skeleton, Switch } from "antd";
 import Themes from "components/Themes";
 import { useActivateOrDeactivateEmployeeSalaryComponent } from "features/payroll/hooks/payroll/employee/salaryComponent/useActivateOrDeactivateEmployeeSalaryComponent";
+import { QUERY_KEY_FOR_EMPLOYEES_IN_PAYROLL } from "features/payroll/hooks/payroll/employee/useGetEmployeesInPayroll";
 import {
   QUERY_KEY_FOR_SINGLE_EMPLOYEE_PAYROLL,
   useGetSingleEmployeePayroll,
@@ -83,6 +84,10 @@ const ViewEmployeePayrollBreakdown: React.FC<IProps> = ({
               };
             }
           );
+          queryClient.invalidateQueries({
+            queryKey: [QUERY_KEY_FOR_EMPLOYEES_IN_PAYROLL],
+            // exact: true,
+          });
           setSelectedCompId(undefined);
         },
       }
