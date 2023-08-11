@@ -143,10 +143,16 @@ const PayrollSchemeCard: React.FC<TScheme> = ({
           <div className="flex gap-2 ">
             <Link
               to={
-                appRoutes.setupSingleProjectPayrollScheme({
-                  projectId,
-                  schemeId,
-                }).path
+                schemeId
+                  ? appRoutes.setupSingleProjectPayrollScheme({
+                      projectId,
+                      schemeId,
+                    }).path
+                  : appRoutes.setupSingleProjectPayrollSchemeWithoutExistingScheme(
+                      {
+                        projectId,
+                      }
+                    ).path
               }
             >
               <AppButton label={btnLabel} variant={btnVariant} />

@@ -27,6 +27,7 @@ import { TSingleProjectPayrollScheme } from "features/payroll/types/payrollSchem
 import { Moment } from "moment";
 import { convertObjectToKeyMomentValues } from "features/payroll/utils/convertObjectToKeyMomentValues";
 import { useUpdateProjectParticipantGrossPay } from "features/payroll/hooks/scheme/project/useUpdateProjectParticipantGrossPay";
+import { generalValidationRules } from "utils/formHelpers/validation";
 
 const DEFAULT_COMPONENT_LABELS = {
   thirteenthMonthSalary: "thirteenth_month_salary",
@@ -440,7 +441,6 @@ export const SetUpPayrollForm: React.FC<{
       type,
       frequencyAmount,
       frequency,
-      projectParticipants,
       issuePayslip,
       name,
       runAutomatically,
@@ -463,7 +463,7 @@ export const SetUpPayrollForm: React.FC<{
           allowApproval,
           allowDisbursement,
           automaticRunDay:
-            type === "project"
+            type === "project" && runAutomatically
               ? JSON.stringify(
                   Array(frequencyAmount)
                     .fill(0)
@@ -511,7 +511,6 @@ export const SetUpPayrollForm: React.FC<{
               description: res.data.message,
               // duration: 0.4,
             });
-            form.resetFields();
 
             queryClient.invalidateQueries({
               queryKey: [QUERY_KEY_FOR_PAYROLL_SCHEME_BY_TYPE_OR_ID],
@@ -534,7 +533,6 @@ export const SetUpPayrollForm: React.FC<{
       issuePayslip,
       name,
       runAutomatically,
-      form,
       queryClient,
     ]
   );
@@ -1199,7 +1197,12 @@ export const SetUpPayrollForm: React.FC<{
                 </p>
                 {runAutomatically && type !== "project" && (
                   <div className="mt-6">
-                    <Form.Item name={`automaticRunDay`} noStyle>
+                    <Form.Item
+                      requiredMark={false}
+                      name={`automaticRunDay`}
+                      noStyle
+                      rules={generalValidationRules}
+                    >
                       <InputNumber
                         placeholder="Select the day of execution in month"
                         min={1}
@@ -1215,11 +1218,13 @@ export const SetUpPayrollForm: React.FC<{
                       .fill(0)
                       .map((item, i) => (
                         <Form.Item
+                          requiredMark={false}
                           className="w-full flex"
                           key={i}
                           name={`Payment${i + 1}`}
                           label={`Payment ${i + 1}`}
                           labelCol={{ span: 10 }}
+                          rules={generalValidationRules}
                         >
                           <DatePicker className="w-full" />
                         </Form.Item>

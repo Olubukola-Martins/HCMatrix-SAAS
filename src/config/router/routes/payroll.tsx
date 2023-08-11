@@ -93,6 +93,14 @@ export const payrollRoutes: TRouteData[] = [
   },
   {
     element: <SetupSingleProjectPayrollSchemePage />,
+    path: appRoutes.setupSingleProjectPayrollSchemeWithoutExistingScheme()
+      .format,
+    isSearchable: false,
+    title: "Single Project Payroll Scheme",
+    isPrimaryFeature: false,
+  },
+  {
+    element: <SetupSingleProjectPayrollSchemePage />,
     path: appRoutes.setupSingleProjectPayrollScheme().format,
     isSearchable: false,
     title: "Single Project Payroll Scheme",

@@ -75,6 +75,14 @@ export const appRoutes = {
   setupGradePayrollScheme: `/settings/payroll/schemes/grade/set-up/`,
   setupDirectSalaryPayrollScheme: `/settings/payroll/schemes/direct-salary/set-up/`,
   setupProjectPayrollScheme: `/settings/payroll/schemes/project/set-up/`,
+  setupSingleProjectPayrollSchemeWithoutExistingScheme: (props?: {
+    projectId?: number;
+  }) => {
+    return {
+      format: `/settings/payroll/schemes/project/set-up/:projectId/scheme`,
+      path: `/settings/payroll/schemes/project/set-up/${props?.projectId}/scheme`,
+    };
+  },
   setupSingleProjectPayrollScheme: (props?: {
     projectId?: number;
     schemeId?: number;
