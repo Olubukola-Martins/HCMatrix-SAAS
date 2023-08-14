@@ -1,9 +1,18 @@
-import React from 'react'
+import { RecruitmentSettingsIntro } from "../components/RecruitmentSettingsIntro";
+import { appRoutes } from "config/router/paths";
 
 const OfferTemplate = () => {
   return (
-    <div>OfferTemplate</div>
-  )
-}
+    <>
+      <RecruitmentSettingsIntro
+        title="Offer Template"
+        description={
+          "Offer templates aid in bridging the gap between employee self-onboarding and the application tracking system."
+        }
+        nextLink={appRoutes.recruitmentJobTemplate}
+      />
+    </>
+  );
+};
 
-export default OfferTemplate
+export default OfferTemplate;
