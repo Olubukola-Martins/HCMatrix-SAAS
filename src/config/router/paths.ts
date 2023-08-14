@@ -180,7 +180,6 @@ export const appRoutes = {
   shiftPerEmployee: `/attendance/shift-per-employee`,
   hoursPerEmployee: `/attendance/hours-per-employee`,
   employeesPerShift: `/attendance/employees-per-shift`,
-
   uploadAttendance: `/attendance/upload-attendance`,
   timeTrackingRules: `/attendance/time-tracking-rules`,
   workSchedule: `/attendance/work-schedule`,
@@ -188,11 +187,18 @@ export const appRoutes = {
   clockInSettings: `/attendance/clock-in-settings`,
   addLocation: `/attendance/add-location`,
   otherSettings: `/attendance/other-settings`,
+
   // Recruitment
   recruitmentSettings: `/recruitment/settings`,
   recruitmentDashboard: `/recruitment/dashboard`,
   recruitmentReport: `/recruitment/report`,
   recruitmentAddJobOpening: `/recruitment/add-job-opening`,
+  candidateStatus: `/recruitment/candidate-status`,
+  candidateSources: `/recruitment/candidate-sources`,
+  recruitmentEmailTemplate: `/recruitment/email-template`,
+  recruitmentOfferTemplate: `/recruitment/offer-template`,
+  recruitmentJobTemplate: `/recruitment/job-template`,
+  recruitmentOtherSettings: `/recruitment/other-settings`,
 
   // Leaning and development
   leaningHome: `/leaning/home`,
