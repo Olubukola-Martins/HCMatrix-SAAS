@@ -16,7 +16,7 @@ const OtherSettings = () => {
           items={[
             {
               label: "Benefits",
-              children: <Benefits/>,
+              children: <Benefits />,
               key: "1",
             },
             {
