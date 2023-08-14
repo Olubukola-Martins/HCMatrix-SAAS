@@ -1,95 +1,48 @@
-import { Form, Input, Select, Button, Checkbox } from "antd";
+import { Form, Input, Select, Button, Checkbox, FormInstance } from "antd";
 import { textInputValidationRules } from "utils/formHelpers/validation";
 import { useState } from "react";
 import { EMPLOYMENT_TYPES, WORK_MODELS } from "constants/general";
 import { AppButton } from "components/button/AppButton";
 
-
-  interface ChildProps {
-    stepperCurrentState: number;
-    updateCount: (newCount: number) => void;
-  }
-
+interface ChildProps {
+  stepperCurrentState: number;
+  updateCount: (newCount: number) => void;
+  form: FormInstance;
+}
 
 export const JobDetails: React.FC<ChildProps> = ({
   stepperCurrentState,
   updateCount,
+  form,
 }) => {
   const { TextArea } = Input;
-  
-  type SetterFunction = React.Dispatch<React.SetStateAction<boolean>>;
-  // const [form] = Form.useForm();
+  // type SetterFunction = React.Dispatch<React.SetStateAction<boolean>>;
 
-  // state for form values
-  const [jobTitleFilled, setJobTitleFilled] = useState(false);
-  const [departmentFilled, setDepartmentFilled] = useState(false);
-  const [hiringLeadFilled, setHiringLeadFilled] = useState(false);
-  const [employmentTypeFilled, setEmploymentTypeFilled] = useState(false);
-  const [minimumExperienceFilled, setMinimumExperienceFilled] = useState(false);
-  const [jobLocationFilled, setJobLocationFilled] = useState(false);
-  const [locationFilled, setLocationFilled] = useState(false);
-  const [jobDescriptionFilled, setJobDescriptionFilled] = useState(false);
-
-
-  // handle field change
-  const updateField = (value: string, setFilled: SetterFunction) => {
-    if (value.trim() === "") {
-      setFilled(false);
-    } else if (value.trim().length > 0) {
-      setFilled(true);
-    }
-  };
-
-  const handleJobTitleChange = (value: string) => {
-    updateField(value, setJobTitleFilled);
-  };
-  const handleDepartmentChange = (value: string) => {
-    updateField(value, setDepartmentFilled);
-  };
-  const handleHiringLeadChange = (value: string) => {
-    updateField(value, setHiringLeadFilled);
-  };
-  const handleEmploymentTypeChange = (value: string) => {
-    updateField(value, setEmploymentTypeFilled);
-  };
-  const handleMinimumExperienceChange = (value: string) => {
-    updateField(value, setMinimumExperienceFilled);
-  };
-  const handleJobLocationChange = (value: string) => {
-    updateField(value, setJobLocationFilled);
-  };
-  const handleLocationChange = (value: string) => {
-    updateField(value, setLocationFilled);
-  };
-  const handleJobDescriptionChange = (value: string) => {
-    updateField(value, setJobDescriptionFilled);
-  };
-
-  // handle next button
+  // handleNextButton
   const handleNextButton = () => {
-    if (
-      jobTitleFilled === true &&
-      departmentFilled === true &&
-      hiringLeadFilled === true &&
-      employmentTypeFilled === true &&
-      minimumExperienceFilled === true &&
-      jobLocationFilled === true &&
-      locationFilled === true &&
-      jobDescriptionFilled === true
-    ) {
-      console.log("success");
-      updateCount(stepperCurrentState + 1);
-    } else if (
-      jobTitleFilled === false ||
-      departmentFilled === false ||
-      hiringLeadFilled === false ||
-      employmentTypeFilled === false ||
-      minimumExperienceFilled === false ||
-      jobLocationFilled === false ||
-      locationFilled === false ||
-      jobDescriptionFilled === false
-    ) {
-      console.log("fail");
+    const values = form.getFieldsValue();
+    const emptyFieldKeys = Object.keys(values).filter((key) => !values[key]);
+
+    const keysToCheck = [
+      "jobTitle",
+      "department",
+      "hiringLead",
+      "employmentType",
+      "minimumExperience",
+      "jobLocation",
+      "location",
+      "jobDescription",
+    ];
+
+    const hasEmptyFieldsToCheck = emptyFieldKeys.some((key) =>
+      keysToCheck.includes(key)
+    );
+
+    if (!hasEmptyFieldsToCheck) {
+      if (stepperCurrentState <= 2 && stepperCurrentState >= 0)
+        updateCount(stepperCurrentState + 1);
+    } else {
+      console.log("Failed.");
     }
   };
 
@@ -101,10 +54,7 @@ export const JobDetails: React.FC<ChildProps> = ({
           name="jobTitle"
           rules={textInputValidationRules}
         >
-          <Input
-            placeholder="e.g Mobile Developer"
-            onChange={(e) => handleJobTitleChange(e.target.value)}
-          ></Input>
+          <Input placeholder="e.g Mobile Developer"></Input>
         </Form.Item>
       </div>
 
@@ -115,7 +65,6 @@ export const JobDetails: React.FC<ChildProps> = ({
           rules={textInputValidationRules}
         >
           <Select
-            onChange={handleDepartmentChange}
             placeholder="e.g(App Development)"
             options={[
               {
@@ -144,7 +93,6 @@ export const JobDetails: React.FC<ChildProps> = ({
         >
           <Select
             placeholder="e.g(Basil Ikpe)"
-            onChange={handleHiringLeadChange}
             options={[
               {
                 value: "Basil Ikpe (Product Manager)",
@@ -165,11 +113,7 @@ export const JobDetails: React.FC<ChildProps> = ({
           name="employmentType"
           rules={textInputValidationRules}
         >
-          <Select
-            placeholder="e.g (full-time)"
-            onChange={handleEmploymentTypeChange}
-            options={EMPLOYMENT_TYPES}
-          />
+          <Select placeholder="e.g (full-time)" options={EMPLOYMENT_TYPES} />
         </Form.Item>
         <Form.Item
           label="Minimum Experience"
@@ -178,7 +122,6 @@ export const JobDetails: React.FC<ChildProps> = ({
         >
           <Select
             placeholder="e.g (Entry Level)"
-            onChange={handleMinimumExperienceChange}
             options={[
               {
                 value: "Entry Level",
@@ -219,21 +162,14 @@ export const JobDetails: React.FC<ChildProps> = ({
           name="jobLocation"
           rules={textInputValidationRules}
         >
-          <Select
-            placeholder="Select e.g(Onsite)"
-            onChange={handleJobLocationChange}
-            options={WORK_MODELS}
-          />
+          <Select placeholder="Select e.g(Onsite)" options={WORK_MODELS} />
         </Form.Item>
         <Form.Item
           label="Location"
           name="location"
           rules={textInputValidationRules}
         >
-          <Input
-            placeholder="e.g Charles Okorocha Lekki Phase 1"
-            onChange={(e) => handleLocationChange(e.target.value)}
-          ></Input>
+          <Input placeholder="e.g Charles Okorocha Lekki Phase 1"></Input>
         </Form.Item>
       </div>
 
@@ -274,7 +210,6 @@ export const JobDetails: React.FC<ChildProps> = ({
           rules={textInputValidationRules}
         >
           <TextArea
-            onChange={(e) => handleJobDescriptionChange(e.target.value)}
             placeholder="Input Description"
             autoSize={{ minRows: 10 }}
           />
@@ -294,7 +229,7 @@ export const JobDetails: React.FC<ChildProps> = ({
           label="Next"
           variant="style-with-class"
           additionalClassNames={[
-            "bg-caramel py-3 px-[69px] max-sm:px-12 max-sm:py-2 rounded-lg text-white text-sm",
+            "bg-caramel py-3 px-[69px] max-sm:px-12 max-sm:py-2 rounded text-white text-sm",
           ]}
           handleClick={() => handleNextButton()}
         />

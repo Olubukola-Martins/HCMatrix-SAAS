@@ -1,18 +1,29 @@
-import {
-  Switch,
-  Select,
-  DatePicker,
-  Checkbox,
-  Form,
-  Button,
-} from "antd";
+import { Switch, Select, DatePicker, Checkbox, Form } from "antd";
 import { CheckboxChangeEvent } from "antd/lib/checkbox";
 import { AppButton } from "components/button/AppButton";
 import { useState } from "react";
 
 const { Option } = Select;
-export const ApplicationQuestions = () => {
- 
+
+interface ChildProps {
+  stepperCurrentState: number;
+  updateCount: (newCount: number) => void;
+}
+
+export const ApplicationQuestions: React.FC<ChildProps> = ({
+  stepperCurrentState,
+  updateCount,
+}) => {
+  // handle next button
+  const handleNextButton = () => {
+    if (stepperCurrentState <= 2 && stepperCurrentState >= 0)
+      updateCount(stepperCurrentState + 1);
+  };
+  // handle back button
+  const handleBackButton = () => {
+    if (stepperCurrentState <= 2 && stepperCurrentState >= 0)
+      updateCount(stepperCurrentState - 1);
+  };
 
   // handling datepicker check
   const [disableDatePicker, setDisableDatePicker] = useState(false);
@@ -152,17 +163,21 @@ export const ApplicationQuestions = () => {
         className=" flex flex-row justify-between items-center "
       >
         <AppButton
-          label="Cancel"
+          type="button"
+          label="Back"
           variant="style-with-class"
           additionalClassNames={["bg-none text-2xl max-sm:text-xl "]}
+          handleClick={() => handleBackButton()}
         />
+
         <AppButton
+          type="button"
           label="Next"
           variant="style-with-class"
           additionalClassNames={[
-            "bg-caramel py-3 px-[69px] max-sm:px-12 max-sm:py-2 rounded-lg text-white text-sm",
+            "bg-caramel py-3 px-[69px] max-sm:px-12 max-sm:py-2 rounded text-white text-sm",
           ]}
-          // handleClick={() => handleNextButton()}
+          handleClick={() => handleNextButton()}
         />
       </div>
     </>

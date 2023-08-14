@@ -17,9 +17,9 @@ export const AddJobOpeningContainer = () => {
     console.log(values);
   };
 
-const updateCount = (newState: number) => {
-  setStepperCurrentState(newState);
-};
+  const updateCount = (newState: number) => {
+    setStepperCurrentState(newState);
+  };
 
   return (
     <>
@@ -74,12 +74,93 @@ const updateCount = (newState: number) => {
           className="w-11/12 bg-mainBg mx-auto md-px-3 py-8 px-6 rounded-lg flex flex-col gap-6"
           onFinish={onFinish}
         >
-          {/* <AdditionalQuestions /> */}
-          <JobDetails
-            stepperCurrentState={stepperCurrentState}
-            updateCount={updateCount}
-          />
-          {/* <ApplicationQuestions /> */}
+          {stepperCurrentState === 0 ? (
+            <>
+              <JobDetails
+                stepperCurrentState={stepperCurrentState}
+                updateCount={updateCount}
+                form={form}
+              />
+              <div
+                style={{
+                  display: "none",
+                }}
+              >
+                <ApplicationQuestions
+                  stepperCurrentState={stepperCurrentState}
+                  updateCount={updateCount}
+                />
+              </div>
+              <div
+                style={{
+                  display: "none",
+                }}
+              >
+                <AdditionalQuestions
+                  stepperCurrentState={stepperCurrentState}
+                  updateCount={updateCount}
+                />
+              </div>
+            </>
+          ) : stepperCurrentState === 1 ? (
+            <>
+              <div
+                style={{
+                  display: "none",
+                }}
+              >
+                <JobDetails
+                  stepperCurrentState={stepperCurrentState}
+                  updateCount={updateCount}
+                  form={form}
+                />
+              </div>
+
+              <ApplicationQuestions
+                stepperCurrentState={stepperCurrentState}
+                updateCount={updateCount}
+              />
+
+              <div
+                style={{
+                  display: "none",
+                }}
+              >
+                <AdditionalQuestions
+                  stepperCurrentState={stepperCurrentState}
+                  updateCount={updateCount}
+                />
+              </div>
+            </>
+          ) : (
+            <>
+              <div
+                style={{
+                  display: "none",
+                }}
+              >
+                <JobDetails
+                  stepperCurrentState={stepperCurrentState}
+                  updateCount={updateCount}
+                  form={form}
+                />
+              </div>
+              <div
+                style={{
+                  display: "none",
+                }}
+              >
+                <ApplicationQuestions
+                  stepperCurrentState={stepperCurrentState}
+                  updateCount={updateCount}
+                />
+              </div>
+              <AdditionalQuestions
+                stepperCurrentState={stepperCurrentState}
+                updateCount={updateCount}
+              />
+            </>
+          )}
         </Form>
       </section>
     </>

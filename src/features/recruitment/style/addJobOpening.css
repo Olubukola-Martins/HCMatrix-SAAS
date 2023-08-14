@@ -110,6 +110,7 @@
 .ant-form-item-control-input-content .ant-picker:hover {
   border-color: var(--caramel);
 }
+/* .ant-form > div:not(#sub-heading), */
 .ant-form > div:not(#buttons),
 .ant-form > .addit-ques-div:last-child {
   font-size: 18px;
@@ -120,11 +121,11 @@
   padding: 22px 20px;
   background-color: var(--card);
 }
-.ant-form #expiryDate,
-.ant-form #addBenefit,
-.ant-form .addit-ques-div:nth-child(1),
-.ant-form .addit-ques-div:nth-child(2),
-.ant-form .addit-ques-div:nth-child(3) {
+#addJobOpening #expiryDate,
+#addJobOpening #addBenefit,
+#addJobOpening .addit-ques-div:nth-child(1),
+#addJobOpening .addit-ques-div:nth-child(2),
+#addJobOpening .addit-ques-div:nth-child(3) {
   align-items: start;
   display: flex;
   padding: 22px 20px;
@@ -150,15 +151,15 @@
 }
 .ant-form #job-Description .ant-form-item:not(#buttons .ant-form-item),
 .ant-form .addit-ques-div:nth-child(2),
-.ant-form #addBenefit .ant-form-item,
+#addJobOpening #addBenefit .ant-form-item,
 .ant-form #expiryDate div,
 .ant-form #expiryDate div .ant-form-item,
 .ant-form #job-Description .ant-form-item {
   width: 100%;
 }
-.ant-form .addit-ques-div:nth-child(1),
-.ant-form .addit-ques-div:nth-child(3),
-.ant-form #sub-heading {
+#addJobOpening .addit-ques-div:nth-child(1),
+#addJobOpening .addit-ques-div:nth-child(3),
+#addJobOpening #sub-heading {
   background-color: var(--mainBg);
   padding: 0;
 }
