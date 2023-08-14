@@ -19,7 +19,7 @@ const SideBar = () => {
     payroll: "/payroll",
     performance: "/performance",
     attendance: "/attendance",
-    leaning: "/leaning",
+    leaning: "/learning",
   };
   return (
     <>
