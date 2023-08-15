@@ -1,20 +1,20 @@
-import { LearningHome } from "features/leaningAndDev/pages/LearningHome";
+import { LearningHome } from "features/learningAndDev/pages/LearningHome";
 import { TRouteData } from "../types";
 import { appRoutes } from "../paths";
-import { TrainingSettings } from "features/leaningAndDev/pages/settings/TrainingSettings";
-import { FeedbackTemplate } from "features/leaningAndDev/pages/settings/FeedbackTemplate";
-import { GamificationSettings } from "features/leaningAndDev/pages/settings/GamificationSettings";
-import { Notification } from "features/leaningAndDev/pages/settings/Notification";
-import { TrackProgress } from "features/leaningAndDev/pages/TrackProgress";
-import { TrackProgressDetails } from "features/leaningAndDev/pages/TrackProgressDetails";
-import { Training } from "features/leaningAndDev/pages/Training";
-import { TrainingDetails } from "features/leaningAndDev/pages/TrainingDetails";
-import { Gamification } from "features/leaningAndDev/pages/Gamification";
-import { Budgets } from "features/leaningAndDev/pages/Budgets";
-import { PaidTraining } from "features/leaningAndDev/pages/PaidTraining";
-import { AddTraining } from "features/leaningAndDev/pages/AddTraining";
-import { LAndDReport } from "features/leaningAndDev/pages/LAndDReport";
-import { Udemy } from "features/leaningAndDev/pages/Udemy";
+import { TrainingSettings } from "features/learningAndDev/pages/settings/TrainingSettings";
+import { FeedbackTemplate } from "features/learningAndDev/pages/settings/FeedbackTemplate";
+import { GamificationSettings } from "features/learningAndDev/pages/settings/GamificationSettings";
+import { Notification } from "features/learningAndDev/pages/settings/Notification";
+import { TrackProgress } from "features/learningAndDev/pages/TrackProgress";
+import { TrackProgressDetails } from "features/learningAndDev/pages/TrackProgressDetails";
+import { Training } from "features/learningAndDev/pages/Training";
+import { TrainingDetails } from "features/learningAndDev/pages/TrainingDetails";
+import { Gamification } from "features/learningAndDev/pages/Gamification";
+import { Budgets } from "features/learningAndDev/pages/Budgets";
+import { PaidTraining } from "features/learningAndDev/pages/PaidTraining";
+import { AddTraining } from "features/learningAndDev/pages/AddTraining";
+import { LAndDReport } from "features/learningAndDev/pages/LAndDReport";
+import { Udemy } from "features/learningAndDev/pages/Udemy";
 
 export const leaningRoutes: TRouteData[] = [
   {

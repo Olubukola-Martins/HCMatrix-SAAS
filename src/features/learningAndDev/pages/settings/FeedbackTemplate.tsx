@@ -1,13 +1,13 @@
 import { Collapse, Form, Switch } from "antd";
 import { AppButton } from "components/button/AppButton";
-import { LeaningSettingsNav } from "features/leaningAndDev/components/settings/LeaningSettingsNav";
+import { LeaningSettingsNav } from "features/learningAndDev/components/settings/LeaningSettingsNav";
 import "../../assets/style.css";
 import {
   Instructor,
   OverallBenefit,
   TrainingEvaluation,
   TrainingTool,
-} from "features/leaningAndDev/components/settings/FeedbackTemplates";
+} from "features/learningAndDev/components/settings/FeedbackTemplates";
 const { Panel } = Collapse;
 
 export const FeedbackTemplate = () => {

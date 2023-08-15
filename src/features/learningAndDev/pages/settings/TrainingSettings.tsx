@@ -1,7 +1,7 @@
 import { Collapse, Form, Select, Switch } from "antd";
 import { AppButton } from "components/button/AppButton";
-import { LeaningSettingsNav } from "features/leaningAndDev/components/settings/LeaningSettingsNav";
-import { ScoreRange } from "features/leaningAndDev/components/settings/ScoreRange";
+import { LeaningSettingsNav } from "features/learningAndDev/components/settings/LeaningSettingsNav";
+import { ScoreRange } from "features/learningAndDev/components/settings/ScoreRange";
 const { Panel } = Collapse;
 
 export const TrainingSettings = () => {

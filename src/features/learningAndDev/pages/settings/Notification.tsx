@@ -1,6 +1,6 @@
 import { Form, Switch } from "antd";
 import { AppButton } from "components/button/AppButton";
-import { LeaningSettingsNav } from "features/leaningAndDev/components/settings/LeaningSettingsNav";
+import { LeaningSettingsNav } from "features/learningAndDev/components/settings/LeaningSettingsNav";
 import "../../assets/style.css";
 
 export const Notification = () => {
