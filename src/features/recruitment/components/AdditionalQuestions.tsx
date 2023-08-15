@@ -42,7 +42,7 @@ export const AdditionalQuestions: React.FC<ChildProps> = ({
       <div className="addit-ques-div">
         LinkedIn
         <Form.Item name="linkedIn" valuePropName="checked">
-          <Switch className="float-right" size="small" defaultChecked={false} />
+          <Switch className="float-right" defaultChecked={false} />
         </Form.Item>
       </div>
 

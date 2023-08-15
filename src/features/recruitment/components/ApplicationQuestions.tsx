@@ -25,12 +25,18 @@ export const ApplicationQuestions: React.FC<ChildProps> = ({
       updateCount(stepperCurrentState - 1);
   };
 
-  // handling datepicker check
-  const [disableDatePicker, setDisableDatePicker] = useState(false);
+  // handling datepicker 
+  const [selectedOption, setSelectedOption] = useState("Not Specified");
 
-  const handleCheckboxChange = (e: CheckboxChangeEvent) => {
-    setDisableDatePicker(e.target.checked);
+  const handleSelectChange = (value: any) => {
+    // Update the selected option
+    setSelectedOption(value);
   };
+  // const [disableDatePicker, setDisableDatePicker] = useState(false);
+
+  // const handleCheckboxChange = (e: CheckboxChangeEvent) => {
+  //   setDisableDatePicker(e.target.checked);
+  // };
   return (
     <>
       <div id="sub-heading" className="p-0 bg-mainBg text-xl">
@@ -39,84 +45,84 @@ export const ApplicationQuestions: React.FC<ChildProps> = ({
       <div className="app-quest-div">
         Upload Resume
         <Form.Item name="uploadResume" valuePropName="checked">
-          <Switch className="float-right" size="small" defaultChecked={false} />
+          <Switch className="float-right" defaultChecked={false} />
         </Form.Item>
       </div>
 
       <div className="app-quest-div">
         Address
         <Form.Item name="address" valuePropName="checked">
-          <Switch className="float-right" size="small" defaultChecked={false} />
+          <Switch className="float-right" defaultChecked={false} />
         </Form.Item>
       </div>
 
       <div className="app-quest-div">
         LinkedIn URL
         <Form.Item name="linkedInURL" valuePropName="checked">
-          <Switch className="float-right" size="small" defaultChecked={false} />
+          <Switch className="float-right" defaultChecked={false} />
         </Form.Item>
       </div>
 
       <div className="app-quest-div">
         Date Available
         <Form.Item name="dateAvailable" valuePropName="checked">
-          <Switch className="float-right" size="small" defaultChecked={false} />
+          <Switch className="float-right" defaultChecked={false} />
         </Form.Item>
       </div>
 
       <div className="app-quest-div">
         Desired Salary
         <Form.Item name="desiredSalary" valuePropName="checked">
-          <Switch className="float-right" size="small" defaultChecked={false} />
+          <Switch className="float-right" defaultChecked={false} />
         </Form.Item>
       </div>
 
       <div className="app-quest-div">
         Cover Letter
         <Form.Item name="coverLetter" valuePropName="checked">
-          <Switch className="float-right" size="small" defaultChecked={false} />
+          <Switch className="float-right" defaultChecked={false} />
         </Form.Item>
       </div>
 
       <div className="app-quest-div">
         Referred By
         <Form.Item name="referredBy" valuePropName="checked">
-          <Switch className="float-right" size="small" defaultChecked={false} />
+          <Switch className="float-right" defaultChecked={false} />
         </Form.Item>
       </div>
 
       <div className="app-quest-div">
         Link to Website, Blog or Portfolio
         <Form.Item name="linkToWebsiteBlogOrPortfolio" valuePropName="checked">
-          <Switch className="float-right" size="small" defaultChecked={false} />
+          <Switch className="float-right" defaultChecked={false} />
         </Form.Item>
       </div>
 
       <div className="app-quest-div">
         Twitter Username
         <Form.Item name="twitterUsername" valuePropName="checked">
-          <Switch className="float-right" size="small" defaultChecked={false} />
+          <Switch className="float-right" defaultChecked={false} />
         </Form.Item>
       </div>
 
       <div className="app-quest-div">
         Education
         <Form.Item name="education" valuePropName="checked">
-          <Switch className="float-right" size="small" defaultChecked={false} />
+          <Switch className="float-right" defaultChecked={false} />
         </Form.Item>
       </div>
 
       <div className="app-quest-div">
         Experience
         <Form.Item name="experience" valuePropName="checked">
-          <Switch className="float-right" size="small" defaultChecked={false} />
+          <Switch className="float-right" defaultChecked={false} />
         </Form.Item>
       </div>
 
       <div className="app-quest-div">
         References
         <Form.Item name="references" valuePropName="checked">
-          <Switch className="float-right" size="small" defaultChecked={false} />
+          <Switch className="float-right" defaultChecked={false} />
         </Form.Item>
       </div>
 
@@ -138,7 +144,7 @@ export const ApplicationQuestions: React.FC<ChildProps> = ({
         </Form.Item>
       </div>
 
-      <div id="expiryDate">
+      {/* <div id="expiryDate">
         Expiry Date
         <div className="mt-2 sm:gap-[22px] flex sm:flex-row flex-col gap-2 items-center max-sm:items-start ">
           <Form.Item
@@ -149,13 +155,47 @@ export const ApplicationQuestions: React.FC<ChildProps> = ({
             <DatePicker
               format="YYYY-MM-DD"
               disabled={disableDatePicker}
-              className="h-[53px] rounded-lg border-[0.3px] border-[#686868] py-4 px-6 sm:w-[60%] md:w-80 w-[31.25vw] "
+              className=" border-[0.3px] border-[#686868]  px-6 sm:w-[60%] md:w-80 w-[31.25vw] "
             />
           </Form.Item>
           <Form.Item>
             <Checkbox onChange={handleCheckboxChange}>Not Specified</Checkbox>
           </Form.Item>
         </div>
+      </div> */}
+
+      <div>
+        <Form.Item label="Expiry Date">
+          <Select
+            onChange={handleSelectChange}
+            placeholder="Select compensation"
+            options={[
+              {
+                value: "Not Specified",
+                label: "Not Specified",
+              },
+              {
+                value: "Enter expiry date",
+                label: "Enter expiry date",
+              },
+            ]}
+          />
+        </Form.Item>
+        <Form.Item
+          label="Enter expiry date"
+          name="expiryDate"
+          valuePropName="checked"
+          style={{
+            display: selectedOption === "Enter expiry date" ? "block" : "none",
+          }}
+          // className="max-sm:w-full"
+        >
+          <DatePicker
+            format="YYYY-MM-DD"
+            style={{ width: "100%" }}
+            // className=" border-[0.3px] border-[#686868]  px-6 sm:w-[60%] md:w-80 w-[31.25vw] "
+          />
+        </Form.Item>
       </div>
 
       <div

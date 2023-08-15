@@ -1,4 +1,10 @@
-import { Form, Input, Select, Button, Checkbox, FormInstance } from "antd";
+import {
+  Form,
+  Input,
+  Select,
+  FormInstance,
+  InputNumber,
+} from "antd";
 import { textInputValidationRules } from "utils/formHelpers/validation";
 import { useState } from "react";
 import { EMPLOYMENT_TYPES, WORK_MODELS } from "constants/general";
@@ -16,9 +22,24 @@ export const JobDetails: React.FC<ChildProps> = ({
   form,
 }) => {
   const { TextArea } = Input;
-  // type SetterFunction = React.Dispatch<React.SetStateAction<boolean>>;
 
-  // handleNextButton
+  const [selectedOption, setSelectedOption] = useState("Not Specified");
+
+  const handleSelectChange = (value: any) => {
+    // Update the selected option
+    setSelectedOption(value);
+  };
+
+  // handle value return for compensation InputNumber
+  // const [inputNumValue, setInputNumValue] = useState<any>("Not Specified");
+  // const handleValue = (value: any) => {
+  //   if (value === undefined || value === null || value === "" ) {
+  //     setInputNumValue("Not Specified");
+  //   } else {setInputNumValue(value)}
+  // };
+
+  // handle required fields check for Next button
+
   const handleNextButton = () => {
     const values = form.getFieldsValue();
     const emptyFieldKeys = Object.keys(values).filter((key) => !values[key]);
@@ -37,7 +58,6 @@ export const JobDetails: React.FC<ChildProps> = ({
     const hasEmptyFieldsToCheck = emptyFieldKeys.some((key) =>
       keysToCheck.includes(key)
     );
-
     if (!hasEmptyFieldsToCheck) {
       if (stepperCurrentState <= 2 && stepperCurrentState >= 0)
         updateCount(stepperCurrentState + 1);
@@ -56,9 +76,6 @@ export const JobDetails: React.FC<ChildProps> = ({
         >
           <Input placeholder="e.g Mobile Developer"></Input>
         </Form.Item>
-      </div>
-
-      <div>
         <Form.Item
           label="Department"
           name="department"
@@ -82,25 +99,6 @@ export const JobDetails: React.FC<ChildProps> = ({
               {
                 value: "Marketing",
                 label: "Marketing",
-              },
-            ]}
-          />
-        </Form.Item>
-        <Form.Item
-          label="Hiring Lead"
-          name="hiringLead"
-          rules={textInputValidationRules}
-        >
-          <Select
-            placeholder="e.g(Basil Ikpe)"
-            options={[
-              {
-                value: "Basil Ikpe (Product Manager)",
-                label: "Basil Ikpe (Product Manager)",
-              },
-              {
-                value: "Esther Adiele (HR Manager)",
-                label: "Esther Adiele (HR Manager)",
               },
             ]}
           />
@@ -174,18 +172,25 @@ export const JobDetails: React.FC<ChildProps> = ({
       </div>
 
       <div>
-        <Form.Item label="Compensation" name="compensation">
-          <Input placeholder="e.g  NGN 200,000 Monthly"></Input>
-          <Form.Item name="Not Specified">
-            <Checkbox>Not Specified</Checkbox>
-          </Form.Item>
+        <Form.Item
+          label="Hiring Lead"
+          name="hiringLead"
+          rules={textInputValidationRules}
+        >
+          <Select
+            placeholder="e.g(Basil Ikpe)"
+            options={[
+              {
+                value: "Basil Ikpe (Product Manager)",
+                label: "Basil Ikpe (Product Manager)",
+              },
+              {
+                value: "Esther Adiele (HR Manager)",
+                label: "Esther Adiele (HR Manager)",
+              },
+            ]}
+          />
         </Form.Item>
-        <Form.Item label="" name="payRange">
-          <Input placeholder="Add pay range e.g NGN 200,000 to NGN 500,0000"></Input>
-        </Form.Item>
-      </div>
-
-      <div>
         <Form.Item label="Job Template" name="jobTemplate">
           <Select
             placeholder="Search job template"
@@ -202,6 +207,40 @@ export const JobDetails: React.FC<ChildProps> = ({
           />
         </Form.Item>
       </div>
+
+      <div>
+        <Form.Item label="Compensation">
+          <Select
+            onChange={handleSelectChange}
+            placeholder="Select compensation"
+            options={[
+              {
+                value: "Not Specified",
+                label: "Not Specified",
+              },
+              {
+                value: "Enter an Amount",
+                label: "Enter an Amount",
+              },
+            ]}
+          />
+        </Form.Item>
+        <Form.Item
+          label="Enter Compensation"
+          name="compensation"
+          style={{
+            display: selectedOption === "Enter an Amount" ? "block" : "none",
+          }}
+        >
+          <InputNumber
+            placeholder="200 000 "
+            style={{ width: "100%" }}
+          />
+        </Form.Item>
+      </div>
+
+      {/* <div>
+      </div> */}
 
       <div id="job-Description">
         <Form.Item

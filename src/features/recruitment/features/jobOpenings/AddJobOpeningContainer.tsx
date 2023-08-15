@@ -2,8 +2,6 @@ import React, { useState } from "react";
 import "../../style/addJobOpening.css";
 import { Form, Steps } from "antd";
 import "antd/dist/antd.min.css";
-import { textInputValidationRules } from "utils/formHelpers/validation";
-import { AppButton } from "components/button/AppButton";
 import { JobDetails } from "features/recruitment/components/JobDetails";
 import { ApplicationQuestions } from "features/recruitment/components/ApplicationQuestions";
 import { AdditionalQuestions } from "features/recruitment/components/AdditionalQuestions";
@@ -49,7 +47,7 @@ export const AddJobOpeningContainer = () => {
 
       {/* STEPPER */}
       <div
-        className="w-[82.1vw] h-36 mx-auto my-6 rounded-2xl shadow shadow-[rgba(0, 0, 0, 0.08)] add-job-opening"
+        className="w-[82.1vw] h-36 mx-auto my-6 rounded-2xl shadow shadow-[rgba(0, 0, 0, 0.08)] add-job-opening-step"
         id="add-job-opening"
       >
         <Steps
