@@ -1,10 +1,10 @@
-export interface IClockInPolicy {
-  companyId: number;
+import { ICurrentCompany } from "types";
+
+export interface IClockInPolicy extends ICurrentCompany {
   adminId: number;
   isSoftClockIn: boolean;
   isBiometricClockIn: boolean;
   biometricDevices: BiometricDevice[];
-  token: string;
 }
 
 interface BiometricDevice {

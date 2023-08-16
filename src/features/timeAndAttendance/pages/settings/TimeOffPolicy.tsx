@@ -1,13 +1,15 @@
-import { Form, Input, TimePicker } from "antd";
+import { Form, Input, InputNumber, TimePicker } from "antd";
 import TextArea from "antd/lib/input/TextArea";
 import { AppButton } from "components/button/AppButton";
 import { AttendanceSettingsIntro } from "features/timeAndAttendance/components/settings/AttendanceSettingsIntro";
 import { TimeAttendanceSettingsNav } from "features/timeAndAttendance/components/settings/TimeAttendanceSettingsNav";
+import { useApiAuth } from "hooks/useApiAuth";
 import { useEffect } from "react";
 import { generalValidationRules } from "utils/formHelpers/validation";
 
 export const TimeOffPolicy = () => {
   const [form] = Form.useForm();
+  const { companyId, token, currentUserEmployeeId } = useApiAuth();
 
   const handleFormSubmit = (values: FormData[]) => {
     console.log("Form submitted:", values);
@@ -60,12 +62,12 @@ export const TimeOffPolicy = () => {
                         <Form.Item
                           {...field}
                           name={[field.name, "duration"]}
-                          label="Set Duration"
+                          label="Duration in days"
                           className="w-full"
                           rules={generalValidationRules}
                           required={false}
                         >
-                          <TimePicker.RangePicker className="w-full" />
+                          <InputNumber className="w-full" />
                         </Form.Item>
                       </div>
                       <Form.Item
@@ -88,7 +90,7 @@ export const TimeOffPolicy = () => {
 
                   <AppButton
                     variant="transparent"
-                    label="+ Add Biometrics"
+                    label="+ Add Time off policy"
                     handleClick={() => handleAddField()}
                   />
                 </>
