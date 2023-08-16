@@ -106,3 +106,7 @@ export const TimeOffPolicy = () => {
     </>
   );
 };
+function ITimeTrackingRule() {
+  throw new Error("Function not implemented.");
+}
+

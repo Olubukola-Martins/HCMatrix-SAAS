@@ -2,16 +2,24 @@ import { AppButton } from "components/button/AppButton";
 import { AttendanceSettingsIntro } from "features/timeAndAttendance/components/settings/AttendanceSettingsIntro";
 import { TimeAttendanceSettingsNav } from "features/timeAndAttendance/components/settings/TimeAttendanceSettingsNav";
 import { radioFormOptions } from "features/timeAndAttendance/constants";
-import { useState } from "react";
+import { useState, useContext } from "react";
 import checkboxBase from "../../assets/images/CheckboxBase.svg";
 import faceReg from "../../assets/images/lucide_scan-face.svg";
 import locationIcon from "../../assets/images/symbols_location.svg";
 import editPenIcon from "../../assets/images/edit-outline.svg";
 import "../../assets/style.css";
+import { useApiAuth } from "hooks/useApiAuth";
+import { EGlobalOps, GlobalContext } from "stateManagers/GlobalContextProvider";
+import { useCreateTimeTrackingRule } from "features/timeAndAttendance/hooks/useCreateTimeTrackingRule";
+import { openNotification } from "utils/notifications";
 
 export const TimeTrackingRules = () => {
   const [error, setError] = useState<string>("");
   const [selectedOption, setSelectedOption] = useState<string>("");
+  const { companyId, token, currentUserEmployeeId } = useApiAuth();
+  const { mutate, isLoading } = useCreateTimeTrackingRule();
+  const globalCtx = useContext(GlobalContext);
+  const { dispatch } = globalCtx;
 
   const handleOptionChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSelectedOption(event.target.value);
@@ -20,11 +28,39 @@ export const TimeTrackingRules = () => {
 
   const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault();
-
     if (!selectedOption) {
       setError("Please select an option");
     } else {
-      console.log(selectedOption);
+      if (companyId) {
+        mutate(
+          {
+            companyId,
+            token,
+            adminId: currentUserEmployeeId,
+            policy: selectedOption,
+          },
+          {
+            onError: (err: any) => {
+              openNotification({
+                state: "error",
+                title: "Error Occurred",
+                description:
+                  err?.response.data.message ??
+                  err?.response.data.error.message,
+              });
+            },
+            onSuccess: (res: any) => {
+              openNotification({
+                state: "success",
+                title: "Success",
+                description: res.data.message,
+                // duration: 0.4,
+              });
+              dispatch({ type: EGlobalOps.setShowInitialSetup, payload: true });
+            },
+          }
+        );
+      }
     }
   };
 
@@ -169,7 +205,11 @@ export const TimeTrackingRules = () => {
           ))}
           <div className="flex justify-end">
             <div>
-              <AppButton type="submit" additionalClassNames={["button py-1"]} />
+              <AppButton
+                type="submit"
+                isLoading={isLoading}
+                additionalClassNames={["button py-1"]}
+              />
               {error && (
                 <p className="text-sm pt-2 text-red-500 font-medium">{error}</p>
               )}

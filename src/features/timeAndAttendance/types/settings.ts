@@ -12,3 +12,20 @@ interface BiometricDevice {
   companyId: number;
   serialNumber: number;
 }
+
+// Add location
+export interface IBiometricDeviceLocation extends ICurrentCompany {
+  biometricDeviceLocations: biometricDeviceLocationDetails[];
+}
+
+interface biometricDeviceLocationDetails {
+  companyId: number;
+  branchId: number;
+  biometricDeviceId: string;
+}
+
+// Time tracking rules
+export interface ITimeTrackingRule extends ICurrentCompany {
+  adminId: number;
+  policy: string;
+}

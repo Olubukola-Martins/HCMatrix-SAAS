@@ -55,17 +55,17 @@ export const ClockIn = () => {
   };
 
   const handleAddField = () => {
-    const biometricDevices = form.getFieldValue("biometricDevices") || []; // Update the name here
-    const newDevice = { biometricsName: "", serialNumber: null };
-    form.setFieldsValue({ biometricDevices: [...biometricDevices, newDevice] }); // Update the name here
+    const biometricDevices = form.getFieldValue("biometricDevices") || [];
+    const newDevice = { companyId: companyId, serialNumber: null };
+    form.setFieldsValue({ biometricDevices: [...biometricDevices, newDevice] });
   };
 
   const handleRemoveField = (index: number) => {
-    const biometricDevices = form.getFieldValue("biometricDevices") || []; // Update the name here
+    const biometricDevices = form.getFieldValue("biometricDevices") || [];
     form.setFieldsValue({
       biometricDevices: biometricDevices.filter(
         (_: any, i: number) => i !== index
-      ), // Update the name here
+      ),
     });
   };
 
@@ -85,6 +85,10 @@ export const ClockIn = () => {
               onFinish={handleFormSubmit}
               layout="vertical"
               requiredMark={false}
+              initialValues={{
+                softClockIn: true,
+                allowBiometrics: true,
+              }}
             >
               <div
                 className={`${formWrapStyle} flex justify-between items-center`}
@@ -111,7 +115,7 @@ export const ClockIn = () => {
                 </Form.Item>
               </div>
               <Form.List name="biometricDevices">
-                {(fields, { add, remove }) => (
+                {(fields) => (
                   <>
                     {fields.map((field, index) => (
                       <div
