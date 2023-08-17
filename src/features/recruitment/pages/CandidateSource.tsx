@@ -1,3 +1,4 @@
+import { Form } from "antd";
 import { RecruitmentSettingsIntro } from "../components/RecruitmentSettingsIntro";
 import { appRoutes } from "config/router/paths";
 
@@ -9,7 +10,6 @@ const CandidateSource = () => {
         description={"Integrate more platform to the system."}
         nextLink={appRoutes.recruitmentEmailTemplate}
       />
-
     </>
   );
 };
