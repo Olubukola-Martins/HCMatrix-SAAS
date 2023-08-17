@@ -189,9 +189,6 @@ export const JobDetails: React.FC<ChildProps> = ({
             ]}
           />
         </Form.Item>
-      </div>
-
-      <div>
         <Form.Item label="Compensation" requiredMark="optional">
           <Select
             onChange={handleSelectChange}
@@ -208,13 +205,14 @@ export const JobDetails: React.FC<ChildProps> = ({
             ]}
           />
         </Form.Item>
-        <Form.Item
-          label="Enter Compensation"
-          name="compensation"
-          style={{
-            display: selectedOption === "Enter an Amount" ? "block" : "none",
-          }}
-        >
+      </div>
+
+      <div
+        style={{
+          display: selectedOption === "Enter an Amount" ? "block" : "none",
+        }}
+      >
+        <Form.Item label="Enter Compensation" name="compensation">
           <InputNumber placeholder="200 000 " style={{ width: "100%" }} />
         </Form.Item>
       </div>
@@ -279,12 +277,11 @@ export const JobDetails: React.FC<ChildProps> = ({
         <AppButton
           label="Cancel"
           variant="style-with-class"
-          additionalClassNames={["bg-none text-lg max-sm:text-base hover:text-caramel"]}
+          additionalClassNames={[
+            "bg-none text-lg max-sm:text-base hover:text-caramel",
+          ]}
         />
-        <AppButton
-          label="Next"
-          handleClick={() => handleNextButton()}
-        />
+        <AppButton label="Next" handleClick={() => handleNextButton()} />
       </div>
     </>
   );
