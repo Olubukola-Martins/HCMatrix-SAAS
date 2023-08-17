@@ -7,7 +7,7 @@ import { AppButton } from "components/button/AppButton";
 
 const CandidateStatus = () => {
   const [form] = Form.useForm();
-  
+
   const handleSubmit = (values: any) => {
     console.log("Received values of form:", values);
   };
@@ -42,7 +42,7 @@ const CandidateStatus = () => {
               onFinish={handleSubmit}
             >
               <div className="recruitmentSettingsForm ">
-                <h3 className="font-medium">Test</h3>
+                <h3 className="font-medium">Reviewed</h3>
                 <Form.Item
                   name="test"
                   className="flex justify-end items-end"
@@ -53,7 +53,62 @@ const CandidateStatus = () => {
               </div>
 
               <div className="recruitmentSettingsForm ">
-                <h3 className="font-medium">Test Two</h3>
+                <h3 className="font-medium">Schedule Interview</h3>
+                <Form.Item
+                  name="testTwo"
+                  className="flex justify-end items-end"
+                  noStyle
+                >
+                  <Switch />
+                </Form.Item>
+              </div>
+
+              <div className="recruitmentSettingsForm ">
+                <h3 className="font-medium">Put on Hold</h3>
+                <Form.Item
+                  name="testTwo"
+                  className="flex justify-end items-end"
+                  noStyle
+                >
+                  <Switch />
+                </Form.Item>
+              </div>
+
+              <div className="recruitmentSettingsForm ">
+                <h3 className="font-medium">Not a Fit</h3>
+                <Form.Item
+                  name="testTwo"
+                  className="flex justify-end items-end"
+                  noStyle
+                >
+                  <Switch />
+                </Form.Item>
+              </div>
+
+              <div className="recruitmentSettingsForm ">
+                <h3 className="font-medium">Declined Offer</h3>
+                <Form.Item
+                  name="testTwo"
+                  className="flex justify-end items-end"
+                  noStyle
+                >
+                  <Switch />
+                </Form.Item>
+              </div>
+
+              <div className="recruitmentSettingsForm ">
+                <h3 className="font-medium">Not Qualified</h3>
+                <Form.Item
+                  name="testTwo"
+                  className="flex justify-end items-end"
+                  noStyle
+                >
+                  <Switch />
+                </Form.Item>
+              </div>
+
+              <div className="recruitmentSettingsForm ">
+                <h3 className="font-medium">Over Qualified</h3>
                 <Form.Item
                   name="testTwo"
                   className="flex justify-end items-end"
