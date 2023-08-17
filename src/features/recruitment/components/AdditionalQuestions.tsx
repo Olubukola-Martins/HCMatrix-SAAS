@@ -25,13 +25,13 @@ export const AdditionalQuestions: React.FC<ChildProps> = ({
         </p>
       </div>
 
-      <div className="addit-ques-div">
+      <div className="addit-ques-div" id="ask-quest">
         <Form.Item label="Ask Your Question" name="askYourQuestion">
           <Input placeholder="Type in Your Question...." />
         </Form.Item>
       </div>
 
-      <div className="addit-ques-div">
+      <div id="integration-text" className="addit-ques-div">
         <h2 className="float-left w-full text-[28px] font-bold">Integration</h2>
         <p className="float-left w-full text-lg mt-4">
           Get the word out. <br /> You can choose to auto post this job to other
@@ -39,7 +39,7 @@ export const AdditionalQuestions: React.FC<ChildProps> = ({
         </p>
       </div>
 
-      <div className="addit-ques-div">
+      <div className="addit-ques-div" id="switch">
         LinkedIn
         <Form.Item name="linkedIn" valuePropName="checked">
           <Switch className="float-right" defaultChecked={false} />
@@ -47,14 +47,16 @@ export const AdditionalQuestions: React.FC<ChildProps> = ({
       </div>
 
       <div
-        id="buttons"
-        className=" flex flex-row justify-between items-center "
+        id="buttons "
+        className="last-pg-btns flex flex-row justify-between items-center "
       >
         <AppButton
           type="button"
           label="Back"
           variant="style-with-class"
-          additionalClassNames={["bg-none text-2xl max-sm:text-xl "]}
+          additionalClassNames={[
+            "bg-none text-lg max-sm:text-base hover:text-caramel",
+          ]}
           handleClick={() => handleBackButton()}
         />
 
@@ -70,9 +72,9 @@ export const AdditionalQuestions: React.FC<ChildProps> = ({
           <AppButton
             type="button"
             label="Preview Job"
-            variant="style-with-class"
+            variant="transparent"
             additionalClassNames={[
-              "border-caramel border-[1px] py-[11px] px-4 max-sm:px-2.5 max-sm:py-2 rounded  text-sm text-caramel",
+              "border-caramel ",
             ]}
           />
 
@@ -80,9 +82,6 @@ export const AdditionalQuestions: React.FC<ChildProps> = ({
             type="submit"
             label="Save Job opening"
             variant="style-with-class"
-            additionalClassNames={[
-              "bg-caramel py-3 px-4 max-sm:px-2.5 max-sm:py-2 rounded text-white text-sm",
-            ]}
           />
         </div>
       </div>

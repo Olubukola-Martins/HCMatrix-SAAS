@@ -30,13 +30,11 @@ export const JobDetails: React.FC<ChildProps> = ({
     setSelectedOption(value);
   };
 
-  // handle value return for compensation InputNumber
-  // const [inputNumValue, setInputNumValue] = useState<any>("Not Specified");
-  // const handleValue = (value: any) => {
-  //   if (value === undefined || value === null || value === "" ) {
-  //     setInputNumValue("Not Specified");
-  //   } else {setInputNumValue(value)}
-  // };
+  const [selectJobDesType, setSelectJobDesType] = useState("");
+  
+  const handleJobDescType = (value: string) => {
+    setSelectJobDesType(value);
+  }
 
   // handle required fields check for Next button
 
@@ -52,7 +50,7 @@ export const JobDetails: React.FC<ChildProps> = ({
       "minimumExperience",
       "jobLocation",
       "location",
-      "jobDescription",
+      // "jobDescription",
     ];
 
     const hasEmptyFieldsToCheck = emptyFieldKeys.some((key) =>
@@ -191,25 +189,10 @@ export const JobDetails: React.FC<ChildProps> = ({
             ]}
           />
         </Form.Item>
-        <Form.Item label="Job Template" name="jobTemplate">
-          <Select
-            placeholder="Search job template"
-            options={[
-              {
-                value: "template 1",
-                label: "template 1",
-              },
-              {
-                value: "template 2",
-                label: "template 2",
-              },
-            ]}
-          />
-        </Form.Item>
       </div>
 
       <div>
-        <Form.Item label="Compensation">
+        <Form.Item label="Compensation" requiredMark="optional">
           <Select
             onChange={handleSelectChange}
             placeholder="Select compensation"
@@ -232,26 +215,60 @@ export const JobDetails: React.FC<ChildProps> = ({
             display: selectedOption === "Enter an Amount" ? "block" : "none",
           }}
         >
-          <InputNumber
-            placeholder="200 000 "
-            style={{ width: "100%" }}
+          <InputNumber placeholder="200 000 " style={{ width: "100%" }} />
+        </Form.Item>
+      </div>
+
+      <div>
+        <Form.Item label="Job Description" requiredMark="optional">
+          <Select
+            onChange={handleJobDescType}
+            placeholder="Choose job description"
+            options={[
+              {
+                value: "Use job template",
+                label: "Use job template",
+              },
+              {
+                value: "Input job description",
+                label: "Input job description",
+              },
+            ]}
+          />
+        </Form.Item>
+        <Form.Item
+          label="Job Template"
+          name="jobDescription"
+          style={{
+            display: selectJobDesType === "Use job template" ? "block" : "none",
+          }}
+          // requiredMark="optional"
+        >
+          <Select
+            placeholder="Search job template"
+            options={[
+              {
+                value: "template 1",
+                label: "template 1",
+              },
+              {
+                value: "template 2",
+                label: "template 2",
+              },
+            ]}
           />
         </Form.Item>
       </div>
 
-      {/* <div>
-      </div> */}
-
-      <div id="job-Description">
-        <Form.Item
-          label="Job Description"
-          name="jobDescription"
-          rules={textInputValidationRules}
-        >
-          <TextArea
-            placeholder="Input Description"
-            autoSize={{ minRows: 10 }}
-          />
+      <div
+        id="job-Description"
+        style={{
+          display:
+            selectJobDesType === "Input job description" ? "block" : "none",
+        }}
+      >
+        <Form.Item label="Enter Job Description" name="jobDescription">
+          <TextArea placeholder="Input Description" autoSize={{ minRows: 5 }} />
         </Form.Item>
       </div>
 
@@ -262,14 +279,10 @@ export const JobDetails: React.FC<ChildProps> = ({
         <AppButton
           label="Cancel"
           variant="style-with-class"
-          additionalClassNames={["bg-none text-2xl max-sm:text-xl "]}
+          additionalClassNames={["bg-none text-lg max-sm:text-base hover:text-caramel"]}
         />
         <AppButton
           label="Next"
-          variant="style-with-class"
-          additionalClassNames={[
-            "bg-caramel py-3 px-[69px] max-sm:px-12 max-sm:py-2 rounded text-white text-sm",
-          ]}
           handleClick={() => handleNextButton()}
         />
       </div>

@@ -5,11 +5,14 @@ import "antd/dist/antd.min.css";
 import { JobDetails } from "features/recruitment/components/JobDetails";
 import { ApplicationQuestions } from "features/recruitment/components/ApplicationQuestions";
 import { AdditionalQuestions } from "features/recruitment/components/AdditionalQuestions";
+import { RequiredMark } from "antd/lib/form/Form";
 
 export const AddJobOpeningContainer = () => {
   const { Step } = Steps;
   const [form] = Form.useForm();
   const [stepperCurrentState, setStepperCurrentState] = useState<number>(0);
+  const [requiredMark, setRequiredMarkType] =
+    useState<RequiredMark>("optional");
   // handling Form onFinish
   const onFinish = (values: any) => {
     console.log(values);
@@ -47,7 +50,7 @@ export const AddJobOpeningContainer = () => {
 
       {/* STEPPER */}
       <div
-        className="w-[82.1vw] h-36 mx-auto my-6 rounded-2xl shadow shadow-[rgba(0, 0, 0, 0.08)] add-job-opening-step"
+        className="w-full h-36 mx-auto my-6 rounded-2xl shadow shadow-[rgba(0, 0, 0, 0.08)] add-job-opening-step"
         id="add-job-opening"
       >
         <Steps
@@ -63,7 +66,7 @@ export const AddJobOpeningContainer = () => {
 
       <section
         id="addJobOpeningSection"
-        className="w-[83.3vw] max-sm:w-full bg-card pt-7 pb-16 mx-auto lg-ml-auto lg-mr-1 "
+        className="w-full max-sm:w-full bg-card pt-7 pb-16 mx-auto lg-ml-auto lg-mr-1 "
       >
         <Form
           name="addJobOpening"
@@ -71,6 +74,8 @@ export const AddJobOpeningContainer = () => {
           layout="vertical"
           className="w-11/12 bg-mainBg mx-auto md-px-3 py-8 px-6 rounded-lg flex flex-col gap-6"
           onFinish={onFinish}
+          requiredMark={requiredMark}
+          
         >
           {stepperCurrentState === 0 ? (
             <>

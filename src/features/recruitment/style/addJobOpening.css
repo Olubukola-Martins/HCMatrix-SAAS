@@ -9,16 +9,22 @@
 .add-job-opening-step .ant-steps .ant-steps-item-finish .ant-steps-item-icon {
   background: var(--caramel);
 }
-.add-job-opening-step .ant-steps .ant-steps-item-finish .ant-steps-item-icon > .ant-steps-icon {
+.add-job-opening-step
+  .ant-steps
+  .ant-steps-item-finish
+  .ant-steps-item-icon
+  > .ant-steps-icon {
   color: var(--background);
 }
-.add-job-opening-step .ant-steps
+.add-job-opening-step
+  .ant-steps
   .ant-steps-item-process
   > .ant-steps-item-container
   > .ant-steps-item-icon {
   background: var(--background);
 }
-.add-job-opening-step .ant-steps
+.add-job-opening-step
+  .ant-steps
   .ant-steps-item-process
   > .ant-steps-item-container
   > .ant-steps-item-icon
@@ -26,27 +32,36 @@
   color: var(--caramel);
 }
 
-.add-job-opening-step .ant-steps .ant-steps-item-container .ant-steps-item-tail {
+.add-job-opening-step
+  .ant-steps
+  .ant-steps-item-container
+  .ant-steps-item-tail {
   padding: 3.5px 28px;
   margin-left: 60px;
 }
 .add-job-opening-step .ant-steps .ant-steps-item-tail:after {
   height: 4px;
 }
-.add-job-opening-step .ant-steps .ant-steps-item .ant-steps-item-container .ant-steps-item-content {
+.add-job-opening-step
+  .ant-steps
+  .ant-steps-item
+  .ant-steps-item-container
+  .ant-steps-item-content {
   margin-top: 27px;
   width: fit-content;
 }
 .add-job-opening-step .ant-steps .ant-steps-item .ant-steps-item-container {
   position: relative;
 }
-.add-job-opening-step .ant-steps
+.add-job-opening-step
+  .ant-steps
   .ant-steps-item:first-child
   .ant-steps-item-container
   .ant-steps-item-content {
   margin-left: 42px;
 }
-.add-job-opening-step .ant-steps
+.add-job-opening-step
+  .ant-steps
   .ant-steps-item:last-child
   .ant-steps-item-container
   .ant-steps-item-content {
@@ -54,7 +69,10 @@
   position: absolute;
 }
 
-.add-job-opening-step .ant-steps .ant-steps-item-content > .ant-steps-item-description {
+.add-job-opening-step
+  .ant-steps
+  .ant-steps-item-content
+  > .ant-steps-item-description {
   margin: auto;
   width: max-content;
   color: #3a3a3a;
@@ -69,7 +87,9 @@
 
 /* FORM */
 #addJobOpeningSection .ant-form-vertical .ant-form-item-label > label,
-#addJobOpeningSection .ant-form-item-control-input-content .ant-checkbox-wrapper {
+#addJobOpeningSection
+  .ant-form-item-control-input-content
+  .ant-checkbox-wrapper {
   /* font-size: 18px; */
   font-weight: 350;
 }
@@ -78,39 +98,27 @@
 .ant-form-item-control-input-content textarea {
   font-size: 16px;
 } */
-#addJobOpeningSection .ant-form-item-control-input-content
+#addJobOpeningSection
+  .ant-form-item-control-input-content
   .ant-select-single.ant-select-show-arrow
   .ant-select-selection-item,
-#addJobOpeningSection .ant-form-item-control-input-content
+#addJobOpeningSection
+  .ant-form-item-control-input-content
   .ant-select-single.ant-select-show-arrow
   .ant-select-selection-placeholder {
   margin-top: auto;
   margin-bottom: auto;
-  padding-left: 24px;
 }
 /* .ant-form-item-control-input .ant-form-item-control-input-content input {
   padding-left: 24px;
 } */
 #addJobOpeningSection .ant-checkbox-wrapper .ant-checkbox::selection,
-#addJobOpeningSection .ant-form-item-control-input-content .ant-checkbox-wrapper .ant-checkbox:hover {
+#addJobOpeningSection
+  .ant-form-item-control-input-content
+  .ant-checkbox-wrapper
+  .ant-checkbox:hover {
   background: var(--caramel);
 }
-#addJobOpeningSection .ant-form-item-control-input-content
-  .ant-select:not(.ant-select-customize-input)
-  #addJobOpeningSection .ant-select-selector,
-.ant-form-item-control-input-content .ant-input {
-  /* height: 53px; */
-  /* border-radius: 4px; */
-  border: 0.3px solid #686868;
-}
-#addJobOpeningSection .ant-form-item-control-input-content
-  .ant-select:not(.ant-select-customize-input)
-  .ant-select-selector:hover,
-#addJobOpeningSection .ant-form-item-control-input-content .ant-input:hover,
-.ant-form-item-control-input-content .ant-picker:hover {
-  border-color: var(--caramel);
-}
-/* .ant-form > div:not(#sub-heading), */
 #addJobOpeningSection .ant-form > div:not(#buttons),
 #addJobOpeningSection .ant-form > .addit-ques-div:last-child {
   /* font-size: 18px; */
@@ -121,6 +129,16 @@
   padding: 22px 20px;
   background-color: var(--card);
 }
+#addJobOpeningSection .ant-form > .addit-ques-div:nth-child(2) {
+  width: 100%;
+}
+div #addJobOpeningSection #addJobOpening #integration-text {
+  flex-direction: column;
+  width: 100%;
+  background-color: var(--background);
+  align-items: start;
+}
+
 #addJobOpeningSection #addJobOpening #expiryDate,
 #addJobOpeningSection #addJobOpening #addBenefit,
 #addJobOpeningSection #addJobOpening .addit-ques-div:nth-child(1),
@@ -149,13 +167,20 @@
   overflow: overlay;
   max-height: 100%;
 }
-#addJobOpeningSection .ant-form #job-Description .ant-form-item:not(#buttons .ant-form-item),
+#addJobOpeningSection
+  .ant-form
+  #job-Description
+  .ant-form-item:not(#buttons .ant-form-item),
 #addJobOpeningSection .ant-form .addit-ques-div:nth-child(2),
 #addJobOpeningSection #addJobOpening #addBenefit .ant-form-item,
 #addJobOpeningSection .ant-form #expiryDate div,
 #addJobOpeningSection .ant-form #expiryDate div .ant-form-item,
+.ant-form-item,
 #addJobOpeningSection .ant-form #job-Description .ant-form-item {
   width: 100%;
+}
+#addJobOpeningSection .ant-form #ask-quest .ant-form-item {
+  width: 100% !important;
 }
 #addJobOpeningSection #addJobOpening .addit-ques-div:nth-child(1),
 #addJobOpeningSection #addJobOpening .addit-ques-div:nth-child(3),
@@ -164,53 +189,35 @@
   padding: 0;
 }
 
-#addJobOpeningSection .ant-form #job-Description .ant-form-item .ant-form-item-control {
+#addJobOpeningSection
+  .ant-form
+  #job-Description
+  .ant-form-item
+  .ant-form-item-control {
   margin-top: 24px;
 }
-#addJobOpeningSection .ant-form-item-control-input
+#addJobOpeningSection
+  .ant-form-item-control-input
   .ant-form-item-control-input-content
   .ant-btn-text:hover {
   color: var(--caramel) !important;
   text-decoration: underline;
 }
-#addJobOpeningSection .ant-form-item-control-input-content .ant-btn-text {
-  font-size: 24px;
-  font-weight: 400;
-}
-#addJobOpeningSection .ant-form-item-control-input-content .ant-btn-primary {
-  background-color: var(--caramel);
-  border-radius: 4px;
-  border-color: var(--caramel);
-  height: 40px;
-}
 
+  .last-pg-btns, .last-pg-btns div {
+    background-color: var(--background) !important;
+  }
 /* MEDIA QUERIES */
 @media (max-width: 1023px) {
   /* stepper */
- .add-job-opening-step .ant-steps .ant-steps-item-content > .ant-steps-item-description {
+  .add-job-opening-step
+    .ant-steps
+    .ant-steps-item-content
+    > .ant-steps-item-description {
     font-size: 15px;
   }
 
   /* form */
-  /* .ant-form-vertical .ant-form-item-label > label,
-  .ant-form-item-control-input-content .ant-checkbox-wrapper {
-    font-size: 16px;
-  }
-
-  .ant-form-item-control-input-content .ant-input,
-  .ant-form-item-control-input-content .ant-select,
-  .ant-form-item-control-input-content textarea {
-    font-size: 14px;
-  }
-  .ant-form-item-control-input-content
-    .ant-select-single.ant-select-show-arrow
-    .ant-select-selection-item,
-  .ant-form-item-control-input-content
-    .ant-select-single.ant-select-show-arrow
-    .ant-select-selection-placeholder,
-  .ant-form-item-control-input .ant-form-item-control-input-content input {
-    padding-left: 10px;
-  } */
 
   #addJobOpeningSection .ant-form-item-control-input-content .ant-btn-text {
     font-size: 20px;
@@ -219,36 +226,71 @@
     font-size: 12px;
     height: 32px;
   }
-  #addJobOpeningSection .ant-form #job-Description .ant-form-item .ant-form-item-control {
+  #addJobOpeningSection
+    .ant-form
+    #job-Description
+    .ant-form-item
+    .ant-form-item-control {
     margin-top: 22px;
   }
 }
 
 @media (max-width: 699px) {
   /* form */
- #addJobOpeningSection .ant-form > div:not(#buttons) {
+  #addJobOpeningSection .ant-form > div:not(#buttons) {
     display: flex;
     flex-direction: column;
     gap: 13px;
     padding: 20px 15px;
   }
-
- #addJobOpeningSection .ant-form div .ant-form-item,
- #addJobOpeningSection .ant-form .addit-ques-div:nth-child(2),
- #addJobOpeningSection  #addJobOpeningSection #addJobOpening div .ant-form-item {
-    width: 100%;
+  #addJobOpeningSection .ant-form #switch {
+    display: flex;
+    flex-direction: row !important;
+  }
+  #addJobOpeningSection .ant-form > div:not(#buttons),
+  #addJobOpeningSection .ant-form > div:not(#switch) > div,
+  #addJobOpeningSection .ant-form .addit-ques-div:nth-child(2),
+  #addJobOpeningSection
+    #addJobOpeningSection
+    #addJobOpening
+    div
+    .ant-form-item {
+    width: 100% !important;
     background-color: var(--card);
   }
- #addJobOpeningSection  .ant-form-item-control-input-content .ant-btn-text {
-    font-size: 18px;
+  #addJobOpeningSection .ant-form-item-control-input-content .ant-btn-text {
+    font-size: 15px;
   }
- #addJobOpeningSection .ant-form #job-Description .ant-form-item .ant-form-item-control {
+  #addJobOpeningSection
+    .ant-form
+    #job-Description
+    .ant-form-item
+    .ant-form-item-control {
     margin-top: 19px;
+  }
+  .last-pg-btns {
+    display: flex;
+    flex-direction: column !important;
+    gap: 15px !important;
+    align-items: start !important;
+    background-color: var(--background) !important;
+  }
+  .last-pg-btns div {
+    background-color: var(--background) !important;
+    gap: 8px;
+    justify-content: space-between;
+    max-width: 100%;
+  }
+  .last-pg-btns div button {
+    font-size: 12px;
   }
 }
 
 @media (max-width: 574px) {
   /* stepper */
+  .add-job-opening-step .ant-steps .ant-steps-item:last-child .ant-steps-item-container .ant-steps-item-content {
+    position: relative;
+}
   .Container .add-job-opening-step {
     height: fit-content;
   }
@@ -258,7 +300,8 @@
   }
 
   /* Form */
-#addJobOpeningSection  #add-job-opening
+  #addJobOpeningSection
+    #add-job-opening
     .ant-steps
     .ant-steps-item
     .ant-steps-item-container
@@ -274,24 +317,15 @@
 /* APPLICATION QUESTIONS STYLING */
 
 @media (max-width: 699px) {
-  /* .ant-form
-    div
-    .ant-form-item:not(#buttons .ant-form-item):not(
-      #addBenefit .ant-form-item
-    ):not(#expiryDate .ant-form-item) {
-    margin: auto 0;
-    height: inherit;
-    width: 31.25vw;
-  } */
- #addJobOpeningSection .ant-form > .app-quest-div,
- #addJobOpeningSection .ant-form > .addit-ques-div:last-child {
+  #addJobOpeningSection .ant-form > .app-quest-div,
+  #addJobOpeningSection .ant-form > .addit-ques-div:last-child {
     display: flex;
     flex-direction: row;
     gap: 13px;
     padding: 20px 15px;
   }
 
- #addJobOpeningSection .ant-form div #expiryDate .ant-form-item {
+  #addJobOpeningSection .ant-form div #expiryDate .ant-form-item {
     width: 100%;
   }
 }

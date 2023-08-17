@@ -42,84 +42,84 @@ export const ApplicationQuestions: React.FC<ChildProps> = ({
       <div id="sub-heading" className="p-0 bg-mainBg text-xl">
         Application Questions
       </div>
-      <div className="app-quest-div">
+      <div className="app-quest-div" id="switch">
         Upload Resume
         <Form.Item name="uploadResume" valuePropName="checked">
           <Switch className="float-right" defaultChecked={false} />
         </Form.Item>
       </div>
 
-      <div className="app-quest-div">
+      <div className="app-quest-div" id="switch">
         Address
         <Form.Item name="address" valuePropName="checked">
           <Switch className="float-right" defaultChecked={false} />
         </Form.Item>
       </div>
 
-      <div className="app-quest-div">
+      <div className="app-quest-div" id="switch">
         LinkedIn URL
         <Form.Item name="linkedInURL" valuePropName="checked">
           <Switch className="float-right" defaultChecked={false} />
         </Form.Item>
       </div>
 
-      <div className="app-quest-div">
+      <div className="app-quest-div" id="switch">
         Date Available
         <Form.Item name="dateAvailable" valuePropName="checked">
           <Switch className="float-right" defaultChecked={false} />
         </Form.Item>
       </div>
 
-      <div className="app-quest-div">
+      <div className="app-quest-div" id="switch">
         Desired Salary
         <Form.Item name="desiredSalary" valuePropName="checked">
           <Switch className="float-right" defaultChecked={false} />
         </Form.Item>
       </div>
 
-      <div className="app-quest-div">
+      <div className="app-quest-div" id="switch">
         Cover Letter
         <Form.Item name="coverLetter" valuePropName="checked">
           <Switch className="float-right" defaultChecked={false} />
         </Form.Item>
       </div>
 
-      <div className="app-quest-div">
+      <div className="app-quest-div" id="switch">
         Referred By
         <Form.Item name="referredBy" valuePropName="checked">
           <Switch className="float-right" defaultChecked={false} />
         </Form.Item>
       </div>
 
-      <div className="app-quest-div">
+      <div className="app-quest-div" id="switch">
         Link to Website, Blog or Portfolio
         <Form.Item name="linkToWebsiteBlogOrPortfolio" valuePropName="checked">
           <Switch className="float-right" defaultChecked={false} />
         </Form.Item>
       </div>
 
-      <div className="app-quest-div">
+      <div className="app-quest-div" id="switch">
         Twitter Username
         <Form.Item name="twitterUsername" valuePropName="checked">
           <Switch className="float-right" defaultChecked={false} />
         </Form.Item>
       </div>
 
-      <div className="app-quest-div">
+      <div className="app-quest-div" id="switch">
         Education
         <Form.Item name="education" valuePropName="checked">
           <Switch className="float-right" defaultChecked={false} />
         </Form.Item>
       </div>
 
-      <div className="app-quest-div">
+      <div className="app-quest-div" id="switch">
         Experience
         <Form.Item name="experience" valuePropName="checked">
           <Switch className="float-right" defaultChecked={false} />
         </Form.Item>
       </div>
 
-      <div className="app-quest-div">
+      <div className="app-quest-div" id="switch">
         References
         <Form.Item name="references" valuePropName="checked">
           <Switch className="float-right" defaultChecked={false} />
@@ -206,17 +206,15 @@ export const ApplicationQuestions: React.FC<ChildProps> = ({
           type="button"
           label="Back"
           variant="style-with-class"
-          additionalClassNames={["bg-none text-2xl max-sm:text-xl "]}
+          additionalClassNames={[
+            "bg-none text-lg max-sm:text-base hover:text-caramel",
+          ]}
           handleClick={() => handleBackButton()}
         />
 
         <AppButton
           type="button"
           label="Next"
-          variant="style-with-class"
-          additionalClassNames={[
-            "bg-caramel py-3 px-[69px] max-sm:px-12 max-sm:py-2 rounded text-white text-sm",
-          ]}
           handleClick={() => handleNextButton()}
         />
       </div>
