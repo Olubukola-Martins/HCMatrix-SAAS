@@ -1,0 +1,223 @@
+import { Switch, Select, DatePicker, Checkbox, Form } from "antd";
+import { CheckboxChangeEvent } from "antd/lib/checkbox";
+import { AppButton } from "components/button/AppButton";
+import { useState } from "react";
+
+const { Option } = Select;
+
+interface ChildProps {
+  stepperCurrentState: number;
+  updateCount: (newCount: number) => void;
+}
+
+export const ApplicationQuestions: React.FC<ChildProps> = ({
+  stepperCurrentState,
+  updateCount,
+}) => {
+  // handle next button
+  const handleNextButton = () => {
+    if (stepperCurrentState <= 2 && stepperCurrentState >= 0)
+      updateCount(stepperCurrentState + 1);
+  };
+  // handle back button
+  const handleBackButton = () => {
+    if (stepperCurrentState <= 2 && stepperCurrentState >= 0)
+      updateCount(stepperCurrentState - 1);
+  };
+
+  // handling datepicker 
+  const [selectedOption, setSelectedOption] = useState("Not Specified");
+
+  const handleSelectChange = (value: any) => {
+    // Update the selected option
+    setSelectedOption(value);
+  };
+  // const [disableDatePicker, setDisableDatePicker] = useState(false);
+
+  // const handleCheckboxChange = (e: CheckboxChangeEvent) => {
+  //   setDisableDatePicker(e.target.checked);
+  // };
+  return (
+    <>
+      <div id="sub-heading" className="p-0 bg-mainBg text-xl">
+        Application Questions
+      </div>
+      <div className="app-quest-div" id="switch">
+        Upload Resume
+        <Form.Item name="uploadResume" valuePropName="checked">
+          <Switch className="float-right" defaultChecked={false} />
+        </Form.Item>
+      </div>
+
+      <div className="app-quest-div" id="switch">
+        Address
+        <Form.Item name="address" valuePropName="checked">
+          <Switch className="float-right" defaultChecked={false} />
+        </Form.Item>
+      </div>
+
+      <div className="app-quest-div" id="switch">
+        LinkedIn URL
+        <Form.Item name="linkedInURL" valuePropName="checked">
+          <Switch className="float-right" defaultChecked={false} />
+        </Form.Item>
+      </div>
+
+      <div className="app-quest-div" id="switch">
+        Date Available
+        <Form.Item name="dateAvailable" valuePropName="checked">
+          <Switch className="float-right" defaultChecked={false} />
+        </Form.Item>
+      </div>
+
+      <div className="app-quest-div" id="switch">
+        Desired Salary
+        <Form.Item name="desiredSalary" valuePropName="checked">
+          <Switch className="float-right" defaultChecked={false} />
+        </Form.Item>
+      </div>
+
+      <div className="app-quest-div" id="switch">
+        Cover Letter
+        <Form.Item name="coverLetter" valuePropName="checked">
+          <Switch className="float-right" defaultChecked={false} />
+        </Form.Item>
+      </div>
+
+      <div className="app-quest-div" id="switch">
+        Referred By
+        <Form.Item name="referredBy" valuePropName="checked">
+          <Switch className="float-right" defaultChecked={false} />
+        </Form.Item>
+      </div>
+
+      <div className="app-quest-div" id="switch">
+        Link to Website, Blog or Portfolio
+        <Form.Item name="linkToWebsiteBlogOrPortfolio" valuePropName="checked">
+          <Switch className="float-right" defaultChecked={false} />
+        </Form.Item>
+      </div>
+
+      <div className="app-quest-div" id="switch">
+        Twitter Username
+        <Form.Item name="twitterUsername" valuePropName="checked">
+          <Switch className="float-right" defaultChecked={false} />
+        </Form.Item>
+      </div>
+
+      <div className="app-quest-div" id="switch">
+        Education
+        <Form.Item name="education" valuePropName="checked">
+          <Switch className="float-right" defaultChecked={false} />
+        </Form.Item>
+      </div>
+
+      <div className="app-quest-div" id="switch">
+        Experience
+        <Form.Item name="experience" valuePropName="checked">
+          <Switch className="float-right" defaultChecked={false} />
+        </Form.Item>
+      </div>
+
+      <div className="app-quest-div" id="switch">
+        References
+        <Form.Item name="references" valuePropName="checked">
+          <Switch className="float-right" defaultChecked={false} />
+        </Form.Item>
+      </div>
+
+      <div id="addBenefit">
+        <div>Add benefit</div>
+        <Form.Item name="addBenefit" valuePropName="checked">
+          <Select
+            className="mt-2"
+            mode="multiple"
+            style={{ width: "100%" }}
+            placeholder="Please select"
+          >
+            <Option value="Dental Insurance">Dental Insurance</Option>
+            <Option value="Flexibility Schedule">Flexibility Schedule</Option>
+            <Option value="Paid Time Off">Paid Time Off</Option>
+            <Option value="Health Insurance">Health Insurance</Option>
+            <Option value="Vision Insurance">Vision Insurance</Option>
+          </Select>
+        </Form.Item>
+      </div>
+
+      {/* <div id="expiryDate">
+        Expiry Date
+        <div className="mt-2 sm:gap-[22px] flex sm:flex-row flex-col gap-2 items-center max-sm:items-start ">
+          <Form.Item
+            name="expiryDate"
+            valuePropName="checked"
+            // className="max-sm:w-full"
+          >
+            <DatePicker
+              format="YYYY-MM-DD"
+              disabled={disableDatePicker}
+              className=" border-[0.3px] border-[#686868]  px-6 sm:w-[60%] md:w-80 w-[31.25vw] "
+            />
+          </Form.Item>
+          <Form.Item>
+            <Checkbox onChange={handleCheckboxChange}>Not Specified</Checkbox>
+          </Form.Item>
+        </div>
+      </div> */}
+
+      <div>
+        <Form.Item label="Expiry Date">
+          <Select
+            onChange={handleSelectChange}
+            placeholder="Select compensation"
+            options={[
+              {
+                value: "Not Specified",
+                label: "Not Specified",
+              },
+              {
+                value: "Enter expiry date",
+                label: "Enter expiry date",
+              },
+            ]}
+          />
+        </Form.Item>
+        <Form.Item
+          label="Enter expiry date"
+          name="expiryDate"
+          valuePropName="checked"
+          style={{
+            display: selectedOption === "Enter expiry date" ? "block" : "none",
+          }}
+          // className="max-sm:w-full"
+        >
+          <DatePicker
+            format="YYYY-MM-DD"
+            style={{ width: "100%" }}
+            // className=" border-[0.3px] border-[#686868]  px-6 sm:w-[60%] md:w-80 w-[31.25vw] "
+          />
+        </Form.Item>
+      </div>
+
+      <div
+        id="buttons"
+        className=" flex flex-row justify-between items-center "
+      >
+        <AppButton
+          type="button"
+          label="Back"
+          variant="style-with-class"
+          additionalClassNames={[
+            "bg-none text-lg max-sm:text-base hover:text-caramel",
+          ]}
+          handleClick={() => handleBackButton()}
+        />
+
+        <AppButton
+          type="button"
+          label="Next"
+          handleClick={() => handleNextButton()}
+        />
+      </div>
+    </>
+  );
+};
