@@ -144,13 +144,14 @@ export const SelectColumnsBtn: React.FC<{
   selectedColumns: ColumnsType<TPayrollListData>;
 }> = ({ setSelectedColumns, selectedColumns }) => {
   const [show, setShow] = useState(false);
+  // TODO: Use useRef to ensure that when create payroll is not in focus show is set to false or using antd
   return (
     <div className="relative">
       <button
         className="button flex items-center gap-2"
         onClick={() => setShow((val) => !val)}
       >
-        <span>Create Payroll</span> <i className="fa-solid fa-chevron-down"></i>
+        <span>Filter Payroll</span> <i className="fa-solid fa-chevron-down"></i>
       </button>
       {show && (
         <div className="absolute z-50 right-0 w-[400px] mt-2">

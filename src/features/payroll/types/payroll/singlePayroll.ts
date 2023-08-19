@@ -20,6 +20,16 @@ export type TSinglePayroll = {
   updatedAt: string;
   employeePayrolls: TEmployeesInPayrollData[];
   costCentre: CostCentre;
+
+  totalAllowances: number;
+  totalDeductions: number;
+  totalNetPay: number;
+  totalGrossPay: number;
+  totalTax: number;
+
+  costCentreId: number;
+
+  scheme: Scheme;
 };
 
 interface CostCentre {
@@ -29,6 +39,25 @@ interface CostCentre {
   amountEntered: string;
   amountPaid: string;
   balance: string;
+  companyId: number;
+  createdAt: string;
+  updatedAt: string;
+}
+
+interface Scheme {
+  id: number;
+  name: string;
+  type: string;
+  frequency: string;
+  allowDisbursement: boolean;
+  disbursement: number;
+  costCentreId: number;
+  allowApproval: boolean;
+  workflowId: number;
+  issuePayslip: boolean;
+  projectId?: any;
+  runAutomatically: boolean;
+  automaticRunDay?: any;
   companyId: number;
   createdAt: string;
   updatedAt: string;
