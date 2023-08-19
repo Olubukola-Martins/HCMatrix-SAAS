@@ -1,9 +1,8 @@
-import React from 'react'
+import React from "react";
 import { Form, Switch, Input } from "antd";
 import { AppButton } from "components/button/AppButton";
 import "../assets/style.css";
 import { textInputValidationRules } from "utils/formHelpers/validation";
-
 
 export const EmploymentType = () => {
   const [form] = Form.useForm();
@@ -13,33 +12,34 @@ export const EmploymentType = () => {
   };
 
   const handleAddField = () => {
-    const newStatus = form.getFieldValue("newStatus") || [];
-    const initialStatus = { statusName: "", allowStatus: true };
-    form.setFieldsValue({ newStatus: [...newStatus, initialStatus] });
+    const newType = form.getFieldValue("newType") || [];
+    const initialEmploymentType = { typeName: "", allowEmploymentType: true };
+    form.setFieldsValue({ newType: [...newType, initialEmploymentType] });
   };
 
   const handleRemoveField = (index: number) => {
-    const newStatus = form.getFieldValue("newStatus") || [];
+    const newType = form.getFieldValue("newType") || [];
     form.setFieldsValue({
-      newStatus: newStatus.filter((_: any, i: number) => i !== index),
+      newType: newType.filter((_: any, i: number) => i !== index),
     });
   };
 
   return (
     <>
       <div className="bg-card rounded md:p-5 p-3">
-        <h2 className="pb-5 font-medium text-base">Benefits</h2>
+        <h2 className="pb-5 font-medium text-base">Employment type</h2>
         <div className="bg-mainBg py-4 px-4 rounded">
           <Form
             form={form}
             layout="vertical"
             requiredMark={false}
             onFinish={handleSubmit}
+            name="employmentTypeSettings"
           >
             <div className="recruitmentSettingsForm ">
-              <h3 className="font-medium">Dental Insurance</h3>
+              <h3 className="font-medium">Contract</h3>
               <Form.Item
-                name="dentalInsurance"
+                name="contract"
                 className="flex justify-end items-end"
                 noStyle
               >
@@ -48,9 +48,9 @@ export const EmploymentType = () => {
             </div>
 
             <div className="recruitmentSettingsForm ">
-              <h3 className="font-medium">Flexibility Schedule</h3>
+              <h3 className="font-medium">Full-Time</h3>
               <Form.Item
-                name="flexibilitySchedule"
+                name="fullTime"
                 className="flex justify-end items-end"
                 noStyle
               >
@@ -59,9 +59,20 @@ export const EmploymentType = () => {
             </div>
 
             <div className="recruitmentSettingsForm ">
-              <h3 className="font-medium">Health Insurance</h3>
+              <h3 className="font-medium">Intern</h3>
               <Form.Item
-                name="healthInsurance"
+                name="intern"
+                className="flex justify-end items-end"
+                noStyle
+              >
+                <Switch />
+              </Form.Item>
+            </div>
+
+            <div className="recruitmentSettingsForm ">
+              <h3 className="font-medium">Part-Time</h3>
+              <Form.Item
+                name="partTime"
                 className="flex justify-end items-end"
                 noStyle
               >
@@ -70,15 +81,15 @@ export const EmploymentType = () => {
             </div>
 
             <div>
-              <h2 className="pb-5 font-medium text-base">Benefit name</h2>
-              <Form.List name="newStatus">
+              <h2 className="pb-5 font-medium text-base">Type name</h2>
+              <Form.List name="newType">
                 {(fields) => (
                   <>
                     {fields.map((field, index) => (
                       <div key={field.key} className="grid grid-cols-2 ">
                         <Form.Item
                           {...field}
-                          name={[field.name, "statusName"]}
+                          name={[field.name, "typeName"]}
                           label="Name"
                           rules={textInputValidationRules}
                         >
@@ -87,7 +98,7 @@ export const EmploymentType = () => {
                         <div className="flex gap-5 items-center justify-end">
                           <Form.Item
                             {...field}
-                            name={[field.name, "allowStatus"]}
+                            name={[field.name, "allowEmploymentType"]}
                             noStyle
                             valuePropName="checked"
                           >
@@ -103,7 +114,7 @@ export const EmploymentType = () => {
 
                     <AppButton
                       variant="transparent"
-                      label="+ Add Benefit"
+                      label="+ Add Employment type"
                       handleClick={() => handleAddField()}
                     />
                   </>
@@ -124,4 +135,4 @@ export const EmploymentType = () => {
       </div>
     </>
   );
-}
+};

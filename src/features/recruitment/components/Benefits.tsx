@@ -34,6 +34,7 @@ export const Benefits = () => {
             layout="vertical"
             requiredMark={false}
             onFinish={handleSubmit}
+            name="benefitsSettings"
           >
             <div className="recruitmentSettingsForm ">
               <h3 className="font-medium">Dental Insurance</h3>
@@ -92,9 +93,7 @@ export const Benefits = () => {
 
             <div>
               <h2 className="pb-5 font-medium text-base">Benefit name</h2>
-              <Form.List
-                name="newBenefit"
-              >
+              <Form.List name="newBenefit">
                 {(fields) => (
                   <>
                     {fields.map((field, index) => (
