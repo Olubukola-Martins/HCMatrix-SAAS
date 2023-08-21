@@ -4,7 +4,7 @@ import PayrollReviewTable from "./PayrollReviewTable";
 import { ColumnsType } from "antd/lib/table";
 import { TPayrollListData } from "features/payroll/types/payroll";
 import moment from "moment";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { appRoutes } from "config/router/paths";
 import { TPayrollSchemeType } from "features/payroll/types/payrollSchemes";
 import { Dropdown, Select } from "antd";
@@ -73,6 +73,7 @@ let OG_COLUMNS: ColumnsType<TPayrollListData> = [
 export const PayrollReviewContainer = () => {
   const [selectedColumns, setSelectedColumns] =
     useState<ColumnsType<TPayrollListData>>(OG_COLUMNS);
+  const navigate = useNavigate();
   return (
     <>
       <div className="flex flex-col gap-6">
@@ -83,7 +84,7 @@ export const PayrollReviewContainer = () => {
           actions={[
             {
               name: "Compare",
-              handleClick: () => {},
+              handleClick: () => navigate(appRoutes.payrollComparison),
               btnVariant: "transparent",
             },
           ]}
