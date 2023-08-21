@@ -5,7 +5,7 @@ import { TPayrollListData } from "features/payroll/types/payroll";
 import React, { useMemo, useState } from "react";
 import { SelectPayrolls } from "./SelectPayrolls";
 import { ColumnsType } from "antd/lib/table";
-import { LineChart } from "components/charts/LineChart";
+import { BarChart } from "components/charts/BarChart";
 import { generateHexColor } from "utils/colorHelpers/generateHexColor";
 
 type TAction = "make-selection";
@@ -28,6 +28,7 @@ export const ComparismContainer = () => {
     []
   );
   const handleSelectPayrolls = (data: TPayrollListData[]) => {
+    // setSelectedPayrolls((prev) => [...data, ...prev]);
     setSelectedPayrolls(data);
   };
 
@@ -230,7 +231,7 @@ const GraphComparison: React.FC<TCompareProps> = ({
 }) => {
   return (
     <div>
-      <LineChart
+      <BarChart
         labels={LABELS as unknown as string[]}
         useDataSet
         dataSets={[
@@ -249,6 +250,7 @@ const GraphComparison: React.FC<TCompareProps> = ({
               `${payroll.id}${payroll.label}`
             )}80`,
             label: payroll.name,
+            stack: payroll.label,
             backgroundColor: generateHexColor(`${payroll.id}${payroll.label}`),
           })),
         ]}
