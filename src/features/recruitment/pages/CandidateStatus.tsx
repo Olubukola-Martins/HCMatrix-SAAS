@@ -44,7 +44,7 @@ const CandidateStatus = () => {
               <div className="recruitmentSettingsForm ">
                 <h3 className="font-medium">Reviewed</h3>
                 <Form.Item
-                  name="test"
+                  name="reviewed"
                   className="flex justify-end items-end"
                   noStyle
                 >
@@ -55,7 +55,7 @@ const CandidateStatus = () => {
               <div className="recruitmentSettingsForm ">
                 <h3 className="font-medium">Schedule Interview</h3>
                 <Form.Item
-                  name="testTwo"
+                  name="scheduleInterview"
                   className="flex justify-end items-end"
                   noStyle
                 >
@@ -66,7 +66,7 @@ const CandidateStatus = () => {
               <div className="recruitmentSettingsForm ">
                 <h3 className="font-medium">Put on Hold</h3>
                 <Form.Item
-                  name="testTwo"
+                  name="putOnHold"
                   className="flex justify-end items-end"
                   noStyle
                 >
@@ -77,7 +77,7 @@ const CandidateStatus = () => {
               <div className="recruitmentSettingsForm ">
                 <h3 className="font-medium">Not a Fit</h3>
                 <Form.Item
-                  name="testTwo"
+                  name="notAFit"
                   className="flex justify-end items-end"
                   noStyle
                 >
@@ -88,7 +88,7 @@ const CandidateStatus = () => {
               <div className="recruitmentSettingsForm ">
                 <h3 className="font-medium">Declined Offer</h3>
                 <Form.Item
-                  name="testTwo"
+                  name="declinedOffer"
                   className="flex justify-end items-end"
                   noStyle
                 >
@@ -99,7 +99,7 @@ const CandidateStatus = () => {
               <div className="recruitmentSettingsForm ">
                 <h3 className="font-medium">Not Qualified</h3>
                 <Form.Item
-                  name="testTwo"
+                  name="notQualified"
                   className="flex justify-end items-end"
                   noStyle
                 >
@@ -110,7 +110,7 @@ const CandidateStatus = () => {
               <div className="recruitmentSettingsForm ">
                 <h3 className="font-medium">Over Qualified</h3>
                 <Form.Item
-                  name="testTwo"
+                  name="overQualified"
                   className="flex justify-end items-end"
                   noStyle
                 >
