@@ -1,15 +1,26 @@
+
 import { Form, Input, Switch } from "antd";
 import { AppButton } from "components/button/AppButton";
+import { appRoutes } from "config/router/paths";
+import { useEffect, useState } from "react";
 
 interface ChildProps {
   stepperCurrentState: number;
   updateCount: (newCount: number) => void;
 }
 
-export const AdditionalQuestions: React.FC<ChildProps> = ({
+export  const AdditionalQuestions: React.FC<ChildProps> = ({
   stepperCurrentState,
-  updateCount,
+  updateCount
 }) => {
+
+// Update switchState changes
+  const [switchState, setSwitchState] = useState<boolean>(true);
+
+  const handleSwitchChange = (checked: boolean) => {
+    setSwitchState(checked);
+  };
+
   // handle back button
   const handleBackButton = () => {
     if (stepperCurrentState <= 2 && stepperCurrentState >= 0)
@@ -26,7 +37,7 @@ export const AdditionalQuestions: React.FC<ChildProps> = ({
       </div>
 
       <div className="addit-ques-div" id="ask-quest">
-        <Form.Item label="Ask Your Question" name="askYourQuestion">
+        <Form.Item label="Additional Questions" name="askYourQuestion">
           <Input placeholder="Type in Your Question...." />
         </Form.Item>
       </div>
@@ -42,7 +53,11 @@ export const AdditionalQuestions: React.FC<ChildProps> = ({
       <div className="addit-ques-div" id="switch">
         LinkedIn
         <Form.Item name="linkedIn" valuePropName="checked">
-          <Switch className="float-right" defaultChecked={false} />
+          <Switch
+            className="float-right"
+            checked={switchState}
+            onChange={handleSwitchChange}
+          />
         </Form.Item>
       </div>
 
@@ -73,9 +88,7 @@ export const AdditionalQuestions: React.FC<ChildProps> = ({
             type="button"
             label="Preview Job"
             variant="transparent"
-            additionalClassNames={[
-              "border-caramel ",
-            ]}
+            additionalClassNames={["border-caramel "]}
           />
 
           <AppButton

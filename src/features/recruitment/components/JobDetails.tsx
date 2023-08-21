@@ -1,14 +1,12 @@
-import {
-  Form,
-  Input,
-  Select,
-  FormInstance,
-  InputNumber,
-} from "antd";
+import { Form, Input, Select, FormInstance } from "antd";
 import { textInputValidationRules } from "utils/formHelpers/validation";
 import { useState } from "react";
 import { EMPLOYMENT_TYPES, WORK_MODELS } from "constants/general";
 import { AppButton } from "components/button/AppButton";
+import { Link, useNavigate } from "react-router-dom";
+import { appRoutes } from "config/router/paths";
+import { openNotification } from "utils/notifications";
+// import { openNotification } from ;
 
 interface ChildProps {
   stepperCurrentState: number;
@@ -22,6 +20,14 @@ export const JobDetails: React.FC<ChildProps> = ({
   form,
 }) => {
   const { TextArea } = Input;
+  const navigator = useNavigate();
+
+  // on cancel, handle fields reset
+  const handleResetClick = () => {
+    form.resetFields();
+    navigator(appRoutes.recruitmentDashboard);
+
+  };
 
   const [selectedOption, setSelectedOption] = useState("Not Specified");
 
@@ -31,10 +37,10 @@ export const JobDetails: React.FC<ChildProps> = ({
   };
 
   const [selectJobDesType, setSelectJobDesType] = useState("");
-  
+
   const handleJobDescType = (value: string) => {
     setSelectJobDesType(value);
-  }
+  };
 
   // handle required fields check for Next button
 
@@ -60,7 +66,12 @@ export const JobDetails: React.FC<ChildProps> = ({
       if (stepperCurrentState <= 2 && stepperCurrentState >= 0)
         updateCount(stepperCurrentState + 1);
     } else {
-      console.log("Failed.");
+      openNotification({
+        title: "Submit failed",
+        description: "Please fill all required field.",
+        state: "error",
+        duration: 8.0,
+      });
     }
   };
 
@@ -189,9 +200,6 @@ export const JobDetails: React.FC<ChildProps> = ({
             ]}
           />
         </Form.Item>
-      </div>
-
-      <div>
         <Form.Item label="Compensation" requiredMark="optional">
           <Select
             onChange={handleSelectChange}
@@ -208,14 +216,15 @@ export const JobDetails: React.FC<ChildProps> = ({
             ]}
           />
         </Form.Item>
-        <Form.Item
-          label="Enter Compensation"
-          name="compensation"
-          style={{
-            display: selectedOption === "Enter an Amount" ? "block" : "none",
-          }}
-        >
-          <InputNumber placeholder="200 000 " style={{ width: "100%" }} />
+      </div>
+
+      <div
+        style={{
+          display: selectedOption === "Enter an Amount" ? "block" : "none",
+        }}
+      >
+        <Form.Item label="Enter Compensation" name="compensation">
+          <Input placeholder="200 000 " style={{ width: "100%" }} />
         </Form.Item>
       </div>
 
@@ -276,15 +285,15 @@ export const JobDetails: React.FC<ChildProps> = ({
         id="buttons"
         className=" flex flex-row justify-between items-center "
       >
-        <AppButton
-          label="Cancel"
-          variant="style-with-class"
-          additionalClassNames={["bg-none text-lg max-sm:text-base hover:text-caramel"]}
-        />
-        <AppButton
-          label="Next"
-          handleClick={() => handleNextButton()}
-        />
+          <AppButton
+            label="Cancel"
+            variant="style-with-class"
+            additionalClassNames={[
+              "bg-none text-lg max-sm:text-base hover:text-caramel",
+            ]}
+            handleClick={() => handleResetClick()}
+          />
+        <AppButton label="Next" handleClick={() => handleNextButton()} />
       </div>
     </>
   );
