@@ -9,6 +9,7 @@ import { EGlobalOps, GlobalContext } from "stateManagers/GlobalContextProvider";
 import { useContext } from "react";
 import { useCreateAttendanceLocation } from "features/timeAndAttendance/hooks/useCreateAttendanceLocation";
 import { openNotification } from "utils/notifications";
+import { FormBranchInput } from "features/core/branches/components/FormBranchInput";
 const formWrapStyle =
   "bg-card px-4 pt-4 rounded grid grid-cols-1 md:grid-cols-2 gap-x-10 mb-5 shadow-sm";
 export const AddLocation = () => {
@@ -28,6 +29,8 @@ export const AddLocation = () => {
   }, []);
 
   const handleFormSubmit = (values: any) => {
+    console.log(values);
+
     if (companyId) {
       mutate(
         {
@@ -62,7 +65,7 @@ export const AddLocation = () => {
 
   const handleAddField = () => {
     const biometricDeviceLocations =
-      form.getFieldValue("biometricDeviceLocations") || []; 
+      form.getFieldValue("biometricDeviceLocations") || [];
     const newLocation = {
       branchId: "",
       biometricDeviceId: "",
@@ -70,7 +73,7 @@ export const AddLocation = () => {
     };
     form.setFieldsValue({
       biometricDeviceLocations: [...biometricDeviceLocations, newLocation],
-    }); 
+    });
   };
 
   const handleRemoveField = (index: number) => {
@@ -79,7 +82,7 @@ export const AddLocation = () => {
     form.setFieldsValue({
       biometricDeviceLocations: biometricDeviceLocations.filter(
         (_: any, i: number) => i !== index
-      ), 
+      ),
     });
   };
 
@@ -99,6 +102,13 @@ export const AddLocation = () => {
               layout="vertical"
               requiredMark={false}
             >
+              <FormBranchInput
+                Form={Form}
+                control={{
+                  label: "Select branch",
+                  name: "branch_id",
+                }}
+              />
               <Form.List name="biometricDeviceLocations">
                 {(fields) => (
                   <>
@@ -107,7 +117,7 @@ export const AddLocation = () => {
                         key={field.key}
                         className={`${formWrapStyle} grid grid-cols-1 md:grid-cols-2 gap-x-7`}
                       >
-                        <Form.Item
+                        {/* <Form.Item
                           {...field}
                           name={[field.name, "branchId"]}
                           label="Select Branch"
@@ -123,7 +133,14 @@ export const AddLocation = () => {
                             ]}
                             allowClear
                           />
-                        </Form.Item>
+                        </Form.Item> */}
+                        <FormBranchInput
+                          Form={Form}
+                          control={{
+                            label: "Select branch",
+                            name: "branch_id",
+                          }}
+                        />
 
                         <div className="flex items-center gap-3 w-full">
                           <Form.Item
