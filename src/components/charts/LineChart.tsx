@@ -30,6 +30,14 @@ interface IProps {
   axis?: "x" | "y";
   bgColors?: string | string[];
   dataEntityLabel?: string;
+  // TODO: Refactor to use only dataset
+  dataSets?: {
+    data: number[];
+    backgroundColor?: string | string[];
+    borderColor?: string | string[];
+    label: string;
+  }[];
+  useDataSet?: boolean;
 }
 export const LineChart: React.FC<IProps> = ({
   labels,
@@ -37,17 +45,21 @@ export const LineChart: React.FC<IProps> = ({
   axis = "x",
   bgColors = "#1B59F8CC",
   dataEntityLabel = "items",
+  useDataSet = false,
+  dataSets = [],
 }) => {
   const dataSrc = {
     labels,
-    datasets: [
-      {
-        label: dataEntityLabel,
-
-        data,
-        backgroundColor: bgColors,
-      },
-    ],
+    datasets: useDataSet
+      ? dataSets
+      : [
+          {
+            label: dataEntityLabel,
+            borderColor: bgColors,
+            data,
+            backgroundColor: bgColors,
+          },
+        ],
   };
   return (
     <Line

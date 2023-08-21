@@ -103,6 +103,7 @@ const SinglePayrollReview: React.FC<IProps> = ({ payroll }) => {
                         onClick: () => handleAction({ action: "view-summary" }),
                       },
                       {
+                        // TO DO: Add the compare functionality, you probably need to use context
                         key: "compare",
                         label: "Compare",
                         onClick: () => handleAction({ action: "compare" }),
