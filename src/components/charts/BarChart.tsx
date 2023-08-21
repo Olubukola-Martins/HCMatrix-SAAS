@@ -6,7 +6,7 @@ import {
   Title,
   Tooltip,
 } from "chart.js";
-import { Line } from "react-chartjs-2";
+import { Bar } from "react-chartjs-2";
 import { IChartProps } from "./types";
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip);
@@ -25,7 +25,7 @@ export const options = {
   },
 };
 
-export const LineChart: React.FC<IChartProps> = ({
+export const BarChart: React.FC<IChartProps> = ({
   labels,
   data = [],
   axis = "x",
@@ -48,18 +48,23 @@ export const LineChart: React.FC<IChartProps> = ({
         ],
   };
   return (
-    <Line
+    <Bar
       options={{
         ...options,
-        indexAxis: axis,
-
+        interaction: {
+          mode: "index" as const,
+          intersect: false,
+        },
         scales: {
           x: {
+            stacked: true,
             grid: {
               display: false,
             },
           },
           y: {
+            stacked: true,
+
             grid: {
               display: false,
             },
