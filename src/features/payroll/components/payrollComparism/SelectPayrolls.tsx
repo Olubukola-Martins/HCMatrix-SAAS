@@ -1,4 +1,4 @@
-import { Form, Modal, Select } from "antd";
+import { Form, Input, Modal, Select } from "antd";
 import { AppButton } from "components/button/AppButton";
 import React, { useState } from "react";
 import { IModalProps } from "types";
@@ -21,9 +21,16 @@ export const SelectPayrolls: React.FC<IProps> = ({
   const [form] = Form.useForm();
 
   const [schemeType, setSchemeType] = useState<TPayrollSchemeType>("office");
+  const [search, setSearch] = useState<string>("");
   const { data: fetchedPayrolls, isLoading } = useGetAllPayrollsByScheme({
     schemeType,
-    data: { pagination: { limit: 200, offset: 0 } },
+
+    data: {
+      pagination: { limit: 200, offset: 0 },
+      searchParams: {
+        name: search,
+      },
+    },
   });
   const handleSubmit = (data: any) => {
     const payrolls = fetchedPayrolls?.data.filter((item) =>
@@ -45,6 +52,15 @@ export const SelectPayrolls: React.FC<IProps> = ({
         onFinish={handleSubmit}
         requiredMark={false}
       >
+        {/* TODO: Add Search by month */}
+        <Form.Item label="Search Term">
+          <Input
+            placeholder="Search by month or name"
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            allowClear
+          />
+        </Form.Item>
         <Form.Item label="Select Scheme Type">
           <Select
             value={schemeType}
