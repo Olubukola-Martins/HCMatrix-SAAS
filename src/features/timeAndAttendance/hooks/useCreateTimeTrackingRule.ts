@@ -3,9 +3,7 @@ import { useMutation } from "react-query";
 import { ITimeTrackingRule } from "../types/settings";
 import { MICROSERVICE_ENDPOINTS } from "config/enviroment";
 
-export const createTimeTrackingRule = async (
-  props: ITimeTrackingRule
-) => {
+export const createTimeTrackingRule = async (props: ITimeTrackingRule) => {
   const url = `${MICROSERVICE_ENDPOINTS.TIME_AND_ATTENDANCE}/time-tracking/policy`;
   const config = {
     headers: {
@@ -18,6 +16,7 @@ export const createTimeTrackingRule = async (
   const data: any = {
     adminId: props.adminId,
     policy: props.policy,
+    companyId: props.companyId,
   };
 
   const response = await axios.post(url, data, config);
