@@ -14,8 +14,11 @@ export const ExperienceType = () => {
 
     const handleAddField = () => {
       const newType = form.getFieldValue("newType") || [];
-      const initialEmploymentType = { typeName: "", allowEmploymentType: true };
-      form.setFieldsValue({ newType: [...newType, initialEmploymentType] });
+      const initialExperienceType = {
+        ExperienceTypeName: "",
+        allowExperienceType: true,
+      };
+      form.setFieldsValue({ newType: [...newType, initialExperienceType] });
     };
 
     const handleRemoveField = (index: number) => {
@@ -35,12 +38,12 @@ export const ExperienceType = () => {
             layout="vertical"
             requiredMark={false}
             onFinish={handleSubmit}
-            name="employmentTypeSettings"
+            name="experienceTypeSettings"
           >
             <div className="recruitmentSettingsForm ">
-              <h3 className="font-medium">Contract</h3>
+              <h3 className="font-medium">Entry-Level</h3>
               <Form.Item
-                name="dentalInsurance"
+                name="entryLevel"
                 className="flex justify-end items-end"
                 noStyle
               >
@@ -49,9 +52,9 @@ export const ExperienceType = () => {
             </div>
 
             <div className="recruitmentSettingsForm ">
-              <h3 className="font-medium">Full-Time</h3>
+              <h3 className="font-medium">Mid-Level</h3>
               <Form.Item
-                name="flexibilitySchedule"
+                name="midLevel"
                 className="flex justify-end items-end"
                 noStyle
               >
@@ -60,9 +63,9 @@ export const ExperienceType = () => {
             </div>
 
             <div className="recruitmentSettingsForm ">
-              <h3 className="font-medium">Intern</h3>
+              <h3 className="font-medium">Experienced</h3>
               <Form.Item
-                name="healthInsurance"
+                name="experienced"
                 className="flex justify-end items-end"
                 noStyle
               >
@@ -71,9 +74,42 @@ export const ExperienceType = () => {
             </div>
 
             <div className="recruitmentSettingsForm ">
-              <h3 className="font-medium">Part-Time</h3>
+              <h3 className="font-medium">Manager/Supervisor</h3>
               <Form.Item
-                name="healthInsurance"
+                name="managerSupervisor"
+                className="flex justify-end items-end"
+                noStyle
+              >
+                <Switch />
+              </Form.Item>
+            </div>
+
+            <div className="recruitmentSettingsForm ">
+              <h3 className="font-medium">Senior Manager/Supervisor</h3>
+              <Form.Item
+                name="seniorManagerSupervisor"
+                className="flex justify-end items-end"
+                noStyle
+              >
+                <Switch />
+              </Form.Item>
+            </div>
+
+            <div className="recruitmentSettingsForm ">
+              <h3 className="font-medium">Executive</h3>
+              <Form.Item
+                name="executive"
+                className="flex justify-end items-end"
+                noStyle
+              >
+                <Switch />
+              </Form.Item>
+            </div>
+
+            <div className="recruitmentSettingsForm ">
+              <h3 className="font-medium">Senior Executive</h3>
+              <Form.Item
+                name="seniorExecutive"
                 className="flex justify-end items-end"
                 noStyle
               >
@@ -90,7 +126,7 @@ export const ExperienceType = () => {
                       <div key={field.key} className="grid grid-cols-2 ">
                         <Form.Item
                           {...field}
-                          name={[field.name, "typeName"]}
+                          name={[field.name, "ExperienceTypeName"]}
                           label="Name"
                           rules={textInputValidationRules}
                         >
@@ -99,7 +135,7 @@ export const ExperienceType = () => {
                         <div className="flex gap-5 items-center justify-end">
                           <Form.Item
                             {...field}
-                            name={[field.name, "allowEmploymentType"]}
+                            name={[field.name, "allowExperienceType"]}
                             noStyle
                             valuePropName="checked"
                           >
@@ -115,7 +151,7 @@ export const ExperienceType = () => {
 
                     <AppButton
                       variant="transparent"
-                      label="+ Add Employment type"
+                      label="+ Add Experience type"
                       handleClick={() => handleAddField()}
                     />
                   </>
