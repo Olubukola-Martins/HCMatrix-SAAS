@@ -9,6 +9,9 @@ import EmailTemplate from "features/recruitment/pages/EmailTemplate";
 import OfferTemplate from "features/recruitment/pages/OfferTemplate";
 import JobTemplate from "features/recruitment/pages/JobTemplate";
 import OtherSettings from "features/recruitment/pages/OtherSettings";
+import AddEmailTemplate from "features/recruitment/pages/AddEmailTemplate";
+import AddOfferTemplate from "features/recruitment/pages/AddOfferTemplate";
+import AddJobTemplate from "features/recruitment/pages/AddJobTemplate";
 
 export const recruitmentRoutes: TRouteData[] = [
   {
@@ -81,5 +84,20 @@ export const recruitmentRoutes: TRouteData[] = [
     isSearchable: false,
     isPrimaryFeature: false,
     title: "Other Settings",
+  },
+  {
+    element: <AddEmailTemplate />,
+    path: appRoutes.addEmailTemplate,
+    isSearchable: false,
+  },
+  {
+    element: <AddOfferTemplate />,
+    path: appRoutes.addOfferTemplate,
+    isSearchable: false,
+  },
+  {
+    element: <AddJobTemplate />,
+    path: appRoutes.addJobTemplate,
+    isSearchable: false,
   },
 ];
