@@ -9,6 +9,15 @@ const OfferTemplate = () => {
     {
       title: "Full Time - At will",
     },
+    {
+      title: "Full Time - At will",
+    },
+    {
+      title: "Full Time - At will",
+    },
+    {
+      title: "Full Time - At will",
+    },
   ];
 
   return (
