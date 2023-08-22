@@ -25,6 +25,7 @@
     "firebase": "^9.21.0",
     "formik": "^2.2.9",
     "framer-motion": "^6.3.11",
+    "jodit": "^4.0.0-beta.61",
     "moment": "^2.29.4",
     "react": "^18.2.0",
     "react-auth-kit": "^2.12.2",
