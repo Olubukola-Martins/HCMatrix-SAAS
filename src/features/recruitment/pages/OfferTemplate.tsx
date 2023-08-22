@@ -3,14 +3,14 @@ import { AppButton } from "components/button/AppButton";
 import { Dropdown, List, Menu } from "antd";
 import { appRoutes } from "config/router/paths";
 import { Link } from "react-router-dom";
-import { OfferTemplateVariables } from "../components/OfferTemplateVariables";
+import { RecruitTemplateVariables } from "../components/RecruitTemplateVariables ";
 import { useState } from "react";
 
 const OfferTemplate = () => {
 const [openVariables, setOpenVariables] = useState(false)
   return (
     <>
-      <OfferTemplateVariables
+      <RecruitTemplateVariables
         open={openVariables}
         handleClose={() => setOpenVariables(false)}
       />

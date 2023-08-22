@@ -2,7 +2,7 @@ import { Modal } from "antd";
 import React from "react";
 import { IModalProps } from "types";
 
-export const OfferTemplateVariables = ({ handleClose, open }: IModalProps) => {
+export const RecruitTemplateVariables = ({ handleClose, open }: IModalProps) => {
   return (
     <Modal
       title="View Variables"
