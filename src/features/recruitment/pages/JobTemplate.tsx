@@ -3,6 +3,7 @@ import { RecruitmentSettingsIntro } from "../components/RecruitmentSettingsIntro
 import { appRoutes } from "config/router/paths";
 import { Dropdown, List, Menu, Select } from "antd";
 import { useState } from "react";
+import { Link } from "react-router-dom";
 
 const JobTemplate = () => {
   const dataFinanceDep = [
@@ -34,21 +35,18 @@ const JobTemplate = () => {
       title: "Backend Developer",
     },
   ];
-  
+
   const [dataSource, setDataSource] = useState(dataAppDep);
-  
-      const handleSelectChange = (value: string) => {
-              if (value === "Finance Department") {
-                setDataSource(dataFinanceDep);
-              } else if (value === "Application Department") {
-                setDataSource(dataAppDep);
-              } else {
-                setDataSource(dataAppDep);
-              }
 
-      };
-
-
+  const handleSelectChange = (value: string) => {
+    if (value === "Finance Department") {
+      setDataSource(dataFinanceDep);
+    } else if (value === "Application Department") {
+      setDataSource(dataAppDep);
+    } else {
+      setDataSource(dataAppDep);
+    }
+  };
 
   return (
     <>
@@ -103,14 +101,15 @@ const JobTemplate = () => {
           renderItem={(item, index) => (
             <div>
               <List.Item>
-                <div className="justify-between flex flex-row rounded shadow-md py-4 px-6">
-                  <div>
-                    <div className="text-[rgba(58, 58, 58, 0.40)]">
-                      Job Subject -:
-                    </div>
-                    <div className="underline decoration-caramel text-caramel text-lg">
+                <div className="justify-between flex flex-row rounded border shadow-sm py-4 px-6">
+                  <div className="w-full">
+                    <h3 className="text-sm pb-1 text-gray-500">Job Subject:</h3>
+                    <Link
+                      to="/"
+                      className="underline decoration-caramel text-caramel text-lg inline-block w-full overflow-hidden text-ellipsis max-w-full whitespace-nowrap"
+                    >
                       {item.title}
-                    </div>
+                    </Link>
                   </div>
                   <Dropdown
                     trigger={["click"]}
