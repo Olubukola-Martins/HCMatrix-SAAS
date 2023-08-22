@@ -1,7 +1,8 @@
 import React from "react";
 import { Menu, Space, Select, Table, Typography, Dropdown } from "antd";
-import { AppButton } from "components/button/AppButton";
 import { ColumnsType } from "antd/es/table";
+import { Link } from "react-router-dom";
+import { appRoutes } from "config/router/paths";
 
 // INTERFACE/TYPES
 type DataSourceItem = {
@@ -137,7 +138,9 @@ export const JobOpeningContainer = () => {
             ]}
           />
         </div>
-        <AppButton label="Add Job Opening" />
+        <Link to={appRoutes.recruitmentAddJobOpening} className="button">
+          Add Job Opening
+        </Link>
       </Space>
 
       {/* TABLE */}
