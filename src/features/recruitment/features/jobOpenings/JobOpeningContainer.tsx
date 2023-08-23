@@ -95,7 +95,7 @@ export const JobOpeningContainer = () => {
     <>
       {/* INPUTS BELOW NAVIGATION */}
       <Space wrap className="flex justify-between mb-6 mt-10 ">
-        <div className="inline-flex gap-6">
+        <div className="inline-flex gap-8">
           <Select
             defaultValue="open"
             className="w-44 border rounded-md hover:border-none important-hover text-[var(--accent)]"

@@ -38,12 +38,9 @@ const OfferTemplate = () => {
             "border-none hover:no-underline underline decoration-inherit underline-offset-4",
           ]}
         />
-        <AppButton
-          type="button"
-          label="+ Add New Template"
-          variant="transparent"
-          additionalClassNames={["border-caramel max-sm:text-xs"]}
-        />
+        <Link to={appRoutes.addOfferTemplate} className="button">
+          + Add New Template
+        </Link>
       </div>
 
       <div className="Container flex-wrap px-3 ">

@@ -3,7 +3,7 @@ import { RecruitmentSettingsIntro } from "../components/RecruitmentSettingsIntro
 import { appRoutes } from "config/router/paths";
 import { Dropdown, List, Menu, Select } from "antd";
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const JobTemplate = () => {
   const dataFinanceDep = [
@@ -81,12 +81,9 @@ const JobTemplate = () => {
             },
           ]}
         />
-        <AppButton
-          type="button"
-          label="+ Add New Template"
-          variant="transparent"
-          additionalClassNames={["border-caramel max-sm:text-xs"]}
-        />
+        <Link to={appRoutes.addJobTemplate} className="button">
+          + Add New Template
+        </Link>
       </div>
 
       <div className="Container flex-wrap px-3 ">
