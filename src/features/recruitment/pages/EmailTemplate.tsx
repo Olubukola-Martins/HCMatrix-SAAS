@@ -39,7 +39,7 @@ const EmailTemplate = () => {
         />
         <AppButton
           type="button"
-          label="+ Add New Template"
+          label="+ Add Email Template"
           variant="transparent"
           additionalClassNames={["py-5 px-8 max-sm:text-xs"]}
         />
