@@ -5,7 +5,6 @@ import "antd/dist/antd.min.css";
 import { JobDetails } from "features/recruitment/components/JobDetails";
 import { ApplicationQuestions } from "features/recruitment/components/ApplicationQuestions";
 import { AdditionalQuestions } from "features/recruitment/components/AdditionalQuestions";
-// import { RequiredMark } from "antd/lib/form/Form";
 import { RecruitmentSettingsIntro } from "features/recruitment/components/RecruitmentSettingsIntro";
 import { appRoutes } from "config/router/paths";
 import { useNavigate } from "react-router-dom";
@@ -15,8 +14,6 @@ export const AddJobOpeningContainer = () => {
   const [form] = Form.useForm();
   const [stepperCurrentState, setStepperCurrentState] = useState<number>(0);
   const navigate = useNavigate();
-  // const [requiredMark, setRequiredMarkType] =
-  //   useState<RequiredMark>("optional");
   // handling Form onFinish
   const onFinish = (values: any) => {
     console.log(values);
@@ -58,7 +55,7 @@ export const AddJobOpeningContainer = () => {
           name="addJobOpening"
           form={form}
           layout="vertical"
-          className="w-11/12 bg-mainBg mx-auto md-px-3 py-8 px-6 rounded-lg flex flex-col gap-6"
+          className="w-11/12 bg-mainBg mx-auto md-px-3 py-8 px-6 max-sm:py-6 max-sm:px-4 rounded-lg flex flex-col gap-6"
           onFinish={onFinish}
         >
           {stepperCurrentState === 0 ? (

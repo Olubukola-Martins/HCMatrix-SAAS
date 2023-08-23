@@ -3,25 +3,17 @@ import { AppButton } from "components/button/AppButton";
 import { Dropdown, List, Menu } from "antd";
 import { appRoutes } from "config/router/paths";
 import { Link } from "react-router-dom";
+import { RecruitTemplateVariables } from "../components/RecruitTemplateVariables ";
+import { useState } from "react";
 
 const OfferTemplate = () => {
-  const dataSource = [
-    {
-      title: "Full Time - At will",
-    },
-    {
-      title: "Full Time - At will",
-    },
-    {
-      title: "Full Time - At will",
-    },
-    {
-      title: "Full Time - At will",
-    },
-  ];
-
+const [openVariables, setOpenVariables] = useState(false)
   return (
     <>
+      <RecruitTemplateVariables
+        open={openVariables}
+        handleClose={() => setOpenVariables(false)}
+      />
       <RecruitmentSettingsIntro
         title="Offer Template"
         description={
@@ -31,8 +23,9 @@ const OfferTemplate = () => {
       />
       <div className="Container mb-5 mt-8 px-3 flex flex-row w-full">
         <AppButton
+          handleClick={() => setOpenVariables(true)}
           type="button"
-          label="Map variables"
+          label="View variables"
           variant="transparent"
           additionalClassNames={[
             "border-none hover:no-underline underline decoration-inherit underline-offset-4",
@@ -51,7 +44,7 @@ const OfferTemplate = () => {
             xs: 1,
             sm: 2,
           }}
-          dataSource={dataSource}
+          dataSource={[1, 2, 3, 4]}
           renderItem={(item, index) => (
             <div>
               <List.Item>
@@ -64,7 +57,7 @@ const OfferTemplate = () => {
                       to="/"
                       className="underline decoration-caramel text-caramel text-lg inline-block w-full overflow-hidden text-ellipsis max-w-full whitespace-nowrap"
                     >
-                      {item.title}
+                      Offer Template
                     </Link>
                   </div>
                   <Dropdown
