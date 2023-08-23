@@ -123,6 +123,8 @@ export const appRoutes = {
   payGradeSettings: `/settings/grades`,
   payGradeAndCategorySettings: `/settings/grades-and-settings`,
   taxAuthorities: `/settings/payroll/tax-authorities`,
+  itfAuthorities: `/settings/payroll/itf-authorities`,
+  nsitfAuthorities: `/settings/payroll/nsitf-authorities`,
   pensionAdministrators: `/settings/payroll/pension-adminsistrators`,
   gradeCategorySettings: `/settings/grade_categories`,
   probationPolicySettings: `/settings/probation_policy`,

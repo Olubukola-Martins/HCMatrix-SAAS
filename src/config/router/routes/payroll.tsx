@@ -31,6 +31,8 @@ import TaxAuthPage from "features/payroll/pages/TaxAuthPage";
 import PensionAdminsPage from "features/payroll/pages/PensionAdminsPage";
 import EditPayslipTemplate from "features/payroll/pages/EditPayslipTemplate";
 import SinglePayroll from "features/payroll/pages/SinglePayroll";
+import ITFAuthPage from "features/payroll/pages/ITFAuthPage";
+import NSITFAuthPage from "features/payroll/pages/NSITFAuthPage";
 
 export const payrollRoutes: TRouteData[] = [
   {
@@ -168,6 +170,20 @@ export const payrollRoutes: TRouteData[] = [
     element: <TaxAuthPage />,
     path: appRoutes.taxAuthorities,
     title: "Tax Authorities",
+    isSearchable: true,
+    isPrimaryFeature: true,
+  },
+  {
+    element: <ITFAuthPage />,
+    path: appRoutes.itfAuthorities,
+    title: "ITF Authorities",
+    isSearchable: true,
+    isPrimaryFeature: true,
+  },
+  {
+    element: <NSITFAuthPage />,
+    path: appRoutes.nsitfAuthorities,
+    title: "NSITF Authorities",
     isSearchable: true,
     isPrimaryFeature: true,
   },
