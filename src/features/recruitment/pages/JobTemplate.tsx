@@ -81,8 +81,13 @@ const JobTemplate = () => {
             },
           ]}
         />
-        <Link to={appRoutes.addJobTemplate} className="button">
-          + Add New Template
+        <Link to={appRoutes.addJobTemplate}>
+          <AppButton
+            type="button"
+            label="+ Add Email Template"
+            variant="transparent"
+            additionalClassNames={["py-5 px-8 max-sm:text-xs"]}
+          />
         </Link>
       </div>
 

@@ -1,8 +1,8 @@
-import { Form, Input } from "antd";
-import JoditEditorComponent from "jodit-react";
+import { Form, Input, Select } from "antd";
+import { appRoutes } from "config/router/paths";
 import { useState } from "react";
 import { RecruitmentSettingsIntro } from "../components/RecruitmentSettingsIntro";
-import { appRoutes } from "config/router/paths";
+import JoditEditorComponent from "../components/JoditEditor";
 import { AppButton } from "components/button/AppButton";
 
 const AddEmailTemplate = () => {
@@ -16,39 +16,38 @@ const AddEmailTemplate = () => {
   const handleSubmit = (values: any) => {
     console.log("Received values of form:", values);
   };
+  const handleChange = (value: string) => {
+    console.log(`selected ${value}`);
+  };
   return (
     <>
       <RecruitmentSettingsIntro
-        title="Job Template"
+        title="New Email Template"
         description={""}
         nextLink={appRoutes.recruitmentEmailTemplate}
       />
-      <div className="Container mt-10">
+      <div className="Container mt-5">
         <Form layout="vertical" form={form} onFinish={handleSubmit}>
           <h2 className="text-xl py-2 font-nedium">
             Template Name <span className="text-red-600">*</span>
           </h2>
           <Form.Item
-            name="templateName"
-            label=""
-            rules={[{ required: true, message: "Template Name is required" }]}
+            name="jobName"
+            rules={[{ required: true, message: "Job Name is required" }]}
+            className="w-56"
           >
-            <Input className="w-56" />
+            <Input />
           </Form.Item>
 
-          <Form.Item
-            label="Offer Letter"
-            name="offerLetter"
-            className="font-medium text-xl"
-          >
+          <Form.Item name="jobName" className="font-medium text-xl">
             <JoditEditorComponent
               value={editorContent}
               onChange={handleEditorChange}
             />
           </Form.Item>
-          <div className="w-full flex justify-end gap-5">
+          <div className="w-full inline-flex justify-end gap-5">
             <button
-              className="text-base underline underline-offset-4 hover:no-underline font-medium hover:text-caramel"
+              className="text-base text-caramel underline underline-offset-4 hover:no-underline font-medium"
               type="reset"
             >
               Cancel

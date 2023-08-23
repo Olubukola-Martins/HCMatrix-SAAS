@@ -1,10 +1,10 @@
-import { useState } from 'react';
-import { RecruitTemplateVariables } from '../components/RecruitTemplateVariables '
-import { RecruitmentSettingsIntro } from '../components/RecruitmentSettingsIntro'
-import { appRoutes } from 'config/router/paths'
-import { Dropdown, List, Menu } from 'antd';
-import { Link } from 'react-router-dom';
-import { AppButton } from 'components/button/AppButton';
+import { useState } from "react";
+import { RecruitTemplateVariables } from "../components/RecruitTemplateVariables ";
+import { RecruitmentSettingsIntro } from "../components/RecruitmentSettingsIntro";
+import { appRoutes } from "config/router/paths";
+import { Dropdown, List, Menu } from "antd";
+import { Link } from "react-router-dom";
+import { AppButton } from "components/button/AppButton";
 
 const EmailTemplate = () => {
   const dataSource = [
@@ -37,12 +37,14 @@ const EmailTemplate = () => {
             "border-none hover:no-underline underline decoration-inherit underline-offset-4",
           ]}
         />
-        <AppButton
-          type="button"
-          label="+ Add Email Template"
-          variant="transparent"
-          additionalClassNames={["py-5 px-8 max-sm:text-xs"]}
-        />
+        <Link to={appRoutes.addEmailTemplate}>
+          <AppButton
+            type="button"
+            label="+ Add Email Template"
+            variant="transparent"
+            additionalClassNames={["py-5 px-8 max-sm:text-xs"]}
+          />
+        </Link>
       </div>
 
       <div className="Container flex-wrap px-3 ">
@@ -145,6 +147,6 @@ const EmailTemplate = () => {
       </div>
     </>
   );
-}
+};
 
-export default EmailTemplate
+export default EmailTemplate;

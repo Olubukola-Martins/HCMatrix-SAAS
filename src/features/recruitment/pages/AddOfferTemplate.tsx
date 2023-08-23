@@ -8,30 +8,24 @@ import { AppButton } from "components/button/AppButton";
 const AddOfferTemplate = () => {
   const [form] = Form.useForm();
   const [offerLetterContent, setOfferLetterContent] = useState("");
-  const [offerEmailContent, setOfferEmailContent] = useState("");
 
   const handleOfferLetterChange = (content: string) => {
     setOfferLetterContent(content);
     console.log(offerLetterContent);
   };
 
-  const handleOfferEmailChange = (content: string) => {
-    setOfferEmailContent(content);
-    console.log(offerEmailContent);
-  };
   const handleSubmit = (values: any) => {
     console.log("Received values of form:", values);
     console.log("Offer Letter Content:", offerLetterContent);
-    console.log("Offer Email Content:", offerEmailContent);
   };
   return (
     <>
       <RecruitmentSettingsIntro
-        title="New Email Template"
+        title="Offer Template"
         description={""}
         nextLink={appRoutes.recruitmentOfferTemplate}
       />
-      <div className="Container mt-10">
+      <div className="Container mt-5">
         <Form layout="vertical" form={form} onFinish={handleSubmit}>
           <h2 className="text-xl py-2 font-nedium">
             Template Name <span className="text-red-600">*</span>
@@ -52,19 +46,9 @@ const AddOfferTemplate = () => {
               onChange={handleOfferLetterChange}
             />
           </Form.Item>
-          <Form.Item
-            label="Offer Email"
-            name="offerEmail"
-            className="font-medium text-xl"
-          >
-            <JoditEditorComponent
-              value={offerEmailContent}
-              onChange={handleOfferEmailChange}
-            />
-          </Form.Item>
           <div className="flex justify-end gap-5">
             <button
-              className="text-base underline underline-offset-4 hover:no-underline font-medium hover:text-caramel"
+              className="text-base text-caramel underline underline-offset-4 hover:no-underline font-medium "
               type="reset"
             >
               Cancel

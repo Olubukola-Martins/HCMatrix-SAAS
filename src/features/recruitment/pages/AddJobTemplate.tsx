@@ -26,7 +26,7 @@ const AddJobTemplate = () => {
         description={""}
         nextLink={appRoutes.recruitmentJobTemplate}
       />
-      <div className="Container mt-10">
+      <div className="Container mt-5">
         <Form layout="vertical" form={form} onFinish={handleSubmit}>
           <h2 className="text-xl py-2 font-nedium">
             Job Name <span className="text-red-600">*</span>
@@ -34,7 +34,6 @@ const AddJobTemplate = () => {
           <div className="flex gap-4 mb-5">
             <Form.Item
               name="jobName"
-              label=""
               rules={[{ required: true, message: "Job Name is required" }]}
               className="w-56"
             >
@@ -62,11 +61,7 @@ const AddJobTemplate = () => {
             </Form.Item>
           </div>
 
-          <Form.Item
-            label="Offer Letter"
-            name="offerLetter"
-            className="font-medium text-xl"
-          >
+          <Form.Item name="jobName" className="font-medium text-xl">
             <JoditEditorComponent
               value={editorContent}
               onChange={handleEditorChange}
@@ -74,7 +69,7 @@ const AddJobTemplate = () => {
           </Form.Item>
           <div className="w-full flex justify-end gap-5">
             <button
-              className="text-base underline underline-offset-4 hover:no-underline font-medium hover:text-caramel"
+              className="text-base text-caramel underline underline-offset-4 hover:no-underline font-medium"
               type="reset"
             >
               Cancel

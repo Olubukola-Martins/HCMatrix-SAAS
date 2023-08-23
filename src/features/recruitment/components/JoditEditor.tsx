@@ -20,6 +20,12 @@ const JoditEditorComponent: React.FC<JoditEditorProps> = ({
     showXPathInStatusbar: false,
     buttons:
       "bold,italic,underline,strikethrough,eraser,ul,ol,font,fontsize,paragraph,classSpan,lineHeight,superscript,subscript,file,image,video,spellcheck,cut,preview",
+    buttonsMD:
+      "bold,italic,underline,strikethrough,eraser,ul,ol,font,fontsize,paragraph,classSpan,lineHeight,superscript,subscript,file,image,video,spellcheck,cut,preview",
+    buttonsSM:
+      "bold,italic,underline,strikethrough,eraser,ul,ol,font,fontsize,paragraph,classSpan,lineHeight,superscript,subscript,file,image,video,spellcheck,cut,preview",
+    buttonsXS:
+      "bold,italic,underline,strikethrough,eraser,ul,ol,font,fontsize,paragraph,classSpan,lineHeight,superscript,subscript,file,image,video,spellcheck,cut,preview",
     minHeight: 0,
     minWidth: 0,
     allowResizeY: false,
