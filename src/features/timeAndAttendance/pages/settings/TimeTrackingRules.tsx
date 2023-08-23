@@ -16,7 +16,7 @@ import { openNotification } from "utils/notifications";
 export const TimeTrackingRules = () => {
   const [error, setError] = useState<string>("");
   const [selectedOption, setSelectedOption] = useState<string>("");
-  const { companyId, token, currentUserEmployeeId } = useApiAuth();
+  const { companyId, token, currentUserId } = useApiAuth();
   const { mutate, isLoading } = useCreateTimeTrackingRule();
   const globalCtx = useContext(GlobalContext);
   const { dispatch } = globalCtx;
@@ -36,7 +36,7 @@ export const TimeTrackingRules = () => {
           {
             companyId,
             token,
-            adminId: currentUserEmployeeId,
+            adminId: currentUserId,
             policy: selectedOption,
           },
           {

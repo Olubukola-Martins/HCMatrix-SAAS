@@ -30,11 +30,13 @@ export const useApiAuth = () => {
   const currentCompany = companies?.find(
     (item) => item.companyId === +currentCompanyId
   );
+  const currentUserId = authDetails?.user?.id;
 
   const currentUserEmployeeId = currentCompany?.id as number;
   return {
     token,
     companyId,
+    currentUserId,
     currentUserEmployeeId,
     currentCompanyEmployeeDetails: currentCompany,
   };

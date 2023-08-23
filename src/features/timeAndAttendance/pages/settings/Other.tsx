@@ -6,6 +6,11 @@ import { TimeAttendanceSettingsNav } from "features/timeAndAttendance/components
 export const Other = () => {
   const formWrapStyle =
     "bg-card px-4 pt-4 rounded grid grid-cols-1 md:grid-cols-2 gap-x-10 mb-5 shadow-sm";
+
+    const onSubmit = (data: any) => {
+      console.log(data);
+    }
+    
   return (
     <div>
       <TimeAttendanceSettingsNav active="other settings" />
@@ -19,7 +24,7 @@ export const Other = () => {
             <h3 className="font-medium text-base pb-3 pt-1">
               Attendance settings
             </h3>
-            <Form layout="vertical">
+            <Form layout="vertical" onFinish={onSubmit}>
               <div className={formWrapStyle}>
                 <Form.Item
                   name="workflow"

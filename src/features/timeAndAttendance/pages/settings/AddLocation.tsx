@@ -45,6 +45,7 @@ export const AddLocation = () => {
               title: "Error Occurred",
               description:
                 err?.response.data.message ?? err?.response.data.error.message,
+                duration: 6.0
             });
           },
           onSuccess: (res: any) => {
@@ -102,13 +103,6 @@ export const AddLocation = () => {
               layout="vertical"
               requiredMark={false}
             >
-              <FormBranchInput
-                Form={Form}
-                control={{
-                  label: "Select branch",
-                  name: "branch_id",
-                }}
-              />
               <Form.List name="biometricDeviceLocations">
                 {(fields) => (
                   <>
@@ -117,7 +111,7 @@ export const AddLocation = () => {
                         key={field.key}
                         className={`${formWrapStyle} grid grid-cols-1 md:grid-cols-2 gap-x-7`}
                       >
-                        {/* <Form.Item
+                        <Form.Item
                           {...field}
                           name={[field.name, "branchId"]}
                           label="Select Branch"
@@ -133,14 +127,8 @@ export const AddLocation = () => {
                             ]}
                             allowClear
                           />
-                        </Form.Item> */}
-                        <FormBranchInput
-                          Form={Form}
-                          control={{
-                            label: "Select branch",
-                            name: "branch_id",
-                          }}
-                        />
+                        </Form.Item>
+                      
 
                         <div className="flex items-center gap-3 w-full">
                           <Form.Item

@@ -13,17 +13,18 @@ const formWrapStyle =
   "bg-card px-4 pt-4 rounded grid grid-cols-1 md:grid-cols-2 gap-x-10 mb-5 shadow-sm";
 export const ClockIn = () => {
   const [form] = Form.useForm();
-  const { companyId, token, currentUserEmployeeId } = useApiAuth();
+  const { companyId, token, currentUserId } = useApiAuth();
   const { mutate, isLoading } = useCreateClockIn();
   const globalCtx = useContext(GlobalContext);
   const { dispatch } = globalCtx;
 
   const handleFormSubmit = (values: any) => {
+    
     if (companyId) {
       mutate(
         {
           companyId,
-          adminId: currentUserEmployeeId,
+          adminId: currentUserId,
           isSoftClockIn: values.softClockIn,
           isBiometricClockIn: values.allowBiometrics,
           biometricDevices: values.biometricDevices,

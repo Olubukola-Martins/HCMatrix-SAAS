@@ -3,26 +3,74 @@ import TextArea from "antd/lib/input/TextArea";
 import { AppButton } from "components/button/AppButton";
 import { AttendanceSettingsIntro } from "features/timeAndAttendance/components/settings/AttendanceSettingsIntro";
 import { TimeAttendanceSettingsNav } from "features/timeAndAttendance/components/settings/TimeAttendanceSettingsNav";
+import { useCreateTimeOffPolicy } from "features/timeAndAttendance/hooks/useCreateTimeOffPolicy";
 import { useApiAuth } from "hooks/useApiAuth";
-import { useEffect } from "react";
+import { useContext, useEffect } from "react";
+import { EGlobalOps, GlobalContext } from "stateManagers/GlobalContextProvider";
 import { generalValidationRules } from "utils/formHelpers/validation";
+import { openNotification } from "utils/notifications";
 
 export const TimeOffPolicy = () => {
   const [form] = Form.useForm();
-  const { companyId, token, currentUserEmployeeId } = useApiAuth();
+  const { companyId, token, currentUserId } = useApiAuth();
+  const { mutate, isLoading } = useCreateTimeOffPolicy();
+  const globalCtx = useContext(GlobalContext);
+  const { dispatch } = globalCtx;
 
-  const handleFormSubmit = (values: FormData[]) => {
-    console.log("Form submitted:", values);
+  const handleFormSubmit = (values: any) => {
+    if (companyId) {
+      mutate(
+        {
+          companyId,
+          token,
+          timeOffPolicies: values.fields,
+        },
+        {
+          onError: (err: any) => {
+            openNotification({
+              state: "error",
+              title: "Error Occurred",
+              description:
+                err?.response.data.message ?? err?.response.data.error.message,
+              duration: 7.0,
+            });
+          },
+          onSuccess: (res: any) => {
+            openNotification({
+              state: "success",
+              title: "Success",
+              description: res.data.message,
+              // duration: 0.4,
+            });
+
+            form.resetFields();
+            dispatch({ type: EGlobalOps.setShowInitialSetup, payload: true });
+          },
+        }
+      );
+    }
   };
 
   useEffect(() => {
-    const defaultField = { policy: "", duration: "", comment: "" };
+    const defaultField = {
+      name: "",
+      durationInDays: "",
+      comment: "",
+      adminId: currentUserId,
+      companyId: companyId
+    };
     form.setFieldsValue({ fields: [defaultField] });
   }, []);
 
   const handleAddField = () => {
     const fields = form.getFieldValue("fields") || [];
-    const newField = { policy: "", duration: "", comment: "" };
+    const newField = {
+      name: "",
+      durationInDays: "",
+      comment: "",
+      adminId: currentUserId,
+      companyId: companyId
+    };
     form.setFieldsValue({ fields: [...fields, newField] });
   };
 
@@ -50,7 +98,7 @@ export const TimeOffPolicy = () => {
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-x-7">
                         <Form.Item
                           {...field}
-                          name={[field.name, "policy"]}
+                          name={[field.name, "name"]}
                           label="Create Time Policy"
                           className="w-full"
                           rules={generalValidationRules}
@@ -61,7 +109,7 @@ export const TimeOffPolicy = () => {
 
                         <Form.Item
                           {...field}
-                          name={[field.name, "duration"]}
+                          name={[field.name, "durationInDays"]}
                           label="Duration in days"
                           className="w-full"
                           rules={generalValidationRules}
@@ -98,7 +146,7 @@ export const TimeOffPolicy = () => {
             </Form.List>
 
             <div className="flex justify-end">
-              <AppButton label="Save" type="submit" />
+              <AppButton label="Save" type="submit" isLoading={isLoading} />
             </div>
           </Form>
         </div>
@@ -109,4 +157,3 @@ export const TimeOffPolicy = () => {
 function ITimeTrackingRule() {
   throw new Error("Function not implemented.");
 }
-

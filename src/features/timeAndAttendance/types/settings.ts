@@ -29,3 +29,16 @@ export interface ITimeTrackingRule extends ICurrentCompany {
   adminId: number;
   policy: string;
 }
+
+// time off policy rule
+export interface ITimeOffPolicyRule extends ICurrentCompany {
+  timeOffPolicies: TimeOffPolicy[];
+}
+
+interface TimeOffPolicy {
+  name: string;
+  durationInDays: number;
+  comment: string;
+  companyId: number;
+  adminId: number;
+}
