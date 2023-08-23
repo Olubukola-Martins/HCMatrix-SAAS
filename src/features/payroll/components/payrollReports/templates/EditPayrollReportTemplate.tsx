@@ -9,14 +9,17 @@ import {
 import { openNotification } from "utils/notifications";
 import { useQueryClient } from "react-query";
 import { QUERY_KEY_FOR_PAY_GRADES } from "features/payroll/hooks/payGrades/useGetPayGrades";
-import { FormPayGradeCategoryInput } from "../payGradeCategories/FormPayGradeCategoryInput";
-import { TPayGrade } from "features/payroll/types";
+
 import { useUpdatePayGrade } from "features/payroll/hooks/payGrades/useUpdatePayGrade";
 
 interface IProps extends IModalProps {
-  grade: TPayGrade;
+  template: any;
 }
-const EditPayGrade: React.FC<IProps> = ({ open, handleClose, grade }) => {
+const EditPayrollReportTemplate: React.FC<IProps> = ({
+  open,
+  handleClose,
+  template,
+}) => {
   const queryClient = useQueryClient();
   const [categoryRange, setCategoryRange] = useState<{
     min: number;
@@ -28,20 +31,20 @@ const EditPayGrade: React.FC<IProps> = ({ open, handleClose, grade }) => {
 
   useEffect(() => {
     form.setFieldsValue({
-      categoryId: grade.categoryId,
-      grossPay: grade.grossPay,
-      name: grade.name,
+      categoryId: template.categoryId,
+      grossPay: template.grossPay,
+      name: template.name,
     });
     setCategoryRange({
-      max: +grade.category.maxGrossPay,
-      min: +grade.category.minGrossPay,
+      max: +template.category.maxGrossPay,
+      min: +template.category.minGrossPay,
     });
-  }, [form, grade]);
+  }, [form, template]);
 
   const handleSubmit = (data: any) => {
     mutate(
       {
-        id: grade.id,
+        id: template.id,
         body: {
           categoryId: data.categoryId,
           grossPay: data.grossPay,
@@ -78,55 +81,37 @@ const EditPayGrade: React.FC<IProps> = ({ open, handleClose, grade }) => {
     );
   };
   return (
-    <Modal
-      open={open}
-      onCancel={() => handleClose()}
-      footer={null}
-      title={"Edit Pay Grade"}
-      style={{ top: 20 }}
+    <Form
+      layout="vertical"
+      form={form}
+      onFinish={handleSubmit}
+      requiredMark={false}
     >
-      <Form
-        layout="vertical"
-        form={form}
-        onFinish={handleSubmit}
-        requiredMark={false}
+      <Form.Item rules={textInputValidationRules} name="name" label="Name">
+        <Input placeholder="Category Name" />
+      </Form.Item>
+
+      <Form.Item
+        rules={generalValidationRules}
+        name="grossPay"
+        label="Gross Pay"
       >
-        <Form.Item rules={textInputValidationRules} name="name" label="Name">
-          <Input placeholder="Category Name" />
-        </Form.Item>
-        <FormPayGradeCategoryInput
-          Form={Form}
-          control={{ name: "categoryId", label: "Category" }}
-          onSelect={(_, option) =>
-            setCategoryRange({
-              max: +option.maxGrossPay,
-              min: +option.minGrossPay,
-            })
-          }
+        <InputNumber
+          min={categoryRange.min}
+          max={categoryRange.max}
+          placeholder="Gross Pay"
+          className="w-2/4"
         />
+      </Form.Item>
+      <Form.Item rules={generalValidationRules} name="grossPay">
+        <Slider min={categoryRange.min} max={categoryRange.max} />
+      </Form.Item>
 
-        <Form.Item
-          rules={generalValidationRules}
-          name="grossPay"
-          label="Gross Pay"
-        >
-          <InputNumber
-            min={categoryRange.min}
-            max={categoryRange.max}
-            placeholder="Gross Pay"
-            className="w-2/4"
-          />
-        </Form.Item>
-        <Form.Item rules={generalValidationRules} name="grossPay">
-          <Slider min={categoryRange.min} max={categoryRange.max} />
-        </Form.Item>
-
-        <div className="flex justify-end">
-          <AppButton type="submit" isLoading={isLoading} />
-        </div>
-      </Form>
-    </Modal>
+      <div className="flex justify-end">
+        <AppButton type="submit" isLoading={isLoading} />
+      </div>
+    </Form>
   );
 };
 
-export default EditPayGrade;
+export default EditPayrollReportTemplate;

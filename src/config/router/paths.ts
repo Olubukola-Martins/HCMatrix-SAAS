@@ -148,6 +148,7 @@ export const appRoutes = {
   createWagesPayroll: `/payroll/create/wage`,
   createProjectPayroll: `/payroll/create/project`,
   payrollReport: `/payroll/report`,
+  addPayrollReport: `/payroll/report/create`,
   payslips: `/payroll/payslip`,
   employeePayslips: `/payroll/employee-payslip`,
   createPayslipTemplate: `/payroll/create-payslip-template`,

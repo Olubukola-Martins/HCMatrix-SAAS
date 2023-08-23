@@ -18,6 +18,7 @@ const routes = [
       { path: appRoutes.nsitfAuthorities, title: "NSITF" },
     ],
   },
+  { title: "Reports", path: appRoutes.payrollReport },
   { title: "Payslips", path: appRoutes.payslips },
 ];
 const PayrollSubNav = () => {
