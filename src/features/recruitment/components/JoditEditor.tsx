@@ -1,6 +1,6 @@
 import JoditEditor from "jodit-react";
 import Form from "antd/es/form";
-import { generalValidationRules } from "utils/formHelpers/validation";
+//import { textInputValidationRules } from "utils/formHelpers/validation";
 
 const config = {
   height: 400,
@@ -27,13 +27,14 @@ const config = {
 };
 export const JoditEditorComponent: React.FC<{
   showLabel?: boolean;
-  control?: { label: string; name: string; multiple?: boolean };
-}> = ({ showLabel, control }) => {
+  control?: { label: string; name: string };
+}> = ({ showLabel = false, control }) => {
   return (
     <Form.Item
-      name={control?.name ?? "joditName"}
+      name={control?.name ?? "templateDescription"}
       label={showLabel ? control?.label ?? "Template" : null}
-      rules={generalValidationRules}
+      className=""
+      //rules={textInputValidationRules}
     >
       <JoditEditor config={config} value={""} />
     </Form.Item>

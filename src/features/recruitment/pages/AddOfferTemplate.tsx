@@ -26,13 +26,10 @@ const AddOfferTemplate = () => {
           <Form.Item name="templateName" rules={textInputValidationRules}>
             <Input className="w-56" />
           </Form.Item>
-          <Form.Item
-            label="Offer Letter"
-            name="offerLetter"
-            className="font-medium text-xl"
-          >
-            <JoditEditorComponent />
-          </Form.Item>
+          <JoditEditorComponent
+            showLabel={true}
+            control={{ label: "Offer Email", name: "" }}
+          />
           <div className="flex justify-end gap-5">
             <button
               className="text-base text-caramel underline underline-offset-4 hover:no-underline font-medium "

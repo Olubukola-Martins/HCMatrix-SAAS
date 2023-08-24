@@ -31,10 +31,7 @@ const AddEmailTemplate = () => {
           >
             <Input />
           </Form.Item>
-
-          <Form.Item name="jobName" className="font-medium text-xl">
-            <JoditEditorComponent />
-          </Form.Item>
+          <JoditEditorComponent />
           <div className="w-full inline-flex justify-end gap-5">
             <button
               className="text-base text-caramel underline underline-offset-4 hover:no-underline font-medium"
