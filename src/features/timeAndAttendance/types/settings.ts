@@ -42,3 +42,11 @@ interface TimeOffPolicy {
   companyId: number;
   adminId: number;
 }
+
+export interface IOtherSettings extends ICurrentCompany {
+  adminId: number;
+  longitude: string;
+  latitude: string;
+  isSoftClockinEnabled: boolean;
+  geoFenceRadiusInKm: string;
+}

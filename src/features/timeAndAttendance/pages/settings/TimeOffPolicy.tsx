@@ -99,7 +99,7 @@ export const TimeOffPolicy = () => {
                         <Form.Item
                           {...field}
                           name={[field.name, "name"]}
-                          label="Create Time Policy"
+                          label="Create Time off Policy"
                           className="w-full"
                           rules={generalValidationRules}
                           required={false}

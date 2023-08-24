@@ -13,8 +13,8 @@ const formWrapStyle =
   "bg-card px-4 pt-4 rounded grid grid-cols-1 md:grid-cols-2 gap-x-10 mb-5 shadow-sm";
 export const ClockIn = () => {
   const [form] = Form.useForm();
-  const { companyId, token, currentUserId } = useApiAuth();
   const { mutate, isLoading } = useCreateClockIn();
+  const { companyId, token, currentUserId } = useApiAuth();
   const globalCtx = useContext(GlobalContext);
   const { dispatch } = globalCtx;
 
