@@ -24,7 +24,7 @@ const AddJobTemplate = () => {
           <h2 className="text-lg py-2 font-medium">
             Job Name <span className="text-red-600">*</span>
           </h2>
-          <div className="flex gap-4 mb-5 lg:w-2/4">
+          <div className="flex gap-4 mb-5 lg:w-1/3">
             <Form.Item name="jobName" rules={textInputValidationRules}>
               <Input placeholder="Job Role" />
             </Form.Item>
