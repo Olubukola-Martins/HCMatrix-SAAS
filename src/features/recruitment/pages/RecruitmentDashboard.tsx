@@ -3,6 +3,9 @@ import RecruitmentSubNav from "../components/RecruitmentSubNav";
 import { WelcomeIntro } from "components/layout/WelcomeIntro";
 import { Tabs } from "antd";
 import { JobOpeningContainer } from "../features/jobOpenings/JobOpeningContainer";
+import ApplicationsList from "../features/applications/ApplicationsList";
+import RecruitmentUsers from "../features/users/RecruitmentUsers";
+import TalentPool from "../features/talentPool/TalentPool";
 
 const RecruitmentDashboard = () => {
   return (
@@ -34,17 +37,17 @@ export const DashboardWrapper = () => {
     },
     {
       label: "Applications",
-      children: <div />,
+      children: <ApplicationsList />,
       key: "Applications",
     },
     {
       label: "Talent Pool",
-      children: <div />,
+      children: <TalentPool />,
       key: "Talent Pool",
     },
     {
       label: "Users",
-      children: <div />,
+      children: <RecruitmentUsers />,
       key: "Users",
     },
   ];
