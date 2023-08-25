@@ -3,6 +3,7 @@ import { AppButton } from "components/button/AppButton";
 import { AttendanceSettingsIntro } from "features/timeAndAttendance/components/settings/AttendanceSettingsIntro";
 import { TimeAttendanceSettingsNav } from "features/timeAndAttendance/components/settings/TimeAttendanceSettingsNav";
 import { useCreateOtherSettings } from "features/timeAndAttendance/hooks/useCreateOtherSettings";
+import { useGetOtherSettings } from "features/timeAndAttendance/hooks/useGetOtherSettings";
 import { useApiAuth } from "hooks/useApiAuth";
 import { useContext } from "react";
 import { EGlobalOps, GlobalContext } from "stateManagers/GlobalContextProvider";
@@ -14,8 +15,10 @@ export const Other = () => {
   const { companyId, token, currentUserId } = useApiAuth();
   const globalCtx = useContext(GlobalContext);
   const { dispatch } = globalCtx;
-
+  const { data, isLoading } = useGetOtherSettings();
   const { mutate, isLoading: isLoadingPost } = useCreateOtherSettings();
+  // console.log("here", data);
+
   const onSubmit = (values: any) => {
     if (companyId) {
       mutate(
@@ -35,7 +38,7 @@ export const Other = () => {
               title: "Error Occurred",
               description:
                 err?.response.data.message ?? err?.response.data.error.message,
-                duration: 7.0
+              duration: 7.0,
             });
           },
           onSuccess: (res: any) => {
