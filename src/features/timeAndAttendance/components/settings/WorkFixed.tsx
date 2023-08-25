@@ -3,7 +3,8 @@ import { AppButton } from "components/button/AppButton";
 import { useCreateWorkSchedule } from "features/timeAndAttendance/hooks/useCreateWorkSchedule";
 import { useApiAuth } from "hooks/useApiAuth";
 import { useContext, useEffect } from "react";
-import { GlobalContext } from "stateManagers/GlobalContextProvider";
+import { EGlobalOps, GlobalContext } from "stateManagers/GlobalContextProvider";
+import { openNotification } from "utils/notifications";
 
 const boxStyle = "border py-3 px-7 text-accent font-medium text-base";
 export const WorkFixed = () => {
@@ -11,7 +12,7 @@ export const WorkFixed = () => {
   const { companyId, token, currentUserId } = useApiAuth();
   const globalCtx = useContext(GlobalContext);
   const { dispatch } = globalCtx;
-  const {mutate, isLoading} = useCreateWorkSchedule()
+  const { mutate, isLoading } = useCreateWorkSchedule();
   useEffect(() => {
     form.setFieldsValue({
       workDaysAndTime: [
@@ -40,9 +41,38 @@ export const WorkFixed = () => {
       };
     });
     if (companyId) {
-      
+      mutate(
+        {
+          companyId,
+          token,
+          adminId: currentUserId,
+          workArrangement: "Fixed",
+          workDaysAndTime: workDaysAndTime,
+        },
+        {
+          onError: (err: any) => {
+            openNotification({
+              state: "error",
+              title: "Error Occurred",
+              description:
+                err?.response.data.message ?? err?.response.data.error.message,
+              duration: 7.0,
+            });
+          },
+          onSuccess: (res: any) => {
+            openNotification({
+              state: "success",
+              title: "Success",
+              description: res.data.message,
+              // duration: 0.4,
+            });
+
+            form.resetFields();
+            dispatch({ type: EGlobalOps.setShowInitialSetup, payload: true });
+          },
+        }
+      );
     }
-   
   };
 
   return (
@@ -77,9 +107,6 @@ export const WorkFixed = () => {
       {/* form */}
       <div className="mt-6">
         <Form form={form} onFinish={onFinish}>
-          <Form.Item noStyle name="workArrangement" initialValue="Fixed">
-            <Input type="hidden" />
-          </Form.Item>
           <Form.List name="workDaysAndTime">
             {(fields) => (
               <>
@@ -108,7 +135,7 @@ export const WorkFixed = () => {
                 </Checkbox>
               </Form.Item>
             </div>
-            <AppButton label="Save" type="submit" isLoading={isLoading}/>
+            <AppButton label="Save" type="submit" isLoading={isLoading} />
           </div>
         </Form>
       </div>

@@ -17,6 +17,7 @@ export const createWorkSchedule = async (props: workScheduleProps) => {
     companyId: props.companyId,
     adminId: props.adminId,
     workArrangement: props.workArrangement,
+    workDaysAndTime: props.workDaysAndTime,
   };
 
   const response = await axios.post(url, data, config);
