@@ -31,12 +31,14 @@ const [openVariables, setOpenVariables] = useState(false)
             "border-none hover:no-underline underline decoration-inherit underline-offset-4",
           ]}
         />
-        <AppButton
-          type="button"
-          label="+ Add New Template"
-          variant="transparent"
-          additionalClassNames={["py-5 px-8 max-sm:text-xs"]}
-        />
+       <Link to={appRoutes.addOfferTemplate}>
+          <AppButton
+            type="button"
+            label="+ Add Email Template"
+            variant="transparent"
+            additionalClassNames={["py-5 px-8 max-sm:text-xs"]}
+          />
+        </Link>
       </div>
 
       <div className="Container flex-wrap px-3 ">

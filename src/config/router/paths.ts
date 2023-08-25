@@ -199,7 +199,7 @@ export const appRoutes = {
   recruitmentOfferTemplate: `/recruitment/offer-template`,
   recruitmentJobTemplate: `/recruitment/job-template`,
   recruitmentOtherSettings: `/recruitment/other-settings`,
-  addEmailTemplate: `/recruitment/add-email-template`,
+  addEmailTemplate: `/recruitment/add-email-template`, 
   addJobTemplate: `/recruitment/add-job-template`,
   addOfferTemplate: `/recruitment/add-offer-template`,
 

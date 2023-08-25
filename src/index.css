@@ -406,8 +406,6 @@ textarea.ant-input,
   color: var(--caramel);
 }
 
-
-
 /* customization to allow userfeedbackComp to have side icon*/
 .ant-steps-vertical.ant-steps-small
   .ant-steps-item-container
@@ -429,7 +427,6 @@ textarea.ant-input,
   .ant-steps-icon-dot {
   background: var(--caramel);
 }
-
 
 /* legibility for disabled inputs */
 .ant-input[disabled],
