@@ -1,8 +1,50 @@
-import { Checkbox, Form, TimePicker } from "antd";
+import { Checkbox, Form, Input, TimePicker } from "antd";
 import { AppButton } from "components/button/AppButton";
+import { useCreateWorkSchedule } from "features/timeAndAttendance/hooks/useCreateWorkSchedule";
+import { useApiAuth } from "hooks/useApiAuth";
+import { useContext, useEffect } from "react";
+import { GlobalContext } from "stateManagers/GlobalContextProvider";
 
+const boxStyle = "border py-3 px-7 text-accent font-medium text-base";
 export const WorkFixed = () => {
-  const boxStyle = "border py-3 px-7 text-accent font-medium text-base";
+  const [form] = Form.useForm();
+  const { companyId, token, currentUserId } = useApiAuth();
+  const globalCtx = useContext(GlobalContext);
+  const { dispatch } = globalCtx;
+  const {mutate, isLoading} = useCreateWorkSchedule()
+  useEffect(() => {
+    form.setFieldsValue({
+      workDaysAndTime: [
+        { day: "Monday" },
+        { day: "Tuesday" },
+        { day: "Wednesday" },
+        { day: "Thursday" },
+        { day: "Friday" },
+        { day: "Saturday" },
+        { day: "Sunday" },
+      ],
+    });
+  }, []);
+
+  const onFinish = (values: any) => {
+    const workDaysAndTime = values?.workDaysAndTime.map((item: any) => {
+      if (!item.time || item.time.length < 2) {
+        return null; // Return null if time array is missing or incomplete
+      }
+      const startTime = item.time[0];
+      const endTime = item.time[1];
+      return {
+        day: item.day,
+        startTime: startTime && startTime.format("HH:mm:ss"),
+        endTime: endTime && endTime.format("HH:mm:ss"),
+      };
+    });
+    if (companyId) {
+      
+    }
+   
+  };
+
   return (
     <div>
       <div className="flex items-center flex-wrap gap-6">
@@ -33,31 +75,31 @@ export const WorkFixed = () => {
       </div>
 
       {/* form */}
-      <div>
-        <Form className="mt-6 lg:w-1/2 md:w-4/5">
-          <Form.Item label="Monday" name="monday">
-            <TimePicker.RangePicker className="w-full md:ml-20 py-2" />
+      <div className="mt-6">
+        <Form form={form} onFinish={onFinish}>
+          <Form.Item noStyle name="workArrangement" initialValue="Fixed">
+            <Input type="hidden" />
           </Form.Item>
-          <Form.Item label="Tuesday" name="tuesday">
-            <TimePicker.RangePicker className="md:ml-20 w-full py-2" />
-          </Form.Item>
-          <Form.Item label="Wednesday" name="wednesday">
-            <TimePicker.RangePicker className="w-full md:ml-20 py-2" />
-          </Form.Item>
-          <Form.Item label="Thursday" name="thursday">
-            <TimePicker.RangePicker className="w-full md:ml-20 py-2" />
-          </Form.Item>
-          <Form.Item label="Friday" name="friday">
-            <TimePicker.RangePicker className="w-full md:ml-20 py-2" />
-          </Form.Item>
-          <Form.Item label="Saturday" name="saturday">
-            <TimePicker.RangePicker className="w-full md:ml-20 py-2" />
-          </Form.Item>
-          <Form.Item label="Sunday" name="sunday">
-            <TimePicker.RangePicker className="w-full md:ml-20 py-2" />
-          </Form.Item>
+          <Form.List name="workDaysAndTime">
+            {(fields) => (
+              <>
+                {fields.map((field, index) => (
+                  <div key={field.key} className="flex gap-5">
+                    <Form.Item {...field} name={[field.name, "day"]}>
+                      <Input placeholder="day" disabled className="w-32" />
+                    </Form.Item>
+                    <div className="flex-1 w-full">
+                      <Form.Item {...field} name={[field.name, "time"]} noStyle>
+                        <TimePicker.RangePicker className="flex-1 w-full" />
+                      </Form.Item>
+                    </div>
+                  </div>
+                ))}
+              </>
+            )}
+          </Form.List>
 
-          <div className="flex justify-between items-start">
+          <div className="flex justify-between md:flex-row flex-col items-start">
             <div className="flex items-start gap-2 md:gap-5">
               <h4 className="pt-1">Payroll hours</h4>
               <Form.Item>
@@ -66,7 +108,7 @@ export const WorkFixed = () => {
                 </Checkbox>
               </Form.Item>
             </div>
-            <AppButton label="Save" type="submit" />
+            <AppButton label="Save" type="submit" isLoading={isLoading}/>
           </div>
         </Form>
       </div>

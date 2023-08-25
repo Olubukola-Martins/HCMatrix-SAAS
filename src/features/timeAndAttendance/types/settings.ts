@@ -50,3 +50,16 @@ export interface IOtherSettings extends ICurrentCompany {
   isSoftClockinEnabled: boolean;
   geoFenceRadiusInKm: string;
 }
+
+export interface workScheduleProps extends ICurrentCompany {
+  adminId: number,
+  workArrangement: string;
+  workDaysAndTime: WorkDaysAndTime[];
+}
+
+interface WorkDaysAndTime {
+  day: string;
+  startTime: string;
+  endTime: string;
+  shift?: string;
+}
