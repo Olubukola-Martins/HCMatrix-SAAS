@@ -54,7 +54,7 @@ export const AddBreak = ({ handleClose, open }: IDrawerProps) => {
         requiredMark={false}
       >
         <Form.List name="fields">
-          {(fields, { add, remove }) => (
+          {(fields) => (
             <>
               {fields.map((field, index) => (
                 <div
@@ -73,25 +73,13 @@ export const AddBreak = ({ handleClose, open }: IDrawerProps) => {
                   </div>
 
                   <div className="flex items-center gap-3 w-full">
-                    <Form.Item
-                      {...field}
-                      name={[field.name, "duration"]}
-                      label="Break duration"
-                      rules={generalValidationRules}
-                      className="w-full"
-                    >
-                      <Input placeholder="1h: 0mn" />
+                    <Form.Item name="timeRange" label="Time range">
+                      <TimePicker.RangePicker className="w-full" />
                     </Form.Item>
                     <i
                       className="ri-delete-bin-line text-xl cursor-pointer hover:text-caramel"
                       onClick={() => handleRemoveField(index)}
                     ></i>
-                  </div>
-
-                  <div>
-                    <Form.Item name="timeRange" label="Time range">
-                      <TimePicker.RangePicker className="w-full" />
-                    </Form.Item>
                   </div>
 
                   <div>
@@ -109,9 +97,11 @@ export const AddBreak = ({ handleClose, open }: IDrawerProps) => {
                     </Form.Item>
                   </div>
 
-                  <Form.Item className="col-span-2">
-                    <Checkbox>Allow break to be taken between</Checkbox>
-                  </Form.Item>
+                  <div className="flex items-end">
+                    <Form.Item>
+                      <Checkbox>Allow break to be taken between</Checkbox>
+                    </Form.Item>
+                  </div>
                 </div>
               ))}
 
