@@ -1,8 +1,67 @@
-import { Checkbox, Form, InputNumber, TimePicker } from "antd";
+import { Checkbox, Form, Input, InputNumber, TimePicker } from "antd";
 import { AppButton } from "components/button/AppButton";
+import { useCreateWorkSchedule } from "features/timeAndAttendance/hooks/useCreateWorkSchedule";
+import { useApiAuth } from "hooks/useApiAuth";
+import { useContext, useEffect } from "react";
+import { GlobalContext, EGlobalOps } from "stateManagers/GlobalContextProvider";
+import { openNotification } from "utils/notifications";
 
 export const WorkFlexible = () => {
   const boxStyle = "border py-3 px-7 text-accent font-medium text-base";
+  const [form] = Form.useForm();
+  const { companyId, token, currentUserId } = useApiAuth();
+  const globalCtx = useContext(GlobalContext);
+  const { dispatch } = globalCtx;
+  const { mutate, isLoading } = useCreateWorkSchedule();
+  useEffect(() => {
+    form.setFieldsValue({
+      workDaysAndTime: [
+        { day: "Monday" },
+        { day: "Tuesday" },
+        { day: "Wednesday" },
+        { day: "Thursday" },
+        { day: "Friday" },
+        { day: "Saturday" },
+        { day: "Sunday" },
+      ],
+    });
+  }, []);
+
+  const onFinish = (values: any) => {
+    if (companyId) {
+      mutate(
+        {
+          companyId,
+          token,
+          adminId: currentUserId,
+          workArrangement: "Flexible",
+          workDaysAndTime: values.workDaysAndTime,
+        },
+        {
+          onError: (err: any) => {
+            openNotification({
+              state: "error",
+              title: "Error Occurred",
+              description:
+                err?.response.data.message ?? err?.response.data.error.message,
+              duration: 7.0,
+            });
+          },
+          onSuccess: (res: any) => {
+            openNotification({
+              state: "success",
+              title: "Success",
+              description: res.data.message,
+              // duration: 0.4,
+            });
+
+            form.resetFields();
+            dispatch({ type: EGlobalOps.setShowInitialSetup, payload: true });
+          },
+        }
+      );
+    }
+  };
   return (
     <div>
       <div className="flex items-center flex-wrap gap-6">
@@ -33,32 +92,40 @@ export const WorkFlexible = () => {
       </div>
 
       {/* form */}
-      <div>
-        <Form className="mt-6 lg:w-1/2 md:w-4/5">
-          <Form.Item label="Monday" name="monday">
-            <InputNumber className="w-full md:ml-20" placeholder="0h: 0min" />
-          </Form.Item>
-          <Form.Item label="Tuesday" name="tuesday">
-            <InputNumber className="w-full md:ml-20" placeholder="0h: 0min" />
-          </Form.Item>
-          <Form.Item label="Wednesday" name="wednesday">
-            <InputNumber className="w-full md:ml-20" placeholder="0h: 0min" />
-          </Form.Item>
-          <Form.Item label="Thursday" name="thursday">
-            <InputNumber className="w-full md:ml-20" placeholder="0h: 0min" />
-          </Form.Item>
-          <Form.Item label="Friday" name="friday">
-            <InputNumber className="w-full md:ml-20" placeholder="0h: 0min" />
-          </Form.Item>
-          <Form.Item label="Saturday" name="saturday">
-            <InputNumber className="w-full md:ml-20" placeholder="0h: 0min" />
-          </Form.Item>
-          <Form.Item label="Sunday" name="sunday">
-            <InputNumber className="w-full md:ml-20" placeholder="0h: 0min" />
-          </Form.Item>
+      <div className="mt-6">
+        <Form form={form} onFinish={onFinish}>
+          <Form.List name="workDaysAndTime">
+            {(fields) => (
+              <>
+                {fields.map((field, index) => (
+                  <div key={field.key} className="flex gap-5">
+                    <Form.Item {...field} name={[field.name, "day"]}>
+                      <Input placeholder="day" disabled className="w-32" />
+                    </Form.Item>
+                    <div className="flex-1 w-full">
+                      <Form.Item
+                        {...field}
+                        name={[field.name, "hours"]}
+                        noStyle
+                      >
+                        <Input
+                          className="flex-1 w-full"
+                          placeholder="eg: 1hr or 1:30min"
+                        />
+                      </Form.Item>
+                    </div>
+                  </div>
+                ))}
+              </>
+            )}
+          </Form.List>
 
-          <div className="flex justify-end mt-4">
-            <AppButton label="Save" type="submit" />
+          <div>
+            <AppButton
+              label="Save changes"
+              type="submit"
+              isLoading={isLoading}
+            />
           </div>
         </Form>
       </div>

@@ -84,10 +84,9 @@ export const WorkSchedule = () => {
               {switchWorkArr === "fixed" && <WorkFixed />}
               {switchWorkArr === "flexible" && <WorkFlexible />}
               {switchWorkArr === "weekly" && <WeeklyWork />}
-              {switchWorkArr === "shift" && <WorkShift />}
             </div>
-          
           </div>
+          {switchWorkArr === "shift" && <WorkShift />}
         </div>
         {switchWorkArr === "break" && <WorkBreak />}
       </div>
