@@ -8,10 +8,10 @@ import { usePagination } from "hooks/usePagination";
 import { TPayGradeCategory } from "features/payroll/types";
 import { useGetPayGradeCategories } from "features/payroll/hooks/payGrades/category/useGetPayGradeCategories";
 import moment from "moment";
-import { DeleteFilled, EditFilled } from "@ant-design/icons";
+import { DeleteFilled, DownloadOutlined } from "@ant-design/icons";
 import DeletePayrollReport from "./DeletePayrollReport";
 
-type TAction = "delete";
+type TAction = "delete" | "download";
 
 const PayrollReportTable: React.FC = () => {
   const [action, setAction] = useState<TAction>();
@@ -49,28 +49,43 @@ const PayrollReportTable: React.FC = () => {
       // width: 100,
     },
     {
-      title: "Maximum Gross Pay",
-      dataIndex: "max",
-      key: "max",
-      render: (_, item) => item.minGrossPay,
+      title: "Description",
+      dataIndex: "name",
+      key: "name",
+      render: (val, item) => <span className="capitalize">{item?.name}</span>,
+
+      ellipsis: true,
     },
     {
-      title: "Minimum Gross pay",
-      dataIndex: "min",
-      key: "min",
-      render: (_, item) => item.maxGrossPay,
+      title: "Template",
+      dataIndex: "max",
+      key: "max",
+      render: (_, item) => <span>Template A</span>,
+    },
+
+    {
+      title: "From",
+      dataIndex: "update",
+      key: "update",
+      render: (_, item) => moment(item.updatedAt).format(`MMMM DD, YYYY`),
+    },
+    {
+      title: "To",
+      dataIndex: "update",
+      key: "update",
+      render: (_, item) => moment(item.updatedAt).format(`MMMM DD, YYYY`),
+    },
+    {
+      title: "Schemes",
+      dataIndex: "schemes",
+      key: "schemes",
+      render: (_, item) => <span>All</span>,
     },
     {
       title: "Created At",
       dataIndex: "createAr",
       key: "createAr",
       render: (_, item) => moment(item.createdAt).format(`YYYY-MM-DD`),
-    },
-    {
-      title: "Updated At",
-      dataIndex: "update",
-      key: "update",
-      render: (_, item) => moment(item.updatedAt).format(`YYYY-MM-DD`),
     },
 
     {
@@ -79,6 +94,11 @@ const PayrollReportTable: React.FC = () => {
       key: "actions",
       render: (_, item) => (
         <div>
+          <Button
+            icon={<DownloadOutlined />}
+            type="text"
+            onClick={() => handleAction({ action: "download", category: item })}
+          />
           <Button
             icon={<DeleteFilled />}
             type="text"

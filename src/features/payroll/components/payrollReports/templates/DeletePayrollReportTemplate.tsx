@@ -9,12 +9,12 @@ import { useDeletePayGradeCategory } from "features/payroll/hooks/payGrades/cate
 import { QUERY_KEY_FOR_PAY_GRADE_CATEGORIES } from "features/payroll/hooks/payGrades/category/useGetPayGradeCategories";
 
 interface IProps extends IModalProps {
-  category: TPayGradeCategory;
+  data: TPayGradeCategory;
 }
 const DeletePayrollReportTemplate: React.FC<IProps> = ({
   open,
   handleClose,
-  category,
+  data,
 }) => {
   const queryClient = useQueryClient();
 
@@ -23,7 +23,7 @@ const DeletePayrollReportTemplate: React.FC<IProps> = ({
   const handleDelete = () => {
     mutate(
       {
-        id: category.id,
+        id: data.id,
       },
       {
         onError: (err: any) => {
@@ -56,7 +56,7 @@ const DeletePayrollReportTemplate: React.FC<IProps> = ({
   return (
     <DeleteEntityModal
       title="Delete Payroll Report Template"
-      entity={{ type: "payroll report template", name: category.name }}
+      entity={{ type: "payroll report template", name: data?.name }}
       handleClose={handleClose}
       open={open}
       handleDelete={{ fn: handleDelete, isLoading: isLoading }}

@@ -1,6 +1,14 @@
-import { Form, Input, InputNumber } from "antd";
+import {
+  DatePicker,
+  Form,
+  Input,
+  InputNumber,
+  Modal,
+  Select,
+  Switch,
+} from "antd";
 import { AppButton } from "components/button/AppButton";
-import React from "react";
+import React, { useState } from "react";
 import {
   generalValidationRules,
   textInputValidationRules,
@@ -11,8 +19,17 @@ import { useCreatePayGradeCategory } from "features/payroll/hooks/payGrades/cate
 import { QUERY_KEY_FOR_PAY_GRADE_CATEGORIES } from "features/payroll/hooks/payGrades/category/useGetPayGradeCategories";
 import { useNavigate } from "react-router-dom";
 import { appRoutes } from "config/router/paths";
+import { FormPayrollReportTemplateInput } from "./templates/FormPayrollReportTemplateInput";
+import { IModalProps } from "types";
 
-const AddPayrollReport: React.FC = () => {
+const PAYROLL_SCHEME_OPTIONS = [
+  { label: "Direct Salary", value: "direct-salary" },
+  { label: "Office", value: "office" },
+  { label: "Wages", value: "wages" },
+  { label: "Project", value: "project" },
+];
+
+const AddPayrollReport: React.FC<IModalProps> = ({ open, handleClose }) => {
   const queryClient = useQueryClient();
   const navigate = useNavigate();
 
@@ -54,35 +71,83 @@ const AddPayrollReport: React.FC = () => {
       }
     );
   };
+  const [showAllSchemes, setShowAllSchemes] = useState(true);
   return (
-    <Form
-      layout="vertical"
-      form={form}
-      onFinish={handleSubmit}
-      requiredMark={false}
+    <Modal
+      open={open}
+      onCancel={() => handleClose()}
+      footer={null}
+      title={"Create Payroll Report"}
+      style={{ top: 10 }}
     >
-      <Form.Item rules={textInputValidationRules} name="name" label="Name">
-        <Input placeholder="Select the payroll or the month you wish to create a report for, only confirmed payrolls should appear" />
-      </Form.Item>
-      <Form.Item
-        rules={generalValidationRules}
-        name="maxGrossPay"
-        label="Max Gross Pay"
+      <Form
+        layout="horizontal"
+        form={form}
+        onFinish={handleSubmit}
+        requiredMark={false}
+        colon={false}
       >
-        <InputNumber min={0} className="w-full" />
-      </Form.Item>
-      <Form.Item
-        rules={generalValidationRules}
-        name="minGrossPay"
-        label="Min Gross Pay"
-      >
-        <InputNumber min={0} className="w-full" />
-      </Form.Item>
+        <Form.Item
+          rules={textInputValidationRules}
+          name="name"
+          label="Report Name"
+          labelCol={{ span: 24 }}
+        >
+          <Input className="w-full" placeholder="Report Name" />
+        </Form.Item>
 
-      <div className="flex justify-end">
-        <AppButton type="submit" isLoading={isLoading} />
-      </div>
-    </Form>
+        <Form.Item
+          rules={generalValidationRules}
+          name="reportDuration"
+          label="Report Duration"
+          labelCol={{ span: 24 }}
+        >
+          <DatePicker.RangePicker
+            placeholder={["From", "To"]}
+            className="w-full"
+          />
+        </Form.Item>
+        <FormPayrollReportTemplateInput
+          Form={Form}
+          control={{ name: "templateId", label: "Select a template" }}
+        />
+
+        <>
+          <Form.Item
+            label="Do you want to include all payroll schemes ?"
+            labelAlign="left"
+          >
+            <div className="flex justify-end">
+              <Switch
+                checked={showAllSchemes}
+                onChange={(val) => setShowAllSchemes(val)}
+              />
+            </div>
+          </Form.Item>
+          {showAllSchemes === false && (
+            <Form.Item rules={generalValidationRules}>
+              <Select
+                options={PAYROLL_SCHEME_OPTIONS}
+                mode="multiple"
+                placeholder="Select Payroll Scheme(s) to include in report"
+              />
+            </Form.Item>
+          )}
+        </>
+        <Form.Item
+          rules={textInputValidationRules}
+          name="description"
+          label="Report Description"
+          labelCol={{ span: 24 }}
+        >
+          <Input.TextArea className="w-full" placeholder="Report Description" />
+        </Form.Item>
+
+        <div className="flex justify-end">
+          <AppButton type="submit" isLoading={isLoading} label="Create" />
+        </div>
+      </Form>
+    </Modal>
   );
 };
 

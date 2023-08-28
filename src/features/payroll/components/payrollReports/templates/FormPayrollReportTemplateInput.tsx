@@ -26,12 +26,13 @@ export const FormPayrollReportTemplateInput: React.FC<{
 
   return (
     <Form.Item
-      name={control?.name ?? "payGradeCategoryId"}
-      label={showLabel ? control?.label ?? "Pay Grade Category" : null}
+      name={control?.name ?? "payrollReportTemplateId"}
+      label={showLabel ? control?.label ?? "Payroll Report Template" : null}
       rules={generalValidationRules}
+      labelCol={{ span: 24 }}
     >
       <Select
-        placeholder="Select Pay Grade Category"
+        placeholder="Select Payroll Report Template"
         loading={isFetching} //TO DO : this should be added to all custom Fetch Form Inputs
         showSearch
         allowClear

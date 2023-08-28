@@ -148,6 +148,15 @@ export const appRoutes = {
   createWagesPayroll: `/payroll/create/wage`,
   createProjectPayroll: `/payroll/create/project`,
   payrollReport: `/payroll/report`,
+  createPayrollReportTemplate: `/payroll/report/create/template`,
+  editPayrollReportTemplate: (id?: number) => ({
+    format: `/payroll/report/edit/template/:id`,
+    path: `/payroll/report/edit/template/${id}`,
+  }),
+  viewPayrollReportTemplate: (id?: number) => ({
+    format: `/payroll/report/view/template/:id`,
+    path: `/payroll/report/view/template/${id}`,
+  }),
   addPayrollReport: `/payroll/report/create`,
   payslips: `/payroll/payslip`,
   employeePayslips: `/payroll/employee-payslip`,
