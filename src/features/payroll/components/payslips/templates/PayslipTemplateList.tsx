@@ -5,11 +5,11 @@ import { usePagination } from "hooks/usePagination";
 import { TemplateCard } from "components/cards/TemplateCard";
 import { useNavigate } from "react-router-dom";
 import { appRoutes } from "config/router/paths";
-import DeletePayrollReportTemplate from "./DeletePayrollReportTemplate";
 import { useState } from "react";
+import DeletePayslipTemplate from "./DeletePayslipTemplate";
 
 type TTemplate = any;
-export const PayrollReportTemplateList: React.FC = () => {
+export const PayslipTemplateList: React.FC = () => {
   const { pagination, onChange } = usePagination({ pageSize: 8 });
 
   const handleDelete = (data: { template: TTemplate }) => {
@@ -23,7 +23,7 @@ export const PayrollReportTemplateList: React.FC = () => {
   return (
     <>
       {template && (
-        <DeletePayrollReportTemplate
+        <DeletePayslipTemplate
           open={action === "delete"}
           handleClose={() => setAction(undefined)}
           data={template}
@@ -37,16 +37,15 @@ export const PayrollReportTemplateList: React.FC = () => {
               <TemplateCard
                 data={{
                   name: `Template ${i + 1}`,
-                  title: "Payroll Report",
-                  link: appRoutes.viewPayrollReportTemplate(5).path,
+                  title: "Payslip",
+                  link: appRoutes.viewPayslipTemplate(5).path,
                 }}
                 key={i}
                 handleDelete={{
                   fn: () => handleDelete({ template: { name: "Template 1" } }),
                 }}
                 handleEdit={{
-                  fn: () =>
-                    navigate(appRoutes.editPayrollReportTemplate(5).path),
+                  fn: () => navigate(appRoutes.editPayslipTemplate(5).path),
                 }}
               />
             ))}

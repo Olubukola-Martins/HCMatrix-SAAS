@@ -162,8 +162,12 @@ export const appRoutes = {
   employeePayslips: `/payroll/employee-payslip`,
   createPayslipTemplate: `/payroll/create-payslip-template`,
   editPayslipTemplate: (id?: number) => ({
-    format: `/payroll/create-payslip-template/:id`,
-    path: `/payroll/create-payslip-template/${id}`,
+    format: `/payroll/edit-payslip-template/:id`,
+    path: `/payroll/edit-payslip-template/${id}`,
+  }),
+  viewPayslipTemplate: (id?: number) => ({
+    format: `/payroll/view-payslip-template/:id`,
+    path: `/payroll/view-payslip-template/${id}`,
   }),
 
   // admin routes

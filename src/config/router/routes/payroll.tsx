@@ -36,6 +36,7 @@ import NSITFAuthPage from "features/payroll/pages/NSITFAuthPage";
 import CreatePayrollReportTemplate from "features/payroll/pages/CreatePayrollReportTemplate";
 import EditPayrollReportTemplate from "features/payroll/pages/EditPayrollReportTemplate";
 import ViewPayrollReportTemplate from "features/payroll/pages/ViewPayrollReportTemplate";
+import ViewPayslipTemplate from "features/payroll/pages/ViewPayslipTemplate";
 
 export const payrollRoutes: TRouteData[] = [
   {
@@ -323,7 +324,13 @@ export const payrollRoutes: TRouteData[] = [
   {
     element: <EditPayslipTemplate />,
     path: appRoutes.editPayslipTemplate().format,
-    isSearchable: true,
-    title: "Create Payslip Template",
+    isSearchable: false,
+    title: "Edit Payslip Template",
+  },
+  {
+    element: <ViewPayslipTemplate />,
+    path: appRoutes.viewPayslipTemplate().format,
+    isSearchable: false,
+    title: "Payslip Template",
   },
 ];

@@ -1,4 +1,4 @@
-import { Form, Input, Select } from "antd";
+import { Checkbox, Form, Input, Radio, Select, Switch } from "antd";
 import { AppButton } from "components/button/AppButton";
 import {
   employeeInformationOptions,
@@ -12,7 +12,7 @@ import {
 
 type TPayrollReportTemplate = any;
 
-const PayrollReportTemplate: React.FC<{
+const PayslipTemplate: React.FC<{
   handleSubmit?: { fn: (data: any) => void; isLoading?: boolean };
   template?: TPayrollReportTemplate;
   disabled?: boolean;
@@ -27,8 +27,6 @@ const PayrollReportTemplate: React.FC<{
     });
   }, [form, template]);
 
-  // TODO:
-  // This component should be reused for editing/viewing and the handle submit should be passed in
   return (
     <div className="bg-card px-2 md:px-5 py-3 rounded-md text-accent">
       <Form
@@ -88,10 +86,29 @@ const PayrollReportTemplate: React.FC<{
               placeholder="Payroll Information to display in report"
             />
           </Form.Item>
+          <Form.Item
+            rules={generalValidationRules}
+            name="displayEmployeeSpecificSalaryComps"
+            label="Do you want to show employee specific salary components e.g loan repayments, bonuses, performance bonuses, etc.?"
+          >
+            <Switch defaultChecked />
+          </Form.Item>
+          <Form.Item
+            rules={generalValidationRules}
+            name="displayYearToDateCalcs"
+            label="Choose the Year to Date data to display on 
+            payslip."
+          >
+            <Checkbox.Group>
+              <Checkbox value="YTD-Net">YTD-Net</Checkbox>
+              <Checkbox value="YTD Gross">YTD Gross</Checkbox>
+              <Checkbox value="YTD Tax">YTD Tax</Checkbox>
+            </Checkbox.Group>
+          </Form.Item>
         </div>
       </Form>
     </div>
   );
 };
 
-export default PayrollReportTemplate;
+export default PayslipTemplate;
