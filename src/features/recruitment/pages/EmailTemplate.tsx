@@ -8,6 +8,7 @@ import { AppButton } from "components/button/AppButton";
 
 const EmailTemplate = () => {
   const dataSource = [
+    { title: "Application Confirmation Email" },
     { title: "Invitation to In-Person Interview" },
     { title: "Regret to Inform -Aplicant" },
     { title: "Regret to Inform -Interviewed" },
@@ -47,7 +48,7 @@ const EmailTemplate = () => {
         </Link>
       </div>
 
-      <div className="Container flex-wrap px-3 ">
+      {/* <div className="Container flex-wrap px-3 ">
         <h2 className="my-6">
           This email template will automatically be sent to applicants when they
           submit an application.
@@ -94,14 +95,14 @@ const EmailTemplate = () => {
             )}
           />
         </div>
-      </div>
+      </div> */}
 
-      {/* additional email template */}
+      {/*  email template */}
       <div className="Container flex-wrap px-3 ">
-        <h2 className="my-6">
+        {/* <h2 className="my-6">
           These are additional email templates required by a candidate or
           application selection.
-        </h2>
+        </h2> */}
         <div>
           <List
             grid={{
