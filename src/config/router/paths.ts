@@ -199,9 +199,12 @@ export const appRoutes = {
   recruitmentOfferTemplate: `/recruitment/offer-template`,
   recruitmentJobTemplate: `/recruitment/job-template`,
   recruitmentOtherSettings: `/recruitment/other-settings`,
-  addEmailTemplate: `/recruitment/add-email-template`, 
+  addEmailTemplate: `/recruitment/add-email-template`,
   addJobTemplate: `/recruitment/add-job-template`,
   addOfferTemplate: `/recruitment/add-offer-template`,
+  applicationsList: `/recruitment/applications-list`,
+  applicationsDescription: `/recruitment/applications-description`,
+  applicationsInfo: `/recruitment/applications-info`,
 
   // Leaning and development
   leaningHome: `/leaning/home`,
