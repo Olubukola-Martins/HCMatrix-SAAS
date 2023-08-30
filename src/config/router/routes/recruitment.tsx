@@ -12,6 +12,9 @@ import OtherSettings from "features/recruitment/pages/OtherSettings";
 import AddEmailTemplate from "features/recruitment/pages/AddEmailTemplate";
 import AddOfferTemplate from "features/recruitment/pages/AddOfferTemplate";
 import AddJobTemplate from "features/recruitment/pages/AddJobTemplate";
+import ApplicantDecription from "features/recruitment/features/applications/JobDetails";
+import ApplicantInfo from "features/recruitment/features/applications/ApplicantInfo";
+import ApplicationsList from "features/recruitment/features/applications/ApplicationsList";
 
 export const recruitmentRoutes: TRouteData[] = [
   {
@@ -98,6 +101,21 @@ export const recruitmentRoutes: TRouteData[] = [
   {
     element: <AddJobTemplate />,
     path: appRoutes.addJobTemplate,
+    isSearchable: false,
+  },
+  {
+    element: <ApplicantDecription />,
+    path: appRoutes.applicationsDescription,
+    isSearchable: false,
+  },
+  {
+    element: <ApplicantInfo />,
+    path: appRoutes.applicationsInfo,
+    isSearchable: false,
+  },
+  {
+    element: <ApplicationsList />,
+    path: appRoutes.applicationsList,
     isSearchable: false,
   },
 ];

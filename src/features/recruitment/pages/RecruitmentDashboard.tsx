@@ -4,7 +4,7 @@ import { WelcomeIntro } from "components/layout/WelcomeIntro";
 import { Tabs } from "antd";
 import { JobOpeningContainer } from "../features/jobOpenings/JobOpeningContainer";
 import ApplicationsList from "../features/applications/ApplicationsList";
-import RecruitmentUsers from "../features/users/RecruitmentUsers";
+import { RecruitmentUsers } from "../features/users/RecruitmentUsers";
 import TalentPool from "../features/talentPool/TalentPool";
 
 const RecruitmentDashboard = () => {

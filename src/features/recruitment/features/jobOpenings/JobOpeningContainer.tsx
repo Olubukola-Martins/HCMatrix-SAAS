@@ -94,8 +94,11 @@ export const JobOpeningContainer = () => {
   return (
     <>
       {/* INPUTS BELOW NAVIGATION */}
-      <Space wrap className="flex justify-between mb-6 mt-10 ">
-        <div className="inline-flex gap-8">
+      <Space
+        wrap
+        className="flex gap-5 md:gap-0 md:justify-between mb-6 md:mt-10 "
+      >
+        <div className="inline-flex gap-2 md:gap-6">
           <Select
             defaultValue="open"
             className="w-44 border rounded-md hover:border-none important-hover text-[var(--accent)]"
@@ -138,7 +141,10 @@ export const JobOpeningContainer = () => {
             ]}
           />
         </div>
-        <Link to={appRoutes.recruitmentAddJobOpening} className="button">
+        <Link
+          to={appRoutes.recruitmentAddJobOpening}
+          className="button mt-4 md:mt-0"
+        >
           Add Job Opening
         </Link>
       </Space>

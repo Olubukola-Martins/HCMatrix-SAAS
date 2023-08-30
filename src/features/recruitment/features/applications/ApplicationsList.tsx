@@ -1,9 +1,8 @@
 import React from 'react'
 
 const ApplicationsList = () => {
-  return (
-    <div>ApplicationsList</div>
-  )
-}
+  return <>
+  </>;
+};
 
-export default ApplicationsList
+export default ApplicationsList;
