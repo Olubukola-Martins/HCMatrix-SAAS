@@ -30,14 +30,19 @@ export const WorkFixed = () => {
   const onFinish = (values: any) => {
     const workDaysAndTime = values?.workDaysAndTime.map((item: any) => {
       if (!item.time || item.time.length < 2) {
-        return null; // Return null if time array is missing or incomplete
+        return {
+          day: item.day,
+          startTime: "00:00",
+          endTime: "00:00",
+        };
+        // Return null if time array is missing or incomplete
       }
       const startTime = item.time[0];
       const endTime = item.time[1];
       return {
         day: item.day,
-        startTime: startTime && startTime.format("HH:mm:ss"),
-        endTime: endTime && endTime.format("HH:mm:ss"),
+        startTime: startTime && startTime.format("HH:mm"),
+        endTime: endTime && endTime.format("HH:mm"),
       };
     });
     if (companyId) {

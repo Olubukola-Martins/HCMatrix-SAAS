@@ -1,4 +1,4 @@
-import { Checkbox, Form, Input, InputNumber, TimePicker } from "antd";
+import { Checkbox, Form, Input, InputNumber, Select, TimePicker } from "antd";
 import { AppButton } from "components/button/AppButton";
 import { useCreateWorkSchedule } from "features/timeAndAttendance/hooks/useCreateWorkSchedule";
 import { useApiAuth } from "hooks/useApiAuth";
@@ -108,9 +108,17 @@ export const WorkFlexible = () => {
                         name={[field.name, "hours"]}
                         noStyle
                       >
-                        <Input
+                        <Select
                           className="flex-1 w-full"
-                          placeholder="eg: 1hr or 1:30min"
+                          placeholder="Select hours"
+                          allowClear
+                          options={[
+                            1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15,
+                            16, 17, 18, 19, 20, 21, 22, 23, 24,
+                          ].map((item: number) => ({
+                            value: item,
+                            label: `${item} ${item === 1 ? "hour" : "hours"}`,
+                          }))}
                         />
                       </Form.Item>
                     </div>

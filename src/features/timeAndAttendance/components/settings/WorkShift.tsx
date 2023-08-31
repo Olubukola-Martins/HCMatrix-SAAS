@@ -6,6 +6,14 @@ export const WorkShift = () => {
   const onFinish = (values: any) => {
     console.log("Form values:", values);
   };
+
+  // {
+  //   workDaysAndTime: [   day: "";
+  //   startTime:"";
+  //   endTime:"";
+  //   hours: "";
+  //   shift: ""];
+  // }
   return (
     <div>
       <Form onFinish={onFinish}>
