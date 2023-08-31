@@ -204,7 +204,7 @@ const JobDetails = () => {
         </div>
         <div className="mb-2">
           <button className="text-lg text-caramel " onClick={toggleDescription}>
-            <i className="ri-arrow-down-s-fill "></i>{" "}
+            <i className="ri-arrow-down-s-fill "></i>
             <span className="underline underline-offset-8 hover:no-underline">
               View full description
             </span>
