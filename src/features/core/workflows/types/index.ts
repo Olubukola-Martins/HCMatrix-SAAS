@@ -44,6 +44,7 @@ export type TStage = {
   entityId: number;
   condition?: TStageCondition;
   count?: number;
+  enableTwoFactorAuth?: boolean;
 };
 
 export interface TSingleWorkflow {
