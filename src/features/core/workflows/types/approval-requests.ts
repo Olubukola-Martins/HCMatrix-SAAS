@@ -11,9 +11,31 @@ import { TransferRequestEntity } from "./approvalRequestEntities/transferRequest
 import { TravelRequestEntity } from "./approvalRequestEntities/travelRequestEntity";
 import { VehicleBookingEntity } from "./approvalRequestEntities/vehicleBookingEntity";
 
+// TODO: Check for basic stage and update type
+interface AdvancedStage {
+  id: number;
+  workflowId: number;
+  name: string;
+  type: string;
+  entityId: number;
+  enableTwoFactorAuth: boolean;
+  condition?: any;
+  count?: any;
+  createdAt: string;
+  updatedAt: string;
+}
+
 export type TApprovalRequest = {
   id: number;
-  basicStageId: number;
+  advancedStageId?: number;
+  basicStageId?: number;
+
+  processed: boolean;
+  comment?: string;
+
+  advancedStage: AdvancedStage;
+  //
+
   entityType: string;
   entityId: number;
   status: string;

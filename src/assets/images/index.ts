@@ -1,2 +1,3 @@
 import deleteEntitySvg from "./deleteEntity.svg";
-export { deleteEntitySvg };
+import confirmActionSvg from "./confirmAction.svg";
+export { deleteEntitySvg, confirmActionSvg };

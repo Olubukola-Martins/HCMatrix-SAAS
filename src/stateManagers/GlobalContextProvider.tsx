@@ -5,11 +5,19 @@ type TCCompany = {
   name: string;
 };
 type TUploadFile = { key: string; value: string };
+type TCurrentApproval = {
+  approvalStageId: number;
+  workflowType: "basic" | "advanced";
+  requires2FA?: boolean;
+
+  status: "approved" | "rejected";
+};
 
 export interface IGlobalState {
   currentCompany: TCCompany | null;
   showInitialSetUp: boolean;
   showAdminWelcomeMessage: boolean;
+  currentApproval?: TCurrentApproval;
   upLoadFileString: TUploadFile[];
 }
 
@@ -26,6 +34,7 @@ interface IGlobalContext {
 }
 
 export enum EGlobalOps {
+  setCurrentApproval,
   setCurrentCompanyId,
   setAdminWelcomeMessage,
   setShowInitialSetup,
@@ -90,6 +99,11 @@ const GlobalReducer = (state: IGlobalState, action: IAction): IGlobalState => {
       return {
         ...state,
         showAdminWelcomeMessage: action.payload,
+      };
+    case EGlobalOps.setCurrentApproval:
+      return {
+        ...state,
+        currentApproval: action.payload as TCurrentApproval,
       };
 
     default:
