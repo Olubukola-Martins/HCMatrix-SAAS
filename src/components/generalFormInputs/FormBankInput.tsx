@@ -1,46 +1,49 @@
 import { Select } from "antd";
-import { useFetchCountries } from "hooks/useFetchCountries";
+import { useGetBanksFromPaystack } from "hooks/useGetBanksFromPaystack";
 import { useEffect, useState } from "react";
-import { TCountry } from "types/country";
+import { TPaystackBank } from "types/paystackBank";
 import { generalValidationRules } from "utils/formHelpers/validation";
 
-export const FormCountryInput: React.FC<{
+export const FormBankInput: React.FC<{
   onClear?: () => void;
-  handleSelect?: (val: number) => void;
+  handleSelect?: (val: string, bank?: TPaystackBank) => void;
   Form: any;
   showLabel?: boolean;
   control?: { label: string; name: string };
 }> = ({ Form, showLabel = true, control, handleSelect, onClear }) => {
-  const { data: countries, isFetching } = useFetchCountries();
+  const { data: banks, isFetching } = useGetBanksFromPaystack();
 
-  const [data, setData] = useState<TCountry[]>([]);
+  const [data, setData] = useState<TPaystackBank[]>([]);
   const [search, setSearch] = useState<string>();
   useEffect(() => {
-    if (countries) {
-      const result = countries?.filter(
+    if (banks) {
+      const result = banks.data?.filter(
         (item) =>
           item.name.toLowerCase().indexOf(search?.toLowerCase() ?? "") !== -1
       );
 
       setData(result);
     }
-  }, [countries, search]);
+  }, [banks, search]);
 
   return (
     <Form.Item
-      name={control?.name ?? "countryId"}
-      label={showLabel ? control?.label ?? "Country" : null}
+      name={control?.name ?? "bankCode"}
+      label={showLabel ? control?.label ?? "Bank" : null}
       rules={generalValidationRules}
     >
       <Select
         getPopupContainer={(triggerNode) => triggerNode.parentElement}
         loading={isFetching}
-        onSelect={handleSelect}
+        onSelect={(val: string) => {
+          const item = banks?.data.find((item) => item.code === val);
+          handleSelect?.(val, item);
+        }}
         searchValue={search}
         showSearch
         allowClear
         onClear={() => {
-          countries && setData(countries);
+          banks && setData(banks.data);
           onClear?.();
         }}
         onSearch={(val) => setSearch(val)}
@@ -50,7 +53,7 @@ export const FormCountryInput: React.FC<{
         filterOption={false}
         options={data?.map((item) => ({
           label: `${item.name}`,
-          value: item.id,
+          value: item.code,
         }))}
       />
     </Form.Item>

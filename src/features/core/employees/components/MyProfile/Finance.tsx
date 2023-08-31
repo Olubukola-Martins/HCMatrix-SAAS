@@ -14,6 +14,13 @@ import {
 import { useSaveEmployeeFinance } from "../../hooks/finance/useSaveEmployeeFinance";
 import { AppButton } from "components/button/AppButton";
 import { QUERY_KEY_FOR_SINGLE_EMPLOYEE } from "../../hooks/useFetchSingleEmployee";
+import { useGetBanksFromPaystack } from "hooks/useGetBanksFromPaystack";
+import { FormBankInput } from "components/generalFormInputs/FormBankInput";
+import { TPaystackBank } from "types/paystackBank";
+import { FormPensionAdminInput } from "features/payroll/components/pensionAdministrators/FormPensionAdminInput";
+import { FormITFAuthInput } from "features/payroll/components/itfAuthorities/FormITFAuthInput";
+import { FormTaxAuthInput } from "features/payroll/components/taxAuthorities/FormTaxAuthInput";
+import { FormNSITFAuthInput } from "features/payroll/components/nsitfAuthorities/FormNSITFAuthInput";
 
 interface IProps {
   finance?: TSingleEmployee["finance"];
@@ -60,12 +67,28 @@ export const Finance = ({ finance = [], employeeId }: IProps) => {
           disabled={disable}
           value={walletValue}
         />
+
+        <BankDetailsForm
+          employeeId={employeeId}
+          disabled={disable}
+          value={bankValue}
+        />
         <PensionDetailsForm
           employeeId={employeeId}
           disabled={disable}
           value={pensionValue}
         />
-        <BankDetailsForm
+        <TaxDetailsForm
+          employeeId={employeeId}
+          disabled={disable}
+          value={bankValue}
+        />
+        <NSITFDetailsForm
+          employeeId={employeeId}
+          disabled={disable}
+          value={bankValue}
+        />
+        <ITFDetailsForm
           employeeId={employeeId}
           disabled={disable}
           value={bankValue}
@@ -147,14 +170,14 @@ const WalletDetailsForm: React.FC<{
           label="Account Number"
           rules={textInputValidationRules}
         >
-          <Input className="generalInputStyle" />
+          <Input />
         </Form.Item>
         <Form.Item
           name="accountProvider"
           label="Account Provider"
           rules={textInputValidationRules}
         >
-          <Input className="generalInputStyle" />
+          <Input />
         </Form.Item>
       </div>
 
@@ -230,29 +253,26 @@ const PensionDetailsForm: React.FC<{
       requiredMark={false}
     >
       <div className="border-b border-gray-400 w-full mb-3">
-        <h2 className="text-accent text-base pb-1">Wallet Details</h2>
+        <h2 className="text-accent text-base pb-1">Pension Information</h2>
       </div>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+        <Form.Item
+          name="employeePensionId"
+          label="Employee Pension ID"
+          rules={textInputValidationRules}
+        >
+          <Input />
+        </Form.Item>
+        <FormPensionAdminInput
+          Form={Form}
+          control={{ label: "Fund Administrator", name: "pensionAuthId" }}
+        />
         <Form.Item
           name="pensionType"
           label="Pension Type"
           rules={textInputValidationRules}
         >
-          <Input className="generalInputStyle" />
-        </Form.Item>
-        <Form.Item
-          name="accountNumber"
-          label="Account Number"
-          rules={textInputValidationRules}
-        >
-          <Input className="generalInputStyle" />
-        </Form.Item>
-        <Form.Item
-          name="fundAdministrator"
-          label="Fund Administrator"
-          rules={textInputValidationRules}
-        >
-          <Input className="generalInputStyle" />
+          <Input placeholder="Not sure y" />
         </Form.Item>
       </div>
 
@@ -263,6 +283,104 @@ const PensionDetailsForm: React.FC<{
   );
 };
 const BankDetailsForm: React.FC<{
+  employeeId?: number;
+  disabled?: boolean;
+  value?: TBankValue;
+}> = ({ employeeId, disabled = false, value }) => {
+  const [form] = Form.useForm();
+  const queryClient = useQueryClient();
+  const { mutate, isLoading } = useSaveEmployeeFinance();
+  const [selectedBank, setSetlectedBank] = useState<TPaystackBank>();
+
+  const handleFinish = (data: any) => {
+    if (employeeId && selectedBank) {
+      mutate(
+        {
+          employeeId,
+          data: {
+            key: "bank",
+            value: {
+              bvn: data.bvn,
+              bankName: selectedBank.name,
+              accountNumber: data?.accountNumber,
+              bankCode: data.bankcode ?? selectedBank.code,
+            },
+          },
+        },
+        {
+          onError: (err: any) => {
+            openNotification({
+              state: "error",
+              title: "Error Occured",
+              description:
+                err?.response.data.message ?? err?.response.data.error.message,
+            });
+          },
+          onSuccess: (res: any) => {
+            openNotification({
+              state: "success",
+
+              title: "Success",
+              description: res?.data?.message,
+            });
+            queryClient.invalidateQueries({
+              queryKey: [QUERY_KEY_FOR_SINGLE_EMPLOYEE],
+              exact: true,
+            });
+          },
+        }
+      );
+    }
+  };
+  useEffect(() => {
+    if (value) {
+      form.setFieldsValue({
+        bvn: value.bvn,
+        bankName: value.bankName,
+        accountNumber: value?.accountNumber,
+      });
+    }
+  }, [form, value]);
+  return (
+    <Form
+      layout="vertical"
+      disabled={disabled}
+      form={form}
+      onFinish={handleFinish}
+      requiredMark={false}
+    >
+      <div className="border-b border-gray-400 w-full mb-3">
+        <h2 className="text-accent text-base pb-1">Bank Information</h2>
+      </div>
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+        <Form.Item
+          name="bvn"
+          label="Bank Verification Number"
+          rules={textInputValidationRules}
+        >
+          <Input />
+        </Form.Item>
+        <FormBankInput
+          Form={Form}
+          control={{ label: "Bank", name: "bankCode" }}
+          handleSelect={(_, bank) => setSetlectedBank(bank)}
+        />
+        <Form.Item
+          name="accountNumber"
+          label="Account Number"
+          rules={textInputValidationRules}
+        >
+          <Input />
+        </Form.Item>
+      </div>
+
+      <div className="flex items-center justify-end">
+        <AppButton label="Save Changes" type="submit" isLoading={isLoading} />
+      </div>
+    </Form>
+  );
+};
+const ITFDetailsForm: React.FC<{
   employeeId?: number;
   disabled?: boolean;
   value?: TBankValue;
@@ -328,30 +446,196 @@ const BankDetailsForm: React.FC<{
       requiredMark={false}
     >
       <div className="border-b border-gray-400 w-full mb-3">
-        <h2 className="text-accent text-base pb-1">Wallet Details</h2>
+        <h2 className="text-accent text-base pb-1">ITF Information</h2>
       </div>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
         <Form.Item
-          name="bvn"
-          label="Bank Verification Number"
+          name="employeeITFId"
+          label="Employee ITF ID"
           rules={textInputValidationRules}
         >
-          <Input className="generalInputStyle" />
+          <Input />
         </Form.Item>
+        <FormITFAuthInput
+          Form={Form}
+          control={{ label: "ITF Authority", name: "itfAuthId" }}
+        />
+      </div>
+
+      <div className="flex items-center justify-end">
+        <AppButton label="Save Changes" type="submit" isLoading={isLoading} />
+      </div>
+    </Form>
+  );
+};
+const NSITFDetailsForm: React.FC<{
+  employeeId?: number;
+  disabled?: boolean;
+  value?: TBankValue;
+}> = ({ employeeId, disabled = false, value }) => {
+  const [form] = Form.useForm();
+  const queryClient = useQueryClient();
+  const { mutate, isLoading } = useSaveEmployeeFinance();
+
+  const handleFinish = (data: any) => {
+    if (employeeId) {
+      mutate(
+        {
+          employeeId,
+          data: {
+            key: "bank",
+            value: {
+              bvn: data.bvn,
+              bankName: data.bankName,
+              accountNumber: data?.accountNumber,
+            },
+          },
+        },
+        {
+          onError: (err: any) => {
+            openNotification({
+              state: "error",
+              title: "Error Occured",
+              description:
+                err?.response.data.message ?? err?.response.data.error.message,
+            });
+          },
+          onSuccess: (res: any) => {
+            openNotification({
+              state: "success",
+
+              title: "Success",
+              description: res?.data?.message,
+            });
+            queryClient.invalidateQueries({
+              queryKey: [QUERY_KEY_FOR_SINGLE_EMPLOYEE],
+              exact: true,
+            });
+          },
+        }
+      );
+    }
+  };
+  useEffect(() => {
+    if (value) {
+      form.setFieldsValue({
+        bvn: value.bvn,
+        bankName: value.bankName,
+        accountNumber: value?.accountNumber,
+      });
+    }
+  }, [form, value]);
+  return (
+    <Form
+      layout="vertical"
+      disabled={disabled}
+      form={form}
+      onFinish={handleFinish}
+      requiredMark={false}
+    >
+      <div className="border-b border-gray-400 w-full mb-3">
+        <h2 className="text-accent text-base pb-1">NSITF Information</h2>
+      </div>
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
         <Form.Item
-          name="bankName"
-          label="Bank Name"
+          name="employeeNSITFId"
+          label="Employee NSITF ID"
           rules={textInputValidationRules}
         >
-          <Input className="generalInputStyle" />
+          <Input />
         </Form.Item>
+        <FormNSITFAuthInput
+          Form={Form}
+          control={{ label: "NSITF Authority", name: "nsitfAuthId" }}
+        />
+      </div>
+
+      <div className="flex items-center justify-end">
+        <AppButton label="Save Changes" type="submit" isLoading={isLoading} />
+      </div>
+    </Form>
+  );
+};
+const TaxDetailsForm: React.FC<{
+  employeeId?: number;
+  disabled?: boolean;
+  value?: TBankValue;
+}> = ({ employeeId, disabled = false, value }) => {
+  const [form] = Form.useForm();
+  const queryClient = useQueryClient();
+  const { mutate, isLoading } = useSaveEmployeeFinance();
+
+  const handleFinish = (data: any) => {
+    if (employeeId) {
+      mutate(
+        {
+          employeeId,
+          data: {
+            key: "bank",
+            value: {
+              bvn: data.bvn,
+              bankName: data.bankName,
+              accountNumber: data?.accountNumber,
+            },
+          },
+        },
+        {
+          onError: (err: any) => {
+            openNotification({
+              state: "error",
+              title: "Error Occured",
+              description:
+                err?.response.data.message ?? err?.response.data.error.message,
+            });
+          },
+          onSuccess: (res: any) => {
+            openNotification({
+              state: "success",
+
+              title: "Success",
+              description: res?.data?.message,
+            });
+            queryClient.invalidateQueries({
+              queryKey: [QUERY_KEY_FOR_SINGLE_EMPLOYEE],
+              exact: true,
+            });
+          },
+        }
+      );
+    }
+  };
+  useEffect(() => {
+    if (value) {
+      form.setFieldsValue({
+        bvn: value.bvn,
+        bankName: value.bankName,
+        accountNumber: value?.accountNumber,
+      });
+    }
+  }, [form, value]);
+  return (
+    <Form
+      layout="vertical"
+      disabled={disabled}
+      form={form}
+      onFinish={handleFinish}
+      requiredMark={false}
+    >
+      <div className="border-b border-gray-400 w-full mb-3">
+        <h2 className="text-accent text-base pb-1">Tax Information</h2>
+      </div>
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
         <Form.Item
-          name="accountNumber"
-          label="Account Number"
+          name="employeeTaxId"
+          label="Employee Tax ID"
           rules={textInputValidationRules}
         >
-          <Input className="generalInputStyle" />
+          <Input />
         </Form.Item>
+        <FormTaxAuthInput
+          Form={Form}
+          control={{ label: "Tax Authority", name: "taxAuthId" }}
+        />
       </div>
 
       <div className="flex items-center justify-end">

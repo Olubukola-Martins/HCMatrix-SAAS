@@ -152,6 +152,7 @@ export interface TBankValue {
   bvn: string;
   bankName: string;
   accountNumber: string;
+  bankCode: string;
 }
 
 export interface TWalletValue {
