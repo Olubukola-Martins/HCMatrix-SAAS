@@ -1,8 +1,7 @@
-import ApplicantDecription from "./JobDetails";
 import { Tabs } from "antd";
-import {ApplicantDocument} from "./ApplicantDocument";
-import ApplicantEmail from "./ApplicantEmail";
-import ApplicantRecords from "./ApplicantRecords";
+import { ApplicantDocument } from "./ApplicantDocument";
+import { ApplicantEmail } from "./ApplicantEmail";
+import { ApplicantRecords } from "./ApplicantRecords";
 import { CandidateInfo } from "./CandidateInfo";
 
 export const ApplicantTab = () => {

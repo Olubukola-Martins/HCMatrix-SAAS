@@ -11,11 +11,13 @@ import {
 } from "antd";
 import { ColumnsType } from "antd/es/table";
 import { AppButton } from "components/button/AppButton";
+import { appRoutes } from "config/router/paths";
 import React, { useState } from "react";
+import { Link } from "react-router-dom";
 import { openNotification } from "utils/notifications";
 
 const ApplicationsList = () => {
-    const { RangePicker } = DatePicker;
+  const { RangePicker } = DatePicker;
 
   const onFinish = (values: any) => {
     console.log(values);
@@ -225,7 +227,11 @@ const ApplicationsList = () => {
             trigger={["click"]}
             overlay={
               <Menu>
-                <Menu.Item key="1">View Candidate</Menu.Item>
+                <Menu.Item key="1">
+                  <Link to={appRoutes.applicantDetails(1).path}>
+                    View Candidate
+                  </Link>
+                </Menu.Item>
                 <Menu.Item key="2">View Resume</Menu.Item>
                 <Menu.Item key="3">Send Email</Menu.Item>
                 <Menu.Item key="4">Comment</Menu.Item>{" "}

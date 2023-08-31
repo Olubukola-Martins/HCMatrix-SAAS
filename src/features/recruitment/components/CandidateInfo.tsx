@@ -1,3 +1,4 @@
+import "../assets/style.css";
 export const CandidateInfo = () => {
   return (
     <>

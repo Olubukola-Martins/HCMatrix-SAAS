@@ -205,6 +205,15 @@ export const appRoutes = {
   applicationsList: `/recruitment/applications-list`,
   applicationsDescription: `/recruitment/applications-description`,
   applicationsInfo: `/recruitment/applications-info`,
+  applicantDetails: (id?: number) => ({
+    format: `/recruitment/dashboard/:id/applicantDetails`,
+    path: `/recruitment/dashboard/${id}/applicantDetails`,
+  }),
+  applicationDetails: (id?: number) => ({
+    format: `/recruitment/dashboard/:id/applicationDetails`,
+    path: `/recruitment/dashboard/${id}/applicationDetails`,
+  }),
+
 
   // Leaning and development
   leaningHome: `/leaning/home`,
