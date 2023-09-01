@@ -1,410 +1,176 @@
 import "../../assets/style.css";
-import { Checkbox, Form, TimePicker } from "antd";
+import { Checkbox, Form, Input, TimePicker } from "antd";
 import { AppButton } from "components/button/AppButton";
+import { useCreateWorkSchedule } from "features/timeAndAttendance/hooks/useCreateWorkSchedule";
+import { useApiAuth } from "hooks/useApiAuth";
+import { useContext, useEffect, useState } from "react";
+import { EGlobalOps, GlobalContext } from "stateManagers/GlobalContextProvider";
+import { openNotification } from "utils/notifications";
 
 export const WorkShift = () => {
-  const onFinish = (values: any) => {
-    console.log("Form values:", values);
-  };
+  const [form] = Form.useForm();
+  const [selectedShifts, setSelectedShifts] = useState<string[]>([]);
+  const { companyId, token, currentUserId } = useApiAuth();
+  const globalCtx = useContext(GlobalContext);
+  const { dispatch } = globalCtx;
+  const { mutate, isLoading } = useCreateWorkSchedule();
+  useEffect(() => {
+    form.setFieldsValue({
+      workDaysAndTime: [
+        { day: "Monday", shift: "Morning" },
+        { day: "Tuesday", shift: "Morning" },
+        { day: "Wednesday", shift: "Morning" },
+        { day: "Thursday", shift: "Morning" },
+        { day: "Friday", shift: "Morning" },
+        { day: "Saturday", shift: "Morning" },
+        { day: "Sunday", shift: "Morning" },
 
-  // {
-  //   workDaysAndTime: [   day: "";
-  //   startTime:"";
-  //   endTime:"";
-  //   hours: "";
-  //   shift: ""];
-  // }
+        { day: "Monday", shift: "Afternoon" },
+        { day: "Tuesday", shift: "Afternoon" },
+        { day: "Wednesday", shift: "Afternoon" },
+        { day: "Thursday", shift: "Afternoon" },
+        { day: "Friday", shift: "Afternoon" },
+        { day: "Saturday", shift: "Afternoon" },
+        { day: "Sunday", shift: "Afternoon" },
+
+        { day: "Monday", shift: "Night" },
+        { day: "Tuesday", shift: "Night" },
+        { day: "Wednesday", shift: "Night" },
+        { day: "Thursday", shift: "Night" },
+        { day: "Friday", shift: "Night" },
+        { day: "Saturday", shift: "Night" },
+        { day: "Sunday", shift: "Night" },
+      ],
+    });
+  }, []);
+
+  const onFinish = (values: any) => {
+    const workDaysAndTime = values?.workDaysAndTime.map((item: any) => {
+      if (!item.time || item.time.length < 2) {
+        return {
+          day: item.day,
+          startTime: "00:00",
+          endTime: "00:00",
+          shift: item.shift,
+        };
+      }
+      const startTime = item.time[0];
+      const endTime = item.time[1];
+      return {
+        day: item.day,
+        startTime: startTime && startTime.format("HH:mm"),
+        endTime: endTime && endTime.format("HH:mm"),
+      };
+    });
+    if (companyId) {
+      mutate(
+        {
+          companyId,
+          token,
+          adminId: currentUserId,
+          workArrangement: "Shift",
+          workDaysAndTime: workDaysAndTime,
+        },
+        {
+          onError: (err: any) => {
+            openNotification({
+              state: "error",
+              title: "Error Occurred",
+              description:
+                err?.response.data.message ?? err?.response.data.error.message,
+              duration: 7.0,
+            });
+          },
+          onSuccess: (res: any) => {
+            openNotification({
+              state: "success",
+              title: "Success",
+              description: res.data.message,
+              // duration: 0.4,
+            });
+
+            form.resetFields();
+            dispatch({ type: EGlobalOps.setShowInitialSetup, payload: true });
+          },
+        }
+      );
+    }
+  };
+  const handleShiftChange = (shift: string, checked: boolean) => {
+    if (checked) {
+      setSelectedShifts((prevShifts) => [...prevShifts, shift]);
+    } else {
+      setSelectedShifts((prevShifts) => prevShifts.filter((s) => s !== shift));
+    }
+  };
   return (
     <div>
-      <Form onFinish={onFinish}>
-        <div className="flex items-center flex-wrap gap-6">
-          <h4 className="text-base font-medium">Hours</h4>
-          <div className="flex items-center flex-wrap md:ml-20">
-            <div className="shiftBox">
-              <Checkbox>Morning</Checkbox>
-            </div>
-            <div className="shiftBox">
-              <Checkbox>Afternoon</Checkbox>
-            </div>
-            <div className="shiftBox">
-              <Checkbox>Night</Checkbox>
-            </div>
-          </div>
-        </div>
-        <p className="py-4">
-          Checkbox the working days, input the time frame for each shift.
-        </p>
-
-
-
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 mt-5">
-          <div>
-            <button className="px-3 py-2 bg-card border shadow-sm rounded-md font-medium mb-5">
+      <div className="flex items-center flex-wrap gap-6">
+        <h4 className="text-base font-medium">Hours</h4>
+        <div className="flex items-center flex-wrap md:ml-20">
+          <div className="shiftBox">
+            <Checkbox
+              onChange={(e) => handleShiftChange("Morning", e.target.checked)}
+            >
               Morning
-            </button>
-            <Form.List name="users" initialValue={[{}]}>
-              {(fields) => (
-                <>
-                  {fields.map((field, index) => (
-                    <>
-                      <div className="flex items-center gap-2">
-                        <Form.Item
-                          name={[field.name, "agreement"]}
-                          valuePropName="checked"
-                        >
-                          <Checkbox>Mon</Checkbox>
-                        </Form.Item>
-                        <Form.Item
-                          {...field}
-                          key={field.key}
-                          name={[field.name, "monday"]}
-                        >
-                          <TimePicker.RangePicker />
-                        </Form.Item>
-                      </div>
-                      <div className="flex items-center gap-2">
-                        <Form.Item
-                          name={[field.name, "agreement"]}
-                          valuePropName="checked"
-                        >
-                          <Checkbox>Tues</Checkbox>
-                        </Form.Item>
-                        <Form.Item
-                          {...field}
-                          key={field.key}
-                          name={[field.name, "monday"]}
-                        >
-                          <TimePicker.RangePicker />
-                        </Form.Item>
-                      </div>
-                      <div className="flex items-center gap-2">
-                        <Form.Item
-                          name={[field.name, "agreement"]}
-                          valuePropName="checked"
-                        >
-                          <Checkbox>Wed</Checkbox>
-                        </Form.Item>
-                        <Form.Item
-                          {...field}
-                          key={field.key}
-                          name={[field.name, "monday"]}
-                        >
-                          <TimePicker.RangePicker />
-                        </Form.Item>
-                      </div>
-                      <div className="flex items-center gap-2">
-                        <Form.Item
-                          name={[field.name, "agreement"]}
-                          valuePropName="checked"
-                        >
-                          <Checkbox>Thurs</Checkbox>
-                        </Form.Item>
-                        <Form.Item
-                          {...field}
-                          key={field.key}
-                          name={[field.name, "monday"]}
-                        >
-                          <TimePicker.RangePicker />
-                        </Form.Item>
-                      </div>
-                      <div className="flex items-center gap-2">
-                        <Form.Item
-                          name={[field.name, "agreement"]}
-                          valuePropName="checked"
-                        >
-                          <Checkbox>Fri</Checkbox>
-                        </Form.Item>
-                        <Form.Item
-                          {...field}
-                          key={field.key}
-                          name={[field.name, "monday"]}
-                        >
-                          <TimePicker.RangePicker />
-                        </Form.Item>
-                      </div>
-                      <div className="flex items-center gap-2">
-                        <Form.Item
-                          name={[field.name, "agreement"]}
-                          valuePropName="checked"
-                        >
-                          <Checkbox>Sat</Checkbox>
-                        </Form.Item>
-                        <Form.Item
-                          {...field}
-                          key={field.key}
-                          name={[field.name, "monday"]}
-                        >
-                          <TimePicker.RangePicker />
-                        </Form.Item>
-                      </div>
-                      <div className="flex items-center gap-2">
-                        <Form.Item
-                          name={[field.name, "agreement"]}
-                          valuePropName="checked"
-                        >
-                          <Checkbox>Sun</Checkbox>
-                        </Form.Item>
-                        <Form.Item
-                          {...field}
-                          key={field.key}
-                          name={[field.name, "monday"]}
-                        >
-                          <TimePicker.RangePicker />
-                        </Form.Item>
-                      </div>
-                    </>
-                  ))}
-                </>
-              )}
-            </Form.List>
+            </Checkbox>
           </div>
-
-          {/* Afternoon */}
-          <div>
-            <button className="px-3 py-2 bg-card border shadow-sm rounded-md font-medium mb-5">
+          <div className="shiftBox">
+            <Checkbox
+              onChange={(e) => handleShiftChange("Afternoon", e.target.checked)}
+            >
               Afternoon
-            </button>
-            <Form.List name="users" initialValue={[{}]}>
-              {(fields) => (
-                <>
-                  {fields.map((field, index) => (
-                    <>
-                      <div className="flex items-center gap-2">
-                        <Form.Item
-                          name={[field.name, "agreement"]}
-                          valuePropName="checked"
-                        >
-                          <Checkbox>Mon</Checkbox>
-                        </Form.Item>
-                        <Form.Item
-                          {...field}
-                          key={field.key}
-                          name={[field.name, "monday"]}
-                        >
-                          <TimePicker.RangePicker />
-                        </Form.Item>
-                      </div>
-                      <div className="flex items-center gap-2">
-                        <Form.Item
-                          name={[field.name, "agreement"]}
-                          valuePropName="checked"
-                        >
-                          <Checkbox>Tues</Checkbox>
-                        </Form.Item>
-                        <Form.Item
-                          {...field}
-                          key={field.key}
-                          name={[field.name, "monday"]}
-                        >
-                          <TimePicker.RangePicker />
-                        </Form.Item>
-                      </div>
-                      <div className="flex items-center gap-2">
-                        <Form.Item
-                          name={[field.name, "agreement"]}
-                          valuePropName="checked"
-                        >
-                          <Checkbox>Wed</Checkbox>
-                        </Form.Item>
-                        <Form.Item
-                          {...field}
-                          key={field.key}
-                          name={[field.name, "monday"]}
-                        >
-                          <TimePicker.RangePicker />
-                        </Form.Item>
-                      </div>
-                      <div className="flex items-center gap-2">
-                        <Form.Item
-                          name={[field.name, "agreement"]}
-                          valuePropName="checked"
-                        >
-                          <Checkbox>Thurs</Checkbox>
-                        </Form.Item>
-                        <Form.Item
-                          {...field}
-                          key={field.key}
-                          name={[field.name, "monday"]}
-                        >
-                          <TimePicker.RangePicker />
-                        </Form.Item>
-                      </div>
-                      <div className="flex items-center gap-2">
-                        <Form.Item
-                          name={[field.name, "agreement"]}
-                          valuePropName="checked"
-                        >
-                          <Checkbox>Fri</Checkbox>
-                        </Form.Item>
-                        <Form.Item
-                          {...field}
-                          key={field.key}
-                          name={[field.name, "monday"]}
-                        >
-                          <TimePicker.RangePicker />
-                        </Form.Item>
-                      </div>
-                      <div className="flex items-center gap-2">
-                        <Form.Item
-                          name={[field.name, "agreement"]}
-                          valuePropName="checked"
-                        >
-                          <Checkbox>Sat</Checkbox>
-                        </Form.Item>
-                        <Form.Item
-                          {...field}
-                          key={field.key}
-                          name={[field.name, "monday"]}
-                        >
-                          <TimePicker.RangePicker />
-                        </Form.Item>
-                      </div>
-                      <div className="flex items-center gap-2">
-                        <Form.Item
-                          name={[field.name, "agreement"]}
-                          valuePropName="checked"
-                        >
-                          <Checkbox>Sun</Checkbox>
-                        </Form.Item>
-                        <Form.Item
-                          {...field}
-                          key={field.key}
-                          name={[field.name, "monday"]}
-                        >
-                          <TimePicker.RangePicker />
-                        </Form.Item>
-                      </div>
-                    </>
-                  ))}
-                </>
-              )}
-            </Form.List>
+            </Checkbox>
           </div>
-          {/* Night */}
-          <div>
-            <button className="px-3 py-2 bg-card border shadow-sm rounded-md font-medium mb-5">
+          <div className="shiftBox">
+            <Checkbox
+              onChange={(e) => handleShiftChange("Night", e.target.checked)}
+            >
               Night
-            </button>
-            <Form.List name="users" initialValue={[{}]}>
-              {(fields) => (
-                <>
-                  {fields.map((field, index) => (
-                    <>
-                      <div className="flex items-center gap-2">
-                        <Form.Item
-                          name={[field.name, "agreement"]}
-                          valuePropName="checked"
-                        >
-                          <Checkbox>Mon</Checkbox>
-                        </Form.Item>
-                        <Form.Item
-                          {...field}
-                          key={field.key}
-                          name={[field.name, "monday"]}
-                        >
-                          <TimePicker.RangePicker />
-                        </Form.Item>
-                      </div>
-                      <div className="flex items-center gap-2">
-                        <Form.Item
-                          name={[field.name, "agreement"]}
-                          valuePropName="checked"
-                        >
-                          <Checkbox>Tues</Checkbox>
-                        </Form.Item>
-                        <Form.Item
-                          {...field}
-                          key={field.key}
-                          name={[field.name, "monday"]}
-                        >
-                          <TimePicker.RangePicker />
-                        </Form.Item>
-                      </div>
-                      <div className="flex items-center gap-2">
-                        <Form.Item
-                          name={[field.name, "agreement"]}
-                          valuePropName="checked"
-                        >
-                          <Checkbox>Wed</Checkbox>
-                        </Form.Item>
-                        <Form.Item
-                          {...field}
-                          key={field.key}
-                          name={[field.name, "monday"]}
-                        >
-                          <TimePicker.RangePicker />
-                        </Form.Item>
-                      </div>
-                      <div className="flex items-center gap-2">
-                        <Form.Item
-                          name={[field.name, "agreement"]}
-                          valuePropName="checked"
-                        >
-                          <Checkbox>Thurs</Checkbox>
-                        </Form.Item>
-                        <Form.Item
-                          {...field}
-                          key={field.key}
-                          name={[field.name, "monday"]}
-                        >
-                          <TimePicker.RangePicker />
-                        </Form.Item>
-                      </div>
-                      <div className="flex items-center gap-2">
-                        <Form.Item
-                          name={[field.name, "agreement"]}
-                          valuePropName="checked"
-                        >
-                          <Checkbox>Fri</Checkbox>
-                        </Form.Item>
-                        <Form.Item
-                          {...field}
-                          key={field.key}
-                          name={[field.name, "monday"]}
-                        >
-                          <TimePicker.RangePicker />
-                        </Form.Item>
-                      </div>
-                      <div className="flex items-center gap-2">
-                        <Form.Item
-                          name={[field.name, "agreement"]}
-                          valuePropName="checked"
-                        >
-                          <Checkbox>Sat</Checkbox>
-                        </Form.Item>
-                        <Form.Item
-                          {...field}
-                          key={field.key}
-                          name={[field.name, "monday"]}
-                        >
-                          <TimePicker.RangePicker />
-                        </Form.Item>
-                      </div>
-                      <div className="flex items-center gap-2">
-                        <Form.Item
-                          name={[field.name, "agreement"]}
-                          valuePropName="checked"
-                        >
-                          <Checkbox>Sun</Checkbox>
-                        </Form.Item>
-                        <Form.Item
-                          {...field}
-                          key={field.key}
-                          name={[field.name, "monday"]}
-                        >
-                          <TimePicker.RangePicker />
-                        </Form.Item>
-                      </div>
-                    </>
-                  ))}
-                </>
-              )}
-            </Form.List>
+            </Checkbox>
           </div>
         </div>
+      </div>
+      <p className="py-4">
+        Checkbox the working days, input the time frame for each shift.
+      </p>
+      <Form onFinish={onFinish} form={form}>
+        <Form.List name="workDaysAndTime">
+          {(fields) => (
+            <>
+              {fields.map((field, index) => {
+                const selectedShift = form.getFieldValue([
+                  "workDaysAndTime",
+                  field.name,
+                  "shift",
+                ]);
+
+                return (
+                  <div key={field.key} className="flex gap-5">
+                    {selectedShifts.includes(selectedShift) && (
+                      <>
+                        <Form.Item {...field} name={[field.name, "day"]}>
+                          <Input placeholder="day" disabled className="w-32" />
+                        </Form.Item>
+                        <Form.Item {...field} name={[field.name, "shift"]}>
+                          <Input placeholder="shift" disabled className="w-24" />
+                        </Form.Item>
+                        <div className="flex-1 w-full">
+                          <Form.Item {...field} name={[field.name, "time"]} noStyle>
+                            <TimePicker.RangePicker className="flex-1 w-full" />
+                          </Form.Item>
+                        </div>
+                      </>
+                    )}
+                  </div>
+                );
+              })}
+            </>
+          )}
+        </Form.List>
         <div className="flex gap-3">
           <AppButton label="Upload Template" />
-          <AppButton type="submit" />
+          <AppButton type="submit" isLoading={isLoading} />
         </div>
       </Form>
     </div>
