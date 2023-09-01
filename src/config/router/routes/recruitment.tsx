@@ -16,6 +16,7 @@ import ApplicantDecription from "features/recruitment/features/applications/Appl
 import ApplicantInfo from "features/recruitment/features/applications/ApplicantInfo";
 import ApplicationsList from "features/recruitment/components/ApplicationsList";
 import ApplicationDetails from "features/recruitment/features/applications/ApplicationDetails";
+import ApplicantEmailPage from "features/recruitment/features/applications/ApplicantEmailPage";
 
 export const recruitmentRoutes: TRouteData[] = [
   {
@@ -117,6 +118,11 @@ export const recruitmentRoutes: TRouteData[] = [
   {
     element: <ApplicationsList />,
     path: appRoutes.applicationsList,
+    isSearchable: false,
+  },
+  {
+    element: <ApplicantEmailPage />,
+    path: appRoutes.applicantEmailPage,
     isSearchable: false,
   },
 ];

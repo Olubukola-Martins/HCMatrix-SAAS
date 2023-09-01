@@ -1,4 +1,4 @@
-import { Select } from "antd";
+import { Card, Select } from "antd";
 import { AppButton } from "components/button/AppButton";
 
 export const ApplicantDocument = () => {
@@ -24,11 +24,33 @@ export const ApplicantDocument = () => {
             },
           ]}
         />
-        <button className="bg-white rounded text-caramel p-1 ml-4 hover:underline underline-offset-8">
-          Download
-        </button>
       </div>
-      <div className="border border-[rgba(58, 58, 58, 0.30)] h-96 rounded overflow-y-scroll"></div>
+      <div>
+        <div className="flex gap-4 mt-4">
+          <Card className="text-caramel w-1/2 p-4">
+            <a href="#" target="blank">
+              Resume
+            </a>
+          </Card>
+          <Card className="text-caramel w-1/2 p-4">
+            <a href="#" target="blank">
+              Resume
+            </a>
+          </Card>
+        </div>
+        <div className="flex gap-4 mt-4">
+          <Card className="text-caramel w-1/2 p-4">
+            <a href="#" target="blank">
+              Resume
+            </a>
+          </Card>
+          <Card className="text-caramel w-1/2 p-4">
+            <a href="#" target="blank">
+              Resume
+            </a>
+          </Card>
+        </div>
+      </div>
     </div>
   );
 };

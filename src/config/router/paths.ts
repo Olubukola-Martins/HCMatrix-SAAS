@@ -213,7 +213,7 @@ export const appRoutes = {
     format: `/recruitment/dashboard/:id/applicationDetails`,
     path: `/recruitment/dashboard/${id}/applicationDetails`,
   }),
-
+  applicantEmailPage: `/recruitment/dashboard/applicantEmailPage`,
 
   // Leaning and development
   leaningHome: `/leaning/home`,
