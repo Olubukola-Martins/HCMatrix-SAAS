@@ -1,5 +1,5 @@
 import { Select, Spin } from "antd";
-import { useGetTaxAuthorities } from "features/payroll/hooks/organization/taxAuthorities/useGetTaxAuthorities";
+import { useGetNSITFAuthorities } from "features/payroll/hooks/organization/nsitfAuthorities/useGetNSITFAuthorities";
 import { TTaxAuthority } from "features/payroll/types";
 import { useDebounce } from "hooks/useDebounce";
 import { useState } from "react";
@@ -14,7 +14,7 @@ export const FormNSITFAuthInput: React.FC<{
   const [searchTerm, setSearchTerm] = useState<string>("");
   const debouncedSearchTerm: string = useDebounce<string>(searchTerm);
 
-  const { data, isFetching, isSuccess } = useGetTaxAuthorities({
+  const { data, isFetching, isSuccess } = useGetNSITFAuthorities({
     searchParams: {
       name: debouncedSearchTerm,
     },

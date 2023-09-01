@@ -20,6 +20,7 @@ import { FormPensionAdminInput } from "features/payroll/components/organizations
 import { FormITFAuthInput } from "features/payroll/components/organizations/itfAuthorities/FormITFAuthInput";
 import { FormTaxAuthInput } from "features/payroll/components/organizations/taxAuthorities/FormTaxAuthInput";
 import { FormNSITFAuthInput } from "features/payroll/components/organizations/nsitfAuthorities/FormNSITFAuthInput";
+import { TITFValue, TNSITFValue, TTaxValue } from "../../types/singleEmployee";
 
 interface IProps {
   finance?: TSingleEmployee["finance"];
@@ -44,6 +45,15 @@ export const Finance = ({ finance = [], employeeId }: IProps) => {
     | undefined;
   const bankValue = finance.find((item) => item.key === "bank")?.value as
     | TBankValue
+    | undefined;
+  const taxValue = finance.find((item) => item.key === "tax")?.value as
+    | TTaxValue
+    | undefined;
+  const nsitfValue = finance.find((item) => item.key === "nsitf")?.value as
+    | TNSITFValue
+    | undefined;
+  const itfValue = finance.find((item) => item.key === "itf")?.value as
+    | TITFValue
     | undefined;
   return (
     <div className="bg-mainBg shadow-sm rounded-md p-4 mt-5">
@@ -80,17 +90,17 @@ export const Finance = ({ finance = [], employeeId }: IProps) => {
         <TaxDetailsForm
           employeeId={employeeId}
           disabled={disable}
-          value={bankValue}
+          value={taxValue}
         />
         <NSITFDetailsForm
           employeeId={employeeId}
           disabled={disable}
-          value={bankValue}
+          value={nsitfValue}
         />
         <ITFDetailsForm
           employeeId={employeeId}
           disabled={disable}
-          value={bankValue}
+          value={itfValue}
         />
       </div>
     </div>
@@ -204,8 +214,8 @@ const PensionDetailsForm: React.FC<{
             key: "pension",
             value: {
               pensionType: data?.pensionType,
-              accountNumber: data?.accountNumber,
-              fundAdministrator: data?.fundAdministrator,
+              employeePensionId: data?.employeePensionId,
+              pensionAdministratorId: data?.pensionAdministratorId,
             },
           },
         },
@@ -238,8 +248,8 @@ const PensionDetailsForm: React.FC<{
     if (value) {
       form.setFieldsValue({
         pensionType: value?.pensionType,
-        accountNumber: value?.accountNumber,
-        fundAdministrator: value?.fundAdministrator,
+        employeePensionId: value?.employeePensionId,
+        pensionAdministratorId: value?.pensionAdministratorId,
       });
     }
   }, [form, value]);
@@ -260,18 +270,21 @@ const PensionDetailsForm: React.FC<{
           label="Employee Pension ID"
           rules={textInputValidationRules}
         >
-          <Input />
+          <Input placeholder="Pension ID" />
         </Form.Item>
         <FormPensionAdminInput
           Form={Form}
-          control={{ label: "Fund Administrator", name: "pensionAuthId" }}
+          control={{
+            label: "Fund Administrator",
+            name: "pensionAdministratorId",
+          }}
         />
         <Form.Item
           name="pensionType"
           label="Pension Type"
           rules={textInputValidationRules}
         >
-          <Input placeholder="Not sure y" />
+          <Input placeholder="Pension Type" />
         </Form.Item>
       </div>
 
@@ -337,6 +350,8 @@ const BankDetailsForm: React.FC<{
         bvn: value.bvn,
         bankName: value.bankName,
         accountNumber: value?.accountNumber,
+        accountName: value?.accountName,
+        bankCode: value?.bankCode,
       });
     }
   }, [form, value]);
@@ -351,7 +366,11 @@ const BankDetailsForm: React.FC<{
       <div className="border-b border-gray-400 w-full mb-3">
         <h2 className="text-accent text-base pb-1">Bank Information</h2>
       </div>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+      <div
+        className={`grid grid-cols-1 md:grid-cols-2 ${
+          value?.accountName ? "lg:grid-cols-4" : "lg:grid-cols-3"
+        } gap-5`}
+      >
         <Form.Item
           name="bvn"
           label="Bank Verification Number"
@@ -364,6 +383,7 @@ const BankDetailsForm: React.FC<{
           control={{ label: "Bank", name: "bankCode" }}
           handleSelect={(_, bank) => setSetlectedBank(bank)}
         />
+
         <Form.Item
           name="accountNumber"
           label="Account Number"
@@ -371,6 +391,11 @@ const BankDetailsForm: React.FC<{
         >
           <Input />
         </Form.Item>
+        {value?.accountName && (
+          <Form.Item name="accountName" label="Account Name">
+            <Input disabled />
+          </Form.Item>
+        )}
       </div>
 
       <div className="flex items-center justify-end">
@@ -382,7 +407,7 @@ const BankDetailsForm: React.FC<{
 const ITFDetailsForm: React.FC<{
   employeeId?: number;
   disabled?: boolean;
-  value?: TBankValue;
+  value?: TITFValue;
 }> = ({ employeeId, disabled = false, value }) => {
   const [form] = Form.useForm();
   const queryClient = useQueryClient();
@@ -394,11 +419,10 @@ const ITFDetailsForm: React.FC<{
         {
           employeeId,
           data: {
-            key: "bank",
+            key: "itf",
             value: {
-              bvn: data.bvn,
-              bankName: data.bankName,
-              accountNumber: data?.accountNumber,
+              itfAuthorityId: data.itfAuthorityId,
+              employeeItfId: data.employeeItfId,
             },
           },
         },
@@ -430,9 +454,9 @@ const ITFDetailsForm: React.FC<{
   useEffect(() => {
     if (value) {
       form.setFieldsValue({
-        bvn: value.bvn,
-        bankName: value.bankName,
-        accountNumber: value?.accountNumber,
+        itfAuthorityId: value.itfAuthorityId,
+        employeeItfId: value.employeeItfId,
+        itfAuthorityName: value?.itfAuthorityName,
       });
     }
   }, [form, value]);
@@ -449,15 +473,15 @@ const ITFDetailsForm: React.FC<{
       </div>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
         <Form.Item
-          name="employeeITFId"
+          name="employeeItfId"
           label="Employee ITF ID"
           rules={textInputValidationRules}
         >
-          <Input />
+          <Input placeholder="ITF ID" />
         </Form.Item>
         <FormITFAuthInput
           Form={Form}
-          control={{ label: "ITF Authority", name: "itfAuthId" }}
+          control={{ label: "ITF Authority", name: "itfAuthorityId" }}
         />
       </div>
 
@@ -470,7 +494,7 @@ const ITFDetailsForm: React.FC<{
 const NSITFDetailsForm: React.FC<{
   employeeId?: number;
   disabled?: boolean;
-  value?: TBankValue;
+  value?: TNSITFValue;
 }> = ({ employeeId, disabled = false, value }) => {
   const [form] = Form.useForm();
   const queryClient = useQueryClient();
@@ -482,11 +506,10 @@ const NSITFDetailsForm: React.FC<{
         {
           employeeId,
           data: {
-            key: "bank",
+            key: "nsitf",
             value: {
-              bvn: data.bvn,
-              bankName: data.bankName,
-              accountNumber: data?.accountNumber,
+              nsitfAuthorityId: data.nsitfAuthorityId,
+              employeeNsitfId: data.employeeNsitfId,
             },
           },
         },
@@ -518,9 +541,9 @@ const NSITFDetailsForm: React.FC<{
   useEffect(() => {
     if (value) {
       form.setFieldsValue({
-        bvn: value.bvn,
-        bankName: value.bankName,
-        accountNumber: value?.accountNumber,
+        nsitfAuthorityId: value.nsitfAuthorityId,
+        employeeNsitfId: value.employeeNsitfId,
+        nsitfAuthorityName: value?.nsitfAuthorityName,
       });
     }
   }, [form, value]);
@@ -537,15 +560,15 @@ const NSITFDetailsForm: React.FC<{
       </div>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
         <Form.Item
-          name="employeeNSITFId"
+          name="employeeNsitfId"
           label="Employee NSITF ID"
           rules={textInputValidationRules}
         >
-          <Input />
+          <Input placeholder="NSITF ID" />
         </Form.Item>
         <FormNSITFAuthInput
           Form={Form}
-          control={{ label: "NSITF Authority", name: "nsitfAuthId" }}
+          control={{ label: "NSITF Authority", name: "nsitfAuthorityId" }}
         />
       </div>
 
@@ -558,7 +581,7 @@ const NSITFDetailsForm: React.FC<{
 const TaxDetailsForm: React.FC<{
   employeeId?: number;
   disabled?: boolean;
-  value?: TBankValue;
+  value?: TTaxValue;
 }> = ({ employeeId, disabled = false, value }) => {
   const [form] = Form.useForm();
   const queryClient = useQueryClient();
@@ -570,11 +593,10 @@ const TaxDetailsForm: React.FC<{
         {
           employeeId,
           data: {
-            key: "bank",
+            key: "tax",
             value: {
-              bvn: data.bvn,
-              bankName: data.bankName,
-              accountNumber: data?.accountNumber,
+              taxAuthorityId: data.taxAuthorityId,
+              employeeTaxId: data.employeeTaxId,
             },
           },
         },
@@ -606,9 +628,9 @@ const TaxDetailsForm: React.FC<{
   useEffect(() => {
     if (value) {
       form.setFieldsValue({
-        bvn: value.bvn,
-        bankName: value.bankName,
-        accountNumber: value?.accountNumber,
+        taxAuthorityId: value.taxAuthorityId,
+        employeeTaxId: value.employeeTaxId,
+        taxAuthorityName: value.taxAuthorityName,
       });
     }
   }, [form, value]);
@@ -629,11 +651,11 @@ const TaxDetailsForm: React.FC<{
           label="Employee Tax ID"
           rules={textInputValidationRules}
         >
-          <Input />
+          <Input placeholder="Tax ID" />
         </Form.Item>
         <FormTaxAuthInput
           Form={Form}
-          control={{ label: "Tax Authority", name: "taxAuthId" }}
+          control={{ label: "Tax Authority", name: "taxAuthorityId" }}
         />
       </div>
 

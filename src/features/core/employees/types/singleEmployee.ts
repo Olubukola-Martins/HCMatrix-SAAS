@@ -142,17 +142,46 @@ export type Finance =
   | {
       key: "pension";
       value: TPensionValue;
+    }
+  | {
+      key: "tax";
+      value: TTaxValue;
+    }
+  | {
+      key: "nsitf";
+      value: TNSITFValue;
+    }
+  | {
+      key: "itf";
+      value: TITFValue;
     };
 export interface TPensionValue {
   pensionType: string;
-  accountNumber: string;
-  fundAdministrator: string;
+  employeePensionId: string;
+  pensionAdministratorId: number;
+  pensionAdministratorName?: string;
+}
+export interface TTaxValue {
+  taxAuthorityId: number;
+  employeeTaxId: string;
+  taxAuthorityName?: string;
+}
+export interface TNSITFValue {
+  nsitfAuthorityId: number;
+  employeeNsitfId: string;
+  nsitfAuthorityName?: string;
+}
+export interface TITFValue {
+  itfAuthorityId: number;
+  employeeItfId: string;
+  itfAuthorityName?: string;
 }
 export interface TBankValue {
   bvn: string;
   bankName: string;
   accountNumber: string;
   bankCode: string;
+  accountName?: string;
 }
 
 export interface TWalletValue {

@@ -4,6 +4,7 @@ import { useApiAuth } from "hooks/useApiAuth";
 import { useMutation } from "react-query";
 import { ICurrentCompany } from "types";
 import { Finance, TBankValue, TPensionValue, TWalletValue } from "../../types";
+import { TITFValue, TNSITFValue, TTaxValue } from "../../types/singleEmployee";
 
 type TDataValue = Pick<Finance, "key" | "value">;
 const createData = async (props: {
@@ -20,7 +21,13 @@ const createData = async (props: {
     },
   };
 
-  const data: TBankValue | TPensionValue | TWalletValue = {
+  const data:
+    | TBankValue
+    | TPensionValue
+    | TWalletValue
+    | TNSITFValue
+    | TITFValue
+    | TTaxValue = {
     ...props.data.value,
   };
 
