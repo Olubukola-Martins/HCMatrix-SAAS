@@ -1,51 +1,34 @@
-import React, { useState } from "react";
-import { AppButton } from "components/button/AppButton";
-import { Drawer, Form } from "antd";
-import { Link } from "react-router-dom";
-import { appRoutes } from "config/router/paths";
+import { Drawer, Form, Select } from "antd";
 import { IDrawerProps } from "types";
+import { UseWindowWidth } from "features/timeAndAttendance/hooks/UseWindowWidth";
 import { JoditEditorComponent } from "./JoditEditor";
-//import IDrawerProps
-
-// type DrawerProps = {
-//   title: string;
-//   placement: "right" | "left";
-//   onClose: () => void;
-//   open: boolean;
-//   closable: boolean;
-//   className: string;
-//   children: React.ReactNode;
-// };
-
-// export const SendEmailDrawer: React.FC<DrawerProps> = ({
-//   title,
-//   placement = "right",
-//   onClose,
-//   open = false,
-//   closable = true,
-//   className,
-//   children,
-// }) => {
-//   return (
-//     <Drawer title={title} placement={placement} onClose={onClose} visible={open} closable={closable} className={className}>
-//       {children}
-//     </Drawer>
-//   );
-// };
 
 export const SendEmailDrawer = ({ handleClose, open }: IDrawerProps) => {
-  const onClose = () => {
-    handleClose();
-  };
+  const { drawerSize } = UseWindowWidth();
   return (
     <Drawer
       title="Send Candidate an Email"
       open={open}
-      onClose={onClose}
-      size="large"
+      onClose={() => handleClose()}
+      size={drawerSize}
     >
       <Form>
-        <JoditEditorComponent />
+        <Form.Item className="w-3/4 md:w-1/4">
+          <Select
+            options={[
+              {
+                value: "template",
+                label: "Template",
+              },
+            ]}
+          />
+        </Form.Item>
+        <JoditEditorComponent
+          control={{
+            name: "sendCandidateEmail",
+            label: "Send Candidate an Email",
+          }}
+        />
       </Form>
     </Drawer>
   );

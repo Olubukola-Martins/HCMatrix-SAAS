@@ -1,4 +1,6 @@
+import { List } from "antd";
 import avatar from "../assets/avatar.png";
+import { LIST_IGNORE } from "antd/lib/upload/Upload";
 
 export interface ApplicantData {
   key: React.Key;
@@ -43,52 +45,60 @@ export const ApplicantRecords = () => {
   return (
     <div className="Container">
       <h2>Candidate Records</h2>
-      <div className="my-4 p-2">
-        {data.map((item) => (
-          <div key={item.key} className="flex gap-4">
-            <img src={item.img} className="w-14 h-14 rounded-full" />
-            <div className="">
-              <div className="mb-3">
+      <List>
+        <List.Item className="my-4 p-2">
+          {data.map((item, index) => (
+            <div key={item.key} className="flex gap-4">
+              <img src={item.img} className="w-14 h-14 rounded-full" />
+              <div className="">
+                <div className="mb-3">
+                  <h2>{item.title}</h2>
+                  <p className="text-sm text-[rgba(58, 58, 58, 0.80)]">
+                    {item.date}
+                  </p>
+                </div>
+                <div>
+                  <h4 className="mb-2">{item.emailSubject}</h4>
+                  <p>{item.description}</p>
+                </div>
+              </div>
+              {index < data.length - 1 && (
+                <hr className="my- border border-fuchsia-800" />
+              )}
+            </div>
+          ))}
+        </List.Item>
+
+        <List.Item>
+          {recordData.map((item) => (
+            <div key={item.key} className="flex gap-4 p-2">
+              <img src={item.img} className="w-14 h-14 rounded-full" />
+              <div className="mb-3 p-1">
                 <h2>{item.title}</h2>
-                <p className="text-sm text-[rgba(58, 58, 58, 0.80)]">
+                <p className="mb-2 text-sm text-[rgba(58, 58, 58, 0.80)]">
                   {item.date}
                 </p>
-              </div>
-              <div>
-                <h4 className="mb-2">{item.emailSubject}</h4>
-                <p>{item.description}</p>
+                <p className="text-caramel">{item.status}</p>
               </div>
             </div>
-          </div>
-        ))}
-      </div>
-      <div>
-        {recordData.map((item) => (
-          <div key={item.key} className="flex gap-4 p-2">
-            <img src={item.img} className="w-14 h-14 rounded-full" />
-            <div className="mb-3 p-1">
-              <h2>{item.title}</h2>
-              <p className="mb-2 text-sm text-[rgba(58, 58, 58, 0.80)]">
-                {item.date}
-              </p>
-              <p className="text-caramel">{item.status}</p>
-            </div>
-          </div>
-        ))}
+          ))}
+        </List.Item>
 
-        {recordData.map((item) => (
-          <div key={item.key} className="flex gap-4 p-2">
-            <img src={item.img} className="w-14 h-14 rounded-full" />
-            <div className="mb-3 p-1">
-              <h2>{item.title}</h2>
-              <p className="mb-2 text-sm text-[rgba(58, 58, 58, 0.80)]">
-                {item.date}
-              </p>
-              <p className="text-caramel">Status set to Reviewed</p>
+        <List.Item>
+          {recordData.map((item) => (
+            <div key={item.key} className="flex gap-4 p-2">
+              <img src={item.img} className="w-14 h-14 rounded-full" />
+              <div className="mb-3 p-1">
+                <h2>{item.title}</h2>
+                <p className="mb-2 text-sm text-[rgba(58, 58, 58, 0.80)]">
+                  {item.date}
+                </p>
+                <p className="text-caramel">Status set to Reviewed</p>
+              </div>
             </div>
-          </div>
-        ))}
-      </div>
+          ))}
+        </List.Item>
+      </List>
     </div>
   );
 };

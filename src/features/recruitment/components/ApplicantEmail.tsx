@@ -1,10 +1,8 @@
-import { Card, Empty } from "antd";
+import { Empty } from "antd";
 import emptyImage from "../assets/not-found.png";
 import { AppButton } from "components/button/AppButton";
 import { useState } from "react";
 import { SendEmailDrawer } from "./SendEmailDrawer";
-import { Link } from "react-router-dom";
-import { appRoutes } from "config/router/paths";
 import { data } from "./ApplicantRecords";
 
 interface emailArray {
@@ -14,27 +12,19 @@ interface emailArray {
 const emailArray: emailArray[] = [];
 export const ApplicantEmail = () => {
   const [openDrawer, setOpenDrawer] = useState(false);
-
-  // const showDrawer = () => {
-  //   setOpen(true);
-  // };
-
-  // const onClose = () => {
-  //   setOpen(false);
-  // };
   return (
     <div>
       {emailArray.length === 0 ? (
         <Empty
-          className="flex flex-col place-items-center gap-8"
+          className="flex flex-col place-items-center gap-4"
           image={emptyImage}
           imageStyle={{
-            height: 300,
+            height: 250,
           }}
           description={
             <div>
               <h2>It's a little quite in here, don't you think?</h2>
-              <p className="text-xs my-4">
+              <p className="text-xs my-1">
                 Start an email conversation with Samuel.
               </p>
             </div>
@@ -77,24 +67,6 @@ export const ApplicantEmail = () => {
           ))}
         </div>
       )}
-      {/* <SendEmailDrawer
-        title="Send Candidate an Email"
-        placement="right"
-        onClose={onClose}
-        open={open}
-        closable={true}
-        className=""
-      >
-        <Card className="text-caramel underline hover:no-underline p-5 my-4">
-          <Link to={appRoutes.applicantEmailPage}>Send a new email</Link>
-        </Card>
-        <Card className="text-caramel underline hover:no-underline p-5">
-          <Link to={appRoutes.recruitmentEmailTemplate}>
-            Select from an existing template
-          </Link>
-        </Card>
-      </SendEmailDrawer> */}
-
       <SendEmailDrawer
         open={openDrawer}
         handleClose={() => setOpenDrawer(false)}

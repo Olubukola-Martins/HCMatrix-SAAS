@@ -30,14 +30,11 @@ const AddOfferTemplate = () => {
             showLabel={true}
             control={{ label: "Offer Email", name: "" }}
           />
-          <div className="flex justify-end gap-5">
-            <button
-              className="text-base text-caramel underline underline-offset-4 hover:no-underline font-medium "
-              type="reset"
-            >
+          <div className=" flex justify-end gap-5">
+            <button className="text-base font-medium" type="reset">
               Cancel
             </button>
-            <Form.Item className="mt-5">
+            <Form.Item className="mt-5 w-[125px]">
               <AppButton type="submit" label="Save template" />
             </Form.Item>
           </div>

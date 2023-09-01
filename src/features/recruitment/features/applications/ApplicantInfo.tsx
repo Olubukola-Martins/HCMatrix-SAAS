@@ -4,6 +4,7 @@ import CandidateImg from "../../assets/candidate.jpeg";
 import { Select } from "antd";
 import "../../assets/style.css";
 import { ApplicantTab } from "../../components/ApplicantTab";
+import { appRoutes } from "config/router/paths";
 
 const ApplicantInfo = () => {
   const handleChange = (value: string) => {

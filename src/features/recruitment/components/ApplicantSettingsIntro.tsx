@@ -18,7 +18,7 @@ export const ApplicantSettingsIntro = ({
       <div className="Container my-5">
         <div className="flex justify-between">
           <div>
-            <PageIntro title={title} link={appRoutes.applicationsList} />
+            <PageIntro title={title} link={appRoutes.recruitmentDashboard} />
             <p className="pt-1">{description}</p>
           </div>
           {nextLink ? (

@@ -119,7 +119,7 @@ const ApplicationsList = () => {
       dataIndex: "candidateInfo",
       ellipsis: true,
       render: (candidateInfo) => (
-        <div>
+        <div> 
           <h2 className="overflow-hidden whitespace-nowrap truncate text-caramel">
             {candidateInfo.candidateName}
           </h2>
@@ -228,13 +228,13 @@ const ApplicationsList = () => {
             overlay={
               <Menu>
                 <Menu.Item key="1">
-                  <Link to={appRoutes.applicantDetails(1).path}>
+                  <Link to={appRoutes.applicantDetails().path}>
                     View Candidate
                   </Link>
                 </Menu.Item>
                 <Menu.Item key="2">View Resume</Menu.Item>
                 <Menu.Item key="3">Send Email</Menu.Item>
-                <Menu.Item key="4">Comment</Menu.Item>{" "}
+                <Menu.Item key="4">Comment</Menu.Item>
                 <Menu.Item key="5">Move Candidate to Talent Pool</Menu.Item>
                 <Menu.Item key="6">Delete Candidate</Menu.Item>
               </Menu>

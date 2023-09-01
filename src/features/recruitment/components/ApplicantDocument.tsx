@@ -26,26 +26,26 @@ export const ApplicantDocument = () => {
         />
       </div>
       <div>
-        <div className="flex gap-4 mt-4">
-          <Card className="text-caramel w-1/2 p-4">
-            <a href="#" target="blank">
+        <div className="flex flex-col md:flex-row gap-4 mt-4 ">
+          <Card className="text-caramel md:w-1/2 p-4">
+            <a href="#" target="_blank">
               Resume
             </a>
           </Card>
-          <Card className="text-caramel w-1/2 p-4">
-            <a href="#" target="blank">
+          <Card className="text-caramel md:w-1/2 p-4">
+            <a href="#" target="_blank">
               Resume
             </a>
           </Card>
         </div>
-        <div className="flex gap-4 mt-4">
-          <Card className="text-caramel w-1/2 p-4">
-            <a href="#" target="blank">
+        <div className="flex flex-col md:flex-row gap-4 mt-4">
+          <Card className="text-caramel md:w-1/2 p-4">
+            <a href="#" target="_blank">
               Resume
             </a>
           </Card>
-          <Card className="text-caramel w-1/2 p-4">
-            <a href="#" target="blank">
+          <Card className="text-caramel md:w-1/2 p-4">
+            <a href="#" target="_blank">
               Resume
             </a>
           </Card>

@@ -187,7 +187,7 @@ export const appRoutes = {
   clockInSettings: `/attendance/clock-in-settings`,
   addLocation: `/attendance/add-location`,
   otherSettings: `/attendance/other-settings`,
- 
+
   // Leaning and development
   learningHome: `/learning/home`,
   trainingSettings: `/learning/training-settings`,
@@ -210,4 +210,31 @@ export const appRoutes = {
   addTraining: `/learning/add-training`,
   lAndDReport: `/learning/report`,
   udemy: `/learning/udemy`,
+
+  // Recruitment
+  recruitmentSettings: `/recruitment/settings`,
+  recruitmentDashboard: `/recruitment/dashboard`,
+  recruitmentReport: `/recruitment/report`,
+  recruitmentAddJobOpening: `/recruitment/add-job-opening`,
+  candidateStatus: `/recruitment/candidate-status`,
+  candidateSources: `/recruitment/candidate-sources`,
+  recruitmentEmailTemplate: `/recruitment/email-template`,
+  recruitmentOfferTemplate: `/recruitment/offer-template`,
+  recruitmentJobTemplate: `/recruitment/job-template`,
+  recruitmentOtherSettings: `/recruitment/other-settings`,
+  addEmailTemplate: `/recruitment/add-email-template`,
+  addJobTemplate: `/recruitment/add-job-template`,
+  addOfferTemplate: `/recruitment/add-offer-template`,
+  applicationsList: `/recruitment/applications-list`,
+  applicationsDescription: `/recruitment/applications-description`,
+  applicationsInfo: `/recruitment/applications-info`,
+  applicantDetails: (id?: number) => ({
+    format: `/recruitment/dashboard/:id/applicantDetails`,
+    path: `/recruitment/dashboard/${id}/applicantDetails`,
+  }),
+  applicationDetails: (id?: number) => ({
+    format: `/recruitment/dashboard/:id/applicationDetails`,
+    path: `/recruitment/dashboard/${id}/applicationDetails`,
+  }),
+  applicantEmailPage: `/recruitment/dashboard/applicantEmailPage`,
 };
