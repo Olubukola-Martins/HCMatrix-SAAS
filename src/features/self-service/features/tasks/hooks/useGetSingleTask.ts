@@ -3,18 +3,17 @@ import { MICROSERVICE_ENDPOINTS } from "config/enviroment";
 import { useQuery } from "react-query";
 import { ICurrentCompany } from "types";
 import { useApiAuth } from "hooks/useApiAuth";
-import { TSingleEmployeePayroll } from "features/payroll/types";
+import { TTask } from "../types";
 
 interface IDataProps {
-  payrollId?: number;
-  employeeId?: number;
+  id: number;
 }
-export const QUERY_KEY_FOR_SINGLE_EMPLOYEE_PAYROLL = "single-employee-payroll";
+export const QUERY_KEY_FOR_SINGLE_TASK = "single-task";
 const getData = async (props: {
   data: IDataProps;
   auth: ICurrentCompany;
-}): Promise<TSingleEmployeePayroll> => {
-  const url = `${MICROSERVICE_ENDPOINTS.PAYROLL}/payroll/${props.data.payrollId}/employee/${props.data.employeeId}`;
+}): Promise<TTask> => {
+  const url = `${MICROSERVICE_ENDPOINTS.UTILITY}/self-service/task/${props.data.id}`;
 
   const config = {
     headers: {
@@ -25,19 +24,19 @@ const getData = async (props: {
   };
 
   const res = await axios.get(url, config);
-  const item: TSingleEmployeePayroll = res.data.data;
+  const item: TTask = res.data.data;
 
-  const data: TSingleEmployeePayroll = {
+  const data: TTask = {
     ...item,
   };
 
   return data;
 };
 
-export const useGetSingleEmployeePayroll = (props: IDataProps) => {
+export const useGetSingleTask = (props: IDataProps) => {
   const { token, companyId } = useApiAuth();
   const queryData = useQuery(
-    [QUERY_KEY_FOR_SINGLE_EMPLOYEE_PAYROLL],
+    [QUERY_KEY_FOR_SINGLE_TASK],
     () =>
       getData({
         auth: {
@@ -47,7 +46,6 @@ export const useGetSingleEmployeePayroll = (props: IDataProps) => {
         data: { ...props },
       }),
     {
-      enabled: !!props.employeeId && !!props.payrollId,
       onError: (err: any) => {},
       onSuccess: (data) => {},
     }

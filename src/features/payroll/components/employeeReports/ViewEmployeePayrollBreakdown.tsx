@@ -1,13 +1,18 @@
 import { Modal, Skeleton, Switch } from "antd";
 import Themes from "components/Themes";
+import { employeeInformationOptions } from "features/payroll/constants";
 import { useActivateOrDeactivateEmployeeSalaryComponent } from "features/payroll/hooks/payroll/employee/salaryComponent/useActivateOrDeactivateEmployeeSalaryComponent";
 import { QUERY_KEY_FOR_EMPLOYEES_IN_PAYROLL } from "features/payroll/hooks/payroll/employee/useGetEmployeesInPayroll";
 import {
   QUERY_KEY_FOR_SINGLE_EMPLOYEE_PAYROLL,
   useGetSingleEmployeePayroll,
 } from "features/payroll/hooks/payroll/employee/useGetSingleEmployeePayroll";
-import { TEmployeesInPayrollData } from "features/payroll/types";
+import {
+  TEmployeesInPayrollData,
+  TPayrollBreakdownAttr,
+} from "features/payroll/types";
 import { useGetCompanyBaseCurrency } from "hooks/useGetCompanyBaseCurrency";
+import moment from "moment";
 import React, { useState } from "react";
 import { useQueryClient } from "react-query";
 import { IModalProps } from "types";
@@ -15,8 +20,8 @@ import { openNotification } from "utils/notifications";
 
 interface IProps extends IModalProps {
   params: {
-    payrollId: number;
-    employeeId: number;
+    payrollId?: number;
+    employeeId?: number;
   };
   showControls?: boolean;
 }
@@ -45,54 +50,92 @@ const ViewEmployeePayrollBreakdown: React.FC<IProps> = ({
   }) => {
     const { salaryComponentId, isActive } = data;
 
-    mutateSalaryComp(
-      {
-        employeeId,
-        payrollId,
-        salaryComponentId,
-        data: { isActive },
-      },
-      {
-        onError: (err: any) => {
-          openNotification({
-            state: "error",
-            title: "Error Occurred",
-            description:
-              err?.response.data.message ?? err?.response.data.error.message,
-          });
+    if (payrollId && employeeId) {
+      mutateSalaryComp(
+        {
+          employeeId,
+          payrollId,
+          salaryComponentId,
+          data: { isActive },
         },
-        onSuccess: (res: any) => {
-          openNotification({
-            state: "success",
+        {
+          onError: (err: any) => {
+            openNotification({
+              state: "error",
+              title: "Error Occurred",
+              description:
+                err?.response.data.message ?? err?.response.data.error.message,
+            });
+          },
+          onSuccess: (res: any) => {
+            openNotification({
+              state: "success",
 
-            title: "Success",
-            description: res.data.message,
-            // duration: 0.4,
-          });
+              title: "Success",
+              description: res.data.message,
+              // duration: 0.4,
+            });
 
-          queryClient.setQueriesData(
-            [QUERY_KEY_FOR_SINGLE_EMPLOYEE_PAYROLL],
-            (vals: unknown) => {
-              const data = vals as TEmployeesInPayrollData;
+            queryClient.setQueriesData(
+              [QUERY_KEY_FOR_SINGLE_EMPLOYEE_PAYROLL],
+              (vals: unknown) => {
+                const data = vals as TEmployeesInPayrollData;
 
-              return {
-                ...data,
-                employeeSalaryComponents: data.employeeSalaryComponents.map(
-                  (item) =>
-                    item.id === salaryComponentId ? { ...item, isActive } : item
-                ),
-              };
-            }
-          );
-          queryClient.invalidateQueries({
-            queryKey: [QUERY_KEY_FOR_EMPLOYEES_IN_PAYROLL],
-            // exact: true,
-          });
-          setSelectedCompId(undefined);
-        },
-      }
-    );
+                return {
+                  ...data,
+                  employeeSalaryComponents: data.employeeSalaryComponents.map(
+                    (item) =>
+                      item.id === salaryComponentId
+                        ? { ...item, isActive }
+                        : item
+                  ),
+                };
+              }
+            );
+            queryClient.invalidateQueries({
+              queryKey: [QUERY_KEY_FOR_EMPLOYEES_IN_PAYROLL],
+              // exact: true,
+            });
+            setSelectedCompId(undefined);
+          },
+        }
+      );
+    }
   };
+  const payrollAttrs: TPayrollBreakdownAttr[] = [
+    {
+      label: "Name",
+      value: employeePayroll?.fullName,
+      takeFullSpace: true,
+    },
+    {
+      label: "Year to Date Net",
+      value: 0,
+      takeFullSpace: true,
+    },
+    {
+      label: "Year to Date Gross",
+      value: 0,
+      takeFullSpace: true,
+    },
+    {
+      label: "Year to Date Tax",
+      value: 0,
+      takeFullSpace: true,
+    },
+
+    {
+      label: "Employee ID",
+      value: employeePayroll?.empUid,
+      takeFullSpace: true,
+    },
+    {
+      label: "Pay Date",
+      value: moment(employeePayroll?.createdAt).format("YYYY-MM-DD"),
+      takeFullSpace: true,
+    },
+    ...employeeInformationOptions,
+  ];
   return (
     <Modal
       open={open}
@@ -114,13 +157,21 @@ const ViewEmployeePayrollBreakdown: React.FC<IProps> = ({
         >
           <div className="scrollBar overflow-auto">
             <div className="text-sm mt-5 font-medium">
-              <div className="bg-mainBg flex items-center justify-between px-5 py-2">
-                <span> Employee Name</span>
-                <span>{employeePayroll?.fullName}</span>
-              </div>
-              <div className="bg-mainBg flex items-center justify-between px-5 py-2 mt-3">
-                <span> Employee ID</span>
-                <span>{employeePayroll?.empUid}</span>
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-2 my-2">
+                {payrollAttrs.map((item, i) => (
+                  <div
+                    key={i}
+                    className={`${
+                      item.takeFullSpace ? "col-span-2" : "col-span-1"
+                    } bg-transparent border shadow-md border-slate-300 flex items-center justify-between px-5 py-2`}
+                  >
+                    <span>{item.label}</span>
+                    <span>
+                      {item?.amount ? baseCurrency?.currencySymbol : ""}
+                      {item.value}
+                    </span>
+                  </div>
+                ))}
               </div>
 
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-5 my-6">

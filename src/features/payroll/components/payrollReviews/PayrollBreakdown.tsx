@@ -1,6 +1,6 @@
 import { Modal, Skeleton } from "antd";
 import Themes from "components/Themes";
-import { TSinglePayroll } from "features/payroll/types";
+import { TPayrollBreakdownAttr, TSinglePayroll } from "features/payroll/types";
 import { useGetCompanyBaseCurrency } from "hooks/useGetCompanyBaseCurrency";
 import React from "react";
 import { IModalProps } from "types";
@@ -12,7 +12,7 @@ interface IProps extends IModalProps {
 const PayrollBreakdown: React.FC<IProps> = ({ open, handleClose, payroll }) => {
   const { baseCurrency, loading: baseCurrLoading } =
     useGetCompanyBaseCurrency();
-  const payrollAttrs = [
+  const payrollAttrs: TPayrollBreakdownAttr[] = [
     { label: "Payroll Name", value: payroll.name, takeFullSpace: true },
     { label: "Date(for)", value: payroll.date, takeFullSpace: true },
     {

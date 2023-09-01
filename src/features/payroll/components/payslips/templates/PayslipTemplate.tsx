@@ -1,8 +1,7 @@
-import { Checkbox, Form, Input, Radio, Select, Switch } from "antd";
+import { Checkbox, Form, Input,  Select,  } from "antd";
 import { AppButton } from "components/button/AppButton";
 import {
   employeeInformationOptions,
-  payrollInformationOptions,
 } from "features/payroll/constants";
 import React, { useEffect } from "react";
 import {
@@ -73,26 +72,7 @@ const PayslipTemplate: React.FC<{
               placeholder="Describe the report template"
             />
           </Form.Item>
-          <Form.Item
-            rules={generalValidationRules}
-            name="payrollInformation"
-            label="Payroll Information"
-          >
-            <Select
-              options={payrollInformationOptions}
-              mode="multiple"
-              className="w-full"
-              getPopupContainer={(triggerNode) => triggerNode.parentElement}
-              placeholder="Payroll Information to display in report"
-            />
-          </Form.Item>
-          <Form.Item
-            rules={generalValidationRules}
-            name="displayEmployeeSpecificSalaryComps"
-            label="Do you want to show employee specific salary components e.g loan repayments, bonuses, performance bonuses, etc.?"
-          >
-            <Switch defaultChecked />
-          </Form.Item>
+
           <Form.Item
             rules={generalValidationRules}
             name="displayYearToDateCalcs"

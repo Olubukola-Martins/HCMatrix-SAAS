@@ -10,6 +10,13 @@ import {
 import { TPensionAdministrator } from "./pensionAdministrators";
 import { TTaxAuthority } from "./taxAuthorities";
 
+export type TPayrollBreakdownAttr = {
+  label: string;
+  value?: number | string;
+  amount?: boolean;
+  takeFullSpace?: boolean;
+};
+
 export {
   type TPayGrade,
   type TPayGradeCategory,

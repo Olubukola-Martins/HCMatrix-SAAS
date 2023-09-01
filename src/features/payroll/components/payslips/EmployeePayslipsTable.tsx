@@ -7,6 +7,7 @@ import { usePagination } from "hooks/usePagination";
 
 import { TPayGrade } from "features/payroll/types";
 import { useGetPayGrades } from "features/payroll/hooks/payGrades/useGetPayGrades";
+import ViewEmployeePayrollBreakdown from "../employeeReports/ViewEmployeePayrollBreakdown";
 
 type TAction = "view";
 
@@ -109,6 +110,14 @@ const EmployeePayslipsTable: React.FC<{
 
   return (
     <>
+      {/* TODO: PAsss proper id when endpoint is available */}
+      <ViewEmployeePayrollBreakdown
+        params={{}}
+        handleClose={() => setAction(undefined)}
+        open={action === "view"}
+        showControls={false}
+      />
+
       <Table
         columns={columns}
         size="small"

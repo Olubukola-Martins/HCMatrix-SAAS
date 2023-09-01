@@ -13,10 +13,10 @@ export const employeeInformationOptions = [
     label: "Full Name",
     value: "name",
   },
-  {
-    label: "Date of Birth",
-    value: "dob",
-  },
+  // {
+  //   label: "Date of Birth",
+  //   value: "dob",
+  // },
   {
     label: "Address",
     value: "address",
