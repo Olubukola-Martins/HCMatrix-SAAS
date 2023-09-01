@@ -31,7 +31,6 @@ const CompanyRegistrationForm = () => {
   const [form] = Form.useForm();
   const {
     data: industries,
-
     isSuccess: isISuccess,
   } = useFetchIndustries();
   const { isSuccess: isCSuccess } = useFetchCountries();

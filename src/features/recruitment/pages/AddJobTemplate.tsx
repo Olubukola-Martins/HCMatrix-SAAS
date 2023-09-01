@@ -24,7 +24,7 @@ const AddJobTemplate = () => {
           <h2 className="text-lg py-2 font-medium">
             Job Name <span className="text-red-600">*</span>
           </h2>
-          <div className="flex gap-4 mb-5 lg:w-1/3">
+          <div className="flex gap-4 mb-5 lg:w-1/3 md:w-1/2">
             <Form.Item name="jobName" rules={textInputValidationRules}>
               <Input placeholder="Job Role" />
             </Form.Item>
@@ -35,14 +35,11 @@ const AddJobTemplate = () => {
             />
           </div>
           <JoditEditorComponent />
-          <div className="w-full flex justify-end gap-5">
-            <button
-              className="text-base text-caramel underline underline-offset-4 hover:no-underline font-medium"
-              type="reset"
-            >
+          <div className=" flex justify-end gap-5">
+            <button className="text-base font-medium" type="reset">
               Cancel
             </button>
-            <Form.Item className="mt-5">
+            <Form.Item className="mt-5 w-[125px]">
               <AppButton type="submit" label="Save template" />
             </Form.Item>
           </div>

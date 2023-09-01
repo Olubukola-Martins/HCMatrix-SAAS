@@ -4,33 +4,89 @@ import { Form, Select } from "antd";
 import { useEffect } from "react";
 import { AppButton } from "components/button/AppButton";
 import { generalValidationRules } from "utils/formHelpers/validation";
-
+import { useApiAuth } from "hooks/useApiAuth";
+import { EGlobalOps, GlobalContext } from "stateManagers/GlobalContextProvider";
+import { useContext } from "react";
+import { useCreateAttendanceLocation } from "features/timeAndAttendance/hooks/useCreateAttendanceLocation";
+import { openNotification } from "utils/notifications";
+import { FormBranchInput } from "features/core/branches/components/FormBranchInput";
+const formWrapStyle =
+  "bg-card px-4 pt-4 rounded grid grid-cols-1 md:grid-cols-2 gap-x-10 mb-5 shadow-sm";
 export const AddLocation = () => {
-  const formWrapStyle =
-    "bg-card px-4 pt-4 rounded grid grid-cols-1 md:grid-cols-2 gap-x-10 mb-5 shadow-sm";
   const [form] = Form.useForm();
+  const { companyId, token } = useApiAuth();
+  const { mutate, isLoading } = useCreateAttendanceLocation();
+  const globalCtx = useContext(GlobalContext);
+  const { dispatch } = globalCtx;
 
   useEffect(() => {
-    const defaultField = { branch: "", biometrics: "" };
-    form.setFieldsValue({ fields: [defaultField] });
+    const defaultField = {
+      branchId: "",
+      biometricDeviceId: "",
+      companyId: companyId,
+    };
+    form.setFieldsValue({ biometricDeviceLocations: [defaultField] });
   }, []);
+
   const handleFormSubmit = (values: any) => {
-    console.log("Form submitted:", values);
+    console.log(values);
+
+    if (companyId) {
+      mutate(
+        {
+          companyId,
+          token,
+          biometricDeviceLocations: values.biometricDeviceLocations,
+        },
+        {
+          onError: (err: any) => {
+            openNotification({
+              state: "error",
+              title: "Error Occurred",
+              description:
+                err?.response.data.message ?? err?.response.data.error.message,
+                duration: 6.0
+            });
+          },
+          onSuccess: (res: any) => {
+            openNotification({
+              state: "success",
+              title: "Success",
+              description: res.data.message,
+              // duration: 0.4,
+            });
+
+            form.resetFields();
+            dispatch({ type: EGlobalOps.setShowInitialSetup, payload: true });
+          },
+        }
+      );
+    }
   };
 
   const handleAddField = () => {
-    const fields = form.getFieldValue("fields") || [];
-    const newField = { branch: "", biometrics: "" };
-    form.setFieldsValue({ fields: [...fields, newField] });
-    console.log("hhh");
+    const biometricDeviceLocations =
+      form.getFieldValue("biometricDeviceLocations") || [];
+    const newLocation = {
+      branchId: "",
+      biometricDeviceId: "",
+      companyId: companyId,
+    };
+    form.setFieldsValue({
+      biometricDeviceLocations: [...biometricDeviceLocations, newLocation],
+    });
   };
 
   const handleRemoveField = (index: number) => {
-    const fields = form.getFieldValue("fields") || [];
+    const biometricDeviceLocations =
+      form.getFieldValue("biometricDeviceLocations") || [];
     form.setFieldsValue({
-      fields: fields.filter((_: any, i: number) => i !== index),
+      biometricDeviceLocations: biometricDeviceLocations.filter(
+        (_: any, i: number) => i !== index
+      ),
     });
   };
+
   return (
     <>
       <TimeAttendanceSettingsNav active="add location" />
@@ -38,7 +94,6 @@ export const AddLocation = () => {
         title={"Add Location"}
         description="Add your offices or places where your team members will be clocking in and out."
       />
-
       <div className="Container mt-7">
         <div className="bg-card rounded md:p-5 p-3">
           <div className="bg-mainBg py-4 px-4 rounded">
@@ -48,8 +103,8 @@ export const AddLocation = () => {
               layout="vertical"
               requiredMark={false}
             >
-              <Form.List name="fields">
-                {(fields, { add, remove }) => (
+              <Form.List name="biometricDeviceLocations">
+                {(fields) => (
                   <>
                     {fields.map((field, index) => (
                       <div
@@ -58,7 +113,7 @@ export const AddLocation = () => {
                       >
                         <Form.Item
                           {...field}
-                          name={[field.name, "branch"]}
+                          name={[field.name, "branchId"]}
                           label="Select Branch"
                           className="w-full"
                           rules={generalValidationRules}
@@ -70,13 +125,15 @@ export const AddLocation = () => {
                               { label: "Branch 1", value: 1 },
                               { label: "Branch 2", value: 2 },
                             ]}
+                            allowClear
                           />
                         </Form.Item>
+                      
 
                         <div className="flex items-center gap-3 w-full">
                           <Form.Item
                             {...field}
-                            name={[field.name, "biometrics"]}
+                            name={[field.name, "biometricDeviceId"]}
                             label="Select Biometrics"
                             className="w-full"
                             rules={generalValidationRules}
@@ -87,6 +144,8 @@ export const AddLocation = () => {
                                 { value: 1, label: "Bio 1" },
                                 { value: 2, label: "Bio 2" },
                               ]}
+                              allowClear
+                              placeholder="Select"
                             />
                           </Form.Item>
 
@@ -108,7 +167,7 @@ export const AddLocation = () => {
               </Form.List>
 
               <div className="flex justify-end">
-                <AppButton label="Save" type="submit" />
+                <AppButton label="Save" type="submit" isLoading={isLoading} />
               </div>
             </Form>
           </div>

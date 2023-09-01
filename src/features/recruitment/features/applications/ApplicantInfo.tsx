@@ -1,9 +1,10 @@
 import RecruitmentSubNav from "features/recruitment/components/RecruitmentSubNav";
-import { ApplicantSettingsIntro } from "./ApplicantSettingsIntro";
+import { ApplicantSettingsIntro } from "../../components/ApplicantSettingsIntro";
 import CandidateImg from "../../assets/candidate.jpeg";
 import { Select } from "antd";
 import "../../assets/style.css";
-import { ApplicantTab } from "./ApplicantTab";
+import { ApplicantTab } from "../../components/ApplicantTab";
+import { appRoutes } from "config/router/paths";
 
 const ApplicantInfo = () => {
   const handleChange = (value: string) => {
@@ -20,7 +21,7 @@ const ApplicantInfo = () => {
       />
       <div className="Container mt-5">
         <div className=" bg-card lg:grid lg:grid-cols-2 gap-4 items-center justify-center md:p-5 p-3 ">
-          <div className="bg-mainBg mb-4 md:mb-0 flex flex-col p-4 rounded md:flex-row gap-4 items-center">
+          <div className="bg-mainBg mb-4 md:mb-3 lg:mb-0  flex flex-col p-4 rounded md:flex-row gap-4 items-center">
             <img src={CandidateImg} className="h-20 rounded-full w-20" />
             <div>
               <p className="pb-2">Candidate Name --:-- Adeshina Samuel</p>

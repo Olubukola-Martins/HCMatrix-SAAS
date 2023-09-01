@@ -9,7 +9,7 @@ export const radioFormOptions: {
   {
     label: "Flexible",
     description: "Good for times with higher onsite autonomy",
-    value: "flexible",
+    value: "Flexible",
     faceRTitle: "Face Recognition Disabled",
     locationTitle: "GPS Location required",
     faceRDes: "Self capturing not allowed",
@@ -17,7 +17,7 @@ export const radioFormOptions: {
   {
     label: "Moderate",
     description: "Good for teams with fixed hours and location",
-    value: "moderate",
+    value: "Moderate",
     faceRTitle: "Face Recognition Enabled",
     locationTitle: "GPS Location not required",
     faceRDes: "If unrecognized flag time entry",
@@ -25,7 +25,7 @@ export const radioFormOptions: {
   {
     label: "Mandatory",
     description: "Good for teams monitoring flexible offsite members",
-    value: "mandatory",
+    value: "Mandatory",
     faceRTitle: "Face Recognition Enforced",
     locationTitle: "GPS Location required",
     faceRDes: "If unrecognized block time entry",
