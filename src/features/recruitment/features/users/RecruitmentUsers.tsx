@@ -23,6 +23,7 @@ export const RecruitmentUsers = () => {
       key: "1",
       title: "User Name",
       dataIndex: "userName",
+      render: (text) => <span className="text-caramel">{text}</span>,
     },
     {
       title: "Email",

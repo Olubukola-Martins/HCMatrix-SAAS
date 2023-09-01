@@ -65,9 +65,8 @@ export const JobOpeningContainer = () => {
             overlay={
               <Menu>
                 <Menu.Item key="1">Edit</Menu.Item>
-                <Menu.Item key="2">View </Menu.Item>
-                <Menu.Item key="3">Delete</Menu.Item>
-                <Menu.Item key="4">Expired</Menu.Item>
+                <Menu.Item key="2"><Link to={appRoutes.applicationDetails(val.key as unknown as number).path}>View</Link></Menu.Item>
+                <Menu.Item key="3">Delete </Menu.Item>
               </Menu>
             }
           >

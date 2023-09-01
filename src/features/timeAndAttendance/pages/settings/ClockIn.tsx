@@ -2,29 +2,74 @@ import { Form, Input, InputNumber, Switch } from "antd";
 import { AppButton } from "components/button/AppButton";
 import { AttendanceSettingsIntro } from "features/timeAndAttendance/components/settings/AttendanceSettingsIntro";
 import { TimeAttendanceSettingsNav } from "features/timeAndAttendance/components/settings/TimeAttendanceSettingsNav";
+import { useCreateClockIn } from "features/timeAndAttendance/hooks/useCreateClockIn";
+import { useApiAuth } from "hooks/useApiAuth";
+import { EGlobalOps, GlobalContext } from "stateManagers/GlobalContextProvider";
 import { generalValidationRules } from "utils/formHelpers/validation";
+import { openNotification } from "utils/notifications";
+import { useContext } from "react";
 
+const formWrapStyle =
+  "bg-card px-4 pt-4 rounded grid grid-cols-1 md:grid-cols-2 gap-x-10 mb-5 shadow-sm";
 export const ClockIn = () => {
-  const formWrapStyle =
-    "bg-card px-4 pt-4 rounded grid grid-cols-1 md:grid-cols-2 gap-x-10 mb-5 shadow-sm";
   const [form] = Form.useForm();
+  const { mutate, isLoading } = useCreateClockIn();
+  const { companyId, token, currentUserId } = useApiAuth();
+  const globalCtx = useContext(GlobalContext);
+  const { dispatch } = globalCtx;
 
   const handleFormSubmit = (values: any) => {
-    console.log("Form submitted:", values);
+    
+    if (companyId) {
+      mutate(
+        {
+          companyId,
+          adminId: currentUserId,
+          isSoftClockIn: values.softClockIn,
+          isBiometricClockIn: values.allowBiometrics,
+          biometricDevices: values.biometricDevices,
+          token,
+        },
+        {
+          onError: (err: any) => {
+            openNotification({
+              state: "error",
+              title: "Error Occurred",
+              description:
+                err?.response.data.message ?? err?.response.data.error.message,
+            });
+          },
+          onSuccess: (res: any) => {
+            openNotification({
+              state: "success",
+              title: "Success",
+              description: res.data.message,
+              // duration: 0.4,
+            });
+
+            form.resetFields();
+            dispatch({ type: EGlobalOps.setShowInitialSetup, payload: true });
+          },
+        }
+      );
+    }
   };
 
   const handleAddField = () => {
-    const fields = form.getFieldValue("fields") || [];
-    const newField = { biometricsName: "", serialNumber: null };
-    form.setFieldsValue({ fields: [...fields, newField] });
+    const biometricDevices = form.getFieldValue("biometricDevices") || [];
+    const newDevice = { companyId: companyId, serialNumber: null };
+    form.setFieldsValue({ biometricDevices: [...biometricDevices, newDevice] });
   };
 
   const handleRemoveField = (index: number) => {
-    const fields = form.getFieldValue("fields") || [];
+    const biometricDevices = form.getFieldValue("biometricDevices") || [];
     form.setFieldsValue({
-      fields: fields.filter((_: any, i: number) => i !== index),
+      biometricDevices: biometricDevices.filter(
+        (_: any, i: number) => i !== index
+      ),
     });
   };
+
   return (
     <>
       <TimeAttendanceSettingsNav active="clock in settings" />
@@ -41,6 +86,10 @@ export const ClockIn = () => {
               onFinish={handleFormSubmit}
               layout="vertical"
               requiredMark={false}
+              initialValues={{
+                softClockIn: true,
+                allowBiometrics: true,
+              }}
             >
               <div
                 className={`${formWrapStyle} flex justify-between items-center`}
@@ -66,8 +115,8 @@ export const ClockIn = () => {
                   <Switch defaultChecked />
                 </Form.Item>
               </div>
-              <Form.List name="fields">
-                {(fields, { add, remove }) => (
+              <Form.List name="biometricDevices">
+                {(fields) => (
                   <>
                     {fields.map((field, index) => (
                       <div
@@ -76,7 +125,7 @@ export const ClockIn = () => {
                       >
                         <Form.Item
                           {...field}
-                          name={[field.name, "biometricsName"]}
+                          name={[field.name, "name"]}
                           label="Name"
                           className="w-full"
                           rules={generalValidationRules}
@@ -94,7 +143,7 @@ export const ClockIn = () => {
                           >
                             <InputNumber className="w-full" />
                           </Form.Item>
-                         
+
                           <i
                             className="ri-delete-bin-line text-xl cursor-pointer hover:text-caramel"
                             onClick={() => handleRemoveField(index)}
@@ -113,7 +162,7 @@ export const ClockIn = () => {
               </Form.List>
 
               <div className="flex justify-end">
-                <AppButton label="Save" type="submit" />
+                <AppButton label="Save" type="submit" isLoading={isLoading} />
               </div>
             </Form>
           </div>

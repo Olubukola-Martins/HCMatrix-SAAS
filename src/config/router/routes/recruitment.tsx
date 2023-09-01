@@ -12,9 +12,11 @@ import OtherSettings from "features/recruitment/pages/OtherSettings";
 import AddEmailTemplate from "features/recruitment/pages/AddEmailTemplate";
 import AddOfferTemplate from "features/recruitment/pages/AddOfferTemplate";
 import AddJobTemplate from "features/recruitment/pages/AddJobTemplate";
-import ApplicantDecription from "features/recruitment/features/applications/JobDetails";
+import ApplicantDecription from "features/recruitment/features/applications/ApplicationDetails";
 import ApplicantInfo from "features/recruitment/features/applications/ApplicantInfo";
-import ApplicationsList from "features/recruitment/features/applications/ApplicationsList";
+import ApplicationsList from "features/recruitment/components/ApplicationsList";
+import ApplicationDetails from "features/recruitment/features/applications/ApplicationDetails";
+import ApplicantEmailPage from "features/recruitment/features/applications/ApplicantEmailPage";
 
 export const recruitmentRoutes: TRouteData[] = [
   {
@@ -104,18 +106,23 @@ export const recruitmentRoutes: TRouteData[] = [
     isSearchable: false,
   },
   {
-    element: <ApplicantDecription />,
-    path: appRoutes.applicationsDescription,
+    element: <ApplicationDetails />,
+    path: appRoutes.applicationDetails().format,
     isSearchable: false,
   },
   {
     element: <ApplicantInfo />,
-    path: appRoutes.applicationsInfo,
+    path: appRoutes.applicantDetails().format,
     isSearchable: false,
   },
   {
     element: <ApplicationsList />,
     path: appRoutes.applicationsList,
+    isSearchable: false,
+  },
+  {
+    element: <ApplicantEmailPage />,
+    path: appRoutes.applicantEmailPage,
     isSearchable: false,
   },
 ];
