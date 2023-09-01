@@ -1,13 +1,21 @@
 import { TPayrollSchemeType } from "../types/payrollSchemes";
 
 export const employeeInformationOptions = [
-  {
-    label: "Date of Birth",
-    value: "dob",
-  },
+  // {
+  //   label: "Profile Picture",
+  //   value: "image",
+  // },
   {
     label: "Staff ID",
     value: "empuid",
+  },
+  {
+    label: "Full Name",
+    value: "name",
+  },
+  {
+    label: "Date of Birth",
+    value: "dob",
   },
   {
     label: "Address",
@@ -18,28 +26,45 @@ export const employeeInformationOptions = [
     value: "email",
   },
   {
+    label: "Alternative Email",
+    value: "altEmail",
+  },
+  {
     label: "Phone Number",
     value: "phoneNumber",
   },
   {
-    label: "Bank Information",
-    value: "bankInformation",
-  },
-  {
-    label: "Bank Verification Number",
-    value: "bvn",
+    label: "Alternative Phone Number",
+    value: "altPhoneNumber",
   },
   {
     label: "National Identification Number",
     value: "nin",
   },
   {
-    label: "Full Name",
-    value: "fullName",
+    label: "Gender",
+    value: "gender",
   },
+  {
+    label: "Bank Name",
+    value: "bankName",
+  },
+  {
+    label: "Account Number",
+    value: "accountNumber",
+  },
+  {
+    label: "Bank Verification Number",
+    value: "bvn",
+  },
+
   {
     label: "Designation",
     value: "designation",
+  },
+  {
+    label: "Employment Eligibility",
+    value: "eligibility",
   },
   {
     label: "Exchange Rate",
@@ -54,21 +79,38 @@ export const employeeInformationOptions = [
     value: "department",
   },
   {
-    label: "Tax Information",
+    label: "Tax ID",
     value: "taxId",
   },
   {
-    label: "NSITF Information",
-    value: "nstifId",
+    label: "Tax Authority",
+    value: "taxAuthority",
   },
   {
-    label: "ITF Information",
+    label: "NSITF ID",
+    value: "nstifID",
+  },
+  {
+    label: "NSITF Authority",
+    value: "nstifAuthority",
+  },
+  {
+    label: "ITF ID",
     value: "itfId",
   },
   {
-    label: "Pension Information",
+    label: "ITF Authority",
+    value: "itfAuthority",
+  },
+  {
+    label: "Pension ID",
     value: "pensionId",
   },
+  {
+    label: "Pension Administrator",
+    value: "pensionAuthority",
+  },
+
   {
     label: "Payroll Type",
     value: "payrollType",
@@ -88,23 +130,23 @@ export const payrollInformationOptions = [
     value: "grossPay",
   },
   {
-    label: "NSITF",
+    label: "NSITF Pay",
     value: "nsitf",
   },
   {
-    label: "ITF",
+    label: "ITF Pay",
     value: "itf",
   },
   {
-    label: "Pension",
+    label: "Pension Pay",
     value: "pension",
   },
   {
-    label: "Tax",
+    label: "Tax Pay",
     value: "tax",
   },
   {
-    label: "Overtime",
+    label: "Overtime Pay",
     value: "overtime",
   },
 
