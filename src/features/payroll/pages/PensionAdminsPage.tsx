@@ -1,7 +1,7 @@
 import React from "react";
 import { PageIntro } from "components/layout/PageIntro";
 import PayrollSubNav from "../components/PayrollSubNav";
-import { PensionAdminContainer } from "../components/pensionAdministrators/PensionAdminContainer";
+import { PensionAdminContainer } from "../components/organizations/pensionAdministrators/PensionAdminContainer";
 
 const PensionAdminsPage = () => {
   return (

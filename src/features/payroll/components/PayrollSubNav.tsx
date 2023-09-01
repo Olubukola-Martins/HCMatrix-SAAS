@@ -41,8 +41,8 @@ const PayrollSubNav = () => {
               )}
             </>
           ),
-          children: item?.children?.map((item, i) => ({
-            key: i,
+          children: item?.children?.map((item) => ({
+            key: item.title,
             label: (
               <>
                 {item?.path ? (

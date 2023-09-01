@@ -1,7 +1,7 @@
 import React from "react";
 import { PageIntro } from "components/layout/PageIntro";
 import PayrollSubNav from "../components/PayrollSubNav";
-import { ITFAuthContainer } from "../components/itfAuthorities/ITFAuthContainer";
+import { ITFAuthContainer } from "../components/organizations/itfAuthorities/ITFAuthContainer";
 
 const ITFAuthPage = () => {
   return (

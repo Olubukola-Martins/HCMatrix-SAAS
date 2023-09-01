@@ -14,13 +14,12 @@ import {
 import { useSaveEmployeeFinance } from "../../hooks/finance/useSaveEmployeeFinance";
 import { AppButton } from "components/button/AppButton";
 import { QUERY_KEY_FOR_SINGLE_EMPLOYEE } from "../../hooks/useFetchSingleEmployee";
-import { useGetBanksFromPaystack } from "hooks/useGetBanksFromPaystack";
 import { FormBankInput } from "components/generalFormInputs/FormBankInput";
 import { TPaystackBank } from "types/paystackBank";
-import { FormPensionAdminInput } from "features/payroll/components/pensionAdministrators/FormPensionAdminInput";
-import { FormITFAuthInput } from "features/payroll/components/itfAuthorities/FormITFAuthInput";
-import { FormTaxAuthInput } from "features/payroll/components/taxAuthorities/FormTaxAuthInput";
-import { FormNSITFAuthInput } from "features/payroll/components/nsitfAuthorities/FormNSITFAuthInput";
+import { FormPensionAdminInput } from "features/payroll/components/organizations/pensionAdministrators/FormPensionAdminInput";
+import { FormITFAuthInput } from "features/payroll/components/organizations/itfAuthorities/FormITFAuthInput";
+import { FormTaxAuthInput } from "features/payroll/components/organizations/taxAuthorities/FormTaxAuthInput";
+import { FormNSITFAuthInput } from "features/payroll/components/organizations/nsitfAuthorities/FormNSITFAuthInput";
 
 interface IProps {
   finance?: TSingleEmployee["finance"];
