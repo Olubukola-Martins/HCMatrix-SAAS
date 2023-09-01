@@ -1,5 +1,6 @@
 import { TPayrollSchemeType } from "../types/payrollSchemes";
 
+// PM COnvo: Employee Id, Address, Name, Tax ID, Phone, Email, (Alt), all org IDS, bank details, Exchange Rate, payroll type
 export const employeeInformationOptions = [
   // {
   //   label: "Profile Picture",
