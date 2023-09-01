@@ -2,6 +2,7 @@ export const MICROSERVICE_ENDPOINTS = {
   UTILITY: process.env.REACT_APP_UTILITY_BASE_URL,
   AUTHENTICATION: process.env.REACT_APP_AUTHENTICATION_BASE_URL,
   NOTIFICATION: process.env.REACT_APP_NOTIFICATION_BASE_URL,
+  TIME_AND_ATTENDANCE: process.env.REACT_APP_TIME_AND_ATTENDANCE_BASE_URL,
 };
 
 export const APP_AUTHENTICATION_PARAMETERS = {
@@ -20,3 +21,4 @@ export const FIREBASE_PARAMETERS = {
   measurementId: process.env.REACT_APP_FIREBASE_measurementId,
   vapidKey: process.env.REACT_APP_FIREBASE_vapidKey,
 };
+

@@ -43,6 +43,12 @@ export const AttendanceSubToper = (props: IProps) => {
         >
           Reports
         </Link>
+        <Link
+          to={appRoutes.timeTrackingRules}
+          className={"pb-3 hover:text-caramel"}
+        >
+          Settings
+        </Link>
       </div>
 
       <div className="flex items-center gap-x-4 mt-2">

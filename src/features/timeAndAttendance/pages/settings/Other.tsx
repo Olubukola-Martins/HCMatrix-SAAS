@@ -1,11 +1,62 @@
-import { Form, InputNumber, Select, Switch } from "antd";
+import { Form, Input, InputNumber, Select, Switch } from "antd";
 import { AppButton } from "components/button/AppButton";
 import { AttendanceSettingsIntro } from "features/timeAndAttendance/components/settings/AttendanceSettingsIntro";
 import { TimeAttendanceSettingsNav } from "features/timeAndAttendance/components/settings/TimeAttendanceSettingsNav";
-
+import { useCreateOtherSettings } from "features/timeAndAttendance/hooks/useCreateOtherSettings";
+import { useGetOtherSettings } from "features/timeAndAttendance/hooks/useGetOtherSettings";
+import { useApiAuth } from "hooks/useApiAuth";
+import { useContext } from "react";
+import { EGlobalOps, GlobalContext } from "stateManagers/GlobalContextProvider";
+import { openNotification } from "utils/notifications";
+const formWrapStyle =
+  "bg-card px-4 pt-4 rounded grid grid-cols-1 md:grid-cols-2 gap-x-10 mb-5 shadow-sm";
 export const Other = () => {
-  const formWrapStyle =
-    "bg-card px-4 pt-4 rounded grid grid-cols-1 md:grid-cols-2 gap-x-10 mb-5 shadow-sm";
+  const [form] = Form.useForm();
+  const { companyId, token, currentUserId } = useApiAuth();
+  const globalCtx = useContext(GlobalContext);
+  const { dispatch } = globalCtx;
+  const { data, isLoading } = useGetOtherSettings();
+  const { mutate, isLoading: isLoadingPost } = useCreateOtherSettings();
+  // console.log("here", data);
+
+  const onSubmit = (values: any) => {
+    if (companyId) {
+      mutate(
+        {
+          companyId,
+          adminId: currentUserId,
+          token,
+          longitude: values.longitude,
+          latitude: values.latitude,
+          isSoftClockinEnabled: values.isSoftClockinEnabled,
+          geoFenceRadiusInKm: values.geoFenceRadiusInKm,
+        },
+        {
+          onError: (err: any) => {
+            openNotification({
+              state: "error",
+              title: "Error Occurred",
+              description:
+                err?.response.data.message ?? err?.response.data.error.message,
+              duration: 7.0,
+            });
+          },
+          onSuccess: (res: any) => {
+            openNotification({
+              state: "success",
+              title: "Success",
+              description: res.data.message,
+              // duration: 0.4,
+            });
+
+            form.resetFields();
+            dispatch({ type: EGlobalOps.setShowInitialSetup, payload: true });
+          },
+        }
+      );
+    }
+  };
+
   return (
     <div>
       <TimeAttendanceSettingsNav active="other settings" />
@@ -19,7 +70,7 @@ export const Other = () => {
             <h3 className="font-medium text-base pb-3 pt-1">
               Attendance settings
             </h3>
-            <Form layout="vertical">
+            <Form layout="vertical" onFinish={onSubmit}>
               <div className={formWrapStyle}>
                 <Form.Item
                   name="workflow"
@@ -53,7 +104,10 @@ export const Other = () => {
                 className={`${formWrapStyle} flex justify-between items-center`}
               >
                 <h3>Enforce Geofence on soft clock-in</h3>
-                <Form.Item className="flex justify-end items-end">
+                <Form.Item
+                  name="isSoftClockinEnabled"
+                  className="flex justify-end items-end"
+                >
                   <Switch defaultChecked />
                 </Form.Item>
               </div>
@@ -61,21 +115,18 @@ export const Other = () => {
                 className={`${formWrapStyle} flex justify-between items-center`}
               >
                 <Form.Item
-                  name="clock-in-distance"
+                  name="geoFenceRadiusInKm"
                   label="Allow clock-in distance from company (km)"
                 >
-                  <InputNumber className="w-full" placeholder="0.00" />
-                </Form.Item>
-
-                <Form.Item
-                  name="accept"
-                  className="flex justify-end items-center"
-                >
-                  <Switch defaultChecked />
+                  <Input className="w-full" placeholder="0.00" />
                 </Form.Item>
               </div>
               <div className="flex justify-end my-2">
-                <AppButton label="Save" type="submit" />
+                <AppButton
+                  label="Save"
+                  type="submit"
+                  isLoading={isLoadingPost}
+                />
               </div>
             </Form>
           </div>

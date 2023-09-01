@@ -20,7 +20,6 @@ export const FormBranchInput: React.FC<{
     searchParams: {
       name: debouncedSearchTerm,
     },
-
     token,
   });
 
