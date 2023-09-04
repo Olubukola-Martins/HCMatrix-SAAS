@@ -4,7 +4,7 @@ import { IClockInPolicy } from "../types/settings";
 import { MICROSERVICE_ENDPOINTS } from "config/enviroment";
 
 export const createClockInPolicy = async (props: IClockInPolicy) => {
-  const url = `${MICROSERVICE_ENDPOINTS.TIME_AND_ATTENDANCE}/create-clock-in-polic`;
+  const url = `${MICROSERVICE_ENDPOINTS.TIME_AND_ATTENDANCE}/create-clock-in-policy`;
   const config = {
     headers: {
       Accept: "application/json",
