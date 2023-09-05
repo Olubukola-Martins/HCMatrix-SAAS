@@ -4,9 +4,13 @@ import { Form, Switch, Input } from "antd";
 import "../assets/style.css";
 import { textInputValidationRules } from "utils/formHelpers/validation";
 import { AppButton } from "components/button/AppButton";
+import axios from "axios";
+import { useApiAuth } from "hooks/useApiAuth";
+import { MICROSERVICE_ENDPOINTS } from "config/enviroment";
 
 const CandidateStatus = () => {
   const [form] = Form.useForm();
+  const { token, companyId } = useApiAuth();
 
   const handleSubmit = (values: any) => {
     console.log("Received values of form:", values);
@@ -24,6 +28,27 @@ const CandidateStatus = () => {
       newStatus: newStatus.filter((_: any, i: number) => i !== index),
     });
   };
+
+  // ==== Temporary code
+  const activateDefaultSettings = async () => {
+    try {
+      const response = await axios.post(
+        `${MICROSERVICE_ENDPOINTS.RECRUITMENT}/default-settings/apply`,
+        {},
+        {
+          headers: {
+            Accept: "application/json",
+            Authorization: `Bearer ${token}`,
+            "x-company-id": companyId,
+          },
+        }
+      );
+      console.log("Response data:", response);
+    } catch (error) {
+      console.error("Error message:", error);
+    }
+  };
+
   return (
     <>
       <RecruitmentSettingsIntro
@@ -32,6 +57,10 @@ const CandidateStatus = () => {
         nextLink={appRoutes.candidateSources}
       />
       <div className="Container mt-5">
+        <AppButton
+          label="Set default settings"
+          handleClick={activateDefaultSettings}
+        />
         <div className="bg-card rounded md:p-5 p-3">
           <h2 className="pb-5 font-medium text-base">Status</h2>
           <div className="bg-mainBg py-4 px-4 rounded">
