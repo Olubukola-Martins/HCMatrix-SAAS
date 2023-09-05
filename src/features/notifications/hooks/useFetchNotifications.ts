@@ -30,7 +30,7 @@ const getNotifications = async (
   const config = {
     headers: {
       Accept: "application/json",
-      Authorization: `Bearer ${APP_AUTHORIZATION_TOKEN_FOR_FCM_TOKEN_ENDPOINT}`,
+      Authorization: `Bearer ${props.token}`,
       "x-company-id": props.companyId,
     },
     params: {
