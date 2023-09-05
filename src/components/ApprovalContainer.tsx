@@ -64,8 +64,7 @@ const ApprovalContainer = () => {
             description: res.data.message,
             // duration: 0.4,
           });
-          form.resetFields();
-
+          handleClose();
           queryClient.invalidateQueries({
             queryKey: [QUERY_KEY_FOR_APPROVAL_REQUESTS],
             // exact: true,
