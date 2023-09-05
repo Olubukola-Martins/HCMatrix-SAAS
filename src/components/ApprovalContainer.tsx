@@ -2,8 +2,6 @@ import { Form, Input, Modal } from "antd";
 import React, { useContext } from "react";
 import { GlobalContext, EGlobalOps } from "stateManagers/GlobalContextProvider";
 import Themes from "./Themes";
-import form from "antd/lib/form";
-import { IModalProps } from "types";
 import {
   textInputValidationRules,
   textInputValidationRulesOp,
