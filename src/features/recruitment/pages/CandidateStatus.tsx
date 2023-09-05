@@ -7,10 +7,16 @@ import { AppButton } from "components/button/AppButton";
 import { MICROSERVICE_ENDPOINTS } from "config/enviroment";
 import axios from "axios";
 import { useApiAuth } from "hooks/useApiAuth";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import { ApplyDefaultSettings } from "../components/ApplyDefaultSettings";
 
 const CandidateStatus = () => {
   const [form] = Form.useForm();
+  const [openApplyDSettings, setOpenApplyDSettings] = useState<boolean>(false);
+
+  useEffect(() => {
+    setOpenApplyDSettings(true);
+  }, []);
 
   const { companyId, token } = useApiAuth();
   const endpointUrl = `${MICROSERVICE_ENDPOINTS.RECRUITMENT}/default-settings/apply`;
@@ -48,12 +54,17 @@ const CandidateStatus = () => {
       newStatus: newStatus.filter((_: any, i: number) => i !== index),
     });
   };
+
   return (
     <>
       <RecruitmentSettingsIntro
         title="Candidate Status"
         description={"Welcome on board, set up your candidate status."}
         nextLink={appRoutes.candidateSources}
+      />
+      <ApplyDefaultSettings
+        open={openApplyDSettings}
+        handleClose={() => setOpenApplyDSettings(false)}
       />
       <div className="Container mt-5">
           {/* <AppButton handleClick={activateDefaultSettings} /> */}
