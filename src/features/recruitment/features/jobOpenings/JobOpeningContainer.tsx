@@ -9,7 +9,7 @@ type DataSourceItem = {
   key: React.Key;
   title: string;
   candidate: string;
-  hiringLead: string;
+  teamLead: string;
   createdOn: string;
   status: string;
 };
@@ -33,8 +33,8 @@ export const JobOpeningContainer = () => {
       key: "2",
     },
     {
-      title: "Hiring Lead",
-      dataIndex: "hiringLead",
+      title: "Team Lead",
+      dataIndex: "Team Lead",
       key: "3",
     },
     {
@@ -65,7 +65,16 @@ export const JobOpeningContainer = () => {
             overlay={
               <Menu>
                 <Menu.Item key="1">Edit</Menu.Item>
-                <Menu.Item key="2"><Link to={appRoutes.applicationDetails(val.key as unknown as number).path}>View</Link></Menu.Item>
+                <Menu.Item key="2">
+                  <Link
+                    to={
+                      appRoutes.applicationDetails(val.key as unknown as number)
+                        .path
+                    }
+                  >
+                    View
+                  </Link>
+                </Menu.Item>
                 <Menu.Item key="3">Delete </Menu.Item>
               </Menu>
             }
@@ -84,7 +93,7 @@ export const JobOpeningContainer = () => {
       key: i,
       title: "Software Engineer",
       candidate: "5 candidates",
-      hiringLead: "Basil Ikpe",
+      teamLead: "Basil Ikpe",
       createdOn: "--:--",
       status: "Open",
     });

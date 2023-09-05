@@ -1,8 +1,10 @@
 import { Select, Table } from "antd";
 import { ColumnsType } from "antd/es/table";
-import React from "react";
+import React, { useState } from "react";
 
 const CandidateSources = () => {
+  const [showColumn, setShowColumn] = useState<boolean>(true);
+  
   interface NumberOfType {
     numberOf: number;
   }
@@ -174,15 +176,36 @@ const CandidateSources = () => {
             into employees.
           </h2>
           <Select
-            className="w-40 mt-4"
-            defaultValue="statuses"
+            mode="multiple"
+            className=" w-40 mt-4"
             placeholder="Please select"
             dropdownMatchSelectWidth={false}
+            // defaultValue="statuses"
             // onChange={handleChange}
             options={[
               {
-                value: "statuses",
-                label: "Statuses (4)",
+                value: "views",
+                label: "Views",
+              },
+              {
+                value: "newCandidates",
+                label: "New Candidates",
+              },
+              {
+                value: "putOnHold",
+                label: "Put On Hold",
+              },
+              {
+                value: "scheduledInterview",
+                label: "Scheduled Interview",
+              },
+              {
+                value: "hired",
+                label: "Hired",
+              },
+              {
+                value: "references",
+                label: "References",
               },
             ]}
           />
@@ -262,8 +285,24 @@ const CandidateSources = () => {
             // onChange={handleChange}
             options={[
               {
-                value: "statuses",
-                label: "Statuses (4)",
+                value: "notFit",
+                label: "Not Fit",
+              },
+              {
+                value: "declinedOffer",
+                label: "Declined Offer",
+              },
+              {
+                value: "notQualified",
+                label: "Not Qualified",
+              },
+              {
+                value: "overQualified",
+                label: "Over Qualified",
+              },
+              {
+                value: "hiredElsewhere",
+                label: "Hired Elsewhere",
               },
             ]}
           />

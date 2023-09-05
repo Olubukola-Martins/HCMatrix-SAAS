@@ -51,7 +51,7 @@ export const JobDetails: React.FC<ChildProps> = ({
     const keysToCheck = [
       "jobTitle",
       "department",
-      "hiringLead",
+      "teamLead",
       "employmentType",
       "minimumExperience",
       "jobLocation",
@@ -182,8 +182,8 @@ export const JobDetails: React.FC<ChildProps> = ({
 
       <div>
         <Form.Item
-          label="Hiring Lead"
-          name="hiringLead"
+          label="Team lead"
+          name="teamLead"
           rules={textInputValidationRules}
         >
           <Select
@@ -285,14 +285,14 @@ export const JobDetails: React.FC<ChildProps> = ({
         id="buttons"
         className=" flex flex-row justify-between items-center "
       >
-          <AppButton
-            label="Cancel"
-            variant="style-with-class"
-            additionalClassNames={[
-              "bg-none text-lg max-sm:text-base hover:text-caramel",
-            ]}
-            handleClick={() => handleResetClick()}
-          />
+        <AppButton
+          label="Cancel"
+          variant="style-with-class"
+          additionalClassNames={[
+            "bg-none text-lg max-sm:text-base hover:text-caramel",
+          ]}
+          handleClick={() => handleResetClick()}
+        />
         <AppButton label="Next" handleClick={() => handleNextButton()} />
       </div>
     </>

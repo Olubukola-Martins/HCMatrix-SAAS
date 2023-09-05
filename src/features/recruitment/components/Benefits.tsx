@@ -1,15 +1,43 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Form, Switch, Input } from "antd";
 import { AppButton } from "components/button/AppButton";
 import "../assets/style.css";
 import { textInputValidationRules } from "utils/formHelpers/validation";
 import { appRoutes } from "config/router/paths";
+import { MICROSERVICE_ENDPOINTS } from "config/enviroment";
+import axios from "axios";
+import { useApiAuth } from "hooks/useApiAuth";
 
 export const Benefits = () => {
   const [form] = Form.useForm();
 
+  const { companyId, token } = useApiAuth();
+  const endpointUrl = `${MICROSERVICE_ENDPOINTS.RECRUITMENT}/employment-benefits`;
+
+  //  GET request
+  useEffect(() => {
+    async function fetchData() {
+      await axios
+        .get(endpointUrl, {
+          headers: {
+            Accept: "application/json",
+            Authorization: `Bearer ${token}`,
+            "x-company-id": companyId,
+          },
+        })
+        .then((response) => {
+          console.log("Response data:", response);
+        })
+        .catch((error) => {
+          console.log("Error message:", error);
+        });
+    }
+
+    fetchData();
+  }, []);
+
   const handleSubmit = (values: any) => {
-    console.log("Received values of form:", values);
+    // console.log("Received values of form:", values);
   };
 
   const handleAddField = () => {

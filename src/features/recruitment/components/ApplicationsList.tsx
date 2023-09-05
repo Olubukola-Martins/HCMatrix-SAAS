@@ -400,9 +400,9 @@ const ApplicationsList = () => {
             />
           </Form.Item>
           <Form.Item label="Date Range" name="dateRange">
-            <RangePicker className="w-full"/>
+            <RangePicker className="w-full" />
           </Form.Item>
-          <Form.Item name="hiringLead" label="Hiring Lead">
+          <Form.Item name="teamLead" label="Team Lead">
             <Select
               mode="multiple"
               placeholder="Please select"
