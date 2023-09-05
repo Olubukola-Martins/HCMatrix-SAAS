@@ -16,13 +16,13 @@ interface IGetDataProps {
 }
 
 const getData = async (
-  props: IGetDataProps & ICurrentCompany & { employeeId: number }
+  props: IGetDataProps & ICurrentCompany
 ): Promise<{ data: TApprovalRequest[]; total: number }> => {
-  const { pagination, type, employeeId } = props;
+  const { pagination, type } = props;
   const limit = pagination?.limit ?? DEFAULT_PAGE_SIZE;
   const offset = pagination?.offset ?? 0;
   const name = props.searchParams?.name ?? "";
-  const url = `${process.env.REACT_APP_UTILITY_BASE_URL}/workflow/approval/request/${type}/${employeeId}`;
+  const url = `${process.env.REACT_APP_UTILITY_BASE_URL}/workflow/approval/request/${type}/`;
 
   const config = {
     headers: {
@@ -56,14 +56,13 @@ const getData = async (
 };
 
 export const useFetchApprovalRequests = (props: IGetDataProps) => {
-  const { token, companyId, currentUserEmployeeId } = useApiAuth();
+  const { token, companyId } = useApiAuth();
 
   const queryData = useQuery(
     [QUERY_KEY_FOR_APPROVAL_REQUESTS, props.pagination],
     () =>
       getData({
         ...props,
-        employeeId: currentUserEmployeeId,
         token,
         companyId,
       }),

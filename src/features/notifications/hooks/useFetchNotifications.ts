@@ -13,7 +13,6 @@ interface IGetDataProps extends ICurrentCompany {
   searchParams?: ISearchParams;
   type?: TNotificationType;
   // fireBaseToken: string; //might just need to exist in getNotifications on its own so need
-  employeeId: number;
 }
 
 export const QUERY_KEY_FOR_NOTIFICATIONS = "notifications";
@@ -39,7 +38,6 @@ const getNotifications = async (
       offset,
       search: name,
       type: props.type,
-      employeeId: props.employeeId,
       // fireBaseToken: props.fireBaseToken,
     },
   };
@@ -64,13 +62,12 @@ export const useFetchNotifications = (
   props: Pick<IGetDataProps, "pagination" | "searchParams" | "type">
 ) => {
   const { pagination, searchParams } = props;
-  const { token, currentUserEmployeeId, companyId } = useApiAuth();
+  const { token, companyId } = useApiAuth();
   const queryData = useQuery(
     [QUERY_KEY_FOR_NOTIFICATIONS, pagination, searchParams],
     () =>
       getNotifications({
         token,
-        employeeId: currentUserEmployeeId,
         companyId,
         // fireBaseToken,
         ...props,
