@@ -32,7 +32,6 @@ const CandidateStatus = () => {
     });
   };
 
- 
   return (
     <>
       <RecruitmentSettingsIntro
