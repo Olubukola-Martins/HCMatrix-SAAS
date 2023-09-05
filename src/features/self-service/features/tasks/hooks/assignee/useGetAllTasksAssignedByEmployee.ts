@@ -25,7 +25,7 @@ const getData = async (props: {
   const offset = pagination?.offset ?? 0;
   const name = props.data.searchParams?.name ?? "";
 
-  const url = `${MICROSERVICE_ENDPOINTS.UTILITY}/task/assignee`;
+  const url = `${MICROSERVICE_ENDPOINTS.UTILITY}/self-service/task/assignee`;
 
   const config = {
     headers: {

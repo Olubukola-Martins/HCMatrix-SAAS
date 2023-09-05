@@ -176,6 +176,7 @@ export const appRoutes = {
 
   // self service routes
   selfServiceHome: `/self-service/home`,
+  selfServiceTasks: `/self-service/tasks`,
   selfServiceRequisition: `/self-service/requisition`,
   selfServiceReimbursement: `/self-service/reimbursements`,
   selfServiceReimbursementSetting: `/self-service/reimbursement-setting`,

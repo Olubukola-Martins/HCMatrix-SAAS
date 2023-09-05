@@ -21,8 +21,8 @@ const createData = async (props: { data: TData; auth: ICurrentCompany }) => {
     },
   };
 
-  const data: TData = {
-    ...props.data,
+  const data: TData["body"] = {
+    ...props.data.body,
   };
 
   const response = await axios.patch(url, data, config);

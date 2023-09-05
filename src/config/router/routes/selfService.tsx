@@ -40,6 +40,7 @@ import AssetRequestSettingsPage from "features/self-service/features/assets/page
 import TravelRequests from "features/self-service/features/travels/pages/TravelRequests";
 import TravelRequestsSettingPage from "features/self-service/features/travels/pages/TravelRequestsSettingPage";
 import DocumentsPage from "features/self-service/features/documents/pages/DocumentsPage";
+import TasksPage from "features/self-service/features/tasks/pages/TasksPage";
 
 // TO DO: This lazy loading might not be needed consider rethinking this, so just temporary
 const Requisition = lazy(
@@ -52,6 +53,13 @@ export const selfServiceRoutes: TRouteData[] = [
     path: appRoutes.selfServiceHome,
     isSearchable: true,
     title: "My Self Service",
+  },
+  {
+    element: <TasksPage />,
+    path: appRoutes.selfServiceTasks,
+    isSearchable: true,
+    title: "Tasks",
+    isPrimaryFeature: true,
   },
   {
     element: <Requisition />,

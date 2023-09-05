@@ -14,7 +14,7 @@ interface IGetDataProps {
 }
 
 export const QUERY_KEY_FOR_TASKS_ASSIGNED_TO_EMPLOYEE =
-  "tasks-assigned-by-employee";
+  "tasks-assigned-to-employee";
 
 const getData = async (props: {
   data: IGetDataProps;
@@ -25,7 +25,7 @@ const getData = async (props: {
   const offset = pagination?.offset ?? 0;
   const name = props.data.searchParams?.name ?? "";
 
-  const url = `${MICROSERVICE_ENDPOINTS.UTILITY}/task/assigned-for`;
+  const url = `${MICROSERVICE_ENDPOINTS.UTILITY}/self-service/task/assigned-for`;
 
   const config = {
     headers: {
