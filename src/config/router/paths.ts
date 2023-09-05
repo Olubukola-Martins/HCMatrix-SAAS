@@ -186,7 +186,7 @@ export const appRoutes = {
   workSchedule: `/attendance/work-schedule`,
   timeOffPolicy: `/attendance/time-off-policy`,
   clockInSettings: `/attendance/clock-in-settings`,
-  addLocation: `/attendance/add-location`,
+  location: `/attendance/location`,
   otherSettings: `/attendance/other-settings`,
 
   // Leaning and development

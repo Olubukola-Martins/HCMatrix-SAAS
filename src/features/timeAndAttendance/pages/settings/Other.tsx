@@ -18,7 +18,6 @@ export const Other = () => {
   const { data, isLoading } = useGetOtherSettings();
   const { mutate, isLoading: isLoadingPost } = useCreateOtherSettings();
   // console.log("here", data);
-
   const onSubmit = (values: any) => {
     if (companyId) {
       mutate(
@@ -99,7 +98,6 @@ export const Other = () => {
                   <InputNumber placeholder="0.0" className="w-full" />
                 </Form.Item>
               </div>
-
               <div
                 className={`${formWrapStyle} flex justify-between items-center`}
               >

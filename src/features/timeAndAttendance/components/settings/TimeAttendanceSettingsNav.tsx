@@ -8,7 +8,7 @@ interface NProps {
     | "clock in settings"
     | "time off policy"
     | "other settings"
-    | "add location";
+    | "location";
 }
 
 export const TimeAttendanceSettingsNav = (props: NProps) => {
@@ -59,14 +59,14 @@ export const TimeAttendanceSettingsNav = (props: NProps) => {
           Clock In Settings
         </Link>
         <Link
-          to={appRoutes.addLocation}
+          to={appRoutes.location}
           className={
-            props.active === "add location"
+            props.active === "location"
               ? `${applyStyle}`
               : "pb-3 hover:text-caramel"
           }
         >
-          Add Location
+          Location
         </Link>
         <Link
           to={appRoutes.otherSettings}

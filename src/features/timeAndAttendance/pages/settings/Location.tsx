@@ -1,36 +1,34 @@
 import { Dropdown, Menu } from "antd";
 import Table, { ColumnsType } from "antd/lib/table";
 import { AppButton } from "components/button/AppButton";
+import { AddLocation } from "features/timeAndAttendance/components/settings/AddLocation";
 import { AttendanceSettingsIntro } from "features/timeAndAttendance/components/settings/AttendanceSettingsIntro";
-import { CreateTimeOffPolicy } from "features/timeAndAttendance/components/settings/CreateTimeOffPolicy";
 import { TimeAttendanceSettingsNav } from "features/timeAndAttendance/components/settings/TimeAttendanceSettingsNav";
 import { useState } from "react";
 
-type TTimeOff = {
+type TLocation = {
   key: React.Key;
-  name: string;
-  durationInDays: string;
-  comment: string;
+  branch: string;
+  biometricDevice: string;
 };
 
-const data: TTimeOff[] = [];
+const data: TLocation[] = [];
 for (let i = 0; i < 4; i++) {
   data.push({
     key: i,
-    name: `Break policy`,
-    durationInDays: `1`,
-    comment: `Break policy for...`,
+    branch: `Abuja road 12`,
+    biometricDevice: `Abuja device`,
   });
 }
 
-const columns: ColumnsType<TTimeOff> = [
+const columns: ColumnsType<TLocation> = [
   {
-    title: "Policy Name",
-    dataIndex: "name",
+    title: "Brand Name",
+    dataIndex: "branch",
   },
   {
-    title: "Duration In Days",
-    dataIndex: "durationInDays",
+    title: "Biometric Device",
+    dataIndex: "biometricDevice",
   },
   {
     title: "Action",
@@ -52,30 +50,31 @@ const columns: ColumnsType<TTimeOff> = [
   },
 ];
 
-export const TimeOffPolicy = () => {
-  const [openAddPolicy, setOpenAddPolicy] = useState(false);
-
+const Location = () => {
+  const [openAddLocation, setOpenAddLocation] = useState(false);
   return (
     <>
-      <TimeAttendanceSettingsNav active="time off policy" />
+      <TimeAttendanceSettingsNav active="location" />
       <AttendanceSettingsIntro
-        title={"Time Off Policy"}
-        description="Plan work by setting your team's work and break time. Manage overtime rules in settings."
+        title={"Location"}
+        description="Places where your team members will be clocking in and out."
       />
-      <CreateTimeOffPolicy
-        open={openAddPolicy}
-        handleClose={() => setOpenAddPolicy(false)}
+      <AddLocation
+        open={openAddLocation}
+        handleClose={() => setOpenAddLocation(false)}
       />
+
       <div className="Container mt-5">
         <div className="flex justify-end mb-5">
           <AppButton
-            label="Add time off policy"
-            handleClick={() => setOpenAddPolicy(true)}
+            label="Add Location"
+            handleClick={() => setOpenAddLocation(true)}
           />
         </div>
-
         <Table columns={columns} dataSource={data} />
       </div>
     </>
   );
 };
+
+export default Location;

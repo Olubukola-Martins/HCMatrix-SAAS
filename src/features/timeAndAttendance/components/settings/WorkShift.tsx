@@ -60,6 +60,7 @@ export const WorkShift = () => {
         day: item.day,
         startTime: startTime && startTime.format("HH:mm"),
         endTime: endTime && endTime.format("HH:mm"),
+        shift: item.shift,
       };
     });
     if (companyId) {
@@ -153,10 +154,18 @@ export const WorkShift = () => {
                           <Input placeholder="day" disabled className="w-32" />
                         </Form.Item>
                         <Form.Item {...field} name={[field.name, "shift"]}>
-                          <Input placeholder="shift" disabled className="w-24" />
+                          <Input
+                            placeholder="shift"
+                            disabled
+                            className="w-24"
+                          />
                         </Form.Item>
                         <div className="flex-1 w-full">
-                          <Form.Item {...field} name={[field.name, "time"]} noStyle>
+                          <Form.Item
+                            {...field}
+                            name={[field.name, "time"]}
+                            noStyle
+                          >
                             <TimePicker.RangePicker className="flex-1 w-full" />
                           </Form.Item>
                         </div>

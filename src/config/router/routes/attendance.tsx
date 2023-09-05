@@ -9,11 +9,11 @@ import { TimeTrackingRules } from "features/timeAndAttendance/pages/settings/Tim
 import { WorkSchedule } from "features/timeAndAttendance/pages/settings/WorkSchedule";
 import { TimeOffPolicy } from "features/timeAndAttendance/pages/settings/TimeOffPolicy";
 import { ClockIn } from "features/timeAndAttendance/pages/settings/ClockIn";
-import { AddLocation } from "features/timeAndAttendance/pages/settings/AddLocation";
 import { Other } from "features/timeAndAttendance/pages/settings/Other";
 import { ShiftPerEmployee } from "features/timeAndAttendance/pages/report/ShiftPerEmployee";
 import { HoursPerEmployee } from "features/timeAndAttendance/pages/report/HoursPerEmployee";
 import { EmployeesPerShift } from "features/timeAndAttendance/pages/report/EmployeesPerShift";
+import Location from "features/timeAndAttendance/pages/settings/Location";
 
 export const attendanceRoutes: TRouteData[] = [
   {
@@ -66,8 +66,8 @@ export const attendanceRoutes: TRouteData[] = [
     isSearchable: false,
   },
   {
-    element: <AddLocation />,
-    path: appRoutes.addLocation,
+    element: <Location />,
+    path: appRoutes.location,
     isSearchable: false,
   },
   {
