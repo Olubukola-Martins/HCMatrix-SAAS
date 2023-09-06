@@ -5,12 +5,15 @@ import { WorkBreak } from "features/timeAndAttendance/components/settings/WorkBr
 import { WorkFixed } from "features/timeAndAttendance/components/settings/WorkFixed";
 import { WorkFlexible } from "features/timeAndAttendance/components/settings/WorkFlexible";
 import { WorkShift } from "features/timeAndAttendance/components/settings/WorkShift";
+import { useGetWorkSchedule } from "features/timeAndAttendance/hooks/useGetWorkSchedule";
 import { useState } from "react";
 
+const boxStyle =
+  "border py-3 px-7 text-accent font-medium text-base cursor-pointer";
 export const WorkSchedule = () => {
   const [switchWorkArr, setSwitchWorkArr] = useState("fixed");
-  const boxStyle =
-    "border py-3 px-7 text-accent font-medium text-base cursor-pointer";
+  const { data, isLoading } = useGetWorkSchedule();
+  
   return (
     <>
       <TimeAttendanceSettingsNav active="Create Work Schedule" />
@@ -87,7 +90,6 @@ export const WorkSchedule = () => {
               {switchWorkArr === "shift" && <WorkShift />}
             </div>
           </div>
-         
         </div>
         {switchWorkArr === "break" && <WorkBreak />}
       </div>

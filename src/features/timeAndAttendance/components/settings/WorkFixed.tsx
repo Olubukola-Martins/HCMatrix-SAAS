@@ -35,7 +35,6 @@ export const WorkFixed = () => {
           startTime: "00:00",
           endTime: "00:00",
         };
-        // Return null if time array is missing or incomplete
       }
       const startTime = item.time[0];
       const endTime = item.time[1];

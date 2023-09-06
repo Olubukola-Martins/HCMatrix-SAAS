@@ -1,6 +1,6 @@
 import axios from "axios";
 import { useQuery } from "react-query";
-import { IOtherSettings } from "../types/settings";
+import { ITimeTrackingRule } from "../types/settings";
 import { MICROSERVICE_ENDPOINTS } from "config/enviroment";
 import { useApiAuth } from "hooks/useApiAuth";
 
@@ -9,8 +9,8 @@ export const QUERY_KEY_FOR_COMPANY_POLICY = "companyPolicy";
 const getData = async (props: {
   token: string;
   companyId: number;
-}): Promise<IOtherSettings> => {
-  const url = `${MICROSERVICE_ENDPOINTS.TIME_AND_ATTENDANCE}/company-policy/${props.companyId}`;
+}): Promise<ITimeTrackingRule> => {
+  const url = `${MICROSERVICE_ENDPOINTS.TIME_AND_ATTENDANCE}/time-tracking/policy/${props.companyId}`;
   const config = {
     headers: {
       Accept: "application/json",
@@ -19,16 +19,15 @@ const getData = async (props: {
     },
   };
   const res = await axios.get(url, config);
-  console.log("inner", res);
 
-  const item: IOtherSettings = res.data;
-  const data: IOtherSettings = {
+  const item: ITimeTrackingRule = res.data;
+  const data: ITimeTrackingRule = {
     ...item,
   };
 
   return data;
 };
-export const useGetOtherSettings = () => {
+export const useGetTimeTrackingRule = () => {
   const { companyId, token } = useApiAuth();
   const queryData = useQuery(
     [QUERY_KEY_FOR_COMPANY_POLICY],

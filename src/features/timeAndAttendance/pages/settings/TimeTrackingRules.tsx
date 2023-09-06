@@ -12,12 +12,14 @@ import { useApiAuth } from "hooks/useApiAuth";
 import { EGlobalOps, GlobalContext } from "stateManagers/GlobalContextProvider";
 import { useCreateTimeTrackingRule } from "features/timeAndAttendance/hooks/useCreateTimeTrackingRule";
 import { openNotification } from "utils/notifications";
+import { useGetTimeTrackingRule } from "features/timeAndAttendance/hooks/useGetTimeTrackingRule";
 
 export const TimeTrackingRules = () => {
   const [error, setError] = useState<string>("");
   const [selectedOption, setSelectedOption] = useState<string>("");
   const { companyId, token, currentUserId } = useApiAuth();
   const { mutate, isLoading } = useCreateTimeTrackingRule();
+  const {data} = useGetTimeTrackingRule()
   const globalCtx = useContext(GlobalContext);
   const { dispatch } = globalCtx;
 

@@ -62,4 +62,5 @@ interface WorkDaysAndTime {
   startTime: string;
   endTime: string;
   shift?: string;
+  hours?: string;
 }

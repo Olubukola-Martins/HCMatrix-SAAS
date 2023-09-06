@@ -17,7 +17,7 @@ export const Other = () => {
   const { dispatch } = globalCtx;
   const { data, isLoading } = useGetOtherSettings();
   const { mutate, isLoading: isLoadingPost } = useCreateOtherSettings();
-  // console.log("here", data);
+  console.log("here", data);
   const onSubmit = (values: any) => {
     if (companyId) {
       mutate(
