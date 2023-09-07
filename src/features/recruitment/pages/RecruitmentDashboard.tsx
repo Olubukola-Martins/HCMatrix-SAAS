@@ -45,11 +45,11 @@ export const DashboardWrapper = () => {
       children: <TalentPool />,
       key: "Talent Pool",
     },
-    {
-      label: "Users",
-      children: <RecruitmentUsers />,
-      key: "Users",
-    },
+    // {
+    //   label: "Users",
+    //   children: <RecruitmentUsers />,
+    //   key: "Users",
+    // },
   ];
   return (
     <div>
