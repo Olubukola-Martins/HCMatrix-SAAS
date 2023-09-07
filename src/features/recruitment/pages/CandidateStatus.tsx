@@ -4,45 +4,14 @@ import { Form, Switch, Input } from "antd";
 import "../assets/style.css";
 import { textInputValidationRules } from "utils/formHelpers/validation";
 import { AppButton } from "components/button/AppButton";
-import { useEffect, useState } from "react";
-import { ApplyDefaultSettings } from "../components/ApplyDefaultSettings";
-import axios from "axios";
-import { MICROSERVICE_ENDPOINTS } from "config/enviroment";
-import { useApiAuth } from "hooks/useApiAuth";
+import { useDefaultSettingsCall } from "../hooks/useDefaultSettingsCall";
 
 const CandidateStatus = () => {
   const [form] = Form.useForm();
-  const [openApplyDSettings, setOpenApplyDSettings] = useState<boolean>(false);
-
-  useEffect(() => {
-    setOpenApplyDSettings(true);
-  }, []);
-  const { companyId, token } = useApiAuth();
-
-  const endpointUrl = `${MICROSERVICE_ENDPOINTS.RECRUITMENT}/application-statuses`;
-
-  //  GET request
+  useDefaultSettingsCall();
 
   const handleSubmit = (values: any) => {
-    // console.log("Received values of form:", values);
-    const getCandidateStatus = async () => {
-      await axios
-        .get(endpointUrl, {
-          headers: {
-            Accept: "application/json",
-            Authorization: `Bearer ${token}`,
-            "x-company-id": companyId,
-          },
-        })
-        .then((response) => {
-          console.log(response);
-        })
-        .catch((err) => {
-          console.log(err.message);
-          console.log(err);
-        });
-    };
-    getCandidateStatus();
+    console.log("Received values of form:", values);
   };
 
   const handleAddField = () => {
@@ -65,10 +34,7 @@ const CandidateStatus = () => {
         description={"Welcome on board, set up your candidate status."}
         nextLink={appRoutes.candidateSources}
       />
-      <ApplyDefaultSettings
-        open={openApplyDSettings}
-        handleClose={() => setOpenApplyDSettings(false)}
-      />
+
       <div className="Container mt-5">
         <div className="bg-card rounded md:p-5 p-3">
           <h2 className="pb-5 font-medium text-base">Status</h2>
