@@ -1,5 +1,6 @@
 import { Form, Input, InputNumber, Select, Switch } from "antd";
 import { AppButton } from "components/button/AppButton";
+import { FormWorkflowInput } from "features/core/workflows/components/FormWorkflowInput";
 import { AttendanceSettingsIntro } from "features/timeAndAttendance/components/settings/AttendanceSettingsIntro";
 import { TimeAttendanceSettingsNav } from "features/timeAndAttendance/components/settings/TimeAttendanceSettingsNav";
 import { useCreateOtherSettings } from "features/timeAndAttendance/hooks/useCreateOtherSettings";
@@ -70,24 +71,22 @@ export const Other = () => {
             </h3>
             <Form layout="vertical" onFinish={onSubmit}>
               <div className={formWrapStyle}>
-                <Form.Item
-                  name="workflow"
-                  label="Select manual Attendance workflow"
-                >
-                  <Select
-                    placeholder="Select"
-                    options={[{ value: 1, label: "Attendance workflow" }]}
-                  />
-                </Form.Item>
-                <Form.Item
-                  name="confirmation"
-                  label="Select overtime confirmation workflow"
-                >
-                  <Select
-                    placeholder="Select"
-                    options={[{ value: 1, label: "loan workflow" }]}
-                  />
-                </Form.Item>
+                
+                <FormWorkflowInput
+                  Form={Form}
+                  control={{
+                    label: "Select manual Attendance workflow",
+                    name: "attendanceWorkflow",
+                  }}
+                />
+                 <FormWorkflowInput
+                  Form={Form}
+                  control={{
+                    label: "Select overtime confirmation workflow",
+                    name: "overtimeConfirmationWorkflow",
+                  }}
+                />
+              
               </div>
               <div className={formWrapStyle}>
                 <Form.Item name="longitude" label="Company longitude">
