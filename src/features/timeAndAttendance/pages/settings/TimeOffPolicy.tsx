@@ -4,6 +4,7 @@ import { AppButton } from "components/button/AppButton";
 import { AttendanceSettingsIntro } from "features/timeAndAttendance/components/settings/AttendanceSettingsIntro";
 import { CreateTimeOffPolicy } from "features/timeAndAttendance/components/settings/CreateTimeOffPolicy";
 import { TimeAttendanceSettingsNav } from "features/timeAndAttendance/components/settings/TimeAttendanceSettingsNav";
+import { useGetTimeOffPolicy } from "features/timeAndAttendance/hooks/useGetTimeOffPolicy";
 import { useState } from "react";
 
 type TTimeOff = {
@@ -13,9 +14,9 @@ type TTimeOff = {
   comment: string;
 };
 
-const data: TTimeOff[] = [];
+const tableData: TTimeOff[] = [];
 for (let i = 0; i < 4; i++) {
-  data.push({
+  tableData.push({
     key: i,
     name: `Break policy`,
     durationInDays: `1`,
@@ -54,7 +55,7 @@ const columns: ColumnsType<TTimeOff> = [
 
 export const TimeOffPolicy = () => {
   const [openAddPolicy, setOpenAddPolicy] = useState(false);
-
+  const { data } = useGetTimeOffPolicy();
   return (
     <>
       <TimeAttendanceSettingsNav active="time off policy" />
@@ -74,7 +75,7 @@ export const TimeOffPolicy = () => {
           />
         </div>
 
-        <Table columns={columns} dataSource={data} />
+        <Table columns={columns} dataSource={tableData} />
       </div>
     </>
   );

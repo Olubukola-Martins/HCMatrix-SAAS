@@ -1,16 +1,16 @@
 import axios from "axios";
 import { useQuery } from "react-query";
-import { workScheduleProps } from "../types/settings";
+import { ITimeOffPolicyRule } from "../types/settings";
 import { MICROSERVICE_ENDPOINTS } from "config/enviroment";
 import { useApiAuth } from "hooks/useApiAuth";
 
-export const QUERY_KEY_FOR_WORK_SCHEDULE = "worksSchedule";
+export const QUERY_KEY_FOR_TIME_OFF_POLICY = "TimeOffPolicy";
 
 const getData = async (props: {
   token: string;
   companyId: number;
-}): Promise<workScheduleProps> => {
-  const url = `${MICROSERVICE_ENDPOINTS.TIME_AND_ATTENDANCE}/work-schedule/policy/${props.companyId}`;
+}): Promise<ITimeOffPolicyRule> => {
+  const url = `${MICROSERVICE_ENDPOINTS.TIME_AND_ATTENDANCE}/time-off/policy/${props.companyId}`;
   const config = {
     headers: {
       Accept: "application/json",
@@ -19,17 +19,18 @@ const getData = async (props: {
     },
   };
   const res = await axios.get(url, config);
-  const item: workScheduleProps = res.data;
-  const data: workScheduleProps = {
+  console.log("hhhhh", res);
+  const item: ITimeOffPolicyRule = res.data;
+  const data: ITimeOffPolicyRule = {
     ...item,
   };
 
   return data;
 };
-export const useGetWorkSchedule = () => {
+export const useGetTimeOffPolicy = () => {
   const { companyId, token } = useApiAuth();
   const queryData = useQuery(
-    [QUERY_KEY_FOR_WORK_SCHEDULE],
+    [QUERY_KEY_FOR_TIME_OFF_POLICY],
     () => getData({ token, companyId }),
     {
       onError: (err: any) => {},

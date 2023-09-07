@@ -22,6 +22,7 @@ export const TimeTrackingRules = () => {
   const {data} = useGetTimeTrackingRule()
   const globalCtx = useContext(GlobalContext);
   const { dispatch } = globalCtx;
+// console.log("the here",data);
 
   const handleOptionChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSelectedOption(event.target.value);

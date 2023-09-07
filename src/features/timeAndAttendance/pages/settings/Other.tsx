@@ -47,7 +47,6 @@ export const Other = () => {
               description: res.data.message,
               // duration: 0.4,
             });
-
             form.resetFields();
             dispatch({ type: EGlobalOps.setShowInitialSetup, payload: true });
           },
