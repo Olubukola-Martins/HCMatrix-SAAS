@@ -705,7 +705,8 @@ const CreatePayrollContainer: React.FC<{
             />
           </div>
           <div className="flex gap-5">
-            {payroll?.status === "draft" && (
+            {(payroll?.status === "draft" ||
+              payroll?.status === "rejected") && (
               <AppButton
                 label="Run Payroll"
                 variant="style-with-class"
@@ -713,13 +714,15 @@ const CreatePayrollContainer: React.FC<{
                 handleClick={() => setAction("run-payroll")}
               />
             )}
-            {payroll?.status === "draft" && (
+            {(payroll?.status === "draft" ||
+              payroll?.status === "rejected") && (
               <AppButton
                 label="Rollback"
                 handleClick={() => setAction("rollback-payroll")}
               />
             )}
-            {payroll?.status === "draft" && (
+            {(payroll?.status === "draft" ||
+              payroll?.status === "rejected") && (
               <AppButton
                 label="Delete"
                 variant="style-with-class"

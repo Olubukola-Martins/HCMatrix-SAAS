@@ -39,6 +39,7 @@ type IFormProps = {
   isTax?: boolean;
   salaryComponent?: TSalaryComponent;
   loading?: boolean;
+  defaultCalculationMode?: TSalaryComponentCalculationMode | "table";
 };
 
 type ExtraProps = {
@@ -59,6 +60,7 @@ export const AddSalaryComponent: React.FC<IProps> = ({
   salaryComponent,
   formMode = "add",
   loading,
+  defaultCalculationMode,
 }) => {
   const defaultTitle =
     type === "allowance" ? `${formMode} allowance` : `${formMode} deduction`;
@@ -82,6 +84,7 @@ export const AddSalaryComponent: React.FC<IProps> = ({
         salaryComponent={salaryComponent}
         formMode={formMode}
         loading={loading}
+        defaultCalculationMode={defaultCalculationMode}
       />
     </Modal>
   );
@@ -101,6 +104,7 @@ export const AddSalaryComponentForm: React.FC<IFormProps> = ({
   salaryComponent,
   isTax,
   loading,
+  defaultCalculationMode = "percentage",
 }) => {
   const [form] = Form.useForm();
 
@@ -110,6 +114,9 @@ export const AddSalaryComponentForm: React.FC<IFormProps> = ({
   const [mode, setMode] = useState<TSalaryComponentCalculationMode | "table">(
     "percentage"
   );
+  useEffect(() => {
+    setMode(defaultCalculationMode);
+  }, [defaultCalculationMode]);
   const { mutate: createMutate, isLoading: isCreateLoading } =
     useAddAllowanceOrDeduction();
   const { mutate: updateMutate, isLoading: isUpdateLoading } =
@@ -127,10 +134,10 @@ export const AddSalaryComponentForm: React.FC<IFormProps> = ({
             type,
             body: {
               name: (vals.name as string).toLocaleLowerCase(),
-              mode: vals.mode,
+              mode: mode === "table" ? "formula" : mode,
+              amount: mode === "table" ? taxFormula : vals.amount,
               isDefault,
               isActive,
-              amount: vals.amount,
               label: (vals.name as string)
                 .toLocaleLowerCase()
                 .split(" ")
@@ -194,10 +201,10 @@ export const AddSalaryComponentForm: React.FC<IFormProps> = ({
       handleSave({
         name: (vals.name as string).toLocaleLowerCase(),
         type,
-        mode: vals.mode,
+        mode: mode === "table" ? "formula" : mode,
+        amount: mode === "table" ? taxFormula : vals.amount,
         isDefault,
         isActive,
-        amount: vals.amount,
         label: (vals.name as string).toLocaleLowerCase().split(" ").join("_"),
       });
 
@@ -210,10 +217,10 @@ export const AddSalaryComponentForm: React.FC<IFormProps> = ({
           type,
           body: {
             name: (vals.name as string).toLocaleLowerCase(),
-            mode: vals.mode,
+            mode: mode === "table" ? "formula" : mode,
+            amount: mode === "table" ? taxFormula : vals.amount,
             isDefault,
             isActive,
-            amount: vals.amount,
             label: (vals.name as string)
               .toLocaleLowerCase()
               .split(" ")
@@ -302,6 +309,9 @@ export const AddSalaryComponentForm: React.FC<IFormProps> = ({
   const calculationModes = isTax
     ? [...defaultCalculationModes, "table"]
     : defaultCalculationModes;
+
+  const [taxFormula, setTaxFormula] = useState("");
+
   return (
     <Form
       layout="vertical"
@@ -318,7 +328,7 @@ export const AddSalaryComponentForm: React.FC<IFormProps> = ({
         <Input placeholder="Salary Component Name" disabled={!!componentName} />
       </Form.Item>
 
-      <Form.Item name={`mode`} label="Select calculation mode">
+      <Form.Item label="Select calculation mode">
         <Select
           className="capitalize"
           value={mode}
@@ -403,7 +413,11 @@ export const AddSalaryComponentForm: React.FC<IFormProps> = ({
       )}
       {mode === "table" && (
         <>
-          <TaxPolicyCreator dependencies={dependencies} />
+          <TaxPolicyCreator
+            dependencies={dependencies}
+            formula={taxFormula}
+            setFormula={setTaxFormula}
+          />
         </>
       )}
 

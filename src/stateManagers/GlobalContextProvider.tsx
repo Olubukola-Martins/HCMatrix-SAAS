@@ -11,6 +11,9 @@ type TCurrentApproval = {
   requires2FA?: boolean;
 
   status: "approved" | "rejected";
+  // TODO: Add a details & a handleSuccess here
+  // details should be an array of objects with style indications and all that
+  // handleSuccess will called in approval container onSuccess
 };
 
 export interface IGlobalState {

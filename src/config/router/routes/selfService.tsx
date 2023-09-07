@@ -6,7 +6,6 @@ import Reimbursements from "features/self-service/features/reimbursement/pages/R
 import Assets from "features/self-service/features/assets/pages/Assets";
 import AssetDetails from "features/self-service/features/assets/pages/AssetDetails";
 import LoanHome from "features/self-service/features/loan/pages/LoanHome";
-import LoanRequest from "features/self-service/features/loan/pages/LoanRequest";
 import LoanPolicies from "features/self-service/features/loan/pages/LoanPolicies";
 import VehicleBookingHome from "features/self-service/features/vehicle-booking/pages/VehicleBookingHome";
 import VehicleDetails from "features/self-service/features/vehicle-booking/pages/VehicleDetails";
@@ -194,12 +193,7 @@ export const selfServiceRoutes: TRouteData[] = [
     title: "Loans",
     isPrimaryFeature: true,
   },
-  {
-    element: <LoanRequest />,
-    path: appRoutes.loanRequests,
-    isSearchable: true,
-    title: "Loan Requests",
-  },
+
   {
     element: <LoanPolicies />,
     path: appRoutes.loanPolicies,

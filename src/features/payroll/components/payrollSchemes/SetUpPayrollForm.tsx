@@ -1283,6 +1283,11 @@ export const SetUpPayrollForm: React.FC<{
                           schemeId={item.schemeId}
                           isTax={item.isTax}
                           salaryComponent={item.salaryComponent}
+                          defaultCalculationMode={
+                            item.componentName === "tax"
+                              ? "table"
+                              : "percentage"
+                          }
                         />
                       </div>
                     </div>

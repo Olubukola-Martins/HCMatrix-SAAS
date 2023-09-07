@@ -286,12 +286,14 @@ export const TaxUIFormulaForm: React.FC<
         dataSource={dataSource}
         columns={columns as ColumnTypes}
       />
-      <AppButton
+
+      {/* TODO: Handle proper adjustments for when a new row is added */}
+      {/* <AppButton
         label="Add a row"
         handleClick={handleAdd}
         type="button"
         variant="transparent"
-      />
+      /> */}
     </div>
   );
 };

@@ -1,5 +1,4 @@
 import { Form, Input, Select, Tag } from "antd";
-import { AppButton } from "components/button/AppButton";
 import React, { useEffect, useState } from "react";
 import { generalValidationRules } from "utils/formHelpers/validation";
 import { TaxUIFormulaForm } from "./TaxUIFormulaForm";
@@ -11,18 +10,25 @@ export interface TTaxPolicyCreatorProps {
   dependencies?: string[];
   taxableIncome?: string;
 }
-export const TaxPolicyCreator: React.FC<TTaxPolicyCreatorProps> = ({
+export const TaxPolicyCreator: React.FC<
+  TTaxPolicyCreatorProps & {
+    formula: string;
+    setFormula: React.Dispatch<React.SetStateAction<string>>;
+  }
+> = ({
   dependencies = ["taxable_income", "gross_pay"],
+  formula,
+  setFormula,
 }) => {
   const [mode, setMode] = useState<TFormulaMode>("ui");
-  const [formula, setFormula] = useState("");
+
   const [taxableIncome, setTaxableIncome] = useState("");
   const handleFormula = (val: string) => {
     console.log("rendering formula", val);
     setFormula(val);
   };
   return (
-    <div className="flex flex-col gap-4">
+    <div className="flex flex-col gap-4 mb-4">
       {/* mode */}
       <div className="flex justify-end">
         <div className="flex flex-col gap-2">
@@ -57,7 +63,7 @@ export const TaxPolicyCreator: React.FC<TTaxPolicyCreatorProps> = ({
         />
       </div>
       {/* creator-forms */}
-      <div>
+      <div className="">
         {mode === "ui" && (
           <TaxUIFormulaForm
             dependencies={dependencies}
