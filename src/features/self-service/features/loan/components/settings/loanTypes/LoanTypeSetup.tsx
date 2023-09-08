@@ -38,8 +38,8 @@ const LoanTypeSetup = () => {
             + Add
           </span>
 
-          <div>
-            <LoanTypeTable />
+          <div className="mt-4">
+            <LoanTypeTable data={[{ id: 500, name: "Car Loan" }]} />
           </div>
           <div className="flex items-center justify-between mt-6 mb-2">
             <button

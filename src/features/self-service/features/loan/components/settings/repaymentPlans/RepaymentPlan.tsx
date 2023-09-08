@@ -5,6 +5,7 @@ import {
   numberInputValidationRules,
   textInputValidationRules,
 } from "utils/formHelpers/validation";
+import RepaymentPlanTable from "./RepaymentPlanTable";
 
 const RepaymentPlan = () => {
   const [paymentPlanSwitch, setPaymentPlanSwitch] = useState(false);
@@ -41,6 +42,12 @@ const RepaymentPlan = () => {
           >
             + Add
           </span>
+
+          <div className="mt-6 w-full">
+            <RepaymentPlanTable
+              data={[{ id: 500, name: "#-month", duration: 3 }]}
+            />
+          </div>
           <div className="flex items-center justify-between mt-6 mb-2">
             <button
               type="button"
