@@ -63,7 +63,16 @@ export const LoanTable: React.FC<{
 
   const columns: ColumnsType<TLoanAndApproval> = [
     {
-      title: "Date",
+      title: "Title",
+      dataIndex: "date",
+      key: "date",
+      render: (_, item) => (
+        <span>{moment(item.dateAssigned).format("YYYY/MM/DD")} </span>
+      ),
+    },
+
+    {
+      title: "Request Date",
       dataIndex: "date",
       key: "date",
       render: (_, item) => (
@@ -71,13 +80,25 @@ export const LoanTable: React.FC<{
       ),
     },
     {
-      title: "Name",
+      title: "Employee Name",
       dataIndex: "Name",
       key: "Name",
       render: (_, item) => <span className="capitalize">{item.name} </span>,
     },
     {
-      title: "Assigned To",
+      title: "Employee ID",
+      dataIndex: "empuid",
+      key: "empuid",
+      render: (_, item) => <span className="capitalize">{item.name} </span>,
+    },
+    {
+      title: "Department",
+      dataIndex: "dept",
+      key: "dept",
+      render: (_, item) => <span className="capitalize">{item.name} </span>,
+    },
+    {
+      title: "Loan Type",
       dataIndex: "ass",
       key: "ass",
       render: (_, item) => (
@@ -85,6 +106,18 @@ export const LoanTable: React.FC<{
           {getEmployeeFullName(item.assignedTo)}{" "}
         </span>
       ),
+    },
+    {
+      title: "Balance",
+      dataIndex: "dept",
+      key: "dept",
+      render: (_, item) => <span className="capitalize">{item.name} </span>,
+    },
+    {
+      title: "Amount",
+      dataIndex: "dept",
+      key: "dept",
+      render: (_, item) => <span className="capitalize">{item.name} </span>,
     },
 
     {
@@ -98,27 +131,6 @@ export const LoanTable: React.FC<{
         >
           {item.status}{" "}
         </span>
-      ),
-    },
-    {
-      title: "Priority",
-      dataIndex: "Priority",
-      key: "Priority",
-      render: (_, item) => (
-        <span
-          className="capitalize"
-          style={{ color: getAppropriateColorForStatus(item.priority) }}
-        >
-          {item.priority}{" "}
-        </span>
-      ),
-    },
-    {
-      title: "Due Date",
-      dataIndex: "Due Date",
-      key: "Due Date",
-      render: (_, item) => (
-        <span>{moment(item.dueDate).format("YYYY/MM/DD")} </span>
       ),
     },
 

@@ -2,16 +2,13 @@ import { DatePicker, Form, Input, InputNumber, Modal, Select } from "antd";
 import { AppButton } from "components/button/AppButton";
 import React from "react";
 import { IModalProps } from "types";
-import {
-  generalValidationRules,
-  textInputValidationRules,
-} from "utils/formHelpers/validation";
+import { generalValidationRules } from "utils/formHelpers/validation";
 import { openNotification } from "utils/notifications";
 import { useQueryClient } from "react-query";
 import { useCreateFolder } from "../../documents/hooks/useCreateFolder";
 import { QUERY_KEY_FOR_FOLDERS } from "../../documents/hooks/useGetFolders";
 
-export const NewLoan: React.FC<IModalProps> = ({ open, handleClose }) => {
+export const MakeRepayment: React.FC<IModalProps> = ({ open, handleClose }) => {
   const queryClient = useQueryClient();
 
   const [form] = Form.useForm();
@@ -55,7 +52,7 @@ export const NewLoan: React.FC<IModalProps> = ({ open, handleClose }) => {
       open={open}
       onCancel={() => handleClose()}
       footer={null}
-      title={"New Loan"}
+      title={"Make Repayment"}
       style={{ top: 20 }}
     >
       <Form
@@ -64,27 +61,18 @@ export const NewLoan: React.FC<IModalProps> = ({ open, handleClose }) => {
         onFinish={handleSubmit}
         requiredMark={false}
       >
-        <Form.Item rules={generalValidationRules} name="title" label="Title">
-          <Input className="w-full" placeholder="Title" />
-        </Form.Item>
-        <Form.Item rules={generalValidationRules} name="date" label="Date">
-          <DatePicker className="w-full" />
-        </Form.Item>
-        <Form.Item rules={generalValidationRules} name="type" label="Loan Type">
-          <Select placeholder="Select a loan type" />
-        </Form.Item>
         <Form.Item
           rules={generalValidationRules}
-          name="repayment"
-          label="Select Repayment"
+          name="type"
+          label="Select Loan"
         >
-          <Select placeholder="Select a repayment" />
+          <Select placeholder="Select a loan" />
+        </Form.Item>
+        <Form.Item rules={generalValidationRules} label="Balance">
+          <Input placeholder="Balance" disabled value={200} />
         </Form.Item>
         <Form.Item rules={generalValidationRules} name="amount" label="Amount">
           <InputNumber className="w-full" placeholder="Amount" />
-        </Form.Item>
-        <Form.Item rules={generalValidationRules} label="Loan Worthiness (Why)">
-          <Input placeholder="0%" disabled />
         </Form.Item>
 
         <div className="flex justify-end">

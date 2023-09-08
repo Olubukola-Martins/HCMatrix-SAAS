@@ -1,3 +1,5 @@
+import { TApprovalStatus } from "types/statuses";
+
 export type TLoan = any;
 export type TLoanType = {
   id: number;
@@ -8,3 +10,5 @@ export type TRepaymentPlan = {
   name: string;
   duration: number;
 };
+
+export type TLoanStatus = TApprovalStatus | "repaid" | "processing";

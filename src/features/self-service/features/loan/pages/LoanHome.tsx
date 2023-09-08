@@ -12,6 +12,7 @@ import { useNavigate } from "react-router-dom";
 import { NewLoan } from "../components/NewLoan";
 import EmployeeLoanRepayments from "../components/repayments/EmployeeLoanRepayments";
 import AllLoanRepayments from "../components/repayments/AllLoanRepayments";
+import { MakeRepayment } from "../components/MakeRepayment";
 
 export type TLoanTabKey =
   | "Overview"
@@ -20,7 +21,7 @@ export type TLoanTabKey =
   | "My Repayments"
   | "All Repayments"
   | "All Loans";
-type TAction = "new-loan";
+type TAction = "new-loan" | "make-repayment";
 const LoanHome = () => {
   const [key, setKey] = useState<TLoanTabKey>("Overview");
   const handleTabKey = (val: TLoanTabKey) => {
@@ -72,6 +73,10 @@ const LoanHome = () => {
         open={action === "new-loan"}
         handleClose={() => setAction(undefined)}
       />
+      <MakeRepayment
+        open={action === "make-repayment"}
+        handleClose={() => setAction(undefined)}
+      />
       <SelfServiceSubNav />
 
       <div className="Container">
@@ -85,6 +90,12 @@ const LoanHome = () => {
                 {
                   name: "New Loan",
                   handleClick: () => setAction("new-loan"),
+                  btnVariant: "style-with-class",
+                  additionalClassNames: ["neutralButton"],
+                },
+                {
+                  name: "Make Repayment",
+                  handleClick: () => setAction("make-repayment"),
                 },
                 {
                   name: "Settings",

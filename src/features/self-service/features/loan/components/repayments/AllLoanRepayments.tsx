@@ -1,7 +1,12 @@
 import React from "react";
+import RepaymentTable from "../data-component/RepaymentTable";
 
 const AllLoanRepayments = () => {
-  return <div>AllLoanRepayments</div>;
+  return (
+    <div>
+      <RepaymentTable />
+    </div>
+  );
 };
 
 export default AllLoanRepayments;
