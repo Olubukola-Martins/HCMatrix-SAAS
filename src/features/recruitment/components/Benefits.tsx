@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Form, Switch, Input } from "antd";
 import { AppButton } from "components/button/AppButton";
 import "../assets/style.css";
@@ -9,7 +9,21 @@ import axios from "axios";
 import { useApiAuth } from "hooks/useApiAuth";
 
 export const Benefits = () => {
+  interface result {
+    companyId: number;
+    createdAt: string;
+    id: number;
+    isActive: boolean;
+    isDefault: boolean;
+    label: string;
+    name: string;
+    updatedAt: string;
+  }
+
   const [form] = Form.useForm();
+  const formItemRef = useRef(null);
+  const [IsActive, setIsActive] = useState<boolean>(true);
+  const [benefitsData, setBenefitsData] = useState<result[]>();
 
   const { companyId, token } = useApiAuth();
   const endpointUrl = `${MICROSERVICE_ENDPOINTS.RECRUITMENT}/employment-benefits`;
@@ -26,7 +40,9 @@ export const Benefits = () => {
           },
         })
         .then((response) => {
-          console.log("Response data:", response);
+          console.log("Response data data:", response.data.data.result);
+          const results = response.data.data.result;
+          setBenefitsData(results);
         })
         .catch((error) => {
           console.log("Error message:", error);
@@ -36,8 +52,52 @@ export const Benefits = () => {
     fetchData();
   }, []);
 
+  // PATCH request
+  const handleSwitchChange = async (checked: boolean, itemId: number) => {
+
+    if (!checked) {
+      await axios
+        .patch(
+          `${MICROSERVICE_ENDPOINTS.RECRUITMENT}/employment-benefits/${itemId}/activate`,
+          null,
+          {
+            headers: {
+              Accept: "application/json",
+              Authorization: `Bearer ${token}`,
+              "x-company-id": companyId,
+            },
+          }
+        )
+        .then((response) => {
+          console.log("Response:", response);
+        })
+        .catch((error) => {
+          console.log("Error message:", error);
+        });
+    } else if (checked) {
+      await axios
+        .patch(
+          `${MICROSERVICE_ENDPOINTS.RECRUITMENT}/employment-benefits/${itemId}/deactivate`,
+          null,
+          {
+            headers: {
+              Accept: "application/json",
+              Authorization: `Bearer ${token}`,
+              "x-company-id": companyId,
+            },
+          }
+        )
+        .then((response) => {
+          console.log("Response:", response);
+        })
+        .catch((error) => {
+          console.log("Error message:", error);
+        });
+    }
+  };
+
   const handleSubmit = (values: any) => {
-    // console.log("Received values of form:", values);
+    console.log("Received values of form:", values);
   };
 
   const handleAddField = () => {
@@ -64,61 +124,98 @@ export const Benefits = () => {
             onFinish={handleSubmit}
             name="benefitsSettings"
           >
-            <div className="recruitmentSettingsForm ">
+            {benefitsData?.map((result) => (
+              <div className="recruitmentSettingsForm" key={result.id}>
+                <h3 className="font-medium">{result.name}</h3>
+                <Form.Item
+                  name={result.name}
+                  className="flex justify-end items-end"
+                  noStyle
+                >
+                  <Switch
+                    checked={result.isActive}
+                    onChange={(checked) =>
+                      handleSwitchChange(checked, result.id)
+                    }
+                  />
+                </Form.Item>
+              </div>
+            ))}
+            {/* <div className="recruitmentSettingsForm ">
               <h3 className="font-medium">Dental Insurance</h3>
               <Form.Item
-                name="dentalInsurance"
+                name="Dental Insurance"
                 className="flex justify-end items-end"
                 noStyle
+                // ref={formItemRef}
               >
-                <Switch />
+                <Switch
+                  checked={IsActive}
+                  // onChange={ }
+                />
               </Form.Item>
             </div>
 
             <div className="recruitmentSettingsForm ">
               <h3 className="font-medium">Flexibility Schedule</h3>
               <Form.Item
-                name="flexibilitySchedule"
+                name="Flexibility Schedule"
                 className="flex justify-end items-end"
                 noStyle
+                // ref={formItemRef}
               >
-                <Switch />
+                <Switch
+                  checked={IsActive}
+                  // onChange={ }
+                />
               </Form.Item>
             </div>
 
             <div className="recruitmentSettingsForm ">
               <h3 className="font-medium">Health Insurance</h3>
               <Form.Item
-                name="healthInsurance"
+                name="Health Insurance"
                 className="flex justify-end items-end"
                 noStyle
+                // ref={formItemRef}
               >
-                <Switch />
+                <Switch
+                  checked={IsActive}
+                  // onChange={ }
+                />
               </Form.Item>
             </div>
 
             <div className="recruitmentSettingsForm ">
-              <h3 className="font-medium">Paid Off Time</h3>
+              <h3 className="font-medium">Pay Off Time</h3>
               <Form.Item
-                name="paidOffTime"
+                name="Pay Off Time"
                 className="flex justify-end items-end"
                 noStyle
+                // ref={formItemRef}
               >
-                <Switch />
+                <Switch
+                  checked={IsActive}
+                  // onChange={ }
+                />
               </Form.Item>
             </div>
 
             <div className="recruitmentSettingsForm ">
               <h3 className="font-medium">Vision Insurance</h3>
               <Form.Item
-                name="visionInsurance"
+                name="Vision Insurance"
                 className="flex justify-end items-end"
                 noStyle
+                // ref={formItemRef}
               >
-                <Switch />
+                <Switch
+                  checked={IsActive}
+                  // onChange={ }
+                />
               </Form.Item>
             </div>
-
+ */}
             <div>
               <h2 className="pb-5 font-medium text-base">Benefit name</h2>
               <Form.List name="newBenefit">
@@ -141,7 +238,10 @@ export const Benefits = () => {
                             noStyle
                             valuePropName="checked"
                           >
-                            <Switch />
+                            <Switch
+                              checked={IsActive}
+                              // onChange={ }
+                            />
                           </Form.Item>
                           <i
                             className="ri-delete-bin-line text-xl cursor-pointer hover:text-caramel"
