@@ -22,7 +22,6 @@ const CandidateStatus = () => {
   const endpointUrl = `${MICROSERVICE_ENDPOINTS.RECRUITMENT}/application-statuses`;
 
   //  GET request
-
   const handleSubmit = (values: any) => {
     // console.log("Received values of form:", values);
     const getCandidateStatus = async () => {
