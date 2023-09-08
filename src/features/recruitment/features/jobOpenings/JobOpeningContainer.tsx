@@ -1,5 +1,5 @@
 import React from "react";
-import { Menu, Space, Select, Table, Typography, Dropdown } from "antd";
+import { Menu, Space, Select, Table, Dropdown } from "antd";
 import { ColumnsType } from "antd/es/table";
 import { Link } from "react-router-dom";
 import { appRoutes } from "config/router/paths";
@@ -47,11 +47,7 @@ export const JobOpeningContainer = () => {
       dataIndex: "status",
       key: "5",
       render: (status: boolean) => {
-        return (
-          <Typography.Paragraph>
-            {status ? "Open" : "Closed"}
-          </Typography.Paragraph>
-        );
+        return <p>{status ? "Open" : "Closed"}</p>;
       },
     },
 

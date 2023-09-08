@@ -9,7 +9,7 @@ export const ApplyDefaultSettings = ({ handleClose, open }: IModalProps) => {
   const {
     currentCompanyEmployeeDetails: user,
     token,
-    companyId,
+    companyId, 
   } = useApiAuth();
   const { mutate, isLoading } = useApplyDefaultSettings();
   const activateDefaultSettings = () => {

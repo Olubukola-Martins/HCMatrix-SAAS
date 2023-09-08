@@ -9,14 +9,11 @@ import axios from "axios";
 import { useApiAuth } from "hooks/useApiAuth";
 import { useEffect, useState } from "react";
 import { ApplyDefaultSettings } from "../components/ApplyDefaultSettings";
+import { useDefaultSettingsCall } from "../hooks/useDefaultSettingsCall";
 
 const CandidateStatus = () => {
   const [form] = Form.useForm();
-  const [openApplyDSettings, setOpenApplyDSettings] = useState<boolean>(false);
-
-  useEffect(() => {
-    setOpenApplyDSettings(true);
-  }, []);
+  useDefaultSettingsCall();
 
   const { companyId, token } = useApiAuth();
   const endpointUrl = `${MICROSERVICE_ENDPOINTS.RECRUITMENT}/default-settings/apply`;
@@ -62,12 +59,9 @@ const CandidateStatus = () => {
         description={"Welcome on board, set up your candidate status."}
         nextLink={appRoutes.candidateSources}
       />
-      <ApplyDefaultSettings
-        open={openApplyDSettings}
-        handleClose={() => setOpenApplyDSettings(false)}
-      />
+
       <div className="Container mt-5">
-          {/* <AppButton handleClick={activateDefaultSettings} /> */}
+
         <div className="bg-card rounded md:p-5 p-3">
           <h2 className="pb-5 font-medium text-base">Status</h2>
           <div className="bg-mainBg py-4 px-4 rounded">

@@ -119,7 +119,7 @@ const ApplicationsList = () => {
       dataIndex: "candidateInfo",
       ellipsis: true,
       render: (candidateInfo) => (
-        <div> 
+        <div>
           <h2 className="overflow-hidden whitespace-nowrap truncate text-caramel">
             {candidateInfo.candidateName}
           </h2>
@@ -283,32 +283,6 @@ const ApplicationsList = () => {
           name="customFilterApplications"
           onFinish={onFinish}
         >
-          <Form.Item name="jobStatus" label="Job Status">
-            <Select
-              mode="multiple"
-              placeholder="Please select"
-              dropdownMatchSelectWidth={false}
-              // onChange={handleChange}
-              options={[
-                {
-                  value: "open",
-                  label: "Open",
-                },
-                {
-                  value: "onHold",
-                  label: "On-Hold",
-                },
-                {
-                  value: "filled",
-                  label: "Filled",
-                },
-                {
-                  value: "cancelled",
-                  label: "Cancelled",
-                },
-              ]}
-            />
-          </Form.Item>
           <Form.Item name="jobOpening" label="Job Opening">
             <Select
               mode="multiple"
@@ -339,67 +313,7 @@ const ApplicationsList = () => {
               ]}
             />
           </Form.Item>
-          <Form.Item name="candidateStatus" label="Candidate Status">
-            <Select
-              mode="multiple"
-              placeholder="Please select"
-              dropdownMatchSelectWidth={false}
-              // onChange={handleChange}
-              options={[
-                {
-                  label: "Active",
-                  options: [
-                    {
-                      value: "reviewed",
-                      label: "Reviewed",
-                    },
-                    {
-                      value: "scheduleInterview",
-                      label: "Schedule Interview",
-                    },
-                    {
-                      value: "interviewed",
-                      label: "Interviewed",
-                    },
-                    {
-                      value: "putOnHold",
-                      label: "Put on Hold",
-                    },
-                    {
-                      value: "checkingRefrences",
-                      label: "Checking Refrences",
-                    },
-                  ],
-                },
-                {
-                  label: "Not Hired",
-                  options: [
-                    {
-                      value: "notaFit",
-                      label: "Not a Fit",
-                    },
-                    {
-                      value: "declinedOffer",
-                      label: "Declined Offer",
-                    },
-                    {
-                      value: "notQualified",
-                      label: "Not Qualified",
-                    },
-                    {
-                      value: "overQualified",
-                      label: "Over Qualified",
-                    },
-                    {
-                      value: "hiredElsewhere",
-                      label: "Hired Elsewhere",
-                    },
-                  ],
-                },
-              ]}
-            />
-          </Form.Item>
-          <Form.Item label="Date Range" name="dateRange">
+          <Form.Item label="Application Date Range" name="applicationDateRange">
             <RangePicker className="w-full" />
           </Form.Item>
           <Form.Item name="teamLead" label="Team Lead">
@@ -420,7 +334,7 @@ const ApplicationsList = () => {
               ]}
             />
           </Form.Item>
-          <Form.Item name="jobLocation" label="Job Location">
+          <Form.Item name="workMode" label="workMode">
             <Select
               mode="multiple"
               placeholder="Please select"
@@ -428,12 +342,16 @@ const ApplicationsList = () => {
               // onChange={handleChange}
               options={[
                 {
-                  value: "lagos",
-                  label: "Lagos",
+                  value: "onsite",
+                  label: "On-site",
                 },
                 {
-                  value: "abuja",
-                  label: "Abuja",
+                  value: "hybrid",
+                  label: "Hybrid",
+                },
+                {
+                  value: "remote",
+                  label: "Remote",
                 },
               ]}
             />

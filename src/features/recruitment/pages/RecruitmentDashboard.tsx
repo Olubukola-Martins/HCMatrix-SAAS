@@ -6,8 +6,10 @@ import { JobOpeningContainer } from "../features/jobOpenings/JobOpeningContainer
 import ApplicationsList from "../components/ApplicationsList";
 import { RecruitmentUsers } from "../features/users/RecruitmentUsers";
 import TalentPool from "../features/talentPool/TalentPool";
+import { useDefaultSettingsCall } from "../hooks/useDefaultSettingsCall";
 
 const RecruitmentDashboard = () => {
+  useDefaultSettingsCall();
   return (
     <>
       <RecruitmentSubNav />
@@ -45,11 +47,11 @@ export const DashboardWrapper = () => {
       children: <TalentPool />,
       key: "Talent Pool",
     },
-    {
-      label: "Users",
-      children: <RecruitmentUsers />,
-      key: "Users",
-    },
+    // {
+    //   label: "Users",
+    //   children: <RecruitmentUsers />,
+    //   key: "Users",
+    // },
   ];
   return (
     <div>
