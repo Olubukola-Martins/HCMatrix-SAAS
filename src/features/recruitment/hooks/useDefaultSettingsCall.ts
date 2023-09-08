@@ -33,7 +33,7 @@ export const useDefaultSettingsCall = () => {
   };
 
   useEffect(() => {
-    if (data === false) {
+    if (!data) {
       activateDefaultSettings();
     }
   }, []);
