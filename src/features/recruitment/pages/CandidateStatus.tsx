@@ -5,14 +5,44 @@ import "../assets/style.css";
 import { textInputValidationRules } from "utils/formHelpers/validation";
 import { AppButton } from "components/button/AppButton";
 import { useDefaultSettingsCall } from "../hooks/useDefaultSettingsCall";
+import { useEffect } from "react";
+import axios from "axios";
+import { MICROSERVICE_ENDPOINTS } from "config/enviroment";
+import { useApiAuth } from "hooks/useApiAuth";
 
 const CandidateStatus = () => {
   const [form] = Form.useForm();
   useDefaultSettingsCall();
 
+  const { companyId, token } = useApiAuth();
+
+  const endpointUrl = `${MICROSERVICE_ENDPOINTS.RECRUITMENT}/application-statuses`;
+
   const handleSubmit = (values: any) => {
     console.log("Received values of form:", values);
   };
+
+  //  GET request
+  useEffect(() => {
+    const getCandidateStatus = async () => {
+      await axios
+        .get(endpointUrl, {
+          headers: {
+            Accept: "application/json",
+            Authorization: `Bearer ${token}`,
+            "x-company-id": companyId,
+          },
+        })
+        .then((response) => {
+          console.log(response);
+        })
+        .catch((err) => {
+          console.log(err.message);
+          console.log(err);
+        });
+    };
+    getCandidateStatus();
+  }, []);
 
   const handleAddField = () => {
     const newStatus = form.getFieldValue("newStatus") || [];
