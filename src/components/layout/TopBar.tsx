@@ -63,8 +63,6 @@ const TopBar = ({
   const avatarUrl = employee?.avatarUrl;
   // done to make changes to user employee profile real-time
 
-  console.log(authDetails?.companies, "TEST");
-
   const defaultCompanies = authDetails?.companies.map((item: any) => ({
     value: item.company.name,
     id: item.company.id,
