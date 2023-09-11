@@ -91,7 +91,6 @@ interface ComponentProps {
 const Component: React.FC<
   ComponentProps & TFilterTransactionContainerProps
 > = ({ status, employeeId, type }) => {
-  console.log(employeeId, "___");
   return (
     <TransactionsContainer
       columns={columns}
