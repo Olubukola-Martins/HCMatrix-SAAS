@@ -34,7 +34,7 @@ export const JobOpeningContainer = () => {
     },
     {
       title: "Team Lead",
-      dataIndex: "Team Lead",
+      dataIndex: "teamLead",
       key: "3",
     },
     {
