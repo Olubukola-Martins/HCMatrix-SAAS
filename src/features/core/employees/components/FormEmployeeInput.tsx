@@ -12,6 +12,7 @@ export const FormEmployeeInput: React.FC<{
   handleSelect?: (val: number, employee?: TEmployee) => void;
   fieldKey?: number;
   Form: any;
+  noStyle?: boolean;
   showLabel?: boolean;
   optional?: boolean;
   mode?: "multiple" | "tags";
@@ -24,6 +25,7 @@ export const FormEmployeeInput: React.FC<{
   fieldKey,
   optional = false,
   mode,
+  noStyle,
 }) => {
   const [searchTerm, setSearchTerm] = useState<string>("");
   const debouncedSearchTerm: string = useDebounce<string>(searchTerm);
@@ -41,6 +43,7 @@ export const FormEmployeeInput: React.FC<{
   return (
     <Form.Item
       fieldKey={fieldKey}
+      noStyle={noStyle}
       name={control?.name ?? "employeeId"}
       label={showLabel ? control?.label ?? "Employee" : null}
       rules={optional ? generalValidationRulesOp : generalValidationRules}

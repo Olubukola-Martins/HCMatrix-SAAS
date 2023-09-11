@@ -6,7 +6,7 @@ import { useApiAuth } from "hooks/useApiAuth";
 import { TCostCentre } from "features/payroll/types";
 
 interface IDataProps {
-  id: number;
+  id?: number;
 }
 export const QUERY_KEY_FOR_SINGLE_COST_CENTRE = "single-cost-centre";
 const getData = async (props: {
@@ -46,6 +46,7 @@ export const useGetSingleCostCentre = (props: IDataProps) => {
         data: { ...props },
       }),
     {
+      enabled: !!props.id,
       onError: (err: any) => {},
       onSuccess: (data) => {},
     }

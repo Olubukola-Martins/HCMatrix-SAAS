@@ -9584,6 +9584,11 @@ react-organizational-chart@^2.1.1:
   dependencies:
     "@emotion/css" "^11.7.1"
 
+react-paystack@^4.0.3:
+  version "4.0.3"
+  resolved "https://registry.npmjs.org/react-paystack/-/react-paystack-4.0.3.tgz#f4a38966295e990a5bcbf587966083a5f0b5f5ab"
+  integrity sha512-ruu94Qrvi7QHK1axrHRShUebka68G3UyGIndVFPCjs3rddBOkLiorF6GJ98FW9lq4ov5M4adh4g03F6aOuJmRA==
+
 react-popper@^1.3.8:
   version "1.3.11"
   resolved "https://registry.npmjs.org/react-popper/-/react-popper-1.3.11.tgz"

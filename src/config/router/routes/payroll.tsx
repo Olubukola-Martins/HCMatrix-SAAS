@@ -37,8 +37,16 @@ import CreatePayrollReportTemplate from "features/payroll/pages/CreatePayrollRep
 import EditPayrollReportTemplate from "features/payroll/pages/EditPayrollReportTemplate";
 import ViewPayrollReportTemplate from "features/payroll/pages/ViewPayrollReportTemplate";
 import ViewPayslipTemplate from "features/payroll/pages/ViewPayslipTemplate";
+import SingleCostCentrePage from "features/payroll/pages/SingleCostCentrePage";
 
 export const payrollRoutes: TRouteData[] = [
+  {
+    element: <SingleCostCentrePage />,
+    path: appRoutes.singleCostCentre().format,
+    isSearchable: false,
+
+    isPrimaryFeature: false,
+  },
   {
     element: <PayrollCostCentresPage />,
     path: appRoutes.payrollCostCentres,

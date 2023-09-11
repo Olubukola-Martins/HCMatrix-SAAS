@@ -1,4 +1,4 @@
-import { TCostCentre } from "./costCentres";
+import { TCostCentre, TSaveCostCentreResponse } from "./costCentres";
 import { TExchangeRateListItem } from "./exchangeRateList";
 import { TPayGradeCategory } from "./payGradeCategories";
 import { TPayGrade } from "./payGrades";
@@ -9,6 +9,19 @@ import {
 } from "./payroll";
 import { TPensionAdministrator } from "./pensionAdministrators";
 import { TTaxAuthority } from "./taxAuthorities";
+
+export type TTransactionStatus = "completed" | "processing" | "declined";
+export type TTransactionType = "credit" | "debit";
+export type TTransaction = {
+  receiver: string;
+  sender: string;
+  ref: string;
+  type: string;
+  amount: string;
+  payroll: string;
+  status: string;
+  paidAt: string;
+};
 
 export type TPayrollBreakdownAttr = {
   label: string;
@@ -22,6 +35,7 @@ export {
   type TPayGradeCategory,
   type TExchangeRateListItem,
   type TCostCentre,
+  type TSaveCostCentreResponse,
   type TTaxAuthority,
   type TPensionAdministrator,
   // ...

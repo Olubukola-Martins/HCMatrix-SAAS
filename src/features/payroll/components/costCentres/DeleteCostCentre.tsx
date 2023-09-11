@@ -10,11 +10,13 @@ import { QUERY_KEY_FOR_COST_CENTRES } from "features/payroll/hooks/costCentres/u
 
 interface IProps extends IModalProps {
   costCentre: TCostCentre;
+  onDelete?: () => void;
 }
 export const DeleteCostCentre: React.FC<IProps> = ({
   open,
   handleClose,
   costCentre,
+  onDelete,
 }) => {
   const queryClient = useQueryClient();
 
@@ -49,6 +51,7 @@ export const DeleteCostCentre: React.FC<IProps> = ({
             // exact: true,
           });
           handleClose();
+          onDelete?.();
         },
       }
     );

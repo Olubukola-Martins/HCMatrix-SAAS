@@ -1,8 +1,10 @@
 import axios from "axios";
 import { MICROSERVICE_ENDPOINTS } from "config/enviroment";
+import { TSaveCostCentreResponse } from "features/payroll/types";
 import { useApiAuth } from "hooks/useApiAuth";
 import { useMutation } from "react-query";
 import { ICurrentCompany } from "types";
+import { removeUndefinedProperties } from "utils/dataHelpers/removeUndefinedProperties";
 
 type TCostData = {
   id: number;
@@ -15,7 +17,7 @@ type TCostData = {
 const createData = async (props: {
   data: TCostData;
   auth: ICurrentCompany;
-}) => {
+}): Promise<TSaveCostCentreResponse> => {
   const url = `${MICROSERVICE_ENDPOINTS.PAYROLL}/cost-centre/${props.data.id}`;
   const config = {
     headers: {
@@ -26,11 +28,12 @@ const createData = async (props: {
   };
 
   const data = {
-    ...props.data.body,
+    ...removeUndefinedProperties(props.data.body),
   };
 
   const response = await axios.patch(url, data, config);
-  return response;
+  const item: TSaveCostCentreResponse = response.data;
+  return item;
 };
 export const useUpdateCostCentre = () => {
   const { token, companyId } = useApiAuth();

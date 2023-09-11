@@ -21,3 +21,12 @@ export const FIREBASE_PARAMETERS = {
   measurementId: process.env.REACT_APP_FIREBASE_measurementId,
   vapidKey: process.env.REACT_APP_FIREBASE_vapidKey,
 };
+
+const getPaystackPublicKey = () => {
+  if (process.env.NODE_ENV === "development")
+    return process.env.REACT_APP_PAYSTACK_TEST_PUBLIC_KEY;
+  return process.env.REACT_APP_PAYSTACK_LIVE_PUBLIC_KEY;
+};
+export const PAYSTACK_PARAMETERS = {
+  paystackPublicKey: getPaystackPublicKey(),
+};

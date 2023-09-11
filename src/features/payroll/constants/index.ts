@@ -1,3 +1,4 @@
+import { TTransactionStatus } from "../types";
 import { TPayrollSchemeType } from "../types/payrollSchemes";
 
 // PM COnvo: Employee Id, Address, Name, Tax ID, Phone, Email, (Alt), all org IDS, bank details, Exchange Rate, payroll type
@@ -182,3 +183,14 @@ export const PAYROLL_SCHEME_OPTIONS: {
   label: item.split("-").join(" "),
   value: item,
 }));
+
+const TRANSACTION_STATUSES: TTransactionStatus[] = [
+  "completed",
+  "declined",
+  "processing",
+];
+
+export const TRANSACTION_STATUS_OPTIONS: {
+  value: TTransactionStatus;
+  label: string;
+}[] = TRANSACTION_STATUSES.map((item) => ({ label: item, value: item }));

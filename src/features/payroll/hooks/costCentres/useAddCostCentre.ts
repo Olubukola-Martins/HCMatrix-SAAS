@@ -1,5 +1,6 @@
 import axios from "axios";
 import { MICROSERVICE_ENDPOINTS } from "config/enviroment";
+import { TSaveCostCentreResponse } from "features/payroll/types";
 import { useApiAuth } from "hooks/useApiAuth";
 import { useMutation } from "react-query";
 import { ICurrentCompany } from "types";
@@ -11,7 +12,7 @@ type TCostData = {
 const createData = async (props: {
   data: TCostData;
   auth: ICurrentCompany;
-}) => {
+}): Promise<TSaveCostCentreResponse> => {
   const url = `${MICROSERVICE_ENDPOINTS.PAYROLL}/cost-centre`;
   const config = {
     headers: {
@@ -26,7 +27,8 @@ const createData = async (props: {
   };
 
   const response = await axios.post(url, data, config);
-  return response;
+  const item: TSaveCostCentreResponse = response.data;
+  return item;
 };
 export const useAddCostCentre = () => {
   const { token, companyId } = useApiAuth();

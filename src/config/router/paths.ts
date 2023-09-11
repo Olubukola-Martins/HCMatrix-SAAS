@@ -68,6 +68,10 @@ export const appRoutes = {
   }),
   payrollSettings: `/settings/payroll`,
   payrollCostCentres: `/settings/payroll/cost-centres`,
+  singleCostCentre: (id?: number) => ({
+    format: `/settings/payroll/cost-centres/:id`,
+    path: `/settings/payroll/cost-centres/${id}`,
+  }),
   payrollTaxPolicies: `/settings/payroll/tax-policies`,
   createTaxPolicy: `/settings/payroll/create-tax-policy`,
   payrollExchangeRates: `/settings/payroll/exhange-rates`,
