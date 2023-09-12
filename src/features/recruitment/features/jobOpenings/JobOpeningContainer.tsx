@@ -9,7 +9,7 @@ type DataSourceItem = {
   key: React.Key;
   title: string;
   candidate: string;
-  hiringLead: string;
+  teamLead: string;
   createdOn: string;
   status: string;
 };
@@ -33,8 +33,8 @@ export const JobOpeningContainer = () => {
       key: "2",
     },
     {
-      title: "Hiring Lead",
-      dataIndex: "hiringLead",
+      title: "Team Lead",
+      dataIndex: "teamLead",
       key: "3",
     },
     {
@@ -89,7 +89,7 @@ export const JobOpeningContainer = () => {
       key: i,
       title: "Software Engineer",
       candidate: "5 candidates",
-      hiringLead: "Basil Ikpe",
+      teamLead: "Basil Ikpe",
       createdOn: "--:--",
       status: "Open",
     });

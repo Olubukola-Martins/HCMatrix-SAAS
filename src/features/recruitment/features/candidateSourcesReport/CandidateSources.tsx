@@ -1,6 +1,7 @@
 import { Select, Table } from "antd";
 import { ColumnsType } from "antd/es/table";
-import React from "react";
+import { LabeledValue } from "antd/lib/select";
+import React, { useState } from "react";
 
 const CandidateSources = () => {
   interface NumberOfType {
@@ -25,12 +26,15 @@ const CandidateSources = () => {
       key: "views",
       title: "Views",
       dataIndex: "views",
+      className: " ",
       render: (views) => `${views.numberOf} (${views.numberOf}%)`,
     },
     {
       key: "newCandidates",
       title: "New Candidates",
       dataIndex: "newCandidates",
+      className: " ",
+
       render: (newCandidates) =>
         `${newCandidates.numberOf} (${newCandidates.numberOf}%)`,
     },
@@ -38,12 +42,16 @@ const CandidateSources = () => {
       key: "putOnHold",
       title: "Put On Hold",
       dataIndex: "putOnHold",
+      className: " ",
+
       render: (putOnHold) => `${putOnHold.numberOf} (${putOnHold.numberOf}%)`,
     },
     {
       key: "scheduledInterview",
       title: "Scheduled Interview",
       dataIndex: "scheduledInterview",
+      className: " ",
+
       render: (scheduledInterview) =>
         `${scheduledInterview.numberOf} (${scheduledInterview.numberOf}%)`,
     },
@@ -51,15 +59,32 @@ const CandidateSources = () => {
       key: "hired",
       title: "Hired",
       dataIndex: "hired",
+      className: " ",
+
       render: (hired) => `${hired.numberOf} (${hired.numberOf}%)`,
     },
     {
       key: "references",
       title: "References",
       dataIndex: "references",
+      className: "",
+
       render: (references) =>
         `${references.numberOf} (${references.numberOf}%)`,
     },
+  ];
+  const [selectedColumnsFirstTb, setSelectedColumnsFirstTb] =
+    useState(columnsFirstTb);
+  const [selectedColumnKeysFirstTb, setSelectedColumnKeysFirstTb] = useState<
+    any[]
+  >(selectedColumnsFirstTb.map((column) => column.key));
+  const selectedOptnsFirstTb = [
+    "views",
+    "newCandidates",
+    "putOnHold",
+    "scheduledInterview",
+    "hired",
+    "references",
   ];
 
   const sourcesListFirstTb = ["LinkedIn", "Others"];
@@ -89,6 +114,30 @@ const CandidateSources = () => {
       },
     });
   }
+
+  const handleSelectFirstTb = (value: string | number | LabeledValue) => {
+    if (!selectedColumnKeysFirstTb.includes(value)) {
+      const newColumn = columnsFirstTb.find(
+        (presentCol) => presentCol.key === value
+      );
+
+      if (newColumn) {
+        setSelectedColumnsFirstTb([...selectedColumnsFirstTb, newColumn]);
+        setSelectedColumnKeysFirstTb([
+          ...selectedColumnKeysFirstTb,
+          newColumn.key,
+        ]);
+      }
+    }
+  };
+
+  const handleDeSelectFirstTb = (value: string | number | LabeledValue) => {
+    const updatedColumns = selectedColumnsFirstTb.filter(
+      (column) => column.key !== value
+    );
+    setSelectedColumnsFirstTb(updatedColumns);
+    setSelectedColumnKeysFirstTb(updatedColumns.map((column) => column.key));
+  };
 
   // TABLE 2 DATA
   //Table Data Interface
@@ -163,6 +212,42 @@ const CandidateSources = () => {
       },
     });
   }
+  const [selectedColumnsSecondTb, setSelectedColumnsSecondTb] =
+    useState(columnsSecondTb);
+  const [selectedColumnKeysSecondTb, setSelectedColumnKeysSecondTb] = useState<
+    any[]
+  >(selectedColumnsSecondTb.map((column) => column.key));
+  const selectedOptnsSecondTb = [
+    "notFit",
+    "declinedOffer",
+    "notQualified",
+    "overQualified",
+    "hiredElsewhere",
+  ];
+
+  const handleSelectSecondTb = (value: string | number | LabeledValue) => {
+    if (!selectedColumnKeysSecondTb.includes(value)) {
+      const newColumn = columnsSecondTb.find(
+        (presentCol) => presentCol.key === value
+      );
+
+      if (newColumn) {
+        setSelectedColumnsSecondTb([...selectedColumnsSecondTb, newColumn]);
+        setSelectedColumnKeysSecondTb([
+          ...selectedColumnKeysSecondTb,
+          newColumn.key,
+        ]);
+      }
+    }
+  };
+
+  const handleDeSelectSecondTb = (value: string | number | LabeledValue) => {
+    const updatedColumns = selectedColumnsSecondTb.filter(
+      (column) => column.key !== value
+    );
+    setSelectedColumnsSecondTb(updatedColumns);
+    setSelectedColumnKeysSecondTb(updatedColumns.map((column) => column.key));
+  };
 
   return (
     <>
@@ -174,22 +259,46 @@ const CandidateSources = () => {
             into employees.
           </h2>
           <Select
+            onDeselect={handleDeSelectFirstTb}
+            onSelect={handleSelectFirstTb}
+            defaultValue={selectedOptnsFirstTb}
+            mode="multiple"
             className="w-40 mt-4"
-            defaultValue="statuses"
+            style={{ minWidth: 200, width: "auto" }}
             placeholder="Please select"
+            showArrow
             dropdownMatchSelectWidth={false}
-            // onChange={handleChange}
             options={[
               {
-                value: "statuses",
-                label: "Statuses (4)",
+                value: "views",
+                label: "Views",
+              },
+              {
+                value: "newCandidates",
+                label: "New Candidates",
+              },
+              {
+                value: "putOnHold",
+                label: "Put On Hold",
+              },
+              {
+                value: "scheduledInterview",
+                label: "Scheduled Interview",
+              },
+              {
+                value: "hired",
+                label: "Hired",
+              },
+              {
+                value: "references",
+                label: "References",
               },
             ]}
           />
           {/* TABLE 1*/}
           <Table
             className="mt-8"
-            columns={columnsFirstTb}
+            columns={selectedColumnsFirstTb}
             dataSource={dataSourceFirstTb}
             scroll={{ x: 900 }}
             summary={(pageData) => {
@@ -221,24 +330,38 @@ const CandidateSources = () => {
                 <>
                   <Table.Summary.Row className="font-bold">
                     <Table.Summary.Cell index={0}>Total</Table.Summary.Cell>
-                    <Table.Summary.Cell index={1}>
-                      {totalViews}
-                    </Table.Summary.Cell>
-                    <Table.Summary.Cell index={2}>
-                      {totalNewCandidates}
-                    </Table.Summary.Cell>
-                    <Table.Summary.Cell index={3}>
-                      {totalPutOnHold}
-                    </Table.Summary.Cell>
-                    <Table.Summary.Cell index={4}>
-                      {totalScheduledInterview}
-                    </Table.Summary.Cell>
-                    <Table.Summary.Cell index={5}>
-                      {totalHired}
-                    </Table.Summary.Cell>
-                    <Table.Summary.Cell index={6}>
-                      {totalReferences}
-                    </Table.Summary.Cell>
+                    {selectedColumnKeysFirstTb.includes("views") && (
+                      <Table.Summary.Cell index={1}>
+                        {totalViews}
+                      </Table.Summary.Cell>
+                    )}
+                    {selectedColumnKeysFirstTb.includes("newCandidates") && (
+                      <Table.Summary.Cell index={2}>
+                        {totalNewCandidates}
+                      </Table.Summary.Cell>
+                    )}
+                    {selectedColumnKeysFirstTb.includes("putOnHold") && (
+                      <Table.Summary.Cell index={3}>
+                        {totalPutOnHold}
+                      </Table.Summary.Cell>
+                    )}
+                    {selectedColumnKeysFirstTb.includes(
+                      "scheduledInterview"
+                    ) && (
+                      <Table.Summary.Cell index={4}>
+                        {totalScheduledInterview}
+                      </Table.Summary.Cell>
+                    )}
+                    {selectedColumnKeysFirstTb.includes("hired") && (
+                      <Table.Summary.Cell index={5}>
+                        {totalHired}
+                      </Table.Summary.Cell>
+                    )}
+                    {selectedColumnKeysFirstTb.includes("references") && (
+                      <Table.Summary.Cell index={6}>
+                        {totalReferences}
+                      </Table.Summary.Cell>
+                    )}
                   </Table.Summary.Row>
                 </>
               );
@@ -255,21 +378,41 @@ const CandidateSources = () => {
             status workflow, as indicated by the source.
           </h3>
           <Select
+            mode="multiple"
+            onDeselect={handleDeSelectSecondTb}
+            onSelect={handleSelectSecondTb}
+            defaultValue={selectedOptnsSecondTb}
             className="w-40 mt-4"
-            defaultValue="statuses"
+            style={{ minWidth: 200, width: "auto" }}
             placeholder="Please select"
+            showArrow
             dropdownMatchSelectWidth={false}
-            // onChange={handleChange}
             options={[
               {
-                value: "statuses",
-                label: "Statuses (4)",
+                value: "notFit",
+                label: "Not Fit",
+              },
+              {
+                value: "declinedOffer",
+                label: "Declined Offer",
+              },
+              {
+                value: "notQualified",
+                label: "Not Qualified",
+              },
+              {
+                value: "overQualified",
+                label: "Over Qualified",
+              },
+              {
+                value: "hiredElsewhere",
+                label: "Hired Elsewhere",
               },
             ]}
           />
           <Table
             className="mt-8"
-            columns={columnsSecondTb}
+            columns={selectedColumnsSecondTb}
             dataSource={dataSourceSecondTb}
             scroll={{ x: 900 }}
             summary={(pageData) => {
@@ -298,21 +441,31 @@ const CandidateSources = () => {
                 <>
                   <Table.Summary.Row className="font-bold">
                     <Table.Summary.Cell index={0}>Total</Table.Summary.Cell>
-                    <Table.Summary.Cell index={1}>
-                      {totalNotFit}
-                    </Table.Summary.Cell>
-                    <Table.Summary.Cell index={2}>
-                      {totalDeclinedOffer}
-                    </Table.Summary.Cell>
-                    <Table.Summary.Cell index={3}>
-                      {totalNotQualified}
-                    </Table.Summary.Cell>
-                    <Table.Summary.Cell index={4}>
-                      {totalOverQualified}
-                    </Table.Summary.Cell>
-                    <Table.Summary.Cell index={5}>
-                      {totalHiredElsewhere}
-                    </Table.Summary.Cell>
+                    {selectedColumnKeysSecondTb.includes("notFit") && (
+                      <Table.Summary.Cell index={1}>
+                        {totalNotFit}
+                      </Table.Summary.Cell>
+                    )}
+                    {selectedColumnKeysSecondTb.includes("declinedOffer") && (
+                      <Table.Summary.Cell index={2}>
+                        {totalDeclinedOffer}
+                      </Table.Summary.Cell>
+                    )}
+                    {selectedColumnKeysSecondTb.includes("notQualified") && (
+                      <Table.Summary.Cell index={3}>
+                        {totalNotQualified}
+                      </Table.Summary.Cell>
+                    )}
+                    {selectedColumnKeysSecondTb.includes("overQualified") && (
+                      <Table.Summary.Cell index={4}>
+                        {totalOverQualified}
+                      </Table.Summary.Cell>
+                    )}
+                    {selectedColumnKeysSecondTb.includes("hiredElsewhere") && (
+                      <Table.Summary.Cell index={5}>
+                        {totalHiredElsewhere}
+                      </Table.Summary.Cell>
+                    )}
                   </Table.Summary.Row>
                 </>
               );

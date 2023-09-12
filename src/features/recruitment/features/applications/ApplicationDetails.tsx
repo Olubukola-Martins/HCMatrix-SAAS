@@ -127,7 +127,7 @@ const ApplicationDetails = () => {
             </div>
           </div>
           <div className="bg-mainBg p-4 rounded">
-            <p className="pb-2">Hiring Lead --:--</p>
+            <p className="pb-2">Team Lead --:--</p>
             <p className="pb-2">Status --:--</p>
             <p className="pb-2">Open --:--</p>
           </div>

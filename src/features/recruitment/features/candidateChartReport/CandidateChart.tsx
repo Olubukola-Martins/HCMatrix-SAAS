@@ -18,15 +18,6 @@ import { useState } from "react";
 
 export const CandidateChartDiagram = () => {
   const data = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
-  //   const [maxValYAxis, setMaxValYAxis] = useState(0.6);
-  //   const [minValYAxis, setMinValYAxis] = useState(-0.4);
-
-  //   for (const val of data) {
-  //     val > 0.6 ? setMaxValYAxis(val) : setMaxValYAxis(0.6);
-  //   }
-  //   for (const val of data) {
-  //     val < -0.4 ? setMinValYAxis(val) : setMinValYAxis(-0.4);
-  //   }
 
   ChartJS.register(
     CategoryScale,
