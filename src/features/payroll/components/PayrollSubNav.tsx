@@ -8,7 +8,6 @@ const routes = [
   { title: "Exchange Rates", path: appRoutes.payrollExchangeRates },
   { title: "Payroll Schemes", path: appRoutes.payrollSchemes },
   { title: "Grade & Categories", path: appRoutes.payGradeAndCategorySettings },
-  { title: "Cost Centres", path: appRoutes.payrollCostCentres },
   {
     title: "Organizations",
     children: [
