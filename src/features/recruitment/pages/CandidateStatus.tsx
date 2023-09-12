@@ -8,7 +8,6 @@ import { useDefaultSettingsCall } from "../hooks/useDefaultSettingsCall";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { MICROSERVICE_ENDPOINTS } from "config/enviroment";
-import axios from "axios";
 import { useApiAuth } from "hooks/useApiAuth";
 
 interface CandidateStatusType {
