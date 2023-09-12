@@ -34,6 +34,9 @@ export const ReportTabWrapper = () => {
 
 const RecruitmentReport = () => {
   const { RangePicker } = DatePicker;
+  const handleSubmit = (value: any) => {
+    console.log("Values:", value)
+  }
 
   return (
     <>
@@ -50,19 +53,17 @@ const RecruitmentReport = () => {
           </div>
         </div>
         <Form
-          // form={form}
-          layout="horizontal"
-          // requiredMark={false}
-          // onFinish={handleSubmit}
-          // name="benefitsSettings"
+          className="w-fit "
+          onFinish={handleSubmit}
+          name="candidatesReportFilter"
         >
-          <div className="flex flex-row gap-4 max-sm:flex-col">
-            <Form.Item>
-              <RangePicker className="w-72" />
+          <div className="flex flex-row gap-4 max-sm:gap-0  max-sm:flex-col">
+            <Form.Item name="dateRange">
+              <RangePicker className="w-fit"/>
             </Form.Item>
 
-            <div className="flex flex-row gap-4">
-              <Form.Item>
+            <div className="flex flex-row gap-4  max-sm:gap-2">
+              <Form.Item name="sources">
                 <Select
                   className="w-40"
                   defaultValue="allSources"
@@ -85,7 +86,7 @@ const RecruitmentReport = () => {
                   ]}
                 />
               </Form.Item>
-              <Form.Item>
+              <Form.Item  name="jobOpening">
                 <Select
                   className="w-40"
                   defaultValue="allJobOpenings"
@@ -121,8 +122,12 @@ const RecruitmentReport = () => {
                 />
               </Form.Item>
             </div>
+
           </div>
+            <AppButton type="submit" label="Apply Filter" />
         </Form>
+
+
         <ReportTabWrapper />
       </div>
     </>
