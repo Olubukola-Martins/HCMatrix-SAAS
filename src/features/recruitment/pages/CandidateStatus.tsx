@@ -4,11 +4,12 @@ import { Form, Switch, Input } from "antd";
 import "../assets/style.css";
 import { textInputValidationRules } from "utils/formHelpers/validation";
 import { AppButton } from "components/button/AppButton";
-import { useDefaultSettingsCall } from "../hooks/useDefaultSettingsCall";
-import { useEffect } from "react";
-import axios from "axios";
 import { MICROSERVICE_ENDPOINTS } from "config/enviroment";
+import axios from "axios";
 import { useApiAuth } from "hooks/useApiAuth";
+import { useEffect, useState } from "react";
+import { ApplyDefaultSettings } from "../components/ApplyDefaultSettings";
+import { useDefaultSettingsCall } from "../hooks/useDefaultSettingsCall";
 
 const CandidateStatus = () => {
   const [form] = Form.useForm();
@@ -66,6 +67,7 @@ const CandidateStatus = () => {
       />
 
       <div className="Container mt-5">
+
         <div className="bg-card rounded md:p-5 p-3">
           <h2 className="pb-5 font-medium text-base">Status</h2>
           <div className="bg-mainBg py-4 px-4 rounded">
