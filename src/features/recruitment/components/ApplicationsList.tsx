@@ -5,6 +5,7 @@ import {
   Form,
   Input,
   Menu,
+  Modal,
   Select,
   Space,
   Table,
@@ -235,7 +236,9 @@ const ApplicationsList = () => {
                 <Menu.Item key="2">View Resume</Menu.Item>
                 <Menu.Item key="3">Send Email</Menu.Item>
                 <Menu.Item key="4">Comment</Menu.Item>
-                <Menu.Item key="5">Move Candidate to Talent Pool</Menu.Item>
+                <Menu.Item key="5" onClick={showModal}>
+                  Move Candidate to Talent Pool
+                </Menu.Item>
                 <Menu.Item key="6">Delete Candidate</Menu.Item>
               </Menu>
             }
@@ -269,8 +272,102 @@ const ApplicationsList = () => {
     });
   }
 
+  // Modal to add job
+  const [openModal, setOpenModal] = useState(false);
+  const showModal = () => {
+    setOpenModal(true);
+  };
+  const closeModal = () => {
+    setOpenModal(false);
+  };
+  // Text Area Input
+  const { TextArea } = Input;
+  // Instantiate form
+  const [form] = Form.useForm();
+  // Function to submit form
+  const handleSubmit = (values: any) => {
+    console.log("Success:", values);
+  };
+
   return (
     <>
+      <Modal
+        title="Move Candidate To Talent Pool"
+        open={openModal}
+        onCancel={closeModal}
+        footer={null}
+        width={400}
+        style={{ top: 70 }}
+      >
+        <Form layout="vertical" form={form} onFinish={handleSubmit}>
+          <Form.Item
+            label="Select department"
+            className="mb-7"
+            name="department"
+          >
+            <Select
+              defaultValue="applicationDevelopment"
+              options={[
+                {
+                  value: "applicationDevelopment",
+                  label: "Application Development",
+                },
+                {
+                  value: "csi",
+                  label: "CSI",
+                },
+                {
+                  value: "finance",
+                  label: "Finance",
+                },
+              ]}
+            ></Select>
+          </Form.Item>
+          <Form.Item
+            label="Select Role/Desgination"
+            className="mb-7"
+            name="roleDesignation"
+          >
+            <Select
+              defaultValue="backendDeveloper"
+              options={[
+                {
+                  value: "backendDeveloper",
+                  label: "Backend Developer",
+                },
+                {
+                  value: "frontendDeveloper",
+                  label: "Frontend Developer",
+                },
+                {
+                  value: "ui/uxDesigner",
+                  label: "UI/UX Designer",
+                },
+              ]}
+            ></Select>
+          </Form.Item>
+          <Form.Item label="Select Status" className="mb-7" name="status">
+            <Select
+              defaultValue="scheduleInterview"
+              options={[
+                {
+                  value: "scheduleInterview",
+                  label: "Schedule Interview",
+                },
+              ]}
+            ></Select>
+          </Form.Item>
+          <div className="flex justify-between items-center mt-5">
+            <button
+              className="text-base font-medium hover:text-caramel"
+              type="reset"
+            >
+              Cancel
+            </button>
+            <AppButton type="submit" label="Add" />
+          </div>
+        </Form>
+      </Modal>
       <Drawer
         title="Custom Filter"
         placement="right"

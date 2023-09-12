@@ -1,16 +1,10 @@
-import {
-  Dropdown,
-  Menu,
-  Select,
-  Space,
-  Table,
-} from "antd";
+import { Dropdown, Menu, Select, Space, Table, Modal, Form, Input } from "antd";
 import { ColumnsType } from "antd/es/table";
+import type { MenuProps } from "antd";
 import { AppButton } from "components/button/AppButton";
-import React from "react";
+import React, { useState } from "react";
 
 const TalentPool = () => {
-
   // applicant added on type
   interface addedOnType {
     dateAdded: string;
@@ -25,11 +19,60 @@ const TalentPool = () => {
   type DataSourceItem = {
     key: React.Key;
     candidateInfo: CandidateInfoType;
-    jobOpening: string;
+    previouslyAppliedRole: string;
     createdOn: string;
     addedOn: addedOnType;
     reasons: string;
     status: string;
+  };
+
+  // Dropdown Items
+  const items: MenuProps["items"] = [
+    {
+      key: "1",
+      label: "Add to a job",
+      onClick: () => {
+        showModal();
+      },
+    },
+    {
+      key: "2",
+      label: "Remove Candidate",
+    },
+    {
+      key: "3",
+      label: "Set status",
+      children: [
+        {
+          key: "3-1",
+          label: "Open",
+        },
+        {
+          key: "3-2",
+          label: "On-hold",
+        },
+        {
+          key: "3-3",
+          label: "Closed",
+        },
+      ],
+    },
+  ];
+  // Modal to add job
+  const [openModal, setOpenModal] = useState(false);
+  const showModal = () => {
+    setOpenModal(true);
+  };
+  const closeModal = () => {
+    setOpenModal(false);
+  };
+  // Text Area Input
+  const { TextArea } = Input;
+  // Instantiate form
+  const [form] = Form.useForm();
+  // Function to submit form
+  const handleSubmit = (values: any) => {
+    console.log("Success:", values);
   };
 
   // Table heading Column
@@ -51,9 +94,9 @@ const TalentPool = () => {
       ),
     },
     {
-      key: "jobOpening",
-      title: "Job Opening",
-      dataIndex: "jobOpening",
+      key: "previouslyAppliedRole",
+      title: "Previously Applied Role",
+      dataIndex: "previouslyAppliedRole",
       ellipsis: true,
     },
     {
@@ -89,22 +132,13 @@ const TalentPool = () => {
       dataIndex: "status",
       ellipsis: true,
     },
-
     {
       title: "Action",
       dataIndex: "action",
       key: "action",
       render: (_, val) => (
         <div>
-          <Dropdown
-            trigger={["click"]}
-            overlay={
-              <Menu>
-                <Menu.Item key="1">Add to a job</Menu.Item>
-                <Menu.Item key="2">Disable Candidate</Menu.Item>
-              </Menu>
-            }
-          >
+          <Dropdown trigger={["click"]} overlay={<Menu items={items} />}>
             <i className="ri-more-2-fill text-lg cursor-pointer"></i>
           </Dropdown>
         </div>
@@ -121,7 +155,7 @@ const TalentPool = () => {
         candidateName: "Adeyemi Samuel",
         candidateEmail: "Sam@gmail.com",
       },
-      jobOpening: "Software Developer",
+      previouslyAppliedRole: "Software Developer",
       createdOn: "27/05/23",
       addedOn: {
         dateAdded: "27/05/23",
@@ -135,6 +169,52 @@ const TalentPool = () => {
 
   return (
     <>
+      <Modal
+        title="Add Candidate To Job"
+        open={openModal}
+        onCancel={closeModal}
+        footer={null}
+        width={400}
+        style={{ top: 70 }}
+      >
+        <Form layout="vertical" form={form} onFinish={handleSubmit}>
+          <Form.Item
+            label="Select department"
+            className="mb-7"
+            name="department"
+          >
+            <Select
+              defaultValue="applicationDevelopment"
+              options={[
+                {
+                  value: "applicationDevelopment",
+                  label: "Application Development",
+                },
+                {
+                  value: "csi",
+                  label: "CSI",
+                },
+                {
+                  value: "finance",
+                  label: "Finance",
+                },
+              ]}
+            ></Select>
+          </Form.Item>
+          <Form.Item className="my-7" name="reasons">
+            <TextArea placeholder="Reasons" rows={4} />
+          </Form.Item>
+          <div className="flex justify-between items-center mt-5">
+            <button
+              className="text-base font-medium hover:text-caramel"
+              type="reset"
+            >
+              Cancel
+            </button>
+            <AppButton type="submit" label="Add" />
+          </div>
+        </Form>
+      </Modal>
       <div className="flex flex-row max-[389px]:block justify-between mt-2 mb-9">
         <Space className="max-[389px]:mb-3">
           <Select

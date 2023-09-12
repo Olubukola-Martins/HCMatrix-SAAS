@@ -16,28 +16,34 @@ const CandidateStatus = () => {
   useDefaultSettingsCall();
 
   const { companyId, token } = useApiAuth();
-  const endpointUrl = `${MICROSERVICE_ENDPOINTS.RECRUITMENT}/default-settings/apply`;
 
-  const activateDefaultSettings = async () => {
-    await axios
-      .post(endpointUrl, {
-        headers: {
-          Accept: "application/json",
-          Authorization: `Bearer ${token}`,
-          "x-company-id": companyId,
-        },
-      })
-      .then((response) => {
-        console.log("Response data:", response);
-      })
-      .catch((error) => {
-        console.log("Error message:", error);
-      });
-  };
+  const endpointUrl = `${MICROSERVICE_ENDPOINTS.RECRUITMENT}/application-statuses`;
 
   const handleSubmit = (values: any) => {
     console.log("Received values of form:", values);
   };
+
+  //  GET request
+  useEffect(() => {
+    const getCandidateStatus = async () => {
+      await axios
+        .get(endpointUrl, {
+          headers: {
+            Accept: "application/json",
+            Authorization: `Bearer ${token}`,
+            "x-company-id": companyId,
+          },
+        })
+        .then((response) => {
+          console.log(response);
+        })
+        .catch((err) => {
+          console.log(err.message);
+          console.log(err);
+        });
+    };
+    getCandidateStatus();
+  }, []);
 
   const handleAddField = () => {
     const newStatus = form.getFieldValue("newStatus") || [];
