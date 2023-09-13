@@ -119,7 +119,11 @@ const PayrollReportTable: React.FC = () => {
       render: (_, item) => (
         <div className="flex gap-1 flex-wrap">
           {item.schemes.map((item) => (
-            <Tag key={item}>{item}</Tag>
+            <Tag key={item} color="#013257">
+              <span className="capitalize text-white">
+                {item.split("-").join(" ")}
+              </span>
+            </Tag>
           ))}
         </div>
       ),
