@@ -40,10 +40,11 @@ const PayrollReportTable: React.FC = () => {
     },
   });
 
-  const { mutate: mutateGetTemplate } = useDownloadPayrollReport();
+  const { mutate: mutateDownload, isLoading: downloadLoading } =
+    useDownloadPayrollReport();
 
   const handleDownload = (props: { id: number }) => {
-    mutateGetTemplate(
+    mutateDownload(
       {
         data: {
           reportId: props.id,
@@ -140,6 +141,7 @@ const PayrollReportTable: React.FC = () => {
             icon={<DownloadOutlined />}
             type="text"
             onClick={() => handleDownload({ id: item.id })}
+            // loading={downloadLoading} //TODO: Make the loading specific
           />
           <Button
             icon={<DeleteFilled />}
