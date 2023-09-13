@@ -14,7 +14,7 @@ const createData = async (props: {
   data: IDataProps;
   auth: ICurrentCompany;
 }): Promise<TResponse> => {
-  const url = `${MICROSERVICE_ENDPOINTS.PAYROLL}/payroll/${props.data.reportId}/overtime-sheet`;
+  const url = `${MICROSERVICE_ENDPOINTS.PAYROLL}/payroll/report/${props.data.reportId}/overtime-sheet`;
 
   const config = {
     headers: {
