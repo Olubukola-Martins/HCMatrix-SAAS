@@ -1,20 +1,20 @@
-import { Form, Input, Select } from "antd";
+import { Form, Input, Select, Skeleton } from "antd";
 import { AppButton } from "components/button/AppButton";
-import {
-  employeeInformationOptions,
-  payrollInformationOptions,
-} from "features/payroll/constants";
+import { useGetPayrollTemplateInfo } from "features/payroll/hooks/templates/information/useGetPayrollTemplateInfo";
+import { TAddPayrollTemplateData } from "features/payroll/hooks/templates/useAddPayrollTemplate";
+import { TPayrollTemplate } from "features/payroll/types/template";
 import React, { useEffect } from "react";
 import {
   generalValidationRules,
   textInputValidationRules,
 } from "utils/formHelpers/validation";
 
-type TPayrollReportTemplate = any;
-
 const PayrollReportTemplate: React.FC<{
-  handleSubmit?: { fn: (data: any) => void; isLoading?: boolean };
-  template?: TPayrollReportTemplate;
+  handleSubmit?: {
+    fn: (data: TAddPayrollTemplateData) => void;
+    isLoading?: boolean;
+  };
+  template?: TPayrollTemplate;
   disabled?: boolean;
 }> = ({ handleSubmit, template, disabled = false }) => {
   const [form] = Form.useForm();
@@ -27,14 +27,30 @@ const PayrollReportTemplate: React.FC<{
     });
   }, [form, template]);
 
-  // TODO:
-  // This component should be reused for editing/viewing and the handle submit should be passed in
+  const onFinish = (data: any) => {
+    handleSubmit?.fn({
+      description: data.description,
+      name: data.name,
+      employeeInformation: data.employeeInformation.map((id: number) => ({
+        templateInformationId: id,
+      })),
+      payrollInformation: data.payrollInformation.map((id: number) => ({
+        templateInformationId: id,
+      })),
+    });
+  };
+  const { data: employeeInformation, isLoading: empLoading } =
+    useGetPayrollTemplateInfo({ type: "employee" });
+  const { data: payrollInformation, isLoading: payLoading } =
+    useGetPayrollTemplateInfo({ type: "payroll" });
+
   return (
     <div className="bg-card px-2 md:px-5 py-3 rounded-md text-accent">
+      {/* <Skeleton loading={empLoading || payLoading} paragraph={{ rows: 12 }}> */}
       <Form
         layout="vertical"
         form={form}
-        onFinish={handleSubmit?.fn}
+        onFinish={onFinish}
         requiredMark={false}
         disabled={disabled}
       >
@@ -58,7 +74,11 @@ const PayrollReportTemplate: React.FC<{
             label="Employee Information"
           >
             <Select
-              options={employeeInformationOptions}
+              options={employeeInformation?.map((item) => ({
+                label: <span className="capitalize">{item.name}</span>,
+                value: item.id,
+              }))}
+              loading={empLoading}
               mode="multiple"
               className="w-full"
               getPopupContainer={(triggerNode) => triggerNode.parentElement}
@@ -81,7 +101,11 @@ const PayrollReportTemplate: React.FC<{
             label="Payroll Information"
           >
             <Select
-              options={payrollInformationOptions}
+              options={payrollInformation?.map((item) => ({
+                label: <span className="capitalize">{item.name}</span>,
+                value: item.id,
+              }))}
+              loading={payLoading}
               mode="multiple"
               className="w-full"
               getPopupContainer={(triggerNode) => triggerNode.parentElement}
@@ -90,6 +114,7 @@ const PayrollReportTemplate: React.FC<{
           </Form.Item>
         </div>
       </Form>
+      {/* </Skeleton> */}
     </div>
   );
 };

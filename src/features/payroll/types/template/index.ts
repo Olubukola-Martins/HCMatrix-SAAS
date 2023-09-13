@@ -27,6 +27,10 @@ export type TPayrollTemplate = {
   payrollInformation: EmployeeInformation[];
 };
 
+export type TPayrollTemplateListData = Omit<
+  TPayrollTemplate,
+  "employeeInformation" | "payrollInformation"
+>;
 interface EmployeeInformation {
   id: number;
   templateId: number;

@@ -9,17 +9,22 @@ import { useCreateFolder } from "features/self-service/features/documents/hooks/
 import { QUERY_KEY_FOR_FOLDERS } from "features/self-service/features/documents/hooks/useGetFolders";
 import { useQueryClient } from "react-query";
 import { openNotification } from "utils/notifications";
+import {
+  TAddPayrollTemplateData,
+  useAddPayrollTemplate,
+} from "../hooks/templates/useAddPayrollTemplate";
 
 const CreatePayrollReportTemplate = () => {
   const queryClient = useQueryClient();
   const navigate = useNavigate();
 
-  const { mutate, isLoading } = useCreateFolder();
+  const { mutate, isLoading } = useAddPayrollTemplate();
 
-  const createTemplate = (data: any) => {
+  const createTemplate = (data: TAddPayrollTemplateData) => {
     mutate(
       {
-        name: data.name,
+        type: "payroll",
+        data,
       },
       {
         onError: (err: any) => {

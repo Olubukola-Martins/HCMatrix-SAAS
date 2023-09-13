@@ -23,10 +23,10 @@ const ViewPayrollReportTemplate = () => {
             description={`You can now view this _ template`}
           />
           {/* TODO: Style select boxes that are disabled to be grayed out */}
-          <PayrollReportTemplate
+          {/* <PayrollReportTemplate
             template={[{ name: "TEST TEMPLATE", description: "___" }]}
             disabled
-          />
+          /> */}
         </Skeleton>
       </div>
     </>

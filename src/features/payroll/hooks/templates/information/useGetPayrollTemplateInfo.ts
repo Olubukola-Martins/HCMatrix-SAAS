@@ -15,7 +15,7 @@ export const QUERY_KEY_FOR_PAYROLL_TEMPLATE_INFO = "payroll-template-info";
 const getData = async (props: {
   data: IDataProps;
   auth: ICurrentCompany;
-}): Promise<TPayrollTemplateInfo> => {
+}): Promise<TPayrollTemplateInfo[]> => {
   const url = `${MICROSERVICE_ENDPOINTS.PAYROLL}/template/information/${props.data.type}`;
 
   const config = {
@@ -27,13 +27,9 @@ const getData = async (props: {
   };
 
   const res = await axios.get(url, config);
-  const item: TPayrollTemplateInfo = res.data.data;
+  const item: TPayrollTemplateInfo[] = res.data.data;
 
-  const data: TPayrollTemplateInfo = {
-    ...item,
-  };
-
-  return data;
+  return item;
 };
 
 export const useGetPayrollTemplateInfo = (props: IDataProps) => {

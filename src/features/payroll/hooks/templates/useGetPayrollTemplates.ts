@@ -6,6 +6,7 @@ import { DEFAULT_PAGE_SIZE } from "constants/general";
 import { useApiAuth } from "hooks/useApiAuth";
 import {
   TPayrollTemplate,
+  TPayrollTemplateListData,
   TPayrollTemplateType,
 } from "features/payroll/types/template";
 
@@ -13,11 +14,6 @@ interface IGetDataProps {
   pagination?: IPaginationProps;
   searchParams?: ISearchParams;
 }
-
-type TPayrollTemplateListData = Omit<
-  TPayrollTemplate,
-  "employeeInformation" | "payrollInformation"
->;
 
 export const QUERY_KEY_FOR_PAYROLL_TEMPLATES = "payroll-templates";
 
