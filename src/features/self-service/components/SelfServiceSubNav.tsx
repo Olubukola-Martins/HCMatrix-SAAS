@@ -10,7 +10,7 @@ const routes = [
   { title: "Asset", path: appRoutes.selfServiceAssets },
   { title: "Loan", path: appRoutes.loans },
   { title: "Leave", path: appRoutes.leaveHome },
-  { title: "Payslips & Transactions", path: appRoutes.payslips },
+  { title: "Payslips", path: appRoutes.payslips },
   {
     title: "Requisitions",
     children: [

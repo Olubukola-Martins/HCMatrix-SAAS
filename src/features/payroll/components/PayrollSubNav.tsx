@@ -1,6 +1,5 @@
 import { Menu } from "antd";
 import { appRoutes } from "config/router/paths";
-import React from "react";
 import { Link } from "react-router-dom";
 
 const routes = [
