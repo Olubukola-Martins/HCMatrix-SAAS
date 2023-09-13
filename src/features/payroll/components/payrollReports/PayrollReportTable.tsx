@@ -83,7 +83,7 @@ const PayrollReportTable: React.FC = () => {
       dataIndex: "schemes",
       key: "schemes",
       render: (_, item) => (
-        <div className="flex gap-3">
+        <div className="flex gap-1 flex-wrap">
           {item.schemes.map((item) => (
             <Tag key={item}>{item}</Tag>
           ))}
