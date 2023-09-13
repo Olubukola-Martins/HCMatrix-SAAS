@@ -10,6 +10,7 @@ const routes = [
   { title: "Asset", path: appRoutes.selfServiceAssets },
   { title: "Loan", path: appRoutes.loans },
   { title: "Leave", path: appRoutes.leaveHome },
+  { title: "Payslips & Transactions", path: appRoutes.payslips },
   {
     title: "Requisitions",
     children: [
@@ -23,12 +24,19 @@ const routes = [
       { title: "Travel", path: appRoutes.selfServiceTravels },
     ],
   },
-  { title: "Files", path: appRoutes.documents },
-  // { title: "Surveys", path: appRoutes.surveyHome },
-  { title: "Health Access", path: appRoutes.healthAccessHome },
-  { title: "Conference Room", path: appRoutes.conferenceRoomBooking },
+
   { title: "Vehicle Booking", path: appRoutes.vehicleBooking },
-  { title: "Hand Over", path: appRoutes.newHandOverForm },
+  {
+    title: "More",
+    children: [
+      { title: "Files", path: appRoutes.documents },
+      { title: "Conference Room", path: appRoutes.conferenceRoomBooking },
+      { title: "Hand Over", path: appRoutes.newHandOverForm },
+
+      { title: "Health Access", path: appRoutes.healthAccessHome },
+      // { title: "Surveys", path: appRoutes.surveyHome },
+    ],
+  },
 ];
 
 const SelfServiceSubNav = () => {
