@@ -47,12 +47,14 @@ export interface IOtherSettings extends ICurrentCompany {
   adminId: number;
   longitude: string;
   latitude: string;
-  isSoftClockinEnabled: boolean;
-  geoFenceRadiusInKm: string;
+  isSoftClockInEnabled: boolean;
+  geoFenceRadiusInKm: number;
+  manualAttendanceWorkFlowId: number;
+  overtimeAttendanceWorkFlowId: number;
 }
 
 export interface workScheduleProps extends ICurrentCompany {
-  adminId: number,
+  adminId: number;
   workArrangement: string;
   workDaysAndTime: WorkDaysAndTime[];
 }

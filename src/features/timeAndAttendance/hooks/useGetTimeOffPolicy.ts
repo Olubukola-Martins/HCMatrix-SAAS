@@ -19,7 +19,6 @@ const getData = async (props: {
     },
   };
   const res = await axios.get(url, config);
-  console.log("hhhhh", res);
   const item: ITimeOffPolicyRule = res.data;
   const data: ITimeOffPolicyRule = {
     ...item,

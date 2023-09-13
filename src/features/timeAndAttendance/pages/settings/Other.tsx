@@ -5,8 +5,10 @@ import { AttendanceSettingsIntro } from "features/timeAndAttendance/components/s
 import { TimeAttendanceSettingsNav } from "features/timeAndAttendance/components/settings/TimeAttendanceSettingsNav";
 import { useCreateOtherSettings } from "features/timeAndAttendance/hooks/useCreateOtherSettings";
 import { useGetOtherSettings } from "features/timeAndAttendance/hooks/useGetOtherSettings";
+import { QUERY_KEY_FOR_COMPANY_POLICY } from "features/timeAndAttendance/hooks/useGetTimeTrackingRule";
 import { useApiAuth } from "hooks/useApiAuth";
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
+import { useQueryClient } from "react-query";
 import { EGlobalOps, GlobalContext } from "stateManagers/GlobalContextProvider";
 import { openNotification } from "utils/notifications";
 const formWrapStyle =
@@ -16,9 +18,23 @@ export const Other = () => {
   const { companyId, token, currentUserId } = useApiAuth();
   const globalCtx = useContext(GlobalContext);
   const { dispatch } = globalCtx;
-  const { data, isLoading } = useGetOtherSettings();
+  const { data, isLoading, isSuccess } = useGetOtherSettings();
   const { mutate, isLoading: isLoadingPost } = useCreateOtherSettings();
-  console.log("here", data);
+  const queryClient = useQueryClient();
+
+  useEffect(() => {
+    if (isSuccess) {
+      form.setFieldsValue({
+        longitude: data.longitude,
+        latitude: data.latitude,
+        isSoftClockInEnabled: data.isSoftClockInEnabled,
+        geoFenceRadiusInKm: data.geoFenceRadiusInKm,
+        attendanceWorkflow: data.manualAttendanceWorkFlowId,
+        overtimeConfirmationWorkflow: data.overtimeAttendanceWorkFlowId,
+      });
+    }
+  }, [data]);
+
   const onSubmit = (values: any) => {
     if (companyId) {
       mutate(
@@ -28,8 +44,10 @@ export const Other = () => {
           token,
           longitude: values.longitude,
           latitude: values.latitude,
-          isSoftClockinEnabled: values.isSoftClockinEnabled,
+          isSoftClockInEnabled: values.isSoftClockInEnabled,
           geoFenceRadiusInKm: values.geoFenceRadiusInKm,
+          manualAttendanceWorkFlowId: values.attendanceWorkflow,
+          overtimeAttendanceWorkFlowId: values.overtimeConfirmationWorkflow,
         },
         {
           onError: (err: any) => {
@@ -46,10 +64,10 @@ export const Other = () => {
               state: "success",
               title: "Success",
               description: res.data.message,
-              // duration: 0.4,
+              duration: 4,
             });
-            form.resetFields();
             dispatch({ type: EGlobalOps.setShowInitialSetup, payload: true });
+            queryClient.invalidateQueries([QUERY_KEY_FOR_COMPANY_POLICY]);
           },
         }
       );
@@ -69,9 +87,14 @@ export const Other = () => {
             <h3 className="font-medium text-base pb-3 pt-1">
               Attendance settings
             </h3>
-            <Form layout="vertical" onFinish={onSubmit}>
+            <Form
+              layout="vertical"
+              onFinish={onSubmit}
+              initialValues={{ isSoftClockInEnabled: true }}
+              form={form}
+              disabled={isLoading}
+            >
               <div className={formWrapStyle}>
-                
                 <FormWorkflowInput
                   Form={Form}
                   control={{
@@ -79,14 +102,13 @@ export const Other = () => {
                     name: "attendanceWorkflow",
                   }}
                 />
-                 <FormWorkflowInput
+                <FormWorkflowInput
                   Form={Form}
                   control={{
                     label: "Select overtime confirmation workflow",
                     name: "overtimeConfirmationWorkflow",
                   }}
                 />
-              
               </div>
               <div className={formWrapStyle}>
                 <Form.Item name="longitude" label="Company longitude">
@@ -101,10 +123,10 @@ export const Other = () => {
               >
                 <h3>Enforce Geofence on soft clock-in</h3>
                 <Form.Item
-                  name="isSoftClockinEnabled"
+                  name="isSoftClockInEnabled"
                   className="flex justify-end items-end"
                 >
-                  <Switch defaultChecked />
+                  <Switch />
                 </Form.Item>
               </div>
               <div
@@ -114,7 +136,7 @@ export const Other = () => {
                   name="geoFenceRadiusInKm"
                   label="Allow clock-in distance from company (km)"
                 >
-                  <Input className="w-full" placeholder="0.00" />
+                  <InputNumber className="w-full" placeholder="0.00" />
                 </Form.Item>
               </div>
               <div className="flex justify-end my-2">

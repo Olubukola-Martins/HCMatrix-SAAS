@@ -19,8 +19,6 @@ const getData = async (props: {
     },
   };
   const res = await axios.get(url, config);
-  console.log("inner", res);
-
   const item: IOtherSettings = res.data;
   const data: IOtherSettings = {
     ...item,

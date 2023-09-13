@@ -56,6 +56,8 @@ const columns: ColumnsType<TTimeOff> = [
 export const TimeOffPolicy = () => {
   const [openAddPolicy, setOpenAddPolicy] = useState(false);
   const { data } = useGetTimeOffPolicy();
+  // console.log(data);
+  
   return (
     <>
       <TimeAttendanceSettingsNav active="time off policy" />

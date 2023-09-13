@@ -18,8 +18,10 @@ export const createOtherSettings = async (props: IOtherSettings) => {
     adminId: props.adminId,
     longitude: props.longitude,
     latitude: props.latitude,
-    isSoftClockinEnabled: props.isSoftClockinEnabled,
+    isSoftClockInEnabled: props.isSoftClockInEnabled,
     geoFenceRadiusInKm: props.geoFenceRadiusInKm,
+    manualAttendanceWorkFlowId: props.manualAttendanceWorkFlowId,
+    overtimeAttendanceWorkFlowId: props.overtimeAttendanceWorkFlowId,
   };
 
   const response = await axios.post(url, data, config);
