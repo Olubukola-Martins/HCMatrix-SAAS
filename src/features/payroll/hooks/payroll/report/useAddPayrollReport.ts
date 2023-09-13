@@ -5,7 +5,7 @@ import { useApiAuth } from "hooks/useApiAuth";
 import { useMutation } from "react-query";
 import { ICurrentCompany } from "types";
 
-type TPassData = {
+export type TAddPayrollReportData = {
   name: string;
   description: string;
   fromDate: string;
@@ -15,7 +15,7 @@ type TPassData = {
 };
 
 type TData = {
-  data: TPassData;
+  data: TAddPayrollReportData;
 };
 const createData = async (props: { data: TData; auth: ICurrentCompany }) => {
   const url = `${MICROSERVICE_ENDPOINTS.PAYROLL}/payroll/report`;
@@ -27,7 +27,7 @@ const createData = async (props: { data: TData; auth: ICurrentCompany }) => {
     },
   };
 
-  const data: TPassData = {
+  const data: TAddPayrollReportData = {
     ...props.data.data,
   };
 

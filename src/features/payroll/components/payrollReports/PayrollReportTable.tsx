@@ -1,27 +1,26 @@
-import { Button, Table } from "antd";
+import { Button, Table, Tag } from "antd";
 
 import React, { useState } from "react";
 import { ColumnsType } from "antd/lib/table";
 
 import { usePagination } from "hooks/usePagination";
-
-import { TPayGradeCategory } from "features/payroll/types";
-import { useGetPayGradeCategories } from "features/payroll/hooks/payGrades/category/useGetPayGradeCategories";
 import moment from "moment";
 import { DeleteFilled, DownloadOutlined } from "@ant-design/icons";
 import DeletePayrollReport from "./DeletePayrollReport";
+import { useGetPayrollReports } from "features/payroll/hooks/payroll/report/useGetPayrollReports";
+import { TPayrollReport } from "features/payroll/types/payroll/report";
 
 type TAction = "delete" | "download";
 
 const PayrollReportTable: React.FC = () => {
   const [action, setAction] = useState<TAction>();
-  const [category, setCategory] = useState<TPayGradeCategory>();
+  const [category, setCategory] = useState<TPayrollReport>();
   const handleAction = ({
     action,
     category,
   }: {
     action: TAction;
-    category: TPayGradeCategory;
+    category: TPayrollReport;
   }) => {
     setAction(action);
     setCategory(category);
@@ -33,11 +32,13 @@ const PayrollReportTable: React.FC = () => {
 
   const { pagination, onChange } = usePagination();
 
-  const { data, isFetching } = useGetPayGradeCategories({
-    pagination,
+  const { data, isFetching } = useGetPayrollReports({
+    data: {
+      pagination,
+    },
   });
 
-  const columns: ColumnsType<TPayGradeCategory> = [
+  const columns: ColumnsType<TPayrollReport> = [
     {
       title: "Name",
       dataIndex: "name",
@@ -52,7 +53,9 @@ const PayrollReportTable: React.FC = () => {
       title: "Description",
       dataIndex: "name",
       key: "name",
-      render: (val, item) => <span className="capitalize">{item?.name}</span>,
+      render: (val, item) => (
+        <span className="capitalize">{item?.description}</span>
+      ),
 
       ellipsis: true,
     },
@@ -60,26 +63,32 @@ const PayrollReportTable: React.FC = () => {
       title: "Template",
       dataIndex: "max",
       key: "max",
-      render: (_, item) => <span>Template A</span>,
+      render: (_, item) => <span>{item.template.name}</span>,
     },
 
     {
       title: "From",
       dataIndex: "update",
       key: "update",
-      render: (_, item) => moment(item.updatedAt).format(`MMMM DD, YYYY`),
+      render: (_, item) => moment(item.fromDate).format(`MMMM DD, YYYY`),
     },
     {
       title: "To",
       dataIndex: "update",
       key: "update",
-      render: (_, item) => moment(item.updatedAt).format(`MMMM DD, YYYY`),
+      render: (_, item) => moment(item.toDate).format(`MMMM DD, YYYY`),
     },
     {
       title: "Schemes",
       dataIndex: "schemes",
       key: "schemes",
-      render: (_, item) => <span>All</span>,
+      render: (_, item) => (
+        <div className="flex gap-3">
+          {item.schemes.map((item) => (
+            <Tag key={item}>{item}</Tag>
+          ))}
+        </div>
+      ),
     },
     {
       title: "Created At",

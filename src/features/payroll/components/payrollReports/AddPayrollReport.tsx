@@ -15,33 +15,49 @@ import {
 } from "utils/formHelpers/validation";
 import { openNotification } from "utils/notifications";
 import { useQueryClient } from "react-query";
-import { useCreatePayGradeCategory } from "features/payroll/hooks/payGrades/category/useCreatePayGradeCategory";
 import { QUERY_KEY_FOR_PAY_GRADE_CATEGORIES } from "features/payroll/hooks/payGrades/category/useGetPayGradeCategories";
 import { useNavigate } from "react-router-dom";
 import { appRoutes } from "config/router/paths";
 import { FormPayrollReportTemplateInput } from "./templates/FormPayrollReportTemplateInput";
 import { IModalProps } from "types";
+import { PAYROLL_SCHEME_OPTIONS } from "features/payroll/constants";
+import {
+  TAddPayrollReportData,
+  useAddPayrollReport,
+} from "features/payroll/hooks/payroll/report/useAddPayrollReport";
+import { DEFAULT_DATE_FORMAT } from "constants/dateFormats";
+import { Moment } from "moment";
+import { QUERY_KEY_FOR_PAYROLL_REPORTS } from "features/payroll/hooks/payroll/report/useGetPayrollReports";
 
-const PAYROLL_SCHEME_OPTIONS = [
-  { label: "Direct Salary", value: "direct-salary" },
-  { label: "Office", value: "office" },
-  { label: "Wages", value: "wages" },
-  { label: "Project", value: "project" },
-];
-
+// Exempt Payroll Scheme Project Option for the time being
+const SCHEME_OPTIONS = PAYROLL_SCHEME_OPTIONS.filter(
+  (item) => item.value !== "project"
+);
 const AddPayrollReport: React.FC<IModalProps> = ({ open, handleClose }) => {
   const queryClient = useQueryClient();
   const navigate = useNavigate();
 
-  const [form] = Form.useForm();
-  const { mutate, isLoading } = useCreatePayGradeCategory();
+  const [form] = Form.useForm<
+    TAddPayrollReportData & { reportDuration: [Moment, Moment] }
+  >();
+  const { mutate, isLoading } = useAddPayrollReport();
+  const [showAllSchemes, setShowAllSchemes] = useState(true);
 
-  const handleSubmit = (data: any) => {
+  const handleSubmit = (
+    data: TAddPayrollReportData & { reportDuration: [Moment, Moment] }
+  ) => {
     mutate(
       {
-        name: data.name,
-        maxGrossPay: data.maxGrossPay,
-        minGrossPay: data.minGrossPay,
+        data: {
+          description: data.description,
+          fromDate: data.reportDuration[0].format(DEFAULT_DATE_FORMAT),
+          toDate: data.reportDuration[1].format(DEFAULT_DATE_FORMAT),
+          name: data.name,
+          schemes: showAllSchemes
+            ? SCHEME_OPTIONS.map((item) => item.value)
+            : data.schemes,
+          templateId: data.templateId,
+        },
       },
       {
         onError: (err: any) => {
@@ -64,14 +80,13 @@ const AddPayrollReport: React.FC<IModalProps> = ({ open, handleClose }) => {
           navigate(appRoutes.addPayrollReport);
 
           queryClient.invalidateQueries({
-            queryKey: [QUERY_KEY_FOR_PAY_GRADE_CATEGORIES],
+            queryKey: [QUERY_KEY_FOR_PAYROLL_REPORTS],
             // exact: true,
           });
         },
       }
     );
   };
-  const [showAllSchemes, setShowAllSchemes] = useState(true);
   return (
     <Modal
       open={open}
@@ -112,6 +127,14 @@ const AddPayrollReport: React.FC<IModalProps> = ({ open, handleClose }) => {
           control={{ name: "templateId", label: "Select a template" }}
         />
 
+        <Form.Item
+          rules={textInputValidationRules}
+          name="description"
+          label="Report Description"
+          labelCol={{ span: 24 }}
+        >
+          <Input.TextArea className="w-full" placeholder="Report Description" />
+        </Form.Item>
         <>
           <Form.Item
             label="Do you want to include all payroll schemes ?"
@@ -125,23 +148,15 @@ const AddPayrollReport: React.FC<IModalProps> = ({ open, handleClose }) => {
             </div>
           </Form.Item>
           {showAllSchemes === false && (
-            <Form.Item rules={generalValidationRules}>
+            <Form.Item rules={generalValidationRules} name={"schemes"}>
               <Select
-                options={PAYROLL_SCHEME_OPTIONS}
+                options={SCHEME_OPTIONS}
                 mode="multiple"
                 placeholder="Select Payroll Scheme(s) to include in report"
               />
             </Form.Item>
           )}
         </>
-        <Form.Item
-          rules={textInputValidationRules}
-          name="description"
-          label="Report Description"
-          labelCol={{ span: 24 }}
-        >
-          <Input.TextArea className="w-full" placeholder="Report Description" />
-        </Form.Item>
 
         <div className="flex justify-end">
           <AppButton type="submit" isLoading={isLoading} label="Create" />

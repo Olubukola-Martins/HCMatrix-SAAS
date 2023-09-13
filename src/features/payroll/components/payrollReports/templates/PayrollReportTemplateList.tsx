@@ -42,7 +42,7 @@ export const PayrollReportTemplateList: React.FC = () => {
                 data={{
                   name: item.name,
                   title: "Payroll Report",
-                  link: appRoutes.viewPayrollReportTemplate(5).path,
+                  link: appRoutes.viewPayrollReportTemplate(item.id).path,
                 }}
                 key={item.id}
                 handleDelete={{

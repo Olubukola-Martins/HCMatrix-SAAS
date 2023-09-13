@@ -1,6 +1,6 @@
 import { Select, Spin } from "antd";
-import { useGetPayGradeCategories } from "features/payroll/hooks/payGrades/category/useGetPayGradeCategories";
-import { TPayGradeCategory } from "features/payroll/types";
+import { useGetPayrollTemplates } from "features/payroll/hooks/templates/useGetPayrollTemplates";
+import { TPayrollTemplateListData } from "features/payroll/types/template";
 import { useDebounce } from "hooks/useDebounce";
 import { useState } from "react";
 import { generalValidationRules } from "utils/formHelpers/validation";
@@ -8,15 +8,18 @@ import { generalValidationRules } from "utils/formHelpers/validation";
 export const FormPayrollReportTemplateInput: React.FC<{
   Form: any;
   showLabel?: boolean;
-  onSelect?: (val: number, option: TPayGradeCategory) => void;
+  onSelect?: (val: number, option: TPayrollTemplateListData) => void;
   control?: { label: string; name: string | (string | number)[] };
 }> = ({ Form, showLabel = true, control, onSelect }) => {
   const [searchTerm, setSearchTerm] = useState<string>("");
   const debouncedSearchTerm: string = useDebounce<string>(searchTerm);
 
-  const { data, isFetching, isSuccess } = useGetPayGradeCategories({
-    searchParams: {
-      name: debouncedSearchTerm,
+  const { data, isFetching, isSuccess } = useGetPayrollTemplates({
+    type: "payroll",
+    data: {
+      searchParams: {
+        name: debouncedSearchTerm,
+      },
     },
   });
 

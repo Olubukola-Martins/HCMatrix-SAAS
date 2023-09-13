@@ -9,6 +9,7 @@ export type TPayrollTemplateInfo = {
   createdAt: string;
   updatedAt: string;
 };
+export type TChangeInfoFromPayrollTemplateAction = "add" | "delete";
 
 export type TPayrollTemplate = {
   id: number;

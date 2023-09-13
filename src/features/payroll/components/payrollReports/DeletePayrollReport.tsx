@@ -3,13 +3,13 @@ import { IModalProps } from "types";
 
 import { openNotification } from "utils/notifications";
 import { useQueryClient } from "react-query";
-import { TPayGradeCategory } from "features/payroll/types";
 import DeleteEntityModal from "components/entity/DeleteEntityModal";
-import { useDeletePayGradeCategory } from "features/payroll/hooks/payGrades/category/useDeletePayGradeCategory";
-import { QUERY_KEY_FOR_PAY_GRADE_CATEGORIES } from "features/payroll/hooks/payGrades/category/useGetPayGradeCategories";
+import { TPayrollReport } from "features/payroll/types/payroll/report";
+import { useDeletePayrollTemplate } from "features/payroll/hooks/templates/useDeletePayrollTemplate";
+import { QUERY_KEY_FOR_PAYROLL_REPORTS } from "features/payroll/hooks/payroll/report/useGetPayrollReports";
 
 interface IProps extends IModalProps {
-  category: TPayGradeCategory;
+  category: TPayrollReport;
 }
 const DeletePayrollReport: React.FC<IProps> = ({
   open,
@@ -18,12 +18,13 @@ const DeletePayrollReport: React.FC<IProps> = ({
 }) => {
   const queryClient = useQueryClient();
 
-  const { mutate, isLoading } = useDeletePayGradeCategory();
+  const { mutate, isLoading } = useDeletePayrollTemplate();
 
   const handleDelete = () => {
     mutate(
       {
-        id: category.id,
+        templateId: category.id,
+        type: "payroll",
       },
       {
         onError: (err: any) => {
@@ -45,7 +46,7 @@ const DeletePayrollReport: React.FC<IProps> = ({
           });
 
           queryClient.invalidateQueries({
-            queryKey: [QUERY_KEY_FOR_PAY_GRADE_CATEGORIES],
+            queryKey: [QUERY_KEY_FOR_PAYROLL_REPORTS],
             // exact: true,
           });
           handleClose();

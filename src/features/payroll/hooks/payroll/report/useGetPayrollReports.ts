@@ -57,7 +57,7 @@ const getData = async (props: {
   return ans;
 };
 
-export const useGetPayrollTemplates = (props: { data: IGetDataProps }) => {
+export const useGetPayrollReports = (props: { data: IGetDataProps }) => {
   const { token, companyId } = useApiAuth();
 
   const { pagination, searchParams } = props.data;
