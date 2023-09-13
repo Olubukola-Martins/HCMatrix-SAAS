@@ -9,6 +9,8 @@ import { DeleteFilled, DownloadOutlined } from "@ant-design/icons";
 import DeletePayrollReport from "./DeletePayrollReport";
 import { useGetPayrollReports } from "features/payroll/hooks/payroll/report/useGetPayrollReports";
 import { TPayrollReport } from "features/payroll/types/payroll/report";
+import { useDownloadPayrollReport } from "features/payroll/hooks/payroll/report/useDownloadPayrollReport";
+import { openNotification } from "utils/notifications";
 
 type TAction = "delete" | "download";
 
@@ -37,6 +39,37 @@ const PayrollReportTable: React.FC = () => {
       pagination,
     },
   });
+
+  const { mutate: mutateGetTemplate } = useDownloadPayrollReport();
+
+  const handleDownload = (props: { id: number }) => {
+    mutateGetTemplate(
+      {
+        data: {
+          reportId: props.id,
+        },
+      },
+      {
+        onError: (err: any) => {
+          openNotification({
+            state: "error",
+            title: "Error Occurred",
+            description:
+              err?.response.data.message ?? err?.response.data.error.message,
+          });
+        },
+        onSuccess: (res: any) => {
+          openNotification({
+            state: "success",
+
+            title: "Success",
+            description: res.data.message,
+            // duration: 0.4,
+          });
+        },
+      }
+    );
+  };
 
   const columns: ColumnsType<TPayrollReport> = [
     {
@@ -106,7 +139,7 @@ const PayrollReportTable: React.FC = () => {
           <Button
             icon={<DownloadOutlined />}
             type="text"
-            onClick={() => handleAction({ action: "download", category: item })}
+            onClick={() => handleDownload({ id: item.id })}
           />
           <Button
             icon={<DeleteFilled />}
