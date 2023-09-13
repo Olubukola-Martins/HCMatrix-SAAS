@@ -7,7 +7,7 @@ import { useApiAuth } from "hooks/useApiAuth";
 import { EGlobalOps, GlobalContext } from "stateManagers/GlobalContextProvider";
 import { generalValidationRules } from "utils/formHelpers/validation";
 import { openNotification } from "utils/notifications";
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 
 const formWrapStyle =
   "bg-card px-4 pt-4 rounded grid grid-cols-1 md:grid-cols-2 gap-x-10 mb-5 shadow-sm";
@@ -18,8 +18,17 @@ export const ClockIn = () => {
   const globalCtx = useContext(GlobalContext);
   const { dispatch } = globalCtx;
 
+  useEffect(() => {
+    const defaultField = {
+      name: "",
+      serialNumber: "",
+      adminId: currentUserId,
+      companyId: companyId,
+    };
+    form.setFieldsValue({ biometricDevices: [defaultField] });
+  }, []);
+
   const handleFormSubmit = (values: any) => {
-    
     if (companyId) {
       mutate(
         {
@@ -40,6 +49,8 @@ export const ClockIn = () => {
             });
           },
           onSuccess: (res: any) => {
+            console.log(res);
+            
             openNotification({
               state: "success",
               title: "Success",

@@ -13,12 +13,18 @@ export const createClockInPolicy = async (props: IClockInPolicy) => {
     },
   };
 
+   // Map the biometricDevices array and stringify the serialNumber
+   const biometricDevicesWithSerializedSerialNumber = props.biometricDevices.map((device) => ({
+    ...device,
+    serialNumber: JSON.stringify(device.serialNumber),
+  }));
+
   const data: any = {
     companyId: props.companyId,
     isSoftClockIn: props.isSoftClockIn,
     isBiometricClockIn: props.isBiometricClockIn,
     adminId: props.adminId,
-    biometricDevices: props.biometricDevices,
+    biometricDevices: biometricDevicesWithSerializedSerialNumber,
   };
 
   const response = await axios.post(url, data, config);
