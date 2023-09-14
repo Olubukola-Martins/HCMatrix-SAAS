@@ -6,6 +6,11 @@ import { PayslipsContainer } from "./PayslipsContainer";
 import { TransactionsContainer } from "../transactions/TransactionsContainer";
 import { TTransaction } from "features/payroll/types";
 import { ColumnsType } from "antd/lib/table";
+import moment from "moment";
+import {
+  DEFAULT_DATE_FORMAT,
+  DEFAULT_TIME_FORMAT,
+} from "constants/dateFormats";
 
 const columns: ColumnsType<TTransaction> = [
   {
@@ -30,7 +35,7 @@ const columns: ColumnsType<TTransaction> = [
     title: "Reference",
     dataIndex: "ass",
     key: "ass",
-    render: (_, item) => <span className="capitalize">{item.ref}</span>,
+    render: (_, item) => <span className="capitalize">{item.reference}</span>,
   },
 
   {
@@ -41,11 +46,11 @@ const columns: ColumnsType<TTransaction> = [
   },
   {
     title: "Context",
-    dataIndex: "Payroll",
-    key: "Payroll",
+    dataIndex: "desc",
+    key: "desc",
     render: (_, item) => (
       <div className="capitalize flex flex-col gap-2 text-sm">
-        {item.payroll}
+        {item.description}
       </div>
     ),
   },
@@ -70,8 +75,8 @@ const columns: ColumnsType<TTransaction> = [
     key: "Date & Time",
     render: (_, item) => (
       <div className="flex flex-col gap-2 ">
-        <span>{item.paidAt} </span>
-        <span>{"8:00 am"} </span>
+        <span>{moment(item.createdAt).format(DEFAULT_DATE_FORMAT)} </span>
+        <span>{moment(item.createdAt).format(DEFAULT_TIME_FORMAT)} </span>
       </div>
       // <span>{moment(item.createdAt).format("YYYY/MM/DD")} </span>
     ),

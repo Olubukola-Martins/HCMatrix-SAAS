@@ -18,6 +18,7 @@ const routes = [
   },
   { title: "Reports", path: appRoutes.payrollReport },
   { title: "Payslips", path: appRoutes.payslips },
+  { title: "Settings", path: appRoutes.payrollSettings },
 ];
 const PayrollSubNav = () => {
   return (

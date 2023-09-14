@@ -6,13 +6,13 @@ import {
   textInputValidationRules,
 } from "utils/formHelpers/validation";
 
-const BankDetails = () => {
+const CompanyBankDetails = () => {
   const [bankDSwitch, setBankDSwitch] = useState(false);
   const [form] = Form.useForm();
   return (
     <div className={`${boxStyle} text-sm`}>
       <div className="flex items-center justify-between">
-        <h5 className={boxTitle}>Upload company's Bank Details</h5>
+        <h5 className={boxTitle}>Company's Bank Details</h5>
         <Switch
           checked={bankDSwitch}
           onChange={(value) => {
@@ -21,7 +21,7 @@ const BankDetails = () => {
         />
       </div>
       <p className="text-sm pt-2">
-        This is the account you would like your loan repayments to be made to
+        This is the bank details that recieve payments from the application
       </p>
 
       {bankDSwitch && (
@@ -75,4 +75,4 @@ const BankDetails = () => {
   );
 };
 
-export default BankDetails;
+export default CompanyBankDetails;

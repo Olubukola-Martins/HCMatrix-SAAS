@@ -13,14 +13,25 @@ import { TTaxAuthority } from "./taxAuthorities";
 export type TTransactionStatus = "completed" | "processing" | "declined";
 export type TTransactionType = "credit" | "debit";
 export type TTransaction = {
-  receiver: string;
-  sender: string;
-  ref: string;
+  id: number;
   type: string;
+  paymentType: TTransactionType;
+  status: TTransactionStatus;
+  sender: string;
+  receiver: string;
   amount: string;
-  payroll: string;
-  status: string;
-  paidAt: string;
+  description: string;
+  reference: string;
+  payrollId?: number;
+  loanId?: number;
+  employeeId?: number;
+  empUid?: string;
+  employeeFullName?: string;
+  costCentreId: number;
+  companyId: number;
+  createdAt: string;
+  updatedAt: string;
+  deletedAt?: string;
 };
 
 export type TPayrollBreakdownAttr = {

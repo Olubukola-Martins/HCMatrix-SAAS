@@ -1,8 +1,8 @@
 import { WorkflowSetUp } from "./WorkflowSetup";
-import BankDetails from "./BankDetails";
 import RepaymentPlan from "./repaymentPlans/RepaymentPlan";
 import LoanTypeSetup from "./loanTypes/LoanTypeSetup";
 import MaxloanPercentSetup from "./MaxloanPercentSetup";
+import SelectLoanCostCentre from "./SelectLoanCostCentre";
 
 const LoanSettings = () => {
   return (
@@ -11,7 +11,7 @@ const LoanSettings = () => {
         <div className="flex flex-col gap-4">
           <WorkflowSetUp />
 
-          <BankDetails />
+          <SelectLoanCostCentre />
 
           <RepaymentPlan />
         </div>

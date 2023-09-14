@@ -1,17 +1,12 @@
 import PayrollHome from "features/payroll/pages/PayrollHome";
 import { appRoutes } from "../paths";
 import { TRouteData } from "../types";
-import PayrollHomeForApprover from "features/payroll/pages/PayrollHomeForApprover";
 import PayrollReview from "features/payroll/pages/PayrollReview";
-import PayrollBreakdown from "features/payroll/pages/PayrollBreakdown";
-import PayrollCycle from "features/payroll/pages/PayrollCycle";
-import PayrollScheme from "features/payroll/pages/PayrollScheme";
 import PayrollComparison from "features/payroll/pages/PayrollComparison";
 import PayrollReport from "features/payroll/pages/PayrollReport";
 import { PayrollPayslip } from "features/payroll/pages/PayrollPayslip";
 import EmployeePayslips from "features/payroll/pages/EmployeePayslips";
 import CreatePayslipTemplate from "features/payroll/pages/CreatePayslipTemplate";
-import PayrollSettings from "features/payroll/pages/PayrollSettings";
 import PayrollCostCentresPage from "features/payroll/pages/PayrollCostCentresPage";
 import PayrollTaxPoliciesPage from "features/payroll/pages/PayrollTaxPoliciesPage";
 import CreateTaxPolicyPage from "features/payroll/pages/CreateTaxPolicyPage";
@@ -39,6 +34,7 @@ import ViewPayrollReportTemplate from "features/payroll/pages/ViewPayrollReportT
 import ViewPayslipTemplate from "features/payroll/pages/ViewPayslipTemplate";
 import SingleCostCentrePage from "features/payroll/pages/SingleCostCentrePage";
 import PayslipsTransactionsPage from "features/payroll/pages/PayslipsTransactionsPage";
+import PayrollSetting from "features/payroll/pages/PayrollSetting";
 
 export const payrollRoutes: TRouteData[] = [
   {
@@ -165,7 +161,7 @@ export const payrollRoutes: TRouteData[] = [
     isPrimaryFeature: false,
   },
   {
-    element: <PayrollSettings />,
+    element: <PayrollSetting />,
     path: appRoutes.payrollSettings,
     isSearchable: true,
     title: "Payroll Settings",
@@ -219,36 +215,14 @@ export const payrollRoutes: TRouteData[] = [
     isSearchable: true,
     title: "Payroll",
   },
-  {
-    element: <PayrollHomeForApprover />,
-    path: appRoutes.payrollHome4Approver,
-    isSearchable: true,
-    title: "Payroll Approval",
-  },
+
   {
     element: <PayrollReview />,
     path: appRoutes.payrollReview,
     isSearchable: true,
     title: "Payroll Review",
   },
-  {
-    element: <PayrollBreakdown />,
-    path: appRoutes.payrollBreakdown,
-    isSearchable: true,
-    title: "Payroll Breakdown",
-  },
-  {
-    element: <PayrollCycle />,
-    path: appRoutes.payrollCycle,
-    isSearchable: true,
-    title: "Payroll Cycle",
-  },
-  {
-    element: <PayrollScheme />,
-    path: appRoutes.payrollScheme,
-    isSearchable: true,
-    title: "Payroll Scheme",
-  },
+
   {
     element: <PayrollComparison />,
     path: appRoutes.payrollComparison,

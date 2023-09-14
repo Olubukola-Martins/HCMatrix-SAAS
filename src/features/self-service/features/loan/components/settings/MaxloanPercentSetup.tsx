@@ -17,8 +17,7 @@ const MaxloanPercentSetup = () => {
         />
       </div>
       <p className="text-sm pt-2">
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Tempor magna id
-        fames cursus luctus scel
+        Select the course of action to take regards the max loan percentage
       </p>
 
       {loanPec && (

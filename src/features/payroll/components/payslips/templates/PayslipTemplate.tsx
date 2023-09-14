@@ -11,6 +11,7 @@ import {
 import React, { useEffect } from "react";
 import {
   generalValidationRules,
+  generalValidationRulesOp,
   textInputValidationRules,
 } from "utils/formHelpers/validation";
 import { openNotification } from "utils/notifications";
@@ -168,7 +169,7 @@ const PayslipTemplate: React.FC<{
             </Form.Item>
 
             <Form.Item
-              rules={generalValidationRules}
+              rules={generalValidationRulesOp}
               name="displayYearToDateCalcs"
               label="Choose the Year to Date data to display on 
             payslip."
