@@ -12,6 +12,7 @@ import { useFetchSingleEmployee } from "features/core/employees/hooks/useFetchSi
 import { GlobalContext, EGlobalOps } from "stateManagers/GlobalContextProvider";
 import logo from "../../assets/images/logo2.png";
 import UserProfileMenu from "./UserProfileMenu";
+import { UserNotificationsBadge } from "./UserNotificationsBadge";
 
 type TCompany = {
   value: string;
@@ -214,14 +215,7 @@ const TopBar = ({
               ></i>
             </Link>
 
-            <Badge size="small" count={5}>
-              <Link to="/notifications">
-                <i
-                  className="ri-notification-3-line text-xl cursor-pointer"
-                  title="Notifications"
-                ></i>
-              </Link>
-            </Badge>
+            <UserNotificationsBadge />
 
             <Dropdown
               overlay={

@@ -110,6 +110,7 @@ export const AddSalaryComponentForm: React.FC<IFormProps> = ({
 
   dependencies = [...DEFAULT_DEPENDENCIES_FROM_API, ...dependencies];
   const queryClient = useQueryClient();
+  const [taxFormula, setTaxFormula] = useState("");
 
   const [mode, setMode] = useState<TSalaryComponentCalculationMode | "table">(
     "percentage"
@@ -190,8 +191,10 @@ export const AddSalaryComponentForm: React.FC<IFormProps> = ({
       handleClose,
       isActive,
       isDefault,
+      mode,
       queryClient,
       salaryComponent,
+      taxFormula,
       type,
       updateMutate,
     ]
@@ -309,8 +312,6 @@ export const AddSalaryComponentForm: React.FC<IFormProps> = ({
   const calculationModes = isTax
     ? [...defaultCalculationModes, "table"]
     : defaultCalculationModes;
-
-  const [taxFormula, setTaxFormula] = useState("");
 
   return (
     <Form

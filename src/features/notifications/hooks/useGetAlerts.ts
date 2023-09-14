@@ -5,14 +5,13 @@ import { ICurrentCompany, IPaginationProps, ISearchParams } from "types";
 import { DEFAULT_PAGE_SIZE } from "constants/general";
 import { TNotification, TNotificationType } from "../types";
 import { useApiAuth } from "hooks/useApiAuth";
-import { APP_AUTHORIZATION_TOKEN_FOR_FCM_TOKEN_ENDPOINT } from "config/firebase/messaging";
 
 // TO DO : need to exist in the general data entities and refactored
 interface IGetDataProps extends ICurrentCompany {
   pagination?: IPaginationProps;
   searchParams?: ISearchParams;
   type?: TNotificationType;
-  // fireBaseToken: string; //might just need to exist in getNotifications on its own so need
+  isRead?: boolean;
 }
 
 export const QUERY_KEY_FOR_NOTIFICATIONS = "notifications";
@@ -38,6 +37,7 @@ const getNotifications = async (
       offset,
       search: name,
       type: props.type,
+      isRead: props.isRead,
       // fireBaseToken: props.fireBaseToken,
     },
   };
@@ -58,13 +58,16 @@ const getNotifications = async (
   return ans;
 };
 
-export const useFetchNotifications = (
-  props: Pick<IGetDataProps, "pagination" | "searchParams" | "type">
+export const useGetAlerts = (
+  props: Pick<
+    IGetDataProps,
+    "pagination" | "searchParams" | "type" | "isRead"
+  > = {}
 ) => {
-  const { pagination, searchParams } = props;
+  const { pagination, searchParams, type, isRead } = props;
   const { token, companyId } = useApiAuth();
   const queryData = useQuery(
-    [QUERY_KEY_FOR_NOTIFICATIONS, pagination, searchParams],
+    [QUERY_KEY_FOR_NOTIFICATIONS, type, isRead, pagination, searchParams],
     () =>
       getNotifications({
         token,
