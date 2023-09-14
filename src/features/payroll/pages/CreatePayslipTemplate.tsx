@@ -4,22 +4,26 @@ import PayrollSubNav from "../components/PayrollSubNav";
 import { appRoutes } from "config/router/paths";
 import PageSubHeader from "components/layout/PageSubHeader";
 import { useNavigate } from "react-router-dom";
-import { useCreateFolder } from "features/self-service/features/documents/hooks/useCreateFolder";
 import { QUERY_KEY_FOR_FOLDERS } from "features/self-service/features/documents/hooks/useGetFolders";
 import { useQueryClient } from "react-query";
 import { openNotification } from "utils/notifications";
 import PayslipTemplate from "../components/payslips/templates/PayslipTemplate";
+import {
+  useAddPayrollTemplate,
+  TAddPayrollTemplateData,
+} from "../hooks/templates/useAddPayrollTemplate";
 
 const CreatePayslipTemplate = () => {
   const queryClient = useQueryClient();
   const navigate = useNavigate();
 
-  const { mutate, isLoading } = useCreateFolder();
+  const { mutate, isLoading } = useAddPayrollTemplate();
 
-  const createTemplate = (data: any) => {
+  const createTemplate = (data: TAddPayrollTemplateData) => {
     mutate(
       {
-        name: data.name,
+        type: "payslip",
+        data,
       },
       {
         onError: (err: any) => {
@@ -43,7 +47,7 @@ const CreatePayslipTemplate = () => {
             queryKey: [QUERY_KEY_FOR_FOLDERS],
             // exact: true,
           });
-          navigate(appRoutes.payrollReport);
+          navigate(appRoutes.payslips);
         },
       }
     );

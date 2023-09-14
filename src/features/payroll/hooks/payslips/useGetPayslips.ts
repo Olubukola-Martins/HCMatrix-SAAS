@@ -4,25 +4,38 @@ import { useQuery } from "react-query";
 import { ICurrentCompany, IPaginationProps, ISearchParams } from "types";
 import { DEFAULT_PAGE_SIZE } from "constants/general";
 import { useApiAuth } from "hooks/useApiAuth";
-import { TTaxAuthority } from "features/payroll/types";
+import { TPayslip } from "features/payroll/types/payslip";
 
 interface IGetDataProps {
   pagination?: IPaginationProps;
   searchParams?: ISearchParams;
+  fromDate?: string;
+  toDate?: string;
 }
 
-export const QUERY_KEY_FOR_EMPLOYEE_PAYSLIPS = "employee-payslips";
+export const QUERY_KEY_FOR_PAYSLIPS = "payslips";
 
 const getData = async (props: {
   data: IGetDataProps;
   auth: ICurrentCompany;
-}): Promise<{ data: TTaxAuthority[]; total: number }> => {
-  const { pagination } = props.data;
+  scheme:
+    | "direct-salary"
+    | "office"
+    | "wages"
+    | { scheme: "project"; projectId: number };
+  role: "admin" | "employee";
+}): Promise<{ data: TPayslip[]; total: number }> => {
+  const { pagination, fromDate, toDate } = props.data;
   const limit = pagination?.limit ?? DEFAULT_PAGE_SIZE;
   const offset = pagination?.offset ?? 0;
   const name = props.data.searchParams?.name ?? "";
-  // TO DO : Correct url, when backend is ready
-  const url = `${MICROSERVICE_ENDPOINTS.PAYROLL}/payslip/employee`;
+
+  let url = `${MICROSERVICE_ENDPOINTS.PAYROLL}/payslip`;
+  if (typeof props.scheme === "string") {
+    url += `/${props.scheme}/${props.role}`;
+  } else {
+    url += `/${props.scheme.scheme}/${props.role}?projectId=${props.scheme.projectId}`;
+  }
 
   const config = {
     headers: {
@@ -34,6 +47,8 @@ const getData = async (props: {
       limit,
       offset,
       search: name,
+      fromDate,
+      toDate,
     },
   };
 
@@ -41,8 +56,8 @@ const getData = async (props: {
   const fetchedData = res.data.data;
   const result = fetchedData.result;
 
-  const data: TTaxAuthority[] = result.map(
-    (item: TTaxAuthority): TTaxAuthority => ({ ...item })
+  const data: TPayslip[] = result.map(
+    (item: TPayslip): TPayslip => ({ ...item })
   );
 
   const ans = {
@@ -53,18 +68,29 @@ const getData = async (props: {
   return ans;
 };
 
-export const useGetEmployeePayslips = (props: IGetDataProps) => {
-  const { token, companyId } = useApiAuth();
+export const useGetEmployeePayslips = (data: {
+  props: IGetDataProps;
+  role: "admin" | "employee";
 
+  scheme:
+    | "direct-salary"
+    | "office"
+    | "wages"
+    | { scheme: "project"; projectId: number };
+}) => {
+  const { token, companyId } = useApiAuth();
+  const { props, scheme, role } = data;
   const { pagination, searchParams } = props;
   const queryData = useQuery(
-    [QUERY_KEY_FOR_EMPLOYEE_PAYSLIPS, pagination, searchParams],
+    [QUERY_KEY_FOR_PAYSLIPS, scheme, role, pagination, searchParams],
     () =>
       getData({
         auth: { token, companyId },
         data: {
           ...props,
         },
+        scheme,
+        role,
       }),
     {
       onError: (err: any) => {},

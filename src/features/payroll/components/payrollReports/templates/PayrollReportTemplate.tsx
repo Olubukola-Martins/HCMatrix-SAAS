@@ -1,6 +1,5 @@
 import { Form, Input, Select, Skeleton } from "antd";
 import { AppButton } from "components/button/AppButton";
-import { appRoutes } from "config/router/paths";
 import { useGetPayrollTemplateInfo } from "features/payroll/hooks/templates/information/useGetPayrollTemplateInfo";
 import { useChangeInfoFromPayrollTemplate } from "features/payroll/hooks/templates/management/useChangeInfoFromPayrollTemplate";
 import { TAddPayrollTemplateData } from "features/payroll/hooks/templates/useAddPayrollTemplate";

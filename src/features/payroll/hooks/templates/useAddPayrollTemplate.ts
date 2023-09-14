@@ -11,8 +11,8 @@ export type TAddPayrollTemplateData = {
   ytdNet?: boolean;
   ytdGross?: boolean;
   ytdTax?: boolean;
-  employeeInformation: EmployeeInformation[];
-  payrollInformation: EmployeeInformation[];
+  employeeInformation?: EmployeeInformation[];
+  payrollInformation?: EmployeeInformation[];
 };
 
 interface EmployeeInformation {
