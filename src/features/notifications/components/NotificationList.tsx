@@ -3,8 +3,12 @@ import moment from "moment";
 import { useFetchNotifications } from "../hooks/useFetchNotifications";
 import { usePagination } from "hooks/usePagination";
 
+const NOTIFICATION_PAGE_SIZE = 15;
+
 export const NotificationList = () => {
-  const { onChange, pagination } = usePagination();
+  const { onChange, pagination } = usePagination({
+    pageSize: NOTIFICATION_PAGE_SIZE,
+  });
   const { data, isFetching } = useFetchNotifications({ pagination });
 
   return (
