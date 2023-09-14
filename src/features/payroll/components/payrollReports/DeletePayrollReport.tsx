@@ -5,8 +5,8 @@ import { openNotification } from "utils/notifications";
 import { useQueryClient } from "react-query";
 import DeleteEntityModal from "components/entity/DeleteEntityModal";
 import { TPayrollReport } from "features/payroll/types/payroll/report";
-import { useDeletePayrollTemplate } from "features/payroll/hooks/templates/useDeletePayrollTemplate";
 import { QUERY_KEY_FOR_PAYROLL_REPORTS } from "features/payroll/hooks/payroll/report/useGetPayrollReports";
+import { useDeletePayrollReport } from "features/payroll/hooks/payroll/report/useDeletePayrollReport";
 
 interface IProps extends IModalProps {
   category: TPayrollReport;
@@ -18,13 +18,12 @@ const DeletePayrollReport: React.FC<IProps> = ({
 }) => {
   const queryClient = useQueryClient();
 
-  const { mutate, isLoading } = useDeletePayrollTemplate();
+  const { mutate, isLoading } = useDeletePayrollReport();
 
   const handleDelete = () => {
     mutate(
       {
-        templateId: category.id,
-        type: "payroll",
+        reportId: category.id,
       },
       {
         onError: (err: any) => {
