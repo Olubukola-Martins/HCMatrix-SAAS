@@ -10,6 +10,7 @@ import { Link } from "react-router-dom";
 import { Dropdown } from "antd";
 import Themes from "components/Themes";
 import SelfBox, { RequisitionBox, MoreBox } from "../components/SelfBox";
+import { appRoutes } from "config/router/paths";
 
 const SelfServiceHome: React.FC = () => {
   const requestStyle =
@@ -49,10 +50,12 @@ const SelfServiceHome: React.FC = () => {
                 icon={health}
                 link="/self-service/health-access"
               />
+              {/* TODO: Refactor all routes to use appRoutes */}
               <SelfBox
                 title="My Payslip"
                 icon={payslip}
-                link="/payroll/employee-payslip"
+                link={appRoutes.payslipTransactions}
+                desc="You can view your payslips and transactions"
               />
               <SelfBox
                 title="Hand-over Forms"

@@ -164,6 +164,7 @@ export const appRoutes = {
   addPayrollReport: `/payroll/report/create`,
   payslips: `/payroll/payslip`,
   employeePayslips: `/payroll/employee-payslip`,
+  payslipTransactions: `/payslip-transactions`,
   createPayslipTemplate: `/payroll/create-payslip-template`,
   editPayslipTemplate: (id?: number) => ({
     format: `/payroll/edit-payslip-template/:id`,

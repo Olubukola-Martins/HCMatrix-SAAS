@@ -68,7 +68,7 @@ const getData = async (props: {
   return ans;
 };
 
-export const useGetEmployeePayslips = (data: {
+export type TGetPayslipsProps = {
   props: IGetDataProps;
   role: "admin" | "employee";
 
@@ -77,12 +77,21 @@ export const useGetEmployeePayslips = (data: {
     | "office"
     | "wages"
     | { scheme: "project"; projectId: number };
-}) => {
+};
+export const useGetPayslips = (data: TGetPayslipsProps) => {
   const { token, companyId } = useApiAuth();
   const { props, scheme, role } = data;
-  const { pagination, searchParams } = props;
+  const { pagination, searchParams, fromDate, toDate } = props;
   const queryData = useQuery(
-    [QUERY_KEY_FOR_PAYSLIPS, scheme, role, pagination, searchParams],
+    [
+      QUERY_KEY_FOR_PAYSLIPS,
+      scheme,
+      role,
+      pagination,
+      searchParams,
+      fromDate,
+      toDate,
+    ],
     () =>
       getData({
         auth: { token, companyId },

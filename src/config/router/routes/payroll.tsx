@@ -38,6 +38,7 @@ import EditPayrollReportTemplate from "features/payroll/pages/EditPayrollReportT
 import ViewPayrollReportTemplate from "features/payroll/pages/ViewPayrollReportTemplate";
 import ViewPayslipTemplate from "features/payroll/pages/ViewPayslipTemplate";
 import SingleCostCentrePage from "features/payroll/pages/SingleCostCentrePage";
+import PayslipsTransactionsPage from "features/payroll/pages/PayslipsTransactionsPage";
 
 export const payrollRoutes: TRouteData[] = [
   {
@@ -322,6 +323,12 @@ export const payrollRoutes: TRouteData[] = [
     path: appRoutes.employeePayslips,
     isSearchable: true,
     title: "Employee Payslips",
+  },
+  {
+    element: <PayslipsTransactionsPage />,
+    path: appRoutes.payslipTransactions,
+    isSearchable: true,
+    title: "Payslip & Transactions",
   },
   {
     element: <CreatePayslipTemplate />,

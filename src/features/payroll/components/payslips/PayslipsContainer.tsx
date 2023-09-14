@@ -1,17 +1,42 @@
 import React, { useEffect, useState } from "react";
 import { DatePicker, Select } from "antd";
-import EmployeePayslipsTable from "./EmployeePayslipsTable";
+import PayslipsTable from "./PayslipsTable";
 import { TPayrollSchemeType } from "features/payroll/types/payrollSchemes";
 import { PAYROLL_SCHEME_OPTIONS } from "features/payroll/constants";
-import { TSingleProjectPayrollScheme } from "features/payroll/types/payrollSchemes/singleProject";
 import { useGetPayrollSchemeByTypeOrId } from "features/payroll/hooks/scheme/useGetPayrollSchemeByTypeOrId";
 import { TProjectPayrollScheme } from "features/payroll/types/payrollSchemes/project";
+import { TGetPayslipsProps } from "features/payroll/hooks/payslips/useGetPayslips";
+import { DEFAULT_DATE_FORMAT } from "constants/dateFormats";
 
-export const EmployeePayslipsContainer = () => {
+interface IProps {
+  role: TGetPayslipsProps["role"];
+  defaultScheme: TPayrollSchemeType;
+}
+
+// helper fns
+const generateScheme = (
+  scheme: TPayrollSchemeType,
+  projectId?: number
+): TGetPayslipsProps["scheme"] => {
+  let data: TGetPayslipsProps["scheme"] = "office";
+  if (projectId && scheme === "project") {
+    data = { scheme: scheme, projectId };
+  }
+  if (scheme !== "project") {
+    data = scheme;
+  }
+  return data;
+};
+export const PayslipsContainer: React.FC<IProps> = ({
+  role,
+  defaultScheme,
+}) => {
   //   const [comp, setComp] = useState<"add-category" | "add-grade">();
   // const [scheme, setScheme] = useState<TPayrollSchemeType>();
-  const [selectedScheme, setSelectedScheme] = useState<TPayrollSchemeType>();
+  const [selectedScheme, setSelectedScheme] =
+    useState<TPayrollSchemeType>(defaultScheme);
   const [projects, setProjects] = useState<TProjectPayrollScheme>([]);
+  const [projectId, setProjectId] = useState<number>();
   const { data: payrollScheme, isLoading } = useGetPayrollSchemeByTypeOrId({
     typeOrId: selectedScheme,
   });
@@ -29,6 +54,8 @@ export const EmployeePayslipsContainer = () => {
     }
   }, [payrollScheme, selectedScheme]);
 
+  const [duration, setDuration] = useState<[string, string]>();
+
   return (
     <>
       <div className="flex flex-col gap-6">
@@ -43,14 +70,11 @@ export const EmployeePayslipsContainer = () => {
               onSelect={(val: TPayrollSchemeType) => {
                 setSelectedScheme(val);
               }}
-              allowClear
-              onClear={() => {
-                setSelectedScheme(undefined);
-              }}
               placeholder="Select Scheme"
             />
             {selectedScheme === "project" && (
               <Select
+                onSelect={(id: number) => setProjectId(id)}
                 loading={isLoading}
                 placeholder="Select Project"
                 options={projects.map((item) => ({
@@ -62,10 +86,22 @@ export const EmployeePayslipsContainer = () => {
             <DatePicker.RangePicker
               picker={"date"}
               placeholder={["From", "To"]}
+              onChange={(val) => {
+                if (val && val.length === 2 && val[0] && val[1])
+                  setDuration([
+                    val[0].format(DEFAULT_DATE_FORMAT),
+                    val[1].format(DEFAULT_DATE_FORMAT),
+                  ]);
+              }}
             />
           </div>
         </div>
-        <EmployeePayslipsTable />
+        <PayslipsTable
+          role={role}
+          scheme={generateScheme(selectedScheme, projectId)}
+          fromDate={duration ? duration[0] : undefined}
+          toDate={duration ? duration[1] : undefined}
+        />
       </div>
     </>
   );

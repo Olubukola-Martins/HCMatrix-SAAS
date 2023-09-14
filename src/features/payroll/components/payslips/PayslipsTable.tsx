@@ -5,23 +5,37 @@ import { ColumnsType } from "antd/lib/table";
 
 import { usePagination } from "hooks/usePagination";
 
-import { TPayGrade } from "features/payroll/types";
-import { useGetPayGrades } from "features/payroll/hooks/payGrades/useGetPayGrades";
 import ViewEmployeePayrollBreakdown from "../employeeReports/ViewEmployeePayrollBreakdown";
+import {
+  TGetPayslipsProps,
+  useGetPayslips,
+} from "features/payroll/hooks/payslips/useGetPayslips";
+import { TPayslip } from "features/payroll/types/payslip";
+import { DEFAULT_DATE_FORMAT } from "constants/dateFormats";
+import moment from "moment";
 
 type TAction = "view";
 
-const EmployeePayslipsTable: React.FC<{
-  categoryId?: number;
-}> = ({ categoryId }) => {
+interface IProps {
+  role: TGetPayslipsProps["role"];
+  scheme: TGetPayslipsProps["scheme"];
+  fromDate?: string;
+  toDate?: string;
+}
+const PayslipsTable: React.FC<IProps> = ({
+  role,
+  scheme,
+  fromDate,
+  toDate,
+}) => {
   const [action, setAction] = useState<TAction>();
-  const [grade, setGrade] = useState<TPayGrade>();
+  const [grade, setGrade] = useState<TPayslip>();
   const handleAction = ({
     action,
     grade,
   }: {
     action: TAction;
-    grade: TPayGrade;
+    grade: TPayslip;
   }) => {
     setAction(action);
     setGrade(grade);
@@ -32,16 +46,24 @@ const EmployeePayslipsTable: React.FC<{
   };
   const { pagination, onChange } = usePagination();
 
-  const { data, isFetching } = useGetPayGrades({
-    pagination,
+  const { data, isFetching } = useGetPayslips({
+    props: {
+      pagination,
+      fromDate,
+      toDate,
+    },
+    role,
+    scheme,
   });
 
-  const columns: ColumnsType<TPayGrade> = [
+  const columns: ColumnsType<TPayslip> = [
     {
       title: "Pay Date",
       dataIndex: "name",
       key: "name",
-      render: (val, item) => <span className="capitalize">{`01/09/2023`}</span>,
+      render: (_, item) => (
+        <span>{moment(item.createdAt).format(DEFAULT_DATE_FORMAT)}</span>
+      ),
 
       // ellipsis: true,
 
@@ -51,43 +73,45 @@ const EmployeePayslipsTable: React.FC<{
       title: "Name",
       dataIndex: "cat",
       key: "cat",
-      render: (_, item) => `Jon Doe`,
+      render: (_, item) => <span className="capitalize">{item.fullName}</span>,
     },
     {
       title: "Scheme",
-      dataIndex: "pay",
-      key: "pay",
-      render: (_, item) => `office`,
+      dataIndex: "_s",
+      key: "_s",
+      render: (_, item) => (
+        <span className="capitalize">{item.payroll?.scheme.name}</span>
+      ),
     },
     {
       title: "Net Pay",
-      dataIndex: "pay",
-      key: "pay",
-      render: (_, item) => 2000,
+      dataIndex: "_n",
+      key: "_n",
+      render: (_, item) => <span className="capitalize">{item.netPay}</span>,
     },
     {
       title: "Gross Pay",
-      dataIndex: "pay",
-      key: "pay",
-      render: (_, item) => 7000,
+      dataIndex: "_g",
+      key: "_g",
+      render: (_, item) => <span className="">{item.grossPay}</span>,
     },
     {
       title: "Total Allowances",
-      dataIndex: "pay",
-      key: "pay",
-      render: (_, item) => 7000,
+      dataIndex: "_ta",
+      key: "_ta",
+      render: (_, item) => <span className="">{item.totalAllowances}</span>,
     },
     {
       title: "Total Deductions",
-      dataIndex: "pay",
-      key: "pay",
-      render: (_, item) => 7000,
+      dataIndex: "_td",
+      key: "_td",
+      render: (_, item) => <span className="">{item.totalDeductions}</span>,
     },
     {
       title: "Tax",
-      dataIndex: "pay",
-      key: "pay",
-      render: (_, item) => 7000,
+      dataIndex: "_tax",
+      key: "_tax",
+      render: (_, item) => <span className="">{item.tax}</span>,
     },
 
     {
@@ -130,4 +154,4 @@ const EmployeePayslipsTable: React.FC<{
   );
 };
 
-export default EmployeePayslipsTable;
+export default PayslipsTable;
