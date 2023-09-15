@@ -74,6 +74,9 @@ const SinglePayrollReview: React.FC<IProps> = ({ payroll }) => {
                           workflowType: !!payrollRequestItem?.basicStageId
                             ? "basic"
                             : "advanced",
+                          requires2FA:
+                            payrollRequestItem?.advancedStage
+                              ?.enableTwoFactorAuth,
                         }),
                     },
                     {
@@ -85,6 +88,9 @@ const SinglePayrollReview: React.FC<IProps> = ({ payroll }) => {
                           workflowType: !!payrollRequestItem?.basicStageId
                             ? "basic"
                             : "advanced",
+                          requires2FA:
+                            payrollRequestItem?.advancedStage
+                              ?.enableTwoFactorAuth,
                         }),
                       btnVariant: "style-with-class",
                       additionalClassNames: ["neutralButton"],

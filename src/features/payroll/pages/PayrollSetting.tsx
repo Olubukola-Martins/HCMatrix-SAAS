@@ -6,15 +6,17 @@ import PageSubHeader from "components/layout/PageSubHeader";
 import CompanyBankDetails from "../components/payrollSetting/CompanyBankDetails";
 import SelectPayslipTemplate from "../components/payrollSetting/SelectPayslipTemplate";
 import LoanConfiguration from "../components/payrollSetting/LoanConfiguration";
-import { Form } from "antd";
+import { Form, Skeleton } from "antd";
 import { useHandlelPayrollSetting } from "../hooks/payroll/setting/useHandlelPayrollSetting";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { TPaystackBank } from "types/paystackBank";
 import { openNotification } from "utils/notifications";
 import { FormInstance } from "antd/es/form";
+import { useGetPayrollSetting } from "../hooks/payroll/setting/useGetPayrollSetting";
 
 const PayrollSetting = () => {
-  // TODO: Fetch Payroll Setting if it exists
+  const { data: setting, isFetching } = useGetPayrollSetting();
+
   const [form] = Form.useForm();
   const { mutate, isLoading } = useHandlelPayrollSetting();
   const [bank, setBank] = useState<TPaystackBank>();
@@ -23,15 +25,28 @@ const PayrollSetting = () => {
     setLoanActivation(val);
   };
 
+  useEffect(() => {
+    if (!setting) return;
+    setLoanActivation(setting.loanConfiguration.isActive);
+    form.setFieldsValue({
+      bankCode: setting.companyBankDetails.bankCode,
+      accountNumber: setting.companyBankDetails.accountNumber,
+      bankName: setting.companyBankDetails.bankName,
+      isActive: setting.loanConfiguration.isActive,
+      schemes: setting.loanConfiguration.schemes,
+      templateId: setting.payslipTemplate.templateId,
+    });
+  }, [form, setting]);
+
   const handleSubmit = (data: any) => {
-    if (!bank) return;
+    if (!bank || !setting?.companyBankDetails.bankName) return;
     mutate(
       {
         data: {
           companyBankDetails: {
             bankCode: data.bankCode,
             accountNumber: data.accountNumber,
-            bankName: bank.name,
+            bankName: bank.name ?? setting?.companyBankDetails.bankName, // bank takes higher priority
           },
           loanConfiguration: {
             isActive: loanActivation,
@@ -84,14 +99,16 @@ const PayrollSetting = () => {
             },
           ]}
         />
-        <PayrollSettingContainer
-          Form={Form}
-          handleSubmit={handleSubmit}
-          handleBank={handleBank}
-          form={form}
-          loanActivation={loanActivation}
-          handleLoanActivation={handleLoanActivation}
-        />
+        <Skeleton loading={isFetching} active paragraph={{ rows: 12 }}>
+          <PayrollSettingContainer
+            Form={Form}
+            handleSubmit={handleSubmit}
+            handleBank={handleBank}
+            form={form}
+            loanActivation={loanActivation}
+            handleLoanActivation={handleLoanActivation}
+          />
+        </Skeleton>
       </div>
     </>
   );

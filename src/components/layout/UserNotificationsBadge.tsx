@@ -6,7 +6,7 @@ import { Link } from "react-router-dom";
 
 const OVERFLOW_COUNT_FOR_NOTIFICATION = 8;
 export const UserNotificationsBadge = () => {
-  const { data } = useGetAlerts({ isRead: true });
+  const { data } = useGetAlerts({ isRead: false });
   return (
     <Badge
       size="small"
