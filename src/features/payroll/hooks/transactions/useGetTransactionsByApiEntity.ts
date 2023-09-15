@@ -13,24 +13,41 @@ import {
 interface IGetDataProps {
   pagination?: IPaginationProps;
   searchParams?: ISearchParams;
-  type?: TTransactionType;
-  status?: TTransactionStatus;
+  type?: TTransactionType[];
+  status?: TTransactionStatus[];
+  employeeId?: number;
 }
 
-export const QUERY_KEY_FOR_COST_CENTRE_TRANSACTIONS =
-  "cost-centre-transactions";
+export type TTransactionApiEntity =
+  | { costCentreId: number; entity: "cost-centre" }
+  | "transaction";
+
+export const QUERY_KEY_FOR_TRANSACTIONS_BY_API_ENTITY =
+  "transactions-by-entity";
 
 const getData = async (props: {
   data: IGetDataProps;
   auth: ICurrentCompany;
-  costCentreId: number;
+  transactionApiEntity: TTransactionApiEntity;
 }): Promise<{ data: TTransaction[]; total: number }> => {
-  const { pagination, type, status } = props.data;
+  const { pagination, type, status, employeeId } = props.data;
   const limit = pagination?.limit ?? DEFAULT_PAGE_SIZE;
   const offset = pagination?.offset ?? 0;
   const name = props.data.searchParams?.name ?? "";
 
-  const url = `${MICROSERVICE_ENDPOINTS.PAYROLL}/cost-centre/${props.costCentreId}/transaction`;
+  let url = `${MICROSERVICE_ENDPOINTS.PAYROLL}`;
+  if (
+    typeof props.transactionApiEntity === "string" &&
+    props.transactionApiEntity === "transaction"
+  ) {
+    url += `/${props.transactionApiEntity}`;
+  }
+  if (
+    typeof props.transactionApiEntity === "object" &&
+    props.transactionApiEntity.entity === "cost-centre"
+  ) {
+    url += `/${props.transactionApiEntity.entity}/${props.transactionApiEntity.costCentreId}/transaction`;
+  }
 
   const config = {
     headers: {
@@ -42,8 +59,9 @@ const getData = async (props: {
       limit,
       offset,
       search: name,
-      type,
-      status,
+      type: type?.join(","),
+      status: status?.join(","),
+      employeeId,
     },
   };
 
@@ -63,18 +81,18 @@ const getData = async (props: {
   return ans;
 };
 
-export const useGetCostCentreTransactions = (data: {
+export const useGetTransactionsByApiEntity = (data: {
   props: IGetDataProps;
-  costCentreId: number;
+  transactionApiEntity: TTransactionApiEntity;
 }) => {
-  const { props, costCentreId } = data;
+  const { props, transactionApiEntity } = data;
   const { token, companyId } = useApiAuth();
 
   const { pagination, searchParams, type, status } = props;
   const queryData = useQuery(
     [
-      QUERY_KEY_FOR_COST_CENTRE_TRANSACTIONS,
-      costCentreId,
+      QUERY_KEY_FOR_TRANSACTIONS_BY_API_ENTITY,
+      transactionApiEntity,
       pagination,
       searchParams,
       type,
@@ -82,7 +100,7 @@ export const useGetCostCentreTransactions = (data: {
     ],
     () =>
       getData({
-        costCentreId,
+        transactionApiEntity,
         auth: { token, companyId },
         data: {
           ...props,

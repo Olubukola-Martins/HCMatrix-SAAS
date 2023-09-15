@@ -84,7 +84,7 @@ const ViewCostCentreContainer: React.FC<{ data?: TCostCentre }> = ({
         }}
         handleUpdate={() => setAction("update")}
       />
-      <CostCentreTransactions />
+      {data && <CostCentreTransactions costCentreId={data?.id} />}
     </div>
   );
 };

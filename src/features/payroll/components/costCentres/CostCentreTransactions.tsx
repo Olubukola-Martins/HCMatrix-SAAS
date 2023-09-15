@@ -90,34 +90,46 @@ const columns: ColumnsType<TTransaction> = [
 ];
 
 interface ComponentProps {
-  type: TTransactionType;
+  type: TTransactionType[];
+  costCentreId: number;
 }
 
 const Component: React.FC<
   ComponentProps & TFilterTransactionContainerProps
-> = ({ status, employeeId, type }) => {
+> = ({ status, employeeId, type, costCentreId }) => {
   return (
     <TransactionsContainer
       columns={columns}
       status={status}
       employeeId={employeeId}
       type={type}
+      transactionApiEntity={{ costCentreId, entity: "cost-centre" }}
     />
   );
 };
-const TransactionsWithFilter = withFilterTransactionContainer(Component);
+const TransactionsWithFilter = withFilterTransactionContainer(Component, {
+  displayEmployeeFilter: true,
+  displayStatusFilter: true,
+  displayTransactionTypeFilter: false,
+});
 
-const CostCentreTransactions = () => {
+const CostCentreTransactions: React.FC<{
+  costCentreId: number;
+}> = ({ costCentreId }) => {
   const tabItems = [
     {
       key: "Credit",
       label: "Credit",
-      children: <TransactionsWithFilter type="credit" />,
+      children: (
+        <TransactionsWithFilter type={["credit"]} costCentreId={costCentreId} />
+      ),
     },
     {
       key: "Debit",
       label: "Debit",
-      children: <TransactionsWithFilter type="debit" />,
+      children: (
+        <TransactionsWithFilter type={["debit"]} costCentreId={costCentreId} />
+      ),
     },
   ];
   return <Tabs items={tabItems} />;

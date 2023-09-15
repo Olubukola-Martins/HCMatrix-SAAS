@@ -1,6 +1,5 @@
 import { Modal, Skeleton, Switch } from "antd";
 import Themes from "components/Themes";
-import { employeeInformationOptions } from "features/payroll/constants";
 import { useActivateOrDeactivateEmployeeSalaryComponent } from "features/payroll/hooks/payroll/employee/salaryComponent/useActivateOrDeactivateEmployeeSalaryComponent";
 import { QUERY_KEY_FOR_EMPLOYEES_IN_PAYROLL } from "features/payroll/hooks/payroll/employee/useGetEmployeesInPayroll";
 import {
@@ -134,7 +133,7 @@ const ViewEmployeePayrollBreakdown: React.FC<IProps> = ({
       value: moment(employeePayroll?.createdAt).format("YYYY-MM-DD"),
       takeFullSpace: true,
     },
-    ...employeeInformationOptions,
+    ...[],
   ];
   return (
     <Modal

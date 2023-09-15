@@ -30,7 +30,6 @@ const PayslipsTransactionsPage = () => {
             {employee ? (
               <PayslipTransactionContainer
                 employeePayrollType={employee?.jobInformation.payrollType}
-                employeeId={employee.id}
               />
             ) : null}
           </ErrorWrapper>

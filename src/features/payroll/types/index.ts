@@ -10,7 +10,11 @@ import {
 import { TPensionAdministrator } from "./pensionAdministrators";
 import { TTaxAuthority } from "./taxAuthorities";
 
-export type TTransactionStatus = "completed" | "processing" | "declined";
+export type TTransactionStatus =
+  | "processing"
+  | "failed"
+  | "cancelled"
+  | "completed";
 export type TTransactionType = "credit" | "debit";
 export type TTransaction = {
   id: number;

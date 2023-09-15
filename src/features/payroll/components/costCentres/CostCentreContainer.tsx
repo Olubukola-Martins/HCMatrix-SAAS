@@ -201,27 +201,6 @@ const CostCentreCard: React.FC<{ data: TCostCentre }> = ({ data }) => {
                 Last Modified: {moment(data.updatedAt).format("YYYY-MM-DD")}
               </p>
             </div>
-            <div className="border-r-2" />
-            <div className="py-7 flex flex-col gap-4">
-              <div className="flex gap-2 items-center">
-                <p className="pb-2">Amount Entered:</p>
-                <span className="bg-card px-3 rounded-lg font-medium flex items-center">
-                  {data.amountEntered}
-                </span>
-              </div>
-              <div className="flex gap-2 items-center">
-                <p className="pb-2">Amount Paid:</p>
-                <span className="bg-card px-3 rounded-lg font-medium flex items-center">
-                  {data.amountPaid}
-                </span>
-              </div>
-              <div className="flex gap-2 items-center">
-                <p className="pb-2">Balance:</p>
-                <span className="bg-card px-3 rounded-lg font-medium flex items-center">
-                  {data.balance}
-                </span>
-              </div>
-            </div>
           </div>
         </div>
       </div>

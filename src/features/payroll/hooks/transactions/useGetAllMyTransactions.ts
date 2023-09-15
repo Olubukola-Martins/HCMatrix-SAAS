@@ -17,8 +17,7 @@ interface IGetDataProps {
   status?: TTransactionStatus;
 }
 
-export const QUERY_KEY_FOR_COST_CENTRE_TRANSACTIONS =
-  "cost-centre-transactions";
+export const QUERY_KEY_FOR_ALL_MY_TRANSACTIONS = "al-my-transactions";
 
 const getData = async (props: {
   data: IGetDataProps;
@@ -30,7 +29,7 @@ const getData = async (props: {
   const offset = pagination?.offset ?? 0;
   const name = props.data.searchParams?.name ?? "";
 
-  const url = `${MICROSERVICE_ENDPOINTS.PAYROLL}/cost-centre/${props.costCentreId}/transaction`;
+  const url = `${MICROSERVICE_ENDPOINTS.PAYROLL}/transaction`;
 
   const config = {
     headers: {
@@ -63,7 +62,7 @@ const getData = async (props: {
   return ans;
 };
 
-export const useGetCostCentreTransactions = (data: {
+export const useGetAllMyTransactions = (data: {
   props: IGetDataProps;
   costCentreId: number;
 }) => {
@@ -73,7 +72,7 @@ export const useGetCostCentreTransactions = (data: {
   const { pagination, searchParams, type, status } = props;
   const queryData = useQuery(
     [
-      QUERY_KEY_FOR_COST_CENTRE_TRANSACTIONS,
+      QUERY_KEY_FOR_ALL_MY_TRANSACTIONS,
       costCentreId,
       pagination,
       searchParams,

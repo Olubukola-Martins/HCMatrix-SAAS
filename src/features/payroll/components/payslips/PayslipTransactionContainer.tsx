@@ -11,6 +11,10 @@ import {
   DEFAULT_DATE_FORMAT,
   DEFAULT_TIME_FORMAT,
 } from "constants/dateFormats";
+import {
+  TFilterTransactionContainerProps,
+  withFilterTransactionContainer,
+} from "../transactions/hoc/FilterTransactionContainerProps";
 
 const columns: ColumnsType<TTransaction> = [
   {
@@ -96,11 +100,29 @@ const columns: ColumnsType<TTransaction> = [
 
 interface IProps {
   employeePayrollType: TPayrollSchemeType;
-  employeeId: number;
 }
+
+interface ComponentProps {}
+
+const Component: React.FC<
+  ComponentProps & TFilterTransactionContainerProps
+> = ({ status, transactionType }) => {
+  return (
+    <TransactionsContainer
+      columns={columns}
+      status={status}
+      type={transactionType}
+      transactionApiEntity={`transaction`}
+    />
+  );
+};
+const TransactionsWithFilter = withFilterTransactionContainer(Component, {
+  displayEmployeeFilter: false,
+  displayStatusFilter: true,
+  displayTransactionTypeFilter: true,
+});
 const PayslipTransactionContainer: React.FC<IProps> = ({
   employeePayrollType,
-  employeeId,
 }) => {
   const tabItems = [
     {
@@ -116,9 +138,7 @@ const PayslipTransactionContainer: React.FC<IProps> = ({
     {
       key: "Transactions",
       label: "Transactions",
-      children: (
-        <TransactionsContainer columns={columns} employeeId={employeeId} />
-      ),
+      children: <TransactionsWithFilter />,
     },
   ];
 
