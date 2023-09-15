@@ -1,12 +1,14 @@
-import { Checkbox, Form, Switch } from "antd";
+import { Checkbox, Switch } from "antd";
 import React, { useState } from "react";
 import { boxStyle, boxTitle } from "styles/reused";
 import { generalValidationRulesOp } from "utils/formHelpers/validation";
 import { PAYROLL_SCHEME_OPTIONS } from "features/payroll/constants";
 
-const LoanConfiguration = () => {
+const LoanConfiguration: React.FC<{
+  Form: any;
+}> = ({ Form }) => {
   const [bankDSwitch, setBankDSwitch] = useState(false);
-  const [form] = Form.useForm();
+
   return (
     <div className={`${boxStyle} text-sm`}>
       <div className="flex items-center justify-between">
@@ -24,16 +26,8 @@ const LoanConfiguration = () => {
 
       {bankDSwitch && (
         <div>
-          <Form
-            className="flex flex-col gap-4 mt-5"
-            form={form}
-            requiredMark={false}
-          >
-            <Form.Item
-              rules={generalValidationRulesOp}
-              name="payrollSchemes"
-              label=""
-            >
+          <div className="flex flex-col gap-4 mt-5">
+            <Form.Item rules={generalValidationRulesOp} name="schemes" label="">
               <Checkbox.Group>
                 {PAYROLL_SCHEME_OPTIONS.map((item, i) => (
                   <Checkbox value={item.value} key={i}>
@@ -42,20 +36,7 @@ const LoanConfiguration = () => {
                 ))}
               </Checkbox.Group>
             </Form.Item>
-
-            <div className="flex items-center justify-between mt-6 mb-2">
-              <button
-                onClick={() => setBankDSwitch(false)}
-                className="transparentButton"
-                type="button"
-              >
-                Cancel
-              </button>
-              <button className="button" type="submit">
-                Save
-              </button>
-            </div>
-          </Form>
+          </div>
         </div>
       )}
     </div>

@@ -1,11 +1,13 @@
-import { Form, Switch } from "antd";
+import { Switch } from "antd";
 import React, { useState } from "react";
 import { boxStyle, boxTitle } from "styles/reused";
 import { FormPayslipTemplateInput } from "../payslips/templates/FormPayslipTemplateInput";
 
-const SelectPayslipTemplate = () => {
+const SelectPayslipTemplate: React.FC<{
+  Form: any;
+}> = ({ Form }) => {
   const [bankDSwitch, setBankDSwitch] = useState(false);
-  const [form] = Form.useForm();
+
   return (
     <div className={`${boxStyle} text-sm`}>
       <div className="flex items-center justify-between">
@@ -24,29 +26,12 @@ const SelectPayslipTemplate = () => {
 
       {bankDSwitch && (
         <div>
-          <Form
-            className="flex flex-col gap-4 mt-5"
-            form={form}
-            requiredMark={false}
-          >
+          <div className="flex flex-col gap-4 mt-5">
             <FormPayslipTemplateInput
               Form={Form}
-              control={{ name: "payslipTemplateId", label: "" }}
+              control={{ name: "templateId", label: "" }}
             />
-
-            <div className="flex items-center justify-between mt-6 mb-2">
-              <button
-                onClick={() => setBankDSwitch(false)}
-                className="transparentButton"
-                type="button"
-              >
-                Cancel
-              </button>
-              <button className="button" type="submit">
-                Save
-              </button>
-            </div>
-          </Form>
+          </div>
         </div>
       )}
     </div>

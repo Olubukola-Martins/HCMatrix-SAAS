@@ -6,8 +6,62 @@ import PageSubHeader from "components/layout/PageSubHeader";
 import CompanyBankDetails from "../components/payrollSetting/CompanyBankDetails";
 import SelectPayslipTemplate from "../components/payrollSetting/SelectPayslipTemplate";
 import LoanConfiguration from "../components/payrollSetting/LoanConfiguration";
+import { Form } from "antd";
+import { useHandlelPayrollSetting } from "../hooks/payroll/setting/useHandlelPayrollSetting";
+import { useState } from "react";
+import { TPaystackBank } from "types/paystackBank";
+import { openNotification } from "utils/notifications";
+import { FormInstance } from "antd/es/form";
 
 const PayrollSetting = () => {
+  const [form] = Form.useForm();
+  const { mutate, isLoading } = useHandlelPayrollSetting();
+  const [bank, setBank] = useState<TPaystackBank>();
+
+  const handleSubmit = (data: any) => {
+    if (!bank) return;
+    mutate(
+      {
+        data: {
+          companyBankDetails: {
+            bankCode: data.bankCode,
+            accountNumber: data.accountNumber,
+            bankName: bank.name,
+          },
+          loanConfiguration: {
+            isActive: data.schemes.length > 0,
+            schemes: data.schemes,
+          },
+          payslipTemplate: {
+            templateId: data.templateId,
+          },
+        },
+      },
+      {
+        onError: (err: any) => {
+          openNotification({
+            state: "error",
+            title: "Error Occurred",
+            description:
+              err?.response.data.message ?? err?.response.data.error.message,
+          });
+        },
+        onSuccess: (res: any) => {
+          openNotification({
+            state: "success",
+
+            title: "Success",
+            description: res.data.message,
+            // duration: 0.4,
+          });
+          form.resetFields();
+        },
+      }
+    );
+  };
+  const handleBank = (bank?: TPaystackBank) => {
+    setBank(bank);
+  };
   return (
     <>
       <PayrollSubNav />
@@ -16,28 +70,46 @@ const PayrollSetting = () => {
         <PageSubHeader
           description={"Configure your payroll setting"}
           hideBackground
+          actions={[
+            {
+              handleClick: () => form.submit(),
+              name: "Save",
+
+              loading: isLoading,
+            },
+          ]}
         />
-        <PayslipContainer />
+        <PayrollSettingContainer
+          Form={Form}
+          handleSubmit={handleSubmit}
+          handleBank={handleBank}
+          form={form}
+        />
       </div>
     </>
   );
 };
 
-const PayslipContainer = () => {
+const PayrollSettingContainer: React.FC<{
+  Form: any;
+  form: FormInstance<any>;
+  handleSubmit: (data: any) => void;
+  handleBank: (data?: TPaystackBank) => void;
+}> = ({ Form, handleSubmit, handleBank, form }) => {
   return (
     <>
-      <div className="">
+      <Form requiredMark={false} onFinish={handleSubmit} form={form}>
         <div className="bg-card px-5 py-7  rounded-md mt-7 grid grid-cols-1 md:grid-cols-2 gap-7 text-accent">
           <div className="flex flex-col gap-4">
-            <CompanyBankDetails />
-            <LoanConfiguration />
+            <CompanyBankDetails key={1} Form={Form} handleBank={handleBank} />
+            <LoanConfiguration key={2} Form={Form} />
           </div>
 
           <div className="flex flex-col gap-4">
-            <SelectPayslipTemplate />
+            <SelectPayslipTemplate key={3} Form={Form} />
           </div>
         </div>
-      </div>
+      </Form>
     </>
   );
 };

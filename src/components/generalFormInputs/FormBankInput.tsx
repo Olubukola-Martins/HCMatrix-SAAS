@@ -10,7 +10,17 @@ export const FormBankInput: React.FC<{
   Form: any;
   showLabel?: boolean;
   control?: { label: string; name: string };
-}> = ({ Form, showLabel = true, control, handleSelect, onClear }) => {
+  noStyle?: boolean;
+  className?: string;
+}> = ({
+  Form,
+  showLabel = true,
+  control,
+  handleSelect,
+  onClear,
+  noStyle,
+  className = "rounded border-slate-400",
+}) => {
   const { data: banks, isFetching } = useGetBanksFromPaystack();
 
   const [data, setData] = useState<TPaystackBank[]>([]);
@@ -31,6 +41,7 @@ export const FormBankInput: React.FC<{
       name={control?.name ?? "bankCode"}
       label={showLabel ? control?.label ?? "Bank" : null}
       rules={generalValidationRules}
+      noStyle={noStyle}
     >
       <Select
         getPopupContainer={(triggerNode) => triggerNode.parentElement}
@@ -47,7 +58,7 @@ export const FormBankInput: React.FC<{
           onClear?.();
         }}
         onSearch={(val) => setSearch(val)}
-        className="rounded border-slate-400"
+        className={className}
         defaultActiveFirstOption={false}
         showArrow={false}
         filterOption={false}
@@ -55,6 +66,7 @@ export const FormBankInput: React.FC<{
           label: `${item.name}`,
           value: item.code,
         }))}
+        placeholder="Select a Bank"
       />
     </Form.Item>
   );
