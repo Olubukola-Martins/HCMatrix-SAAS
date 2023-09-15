@@ -8,7 +8,8 @@ type TData = {
   employeeId: number;
 };
 const delData = async (props: { data: TData; auth: ICurrentCompany }) => {
-  const url = `${MICROSERVICE_ENDPOINTS.NOTIFICATION}/alert/all/${props.data.employeeId}`;
+  // const url = `${MICROSERVICE_ENDPOINTS.NOTIFICATION}/alert/all/${props.data.employeeId}`;
+  const url = `${MICROSERVICE_ENDPOINTS.NOTIFICATION}/alert/all/`;
   const config = {
     headers: {
       Accept: "application/json",
