@@ -5,11 +5,11 @@ import { useApiAuth } from "hooks/useApiAuth";
 import { useMutation } from "react-query";
 import { ICurrentCompany } from "types";
 
-export type TPayrolSettingData = Partial<{
+export type TPayrolSettingData = {
   companyBankDetails: CompanyBankDetails;
   loanConfiguration: LoanConfiguration;
   payslipTemplate: PayslipTemplate;
-}>;
+};
 
 interface PayslipTemplate {
   templateId: number;

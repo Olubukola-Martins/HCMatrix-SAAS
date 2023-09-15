@@ -1,22 +1,22 @@
 import { Checkbox, Switch } from "antd";
-import React, { useState } from "react";
+import React from "react";
 import { boxStyle, boxTitle } from "styles/reused";
 import { generalValidationRulesOp } from "utils/formHelpers/validation";
 import { PAYROLL_SCHEME_OPTIONS } from "features/payroll/constants";
 
 const LoanConfiguration: React.FC<{
   Form: any;
-}> = ({ Form }) => {
-  const [bankDSwitch, setBankDSwitch] = useState(false);
-
+  loanActivation: boolean;
+  handleLoanActivation: (val: boolean) => void;
+}> = ({ Form, loanActivation, handleLoanActivation }) => {
   return (
     <div className={`${boxStyle} text-sm`}>
       <div className="flex items-center justify-between">
         <h5 className={boxTitle}>Loan Configuration</h5>
         <Switch
-          checked={bankDSwitch}
+          checked={loanActivation}
           onChange={(value) => {
-            setBankDSwitch(value);
+            handleLoanActivation(value);
           }}
         />
       </div>
@@ -24,7 +24,7 @@ const LoanConfiguration: React.FC<{
         Select the payroll schemes that will be eligible for loan
       </p>
 
-      {bankDSwitch && (
+      {loanActivation && (
         <div>
           <div className="flex flex-col gap-4 mt-5">
             <Form.Item rules={generalValidationRulesOp} name="schemes" label="">

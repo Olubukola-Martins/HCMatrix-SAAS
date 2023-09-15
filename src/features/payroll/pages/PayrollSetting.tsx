@@ -14,9 +14,14 @@ import { openNotification } from "utils/notifications";
 import { FormInstance } from "antd/es/form";
 
 const PayrollSetting = () => {
+  // TODO: Fetch Payroll Setting if it exists
   const [form] = Form.useForm();
   const { mutate, isLoading } = useHandlelPayrollSetting();
   const [bank, setBank] = useState<TPaystackBank>();
+  const [loanActivation, setLoanActivation] = useState(false);
+  const handleLoanActivation = (val: boolean) => {
+    setLoanActivation(val);
+  };
 
   const handleSubmit = (data: any) => {
     if (!bank) return;
@@ -29,7 +34,7 @@ const PayrollSetting = () => {
             bankName: bank.name,
           },
           loanConfiguration: {
-            isActive: data.schemes.length > 0,
+            isActive: loanActivation,
             schemes: data.schemes,
           },
           payslipTemplate: {
@@ -54,7 +59,7 @@ const PayrollSetting = () => {
             description: res.data.message,
             // duration: 0.4,
           });
-          form.resetFields();
+          // form.resetFields();
         },
       }
     );
@@ -84,6 +89,8 @@ const PayrollSetting = () => {
           handleSubmit={handleSubmit}
           handleBank={handleBank}
           form={form}
+          loanActivation={loanActivation}
+          handleLoanActivation={handleLoanActivation}
         />
       </div>
     </>
@@ -95,18 +102,31 @@ const PayrollSettingContainer: React.FC<{
   form: FormInstance<any>;
   handleSubmit: (data: any) => void;
   handleBank: (data?: TPaystackBank) => void;
-}> = ({ Form, handleSubmit, handleBank, form }) => {
+  loanActivation: boolean;
+  handleLoanActivation: (val: boolean) => void;
+}> = ({
+  Form,
+  handleSubmit,
+  handleBank,
+  form,
+  handleLoanActivation,
+  loanActivation,
+}) => {
   return (
     <>
       <Form requiredMark={false} onFinish={handleSubmit} form={form}>
         <div className="bg-card px-5 py-7  rounded-md mt-7 grid grid-cols-1 md:grid-cols-2 gap-7 text-accent">
           <div className="flex flex-col gap-4">
-            <CompanyBankDetails key={1} Form={Form} handleBank={handleBank} />
-            <LoanConfiguration key={2} Form={Form} />
+            <CompanyBankDetails Form={Form} handleBank={handleBank} />
+            <LoanConfiguration
+              Form={Form}
+              loanActivation={loanActivation}
+              handleLoanActivation={handleLoanActivation}
+            />
           </div>
 
           <div className="flex flex-col gap-4">
-            <SelectPayslipTemplate key={3} Form={Form} />
+            <SelectPayslipTemplate Form={Form} />
           </div>
         </div>
       </Form>
