@@ -4,11 +4,8 @@ import { useApiAuth } from "hooks/useApiAuth";
 import { useMutation } from "react-query";
 import { ICurrentCompany } from "types";
 
-type TData = {
-  employeeId: number;
-};
-const delData = async (props: { data: TData; auth: ICurrentCompany }) => {
-  const url = `${MICROSERVICE_ENDPOINTS.NOTIFICATION}/alert/all/${props.data.employeeId}`;
+const delData = async (props: { auth: ICurrentCompany }) => {
+  const url = `${MICROSERVICE_ENDPOINTS.NOTIFICATION}/alert/all`;
   const config = {
     headers: {
       Accept: "application/json",
@@ -21,10 +18,9 @@ const delData = async (props: { data: TData; auth: ICurrentCompany }) => {
   return response;
 };
 export const useDeleteAllAlert = () => {
-  const { token, companyId, currentUserEmployeeId } = useApiAuth();
+  const { token, companyId } = useApiAuth();
   return useMutation(() =>
     delData({
-      data: { employeeId: currentUserEmployeeId },
       auth: { token, companyId },
     })
   );
