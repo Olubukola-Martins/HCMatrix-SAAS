@@ -19,7 +19,7 @@ const PayrollSetting = () => {
 
   const [form] = Form.useForm();
   const { mutate, isLoading } = useHandlelPayrollSetting();
-  const [bank, setBank] = useState<TPaystackBank>();
+  const [bank, setBank] = useState<Pick<TPaystackBank, "code" | "name">>();
   const [loanActivation, setLoanActivation] = useState(false);
   const handleLoanActivation = (val: boolean) => {
     setLoanActivation(val);
@@ -28,6 +28,10 @@ const PayrollSetting = () => {
   useEffect(() => {
     if (!setting) return;
     setLoanActivation(setting.loanConfiguration.isActive);
+    setBank({
+      name: setting.companyBankDetails.bankName,
+      code: setting.companyBankDetails.bankCode,
+    });
     form.setFieldsValue({
       bankCode: setting.companyBankDetails.bankCode,
       accountNumber: setting.companyBankDetails.accountNumber,
@@ -39,14 +43,14 @@ const PayrollSetting = () => {
   }, [form, setting]);
 
   const handleSubmit = (data: any) => {
-    if (!bank || !setting?.companyBankDetails.bankName) return;
+    if (!bank) return;
     mutate(
       {
         data: {
           companyBankDetails: {
             bankCode: data.bankCode,
             accountNumber: data.accountNumber,
-            bankName: bank.name ?? setting?.companyBankDetails.bankName, // bank takes higher priority
+            bankName: bank.name,
           },
           loanConfiguration: {
             isActive: loanActivation,

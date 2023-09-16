@@ -1,15 +1,28 @@
-import React, { Component } from "react";
+import { Component, ReactNode } from "react";
 import ErrorImage from "../../assets/images/err.png";
 import { AppButton } from "components/button/AppButton";
 
-export class ErrorBoundary extends Component {
-  constructor(props) {
+interface ErrorBoundaryProps {
+  message?: string;
+  children?: ReactNode;
+  action?: () => void;
+}
+
+interface ErrorBoundaryState {
+  hasError: boolean;
+}
+
+export class ErrorBoundary extends Component<
+  ErrorBoundaryProps,
+  ErrorBoundaryState
+> {
+  constructor(props: ErrorBoundaryProps) {
     super(props);
     this.state = {
       hasError: false,
     };
   }
-  static getDerivedStateFromError(err) {
+  static getDerivedStateFromError() {
     return {
       hasError: true,
     };
