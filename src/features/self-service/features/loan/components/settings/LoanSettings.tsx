@@ -3,6 +3,7 @@ import RepaymentPlan from "./repaymentPlans/RepaymentPlan";
 import LoanTypeSetup from "./loanTypes/LoanTypeSetup";
 import MaxloanPercentSetup from "./MaxloanPercentSetup";
 import SelectLoanCostCentre from "./SelectLoanCostCentre";
+import { EmployeeApplicationConfiguration } from "./EmployeeApplicationConfiguration";
 
 const LoanSettings = () => {
   return (
@@ -20,6 +21,7 @@ const LoanSettings = () => {
           <LoanTypeSetup />
 
           <MaxloanPercentSetup />
+          <EmployeeApplicationConfiguration />
         </div>
       </div>
     </div>
