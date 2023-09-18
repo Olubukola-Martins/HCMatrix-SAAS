@@ -7,3 +7,336 @@
 .applicantInfoPageParagraph {
   @apply bg-white rounded border border-[#686868] p-2 mt-1 md:w-[20rem] w-[17rem] lg:w-[23rem];
 }
+
+/* ADD JOB OPENING CONTAINER STYLE */
+/* STEPPER STYLES*/
+.add-job-opening-step .ant-steps {
+  margin-left: 1%;
+  width: 93%;
+  height: 100%;
+  margin-top: auto;
+  margin-bottom: auto;
+}
+.add-job-opening-step .ant-steps .ant-steps-item-finish .ant-steps-item-icon {
+  background: var(--caramel);
+}
+.add-job-opening-step
+  .ant-steps
+  .ant-steps-item-finish
+  .ant-steps-item-icon
+  > .ant-steps-icon {
+  color: var(--background);
+}
+.add-job-opening-step
+  .ant-steps
+  .ant-steps-item-process
+  > .ant-steps-item-container
+  > .ant-steps-item-icon {
+  background: var(--background);
+}
+.add-job-opening-step
+  .ant-steps
+  .ant-steps-item-process
+  > .ant-steps-item-container
+  > .ant-steps-item-icon
+  > .ant-steps-icon {
+  color: var(--caramel);
+}
+
+.add-job-opening-step
+  .ant-steps
+  .ant-steps-item-container
+  .ant-steps-item-tail {
+  padding: 3.5px 28px;
+  margin-left: 60px;
+}
+.add-job-opening-step .ant-steps .ant-steps-item-tail:after {
+  height: 4px;
+}
+.add-job-opening-step
+  .ant-steps
+  .ant-steps-item
+  .ant-steps-item-container
+  .ant-steps-item-content {
+  margin-top: 27px;
+  width: fit-content;
+}
+.add-job-opening-step .ant-steps .ant-steps-item .ant-steps-item-container {
+  position: relative;
+}
+.add-job-opening-step
+  .ant-steps
+  .ant-steps-item:first-child
+  .ant-steps-item-container
+  .ant-steps-item-content {
+  margin-left: 42px;
+}
+.add-job-opening-step
+  .ant-steps
+  .ant-steps-item:last-child
+  .ant-steps-item-container
+  .ant-steps-item-content {
+  right: 0;
+  position: absolute;
+}
+
+.add-job-opening-step
+  .ant-steps
+  .ant-steps-item-content
+  > .ant-steps-item-description {
+  margin: auto;
+  width: max-content;
+  color: #3a3a3a;
+  font-size: 18px;
+  font-weight: 400;
+}
+
+.add-job-opening-step .ant-steps .ant-steps-item-icon {
+  width: 2.63rem;
+  height: 2.63rem;
+}
+
+/* FORM */
+#addJobOpeningSection .ant-form-vertical .ant-form-item-label > label,
+#addJobOpeningSection
+  .ant-form-item-control-input-content
+  .ant-checkbox-wrapper {
+  /* font-size: 18px; */
+  font-weight: 350;
+}
+/* .ant-form-item-control-input-content .ant-input,
+.ant-form-item-control-input-content .ant-select,
+.ant-form-item-control-input-content textarea {
+  font-size: 16px;
+} */
+#addJobOpeningSection
+  .ant-form-item-control-input-content
+  .ant-select-single.ant-select-show-arrow
+  .ant-select-selection-item,
+#addJobOpeningSection
+  .ant-form-item-control-input-content
+  .ant-select-single.ant-select-show-arrow
+  .ant-select-selection-placeholder {
+  margin-top: auto;
+  margin-bottom: auto;
+}
+/* .ant-form-item-control-input .ant-form-item-control-input-content input {
+  padding-left: 24px;
+} */
+#addJobOpeningSection .ant-checkbox-wrapper .ant-checkbox::selection,
+#addJobOpeningSection
+  .ant-form-item-control-input-content
+  .ant-checkbox-wrapper
+  .ant-checkbox:hover {
+  background: var(--caramel);
+}
+#addJobOpeningSection .ant-form > div:not(#buttons),
+#addJobOpeningSection .ant-form > .addit-ques-div:last-child {
+  /* font-size: 18px; */
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  padding: 22px 20px;
+  background-color: var(--card);
+}
+#addJobOpeningSection .ant-form > .addit-ques-div:nth-child(2) {
+  width: 100%;
+}
+div #addJobOpeningSection #addJobOpening #integration-text {
+  flex-direction: column;
+  width: 100%;
+  background-color: var(--background);
+  align-items: start;
+}
+
+#addJobOpeningSection #addJobOpening #expiryDate,
+#addJobOpeningSection #addJobOpening #addBenefit,
+#addJobOpeningSection #addJobOpening .addit-ques-div:nth-child(1),
+#addJobOpeningSection #addJobOpening .addit-ques-div:nth-child(2),
+#addJobOpeningSection #addJobOpening .addit-ques-div:nth-child(3) {
+  align-items: start;
+  display: flex;
+  padding: 22px 20px;
+  background-color: var(--card);
+  flex-direction: column;
+}
+#addJobOpeningSection .ant-form
+  div
+  .ant-form-item:not(#addBenefit .ant-form-item),#addJobOpeningSection .ant-form
+  div
+  .ant-form-item:not(#expiryDate .ant-form-item),#addJobOpeningSection .ant-form
+  div
+  .ant-form-item:not(#job-Description .ant-form-item)
+  /* :not(#buttons .ant-form-item)
+    */ {
+  margin: auto 0;
+  height: inherit;
+  width: 31.25vw;
+}
+#addJobOpeningSection .ant-select-selection-overflow {
+  overflow: overlay;
+  max-height: 100%;
+}
+#addJobOpeningSection
+  .ant-form
+  #job-Description
+  .ant-form-item:not(#buttons .ant-form-item),
+#addJobOpeningSection .ant-form .addit-ques-div:nth-child(2),
+#addJobOpeningSection #addJobOpening #addBenefit .ant-form-item,
+#addJobOpeningSection .ant-form #expiryDate div,
+#addJobOpeningSection .ant-form #expiryDate div .ant-form-item,
+.ant-form-item,
+#addJobOpeningSection .ant-form #job-Description .ant-form-item {
+  width: 100%;
+}
+#addJobOpeningSection .ant-form #ask-quest .ant-form-item {
+  width: 100% !important;
+}
+#addJobOpeningSection #addJobOpening .addit-ques-div:nth-child(1),
+#addJobOpeningSection #addJobOpening .addit-ques-div:nth-child(3),
+#addJobOpeningSection #addJobOpening #sub-heading {
+  background-color: var(--mainBg);
+  padding: 0;
+}
+
+#addJobOpeningSection
+  .ant-form
+  #job-Description
+  .ant-form-item
+  .ant-form-item-control {
+  margin-top: 24px;
+}
+#addJobOpeningSection
+  .ant-form-item-control-input
+  .ant-form-item-control-input-content
+  .ant-btn-text:hover {
+  color: var(--caramel) !important;
+  text-decoration: underline;
+}
+
+  .last-pg-btns, .last-pg-btns div {
+    background-color: var(--background) !important;
+  }
+/* MEDIA QUERIES */
+@media (max-width: 1023px) {
+  /* stepper */
+  .add-job-opening-step
+    .ant-steps
+    .ant-steps-item-content
+    > .ant-steps-item-description {
+    font-size: 15px;
+  }
+
+  /* form */
+
+  #addJobOpeningSection .ant-form-item-control-input-content .ant-btn-text {
+    font-size: 20px;
+  }
+  #addJobOpeningSection .ant-form-item-control-input-content .ant-btn-primary {
+    font-size: 12px;
+    height: 32px;
+  }
+  #addJobOpeningSection
+    .ant-form
+    #job-Description
+    .ant-form-item
+    .ant-form-item-control {
+    margin-top: 22px;
+  }
+}
+
+@media (max-width: 699px) {
+  /* form */
+  #addJobOpeningSection .ant-form > div:not(#buttons) {
+    display: flex;
+    flex-direction: column;
+    gap: 13px;
+    padding: 20px 15px;
+  }
+  #addJobOpeningSection .ant-form #switch {
+    display: flex;
+    flex-direction: row !important;
+  }
+  #addJobOpeningSection .ant-form > div:not(#buttons),
+  #addJobOpeningSection .ant-form > div:not(#switch) > div,
+  #addJobOpeningSection .ant-form .addit-ques-div:nth-child(2),
+  #addJobOpeningSection
+    #addJobOpeningSection
+    #addJobOpening
+    div
+    .ant-form-item {
+    width: 100% !important;
+    background-color: var(--card);
+  }
+  #addJobOpeningSection .ant-form-item-control-input-content .ant-btn-text {
+    font-size: 15px;
+  }
+  #addJobOpeningSection
+    .ant-form
+    #job-Description
+    .ant-form-item
+    .ant-form-item-control {
+    margin-top: 19px;
+  }
+  .last-pg-btns {
+    display: flex;
+    flex-direction: column !important;
+    gap: 15px !important;
+    align-items: start !important;
+    background-color: var(--background) !important;
+  }
+  .last-pg-btns div {
+    background-color: var(--background) !important;
+    gap: 8px;
+    justify-content: space-between;
+    max-width: 100%;
+  }
+  .last-pg-btns div button {
+    font-size: 12px;
+  }
+}
+
+@media (max-width: 574px) {
+  /* stepper */
+  .add-job-opening-step .ant-steps .ant-steps-item:last-child .ant-steps-item-container .ant-steps-item-content {
+    position: relative;
+}
+  .Container .add-job-opening-step {
+    height: fit-content;
+  }
+  .add-job-opening-step .ant-steps {
+    gap: 0.5rem;
+    margin: auto;
+  }
+
+  /* Form */
+  #addJobOpeningSection
+    #add-job-opening
+    .ant-steps
+    .ant-steps-item
+    .ant-steps-item-container
+    .ant-steps-item-content {
+    margin-top: 0;
+    position: relative;
+    padding-left: 15px;
+    flex-direction: column;
+    display: flex;
+  }
+}
+
+/* APPLICATION QUESTIONS STYLING */
+
+@media (max-width: 699px) {
+  #addJobOpeningSection .ant-form > .app-quest-div,
+  #addJobOpeningSection .ant-form > .addit-ques-div:last-child {
+    display: flex;
+    flex-direction: row;
+    gap: 13px;
+    padding: 20px 15px;
+  }
+
+  #addJobOpeningSection .ant-form div #expiryDate .ant-form-item {
+    width: 100%;
+  }
+}
