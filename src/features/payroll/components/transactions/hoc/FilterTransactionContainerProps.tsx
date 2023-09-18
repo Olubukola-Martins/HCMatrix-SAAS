@@ -49,6 +49,7 @@ export function withFilterTransactionContainer<
                     handleSelect={(val) => setEmployeeId(val)}
                     control={{ label: "", name: "_" }}
                     noStyle
+                    handleClear={() => setEmployeeId(undefined)}
                   />
                 </div>
               )}

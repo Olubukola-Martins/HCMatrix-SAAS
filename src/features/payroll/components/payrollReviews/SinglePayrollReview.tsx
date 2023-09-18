@@ -9,6 +9,8 @@ import { useApproveORReject } from "hooks/useApproveORReject";
 import { QUERY_KEY_FOR_PAYROLLS_BY_SCHEME } from "features/payroll/hooks/payroll/useGetAllPayrollsByScheme";
 import { useQueryClient } from "react-query";
 import { useFetchApprovalRequests } from "features/core/workflows/hooks/useFetchApprovalRequests";
+import { useNavigate } from "react-router-dom";
+import { appRoutes } from "config/router/paths";
 
 interface IProps {
   payroll: TSinglePayroll;
@@ -37,13 +39,14 @@ const SinglePayrollReview: React.FC<IProps> = ({ payroll }) => {
   const payrollRequestItem = payrollApprRequests?.data.find(
     (item) => item.payroll?.id === payroll.id
   );
-
+  const navigate = useNavigate();
   const { confirmApprovalAction } = useApproveORReject({
     handleSuccess: () => {
       queryClient.invalidateQueries({
         queryKey: [QUERY_KEY_FOR_PAYROLLS_BY_SCHEME],
         // exact: true,
       });
+      navigate(appRoutes.payrollReview);
     },
   });
   return (

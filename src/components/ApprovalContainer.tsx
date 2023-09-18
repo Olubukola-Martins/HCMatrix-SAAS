@@ -67,6 +67,7 @@ const ApprovalContainer = () => {
             queryKey: [QUERY_KEY_FOR_APPROVAL_REQUESTS],
             // exact: true,
           });
+          approval?.handleSuccess?.();
         },
       }
     );

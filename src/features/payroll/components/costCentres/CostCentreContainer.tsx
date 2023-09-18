@@ -24,11 +24,12 @@ export const CostCentreContainer = () => {
   const [url, setUrl] = useState<string>();
   const queryClient = useQueryClient();
 
-  const handleSubmit = (data: { name: string; amountEntered: number }) => {
+  const handleSubmit = (data: { name?: string; amountEntered?: number }) => {
+    if (!data.name || !data.amountEntered) return;
     mutate(
       {
-        name: data.name,
-        amountEntered: data.amountEntered,
+        name: data?.name,
+        amountEntered: data?.amountEntered,
       },
       {
         onError: (err: any) => {
@@ -47,8 +48,8 @@ export const CostCentreContainer = () => {
             description: res.message,
             // duration: 0.4,
           });
-          console.log("url", res.data.paymentData.authorization_url);
-          setUrl(res.data.paymentData.authorization_url);
+          res.data?.paymentData?.authorization_url &&
+            setUrl(res.data?.paymentData?.authorization_url);
           queryClient.invalidateQueries({
             queryKey: [QUERY_KEY_FOR_COST_CENTRES],
             // exact: true,
@@ -118,19 +119,21 @@ const CostCentreCardList = () => {
   );
 };
 
-type TAction = "fund" | "delete" | "view";
+type TAction = "fund" | "delete" | "view" | "edit";
 const CostCentreCard: React.FC<{ data: TCostCentre }> = ({ data }) => {
+  const queryClient = useQueryClient();
+
   const [action, setAction] = useState<TAction>();
   const { mutate, isLoading } = useUpdateCostCentre();
   const [url, setUrl] = useState<string>();
 
-  const handleSubmit = (props: { name: string; amountEntered: number }) => {
+  const handleSubmit = (props: { name?: string; amountEntered?: number }) => {
     mutate(
       {
         id: data.id,
         body: {
           name:
-            props.name.toLowerCase() === data.name.toLowerCase()
+            props?.name?.toLowerCase() === data.name.toLowerCase()
               ? undefined
               : props.name,
           amountEntered: props.amountEntered,
@@ -153,38 +156,67 @@ const CostCentreCard: React.FC<{ data: TCostCentre }> = ({ data }) => {
             description: res.message,
             // duration: 0.4,
           });
-          console.log("url", res.data?.paymentData.authorization_url);
-          setUrl(res.data?.paymentData.authorization_url);
+
+          res.data?.paymentData?.authorization_url &&
+            setUrl(res.data?.paymentData?.authorization_url);
+          if (!res.data?.paymentData?.authorization_url) {
+            // only invalidate query when there is no payment
+            queryClient.invalidateQueries({
+              queryKey: [QUERY_KEY_FOR_COST_CENTRES],
+              // exact: true,
+            });
+          }
         },
       }
     );
   };
+  const onClose = () => {
+    setAction(undefined);
+    setUrl(undefined);
+  };
   return (
     <>
       <SaveCostCentre
+        key="fund"
         open={action === "fund"}
-        handleClose={() => setAction(undefined)}
+        handleClose={onClose}
         url={url}
         handleSubmit={{ fn: handleSubmit, isLoading }}
         costCentre={data}
-        title="Update Cost Centre"
+        title="Fund Cost Centre"
+        fieldsToDisplay={["amountEntered"]}
+      />
+      <SaveCostCentre
+        key="edit"
+        open={action === "edit"}
+        handleClose={onClose}
+        handleSubmit={{ fn: handleSubmit, isLoading }}
+        costCentre={data}
+        title="Edit Cost Centre"
+        fieldsToDisplay={["name"]}
       />
 
       <DeleteCostCentre
         open={action === "delete"}
-        handleClose={() => setAction(undefined)}
+        handleClose={onClose}
         costCentre={data}
       />
 
       <div className="rounded border shadow bg-mainBg">
         <div className="bg-card p-3 flex justify-between items-center">
-          <h4 className="font-medium text-lg">{data.name}</h4>
-          <div className="flex gap-4 items-center">
-            <AppButton label="Update" handleClick={() => setAction("fund")} />
+          <Link to={appRoutes.singleCostCentre(data.id).path} className="">
+            <h4 className="font-medium text-lg text-caramel underline underline-offset-2 hover:no-underline capitalize">
+              {data.name}
+            </h4>
+          </Link>
 
-            <Link to={appRoutes.singleCostCentre(data.id).path}>
-              <i className="ri-eye-fill text-lg cursor-pointer" />
-            </Link>
+          <div className="flex gap-4 items-center">
+            <AppButton label="Fund" handleClick={() => setAction("fund")} />
+
+            <i
+              className="ri-pencil-line text-lg cursor-pointer"
+              onClick={() => setAction("edit")}
+            />
             <i
               className="ri-delete-bin-6-line text-lg cursor-pointer"
               onClick={() => setAction("delete")}

@@ -10,6 +10,11 @@ import { Input } from "antd";
 import { AppButton } from "components/button/AppButton";
 import { useVerify2FA } from "features/core/employees/hooks/twoFactorAuth/verify/useVerify2FA";
 
+interface TVerifyResponse {
+  message: string;
+  data: string[];
+}
+
 export const Setup2FA: React.FC<IModalProps> = ({ open, handleClose }) => {
   type TAction = "display-qrcode";
   const [action, setAction] = useState<TAction>();
@@ -35,13 +40,21 @@ export const Setup2FA: React.FC<IModalProps> = ({ open, handleClose }) => {
               err?.response.data.message ?? err?.response.data.error.message,
           });
         },
-        onSuccess: (res) => {
+        onSuccess: (res: { data: TVerifyResponse }) => {
           openNotification({
             state: "success",
 
             title: "Success",
-            description: res.data.message,
-            // duration: 0.4,
+            description: (
+              <div className="flex flex-col gap-2">
+                <p>{res.data.message}</p>
+                <p>
+                  <span className="font-semibold">Verification Codes: </span>{" "}
+                  {res.data.data.join(",")}
+                </p>
+              </div>
+            ),
+            duration: 0,
           });
           onClose();
           queryClient.invalidateQueries({

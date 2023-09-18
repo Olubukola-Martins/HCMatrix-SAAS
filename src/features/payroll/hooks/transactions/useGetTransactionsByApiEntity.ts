@@ -88,15 +88,17 @@ export const useGetTransactionsByApiEntity = (data: {
   const { props, transactionApiEntity } = data;
   const { token, companyId } = useApiAuth();
 
-  const { pagination, searchParams, type, status } = props;
+  const { pagination, searchParams, type, status, employeeId } = props;
   const queryData = useQuery(
     [
       QUERY_KEY_FOR_TRANSACTIONS_BY_API_ENTITY,
       transactionApiEntity,
-      pagination,
       searchParams,
       type,
       status,
+      employeeId,
+      pagination?.limit,
+      pagination?.offset,
     ],
     () =>
       getData({

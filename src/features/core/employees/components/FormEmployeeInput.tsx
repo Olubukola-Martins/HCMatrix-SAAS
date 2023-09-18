@@ -10,6 +10,7 @@ import { TEmployee } from "../types";
 
 export const FormEmployeeInput: React.FC<{
   handleSelect?: (val: number, employee?: TEmployee) => void;
+  handleClear?: () => void;
   fieldKey?: number;
   Form: any;
   noStyle?: boolean;
@@ -26,6 +27,7 @@ export const FormEmployeeInput: React.FC<{
   optional = false,
   mode,
   noStyle,
+  handleClear,
 }) => {
   const [searchTerm, setSearchTerm] = useState<string>("");
   const debouncedSearchTerm: string = useDebounce<string>(searchTerm);
@@ -38,6 +40,11 @@ export const FormEmployeeInput: React.FC<{
 
   const handleSearch = (val: string) => {
     setSearchTerm(val);
+  };
+
+  const onClear = () => {
+    setSearchTerm("");
+    handleClear?.();
   };
 
   return (
@@ -59,7 +66,7 @@ export const FormEmployeeInput: React.FC<{
         placeholder={`Select employee${!!mode ? "s" : ""}`}
         showSearch
         allowClear
-        onClear={() => setSearchTerm("")}
+        onClear={onClear}
         onSearch={handleSearch}
         className="rounded border-slate-400 w-full"
         defaultActiveFirstOption={false}

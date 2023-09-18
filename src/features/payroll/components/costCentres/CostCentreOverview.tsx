@@ -1,21 +1,23 @@
-import { Dropdown, Skeleton } from "antd";
+import { Skeleton } from "antd";
+import { AppButton } from "components/button/AppButton";
 import { HighLightItemList } from "components/highlight/HighLightItemList";
-import React, { useState } from "react";
+import React from "react";
 
 interface IData {
-  totalTransactions: string;
-  balance: string;
-  lastFundedAmount: string;
+  totalTransactions: number;
+  balance: number;
+  lastFundedAmount: number;
   createdAt: string;
   updatedAt: string;
-  totalDebit: string;
-  totalCredit: string;
+  totalDebit: number;
+  totalCredit: number;
 }
 
 interface IProps {
   data?: Partial<IData>;
   isLoading?: boolean;
   handleUpdate: () => void;
+  handleFund: () => void;
   handleDelete: () => void;
 }
 
@@ -24,6 +26,7 @@ export const CostCentreOverview: React.FC<IProps> = ({
   isLoading,
   handleUpdate,
   handleDelete,
+  handleFund,
 }) => {
   const {
     totalTransactions = "0",
@@ -65,13 +68,16 @@ export const CostCentreOverview: React.FC<IProps> = ({
                 </div>
               </div>
               <div className="flex gap-3 text-xl">
+                <div>
+                  <AppButton label="Fund" handleClick={handleFund} />
+                </div>
                 <i
-                  title="Edit Project"
+                  title="Edit Cost Centre"
                   className="ri-pencil-line cursor-pointer hover:text-caramel"
                   onClick={() => handleUpdate()}
                 ></i>
                 <i
-                  title="Delete Project"
+                  title="Delete Cost Centre"
                   className="ri-delete-bin-line cursor-pointer hover:text-caramel"
                   onClick={() => handleDelete()}
                 ></i>

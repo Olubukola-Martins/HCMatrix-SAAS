@@ -977,6 +977,14 @@ const CreatePayrollContainer: React.FC<{
                     eligibility="citizen"
                     generalSalaryComponents={[...allowances, ...deductions]}
                     payrollId={payroll?.id}
+                    allowMultipleSelect={
+                      payroll?.status === "confirmed" ? false : true
+                    }
+                    allowedEmployeeActions={
+                      payroll?.status === "confirmed"
+                        ? ["view-details"]
+                        : undefined
+                    }
                   />
                 </div>
               </div>
@@ -1003,6 +1011,14 @@ const CreatePayrollContainer: React.FC<{
                     eligibility="expatriate"
                     generalSalaryComponents={[...allowances, ...deductions]}
                     payrollId={payroll?.id}
+                    allowMultipleSelect={
+                      payroll?.status === "confirmed" ? false : true
+                    }
+                    allowedEmployeeActions={
+                      payroll?.status === "confirmed"
+                        ? ["view-details"]
+                        : undefined
+                    }
                   />
                 </div>
               </div>

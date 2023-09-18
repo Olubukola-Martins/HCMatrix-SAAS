@@ -27,6 +27,7 @@ export const TransactionsContainer: React.FC<{
       type,
       status,
       employeeId,
+      pagination,
     },
   });
 

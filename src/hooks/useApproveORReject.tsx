@@ -24,7 +24,13 @@ export const useApproveORReject = ({ handleSuccess }: IProps = {}) => {
   }) => {
     globalDispatch({
       type: EGlobalOps.setCurrentApproval,
-      payload: { approvalStageId, workflowType, status, requires2FA },
+      payload: {
+        approvalStageId,
+        workflowType,
+        status,
+        requires2FA,
+        handleSuccess,
+      },
     });
   };
 

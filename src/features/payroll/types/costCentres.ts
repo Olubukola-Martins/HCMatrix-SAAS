@@ -2,14 +2,17 @@ export type TCostCentre = {
   id: number;
   name: string;
   label: string;
-  amountEntered: string;
-  amountPaid: string;
-  balance: string;
   companyId: number;
   createdAt: string;
   updatedAt: string;
+  deletedAt?: any;
+  lastAmountCredited: number;
+  totalTransactions: number;
+  totalCompletedTransaction: number;
+  balance: number;
+  totalCredits: number;
+  totalDebits: number;
 };
-
 export type TSaveCostCentreResponse = {
   message: string;
   data: Data;
