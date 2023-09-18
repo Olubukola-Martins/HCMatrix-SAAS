@@ -2,10 +2,9 @@ import React from "react";
 import RecruitmentSubNav from "../components/RecruitmentSubNav";
 import { WelcomeIntro } from "components/layout/WelcomeIntro";
 import { Tabs } from "antd";
-import { JobOpeningContainer } from "../features/jobOpenings/JobOpeningContainer";
-import ApplicationsList from "../components/ApplicationsList";
-import { RecruitmentUsers } from "../features/users/RecruitmentUsers";
-import TalentPool from "../features/talentPool/TalentPool";
+import { JobOpeningContainer } from "../features/jobOpenings/components/JobOpeningContainer";
+import ApplicationsList from "../features/applications/components/ApplicationsList";
+import TalentPool from "../features/talentPool/components/TalentPool";
 import { useDefaultSettingsCall } from "../hooks/useDefaultSettingsCall";
 
 const RecruitmentDashboard = () => {
@@ -47,11 +46,6 @@ export const DashboardWrapper = () => {
       children: <TalentPool />,
       key: "Talent Pool",
     },
-    // {
-    //   label: "Users",
-    //   children: <RecruitmentUsers />,
-    //   key: "Users",
-    // },
   ];
   return (
     <div>

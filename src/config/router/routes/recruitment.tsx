@@ -1,22 +1,22 @@
-import AddJobOpening from "features/recruitment/pages/AddJobOpening";
+import AddJobOpening from "features/recruitment/features/jobOpenings/pages/AddJobOpening";
 import { appRoutes } from "../paths";
 import { TRouteData } from "../types";
 import RecruitmentDashboard from "features/recruitment/pages/RecruitmentDashboard";
-import RecruitmentReport from "features/recruitment/pages/RecruitmentReport";
-import CandidateStatus from "features/recruitment/pages/CandidateStatus";
-import CandidateSource from "features/recruitment/pages/CandidateSource";
-import EmailTemplate from "features/recruitment/pages/EmailTemplate";
-import OfferTemplate from "features/recruitment/pages/OfferTemplate";
-import JobTemplate from "features/recruitment/pages/JobTemplate";
-import OtherSettings from "features/recruitment/pages/OtherSettings";
-import AddEmailTemplate from "features/recruitment/pages/AddEmailTemplate";
-import AddOfferTemplate from "features/recruitment/pages/AddOfferTemplate";
-import AddJobTemplate from "features/recruitment/pages/AddJobTemplate";
-import ApplicantDecription from "features/recruitment/features/applications/ApplicationDetails";
-import ApplicantInfo from "features/recruitment/features/applications/ApplicantInfo";
-import ApplicationsList from "features/recruitment/components/ApplicationsList";
-import ApplicationDetails from "features/recruitment/features/applications/ApplicationDetails";
-import ApplicantEmailPage from "features/recruitment/features/applications/ApplicantEmailPage";
+import RecruitmentReport from "features/recruitment/features/report/pages/RecruitmentReport";
+import CandidateStatus from "features/recruitment/settings/pages/CandidateStatus";
+import OtherSettings from "features/recruitment/settings/pages/OtherSettings";
+import AddEmailTemplate from "features/recruitment/settings/pages/AddEmailTemplate";
+import ApplicantInfo from "features/recruitment/features/applications/pages/ApplicantInfo";
+import ApplicationsList from "features/recruitment/features/applications/components/ApplicationsList";
+import ApplicationDetails from "features/recruitment/features/applications/components/ApplicationDetails";
+// import ApplicantDecription from "features/recruitment/features/applications/ApplicationDetails";
+import ApplicantEmailPage from "features/recruitment/features/applications/components/ApplicantEmailPage";
+import AddJobTemplate from "features/recruitment/settings/pages/AddJobTemplate";
+import AddOfferTemplate from "features/recruitment/settings/pages/AddOfferTemplate";
+import CandidateSource from "features/recruitment/settings/pages/CandidateSource";
+import EmailTemplate from "features/recruitment/settings/pages/EmailTemplate";
+import JobTemplate from "features/recruitment/settings/pages/JobTemplate";
+import OfferTemplate from "features/recruitment/settings/pages/OfferTemplate";
 
 export const recruitmentRoutes: TRouteData[] = [
   {
