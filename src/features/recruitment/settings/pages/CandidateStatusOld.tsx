@@ -1,10 +1,10 @@
 import { appRoutes } from "config/router/paths";
-import { RecruitmentSettingsIntro } from "features/recruitment/components/RecruitmentSettingsIntro";
+import { RecruitmentSettingsIntro } from "../../components/RecruitmentSettingsIntro";
 import { Form, Switch, Input, Skeleton, Popconfirm, FormInstance } from "antd";
 import '../../assets/style.css'
 import { textInputValidationRules } from "utils/formHelpers/validation";
 import { AppButton } from "components/button/AppButton";
-import { useDefaultSettingsCall } from "features/recruitment/hooks/useDefaultSettingsCall";
+import { useDefaultSettingsCall } from "../../hooks/useDefaultSettingsCall";
 import { useEffect, useRef, useState } from "react";
 import axios from "axios";
 import { MICROSERVICE_ENDPOINTS } from "config/enviroment";
@@ -13,14 +13,14 @@ import { openNotification } from "utils/notifications";
 import { QuestionCircleOutlined } from "@ant-design/icons";
 
 interface CandidateStatusType {
-  companyId: number;
-  createdAt: string;
+  // companyId: number;
+  // createdAt: string;
   isActive: boolean;
   isDefault: boolean;
   id: number;
   name: string;
   label: string;
-  updatedAt: string;
+  // updatedAt: string;
 }
 
 const CandidateStatus = () => {
