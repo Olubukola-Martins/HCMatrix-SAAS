@@ -1,11 +1,12 @@
-import { Avatar, Button, Form, Input, InputNumber, Switch, Table } from "antd";
+import { Button, Form, Input, Table } from "antd";
 import { ColumnsType, TablePaginationConfig, TableProps } from "antd/lib/table";
 import { useState } from "react";
 import { useQueryClient } from "react-query";
 import { openNotification } from "utils/notifications";
-import { useUpdateExchangeRate } from "features/payroll/hooks/exhangeRates/useUpdateExchangeRate";
-import { QUERY_KEY_FOR_EXCHANGE_RATES } from "features/payroll/hooks/exhangeRates/useGetExchangeRates";
 import { TLoanType } from "../../../types";
+import { DeleteLoanType } from "./DeleteLoanType";
+import { QUERY_KEY_FOR_LOAN_TYPES } from "../../../hooks/type/useGetLoanTypes";
+import { useUpdateLoanType } from "../../../hooks/type/useUpdateLoanType";
 
 interface IProps {
   data?: TLoanType[];
@@ -63,6 +64,8 @@ const EditableCell: React.FC<EditableCellProps> = ({
   );
 };
 
+type TAction = "delete";
+
 const LoanTypeTable = ({
   data = [],
   loading,
@@ -74,7 +77,7 @@ const LoanTypeTable = ({
 
   const [form] = Form.useForm();
 
-  const { mutate, isLoading } = useUpdateExchangeRate();
+  const { mutate, isLoading } = useUpdateLoanType();
 
   const [editingKey, setEditingKey] = useState<number>();
   const isEditing = (record: TLoanType) => record.id === editingKey;
@@ -85,6 +88,12 @@ const LoanTypeTable = ({
 
   const cancel = () => {
     setEditingKey(undefined);
+  };
+  const [action, setAction] = useState<TAction>();
+  const [selectedType, setSelectedType] = useState<TLoanType>();
+  const handleDelete = (props: { type: TLoanType }) => {
+    setAction("delete");
+    setSelectedType(props.type);
   };
   const save = async (key: React.Key) => {
     try {
@@ -98,8 +107,7 @@ const LoanTypeTable = ({
         {
           id: member.id,
           body: {
-            currency: member.name,
-            rate: +row.id,
+            name: row.name,
           },
         },
         {
@@ -124,7 +132,7 @@ const LoanTypeTable = ({
             cancel();
 
             queryClient.invalidateQueries({
-              queryKey: [QUERY_KEY_FOR_EXCHANGE_RATES],
+              queryKey: [QUERY_KEY_FOR_LOAN_TYPES],
               // exact: true,
             });
           },
@@ -176,6 +184,10 @@ const LoanTypeTable = ({
                 <i className="ri-pencil-line cursor-not-allowed text-slate-200" />
               </>
             )}
+            <i
+              className="ri-delete-bin-line cursor-pointer"
+              onClick={() => handleDelete({ type: item })}
+            />
           </div>
         );
       },
@@ -199,22 +211,32 @@ const LoanTypeTable = ({
   });
 
   return (
-    <Form form={form} component={false}>
-      <Table
-        components={{
-          body: {
-            cell: EditableCell,
-          },
-        }}
-        bordered
-        columns={mergedColumns as any}
-        size="small"
-        dataSource={data}
-        loading={loading}
-        pagination={{ ...pagination, total }}
-        onChange={onChange}
-      />
-    </Form>
+    <>
+      {selectedType && (
+        <DeleteLoanType
+          handleClose={() => setAction(undefined)}
+          open={action === "delete"}
+          type={selectedType}
+        />
+      )}
+
+      <Form form={form} component={false}>
+        <Table
+          components={{
+            body: {
+              cell: EditableCell,
+            },
+          }}
+          bordered
+          columns={mergedColumns as any}
+          size="small"
+          dataSource={data}
+          loading={loading}
+          pagination={{ ...pagination, total }}
+          onChange={onChange}
+        />
+      </Form>
+    </>
   );
 };
 

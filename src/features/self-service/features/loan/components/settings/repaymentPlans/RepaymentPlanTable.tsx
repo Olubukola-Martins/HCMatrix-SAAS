@@ -1,11 +1,13 @@
-import { Avatar, Button, Form, Input, InputNumber, Switch, Table } from "antd";
+import { Button, Form, Input, InputNumber, Table } from "antd";
 import { ColumnsType, TablePaginationConfig, TableProps } from "antd/lib/table";
 import { useState } from "react";
 import { useQueryClient } from "react-query";
 import { openNotification } from "utils/notifications";
-import { useUpdateExchangeRate } from "features/payroll/hooks/exhangeRates/useUpdateExchangeRate";
-import { QUERY_KEY_FOR_EXCHANGE_RATES } from "features/payroll/hooks/exhangeRates/useGetExchangeRates";
+
 import { TPaymentPlan } from "../../../types";
+import { useUpdateLoanPaymentPlan } from "../../../hooks/paymentPlan/useUpdatePaymentPlan";
+import { QUERY_KEY_FOR_LOAN_PAYMENT_PLANS } from "../../../hooks/paymentPlan/useGetPaymentPlans";
+import { DeleteRepaymentPlan } from "./DeleteRepaymentPlan";
 
 interface IProps {
   data?: TPaymentPlan[];
@@ -62,7 +64,7 @@ const EditableCell: React.FC<EditableCellProps> = ({
     </td>
   );
 };
-
+type TAction = "delete";
 const RepaymentPlanTable = ({
   data = [],
   loading,
@@ -74,7 +76,7 @@ const RepaymentPlanTable = ({
 
   const [form] = Form.useForm();
 
-  const { mutate, isLoading } = useUpdateExchangeRate();
+  const { mutate, isLoading } = useUpdateLoanPaymentPlan();
 
   const [editingKey, setEditingKey] = useState<number>();
   const isEditing = (record: TPaymentPlan) => record.id === editingKey;
@@ -98,8 +100,8 @@ const RepaymentPlanTable = ({
         {
           id: member.id,
           body: {
-            currency: member.name,
-            rate: +row.id,
+            name: row.name,
+            duration: row.duration,
           },
         },
         {
@@ -124,7 +126,7 @@ const RepaymentPlanTable = ({
             cancel();
 
             queryClient.invalidateQueries({
-              queryKey: [QUERY_KEY_FOR_EXCHANGE_RATES],
+              queryKey: [QUERY_KEY_FOR_LOAN_PAYMENT_PLANS],
               // exact: true,
             });
           },
@@ -133,6 +135,12 @@ const RepaymentPlanTable = ({
     } catch (errInfo) {
       console.log(errInfo, "ERRO");
     }
+  };
+  const [action, setAction] = useState<TAction>();
+  const [selectedPlan, setSelectedPlan] = useState<TPaymentPlan>();
+  const handleDelete = (props: { plan: TPaymentPlan }) => {
+    setAction("delete");
+    setSelectedPlan(props.plan);
   };
   const ogColumns: ColumnsType<TPaymentPlan> = [
     {
@@ -182,6 +190,11 @@ const RepaymentPlanTable = ({
                 <i className="ri-pencil-line cursor-not-allowed text-slate-200" />
               </>
             )}
+
+            <i
+              className="ri-delete-bin-line cursor-pointer"
+              onClick={() => handleDelete({ plan: item })}
+            />
           </div>
         );
       },
@@ -205,22 +218,31 @@ const RepaymentPlanTable = ({
   });
 
   return (
-    <Form form={form} component={false}>
-      <Table
-        components={{
-          body: {
-            cell: EditableCell,
-          },
-        }}
-        bordered
-        columns={mergedColumns as any}
-        size="small"
-        dataSource={data}
-        loading={loading}
-        pagination={{ ...pagination, total }}
-        onChange={onChange}
-      />
-    </Form>
+    <>
+      {selectedPlan && (
+        <DeleteRepaymentPlan
+          handleClose={() => setAction(undefined)}
+          open={action === "delete"}
+          plan={selectedPlan}
+        />
+      )}
+      <Form form={form} component={false}>
+        <Table
+          components={{
+            body: {
+              cell: EditableCell,
+            },
+          }}
+          bordered
+          columns={mergedColumns as any}
+          size="small"
+          dataSource={data}
+          loading={loading}
+          pagination={{ ...pagination, total }}
+          onChange={onChange}
+        />
+      </Form>
+    </>
   );
 };
 
