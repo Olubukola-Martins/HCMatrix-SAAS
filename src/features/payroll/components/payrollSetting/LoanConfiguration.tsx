@@ -29,11 +29,15 @@ const LoanConfiguration: React.FC<{
           <div className="flex flex-col gap-4 mt-5">
             <Form.Item rules={generalValidationRulesOp} name="schemes" label="">
               <Checkbox.Group>
-                {PAYROLL_SCHEME_OPTIONS.map((item, i) => (
-                  <Checkbox value={item.value} key={i}>
-                    <span className="capitalize">{item.label}</span>
-                  </Checkbox>
-                ))}
+                {PAYROLL_SCHEME_OPTIONS.filter(
+                  (item) => item.value !== "project"
+                )
+                  .filter((item) => item.value !== "wages")
+                  .map((item, i) => (
+                    <Checkbox value={item.value} key={i}>
+                      <span className="capitalize">{item.label}</span>
+                    </Checkbox>
+                  ))}
               </Checkbox.Group>
             </Form.Item>
           </div>

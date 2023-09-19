@@ -1,72 +1,44 @@
-import { Switch } from "antd";
-import React, { useState } from "react";
+import { InputNumber, Radio } from "antd";
+import React from "react";
 import { boxStyle, boxTitle, inputStyle } from "styles/reused";
+import { generalValidationRules } from "utils/formHelpers/validation";
 
-const MaxloanPercentSetup = () => {
-  const [loanPec, setLoanPec] = useState(false);
-
+const MaxloanPercentSetup: React.FC<{
+  Form: any;
+}> = ({ Form }) => {
   return (
     <div className={`${boxStyle} text-sm`}>
       <div className="flex items-center justify-between">
         <h5 className={boxTitle}>Set Maximum Loan Percentage</h5>
-        <Switch
-          checked={loanPec}
-          onChange={(value) => {
-            setLoanPec(value);
-          }}
-        />
       </div>
       <p className="text-sm pt-2">
         Select the course of action to take regards the max loan percentage
       </p>
 
-      {loanPec && (
-        <div>
-          <form className="flex flex-col gap-4 mt-4">
-            <input
-              type="text"
+      <div>
+        <div className="flex flex-col gap-4 mt-4">
+          <Form.Item name="maxLoanPercentage" rules={generalValidationRules}>
+            <InputNumber
               placeholder="Percentage"
-              className={inputStyle}
+              className="w-full"
+              min={1}
+              max={100}
             />
+          </Form.Item>
 
-            <div className="flex items-center gap-4">
-              <input
-                type="radio"
-                name="loan_limit"
-                id="1"
-                className="scale-150 accent-caramel"
-              />
-              <label htmlFor="1" className="hover:text-caramel cursor-pointer">
+          <Form.Item name="loanLimit" rules={generalValidationRules}>
+            <Radio.Group className="flex flex-col gap-4">
+              <Radio value={`cannotExceedMaxLoanPercentage`}>
                 Employees can not exceed set loan percentage
-              </label>
-            </div>
-            <div className="flex items-center gap-4">
-              <input
-                type="radio"
-                name="loan_limit"
-                id="2"
-                className="scale-150 accent-caramel"
-              />
-              <label htmlFor="2" className="hover:text-caramel cursor-pointer">
+              </Radio>
+              <Radio value={`shouldFillGuarantorsForm`}>
                 If employees should apply for loans that exceed the set loan
                 percentage, employees should fill guarantor's forms
-              </label>
-            </div>
-            <div className="flex items-center justify-between mt-6 mb-2">
-              <button
-                type="button"
-                onClick={() => setLoanPec(false)}
-                className="transparentButton"
-              >
-                Cancel
-              </button>
-              <button type="submit" className="button">
-                Save
-              </button>
-            </div>
-          </form>
+              </Radio>
+            </Radio.Group>
+          </Form.Item>
         </div>
-      )}
+      </div>
     </div>
   );
 };

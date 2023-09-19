@@ -43,7 +43,12 @@ const SelfServiceHome: React.FC = () => {
                 icon={Onboarding}
                 link="/self-service/onboarding"
               />
-              <SelfBox title="Loan" icon={loan} link="/self-service/loan" />
+              <SelfBox
+                title="Loan"
+                icon={loan}
+                link="/self-service/loan"
+                desc="You can apply and manage loan requests"
+              />
               <SelfBox title="Leave" icon={leave} link="/self-service/leave" />
               <SelfBox
                 title="Health access"

@@ -26,7 +26,11 @@ const PayrollSetting = () => {
   };
 
   useEffect(() => {
-    if (!setting) return;
+    if (!setting) {
+      // set the loan config to have office && direct-salary ticked by default(if no setting exists)
+      form.setFieldValue("schemes", ["office", "direct-salary"]);
+      return;
+    }
     setLoanActivation(setting.loanConfiguration.isActive);
     setBank({
       name: setting.companyBankDetails.bankName,
