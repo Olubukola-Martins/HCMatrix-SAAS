@@ -5,19 +5,22 @@ import { ICurrentCompany } from "types";
 import { useApiAuth } from "hooks/useApiAuth";
 import { openNotification } from "utils/notifications";
 
-interface IDeleteRecruitmentItem extends ICurrentCompany {
+interface IPatchRecruitmentItem extends ICurrentCompany {
   itemId: number;
-  deleteEndpointUrl: string;
+  patchEndpointUrl: string;
+  queryKey: string;
+  checked: boolean;
+}
+
+interface IPProps {
+  patchEndpointUrl: string;
   queryKey: string;
 }
 
-interface IDProps {
-  deleteEndpointUrl: string;
-  queryKey: string;
-}
-
-export const handleDeleteData = async (props: IDeleteRecruitmentItem) => {
-  const url = `${MICROSERVICE_ENDPOINTS.RECRUITMENT}/${props.deleteEndpointUrl}/${props.itemId}`;
+export const handlePatchData = async (props: IPatchRecruitmentItem) => {
+  const activateHandler = `${MICROSERVICE_ENDPOINTS.RECRUITMENT}/${props.patchEndpointUrl}/${props.itemId}/activate`;
+  const deactivateHandler = `${MICROSERVICE_ENDPOINTS.RECRUITMENT}/${props.patchEndpointUrl}/${props.itemId}/deactivate`;
+  const url = props.checked ? activateHandler : deactivateHandler;
 
   const config = {
     headers: {
@@ -27,25 +30,26 @@ export const handleDeleteData = async (props: IDeleteRecruitmentItem) => {
     },
   };
 
-  const response = await axios.delete(url, config);
+  const response = await axios.patch(url, null, config);
   return response;
 };
 
-export const useDeleteRecruitmentItem = ({
+export const usePatchRecruitmentItem = ({
   queryKey,
-  deleteEndpointUrl,
-}: IDProps) => {
+  patchEndpointUrl,
+}: IPProps) => {
   const queryClient = useQueryClient();
   const { token, companyId } = useApiAuth();
-  const { mutate, isLoading } = useMutation(handleDeleteData);
-  const removeData = (itemId: number) => {
+  const { mutate } = useMutation(handlePatchData);
+  const patchData = (itemId: number, checked: boolean) => {
     mutate(
       {
         companyId,
-        deleteEndpointUrl,
-        itemId,
         token,
+        patchEndpointUrl,
+        itemId,
         queryKey,
+        checked,
       },
       {
         onError: (error: any) => {
@@ -67,5 +71,5 @@ export const useDeleteRecruitmentItem = ({
       }
     );
   };
-  return { removeData, deleteIsLoading: isLoading };
+  return { patchData };
 };

@@ -5,9 +5,7 @@ import "../../assets/style.css";
 import { textInputValidationRules } from "utils/formHelpers/validation";
 import { AppButton } from "components/button/AppButton";
 import { useDefaultSettingsCall } from "../../hooks/useDefaultSettingsCall";
-import { useRef, useState } from "react";
-import axios from "axios";
-import { MICROSERVICE_ENDPOINTS } from "config/enviroment";
+import { useRef } from "react";
 import { useApiAuth } from "hooks/useApiAuth";
 import { openNotification } from "utils/notifications";
 import { QuestionCircleOutlined } from "@ant-design/icons";
@@ -18,19 +16,23 @@ import {
 import { useCreateCandidateStatus } from "../hooks/useCreateCandidateStatus";
 import { useQueryClient } from "react-query";
 import { useDeleteRecruitmentItem } from "features/recruitment/hooks/useDeleteRecruitmentItem";
+import { usePatchRecruitmentItem } from "features/recruitment/settings/hooks/usePatchRecruitmentSettings";
 
 const CandidateStatus = () => {
   const [form] = Form.useForm();
   useDefaultSettingsCall();
   const queryClient = useQueryClient();
   const { data, isLoading } = useGetCandidateStatus();
-  const { mutate } = useCreateCandidateStatus();
+  const { mutate, isLoading: postLoading } = useCreateCandidateStatus();
   const { removeData } = useDeleteRecruitmentItem({
     queryKey: QUERY_KEY_FOR_CANDIDATE_STATUS,
     deleteEndpointUrl: "application-statuses",
   });
+  const { patchData } = usePatchRecruitmentItem({
+    patchEndpointUrl: "application-statuses",
+    queryKey: QUERY_KEY_FOR_CANDIDATE_STATUS,
+  });
 
-  const [loadingStatus, setLoadingStatus] = useState<boolean>(false);
   const { companyId, token } = useApiAuth();
   const formRef = useRef<FormInstance | null>(null);
   formRef.current?.resetFields(["newStatus"]);
@@ -40,6 +42,7 @@ const CandidateStatus = () => {
     if (!values.newStatus) {
       return;
     }
+    // isLoading: true;
     const newStatusName = values.newStatus?.map((item: any) => item.statusName);
     for (let i = 0; i < newStatusName.length; i++) {
       const name = newStatusName[i];
@@ -65,78 +68,17 @@ const CandidateStatus = () => {
               description: "Application successfully added!",
             });
             queryClient.invalidateQueries([QUERY_KEY_FOR_CANDIDATE_STATUS]);
-            formRef.current?.resetFields();
+            // formRef.current?.resetFields();
           },
+          // isLoading: false,
         }
       );
     }
   };
 
   // Patch request
-  const handleSwitchValue = async (checked: boolean, itemId: number) => {
-    checked &&
-      (await axios
-        .patch(
-          `${MICROSERVICE_ENDPOINTS.RECRUITMENT}/application-statuses/${itemId}/activate`,
-          null,
-          {
-            headers: {
-              Accept: "application/json",
-              Authorization: `Bearer ${token}`,
-              "x-company-id": companyId,
-            },
-          }
-        )
-        .then((response) => {
-          const currentStatus = response.data.data.name;
-          openNotification({
-            title: "Success",
-            state: "success",
-            description: <p>{currentStatus} has been successfully activated</p>,
-            duration: 5,
-          });
-        })
-        .catch((error) => {
-          openNotification({
-            state: "error",
-            title: "An error occured",
-            description: error.response.data.message,
-            duration: 5,
-          });
-        }));
-
-    !checked &&
-      (await axios
-        .patch(
-          `${MICROSERVICE_ENDPOINTS.RECRUITMENT}/application-statuses/${itemId}/deactivate`,
-          null,
-          {
-            headers: {
-              Accept: "application/json",
-              Authorization: `Bearer ${token}`,
-              "x-company-id": companyId,
-            },
-          }
-        )
-        .then((response) => {
-          const currentStatus = response.data.data.name;
-          openNotification({
-            title: "Success",
-            state: "success",
-            description: (
-              <p>{currentStatus} has been successfully de-activated</p>
-            ),
-            duration: 5,
-          });
-        })
-        .catch((error) => {
-          openNotification({
-            state: "error",
-            title: "An error occured",
-            description: error.response.data.message,
-            duration: 5,
-          });
-        }));
+  const handleSwitchValue = (checked: boolean, itemId: number) => {
+    patchData(itemId, checked);
   };
 
   const handleAddField = () => {
@@ -186,21 +128,26 @@ const CandidateStatus = () => {
                           onChange={(checked) =>
                             handleSwitchValue(checked, item.id)
                           }
+                          
                         />
                       </Form.Item>
-                      {!item.isDefault && (
-                        <Popconfirm
-                          title={`Are you sure to delete ${item.name} ?`}
-                          icon={
-                            <QuestionCircleOutlined style={{ color: "red" }} />
+                      <Popconfirm
+                        title={`Are you sure to delete ${item.name} ?`}
+                        icon={
+                          <QuestionCircleOutlined style={{ color: "red" }} />
+                        }
+                        okText="Yes"
+                        cancelText="No"
+                        onConfirm={() => removeData(item.id)}
+                      >
+                        <i
+                          className={
+                            !item.isDefault
+                              ? "ri-delete-bin-line text-xl cursor-pointer hover:text-caramel"
+                              : "ri-delete-bin-line text-xl invisible"
                           }
-                          okText="Yes"
-                          cancelText="No"
-                          onConfirm={() => removeData(item.id)}
-                        >
-                          <i className="ri-delete-bin-line text-xl cursor-pointer hover:text-caramel"></i>
-                        </Popconfirm>
-                      )}
+                        ></i>
+                      </Popconfirm>
                     </div>
                   </div>
                 ))}
@@ -256,7 +203,7 @@ const CandidateStatus = () => {
                   <AppButton
                     type="submit"
                     label="Add"
-                    isLoading={loadingStatus}
+                    isLoading={postLoading}
                   />
                 </div>
               </Form>
