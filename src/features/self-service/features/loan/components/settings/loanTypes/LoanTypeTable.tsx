@@ -10,6 +10,9 @@ import { TLoanType } from "../../../types";
 interface IProps {
   data?: TLoanType[];
   loading?: boolean;
+  pagination?: TablePaginationConfig;
+  onChange?: TableProps<TLoanType>["onChange"];
+  total?: number;
 }
 
 interface EditableCellProps extends React.HTMLAttributes<HTMLElement> {
@@ -60,7 +63,13 @@ const EditableCell: React.FC<EditableCellProps> = ({
   );
 };
 
-const LoanTypeTable = ({ data = [], loading }: IProps) => {
+const LoanTypeTable = ({
+  data = [],
+  loading,
+  pagination,
+  onChange,
+  total,
+}: IProps) => {
   const queryClient = useQueryClient();
 
   const [form] = Form.useForm();
@@ -202,6 +211,8 @@ const LoanTypeTable = ({ data = [], loading }: IProps) => {
         size="small"
         dataSource={data}
         loading={loading}
+        pagination={{ ...pagination, total }}
+        onChange={onChange}
       />
     </Form>
   );

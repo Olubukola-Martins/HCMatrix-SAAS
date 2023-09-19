@@ -3,10 +3,60 @@ import React, { useState } from "react";
 import { boxStyle, boxTitle, inputStyle } from "styles/reused";
 import { textInputValidationRules } from "utils/formHelpers/validation";
 import LoanTypeTable from "./LoanTypeTable";
+import {
+  QUERY_KEY_FOR_LOAN_TYPES,
+  useGetLoanTypes,
+} from "../../../hooks/type/useGetLoanTypes";
+import { useQueryClient } from "react-query";
+import { useAddLoanType } from "../../../hooks/type/useAddLoanType";
+import { LoadingOutlined } from "@ant-design/icons";
+import { openNotification } from "utils/notifications";
+import { usePagination } from "hooks/usePagination";
 
 const LoanTypeSetup = () => {
   const [loanTypeSwitch, setLoanTypeSwitch] = useState(false);
   const [form] = Form.useForm();
+  const queryClient = useQueryClient();
+  const { mutate, isLoading } = useAddLoanType();
+
+  const handleSubmit = (data: any) => {
+    mutate(
+      {
+        name: data.name,
+      },
+      {
+        onError: (err: any) => {
+          openNotification({
+            state: "error",
+            title: "Error Occurred",
+            description:
+              err?.response.data.message ?? err?.response.data.error.message,
+          });
+        },
+        onSuccess: (res: any) => {
+          openNotification({
+            state: "success",
+
+            title: "Success",
+            description: res.data.message,
+            // duration: 0.4,
+          });
+          form.resetFields();
+
+          queryClient.invalidateQueries({
+            queryKey: [QUERY_KEY_FOR_LOAN_TYPES],
+            // exact: true,
+          });
+        },
+      }
+    );
+  };
+
+  const { pagination, onChange } = usePagination();
+
+  const { data, isFetching } = useGetLoanTypes({
+    pagination,
+  });
   return (
     <div className={`${boxStyle} text-sm`}>
       <div className="flex items-center justify-between">
@@ -23,7 +73,7 @@ const LoanTypeSetup = () => {
       </p>
 
       {loanTypeSwitch && (
-        <Form className="mt-4" form={form}>
+        <Form className="mt-4" form={form} onFinish={handleSubmit}>
           <Form.Item name="name" rules={textInputValidationRules}>
             <input
               type="text"
@@ -35,11 +85,17 @@ const LoanTypeSetup = () => {
             onClick={() => form.submit()}
             className="text-sm cursor-pointer text-caramel font-medium text-right block pt-2 underline"
           >
-            + Add
+            {!isLoading ? "+ Add" : <LoadingOutlined />}
           </span>
 
           <div className="mt-4">
-            <LoanTypeTable data={[{ id: 500, name: "Car Loan" }]} />
+            <LoanTypeTable
+              pagination={pagination}
+              onChange={onChange}
+              data={data?.data}
+              total={data?.total}
+              loading={isFetching}
+            />
           </div>
           <div className="flex items-center justify-between mt-6 mb-2">
             <button

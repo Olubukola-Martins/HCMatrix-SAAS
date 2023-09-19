@@ -1,14 +1,25 @@
 import { TApprovalStatus } from "types/statuses";
+import { TLoanSetting } from "./setting";
 
 export type TLoan = any;
-export type TLoanType = {
+type TLoanType = {
   id: number;
   name: string;
+  label: string;
+  companyId: number;
+  createdAt: string;
+  updatedAt: string;
 };
-export type TRepaymentPlan = {
+type TPaymentPlan = {
   id: number;
   name: string;
+  label: string;
   duration: number;
+  companyId: number;
+  createdAt: string;
+  updatedAt: string;
 };
 
 export type TLoanStatus = TApprovalStatus | "repaid" | "processing";
+
+export { type TLoanSetting, type TLoanType, type TPaymentPlan };

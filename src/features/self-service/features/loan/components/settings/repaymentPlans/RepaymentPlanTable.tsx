@@ -5,11 +5,14 @@ import { useQueryClient } from "react-query";
 import { openNotification } from "utils/notifications";
 import { useUpdateExchangeRate } from "features/payroll/hooks/exhangeRates/useUpdateExchangeRate";
 import { QUERY_KEY_FOR_EXCHANGE_RATES } from "features/payroll/hooks/exhangeRates/useGetExchangeRates";
-import { TRepaymentPlan } from "../../../types";
+import { TPaymentPlan } from "../../../types";
 
 interface IProps {
-  data?: TRepaymentPlan[];
+  data?: TPaymentPlan[];
   loading?: boolean;
+  pagination?: TablePaginationConfig;
+  onChange?: TableProps<TPaymentPlan>["onChange"];
+  total?: number;
 }
 
 interface EditableCellProps extends React.HTMLAttributes<HTMLElement> {
@@ -17,7 +20,7 @@ interface EditableCellProps extends React.HTMLAttributes<HTMLElement> {
   dataIndex: string;
   title: any;
   inputType: "text" | "number";
-  record: TRepaymentPlan;
+  record: TPaymentPlan;
   index: number;
   children: React.ReactNode;
 }
@@ -60,7 +63,13 @@ const EditableCell: React.FC<EditableCellProps> = ({
   );
 };
 
-const RepaymentPlanTable = ({ data = [], loading }: IProps) => {
+const RepaymentPlanTable = ({
+  data = [],
+  loading,
+  pagination,
+  onChange,
+  total,
+}: IProps) => {
   const queryClient = useQueryClient();
 
   const [form] = Form.useForm();
@@ -68,8 +77,8 @@ const RepaymentPlanTable = ({ data = [], loading }: IProps) => {
   const { mutate, isLoading } = useUpdateExchangeRate();
 
   const [editingKey, setEditingKey] = useState<number>();
-  const isEditing = (record: TRepaymentPlan) => record.id === editingKey;
-  const edit = (record: Partial<TRepaymentPlan> & { id: React.Key }) => {
+  const isEditing = (record: TPaymentPlan) => record.id === editingKey;
+  const edit = (record: Partial<TPaymentPlan> & { id: React.Key }) => {
     form.setFieldsValue({ isLead: false, ...record });
     setEditingKey(record.id);
   };
@@ -79,11 +88,11 @@ const RepaymentPlanTable = ({ data = [], loading }: IProps) => {
   };
   const save = async (key: React.Key) => {
     try {
-      const row = (await form.validateFields()) as TRepaymentPlan;
+      const row = (await form.validateFields()) as TPaymentPlan;
 
       const member = data?.find(
         (item) => item.id === key
-      ) as unknown as TRepaymentPlan;
+      ) as unknown as TPaymentPlan;
 
       mutate(
         {
@@ -125,7 +134,7 @@ const RepaymentPlanTable = ({ data = [], loading }: IProps) => {
       console.log(errInfo, "ERRO");
     }
   };
-  const ogColumns: ColumnsType<TRepaymentPlan> = [
+  const ogColumns: ColumnsType<TPaymentPlan> = [
     {
       title: "Name",
       dataIndex: "name",
@@ -183,7 +192,7 @@ const RepaymentPlanTable = ({ data = [], loading }: IProps) => {
     if (col.key === "name" || col.key === "duration") {
       return {
         ...col,
-        onCell: (record: TRepaymentPlan) => ({
+        onCell: (record: TPaymentPlan) => ({
           record,
           inputType: col.key === "name" ? "text" : "number",
           dataIndex: col.key,
@@ -208,6 +217,8 @@ const RepaymentPlanTable = ({ data = [], loading }: IProps) => {
         size="small"
         dataSource={data}
         loading={loading}
+        pagination={{ ...pagination, total }}
+        onChange={onChange}
       />
     </Form>
   );
