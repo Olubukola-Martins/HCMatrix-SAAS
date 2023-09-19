@@ -1,6 +1,5 @@
 import axios from "axios";
 import { MICROSERVICE_ENDPOINTS } from "config/enviroment";
-import { TSaveCostCentreResponse } from "features/payroll/types";
 import { useApiAuth } from "hooks/useApiAuth";
 import { useMutation } from "react-query";
 import { ICurrentCompany } from "types";
@@ -14,7 +13,7 @@ type TCostData = {
 const createData = async (props: {
   data: TCostData;
   auth: ICurrentCompany;
-}): Promise<TSaveCostCentreResponse> => {
+}) => {
   const url = `${MICROSERVICE_ENDPOINTS.PAYROLL}/loan/payment-plan/${props.data.id}`;
   const config = {
     headers: {
@@ -29,8 +28,7 @@ const createData = async (props: {
   };
 
   const response = await axios.patch(url, data, config);
-  const item: TSaveCostCentreResponse = response.data;
-  return item;
+  return response;
 };
 export const useUpdateLoanPaymentPlan = () => {
   const { token, companyId } = useApiAuth();
