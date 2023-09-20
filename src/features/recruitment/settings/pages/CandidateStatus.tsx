@@ -1,230 +1,84 @@
 import { appRoutes } from "config/router/paths";
 import { RecruitmentSettingsIntro } from "../../components/RecruitmentSettingsIntro";
 import { Form, Switch, Input, Skeleton, Popconfirm, FormInstance } from "antd";
-import '../../assets/style.css'
+import "../../assets/style.css";
 import { textInputValidationRules } from "utils/formHelpers/validation";
 import { AppButton } from "components/button/AppButton";
 import { useDefaultSettingsCall } from "../../hooks/useDefaultSettingsCall";
-import { useEffect, useRef, useState } from "react";
-import axios from "axios";
-import { MICROSERVICE_ENDPOINTS } from "config/enviroment";
+import { useRef } from "react";
 import { useApiAuth } from "hooks/useApiAuth";
 import { openNotification } from "utils/notifications";
 import { QuestionCircleOutlined } from "@ant-design/icons";
-
-interface CandidateStatusType {
-  companyId: number;
-  createdAt: string;
-  isActive: boolean;
-  isDefault: boolean;
-  id: number;
-  name: string;
-  label: string;
-  updatedAt: string;
-}
+import {
+  QUERY_KEY_FOR_CANDIDATE_STATUS,
+  useGetCandidateStatus,
+} from "../hooks/useGetCandidateStatus";
+import { useCreateCandidateStatus } from "../hooks/useCreateCandidateStatus";
+import { useQueryClient } from "react-query";
+import { useDeleteRecruitmentItem } from "features/recruitment/hooks/useDeleteRecruitmentItem";
+import { usePatchRecruitmentItem } from "features/recruitment/settings/hooks/usePatchRecruitmentSettings";
 
 const CandidateStatus = () => {
   const [form] = Form.useForm();
-
   useDefaultSettingsCall();
+  const queryClient = useQueryClient();
+  const { data, isLoading } = useGetCandidateStatus();
+  const { mutate, isLoading: postLoading } = useCreateCandidateStatus();
+  const { removeData } = useDeleteRecruitmentItem({
+    queryKey: QUERY_KEY_FOR_CANDIDATE_STATUS,
+    deleteEndpointUrl: "application-statuses",
+  });
+  const { patchData } = usePatchRecruitmentItem({
+    patchEndpointUrl: "application-statuses",
+    queryKey: QUERY_KEY_FOR_CANDIDATE_STATUS,
+  });
 
-  const [candidateStatus, setCandidateStatus] = useState<CandidateStatusType[]>(
-    []
-  );
-  const [formLoaded, setFormLoaded] = useState(false);
-  const [error, setError] = useState(null);
-  const [loadingStatus, setLoadingStatus] = useState<boolean>(false);
   const { companyId, token } = useApiAuth();
   const formRef = useRef<FormInstance | null>(null);
   formRef.current?.resetFields(["newStatus"]);
 
-  const endpointUrl = `${MICROSERVICE_ENDPOINTS.RECRUITMENT}/application-statuses`;
-
-  // Get request
-  useEffect(() => {
-    const getCandidateStatus = async () => {
-      await axios
-        .get(endpointUrl, {
-          headers: {
-            Accept: "application/json",
-            Authorization: `Bearer ${token}`,
-            "x-company-id": companyId,
-          },
-        })
-        .then((response) => {
-          if (response.status === 200) {
-            const candidateData = response.data.data.result;
-            setCandidateStatus(candidateData);
-            setFormLoaded(true);
-          }
-        })
-        .catch((err) => {
-          setFormLoaded(false);
-          openNotification({
-            title: "An error occured",
-            description: err.response.data.message,
-            duration: 5,
-            state: "error",
-          });
-          setError(err);
-        });
-    };
-    getCandidateStatus();
-  }, []);
-
-  // Patch request
-  const handleSwitchValue = async (checked: boolean, itemId: number) => {
-    checked &&
-      (await axios
-        .patch(
-          `${MICROSERVICE_ENDPOINTS.RECRUITMENT}/application-statuses/${itemId}/activate`,
-          null,
-          {
-            headers: {
-              Accept: "application/json",
-              Authorization: `Bearer ${token}`,
-              "x-company-id": companyId,
-            },
-          }
-        )
-        .then((response) => {
-          const currentStatus = response.data.data.name;
-          openNotification({
-            title: "Success",
-            state: "success",
-            description: <p>{currentStatus} has been successfully activated</p>,
-            duration: 5,
-          });
-        })
-        .catch((error) => {
-          openNotification({
-            state: "error",
-            title: "An error occured",
-            description: error.response.data.message,
-            duration: 5,
-          });
-        }));
-
-    !checked &&
-      (await axios
-        .patch(
-          `${MICROSERVICE_ENDPOINTS.RECRUITMENT}/application-statuses/${itemId}/deactivate`,
-          null,
-          {
-            headers: {
-              Accept: "application/json",
-              Authorization: `Bearer ${token}`,
-              "x-company-id": companyId,
-            },
-          }
-        )
-        .then((response) => {
-          const currentStatus = response.data.data.name;
-          openNotification({
-            title: "Success",
-            state: "success",
-            description: (
-              <p>{currentStatus} has been successfully de-activated</p>
-            ),
-            duration: 5,
-          });
-        })
-        .catch((error) => {
-          openNotification({
-            state: "error",
-            title: "An error occured",
-            description: error.response.data.message,
-            duration: 5,
-          });
-        }));
-  };
-
   // Post request
-  const handleSubmit = async (values: any) => {
+  const handleSubmit = (values: any) => {
     if (!values.newStatus) {
       return;
     }
-    setLoadingStatus(true);
-    const formData = values.newStatus.map((status: any) => ({
-      name: status.statusName,
-    }));
-
-    for (let i = 0; i < formData.length; i++) {
-      await axios
-        .post(
-          `${MICROSERVICE_ENDPOINTS.RECRUITMENT}/application-statuses/`,
-          formData[i],
-          {
-            headers: {
-              Accept: "application/json",
-              Authorization: `Bearer ${token}`,
-              "x-company-id": companyId,
-            },
-          }
-        )
-        .then((response) => {
-          const postResponse = response.data.data;
-          const currentStatus = response.data.data.name;
-          if (response.status === 409) {
+    // isLoading: true;
+    const newStatusName = values.newStatus?.map((item: any) => item.statusName);
+    for (let i = 0; i < newStatusName.length; i++) {
+      const name = newStatusName[i];
+      mutate(
+        {
+          name,
+          companyId,
+          token,
+        },
+        {
+          onError: (error: any) => {
             openNotification({
               state: "error",
-              title: "An error occured",
-              description: <p>{currentStatus} already exists!</p>,
+              title: "Error Occured",
+              description: error.response.data.message,
+              duration: 5,
             });
-          }
-          openNotification({
-            state: "success",
-            title: "Success",
-            description: <p>{currentStatus} added successfully</p>,
-          });
-          setCandidateStatus((prevArray) => [...prevArray, postResponse]);
-          setLoadingStatus(false);
-        })
-        .catch((err) => {
-          setLoadingStatus(false);
-          openNotification({
-            state: "error",
-            title: "Error Occured",
-            description: err.response.data.message,
-            duration: 5,
-          });
-        });
+          },
+          onSuccess: (res: any) => {
+            openNotification({
+              state: "success",
+              title: "Success",
+              description: "Application successfully added!",
+            });
+            queryClient.invalidateQueries([QUERY_KEY_FOR_CANDIDATE_STATUS]);
+            // formRef.current?.resetFields();
+          },
+          // isLoading: false,
+        }
+      );
     }
-    formRef.current?.resetFields(["newStatus"]);
   };
 
-  // Delete request
-  const deleteSwitch = async (itemId: number) => {
-    await axios
-      .delete(
-        `${MICROSERVICE_ENDPOINTS.RECRUITMENT}/application-statuses/${itemId}`,
-        {
-          headers: {
-            Accept: "application/json",
-            Authorization: `Bearer ${token}`,
-            "x-company-id": companyId,
-          },
-        }
-      )
-      .then((response) => {
-        const currentStatus = response.data.message;
-        setCandidateStatus((prevArray) =>
-          prevArray.filter((item) => item.id !== itemId)
-        );
-        openNotification({
-          state: "success",
-          title: "Success",
-          description: currentStatus,
-        });
-      })
-      .catch((err) => {
-        openNotification({
-          state: "error",
-          title: "Error Occured",
-          description: err.response.data.message,
-          duration: 5,
-        });
-      });
+  // Patch request
+  const handleSwitchValue = (checked: boolean, itemId: number) => {
+    patchData(itemId, checked);
   };
 
   const handleAddField = () => {
@@ -252,9 +106,7 @@ const CandidateStatus = () => {
         <div className="bg-card rounded md:p-5 p-3">
           <h2 className="pb-5 font-medium text-base">Status</h2>
           <div className="bg-mainBg py-4 px-4 rounded">
-            {!formLoaded ? (
-              <Skeleton active />
-            ) : (
+            <Skeleton active loading={isLoading}>
               <Form
                 ref={formRef}
                 form={form}
@@ -262,7 +114,7 @@ const CandidateStatus = () => {
                 requiredMark={false}
                 onFinish={handleSubmit}
               >
-                {candidateStatus?.map((item, index) => (
+                {data?.map((item) => (
                   <div className="recruitmentSettingsForm">
                     <h3 className="font-medium">{item.name}</h3>
                     <div className="flex gap-4 items-center justify-center">
@@ -276,21 +128,26 @@ const CandidateStatus = () => {
                           onChange={(checked) =>
                             handleSwitchValue(checked, item.id)
                           }
+                          
                         />
                       </Form.Item>
-                      {!item.isDefault && (
-                        <Popconfirm
-                          title={`Are you sure to delete ${item.name} ?`}
-                          icon={
-                            <QuestionCircleOutlined style={{ color: "red" }} />
+                      <Popconfirm
+                        title={`Are you sure to delete ${item.name} ?`}
+                        icon={
+                          <QuestionCircleOutlined style={{ color: "red" }} />
+                        }
+                        okText="Yes"
+                        cancelText="No"
+                        onConfirm={() => removeData(item.id)}
+                      >
+                        <i
+                          className={
+                            !item.isDefault
+                              ? "ri-delete-bin-line text-xl cursor-pointer hover:text-caramel"
+                              : "ri-delete-bin-line text-xl invisible"
                           }
-                          okText="Yes"
-                          cancelText="No"
-                          onConfirm={() => deleteSwitch(item.id)}
-                        >
-                          <i className="ri-delete-bin-line text-xl cursor-pointer hover:text-caramel"></i>
-                        </Popconfirm>
-                      )}
+                        ></i>
+                      </Popconfirm>
                     </div>
                   </div>
                 ))}
@@ -346,11 +203,11 @@ const CandidateStatus = () => {
                   <AppButton
                     type="submit"
                     label="Add"
-                    isLoading={loadingStatus}
+                    isLoading={postLoading}
                   />
                 </div>
               </Form>
-            )}
+            </Skeleton>
           </div>
         </div>
       </div>
