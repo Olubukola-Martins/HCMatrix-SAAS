@@ -3,8 +3,10 @@ import TextArea from "antd/lib/input/TextArea";
 import { AppButton } from "components/button/AppButton";
 import { UseWindowWidth } from "features/timeAndAttendance/hooks/UseWindowWidth";
 import { useCreateTimeOffPolicy } from "features/timeAndAttendance/hooks/useCreateTimeOffPolicy";
+import { QUERY_KEY_FOR_TIME_OFF_POLICY } from "features/timeAndAttendance/hooks/useGetTimeOffPolicy";
 import { useApiAuth } from "hooks/useApiAuth";
 import { useContext, useEffect } from "react";
+import { useQueryClient } from "react-query";
 import { GlobalContext, EGlobalOps } from "stateManagers/GlobalContextProvider";
 import { IDrawerProps } from "types";
 import { generalValidationRules } from "utils/formHelpers/validation";
@@ -12,6 +14,7 @@ import { openNotification } from "utils/notifications";
 
 export const CreateTimeOffPolicy = ({ handleClose, open }: IDrawerProps) => {
   const { drawerSize } = UseWindowWidth();
+  const queryClient = useQueryClient();
   const [form] = Form.useForm();
   const { companyId, token, currentUserId } = useApiAuth();
   const { mutate, isLoading } = useCreateTimeOffPolicy();
@@ -41,11 +44,11 @@ export const CreateTimeOffPolicy = ({ handleClose, open }: IDrawerProps) => {
               state: "success",
               title: "Success",
               description: res.data.message,
-              // duration: 0.4,
             });
-
             form.resetFields();
             dispatch({ type: EGlobalOps.setShowInitialSetup, payload: true });
+            handleClose();
+            queryClient.invalidateQueries([QUERY_KEY_FOR_TIME_OFF_POLICY]);
           },
         }
       );

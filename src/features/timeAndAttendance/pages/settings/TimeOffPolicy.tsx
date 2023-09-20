@@ -5,33 +5,21 @@ import { AttendanceSettingsIntro } from "features/timeAndAttendance/components/s
 import { CreateTimeOffPolicy } from "features/timeAndAttendance/components/settings/CreateTimeOffPolicy";
 import { TimeAttendanceSettingsNav } from "features/timeAndAttendance/components/settings/TimeAttendanceSettingsNav";
 import { useGetTimeOffPolicy } from "features/timeAndAttendance/hooks/useGetTimeOffPolicy";
+import { ITimeOffPolicyRule } from "features/timeAndAttendance/types/settings";
 import { useState } from "react";
 
-type TTimeOff = {
-  key: React.Key;
-  name: string;
-  durationInDays: string;
-  comment: string;
-};
-
-const tableData: TTimeOff[] = [];
-for (let i = 0; i < 4; i++) {
-  tableData.push({
-    key: i,
-    name: `Break policy`,
-    durationInDays: `1`,
-    comment: `Break policy for...`,
-  });
-}
-
-const columns: ColumnsType<TTimeOff> = [
+const columns: ColumnsType<ITimeOffPolicyRule> = [
   {
     title: "Policy Name",
     dataIndex: "name",
   },
   {
     title: "Duration In Days",
-    dataIndex: "durationInDays",
+    dataIndex: "duration",
+  },
+  {
+    title: "Comment",
+    dataIndex: "comment",
   },
   {
     title: "Action",
@@ -55,8 +43,7 @@ const columns: ColumnsType<TTimeOff> = [
 
 export const TimeOffPolicy = () => {
   const [openAddPolicy, setOpenAddPolicy] = useState(false);
-  const { data } = useGetTimeOffPolicy();
-  // console.log(data);
+  const { data, isLoading } = useGetTimeOffPolicy();
   
   return (
     <>
@@ -77,7 +64,7 @@ export const TimeOffPolicy = () => {
           />
         </div>
 
-        <Table columns={columns} dataSource={tableData} />
+        <Table columns={columns} dataSource={data} loading={isLoading} />
       </div>
     </>
   );

@@ -9,7 +9,7 @@ export const QUERY_KEY_FOR_TIME_OFF_POLICY = "TimeOffPolicy";
 const getData = async (props: {
   token: string;
   companyId: number;
-}): Promise<ITimeOffPolicyRule> => {
+}): Promise<ITimeOffPolicyRule[]> => {
   const url = `${MICROSERVICE_ENDPOINTS.TIME_AND_ATTENDANCE}/time-off/policy/${props.companyId}`;
   const config = {
     headers: {
@@ -19,12 +19,8 @@ const getData = async (props: {
     },
   };
   const res = await axios.get(url, config);
-  const item: ITimeOffPolicyRule = res.data;
-  const data: ITimeOffPolicyRule = {
-    ...item,
-  };
-
-  return data;
+  const item: ITimeOffPolicyRule[] = res.data;
+  return item;
 };
 export const useGetTimeOffPolicy = () => {
   const { companyId, token } = useApiAuth();
