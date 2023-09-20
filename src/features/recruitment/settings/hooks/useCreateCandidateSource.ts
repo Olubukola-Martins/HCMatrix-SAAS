@@ -3,8 +3,8 @@ import { useMutation } from "react-query";
 import { ICreateCandidateStatus } from "../types";
 import { MICROSERVICE_ENDPOINTS } from "config/enviroment";
 
-export const postCandidateStatus = async (props: ICreateCandidateStatus) => {
-  const url = `${MICROSERVICE_ENDPOINTS.RECRUITMENT}/settings/application-statuses/`;
+export const postCandidateSource = async (props: ICreateCandidateStatus) => {
+  const url = `${MICROSERVICE_ENDPOINTS.RECRUITMENT}/settings/application-sources/`;
 
   const config = {
     headers: {
@@ -22,6 +22,6 @@ export const postCandidateStatus = async (props: ICreateCandidateStatus) => {
   return response;
 };
 
-export const useCreateCandidateStatus = () => {
-  return useMutation(postCandidateStatus);
+export const useCreateCandidateSource = () => {
+  return useMutation(postCandidateSource);
 };

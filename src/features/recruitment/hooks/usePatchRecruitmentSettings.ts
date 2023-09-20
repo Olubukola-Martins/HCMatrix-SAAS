@@ -18,8 +18,8 @@ interface IPProps {
 }
 
 export const handlePatchData = async (props: IPatchRecruitmentItem) => {
-  const activateHandler = `${MICROSERVICE_ENDPOINTS.RECRUITMENT}/${props.patchEndpointUrl}/${props.itemId}/activate`;
-  const deactivateHandler = `${MICROSERVICE_ENDPOINTS.RECRUITMENT}/${props.patchEndpointUrl}/${props.itemId}/deactivate`;
+  const activateHandler = `${MICROSERVICE_ENDPOINTS.RECRUITMENT}/settings/${props.patchEndpointUrl}/${props.itemId}/activate`;
+  const deactivateHandler = `${MICROSERVICE_ENDPOINTS.RECRUITMENT}/settings/${props.patchEndpointUrl}/${props.itemId}/deactivate`;
   const url = props.checked ? activateHandler : deactivateHandler;
 
   const config = {

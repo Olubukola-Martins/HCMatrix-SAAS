@@ -1,26 +1,56 @@
-import { Form, Input, Switch } from "antd";
+import { Form, Input, Popconfirm, Skeleton, Switch } from "antd";
 import { RecruitmentSettingsIntro } from "../../components/RecruitmentSettingsIntro";
 import { appRoutes } from "config/router/paths";
 import { textInputValidationRules } from "utils/formHelpers/validation";
 import { AppButton } from "components/button/AppButton";
-import '../../assets/style.css'
+import "../../assets/style.css";
+import {
+  QUERY_KEY_FOR_CANDIDATE_SOURCE,
+  useGetCandidateSource,
+} from "../hooks/useGetCandidateSource";
+import { usePatchRecruitmentItem } from "../../hooks/usePatchRecruitmentSettings";
+import { QuestionCircleOutlined } from "@ant-design/icons";
+import { useDeleteRecruitmentItem } from "features/recruitment/hooks/useDeleteRecruitmentItem";
 
 const CandidateSource = () => {
+  const { data, isLoading } = useGetCandidateSource();
   const [form] = Form.useForm();
+
+  const { patchData } = usePatchRecruitmentItem({
+    patchEndpointUrl: "application-sources",
+    queryKey: QUERY_KEY_FOR_CANDIDATE_SOURCE,
+  });
+  const { removeData } = useDeleteRecruitmentItem({
+    deleteEndpointUrl: "",
+    queryKey: QUERY_KEY_FOR_CANDIDATE_SOURCE,
+  });
+
+  // Patch request
+  const handleSwitchValue = (checked: boolean, itemId: number) => {
+    patchData(itemId, checked);
+  };
+
+  // Post request
   const handleSubmit = (values: any) => {
-    console.log("Received values of form:", values);
+    if (!values.newSource) {
+      return;
+    }
+    const newSourceName = values.newSource.map((item: any) => item.sourceName);
+    for (let i = 0; i < newSourceName.length; i++) {
+      const name = newSourceName[i];
+    }
   };
 
   const handleAddField = () => {
-    const newStatus = form.getFieldValue("newStatus") || [];
-    const initialStatus = { statusName: "", allowStatus: true };
-    form.setFieldsValue({ newStatus: [...newStatus, initialStatus] });
+    const newSource = form.getFieldValue("newSource") || [];
+    const initialSource = { sourceName: "", allowSource: true };
+    form.setFieldsValue({ newSource: [...newSource, initialSource] });
   };
 
   const handleRemoveField = (index: number) => {
-    const newStatus = form.getFieldValue("newStatus") || [];
+    const newSource = form.getFieldValue("newSource") || [];
     form.setFieldsValue({
-      newStatus: newStatus.filter((_: any, i: number) => i !== index),
+      newSource: newSource.filter((_: any, i: number) => i !== index),
     });
   };
 
@@ -36,69 +66,101 @@ const CandidateSource = () => {
         <div className="bg-card rounded md:p-5 p-3">
           <h2 className="pb-5 font-medium text-base">Sources</h2>
           <div className="bg-mainBg py-4 px-4 rounded">
-            <Form form={form} layout="vertical" onFinish={handleSubmit}>
-              <div className=" recruitmentSettingsForm ">
-                <h3 className="font-medium">LinkedIn</h3>
-                <Form.Item
-                  name="test"
-                  className="flex justify-end items-end"
-                  noStyle
-                >
-                  <Switch />
-                </Form.Item>
-              </div>
+            <Skeleton active loading={isLoading}>
+              <Form form={form} layout="vertical" onFinish={handleSubmit}>
+                {data?.map((item) => (
+                  <div className=" recruitmentSettingsForm ">
+                    <h3 className="font-medium">{item.name}</h3>
+                    <div className="flex gap-4 items-center justify-center">
+                      <Form.Item
+                        name={item.label}
+                        className="flex justify-end items-end"
+                        noStyle
+                      >
+                        <Switch
+                          defaultChecked={item.isActive}
+                          onChange={(checked) => {
+                            if (item.label === "direct") {
+                              return;
+                            }
+                            handleSwitchValue(checked, item.id);
+                          }}
+                          disabled={item.label === "direct"}
+                        />
+                      </Form.Item>
+                      <Popconfirm
+                        title={`Are you sure to delete ${item.name} ?`}
+                        icon={
+                          <QuestionCircleOutlined style={{ color: "red" }} />
+                        }
+                        okText="Yes"
+                        cancelText="No"
+                        onConfirm={() => removeData(item.id)}
+                      >
+                        <i
+                          className={
+                            !item.isDefault
+                              ? "ri-delete-bin-line text-xl cursor-pointer hover:text-caramel"
+                              : "ri-delete-bin-line text-xl invisible"
+                          }
+                        ></i>
+                      </Popconfirm>
+                    </div>
+                  </div>
+                ))}
 
-              <div>
-                <h2 className="pb-5 font-medium text-base">Source name</h2>
-                <Form.List name="newStatus">
-                  {(fields) => (
-                    <>
-                      {fields.map((field, index) => (
-                        <div key={field.key} className="grid grid-cols-2 ">
-                          <Form.Item
-                            {...field}
-                            name={[field.name, "statusName"]}
-                            label="Name"
-                            rules={textInputValidationRules}
-                          >
-                            <Input placeholder="Enter status name" />
-                          </Form.Item>
-                          <div className="flex gap-5 items-center justify-end">
+                <div>
+                  <h2 className="pb-5 font-medium text-base">Source name</h2>
+                  <Form.List name="newSource">
+                    {(fields) => (
+                      <>
+                        {fields.map((field, index) => (
+                          <div key={field.key} className="grid grid-cols-2 ">
                             <Form.Item
                               {...field}
-                              name={[field.name, "allowStatus"]}
-                              noStyle
-                              valuePropName="checked"
+                              name={[field.name, "sourceName"]}
+                              label="Name"
+                              rules={textInputValidationRules}
                             >
-                              <Switch />
+                              <Input placeholder="Enter source name" />
                             </Form.Item>
-                            <i
-                              className="ri-delete-bin-line text-xl cursor-pointer hover:text-caramel"
-                              onClick={() => handleRemoveField(index)}
-                            ></i>
+                            <div className="flex gap-5 items-center justify-end">
+                              <Form.Item
+                                {...field}
+                                name={[field.name, "allowSource"]}
+                                noStyle
+                                valuePropName="checked"
+                              >
+                                <Switch />
+                              </Form.Item>
+                              <i
+                                className="ri-delete-bin-line text-xl cursor-pointer hover:text-caramel"
+                                onClick={() => handleRemoveField(index)}
+                              ></i>
+                            </div>
                           </div>
-                        </div>
-                      ))}
+                        ))}
 
-                      <AppButton
-                        variant="transparent"
-                        label="+ Add sources"
-                        handleClick={() => handleAddField()}
-                      />
-                    </>
-                  )}
-                </Form.List>
-              </div>
-              <div className="flex justify-end items-center mt-5 gap-4">
-                <button
-                  className="text-base font-medium hover:text-caramel"
-                  type="reset"
-                >
-                  Cancel
-                </button>
-                <AppButton type="submit" label="Save" />
-              </div>
-            </Form>
+                        <AppButton
+                          variant="transparent"
+                          label="+ Add sources"
+                          handleClick={() => handleAddField()}
+                        />
+                      </>
+                    )}
+                  </Form.List>
+                </div>
+                <div className="flex justify-end items-center mt-5 gap-4">
+                  <button
+                    className="text-base font-medium hover:text-caramel"
+                    type="reset"
+                  >
+                    Cancel
+                  </button>
+                  <AppButton type="submit" label="Add" />
+                </div>
+              </Form>
+            </Skeleton>
           </div>
         </div>
       </div>

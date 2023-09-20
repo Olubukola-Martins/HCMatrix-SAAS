@@ -4,13 +4,13 @@ import { ICandidateStatus } from "../types";
 import { useApiAuth } from "hooks/useApiAuth";
 import { useQuery } from "react-query";
 
-export const QUERY_KEY_FOR_CANDIDATE_STATUS = "CandidateStatus";
+export const QUERY_KEY_FOR_CANDIDATE_SOURCE = "CandidateSource";
 
 const getData = async (props: {
   token: string;
   companyId: number;
 }): Promise<ICandidateStatus[]> => {
-  const url = `${MICROSERVICE_ENDPOINTS.RECRUITMENT}/settings/application-statuses`;
+  const url = `${MICROSERVICE_ENDPOINTS.RECRUITMENT}/settings/application-sources`;
   const config = {
     headers: {
       Accept: "application/json",
@@ -24,10 +24,10 @@ const getData = async (props: {
   return item;
 };
 
-export const useGetCandidateStatus = () => {
+export const useGetCandidateSource = () => {
   const { companyId, token } = useApiAuth();
   const queryData = useQuery(
-    [QUERY_KEY_FOR_CANDIDATE_STATUS],
+    [QUERY_KEY_FOR_CANDIDATE_SOURCE],
     () => getData({ token, companyId }),
     {
       onError: (err: any) => {},

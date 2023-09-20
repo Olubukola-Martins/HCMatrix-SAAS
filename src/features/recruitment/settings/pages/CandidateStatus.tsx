@@ -16,7 +16,7 @@ import {
 import { useCreateCandidateStatus } from "../hooks/useCreateCandidateStatus";
 import { useQueryClient } from "react-query";
 import { useDeleteRecruitmentItem } from "features/recruitment/hooks/useDeleteRecruitmentItem";
-import { usePatchRecruitmentItem } from "features/recruitment/settings/hooks/usePatchRecruitmentSettings";
+import { usePatchRecruitmentItem } from "features/recruitment/hooks/usePatchRecruitmentSettings";
 
 const CandidateStatus = () => {
   const [form] = Form.useForm();
@@ -42,7 +42,6 @@ const CandidateStatus = () => {
     if (!values.newStatus) {
       return;
     }
-    // isLoading: true;
     const newStatusName = values.newStatus?.map((item: any) => item.statusName);
     for (let i = 0; i < newStatusName.length; i++) {
       const name = newStatusName[i];
@@ -70,7 +69,6 @@ const CandidateStatus = () => {
             queryClient.invalidateQueries([QUERY_KEY_FOR_CANDIDATE_STATUS]);
             // formRef.current?.resetFields();
           },
-          // isLoading: false,
         }
       );
     }
@@ -128,7 +126,6 @@ const CandidateStatus = () => {
                           onChange={(checked) =>
                             handleSwitchValue(checked, item.id)
                           }
-                          
                         />
                       </Form.Item>
                       <Popconfirm

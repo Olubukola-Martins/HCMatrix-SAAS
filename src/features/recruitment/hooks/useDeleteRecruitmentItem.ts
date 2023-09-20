@@ -17,7 +17,7 @@ interface IDProps {
 }
 
 export const handleDeleteData = async (props: IDeleteRecruitmentItem) => {
-  const url = `${MICROSERVICE_ENDPOINTS.RECRUITMENT}/${props.deleteEndpointUrl}/${props.itemId}`;
+  const url = `${MICROSERVICE_ENDPOINTS.RECRUITMENT}/settings/${props.deleteEndpointUrl}/${props.itemId}`;
 
   const config = {
     headers: {
