@@ -1,10 +1,12 @@
 import { Drawer, Form, Select } from "antd";
 import { AppButton } from "components/button/AppButton";
+import { useFetchBranches } from "features/core/branches/hooks/useFetchBranches";
 import { UseWindowWidth } from "features/timeAndAttendance/hooks/UseWindowWidth";
 import { useCreateAttendanceLocation } from "features/timeAndAttendance/hooks/useCreateAttendanceLocation";
 import { useGetBiometricDevice } from "features/timeAndAttendance/hooks/useGetBiometricDevice";
 import { useApiAuth } from "hooks/useApiAuth";
-import { useContext, useEffect } from "react";
+import { useDebounce } from "hooks/useDebounce";
+import { useContext, useEffect, useState } from "react";
 import { GlobalContext, EGlobalOps } from "stateManagers/GlobalContextProvider";
 import { IDrawerProps } from "types";
 import { generalValidationRules } from "utils/formHelpers/validation";
@@ -18,7 +20,26 @@ export const AddLocation = ({ handleClose, open }: IDrawerProps) => {
   const { mutate, isLoading } = useCreateAttendanceLocation();
   const globalCtx = useContext(GlobalContext);
   const { dispatch } = globalCtx;
-  const { data: BiometricDevice, isLoading: loadBiometricDevice } = useGetBiometricDevice();
+  const { data: BiometricDevice, isLoading: loadBiometricDevice } =
+    useGetBiometricDevice();
+
+  const [searchTerm, setSearchTerm] = useState<string>("");
+  const debouncedSearchTerm: string = useDebounce<string>(searchTerm);
+
+  const {
+    data: branchData,
+    isFetching,
+  } = useFetchBranches({
+    companyId,
+    searchParams: {
+      name: debouncedSearchTerm,
+    },
+    token,
+  });
+
+  const handleSearch = (val: string) => {
+    setSearchTerm(val);
+  };
 
   useEffect(() => {
     const defaultField = {
@@ -30,7 +51,6 @@ export const AddLocation = ({ handleClose, open }: IDrawerProps) => {
   }, []);
 
   const handleFormSubmit = (values: any) => {
-
     if (companyId) {
       mutate(
         {
@@ -115,12 +135,19 @@ export const AddLocation = ({ handleClose, open }: IDrawerProps) => {
                   >
                     <Select
                       className="w-full"
-                      placeholder="Select"
-                      options={[
-                        { label: "Branch 1", value: 1 },
-                        { label: "Branch 2", value: 2 },
-                      ]}
+                      placeholder="Select branch"
+                      loading={isFetching}
+                      showSearch
                       allowClear
+                      onClear={() => setSearchTerm("")}
+                      onSearch={handleSearch}
+                      defaultActiveFirstOption={false}
+                      showArrow={false}
+                      filterOption={false}
+                      options={branchData?.data.map((item) => ({
+                        value: item.id,
+                        label: item.name,
+                      }))}
                     />
                   </Form.Item>
 
@@ -136,7 +163,7 @@ export const AddLocation = ({ handleClose, open }: IDrawerProps) => {
                         className="w-full"
                         options={BiometricDevice?.map((item) => ({
                           value: item.id,
-                          label: item.name
+                          label: item.name,
                         }))}
                         allowClear
                         placeholder="Select"
