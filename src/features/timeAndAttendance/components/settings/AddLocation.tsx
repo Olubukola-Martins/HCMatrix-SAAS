@@ -2,6 +2,7 @@ import { Drawer, Form, Select } from "antd";
 import { AppButton } from "components/button/AppButton";
 import { UseWindowWidth } from "features/timeAndAttendance/hooks/UseWindowWidth";
 import { useCreateAttendanceLocation } from "features/timeAndAttendance/hooks/useCreateAttendanceLocation";
+import { useGetBiometricDevice } from "features/timeAndAttendance/hooks/useGetBiometricDevice";
 import { useApiAuth } from "hooks/useApiAuth";
 import { useContext, useEffect } from "react";
 import { GlobalContext, EGlobalOps } from "stateManagers/GlobalContextProvider";
@@ -17,6 +18,7 @@ export const AddLocation = ({ handleClose, open }: IDrawerProps) => {
   const { mutate, isLoading } = useCreateAttendanceLocation();
   const globalCtx = useContext(GlobalContext);
   const { dispatch } = globalCtx;
+  const { data: BiometricDevice, isLoading: loadBiometricDevice } = useGetBiometricDevice();
 
   useEffect(() => {
     const defaultField = {
@@ -28,7 +30,6 @@ export const AddLocation = ({ handleClose, open }: IDrawerProps) => {
   }, []);
 
   const handleFormSubmit = (values: any) => {
-    console.log(values);
 
     if (companyId) {
       mutate(
@@ -133,12 +134,13 @@ export const AddLocation = ({ handleClose, open }: IDrawerProps) => {
                     >
                       <Select
                         className="w-full"
-                        options={[
-                          { value: 1, label: "Bio 1" },
-                          { value: 2, label: "Bio 2" },
-                        ]}
+                        options={BiometricDevice?.map((item) => ({
+                          value: item.id,
+                          label: item.name
+                        }))}
                         allowClear
                         placeholder="Select"
+                        loading={loadBiometricDevice}
                       />
                     </Form.Item>
 

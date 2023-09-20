@@ -7,10 +7,11 @@ export interface IClockInPolicy extends ICurrentCompany {
   biometricDevices: BiometricDevice[];
 }
 
-interface BiometricDevice {
+export interface BiometricDevice {
   name: string;
   companyId: number;
   serialNumber: string;
+  id: number;
 }
 
 // Add location

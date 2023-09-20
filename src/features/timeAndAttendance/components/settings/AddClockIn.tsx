@@ -2,8 +2,10 @@ import { Drawer, Form, Input, InputNumber, Switch } from "antd";
 import { AppButton } from "components/button/AppButton";
 import { UseWindowWidth } from "features/timeAndAttendance/hooks/UseWindowWidth";
 import { useCreateClockIn } from "features/timeAndAttendance/hooks/useCreateClockIn";
+import { QUERY_KEY_FOR_BIOMETRIC_DEVICE } from "features/timeAndAttendance/hooks/useGetBiometricDevice";
 import { useApiAuth } from "hooks/useApiAuth";
-import React, { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
+import { useQueryClient } from "react-query";
 import { GlobalContext, EGlobalOps } from "stateManagers/GlobalContextProvider";
 import { IDrawerProps } from "types";
 import { generalValidationRules } from "utils/formHelpers/validation";
@@ -18,7 +20,7 @@ export const AddClockIn = ({ handleClose, open }: IDrawerProps) => {
   const { companyId, token, currentUserId } = useApiAuth();
   const globalCtx = useContext(GlobalContext);
   const { dispatch } = globalCtx;
-  const [addClockIn, setAddClockIn] = useState(false);
+  const queryClient = useQueryClient();
 
   useEffect(() => {
     const defaultField = {
@@ -56,12 +58,13 @@ export const AddClockIn = ({ handleClose, open }: IDrawerProps) => {
             openNotification({
               state: "success",
               title: "Success",
-              description: res.data.message,
-              // duration: 0.4,
+              description: "Successfully created",
             });
-
+          
             form.resetFields();
             dispatch({ type: EGlobalOps.setShowInitialSetup, payload: true });
+            queryClient.invalidateQueries([QUERY_KEY_FOR_BIOMETRIC_DEVICE]);
+            handleClose();
           },
         }
       );
@@ -84,7 +87,7 @@ export const AddClockIn = ({ handleClose, open }: IDrawerProps) => {
 
   return (
     <Drawer
-      title="Add location"
+      title="See Clock In"
       size={drawerSize}
       open={open}
       onClose={() => handleClose()}
