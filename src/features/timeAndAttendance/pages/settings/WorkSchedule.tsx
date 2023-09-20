@@ -1,3 +1,4 @@
+import { Skeleton } from "antd";
 import { AttendanceSettingsIntro } from "features/timeAndAttendance/components/settings/AttendanceSettingsIntro";
 import { TimeAttendanceSettingsNav } from "features/timeAndAttendance/components/settings/TimeAttendanceSettingsNav";
 import { WeeklyWork } from "features/timeAndAttendance/components/settings/WeeklyWork";
@@ -11,9 +12,10 @@ import { useState } from "react";
 const boxStyle =
   "border py-3 px-7 text-accent font-medium text-base cursor-pointer";
 export const WorkSchedule = () => {
-  const [switchWorkArr, setSwitchWorkArr] = useState("fixed");
   const { data, isLoading } = useGetWorkSchedule();
-
+  const [switchWorkArr, setSwitchWorkArr] = useState("fixed");
+  console.log(data);
+  
   return (
     <>
       <TimeAttendanceSettingsNav active="Create Work Schedule" />
@@ -23,11 +25,11 @@ export const WorkSchedule = () => {
       />
 
       <div className="Container mt-7">
+
         <div className="border rounded-md px-3 md:pl-5 py-4">
           <div className="max-w-2xl">
             <div>
               <h3 className="font-semibold text-lg">Schedule</h3>
-
               <div className="flex items-center flex-wrap gap-3 mb-5">
                 <h4 className="text-base font-medium">Work arrangement</h4>
                 <div className="flex items-center flex-wrap">
@@ -84,14 +86,13 @@ export const WorkSchedule = () => {
                 </div>
               </div>
               {/* Initialization of the components */}
-              {switchWorkArr === "fixed" && <WorkFixed data={data} />}
-              {switchWorkArr === "flexible" && <WorkFlexible data={data} />}
-              {switchWorkArr === "weekly" && (
-                <WeeklyWork data={data} />
-              )}
-              {switchWorkArr === "shift" && (
-                <WorkShift data={data} />
-              )}
+              <Skeleton active loading={isLoading}>
+                {switchWorkArr === "fixed" && <WorkFixed data={data} />}
+                {switchWorkArr === "flexible" && <WorkFlexible data={data} />}
+                {switchWorkArr === "weekly" && <WeeklyWork data={data} />}
+              </Skeleton>
+
+              {switchWorkArr === "shift" && <WorkShift data={data} />}
             </div>
           </div>
         </div>

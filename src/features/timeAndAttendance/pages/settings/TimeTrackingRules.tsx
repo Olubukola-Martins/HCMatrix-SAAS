@@ -31,7 +31,7 @@ export const TimeTrackingRules = () => {
     <>
       <TimeAttendanceSettingsNav active={"time tracking rules"} />
       <AttendanceSettingsIntro
-        title="Select time tracking policies"
+        title="Time tracking policies"
         description="Take control of how your team members clock in and out. Choose from presets and make advanced changes Later."
       />
       <CreateTrackingRule

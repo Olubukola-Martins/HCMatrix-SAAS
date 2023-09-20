@@ -117,6 +117,7 @@ export const WeeklyWork: React.FC<{ data: any }> = ({ data }) => {
                     <InputNumber
                       className="w-full"
                       placeholder="Enter hours..."
+                      min={1}
                     />
                   </Form.Item>
                 </div>
