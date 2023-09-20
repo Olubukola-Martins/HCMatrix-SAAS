@@ -1,19 +1,15 @@
 import { ICurrentCompany } from "types";
-
-export interface ICandidateStatus {
-  //   companyId: number;
-  //   createdAt: string;
+// ISettingsSwitchData
+// IPostSwitch
+export interface ISettingsSwitchData {
   isActive: boolean;
   isDefault: boolean;
   id: number;
   name: string;
   label: string;
-  //   updatedAt: string;
 }
-[];
 
-export interface ICreateCandidateStatus extends ICurrentCompany {
+export interface IPostSwitch extends ICurrentCompany {
   name: string[];
 }
-
 
