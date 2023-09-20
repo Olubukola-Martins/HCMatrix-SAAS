@@ -128,7 +128,6 @@ const CandidateStatus = () => {
                           onChange={(checked) =>
                             handleSwitchValue(checked, item.id)
                           }
-                          
                         />
                       </Form.Item>
                       <Popconfirm
