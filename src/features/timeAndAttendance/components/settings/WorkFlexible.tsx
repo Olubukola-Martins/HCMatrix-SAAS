@@ -1,21 +1,31 @@
-import { Checkbox, Form, Input, InputNumber, Select, TimePicker } from "antd";
+import { Form, Input, Select, TimePicker } from "antd";
 import { AppButton } from "components/button/AppButton";
 import { useCreateWorkSchedule } from "features/timeAndAttendance/hooks/useCreateWorkSchedule";
+import { QUERY_KEY_FOR_WORK_SCHEDULE } from "features/timeAndAttendance/hooks/useGetWorkSchedule";
 import { useApiAuth } from "hooks/useApiAuth";
 import { useContext, useEffect } from "react";
+import { useQueryClient } from "react-query";
 import { GlobalContext, EGlobalOps } from "stateManagers/GlobalContextProvider";
 import { openNotification } from "utils/notifications";
 
-export const WorkFlexible = () => {
-  const boxStyle = "border py-3 px-7 text-accent font-medium text-base";
+export const WorkFlexible: React.FC<{ data: any }> = ({ data }) => {
+  // const boxStyle = "border py-3 px-7 text-accent font-medium text-base";
   const [form] = Form.useForm();
   const { companyId, token, currentUserId } = useApiAuth();
+  const queryClient = useQueryClient();
   const globalCtx = useContext(GlobalContext);
   const { dispatch } = globalCtx;
   const { mutate, isLoading } = useCreateWorkSchedule();
+
   useEffect(() => {
-    form.setFieldsValue({
-      workDaysAndTime: [
+    let initialFormValues;
+    if (data && data.workArrangement === "Flexible") {
+      initialFormValues = data?.workDaysAndTime.map((item: any) => ({
+        day: item.day,
+        hours: item.hours
+      }));
+    } else {
+      initialFormValues = [
         { day: "Monday" },
         { day: "Tuesday" },
         { day: "Wednesday" },
@@ -23,9 +33,14 @@ export const WorkFlexible = () => {
         { day: "Friday" },
         { day: "Saturday" },
         { day: "Sunday" },
-      ],
+      ];
+    }
+
+    form.setFieldsValue({
+      workDaysAndTime: initialFormValues,
     });
-  }, []);
+  }, [data, form]);
+
 
   const onFinish = (values: any) => {
     if (companyId) {
@@ -51,12 +66,10 @@ export const WorkFlexible = () => {
             openNotification({
               state: "success",
               title: "Success",
-              description: res.data.message,
-              // duration: 0.4,
+              description: "Schedule Created Successfully",
             });
-
-            form.resetFields();
             dispatch({ type: EGlobalOps.setShowInitialSetup, payload: true });
+            queryClient.invalidateQueries([QUERY_KEY_FOR_WORK_SCHEDULE]);
           },
         }
       );
@@ -64,7 +77,7 @@ export const WorkFlexible = () => {
   };
   return (
     <div>
-      <div className="flex items-center flex-wrap gap-6">
+      {/* <div className="flex items-center flex-wrap gap-6">
         <h4 className="text-base font-medium">Days of the week</h4>
         <div className="flex items-center flex-wrap">
           <div className={`${boxStyle} bg-caramel rounded-l`}>
@@ -89,7 +102,7 @@ export const WorkFlexible = () => {
             <h5>S</h5>
           </div>
         </div>
-      </div>
+      </div> */}
 
       {/* form */}
       <div className="mt-6">

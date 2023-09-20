@@ -1,21 +1,36 @@
 import { Checkbox, Form, Input, TimePicker } from "antd";
 import { AppButton } from "components/button/AppButton";
 import { useCreateWorkSchedule } from "features/timeAndAttendance/hooks/useCreateWorkSchedule";
+import { QUERY_KEY_FOR_WORK_SCHEDULE } from "features/timeAndAttendance/hooks/useGetWorkSchedule";
 import { useApiAuth } from "hooks/useApiAuth";
+import moment from "moment";
 import { useContext, useEffect } from "react";
+import { useQueryClient } from "react-query";
 import { EGlobalOps, GlobalContext } from "stateManagers/GlobalContextProvider";
 import { openNotification } from "utils/notifications";
 
-const boxStyle = "border py-3 px-7 text-accent font-medium text-base";
-export const WorkFixed = () => {
+// const boxStyle = "border py-3 px-7 text-accent font-medium text-base";
+export const WorkFixed: React.FC<{ data: any }> = ({ data }) => {
   const [form] = Form.useForm();
+  const queryClient = useQueryClient();
   const { companyId, token, currentUserId } = useApiAuth();
   const globalCtx = useContext(GlobalContext);
   const { dispatch } = globalCtx;
   const { mutate, isLoading } = useCreateWorkSchedule();
+
   useEffect(() => {
-    form.setFieldsValue({
-      workDaysAndTime: [
+    let initialFormValues;
+
+    if (data && data.workArrangement === "Fixed") {
+      initialFormValues = data?.workDaysAndTime.map((item: any) => ({
+        day: item.day,
+        time: [
+          moment(`2013-02-07 ${item.startTime}`),
+          moment(`2013-02-08 ${item.endTime}`),
+        ],
+      }));
+    } else {
+      initialFormValues = [
         { day: "Monday" },
         { day: "Tuesday" },
         { day: "Wednesday" },
@@ -23,9 +38,13 @@ export const WorkFixed = () => {
         { day: "Friday" },
         { day: "Saturday" },
         { day: "Sunday" },
-      ],
+      ];
+    }
+
+    form.setFieldsValue({
+      workDaysAndTime: initialFormValues,
     });
-  }, []);
+  }, [data, form]);
 
   const onFinish = (values: any) => {
     const workDaysAndTime = values?.workDaysAndTime.map((item: any) => {
@@ -36,8 +55,7 @@ export const WorkFixed = () => {
           endTime: "00:00",
         };
       }
-      const startTime = item.time[0];
-      const endTime = item.time[1];
+      const [startTime, endTime] = item.time;
       return {
         day: item.day,
         startTime: startTime && startTime.format("HH:mm"),
@@ -67,12 +85,12 @@ export const WorkFixed = () => {
             openNotification({
               state: "success",
               title: "Success",
-              description: res.data.message,
-              // duration: 0.4,
+              description: "Schedule Created Successfully",
             });
 
-            form.resetFields();
+            // form.resetFields();
             dispatch({ type: EGlobalOps.setShowInitialSetup, payload: true });
+            queryClient.invalidateQueries([QUERY_KEY_FOR_WORK_SCHEDULE]);
           },
         }
       );
@@ -81,7 +99,7 @@ export const WorkFixed = () => {
 
   return (
     <div>
-      <div className="flex items-center flex-wrap gap-6">
+      {/* <div className="flex items-center flex-wrap gap-6">
         <h4 className="text-base font-medium">Days of the week</h4>
         <div className="flex items-center flex-wrap">
           <div className={`${boxStyle} bg-caramel rounded-l`}>
@@ -106,12 +124,34 @@ export const WorkFixed = () => {
             <h5>S</h5>
           </div>
         </div>
-      </div>
+      </div> */}
 
       {/* form */}
       <div className="mt-6">
         <Form form={form} onFinish={onFinish}>
           <Form.List name="workDaysAndTime">
+            {(fields) => (
+              <>
+                {fields.map((field, index) => (
+                  <div key={field.key} className="flex gap-5">
+                    <Form.Item {...field} name={[field.name, "day"]}>
+                      <Input placeholder="day" disabled className="w-32" />
+                    </Form.Item>
+                    <div className="flex-1 w-full">
+                      <Form.Item {...field} name={[field.name, "time"]} noStyle>
+                        <TimePicker.RangePicker
+                          className="flex-1 w-full"
+                          format="HH:mm"
+                        />
+                      </Form.Item>
+                    </div>
+                  </div>
+                ))}
+              </>
+            )}
+          </Form.List>
+
+          {/* <Form.List name="workDaysAndTime">
             {(fields) => (
               <>
                 {fields.map((field, index) => (
@@ -128,7 +168,7 @@ export const WorkFixed = () => {
                 ))}
               </>
             )}
-          </Form.List>
+          </Form.List> */}
 
           <div className="flex justify-between md:flex-row flex-col items-start">
             <div className="flex items-start gap-2 md:gap-5">

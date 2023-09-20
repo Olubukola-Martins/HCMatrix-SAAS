@@ -2,21 +2,36 @@ import "../../assets/style.css";
 import { Checkbox, Form, Input, TimePicker } from "antd";
 import { AppButton } from "components/button/AppButton";
 import { useCreateWorkSchedule } from "features/timeAndAttendance/hooks/useCreateWorkSchedule";
+import { QUERY_KEY_FOR_WORK_SCHEDULE } from "features/timeAndAttendance/hooks/useGetWorkSchedule";
 import { useApiAuth } from "hooks/useApiAuth";
+import moment from "moment";
 import { useContext, useEffect, useState } from "react";
+import { useQueryClient } from "react-query";
 import { EGlobalOps, GlobalContext } from "stateManagers/GlobalContextProvider";
 import { openNotification } from "utils/notifications";
 
-export const WorkShift = () => {
+export const WorkShift: React.FC<{ data: any }> = ({ data }) => {
   const [form] = Form.useForm();
   const [selectedShifts, setSelectedShifts] = useState<string[]>([]);
   const { companyId, token, currentUserId } = useApiAuth();
   const globalCtx = useContext(GlobalContext);
   const { dispatch } = globalCtx;
+  const queryClient = useQueryClient();
   const { mutate, isLoading } = useCreateWorkSchedule();
+
   useEffect(() => {
-    form.setFieldsValue({
-      workDaysAndTime: [
+    let initialFormValues;
+    if (data && data.workArrangement === "Shift") {
+      initialFormValues = data?.workDaysAndTime.map((item: any) => ({
+        day: item.day,
+        shift: item.shift,
+        time: [
+          moment(`2013-02-07 ${item.startTime}`),
+          moment(`2013-02-08 ${item.endTime}`),
+        ],
+      }));
+    } else {
+      initialFormValues = [
         { day: "Monday", shift: "Morning" },
         { day: "Tuesday", shift: "Morning" },
         { day: "Wednesday", shift: "Morning" },
@@ -40,9 +55,13 @@ export const WorkShift = () => {
         { day: "Friday", shift: "Night" },
         { day: "Saturday", shift: "Night" },
         { day: "Sunday", shift: "Night" },
-      ],
+      ];
+    }
+
+    form.setFieldsValue({
+      workDaysAndTime: initialFormValues,
     });
-  }, []);
+  }, [data, form]);
 
   const onFinish = (values: any) => {
     const workDaysAndTime = values?.workDaysAndTime.map((item: any) => {
@@ -86,12 +105,11 @@ export const WorkShift = () => {
             openNotification({
               state: "success",
               title: "Success",
-              description: res.data.message,
-              // duration: 0.4,
+              description: "Schedule Created Successfully",
             });
 
-            form.resetFields();
             dispatch({ type: EGlobalOps.setShowInitialSetup, payload: true });
+            queryClient.invalidateQueries([QUERY_KEY_FOR_WORK_SCHEDULE]);
           },
         }
       );
@@ -166,7 +184,7 @@ export const WorkShift = () => {
                             name={[field.name, "time"]}
                             noStyle
                           >
-                            <TimePicker.RangePicker className="flex-1 w-full" />
+                            <TimePicker.RangePicker className="flex-1 w-full" format="HH:mm"/>
                           </Form.Item>
                         </div>
                       </>

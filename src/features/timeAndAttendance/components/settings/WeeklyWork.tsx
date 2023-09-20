@@ -1,25 +1,38 @@
 import { Form, InputNumber } from "antd";
 import { AppButton } from "components/button/AppButton";
 import { useCreateWorkSchedule } from "features/timeAndAttendance/hooks/useCreateWorkSchedule";
+import { QUERY_KEY_FOR_WORK_SCHEDULE } from "features/timeAndAttendance/hooks/useGetWorkSchedule";
 import { useApiAuth } from "hooks/useApiAuth";
 import { useContext, useEffect } from "react";
+import { useQueryClient } from "react-query";
 import { EGlobalOps, GlobalContext } from "stateManagers/GlobalContextProvider";
 import { generalValidationRules } from "utils/formHelpers/validation";
 import { openNotification } from "utils/notifications";
 
-export const WeeklyWork = () => {
-  const boxStyle = "border py-3 px-7 text-accent font-medium text-base";
+export const WeeklyWork: React.FC<{ data: any }> = ({ data }) => {
+  // const boxStyle = "border py-3 px-7 text-accent font-medium text-base";
   const [form] = Form.useForm();
   const { companyId, token, currentUserId } = useApiAuth();
   const globalCtx = useContext(GlobalContext);
   const { dispatch } = globalCtx;
+  const queryClient = useQueryClient();
   const { mutate, isLoading } = useCreateWorkSchedule();
 
   useEffect(() => {
+    let initialFormValues;
+    if (data && data.workArrangement === "Weekly") {
+      initialFormValues = data?.workDaysAndTime.map((item: any) => ({
+        day: item.day,
+        hours: item.hours,
+      }));
+    } else {
+      initialFormValues = [{ hours: "" }];
+    }
+
     form.setFieldsValue({
-      workDaysAndTime: [{ hours: "" }],
+      workDaysAndTime: initialFormValues,
     });
-  }, []);
+  }, [data, form]);
 
   const handleSubmit = (values: any) => {
     const workDaysAndTime = values?.workDaysAndTime.map((item: any) => {
@@ -50,10 +63,10 @@ export const WeeklyWork = () => {
             openNotification({
               state: "success",
               title: "Success",
-              description: res.data.message,
-              // duration: 0.4,
+              description: "Schedule Created Successfully",
             });
             dispatch({ type: EGlobalOps.setShowInitialSetup, payload: true });
+            queryClient.invalidateQueries([QUERY_KEY_FOR_WORK_SCHEDULE]);
           },
         }
       );
@@ -61,7 +74,7 @@ export const WeeklyWork = () => {
   };
   return (
     <div>
-      <div className="flex items-center flex-wrap gap-6">
+      {/* <div className="flex items-center flex-wrap gap-6">
         <h4 className="text-base font-medium">Days of the week</h4>
         <div className="flex items-center flex-wrap">
           <div className={`${boxStyle} bg-caramel rounded-l`}>
@@ -86,7 +99,7 @@ export const WeeklyWork = () => {
             <h5>S</h5>
           </div>
         </div>
-      </div>
+      </div> */}
 
       {/* form */}
       <Form form={form} className="mt-6" onFinish={handleSubmit}>
@@ -113,7 +126,7 @@ export const WeeklyWork = () => {
         </Form.List>
 
         <div className="flex justify-end">
-          <AppButton label="Save" type="submit" />
+          <AppButton label="Save" type="submit" isLoading={isLoading} />
         </div>
       </Form>
     </div>

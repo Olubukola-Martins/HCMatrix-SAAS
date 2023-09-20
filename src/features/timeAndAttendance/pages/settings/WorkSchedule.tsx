@@ -14,7 +14,6 @@ export const WorkSchedule = () => {
   const [switchWorkArr, setSwitchWorkArr] = useState("fixed");
   const { data, isLoading } = useGetWorkSchedule();
 
-  
   return (
     <>
       <TimeAttendanceSettingsNav active="Create Work Schedule" />
@@ -85,10 +84,14 @@ export const WorkSchedule = () => {
                 </div>
               </div>
               {/* Initialization of the components */}
-              {switchWorkArr === "fixed" && <WorkFixed />}
-              {switchWorkArr === "flexible" && <WorkFlexible />}
-              {switchWorkArr === "weekly" && <WeeklyWork />}
-              {switchWorkArr === "shift" && <WorkShift />}
+              {switchWorkArr === "fixed" && <WorkFixed data={data} />}
+              {switchWorkArr === "flexible" && <WorkFlexible data={data} />}
+              {switchWorkArr === "weekly" && (
+                <WeeklyWork data={data} />
+              )}
+              {switchWorkArr === "shift" && (
+                <WorkShift data={data} />
+              )}
             </div>
           </div>
         </div>
