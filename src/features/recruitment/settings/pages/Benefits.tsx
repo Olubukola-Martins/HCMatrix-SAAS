@@ -1,14 +1,12 @@
 /* eslint-disable no-loop-func */
-import React, { useEffect, useRef, useState } from "react";
+import React, {  useRef, useState } from "react";
 import { Form, Switch, Input, Skeleton, Popconfirm } from "antd";
 import { AppButton } from "components/button/AppButton";
 import "../../assets/style.css";
 import { textInputValidationRules } from "utils/formHelpers/validation";
-import { MICROSERVICE_ENDPOINTS } from "config/enviroment";
-import axios from "axios";
 import { useApiAuth } from "hooks/useApiAuth";
 import { openNotification } from "utils/notifications";
-import { LoadingOutlined, QuestionCircleOutlined } from "@ant-design/icons";
+import {  QuestionCircleOutlined } from "@ant-design/icons";
 import { FormInstance } from "antd/lib/form";
 import {
   QUERY_KEY_FOR_BENEFITS,
