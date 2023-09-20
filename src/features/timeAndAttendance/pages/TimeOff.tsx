@@ -6,37 +6,12 @@ import { AppButton } from "components/button/AppButton";
 import Table, { ColumnsType } from "antd/lib/table";
 import { Dropdown, Menu } from "antd";
 import { AddTimeOff } from "../components/AddTimeOff";
+import { IAllTimeOff } from "../types/settings";
 
-type TTimeOff = {
-  key: React.Key;
-  date: string;
-  name: string;
-  timeOffPolicy: string;
-  duration: string;
-  status: string;
-};
-
-const data: TTimeOff[] = [
-  {
-    key: 1,
-    date: "Tuesday, June 2023",
-    duration: "---",
-    name: "Godswill Omenuko",
-    status: "Pending",
-    timeOffPolicy: "Medical policy",
-  },
-  {
-    key: 2,
-    date: "Tuesday, June 2023",
-    duration: "---",
-    name: "Godswill Omenuko",
-    status: "Pending",
-    timeOffPolicy: "Medical policy",
-  },
-];
 
 export const TimeOff = () => {
   const [newTimeOffModal, setNewTimeOffModal] = useState(false);
+  
   const [selectedRowKeys, setSelectedRowKeys] = useState<React.Key[]>([]);
   const onSelectChange = (newSelectedRowKeys: React.Key[]) => {
     console.log("selectedRowKeys changed: ", newSelectedRowKeys);
@@ -49,7 +24,7 @@ export const TimeOff = () => {
   };
   const hasSelected = selectedRowKeys.length > 0;
   
-  const columns: ColumnsType<TTimeOff> = [
+  const columns: ColumnsType<IAllTimeOff> = [
     {
       title: "Date",
       dataIndex: "date",
@@ -132,7 +107,7 @@ export const TimeOff = () => {
         <Table
         className="mt-3"
           columns={columns}
-          dataSource={data}
+          dataSource={[]}
           rowSelection={rowSelection}
         />
       </div>

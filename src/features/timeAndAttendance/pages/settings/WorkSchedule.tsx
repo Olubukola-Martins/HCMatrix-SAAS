@@ -13,9 +13,10 @@ const boxStyle =
   "border py-3 px-7 text-accent font-medium text-base cursor-pointer";
 export const WorkSchedule = () => {
   const { data, isLoading } = useGetWorkSchedule();
-  const [switchWorkArr, setSwitchWorkArr] = useState("fixed");
-  console.log(data);
-  
+  const [switchWorkArr, setSwitchWorkArr] = useState(
+    data ? data?.workArrangement : "Fixed"
+  );
+ 
   return (
     <>
       <TimeAttendanceSettingsNav active="Create Work Schedule" />
@@ -25,7 +26,6 @@ export const WorkSchedule = () => {
       />
 
       <div className="Container mt-7">
-
         <div className="border rounded-md px-3 md:pl-5 py-4">
           <div className="max-w-2xl">
             <div>
@@ -34,9 +34,9 @@ export const WorkSchedule = () => {
                 <h4 className="text-base font-medium">Work arrangement</h4>
                 <div className="flex items-center flex-wrap">
                   <div
-                    onClick={() => setSwitchWorkArr("fixed")}
+                    onClick={() => setSwitchWorkArr("Fixed")}
                     className={
-                      switchWorkArr === "fixed"
+                      switchWorkArr === "Fixed"
                         ? `${boxStyle} bg-caramel rounded-l`
                         : `${boxStyle} rounded-l`
                     }
@@ -44,9 +44,9 @@ export const WorkSchedule = () => {
                     <h5>Fixed</h5>
                   </div>
                   <div
-                    onClick={() => setSwitchWorkArr("flexible")}
+                    onClick={() => setSwitchWorkArr("Flexible")}
                     className={
-                      switchWorkArr === "flexible"
+                      switchWorkArr === "Flexible"
                         ? `${boxStyle} bg-caramel`
                         : `${boxStyle}`
                     }
@@ -54,9 +54,9 @@ export const WorkSchedule = () => {
                     <h5>Flexible</h5>
                   </div>
                   <div
-                    onClick={() => setSwitchWorkArr("weekly")}
+                    onClick={() => setSwitchWorkArr("Weekly")}
                     className={
-                      switchWorkArr === "weekly"
+                      switchWorkArr === "Weekly"
                         ? `${boxStyle} bg-caramel`
                         : `${boxStyle}`
                     }
@@ -64,9 +64,9 @@ export const WorkSchedule = () => {
                     <h5>Weekly</h5>
                   </div>
                   <div
-                    onClick={() => setSwitchWorkArr("shift")}
+                    onClick={() => setSwitchWorkArr("Shift")}
                     className={
-                      switchWorkArr === "shift"
+                      switchWorkArr === "Shift"
                         ? `${boxStyle} bg-caramel`
                         : `${boxStyle}`
                     }
@@ -87,12 +87,12 @@ export const WorkSchedule = () => {
               </div>
               {/* Initialization of the components */}
               <Skeleton active loading={isLoading}>
-                {switchWorkArr === "fixed" && <WorkFixed data={data} />}
-                {switchWorkArr === "flexible" && <WorkFlexible data={data} />}
-                {switchWorkArr === "weekly" && <WeeklyWork data={data} />}
+                {switchWorkArr === "Fixed" && <WorkFixed data={data} />}
+                {switchWorkArr === "Flexible" && <WorkFlexible data={data} />}
+                {switchWorkArr === "Weekly" && <WeeklyWork data={data} />}
               </Skeleton>
 
-              {switchWorkArr === "shift" && <WorkShift data={data} />}
+              {switchWorkArr === "Shift" && <WorkShift data={data} />}
             </div>
           </div>
         </div>

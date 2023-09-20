@@ -44,6 +44,13 @@ interface TimeOffPolicy {
   adminId: number;
 }
 
+export interface IAllTimeOff extends ICurrentCompany {
+  reason: string;
+  date: string;
+  timeOffPolicyId: number
+  userId: number;
+}
+
 export interface IOtherSettings extends ICurrentCompany {
   adminId: number;
   longitude: string;
