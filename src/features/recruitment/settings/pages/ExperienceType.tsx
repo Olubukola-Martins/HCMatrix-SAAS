@@ -44,7 +44,7 @@ export const ExperienceType = () => {
 
   // POST request: Adding a new employment type
   const handleSubmit = (values: any) => {
-    if (!values.newType) {
+    if (!values.newExperienceType) {
       return;
     }
     const newTypeName = values.newExperienceType?.map(

@@ -1,26 +1,31 @@
-import React, { useRef, useState } from 'react'
+import React, { useRef, useState } from "react";
 import { Form, Switch, Input, Skeleton, Popconfirm, FormInstance } from "antd";
 import { AppButton } from "components/button/AppButton";
-import '../../assets/style.css'
+import "../../assets/style.css";
 import { textInputValidationRules } from "utils/formHelpers/validation";
 import { QuestionCircleOutlined } from "@ant-design/icons";
-import { useApiAuth } from 'hooks/useApiAuth';
-import { useQueryClient } from 'react-query';
-import { useGetJobStatusSettings } from '../hooks/useGetJobStatusSettings';
-
-
+import { useApiAuth } from "hooks/useApiAuth";
+import { useQueryClient } from "react-query";
+import {
+  QUERY_KEY_FOR_JOB_STATUS_SETTINGS,
+  useGetJobStatusSettings,
+} from "../hooks/useGetJobStatusSettings";
+import { useDeleteRecruitmentItem } from "features/recruitment/hooks/useDeleteRecruitmentItem";
+import { usePatchRecruitmentItem } from "../hooks/usePatchRecruitmentSettings";
+import { useCreateJobStatusSettings } from "../hooks/useCreateJobStatusSettings";
+import { openNotification } from "utils/notifications";
 
 export const JobStatusSettings = () => {
-  // const uniqueEndPoint = "experience-types";
-  // const { removeData } = useDeleteRecruitmentItem({
-  //   queryKey: QUERY_KEY_FOR_EXPERIENCE_TYPES,
-  //   deleteEndpointUrl: uniqueEndPoint,
-  // });
-  // const { patchData } = usePatchRecruitmentItem({
-  //   patchEndpointUrl: uniqueEndPoint,
-  //   queryKey: QUERY_KEY_FOR_EXPERIENCE_TYPES,
-  // });
-  // const { mutate, isLoading: postLoading } = useCreateExperienceType();
+  const uniqueEndPoint = "job-statuses";
+  const { removeData } = useDeleteRecruitmentItem({
+    queryKey: QUERY_KEY_FOR_JOB_STATUS_SETTINGS,
+    deleteEndpointUrl: uniqueEndPoint,
+  });
+  const { patchData } = usePatchRecruitmentItem({
+    patchEndpointUrl: uniqueEndPoint,
+    queryKey: QUERY_KEY_FOR_JOB_STATUS_SETTINGS,
+  });
+  const { mutate, isLoading: postLoading } = useCreateJobStatusSettings();
   const { companyId, token } = useApiAuth();
   const queryClient = useQueryClient();
   const [IsActive, setIsActive] = useState<boolean>(true);
@@ -30,51 +35,49 @@ export const JobStatusSettings = () => {
   // //  GET request: Load all employment types
   const { data, isLoading, error } = useGetJobStatusSettings();
 
-  // // PATCH request:Activating and de-activating the employment type
-  // const handleSwitchChange = (checked: boolean, itemId: number) => {
-  //   patchData(itemId, checked);
-  // };
-  // // DELETE request: deleting a non-default employment type -- check removeData(result.id)
+  // PATCH request:Activating and de-activating the employment type
+  const handleSwitchChange = (checked: boolean, itemId: number) => {
+    patchData(itemId, checked);
+  };
+  // DELETE request: deleting a non-default employment type -- check removeData(result.id)
 
-  // // POST request: Adding a new employment type
-  // const handleSubmit = (values: any) => {
-  //   if (!values.newType) {
-  //     return;
-  //   }
-  //   const newTypeName = values.newExperienceType?.map(
-  //     (item: any) => item.typeName
-  //   );
-  //   for (let i = 0; i < newTypeName.length; i++) {
-  //     const name = newTypeName[i];
-  //     mutate(
-  //       {
-  //         name,
-  //         companyId,
-  //         token,
-  //       },
-  //       {
-  //         onError: (error: any) => {
-  //           openNotification({
-  //             state: "error",
-  //             title: "Error Occured",
-  //             description: error.response.data.message,
-  //             duration: 5,
-  //           });
-  //         },
-  //         onSuccess: (res: any) => {
-  //           console.log(res);
-  //           openNotification({
-  //             state: "success",
-  //             title: "Success",
-  //             description: res.data.message,
-  //           });
-  //           queryClient.invalidateQueries([QUERY_KEY_FOR_EXPERIENCE_TYPES]);
-  //           formRef.current?.resetFields(["newExperienceType"]);
-  //         },
-  //       }
-  //     );
-  //   }
-  // };
+  // POST request: Adding a new employment type
+  const handleSubmit = (values: any) => {
+    if (!values.newStatus) {
+      return;
+    }
+    const newStatusName = values.newStatus?.map((item: any) => item.statusName);
+    for (let i = 0; i < newStatusName.length; i++) {
+      const name = newStatusName[i];
+      mutate(
+        {
+          name,
+          companyId,
+          token,
+        },
+        {
+          onError: (error: any) => {
+            openNotification({
+              state: "error",
+              title: "Error Occured",
+              description: error.response.data.message,
+              duration: 5,
+            });
+          },
+          onSuccess: (res: any) => {
+            console.log(res);
+            openNotification({
+              state: "success",
+              title: "Success",
+              description: res.data.message,
+            });
+            queryClient.invalidateQueries([QUERY_KEY_FOR_JOB_STATUS_SETTINGS]);
+            formRef.current?.resetFields(["newStatus"]);
+          },
+        }
+      );
+    }
+  };
 
   const handleAddField = () => {
     const newStatus = form.getFieldValue("newStatus") || [];
@@ -265,4 +268,4 @@ export const JobStatusSettings = () => {
       </div>
     </>
   );
-}
+};
