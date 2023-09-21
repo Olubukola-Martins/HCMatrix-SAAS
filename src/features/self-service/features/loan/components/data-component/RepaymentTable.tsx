@@ -11,20 +11,23 @@ import {
 } from "antd";
 import moment from "moment";
 import { getAppropriateColorForStatus } from "utils/colorHelpers/getAppropriateColorForStatus";
-import { TLoan } from "../../types";
+import { TLoan, TLoanRepayment } from "../../types";
 import { TApprovalRequest } from "features/core/workflows/types/approval-requests";
 import { useQueryClient } from "react-query";
 import { useApproveORReject } from "hooks/useApproveORReject";
 import { QUERY_KEY_FOR_LEAVES } from "features/self-service/features/leave/hooks/useFetchLeaves";
 import { LoanDetails } from "../LoanDetails";
+import { getEmployeeFullName } from "features/core/employees/utils/getEmployeeFullName";
+import { DEFAULT_DATE_FORMAT } from "constants/dateFormats";
+import { RepaymentDetails } from "../repayments/RepaymentDetails";
 
 type TAction = "view";
-type TLoanAndApproval = TLoan & { approvalDetails?: TApprovalRequest };
+
 const RepaymentTable: React.FC<{
-  data?: TLoanAndApproval[];
+  data?: TLoanRepayment[];
   loading?: boolean;
   pagination?: TablePaginationConfig;
-  onChange?: TableProps<TLoanAndApproval>["onChange"];
+  onChange?: TableProps<TLoanRepayment>["onChange"];
   total?: number;
   permitedActions?: TAction[];
 }> = ({
@@ -37,75 +40,76 @@ const RepaymentTable: React.FC<{
 }) => {
   const queryClient = useQueryClient();
 
-  const [loan, setLoan] = useState<TLoan>();
+  const [repayment, setRepayment] = useState<TLoanRepayment>();
   const [action, setAction] = useState<TAction>();
   const onClose = () => {
     setAction(undefined);
-    setLoan(undefined);
+    setRepayment(undefined);
   };
 
-  const handleAction = (props: { action: TAction; loan: TLoan }) => {
-    const { loan, action } = props;
+  const handleAction = (props: {
+    action: TAction;
+    repayment: TLoanRepayment;
+  }) => {
+    const { repayment, action } = props;
     setAction(action);
-    setLoan(loan);
+    setRepayment(repayment);
   };
-  const { confirmApprovalAction } = useApproveORReject({
-    handleSuccess: () => {
-      queryClient.invalidateQueries({
-        queryKey: [QUERY_KEY_FOR_LEAVES], //TODO: CHange this when loan hooks are created
-        // exact: true,
-      });
-    },
-  });
 
-  const columns: ColumnsType<TLoanAndApproval> = [
+  const columns: ColumnsType<TLoanRepayment> = [
     {
       title: "Loan",
-      dataIndex: "date",
-      key: "date",
+      dataIndex: "loan",
+      key: "loan",
       render: (_, item) => (
-        <span>{moment(item.dateAssigned).format("YYYY/MM/DD")} </span>
+        <span className="capitalize">{item.loan.title} </span>
       ),
     },
 
     {
       title: "Loan Type",
-      dataIndex: "date",
-      key: "date",
+      dataIndex: "type",
+      key: "type",
       render: (_, item) => (
-        <span>{moment(item.dateAssigned).format("YYYY/MM/DD")} </span>
+        <span className="capitalize">{item.loan.type.name} </span>
       ),
     },
     {
       title: "Employee Name",
       dataIndex: "Name",
       key: "Name",
-      render: (_, item) => <span className="capitalize">{item.name} </span>,
+      render: (_, item) => (
+        <span className="capitalize">{item.employeeFullName} </span>
+      ),
     },
     {
       title: "Employee ID",
       dataIndex: "empuid",
       key: "empuid",
-      render: (_, item) => <span className="capitalize">{item.name} </span>,
+      render: (_, item) => <span className="capitalize">{item.empUid} </span>,
     },
     {
       title: "Department",
       dataIndex: "dept",
       key: "dept",
-      render: (_, item) => <span className="capitalize">{item.name} </span>,
+      render: (_, item) => <span className="capitalize">{``} </span>,
     },
 
     {
       title: "Amount Paid",
-      dataIndex: "dept",
-      key: "dept",
-      render: (_, item) => <span className="capitalize">{item.name} </span>,
+      dataIndex: "amount",
+      key: "amount",
+      render: (_, item) => <span className="capitalize">{item.amount} </span>,
     },
     {
       title: "Paid At",
-      dataIndex: "dept",
-      key: "dept",
-      render: (_, item) => <span className="capitalize">{item.name} </span>,
+      dataIndex: "paidAt",
+      key: "paidAt",
+      render: (_, item) => (
+        <span className="capitalize">
+          {moment(item.createdAt).format(DEFAULT_DATE_FORMAT)}{" "}
+        </span>
+      ),
     },
 
     {
@@ -132,7 +136,9 @@ const RepaymentTable: React.FC<{
               {permitedActions.find((val) => val === "view") && (
                 <Menu.Item
                   key="3"
-                  onClick={() => handleAction({ loan: item, action: "view" })}
+                  onClick={() =>
+                    handleAction({ repayment: item, action: "view" })
+                  }
                 >
                   View Details
                 </Menu.Item>
@@ -149,11 +155,11 @@ const RepaymentTable: React.FC<{
 
   return (
     <>
-      {loan && (
-        <LoanDetails
+      {repayment && (
+        <RepaymentDetails
           handleClose={onClose}
           open={action === "view"}
-          id={loan.id}
+          data={repayment}
         />
       )}
       <Table

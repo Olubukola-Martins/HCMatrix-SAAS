@@ -32,7 +32,8 @@ export type TWorkflowApprovalType =
   | "reimbursement"
   | "transfer"
   | "travel"
-  | "payroll";
+  | "payroll"
+  | "loan";
 
 export type TStagingType = "employee" | "role" | "group" | "department-head";
 export type TStageCondition = "specific" | "at-least-one" | "everyone";

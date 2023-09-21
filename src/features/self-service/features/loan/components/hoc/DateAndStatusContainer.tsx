@@ -1,11 +1,11 @@
 import { DatePicker, Select } from "antd";
 import React, { ComponentType, useState } from "react";
 
-import { TLoanStatus } from "../../types";
+import { TLoanRequestStatus } from "../../types";
 import { LOAN_STATUS_OPTIONS } from "../../constants";
 
 export interface TLoanDateAndStatusContainerProps {
-  status: TLoanStatus[];
+  status: TLoanRequestStatus[];
   date: string;
 }
 
@@ -16,7 +16,7 @@ export function withDateAndStatusContainer<
   const WithAdditionalProp: React.FC<
     Omit<T, keyof TLoanDateAndStatusContainerProps>
   > = (props) => {
-    const [status, setStatus] = useState<TLoanStatus[]>([]);
+    const [status, setStatus] = useState<TLoanRequestStatus[]>([]);
     const [date, setDate] = useState<string>();
 
     // Add the status to the props passed to the wrapped component
@@ -44,7 +44,7 @@ export function withDateAndStatusContainer<
                   size="middle"
                   className="w-full"
                   placeholder="Filter by Status"
-                  onChange={(val: TLoanStatus[]) => setStatus(val)}
+                  onChange={(val: TLoanRequestStatus[]) => setStatus(val)}
                   options={LOAN_STATUS_OPTIONS}
                 />
               </div>

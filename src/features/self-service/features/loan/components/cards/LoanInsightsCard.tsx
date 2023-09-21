@@ -1,15 +1,18 @@
 import { Select, Skeleton } from "antd";
 import { LineChart } from "components/charts/LineChart";
 import { ChartSwitcher } from "components/controls/ChartSwitcher";
-import { MONTH_CHART_LABELS } from "constants/general";
-import { useGetAssetAnalytics } from "features/self-service/features/assets/hooks/useGetAssetAnalytics";
+
 import { useState } from "react";
+import { useGetLoanAnalytics } from "../../hooks/analytics/useGetLoanAnalytics";
 
 const items = ["Total", "Pending", "Approved", "Rejected"];
 export const LoanInsightsCard = () => {
   const [year, setYear] = useState<string>();
 
-  const { data, isLoading } = useGetAssetAnalytics({ year });
+  const { data, isLoading } = useGetLoanAnalytics({
+    type: "all",
+    props: { year },
+  });
   return (
     <div className="col-span-3 bg-mainBg border flex flex-col gap-4 rounded-lg text-sm shadow p-3">
       <div className="flex justify-between">
@@ -34,9 +37,8 @@ export const LoanInsightsCard = () => {
       </div>
       <Skeleton active paragraph={{ rows: 9 }} loading={isLoading}>
         <LineChart
-          data={data ? Object.values(data?.totalAssetsCost.costsByMonth) : []}
-          // labels={MONTH_CHART_LABELS}
-          labels={data ? Object.keys(data?.totalAssetsCost.costsByMonth) : []}
+          data={data ? Object.values(data?.graphData.countsByMonth) : []}
+          labels={data ? Object.keys(data?.graphData.countsByMonth) : []}
           dataEntityLabel="loans"
           bgColors={"#ff6647"}
         />

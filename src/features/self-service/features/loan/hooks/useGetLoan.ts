@@ -3,9 +3,9 @@ import { MICROSERVICE_ENDPOINTS } from "config/enviroment";
 import { useQuery } from "react-query";
 import { ICurrentCompany } from "types";
 import { useApiAuth } from "hooks/useApiAuth";
-import { TLoanType } from "../../types";
+import { TLoan } from "../types";
 
-export const QUERY_KEY_FOR_SINGLE_LOAN_TYPE = "single-loan-type";
+export const QUERY_KEY_FOR_LOAN = "loan";
 
 type TData = {
   id: number;
@@ -13,8 +13,8 @@ type TData = {
 const getData = async (props: {
   data: TData;
   auth: ICurrentCompany;
-}): Promise<TLoanType> => {
-  const url = `${MICROSERVICE_ENDPOINTS.PAYROLL}/loan/type/${props.data.id}`;
+}): Promise<TLoan> => {
+  const url = `${MICROSERVICE_ENDPOINTS.PAYROLL}/loan/${props.data.id}`;
 
   const config = {
     headers: {
@@ -25,19 +25,19 @@ const getData = async (props: {
   };
 
   const res = await axios.get(url, config);
-  const item: TLoanType = res.data.data;
+  const item: TLoan = res.data.data;
 
-  const data: TLoanType = {
+  const data: TLoan = {
     ...item,
   };
 
   return data;
 };
 
-export const useGetSingleLoanType = (props: TData) => {
+export const useGetLoan = (props: TData) => {
   const { token, companyId } = useApiAuth();
   const queryData = useQuery(
-    [QUERY_KEY_FOR_SINGLE_LOAN_TYPE, props.id],
+    [QUERY_KEY_FOR_LOAN, props.id],
     () =>
       getData({
         auth: {

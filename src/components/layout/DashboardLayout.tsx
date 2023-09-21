@@ -4,6 +4,9 @@ import { Outlet } from "react-router-dom";
 import GlobalSupport from "components/GlobalSupport";
 import SideBar from "./SideBar";
 import TopBar from "./TopBar";
+import AdminWelcomeContainer from "components/AdminWelcomeContainer";
+import ApprovalContainer from "components/ApprovalContainer";
+import UserFeedbackContainer from "components/UserFeedbackContainer";
 
 const DashboardLayout = () => {
   const [theme, setTheme] = useLocalStorage("theme" ? "dark" : "light", "");
@@ -43,45 +46,50 @@ const DashboardLayout = () => {
   };
 
   return (
-    <div className="mode_color" data-theme={theme} color-theme={colorTheme}>
-      <div className="h-screen overflow-y-auto">
-        <TopBar
-          switchTheme={switchTheme}
-          theme={theme as unknown as string}
-          green={switchGreenColor}
-          orange={switchOrangeColor}
-          yellow={switchYellowColor}
-          blue={switchBlueColor}
-          purple={switchPurpleColor}
-          sidebarToggle={sidebarToggle}
-          setSidebarToggle={() => setSidebarToggle(!sidebarToggle)}
-        />
-        <GlobalSupport />
-        <div className="flex w-full relative">
-          <div
-            className={
-              sidebarToggle
-                ? "w-28 fixed z-40 overflow-hidden lg:flex hidden transition-all duration-500 ease-in-out"
-                : "w-0 overflow-hidden "
-            }
-          >
-            <SideBar />
-          </div>
+    <>
+      <UserFeedbackContainer />
+      <AdminWelcomeContainer />
+      <ApprovalContainer />
+      <div className="mode_color" data-theme={theme} color-theme={colorTheme}>
+        <div className="h-screen overflow-y-auto">
+          <TopBar
+            switchTheme={switchTheme}
+            theme={theme as unknown as string}
+            green={switchGreenColor}
+            orange={switchOrangeColor}
+            yellow={switchYellowColor}
+            blue={switchBlueColor}
+            purple={switchPurpleColor}
+            sidebarToggle={sidebarToggle}
+            setSidebarToggle={() => setSidebarToggle(!sidebarToggle)}
+          />
+          <GlobalSupport />
+          <div className="flex w-full relative">
+            <div
+              className={
+                sidebarToggle
+                  ? "w-28 fixed z-40 overflow-hidden lg:flex hidden transition-all duration-500 ease-in-out"
+                  : "w-0 overflow-hidden "
+              }
+            >
+              <SideBar />
+            </div>
 
-          <div
-            className={
-              sidebarToggle
-                ? "w-full lg:pl-28 mt-1 pb-10"
-                : "lg:pl-0 w-full transition-all duration-500 ease-in-out mt-1 pb-10"
-            }
-          >
-            <main className="Containe">
-              <Outlet />
-            </main>
+            <div
+              className={
+                sidebarToggle
+                  ? "w-full lg:pl-28 mt-1 pb-10"
+                  : "lg:pl-0 w-full transition-all duration-500 ease-in-out mt-1 pb-10"
+              }
+            >
+              <main className="Containe">
+                <Outlet />
+              </main>
+            </div>
           </div>
         </div>
       </div>
-    </div>
+    </>
   );
 };
 

@@ -4,11 +4,7 @@ import { ReactQueryDevtools } from "react-query/devtools";
 import { AuthProvider } from "react-auth-kit";
 import { Suspense, useEffect } from "react";
 import Router from "config/router";
-import refreshApi from "config/refreshTokenApi";
 import GlobalContextProvider from "stateManagers/GlobalContextProvider";
-import UserFeedbackContainer from "components/UserFeedbackContainer";
-import AdminWelcomeContainer from "components/AdminWelcomeContainer";
-import ApprovalContainer from "components/ApprovalContainer";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -37,9 +33,6 @@ function App() {
       >
         <QueryClientProvider client={queryClient}>
           <GlobalContextProvider>
-            <UserFeedbackContainer />
-            <AdminWelcomeContainer />
-            <ApprovalContainer />
             <Suspense fallback={<div>temporary Loading...</div>}>
               <Router />
             </Suspense>

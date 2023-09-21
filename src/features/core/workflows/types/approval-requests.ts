@@ -10,6 +10,7 @@ import { ReimbursementRequestEntity } from "./approvalRequestEntities/reimbursem
 import { TransferRequestEntity } from "./approvalRequestEntities/transferRequestEntity";
 import { TravelRequestEntity } from "./approvalRequestEntities/travelRequestEntity";
 import { VehicleBookingEntity } from "./approvalRequestEntities/vehicleBookingEntity";
+import { TLoanRequest } from "features/self-service/features/loan/types";
 
 // TODO: Check for basic stage and update type
 interface AdvancedStage {
@@ -54,4 +55,5 @@ export type TApprovalRequest = {
   positionChangeRequisition?: PositionChangeRequestEntity;
   moneyRequisition?: MoneyRequestEntity;
   payroll?: TPayrollListData;
+  loan?: TLoanRequest;
 };

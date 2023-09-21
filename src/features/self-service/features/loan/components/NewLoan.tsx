@@ -4,23 +4,29 @@ import React from "react";
 import { IModalProps } from "types";
 import {
   generalValidationRules,
-  textInputValidationRules,
+  generalValidationRulesOp,
 } from "utils/formHelpers/validation";
 import { openNotification } from "utils/notifications";
 import { useQueryClient } from "react-query";
-import { useCreateFolder } from "../../documents/hooks/useCreateFolder";
-import { QUERY_KEY_FOR_FOLDERS } from "../../documents/hooks/useGetFolders";
+import {
+  TRequestForLoanData,
+  useRequestForLoan,
+} from "../hooks/useRequestForLoan";
+import { QUERY_KEY_FOR_LOAN_REQUESTS } from "../hooks/requests/useGetLoanRequests";
+import { QUERY_KEY_FOR_LOAN } from "../hooks/useGetLoan";
+import { FormLoanTypeInput } from "./settings/loanTypes/FormLoanTypeInput";
+import { FormLoanRepaymentPlanInput } from "./settings/repaymentPlans/FormLoanRepaymentPlanInput";
 
 export const NewLoan: React.FC<IModalProps> = ({ open, handleClose }) => {
   const queryClient = useQueryClient();
 
-  const [form] = Form.useForm();
-  const { mutate, isLoading } = useCreateFolder();
+  const [form] = Form.useForm<TRequestForLoanData>();
+  const { mutate, isLoading } = useRequestForLoan();
 
-  const handleSubmit = (data: any) => {
+  const handleSubmit = (data: TRequestForLoanData) => {
     mutate(
       {
-        name: data.name,
+        ...data,
       },
       {
         onError: (err: any) => {
@@ -43,7 +49,11 @@ export const NewLoan: React.FC<IModalProps> = ({ open, handleClose }) => {
           handleClose();
 
           queryClient.invalidateQueries({
-            queryKey: [QUERY_KEY_FOR_FOLDERS],
+            queryKey: [QUERY_KEY_FOR_LOAN_REQUESTS],
+            // exact: true,
+          });
+          queryClient.invalidateQueries({
+            queryKey: [QUERY_KEY_FOR_LOAN],
             // exact: true,
           });
         },
@@ -70,21 +80,27 @@ export const NewLoan: React.FC<IModalProps> = ({ open, handleClose }) => {
         <Form.Item rules={generalValidationRules} name="date" label="Date">
           <DatePicker className="w-full" />
         </Form.Item>
-        <Form.Item rules={generalValidationRules} name="type" label="Loan Type">
-          <Select placeholder="Select a loan type" />
-        </Form.Item>
-        <Form.Item
-          rules={generalValidationRules}
-          name="repayment"
-          label="Select Repayment"
-        >
-          <Select placeholder="Select a repayment" />
-        </Form.Item>
+        <FormLoanTypeInput
+          Form={Form}
+          control={{ name: "typeId", label: "Type" }}
+        />
+        <FormLoanRepaymentPlanInput
+          Form={Form}
+          control={{ name: "paymentPlanId", label: "Payment Plan" }}
+        />
+
         <Form.Item rules={generalValidationRules} name="amount" label="Amount">
           <InputNumber className="w-full" placeholder="Amount" />
         </Form.Item>
         <Form.Item rules={generalValidationRules} label="Loan Worthiness (Why)">
           <Input placeholder="0%" disabled />
+        </Form.Item>
+        <Form.Item
+          rules={generalValidationRulesOp}
+          name="description"
+          label="Description"
+        >
+          <Input.TextArea className="w-full" placeholder="Description" />
         </Form.Item>
 
         <div className="flex justify-end">

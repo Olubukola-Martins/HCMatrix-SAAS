@@ -1,30 +1,28 @@
-import { DatePicker, Form, Input, Modal, Skeleton, Switch } from "antd";
+import { Form, Input, Modal, Skeleton } from "antd";
 import moment from "moment";
 import { useEffect } from "react";
 import { IModalProps } from "types";
-import { useFetchSingleLeave } from "../../leave/hooks/useFetchSingleLeave";
+import { useGetLoan } from "../hooks/useGetLoan";
+import { getEmployeeFullName } from "features/core/employees/utils/getEmployeeFullName";
+import { DEFAULT_DATE_FORMAT } from "constants/dateFormats";
 
 interface IProps extends IModalProps {
   id: number;
 }
 
-const boxStyle = "px-4 py-3 shadow rounded-md bg-mainBg mb-4";
-
 export const LoanDetails = ({ id, open, handleClose }: IProps) => {
   const [form] = Form.useForm();
-  const { data, isFetching } = useFetchSingleLeave({ id });
+  const { data, isFetching } = useGetLoan({ id });
   useEffect(() => {
     if (data) {
       form.setFieldsValue({
-        employee: `${data.employee.firstName} ${data.employee.lastName}`,
-        relieve: `${data.workAssignee.firstName} ${data.workAssignee.lastName}`,
-        department: data.department.name,
-        length: data.length,
-        leaveType: data.leaveType.name,
-        reason: data.reason,
-        requestAllowance: data.requestAllowance,
-        workAssigneeId: data.workAssigneeId,
-        duration: [moment(data.startDate), moment(data.endDate)],
+        employee: `${getEmployeeFullName(data.employee)} `,
+        title: `${data.title} `,
+        amount: `${data.amount} `,
+        date: moment(data.date).format(DEFAULT_DATE_FORMAT),
+        type: data.type.name,
+        paymentPlan: data.paymentPlan.name,
+        description: `${data.description} `,
       });
     }
   }, [id, form, data]);
@@ -42,52 +40,25 @@ export const LoanDetails = ({ id, open, handleClose }: IProps) => {
           <Form.Item label="Employee" name="employee">
             <Input placeholder="Employee" />
           </Form.Item>
-          <Form.Item label="Deparment" name="department">
-            <Input placeholder="Deparment" />
+          <Form.Item label="Title" name="title">
+            <Input placeholder="title" />
           </Form.Item>
-          <Form.Item name="duration" label="Duration">
-            <DatePicker.RangePicker
-              placeholder={["Start Date", "End Date"]}
-              className="w-full"
-            />
+          <Form.Item label="Amount" name="amount">
+            <Input placeholder="amount" />
           </Form.Item>
-          <Form.Item label="Number of days" name="length">
-            <Input placeholder="Number of days" />
+          <Form.Item label="Date" name="date">
+            <Input placeholder="date" />
           </Form.Item>
-
-          <Form.Item label="Leave Type" name="leaveType">
-            <Input placeholder="Leave Type" />
+          <Form.Item label="Type" name="type">
+            <Input placeholder="type" />
           </Form.Item>
-
-          <Form.Item label="Work Assignee/Relieve" name={"relieve"}>
-            <Input placeholder="Work Assignee/Relieve" />
+          <Form.Item label="Payment Plan" name="paymentPlan">
+            <Input placeholder="paymentPlan" />
           </Form.Item>
 
-          <Form.Item name="reason">
-            <Input.TextArea rows={4} placeholder="Reason" />
+          <Form.Item name="description">
+            <Input.TextArea rows={4} placeholder="Description" />
           </Form.Item>
-          <Form.Item name="requestAllowance" label="Request Allowance ">
-            <Switch
-              defaultChecked={!!data?.requestAllowance}
-              checkedChildren="Yes"
-              unCheckedChildren="No"
-            />
-          </Form.Item>
-          {data?.documentUrls && data?.documentUrls.length > 0 && (
-            <div className={boxStyle}>
-              {data?.documentUrls.map((item, i) => (
-                <a
-                  href={item}
-                  className="mb-2 text-sm underline text-caramel hover:no-underline"
-                >
-                  Document {i + 1}
-                </a>
-              ))}
-            </div>
-          )}
-          {/* <div className="flex justify-end">
-          <AppButton isLoading={isLoading} type="submit" />
-        </div> */}
         </Form>
       </Skeleton>
     </Modal>

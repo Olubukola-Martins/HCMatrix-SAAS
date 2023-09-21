@@ -4,6 +4,8 @@ import {
   TLoanDateAndStatusContainerProps,
   withDateAndStatusContainer,
 } from "./hoc/DateAndStatusContainer";
+import { usePagination } from "hooks/usePagination";
+import { useGetLoanRequests } from "../hooks/requests/useGetLoanRequests";
 
 interface ComponentProps {
   export: () => void;
@@ -11,16 +13,25 @@ interface ComponentProps {
 const Component: React.FC<
   ComponentProps & TLoanDateAndStatusContainerProps
 > = ({ status, date }) => {
-  // const { pagination, onChange } = usePagination();
+  const { pagination, onChange } = usePagination();
 
-  // const { data, isLoading } = useGetAllTasksAssignedByEmployee({
-  //   pagination,
-  //   date,
-  //   status,
-  // });
+  const { data, isFetching } = useGetLoanRequests({
+    type: "all",
+    props: {
+      pagination,
+      date,
+      status,
+    },
+  });
   return (
     <div>
-      <LoanTable />
+      <LoanTable
+        loading={isFetching}
+        data={data?.data}
+        total={data?.total}
+        pagination={pagination}
+        onChange={onChange}
+      />
     </div>
   );
 };

@@ -1,7 +1,7 @@
 import React from "react";
-import { useApiAuth } from "hooks/useApiAuth";
 import { RecentCard } from "components/cards/RecentCard";
-import { useGetAssetRequisitions } from "features/self-service/features/requisitions/hooks/asset/useGetAssetRequisitions";
+import { useFetchApprovalRequests } from "features/core/workflows/hooks/useFetchApprovalRequests";
+import { getEmployeeFullName } from "features/core/employees/utils/getEmployeeFullName";
 
 // TO DO: Remove this export and if need be move to styles/reused
 export const requestStyle =
@@ -12,11 +12,8 @@ export const LIMIT_OF_ITEMS_TO_DISPLAY = 3;
 export const RecentLoanRequestsCard: React.FC<{
   handleSeeAll?: () => void;
 }> = ({ handleSeeAll }) => {
-  const { token, companyId } = useApiAuth();
-
-  const { data, isLoading } = useGetAssetRequisitions({
-    token,
-    companyId,
+  const { data, isLoading } = useFetchApprovalRequests({
+    type: "loan",
     pagination: {
       limit: LIMIT_OF_ITEMS_TO_DISPLAY,
       offset: 0,
@@ -24,11 +21,11 @@ export const RecentLoanRequestsCard: React.FC<{
   });
   return (
     <RecentCard
-      title="Recent Requests"
+      title="Recent Approval Requests"
       total={data?.total}
       loading={isLoading}
       data={data?.data.map((item) => ({
-        title: `${item.employee.firstName} ${item.employee.lastName}`,
+        title: `${getEmployeeFullName(item.loan?.employee)}`,
         features: [
           {
             name: "ID",
@@ -36,11 +33,11 @@ export const RecentLoanRequestsCard: React.FC<{
           },
           {
             name: "Loan Type",
-            value: `${item.asset.name}`,
+            value: `${item.loan?.type.name}`,
           },
           {
             name: "Amount",
-            value: `${item.asset.name}`,
+            value: `${item.loan?.amount}`,
           },
         ],
         secondaryCol: {

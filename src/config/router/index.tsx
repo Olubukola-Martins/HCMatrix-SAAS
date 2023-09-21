@@ -15,7 +15,6 @@ const Router = () => {
       return (
         <Route element={<DashboardLayout />} key={path}>
           <Route
-            key={path}
             path={`${path}`}
             element={
               <RequireAuth loginPath={appRoutes.login}>{element}</RequireAuth>
@@ -26,7 +25,11 @@ const Router = () => {
     }
   );
 
-  return <Routes key={"app"}>{pageRoutes}</Routes>;
+  return (
+    <>
+      <Routes key={"app"}>{pageRoutes}</Routes>
+    </>
+  );
 };
 
 export default Router;

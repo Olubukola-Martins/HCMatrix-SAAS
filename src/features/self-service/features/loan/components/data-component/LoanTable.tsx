@@ -11,7 +11,7 @@ import {
 } from "antd";
 import moment from "moment";
 import { getAppropriateColorForStatus } from "utils/colorHelpers/getAppropriateColorForStatus";
-import { TLoan } from "../../types";
+import { TLoanRequest } from "../../types";
 
 import { getEmployeeFullName } from "features/core/employees/utils/getEmployeeFullName";
 import { TApprovalRequest } from "features/core/workflows/types/approval-requests";
@@ -20,9 +20,10 @@ import { useApproveORReject } from "hooks/useApproveORReject";
 import { QUERY_KEY_FOR_LEAVES } from "features/self-service/features/leave/hooks/useFetchLeaves";
 import { APPROVAL_STATUS_ACTION_OPTIONS } from "constants/statustes";
 import { LoanDetails } from "../LoanDetails";
+import { DEFAULT_DATE_FORMAT } from "constants/dateFormats";
 
 type TAction = "approve/reject" | "view";
-type TLoanAndApproval = TLoan & { approvalDetails?: TApprovalRequest };
+type TLoanAndApproval = TLoanRequest & { approvalDetails?: TApprovalRequest };
 export const LoanTable: React.FC<{
   data?: TLoanAndApproval[];
   loading?: boolean;
@@ -40,14 +41,14 @@ export const LoanTable: React.FC<{
 }) => {
   const queryClient = useQueryClient();
 
-  const [loan, setLoan] = useState<TLoan>();
+  const [loan, setLoan] = useState<TLoanRequest>();
   const [action, setAction] = useState<TAction>();
   const onClose = () => {
     setAction(undefined);
     setLoan(undefined);
   };
 
-  const handleAction = (props: { action: TAction; loan: TLoan }) => {
+  const handleAction = (props: { action: TAction; loan: TLoanRequest }) => {
     const { loan, action } = props;
     setAction(action);
     setLoan(loan);
@@ -64,11 +65,9 @@ export const LoanTable: React.FC<{
   const columns: ColumnsType<TLoanAndApproval> = [
     {
       title: "Title",
-      dataIndex: "date",
-      key: "date",
-      render: (_, item) => (
-        <span>{moment(item.dateAssigned).format("YYYY/MM/DD")} </span>
-      ),
+      dataIndex: "title",
+      key: "title",
+      render: (_, item) => <span className="capitalize">{item.title}</span>,
     },
 
     {
@@ -76,48 +75,54 @@ export const LoanTable: React.FC<{
       dataIndex: "date",
       key: "date",
       render: (_, item) => (
-        <span>{moment(item.dateAssigned).format("YYYY/MM/DD")} </span>
+        <span>{moment(item.date).format(DEFAULT_DATE_FORMAT)} </span>
       ),
     },
     {
       title: "Employee Name",
       dataIndex: "Name",
       key: "Name",
-      render: (_, item) => <span className="capitalize">{item.name} </span>,
+      render: (_, item) => (
+        <span className="capitalize">
+          {getEmployeeFullName(item.employee)}{" "}
+        </span>
+      ),
     },
     {
       title: "Employee ID",
       dataIndex: "empuid",
       key: "empuid",
-      render: (_, item) => <span className="capitalize">{item.name} </span>,
+      render: (_, item) => (
+        <span className="capitalize">{item.employee.empUid} </span>
+      ),
     },
     {
       title: "Department",
       dataIndex: "dept",
       key: "dept",
-      render: (_, item) => <span className="capitalize">{item.name} </span>,
+      render: (_, item) => (
+        <span className="capitalize">
+          {item.employee.designation.department.name}{" "}
+        </span>
+      ),
     },
     {
       title: "Loan Type",
       dataIndex: "ass",
       key: "ass",
-      render: (_, item) => (
-        <span className="capitalize">
-          {getEmployeeFullName(item.assignedTo)}{" "}
-        </span>
-      ),
+      render: (_, item) => <span className="capitalize">{item.type.name}</span>,
     },
     {
       title: "Balance",
       dataIndex: "dept",
       key: "dept",
-      render: (_, item) => <span className="capitalize">{item.name} </span>,
+      render: (_, item) => <span className="capitalize">{item.balance} </span>,
     },
     {
       title: "Amount",
       dataIndex: "dept",
       key: "dept",
-      render: (_, item) => <span className="capitalize">{item.name} </span>,
+      render: (_, item) => <span className="capitalize">{item.amount} </span>,
     },
 
     {
@@ -152,16 +157,18 @@ export const LoanTable: React.FC<{
               {permitedActions.find((val) => val === "approve/reject") &&
                 APPROVAL_STATUS_ACTION_OPTIONS.map(({ value, label }) => (
                   <Menu.Item
-                    hidden={item.vehicleBooking?.status !== "pending"}
+                    hidden={item?.status !== "pending"}
                     key={value}
                     onClick={() =>
                       confirmApprovalAction({
                         approvalStageId: item?.id,
                         status: value,
-                        workflowType: !!item?.basicStageId
+                        workflowType: !!item?.approvalDetails?.basicStageId
                           ? "basic"
                           : "advanced",
-                        requires2FA: item?.advancedStage?.enableTwoFactorAuth,
+                        requires2FA:
+                          item?.approvalDetails?.advancedStage
+                            ?.enableTwoFactorAuth,
                       })
                     }
                   >

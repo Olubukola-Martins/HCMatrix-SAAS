@@ -1,7 +1,9 @@
-import { TApprovalStatus } from "types/statuses";
 import { TLoanSetting } from "./setting";
+import { TLoanRequest, TLoanRequestStatus } from "./request";
+import { TLoanAnalytics } from "./analytic";
+import { TLoanRepayment } from "./repayment";
+import { TLoan } from "./loan";
 
-export type TLoan = any;
 type TLoanType = {
   id: number;
   name: string;
@@ -20,6 +22,13 @@ type TPaymentPlan = {
   updatedAt: string;
 };
 
-export type TLoanStatus = TApprovalStatus | "repaid" | "processing";
-
-export { type TLoanSetting, type TLoanType, type TPaymentPlan };
+export {
+  type TLoanSetting,
+  type TLoanType,
+  type TPaymentPlan,
+  type TLoanRequest,
+  type TLoanRequestStatus,
+  type TLoanAnalytics,
+  type TLoanRepayment,
+  type TLoan,
+};

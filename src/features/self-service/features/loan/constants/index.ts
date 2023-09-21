@@ -1,11 +1,18 @@
-import { TLoanStatus } from "../types";
+import { TLoanRequestStatus } from "../types";
 
-const LOAN_STATUSES: TLoanStatus[] = [
+const LOAN_STATUSES: TLoanRequestStatus[] = [
+  "pending",
   "approved",
   "rejected",
-  "processing",
+  "disbursed",
+  "repayment-in-process",
   "repaid",
 ];
 
-export const LOAN_STATUS_OPTIONS: { value: TLoanStatus; label: string }[] =
-  LOAN_STATUSES.map((item) => ({ label: item, value: item }));
+export const LOAN_STATUS_OPTIONS: {
+  value: TLoanRequestStatus;
+  label: string;
+}[] = LOAN_STATUSES.map((item) => ({
+  label: item.split("-").join(" "),
+  value: item,
+}));
