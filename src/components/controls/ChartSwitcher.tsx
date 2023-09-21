@@ -16,7 +16,7 @@ export const ChartSwitcher: React.FC<{
           <span
             className={`${
               item === "Total Assets Cost" && "text-caramel"
-            } hover:text-caramel text-sm cursor-pointer`}
+            } hover:text-caramel text-sm cursor-pointer capitalize`}
             onClick={() => handleClick(item)}
           >
             {item}

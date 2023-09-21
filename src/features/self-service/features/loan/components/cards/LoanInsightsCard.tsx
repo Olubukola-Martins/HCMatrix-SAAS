@@ -4,23 +4,28 @@ import { ChartSwitcher } from "components/controls/ChartSwitcher";
 
 import { useState } from "react";
 import { useGetLoanAnalytics } from "../../hooks/analytics/useGetLoanAnalytics";
+import { APPROVAL_STATUS_OPTIONS } from "constants/statustes";
+import { TApprovalStatus } from "types/statuses";
 
-const items = ["Total", "Pending", "Approved", "Rejected"];
+const items = APPROVAL_STATUS_OPTIONS.map((item) => item.value);
 export const LoanInsightsCard = () => {
-  const [year, setYear] = useState<string>();
-
+  const [year, setYear] = useState<string>("2023");
+  const [status, setStatus] = useState<TApprovalStatus[]>(items);
   const { data, isLoading } = useGetLoanAnalytics({
     type: "all",
-    props: { year },
+    props: { year, status },
   });
   return (
     <div className="col-span-3 bg-mainBg border flex flex-col gap-4 rounded-lg text-sm shadow p-3">
       <div className="flex justify-between">
         <ChartSwitcher
-          items={items}
+          items={["total", ...items]}
           handleClick={(key) => {
-            // TO DO: HANDLE SWITCH LOGIC HERE
-            console.log(key);
+            if (key === "total") {
+              setStatus(items);
+              return;
+            }
+            setStatus([key as TApprovalStatus]);
           }}
         />
         <div>
