@@ -48,7 +48,7 @@ export const ExperienceType = () => {
       return;
     }
     const newTypeName = values.newExperienceType?.map(
-      (item: any) => item.typeName
+      (item: any) => item.ExperienceTypeName
     );
     for (let i = 0; i < newTypeName.length; i++) {
       const name = newTypeName[i];
@@ -83,18 +83,22 @@ export const ExperienceType = () => {
   };
 
   const handleAddField = () => {
-    const newType = form.getFieldValue("newExperienceType") || [];
+    const newExperienceType = form.getFieldValue("newExperienceType") || [];
     const initialExperienceType = {
       ExperienceTypeName: "",
       allowExperienceType: true,
     };
-    form.setFieldsValue({ newType: [...newType, initialExperienceType] });
+    form.setFieldsValue({
+      newExperienceType: [...newExperienceType, initialExperienceType],
+    });
   };
 
   const handleRemoveField = (index: number) => {
-    const newType = form.getFieldValue("newExperienceType") || [];
+    const newExperienceType = form.getFieldValue("newExperienceType") || [];
     form.setFieldsValue({
-      newType: newType.filter((_: any, i: number) => i !== index),
+      newExperienceType: newExperienceType.filter(
+        (_: any, i: number) => i !== index
+      ),
     });
   };
 

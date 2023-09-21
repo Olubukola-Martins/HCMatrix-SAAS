@@ -4,13 +4,13 @@ import { ISettingsSwitchData } from "../types";
 import { useApiAuth } from "hooks/useApiAuth";
 import { useQuery } from "react-query";
 
-export const QUERY_KEY_FOR_EXPERIENCE_TYPES = "ExperienceTypes";
+export const QUERY_KEY_FOR_RECRUIT_NOTIFICATIONS = "RecruitNotifications";
 
 const getData = async (props: {
   token: string;
   companyId: number;
 }): Promise<ISettingsSwitchData[]> => {
-  const url = `${MICROSERVICE_ENDPOINTS.RECRUITMENT}/settings/experience-types`;
+  const url = `${MICROSERVICE_ENDPOINTS.RECRUITMENT}/settings/notifications`;
   const config = {
     headers: {
       Accept: "application/json",
@@ -25,18 +25,17 @@ const getData = async (props: {
 };
 
 
-export const useGetExperienceType = () => {
+export const useGetNotifications = () => {
   const { companyId, token } = useApiAuth();
   const queryData = useQuery(
-    [QUERY_KEY_FOR_EXPERIENCE_TYPES],
+    [QUERY_KEY_FOR_RECRUIT_NOTIFICATIONS],
     () => getData({ token, companyId }),
     {
-      onError: (err: any) => {
-      },
-      onSuccess: (data) => {
-      },
+      onError: (err: any) => {},
+      onSuccess: (data) => {},
     }
   );
+
   return queryData;
 };
 
