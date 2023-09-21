@@ -27,6 +27,7 @@ const getData = async (props: {
       status:
         props.data?.status?.join(",") ??
         APPROVAL_STATUS_OPTIONS.map((item) => item.value).join(","),
+      year: props.data?.year,
     },
   };
 

@@ -1,27 +1,15 @@
 import React from "react";
 import { LoanTable } from "./data-component/LoanTable";
-import {
-  TLoanDateAndStatusContainerProps,
-  withDateAndStatusContainer,
-} from "./hoc/DateAndStatusContainer";
 import { useFetchApprovalRequests } from "features/core/workflows/hooks/useFetchApprovalRequests";
 import { usePagination } from "hooks/usePagination";
 import { TLoanRequest } from "../types";
 
-interface ComponentProps {
-  export: () => void;
-}
-const Component: React.FC<
-  ComponentProps & TLoanDateAndStatusContainerProps
-> = ({ status, date }) => {
+const LoanApprovalsContainer = () => {
   const { pagination, onChange } = usePagination();
 
   const { data, isFetching } = useFetchApprovalRequests({
     pagination,
     type: "loan",
-    searchParams: {
-      name: date,
-    },
   });
   return (
     <div>
@@ -40,12 +28,6 @@ const Component: React.FC<
       />
     </div>
   );
-};
-
-const ComponentWithHOC = withDateAndStatusContainer(Component);
-
-const LoanApprovalsContainer: React.FC = () => {
-  return <ComponentWithHOC export={() => {}} />;
 };
 
 export default LoanApprovalsContainer;

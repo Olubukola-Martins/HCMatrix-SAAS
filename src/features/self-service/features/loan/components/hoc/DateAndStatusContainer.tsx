@@ -3,6 +3,7 @@ import React, { ComponentType, useState } from "react";
 
 import { TLoanRequestStatus } from "../../types";
 import { LOAN_STATUS_OPTIONS } from "../../constants";
+import { DEFAULT_DATE_FORMAT } from "constants/dateFormats";
 
 export interface TLoanDateAndStatusContainerProps {
   status: TLoanRequestStatus[];
@@ -29,10 +30,10 @@ export function withDateAndStatusContainer<
             <div className="flex items-center gap-4">
               <div style={{ minWidth: "150px" }}>
                 <DatePicker
+                  placeholder="Select Date"
                   allowClear
-                  onChange={(val) => setDate(val?.format("MM-YYYY"))}
-                  format={"MM-YYYY"}
-                  picker="month"
+                  onChange={(val) => setDate(val?.format(DEFAULT_DATE_FORMAT))}
+                  format={DEFAULT_DATE_FORMAT}
                 />
               </div>
               <div style={{ minWidth: "150px" }}>
@@ -42,10 +43,13 @@ export function withDateAndStatusContainer<
                   value={status}
                   mode="multiple"
                   size="middle"
-                  className="w-full"
+                  className="w-full capitalize"
                   placeholder="Filter by Status"
                   onChange={(val: TLoanRequestStatus[]) => setStatus(val)}
-                  options={LOAN_STATUS_OPTIONS}
+                  options={LOAN_STATUS_OPTIONS.map((item) => ({
+                    ...item,
+                    label: <span className="capitalize">{item.label}</span>,
+                  }))}
                 />
               </div>
             </div>
