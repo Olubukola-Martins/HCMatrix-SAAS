@@ -1,13 +1,22 @@
-
-import { Form, Switch, Input } from "antd";
+import { Form, Switch, Input, Popconfirm, Skeleton } from "antd";
 import { AppButton } from "components/button/AppButton";
 import "../../assets/style.css";
+import {
+  QUERY_KEY_FOR_RECRUIT_NOTIFICATIONS,
+  useGetNotifications,
+} from "../hooks/useGetNotifications";
+import { usePatchRecruitmentItem } from "../hooks/usePatchRecruitmentSettings";
 
 export const RecruitmentNotification = () => {
+  const { data, isLoading, error } = useGetNotifications();
+  const { patchData } = usePatchRecruitmentItem({
+    patchEndpointUrl: "notifications",
+    queryKey: QUERY_KEY_FOR_RECRUIT_NOTIFICATIONS,
+  });
   const [form] = Form.useForm();
-
-  const handleSubmit = (values: any) => {
-    console.log("Received values of form:", values);
+  console.log(data);
+  const handleSwitchChange = (checked: boolean, id: number) => {
+    patchData(id, checked);
   };
 
   return (
@@ -19,62 +28,40 @@ export const RecruitmentNotification = () => {
             form={form}
             layout="vertical"
             requiredMark={false}
-            onFinish={handleSubmit}
+            // onFinish={handleSubmit}
             name="notificationsSettings"
           >
-            <div className="recruitmentSettingsForm flex flex-row gap-2">
-              <h3 className="font-medium">
-                Notify me when an applicant send in his/her applications
-              </h3>
-              <Form.Item
-                name="notifyMeOnApplication"
-                className="flex justify-end items-end"
-                noStyle
-              >
-                <Switch />
-              </Form.Item>
-            </div>
-
-            <div className="recruitmentSettingsForm flex flex-row gap-2">
-              <h3 className="font-medium">
-                Notify me when an applicant send me any email
-              </h3>
-              <Form.Item
-                name="notifyMeOnApplicantEmail"
-                className="flex justify-end items-end"
-                noStyle
-              >
-                <Switch />
-              </Form.Item>
-            </div>
-
-            <div className="recruitmentSettingsForm flex flex-row gap-2">
-              <h3 className="font-medium">
-                Send notification to team lead applicant to view their applicant
-                resume/cv
-              </h3>
-              <Form.Item
-                name="sendNotificationToTeamLead"
-                className="flex justify-end items-end"
-                noStyle
-              >
-                <Switch />
-              </Form.Item>
-            </div>
-
-            <div className="recruitmentSettingsForm flex flex-row gap-2">
-              <h3 className="font-medium">
-                Send a notification reminder after 2 weeks for applicant placed
-                on Hold
-              </h3>
-              <Form.Item
-                name="sendNotificationReminderForApplicantPlacedOnHold"
-                className="flex justify-end items-end"
-                noStyle
-              >
-                <Switch />
-              </Form.Item>
-            </div>
+            {isLoading ? (
+              <div className="recruitmentSettingsForm flex flex-col sm:gap-6 gap-9 ">
+                <Skeleton active />
+                <Skeleton active />
+              </div>
+            ) : error ? (
+              <p className="text-red-600 text-xl">ERROR</p>
+            ) : (
+              <>
+                {data?.map((result) => (
+                  <div className="recruitmentSettingsForm" key={result.id}>
+                    <h3 className="font-medium">{result.notification.title}</h3>
+                    <div className="flex gap-5 items-center justify-end">
+                      <Form.Item
+                        valuePropName="checked"
+                        name={result.name}
+                        className="flex justify-end items-end"
+                        noStyle
+                      >
+                        <Switch
+                          defaultChecked={result.isActive}
+                          onChange={(checked) =>
+                            handleSwitchChange(checked, result.id)
+                          }
+                        />
+                      </Form.Item>
+                    </div>
+                  </div>
+                ))}
+              </>
+            )}
 
             <div className="flex justify-between self-center mt-5 w-96 ml-auto max-sm:w-full max-lg:w-80">
               <button
