@@ -21,6 +21,8 @@ import { QUERY_KEY_FOR_LEAVES } from "features/self-service/features/leave/hooks
 import { APPROVAL_STATUS_ACTION_OPTIONS } from "constants/statustes";
 import { LoanDetails } from "../LoanDetails";
 import { DEFAULT_DATE_FORMAT } from "constants/dateFormats";
+import { QUERY_KEY_FOR_LOAN_REQUESTS } from "../../hooks/requests/useGetLoanRequests";
+import { QUERY_KEY_FOR_LOAN_ANALYTICS } from "../../hooks/analytics/useGetLoanAnalytics";
 
 type TAction = "approve/reject" | "view";
 type TLoanAndApproval = TLoanRequest & { approvalDetails?: TApprovalRequest };
@@ -56,7 +58,11 @@ export const LoanTable: React.FC<{
   const { confirmApprovalAction } = useApproveORReject({
     handleSuccess: () => {
       queryClient.invalidateQueries({
-        queryKey: [QUERY_KEY_FOR_LEAVES], //TODO: CHange this when loan hooks are created
+        queryKey: [QUERY_KEY_FOR_LOAN_REQUESTS],
+        // exact: true,
+      });
+      queryClient.invalidateQueries({
+        queryKey: [QUERY_KEY_FOR_LOAN_ANALYTICS],
         // exact: true,
       });
     },
@@ -160,8 +166,9 @@ export const LoanTable: React.FC<{
                     hidden={item?.status !== "pending"}
                     key={value}
                     onClick={() =>
+                      item?.approvalDetails &&
                       confirmApprovalAction({
-                        approvalStageId: item?.id,
+                        approvalStageId: item?.approvalDetails?.id,
                         status: value,
                         workflowType: !!item?.approvalDetails?.basicStageId
                           ? "basic"
