@@ -88,12 +88,6 @@ const RepaymentTable: React.FC<{
       key: "empuid",
       render: (_, item) => <span className="capitalize">{item.empUid} </span>,
     },
-    {
-      title: "Department",
-      dataIndex: "dept",
-      key: "dept",
-      render: (_, item) => <span className="capitalize">{``} </span>,
-    },
 
     {
       title: "Amount Paid",

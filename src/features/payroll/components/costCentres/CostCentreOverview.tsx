@@ -2,6 +2,7 @@ import { Skeleton } from "antd";
 import { AppButton } from "components/button/AppButton";
 import { HighLightItemList } from "components/highlight/HighLightItemList";
 import React from "react";
+import { formatNumberWithCommas } from "utils/dataHelpers/formatNumberWithCommas";
 
 interface IData {
   totalTransactions: number;
@@ -48,15 +49,30 @@ export const CostCentreOverview: React.FC<IProps> = ({
                 <div className="flex flex-col gap-3 text-accent mt-4">
                   <HighLightItemList
                     items={[
-                      { name: "Last Funded Amount", value: lastFundedAmount },
-                      { name: "Total Transactions", value: totalTransactions },
-                      { name: "Balance", value: balance },
+                      {
+                        name: "Last Funded Amount",
+                        value: formatNumberWithCommas(lastFundedAmount),
+                      },
+                      {
+                        name: "Total Transactions",
+                        value: formatNumberWithCommas(totalTransactions),
+                      },
+                      {
+                        name: "Balance",
+                        value: formatNumberWithCommas(balance),
+                      },
                     ]}
                   />
                   <HighLightItemList
                     items={[
-                      { name: "Total Debit", value: totalDebit },
-                      { name: "Total Credit", value: totalCredit },
+                      {
+                        name: "Total Debit",
+                        value: formatNumberWithCommas(totalDebit),
+                      },
+                      {
+                        name: "Total Credit",
+                        value: formatNumberWithCommas(totalCredit),
+                      },
                     ]}
                   />
                   <HighLightItemList
