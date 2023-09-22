@@ -19,6 +19,7 @@ import { FormLoanRepaymentPlanInput } from "./settings/repaymentPlans/FormLoanRe
 import LoanWorthiness from "./worthiness/LoanWorthiness";
 import { TLoanWorthinessInputData } from "../hooks/worthiness/useGetLoanWorthiness";
 import { useCurrentFileUploadUrl } from "hooks/useCurrentFileUploadUrl";
+import { QUERY_KEY_FOR_LOAN_ANALYTICS } from "../hooks/analytics/useGetLoanAnalytics";
 
 export const NewLoan: React.FC<IModalProps> = ({ open, handleClose }) => {
   const queryClient = useQueryClient();
@@ -62,6 +63,10 @@ export const NewLoan: React.FC<IModalProps> = ({ open, handleClose }) => {
           form.resetFields();
           handleClose();
 
+          queryClient.invalidateQueries({
+            queryKey: [QUERY_KEY_FOR_LOAN_ANALYTICS],
+            // exact: true,
+          });
           queryClient.invalidateQueries({
             queryKey: [QUERY_KEY_FOR_LOAN_REQUESTS],
             // exact: true,

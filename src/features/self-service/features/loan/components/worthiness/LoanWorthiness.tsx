@@ -30,7 +30,7 @@ const LoanWorthiness: React.FC<{
   }, [data]);
   return (
     <Skeleton loading={isFetching} active paragraph={{ rows: 1 }}>
-      <div className="flex flex-col mb-4">
+      <div className="flex flex-col gap-3 mb-4">
         <p
           className={`${
             typeof data?.isWorthy === "boolean" && data?.isWorthy
@@ -40,7 +40,7 @@ const LoanWorthiness: React.FC<{
         >
           Loan Worthiness
         </p>
-        <Input value={data?.worthinessMessage} disabled size="small" />
+        <Input.TextArea value={data?.worthinessMessage} disabled size="small" />
         {data?.requiresForm && (
           <div className={boxStyle}>
             <FileUpload
