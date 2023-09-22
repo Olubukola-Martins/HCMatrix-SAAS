@@ -1,6 +1,6 @@
 import { DatePicker, Form, Input, InputNumber, Modal, Select } from "antd";
 import { AppButton } from "components/button/AppButton";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { IModalProps } from "types";
 import {
   generalValidationRules,
@@ -16,17 +16,31 @@ import { QUERY_KEY_FOR_LOAN_REQUESTS } from "../hooks/requests/useGetLoanRequest
 import { QUERY_KEY_FOR_LOAN } from "../hooks/useGetLoan";
 import { FormLoanTypeInput } from "./settings/loanTypes/FormLoanTypeInput";
 import { FormLoanRepaymentPlanInput } from "./settings/repaymentPlans/FormLoanRepaymentPlanInput";
+import LoanWorthiness from "./worthiness/LoanWorthiness";
+import { TLoanWorthinessInputData } from "../hooks/worthiness/useGetLoanWorthiness";
+import { useCurrentFileUploadUrl } from "hooks/useCurrentFileUploadUrl";
 
 export const NewLoan: React.FC<IModalProps> = ({ open, handleClose }) => {
   const queryClient = useQueryClient();
 
   const [form] = Form.useForm<TRequestForLoanData>();
   const { mutate, isLoading } = useRequestForLoan();
-
+  const documentUrl = useCurrentFileUploadUrl("documentUrl");
+  const [requiresForm, setRequiresForm] = useState(false);
   const handleSubmit = (data: TRequestForLoanData) => {
+    if (requiresForm && !documentUrl) {
+      openNotification({
+        state: "error",
+        title: "Error",
+        description: "Please upload a guarantor's form!",
+        duration: 0,
+      });
+      return;
+    }
     mutate(
       {
         ...data,
+        guarantorFormUrls: documentUrl ? [documentUrl] : [],
       },
       {
         onError: (err: any) => {
@@ -60,6 +74,11 @@ export const NewLoan: React.FC<IModalProps> = ({ open, handleClose }) => {
       }
     );
   };
+  const [worthinessInput, setWorthinessInput] =
+    useState<TLoanWorthinessInputData>({});
+  const handleRequiresForm = (val: boolean) => {
+    setRequiresForm(val);
+  };
   return (
     <Modal
       open={open}
@@ -87,14 +106,31 @@ export const NewLoan: React.FC<IModalProps> = ({ open, handleClose }) => {
         <FormLoanRepaymentPlanInput
           Form={Form}
           control={{ name: "paymentPlanId", label: "Payment Plan" }}
+          handleSelect={(_, plan) =>
+            setWorthinessInput((prev) => ({ ...prev, paymentPlanId: plan?.id }))
+          }
+          handleClear={() =>
+            setWorthinessInput((prev) => ({
+              ...prev,
+              paymentPlanId: undefined,
+            }))
+          }
         />
 
         <Form.Item rules={generalValidationRules} name="amount" label="Amount">
-          <InputNumber className="w-full" placeholder="Amount" />
+          <InputNumber
+            className="w-full"
+            placeholder="Amount"
+            // TODO: Implement Debounce for this
+            onChange={(val: number | null) =>
+              setWorthinessInput((prev) => ({ ...prev, amount: val ?? 0 }))
+            }
+          />
         </Form.Item>
-        <Form.Item rules={generalValidationRules} label="Loan Worthiness (Why)">
-          <Input placeholder="0%" disabled />
-        </Form.Item>
+        <LoanWorthiness
+          input={worthinessInput}
+          handleRequiresForm={handleRequiresForm}
+        />
         <Form.Item
           rules={generalValidationRulesOp}
           name="description"

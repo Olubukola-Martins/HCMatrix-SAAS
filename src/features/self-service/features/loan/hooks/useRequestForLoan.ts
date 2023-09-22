@@ -13,6 +13,7 @@ export type TRequestForLoanData = Pick<
   | "typeId"
   | "paymentPlanId"
   | "guarantorFormUrls"
+  | "amount"
 >;
 const createData = async (props: {
   data: TRequestForLoanData;

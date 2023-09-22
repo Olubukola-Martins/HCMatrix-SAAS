@@ -3,6 +3,7 @@ import { TLoanRequest, TLoanRequestStatus } from "./request";
 import { TLoanAnalytics } from "./analytic";
 import { TLoanRepayment } from "./repayment";
 import { TLoan } from "./loan";
+import { TLoanWorthiness } from "./worthiness";
 
 type TLoanType = {
   id: number;
@@ -31,4 +32,5 @@ export {
   type TLoanAnalytics,
   type TLoanRepayment,
   type TLoan,
+  type TLoanWorthiness,
 };

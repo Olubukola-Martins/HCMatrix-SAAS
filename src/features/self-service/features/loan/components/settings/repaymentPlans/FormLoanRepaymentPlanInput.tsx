@@ -3,12 +3,15 @@ import { useDebounce } from "hooks/useDebounce";
 import { useState } from "react";
 import { generalValidationRules } from "utils/formHelpers/validation";
 import { useGetLoanPaymentPlans } from "../../../hooks/paymentPlan/useGetPaymentPlans";
+import { TPaymentPlan } from "../../../types";
 
 export const FormLoanRepaymentPlanInput: React.FC<{
+  handleSelect?: (val: number, plan?: TPaymentPlan) => void;
+  handleClear?: () => void;
   Form: any;
   showLabel?: boolean;
   control?: { label: string; name: string | (string | number)[] };
-}> = ({ Form, showLabel = true, control }) => {
+}> = ({ Form, showLabel = true, control, handleClear, handleSelect }) => {
   const [searchTerm, setSearchTerm] = useState<string>("");
   const debouncedSearchTerm: string = useDebounce<string>(searchTerm);
 
@@ -20,6 +23,10 @@ export const FormLoanRepaymentPlanInput: React.FC<{
 
   const handleSearch = (val: string) => {
     setSearchTerm(val);
+  };
+  const onClear = () => {
+    setSearchTerm("");
+    handleClear?.();
   };
 
   return (
@@ -33,7 +40,13 @@ export const FormLoanRepaymentPlanInput: React.FC<{
         loading={isFetching} //TO DO : this should be added to all custom Fetch Form Inputs
         showSearch
         allowClear
-        onClear={() => setSearchTerm("")}
+        onClear={onClear}
+        onSelect={(val: number) => {
+          if (handleSelect) {
+            const plan = data?.data.find((item) => item.id === val);
+            handleSelect(val, plan);
+          }
+        }}
         onSearch={handleSearch}
         className="rounded border-slate-400 w-full"
         defaultActiveFirstOption={false}
