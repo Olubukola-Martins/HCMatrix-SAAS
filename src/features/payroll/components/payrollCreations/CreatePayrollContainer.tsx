@@ -43,6 +43,7 @@ import { useGetOvertimeSheetTemplate } from "features/payroll/hooks/payroll/over
 import { FormPayrollProjectSchemeInput } from "../payrollSchemes/FormPayrollProjectSchemeInput";
 import { useRunPayroll } from "features/payroll/hooks/payroll/useRunPayroll";
 import SinglePayrollReview from "../payrollReviews/SinglePayrollReview";
+import { RunPayroll } from "./RunPayroll";
 
 const boxStyle =
   "bg-mainBg flex justify-between items-start md:items-center px-6 py-5 rounded lg:flex-row flex-col gap-y-5";
@@ -535,45 +536,7 @@ const CreatePayrollContainer: React.FC<{
   const clearAction = () => {
     setAction(undefined);
   };
-  const { mutate: mutateRunPayroll, isLoading: isRunPayrollLoading } =
-    useRunPayroll();
 
-  const handleRunPayroll = () => {
-    if (payrollId) {
-      mutateRunPayroll(
-        {
-          data: {
-            id: payrollId,
-          },
-        },
-        {
-          onError: (err: any) => {
-            openNotification({
-              state: "error",
-              title: "Error Occurred",
-              description:
-                err?.response.data.message ?? err?.response.data.error.message,
-            });
-          },
-          onSuccess: (res: any) => {
-            openNotification({
-              state: "success",
-
-              title: "Success",
-              description: res.data.message,
-              // duration: 0.4,
-            });
-            clearAction();
-
-            queryClient.invalidateQueries({
-              queryKey: [QUERY_KEY_FOR_SINGLE_PAYROLL],
-              // exact: true,
-            });
-          },
-        }
-      );
-    }
-  };
   const { mutate: mutateRollback, isLoading: isRollbackLoading } =
     useRollbackPayroll();
 
@@ -685,16 +648,10 @@ const CreatePayrollContainer: React.FC<{
           isLoading: isRollbackLoading,
         }}
       />
-      <ConfirmationModal
-        key="run-payroll"
-        title={`Run Payroll`}
-        description={`Are you sure you want to run ${payroll?.name} payroll?`}
+      <RunPayroll
+        payrollId={payroll?.id}
         handleClose={() => clearAction()}
         open={action === "run-payroll"}
-        handleConfirm={{
-          fn: () => handleRunPayroll(),
-          isLoading: isRunPayrollLoading,
-        }}
       />
 
       <div className="text-accent">

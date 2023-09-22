@@ -6,6 +6,9 @@ import { ICurrentCompany } from "types";
 
 type TPayrollData = {
   id: number;
+  body: {
+    disbursementDate: string;
+  };
 };
 const createData = async (props: {
   data: TPayrollData;
@@ -20,8 +23,8 @@ const createData = async (props: {
     },
   };
 
-  const data: TPayrollData = {
-    ...props.data,
+  const data = {
+    ...props.data.body,
   };
 
   const response = await axios.postForm(url, data, config);
