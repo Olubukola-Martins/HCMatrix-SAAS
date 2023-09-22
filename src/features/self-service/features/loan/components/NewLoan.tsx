@@ -31,7 +31,7 @@ export const NewLoan: React.FC<IModalProps> = ({ open, handleClose }) => {
     if (requiresForm && !documentUrl) {
       openNotification({
         state: "error",
-        title: "Error",
+        title: "Guarantor's Form Required",
         description: "Please upload a guarantor's form!",
         duration: 0,
       });
