@@ -28,6 +28,8 @@ import { Moment } from "moment";
 import { convertObjectToKeyMomentValues } from "features/payroll/utils/convertObjectToKeyMomentValues";
 import { useUpdateProjectParticipantGrossPay } from "features/payroll/hooks/scheme/project/useUpdateProjectParticipantGrossPay";
 import { generalValidationRules } from "utils/formHelpers/validation";
+import moment from "moment";
+import { DEFAULT_DATE_FORMAT } from "constants/dateFormats";
 
 const DEFAULT_COMPONENT_LABELS = {
   thirteenthMonthSalary: "thirteenth_month_salary",
@@ -399,7 +401,6 @@ export const SetUpPayrollForm: React.FC<{
 
               runAutomatically,
               type,
-              disbursement: data.disbursement,
               workflowId: data.workflowId,
               costCentreId: data.costCentreId,
             },
@@ -489,7 +490,6 @@ export const SetUpPayrollForm: React.FC<{
 
           runAutomatically,
           type,
-          disbursement: data.disbursement,
           workflowId: data.workflowId,
           costCentreId: data.costCentreId,
         },
@@ -643,7 +643,8 @@ export const SetUpPayrollForm: React.FC<{
           ...initialState,
           allowDisbursement: scheme?.allowDisbursement,
           allowApproval: scheme?.allowApproval,
-          runAutomatically: scheme?.runAutomatically,
+          runAutomatically:
+            scheme.type === "wages" ? false : scheme?.runAutomatically,
           display13thMonth: !!ogSalaryComponents.find(
             (item) =>
               item.label === DEFAULT_COMPONENT_LABELS.thirteenthMonthSalary
@@ -880,6 +881,7 @@ export const SetUpPayrollForm: React.FC<{
       scheme,
     ]
   );
+  const [paymentDates, setPaymentDates] = useState<string[]>([]);
   return (
     <div className="flex flex-col gap-4">
       <PageSubHeader
@@ -1040,26 +1042,6 @@ export const SetUpPayrollForm: React.FC<{
                 <p className="text-sm">
                   Do you want to disburse payment after approval/confirmation?
                 </p>
-                {allowDisbursement && (
-                  <div className="mt-2">
-                    {/* <label className="text-sm">
-                What day would you like to disburse payment
-              </label> */}
-                    <div className="flex items-center lg:justify-between">
-                      <div className="w-2/5">
-                        <Form.Item noStyle name="disbursement">
-                          <input
-                            className={inputStyle}
-                            type="number"
-                            min={20}
-                            max={28}
-                            placeholder="What day would you like to disburse payment"
-                          />
-                        </Form.Item>
-                      </div>
-                    </div>
-                  </div>
-                )}
               </div>
               <div className={boxStyle}>
                 <h5 className={boxTitle}>Default Cost Centre</h5>
@@ -1170,9 +1152,6 @@ export const SetUpPayrollForm: React.FC<{
                 </p>
                 {allowApproval && (
                   <div className="mt-2">
-                    {/* <label className="text-sm">
-                What day would you like to disburse payment
-              </label> */}
                     <div className="flex items-center lg:justify-between">
                       <div className="w-2/5">
                         <FormWorkflowInput
@@ -1184,55 +1163,95 @@ export const SetUpPayrollForm: React.FC<{
                   </div>
                 )}
               </div>
-              <div className={boxStyle}>
-                <div className="flex items-center justify-between">
-                  <h5 className={boxTitle}>Run Payroll automatically</h5>
-                  <Switch
-                    checked={runAutomatically}
-                    onChange={() => dispatch({ type: "runAutomatically" })}
-                  />
+              {type !== "wages" && (
+                <div className={boxStyle}>
+                  <div className="flex items-center justify-between">
+                    <h5 className={boxTitle}>Run Payroll automatically</h5>
+                    <Switch
+                      checked={runAutomatically}
+                      onChange={() => dispatch({ type: "runAutomatically" })}
+                    />
+                  </div>
+                  <p className="text-sm">
+                    This will enable payroll to be run automatically every month
+                    with the scheme's default settings
+                  </p>
+                  {runAutomatically && type !== "project" && (
+                    <div className="mt-6">
+                      <Form.Item
+                        requiredMark={false}
+                        name={`automaticRunDay`}
+                        noStyle
+                        rules={generalValidationRules}
+                      >
+                        <InputNumber
+                          placeholder="Select the day of execution in month"
+                          min={1}
+                          max={28}
+                          className="w-2/5"
+                        />
+                      </Form.Item>
+                    </div>
+                  )}
+                  {runAutomatically && type === "project" && (
+                    <div className="mt-6 items-start flex flex-col gap-1">
+                      {Array(frequencyAmount)
+                        .fill(0)
+                        .map((item, i) => (
+                          <Form.Item
+                            requiredMark={false}
+                            className="w-full flex"
+                            key={i}
+                            name={`Payment${i + 1}`}
+                            label={`Payment ${i + 1}`}
+                            labelCol={{ span: 10 }}
+                            rules={[
+                              {
+                                required: true,
+                                validator: async (rule, value) => {
+                                  // value is a moment object
+                                  const isDateGreaterThanCurrentDay = (
+                                    date: Moment
+                                  ) => {
+                                    const currentDate = moment();
+                                    return date.isAfter(currentDate, "day"); // Check if selected date is greater than the current day
+                                  };
+
+                                  if (!isDateGreaterThanCurrentDay(value)) {
+                                    throw new Error(
+                                      "Please select a date greater than the current day"
+                                    );
+                                  }
+                                  if (
+                                    paymentDates.includes(
+                                      value.format(DEFAULT_DATE_FORMAT)
+                                    )
+                                  ) {
+                                    throw new Error(
+                                      `Please select a date that hasn't been selected!`
+                                    );
+                                  }
+                                  setPaymentDates((prev) =>
+                                    value
+                                      ? [
+                                          ...prev,
+                                          value?.format(DEFAULT_DATE_FORMAT),
+                                        ]
+                                      : prev
+                                  );
+                                  // if (false) throw new Error("Something wrong!");
+                                  return true;
+                                },
+                              },
+                            ]}
+                          >
+                            <DatePicker className="w-full" />
+                          </Form.Item>
+                        ))}
+                    </div>
+                  )}
                 </div>
-                <p className="text-sm">
-                  This will enable payroll to be run automatically every month
-                  with the scheme's default settings
-                </p>
-                {runAutomatically && type !== "project" && (
-                  <div className="mt-6">
-                    <Form.Item
-                      requiredMark={false}
-                      name={`automaticRunDay`}
-                      noStyle
-                      rules={generalValidationRules}
-                    >
-                      <InputNumber
-                        placeholder="Select the day of execution in month"
-                        min={1}
-                        max={28}
-                        className="w-2/5"
-                      />
-                    </Form.Item>
-                  </div>
-                )}
-                {runAutomatically && type === "project" && (
-                  <div className="mt-6 items-start flex flex-col gap-1">
-                    {Array(frequencyAmount)
-                      .fill(0)
-                      .map((item, i) => (
-                        <Form.Item
-                          requiredMark={false}
-                          className="w-full flex"
-                          key={i}
-                          name={`Payment${i + 1}`}
-                          label={`Payment ${i + 1}`}
-                          labelCol={{ span: 10 }}
-                          rules={generalValidationRules}
-                        >
-                          <DatePicker className="w-full" />
-                        </Form.Item>
-                      ))}
-                  </div>
-                )}
-              </div>
+              )}
               <div className={boxStyle}>
                 <div className="flex items-center justify-between">
                   <h5

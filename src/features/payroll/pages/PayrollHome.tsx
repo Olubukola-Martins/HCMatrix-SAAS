@@ -18,6 +18,7 @@ import { Dropdown, Menu } from "antd";
 import { appRoutes } from "config/router/paths";
 import { AppButton } from "components/button/AppButton";
 import { CreatePayrollButton } from "../components/payrollCreations/CreatePayrollButton";
+import PayrollOverviewChart from "../components/graphs/PayrollOverviewChart";
 
 const outerStyle =
   "group  transition ease-in-out duration-500 cursor-pointer shadow-md col-span-3 md:col-span-1 rounded-xl flex flex-col gap-2 w-full  p-3 bg-card";
@@ -275,75 +276,8 @@ const PayrollHome = () => {
                   : "lg:col-span-4 col-span-3"
               }`}
             >
-              {/* top */}
-              <div className="flex justify-between items-center">
-                <h4 className="text-lg">Payroll Graphs and Charts</h4>
-
-                <div className="flex gap-2 text-sm">
-                  <div className="flex gap-2 lg:items-center flex-col lg:flex-row">
-                    <div className="flex-1  self-start">
-                      <select
-                        className="w-full  border rounded px-2 py-2 border-black bg-mainBg"
-                        name="filterInfo"
-                        placeholder="Bar Chart"
-                        onChange={(e) => setCurrentChart(e.target.value)}
-                      >
-                        <option value="line-chart" selected>
-                          Line Chart
-                        </option>
-                        <option value="bar-chart">Bar Chart</option>
-                        {/* <option value="combo-chart">Combo Chart</option> */}
-                        <option value="scatter-chart">Scatter Chart</option>
-                        <option value="waterfall-chart">Waterfall Chart</option>
-                        <option value="pie-chart">Pie Chart</option>
-                        <option value="histogram">Histogram</option>
-                        {/* <option value="gauge-chart">Gauge Chart</option> */}
-                        <option value="area-graph">Area Graph</option>
-                        <option value="spider-chart">Spider Chart</option>
-                      </select>
-                    </div>
-                  </div>
-                  <div className="flex gap-2 lg:items-center flex-col lg:flex-row">
-                    <div className="flex-1  self-start">
-                      <input
-                        className="w-32 border rounded px-2 py-2 border-black bg-mainBg"
-                        name="date"
-                        type="text"
-                        placeholder="23-09-2022"
-                        onFocus={(e) => (e.target.type = "date")}
-                        onBlur={(e) => (e.target.type = "text")}
-                      />
-                    </div>
-                  </div>
-                </div>
-              </div>
-              {/* nav */}
-              <div className="flex rounded-md overflow-hidden shadow-sm">
-                {chartData.map((item) => (
-                  <div
-                    onClick={() => setActive(item.name)}
-                    className={`border border-r text-xs text-center flex-1 h-12 hover:text-caramel flex capitalize items-center justify-center cursor-pointer bg-mainBg md:text-xs ${
-                      active === item.name ? "text-caramel" : "text-accent"
-                    }`}
-                  >
-                    <span>{item.name}</span>
-                  </div>
-                ))}
-              </div>
-
               {/* the chart goes here */}
-              <div className="h-72">
-                {/* {currentChart === "line-chart" && <LineChart data={[]} />}
-                {currentChart === "bar-chart" && <BarChart data={[]} />}
-                {currentChart === "scatter-chart" && <ScatterChart data={[]} />}
-                {currentChart === "pie-chart" && (
-                  <PieChart dData={[]} labels={[]} title={""} />
-                )}
-                {currentChart === "area-graph" && <AreaGraph />}
-                {currentChart === "waterfall-chart" && <WaterFallChart />}
-                {currentChart === "histogram" && <Histogram />}
-                {currentChart === "spider-chart" && <SpiderChart />} */}
-              </div>
+              <PayrollOverviewChart />
             </motion.div>
           </AnimatePresence>
         </div>

@@ -29,7 +29,6 @@ export type TSetupPayrollSchemeData = {
   runAutomatically: boolean;
   automaticRunDay: string | number; //{\"1-Payment\": \"2023-07-27\",\"2-Payment\": \"2023-10-27\",\"3-Payment\": \"2024-02-01\"} OR day of month
   salaryComponents: TSalaryComponentInput[];
-  disbursement: number; // might not apply to project
 
   projectParticipants?: ProjectParticipant[];
 };

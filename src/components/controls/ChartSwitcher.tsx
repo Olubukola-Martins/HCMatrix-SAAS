@@ -1,9 +1,10 @@
-import React from "react";
+import React, { useState } from "react";
 
 export const ChartSwitcher: React.FC<{
   items: string[];
   handleClick: (val: string) => void;
 }> = ({ items, handleClick }) => {
+  const [selected, setSelected] = useState<string>();
   return (
     <div className="flex px-2 bg-card justify-between shadow-sm rounded-md">
       {items.map((item, i) => (
@@ -15,9 +16,12 @@ export const ChartSwitcher: React.FC<{
         >
           <span
             className={`${
-              item === "Total Assets Cost" && "text-caramel"
-            } hover:text-caramel text-sm cursor-pointer capitalize`}
-            onClick={() => handleClick(item)}
+              item === selected && "text-caramel"
+            } hover:text-caramel text-sm cursor-pointer capitalize text-center`}
+            onClick={() => {
+              setSelected(item);
+              handleClick(item);
+            }}
           >
             {item}
           </span>

@@ -10,7 +10,6 @@ type TSchemeData = {
   type: TPayrollSchemeType;
   frequency: "monthly" | "daily" | number;
   allowDisbursement: boolean;
-  disbursement: number;
   allowApproval: boolean;
   workflowId: number;
   costCentreId: number;
