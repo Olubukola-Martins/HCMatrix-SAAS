@@ -12,6 +12,8 @@ import { useApiAuth } from "hooks/useApiAuth";
 import { openNotification } from "utils/notifications";
 import { EGlobalOps, GlobalContext } from "stateManagers/GlobalContextProvider";
 import { useContext } from "react";
+import { QUERY_KEY_FOR_TIME_OFF } from "../hooks/useGetTimeOff";
+import { useQueryClient } from "react-query";
 
 export const AddTimeOff = ({ open, handleClose }: IModalProps) => {
   const { companyId, token, currentUserId } = useApiAuth();
@@ -20,6 +22,7 @@ export const AddTimeOff = ({ open, handleClose }: IModalProps) => {
   const { dispatch } = globalCtx;
   const { data, isLoading: loadPolicy } = useGetTimeOffPolicy();
   const { mutate, isLoading } = useCreateTimeOff();
+  const queryClient = useQueryClient();
   const handleSubmit = (values: any) => {
     mutate(
       {
@@ -49,7 +52,7 @@ export const AddTimeOff = ({ open, handleClose }: IModalProps) => {
 
           form.resetFields();
           dispatch({ type: EGlobalOps.setShowInitialSetup, payload: true });
-          // queryClient.invalidateQueries([QUERY_KEY_FOR_BIOMETRIC_DEVICE]);
+          queryClient.invalidateQueries([QUERY_KEY_FOR_TIME_OFF]);
           handleClose();
         },
       }

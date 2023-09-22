@@ -7,11 +7,12 @@ import Table, { ColumnsType } from "antd/lib/table";
 import { Dropdown, Menu } from "antd";
 import { AddTimeOff } from "../components/AddTimeOff";
 import { IAllTimeOff } from "../types/settings";
-
+import { useGetTimeOff } from "../hooks/useGetTimeOff";
+import moment from "moment";
 
 export const TimeOff = () => {
   const [newTimeOffModal, setNewTimeOffModal] = useState(false);
-  
+  const { data } = useGetTimeOff();
   const [selectedRowKeys, setSelectedRowKeys] = useState<React.Key[]>([]);
   const onSelectChange = (newSelectedRowKeys: React.Key[]) => {
     console.log("selectedRowKeys changed: ", newSelectedRowKeys);
@@ -23,27 +24,26 @@ export const TimeOff = () => {
     onChange: onSelectChange,
   };
   const hasSelected = selectedRowKeys.length > 0;
-  
+
   const columns: ColumnsType<IAllTimeOff> = [
     {
       title: "Date",
       dataIndex: "date",
-    },
-    {
-      title: "Name",
-      dataIndex: "name",
+      render: (_, val) => (
+        <span>{moment(val?.date).format("MMM Do YYYY")}</span>
+      ),
     },
     {
       title: "Time off Policy",
       dataIndex: "timeOffPolicy",
     },
     {
-      title: "Duration",
-      dataIndex: "duration",
-    },
-    {
       title: "Status",
       dataIndex: "status",
+    },
+    {
+      title: "Reason",
+      dataIndex: "reason",
     },
     {
       title: "Action",
@@ -105,9 +105,9 @@ export const TimeOff = () => {
         )}
 
         <Table
-        className="mt-3"
+          className="mt-3"
           columns={columns}
-          dataSource={[]}
+          dataSource={data}
           rowSelection={rowSelection}
         />
       </div>

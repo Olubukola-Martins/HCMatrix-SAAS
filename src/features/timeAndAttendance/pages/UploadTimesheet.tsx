@@ -1,7 +1,7 @@
 import { PageIntro } from "components/layout/PageIntro";
 import { AttendanceSubToper } from "../components/AttendanceSubToper";
 import { appRoutes } from "config/router/paths";
-import { Dropdown, Input, Menu, Select } from "antd";
+import { Dropdown, Input, Menu} from "antd";
 import { AppButton } from "components/button/AppButton";
 import Table, { ColumnsType } from "antd/lib/table";
 import { useState } from "react";
@@ -29,8 +29,8 @@ const columns: ColumnsType<DataType> = [
     dataIndex: "timeOut",
   },
   {
-    title: "Status",
-    dataIndex: "status",
+    title: "Date",
+    dataIndex: "date",
   },
   {
     title: "Action",
@@ -58,7 +58,7 @@ export const UploadTimesheet = () => {
 
   return (
     <>
-      <AttendanceSubToper active="time-sheet"/>
+      <AttendanceSubToper active="time-sheet" />
       <div className="Container">
         <NewAttendanceModal
           open={addNewModal}
@@ -70,23 +70,18 @@ export const UploadTimesheet = () => {
           Welcome on board, upload attendance manually
         </p>
 
-        <Input.Search
-          placeholder="Search branch"
-          style={{ width: "35%" }}
-          allowClear
-        />
-
         <div className="grid grid-cols-1 md:grid-cols-2 gap-3 mt-6 mb-8">
           <div className="flex gap-3 md:justify-start justify-between">
-            <Select
-              defaultValue="Daily"
-              style={{ width: 120 }}
-              options={[{ value: "daily", label: "Daily" }]}
+            <Input.Search
+              placeholder="Search employee"
+              allowClear
+              className="md:w-72 w-52"
             />
-            <AppButton
-              label="Feb 27-Mar 5"
-              additionalClassNames={["transparentButton"]}
-            />
+
+            <button className="flex items-center gap-x-2 transparentButton">
+              <span className="text-caramel font-medium">Filter</span>
+              <i className="ri-filter-2-line text-caramel"></i>
+            </button>
           </div>
           <div className="flex gap-3 md:justify-end justify-between">
             <AppButton
