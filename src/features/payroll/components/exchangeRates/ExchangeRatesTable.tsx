@@ -51,6 +51,15 @@ const EditableCell: React.FC<EditableCellProps> = ({
               required: true,
               message: `Please Input ${title}!`,
             },
+            {
+              validator: async (rule, value) => {
+                if (value <= 0) {
+                  throw new Error("Please enter a value greater than 0");
+                }
+
+                return true;
+              },
+            },
           ]}
         >
           {inputNode}
