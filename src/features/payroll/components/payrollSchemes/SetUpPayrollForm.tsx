@@ -1194,7 +1194,7 @@ export const SetUpPayrollForm: React.FC<{
                     </div>
                   )}
                   {runAutomatically && type === "project" && (
-                    <div className="mt-6 items-start flex flex-col gap-1">
+                    <div className="mt-6 items-start grid lg:grid-cols-4 md:grid-cols-3 gap-2">
                       {Array(frequencyAmount)
                         .fill(0)
                         .map((item, i) => (
@@ -1204,7 +1204,7 @@ export const SetUpPayrollForm: React.FC<{
                             key={i}
                             name={`Payment${i + 1}`}
                             label={`Payment ${i + 1}`}
-                            labelCol={{ span: 10 }}
+                            labelCol={{ span: 24 }}
                             rules={[
                               {
                                 required: true,
@@ -1223,6 +1223,7 @@ export const SetUpPayrollForm: React.FC<{
                                     );
                                   }
                                   if (
+                                    paymentDates[i] !== DEFAULT_DATE_FORMAT &&
                                     paymentDates.includes(
                                       value.format(DEFAULT_DATE_FORMAT)
                                     )
@@ -1231,15 +1232,13 @@ export const SetUpPayrollForm: React.FC<{
                                       `Please select a date that hasn't been selected!`
                                     );
                                   }
-                                  setPaymentDates((prev) =>
-                                    value
-                                      ? [
-                                          ...prev,
-                                          value?.format(DEFAULT_DATE_FORMAT),
-                                        ]
-                                      : prev
-                                  );
-                                  // if (false) throw new Error("Something wrong!");
+                                  setPaymentDates((prev) => {
+                                    const newDates = prev;
+                                    newDates[i] =
+                                      value.format(DEFAULT_DATE_FORMAT);
+                                    return newDates;
+                                  });
+
                                   return true;
                                 },
                               },
