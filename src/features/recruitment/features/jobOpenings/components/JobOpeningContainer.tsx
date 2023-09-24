@@ -3,6 +3,8 @@ import { Menu, Space, Select, Table, Dropdown } from "antd";
 import { ColumnsType } from "antd/es/table";
 import { Link } from "react-router-dom";
 import { appRoutes } from "config/router/paths";
+import { useDeleteRecruitmentItem } from "features/recruitment/hooks/useDeleteRecruitmentItem";
+import { QUERY_KEY_FOR_JOB_OPENINGS } from "../hooks/useGetJobOpenings";
 
 // INTERFACE/TYPES
 type DataSourceItem = {
@@ -15,6 +17,9 @@ type DataSourceItem = {
 };
 
 export const JobOpeningContainer = () => {
+  const uniqueEndPoint = "jobs";
+  const queryKey = QUERY_KEY_FOR_JOB_OPENINGS;
+  const {removeData} = useDeleteRecruitmentItem({queryKey, deleteEndpointUrl:uniqueEndPoint})
   // FUNCTION TO HANDLE DROPDOWN CHANGES
   const handleChange = (value: string) => {
     console.log(`selected ${value}`);
@@ -71,7 +76,9 @@ export const JobOpeningContainer = () => {
                     View
                   </Link>
                 </Menu.Item>
-                <Menu.Item key="3">Delete </Menu.Item>
+                <Menu.Item key="3" onClick={() => removeData(val.key as unknown as number)}>
+                  Delete
+                </Menu.Item>
               </Menu>
             }
           >

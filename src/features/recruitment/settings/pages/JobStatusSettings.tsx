@@ -16,7 +16,7 @@ import { useCreateJobStatusSettings } from "../hooks/useCreateJobStatusSettings"
 import { openNotification } from "utils/notifications";
 
 export const JobStatusSettings = () => {
-  const uniqueEndPoint = "job-statuses";
+  const uniqueEndPoint = "settings/job-statuses";
   const { removeData } = useDeleteRecruitmentItem({
     queryKey: QUERY_KEY_FOR_JOB_STATUS_SETTINGS,
     deleteEndpointUrl: uniqueEndPoint,

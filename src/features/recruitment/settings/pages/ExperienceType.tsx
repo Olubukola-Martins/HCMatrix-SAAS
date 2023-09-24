@@ -17,7 +17,7 @@ import { useCreateExperienceType } from "../hooks/useCreateExperienceType";
 import { openNotification } from "utils/notifications";
 
 export const ExperienceType = () => {
-  const uniqueEndPoint = "experience-types";
+  const uniqueEndPoint = "settings/experience-types";
   const { removeData } = useDeleteRecruitmentItem({
     queryKey: QUERY_KEY_FOR_EXPERIENCE_TYPES,
     deleteEndpointUrl: uniqueEndPoint,

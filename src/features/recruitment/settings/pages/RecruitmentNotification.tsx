@@ -10,7 +10,7 @@ import { usePatchRecruitmentItem } from "../hooks/usePatchRecruitmentSettings";
 export const RecruitmentNotification = () => {
   const { data, isLoading, error } = useGetNotifications();
   const { patchData } = usePatchRecruitmentItem({
-    patchEndpointUrl: "notifications",
+    patchEndpointUrl: "settings/notifications",
     queryKey: QUERY_KEY_FOR_RECRUIT_NOTIFICATIONS,
   });
   const [form] = Form.useForm();

@@ -22,7 +22,7 @@ export const Benefits = () => {
   const { companyId, token } = useApiAuth();
   const { removeData } = useDeleteRecruitmentItem({
     queryKey: QUERY_KEY_FOR_BENEFITS,
-    deleteEndpointUrl: "employment-benefits",
+    deleteEndpointUrl: "settings/employment-benefits",
   });
   const { patchData } = usePatchRecruitmentItem({
     patchEndpointUrl: "employment-benefits",

@@ -17,7 +17,7 @@ import { FormInstance } from "antd/es/form";
 import { openNotification } from "utils/notifications";
 
 export const EmploymentType = () => {
-  const uniqueEndPoint = "employment-types";
+  const uniqueEndPoint = "settings/employment-types";
   const { removeData } = useDeleteRecruitmentItem({
     queryKey: QUERY_KEY_FOR_EMPLOYMENT_TYPES,
     deleteEndpointUrl: uniqueEndPoint,
