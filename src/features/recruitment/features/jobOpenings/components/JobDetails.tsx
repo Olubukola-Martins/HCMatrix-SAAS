@@ -1,12 +1,18 @@
 import { Form, Input, Select, FormInstance } from "antd";
 import { textInputValidationRules } from "utils/formHelpers/validation";
 import { useState } from "react";
-import { EMPLOYMENT_TYPES, WORK_MODELS } from "constants/general";
+import {  WORK_MODELS } from "constants/general";
 import { AppButton } from "components/button/AppButton";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { appRoutes } from "config/router/paths";
 import { openNotification } from "utils/notifications";
-// import { openNotification } from ;
+import { useGetEmploymentTypes } from "features/recruitment/settings/hooks/useGetEmploymentTypes";
+import { useGetExperienceType } from "features/recruitment/settings/hooks/useGetExperienceType";
+import {
+  IFRQDataReturnProps,
+  useFetchAllDepartments,
+} from "features/core/departments/hooks/useFetchDepartments";
+import { useApiAuth } from "hooks/useApiAuth";
 
 interface ChildProps {
   stepperCurrentState: number;
@@ -19,6 +25,17 @@ export const JobDetails: React.FC<ChildProps> = ({
   updateCount,
   form,
 }) => {
+  const { data: employTypData } = useGetEmploymentTypes();
+  const { data: experncTypData } = useGetExperienceType();
+  const onDeptSuccess = (data: IFRQDataReturnProps) => {
+    console.log(data);
+  };
+
+  const { data: departmentsData, error: departDataError } =
+    useFetchAllDepartments(onDeptSuccess);
+  console.log("department data", departmentsData?.data);
+  console.log("department err", departDataError);
+
   const { TextArea } = Input;
   const navigator = useNavigate();
 
@@ -55,7 +72,6 @@ export const JobDetails: React.FC<ChildProps> = ({
       "minimumExperience",
       "jobLocation",
       "location",
-      // "jobDescription",
     ];
 
     const hasEmptyFieldsToCheck = emptyFieldKeys.some((key) =>
@@ -91,24 +107,31 @@ export const JobDetails: React.FC<ChildProps> = ({
         >
           <Select
             placeholder="e.g(App Development)"
-            options={[
-              {
-                value: "Application Development",
-                label: "Application Development",
-              },
-              {
-                value: "CSI",
-                label: "CSI",
-              },
-              {
-                value: "Sales",
-                label: "Sales",
-              },
-              {
-                value: "Marketing",
-                label: "Marketing",
-              },
-            ]}
+            options={
+              // [
+              // {
+              //   value: "Application Development",
+              //   label: "Application Development",
+              // },
+              // {
+              //   value: "CSI",
+              //   label: "CSI",
+              // },
+              // {
+              //   value: "Sales",
+              //   label: "Sales",
+              // },
+              // {
+              //   value: "Marketing",
+              //   label: "Marketing",
+              // },
+              // ]
+
+              departmentsData?.data?.map((department) => ({
+                value: department.name,
+                label: department.name.replace(/\s/g, ""),
+              }))
+            }
           />
         </Form.Item>
       </div>
@@ -119,7 +142,13 @@ export const JobDetails: React.FC<ChildProps> = ({
           name="employmentType"
           rules={textInputValidationRules}
         >
-          <Select placeholder="e.g (full-time)" options={EMPLOYMENT_TYPES} />
+          <Select
+            placeholder="e.g (full-time)"
+            options={employTypData?.map((item) => ({
+              value: item.label,
+              label: item.name,
+            }))}
+          />
         </Form.Item>
         <Form.Item
           label="Minimum Experience"
@@ -128,36 +157,10 @@ export const JobDetails: React.FC<ChildProps> = ({
         >
           <Select
             placeholder="e.g (Entry Level)"
-            options={[
-              {
-                value: "Entry Level",
-                label: "Entry Level",
-              },
-              {
-                value: "Mid-Level",
-                label: "Mid-Level",
-              },
-              {
-                value: "Experienced",
-                label: "Experienced",
-              },
-              {
-                value: "Manager/Supervisor",
-                label: "Manager/Supervisor",
-              },
-              {
-                value: "Senior Manager/Supervisor",
-                label: "Senior Manager/Supervisor",
-              },
-              {
-                value: "Executive",
-                label: "Executive",
-              },
-              {
-                value: "Senior Executive",
-                label: "Senior Executive",
-              },
-            ]}
+            options={experncTypData?.map((item) => ({
+              value: item.label,
+              label: item.name,
+            }))}
           />
         </Form.Item>
       </div>

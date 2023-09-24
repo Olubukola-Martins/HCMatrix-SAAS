@@ -2,7 +2,7 @@
 import { Form, Input, Switch } from "antd";
 import { AppButton } from "components/button/AppButton";
 import { appRoutes } from "config/router/paths";
-import { useEffect, useState } from "react";
+import {  useState } from "react";
 
 interface ChildProps {
   stepperCurrentState: number;
@@ -15,10 +15,10 @@ export  const AdditionalQuestions: React.FC<ChildProps> = ({
 }) => {
 
 // Update switchState changes
-  const [switchState, setSwitchState] = useState<boolean>(true);
+  const [IsActive, setIsActive] = useState<boolean>(true);
 
   const handleSwitchChange = (checked: boolean) => {
-    setSwitchState(checked);
+    setIsActive(!checked);
   };
 
   // handle back button
@@ -37,7 +37,7 @@ export  const AdditionalQuestions: React.FC<ChildProps> = ({
       </div>
 
       <div className="addit-ques-div" id="ask-quest">
-        <Form.Item label="Additional Questions" name="askYourQuestion">
+        <Form.Item label="Additional Questions" name="additionalQuestion">
           <Input placeholder="Type in Your Question...." />
         </Form.Item>
       </div>
@@ -55,7 +55,7 @@ export  const AdditionalQuestions: React.FC<ChildProps> = ({
         <Form.Item name="linkedIn" valuePropName="checked">
           <Switch
             className="float-right"
-            checked={switchState}
+            defaultChecked={IsActive}
             onChange={handleSwitchChange}
           />
         </Form.Item>

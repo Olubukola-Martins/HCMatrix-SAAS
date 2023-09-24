@@ -30,8 +30,8 @@ export const useGetEmploymentTypes = () => {
       [QUERY_KEY_FOR_EMPLOYMENT_TYPES],
       () => getData({ token, companyId }),
       {
-        onError: (err: any) => {console.log(err)},
-        onSuccess: (data) => {console.log(data)},
+        onError: (err: any) => {},
+        onSuccess: (data) => {},
       }
     );
     return queryData;

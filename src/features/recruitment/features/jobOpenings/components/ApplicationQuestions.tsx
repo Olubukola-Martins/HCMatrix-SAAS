@@ -1,6 +1,8 @@
-import { Switch, Select, DatePicker, Checkbox, Form } from "antd";
+import { Switch, Select, DatePicker, Checkbox, Form, Skeleton } from "antd";
 import { CheckboxChangeEvent } from "antd/lib/checkbox";
 import { AppButton } from "components/button/AppButton";
+import { useGetAppplicationQuestions } from "features/recruitment/features/jobOpenings/hooks/useGetAppplicationQuestions";
+import { useGetBenefits } from "features/recruitment/settings/hooks/useGetBenefits";
 import { useState } from "react";
 
 const { Option } = Select;
@@ -14,6 +16,13 @@ export const ApplicationQuestions: React.FC<ChildProps> = ({
   stepperCurrentState,
   updateCount,
 }) => {
+  const {
+    data: dataForSwitches,
+    isLoading,
+    error,
+  } = useGetAppplicationQuestions();
+  const { data: benefitsData } = useGetBenefits();
+
   // handle next button
   const handleNextButton = () => {
     if (stepperCurrentState <= 2 && stepperCurrentState >= 0)
@@ -33,147 +42,39 @@ export const ApplicationQuestions: React.FC<ChildProps> = ({
     setSelectedOption(value);
   };
 
-  const [switchState, setSwitchState] = useState<boolean>(true);
+  const [IsActive, setIsActive] = useState<boolean>(true);
 
   const handleSwitchChange = (checked: boolean) => {
-    setSwitchState(checked);
+    setIsActive(!checked);
   };
   return (
     <>
       <div id="sub-heading" className="p-0 bg-mainBg text-xl">
         Application Questions
       </div>
-      <div className="app-quest-div" id="switch">
-        Upload Resume
-        <Form.Item name="uploadResume">
-          <Switch
-            className="float-right"
-            checked={switchState}
-            onChange={handleSwitchChange}
-          />
-        </Form.Item>
-      </div>
 
-      <div className="app-quest-div" id="switch">
-        Address
-        <Form.Item name="address">
-          <Switch
-            className="float-right"
-            checked={switchState}
-            onChange={handleSwitchChange}
-          />
-        </Form.Item>
-      </div>
-
-      <div className="app-quest-div" id="switch">
-        LinkedIn URL
-        <Form.Item name="linkedInURL">
-          <Switch
-            className="float-right"
-            checked={switchState}
-            onChange={handleSwitchChange}
-          />
-        </Form.Item>
-      </div>
-
-      <div className="app-quest-div" id="switch">
-        Date Available
-        <Form.Item name="dateAvailable">
-          <Switch
-            className="float-right"
-            checked={switchState}
-            onChange={handleSwitchChange}
-          />
-        </Form.Item>
-      </div>
-
-      <div className="app-quest-div" id="switch">
-        Desired Salary
-        <Form.Item name="desiredSalary">
-          <Switch
-            className="float-right"
-            checked={switchState}
-            onChange={handleSwitchChange}
-          />
-        </Form.Item>
-      </div>
-
-      <div className="app-quest-div" id="switch">
-        Cover Letter
-        <Form.Item name="coverLetter">
-          <Switch
-            className="float-right"
-            checked={switchState}
-            onChange={handleSwitchChange}
-          />
-        </Form.Item>
-      </div>
-
-      <div className="app-quest-div" id="switch">
-        Referred By
-        <Form.Item name="referredBy">
-          <Switch
-            className="float-right"
-            checked={switchState}
-            onChange={handleSwitchChange}
-          />
-        </Form.Item>
-      </div>
-
-      <div className="app-quest-div" id="switch">
-        Link to Website, Blog or Portfolio
-        <Form.Item name="linkToWebsiteBlogOrPortfolio">
-          <Switch
-            className="float-right"
-            checked={switchState}
-            onChange={handleSwitchChange}
-          />
-        </Form.Item>
-      </div>
-
-      <div className="app-quest-div" id="switch">
-        Twitter Username
-        <Form.Item name="twitterUsername">
-          <Switch
-            className="float-right"
-            checked={switchState}
-            onChange={handleSwitchChange}
-          />
-        </Form.Item>
-      </div>
-
-      <div className="app-quest-div" id="switch">
-        Education
-        <Form.Item name="education">
-          <Switch
-            className="float-right"
-            checked={switchState}
-            onChange={handleSwitchChange}
-          />
-        </Form.Item>
-      </div>
-
-      <div className="app-quest-div" id="switch">
-        Experience
-        <Form.Item name="experience">
-          <Switch
-            className="float-right"
-            checked={switchState}
-            onChange={handleSwitchChange}
-          />
-        </Form.Item>
-      </div>
-
-      <div className="app-quest-div" id="switch">
-        References
-        <Form.Item name="references">
-          <Switch
-            className="float-right"
-            checked={switchState}
-            onChange={handleSwitchChange}
-          />
-        </Form.Item>
-      </div>
+      {error ? (
+        <p className="text-red-600 text-xl">ERROR</p>
+      ) : (
+        dataForSwitches?.map((result) => (
+          <Skeleton active loading={isLoading}>
+            <div className="app-quest-div" id="switch">
+              {result.name}
+              <Form.Item
+                name={result.label}
+                valuePropName="checked"
+                initialValue={true}
+              >
+                <Switch
+                  className="float-right"
+                  defaultChecked={IsActive}
+                  onChange={handleSwitchChange}
+                />
+              </Form.Item>
+            </div>
+          </Skeleton>
+        ))
+      )}
 
       <div id="addBenefit">
         <div>Add benefit</div>
@@ -184,11 +85,9 @@ export const ApplicationQuestions: React.FC<ChildProps> = ({
             style={{ width: "100%" }}
             placeholder="Please select"
           >
-            <Option value="Dental Insurance">Dental Insurance</Option>
-            <Option value="Flexibility Schedule">Flexibility Schedule</Option>
-            <Option value="Paid Time Off">Paid Time Off</Option>
-            <Option value="Health Insurance">Health Insurance</Option>
-            <Option value="Vision Insurance">Vision Insurance</Option>
+            {benefitsData?.map((item) => (
+              <Option value={item.label}>{item.name}</Option>
+            ))}
           </Select>
         </Form.Item>
       </div>
@@ -218,10 +117,7 @@ export const ApplicationQuestions: React.FC<ChildProps> = ({
             display: selectedOption === "Enter expiry date" ? "block" : "none",
           }}
         >
-          <DatePicker
-            format="YYYY-MM-DD"
-            style={{ width: "100%" }}
-          />
+          <DatePicker format="YYYY-MM-DD" style={{ width: "100%" }} />
         </Form.Item>
       </div>
 
