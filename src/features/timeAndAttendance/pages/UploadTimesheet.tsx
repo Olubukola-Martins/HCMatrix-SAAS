@@ -1,11 +1,12 @@
 import { PageIntro } from "components/layout/PageIntro";
 import { AttendanceSubToper } from "../components/AttendanceSubToper";
 import { appRoutes } from "config/router/paths";
-import { Dropdown, Input, Menu} from "antd";
+import { Dropdown, Input, Menu } from "antd";
 import { AppButton } from "components/button/AppButton";
 import Table, { ColumnsType } from "antd/lib/table";
 import { useState } from "react";
 import { NewAttendanceModal } from "../components/NewAttendanceModal";
+import { FilterManualTimeSheet } from "../components/FilterManualTimeSheet";
 
 interface DataType {
   key: string;
@@ -55,6 +56,7 @@ const columns: ColumnsType<DataType> = [
 
 export const UploadTimesheet = () => {
   const [addNewModal, setAddNewModal] = useState(false);
+  const [openFilter, setOpenFilter] = useState(false);
 
   return (
     <>
@@ -66,6 +68,10 @@ export const UploadTimesheet = () => {
         />
 
         <PageIntro title="Upload Attendance" link={appRoutes.attendanceHome} />
+        <FilterManualTimeSheet
+          open={openFilter}
+          handleClose={() => setOpenFilter(false)}
+        />
         <p className="pt-2 pb-6">
           Welcome on board, upload attendance manually
         </p>
@@ -78,7 +84,10 @@ export const UploadTimesheet = () => {
               className="md:w-72 w-52"
             />
 
-            <button className="flex items-center gap-x-2 transparentButton">
+            <button
+              className="flex items-center gap-x-2 transparentButton"
+              onClick={() => setOpenFilter(true)}
+            >
               <span className="text-caramel font-medium">Filter</span>
               <i className="ri-filter-2-line text-caramel"></i>
             </button>

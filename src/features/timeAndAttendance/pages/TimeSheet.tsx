@@ -2,8 +2,10 @@ import Table, { ColumnsType } from "antd/lib/table";
 import { AttendanceSubToper } from "../components/AttendanceSubToper";
 import { PageIntro } from "components/layout/PageIntro";
 import { appRoutes } from "config/router/paths";
-import { Input,} from "antd";
+import { Input } from "antd";
 import { Link } from "react-router-dom";
+import { useState } from "react";
+import { FilterTimeSheet } from "../components/FilterTimeSheet";
 
 interface DataType {
   key: string;
@@ -88,9 +90,14 @@ const data: DataType[] = [
 ];
 
 export const TimeSheet = () => {
+  const [filterSheet, setFilterSheet] = useState(false);
   return (
     <>
       <AttendanceSubToper active="time-sheet" />
+      <FilterTimeSheet
+        open={filterSheet}
+        handleClose={() => setFilterSheet(false)}
+      />
       <div className="Container">
         <PageIntro title="Timesheet" link={appRoutes.attendanceHome} />
         <p className="pt-2">
@@ -105,7 +112,10 @@ export const TimeSheet = () => {
             allowClear
           />
           <div className="flex items-center gap-x-3">
-            <button className="flex items-center gap-x-2 transparentButton">
+            <button
+              className="flex items-center gap-x-2 transparentButton"
+              onClick={() => setFilterSheet(true)}
+            >
               <span className="text-caramel font-medium">Filter</span>
               <i className="ri-filter-2-line text-caramel"></i>
             </button>
