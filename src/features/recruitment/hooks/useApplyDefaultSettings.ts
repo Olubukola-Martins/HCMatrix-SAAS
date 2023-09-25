@@ -11,7 +11,7 @@ export const applyDefaultSettings = async ({
   companyId,
   token,
 }: applyDefaultSettingsProps) => {
-  const url = `${MICROSERVICE_ENDPOINTS.RECRUITMENT}/default-settings/apply`;
+  const url = `${MICROSERVICE_ENDPOINTS.RECRUITMENT}/settings/default-settings/apply`;
   const config = {
     headers: {
       Accept: "application/json",

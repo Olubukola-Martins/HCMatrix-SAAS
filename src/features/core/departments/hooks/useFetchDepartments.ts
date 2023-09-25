@@ -3,6 +3,8 @@ import { useSignOut } from "react-auth-kit";
 import { useQuery } from "react-query";
 import { ICurrentCompany, IPaginationProps, ISearchParams } from "types";
 import { TDepartment } from "../types";
+import { useApiAuth } from "hooks/useApiAuth";
+import { MICROSERVICE_ENDPOINTS } from "config/enviroment";
 
 export const QUERY_KEY_FOR_DEPARTMENTS = "departments";
 
@@ -90,6 +92,66 @@ export const useFetchDepartments = ({
         signOut();
         localStorage.clear();
       },
+      onSuccess: (data) => {
+        onSuccess && onSuccess(data);
+      },
+    }
+  );
+
+  return queryData;
+};
+
+// Get all departments without pagination
+
+export const getAllDepartments = async (
+  props: ICurrentCompany
+): Promise<{ data: TDepartment[]; total: number }> => {
+  let url = `${MICROSERVICE_ENDPOINTS.UTILITY}/company/department`;
+
+  const config = {
+    headers: {
+      Accept: "application/json",
+      Authorization: `Bearer ${props.token}`,
+      "x-company-id": props.companyId,
+    },
+  };
+
+  const res = await axios.get(url, config);
+
+  const fetchedData = res.data.data;
+  console.log("fetchData", fetchedData);
+  const result = fetchedData.result;
+
+  const data: TDepartment[] = result.map(
+    (item: any): TDepartment => ({
+      id: item.id,
+      name: item.name,
+      email: item.email,
+      employeeCount: item.employeeCount ?? 0,
+    })
+  );
+
+  const ans = {
+    data,
+    total: fetchedData.totalCount,
+  };
+
+  return ans;
+};
+
+export const useFetchAllDepartments = (
+  onSuccess: IFRQDataProps["onSuccess"]
+) => {
+  const { token, companyId } = useApiAuth();
+  const queryData = useQuery(
+    [QUERY_KEY_FOR_DEPARTMENTS],
+    () =>
+      getAllDepartments({
+        companyId,
+        token,
+      }),
+    {
+      onError: (err: any) => {},
       onSuccess: (data) => {
         onSuccess && onSuccess(data);
       },

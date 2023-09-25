@@ -1,17 +1,17 @@
-import axios from "axios";
-import { MICROSERVICE_ENDPOINTS } from "config/enviroment";
-import { ISettingsSwitchData } from "../types";
-import { ITimeOffPolicyRule } from "features/timeAndAttendance/types/settings";
 import { useApiAuth } from "hooks/useApiAuth";
 import { useQuery } from "react-query";
+import { ISettingsSwitchData } from "../../../settings/types";
+import axios from "axios";
+import { MICROSERVICE_ENDPOINTS } from "config/enviroment";
 
-export const QUERY_KEY_FOR_CANDIDATE_STATUS = "CandidateStatus";
+export const QUERY_KEY_FOR_APPLICATION_QUESTIONS =
+  "RecruitApplicationQuestions";
 
 const getData = async (props: {
   token: string;
   companyId: number;
 }): Promise<ISettingsSwitchData[]> => {
-  const url = `${MICROSERVICE_ENDPOINTS.RECRUITMENT}/settings/application-statuses`;
+  const url = `${MICROSERVICE_ENDPOINTS.RECRUITMENT}/settings/application-questions`;
   const config = {
     headers: {
       Accept: "application/json",
@@ -25,10 +25,10 @@ const getData = async (props: {
   return item;
 };
 
-export const useGetCandidateStatus = () => {
+export const useGetAppplicationQuestions = () => {
   const { companyId, token } = useApiAuth();
   const queryData = useQuery(
-    [QUERY_KEY_FOR_CANDIDATE_STATUS],
+    [QUERY_KEY_FOR_APPLICATION_QUESTIONS],
     () => getData({ token, companyId }),
     {
       onError: (err: any) => {},

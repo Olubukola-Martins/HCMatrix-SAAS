@@ -6,7 +6,7 @@ import { useApiAuth } from "hooks/useApiAuth";
 export const QUERY_KEY_FOR_COMPANY_POLICY = "companyPolicy";
 
 const getData = async (props: { token: string; companyId: number }) => {
-  const url = `${MICROSERVICE_ENDPOINTS.RECRUITMENT}/default-settings/applied`;
+  const url = `${MICROSERVICE_ENDPOINTS.RECRUITMENT}/settings/default-settings/applied`;
   const config = {
     headers: {
       Accept: "application/json",
