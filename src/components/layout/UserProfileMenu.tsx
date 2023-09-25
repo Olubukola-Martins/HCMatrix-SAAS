@@ -24,6 +24,7 @@ const UserProfileMenu: React.FC<{
   const handleLogOut = () => {
     signOut();
     localStorage.clear();
+    window.location.reload();
   };
   return (
     <div className="rounded-md py-5 px-5 text-center bg-card shadow-md">
