@@ -1,4 +1,4 @@
-import { DatePicker, Drawer, Form, TimePicker } from "antd";
+import { DatePicker, Drawer, Form } from "antd";
 import { AppButton } from "components/button/AppButton";
 import { FormEmployeeInput } from "features/core/employees/components/FormEmployeeInput";
 import { IDrawerProps } from "types";
@@ -15,7 +15,6 @@ export const FilterTimeSheet = ({ handleClose, open }: IDrawerProps) => {
         <Form.Item name="week" label="Week">
           <DatePicker.RangePicker picker="week" className="w-full" />
         </Form.Item>
-
         <AppButton label="Apply" type="submit" />
       </Form>
     </Drawer>
