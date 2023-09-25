@@ -13,6 +13,9 @@ import {
   useFetchAllDepartments,
 } from "features/core/departments/hooks/useFetchDepartments";
 import { useApiAuth } from "hooks/useApiAuth";
+import { useFetchEmployees } from "features/core/employees/hooks/useFetchEmployees";
+import { FormEmployeeInput } from "features/core/employees/components/FormEmployeeInput";
+import { getEmployeeFullName } from "features/core/employees/utils/getEmployeeFullName";
 
 interface ChildProps {
   stepperCurrentState: number;
@@ -25,6 +28,7 @@ export const JobDetails: React.FC<ChildProps> = ({
   updateCount,
   form,
 }) => {
+
   const { data: employTypData } = useGetEmploymentTypes();
   const { data: experncTypData } = useGetExperienceType();
   const onDeptSuccess = (data: IFRQDataReturnProps) => {
@@ -33,9 +37,11 @@ export const JobDetails: React.FC<ChildProps> = ({
 
   const { data: departmentsData, error: departDataError } =
     useFetchAllDepartments(onDeptSuccess);
-  console.log("department data", departmentsData?.data);
-  console.log("department err", departDataError);
 
+  const { data: employeeData } = useFetchEmployees({pagination:{
+  limit: 10,
+  offset: 0
+}, onSuccess:onDeptSuccess});
   const { TextArea } = Input;
   const navigator = useNavigate();
 
@@ -183,25 +189,26 @@ export const JobDetails: React.FC<ChildProps> = ({
       </div>
 
       <div>
-        <Form.Item
+        {/* <Form.Item
           label="Team lead"
           name="teamLead"
           rules={textInputValidationRules}
         >
           <Select
             placeholder="e.g(Basil Ikpe)"
-            options={[
-              {
-                value: "Basil Ikpe (Product Manager)",
-                label: "Basil Ikpe (Product Manager)",
-              },
-              {
-                value: "Esther Adiele (HR Manager)",
-                label: "Esther Adiele (HR Manager)",
-              },
-            ]}
+            options={
+              employeeData?.data.map((item) => ({
+                value: `${item.firstName} ${item.lastName}`,
+                label: `${item.firstName} ${item.lastName}`
+              }))
+            }
           />
-        </Form.Item>
+        </Form.Item> */}
+        <FormEmployeeInput
+          Form={Form}
+          control={{ name: "teamLead", label: "Team Lead" }}
+        />
+
         <Form.Item label="Compensation" requiredMark="optional">
           <Select
             onChange={handleSelectChange}
