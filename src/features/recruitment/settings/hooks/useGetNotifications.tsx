@@ -1,17 +1,18 @@
 import axios from "axios";
 import { MICROSERVICE_ENDPOINTS } from "config/enviroment";
 import { ISettingsSwitchData } from "../types";
-import { ITimeOffPolicyRule } from "features/timeAndAttendance/types/settings";
 import { useApiAuth } from "hooks/useApiAuth";
 import { useQuery } from "react-query";
 
-export const QUERY_KEY_FOR_CANDIDATE_STATUS = "CandidateStatus";
-
+export const QUERY_KEY_FOR_RECRUIT_NOTIFICATIONS = "RecruitNotifications";
+interface IRecruitNotificationSettings extends ISettingsSwitchData {
+    notification: {title:string}
+}
 const getData = async (props: {
   token: string;
   companyId: number;
-}): Promise<ISettingsSwitchData[]> => {
-  const url = `${MICROSERVICE_ENDPOINTS.RECRUITMENT}/settings/application-statuses`;
+}): Promise<IRecruitNotificationSettings[]> => {
+  const url = `${MICROSERVICE_ENDPOINTS.RECRUITMENT}/settings/notifications`;
   const config = {
     headers: {
       Accept: "application/json",
@@ -21,14 +22,15 @@ const getData = async (props: {
   };
 
   const res = await axios.get(url, config);
-  const item: ISettingsSwitchData[] = res.data.data.result;
+  const item: IRecruitNotificationSettings[] = res.data.data.result;
   return item;
 };
 
-export const useGetCandidateStatus = () => {
+
+export const useGetNotifications = () => {
   const { companyId, token } = useApiAuth();
   const queryData = useQuery(
-    [QUERY_KEY_FOR_CANDIDATE_STATUS],
+    [QUERY_KEY_FOR_RECRUIT_NOTIFICATIONS],
     () => getData({ token, companyId }),
     {
       onError: (err: any) => {},
@@ -38,3 +40,4 @@ export const useGetCandidateStatus = () => {
 
   return queryData;
 };
+

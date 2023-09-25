@@ -1,12 +1,21 @@
 import { Form, Input, Select, FormInstance } from "antd";
 import { textInputValidationRules } from "utils/formHelpers/validation";
 import { useState } from "react";
-import { EMPLOYMENT_TYPES, WORK_MODELS } from "constants/general";
+import {  WORK_MODELS } from "constants/general";
 import { AppButton } from "components/button/AppButton";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { appRoutes } from "config/router/paths";
 import { openNotification } from "utils/notifications";
-// import { openNotification } from ;
+import { useGetEmploymentTypes } from "features/recruitment/settings/hooks/useGetEmploymentTypes";
+import { useGetExperienceType } from "features/recruitment/settings/hooks/useGetExperienceType";
+import {
+  IFRQDataReturnProps,
+  useFetchAllDepartments,
+} from "features/core/departments/hooks/useFetchDepartments";
+import { useApiAuth } from "hooks/useApiAuth";
+import { useFetchEmployees } from "features/core/employees/hooks/useFetchEmployees";
+import { FormEmployeeInput } from "features/core/employees/components/FormEmployeeInput";
+import { getEmployeeFullName } from "features/core/employees/utils/getEmployeeFullName";
 
 interface ChildProps {
   stepperCurrentState: number;
@@ -19,6 +28,20 @@ export const JobDetails: React.FC<ChildProps> = ({
   updateCount,
   form,
 }) => {
+
+  const { data: employTypData } = useGetEmploymentTypes();
+  const { data: experncTypData } = useGetExperienceType();
+  const onDeptSuccess = (data: IFRQDataReturnProps) => {
+    console.log(data);
+  };
+
+  const { data: departmentsData, error: departDataError } =
+    useFetchAllDepartments(onDeptSuccess);
+
+  const { data: employeeData } = useFetchEmployees({pagination:{
+  limit: 10,
+  offset: 0
+}, onSuccess:onDeptSuccess});
   const { TextArea } = Input;
   const navigator = useNavigate();
 
@@ -55,7 +78,6 @@ export const JobDetails: React.FC<ChildProps> = ({
       "minimumExperience",
       "jobLocation",
       "location",
-      // "jobDescription",
     ];
 
     const hasEmptyFieldsToCheck = emptyFieldKeys.some((key) =>
@@ -91,24 +113,31 @@ export const JobDetails: React.FC<ChildProps> = ({
         >
           <Select
             placeholder="e.g(App Development)"
-            options={[
-              {
-                value: "Application Development",
-                label: "Application Development",
-              },
-              {
-                value: "CSI",
-                label: "CSI",
-              },
-              {
-                value: "Sales",
-                label: "Sales",
-              },
-              {
-                value: "Marketing",
-                label: "Marketing",
-              },
-            ]}
+            options={
+              // [
+              // {
+              //   value: "Application Development",
+              //   label: "Application Development",
+              // },
+              // {
+              //   value: "CSI",
+              //   label: "CSI",
+              // },
+              // {
+              //   value: "Sales",
+              //   label: "Sales",
+              // },
+              // {
+              //   value: "Marketing",
+              //   label: "Marketing",
+              // },
+              // ]
+
+              departmentsData?.data?.map((department) => ({
+                value: department.name,
+                label: department.name.replace(/\s/g, ""),
+              }))
+            }
           />
         </Form.Item>
       </div>
@@ -119,7 +148,13 @@ export const JobDetails: React.FC<ChildProps> = ({
           name="employmentType"
           rules={textInputValidationRules}
         >
-          <Select placeholder="e.g (full-time)" options={EMPLOYMENT_TYPES} />
+          <Select
+            placeholder="e.g (full-time)"
+            options={employTypData?.map((item) => ({
+              value: item.label,
+              label: item.name,
+            }))}
+          />
         </Form.Item>
         <Form.Item
           label="Minimum Experience"
@@ -128,36 +163,10 @@ export const JobDetails: React.FC<ChildProps> = ({
         >
           <Select
             placeholder="e.g (Entry Level)"
-            options={[
-              {
-                value: "Entry Level",
-                label: "Entry Level",
-              },
-              {
-                value: "Mid-Level",
-                label: "Mid-Level",
-              },
-              {
-                value: "Experienced",
-                label: "Experienced",
-              },
-              {
-                value: "Manager/Supervisor",
-                label: "Manager/Supervisor",
-              },
-              {
-                value: "Senior Manager/Supervisor",
-                label: "Senior Manager/Supervisor",
-              },
-              {
-                value: "Executive",
-                label: "Executive",
-              },
-              {
-                value: "Senior Executive",
-                label: "Senior Executive",
-              },
-            ]}
+            options={experncTypData?.map((item) => ({
+              value: item.label,
+              label: item.name,
+            }))}
           />
         </Form.Item>
       </div>
@@ -180,25 +189,26 @@ export const JobDetails: React.FC<ChildProps> = ({
       </div>
 
       <div>
-        <Form.Item
+        {/* <Form.Item
           label="Team lead"
           name="teamLead"
           rules={textInputValidationRules}
         >
           <Select
             placeholder="e.g(Basil Ikpe)"
-            options={[
-              {
-                value: "Basil Ikpe (Product Manager)",
-                label: "Basil Ikpe (Product Manager)",
-              },
-              {
-                value: "Esther Adiele (HR Manager)",
-                label: "Esther Adiele (HR Manager)",
-              },
-            ]}
+            options={
+              employeeData?.data.map((item) => ({
+                value: `${item.firstName} ${item.lastName}`,
+                label: `${item.firstName} ${item.lastName}`
+              }))
+            }
           />
-        </Form.Item>
+        </Form.Item> */}
+        <FormEmployeeInput
+          Form={Form}
+          control={{ name: "teamLead", label: "Team Lead" }}
+        />
+
         <Form.Item label="Compensation" requiredMark="optional">
           <Select
             onChange={handleSelectChange}
