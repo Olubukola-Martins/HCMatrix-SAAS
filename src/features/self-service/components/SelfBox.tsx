@@ -122,7 +122,12 @@ export const MoreBox = () => {
   );
 };
 
-const SelfBox = ({ title, desc, icon, link }: IProps) => {
+const SelfBox = ({
+  title,
+  desc = "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+  icon,
+  link,
+}: IProps) => {
   return (
     <Link
       to={link}
@@ -137,9 +142,7 @@ const SelfBox = ({ title, desc, icon, link }: IProps) => {
             {title}
           </h5>
         </div>
-        <p className="text-xs md:text-sm py-3">
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-        </p>
+        <p className="text-xs md:text-sm py-3">{desc}</p>
       </div>
     </Link>
   );

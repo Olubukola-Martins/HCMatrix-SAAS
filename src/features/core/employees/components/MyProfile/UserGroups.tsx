@@ -1,57 +1,69 @@
 import { Input, Table } from "antd";
-import React from "react";
+import { TSingleEmployee } from "features/core/employees/types";
+import { useState, useEffect } from "react";
+import { usePagination } from "hooks/usePagination";
 import { ColumnsType } from "antd/lib/table";
-import { TEmployee, TUserGroup } from "../../types";
 
 interface IProps {
-  employee?: TEmployee;
+  groups?: TSingleEmployee["userGroups"];
 }
 
-const columns: ColumnsType<TUserGroup> = [
-  {
-    title: "Name",
-    dataIndex: "name",
-    render: (_, item) => <span className="capitalize">{item.name}</span>,
-    // width: 150,
-  },
+export const UserGroups: React.FC<IProps> = ({ groups = [] }) => {
+  const { pagination, onChange } = usePagination({ pageSize: 7 });
+  const [data, setData] = useState<TSingleEmployee["userGroups"]>([]);
+  const [search, setSearch] = useState<string>();
+  useEffect(() => {
+    const result = groups?.filter(
+      (item) =>
+        item.group.name.toLowerCase().indexOf(search?.toLowerCase() ?? "") !==
+        -1
+    );
+    setData(result);
+  }, [search, groups]);
+  const columns: ColumnsType<TSingleEmployee["userGroups"][0]> = [
+    {
+      title: "Name",
+      dataIndex: "na",
+      render: (_, val) => <span className="capitalize">{val.group.name}</span>,
+    },
+    {
+      title: "Description",
+      dataIndex: "comp",
+      ellipsis: true,
+      render: (_, val) => <span className="">{val.group.description}</span>,
+    },
 
-  {
-    title: "Description",
-    dataIndex: "description",
-  },
-  {
-    title: "Is Lead",
-    dataIndex: "isLead",
-    render: (val) => <span className="capitalize">{val ? "Yes" : "No"}</span>,
+    {
+      title: "Lead",
+      dataIndex: "cM",
+      render: (_, val) => <span className="">{val.isLead ? "Yes" : "No"}</span>,
+    },
+  ];
+  return (
+    <>
+      {" "}
+      <div className="bg-mainBg shadow-sm rounded-md p-4 mt-5">
+        <h2 className="font-medium text-lg mb-4">User groups</h2>
+        <div className="bg-card p-3 rounded">
+          <div className="flex md:items-center gap-5  flex-col-reverse md:flex-row md:justify-between my-3">
+            <Input
+              placeholder="Search groups"
+              style={{ width: 200 }}
+              className="rounded"
+              onChange={(e) => setSearch(e.target.value)}
+              allowClear
+            />
+          </div>
 
-    // width: 150,
-  },
-];
-
-export const UserGroups: React.FC<IProps> = ({ employee }) => {
-  if (employee) {
-    return (
-      <div className="bg-card p-3 rounded">
-        <div className="border-b border-gray-400 w-full mb-7">
-          <h2 className="text-accent text-base pb-1">User Groups</h2>
-        </div>
-        <div className="my-3 flex justify-end">
-          <Input.Search
-            placeholder="input search text"
-            style={{ width: 200 }}
-            className="rounded"
+          <Table
+            columns={columns}
+            size="small"
+            dataSource={data}
+            pagination={{ ...pagination, total: data.length }}
+            onChange={onChange}
           />
         </div>
-
-        <Table
-          columns={columns}
-          dataSource={employee.userGroups}
-          size="small"
-          pagination={{ pageSize: 4, total: employee?.userGroups?.length }}
-          scroll={{ y: 240 }}
-        />
       </div>
-    );
-  }
-  return null;
+    </>
+  );
 };

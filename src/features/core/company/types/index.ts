@@ -6,6 +6,7 @@ export type TSaveCompanyParams = {
   profilePhotoSettings: ProfilePhotoSettings;
   notificationSettings: NotificationSettings;
   employeeSettings: EmployeeSettings;
+  currencySettings?: CurrencySettings; //This is potentially undefined cos it was set at a later date, and as a result not all app company accounts might have it
 };
 
 export type TCompany = {
@@ -33,7 +34,10 @@ interface Address {
   lgaId?: number;
   timezone?: string;
 }
-
+interface CurrencySettings {
+  showCurrencySymbol: boolean;
+  baseCurrency: string;
+}
 interface EmployeeSettings {
   hideBirthday: boolean;
   hidePhoneNumber: boolean;

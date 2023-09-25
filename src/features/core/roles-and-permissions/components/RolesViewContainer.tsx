@@ -1,10 +1,10 @@
-import { TablePaginationConfig } from "antd";
 import React, { useState } from "react";
 
 import { RolesGridView } from "./RolesGridView";
 import { TListDataTypeView } from "types";
 import { useApiAuth } from "hooks/useApiAuth";
 import { useFetchRoles } from "../hooks/useFetchRoles";
+import { usePagination } from "hooks/usePagination";
 
 const RolesViewContainer = () => {
   const [viewId, setViewId] = useState<TListDataTypeView>("grid");
@@ -13,33 +13,15 @@ const RolesViewContainer = () => {
   };
   const { token, companyId } = useApiAuth();
 
-  const [pagination, setPagination] = useState<TablePaginationConfig>({
-    current: 1,
-    pageSize: 4,
-    total: 0,
-    showSizeChanger: false,
-  });
+  const { pagination, onChange } = usePagination();
 
-  const offset =
-    pagination.current && pagination.current !== 1
-      ? (pagination.pageSize ?? 4) * (pagination.current - 1)
-      : 0;
-
-  const onChange = (newPagination: TablePaginationConfig) => {
-    setPagination(() => ({
-      ...newPagination,
-    }));
-  };
   const {
     data: rolesData,
     isFetching,
     isSuccess,
   } = useFetchRoles({
     companyId,
-    pagination: {
-      limit: pagination.pageSize,
-      offset,
-    },
+    pagination,
     token,
   });
 

@@ -13,3 +13,24 @@ export const APPROVAL_STATUS_OPTIONS: {
   value: item,
   label: item,
 }));
+
+const determineActionLabel = (val: TApprovalStatus) => {
+  let label = "";
+  switch (val) {
+    case "rejected":
+      label = "Reject";
+
+      break;
+    case "approved":
+      label = "Approve";
+
+      break;
+
+    default:
+      break;
+  }
+  return label;
+};
+export const APPROVAL_STATUS_ACTION_OPTIONS = APPROVAL_STATUS_OPTIONS.filter(
+  (item) => item.value !== "pending"
+).map((item) => ({ ...item, label: determineActionLabel(item.value) }));

@@ -64,10 +64,10 @@ export const EditBasicWorkflow: React.FC<{ data: TSingleWorkflow }> = ({
 
   const { mutate, isLoading } = useUpdateSingleWorkflow();
 
-  const handleSubmit = (data: any) => {
+  const handleSubmit = (values: any) => {
     mutate(
       {
-        name: data.name,
+        name: values.name,
         id: data.id,
       },
       {

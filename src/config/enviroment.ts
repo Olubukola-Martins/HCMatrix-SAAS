@@ -2,6 +2,7 @@ export const MICROSERVICE_ENDPOINTS = {
   UTILITY: process.env.REACT_APP_UTILITY_BASE_URL,
   AUTHENTICATION: process.env.REACT_APP_AUTHENTICATION_BASE_URL,
   NOTIFICATION: process.env.REACT_APP_NOTIFICATION_BASE_URL,
+  PAYROLL: process.env.REACT_APP_PAYROLL_BASE_URL,
 };
 
 export const APP_AUTHENTICATION_PARAMETERS = {
@@ -19,4 +20,13 @@ export const FIREBASE_PARAMETERS = {
   appId: process.env.REACT_APP_FIREBASE_appId,
   measurementId: process.env.REACT_APP_FIREBASE_measurementId,
   vapidKey: process.env.REACT_APP_FIREBASE_vapidKey,
+};
+
+const getPaystackPublicKey = () => {
+  if (process.env.NODE_ENV === "development")
+    return process.env.REACT_APP_PAYSTACK_TEST_PUBLIC_KEY;
+  return process.env.REACT_APP_PAYSTACK_LIVE_PUBLIC_KEY;
+};
+export const PAYSTACK_PARAMETERS = {
+  paystackPublicKey: getPaystackPublicKey(),
 };

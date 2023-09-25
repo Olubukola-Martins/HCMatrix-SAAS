@@ -18,11 +18,17 @@ import { useNavigate } from "react-router-dom";
 export const CreateAdvancedWorkflow = () => {
   const queryClient = useQueryClient();
   const [stages, setStages] = useState<
-    ({ editable: boolean } & OptionalTypeParams<TStage, "entityId" | "type">)[]
+    ({ editable: boolean } & OptionalTypeParams<
+      TStage,
+      "entityId" | "type" | "enableTwoFactorAuth"
+    >)[]
   >([]);
   const [form] = Form.useForm();
   const addStage = (id: number) => {
-    setStages((prev) => [...prev, { id, name: "", editable: true }]);
+    setStages((prev) => [
+      ...prev,
+      { id, name: "", editable: true, enableTwoFactorAuth: false },
+    ]);
   };
   const removeStage = (id: number) => {
     setStages((prev) => {
@@ -43,6 +49,7 @@ export const CreateAdvancedWorkflow = () => {
           type,
           condition,
           count,
+          enableTwoFactorAuth,
         }): TAdvancedWorkflowStage => {
           if (!!entityId && !!type) {
             return {
@@ -51,6 +58,7 @@ export const CreateAdvancedWorkflow = () => {
               name,
               condition,
               count,
+              enableTwoFactorAuth,
             };
           }
           return {
@@ -145,6 +153,7 @@ export const CreateAdvancedWorkflow = () => {
                           entityId: data.entityId,
                           condition: data.condition,
                           count: data.count,
+                          enableTwoFactorAuth: data.enableTwoFactorAuth,
                           editable: false,
                         }
                       : stage

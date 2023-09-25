@@ -1,39 +1,46 @@
-import {
-  DatePicker,
-  Form,
-  InputNumber,
-  message,
-  Select,
-  Spin,
-  Tooltip,
-} from "antd";
-import { IAuthDets } from "features/authentication/types";
+import { DatePicker, Form, InputNumber, message, Select, Tooltip } from "antd";
 import moment from "moment";
 
-import React, { useContext, useEffect, useState } from "react";
-import { useAuthUser } from "react-auth-kit";
+import React, { useEffect, useState } from "react";
 import { useQueryClient } from "react-query";
-import { BeatLoader } from "react-spinners";
-import { GlobalContext } from "stateManagers/GlobalContextProvider";
 import { generalValidationRules } from "utils/formHelpers/validation";
 import { openNotification } from "utils/notifications";
-import { useCreateEmployeeJobInfo } from "../../hooks/useCreateEmployeeJobInfo";
 import { useFetchEmployees } from "../../hooks/useFetchEmployees";
-import { useUpdateEmployeeJobInfo } from "../../hooks/useUpdateEmployeeJobInfo";
-import { TEmployee, ICreateEmpJobInfoProps } from "../../types";
-import { useApiAuth } from "hooks/useApiAuth";
+import { TSingleEmployee } from "../../types";
 import { EMPLOYMENT_TYPES, WORK_MODELS } from "constants/general";
+import { FormPayGradeInput } from "features/payroll/components/payGrades/FormPayGradeInput";
+import { FormBranchInput } from "features/core/branches/components/FormBranchInput";
+import { useSaveEmployeeJobInformation } from "../../hooks/jobInformation/useSaveEmployeeJobInformation";
+import { AppButton } from "components/button/AppButton";
+import { QUERY_KEY_FOR_SINGLE_EMPLOYEE } from "../../hooks/useFetchSingleEmployee";
 const { Option } = Select;
 
-interface IProps {
-  employee?: TEmployee;
-}
+type TPayrollType = "direct-salary" | "office" | "wages";
+type TPayrollFrequency = "daily" | "monthly";
+const PAYROLL_FREQUENCIES: TPayrollFrequency[] = ["daily", "monthly"];
+const PAYROLL_TYPES: TPayrollType[] = ["direct-salary", "office", "wages"];
+const PAYROLL_FREQUENCIES_OPTIONS = PAYROLL_FREQUENCIES.map((item) => ({
+  label: <span className="capitalize">{item.split("-").join(" ")}</span>,
+  value: item,
+}));
+const PAYROLL_TYPES_OPTIONS = PAYROLL_TYPES.map((item) => ({
+  label: <span className="capitalize">{item.split("-").join(" ")}</span>,
+  value: item,
+}));
 
-const branchList = ["Branch 1", "Branch 2", "Branch 3"];
-export const JobInformation = ({ employee }: IProps) => {
+interface IProps {
+  employeeId?: number;
+  jobInformation?: TSingleEmployee["jobInformation"];
+}
+export const JobInformation: React.FC<IProps> = ({
+  jobInformation,
+  employeeId,
+}) => {
+  const [payrollType, setPayrollType] = useState<
+    "direct-salary" | "office" | "wages"
+  >("direct-salary");
   const [form] = Form.useForm();
   const queryClient = useQueryClient();
-  const { token, companyId } = useApiAuth();
 
   const [disable, setDisable] = useState(true);
   const enableEdit = () => {
@@ -50,16 +57,21 @@ export const JobInformation = ({ employee }: IProps) => {
   });
 
   useEffect(() => {
-    const jobInfo = employee?.jobInformation;
+    const jobInfo = jobInformation;
     if (jobInfo) {
       form.setFieldsValue({
         lineManagerId: jobInfo.lineManagerId,
+        branchId: jobInfo.branchId,
+        payGradeId: jobInfo?.payGradeId,
         startDate: jobInfo.startDate ? moment(jobInfo.startDate) : null,
         monthlyGross: +jobInfo.monthlyGross, // to covert to number
         employmentType: jobInfo.employmentType,
         workModel: jobInfo.workModel,
+        payrollType: jobInfo?.payrollType,
+        frequency: jobInfo?.frequency,
+        hourlyRate: jobInfo?.hourlyRate ? +jobInfo?.hourlyRate : 0,
         numberOfDaysPerWeek: jobInfo.numberOfDaysPerWeek,
-        hireDate: jobInfo.hireDate ? moment(jobInfo.hireDate) : null,
+        hireDate: jobInfo?.hireDate ? moment(jobInfo?.hireDate) : null,
         probationEndDate: jobInfo.probationEndDate
           ? moment(jobInfo.probationEndDate)
           : null,
@@ -67,100 +79,58 @@ export const JobInformation = ({ employee }: IProps) => {
           ? moment(jobInfo.confirmationDate)
           : null,
       });
+      jobInfo.payrollType && setPayrollType(jobInfo.payrollType);
+      jobInfo.frequency && setFrequency(jobInfo.frequency);
     }
-  }, [employee, form]);
-  const { mutate: createMutate, isLoading: createLoading } =
-    useCreateEmployeeJobInfo();
-  const { mutate: updateMutate, isLoading: updateLoading } =
-    useUpdateEmployeeJobInfo();
+  }, [jobInformation, form]);
+  const { mutate, isLoading } = useSaveEmployeeJobInformation();
+  const [frequency, setFrequency] = useState<TPayrollFrequency>("monthly");
 
   const handleFinish = (data: any) => {
-    if (companyId && employee && !employee.jobInformation) {
-      //if the personal info doesnt exist, then create
-      const props: ICreateEmpJobInfoProps = {
-        token,
-        companyId,
-        startDate: data.startDate.format("YYYY-MM-DD"),
-        monthlyGross: data.monthlyGross,
-        employmentType: data.employmentType,
-        workModel: data.workModel,
-        numberOfDaysPerWeek: data.numberOfDaysPerWeek,
-        hireDate: data.hireDate.format("YYYY-MM-DD"),
-        probationEndDate: data.probationEndDate.format("YYYY-MM-DD"),
-        confirmationDate: data.confirmationDate.format("YYYY-MM-DD"),
-        lineManagerId: data.lineManagerId,
-        employeeId: employee.id,
-      };
+    if (employeeId) {
+      mutate(
+        {
+          employeeId,
 
-      createMutate(props, {
-        onError: (err: any) => {
-          openNotification({
-            state: "error",
-            title: "Error Occured",
-            description:
-              err?.response.data.message ?? err?.response.data.error.message,
-          });
+          data: {
+            startDate: data.startDate.format("YYYY-MM-DD"),
+            monthlyGross: data.monthlyGross,
+            employmentType: data.employmentType,
+            workModel: data.workModel,
+            numberOfDaysPerWeek: data.numberOfDaysPerWeek,
+            hireDate: data.hireDate.format("YYYY-MM-DD"),
+            probationEndDate: data.probationEndDate.format("YYYY-MM-DD"),
+            confirmationDate: data.confirmationDate.format("YYYY-MM-DD"),
+            lineManagerId: data.lineManagerId,
+            payGradeId: data.payGradeId,
+            payrollType: data.payrollType,
+            branchId: data.branchId,
+            hourlyRate: data.hourlyRate,
+            frequency: payrollType === "wages" ? frequency : "monthly",
+          },
         },
-        onSuccess: (res: any) => {
-          openNotification({
-            state: "success",
+        {
+          onError: (err: any) => {
+            openNotification({
+              state: "error",
+              title: "Error Occured",
+              description:
+                err?.response.data.message ?? err?.response.data.error.message,
+            });
+          },
+          onSuccess: (res: any) => {
+            openNotification({
+              state: "success",
 
-            title: "Success",
-            description: res?.data?.message,
-          });
-          queryClient.invalidateQueries({
-            queryKey: ["single-employee", employee?.id],
-            exact: true,
-          });
-        },
-      });
-    }
-    if (companyId && employee && employee.jobInformation) {
-      //if the personal info exist, then update
-      const props: ICreateEmpJobInfoProps = {
-        token,
-        companyId,
-        startDate: data.startDate.format("YYYY-MM-DD"),
-        monthlyGross: data.monthlyGross,
-        employmentType: data.employmentType,
-        workModel: data.workModel,
-        numberOfDaysPerWeek: data.numberOfDaysPerWeek,
-        hireDate: data.hireDate.format("YYYY-MM-DD"),
-        probationEndDate: data.probationEndDate.format("YYYY-MM-DD"),
-        confirmationDate: data.confirmationDate.format("YYYY-MM-DD"),
-        lineManagerId: data.lineManagerId,
-
-        employeeId: employee.id,
-      };
-
-      // return;
-      openNotification({
-        state: "info",
-        title: "Wait a second ...",
-        description: <Spin />,
-      });
-      updateMutate(props, {
-        onError: (err: any) => {
-          openNotification({
-            state: "error",
-            title: "Error Occured",
-            description:
-              err?.response.data.message ?? err?.response.data.error.message,
-          });
-        },
-        onSuccess: (res: any) => {
-          openNotification({
-            state: "success",
-
-            title: "Success",
-            description: res?.data?.message,
-          });
-          queryClient.invalidateQueries({
-            queryKey: ["single-employee", employee?.id],
-            exact: true,
-          });
-        },
-      });
+              title: "Success",
+              description: res?.data?.message,
+            });
+            queryClient.invalidateQueries({
+              queryKey: [QUERY_KEY_FOR_SINGLE_EMPLOYEE],
+            });
+          },
+        }
+      );
     }
   };
 
@@ -189,12 +159,56 @@ export const JobInformation = ({ employee }: IProps) => {
           disabled={disable}
         >
           <Form.Item
-            name="monthlyGross"
-            label="Monthly Gross"
-            rules={[...generalValidationRules, { type: "number" }]}
+            label="Payroll Type"
+            name={`payrollType`}
+            rules={[...generalValidationRules]}
           >
-            <InputNumber min={1} className="w-full" />
+            <Select
+              value={payrollType}
+              className="capitalize"
+              options={PAYROLL_TYPES_OPTIONS}
+              onSelect={(val: TPayrollType) => setPayrollType(val)}
+            />
           </Form.Item>
+          {payrollType === "wages" && (
+            <Form.Item
+              name="frequency"
+              label="Type of Wage"
+              rules={[...generalValidationRules]}
+            >
+              <Select
+                value={frequency}
+                className="capitalize"
+                options={PAYROLL_FREQUENCIES_OPTIONS}
+                onSelect={(val: TPayrollFrequency) => setFrequency(val)}
+              />
+            </Form.Item>
+          )}
+          {payrollType === "wages" && (
+            <Form.Item
+              name="hourlyRate"
+              label="Hourly Gross"
+              rules={[...generalValidationRules, { type: "number" }]}
+            >
+              <InputNumber min={1} className="w-full" />
+            </Form.Item>
+          )}
+
+          {payrollType === "direct-salary" && (
+            <Form.Item
+              name="monthlyGross"
+              label="Monthly Gross"
+              rules={[...generalValidationRules, { type: "number" }]}
+            >
+              <InputNumber min={1} className="w-full" />
+            </Form.Item>
+          )}
+          {payrollType === "office" && (
+            <FormPayGradeInput
+              Form={Form}
+              control={{ name: "payGradeId", label: "Pay Grade" }}
+            />
+          )}
           <Form.Item
             name="numberOfDaysPerWeek"
             label="Number of days per week"
@@ -228,20 +242,10 @@ export const JobInformation = ({ employee }: IProps) => {
               }
             />
           </Form.Item>
-          <Form.Item name="branch" label="Branch">
-            <Select
-              showSearch
-              allowClear
-              optionLabelProp="label"
-              placeholder="Select Branch"
-            >
-              {branchList.map((data) => (
-                <Option key={data} value={data} label={data}>
-                  {data}
-                </Option>
-              ))}
-            </Select>
-          </Form.Item>
+          <FormBranchInput
+            Form={Form}
+            control={{ label: "Branch", name: "branchId" }}
+          />
           <Form.Item name="lineManagerId" label="Line Manager (optional)">
             <Select
               showSearch
@@ -290,24 +294,15 @@ export const JobInformation = ({ employee }: IProps) => {
           >
             <DatePicker format="YYYY/MM/DD" className="w-full" />
           </Form.Item>
-          <Form.Item name="payGradeId" label="Pay Grade">
-            <Select placeholder="Select">
-              <Option value="grade 1">Grade 1</Option>
-              <Option value="grade 2">Grade 2</Option>
-              <Option value="grade 2">Grade 2</Option>
-            </Select>
-          </Form.Item>
-          {!disable && (
-            <div className="flex items-center">
-              <button className="button" type="submit">
-                {createLoading || updateLoading ? (
-                  <BeatLoader color="#fff" />
-                ) : (
-                  "Save changes"
-                )}
-              </button>
-            </div>
-          )}
+          <div className="flex justify-end items-end lg:col-span-3 md:col-span-3">
+            {!disable && (
+              <AppButton
+                type="submit"
+                label="Save Changes"
+                isLoading={isLoading}
+              />
+            )}
+          </div>
         </Form>
       </div>
     </div>
