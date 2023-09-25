@@ -20,7 +20,7 @@ export const PageIntro = ({ title, link, close }: introProps) => {
           className="ri-arrow-left-s-line text-lg cursor-pointer hover:text-caramel"
         ></i>
       )}
-      <h2 className="text-xl text-accent">{title}</h2>
+      <h2 className="text-xl text-accent capitalize">{title}</h2>
     </div>
   );
 };

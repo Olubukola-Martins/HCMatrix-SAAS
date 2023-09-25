@@ -2,20 +2,33 @@ import { Form, Input, message, Tooltip } from "antd";
 
 import React, { useEffect, useState } from "react";
 import { useQueryClient } from "react-query";
-import { BeatLoader } from "react-spinners";
 import { textInputValidationRules } from "utils/formHelpers/validation";
 import { openNotification } from "utils/notifications";
-import { useCreateEmployeeBank } from "../../hooks/useCreateEmployeeBank";
-import { useCreateEmployeePension } from "../../hooks/useCreateEmployeePension";
-import { useCreateEmployeeWallet } from "../../hooks/useCreateEmployeeWallet";
-import { TEmployee } from "../../types";
-import { useApiAuth } from "hooks/useApiAuth";
+
+import {
+  TBankValue,
+  TPensionValue,
+  TSingleEmployee,
+  TWalletValue,
+} from "../../types";
+import { useSaveEmployeeFinance } from "../../hooks/finance/useSaveEmployeeFinance";
+import { AppButton } from "components/button/AppButton";
+import { QUERY_KEY_FOR_SINGLE_EMPLOYEE } from "../../hooks/useFetchSingleEmployee";
+import { FormBankInput } from "components/generalFormInputs/FormBankInput";
+import { TPaystackBank } from "types/paystackBank";
+import { FormPensionAdminInput } from "features/payroll/components/organizations/pensionAdministrators/FormPensionAdminInput";
+import { FormITFAuthInput } from "features/payroll/components/organizations/itfAuthorities/FormITFAuthInput";
+import { FormTaxAuthInput } from "features/payroll/components/organizations/taxAuthorities/FormTaxAuthInput";
+import { FormNSITFAuthInput } from "features/payroll/components/organizations/nsitfAuthorities/FormNSITFAuthInput";
+import { TITFValue, TNSITFValue, TTaxValue } from "../../types/singleEmployee";
 
 interface IProps {
-  employee?: TEmployee;
+  finance?: TSingleEmployee["finance"];
+  employeeId?: number;
+  onFinishAction?: () => void;
 }
 
-export const Finance = ({ employee }: IProps) => {
+export const Finance = ({ finance = [], employeeId }: IProps) => {
   const [disable, setDisable] = useState(true);
   const enableEdit = () => {
     setDisable(!disable);
@@ -23,141 +36,25 @@ export const Finance = ({ employee }: IProps) => {
       disable ? "Editing enabled Successfully" : "Editing disabled successfully"
     );
   };
-  const [walletForm] = Form.useForm();
-  const [bankForm] = Form.useForm();
-  const [pensionForm] = Form.useForm();
-  const queryClient = useQueryClient();
-  const { token, companyId } = useApiAuth();
 
-  useEffect(() => {
-    const finance = employee?.finance;
-    if (finance) {
-      walletForm.setFieldsValue({
-        ...finance.wallet,
-      });
-      bankForm.setFieldsValue({
-        ...finance.bank,
-      });
-      pensionForm.setFieldsValue({
-        ...finance.pension,
-      });
-    }
-  }, [employee, walletForm, bankForm, pensionForm]);
-  const { mutate: createWallet, isLoading: walletLoading } =
-    useCreateEmployeeWallet();
-  const { mutate: createBank, isLoading: bankLoading } =
-    useCreateEmployeeBank();
-  const { mutate: createPension, isLoading: pensionLoading } =
-    useCreateEmployeePension();
-
-  const handleWallet = (data: any) => {
-    if (companyId && employee) {
-      createWallet(
-        {
-          accountNumber: data.accountNumber,
-          accountProvider: data.accountProvider,
-          companyId,
-          token,
-          employeeId: employee.id,
-        },
-        {
-          onError: (err: any) => {
-            openNotification({
-              state: "error",
-              title: "Error Occured",
-              description:
-                err?.response.data.message ?? err?.response.data.error.message,
-            });
-          },
-          onSuccess: (res: any) => {
-            openNotification({
-              state: "success",
-
-              title: "Success",
-              description: res?.data?.message,
-            });
-            queryClient.invalidateQueries({
-              queryKey: ["single-employee", employee?.id],
-              exact: true,
-            });
-          },
-        }
-      );
-    }
-  };
-  const handleBank = (data: any) => {
-    if (companyId && employee) {
-      createBank(
-        {
-          accountNumber: data.accountNumber,
-          bankName: data.bankName,
-          bvn: data.bvn,
-          companyId,
-          token,
-          employeeId: employee.id,
-        },
-        {
-          onError: (err: any) => {
-            openNotification({
-              state: "error",
-              title: "Error Occured",
-              description:
-                err?.response.data.message ?? err?.response.data.error.message,
-            });
-          },
-          onSuccess: (res: any) => {
-            openNotification({
-              state: "success",
-
-              title: "Success",
-              description: res?.data?.message,
-            });
-            queryClient.invalidateQueries({
-              queryKey: ["single-employee", employee?.id],
-              exact: true,
-            });
-          },
-        }
-      );
-    }
-  };
-  const handlePension = (data: any) => {
-    if (companyId && employee) {
-      createPension(
-        {
-          accountNumber: data.accountNumber,
-          fundAdministrator: data.fundAdministrator,
-          pensionType: data.pensionType,
-          companyId,
-          token,
-          employeeId: employee.id,
-        },
-        {
-          onError: (err: any) => {
-            openNotification({
-              state: "error",
-              title: "Error Occured",
-              description:
-                err?.response.data.message ?? err?.response.data.error.message,
-            });
-          },
-          onSuccess: (res: any) => {
-            openNotification({
-              state: "success",
-
-              title: "Success",
-              description: res?.data?.message,
-            });
-            queryClient.invalidateQueries({
-              queryKey: ["single-employee", employee?.id],
-              exact: true,
-            });
-          },
-        }
-      );
-    }
-  };
-
+  const walletValue = finance.find((item) => item.key === "wallet")?.value as
+    | TWalletValue
+    | undefined;
+  const pensionValue = finance.find((item) => item.key === "pension")?.value as
+    | TPensionValue
+    | undefined;
+  const bankValue = finance.find((item) => item.key === "bank")?.value as
+    | TBankValue
+    | undefined;
+  const taxValue = finance.find((item) => item.key === "tax")?.value as
+    | TTaxValue
+    | undefined;
+  const nsitfValue = finance.find((item) => item.key === "nsitf")?.value as
+    | TNSITFValue
+    | undefined;
+  const itfValue = finance.find((item) => item.key === "itf")?.value as
+    | TITFValue
+    | undefined;
   return (
     <div className="bg-mainBg shadow-sm rounded-md p-4 mt-5">
       <div className="flex justify-between mb-3">
@@ -174,123 +71,597 @@ export const Finance = ({ employee }: IProps) => {
         </Tooltip>
       </div>
       <div className="bg-card p-3 rounded">
-        <div className="border-b border-gray-400 w-full mb-3">
-          <h2 className="text-accent text-base pb-1">Wallet Details</h2>
-        </div>
-        <Form
-          layout="vertical"
+        <WalletDetailsForm
+          employeeId={employeeId}
           disabled={disable}
-          form={walletForm}
-          onFinish={handleWallet}
-          requiredMark={false}
-        >
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
-            <Form.Item
-              name="accountProvider"
-              label="Nubian Account Provider"
-              rules={textInputValidationRules}
-            >
-              <Input className="generalInputStyle" />
-            </Form.Item>
-            <Form.Item
-              name="accountNumber"
-              label="Nubian Account Number"
-              rules={textInputValidationRules}
-            >
-              <Input className="generalInputStyle" />
-            </Form.Item>
-          </div>
-          {!disable && (
-            <div className="flex items-center justify-end">
-              <button className="button">
-                {walletLoading ? <BeatLoader color="#fff" /> : "Save changes"}
-              </button>
-            </div>
-          )}
-        </Form>
-        <Form
-          layout="vertical"
+          value={walletValue}
+        />
+
+        <BankDetailsForm
+          employeeId={employeeId}
           disabled={disable}
-          form={bankForm}
-          onFinish={handleBank}
-          requiredMark={false}
-        >
-          <div className="border-b border-gray-400 w-full mb-3">
-            <h2 className="text-accent text-base pb-1">Bank Details</h2>
-          </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
-            <Form.Item
-              name="bankName"
-              label="Bank Name"
-              rules={textInputValidationRules}
-            >
-              <Input className="generalInputStyle" />
-            </Form.Item>
-            <Form.Item
-              name="accountNumber"
-              label="Account Number"
-              rules={textInputValidationRules}
-            >
-              <Input className="generalInputStyle" />
-            </Form.Item>
-            <Form.Item
-              name="bvn"
-              label="Bank Verification Number"
-              rules={textInputValidationRules}
-            >
-              <Input className="generalInputStyle" />
-            </Form.Item>
-          </div>
-          {!disable && (
-            <div className="flex items-center justify-end">
-              <button className="button">
-                {bankLoading ? <BeatLoader color="#fff" /> : "Save changes"}
-              </button>
-            </div>
-          )}
-        </Form>
-        <Form
-          layout="vertical"
+          value={bankValue}
+        />
+        <PensionDetailsForm
+          employeeId={employeeId}
           disabled={disable}
-          form={pensionForm}
-          onFinish={handlePension}
-          requiredMark={false}
-        >
-          <div className="border-b border-gray-400 w-full mb-3">
-            <h2 className="text-accent text-base pb-1">Pension Details</h2>
-          </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
-            <Form.Item
-              name="fundAdministrator"
-              label="Pension Fund Administrator"
-              rules={textInputValidationRules}
-            >
-              <Input className="generalInputStyle" />
-            </Form.Item>
-            <Form.Item
-              name="pensionType"
-              label="Pension Type"
-              rules={textInputValidationRules}
-            >
-              <Input className="generalInputStyle" />
-            </Form.Item>
-            <Form.Item
-              name="accountNumber"
-              label="Pension Account Number"
-              rules={textInputValidationRules}
-            >
-              <Input className="generalInputStyle" />
-            </Form.Item>
-          </div>
-          {!disable && (
-            <div className="flex items-center justify-end">
-              <button className="button">
-                {pensionLoading ? <BeatLoader color="#fff" /> : "Save changes"}
-              </button>
-            </div>
-          )}
-        </Form>
+          value={pensionValue}
+        />
+        <TaxDetailsForm
+          employeeId={employeeId}
+          disabled={disable}
+          value={taxValue}
+        />
+        <NSITFDetailsForm
+          employeeId={employeeId}
+          disabled={disable}
+          value={nsitfValue}
+        />
+        <ITFDetailsForm
+          employeeId={employeeId}
+          disabled={disable}
+          value={itfValue}
+        />
       </div>
     </div>
+  );
+};
+
+const WalletDetailsForm: React.FC<{
+  employeeId?: number;
+  disabled?: boolean;
+  value?: TWalletValue;
+}> = ({ employeeId, disabled = false, value }) => {
+  const [form] = Form.useForm();
+  const queryClient = useQueryClient();
+  const { mutate, isLoading } = useSaveEmployeeFinance();
+
+  const handleFinish = (data: any) => {
+    if (employeeId) {
+      mutate(
+        {
+          employeeId,
+          data: {
+            key: "wallet",
+            value: {
+              accountNumber: data.accountNumber,
+              accountProvider: data.accountProvider,
+            },
+          },
+        },
+        {
+          onError: (err: any) => {
+            openNotification({
+              state: "error",
+              title: "Error Occured",
+              description:
+                err?.response.data.message ?? err?.response.data.error.message,
+            });
+          },
+          onSuccess: (res: any) => {
+            openNotification({
+              state: "success",
+
+              title: "Success",
+              description: res?.data?.message,
+            });
+            queryClient.invalidateQueries({
+              queryKey: [QUERY_KEY_FOR_SINGLE_EMPLOYEE],
+              exact: true,
+            });
+          },
+        }
+      );
+    }
+  };
+  useEffect(() => {
+    if (value) {
+      form.setFieldsValue({
+        accountNumber: value.accountNumber,
+        accountProvider: value.accountProvider,
+      });
+    }
+  }, [form, value]);
+  return (
+    <Form
+      layout="vertical"
+      disabled={disabled}
+      form={form}
+      onFinish={handleFinish}
+      requiredMark={false}
+    >
+      <div className="border-b border-gray-400 w-full mb-3">
+        <h2 className="text-accent text-base pb-1">Wallet Details</h2>
+      </div>
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+        <Form.Item
+          name="accountNumber"
+          label="Account Number"
+          rules={textInputValidationRules}
+        >
+          <Input />
+        </Form.Item>
+        <Form.Item
+          name="accountProvider"
+          label="Account Provider"
+          rules={textInputValidationRules}
+        >
+          <Input />
+        </Form.Item>
+      </div>
+
+      <div className="flex items-center justify-end">
+        <AppButton label="Save Changes" type="submit" isLoading={isLoading} />
+      </div>
+    </Form>
+  );
+};
+const PensionDetailsForm: React.FC<{
+  employeeId?: number;
+  disabled?: boolean;
+  value?: TPensionValue;
+}> = ({ employeeId, disabled = false, value }) => {
+  const [form] = Form.useForm();
+  const queryClient = useQueryClient();
+  const { mutate, isLoading } = useSaveEmployeeFinance();
+
+  const handleFinish = (data: any) => {
+    if (employeeId) {
+      mutate(
+        {
+          employeeId,
+          data: {
+            key: "pension",
+            value: {
+              pensionType: data?.pensionType,
+              employeePensionId: data?.employeePensionId,
+              pensionAdministratorId: data?.pensionAdministratorId,
+            },
+          },
+        },
+        {
+          onError: (err: any) => {
+            openNotification({
+              state: "error",
+              title: "Error Occured",
+              description:
+                err?.response.data.message ?? err?.response.data.error.message,
+            });
+          },
+          onSuccess: (res: any) => {
+            openNotification({
+              state: "success",
+
+              title: "Success",
+              description: res?.data?.message,
+            });
+            queryClient.invalidateQueries({
+              queryKey: [QUERY_KEY_FOR_SINGLE_EMPLOYEE],
+              exact: true,
+            });
+          },
+        }
+      );
+    }
+  };
+  useEffect(() => {
+    if (value) {
+      form.setFieldsValue({
+        pensionType: value?.pensionType,
+        employeePensionId: value?.employeePensionId,
+        pensionAdministratorId: value?.pensionAdministratorId,
+      });
+    }
+  }, [form, value]);
+  return (
+    <Form
+      layout="vertical"
+      disabled={disabled}
+      form={form}
+      onFinish={handleFinish}
+      requiredMark={false}
+    >
+      <div className="border-b border-gray-400 w-full mb-3">
+        <h2 className="text-accent text-base pb-1">Pension Information</h2>
+      </div>
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+        <Form.Item
+          name="employeePensionId"
+          label="Employee Pension ID"
+          rules={textInputValidationRules}
+        >
+          <Input placeholder="Pension ID" />
+        </Form.Item>
+        <FormPensionAdminInput
+          Form={Form}
+          control={{
+            label: "Fund Administrator",
+            name: "pensionAdministratorId",
+          }}
+        />
+        <Form.Item
+          name="pensionType"
+          label="Pension Type"
+          rules={textInputValidationRules}
+        >
+          <Input placeholder="Pension Type" />
+        </Form.Item>
+      </div>
+
+      <div className="flex items-center justify-end">
+        <AppButton label="Save Changes" type="submit" isLoading={isLoading} />
+      </div>
+    </Form>
+  );
+};
+const BankDetailsForm: React.FC<{
+  employeeId?: number;
+  disabled?: boolean;
+  value?: TBankValue;
+}> = ({ employeeId, disabled = false, value }) => {
+  const [form] = Form.useForm();
+  const queryClient = useQueryClient();
+  const { mutate, isLoading } = useSaveEmployeeFinance();
+  const [selectedBank, setSetlectedBank] = useState<TPaystackBank>();
+
+  const handleFinish = (data: any) => {
+    if (employeeId && selectedBank) {
+      mutate(
+        {
+          employeeId,
+          data: {
+            key: "bank",
+            value: {
+              bvn: data.bvn,
+              bankName: selectedBank.name,
+              accountNumber: data?.accountNumber,
+              bankCode: data.bankcode ?? selectedBank.code,
+            },
+          },
+        },
+        {
+          onError: (err: any) => {
+            openNotification({
+              state: "error",
+              title: "Error Occured",
+              description:
+                err?.response.data.message ?? err?.response.data.error.message,
+            });
+          },
+          onSuccess: (res: any) => {
+            openNotification({
+              state: "success",
+
+              title: "Success",
+              description: res?.data?.message,
+            });
+            queryClient.invalidateQueries({
+              queryKey: [QUERY_KEY_FOR_SINGLE_EMPLOYEE],
+              exact: true,
+            });
+          },
+        }
+      );
+    }
+  };
+  useEffect(() => {
+    if (value) {
+      form.setFieldsValue({
+        bvn: value.bvn,
+        bankName: value.bankName,
+        accountNumber: value?.accountNumber,
+        accountName: value?.accountName,
+        bankCode: value?.bankCode,
+      });
+    }
+  }, [form, value]);
+  return (
+    <Form
+      layout="vertical"
+      disabled={disabled}
+      form={form}
+      onFinish={handleFinish}
+      requiredMark={false}
+    >
+      <div className="border-b border-gray-400 w-full mb-3">
+        <h2 className="text-accent text-base pb-1">Bank Information</h2>
+      </div>
+      <div
+        className={`grid grid-cols-1 md:grid-cols-2 ${
+          value?.accountName ? "lg:grid-cols-4" : "lg:grid-cols-3"
+        } gap-5`}
+      >
+        <Form.Item
+          name="bvn"
+          label="Bank Verification Number"
+          rules={textInputValidationRules}
+        >
+          <Input />
+        </Form.Item>
+        <FormBankInput
+          Form={Form}
+          control={{ label: "Bank", name: "bankCode" }}
+          handleSelect={(_, bank) => setSetlectedBank(bank)}
+        />
+
+        <Form.Item
+          name="accountNumber"
+          label="Account Number"
+          rules={textInputValidationRules}
+        >
+          <Input />
+        </Form.Item>
+        {value?.accountName && (
+          <Form.Item name="accountName" label="Account Name">
+            <Input disabled />
+          </Form.Item>
+        )}
+      </div>
+
+      <div className="flex items-center justify-end">
+        <AppButton label="Save Changes" type="submit" isLoading={isLoading} />
+      </div>
+    </Form>
+  );
+};
+const ITFDetailsForm: React.FC<{
+  employeeId?: number;
+  disabled?: boolean;
+  value?: TITFValue;
+}> = ({ employeeId, disabled = false, value }) => {
+  const [form] = Form.useForm();
+  const queryClient = useQueryClient();
+  const { mutate, isLoading } = useSaveEmployeeFinance();
+
+  const handleFinish = (data: any) => {
+    if (employeeId) {
+      mutate(
+        {
+          employeeId,
+          data: {
+            key: "itf",
+            value: {
+              itfAuthorityId: data.itfAuthorityId,
+              employeeItfId: data.employeeItfId,
+            },
+          },
+        },
+        {
+          onError: (err: any) => {
+            openNotification({
+              state: "error",
+              title: "Error Occured",
+              description:
+                err?.response.data.message ?? err?.response.data.error.message,
+            });
+          },
+          onSuccess: (res: any) => {
+            openNotification({
+              state: "success",
+
+              title: "Success",
+              description: res?.data?.message,
+            });
+            queryClient.invalidateQueries({
+              queryKey: [QUERY_KEY_FOR_SINGLE_EMPLOYEE],
+              exact: true,
+            });
+          },
+        }
+      );
+    }
+  };
+  useEffect(() => {
+    if (value) {
+      form.setFieldsValue({
+        itfAuthorityId: value.itfAuthorityId,
+        employeeItfId: value.employeeItfId,
+        itfAuthorityName: value?.itfAuthorityName,
+      });
+    }
+  }, [form, value]);
+  return (
+    <Form
+      layout="vertical"
+      disabled={disabled}
+      form={form}
+      onFinish={handleFinish}
+      requiredMark={false}
+    >
+      <div className="border-b border-gray-400 w-full mb-3">
+        <h2 className="text-accent text-base pb-1">ITF Information</h2>
+      </div>
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+        <Form.Item
+          name="employeeItfId"
+          label="Employee ITF ID"
+          rules={textInputValidationRules}
+        >
+          <Input placeholder="ITF ID" />
+        </Form.Item>
+        <FormITFAuthInput
+          Form={Form}
+          control={{ label: "ITF Authority", name: "itfAuthorityId" }}
+        />
+      </div>
+
+      <div className="flex items-center justify-end">
+        <AppButton label="Save Changes" type="submit" isLoading={isLoading} />
+      </div>
+    </Form>
+  );
+};
+const NSITFDetailsForm: React.FC<{
+  employeeId?: number;
+  disabled?: boolean;
+  value?: TNSITFValue;
+}> = ({ employeeId, disabled = false, value }) => {
+  const [form] = Form.useForm();
+  const queryClient = useQueryClient();
+  const { mutate, isLoading } = useSaveEmployeeFinance();
+
+  const handleFinish = (data: any) => {
+    if (employeeId) {
+      mutate(
+        {
+          employeeId,
+          data: {
+            key: "nsitf",
+            value: {
+              nsitfAuthorityId: data.nsitfAuthorityId,
+              employeeNsitfId: data.employeeNsitfId,
+            },
+          },
+        },
+        {
+          onError: (err: any) => {
+            openNotification({
+              state: "error",
+              title: "Error Occured",
+              description:
+                err?.response.data.message ?? err?.response.data.error.message,
+            });
+          },
+          onSuccess: (res: any) => {
+            openNotification({
+              state: "success",
+
+              title: "Success",
+              description: res?.data?.message,
+            });
+            queryClient.invalidateQueries({
+              queryKey: [QUERY_KEY_FOR_SINGLE_EMPLOYEE],
+              exact: true,
+            });
+          },
+        }
+      );
+    }
+  };
+  useEffect(() => {
+    if (value) {
+      form.setFieldsValue({
+        nsitfAuthorityId: value.nsitfAuthorityId,
+        employeeNsitfId: value.employeeNsitfId,
+        nsitfAuthorityName: value?.nsitfAuthorityName,
+      });
+    }
+  }, [form, value]);
+  return (
+    <Form
+      layout="vertical"
+      disabled={disabled}
+      form={form}
+      onFinish={handleFinish}
+      requiredMark={false}
+    >
+      <div className="border-b border-gray-400 w-full mb-3">
+        <h2 className="text-accent text-base pb-1">NSITF Information</h2>
+      </div>
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+        <Form.Item
+          name="employeeNsitfId"
+          label="Employee NSITF ID"
+          rules={textInputValidationRules}
+        >
+          <Input placeholder="NSITF ID" />
+        </Form.Item>
+        <FormNSITFAuthInput
+          Form={Form}
+          control={{ label: "NSITF Authority", name: "nsitfAuthorityId" }}
+        />
+      </div>
+
+      <div className="flex items-center justify-end">
+        <AppButton label="Save Changes" type="submit" isLoading={isLoading} />
+      </div>
+    </Form>
+  );
+};
+const TaxDetailsForm: React.FC<{
+  employeeId?: number;
+  disabled?: boolean;
+  value?: TTaxValue;
+}> = ({ employeeId, disabled = false, value }) => {
+  const [form] = Form.useForm();
+  const queryClient = useQueryClient();
+  const { mutate, isLoading } = useSaveEmployeeFinance();
+
+  const handleFinish = (data: any) => {
+    if (employeeId) {
+      mutate(
+        {
+          employeeId,
+          data: {
+            key: "tax",
+            value: {
+              taxAuthorityId: data.taxAuthorityId,
+              employeeTaxId: data.employeeTaxId,
+            },
+          },
+        },
+        {
+          onError: (err: any) => {
+            openNotification({
+              state: "error",
+              title: "Error Occured",
+              description:
+                err?.response.data.message ?? err?.response.data.error.message,
+            });
+          },
+          onSuccess: (res: any) => {
+            openNotification({
+              state: "success",
+
+              title: "Success",
+              description: res?.data?.message,
+            });
+            queryClient.invalidateQueries({
+              queryKey: [QUERY_KEY_FOR_SINGLE_EMPLOYEE],
+              exact: true,
+            });
+          },
+        }
+      );
+    }
+  };
+  useEffect(() => {
+    if (value) {
+      form.setFieldsValue({
+        taxAuthorityId: value.taxAuthorityId,
+        employeeTaxId: value.employeeTaxId,
+        taxAuthorityName: value.taxAuthorityName,
+      });
+    }
+  }, [form, value]);
+  return (
+    <Form
+      layout="vertical"
+      disabled={disabled}
+      form={form}
+      onFinish={handleFinish}
+      requiredMark={false}
+    >
+      <div className="border-b border-gray-400 w-full mb-3">
+        <h2 className="text-accent text-base pb-1">Tax Information</h2>
+      </div>
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+        <Form.Item
+          name="employeeTaxId"
+          label="Employee Tax ID"
+          rules={textInputValidationRules}
+        >
+          <Input placeholder="Tax ID" />
+        </Form.Item>
+        <FormTaxAuthInput
+          Form={Form}
+          control={{ label: "Tax Authority", name: "taxAuthorityId" }}
+        />
+      </div>
+
+      <div className="flex items-center justify-end">
+        <AppButton label="Save Changes" type="submit" isLoading={isLoading} />
+      </div>
+    </Form>
   );
 };

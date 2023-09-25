@@ -123,8 +123,9 @@ const ReimbursementApprovalRequestsTable: React.FC<{
                   onClick={() =>
                     confirmApprovalAction({
                       approvalStageId: item?.id,
-                      status: "approved",
+                      status: "rejected",
                       workflowType: !!item?.basicStageId ? "basic" : "advanced",
+                      requires2FA: item?.advancedStage?.enableTwoFactorAuth,
                     })
                   }
                 >

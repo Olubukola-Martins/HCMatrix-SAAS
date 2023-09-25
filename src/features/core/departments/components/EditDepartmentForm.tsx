@@ -1,4 +1,4 @@
-import { Form, Input, Select, Spin } from "antd";
+import { Form, Input, Skeleton, Spin } from "antd";
 import { useApiAuth } from "hooks/useApiAuth";
 import { useContext, useEffect } from "react";
 import { useQueryClient } from "react-query";
@@ -12,6 +12,8 @@ import { openNotification } from "utils/notifications";
 import { useFetchSingleDepartment } from "../hooks/useFetchSingleDepartment";
 import { useUpdateDepartment } from "../hooks/useUpdateDepartment";
 import { IUpdateDeptProps } from "../types";
+import { FormEmployeeInput } from "features/core/employees/components/FormEmployeeInput";
+import { FormDepartmentInput } from "./FormDepartmentInput";
 
 const EditDepartmentForm = ({
   handleClose,
@@ -24,7 +26,7 @@ const EditDepartmentForm = ({
   const { token, companyId } = useApiAuth();
   const { dispatch } = useContext(GlobalContext);
   const [form] = Form.useForm();
-  const { data, isSuccess } = useFetchSingleDepartment({
+  const { data, isSuccess, isFetching } = useFetchSingleDepartment({
     token,
     companyId,
     departmentId,
@@ -39,7 +41,7 @@ const EditDepartmentForm = ({
         parentDepartmentId: data?.parentDepartmentId,
       });
     }
-  }, [isSuccess, data]);
+  }, [isSuccess, data, form]);
   const { mutate, isLoading } = useUpdateDepartment();
 
   const handleSubmit = (data: any) => {
@@ -69,8 +71,6 @@ const EditDepartmentForm = ({
           });
         },
         onSuccess: (res: any) => {
-          const result = res.data.data;
-
           openNotification({
             state: "success",
 
@@ -96,34 +96,46 @@ const EditDepartmentForm = ({
     }
   };
   return (
-    <Form
-      layout="vertical"
-      requiredMark={false}
-      form={form}
-      onFinish={handleSubmit}
-    >
-      <Form.Item
-        name="name"
-        label="Department Name"
-        rules={textInputValidationRules}
+    <Skeleton loading={isFetching} active paragraph={{ rows: 9 }}>
+      <Form
+        layout="vertical"
+        requiredMark={false}
+        form={form}
+        onFinish={handleSubmit}
       >
-        <Input placeholder="Department" />
-      </Form.Item>
-      <Form.Item name="email" label="Mail Alias" rules={emailValidationRules}>
-        <Input placeholder="john@gmail.com" />
-      </Form.Item>
+        <Form.Item
+          name="name"
+          label="Department Name"
+          rules={textInputValidationRules}
+        >
+          <Input placeholder="Department" />
+        </Form.Item>
+        <Form.Item name="email" label="Mail Alias" rules={emailValidationRules}>
+          <Input placeholder="john@gmail.com" />
+        </Form.Item>
 
-      <Form.Item name="departmentHeadId" label="Department Head (Optional)">
-        <Select placeholder="Department head" options={[]} />
-      </Form.Item>
-      <Form.Item name="parentDepartmentId" label="Parent Department (Optional)">
-        <Select placeholder="Parent Department" options={[]} />
-      </Form.Item>
+        <FormEmployeeInput
+          Form={Form}
+          control={{
+            name: "departmentHeadId",
+            label: "Department Head (Optional)",
+          }}
+          optional
+        />
+        <FormDepartmentInput
+          Form={Form}
+          control={{
+            name: "parentDepartmentId",
+            label: "Parent Department (Optional)",
+          }}
+          optional
+        />
 
-      <button className="button" type="submit">
-        {isLoading ? <BeatLoader color="#fff" /> : "Submit"}
-      </button>
-    </Form>
+        <button className="button" type="submit">
+          {isLoading ? <BeatLoader color="#fff" /> : "Submit"}
+        </button>
+      </Form>
+    </Skeleton>
   );
 };
 

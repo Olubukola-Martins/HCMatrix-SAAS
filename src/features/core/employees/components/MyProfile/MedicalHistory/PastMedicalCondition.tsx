@@ -25,8 +25,8 @@ export const PastMedicalCondition = () => {
             </tr>
           </thead>
           <tbody>
-            {[1, 2].map((data) => (
-              <tr>
+            {[1, 2].map((data, i) => (
+              <tr key={i}>
                 <td className="p-1">Headache</td>
                 <td>19-07-2022</td>
                 <td>

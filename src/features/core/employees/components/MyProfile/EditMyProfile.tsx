@@ -14,13 +14,13 @@ import {
 } from "utils/formHelpers/validation";
 import { openNotification } from "utils/notifications";
 import { useUpdateEmployee } from "../../hooks/useUpdateEmployee";
-import { TEmployee, IUpdateEmpProps } from "../../types";
+import { TSingleEmployee, IUpdateEmpProps } from "../../types";
 import { useApiAuth } from "hooks/useApiAuth";
 import { FileUpload } from "components/FileUpload";
 import { useCurrentFileUploadUrl } from "hooks/useCurrentFileUploadUrl";
 
 interface IProps extends IDrawerProps {
-  employee?: TEmployee;
+  employee?: TSingleEmployee;
 }
 
 export const EditMyProfile = ({ open, handleClose, employee }: IProps) => {

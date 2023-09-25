@@ -18,6 +18,7 @@ export const useApiAuth = () => {
   const auth = useAuthUser();
 
   const authDetails = auth() as unknown as IAuthDets;
+  const authUserData = authDetails?.user;
 
   const token = authDetails?.userToken;
   const globalCtx = useContext(GlobalContext);
@@ -39,5 +40,6 @@ export const useApiAuth = () => {
     currentUserId,
     currentUserEmployeeId,
     currentCompanyEmployeeDetails: currentCompany,
+    authUserData,
   };
 };

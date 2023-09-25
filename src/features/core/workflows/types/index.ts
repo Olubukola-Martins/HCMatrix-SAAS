@@ -31,7 +31,9 @@ export type TWorkflowApprovalType =
   | "promotion"
   | "reimbursement"
   | "transfer"
-  | "travel";
+  | "travel"
+  | "payroll"
+  | "loan";
 
 export type TStagingType = "employee" | "role" | "group" | "department-head";
 export type TStageCondition = "specific" | "at-least-one" | "everyone";
@@ -43,6 +45,7 @@ export type TStage = {
   entityId: number;
   condition?: TStageCondition;
   count?: number;
+  enableTwoFactorAuth?: boolean;
 };
 
 export interface TSingleWorkflow {

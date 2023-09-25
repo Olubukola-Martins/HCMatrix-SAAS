@@ -1,18 +1,13 @@
 import { Button, Form, Input } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
 import { useEffect, useState } from "react";
-import { EditBasicStage } from "./EditBasicStage";
 
 import { useQueryClient } from "react-query";
 import { EditOutlined, SaveOutlined } from "@ant-design/icons";
 
-import { AddBasicStage } from "./AddBasicStage";
 import { textInputValidationRules } from "utils/formHelpers/validation";
 import { openNotification } from "utils/notifications";
-import useAddStageToBasicWorkflow from "../hooks/useAddStageToBasicWorkflow";
-import useEditBasicWorkflow, {
-  useUpdateSingleWorkflow,
-} from "../hooks/useUpdateSingleWorkflow";
+import { useUpdateSingleWorkflow } from "../hooks/useUpdateSingleWorkflow";
 import { QUERY_KEY_FOR_SINGLE_WORKFLOW } from "../hooks/useFetchSingleWorkflow";
 import { TSingleWorkflow, TStage } from "../types";
 import { EditAdvancedStage } from "./EditAdvancedStage";
@@ -35,7 +30,15 @@ export const EditAdvancedWorkflow: React.FC<{ data: TSingleWorkflow }> = ({
 
   const { mutate: stageMutate } = useAddStageToAdvancedWorkflow();
   const addStage = (
-    stage: Pick<TStage, "name" | "entityId" | "type" | "condition" | "count">
+    stage: Pick<
+      TStage,
+      | "name"
+      | "entityId"
+      | "type"
+      | "condition"
+      | "count"
+      | "enableTwoFactorAuth"
+    >
   ) => {
     stageMutate(
       {
@@ -71,10 +74,10 @@ export const EditAdvancedWorkflow: React.FC<{ data: TSingleWorkflow }> = ({
 
   const { mutate, isLoading } = useUpdateSingleWorkflow();
 
-  const handleSubmit = (data: any) => {
+  const handleSubmit = (values: any) => {
     mutate(
       {
-        name: data.name,
+        name: values.name,
         id: data.id,
       },
       {
@@ -168,6 +171,7 @@ export const EditAdvancedWorkflow: React.FC<{ data: TSingleWorkflow }> = ({
                   type: data.type,
                   condition: data.condition,
                   count: data.count,
+                  enableTwoFactorAuth: data.enableTwoFactorAuth,
                 });
               }}
             />

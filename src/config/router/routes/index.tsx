@@ -1,3 +1,4 @@
+import { TRouteDataCategory } from "../types";
 import { attendanceRoutes } from "./attendance";
 import { authRoutesDontRequireAuthentication } from "./auth";
 import { billingRoutes } from "./billing";

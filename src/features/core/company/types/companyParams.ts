@@ -15,12 +15,17 @@ interface Value {
   dateAndTimeSettings: DateAndTimeSettings;
   notificationSettings: NotificationSettings;
   profilePhotoSettings: ProfilePhotoSettings;
+  currencySettings?: CurrencySettings;
 }
 
 interface ProfilePhotoSettings {
   modifyUsersProfile: ModifyUsersProfile;
 }
 
+interface CurrencySettings {
+  showCurrencySymbol: boolean;
+  baseCurrency: string;
+}
 interface ModifyUsersProfile {
   employee: boolean;
   administrator: boolean;

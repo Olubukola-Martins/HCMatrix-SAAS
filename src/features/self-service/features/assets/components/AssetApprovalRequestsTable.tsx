@@ -107,6 +107,7 @@ const AssetApprovalRequestsTable: React.FC<{
                       approvalStageId: item?.id,
                       status: "approved",
                       workflowType: !!item?.basicStageId ? "basic" : "advanced",
+                      requires2FA: item?.advancedStage?.enableTwoFactorAuth,
                     })
                   }
                 >
@@ -120,6 +121,7 @@ const AssetApprovalRequestsTable: React.FC<{
                       approvalStageId: item?.id,
                       status: "rejected",
                       workflowType: !!item?.basicStageId ? "basic" : "advanced",
+                      requires2FA: item?.advancedStage?.enableTwoFactorAuth,
                     })
                   }
                 >
