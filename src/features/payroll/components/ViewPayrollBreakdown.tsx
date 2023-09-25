@@ -5,20 +5,20 @@ import { IModalProps } from "types";
 
 const ViewPayrollBreakdown: React.FC<IModalProps> = ({ open, handleClose }) => {
   return (
-    <Modal open={open} onCancel={() => handleClose()}>
+    <Modal
+      open={open}
+      onCancel={() => handleClose()}
+      footer={null}
+      style={{ top: 5 }}
+      width={`65%`}
+      title={
+        <div className="flex items-center justify-between">
+          <h5 className="font-semibold text-lg">Payroll breakdown</h5>
+        </div>
+      }
+    >
       <Themes>
-        <div
-          className="CModal border scrollBar overflow-auto"
-          style={{ maxWidth: 700, height: 500 }}
-        >
-          <div className="flex items-center justify-between">
-            <h5 className="font-semibold text-lg">Payroll breakdown</h5>
-            <i
-              onClick={() => handleClose()}
-              className="ri-close-line font-semibold text-xl cursor-pointer hover:text-neutral"
-            ></i>
-          </div>
-
+        <div className="scrollBar overflow-auto">
           <div className="text-sm mt-5 font-medium">
             <div className="bg-mainBg flex items-center justify-between px-5 py-2">
               <span> Employee Name</span>
@@ -39,16 +39,16 @@ const ViewPayrollBreakdown: React.FC<IModalProps> = ({ open, handleClose }) => {
                     </tr>
                   </thead>
                   <tbody>
+                    {Array(4)
+                      .fill({ label: "Meal Allowance", value: 2000 })
+                      .map((item, i) => (
+                        <tr>
+                          <td>{item.label}</td>
+                          <td>N{item.value}</td>
+                        </tr>
+                      ))}
                     <tr>
-                      <td>Total Gross</td>
-                      <td>N0.00</td>
-                    </tr>
-                    <tr>
-                      <td>Total Net</td>
-                      <td>N0.00</td>
-                    </tr>
-                    <tr>
-                      <td>Total Bonuses</td>
+                      <td>Sub Total</td>
                       <td>N0.00</td>
                     </tr>
                   </tbody>
@@ -119,10 +119,10 @@ const ViewPayrollBreakdown: React.FC<IModalProps> = ({ open, handleClose }) => {
               <span>xxxxxxxxxx</span>
             </div>
 
-            <div className="flex items-center justify-around mt-6">
+            {/* <div className="flex items-center justify-around mt-6">
               <button className="neutralButton">Roll back</button>
               <button className="button">Approve</button>
-            </div>
+            </div> */}
           </div>
         </div>
       </Themes>

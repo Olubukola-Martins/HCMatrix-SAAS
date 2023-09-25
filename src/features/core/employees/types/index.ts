@@ -1,6 +1,21 @@
 import { TDesignation } from "features/core/designations/types";
 import { TRole } from "features/core/roles-and-permissions/types";
 import { ICurrentCompany, IPaginationProps, ISearchParams } from "types";
+import {
+  Finance,
+  TBankValue,
+  TPensionValue,
+  TSingleEmployee,
+  TWalletValue,
+} from "./singleEmployee";
+
+export {
+  type TSingleEmployee,
+  type TPensionValue,
+  type TWalletValue,
+  type TBankValue,
+  type Finance,
+};
 
 export type TBulkEmployeeImport = {
   employeeInformation: {
@@ -231,8 +246,9 @@ export type TPersonalInfo = {
   maritalStatus: string;
   nationality: string;
   address: TAddress;
+  exchangeRateId?: number;
   passportExpirationDate?: string;
-  validDocumentUrl: string;
+  validDocumentUrl?: string;
 };
 
 export type TJobInfo = {
@@ -245,6 +261,9 @@ export type TJobInfo = {
   probationEndDate: string;
   confirmationDate: string;
   lineManagerId?: number;
+  payGradeId?: number;
+  branchId?: number;
+  payrollType?: "direct-salary" | "office" | "wages";
 };
 
 export type TWallet = {

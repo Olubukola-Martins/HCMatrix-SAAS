@@ -43,6 +43,19 @@ export const AddAdvancedStage: React.FC<{
             <Input placeholder="Stage name" />
           </Form.Item>
           <Form.Item
+            name={"enableTwoFactorAuth"}
+            label={`Enable 2FA`}
+            rules={generalValidationRules}
+          >
+            <Select
+              placeholder="Enable 2FA"
+              options={[
+                { label: "Yes", value: true },
+                { label: "No", value: false },
+              ]}
+            />
+          </Form.Item>
+          <Form.Item
             name={"type"}
             rules={generalValidationRules}
             label="Approver Type"

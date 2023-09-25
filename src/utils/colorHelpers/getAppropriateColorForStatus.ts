@@ -1,24 +1,12 @@
-const ESTATUS = {
-  PENDING: "pending",
-  APPROVED: "approved",
-  REJECTED: "rejected",
-};
-const ECOLOR = {
-  PENDING: "#FFA600",
-  APPROVED: "#01966B",
-  REJECTED: "#FF221E",
+// type TSTATUS = "pending" | "approved" | "rejected" | "in-review";
+
+const ECOLOR: { [key: string]: string } = {
+  pending: "#FFA600",
+  approved: "#01966B",
+  rejected: "#FF221E",
+  "in-review": "#FFA600",
 };
 
 export const getAppropriateColorForStatus = (status: string) => {
-  switch (status) {
-    case ESTATUS.PENDING:
-      return ECOLOR.PENDING;
-    case ESTATUS.APPROVED:
-      return ECOLOR.APPROVED;
-    case ESTATUS.REJECTED:
-      return ECOLOR.REJECTED;
-
-    default:
-      return "";
-  }
+  return ECOLOR[status] ?? "#aaa";
 };

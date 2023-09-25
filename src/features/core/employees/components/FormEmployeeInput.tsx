@@ -10,11 +10,13 @@ import { TEmployee } from "../types";
 
 export const FormEmployeeInput: React.FC<{
   handleSelect?: (val: number, employee?: TEmployee) => void;
+  handleClear?: () => void;
   fieldKey?: number;
   Form: any;
+  noStyle?: boolean;
   showLabel?: boolean;
   optional?: boolean;
-  mode?: "multiple" | "tags",
+  mode?: "multiple" | "tags";
   control?: { label: string; name: string | (string | number)[] };
 }> = ({
   Form,
@@ -23,7 +25,9 @@ export const FormEmployeeInput: React.FC<{
   handleSelect,
   fieldKey,
   optional = false,
-  mode
+  mode,
+  noStyle,
+  handleClear,
 }) => {
   const [searchTerm, setSearchTerm] = useState<string>("");
   const debouncedSearchTerm: string = useDebounce<string>(searchTerm);
@@ -38,25 +42,31 @@ export const FormEmployeeInput: React.FC<{
     setSearchTerm(val);
   };
 
+  const onClear = () => {
+    setSearchTerm("");
+    handleClear?.();
+  };
+
   return (
     <Form.Item
       fieldKey={fieldKey}
+      noStyle={noStyle}
       name={control?.name ?? "employeeId"}
       label={showLabel ? control?.label ?? "Employee" : null}
       rules={optional ? generalValidationRulesOp : generalValidationRules}
     >
       <Select
-      mode={mode}
+        mode={mode}
         onSelect={(val: number) => {
           if (handleSelect) {
             const employee = data?.data.find((emp) => emp.id === val);
             handleSelect(val, employee);
           }
         }}
-        placeholder="Select user"
+        placeholder={`Select employee${!!mode ? "s" : ""}`}
         showSearch
         allowClear
-        onClear={() => setSearchTerm("")}
+        onClear={onClear}
         onSearch={handleSearch}
         className="rounded border-slate-400 w-full"
         defaultActiveFirstOption={false}

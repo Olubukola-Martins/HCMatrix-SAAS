@@ -1,34 +1,30 @@
 import { Select } from "antd";
 import { useFetchCountries } from "hooks/useFetchCountries";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { TCountry } from "types/country";
 import { generalValidationRules } from "utils/formHelpers/validation";
 
 export const FormCountryInput: React.FC<{
+  onClear?: () => void;
   handleSelect?: (val: number) => void;
   Form: any;
   showLabel?: boolean;
   control?: { label: string; name: string };
-}> = ({ Form, showLabel = true, control, handleSelect }) => {
-  const [searchedCountries, setSearchedCountries] = useState<TCountry[]>();
+}> = ({ Form, showLabel = true, control, handleSelect, onClear }) => {
+  const { data: countries, isFetching } = useFetchCountries();
 
-  const { data: countries, isSuccess } = useFetchCountries();
+  const [data, setData] = useState<TCountry[]>([]);
+  const [search, setSearch] = useState<string>();
+  useEffect(() => {
+    if (countries) {
+      const result = countries?.filter(
+        (item) =>
+          item.name.toLowerCase().indexOf(search?.toLowerCase() ?? "") !== -1
+      );
 
-  const handleCountrySearch = (val: string) => {
-    if (isSuccess) {
-      if (val.length > 0) {
-        const sCountries = countries.filter(
-          (item) =>
-            item.name.toLowerCase().indexOf(val.toLowerCase()) !== -1 ||
-            `+${item.code}`.toLowerCase().indexOf(`${val.toLowerCase()}`) !== -1
-        );
-        setSearchedCountries(sCountries);
-      } else {
-        setSearchedCountries([]);
-      }
+      setData(result);
     }
-  };
-  const mainCountries = !!searchedCountries ? searchedCountries : countries;
+  }, [countries, search]);
 
   return (
     <Form.Item
@@ -37,16 +33,22 @@ export const FormCountryInput: React.FC<{
       rules={generalValidationRules}
     >
       <Select
+        getPopupContainer={(triggerNode) => triggerNode.parentElement}
+        loading={isFetching}
         onSelect={handleSelect}
+        searchValue={search}
         showSearch
         allowClear
-        onClear={() => setSearchedCountries([])}
-        onSearch={handleCountrySearch}
+        onClear={() => {
+          countries && setData(countries);
+          onClear?.();
+        }}
+        onSearch={(val) => setSearch(val)}
         className="rounded border-slate-400"
         defaultActiveFirstOption={false}
         showArrow={false}
         filterOption={false}
-        options={mainCountries?.map((item) => ({
+        options={data?.map((item) => ({
           label: `${item.name}`,
           value: item.id,
         }))}

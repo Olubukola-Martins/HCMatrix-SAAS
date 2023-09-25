@@ -1,3 +1,4 @@
+import { TEmploymentEligibity } from "types/employementEligibilities";
 import { TPriority } from "types/priorities";
 
 // The purpose of this file to prevent repetition
@@ -66,16 +67,13 @@ export const MARITAL_STATUSES = [
   },
 ];
 
-export const EMPLOYMENT_ELIGIBILITIES = [
-  {
-    label: "Citizen",
-    value: "citizen",
-  },
-  {
-    label: "Not a citizen",
-    value: "not a citizen",
-  },
+export const EMPLOYMENT_ELIGIBILITIES: TEmploymentEligibity[] = [
+  "citizen",
+  "expatriate",
 ];
+export const EMPLOYMENT_ELIGIBILITIES_OPTIONS = EMPLOYMENT_ELIGIBILITIES.map(
+  (item) => ({ label: item, value: item })
+);
 
 export const WORK_MODELS = [
   {

@@ -9,10 +9,10 @@ import {
   phoneNumberValidationRule,
 } from "utils/formHelpers/validation";
 
-export const FormPhoneInput: React.FC<{ Form: any; showLabel?: boolean }> = ({
-  Form,
-  showLabel = true,
-}) => {
+export const FormPhoneInput: React.FC<{
+  Form: any;
+  showLabel?: boolean;
+}> = ({ Form, showLabel = true }) => {
   const { data: countries, isSuccess } = useFetchCountries();
   const [searchedCountries, setSearchedCountries] = useState<TCountry[]>();
 
