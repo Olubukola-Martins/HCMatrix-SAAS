@@ -223,7 +223,7 @@ const PayrollCardContent: React.FC<IPayrollCardProps> = ({
             {typeof image === "string" ? (
               <img src={image} alt="bg" className="h-6 w-6" />
             ) : (
-              <div className="h-4 w-4">{image}</div>
+              <div className="h-6 w-6">{image}</div>
             )}
           </div>{" "}
           <h4 className="font-light text-sm">{title}</h4>
