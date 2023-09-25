@@ -1,9 +1,9 @@
 import axios from "axios";
 import { useMutation } from "react-query";
-import { ICreateCandidateStatus } from "../types";
+import { IPostSwitch } from "../types";
 import { MICROSERVICE_ENDPOINTS } from "config/enviroment";
 
-export const postCandidateSource = async (props: ICreateCandidateStatus) => {
+export const postCandidateSource = async (props: IPostSwitch) => {
   const url = `${MICROSERVICE_ENDPOINTS.RECRUITMENT}/settings/application-sources/`;
 
   const config = {

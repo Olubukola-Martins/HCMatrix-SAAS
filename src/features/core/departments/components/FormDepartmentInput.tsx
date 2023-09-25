@@ -27,7 +27,7 @@ export const FormDepartmentInput: React.FC<{
 
   const handleSearch = (val: string) => {
     setSearchTerm(val);
-  };
+  }; 
 
   return (
     <Form.Item

@@ -67,7 +67,7 @@ const CandidateStatus = () => {
               description: "Application successfully added!",
             });
             queryClient.invalidateQueries([QUERY_KEY_FOR_CANDIDATE_STATUS]);
-            // formRef.current?.resetFields();
+
           },
         }
       );
@@ -113,10 +113,11 @@ const CandidateStatus = () => {
                 onFinish={handleSubmit}
               >
                 {data?.map((item) => (
-                  <div className="recruitmentSettingsForm">
+                  <div className="recruitmentSettingsForm" key={item.id}>
                     <h3 className="font-medium">{item.name}</h3>
-                    <div className="flex gap-4 items-center justify-center">
+                    <div className="flex gap-5 items-center justify-end">
                       <Form.Item
+                        valuePropName="checked"
                         name={item.label}
                         className="flex justify-end items-end"
                         noStyle
@@ -171,7 +172,7 @@ const CandidateStatus = () => {
                                 noStyle
                                 valuePropName="checked"
                               >
-                                <Switch />
+                                <Switch  />
                               </Form.Item>
                               <i
                                 className="ri-delete-bin-line text-xl cursor-pointer hover:text-caramel"

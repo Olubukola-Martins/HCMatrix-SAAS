@@ -1,4 +1,7 @@
 // These object helps to ensure that the routes in the application are not manually hardcorded and littered everywhere
+
+import { format } from "path";
+
 // rather they are managed by a single file
 export const appRoutes = {
   // auth routes
@@ -223,6 +226,18 @@ export const appRoutes = {
   recruitmentJobTemplate: `/recruitment/job-template`,
   recruitmentOtherSettings: `/recruitment/other-settings`,
   addEmailTemplate: `/recruitment/add-email-template`,
+  emailTemplateDetails: (id?: number) => ({
+    format: `/recruitment/email-template/:id`,
+    path: `/recruitment/email-template/${id}`,
+  }),
+  offerTemplateDetails: (id?: number) => ({
+    format: `/recruitment/offer-template/:id`,
+    path: `/recruitment/offer-template/${id}`,
+  }),
+  jobTemplateDetails: (id?: number) => ({
+    format: `/recruitment/job-template/:id`,
+    path: `/recruitment/job-template/${id}`,
+  }),
   addJobTemplate: `/recruitment/add-job-template`,
   addOfferTemplate: `/recruitment/add-offer-template`,
   applicationsList: `/recruitment/applications-list`,

@@ -5,24 +5,21 @@ import { ICurrentCompany } from "types";
 import { useApiAuth } from "hooks/useApiAuth";
 import { openNotification } from "utils/notifications";
 
-interface IPatchRecruitmentItem extends ICurrentCompany {
+export interface IPutRecruitmentItem extends ICurrentCompany {
   itemId: number;
-  patchEndpointUrl: string;
+  putEndpointUrl: string;
   queryKey: string;
-  checked: boolean;
 }
 
 interface IPProps {
-  patchEndpointUrl: string;
+  putEndpointUrl: string;
   queryKey: string;
 }
 
-export const handlePatchData = async (props: IPatchRecruitmentItem) => {
-  const activateHandler = `${MICROSERVICE_ENDPOINTS.RECRUITMENT}/settings/${props.patchEndpointUrl}/${props.itemId}/activate`;
-  const deactivateHandler = `${MICROSERVICE_ENDPOINTS.RECRUITMENT}/settings/${props.patchEndpointUrl}/${props.itemId}/deactivate`;
-  const url = props.checked ? activateHandler : deactivateHandler;
+export const handlePutData = async (props: IPutRecruitmentItem) => {
+  const url = `${MICROSERVICE_ENDPOINTS.RECRUITMENT}/settings/${props.putEndpointUrl}/${props.itemId}`;
 
-  const config = { 
+  const config = {
     headers: {
       Accept: "application/json",
       Authorization: `Bearer ${props.token}`,
@@ -30,29 +27,29 @@ export const handlePatchData = async (props: IPatchRecruitmentItem) => {
     },
   };
 
-  const response = await axios.patch(url, null, config);
+  const response = await axios.put(url, null, config);
   return response;
 };
 
-export const usePatchRecruitmentItem = ({
+export const useUpdateEmailTemplate = ({
   queryKey,
-  patchEndpointUrl,
+  putEndpointUrl,
 }: IPProps) => {
   const queryClient = useQueryClient();
   const { token, companyId } = useApiAuth();
-  const { mutate } = useMutation(handlePatchData);
-  const patchData = (itemId: number, checked: boolean) => {
+  const { mutate, isLoading } = useMutation(handlePutData);
+  const putData = (itemId: number) => {
     mutate(
       {
         companyId,
         token,
-        patchEndpointUrl,
+        putEndpointUrl,
         itemId,
         queryKey,
-        checked,
       },
       {
         onError: (error: any) => {
+          console.log(error);
           openNotification({
             state: "error",
             title: "Error Occured",
@@ -71,5 +68,5 @@ export const usePatchRecruitmentItem = ({
       }
     );
   };
-  return { patchData };
+  return { putData, isLoading };
 };

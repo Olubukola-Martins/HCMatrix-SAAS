@@ -71,8 +71,9 @@ const CandidateSource = () => {
                 {data?.map((item) => (
                   <div className=" recruitmentSettingsForm ">
                     <h3 className="font-medium">{item.name}</h3>
-                    <div className="flex gap-4 items-center justify-center">
+                    <div className="flex gap-5 items-center justify-end">
                       <Form.Item
+                        valuePropName="checked"
                         name={item.label}
                         className="flex justify-end items-end"
                         noStyle
@@ -80,9 +81,6 @@ const CandidateSource = () => {
                         <Switch
                           defaultChecked={item.isActive}
                           onChange={(checked) => {
-                            if (item.label === "direct") {
-                              return;
-                            }
                             handleSwitchValue(checked, item.id);
                           }}
                           disabled={item.label === "direct"}
@@ -109,7 +107,8 @@ const CandidateSource = () => {
                   </div>
                 ))}
 
-                <div>
+                {/* API URL to add new sources is not yet available */}
+                {/* <div>
                   <h2 className="pb-5 font-medium text-base">Source name</h2>
                   <Form.List name="newSource">
                     {(fields) => (
@@ -149,7 +148,7 @@ const CandidateSource = () => {
                       </>
                     )}
                   </Form.List>
-                </div>
+                </div> 
                 <div className="flex justify-end items-center mt-5 gap-4">
                   <button
                     className="text-base font-medium hover:text-caramel"
@@ -158,7 +157,7 @@ const CandidateSource = () => {
                     Cancel
                   </button>
                   <AppButton type="submit" label="Add" />
-                </div>
+                </div>*/}
               </Form>
             </Skeleton>
           </div>
