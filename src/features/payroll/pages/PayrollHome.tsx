@@ -3,20 +3,11 @@ import PayrollCycle from "../assets/images/payrollCycle.svg";
 import Group from "../assets/images/group.svg";
 import DollarBox from "../assets/images/dollarBox.svg";
 import PayrollReview from "../assets/images/payrollReview.svg";
-import { LineChart } from "../components/LineChart";
-import { BarChart } from "../components/BarChart";
-import { ScatterChart } from "../components/ScatterChart";
-import { PieChart } from "../components/PieChart";
-import { WaterFallChart } from "../components/WaterFallChart";
-import { AreaGraph } from "../components/AreaGraph";
-import { Histogram } from "../components/Histogram";
+
 import { AnimatePresence, motion } from "framer-motion";
-import { SpiderChart } from "../components/SpiderChart";
 import { Link } from "react-router-dom";
 import PayrollSubNav from "../components/PayrollSubNav";
-import { Dropdown, Menu } from "antd";
 import { appRoutes } from "config/router/paths";
-import { AppButton } from "components/button/AppButton";
 import { CreatePayrollButton } from "../components/payrollCreations/CreatePayrollButton";
 import PayrollOverviewChart from "../components/graphs/PayrollOverviewChart";
 
@@ -40,92 +31,6 @@ const labels = [
 ];
 
 const PayrollHome = () => {
-  const chartData = [
-    {
-      name: "net income",
-      data: {
-        labels,
-        datasets: [
-          {
-            label: "Net Income",
-            data: [18, 19, 20, 28, 10, 29, 7, 0, 35, 27, 12, 20, 30],
-            borderColor: "rgb(255, 99, 132)",
-            backgroundColor: "rgba(255, 99, 132, 0.5)",
-          },
-        ],
-      },
-    },
-    {
-      name: "gross income",
-      data: {
-        labels,
-        datasets: [
-          {
-            label: "Gross Income",
-            data: [1, 2, 5, 8, 10, 9, 7, 0, 5, 1, 12, 2, 30],
-            borderColor: "rgb(255, 99, 132)",
-            backgroundColor: "rgba(255, 99, 132, 0.5)",
-          },
-        ],
-      },
-    },
-    {
-      name: "Employee Tax",
-      data: {
-        labels,
-        datasets: [
-          {
-            label: "Employee Tax",
-            data: [1, 2, 5, 48, 10, 49, 20, 0, 5, 1, 12, 2, 30],
-            borderColor: "rgb(255, 99, 132)",
-            backgroundColor: "rgba(255, 99, 132, 0.5)",
-          },
-        ],
-      },
-    },
-    {
-      name: "Pension",
-      data: {
-        labels,
-        datasets: [
-          {
-            label: "Pension",
-            data: [1, 2, 5, 8, 10, 9, 7, 0, 5, 1, 12, 2, 30].reverse(),
-            borderColor: "rgb(255, 99, 132)",
-            backgroundColor: "rgba(255, 99, 132, 0.5)",
-          },
-        ],
-      },
-    },
-    {
-      name: "Total Deductions",
-      data: {
-        labels,
-        datasets: [
-          {
-            label: "Total Deductions",
-            data: [31, 52, 35, 48, 10, 9, 7, 0, 5, 11, 12, 2, 30],
-            borderColor: "rgb(255, 99, 132)",
-            backgroundColor: "rgba(255, 99, 132, 0.5)",
-          },
-        ],
-      },
-    },
-    {
-      name: "Total Allowances",
-      data: {
-        labels,
-        datasets: [
-          {
-            label: "Total Allowances",
-            data: [1, 21, 5, 8, 40, 9, 7, 0, 5, 1, 32, 2, 30],
-            borderColor: "rgb(255, 99, 132)",
-            backgroundColor: "rgba(255, 99, 132, 0.5)",
-          },
-        ],
-      },
-    },
-  ];
   const pendingItems = [
     { content: "Complete company profile", done: true },
     { content: "Create cost center/branch", done: true },
@@ -140,16 +45,7 @@ const PayrollHome = () => {
     { content: "Create Wallet", done: false },
     { content: "Run Payroll", done: false },
   ];
-  const chartFilters = [
-    { id: "1", name: "Net Income" },
-    { id: "2", name: "Gross Income" },
-    { id: "3", name: "Pension" },
-    { id: "4", name: "Employees Taxes" },
-    { id: "5", name: "Total Deductions" },
-    { id: "6", name: "Total Allowances" },
-  ];
-  const [currentChart, setCurrentChart] = useState("line-chart");
-  const [active, setActive] = useState("gross income");
+
   const [showItems, setShowItems] = useState(false);
 
   return (

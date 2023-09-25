@@ -1,4 +1,4 @@
-import { Select, Skeleton } from "antd";
+import { DatePicker, Select, Skeleton } from "antd";
 import { LineChart } from "components/charts/LineChart";
 import { ChartSwitcher } from "components/controls/ChartSwitcher";
 
@@ -29,14 +29,11 @@ export const LoanInsightsCard = () => {
           }}
         />
         <div>
-          <Select
-            value={year}
-            placeholder="Year"
-            onSelect={(val: string) => setYear(val)}
-            options={["2023", "2022", "2021"].map((item) => ({
-              label: item,
-              value: item,
-            }))}
+          <DatePicker
+            picker="year"
+            className="w-full"
+            placeholder="Select Year"
+            onSelect={(val) => setYear(val.format("YYYY"))}
           />
         </div>
       </div>
