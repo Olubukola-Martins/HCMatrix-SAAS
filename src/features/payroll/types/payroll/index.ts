@@ -1,3 +1,9 @@
+import {
+  TPayrollAnalyticsItem,
+  TPayrollGraphAnalyticsItem,
+  TPayrollGraphAnalyticsItemType,
+  TPayrollGraphTabItem,
+} from "./analytics";
 import { TEmployeesInPayrollData } from "./employee/employeesInPayroll";
 import { TSingleEmployeePayroll } from "./employee/singleEmployeePayroll";
 import { TSinglePayroll } from "./singlePayroll";
@@ -7,6 +13,10 @@ export {
   type TSingleEmployeePayroll,
   type TEmployeesInPayrollData,
   type TPayrollListData,
+  type TPayrollGraphAnalyticsItemType,
+  type TPayrollGraphAnalyticsItem,
+  type TPayrollAnalyticsItem,
+  type TPayrollGraphTabItem,
 };
 
 interface TPayrollListData {

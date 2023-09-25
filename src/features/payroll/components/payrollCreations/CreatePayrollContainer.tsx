@@ -650,6 +650,7 @@ const CreatePayrollContainer: React.FC<{
       />
       <RunPayroll
         payrollId={payroll?.id}
+        allowDisbursement={payroll?.scheme?.allowDisbursement}
         handleClose={() => clearAction()}
         open={action === "run-payroll"}
       />
