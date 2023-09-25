@@ -17,6 +17,8 @@ export const createDepartment = async (props: ICreateDepProps) => {
   const data: any = {
     name: props.name,
     email: props.email,
+    departmentHeadId: props?.departmentHeadId,
+    parentDepartmentId: props?.parentDepartmentId,
   };
 
   if (props.departmentHeadId) data.departmentHeadId = props.departmentHeadId;
