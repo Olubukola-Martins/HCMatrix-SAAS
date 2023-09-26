@@ -1,4 +1,5 @@
 import { Rule } from "antd/lib/form";
+import moment, { Moment } from "moment";
 
 export const generalValidationRules: Rule[] = [
   { required: true, message: "Field is required!" },
@@ -71,6 +72,20 @@ export const passwordValidationRules: Rule[] = [
   },
 ];
 
+export const dateHasToBeGreaterThanDayRule: Rule = {
+  validator: async (rule, value) => {
+    const isDateGreaterThanCurrentDay = (date: Moment) => {
+      const currentDate = moment();
+      if (!date) return;
+      return date.isAfter(currentDate, "day"); // Check if selected date is greater than the current day
+    };
+    if (!isDateGreaterThanCurrentDay(value)) {
+      throw new Error("Please select a date greater than the current day");
+    }
+
+    return true;
+  },
+};
 export const urlValidationRule: Rule = {
   validator: async (rule, value) => {
     let paswd = /^(https?:\/\/)?([\da-z.-]+)\.([a-z.]{2,6})([/\w .-]*)*\/?$/;

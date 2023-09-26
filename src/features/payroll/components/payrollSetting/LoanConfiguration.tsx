@@ -18,10 +18,12 @@ const LoanConfiguration: React.FC<{
           onChange={(value) => {
             handleLoanActivation(value);
           }}
+          title="Toggling switch will activate or deactivate loan"
         />
       </div>
       <p className="text-sm pt-2">
-        Select the payroll schemes that will be eligible for loan
+        You can activate loan and select the payroll schemes that will be
+        eligible for loan
       </p>
 
       {loanActivation && (

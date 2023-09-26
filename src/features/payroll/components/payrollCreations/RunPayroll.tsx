@@ -1,4 +1,4 @@
-import { DatePicker, Form,  Modal } from "antd";
+import { DatePicker, Form, Modal } from "antd";
 import { AppButton } from "components/button/AppButton";
 import React from "react";
 import { IModalProps } from "types";
@@ -9,15 +9,18 @@ import { QUERY_KEY_FOR_SINGLE_PAYROLL } from "features/payroll/hooks/payroll/use
 import { DEFAULT_DATE_FORMAT } from "constants/dateFormats";
 import { Moment } from "moment";
 import moment from "moment";
+import { dateHasToBeGreaterThanDayRule } from "utils/formHelpers/validation";
 
 interface IProps extends IModalProps {
   payrollId?: number;
+  allowDisbursement?: boolean;
 }
 
 export const RunPayroll: React.FC<IProps> = ({
   open,
   handleClose,
   payrollId,
+  allowDisbursement,
 }) => {
   const queryClient = useQueryClient();
 
@@ -31,7 +34,9 @@ export const RunPayroll: React.FC<IProps> = ({
         data: {
           id: payrollId,
           body: {
-            disbursementDate: data.disbursementDate.format(DEFAULT_DATE_FORMAT),
+            disbursementDate: data.disbursementDate
+              ? data.disbursementDate.format(DEFAULT_DATE_FORMAT)
+              : undefined,
           },
         },
       },
@@ -73,33 +78,32 @@ export const RunPayroll: React.FC<IProps> = ({
         onFinish={handleRunPayroll}
         requiredMark={false}
       >
-        <Form.Item
-          name="disbursementDate"
-          label="Enter Day for Disbursement Date"
-          rules={[
-            {
-              required: true,
-              validator: async (rule, value) => {
-                const isDateGreaterThanCurrentDay = (date: Moment) => {
-                  const currentDate = moment();
-                  return date.isAfter(currentDate, "day"); // Check if selected date is greater than the current day
-                };
-                if (!isDateGreaterThanCurrentDay(value)) {
-                  throw new Error(
-                    "Please select a date greater than the current day"
-                  );
-                }
-
-                return true;
+        <span className="text-base font-semibold block pb-4">
+          Are you sure you want to run payroll?
+        </span>
+        {allowDisbursement && (
+          <Form.Item
+            name="disbursementDate"
+            label="Enter Day for Disbursement Date"
+            rules={[
+              {
+                required: true,
               },
-            },
-          ]}
-        >
-          <DatePicker />
-        </Form.Item>
+              dateHasToBeGreaterThanDayRule,
+            ]}
+          >
+            <DatePicker className="w-full" />
+          </Form.Item>
+        )}
 
-        <div className="flex justify-end">
-          <AppButton type="submit" isLoading={isLoading} />
+        <div className="flex justify-end gap-4">
+          <AppButton
+            type="button"
+            label="Cancel"
+            variant="transparent"
+            handleClick={() => handleClose()}
+          />
+          <AppButton type="submit" label="Continue" isLoading={isLoading} />
         </div>
       </Form>
     </Modal>
