@@ -1,5 +1,7 @@
 import { Link } from "react-router-dom";
-import { TableProps, TablePaginationConfig, Tooltip } from "antd";
+import { TablePaginationConfig, Tooltip, Pagination } from "antd";
+import type { PaginationProps } from "antd";
+
 import moment from "moment";
 import { appRoutes } from "config/router/paths";
 import { TRole } from "../types";
@@ -8,7 +10,7 @@ interface IProps {
   data: TRole[];
   loading: boolean;
   pagination?: TablePaginationConfig;
-  onChange: TableProps<TRole>["onChange"];
+  onChange: PaginationProps["onChange"];
 }
 
 export const RolesGridView = ({
@@ -24,9 +26,9 @@ export const RolesGridView = ({
           <RoleBox key={item.id} data={item} />
         ))}
       </div>
-      {/* <div className="mt-4 flex justify-end">
+      <div className="mt-4 flex justify-end">
         <Pagination {...pagination} onChange={onChange} size="small" />
-      </div> */}
+      </div>
     </div>
   );
 };

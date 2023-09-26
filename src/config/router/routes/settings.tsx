@@ -19,8 +19,21 @@ import CreateWorklow from "features/core/workflows/pages/CreateWorkflow";
 import EditWorkflow from "features/core/workflows/pages/EditWorkflow";
 import Holidays from "features/core/holidays/pages/Holidays";
 import ResignationSettingsPage from "features/core/policies/pages/ResignationSettingsPage";
+import ProjectsPage from "features/core/projects/pages/ProjectsPage";
+import SingleProjectPage from "features/core/projects/pages/SingleProjectPage";
 
 export const settingRoutes: TRouteData[] = [
+  {
+    element: <ProjectsPage />,
+    path: appRoutes.projectSettings,
+    isSearchable: true,
+    title: "Project Management",
+  },
+  {
+    element: <SingleProjectPage />,
+    path: appRoutes.singleProject().format,
+    isSearchable: false,
+  },
   {
     element: <GeneralCompanySettings />,
     path: appRoutes.settings,

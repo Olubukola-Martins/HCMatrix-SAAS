@@ -15,3 +15,6 @@ export const DATE_FORMATS = [
   // { label: "YYYY MMM. D", value: "YYYY MMM. D" },
   // Add more date formats here
 ];
+
+export const DEFAULT_DATE_FORMAT = DATE_FORMATS[0].value;
+export const DEFAULT_TIME_FORMAT = "HH:mm:ss";

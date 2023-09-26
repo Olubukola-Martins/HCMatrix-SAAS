@@ -1,4 +1,4 @@
-type TRouteDataCategory = "doesnt-require-authentication";
+export type TRouteDataCategory = "doesnt-require-authentication";
 
 export type TRouteData = {
   path: string;

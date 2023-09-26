@@ -1,4 +1,4 @@
-export const getEmployeeFullName = (employee: {
+export const getEmployeeFullName = (employee?: {
   firstName: string;
   lastName: string;
-}) => `${employee.firstName} ${employee.lastName}`;
+}) => (employee ? `${employee.firstName} ${employee.lastName}` : `No Name`);

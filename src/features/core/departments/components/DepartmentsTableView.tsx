@@ -1,6 +1,7 @@
 import { Table } from "antd";
 import { ColumnsType, TablePaginationConfig, TableProps } from "antd/lib/table";
 import { TDepartment } from "../types";
+import { getEmployeeFullName } from "features/core/employees/utils/getEmployeeFullName";
 
 interface IProps {
   departments: TDepartment[];
@@ -32,11 +33,23 @@ export const DepartmentsTableView = ({
       title: "Department Head",
       dataIndex: "departmentHeadId",
       key: "departmentHeadId",
+      render: (_, item) => (
+        <span className="capitalize">
+          {item?.departmentHead
+            ? getEmployeeFullName(item?.departmentHead)
+            : ""}
+        </span>
+      ),
     },
     {
       title: "Parent Department",
       dataIndex: "parentDepartmentId",
       key: "parentDepartmentId",
+      render: (_, item) => (
+        <span className="capitalize">
+          {item?.parentDepartment ? item.parentDepartment.name : ""}
+        </span>
+      ),
     },
     {
       title: "Employee Count",

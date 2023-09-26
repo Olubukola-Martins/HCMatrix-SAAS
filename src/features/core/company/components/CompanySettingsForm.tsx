@@ -28,6 +28,7 @@ import {
   emailValidationRulesOp,
   generalValidationRules,
 } from "utils/formHelpers/validation";
+import { CURRENCY_OPTIONS } from "constants/currencies";
 
 const parentCompStyle = "grid md:grid-cols-2 border-0 border-b gap-4 py-2";
 const compStyle = "flex flex-col gap-2 items-start";
@@ -77,6 +78,10 @@ const CompanySettingsForm = () => {
           hidePhoneNumber: !!data.hidePhoneNumber,
           hideWorkAnniversary: !!data.hideWorkAnniversary,
         },
+        currencySettings: {
+          showCurrencySymbol: !!data.showCurrencySymbol,
+          baseCurrency: data.baseCurrency,
+        },
       },
       {
         onError: (err: any) => {
@@ -116,6 +121,11 @@ const CompanySettingsForm = () => {
         timezone: data.locationSettings.timezone,
         dateFormat: data.dateAndTimeSettings.dateFormat,
         timeFormat: data.dateAndTimeSettings.timeFormat,
+        hideBirthday: data.employeeSettings.hideBirthday,
+        hidePhoneNumber: data.employeeSettings.hidePhoneNumber,
+        hideWorkAnniversary: data.employeeSettings.hideWorkAnniversary,
+        baseCurrency: data.currencySettings?.baseCurrency,
+        showCurrencySymbol: data.currencySettings?.showCurrencySymbol,
         modifyUsersProfile: [
           data.profilePhotoSettings.modifyUsersProfile.administrator
             ? "administrator"
@@ -124,7 +134,6 @@ const CompanySettingsForm = () => {
             ? "employee"
             : "",
         ].filter((item) => item !== ""),
-        enableChatFeature: true,
         notificationSettings: [
           data.notificationSettings.email ? "email" : "",
           data.notificationSettings.inApp ? "inApp" : "",
@@ -275,18 +284,6 @@ const CompanySettingsForm = () => {
                 />
               </Form.Item>
             </div>
-
-            <div className={compStyle}>
-              <Typography.Title level={5}>Chat Settings</Typography.Title>
-              <Form.Item
-                labelCol={{ span: 24 }}
-                label="Would you like to enable the chat feature ?"
-                name={`enableChatFeature`}
-                className="w-3/4"
-              >
-                <Switch unCheckedChildren="No" checkedChildren="Yes" />
-              </Form.Item>
-            </div>
           </div>
           {/* 5*/}
           <div className={parentCompStyle}>
@@ -347,6 +344,34 @@ const CompanySettingsForm = () => {
                 checkedChildren="Yes"
                 defaultChecked={
                   companyParams?.value.employeeSettings.hideWorkAnniversary
+                }
+              />
+            </Form.Item>
+          </div>
+          {/* 7*/}
+          <div className={parentCompStyle}>
+            <Typography.Title level={5} className="mb-4 md:col-span-2">
+              Currency Settings
+            </Typography.Title>
+            <Form.Item
+              label="What is your base currency ?"
+              name={`baseCurrency`}
+              colon={false}
+              className="w-3/4"
+            >
+              <Select placeholder="Base Currency" options={CURRENCY_OPTIONS} />
+            </Form.Item>
+            <Form.Item
+              label="Do you want to show currency symbol ?"
+              name={`showCurrencySymbol`}
+              colon={false}
+              className="w-3/4"
+            >
+              <Switch
+                unCheckedChildren="No"
+                checkedChildren="Yes"
+                defaultChecked={
+                  companyParams?.value?.currencySettings?.showCurrencySymbol
                 }
               />
             </Form.Item>

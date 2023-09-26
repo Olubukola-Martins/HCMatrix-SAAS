@@ -17,7 +17,10 @@ import {
 } from "../constants";
 
 export const CreateAdvancedStage: React.FC<{
-  stage: OptionalTypeParams<TStage, "entityId" | "type"> & {
+  stage: OptionalTypeParams<
+    TStage,
+    "entityId" | "type" | "enableTwoFactorAuth"
+  > & {
     editable: boolean;
   };
   handleFinish: (data: any) => void;
@@ -33,6 +36,7 @@ export const CreateAdvancedStage: React.FC<{
         name: stage.name,
         type: stage.type,
         entityId: stage.entityId,
+        enableTwoFactorAuth: stage.enableTwoFactorAuth,
       });
     }
   }, [form, stage]);
@@ -52,6 +56,19 @@ export const CreateAdvancedStage: React.FC<{
             rules={textInputValidationRules}
           >
             <Input placeholder="Stage name" />
+          </Form.Item>
+          <Form.Item
+            name={"enableTwoFactorAuth"}
+            label={`Enable 2FA`}
+            rules={generalValidationRules}
+          >
+            <Select
+              placeholder="Enable 2FA"
+              options={[
+                { label: "Yes", value: true },
+                { label: "No", value: false },
+              ]}
+            />
           </Form.Item>
           <Form.Item
             name={"type"}

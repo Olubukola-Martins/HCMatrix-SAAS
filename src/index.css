@@ -258,7 +258,8 @@ textarea.ant-input,
 textarea.ant-input,
 .ant-picker,
 .ant-select-dropdown {
-  background: var(--background) !important;
+  /* commented out so disabled form items can have proper effect */
+  /* background: var(--background) !important; */
 }
 
 /* enable disabled date inputs to be grayed out as intended */
@@ -276,6 +277,15 @@ textarea.ant-input,
   opacity: 1;
 }
 
+.ant-select[disabled],
+.ant-select-disabled {
+  color: rgba(0, 0, 0, 0.25);
+  background-color: green !important;
+  border-color: #d9d9d9 !important;
+  box-shadow: none;
+  cursor: not-allowed;
+  opacity: 1;
+}
 .ant-input[disabled] {
   color: rgba(0, 0, 0, 0.25);
   background-color: #f5f5f5 !important;
@@ -374,6 +384,17 @@ textarea.ant-input,
 
 .drawerBg .ant-drawer-wrapper-body {
   background: var(--card);
+}
+
+/* antd customization for menu horizontal sub nav */
+.ant-menu-horizontal > .ant-menu-item a:hover {
+  color: var(--caramel);
+}
+.ant-menu-item-active {
+  color: var(--caramel);
+}
+.ant-menu-horizontal:not(.ant-menu-dark) > .ant-menu-item:hover:after {
+  border-color: var(--caramel);
 }
 
 /* Accordion */

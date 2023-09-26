@@ -1,4 +1,4 @@
-import { Form, Input, Select } from "antd";
+import { Form, Input } from "antd";
 import { useContext } from "react";
 import { useQueryClient } from "react-query";
 import { BeatLoader } from "react-spinners";
@@ -11,6 +11,8 @@ import { openNotification } from "utils/notifications";
 import { useCreateDepartment } from "../hooks/useCreateDepartment";
 import { ICreateDepProps } from "../types";
 import { useApiAuth } from "hooks/useApiAuth";
+import { FormEmployeeInput } from "features/core/employees/components/FormEmployeeInput";
+import { FormDepartmentInput } from "./FormDepartmentInput";
 
 const AddDepartmentForm = ({ handleClose }: { handleClose: Function }) => {
   const queryClient = useQueryClient();
@@ -79,12 +81,22 @@ const AddDepartmentForm = ({ handleClose }: { handleClose: Function }) => {
         <Input placeholder="john@gmail.com" />
       </Form.Item>
 
-      <Form.Item name="departmentHeadId" label="Department Head (Optional)">
-        <Select placeholder="Department head" options={[]} />
-      </Form.Item>
-      <Form.Item name="parentDepartmentId" label="Parent Department (Optional)">
-        <Select placeholder="Parent Department" options={[]} />
-      </Form.Item>
+      <FormEmployeeInput
+        Form={Form}
+        control={{
+          name: "departmentHeadId",
+          label: "Department Head (Optional)",
+        }}
+        optional
+      />
+      <FormDepartmentInput
+        Form={Form}
+        control={{
+          name: "parentDepartmentId",
+          label: "Parent Department (Optional)",
+        }}
+        optional
+      />
 
       <button className="button" type="submit">
         {isLoading ? <BeatLoader color="#fff" /> : "Submit"}

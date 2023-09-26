@@ -1,6 +1,7 @@
 import React from "react";
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
 import { Pie } from "react-chartjs-2";
+import { IChartProps } from "./types";
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
@@ -18,19 +19,14 @@ export const options = {
   },
 };
 
-interface IProps {
-  labels: string[];
-  data: number[];
-  axis?: "x" | "y";
-  bgColors?: string | string[];
-  dataEntityLabel?: string;
-}
-export const PieChart: React.FC<IProps> = ({
+export const PieChart: React.FC<IChartProps> = ({
   labels,
   data = [],
   axis = "x",
   bgColors = "#1B59F8CC",
   dataEntityLabel = "items",
+  useDataSet = false,
+  dataSets = [],
 }) => {
   const dataSrc = {
     labels,
