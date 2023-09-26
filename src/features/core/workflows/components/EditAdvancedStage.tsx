@@ -42,6 +42,7 @@ export const EditAdvancedStage: React.FC<{
       entityId: stage.entityId,
       condition: stage.condition,
       count: stage.count,
+      enableTwoFactorAuth: stage.enableTwoFactorAuth,
     });
     setStagingType(stage.type);
     setStagingCondition(stage.condition);
@@ -55,6 +56,7 @@ export const EditAdvancedStage: React.FC<{
       entityId: data.entityId,
       condition: data.condition,
       count: data.count,
+      enableTwoFactorAuth: data.enableTwoFactorAuth,
     };
 
     mutate(
@@ -141,6 +143,19 @@ export const EditAdvancedStage: React.FC<{
             rules={textInputValidationRules}
           >
             <Input placeholder="Stage name" />
+          </Form.Item>
+          <Form.Item
+            name={"enableTwoFactorAuth"}
+            label={`Enable 2FA`}
+            rules={generalValidationRules}
+          >
+            <Select
+              placeholder="Enable 2FA"
+              options={[
+                { label: "Yes", value: true },
+                { label: "No", value: false },
+              ]}
+            />
           </Form.Item>
           <Form.Item
             name={"type"}

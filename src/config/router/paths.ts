@@ -1,6 +1,10 @@
 // These object helps to ensure that the routes in the application are not manually hardcorded and littered everywhere
 
+
 import { format } from "path";
+
+import { TPayrollSchemeType } from "features/payroll/types/payrollSchemes";
+
 
 // rather they are managed by a single file
 export const appRoutes = {
@@ -18,6 +22,11 @@ export const appRoutes = {
   companyOrganogram: `/company-organogram`,
   // setting routes
   settings: "/settings",
+  projectSettings: "/settings/projects",
+  singleProject: (id?: number) => ({
+    format: `/settings/projects/:id`,
+    path: `/settings/projects/${id}`,
+  }),
   companyDetailsSettings: `/settings/company-details`,
   locationSettings: `/settings/locations`,
   singleLocation: (id?: number) => ({
@@ -62,8 +71,69 @@ export const appRoutes = {
     path: `/settings/workflows/${id}`,
   }),
   payrollSettings: `/settings/payroll`,
+  payrollCostCentres: `/settings/payroll/cost-centres`,
+  singleCostCentre: (id?: number) => ({
+    format: `/settings/payroll/cost-centres/:id`,
+    path: `/settings/payroll/cost-centres/${id}`,
+  }),
+  payrollTaxPolicies: `/settings/payroll/tax-policies`,
+  createTaxPolicy: `/settings/payroll/create-tax-policy`,
+  payrollExchangeRates: `/settings/payroll/exhange-rates`,
+  payrollSchemes: `/settings/payroll/schemes`,
+  setupGradePayrollScheme: `/settings/payroll/schemes/grade/set-up/`,
+  setupDirectSalaryPayrollScheme: `/settings/payroll/schemes/direct-salary/set-up/`,
+  setupProjectPayrollScheme: `/settings/payroll/schemes/project/set-up/`,
+  setupSingleProjectPayrollSchemeWithoutExistingScheme: (props?: {
+    projectId?: number;
+  }) => {
+    return {
+      format: `/settings/payroll/schemes/project/set-up/:projectId/scheme`,
+      path: `/settings/payroll/schemes/project/set-up/${props?.projectId}/scheme`,
+    };
+  },
+  setupSingleProjectPayrollScheme: (props?: {
+    projectId?: number;
+    schemeId?: number;
+  }) => {
+    return {
+      format: `/settings/payroll/schemes/project/set-up/:projectId/scheme/:schemeId`,
+      path: `/settings/payroll/schemes/project/set-up/${
+        props?.projectId
+      }/scheme/${props?.schemeId ?? ""}`,
+    };
+  },
+  setupWagesPayrollScheme: `/settings/payroll/schemes/wages/set-up/`,
+  setupDailyWagesPayrollScheme: `/settings/payroll/schemes/wages/set-up/daily`,
+
+  setupMonthlyWagesPayrollScheme: `/settings/payroll/schemes/wages/set-up/monthly`,
+  setupWagesPayrollSchemeById: ({
+    frequency,
+    id,
+  }: {
+    frequency: "monthly" | "daily";
+    id?: number;
+  }) => ({
+    format: `/settings/payroll/schemes/wages/set-up/${frequency}/:id`,
+    path: `/settings/payroll/schemes/wages/set-up/${frequency}/${id}`,
+  }),
+  listOfPayrolls: `/settings/payroll/list`,
+  singlePayroll: ({
+    scheme,
+    id,
+  }: {
+    scheme?: TPayrollSchemeType;
+    id?: number;
+  } = {}) => ({
+    format: `/settings/scheme/:scheme/payroll/:id`,
+    path: `/settings/scheme/${scheme}/payroll/${id}`,
+  }),
   payrollPolicySettings: `/settings/probation_policy_PENDING`,
   payGradeSettings: `/settings/grades`,
+  payGradeAndCategorySettings: `/settings/grades-and-settings`,
+  taxAuthorities: `/settings/payroll/tax-authorities`,
+  itfAuthorities: `/settings/payroll/itf-authorities`,
+  nsitfAuthorities: `/settings/payroll/nsitf-authorities`,
+  pensionAdministrators: `/settings/payroll/pension-adminsistrators`,
   gradeCategorySettings: `/settings/grade_categories`,
   probationPolicySettings: `/settings/probation_policy`,
   resignationPolicySettings: `/settings/resignation_policy`,
@@ -81,11 +151,33 @@ export const appRoutes = {
   payrollCycle: `/payroll/cycle`,
   payrollScheme: `/payroll/scheme`,
   payrollComparison: `/payroll/comparison`,
-  createPayroll: `/payroll/create`,
+  createOfficePayroll: `/payroll/create/office`,
+  createDirectSalaryPayroll: `/payroll/create/direct-salary`,
+  createWagesPayroll: `/payroll/create/wage`,
+  createProjectPayroll: `/payroll/create/project`,
   payrollReport: `/payroll/report`,
+  createPayrollReportTemplate: `/payroll/report/create/template`,
+  editPayrollReportTemplate: (id?: number) => ({
+    format: `/payroll/report/edit/template/:id`,
+    path: `/payroll/report/edit/template/${id}`,
+  }),
+  viewPayrollReportTemplate: (id?: number) => ({
+    format: `/payroll/report/view/template/:id`,
+    path: `/payroll/report/view/template/${id}`,
+  }),
+  addPayrollReport: `/payroll/report/create`,
   payslips: `/payroll/payslip`,
   employeePayslips: `/payroll/employee-payslip`,
+  payslipTransactions: `/payslip-transactions`,
   createPayslipTemplate: `/payroll/create-payslip-template`,
+  editPayslipTemplate: (id?: number) => ({
+    format: `/payroll/edit-payslip-template/:id`,
+    path: `/payroll/edit-payslip-template/${id}`,
+  }),
+  viewPayslipTemplate: (id?: number) => ({
+    format: `/payroll/view-payslip-template/:id`,
+    path: `/payroll/view-payslip-template/${id}`,
+  }),
 
   // admin routes
   systemAdminLogin: `/system-administration-login`,
@@ -93,6 +185,7 @@ export const appRoutes = {
 
   // self service routes
   selfServiceHome: `/self-service/home`,
+  selfServiceTasks: `/self-service/tasks`,
   selfServiceRequisition: `/self-service/requisition`,
   selfServiceReimbursement: `/self-service/reimbursements`,
   selfServiceReimbursementSetting: `/self-service/reimbursement-setting`,

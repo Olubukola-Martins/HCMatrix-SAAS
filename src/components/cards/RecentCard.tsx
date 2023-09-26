@@ -1,6 +1,6 @@
 import React from "react";
 
-import { Empty, Skeleton } from "antd";
+import { Dropdown, Empty, Skeleton } from "antd";
 
 export const requestStyle =
   "flex items-center justify-between cursor-pointer group border-b pb-2";
@@ -42,9 +42,7 @@ export const RecentCard: React.FC<IProps> = ({
             data.map((item, i) => (
               <div className={requestStyle} key={i}>
                 <div className="flex flex-col gap-1">
-                  <h5 className="group-hover:text-caramel font-medium">
-                    {item.title}
-                  </h5>
+                  <h5 className="font-medium">{item.title}</h5>
                   {item?.features?.map((item, i) => (
                     <span className="text-xs" key={i}>
                       {item.name}: {item.value}
@@ -52,7 +50,30 @@ export const RecentCard: React.FC<IProps> = ({
                   ))}
                 </div>
                 {item.secondaryCol?.type === "options" && (
-                  <i className="ri-more-fill text-lg"></i>
+                  <Dropdown
+                    getPopupContainer={(triggerNode) =>
+                      triggerNode.parentElement as HTMLElement
+                    }
+                    className="overflow-hidden"
+                    overlay={
+                      <div className="bg-mainBg flex flex-col gap-2 rounded shadow-sm py-2 relative -top-2  px-2 text-xs border font-medium">
+                        {item.secondaryCol.options.map((option, i) => (
+                          <div
+                            key={i}
+                            className="cursor-pointer "
+                            onClick={option.onClick}
+                          >
+                            <span className="hover:text-caramel">
+                              {option.name}
+                            </span>
+                          </div>
+                        ))}
+                      </div>
+                    }
+                    trigger={["click"]}
+                  >
+                    <i className="ri-more-fill text-base" />
+                  </Dropdown>
                 )}
                 {item.secondaryCol?.type === "text" && (
                   <span className="text-xs">{item.secondaryCol.text}</span>

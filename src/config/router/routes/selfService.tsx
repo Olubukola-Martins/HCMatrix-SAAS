@@ -6,7 +6,6 @@ import Reimbursements from "features/self-service/features/reimbursement/pages/R
 import Assets from "features/self-service/features/assets/pages/Assets";
 import AssetDetails from "features/self-service/features/assets/pages/AssetDetails";
 import LoanHome from "features/self-service/features/loan/pages/LoanHome";
-import LoanRequest from "features/self-service/features/loan/pages/LoanRequest";
 import LoanPolicies from "features/self-service/features/loan/pages/LoanPolicies";
 import VehicleBookingHome from "features/self-service/features/vehicle-booking/pages/VehicleBookingHome";
 import VehicleDetails from "features/self-service/features/vehicle-booking/pages/VehicleDetails";
@@ -40,6 +39,7 @@ import AssetRequestSettingsPage from "features/self-service/features/assets/page
 import TravelRequests from "features/self-service/features/travels/pages/TravelRequests";
 import TravelRequestsSettingPage from "features/self-service/features/travels/pages/TravelRequestsSettingPage";
 import DocumentsPage from "features/self-service/features/documents/pages/DocumentsPage";
+import TasksPage from "features/self-service/features/tasks/pages/TasksPage";
 
 // TO DO: This lazy loading might not be needed consider rethinking this, so just temporary
 const Requisition = lazy(
@@ -52,6 +52,13 @@ export const selfServiceRoutes: TRouteData[] = [
     path: appRoutes.selfServiceHome,
     isSearchable: true,
     title: "My Self Service",
+  },
+  {
+    element: <TasksPage />,
+    path: appRoutes.selfServiceTasks,
+    isSearchable: true,
+    title: "Tasks",
+    isPrimaryFeature: true,
   },
   {
     element: <Requisition />,
@@ -186,12 +193,7 @@ export const selfServiceRoutes: TRouteData[] = [
     title: "Loans",
     isPrimaryFeature: true,
   },
-  {
-    element: <LoanRequest />,
-    path: appRoutes.loanRequests,
-    isSearchable: true,
-    title: "Loan Requests",
-  },
+
   {
     element: <LoanPolicies />,
     path: appRoutes.loanPolicies,

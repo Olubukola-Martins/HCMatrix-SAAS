@@ -3,14 +3,18 @@ import { useApiAuth } from "hooks/useApiAuth";
 import { useDebounce } from "hooks/useDebounce";
 
 import React, { useState } from "react";
-import { generalValidationRules } from "utils/formHelpers/validation";
+import {
+  generalValidationRules,
+  generalValidationRulesOp,
+} from "utils/formHelpers/validation";
 import { useFetchDepartments } from "../hooks/useFetchDepartments";
 
 export const FormDepartmentInput: React.FC<{
   Form: any;
   showLabel?: boolean;
   control?: { label: string; name: string; multiple?: boolean };
-}> = ({ Form, showLabel = true, control }) => {
+  optional?: boolean;
+}> = ({ Form, showLabel = true, control, optional = false }) => {
   const { token, companyId } = useApiAuth();
 
   const [searchTerm, setSearchTerm] = useState<string>("");
@@ -33,7 +37,7 @@ export const FormDepartmentInput: React.FC<{
     <Form.Item
       name={control?.name ?? "departmentId"}
       label={showLabel ? control?.label ?? "Department" : null}
-      rules={generalValidationRules}
+      rules={optional ? generalValidationRulesOp : generalValidationRules}
     >
       <Select
         mode={control?.multiple ? "multiple" : undefined}

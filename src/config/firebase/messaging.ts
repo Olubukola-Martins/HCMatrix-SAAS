@@ -9,19 +9,22 @@ const VAPID_KEY =
 export const APP_AUTHORIZATION_TOKEN_FOR_FCM_TOKEN_ENDPOINT =
   "6e964d49fbb3a02748ee80e5b42346d3cedd460cda2c3292c946607b5b8a953e";
 const handleFCMToken = async (props: {
-  employeeId: number;
   fireBaseToken: string;
+  auth: {
+    companyId: number;
+    token: string;
+  };
 }) => {
   const url = `${MICROSERVICE_ENDPOINTS.NOTIFICATION}/firebase/fcm-token`;
   const config = {
     headers: {
       Accept: "application/json",
-      Authorization: `Bearer ${APP_AUTHORIZATION_TOKEN_FOR_FCM_TOKEN_ENDPOINT}`,
+      Authorization: `Bearer ${props.auth.token}`,
+      "x-company-id": props.auth.companyId,
     },
   };
   const data = {
     token: props.fireBaseToken,
-    employeeId: props.employeeId,
   };
 
   const response = await axios.post(url, data, config);
@@ -31,24 +34,32 @@ const handleFCMToken = async (props: {
 };
 
 export const requestNotificationsPermission = async ({
+  companyId,
+  token,
   employeeId,
 }: {
+  companyId: number;
   employeeId: number;
+  token: string;
 }) => {
   console.log("Requesting Notifications permission");
   const permission = await Notification.requestPermission();
 
   if (permission === "granted") {
-    await saveMessagingDeviceToken({ employeeId });
+    await saveMessagingDeviceToken({ companyId, token, employeeId });
   } else {
     console.log("Unable to get permission to notify");
     // TO DO: Propogate message to ui to inform user
   }
 };
 export const saveMessagingDeviceToken = async ({
+  companyId,
+  token,
   employeeId,
 }: {
+  companyId: number;
   employeeId: number;
+  token: string;
 }) => {
   const msg = await messaging();
   if (!msg) {
@@ -62,7 +73,10 @@ export const saveMessagingDeviceToken = async ({
   if (fcmToken && msg) {
     console.log("Got FCM device token:", fcmToken);
     // make api call to send token and employeeId to backend
-    await handleFCMToken({ employeeId, fireBaseToken: fcmToken });
+    await handleFCMToken({
+      auth: { companyId, token },
+      fireBaseToken: fcmToken,
+    });
 
     onMessage(msg, (message) => {
       console.log(
@@ -85,6 +99,6 @@ export const saveMessagingDeviceToken = async ({
     });
   } else {
     console.log("Permission needed");
-    requestNotificationsPermission({ employeeId });
+    requestNotificationsPermission({ companyId, token, employeeId });
   }
 };

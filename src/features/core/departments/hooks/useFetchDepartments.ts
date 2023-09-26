@@ -37,12 +37,7 @@ export const getDepartments = async (
   const result = fetchedData.result;
 
   const data: TDepartment[] = result.map(
-    (item: any): TDepartment => ({
-      id: item.id,
-      name: item.name,
-      email: item.email,
-      employeeCount: item.employeeCount ?? 0,
-    })
+    (item: TDepartment): TDepartment => ({ ...item })
   );
 
   const ans = {
