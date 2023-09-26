@@ -45,3 +45,8 @@ export type TPayrollGraphAnalyticsItem4Waterfall = {
 };
 
 type ObjectItem = { [key: string]: number };
+
+export type TPayrollGraphAnalyticsFormattedData = {
+  labels: string[];
+  data: number[] | number[][];
+};

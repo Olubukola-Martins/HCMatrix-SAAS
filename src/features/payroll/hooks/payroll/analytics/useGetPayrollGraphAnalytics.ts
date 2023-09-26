@@ -50,7 +50,7 @@ const getData = async (props: {
 export const useGetPayrollGraphAnalytics = (props: IDataProps) => {
   const { token, companyId } = useApiAuth();
   const queryData = useQuery(
-    [QUERY_KEY_FOR_PAYROLL_GRAPH_ANALYTICS],
+    [QUERY_KEY_FOR_PAYROLL_GRAPH_ANALYTICS, props],
     () =>
       getData({
         auth: {

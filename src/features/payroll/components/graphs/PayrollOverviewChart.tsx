@@ -12,11 +12,14 @@ import { AreaChart } from "components/charts/AreaChart";
 import { RadarChart } from "components/charts/RadarChart";
 import { TPayrollGraphAnalyticsItemType } from "features/payroll/types/payroll";
 import { useGetPayrollGraphAnalytics } from "features/payroll/hooks/payroll/analytics/useGetPayrollGraphAnalytics";
+import { TPayrollGraphTabItem } from "features/payroll/types/payroll/analytics";
 import {
-  TPayrollGraphAnalyticsItem,
-  TPayrollGraphAnalyticsItem4Waterfall,
-  TPayrollGraphTabItem,
-} from "features/payroll/types/payroll/analytics";
+  parsePayrollGraphAnalyticsData,
+  selectPayrollGraphAnalyticsData,
+} from "features/payroll/utils/parsePayrollGraphData";
+import PayrollGraphsContainer from "./PayrollGraphsContainer";
+import moment from "moment";
+import { CURRENT_YEAR } from "constants/dateFormats";
 
 const CHART_ITEMS: TPayrollGraphAnalyticsItemType[] = [
   "bar-chart",
@@ -40,168 +43,22 @@ const PAYROLL_ITEMS: TPayrollGraphTabItem[] = [
 const PayrollOverviewChart = () => {
   const [selectedPayrollItem, setSelectedPayrollItem] =
     useState<TPayrollGraphTabItem>(PAYROLL_ITEMS[0]);
-  const [chartItem, seTPayrollGraphAnalyticsItemType] =
-    useState<TPayrollGraphAnalyticsItemType>(CHART_ITEMS[0]);
-  // TODO: Create a default date format
-  const [year, setYear] = useState<string>("2023");
+  const [chartItem, setChartItem] = useState<TPayrollGraphAnalyticsItemType>(
+    CHART_ITEMS[0]
+  );
+  // TODO: Create a default date that will use the current year
+
+  const [year, setYear] = useState<string>(CURRENT_YEAR);
   const { data, isLoading } = useGetPayrollGraphAnalytics({
     type: chartItem,
     year,
   });
-  type TParseData = {
-    labels: string[];
-    data: {
-      totalNetPay: number[] | number[][];
-      totalGrossPay: number[] | number[][];
-      totalTax: number[] | number[][];
-      totalPension: number[] | number[][];
-      totalAllowances: number[] | number[][];
-      totalDeductions: number[] | number[][];
-    };
-  };
-  const parseData = (): TParseData => {
-    let value: TParseData = {
-      labels: [],
-      data: {
-        totalNetPay: [],
-        totalGrossPay: [],
-        totalTax: [],
-        totalPension: [],
-        totalAllowances: [],
-        totalDeductions: [],
-      },
-    };
-    if (!data) return value;
-    if (chartItem === "waterfall-chart") {
-      value.labels = Object.keys(data as TPayrollGraphAnalyticsItem4Waterfall);
-      value.data.totalNetPay = Object.entries(
-        data as TPayrollGraphAnalyticsItem4Waterfall
-      ).map(([key, value]) => {
-        let ans: number[] = [];
-        Object.entries(value).forEach(([innerkey, innerVal]) =>
-          ans.push(innerVal.totalNetPay)
-        );
-        return ans;
-      });
-      value.data.totalGrossPay = Object.entries(
-        data as TPayrollGraphAnalyticsItem4Waterfall
-      ).map(([key, value]) => {
-        let ans: number[] = [];
-        Object.entries(value).forEach(([innerkey, innerVal]) =>
-          ans.push(innerVal.totalGrossPay)
-        );
-        return ans;
-      });
-      value.data.totalTax = Object.entries(
-        data as TPayrollGraphAnalyticsItem4Waterfall
-      ).map(([key, value]) => {
-        let ans: number[] = [];
-        Object.entries(value).forEach(([innerkey, innerVal]) =>
-          ans.push(innerVal.totalTax)
-        );
-        return ans;
-      });
-      value.data.totalPension = Object.entries(
-        data as TPayrollGraphAnalyticsItem4Waterfall
-      ).map(([key, value]) => {
-        let ans: number[] = [];
-        Object.entries(value).forEach(([innerkey, innerVal]) =>
-          ans.push(innerVal.totalPension)
-        );
-        return ans;
-      });
-      value.data.totalAllowances = Object.entries(
-        data as TPayrollGraphAnalyticsItem4Waterfall
-      ).map(([key, value]) => {
-        let ans: number[] = [];
-        Object.entries(value).forEach(([innerkey, innerVal]) =>
-          ans.push(innerVal.totalAllowances)
-        );
-        return ans;
-      });
-      value.data.totalDeductions = Object.entries(
-        data as TPayrollGraphAnalyticsItem4Waterfall
-      ).map(([key, value]) => {
-        let ans: number[] = [];
-        Object.entries(value).forEach(([innerkey, innerVal]) =>
-          ans.push(innerVal.totalDeductions)
-        );
-        return ans;
-      });
-    } else {
-      value.labels = Object.keys(data as TPayrollGraphAnalyticsItem);
-      value.data.totalNetPay = Object.entries(
-        data as TPayrollGraphAnalyticsItem
-      ).map(([key, value]) => {
-        return value.totalNetPay;
-      });
-      value.data.totalGrossPay = Object.entries(
-        data as TPayrollGraphAnalyticsItem
-      ).map(([key, value]) => {
-        return value.totalGrossPay;
-      });
-      value.data.totalTax = Object.entries(
-        data as TPayrollGraphAnalyticsItem
-      ).map(([key, value]) => {
-        return value.totalTax;
-      });
-      value.data.totalPension = Object.entries(
-        data as TPayrollGraphAnalyticsItem
-      ).map(([key, value]) => {
-        return value.totalPension;
-      });
-      value.data.totalAllowances = Object.entries(
-        data as TPayrollGraphAnalyticsItem
-      ).map(([key, value]) => {
-        return value.totalAllowances;
-      });
-      value.data.totalDeductions = Object.entries(
-        data as TPayrollGraphAnalyticsItem
-      ).map(([key, value]) => {
-        return value.totalDeductions;
-      });
-    }
-    return value;
-  };
 
-  const selectData = (
-    type: TPayrollGraphTabItem
-  ): { labels: string[]; data: number[] | number[][] } => {
-    const value: { labels: string[]; data: number[] | number[][] } = {
-      labels: [],
-      data: [],
-    };
-    switch (type) {
-      case "Net Pay":
-        value.data = parseData().data.totalNetPay;
-
-        break;
-      case "Gross Pay":
-        value.data = parseData().data.totalGrossPay;
-
-        break;
-      case "Tax":
-        value.data = parseData().data.totalTax;
-
-        break;
-      case "Pension":
-        value.data = parseData().data.totalPension;
-
-        break;
-      case "Total Allowances":
-        value.data = parseData().data.totalAllowances;
-
-        break;
-      case "Total Deductions":
-        value.data = parseData().data.totalDeductions;
-
-        break;
-
-      default:
-        break;
-    }
-    return value;
-  };
+  const parseAnalyticData = parsePayrollGraphAnalyticsData({ chartItem, data });
+  const analyticsData = selectPayrollGraphAnalyticsData(
+    parseAnalyticData,
+    selectedPayrollItem
+  );
   return (
     <div className="flex flex-col gap-4">
       {/* header */}
@@ -213,7 +70,7 @@ const PayrollOverviewChart = () => {
             <Select
               value={chartItem}
               onSelect={(val: TPayrollGraphAnalyticsItemType) =>
-                seTPayrollGraphAnalyticsItemType(val)
+                setChartItem(val)
               }
               options={CHART_ITEMS.map((item) => ({
                 value: item,
@@ -228,6 +85,7 @@ const PayrollOverviewChart = () => {
           </div>
           <div>
             <DatePicker
+              value={moment(year)}
               picker="year"
               className="w-full"
               placeholder="Select Year"
@@ -244,93 +102,12 @@ const PayrollOverviewChart = () => {
           setSelectedPayrollItem(key as TPayrollGraphTabItem)
         }
       />
-      <div className="h-72">
-        <Skeleton active paragraph={{ rows: 9 }} loading={isLoading}>
-          {chartItem === "spider-chart" && (
-            <div className=" w-2/3 mx-auto">
-              <RadarChart
-                data={selectData(selectedPayrollItem).data as number[]}
-                labels={selectData(selectedPayrollItem).labels}
-                dataEntityLabel="Amount"
-                bgColors={"#ff6647"}
-              />
-            </div>
-          )}
-          {chartItem === "line-chart" && (
-            <LineChart
-              data={selectData(selectedPayrollItem).data as number[]}
-              labels={selectData(selectedPayrollItem).labels}
-              dataEntityLabel="Amount"
-              bgColors={"#ff6647"}
-            />
-          )}
-          {chartItem === "area-graph" && (
-            <AreaChart
-              data={selectData(selectedPayrollItem).data as number[]}
-              labels={selectData(selectedPayrollItem).labels}
-              dataEntityLabel="Amount"
-              bgColors={"#ff6647"}
-            />
-          )}
-          {chartItem === "scatter-chart" && (
-            <ScatterChart
-              data={selectData(selectedPayrollItem).data as number[]}
-              labels={selectData(selectedPayrollItem).labels}
-              dataEntityLabel="Amount"
-              bgColors={"#ff6647"}
-            />
-          )}
-          {chartItem === "bar-chart" && (
-            <BarChart
-              data={selectData(selectedPayrollItem).data as number[]}
-              labels={selectData(selectedPayrollItem).labels}
-              dataEntityLabel="Amount"
-              bgColors={"#ff6647"}
-            />
-          )}
-          {chartItem === "histogram" && (
-            <Histogram
-              data={selectData(selectedPayrollItem).data as number[]}
-              labels={selectData(selectedPayrollItem).labels}
-              dataEntityLabel="Amount"
-              bgColors={selectData(selectedPayrollItem).labels.map(
-                (val) => `${generateHexColor(`${val}`)}`
-              )}
-            />
-          )}
-          {chartItem === "waterfall-chart" && (
-            <WaterFallChart
-              useDataSet
-              dataSets={[
-                // Object.values(data?.graphData.countsByMonth)
-                {
-                  data: selectData(selectedPayrollItem).data as number[][],
-                  label: "rec",
-                  borderColor: selectData(selectedPayrollItem).labels.map(
-                    (val) => `${generateHexColor(`${val}`)}80`
-                  ),
-                  backgroundColor: selectData(selectedPayrollItem).labels.map(
-                    (val) => `${generateHexColor(`${val}`)}`
-                  ),
-                },
-              ]}
-              labels={selectData(selectedPayrollItem).labels}
-              dataEntityLabel="Amount"
-              bgColors={"#ff6647"}
-            />
-          )}
-          {chartItem === "pie-chart" && (
-            <div className=" w-2/3 mx-auto">
-              <PieChart
-                data={selectData(selectedPayrollItem).data as number[]}
-                labels={selectData(selectedPayrollItem).labels}
-                dataEntityLabel="Amount"
-                bgColors={"#ff6647"}
-              />
-            </div>
-          )}
-        </Skeleton>
-      </div>
+      {/* container 4 graphs */}
+      <PayrollGraphsContainer
+        analyticsData={analyticsData}
+        chartItem={chartItem}
+        isLoading={isLoading}
+      />
     </div>
   );
 };
