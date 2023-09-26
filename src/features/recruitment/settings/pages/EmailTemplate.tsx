@@ -17,7 +17,7 @@ const EmailTemplate = () => {
 
   const { removeData } = useDeleteRecruitmentItem({
     queryKey: QUERY_KEY_FOR_EMAIL_TEMPLATE,
-    deleteEndpointUrl: "email-templates",
+    deleteEndpointUrl: "settings/email-templates",
   });
   const [openVariables, setOpenVariables] = useState(false);
 

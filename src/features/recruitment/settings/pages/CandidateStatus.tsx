@@ -26,7 +26,7 @@ const CandidateStatus = () => {
   const { mutate, isLoading: postLoading } = useCreateCandidateStatus();
   const { removeData } = useDeleteRecruitmentItem({
     queryKey: QUERY_KEY_FOR_CANDIDATE_STATUS,
-    deleteEndpointUrl: "application-statuses",
+    deleteEndpointUrl: "settings/application-statuses",
   });
   const { patchData } = usePatchRecruitmentItem({
     patchEndpointUrl: "application-statuses",
@@ -67,7 +67,6 @@ const CandidateStatus = () => {
               description: "Application successfully added!",
             });
             queryClient.invalidateQueries([QUERY_KEY_FOR_CANDIDATE_STATUS]);
-
           },
         }
       );
@@ -172,7 +171,7 @@ const CandidateStatus = () => {
                                 noStyle
                                 valuePropName="checked"
                               >
-                                <Switch  />
+                                <Switch />
                               </Form.Item>
                               <i
                                 className="ri-delete-bin-line text-xl cursor-pointer hover:text-caramel"

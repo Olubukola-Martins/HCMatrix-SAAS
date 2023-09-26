@@ -5,7 +5,7 @@ import {
   QUERY_KEY_FOR_RECRUIT_NOTIFICATIONS,
   useGetNotifications,
 } from "../hooks/useGetNotifications";
-import { usePatchRecruitmentItem } from "../hooks/usePatchRecruitmentSettings";
+import { usePatchRecruitmentItem } from "features/recruitment/hooks/usePatchRecruitmentSettings";
 
 export const RecruitmentNotification = () => {
   const { data, isLoading, error } = useGetNotifications();
@@ -14,7 +14,6 @@ export const RecruitmentNotification = () => {
     queryKey: QUERY_KEY_FOR_RECRUIT_NOTIFICATIONS,
   });
   const [form] = Form.useForm();
-  console.log(data);
   const handleSwitchChange = (checked: boolean, id: number) => {
     patchData(id, checked);
   };

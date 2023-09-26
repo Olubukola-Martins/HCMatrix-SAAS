@@ -11,7 +11,7 @@ import {
   useGetJobStatusSettings,
 } from "../hooks/useGetJobStatusSettings";
 import { useDeleteRecruitmentItem } from "features/recruitment/hooks/useDeleteRecruitmentItem";
-import { usePatchRecruitmentItem } from "../hooks/usePatchRecruitmentSettings";
+import { usePatchRecruitmentItem } from "features/recruitment/hooks/usePatchRecruitmentSettings";
 import { useCreateJobStatusSettings } from "../hooks/useCreateJobStatusSettings";
 import { openNotification } from "utils/notifications";
 
@@ -65,7 +65,6 @@ export const JobStatusSettings = () => {
             });
           },
           onSuccess: (res: any) => {
-            console.log(res);
             openNotification({
               state: "success",
               title: "Success",

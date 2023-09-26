@@ -36,7 +36,6 @@ const AddOfferTemplate = () => {
           });
         },
         onSuccess: (res: any) => {
-          console.log("checking resp:", res);
           openNotification({
             state: "success",
             title: "Success",

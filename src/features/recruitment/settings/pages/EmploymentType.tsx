@@ -9,7 +9,7 @@ import {
 } from "../hooks/useGetEmploymentTypes";
 import { QuestionCircleOutlined } from "@ant-design/icons";
 import { useDeleteRecruitmentItem } from "features/recruitment/hooks/useDeleteRecruitmentItem";
-import { usePatchRecruitmentItem } from "../hooks/usePatchRecruitmentSettings";
+import { usePatchRecruitmentItem } from "features/recruitment/hooks/usePatchRecruitmentSettings";
 import { useCreateEmploymentTypes } from "../hooks/useCreateEmploymentTypes";
 import { useApiAuth } from "hooks/useApiAuth";
 import { useQueryClient } from "react-query";
@@ -66,7 +66,6 @@ export const EmploymentType = () => {
             });
           },
           onSuccess: (res: any) => {
-            console.log(res);
             openNotification({
               state: "success",
               title: "Success",

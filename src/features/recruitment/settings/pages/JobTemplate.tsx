@@ -14,7 +14,7 @@ import { QuestionCircleOutlined } from "@ant-design/icons";
 const JobTemplate = () => {
   const { data, isLoading } = useGetJobTemplate();
   const { removeData } = useDeleteRecruitmentItem({
-    deleteEndpointUrl: "job-templates",
+    deleteEndpointUrl: "settings/job-templates",
     queryKey: QUERY_KEY_FOR_JOB_TEMPLATE,
   });
   const dataFinanceDep = [

@@ -35,7 +35,6 @@ const AddEmailTemplate = () => {
           });
         },
         onSuccess: (res: any) => {
-          console.log("checking resp:", res);
           openNotification({
             state: "success",
             title: "Success",
@@ -84,7 +83,7 @@ const AddEmailTemplate = () => {
               </div>
             </div>
 
-            <JoditEditorComponent  />
+            <JoditEditorComponent />
             <div className=" flex justify-end gap-5">
               <button className="text-base font-medium" type="reset">
                 Cancel

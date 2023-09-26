@@ -16,7 +16,7 @@ const OfferTemplate = () => {
   const { data, isLoading } = useGetOfferTemplate();
   const { removeData } = useDeleteRecruitmentItem({
     queryKey: QUERY_KEY_FOR_OFFER_TEMPLATE,
-    deleteEndpointUrl: "offer-templates",
+    deleteEndpointUrl: "settings/offer-templates",
   });
   const [openVariables, setOpenVariables] = useState(false);
   return (

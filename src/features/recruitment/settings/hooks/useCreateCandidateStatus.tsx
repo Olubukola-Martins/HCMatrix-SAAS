@@ -4,7 +4,7 @@ import { IPostSwitch } from "../types";
 import { MICROSERVICE_ENDPOINTS } from "config/enviroment";
 
 export const postCandidateStatus = async (props: IPostSwitch) => {
-  const url = `${MICROSERVICE_ENDPOINTS.RECRUITMENT}/application-statuses/`;
+  const url = `${MICROSERVICE_ENDPOINTS.RECRUITMENT}/settings/application-statuses/`;
 
   const config = {
     headers: {
