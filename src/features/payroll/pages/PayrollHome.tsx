@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import PayrollCycle from "../assets/images/payrollCycle.svg";
 import Group from "../assets/images/group.svg";
-import PayrollReview from "../assets/images/payrollReview.svg";
 import { AnimatePresence, motion } from "framer-motion";
 import { Link } from "react-router-dom";
 import PayrollSubNav from "../components/PayrollSubNav";
