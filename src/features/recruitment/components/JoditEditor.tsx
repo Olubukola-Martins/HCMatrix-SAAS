@@ -1,5 +1,6 @@
 import JoditEditor from "jodit-react";
 import Form from "antd/es/form";
+import { useEffect, useRef, useState } from "react";
 //import { textInputValidationRules } from "utils/formHelpers/validation";
 
 const config = {
@@ -25,10 +26,17 @@ const config = {
   },
   toolbarAdaptive: false,
 };
+
 export const JoditEditorComponent: React.FC<{
   showLabel?: boolean;
   control?: { label: string; name: string };
+  // initialValue: string;
 }> = ({ showLabel = false, control }) => {
+  // const [dataTextContent, setDataTextContent] = useState(initialValue);
+  // const handleTextChange = (e: any) => {
+  //   setDataTextContent(e.target.value);
+  // };
+
   return (
     <Form.Item
       name={control?.name ?? "templateDescription"}
@@ -36,7 +44,11 @@ export const JoditEditorComponent: React.FC<{
       className=""
       //rules={textInputValidationRules}
     >
-      <JoditEditor config={config} value={""} />
+      <JoditEditor
+        config={config}
+        value=""
+        // onChange={handleTextChange}
+      />
     </Form.Item>
   );
 };

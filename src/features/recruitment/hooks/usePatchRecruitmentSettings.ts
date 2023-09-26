@@ -22,7 +22,7 @@ export const handlePatchData = async (props: IPatchRecruitmentItem) => {
   const deactivateHandler = `${MICROSERVICE_ENDPOINTS.RECRUITMENT}/settings/${props.patchEndpointUrl}/${props.itemId}/deactivate`;
   const url = props.checked ? activateHandler : deactivateHandler;
 
-  const config = {
+  const config = { 
     headers: {
       Accept: "application/json",
       Authorization: `Bearer ${props.token}`,

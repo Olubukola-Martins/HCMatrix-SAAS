@@ -16,7 +16,7 @@ import {
 import { useCreateCandidateStatus } from "../hooks/useCreateCandidateStatus";
 import { useQueryClient } from "react-query";
 import { useDeleteRecruitmentItem } from "features/recruitment/hooks/useDeleteRecruitmentItem";
-import { usePatchRecruitmentItem } from "features/recruitment/settings/hooks/usePatchRecruitmentSettings";
+import { usePatchRecruitmentItem } from "features/recruitment/hooks/usePatchRecruitmentSettings";
 
 const CandidateStatus = () => {
   const [form] = Form.useForm();
@@ -26,7 +26,7 @@ const CandidateStatus = () => {
   const { mutate, isLoading: postLoading } = useCreateCandidateStatus();
   const { removeData } = useDeleteRecruitmentItem({
     queryKey: QUERY_KEY_FOR_CANDIDATE_STATUS,
-    deleteEndpointUrl: "application-statuses",
+    deleteEndpointUrl: "settings/application-statuses",
   });
   const { patchData } = usePatchRecruitmentItem({
     patchEndpointUrl: "application-statuses",
@@ -42,7 +42,6 @@ const CandidateStatus = () => {
     if (!values.newStatus) {
       return;
     }
-    // isLoading: true;
     const newStatusName = values.newStatus?.map((item: any) => item.statusName);
     for (let i = 0; i < newStatusName.length; i++) {
       const name = newStatusName[i];
@@ -68,9 +67,7 @@ const CandidateStatus = () => {
               description: "Application successfully added!",
             });
             queryClient.invalidateQueries([QUERY_KEY_FOR_CANDIDATE_STATUS]);
-            // formRef.current?.resetFields();
           },
-          // isLoading: false,
         }
       );
     }
@@ -115,10 +112,11 @@ const CandidateStatus = () => {
                 onFinish={handleSubmit}
               >
                 {data?.map((item) => (
-                  <div className="recruitmentSettingsForm">
+                  <div className="recruitmentSettingsForm" key={item.id}>
                     <h3 className="font-medium">{item.name}</h3>
-                    <div className="flex gap-4 items-center justify-center">
+                    <div className="flex gap-5 items-center justify-end">
                       <Form.Item
+                        valuePropName="checked"
                         name={item.label}
                         className="flex justify-end items-end"
                         noStyle

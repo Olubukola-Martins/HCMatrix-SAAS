@@ -5,7 +5,7 @@ import { AppButton } from "components/button/AppButton";
 import "../../assets/style.css";
 import { textInputValidationRules } from "utils/formHelpers/validation";
 import { useDeleteRecruitmentItem } from "features/recruitment/hooks/useDeleteRecruitmentItem";
-import { usePatchRecruitmentItem } from "../hooks/usePatchRecruitmentSettings";
+import { usePatchRecruitmentItem } from "features/recruitment/hooks/usePatchRecruitmentSettings";
 import { useApiAuth } from "hooks/useApiAuth";
 import { useQueryClient } from "react-query";
 import { QuestionCircleOutlined } from "@ant-design/icons";
@@ -68,7 +68,6 @@ export const ExperienceType = () => {
             });
           },
           onSuccess: (res: any) => {
-            console.log(res);
             openNotification({
               state: "success",
               title: "Success",

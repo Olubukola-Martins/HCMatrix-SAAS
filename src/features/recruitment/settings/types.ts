@@ -13,3 +13,13 @@ export interface IPostSwitch extends ICurrentCompany {
   name: string[];
 }
 
+export interface ITemplateData extends ISettingsSwitchData {
+  subject: string;
+  body: string;
+  file: string;
+  name: string;
+  label: string;
+  title?: string;
+  department?: string;
+  description?: string;
+}

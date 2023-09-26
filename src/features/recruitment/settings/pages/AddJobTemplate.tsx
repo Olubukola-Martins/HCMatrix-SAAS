@@ -1,16 +1,51 @@
-import { Form, Input } from "antd";
+import { Form, Input, Skeleton } from "antd";
 import { appRoutes } from "config/router/paths";
 import { RecruitmentSettingsIntro } from "../../components/RecruitmentSettingsIntro";
 import { JoditEditorComponent } from "../../components/JoditEditor";
 import { AppButton } from "components/button/AppButton";
 import { textInputValidationRules } from "utils/formHelpers/validation";
 import { FormDepartmentInput } from "features/core/departments/components/FormDepartmentInput";
+import { useCreateJobTemplate } from "../hooks/useCreateJobTemplate";
+import { useApiAuth } from "hooks/useApiAuth";
+import { openNotification } from "utils/notifications";
+import { QUERY_KEY_FOR_JOB_TEMPLATE } from "../hooks/useGetJobTemplate";
+import { useQueryClient } from "react-query";
 
 const AddJobTemplate = () => {
+  const { mutate, isLoading } = useCreateJobTemplate();
+  const { token, companyId } = useApiAuth();
+  const queryClient = useQueryClient();
   const [form] = Form.useForm();
 
   const handleSubmit = (values: any) => {
-    console.log("Received values of form:", values);
+    mutate(
+      {
+        companyId,
+        departmentId: values.department,
+        description: values.templateDescription,
+        title: values.jobName,
+        token,
+      },
+      {
+        onError: (error: any) => {
+          openNotification({
+            state: "error",
+            title: "Error Occured",
+            description: error.response.data.message,
+            duration: 5,
+          });
+        },
+        onSuccess: (res: any) => {
+          console.log("checking resp:", res);
+          openNotification({
+            state: "success",
+            title: "Success",
+            description: res.data.message,
+          });
+          queryClient.invalidateQueries([QUERY_KEY_FOR_JOB_TEMPLATE]);
+        },
+      }
+    );
   };
   return (
     <>
@@ -40,7 +75,11 @@ const AddJobTemplate = () => {
               Cancel
             </button>
             <Form.Item className="mt-5 w-[125px]">
-              <AppButton type="submit" label="Save template" />
+              <AppButton
+                type="submit"
+                label="Save template"
+                isLoading={isLoading}
+              />
             </Form.Item>
           </div>
         </Form>

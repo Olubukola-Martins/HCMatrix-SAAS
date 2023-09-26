@@ -1,20 +1,20 @@
 /* eslint-disable no-loop-func */
-import React, {  useRef, useState } from "react";
+import React, { useRef, useState } from "react";
 import { Form, Switch, Input, Skeleton, Popconfirm } from "antd";
 import { AppButton } from "components/button/AppButton";
 import "../../assets/style.css";
 import { textInputValidationRules } from "utils/formHelpers/validation";
 import { useApiAuth } from "hooks/useApiAuth";
 import { openNotification } from "utils/notifications";
-import {  QuestionCircleOutlined } from "@ant-design/icons";
+import { QuestionCircleOutlined } from "@ant-design/icons";
 import { FormInstance } from "antd/lib/form";
 import {
   QUERY_KEY_FOR_BENEFITS,
   useGetBenefits,
 } from "../hooks/useGetBenefits";
 import { useQueryClient } from "react-query";
-import { useCreateBenefits } from "../hooks/useCreateBenefits";
-import { usePatchRecruitmentItem } from "../hooks/usePatchRecruitmentSettings";
+import { useCreateBenefits } from "../hooks/useCreateBenefits"; // import { usePatchRecruitmentItem } from "../hooks/usePatchRecruitmentSettings";
+import { usePatchRecruitmentItem } from "features/recruitment/hooks/usePatchRecruitmentSettings";
 import { useDeleteRecruitmentItem } from "features/recruitment/hooks/useDeleteRecruitmentItem";
 
 export const Benefits = () => {
@@ -63,7 +63,6 @@ export const Benefits = () => {
             });
           },
           onSuccess: (res: any) => {
-            console.log(res);
             openNotification({
               state: "success",
               title: "Success",

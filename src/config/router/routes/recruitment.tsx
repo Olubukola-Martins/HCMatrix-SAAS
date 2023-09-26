@@ -9,7 +9,6 @@ import AddEmailTemplate from "features/recruitment/settings/pages/AddEmailTempla
 import ApplicantInfo from "features/recruitment/features/applications/pages/ApplicantInfo";
 import ApplicationsList from "features/recruitment/features/applications/components/ApplicationsList";
 import ApplicationDetails from "features/recruitment/features/applications/components/ApplicationDetails";
-// import ApplicantDecription from "features/recruitment/features/applications/ApplicationDetails";
 import ApplicantEmailPage from "features/recruitment/features/applications/components/ApplicantEmailPage";
 import AddJobTemplate from "features/recruitment/settings/pages/AddJobTemplate";
 import AddOfferTemplate from "features/recruitment/settings/pages/AddOfferTemplate";
@@ -17,6 +16,9 @@ import CandidateSource from "features/recruitment/settings/pages/CandidateSource
 import EmailTemplate from "features/recruitment/settings/pages/EmailTemplate";
 import JobTemplate from "features/recruitment/settings/pages/JobTemplate";
 import OfferTemplate from "features/recruitment/settings/pages/OfferTemplate";
+import EmailTemplateDetails from "features/recruitment/settings/pages/EmailTemplateDetails";
+import OfferTemplateDetails from "features/recruitment/settings/pages/OfferTemplateDetails";
+import JobTemplateDetails from "features/recruitment/settings/pages/JobTemplateDetails";
 
 export const recruitmentRoutes: TRouteData[] = [
   {
@@ -100,6 +102,22 @@ export const recruitmentRoutes: TRouteData[] = [
     path: appRoutes.addOfferTemplate,
     isSearchable: false,
   },
+  {
+    element: <EmailTemplateDetails />,
+    path: appRoutes.emailTemplateDetails().format,
+    isSearchable: false,
+  },
+  {
+    element: <OfferTemplateDetails />,
+    path: appRoutes.offerTemplateDetails().format,
+    isSearchable: false,
+  },
+  {
+    element: <JobTemplateDetails />,
+    path: appRoutes.jobTemplateDetails().format,
+    isSearchable: false,
+  },
+
   {
     element: <AddJobTemplate />,
     path: appRoutes.addJobTemplate,
