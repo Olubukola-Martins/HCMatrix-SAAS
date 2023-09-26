@@ -9,6 +9,7 @@ import { CreatePayrollButton } from "../components/payrollCreations/CreatePayrol
 import PayrollOverviewChart from "../components/graphs/PayrollOverviewChart";
 import { useGetPayrollAnalytics } from "../hooks/payroll/analytics/useGetPayrollAnalytics";
 import { Badge, Skeleton } from "antd";
+import { formatNumberWithCommas } from "utils/dataHelpers/formatNumberWithCommas";
 
 const outerStyle =
   "group  transition ease-in-out duration-500 cursor-pointer shadow-md col-span-3 md:col-span-1 rounded-xl flex flex-col gap-2 w-full  p-3 bg-card";
@@ -70,7 +71,9 @@ const PayrollHome = () => {
                   </Badge>
                 ),
                 title: "Review Payroll",
-                highlight: `${analytics?.reviewPayroll?.totalPay}`,
+                highlight: `${formatNumberWithCommas(
+                  analytics?.reviewPayroll?.totalPay ?? 0
+                )}`,
                 content: "Click here to review payroll",
                 link: appRoutes.payrollReview,
               }}
