@@ -61,7 +61,7 @@ const PayrollHome = () => {
                 image: (
                   <Badge
                     size="small"
-                    count={analytics?.reviewPayroll?.totalCount ?? 10}
+                    count={analytics?.reviewPayroll?.totalCount}
                     overflowCount={9}
                   >
                     <i
