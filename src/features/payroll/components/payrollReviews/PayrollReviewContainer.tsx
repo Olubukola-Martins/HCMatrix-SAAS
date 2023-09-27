@@ -21,24 +21,24 @@ let OG_COLUMNS: ColumnsType<TPayrollListData> = [
     ),
   },
 
-  {
-    title: "Cycle",
-    dataIndex: "frequency",
-    key: "frequency",
-    render: (_, item) => (
-      <span className="capitalize">
-        {item.scheme.type === "project"
-          ? `Payment ${item.frequency}`
-          : item.frequency}{" "}
-      </span>
-    ),
-  },
-  {
-    title: "Date",
-    dataIndex: "Date",
-    key: "Date",
-    render: (_, item) => <span>{item.date} </span>,
-  },
+  // {
+  //   title: "Cycle",
+  //   dataIndex: "frequency",
+  //   key: "frequency",
+  //   render: (_, item) => (
+  //     <span className="capitalize">
+  //       {item.scheme.type === "project"
+  //         ? `Payment ${item.frequency}`
+  //         : item.frequency}{" "}
+  //     </span>
+  //   ),
+  // },
+  // {
+  //   title: "Date",
+  //   dataIndex: "Date",
+  //   key: "Date",
+  //   render: (_, item) => <span>{item.date} </span>,
+  // },
   {
     title: "Allowances",
     dataIndex: "allowances",

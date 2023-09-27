@@ -66,7 +66,7 @@ const SinglePayrollReview: React.FC<IProps> = ({ payroll }) => {
             description={`Review ${payroll.name} payroll being processed`}
             hideBackground
             actions={
-              payrollRequestItem
+              payrollRequestItem && payroll.status === "in-review"
                 ? [
                     {
                       name: "Approve",

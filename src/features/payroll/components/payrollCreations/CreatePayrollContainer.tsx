@@ -608,7 +608,10 @@ const CreatePayrollContainer: React.FC<{
       );
     }
   };
-  if (payroll && payroll.status === "in-review") {
+  if (
+    payroll &&
+    (payroll.status === "in-review" || payroll.status === "confirmed")
+  ) {
     return <SinglePayrollReview payroll={payroll} />;
   }
   return (
