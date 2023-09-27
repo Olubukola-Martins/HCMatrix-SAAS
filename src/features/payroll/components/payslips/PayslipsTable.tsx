@@ -1,10 +1,7 @@
 import { Table } from "antd";
-
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import { ColumnsType } from "antd/lib/table";
-
 import { usePagination } from "hooks/usePagination";
-
 import ViewEmployeePayrollBreakdown from "../employeeReports/ViewEmployeePayrollBreakdown";
 import {
   TGetPayslipsProps,
@@ -13,6 +10,9 @@ import {
 import { TPayslip } from "features/payroll/types/payslip";
 import { DEFAULT_DATE_FORMAT } from "constants/dateFormats";
 import moment from "moment";
+import { PayslipGenerator } from "./PayslipGenerator";
+import ReactToPrint from "react-to-print";
+import { useGetPayrollSetting } from "features/payroll/hooks/payroll/setting/useGetPayrollSetting";
 
 type TAction = "view";
 
@@ -55,6 +55,7 @@ const PayslipsTable: React.FC<IProps> = ({
     role,
     scheme,
   });
+  const componentRef = useRef<HTMLDivElement>(null);
 
   const columns: ColumnsType<TPayslip> = [
     {
@@ -123,14 +124,19 @@ const PayslipsTable: React.FC<IProps> = ({
             className="ri-eye-fill text-lg cursor-pointer"
             onClick={() => handleAction({ action: "view", grade: item })}
           />
-          <i
-            className="ri-download-line text-lg cursor-pointer"
-            onClick={() => handleAction({ action: "view", grade: item })}
+          <ReactToPrint
+            trigger={() => {
+              setGrade(item);
+              return <i className="ri-printer-line text-lg cursor-pointer" />;
+            }}
+            content={() => componentRef.current}
           />
         </div>
       ),
     },
   ];
+
+  const { data: payrollSetting } = useGetPayrollSetting();
 
   return (
     <>
@@ -144,6 +150,16 @@ const PayslipsTable: React.FC<IProps> = ({
         open={action === "view"}
         showControls={false}
       />
+      <div className="hidden">
+        <PayslipGenerator
+          ref={componentRef}
+          params={{
+            employeeId: grade?.employeeId,
+            payrollId: grade?.payrollId,
+          }}
+          defaultPayslipTemplateId={payrollSetting?.payslipTemplate.templateId}
+        />
+      </div>
 
       <Table
         columns={columns}

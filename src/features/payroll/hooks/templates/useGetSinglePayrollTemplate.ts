@@ -10,7 +10,7 @@ import {
 
 interface IDataProps {
   type: TPayrollTemplateType;
-  templateId: number;
+  templateId?: number;
 }
 export const QUERY_KEY_FOR_SINGLE_PAYROLL_TEMPLATE = "simple-payroll-template";
 const getData = async (props: {
@@ -40,7 +40,7 @@ const getData = async (props: {
 export const useGetSinglePayrollTemplate = (props: IDataProps) => {
   const { token, companyId } = useApiAuth();
   const queryData = useQuery(
-    [QUERY_KEY_FOR_SINGLE_PAYROLL_TEMPLATE],
+    [QUERY_KEY_FOR_SINGLE_PAYROLL_TEMPLATE, props.type, props.templateId],
     () =>
       getData({
         auth: {
@@ -50,6 +50,7 @@ export const useGetSinglePayrollTemplate = (props: IDataProps) => {
         data: { ...props },
       }),
     {
+      enabled: !!props.templateId,
       onError: (err: any) => {},
       onSuccess: (data) => {},
     }
