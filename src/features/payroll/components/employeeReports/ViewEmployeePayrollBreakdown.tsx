@@ -16,6 +16,7 @@ import React, { useState } from "react";
 import { useQueryClient } from "react-query";
 import { IModalProps } from "types";
 import { openNotification } from "utils/notifications";
+import "../../style/style.css";
 
 interface IProps extends IModalProps {
   params: {
@@ -105,29 +106,37 @@ const ViewEmployeePayrollBreakdown: React.FC<IProps> = ({
     {
       label: "Name",
       value: employeePayroll?.fullName,
-      takeFullSpace: true,
     },
-    {
-      label: "Year to Date Net",
-      value: 0,
-      takeFullSpace: true,
-    },
-    {
-      label: "Year to Date Gross",
-      value: 0,
-      takeFullSpace: true,
-    },
-    {
-      label: "Year to Date Tax",
-      value: 0,
-      takeFullSpace: true,
-    },
-
     {
       label: "Employee ID",
       value: employeePayroll?.empUid,
-      takeFullSpace: true,
     },
+    {
+      label: "Department",
+      value: employeePayroll?.designation,
+    },
+    {
+      label: "Designation",
+      value: employeePayroll?.designation,
+    },
+    {
+      label: "Year to Date Net",
+      value: employeePayroll?.ytdNet,
+    },
+
+    {
+      label: "Year to Date Tax",
+      value: employeePayroll?.ytdTax,
+    },
+    {
+      label: "Year to Date Gross",
+      value: employeePayroll?.ytdGross,
+    },
+    {
+      label: "Gross Pay",
+      value: moment(employeePayroll?.createdAt).format("YYYY-MM-DD"),
+    },
+
     {
       label: "Pay Date",
       value: moment(employeePayroll?.createdAt).format("YYYY-MM-DD"),
@@ -192,7 +201,7 @@ const ViewEmployeePayrollBreakdown: React.FC<IProps> = ({
                           .filter((item) => item.type === comp.type)
                           .map((item, i) => (
                             <tr key={i}>
-                              <td>{item.name}</td>
+                              <td className="capitalize">{item.name}</td>
                               <td>
                                 {baseCurrency?.currencySymbol}
                                 {item.calculatedAmount}
@@ -243,13 +252,12 @@ const ViewEmployeePayrollBreakdown: React.FC<IProps> = ({
               </div>
               <div className="bg-mainBg flex items-center justify-between px-5 py-2 mt-3">
                 <span>Account Number</span>
-                <span>xxxxxxxxxx</span>
+                <span>{employeePayroll?.accountNumber}</span>
               </div>
-
-              {/* <div className="flex items-center justify-around mt-6">
-              <button className="neutralButton">Roll back</button>
-              <button className="button">Approve</button>
-            </div> */}
+              {/* <div className="bg-mainBg flex items-center justify-between px-5 py-2 mt-3">
+                <span>Bank</span>
+                <span>{employeePayroll?.bankName}</span>
+              </div> */}
             </div>
           </div>
         </Skeleton>

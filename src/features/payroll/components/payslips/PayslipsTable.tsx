@@ -136,7 +136,10 @@ const PayslipsTable: React.FC<IProps> = ({
     <>
       {/* TODO: PAsss proper id when endpoint is available */}
       <ViewEmployeePayrollBreakdown
-        params={{}}
+        params={{
+          employeeId: grade?.employeeId,
+          payrollId: grade?.payrollId,
+        }}
         handleClose={() => setAction(undefined)}
         open={action === "view"}
         showControls={false}
