@@ -43,6 +43,7 @@ export type TPayrollBreakdownAttr = {
   value?: number | string;
   amount?: boolean;
   takeFullSpace?: boolean;
+  hidden?: boolean;
 };
 
 export {
