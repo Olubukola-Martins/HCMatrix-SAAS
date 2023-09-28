@@ -89,7 +89,7 @@ const PayslipPrintTemplate = forwardRef<
         <div className="">
           <h6 className="text-xl text-center">Employee Payslip</h6>
 
-          <div className="text-sm mt-5 font-medium">
+          <div className="text-sm mt-5 font-medium gap-4">
             <div className="grid grid-cols-2 gap-2 my-2">
               {payrollAttrs
                 .filter((item) => item.hidden !== true)
@@ -109,7 +109,7 @@ const PayslipPrintTemplate = forwardRef<
                 ))}
             </div>
 
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-5 my-6">
+            <div className="grid grid-cols-2 gap-5 my-6">
               {[
                 { name: "Allowance", type: "allowance" },
                 { name: "Deduction", type: "deduction" },
