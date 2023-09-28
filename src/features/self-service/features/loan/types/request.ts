@@ -22,6 +22,7 @@ export type TLoanRequest = {
   createdAt: string;
   updatedAt: string;
   deletedAt?: string;
+  disbursedAt?: string;
   type: Type;
   paymentPlan: PaymentPlan;
   employee: Employee;

@@ -7,9 +7,9 @@ import moment from "moment";
 import { Link, useNavigate } from "react-router-dom";
 import { appRoutes } from "config/router/paths";
 import { TPayrollSchemeType } from "features/payroll/types/payrollSchemes";
-import { Dropdown, Select } from "antd";
-import { AppButton } from "components/button/AppButton";
+import { Select } from "antd";
 import { getAppropriateColorForStatus } from "utils/colorHelpers/getAppropriateColorForStatus";
+import { DEFAULT_DATE_FORMAT } from "constants/dateFormats";
 
 let OG_COLUMNS: ColumnsType<TPayrollListData> = [
   {
@@ -68,6 +68,15 @@ let OG_COLUMNS: ColumnsType<TPayrollListData> = [
     dataIndex: "netPay",
     key: "netPay",
     render: (_, item) => <span>{item.totalNetPay} </span>,
+  },
+  {
+    title: "Disburment Date",
+    dataIndex: "drt",
+    key: "drt",
+    ellipsis: true,
+    render: (_, item) => (
+      <span>{moment(item.disbursmentDate).format(DEFAULT_DATE_FORMAT)} </span>
+    ),
   },
 ];
 export const PayrollReviewContainer = () => {
