@@ -80,17 +80,17 @@ const PayslipPrintTemplate = forwardRef<
 
     //   TODO: Add company logo && Name
     return (
-      <div ref={ref} className="px-6 py-4 flex flex-col gap-6">
+      <div ref={ref} className="px-4 py-4 flex flex-col gap-6 w-full">
         <div className="flex gap-2 items-center">
           <Avatar size={`large`} src={company.logoUrl} />
           <h4 className="font-semibold text-lg">{company.name}</h4>
         </div>
 
-        <div className="scrollBar overflow-auto">
+        <div className="">
           <h6 className="text-xl text-center">Employee Payslip</h6>
 
           <div className="text-sm mt-5 font-medium">
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-2 my-2">
+            <div className="grid grid-cols-2 gap-2 my-2">
               {payrollAttrs
                 .filter((item) => item.hidden !== true)
                 .map((item, i) => (

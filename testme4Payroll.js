@@ -89,7 +89,7 @@ const result3 = eval(formula);
 console.log(formula, "FORMULA");
 console.log(result3, "method eval ");
 
-function calculateSalaryEvalStatement(AH4, conditions) {
+export function calculateSalaryEvalStatement(AH4, conditions) {
   const evalStatement = conditions.reduce((statement, condition, index) => {
     const conditionStatement = `(${AH4} > ${condition.min} && ${AH4} <= ${condition.max}) ? (${condition.salary} + (${AH4} - ${condition.min}) * ${condition.rate}) : ${statement}`;
 
@@ -105,5 +105,5 @@ function calculateSalaryEvalStatement(AH4, conditions) {
 const result4 = calculateSalaryEvalStatement("taxable_income", conditions);
 const evalStatement = `const taxable_income = ${AH4}; ${result4};`;
 
-// console.log(result4, "tax = ", eval(evalStatement));
-console.log(result4, "tax = ", evalStatement);
+console.log(result4, "tax = ", eval(evalStatement));
+console.log("tax = ", evalStatement);

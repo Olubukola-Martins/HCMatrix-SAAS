@@ -8,11 +8,12 @@ export const createTaxyearlyTaxableIncomeComponentFormula = ({
   divisor?: number;
 }) => {
   const result4 = calculateyearlyTaxableIncomeEvalStatement({
-    taxableIncome: "taxable_income",
+    taxableIncome,
     conditions,
     divisor,
   });
-  const evalStatement = `const taxable_income = (${taxableIncome}); ${result4};`;
+  const evalStatement = ` ${result4}`;
+  // const evalStatement = `const taxable_income = (${taxableIncome}); ${result4};`;
   return evalStatement;
 };
 
@@ -53,6 +54,27 @@ export interface TTaxCondition {
   rate: number;
 }
 
+export function calculateSalaryEvalStatement(
+  AH4: string,
+  conditions: {
+    min: number;
+    max: number;
+    salary: number;
+    rate: number;
+  }[]
+) {
+  const evalStatement = conditions.reduce((statement, condition, index) => {
+    const conditionStatement = `(${AH4} > ${condition.min} && ${AH4} <= ${condition.max}) ? (${condition.salary} + (${AH4} - ${condition.min}) * ${condition.rate}) : ${statement}`;
+
+    if (index === conditions.length - 1) {
+      return conditionStatement;
+    } else {
+      return `(${conditionStatement})`;
+    }
+  }, "0");
+
+  return evalStatement;
+}
 export const dummyConditions = [
   { min: 0, max: 300000, yearlyTaxableIncome: 0, rate: 7 },
   {

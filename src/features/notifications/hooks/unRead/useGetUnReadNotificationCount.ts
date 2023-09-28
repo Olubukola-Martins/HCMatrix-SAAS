@@ -1,9 +1,9 @@
 import axios from "axios";
 import { MICROSERVICE_ENDPOINTS } from "config/enviroment";
 import { useQuery } from "react-query";
-import { ICurrentCompany, IPaginationProps, ISearchParams } from "types";
-import { DEFAULT_PAGE_SIZE } from "constants/general";
+import { ICurrentCompany } from "types";
 import { useApiAuth } from "hooks/useApiAuth";
+import { openNotification } from "utils/notifications";
 
 // TO DO : need to exist in the general data entities and refactored
 interface IGetDataProps extends ICurrentCompany {}
@@ -44,8 +44,16 @@ export const useGetUnReadNotificationCount = () => {
         companyId,
       }),
     {
+      // refetchInterval: 4,
       onError: (err: any) => {},
-      onSuccess: (data) => {},
+      onSuccess: (data) => {
+        // openNotification({
+        //   state: "success",
+        //   title: "Success",
+        //   description: `You have ${data.unreadCount} notifications`,
+        //   duration: 3,
+        // });
+      },
     }
   );
 

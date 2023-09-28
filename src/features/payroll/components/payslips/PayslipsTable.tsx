@@ -127,9 +127,10 @@ const PayslipsTable: React.FC<IProps> = ({
           <ReactToPrint
             trigger={() => {
               setGrade(item);
-              return <i className="ri-printer-line text-lg cursor-pointer" />;
+              return <i className="ri-printer-line  text-lg cursor-pointer" />;
             }}
             content={() => componentRef.current}
+            bodyClass={"w-full justify-stretch items-center"}
           />
         </div>
       ),

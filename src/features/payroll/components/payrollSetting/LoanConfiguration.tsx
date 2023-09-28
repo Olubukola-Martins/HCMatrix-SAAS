@@ -1,7 +1,10 @@
-import { Checkbox, InputNumber, Switch } from "antd";
+import { Checkbox, Input, InputNumber, Switch, Tooltip } from "antd";
 import React from "react";
 import { boxStyle, boxTitle } from "styles/reused";
-import { generalValidationRulesOp } from "utils/formHelpers/validation";
+import {
+  generalValidationRulesOp,
+  validateTimeFrameForManualRepayment,
+} from "utils/formHelpers/validation";
 import { PAYROLL_SCHEME_OPTIONS } from "features/payroll/constants";
 
 const LoanConfiguration: React.FC<{
@@ -46,33 +49,40 @@ const LoanConfiguration: React.FC<{
                   ))}
               </Checkbox.Group>
             </Form.Item>
-            <Form.Item
-              name="payrollCreationTimeFrameLimit"
-              label="What is the time frame limit for payrolls to be created within a month ?"
-              labelCol={{ span: 24 }}
-              rules={[
-                {
-                  validator: async (_: any, value: number | string) => {
-                    if (+value < 1) {
-                      throw new Error(
-                        "Please enter a day that is either 1st or between 1st and 28th"
-                      );
-                    }
-                    if (+value > 28) {
-                      throw new Error(
-                        "Please enter a day that is either 1st or between 1st and 28th"
-                      );
-                    }
 
-                    return true;
-                  },
-                },
-              ]}
+            <Form.Item
+              labelCol={{ span: 24 }}
+              name="timeFrameForManualRepayment"
+              label={
+                <div className="flex gap-2 items-center">
+                  <span>Time frame for manual repayment</span>
+                  <Tooltip
+                    showArrow={false}
+                    title="Please not this will affect payroll creation, as per depending on what is set it will limit the time period within which payrolls can be created."
+                  >
+                    <i className="ri-information-fill text-lg" />
+                  </Tooltip>
+                </div>
+              }
             >
-              <InputNumber
-                placeholder="Payroll Creation Time Frame Limit"
-                className="w-full"
-              />
+              <Input.Group className="flex gap-4 w-full">
+                <Form.Item
+                  rules={[validateTimeFrameForManualRepayment]}
+                  name={["timeFrameForManualRepayment", "startDay"]}
+                  className="flex-1"
+                  label={<span className="text-xs">Start Day</span>}
+                >
+                  <InputNumber placeholder="Start Day" className="w-full" />
+                </Form.Item>
+                <Form.Item
+                  rules={[validateTimeFrameForManualRepayment]}
+                  name={["timeFrameForManualRepayment", "endDay"]}
+                  className="flex-1"
+                  label={<span className="text-xs">End Day</span>}
+                >
+                  <InputNumber placeholder="End Day" className="w-full" />
+                </Form.Item>
+              </Input.Group>
             </Form.Item>
           </div>
         </div>

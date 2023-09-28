@@ -25,7 +25,10 @@ export const TaxPolicyCreator: React.FC<
   const [taxableIncome, setTaxableIncome] = useState("");
   const handleFormula = (val: string) => {
     console.log("rendering formula", val);
-    setFormula(val);
+    const regex = /taxable_income/g;
+    let ans = val.replace(regex, `(${taxableIncome})`);
+    setFormula(() => ans);
+    console.log(formula, "FORMULAAA");
   };
   return (
     <div className="flex flex-col gap-4 mb-4">

@@ -119,9 +119,10 @@ export function isValidEvalExpression(
 export const isFormulaValid = (input: string, acceptedVariables: string[]) => {
   //regex to match JavaScript arithmetic symbols and one or more whitespace characters, also digits
   // no equals, user should not be able to assign
-  const regex = /[\+\-\*\/\%\(\)\[\]\{\}\^\<\>\,\;\:\?\=\&\|\d]+|\s+/g;
+  // const regex = /[\+\-\*\/\%\(\)\[\]\{\}\^\<\>\,\;\:\?\=\&\|\d]+|\s+/g;
+  const regex = /[\+\-\*\/\%\(\)\[\]\{\}\^\<\>\,\;\:\?\=\&\|\d\.]+|\s+/g;
 
-  const recognizedWords = [...acceptedVariables];
+  const recognizedWords = [...acceptedVariables, "Infinity"];
 
   // Split the input string into an array of words using whitespace as the delimiter
   const inputWords = input.split(regex).filter((item) => item.trim() !== "");
@@ -194,6 +195,30 @@ export const phoneNumberValidationRule: Rule = {
 
     if (!value.match(paswd)) throw new Error("Only digits are allowed");
     // if (false) throw new Error("Something wrong!");
+    return true;
+  },
+};
+
+export const validateTimeFrameForManualRepayment: Rule = {
+  required: true,
+  validator: async (_: any, value: number | string) => {
+    if (typeof value === "undefined") {
+      throw new Error("Please enter a value");
+    }
+    if (typeof value !== "number") {
+      throw new Error("Only numbers are allowed");
+    }
+    if (+value < 1) {
+      throw new Error(
+        "Please enter a day that is either 1st, 25th, or between 1st and 25th"
+      );
+    }
+    if (+value > 25) {
+      throw new Error(
+        "Please enter a day that is either 1st, 25th, or between 1st and 25th"
+      );
+    }
+
     return true;
   },
 };
