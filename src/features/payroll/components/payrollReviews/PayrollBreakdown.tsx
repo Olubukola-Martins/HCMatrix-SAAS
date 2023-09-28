@@ -1,7 +1,9 @@
 import { Modal, Skeleton } from "antd";
 import Themes from "components/Themes";
+import { DEFAULT_DATE_FORMAT } from "constants/dateFormats";
 import { TPayrollBreakdownAttr, TSinglePayroll } from "features/payroll/types";
 import { useGetCompanyBaseCurrency } from "hooks/useGetCompanyBaseCurrency";
+import moment from "moment";
 import React from "react";
 import { IModalProps } from "types";
 
@@ -15,6 +17,13 @@ const PayrollBreakdown: React.FC<IProps> = ({ open, handleClose, payroll }) => {
   const payrollAttrs: TPayrollBreakdownAttr[] = [
     { label: "Payroll Name", value: payroll.name, takeFullSpace: true },
     { label: "Date(for)", value: payroll.date, takeFullSpace: true },
+    {
+      label: "Disbursment Date",
+      value: payroll.disbursementDate
+        ? moment(payroll.disbursementDate).format(DEFAULT_DATE_FORMAT)
+        : "",
+      takeFullSpace: true,
+    },
     {
       label: "Gross Pay",
       value: payroll.totalGrossPay,

@@ -63,7 +63,12 @@ const SinglePayrollReview: React.FC<IProps> = ({ payroll }) => {
       >
         <div className="flex flex-col gap-6">
           <PageSubHeader
-            description={`Review ${payroll.name} payroll being processed`}
+            description={{
+              content: `${payroll.name} payroll is ${payroll.status
+                .split("-")
+                .join(" ")}`,
+              className: "text-base",
+            }}
             hideBackground
             actions={
               payrollRequestItem && payroll.status === "in-review"

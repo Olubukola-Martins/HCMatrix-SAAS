@@ -130,6 +130,18 @@ export const LoanTable: React.FC<{
       key: "dept",
       render: (_, item) => <span className="capitalize">{item.amount} </span>,
     },
+    {
+      title: "Disbursed At",
+      dataIndex: "disAt",
+      key: "disAt",
+      render: (_, item) => (
+        <span className="capitalize">
+          {item.disbursedAt
+            ? moment(item.disbursedAt).format(DEFAULT_DATE_FORMAT)
+            : ""}{" "}
+        </span>
+      ),
+    },
 
     {
       title: "Status",
