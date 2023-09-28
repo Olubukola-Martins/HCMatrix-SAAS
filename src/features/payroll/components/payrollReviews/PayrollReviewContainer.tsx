@@ -70,7 +70,7 @@ let OG_COLUMNS: ColumnsType<TPayrollListData> = [
     render: (_, item) => <span>{item.totalNetPay} </span>,
   },
   {
-    title: "Disburment Date",
+    title: "Disbursment Date",
     dataIndex: "drt",
     key: "drt",
     ellipsis: true,

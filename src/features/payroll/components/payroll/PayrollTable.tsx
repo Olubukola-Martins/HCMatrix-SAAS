@@ -108,7 +108,7 @@ export const PayrollTable: React.FC<{
       ),
     },
     {
-      title: "Disburment Date",
+      title: "Disbursment Date",
       dataIndex: "drt",
       key: "drt",
       ellipsis: true,

@@ -43,6 +43,11 @@ const PayrollSetting = () => {
       isActive: setting.loanConfiguration.isActive,
       schemes: setting.loanConfiguration.schemes,
       templateId: setting.payslipTemplate.templateId,
+      timeFrameForManualRepayment: {
+        startDay:
+          setting.loanConfiguration?.timeFrameForManualRepayment?.startDay,
+        endDay: setting.loanConfiguration?.timeFrameForManualRepayment?.endDay,
+      },
     });
   }, [form, setting]);
 
@@ -59,6 +64,10 @@ const PayrollSetting = () => {
           loanConfiguration: {
             isActive: loanActivation,
             schemes: data.schemes,
+            timeFrameForManualRepayment: {
+              startDay: data.timeFrameForManualRepayment.startDay,
+              endDay: data.timeFrameForManualRepayment.endDay,
+            },
           },
           payslipTemplate: {
             templateId: data.templateId,

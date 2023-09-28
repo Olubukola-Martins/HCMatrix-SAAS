@@ -3,6 +3,7 @@ import { appRoutes } from "config/router/paths";
 import { Link } from "react-router-dom";
 
 const routes = [
+  { title: "Dashboard", path: appRoutes.payrollHome },
   { title: "Cost Centres", path: appRoutes.payrollCostCentres },
   { title: "Exchange Rates", path: appRoutes.payrollExchangeRates },
   { title: "Payroll Schemes", path: appRoutes.payrollSchemes },

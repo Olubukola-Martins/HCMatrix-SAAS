@@ -7,6 +7,7 @@ import { TTaxPolicyCreatorProps } from "./TaxPolicyCreator";
 import { AddSalaryComponentForm } from "../salaryComponents/AddSalaryComponent";
 import {
   TTaxCondition,
+  calculateSalaryEvalStatement,
   createTaxyearlyTaxableIncomeComponentFormula,
   dummyConditions,
 } from "features/payroll/utils/createTaxSalaryComponentFormula";
@@ -253,12 +254,49 @@ export const TaxUIFormulaForm: React.FC<
         rate: item.taxRate / 100,
       })
     );
-    const result = createTaxyearlyTaxableIncomeComponentFormula({
-      conditions,
-      taxableIncome: taxableIncome ?? "taxable_income",
-      divisor: 1,
-    });
-    console.log("first", result);
+
+    // const conditions = [
+    //   { min: 0, max: 300000 / 12, yearlyTaxableIncome: 0, rate: 0.07 },
+    //   {
+    //     min: 300000 / 12,
+    //     max: 600000 / 12,
+    //     yearlyTaxableIncome: 21000 / 12,
+    //     rate: 0.11,
+    //   },
+    //   {
+    //     min: 600000 / 12,
+    //     max: 1100000 / 12,
+    //     yearlyTaxableIncome: 54000 / 12,
+    //     rate: 0.15,
+    //   },
+    //   {
+    //     min: 1100000 / 12,
+    //     max: 1600000 / 12,
+    //     yearlyTaxableIncome: 129000 / 12,
+    //     rate: 0.19,
+    //   },
+    //   {
+    //     min: 1600000 / 12,
+    //     max: 3200000 / 12,
+    //     yearlyTaxableIncome: 224000 / 12,
+    //     rate: 0.21,
+    //   },
+    //   {
+    //     min: 3200000 / 12,
+    //     max: Infinity,
+    //     yearlyTaxableIncome: 560000 / 12,
+    //     rate: 0.24,
+    //   },
+    // ];
+    const result = calculateSalaryEvalStatement(
+      "taxable_income",
+      conditions.map((item) => ({ ...item, salary: item.yearlyTaxableIncome }))
+    );
+    // const result = createTaxyearlyTaxableIncomeComponentFormula({
+    //   conditions,
+    //   taxableIncome: "taxable_income",
+    //   divisor: 1,
+    // });
     handleFormula(result);
   }, [dataSource, handleFormula, taxableIncome]);
   const columns = defaultColumns.map((col) => {

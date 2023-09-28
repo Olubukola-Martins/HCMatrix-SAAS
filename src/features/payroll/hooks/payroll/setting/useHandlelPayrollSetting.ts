@@ -18,6 +18,10 @@ interface PayslipTemplate {
 interface LoanConfiguration {
   isActive: boolean;
   schemes: TPayrollSchemeType[];
+  timeFrameForManualRepayment?: {
+    startDay: number; // min of 1, max of 25
+    endDay: number; // min of 1, max of 25
+  };
 }
 
 interface CompanyBankDetails {

@@ -64,7 +64,7 @@ export const AddSalaryComponent: React.FC<IProps> = ({
 }) => {
   const defaultTitle =
     type === "allowance" ? `${formMode} allowance` : `${formMode} deduction`;
-
+  console.log(dependencies, salaryComponent?.label, "HELLO");
   return (
     <Modal
       open={open}
@@ -108,7 +108,10 @@ export const AddSalaryComponentForm: React.FC<IFormProps> = ({
 }) => {
   const [form] = Form.useForm();
 
-  dependencies = [...DEFAULT_DEPENDENCIES_FROM_API, ...dependencies];
+  dependencies = [
+    ...DEFAULT_DEPENDENCIES_FROM_API,
+    ...dependencies.filter((item) => item !== salaryComponent?.label),
+  ];
   const queryClient = useQueryClient();
   const [taxFormula, setTaxFormula] = useState("");
 
