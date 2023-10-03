@@ -13,6 +13,7 @@ import { QUERY_KEY_FOR_TASKS_ASSIGNED_BY_EMPLOYEE } from "../hooks/assignee/useG
 import { QUERY_KEY_FOR_TASKS_ASSIGNED_TO_EMPLOYEE } from "../hooks/assignedFor/useGetAllTasksAssignedToEmployee";
 import { FormEmployeeInput } from "features/core/employees/components/FormEmployeeInput";
 import { PRIORITIES } from "constants/general";
+import { DEFAULT_DATE_FORMAT } from "constants/dateFormats";
 
 export const AddTask: React.FC<IModalProps> = ({ open, handleClose }) => {
   const queryClient = useQueryClient();
@@ -27,8 +28,8 @@ export const AddTask: React.FC<IModalProps> = ({ open, handleClose }) => {
         description: data.description,
         assignedToId: data.assignedToId,
         priority: data.priority, // enum: low, medium, high
-        dateAssigned: data.dateAssigned.format("YYYY-MM-DD"),
-        dueDate: data.dueDate.format("YYYY-MM-DD"),
+        dateAssigned: data.dateAssigned.format(DEFAULT_DATE_FORMAT),
+        dueDate: data.dueDate.format(DEFAULT_DATE_FORMAT),
       },
       {
         onError: (err: any) => {

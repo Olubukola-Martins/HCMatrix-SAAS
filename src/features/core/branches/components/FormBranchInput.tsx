@@ -10,18 +10,13 @@ export const FormBranchInput: React.FC<{
   showLabel?: boolean;
   control?: { label: string; name: string | (string | number)[] };
 }> = ({ Form, showLabel = true, control }) => {
-  const { companyId, token } = useApiAuth();
-
   const [searchTerm, setSearchTerm] = useState<string>("");
   const debouncedSearchTerm: string = useDebounce<string>(searchTerm);
 
   const { data, isFetching, isSuccess } = useFetchBranches({
-    companyId,
     searchParams: {
       name: debouncedSearchTerm,
     },
-
-    token,
   });
 
   const handleSearch = (val: string) => {

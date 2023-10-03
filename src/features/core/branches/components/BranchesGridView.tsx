@@ -15,8 +15,9 @@ interface IProps {
   loading: boolean;
   pagination?: TablePaginationConfig;
   onChange: PaginationProps["onChange"];
-  editBranch: (val: number) => void;
-  viewBranch: (val: number) => void;
+  editBranch: (val: TBranch) => void;
+  viewBranch: (val: TBranch) => void;
+  deleteBranch: (val: TBranch) => void;
 }
 
 // TO DO: Use the grid component in components folder instead
@@ -28,6 +29,7 @@ export const BranchesGridView = ({
   onChange,
   editBranch,
   viewBranch,
+  deleteBranch,
 }: IProps) => {
   return (
     <motion.div
@@ -48,6 +50,7 @@ export const BranchesGridView = ({
             data={item}
             editBranch={editBranch}
             viewBranch={viewBranch}
+            deleteBranch={deleteBranch}
           />
         ))}
       </div>
@@ -62,10 +65,12 @@ const Box = ({
   data,
   editBranch,
   viewBranch,
+  deleteBranch,
 }: {
   data: TBranch;
-  editBranch: (val: number) => void;
-  viewBranch: (val: number) => void;
+  editBranch: (val: TBranch) => void;
+  viewBranch: (val: TBranch) => void;
+  deleteBranch: (val: TBranch) => void;
 }) => {
   return (
     <>
@@ -78,9 +83,9 @@ const Box = ({
           <Dropdown
             overlay={
               <Menu>
-                <Menu.Item onClick={() => editBranch(data.id)}>Edit</Menu.Item>
-                <Menu.Item onClick={() => viewBranch(data.id)}>View</Menu.Item>
-                <Menu.Item>Delete</Menu.Item>
+                <Menu.Item onClick={() => editBranch(data)}>Edit</Menu.Item>
+                <Menu.Item onClick={() => viewBranch(data)}>View</Menu.Item>
+                <Menu.Item onClick={() => deleteBranch(data)}>Delete</Menu.Item>
               </Menu>
             }
             trigger={["click"]}

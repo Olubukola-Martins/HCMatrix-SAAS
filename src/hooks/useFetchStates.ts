@@ -8,7 +8,7 @@ import { openNotification } from "utils/notifications";
 const QUERY_KEY_FOR_STATES = "states";
 
 export interface IStateProps {
-  countryId: number;
+  countryId?: number;
   searchParams?: ISearchParams;
 }
 
@@ -45,7 +45,7 @@ export const useFetchStates = ({ countryId, searchParams }: IStateProps) => {
       refetchInterval: false,
       refetchIntervalInBackground: false,
       refetchOnWindowFocus: false,
-      enabled: countryId ? true : false, // or countryId ? true : false,
+      enabled: !!countryId,
       onError: (err: any) => {
         // show notification
         openNotification({

@@ -1,49 +1,31 @@
-import { TablePaginationConfig, Tooltip } from "antd";
+import { Tooltip } from "antd";
 import { useEffect, useState } from "react";
-
 import { BranchesGridView } from "./BranchesGridView";
 import { BranchesTableView } from "./BranchesTableView";
-
-import { EditBranchModal } from "./EditBranchModal";
 import { TListDataTypeView } from "types";
 import { ErrorComponent } from "components/errorHandlers/ErrorComponent";
 import { DataContainerLoader } from "components/loaders/DataContainerLoader";
-
-import { useFetchBranches } from "../hooks/useFetchBranches";
-import { DEFAULT_GRID_PAGE_SIZE, DEFAULT_PAGE_SIZE } from "constants/general";
+import {
+  QUERY_KEY_FOR_BRANCHES,
+  useFetchBranches,
+} from "../hooks/useFetchBranches";
 import { useApiAuth } from "hooks/useApiAuth";
+import { SaveBranch } from "./SaveBranch";
+import { useUpdateBranch } from "../hooks/useUpdateBranch";
+import { TBranch, TCreateBranchProps } from "../types";
+import { useQueryClient } from "react-query";
+import { openNotification } from "utils/notifications";
+import { usePagination } from "hooks/usePagination";
+import { DeleteBranch } from "./DeleteBranch";
+
+type TAction = "view" | "edit" | "delete";
 
 const BranchesViewContainer = () => {
   const [viewId, setViewId] = useState<TListDataTypeView>("list");
   const handleViewId = (val: TListDataTypeView) => {
     setViewId(val);
   };
-  const { companyId, token } = useApiAuth();
-  const [pagination, setPagination] = useState<TablePaginationConfig>({
-    current: 1,
-    pageSize: DEFAULT_PAGE_SIZE,
-    total: 0,
-    showSizeChanger: false,
-  });
-
-  const offset =
-    pagination.current && pagination.current !== 1
-      ? (pagination.pageSize ?? DEFAULT_PAGE_SIZE) * (pagination.current - 1)
-      : 0;
-
-  const onChange = (newPagination: TablePaginationConfig | number) => {
-    if (typeof newPagination === "number") {
-      setPagination((val) => ({
-        ...val,
-        current: newPagination,
-      }));
-    } else {
-      setPagination((val) => ({
-        ...val,
-        current: newPagination.current,
-      }));
-    }
-  };
+  const { pagination, onChange, resetPagination } = usePagination();
 
   const {
     data: branchData,
@@ -51,56 +33,97 @@ const BranchesViewContainer = () => {
     isFetching,
     isSuccess,
   } = useFetchBranches({
-    companyId,
-    pagination: {
-      limit: pagination.pageSize,
-      offset,
-    },
-    token,
+    pagination,
   });
 
   // to be able to maitain diff page size per diff view
   useEffect(() => {
-    if (viewId === "grid") {
-      setPagination((val) => ({
-        ...val,
-        pageSize: DEFAULT_GRID_PAGE_SIZE,
-        current: 1,
-      }));
-    } else {
-      setPagination((val) => ({
-        ...val,
-        pageSize: DEFAULT_PAGE_SIZE,
-        current: 1,
-      }));
-    }
-  }, [viewId]);
+    resetPagination();
+  }, [resetPagination, viewId]);
 
-  const [branchId, setBranchId] = useState(0);
-  const [openEditModal, setOpenEditModal] = useState(false);
-  const [editItem, setEditItem] = useState(false); //to disable edit on just view
-  const editBranch = (id: number) => {
-    setEditItem(true);
-    setBranchId(id);
-    setOpenEditModal(true);
+  const queryClient = useQueryClient();
+  const [selectedBranch, setSelectedBranch] = useState<TBranch>();
+
+  const [action, setAction] = useState<TAction>();
+  const {
+    mutate,
+    isLoading,
+    isSuccess: isSuccUpdateBranch,
+  } = useUpdateBranch();
+  const handleUpdateBranch = (data: TCreateBranchProps) => {
+    if (!selectedBranch) return;
+    mutate(
+      {
+        id: selectedBranch.id,
+        data,
+      },
+      {
+        onError: (err: any) => {
+          openNotification({
+            state: "error",
+            title: "Error Occurred",
+            description:
+              err?.response.data.message ?? err?.response.data.error.message,
+          });
+        },
+        onSuccess: (res: any) => {
+          openNotification({
+            state: "success",
+
+            title: "Success",
+            description: res.data.message,
+            // duration: 0.4,
+          });
+          setAction(undefined);
+          queryClient.invalidateQueries({
+            queryKey: [QUERY_KEY_FOR_BRANCHES],
+            // exact: true,
+          });
+        },
+      }
+    );
   };
-  const viewBranch = (id: number) => {
-    setEditItem(false);
-    setBranchId(id);
-    setOpenEditModal(true);
+
+  const editBranch = (val: TBranch) => {
+    setSelectedBranch(val);
+    setAction("edit");
   };
-  const handleClose = () => {
-    setBranchId(0);
-    setOpenEditModal(false);
+  const viewBranch = (val: TBranch) => {
+    setSelectedBranch(val);
+    setAction("view");
+  };
+  const deleteBranch = (val: TBranch) => {
+    setSelectedBranch(val);
+    setAction("delete");
   };
 
   return (
     <>
-      <EditBranchModal
-        id={branchId}
-        open={openEditModal}
-        handleClose={handleClose}
-        editable={editItem}
+      <SaveBranch
+        key="edit"
+        open={action === "edit"}
+        action="edit"
+        title="Edit Branch"
+        onSubmit={{
+          fn: handleUpdateBranch,
+          isLoading,
+          isSuccess: isSuccUpdateBranch,
+        }}
+        branch={selectedBranch}
+        handleClose={() => setAction(undefined)}
+      />
+      <SaveBranch
+        key="view"
+        open={action === "view"}
+        action="view"
+        title="View Branch"
+        branch={selectedBranch}
+        handleClose={() => setAction(undefined)}
+      />
+      <DeleteBranch
+        open={action === "delete"}
+        branch={selectedBranch}
+        handleClose={() => setAction(undefined)}
       />
       <div className="mt-5 flex flex-col gap-4">
         <div className="view-toggler flex rounded overflow-hidden items-center">
@@ -129,6 +152,7 @@ const BranchesViewContainer = () => {
           </Tooltip>
         </div>
         <div className="content overflow-y-hidden relative">
+          {/* NEXT UP: CLean this up with proper err boundary n loader if needed, then work on the import branches */}
           {!isSuccess && !isError && <DataContainerLoader />}
           {isError && (
             <ErrorComponent
@@ -144,6 +168,7 @@ const BranchesViewContainer = () => {
               onChange={onChange}
               editBranch={editBranch}
               viewBranch={viewBranch}
+              deleteBranch={deleteBranch}
             />
           )}
 
@@ -155,6 +180,7 @@ const BranchesViewContainer = () => {
               onChange={onChange}
               editBranch={editBranch}
               viewBranch={viewBranch}
+              deleteBranch={deleteBranch}
             />
           )}
         </div>

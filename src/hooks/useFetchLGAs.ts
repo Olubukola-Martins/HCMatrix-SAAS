@@ -8,7 +8,7 @@ import { openNotification } from "utils/notifications";
 export const QUERY_KEY_FOR_LGA = "lga";
 
 export interface ILgaProps {
-  stateId: number;
+  stateId?: number;
   searchParams?: ISearchParams;
 }
 export const getLgas = async ({
@@ -45,7 +45,7 @@ export const useFetchLgas = ({ stateId, searchParams }: ILgaProps) => {
       refetchInterval: false,
       refetchIntervalInBackground: false,
       refetchOnWindowFocus: false,
-      enabled: stateId ? true : false, // or stateId ? true : false,
+      enabled: !!stateId,
       onError: (err: any) => {
         // show notification
         openNotification({
