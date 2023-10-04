@@ -1,6 +1,14 @@
 import { Rule } from "antd/lib/form";
 import moment, { Moment } from "moment";
 
+// helpers
+const isDateGreaterThanCurrentDay = (date: Moment) => {
+  const currentDate = moment();
+  if (!date) return;
+  return date.isAfter(currentDate, "day"); // Check if selected date is greater than the current day
+};
+// helpers -end
+
 export const generalValidationRules: Rule[] = [
   { required: true, message: "Field is required!" },
 ];
@@ -72,14 +80,21 @@ export const passwordValidationRules: Rule[] = [
   },
 ];
 
-export const dateHasToBeGreaterThanDayRule: Rule = {
+export const dateHasToBeGreaterThanCurrentDayRule: Rule = {
   validator: async (rule, value) => {
-    const isDateGreaterThanCurrentDay = (date: Moment) => {
-      const currentDate = moment();
-      if (!date) return;
-      return date.isAfter(currentDate, "day"); // Check if selected date is greater than the current day
-    };
     if (!isDateGreaterThanCurrentDay(value)) {
+      throw new Error("Please select a date greater than the current day");
+    }
+
+    return true;
+  },
+};
+export const dateHasToBeGreaterThanCurrentDayRuleForRange: Rule = {
+  validator: async (rule, value) => {
+    if (!isDateGreaterThanCurrentDay(value[0])) {
+      throw new Error("Please select a date greater than the current day");
+    }
+    if (!isDateGreaterThanCurrentDay(value[1])) {
       throw new Error("Please select a date greater than the current day");
     }
 

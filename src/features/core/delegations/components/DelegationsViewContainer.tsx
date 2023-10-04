@@ -1,54 +1,23 @@
-import { Table, TablePaginationConfig } from "antd";
+import { Table } from "antd";
 import { ColumnsType } from "antd/lib/table";
 import { DelegationDetail } from "./DelegationDetail";
-import { DEFAULT_PAGE_SIZE } from "constants/general";
-import { useApiAuth } from "hooks/useApiAuth";
 import moment from "moment";
 import { useState } from "react";
 import { useFetchDelegations } from "../hooks/useFetchDelegations";
 import { TDelegation } from "../types";
+import { usePagination } from "hooks/usePagination";
+import { getEmployeeFullName } from "features/core/employees/utils/getEmployeeFullName";
 
 const DelegationsViewContainer = () => {
-  const { token, companyId } = useApiAuth();
   const [delegationId, setDelegationId] = useState<number>();
   const [showModal, setShowModal] = useState(false);
-
-  const [pagination, setPagination] = useState<TablePaginationConfig>({
-    current: 1,
-    pageSize: DEFAULT_PAGE_SIZE,
-    total: 0,
-    showSizeChanger: false,
-  });
-
-  const offset =
-    pagination.current && pagination.current !== 1
-      ? (pagination.pageSize ?? DEFAULT_PAGE_SIZE) * (pagination.current - 1)
-      : 0;
-
-  const onChange = (newPagination: TablePaginationConfig | number) => {
-    if (typeof newPagination === "number") {
-      setPagination((val) => ({
-        ...val,
-        current: newPagination,
-      }));
-    } else {
-      setPagination((val) => ({
-        ...val,
-        current: newPagination.current,
-      }));
-    }
-  };
+  const { onChange, pagination } = usePagination();
   const view = (id: number) => {
     setDelegationId(id);
     setShowModal(true);
   };
   const { data, isFetching } = useFetchDelegations({
-    companyId,
-    pagination: {
-      limit: pagination.pageSize,
-      offset,
-    },
-    token,
+    pagination,
   });
   const columns: ColumnsType<TDelegation> = [
     {
@@ -57,7 +26,7 @@ const DelegationsViewContainer = () => {
       key: "Delegator",
       render: (_, item) => (
         <span className="capitalize">
-          {item.delegator.firstName} {item.delegator.lastName}
+          {getEmployeeFullName(item.delegator)}
         </span>
       ),
     },
@@ -67,7 +36,7 @@ const DelegationsViewContainer = () => {
       key: "Delegatee",
       render: (_, item) => (
         <span className="capitalize">
-          {item.delegatee.firstName} {item.delegatee.lastName}
+          {getEmployeeFullName(item.delegatee)}
         </span>
       ),
     },

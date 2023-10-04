@@ -1,8 +1,9 @@
 import axios from "axios";
+import { useApiAuth } from "hooks/useApiAuth";
 import { useMutation } from "react-query";
 import { ICurrentCompany } from "types";
 
-export interface ICreateProps extends ICurrentCompany {
+interface ICreateProps {
   delegatorId: number;
   delegateeId: number;
   startDate: string;
@@ -12,27 +13,30 @@ export interface ICreateProps extends ICurrentCompany {
   }[];
   description: string;
 }
-const saveDelegation = async (props: ICreateProps) => {
+const saveDelegation = async (vals: {
+  props: ICreateProps;
+  auth: ICurrentCompany;
+}) => {
+  const { auth, props } = vals;
   const url = `${process.env.REACT_APP_AUTHENTICATION_BASE_URL}/permission/delegation`;
   const config = {
     headers: {
       Accept: "application/json",
-      Authorization: `Bearer ${props.token}`,
-      "x-company-id": props.companyId,
+      Authorization: `Bearer ${auth.token}`,
+      "x-company-id": auth.companyId,
     },
   };
 
-  // necessary to make immediate changes when in  a central place when schema changes
-  const data: any = props;
-
-  delete data["companyId"];
-  delete data["token"];
+  const data = props;
 
   const response = await axios.post(url, data, config);
   return response;
 };
 export const useSaveDelegation = () => {
-  return useMutation(saveDelegation);
+  const { token, companyId } = useApiAuth();
+  return useMutation((props: ICreateProps) =>
+    saveDelegation({ props, auth: { token, companyId } })
+  );
 };
 
 export default useSaveDelegation;

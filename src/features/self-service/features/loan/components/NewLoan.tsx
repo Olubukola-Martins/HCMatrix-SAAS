@@ -3,7 +3,7 @@ import { AppButton } from "components/button/AppButton";
 import React, { useEffect, useState } from "react";
 import { IModalProps } from "types";
 import {
-  dateHasToBeGreaterThanDayRule,
+  dateHasToBeGreaterThanCurrentDayRule,
   generalValidationRules,
   generalValidationRulesOp,
 } from "utils/formHelpers/validation";
@@ -103,7 +103,7 @@ export const NewLoan: React.FC<IModalProps> = ({ open, handleClose }) => {
           <Input className="w-full" placeholder="Title" />
         </Form.Item>
         <Form.Item
-          rules={[dateHasToBeGreaterThanDayRule]}
+          rules={[dateHasToBeGreaterThanCurrentDayRule]}
           name="date"
           label="Date"
         >

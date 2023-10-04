@@ -3,17 +3,20 @@ import { TPermission } from "features/core/roles-and-permissions/types";
 import { useQuery } from "react-query";
 import { ICurrentCompany, IPaginationProps, ISearchParams } from "types";
 import { TDelegation } from "../types";
+import { useApiAuth } from "hooks/useApiAuth";
 
-interface IGetDataProps extends ICurrentCompany {
+interface IGetDataProps {
   pagination?: IPaginationProps;
   searchParams?: ISearchParams;
 }
 
 export const QUERY_KEY_FOR_DELEGATIONS = "delegations";
 
-const getDelegations = async (
-  props: IGetDataProps
-): Promise<{ data: TDelegation[]; total: number }> => {
+const getDelegations = async (vals: {
+  props: IGetDataProps;
+  auth: ICurrentCompany;
+}): Promise<{ data: TDelegation[]; total: number }> => {
+  const { props, auth } = vals;
   const { pagination } = props;
   const limit = pagination?.limit ?? 10;
   const offset = pagination?.offset ?? 0;
@@ -24,8 +27,8 @@ const getDelegations = async (
   const config = {
     headers: {
       Accept: "application/json",
-      Authorization: `Bearer ${props.token}`,
-      "x-company-id": props.companyId,
+      Authorization: `Bearer ${auth.token}`,
+      "x-company-id": auth.companyId,
     },
     params: {
       limit,
@@ -113,12 +116,18 @@ const getDelegations = async (
 };
 
 export const useFetchDelegations = (props: IGetDataProps) => {
+  const { token, companyId } = useApiAuth();
+
   const { pagination, searchParams } = props;
   const queryData = useQuery(
     [QUERY_KEY_FOR_DELEGATIONS, pagination?.limit, searchParams?.name],
     () =>
       getDelegations({
-        ...props,
+        auth: {
+          token,
+          companyId,
+        },
+        props,
       }),
     {
       onError: (err: any) => {},

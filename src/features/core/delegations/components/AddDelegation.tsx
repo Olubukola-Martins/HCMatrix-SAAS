@@ -1,10 +1,9 @@
 import { DatePicker, Form, Modal, Input } from "antd";
 import { AppButton } from "components/button/AppButton";
-import { useApiAuth } from "hooks/useApiAuth";
 import { useState } from "react";
 import { useQueryClient } from "react-query";
 import { IModalProps } from "types";
-import { generalValidationRules } from "utils/formHelpers/validation";
+import { dateHasToBeGreaterThanCurrentDayRuleForRange } from "utils/formHelpers/validation";
 import { openNotification } from "utils/notifications";
 import useSaveDelegation from "../hooks/useSaveDelegation";
 import { FormEmployeeInput } from "features/core/employees/components/FormEmployeeInput";
@@ -16,54 +15,49 @@ const { RangePicker } = DatePicker;
 export const AddDelegation = ({ open, handleClose }: IModalProps) => {
   const [delegatorRoleId, setDelegatorRoleId] = useState<number>();
   const queryClient = useQueryClient();
-  const { token, companyId } = useApiAuth();
   const [form] = Form.useForm();
   const { mutate, isLoading } = useSaveDelegation();
 
   const handleSubmit = (data: any) => {
-    if (companyId) {
-      mutate(
-        {
-          companyId,
-          token,
-          delegateeId: data.delegateeId,
-          delegatorId: data.delegatorId,
-          description: data.description,
-          startDate: data.period[0].toString(),
-          endDate: data.period[1].toString(),
-          permissions: data.permissionIds.map((item: number) => ({
-            permissionId: item,
-          })),
+    mutate(
+      {
+        delegateeId: data.delegateeId,
+        delegatorId: data.delegatorId,
+        description: data.description,
+        startDate: data.period[0].toString(),
+        endDate: data.period[1].toString(),
+        permissions: data.permissionIds.map((item: number) => ({
+          permissionId: item,
+        })),
+      },
+      {
+        onError: (err: any) => {
+          openNotification({
+            state: "error",
+            title: "Error Occurred",
+            description:
+              err?.response.data.message ?? err?.response.data.error.message,
+          });
         },
-        {
-          onError: (err: any) => {
-            openNotification({
-              state: "error",
-              title: "Error Occurred",
-              description:
-                err?.response.data.message ?? err?.response.data.error.message,
-            });
-          },
-          onSuccess: (res: any) => {
-            openNotification({
-              state: "success",
+        onSuccess: (res: any) => {
+          openNotification({
+            state: "success",
 
-              title: "Success",
-              description: res.data.message,
-              // duration: 0.4,
-            });
+            title: "Success",
+            description: res.data.message,
+            // duration: 0.4,
+          });
 
-            form.resetFields();
-            handleClose();
+          form.resetFields();
+          handleClose();
 
-            queryClient.invalidateQueries({
-              queryKey: ["delegations"],
-              // exact: true,
-            });
-          },
-        }
-      );
-    }
+          queryClient.invalidateQueries({
+            queryKey: ["delegations"],
+            // exact: true,
+          });
+        },
+      }
+    );
   };
   return (
     <Modal
@@ -95,7 +89,7 @@ export const AddDelegation = ({ open, handleClose }: IModalProps) => {
         <Form.Item
           name="period"
           label="Select Period"
-          rules={generalValidationRules}
+          rules={[dateHasToBeGreaterThanCurrentDayRuleForRange]}
         >
           <RangePicker className="generalInputStyle" />
         </Form.Item>
