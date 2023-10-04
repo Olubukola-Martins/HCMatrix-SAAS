@@ -2,7 +2,6 @@ import { PageIntro } from "components/layout/PageIntro";
 import { appRoutes } from "config/router/paths";
 import { useState } from "react";
 import BranchesViewContainer from "../components/BranchesViewContainer";
-import { ImportBranchModal } from "../components/ImportBranchModal";
 import PageSubHeader from "components/layout/PageSubHeader";
 import { SaveBranch } from "../components/SaveBranch";
 import { TCreateBranchProps } from "../types";
@@ -10,6 +9,7 @@ import { useCreateBranch } from "../hooks/useCreateBranch";
 import { openNotification } from "utils/notifications";
 import { QUERY_KEY_FOR_BRANCHES } from "../hooks/useFetchBranches";
 import { useQueryClient } from "react-query";
+import { ImportBranch } from "../components/ImportBranch";
 
 type TAction = "import" | "add";
 
@@ -59,7 +59,7 @@ const Branches = () => {
         onSubmit={{ fn: handleAddBranch, isLoading, isSuccess }}
         handleClose={() => setAction(undefined)}
       />
-      <ImportBranchModal
+      <ImportBranch
         open={action === "import"}
         handleClose={() => setAction(undefined)}
       />
@@ -74,7 +74,7 @@ const Branches = () => {
               actions={[
                 { name: "Add Branch", handleClick: () => setAction("add") },
                 {
-                  name: "Import Branches",
+                  name: "Bulk Import",
                   handleClick: () => setAction("import"),
                   btnVariant: "transparent",
                 },

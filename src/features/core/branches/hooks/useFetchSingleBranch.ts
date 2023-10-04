@@ -2,16 +2,19 @@ import axios from "axios";
 import { useQuery } from "react-query";
 import { ICurrentCompany } from "types";
 import { TBranch } from "../types";
+import { useApiAuth } from "hooks/useApiAuth";
 
 export const QUERY_KEY_FOR_SINGLE_BRANCH = "single-branch";
 
-export interface IGetSingleBranchProps extends ICurrentCompany {
+export interface IGetSingleBranchProps {
   branchId: number;
 }
 
-export const getSingleBranch = async (
-  props: IGetSingleBranchProps
-): Promise<TBranch> => {
+export const getSingleBranch = async (vals: {
+  props: IGetSingleBranchProps;
+  auth: ICurrentCompany;
+}): Promise<TBranch> => {
+  const { props, auth } = vals;
   const id = props.branchId;
 
   const url = `${process.env.REACT_APP_UTILITY_BASE_URL}/company/branch/${id}`;
@@ -19,44 +22,31 @@ export const getSingleBranch = async (
   const config = {
     headers: {
       Accept: "application/json",
-      Authorization: `Bearer ${props.token}`,
-      "x-company-id": props.companyId,
+      Authorization: `Bearer ${auth.token}`,
+      "x-company-id": auth.companyId,
     },
   };
 
   const res = await axios.get(url, config);
-  const item = res.data.data;
+  const item: TBranch = res.data.data;
 
-  const data: TBranch = {
-    id: item.id,
-    name: item.name,
-    description: item.description,
-    address: {
-      streetAddress: item.address.streetAddress,
-      countryId: item.address.countryId,
-      stateId: item.address.stateId,
-      lgaId: item.address.lgaId,
-      timezone: item.address.timezone,
-    },
-    employeeCount: item?.employeeCount,
-  };
-  return data;
+  return item;
 };
 
-export const useFetchSingleBranch = ({
-  branchId,
-  companyId,
-
-  token,
-}: IGetSingleBranchProps) => {
+export const useFetchSingleBranch = ({ branchId }: IGetSingleBranchProps) => {
+  const { token, companyId } = useApiAuth();
   const queryData = useQuery(
     [QUERY_KEY_FOR_SINGLE_BRANCH, branchId],
     () =>
       getSingleBranch({
-        companyId,
-        branchId,
+        props: {
+          branchId,
+        },
+        auth: {
+          companyId,
 
-        token,
+          token,
+        },
       }),
     {
       // refetchInterval: false,

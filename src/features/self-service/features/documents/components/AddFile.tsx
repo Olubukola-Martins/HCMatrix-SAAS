@@ -105,8 +105,7 @@ export const AddFile: React.FC<IProps> = ({ open, handleClose }) => {
   const { companyId, token } = useApiAuth();
   const { data: departments, isFetching: isFetchingDepartments } =
     useFetchDepartments({
-      companyId,
-      token,
+  
       pagination: {
         offset: 0,
         limit: 220,

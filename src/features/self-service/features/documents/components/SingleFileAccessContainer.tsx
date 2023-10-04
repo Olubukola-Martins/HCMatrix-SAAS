@@ -185,8 +185,6 @@ const AddAccessForm: React.FC<{ fileId: number; folderId: number }> = ({
   const { companyId, token } = useApiAuth();
   const { data: departments, isFetching: isFetchingDepartments } =
     useFetchDepartments({
-      companyId,
-      token,
       pagination: {
         offset: 0,
         limit: 220,

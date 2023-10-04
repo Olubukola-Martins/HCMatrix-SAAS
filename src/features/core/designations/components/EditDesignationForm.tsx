@@ -39,12 +39,10 @@ const EditDesignationForm = ({
     isFetching,
     isSuccess,
   } = useFetchDepartments({
-    companyId,
     pagination: {
       limit: 100, //temp suppose to allow search
       offset: 0,
     },
-    token,
   });
   const [form] = Form.useForm();
 

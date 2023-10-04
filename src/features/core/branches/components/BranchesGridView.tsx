@@ -6,13 +6,14 @@ import {
   Menu,
   Pagination,
   PaginationProps,
+  Skeleton,
   TablePaginationConfig,
 } from "antd";
 import { TBranch } from "../types";
 
 interface IProps {
-  data: TBranch[];
-  loading: boolean;
+  data?: TBranch[];
+  loading?: boolean;
   pagination?: TablePaginationConfig;
   onChange: PaginationProps["onChange"];
   editBranch: (val: TBranch) => void;
@@ -32,32 +33,34 @@ export const BranchesGridView = ({
   deleteBranch,
 }: IProps) => {
   return (
-    <motion.div
-      className="mt-4 flex flex-col gap-4"
-      initial={{ opacity: 0, y: 400 }}
-      animate={{
-        opacity: 1,
-        y: 0,
-      }}
-      key={0}
-      transition={{ ease: "easeIn" }}
-      exit={{ opacity: 0, y: 400 }}
-    >
-      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-        {data.map((item) => (
-          <Box
-            key={item.id}
-            data={item}
-            editBranch={editBranch}
-            viewBranch={viewBranch}
-            deleteBranch={deleteBranch}
-          />
-        ))}
-      </div>
-      <div className="flex justify-end">
-        <Pagination {...pagination} onChange={onChange} size="small" />
-      </div>
-    </motion.div>
+    <Skeleton loading={loading} paragraph={{ rows: 20 }}>
+      <motion.div
+        className="mt-4 flex flex-col gap-4"
+        initial={{ opacity: 0, y: 400 }}
+        animate={{
+          opacity: 1,
+          y: 0,
+        }}
+        key={0}
+        transition={{ ease: "easeIn" }}
+        exit={{ opacity: 0, y: 400 }}
+      >
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+          {data?.map((item) => (
+            <Box
+              key={item.id}
+              data={item}
+              editBranch={editBranch}
+              viewBranch={viewBranch}
+              deleteBranch={deleteBranch}
+            />
+          ))}
+        </div>
+        <div className="flex justify-end">
+          <Pagination {...pagination} onChange={onChange} size="small" />
+        </div>
+      </motion.div>
+    </Skeleton>
   );
 };
 

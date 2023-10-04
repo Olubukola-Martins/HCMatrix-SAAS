@@ -1,7 +1,5 @@
 import { Select, Spin } from "antd";
-import { useApiAuth } from "hooks/useApiAuth";
 import { useDebounce } from "hooks/useDebounce";
-
 import React, { useState } from "react";
 import {
   generalValidationRules,
@@ -15,18 +13,13 @@ export const FormDepartmentInput: React.FC<{
   control?: { label: string; name: string; multiple?: boolean };
   optional?: boolean;
 }> = ({ Form, showLabel = true, control, optional = false }) => {
-  const { token, companyId } = useApiAuth();
-
   const [searchTerm, setSearchTerm] = useState<string>("");
   const debouncedSearchTerm: string = useDebounce<string>(searchTerm);
 
   const { data, isFetching, isSuccess } = useFetchDepartments({
-    companyId,
     searchParams: {
       name: debouncedSearchTerm,
     },
-
-    token,
   });
 
   const handleSearch = (val: string) => {

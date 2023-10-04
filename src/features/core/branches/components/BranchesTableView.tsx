@@ -5,8 +5,8 @@ import { ColumnsType, TablePaginationConfig, TableProps } from "antd/lib/table";
 import { TBranch } from "../types";
 
 interface IProps {
-  data: TBranch[];
-  loading: boolean;
+  data?: TBranch[];
+  loading?: boolean;
   pagination?: TablePaginationConfig;
   onChange?: TableProps<TBranch>["onChange"];
   editBranch: (val: TBranch) => void;

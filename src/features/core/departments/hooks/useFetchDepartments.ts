@@ -1,32 +1,37 @@
 import axios from "axios";
-import { useSignOut } from "react-auth-kit";
 import { useQuery } from "react-query";
 import { ICurrentCompany, IPaginationProps, ISearchParams } from "types";
 import { TDepartment } from "../types";
+import { useApiAuth } from "hooks/useApiAuth";
 
 export const QUERY_KEY_FOR_DEPARTMENTS = "departments";
 
-interface IGetDepsProps extends ICurrentCompany {
+interface IGetDepsProps {
   pagination?: IPaginationProps;
   searchParams?: ISearchParams;
 }
-export const getDepartments = async (
-  props: IGetDepsProps
-): Promise<{ data: TDepartment[]; total: number }> => {
+export const getDepartments = async (vals: {
+  props: IGetDepsProps;
+  auth: ICurrentCompany;
+}): Promise<{ data: TDepartment[]; total: number }> => {
+  const { auth, props } = vals;
   const { pagination } = props;
   const limit = pagination?.limit ?? 10;
   const offset = pagination?.offset ?? 0;
+  const name = props.searchParams?.name ?? "";
 
-  let url = `${process.env.REACT_APP_UTILITY_BASE_URL}/company/department?limit=${limit}&offset=${offset}`;
-  if (props.searchParams?.name) {
-    url += `&search=${props.searchParams.name}`;
-  }
+  let url = `${process.env.REACT_APP_UTILITY_BASE_URL}/company/department`;
 
   const config = {
     headers: {
       Accept: "application/json",
-      Authorization: `Bearer ${props.token}`,
-      "x-company-id": props.companyId,
+      Authorization: `Bearer ${auth.token}`,
+      "x-company-id": auth.companyId,
+    },
+    params: {
+      limit,
+      offset,
+      search: name,
     },
   };
 
@@ -46,47 +51,38 @@ export const getDepartments = async (
   return ans;
 };
 
-interface IFRQDataProps {
-  pagination?: IPaginationProps;
-  searchParams?: ISearchParams;
-  companyId: number;
-  onSuccess?: Function;
-  token: string;
-}
-
-export interface IFRQDataReturnProps {
-  data: TDepartment[];
-  total: number;
-}
-
 export const useFetchDepartments = ({
   pagination,
-  companyId,
-  onSuccess,
-  token,
+
   searchParams,
-}: IFRQDataProps) => {
-  const signOut = useSignOut();
+  onSuccess,
+}: IGetDepsProps & {
+  onSuccess?: Function;
+}) => {
+  const { token, companyId } = useApiAuth();
 
   const queryData = useQuery(
-    [QUERY_KEY_FOR_DEPARTMENTS, pagination?.limit, searchParams?.name],
+    [
+      QUERY_KEY_FOR_DEPARTMENTS,
+      pagination?.offset,
+      pagination?.limit,
+      searchParams?.name,
+    ],
     () =>
       getDepartments({
-        companyId,
-        pagination: { limit: pagination?.limit, offset: pagination?.offset },
-        searchParams,
-        token,
+        auth: {
+          token,
+          companyId,
+        },
+        props: {
+          pagination,
+          searchParams,
+        },
       }),
     {
-      // refetchInterval: false,
-      // refetchIntervalInBackground: false,
-      // refetchOnWindowFocus: false,
-      onError: (err: any) => {
-        signOut();
-        localStorage.clear();
-      },
+      onError: (err: any) => {},
       onSuccess: (data) => {
-        onSuccess && onSuccess(data);
+        onSuccess?.(data);
       },
     }
   );

@@ -64,15 +64,6 @@ export const getBranches = async (vals: {
   return ans;
 };
 
-interface IFRQDataProps {
-  pagination?: IPaginationProps;
-  searchParams?: ISearchParams;
-
-  companyId: number;
-  onSuccess?: Function;
-  token: string;
-}
-
 export const useFetchBranches = ({
   pagination,
 

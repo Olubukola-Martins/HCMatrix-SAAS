@@ -41,7 +41,6 @@ import Upload, { RcFile } from "antd/lib/upload";
 import { useAddOvertimeSheet } from "features/payroll/hooks/payroll/overtimeSheet/useAddOvertimeSheet";
 import { useGetOvertimeSheetTemplate } from "features/payroll/hooks/payroll/overtimeSheet/useGetOvertimeSheetTemplate";
 import { FormPayrollProjectSchemeInput } from "../payrollSchemes/FormPayrollProjectSchemeInput";
-import { useRunPayroll } from "features/payroll/hooks/payroll/useRunPayroll";
 import SinglePayrollReview from "../payrollReviews/SinglePayrollReview";
 import { RunPayroll } from "./RunPayroll";
 
@@ -80,15 +79,18 @@ export const UploadTimesheet: React.FC<ITimesheetProps> = ({
     setFilelist(val.fileList);
   };
   const beforeUpload = (file: RcFile) => {
+    let allowSubmission = true;
+    const isLt2M = file.size / 1024 / 1024 < 2;
     const isSpreadSheetFile = file.type === "text/csv";
     if (!isSpreadSheetFile) {
+      allowSubmission = false;
       message.error("You can only upload CSV file!");
     }
-    const isLt2M = file.size / 1024 / 1024 < 2;
     if (!isLt2M) {
+      allowSubmission = false;
       message.error("File must smaller than 2MB!");
     }
-    return false;
+    return allowSubmission || Upload.LIST_IGNORE;
   };
   const { mutate: mutateGetTemplate } = useGetOvertimeSheetTemplate();
 

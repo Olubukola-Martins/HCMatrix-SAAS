@@ -9,7 +9,6 @@ import {
   QUERY_KEY_FOR_BRANCHES,
   useFetchBranches,
 } from "../hooks/useFetchBranches";
-import { useApiAuth } from "hooks/useApiAuth";
 import { SaveBranch } from "./SaveBranch";
 import { useUpdateBranch } from "../hooks/useUpdateBranch";
 import { TBranch, TCreateBranchProps } from "../types";
@@ -27,12 +26,7 @@ const BranchesViewContainer = () => {
   };
   const { pagination, onChange, resetPagination } = usePagination();
 
-  const {
-    data: branchData,
-    isError,
-    isFetching,
-    isSuccess,
-  } = useFetchBranches({
+  const { data: branchData, isFetching } = useFetchBranches({
     pagination,
   });
 
@@ -152,19 +146,11 @@ const BranchesViewContainer = () => {
           </Tooltip>
         </div>
         <div className="content overflow-y-hidden relative">
-          {/* NEXT UP: CLean this up with proper err boundary n loader if needed, then work on the import branches */}
-          {!isSuccess && !isError && <DataContainerLoader />}
-          {isError && (
-            <ErrorComponent
-              message="Oops! Something went wrong."
-              supportText="Please check back in a minute"
-            />
-          )}
-          {viewId === "grid" && isSuccess && (
+          {viewId === "grid" && (
             <BranchesGridView
-              data={branchData.data}
+              data={branchData?.data}
               loading={isFetching}
-              pagination={{ ...pagination, total: branchData.total }}
+              pagination={{ ...pagination, total: branchData?.total }}
               onChange={onChange}
               editBranch={editBranch}
               viewBranch={viewBranch}
@@ -172,11 +158,11 @@ const BranchesViewContainer = () => {
             />
           )}
 
-          {viewId === "list" && isSuccess && (
+          {viewId === "list" && (
             <BranchesTableView
-              data={branchData.data}
+              data={branchData?.data}
               loading={isFetching}
-              pagination={{ ...pagination, total: branchData.total }}
+              pagination={{ ...pagination, total: branchData?.total }}
               onChange={onChange}
               editBranch={editBranch}
               viewBranch={viewBranch}

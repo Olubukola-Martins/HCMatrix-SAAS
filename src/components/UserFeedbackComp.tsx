@@ -53,9 +53,7 @@ const UserFeedbackComp = () => {
   const dismissFeedback = () => {
     dispatch({ type: EGlobalOps.setShowInitialSetup, payload: false });
   };
-  const { isSuccess: isDepSuccess } = useFetchDepartments({
-    companyId,
-    token,
+  const { isSuccess: isDepSuccess, error } = useFetchDepartments({
     pagination: {
       limit: 100, //temp suppose to allow search
       offset: 0,
