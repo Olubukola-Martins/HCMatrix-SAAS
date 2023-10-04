@@ -73,7 +73,7 @@ export const SaveDesignation: React.FC<IProps> = ({
 
           <FormDepartmentInput
             Form={Form}
-            control={{ name: "designationId", label: "designation" }}
+            control={{ name: "departmentId", label: "Department" }}
           />
 
           <AppButton
