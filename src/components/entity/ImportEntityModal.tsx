@@ -31,24 +31,42 @@ export const ImportEntityModal: React.FC<IImportEntityModalProps> = ({
   const handleUpload = (val: any) => {
     setFilelist(val.fileList);
   };
+  const [submission, setSubmission] = useState<{
+    allow: boolean;
+    errors: string[];
+  }>({
+    allow: false,
+    errors: [],
+  });
   const beforeUpload = (file: RcFile) => {
     const isLt2M = file.size / 1024 / 1024 <= maxFileSizeInMB;
     let allowSubmission = true;
+    let errors = [];
     if (!allowedFileTypes.includes(file.type as TFileType)) {
       allowSubmission = false;
 
-      message.error(`This file type (${file.type}) is not allowed!`);
+      let error = `This file type (${file.type}) is not allowed!`;
+      errors.push(error);
+
+      message.error(error);
     }
 
     if (!isLt2M) {
       allowSubmission = false;
+      let error = `File must smaller than or equal to ${maxFileSizeInMB}MB!`;
+      errors.push(error);
 
-      message.error(`File must smaller than or equal to ${maxFileSizeInMB}MB!`);
+      message.error(error);
     }
-    return allowSubmission;
-
-    // TODO: Figure out how to use Upload.LIST_IGNORE properly
-    // return allowSubmission || Upload.LIST_IGNORE;
+    setSubmission({ allow: allowSubmission, errors });
+    return false; //this is done so that it prevents dafault value
+  };
+  const onFinish = () => {
+    if (submission.allow === false) {
+      submission.errors.forEach((err) => message.error(err));
+      return;
+    }
+    handleSubmit.fn({ file: fileList[0]?.originFileObj });
   };
 
   return (
@@ -59,11 +77,7 @@ export const ImportEntityModal: React.FC<IImportEntityModalProps> = ({
       style={{ top: 20 }}
       onCancel={() => handleClose()}
     >
-      <Form
-        form={form}
-        onFinish={() => handleSubmit.fn({ file: fileList[0]?.originFileObj })}
-        requiredMark={false}
-      >
+      <Form form={form} onFinish={onFinish} requiredMark={false}>
         <div className="border border-dotted border-slate-500 rounded flex flex-col items-center gap-2 py-3 px-2">
           <p>Select file to be Imported</p>
           <Typography.Text title="Please Download template and populate">

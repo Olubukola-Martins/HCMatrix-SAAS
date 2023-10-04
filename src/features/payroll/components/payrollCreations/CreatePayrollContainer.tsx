@@ -72,6 +72,7 @@ export const UploadTimesheet: React.FC<ITimesheetProps> = ({
   handleClose,
   payrollId,
 }) => {
+  // TODO : Refactor to use ImportEntityModal, in its own comp
   const [form] = Form.useForm();
   const { mutate, isLoading } = useAddOvertimeSheet();
   const [fileList, setFilelist] = useState<any>([]);
@@ -90,7 +91,7 @@ export const UploadTimesheet: React.FC<ITimesheetProps> = ({
       allowSubmission = false;
       message.error("File must smaller than 2MB!");
     }
-    return allowSubmission || Upload.LIST_IGNORE;
+    return false; //this is done so that it prevents dafault value
   };
   const { mutate: mutateGetTemplate } = useGetOvertimeSheetTemplate();
 
