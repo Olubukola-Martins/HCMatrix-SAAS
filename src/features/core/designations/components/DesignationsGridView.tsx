@@ -6,16 +6,19 @@ import {
   Menu,
   Pagination,
   PaginationProps,
+  Skeleton,
   TablePaginationConfig,
 } from "antd";
 import { TDesignation } from "../types";
 
 interface IProps {
-  data: TDesignation[];
-  loading: boolean;
+  data?: TDesignation[];
+  loading?: boolean;
   pagination?: TablePaginationConfig;
   onChange: PaginationProps["onChange"];
-  editDesignation: (val: number) => void;
+  editDesignation: (val: TDesignation) => void;
+  viewDesignation: (val: TDesignation) => void;
+  deleteDesignation: (val: TDesignation) => void;
 }
 
 export const DesignationsGridView = ({
@@ -24,37 +27,51 @@ export const DesignationsGridView = ({
   pagination,
   onChange,
   editDesignation,
+  deleteDesignation,
+  viewDesignation,
 }: IProps) => {
   return (
-    <motion.div
-      className="mt-4 flex flex-col gap-4"
-      initial={{ opacity: 0, y: 400 }}
-      animate={{
-        opacity: 1,
-        y: 0,
-      }}
-      key={0}
-      transition={{ ease: "easeIn" }}
-      exit={{ opacity: 0, y: 400 }}
-    >
-      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-        {data.map((item) => (
-          <Box key={item.id} data={item} editDesignation={editDesignation} />
-        ))}
-      </div>
-      <div className="flex justify-end">
-        <Pagination {...pagination} onChange={onChange} size="small" />
-      </div>
-    </motion.div>
+    <Skeleton loading={loading} paragraph={{ rows: 20 }}>
+      <motion.div
+        className="mt-4 flex flex-col gap-4"
+        initial={{ opacity: 0, y: 400 }}
+        animate={{
+          opacity: 1,
+          y: 0,
+        }}
+        key={0}
+        transition={{ ease: "easeIn" }}
+        exit={{ opacity: 0, y: 400 }}
+      >
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+          {data?.map((item) => (
+            <Box
+              key={item.id}
+              data={item}
+              editDesignation={editDesignation}
+              viewDesignation={viewDesignation}
+              deleteDesignation={deleteDesignation}
+            />
+          ))}
+        </div>
+        <div className="flex justify-end">
+          <Pagination {...pagination} onChange={onChange} size="small" />
+        </div>
+      </motion.div>
+    </Skeleton>
   );
 };
 
 const Box = ({
   data,
   editDesignation,
+  viewDesignation,
+  deleteDesignation,
 }: {
   data: TDesignation;
-  editDesignation: (val: number) => void;
+  editDesignation: (val: TDesignation) => void;
+  viewDesignation: (val: TDesignation) => void;
+  deleteDesignation: (val: TDesignation) => void;
 }) => {
   return (
     <>
@@ -67,10 +84,15 @@ const Box = ({
           <Dropdown
             overlay={
               <Menu>
-                <Menu.Item onClick={() => editDesignation(data.id)}>
+                <Menu.Item onClick={() => editDesignation(data)}>
                   Edit
                 </Menu.Item>
-                <Menu.Item>Delete</Menu.Item>
+                <Menu.Item onClick={() => viewDesignation(data)}>
+                  View
+                </Menu.Item>
+                <Menu.Item onClick={() => deleteDesignation(data)}>
+                  Delete
+                </Menu.Item>
               </Menu>
             }
             trigger={["click"]}

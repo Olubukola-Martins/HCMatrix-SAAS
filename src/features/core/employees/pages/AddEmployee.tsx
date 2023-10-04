@@ -48,7 +48,6 @@ export const AddEmployee = () => {
     isSuccess: isDSuccess,
     isFetching: isDFetching,
   } = useFetchDesignations({
-    companyId,
     pagination: {
       limit: 100, //temp suppose to allow search
       offset: 0,
@@ -56,7 +55,6 @@ export const AddEmployee = () => {
     searchParams: {
       name: degSearch,
     },
-    token,
   });
   const {
     data: empData,

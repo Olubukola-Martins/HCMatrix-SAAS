@@ -71,8 +71,6 @@ const UserFeedbackComp = () => {
     },
   });
   const { isSuccess: isDegSuccess } = useFetchDesignations({
-    companyId,
-    token,
     pagination: {
       limit: 100, //temp suppose to allow search
       offset: 0,

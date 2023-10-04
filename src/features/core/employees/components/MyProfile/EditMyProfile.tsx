@@ -49,8 +49,6 @@ export const EditMyProfile = ({ open, handleClose, employee }: IProps) => {
 
   const { data: designations, isFetching: isDesgFetching } =
     useFetchDesignations({
-      token,
-      companyId,
       pagination: {
         limit: 100,
         offset: 0,

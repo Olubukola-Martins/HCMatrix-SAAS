@@ -3,8 +3,6 @@ import { useEffect, useState } from "react";
 import { BranchesGridView } from "./BranchesGridView";
 import { BranchesTableView } from "./BranchesTableView";
 import { TListDataTypeView } from "types";
-import { ErrorComponent } from "components/errorHandlers/ErrorComponent";
-import { DataContainerLoader } from "components/loaders/DataContainerLoader";
 import {
   QUERY_KEY_FOR_BRANCHES,
   useFetchBranches,
