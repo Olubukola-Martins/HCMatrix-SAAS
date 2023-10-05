@@ -3,23 +3,9 @@ import { MICROSERVICE_ENDPOINTS } from "config/enviroment";
 import { useApiAuth } from "hooks/useApiAuth";
 import { useMutation } from "react-query";
 import { ICurrentCompany } from "types";
+import { TJobInfo } from "../../types";
 
-type TData = {
-  startDate: string;
-  employmentType: string;
-  workModel: string;
-  numberOfDaysPerWeek: number;
-  hireDate: string;
-  probationEndDate: string;
-  confirmationDate: string;
-  lineManagerId: number;
-  branchId: number;
-  payrollType?: "direct-salary" | "office" | "wages";
-  monthlyGross: number;
-  payGradeId: number;
-  frequency?: "daily" | "monthly";
-  hourlyRate: number;
-};
+type TData = TJobInfo;
 const createData = async (props: {
   employeeId: number;
   data: TData;

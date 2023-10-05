@@ -8,6 +8,7 @@ import {
   TSingleEmployee,
   TWalletValue,
 } from "./singleEmployee";
+import { RELATIONSHIPS } from "constants/general";
 
 export {
   type TSingleEmployee,
@@ -212,7 +213,7 @@ export interface IFRQEmpDataProps {
 export type TEmergencyContact = {
   fullName: string;
   address: string;
-  relationship: string;
+  relationship: (typeof RELATIONSHIPS)[number]["value"];
   phoneNumber: string;
 };
 
@@ -234,7 +235,7 @@ export type TAddress = {
   streetAddress: string;
   countryId: number;
   stateId: number;
-  lgaId: number;
+  lgaId?: number;
   timezone: string;
 };
 
@@ -243,27 +244,32 @@ export type TPersonalInfo = {
   gender: string;
   phoneNumber: string;
   eligibility: string;
+  exchangeRateId: number;
   maritalStatus: string;
   nationality: string;
   address: TAddress;
-  exchangeRateId?: number;
-  passportExpirationDate?: string;
+  passportExpirationDate: string;
   validDocumentUrl?: string;
+  alternativeEmail?: string;
+  alternativePhoneNumber?: string;
+  nin?: string;
 };
 
 export type TJobInfo = {
   startDate: string;
-  monthlyGross: number;
   employmentType: string;
   workModel: string;
   numberOfDaysPerWeek: number;
   hireDate: string;
   probationEndDate: string;
   confirmationDate: string;
-  lineManagerId?: number;
-  payGradeId?: number;
-  branchId?: number;
+  lineManagerId: number;
+  branchId: number;
   payrollType?: "direct-salary" | "office" | "wages";
+  monthlyGross: number;
+  payGradeId: number;
+  frequency?: "daily" | "monthly";
+  hourlyRate: number;
 };
 
 export type TWallet = {

@@ -82,8 +82,6 @@ export const PersonalInformation: React.FC<IProps> = ({
         alternativeEmail: personalInfo?.alternativeEmail,
         alternativePhoneNumber: personalInfo?.alternativePhoneNumber,
         nin: personalInfo?.nin,
-        taxId: personalInfo?.taxId,
-        taxAuthority: personalInfo?.taxAuthority,
       });
       setSelectedEligibility(
         personalInfo.eligibility as unknown as TEmploymentEligibity
@@ -122,8 +120,6 @@ export const PersonalInformation: React.FC<IProps> = ({
             alternativeEmail: data.alternativeEmail,
             alternativePhoneNumber: data.alternativePhoneNumber,
             nin: data.nin,
-            taxId: data.taxId,
-            taxAuthority: data.taxAuthority,
           },
         },
         {

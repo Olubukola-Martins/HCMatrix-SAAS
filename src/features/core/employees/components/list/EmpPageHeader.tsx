@@ -6,42 +6,77 @@ import { AddMultipleEmployees } from "../AddMultipleEmployees";
 import FilterEmployeeDrawer from "../FilterEmployeeDrawer";
 import UploadFileModal from "../UploadFileModal";
 import { PageIntro } from "components/layout/PageIntro";
+import ImportEmployees from "../bulkImport/ImportEmployees";
 
+// TODO: Use +234 in number imports as opposed to country name
+
+// Personal
+// Job
+// Employee Info - add branch
+// Emergency Contact
+
+// thehcmsnapnetsolutionsdb
+
+// TODO: Update Activity log
+
+// TODO: Probably weekend work on aws: fin: cloud practitioner this week
+// TODO: For holiday, refactor input to be a datepicker(month), and a day(with validation based on month picked)
+
+// TODO: Work on add single employee, refactor
+// TODO: Also ability to change employee status, and the different statuses [probation, active, inactive{on-leave}, disengaged]
+// TODO: Also ability to delete employee provided there are no connections
+// TODO: Implement BUlk actions for employee table like add 2 department, assign job, refer to hcm v2, ... assign line manager
+
+type TAction = "bulk-import" | "invite" | "filter-employees" | "test-import";
 const EmpPageHeader = () => {
-  const [importEmployeeDrawer, setImportEmployeeDrawer] = useState(false);
-  const [openF, setOpenF] = useState(false);
-
-  const [addMEmployees, setAddMEmployees] = useState(false);
+  const [action, setAction] = useState<TAction>();
+  const clearAction = () => {
+    setAction(undefined);
+  };
   return (
     <>
+      {/* TODO: Test and implement bulk upload */}
       <UploadFileModal
-        open={importEmployeeDrawer}
-        handleClose={() => setImportEmployeeDrawer(false)}
+        open={action === "bulk-import"}
+        handleClose={clearAction}
       />
-      <FilterEmployeeDrawer open={openF} handleClose={() => setOpenF(false)} />
+      {/* TODO: Implement filter for employees, as per by department, expatriate, role */}
+      <FilterEmployeeDrawer
+        open={action === "filter-employees"}
+        handleClose={clearAction}
+      />
       <AddMultipleEmployees
-        open={addMEmployees}
-        handleClose={() => setAddMEmployees(false)}
+        open={action === "invite"}
+        handleClose={clearAction}
+      />
+      <ImportEmployees
+        open={action === "test-import"}
+        handleClose={clearAction}
       />
       <div className="flex justify-between">
         <PageIntro title="Employees" link="/settings" />
         <div className="flex items-center gap-3">
+          {/* TODO: Create an Export Modal to allow for filtering before export */}
           <Button
             icon={<ExportOutlined />}
             type="text"
             title="Export Employee Data"
           />
+          {/* TODO: Reafactor to Be a Dropdown Btn */}
           <Dropdown
             overlay={
               <Menu>
                 <Menu.Item>
                   <Link to="/settings/add-employee">Add Single Employee</Link>
                 </Menu.Item>
-                <Menu.Item onClick={() => setAddMEmployees(true)}>
+                <Menu.Item onClick={() => setAction("invite")}>
                   Invite Multiple Users
                 </Menu.Item>
-                <Menu.Item onClick={() => setImportEmployeeDrawer(true)}>
+                <Menu.Item onClick={() => setAction("bulk-import")}>
                   Import Employees
+                </Menu.Item>
+                <Menu.Item onClick={() => setAction("test-import")}>
+                  Test Import
                 </Menu.Item>
               </Menu>
             }
@@ -74,7 +109,7 @@ const EmpPageHeader = () => {
           /> */}
           <button
             className="transparentButton flex items-center gap-2"
-            onClick={() => setOpenF(true)}
+            onClick={() => setAction("filter-employees")}
           >
             <span>Filter</span>
           </button>

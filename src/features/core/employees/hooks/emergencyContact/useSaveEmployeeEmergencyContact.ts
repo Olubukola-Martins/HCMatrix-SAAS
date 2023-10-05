@@ -3,13 +3,9 @@ import { MICROSERVICE_ENDPOINTS } from "config/enviroment";
 import { useApiAuth } from "hooks/useApiAuth";
 import { useMutation } from "react-query";
 import { ICurrentCompany } from "types";
+import { TEmergencyContact } from "../../types";
 
-type TData = {
-  fullName: string;
-  address: string;
-  relationship: string;
-  phoneNumber: string;
-};
+type TData = TEmergencyContact;
 const createData = async (props: {
   employeeId: number;
   data: TData;
