@@ -1,9 +1,5 @@
-import { TablePaginationConfig } from "antd";
-
 import React, { useState } from "react";
-
 import ActiveEmpTableView from "./ActiveEmpTableView";
-import { DEFAULT_PAGE_SIZE } from "constants/general";
 import { useFetchEmployees } from "../../hooks/useFetchEmployees";
 import { TEmployee } from "../../types";
 import { usePagination } from "hooks/usePagination";
