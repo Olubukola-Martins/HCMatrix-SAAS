@@ -83,6 +83,8 @@ const ImportEmployees: React.FC<IProps> = ({ open, handleClose }) => {
                 dataToBeSubmitted,
                 handleNext: () => setActiveStep(3),
                 handlePrev: () => setActiveStep(1),
+                handleDataToBeSubmitted: (data) => setDataToBeSubmitted(data),
+                sections: selectedSections,
               }}
             />
           </div>

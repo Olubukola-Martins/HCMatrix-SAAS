@@ -131,12 +131,14 @@ export const UploadEmployeeBulkImport = ({
         <Form.Item
           label="Import for:"
           name="sections"
-          rules={generalValidationRules}
+          // No Validation Needed as there is a default value
         >
           <Select
+            defaultValue={["employeeInformation"]}
             options={BULK_EMPLOYEE_IMPORT_MAPPING_SECTIONS.map((item) => ({
               label: <span className="capitalize">{item.title}</span>,
               value: item.key,
+              disabled: item.key === "employeeInformation",
             }))}
             mode="multiple"
             placeholder="What data are you importing"

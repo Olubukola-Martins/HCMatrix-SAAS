@@ -25,7 +25,7 @@ export type TEmployeeMappingSectionInput = {
   optional?: boolean;
   children?: TEmployeeMappingSectionInput[];
 };
-type EmployeeMappingSectionKeyType =
+export type EmployeeMappingSectionKeyType =
   | "personalInformation"
   | "jobInformation"
   | "emergencyContact"

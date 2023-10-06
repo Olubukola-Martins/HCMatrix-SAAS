@@ -10,7 +10,7 @@ export const EMPLOYEE_BULK_IMPORT_STEPS = [
   "Confirmation",
 ];
 
-export const COMPULSORY_BULK_MAPPING_SECTION_FOR_EMPLOYEE_INFO: TBulkEmployeeImportMappingSection =
+const COMPULSORY_BULK_MAPPING_SECTION_FOR_EMPLOYEE_INFO: TBulkEmployeeImportMappingSection =
   {
     title: EmployeeMappingSectionEnum.COMPULSORY_SECTION,
     key: "employeeInformation",
@@ -24,6 +24,7 @@ export const COMPULSORY_BULK_MAPPING_SECTION_FOR_EMPLOYEE_INFO: TBulkEmployeeImp
   };
 export const BULK_EMPLOYEE_IMPORT_MAPPING_SECTIONS: TBulkEmployeeImportMappingSection[] =
   [
+    COMPULSORY_BULK_MAPPING_SECTION_FOR_EMPLOYEE_INFO,
     {
       title: EmployeeMappingSectionEnum.PERSONAL_INFORMATION,
       key: "personalInformation",

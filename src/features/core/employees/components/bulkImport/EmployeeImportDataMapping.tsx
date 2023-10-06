@@ -1,15 +1,13 @@
-import { Collapse, Form } from "antd";
+import { Form } from "antd";
 import MappingFormGroup from "./MappingFormGroup";
 import { AppButton } from "components/button/AppButton";
 import {
   TBulkEmployeeImportMappingSection,
   TBulkImportEmployeeProp,
 } from "../../types/bulk-import";
-import {
-  BULK_EMPLOYEE_IMPORT_MAPPING_SECTIONS,
-  COMPULSORY_BULK_MAPPING_SECTION_FOR_EMPLOYEE_INFO,
-} from "../../constants";
+import { BULK_EMPLOYEE_IMPORT_MAPPING_SECTIONS } from "../../constants";
 import { useState } from "react";
+import FramerAccordian from "components/accordian/FramerAccordian";
 
 interface IProps {
   handleNext: () => void;
@@ -20,7 +18,6 @@ interface IProps {
   retrievedData: (string | number)[][];
 }
 
-const { Panel } = Collapse;
 const EmployeeImportDataMapping = ({
   handlePrev,
   handleNext,
@@ -133,34 +130,24 @@ const EmployeeImportDataMapping = ({
         onFinish={handleSubmit}
         form={form}
       >
-        <Collapse
-          defaultActiveKey={[
-            COMPULSORY_BULK_MAPPING_SECTION_FOR_EMPLOYEE_INFO.key,
-          ]}
-          accordion
-        >
-          <Panel
-            header={COMPULSORY_BULK_MAPPING_SECTION_FOR_EMPLOYEE_INFO.title}
-            key={COMPULSORY_BULK_MAPPING_SECTION_FOR_EMPLOYEE_INFO.key}
-          >
-            <MappingFormGroup
-              columns={columns}
-              Form={Form}
-              formInputs={
-                COMPULSORY_BULK_MAPPING_SECTION_FOR_EMPLOYEE_INFO.inputs
-              }
-            />
-          </Panel>
+        <div className="flex flex-col gap-4">
           {sections.map((item) => (
-            <Panel header={item.title} key={item.key}>
+            <FramerAccordian
+              key={item.key}
+              heading={
+                <h5 className="text-black  text-sm   font-semibold">
+                  {item.title}
+                </h5>
+              }
+            >
               <MappingFormGroup
                 columns={columns}
                 Form={Form}
                 formInputs={item.inputs}
               />
-            </Panel>
+            </FramerAccordian>
           ))}
-        </Collapse>
+        </div>
       </Form>
 
       {/* buttons */}

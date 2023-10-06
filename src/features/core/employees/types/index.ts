@@ -263,11 +263,11 @@ export type TJobInfo = {
   hireDate: string;
   probationEndDate: string;
   confirmationDate: string;
-  lineManagerId: number;
-  branchId: number;
+  lineManagerId?: number;
+  branchId?: number;
   payrollType?: "direct-salary" | "office" | "wages";
   monthlyGross: number;
-  payGradeId: number;
+  payGradeId?: number;
   frequency?: "daily" | "monthly";
   hourlyRate: number;
 };

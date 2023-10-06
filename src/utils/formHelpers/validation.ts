@@ -2,10 +2,15 @@ import { Rule } from "antd/lib/form";
 import moment, { Moment } from "moment";
 
 // helpers
-const isDateGreaterThanCurrentDay = (date: Moment) => {
+export const isDateGreaterThanCurrentDay = (date: Moment) => {
   const currentDate = moment();
   if (!date) return;
   return date.isAfter(currentDate, "day"); // Check if selected date is greater than the current day
+};
+export const isDateLesserThanOrEqualToCurrentDay = (date: Moment) => {
+  const currentDate = moment();
+  if (!date) return;
+  return date.isSameOrBefore(currentDate, "day"); // Check if selected date is greater than the current day
 };
 // helpers -end
 
