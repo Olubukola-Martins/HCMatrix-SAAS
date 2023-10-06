@@ -26,6 +26,13 @@ export const EMPLOYEE_TABLE_COLUMNS: ColumnsType<TEmployee> = [
     render: (_, item) => item.empUid,
   },
   {
+    title: "Branch",
+    dataIndex: "Branch",
+    key: "Branch",
+    // render: (_, item) => item.branch?.name ?? "none",
+    render: (_, item) => "___",
+  },
+  {
     title: "Department",
     dataIndex: "department",
     key: "department",

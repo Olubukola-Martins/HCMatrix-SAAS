@@ -11,6 +11,9 @@ const FilterEmployeeDrawer = ({ handleClose, open }: IDrawerProps) => {
           <Form.Item name={"gender"} label="Gender">
             <Select placeholder="Select a gender" />
           </Form.Item>
+          <Form.Item name={"brnchId"} label="Branch">
+            <Select placeholder="Select a Branch" />
+          </Form.Item>
           <Form.Item name={"departmentId"} label="Department">
             <Select placeholder="Select a department" />
           </Form.Item>
