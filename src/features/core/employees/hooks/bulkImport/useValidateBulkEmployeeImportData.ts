@@ -8,7 +8,6 @@ import {
 import { pluralOrSingular } from "utils/dataHelpers/pluralOrSingular";
 import { useFetchCountries } from "hooks/useFetchCountries";
 import { TCountry } from "types/country";
-import { RELATIONSHIPS } from "constants/general";
 import {
   validateBulkEmergencyContact,
   validateBulkEmployeeInfo,
@@ -40,7 +39,7 @@ type TDependencies = {
 };
 const validateData = async (props: {
   data: TData;
-  auth: ICurrentCompany;
+  // auth: ICurrentCompany;
   dependencies: TDependencies;
 }): Promise<{
   isDataValid: boolean;
@@ -148,7 +147,7 @@ const validateData = async (props: {
 };
 
 export const useValidateBulkEmployeeImportData = () => {
-  const { token, companyId } = useApiAuth();
+  // const { token, companyId } = useApiAuth();
   const { data: countries } = useFetchCountries();
   const { data: employees } = useFetchEmployees({
     pagination: { limit: 500, offset: 0 },
@@ -175,7 +174,7 @@ export const useValidateBulkEmployeeImportData = () => {
           exchangeRates: exchangeRates?.data,
         },
 
-        auth: { token, companyId },
+        // auth: { token, companyId },
       }),
     {}
   );

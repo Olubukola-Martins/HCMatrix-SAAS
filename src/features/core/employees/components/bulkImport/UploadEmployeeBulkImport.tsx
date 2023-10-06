@@ -9,6 +9,8 @@ import { TFileType } from "types/files";
 import { AppButton } from "components/button/AppButton";
 import { DEFAULT_MAX_FILE_UPLOAD_SIZE_IN_MB } from "constants/files";
 import ErrorBoundary from "components/errorHandlers/ErrorBoundary";
+import { useDownloadEmployeeImportTemplate } from "../../hooks/bulkImport/useDownloadEmployeeImportTemplate";
+import { openNotification } from "utils/notifications";
 
 const getBase64 = (img: RcFile, callback: (url: string) => void) => {
   const reader = new FileReader();
@@ -121,6 +123,30 @@ export const UploadEmployeeBulkImport = ({
     handleSections(selectedSections);
     handleNext();
   };
+  const { mutate: mutateDownload, isLoading: downloadLoading } =
+    useDownloadEmployeeImportTemplate();
+
+  const handleDownload = () => {
+    mutateDownload(undefined, {
+      onError: (err: any) => {
+        openNotification({
+          state: "error",
+          title: "Error Occurred",
+          description:
+            err?.response.data.message ?? err?.response.data.error.message,
+        });
+      },
+      onSuccess: (res: any) => {
+        openNotification({
+          state: "success",
+
+          title: "Success",
+          description: res.data.message,
+          // duration: 0.4,
+        });
+      },
+    });
+  };
   return (
     <ErrorBoundary
       message="There seems to be an issue with file, is the file permission restricted!"
@@ -157,7 +183,10 @@ export const UploadEmployeeBulkImport = ({
         <div className="border border-dotted border-slate-500 rounded flex flex-col items-center gap-2 py-3 px-2">
           <p>Select file to be Imported</p>
           <Typography.Text title="Please Download template and populate">
-            <span className="text-sm pt-1 font-medium cursor-pointer hover:text-caramel underline">
+            <span
+              onClick={() => handleDownload()}
+              className="text-sm pt-1 font-medium cursor-pointer hover:text-caramel underline"
+            >
               Download template
             </span>
           </Typography.Text>
