@@ -10,6 +10,7 @@ import {
 } from "../../types/bulk-import";
 import EmployeeImportDataMapping from "./EmployeeImportDataMapping";
 import EmployeeDataVerification from "./EmployeeDataVerification";
+import EmployeeDataImportConfirmation from "./EmployeeDataImportConfirmation";
 
 interface IProps extends IModalProps {}
 
@@ -85,6 +86,21 @@ const ImportEmployees: React.FC<IProps> = ({ open, handleClose }) => {
                 handlePrev: () => setActiveStep(1),
                 handleDataToBeSubmitted: (data) => setDataToBeSubmitted(data),
                 sections: selectedSections,
+              }}
+            />
+          </div>
+          <div className={activeStep === 3 ? "block" : "hidden"}>
+            <EmployeeDataImportConfirmation
+              {...{
+                dataToBeSubmitted,
+                handleClose: () => {
+                  setActiveStep(0);
+                  setDataToBeSubmitted([]);
+                  setSelectedSections([]);
+                  setRetrievedData([]);
+                  handleClose();
+                },
+                handlePrev: () => setActiveStep(2),
               }}
             />
           </div>

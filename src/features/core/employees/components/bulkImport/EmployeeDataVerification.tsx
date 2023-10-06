@@ -44,7 +44,6 @@ const EmployeeDataVerification: React.FC<IProps> = ({
           });
         },
         onSuccess: (res) => {
-          handleDataToBeSubmitted(res.employees);
           setErrors(res.errors);
           openNotification({
             state: res.isDataValid === false ? "error" : "success",
@@ -56,6 +55,8 @@ const EmployeeDataVerification: React.FC<IProps> = ({
             duration: 2,
           });
           if (res.isDataValid) {
+            handleDataToBeSubmitted(res.employees);
+            setErrors([]);
             handleNext();
           }
         },

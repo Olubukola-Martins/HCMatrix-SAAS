@@ -7,6 +7,11 @@ export const isDateGreaterThanCurrentDay = (date: Moment) => {
   if (!date) return;
   return date.isAfter(currentDate, "day"); // Check if selected date is greater than the current day
 };
+export const isDateGreaterThanOrEqualToCurrentDay = (date: Moment) => {
+  const currentDate = moment();
+  if (!date) return;
+  return date.isSameOrAfter(currentDate, "day"); // Check if selected date is greater than the current day
+};
 export const isDateLesserThanOrEqualToCurrentDay = (date: Moment) => {
   const currentDate = moment();
   if (!date) return;

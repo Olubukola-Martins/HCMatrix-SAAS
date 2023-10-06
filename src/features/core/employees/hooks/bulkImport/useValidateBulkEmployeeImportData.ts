@@ -13,13 +13,15 @@ import {
   validateBulkEmergencyContact,
   validateBulkEmployeeInfo,
   validateBulkJobInformation,
+  validateBulkPersonalInformation,
 } from "../../utils/bulk-import";
 import { TEmployee } from "../../types";
 import { TBranch } from "features/core/branches/types";
-import { TPayGrade } from "features/payroll/types";
+import { TExchangeRateListItem, TPayGrade } from "features/payroll/types";
 import { useFetchEmployees } from "../useFetchEmployees";
 import { useFetchBranches } from "features/core/branches/hooks/useFetchBranches";
 import { useGetPayGrades } from "features/payroll/hooks/payGrades/useGetPayGrades";
+import { useGetExchangeRates } from "features/payroll/hooks/exhangeRates/useGetExchangeRates";
 
 type TData = {
   dataToBeSubmitted: TBulkImportEmployeeProp[];
@@ -34,6 +36,7 @@ type TDependencies = {
   employees?: TEmployee[];
   branches?: TBranch[];
   payGrades?: TPayGrade[];
+  exchangeRates?: TExchangeRateListItem[];
 };
 const validateData = async (props: {
   data: TData;
@@ -54,6 +57,7 @@ const validateData = async (props: {
     branches,
     employees: employeeFetchedData,
     payGrades,
+    exchangeRates,
   } = dependencies;
 
   const employees: TBulkImportEmployeeProp[] = [];
@@ -103,6 +107,19 @@ const validateData = async (props: {
         jobInformation: validateJobInformation.jobInformation,
       };
       // validate employee personal info
+      let validatePersonalInformation = validateBulkPersonalInformation({
+        employee,
+        rowId,
+        countries,
+        exchangeRates,
+      });
+      if (validatePersonalInformation.isDataValid === false) {
+        errors = [...errors, ...validatePersonalInformation.errors];
+      }
+      transformedEmployee = {
+        ...transformedEmployee,
+        personalInformation: validatePersonalInformation.personalInformation,
+      };
 
       //   push to employees
       employees.push(transformedEmployee);
@@ -142,6 +159,9 @@ export const useValidateBulkEmployeeImportData = () => {
   const { data: payGrades } = useGetPayGrades({
     pagination: { limit: 500, offset: 0 },
   });
+  const { data: exchangeRates } = useGetExchangeRates({
+    pagination: { limit: 500, offset: 0 },
+  });
   //   TODO: Refactor to be the actual mutate returned, so you can block until the other hooks get data
   return useMutation(
     (props: TData) =>
@@ -152,6 +172,7 @@ export const useValidateBulkEmployeeImportData = () => {
           employees: employees?.data,
           branches: branches?.data,
           payGrades: payGrades?.data,
+          exchangeRates: exchangeRates?.data,
         },
 
         auth: { token, companyId },

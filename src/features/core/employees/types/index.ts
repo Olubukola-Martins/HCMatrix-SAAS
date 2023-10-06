@@ -244,7 +244,7 @@ export type TPersonalInfo = {
   gender: string;
   phoneNumber: string;
   eligibility: string;
-  exchangeRateId: number;
+  exchangeRateId?: number;
   maritalStatus: string;
   nationality: string;
   address: TAddress;

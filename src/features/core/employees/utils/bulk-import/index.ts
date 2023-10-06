@@ -1,7 +1,10 @@
 // VALIDATION FNS
 
 import {
+  EMPLOYMENT_ELIGIBILITIES,
   EMPLOYMENT_TYPES,
+  GENDERS,
+  MARITAL_STATUSES,
   RELATIONSHIPS,
   WORK_MODELS,
 } from "constants/general";
@@ -12,9 +15,12 @@ import {
   EmployeeMappingSectionKeyType,
 } from "../../types/bulk-import";
 import { TBranch } from "features/core/branches/types";
-import { TPayGrade } from "features/payroll/types";
+import { TExchangeRateListItem, TPayGrade } from "features/payroll/types";
 import moment from "moment";
-import { isDateLesserThanOrEqualToCurrentDay } from "utils/formHelpers/validation";
+import {
+  isDateGreaterThanOrEqualToCurrentDay,
+  isDateLesserThanOrEqualToCurrentDay,
+} from "utils/formHelpers/validation";
 import { TPayrollSchemeType } from "features/payroll/types/payrollSchemes";
 import { PAYROLL_SCHEME_OPTIONS } from "features/payroll/constants";
 
@@ -500,6 +506,194 @@ export const validateBulkJobInformation = (
   };
 
   return { isDataValid: errors.length === 0, errors, jobInformation };
+};
+
+export const validateBulkPersonalInformation = (
+  props: TValidateProps & {
+    exchangeRates?: TExchangeRateListItem[];
+    countries?: TCountry[];
+  }
+): {
+  isDataValid: boolean;
+  errors: TBulkEmployeeImportError[];
+  personalInformation: TBulkImportEmployeeProp["personalInformation"];
+} => {
+  const { employee, rowId, exchangeRates, countries } = props;
+
+  const category: EmployeeMappingSectionKeyType = "personalInformation";
+  const errors: TBulkEmployeeImportError[] = [];
+  const INDENTIFIER = employee?.empUid ?? `Row ${rowId}`;
+  const ACCEPTED_GENDER_VALUES = GENDERS.map((item) => item.value);
+  const ACCEPTED_MARITAL_STATUS_VALUES = MARITAL_STATUSES.map(
+    (item) => item.value
+  );
+  const ACCEPTED_EMPLOYMENT_ELIGIBILITIES_VALUES = EMPLOYMENT_ELIGIBILITIES;
+
+  let personalInformation = employee?.personalInformation;
+  if (personalInformation === undefined) {
+    return {
+      isDataValid: true,
+      personalInformation,
+      errors,
+    };
+  }
+  // dob
+
+  if (
+    (!isValueEmpty(personalInformation?.dob) &&
+      moment(personalInformation?.dob).isValid() === true &&
+      isDateLesserThanOrEqualToCurrentDay(moment(personalInformation?.dob)) ===
+        true) === false
+  ) {
+    errors.push({
+      category,
+      content: `${INDENTIFIER} date of birth has to be lesser than or equal today!`,
+    });
+  }
+
+  // gender
+  if (
+    !isValueEmpty(personalInformation?.gender) &&
+    ACCEPTED_GENDER_VALUES.map((item) =>
+      item.toLowerCase().split(" ").join("-")
+    ).includes(`${personalInformation?.gender}.`.toLowerCase()) === false
+  ) {
+    errors.push({
+      category,
+      content: `${INDENTIFIER} work model has to be one of the following ${ACCEPTED_GENDER_VALUES.join(
+        ","
+      )}.`,
+    });
+  }
+
+  //phone
+  if (
+    (!isValueEmpty(personalInformation?.phoneNumber) &&
+      isPhoneNumberValid(personalInformation?.phoneNumber) === true) === false
+  ) {
+    errors.push({
+      category,
+      content: `${INDENTIFIER} phone number is invalid.`,
+    });
+  }
+
+  // elgibility
+  if (
+    !isValueEmpty(personalInformation?.eligibility) &&
+    ACCEPTED_EMPLOYMENT_ELIGIBILITIES_VALUES.map((item) =>
+      item.toLowerCase().split(" ").join("-")
+    ).includes(`${personalInformation?.eligibility}.`.toLowerCase()) === false
+  ) {
+    errors.push({
+      category,
+      content: `${INDENTIFIER} eligibility has to be one of the following ${ACCEPTED_EMPLOYMENT_ELIGIBILITIES_VALUES.join(
+        ","
+      )}.`,
+    });
+  }
+
+  // exchange rate
+  if (
+    (!isValueEmpty(personalInformation?.exchangeRateId) &&
+      !!exchangeRates?.find(
+        (item) =>
+          item.currency ===
+          (personalInformation?.exchangeRateId as unknown as string)
+      ) === true) === false
+  ) {
+    errors.push({
+      category,
+      content: `${INDENTIFIER} no exchange rate exists with the currency provided!`,
+    });
+  }
+
+  // marital status
+  if (
+    !isValueEmpty(personalInformation?.maritalStatus) &&
+    ACCEPTED_MARITAL_STATUS_VALUES.map((item) =>
+      item.toLowerCase().split(" ").join("-")
+    ).includes(`${personalInformation?.maritalStatus}.`.toLowerCase()) === false
+  ) {
+    errors.push({
+      category,
+      content: `${INDENTIFIER} marital status has to be one of the following ${ACCEPTED_MARITAL_STATUS_VALUES.join(
+        ","
+      )}.`,
+    });
+  }
+
+  // nationality
+  if (
+    (!isValueEmpty(personalInformation?.nationality) &&
+      !!countries?.find(
+        (item) =>
+          item.name === (personalInformation?.nationality as unknown as string)
+      ) === true) === false
+  ) {
+    errors.push({
+      category,
+      content: `${INDENTIFIER} no employee exists with the employee id provided!`,
+    });
+  }
+
+  // passportExpirationDate
+
+  if (
+    (!isValueEmpty(personalInformation?.passportExpirationDate) &&
+      moment(personalInformation?.passportExpirationDate).isValid() === true &&
+      isDateGreaterThanOrEqualToCurrentDay(
+        moment(personalInformation?.passportExpirationDate)
+      ) === true) === false
+  ) {
+    errors.push({
+      category,
+      content: `${INDENTIFIER} passport expiration date has to be greater than or equal today!`,
+    });
+  }
+
+  //alternativeEmail
+  if (
+    (!isValueEmpty(personalInformation?.alternativeEmail) &&
+      isEmailValid(personalInformation?.alternativeEmail ?? "") === true) ===
+    false
+  ) {
+    errors.push({
+      category,
+      content: `${INDENTIFIER}  alternative email is invalid`,
+    });
+  }
+  //alternativePhoneNumber
+  if (
+    (!isValueEmpty(personalInformation?.alternativePhoneNumber) &&
+      isPhoneNumberValid(personalInformation?.alternativePhoneNumber ?? "") ===
+        true) === false
+  ) {
+    errors.push({
+      category,
+      content: `${INDENTIFIER}  alternative phone number has to be digits`,
+    });
+  }
+  // nin
+  if (
+    (!isValueEmpty(personalInformation?.nin) &&
+      isPhoneNumberValid(personalInformation?.nin ?? "") === true) === false
+  ) {
+    errors.push({
+      category,
+      content: `${INDENTIFIER}  National Identification number has to be digits`,
+    });
+  }
+
+  personalInformation = {
+    ...personalInformation,
+    exchangeRateId: exchangeRates?.find(
+      (item) =>
+        item.currency ===
+        (personalInformation?.exchangeRateId as unknown as string)
+    )?.id,
+  };
+
+  return { isDataValid: errors.length === 0, errors, personalInformation };
 };
 
 // HELPERS FNS

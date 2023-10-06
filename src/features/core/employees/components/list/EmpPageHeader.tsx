@@ -4,7 +4,6 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { AddMultipleEmployees } from "../AddMultipleEmployees";
 import FilterEmployeeDrawer from "../FilterEmployeeDrawer";
-import UploadFileModal from "../UploadFileModal";
 import { PageIntro } from "components/layout/PageIntro";
 import ImportEmployees from "../bulkImport/ImportEmployees";
 
@@ -36,10 +35,7 @@ const EmpPageHeader = () => {
   return (
     <>
       {/* TODO: Test and implement bulk upload */}
-      <UploadFileModal
-        open={action === "bulk-import"}
-        handleClose={clearAction}
-      />
+
       {/* TODO: Implement filter for employees, as per by department, expatriate, role */}
       <FilterEmployeeDrawer
         open={action === "filter-employees"}
@@ -50,7 +46,7 @@ const EmpPageHeader = () => {
         handleClose={clearAction}
       />
       <ImportEmployees
-        open={action === "test-import"}
+        open={action === "bulk-import"}
         handleClose={clearAction}
       />
       <div className="flex justify-between">
@@ -74,9 +70,6 @@ const EmpPageHeader = () => {
                 </Menu.Item>
                 <Menu.Item onClick={() => setAction("bulk-import")}>
                   Import Employees
-                </Menu.Item>
-                <Menu.Item onClick={() => setAction("test-import")}>
-                  Test Import
                 </Menu.Item>
               </Menu>
             }
