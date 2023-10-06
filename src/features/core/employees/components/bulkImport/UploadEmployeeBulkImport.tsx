@@ -3,7 +3,6 @@ import type { UploadChangeParam } from "antd/es/upload";
 import type { RcFile, UploadFile, UploadProps } from "antd/es/upload/interface";
 import { useState } from "react";
 import * as XLSX from "xlsx";
-import { generalValidationRules } from "utils/formHelpers/validation";
 import { BULK_EMPLOYEE_IMPORT_MAPPING_SECTIONS } from "../../constants";
 import { TBulkEmployeeImportMappingSection } from "../../types/bulk-import";
 import { TFileType } from "types/files";

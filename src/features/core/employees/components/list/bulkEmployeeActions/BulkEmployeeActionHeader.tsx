@@ -7,17 +7,20 @@ import { BulkAssignDesignation } from "./BulkAssignDesignation";
 import { BulkAssignToGroup } from "./BulkAssignToGroup";
 import { BulkAssignRole } from "./BulkAssignRole";
 import { BulkDeleteEmployees } from "./BulkDeleteEmployees";
+import { BulkAssignBranch } from "./BulkAssignBranch";
 
 type TAction =
   | "change status"
   | "assign line manager"
   | "assign designation"
+  | "assign branch"
   | "add to group"
   | "assign role"
   | "delete";
 const EMPLOYEE_BULK_ACTIONS: TAction[] = [
   "change status",
   "assign line manager",
+  "assign branch",
   "assign designation",
   "add to group",
   "assign role",
@@ -41,6 +44,11 @@ const BulkEmployeeActionHeader: React.FC<{ data: TEmployee[] }> = ({
       <BulkAssignLineManager
         handleClose={() => setAction(undefined)}
         open={action === "assign line manager"}
+        employeeIds={data.map((item) => item.id)}
+      />
+      <BulkAssignBranch
+        handleClose={() => setAction(undefined)}
+        open={action === "assign branch"}
         employeeIds={data.map((item) => item.id)}
       />
       <BulkAssignDesignation
