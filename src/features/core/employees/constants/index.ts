@@ -1,8 +1,19 @@
+import { TEmployeeStatus } from "../types";
 import {
   EmployeeMappingSectionEnum,
   TBulkEmployeeImportMappingSection,
 } from "../types/bulk-import";
 
+export const EMPLOYEE_STATUSES: TEmployeeStatus[] = [
+  "confirmed",
+  "terminated",
+  "suspended",
+  "probation",
+];
+export const EMPLOYEE_STATUSES_OPTIONS = EMPLOYEE_STATUSES.map((item) => ({
+  label: item,
+  value: item,
+}));
 export const EMPLOYEE_BULK_IMPORT_STEPS = [
   "Upload File",
   "Mapping details",

@@ -6,19 +6,11 @@ import ActiveEmpTableView from "./ActiveEmpTableView";
 import { DEFAULT_PAGE_SIZE } from "constants/general";
 import { useFetchEmployees } from "../../hooks/useFetchEmployees";
 import { TEmployee } from "../../types";
+import { usePagination } from "hooks/usePagination";
+import BulkEmployeeActionHeader from "./bulkEmployeeActions/BulkEmployeeActionHeader";
 
 const ActiveEmployeesContainer = () => {
-  const [pagination, setPagination] = useState<TablePaginationConfig>({
-    current: 1,
-    pageSize: DEFAULT_PAGE_SIZE,
-    total: 0,
-    showSizeChanger: false,
-  });
-
-  const offset =
-    pagination.current && pagination.current !== 1
-      ? (pagination.pageSize ?? DEFAULT_PAGE_SIZE) * (pagination.current - 1)
-      : 0;
+  const { pagination, onChange } = usePagination();
   const {
     data: employeeData,
     isSuccess,
@@ -26,31 +18,18 @@ const ActiveEmployeesContainer = () => {
   } = useFetchEmployees({
     status: ["probation", "confirmed"],
 
-    pagination: {
-      limit: pagination.pageSize,
-      offset,
-    },
+    pagination,
   });
-
+  const [selectedEmployees, setSelectedEmployees] = useState<TEmployee[]>([]);
   const rowSelection = {
-    onChange: (selectedRowKeys: React.Key[], selectedRows: TEmployee[]) => {},
-  };
-  const onChange = (newPagination: TablePaginationConfig | number) => {
-    if (typeof newPagination === "number") {
-      setPagination((val) => ({
-        ...val,
-        current: newPagination,
-      }));
-    } else {
-      setPagination((val) => ({
-        ...val,
-        current: newPagination.current,
-      }));
-    }
+    onChange: (selectedRowKeys: React.Key[], selectedRows: TEmployee[]) => {
+      setSelectedEmployees(selectedRows);
+    },
   };
 
   return (
-    <div>
+    <div className="flex flex-col gap-4">
+      <BulkEmployeeActionHeader data={selectedEmployees} />
       <ActiveEmpTableView
         rowSelection={{
           type: "checkbox",

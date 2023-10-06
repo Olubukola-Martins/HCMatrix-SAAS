@@ -116,8 +116,8 @@ export const UploadEmployeeBulkImport = ({
       submission.errors.forEach((err) => message.error(err));
       return;
     }
-    const selectedSections = BULK_EMPLOYEE_IMPORT_MAPPING_SECTIONS.filter(
-      (section) => data.sections.find((item: string) => item === section.key)
+    const selectedSections = BULK_EMPLOYEE_IMPORT_MAPPING_SECTIONS?.filter(
+      (section) => data?.sections?.find((item: string) => item === section?.key)
     );
     handleSections(selectedSections);
     handleNext();
