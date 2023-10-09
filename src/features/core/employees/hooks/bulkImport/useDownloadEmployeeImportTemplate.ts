@@ -1,3 +1,16 @@
+// TODO: Work on Duplicate Data Validation
+// ENSURE ADDRESS is properly mapped for personal info, and is also accounted for in the generated template
+// Work on testing validation and actually importing data
+// then move on to recent updates
+
+// Also the discussion of create vs update data, and also what fields are required and what happens when they are not filled
+
+// then move on to delete group, & member confirmation, and then to employee info & modals : account for branch, and then the user dashboard, and organogram
+
+// Also limit upload file for employee bulk import to one file
+
+// STICK TO FLOW , before switching to other tasks
+
 import { useMutation } from "react-query";
 import { EmployeeMappingSectionKeyType } from "../../types/bulk-import";
 import { useFetchCountries } from "hooks/useFetchCountries";

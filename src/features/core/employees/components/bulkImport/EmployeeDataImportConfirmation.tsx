@@ -13,11 +13,13 @@ interface IProps {
   handleClose: () => void;
   handlePrev: () => void;
   dataToBeSubmitted: TBulkImportEmployeeProp[];
+  confirmationMessages: string[];
 }
 const EmployeeDataImportConfirmation: React.FC<IProps> = ({
   handleClose,
   handlePrev,
   dataToBeSubmitted,
+  confirmationMessages,
 }) => {
   const queryClient = useQueryClient();
 
@@ -56,7 +58,10 @@ const EmployeeDataImportConfirmation: React.FC<IProps> = ({
   };
   return (
     <div>
-      <VerificationCallToAction employeeCount={dataToBeSubmitted.length} />
+      <VerificationCallToAction
+        employeeCount={dataToBeSubmitted.length}
+        confirmationMessages={confirmationMessages}
+      />
 
       <div className="flex flex-row justify-between w-full mt-4">
         <>
@@ -81,6 +86,7 @@ const EmployeeDataImportConfirmation: React.FC<IProps> = ({
 };
 const VerificationCallToAction: React.FC<{
   employeeCount: number;
+  confirmationMessages: string[];
 }> = ({ employeeCount }) => {
   return (
     <>

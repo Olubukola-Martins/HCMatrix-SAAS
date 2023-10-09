@@ -19,6 +19,7 @@ interface IProps {
   dataToBeSubmitted: TBulkImportEmployeeProp[];
   handleDataToBeSubmitted: (data: TBulkImportEmployeeProp[]) => void;
   sections: TBulkEmployeeImportMappingSection[];
+  handleConfirmationMessages: (data: string[]) => void;
 }
 const EmployeeDataVerification: React.FC<IProps> = ({
   handleNext,
@@ -26,6 +27,7 @@ const EmployeeDataVerification: React.FC<IProps> = ({
   handleDataToBeSubmitted,
   dataToBeSubmitted,
   sections,
+  handleConfirmationMessages,
 }) => {
   const [errors, setErrors] = useState<TBulkEmployeeImportError[]>([]);
   const { mutate, isLoading } = useValidateBulkEmployeeImportData();
@@ -56,6 +58,7 @@ const EmployeeDataVerification: React.FC<IProps> = ({
           });
           if (res.isDataValid) {
             handleDataToBeSubmitted(res.employees);
+            handleConfirmationMessages(res.confirmationMessages);
             setErrors([]);
             handleNext();
           }

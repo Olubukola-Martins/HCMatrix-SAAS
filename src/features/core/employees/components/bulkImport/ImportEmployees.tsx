@@ -24,6 +24,9 @@ const ImportEmployees: React.FC<IProps> = ({ open, handleClose }) => {
   const [dataToBeSubmitted, setDataToBeSubmitted] = useState<
     TBulkImportEmployeeProp[]
   >([]);
+  const [confirmationMessages, setConfirmationMessages] = useState<string[]>(
+    []
+  );
 
   return (
     <Modal
@@ -86,12 +89,15 @@ const ImportEmployees: React.FC<IProps> = ({ open, handleClose }) => {
                 handlePrev: () => setActiveStep(1),
                 handleDataToBeSubmitted: (data) => setDataToBeSubmitted(data),
                 sections: selectedSections,
+                handleConfirmationMessages: (messages) =>
+                  setConfirmationMessages(messages),
               }}
             />
           </div>
           <div className={activeStep === 3 ? "block" : "hidden"}>
             <EmployeeDataImportConfirmation
               {...{
+                confirmationMessages,
                 dataToBeSubmitted,
                 handleClose: () => {
                   setActiveStep(0);

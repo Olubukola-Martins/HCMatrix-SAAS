@@ -44,6 +44,7 @@ const validateData = async (props: {
 }): Promise<{
   isDataValid: boolean;
   errors: TBulkEmployeeImportError[];
+  confirmationMessages: string[];
   message: string;
   employees: TBulkImportEmployeeProp[];
 }> => {
@@ -61,6 +62,7 @@ const validateData = async (props: {
 
   const employees: TBulkImportEmployeeProp[] = [];
   let errors: TBulkEmployeeImportError[] = [];
+  const confirmationMessages: string[]=[]
 
   //   This Data will just be to create AND NOT update for the time being
   try {
@@ -133,6 +135,7 @@ const validateData = async (props: {
         singular: "error",
       })}`,
       employees,
+      confirmationMessages
     };
   } catch (error) {
     console.log(error, "WHY");
@@ -142,6 +145,7 @@ const validateData = async (props: {
       errors,
       message: "An error occured",
       employees,
+      confirmationMessages
     };
   }
 };

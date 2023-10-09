@@ -44,13 +44,10 @@ export const SaveDepartment: React.FC<IProps> = ({
     if (onSubmit?.isSuccess) {
       form.resetFields();
     }
-  }, [form, onSubmit?.isSuccess]);
-
-  useEffect(() => {
     if (department) {
       form.setFieldsValue({ ...department });
     }
-  }, [department, form]);
+  }, [form, onSubmit?.isSuccess, department]);
 
   return (
     <Modal
