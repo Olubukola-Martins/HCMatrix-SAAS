@@ -1,12 +1,20 @@
 import { useSignOut } from "react-auth-kit";
 import { useQuery } from "react-query";
-import { IGetSingleGroupProps, TGroup, TGroupMember } from "../types";
+import { TGroup, TGroupMember } from "../types";
 import axios from "axios";
+import { ICurrentCompany } from "types";
+import { useApiAuth } from "hooks/useApiAuth";
+
+export interface IGetSingleGroupProps {
+  id: number;
+}
 
 export const QUERY_KEY_FOR_SINGLE_GROUP = "single-group";
-export const getSingleGroup = async (
-  props: IGetSingleGroupProps
-): Promise<TGroup> => {
+export const getSingleGroup = async (vals: {
+  props: IGetSingleGroupProps;
+  auth: ICurrentCompany;
+}): Promise<TGroup> => {
+  const { props, auth } = vals;
   const id = props.id;
 
   const url = `${process.env.REACT_APP_UTILITY_BASE_URL}/company/group/${id}`;
@@ -14,8 +22,8 @@ export const getSingleGroup = async (
   const config = {
     headers: {
       Accept: "application/json",
-      Authorization: `Bearer ${props.token}`,
-      "x-company-id": props.companyId,
+      Authorization: `Bearer ${auth.token}`,
+      "x-company-id": auth.companyId,
     },
   };
 
@@ -43,31 +51,27 @@ export const getSingleGroup = async (
   return data;
 };
 
-export const useFetchSingleGroup = ({
-  id,
-  companyId,
-
-  token,
-}: IGetSingleGroupProps) => {
-  const signOut = useSignOut();
+export const useFetchSingleGroup = ({ id }: IGetSingleGroupProps) => {
+  const { token, companyId } = useApiAuth();
 
   const queryData = useQuery(
     [QUERY_KEY_FOR_SINGLE_GROUP, id],
     () =>
       getSingleGroup({
-        companyId,
-        id,
+        auth: {
+          companyId,
 
-        token,
+          token,
+        },
+        props: {
+          id,
+        },
       }),
     {
       // refetchInterval: false,
       // refetchIntervalInBackground: false,
       // refetchOnWindowFocus: false,
-      onError: (err: any) => {
-        signOut();
-        localStorage.clear();
-      },
+      onError: (err: any) => {},
     }
   );
 

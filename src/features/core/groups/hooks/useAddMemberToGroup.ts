@@ -1,31 +1,40 @@
 import axios from "axios";
+import { useApiAuth } from "hooks/useApiAuth";
 import { useMutation } from "react-query";
-import { IAddMemberToGroupProps } from "../types";
+import { ICurrentCompany } from "types";
 
-export const addMemberToGroup = async (props: IAddMemberToGroupProps) => {
+type IAddMemberToGroupProps = {
+  id: number;
+  body: {
+    employeeId: number;
+    isLead: boolean;
+  };
+};
+export const addMemberToGroup = async (vals: {
+  props: IAddMemberToGroupProps;
+  auth: ICurrentCompany;
+}) => {
+  const { props, auth } = vals;
   let url = `${process.env.REACT_APP_UTILITY_BASE_URL}/company/group/${props.id}/management`;
 
   const config = {
     headers: {
       Accept: "application/json",
-      Authorization: `Bearer ${props.token}`,
-      "x-company-id": props.companyId,
+      Authorization: `Bearer ${auth.token}`,
+      "x-company-id": auth.companyId,
     },
   };
 
   // necessary to make immediate changes when in  a central place when schema changes
-  const data: any = {
-    ...props,
-  };
-
-  delete data["companyId"];
-  delete data["token"];
-  delete data["id"];
+  const data = props.body;
 
   const response = await axios.post(url, data, config);
   return response;
 };
 
 export const useAddMemberToGroup = () => {
-  return useMutation(addMemberToGroup);
+  const { token, companyId } = useApiAuth();
+  return useMutation((props: IAddMemberToGroupProps) =>
+    addMemberToGroup({ props, auth: { token, companyId } })
+  );
 };

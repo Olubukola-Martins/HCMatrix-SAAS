@@ -1,23 +1,22 @@
 import axios from "axios";
-import { useApiAuth } from "hooks/useApiAuth";
 import { useMutation } from "react-query";
 import { ICurrentCompany } from "types";
-type TData = {
-  groupId: number;
-  managementId: number;
+import { useApiAuth } from "hooks/useApiAuth";
+
+interface TData {
+  id: number;
   body: {
-    employeeId: number;
-    isLead: boolean;
+    name: string;
+    description: string;
+    email: string;
   };
-};
-export const updateMemberInGroup = async (vals: {
+}
+export const updateData = async (vals: {
   props: TData;
   auth: ICurrentCompany;
 }) => {
   const { props, auth } = vals;
-
-  let url = `${process.env.REACT_APP_UTILITY_BASE_URL}/company/group/${props.groupId}/management/${props.managementId}`;
-
+  const url = `${process.env.REACT_APP_UTILITY_BASE_URL}/company/group/${props.id}`;
   const config = {
     headers: {
       Accept: "application/json",
@@ -26,15 +25,16 @@ export const updateMemberInGroup = async (vals: {
     },
   };
 
+  // necessary to make immediate changes when in  a central place when schema changes
   const data = props.body;
 
   const response = await axios.put(url, data, config);
   return response;
 };
 
-export const useUpdateMemberInGroup = () => {
+export const useUpdateGroup = () => {
   const { token, companyId } = useApiAuth();
   return useMutation((props: TData) =>
-    updateMemberInGroup({ props, auth: { token, companyId } })
+    updateData({ props, auth: { token, companyId } })
   );
 };

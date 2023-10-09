@@ -65,7 +65,7 @@ export const BranchesTableView = ({
   ];
   return (
     <motion.div
-      className="  mt-4"
+      className="mt-4"
       initial={{ opacity: 0, y: 400 }}
       animate={{
         opacity: 1,

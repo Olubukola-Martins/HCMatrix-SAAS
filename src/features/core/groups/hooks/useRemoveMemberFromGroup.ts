@@ -1,26 +1,34 @@
 import axios from "axios";
+import { useApiAuth } from "hooks/useApiAuth";
 import { useMutation } from "react-query";
-import { IUpdateMemberToGroupProps } from "../types";
+import { ICurrentCompany } from "types";
 
-export const removeMemberFromGroup = async (
-  props: IUpdateMemberToGroupProps
-) => {
-  let url = `${process.env.REACT_APP_UTILITY_BASE_URL}/company/group/${props.id}/management/${props.managementId}`;
+type TData = {
+  groupId: number;
+  managementId: number;
+};
+export const removeMemberFromGroup = async (vals: {
+  props: TData;
+  auth: ICurrentCompany;
+}) => {
+  const { props, auth } = vals;
+  let url = `${process.env.REACT_APP_UTILITY_BASE_URL}/company/group/${props.groupId}/management/${props.managementId}`;
 
   const config = {
     headers: {
       Accept: "application/json",
-      Authorization: `Bearer ${props.token}`,
-      "x-company-id": props.companyId,
+      Authorization: `Bearer ${auth.token}`,
+      "x-company-id": auth.companyId,
     },
   };
-
-  // necessary to make immediate changes when in  a central place when schema changes
 
   const response = await axios.delete(url, config);
   return response;
 };
 
 export const useRemoveMemberFromGroup = () => {
-  return useMutation(removeMemberFromGroup);
+  const { token, companyId } = useApiAuth();
+  return useMutation((props: TData) =>
+    removeMemberFromGroup({ props, auth: { token, companyId } })
+  );
 };

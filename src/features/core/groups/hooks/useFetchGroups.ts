@@ -1,32 +1,38 @@
 import axios from "axios";
-import { useSignOut } from "react-auth-kit";
 import { useQuery } from "react-query";
 import { ICurrentCompany, IPaginationProps, ISearchParams } from "types";
 import { TGroup, TGroupMember } from "../types";
+import { useApiAuth } from "hooks/useApiAuth";
+import { DEFAULT_PAGE_SIZE } from "constants/general";
 
 export const QUERY_KEY_FOR_GROUPS = "groups";
 
-interface IGetDataProps extends ICurrentCompany {
+interface IGetDataProps {
   pagination?: IPaginationProps;
   searchParams?: ISearchParams;
 }
-export const getGroups = async (
-  props: IGetDataProps
-): Promise<{ data: TGroup[]; total: number }> => {
+export const getGroups = async (vals: {
+  props: IGetDataProps;
+  auth: ICurrentCompany;
+}): Promise<{ data: TGroup[]; total: number }> => {
+  const { props, auth } = vals;
   const { pagination } = props;
-  const limit = pagination?.limit ?? 10;
+  const limit = pagination?.limit ?? DEFAULT_PAGE_SIZE;
   const offset = pagination?.offset ?? 0;
+  const name = props.searchParams?.name ?? "";
 
-  let url = `${process.env.REACT_APP_UTILITY_BASE_URL}/company/group?limit=${limit}&offset=${offset}`;
-  if (props.searchParams?.name) {
-    url += `&search=${props.searchParams.name}`;
-  }
+  let url = `${process.env.REACT_APP_UTILITY_BASE_URL}/company/group`;
 
   const config = {
     headers: {
       Accept: "application/json",
-      Authorization: `Bearer ${props.token}`,
-      "x-company-id": props.companyId,
+      Authorization: `Bearer ${auth.token}`,
+      "x-company-id": auth.companyId,
+    },
+    params: {
+      limit,
+      offset,
+      search: name,
     },
   };
 
@@ -62,9 +68,7 @@ export const getGroups = async (
   return ans;
 };
 interface IFRQDataProps extends IGetDataProps {
-  companyId: number;
   onSuccess?: Function;
-  token: string;
 }
 
 export interface IFRQDataReturnProps {
@@ -74,28 +78,29 @@ export interface IFRQDataReturnProps {
 
 export const useFetchGroups = ({
   pagination,
-  companyId,
   onSuccess,
-  token,
   searchParams,
 }: IFRQDataProps) => {
-  const signOut = useSignOut();
+  const { token, companyId } = useApiAuth();
 
   const queryData = useQuery(
     [QUERY_KEY_FOR_GROUPS, pagination?.limit, searchParams?.name],
     () =>
       getGroups({
-        companyId,
-        pagination: { limit: pagination?.limit, offset: pagination?.offset },
-        searchParams,
-        token,
+        auth: {
+          companyId,
+          token,
+        },
+        props: {
+          pagination,
+          searchParams,
+        },
       }),
     {
       // refetchInterval: false,
       // refetchIntervalInBackground: false,
       // refetchOnWindowFocus: false,
       onError: (err: any) => {
-        signOut();
         localStorage.clear();
       },
       onSuccess: (data) => {

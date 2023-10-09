@@ -3,6 +3,7 @@ import { ICurrentCompany, IPaginationProps, ISearchParams } from "types";
 import { TBranch } from "../types";
 import { useQuery } from "react-query";
 import { useApiAuth } from "hooks/useApiAuth";
+import { DEFAULT_PAGE_SIZE } from "constants/general";
 
 export const QUERY_KEY_FOR_BRANCHES = "branches";
 
@@ -17,7 +18,7 @@ export const getBranches = async (vals: {
 }): Promise<{ data: TBranch[]; total: number }> => {
   const { auth, props } = vals;
   const { pagination } = props;
-  const limit = pagination?.limit ?? 10;
+  const limit = pagination?.limit ?? DEFAULT_PAGE_SIZE;
   const offset = pagination?.offset ?? 0;
   const name = props.searchParams?.name ?? "";
 

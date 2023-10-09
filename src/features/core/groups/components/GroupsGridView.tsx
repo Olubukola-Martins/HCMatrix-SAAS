@@ -1,14 +1,21 @@
-import { Pagination, TablePaginationConfig, Dropdown, Menu } from "antd";
+import {
+  Pagination,
+  TablePaginationConfig,
+  Dropdown,
+  Menu,
+  Skeleton,
+} from "antd";
 import type { PaginationProps } from "antd";
 import { TGroup } from "../types";
+import { motion } from "framer-motion";
 
 interface IProps {
-  groups: TGroup[];
-  loading: boolean;
+  groups?: TGroup[];
+  loading?: boolean;
   pagination?: TablePaginationConfig;
   onChange: PaginationProps["onChange"];
-  editGroup: (val: number) => void;
-  deleteGroup: (val: number) => void;
+  editGroup: (val: TGroup) => void;
+  deleteGroup: (val: TGroup) => void;
 }
 
 const GroupsGridView = ({
@@ -20,21 +27,33 @@ const GroupsGridView = ({
   deleteGroup,
 }: IProps) => {
   return (
-    <div>
-      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4  gap-6">
-        {groups.map((item) => (
-          <GroupBox
-            key={item.id}
-            group={item}
-            editGroup={editGroup}
-            deleteGroup={deleteGroup}
-          />
-        ))}
-      </div>
-      <div className="mt-4 flex justify-end">
-        <Pagination {...pagination} onChange={onChange} size="small" />
-      </div>
-    </div>
+    <Skeleton loading={loading} paragraph={{ rows: 20 }}>
+      <motion.div
+        className="mt-4 flex flex-col gap-4"
+        initial={{ opacity: 0, y: 400 }}
+        animate={{
+          opacity: 1,
+          y: 0,
+        }}
+        key={0}
+        transition={{ ease: "easeIn" }}
+        exit={{ opacity: 0, y: 400 }}
+      >
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4  gap-6">
+          {groups?.map((item) => (
+            <GroupBox
+              key={item.id}
+              group={item}
+              editGroup={editGroup}
+              deleteGroup={deleteGroup}
+            />
+          ))}
+        </div>
+        <div className="mt-4 flex justify-end">
+          <Pagination {...pagination} onChange={onChange} size="small" />
+        </div>
+      </motion.div>
+    </Skeleton>
   );
 };
 
@@ -44,8 +63,8 @@ const GroupBox = ({
   deleteGroup,
 }: {
   group: TGroup;
-  editGroup: (val: number) => void;
-  deleteGroup: (val: number) => void;
+  editGroup: (val: TGroup) => void;
+  deleteGroup: (val: TGroup) => void;
 }) => {
   return (
     <>
@@ -58,12 +77,8 @@ const GroupBox = ({
           <Dropdown
             overlay={
               <Menu>
-                <Menu.Item onClick={() => editGroup(group?.id as number)}>
-                  Edit
-                </Menu.Item>
-                <Menu.Item onClick={() => deleteGroup(group?.id as number)}>
-                  Delete
-                </Menu.Item>
+                <Menu.Item onClick={() => editGroup(group)}>Edit</Menu.Item>
+                <Menu.Item onClick={() => deleteGroup(group)}>Delete</Menu.Item>
               </Menu>
             }
             trigger={["click"]}

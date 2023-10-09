@@ -3,12 +3,12 @@ import { Table } from "antd";
 import { TGroup } from "../types";
 
 interface IProps {
-  groups: TGroup[];
-  loading: boolean;
+  groups?: TGroup[];
+  loading?: boolean;
   pagination?: TablePaginationConfig;
   onChange?: TableProps<TGroup>["onChange"];
-  editGroup: (val: number) => void;
-  deleteGroup: (val: number) => void;
+  editGroup: (val: TGroup) => void;
+  deleteGroup: (val: TGroup) => void;
 }
 const GroupsGridView = ({
   groups,
@@ -44,12 +44,12 @@ const GroupsGridView = ({
       render: (_, item) => (
         <div className="flex items-center gap-3 text-lg">
           <i
-            className="ri-pencil-line cursor-pointer hover:text-caramel"
-            onClick={() => editGroup(item.id as number)}
+            className="ri-eye-line cursor-pointer hover:text-caramel"
+            onClick={() => editGroup(item)}
           />
           <i
             className="ri-delete-bin-line cursor-pointer hover:text-caramel"
-            onClick={() => deleteGroup(item.id as number)}
+            onClick={() => deleteGroup(item)}
           />
         </div>
       ),

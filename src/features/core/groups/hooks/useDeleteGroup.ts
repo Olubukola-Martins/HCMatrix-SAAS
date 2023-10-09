@@ -1,8 +1,14 @@
 import axios from "axios";
 import { useMutation } from "react-query";
-import { IGetSingleGroupProps } from "../types";
+import { useApiAuth } from "hooks/useApiAuth";
+import { ICurrentCompany } from "types";
 
-export const deleteSingleGroup = async (props: IGetSingleGroupProps) => {
+type TData = { id: number };
+export const deleteSingleGroup = async (vals: {
+  props: TData;
+  auth: ICurrentCompany;
+}) => {
+  const { props, auth } = vals;
   const id = props.id;
 
   const url = `${process.env.REACT_APP_UTILITY_BASE_URL}/company/group/${id}`;
@@ -10,8 +16,8 @@ export const deleteSingleGroup = async (props: IGetSingleGroupProps) => {
   const config = {
     headers: {
       Accept: "application/json",
-      Authorization: `Bearer ${props.token}`,
-      "x-company-id": props.companyId,
+      Authorization: `Bearer ${auth.token}`,
+      "x-company-id": auth.companyId,
     },
   };
 
@@ -20,5 +26,8 @@ export const deleteSingleGroup = async (props: IGetSingleGroupProps) => {
 };
 
 export const useDeleteGroup = () => {
-  return useMutation(deleteSingleGroup);
+  const { token, companyId } = useApiAuth();
+  return useMutation((props: TData) =>
+    deleteSingleGroup({ props, auth: { token, companyId } })
+  );
 };
