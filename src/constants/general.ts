@@ -1,6 +1,8 @@
 import { TEmploymentEligibity } from "types/employementEligibilities";
 import { TPriority } from "types/priorities";
 
+export const MAX_NO_OF_WORKING_DAYS_PER_WEEK = 7;
+
 // The purpose of this file to prevent repetition
 export const MONTH_CHART_LABELS = [
   "Jan",

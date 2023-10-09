@@ -21,6 +21,10 @@ import { useFetchEmployees } from "../useFetchEmployees";
 import { useFetchBranches } from "features/core/branches/hooks/useFetchBranches";
 import { useGetPayGrades } from "features/payroll/hooks/payGrades/useGetPayGrades";
 import { useGetExchangeRates } from "features/payroll/hooks/exhangeRates/useGetExchangeRates";
+import { useFetchStates } from "hooks/useFetchStates";
+import { useFetchLgas } from "hooks/useFetchLGAs";
+import { TState } from "types/states";
+import { TLga } from "types/lgas";
 
 type TData = {
   dataToBeSubmitted: TBulkImportEmployeeProp[];
@@ -32,6 +36,8 @@ export type TBulkEmployeeImportError = {
 
 type TDependencies = {
   countries?: TCountry[];
+  states?: TState[];
+  lgas?: TLga[];
   employees?: TEmployee[];
   branches?: TBranch[];
   payGrades?: TPayGrade[];
@@ -58,18 +64,44 @@ const validateData = async (props: {
     employees: employeeFetchedData,
     payGrades,
     exchangeRates,
+    states,
+    lgas,
   } = dependencies;
 
   const employees: TBulkImportEmployeeProp[] = [];
   let errors: TBulkEmployeeImportError[] = [];
-  const confirmationMessages: string[]=[]
+  const confirmationMessages: string[] = [];
+  const uniqueEmpUids: string[] = [];
 
   //   This Data will just be to create AND NOT update for the time being
   try {
     dataToBeSubmitted.forEach((employee, i) => {
       let transformedEmployee: TBulkImportEmployeeProp = employee;
       let rowId = i + 2; //becos first row is the header
-
+      // validate ensure no duplicate errors
+      if (uniqueEmpUids.includes(employee.empUid)) {
+        errors = [
+          ...errors,
+          {
+            category: "employeeInformation",
+            content: `${employee.empUid} has a duplicate employee record!`,
+          },
+        ];
+      }
+      uniqueEmpUids.push(employee.empUid);
+      // validate ensure employee does not exist
+      const employeeAlreadyExists = employeeFetchedData?.find(
+        (item) => item.empUid === employee.empUid
+      );
+      if (employeeAlreadyExists) {
+        errors = [
+          ...errors,
+          {
+            category: "employeeInformation",
+            content: `${employee.empUid} already exists!`,
+          },
+        ];
+      }
       // validate employee info
       let validateEmpInfo = validateBulkEmployeeInfo({ employee, rowId });
       if (validateEmpInfo.isDataValid === false) {
@@ -113,6 +145,8 @@ const validateData = async (props: {
         rowId,
         countries,
         exchangeRates,
+        states,
+        lgas,
       });
       if (validatePersonalInformation.isDataValid === false) {
         errors = [...errors, ...validatePersonalInformation.errors];
@@ -135,7 +169,7 @@ const validateData = async (props: {
         singular: "error",
       })}`,
       employees,
-      confirmationMessages
+      confirmationMessages,
     };
   } catch (error) {
     console.log(error, "WHY");
@@ -145,14 +179,18 @@ const validateData = async (props: {
       errors,
       message: "An error occured",
       employees,
-      confirmationMessages
+      confirmationMessages: [
+        ...confirmationMessages,
+        `You about to add ${employees.length} employees!`,
+      ],
     };
   }
 };
 
 export const useValidateBulkEmployeeImportData = () => {
-  // const { token, companyId } = useApiAuth();
   const { data: countries } = useFetchCountries();
+  const { data: states } = useFetchStates();
+  const { data: lgas } = useFetchLgas();
   const { data: employees } = useFetchEmployees({
     pagination: { limit: 500, offset: 0 },
   });
@@ -172,13 +210,13 @@ export const useValidateBulkEmployeeImportData = () => {
         data: props,
         dependencies: {
           countries,
+          states,
+          lgas,
           employees: employees?.data,
           branches: branches?.data,
           payGrades: payGrades?.data,
           exchangeRates: exchangeRates?.data,
         },
-
-        // auth: { token, companyId },
       }),
     {}
   );

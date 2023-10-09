@@ -87,7 +87,7 @@ const EmployeeDataImportConfirmation: React.FC<IProps> = ({
 const VerificationCallToAction: React.FC<{
   employeeCount: number;
   confirmationMessages: string[];
-}> = ({ employeeCount }) => {
+}> = ({ employeeCount, confirmationMessages }) => {
   return (
     <>
       <div className="flex flex-col gap-4 items-center">
@@ -99,8 +99,20 @@ const VerificationCallToAction: React.FC<{
           />
         </div>
         <h4 className="text-center text-base mb-4 ">
-          Are you sure you want to add/modify {employeeCount} employee records
+          Are you sure you want to add {employeeCount} employee records
         </h4>
+        {confirmationMessages.map((item, i) => (
+          <div
+            key={i}
+            className="border rounded mt-4 px-3 py-3 cursor-pointer hover:bg-card flex md:justify-between gap-x-5"
+          >
+            <div className="flex items-center gap-3">
+              <div>
+                <h5 className="text-xs md:text-sm text-green-400">{item}</h5>
+              </div>
+            </div>
+          </div>
+        ))}
       </div>
     </>
   );

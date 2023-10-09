@@ -16,8 +16,7 @@ const MappingFormGroup = ({ Form, columns, formInputs }: IProps) => {
           label={<span className="capitalize">{item.label}</span>}
           rules={[
             {
-              required:
-                typeof item.optional === "undefined" ? true : !item.optional,
+              required: !item.optional,
               message: "Field is required!",
             },
           ]}

@@ -33,6 +33,11 @@ import {
   WORK_MODELS,
 } from "constants/general";
 import { PAYROLL_SCHEME_OPTIONS } from "features/payroll/constants";
+import { TState } from "types/states";
+import { TLga } from "types/lgas";
+import { useFetchStates } from "hooks/useFetchStates";
+import { useFetchLgas } from "hooks/useFetchLGAs";
+import { TIME_ZONES } from "constants/timeZones";
 
 type TResponse = any;
 const EMPLOYEE_IMPORT_DOWNLOAD = "employee-import.xlsx";
@@ -44,6 +49,9 @@ export type TBulkEmployeeImportError = {
 
 type TDependencies = {
   countries?: TCountry[];
+  states?: TState[];
+  lgas?: TLga[];
+  timezones?: { label: string; value: string }[];
   employees?: TEmployee[];
   branches?: TBranch[];
   payGrades?: TPayGrade[];
@@ -56,8 +64,16 @@ const generateTemplate = async (props: {
   const { dependencies } = props;
 
   //   dependcies
-  const { countries, branches, employees, payGrades, exchangeRates } =
-    dependencies;
+  const {
+    countries,
+    branches,
+    employees,
+    payGrades,
+    exchangeRates,
+    lgas,
+    states,
+    timezones,
+  } = dependencies;
 
   //   This Data will just be to create AND NOT update for the time being
 
@@ -77,6 +93,11 @@ const generateTemplate = async (props: {
       "Exchange Rate": "A valid Name of Exchange Rate",
       "Marital Status": MARITAL_STATUSES.map((item) => item.value).join(","),
       Nationality: "A valid Country Name",
+      "Street Address": "A non empty value",
+      "Country of Residence": "A valid country name",
+      "State of Residence": "A valid state name",
+      "LGA of Residence": "A valid lga name",
+      "Timezone of Residence": "A valid timezone",
       "Passport Expiration Date": "A valid Date",
       "Alternative Email": "Valid Email",
       "Alternative Phone Number": "Valid Phone Number",
@@ -108,6 +129,21 @@ const generateTemplate = async (props: {
     },
   ];
   const importWorkSheet = XLSX.utils.json_to_sheet(rows);
+  const statesWorksheet = XLSX.utils.json_to_sheet(
+    states?.map((item) => ({
+      Name: item.name,
+    })) ?? []
+  );
+  const lgasWorksheet = XLSX.utils.json_to_sheet(
+    lgas?.map((item) => ({
+      Name: item.name,
+    })) ?? []
+  );
+  const timezoneWorksheet = XLSX.utils.json_to_sheet(
+    timezones?.map((item) => ({
+      Name: item.value,
+    })) ?? []
+  );
   const branchesWorksheet = XLSX.utils.json_to_sheet(
     branches?.map((item) => ({
       Name: item.name,
@@ -149,6 +185,9 @@ const generateTemplate = async (props: {
   //   XLSX.utils.sheet_set_array_formula(importWorkSheet, "D2", "=Yes, No");
   XLSX.utils.book_append_sheet(workbook, importWorkSheet, "MAIN IMPORT FILE");
   XLSX.utils.book_append_sheet(workbook, countriesWorksheet, "Countries");
+  XLSX.utils.book_append_sheet(workbook, statesWorksheet, "States");
+  XLSX.utils.book_append_sheet(workbook, lgasWorksheet, "Local Governments");
+  XLSX.utils.book_append_sheet(workbook, timezoneWorksheet, "Timezones");
   XLSX.utils.book_append_sheet(workbook, payGradesWorksheet, "Pay Grades");
   XLSX.utils.book_append_sheet(workbook, branchesWorksheet, "Branches");
   XLSX.utils.book_append_sheet(
@@ -166,6 +205,8 @@ const generateTemplate = async (props: {
 
 export const useDownloadEmployeeImportTemplate = () => {
   const { data: countries } = useFetchCountries();
+  const { data: states } = useFetchStates();
+  const { data: lgas } = useFetchLgas();
   const { data: employees } = useFetchEmployees({
     pagination: { limit: 500, offset: 0 },
   });
@@ -183,10 +224,13 @@ export const useDownloadEmployeeImportTemplate = () => {
       generateTemplate({
         dependencies: {
           countries,
+          states,
+          lgas,
           employees: employees?.data,
           branches: branches?.data,
           payGrades: payGrades?.data,
           exchangeRates: exchangeRates?.data,
+          timezones: TIME_ZONES,
         },
       }),
     {}

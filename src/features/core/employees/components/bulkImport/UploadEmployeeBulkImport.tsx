@@ -152,14 +152,18 @@ export const UploadEmployeeBulkImport = ({
       message="There seems to be an issue with file, is the file permission restricted!"
       action={onError}
     >
-      <Form className="" requiredMark={false} onFinish={handleSubmit}>
+      <Form
+        className=""
+        requiredMark={false}
+        onFinish={handleSubmit}
+        initialValues={{ sections: ["employeeInformation"] }}
+      >
         <Form.Item
           label="Import for:"
           name="sections"
           // No Validation Needed as there is a default value
         >
           <Select
-            defaultValue={["employeeInformation"]}
             options={BULK_EMPLOYEE_IMPORT_MAPPING_SECTIONS.map((item) => ({
               label: <span className="capitalize">{item.title}</span>,
               value: item.key,
@@ -194,7 +198,12 @@ export const UploadEmployeeBulkImport = ({
           <div className="flex justify-center w-3/5">
             <Upload
               // fileList={fileList}
+              multiple={false}
+              maxCount={1} //ensures only a single file is uploaded
               beforeUpload={beforeUpload}
+              onRemove={() =>
+                setSubmission((val) => ({ ...val, allow: false }))
+              } // prevent submission when file has been removed
               onChange={handleChange}
               className="flex flex-col items-center w-full"
             >

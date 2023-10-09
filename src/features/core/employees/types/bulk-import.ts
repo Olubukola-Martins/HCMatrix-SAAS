@@ -22,7 +22,7 @@ export enum EmployeeMappingSectionEnum {
 export type TEmployeeMappingSectionInput = {
   name: string;
   label: string;
-  optional?: boolean;
+  optional: boolean;
   children?: TEmployeeMappingSectionInput[];
 };
 export type EmployeeMappingSectionKeyType =
