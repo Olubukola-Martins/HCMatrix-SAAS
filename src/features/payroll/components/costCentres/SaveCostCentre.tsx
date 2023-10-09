@@ -1,13 +1,15 @@
 import { Form, Input, InputNumber, Modal } from "antd";
 import Themes from "components/Themes";
 import { AppButton } from "components/button/AppButton";
+import { QUERY_KEY_FOR_COST_CENTRE_TRANSACTIONS } from "features/payroll/hooks/costCentres/transactions/useGetCostCentreTransactions";
+import { QUERY_KEY_FOR_COST_CENTRES } from "features/payroll/hooks/costCentres/useGetCostCentres";
+import { QUERY_KEY_FOR_SINGLE_COST_CENTRE } from "features/payroll/hooks/costCentres/useGetSingleCostCentre";
+import { QUERY_KEY_FOR_TRANSACTIONS_BY_API_ENTITY } from "features/payroll/hooks/transactions/useGetTransactionsByApiEntity";
 import { TCostCentre } from "features/payroll/types";
 import React, { useEffect } from "react";
+import { useQueryClient } from "react-query";
 import { IModalProps } from "types";
-import {
-  generalValidationRules,
-  textInputValidationRules,
-} from "utils/formHelpers/validation";
+import { textInputValidationRules } from "utils/formHelpers/validation";
 
 type TFieldToDisplay = "name" | "amountEntered";
 interface IProps extends IModalProps {
@@ -31,6 +33,8 @@ export const SaveCostCentre: React.FC<IProps> = ({
   fieldsToDisplay = ["amountEntered", "name"],
   onPaymentCompletion,
 }) => {
+  const queryClient = useQueryClient();
+
   const [form] = Form.useForm();
   useEffect(() => {
     if (!costCentre) return;
@@ -93,6 +97,22 @@ export const SaveCostCentre: React.FC<IProps> = ({
   }, [onPaymentCompletion]);
 
   const onClose = () => {
+    queryClient.invalidateQueries({
+      queryKey: [QUERY_KEY_FOR_COST_CENTRES],
+      // exact: true,
+    });
+    queryClient.invalidateQueries({
+      queryKey: [QUERY_KEY_FOR_SINGLE_COST_CENTRE],
+      // exact: true,
+    });
+    queryClient.invalidateQueries({
+      queryKey: [QUERY_KEY_FOR_COST_CENTRE_TRANSACTIONS],
+      // exact: true,
+    });
+    queryClient.invalidateQueries({
+      queryKey: [QUERY_KEY_FOR_TRANSACTIONS_BY_API_ENTITY],
+      // exact: true,
+    });
     form.resetFields();
     handleClose();
   };

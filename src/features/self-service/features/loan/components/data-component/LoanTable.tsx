@@ -144,15 +144,26 @@ export const LoanTable: React.FC<{
     },
 
     {
-      title: "Status",
+      title: permitedActions.find((val) => val === "approve/reject")
+        ? "Approval Status"
+        : "Loan Status",
       dataIndex: "status",
       key: "status",
+
       render: (_, item) => (
         <span
           className="capitalize"
-          style={{ color: getAppropriateColorForStatus(item.status) }}
+          style={{
+            color: getAppropriateColorForStatus(
+              permitedActions.find((val) => val === "approve/reject")
+                ? item?.approvalDetails?.status ?? ""
+                : item.status
+            ),
+          }}
         >
-          {item.status}{" "}
+          {permitedActions.find((val) => val === "approve/reject")
+            ? item?.approvalDetails?.status
+            : item.status}{" "}
         </span>
       ),
     },
@@ -175,7 +186,7 @@ export const LoanTable: React.FC<{
               {permitedActions.find((val) => val === "approve/reject") &&
                 APPROVAL_STATUS_ACTION_OPTIONS.map(({ value, label }) => (
                   <Menu.Item
-                    hidden={item?.status !== "pending"}
+                    hidden={item?.approvalDetails?.status !== "pending"}
                     key={value}
                     onClick={() =>
                       item?.approvalDetails &&
