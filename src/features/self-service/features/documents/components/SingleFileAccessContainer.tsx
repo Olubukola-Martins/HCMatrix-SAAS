@@ -199,8 +199,6 @@ const AddAccessForm: React.FC<{ fileId: number; folderId: number }> = ({
     },
   });
   const { data: groups, isFetching: isFetchingGroups } = useFetchGroups({
-    companyId,
-    token,
     pagination: {
       offset: 0,
       limit: 220,
