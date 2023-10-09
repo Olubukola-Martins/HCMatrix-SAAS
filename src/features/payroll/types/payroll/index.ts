@@ -37,7 +37,7 @@ interface TPayrollListData {
   companyId: number;
   createdAt: string;
   updatedAt: string;
-  disbursmentDate?: string;
+  disbursementDate?: string;
   scheme: Scheme;
   employeePayrolls: EmployeePayroll[];
 }

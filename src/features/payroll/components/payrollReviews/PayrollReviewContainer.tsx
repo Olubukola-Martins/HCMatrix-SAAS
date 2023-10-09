@@ -75,7 +75,7 @@ let OG_COLUMNS: ColumnsType<TPayrollListData> = [
     key: "drt",
     ellipsis: true,
     render: (_, item) => (
-      <span>{moment(item.disbursmentDate).format(DEFAULT_DATE_FORMAT)} </span>
+      <span>{moment(item.disbursementDate).format(DEFAULT_DATE_FORMAT)} </span>
     ),
   },
 ];
