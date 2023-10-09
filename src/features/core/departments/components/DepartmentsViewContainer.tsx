@@ -50,7 +50,11 @@ const DepartmentsViewContainer = () => {
     mutate(
       {
         id: selectedDepartment.id,
-        data,
+        data: {
+          ...data,
+          departmentHeadId: data.departmentHeadId ?? null,
+          parentDepartmentId: data.parentDepartmentId ?? null,
+        },
       },
       {
         onError: (err: any) => {
