@@ -7,7 +7,7 @@ interface TData {
   id: number;
   body: {
     name: string;
-    description: string;
+    description?: string;
     email: string;
   };
 }

@@ -8,6 +8,8 @@ import { useDeleteGroup } from "../hooks/useDeleteGroup";
 import { QUERY_KEY_FOR_GROUPS } from "../hooks/useFetchGroups";
 import { useRemoveMemberFromGroup } from "../hooks/useRemoveMemberFromGroup";
 import ConfirmationModal from "components/modals/ConfirmationModal";
+import { QUERY_KEY_FOR_SINGLE_GROUP } from "../hooks/useFetchSingleGroup";
+import { QUERY_KEY_FOR_SINGLE_GROUP_MEMBERS } from "../hooks/useFetchSingleGroupMembers";
 
 interface IProps extends IModalProps {
   groupName: string;
@@ -53,7 +55,11 @@ export const RemoveGroupMember: React.FC<IProps> = ({
           });
 
           queryClient.invalidateQueries({
-            queryKey: [QUERY_KEY_FOR_GROUPS],
+            queryKey: [QUERY_KEY_FOR_SINGLE_GROUP],
+            // exact: true,
+          });
+          queryClient.invalidateQueries({
+            queryKey: [QUERY_KEY_FOR_SINGLE_GROUP_MEMBERS],
             // exact: true,
           });
 

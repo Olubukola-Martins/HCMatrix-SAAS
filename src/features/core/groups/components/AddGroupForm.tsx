@@ -44,7 +44,7 @@ const AddGroupForm = ({
 
   const onSubmit = (data: any) => {
     handleSubmit.fn({
-      description: data.description,
+      description: data?.description,
       email: data.email,
       employees: data.employees.map((id: number, index: number) => ({
         employeeId: id,

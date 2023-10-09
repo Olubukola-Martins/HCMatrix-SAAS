@@ -1,8 +1,7 @@
-import { Collapse, Drawer, Modal } from "antd";
+import { Collapse, Drawer } from "antd";
 
 import AddGroupForm from "./AddGroupForm";
 import { ManageGroupMembership } from "./ManageGroupMembership";
-import { useApiAuth } from "hooks/useApiAuth";
 import { IModalProps } from "types";
 import {
   QUERY_KEY_FOR_SINGLE_GROUP,
