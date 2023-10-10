@@ -114,7 +114,9 @@ export const PayrollTable: React.FC<{
       ellipsis: true,
       render: (_, item) => (
         <span>
-          {moment(item.disbursementDate).format(DEFAULT_DATE_FORMAT)}{" "}
+          {item?.disbursementDate
+            ? moment(item.disbursementDate).format(DEFAULT_DATE_FORMAT)
+            : ""}{" "}
         </span>
       ),
     },

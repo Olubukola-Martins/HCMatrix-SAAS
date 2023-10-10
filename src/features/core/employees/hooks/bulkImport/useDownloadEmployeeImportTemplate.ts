@@ -1,15 +1,13 @@
-// TODO: Work on Duplicate Data Validation
-// ENSURE ADDRESS is properly mapped for personal info, and is also accounted for in the generated template
-// Work on testing validation and actually importing data
-// then move on to recent updates
-
-// Also the discussion of create vs update data, and also what fields are required and what happens when they are not filled
-
-// then move on to delete group, & member confirmation, and then to employee info & modals : account for branch, and then the user dashboard, and organogram
-
-// Also limit upload file for employee bulk import to one file
-
-// STICK TO FLOW , before switching to other tasks
+// TODO: 1.) Work on Endpoints created recently
+// 2.) Work on the buttons on group members management
+// 3.) Work on organogram
+// 4.) Work on upload company handbook/download handbook
+// 5.) Look at the user dashboard and make comparison btwn admin n employee
+// 6.) Look at employee - add single employee, also branch on table, and employee profile
+// 7.) Look at document is anything unaccounted for
+// 8.) Create payroll: Need to ensure it behaves as intended
+// 9.) Roles & Permissions Implementation - leading to the the organization current resources
+// *.) UGL Payroll Taxation
 
 import { useMutation } from "react-query";
 import { EmployeeMappingSectionKeyType } from "../../types/bulk-import";
