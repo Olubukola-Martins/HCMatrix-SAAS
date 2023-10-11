@@ -6,23 +6,21 @@ import {
   IImportEntityModalProps,
   ImportEntityModal,
 } from "components/entity/ImportEntityModal";
-import { useGetOvertimeSheetTemplate } from "features/payroll/hooks/payroll/overtimeSheet/useGetOvertimeSheetTemplate";
-import { useAddOvertimeSheet } from "features/payroll/hooks/payroll/overtimeSheet/useAddOvertimeSheet";
 import { QUERY_KEY_FOR_DESIGNATIONS } from "../hooks/useFetchDesignations";
+import { useGetImportDesignationsTemplate } from "../hooks/bulk/useGetImportDesignationsTemplate";
+import { useImportDesignations } from "../hooks/bulk/useImportDesignations";
 
 interface IProps extends IModalProps {}
 
 export const ImportDesignation: React.FC<IProps> = ({ open, handleClose }) => {
   const queryClient = useQueryClient();
   const { mutate: mutateGetTemplate, isLoading: isLoadingGetTemplate } =
-    useGetOvertimeSheetTemplate();
+    useGetImportDesignationsTemplate();
 
   const handleGetTemplate = () => {
     mutateGetTemplate(
       {
-        data: {
-          payrollId: 0,
-        },
+        data: {},
       },
       {
         onError: (err: any) => {
@@ -47,14 +45,13 @@ export const ImportDesignation: React.FC<IProps> = ({ open, handleClose }) => {
       }
     );
   };
-  const { mutate, isLoading } = useAddOvertimeSheet();
+  const { mutate, isLoading } = useImportDesignations();
 
   const handleSubmit: IImportEntityModalProps["handleSubmit"]["fn"] = ({
     file,
   }) => {
     mutate(
       {
-        payrollId: 0,
         data: {
           csvFile: file,
         },

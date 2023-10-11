@@ -8,7 +8,7 @@ type TData = {
   csvFile: any;
 };
 const createData = async (props: { data: TData; auth: ICurrentCompany }) => {
-  const url = `${MICROSERVICE_ENDPOINTS.PAYROLL}/company/branch/bulk`;
+  const url = `${MICROSERVICE_ENDPOINTS.UTILITY}/company/branch/bulk`;
   const config = {
     headers: {
       Accept: "application/json",

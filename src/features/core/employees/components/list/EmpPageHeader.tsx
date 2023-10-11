@@ -6,6 +6,7 @@ import { AddMultipleEmployees } from "../AddMultipleEmployees";
 import FilterEmployeeDrawer from "../FilterEmployeeDrawer";
 import { PageIntro } from "components/layout/PageIntro";
 import ImportEmployees from "../bulkImport/ImportEmployees";
+import { TEmployeeFilterProps } from "../../types/employee-filter";
 
 // TODO: Use +234 in number imports as opposed to country name
 
@@ -27,19 +28,19 @@ import ImportEmployees from "../bulkImport/ImportEmployees";
 // TODO: Implement BUlk actions for employee table like add 2 department, assign job, refer to hcm v2, ... assign line manager
 
 type TAction = "bulk-import" | "invite" | "filter-employees" | "test-import";
-const EmpPageHeader = () => {
+const EmpPageHeader: React.FC<{
+  handleFilter: (props: TEmployeeFilterProps) => void;
+}> = ({ handleFilter }) => {
   const [action, setAction] = useState<TAction>();
   const clearAction = () => {
     setAction(undefined);
   };
   return (
     <>
-      {/* TODO: Test and implement bulk upload */}
-
-      {/* TODO: Implement filter for employees, as per by department, expatriate, role */}
       <FilterEmployeeDrawer
         open={action === "filter-employees"}
         handleClose={clearAction}
+        handleFilter={handleFilter}
       />
       <AddMultipleEmployees
         open={action === "invite"}

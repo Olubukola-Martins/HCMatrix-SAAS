@@ -4,8 +4,13 @@ import { useFetchEmployees } from "../../hooks/useFetchEmployees";
 import { TEmployee } from "../../types";
 import { usePagination } from "hooks/usePagination";
 import BulkEmployeeActionHeader from "./bulkEmployeeActions/BulkEmployeeActionHeader";
+import { TEmployeeFilterProps } from "../../types/employee-filter";
 
-const ActiveEmployeesContainer = () => {
+type IProps = {
+  filterProps: TEmployeeFilterProps;
+};
+
+const ActiveEmployeesContainer: React.FC<IProps> = ({ filterProps }) => {
   const { pagination, onChange } = usePagination();
   const {
     data: employeeData,
@@ -13,6 +18,7 @@ const ActiveEmployeesContainer = () => {
     isFetching,
   } = useFetchEmployees({
     status: ["probation", "confirmed"],
+    ...filterProps,
 
     pagination,
   });

@@ -6,6 +6,7 @@ import { useQueryClient } from "react-query";
 import { openNotification } from "utils/notifications";
 import {
   generalValidationRules,
+  generalValidationRulesOp,
   textInputValidationRules,
 } from "utils/formHelpers/validation";
 import { GENDERS } from "constants/general";
@@ -106,9 +107,9 @@ const AddLeaveTypeForm = ({ handleClose }: { handleClose: Function }) => {
         <Form.Item
           label="Gender"
           name={`gender`}
-          rules={generalValidationRules}
+          rules={generalValidationRulesOp}
         >
-          <Select options={GENDERS} />
+          <Select options={GENDERS} allowClear />
         </Form.Item>
 
         <div className="flex flex-row justify-between items-center">

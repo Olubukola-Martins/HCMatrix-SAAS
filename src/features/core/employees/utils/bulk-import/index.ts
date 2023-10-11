@@ -22,7 +22,6 @@ import {
   isDateGreaterThanOrEqualToCurrentDay,
   isDateLesserThanOrEqualToCurrentDay,
 } from "utils/formHelpers/validation";
-import { TPayrollSchemeType } from "features/payroll/types/payrollSchemes";
 import { PAYROLL_SCHEME_OPTIONS } from "features/payroll/constants";
 import { TLga } from "types/lgas";
 import { TState } from "types/states";

@@ -2,14 +2,18 @@ import { Select, Spin } from "antd";
 import { useApiAuth } from "hooks/useApiAuth";
 import { useDebounce } from "hooks/useDebounce";
 import { useState } from "react";
-import { generalValidationRules } from "utils/formHelpers/validation";
+import {
+  generalValidationRules,
+  generalValidationRulesOp,
+} from "utils/formHelpers/validation";
 import { useFetchRoles } from "../hooks/useFetchRoles";
 
 export const FormRoleInput: React.FC<{
   Form: any;
   showLabel?: boolean;
   control?: { label: string; name: string | (string | number)[] };
-}> = ({ Form, showLabel = true, control }) => {
+  optional?: boolean;
+}> = ({ Form, showLabel = true, control, optional = false }) => {
   const { token, companyId } = useApiAuth();
 
   const [searchTerm, setSearchTerm] = useState<string>("");
@@ -30,7 +34,7 @@ export const FormRoleInput: React.FC<{
 
   return (
     <Form.Item
-      rules={generalValidationRules}
+      rules={optional ? generalValidationRulesOp : generalValidationRules}
       name={control?.name ?? "roleId"}
       label={showLabel ? control?.label ?? "Role" : null}
     >

@@ -12,7 +12,7 @@ const createData = async (props: {
   data: IDataProps;
   auth: ICurrentCompany;
 }): Promise<TResponse> => {
-  const url = `${MICROSERVICE_ENDPOINTS.PAYROLL}/company/department/designation`;
+  const url = `${MICROSERVICE_ENDPOINTS.UTILITY}/company/designation/bulk`;
 
   const config = {
     headers: {

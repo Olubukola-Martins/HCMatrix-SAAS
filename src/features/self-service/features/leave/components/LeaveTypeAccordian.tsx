@@ -15,6 +15,7 @@ const LeaveTypeAccordian = () => {
         onCancel={() => setShowM(false)}
         title="Add Leave Type"
         footer={null}
+        style={{ top: 10 }}
       >
         <AddLeaveTypeForm handleClose={() => setShowM(false)} />
       </Modal>

@@ -1,15 +1,18 @@
 import { Select, Spin } from "antd";
-import { useApiAuth } from "hooks/useApiAuth";
 import { useDebounce } from "hooks/useDebounce";
 import { useState } from "react";
-import { generalValidationRules } from "utils/formHelpers/validation";
+import {
+  generalValidationRules,
+  generalValidationRulesOp,
+} from "utils/formHelpers/validation";
 import { useFetchBranches } from "../hooks/useFetchBranches";
 
 export const FormBranchInput: React.FC<{
   Form: any;
   showLabel?: boolean;
   control?: { label: string; name: string | (string | number)[] };
-}> = ({ Form, showLabel = true, control }) => {
+  optional?: boolean;
+}> = ({ Form, showLabel = true, control, optional = false }) => {
   const [searchTerm, setSearchTerm] = useState<string>("");
   const debouncedSearchTerm: string = useDebounce<string>(searchTerm);
 
@@ -27,7 +30,7 @@ export const FormBranchInput: React.FC<{
     <Form.Item
       name={control?.name ?? "branchId"}
       label={showLabel ? control?.label ?? "Branch" : null}
-      rules={generalValidationRules}
+      rules={optional ? generalValidationRulesOp : generalValidationRules}
     >
       <Select
         placeholder="Select branch"

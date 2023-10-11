@@ -53,7 +53,7 @@ export const HandOverContainer = () => {
       /> */}
       <div className="flex flex-col gap-6">
         <PageSubHeader
-          description={`You can now request for time-off to travel for work puposes`}
+          description={`You can now manage hand-overs`}
           actions={[
             {
               name: "Hand Over",
