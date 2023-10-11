@@ -6,7 +6,6 @@ import { BulkAssignLineManager } from "./BulkAssignLineManager";
 import { BulkAssignDesignation } from "./BulkAssignDesignation";
 import { BulkAssignToGroup } from "./BulkAssignToGroup";
 import { BulkAssignRole } from "./BulkAssignRole";
-import { BulkDeleteEmployees } from "./BulkDeleteEmployees";
 import { BulkAssignBranch } from "./BulkAssignBranch";
 
 type TAction =
@@ -15,8 +14,8 @@ type TAction =
   | "assign designation"
   | "assign branch"
   | "add to group"
-  | "assign role"
-  | "delete";
+  | "assign role";
+// | "delete";
 const EMPLOYEE_BULK_ACTIONS: TAction[] = [
   "change status",
   "assign line manager",
@@ -24,7 +23,7 @@ const EMPLOYEE_BULK_ACTIONS: TAction[] = [
   "assign designation",
   "add to group",
   "assign role",
-  "delete",
+  // "delete",
 ];
 const BulkEmployeeActionHeader: React.FC<{ data: TEmployee[] }> = ({
   data,
@@ -66,11 +65,11 @@ const BulkEmployeeActionHeader: React.FC<{ data: TEmployee[] }> = ({
         open={action === "assign role"}
         employeeIds={data.map((item) => item.id)}
       />
-      <BulkDeleteEmployees
+      {/* <BulkDeleteEmployees
         handleClose={() => setAction(undefined)}
         open={action === "delete"}
         employeeIds={data.map((item) => item.id)}
-      />
+      /> */}
       <div className="flex justify-end">
         <AppButtonList
           data={EMPLOYEE_BULK_ACTIONS.map((item) => ({

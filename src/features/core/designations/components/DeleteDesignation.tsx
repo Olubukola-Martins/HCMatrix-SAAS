@@ -6,6 +6,7 @@ import DeleteEntityModal from "components/entity/DeleteEntityModal";
 import { TDesignation } from "../types";
 import { useDeleteTask } from "features/self-service/features/tasks/hooks/useDeleteTask";
 import { QUERY_KEY_FOR_DESIGNATIONS } from "../hooks/useFetchDesignations";
+import { useDeleteDesignation } from "../hooks/useDeleteDesignation";
 
 interface IProps extends IModalProps {
   designation?: TDesignation;
@@ -17,7 +18,7 @@ export const DeleteDesignation: React.FC<IProps> = ({
 }) => {
   const queryClient = useQueryClient();
 
-  const { mutate, isLoading } = useDeleteTask(); //TODO: Change when enpoint is provided
+  const { mutate, isLoading } = useDeleteDesignation();
 
   const handleDelete = () => {
     if (!designation) return;

@@ -4,8 +4,8 @@ import { openNotification } from "utils/notifications";
 import { useQueryClient } from "react-query";
 import DeleteEntityModal from "components/entity/DeleteEntityModal";
 import { TDepartment } from "../types";
-import { useDeleteTask } from "features/self-service/features/tasks/hooks/useDeleteTask";
 import { QUERY_KEY_FOR_DEPARTMENTS } from "../hooks/useFetchDepartments";
+import { useDeleteDepartment } from "../hooks/useDeleteDepartment";
 
 interface IProps extends IModalProps {
   department?: TDepartment;
@@ -17,7 +17,7 @@ export const DeleteDepartment: React.FC<IProps> = ({
 }) => {
   const queryClient = useQueryClient();
 
-  const { mutate, isLoading } = useDeleteTask(); //TODO: Change when enpoint is provided
+  const { mutate, isLoading } = useDeleteDepartment();
 
   const handleDelete = () => {
     if (!department) return;

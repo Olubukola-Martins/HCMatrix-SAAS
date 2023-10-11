@@ -1,18 +1,15 @@
-import { Form, Input, Modal, Select } from "antd";
+import { Form, Modal } from "antd";
 import { AppButton } from "components/button/AppButton";
 import React from "react";
 import { IModalProps } from "types";
-import {
-  generalValidationRules,
-  textInputValidationRules,
-} from "utils/formHelpers/validation";
+
 import { openNotification } from "utils/notifications";
 import { useQueryClient } from "react-query";
 import { QUERY_KEY_FOR_LIST_OF_EMPLOYEES } from "features/core/employees/hooks/useFetchEmployees";
-import { useCreateFolder } from "features/self-service/features/documents/hooks/useCreateFolder";
-import { EMPLOYEE_STATUSES_OPTIONS } from "features/core/employees/constants";
+
 import { pluralOrSingular } from "utils/dataHelpers/pluralOrSingular";
 import { FormEmployeeInput } from "../../FormEmployeeInput";
+import { useHandleEmployeeBulkAction } from "features/core/employees/hooks/bulkActions/useHandleEmployeeBulkAction";
 
 interface IProps extends IModalProps {
   employeeIds: number[];
@@ -26,12 +23,16 @@ export const BulkAssignLineManager: React.FC<IProps> = ({
   const queryClient = useQueryClient();
 
   const [form] = Form.useForm();
-  const { mutate, isLoading } = useCreateFolder();
+  const { mutate, isLoading } = useHandleEmployeeBulkAction();
 
   const handleSubmit = (data: any) => {
     mutate(
       {
-        name: data.name,
+        action: "assign-line-manager",
+        data: {
+          lineManagerId: data.lineManagerId,
+          employeeIds,
+        },
       },
       {
         onError: (err: any) => {

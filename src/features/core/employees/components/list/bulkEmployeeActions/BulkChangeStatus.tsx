@@ -9,6 +9,7 @@ import { QUERY_KEY_FOR_LIST_OF_EMPLOYEES } from "features/core/employees/hooks/u
 import { useCreateFolder } from "features/self-service/features/documents/hooks/useCreateFolder";
 import { EMPLOYEE_STATUSES_OPTIONS } from "features/core/employees/constants";
 import { pluralOrSingular } from "utils/dataHelpers/pluralOrSingular";
+import { useHandleEmployeeBulkAction } from "features/core/employees/hooks/bulkActions/useHandleEmployeeBulkAction";
 
 interface IProps extends IModalProps {
   employeeIds: number[];
@@ -22,12 +23,16 @@ export const BulkChangeStatus: React.FC<IProps> = ({
   const queryClient = useQueryClient();
 
   const [form] = Form.useForm();
-  const { mutate, isLoading } = useCreateFolder();
+  const { mutate, isLoading } = useHandleEmployeeBulkAction();
 
   const handleSubmit = (data: any) => {
     mutate(
       {
-        name: data.name,
+        action: "change-status",
+        data: {
+          status: data.status,
+          employeeIds,
+        },
       },
       {
         onError: (err: any) => {

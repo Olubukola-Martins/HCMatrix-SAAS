@@ -14,6 +14,9 @@ import { EMPLOYEE_STATUSES_OPTIONS } from "features/core/employees/constants";
 import { pluralOrSingular } from "utils/dataHelpers/pluralOrSingular";
 import { FormEmployeeInput } from "../../FormEmployeeInput";
 import { FormDesignationInput } from "features/core/designations/components/FormDesignationInput";
+import { useHandleEmployeeBulkAction } from "features/core/employees/hooks/bulkActions/useHandleEmployeeBulkAction";
+import { QUERY_KEY_FOR_DESIGNATIONS } from "features/core/designations/hooks/useFetchDesignations";
+import { QUERY_KEY_FOR_SINGLE_DESIGNATION } from "features/core/designations/hooks/useFetchSingleDesignation";
 
 interface IProps extends IModalProps {
   employeeIds: number[];
@@ -27,12 +30,16 @@ export const BulkAssignDesignation: React.FC<IProps> = ({
   const queryClient = useQueryClient();
 
   const [form] = Form.useForm();
-  const { mutate, isLoading } = useCreateFolder();
+  const { mutate, isLoading } = useHandleEmployeeBulkAction();
 
   const handleSubmit = (data: any) => {
     mutate(
       {
-        name: data.name,
+        action: "assign-designation",
+        data: {
+          designationId: data.designationId,
+          employeeIds,
+        },
       },
       {
         onError: (err: any) => {
@@ -56,6 +63,14 @@ export const BulkAssignDesignation: React.FC<IProps> = ({
 
           queryClient.invalidateQueries({
             queryKey: [QUERY_KEY_FOR_LIST_OF_EMPLOYEES],
+            // exact: true,
+          });
+          queryClient.invalidateQueries({
+            queryKey: [QUERY_KEY_FOR_DESIGNATIONS],
+            // exact: true,
+          });
+          queryClient.invalidateQueries({
+            queryKey: [QUERY_KEY_FOR_SINGLE_DESIGNATION],
             // exact: true,
           });
         },

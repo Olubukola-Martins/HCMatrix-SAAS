@@ -5,7 +5,7 @@ import { useQueryClient } from "react-query";
 import DeleteEntityModal from "components/entity/DeleteEntityModal";
 import { QUERY_KEY_FOR_BRANCHES } from "../hooks/useFetchBranches";
 import { TBranch } from "../types";
-import { useDeleteTask } from "features/self-service/features/tasks/hooks/useDeleteTask";
+import { useDeleteBranch } from "../hooks/useDeleteBranch";
 
 interface IProps extends IModalProps {
   branch?: TBranch;
@@ -17,7 +17,7 @@ export const DeleteBranch: React.FC<IProps> = ({
 }) => {
   const queryClient = useQueryClient();
 
-  const { mutate, isLoading } = useDeleteTask(); //TODO: Change when enpoint is provided
+  const { mutate, isLoading } = useDeleteBranch();
 
   const handleDelete = () => {
     if (!branch) return;

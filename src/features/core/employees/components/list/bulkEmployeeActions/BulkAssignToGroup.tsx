@@ -2,19 +2,14 @@ import { Form, Input, Modal, Select } from "antd";
 import { AppButton } from "components/button/AppButton";
 import React from "react";
 import { IModalProps } from "types";
-import {
-  generalValidationRules,
-  textInputValidationRules,
-} from "utils/formHelpers/validation";
 import { openNotification } from "utils/notifications";
 import { useQueryClient } from "react-query";
 import { QUERY_KEY_FOR_LIST_OF_EMPLOYEES } from "features/core/employees/hooks/useFetchEmployees";
-import { useCreateFolder } from "features/self-service/features/documents/hooks/useCreateFolder";
-import { EMPLOYEE_STATUSES_OPTIONS } from "features/core/employees/constants";
 import { pluralOrSingular } from "utils/dataHelpers/pluralOrSingular";
-import { FormEmployeeInput } from "../../FormEmployeeInput";
-import { FormDesignationInput } from "features/core/designations/components/FormDesignationInput";
 import { FormGroupInput } from "features/core/groups/components/FormGroupInput";
+import { useHandleEmployeeBulkAction } from "features/core/employees/hooks/bulkActions/useHandleEmployeeBulkAction";
+import { QUERY_KEY_FOR_GROUPS } from "features/core/groups/hooks/useFetchGroups";
+import { QUERY_KEY_FOR_SINGLE_GROUP } from "features/core/groups/hooks/useFetchSingleGroup";
 
 interface IProps extends IModalProps {
   employeeIds: number[];
@@ -28,12 +23,16 @@ export const BulkAssignToGroup: React.FC<IProps> = ({
   const queryClient = useQueryClient();
 
   const [form] = Form.useForm();
-  const { mutate, isLoading } = useCreateFolder();
+  const { mutate, isLoading } = useHandleEmployeeBulkAction();
 
   const handleSubmit = (data: any) => {
     mutate(
       {
-        name: data.name,
+        action: "add-to-group",
+        data: {
+          groupId: data.groupId,
+          employeeIds,
+        },
       },
       {
         onError: (err: any) => {
@@ -57,6 +56,14 @@ export const BulkAssignToGroup: React.FC<IProps> = ({
 
           queryClient.invalidateQueries({
             queryKey: [QUERY_KEY_FOR_LIST_OF_EMPLOYEES],
+            // exact: true,
+          });
+          queryClient.invalidateQueries({
+            queryKey: [QUERY_KEY_FOR_GROUPS],
+            // exact: true,
+          });
+          queryClient.invalidateQueries({
+            queryKey: [QUERY_KEY_FOR_SINGLE_GROUP],
             // exact: true,
           });
         },
