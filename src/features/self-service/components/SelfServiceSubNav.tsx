@@ -5,12 +5,13 @@ import React from "react";
 import { Link } from "react-router-dom";
 
 const routes = [
+  { title: "Dashboard", path: appRoutes.selfServiceHome },
   { title: "Onboarding", path: appRoutes.onboarding },
   { title: "Tasks", path: appRoutes.selfServiceTasks },
   { title: "Asset", path: appRoutes.selfServiceAssets },
   { title: "Loan", path: appRoutes.loans },
   { title: "Leave", path: appRoutes.leaveHome },
-  { title: "Payslips", path: appRoutes.payslips },
+  { title: "Payslips", path: appRoutes.payslipTransactions },
   {
     title: "Requisitions",
     children: [

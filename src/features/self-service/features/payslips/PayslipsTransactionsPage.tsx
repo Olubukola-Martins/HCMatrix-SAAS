@@ -1,12 +1,12 @@
 import React from "react";
 import { PageIntro } from "components/layout/PageIntro";
-import PayrollSubNav from "../components/PayrollSubNav";
 import { appRoutes } from "config/router/paths";
 import { useFetchSingleEmployee } from "features/core/employees/hooks/useFetchSingleEmployee";
 import { useApiAuth } from "hooks/useApiAuth";
 import { Skeleton } from "antd";
 import { ErrorWrapper } from "components/errorHandlers/ErrorWrapper";
-import PayslipTransactionContainer from "../components/payslips/PayslipTransactionContainer";
+import SelfServiceSubNav from "features/self-service/components/SelfServiceSubNav";
+import PayslipTransactionContainer from "features/payroll/components/payslips/PayslipTransactionContainer";
 
 const PayslipsTransactionsPage = () => {
   const { currentUserEmployeeId } = useApiAuth();
@@ -19,7 +19,7 @@ const PayslipsTransactionsPage = () => {
   });
   return (
     <>
-      <PayrollSubNav />
+      <SelfServiceSubNav />
       <div className="Container">
         <PageIntro
           title="My Payslips & Transactions"

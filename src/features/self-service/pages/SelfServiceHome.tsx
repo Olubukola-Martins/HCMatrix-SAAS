@@ -41,19 +41,25 @@ const SelfServiceHome: React.FC = () => {
               <SelfBox
                 title="Onboarding"
                 icon={Onboarding}
-                link="/self-service/onboarding"
+                link={appRoutes.onboarding}
+                desc="You can now access and manage onboarding"
               />
               <SelfBox
                 title="Loan"
                 icon={loan}
-                link="/self-service/loan"
+                link={appRoutes.loans}
                 desc="You can apply and manage loan requests"
               />
-              <SelfBox title="Leave" icon={leave} link="/self-service/leave" />
+              <SelfBox
+                title="Leave"
+                icon={leave}
+                link={appRoutes.leaveHome}
+                desc="You can apply and manage leave requests"
+              />
               <SelfBox
                 title="Health access"
                 icon={health}
-                link="/self-service/health-access"
+                link={appRoutes.healthAccessHome}
               />
               {/* TODO: Refactor all routes to use appRoutes */}
               <SelfBox

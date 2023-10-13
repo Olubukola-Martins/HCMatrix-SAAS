@@ -2,16 +2,18 @@ import { Table } from "antd";
 import { ColumnsType } from "antd/lib/table";
 import moment from "moment";
 import React from "react";
-import { TOnboardingTask } from "../types";
+import { TOnboardingTask } from "../../types";
+import { getEmployeeFullName } from "features/core/employees/utils/getEmployeeFullName";
 
 interface IProps {
-  data: TOnboardingTask[];
+  data?: TOnboardingTask[];
 }
 
 const columns: ColumnsType<TOnboardingTask> = [
   {
     title: "Task",
     dataIndex: "name",
+    ellipsis: true,
     render: (_, item) => <span className="capitalize">{item.name}</span>,
     // width: 150,
   },
@@ -19,14 +21,13 @@ const columns: ColumnsType<TOnboardingTask> = [
   {
     title: "Description",
     dataIndex: "description",
+    ellipsis: true,
   },
   {
     title: "Task Supervisor",
     dataIndex: "supervisor",
     render: (_, item) => (
-      <span className="capitalize">
-        {item.supervisor.firstName} {item.supervisor.lastName}
-      </span>
+      <span className="capitalize">{getEmployeeFullName(item.supervisor)}</span>
     ),
   },
   {
@@ -53,7 +54,7 @@ const columns: ColumnsType<TOnboardingTask> = [
     ),
   },
 ];
-const Tasks: React.FC<IProps> = ({ data }) => {
+const OnboardingTasks: React.FC<IProps> = ({ data }) => {
   return (
     <div className="mt-8 flex flex-col gap-4">
       <h4 className="text-lg font-semibold">Tasks</h4>
@@ -61,11 +62,10 @@ const Tasks: React.FC<IProps> = ({ data }) => {
         columns={columns}
         dataSource={data}
         size="small"
-        pagination={{ pageSize: 4, total: data.length }}
-        scroll={{ y: 240 }}
+        pagination={{ pageSize: 10, total: data?.length }}
       />
     </div>
   );
 };
 
-export default Tasks;
+export default OnboardingTasks;

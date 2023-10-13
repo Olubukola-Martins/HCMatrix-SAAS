@@ -5,29 +5,34 @@ import moment from "moment";
 import { useEffect } from "react";
 import { useQueryClient } from "react-query";
 import { Link } from "react-router-dom";
-import { generalValidationRules } from "utils/formHelpers/validation";
+import { dateHasToBeGreaterThanOrEqualToCurrentDayRule } from "utils/formHelpers/validation";
 import { openNotification } from "utils/notifications";
-import useSaveResumptionInformation from "../hooks/useSaveResumptionInformation";
-import { TOnboarding } from "../types";
+import useSaveResumptionInformation from "../../hooks/useSaveResumptionInformation";
+import { TOnboarding } from "../../types";
 import { FileUpload } from "components/FileUpload";
 import { AppButton } from "components/button/AppButton";
 import { useCurrentFileUploadUrl } from "hooks/useCurrentFileUploadUrl";
 import { FormBranchInput } from "features/core/branches/components/FormBranchInput";
+import { QUERY_KEY_FOR_SINGLE_ONBOARDING } from "../../hooks/useFetchSingleOnboarding";
+import { QUERY_KEY_FOR_AUTHENTICATED_EMPLOYEE_ONBOARDING } from "../../hooks/useGetAuthenticatedEmployeeOnboarding";
 
 interface IProps {
-  setNewTaskDrawer: (val: boolean) => void;
-  onboarding: TOnboarding;
+  handleAddTask: () => void;
+  handleCloseTask: () => void;
+  onboarding?: TOnboarding;
 }
 
 export const ResumptionInformation = ({
-  setNewTaskDrawer,
+  handleAddTask,
+  handleCloseTask,
+
   onboarding,
 }: IProps) => {
   const [form] = Form.useForm();
 
   useEffect(() => {
-    if (onboarding.resumptionInformation) {
-      const data = onboarding.resumptionInformation;
+    if (onboarding?.resumptionInformation) {
+      const data = onboarding?.resumptionInformation;
       form.setFieldsValue({
         resumptionDateAndTime: data.resumptionDateAndTime
           ? moment(data.resumptionDateAndTime)
@@ -44,49 +49,51 @@ export const ResumptionInformation = ({
   const { mutate, isLoading } = useSaveResumptionInformation();
   const documentUrl = useCurrentFileUploadUrl("documentUrl");
   const handleFinish = (data: any) => {
-    if (companyId) {
-      mutate(
-        {
-          token,
-          companyId,
-          branchId: data.branchId,
-          documentUrl: !!documentUrl
-            ? documentUrl
-            : onboarding?.resumptionInformation?.documentUrl ?? "",
-          resumptionDateAndTime: data.resumptionDateAndTime
-            ? moment(data.resumptionDateAndTime).toISOString()
-            : "",
-          whoToCallId: data.whoToCallId,
-          id: onboarding.id,
+    if (!onboarding) return;
+    mutate(
+      {
+        token,
+        companyId,
+        branchId: data.branchId,
+        documentUrl: !!documentUrl
+          ? documentUrl
+          : onboarding?.resumptionInformation?.documentUrl ?? "",
+        resumptionDateAndTime: data.resumptionDateAndTime
+          ? moment(data.resumptionDateAndTime).toISOString()
+          : "",
+        whoToCallId: data.whoToCallId,
+        id: onboarding?.id,
+      },
+      {
+        onError: (err: any) => {
+          openNotification({
+            state: "error",
+            title: "Error Occured",
+            description:
+              err?.response.data.message ?? err?.response.data.error.message,
+          });
         },
-        {
-          onError: (err: any) => {
-            openNotification({
-              state: "error",
-              title: "Error Occured",
-              description:
-                err?.response.data.message ?? err?.response.data.error.message,
-            });
-          },
-          onSuccess: (res: any) => {
-            openNotification({
-              state: "success",
+        onSuccess: (res: any) => {
+          openNotification({
+            state: "success",
 
-              title: "Success",
-              description: res.data.message,
-              // duration: 0.4,
-            });
+            title: "Success",
+            description: res.data.message,
+            // duration: 0.4,
+          });
 
-            form.resetFields();
+          form.resetFields();
 
-            queryClient.invalidateQueries({
-              queryKey: ["single-onboarding"], // pass in id later
-            });
-            setNewTaskDrawer(true);
-          },
-        }
-      );
-    }
+          queryClient.invalidateQueries({
+            queryKey: [QUERY_KEY_FOR_SINGLE_ONBOARDING],
+          });
+          queryClient.invalidateQueries({
+            queryKey: [QUERY_KEY_FOR_AUTHENTICATED_EMPLOYEE_ONBOARDING],
+          });
+          handleCloseTask();
+        },
+      }
+    );
   };
   return (
     <div className="bg-mainBg rounded-md px-2 md:px-4 pt-4 pb-6 shadow-sm mt-5">
@@ -96,14 +103,14 @@ export const ResumptionInformation = ({
         labelCol={{ span: 24 }}
         form={form}
         onFinish={handleFinish}
-        disabled={!!onboarding.resumptionInformation}
-        requiredMark={onboarding.resumptionInformation ? false : true}
+        disabled={!!onboarding?.resumptionInformation}
+        requiredMark={false}
       >
         <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
           <Form.Item
             label="Resumption Date & Time"
             name="resumptionDateAndTime"
-            rules={generalValidationRules}
+            rules={[dateHasToBeGreaterThanOrEqualToCurrentDayRule]}
           >
             <DatePicker showTime allowClear className="w-full" />
           </Form.Item>
@@ -145,10 +152,7 @@ export const ResumptionInformation = ({
             />
           )}
           {onboarding?.resumptionInformation && (
-            <AppButton
-              label="Add Task"
-              handleClick={() => setNewTaskDrawer(true)}
-            />
+            <AppButton label="Add Task" handleClick={handleAddTask} />
           )}
         </div>
       </Form>

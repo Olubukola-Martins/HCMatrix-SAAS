@@ -123,6 +123,33 @@ export const dateHasToBeGreaterThanCurrentDayRuleForRange: Rule = {
     return true;
   },
 };
+export const dateHasToBeGreaterThanOrEqualToCurrentDayRule: Rule = {
+  validator: async (rule, value) => {
+    if (!isDateGreaterThanOrEqualToCurrentDay(value)) {
+      throw new Error(
+        "Please select a date greater than or equal to the current day"
+      );
+    }
+
+    return true;
+  },
+};
+export const dateHasToBeGreaterThanOrEqualToCurrentDayRuleForRange: Rule = {
+  validator: async (rule, value) => {
+    if (!isDateGreaterThanOrEqualToCurrentDay(value[0])) {
+      throw new Error(
+        "Please select a date greater than or equal to the current day"
+      );
+    }
+    if (!isDateGreaterThanOrEqualToCurrentDay(value[1])) {
+      throw new Error(
+        "Please select a date greater than or equal to the current day"
+      );
+    }
+
+    return true;
+  },
+};
 export const dateHasToBeLesserThanOrEqualToCurrentDayRuleForRange: Rule = {
   validator: async (_, value) => {
     if (!isDateLesserThanOrEqualToCurrentDay(value[0])) {

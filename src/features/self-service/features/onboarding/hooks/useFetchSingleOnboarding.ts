@@ -2,22 +2,26 @@ import axios from "axios";
 import { useQuery } from "react-query";
 import { ICurrentCompany } from "types";
 import { TOnboarding, TOnboardingTask } from "../types";
+import { useApiAuth } from "hooks/useApiAuth";
 
 // TO DO : need to exist in the general data entities and refactored
-interface IGetDataProps extends ICurrentCompany {
-  id: number;
+interface IGetDataProps {
+  id?: number;
 }
 
-const getSingleOnboarding = async (
-  props: IGetDataProps
-): Promise<TOnboarding> => {
+export const QUERY_KEY_FOR_SINGLE_ONBOARDING = "single-onboarding";
+const getSingleOnboarding = async (vals: {
+  props: IGetDataProps;
+  auth: ICurrentCompany;
+}): Promise<TOnboarding> => {
+  const { props, auth } = vals;
   const url = `${process.env.REACT_APP_UTILITY_BASE_URL}/self-service/onboarding/${props.id}`;
 
   const config = {
     headers: {
       Accept: "application/json",
-      Authorization: `Bearer ${props.token}`,
-      "x-company-id": props.companyId,
+      Authorization: `Bearer ${auth.token}`,
+      "x-company-id": auth.companyId,
     },
   };
 
@@ -81,13 +85,19 @@ const getSingleOnboarding = async (
 };
 
 export const useFetchSingleOnboarding = (props: IGetDataProps) => {
+  const { companyId, token } = useApiAuth();
   const queryData = useQuery(
-    ["single-onboarding", props.id],
+    [QUERY_KEY_FOR_SINGLE_ONBOARDING, props.id],
     () =>
       getSingleOnboarding({
-        ...props,
+        props,
+        auth: {
+          companyId,
+          token,
+        },
       }),
     {
+      enabled: !!props.id,
       onError: (err: any) => {},
       onSuccess: (data) => {},
     }
