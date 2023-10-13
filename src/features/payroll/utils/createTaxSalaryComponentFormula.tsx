@@ -56,13 +56,21 @@ export interface TTaxCondition {
 
 export function calculateSalaryEvalStatement(
   AH4: string,
-  conditions: {
+  _conditions: {
     min: number;
     max: number;
     salary: number;
     rate: number;
-  }[]
+  }[],
+  _divisor?: number
 ) {
+  let divisor = _divisor ?? 12;
+  const conditions = _conditions.map((item) => ({
+    ...item,
+    min: item.min / divisor,
+    max: item.max / divisor,
+    salary: item.salary / divisor,
+  }));
   const evalStatement = conditions.reduce((statement, condition, index) => {
     const conditionStatement = `(${AH4} > ${condition.min} && ${AH4} <= ${condition.max}) ? (${condition.salary} + (${AH4} - ${condition.min}) * ${condition.rate}) : ${statement}`;
 

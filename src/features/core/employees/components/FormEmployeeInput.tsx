@@ -36,6 +36,7 @@ export const FormEmployeeInput: React.FC<{
     searchParams: {
       name: debouncedSearchTerm,
     },
+    status: ["confirmed", "probation"],
   });
 
   const handleSearch = (val: string) => {
@@ -58,10 +59,8 @@ export const FormEmployeeInput: React.FC<{
       <Select
         mode={mode}
         onSelect={(val: number) => {
-          if (handleSelect) {
-            const employee = data?.data.find((emp) => emp.id === val);
-            handleSelect(val, employee);
-          }
+          const employee = data?.data.find((emp) => emp.id === val);
+          handleSelect?.(val, employee);
         }}
         placeholder={`Select employee${!!mode ? "s" : ""}`}
         showSearch

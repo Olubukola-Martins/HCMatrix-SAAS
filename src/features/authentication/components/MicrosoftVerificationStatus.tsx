@@ -178,7 +178,7 @@ const MicrosoftVerificationStatus = ({
     isSuccess: isISuccess,
   } = useFetchIndustries();
   const handleFinish = (data: any) => {
-    const phoneNumber = `+${data.phone.code}-${data.phone.number}`;
+    const phoneNumber = `${data.phone.code}-${data.phone.number}`;
 
     if (tempAuthState) {
       mutate(

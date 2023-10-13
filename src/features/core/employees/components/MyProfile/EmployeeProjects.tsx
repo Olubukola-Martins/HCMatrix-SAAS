@@ -33,26 +33,7 @@ export const EmployeeProjects: React.FC<{ data?: TEmployeeProject[] }> = ({
       key: "name",
       render: (val, item) => <span className="capitalize">{item?.name}</span>,
     },
-    {
-      title: "Gross Income",
-      dataIndex: "income",
-      key: "income",
-      render: (val, item) => (
-        <span className="capitalize">{item?.grossIncome}</span>
-      ),
-    },
-    {
-      title: "Total Paid",
-      dataIndex: "cat",
-      key: "cat",
-      render: (_, item) => item.totalPaid,
-    },
-    {
-      title: "No of Payments Made",
-      dataIndex: "pay",
-      key: "pay",
-      render: (_, item) => item.noOfPaymentsMade,
-    },
+
     {
       title: "Project Began",
       dataIndex: "createAr",

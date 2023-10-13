@@ -1,34 +1,24 @@
-import {
-  Collapse,
-  Form,
-  Spin,
-  Input,
-  DatePicker,
-  InputNumber,
-  Select,
-  Radio,
-  Button,
-  Dropdown,
-} from "antd";
+import { Collapse, Form, Input, Radio, Button, Dropdown } from "antd";
 import { PageIntro } from "components/layout/PageIntro";
 import { appRoutes } from "config/router/paths";
-import { useFetchDesignations } from "features/core/designations/hooks/useFetchDesignations";
-import { FormRoleInput } from "features/core/roles-and-permissions/components/FormRoleInput";
-import { useFetchRoles } from "features/core/roles-and-permissions/hooks/useFetchRoles";
-import { useApiAuth } from "hooks/useApiAuth";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import {
+  emailValidationRules,
   textInputValidationRules,
-  generalValidationRules,
+  textInputValidationRulesOp,
 } from "utils/formHelpers/validation";
 import { openNotification } from "utils/notifications";
-import { FormEmployeeInput } from "../components/FormEmployeeInput";
 import { useCreateEmployee } from "../hooks/useCreateEmployee";
-import { useFetchEmployees } from "../hooks/useFetchEmployees";
-import { ICreateEmpProps } from "../types";
+import { JobInformationFormItems } from "../components/MyProfile/JobInformation";
+import {
+  TEssentialPayrollType,
+  TPayrollFrequency,
+} from "features/payroll/types/payroll";
+import { DEFAULT_DATE_FORMAT } from "constants/dateFormats";
+import { FormRoleInput } from "features/core/roles-and-permissions/components/FormRoleInput";
 import { FormDesignationInput } from "features/core/designations/components/FormDesignationInput";
-import { EMPLOYMENT_TYPES, WORK_MODELS } from "constants/general";
+import { BeatLoader } from "react-spinners";
 
 const { Panel } = Collapse;
 
@@ -36,55 +26,10 @@ type TNextAction = "onboarding" | "complete-profile" | "add-another";
 
 export const AddEmployee = () => {
   const [nextAction, setNextAction] = useState<TNextAction>();
-  const { token, companyId } = useApiAuth();
-  const [degSearch, setDegSearch] = useState<string>("");
-  const [empSearch, setEmpSearch] = useState<string>("");
-  const [roleSearch, setRoleSearch] = useState<string>("");
 
   const [form] = Form.useForm();
-  const { mutate } = useCreateEmployee();
-  const {
-    data: degData,
-    isSuccess: isDSuccess,
-    isFetching: isDFetching,
-  } = useFetchDesignations({
-    pagination: {
-      limit: 100, //temp suppose to allow search
-      offset: 0,
-    },
-    searchParams: {
-      name: degSearch,
-    },
-  });
-  const {
-    data: empData,
-    isSuccess: isEmpSuccess,
-    isFetching: isEmpFetching,
-  } = useFetchEmployees({
-    pagination: {
-      limit: 100, //temp suppose to allow search
-      offset: 0,
-    },
-    searchParams: {
-      name: empSearch,
-    },
-  });
-  const {
-    data: roleData,
-    isSuccess: isRSuccess,
-    isFetching: isRFetching,
-  } = useFetchRoles({
-    companyId,
-    pagination: {
-      limit: 100, //temp suppose to allow search
-      offset: 0,
-    },
-    searchParams: {
-      name: roleSearch,
-    },
+  const { mutate, isLoading } = useCreateEmployee();
 
-    token,
-  });
   const navigate = useNavigate();
   const [successData, setSuccessData] = useState<{
     employeeId: number;
@@ -92,24 +37,23 @@ export const AddEmployee = () => {
   }>();
 
   const handleNextAction = () => {
-    if (successData) {
-      switch (nextAction) {
-        case "complete-profile":
-          navigate(appRoutes.singleEmployee(successData.employeeId).path);
+    if (!successData) return;
+    switch (nextAction) {
+      case "complete-profile":
+        navigate(appRoutes.singleEmployee(successData.employeeId).path);
 
-          break;
-        case "add-another":
-          form.resetFields();
+        break;
+      case "add-another":
+        form.resetFields();
 
-          break;
-        case "onboarding":
-          navigate(appRoutes.startOnBoarding(successData.onboardingId).path);
+        break;
+      case "onboarding":
+        navigate(appRoutes.startOnBoarding(successData.onboardingId).path);
 
-          break;
+        break;
 
-        default:
-          break;
-      }
+      default:
+        break;
     }
   };
   const handleCurrentAction = (action: TNextAction) => {
@@ -118,37 +62,33 @@ export const AddEmployee = () => {
   };
 
   const handleSubmit = (data: any) => {
-    if (companyId) {
-      const props: ICreateEmpProps = {
-        token,
-        companyId,
+    mutate(
+      {
+        designationId: data.designationId,
+        email: data.email,
         firstName: data.firstName,
         lastName: data.lastName,
-        email: data.email,
-        hasSelfService: data.hasSelfService,
-        empUid: data.empUid,
+        hasSelfService: !!data.hasSelfService,
         roleId: data.roleId,
-        designationId: data.designationId,
+        empUid: data.empUid,
         jobInformation: {
-          startDate: data.startDate.format("YYYY-MM-DD"),
-          jobTitle: data.jobTitle,
+          startDate: data.startDate.format(DEFAULT_DATE_FORMAT),
           monthlyGross: data.monthlyGross,
           employmentType: data.employmentType,
           workModel: data.workModel,
           numberOfDaysPerWeek: data.numberOfDaysPerWeek,
-
+          hireDate: data.hireDate.format(DEFAULT_DATE_FORMAT),
+          probationEndDate: data.probationEndDate.format(DEFAULT_DATE_FORMAT),
+          confirmationDate: data.confirmationDate.format(DEFAULT_DATE_FORMAT),
           lineManagerId: data.lineManagerId,
+          payGradeId: data.payGradeId,
+          payrollType: data.payrollType,
+          branchId: data.branchId,
+          hourlyRate: data.hourlyRate,
+          frequency: payrollType === "wages" ? frequency : "monthly",
         },
-      };
-
-      // return;
-      openNotification({
-        state: "info",
-        title: "Wait a second ...",
-        // description: <Progress percent={80} status="active" />,
-        description: <Spin />,
-      });
-      mutate(props, {
+      },
+      {
         onError: (err: any) => {
           openNotification({
             state: "error",
@@ -174,9 +114,13 @@ export const AddEmployee = () => {
             // duration: 0.4,
           });
         },
-      });
-    }
+      }
+    );
   };
+  const [frequency, setFrequency] = useState<TPayrollFrequency>("monthly");
+
+  const [payrollType, setPayrollType] =
+    useState<TEssentialPayrollType>("direct-salary");
 
   return (
     <>
@@ -184,10 +128,6 @@ export const AddEmployee = () => {
         <PageIntro title="Add Employee" link="/settings/employees" />
 
         <div className="bg-card px-1 md:px-5 py-7 rounded-md mt-7 text-accent">
-          <div className="bg-red-200 text-sm rounded-md py-2 flex justify-between items-center px-3 mb-4">
-            <span>Employees Added: 2</span>
-            <span>License count left: 5</span>
-          </div>
           <Form
             onFinish={handleSubmit}
             layout="vertical"
@@ -219,25 +159,28 @@ export const AddEmployee = () => {
                     >
                       <Input placeholder="Enter Last Name" />
                     </Form.Item>
-                    <Form.Item name="empUid" label="Employee ID (optional)">
+                    <Form.Item
+                      name="empUid"
+                      label="Employee ID (optional)"
+                      rules={textInputValidationRulesOp}
+                    >
                       <Input placeholder="Employee ID" />
                     </Form.Item>
                     <Form.Item
                       name="email"
                       label="Employee Email"
-                      rules={[
-                        {
-                          required: true,
-                          message: "Field is required",
-                        },
-                        {
-                          type: "email",
-                          message: "Please enter a valid email",
-                        },
-                      ]}
+                      rules={emailValidationRules}
                     >
                       <Input placeholder="Enter Email" />
                     </Form.Item>
+                    <FormRoleInput
+                      Form={Form}
+                      control={{ name: "roleId", label: "Role" }}
+                    />
+                    <FormDesignationInput
+                      Form={Form}
+                      control={{ name: "designationId", label: "Designation" }}
+                    />
                   </div>
                 </Panel>
               </Collapse>
@@ -250,70 +193,15 @@ export const AddEmployee = () => {
                   key="1"
                   className="collapseHeader"
                 >
-                  <div className="bg-card px-3 py-4 rounded-md grid grid-cols-1 md:grid-cols-2 gap-x-5">
-                    <Form.Item
-                      name="startDate"
-                      label="Start Date"
-                      rules={generalValidationRules}
-                    >
-                      <DatePicker format="YYYY/MM/DD" className="w-full" />
-                    </Form.Item>
-
-                    <FormRoleInput Form={Form} />
-                    <Form.Item
-                      name="monthlyGross"
-                      label="Monthly Gross"
-                      rules={[...generalValidationRules, { type: "number" }]}
-                    >
-                      <InputNumber
-                        placeholder="Enter monthly gross"
-                        min={1}
-                        className="w-full"
-                      />
-                    </Form.Item>
-                    <Form.Item
-                      name="employmentType"
-                      label="Employment Type"
-                      rules={generalValidationRules}
-                    >
-                      <Select
-                        className="SelectTag w-full"
-                        placeholder="Select Employment Type"
-                        options={EMPLOYMENT_TYPES}
-                      />
-                    </Form.Item>
-                    <Form.Item
-                      name="workModel"
-                      label="Work Model"
-                      rules={generalValidationRules}
-                    >
-                      <Select
-                        className="SelectTag w-full"
-                        placeholder="Select Work Model"
-                        options={WORK_MODELS}
-                      />
-                    </Form.Item>
-
-                    <FormEmployeeInput
+                  <div className="bg-card px-3 py-4 rounded-md ">
+                    {/* Begin here: Extract a job information form and use here */}
+                    <JobInformationFormItems
                       Form={Form}
-                      control={{
-                        name: "lineManagerId",
-                        label: "Line Manager (optional)",
-                      }}
+                      frequency={frequency}
+                      setFrequency={setFrequency}
+                      payrollType={payrollType}
+                      setPayrollType={setPayrollType}
                     />
-                    <FormDesignationInput Form={Form} />
-                    <Form.Item
-                      name="numberOfDaysPerWeek"
-                      label="Number of Days in the Week"
-                      rules={generalValidationRules}
-                    >
-                      <InputNumber
-                        min={1}
-                        max={7}
-                        className="w-full"
-                        placeholder="Enter..."
-                      />
-                    </Form.Item>
                   </div>
                 </Panel>
               </Collapse>
@@ -336,16 +224,16 @@ export const AddEmployee = () => {
               </Collapse>
             </div>
             <div className="flex items-center gap-3 justify-end mt-5">
-              <Button
-                type="text"
-                onClick={() => handleCurrentAction("onboarding")}
-              >
-                Proceed to onboarding
-              </Button>
               <Dropdown
                 placement="top"
                 overlay={
                   <ul className="bg-mainBg text-sm rounded-md font-medium shadow-md px-2 py-3 border-2">
+                    <li
+                      className="pb-2 cursor-pointer hover:text-caramel"
+                      onClick={() => handleCurrentAction("onboarding")}
+                    >
+                      Save and Onboard
+                    </li>
                     <li
                       className="pb-2 cursor-pointer hover:text-caramel"
                       onClick={() => handleCurrentAction("add-another")}
@@ -366,8 +254,14 @@ export const AddEmployee = () => {
                   type="button"
                   className="flex items-center gap-2 transparentButton"
                 >
-                  <span>Save</span>
-                  <i className="ri-arrow-down-s-line"></i>
+                  {isLoading ? (
+                    <BeatLoader />
+                  ) : (
+                    <>
+                      <span>Save</span>
+                      <i className="ri-arrow-down-s-line"></i>
+                    </>
+                  )}
                 </button>
               </Dropdown>
             </div>

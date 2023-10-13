@@ -54,6 +54,7 @@ export const EmploymentHistory: React.FC<IProps> = ({
     {
       title: "Organization",
       dataIndex: "na",
+      ellipsis: true,
       render: (_, val) => (
         <span className="capitalize">{val.organization}</span>
       ),
@@ -61,6 +62,8 @@ export const EmploymentHistory: React.FC<IProps> = ({
     {
       title: "Position",
       dataIndex: "comp",
+      ellipsis: true,
+
       render: (_, val) => <span className="capitalize">{val.position}</span>,
     },
     {

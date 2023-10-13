@@ -115,80 +115,84 @@ export const SaveBranch: React.FC<IProps> = ({
             <Input.TextArea placeholder="Description" />
           </Form.Item>
 
-          <Form.Item name="address" label="Address">
-            <Input.Group className="grid grid-cols-2 gap-4">
-              <div className="col-span-2">
+          {/* TODO: Create a reusable address form component */}
+          <>
+            {" "}
+            <Form.Item name="address" label="Address">
+              <Input.Group className="grid grid-cols-2 gap-4">
+                <div className="col-span-2">
+                  <Form.Item
+                    noStyle
+                    rules={textInputValidationRules}
+                    name={["address", "streetAddress"]}
+                  >
+                    <Input.TextArea placeholder="Street Address" />
+                  </Form.Item>
+                </div>
+                <Form.Item noStyle>
+                  <SelectCountry
+                    handleSelect={(val) => {
+                      setCountryId(val);
+                      setErrors((prev) => ({ ...prev, country: undefined }));
+                    }}
+                    onClear={() => {
+                      setCountryId(undefined);
+                      setStateId(undefined);
+                      setLgaId(undefined);
+                    }}
+                    value={countryId}
+                  />
+                </Form.Item>
+                <Form.Item noStyle>
+                  <SelectState
+                    countryId={countryId}
+                    handleSelect={(val) => {
+                      setStateId(val);
+                      setErrors((prev) => ({ ...prev, state: undefined }));
+                    }}
+                    onClear={() => {
+                      setStateId(undefined);
+                      setLgaId(undefined);
+                    }}
+                    value={stateId}
+                  />
+                </Form.Item>
+                <Form.Item noStyle>
+                  <SelectLGA
+                    stateId={stateId}
+                    handleSelect={(val) => {
+                      setLgaId(val);
+                      setErrors((prev) => ({ ...prev, lga: undefined }));
+                    }}
+                    onClear={() => {
+                      setLgaId(undefined);
+                    }}
+                    onFetchSuccess={(dataIsEmpty) =>
+                      setDoesStateHaveLGAS(!dataIsEmpty)
+                    }
+                    value={lgaId}
+                  />
+                </Form.Item>
                 <Form.Item
                   noStyle
-                  rules={textInputValidationRules}
-                  name={["address", "streetAddress"]}
+                  name={["address", "timezone"]}
+                  rules={generalValidationRules}
                 >
-                  <Input.TextArea placeholder="Street Address" />
+                  <Select options={TIME_ZONES} placeholder="Select Timezone" />
                 </Form.Item>
-              </div>
-              <Form.Item noStyle>
-                <SelectCountry
-                  handleSelect={(val) => {
-                    setCountryId(val);
-                    setErrors((prev) => ({ ...prev, country: undefined }));
-                  }}
-                  onClear={() => {
-                    setCountryId(undefined);
-                    setStateId(undefined);
-                    setLgaId(undefined);
-                  }}
-                  value={countryId}
-                />
-              </Form.Item>
-              <Form.Item noStyle>
-                <SelectState
-                  countryId={countryId}
-                  handleSelect={(val) => {
-                    setStateId(val);
-                    setErrors((prev) => ({ ...prev, state: undefined }));
-                  }}
-                  onClear={() => {
-                    setStateId(undefined);
-                    setLgaId(undefined);
-                  }}
-                  value={stateId}
-                />
-              </Form.Item>
-              <Form.Item noStyle>
-                <SelectLGA
-                  stateId={stateId}
-                  handleSelect={(val) => {
-                    setLgaId(val);
-                    setErrors((prev) => ({ ...prev, lga: undefined }));
-                  }}
-                  onClear={() => {
-                    setLgaId(undefined);
-                  }}
-                  onFetchSuccess={(dataIsEmpty) =>
-                    setDoesStateHaveLGAS(!dataIsEmpty)
-                  }
-                  value={lgaId}
-                />
-              </Form.Item>
-              <Form.Item
-                noStyle
-                name={["address", "timezone"]}
-                rules={generalValidationRules}
-              >
-                <Select options={TIME_ZONES} placeholder="Select Timezone" />
-              </Form.Item>
-            </Input.Group>
-          </Form.Item>
-          {/* errors */}
-          <div className="flex flex-col gap-1">
-            {Object.values(errors)
-              .filter((item) => typeof item != "undefined")
-              .map((item, i) => (
-                <span key={i} className="text-sm text-red-500">
-                  {item}
-                </span>
-              ))}
-          </div>
+              </Input.Group>
+            </Form.Item>
+            {/* errors */}
+            <div className="flex flex-col gap-1">
+              {Object.values(errors)
+                .filter((item) => typeof item != "undefined")
+                .map((item, i) => (
+                  <span key={i} className="text-sm text-red-500">
+                    {item}
+                  </span>
+                ))}
+            </div>
+          </>
 
           {action !== "view" ? (
             <div className="flex justify-end">

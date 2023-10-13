@@ -2,7 +2,7 @@ import { notification } from "antd";
 import { ReactNode } from "react";
 
 const NOTIFICATION_KEY = "general notification";
-
+const DEFAULT_DURATION = 8;
 export const openNotification = ({
   title,
   description,
@@ -18,7 +18,7 @@ export const openNotification = ({
     key: NOTIFICATION_KEY,
     message: title,
     description,
-    duration: duration ?? 0.8,
+    duration: duration ?? DEFAULT_DURATION,
     onClick: () => {},
   });
 };

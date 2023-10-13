@@ -52,16 +52,22 @@ export const Education: React.FC<IProps> = ({
     {
       title: "School",
       dataIndex: "na",
+      ellipsis: true,
+
       render: (_, val) => <span className="capitalize">{val.school}</span>,
     },
     {
       title: "Degree",
       dataIndex: "comp",
+      ellipsis: true,
+
       render: (_, val) => <span className="capitalize">{val.degree}</span>,
     },
     {
       title: "Specialization",
       dataIndex: "spec",
+      ellipsis: true,
+
       render: (_, val) => (
         <span className="capitalize">{val.specialization}</span>
       ),

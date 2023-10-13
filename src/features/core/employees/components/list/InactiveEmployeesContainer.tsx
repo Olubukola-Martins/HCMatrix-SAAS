@@ -30,9 +30,14 @@ const InactiveEmployeesContainer: React.FC<IProps> = ({ filterProps }) => {
     },
   };
 
+  const clearSelectedEmployees = () => setSelectedEmployees([]);
+
   return (
     <div className="flex flex-col gap-4">
-      <BulkEmployeeActionHeader data={selectedEmployees} />
+      <BulkEmployeeActionHeader
+        data={selectedEmployees}
+        clearSelectedEmployees={clearSelectedEmployees}
+      />
 
       <InactiveEmpTableView
         rowSelection={{

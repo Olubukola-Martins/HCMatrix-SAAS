@@ -29,7 +29,7 @@ const createData = async (props: {
     ...props.data,
   };
 
-  const response = await axios.post(url, data, config);
+  const response = await axios.patch(url, data, config);
   return response;
 };
 export const useUpdateEmployeeEmploymentHistory = () => {

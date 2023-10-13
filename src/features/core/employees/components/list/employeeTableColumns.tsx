@@ -29,8 +29,7 @@ export const EMPLOYEE_TABLE_COLUMNS: ColumnsType<TEmployee> = [
     title: "Branch",
     dataIndex: "Branch",
     key: "Branch",
-    // render: (_, item) => item.branch?.name ?? "none",
-    render: (_, item) => "___",
+    render: (_, item) => item?.jobInformation?.branch?.name ?? "none",
   },
   {
     title: "Department",

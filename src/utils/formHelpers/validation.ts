@@ -31,8 +31,11 @@ export const textInputValidationRules: Rule[] = [
   { whitespace: true },
 ];
 export const textInputValidationRulesOp: Rule[] = [
-  ...generalValidationRulesOp,
-  { whitespace: true },
+  {
+    required: false,
+    message: "Please input a non-empty value",
+    whitespace: true,
+  },
 ];
 export const numberInputValidationRules: Rule[] = [
   ...generalValidationRules,
@@ -99,6 +102,15 @@ export const dateHasToBeGreaterThanCurrentDayRule: Rule = {
     return true;
   },
 };
+export const dateHasToBeLesserThanOrEqualToCurrentDayRule: Rule = {
+  validator: async (rule, value) => {
+    if (!isDateLesserThanOrEqualToCurrentDay(value)) {
+      throw new Error("Please select a day before today or today");
+    }
+
+    return true;
+  },
+};
 export const dateHasToBeGreaterThanCurrentDayRuleForRange: Rule = {
   validator: async (rule, value) => {
     if (!isDateGreaterThanCurrentDay(value[0])) {
@@ -111,6 +123,19 @@ export const dateHasToBeGreaterThanCurrentDayRuleForRange: Rule = {
     return true;
   },
 };
+export const dateHasToBeLesserThanOrEqualToCurrentDayRuleForRange: Rule = {
+  validator: async (_, value) => {
+    if (!isDateLesserThanOrEqualToCurrentDay(value[0])) {
+      throw new Error("Please select a date lesser than or equal to today!");
+    }
+    if (!isDateLesserThanOrEqualToCurrentDay(value[1])) {
+      throw new Error("Please select a date lesser than or equal to today!");
+    }
+
+    return true;
+  },
+};
+
 export const urlValidationRule: Rule = {
   validator: async (rule, value) => {
     let paswd = /^(https?:\/\/)?([\da-z.-]+)\.([a-z.]{2,6})([/\w .-]*)*\/?$/;
@@ -215,6 +240,19 @@ export const jsVariableNameValidationRule: Rule = {
 };
 
 export const phoneNumberValidationRule: Rule = {
+  required: true,
+  whitespace: true,
+  validator: async (rule, value) => {
+    let paswd = /^[0-9]*$/;
+
+    if (!value.match(paswd)) throw new Error("Only digits are allowed");
+    // if (false) throw new Error("Something wrong!");
+    return true;
+  },
+};
+export const phoneNumberValidationRuleOp: Rule = {
+  required: false,
+  whitespace: true,
   validator: async (rule, value) => {
     let paswd = /^[0-9]*$/;
 

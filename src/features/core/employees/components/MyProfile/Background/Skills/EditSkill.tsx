@@ -1,4 +1,4 @@
-import { DatePicker, Form, Input, Modal, Select } from "antd";
+import { Form, Input, Modal, Select } from "antd";
 import { AppButton } from "components/button/AppButton";
 import React, { useEffect } from "react";
 import { IModalProps } from "types";
@@ -9,8 +9,7 @@ import {
 import { openNotification } from "utils/notifications";
 import { useQueryClient } from "react-query";
 import { QUERY_KEY_FOR_SINGLE_EMPLOYEE } from "features/core/employees/hooks/useFetchSingleEmployee";
-import { FormPhoneInput } from "components/generalFormInputs/FormPhoneInput";
-import { RELATIONSHIPS } from "constants/general";
+import { COMPETENCIES } from "constants/general";
 import { TSingleEmployee } from "features/core/employees/types";
 import { useUpdateEmployeeSkill } from "features/core/employees/hooks/skills/useUpdateEmployeeSkill";
 
@@ -79,7 +78,7 @@ export const EditSkill: React.FC<IProps> = ({
       open={open}
       onCancel={() => handleClose()}
       footer={null}
-      title={"Add Dependent"}
+      title={"Edit Skill"}
       style={{ top: 20 }}
     >
       <Form
@@ -88,23 +87,20 @@ export const EditSkill: React.FC<IProps> = ({
         onFinish={handleSubmit}
         requiredMark={false}
       >
-        <Form.Item
-          rules={textInputValidationRules}
-          name="fullName"
-          label="Full Name"
-        >
-          <Input placeholder="Full Name" />
+        <Form.Item name="skill" label="Skill" rules={textInputValidationRules}>
+          <Input className="generalInputStyle" placeholder="Enter Skill" />
         </Form.Item>
         <Form.Item
+          name="competency"
+          label="Competency"
           rules={generalValidationRules}
-          name="dob"
-          label="Date of Birth"
         >
-          <DatePicker placeholder="Date of Birth" className="w-full" />
-        </Form.Item>
-        <FormPhoneInput Form={Form} />
-        <Form.Item name="relationship" label="Relationship">
-          <Select options={RELATIONSHIPS} />
+          <Select
+            className="SelectTag w-full"
+            size="large"
+            placeholder="Select Competency"
+            options={COMPETENCIES}
+          />
         </Form.Item>
 
         <div className="flex justify-end">

@@ -1,5 +1,23 @@
 import { TTransactionStatus, TTransactionType } from "../types";
+import { TPayrollFrequency, TEssentialPayrollType } from "../types/payroll";
 import { TPayrollSchemeType } from "../types/payrollSchemes";
+
+export const PAYROLL_FREQUENCIES: TPayrollFrequency[] = ["daily", "monthly"];
+export const ESSENTIAL_PAYROLL_TYPES: TEssentialPayrollType[] = [
+  "direct-salary",
+  "office",
+  "wages",
+];
+export const PAYROLL_FREQUENCIES_OPTIONS = PAYROLL_FREQUENCIES.map((item) => ({
+  label: <span className="capitalize">{item.split("-").join(" ")}</span>,
+  value: item,
+}));
+export const ESSENTIAL_PAYROLL_TYPES_OPTIONS = ESSENTIAL_PAYROLL_TYPES.map(
+  (item) => ({
+    label: <span className="capitalize">{item.split("-").join(" ")}</span>,
+    value: item,
+  })
+);
 
 const PAYROLL_SCHEMES: TPayrollSchemeType[] = [
   "direct-salary",

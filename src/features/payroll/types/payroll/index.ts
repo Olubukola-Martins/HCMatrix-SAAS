@@ -8,7 +8,12 @@ import { TEmployeesInPayrollData } from "./employee/employeesInPayroll";
 import { TSingleEmployeePayroll } from "./employee/singleEmployeePayroll";
 import { TSinglePayroll } from "./singlePayroll";
 
+type TPayrollFrequency = "daily" | "monthly";
+type TEssentialPayrollType = "direct-salary" | "office" | "wages";
+
 export {
+  type TEssentialPayrollType,
+  type TPayrollFrequency,
   type TSinglePayroll,
   type TSingleEmployeePayroll,
   type TEmployeesInPayrollData,

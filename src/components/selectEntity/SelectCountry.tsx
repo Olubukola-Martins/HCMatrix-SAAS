@@ -5,7 +5,7 @@ import { TCountry } from "types/country";
 
 export const SelectCountry: React.FC<{
   onClear?: () => void;
-  handleSelect?: (val: number) => void;
+  handleSelect?: (id: number, country?: TCountry) => void;
   value?: number;
 }> = ({ handleSelect, onClear, value }) => {
   const { data: countries, isFetching } = useFetchCountries();
@@ -27,7 +27,10 @@ export const SelectCountry: React.FC<{
     <Select
       getPopupContainer={(triggerNode) => triggerNode.parentElement}
       loading={isFetching}
-      onSelect={handleSelect}
+      onSelect={(id: number) => {
+        const country = countries?.find((country) => country.id === id);
+        handleSelect?.(id, country);
+      }}
       searchValue={search}
       showSearch
       allowClear

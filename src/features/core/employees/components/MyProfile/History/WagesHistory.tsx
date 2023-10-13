@@ -3,32 +3,45 @@ import { Input, Table } from "antd";
 import moment from "moment";
 import React, { useEffect, useState } from "react";
 import { usePagination } from "hooks/usePagination";
-import { TRole } from "features/core/roles-and-permissions/types";
 import { DEFAULT_DATE_FORMAT } from "constants/dateFormats";
+import { TPayrollFrequency } from "features/payroll/types/payroll";
 
-type TRoleHistory = {
+type TWagesHistory = {
   startDate: string;
   endDate: string;
-} & TRole;
-export const RoleHistory: React.FC<{ data?: TRoleHistory[] }> = ({
-  data = [],
-}) => {
+  hourlyGross: string;
+  frequency: TPayrollFrequency;
+};
+export const WagesHistory: React.FC<{
+  data?: TWagesHistory[];
+}> = ({ data = [] }) => {
   const { pagination, onChange } = usePagination({ pageSize: 7 });
-  const [roles, setRoles] = useState<TRoleHistory[]>([]);
+  const [histories, setHistories] = useState<TWagesHistory[]>([]);
   const [search, setSearch] = useState<string>();
   useEffect(() => {
     const result = data?.filter(
       (item) =>
-        item.name.toLowerCase().indexOf(search?.toLowerCase() ?? "") !== -1
+        item.hourlyGross.toLowerCase().indexOf(search?.toLowerCase() ?? "") !==
+        -1
     );
-    setRoles(result);
+    setHistories(result);
   }, [search, data]);
-  const columns: ColumnsType<TRoleHistory> = [
+  const columns: ColumnsType<TWagesHistory> = [
     {
-      title: "Name",
-      dataIndex: "name",
-      key: "name",
-      render: (val, item) => <span className="capitalize">{item?.name}</span>,
+      title: "Monthly Gross",
+      dataIndex: "monthly",
+      key: "monthly",
+      render: (_, item) => (
+        <span className="capitalize">{item?.hourlyGross}</span>
+      ),
+    },
+    {
+      title: "Frequency",
+      dataIndex: "freq",
+      key: "freq",
+      render: (_, item) => (
+        <span className="capitalize">{item?.frequency}</span>
+      ),
     },
 
     {
@@ -48,7 +61,7 @@ export const RoleHistory: React.FC<{ data?: TRoleHistory[] }> = ({
     <div>
       <div className="bg-card p-3 rounded">
         <div className="border-b border-gray-400 w-full mb-7">
-          <h2 className="text-accent text-base pb-1">Role History</h2>
+          <h2 className="text-accent text-base pb-1">Direct Salary History</h2>
         </div>
         <div className="my-3 flex justify-end">
           <Input.Search
@@ -63,8 +76,8 @@ export const RoleHistory: React.FC<{ data?: TRoleHistory[] }> = ({
         <Table
           columns={columns}
           size="small"
-          dataSource={roles}
-          pagination={{ ...pagination, total: roles.length }}
+          dataSource={histories}
+          pagination={{ ...pagination, total: histories.length }}
           onChange={onChange}
         />
       </div>

@@ -25,48 +25,53 @@ const EMPLOYEE_BULK_ACTIONS: TAction[] = [
   "assign role",
   // "delete",
 ];
-const BulkEmployeeActionHeader: React.FC<{ data: TEmployee[] }> = ({
-  data,
-}) => {
+const BulkEmployeeActionHeader: React.FC<{
+  data: TEmployee[];
+  clearSelectedEmployees: () => void;
+}> = ({ data, clearSelectedEmployees }) => {
   const [action, setAction] = useState<TAction>();
 
   if (data.length === 0) {
     return null;
   }
+  const handleClose = () => {
+    setAction(undefined);
+    clearSelectedEmployees();
+  };
   return (
     <>
       <BulkChangeStatus
-        handleClose={() => setAction(undefined)}
+        handleClose={handleClose}
         open={action === "change status"}
         employeeIds={data.map((item) => item.id)}
       />
       <BulkAssignLineManager
-        handleClose={() => setAction(undefined)}
+        handleClose={handleClose}
         open={action === "assign line manager"}
         employeeIds={data.map((item) => item.id)}
       />
       <BulkAssignBranch
-        handleClose={() => setAction(undefined)}
+        handleClose={handleClose}
         open={action === "assign branch"}
         employeeIds={data.map((item) => item.id)}
       />
       <BulkAssignDesignation
-        handleClose={() => setAction(undefined)}
+        handleClose={handleClose}
         open={action === "assign designation"}
         employeeIds={data.map((item) => item.id)}
       />
       <BulkAssignToGroup
-        handleClose={() => setAction(undefined)}
+        handleClose={handleClose}
         open={action === "add to group"}
         employeeIds={data.map((item) => item.id)}
       />
       <BulkAssignRole
-        handleClose={() => setAction(undefined)}
+        handleClose={handleClose}
         open={action === "assign role"}
         employeeIds={data.map((item) => item.id)}
       />
       {/* <BulkDeleteEmployees
-        handleClose={() => setAction(undefined)}
+        handleClose={handleClose}
         open={action === "delete"}
         employeeIds={data.map((item) => item.id)}
       /> */}

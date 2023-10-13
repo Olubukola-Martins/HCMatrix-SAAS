@@ -2,12 +2,17 @@ import { DatePicker, Form, Input, Modal } from "antd";
 import { AppButton } from "components/button/AppButton";
 import React from "react";
 import { IModalProps } from "types";
-import { generalValidationRules } from "utils/formHelpers/validation";
+import {
+  dateHasToBeLesserThanOrEqualToCurrentDayRuleForRange,
+  generalValidationRules,
+  textInputValidationRules,
+} from "utils/formHelpers/validation";
 import { openNotification } from "utils/notifications";
 import { useQueryClient } from "react-query";
 import { QUERY_KEY_FOR_SINGLE_EMPLOYEE } from "features/core/employees/hooks/useFetchSingleEmployee";
 
 import { useAddEmployeeEducation } from "features/core/employees/hooks/educationDetail/useAddEmployeeEducation";
+import { DEFAULT_DATE_FORMAT } from "constants/dateFormats";
 
 interface IProps extends IModalProps {
   employeeId: number;
@@ -77,16 +82,24 @@ export const AddEducation: React.FC<IProps> = ({
         onFinish={handleSubmit}
         requiredMark={false}
       >
-        <Form.Item name="school" label="School" rules={generalValidationRules}>
+        <Form.Item
+          name="school"
+          label="School"
+          rules={textInputValidationRules}
+        >
           <Input className="generalInputStyle" placeholder="Enter School" />
         </Form.Item>
-        <Form.Item name="degree" label="Degree" rules={generalValidationRules}>
+        <Form.Item
+          name="degree"
+          label="Degree"
+          rules={textInputValidationRules}
+        >
           <Input className="generalInputStyle" placeholder="Enter Degree" />
         </Form.Item>
         <Form.Item
           name="specialization"
           label="Specialization"
-          rules={generalValidationRules}
+          rules={textInputValidationRules}
         >
           <Input
             className="generalInputStyle"
@@ -96,11 +109,11 @@ export const AddEducation: React.FC<IProps> = ({
         <Form.Item
           name="duration"
           label="Duration"
-          rules={generalValidationRules}
+          rules={[dateHasToBeLesserThanOrEqualToCurrentDayRuleForRange]}
         >
           <DatePicker.RangePicker
             placeholder={["Start Date", "End Date"]}
-            format="YYYY/MM/DD"
+            format={DEFAULT_DATE_FORMAT}
             className="generalInputStyle"
           />
         </Form.Item>

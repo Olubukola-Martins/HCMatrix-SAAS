@@ -9,6 +9,7 @@ import {
   TWalletValue,
 } from "./singleEmployee";
 import { RELATIONSHIPS } from "constants/general";
+import { TBranch } from "features/core/branches/types";
 
 export {
   type TSingleEmployee,
@@ -171,7 +172,7 @@ export interface IUpdateEmpProps extends ICurrentCompany {
   avatarUrl?: string;
 }
 
-export interface ICreateEmpProps extends ICurrentCompany {
+export interface ICreateEmpProps {
   firstName: string;
   lastName: string;
   email: string;
@@ -179,16 +180,7 @@ export interface ICreateEmpProps extends ICurrentCompany {
   empUid?: string;
   roleId: number;
   designationId: number;
-  jobInformation: {
-    startDate: string;
-    jobTitle: string;
-    monthlyGross: number;
-    employmentType: string;
-    workModel: string;
-    numberOfDaysPerWeek: number;
-
-    lineManagerId?: number;
-  };
+  jobInformation: TJobInfo;
 }
 
 interface IResendInviteProps extends ICurrentCompany {
@@ -353,7 +345,7 @@ export type TEmployee = {
   firstName: string;
   hasSelfService: boolean;
   id: number;
-  jobInformation?: TJobInfo;
+  jobInformation?: TJobInfo & { branch?: TBranch };
   lastName: string;
   personalInformation?: TPersonalInfo;
   role: TRole;
