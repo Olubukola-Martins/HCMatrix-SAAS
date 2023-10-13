@@ -45,7 +45,7 @@ const VerificationStatus = ({ token, uid }: IVerifyUserProps) => {
             email: result?.user?.email,
             lastLogin: result?.user?.lastLogin,
             id: result?.user?.id,
-            isAdmin: result?.user?.isAdmin,
+            isOwner: result?.user?.isOwner,
             isSocial: result?.user?.isSocial,
             isVerified: result?.user?.isVerified,
           },

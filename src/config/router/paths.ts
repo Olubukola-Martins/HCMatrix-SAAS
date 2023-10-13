@@ -232,8 +232,8 @@ export const appRoutes = {
   newHandOverForm: `/self-service/handover-new-form`,
 
   handOverDetails: (id?: number) => ({
-    format: ` /self-service/handover-form/:id`,
-    path: ` /self-service/handover-form/${id}`,
+    format: `/self-service/handover-form/:id`,
+    path: `/self-service/handover-form/${id}`,
   }),
   hRLetters: `/self-service/hr-letters`,
   documents: `/self-service/documents`,

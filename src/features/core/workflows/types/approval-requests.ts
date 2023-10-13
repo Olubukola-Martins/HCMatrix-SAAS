@@ -11,6 +11,7 @@ import { TransferRequestEntity } from "./approvalRequestEntities/transferRequest
 import { TravelRequestEntity } from "./approvalRequestEntities/travelRequestEntity";
 import { VehicleBookingEntity } from "./approvalRequestEntities/vehicleBookingEntity";
 import { TLoanRequest } from "features/self-service/features/loan/types";
+import { TTHandOverForm } from "features/self-service/features/handover-forms/types";
 
 // TODO: Check for basic stage and update type
 interface AdvancedStage {
@@ -56,4 +57,5 @@ export type TApprovalRequest = {
   moneyRequisition?: MoneyRequestEntity;
   payroll?: TPayrollListData;
   loan?: TLoanRequest;
+  handover?: TTHandOverForm;
 };

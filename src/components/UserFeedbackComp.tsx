@@ -138,7 +138,7 @@ const UserFeedbackComp = () => {
 
   const showModal =
     globalState.showInitialSetUp &&
-    user.isAdmin &&
+    user.isOwner &&
     isDepSuccess &&
     isDegSuccess &&
     isRoleSuccess &&

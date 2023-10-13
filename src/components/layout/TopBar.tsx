@@ -165,7 +165,7 @@ const TopBar = ({
                 open={openSearchModal}
                 handleClose={() => setOpenSearchModal(false)}
               />
-              {user?.isAdmin && (
+              {user?.isOwner && (
                 <div className="flex items-center gap-2">
                   <Avatar
                     src={
@@ -207,7 +207,7 @@ const TopBar = ({
 
             <Link
               to="/settings"
-              className={user?.isAdmin ? "hover:text-black" : "hidden"}
+              className={user?.isOwner ? "hover:text-black" : "hidden"}
             >
               <i
                 className="ri-settings-3-line text-xl cursor-pointer hover:text-black"

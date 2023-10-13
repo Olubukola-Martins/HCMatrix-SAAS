@@ -14,7 +14,7 @@ const UserFeedbackContainer = () => {
   if (!isAuthenticated()) {
     return null;
   }
-  if (isAuthenticated() && user.isAdmin === false) {
+  if (isAuthenticated() && user.isOwner === false) {
     return null;
   }
 

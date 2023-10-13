@@ -71,7 +71,8 @@ const SelfServiceHome: React.FC = () => {
               <SelfBox
                 title="Hand-over Forms"
                 icon={attendance}
-                link="/self-service/handover-form"
+                link={appRoutes.newHandOverForm}
+                desc="You can now access and manage employee resignations"
               />
               <SelfBox
                 title="Vehicle booking"

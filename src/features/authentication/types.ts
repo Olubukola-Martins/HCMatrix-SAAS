@@ -14,7 +14,7 @@ export interface IAuthDets {
     email: string;
     fullName: string;
     id: number;
-    isAdmin: boolean;
+    isOwner: boolean;
     isSocial: boolean;
     isVerified: boolean;
     lastLogin: string;

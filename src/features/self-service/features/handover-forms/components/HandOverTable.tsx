@@ -9,8 +9,10 @@ import { getAppropriateColorForStatus } from "utils/colorHelpers/getAppropriateC
 
 import { getEmployeeFullName } from "features/core/employees/utils/getEmployeeFullName";
 import { useGetExitHandOverForms } from "../hooks/useGetExitHandOverForms";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { TTHandOverForm } from "../types";
+import { DEFAULT_DATE_FORMAT } from "constants/dateFormats";
+import { appRoutes } from "config/router/paths";
 
 export const HandOverTable: React.FC<{
   status?: TApprovalStatus;
@@ -34,22 +36,23 @@ export const HandOverTable: React.FC<{
 
   const columns: ColumnsType<TTHandOverForm> = [
     {
-      title: "Seperation Date",
-      dataIndex: "date",
-      key: "date",
-      render: (_, item) => (
-        <span>{moment(item.separationDate).format("YYYY/MM/DD")} </span>
-      ),
-    },
-
-    {
       title: "Employee Name",
       dataIndex: "emp",
       key: "emp",
       render: (_, item) => (
-        <span className="capitalize">
-          {getEmployeeFullName(item.employee)}{" "}
-        </span>
+        <Link to={appRoutes.handOverDetails(item.id).path}>
+          <span className="capitalize text-caramel">
+            {getEmployeeFullName(item.employee)}{" "}
+          </span>
+        </Link>
+      ),
+    },
+    {
+      title: "Seperation Date",
+      dataIndex: "date",
+      key: "date",
+      render: (_, item) => (
+        <span>{moment(item.separationDate).format(DEFAULT_DATE_FORMAT)} </span>
       ),
     },
     {
@@ -83,35 +86,6 @@ export const HandOverTable: React.FC<{
         <span style={{ color: getAppropriateColorForStatus(item.status) }}>
           {item.status}{" "}
         </span>
-      ),
-    },
-
-    {
-      title: "Action",
-      key: "action",
-      render: (_, item) => (
-        <Dropdown
-          overlay={
-            <Menu>
-              <Menu.Item
-                key="3"
-                onClick={() => {
-                  navigate(item.id);
-                }}
-              >
-                View Details
-              </Menu.Item>
-            </Menu>
-          }
-          trigger={["click"]}
-        >
-          <Button
-            title="Actions"
-            icon={<MoreOutlined />}
-            type="text"
-            // onClick={() => handleEdit(item._id)}
-          />
-        </Dropdown>
       ),
     },
   ];

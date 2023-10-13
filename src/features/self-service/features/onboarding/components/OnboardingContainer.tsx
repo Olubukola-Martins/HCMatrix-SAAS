@@ -5,7 +5,7 @@ import ManageOnboarding from "./ManageOnboarding";
 
 export const OnboardingContainer = () => {
   const tabItems = [
-    // TODO: When implementing role-permission resrictor remember to exempt isAdmin(isOwner) from my onboarding as its not applicable to the owner, initial purchaser of app
+    // TODO: When implementing role-permission resrictor remember to exempt isOwner(isOwner) from my onboarding as its not applicable to the owner, initial purchaser of app
     {
       key: "My Onboarding",
       label: "My Onboarding",

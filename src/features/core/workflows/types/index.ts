@@ -33,7 +33,8 @@ export type TWorkflowApprovalType =
   | "transfer"
   | "travel"
   | "payroll"
-  | "loan";
+  | "loan"
+  | "handover";
 
 export type TStagingType = "employee" | "role" | "group" | "department-head";
 export type TStageCondition = "specific" | "at-least-one" | "everyone";

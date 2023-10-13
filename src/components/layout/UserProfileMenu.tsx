@@ -43,7 +43,7 @@ const UserProfileMenu: React.FC<{
         </Link>
       </div>
 
-      <UserActions isAdmin={authUserData.isAdmin} closeMenu={closeMenu} />
+      <UserActions isOwner={authUserData.isOwner} closeMenu={closeMenu} />
       <ThemeChanger colorFns={colorFns} />
       <div
         onClick={handleLogOut}
@@ -56,8 +56,8 @@ const UserProfileMenu: React.FC<{
   );
 };
 
-const UserActions: React.FC<{ isAdmin?: boolean; closeMenu: () => void }> = ({
-  isAdmin,
+const UserActions: React.FC<{ isOwner?: boolean; closeMenu: () => void }> = ({
+  isOwner,
   closeMenu,
 }) => {
   type TAction = "transfer-ownership" | "setup-2fa";
@@ -77,18 +77,18 @@ const UserActions: React.FC<{ isAdmin?: boolean; closeMenu: () => void }> = ({
     {
       onClick: () => setAction("transfer-ownership"),
       text: "Transfer Ownership",
-      hidden: isAdmin === false,
+      hidden: isOwner === false,
       isLink: false,
     },
     {
       url: "/settings/delegations",
       text: "Delegate Role",
-      hidden: isAdmin === false,
+      hidden: isOwner === false,
       isLink: true,
     },
     {
       text: "Advanced Settings",
-      hidden: isAdmin === false,
+      hidden: isOwner === false,
       isLink: false,
     },
     {
@@ -100,12 +100,12 @@ const UserActions: React.FC<{ isAdmin?: boolean; closeMenu: () => void }> = ({
     {
       url: "/billings",
       text: "Billings",
-      hidden: isAdmin === false,
+      hidden: isOwner === false,
       isLink: true,
     },
     {
       text: "Change Language",
-      hidden: isAdmin === false,
+      hidden: isOwner === false,
       isLink: false,
     },
   ];

@@ -8,7 +8,7 @@ function Home() {
   const user = authDetails?.user;
 
   return (
-    <div>{user.isAdmin ? <AdminHome /> : <EmployeeHome user={user} />}</div>
+    <div>{user.isOwner ? <AdminHome /> : <EmployeeHome user={user} />}</div>
   );
 }
 

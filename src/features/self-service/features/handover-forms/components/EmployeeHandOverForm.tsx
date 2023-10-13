@@ -1,11 +1,13 @@
-import { Checkbox, Form, Skeleton } from "antd";
+import { Checkbox, DatePicker, Form, Input, Skeleton } from "antd";
 import { FileUpload } from "components/FileUpload";
 import { AppButton } from "components/button/AppButton";
 import { useCurrentFileUploadUrl } from "hooks/useCurrentFileUploadUrl";
-import React from "react";
+import React, { useEffect } from "react";
 import { useQueryClient } from "react-query";
 import {
+  dateHasToBeGreaterThanOrEqualToCurrentDayRule,
   generalValidationRules,
+  generalValidationRulesOp,
   textInputValidationRules,
   textInputValidationRulesOp,
 } from "utils/formHelpers/validation";
@@ -15,6 +17,9 @@ import { openNotification } from "utils/notifications";
 import { useApiAuth } from "hooks/useApiAuth";
 import { useGetAssetRequisitions } from "../../requisitions/hooks/asset/useGetAssetRequisitions";
 import { useGetResignationPolicy } from "features/core/policies/hooks/useGetResignationPolicy";
+import { DEFAULT_DATE_FORMAT } from "constants/dateFormats";
+import { TTHandOverForm } from "../types";
+import moment from "moment";
 
 const boxStyle = "px-4 py-3 shadow rounded-md bg-mainBg";
 const boxTitle = "font-medium text-base pb-1";
@@ -22,7 +27,14 @@ const inputStyle =
   "w-full rounded-md border border-gray-300 py-2 px-2 text-sm bg-mainBg focus:outline-none placeholder:text-slate-400";
 const assetCheckListWrap = "flex flex-col";
 
-export const EmployeeHandOverForm = () => {
+type IProps = {
+  handover?: TTHandOverForm;
+  isLoading?: boolean;
+};
+export const EmployeeHandOverForm: React.FC<IProps> = ({
+  handover,
+  isLoading: isLoadingHandover,
+}) => {
   const queryClient = useQueryClient();
 
   const supportingDocumentUrl = useCurrentFileUploadUrl(
@@ -33,8 +45,18 @@ export const EmployeeHandOverForm = () => {
   );
   const { token, companyId, currentUserEmployeeId } = useApiAuth();
 
-  const [form] = Form.useForm();
   const { mutate, isLoading } = useCreateExitHandOverForm();
+  const [form] = Form.useForm();
+  useEffect(() => {
+    if (!handover) return;
+    form.setFieldsValue({
+      ...handover,
+      separationDate: moment(handover.separationDate),
+      assetChecklist: handover.assetChecklist.map(
+        (item) => item.assetRequisitionId
+      ),
+    });
+  }, [handover, form]);
   const { data: resignationPolicy, isFetching: isFetchingResignationPolicy } =
     useGetResignationPolicy();
   const { data: assets, isFetching: isFetchingAssests } =
@@ -48,7 +70,6 @@ export const EmployeeHandOverForm = () => {
   const handleSubmit = (data: any) => {
     mutate(
       {
-        employeeId: currentUserEmployeeId,
         reasonForLeaving: data.reasonForLeaving,
         separationDate: data.separationDate,
         supervisorClearanceUrl: supervisorClearanceUrl,
@@ -90,7 +111,9 @@ export const EmployeeHandOverForm = () => {
   };
   return (
     <Skeleton
-      loading={isFetchingAssests || isFetchingResignationPolicy}
+      loading={
+        isLoadingHandover || isFetchingAssests || isFetchingResignationPolicy
+      }
       active
       paragraph={{ rows: 24 }}
     >
@@ -98,19 +121,21 @@ export const EmployeeHandOverForm = () => {
         className="bg-card px-5 py-7  rounded-md mt-7 "
         form={form}
         onFinish={handleSubmit}
+        disabled={!!handover}
       >
         <div className="grid grid-cols-1 md:grid-cols-2 gap-5 text-accent">
           {/* first grid */}
           <div className="flex flex-col gap-4">
             <div className={boxStyle}>
               <h5 className={boxTitle}>Separation Date</h5>
-              <Form.Item name="separationDate" rules={generalValidationRules}>
-                <input
-                  type="text"
-                  className={inputStyle}
-                  onFocus={(e) => (e.target.type = "date")}
-                  onBlur={(e) => (e.target.type = "text")}
-                  placeholder="DD/MM/YY"
+              <Form.Item
+                name="separationDate"
+                rules={[dateHasToBeGreaterThanOrEqualToCurrentDayRule]}
+              >
+                <DatePicker
+                  format={DEFAULT_DATE_FORMAT}
+                  placeholder={"Seperation Date"}
+                  className={`${inputStyle} w-full`}
                 />
               </Form.Item>
             </div>
@@ -118,7 +143,7 @@ export const EmployeeHandOverForm = () => {
               <h5 className={boxTitle}>Notice Period</h5>
               <input
                 type="text"
-                className={`${inputStyle} bg-slate-300`}
+                className={`${inputStyle}  font-semibold border-red-400`}
                 value={`${resignationPolicy?.noticePeriod} weeks`}
                 disabled
               />
@@ -129,7 +154,7 @@ export const EmployeeHandOverForm = () => {
                 name="reasonForLeaving"
                 rules={textInputValidationRules}
               >
-                <input
+                <Input
                   type="text"
                   className={inputStyle}
                   placeholder="Reason for Leaving"
@@ -144,7 +169,7 @@ export const EmployeeHandOverForm = () => {
                 name="whatDidYouLikeTheMost"
                 rules={textInputValidationRules}
               >
-                <input
+                <Input
                   type="text"
                   className={inputStyle}
                   placeholder="Preferences"
@@ -161,7 +186,7 @@ export const EmployeeHandOverForm = () => {
                 name="whatDoYouThinkNeedsImprovement"
                 rules={textInputValidationRules}
               >
-                <input
+                <Input
                   type="text"
                   className={inputStyle}
                   placeholder="Welfare"
@@ -176,7 +201,7 @@ export const EmployeeHandOverForm = () => {
                 name="otherComments"
                 rules={textInputValidationRulesOp}
               >
-                <input
+                <Input
                   type="text"
                   className={inputStyle}
                   placeholder="Comments"
@@ -189,7 +214,15 @@ export const EmployeeHandOverForm = () => {
           <div className="flex flex-col gap-4">
             <div className={`${boxStyle} `}>
               <h5 className={boxTitle}>Asset Checklist</h5>
-              <Form.Item name="assetChecklist" className="w-full">
+              <Form.Item
+                name="assetChecklist"
+                className="w-full"
+                rules={
+                  assets && assets?.total > 0
+                    ? generalValidationRules
+                    : generalValidationRulesOp
+                }
+              >
                 <Checkbox.Group className="w-full">
                   <div className="px-4 py-2 grid grid-cols-1 md:grid-cols-2 gap-3 text-xs">
                     {/* 1 */}
@@ -201,7 +234,7 @@ export const EmployeeHandOverForm = () => {
                             <AssetDetail
                               {...{
                                 ID: item.asset.uid,
-                                type: "N/A",
+                                uid: item.asset.uid,
                                 name: item.asset.name,
                               }}
                             />
@@ -247,25 +280,32 @@ export const EmployeeHandOverForm = () => {
             </div>
           </div>
         </div>
-        <div className="flex justify-between items-center mt-5">
-          <AppButton label="cancel" type="button" variant="transparent" />
-          <AppButton label="Submit" type="submit" isLoading={isLoading} />
-        </div>
+        {!handover && (
+          <div className="flex justify-between items-center mt-5">
+            <AppButton label="cancel" type="button" variant="transparent" />
+            <AppButton label="Submit" type="submit" isLoading={isLoading} />
+          </div>
+        )}
       </Form>
     </Skeleton>
   );
 };
-
-export const AssetDetail: React.FC<{
-  type: string;
+const AssetDetail: React.FC<{
+  uid: string;
   name: string;
   ID: string;
-}> = ({ type, name, ID }) => {
+}> = ({ uid, name, ID }) => {
   return (
     <div className={`${assetCheckListWrap} gap-1`}>
-      <span>{type}</span>
-      <span>Name: {name}</span>
-      <span>ID: {ID}</span>
+      <span>
+        UID: <span className="font-semibold">{uid}</span>
+      </span>
+      <span>
+        Name: <span className="font-semibold">{name}</span>
+      </span>
+      <span>
+        ID: <span className="font-semibold">{ID}</span>
+      </span>
     </div>
   );
 };

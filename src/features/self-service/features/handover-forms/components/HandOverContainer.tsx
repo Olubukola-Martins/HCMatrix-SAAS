@@ -3,54 +3,25 @@ import PageSubHeader from "components/layout/PageSubHeader";
 import { useNavigate } from "react-router-dom";
 import { appRoutes } from "config/router/paths";
 import HandOverTableContainer from "./HandOverTableContainer";
-import { EntityDetailModal } from "components/entity/EntityDetailModal";
+import { Tabs } from "antd";
+import HandOverApprovalRequestsContainer from "./approvalRequests/HandOverApprovalRequestsContainer";
 
 export const HandOverContainer = () => {
   const navigate = useNavigate();
+  const tabItems = [
+    {
+      key: "Hand Overs",
+      label: "Hand Overs",
+      children: <HandOverTableContainer />,
+    },
+    {
+      key: "Approvals",
+      label: "Approvals",
+      children: <HandOverApprovalRequestsContainer />,
+    },
+  ];
   return (
     <>
-      {/* EXAMPLE OF USING REUSABLE entity detail modal */}
-      {/* <EntityDetailModal
-        open={true}
-        handleClose={() => {}}
-        title="Entity"
-        formFields={[
-          {
-            label: "Name",
-            name: "name",
-            render: { value: "James", component: "text" },
-          },
-          {
-            label: "Can User Edit ?",
-            name: "allowEdit",
-            render: { value: true, component: "switch" },
-          },
-          {
-            label: "Date",
-            name: "date",
-            render: { value: "9/10/11", component: "text" },
-          },
-          {
-            label: "Duration",
-            name: "Duration",
-            render: {
-              value: ["9/10/2011", "9/10/2013"],
-              component: "date-range-picker",
-            },
-          },
-          {
-            label: "Documents",
-            name: "Documents",
-            render: {
-              value: [
-                { name: "Car Insurance", url: "/" },
-                { name: "Car Insurance", url: "/" },
-              ],
-              component: "url",
-            },
-          },
-        ]}
-      /> */}
       <div className="flex flex-col gap-6">
         <PageSubHeader
           description={`You can now manage hand-overs`}
@@ -61,7 +32,8 @@ export const HandOverContainer = () => {
             },
           ]}
         />
-        <HandOverTableContainer />
+
+        <Tabs items={tabItems} />
       </div>
     </>
   );
