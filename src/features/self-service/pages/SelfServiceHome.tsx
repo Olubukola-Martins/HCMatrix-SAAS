@@ -175,6 +175,11 @@ const SelfServiceHome: React.FC = () => {
                         icon: requisition,
                         requisitions: [
                           {
+                            link: appRoutes.selfServiceRequisition,
+                            title: "Setting",
+                            hidden: false, //Based on Permission
+                          },
+                          {
                             link: appRoutes.selfServiceTravels,
                             title: "Travel Requisition",
                             hidden:
