@@ -17,10 +17,8 @@ import {
 } from "utils/formHelpers/validation";
 import { openNotification } from "utils/notifications";
 import { useQueryClient } from "react-query";
-import { FormDesignationInput } from "features/core/designations/components/FormDesignationInput";
-import { EMPLOYMENT_TYPES, PRIORITIES } from "constants/general";
+import { PRIORITIES } from "constants/general";
 import { useCreateTravelRequisition } from "../../requisitions/hooks/travel/useCreateTravelRequisition";
-import { useApiAuth } from "hooks/useApiAuth";
 import { QUERY_KEY_FOR_TRAVEL_REQUESTS } from "../../requisitions/hooks/travel/useGetTravelRequisitions";
 
 export const NewTravelRequest: React.FC<IModalProps> = ({
@@ -31,12 +29,10 @@ export const NewTravelRequest: React.FC<IModalProps> = ({
 
   const [form] = Form.useForm();
   const { mutate, isLoading } = useCreateTravelRequisition();
-  const { currentUserEmployeeId } = useApiAuth();
 
   const handleSubmit = (data: any) => {
     mutate(
       {
-        employeeId: currentUserEmployeeId,
         arrivalDate: data.arrivalDate.toString(),
         cost: data.cost,
         duration: data.duration,
@@ -91,17 +87,24 @@ export const NewTravelRequest: React.FC<IModalProps> = ({
       >
         <Form.Item
           rules={generalValidationRules}
+          name="arrivalDate"
+          label="Arrival Date"
+        >
+          <DatePicker placeholder="Arrival Date" className="w-full" />
+        </Form.Item>
+        <Form.Item
+          rules={generalValidationRules}
           name="departureDate"
           label="Departure Date"
         >
           <DatePicker placeholder="Departure Date" className="w-full" />
         </Form.Item>
         <Form.Item
-          rules={generalValidationRules}
-          name="arrivalDate"
-          label="Arrival Date"
+          rules={textInputValidationRules}
+          name="clientName"
+          label="Client Name"
         >
-          <DatePicker placeholder="Arrival Date" className="w-full" />
+          <Input placeholder="Client Name" />
         </Form.Item>
         <Form.Item
           rules={generalValidationRules}
@@ -120,13 +123,7 @@ export const NewTravelRequest: React.FC<IModalProps> = ({
         <Form.Item rules={generalValidationRules} name="cost" label="Cost">
           <InputNumber placeholder="Cost" className="w-full" />
         </Form.Item>
-        <Form.Item
-          rules={textInputValidationRules}
-          name="clientName"
-          label="Client Name"
-        >
-          <Input />
-        </Form.Item>
+
         <Form.Item
           rules={textInputValidationRules}
           name="location"

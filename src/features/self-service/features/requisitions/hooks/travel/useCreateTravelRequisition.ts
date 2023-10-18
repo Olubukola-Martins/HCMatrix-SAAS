@@ -6,7 +6,6 @@ import { ICurrentCompany } from "types";
 import { TPriority } from "types/priorities";
 
 type TCreateProps = {
-  employeeId: number;
   location: string;
   reason: string;
   departureDate: string;
