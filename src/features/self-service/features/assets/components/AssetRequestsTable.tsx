@@ -30,6 +30,7 @@ export const AssetRequestsTable: React.FC<{
       limit: pagination.limit,
       offset: pagination.offset,
     },
+    employeeId,
   });
 
   const columns: ColumnsType<TAssetRequisition> = [

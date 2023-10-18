@@ -77,10 +77,35 @@ const SelfServiceHome: React.FC = () => {
               <SelfBox
                 title="Vehicle booking"
                 icon={vehicle}
-                link="/self-service/vehicle-booking"
+                link={appRoutes.vehicleBooking}
+                desc="You can now manage vehicles and their bookings"
+              />
+              <SelfBox
+                title="Asset Management"
+                icon={attendance}
+                link={appRoutes.selfServiceAssets}
+                desc="You can now manage assets within your organization"
+              />
+              <SelfBox
+                title="Conference Room"
+                icon={leave}
+                link={appRoutes.conferenceRoomBooking}
+                desc="You can now manage conference rooms within your organization"
+              />
+              <SelfBox
+                title="Tasks"
+                icon={payslip}
+                link={appRoutes.selfServiceTasks}
+                desc="You can now assign and manage tasks within your organization"
+              />
+              <SelfBox
+                title="Documents"
+                icon={payslip}
+                link={appRoutes.documents}
+                desc="You can now manage documents within your organization"
               />
               <RequisitionBox icon={requisition} />
-              <MoreBox />
+              {/* <MoreBox /> */}
             </div>
             <div>
               <div className="rounded-lg bg-mainBg border py-5 px-3 shadow">

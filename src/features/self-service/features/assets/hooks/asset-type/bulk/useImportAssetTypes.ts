@@ -4,15 +4,11 @@ import { useApiAuth } from "hooks/useApiAuth";
 import { useMutation } from "react-query";
 import { ICurrentCompany } from "types";
 
-type TCreateProps = {
-  name: string;
+type TData = {
+  csvFile: any;
 };
-
-const createAssetType = async (props: {
-  data: TCreateProps;
-  auth: ICurrentCompany;
-}) => {
-  const url = `${MICROSERVICE_ENDPOINTS.UTILITY}/self-service/asset/type`;
+const createData = async (props: { data: TData; auth: ICurrentCompany }) => {
+  const url = `${MICROSERVICE_ENDPOINTS.UTILITY}/self-service/asset/type/bulk`;
   const config = {
     headers: {
       Accept: "application/json",
@@ -21,16 +17,19 @@ const createAssetType = async (props: {
     },
   };
 
-  const data: TCreateProps = {
+  const data: TData = {
     ...props.data,
   };
 
-  const response = await axios.post(url, data, config);
+  const response = await axios.postForm(url, data, config);
   return response;
 };
-export const useCreateAssetType = () => {
+export const useImportAssetTypes = () => {
   const { token, companyId } = useApiAuth();
-  return useMutation((props: TCreateProps) =>
-    createAssetType({ data: props, auth: { token, companyId } })
+  return useMutation((props: { data: TData }) =>
+    createData({
+      data: props.data,
+      auth: { token, companyId },
+    })
   );
 };

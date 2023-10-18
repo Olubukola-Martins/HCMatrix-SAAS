@@ -1,25 +1,26 @@
-import { Select, Table } from "antd";
+import { Table } from "antd";
 import { ColumnsType } from "antd/lib/table";
 import { AppButton } from "components/button/AppButton";
 import React, { useState } from "react";
 import {
   TVehicleBooking,
   useFetchVehicleBookings,
-} from "../hooks/useFetchVehicleBookings";
+} from "../../hooks/useFetchVehicleBookings";
 import { useApiAuth } from "hooks/useApiAuth";
 import { usePagination } from "hooks/usePagination";
 import moment from "moment";
-import { AddVehicleBooking } from "./AddVehicleBooking";
+import { AddVehicleBooking } from "../AddVehicleBooking";
 import { getAppropriateColorForStatus } from "utils/colorHelpers/getAppropriateColorForStatus";
-import { ViewVehicleBooking } from "./ViewVehicleBooking";
+import { ViewVehicleBooking } from "../ViewVehicleBooking";
+import { getEmployeeFullName } from "features/core/employees/utils/getEmployeeFullName";
+import { useGetVehicleBookings4AuthEmployee } from "../../hooks/booking/useGetVehicleBookings4AuthEmployee";
 
-export const BookingHistory = () => {
-  const { token, companyId, currentUserEmployeeId } = useApiAuth();
+export const EmployeeVehicleBookingHistory: React.FC<{
+  title?: string;
+}> = ({ title }) => {
   const { pagination, onChange } = usePagination();
 
-  const { data, isFetching } = useFetchVehicleBookings({
-    token,
-    companyId,
+  const { data, isFetching } = useGetVehicleBookings4AuthEmployee({
     pagination,
   });
   const [showM, setShowM] = useState(false);
@@ -30,6 +31,14 @@ export const BookingHistory = () => {
       dataIndex: "Booking Date",
       key: "Booking Date",
       render: (_, item) => moment(item.date).format("YYYY-MM-DD"),
+    },
+    {
+      title: "Employee",
+      dataIndex: "Employee",
+      key: "Employee",
+      render: (_, item) => (
+        <span className="capitalize">{getEmployeeFullName(item.employee)}</span>
+      ),
     },
     {
       title: "Vehicle Brand",
@@ -94,11 +103,7 @@ export const BookingHistory = () => {
 
   return (
     <>
-      <AddVehicleBooking
-        open={showM}
-        handleClose={() => setShowM(false)}
-        employeeId={currentUserEmployeeId}
-      />
+      <AddVehicleBooking open={showM} handleClose={() => setShowM(false)} />
       {bookingId && (
         <ViewVehicleBooking
           open={!!bookingId}
@@ -107,11 +112,10 @@ export const BookingHistory = () => {
         />
       )}
       <div className="flex flex-col gap-2">
-        <h4 className="text-lg font-light">Booking History</h4>
+        <h4 className="text-lg font-light">{title}</h4>
         <div className="flex items-center gap-3 justify-between">
-          <Select placeholder="Filter" />
+          <i className="ri-download-2-line text-lg"></i>
           <div className="my-5 flex justify-end gap-3">
-            <i className="ri-download-2-line text-lg"></i>
             <AppButton
               label="Book Vehicle"
               handleClick={() => setShowM(true)}

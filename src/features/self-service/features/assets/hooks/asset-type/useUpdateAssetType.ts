@@ -5,14 +5,17 @@ import { useMutation } from "react-query";
 import { ICurrentCompany } from "types";
 
 type TCreateProps = {
-  name: string;
+  id: number;
+  data: {
+    name: string;
+  };
 };
 
 const updateAssetType = async (props: {
   data: TCreateProps;
   auth: ICurrentCompany;
 }) => {
-  const url = `${MICROSERVICE_ENDPOINTS.UTILITY}/self-service/asset/type`;
+  const url = `${MICROSERVICE_ENDPOINTS.UTILITY}/self-service/asset/type/${props.data.id}`;
   const config = {
     headers: {
       Accept: "application/json",
@@ -21,9 +24,7 @@ const updateAssetType = async (props: {
     },
   };
 
-  const data: TCreateProps = {
-    ...props.data,
-  };
+  const data = props.data.data;
 
   const response = await axios.put(url, data, config);
   return response;

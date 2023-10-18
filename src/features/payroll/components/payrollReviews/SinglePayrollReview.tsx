@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import { EmployeePayrollUpdatesContainer } from "../employeePayrollUpdates/EmployeePayrollUpdatesContainer";
 import PageSubHeader from "components/layout/PageSubHeader";
 import { MoreOutlined } from "@ant-design/icons";
-import { Button, Dropdown, Menu, Skeleton } from "antd";
+import { Button, Dropdown, Menu, Skeleton, Tag } from "antd";
 import PayrollBreakdown from "./PayrollBreakdown";
 import { useApproveORReject } from "hooks/useApproveORReject";
 import { QUERY_KEY_FOR_PAYROLLS_BY_SCHEME } from "features/payroll/hooks/payroll/useGetAllPayrollsByScheme";
@@ -64,10 +64,8 @@ const SinglePayrollReview: React.FC<IProps> = ({ payroll }) => {
         <div className="flex flex-col gap-6">
           <PageSubHeader
             description={{
-              content: `${payroll.name} payroll is ${payroll.status
-                .split("-")
-                .join(" ")}`,
-              className: "text-base",
+              content: `${payroll.name} payroll`,
+              className: "text-lg",
             }}
             hideBackground
             actions={
@@ -130,6 +128,15 @@ const SinglePayrollReview: React.FC<IProps> = ({ payroll }) => {
               </Dropdown>,
             ]}
           />
+          <div className="flex justify-end">
+            <Tag
+              children={
+                <span className="capitalize">
+                  {payroll.status.split("-").join(" ")}
+                </span>
+              }
+            />
+          </div>
           <EmployeePayrollUpdatesContainer
             expatriate={false}
             payrollId={payroll?.id}

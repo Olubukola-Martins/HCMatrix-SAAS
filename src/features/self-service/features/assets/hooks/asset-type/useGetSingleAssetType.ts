@@ -2,7 +2,7 @@ import axios from "axios";
 import { MICROSERVICE_ENDPOINTS } from "config/enviroment";
 import { useQuery } from "react-query";
 import { ICurrentCompany } from "types";
-import { TAssetType } from "../types";
+import { TAssetType } from "../../types";
 
 interface IGetDataProps extends ICurrentCompany {
   id: number;

@@ -13,6 +13,7 @@ export type IAppBtnProps = {
   variant?: TBtnVariant;
 };
 
+// TODO: Refactor to use the generateBtnVariantClassName from dropdown btn
 export const AppButton: React.FunctionComponent<IAppBtnProps> = ({
   disabled = false,
   isLoading = false,

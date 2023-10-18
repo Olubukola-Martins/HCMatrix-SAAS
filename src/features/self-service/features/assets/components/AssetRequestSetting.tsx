@@ -15,9 +15,6 @@ import { openNotification } from "utils/notifications";
 export const AssetRequestSetting = () => {
   return (
     <div className="flex flex-col gap-4">
-      <PageSubHeader
-        description={`You can now select the workflow approval for asset requisition`}
-      />
       <AssetRequestPolicy />
     </div>
   );

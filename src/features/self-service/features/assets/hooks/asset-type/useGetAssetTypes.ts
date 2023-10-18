@@ -3,7 +3,7 @@ import { MICROSERVICE_ENDPOINTS } from "config/enviroment";
 import { useQuery } from "react-query";
 import { ICurrentCompany, IPaginationProps, ISearchParams } from "types";
 import { DEFAULT_PAGE_SIZE } from "constants/general";
-import { TAssetType } from "../types";
+import { TAssetType } from "../../types";
 
 interface IGetDataProps extends ICurrentCompany {
   pagination?: IPaginationProps;

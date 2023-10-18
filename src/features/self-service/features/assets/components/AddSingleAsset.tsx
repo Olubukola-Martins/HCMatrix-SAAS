@@ -12,7 +12,6 @@ import { openNotification } from "utils/notifications";
 import { useQueryClient } from "react-query";
 
 import { useCreateAsset } from "../hooks/useCreateAsset";
-import { FormAssetTypeInput } from "./FormAssetTypeInput";
 import { FileUpload } from "components/FileUpload";
 import { boxStyle } from "styles/reused";
 import { useCurrentFileUploadUrl } from "hooks/useCurrentFileUploadUrl";
@@ -20,6 +19,7 @@ import { FormEmployeeInput } from "features/core/employees/components/FormEmploy
 import { QUERY_KEY_FOR_ASSETS } from "../hooks/useGetAssets";
 import { TAssetStatus } from "../types";
 import { ASSET_STATUSES } from "../constants";
+import { FormAssetTypeInput } from "./asset-type/FormAssetTypeInput";
 const boxTitle = "font-medium text-sm pb-1";
 const AddSingleAsset: React.FC<IModalProps> = ({ open, handleClose }) => {
   const queryClient = useQueryClient();

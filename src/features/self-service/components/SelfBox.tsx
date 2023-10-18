@@ -39,8 +39,6 @@ const requisitionContent = (
 const moreItems = [
   // { link: appRoutes.hRLetters, title: "HR Letters & Documents" },
   { link: appRoutes.documents, title: "Documents" },
-  { link: appRoutes.surveyHome, title: "Survey Forms" },
-  { link: appRoutes.conferenceRoomBooking, title: "Meeting Room Booking" },
 ];
 
 const moreContent = (
@@ -89,7 +87,7 @@ export const RequisitionBox = ({ icon }: { icon: string }) => {
           </Dropdown>
         </div>
         <p className="text-xs md:text-sm py-3">
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+          You can now manage different requisitions within your organization
         </p>
       </div>
     </div>

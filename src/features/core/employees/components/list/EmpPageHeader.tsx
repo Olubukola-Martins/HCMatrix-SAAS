@@ -7,6 +7,7 @@ import FilterEmployeeDrawer from "../FilterEmployeeDrawer";
 import { PageIntro } from "components/layout/PageIntro";
 import ImportEmployees from "../bulkImport/ImportEmployees";
 import { TEmployeeFilterProps } from "../../types/employee-filter";
+import DropdownButton from "components/button/DropdownButton";
 
 // TODO: Use +234 in number imports as opposed to country name
 
@@ -59,28 +60,27 @@ const EmpPageHeader: React.FC<{
             type="text"
             title="Export Employee Data"
           />
-          {/* TODO: Reafactor to Be a Dropdown Btn */}
-          <Dropdown
-            overlay={
-              <Menu>
-                <Menu.Item>
+          <DropdownButton
+            label="Add Employee"
+            items={[
+              {
+                label: (
                   <Link to="/settings/add-employee">Add Single Employee</Link>
-                </Menu.Item>
-                <Menu.Item onClick={() => setAction("invite")}>
-                  Invite Multiple Users
-                </Menu.Item>
-                <Menu.Item onClick={() => setAction("bulk-import")}>
-                  Import Employees
-                </Menu.Item>
-              </Menu>
-            }
-            trigger={["click"]}
-          >
-            <button className="button flex items-center gap-2">
-              <span>Add Employees</span>{" "}
-              <i className="fa-solid fa-chevron-down"></i>
-            </button>
-          </Dropdown>
+                ),
+                key: "Add employee",
+              },
+              {
+                key: "invite",
+                label: "Invite Multiple Employees",
+                onClick: () => setAction("invite"),
+              },
+              {
+                key: "bulk-import",
+                label: "Import Employees",
+                onClick: () => setAction("bulk-import"),
+              },
+            ]}
+          />
 
           <Dropdown
             overlay={

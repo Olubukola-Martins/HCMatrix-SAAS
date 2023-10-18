@@ -3,6 +3,7 @@ import { AppButton } from "components/button/AppButton";
 import React from "react";
 import { IModalProps } from "types";
 import {
+  dateHasToBeGreaterThanOrEqualToCurrentDayRule,
   generalValidationRules,
   textInputValidationRules,
 } from "utils/formHelpers/validation";
@@ -11,7 +12,6 @@ import { useQueryClient } from "react-query";
 
 import { QUERY_KEY_FOR_ASSET_REQUISITIONS } from "../../requisitions/hooks/asset/useGetAssetRequisitions";
 import { useCreateAssetRequisition } from "../../requisitions/hooks/asset/useCreateAssetRequisition";
-import { useApiAuth } from "hooks/useApiAuth";
 import { useCurrentFileUploadUrl } from "hooks/useCurrentFileUploadUrl";
 import { FormAssetInput } from "./FormAssetInput";
 import { FileUpload } from "components/FileUpload";
@@ -25,15 +25,12 @@ export const NewAssetRequest: React.FC<IModalProps> = ({
 
   const [form] = Form.useForm();
   const { mutate, isLoading } = useCreateAssetRequisition();
-  const { currentUserEmployeeId, currentCompanyEmployeeDetails } = useApiAuth();
-  console.log(currentCompanyEmployeeDetails, "ppp");
   const documentUrl = useCurrentFileUploadUrl("documentUrl");
 
   const handleSubmit = (data: any) => {
     mutate(
       {
         date: data.date.toString(),
-        employeeId: currentUserEmployeeId,
         assetId: data.assetId,
         description: data.description,
         attachmentUrls: !!documentUrl ? [documentUrl] : [],
@@ -84,7 +81,11 @@ export const NewAssetRequest: React.FC<IModalProps> = ({
           Form={Form}
           control={{ name: "assetId", label: "Asset" }}
         />
-        <Form.Item rules={generalValidationRules} name="date" label="Date">
+        <Form.Item
+          rules={[dateHasToBeGreaterThanOrEqualToCurrentDayRule]}
+          name="date"
+          label="Date"
+        >
           <DatePicker placeholder="Date" className="w-full" />
         </Form.Item>
 

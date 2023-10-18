@@ -2,6 +2,7 @@ import { Skeleton } from "antd";
 import { AppButton, IAppBtnProps } from "components/button/AppButton";
 import React from "react";
 import { Link } from "react-router-dom";
+import { truncateString } from "utils/dataHelpers/truncateString";
 
 export interface ISimpleCard {
   title: string;
@@ -10,6 +11,7 @@ export interface ISimpleCard {
   action?: IAppBtnProps;
   center?: boolean;
   loading?: boolean;
+  cardActions?: { onClick: () => void; icon: React.ReactNode }[];
 }
 
 export const SimpleCard: React.FC<ISimpleCard> = ({
@@ -19,6 +21,7 @@ export const SimpleCard: React.FC<ISimpleCard> = ({
   action,
   center = false,
   loading,
+  cardActions,
 }) => {
   if (url) {
     return (
@@ -50,7 +53,16 @@ export const SimpleCard: React.FC<ISimpleCard> = ({
       >
         <Skeleton loading={loading} paragraph={{ rows: 3 }}>
           <>
-            <p className="text-sm font-medium py-3 capitalize">{title}</p>
+            <div className="flex justify-between py-3 items-start">
+              <p className="text-sm font-medium  capitalize">{title}</p>
+              <div className="flex gap-2">
+                {cardActions?.map(({ icon, onClick }, i) => (
+                  <div key={i} onClick={onClick}>
+                    {icon}
+                  </div>
+                ))}
+              </div>
+            </div>
             {highlight && (
               <h2 className="font-semibold text-lg mb-2">{highlight}</h2>
             )}

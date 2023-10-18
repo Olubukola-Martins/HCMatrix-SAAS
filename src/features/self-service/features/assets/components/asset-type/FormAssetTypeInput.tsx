@@ -3,7 +3,7 @@ import { useApiAuth } from "hooks/useApiAuth";
 import { useDebounce } from "hooks/useDebounce";
 import { useState } from "react";
 import { generalValidationRules } from "utils/formHelpers/validation";
-import { useGetAssetTypes } from "../hooks/useGetAssetTypes";
+import { useGetAssetTypes } from "../../hooks/asset-type/useGetAssetTypes";
 
 export const FormAssetTypeInput: React.FC<{
   Form: any;

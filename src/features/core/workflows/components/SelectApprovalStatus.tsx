@@ -13,7 +13,7 @@ export const SelectApprovalStatus: React.FC<IProps> = ({
   value,
   onSelect,
   onClear,
-  size = "small",
+  size = "middle",
 }) => {
   return (
     <div>

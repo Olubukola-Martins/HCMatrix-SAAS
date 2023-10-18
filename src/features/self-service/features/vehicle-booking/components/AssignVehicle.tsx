@@ -5,7 +5,7 @@ import { IModalProps } from "types";
 import { openNotification } from "utils/notifications";
 import { useQueryClient } from "react-query";
 
-import { generalValidationRules } from "utils/formHelpers/validation";
+import { dateHasToBeGreaterThanOrEqualToCurrentDayRule } from "utils/formHelpers/validation";
 import { FormEmployeeInput } from "features/core/employees/components/FormEmployeeInput";
 import { TVehicle } from "../hooks/useFetchVehicles";
 import { useEditVehicle } from "../hooks/useEditVehicle";
@@ -94,7 +94,7 @@ export const AssignVehicle: React.FC<IProps> = ({
           control={{ label: "Assignee", name: "assigneeId" }}
         />
         <Form.Item
-          rules={generalValidationRules}
+          rules={[dateHasToBeGreaterThanOrEqualToCurrentDayRule]}
           name="dateAssigned"
           label="Date assigned"
         >

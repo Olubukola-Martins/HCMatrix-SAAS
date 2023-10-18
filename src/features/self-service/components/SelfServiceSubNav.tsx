@@ -16,6 +16,7 @@ const routes = [
     title: "Requisitions",
     children: [
       { title: "Settings", path: appRoutes.selfServiceRequisition },
+      { title: "Asset", path: appRoutes.selfServiceAssets },
       { title: "Transfer", path: appRoutes.selfServiceTransfer },
       { title: "Monetary", path: appRoutes.selfServiceMonetary },
       { title: "Promotion", path: appRoutes.selfServicePromotion },
@@ -30,12 +31,12 @@ const routes = [
   {
     title: "More",
     children: [
-      { title: "Files", path: appRoutes.documents },
       { title: "Conference Room", path: appRoutes.conferenceRoomBooking },
+      { title: "Tasks", path: appRoutes.selfServiceTasks },
       { title: "Hand Over", path: appRoutes.newHandOverForm },
+      { title: "Documents", path: appRoutes.documents },
 
       { title: "Health Access", path: appRoutes.healthAccessHome },
-      // { title: "Surveys", path: appRoutes.surveyHome },
     ],
   },
 ];

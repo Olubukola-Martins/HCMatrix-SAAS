@@ -1,12 +1,11 @@
-import React from "react";
 import {
   TVehicleBookingStatus,
   VehicleBookingByStatusCard,
 } from "./VehicleBookingByStatusCard";
 
 import { VehicleAssignedToEmployee } from "./VehicleAssignedToEmployee";
-import { BookingHistory } from "./BookingHistory";
 import { useGetVehicleEmployeeBookingAnalytics } from "../hooks/useGetVehicleEmployeeBookingAnalytics";
+import { EmployeeVehicleBookingHistory } from "./booking/EmployeeVehicleBookingHistory";
 
 const STATUSES: TVehicleBookingStatus[] = ["approved", "pending", "rejected"];
 export const EmployeeVehicleBooking = () => {
@@ -26,7 +25,7 @@ export const EmployeeVehicleBooking = () => {
           <VehicleAssignedToEmployee data={data?.vehicleInUse} />
         </div>
       )}
-      <BookingHistory />
+      <EmployeeVehicleBookingHistory title="Booking History" />
     </div>
   );
 };

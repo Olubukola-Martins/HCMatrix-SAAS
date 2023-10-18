@@ -10,6 +10,8 @@ import { VehicleSetting } from "../components/VehicleSetting";
 import { VBApprovalRequestsContainer } from "../components/VBApprovalRequestsContainer";
 import SelfServiceSubNav from "features/self-service/components/SelfServiceSubNav";
 import { useState } from "react";
+import { AllVehicleBookingHistory } from "../components/booking/AllVehicleBookingHistory";
+import { AllEmployeeVehicleAssigneeHistory } from "../components/assignee-history/AllEmployeeVehicleAssigneeHistory";
 
 export type TVehicleTabKey =
   | "Vehicle Overview"
@@ -17,7 +19,9 @@ export type TVehicleTabKey =
   | "Reminders"
   | "Settings"
   | "Approvals"
-  | "My Bookings";
+  | "My Bookings"
+  | "Assignee History"
+  | "All Bookings";
 
 const VehicleBookingHome = () => {
   const [key, setKey] = useState<TVehicleTabKey>("Vehicle Overview");
@@ -39,11 +43,12 @@ const VehicleBookingHome = () => {
       children: <VehicleList />,
       key: "Vehicle List",
     },
-    {
-      label: "Reminders",
-      children: <Reminder />,
-      key: "Reminders",
-    },
+    // TODO: Removed until properly fleshed out
+    // {
+    //   label: "Reminders",
+    //   children: <Reminder />,
+    //   key: "Reminders",
+    // },
     {
       label: "Settings",
       children: <VehicleSetting />,
@@ -53,6 +58,17 @@ const VehicleBookingHome = () => {
       label: "My Bookings",
       children: <EmployeeVehicleBooking />,
       key: "My Bookings",
+    },
+    {
+      label: "All Bookings",
+      children: <AllVehicleBookingHistory />,
+      key: "All Bookings",
+    },
+    {
+      // TODO: Add Search for this below
+      label: "Assignee History",
+      children: <AllEmployeeVehicleAssigneeHistory />,
+      key: "Assignee History",
     },
     {
       label: "Approvals",
@@ -76,7 +92,10 @@ const VehicleBookingHome = () => {
               children: (
                 <VehicleWrapper
                   showAddVehicleAndDownlaod={
-                    item.key === "My Bookings" || item.key === "Approvals"
+                    item.key === "My Bookings" ||
+                    item.key === "Approvals" ||
+                    item.key === "All Bookings" ||
+                    item.key === "Assignee History"
                       ? false
                       : true
                   }
