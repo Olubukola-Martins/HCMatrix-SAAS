@@ -4,33 +4,27 @@ import { MoreOutlined } from "@ant-design/icons";
 import type { ColumnsType } from "antd/es/table";
 import { usePagination } from "hooks/usePagination";
 import { Button, Dropdown, Menu, Table } from "antd";
-import { useApiAuth } from "hooks/useApiAuth";
 import moment from "moment";
 import { getAppropriateColorForStatus } from "utils/colorHelpers/getAppropriateColorForStatus";
-import { useGeTPositionChangeRequisitionRequisitions } from "../../requisitions/hooks/position-change/useGetPositionChangeRequisitions";
-import { TPositionChangeRequisition } from "../../requisitions/types/positionChange";
-import { PositionChangeRequestDetails } from "./PositionChangeRequestDetails";
 import { DEFAULT_DATE_FORMAT } from "constants/dateFormats";
+import { TMoneyRequisition } from "../../requisitions/types/money";
+import { useGetMoneyRequisitions4AuthEmployee } from "../../requisitions/hooks/money/useGetMoneyRequisitions4AuthEmployee";
+import { MonetaryRequestDetails } from "./MonetaryRequestDetails";
 
-export const PositionChangeRequestsTable: React.FC<{
-  status?: TApprovalStatus;
-  employeeId?: number;
-}> = ({ status, employeeId }) => {
+export const EmployeeMoneyRequestsTable: React.FC<{
+  status?: TApprovalStatus[] | TApprovalStatus;
+}> = ({ status }) => {
   const [requestId, setRequestId] = useState<number>();
-  const { companyId, token } = useApiAuth();
   const { pagination, onChange } = usePagination();
-  const { data, isFetching } = useGeTPositionChangeRequisitionRequisitions({
-    companyId,
-    token,
+  const { data, isFetching } = useGetMoneyRequisitions4AuthEmployee({
     status,
-    employeeId,
     pagination: {
       limit: pagination.limit,
       offset: pagination.offset,
     },
   });
 
-  const columns: ColumnsType<TPositionChangeRequisition> = [
+  const columns: ColumnsType<TMoneyRequisition> = [
     {
       title: "Date",
       dataIndex: "date",
@@ -40,36 +34,33 @@ export const PositionChangeRequestsTable: React.FC<{
       ),
     },
     {
-      title: "Employee",
-      dataIndex: "Employee",
-      key: "Employee",
-      render: (_, item) => (
-        <span className="capitalize">
-          {item.employee.firstName} {item.employee.lastName}
-        </span>
-      ),
+      title: "Title",
+      dataIndex: "title",
+      key: "title",
+      render: (_, item) => <span className="capitalize">{item.title} </span>,
     },
     {
-      title: "Proposed Designation",
+      title: "Purpose",
       dataIndex: "desc",
       key: "desc",
-      render: (_, item) => (
-        <span className="capitalize">{item.proposedDesignation.name} </span>
-      ),
+      render: (_, item) => <span className="capitalize">{item.purpose} </span>,
     },
 
     {
-      title: "Skills And Qualifications",
-      dataIndex: "skillsAndQualifications",
-      key: "skillsAndQualifications",
-      render: (_, item) => <span>{item.skillsAndQualifications} </span>,
+      title: "Amount",
+      dataIndex: "amnt",
+      key: "amnt",
+      render: (_, item) => <span>{item.amount} </span>,
     },
     {
       title: "Status",
       dataIndex: "status",
       key: "status",
       render: (_, item) => (
-        <span style={{ color: getAppropriateColorForStatus(item.status) }}>
+        <span
+          className="capitalize"
+          style={{ color: getAppropriateColorForStatus(item.status) }}
+        >
           {item.status}{" "}
         </span>
       ),
@@ -108,7 +99,7 @@ export const PositionChangeRequestsTable: React.FC<{
   return (
     <div>
       {requestId && (
-        <PositionChangeRequestDetails
+        <MonetaryRequestDetails
           open={!!requestId}
           handleClose={() => setRequestId(undefined)}
           id={requestId}

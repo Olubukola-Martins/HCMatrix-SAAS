@@ -4,33 +4,34 @@ import { MoreOutlined } from "@ant-design/icons";
 import type { ColumnsType } from "antd/es/table";
 import { usePagination } from "hooks/usePagination";
 import { Button, Dropdown, Menu, Table } from "antd";
-import { useApiAuth } from "hooks/useApiAuth";
 import moment from "moment";
 import { getAppropriateColorForStatus } from "utils/colorHelpers/getAppropriateColorForStatus";
-import { useGeTPositionChangeRequisitionRequisitions } from "../../requisitions/hooks/position-change/useGetPositionChangeRequisitions";
-import { TPositionChangeRequisition } from "../../requisitions/types/positionChange";
-import { PositionChangeRequestDetails } from "./PositionChangeRequestDetails";
 import { DEFAULT_DATE_FORMAT } from "constants/dateFormats";
+import { TPromotionRequisition } from "../../requisitions/types/promotion";
+import { PromotionRequestDetails } from "./PromotionRequestDetails";
+import { getEmployeeFullName } from "features/core/employees/utils/getEmployeeFullName";
+import { useGetPromotionRequisitions4AuthEmployee } from "../../requisitions/hooks/promotion/useGetPromotionRequisitions4AuthEmployee";
 
-export const PositionChangeRequestsTable: React.FC<{
-  status?: TApprovalStatus;
-  employeeId?: number;
-}> = ({ status, employeeId }) => {
+export const EmployeePromotionRequestsTable: React.FC<{
+  status?: TApprovalStatus[] | TApprovalStatus;
+}> = ({ status }) => {
   const [requestId, setRequestId] = useState<number>();
-  const { companyId, token } = useApiAuth();
   const { pagination, onChange } = usePagination();
-  const { data, isFetching } = useGeTPositionChangeRequisitionRequisitions({
-    companyId,
-    token,
+  const { data, isFetching } = useGetPromotionRequisitions4AuthEmployee({
     status,
-    employeeId,
     pagination: {
       limit: pagination.limit,
       offset: pagination.offset,
     },
   });
 
-  const columns: ColumnsType<TPositionChangeRequisition> = [
+  const columns: ColumnsType<TPromotionRequisition> = [
+    {
+      title: "Employee",
+      dataIndex: "Employee",
+      key: "Employee",
+      render: (_, item) => <span>{getEmployeeFullName(item.employee)}</span>,
+    },
     {
       title: "Date",
       dataIndex: "date",
@@ -40,30 +41,24 @@ export const PositionChangeRequestsTable: React.FC<{
       ),
     },
     {
-      title: "Employee",
-      dataIndex: "Employee",
-      key: "Employee",
+      title: "Preferred Start Date",
+      dataIndex: "preferredStartDate",
+      key: "preferredStartDate",
       render: (_, item) => (
-        <span className="capitalize">
-          {item.employee.firstName} {item.employee.lastName}
+        <span>
+          {moment(item.preferredStartDate).format(DEFAULT_DATE_FORMAT)}{" "}
         </span>
       ),
     },
     {
       title: "Proposed Designation",
-      dataIndex: "desc",
-      key: "desc",
+      dataIndex: "proposedDesignationId",
+      key: "proposedDesignationId",
       render: (_, item) => (
         <span className="capitalize">{item.proposedDesignation.name} </span>
       ),
     },
 
-    {
-      title: "Skills And Qualifications",
-      dataIndex: "skillsAndQualifications",
-      key: "skillsAndQualifications",
-      render: (_, item) => <span>{item.skillsAndQualifications} </span>,
-    },
     {
       title: "Status",
       dataIndex: "status",
@@ -108,7 +103,7 @@ export const PositionChangeRequestsTable: React.FC<{
   return (
     <div>
       {requestId && (
-        <PositionChangeRequestDetails
+        <PromotionRequestDetails
           open={!!requestId}
           handleClose={() => setRequestId(undefined)}
           id={requestId}

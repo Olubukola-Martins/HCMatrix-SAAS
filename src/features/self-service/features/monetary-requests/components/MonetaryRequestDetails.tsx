@@ -7,6 +7,7 @@ import { boxStyle } from "styles/reused";
 import { getAppropriateColorForStatus } from "utils/colorHelpers/getAppropriateColorForStatus";
 import moment from "moment";
 import { useGetSingleMoneyRequisition } from "../../requisitions/hooks/money/useGetSingleMoneyRequisition";
+import { getEmployeeFullName } from "features/core/employees/utils/getEmployeeFullName";
 
 interface IProps extends IModalProps {
   id: number;
@@ -28,9 +29,8 @@ export const MonetaryRequestDetails: React.FC<IProps> = ({
     if (data) {
       form.setFieldsValue({
         date: data.date ? moment(data.date) : null,
-        employeeName: `${data.employee.firstName} ${data.employee.lastName}`,
+        employeeName: getEmployeeFullName(data.employee),
         employeeID: data.employee.empUid,
-        department: "N/A",
         purpose: data.purpose,
         status: data.status,
         amount: data.amount,
@@ -59,9 +59,7 @@ export const MonetaryRequestDetails: React.FC<IProps> = ({
           <Form.Item name={"amount"} label="Amount">
             <Input />
           </Form.Item>
-          <Form.Item name={"department"} label="Department">
-            <Input />
-          </Form.Item>
+
           <Form.Item name={"purpose"} label="Purpose">
             <Input.TextArea />
           </Form.Item>

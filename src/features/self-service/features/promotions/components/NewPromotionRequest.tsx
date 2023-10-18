@@ -9,17 +9,19 @@ import {
 import { useCurrentFileUploadUrl } from "hooks/useCurrentFileUploadUrl";
 import { openNotification } from "utils/notifications";
 import { useQueryClient } from "react-query";
-import { useApiAuth } from "hooks/useApiAuth";
 import { QUERY_KEY_FOR_PROMOTION_REQUISITIONS } from "../../requisitions/hooks/promotion/useGetPromotionRequisitions";
 import { useCreatePromotionRequisition } from "../../requisitions/hooks/promotion/useCreatePromotionRequisition";
 import { FormDesignationInput } from "features/core/designations/components/FormDesignationInput";
+import { QUERY_KEY_FOR_PROMOTION_REQUISITIONS_FOR_AUTH_EMPLOYEE } from "../../requisitions/hooks/promotion/useGetPromotionRequisitions4AuthEmployee";
+import { QUERY_KEY_FOR_APPROVAL_REQUESTS } from "features/core/workflows/hooks/useFetchApprovalRequests";
+import { QUERY_KEY_FOR_UNREAD_NOTIFICATION_COUNT } from "features/notifications/hooks/unRead/useGetUnReadNotificationCount";
+import { QUERY_KEY_FOR_NOTIFICATIONS } from "features/notifications/hooks/useGetAlerts";
 
 export const NewPromotionRequest: React.FC<IModalProps> = ({
   open,
   handleClose,
 }) => {
   const queryClient = useQueryClient();
-  const { currentUserEmployeeId } = useApiAuth();
 
   const [form] = Form.useForm();
   const { mutate, isLoading } = useCreatePromotionRequisition();
@@ -31,7 +33,6 @@ export const NewPromotionRequest: React.FC<IModalProps> = ({
         date: data.date.toString(),
         preferredStartDate: data.preferredStartDate.toString(),
         proposedDesignationId: data.proposedDesignationId,
-        employeeId: currentUserEmployeeId,
         justification: data.justification,
         attachmentUrls: !!documentUrl ? [documentUrl] : [],
       },
@@ -57,6 +58,22 @@ export const NewPromotionRequest: React.FC<IModalProps> = ({
 
           queryClient.invalidateQueries({
             queryKey: [QUERY_KEY_FOR_PROMOTION_REQUISITIONS],
+            // exact: true,
+          });
+          queryClient.invalidateQueries({
+            queryKey: [QUERY_KEY_FOR_PROMOTION_REQUISITIONS_FOR_AUTH_EMPLOYEE],
+            // exact: true,
+          });
+          queryClient.invalidateQueries({
+            queryKey: [QUERY_KEY_FOR_APPROVAL_REQUESTS],
+            // exact: true,
+          });
+          queryClient.invalidateQueries({
+            queryKey: [QUERY_KEY_FOR_NOTIFICATIONS],
+            // exact: true,
+          });
+          queryClient.invalidateQueries({
+            queryKey: [QUERY_KEY_FOR_UNREAD_NOTIFICATION_COUNT],
             // exact: true,
           });
         },

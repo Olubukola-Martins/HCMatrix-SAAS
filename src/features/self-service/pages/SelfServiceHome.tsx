@@ -23,8 +23,6 @@ import { useState } from "react";
 import { TApprovalRequest } from "features/core/workflows/types/approval-requests";
 import ViewApprovalRequest from "features/core/workflows/components/approval-request/ViewApprovalRequest";
 
-const requestStyle =
-  "flex items-center justify-between cursor-pointer group border-b pb-2";
 const SelfServiceHome: React.FC = () => {
   const { data, isLoading, isError } = useGetSelfServiceDBAnalytics();
 
@@ -63,9 +61,10 @@ const SelfServiceHome: React.FC = () => {
                           },
                         },
                         {
-                          hidden: !data?.settings.some(
-                            (item) => item.type === "loan" && item.isActive
-                          ),
+                          hidden:
+                            data?.settings.some(
+                              (item) => item.type === "loan" && item.isActive
+                            ) === false,
                           item: {
                             icon: loan,
                             link: appRoutes.loans,
@@ -74,7 +73,10 @@ const SelfServiceHome: React.FC = () => {
                           },
                         },
                         {
-                          hidden: false,
+                          hidden:
+                            data?.settings.some(
+                              (item) => item.type === "leave" && item.isActive
+                            ) === false,
                           item: {
                             icon: leave,
                             link: appRoutes.leaveHome,
@@ -91,7 +93,7 @@ const SelfServiceHome: React.FC = () => {
                           },
                         },
                         {
-                          hidden: false,
+                          hidden: false, //Subscription
                           item: {
                             icon: payslip,
                             link: appRoutes.payslipTransactions,
@@ -100,7 +102,12 @@ const SelfServiceHome: React.FC = () => {
                           },
                         },
                         {
-                          hidden: false,
+                          hidden:
+                            data?.settings.some(
+                              (item) =>
+                                item.type === "exit-handover-form" &&
+                                item.isActive
+                            ) === false,
                           item: {
                             icon: attendance,
                             link: appRoutes.newHandOverForm,
@@ -109,7 +116,10 @@ const SelfServiceHome: React.FC = () => {
                           },
                         },
                         {
-                          hidden: false,
+                          hidden:
+                            data?.settings.some(
+                              (item) => item.type === "vehicle" && item.isActive
+                            ) === false,
                           item: {
                             icon: vehicle,
                             link: appRoutes.vehicleBooking,
@@ -118,7 +128,10 @@ const SelfServiceHome: React.FC = () => {
                           },
                         },
                         {
-                          hidden: false,
+                          hidden:
+                            data?.settings.some(
+                              (item) => item.type === "asset" && item.isActive
+                            ) === false,
                           item: {
                             icon: attendance,
                             link: appRoutes.selfServiceAssets,
@@ -127,7 +140,11 @@ const SelfServiceHome: React.FC = () => {
                           },
                         },
                         {
-                          hidden: false,
+                          hidden:
+                            data?.settings.some(
+                              (item) =>
+                                item.type === "conference-room" && item.isActive
+                            ) === false,
                           item: {
                             icon: leave,
                             link: appRoutes.conferenceRoomBooking,
@@ -160,62 +177,72 @@ const SelfServiceHome: React.FC = () => {
                           {
                             link: appRoutes.selfServiceTravels,
                             title: "Travel Requisition",
-                            hidden: !data?.settings.some(
-                              (item) => item.type === "travel" && item.isActive
-                            ),
+                            hidden:
+                              data?.settings.some(
+                                (item) =>
+                                  item.type === "travel" && item.isActive
+                              ) === false,
                           },
                           {
                             link: appRoutes.selfServiceAssets,
                             title: "Asset Requisition",
-                            hidden: !data?.settings.some(
-                              (item) => item.type === "asset" && item.isActive
-                            ),
+                            hidden:
+                              data?.settings.some(
+                                (item) => item.type === "asset" && item.isActive
+                              ) === false,
                           },
                           {
                             link: appRoutes.selfServiceJob,
                             title: "Job Requisition",
-                            hidden: !data?.settings.some(
-                              (item) => item.type === "job" && item.isActive
-                            ),
+                            hidden:
+                              data?.settings.some(
+                                (item) => item.type === "job" && item.isActive
+                              ) === false,
                           },
                           {
                             link: appRoutes.selfServicePositionChange,
                             title: "Position Change Requisition",
-                            hidden: !data?.settings.some(
-                              (item) =>
-                                item.type === "position-change" && item.isActive
-                            ),
+                            hidden:
+                              data?.settings.some(
+                                (item) =>
+                                  item.type === "position-change" &&
+                                  item.isActive
+                              ) === false,
                           },
                           {
                             link: appRoutes.selfServicePromotion,
                             title: "Promotion Requisition",
-                            hidden: !data?.settings.some(
-                              (item) =>
-                                item.type === "promotion" && item.isActive
-                            ),
+                            hidden:
+                              data?.settings.some(
+                                (item) =>
+                                  item.type === "promotion" && item.isActive
+                              ) === false,
                           },
                           {
                             link: appRoutes.selfServiceReimbursement,
                             title: "Reimbursement Requisition",
-                            hidden: !data?.settings.some(
-                              (item) =>
-                                item.type === "reimbursement" && item.isActive
-                            ),
+                            hidden:
+                              data?.settings.some(
+                                (item) =>
+                                  item.type === "reimbursement" && item.isActive
+                              ) === false,
                           },
                           {
                             link: appRoutes.selfServiceTransfer,
                             title: "Transfer Requisition",
-                            hidden: !data?.settings.some(
-                              (item) =>
-                                item.type === "transfer" && item.isActive
-                            ),
+                            hidden:
+                              data?.settings.some(
+                                (item) =>
+                                  item.type === "transfer" && item.isActive
+                              ) === false,
                           },
                           {
                             link: appRoutes.selfServiceMonetary,
                             title: "Monetary Requisition",
-                            hidden: !data?.settings.some(
-                              (item) => item.type === "money" && item.isActive
-                            ),
+                            hidden:
+                              data?.settings.some(
+                                (item) => item.type === "money" && item.isActive
+                              ) === false,
                           },
                         ],
                       }}

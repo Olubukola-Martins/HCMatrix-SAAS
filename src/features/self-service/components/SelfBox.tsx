@@ -3,10 +3,7 @@ import Themes from "components/Themes";
 import { appRoutes } from "config/router/paths";
 import { Link } from "react-router-dom";
 
-const moreItems = [
-  // { link: appRoutes.hRLetters, title: "HR Letters & Documents" },
-  { link: appRoutes.documents, title: "Documents" },
-];
+const moreItems = [{ link: appRoutes.documents, title: "Documents" }];
 
 const moreContent = (
   <Themes>
@@ -38,6 +35,9 @@ export const RequisitionBox = ({
   icon,
   requisitions,
 }: TRequisitionBoxProps) => {
+  if (requisitions.filter((item) => item.hidden === false).length === 0) {
+    return null;
+  }
   return (
     <div className="bg-card p-2 rounded-lg shadow cursor-pointer group text-accent">
       <div className="bg-mainBg transition ease-in-out duration-300 py-2 px-3 rounded-lg group-hover:border-b-2 group-hover:border-caramel group-hover:shadow-md">
@@ -50,28 +50,32 @@ export const RequisitionBox = ({
               Requisition
             </h5>
           </div>
-          <Dropdown
-            overlayStyle={{ top: 1000 }}
-            overlay={
-              <Themes>
-                <div className="py-3 shadow-md px-4 text-sm font-medium rounded-md flex flex-col gap-3">
-                  {requisitions.map((item) => (
-                    <Link
-                      key={item.title}
-                      to={item.link}
-                      className="cursor-pointer hover:text-caramel"
-                    >
-                      {item.title}
-                    </Link>
-                  ))}
-                </div>
-              </Themes>
-            }
-            trigger={["click"]}
-            placement="bottom"
-          >
-            <i className="ri-more-fill text-lg"></i>
-          </Dropdown>
+          {
+            <Dropdown
+              overlayStyle={{ top: 1000 }}
+              overlay={
+                <Themes>
+                  <div className="py-3 shadow-md px-4 text-sm font-medium rounded-md flex flex-col gap-3">
+                    {requisitions
+                      .filter((item) => item.hidden === false)
+                      .map((item, i) => (
+                        <Link
+                          key={i}
+                          to={item.link}
+                          className="cursor-pointer hover:text-caramel"
+                        >
+                          {item.title}
+                        </Link>
+                      ))}
+                  </div>
+                </Themes>
+              }
+              trigger={["click"]}
+              placement="bottom"
+            >
+              <i className="ri-more-fill text-lg"></i>
+            </Dropdown>
+          }
         </div>
         <p className="text-xs md:text-sm py-3">
           You can now manage different requisitions within your organization

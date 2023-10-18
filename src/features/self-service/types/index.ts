@@ -7,7 +7,7 @@ export type TSelfServiceDBAnalytics = {
 };
 
 interface Setting {
-  type: TWorkflowApprovalType;
+  type: TWorkflowApprovalType | "exit-handover-form";
   isActive: boolean;
 }
 

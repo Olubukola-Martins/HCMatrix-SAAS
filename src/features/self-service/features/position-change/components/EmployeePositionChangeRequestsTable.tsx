@@ -4,26 +4,21 @@ import { MoreOutlined } from "@ant-design/icons";
 import type { ColumnsType } from "antd/es/table";
 import { usePagination } from "hooks/usePagination";
 import { Button, Dropdown, Menu, Table } from "antd";
-import { useApiAuth } from "hooks/useApiAuth";
 import moment from "moment";
 import { getAppropriateColorForStatus } from "utils/colorHelpers/getAppropriateColorForStatus";
-import { useGeTPositionChangeRequisitionRequisitions } from "../../requisitions/hooks/position-change/useGetPositionChangeRequisitions";
+import { useGetPositionChangeRequisitions4AuthEmployee } from "../../requisitions/hooks/position-change/useGetPositionChangeRequisitions4AuthEmployee";
 import { TPositionChangeRequisition } from "../../requisitions/types/positionChange";
-import { PositionChangeRequestDetails } from "./PositionChangeRequestDetails";
 import { DEFAULT_DATE_FORMAT } from "constants/dateFormats";
+import { getEmployeeFullName } from "features/core/employees/utils/getEmployeeFullName";
+import { PositionChangeRequestDetails } from "./PositionChangeRequestDetails";
 
-export const PositionChangeRequestsTable: React.FC<{
-  status?: TApprovalStatus;
-  employeeId?: number;
-}> = ({ status, employeeId }) => {
+export const EmployeePositionChangeRequestsTable: React.FC<{
+  status?: TApprovalStatus[] | TApprovalStatus;
+}> = ({ status }) => {
   const [requestId, setRequestId] = useState<number>();
-  const { companyId, token } = useApiAuth();
   const { pagination, onChange } = usePagination();
-  const { data, isFetching } = useGeTPositionChangeRequisitionRequisitions({
-    companyId,
-    token,
+  const { data, isFetching } = useGetPositionChangeRequisitions4AuthEmployee({
     status,
-    employeeId,
     pagination: {
       limit: pagination.limit,
       offset: pagination.offset,
@@ -44,9 +39,7 @@ export const PositionChangeRequestsTable: React.FC<{
       dataIndex: "Employee",
       key: "Employee",
       render: (_, item) => (
-        <span className="capitalize">
-          {item.employee.firstName} {item.employee.lastName}
-        </span>
+        <span className="capitalize">{getEmployeeFullName(item.employee)}</span>
       ),
     },
     {

@@ -6,7 +6,6 @@ import { ICurrentCompany } from "types";
 
 type TCreateProps = {
   date: string;
-  employeeId: number;
   proposedDesignationId: number;
   skillsAndQualifications: string;
   reason: string;

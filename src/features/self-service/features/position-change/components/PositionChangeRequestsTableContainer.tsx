@@ -17,7 +17,9 @@ const Component: React.FC<ComponentProps & TApprovalStatusContainerProps> = ({
     </div>
   );
 };
-const ComponentWithHOC = withApprovalStatusContainer(Component);
+const ComponentWithHOC = withApprovalStatusContainer(Component, {
+  filtersToDisplay: ["employee", "status"],
+});
 
 export const PositionChangeRequestsTableContainer: React.FC = () => {
   return <ComponentWithHOC export={() => {}} />;
