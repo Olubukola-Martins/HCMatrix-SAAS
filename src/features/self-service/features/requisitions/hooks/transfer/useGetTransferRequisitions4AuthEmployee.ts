@@ -3,43 +3,44 @@ import { MICROSERVICE_ENDPOINTS } from "config/enviroment";
 import { useQuery } from "react-query";
 import { ICurrentCompany, IPaginationProps, ISearchParams } from "types";
 import { DEFAULT_PAGE_SIZE } from "constants/general";
+import { useApiAuth } from "hooks/useApiAuth";
 import { TApprovalStatus } from "types/statuses";
 import { TTransferRequisition } from "../../types/transfer";
 
-interface IGetDataProps extends ICurrentCompany {
+interface IGetDataProps {
   pagination?: IPaginationProps;
   searchParams?: ISearchParams;
   status?: TApprovalStatus[] | TApprovalStatus;
-  employeeId?: number;
 }
 
-export const QUERY_KEY_FOR_TRANSFER_REQUISITIONS = "transfer-requisitions";
+export const QUERY_KEY_FOR_TRANSFER_REQUISITIONS_FOR_AUTH_EMPLOYEE =
+  "transfer-requisitions-for-auth-employee";
 
-const getData = async (
-  props: IGetDataProps
-): Promise<{ data: TTransferRequisition[]; total: number }> => {
-  const { pagination } = props;
+const getData = async (props: {
+  data: IGetDataProps;
+  auth: ICurrentCompany;
+}): Promise<{ data: TTransferRequisition[]; total: number }> => {
+  const { pagination } = props.data;
   const limit = pagination?.limit ?? DEFAULT_PAGE_SIZE;
   const offset = pagination?.offset ?? 0;
-  const name = props.searchParams?.name ?? "";
+  const name = props.data.searchParams?.name ?? "";
 
-  const url = `${MICROSERVICE_ENDPOINTS.UTILITY}/self-service/requisition/transfer`;
+  const url = `${MICROSERVICE_ENDPOINTS.UTILITY}/self-service/requisition/transfer/mine`;
 
   const config = {
     headers: {
       Accept: "application/json",
-      Authorization: `Bearer ${props.token}`,
-      "x-company-id": props.companyId,
+      Authorization: `Bearer ${props.auth.token}`,
+      "x-company-id": props.auth.companyId,
     },
     params: {
       limit,
       offset,
       search: name,
-      employeeId: props.employeeId,
       status:
-        typeof props.status === "string"
-          ? props.status
-          : props.status?.join(","),
+        typeof props.data.status === "string"
+          ? props.data.status
+          : props.data.status?.join(","),
     },
   };
 
@@ -59,12 +60,25 @@ const getData = async (
   return ans;
 };
 
-export const useGetTransferRequisitions = (props: IGetDataProps) => {
+export const useGetTransferRequisitions4AuthEmployee = (
+  props: IGetDataProps
+) => {
+  const { token, companyId } = useApiAuth();
+
+  const { pagination, searchParams, status } = props;
   const queryData = useQuery(
-    [QUERY_KEY_FOR_TRANSFER_REQUISITIONS, props],
+    [
+      QUERY_KEY_FOR_TRANSFER_REQUISITIONS_FOR_AUTH_EMPLOYEE,
+      pagination,
+      searchParams,
+      status,
+    ],
     () =>
       getData({
-        ...props,
+        auth: { token, companyId },
+        data: {
+          ...props,
+        },
       }),
     {
       onError: (err: any) => {},

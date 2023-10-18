@@ -4,26 +4,19 @@ import { MoreOutlined } from "@ant-design/icons";
 import type { ColumnsType } from "antd/es/table";
 import { usePagination } from "hooks/usePagination";
 import { Button, Dropdown, Menu, Table } from "antd";
-import { useApiAuth } from "hooks/useApiAuth";
-import { getAppropriateColorForStatus } from "utils/colorHelpers/getAppropriateColorForStatus";
-
+import { getEmployeeFullName } from "features/core/employees/utils/getEmployeeFullName";
 import { TransferDetails } from "./TransferDetails";
 import { TTransferRequisition } from "../../requisitions/types/transfer";
-import { useGetTransferRequisitions } from "../../requisitions/hooks/transfer/useGetTransferRequisitions";
-import { getEmployeeFullName } from "features/core/employees/utils/getEmployeeFullName";
+import { getAppropriateColorForStatus } from "utils/colorHelpers/getAppropriateColorForStatus";
+import { useGetTransferRequisitions4AuthEmployee } from "../../requisitions/hooks/transfer/useGetTransferRequisitions4AuthEmployee";
 
-export const TransferRequestsTable: React.FC<{
-  status?: TApprovalStatus;
-  employeeId?: number;
-}> = ({ status, employeeId }) => {
+export const EmployeeTransferRequestsTable: React.FC<{
+  status?: TApprovalStatus[] | TApprovalStatus;
+}> = ({ status }) => {
   const [requestId, setRequestId] = useState<number>();
-  const { companyId, token } = useApiAuth();
   const { pagination, onChange } = usePagination();
-  const { data, isFetching } = useGetTransferRequisitions({
-    companyId,
-    token,
+  const { data, isFetching } = useGetTransferRequisitions4AuthEmployee({
     status,
-    employeeId,
     pagination: {
       limit: pagination.limit,
       offset: pagination.offset,
@@ -83,10 +76,10 @@ export const TransferRequestsTable: React.FC<{
       ),
     },
     {
-      title: "Proposed Branch",
-      dataIndex: "Proposed Branch",
-      key: "Proposed Branch",
-      render: (_, item) => <span>{item.proposedBranch.name}</span>,
+      title: "Proposed Location",
+      dataIndex: "Proposed Location",
+      key: "Proposed Location",
+      render: (_, item) => <span>{"N/A"}</span>,
     },
     {
       title: "Status",

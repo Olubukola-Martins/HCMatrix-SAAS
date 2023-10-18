@@ -8,15 +8,17 @@ import {
 } from "utils/formHelpers/validation";
 import { openNotification } from "utils/notifications";
 import { useQueryClient } from "react-query";
-import { useApiAuth } from "hooks/useApiAuth";
 import { useCreateTranferRequisition } from "../../requisitions/hooks/transfer/useCreateTransferRequisition";
 import { FormBranchInput } from "features/core/branches/components/FormBranchInput";
 import { FormDesignationInput } from "features/core/designations/components/FormDesignationInput";
 import { QUERY_KEY_FOR_TRANSFER_REQUISITIONS } from "../../requisitions/hooks/transfer/useGetTransferRequisitions";
+import { QUERY_KEY_FOR_JOB_REQUISITIONS_FOR_AUTH_EMPLOYEE } from "../../requisitions/hooks/job/useGetJobRequisitions4AuthEmployee";
+import { QUERY_KEY_FOR_APPROVAL_REQUESTS } from "features/core/workflows/hooks/useFetchApprovalRequests";
+import { QUERY_KEY_FOR_UNREAD_NOTIFICATION_COUNT } from "features/notifications/hooks/unRead/useGetUnReadNotificationCount";
+import { QUERY_KEY_FOR_NOTIFICATIONS } from "features/notifications/hooks/useGetAlerts";
 
 export const NewTransfer: React.FC<IModalProps> = ({ open, handleClose }) => {
   const queryClient = useQueryClient();
-  const { currentUserEmployeeId } = useApiAuth();
 
   const [form] = Form.useForm();
   const { mutate, isLoading } = useCreateTranferRequisition();
@@ -29,7 +31,6 @@ export const NewTransfer: React.FC<IModalProps> = ({ open, handleClose }) => {
         proposedDesignationId: data.proposedDesignationId,
         skillsAndQualifications: data.skillsAndQualifications,
         reason: data.reason,
-        employeeId: currentUserEmployeeId,
       },
       {
         onError: (err: any) => {
@@ -53,6 +54,22 @@ export const NewTransfer: React.FC<IModalProps> = ({ open, handleClose }) => {
 
           queryClient.invalidateQueries({
             queryKey: [QUERY_KEY_FOR_TRANSFER_REQUISITIONS],
+            // exact: true,
+          });
+          queryClient.invalidateQueries({
+            queryKey: [QUERY_KEY_FOR_JOB_REQUISITIONS_FOR_AUTH_EMPLOYEE],
+            // exact: true,
+          });
+          queryClient.invalidateQueries({
+            queryKey: [QUERY_KEY_FOR_APPROVAL_REQUESTS],
+            // exact: true,
+          });
+          queryClient.invalidateQueries({
+            queryKey: [QUERY_KEY_FOR_NOTIFICATIONS],
+            // exact: true,
+          });
+          queryClient.invalidateQueries({
+            queryKey: [QUERY_KEY_FOR_UNREAD_NOTIFICATION_COUNT],
             // exact: true,
           });
         },

@@ -2,27 +2,22 @@ import React, { useState } from "react";
 import { TApprovalStatus } from "types/statuses";
 import { MoreOutlined } from "@ant-design/icons";
 import type { ColumnsType } from "antd/es/table";
-import { useGetReimbursementRequisitions } from "../../requisitions/hooks/reimbursement/useGetReimbursementRequisitions";
 import { usePagination } from "hooks/usePagination";
-import { TReimbursementRequisition } from "../../requisitions/types/reimbursement";
 import { Button, Dropdown, Menu, Table } from "antd";
-import { useApiAuth } from "hooks/useApiAuth";
-import moment from "moment";
 import { getAppropriateColorForStatus } from "utils/colorHelpers/getAppropriateColorForStatus";
+import moment from "moment";
+import { TReimbursementRequisition } from "../../requisitions/types/reimbursement";
 import { ReimbursementDetails } from "./ReimbursementDetails";
+import { DEFAULT_DATE_FORMAT } from "constants/dateFormats";
+import { useGetReimburements4AuthEmployee } from "../../requisitions/hooks/reimbursement/useGetReimburements4AuthEmployee";
 
-export const ReimbursementRequestsTable: React.FC<{
-  status?: TApprovalStatus;
-  employeeId?: number;
-}> = ({ status, employeeId }) => {
+export const EmployeeReimbursementRequestsTable: React.FC<{
+  status?: TApprovalStatus[] | TApprovalStatus;
+}> = ({ status }) => {
   const [requestId, setRequestId] = useState<number>();
-  const { companyId, token } = useApiAuth();
   const { pagination, onChange } = usePagination();
-  const { data, isFetching } = useGetReimbursementRequisitions({
-    companyId,
-    token,
+  const { data, isFetching } = useGetReimburements4AuthEmployee({
     status,
-    employeeId,
     pagination: {
       limit: pagination.limit,
       offset: pagination.offset,
@@ -35,7 +30,7 @@ export const ReimbursementRequestsTable: React.FC<{
       dataIndex: "date",
       key: "date",
       render: (_, item) => (
-        <span>{moment(item.date).format("YYYY/MM/DD")} </span>
+        <span>{moment(item.date).format(DEFAULT_DATE_FORMAT)} </span>
       ),
     },
     {
