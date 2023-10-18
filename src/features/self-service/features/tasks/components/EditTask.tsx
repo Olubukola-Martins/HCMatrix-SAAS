@@ -1,8 +1,9 @@
-import { Form, Input, Modal, Select } from "antd";
+import { DatePicker, Form, Input, Modal, Select } from "antd";
 import { AppButton } from "components/button/AppButton";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { IModalProps } from "types";
 import {
+  dateHasToBeGreaterThanOrEqualToCurrentDayRule,
   generalValidationRules,
   textInputValidationRules,
 } from "utils/formHelpers/validation";
@@ -13,15 +14,24 @@ import { QUERY_KEY_FOR_TASKS_ASSIGNED_TO_EMPLOYEE } from "../hooks/assignedFor/u
 import { PRIORITIES } from "constants/general";
 import { TTask } from "../types";
 import { useUpdateTask } from "../hooks/useUpdateTask";
-import { TASK_STATUS_OPTIONS } from "../constants";
-import moment from "moment";
-import { getEmployeeFullName } from "features/core/employees/utils/getEmployeeFullName";
+import {
+  TASK_ASSIGNEE_TASK_STATUS_OPTIONS,
+  TASK_ASSIGNER_TASK_STATUS_OPTIONS,
+} from "../constants";
+import moment, { Moment } from "moment";
+import { FormEmployeeInput } from "features/core/employees/components/FormEmployeeInput";
 
 interface IProps extends IModalProps {
   task: TTask;
+  isTaskAssigner: boolean;
 }
 
-export const EditTask: React.FC<IProps> = ({ open, handleClose, task }) => {
+export const EditTask: React.FC<IProps> = ({
+  open,
+  handleClose,
+  task,
+  isTaskAssigner,
+}) => {
   const queryClient = useQueryClient();
 
   const [form] = Form.useForm();
@@ -33,6 +43,12 @@ export const EditTask: React.FC<IProps> = ({ open, handleClose, task }) => {
         id: task.id,
         body: {
           status: data.status,
+          priority: data.priority,
+          dueDate: (data.dueDate as Moment).toISOString(),
+          dateAssigned: (data.dateAssigned as Moment).toISOString(),
+          assignedToId: data.assignedToId,
+          description: data.description,
+          name: data?.name,
         },
       },
       {
@@ -72,18 +88,21 @@ export const EditTask: React.FC<IProps> = ({ open, handleClose, task }) => {
     form.setFieldsValue({
       name: data.name,
       description: data.description,
-      assignedToId: getEmployeeFullName(data.assignedTo),
+      assignedToId: data.assignedTo.id,
       priority: data.priority, // enum: low, medium, high
-      dateAssigned: moment(data.dateAssigned).format("YYYY-MM-DD"),
-      dueDate: moment(data.dueDate).format("YYYY-MM-DD"),
+      dateAssigned: moment(data.dateAssigned),
+      dueDate: moment(data.dueDate),
+      status: data.status,
     });
   }, [form, task]);
+  const [dateAssigned, setDateAssigned] = useState<Moment | null>(null);
+
   return (
     <Modal
       open={open}
       onCancel={() => handleClose()}
       footer={null}
-      title={"Add Task"}
+      title={task.status === "closed" ? "View Task" : "Update Task"}
       style={{ top: 20 }}
     >
       <Form
@@ -91,52 +110,88 @@ export const EditTask: React.FC<IProps> = ({ open, handleClose, task }) => {
         form={form}
         onFinish={handleSubmit}
         requiredMark={false}
+        disabled={task.status === "closed"}
       >
         <Form.Item rules={textInputValidationRules} name="name" label="Name">
-          <Input placeholder="Name" disabled />
+          <Input placeholder="Name" disabled={!isTaskAssigner} />
         </Form.Item>
         <Form.Item
           rules={textInputValidationRules}
           name="description"
           label="Description"
         >
-          <Input.TextArea placeholder="Description" disabled />
+          <Input.TextArea
+            placeholder="Description"
+            disabled={!isTaskAssigner}
+          />
         </Form.Item>
-        <Form.Item
-          rules={textInputValidationRules}
-          name="assignedToId"
-          label="Assigned To"
-        >
-          <Input placeholder="Assigned To" disabled />
-        </Form.Item>
+        <FormEmployeeInput
+          Form={Form}
+          control={{ name: "assignedToId", label: "Assigned To" }}
+          disabled={!isTaskAssigner}
+        />
         <Form.Item
           rules={generalValidationRules}
           name="priority"
           label="Priority"
         >
-          <Select placeholder="Priority" options={PRIORITIES} disabled />
+          <Select
+            placeholder="Priority"
+            options={PRIORITIES}
+            disabled={!isTaskAssigner}
+          />
         </Form.Item>
         <Form.Item
-          rules={generalValidationRules}
+          rules={[dateHasToBeGreaterThanOrEqualToCurrentDayRule]}
           name="dateAssigned"
           label="Date Assigned"
         >
-          <Input placeholder="Date Assigned" disabled />
+          <DatePicker
+            placeholder="Date Assigned"
+            disabled={!isTaskAssigner}
+            onChange={(val) => setDateAssigned(val)}
+            className="w-full"
+          />
         </Form.Item>
         <Form.Item rules={generalValidationRules} name="status" label="Status">
-          <Select options={TASK_STATUS_OPTIONS} placeholder="Status" />
+          <Select
+            options={
+              isTaskAssigner
+                ? TASK_ASSIGNER_TASK_STATUS_OPTIONS
+                : TASK_ASSIGNEE_TASK_STATUS_OPTIONS
+            }
+            placeholder="Status"
+            disabled={task.status === "closed"}
+          />
         </Form.Item>
         <Form.Item
-          rules={generalValidationRules}
+          rules={[
+            {
+              required: true,
+              validator: async (_, value: Moment) => {
+                if (value.isBefore(dateAssigned)) {
+                  throw new Error("Due date cannot be before date assigned!");
+                }
+
+                return true;
+              },
+            },
+          ]}
           name="dueDate"
           label="Due Date"
         >
-          <Input placeholder="Due Date" disabled />
+          <DatePicker
+            placeholder="Due Date"
+            disabled={!isTaskAssigner}
+            className="w-full"
+          />
         </Form.Item>
 
-        <div className="flex justify-end">
-          <AppButton type="submit" isLoading={isLoading} />
-        </div>
+        {task.status !== "closed" && (
+          <div className="flex justify-end">
+            <AppButton type="submit" isLoading={isLoading} />
+          </div>
+        )}
       </Form>
     </Modal>
   );

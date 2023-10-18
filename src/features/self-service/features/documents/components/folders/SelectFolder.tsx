@@ -1,12 +1,12 @@
 import { Select } from "antd";
 import { useDebounce } from "hooks/useDebounce";
 import { useState } from "react";
-import { useFetchEmployees } from "../hooks/useFetchEmployees";
-import { TEmployee } from "../types";
-import { getEmployeeFullName } from "../utils/getEmployeeFullName";
 
-export const SelectEmployee: React.FC<{
-  handleSelect?: (val: number, employee?: TEmployee) => void;
+import { TFolderListItem } from "../../types";
+import { useGetFolders } from "../../hooks/useGetFolders";
+
+export const SelectFolder: React.FC<{
+  handleSelect?: (val: number, folder?: TFolderListItem) => void;
   handleClear?: () => void;
   mode?: "multiple" | "tags";
   value?: number;
@@ -20,11 +20,10 @@ export const SelectEmployee: React.FC<{
   const [searchTerm, setSearchTerm] = useState<string>("");
   const debouncedSearchTerm: string = useDebounce<string>(searchTerm);
 
-  const { data, isLoading } = useFetchEmployees({
+  const { data, isLoading } = useGetFolders({
     searchParams: {
       name: debouncedSearchTerm,
     },
-    status: ["confirmed", "probation"],
   });
 
   const handleSearch = (val: string) => {
@@ -45,7 +44,7 @@ export const SelectEmployee: React.FC<{
         const employee = data?.data.find((emp) => emp.id === val);
         handleSelect?.(val, employee);
       }}
-      placeholder={`Select employee${!!mode ? "s" : ""}`}
+      placeholder={`Select folder${!!mode ? "s" : ""}`}
       showSearch
       allowClear
       onClear={onClear}
@@ -55,7 +54,7 @@ export const SelectEmployee: React.FC<{
       showArrow={false}
       filterOption={false}
       options={data?.data.map((item) => ({
-        label: <span className="capitalize">{getEmployeeFullName(item)} </span>,
+        label: <span className="capitalize">{item.name} </span>,
         value: item.id,
       }))}
     ></Select>

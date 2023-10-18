@@ -3,13 +3,21 @@ import { MICROSERVICE_ENDPOINTS } from "config/enviroment";
 import { useApiAuth } from "hooks/useApiAuth";
 import { useMutation } from "react-query";
 import { ICurrentCompany } from "types";
-import { TTaskStatus } from "../types";
+import { removeUndefinedProperties } from "utils/dataHelpers/removeUndefinedProperties";
+
+type TBody = {
+  name: string;
+  description: string;
+  assignedToId: number;
+  status: string;
+  priority: string;
+  dateAssigned: string;
+  dueDate: string;
+};
 
 type TData = {
   id: number;
-  body: {
-    status: TTaskStatus;
-  };
+  body: Partial<TBody>;
 };
 const createData = async (props: { data: TData; auth: ICurrentCompany }) => {
   const url = `${MICROSERVICE_ENDPOINTS.UTILITY}/self-service/task/${props.data.id}`;
@@ -22,7 +30,7 @@ const createData = async (props: { data: TData; auth: ICurrentCompany }) => {
   };
 
   const data: TData["body"] = {
-    ...props.data.body,
+    ...removeUndefinedProperties(props.data.body),
   };
 
   const response = await axios.patch(url, data, config);

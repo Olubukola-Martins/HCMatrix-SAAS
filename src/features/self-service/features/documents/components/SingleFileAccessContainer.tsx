@@ -14,6 +14,7 @@ import { useFetchRoles } from "features/core/roles-and-permissions/hooks/useFetc
 import { useApiAuth } from "hooks/useApiAuth";
 import { QUERY_KEY_FOR_ALL_ACCESSES_TO_A_FILE } from "../hooks/file/access/useGetAllAccessToFile";
 import { useRemoveAccessToFile } from "../hooks/file/access/useRemoveAccessToFile";
+import { FileAccessOption } from "./AddFile";
 
 interface IProps {
   data?: TFileAccessListItem[];
@@ -89,13 +90,19 @@ export const SingleFileAccessContainer: React.FC<IProps> = ({
       title: "",
       dataIndex: "operation",
       render: (_, item) => (
-        <Popconfirm
-          title="Sure to delete?"
-          onConfirm={() => handleDelete(item.id)}
-          okButtonProps={{ loading: isLoading }}
-        >
-          <DeleteFilled />
-        </Popconfirm>
+        <div>
+          <Popconfirm
+            title="Are you sure you want to delete?"
+            onConfirm={() => handleDelete(item.id)}
+            okButtonProps={{ loading: isLoading }}
+            getTooltipContainer={(triggerNode) =>
+              triggerNode.parentElement as HTMLElement
+            }
+            icon={null}
+          >
+            <DeleteFilled />
+          </Popconfirm>
+        </div>
       ),
     },
   ];
@@ -133,12 +140,6 @@ const AddAccessForm: React.FC<{ fileId: number; folderId: number }> = ({
   fileId,
   folderId,
 }) => {
-  interface AccessOption {
-    value: number | string;
-    label: string;
-    children?: AccessOption[];
-    disableCheckbox?: boolean;
-  }
   const { mutate, isLoading } = useAddAccessToFile();
   const queryClient = useQueryClient();
 
@@ -205,11 +206,12 @@ const AddAccessForm: React.FC<{ fileId: number; folderId: number }> = ({
     },
   });
 
-  const [accessOptions, setAccessOptions] = useState<AccessOption[]>([]);
+  const [accessOptions, setAccessOptions] = useState<FileAccessOption[]>([]);
 
   useEffect(() => {
     if (departments && roles && groups) {
-      const groupOptions: AccessOption = {
+      const groupOptions: FileAccessOption = {
+        disabled: groups && groups.total === 0,
         label: "Group",
         value: "group",
         children: groups?.data?.map((item) => ({
@@ -218,7 +220,8 @@ const AddAccessForm: React.FC<{ fileId: number; folderId: number }> = ({
           value: item.id as unknown as number,
         })),
       };
-      const departmentOptions: AccessOption = {
+      const departmentOptions: FileAccessOption = {
+        disabled: departments && departments.total === 0,
         label: "Department",
         value: "department",
         children: departments?.data?.map((item) => ({
@@ -226,7 +229,8 @@ const AddAccessForm: React.FC<{ fileId: number; folderId: number }> = ({
           value: item.id as unknown as number,
         })),
       };
-      const roleOptions: AccessOption = {
+      const roleOptions: FileAccessOption = {
+        disabled: roles && roles.total === 0,
         label: "Role",
         value: "role",
         children: roles?.data?.map((item) => ({
@@ -235,7 +239,7 @@ const AddAccessForm: React.FC<{ fileId: number; folderId: number }> = ({
           value: item.id as unknown as number,
         })),
       };
-      const options: AccessOption[] = [
+      const options: FileAccessOption[] = [
         groupOptions,
         departmentOptions,
         roleOptions,

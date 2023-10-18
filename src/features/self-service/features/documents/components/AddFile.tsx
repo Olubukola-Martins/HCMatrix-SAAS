@@ -9,8 +9,6 @@ import {
 } from "utils/formHelpers/validation";
 import { openNotification } from "utils/notifications";
 import { useQueryClient } from "react-query";
-import type { DefaultOptionType } from "antd/es/cascader";
-
 import { useCreateFile } from "../hooks/file/useCreateFile";
 import { QUERY_KEY_FOR_FILES_IN_A_FOLDER } from "../hooks/file/useGetFilesInFolder";
 import { FormFolderInput } from "./FormFolderInput";
@@ -22,17 +20,19 @@ import { useApiAuth } from "hooks/useApiAuth";
 import { useFetchGroups } from "features/core/groups/hooks/useFetchGroups";
 import { useFetchRoles } from "features/core/roles-and-permissions/hooks/useFetchRoles";
 
+const SUITABLE_PAGE_SIZE_FOR_ENTITIES_TO_BE_DISPAYED = 250;
+
 interface IProps extends IModalProps {}
-interface AccessOption {
+export interface FileAccessOption {
   value: number | string;
   label: string;
-  children?: AccessOption[];
-  disableCheckbox?: boolean;
+  children?: FileAccessOption[];
+  disabled?: boolean;
 }
 
 const displayRender = (
   labels: string[],
-  //   selectedOptions?: AccessOption[]
+  //   selectedOptions?: FileAccessOption[]
   selectedOptions?: any //TO DO Refactor this code or might be no need as the use of showStrategy
 ) => {
   const options = selectedOptions ?? [];
@@ -107,7 +107,7 @@ export const AddFile: React.FC<IProps> = ({ open, handleClose }) => {
     useFetchDepartments({
       pagination: {
         offset: 0,
-        limit: 220,
+        limit: SUITABLE_PAGE_SIZE_FOR_ENTITIES_TO_BE_DISPAYED,
       },
     });
   const { data: roles, isFetching: isFetchingRoles } = useFetchRoles({
@@ -115,21 +115,24 @@ export const AddFile: React.FC<IProps> = ({ open, handleClose }) => {
     token,
     pagination: {
       offset: 0,
-      limit: 220,
+      limit: SUITABLE_PAGE_SIZE_FOR_ENTITIES_TO_BE_DISPAYED,
     },
   });
   const { data: groups, isFetching: isFetchingGroups } = useFetchGroups({
     pagination: {
       offset: 0,
-      limit: 220,
+      limit: SUITABLE_PAGE_SIZE_FOR_ENTITIES_TO_BE_DISPAYED,
     },
   });
 
-  const [accessOptions, setAccessOptions] = useState<AccessOption[]>([]);
+  const [FileAccessOptions, setFileAccessOptions] = useState<
+    FileAccessOption[]
+  >([]);
 
   useEffect(() => {
     if (departments && roles && groups) {
-      const groupOptions: AccessOption = {
+      const groupOptions: FileAccessOption = {
+        disabled: groups && groups.total === 0,
         label: "Group",
         value: "group",
         children: groups?.data?.map((item) => ({
@@ -138,7 +141,8 @@ export const AddFile: React.FC<IProps> = ({ open, handleClose }) => {
           value: item.id as unknown as number,
         })),
       };
-      const departmentOptions: AccessOption = {
+      const departmentOptions: FileAccessOption = {
+        disabled: departments && departments.total === 0,
         label: "Department",
         value: "department",
         children: departments?.data?.map((item) => ({
@@ -146,7 +150,8 @@ export const AddFile: React.FC<IProps> = ({ open, handleClose }) => {
           value: item.id as unknown as number,
         })),
       };
-      const roleOptions: AccessOption = {
+      const roleOptions: FileAccessOption = {
+        disabled: roles && roles.total === 0,
         label: "Role",
         value: "role",
         children: roles?.data?.map((item) => ({
@@ -155,13 +160,13 @@ export const AddFile: React.FC<IProps> = ({ open, handleClose }) => {
           value: item.id as unknown as number,
         })),
       };
-      const options: AccessOption[] = [
+      const options: FileAccessOption[] = [
         groupOptions,
         departmentOptions,
         roleOptions,
       ];
 
-      setAccessOptions(options);
+      setFileAccessOptions(options);
     }
   }, [departments, roles, groups]);
 
@@ -208,7 +213,7 @@ export const AddFile: React.FC<IProps> = ({ open, handleClose }) => {
             label="Access"
           >
             <Cascader
-              options={accessOptions}
+              options={FileAccessOptions}
               multiple
               displayRender={displayRender}
               allowClear
@@ -225,6 +230,8 @@ export const AddFile: React.FC<IProps> = ({ open, handleClose }) => {
                 "application/pdf",
                 "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
                 "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+                "text/csv",
+                "text/plain",
               ]}
               fileKey="documentUrl"
               textToDisplay="Upload File"

@@ -15,6 +15,7 @@ import { TTask } from "../types";
 import { EditTask } from "./EditTask";
 import { getEmployeeFullName } from "features/core/employees/utils/getEmployeeFullName";
 import { DeleteTask } from "./DeleteTask";
+import { DEFAULT_DATE_FORMAT } from "constants/dateFormats";
 
 type TAction = "edit" | "delete";
 
@@ -24,7 +25,8 @@ export const TasksTable: React.FC<{
   pagination?: TablePaginationConfig;
   onChange?: TableProps<TTask>["onChange"];
   total?: number;
-}> = ({ data, loading, pagination, onChange, total }) => {
+  isTaskAssigner: boolean;
+}> = ({ data, loading, pagination, onChange, total, isTaskAssigner }) => {
   const [task, setTask] = useState<TTask>();
   const [action, setAction] = useState<TAction>();
   const onClose = () => {
@@ -39,14 +41,6 @@ export const TasksTable: React.FC<{
   };
 
   const columns: ColumnsType<TTask> = [
-    {
-      title: "Date",
-      dataIndex: "date",
-      key: "date",
-      render: (_, item) => (
-        <span>{moment(item.dateAssigned).format("YYYY/MM/DD")} </span>
-      ),
-    },
     {
       title: "Name",
       dataIndex: "Name",
@@ -91,11 +85,19 @@ export const TasksTable: React.FC<{
       ),
     },
     {
+      title: "Date Assigned",
+      dataIndex: "Date Assigned",
+      key: "Date Assigned",
+      render: (_, item) => (
+        <span>{moment(item.dateAssigned).format(DEFAULT_DATE_FORMAT)} </span>
+      ),
+    },
+    {
       title: "Due Date",
       dataIndex: "Due Date",
       key: "Due Date",
       render: (_, item) => (
-        <span>{moment(item.dueDate).format("YYYY/MM/DD")} </span>
+        <span>{moment(item.dueDate).format(DEFAULT_DATE_FORMAT)} </span>
       ),
     },
 
@@ -110,9 +112,10 @@ export const TasksTable: React.FC<{
                 key="3"
                 onClick={() => handleAction({ task: item, action: "edit" })}
               >
-                Edit
+                {item.status === "closed" ? "View" : "Update"}
               </Menu.Item>
               <Menu.Item
+                hidden={item.status === "closed"}
                 key="4"
                 onClick={() => handleAction({ task: item, action: "delete" })}
               >
@@ -138,7 +141,12 @@ export const TasksTable: React.FC<{
         />
       )}
       {task && (
-        <EditTask open={action === "edit"} handleClose={onClose} task={task} />
+        <EditTask
+          isTaskAssigner={isTaskAssigner}
+          open={action === "edit"}
+          handleClose={onClose}
+          task={task}
+        />
       )}
       <Table
         size="small"
