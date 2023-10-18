@@ -3,6 +3,7 @@ import { AppButton } from "components/button/AppButton";
 import React from "react";
 import { IModalProps } from "types";
 import {
+  dateHasToBeGreaterThanOrEqualToCurrentDayRule,
   generalValidationRules,
   textInputValidationRules,
 } from "utils/formHelpers/validation";
@@ -94,11 +95,15 @@ export const NewPromotionRequest: React.FC<IModalProps> = ({
         onFinish={handleSubmit}
         requiredMark={false}
       >
-        <Form.Item rules={generalValidationRules} name="date" label="Date">
+        <Form.Item
+          rules={[dateHasToBeGreaterThanOrEqualToCurrentDayRule]}
+          name="date"
+          label="Date"
+        >
           <DatePicker placeholder="Date" className="w-full" />
         </Form.Item>
         <Form.Item
-          rules={generalValidationRules}
+          rules={[dateHasToBeGreaterThanOrEqualToCurrentDayRule]}
           name="preferredStartDate"
           label="Preferred Start Date"
         >

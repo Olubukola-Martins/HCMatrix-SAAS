@@ -7,6 +7,7 @@ import { TravelRequestDetails } from "features/self-service/features/travels/com
 import { TransferDetails } from "features/self-service/features/transfers/components/TransferDetails";
 import { PositionChangeRequestDetails } from "features/self-service/features/position-change/components/PositionChangeRequestDetails";
 import { MonetaryRequestDetails } from "features/self-service/features/monetary-requests/components/MonetaryRequestDetails";
+import { ReimbursementDetails } from "features/self-service/features/reimbursement/components/ReimbursementDetails";
 
 interface IProps extends IModalProps {
   request?: TApprovalRequest;
@@ -68,6 +69,13 @@ const ViewApprovalRequest: React.FC<IProps> = ({
           open={open}
           handleClose={handleClose}
           id={request.moneyRequisition.id}
+        />
+      )}
+      {typeof request.reimbursementRequisition !== "undefined" && (
+        <ReimbursementDetails
+          open={open}
+          handleClose={handleClose}
+          id={request.reimbursementRequisition.id}
         />
       )}
       {/* TODO: Fill for other type of approval requests */}
