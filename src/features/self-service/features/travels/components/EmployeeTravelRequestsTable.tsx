@@ -4,64 +4,76 @@ import { MoreOutlined } from "@ant-design/icons";
 import type { ColumnsType } from "antd/es/table";
 import { usePagination } from "hooks/usePagination";
 import { Button, Dropdown, Menu, Table } from "antd";
-import { useApiAuth } from "hooks/useApiAuth";
 import moment from "moment";
 import { getAppropriateColorForStatus } from "utils/colorHelpers/getAppropriateColorForStatus";
-import { useGeTJobRequisitions } from "../../requisitions/hooks/job/useGetJobRequisitions";
-import { TJobRequisition } from "../../requisitions/types/job";
-import { JobRequestDetails } from "./JobRequestDetails";
+import { TTravelRequest } from "../../requisitions/types/travel";
+import { TravelRequestDetails } from "./TravelRequestDetails";
+import { getEmployeeFullName } from "features/core/employees/utils/getEmployeeFullName";
+import { DEFAULT_DATE_FORMAT } from "constants/dateFormats";
+import { useGetTravelRequisitions4AuthEmployee } from "../../requisitions/hooks/travel/useGetTravelRequisitions4AuthEmployee";
 
-export const JobRequestsTable: React.FC<{
-  status?: TApprovalStatus;
-  employeeId?: number;
-}> = ({ status, employeeId }) => {
+export const EmployeeTravelRequestsTable: React.FC<{
+  status?: TApprovalStatus[] | TApprovalStatus;
+}> = ({ status }) => {
   const [requestId, setRequestId] = useState<number>();
-  const { companyId, token } = useApiAuth();
   const { pagination, onChange } = usePagination();
-  const { data, isFetching } = useGeTJobRequisitions({
-    companyId,
-    token,
+  const { data, isFetching } = useGetTravelRequisitions4AuthEmployee({
     status,
-    employeeId,
     pagination: {
       limit: pagination.limit,
       offset: pagination.offset,
     },
   });
 
-  const columns: ColumnsType<TJobRequisition> = [
+  const columns: ColumnsType<TTravelRequest> = [
     {
       title: "Date",
       dataIndex: "date",
       key: "date",
       render: (_, item) => (
-        <span>{moment(item.date).format("YYYY/MM/DD")} </span>
+        <span>{moment(item.createdAt).format(DEFAULT_DATE_FORMAT)} </span>
       ),
     },
     {
-      title: "Preferred Start Date",
-      dataIndex: "preferredStartDate",
-      key: "preferredStartDate",
+      title: "Arrival Date",
+      dataIndex: "adate",
+      key: "adate",
       render: (_, item) => (
-        <span className="capitalize">
-          {moment(item.preferredStartDate).format("YYYY/MM/DD")}{" "}
-        </span>
+        <span>{moment(item.arrivalDate).format(DEFAULT_DATE_FORMAT)} </span>
       ),
     },
     {
-      title: "Designation",
-      dataIndex: "desc",
-      key: "desc",
+      title: "Departure Date",
+      dataIndex: "ddate",
+      key: "ddate",
       render: (_, item) => (
-        <span className="capitalize">{item.designation.name} </span>
+        <span>{moment(item.departureDate).format(DEFAULT_DATE_FORMAT)} </span>
       ),
+    },
+    {
+      title: "Travel ID",
+      dataIndex: "id",
+      key: "id",
+      render: (_, item) => <span>{item.id} </span>,
     },
 
     {
-      title: "Employment Type",
-      dataIndex: "emptype",
-      key: "emptype",
-      render: (_, item) => <span>{item.employmentType} </span>,
+      title: "Employee",
+      dataIndex: "emp",
+      key: "emp",
+      render: (_, item) => <span>{getEmployeeFullName(item.employee)} </span>,
+    },
+    {
+      title: "Reason",
+      dataIndex: "reas",
+      key: "reas",
+      render: (_, item) => <span className="capitalize">{item.reason} </span>,
+    },
+    {
+      title: "Duration (days)",
+      dataIndex: "dura",
+      key: "dura",
+      render: (_, item) => <span className="capitalize">{item.duration} </span>,
     },
     {
       title: "Status",
@@ -72,7 +84,7 @@ export const JobRequestsTable: React.FC<{
           className="capitalize"
           style={{ color: getAppropriateColorForStatus(item.status) }}
         >
-          {item.status}{" "}
+          {item.status}
         </span>
       ),
     },
@@ -110,7 +122,7 @@ export const JobRequestsTable: React.FC<{
   return (
     <div>
       {requestId && (
-        <JobRequestDetails
+        <TravelRequestDetails
           open={!!requestId}
           handleClose={() => setRequestId(undefined)}
           id={requestId}

@@ -8,11 +8,14 @@ import {
   Switch,
 } from "antd";
 import { AppButton } from "components/button/AppButton";
-import React from "react";
+import React, { useState } from "react";
 import { IModalProps } from "types";
 import {
+  dateHasToBeGreaterThanOrEqualToCurrentDayRule,
   generalValidationRules,
   generalValidationRulesOp,
+  numberHasToBeAWholeNumberRule,
+  numberHasToBeGreaterThanZeroRule,
   textInputValidationRules,
 } from "utils/formHelpers/validation";
 import { openNotification } from "utils/notifications";
@@ -20,6 +23,7 @@ import { useQueryClient } from "react-query";
 import { PRIORITIES } from "constants/general";
 import { useCreateTravelRequisition } from "../../requisitions/hooks/travel/useCreateTravelRequisition";
 import { QUERY_KEY_FOR_TRAVEL_REQUESTS } from "../../requisitions/hooks/travel/useGetTravelRequisitions";
+import moment, { Moment } from "moment";
 
 export const NewTravelRequest: React.FC<IModalProps> = ({
   open,
@@ -29,16 +33,20 @@ export const NewTravelRequest: React.FC<IModalProps> = ({
 
   const [form] = Form.useForm();
   const { mutate, isLoading } = useCreateTravelRequisition();
-
+  const [arrivalDate, setArrivalDate] = useState<Moment | null>(null);
+  const [departureDate, setDepartureDate] = useState<Moment | null>(null);
   const handleSubmit = (data: any) => {
     mutate(
       {
-        arrivalDate: data.arrivalDate.toString(),
+        arrivalDate: (data.arrivalDate as Moment).toString(),
         cost: data.cost,
-        duration: data.duration,
+        duration: +moment
+          .duration(departureDate?.diff(arrivalDate))
+          .asDays()
+          .toFixed(),
         location: data.location,
         reason: data.reason,
-        departureDate: data.departureDate.toString(),
+        departureDate: (data.departureDate as Moment).toString(),
         priority: data.priority,
         clientName: data.clientName,
         billableToClient: !!data.billableToClient,
@@ -71,6 +79,7 @@ export const NewTravelRequest: React.FC<IModalProps> = ({
       }
     );
   };
+
   return (
     <Modal
       open={open}
@@ -86,18 +95,50 @@ export const NewTravelRequest: React.FC<IModalProps> = ({
         requiredMark={false}
       >
         <Form.Item
-          rules={generalValidationRules}
+          rules={[dateHasToBeGreaterThanOrEqualToCurrentDayRule]}
           name="arrivalDate"
           label="Arrival Date"
         >
-          <DatePicker placeholder="Arrival Date" className="w-full" />
+          <DatePicker
+            placeholder="Arrival Date"
+            className="w-full"
+            onChange={setArrivalDate}
+          />
         </Form.Item>
         <Form.Item
-          rules={generalValidationRules}
+          rules={[
+            {
+              required: true,
+              validator: async (rule: any, value: Moment) => {
+                if (value.isBefore(arrivalDate)) {
+                  throw new Error(
+                    "Departure Date cannot be before arrival date!"
+                  );
+                }
+
+                return true;
+              },
+            },
+          ]}
           name="departureDate"
           label="Departure Date"
         >
-          <DatePicker placeholder="Departure Date" className="w-full" />
+          <DatePicker
+            placeholder="Departure Date"
+            className="w-full"
+            onChange={setDepartureDate}
+          />
+        </Form.Item>
+        <Form.Item label="Duration (days)">
+          <InputNumber
+            placeholder="Duration"
+            className="w-full"
+            disabled
+            value={moment
+              .duration(departureDate?.diff(arrivalDate))
+              .asDays()
+              .toFixed()}
+          />
         </Form.Item>
         <Form.Item
           rules={textInputValidationRules}
@@ -106,13 +147,7 @@ export const NewTravelRequest: React.FC<IModalProps> = ({
         >
           <Input placeholder="Client Name" />
         </Form.Item>
-        <Form.Item
-          rules={generalValidationRules}
-          name="duration"
-          label="Duration (days)"
-        >
-          <InputNumber placeholder="Duration" className="w-full" />
-        </Form.Item>
+
         <Form.Item
           rules={generalValidationRulesOp}
           name="priority"
@@ -120,7 +155,16 @@ export const NewTravelRequest: React.FC<IModalProps> = ({
         >
           <Select options={PRIORITIES} placeholder="Priority" />
         </Form.Item>
-        <Form.Item rules={generalValidationRules} name="cost" label="Cost">
+        <Form.Item
+          rules={[
+            {
+              required: true,
+              ...numberHasToBeGreaterThanZeroRule,
+            },
+          ]}
+          name="cost"
+          label="Cost"
+        >
           <InputNumber placeholder="Cost" className="w-full" />
         </Form.Item>
 

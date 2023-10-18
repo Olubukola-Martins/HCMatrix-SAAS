@@ -3,39 +3,6 @@ import Themes from "components/Themes";
 import { appRoutes } from "config/router/paths";
 import { Link } from "react-router-dom";
 
-const requisitions = [
-  { link: appRoutes.selfServiceTravels, title: "Travel Requests" },
-  { link: appRoutes.selfServiceAssets, title: "Asset Requisition" },
-  { link: appRoutes.selfServiceJob, title: "Job Requisition" },
-  {
-    link: appRoutes.selfServicePositionChange,
-    title: "Position Change Requisition",
-  },
-  { link: appRoutes.selfServicePromotion, title: "Promotion Requisition" },
-  {
-    link: appRoutes.selfServiceReimbursement,
-    title: "Reimbursement Requisition",
-  },
-  { link: appRoutes.selfServiceTransfer, title: "Transfer Requisition" },
-  { link: appRoutes.selfServiceMonetary, title: "Monetary Requisition" },
-];
-
-const requisitionContent = (
-  <Themes>
-    <div className="py-3 shadow-md px-4 text-sm font-medium rounded-md flex flex-col gap-3">
-      {requisitions.map((item) => (
-        <Link
-          key={item.title}
-          to={item.link}
-          className="cursor-pointer hover:text-caramel"
-        >
-          {item.title}
-        </Link>
-      ))}
-    </div>
-  </Themes>
-);
-
 const moreItems = [
   // { link: appRoutes.hRLetters, title: "HR Letters & Documents" },
   { link: appRoutes.documents, title: "Documents" },
@@ -57,14 +24,20 @@ const moreContent = (
   </Themes>
 );
 
-interface IProps {
+export type ISelfBoxProps = {
   title: string;
   desc?: string;
   icon: string;
   link: string;
-}
-
-export const RequisitionBox = ({ icon }: { icon: string }) => {
+};
+export type TRequisitionBoxProps = {
+  icon: string;
+  requisitions: { link: string; title: string; hidden: boolean }[];
+};
+export const RequisitionBox = ({
+  icon,
+  requisitions,
+}: TRequisitionBoxProps) => {
   return (
     <div className="bg-card p-2 rounded-lg shadow cursor-pointer group text-accent">
       <div className="bg-mainBg transition ease-in-out duration-300 py-2 px-3 rounded-lg group-hover:border-b-2 group-hover:border-caramel group-hover:shadow-md">
@@ -79,7 +52,21 @@ export const RequisitionBox = ({ icon }: { icon: string }) => {
           </div>
           <Dropdown
             overlayStyle={{ top: 1000 }}
-            overlay={requisitionContent}
+            overlay={
+              <Themes>
+                <div className="py-3 shadow-md px-4 text-sm font-medium rounded-md flex flex-col gap-3">
+                  {requisitions.map((item) => (
+                    <Link
+                      key={item.title}
+                      to={item.link}
+                      className="cursor-pointer hover:text-caramel"
+                    >
+                      {item.title}
+                    </Link>
+                  ))}
+                </div>
+              </Themes>
+            }
             trigger={["click"]}
             placement="bottom"
           >
@@ -125,7 +112,7 @@ const SelfBox = ({
   desc = "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
   icon,
   link,
-}: IProps) => {
+}: ISelfBoxProps) => {
   return (
     <Link
       to={link}

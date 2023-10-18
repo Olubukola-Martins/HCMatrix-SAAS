@@ -21,7 +21,7 @@ const createData = async (props: {
   data: TCreateProps;
   auth: ICurrentCompany;
 }) => {
-  const url = `${MICROSERVICE_ENDPOINTS.UTILITY}/self-service/travel-request`;
+  const url = `${MICROSERVICE_ENDPOINTS.UTILITY}/self-service/requisition/travel`;
   const config = {
     headers: {
       Accept: "application/json",

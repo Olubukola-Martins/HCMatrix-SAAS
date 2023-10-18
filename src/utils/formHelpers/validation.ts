@@ -37,6 +37,30 @@ export const textInputValidationRulesOp: Rule[] = [
     whitespace: true,
   },
 ];
+export const numberHasToBeAWholeNumberRule: Rule = {
+  validator: async (_: any, value: any) => {
+    if (typeof value !== "number") {
+      throw new Error("Please enter a valid number!");
+    }
+    if (+value % 1 !== 0) {
+      throw new Error("Please enter a whole number");
+    }
+
+    return true;
+  },
+};
+export const numberHasToBeGreaterThanZeroRule: Rule = {
+  validator: async (_: any, value: any) => {
+    if (typeof value !== "number") {
+      throw new Error("Please enter a valid number!");
+    }
+    if (+value <= 0) {
+      throw new Error("Please enter a number greater than 0");
+    }
+
+    return true;
+  },
+};
 export const numberInputValidationRules: Rule[] = [
   ...generalValidationRules,
   { type: "number" },

@@ -4,25 +4,20 @@ import { MoreOutlined } from "@ant-design/icons";
 import type { ColumnsType } from "antd/es/table";
 import { usePagination } from "hooks/usePagination";
 import { Button, Dropdown, Menu, Table } from "antd";
-import { useApiAuth } from "hooks/useApiAuth";
 import moment from "moment";
 import { getAppropriateColorForStatus } from "utils/colorHelpers/getAppropriateColorForStatus";
-import { useGeTJobRequisitions } from "../../requisitions/hooks/job/useGetJobRequisitions";
+import { DEFAULT_DATE_FORMAT } from "constants/dateFormats";
+import { useGetJobRequisitions4AuthEmployee } from "../../requisitions/hooks/job/useGetJobRequisitions4AuthEmployee";
 import { TJobRequisition } from "../../requisitions/types/job";
 import { JobRequestDetails } from "./JobRequestDetails";
 
-export const JobRequestsTable: React.FC<{
-  status?: TApprovalStatus;
-  employeeId?: number;
-}> = ({ status, employeeId }) => {
+export const EmployeeJobRequestsTable: React.FC<{
+  status?: TApprovalStatus[] | TApprovalStatus;
+}> = ({ status }) => {
   const [requestId, setRequestId] = useState<number>();
-  const { companyId, token } = useApiAuth();
   const { pagination, onChange } = usePagination();
-  const { data, isFetching } = useGeTJobRequisitions({
-    companyId,
-    token,
+  const { data, isFetching } = useGetJobRequisitions4AuthEmployee({
     status,
-    employeeId,
     pagination: {
       limit: pagination.limit,
       offset: pagination.offset,
@@ -35,7 +30,7 @@ export const JobRequestsTable: React.FC<{
       dataIndex: "date",
       key: "date",
       render: (_, item) => (
-        <span>{moment(item.date).format("YYYY/MM/DD")} </span>
+        <span>{moment(item.date).format(DEFAULT_DATE_FORMAT)} </span>
       ),
     },
     {
@@ -44,7 +39,7 @@ export const JobRequestsTable: React.FC<{
       key: "preferredStartDate",
       render: (_, item) => (
         <span className="capitalize">
-          {moment(item.preferredStartDate).format("YYYY/MM/DD")}{" "}
+          {moment(item.preferredStartDate).format(DEFAULT_DATE_FORMAT)}{" "}
         </span>
       ),
     },

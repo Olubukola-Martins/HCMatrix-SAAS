@@ -8,7 +8,11 @@ import requisition from "../assets/images/requisition.svg";
 import Onboarding from "../assets/images/Onboarding.svg";
 import { Link } from "react-router-dom";
 import { Skeleton } from "antd";
-import SelfBox, { RequisitionBox } from "../components/SelfBox";
+import SelfBox, {
+  ISelfBoxProps,
+  RequisitionBox,
+  TRequisitionBoxProps,
+} from "../components/SelfBox";
 import { appRoutes } from "config/router/paths";
 import { useGetSelfServiceDBAnalytics } from "../hooks/useGetSelfServiceDashboardAnalytics";
 import { ErrorWrapper } from "components/errorHandlers/ErrorWrapper";
@@ -46,76 +50,179 @@ const SelfServiceHome: React.FC = () => {
                 paragraph={{ rows: 45 }}
               >
                 <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-6 mt-6 mb-10">
-                  <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-5 col-span-3">
-                    <SelfBox
-                      title="Onboarding"
-                      icon={Onboarding}
-                      link={appRoutes.onboarding}
-                      desc="You can now access and manage onboarding"
+                  {data && (
+                    <SelfBoxList
+                      primaryData={[
+                        {
+                          hidden: false,
+                          item: {
+                            icon: Onboarding,
+                            link: appRoutes.onboarding,
+                            title: "Onboarding",
+                            desc: "You can now access and manage onboarding",
+                          },
+                        },
+                        {
+                          hidden: !data?.settings.some(
+                            (item) => item.type === "loan" && item.isActive
+                          ),
+                          item: {
+                            icon: loan,
+                            link: appRoutes.loans,
+                            title: "Loan",
+                            desc: "You can apply and manage loan requests",
+                          },
+                        },
+                        {
+                          hidden: false,
+                          item: {
+                            icon: leave,
+                            link: appRoutes.leaveHome,
+                            title: "Leave",
+                            desc: "You can apply and manage leave requests",
+                          },
+                        },
+                        {
+                          hidden: true, //Pending when its fleshed out
+                          item: {
+                            icon: health,
+                            link: appRoutes.healthAccessHome,
+                            title: "Health Access",
+                          },
+                        },
+                        {
+                          hidden: false,
+                          item: {
+                            icon: payslip,
+                            link: appRoutes.payslipTransactions,
+                            title: "My Payslip",
+                            desc: "You can view payslips and transactions",
+                          },
+                        },
+                        {
+                          hidden: false,
+                          item: {
+                            icon: attendance,
+                            link: appRoutes.newHandOverForm,
+                            title: "Hand Over",
+                            desc: "You can now access and manage employee resignations",
+                          },
+                        },
+                        {
+                          hidden: false,
+                          item: {
+                            icon: vehicle,
+                            link: appRoutes.vehicleBooking,
+                            title: "Vehicle booking",
+                            desc: "You can now manage vehicles and their bookings",
+                          },
+                        },
+                        {
+                          hidden: false,
+                          item: {
+                            icon: attendance,
+                            link: appRoutes.selfServiceAssets,
+                            title: "Asset",
+                            desc: "You can now manage assets within your organization",
+                          },
+                        },
+                        {
+                          hidden: false,
+                          item: {
+                            icon: leave,
+                            link: appRoutes.conferenceRoomBooking,
+                            title: "Conference Room",
+                            desc: "You can now manage conference rooms within your organization",
+                          },
+                        },
+                        {
+                          hidden: false,
+                          item: {
+                            icon: payslip,
+                            link: appRoutes.selfServiceTasks,
+                            title: "Tasks",
+                            desc: "You can now assign and manage tasks within your organization",
+                          },
+                        },
+                        {
+                          hidden: false,
+                          item: {
+                            icon: payslip,
+                            link: appRoutes.documents,
+                            title: "Documents",
+                            desc: "You can now manage documents within your organization",
+                          },
+                        },
+                      ]}
+                      requisitionData={{
+                        icon: requisition,
+                        requisitions: [
+                          {
+                            link: appRoutes.selfServiceTravels,
+                            title: "Travel Requisition",
+                            hidden: !data?.settings.some(
+                              (item) => item.type === "travel" && item.isActive
+                            ),
+                          },
+                          {
+                            link: appRoutes.selfServiceAssets,
+                            title: "Asset Requisition",
+                            hidden: !data?.settings.some(
+                              (item) => item.type === "asset" && item.isActive
+                            ),
+                          },
+                          {
+                            link: appRoutes.selfServiceJob,
+                            title: "Job Requisition",
+                            hidden: !data?.settings.some(
+                              (item) => item.type === "job" && item.isActive
+                            ),
+                          },
+                          {
+                            link: appRoutes.selfServicePositionChange,
+                            title: "Position Change Requisition",
+                            hidden: !data?.settings.some(
+                              (item) =>
+                                item.type === "position-change" && item.isActive
+                            ),
+                          },
+                          {
+                            link: appRoutes.selfServicePromotion,
+                            title: "Promotion Requisition",
+                            hidden: !data?.settings.some(
+                              (item) =>
+                                item.type === "promotion" && item.isActive
+                            ),
+                          },
+                          {
+                            link: appRoutes.selfServiceReimbursement,
+                            title: "Reimbursement Requisition",
+                            hidden: !data?.settings.some(
+                              (item) =>
+                                item.type === "reimbursement" && item.isActive
+                            ),
+                          },
+                          {
+                            link: appRoutes.selfServiceTransfer,
+                            title: "Transfer Requisition",
+                            hidden: !data?.settings.some(
+                              (item) =>
+                                item.type === "transfer" && item.isActive
+                            ),
+                          },
+                          {
+                            link: appRoutes.selfServiceMonetary,
+                            title: "Monetary Requisition",
+                            hidden: !data?.settings.some(
+                              (item) => item.type === "money" && item.isActive
+                            ),
+                          },
+                        ],
+                      }}
                     />
-                    <SelfBox
-                      title="Loan"
-                      icon={loan}
-                      link={appRoutes.loans}
-                      desc="You can apply and manage loan requests"
-                    />
-                    <SelfBox
-                      title="Leave"
-                      icon={leave}
-                      link={appRoutes.leaveHome}
-                      desc="You can apply and manage leave requests"
-                    />
-                    <SelfBox
-                      title="Health access"
-                      icon={health}
-                      link={appRoutes.healthAccessHome}
-                    />
-                    {/* TODO: Refactor all routes to use appRoutes */}
-                    <SelfBox
-                      title="My Payslip"
-                      icon={payslip}
-                      link={appRoutes.payslipTransactions}
-                      desc="You can view your payslips and transactions"
-                    />
-                    <SelfBox
-                      title="Hand-over Forms"
-                      icon={attendance}
-                      link={appRoutes.newHandOverForm}
-                      desc="You can now access and manage employee resignations"
-                    />
-                    <SelfBox
-                      title="Vehicle booking"
-                      icon={vehicle}
-                      link={appRoutes.vehicleBooking}
-                      desc="You can now manage vehicles and their bookings"
-                    />
-                    <SelfBox
-                      title="Asset Management"
-                      icon={attendance}
-                      link={appRoutes.selfServiceAssets}
-                      desc="You can now manage assets within your organization"
-                    />
-                    <SelfBox
-                      title="Conference Room"
-                      icon={leave}
-                      link={appRoutes.conferenceRoomBooking}
-                      desc="You can now manage conference rooms within your organization"
-                    />
-                    <SelfBox
-                      title="Tasks"
-                      icon={payslip}
-                      link={appRoutes.selfServiceTasks}
-                      desc="You can now assign and manage tasks within your organization"
-                    />
-                    <SelfBox
-                      title="Documents"
-                      icon={payslip}
-                      link={appRoutes.documents}
-                      desc="You can now manage documents within your organization"
-                    />
-                    <RequisitionBox icon={requisition} />
-                  </div>
-                  <div className="flex flex-col gap-12  h-full">
+                  )}
+
+                  <div className="flex md:col-span-2 lg:col-span-1  col-span-3 flex-col gap-12 w-full">
                     <TotalCompanyAssetCount
                       totalAssetCount={data?.analytics.totalAssetCount}
                     />
@@ -133,6 +240,22 @@ const SelfServiceHome: React.FC = () => {
         </div>
       </div>
     </>
+  );
+};
+
+export const SelfBoxList: React.FC<{
+  primaryData: ({ item: ISelfBoxProps } & { hidden: boolean })[];
+  requisitionData: TRequisitionBoxProps;
+}> = ({ primaryData, requisitionData }) => {
+  return (
+    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 col-span-3">
+      {primaryData
+        .filter((item) => item.hidden === false)
+        .map((item, i) => {
+          return <SelfBox {...item.item} />;
+        })}
+      <RequisitionBox {...requisitionData} />
+    </div>
   );
 };
 
