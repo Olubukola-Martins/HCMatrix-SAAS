@@ -31,10 +31,10 @@ export const RecentCard: React.FC<IProps> = ({
   handleViewMore,
 }) => {
   return (
-    <div className="bg-mainBg border rounded-lg text-sm shadow">
+    <div className="bg-mainBg pb-6 border rounded-lg text-sm shadow">
       <div className="flex items-center justify-between px-3 py-3 border-b">
         <p className="font-medium">{title}</p>
-        <span className="text-xs">{secondaryColTitle}</span>
+        <span className="text-xs capitalize">{secondaryColTitle}</span>
       </div>
       <div className="flex flex-col gap-3 px-3 py-2">
         <Skeleton loading={loading} active paragraph={{ rows: 4 }}>
@@ -42,9 +42,9 @@ export const RecentCard: React.FC<IProps> = ({
             data.map((item, i) => (
               <div className={requestStyle} key={i}>
                 <div className="flex flex-col gap-1">
-                  <h5 className="font-medium">{item.title}</h5>
+                  <h5 className="font-medium capitalize">{item.title}</h5>
                   {item?.features?.map((item, i) => (
-                    <span className="text-xs" key={i}>
+                    <span className="text-xs capitalize" key={i}>
                       {item.name}: {item.value}
                     </span>
                   ))}
@@ -76,7 +76,9 @@ export const RecentCard: React.FC<IProps> = ({
                   </Dropdown>
                 )}
                 {item.secondaryCol?.type === "text" && (
-                  <span className="text-xs">{item.secondaryCol.text}</span>
+                  <span className="text-xs capitalize">
+                    {item.secondaryCol.text}
+                  </span>
                 )}
               </div>
             ))

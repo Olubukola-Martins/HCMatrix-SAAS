@@ -7,6 +7,7 @@ import {
 } from "utils/formHelpers/validation";
 import { useFetchEmployees } from "../hooks/useFetchEmployees";
 import { TEmployee } from "../types";
+import { getEmployeeFullName } from "../utils/getEmployeeFullName";
 
 export const SelectEmployee: React.FC<{
   handleSelect?: (val: number, employee?: TEmployee) => void;
@@ -23,7 +24,7 @@ export const SelectEmployee: React.FC<{
   const [searchTerm, setSearchTerm] = useState<string>("");
   const debouncedSearchTerm: string = useDebounce<string>(searchTerm);
 
-  const { data, isSuccess } = useFetchEmployees({
+  const { data, isLoading } = useFetchEmployees({
     searchParams: {
       name: debouncedSearchTerm,
     },
@@ -43,6 +44,7 @@ export const SelectEmployee: React.FC<{
     <Select
       value={value}
       mode={mode}
+      loading={isLoading}
       onSelect={(val: number) => {
         const employee = data?.data.find((emp) => emp.id === val);
         handleSelect?.(val, employee);
@@ -56,18 +58,10 @@ export const SelectEmployee: React.FC<{
       defaultActiveFirstOption={false}
       showArrow={false}
       filterOption={false}
-    >
-      {isSuccess ? (
-        data.data.map((item) => (
-          <Select.Option key={item.id} value={item.id}>
-            {item.firstName} {item.lastName}
-          </Select.Option>
-        ))
-      ) : (
-        <div className="flex justify-center items-center w-full">
-          <Spin size="small" />
-        </div>
-      )}
-    </Select>
+      options={data?.data.map((item) => ({
+        label: <span className="capitalize">{getEmployeeFullName(item)} </span>,
+        value: item.id,
+      }))}
+    ></Select>
   );
 };

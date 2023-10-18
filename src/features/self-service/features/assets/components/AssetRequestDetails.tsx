@@ -2,7 +2,6 @@ import { DatePicker, Form, Input, Modal, Skeleton } from "antd";
 import React, { useEffect } from "react";
 import { IModalProps } from "types";
 import { useApiAuth } from "hooks/useApiAuth";
-import { AppButton } from "components/button/AppButton";
 import moment from "moment";
 import { useGetSingleAssetRequisition } from "../../requisitions/hooks/asset/useGetSingleAssetRequisition";
 import { getEmployeeFullName } from "features/core/employees/utils/getEmployeeFullName";
@@ -31,6 +30,7 @@ export const AssetRequestDetails: React.FC<IProps> = ({
         employee: getEmployeeFullName(data.employee),
         asset: data.asset.name,
         description: data.description,
+        status: data.status,
       });
     }
   }, [id, form, data]);
@@ -48,6 +48,9 @@ export const AssetRequestDetails: React.FC<IProps> = ({
             <DatePicker className="w-full" />
           </Form.Item>
 
+          <Form.Item name={"status"} label="Status">
+            <Input className="capitalize" />
+          </Form.Item>
           <Form.Item name={"employee"} label="Employee">
             <Input />
           </Form.Item>
@@ -70,9 +73,6 @@ export const AssetRequestDetails: React.FC<IProps> = ({
             </div>
           )}
         </Form>
-        <div className="flex justify-end">
-          <AppButton label="Download" type="button" />
-        </div>
       </Skeleton>
     </Modal>
   );
