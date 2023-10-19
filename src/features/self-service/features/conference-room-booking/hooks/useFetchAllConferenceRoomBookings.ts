@@ -4,6 +4,7 @@ import { useQuery } from "react-query";
 import { useApiAuth } from "hooks/useApiAuth";
 import { IPaginationProps, ISearchParams, ICurrentCompany } from "types";
 import { TSingleConferenceRoomBooking } from "../types";
+import { TApprovalStatus } from "types/statuses";
 
 export type TCRBookingStatus = "pending" | "approved" | "rejected";
 
@@ -11,22 +12,23 @@ interface IGetDataProps {
   pagination?: IPaginationProps;
   searchParams?: ISearchParams;
   employeeId?: number;
-  status?: TCRBookingStatus;
+  status?: TApprovalStatus[] | TApprovalStatus;
 }
 
 export const QUERY_KEY_FOR_ALL_CONFERENCE_ROOM_BOOKINGS =
   "conference-room-bookings";
 
-const getBAllConferenceRooms = async (
-  props: IGetDataProps & ICurrentCompany
+const getAllConferenceRooms = async (
+  props: IGetDataProps,
+  auth: ICurrentCompany
 ): Promise<{ data: TSingleConferenceRoomBooking[]; total: number }> => {
   const url = `${process.env.REACT_APP_UTILITY_BASE_URL}/self-service/conference-room/booking`;
 
   const config = {
     headers: {
       Accept: "application/json",
-      Authorization: `Bearer ${props.token}`,
-      "x-company-id": props.companyId,
+      Authorization: `Bearer ${auth.token}`,
+      "x-company-id": auth.companyId,
     },
 
     params: {
@@ -34,7 +36,10 @@ const getBAllConferenceRooms = async (
       offset: props?.pagination?.offset,
       search: props?.searchParams?.name,
       employeeId: props.employeeId,
-      status: props.status,
+      status:
+        typeof props.status === "string"
+          ? props.status
+          : props.status?.join(","),
     },
   };
 
@@ -63,11 +68,12 @@ export const useFetchAllConferenceRoomBookings = (props: IGetDataProps) => {
   const queryData = useQuery(
     [QUERY_KEY_FOR_ALL_CONFERENCE_ROOM_BOOKINGS, props],
     () =>
-      getBAllConferenceRooms({
-        ...props,
-        token,
-        companyId,
-      }),
+      getAllConferenceRooms(
+        {
+          ...props,
+        },
+        { token, companyId }
+      ),
     {
       onError: (err: any) => {},
       onSuccess: (data) => {},

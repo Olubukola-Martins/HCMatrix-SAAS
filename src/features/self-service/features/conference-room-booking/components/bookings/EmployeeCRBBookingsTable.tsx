@@ -1,48 +1,31 @@
-import { Space, Dropdown, Menu, Table, Modal } from "antd";
-import { MoreOutlined } from "@ant-design/icons";
-
 import React, { useState } from "react";
-import { ColumnsType } from "antd/lib/table";
-
-import moment from "moment";
-import {
-  TCRBookingStatus,
-  useFetchAllConferenceRoomBookings,
-} from "../hooks/useFetchAllConferenceRoomBookings";
-import { TSingleConferenceRoomBooking } from "../types";
-import { getAppropriateColorForStatus } from "utils/colorHelpers/getAppropriateColorForStatus";
-import CRBBookingDetails from "./CRBBookingDetails";
+import { TApprovalStatus } from "types/statuses";
+import { MoreOutlined } from "@ant-design/icons";
+import type { ColumnsType } from "antd/es/table";
 import { usePagination } from "hooks/usePagination";
+import { Dropdown, Menu, Modal, Space, Table } from "antd";
+import moment from "moment";
+import { getAppropriateColorForStatus } from "utils/colorHelpers/getAppropriateColorForStatus";
+import { useGetConferenceRoomBookings4AuthEmployee } from "../../hooks/useGetConferenceRoomBookings4AuthEmployee";
+import { TSingleConferenceRoomBooking } from "../../types";
+import CRBBookingDetails from "../CRBBookingDetails";
 
-const CRBHistoryTable: React.FC<{
-  status?: TCRBookingStatus;
-  employeeId?: number;
-}> = ({ status, employeeId }) => {
-  const [showD, setShowD] = useState(false);
+export const EmployeeCRBBookingsTable: React.FC<{
+  status?: TApprovalStatus[] | TApprovalStatus;
+}> = ({ status }) => {
   const [bookingId, setBookingId] = useState<number>();
-  const { pagination, onChange } = usePagination();
+  const [showD, setShowD] = useState(false);
 
-  const { data, isFetching } = useFetchAllConferenceRoomBookings({
-    pagination,
+  const { pagination, onChange } = usePagination();
+  const { data, isFetching } = useGetConferenceRoomBookings4AuthEmployee({
     status,
-    employeeId,
+    pagination: {
+      limit: pagination.limit,
+      offset: pagination.offset,
+    },
   });
 
   const columns: ColumnsType<TSingleConferenceRoomBooking> = [
-    {
-      title: "Name",
-      dataIndex: "name",
-      key: "name",
-      render: (val, item) => (
-        <span>
-          {item.employee.firstName} {item.employee.lastName}
-        </span>
-      ),
-
-      // ellipsis: true,
-
-      // width: 100,
-    },
     {
       title: "Date",
       dataIndex: "createdAt",
@@ -162,5 +145,3 @@ const CRBHistoryTable: React.FC<{
     </div>
   );
 };
-
-export default CRBHistoryTable;

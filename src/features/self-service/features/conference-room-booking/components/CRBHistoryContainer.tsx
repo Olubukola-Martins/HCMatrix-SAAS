@@ -12,7 +12,6 @@ const CRBHistoryContainer = () => {
 
   return (
     <div>
-      <p className="text-lg mb-4">My Booking History</p>
       <div className="flex flex-col gap-6">
         <div className="flex justify-between items-center">
           <Select

@@ -1,4 +1,4 @@
-import { Button as AntBtn, Form, Input } from "antd";
+import { Form, Input, Modal } from "antd";
 import Themes from "components/Themes";
 import React from "react";
 import { useQueryClient } from "react-query";
@@ -7,12 +7,11 @@ import { openNotification } from "utils/notifications";
 import { useCreateConferenceRoom } from "../hooks/useCreateConferenceRoom";
 import { QUERY_KEY_FOR_ALL_CONFERENCE_ROOMS } from "../hooks/useFetchAllConferenceRooms";
 import { AppButton } from "components/button/AppButton";
+import { QUERY_KEY_FOR_AVAILABLE_CONFERENCE_ROOMS } from "../hooks/useFetchAllAvailableConferenceRooms";
+import { IModalProps } from "types";
+import { QUERY_KEY_FOR_CONFERENCE_ROOM_ANALYTICS } from "../hooks/useGetConferenceRoomAnalytics";
 
-interface IProps {
-  handleClose: Function;
-}
-
-const NewMeetingRoomForm = ({ handleClose }: IProps) => {
+const NewMeetingRoom: React.FC<IModalProps> = ({ open, handleClose }) => {
   const queryClient = useQueryClient();
 
   const [form] = Form.useForm();
@@ -45,7 +44,15 @@ const NewMeetingRoomForm = ({ handleClose }: IProps) => {
           handleClose();
 
           queryClient.invalidateQueries({
+            queryKey: [QUERY_KEY_FOR_CONFERENCE_ROOM_ANALYTICS],
+            // exact: true,
+          });
+          queryClient.invalidateQueries({
             queryKey: [QUERY_KEY_FOR_ALL_CONFERENCE_ROOMS],
+            // exact: true,
+          });
+          queryClient.invalidateQueries({
+            queryKey: [QUERY_KEY_FOR_AVAILABLE_CONFERENCE_ROOMS],
             // exact: true,
           });
         },
@@ -53,7 +60,13 @@ const NewMeetingRoomForm = ({ handleClose }: IProps) => {
     );
   };
   return (
-    <div>
+    <Modal
+      open={open}
+      onCancel={() => handleClose()}
+      footer={null}
+      title={"Add Conference Room"}
+      style={{ top: 20 }}
+    >
       <Form
         labelCol={{ span: 24 }}
         requiredMark={false}
@@ -68,18 +81,15 @@ const NewMeetingRoomForm = ({ handleClose }: IProps) => {
           <Input placeholder="Room name" />
         </Form.Item>
         <Themes>
-          <div className="flex justify-between items-center">
-            <AntBtn type="text" onClick={() => handleClose()}>
-              Cancel
-            </AntBtn>
+          <div className="flex justify-end">
             <div className="flex gap-3">
               <AppButton type="submit" label="Submit" isLoading={isLoading} />
             </div>
           </div>
         </Themes>
       </Form>
-    </div>
+    </Modal>
   );
 };
 
-export default NewMeetingRoomForm;
+export default NewMeetingRoom;

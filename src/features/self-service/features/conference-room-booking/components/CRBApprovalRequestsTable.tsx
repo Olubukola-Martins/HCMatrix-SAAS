@@ -16,6 +16,8 @@ import { useQueryClient } from "react-query";
 import { useFetchApprovalRequests } from "features/core/workflows/hooks/useFetchApprovalRequests";
 import { useApproveORReject } from "hooks/useApproveORReject";
 import { TApprovalRequest } from "features/core/workflows/types/approval-requests";
+import { DEFAULT_DATE_FORMAT } from "constants/dateFormats";
+import { getEmployeeFullName } from "features/core/employees/utils/getEmployeeFullName";
 
 const CRBApprovalRequestsTable: React.FC<{
   status?: TCRBookingStatus;
@@ -46,10 +48,7 @@ const CRBApprovalRequestsTable: React.FC<{
       dataIndex: "name",
       key: "name",
       render: (val, item) => (
-        <span>
-          {item.conferenceRoomBooking?.employee.firstName}{" "}
-          {item.conferenceRoomBooking?.employee.lastName}
-        </span>
+        <span>{getEmployeeFullName(item.conferenceRoomBooking?.employee)}</span>
       ),
     },
     {
@@ -57,7 +56,9 @@ const CRBApprovalRequestsTable: React.FC<{
       dataIndex: "createdAt",
       key: "createdAt",
       render: (val, item) =>
-        moment(item.conferenceRoomBooking?.createdAt).format("YYYY-MM-DD"),
+        moment(item.conferenceRoomBooking?.createdAt).format(
+          DEFAULT_DATE_FORMAT
+        ),
     },
     {
       title: "Room Name",
@@ -93,7 +94,7 @@ const CRBApprovalRequestsTable: React.FC<{
       dataIndex: "date",
       key: "date",
       render: (val, item) =>
-        moment(item.conferenceRoomBooking?.date).format("YYYY-MM-DD"),
+        moment(item.conferenceRoomBooking?.date).format(DEFAULT_DATE_FORMAT),
     },
     {
       title: "Start Time",
