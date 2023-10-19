@@ -6,7 +6,6 @@ import { textInputValidationRules } from "utils/formHelpers/validation";
 import { openNotification } from "utils/notifications";
 import { useQueryClient } from "react-query";
 
-// import { useCreateFolder } from "../hooks/useCreateFolder";
 import { QUERY_KEY_FOR_FOLDERS } from "../hooks/useGetFolders";
 import { useUpdateFolder } from "../hooks/useUpdateFolder";
 import { TFolderListItem } from "../types";
