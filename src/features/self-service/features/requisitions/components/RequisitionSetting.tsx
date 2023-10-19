@@ -7,9 +7,11 @@ import { AppButton } from "components/button/AppButton";
 import { FormWorkflowInput } from "features/core/workflows/components/FormWorkflowInput";
 import { useApiAuth } from "hooks/useApiAuth";
 import { openNotification } from "utils/notifications";
-import { QUERY_KEY_FOR_REQUISITION_SETTING } from "../hooks/setting/useGetRequisitionSetting";
 import { TRequistionType } from "../types";
-import { useGetSingleRequisitionSetting } from "../hooks/setting/useGetSingleRequisitionSetting";
+import {
+  QUERY_KEY_FOR_SINGLE_REQUISITION_SETTING,
+  useGetSingleRequisitionSetting,
+} from "../hooks/setting/useGetSingleRequisitionSetting";
 
 export const REQUISITION_TYPES: TRequistionType[] = [
   "asset",
@@ -106,7 +108,7 @@ const RequisitionPolicyForm: React.FC<{ type: TRequistionType }> = ({
           form.resetFields();
 
           queryClient.invalidateQueries({
-            queryKey: [QUERY_KEY_FOR_REQUISITION_SETTING],
+            queryKey: [QUERY_KEY_FOR_SINGLE_REQUISITION_SETTING, type],
             // exact: true,
           });
         },
