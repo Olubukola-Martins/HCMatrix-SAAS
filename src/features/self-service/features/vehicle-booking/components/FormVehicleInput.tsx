@@ -1,13 +1,12 @@
-import { Select, Spin } from "antd";
+import { Select, Spin, Form } from "antd";
 import { useApiAuth } from "hooks/useApiAuth";
 import { useDebounce } from "hooks/useDebounce";
 import { useState } from "react";
 import { generalValidationRules } from "utils/formHelpers/validation";
 import { useFetchVehicles } from "../hooks/useFetchVehicles";
-import { VEHICLE_STATUSES } from "./SelectVehicleStatus";
 
 export const FormVehicleInput: React.FC<{
-  Form: any;
+  Form: typeof Form;
   showLabel?: boolean;
 }> = ({ Form, showLabel = true }) => {
   const { token, companyId } = useApiAuth();

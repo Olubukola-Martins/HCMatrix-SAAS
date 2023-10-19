@@ -1,4 +1,4 @@
-import { Select } from "antd";
+import { Select, Form } from "antd";
 import { useFetchStates } from "hooks/useFetchStates";
 import { useState } from "react";
 import { TState } from "types/states";
@@ -7,7 +7,7 @@ import { generalValidationRules } from "utils/formHelpers/validation";
 export const FormStateInput: React.FC<{
   handleSelect?: (val: number) => void;
   countryId: number;
-  Form: any;
+  Form: typeof Form;
   showLabel?: boolean;
   control?: { label: string; name: string };
 }> = ({ Form, showLabel = true, control, countryId, handleSelect }) => {

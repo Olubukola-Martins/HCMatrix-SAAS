@@ -1,4 +1,4 @@
-import { Select, Spin } from "antd";
+import { Select, Spin, Form } from "antd";
 import { useDebounce } from "hooks/useDebounce";
 import { useState } from "react";
 import {
@@ -12,7 +12,7 @@ export const FormEmployeeInput: React.FC<{
   handleSelect?: (val: number, employee?: TEmployee) => void;
   handleClear?: () => void;
   fieldKey?: number;
-  Form: any;
+  Form: typeof Form;
   noStyle?: boolean;
   showLabel?: boolean;
   optional?: boolean;

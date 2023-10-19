@@ -207,7 +207,7 @@ const workingDaysValidation = {
   },
 };
 export const JobInformationFormItems: React.FC<{
-  Form: any;
+  Form: typeof Form;
   frequency: TPayrollFrequency;
   setFrequency: Dispatch<SetStateAction<TPayrollFrequency>>;
   payrollType: TEssentialPayrollType;

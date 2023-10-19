@@ -1,4 +1,4 @@
-import { Select, Spin } from "antd";
+import { Select, Spin, Form } from "antd";
 import { useDebounce } from "hooks/useDebounce";
 
 import React, { useState } from "react";
@@ -7,7 +7,7 @@ import { useFetchLeaveTypes } from "../hooks/useFetchLeaveTypes";
 import { useApiAuth } from "hooks/useApiAuth";
 
 export const FormLeaveTypeInput: React.FC<{
-  Form: any;
+  Form: typeof Form;
   showLabel?: boolean;
   control?: { label: string; name: string };
 }> = ({ Form, showLabel = true, control }) => {

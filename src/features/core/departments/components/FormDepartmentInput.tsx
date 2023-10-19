@@ -1,4 +1,4 @@
-import { Select, Spin } from "antd";
+import { Select, Spin, Form } from "antd";
 import { useDebounce } from "hooks/useDebounce";
 import React, { useState } from "react";
 import {
@@ -8,7 +8,7 @@ import {
 import { useFetchDepartments } from "../hooks/useFetchDepartments";
 
 export const FormDepartmentInput: React.FC<{
-  Form: any;
+  Form: typeof Form;
   showLabel?: boolean;
   control?: { label: string; name: string; multiple?: boolean };
   optional?: boolean;

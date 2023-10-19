@@ -1,4 +1,4 @@
-import { Select } from "antd";
+import { Select, Form } from "antd";
 import { useGetBanksFromPaystack } from "hooks/useGetBanksFromPaystack";
 import { useEffect, useState } from "react";
 import { TPaystackBank } from "types/paystackBank";
@@ -7,7 +7,7 @@ import { generalValidationRules } from "utils/formHelpers/validation";
 export const FormBankInput: React.FC<{
   onClear?: () => void;
   handleSelect?: (val: string, bank?: TPaystackBank) => void;
-  Form: any;
+  Form: typeof Form;
   showLabel?: boolean;
   control?: { label: string; name: string };
   noStyle?: boolean;

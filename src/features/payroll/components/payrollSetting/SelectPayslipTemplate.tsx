@@ -1,9 +1,10 @@
 import React from "react";
 import { boxStyle, boxTitle } from "styles/reused";
 import { FormPayslipTemplateInput } from "../payslips/templates/FormPayslipTemplateInput";
+import { Form } from "antd";
 
 const SelectPayslipTemplate: React.FC<{
-  Form: any;
+  Form: typeof Form;
 }> = ({ Form }) => {
   return (
     <div className={`${boxStyle} text-sm`}>

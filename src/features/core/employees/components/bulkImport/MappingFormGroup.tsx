@@ -1,8 +1,8 @@
-import { Select } from "antd";
+import { Select, Form } from "antd";
 import { TEmployeeMappingSectionInput } from "../../types/bulk-import";
 
 interface IProps {
-  Form: any;
+  Form: typeof Form;
   columns: string[];
   formInputs: TEmployeeMappingSectionInput[];
 }

@@ -1,4 +1,4 @@
-import { Input } from "antd";
+import { Input, Form } from "antd";
 import { FormBankInput } from "components/generalFormInputs/FormBankInput";
 import React from "react";
 import { boxStyle, boxTitle } from "styles/reused";
@@ -6,7 +6,7 @@ import { TPaystackBank } from "types/paystackBank";
 import { generalValidationRules } from "utils/formHelpers/validation";
 
 const CompanyBankDetails: React.FC<{
-  Form: any;
+  Form: typeof Form;
   handleBank: (data?: TPaystackBank) => void;
 }> = ({ Form, handleBank }) => {
   return (

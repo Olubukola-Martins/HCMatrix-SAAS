@@ -1,4 +1,4 @@
-import { Checkbox, Input, InputNumber, Switch, Tooltip } from "antd";
+import { Checkbox, Input, InputNumber, Switch, Tooltip, Form } from "antd";
 import React from "react";
 import { boxStyle, boxTitle } from "styles/reused";
 import {
@@ -8,7 +8,7 @@ import {
 import { PAYROLL_SCHEME_OPTIONS } from "features/payroll/constants";
 
 const LoanConfiguration: React.FC<{
-  Form: any;
+  Form: typeof Form;
   loanActivation: boolean;
   handleLoanActivation: (val: boolean) => void;
 }> = ({ Form, loanActivation, handleLoanActivation }) => {

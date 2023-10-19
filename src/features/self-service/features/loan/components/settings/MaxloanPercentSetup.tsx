@@ -1,10 +1,10 @@
-import { InputNumber, Radio } from "antd";
+import { Form, InputNumber, Radio } from "antd";
 import React from "react";
-import { boxStyle, boxTitle, inputStyle } from "styles/reused";
+import { boxStyle, boxTitle } from "styles/reused";
 import { generalValidationRules } from "utils/formHelpers/validation";
 
 const MaxloanPercentSetup: React.FC<{
-  Form: any;
+  Form: typeof Form;
 }> = ({ Form }) => {
   return (
     <div className={`${boxStyle} text-sm`}>

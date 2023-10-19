@@ -1,4 +1,4 @@
-import { Select } from "antd";
+import { Select, Form } from "antd";
 import { useApiAuth } from "hooks/useApiAuth";
 import { useState } from "react";
 import { generalValidationRules } from "utils/formHelpers/validation";
@@ -8,7 +8,7 @@ import { TPermission } from "../types";
 export const FormRolePermissionsInput: React.FC<{
   handleSelect?: (val: number) => void;
   roleId: number;
-  Form: any;
+  Form: typeof Form;
   showLabel?: boolean;
   control?: { label: string; name: string };
 }> = ({ Form, showLabel = true, control, roleId, handleSelect }) => {

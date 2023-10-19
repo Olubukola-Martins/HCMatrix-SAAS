@@ -4,9 +4,10 @@ import { useDebounce } from "hooks/useDebounce";
 import { useState } from "react";
 import { generalValidationRules } from "utils/formHelpers/validation";
 import { useGetAssetTypes } from "../../hooks/asset-type/useGetAssetTypes";
+import { Form } from "antd";
 
 export const FormAssetTypeInput: React.FC<{
-  Form: any;
+  Form: typeof Form;
   showLabel?: boolean;
   control?: { label: string; name: string | (string | number)[] };
 }> = ({ Form, showLabel = true, control }) => {

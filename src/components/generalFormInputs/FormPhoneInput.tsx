@@ -1,18 +1,17 @@
-import { Input, Select } from "antd";
+import { Input, Select, Form } from "antd";
 import { useFetchCountries } from "hooks/useFetchCountries";
 
 import React, { useState } from "react";
 import { TCountry } from "types/country";
 import {
   generalValidationRules,
-  textInputValidationRules,
   phoneNumberValidationRule,
   generalValidationRulesOp,
   phoneNumberValidationRuleOp,
 } from "utils/formHelpers/validation";
 
 export const FormPhoneInput: React.FC<{
-  Form: any;
+  Form: typeof Form;
   showLabel?: boolean;
   control?: { label: string; name: string };
   optional?: boolean;
