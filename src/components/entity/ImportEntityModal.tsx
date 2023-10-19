@@ -1,6 +1,7 @@
 import { Form, Modal, Typography, message } from "antd";
 import Upload, { RcFile } from "antd/lib/upload";
 import { AppButton } from "components/button/AppButton";
+import { DEFAULT_MAX_FILE_UPLOAD_SIZE_IN_MB } from "constants/files";
 import { useState } from "react";
 import { IModalProps } from "types";
 import { TFileType } from "types/files";
@@ -21,7 +22,7 @@ export const ImportEntityModal: React.FC<IImportEntityModalProps> = ({
     "text/csv",
     "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
   ],
-  maxFileSizeInMB = 2,
+  maxFileSizeInMB = DEFAULT_MAX_FILE_UPLOAD_SIZE_IN_MB,
   handleDownloadTemplate,
   handleSubmit,
 }) => {

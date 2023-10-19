@@ -1,5 +1,7 @@
 import { Rule } from "antd/lib/form";
+import { DEFAULT_MAX_FILE_UPLOAD_SIZE_IN_MB } from "constants/files";
 import moment, { Moment } from "moment";
+import { TFileType } from "types/files";
 
 // helpers
 export const isDateGreaterThanCurrentDay = (date: Moment) => {
@@ -48,6 +50,43 @@ export const numberHasToBeAWholeNumberRule: Rule = {
 
     return true;
   },
+};
+export type TCeateFileValidationRuleProps = {
+  required?: boolean;
+  maxFileSize?: number;
+  allowedFileTypes: TFileType[];
+};
+export const createFileValidationRule = (
+  props: TCeateFileValidationRuleProps
+): Rule => {
+  const {
+    required = true,
+    maxFileSize = DEFAULT_MAX_FILE_UPLOAD_SIZE_IN_MB,
+    allowedFileTypes,
+  } = props;
+  return {
+    required,
+
+    validator: async (_, value) => {
+      if (required === false) {
+        return true;
+      }
+      if (Array.isArray(value) === false || value?.length === 0) {
+        throw new Error("Please upload a file");
+      }
+      const file = value?.[0]?.originFileObj;
+      const isLt2M = file.size / 1024 / 1024 <= maxFileSize;
+
+      if (!isLt2M) {
+        throw new Error(`File must smaller than or equal to ${maxFileSize}MB!`);
+      }
+      if (!allowedFileTypes.includes(file.type as TFileType)) {
+        throw new Error(`This file type (${file.type}) is not allowed!`);
+      }
+
+      return true;
+    },
+  };
 };
 export const numberHasToBeGreaterThanZeroRule: Rule = {
   validator: async (_: any, value: any) => {

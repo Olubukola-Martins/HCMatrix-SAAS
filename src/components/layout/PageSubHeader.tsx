@@ -13,6 +13,7 @@ interface IProps {
     loading?: boolean;
     type?: "submit" | "reset" | "button";
     additionalClassNames?: string[];
+    disabled?: boolean;
   }[];
   comps?: React.ReactNode[];
 }
@@ -37,7 +38,7 @@ const PageSubHeader = ({
       <div className="flex gap-4 items-center ">
         {actions?.some((item) => item.hidden)
           ? actions
-              ?.filter((item) => item.hidden === true)
+              ?.filter((item) => item.hidden === false)
               .map((item, i) => (
                 <AppButton
                   key={i}
@@ -46,6 +47,7 @@ const PageSubHeader = ({
                   variant={item.btnVariant}
                   isLoading={item.loading}
                   additionalClassNames={item.additionalClassNames}
+                  disabled={item.disabled}
                 />
               ))
           : actions?.map((item, i) => (
@@ -56,6 +58,7 @@ const PageSubHeader = ({
                 variant={item.btnVariant}
                 isLoading={item.loading}
                 additionalClassNames={item.additionalClassNames}
+                disabled={item.disabled}
               />
             ))}
         {comps?.map((item, i) => (

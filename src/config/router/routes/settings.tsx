@@ -40,23 +40,21 @@ export const settingRoutes: TRouteData[] = [
     isSearchable: true,
     title: "Settings",
   },
+
   {
     element: <CompanyDetails />,
     path: appRoutes.companyDetailsSettings,
     isSearchable: true,
     title: "Company Details",
   },
+
   {
     element: <Branches />,
     path: appRoutes.locationSettings,
     isSearchable: true,
-    title: "Locations",
+    title: "Branches",
   },
-  {
-    element: <div />,
-    path: appRoutes.singleLocation().format,
-    isSearchable: false,
-  },
+
   {
     element: <Holidays />,
     path: appRoutes.holidaySettings,

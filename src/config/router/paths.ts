@@ -15,9 +15,9 @@ export const appRoutes = {
   invitedEmployee: `/invited-employee-form`,
   //home routes
   home: `/`,
-  companyOrganogram: `/company-organogram`,
   // setting routes
   settings: "/settings",
+  companyOrganogram: `/settings/company-organogram`,
   projectSettings: "/settings/projects",
   singleProject: (id?: number) => ({
     format: `/settings/projects/:id`,
@@ -48,10 +48,7 @@ export const appRoutes = {
     format: `/settings/departments/:id`,
     path: `/settings/departments/${id}`,
   }),
-  // singleDelegation: (id?: number) => ({
-  //   format: `/settings/delegations/:id`,
-  //   path: `/settings/delegations/${id}`,
-  // }),
+
   delegationSettings: `/settings/delegations`,
 
   roleSettings: `/settings/roles`,

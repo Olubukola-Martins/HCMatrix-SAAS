@@ -2,6 +2,7 @@ import { PageIntro } from "components/layout/PageIntro";
 import CompanyInfoAccordion from "../components/CompanyInfoAccordion";
 import CompanyLogoForm from "../components/CompanyLogoForm";
 import CompanySettingsAccordion from "../components/CompanySettingsAccordion";
+import CompanyDocumentsAccordion from "../components/CompanyDocumentsAccordion";
 
 const CompanyDetails = () => {
   return (
@@ -19,6 +20,8 @@ const CompanyDetails = () => {
 
           {/* accordian 2 */}
           <CompanySettingsAccordion />
+          {/* accordian 3 */}
+          <CompanyDocumentsAccordion />
         </div>
       </div>
     </>

@@ -13,6 +13,7 @@ import { pluralOrSingular } from "utils/dataHelpers/pluralOrSingular";
 import EmployeeInfoChart from "features/core/employees/components/EmployeeInfoChart";
 import { Celebrations } from "./Celebrations";
 import { PendingItem } from "./PendingItem";
+import { appRoutes } from "config/router/paths";
 
 export const AdminHome = () => {
   const auth = useAuthUser();
@@ -75,7 +76,15 @@ export const AdminHome = () => {
           <h1 className="text-xl md:text-2xl font-black">
             Welcome {user.fullName} ,
           </h1>
-          <button className="transparentButton">Upload Handbook</button>
+          <div className="flex gap-4 items-center">
+            <Link
+              to={appRoutes.companyOrganogram}
+              className="text-caramel underline hover:no-underline"
+            >
+              Company Organogram
+            </Link>
+            <button className="transparentButton">Download Handbook</button>
+          </div>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-5 mt-6">
           <div className="md:col-span-3">
@@ -178,7 +187,7 @@ export const AdminHome = () => {
               </p>
             </div>
           </div>
-          
+
           <div className="col-span-2 bg-mainBg shadow border rounded-lg p-3">
             <h3 className="text-base">Who is out?</h3>
 
