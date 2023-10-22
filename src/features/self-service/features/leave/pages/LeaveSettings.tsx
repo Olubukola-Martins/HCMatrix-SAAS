@@ -1,11 +1,8 @@
 import React, { useState } from "react";
-import { Drawer, Button } from "antd";
-import { CloseOutlined } from "@ant-design/icons";
-import Themes from "components/Themes";
 import SelfServiceSubNav from "features/self-service/components/SelfServiceSubNav";
 import LeaveSettingsAccordians from "../components/LeaveSettingsAccordians";
 import LeaveSettingsHeader from "../components/LeaveSettingsHeader";
-import { RequestForLeave } from "../components/RequestForLeave";
+import { RequestForLeave } from "../components/leave-requests/RequestForLeave";
 
 const ECOMP = {
   ADD_NEW_LEAVE: "New Leave",

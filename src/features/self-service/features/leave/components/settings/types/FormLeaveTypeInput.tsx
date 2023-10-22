@@ -1,10 +1,8 @@
 import { Select, Spin, Form } from "antd";
 import { useDebounce } from "hooks/useDebounce";
-
 import React, { useState } from "react";
 import { generalValidationRules } from "utils/formHelpers/validation";
-import { useFetchLeaveTypes } from "../hooks/useFetchLeaveTypes";
-import { useApiAuth } from "hooks/useApiAuth";
+import { useFetchLeaveTypes } from "../../../hooks/leaveTypes/useFetchLeaveTypes";
 
 export const FormLeaveTypeInput: React.FC<{
   Form: typeof Form;
@@ -13,13 +11,11 @@ export const FormLeaveTypeInput: React.FC<{
 }> = ({ Form, showLabel = true, control }) => {
   const [searchTerm, setSearchTerm] = useState<string>("");
   const debouncedSearchTerm: string = useDebounce<string>(searchTerm);
-  const { companyId, token } = useApiAuth();
   const { data, isFetching, isSuccess } = useFetchLeaveTypes({
     searchParams: {
       name: debouncedSearchTerm,
     },
-    companyId,
-    token,
+
     pagination: {
       offset: 0,
       limit: 40,

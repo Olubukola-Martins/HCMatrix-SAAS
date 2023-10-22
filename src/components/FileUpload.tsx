@@ -1,5 +1,6 @@
 import { UploadOutlined } from "@ant-design/icons";
 import { UploadProps, message, Upload, Button, Typography } from "antd";
+import { MICROSERVICE_ENDPOINTS } from "config/enviroment";
 import { useApiAuth } from "hooks/useApiAuth";
 import { useContext } from "react";
 import { GlobalContext, EGlobalOps } from "stateManagers/GlobalContextProvider";
@@ -20,10 +21,9 @@ export const FileUpload = ({
   textToDisplay = "Click to Upload",
   fileKey,
 }: IFilesProps) => {
-  const { token } = useApiAuth();
+  const { token, companyId } = useApiAuth();
   const globalCtx = useContext(GlobalContext);
-  const { state: globalState, dispatch } = globalCtx;
-  const companyId = globalState.currentCompany?.id;
+  const { dispatch } = globalCtx;
 
   const props: UploadProps = {
     beforeUpload: (file) => {
@@ -38,11 +38,11 @@ export const FileUpload = ({
     },
     name: "file",
     // showUploadList: false,
-    action: `${process.env.REACT_APP_UTILITY_BASE_URL}/file`,
+    action: `${MICROSERVICE_ENDPOINTS.UTILITY}/file`,
     headers: {
       Accept: "application/json",
       Authorization: `Bearer ${token}`,
-      "x-company-id": companyId as string,
+      "x-company-id": companyId.toString(),
     },
     onChange(info) {
       if (info.file.status !== "uploading") {

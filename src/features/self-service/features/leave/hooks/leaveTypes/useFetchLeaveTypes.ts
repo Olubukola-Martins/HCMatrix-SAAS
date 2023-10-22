@@ -3,10 +3,10 @@ import { MICROSERVICE_ENDPOINTS } from "config/enviroment";
 import { useQuery } from "react-query";
 import { ICurrentCompany, IPaginationProps, ISearchParams } from "types";
 import { DEFAULT_PAGE_SIZE } from "constants/general";
-import { TLeaveType } from "../types";
+import { TLeaveType } from "../../types";
+import { useApiAuth } from "hooks/useApiAuth";
 
-// TO DO : need to exist in the general data entities and refactored
-interface IGetDataProps extends ICurrentCompany {
+interface IGetDataProps {
   pagination?: IPaginationProps;
   searchParams?: ISearchParams;
 }
@@ -14,7 +14,8 @@ interface IGetDataProps extends ICurrentCompany {
 export const QUERY_KEY_FOR_LEAVE_TYPES = "leave-types";
 
 const getLeaveTypes = async (
-  props: IGetDataProps
+  props: IGetDataProps,
+  auth: ICurrentCompany
 ): Promise<{ data: TLeaveType[]; total: number }> => {
   const { pagination } = props;
   const limit = pagination?.limit ?? DEFAULT_PAGE_SIZE;
@@ -26,8 +27,8 @@ const getLeaveTypes = async (
   const config = {
     headers: {
       Accept: "application/json",
-      Authorization: `Bearer ${props.token}`,
-      "x-company-id": props.companyId,
+      Authorization: `Bearer ${auth.token}`,
+      "x-company-id": auth.companyId,
     },
     params: {
       limit,
@@ -52,14 +53,21 @@ const getLeaveTypes = async (
   return ans;
 };
 
-export const useFetchLeaveTypes = (props: IGetDataProps) => {
+export const useFetchLeaveTypes = (props: IGetDataProps = {}) => {
   const { pagination, searchParams } = props;
+  const { companyId, token } = useApiAuth();
   const queryData = useQuery(
     [QUERY_KEY_FOR_LEAVE_TYPES, pagination, searchParams],
     () =>
-      getLeaveTypes({
-        ...props,
-      }),
+      getLeaveTypes(
+        {
+          ...props,
+        },
+        {
+          token,
+          companyId,
+        }
+      ),
     {
       onError: (err: any) => {},
       onSuccess: (data) => {},

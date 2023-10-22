@@ -1,20 +1,21 @@
 import axios from "axios";
 import { MICROSERVICE_ENDPOINTS } from "config/enviroment";
 import { useApiAuth } from "hooks/useApiAuth";
+import { bulkUploadFiles } from "hooks/useUploadFile";
 import { useMutation } from "react-query";
 import { ICurrentCompany } from "types";
 
 type TCreateProps = {
-  employeeId: number;
   departmentId: number;
-  startDate: string;
-  endDate: string;
+  startDate?: string;
+  endDate?: string;
+  specificDates?: string[];
   length: number;
   leaveTypeId: number;
   reason: string;
   requestAllowance: boolean;
   workAssigneeId: number;
-  documentUrls: string[];
+  documentUrls: any[];
 };
 
 const createLeave = async (props: {
@@ -30,8 +31,15 @@ const createLeave = async (props: {
     },
   };
 
+  const uploadedFileUrls = await bulkUploadFiles({
+    data: {
+      files: props.data.documentUrls,
+    },
+    auth: { token: props.auth.token, companyId: props.auth.companyId },
+  });
   const data: TCreateProps = {
     ...props.data,
+    documentUrls: uploadedFileUrls,
   };
 
   const response = await axios.post(url, data, config);

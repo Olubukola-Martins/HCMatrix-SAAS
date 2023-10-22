@@ -10,7 +10,8 @@ export const FormFileInput: React.FC<{
   label: React.ReactNode;
   ruleOptions: TCeateFileValidationRuleProps;
   name: string;
-}> = ({ Form, label, ruleOptions, name }) => {
+  multiple?: boolean;
+}> = ({ Form, label, ruleOptions, name, multiple = false }) => {
   const normFile = (e: any) => {
     if (Array.isArray(e)) {
       return e;
@@ -27,8 +28,12 @@ export const FormFileInput: React.FC<{
     >
       <Upload
         beforeUpload={() => false}
-        multiple={false}
-        maxCount={1} //ensures only a single file is uploaded
+        multiple={multiple}
+        maxCount={
+          ruleOptions.maxFileUploadCount
+            ? ruleOptions.maxFileUploadCount + 1
+            : undefined
+        } //ensures only a certain amount of files are uploaded, a plus one so the error shows up
         className="w-full flex-1"
       >
         <Button icon={<UploadOutlined />} className="flex w-full">

@@ -6,6 +6,7 @@ import {
   validateTimeFrameForManualRepayment,
 } from "utils/formHelpers/validation";
 import { PAYROLL_SCHEME_OPTIONS } from "features/payroll/constants";
+import AppTooltip from "components/tooltip/AppTooltip";
 
 const LoanConfiguration: React.FC<{
   Form: typeof Form;
@@ -54,15 +55,13 @@ const LoanConfiguration: React.FC<{
               labelCol={{ span: 24 }}
               name="timeFrameForManualRepayment"
               label={
-                <div className="flex gap-2 items-center">
-                  <span>Time frame for manual repayment</span>
-                  <Tooltip
-                    showArrow={false}
-                    title="Please not this will affect payroll creation, as per depending on what is set it will limit the time period within which payrolls can be created."
-                  >
-                    <i className="ri-information-fill text-lg" />
-                  </Tooltip>
-                </div>
+                <AppTooltip
+                  children={<span>Time frame for manual repayment</span>}
+                  tooltipProps={{
+                    title:
+                      "Please not this will affect payroll creation, as per depending on what is set it will limit the time period within which payrolls can be created.",
+                  }}
+                />
               }
             >
               <Input.Group className="flex gap-4 w-full">

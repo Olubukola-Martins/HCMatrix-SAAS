@@ -1,5 +1,6 @@
 export interface TLeave {
   id: number;
+  specificDates?: string[];
   employeeId: number;
   departmentId: number;
   startDate: string;

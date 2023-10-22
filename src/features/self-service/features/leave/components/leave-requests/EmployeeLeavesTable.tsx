@@ -6,15 +6,17 @@ import { ColumnsType } from "antd/lib/table";
 
 import { getAppropriateColorForStatus } from "utils/colorHelpers/getAppropriateColorForStatus";
 import { usePagination } from "hooks/usePagination";
-import { useFetchLeaves } from "../hooks/useFetchLeaves";
 import { TApprovalStatus } from "types/statuses";
-import { TLeave } from "../types";
-import { LeaveDetails } from "./LeaveDetails";
 import moment from "moment";
+import { useFetchLeaves } from "../../hooks/useFetchLeaves";
+import { TLeave } from "../../types";
+import { LeaveDetails } from "../LeaveDetails";
 
-const LeavesTable: React.FC<{
+const EmployeeLeavesTable: React.FC<{
   status?: TApprovalStatus;
   employeeId?: number;
+  startDate?: string;
+  endDate?: string;
 }> = ({ status, employeeId }) => {
   const [showD, setShowD] = useState(false);
   const [requestId, setRequestId] = useState<number>();
@@ -169,4 +171,4 @@ const LeavesTable: React.FC<{
   );
 };
 
-export default LeavesTable;
+export default EmployeeLeavesTable;

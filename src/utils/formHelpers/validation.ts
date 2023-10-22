@@ -1,5 +1,8 @@
 import { Rule } from "antd/lib/form";
-import { DEFAULT_MAX_FILE_UPLOAD_SIZE_IN_MB } from "constants/files";
+import {
+  DEFAULT_MAX_FILE_UPLOAD_COUNT,
+  DEFAULT_MAX_FILE_UPLOAD_SIZE_IN_MB,
+} from "constants/files";
 import moment, { Moment } from "moment";
 import { TFileType } from "types/files";
 
@@ -40,11 +43,14 @@ export const textInputValidationRulesOp: Rule[] = [
   },
 ];
 export const numberHasToBeAWholeNumberRule: Rule = {
-  validator: async (_: any, value: any) => {
+  validator: async (val, value: any) => {
     if (typeof value !== "number") {
       throw new Error("Please enter a valid number!");
     }
-    if (+value % 1 !== 0) {
+    if (typeof value === "number" && +value === 0) {
+      throw new Error("Please enter a value greater than 0!");
+    }
+    if (!Number.isInteger(value)) {
       throw new Error("Please enter a whole number");
     }
 
@@ -55,6 +61,7 @@ export type TCeateFileValidationRuleProps = {
   required?: boolean;
   maxFileSize?: number;
   allowedFileTypes: TFileType[];
+  maxFileUploadCount?: number;
 };
 export const createFileValidationRule = (
   props: TCeateFileValidationRuleProps
@@ -63,6 +70,7 @@ export const createFileValidationRule = (
     required = true,
     maxFileSize = DEFAULT_MAX_FILE_UPLOAD_SIZE_IN_MB,
     allowedFileTypes,
+    maxFileUploadCount = DEFAULT_MAX_FILE_UPLOAD_COUNT,
   } = props;
   return {
     required,
@@ -74,15 +82,26 @@ export const createFileValidationRule = (
       if (Array.isArray(value) === false || value?.length === 0) {
         throw new Error("Please upload a file");
       }
-      const file = value?.[0]?.originFileObj;
-      const isLt2M = file.size / 1024 / 1024 <= maxFileSize;
+      if (Array.isArray(value) === true && value?.length > maxFileUploadCount) {
+        throw new Error(
+          "You can only upload a maximum of " + maxFileUploadCount + " files"
+        );
+      }
+      (value as any[]).forEach((item, i) => {
+        const file = item?.originFileObj;
+        const isLt2M = file.size / 1024 / 1024 <= maxFileSize;
 
-      if (!isLt2M) {
-        throw new Error(`File must smaller than or equal to ${maxFileSize}MB!`);
-      }
-      if (!allowedFileTypes.includes(file.type as TFileType)) {
-        throw new Error(`This file type (${file.type}) is not allowed!`);
-      }
+        if (!isLt2M) {
+          throw new Error(
+            `File ${i + 1} must smaller than or equal to ${maxFileSize}MB!`
+          );
+        }
+        if (!allowedFileTypes.includes(file.type as TFileType)) {
+          throw new Error(
+            `File ${i + 1}: This file type (${file.type}) is not allowed!`
+          );
+        }
+      });
 
       return true;
     },
@@ -176,6 +195,9 @@ export const dateHasToBeLesserThanOrEqualToCurrentDayRule: Rule = {
 };
 export const dateHasToBeGreaterThanCurrentDayRuleForRange: Rule = {
   validator: async (rule, value) => {
+    if (Array.isArray(value) === false) {
+      throw new Error("Please select a make a date selection");
+    }
     if (!isDateGreaterThanCurrentDay(value[0])) {
       throw new Error("Please select a date greater than the current day");
     }
@@ -199,6 +221,9 @@ export const dateHasToBeGreaterThanOrEqualToCurrentDayRule: Rule = {
 };
 export const dateHasToBeGreaterThanOrEqualToCurrentDayRuleForRange: Rule = {
   validator: async (rule, value) => {
+    if (Array.isArray(value) === false || value?.length === 0) {
+      throw new Error("Please select a date range");
+    }
     if (!isDateGreaterThanOrEqualToCurrentDay(value[0])) {
       throw new Error(
         "Please select a date greater than or equal to the current day"

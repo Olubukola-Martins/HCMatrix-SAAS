@@ -3,15 +3,17 @@ import { MICROSERVICE_ENDPOINTS } from "config/enviroment";
 import { useApiAuth } from "hooks/useApiAuth";
 import { useMutation } from "react-query";
 import { ICurrentCompany } from "types";
+import { TLeaveType } from "../../types";
 
-type TCreateProps = {
-  name: string;
-  length: number;
-  calculation: string;
-  employeesGetAllowance: boolean;
-  percentageAmount: number;
-  gender: string;
-};
+type TCreateProps = Pick<
+  TLeaveType,
+  | "name"
+  | "length"
+  | "calculation"
+  | "employeesGetAllowance"
+  | "gender"
+  | "percentageAmount"
+>;
 
 const createLeaveType = async (props: {
   data: TCreateProps;

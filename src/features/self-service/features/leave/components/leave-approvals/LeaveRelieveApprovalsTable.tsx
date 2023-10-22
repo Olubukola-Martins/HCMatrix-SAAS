@@ -7,15 +7,15 @@ import { ColumnsType } from "antd/lib/table";
 import { getAppropriateColorForStatus } from "utils/colorHelpers/getAppropriateColorForStatus";
 import { usePagination } from "hooks/usePagination";
 import { TApprovalStatus } from "types/statuses";
-import { LeaveDetails } from "./LeaveDetails";
 import moment from "moment";
 import { useApproveORReject } from "hooks/useApproveORReject";
 import { TApprovalRequest } from "features/core/workflows/types/approval-requests";
 import { useFetchApprovalRequests } from "features/core/workflows/hooks/useFetchApprovalRequests";
 import { useQueryClient } from "react-query";
-import { QUERY_KEY_FOR_LEAVES } from "../hooks/useFetchLeaves";
+import { QUERY_KEY_FOR_LEAVES } from "../../hooks/useFetchLeaves";
+import { LeaveDetails } from "../LeaveDetails";
 
-const LeavesApprovalRequestsTable: React.FC<{
+const LeaveRelieveApprovalsTable: React.FC<{
   status?: TApprovalStatus;
   employeeId?: number;
 }> = ({ status, employeeId }) => {
@@ -194,4 +194,4 @@ const LeavesApprovalRequestsTable: React.FC<{
   );
 };
 
-export default LeavesApprovalRequestsTable;
+export default LeaveRelieveApprovalsTable;

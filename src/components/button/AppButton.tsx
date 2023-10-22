@@ -1,3 +1,4 @@
+import Themes from "components/Themes";
 import React from "react";
 import { BeatLoader } from "react-spinners";
 
@@ -25,40 +26,46 @@ export const AppButton: React.FunctionComponent<IAppBtnProps> = ({
 }) => {
   if (variant === "style-with-class") {
     return (
-      <button
-        className={`${[...additionalClassNames]?.join(" ")} capitalize`}
-        type={type}
-        onClick={() => handleClick?.()}
-        disabled={disabled}
-        // style={{ color: "var(--neutral)" }}
-      >
-        {isLoading ? <BeatLoader color="#aaa" /> : label}
-      </button>
+      <Themes>
+        <button
+          className={`${[...additionalClassNames]?.join(" ")} capitalize`}
+          type={type}
+          onClick={() => handleClick?.()}
+          disabled={disabled}
+          // style={{ color: "var(--neutral)" }}
+        >
+          {isLoading ? <BeatLoader color="#aaa" /> : label}
+        </button>
+      </Themes>
     );
   }
   if (variant === "transparent") {
     return (
-      <button
-        className={`${[...additionalClassNames, "transparentButton"]?.join(
-          " "
-        )} capitalize`}
-        type={type}
-        onClick={() => handleClick?.()}
-        disabled={disabled}
-        style={{ color: "var(--neutral)" }}
-      >
-        {isLoading ? <BeatLoader color="#aaa" /> : label}
-      </button>
+      <Themes>
+        <button
+          className={`${[...additionalClassNames, "transparentButton"]?.join(
+            " "
+          )} capitalize`}
+          type={type}
+          onClick={() => handleClick?.()}
+          disabled={disabled}
+          style={{ color: "var(--neutral)" }}
+        >
+          {isLoading ? <BeatLoader color="#aaa" /> : label}
+        </button>
+      </Themes>
     );
   }
   return (
-    <button
-      className={`${additionalClassNames?.join(" ")} capitalize`}
-      type={type}
-      onClick={() => handleClick?.()}
-      disabled={disabled}
-    >
-      {isLoading ? <BeatLoader color="#fff" /> : label}
-    </button>
+    <Themes>
+      <button
+        className={`${additionalClassNames?.join(" ")} capitalize`}
+        type={type}
+        onClick={() => handleClick?.()}
+        disabled={disabled}
+      >
+        {isLoading ? <BeatLoader color="#fff" /> : label}
+      </button>
+    </Themes>
   );
 };

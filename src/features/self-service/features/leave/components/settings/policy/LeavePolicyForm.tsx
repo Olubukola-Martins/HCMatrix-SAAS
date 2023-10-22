@@ -1,15 +1,16 @@
-import { Form, Switch, Typography, InputNumber, Skeleton } from "antd";
+import { Form, Typography, InputNumber, Skeleton } from "antd";
 import { FormWorkflowInput } from "features/core/workflows/components/FormWorkflowInput";
 import { useEffect, useState } from "react";
-import { useCreateOrUpdateLeavePolicy } from "../hooks/useCreateOrUpdateLeavePolicy";
+import { useCreateOrUpdateLeavePolicy } from "../../../hooks/useCreateOrUpdateLeavePolicy";
 import {
   QUERY_KEY_FOR_LEAVE_POLICY,
   useFetchLeavePolicy,
-} from "../hooks/useFetchLeavePolicy";
+} from "../../../hooks/useFetchLeavePolicy";
 import { useQueryClient } from "react-query";
 import { openNotification } from "utils/notifications";
 import { useApiAuth } from "hooks/useApiAuth";
 import { AppButton } from "components/button/AppButton";
+import AppSwitch from "components/switch/AppSwitch";
 
 const btwnStyle =
   "bg-card pt-4 px-3 flex flex-row w-full justify-between align-center rounded-md";
@@ -94,17 +95,10 @@ const LeavePolicyForm = () => {
       >
         <div className="flex flex-col gap-4">
           <div className={gapStyle}>
-            <Form.Item label="" className="flex-1" name="defaultLength">
-              <InputNumber
-                placeholder="Default Leave Length"
-                className="w-full"
-                min={1}
-              />
-            </Form.Item>
             <div className="flex-1">
               <FormWorkflowInput
                 Form={Form}
-                control={{ label: "", name: "workflowId" }}
+                control={{ label: "Select Workflow", name: "workflowId" }}
               />
             </div>
           </div>
@@ -117,7 +111,7 @@ const LeavePolicyForm = () => {
             </div>
             <div>
               <Form.Item label="" className="flex-1" name="includeWeekends">
-                <Switch
+                <AppSwitch
                   checkedChildren="Yes"
                   unCheckedChildren="No"
                   defaultChecked={!!data?.includeWeekends}
@@ -135,7 +129,7 @@ const LeavePolicyForm = () => {
             </div>
             <div>
               <Form.Item label="" className="flex-1" name="includeHolidays">
-                <Switch
+                <AppSwitch
                   checkedChildren="Yes"
                   unCheckedChildren="No"
                   defaultChecked={!!data?.includeHolidays}
@@ -152,7 +146,7 @@ const LeavePolicyForm = () => {
             </div>
             <div>
               <Form.Item label="" className="flex-1" name="carryover">
-                <Switch
+                <AppSwitch
                   checkedChildren="Yes"
                   unCheckedChildren="No"
                   defaultChecked={!!data?.carryover}
@@ -188,7 +182,7 @@ const LeavePolicyForm = () => {
                 className="flex-1"
                 name="just-toshow-max-leave-len-days"
               >
-                <Switch
+                <AppSwitch
                   checkedChildren="Yes"
                   unCheckedChildren="No"
                   defaultChecked={showMaxCODays}
@@ -198,73 +192,7 @@ const LeavePolicyForm = () => {
               </Form.Item>
             </div>
           </div>
-          <div className={btwnStyle}>
-            <div className="flex flex-col gap-4">
-              {" "}
-              <Typography.Text>Do you have casual leave?</Typography.Text>
-              {showCasualLLen && (
-                <Form.Item label="" className="flex-1" name="casualLeaveLength">
-                  <InputNumber
-                    placeholder="What is your Casual Leave Length"
-                    className="w-full"
-                    min={1}
-                  />
-                </Form.Item>
-              )}
-            </div>
-            <div>
-              <Form.Item label="" className="flex-1" name="casualLeave">
-                <Switch
-                  checkedChildren="Yes"
-                  unCheckedChildren="No"
-                  defaultChecked={!!data?.casualLeave}
-                  // value={showCasualLLen}
-                  onChange={() => setShowCasualLLen((val) => !val)}
-                  // size="small"
-                />
-              </Form.Item>
-            </div>
-          </div>
-          <div className={btwnStyle}>
-            <div className="flex flex-col gap-4">
-              {" "}
-              <Typography.Text>Does your probationers apply?</Typography.Text>
-            </div>
-            <div>
-              <Form.Item label="" className="flex-1" name="probationersApply">
-                <Switch
-                  checkedChildren="Yes"
-                  unCheckedChildren="No"
-                  defaultChecked={!!data?.probationersApply}
 
-                  // size="small"
-                />
-              </Form.Item>
-            </div>
-          </div>
-          <div className={btwnStyle}>
-            <div className="flex flex-col gap-4">
-              {" "}
-              <Typography.Text>
-                Does your probationers use casual leave?
-              </Typography.Text>
-            </div>
-            <div>
-              <Form.Item
-                label=""
-                className="flex-1"
-                name="probationersUseCasualLeave"
-              >
-                <Switch
-                  checkedChildren="Yes"
-                  unCheckedChildren="No"
-                  defaultChecked={!!data?.probationersUseCasualLeave}
-
-                  // size="small"
-                />
-              </Form.Item>
-            </div>
-          </div>
           <div className="flex justify-end">
             <Form.Item>
               <AppButton type="submit" isLoading={isLoading} label="Submit" />

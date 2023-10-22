@@ -1,11 +1,10 @@
 import React, { useState } from "react";
-
 import SelfServiceSubNav from "features/self-service/components/SelfServiceSubNav";
-import { RequestForLeave } from "../components/RequestForLeave";
 import LeaveCards from "../components/LeaveCards";
 import LeaveHomePageHeader from "../components/LeaveHomePageHeader";
-import LeaveHistoryContainer from "../components/LeaveHistoryContainer";
-import LeaveApprovalRequestsContainer from "../components/LeaveApprovalRequestsContainer";
+import "../styles/leave.css";
+import { RequestForLeave } from "../components/leave-requests/RequestForLeave";
+import LeaveHomeTabs from "../components/LeaveHomeTabs";
 
 const ECOMP = {
   ADD_NEW_LEAVE: "New Leave",
@@ -46,8 +45,7 @@ const LeaveHome = () => {
 
             {/* table section*/}
             <div className="mt-12 flex flex-col gap-4">
-              <LeaveApprovalRequestsContainer />
-              <LeaveHistoryContainer />
+              <LeaveHomeTabs />
             </div>
           </div>
         </div>

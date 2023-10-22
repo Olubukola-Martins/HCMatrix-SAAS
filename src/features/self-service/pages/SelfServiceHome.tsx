@@ -22,6 +22,7 @@ import { TSelfServiceDBAnalytics } from "../types";
 import { useState } from "react";
 import { TApprovalRequest } from "features/core/workflows/types/approval-requests";
 import ViewApprovalRequest from "features/core/workflows/components/approval-request/ViewApprovalRequest";
+import { truncateString } from "utils/dataHelpers/truncateString";
 
 const SelfServiceHome: React.FC = () => {
   const { data, isLoading, isError } = useGetSelfServiceDBAnalytics();
@@ -329,7 +330,10 @@ const RecentSelfServiceRequests: React.FC<{
       <RecentCard
         title="Recent Approval Requests"
         data={requests?.map((item) => ({
-          title: `${item.entityType} Request`,
+          title: truncateString(
+            `${item.entityType.split("-").join(" ")} Request`,
+            14
+          ),
           features: [
             {
               name: "Status",
