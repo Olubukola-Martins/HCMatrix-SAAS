@@ -41,7 +41,7 @@ export const AppButton: React.FunctionComponent<IAppBtnProps> = ({
   }
   if (variant === "transparent") {
     return (
-      <Themes>
+      <Themes isBg={false}>
         <button
           className={`${[...additionalClassNames, "transparentButton"]?.join(
             " "
