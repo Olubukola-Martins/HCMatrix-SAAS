@@ -20,7 +20,6 @@
     "chart.js": "^3.9.1",
     "faker": "^6.6.6",
     "firebase": "^9.21.0",
-    "formik": "^2.2.9",
     "framer-motion": "^6.3.11",
     "js-file-download": "^0.4.12",
     "moment": "^2.29.4",
