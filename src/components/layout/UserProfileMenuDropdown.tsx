@@ -91,7 +91,7 @@ const UserActions: React.FC<{
     },
     {
       url: appRoutes.delegationSettings,
-      text: "Delegate Role",
+      text: "Delegations",
       hidden: !canUserAccessComponent({
         userPermissions,
         requiredPermissions: ["create-delegations", "view-all-delegations"],
