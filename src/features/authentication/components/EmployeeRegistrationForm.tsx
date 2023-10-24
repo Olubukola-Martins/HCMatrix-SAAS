@@ -1,5 +1,5 @@
 // TO DO: REMOVE and refactor all mui icons used
-import { MailOutlined, LockOutlined } from "@mui/icons-material";
+import { MailOutlined, LockOutlined } from "@ant-design/icons";
 import { Form, Input } from "antd";
 import {
   TOKEN_EXPIRES_IN,

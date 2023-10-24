@@ -1,7 +1,16 @@
 import React from "react";
 import { Link } from "react-router-dom";
 
-const EntryBox = ({ item }) => {
+interface EntryBoxProps {
+  item: {
+    isLink: boolean;
+    title: string;
+    info: string;
+    url: string;
+  };
+}
+
+const EntryBox: React.FC<EntryBoxProps> = ({ item }) => {
   const { isLink, title, info, url } = item;
   if (isLink) {
     return (

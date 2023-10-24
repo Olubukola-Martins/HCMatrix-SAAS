@@ -1,6 +1,6 @@
 import { appRoutes } from "../paths";
 import { TRouteData } from "../types";
-import React, { lazy } from "react";
+// import React, { lazy } from "react";
 import SelfServiceHome from "features/self-service/pages/SelfServiceHome";
 import Reimbursements from "features/self-service/features/reimbursement/pages/Reimbursements";
 import Assets from "features/self-service/features/assets/pages/Assets";
@@ -41,11 +41,12 @@ import TravelRequestsSettingPage from "features/self-service/features/travels/pa
 import DocumentsPage from "features/self-service/features/documents/pages/DocumentsPage";
 import TasksPage from "features/self-service/features/tasks/pages/TasksPage";
 import PayslipsTransactionsPage from "features/self-service/features/payslips/PayslipsTransactionsPage";
+import Requisition from "features/self-service/features/requisitions/pages/Requisition";
 
 // TO DO: This lazy loading might not be needed consider rethinking this, so just temporary
-const Requisition = lazy(
-  () => import("features/self-service/features/requisitions/pages/Requisition")
-);
+// const Requisition = lazy(
+//   () => import("features/self-service/features/requisitions/pages/Requisition")
+// );
 
 export const selfServiceRoutes: TRouteData[] = [
   {

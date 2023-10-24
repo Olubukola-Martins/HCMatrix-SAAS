@@ -1,5 +1,3 @@
-// TO DO : Refactor file to be a folder with an index, and other brakdown files if needed
-
 export type TPermissionLabel =
   | "create-sister-company"
   | "manage-company-settings"

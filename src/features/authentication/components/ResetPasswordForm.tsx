@@ -1,4 +1,4 @@
-import { LockOutlined } from "@mui/icons-material";
+import { LockOutlined } from "@ant-design/icons";
 import { Form, Input } from "antd";
 import { useSignIn } from "react-auth-kit";
 import { useQueryClient } from "react-query";
