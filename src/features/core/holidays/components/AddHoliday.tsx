@@ -69,7 +69,11 @@ export const AddHoliday: React.FC<IModalProps> = ({ open, handleClose }) => {
           <Input placeholder="Holiday Name" />
         </Form.Item>
         <Form.Item rules={generalValidationRules} name="date" label="Date">
-          <DatePicker placeholder="Holiday Date" className="w-full" />
+          <DatePicker
+            placeholder="Holiday Date"
+            className="w-full"
+            format={"DD, MMMM"}
+          />
         </Form.Item>
 
         <div className="flex justify-end">
