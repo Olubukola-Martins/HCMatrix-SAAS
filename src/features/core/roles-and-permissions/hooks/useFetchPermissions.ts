@@ -80,14 +80,9 @@ export const useFetchPermissions = ({ companyId, token }: IFRQDataProps) => {
 
         result.forEach((category: any) => {
           categories.push({ id: category.id, name: category.name });
-          category.permissions.forEach((item: any) => {
+          category.permissions.forEach((item: TPermission) => {
             permissions.push({
-              permissionId: item.id,
-              id: item.id,
-              name: item.name,
-              label: item.label,
-              categoryId: item.categoryId,
-              description: item?.description,
+              ...item,
             });
           });
         });

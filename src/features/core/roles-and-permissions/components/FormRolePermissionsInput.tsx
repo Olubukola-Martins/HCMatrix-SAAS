@@ -41,6 +41,7 @@ export const FormRolePermissionsInput: React.FC<{
       rules={generalValidationRules}
     >
       <Select
+        getPopupContainer={(triggerNode) => triggerNode.parentElement}
         mode="tags"
         onSelect={handleSelect}
         showSearch
@@ -53,7 +54,7 @@ export const FormRolePermissionsInput: React.FC<{
         filterOption={false}
         options={mainData?.map((item) => ({
           label: `${item.name}`,
-          value: item.permissionId,
+          value: item.id,
         }))}
       />
     </Form.Item>

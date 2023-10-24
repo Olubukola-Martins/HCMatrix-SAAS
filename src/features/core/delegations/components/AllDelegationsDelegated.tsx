@@ -3,12 +3,12 @@ import { ColumnsType } from "antd/lib/table";
 import { DelegationDetail } from "./DelegationDetail";
 import moment from "moment";
 import { useState } from "react";
-import { useFetchDelegations } from "../hooks/useFetchDelegations";
 import { TDelegation } from "../types";
 import { usePagination } from "hooks/usePagination";
 import { getEmployeeFullName } from "features/core/employees/utils/getEmployeeFullName";
+import { useGetAllDelegationsDelegated } from "../hooks/useGetAllDelegationsDelegated";
 
-const DelegationsViewContainer = () => {
+const AllDelegationsDelegated = () => {
   const [delegationId, setDelegationId] = useState<number>();
   const [showModal, setShowModal] = useState(false);
   const { onChange, pagination } = usePagination();
@@ -16,7 +16,7 @@ const DelegationsViewContainer = () => {
     setDelegationId(id);
     setShowModal(true);
   };
-  const { data, isFetching } = useFetchDelegations({
+  const { data, isFetching } = useGetAllDelegationsDelegated({
     pagination,
   });
   const columns: ColumnsType<TDelegation> = [
@@ -102,4 +102,4 @@ const DelegationsViewContainer = () => {
   );
 };
 
-export default DelegationsViewContainer;
+export default AllDelegationsDelegated;

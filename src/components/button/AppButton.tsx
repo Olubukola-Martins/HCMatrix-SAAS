@@ -26,7 +26,7 @@ export const AppButton: React.FunctionComponent<IAppBtnProps> = ({
 }) => {
   if (variant === "style-with-class") {
     return (
-      <Themes>
+      <Themes isBg={false}>
         <button
           className={`${[...additionalClassNames]?.join(" ")} capitalize`}
           type={type}

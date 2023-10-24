@@ -1,17 +1,21 @@
-import { Avatar, Dropdown, Skeleton } from "antd";
+import { Avatar, Dropdown } from "antd";
 import Themes from "components/Themes";
+import { canUserAccessComponent } from "components/permission-restriction/PermissionRestrictor";
 import TransferOwnership from "components/transferOwnership/TransferOwnership";
 import { Setup2FA } from "components/twoFactorAuth/SetUp2FA";
+import { appRoutes } from "config/router/paths";
 import { DEFAULT_PROFILE_IMAGE_URL } from "constants/general";
 import { useGetCompanyParams } from "features/core/company/hooks/useGetCompanyParams";
 import { useFetchSingleEmployee } from "features/core/employees/hooks/useFetchSingleEmployee";
 import { getEmployeeFullName } from "features/core/employees/utils/getEmployeeFullName";
+import { TPermissionLabel } from "features/core/roles-and-permissions/types";
 import { useApiAuth } from "hooks/useApiAuth";
 import React, { useState } from "react";
 import { useSignOut } from "react-auth-kit";
 import { Link } from "react-router-dom";
 
 const UserProfileMenu: React.FC<{
+  userPermissions: TPermissionLabel[];
   colorFns: {
     green: Function;
     yellow: Function;
@@ -20,9 +24,8 @@ const UserProfileMenu: React.FC<{
     purple: Function;
   };
   closeMenu: () => void;
-}> = ({ colorFns, closeMenu }) => {
-  const { currentCompanyEmployeeDetails: employee, authUserData } =
-    useApiAuth();
+}> = ({ colorFns, closeMenu, userPermissions }) => {
+  const { currentCompanyEmployeeDetails: employee } = useApiAuth();
   const signOut = useSignOut();
   const handleLogOut = () => {
     signOut();
@@ -46,7 +49,7 @@ const UserProfileMenu: React.FC<{
         </Link>
       </div>
 
-      <UserActions isOwner={authUserData.isOwner} closeMenu={closeMenu} />
+      <UserActions userPermissions={userPermissions} closeMenu={closeMenu} />
       <ThemeChanger colorFns={colorFns} />
       <div
         onClick={handleLogOut}
@@ -59,10 +62,10 @@ const UserProfileMenu: React.FC<{
   );
 };
 
-const UserActions: React.FC<{ isOwner?: boolean; closeMenu: () => void }> = ({
-  isOwner,
-  closeMenu,
-}) => {
+const UserActions: React.FC<{
+  userPermissions: TPermissionLabel[];
+  closeMenu: () => void;
+}> = ({ userPermissions, closeMenu }) => {
   type TAction = "transfer-ownership" | "setup-2fa";
   const [action, setAction] = useState<TAction>();
   const { data: companyParams } = useGetCompanyParams();
@@ -80,18 +83,24 @@ const UserActions: React.FC<{ isOwner?: boolean; closeMenu: () => void }> = ({
     {
       onClick: () => setAction("transfer-ownership"),
       text: "Transfer Ownership",
-      hidden: isOwner === false,
+      hidden: !canUserAccessComponent({
+        userPermissions,
+        requiredPermissions: ["transfer-company-ownership"],
+      }),
       isLink: false,
     },
     {
-      url: "/settings/delegations",
+      url: appRoutes.delegationSettings,
       text: "Delegate Role",
-      hidden: isOwner === false,
+      hidden: !canUserAccessComponent({
+        userPermissions,
+        requiredPermissions: ["create-delegations", "view-all-delegations"],
+      }),
       isLink: true,
     },
     {
       text: "Advanced Settings",
-      hidden: isOwner === false,
+      hidden: true,
       isLink: false,
     },
     {
@@ -103,12 +112,12 @@ const UserActions: React.FC<{ isOwner?: boolean; closeMenu: () => void }> = ({
     {
       url: "/billings",
       text: "Billings",
-      hidden: isOwner === false,
+      hidden: true,
       isLink: true,
     },
     {
       text: "Change Language",
-      hidden: isOwner === false,
+      hidden: true,
       isLink: false,
     },
   ];
@@ -208,9 +217,10 @@ const UserProfileMenuDropdown: React.FC<{
     purple: Function;
   };
   onOpenChange: (val: boolean) => void;
+  userPermissions: TPermissionLabel[];
   open: boolean;
   employeeId: number;
-}> = ({ colorFns, open, onOpenChange, employeeId }) => {
+}> = ({ colorFns, open, onOpenChange, employeeId, userPermissions }) => {
   // done to make changes to user employee profile real-time
   const { data: employee } = useFetchSingleEmployee({
     employeeId,
@@ -224,6 +234,7 @@ const UserProfileMenuDropdown: React.FC<{
           <UserProfileMenu
             colorFns={colorFns}
             closeMenu={() => onOpenChange(false)}
+            userPermissions={userPermissions}
           />
         </Themes>
       }

@@ -21,6 +21,8 @@ import Holidays from "features/core/holidays/pages/Holidays";
 import ResignationSettingsPage from "features/core/policies/pages/ResignationSettingsPage";
 import ProjectsPage from "features/core/projects/pages/ProjectsPage";
 import SingleProjectPage from "features/core/projects/pages/SingleProjectPage";
+import { TPermissionLabel } from "features/core/roles-and-permissions/types";
+import { canUserAccessComponent } from "components/permission-restriction/PermissionRestrictor";
 
 export const settingRoutes = (props: TAppPageDataFnProps): TRouteData[] => {
   const { userPermissions } = props;
@@ -41,14 +43,22 @@ export const settingRoutes = (props: TAppPageDataFnProps): TRouteData[] => {
       path: appRoutes.settings,
       isSearchable: true,
       title: "Settings",
-      hidden: !userPermissions.includes("manage-company-settings"),
+      hidden: !canUserAccessComponent({
+        userPermissions,
+
+        requiredPermissions: ["manage-company-settings"],
+      }),
     },
 
     {
       element: <CompanyDetails />,
       path: appRoutes.companyDetailsSettings,
       isSearchable: true,
-      hidden: !userPermissions.includes("manage-company-settings"),
+      hidden: !canUserAccessComponent({
+        userPermissions,
+
+        requiredPermissions: ["manage-company-settings"],
+      }),
       title: "Company Details",
     },
 
@@ -116,6 +126,12 @@ export const settingRoutes = (props: TAppPageDataFnProps): TRouteData[] => {
       element: <Delegations />,
       path: appRoutes.delegationSettings,
       isSearchable: true,
+
+      hidden: !canUserAccessComponent({
+        userPermissions,
+
+        requiredPermissions: ["create-delegations", "view-all-delegations"],
+      }),
       title: "Delegations",
     },
     {

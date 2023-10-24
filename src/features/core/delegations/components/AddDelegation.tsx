@@ -1,28 +1,30 @@
 import { DatePicker, Form, Modal, Input } from "antd";
 import { AppButton } from "components/button/AppButton";
-import { useState } from "react";
 import { useQueryClient } from "react-query";
 import { IModalProps } from "types";
-import { dateHasToBeGreaterThanCurrentDayRuleForRange } from "utils/formHelpers/validation";
+import { dateHasToBeGreaterThanOrEqualToCurrentDayRuleForRange } from "utils/formHelpers/validation";
 import { openNotification } from "utils/notifications";
 import useSaveDelegation from "../hooks/useSaveDelegation";
 import { FormEmployeeInput } from "features/core/employees/components/FormEmployeeInput";
 import { FormRolePermissionsInput } from "features/core/roles-and-permissions/components/FormRolePermissionsInput";
+import { useApiAuth } from "hooks/useApiAuth";
+import { QUERY_KEY_FOR_DELEGATED_DELEGATIONS } from "../hooks/useGetAllDelegatedDelegations";
+import { QUERY_KEY_FOR_DELEGATIONS_DELEGATED } from "../hooks/useGetAllDelegationsDelegated";
 
 const { TextArea } = Input;
 const { RangePicker } = DatePicker;
 
 export const AddDelegation = ({ open, handleClose }: IModalProps) => {
-  const [delegatorRoleId, setDelegatorRoleId] = useState<number>();
   const queryClient = useQueryClient();
   const [form] = Form.useForm();
   const { mutate, isLoading } = useSaveDelegation();
+  const { currentCompanyEmployeeDetails: delegator } = useApiAuth();
+  const delegatorRoleId = delegator?.roleId;
 
   const handleSubmit = (data: any) => {
     mutate(
       {
         delegateeId: data.delegateeId,
-        delegatorId: data.delegatorId,
         description: data.description,
         startDate: data.period[0].toString(),
         endDate: data.period[1].toString(),
@@ -52,7 +54,11 @@ export const AddDelegation = ({ open, handleClose }: IModalProps) => {
           handleClose();
 
           queryClient.invalidateQueries({
-            queryKey: ["delegations"],
+            queryKey: [QUERY_KEY_FOR_DELEGATED_DELEGATIONS],
+            // exact: true,
+          });
+          queryClient.invalidateQueries({
+            queryKey: [QUERY_KEY_FOR_DELEGATIONS_DELEGATED],
             // exact: true,
           });
         },
@@ -75,21 +81,13 @@ export const AddDelegation = ({ open, handleClose }: IModalProps) => {
       >
         <FormEmployeeInput
           Form={Form}
-          control={{ name: "delegatorId", label: "Delegator" }}
-          handleSelect={(val, option) => {
-            form.setFieldValue("permissionIds", []); //this is done to clear the permissions input on change
-            setDelegatorRoleId(() => option?.roleId);
-          }}
-        />
-        <FormEmployeeInput
-          Form={Form}
           control={{ name: "delegateeId", label: "Delegatee" }}
         />
 
         <Form.Item
           name="period"
           label="Select Period"
-          rules={[dateHasToBeGreaterThanCurrentDayRuleForRange]}
+          rules={[dateHasToBeGreaterThanOrEqualToCurrentDayRuleForRange]}
         >
           <RangePicker className="generalInputStyle" />
         </Form.Item>

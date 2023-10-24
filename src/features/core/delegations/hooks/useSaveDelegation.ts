@@ -4,7 +4,6 @@ import { useMutation } from "react-query";
 import { ICurrentCompany } from "types";
 
 interface ICreateProps {
-  delegatorId: number;
   delegateeId: number;
   startDate: string;
   endDate: string;

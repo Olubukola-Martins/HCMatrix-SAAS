@@ -63,14 +63,25 @@ export type TPermissionLabel =
   | "delete-payroll"
   | "view-all-payrolls"
   | "compare-payrolls";
-export type TPermission = {
+
+export type TPermissionInDelegation = {
+  id: number;
+  permissionId: number;
+  delegationId: number;
+  createdAt: string;
+  updatedAt: string;
+  permission: TPermission;
+}
+
+export type  TPermission  ={
   id: number;
   name: string;
   label: TPermissionLabel;
   categoryId: number;
-  description?: string;
-  permissionId: number;
-};
+  description: string;
+  createdAt: string;
+  updatedAt: string;
+}
 export type TPermissionCategory = {
   id: number;
   name: string;

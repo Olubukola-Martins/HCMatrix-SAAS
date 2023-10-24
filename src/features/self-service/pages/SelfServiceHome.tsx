@@ -285,7 +285,7 @@ export const SelfBoxList: React.FC<{
       {primaryData
         .filter((item) => item.hidden === false)
         .map((item, i) => {
-          return <SelfBox {...item.item} />;
+          return <SelfBox key={i} {...item.item} />;
         })}
       <RequisitionBox {...requisitionData} />
     </div>

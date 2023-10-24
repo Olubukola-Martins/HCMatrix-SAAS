@@ -9,7 +9,10 @@ import logo from "../../assets/images/logo2.png";
 import { UserNotificationsBadge } from "./UserNotificationsBadge";
 import { useApiAuth } from "hooks/useApiAuth";
 import UserProfileMenuDropdown from "./UserProfileMenuDropdown";
-import { useGetUserPermissions } from "components/permission-restriction/PermissionRestrictor";
+import {
+  canUserAccessComponent,
+  useGetUserPermissions,
+} from "components/permission-restriction/PermissionRestrictor";
 import { appRoutes } from "config/router/paths";
 
 type TCompanyOption = {
@@ -129,6 +132,7 @@ const TopBar = ({
               <SearchModal
                 open={action === "search"}
                 handleClose={() => setAction(undefined)}
+                userPermissions={userPermissions}
               />
               <div className="flex items-center gap-2">
                 <Avatar
@@ -145,9 +149,10 @@ const TopBar = ({
                       value: "",
                       id: "",
                       image: "",
-                      hidden: !userPermissions.includes(
-                        "create-sister-company"
-                      ),
+                      hidden: !canUserAccessComponent({
+                        userPermissions,
+                        requiredPermissions: ["manage-company-settings"],
+                      }),
 
                       label: (
                         <div className="flex gap-2 items-center">
@@ -186,7 +191,10 @@ const TopBar = ({
               />
             )} */}
 
-            {userPermissions.includes("manage-company-settings") && (
+            {canUserAccessComponent({
+              userPermissions,
+              requiredPermissions: ["manage-company-settings"],
+            }) && (
               <Link to={appRoutes.settings} className={"hover:text-black"}>
                 <i
                   className="ri-settings-3-line text-xl cursor-pointer hover:text-black"
@@ -208,6 +216,7 @@ const TopBar = ({
               employeeId={currentUserEmployeeId}
               onOpenChange={(val) => setAction(val ? "user-menu" : undefined)}
               open={action === "user-menu"}
+              userPermissions={userPermissions}
             />
           </div>
         </div>

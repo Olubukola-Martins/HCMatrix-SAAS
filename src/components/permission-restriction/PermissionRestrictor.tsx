@@ -24,6 +24,7 @@ export const useGetUserPermissions = () => {
     currentCompanyEmployeeDetails?.role?.permissions?.map(
       (item) => item.permission.label
     ) ?? [];
+  //  TODO: APPEND PERMISSIONS FROM DELEGATIONS INTO USER PERMISSIONS
 
   return {
     userPermissions,

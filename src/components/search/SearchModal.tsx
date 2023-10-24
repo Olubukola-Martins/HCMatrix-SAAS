@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 
 import { Link, useNavigate } from "react-router-dom";
 import { Modal } from "antd";
@@ -6,14 +6,19 @@ import { appPagesData } from "config/router/routes";
 import { IModalProps } from "types";
 import Themes from "components/Themes";
 import { TSearchLink } from "./types";
-import { useGetUserPermissions } from "components/permission-restriction/PermissionRestrictor";
+import { TPermissionLabel } from "features/core/roles-and-permissions/types";
 
 const TEXT_FOR_NOT_SPECIFIED_TITLE = "_______________";
-
-const SearchModal = ({ open, handleClose }: IModalProps) => {
-  const { userPermissions } = useGetUserPermissions();
-  let links = appPagesData({ userPermissions }).filter(
-    (item) => item.isSearchable === true
+interface IProps extends IModalProps {
+  userPermissions: TPermissionLabel[];
+}
+const SearchModal = ({ open, handleClose, userPermissions }: IProps) => {
+  let links = useMemo(
+    () =>
+      appPagesData({ userPermissions }).filter(
+        (item) => item.isSearchable === true
+      ),
+    [userPermissions]
   );
   const navigate = useNavigate();
   const [value, setValue] = useState<string>("");
