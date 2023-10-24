@@ -15,5 +15,6 @@ export type TRouteData = {
 type TSubscription = {};
 export type TAppPageDataFnProps = {
   userPermissions: TPermissionLabel[];
+  hasSelfService?: boolean;
   subscription?: TSubscription;
 };
