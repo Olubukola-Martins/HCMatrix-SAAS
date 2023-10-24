@@ -1,7 +1,10 @@
+import { Avatar, Dropdown, Skeleton } from "antd";
+import Themes from "components/Themes";
 import TransferOwnership from "components/transferOwnership/TransferOwnership";
 import { Setup2FA } from "components/twoFactorAuth/SetUp2FA";
+import { DEFAULT_PROFILE_IMAGE_URL } from "constants/general";
 import { useGetCompanyParams } from "features/core/company/hooks/useGetCompanyParams";
-import { useSetup2FA } from "features/core/employees/hooks/twoFactorAuth/useSetup2FA";
+import { useFetchSingleEmployee } from "features/core/employees/hooks/useFetchSingleEmployee";
 import { getEmployeeFullName } from "features/core/employees/utils/getEmployeeFullName";
 import { useApiAuth } from "hooks/useApiAuth";
 import React, { useState } from "react";
@@ -196,4 +199,46 @@ const ThemeChanger: React.FC<{
   );
 };
 
-export default UserProfileMenu;
+const UserProfileMenuDropdown: React.FC<{
+  colorFns: {
+    green: Function;
+    yellow: Function;
+    orange: Function;
+    blue: Function;
+    purple: Function;
+  };
+  onOpenChange: (val: boolean) => void;
+  open: boolean;
+  employeeId: number;
+}> = ({ colorFns, open, onOpenChange, employeeId }) => {
+  // done to make changes to user employee profile real-time
+  const { data: employee } = useFetchSingleEmployee({
+    employeeId,
+  });
+  const avatarUrl = employee?.avatarUrl;
+
+  return (
+    <Dropdown
+      overlay={
+        <Themes>
+          <UserProfileMenu
+            colorFns={colorFns}
+            closeMenu={() => onOpenChange(false)}
+          />
+        </Themes>
+      }
+      trigger={["click"]}
+      open={open}
+      onOpenChange={onOpenChange}
+    >
+      <Avatar
+        src={!!avatarUrl ? avatarUrl : DEFAULT_PROFILE_IMAGE_URL}
+        alt=""
+        className="h-6 md:h-9 cursor-pointer border-2 border-slate-300 rounded-full ml-1"
+        onClick={() => onOpenChange(true)}
+      />
+    </Dropdown>
+  );
+};
+
+export default UserProfileMenuDropdown;

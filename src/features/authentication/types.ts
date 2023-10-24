@@ -1,4 +1,5 @@
 import { FormInstance } from "antd";
+import { TPermissionLabel } from "features/core/roles-and-permissions/types";
 
 export interface IRefreshTokenProps {
   refreshToken: string;
@@ -73,7 +74,7 @@ export interface IAuthDets {
           permission: {
             id: number;
             name: string;
-            label: string;
+            label: TPermissionLabel;
             categoryId: number;
             description?: string;
             createdAt: string;

@@ -22,7 +22,7 @@ export const useApiAuth = () => {
 
   const token = authDetails?.userToken;
   const globalCtx = useContext(GlobalContext);
-  const { state: globalState } = globalCtx;
+  const { state: globalState, dispatch: globalDispatch } = globalCtx;
   const companyId = +(globalState.currentCompany?.id as unknown as string); // make a number
   const companies = authDetails?.companies;
 
@@ -39,5 +39,7 @@ export const useApiAuth = () => {
     currentUserEmployeeId,
     currentCompanyEmployeeDetails: currentCompany,
     authUserData,
+    userCompanies: companies,
+    globalDispatch,
   };
 };
