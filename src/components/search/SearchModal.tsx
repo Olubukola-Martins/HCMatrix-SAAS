@@ -6,32 +6,38 @@ import { appPagesData } from "config/router/routes";
 import { IModalProps } from "types";
 import Themes from "components/Themes";
 import { TSearchLink } from "./types";
-
-let links = appPagesData.filter((item) => item.isSearchable === true);
+import { useGetUserPermissions } from "components/permission-restriction/PermissionRestrictor";
 
 const TEXT_FOR_NOT_SPECIFIED_TITLE = "_______________";
 
 const SearchModal = ({ open, handleClose }: IModalProps) => {
+  const { userPermissions } = useGetUserPermissions();
+  let links = appPagesData({ userPermissions }).filter(
+    (item) => item.isSearchable === true
+  );
   const navigate = useNavigate();
   const [value, setValue] = useState<string>("");
   const [searchResults, setSearchResults] = useState<TSearchLink[]>([]);
-  const handleSearch = useCallback((val: string) => {
-    const result: TSearchLink[] = links
-      .filter(
-        (item) => item.path.toLowerCase().indexOf(val.toLowerCase()) !== -1
-      )
-      .map(
-        (item): TSearchLink => ({
-          name: item.title ?? TEXT_FOR_NOT_SPECIFIED_TITLE,
-          link: item.path,
-        })
-      );
+  const handleSearch = useCallback(
+    (val: string) => {
+      const result: TSearchLink[] = links
+        .filter(
+          (item) => item.path.toLowerCase().indexOf(val.toLowerCase()) !== -1
+        )
+        .map(
+          (item): TSearchLink => ({
+            name: item.title ?? TEXT_FOR_NOT_SPECIFIED_TITLE,
+            link: item.path,
+          })
+        );
 
-    if (val !== "") {
-      return result;
-    }
-    return [];
-  }, []);
+      if (val !== "") {
+        return result;
+      }
+      return [];
+    },
+    [links]
+  );
   useEffect(() => {
     const result = handleSearch(value);
     setSearchResults(() => result);

@@ -1,4 +1,4 @@
-import { TRouteDataCategory } from "../types";
+import { TAppPageDataFnProps, TRouteData } from "../types";
 import { attendanceRoutes } from "./attendance";
 import { authRoutesDontRequireAuthentication } from "./auth";
 import { billingRoutes } from "./billing";
@@ -12,17 +12,20 @@ import { selfServiceRoutes } from "./selfService";
 import { settingRoutes } from "./settings";
 import { systemAdminRoutes } from "./systemAdmins";
 
-export const appPagesData = [
-  ...authRoutesDontRequireAuthentication,
-  ...billingRoutes,
-  ...homeRoutes,
-  ...notFoundRoutes,
-  ...notificationRoutes,
-  ...payrollRoutes,
-  ...selfServiceRoutes,
-  ...settingRoutes,
-  ...systemAdminRoutes,
-  ...performanceRoutes,
-  ...attendanceRoutes,
-  ...leaningRoutes,
-];
+export const appPagesData = (props: TAppPageDataFnProps): TRouteData[] => {
+  const { userPermissions } = props;
+  return [
+    ...authRoutesDontRequireAuthentication,
+    ...billingRoutes,
+    ...homeRoutes,
+    ...notFoundRoutes,
+    ...notificationRoutes,
+    ...payrollRoutes,
+    ...selfServiceRoutes,
+    ...settingRoutes({ userPermissions }),
+    ...systemAdminRoutes,
+    ...performanceRoutes,
+    ...attendanceRoutes,
+    ...leaningRoutes,
+  ].filter((item) => item?.hidden === false || item.hidden === undefined);
+};

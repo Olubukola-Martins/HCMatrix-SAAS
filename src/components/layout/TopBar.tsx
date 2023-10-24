@@ -10,6 +10,7 @@ import { UserNotificationsBadge } from "./UserNotificationsBadge";
 import { useApiAuth } from "hooks/useApiAuth";
 import UserProfileMenuDropdown from "./UserProfileMenuDropdown";
 import { useGetUserPermissions } from "components/permission-restriction/PermissionRestrictor";
+import { appRoutes } from "config/router/paths";
 
 type TCompanyOption = {
   value: string;
@@ -185,15 +186,14 @@ const TopBar = ({
               />
             )} */}
 
-            <Link
-              to="/settings"
-              className={user?.isOwner ? "hover:text-black" : "hidden"}
-            >
-              <i
-                className="ri-settings-3-line text-xl cursor-pointer hover:text-black"
-                title="Settings"
-              ></i>
-            </Link>
+            {userPermissions.includes("manage-company-settings") && (
+              <Link to={appRoutes.settings} className={"hover:text-black"}>
+                <i
+                  className="ri-settings-3-line text-xl cursor-pointer hover:text-black"
+                  title="Settings"
+                ></i>
+              </Link>
+            )}
 
             <UserNotificationsBadge />
 

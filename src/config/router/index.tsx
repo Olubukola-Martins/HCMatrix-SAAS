@@ -5,9 +5,11 @@ import { TRouteData } from "./types";
 import { RequireAuth } from "react-auth-kit";
 import { appRoutes } from "./paths";
 import DashboardLayout from "components/layout/DashboardLayout";
+import { useGetUserPermissions } from "components/permission-restriction/PermissionRestrictor";
 
 const Router = () => {
-  const pageRoutes = appPagesData.map(
+  const { userPermissions } = useGetUserPermissions();
+  const pageRoutes = appPagesData({ userPermissions }).map(
     ({ path, element, category }: TRouteData) => {
       if (category === "doesnt-require-authentication") {
         return <Route key={path} path={`${path}`} element={element} />;

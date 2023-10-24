@@ -1,6 +1,6 @@
 import Branches from "features/core/branches/pages/Branches";
 import { appRoutes } from "../paths";
-import { TRouteData } from "../types";
+import { TAppPageDataFnProps, TRouteData } from "../types";
 import GeneralCompanySettings from "features/settings/pages/GeneralCompanySettings";
 import CompanyDetails from "features/core/company/pages/CompanyDetails";
 import { MyProfile } from "features/core/employees/pages/MyProfile";
@@ -22,140 +22,141 @@ import ResignationSettingsPage from "features/core/policies/pages/ResignationSet
 import ProjectsPage from "features/core/projects/pages/ProjectsPage";
 import SingleProjectPage from "features/core/projects/pages/SingleProjectPage";
 
-export const settingRoutes: TRouteData[] = [
-  {
-    element: <ProjectsPage />,
-    path: appRoutes.projectSettings,
-    isSearchable: true,
-    title: "Project Management",
-  },
-  {
-    element: <SingleProjectPage />,
-    path: appRoutes.singleProject().format,
-    isSearchable: false,
-  },
-  {
-    element: <GeneralCompanySettings />,
-    path: appRoutes.settings,
-    isSearchable: true,
-    title: "Settings",
-  },
+export const settingRoutes = (props: TAppPageDataFnProps): TRouteData[] => {
+  const { userPermissions } = props;
+  return [
+    {
+      element: <ProjectsPage />,
+      path: appRoutes.projectSettings,
+      isSearchable: true,
+      title: "Project Management",
+    },
+    {
+      element: <SingleProjectPage />,
+      path: appRoutes.singleProject().format,
+      isSearchable: false,
+    },
+    {
+      element: <GeneralCompanySettings />,
+      path: appRoutes.settings,
+      isSearchable: true,
+      title: "Settings",
+      hidden: !userPermissions.includes("manage-company-settings"),
+    },
 
-  {
-    element: <CompanyDetails />,
-    path: appRoutes.companyDetailsSettings,
-    isSearchable: true,
-    title: "Company Details",
-  },
+    {
+      element: <CompanyDetails />,
+      path: appRoutes.companyDetailsSettings,
+      isSearchable: true,
+      hidden: !userPermissions.includes("manage-company-settings"),
+      title: "Company Details",
+    },
 
-  {
-    element: <Branches />,
-    path: appRoutes.locationSettings,
-    isSearchable: true,
-    title: "Branches",
-  },
+    {
+      element: <Branches />,
+      path: appRoutes.locationSettings,
+      isSearchable: true,
+      title: "Branches",
+    },
 
-  {
-    element: <Holidays />,
-    path: appRoutes.holidaySettings,
-    isSearchable: true,
-    title: "Holidays",
-  },
+    {
+      element: <Holidays />,
+      path: appRoutes.holidaySettings,
+      isSearchable: true,
+      title: "Holidays",
+    },
 
-  {
-    element: <MyProfile />,
-    path: appRoutes.userProfileSettings,
-    isSearchable: true,
-    title: "User Profile",
-  },
-  {
-    element: <EmployeeProfile />,
-    path: appRoutes.singleEmployee().format,
-    isSearchable: false,
-  },
-  {
-    element: <AddEmployee />,
-    path: appRoutes.addEmployee,
-    isSearchable: true,
-    title: "Add Employee",
-  },
-  {
-    element: <Employees />,
-    path: appRoutes.employeeSettings,
-    isSearchable: true,
-    title: "Employees",
-  },
-  {
-    element: <Designations />,
-    path: appRoutes.designationSettings,
-    isSearchable: true,
-    title: "Designations",
-  },
-  {
-    element: <div />,
-    path: appRoutes.singleDesignation().format,
-    isSearchable: false,
-  },
-  {
-    element: <Groups />,
-    path: appRoutes.groupSettings,
-    isSearchable: true,
-    title: "Groups",
-  },
-  {
-    element: <Departments />,
-    path: appRoutes.departmentSettings,
-    isSearchable: false,
-  },
-  {
-    element: <div />,
-    path: appRoutes.singleDepartment().format,
-    isSearchable: false,
-  },
-  {
-    element: <Delegations />,
-    path: appRoutes.delegationSettings,
-    isSearchable: true,
-    title: "Delegations",
-  },
-  {
-    element: <Roles />,
-    path: appRoutes.roleSettings,
-    isSearchable: true,
-    title: "Roles",
-  },
-  {
-    element: <CreateRole />,
-    path: appRoutes.createRole,
-    isSearchable: true,
-    title: "Create Role",
-  },
-  {
-    element: <EditRole />,
-    path: appRoutes.editRole().format,
-    isSearchable: false,
-  },
-  {
-    element: <Workflows />,
-    path: appRoutes.workflowSettings,
-    isSearchable: true,
-    title: "Workflows",
-  },
-  {
-    element: <CreateWorklow />,
-    path: appRoutes.createWorkflow,
-    isSearchable: true,
-    title: "Create Workflow",
-  },
-  {
-    element: <EditWorkflow />,
-    path: appRoutes.editWorkflow().format,
-    isSearchable: false,
-  },
-  {
-    element: <ResignationSettingsPage />,
-    path: appRoutes.resignationPolicySettings,
-    isSearchable: true,
-    title: "Resignation Setting",
-  },
-];
+    {
+      element: <MyProfile />,
+      path: appRoutes.userProfileSettings,
+      isSearchable: true,
+      title: "User Profile",
+    },
+    {
+      element: <EmployeeProfile />,
+      path: appRoutes.singleEmployee().format,
+      isSearchable: false,
+    },
+    {
+      element: <AddEmployee />,
+      path: appRoutes.addEmployee,
+      isSearchable: true,
+      title: "Add Employee",
+    },
+    {
+      element: <Employees />,
+      path: appRoutes.employeeSettings,
+      isSearchable: true,
+      title: "Employees",
+    },
+    {
+      element: <Designations />,
+      path: appRoutes.designationSettings,
+      isSearchable: true,
+      title: "Designations",
+    },
+    {
+      element: <div />,
+      path: appRoutes.singleDesignation().format,
+      isSearchable: false,
+    },
+    {
+      element: <Groups />,
+      path: appRoutes.groupSettings,
+      isSearchable: true,
+      title: "Groups",
+    },
+    {
+      element: <Departments />,
+      path: appRoutes.departmentSettings,
+      isSearchable: false,
+    },
+
+    {
+      element: <Delegations />,
+      path: appRoutes.delegationSettings,
+      isSearchable: true,
+      title: "Delegations",
+    },
+    {
+      element: <Roles />,
+      path: appRoutes.roleSettings,
+      isSearchable: true,
+      title: "Roles",
+    },
+    {
+      element: <CreateRole />,
+      path: appRoutes.createRole,
+      isSearchable: true,
+      title: "Create Role",
+    },
+    {
+      element: <EditRole />,
+      path: appRoutes.editRole().format,
+      isSearchable: false,
+    },
+    {
+      element: <Workflows />,
+      path: appRoutes.workflowSettings,
+      isSearchable: true,
+      title: "Workflows",
+    },
+    {
+      element: <CreateWorklow />,
+      path: appRoutes.createWorkflow,
+      isSearchable: true,
+      title: "Create Workflow",
+    },
+    {
+      element: <EditWorkflow />,
+      path: appRoutes.editWorkflow().format,
+      isSearchable: false,
+    },
+    {
+      element: <ResignationSettingsPage />,
+      path: appRoutes.resignationPolicySettings,
+      isSearchable: true,
+      title: "Resignation Setting",
+    },
+  ];
+};
