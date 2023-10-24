@@ -32,8 +32,15 @@ export const EmployeeProfileContainer = ({
   return (
     <>
       <div className="Container mt-3">
-        <PageIntro title="Employee Profile" link={appRoutes.employeeSettings} />
-        <ErrorWrapper isError={isError} backLink={appRoutes.employeeSettings}>
+        <PageIntro
+          title={isError ? "Back" : "Employee Profile"}
+          link={appRoutes.employeeSettings}
+        />
+        <ErrorWrapper
+          isError={isError}
+          backLink={appRoutes.employeeSettings}
+          message="Employee not found"
+        >
           <div>
             <EditMyProfile
               open={action === "edit-user"}

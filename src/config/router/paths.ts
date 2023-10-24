@@ -120,7 +120,6 @@ export const appRoutes = {
     format: `/settings/scheme/:scheme/payroll/:id`,
     path: `/settings/scheme/${scheme}/payroll/${id}`,
   }),
-  payrollPolicySettings: `/settings/probation_policy_PENDING`,
   payGradeSettings: `/settings/grades`,
   payGradeAndCategorySettings: `/settings/grades-and-settings`,
   taxAuthorities: `/settings/payroll/tax-authorities`,
@@ -128,8 +127,8 @@ export const appRoutes = {
   nsitfAuthorities: `/settings/payroll/nsitf-authorities`,
   pensionAdministrators: `/settings/payroll/pension-adminsistrators`,
   gradeCategorySettings: `/settings/grade_categories`,
-  probationPolicySettings: `/settings/probation_policy`,
-  resignationPolicySettings: `/settings/resignation_policy`,
+  probationPolicySettings: `/settings/probation-policy`,
+  resignationPolicySettings: `/settings/resignation-policy`,
 
   // Billing routes
   billingStatement: `/statement`,

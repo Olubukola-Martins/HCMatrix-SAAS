@@ -16,16 +16,17 @@ const SingleProjectPage = () => {
   return (
     <div>
       <div className="Container flex flex-col gap-4">
+        <PageIntro
+          title={isError ? "Back" : data?.name}
+          link={appRoutes.projectSettings}
+          loading={isFetching}
+        />
         <Skeleton loading={isFetching} paragraph={{ rows: 27 }}>
           <ErrorWrapper
             isError={isError}
             backLink={appRoutes.projectSettings}
             message="Project not found!"
           >
-            <PageIntro
-              title={data?.name ?? "Project Not Found"}
-              link={appRoutes.projectSettings}
-            />
             <ProjectDetailsContainer project={data} />
           </ErrorWrapper>
         </Skeleton>

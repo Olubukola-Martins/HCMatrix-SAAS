@@ -21,8 +21,8 @@ import Holidays from "features/core/holidays/pages/Holidays";
 import ResignationSettingsPage from "features/core/policies/pages/ResignationSettingsPage";
 import ProjectsPage from "features/core/projects/pages/ProjectsPage";
 import SingleProjectPage from "features/core/projects/pages/SingleProjectPage";
-import { TPermissionLabel } from "features/core/roles-and-permissions/types";
 import { canUserAccessComponent } from "components/permission-restriction/PermissionRestrictor";
+import ProbationSettingsPage from "features/core/policies/pages/ProbationSettingsPage";
 
 export const settingRoutes = (props: TAppPageDataFnProps): TRouteData[] => {
   const { userPermissions } = props;
@@ -32,11 +32,21 @@ export const settingRoutes = (props: TAppPageDataFnProps): TRouteData[] => {
       path: appRoutes.projectSettings,
       isSearchable: true,
       title: "Project Management",
+      hidden: !canUserAccessComponent({
+        userPermissions,
+
+        requiredPermissions: ["manage-projects"],
+      }),
     },
     {
       element: <SingleProjectPage />,
       path: appRoutes.singleProject().format,
       isSearchable: false,
+      hidden: !canUserAccessComponent({
+        userPermissions,
+
+        requiredPermissions: ["manage-projects"],
+      }),
     },
     {
       element: <GeneralCompanySettings />,
@@ -67,6 +77,11 @@ export const settingRoutes = (props: TAppPageDataFnProps): TRouteData[] => {
       path: appRoutes.locationSettings,
       isSearchable: true,
       title: "Branches",
+      hidden: !canUserAccessComponent({
+        userPermissions,
+
+        requiredPermissions: ["manage-branches"],
+      }),
     },
 
     {
@@ -74,6 +89,11 @@ export const settingRoutes = (props: TAppPageDataFnProps): TRouteData[] => {
       path: appRoutes.holidaySettings,
       isSearchable: true,
       title: "Holidays",
+      hidden: !canUserAccessComponent({
+        userPermissions,
+
+        requiredPermissions: ["manage-holidays"],
+      }),
     },
 
     {
@@ -86,40 +106,66 @@ export const settingRoutes = (props: TAppPageDataFnProps): TRouteData[] => {
       element: <EmployeeProfile />,
       path: appRoutes.singleEmployee().format,
       isSearchable: false,
+      hidden: !canUserAccessComponent({
+        userPermissions,
+
+        requiredPermissions: ["manage-employees"],
+      }),
     },
     {
       element: <AddEmployee />,
       path: appRoutes.addEmployee,
       isSearchable: true,
       title: "Add Employee",
+      hidden: !canUserAccessComponent({
+        userPermissions,
+
+        requiredPermissions: ["manage-employees"],
+      }),
     },
     {
       element: <Employees />,
       path: appRoutes.employeeSettings,
       isSearchable: true,
       title: "Employees",
+      hidden: !canUserAccessComponent({
+        userPermissions,
+
+        requiredPermissions: ["manage-employees"],
+      }),
     },
     {
       element: <Designations />,
       path: appRoutes.designationSettings,
       isSearchable: true,
       title: "Designations",
+      hidden: !canUserAccessComponent({
+        userPermissions,
+
+        requiredPermissions: ["manage-designations"],
+      }),
     },
-    {
-      element: <div />,
-      path: appRoutes.singleDesignation().format,
-      isSearchable: false,
-    },
+
     {
       element: <Groups />,
       path: appRoutes.groupSettings,
       isSearchable: true,
       title: "Groups",
+      hidden: !canUserAccessComponent({
+        userPermissions,
+
+        requiredPermissions: ["manage-groups"],
+      }),
     },
     {
       element: <Departments />,
       path: appRoutes.departmentSettings,
       isSearchable: false,
+      hidden: !canUserAccessComponent({
+        userPermissions,
+
+        requiredPermissions: ["manage-departments"],
+      }),
     },
 
     {
@@ -139,40 +185,86 @@ export const settingRoutes = (props: TAppPageDataFnProps): TRouteData[] => {
       path: appRoutes.roleSettings,
       isSearchable: true,
       title: "Roles",
+      hidden: !canUserAccessComponent({
+        userPermissions,
+
+        requiredPermissions: ["manage-roles"],
+      }),
     },
     {
       element: <CreateRole />,
       path: appRoutes.createRole,
       isSearchable: true,
       title: "Create Role",
+      hidden: !canUserAccessComponent({
+        userPermissions,
+
+        requiredPermissions: ["manage-roles"],
+      }),
     },
     {
       element: <EditRole />,
       path: appRoutes.editRole().format,
       isSearchable: false,
+      hidden: !canUserAccessComponent({
+        userPermissions,
+
+        requiredPermissions: ["manage-roles"],
+      }),
     },
     {
       element: <Workflows />,
       path: appRoutes.workflowSettings,
       isSearchable: true,
       title: "Workflows",
+      hidden: !canUserAccessComponent({
+        userPermissions,
+
+        requiredPermissions: ["manage-workflows"],
+      }),
     },
     {
       element: <CreateWorklow />,
       path: appRoutes.createWorkflow,
       isSearchable: true,
       title: "Create Workflow",
+      hidden: !canUserAccessComponent({
+        userPermissions,
+
+        requiredPermissions: ["manage-workflows"],
+      }),
     },
     {
       element: <EditWorkflow />,
       path: appRoutes.editWorkflow().format,
       isSearchable: false,
+      hidden: !canUserAccessComponent({
+        userPermissions,
+
+        requiredPermissions: ["manage-workflows"],
+      }),
     },
     {
       element: <ResignationSettingsPage />,
       path: appRoutes.resignationPolicySettings,
       isSearchable: true,
       title: "Resignation Setting",
+      hidden: !canUserAccessComponent({
+        userPermissions,
+
+        requiredPermissions: ["manage-resignation"],
+      }),
+    },
+    {
+      element: <ProbationSettingsPage />,
+      path: appRoutes.probationPolicySettings,
+      isSearchable: true,
+      title: "Probation Setting",
+      hidden: !canUserAccessComponent({
+        userPermissions,
+
+        requiredPermissions: ["manage-probation"],
+      }),
     },
   ];
 };
