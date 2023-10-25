@@ -20,7 +20,7 @@ export const appPagesData = (props: TAppPageDataFnProps): TRouteData[] => {
     ...homeRoutes,
     ...notFoundRoutes,
     ...notificationRoutes,
-    ...payrollRoutes,
+    ...payrollRoutes({ userPermissions, hasSelfService }),
     ...selfServiceRoutes({ userPermissions, hasSelfService }),
     ...settingRoutes({ userPermissions }),
     ...systemAdminRoutes,

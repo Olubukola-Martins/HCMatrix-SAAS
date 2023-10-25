@@ -28,8 +28,6 @@ export const EditMyProfile = ({ open, handleClose, employee }: IProps) => {
   const [form] = Form.useForm();
   const { token, companyId } = useApiAuth();
 
-  const globalCtx = useContext(GlobalContext);
-  const { state: globalState } = globalCtx;
   const avatarUrl = useCurrentFileUploadUrl("avatarUrl");
 
   useEffect(() => {
@@ -46,22 +44,6 @@ export const EditMyProfile = ({ open, handleClose, employee }: IProps) => {
       });
     }
   }, [employee, form, avatarUrl]);
-
-  const { data: designations, isFetching: isDesgFetching } =
-    useFetchDesignations({
-      pagination: {
-        limit: 100,
-        offset: 0,
-      },
-    });
-  const { data: roles, isFetching: isRoleFetching } = useFetchRoles({
-    token,
-    companyId,
-    pagination: {
-      limit: 100,
-      offset: 0,
-    },
-  });
 
   const { mutate, isLoading } = useUpdateEmployee();
 
@@ -176,7 +158,7 @@ export const EditMyProfile = ({ open, handleClose, employee }: IProps) => {
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-x-4 mt-2">
           <FormDesignationInput Form={Form} />
-
+          {/* TODO: Put a check to ensure that isOwner role is always disabled in a form */}
           <FormRoleInput Form={Form} />
           <Form.Item
             name="email"
