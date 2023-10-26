@@ -1,10 +1,8 @@
-import { Avatar, Card, Skeleton } from "antd";
+import { Avatar, Card } from "antd";
 import PageSubHeader from "components/layout/PageSubHeader";
 import React, { useState } from "react";
 import { Tree, TreeNode } from "react-organizational-chart";
 import styled from "styled-components";
-import { useGetCompanyOwnerOrganogram } from "../hooks/organogram/useGetCompanyOwnerOrganogram";
-import { getEmployeeFullName } from "features/core/employees/utils/getEmployeeFullName";
 const admin = {
   name: "Chuma Ukeagu",
   position: "CEO",
@@ -138,44 +136,46 @@ const StyledNode = styled.div`
   // background: var(--caramel);
 `;
 const CompanyOrganogram = () => {
-  const { data: owner, isLoading } = useGetCompanyOwnerOrganogram();
+  const [rootAdmin, setRootAdmin] = useState(admin);
 
+  const [max, setMax] = useState(2);
   return (
     <div className="w-full py-4 flex flex-col gap-4">
       <PageSubHeader
         description={`View your organization's organogram at a glance`}
+        actions={[
+          {
+            name: "Show More",
+            handleClick: () => setMax((val) => val + 1),
+          },
+          {
+            name: "Show Less",
+            handleClick: () => setMax((val) => val - 1),
+            btnVariant: "transparent",
+          },
+          {
+            name: "Print",
+            handleClick: () => setMax((val) => val - 1),
+            btnVariant: "style-with-class",
+            additionalClassNames: ["neutralButton"],
+          },
+        ]}
       />
 
-      <Skeleton loading={isLoading} active paragraph={{ rows: 14 }}>
-        <div className="overflow-x-auto">
-          <Tree
-            lineWidth={"1px"}
-            lineColor={`#aaa`}
-            lineBorderRadius={"10px"}
-            label={
-              <OrgCard
-                name={getEmployeeFullName(owner)}
-                position={owner?.designation.name ?? "CEO"}
-                department={owner?.designation.department.name}
-              />
-            }
-          >
-            {/* TODO: Refactor to be a component that is passed direct report */}
-            {owner?.directReport.map((item) =>
-              displayOrganogram(
-                {
-                  directReports: [],
-                  name: getEmployeeFullName(item.employee),
-                  position: item.employee.designation.name,
-                  department: item.employee.designation.department.name,
-                },
-                1,
-                4 //max
-              )
-            )}
-          </Tree>
-        </div>
-      </Skeleton>
+      <div className="overflow-x-auto">
+        <Tree
+          lineWidth={"1px"}
+          lineColor={`#aaa`}
+          lineBorderRadius={"10px"}
+          label={OrgCard({
+            position: admin.position,
+            name: admin.name,
+            department: admin.department,
+          })}
+        >
+          {admin.directReports.map((item) => displayOrganogram(item, 1, max))}
+        </Tree>
+      </div>
     </div>
   );
 };
