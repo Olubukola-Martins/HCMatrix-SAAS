@@ -11,7 +11,7 @@ const MyRecentRequestsCard = () => {
       </div>
       <div className="flex justify-between items-center border-b pb-2">
         <div>
-          <h3>Recent Requests </h3>
+          <h3>Asset </h3>
           <span className="text-xs">HP EliteBook</span>
         </div>
         <div>
@@ -33,7 +33,7 @@ const MyRecentRequestsCard = () => {
       </div>
       <div className="flex justify-between items-center border-b pb-2">
         <div>
-          <h3>Recent Requests </h3>
+          <h3>Monetary </h3>
           <span className="text-xs">Data Allowance</span>
         </div>
         <div>

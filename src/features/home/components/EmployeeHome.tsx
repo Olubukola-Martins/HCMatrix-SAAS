@@ -14,6 +14,7 @@ import MyRecentRequestsCard from "./cards/MyRecentRequestsCard";
 import moment from "moment";
 import LiveClock from "components/clock/LiveClock";
 import ClockInOrOut from "./ClockInOrOut";
+import PersonWelcomingIcon from "assets/svg-components/PersonWelcomingIcon/PersonWelcomingIcon";
 
 export const EmployeeHome: React.FC<{
   employee?: Pick<
@@ -79,13 +80,16 @@ export const EmployeeHome: React.FC<{
                     </Link>
                   </div>
                 </div>
-                <div className="">
+                <div>
+                  <PersonWelcomingIcon className="md:-mt-32 w-full" />
+                </div>
+                {/* <div className="">
                   <img
                     src="https://res.cloudinary.com/ddvaelej7/image/upload/v1667472471/welcome1_yu9jto.svg"
                     alt="employee"
                     className="md:-mt-16"
                   />
-                </div>
+                </div> */}
               </div>
             </div>
             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-5 text-center mt-5">

@@ -183,7 +183,7 @@ const TopBar = ({
               ></i>
             ) : (
               <img
-                src={sun}
+                src={"--"}
                 alt="sun"
                 onClick={() => switchTheme()}
                 className="cursor-pointer h-5"
