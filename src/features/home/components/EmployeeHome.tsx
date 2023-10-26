@@ -1,10 +1,4 @@
 import { Link } from "react-router-dom";
-import Onboarding from "features/self-service/assets/images/Onboarding.svg";
-import loan from "features/self-service/assets/images/loan.svg";
-import leave from "features/self-service/assets/images/leave.svg";
-import health from "features/self-service/assets/images/health.svg";
-import payslip from "features/self-service/assets/images/payslip.svg";
-import SelfBox from "features/self-service/components/SelfBox";
 import { Celebrations } from "./Celebrations";
 import { appRoutes } from "config/router/paths";
 import { TEmployee } from "features/core/employees/types";
