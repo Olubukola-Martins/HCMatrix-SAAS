@@ -72,7 +72,7 @@ export const EmployeeHome: React.FC<{
 
                   <div className="mt-6 pb-2">
                     <Link
-                      to={appRoutes.singleEmployee(employee?.id).path}
+                      to={appRoutes.userProfileSettings}
                       className="transparentButton text-caramel "
                     >
                       View profile
