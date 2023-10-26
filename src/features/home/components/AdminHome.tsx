@@ -76,15 +76,6 @@ export const AdminHome = () => {
           <h1 className="text-xl md:text-2xl font-black">
             Welcome {user.fullName} ,
           </h1>
-          <div className="flex gap-4 items-center">
-            <Link
-              to={appRoutes.companyOrganogram}
-              className="text-caramel underline hover:no-underline"
-            >
-              Company Organogram
-            </Link>
-            <button className="transparentButton">Download Handbook</button>
-          </div>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-5 mt-6">
           <div className="md:col-span-3">

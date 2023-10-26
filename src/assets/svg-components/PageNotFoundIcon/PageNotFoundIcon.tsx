@@ -1,6 +1,9 @@
 import React from "react";
 
-const PageNotFoundIcon = () => {
+export interface IconProps
+  extends React.ButtonHTMLAttributes<HTMLOrSVGElement> {}
+
+const PageNotFoundIcon: React.FC<IconProps> = (props) => {
   return (
     <svg
       width="539"
@@ -8,6 +11,7 @@ const PageNotFoundIcon = () => {
       viewBox="0 0 539 450"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
+      {...props}
     >
       <path
         d="M230.564 289.656L229.571 295.731L228.513 302.259L218.802 361.789H202.93L212.63 302.259L213.698 295.731L214.691 289.656H230.564Z"

@@ -19,7 +19,20 @@ type OtherProps = {
 };
 export const getEmployees = async (
   props: TFetchListDataProps & OtherProps
-): Promise<{ data: TEmployee[]; total: number }> => {
+): Promise<{
+  data: Omit<
+    TEmployee,
+    | "personalInformation"
+    | "userGroups"
+    | "directReports"
+    | "managerHistory"
+    | "skills"
+    | "emergencyContact"
+    | "dependents"
+    | "finance"
+  >[];
+  total: number;
+}> => {
   const { pagination, roleId, departmentId, designationId, branchId, gender } =
     props;
   const limit = pagination?.limit ?? DEFAULT_PAGE_SIZE;

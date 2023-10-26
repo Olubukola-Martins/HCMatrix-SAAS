@@ -6,8 +6,28 @@ import health from "features/self-service/assets/images/health.svg";
 import payslip from "features/self-service/assets/images/payslip.svg";
 import SelfBox from "features/self-service/components/SelfBox";
 import { Celebrations } from "./Celebrations";
+import { appRoutes } from "config/router/paths";
+import { TEmployee } from "features/core/employees/types";
+import { getEmployeeFullName } from "features/core/employees/utils/getEmployeeFullName";
+import { SelfBoxListContainer } from "features/self-service/pages/SelfServiceHome";
+import MyRecentRequestsCard from "./cards/MyRecentRequestsCard";
+import moment from "moment";
+import LiveClock from "components/clock/LiveClock";
+import ClockInOrOut from "./ClockInOrOut";
 
-export const EmployeeHome = ({ user }: any) => {
+export const EmployeeHome: React.FC<{
+  employee?: Pick<
+    TEmployee,
+    | "id"
+    | "email"
+    | "empUid"
+    | "firstName"
+    | "lastName"
+    | "personalInformation"
+    | "jobInformation"
+    | "designation"
+  >;
+}> = ({ employee }) => {
   return (
     <>
       <div className="Container">
@@ -15,39 +35,54 @@ export const EmployeeHome = ({ user }: any) => {
           <div className="col-span-2">
             <div className="bg-mainBg shadow border rounded-md px-5 pt-4 pb-6">
               <h5 className="font-semibold text-accent text-lg">
-                Welcome {user.fullName} 🖐
+                Welcome {getEmployeeFullName(employee)} 🖐
               </h5>
               <div className="flex items-center gap-3 mt-3">
                 <span className="flex items-center gap-2 text-xs text-accent">
                   <i className="ri-calendar-todo-line"></i>
-                  <span>Feb 15, 2022</span>
+                  <span>{moment().format("DD MMMM YYYY")}</span>
                 </span>
                 <span className="flex items-center gap-2 text-xs text-green-700">
                   <i className="ri-time-line"></i>
-                  <span>12:14:59 PM</span>
+                  <span>
+                    <LiveClock format="HH:mm:ss" />
+                  </span>
                 </span>
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-5 mt-2">
                 <div>
                   <ul className="flex flex-col gap-2 text-xs text-accent">
-                    <li>ID Number: Line manager</li>
-                    <li>Line manager: {user.id}</li>
-                    <li>Email: {user.email}</li>
-                    <li>phone: +1-9034-463- 80</li>
+                    <li>ID Number: {employee?.empUid}</li>
+                    <li>
+                      Line manager:{" "}
+                      {getEmployeeFullName(
+                        employee?.jobInformation?.lineManager
+                      )}
+                    </li>
+                    <li>
+                      Designation:{" "}
+                      <span className="capitalize">
+                        {employee?.designation?.name}
+                      </span>
+                    </li>
+                    <li>Email: {employee?.email}</li>
+                    <li>Phone: {employee?.personalInformation?.phoneNumber}</li>
                   </ul>
-                  <p className="text-xs mt-3 pb-5 leading-5 text-accent text-justify">
-                    As ultra influential young entrepreneur - Shelby Leimgruber
-                    has succeeded in multiple business facets.
-                  </p>
-                  <Link to="/" className="transparentButton text-caramel">
-                    View profile
-                  </Link>
+
+                  <div className="mt-6 pb-2">
+                    <Link
+                      to={appRoutes.singleEmployee(employee?.id).path}
+                      className="transparentButton text-caramel "
+                    >
+                      View profile
+                    </Link>
+                  </div>
                 </div>
                 <div className="">
                   <img
                     src="https://res.cloudinary.com/ddvaelej7/image/upload/v1667472471/welcome1_yu9jto.svg"
-                    alt="user"
+                    alt="employee"
                     className="md:-mt-16"
                   />
                 </div>
@@ -55,11 +90,13 @@ export const EmployeeHome = ({ user }: any) => {
             </div>
             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-5 text-center mt-5">
               <Link to="#!" className="dashboardLink shadow border">
-                <span className="text-caramel font-semibold text-lg">View</span>
+                <span className="text-caramel font-semibold text-lg">
+                  Download
+                </span>
                 <h6 className="text-xs font-semibold">Company Handbook</h6>
               </Link>
               <Link
-                to="/company-organogram"
+                to={appRoutes.companyOrganogram}
                 className="dashboardLink shadow border"
               >
                 <span className="text-caramel font-semibold text-lg">View</span>
@@ -71,7 +108,10 @@ export const EmployeeHome = ({ user }: any) => {
                 </p>
                 <div className="flex items-center justify-between">
                   <h2 className="text-lg font-semibold">0</h2>
-                  <Link to="/" className="underline text-caramel text-sm">
+                  <Link
+                    to={appRoutes.selfServiceAssets}
+                    className="underline text-caramel text-sm"
+                  >
                     View {">"}
                   </Link>
                 </div>
@@ -79,100 +119,23 @@ export const EmployeeHome = ({ user }: any) => {
             </div>
           </div>
 
-          <div>
-            <div className="shadow px-2 py-3 rounded mb-5 border">
-              <h2 className="font-semibold pb-3">9:00 am</h2>
-              <button className="button w-full">Clock - In</button>
-            </div>
-            <div className="shadow px-2 py-3 rounded border  flex flex-col gap-2">
-              <div className="flex justify-between border-b pb-2 font-medium">
-                <h3>Recent Requests </h3>
-                <span>Status</span>
-              </div>
-              <div className="flex justify-between items-center border-b pb-2">
-                <div>
-                  <h3>Recent Requests </h3>
-                  <span className="text-xs">HP EliteBook</span>
-                </div>
-                <div>
-                  <button className="px-2 py-1 border rounded text-green-600">
-                    Approved
-                  </button>
-                </div>
-              </div>
-              <div className="flex justify-between items-center border-b pb-2">
-                <div>
-                  <h3>Reimbursement</h3>
-                  <span className="text-xs">Bolt Fare</span>
-                </div>
-                <div>
-                  <button className="px-2 py-1 border rounded text-red-600">
-                    Rejected
-                  </button>
-                </div>
-              </div>
-              <div className="flex justify-between items-center border-b pb-2">
-                <div>
-                  <h3>Recent Requests </h3>
-                  <span className="text-xs">Data Allowance</span>
-                </div>
-                <div>
-                  <button className="px-2 py-1 border rounded text-yellow-400">
-                    Pending
-                  </button>
-                </div>
-              </div>
-              <Link to="/" className="underline text-caramel text-center">
-                View All
-              </Link>
-            </div>
+          <div className="flex flex-col gap-5">
+            <ClockInOrOut />
+            <MyRecentRequestsCard />
           </div>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mt-10">
           <div className="col-span-2">
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              <SelfBox
-                title="Onboarding"
-                icon={Onboarding}
-                link="/self-service/onboarding"
-              />
-              <SelfBox title="Loan" icon={loan} link="/self-service/loan" />
-              <SelfBox title="Leave" icon={leave} link="/self-service/leave" />
-              <SelfBox
-                title="Health access"
-                icon={health}
-                link="/self-service/health-access"
-              />
-              <SelfBox
-                title="My Payslip"
-                icon={payslip}
-                link="/payroll/employee-payslip"
-              />
-              <Link
-                to="/self-service/home"
-                className="bg-card p-2 rounded-lg shadow cursor-pointer group text-accent"
-              >
-                <div className="bg-mainBg transition ease-in-out duration-300 py-2 px-3 rounded-lg  group-hover:border-b-2 group-hover:border-caramel group-hover:shadow-md">
-                  <div className="flex items-center justify-between">
-                    <button
-                      className="transparentButton"
-                      style={{ color: "var(--caramel)" }}
-                    >
-                      More
-                    </button>
-                    <i className="ri-more-fill text-lg"></i>
-                  </div>
-                  <p className="text-xs md:text-sm py-3">
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                  </p>
-                </div>
-              </Link>
+              <SelfBoxListContainer />
             </div>
           </div>
 
-          <div className="shadow px-2 py-3 rounded border">
-            <Celebrations />
+          <div>
+            <div className="shadow px-2 py-3 rounded border">
+              <Celebrations />
+            </div>
           </div>
         </div>
       </div>

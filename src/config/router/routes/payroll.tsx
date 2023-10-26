@@ -38,7 +38,7 @@ import { canUserAccessComponent } from "components/permission-restriction/Permis
 
 // TODO: Perm Restrict payroll pages [Done], then move to home dashboard, then handbook, then company organogram, then back to self service restrictions as per components, then payroll bug fixes n removal of leave comp, and then tax finale
 
-// NOTE: The subscription pattern will !doesSubscriptionContains({companySubscription, requiredSubscription: ["payroll"]}) && !canUserAccessComponent({userPermissions, requiredPermissions: ["manage-payroll"]})
+// NOTE: The subscription pattern will !doesSubscriptionContains({companySubscription, yrequiredSubscription: ["payroll"]}) && !canUserAccessComponent({userPermissions, requiredPermissions: ["manage-payroll"]})
 export const payrollRoutes = (props: TAppPageDataFnProps): TRouteData[] => {
   const { userPermissions } = props;
   return [

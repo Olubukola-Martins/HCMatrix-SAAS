@@ -279,16 +279,223 @@ const SelfServiceHome: React.FC = () => {
 export const SelfBoxList: React.FC<{
   primaryData: ({ item: ISelfBoxProps } & { hidden: boolean })[];
   requisitionData: TRequisitionBoxProps;
-}> = ({ primaryData, requisitionData }) => {
+  loading?: boolean;
+}> = ({ primaryData, requisitionData, loading }) => {
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 col-span-3">
       {primaryData
         .filter((item) => item.hidden === false)
         .map((item, i) => {
-          return <SelfBox key={i} {...item.item} />;
+          return <SelfBox key={i} {...item.item} loading={loading} />;
         })}
       <RequisitionBox {...requisitionData} />
     </div>
+  );
+};
+
+export const SelfBoxListContainer = () => {
+  const { data, isLoading, isError } = useGetSelfServiceDBAnalytics();
+
+  return (
+    <ErrorWrapper isError={isError} message="Something went wrong!">
+      {data && (
+        <SelfBoxList
+          loading={isLoading}
+          primaryData={[
+            {
+              hidden: false,
+              item: {
+                icon: Onboarding,
+                link: appRoutes.onboarding,
+                title: "Onboarding",
+                desc: "You can now access and manage onboarding",
+              },
+            },
+            {
+              hidden:
+                data?.settings.some(
+                  (item) => item.type === "loan" && item.isActive
+                ) === false,
+              item: {
+                icon: loan,
+                link: appRoutes.loans,
+                title: "Loan",
+                desc: "You can apply and manage loan requests",
+              },
+            },
+            {
+              hidden:
+                data?.settings.some(
+                  (item) => item.type === "leave" && item.isActive
+                ) === false,
+              item: {
+                icon: leave,
+                link: appRoutes.leaveHome,
+                title: "Leave",
+                desc: "You can apply and manage leave requests",
+              },
+            },
+            {
+              hidden: true, //Pending when its fleshed out
+              item: {
+                icon: health,
+                link: appRoutes.healthAccessHome,
+                title: "Health Access",
+              },
+            },
+            {
+              hidden: false, //Subscription
+              item: {
+                icon: payslip,
+                link: appRoutes.payslipTransactions,
+                title: "My Payslip",
+                desc: "You can view payslips and transactions",
+              },
+            },
+            {
+              hidden:
+                data?.settings.some(
+                  (item) => item.type === "exit-handover-form" && item.isActive
+                ) === false,
+              item: {
+                icon: attendance,
+                link: appRoutes.newHandOverForm,
+                title: "Hand Over",
+                desc: "You can now access and manage employee resignations",
+              },
+            },
+            {
+              hidden:
+                data?.settings.some(
+                  (item) => item.type === "vehicle" && item.isActive
+                ) === false,
+              item: {
+                icon: vehicle,
+                link: appRoutes.vehicleBooking,
+                title: "Vehicle booking",
+                desc: "You can now manage vehicles and their bookings",
+              },
+            },
+            {
+              hidden:
+                data?.settings.some(
+                  (item) => item.type === "asset" && item.isActive
+                ) === false,
+              item: {
+                icon: attendance,
+                link: appRoutes.selfServiceAssets,
+                title: "Asset",
+                desc: "You can now manage assets within your organization",
+              },
+            },
+            {
+              hidden:
+                data?.settings.some(
+                  (item) => item.type === "conference-room" && item.isActive
+                ) === false,
+              item: {
+                icon: leave,
+                link: appRoutes.conferenceRoomBooking,
+                title: "Conference Room",
+                desc: "You can now manage conference rooms within your organization",
+              },
+            },
+            {
+              hidden: false,
+              item: {
+                icon: payslip,
+                link: appRoutes.selfServiceTasks,
+                title: "Tasks",
+                desc: "You can now assign and manage tasks within your organization",
+              },
+            },
+            {
+              hidden: false,
+              item: {
+                icon: payslip,
+                link: appRoutes.documents,
+                title: "Documents",
+                desc: "You can now manage documents within your organization",
+              },
+            },
+          ]}
+          requisitionData={{
+            icon: requisition,
+            requisitions: [
+              {
+                link: appRoutes.selfServiceRequisition,
+                title: "Setting",
+                hidden: false, //Based on Permission
+              },
+              {
+                link: appRoutes.selfServiceTravels,
+                title: "Travel Requisition",
+                hidden:
+                  data?.settings.some(
+                    (item) => item.type === "travel" && item.isActive
+                  ) === false,
+              },
+              {
+                link: appRoutes.selfServiceAssets,
+                title: "Asset Requisition",
+                hidden:
+                  data?.settings.some(
+                    (item) => item.type === "asset" && item.isActive
+                  ) === false,
+              },
+              {
+                link: appRoutes.selfServiceJob,
+                title: "Job Requisition",
+                hidden:
+                  data?.settings.some(
+                    (item) => item.type === "job" && item.isActive
+                  ) === false,
+              },
+              {
+                link: appRoutes.selfServicePositionChange,
+                title: "Position Change Requisition",
+                hidden:
+                  data?.settings.some(
+                    (item) => item.type === "position-change" && item.isActive
+                  ) === false,
+              },
+              {
+                link: appRoutes.selfServicePromotion,
+                title: "Promotion Requisition",
+                hidden:
+                  data?.settings.some(
+                    (item) => item.type === "promotion" && item.isActive
+                  ) === false,
+              },
+              {
+                link: appRoutes.selfServiceReimbursement,
+                title: "Reimbursement Requisition",
+                hidden:
+                  data?.settings.some(
+                    (item) => item.type === "reimbursement" && item.isActive
+                  ) === false,
+              },
+              {
+                link: appRoutes.selfServiceTransfer,
+                title: "Transfer Requisition",
+                hidden:
+                  data?.settings.some(
+                    (item) => item.type === "transfer" && item.isActive
+                  ) === false,
+              },
+              {
+                link: appRoutes.selfServiceMonetary,
+                title: "Monetary Requisition",
+                hidden:
+                  data?.settings.some(
+                    (item) => item.type === "money" && item.isActive
+                  ) === false,
+              },
+            ],
+          }}
+        />
+      )}
+    </ErrorWrapper>
   );
 };
 

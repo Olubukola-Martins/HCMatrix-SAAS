@@ -345,7 +345,7 @@ export type TEmployee = {
   firstName: string;
   hasSelfService: boolean;
   id: number;
-  jobInformation?: TJobInfo & { branch?: TBranch };
+  jobInformation?: TJobInfo & { branch?: TBranch; lineManager: TEmployee };
   lastName: string;
   personalInformation?: TPersonalInfo;
   role: TRole;
