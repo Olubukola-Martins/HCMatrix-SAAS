@@ -1,4 +1,4 @@
-import { Tabs } from "antd";
+import { Affix, Tabs } from "antd";
 import { useContext, useState } from "react";
 import { useAuthUser } from "react-auth-kit";
 import { Link } from "react-router-dom";
@@ -144,7 +144,7 @@ export const AdminHome = () => {
 
         <div className="grid grid-cols-1 lg:grid-cols-3 mt-7 gap-y-7 gap-x-5">
           <div className="col-span-2 bg-mainBg shadow border rounded-lg p-3 relative h-80">
-            <div className="absolute top-36 left-0">
+            <Affix offsetBottom={20}>
               <button
                 className="button flex gap-2 align-center"
                 onClick={handleGetStarted}
@@ -152,7 +152,10 @@ export const AdminHome = () => {
                 <i className="ri-checkbox-circle-fill" />
                 <span>Get Started</span>
               </button>
-            </div>
+            </Affix>
+            {/* <div className="absolute top-36 left-0">
+             
+            </div> */}
             <EmployeeInfoChart />
           </div>
           <div className="flex flex-col gap-6">
@@ -175,7 +178,7 @@ export const AdminHome = () => {
           </div>
 
           <div className="col-span-2 bg-mainBg shadow border rounded-lg p-3">
-            <h3 className="text-base">Who is out?</h3>
+            <h3 className="text-base">Who is out today?</h3>
 
             <Tabs
               defaultActiveKey="1"
