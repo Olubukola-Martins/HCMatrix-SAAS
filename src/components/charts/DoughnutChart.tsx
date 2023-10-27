@@ -1,6 +1,6 @@
 import React from "react";
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
-import { Pie } from "react-chartjs-2";
+import { Doughnut } from "react-chartjs-2";
 import { IChartProps } from "./types";
 
 ChartJS.register(ArcElement, Tooltip, Legend);
@@ -20,7 +20,7 @@ export const options = {
   },
 };
 
-export const PieChart: React.FC<IChartProps> = ({
+export const DoughnutChart: React.FC<IChartProps> = ({
   labels,
   data = [],
   axis = "x",
@@ -41,7 +41,7 @@ export const PieChart: React.FC<IChartProps> = ({
     ],
   };
   return (
-    <Pie
+    <Doughnut
       options={{
         ...options,
 

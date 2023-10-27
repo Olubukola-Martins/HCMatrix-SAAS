@@ -1,27 +1,11 @@
-import React from "react";
-import {
-  Chart as ChartJS,
-  CategoryScale,
-  LinearScale,
-  PointElement,
-  LineElement,
-  Title,
-  Tooltip,
-  Legend,
-} from "chart.js";
-import { Line } from "react-chartjs-2";
-import ChartTabHeader, { TChartTabItem } from "./ChartTabHeader";
-import { Select } from "antd";
+import React, { useState } from "react";
 
-ChartJS.register(
-  CategoryScale,
-  LinearScale,
-  PointElement,
-  LineElement,
-  Title,
-  Tooltip,
-  Legend
-);
+// import { Line } from "react-chartjs-2";
+import ChartTabHeader, { TChartTabItem } from "./ChartTabHeader";
+import { DatePicker } from "antd";
+import moment, { Moment } from "moment";
+import { Histogram, LineChart } from "components/charts";
+import { generateHexColor } from "utils/colorHelpers/generateHexColor";
 
 const labels = [
   "January",
@@ -37,75 +21,63 @@ const labels = [
   "December",
 ];
 const tabItems: TChartTabItem[] = [
-  { name: "Total Active Employees", handleClick: () => {} },
-  { name: "Employees per Department", handleClick: () => {} },
-  { name: "Turn Over", handleClick: () => {} },
+  { name: "Total Active Employees" },
+  { name: "Employees per Department" },
+  // { name: "Turn Over" },
 ];
 const EmployeeInfoChart = () => {
+  const [year, setYear] = useState<Moment | null>(moment());
+  const [activeTab, setActiveTab] = useState<string>(tabItems[0].name);
+
   return (
     <div style={{ height: "100%" }} className="flex flex-col gap-4">
       <div className="flex gap-6 items-stretch">
         <div className="flex-1">
-          <ChartTabHeader items={tabItems} />
+          <ChartTabHeader
+            items={tabItems}
+            handleChange={(val) => setActiveTab(val)}
+          />
         </div>
         <div>
-          <Select
-            placeholder="Yearly Report"
-            options={[
-              {
-                label: "Last 12 months",
-                value: "2022",
-              },
-              {
-                label: "2021",
-                value: "2021",
-              },
-            ]}
-            size="small"
+          <DatePicker
+            value={year}
+            onChange={(val) => setYear(val)}
+            picker="year"
+            placeholder="Year"
           />
         </div>
       </div>
-      <div style={{ height: "100%" }}>
-        <Line
-          options={{
-            responsive: true,
-            scales: {
-              y: {
-                beginAtZero: true,
-                grid: {
-                  color: "#b2beb5",
-                },
-              },
-              x: {
-                beginAtZero: true,
-                grid: {
-                  color: "#b2beb5",
-                },
-              },
-            },
-            maintainAspectRatio: false,
-            plugins: {
-              legend: {
-                position: "top",
-              },
-              title: {
-                display: false,
-                text: "Net Income",
-              },
-            },
-          }}
-          data={{
-            labels,
-            datasets: [
-              {
-                label: "",
-                data: [1, 2, 5, 8, 10, 9, 7, 0, 5, 1, 12, 2, 30],
-                borderColor: "rgb(205, 99, 12)",
-                backgroundColor: "rgba(255, 99, 132, 0.5)",
-              },
-            ],
-          }}
-        />
+      <div style={{ height: "70%" }}>
+        {activeTab === tabItems[1].name && (
+          <Histogram
+            data={[30, 10, 67, 30, 10, 67]}
+            labels={[
+              "Human Resources",
+              "IT",
+              "Sales",
+              "Marketing",
+              "Finance",
+              "Admin",
+            ]}
+            dataEntityLabel="Departments"
+            bgColors={[
+              "Human Resources",
+              "IT",
+              "Sales",
+              "Marketing",
+              "Finance",
+              "Admin",
+            ].map((val) => `${generateHexColor(`${val}`)}`)}
+          />
+        )}
+        {activeTab === tabItems[0].name && (
+          <LineChart
+            data={[30, 10, 67, 30, 10, 67, 30, 5, 98, 120]}
+            labels={labels}
+            dataEntityLabel="Employees"
+            bgColors={`#ff6647`}
+          />
+        )}
       </div>
     </div>
   );

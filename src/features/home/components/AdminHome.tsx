@@ -14,6 +14,7 @@ import EmployeeInfoChart from "features/core/employees/components/EmployeeInfoCh
 import { Celebrations } from "./Celebrations";
 import { PendingItem } from "./PendingItem";
 import { appRoutes } from "config/router/paths";
+import { DoughnutChart } from "components/charts/DoughnutChart";
 
 export const AdminHome = () => {
   const auth = useAuthUser();
@@ -29,19 +30,6 @@ export const AdminHome = () => {
   };
 
   ChartJS.register(ArcElement, Tooltip, Legend);
-  const labels = [
-    "January",
-    "February",
-    "March",
-    "April",
-    "May",
-    "June",
-    "July",
-    "August",
-    "September",
-    "November",
-    "December",
-  ];
 
   const data = {
     // labels: ["Male", "Female", "Other"],
@@ -96,7 +84,12 @@ export const AdminHome = () => {
                   style={{ height: "200px", width: "200px" }}
                   className="mt-4 mb-5"
                 >
-                  <Doughnut data={data} />
+                  <DoughnutChart
+                    data={[200, 400, 500]}
+                    labels={[]}
+                    dataEntityLabel="Employees"
+                    bgColors={["#01966B", "#F97316", "#ccc"]}
+                  />
                 </div>
               </div>
               <div className="flex items-center justify-between">

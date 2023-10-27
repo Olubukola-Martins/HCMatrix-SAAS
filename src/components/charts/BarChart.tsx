@@ -13,6 +13,7 @@ ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip);
 
 export const options = {
   responsive: true,
+  maintainAspectRatio: false,
 
   plugins: {
     legend: {
