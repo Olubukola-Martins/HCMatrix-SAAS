@@ -15,6 +15,8 @@ import { Celebrations } from "./Celebrations";
 import { PendingItem } from "./PendingItem";
 import { appRoutes } from "config/router/paths";
 import { DoughnutChart } from "components/charts/DoughnutChart";
+import { LeaveWhoIsOut } from "./whoIsOut/LeaveWhoIsOut";
+import { RemoteWhoIsOut } from "./whoIsOut/RemoteWhoIsOut";
 
 export const AdminHome = () => {
   const auth = useAuthUser();
@@ -181,20 +183,12 @@ export const AdminHome = () => {
                 {
                   key: "1",
                   label: "Leave (0)",
-                  children: (
-                    <>
-                      <h4>No One is Currently on Leave</h4>
-                    </>
-                  ),
+                  children: <LeaveWhoIsOut />,
                 },
                 {
                   key: "2",
                   label: "Remote Work (0)",
-                  children: (
-                    <>
-                      <h4>No Remote Worker</h4>
-                    </>
-                  ),
+                  children: <RemoteWhoIsOut />,
                 },
               ]}
             />
