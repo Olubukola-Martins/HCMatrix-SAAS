@@ -29,7 +29,7 @@ const PayslipsTransactionsPage = () => {
           <ErrorWrapper backLink={appRoutes.selfServiceHome} isError={isError}>
             {employee ? (
               <PayslipTransactionContainer
-                employeePayrollType={employee?.jobInformation.payrollType}
+                employeePayrollType={employee?.jobInformation?.payrollType}
               />
             ) : null}
           </ErrorWrapper>
