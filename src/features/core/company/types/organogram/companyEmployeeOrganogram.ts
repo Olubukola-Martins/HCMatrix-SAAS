@@ -4,7 +4,7 @@ export type TCompanyEmployeeOrganogram = {
   lastName: string;
   designation: Designation;
   directReport: DirectReport[];
-};
+} | null;
 
 interface DirectReport {
   employeeId: number;

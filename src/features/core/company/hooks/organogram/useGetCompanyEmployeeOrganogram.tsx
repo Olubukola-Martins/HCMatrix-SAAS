@@ -12,7 +12,7 @@ export const QUERY_KEY_FOR_COMPANY_OWNER_ORGANOGRAM =
   "company-employee-organogram";
 const getData = async (
   props: IGetDataProps,
-  employeeId: number
+  employeeId?: number
 ): Promise<TCompanyEmployeeOrganogram> => {
   const url = `${MICROSERVICE_ENDPOINTS.UTILITY}/company/organogram/${employeeId}`;
 
@@ -27,9 +27,7 @@ const getData = async (
   const res = await axios.get(url, config);
   const item: TCompanyEmployeeOrganogram = res.data.data;
 
-  const data: TCompanyEmployeeOrganogram = {
-    ...item,
-  };
+  const data: TCompanyEmployeeOrganogram = item;
 
   return data;
 };
@@ -37,7 +35,7 @@ const getData = async (
 export const useGetCompanyEmployeeOrganogram = ({
   employeeId,
 }: {
-  employeeId: number;
+  employeeId?: number;
 }) => {
   const { token, companyId } = useApiAuth();
   const queryData = useQuery(
@@ -51,6 +49,7 @@ export const useGetCompanyEmployeeOrganogram = ({
         employeeId
       ),
     {
+      enabled: employeeId !== undefined,
       onError: (err: any) => {},
       onSuccess: (data) => {},
     }

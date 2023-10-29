@@ -1,134 +1,14 @@
-import { Avatar, Card, Skeleton } from "antd";
+import { Avatar, Skeleton } from "antd";
 import PageSubHeader from "components/layout/PageSubHeader";
 import React, { useState } from "react";
-import { Tree, TreeNode } from "react-organizational-chart";
+import { Tree } from "react-organizational-chart";
 import styled from "styled-components";
 import { useGetCompanyOwnerOrganogram } from "../hooks/organogram/useGetCompanyOwnerOrganogram";
 import { getEmployeeFullName } from "features/core/employees/utils/getEmployeeFullName";
-const admin = {
-  name: "Chuma Ukeagu",
-  position: "CEO",
-  department: "Adminstration & Management",
-  directReports: [
-    {
-      name: "Basil Ikpe",
-      position: "Product Manager",
-      department: "Application Development",
-      directReports: [
-        {
-          name: "Ruth Godwin",
-          position: "Product Designer",
-          department: "Application Development",
-          directReports: [],
-        },
-        {
-          name: "Toyin Komolafe",
-          position: "Node Developer",
-          department: "Application Development",
-          directReports: [],
-        },
-        {
-          name: "Godswill Omenuke",
-          position: "Frontend Developer",
-          department: "Application Development",
-          directReports: [],
-        },
-      ],
-    },
-    {
-      name: "Uche Ikeobi",
-      position: "Product Manager",
-      department: "Product Management",
-      directReports: [
-        {
-          name: "Nmesoma Charles",
-          position: "Product Manager",
-          department: "Product Management",
-          directReports: [],
-        },
-        {
-          name: "Mary Ochanya",
-          position: "Product Manager",
-          department: "Product Management",
-          directReports: [],
-        },
-        {
-          name: "Cuppy Otedola",
-          position: "Product Appraiser",
-          department: "Product Management",
-          directReports: [],
-        },
-      ],
-    },
-    {
-      name: "Linus Klocksco",
-      position: "Cloud Solutions Architect",
-      department: "Devops Operations",
-      directReports: [
-        {
-          name: "Readone Maxxi",
-          position: "Assistant Cloud Operator",
-          department: "Devops Operations",
-
-          directReports: [],
-        },
-
-        {
-          name: "Dave Chapelle",
-          position: "Comedian",
-          department: "Devops Operations",
-
-          directReports: [
-            { name: "Francis Machi", position: "Jester", directReports: [] },
-          ],
-        },
-        {
-          name: "Patrick Collins",
-          position: "Blockchain Developer",
-          department: "Devops Operations",
-
-          directReports: [
-            {
-              name: "Adrian Ricardo",
-              position: "Mode Developer",
-              department: "Devops Operations",
-
-              directReports: [],
-            },
-            {
-              name: "James Maxwell",
-              position: "Data Analyst",
-              department: "Artificial Intelligence & Data",
-
-              directReports: [
-                {
-                  name: "Kevnin Theorem",
-                  position: "Circuit Designer",
-                  department: "Artificial Intelligence & Data",
-                  directReports: [],
-                },
-                {
-                  name: "Nortons Theorem",
-                  position: "Circuit Designer",
-                  department: "Artificial Intelligence & Data",
-                  directReports: [],
-                },
-              ],
-            },
-          ],
-        },
-      ],
-    },
-    // { name: "Plata", position: "Head of AI & Research", directReports: [] },
-  ],
-};
-
-type Participant = {
-  name: string;
-  position: string;
-  department?: string;
-  directReports: Participant[];
-};
+import { TCompanyEmployeeOrganogram } from "../types/organogram/companyEmployeeOrganogram";
+import { DEFAULT_PROFILE_IMAGE_URL } from "constants/general";
+import { truncateString } from "utils/dataHelpers/truncateString";
+import { useGetCompanyEmployeeOrganogram } from "../hooks/organogram/useGetCompanyEmployeeOrganogram";
 
 const StyledNode = styled.div`
   padding: 5px;
@@ -138,104 +18,158 @@ const StyledNode = styled.div`
   // background: var(--caramel);
 `;
 const CompanyOrganogram = () => {
-  const { data: owner, isLoading } = useGetCompanyOwnerOrganogram();
+  const [organogramToDisplay, setOrganogramToDisplay] = useState<
+    "owner" | "employee"
+  >("owner");
+  const [selectedEmployeeId, setSelectedEmployeeId] = useState<number>();
+  const [lineManagerId, setLineManagerId] = useState<number>();
+  const { data: owner, isLoading: ownerLoading } =
+    useGetCompanyOwnerOrganogram();
+  const { data: selectedEmployee, isLoading: employeeLoading } =
+    useGetCompanyEmployeeOrganogram({ employeeId: selectedEmployeeId });
 
   return (
     <div className="w-full py-4 flex flex-col gap-4">
       <PageSubHeader
         description={`View your organization's organogram at a glance`}
       />
+      <div>
+        {lineManagerId !== undefined && (
+          // TODO: Fix bug of not being able to go back, when no orgaonogram was found
+          <i
+            className="ri-arrow-left-s-line text-lg cursor-pointer hover:text-caramel"
+            onClick={() => {
+              setSelectedEmployeeId(lineManagerId);
+            }}
+          />
+        )}
+      </div>
 
-      <Skeleton loading={isLoading} active paragraph={{ rows: 14 }}>
+      <Skeleton
+        loading={ownerLoading || employeeLoading}
+        active
+        paragraph={{ rows: 14 }}
+      >
         <div className="overflow-x-auto">
-          <Tree
-            lineWidth={"1px"}
-            lineColor={`#aaa`}
-            lineBorderRadius={"10px"}
-            label={
-              <OrgCard
-                name={getEmployeeFullName(owner)}
-                position={owner?.designation.name ?? "CEO"}
-                department={owner?.designation.department.name}
-              />
-            }
-          >
-            {/* TODO: Refactor to be a component that is passed direct report */}
-            {owner?.directReport.map((item) =>
-              displayOrganogram(
-                {
-                  directReports: [],
-                  name: getEmployeeFullName(item.employee),
-                  position: item.employee.designation.name,
-                  department: item.employee.designation.department.name,
-                },
-                1,
-                4 //max
-              )
-            )}
-          </Tree>
+          {organogramToDisplay === "owner" && (
+            <HierarchicalOrganogram
+              person={owner}
+              onDirectReportClick={(employeeId) => {
+                setLineManagerId(owner?.id);
+                setSelectedEmployeeId(employeeId);
+                setOrganogramToDisplay("employee");
+              }}
+            />
+          )}
+          {organogramToDisplay === "employee" && (
+            <HierarchicalOrganogram
+              person={selectedEmployee}
+              onDirectReportClick={(employeeId) => {
+                setLineManagerId(selectedEmployee?.id);
+                setSelectedEmployeeId(employeeId);
+                setOrganogramToDisplay("employee");
+              }}
+            />
+          )}
         </div>
       </Skeleton>
     </div>
   );
 };
-
-const OrgCard: React.FC<{
-  position: string;
-  name: string;
-  isPrimary?: boolean;
-  department?: string;
-}> = ({ position, name, isPrimary, department }) => {
+const HierarchicalOrganogram: React.FC<{
+  person?: TCompanyEmployeeOrganogram;
+  onDirectReportClick: (employeeId: number) => void;
+}> = ({ person, onDirectReportClick }) => {
   return (
-    <StyledNode>
-      <Card size="small" hoverable className="shadow-sm" bordered>
-        <Card.Meta
-          avatar={<Avatar src="https://picsum.photos/190" />}
-          description={
-            <div className="flex-1 min-w-0 text-left">
-              <p className="text-sm font-extrabold text-gray-900 truncate dark:text-white">
-                {name}
-              </p>
-              <p className="text-sm text-gray-500 font-light truncate dark:text-gray-400">
-                {position}
-              </p>
-              <p className="text-sm text-gray-800 font-normal truncate dark:text-gray-400">
-                {department}
-              </p>
-            </div>
+    <>
+      {person === null && (
+        <h4 className="text-gray-300 text-xl text-center py-5">
+          No Organogram found!
+        </h4>
+      )}
+      {person !== null && (
+        <Tree
+          lineWidth={"1px"}
+          lineColor={`#aaa`}
+          lineBorderRadius={"10px"}
+          label={
+            <OrgCard
+              name={getEmployeeFullName(person)}
+              designation={person?.designation?.name ?? ""}
+              department={person?.designation?.department?.name}
+            />
           }
-        />
-      </Card>
-    </StyledNode>
+        >
+          <div className="shadow-lg rounded-md p-2 bg-white w-full">
+            {person?.directReport && person?.directReport.length === 0 && (
+              <h4 className="text-gray-300 text-xl text-center py-5">
+                No Direct Reports
+              </h4>
+            )}
+            {/* TODO: Paginate Direct Reports */}
+            {person?.directReport && person?.directReport.length > 0 && (
+              <div className="grid grid-cols-4 gap-4">
+                {person?.directReport.map((item) => (
+                  <div
+                    className="shadow cursor-pointer border p-2 rounded flex  gap-2"
+                    key={item.employeeId}
+                    onClick={() => {
+                      onDirectReportClick(item.employeeId);
+                    }}
+                  >
+                    <Avatar
+                      src={`https://picsum.photos/${190 + item.employeeId}`}
+                    />
+
+                    <div className="text-left">
+                      <h5 className="text-xs font-extrabold text-gray-900">
+                        {truncateString(getEmployeeFullName(item.employee), 12)}
+                      </h5>
+                      <div className="flex flex-col gap-0.5">
+                        <span className="text-xs text-gray-500 font-light">
+                          {item.employee.designation.name}
+                        </span>
+                        <span className="text-xs text-gray-800 font-normal">
+                          {item.employee.designation.department.name}
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+        </Tree>
+      )}
+    </>
   );
 };
 
-const displayOrganogram = (root: Participant, level = 1, max: number) => {
-  // conditions to be met
-  // if the levelCount is greater tha
-  level++;
-  if (max === level) return;
+const OrgCard: React.FC<{
+  designation: string;
+  name: string;
+  department?: string;
+}> = ({ designation, name, department }) => {
   return (
-    <TreeNode
-      label={OrgCard({
-        position: root.position,
-        name: root.name,
-        department: root?.department,
-      })}
-    >
-      {root.directReports.length >= 0 ? (
-        root.directReports.map((item) => displayOrganogram(item, level, max))
-      ) : (
-        <TreeNode
-          label={OrgCard({
-            position: root.position,
-            name: root.name,
-            isPrimary: max % 2 === 0,
-            department: root.department,
-          })}
-        />
-      )}
-    </TreeNode>
+    <StyledNode>
+      <div className="shadow border p-2 rounded flex  gap-2 min-w-[280px]">
+        <Avatar src="https://picsum.photos/190" size={`large`} />
+        {/* <img src={DEFAULT_PROFILE_IMAGE_URL} alt="user" className="h-7" /> */}
+        <div className="text-left">
+          <h5 className="text-sm font-extrabold text-gray-900">
+            {truncateString(name, 12)}
+          </h5>
+          <div className="flex flex-col gap-0.5">
+            <span className="text-sm text-gray-500 font-light">
+              {designation}
+            </span>
+            <span className="text-sm text-gray-800 font-normal">
+              {department}
+            </span>
+          </div>
+        </div>
+      </div>
+    </StyledNode>
   );
 };
 

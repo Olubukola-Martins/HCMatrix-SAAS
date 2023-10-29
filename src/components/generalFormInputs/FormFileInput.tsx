@@ -7,11 +7,23 @@ import { UploadOutlined } from "@ant-design/icons";
 
 export const FormFileInput: React.FC<{
   Form: typeof Form;
-  label: React.ReactNode;
+  label?: React.ReactNode;
   ruleOptions: TCeateFileValidationRuleProps;
   name: string;
   multiple?: boolean;
-}> = ({ Form, label, ruleOptions, name, multiple = false }) => {
+  triggerComp?: React.ReactNode;
+}> = ({
+  Form,
+  label,
+  ruleOptions,
+  name,
+  multiple = false,
+  triggerComp = (
+    <Button icon={<UploadOutlined />} className="flex w-full">
+      Click to Upload
+    </Button>
+  ),
+}) => {
   const normFile = (e: any) => {
     if (Array.isArray(e)) {
       return e;
@@ -36,9 +48,7 @@ export const FormFileInput: React.FC<{
         } //ensures only a certain amount of files are uploaded, a plus one so the error shows up
         className="w-full flex-1"
       >
-        <Button icon={<UploadOutlined />} className="flex w-full">
-          Click to Upload
-        </Button>
+        {triggerComp}
       </Upload>
     </Form.Item>
   );
