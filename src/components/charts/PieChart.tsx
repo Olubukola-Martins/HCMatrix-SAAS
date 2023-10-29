@@ -7,7 +7,6 @@ ChartJS.register(ArcElement, Tooltip, Legend);
 
 export const options = {
   responsive: true,
-  maintainAspectRatio: false,
 
   plugins: {
     // legend: {
@@ -28,6 +27,7 @@ export const PieChart: React.FC<IChartProps> = ({
   dataEntityLabel = "items",
   useDataSet = false,
   dataSets = [],
+  maintainAspectRatio = true,
 }) => {
   const dataSrc = {
     labels,
@@ -44,6 +44,7 @@ export const PieChart: React.FC<IChartProps> = ({
     <Pie
       options={{
         ...options,
+        maintainAspectRatio,
 
         // indexAxis: axis,
 

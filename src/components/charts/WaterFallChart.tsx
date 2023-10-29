@@ -13,7 +13,6 @@ ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip);
 
 export const options = {
   responsive: true,
-  maintainAspectRatio: false,
 
   plugins: {
     legend: {
@@ -34,9 +33,11 @@ export const WaterFallChart: React.FC<IChartProps> = ({
   dataEntityLabel = "items",
   useDataSet = false,
   dataSets = [],
+  maintainAspectRatio = true,
 }) => {
   const dataSrc = {
     labels,
+
     datasets: useDataSet
       ? dataSets
       : [
@@ -52,6 +53,7 @@ export const WaterFallChart: React.FC<IChartProps> = ({
     <Bar
       options={{
         ...options,
+        maintainAspectRatio,
         interaction: {
           mode: "index" as const,
           intersect: false,

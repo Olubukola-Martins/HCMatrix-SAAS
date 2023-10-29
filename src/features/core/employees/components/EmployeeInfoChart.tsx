@@ -50,6 +50,7 @@ const EmployeeInfoChart = () => {
       <div style={{ height: "70%" }}>
         {activeTab === tabItems[1].name && (
           <Histogram
+            maintainAspectRatio={false}
             data={[30, 10, 67, 30, 10, 67]}
             labels={[
               "Human Resources",
@@ -72,6 +73,7 @@ const EmployeeInfoChart = () => {
         )}
         {activeTab === tabItems[0].name && (
           <LineChart
+            maintainAspectRatio={false}
             data={[30, 10, 67, 30, 10, 67, 30, 5, 98, 120]}
             labels={labels}
             dataEntityLabel="Employees"

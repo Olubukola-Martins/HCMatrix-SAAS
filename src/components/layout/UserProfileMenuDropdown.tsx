@@ -12,7 +12,7 @@ import { TPermissionLabel } from "features/core/roles-and-permissions/types";
 import { useApiAuth } from "hooks/useApiAuth";
 import React, { useState } from "react";
 import { useSignOut } from "react-auth-kit";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const UserProfileMenu: React.FC<{
   userPermissions: TPermissionLabel[];
@@ -27,9 +27,11 @@ const UserProfileMenu: React.FC<{
 }> = ({ colorFns, closeMenu, userPermissions }) => {
   const { currentCompanyEmployeeDetails: employee } = useApiAuth();
   const signOut = useSignOut();
+  const navigate = useNavigate();
   const handleLogOut = () => {
     signOut();
     localStorage.clear();
+    navigate(appRoutes.login);
     window.location.reload();
   };
   return (
