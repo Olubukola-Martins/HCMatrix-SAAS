@@ -12,12 +12,10 @@ import { useUpdateCompany } from "../hooks/useUpdateCompany";
 import { AppButton } from "components/button/AppButton";
 import { useQueryClient } from "react-query";
 import { openNotification } from "utils/notifications";
-import { useEffect, useState } from "react";
-import { FormCountryInput } from "components/generalFormInputs/FormCountryInput";
-import { FormStateInput } from "components/generalFormInputs/FormStateInput";
-import { FormLGAInput } from "components/generalFormInputs/FormLGAInput";
+import { useEffect } from "react";
+
 import { FormIndustryInput } from "components/generalFormInputs/FormIndustryInput";
-import { useCurrentFileUploadUrl } from "hooks/useCurrentFileUploadUrl";
+import { FormAddressInput } from "components/generalFormInputs/FormAddressInput";
 
 const CompanyInformationForm = () => {
   const queryClient = useQueryClient();
@@ -26,9 +24,6 @@ const CompanyInformationForm = () => {
 
   const [form] = Form.useForm();
   const { mutate, isLoading } = useUpdateCompany();
-  const [countryId, setCountryId] = useState<number>();
-  const [stateId, setStateId] = useState<number>();
-  const logoUrl = useCurrentFileUploadUrl("logoUrl");
 
   const handleSubmit = (data: any) => {
     // as per patch
@@ -43,14 +38,9 @@ const CompanyInformationForm = () => {
           company?.industryId === data.industryId ? undefined : data.industryId,
         color: company?.color === data.color ? undefined : data.color,
         address: {
-          streetAddress: data.streetAddress,
-          countryId,
-          stateId,
-          lgaId: data.lgaId,
-          timezone: "Africa/Lagos", //TO DO: Make this changeable
+          ...data.address,
         },
 
-        logoUrl: company?.logoUrl === logoUrl ? undefined : logoUrl,
         website: company?.website === data.website ? undefined : data.website,
       },
       {
@@ -89,14 +79,14 @@ const CompanyInformationForm = () => {
         color: company.color,
         logoUrl: company.logoUrl,
         website: company.website,
-        streetAddress: company.address?.streetAddress,
-        countryId: company.address?.countryId,
-        stateId: company.address?.stateId,
-        lgaId: company.address?.lgaId,
-        timezone: company.address?.timezone,
+        address: {
+          streetAddress: company.address?.streetAddress,
+          countryId: company.address?.countryId,
+          stateId: company.address?.stateId,
+          lgaId: company.address?.lgaId ?? undefined, //Done to prevent sending null, instead send undefined
+          timezone: company.address?.timezone,
+        },
       });
-      setCountryId(company.address?.countryId);
-      setStateId(company.address?.stateId);
     }
   }, [form, company]);
 
@@ -109,7 +99,7 @@ const CompanyInformationForm = () => {
         onFinish={handleSubmit}
       >
         <div className="flex flex-col gap-4">
-          <div className="grid md:grid-cols-3 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             <Form.Item
               label="Company Name"
               rules={generalValidationRules}
@@ -136,28 +126,10 @@ const CompanyInformationForm = () => {
               <Input placeholder="contact phone" />
             </Form.Item>
 
-            <Form.Item
-              label="Street Address"
-              rules={generalValidationRules}
-              name="streetAddress"
-            >
-              <Input placeholder="Enter Address Details" />
-            </Form.Item>
-            <FormCountryInput
+            <FormAddressInput
               Form={Form}
-              control={{ label: "Country", name: "countryId" }}
-              handleSelect={(id) => setCountryId(id)}
-            />
-            <FormStateInput
-              Form={Form}
-              countryId={countryId ?? 0}
-              control={{ name: "stateId", label: "State" }}
-              handleSelect={(id) => setStateId(id)}
-            />
-            <FormLGAInput
-              Form={Form}
-              stateId={stateId ?? 0}
-              control={{ name: "lgaId", label: "Local Government" }}
+              form={form}
+              className="md:col-span-3"
             />
           </div>
           <div className="flex justify-end">

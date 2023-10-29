@@ -5,7 +5,7 @@ import TransferOwnership from "components/transferOwnership/TransferOwnership";
 import { Setup2FA } from "components/twoFactorAuth/SetUp2FA";
 import { appRoutes } from "config/router/paths";
 import { DEFAULT_PROFILE_IMAGE_URL } from "constants/general";
-import { useGetCompanyParams } from "features/core/company/hooks/useGetCompanyParams";
+import { useGetCompanyParamSetting } from "features/core/company/hooks/useGetCompanyParamSetting";
 import { useFetchSingleEmployee } from "features/core/employees/hooks/useFetchSingleEmployee";
 import { getEmployeeFullName } from "features/core/employees/utils/getEmployeeFullName";
 import { TPermissionLabel } from "features/core/roles-and-permissions/types";
@@ -68,7 +68,7 @@ const UserActions: React.FC<{
 }> = ({ userPermissions, closeMenu }) => {
   type TAction = "transfer-ownership" | "setup-2fa";
   const [action, setAction] = useState<TAction>();
-  const { data: companyParams } = useGetCompanyParams();
+  const { data: companyParams } = useGetCompanyParamSetting();
   const clearAction = () => {
     setAction(undefined);
   };

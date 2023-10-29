@@ -25,7 +25,7 @@ const createData = async (props: {
   const response = await axios.post(url, data, config);
   return response;
 };
-export const useSaveCompanyParams = () => {
+export const useSaveCompanyParamSetting = () => {
   const { token, companyId } = useApiAuth();
   return useMutation((props: TSaveCompanyParams) =>
     createData({ data: props, auth: { token, companyId } })

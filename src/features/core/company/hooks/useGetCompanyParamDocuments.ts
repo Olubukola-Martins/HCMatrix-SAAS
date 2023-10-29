@@ -4,12 +4,25 @@ import { useQuery } from "react-query";
 import { ICurrentCompany } from "types";
 
 import { useApiAuth } from "hooks/useApiAuth";
-import { TCompanyParams } from "../types/companyParams";
 
 interface IGetDataProps extends ICurrentCompany {}
-export const QUERY_KEY_FOR_COMPANY_PARAMETERS = "company-parameters";
-const getData = async (props: IGetDataProps): Promise<TCompanyParams> => {
-  const url = `${MICROSERVICE_ENDPOINTS.UTILITY}/company/parameter/setting`;
+export const QUERY_KEY_FOR_COMPANY_PARAMETER_DOCUMENTS =
+  "company-parameter-document";
+
+type TData = {
+  id: number;
+  key: string;
+  value: Value;
+  companyId: number;
+  createdAt: string;
+  updatedAt: string;
+};
+
+interface Value {
+  companyHandBook: string;
+}
+const getData = async (props: IGetDataProps): Promise<TData> => {
+  const url = `${MICROSERVICE_ENDPOINTS.UTILITY}/company/parameter/document`;
 
   const config = {
     headers: {
@@ -20,19 +33,19 @@ const getData = async (props: IGetDataProps): Promise<TCompanyParams> => {
   };
 
   const res = await axios.get(url, config);
-  const item: TCompanyParams = res.data.data;
+  const item: TData = res.data.data;
 
-  const data: TCompanyParams = {
+  const data: TData = {
     ...item,
   };
 
   return data;
 };
 
-export const useGetCompanyParams = () => {
+export const useGetCompanyParamDocuments = () => {
   const { token, companyId } = useApiAuth();
   const queryData = useQuery(
-    [QUERY_KEY_FOR_COMPANY_PARAMETERS],
+    [QUERY_KEY_FOR_COMPANY_PARAMETER_DOCUMENTS],
     () =>
       getData({
         companyId,

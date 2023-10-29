@@ -10,12 +10,7 @@ import {
 } from "antd";
 import TransferOwnership from "components/transferOwnership/TransferOwnership";
 import { useEffect, useState } from "react";
-import {
-  QUERY_KEY_FOR_COMPANY_PARAMETERS,
-  useGetCompanyParams,
-} from "../hooks/useGetCompanyParams";
 
-import { useSaveCompanyParams } from "../hooks/useSaveCompanyParams";
 import { useQueryClient } from "react-query";
 import { openNotification } from "utils/notifications";
 import { AppButton } from "components/button/AppButton";
@@ -29,6 +24,11 @@ import {
   generalValidationRules,
 } from "utils/formHelpers/validation";
 import { CURRENCY_OPTIONS } from "constants/currencies";
+import { useSaveCompanyParamSetting } from "../hooks/useSaveCompanyParamSetting";
+import {
+  QUERY_KEY_FOR_COMPANY_PARAMETER_SETTING,
+  useGetCompanyParamSetting,
+} from "../hooks/useGetCompanyParamSetting";
 
 const parentCompStyle = "grid md:grid-cols-2 border-0 border-b gap-4 py-2";
 const compStyle = "flex flex-col gap-2 items-start";
@@ -41,10 +41,10 @@ const CompanySettingsForm = () => {
   const [adminEmail, setAdminEmail] = useState("");
 
   const { data: companyParams, isFetching: isFetchingCompanyParams } =
-    useGetCompanyParams();
+    useGetCompanyParamSetting();
 
   const [form] = Form.useForm();
-  const { mutate, isLoading } = useSaveCompanyParams();
+  const { mutate, isLoading } = useSaveCompanyParamSetting();
 
   const handleSubmit = (data: any) => {
     mutate(
@@ -103,7 +103,7 @@ const CompanySettingsForm = () => {
           form.resetFields();
 
           queryClient.invalidateQueries({
-            queryKey: [QUERY_KEY_FOR_COMPANY_PARAMETERS],
+            queryKey: [QUERY_KEY_FOR_COMPANY_PARAMETER_SETTING],
             // exact: true,
           });
         },

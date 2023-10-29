@@ -9,6 +9,8 @@ import moment from "moment";
 import LiveClock from "components/clock/LiveClock";
 import ClockInOrOut from "./ClockInOrOut";
 import PersonWelcomingIcon from "assets/svg-components/PersonWelcomingIcon/PersonWelcomingIcon";
+import { useGetCompanyParamDocuments } from "features/core/company/hooks/useGetCompanyParamDocuments";
+import { Skeleton } from "antd";
 
 export const EmployeeHome: React.FC<{
   employee?: Pick<
@@ -87,12 +89,7 @@ export const EmployeeHome: React.FC<{
               </div>
             </div>
             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-5 text-center mt-5">
-              <Link to="#!" className="dashboardLink shadow border">
-                <span className="text-caramel font-semibold text-lg">
-                  Download
-                </span>
-                <h6 className="text-xs font-semibold">Company Handbook</h6>
-              </Link>
+              <CompanyHandBook />
               <Link
                 to={appRoutes.companyOrganogram}
                 className="dashboardLink shadow border"
@@ -138,5 +135,20 @@ export const EmployeeHome: React.FC<{
         </div>
       </div>
     </>
+  );
+};
+
+const CompanyHandBook = () => {
+  const { data, isFetching } = useGetCompanyParamDocuments();
+  return (
+    <Skeleton active paragraph={{ rows: 2 }} loading={isFetching}>
+      <a
+        href={data?.value.companyHandBook}
+        className="dashboardLink shadow border"
+      >
+        <span className="text-caramel font-semibold text-lg">Download</span>
+        <h6 className="text-xs font-semibold">Company Handbook</h6>
+      </a>
+    </Skeleton>
   );
 };
