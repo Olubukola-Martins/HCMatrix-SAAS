@@ -1,9 +1,11 @@
-import { DatePicker, Form, Input, Modal, Skeleton, Switch } from "antd";
+import { DatePicker, Form, Input, Modal, Skeleton, Switch, Tag } from "antd";
+import { CloseCircleOutlined } from "@ant-design/icons";
 import moment from "moment";
 import { useEffect } from "react";
 import { useGetSingleLeave } from "../hooks/useGetSingleLeave";
 import { IModalProps } from "types";
 import { getEmployeeFullName } from "features/core/employees/utils/getEmployeeFullName";
+import { DEFAULT_DATE_FORMAT } from "constants/dateFormats";
 
 interface IProps extends IModalProps {
   id: number;
@@ -22,7 +24,7 @@ export const LeaveDetails = ({ id, open, handleClose }: IProps) => {
         length: data.length,
         leaveType: data.leaveType.name,
         reason: data.reason,
-        requestAllowance: data.leaveType.employeesGetAllowance,
+        employeesGetAllowance: data.leaveType.employeesGetAllowance,
         duration: [moment(data.startDate), moment(data.endDate)],
       });
     }
@@ -43,12 +45,30 @@ export const LeaveDetails = ({ id, open, handleClose }: IProps) => {
           <Form.Item label="Deparment" name="department">
             <Input placeholder="Deparment" />
           </Form.Item>
-          <Form.Item name="duration" label="Duration">
-            <DatePicker.RangePicker
-              placeholder={["Start Date", "End Date"]}
-              className="w-full"
-            />
-          </Form.Item>
+          {!data?.specificDates && (
+            <Form.Item name="duration" label="Duration">
+              <DatePicker.RangePicker
+                placeholder={["Start Date", "End Date"]}
+                className="w-full"
+              />
+            </Form.Item>
+          )}
+          {data?.specificDates && (
+            <Form.Item label="Specific Dates">
+              <div className="grid grid-cols-4 gap-x-2 gap-y-3">
+                {data.specificDates?.map((item) => (
+                  <Tag color="blue">
+                    <div className="flex items-center gap-2">
+                      <span>
+                        {moment(item.toString()).format(DEFAULT_DATE_FORMAT)}
+                      </span>
+                      <CloseCircleOutlined />
+                    </div>
+                  </Tag>
+                ))}
+              </div>
+            </Form.Item>
+          )}
           <Form.Item label="Number of days" name="length">
             <Input placeholder="Number of days" />
           </Form.Item>
@@ -57,14 +77,19 @@ export const LeaveDetails = ({ id, open, handleClose }: IProps) => {
             <Input placeholder="Leave Type" />
           </Form.Item>
 
-          <Form.Item label="Work Assignee/Relieve" name={"relieve"}>
-            <Input placeholder="Work Assignee/Relieve" />
-          </Form.Item>
+          {data?.leaveType.requireReliever && (
+            <Form.Item label="Work Assignee/Relieve" name={"reliever"}>
+              <Input placeholder="Work Assignee/Relieve" />
+            </Form.Item>
+          )}
 
           <Form.Item name="reason">
             <Input.TextArea rows={4} placeholder="Reason" />
           </Form.Item>
-          <Form.Item name="requestAllowance" label="Leave Allowance">
+          <Form.Item
+            name="employeesGetAllowance"
+            label="Does employees get allowance?"
+          >
             <Switch
               defaultChecked={!!data?.leaveType.employeesGetAllowance}
               checkedChildren="Yes"
