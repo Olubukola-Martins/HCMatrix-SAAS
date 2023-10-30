@@ -1,4 +1,4 @@
-import { Space, Dropdown, Menu, Table, Modal } from "antd";
+import { Space, Dropdown, Menu, Table } from "antd";
 import { MoreOutlined } from "@ant-design/icons";
 
 import React, { useState } from "react";
@@ -15,6 +15,8 @@ import { useQueryClient } from "react-query";
 import { LeaveDetails } from "../LeaveDetails";
 import { QUERY_KEY_FOR_ALL_LEAVES } from "../../hooks/useGetAllLeaves";
 import { QUERY_KEY_FOR_EMPLOYEE_LEAVES } from "../../hooks/useGetEmployeeLeaves";
+import { getEmployeeFullName } from "features/core/employees/utils/getEmployeeFullName";
+import { DEFAULT_DATE_FORMAT } from "constants/dateFormats";
 
 const LeavesApprovalRequestsTable: React.FC<{
   status?: TApprovalStatus;
@@ -49,16 +51,14 @@ const LeavesApprovalRequestsTable: React.FC<{
       dataIndex: "name",
       key: "name",
       render: (val, item) => (
-        <span>
-          {item.leave?.employee.firstName} {item.leave?.employee.lastName}
-        </span>
+        <span>{getEmployeeFullName(item.leave?.employee)}</span>
       ),
     },
     {
       title: "Department",
       dataIndex: "department",
       key: "department",
-      render: (val, item) => <span>{item.leave?.department.name}</span>,
+      render: (val, item) => <span>{item.leave?.department?.name}</span>,
     },
     {
       title: "Leave Type",
@@ -67,11 +67,24 @@ const LeavesApprovalRequestsTable: React.FC<{
       render: (val, item) => <span>{item.leave?.leaveType.name}</span>,
     },
     {
+      title: "Specific Dates",
+      dataIndex: "specificDates",
+      key: "specificDates",
+      ellipsis: true,
+      render: (val, item) => (
+        <span>{item.leave?.specificDates?.join(",")}</span>
+      ),
+    },
+    {
       title: "Start Date",
       dataIndex: "startDate",
       key: "startDate",
       render: (val, item) => (
-        <span>{moment(item?.leave?.startDate).format("YYYY/MM/DD")}</span>
+        <span>
+          {item.leave?.startDate
+            ? moment(item.leave?.startDate).format(DEFAULT_DATE_FORMAT)
+            : "N/A"}
+        </span>
       ),
     },
     {
@@ -79,7 +92,11 @@ const LeavesApprovalRequestsTable: React.FC<{
       dataIndex: "endDate",
       key: "endDate",
       render: (val, item) => (
-        <span>{moment(item?.leave?.endDate).format("YYYY/MM/DD")}</span>
+        <span>
+          {item.leave?.endDate
+            ? moment(item.leave?.endDate).format(DEFAULT_DATE_FORMAT)
+            : "N/A"}
+        </span>
       ),
     },
 
@@ -140,7 +157,7 @@ const LeavesApprovalRequestsTable: React.FC<{
                   onClick={() =>
                     confirmApprovalAction({
                       approvalStageId: item?.id,
-                      status: "rejected",
+                      status: "approved",
                       workflowType: !!item?.basicStageId ? "basic" : "advanced",
                       requires2FA: item?.advancedStage?.enableTwoFactorAuth,
                     })

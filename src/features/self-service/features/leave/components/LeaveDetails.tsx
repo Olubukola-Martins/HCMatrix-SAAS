@@ -88,7 +88,7 @@ export const LeaveDetails = ({ id, open, handleClose }: IProps) => {
           </Form.Item>
           <Form.Item
             name="employeesGetAllowance"
-            label="Does employees get allowance?"
+            label="Does employee get allowance?"
           >
             <Switch
               defaultChecked={!!data?.leaveType.employeesGetAllowance}

@@ -4,7 +4,7 @@ export type TLeaveRecall = {
   id: number;
   leaveId: number;
   length: number;
-  newEndDate: string;
+  newEndDate?: string | null;
   leave: TLeave;
   createdAt: string;
   updatedAt: string;

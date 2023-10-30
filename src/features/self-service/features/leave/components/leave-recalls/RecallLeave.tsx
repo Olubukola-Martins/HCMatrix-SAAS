@@ -4,10 +4,7 @@ import React, { useEffect, useState } from "react";
 import { IModalProps } from "types";
 import { openNotification } from "utils/notifications";
 import { useQueryClient } from "react-query";
-
 import { TLeave } from "../../types";
-import { useCreateFolder } from "features/self-service/features/documents/hooks/useCreateFolder";
-import { QUERY_KEY_FOR_FOLDERS } from "features/self-service/features/documents/hooks/useGetFolders";
 import moment, { Moment } from "moment";
 import { DEFAULT_DATE_FORMAT } from "constants/dateFormats";
 import { getEmployeeFullName } from "features/core/employees/utils/getEmployeeFullName";
@@ -39,13 +36,13 @@ export const RecallLeave: React.FC<IProps> = ({ open, handleClose, leave }) => {
     setNewLeaveLength(0);
   }, [leave, form]);
 
-  const handleSubmit = () => {
-    if (!newEndDate || !leave) return;
+  const handleSubmit = (data: any) => {
+    if ((!newEndDate && !leave?.specificDates) || !leave) return;
     mutate(
       {
         leaveId: leave.id,
-        length: newLeaveLength,
-        newEndDate: newEndDate?.toISOString(),
+        length: !leave.specificDates ? data?.daysToBeRecalled : newLeaveLength,
+        newEndDate: !leave.specificDates ? newEndDate?.toISOString() : null,
       },
       {
         onError: (err: any) => {
