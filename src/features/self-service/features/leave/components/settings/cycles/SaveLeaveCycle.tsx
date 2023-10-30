@@ -1,17 +1,15 @@
-import { DatePicker, Form, Input, Modal } from "antd";
+import { DatePicker, Form, Modal } from "antd";
 import { AppButton } from "components/button/AppButton";
 import React, { useEffect } from "react";
 import { IModalProps } from "types";
-import {
-  dateHasToBeGreaterThanOrEqualToCurrentDayRuleForRange,
-  textInputValidationRules,
-} from "utils/formHelpers/validation";
-import { TLeaveCycle } from "../LeaveCyclesAccordian";
+import { dateHasToBeGreaterThanOrEqualToCurrentDayRuleForRange } from "utils/formHelpers/validation";
 import moment, { Moment } from "moment";
+import { TLeaveCycle } from "../../../types";
+import { TSaveLeaveCycleProps } from "../../../hooks/leaveCycles/useSaveLeaveCycle";
 
 interface IProps extends IModalProps {
   onSubmit: {
-    fn: (props: Pick<TLeaveCycle, "name" | "startDate" | "endDate">) => void;
+    fn: (props: TSaveLeaveCycleProps) => void;
     isLoading?: boolean;
     isSuccess?: boolean;
   };
@@ -30,19 +28,20 @@ export const SaveLeaveCycle: React.FC<IProps> = ({
   useEffect(() => {
     if (!defaultData) return;
     form.setFieldsValue({
-      name: defaultData.name,
       duration: [
-        moment(defaultData.startDate ?? null),
-        moment(defaultData.endDate ?? null),
+        moment(
+          `${moment().format("YYYY")}-${defaultData.endMonth + 1}-${
+            defaultData.endDay
+          }`
+        ),
+        moment(
+          `${moment().format("YYYY")}-${defaultData.startMonth + 1}-${
+            defaultData.startDay
+          }`
+        ),
       ],
     });
   }, [form, defaultData]);
-
-  // close modal if onSubmit is success
-  useEffect(() => {
-    if (!onSubmit.isSuccess) return;
-    handleClose();
-  }, [form, onSubmit.isSuccess, handleClose]);
 
   return (
     <Modal
@@ -62,16 +61,14 @@ export const SaveLeaveCycle: React.FC<IProps> = ({
         form={form}
         onFinish={(data) =>
           onSubmit.fn({
-            name: data.name,
-            endDate: (data.duration[1] as Moment).toISOString(),
-            startDate: (data.duration[0] as Moment).toISOString(),
+            endDay: +(data.duration[1] as Moment).format(`DD`),
+            startDay: +(data.duration[0] as Moment).format(`DD`),
+            endMonth: +(data.duration[1] as Moment).format(`MM`) - 1, //cos of backend api, using 0 - 11 for month
+            startMonth: +(data.duration[0] as Moment).format(`MM`) - 1, //cos of backend api, using 0 - 11 for month
           })
         }
         requiredMark={false}
       >
-        <Form.Item rules={textInputValidationRules} name="name" label="Name">
-          <Input placeholder="Cycle Name" />
-        </Form.Item>
         <Form.Item
           rules={[dateHasToBeGreaterThanOrEqualToCurrentDayRuleForRange]}
           name="duration"

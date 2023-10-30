@@ -2,12 +2,12 @@ import axios from "axios";
 import { MICROSERVICE_ENDPOINTS } from "config/enviroment";
 import { useQuery } from "react-query";
 import { ICurrentCompany } from "types";
-import { TLeavePolicy } from "../types";
+import { useApiAuth } from "hooks/useApiAuth";
+import { TLeavePolicy } from "../../types";
 
-// TO DO : need to exist in the general data entities and refactored
 interface IGetDataProps extends ICurrentCompany {}
-export const QUERY_KEY_FOR_LEAVE_POLICY = "leave-policy";
-const getLeave = async (props: IGetDataProps): Promise<TLeavePolicy> => {
+export const QUERY_KEY_FOR_LEAVE_POLICY_SETTING = "leave-policy-setting";
+const getData = async (props: IGetDataProps): Promise<TLeavePolicy> => {
   const url = `${MICROSERVICE_ENDPOINTS.UTILITY}/self-service/leave/policy-setting`;
 
   const config = {
@@ -28,12 +28,14 @@ const getLeave = async (props: IGetDataProps): Promise<TLeavePolicy> => {
   return data;
 };
 
-export const useFetchLeavePolicy = (props: IGetDataProps) => {
+export const useGetLeavePolicySetting = () => {
+  const { token, companyId } = useApiAuth();
   const queryData = useQuery(
-    [QUERY_KEY_FOR_LEAVE_POLICY, props.companyId],
+    [QUERY_KEY_FOR_LEAVE_POLICY_SETTING],
     () =>
-      getLeave({
-        ...props,
+      getData({
+        token,
+        companyId,
       }),
     {
       onError: (err: any) => {},

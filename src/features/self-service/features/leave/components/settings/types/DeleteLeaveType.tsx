@@ -3,8 +3,9 @@ import { IModalProps } from "types";
 import { openNotification } from "utils/notifications";
 import { useQueryClient } from "react-query";
 import DeleteEntityModal from "components/entity/DeleteEntityModal";
-import { useDeleteLeaveCycle } from "../../../hooks/leaveCycles/useDeleteLeaveCycle";
 import { TLeaveType } from "../../../types";
+import { useDeleteLeaveType } from "../../../hooks/leaveTypes/useDeleteLeaveType";
+import { QUERY_KEY_FOR_LEAVE_TYPES } from "../../../hooks/leaveTypes/useGetLeaveTypes";
 
 interface IProps extends IModalProps {
   type?: TLeaveType;
@@ -16,7 +17,7 @@ export const DeleteLeaveType: React.FC<IProps> = ({
 }) => {
   const queryClient = useQueryClient();
 
-  const { mutate, isLoading } = useDeleteLeaveCycle();
+  const { mutate, isLoading } = useDeleteLeaveType();
 
   const handleDelete = () => {
     if (!type) return;
@@ -43,14 +44,11 @@ export const DeleteLeaveType: React.FC<IProps> = ({
             // duration: 0.4,
           });
 
-          //   queryClient.invalidateQueries({
-          //     queryKey: [QUERY_KEY_FOR_TASKS_ASSIGNED_BY_EMPLOYEE],
-          //     // exact: true,
-          //   });
-          //   queryClient.invalidateQueries({
-          //     queryKey: [QUERY_KEY_FOR_TASKS_ASSIGNED_TO_EMPLOYEE],
-          //     // exact: true,
-          //   });
+          queryClient.invalidateQueries({
+            queryKey: [QUERY_KEY_FOR_LEAVE_TYPES],
+            // exact: true,
+          });
+
           handleClose();
         },
       }

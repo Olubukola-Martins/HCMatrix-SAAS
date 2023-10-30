@@ -1,17 +1,19 @@
-import { Select, Spin, Form } from "antd";
+import { Select, Form } from "antd";
 import { useDebounce } from "hooks/useDebounce";
 import React, { useState } from "react";
 import { generalValidationRules } from "utils/formHelpers/validation";
-import { useFetchLeaveTypes } from "../../../hooks/leaveTypes/useFetchLeaveTypes";
+import { useGetLeaveTypes } from "../../../hooks/leaveTypes/useGetLeaveTypes";
+import { TLeaveType } from "../../../types";
 
 export const FormLeaveTypeInput: React.FC<{
   Form: typeof Form;
   showLabel?: boolean;
   control?: { label: string; name: string };
-}> = ({ Form, showLabel = true, control }) => {
+  handleSelect?: (val: number, leaveType?: TLeaveType) => void;
+}> = ({ Form, showLabel = true, control, handleSelect }) => {
   const [searchTerm, setSearchTerm] = useState<string>("");
   const debouncedSearchTerm: string = useDebounce<string>(searchTerm);
-  const { data, isFetching, isSuccess } = useFetchLeaveTypes({
+  const { data, isFetching } = useGetLeaveTypes({
     searchParams: {
       name: debouncedSearchTerm,
     },
@@ -38,27 +40,23 @@ export const FormLeaveTypeInput: React.FC<{
         showSearch
         allowClear
         onClear={() => setSearchTerm("")}
+        onSelect={(val: number) => {
+          if (handleSelect) {
+            const leaveType = data?.data.find((emp) => emp.id === val);
+            handleSelect(val, leaveType);
+          }
+        }}
         onSearch={handleSearch}
         className="rounded border-slate-400 w-full"
         defaultActiveFirstOption={false}
         showArrow={false}
         filterOption={false}
       >
-        {isSuccess ? (
-          data.data.map((item) => (
-            <Select.Option key={item.id} value={item.id}>
-              {item.name}
-            </Select.Option>
-          ))
-        ) : (
-          <Select.Option
-            className="flex justify-center items-center w-full"
-            key="_"
-            disabled
-          >
-            <Spin size="small" />
+        {data?.data.map((item) => (
+          <Select.Option key={item.id} value={item.id}>
+            {item.name}
           </Select.Option>
-        )}
+        ))}
       </Select>
     </Form.Item>
   );

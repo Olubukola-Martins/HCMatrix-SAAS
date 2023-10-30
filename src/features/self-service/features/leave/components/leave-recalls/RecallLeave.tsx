@@ -11,6 +11,8 @@ import { QUERY_KEY_FOR_FOLDERS } from "features/self-service/features/documents/
 import moment, { Moment } from "moment";
 import { DEFAULT_DATE_FORMAT } from "constants/dateFormats";
 import { getEmployeeFullName } from "features/core/employees/utils/getEmployeeFullName";
+import { useRecallLeave } from "../../hooks/leaveRecall/useRecallLeave";
+import { QUERY_KEY_FOR_ALL_LEAVE_RECALLS } from "../../hooks/leaveRecall/useGetAllLeaveRecalls";
 
 interface IProps extends IModalProps {
   leave?: TLeave;
@@ -20,7 +22,7 @@ export const RecallLeave: React.FC<IProps> = ({ open, handleClose, leave }) => {
   const queryClient = useQueryClient();
 
   const [form] = Form.useForm();
-  const { mutate, isLoading } = useCreateFolder();
+  const { mutate, isLoading } = useRecallLeave();
   const [newEndDate, setNewEndDate] = useState<Moment | null>(null);
   const [newLeaveLength, setNewLeaveLength] = useState<number>(0);
   useEffect(() => {
@@ -37,10 +39,13 @@ export const RecallLeave: React.FC<IProps> = ({ open, handleClose, leave }) => {
     setNewLeaveLength(0);
   }, [leave, form]);
 
-  const handleSubmit = (data: any) => {
+  const handleSubmit = () => {
+    if (!newEndDate || !leave) return;
     mutate(
       {
-        name: data.name,
+        leaveId: leave.id,
+        length: newLeaveLength,
+        newEndDate: newEndDate?.toISOString(),
       },
       {
         onError: (err: any) => {
@@ -63,7 +68,7 @@ export const RecallLeave: React.FC<IProps> = ({ open, handleClose, leave }) => {
           handleClose();
 
           queryClient.invalidateQueries({
-            queryKey: [QUERY_KEY_FOR_FOLDERS],
+            queryKey: [QUERY_KEY_FOR_ALL_LEAVE_RECALLS],
             // exact: true,
           });
         },

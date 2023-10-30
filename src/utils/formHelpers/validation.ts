@@ -7,6 +7,50 @@ import moment, { Moment } from "moment";
 import { TFileType } from "types/files";
 
 // helpers
+
+export const countMatchingDatesInclusive = (
+  start: Moment,
+  end: Moment,
+  dates: Moment[]
+): number => {
+  // Make sure the start date is before or equal to the end date
+  if (end.isBefore(start)) {
+    [start, end] = [end, start];
+  }
+
+  let currentDate = moment(start);
+  let matchingCount = 0;
+
+  while (currentDate.isSameOrBefore(end)) {
+    if (dates.some((date) => date.isSame(currentDate, "day"))) {
+      matchingCount++;
+    }
+    currentDate.add(1, "day"); // Move to the next day
+  }
+
+  return matchingCount;
+};
+
+export const countWeekendsInclusive = (start: Moment, end: Moment): number => {
+  // Make sure the start date is before or equal to the end date
+  if (end.isBefore(start)) {
+    [start, end] = [end, start];
+  }
+
+  let currentDate = moment(start);
+  let weekendCount = 0;
+
+  while (currentDate.isSameOrBefore(end)) {
+    if (currentDate.isoWeekday() === 6 || currentDate.isoWeekday() === 7) {
+      // Check if it's a Saturday (6) or Sunday (7)
+      weekendCount++;
+    }
+    currentDate.add(1, "day"); // Move to the next day
+  }
+
+  return weekendCount;
+};
+
 export const isDateGreaterThanCurrentDay = (date: Moment) => {
   const currentDate = moment();
   if (!date) return;

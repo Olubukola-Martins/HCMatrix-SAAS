@@ -14,20 +14,11 @@ import { FormGroupInput } from "features/core/groups/components/FormGroupInput";
 import FormItem from "antd/es/form/FormItem";
 import { GENDERS, MARITAL_STATUSES } from "constants/general";
 import { EMPLOYEE_STATUSES_OPTIONS } from "features/core/employees/constants";
+import { TCreateLeaveTypeProps } from "../../../hooks/leaveTypes/useCreateLeaveType";
 
 interface IProps extends IModalProps {
   onSubmit: {
-    fn: (
-      props: Pick<
-        TLeaveType,
-        | "name"
-        | "length"
-        | "calculation"
-        | "employeesGetAllowance"
-        | "gender"
-        | "percentageAmount"
-      >
-    ) => void;
+    fn: (props: TCreateLeaveTypeProps) => void;
     isLoading?: boolean;
     isSuccess?: boolean;
   };
@@ -43,19 +34,27 @@ export const SaveLeaveType: React.FC<IProps> = ({
   action,
 }) => {
   const [form] = Form.useForm();
+
+  const [usesGroup, setUsesGroup] = useState<boolean>(false);
+
   useEffect(() => {
     if (!data) return;
+    setUsesGroup(data.applicableToCertainGroup);
     form.setFieldsValue({
       name: data.name,
-      //   TODO: Populate when Backend updates endpoint
+      length: data.length,
+      employeesGetAllowance: data.employeesGetAllowance,
+      eligibilityCriteria: {
+        applicableToCertainGroup: data.applicableToCertainGroup,
+        groupId: data.groupId ?? null,
+        gender: data.gender ?? null,
+        employeeStatus: data.employeeStatus ?? null,
+        maritalStatus: data.maritalStatus ?? null,
+      },
+
+      requireReliever: data.requireReliever,
     });
   }, [form, data]);
-
-  // close modal if onSubmit is success
-  useEffect(() => {
-    if (!onSubmit.isSuccess) return;
-    handleClose();
-  }, [form, onSubmit.isSuccess, handleClose]);
 
   return (
     <Themes>
@@ -78,10 +77,13 @@ export const SaveLeaveType: React.FC<IProps> = ({
             onSubmit.fn({
               name: data.name,
               length: data.length,
-              calculation: data.calculation,
               employeesGetAllowance: data.employeesGetAllowance,
-              gender: data.gender,
-              percentageAmount: data.percentageAmount,
+              gender: data.eligibilityCriteria.gender ?? null,
+              maritalStatus: data.eligibilityCriteria.maritalStatus ?? null,
+              employeeStatus: data.eligibilityCriteria.employeeStatus ?? null,
+              groupId: data.eligibilityCriteria.groupId ?? null,
+              applicableToCertainGroup: usesGroup,
+              requireReliever: !!data.requireReliever,
             })
           }
           className="grid grid-cols-2 gap-x-4"
@@ -107,7 +109,7 @@ export const SaveLeaveType: React.FC<IProps> = ({
           </Form.Item>
           <Form.Item
             className="col-span-2"
-            name="requiresLeaveReliever"
+            name="requireReliever"
             label={
               <AppTooltip
                 children={
@@ -123,7 +125,11 @@ export const SaveLeaveType: React.FC<IProps> = ({
               />
             }
           >
-            <AppSwitch unCheckedChildren="No" checkedChildren="Yes" />
+            <AppSwitch
+              unCheckedChildren="No"
+              checkedChildren="Yes"
+              defaultChecked={data?.requireReliever}
+            />
           </Form.Item>
           <Form.Item
             className="col-span-2"
@@ -146,7 +152,11 @@ export const SaveLeaveType: React.FC<IProps> = ({
             <AppSwitch unCheckedChildren="No" checkedChildren="Yes" />
           </Form.Item>
           <div className="col-span-2">
-            <EligibilityCriteriaInput Form={Form} />
+            <EligibilityCriteriaInput
+              Form={Form}
+              usesGroup={usesGroup}
+              setUsesGroup={setUsesGroup}
+            />
           </div>
 
           <div className="col-span-2 flex justify-end">
@@ -162,10 +172,11 @@ export const SaveLeaveType: React.FC<IProps> = ({
   );
 };
 
-const EligibilityCriteriaInput: React.FC<{ Form: typeof Form }> = ({
-  Form,
-}) => {
-  const [usesGroup, setUsesGroup] = useState<boolean>(false);
+const EligibilityCriteriaInput: React.FC<{
+  Form: typeof Form;
+  usesGroup: boolean;
+  setUsesGroup: (value: boolean) => void;
+}> = ({ Form, usesGroup, setUsesGroup }) => {
   return (
     <Form.Item
       name={`eligibilityCriteria`}
@@ -222,7 +233,7 @@ const EligibilityCriteriaInput: React.FC<{ Form: typeof Form }> = ({
                 allowClear
               />
             </FormItem>
-            <FormItem name={[`eligibilityCriteria`, "employmentStatus"]}>
+            <FormItem name={[`eligibilityCriteria`, "employeeStatus"]}>
               <Select
                 allowClear
                 options={EMPLOYEE_STATUSES_OPTIONS.filter((item) =>

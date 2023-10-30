@@ -11,13 +11,7 @@ import {
 } from "antd";
 import moment from "moment";
 import { getAppropriateColorForStatus } from "utils/colorHelpers/getAppropriateColorForStatus";
-import { TLoan, TLoanRepayment } from "../../types";
-import { TApprovalRequest } from "features/core/workflows/types/approval-requests";
-import { useQueryClient } from "react-query";
-import { useApproveORReject } from "hooks/useApproveORReject";
-import { QUERY_KEY_FOR_LEAVES } from "features/self-service/features/leave/hooks/useFetchLeaves";
-import { LoanDetails } from "../LoanDetails";
-import { getEmployeeFullName } from "features/core/employees/utils/getEmployeeFullName";
+import { TLoanRepayment } from "../../types";
 import { DEFAULT_DATE_FORMAT } from "constants/dateFormats";
 import { RepaymentDetails } from "../repayments/RepaymentDetails";
 
@@ -38,8 +32,6 @@ const RepaymentTable: React.FC<{
   total,
   permitedActions = ["view"],
 }) => {
-  const queryClient = useQueryClient();
-
   const [repayment, setRepayment] = useState<TLoanRepayment>();
   const [action, setAction] = useState<TAction>();
   const onClose = () => {

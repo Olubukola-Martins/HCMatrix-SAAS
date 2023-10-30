@@ -23,7 +23,7 @@ const LeaveRelieveApprovalsContainer = () => {
             options={APPROVAL_STATUS_OPTIONS}
           />
         </div>
-        <LeaveRelieveApprovalsTable status={status} />
+        <LeaveRelieveApprovalsTable status={status ? [status] : undefined} />
       </div>
     </div>
   );

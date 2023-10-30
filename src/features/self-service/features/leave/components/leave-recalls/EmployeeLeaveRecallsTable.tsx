@@ -11,17 +11,15 @@ import { LeaveDetails } from "../LeaveDetails";
 import { getEmployeeFullName } from "features/core/employees/utils/getEmployeeFullName";
 import { useGetAllLeaveRecalls } from "../../hooks/leaveRecall/useGetAllLeaveRecalls";
 import { DEFAULT_DATE_FORMAT } from "constants/dateFormats";
+import { useGetEmployeeLeaveRecalls } from "../../hooks/leaveRecall/useGetEmployeeLeaveRecalls";
 
-const AllLeaveRecallsTable: React.FC<{
-  employeeId?: number;
-}> = ({ employeeId }) => {
+const EmployeeLeaveRecallsTable: React.FC = () => {
   const [showD, setShowD] = useState<"view">();
   const [requestId, setRequestId] = useState<number>();
   const { pagination, onChange } = usePagination();
 
-  const { data, isFetching } = useGetAllLeaveRecalls({
+  const { data, isFetching } = useGetEmployeeLeaveRecalls({
     pagination,
-    employeeId,
   });
 
   const columns: ColumnsType<TLeaveRecall> = [
@@ -158,4 +156,4 @@ const AllLeaveRecallsTable: React.FC<{
   );
 };
 
-export default AllLeaveRecallsTable;
+export default EmployeeLeaveRecallsTable;

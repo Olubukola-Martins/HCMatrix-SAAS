@@ -3,14 +3,16 @@ import { MICROSERVICE_ENDPOINTS } from "config/enviroment";
 import { useApiAuth } from "hooks/useApiAuth";
 import { useMutation, useQueryClient } from "react-query";
 import { ICurrentCompany } from "types";
+import { TCreateLeaveTypeProps } from "./useCreateLeaveType";
+import { QUERY_KEY_FOR_LEAVE_TYPES } from "./useGetLeaveTypes";
 import { openNotification } from "utils/notifications";
-import { QUERY_KEY_FOR_LEAVE_ANALYTICS } from "../useGetLeaveAnalytics";
 
 type TData = {
   id: number;
+  body: TCreateLeaveTypeProps;
 };
-const delData = async (props: { data: TData; auth: ICurrentCompany }) => {
-  const url = `${MICROSERVICE_ENDPOINTS.UTILITY}/self-service/task/${props.data.id}`;
+const createData = async (props: { data: TData; auth: ICurrentCompany }) => {
+  const url = `${MICROSERVICE_ENDPOINTS.UTILITY}/self-service/leave/type/${props.data.id}`;
   const config = {
     headers: {
       Accept: "application/json",
@@ -19,18 +21,19 @@ const delData = async (props: { data: TData; auth: ICurrentCompany }) => {
     },
   };
 
-  const response = await axios.delete(url, config);
+  const data = {
+    ...props.data.body,
+  };
+
+  const response = await axios.put(url, data, config);
   return response;
 };
-export const useDeleteLeaveCycle = (
-  onSuccess?: () => void,
-  onError?: () => void
-) => {
+export const useUpdateLeaveType = () => {
   const queryClient = useQueryClient();
 
   const { token, companyId } = useApiAuth();
   return useMutation(
-    (props: TData) => delData({ data: props, auth: { token, companyId } }),
+    (props: TData) => createData({ data: props, auth: { token, companyId } }),
     {
       onSuccess: (res, variables, context) => {
         openNotification({
@@ -41,10 +44,9 @@ export const useDeleteLeaveCycle = (
           // duration: 0.4,
         });
         queryClient.invalidateQueries({
-          queryKey: [QUERY_KEY_FOR_LEAVE_ANALYTICS], //Replace with proper query key
+          queryKey: [QUERY_KEY_FOR_LEAVE_TYPES],
           // exact: true,
         });
-        onSuccess?.();
       },
       onError: (err: any, variables, context) => {
         openNotification({
@@ -53,7 +55,6 @@ export const useDeleteLeaveCycle = (
           description:
             err?.response?.data.message ?? err?.response?.data.error.message,
         });
-        onError?.();
       },
     }
   );

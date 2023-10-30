@@ -5,19 +5,14 @@ import { useMutation } from "react-query";
 import { ICurrentCompany } from "types";
 
 type TCreateProps = {
-  defaultLength: number;
   workflowId: number;
   includeWeekends: boolean;
   includeHolidays: boolean;
   carryover: boolean;
-  maxLengthCarryover: number;
-  casualLeave: boolean;
-  casualLeaveLength: number;
-  probationersApply: boolean;
-  probationersUseCasualLeave: boolean;
+  maxLengthCarryover?: number;
 };
 
-const createOrUpdateLeavePolicy = async (props: {
+const createData = async (props: {
   data: TCreateProps;
   auth: ICurrentCompany;
 }) => {
@@ -37,9 +32,9 @@ const createOrUpdateLeavePolicy = async (props: {
   const response = await axios.post(url, data, config);
   return response;
 };
-export const useCreateOrUpdateLeavePolicy = () => {
+export const useSaveLeavePolicySetting = () => {
   const { token, companyId } = useApiAuth();
   return useMutation((props: TCreateProps) =>
-    createOrUpdateLeavePolicy({ data: props, auth: { token, companyId } })
+    createData({ data: props, auth: { token, companyId } })
   );
 };

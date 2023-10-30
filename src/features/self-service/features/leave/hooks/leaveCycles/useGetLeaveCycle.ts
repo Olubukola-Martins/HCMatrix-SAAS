@@ -2,13 +2,17 @@ import axios from "axios";
 import { MICROSERVICE_ENDPOINTS } from "config/enviroment";
 import { useQuery } from "react-query";
 import { ICurrentCompany } from "types";
-import { TLeaveAnalytics } from "../types";
 import { useApiAuth } from "hooks/useApiAuth";
+import { TLeaveCycle } from "../../types/leaveCycle";
 
-interface IGetDataProps  {}
-export const QUERY_KEY_FOR_LEAVE_ANALYTICS = "leave-analytics";
-const getData = async (auth:ICurrentCompany,props: IGetDataProps): Promise<TLeaveAnalytics> => {
-  const url = `${MICROSERVICE_ENDPOINTS.UTILITY}/self-service/leave/analytic`;
+export const QUERY_KEY_FOR_LEAVE_CYCLE = "leave-cycle";
+
+const getData = async ({
+  auth,
+}: {
+  auth: ICurrentCompany;
+}): Promise<TLeaveCycle> => {
+  const url = `${MICROSERVICE_ENDPOINTS.UTILITY}/self-service/leave/cycle`;
 
   const config = {
     headers: {
@@ -16,26 +20,26 @@ const getData = async (auth:ICurrentCompany,props: IGetDataProps): Promise<TLeav
       Authorization: `Bearer ${auth.token}`,
       "x-company-id": auth.companyId,
     },
-    params: {},
   };
 
   const res = await axios.get(url, config);
-  const item: TLeaveAnalytics = res.data.data;
+  const item: TLeaveCycle = res.data.data;
 
-  const data: TLeaveAnalytics = {
+  const data: TLeaveCycle = {
     ...item,
   };
 
   return data;
 };
 
-export const useGetLeaveAnalytics = (props: IGetDataProps ={}) => {
-  const {token, companyId} = useApiAuth()
+export const useGetLeaveCycle = () => {
+  const { token, companyId } = useApiAuth();
+
   const queryData = useQuery(
-    [QUERY_KEY_FOR_LEAVE_ANALYTICS],
+    [QUERY_KEY_FOR_LEAVE_CYCLE],
     () =>
-      getData({token, companyId},{
-        ...props,
+      getData({
+        auth: { token, companyId },
       }),
     {
       onError: (err: any) => {},

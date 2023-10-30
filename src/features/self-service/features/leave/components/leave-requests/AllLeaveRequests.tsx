@@ -2,7 +2,7 @@ import { SelectApprovalStatus } from "features/core/workflows/components/SelectA
 import React, { useState } from "react";
 import { TApprovalStatus } from "types/statuses";
 import moment, { Moment } from "moment";
-import { DatePicker } from "antd";
+import { DatePicker, Input } from "antd";
 import AllLeaveRequestsTable from "./AllLeaveRequestsTable";
 import { SelectEmployee } from "features/core/employees/components/SelectEmployee";
 
@@ -13,6 +13,7 @@ const AllLeaveRequests = () => {
     moment(),
   ]);
   const [employeeId, setEmployeeId] = useState<number>();
+  const [search, setSearch] = useState<string>();
 
   return (
     <div>
@@ -33,6 +34,11 @@ const AllLeaveRequests = () => {
               onChange={(vals) => vals && setDuration(vals)}
               className="w-full"
             />
+            <Input.Search
+              placeholder="Search"
+              className="w-full"
+              onSearch={(val) => setSearch(val)}
+            />
             <SelectEmployee
               value={employeeId}
               handleSelect={(val) => {
@@ -49,9 +55,9 @@ const AllLeaveRequests = () => {
           </div>
         </div>
         <AllLeaveRequestsTable
-          status={status}
-          startDate={duration?.[0]?.toString()}
-          endDate={duration?.[0]?.toString()}
+          status={status ? [status] : undefined}
+          employeeId={employeeId}
+          search={search}
         />
       </div>
     </div>

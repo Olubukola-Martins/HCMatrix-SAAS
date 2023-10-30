@@ -4,19 +4,19 @@ import { useApiAuth } from "hooks/useApiAuth";
 import { useMutation, useQueryClient } from "react-query";
 import { ICurrentCompany } from "types";
 import { openNotification } from "utils/notifications";
-import { QUERY_KEY_FOR_LEAVE_ANALYTICS } from "../useGetLeaveAnalytics";
-import { TLeaveCycle } from "../../components/settings/LeaveCyclesAccordian";
+import { TLeaveCycle } from "../../types/leaveCycle";
+import { QUERY_KEY_FOR_LEAVE_CYCLE } from "./useGetLeaveCycle";
 
-type TEditProps = {
-  id: number;
-  body: Pick<TLeaveCycle, "name" | "startDate" | "endDate">;
-};
+export type TSaveLeaveCycleProps = Pick<
+  TLeaveCycle,
+  "startDay" | "startMonth" | "endDay" | "endMonth"
+>;
 
-const createLeaveCycle = async (props: {
-  data: TEditProps;
+const saveLeaveCycle = async (props: {
+  data: TSaveLeaveCycleProps;
   auth: ICurrentCompany;
 }) => {
-  const url = `${MICROSERVICE_ENDPOINTS.UTILITY}/self-service/leave/${props.data.id}`;
+  const url = `${MICROSERVICE_ENDPOINTS.UTILITY}/self-service/leave/cycle`;
   const config = {
     headers: {
       Accept: "application/json",
@@ -25,21 +25,20 @@ const createLeaveCycle = async (props: {
     },
   };
 
-  const data = props.data.body;
+  const data: TSaveLeaveCycleProps = {
+    ...props.data,
+  };
 
   const response = await axios.post(url, data, config);
   return response;
 };
-export const useEditLeaveCycle = (
-  onSuccess?: () => void,
-  onError?: () => void
-) => {
+export const useSaveLeaveCycle = () => {
   const queryClient = useQueryClient();
 
   const { token, companyId } = useApiAuth();
   return useMutation(
-    (props: TEditProps) =>
-      createLeaveCycle({ data: props, auth: { token, companyId } }),
+    (props: TSaveLeaveCycleProps) =>
+      saveLeaveCycle({ data: props, auth: { token, companyId } }),
     {
       onSuccess: (res, variables, context) => {
         openNotification({
@@ -50,10 +49,9 @@ export const useEditLeaveCycle = (
           // duration: 0.4,
         });
         queryClient.invalidateQueries({
-          queryKey: [QUERY_KEY_FOR_LEAVE_ANALYTICS], //Replace with proper query key
+          queryKey: [QUERY_KEY_FOR_LEAVE_CYCLE],
           // exact: true,
         });
-        onSuccess?.();
       },
       onError: (err: any, variables, context) => {
         openNotification({
@@ -62,7 +60,6 @@ export const useEditLeaveCycle = (
           description:
             err?.response?.data.message ?? err?.response?.data.error.message,
         });
-        onError?.();
       },
     }
   );

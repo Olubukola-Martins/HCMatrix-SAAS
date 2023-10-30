@@ -1,4 +1,4 @@
-import { Dropdown, Menu, Modal, Table } from "antd";
+import { Dropdown, Menu, Table } from "antd";
 import { MoreOutlined } from "@ant-design/icons";
 
 import React, { useState } from "react";
@@ -8,19 +8,12 @@ import { usePagination } from "hooks/usePagination";
 
 import { THoliday } from "../types";
 import moment from "moment";
-import { openNotification } from "utils/notifications";
-import { useQueryClient } from "react-query";
-import { useDeleteHoliday } from "../hooks/useDeleteHoliday";
-import {
-  QUERY_KEY_FOR_HOLIDAYS,
-  useGetHolidays,
-} from "../hooks/useGetHolidays";
+
+import { useGetHolidays } from "../hooks/useGetHolidays";
 import { EditHoliday } from "./EditHoliday";
 import { DeleteHoliday } from "./DeleteHoliday";
 
 export const HolidaysTable: React.FC = () => {
-  const queryClient = useQueryClient();
-
   const [showM, setShowM] = useState<"edit" | "delete">();
   const [holiday, setHoliday] = useState<THoliday>();
   const handleAction = (data: THoliday, action: "edit" | "delete") => {

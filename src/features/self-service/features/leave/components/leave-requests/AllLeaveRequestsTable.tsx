@@ -1,4 +1,4 @@
-import { Space, Dropdown, Menu, Table, Modal } from "antd";
+import { Space, Dropdown, Menu, Table } from "antd";
 import { MoreOutlined } from "@ant-design/icons";
 
 import React, { useState } from "react";
@@ -8,39 +8,36 @@ import { getAppropriateColorForStatus } from "utils/colorHelpers/getAppropriateC
 import { usePagination } from "hooks/usePagination";
 import { TApprovalStatus } from "types/statuses";
 import moment from "moment";
-import { useFetchLeaves } from "../../hooks/useFetchLeaves";
 import { TLeave } from "../../types";
 import { LeaveDetails } from "../LeaveDetails";
 import { RecallLeave } from "../leave-recalls/RecallLeave";
+import { useGetAllLeaves } from "../../hooks/useGetAllLeaves";
+import { getEmployeeFullName } from "features/core/employees/utils/getEmployeeFullName";
 
 const AllLeaveRequestsTable: React.FC<{
-  status?: TApprovalStatus;
+  status?: TApprovalStatus[];
   employeeId?: number;
-  startDate?: string;
-  endDate?: string;
-}> = ({ status, employeeId }) => {
+  search?: string;
+}> = ({ status, employeeId, search }) => {
   const [showD, setShowD] = useState<"view" | "recall">();
   const [request, setRequest] = useState<TLeave>();
   const { pagination, onChange } = usePagination();
 
-  const { data, isFetching } = useFetchLeaves({
+  const { data, isFetching } = useGetAllLeaves({
     pagination,
     status,
     employeeId,
+    searchParams: { name: search },
   });
 
-  const originalColumns: ColumnsType<TLeave> = [
+  const columns: ColumnsType<TLeave> = [
     {
       title: "Name",
       dataIndex: "name",
       key: "name",
-      render: (val, item) => (
-        <span>
-          {item.employee.firstName} {item.employee.lastName}
-        </span>
-      ),
+      render: (val, item) => <span>{getEmployeeFullName(item.employee)}</span>,
 
-      // ellipsis: true,
+      ellipsis: true,
 
       // width: 100,
     },
@@ -49,21 +46,16 @@ const AllLeaveRequestsTable: React.FC<{
       dataIndex: "department",
       key: "department",
       ellipsis: true,
-      render: (val, item) => <span>{item.department.name}</span>,
-
-      // ellipsis: true,
-
-      // width: 100,
+      render: (val, item) => (
+        <span>{item.employee?.designation?.department.name}</span>
+      ),
     },
+
     {
       title: "Leave Type",
       dataIndex: "leaveType",
       key: "leaveType",
       render: (val, item) => <span>{item.leaveType.name}</span>,
-
-      // ellipsis: true,
-
-      // width: 100,
     },
     {
       title: "Specific Dates",
@@ -105,7 +97,7 @@ const AllLeaveRequestsTable: React.FC<{
 
       key: "withPay",
       render: (val, item) => (
-        <span>{item.requestAllowance ? "Yes" : "No"}</span>
+        <span>{item.leaveType.employeesGetAllowance ? "Yes" : "No"}</span>
       ),
     },
 
@@ -114,12 +106,12 @@ const AllLeaveRequestsTable: React.FC<{
       dataIndex: "status",
 
       key: "status",
-      render: (val) => (
+      render: (val, item) => (
         <span
           className="capitalize"
-          style={{ color: getAppropriateColorForStatus(val) }}
+          style={{ color: getAppropriateColorForStatus(item.status) }}
         >
-          {val}
+          {item.status}
         </span>
       ),
     },
@@ -162,21 +154,16 @@ const AllLeaveRequestsTable: React.FC<{
     },
   ];
 
-  const columns = employeeId
-    ? originalColumns.filter((item) => item.key !== "name")
-    : originalColumns;
-
   return (
     <div>
-      <Modal
-        open={showD === "view"}
-        onCancel={() => setShowD(undefined)}
-        title={"Booking Details"}
-        style={{ top: 10 }}
-        footer={null}
-      >
-        {request && <LeaveDetails id={request?.id} />}
-      </Modal>
+      {request && (
+        <LeaveDetails
+          id={request?.id}
+          open={showD === "view"}
+          handleClose={() => setShowD(undefined)}
+        />
+      )}
+
       <RecallLeave
         open={showD === "recall"}
         handleClose={() => setShowD(undefined)}

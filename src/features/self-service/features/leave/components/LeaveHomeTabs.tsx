@@ -6,6 +6,7 @@ import AllLeaveRequests from "./leave-requests/AllLeaveRequests";
 import LeaveApprovalRequestsContainer from "./leave-approvals/LeaveApprovalRequestsContainer";
 import LeaveRelieveApprovalsContainer from "./leave-approvals/LeaveRelieveApprovalsContainer";
 import AllLeaveRecalls from "./leave-recalls/AllLeaveRecalls";
+import EmployeeLeaveRecallsTable from "./leave-recalls/EmployeeLeaveRecallsTable";
 
 const LeaveHomeTabs = () => {
   const tabItems: {
@@ -22,6 +23,11 @@ const LeaveHomeTabs = () => {
       label: "My Leave Approvals",
       children: <LeaveApprovalRequestsContainer />,
       key: "Leave Approvals",
+    },
+    {
+      label: "My Leave Recalls",
+      children: <EmployeeLeaveRecallsTable />,
+      key: "My Leave Recalls",
     },
     {
       label: "My Relieve Approvals",

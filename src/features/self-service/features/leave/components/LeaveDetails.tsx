@@ -1,85 +1,93 @@
-import { DatePicker, Form, Input, Skeleton, Switch } from "antd";
-import { useFetchSingleLeave } from "../hooks/useFetchSingleLeave";
+import { DatePicker, Form, Input, Modal, Skeleton, Switch } from "antd";
 import moment from "moment";
 import { useEffect } from "react";
+import { useGetSingleLeave } from "../hooks/useGetSingleLeave";
+import { IModalProps } from "types";
+import { getEmployeeFullName } from "features/core/employees/utils/getEmployeeFullName";
 
-interface IProps {
+interface IProps extends IModalProps {
   id: number;
 }
-
 const boxStyle = "px-4 py-3 shadow rounded-md bg-mainBg mb-4";
 
-export const LeaveDetails = ({ id }: IProps) => {
+export const LeaveDetails = ({ id, open, handleClose }: IProps) => {
   const [form] = Form.useForm();
-  const { data, isFetching } = useFetchSingleLeave({ id });
+  const { data, isFetching } = useGetSingleLeave({ id });
   useEffect(() => {
     if (data) {
       form.setFieldsValue({
-        employee: `${data.employee.firstName} ${data.employee.lastName}`,
-        relieve: `${data.workAssignee.firstName} ${data.workAssignee.lastName}`,
-        department: data.department.name,
+        employee: getEmployeeFullName(data.employee),
+        reliever: data.reliever ? getEmployeeFullName(data.reliever) : "",
+        department: data.employee?.designation?.department?.name,
         length: data.length,
         leaveType: data.leaveType.name,
         reason: data.reason,
-        requestAllowance: data.requestAllowance,
-        workAssigneeId: data.workAssigneeId,
+        requestAllowance: data.leaveType.employeesGetAllowance,
         duration: [moment(data.startDate), moment(data.endDate)],
       });
     }
   }, [id, form, data]);
   return (
-    <Skeleton loading={isFetching} active paragraph={{ rows: 16 }}>
-      <Form layout="vertical" requiredMark={false} form={form} disabled>
-        <Form.Item label="Employee" name="employee">
-          <Input placeholder="Employee" />
-        </Form.Item>
-        <Form.Item label="Deparment" name="department">
-          <Input placeholder="Deparment" />
-        </Form.Item>
-        <Form.Item name="duration" label="Duration">
-          <DatePicker.RangePicker
-            placeholder={["Start Date", "End Date"]}
-            className="w-full"
-          />
-        </Form.Item>
-        <Form.Item label="Number of days" name="length">
-          <Input placeholder="Number of days" />
-        </Form.Item>
+    <Modal
+      open={open}
+      onCancel={() => handleClose()}
+      footer={null}
+      title={"Leave Details"}
+      style={{ top: 20 }}
+    >
+      <Skeleton loading={isFetching} active paragraph={{ rows: 16 }}>
+        <Form layout="vertical" requiredMark={false} form={form} disabled>
+          <Form.Item label="Employee" name="employee">
+            <Input placeholder="Employee" />
+          </Form.Item>
+          <Form.Item label="Deparment" name="department">
+            <Input placeholder="Deparment" />
+          </Form.Item>
+          <Form.Item name="duration" label="Duration">
+            <DatePicker.RangePicker
+              placeholder={["Start Date", "End Date"]}
+              className="w-full"
+            />
+          </Form.Item>
+          <Form.Item label="Number of days" name="length">
+            <Input placeholder="Number of days" />
+          </Form.Item>
 
-        <Form.Item label="Leave Type" name="leaveType">
-          <Input placeholder="Leave Type" />
-        </Form.Item>
+          <Form.Item label="Leave Type" name="leaveType">
+            <Input placeholder="Leave Type" />
+          </Form.Item>
 
-        <Form.Item label="Work Assignee/Relieve" name={"relieve"}>
-          <Input placeholder="Work Assignee/Relieve" />
-        </Form.Item>
+          <Form.Item label="Work Assignee/Relieve" name={"relieve"}>
+            <Input placeholder="Work Assignee/Relieve" />
+          </Form.Item>
 
-        <Form.Item name="reason">
-          <Input.TextArea rows={4} placeholder="Reason" />
-        </Form.Item>
-        <Form.Item name="requestAllowance" label="Request Allowance ">
-          <Switch
-            defaultChecked={!!data?.requestAllowance}
-            checkedChildren="Yes"
-            unCheckedChildren="No"
-          />
-        </Form.Item>
-        {data?.documentUrls && data?.documentUrls.length > 0 && (
-          <div className={boxStyle}>
-            {data?.documentUrls.map((item, i) => (
-              <a
-                href={item}
-                className="mb-2 text-sm underline text-caramel hover:no-underline"
-              >
-                Document {i + 1}
-              </a>
-            ))}
-          </div>
-        )}
-        {/* <div className="flex justify-end">
+          <Form.Item name="reason">
+            <Input.TextArea rows={4} placeholder="Reason" />
+          </Form.Item>
+          <Form.Item name="requestAllowance" label="Leave Allowance">
+            <Switch
+              defaultChecked={!!data?.leaveType.employeesGetAllowance}
+              checkedChildren="Yes"
+              unCheckedChildren="No"
+            />
+          </Form.Item>
+          {data?.documentUrls && data?.documentUrls.length > 0 && (
+            <div className={boxStyle + "grid gap-3 grid-cols-3"}>
+              {data?.documentUrls.map((item, i) => (
+                <a
+                  href={item}
+                  className="mb-2 text-sm underline text-caramel hover:no-underline"
+                >
+                  Document {i + 1}
+                </a>
+              ))}
+            </div>
+          )}
+          {/* <div className="flex justify-end">
           <AppButton isLoading={isLoading} type="submit" />
         </div> */}
-      </Form>
-    </Skeleton>
+        </Form>
+      </Skeleton>
+    </Modal>
   );
 };

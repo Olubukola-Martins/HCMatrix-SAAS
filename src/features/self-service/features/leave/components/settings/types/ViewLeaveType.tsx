@@ -13,6 +13,7 @@ import FormItem from "antd/es/form/FormItem";
 import { GENDERS, MARITAL_STATUSES } from "constants/general";
 import { EMPLOYEE_STATUSES_OPTIONS } from "features/core/employees/constants";
 import { truncateString } from "utils/dataHelpers/truncateString";
+import { FormGroupInput } from "features/core/groups/components/FormGroupInput";
 
 interface IProps extends IModalProps {
   data?: TLeaveType;
@@ -31,13 +32,14 @@ export const ViewLeaveType: React.FC<IProps> = ({
       length: data.length,
       employeesGetAllowance: data.employeesGetAllowance,
       eligibilityCriteria: {
-        usesGroup: true,
-        groupName: "Administrators",
-        gender: "male",
-        employmentStatus: "probation",
-        maritalStatus: "married",
+        applicableToCertainGroup: data.applicableToCertainGroup,
+        groupId: data.groupId,
+        gender: data.gender,
+        employeeStatus: data.employeeStatus,
+        maritalStatus: data.maritalStatus,
       },
-      //   TODO: Populate when Backend updates endpoint
+
+      requireReliever: data.requireReliever,
     });
   }, [form, data]);
 
@@ -135,7 +137,7 @@ const EligibilityCriteriaInput: React.FC<{
   const [usesGroup, setUsesGroup] = useState<boolean>(false);
   useEffect(() => {
     if (!type) return;
-    setUsesGroup(type.gender === "male"); // TODO: Update this when backend updates
+    setUsesGroup(type.applicableToCertainGroup);
   }, [type]);
   return (
     <Form.Item
@@ -161,9 +163,13 @@ const EligibilityCriteriaInput: React.FC<{
         </Form.Item>
         {usesGroup && (
           <div className="col-span-3">
-            <FormItem name={[`eligibilityCriteria`, "groupName"]}>
-              <Input />
-            </FormItem>
+            <FormGroupInput
+              Form={Form}
+              control={{
+                label: "",
+                name: [`eligibilityCriteria`, "groupId"],
+              }}
+            />
           </div>
         )}
         {!usesGroup && (
@@ -186,7 +192,7 @@ const EligibilityCriteriaInput: React.FC<{
               />
             </FormItem>
             <FormItem
-              name={[`eligibilityCriteria`, "employmentStatus"]}
+              name={[`eligibilityCriteria`, "employeeStatus"]}
               label={truncateString("Employment Status", 10)}
             >
               <Select

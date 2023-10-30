@@ -1,22 +1,27 @@
 import axios from "axios";
 import { MICROSERVICE_ENDPOINTS } from "config/enviroment";
 import { useApiAuth } from "hooks/useApiAuth";
-import { useMutation } from "react-query";
+import { useMutation, useQueryClient } from "react-query";
 import { ICurrentCompany } from "types";
 import { TLeaveType } from "../../types";
+import { openNotification } from "utils/notifications";
+import { QUERY_KEY_FOR_LEAVE_TYPES } from "./useGetLeaveTypes";
 
-type TCreateProps = Pick<
+export type TCreateLeaveTypeProps = Pick<
   TLeaveType,
   | "name"
   | "length"
-  | "calculation"
   | "employeesGetAllowance"
   | "gender"
-  | "percentageAmount"
+  | "applicableToCertainGroup"
+  | "groupId"
+  | "maritalStatus"
+  | "employeeStatus"
+  | "requireReliever"
 >;
 
 const createLeaveType = async (props: {
-  data: TCreateProps;
+  data: TCreateLeaveTypeProps;
   auth: ICurrentCompany;
 }) => {
   const url = `${MICROSERVICE_ENDPOINTS.UTILITY}/self-service/leave/type`;
@@ -28,7 +33,7 @@ const createLeaveType = async (props: {
     },
   };
 
-  const data: TCreateProps = {
+  const data: TCreateLeaveTypeProps = {
     ...props.data,
   };
 
@@ -36,8 +41,34 @@ const createLeaveType = async (props: {
   return response;
 };
 export const useCreateLeaveType = () => {
+  const queryClient = useQueryClient();
+
   const { token, companyId } = useApiAuth();
-  return useMutation((props: TCreateProps) =>
-    createLeaveType({ data: props, auth: { token, companyId } })
+  return useMutation(
+    (props: TCreateLeaveTypeProps) =>
+      createLeaveType({ data: props, auth: { token, companyId } }),
+    {
+      onSuccess: (res, variables, context) => {
+        openNotification({
+          state: "success",
+
+          title: "Success",
+          description: res.data.message,
+          // duration: 0.4,
+        });
+        queryClient.invalidateQueries({
+          queryKey: [QUERY_KEY_FOR_LEAVE_TYPES],
+          // exact: true,
+        });
+      },
+      onError: (err: any, variables, context) => {
+        openNotification({
+          state: "error",
+          title: "Error Occurred",
+          description:
+            err?.response?.data.message ?? err?.response?.data.error.message,
+        });
+      },
+    }
   );
 };

@@ -17,7 +17,6 @@ import { getEmployeeFullName } from "features/core/employees/utils/getEmployeeFu
 import { TApprovalRequest } from "features/core/workflows/types/approval-requests";
 import { useQueryClient } from "react-query";
 import { useApproveORReject } from "hooks/useApproveORReject";
-import { QUERY_KEY_FOR_LEAVES } from "features/self-service/features/leave/hooks/useFetchLeaves";
 import { APPROVAL_STATUS_ACTION_OPTIONS } from "constants/statustes";
 import { LoanDetails } from "../LoanDetails";
 import { DEFAULT_DATE_FORMAT } from "constants/dateFormats";

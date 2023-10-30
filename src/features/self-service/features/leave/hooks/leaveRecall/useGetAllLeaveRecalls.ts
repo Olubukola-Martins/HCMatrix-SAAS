@@ -1,28 +1,27 @@
 import axios from "axios";
 import { MICROSERVICE_ENDPOINTS } from "config/enviroment";
 import { useQuery } from "react-query";
-import { ICurrentCompany, IPaginationProps, ISearchParams } from "types";
+import { ICurrentCompany, IPaginationProps } from "types";
 import { DEFAULT_PAGE_SIZE } from "constants/general";
-import { TLeaveType } from "../../types";
 import { useApiAuth } from "hooks/useApiAuth";
+import { TLeaveRecall } from "../../types";
 
 interface IGetDataProps {
   pagination?: IPaginationProps;
-  searchParams?: ISearchParams;
+  employeeId?: number;
 }
 
-export const QUERY_KEY_FOR_LEAVE_TYPES = "leave-types";
+export const QUERY_KEY_FOR_ALL_LEAVE_RECALLS = "all-leave-recalls";
 
-const getLeaveTypes = async (
+const getData = async (
   props: IGetDataProps,
   auth: ICurrentCompany
-): Promise<{ data: TLeaveType[]; total: number }> => {
+): Promise<{ data: TLeaveRecall[]; total: number }> => {
   const { pagination } = props;
   const limit = pagination?.limit ?? DEFAULT_PAGE_SIZE;
   const offset = pagination?.offset ?? 0;
-  const name = props.searchParams?.name ?? "";
 
-  const url = `${MICROSERVICE_ENDPOINTS.UTILITY}/self-service/leave/type`;
+  const url = `${MICROSERVICE_ENDPOINTS.UTILITY}/self-service/leave/recall`;
 
   const config = {
     headers: {
@@ -33,7 +32,7 @@ const getLeaveTypes = async (
     params: {
       limit,
       offset,
-      search: name,
+      employeeId: props.employeeId,
     },
   };
 
@@ -41,8 +40,8 @@ const getLeaveTypes = async (
   const fetchedData = res.data.data;
   const result = fetchedData.result;
 
-  const data: TLeaveType[] = result.map(
-    (item: TLeaveType): TLeaveType => ({ ...item })
+  const data: TLeaveRecall[] = result.map(
+    (item: TLeaveRecall): TLeaveRecall => ({ ...item })
   );
 
   const ans = {
@@ -53,13 +52,13 @@ const getLeaveTypes = async (
   return ans;
 };
 
-export const useFetchLeaveTypes = (props: IGetDataProps = {}) => {
-  const { pagination, searchParams } = props;
+export const useGetAllLeaveRecalls = (props: IGetDataProps = {}) => {
+  const { pagination, employeeId } = props;
   const { companyId, token } = useApiAuth();
   const queryData = useQuery(
-    [QUERY_KEY_FOR_LEAVE_TYPES, pagination, searchParams],
+    [QUERY_KEY_FOR_ALL_LEAVE_RECALLS, pagination, employeeId],
     () =>
-      getLeaveTypes(
+      getData(
         {
           ...props,
         },

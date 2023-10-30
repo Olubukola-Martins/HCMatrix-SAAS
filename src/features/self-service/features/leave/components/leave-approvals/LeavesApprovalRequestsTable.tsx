@@ -12,8 +12,9 @@ import { useApproveORReject } from "hooks/useApproveORReject";
 import { TApprovalRequest } from "features/core/workflows/types/approval-requests";
 import { useFetchApprovalRequests } from "features/core/workflows/hooks/useFetchApprovalRequests";
 import { useQueryClient } from "react-query";
-import { QUERY_KEY_FOR_LEAVES } from "../../hooks/useFetchLeaves";
 import { LeaveDetails } from "../LeaveDetails";
+import { QUERY_KEY_FOR_ALL_LEAVES } from "../../hooks/useGetAllLeaves";
+import { QUERY_KEY_FOR_EMPLOYEE_LEAVES } from "../../hooks/useGetEmployeeLeaves";
 
 const LeavesApprovalRequestsTable: React.FC<{
   status?: TApprovalStatus;
@@ -21,7 +22,7 @@ const LeavesApprovalRequestsTable: React.FC<{
 }> = ({ status, employeeId }) => {
   const queryClient = useQueryClient();
 
-  const [showD, setShowD] = useState(false);
+  const [showD, setShowD] = useState<"view">();
   const [requestId, setRequestId] = useState<number>();
   const { pagination, onChange } = usePagination();
   const { data, isFetching } = useFetchApprovalRequests({
@@ -32,7 +33,11 @@ const LeavesApprovalRequestsTable: React.FC<{
   const { confirmApprovalAction } = useApproveORReject({
     handleSuccess: () => {
       queryClient.invalidateQueries({
-        queryKey: [QUERY_KEY_FOR_LEAVES],
+        queryKey: [QUERY_KEY_FOR_ALL_LEAVES],
+        // exact: true,
+      });
+      queryClient.invalidateQueries({
+        queryKey: [QUERY_KEY_FOR_EMPLOYEE_LEAVES],
         // exact: true,
       });
     },
@@ -123,7 +128,7 @@ const LeavesApprovalRequestsTable: React.FC<{
                 <Menu.Item
                   key="3"
                   onClick={() => {
-                    setShowD(true);
+                    setShowD("view");
                     setRequestId(item?.leave?.id);
                   }}
                 >
@@ -171,16 +176,13 @@ const LeavesApprovalRequestsTable: React.FC<{
 
   return (
     <div>
-      <Modal
-        open={showD}
-        onCancel={() => setShowD(false)}
-        closeIcon={false}
-        title={"Booking Details"}
-        style={{ top: 10 }}
-        footer={null}
-      >
-        {requestId && <LeaveDetails id={requestId} />}
-      </Modal>
+      {requestId && (
+        <LeaveDetails
+          id={requestId}
+          handleClose={() => setShowD(undefined)}
+          open={showD === "view"}
+        />
+      )}
 
       <Table
         columns={columns}

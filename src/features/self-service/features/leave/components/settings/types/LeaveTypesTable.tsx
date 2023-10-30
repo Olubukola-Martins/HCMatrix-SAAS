@@ -6,18 +6,19 @@ import { useState } from "react";
 import { getAppropriateColorForStatus } from "utils/colorHelpers/getAppropriateColorForStatus";
 import { MoreOutlined } from "@ant-design/icons";
 import { usePagination } from "hooks/usePagination";
-import { useFetchLeaveTypes } from "../../../hooks/leaveTypes/useFetchLeaveTypes";
 import { TLeaveType } from "../../../types";
+import { useGetLeaveTypes } from "../../../hooks/leaveTypes/useGetLeaveTypes";
 
 export const LeaveTypesTable: React.FC<{
+  handleEdit?: (item: TLeaveType) => void;
   handleView?: (item: TLeaveType) => void;
   handleDelete?: (item: TLeaveType) => void;
   handleActivateOrDeactivate?: {
     fn: (item: TLeaveType) => void;
     isLoading?: boolean;
   };
-}> = ({ handleActivateOrDeactivate, handleView, handleDelete }) => {
-  const { data, isFetching } = useFetchLeaveTypes();
+}> = ({ handleActivateOrDeactivate, handleView, handleDelete, handleEdit }) => {
+  const { data, isFetching } = useGetLeaveTypes();
   const { pagination, onChange } = usePagination({ pageSize: 8 });
   const [selectedId, setSelectedId] = useState<number>();
   const columns: ColumnsType<TLeaveType> = [
@@ -34,9 +35,13 @@ export const LeaveTypesTable: React.FC<{
       render: (val, item) => (
         <span
           className="capitalize"
-          style={{ color: getAppropriateColorForStatus(item.gender) }}
+          style={{
+            color: getAppropriateColorForStatus(
+              item.isActive ? "active" : "inactive"
+            ),
+          }}
         >
-          {`Active`}
+          {item.isActive ? "active" : "inactive"}
         </span>
       ),
     },
@@ -69,7 +74,7 @@ export const LeaveTypesTable: React.FC<{
         <Switch
           checkedChildren="Yes"
           unCheckedChildren="No"
-          defaultChecked={item.gender === "active"}
+          defaultChecked={item.isActive}
           onChange={() => {
             setSelectedId(item.id); //to ensure only one row is selected for loading to affect
             handleActivateOrDeactivate?.fn?.(item);
@@ -90,6 +95,11 @@ export const LeaveTypesTable: React.FC<{
           overlay={
             <Menu
               items={[
+                {
+                  label: "Edit",
+                  key: "Edit",
+                  onClick: () => handleEdit?.(item),
+                },
                 {
                   label: "View",
                   key: "View",

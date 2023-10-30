@@ -5,20 +5,16 @@ import { useMutation } from "react-query";
 import { ICurrentCompany } from "types";
 
 type TCreateProps = {
-  name: string;
-  length: number;
-  calculation: string;
-  employeesGetAllowance: boolean;
-  percentageAmount: number;
-  gender: string;
+  status: "approved" | "rejected";
+  comment?: string;
 };
 
-const updateLeaveType = async (props: {
+const updateApproval = async (props: {
   data: TCreateProps;
   auth: ICurrentCompany;
-  id: number;
+  approvalId: number;
 }) => {
-  const url = `${MICROSERVICE_ENDPOINTS.UTILITY}/self-service/leave/type/${props.id}`;
+  const url = `${MICROSERVICE_ENDPOINTS.UTILITY}/self-service/leave/reliever-approval/${props.approvalId}`;
   const config = {
     headers: {
       Accept: "application/json",
@@ -31,15 +27,15 @@ const updateLeaveType = async (props: {
     ...props.data,
   };
 
-  const response = await axios.put(url, data, config);
+  const response = await axios.patch(url, data, config);
   return response;
 };
-export const useUpdateLeaveType = () => {
+export const useApproveOrRejectLeaveRelieverRequest = () => {
   const { token, companyId } = useApiAuth();
-  return useMutation((props: { data: TCreateProps; id: number }) =>
-    updateLeaveType({
+  return useMutation((props: { data: TCreateProps; approvalId: number }) =>
+    updateApproval({
       data: props.data,
-      id: props.id,
+      approvalId: props.approvalId,
       auth: { token, companyId },
     })
   );

@@ -2,25 +2,16 @@ import { Collapse, Typography } from "antd";
 import { AppButton } from "components/button/AppButton";
 import { useState } from "react";
 import { SaveLeaveCycle } from "./cycles/SaveLeaveCycle";
-import { useAddLeaveCycle } from "../../hooks/leaveCycles/useAddLeaveCycle";
-import { useEditLeaveCycle } from "../../hooks/leaveCycles/useEditLeavCycle";
-import { DeleteLeaveCycle } from "./cycles/DeleteLeaveCycle";
 import { useActivateOrDeactivateLeaveCycle } from "../../hooks/leaveCycles/useActivateOrDeactivateLeaveCycle";
 import { LeaveCyclesTable } from "./cycles/LeaveCyclesTable";
 import AppTooltip from "components/tooltip/AppTooltip";
+import { useSaveLeaveCycle } from "../../hooks/leaveCycles/useSaveLeaveCycle";
+import { TLeaveCycle } from "../../types";
+import { useGetLeaveCycle } from "../../hooks/leaveCycles/useGetLeaveCycle";
 
 const { Panel } = Collapse;
 
-export type TLeaveCycle = {
-  id: number;
-  createdAt: string;
-  updatedAt: string;
-  startDate: string;
-  endDate: string;
-  name: string;
-  status: "active" | "inactive" | "ended";
-};
-type TAction = "add" | "edit" | "delete" | "activate-or-deactivate";
+type TAction = "save" | "delete" | "activate-or-deactivate";
 const LeaveCyclesAccordian = () => {
   const [action, setAction] = useState<TAction>();
   const [cycle, setCycle] = useState<TLeaveCycle>();
@@ -35,42 +26,33 @@ const LeaveCyclesAccordian = () => {
     mutate: addCycle,
     isLoading: isAdding,
     isSuccess: isAdded,
-  } = useAddLeaveCycle();
-  const {
-    mutate: editCycle,
-    isLoading: isEditing,
-    isSuccess: isEdited,
-  } = useEditLeaveCycle();
+  } = useSaveLeaveCycle();
+
   const { mutate: activateOrDeactivate, isLoading: isProcessing } =
     useActivateOrDeactivateLeaveCycle();
+  const { data: leaveCycle, isFetching: isFetchingLeaveCycle } =
+    useGetLeaveCycle();
 
   return (
     <>
       <SaveLeaveCycle
-        key="add"
-        open={action === "add"}
-        action={"add"}
-        handleClose={onClose}
+        open={action === "save"}
+        action={cycle ? "edit" : "add"}
+        handleClose={() => onClose()}
         defaultData={cycle}
-        onSubmit={{ fn: addCycle, isLoading: isAdding, isSuccess: isAdded }}
-      />
-      <SaveLeaveCycle
-        key="edit"
-        open={action === "edit"}
-        action={"edit"}
-        handleClose={onClose}
         onSubmit={{
-          fn: (data) => cycle && editCycle({ id: cycle?.id, body: data }),
-          isLoading: isEditing,
-          isSuccess: isEdited,
+          fn: (vals) =>
+            addCycle(vals, {
+              onSuccess: () => {
+                setCycle(undefined);
+                onClose();
+              },
+            }),
+          isLoading: isAdding,
+          isSuccess: isAdded,
         }}
-        defaultData={cycle}
       />
-      <DeleteLeaveCycle
-        open={action === "delete"}
-        cycle={cycle}
-        handleClose={onClose}
-      />
+
       <Collapse expandIconPosition="end" accordion>
         <Panel
           header={
@@ -89,20 +71,23 @@ const LeaveCyclesAccordian = () => {
           <>
             <div className="flex flex-col gap-4">
               <div className="flex justify-end">
-                <AppButton
-                  label="Add Leave Cycle"
-                  handleClick={() => handleClick("add")}
-                />
+                {!leaveCycle && (
+                  <AppButton
+                    label="Create Leave Cycle"
+                    handleClick={() => handleClick("save")}
+                  />
+                )}
               </div>
               <LeaveCyclesTable
-                handleDelete={(item) => handleClick("delete", item)}
-                handleEdit={(item) => handleClick("edit", item)}
+                handleEdit={(item) => handleClick("save", item)}
                 handleActivateOrDeactivate={{
                   fn: (item) => {
-                    activateOrDeactivate({ id: item.id });
+                    activateOrDeactivate({ isActive: !item.isActive });
                   },
                   isLoading: isProcessing,
                 }}
+                data={leaveCycle ? [leaveCycle] : undefined}
+                isFetching={isFetchingLeaveCycle}
               />
             </div>
           </>

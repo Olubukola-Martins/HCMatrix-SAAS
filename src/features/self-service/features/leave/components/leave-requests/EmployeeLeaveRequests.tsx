@@ -36,11 +36,7 @@ const EmployeeLeaveRequests = () => {
             <i className="ri-logout-box-r-line text-xl"></i>
           </div>
         </div>
-        <EmployeeLeavesTable
-          status={status}
-          startDate={duration?.[0]?.toString()}
-          endDate={duration?.[0]?.toString()}
-        />
+        <EmployeeLeavesTable status={status ? [status] : undefined} />
       </div>
     </div>
   );

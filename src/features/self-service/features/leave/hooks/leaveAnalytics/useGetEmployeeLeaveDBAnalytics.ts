@@ -3,17 +3,15 @@ import { MICROSERVICE_ENDPOINTS } from "config/enviroment";
 import { useQuery } from "react-query";
 import { ICurrentCompany } from "types";
 import { useApiAuth } from "hooks/useApiAuth";
-import { TSingleFolder } from "../types";
+import { TLeaveAnalytics } from "../../types";
 
-interface IDataProps {
-  id: number;
-}
-export const QUERY_KEY_FOR_SINGLE_FOLDER = "single-folder";
+export const QUERY_KEY_FOR_LEAVE_EMPLOYEE_DB_ANALYTICS =
+  "leave-employee-db-analytics";
+
 const getData = async (props: {
-  data: IDataProps;
   auth: ICurrentCompany;
-}): Promise<TSingleFolder> => {
-  const url = `${MICROSERVICE_ENDPOINTS.UTILITY}/self-service/folder/${props.data.id}`;
+}): Promise<TLeaveAnalytics> => {
+  const url = `${MICROSERVICE_ENDPOINTS.UTILITY}/self-service/leave/analytic`;
 
   const config = {
     headers: {
@@ -24,26 +22,25 @@ const getData = async (props: {
   };
 
   const res = await axios.get(url, config);
-  const item: TSingleFolder = res.data.data;
+  const item: TLeaveAnalytics = res.data.data;
 
-  const data: TSingleFolder = {
+  const data: TLeaveAnalytics = {
     ...item,
   };
 
   return data;
 };
 
-export const useGetSingleFolder = (props: IDataProps) => {
+export const useGetEmployeeLeaveDBAnalytics = () => {
   const { token, companyId } = useApiAuth();
   const queryData = useQuery(
-    [QUERY_KEY_FOR_SINGLE_FOLDER, props.id],
+    [QUERY_KEY_FOR_LEAVE_EMPLOYEE_DB_ANALYTICS],
     () =>
       getData({
         auth: {
           companyId,
           token,
         },
-        data: { ...props },
       }),
     {
       onError: (err: any) => {},

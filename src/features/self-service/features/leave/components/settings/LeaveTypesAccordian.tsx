@@ -9,10 +9,12 @@ import { LeaveTypesTable } from "./types/LeaveTypesTable";
 import { ViewLeaveType } from "./types/ViewLeaveType";
 import { DeleteLeaveType } from "./types/DeleteLeaveType";
 import AppTooltip from "components/tooltip/AppTooltip";
+import { useActivateOrDeactivateLeaveType } from "../../hooks/leaveTypes/useActivateOrDeactivateLeaveType";
+import { useUpdateLeaveType } from "../../hooks/leaveTypes/useUpdateLeaveType";
 
 const { Panel } = Collapse;
 
-type TAction = "add" | "view" | "delete" | "activate-or-deactivate";
+type TAction = "add" | "edit" | "view" | "delete" | "activate-or-deactivate";
 const LeaveTypesAccordian = () => {
   const [action, setAction] = useState<TAction>();
   const [type, setType] = useState<TLeaveType>();
@@ -28,6 +30,13 @@ const LeaveTypesAccordian = () => {
     isLoading: isAdding,
     isSuccess: isAdded,
   } = useCreateLeaveType();
+  const {
+    mutate: edittype,
+    isLoading: isUpdating,
+    isSuccess: isUpdated,
+  } = useUpdateLeaveType();
+  const { mutate: activateOrDeactivate, isLoading: isProcessing } =
+    useActivateOrDeactivateLeaveType();
 
   return (
     <>
@@ -36,8 +45,38 @@ const LeaveTypesAccordian = () => {
         open={action === "add"}
         action={"add"}
         handleClose={onClose}
+        onSubmit={{
+          fn: (vals) =>
+            addtype(vals, {
+              onSuccess: () => {
+                onClose();
+                setType(undefined);
+              },
+            }),
+          isLoading: isAdding,
+          isSuccess: isAdded,
+        }}
+      />
+      <SaveLeaveType
+        key="edit"
+        open={action === "edit"}
+        action={"edit"}
+        handleClose={onClose}
         data={type}
-        onSubmit={{ fn: addtype, isLoading: isAdding, isSuccess: isAdded }}
+        onSubmit={{
+          fn: (vals) =>
+            type &&
+            edittype(
+              { id: type.id, body: vals },
+              {
+                onSuccess: () => {
+                  onClose();
+                },
+              }
+            ),
+          isLoading: isUpdating,
+          isSuccess: isUpdated,
+        }}
       />
       <ViewLeaveType
         key="view"
@@ -74,8 +113,18 @@ const LeaveTypesAccordian = () => {
               />
             </div>
             <LeaveTypesTable
+              handleEdit={(item) => handleClick("edit", item)}
               handleView={(item) => handleClick("view", item)}
               handleDelete={(item) => handleClick("delete", item)}
+              handleActivateOrDeactivate={{
+                fn: (item) => {
+                  activateOrDeactivate({
+                    isActive: !item.isActive,
+                    leaveTypeId: item.id,
+                  });
+                },
+                isLoading: isProcessing,
+              }}
             />
           </div>
         </Panel>

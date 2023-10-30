@@ -1,42 +1,35 @@
 import { Form, Typography, InputNumber, Skeleton } from "antd";
 import { FormWorkflowInput } from "features/core/workflows/components/FormWorkflowInput";
 import { useEffect, useState } from "react";
-import { useCreateOrUpdateLeavePolicy } from "../../../hooks/useCreateOrUpdateLeavePolicy";
-import {
-  QUERY_KEY_FOR_LEAVE_POLICY,
-  useFetchLeavePolicy,
-} from "../../../hooks/useFetchLeavePolicy";
 import { useQueryClient } from "react-query";
 import { openNotification } from "utils/notifications";
-import { useApiAuth } from "hooks/useApiAuth";
 import { AppButton } from "components/button/AppButton";
 import AppSwitch from "components/switch/AppSwitch";
+import {
+  QUERY_KEY_FOR_LEAVE_POLICY_SETTING,
+  useGetLeavePolicySetting,
+} from "../../../hooks/leavePolicySetting/useGetLeavePolicySetting";
+import { useSaveLeavePolicySetting } from "../../../hooks/leavePolicySetting/useSaveLeavePolicySetting";
+import { numberHasToBeAWholeNumberRule } from "utils/formHelpers/validation";
 
 const btwnStyle =
   "bg-card pt-4 px-3 flex flex-row w-full justify-between align-center rounded-md";
 const gapStyle = "bg-card pt-4 px-3 flex  gap-16 align-center rounded-md";
 const LeavePolicyForm = () => {
   const queryClient = useQueryClient();
-  const { companyId, token } = useApiAuth();
 
   const [showMaxCODays, setShowMaxCODays] = useState(false);
-  const [showCasualLLen, setShowCasualLLen] = useState(false);
   const [form] = Form.useForm();
-  const { data, isFetching } = useFetchLeavePolicy({ companyId, token });
-  const { mutate, isLoading } = useCreateOrUpdateLeavePolicy();
+  const { data, isFetching } = useGetLeavePolicySetting();
+  const { mutate, isLoading } = useSaveLeavePolicySetting();
   const handleSubmit = (data: any) => {
     mutate(
       {
-        defaultLength: data.defaultLength,
         workflowId: data.workflowId,
-        includeWeekends: data.includeWeekends,
-        includeHolidays: data.includeHolidays,
-        carryover: data.carryover,
+        includeWeekends: !!data.includeWeekends,
+        includeHolidays: !!data.includeHolidays,
+        carryover: !!data.carryover,
         maxLengthCarryover: data.maxLengthCarryover,
-        casualLeave: data.casualLeave,
-        casualLeaveLength: data.casualLeaveLength,
-        probationersApply: data.probationersApply,
-        probationersUseCasualLeave: data.probationersUseCasualLeave,
       },
 
       {
@@ -58,7 +51,7 @@ const LeavePolicyForm = () => {
           });
 
           queryClient.invalidateQueries({
-            queryKey: [QUERY_KEY_FOR_LEAVE_POLICY],
+            queryKey: [QUERY_KEY_FOR_LEAVE_POLICY_SETTING],
             // exact: true,
           });
         },
@@ -67,20 +60,14 @@ const LeavePolicyForm = () => {
   };
   useEffect(() => {
     if (data) {
-      setShowMaxCODays(data.maxLengthCarryover > 0);
-      setShowCasualLLen(!!data.casualLeaveLength);
+      setShowMaxCODays(data.carryover);
 
       form.setFieldsValue({
-        defaultLength: data.defaultLength,
         workflowId: data.workflowId,
         includeWeekends: data.includeWeekends,
         includeHolidays: data.includeHolidays,
         carryover: data.carryover,
         maxLengthCarryover: data.maxLengthCarryover,
-        casualLeave: data.casualLeave,
-        casualLeaveLength: data.casualLeaveLength,
-        probationersApply: data.probationersApply,
-        probationersUseCasualLeave: data.probationersUseCasualLeave,
       });
     }
   }, [form, data]);
@@ -167,6 +154,7 @@ const LeavePolicyForm = () => {
                   label=""
                   className="flex-1 "
                   name="maxLengthCarryover"
+                  rules={[numberHasToBeAWholeNumberRule]}
                 >
                   <InputNumber
                     placeholder="What is your Maximum Leave Carryover Length"
@@ -195,7 +183,7 @@ const LeavePolicyForm = () => {
 
           <div className="flex justify-end">
             <Form.Item>
-              <AppButton type="submit" isLoading={isLoading} label="Submit" />
+              <AppButton type="submit" isLoading={isLoading} label="Save" />
             </Form.Item>
           </div>
         </div>

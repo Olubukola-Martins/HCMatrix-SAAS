@@ -1,17 +1,8 @@
-import { SelectApprovalStatus } from "features/core/workflows/components/SelectApprovalStatus";
-import React, { useState } from "react";
-import { TApprovalStatus } from "types/statuses";
-import moment, { Moment } from "moment";
-import { DatePicker } from "antd";
+import { useState } from "react";
 import { SelectEmployee } from "features/core/employees/components/SelectEmployee";
 import AllLeaveRecallsTable from "./AllLeaveRecallsTable";
 
 const AllLeaveRecalls = () => {
-  const [status, setStatus] = useState<TApprovalStatus>();
-  const [duration, setDuration] = useState<[Moment | null, Moment | null]>([
-    moment(),
-    moment(),
-  ]);
   const [employeeId, setEmployeeId] = useState<number>();
 
   return (
@@ -19,20 +10,6 @@ const AllLeaveRecalls = () => {
       <div className="flex flex-col gap-6">
         <div className="flex justify-between items-center">
           <div className="flex gap-4">
-            <SelectApprovalStatus
-              value={status}
-              onSelect={(val) => {
-                setStatus(val);
-              }}
-              onClear={() => {
-                setStatus(undefined);
-              }}
-            />
-            <DatePicker.RangePicker
-              placeholder={["Start Date", "End Date"]}
-              onChange={(vals) => vals && setDuration(vals)}
-              className="w-full"
-            />
             <SelectEmployee
               value={employeeId}
               handleSelect={(val) => {
@@ -48,11 +25,7 @@ const AllLeaveRecalls = () => {
             <i className="ri-logout-box-r-line text-xl"></i>
           </div>
         </div>
-        <AllLeaveRecallsTable
-          status={status}
-          startDate={duration?.[0]?.toString()}
-          endDate={duration?.[0]?.toString()}
-        />
+        <AllLeaveRecallsTable employeeId={employeeId} />
       </div>
     </div>
   );

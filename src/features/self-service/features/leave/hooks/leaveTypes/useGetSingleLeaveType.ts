@@ -2,21 +2,24 @@ import axios from "axios";
 import { MICROSERVICE_ENDPOINTS } from "config/enviroment";
 import { useQuery } from "react-query";
 import { ICurrentCompany } from "types";
-import { TLeaveType } from "../types";
+import { useApiAuth } from "hooks/useApiAuth";
+import { TLeaveType } from "../../types";
 
-// TO DO : need to exist in the general data entities and refactored
-interface IGetDataProps extends ICurrentCompany {
+interface IDataProps {
   id: number;
 }
 export const QUERY_KEY_FOR_SINGLE_LEAVE_TYPE = "single-leave-type";
-const getLeave = async (props: IGetDataProps): Promise<TLeaveType> => {
-  const url = `${MICROSERVICE_ENDPOINTS.UTILITY}/self-service/leave/type/${props.id}`;
+const getData = async (props: {
+  data: IDataProps;
+  auth: ICurrentCompany;
+}): Promise<TLeaveType> => {
+  const url = `${MICROSERVICE_ENDPOINTS.UTILITY}/self-service/leave/type/${props.data.id}`;
 
   const config = {
     headers: {
       Accept: "application/json",
-      Authorization: `Bearer ${props.token}`,
-      "x-company-id": props.companyId,
+      Authorization: `Bearer ${props.auth.token}`,
+      "x-company-id": props.auth.companyId,
     },
   };
 
@@ -30,12 +33,17 @@ const getLeave = async (props: IGetDataProps): Promise<TLeaveType> => {
   return data;
 };
 
-export const useFetchSingleLeaveType = (props: IGetDataProps) => {
+export const useGetSingleLeaveType = (props: IDataProps) => {
+  const { token, companyId } = useApiAuth();
   const queryData = useQuery(
     [QUERY_KEY_FOR_SINGLE_LEAVE_TYPE, props.id],
     () =>
-      getLeave({
-        ...props,
+      getData({
+        auth: {
+          companyId,
+          token,
+        },
+        data: { ...props },
       }),
     {
       onError: (err: any) => {},

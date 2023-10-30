@@ -4,30 +4,22 @@ import { DEFAULT_DATE_FORMAT } from "constants/dateFormats";
 import moment from "moment";
 import { useState } from "react";
 import { getAppropriateColorForStatus } from "utils/colorHelpers/getAppropriateColorForStatus";
-import { useGetLeaveCycles } from "../../../hooks/leaveCycles/useGetLeaveCycles";
-import { TLeaveCycle } from "../LeaveCyclesAccordian";
 import { MoreOutlined } from "@ant-design/icons";
-import { usePagination } from "hooks/usePagination";
 import AppSwitch from "components/switch/AppSwitch";
 
+import { TLeaveCycle } from "../../../types";
+
 export const LeaveCyclesTable: React.FC<{
-  handleDelete?: (item: TLeaveCycle) => void;
   handleEdit?: (item: TLeaveCycle) => void;
   handleActivateOrDeactivate?: {
     fn: (item: TLeaveCycle) => void;
     isLoading?: boolean;
   };
-}> = ({ handleActivateOrDeactivate, handleDelete, handleEdit }) => {
-  const { data, isFetching } = useGetLeaveCycles();
-  const { pagination, onChange } = usePagination({ pageSize: 8 });
+  data?: TLeaveCycle[];
+  isFetching?: boolean;
+}> = ({ handleActivateOrDeactivate, handleEdit, data, isFetching }) => {
   const [selectedId, setSelectedId] = useState<number>();
   const columns: ColumnsType<TLeaveCycle> = [
-    {
-      title: "Name",
-      dataIndex: "name",
-      key: "name",
-      render: (val, item) => <span className="capitalize">{item.name}</span>,
-    },
     {
       title: "Status",
       dataIndex: "Status",
@@ -35,9 +27,13 @@ export const LeaveCyclesTable: React.FC<{
       render: (val, item) => (
         <span
           className="capitalize"
-          style={{ color: getAppropriateColorForStatus(item.status) }}
+          style={{
+            color: getAppropriateColorForStatus(
+              item.isActive ? "active" : "inactive"
+            ),
+          }}
         >
-          {item.status}
+          {item.isActive ? "active" : "inactive"}
         </span>
       ),
     },
@@ -48,7 +44,10 @@ export const LeaveCyclesTable: React.FC<{
       key: "startDate",
       render: (val, item) => (
         <span className="">
-          {moment(item.startDate).format(DEFAULT_DATE_FORMAT)}
+          {moment(
+            `${moment().format("YYYY")}-${item.startMonth + 1}-${item.startDay}`
+          ).format(`DD, MMMM`)}
+          {/* //cos of backend api, using 0 - 11 for month, hence +1 */}
         </span>
       ),
     },
@@ -58,7 +57,10 @@ export const LeaveCyclesTable: React.FC<{
       key: "endDate",
       render: (val, item) => (
         <span className="">
-          {moment(item.endDate).format(DEFAULT_DATE_FORMAT)}
+          {moment(
+            `${moment().format("YYYY")}-${item.endMonth + 1}-${item.endDay}`
+          ).format(`DD, MMMM`)}
+          {/* //cos of backend api, using 0 - 11 for month, hence +1 */}
         </span>
       ),
     },
@@ -90,7 +92,7 @@ export const LeaveCyclesTable: React.FC<{
         <AppSwitch
           checkedChildren="Yes"
           unCheckedChildren="No"
-          defaultChecked={item.status === "active"}
+          defaultChecked={item.isActive}
           onChange={() => {
             setSelectedId(item.id); //to ensure only one row is selected for loading to affect
             handleActivateOrDeactivate?.fn?.(item);
@@ -116,11 +118,6 @@ export const LeaveCyclesTable: React.FC<{
                   key: "Edit",
                   onClick: () => handleEdit?.(item),
                 },
-                {
-                  label: "Delete",
-                  key: "Delete",
-                  onClick: () => handleDelete?.(item),
-                },
               ]}
             />
           }
@@ -136,25 +133,8 @@ export const LeaveCyclesTable: React.FC<{
       <Table
         columns={columns}
         size="small"
-        dataSource={data?.data.map((item): TLeaveCycle & { key: number } => ({
-          key: item.id,
-          id: item.id,
-
-          createdAt: item.createdAt,
-          endDate: item.dueDate,
-          name: item.name,
-          startDate: item.dateAssigned,
-          updatedAt: item.updatedAt,
-          status:
-            item.status === "resolved"
-              ? "ended"
-              : item.status === "closed"
-              ? "active"
-              : "inactive",
-        }))}
+        dataSource={data}
         loading={isFetching}
-        pagination={{ ...pagination, total: data?.total }}
-        onChange={onChange}
       />
     </div>
   );

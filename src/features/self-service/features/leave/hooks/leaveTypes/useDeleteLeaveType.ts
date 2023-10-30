@@ -1,18 +1,14 @@
 import axios from "axios";
+import { MICROSERVICE_ENDPOINTS } from "config/enviroment";
 import { useApiAuth } from "hooks/useApiAuth";
-
 import { useMutation } from "react-query";
 import { ICurrentCompany } from "types";
 
-type TDelProps = {
+type TData = {
   id: number;
 };
-
-const deleteLeaveType = async (props: {
-  data: TDelProps;
-  auth: ICurrentCompany;
-}) => {
-  const url = `${process.env.REACT_APP_UTILITY_BASE_URL}/self-service/leave/type/${props.data.id}`;
+const delData = async (props: { data: TData; auth: ICurrentCompany }) => {
+  const url = `${MICROSERVICE_ENDPOINTS.UTILITY}/self-service/leave/type/${props.data.id}`;
   const config = {
     headers: {
       Accept: "application/json",
@@ -26,9 +22,7 @@ const deleteLeaveType = async (props: {
 };
 export const useDeleteLeaveType = () => {
   const { token, companyId } = useApiAuth();
-  return useMutation((props: TDelProps) =>
-    deleteLeaveType({ data: props, auth: { token, companyId } })
+  return useMutation((props: TData) =>
+    delData({ data: props, auth: { token, companyId } })
   );
 };
-
-export default useDeleteLeaveType;

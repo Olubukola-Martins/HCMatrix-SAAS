@@ -3,42 +3,37 @@ import { MICROSERVICE_ENDPOINTS } from "config/enviroment";
 import { useQuery } from "react-query";
 import { ICurrentCompany, IPaginationProps, ISearchParams } from "types";
 import { DEFAULT_PAGE_SIZE } from "constants/general";
-import { TLeave } from "../types";
-import { TApprovalStatus } from "types/statuses";
+import { TLeaveType } from "../../types";
 import { useApiAuth } from "hooks/useApiAuth";
 
-// TO DO : need to exist in the general data entities and refactored
 interface IGetDataProps {
   pagination?: IPaginationProps;
   searchParams?: ISearchParams;
-  employeeId?: number;
-  status?: TApprovalStatus;
 }
 
-export const QUERY_KEY_FOR_LEAVES = "leaves";
+export const QUERY_KEY_FOR_LEAVE_TYPES = "leave-types";
 
-const getLeaves = async (
-  props: IGetDataProps & ICurrentCompany
-): Promise<{ data: TLeave[]; total: number }> => {
+const getLeaveTypes = async (
+  props: IGetDataProps,
+  auth: ICurrentCompany
+): Promise<{ data: TLeaveType[]; total: number }> => {
   const { pagination } = props;
   const limit = pagination?.limit ?? DEFAULT_PAGE_SIZE;
   const offset = pagination?.offset ?? 0;
   const name = props.searchParams?.name ?? "";
 
-  const url = `${MICROSERVICE_ENDPOINTS.UTILITY}/self-service/leave`;
+  const url = `${MICROSERVICE_ENDPOINTS.UTILITY}/self-service/leave/type`;
 
   const config = {
     headers: {
       Accept: "application/json",
-      Authorization: `Bearer ${props.token}`,
-      "x-company-id": props.companyId,
+      Authorization: `Bearer ${auth.token}`,
+      "x-company-id": auth.companyId,
     },
     params: {
       limit,
       offset,
       search: name,
-      employeeId: props.employeeId,
-      status: props.status,
     },
   };
 
@@ -46,7 +41,9 @@ const getLeaves = async (
   const fetchedData = res.data.data;
   const result = fetchedData.result;
 
-  const data: TLeave[] = result.map((item: TLeave): TLeave => ({ ...item }));
+  const data: TLeaveType[] = result.map(
+    (item: TLeaveType): TLeaveType => ({ ...item })
+  );
 
   const ans = {
     data,
@@ -56,17 +53,21 @@ const getLeaves = async (
   return ans;
 };
 
-export const useFetchLeaves = (props: IGetDataProps) => {
-  const { token, companyId } = useApiAuth();
-
+export const useGetLeaveTypes = (props: IGetDataProps = {}) => {
+  const { pagination, searchParams } = props;
+  const { companyId, token } = useApiAuth();
   const queryData = useQuery(
-    [QUERY_KEY_FOR_LEAVES, props],
+    [QUERY_KEY_FOR_LEAVE_TYPES, pagination, searchParams],
     () =>
-      getLeaves({
-        ...props,
-        token,
-        companyId,
-      }),
+      getLeaveTypes(
+        {
+          ...props,
+        },
+        {
+          token,
+          companyId,
+        }
+      ),
     {
       onError: (err: any) => {},
       onSuccess: (data) => {},
