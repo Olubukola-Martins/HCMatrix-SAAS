@@ -42,7 +42,8 @@ export const EmployeeHome: React.FC<{
                 <span className="flex items-center gap-2 text-xs text-green-700">
                   <i className="ri-time-line"></i>
                   <span>
-                    <LiveClock format="HH:mm:ss" />
+                    <LiveClock format="hh:mm:ss A" />
+                    {/* TODO: When 12 hr global format is implemented from company setting ensure to apply it to the format above */}
                   </span>
                 </span>
               </div>
