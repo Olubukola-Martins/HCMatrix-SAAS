@@ -2,6 +2,7 @@ export type TCompanyOwnerOrganogram = {
   id: number;
   firstName: string;
   lastName: string;
+  avatarUrl?: string;
   designation: Designation;
   directReport: DirectReport[];
 };
@@ -15,6 +16,8 @@ interface Employee {
   id: number;
   firstName: string;
   lastName: string;
+  avatarUrl?: string;
+
   designation: Designation;
 }
 

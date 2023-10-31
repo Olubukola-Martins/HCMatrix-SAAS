@@ -97,6 +97,7 @@ const HierarchicalOrganogram: React.FC<{
               name={getEmployeeFullName(person)}
               designation={person?.designation?.name ?? ""}
               department={person?.designation?.department?.name}
+              avatarUrl={person?.avatarUrl}
             />
           }
         >
@@ -118,7 +119,10 @@ const HierarchicalOrganogram: React.FC<{
                     }}
                   >
                     <Avatar
-                      src={`https://picsum.photos/${190 + item.employeeId}`}
+                      src={
+                        item.employee?.avatarUrl ??
+                        `https://picsum.photos/${190 + item.employeeId}`
+                      }
                     />
 
                     <div className="text-left">
@@ -148,12 +152,14 @@ const HierarchicalOrganogram: React.FC<{
 const OrgCard: React.FC<{
   designation: string;
   name: string;
+  avatarUrl?: string;
+
   department?: string;
-}> = ({ designation, name, department }) => {
+}> = ({ designation, name, department, avatarUrl }) => {
   return (
     <StyledNode>
       <div className="shadow border p-2 rounded flex  gap-2 min-w-[280px]">
-        <Avatar src="https://picsum.photos/190" size={`large`} />
+        <Avatar src={avatarUrl ?? "https://picsum.photos/190"} size={`large`} />
         {/* <img src={DEFAULT_PROFILE_IMAGE_URL} alt="user" className="h-7" /> */}
         <div className="text-left">
           <h5 className="text-sm font-extrabold text-gray-900">

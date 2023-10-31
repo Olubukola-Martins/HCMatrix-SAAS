@@ -20,7 +20,7 @@ export const canUserAccessComponent = ({
 
 export const useGetUserPermissions = () => {
   const { currentCompanyEmployeeDetails } = useApiAuth();
-  const hasSelfService = currentCompanyEmployeeDetails?.hasSelfService;
+  const hasSelfService = !!currentCompanyEmployeeDetails?.hasSelfService;
 
   const userPermissions =
     currentCompanyEmployeeDetails?.role?.permissions?.map(
