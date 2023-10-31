@@ -29,6 +29,13 @@ export const LeaveTypesTable: React.FC<{
       render: (val, item) => <span className="capitalize">{item.name}</span>,
     },
     {
+      title: "Length",
+      dataIndex: "Length",
+      key: "Length",
+      render: (val, item) => <span className="capitalize">{item.length}</span>,
+    },
+
+    {
       title: "Status",
       dataIndex: "Status",
       key: "Status",
