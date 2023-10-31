@@ -81,7 +81,7 @@ export const EditConferenceRoom: React.FC<IProps> = ({
       open={open}
       onCancel={() => handleClose()}
       footer={null}
-      title={"Edit Folder"}
+      title={"Edit Conference Room"}
       style={{ top: 20 }}
     >
       <Form
