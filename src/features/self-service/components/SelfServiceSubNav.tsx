@@ -40,10 +40,24 @@ const SelfServiceSubNav = () => {
             })),
         },
       ];
+  const settingRoutes: TNavRoute[] = !data
+    ? []
+    : [
+        {
+          title: "Setting",
+          children: data?.settingsData.settings
+            .filter((item) => item.hidden === false)
+            .map((item) => ({
+              title: item.title,
+              path: item.link,
+            })),
+        },
+      ];
   const routes: TNavRoute[] = [
     ...DEFAULT_ROUTES,
     ...mainPrimaryDataRoutes,
     ...requisitionRoutes,
+    ...settingRoutes,
     { title: "More", children: morePrimaryDataRoutes },
   ];
   return (

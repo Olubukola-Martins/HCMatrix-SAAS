@@ -43,6 +43,7 @@ import TasksPage from "features/self-service/features/tasks/pages/TasksPage";
 import PayslipsTransactionsPage from "features/self-service/features/payslips/PayslipsTransactionsPage";
 import Requisition from "features/self-service/features/requisitions/pages/Requisition";
 import { canUserAccessComponent } from "components/permission-restriction/PermissionRestrictor";
+import VehicleBookingSettings from "features/self-service/features/vehicle-booking/pages/VehicleBookingSettings";
 
 // TO DO: This lazy loading might not be needed consider rethinking this, so just temporary
 // const Requisition = lazy(
@@ -280,6 +281,18 @@ export const selfServiceRoutes = (props: TAppPageDataFnProps): TRouteData[] => {
       title: "Vehicle Booking",
       isPrimaryFeature: true,
       hidden: !hasSelfService,
+    },
+    {
+      element: <VehicleBookingSettings />,
+      path: appRoutes.vehicleBookingSetting,
+      isSearchable: true,
+      title: "Vehicle Booking Setting",
+      isPrimaryFeature: true,
+      hidden: !canUserAccessComponent({
+        userPermissions,
+
+        requiredPermissions: ["manage-vehicle-settings"],
+      }),
     },
     {
       element: <VehicleDetails />,

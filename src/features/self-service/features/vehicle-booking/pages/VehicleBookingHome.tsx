@@ -12,6 +12,8 @@ import SelfServiceSubNav from "features/self-service/components/SelfServiceSubNa
 import { useState } from "react";
 import { AllVehicleBookingHistory } from "../components/booking/AllVehicleBookingHistory";
 import { AllEmployeeVehicleAssigneeHistory } from "../components/assignee-history/AllEmployeeVehicleAssigneeHistory";
+import PageSubHeader from "components/layout/PageSubHeader";
+import { useNavigate } from "react-router-dom";
 
 export type TVehicleTabKey =
   | "Vehicle Overview"
@@ -49,11 +51,7 @@ const VehicleBookingHome = () => {
     //   children: <Reminder />,
     //   key: "Reminders",
     // },
-    {
-      label: "Settings",
-      children: <VehicleSetting />,
-      key: "Settings",
-    },
+
     {
       label: "My Bookings",
       children: <EmployeeVehicleBooking />,
@@ -76,6 +74,7 @@ const VehicleBookingHome = () => {
       key: "Approvals",
     },
   ];
+  const navigate = useNavigate();
   return (
     <>
       <SelfServiceSubNav />
@@ -83,6 +82,16 @@ const VehicleBookingHome = () => {
       <div className="Container">
         <div className="flex flex-col gap-4">
           <PageIntro title="Vehicle Booking" link={appRoutes.selfServiceHome} />
+          <PageSubHeader
+            description={`You can now manage vehicles and bookings`}
+            actions={[
+              {
+                name: "Setting",
+                handleClick: () => navigate(appRoutes.vehicleBookingSetting),
+                btnVariant: "transparent",
+              },
+            ]}
+          />
           <Tabs
             activeKey={key}
             onChange={(val) => setKey(val as unknown as TVehicleTabKey)}

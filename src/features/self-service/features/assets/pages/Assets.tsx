@@ -13,6 +13,7 @@ import { EmployeeAssetRequisitionHistory } from "../components/requisitions/Empl
 import { AllEmployeeAssetAssigneeHistory } from "../components/assignee-history/AllEmployeeAssetAssigneeHistory";
 import ErrorBoundary from "components/errorHandlers/ErrorBoundary";
 import { AssetRequestSetting } from "../components/AssetRequestSetting";
+import { useNavigate } from "react-router-dom";
 
 export type TAssetTabKey =
   | "Asset Overview"
@@ -69,13 +70,8 @@ const Assets: React.FC = () => {
       children: <AssetApprovalRequestsContainer />,
       key: "Approvals",
     },
-    {
-      label: "Setting",
-      children: <AssetRequestSetting />,
-      key: "Setting",
-    },
   ];
-
+  const navigate = useNavigate();
   return (
     <>
       <SelfServiceSubNav />
@@ -84,7 +80,15 @@ const Assets: React.FC = () => {
           <div>
             <PageIntro title="Assets" link={appRoutes.selfServiceHome} />
             <PageSubHeader
-              description={`You can now add assets and asset type, view asset requests and request for assets`}
+              description={`You can now manage assets and requests`}
+              actions={[
+                {
+                  name: "Setting",
+                  handleClick: () =>
+                    navigate(appRoutes.selfServiceAssetSetting),
+                  btnVariant: "transparent",
+                },
+              ]}
             />
           </div>
           <ErrorBoundary>

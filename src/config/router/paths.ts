@@ -203,6 +203,7 @@ export const appRoutes = {
   loanRequests: `/self-service/loan-request`,
   loanPolicies: `/self-service/loan-policies`,
   vehicleBooking: `/self-service/vehicle-booking`,
+  vehicleBookingSetting: `/self-service/vehicle-booking/setting`,
   vehicleDetails: (id?: number) => ({
     format: `/self-service/vehicle-details/:id`,
     path: `/self-service/vehicle-details/${id}`,

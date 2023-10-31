@@ -1,4 +1,8 @@
-import { ISelfBoxProps, TRequisitionBoxProps } from "../components/SelfBox";
+import {
+  ISelfBoxProps,
+  TRequisitionBoxProps,
+  TSelfServiceSettingBoxProps,
+} from "../components/SelfBox";
 import { useGetSelfServiceDBAnalytics } from "./useGetSelfServiceDashboardAnalytics";
 import loan from "../assets/images/loan.svg";
 import leave from "../assets/images/leave.svg";
@@ -17,6 +21,7 @@ import {
 type TData = {
   primaryData: ({ item: ISelfBoxProps } & { hidden: boolean })[];
   requisitionData: TRequisitionBoxProps;
+  settingsData: TSelfServiceSettingBoxProps;
   selfServiceDBAnalytics: TSelfServiceDBAnalytics;
 };
 export const useGetActivatedSelfServiceLinksAndAnalytics = (): {
@@ -150,72 +155,13 @@ export const useGetActivatedSelfServiceLinksAndAnalytics = (): {
                 desc: "You can now manage documents within your organization",
               },
             },
-            // _______________ Self Service General Settings ______________
-            // TODO: Make this a card like requisition box
-            // TODO: Populate other settings page that are independent of the feature here
-            // TODO: Create a settings page for asset, and vehicle
-            // TODO: Refactor all components that use address to use the FormAddressinput
-            {
-              hidden: !canUserAccessComponent({
-                requiredPermissions: ["manage-resignation"],
-                userPermissions,
-              }),
-              item: {
-                icon: attendance,
-                link: appRoutes.resignationPolicySettings,
-                title: "Resignation Setting",
-                desc: "You can activate and configure resignation settings",
-              },
-            },
-            {
-              hidden: !canUserAccessComponent({
-                requiredPermissions: ["manage-conference-room-settings"],
-                userPermissions,
-              }),
-              item: {
-                icon: leave,
-                link: appRoutes.conferenceRoomBookingSetting,
-                title: "Conference Room Setting",
-                desc: "You can activate and configure conference room settings",
-              },
-            },
-            {
-              hidden: !canUserAccessComponent({
-                requiredPermissions: ["manage-leave-settings"],
-                userPermissions,
-              }),
-
-              item: {
-                icon: leave,
-                link: appRoutes.leaveSettings,
-                title: "Leave Setting",
-                desc: "You can activate and configure leave settings",
-              },
-            },
-            {
-              hidden: !canUserAccessComponent({
-                requiredPermissions: ["manage-loan-settings"],
-                userPermissions,
-              }),
-              item: {
-                icon: loan,
-                link: appRoutes.loanPolicies,
-                title: "Loan Settings",
-                desc: "You can activate and manage loan settings",
-              },
-            },
           ],
           requisitionData: {
             icon: requisition,
             requisitions: [
               {
-                link: appRoutes.selfServiceRequisition,
-                title: "Setting",
-                hidden: false, //Based on Permission
-              },
-              {
                 link: appRoutes.selfServiceTravels,
-                title: "Travel Requisition",
+                title: "Travel",
                 hidden:
                   data?.settings.some(
                     (item) => item.type === "travel" && item.isActive
@@ -223,7 +169,7 @@ export const useGetActivatedSelfServiceLinksAndAnalytics = (): {
               },
               {
                 link: appRoutes.selfServiceAssets,
-                title: "Asset Requisition",
+                title: "Asset",
                 hidden:
                   data?.settings.some(
                     (item) => item.type === "asset" && item.isActive
@@ -231,7 +177,7 @@ export const useGetActivatedSelfServiceLinksAndAnalytics = (): {
               },
               {
                 link: appRoutes.selfServiceJob,
-                title: "Job Requisition",
+                title: "Job",
                 hidden:
                   data?.settings.some(
                     (item) => item.type === "job" && item.isActive
@@ -239,7 +185,7 @@ export const useGetActivatedSelfServiceLinksAndAnalytics = (): {
               },
               {
                 link: appRoutes.selfServicePositionChange,
-                title: "Position Change Requisition",
+                title: "Position Change",
                 hidden:
                   data?.settings.some(
                     (item) => item.type === "position-change" && item.isActive
@@ -247,7 +193,7 @@ export const useGetActivatedSelfServiceLinksAndAnalytics = (): {
               },
               {
                 link: appRoutes.selfServicePromotion,
-                title: "Promotion Requisition",
+                title: "Promotion",
                 hidden:
                   data?.settings.some(
                     (item) => item.type === "promotion" && item.isActive
@@ -255,7 +201,7 @@ export const useGetActivatedSelfServiceLinksAndAnalytics = (): {
               },
               {
                 link: appRoutes.selfServiceReimbursement,
-                title: "Reimbursement Requisition",
+                title: "Reimbursement",
                 hidden:
                   data?.settings.some(
                     (item) => item.type === "reimbursement" && item.isActive
@@ -263,7 +209,7 @@ export const useGetActivatedSelfServiceLinksAndAnalytics = (): {
               },
               {
                 link: appRoutes.selfServiceTransfer,
-                title: "Transfer Requisition",
+                title: "Transfer",
                 hidden:
                   data?.settings.some(
                     (item) => item.type === "transfer" && item.isActive
@@ -271,11 +217,72 @@ export const useGetActivatedSelfServiceLinksAndAnalytics = (): {
               },
               {
                 link: appRoutes.selfServiceMonetary,
-                title: "Monetary Requisition",
+                title: "Monetary",
                 hidden:
                   data?.settings.some(
                     (item) => item.type === "money" && item.isActive
                   ) === false,
+              },
+            ],
+          },
+          settingsData: {
+            icon: requisition,
+            settings: [
+              {
+                link: appRoutes.resignationPolicySettings,
+                title: "Requisition",
+                hidden: !canUserAccessComponent({
+                  requiredPermissions: ["manage-requsition-settings"],
+                  userPermissions,
+                }),
+              },
+              {
+                link: appRoutes.resignationPolicySettings,
+                title: "Resignation",
+                hidden: !canUserAccessComponent({
+                  requiredPermissions: ["manage-resignation"],
+                  userPermissions,
+                }),
+              },
+              {
+                link: appRoutes.selfServiceAssetSetting,
+                title: "Asset",
+                hidden: !canUserAccessComponent({
+                  requiredPermissions: ["manage-assets"],
+                  userPermissions,
+                }),
+              },
+              {
+                link: appRoutes.vehicleBookingSetting,
+                title: "Vehicle Booking",
+                hidden: !canUserAccessComponent({
+                  requiredPermissions: ["manage-vehicle-settings"],
+                  userPermissions,
+                }),
+              },
+              {
+                link: appRoutes.conferenceRoomBookingSetting,
+                title: "Conference Room",
+                hidden: !canUserAccessComponent({
+                  requiredPermissions: ["manage-conference-room-settings"],
+                  userPermissions,
+                }),
+              },
+              {
+                link: appRoutes.leaveSettings,
+                title: "Leave",
+                hidden: !canUserAccessComponent({
+                  requiredPermissions: ["manage-leave-settings"],
+                  userPermissions,
+                }),
+              },
+              {
+                link: appRoutes.loanPolicies,
+                title: "Loan",
+                hidden: !canUserAccessComponent({
+                  requiredPermissions: ["manage-loan-settings"],
+                  userPermissions,
+                }),
               },
             ],
           },
