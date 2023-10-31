@@ -17,6 +17,7 @@ export const FormLeaveTypeInput: React.FC<{
     searchParams: {
       name: debouncedSearchTerm,
     },
+    isActive: true,
 
     pagination: {
       offset: 0,

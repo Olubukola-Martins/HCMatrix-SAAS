@@ -136,6 +136,7 @@ const AllLeaveRequestsTable: React.FC<{
                 </Menu.Item>
                 <Menu.Item
                   key="2"
+                  hidden={item.status !== "approved"}
                   onClick={() => {
                     setShowD("recall");
                     setRequest(item);

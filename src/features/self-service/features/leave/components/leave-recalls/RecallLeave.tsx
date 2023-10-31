@@ -31,9 +31,9 @@ export const RecallLeave: React.FC<IProps> = ({ open, handleClose, leave }) => {
         leaveLength: leave.length,
         employeeName: getEmployeeFullName(leave.employee),
       });
+      setNewLeaveLength(leave.length);
     }
     setNewEndDate(null);
-    setNewLeaveLength(0);
   }, [leave, form]);
 
   const handleSubmit = (data: any) => {
@@ -41,8 +41,13 @@ export const RecallLeave: React.FC<IProps> = ({ open, handleClose, leave }) => {
     mutate(
       {
         leaveId: leave.id,
-        length: !leave.specificDates ? data?.daysToBeRecalled : newLeaveLength,
-        newEndDate: !leave.specificDates ? newEndDate?.toISOString() : null,
+        length: !leave.specificDates
+          ? data?.daysToBeRecalled
+          : data?.specificDates.length,
+        specificDates: !leave.specificDates ? null : data?.specificDates,
+        newEndDate: !leave.specificDates
+          ? newEndDate?.toISOString()
+          : undefined,
       },
       {
         onError: (err: any) => {

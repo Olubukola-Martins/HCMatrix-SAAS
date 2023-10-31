@@ -9,6 +9,7 @@ import { useApiAuth } from "hooks/useApiAuth";
 interface IGetDataProps {
   pagination?: IPaginationProps;
   searchParams?: ISearchParams;
+  isActive?: boolean;
 }
 
 export const QUERY_KEY_FOR_LEAVE_TYPES = "leave-types";
@@ -34,6 +35,7 @@ const getLeaveTypes = async (
       limit,
       offset,
       search: name,
+      isActive: props.isActive,
     },
   };
 

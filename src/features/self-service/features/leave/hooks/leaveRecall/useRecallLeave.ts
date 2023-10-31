@@ -7,7 +7,7 @@ import { TLeaveRecall } from "../../types";
 
 type TRecallLeaveProps = Pick<
   TLeaveRecall,
-  "leaveId" | "length" | "newEndDate"
+  "leaveId" | "length" | "newEndDate" | "specificDates"
 >;
 
 const createLeaveType = async (props: {

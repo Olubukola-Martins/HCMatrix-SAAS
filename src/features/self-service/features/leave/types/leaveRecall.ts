@@ -5,6 +5,7 @@ export type TLeaveRecall = {
   leaveId: number;
   length: number;
   newEndDate?: string | null;
+  specificDates?: string[] | null;
   leave: TLeave;
   createdAt: string;
   updatedAt: string;

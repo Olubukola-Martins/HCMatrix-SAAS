@@ -11,7 +11,7 @@ export const CRBHomeSettings = () => {
       <div>
         <div className="Container">
           <CRBHeader
-            title="Meeting Room Settings"
+            title="Conference Room Settings"
             backLink={appRoutes.conferenceRoomBooking}
           />
           <CRBSettingsAccordian />
