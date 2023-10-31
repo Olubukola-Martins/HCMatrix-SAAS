@@ -75,6 +75,7 @@ export const SaveLeaveCycle: React.FC<IProps> = ({
           label="Duration"
         >
           <DatePicker.RangePicker
+            format={`DD, MMMM`}
             placeholder={[`Start Date`, `End Date`]}
             className="w-full"
           />
