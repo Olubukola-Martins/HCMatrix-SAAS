@@ -1,20 +1,15 @@
 import { DatePicker, Form, Input, message, Select, Tooltip } from "antd";
 import { FileUpload } from "components/FileUpload";
 import { AppButton } from "components/button/AppButton";
-import { FormCountryInput } from "components/generalFormInputs/FormCountryInput";
-import { FormLGAInput } from "components/generalFormInputs/FormLGAInput";
+import { FormAddressInput } from "components/generalFormInputs/FormAddressInput";
 import { FormPhoneInput } from "components/generalFormInputs/FormPhoneInput";
-import { FormStateInput } from "components/generalFormInputs/FormStateInput";
-import { SelectCountry } from "components/selectEntity/SelectCountry";
-import { SelectLGA } from "components/selectEntity/SelectLGA";
-import { SelectState } from "components/selectEntity/SelectState";
+
 import { DEFAULT_DATE_FORMAT } from "constants/dateFormats";
 import {
   EMPLOYMENT_ELIGIBILITIES_OPTIONS,
   GENDERS,
   MARITAL_STATUSES,
 } from "constants/general";
-import { TIME_ZONES } from "constants/timeZones";
 import { useSaveEmployeePersonalInformation } from "features/core/employees/hooks/personalInformation/useSaveEmployeePersonalInformation";
 import { QUERY_KEY_FOR_SINGLE_EMPLOYEE } from "features/core/employees/hooks/useFetchSingleEmployee";
 import { TSingleEmployee } from "features/core/employees/types";
@@ -31,7 +26,6 @@ import {
   dateHasToBeLesserThanOrEqualToCurrentDayRule,
   emailValidationRulesOp,
   generalValidationRules,
-  textInputValidationRules,
 } from "utils/formHelpers/validation";
 import { openNotification } from "utils/notifications";
 
@@ -50,6 +44,7 @@ export const PersonalInformation: React.FC<IProps> = ({
   const [disable, setDisable] = useState(true);
   const [selectedEligibility, setSelectedEligibility] =
     useState<TEmploymentEligibity>();
+  const { data: countries } = useFetchCountries();
 
   const documentUrl = useCurrentFileUploadUrl("documentUrl");
 
@@ -59,19 +54,10 @@ export const PersonalInformation: React.FC<IProps> = ({
       disable ? "Editing enabled Successfully" : "Editing disabled successfully"
     );
   };
-  const [errors, setErrors] = useState<{
-    [key: string]: string | undefined;
-  }>({});
-  const [nationality, setNationality] = useState<string>("");
-  const [countryId, setCountryId] = useState<number>();
-  const [stateId, setStateId] = useState<number>();
-  const [lgaId, setLgaId] = useState<number>();
-  const [doesStateHaveLGAS, setDoesStateHaveLGAS] = useState(false);
 
   useEffect(() => {
     if (!personalInfo) return;
-    setCountryId(personalInfo.address.countryId);
-    setStateId(personalInfo.address.stateId);
+
     form.setFieldsValue({
       dob: personalInfo.dob ? moment(personalInfo.dob) : null,
       nationality: personalInfo.nationality,
@@ -100,41 +86,21 @@ export const PersonalInformation: React.FC<IProps> = ({
       address: {
         timezone: personalInfo?.address.timezone,
         streetAddress: personalInfo?.address.streetAddress,
+        countryId: personalInfo?.address.countryId,
+        stateId: personalInfo?.address.stateId,
+        lgaId: personalInfo?.address.lgaId,
       },
     });
     setSelectedEligibility(
       personalInfo.eligibility as unknown as TEmploymentEligibity
     );
-    setNationality(personalInfo.nationality);
-    setCountryId(personalInfo?.address.countryId);
-    setStateId(personalInfo?.address.stateId);
-    setLgaId(personalInfo?.address.lgaId);
   }, [personalInfo, form]);
 
   const { mutate, isLoading } = useSaveEmployeePersonalInformation();
 
   const handleFinish = (data: any) => {
     if (!employeeId) return;
-    setErrors((prev) => ({
-      ...prev,
-      country:
-        typeof countryId === "undefined" ? "Please fill country!" : undefined,
-      state:
-        typeof stateId === "undefined" && typeof countryId === "number"
-          ? "Please fill state!"
-          : undefined,
-      lga:
-        typeof lgaId === "undefined" &&
-        typeof countryId === "number" &&
-        typeof stateId === "number" &&
-        doesStateHaveLGAS
-          ? "Please fill LGA!"
-          : undefined,
-    }));
 
-    if (!countryId) return;
-    if (!stateId) return;
-    if (!lgaId && doesStateHaveLGAS) return;
     mutate(
       {
         employeeId,
@@ -148,8 +114,8 @@ export const PersonalInformation: React.FC<IProps> = ({
           eligibility: data.eligibility,
           exchangeRateId: data.exchangeRateId,
           maritalStatus: data.maritalStatus,
-          nationality,
-          address: { ...data.address, countryId, stateId, lgaId },
+          nationality: data.nationality,
+          address: { ...data.address, lgaId: data.lgaId ?? undefined },
 
           validDocumentUrl: documentUrl,
           passportExpirationDate:
@@ -227,10 +193,11 @@ export const PersonalInformation: React.FC<IProps> = ({
               label="Nationality"
               rules={generalValidationRules}
             >
-              <SelectCountry
-                handleSelect={(_, country) =>
-                  setNationality(country?.name ?? "")
-                }
+              <Select
+                options={countries?.map((item) => ({
+                  label: item.name,
+                  value: item.name,
+                }))}
               />
             </Form.Item>
             <FormPhoneInput Form={Form} />
@@ -333,89 +300,9 @@ export const PersonalInformation: React.FC<IProps> = ({
               }}
               optional
             />
-            {/* TODO: Create a reusable address form component */}
+
             <>
-              <Form.Item
-                name="address"
-                label="Address"
-                className="md:col-span-2 lg:col-span-3"
-              >
-                <Input.Group className="grid grid-cols-2 gap-4">
-                  <div className="col-span-2">
-                    <Form.Item
-                      noStyle
-                      rules={textInputValidationRules}
-                      name={["address", "streetAddress"]}
-                    >
-                      <Input.TextArea placeholder="Street Address" />
-                    </Form.Item>
-                  </div>
-                  <Form.Item noStyle>
-                    <SelectCountry
-                      handleSelect={(val) => {
-                        setCountryId(val);
-                        setErrors((prev) => ({ ...prev, country: undefined }));
-                      }}
-                      onClear={() => {
-                        setCountryId(undefined);
-                        setStateId(undefined);
-                        setLgaId(undefined);
-                      }}
-                      value={countryId}
-                    />
-                  </Form.Item>
-                  <Form.Item noStyle>
-                    <SelectState
-                      countryId={countryId}
-                      handleSelect={(val) => {
-                        setStateId(val);
-                        setErrors((prev) => ({ ...prev, state: undefined }));
-                      }}
-                      onClear={() => {
-                        setStateId(undefined);
-                        setLgaId(undefined);
-                      }}
-                      value={stateId}
-                    />
-                  </Form.Item>
-                  <Form.Item noStyle>
-                    <SelectLGA
-                      stateId={stateId}
-                      handleSelect={(val) => {
-                        setLgaId(val);
-                        setErrors((prev) => ({ ...prev, lga: undefined }));
-                      }}
-                      onClear={() => {
-                        setLgaId(undefined);
-                      }}
-                      onFetchSuccess={(dataIsEmpty) =>
-                        setDoesStateHaveLGAS(!dataIsEmpty)
-                      }
-                      value={lgaId}
-                    />
-                  </Form.Item>
-                  <Form.Item
-                    noStyle
-                    name={["address", "timezone"]}
-                    rules={generalValidationRules}
-                  >
-                    <Select
-                      options={TIME_ZONES}
-                      placeholder="Select Timezone"
-                    />
-                  </Form.Item>
-                </Input.Group>
-              </Form.Item>
-              {/* errors */}
-              <div className="flex flex-col gap-1 md:col-span-2 lg:col-span-3">
-                {Object.values(errors)
-                  .filter((item) => typeof item != "undefined")
-                  .map((item, i) => (
-                    <span key={i} className="text-sm text-red-500">
-                      {item}
-                    </span>
-                  ))}
-              </div>
+              <FormAddressInput Form={Form} form={form} />
             </>
             {!disable && (
               <div className="flex items-center justify-end md:col-span-2 lg:col-span-3">
