@@ -4,14 +4,10 @@ import { Link } from "react-router-dom";
 import { useGetActivatedSelfServiceLinksAndAnalytics } from "../hooks/useGetActivatedSelfServiceLinksAndAnalytics";
 import { ErrorWrapper } from "components/errorHandlers/ErrorWrapper";
 import ErrorBoundary from "components/errorHandlers/ErrorBoundary";
+import { TNavRoute } from "types/navigation-routes";
 
-type TNavRoute = {
-  title: string;
-  path?: string;
-  children?: TNavRoute[];
-};
 const DEFAULT_ROUTES: TNavRoute[] = [
-  { title: "Dashboard", path: appRoutes.selfServiceHome },
+  { title: "Dashboard", path: appRoutes.selfServiceHome, hidden: false },
 ];
 
 const SelfServiceSubNav = () => {
@@ -19,12 +15,11 @@ const SelfServiceSubNav = () => {
     useGetActivatedSelfServiceLinksAndAnalytics();
   const primaryDataRoutes: TNavRoute[] = !data
     ? []
-    : data?.primaryData
-        ?.filter((item) => item.hidden === false)
-        .map((item) => ({
-          title: item.item.title,
-          path: item.item.link,
-        }));
+    : data?.primaryData.map((item) => ({
+        title: item.item.title,
+        path: item.item.link,
+        hidden: item.hidden,
+      }));
   const mainPrimaryDataRoutes = primaryDataRoutes.slice(0, 5);
   const morePrimaryDataRoutes = primaryDataRoutes.slice(5);
   const requisitionRoutes: TNavRoute[] = !data
@@ -32,25 +27,31 @@ const SelfServiceSubNav = () => {
     : [
         {
           title: "Requisitions",
-          children: data?.requisitionData.requisitions
-            .filter((item) => item.hidden === false)
-            .map((item) => ({
-              title: item.title,
-              path: item.link,
-            })),
+          hidden:
+            data.requisitionData.requisitions.filter(
+              (item) => item.hidden === false
+            ).length === 0,
+          children: data?.requisitionData.requisitions.map((item) => ({
+            title: item.title,
+            path: item.link,
+            hidden: item.hidden,
+          })),
         },
       ];
   const settingRoutes: TNavRoute[] = !data
     ? []
     : [
         {
+          hidden:
+            data.settingsData.settings.filter((item) => item.hidden === false)
+              .length === 0,
+
           title: "Setting",
-          children: data?.settingsData.settings
-            .filter((item) => item.hidden === false)
-            .map((item) => ({
-              title: item.title,
-              path: item.link,
-            })),
+          children: data?.settingsData.settings.map((item) => ({
+            title: item.title,
+            path: item.link,
+            hidden: item.hidden,
+          })),
         },
       ];
   const routes: TNavRoute[] = [
@@ -58,7 +59,7 @@ const SelfServiceSubNav = () => {
     ...mainPrimaryDataRoutes,
     ...requisitionRoutes,
     ...settingRoutes,
-    { title: "More", children: morePrimaryDataRoutes },
+    { title: "More", children: morePrimaryDataRoutes, hidden: false },
   ];
   return (
     <ErrorBoundary>
@@ -67,22 +68,11 @@ const SelfServiceSubNav = () => {
           <Menu
             className="bg-white py-4 px-3 text-accent rounded mb-9 shadow-md  text-sm font-medium"
             mode="horizontal"
-            items={routes.map((item, i) => ({
-              key: i,
+            items={routes
+              .filter((item) => item.hidden === false)
+              .map((item, i) => ({
+                key: i,
 
-              label: (
-                <>
-                  {item?.path ? (
-                    <Link to={item.path} className="">
-                      <span className="">{item.title}</span>
-                    </Link>
-                  ) : (
-                    <span>{item.title}</span>
-                  )}
-                </>
-              ),
-              children: item?.children?.map((item) => ({
-                key: item.title,
                 label: (
                   <>
                     {item?.path ? (
@@ -94,8 +84,23 @@ const SelfServiceSubNav = () => {
                     )}
                   </>
                 ),
-              })),
-            }))}
+                children: item?.children
+                  ?.filter((item) => item.hidden === false)
+                  .map((item) => ({
+                    key: item.title,
+                    label: (
+                      <>
+                        {item?.path ? (
+                          <Link to={item.path} className="">
+                            <span className="">{item.title}</span>
+                          </Link>
+                        ) : (
+                          <span>{item.title}</span>
+                        )}
+                      </>
+                    ),
+                  })),
+              }))}
           />
         </Skeleton>
       </ErrorWrapper>

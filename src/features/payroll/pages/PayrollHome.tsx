@@ -48,13 +48,6 @@ const PayrollHome = () => {
 
         <Skeleton active loading={isFetching} paragraph={{ rows: 12 }}>
           <div className="grid grid-cols-1 lg:grid-cols-4 md:grid-cols-2 gap-x-4 gap-y-12 w-full ">
-            {/* <PayrollCard
-            {...{
-              image: DollarBox,
-              title: "Payroll Burden",
-              highlight: "N0.00",
-            }}
-          /> */}
             <PayrollCard
               key={1}
               {...{
