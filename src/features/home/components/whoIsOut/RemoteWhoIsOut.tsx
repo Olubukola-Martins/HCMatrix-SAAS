@@ -1,7 +1,6 @@
 import { Table } from "antd";
 import { ColumnsType } from "antd/lib/table";
 import { getEmployeeFullName } from "features/core/employees/utils/getEmployeeFullName";
-import { getAppropriateColorForStatus } from "utils/colorHelpers/getAppropriateColorForStatus";
 import { Link } from "react-router-dom";
 import { appRoutes } from "config/router/paths";
 import { TCompanyOwnerDashboard } from "features/core/company/types/companyDashboard";

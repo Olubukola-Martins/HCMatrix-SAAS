@@ -166,8 +166,10 @@ const CompanyHandBook = () => {
         href={data?.value.companyHandBook}
         className="dashboardLink shadow border"
       >
-        <span className="text-caramel font-semibold text-lg">Download</span>
-        <h6 className="text-xs font-semibold">Company Handbook</h6>
+        <span className="text-caramel font-semibold text-lg">
+          {data?.value.companyHandBook ? "Download" : "Unavailable"}
+        </span>
+        <h6 className="text-xs font-semibold">{"Company Handbook"}</h6>
       </a>
     </Skeleton>
   );

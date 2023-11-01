@@ -126,14 +126,14 @@ const HierarchicalOrganogram: React.FC<{
                     />
 
                     <div className="text-left">
-                      <h5 className="text-xs font-extrabold text-gray-900">
+                      <h5 className="text-xs capitalize font-extrabold text-gray-900">
                         {truncateString(getEmployeeFullName(item.employee), 12)}
                       </h5>
                       <div className="flex flex-col gap-0.5">
-                        <span className="text-xs text-gray-500 font-light">
+                        <span className="text-xs capitalize text-gray-500 font-light">
                           {item.employee.designation.name}
                         </span>
-                        <span className="text-xs text-gray-800 font-normal">
+                        <span className="text-xs capitalize text-gray-800 font-normal">
                           {item.employee.designation.department.name}
                         </span>
                       </div>
@@ -162,14 +162,14 @@ const OrgCard: React.FC<{
         <Avatar src={avatarUrl ?? "https://picsum.photos/190"} size={`large`} />
         {/* <img src={DEFAULT_PROFILE_IMAGE_URL} alt="user" className="h-7" /> */}
         <div className="text-left">
-          <h5 className="text-sm font-extrabold text-gray-900">
+          <h5 className="text-sm capitalize font-extrabold text-gray-900">
             {truncateString(name, 12)}
           </h5>
           <div className="flex flex-col gap-0.5">
-            <span className="text-sm text-gray-500 font-light">
+            <span className="text-sm capitalize text-gray-500 font-light">
               {designation}
             </span>
-            <span className="text-sm text-gray-800 font-normal">
+            <span className="text-sm capitalize text-gray-800 font-normal">
               {department}
             </span>
           </div>
