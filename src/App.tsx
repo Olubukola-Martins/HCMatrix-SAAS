@@ -6,6 +6,7 @@ import { Suspense, useEffect } from "react";
 import Router from "config/router";
 import GlobalContextProvider from "stateManagers/GlobalContextProvider";
 import ErrorBoundary from "components/errorHandlers/ErrorBoundary";
+import { LOCAL_STORAGE_AUTH_KEY } from "constants/localStorageKeys";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -32,7 +33,7 @@ function App() {
       <BrowserRouter>
         <AuthProvider
           authType={"localstorage"}
-          authName={"hcmatrix_app"}
+          authName={LOCAL_STORAGE_AUTH_KEY}
           // cookieDomain={window.location.hostname}
           // cookieSecure={window.location.protocol === "https:"}
           // refresh={refreshApi}

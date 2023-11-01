@@ -27,6 +27,7 @@ export const useGetUserPermissions = () => {
       (item) => item.permission.label
     ) ?? [];
   //  TODO: APPEND PERMISSIONS FROM DELEGATIONS INTO USER PERMISSIONS
+  // TODO: refactor useApiAuth to use auth/me 4 evrything apart from token
 
   return {
     userPermissions,

@@ -9,23 +9,24 @@ import { useGetUserPermissions } from "components/permission-restriction/Permiss
 
 const Router = () => {
   const { userPermissions, hasSelfService } = useGetUserPermissions();
-  const pageRoutes = appPagesData({ userPermissions, hasSelfService }).map(
-    ({ path, element, category }: TRouteData) => {
-      if (category === "doesnt-require-authentication") {
-        return <Route key={path} path={`${path}`} element={element} />;
-      }
-      return (
-        <Route element={<DashboardLayout />} key={path}>
-          <Route
-            path={`${path}`}
-            element={
-              <RequireAuth loginPath={appRoutes.login}>{element}</RequireAuth>
-            }
-          />
-        </Route>
-      );
+  const pageRoutes = appPagesData({
+    userPermissions,
+    hasSelfService,
+  }).map(({ path, element, category }: TRouteData) => {
+    if (category === "doesnt-require-authentication") {
+      return <Route key={path} path={`${path}`} element={element} />;
     }
-  );
+    return (
+      <Route element={<DashboardLayout />} key={path}>
+        <Route
+          path={`${path}`}
+          element={
+            <RequireAuth loginPath={appRoutes.login}>{element}</RequireAuth>
+          }
+        />
+      </Route>
+    );
+  });
 
   return (
     <>
