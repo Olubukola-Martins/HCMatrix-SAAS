@@ -3,30 +3,22 @@ import React, { useState } from "react";
 // import { Line } from "react-chartjs-2";
 import ChartTabHeader, { TChartTabItem } from "./ChartTabHeader";
 import { DatePicker } from "antd";
-import moment, { Moment } from "moment";
+import { Moment } from "moment";
 import { Histogram, LineChart } from "components/charts";
 import { generateHexColor } from "utils/colorHelpers/generateHexColor";
+import { TCompanyOwnerDashboard } from "features/core/company/types/companyDashboard";
 
-const labels = [
-  "January",
-  "February",
-  "March",
-  "April",
-  "May",
-  "June",
-  "July",
-  "August",
-  "September",
-  "November",
-  "December",
-];
 const tabItems: TChartTabItem[] = [
   { name: "Total Active Employees" },
   { name: "Employees per Department" },
   // { name: "Turn Over" },
 ];
-const EmployeeInfoChart = () => {
-  const [year, setYear] = useState<Moment | null>(moment());
+type TProps = {
+  year: Moment | null;
+  setYear: (props: Moment | null) => void;
+  data?: TCompanyOwnerDashboard["employeesBreakdown"];
+};
+const EmployeeInfoChart: React.FC<TProps> = ({ setYear, year, data }) => {
   const [activeTab, setActiveTab] = useState<string>(tabItems[0].name);
 
   return (
@@ -51,32 +43,24 @@ const EmployeeInfoChart = () => {
         {activeTab === tabItems[1].name && (
           <Histogram
             maintainAspectRatio={false}
-            data={[30, 10, 67, 30, 10, 67]}
-            labels={[
-              "Human Resources",
-              "IT",
-              "Sales",
-              "Marketing",
-              "Finance",
-              "Admin",
-            ]}
+            data={data ? Object.values(data?.employeesPerDepartment) : []}
+            labels={data ? Object.keys(data?.employeesPerDepartment) : []}
             dataEntityLabel="Departments"
-            bgColors={[
-              "Human Resources",
-              "IT",
-              "Sales",
-              "Marketing",
-              "Finance",
-              "Admin",
-            ].map((val) => `${generateHexColor(`${val}`)}`)}
+            bgColors={
+              data
+                ? Object.keys(data?.employeesPerDepartment)?.map(
+                    (val) => `${generateHexColor(`${val}`)}`
+                  )
+                : undefined
+            }
           />
         )}
         {activeTab === tabItems[0].name && (
           <LineChart
             maintainAspectRatio={false}
-            data={[30, 10, 67, 30, 10, 67, 30, 5, 98, 120]}
-            labels={labels}
-            dataEntityLabel="Employees"
+            data={data ? Object.values(data?.totalActiveEmployees) : []}
+            labels={data ? Object.keys(data?.totalActiveEmployees) : []}
+            dataEntityLabel="Active Employees"
             bgColors={`#ff6647`}
           />
         )}

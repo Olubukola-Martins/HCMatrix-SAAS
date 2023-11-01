@@ -33,6 +33,7 @@ interface Today {
 interface Employee {
   firstName: string;
   lastName: string;
+  avatarUrl?: string;
 }
 
 interface PendingApprovals {

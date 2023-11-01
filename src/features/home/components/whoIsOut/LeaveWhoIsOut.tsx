@@ -2,23 +2,18 @@ import { Table } from "antd";
 
 import { ColumnsType } from "antd/lib/table";
 
-import { usePagination } from "hooks/usePagination";
-
-import { useFetchEmployees } from "features/core/employees/hooks/useFetchEmployees";
-import { TEmployee } from "features/core/employees/types";
 import { getEmployeeFullName } from "features/core/employees/utils/getEmployeeFullName";
 import { getAppropriateColorForStatus } from "utils/colorHelpers/getAppropriateColorForStatus";
 import { Link } from "react-router-dom";
 import { appRoutes } from "config/router/paths";
+import { TCompanyOwnerDashboard } from "features/core/company/types/companyDashboard";
 
-export const LeaveWhoIsOut: React.FC = () => {
-  const { pagination, onChange } = usePagination();
-
-  const { data, isFetching } = useFetchEmployees({
-    pagination,
-  });
-
-  const columns: ColumnsType<TEmployee> = [
+export const LeaveWhoIsOut: React.FC<{
+  data?: TCompanyOwnerDashboard["outToday"]["leave"]["result"];
+}> = ({ data }) => {
+  const columns: ColumnsType<
+    TCompanyOwnerDashboard["outToday"]["leave"]["result"][0]
+  > = [
     {
       title: "Name",
       ellipsis: true,
@@ -26,10 +21,10 @@ export const LeaveWhoIsOut: React.FC = () => {
       key: "name",
       render: (val, item) => (
         <Link
-          to={`${appRoutes.singleEmployee(item.id).path}`}
+          to={`${appRoutes.singleEmployee(item.employee.id).path}`}
           className="text-caramel hover:underline hover:text-caramel"
         >
-          {getEmployeeFullName(item)}
+          {getEmployeeFullName(item.employee)}
         </Link>
       ),
     },
@@ -39,7 +34,9 @@ export const LeaveWhoIsOut: React.FC = () => {
       ellipsis: true,
 
       key: "ID",
-      render: (_, item) => <span className="capitalize">{item.empUid}</span>,
+      render: (_, item) => (
+        <span className="capitalize">{item.employee.empUid}</span>
+      ),
     },
     {
       title: "Email",
@@ -47,7 +44,8 @@ export const LeaveWhoIsOut: React.FC = () => {
       ellipsis: true,
 
       key: "email",
-      render: (_, item) => <span className="">{item.email}</span>,
+      render: (_, item) => <span className="lowercase">{}</span>,
+      // render: (_, item) => <span className="lowercase">{item.employee.email}</span>,
     },
 
     {
@@ -59,7 +57,7 @@ export const LeaveWhoIsOut: React.FC = () => {
       render: (_, item) => (
         <span
           className="capitalize"
-          style={{ color: getAppropriateColorForStatus(item.status) }}
+          style={{ color: getAppropriateColorForStatus(item.employee.status) }}
         >
           {item.status}
         </span>
@@ -72,7 +70,9 @@ export const LeaveWhoIsOut: React.FC = () => {
       ellipsis: true,
 
       render: (_, item) => (
-        <span className="capitalize">{item.jobInformation?.branch?.name}</span>
+        <span className="capitalize">
+          {item.employee.jobInformation?.branch?.name}
+        </span>
       ),
     },
     {
@@ -80,7 +80,7 @@ export const LeaveWhoIsOut: React.FC = () => {
       dataIndex: "Designation",
       key: "Designation",
       render: (_, item) => (
-        <span className="capitalize">{item.designation?.name}</span>
+        <span className="capitalize">{item.employee.designation?.name}</span>
       ),
     },
   ];
@@ -91,10 +91,7 @@ export const LeaveWhoIsOut: React.FC = () => {
         columns={columns}
         size="small"
         scroll={{ x: "max-content" }}
-        dataSource={data?.data}
-        loading={isFetching}
-        pagination={{ ...pagination, total: data?.total }}
-        onChange={onChange}
+        dataSource={data}
       />
     </div>
   );

@@ -2,10 +2,11 @@ import { Tabs } from "antd";
 import { Birthdays } from "./Birthdays";
 import { Holidays } from "./Holidays";
 import { WorkAnniversary } from "./WorkAnniversary";
-import { useFetchEmployees } from "features/core/employees/hooks/useFetchEmployees";
+import { TCompanyEmployeeDashboard } from "features/core/company/types/companyDashboard";
 
-export const Celebrations = () => {
-  const { data, isLoading } = useFetchEmployees();
+export const Celebrations: React.FC<{
+  data?: TCompanyEmployeeDashboard["celebrationsAndHolidays"];
+}> = ({ data }) => {
   return (
     <div>
       <h3 className="pb-1 font-medium">Celebrations & Holidays</h3>
@@ -15,36 +16,23 @@ export const Celebrations = () => {
           {
             key: "Birthdays",
             label: "Birthdays",
-            children: (
-              <Birthdays
-                data={data?.data.map((item) => ({ ...item, dob: "8/9/01" }))}
-                loading={isLoading}
-              />
-            ),
+            children: <Birthdays data={data?.birthdays} />,
           },
           {
             key: "Work Anniversaries",
             label: "Work Anniversaries",
-            children: (
-              <WorkAnniversary
-                data={data?.data.map((item) => ({
-                  ...item,
-                  startDate: "8/9/01",
-                }))}
-                loading={isLoading}
-              />
-            ),
+            children: <WorkAnniversary data={data?.workAnniversaries} />,
           },
           {
             key: "Holidays",
             label: "Holidays",
             children: (
               <Holidays
-                data={[
-                  { date: "8/9/01", id: 0, title: "Salah" },
-                  { date: "3/1/01", id: 0, title: "Easter" },
-                ]}
-                loading={isLoading}
+                data={data?.holidays.map((item, i) => ({
+                  date: item.date,
+                  title: item.title,
+                  id: i,
+                }))}
               />
             ),
           },
