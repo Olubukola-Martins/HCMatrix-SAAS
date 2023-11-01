@@ -12,7 +12,6 @@ import Groups from "features/core/groups/pages/Groups";
 import Departments from "features/core/departments/pages/Departments";
 import Delegations from "features/core/delegations/pages/Delegations";
 import Roles from "features/core/roles-and-permissions/pages/Roles";
-import CreateRole from "features/core/roles-and-permissions/pages/CreateRole";
 import { EditRole } from "features/core/roles-and-permissions/pages/EditRole";
 import Workflows from "features/core/workflows/pages/Workflows";
 import CreateWorklow from "features/core/workflows/pages/CreateWorkflow";
@@ -191,17 +190,7 @@ export const settingRoutes = (props: TAppPageDataFnProps): TRouteData[] => {
         requiredPermissions: ["manage-roles"],
       }),
     },
-    {
-      element: <CreateRole />,
-      path: appRoutes.createRole,
-      isSearchable: true,
-      title: "Create Role",
-      hidden: !canUserAccessComponent({
-        userPermissions,
 
-        requiredPermissions: ["manage-roles"],
-      }),
-    },
     {
       element: <EditRole />,
       path: appRoutes.editRole().format,

@@ -1,5 +1,4 @@
 import { Select, Spin, Form } from "antd";
-import { useApiAuth } from "hooks/useApiAuth";
 import { useDebounce } from "hooks/useDebounce";
 import { useState } from "react";
 import {
@@ -14,18 +13,13 @@ export const FormRoleInput: React.FC<{
   control?: { label: string; name: string | (string | number)[] };
   optional?: boolean;
 }> = ({ Form, showLabel = true, control, optional = false }) => {
-  const { token, companyId } = useApiAuth();
-
   const [searchTerm, setSearchTerm] = useState<string>("");
   const debouncedSearchTerm: string = useDebounce<string>(searchTerm);
 
   const { data, isFetching, isSuccess } = useFetchRoles({
-    companyId,
     searchParams: {
       name: debouncedSearchTerm,
     },
-
-    token,
   });
 
   const handleSearch = (val: string) => {

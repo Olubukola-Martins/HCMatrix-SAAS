@@ -16,7 +16,6 @@ import { FileUpload } from "components/FileUpload";
 import { boxStyle } from "styles/reused";
 import { useCurrentFileUploadUrl } from "hooks/useCurrentFileUploadUrl";
 import { useFetchDepartments } from "features/core/departments/hooks/useFetchDepartments";
-import { useApiAuth } from "hooks/useApiAuth";
 import { useFetchGroups } from "features/core/groups/hooks/useFetchGroups";
 import { useFetchRoles } from "features/core/roles-and-permissions/hooks/useFetchRoles";
 
@@ -102,7 +101,6 @@ export const AddFile: React.FC<IProps> = ({ open, handleClose }) => {
     }
   };
 
-  const { companyId, token } = useApiAuth();
   const { data: departments, isFetching: isFetchingDepartments } =
     useFetchDepartments({
       pagination: {
@@ -111,8 +109,6 @@ export const AddFile: React.FC<IProps> = ({ open, handleClose }) => {
       },
     });
   const { data: roles, isFetching: isFetchingRoles } = useFetchRoles({
-    companyId,
-    token,
     pagination: {
       offset: 0,
       limit: SUITABLE_PAGE_SIZE_FOR_ENTITIES_TO_BE_DISPAYED,

@@ -96,5 +96,14 @@ export type TRole = {
   createdAt: string;
   updatedAt: string;
   label?: string;
-  permissions?: TPermission[];
+  permissions?: {
+    id: number;
+    permissionId: number;
+    roleId: number;
+    createdAt: string;
+    updatedAt: string;
+    permission: TPermission;
+  }[];
 };
+
+

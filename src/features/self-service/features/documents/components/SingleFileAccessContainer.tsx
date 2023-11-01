@@ -11,7 +11,6 @@ import { useQueryClient } from "react-query";
 import { useFetchDepartments } from "features/core/departments/hooks/useFetchDepartments";
 import { useFetchGroups } from "features/core/groups/hooks/useFetchGroups";
 import { useFetchRoles } from "features/core/roles-and-permissions/hooks/useFetchRoles";
-import { useApiAuth } from "hooks/useApiAuth";
 import { QUERY_KEY_FOR_ALL_ACCESSES_TO_A_FILE } from "../hooks/file/access/useGetAllAccessToFile";
 import { useRemoveAccessToFile } from "../hooks/file/access/useRemoveAccessToFile";
 import { FileAccessOption } from "./AddFile";
@@ -183,7 +182,6 @@ const AddAccessForm: React.FC<{ fileId: number; folderId: number }> = ({
     );
   };
 
-  const { companyId, token } = useApiAuth();
   const { data: departments, isFetching: isFetchingDepartments } =
     useFetchDepartments({
       pagination: {
@@ -192,8 +190,6 @@ const AddAccessForm: React.FC<{ fileId: number; folderId: number }> = ({
       },
     });
   const { data: roles, isFetching: isFetchingRoles } = useFetchRoles({
-    companyId,
-    token,
     pagination: {
       offset: 0,
       limit: 220,

@@ -3,6 +3,8 @@ import { useQuery } from "react-query";
 import { ICurrentCompany, IPaginationProps, ISearchParams } from "types";
 import { TDepartment } from "../types";
 import { useApiAuth } from "hooks/useApiAuth";
+import { MICROSERVICE_ENDPOINTS } from "config/enviroment";
+import { DEFAULT_PAGE_SIZE } from "constants/general";
 
 export const QUERY_KEY_FOR_DEPARTMENTS = "departments";
 
@@ -16,11 +18,11 @@ export const getDepartments = async (vals: {
 }): Promise<{ data: TDepartment[]; total: number }> => {
   const { auth, props } = vals;
   const { pagination } = props;
-  const limit = pagination?.limit ?? 10;
+  const limit = pagination?.limit ?? DEFAULT_PAGE_SIZE;
   const offset = pagination?.offset ?? 0;
   const name = props.searchParams?.name ?? "";
 
-  let url = `${process.env.REACT_APP_UTILITY_BASE_URL}/company/department`;
+  let url = `${MICROSERVICE_ENDPOINTS.UTILITY}/company/department`;
 
   const config = {
     headers: {

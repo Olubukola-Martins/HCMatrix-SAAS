@@ -4,15 +4,16 @@ import { useApiAuth } from "hooks/useApiAuth";
 import { useMutation } from "react-query";
 import { ICurrentCompany } from "types";
 
-export interface ICreateRoleProps {
+interface IData {
   name: string;
   permissionIds: number[];
 }
 export const createRole = async (
-  props: ICreateRoleProps,
+  props: IData,
+  roleId: number,
   auth: ICurrentCompany
 ) => {
-  const url = `${MICROSERVICE_ENDPOINTS.AUTHENTICATION}/permission/role`;
+  const url = `${MICROSERVICE_ENDPOINTS.AUTHENTICATION}/permission/role/${roleId}`;
   const config = {
     headers: {
       Accept: "application/json",
@@ -21,19 +22,18 @@ export const createRole = async (
     },
   };
 
-  // necessary to make immediate changes when in  a central place when schema changes
   const data = {
     name: props.name,
     permissionIds: props.permissionIds,
   };
 
-  const response = await axios.post(url, data, config);
+  const response = await axios.put(url, data, config);
   return response;
 };
 
-export const useCreateRole = () => {
+export const useEditRole = () => {
   const { token, companyId } = useApiAuth();
-  return useMutation((props: ICreateRoleProps) =>
-    createRole(props, { token, companyId })
+  return useMutation(({ roleId, data }: { roleId: number; data: IData }) =>
+    createRole(data, roleId, { token, companyId })
   );
 };

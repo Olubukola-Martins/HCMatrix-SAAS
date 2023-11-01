@@ -1,5 +1,4 @@
 import { Select, Form } from "antd";
-import { useApiAuth } from "hooks/useApiAuth";
 import { useState } from "react";
 import { generalValidationRules } from "utils/formHelpers/validation";
 import { useFetchSingleRole } from "../hooks/useFetchSingleRole";
@@ -13,26 +12,29 @@ export const FormRolePermissionsInput: React.FC<{
   control?: { label: string; name: string };
 }> = ({ Form, showLabel = true, control, roleId, handleSelect }) => {
   const [searchedData, setSearchedData] = useState<TPermission[]>();
-  const { companyId, token } = useApiAuth();
   const { data, isSuccess } = useFetchSingleRole({
     id: roleId,
-    companyId,
-    token,
   });
 
   const handleDataSearch = (val: string) => {
     if (isSuccess && data?.permissions) {
       if (val.length > 0) {
-        const sData = data?.permissions.filter(
-          (item) => item.name.toLowerCase().indexOf(val.toLowerCase()) !== -1
-        );
+        const sData = data?.permissions
+          .filter(
+            (item) =>
+              item.permission.name.toLowerCase().indexOf(val.toLowerCase()) !==
+              -1
+          )
+          .map((item) => item.permission);
         setSearchedData(sData);
       } else {
         setSearchedData([]);
       }
     }
   };
-  const mainData = !!searchedData ? searchedData : data?.permissions;
+  const mainData: TPermission[] | undefined = !!searchedData
+    ? searchedData
+    : data?.permissions?.map((item) => item.permission);
 
   return (
     <Form.Item

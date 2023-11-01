@@ -52,7 +52,6 @@ export const appRoutes = {
   delegationSettings: `/settings/delegations`,
 
   roleSettings: `/settings/roles`,
-  createRole: `/settings/roles/create`,
   editRole: (id?: number) => ({
     format: `/settings/roles/edit/:id`,
     path: `/settings/roles/edit/${id}`,

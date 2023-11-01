@@ -8,6 +8,8 @@ import { useFetchEmployees } from "features/core/employees/hooks/useFetchEmploye
 import { TEmployee } from "features/core/employees/types";
 import { getEmployeeFullName } from "features/core/employees/utils/getEmployeeFullName";
 import { getAppropriateColorForStatus } from "utils/colorHelpers/getAppropriateColorForStatus";
+import { Link } from "react-router-dom";
+import { appRoutes } from "config/router/paths";
 
 export const LeaveWhoIsOut: React.FC = () => {
   const { pagination, onChange } = usePagination();
@@ -22,8 +24,13 @@ export const LeaveWhoIsOut: React.FC = () => {
       ellipsis: true,
       dataIndex: "name",
       key: "name",
-      render: (_, item) => (
-        <span className="capitalize">{getEmployeeFullName(item)}</span>
+      render: (val, item) => (
+        <Link
+          to={`${appRoutes.singleEmployee(item.id).path}`}
+          className="text-caramel hover:underline hover:text-caramel"
+        >
+          {getEmployeeFullName(item)}
+        </Link>
       ),
     },
     {

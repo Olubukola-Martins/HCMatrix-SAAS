@@ -4,16 +4,21 @@ import axios from "axios";
 import { useQuery } from "react-query";
 import { ICurrentCompany, IPaginationProps, ISearchParams } from "types";
 import { openNotification } from "utils/notifications";
+import { useApiAuth } from "hooks/useApiAuth";
+import { DEFAULT_PAGE_SIZE } from "constants/general";
 
 export const QUERY_KEY_FOR_PERMISSIONS = "permissions";
 
-interface IGetPemProps extends ICurrentCompany {
+interface IGetPemProps {
   pagination?: IPaginationProps;
   searchParams?: ISearchParams;
 }
-export const getPermissions = async (props: IGetPemProps) => {
+export const getPermissions = async (
+  props: IGetPemProps,
+  auth: ICurrentCompany
+) => {
   const { pagination } = props;
-  const limit = pagination?.limit ?? 10;
+  const limit = pagination?.limit ?? DEFAULT_PAGE_SIZE;
   const offset = pagination?.offset ?? 0;
 
   const url = `${MICROSERVICE_ENDPOINTS.AUTHENTICATION}/permission`;
@@ -21,8 +26,8 @@ export const getPermissions = async (props: IGetPemProps) => {
   const config = {
     headers: {
       Accept: "application/json",
-      Authorization: `Bearer ${props.token}`,
-      "x-company-id": props.companyId,
+      Authorization: `Bearer ${auth.token}`,
+      "x-company-id": auth.companyId,
     },
     params: {
       limit,
@@ -34,11 +39,6 @@ export const getPermissions = async (props: IGetPemProps) => {
   return response;
 };
 
-interface IFRQDataProps {
-  companyId: number;
-  token: string;
-}
-
 interface ICategory {
   id: number;
   name: string;
@@ -49,11 +49,12 @@ interface IFRQDataReturnProps {
   categories: ICategory[];
 }
 
-export const useFetchPermissions = ({ companyId, token }: IFRQDataProps) => {
+export const useFetchPermissions = (props: IGetPemProps = {}) => {
+  const { companyId, token } = useApiAuth();
   const queryData = useQuery(
-    [QUERY_KEY_FOR_PERMISSIONS],
+    [QUERY_KEY_FOR_PERMISSIONS, props],
     () =>
-      getPermissions({
+      getPermissions(props, {
         companyId,
         token,
       }),

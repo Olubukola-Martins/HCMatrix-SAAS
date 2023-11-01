@@ -3,6 +3,7 @@ import { appRoutes } from "config/router/paths";
 import { Link } from "react-router-dom";
 import { TEmployee } from "../../types";
 import { getEmployeeStatusColor } from "../../utils/getEmployeeStatusColor";
+import { getEmployeeFullName } from "../../utils/getEmployeeFullName";
 
 export const EMPLOYEE_TABLE_COLUMNS: ColumnsType<TEmployee> = [
   {
@@ -14,7 +15,7 @@ export const EMPLOYEE_TABLE_COLUMNS: ColumnsType<TEmployee> = [
         to={`${appRoutes.singleEmployee(item.id).path}`}
         className="text-caramel hover:underline hover:text-caramel"
       >
-        {item.firstName} {item.lastName}
+        {getEmployeeFullName(item)}
       </Link>
     ),
   },

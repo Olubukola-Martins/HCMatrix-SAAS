@@ -2,25 +2,28 @@ import { useQuery } from "react-query";
 import { ICurrentCompany, IPaginationProps, ISearchParams } from "types";
 import { TRole } from "../types";
 import axios from "axios";
+import { MICROSERVICE_ENDPOINTS } from "config/enviroment";
+import { DEFAULT_PAGE_SIZE } from "constants/general";
+import { useApiAuth } from "hooks/useApiAuth";
 
 export const QUERY_KEY_FOR_ROLES = "roles";
 
-interface IGetRolesProps extends ICurrentCompany {
+interface IGetRolesProps {
   pagination?: IPaginationProps;
   searchParams?: ISearchParams;
 }
-const getRoles = async (props: IGetRolesProps) => {
+const getRoles = async (props: IGetRolesProps, auth: ICurrentCompany) => {
   const { pagination } = props;
-  const limit = pagination?.limit ?? 10;
+  const limit = pagination?.limit ?? DEFAULT_PAGE_SIZE;
   const offset = pagination?.offset ?? 0;
 
-  let url = `${process.env.REACT_APP_AUTHENTICATION_BASE_URL}/permission/role`;
+  let url = `${MICROSERVICE_ENDPOINTS.AUTHENTICATION}/permission/role`;
 
   const config = {
     headers: {
       Accept: "application/json",
-      Authorization: `Bearer ${props.token}`,
-      "x-company-id": props.companyId,
+      Authorization: `Bearer ${auth.token}`,
+      "x-company-id": auth.companyId,
     },
     params: {
       limit,
@@ -37,8 +40,6 @@ interface IFRQDataProps {
   pagination?: IPaginationProps;
   searchParams?: ISearchParams;
 
-  companyId: number;
-  token: string;
   onSuccess?: Function;
 }
 export interface IFRQRoleReturnProps {
@@ -48,10 +49,9 @@ export interface IFRQRoleReturnProps {
 export const useFetchRoles = ({
   pagination,
   searchParams,
-  companyId,
   onSuccess,
-  token,
 }: IFRQDataProps) => {
+  const { companyId, token } = useApiAuth();
   const queryData = useQuery(
     [
       QUERY_KEY_FOR_ROLES,
@@ -60,13 +60,13 @@ export const useFetchRoles = ({
       searchParams?.name,
     ],
     () =>
-      getRoles({
-        companyId,
-        pagination: { limit: pagination?.limit, offset: pagination?.offset },
-        searchParams,
-
-        token,
-      }),
+      getRoles(
+        {
+          pagination: { limit: pagination?.limit, offset: pagination?.offset },
+          searchParams,
+        },
+        { companyId, token }
+      ),
     {
       // refetchInterval: false,
       // refetchIntervalInBackground: false,
