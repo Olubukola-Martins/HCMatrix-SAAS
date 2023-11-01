@@ -1,5 +1,5 @@
 import { Modal } from "antd";
-import { deleteEntitySvg } from "assets/images";
+import PersonTrashIcon from "assets/svg-components/PersonTrashIcon/PersonTrashIcon";
 import { AppButton } from "components/button/AppButton";
 import { IModalProps } from "types";
 
@@ -31,11 +31,7 @@ const DeleteEntityModal: React.FC<IProps> = ({
     >
       <div className="flex flex-col gap-4 items-center">
         <div className="flex justify-center h-[50vh] items-center">
-          <img
-            src={deleteEntitySvg}
-            alt="delete"
-            className="object-contain h-4/5"
-          />
+          <PersonTrashIcon className="object-contain h-4/5" />
         </div>
         <h4 className="text-center text-base mb-4 font-semibold">
           Are you sure you want to delete {entity.name} {entity.type}?

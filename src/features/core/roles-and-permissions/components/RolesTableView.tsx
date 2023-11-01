@@ -61,18 +61,29 @@ export const RolesTableView = ({
     {
       title: "Action",
       dataIndex: "action",
-      render: (_, item) => (
-        <div className="flex items-center gap-3 text-lg">
-          <Link to={appRoutes.editRole(item.id).path}>
-            <i className="ri-pencil-line cursor-pointer hover:text-caramel" />
-          </Link>
+      render: (_, item) => {
+        const hideDeleteBtn =
+          item.label === "employee" ||
+          item.label === "admin" ||
+          item.userCount > 0;
+        const hideEditBtn = item.label === "admin";
+        return (
+          <div className="flex items-center gap-3 text-lg">
+            {hideEditBtn ? null : (
+              <Link to={appRoutes.editRole(item.id).path}>
+                <i className="ri-pencil-line cursor-pointer hover:text-caramel" />
+              </Link>
+            )}
 
-          <i
-            className="ri-delete-bin-line cursor-pointer hover:text-caramel"
-            onClick={() => deleteRole(item)}
-          />
-        </div>
-      ),
+            {hideDeleteBtn ? null : (
+              <i
+                className="ri-delete-bin-line cursor-pointer hover:text-caramel"
+                onClick={() => deleteRole(item)}
+              />
+            )}
+          </div>
+        );
+      },
     },
   ];
   return (
