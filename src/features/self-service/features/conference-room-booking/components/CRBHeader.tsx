@@ -6,6 +6,10 @@ import { appRoutes } from "config/router/paths";
 
 import { SettingFilled } from "@ant-design/icons";
 import NewMeetingRoom from "./NewMeetingRoom";
+import {
+  canUserAccessComponent,
+  useGetUserPermissions,
+} from "components/permission-restriction/PermissionRestrictor";
 
 interface IProps {
   title?: string;
@@ -22,6 +26,7 @@ const CRBHeader = ({ title = "Conference Rooms", backLink }: IProps) => {
   const handleAction = (val: EAction) => {
     setAction(val);
   };
+  const { userPermissions } = useGetUserPermissions();
   return (
     <>
       <NewCRBBooking
@@ -48,15 +53,25 @@ const CRBHeader = ({ title = "Conference Rooms", backLink }: IProps) => {
           >
             New Booking
           </button>
-          <button
-            className="borderButton"
-            onClick={() => handleAction(EAction.NEW_MEETING_ROOM)}
-          >
-            Add Meeting Room
-          </button>
-          <Link to={appRoutes.conferenceRoomBookingSetting}>
-            <Button icon={<SettingFilled />} type="text" />
-          </Link>
+          {canUserAccessComponent({
+            userPermissions,
+            requiredPermissions: ["manage-conference-room"],
+          }) && (
+            <button
+              className="borderButton"
+              onClick={() => handleAction(EAction.NEW_MEETING_ROOM)}
+            >
+              Add Meeting Room
+            </button>
+          )}
+          {canUserAccessComponent({
+            userPermissions,
+            requiredPermissions: ["manage-conference-room-settings"],
+          }) && (
+            <Link to={appRoutes.conferenceRoomBookingSetting}>
+              <Button icon={<SettingFilled />} type="text" />
+            </Link>
+          )}
         </div>
       </div>
     </>

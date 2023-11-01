@@ -19,7 +19,7 @@ const Roles = () => {
             in your organization."
               actions={[
                 {
-                  name: "Add Department",
+                  name: "Add Role",
                   handleClick: () => setAddRoleModal(true),
                 },
               ]}

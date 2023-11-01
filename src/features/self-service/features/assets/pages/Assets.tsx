@@ -12,20 +12,24 @@ import { useState } from "react";
 import { EmployeeAssetRequisitionHistory } from "../components/requisitions/EmployeeAssetRequisitionHistory";
 import { AllEmployeeAssetAssigneeHistory } from "../components/assignee-history/AllEmployeeAssetAssigneeHistory";
 import ErrorBoundary from "components/errorHandlers/ErrorBoundary";
-import { AssetRequestSetting } from "../components/AssetRequestSetting";
 import { useNavigate } from "react-router-dom";
+import {
+  canUserAccessComponent,
+  useGetUserPermissions,
+} from "components/permission-restriction/PermissionRestrictor";
 
 export type TAssetTabKey =
   | "Asset Overview"
   | "Asset List"
   | "Asset Type"
-  | "Approvals"
+  | "My Approvals"
   | "My Requests"
   | "Asset Assignee History"
   | "Setting"
   | "All Requests";
 
 const Assets: React.FC = () => {
+  const { userPermissions } = useGetUserPermissions();
   const [key, setKey] = useState<TAssetTabKey>("Asset Overview");
   const handleTabKey = (val: TAssetTabKey) => {
     setKey(val);
@@ -34,41 +38,64 @@ const Assets: React.FC = () => {
     label: TAssetTabKey;
     key: TAssetTabKey;
     children: React.ReactNode;
+    hidden: boolean;
   }[] = [
     {
       label: "Asset Overview",
       children: <AssetOverview handleTabKey={handleTabKey} />,
       key: "Asset Overview",
+      hidden: !canUserAccessComponent({
+        userPermissions,
+        requiredPermissions: ["view-asset-overview"],
+      }),
     },
     {
       label: "Asset List",
       children: <AssetList />,
       key: "Asset List",
+      hidden: !canUserAccessComponent({
+        userPermissions,
+        requiredPermissions: ["manage-assets"],
+      }),
     },
     {
       label: "Asset Type",
       children: <AssetType />,
       key: "Asset Type",
+      hidden: !canUserAccessComponent({
+        userPermissions,
+        requiredPermissions: ["manage-assets"],
+      }),
     },
     {
       label: "All Requests",
       children: <AssetRequestsContainer />,
       key: "All Requests",
+      hidden: !canUserAccessComponent({
+        userPermissions,
+        requiredPermissions: ["view-all-asset-requests"],
+      }),
     },
     {
       label: "Asset Assignee History",
       children: <AllEmployeeAssetAssigneeHistory />,
       key: "Asset Assignee History",
+      hidden: !canUserAccessComponent({
+        userPermissions,
+        requiredPermissions: ["view-all-asset-requests"],
+      }),
     },
     {
       label: "My Requests",
       children: <EmployeeAssetRequisitionHistory />,
       key: "My Requests",
+      hidden: false,
     },
     {
-      label: "Approvals",
+      label: "My Approvals",
       children: <AssetApprovalRequestsContainer />,
-      key: "Approvals",
+      key: "My Approvals",
+      hidden: false,
     },
   ];
   const navigate = useNavigate();
@@ -87,6 +114,10 @@ const Assets: React.FC = () => {
                   handleClick: () =>
                     navigate(appRoutes.selfServiceAssetSetting),
                   btnVariant: "transparent",
+                  hidden: !canUserAccessComponent({
+                    userPermissions,
+                    requiredPermissions: ["manage-requsition-settings"],
+                  }),
                 },
               ]}
             />
@@ -95,7 +126,7 @@ const Assets: React.FC = () => {
             <Tabs
               activeKey={key}
               onChange={(val) => setKey(val as unknown as TAssetTabKey)}
-              items={[...tabItems]}
+              items={[...tabItems.filter((item) => item.hidden === false)]}
             />
           </ErrorBoundary>
         </div>

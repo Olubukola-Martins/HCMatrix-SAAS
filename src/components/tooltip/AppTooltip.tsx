@@ -14,7 +14,7 @@ const AppTooltip: React.FC<{
         <Tooltip
           showArrow={showArrow}
           title={title}
-          trigger={["hover"]}
+          trigger={["hover", "click"]}
           overlayInnerStyle={{
             background: "var(--card)",
             color: "black",

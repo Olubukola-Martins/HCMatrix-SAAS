@@ -8,25 +8,36 @@ import JobApprovalRequestsContainer from "./JobApprovalRequestsContainer";
 import { appRoutes } from "config/router/paths";
 import { useNavigate } from "react-router-dom";
 import { EmployeeJobRequests } from "./EmployeeJobRequests";
+import {
+  canUserAccessComponent,
+  useGetUserPermissions,
+} from "components/permission-restriction/PermissionRestrictor";
 
 const JobRequestsContainer = () => {
   const [showM, setShowM] = useState(false);
+  const { userPermissions } = useGetUserPermissions();
   const tabItems = [
     {
       key: "My Requests",
       label: "My Requests",
       children: <EmployeeJobRequests />,
+      hidden: false,
     },
     {
-      key: "Approval Requests",
-      label: "Approval Requests",
+      key: "My Approvals",
+      label: "My Approvals",
       children: <JobApprovalRequestsContainer />,
+      hidden: false,
     },
 
     {
       key: "All Requests",
       label: "All Requests",
       children: <JobRequestsTableContainer />,
+      hidden: !canUserAccessComponent({
+        userPermissions,
+        requiredPermissions: ["view-all-job-requests"],
+      }),
     },
   ];
   const navigate = useNavigate();
@@ -42,10 +53,14 @@ const JobRequestsContainer = () => {
             name: "Setting",
             handleClick: () => navigate(appRoutes.selfServiceJobSetting),
             btnVariant: "transparent",
+            hidden: !canUserAccessComponent({
+              userPermissions,
+              requiredPermissions: ["manage-requsition-settings"],
+            }),
           },
         ]}
       />
-      <Tabs items={tabItems} />
+      <Tabs items={tabItems.filter((item) => item.hidden === false)} />
     </div>
   );
 };

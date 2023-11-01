@@ -159,14 +159,14 @@ export const EditRoleForm: React.FC<{ id: number }> = ({ id }) => {
                         <Checkbox
                           key={item.id}
                           value={item.id}
+                          //TODO: Fix search functionality, and also implement the ability to select all in a category, and also all in all categories
                           className={`${
                             item.categoryId === selectedCategory ||
-                            selectedCategory === 0
-                              ? //   ||
-                                //   searchTerm
-                                //     .toLowerCase()
-                                //     .search(item.name.toLowerCase()) !== -1
-                                "flex"
+                            selectedCategory === 0 ||
+                            searchTerm
+                              .toLowerCase()
+                              .search(item.name.toLowerCase()) !== -1
+                              ? "flex"
                               : "hidden"
                           }`}
                         >

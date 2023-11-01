@@ -28,6 +28,9 @@ export type TPermissionLabel =
   | "view-all-loan-requests"
   | "view-all-loan-repayments"
   | "manage-leave-settings"
+  | "view-all-leave-requests"
+  | "recall-leave"
+  | "view-all-leave-recalls"
   | "manage-requsition-settings"
   | "manage-assets"
   | "view-asset-overview"
@@ -71,9 +74,9 @@ export type TPermissionInDelegation = {
   createdAt: string;
   updatedAt: string;
   permission: TPermission;
-}
+};
 
-export type  TPermission  ={
+export type TPermission = {
   id: number;
   name: string;
   label: TPermissionLabel;
@@ -81,7 +84,7 @@ export type  TPermission  ={
   description: string;
   createdAt: string;
   updatedAt: string;
-}
+};
 export type TPermissionCategory = {
   id: number;
   name: string;
@@ -105,5 +108,3 @@ export type TRole = {
     permission: TPermission;
   }[];
 };
-
-

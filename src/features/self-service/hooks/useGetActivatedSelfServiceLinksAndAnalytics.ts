@@ -147,7 +147,10 @@ export const useGetActivatedSelfServiceLinksAndAnalytics = (): {
               },
             },
             {
-              hidden: false,
+              hidden: !canUserAccessComponent({
+                userPermissions,
+                requiredPermissions: ["manage-documents"],
+              }),
               item: {
                 icon: payslip,
                 link: appRoutes.documents,
@@ -229,7 +232,7 @@ export const useGetActivatedSelfServiceLinksAndAnalytics = (): {
             icon: requisition,
             settings: [
               {
-                link: appRoutes.resignationPolicySettings,
+                link: appRoutes.selfServiceRequisition,
                 title: "Requisition",
                 hidden: !canUserAccessComponent({
                   requiredPermissions: ["manage-requsition-settings"],

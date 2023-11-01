@@ -151,7 +151,7 @@ const TopBar = ({
                       image: "",
                       hidden: !canUserAccessComponent({
                         userPermissions,
-                        requiredPermissions: ["manage-company-settings"],
+                        requiredPermissions: ["create-sister-company"],
                       }),
 
                       label: (

@@ -55,7 +55,7 @@ const RequisitionPolicyFormList = () => {
     </>
   );
 };
-const RequisitionPolicyForm: React.FC<{ type: TRequistionType }> = ({
+export const RequisitionPolicyForm: React.FC<{ type: TRequistionType }> = ({
   type,
 }) => {
   const queryClient = useQueryClient();

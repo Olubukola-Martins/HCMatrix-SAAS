@@ -8,25 +8,36 @@ import TravelApprovalRequestsContainer from "./TravelApprovalRequestsContainer";
 import { EmployeeTravelRequests } from "./EmployeeTravelRequests";
 import { useNavigate } from "react-router-dom";
 import { appRoutes } from "config/router/paths";
+import {
+  canUserAccessComponent,
+  useGetUserPermissions,
+} from "components/permission-restriction/PermissionRestrictor";
 
 const TravelRequestsContainer = () => {
   const [showM, setShowM] = useState(false);
+  const { userPermissions } = useGetUserPermissions();
   const tabItems = [
     {
       key: "My Requests",
       label: "My Requests",
       children: <EmployeeTravelRequests />,
+      hidden: false,
     },
     {
-      key: "Approval Requests",
-      label: "Approval Requests",
+      key: "My Approvals",
+      label: "My Approvals",
       children: <TravelApprovalRequestsContainer />,
+      hidden: false,
     },
 
     {
       key: "All Requests",
       label: "All Requests",
       children: <TravelRequestsTableContainer />,
+      hidden: !canUserAccessComponent({
+        requiredPermissions: ["view-all-travel-requests"],
+        userPermissions,
+      }),
     },
   ];
   const navigate = useNavigate();
@@ -41,10 +52,14 @@ const TravelRequestsContainer = () => {
             name: "Setting",
             handleClick: () => navigate(appRoutes.selfServiceTravelSetting),
             btnVariant: "transparent",
+            hidden: !canUserAccessComponent({
+              requiredPermissions: ["manage-requsition-settings"],
+              userPermissions,
+            }),
           },
         ]}
       />
-      <Tabs items={tabItems} />
+      <Tabs items={tabItems.filter((item) => item.hidden === false)} />
     </div>
   );
 };

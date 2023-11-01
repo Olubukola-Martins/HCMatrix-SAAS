@@ -13,16 +13,21 @@ import { NewLoan } from "../components/NewLoan";
 import EmployeeLoanRepayments from "../components/repayments/EmployeeLoanRepayments";
 import AllLoanRepayments from "../components/repayments/AllLoanRepayments";
 import { MakeRepayment } from "../components/MakeRepayment";
+import {
+  canUserAccessComponent,
+  useGetUserPermissions,
+} from "components/permission-restriction/PermissionRestrictor";
 
 export type TLoanTabKey =
   | "Overview"
   | "My Requests"
-  | "Approvals"
+  | "My Approvals"
   | "My Repayments"
   | "All Repayments"
   | "All Loans";
 type TAction = "new-loan" | "make-repayment";
 const LoanHome = () => {
+  const { userPermissions } = useGetUserPermissions();
   const [key, setKey] = useState<TLoanTabKey>("Overview");
   const handleTabKey = (val: TLoanTabKey) => {
     setKey(val);
@@ -31,37 +36,53 @@ const LoanHome = () => {
     label: TLoanTabKey;
     key: TLoanTabKey;
     children: React.ReactNode;
+    hidden: boolean;
   }[] = [
     {
       label: "Overview",
       children: <LoanOverview handleTabKey={handleTabKey} />,
       key: "Overview",
+      hidden: !canUserAccessComponent({
+        userPermissions,
+        requiredPermissions: ["view-all-loan-requests"], //TODO: update to an overview permission if there is ever a need for it
+      }),
     },
     {
       label: "My Requests",
       children: <EmployeeLoanRequests />,
       key: "My Requests",
+      hidden: false,
     },
     {
       label: "My Repayments",
       children: <EmployeeLoanRepayments />,
       key: "My Repayments",
+      hidden: false,
     },
 
     {
-      label: "Approvals",
+      label: "My Approvals",
       children: <LoanApprovalsContainer />,
-      key: "Approvals",
+      key: "My Approvals",
+      hidden: false,
     },
     {
       label: "All Loans",
       children: <AllLoanRequests />,
       key: "All Loans",
+      hidden: !canUserAccessComponent({
+        userPermissions,
+        requiredPermissions: ["view-all-loan-requests"],
+      }),
     },
     {
       label: "All Repayments",
       children: <AllLoanRepayments />,
       key: "All Repayments",
+      hidden: !canUserAccessComponent({
+        userPermissions,
+        requiredPermissions: ["view-all-loan-repayments"],
+      }),
     },
   ];
   const [action, setAction] = useState<TAction>();
@@ -101,6 +122,10 @@ const LoanHome = () => {
                   name: "Settings",
                   handleClick: () => navigate(appRoutes.loanPolicies),
                   btnVariant: "transparent",
+                  hidden: !canUserAccessComponent({
+                    userPermissions,
+                    requiredPermissions: ["manage-loan-settings"],
+                  }),
                 },
               ]}
             />
@@ -108,7 +133,7 @@ const LoanHome = () => {
           <Tabs
             activeKey={key}
             onChange={(val) => setKey(val as unknown as TLoanTabKey)}
-            items={tabItems}
+            items={tabItems.filter((item) => item.hidden === false)}
           />
         </div>
       </div>

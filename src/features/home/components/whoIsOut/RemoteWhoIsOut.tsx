@@ -49,14 +49,7 @@ export const RemoteWhoIsOut: React.FC = () => {
       key: "email",
       render: (_, item) => <span className="">{item.email}</span>,
     },
-    {
-      title: "Role",
-      dataIndex: "role",
-      ellipsis: true,
 
-      key: "role",
-      render: (_, item) => <span className="capitalize">{item.role.name}</span>,
-    },
     {
       title: "Status",
       dataIndex: "Employee Status",
