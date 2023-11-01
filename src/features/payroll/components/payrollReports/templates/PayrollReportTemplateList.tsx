@@ -1,4 +1,4 @@
-import { Pagination, Skeleton } from "antd";
+import { Empty, Pagination, Skeleton } from "antd";
 
 import { usePagination } from "hooks/usePagination";
 
@@ -36,32 +36,43 @@ export const PayrollReportTemplateList: React.FC = () => {
       )}
       <div>
         <Skeleton loading={isFetching} paragraph={{ rows: 12 }}>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
-            {data?.data.map((item) => (
-              <TemplateCard
-                data={{
-                  name: item.name,
-                  title: "Payroll Report",
-                  link: appRoutes.viewPayrollReportTemplate(item.id).path,
-                }}
-                key={item.id}
-                handleDelete={{
-                  fn: () => handleDelete({ template: { ...item } }),
-                }}
-                handleEdit={{
-                  fn: () =>
-                    navigate(appRoutes.editPayrollReportTemplate(item.id).path),
-                }}
-              />
-            ))}
-          </div>
-          <div className="mt-4 flex justify-end">
-            <Pagination
-              {...{ ...pagination, total: data?.total }}
-              onChange={onChange}
-              size="small"
-            />
-          </div>
+          {data && data?.data.length > 0 && (
+            <>
+              {" "}
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
+                {data?.data.map((item) => (
+                  <TemplateCard
+                    data={{
+                      name: item.name,
+                      title: "Payroll Report",
+                      link: appRoutes.viewPayrollReportTemplate(item.id).path,
+                    }}
+                    key={item.id}
+                    handleDelete={{
+                      fn: () => handleDelete({ template: { ...item } }),
+                    }}
+                    handleEdit={{
+                      fn: () =>
+                        navigate(
+                          appRoutes.editPayrollReportTemplate(item.id).path
+                        ),
+                    }}
+                  />
+                ))}
+              </div>
+              <div className="mt-4 flex justify-end">
+                <Pagination
+                  {...{ ...pagination, total: data?.total }}
+                  onChange={onChange}
+                  size="small"
+                />
+              </div>
+            </>
+          )}
+
+          {data?.data && data?.data.length === 0 && (
+            <Empty description="No Templates Found!" />
+          )}
         </Skeleton>
       </div>
     </>
