@@ -3,10 +3,11 @@ import { Table } from "antd";
 import { ColumnsType } from "antd/lib/table";
 
 import { getEmployeeFullName } from "features/core/employees/utils/getEmployeeFullName";
-import { getAppropriateColorForStatus } from "utils/colorHelpers/getAppropriateColorForStatus";
 import { Link } from "react-router-dom";
 import { appRoutes } from "config/router/paths";
 import { TCompanyOwnerDashboard } from "features/core/company/types/companyDashboard";
+import { getEmployeeStatusColor } from "features/core/employees/utils/getEmployeeStatusColor";
+import { TEmployeeStatus } from "features/core/employees/types";
 
 export const LeaveWhoIsOut: React.FC<{
   data?: TCompanyOwnerDashboard["outToday"]["leave"]["result"];
@@ -29,7 +30,7 @@ export const LeaveWhoIsOut: React.FC<{
       ),
     },
     {
-      title: "ID",
+      title: "Employee ID",
       dataIndex: "ID",
       ellipsis: true,
 
@@ -37,15 +38,6 @@ export const LeaveWhoIsOut: React.FC<{
       render: (_, item) => (
         <span className="capitalize">{item.employee.empUid}</span>
       ),
-    },
-    {
-      title: "Email",
-      dataIndex: "email",
-      ellipsis: true,
-
-      key: "email",
-      render: (_, item) => <span className="lowercase">{}</span>,
-      // render: (_, item) => <span className="lowercase">{item.employee.email}</span>,
     },
 
     {
@@ -56,10 +48,11 @@ export const LeaveWhoIsOut: React.FC<{
 
       render: (_, item) => (
         <span
-          className="capitalize"
-          style={{ color: getAppropriateColorForStatus(item.employee.status) }}
+          className={`capitalize ${getEmployeeStatusColor(
+            item.employee.status as TEmployeeStatus
+          )}`}
         >
-          {item.status}
+          {item.employee.status}
         </span>
       ),
     },

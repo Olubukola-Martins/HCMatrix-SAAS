@@ -13,7 +13,6 @@ export const Birthdays: React.FC<{
   return (
     <div>
       <>
-        {" "}
         <Collapse>
           <Panel header="Birthdays" key="1">
             {data && data.today.length === 0 && (
@@ -44,7 +43,7 @@ export const Birthdays: React.FC<{
 
             {data && data.upcoming.length > 0 && (
               <UserOneBriefInfoCards
-                data={data.today.map((item) => ({
+                data={data.upcoming.map((item) => ({
                   info: moment(item.dob).format("MMMM DD"),
                   name: truncateString(getEmployeeFullName(item.employee), 12),
                   avatarUrl: item.employee.avatarUrl,

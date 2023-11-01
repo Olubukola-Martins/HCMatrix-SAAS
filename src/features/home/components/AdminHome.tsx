@@ -183,13 +183,17 @@ export const AdminHome = () => {
                       {
                         key: "2",
                         label: `Remote Work (${data?.outToday.remoteWork.totalCount})`,
-                        children: <RemoteWhoIsOut />,
+                        children: (
+                          <RemoteWhoIsOut
+                            data={data?.outToday.remoteWork.result}
+                          />
+                        ),
                       },
                     ]}
                   />
                 </div>
                 <div className="bg-mainBg shadow border rounded-lg p-3">
-                  <Celebrations />
+                  <Celebrations data={data?.celebrationsAndHolidays} />
                 </div>
               </div>
             </div>

@@ -5,12 +5,14 @@ import { getAppropriateColorForStatus } from "utils/colorHelpers/getAppropriateC
 import { Link } from "react-router-dom";
 import { appRoutes } from "config/router/paths";
 import { TCompanyOwnerDashboard } from "features/core/company/types/companyDashboard";
+import { getEmployeeStatusColor } from "features/core/employees/utils/getEmployeeStatusColor";
+import { TEmployeeStatus } from "features/core/employees/types";
 
 export const RemoteWhoIsOut: React.FC<{
-  data?: TCompanyOwnerDashboard["outToday"]["leave"]["result"];
+  data?: TCompanyOwnerDashboard["outToday"]["remoteWork"]["result"];
 }> = ({ data }) => {
   const columns: ColumnsType<
-    TCompanyOwnerDashboard["outToday"]["leave"]["result"][0]
+    TCompanyOwnerDashboard["outToday"]["remoteWork"]["result"][0]
   > = [
     {
       title: "Name",
@@ -19,31 +21,21 @@ export const RemoteWhoIsOut: React.FC<{
       key: "name",
       render: (val, item) => (
         <Link
-          to={`${appRoutes.singleEmployee(item.employee.id).path}`}
+          to={`${appRoutes.singleEmployee(item.id).path}`}
           className="text-caramel hover:underline hover:text-caramel"
         >
-          {getEmployeeFullName(item.employee)}
+          {getEmployeeFullName(item)}
         </Link>
       ),
     },
     {
-      title: "ID",
+      title: "Employee ID",
+
       dataIndex: "ID",
       ellipsis: true,
 
       key: "ID",
-      render: (_, item) => (
-        <span className="capitalize">{item.employee.empUid}</span>
-      ),
-    },
-    {
-      title: "Email",
-      dataIndex: "email",
-      ellipsis: true,
-
-      key: "email",
-      render: (_, item) => <span className="lowercase">{}</span>,
-      // render: (_, item) => <span className="lowercase">{item.employee.email}</span>,
+      render: (_, item) => <span className="capitalize">{item.empUid}</span>,
     },
 
     {
@@ -54,8 +46,9 @@ export const RemoteWhoIsOut: React.FC<{
 
       render: (_, item) => (
         <span
-          className="capitalize"
-          style={{ color: getAppropriateColorForStatus(item.employee.status) }}
+          className={`capitalize ${getEmployeeStatusColor(
+            item.status as TEmployeeStatus
+          )}`}
         >
           {item.status}
         </span>
@@ -68,9 +61,7 @@ export const RemoteWhoIsOut: React.FC<{
       ellipsis: true,
 
       render: (_, item) => (
-        <span className="capitalize">
-          {item.employee.jobInformation?.branch?.name}
-        </span>
+        <span className="capitalize">{item.jobInformation?.branch?.name}</span>
       ),
     },
     {
@@ -78,7 +69,7 @@ export const RemoteWhoIsOut: React.FC<{
       dataIndex: "Designation",
       key: "Designation",
       render: (_, item) => (
-        <span className="capitalize">{item.employee.designation?.name}</span>
+        <span className="capitalize">{item.designation?.name}</span>
       ),
     },
   ];

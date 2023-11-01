@@ -13,7 +13,9 @@ export const Holidays: React.FC<{
     <Skeleton active loading={loading}>
       <div>
         {data && data.length === 0 && (
-          <h4 className="text-gray-300 text-xl text-center py-5">Holidays</h4>
+          <h4 className="text-gray-300 text-xl text-center py-5">
+            No Holidays
+          </h4>
         )}
         {data && data.length > 0 && (
           <>
