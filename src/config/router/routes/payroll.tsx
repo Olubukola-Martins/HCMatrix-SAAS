@@ -208,7 +208,7 @@ export const payrollRoutes = (props: TAppPageDataFnProps): TRouteData[] => {
       isPrimaryFeature: false,
       hidden: !canUserAccessComponent({
         userPermissions,
-        requiredPermissions: ["manage-payroll-schemes"],
+        requiredPermissions: ["view-all-payrolls"],
       }),
     },
     {

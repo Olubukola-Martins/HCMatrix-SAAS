@@ -7,20 +7,33 @@ import { useNavigate } from "react-router-dom";
 import { appRoutes } from "config/router/paths";
 import { useState } from "react";
 import AddPayrollReport from "./AddPayrollReport";
+import {
+  canUserAccessComponent,
+  useGetUserPermissions,
+} from "components/permission-restriction/PermissionRestrictor";
 
 type TAction = "create-report";
 
 export const PayrollReportAndTempsContainer = () => {
+  const { userPermissions } = useGetUserPermissions();
   const tabItems = [
     {
       key: "Templates",
       label: "Templates",
       children: <PayrollReportTemplateList />,
+      hidden: !canUserAccessComponent({
+        userPermissions,
+        requiredPermissions: ["view-payroll-report-templates"],
+      }),
     },
     {
       key: "Reports",
       label: "Reports",
       children: <PayrollReportTable />,
+      hidden: !canUserAccessComponent({
+        userPermissions,
+        requiredPermissions: ["view-payroll-reports"],
+      }),
     },
   ];
   const navigate = useNavigate();
@@ -39,16 +52,24 @@ export const PayrollReportAndTempsContainer = () => {
               name: "New Template",
               handleClick: () =>
                 navigate(appRoutes.createPayrollReportTemplate),
+              hidden: !canUserAccessComponent({
+                userPermissions,
+                requiredPermissions: ["manage-payroll-report-templates"],
+              }),
             },
             {
               name: "Create Report",
               handleClick: () => {
                 setAction("create-report");
               },
+              hidden: !canUserAccessComponent({
+                userPermissions,
+                requiredPermissions: ["manage-payroll-reports"],
+              }),
             },
           ]}
         />
-        <Tabs items={tabItems} />
+        <Tabs items={tabItems.filter((item) => item.hidden === false)} />
       </div>
     </>
   );
