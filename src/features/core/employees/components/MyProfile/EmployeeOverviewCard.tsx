@@ -1,4 +1,4 @@
-import { Dropdown, Skeleton } from "antd";
+import { Avatar, Dropdown, Skeleton } from "antd";
 import { DEFAULT_PROFILE_IMAGE_URL } from "constants/general";
 import React from "react";
 
@@ -48,10 +48,11 @@ export const EmployeeOverviewCard: React.FC<IProps> = ({
         <Skeleton loading={isLoading} active paragraph={{ rows: 4 }}>
           <>
             <div className="flex gap-3 items-center md:flex-row flex-col">
-              <img
+              <Avatar
+                shape="circle"
                 src={avatarUrl ?? DEFAULT_PROFILE_IMAGE_URL}
                 alt={`employee avatar`}
-                className="h-24"
+                size={140}
               />
 
               <div className="flex flex-col gap-1 text-accent">
