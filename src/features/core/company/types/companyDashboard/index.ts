@@ -1,34 +1,7 @@
-export type TCompanyDashboard = {
-  celebrationsAndHolidays: CelebrationsAndHolidays;
-};
+import { TCompanyEmployeeDashboard } from "./employee";
+import { TCompanyOwnerDashboard } from "./owner";
 
-interface CelebrationsAndHolidays {
-  birthdays: Birthdays;
-  workAnniversaries: WorkAnniversary[];
-  holidays: Holiday[];
-}
-
-interface Holiday {
-  title: string;
-  date: string;
-}
-
-interface WorkAnniversary {
-  startDate: string;
-  employee: Employee;
-}
-
-interface Birthdays {
-  today: Today[];
-  upcoming: Today[];
-}
-
-interface Today {
-  dob: string;
-  employee: Employee;
-}
-
-interface Employee {
-  firstName: string;
-  lastName: string;
+export {
+    type TCompanyEmployeeDashboard,
+    type TCompanyOwnerDashboard,
 }

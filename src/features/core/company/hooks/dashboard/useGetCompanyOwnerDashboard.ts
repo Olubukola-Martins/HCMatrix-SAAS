@@ -2,19 +2,18 @@ import axios from "axios";
 import { MICROSERVICE_ENDPOINTS } from "config/enviroment";
 import { useQuery } from "react-query";
 import { ICurrentCompany } from "types";
-
 import { useApiAuth } from "hooks/useApiAuth";
-import { TCompanyDashboard } from "../../types/companyDashboard";
+import { TCompanyOwnerDashboard } from "../../types/companyDashboard";
 
 interface IGetDataProps {
-  year?: string; // TODO: Flesh out when endpoint is ready
+  year?: string;
 }
-export const QUERY_KEY_FOR_COMPANY_DASHBOARD = "company-dashboard";
+export const QUERY_KEY_FOR_COMPANY_OWNER_DASHBOARD = "company-dashboard-owner";
 const getData = async (
   auth: ICurrentCompany,
   props: IGetDataProps
-): Promise<TCompanyDashboard> => {
-  const url = `${MICROSERVICE_ENDPOINTS.UTILITY}/company/dashboard`;
+): Promise<TCompanyOwnerDashboard> => {
+  const url = `${MICROSERVICE_ENDPOINTS.UTILITY}/company/dashboard/owner`;
 
   const config = {
     headers: {
@@ -28,19 +27,19 @@ const getData = async (
   };
 
   const res = await axios.get(url, config);
-  const item: TCompanyDashboard = res.data.data;
+  const item: TCompanyOwnerDashboard = res.data.data;
 
-  const data: TCompanyDashboard = {
+  const data: TCompanyOwnerDashboard = {
     ...item,
   };
 
   return data;
 };
 
-export const useGeTCompanyDashboard = (props: IGetDataProps = {}) => {
+export const useGetCompanyOwnerDashboard = (props: IGetDataProps = {}) => {
   const { token, companyId } = useApiAuth();
   const queryData = useQuery(
-    [QUERY_KEY_FOR_COMPANY_DASHBOARD, props.year],
+    [QUERY_KEY_FOR_COMPANY_OWNER_DASHBOARD, props.year],
     () =>
       getData(
         { token, companyId },
