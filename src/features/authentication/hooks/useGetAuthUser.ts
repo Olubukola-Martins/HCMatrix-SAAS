@@ -42,6 +42,10 @@ export const useGetAuthUser = () => {
     {
       onError: (err: any) => {},
       onSuccess: (data) => {},
+      //TODO: Populate initial data with the stale data from useApiAuth
+      // TODO: Ensure dashboard data uses this hook, make a list of things that will need to make use of this
+      // Might need to refactor useApiAuth type to use this & then union access token, and also do on login, for consistency
+      // initialData:{} //Populate initial data with the stale data from useApiAuth so on initial load data is not empty
     }
   );
 
