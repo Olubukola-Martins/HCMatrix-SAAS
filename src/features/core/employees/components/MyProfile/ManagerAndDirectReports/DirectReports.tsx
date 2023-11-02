@@ -65,7 +65,7 @@ export const DirectReports: React.FC<IProps> = ({ reports = [] }) => {
     <>
       {" "}
       <div className="bg-mainBg shadow-sm rounded-md p-4 mt-5">
-        <h2 className="font-medium text-lg mb-4">Birect Reports</h2>
+        <h2 className="font-medium text-lg mb-4">Direct Reports</h2>
         <div className="bg-card p-3 rounded">
           <div className="flex md:items-center gap-5  flex-col-reverse md:flex-row md:justify-between my-3">
             <Input

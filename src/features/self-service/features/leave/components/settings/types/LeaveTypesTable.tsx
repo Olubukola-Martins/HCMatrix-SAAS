@@ -136,7 +136,7 @@ export const LeaveTypesTable: React.FC<{
           data
             ? [
                 {
-                  id: 5,
+                  id: 0,
                   name: "Test",
                   label: "test",
                   length: "Dynamic: Employee Spillover",
