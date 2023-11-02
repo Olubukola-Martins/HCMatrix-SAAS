@@ -3,6 +3,7 @@ import { AppButton } from "components/button/AppButton";
 import React, { useEffect, useState } from "react";
 import { IModalProps } from "types";
 import {
+  generalValidationRules,
   numberHasToBeAWholeNumberRule,
   textInputValidationRules,
 } from "utils/formHelpers/validation";
@@ -55,7 +56,7 @@ export const SaveLeaveType: React.FC<IProps> = ({
       requireReliever: data.requireReliever,
     });
   }, [form, data]);
-
+  const [leaveLengthType, setLeaveLengthType] = useState<string>("dynamic");
   return (
     <Themes>
       <Modal
@@ -89,24 +90,84 @@ export const SaveLeaveType: React.FC<IProps> = ({
           className="grid grid-cols-2 gap-x-4"
           requiredMark={false}
         >
-          <Form.Item rules={textInputValidationRules} name="name" label="Name">
+          <Form.Item
+            className="col-span-2"
+            rules={textInputValidationRules}
+            name="name"
+            label="Name"
+          >
             <Input placeholder="Leave Name" />
           </Form.Item>
           <Form.Item
-            rules={[numberHasToBeAWholeNumberRule]}
-            name="length"
+            className="col-span-1"
+            rules={[]}
+            name="leaveLengthType"
             label={
               <AppTooltip
-                children={<span>Leave Length</span>}
+                children={<span>Type of Leave Length</span>}
                 tooltipProps={{
                   title:
-                    "This is the number of days you can take leave in a leave cycle",
+                    "Specify the type of leave length you want to apply to this leave type, Note: A Dynamic leave length cannot be changed to a fixed one",
                 }}
               />
             }
           >
-            <InputNumber className="w-full" placeholder="Leave Length" />
+            <Select
+              className="w-full"
+              placeholder="type of leave length"
+              options={["dynamic", "fixed"].map((item) => ({
+                label: item,
+                value: item,
+              }))}
+              value={leaveLengthType}
+              onChange={(value) => {
+                setLeaveLengthType(value);
+              }}
+            />
           </Form.Item>
+          {leaveLengthType === "dynamic" && (
+            <Form.Item
+              className="col-span-1"
+              rules={generalValidationRules}
+              name="length"
+              label={
+                <AppTooltip
+                  children={<span>Leave Length</span>}
+                  tooltipProps={{
+                    title:
+                      "This is the number of days based on an employee property",
+                  }}
+                />
+              }
+            >
+              <Select
+                className="w-full"
+                placeholder="Employee Attribute"
+                options={["spillover"].map((item) => ({
+                  label: item,
+                  value: item,
+                }))}
+              />
+            </Form.Item>
+          )}
+          {leaveLengthType === "fixed" && (
+            <Form.Item
+              className="col-span-1"
+              rules={[numberHasToBeAWholeNumberRule]}
+              name="length"
+              label={
+                <AppTooltip
+                  children={<span>Leave Length</span>}
+                  tooltipProps={{
+                    title:
+                      "This is the number of days you can take leave in a leave cycle",
+                  }}
+                />
+              }
+            >
+              <InputNumber className="w-full" placeholder="Leave Length" />
+            </Form.Item>
+          )}
           <Form.Item
             className="col-span-2"
             name="requireReliever"

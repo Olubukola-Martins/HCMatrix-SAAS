@@ -15,7 +15,6 @@ export const CRBHomeSettings = () => {
             backLink={appRoutes.conferenceRoomBooking}
           />
           <CRBSettingsAccordian />
-          <div className="mt-12 flex flex-col gap-4"></div>
         </div>
       </div>
     </>
