@@ -1,11 +1,15 @@
 import axios from "axios";
-import { ICreateCompSocialAuthProps } from "../types";
+import { ICreateCompSocialAuthProps, TGeneralAuthResponse } from "../types";
 import { useMutation } from "react-query";
 import { MICROSERVICE_ENDPOINTS } from "config/enviroment";
 
+type TResponse = {
+  message: TGeneralAuthResponse["message"];
+  data: TGeneralAuthResponse["data"]["payload"][0];
+};
 export const createCompanyFromSocialAuth = async (
   props: ICreateCompSocialAuthProps
-) => {
+): Promise<TResponse> => {
   const url = `${MICROSERVICE_ENDPOINTS.UTILITY}/company/auth`;
   const config = {
     headers: {
@@ -14,12 +18,12 @@ export const createCompanyFromSocialAuth = async (
     },
   };
 
-  // necessary to make immediate changes when in  a central place when schema changes
   const data: any = props;
   delete data["token"];
 
   const response = await axios.post(url, data, config);
-  return response;
+  const result = response.data as unknown as TResponse;
+  return result;
 };
 
 export const useCreateCompanyFromSocialAuth = () => {

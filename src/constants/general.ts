@@ -118,7 +118,7 @@ export const RELATIONSHIPS = [
   },
 ];
 export const DEFAULT_PROFILE_IMAGE_URL =
-  "https://res.cloudinary.com/ddvaelej7/image/upload/v1639659955/HCmatrix/User-Icon_wdkmsf.png";
+  "https://res.cloudinary.com/ddvaelej7/image/upload/v1655735373/samples/Ellipse_4_j0womm.png";
 export const EMPLOYMENT_TYPES = [
   {
     label: "Contract",

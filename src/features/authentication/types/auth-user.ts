@@ -15,7 +15,7 @@ interface Payload {
   roleId: number;
   status: string;
   companyId: number;
-  designationId: number;
+  designationId?: number;
   userId: number;
   avatarUrl?: string;
   company: Company;
@@ -85,9 +85,9 @@ interface Company {
   color: string;
   industryId: number;
   userId: number;
-  addressId: number;
-  logoUrl: string;
-  website: string;
+  addressId?: number;
+  logoUrl?: string;
+  website?: string;
   parentId?: number;
 }
 

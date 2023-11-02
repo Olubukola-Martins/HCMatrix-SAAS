@@ -1,91 +1,18 @@
 import { FormInstance } from "antd";
-import { TPermissionLabel } from "features/core/roles-and-permissions/types";
 import { TAuthUser } from "./auth-user";
+import { TGeneralAuthResponse } from "./general-auth-response";
 
-export { type TAuthUser };
+export { type TAuthUser, type TGeneralAuthResponse };
 export interface IRefreshTokenProps {
   refreshToken: string;
   token: string;
 }
 
 export interface IAuthDets {
-  // TO DO
-  // To properly define the user object regardless of role
-  user: {
-    avatarUrl?: string;
-
-    email: string;
-    fullName: string;
-    id: number;
-    isOwner: boolean;
-    isSocial: boolean;
-    isVerified: boolean;
-    lastLogin: string;
-  };
+  user: TAuthUser["user"];
   userToken: string;
 
-  companies: {
-    avatarUrl?: string;
-    id: number;
-    firstName: string;
-    lastName: string;
-    email: string;
-    hasSelfService: true;
-    empUid: string;
-    roleId: number;
-    status: string; // suppose be 'confirmed' n all
-    companyId: number;
-    designationId?: number;
-    userId: number;
-    createdAt: string;
-    updatedAt: string;
-    deletedAt?: string;
-    departmentId?: number;
-    company: {
-      id: number;
-      name: string;
-      label: string;
-      email: string;
-      phoneNumber: string;
-      isParent: true;
-      isActive: true;
-      color: string;
-      industryId: 2;
-      userId: number;
-      addressId?: string;
-      logoUrl?: string;
-      website?: string;
-      parentId: number;
-      createdAt: string;
-      updatedAt: string;
-      deletedAt?: string;
-    };
-    role: {
-      id: number;
-      name: string;
-      companyId: number;
-      createdAt: string;
-      updatedAt: string;
-      permissions: [
-        {
-          id: number;
-          permissionId: number;
-          roleId: string;
-          createdAt: string;
-          updatedAt: string;
-          permission: {
-            id: number;
-            name: string;
-            label: TPermissionLabel;
-            categoryId: number;
-            description?: string;
-            createdAt: string;
-            updatedAt: string;
-          };
-        }
-      ];
-    };
-  }[];
+  companies: TAuthUser["payload"];
 }
 
 export interface ICreateCompProps {
