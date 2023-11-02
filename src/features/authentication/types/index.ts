@@ -1,6 +1,8 @@
 import { FormInstance } from "antd";
 import { TPermissionLabel } from "features/core/roles-and-permissions/types";
+import { TAuthUser } from "./auth-user";
 
+export { type TAuthUser };
 export interface IRefreshTokenProps {
   refreshToken: string;
   token: string;
