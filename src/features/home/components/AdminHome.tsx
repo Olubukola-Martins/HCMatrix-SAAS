@@ -18,6 +18,7 @@ import ErrorBoundary from "components/errorHandlers/ErrorBoundary";
 import { ErrorWrapper } from "components/errorHandlers/ErrorWrapper";
 import moment, { Moment } from "moment";
 import { appRoutes } from "config/router/paths";
+import RecentApprovalRequestsCard from "features/core/workflows/components/approval-request/RecentApprovalRequestsCard";
 
 export const AdminHome = () => {
   const auth = useAuthUser();
@@ -162,15 +163,11 @@ export const AdminHome = () => {
                       </Link>
                     </div>
                   </div>
-                  <div className="bg-mainBg shadow border rounded-lg p-3 flex-1">
-                    <h3 className="text-base font-medium pb-2">
-                      Pending Approval
-                    </h3>
-                    <hr />
-                    <p className="text-center py-5 text-gray-500">
-                      You have No Pending <br /> Approval
-                    </p>
-                  </div>
+                  <RecentApprovalRequestsCard
+                    title={`Pending Approvals (${data?.pendingApprovals?.totalCount})`}
+                    requests={data?.pendingApprovals.result}
+                    emptyMessage="You have No Pending Approvals"
+                  />
                 </div>
 
                 <div className="col-span-2 bg-mainBg shadow border rounded-lg p-3">

@@ -1,4 +1,4 @@
-import { Space, Dropdown, Menu, Table, Modal } from "antd";
+import { Space, Dropdown, Menu, Table } from "antd";
 import { MoreOutlined } from "@ant-design/icons";
 
 import React, { useState } from "react";
@@ -187,16 +187,13 @@ const CRBApprovalRequestsTable: React.FC<{
     : originalColumns;
   return (
     <div>
-      <Modal
-        open={showD}
-        onCancel={() => setShowD(false)}
-        closeIcon={false}
-        title={"Booking Details"}
-        style={{ top: 10 }}
-        footer={null}
-      >
-        {requestId && <CRBBookingDetails id={requestId} />}
-      </Modal>
+      {requestId && (
+        <CRBBookingDetails
+          id={requestId}
+          open={showD}
+          handleClose={() => setShowD(false)}
+        />
+      )}
 
       <Table
         columns={columns}

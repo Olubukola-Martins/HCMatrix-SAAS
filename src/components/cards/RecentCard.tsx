@@ -8,12 +8,13 @@ export const requestStyle =
 export const LIMIT_OF_ITEMS_TO_DISPLAY = 3;
 
 interface IProps {
+  emptyComp?: React.ReactNode;
   title: string;
   secondaryColTitle?: string;
   loading?: boolean;
   data?: {
     title: string;
-    features?: { name: string; value: string }[];
+    features?: { name?: string; value: string; color?: string }[];
     secondaryCol?:
       | { type: "text"; text: string }
       | { type: "options"; options: { name: string; onClick: () => void }[] };
@@ -29,6 +30,7 @@ export const RecentCard: React.FC<IProps> = ({
   total,
   loading,
   handleViewMore,
+  emptyComp = <Empty description="No Data" />,
 }) => {
   return (
     <div className="bg-mainBg pb-6 border rounded-lg text-sm shadow">
@@ -44,8 +46,12 @@ export const RecentCard: React.FC<IProps> = ({
                 <div className="flex flex-col gap-1">
                   <h5 className="font-medium capitalize">{item.title}</h5>
                   {item?.features?.map((item, i) => (
-                    <span className="text-xs capitalize" key={i}>
-                      {item.name}: {item.value}
+                    <span
+                      className="text-xs capitalize"
+                      key={i}
+                      style={{ color: item.color }}
+                    >
+                      {item.name && `${item?.name}:`} {item.value}
                     </span>
                   ))}
                 </div>
@@ -83,7 +89,7 @@ export const RecentCard: React.FC<IProps> = ({
               </div>
             ))
           ) : (
-            <Empty description="No Request" />
+            <>{emptyComp}</>
           )}
         </Skeleton>
       </div>

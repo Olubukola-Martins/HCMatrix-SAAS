@@ -12,7 +12,8 @@ export const FormRoleInput: React.FC<{
   showLabel?: boolean;
   control?: { label: string; name: string | (string | number)[] };
   optional?: boolean;
-}> = ({ Form, showLabel = true, control, optional = false }) => {
+  disabled?: boolean;
+}> = ({ Form, showLabel = true, control, optional = false, disabled }) => {
   const [searchTerm, setSearchTerm] = useState<string>("");
   const debouncedSearchTerm: string = useDebounce<string>(searchTerm);
 
@@ -33,8 +34,9 @@ export const FormRoleInput: React.FC<{
       label={showLabel ? control?.label ?? "Role" : null}
     >
       <Select
+        disabled={disabled}
         placeholder="Select role"
-        loading={isFetching} //TO DO : this should be added to all custom Fetch Form Inputs
+        loading={isFetching}
         showSearch
         allowClear
         onClear={() => setSearchTerm("")}
@@ -44,17 +46,11 @@ export const FormRoleInput: React.FC<{
         showArrow={false}
         filterOption={false}
       >
-        {isSuccess ? (
-          data.data.map((item) => (
-            <Select.Option key={item.id} value={item.id}>
-              {item.name}
-            </Select.Option>
-          ))
-        ) : (
-          <div className="flex justify-center items-center w-full">
-            <Spin size="small" />
-          </div>
-        )}
+        {data?.data.map((item) => (
+          <Select.Option key={item.id} value={item.id}>
+            {item.name}
+          </Select.Option>
+        ))}
       </Select>
     </Form.Item>
   );

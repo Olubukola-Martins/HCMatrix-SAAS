@@ -121,7 +121,9 @@ export const EmployeeHandOverForm: React.FC<IProps> = ({
         className="bg-card px-5 py-7  rounded-md mt-7 "
         form={form}
         onFinish={handleSubmit}
-        disabled={!!handover}
+        disabled={
+          handover?.status === "pending" || handover?.status === "approved"
+        } //the employee should only able to edit/create handover when it is neither pending or approved
       >
         <div className="grid grid-cols-1 md:grid-cols-2 gap-5 text-accent">
           {/* first grid */}

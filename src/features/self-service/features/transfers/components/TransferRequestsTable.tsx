@@ -35,6 +35,7 @@ export const TransferRequestsTable: React.FC<{
       title: "Name",
       dataIndex: "name",
       key: "name",
+      ellipsis: true,
       render: (_, item) => (
         <span className="capitalize">
           {item ? getEmployeeFullName(item.employee) : ""}
@@ -53,40 +54,68 @@ export const TransferRequestsTable: React.FC<{
       title: "Current Designation",
       dataIndex: "Current Designation",
       key: "Current Designation",
-      render: (_, item) => <span className="capitalize">N/A </span>,
+      ellipsis: true,
+
+      render: (_, item) => (
+        <span className="capitalize">{item.employee?.designation?.name}</span>
+      ),
     },
 
     {
       title: "Current Department",
       dataIndex: "Current Department",
       key: "Current Department",
-      render: (_, item) => <span>N/A</span>,
+
+      ellipsis: true,
+      render: (_, item) => (
+        <span className="capitalize">
+          {item.employee?.designation?.department.name}
+        </span>
+      ),
     },
     {
-      title: "Current Location",
-      dataIndex: "Current Location",
-      key: "Current Location",
-      render: (_, item) => <span>N/A</span>,
+      title: "Current Branch",
+      dataIndex: "Current Branch",
+      ellipsis: true,
+      key: "Current Branch",
+
+      render: (_, item) => (
+        <span className="capitalize">
+          {item?.employee.jobInformation?.branch?.name}
+        </span>
+      ),
     },
     {
       title: "Proposed Designation",
       dataIndex: "Proposed Designation",
       key: "Proposed Designation",
-      render: (_, item) => <span>{item.proposedDesignation.name}</span>,
+      ellipsis: true,
+
+      render: (_, item) => (
+        <span className="capitalize">{item.proposedDesignation.name}</span>
+      ),
     },
     {
       title: "Proposed Department",
       dataIndex: "Proposed Department",
       key: "Proposed Department",
+      ellipsis: true,
+
       render: (_, item) => (
-        <span>{item.proposedDesignation.department.name}</span>
+        <span className="capitalize">
+          {item.proposedDesignation.department.name}
+        </span>
       ),
     },
     {
-      title: "Proposed Branch",
-      dataIndex: "Proposed Branch",
-      key: "Proposed Branch",
-      render: (_, item) => <span>{item.proposedBranch.name}</span>,
+      title: "Proposed branch",
+      dataIndex: "Proposed branch",
+      key: "Proposed branch",
+      ellipsis: true,
+
+      render: (_, item) => (
+        <span className="capitalize">{item.proposedBranch.name}</span>
+      ),
     },
     {
       title: "Status",

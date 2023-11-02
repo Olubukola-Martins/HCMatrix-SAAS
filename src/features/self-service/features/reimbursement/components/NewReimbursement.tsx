@@ -7,6 +7,7 @@ import { IModalProps } from "types";
 import {
   dateHasToBeGreaterThanOrEqualToCurrentDayRule,
   generalValidationRules,
+  numberHasToBeGreaterThanZeroRule,
   textInputValidationRules,
 } from "utils/formHelpers/validation";
 import { useCreateReimbursementRequisition } from "../../requisitions/hooks/reimbursement/useCreateReimbursementRequisition";
@@ -116,7 +117,11 @@ export const NewReimbursement: React.FC<IModalProps> = ({
         >
           <Input.TextArea placeholder="description" />
         </Form.Item>
-        <Form.Item rules={generalValidationRules} name="amount" label="Amount">
+        <Form.Item
+          rules={[numberHasToBeGreaterThanZeroRule]}
+          name="amount"
+          label="Amount"
+        >
           <InputNumber placeholder="amount" className="w-full" />
         </Form.Item>
         <div className={boxStyle}>

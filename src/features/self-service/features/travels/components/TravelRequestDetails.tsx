@@ -2,7 +2,6 @@ import { DatePicker, Form, Input, Modal, Skeleton, Switch } from "antd";
 import React, { useEffect } from "react";
 import { IModalProps } from "types";
 import { useApiAuth } from "hooks/useApiAuth";
-import { AppButton } from "components/button/AppButton";
 import { getAppropriateColorForStatus } from "utils/colorHelpers/getAppropriateColorForStatus";
 import moment from "moment";
 import { useGetSingleTravelRequisition } from "../../requisitions/hooks/travel/useGetSingleTravelRequisition";
@@ -92,9 +91,6 @@ export const TravelRequestDetails: React.FC<IProps> = ({
             />
           </Form.Item>
         </Form>
-        <div className="flex justify-end">
-          <AppButton label="Download" type="button" />
-        </div>
       </Skeleton>
     </Modal>
   );

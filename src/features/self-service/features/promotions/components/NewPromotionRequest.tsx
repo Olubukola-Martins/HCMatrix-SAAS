@@ -4,7 +4,6 @@ import React from "react";
 import { IModalProps } from "types";
 import {
   dateHasToBeGreaterThanOrEqualToCurrentDayRule,
-  generalValidationRules,
   textInputValidationRules,
 } from "utils/formHelpers/validation";
 import { useCurrentFileUploadUrl } from "hooks/useCurrentFileUploadUrl";
@@ -120,9 +119,9 @@ export const NewPromotionRequest: React.FC<IModalProps> = ({
         <Form.Item
           rules={textInputValidationRules}
           name="justification"
-          label="justification"
+          label="Justification"
         >
-          <Input.TextArea placeholder="justification" />
+          <Input.TextArea placeholder="Justification" />
         </Form.Item>
 
         <div className="flex justify-end">

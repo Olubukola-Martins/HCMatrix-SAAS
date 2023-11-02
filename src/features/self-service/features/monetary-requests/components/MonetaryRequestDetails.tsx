@@ -86,9 +86,6 @@ export const MonetaryRequestDetails: React.FC<IProps> = ({
             />
           </Form.Item>
         </Form>
-        <div className="flex justify-end">
-          <AppButton label="Download" type="button" />
-        </div>
       </Skeleton>
     </Modal>
   );

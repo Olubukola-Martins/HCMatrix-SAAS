@@ -4,7 +4,6 @@ import React from "react";
 import { IModalProps } from "types";
 import {
   dateHasToBeGreaterThanOrEqualToCurrentDayRule,
-  generalValidationRules,
   textInputValidationRules,
 } from "utils/formHelpers/validation";
 import { openNotification } from "utils/notifications";
@@ -16,6 +15,7 @@ import { useCurrentFileUploadUrl } from "hooks/useCurrentFileUploadUrl";
 import { FormAssetInput } from "./FormAssetInput";
 import { FileUpload } from "components/FileUpload";
 import { boxStyle } from "styles/reused";
+import { QUERY_KEY_FOR_ASSET_REQUISITIONS_FOR_AUTH_EMPLOYEE } from "../hooks/requisitions/useGetAssetRequisitions4AuthEmployee";
 
 export const NewAssetRequest: React.FC<IModalProps> = ({
   open,
@@ -57,6 +57,10 @@ export const NewAssetRequest: React.FC<IModalProps> = ({
 
           queryClient.invalidateQueries({
             queryKey: [QUERY_KEY_FOR_ASSET_REQUISITIONS],
+            // exact: true,
+          });
+          queryClient.invalidateQueries({
+            queryKey: [QUERY_KEY_FOR_ASSET_REQUISITIONS_FOR_AUTH_EMPLOYEE],
             // exact: true,
           });
         },

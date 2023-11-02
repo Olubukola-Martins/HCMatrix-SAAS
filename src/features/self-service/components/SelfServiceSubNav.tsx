@@ -11,7 +11,7 @@ const DEFAULT_ROUTES: TNavRoute[] = [
 ];
 
 const SelfServiceSubNav = () => {
-  const { data, isError, isLoading } =
+  const { data, isError, isLoading, error } =
     useGetActivatedSelfServiceLinksAndAnalytics();
   const primaryDataRoutes: TNavRoute[] = !data
     ? []
@@ -63,7 +63,12 @@ const SelfServiceSubNav = () => {
   ];
   return (
     <ErrorBoundary>
-      <ErrorWrapper isError={isError}>
+      <ErrorWrapper
+        isError={isError}
+        message={
+          error?.response.data.message ?? error?.response.data.error.message
+        }
+      >
         <Skeleton loading={isLoading} paragraph={{ rows: 2 }}>
           <Menu
             className="bg-white py-4 px-3 text-accent rounded mb-9 shadow-md  text-sm font-medium"

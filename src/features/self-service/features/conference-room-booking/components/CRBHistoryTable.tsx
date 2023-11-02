@@ -1,4 +1,4 @@
-import { Space, Dropdown, Menu, Table, Modal } from "antd";
+import { Space, Dropdown, Menu, Table } from "antd";
 import { MoreOutlined } from "@ant-design/icons";
 
 import React, { useState } from "react";
@@ -13,6 +13,8 @@ import { TSingleConferenceRoomBooking } from "../types";
 import { getAppropriateColorForStatus } from "utils/colorHelpers/getAppropriateColorForStatus";
 import CRBBookingDetails from "./CRBBookingDetails";
 import { usePagination } from "hooks/usePagination";
+import { getEmployeeFullName } from "features/core/employees/utils/getEmployeeFullName";
+import { DEFAULT_DATE_FORMAT } from "constants/dateFormats";
 
 const CRBHistoryTable: React.FC<{
   status?: TCRBookingStatus;
@@ -33,27 +35,23 @@ const CRBHistoryTable: React.FC<{
       title: "Name",
       dataIndex: "name",
       key: "name",
-      render: (val, item) => (
-        <span>
-          {item.employee.firstName} {item.employee.lastName}
-        </span>
-      ),
+      render: (val, item) => <span>{getEmployeeFullName(item.employee)}</span>,
 
-      // ellipsis: true,
-
-      // width: 100,
+      ellipsis: true,
     },
     {
-      title: "Date",
+      title: "Created At",
       dataIndex: "createdAt",
       key: "createdAt",
-      render: (val) => moment(val).format("YYYY-MM-DD"),
+      render: (val, item) => moment(item.createdAt).format(DEFAULT_DATE_FORMAT),
     },
     {
       title: "Room Name",
       dataIndex: "roomName",
       key: "roomName",
-      render: (val: string) => <span>{`Marketing`}</span>,
+      render: (_, item) => (
+        <span className="capitalize">{item.conferenceRoom.name}</span>
+      ),
 
       // ellipsis: true,
 
@@ -67,16 +65,12 @@ const CRBHistoryTable: React.FC<{
 
       // width: 100,
     },
-    {
-      title: "Department",
-      dataIndex: "department",
-      key: "department",
-    },
+
     {
       title: "Meeting Date",
       dataIndex: "date",
       key: "date",
-      render: (val) => moment(val).format("YYYY-MM-DD"),
+      render: (val) => moment(val).format(DEFAULT_DATE_FORMAT),
     },
     {
       title: "Start Time",
@@ -140,16 +134,13 @@ const CRBHistoryTable: React.FC<{
 
   return (
     <div>
-      <Modal
-        open={showD}
-        onCancel={() => setShowD(false)}
-        closeIcon={false}
-        title={"Booking Details"}
-        style={{ top: 10 }}
-        footer={null}
-      >
-        {bookingId && <CRBBookingDetails id={bookingId} />}
-      </Modal>
+      {bookingId && (
+        <CRBBookingDetails
+          id={bookingId}
+          open={showD}
+          handleClose={() => setShowD(false)}
+        />
+      )}
 
       <Table
         columns={columns}

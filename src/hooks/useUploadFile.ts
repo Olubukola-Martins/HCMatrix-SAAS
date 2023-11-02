@@ -31,7 +31,6 @@ export const uploadFile = async (props: {
   };
 
   const response = await axios.postForm(url, data, config);
-  console.log("response>>", response.data);
   const fetchedData: TUploadFileApiResponse = response.data;
 
   return fetchedData;

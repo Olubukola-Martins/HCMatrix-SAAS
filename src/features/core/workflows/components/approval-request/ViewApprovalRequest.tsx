@@ -8,6 +8,12 @@ import { TransferDetails } from "features/self-service/features/transfers/compon
 import { PositionChangeRequestDetails } from "features/self-service/features/position-change/components/PositionChangeRequestDetails";
 import { MonetaryRequestDetails } from "features/self-service/features/monetary-requests/components/MonetaryRequestDetails";
 import { ReimbursementDetails } from "features/self-service/features/reimbursement/components/ReimbursementDetails";
+import CRBBookingDetails from "features/self-service/features/conference-room-booking/components/CRBBookingDetails";
+import { LeaveDetails } from "features/self-service/features/leave/components/LeaveDetails";
+import { LoanDetails } from "features/self-service/features/loan/components/LoanDetails";
+import { PromotionRequestDetails } from "features/self-service/features/promotions/components/PromotionRequestDetails";
+import { Navigate } from "react-router-dom";
+import { appRoutes } from "config/router/paths";
 
 interface IProps extends IModalProps {
   request?: TApprovalRequest;
@@ -18,10 +24,44 @@ const ViewApprovalRequest: React.FC<IProps> = ({
   handleClose,
   open,
 }) => {
+  console.log(request, "WHY");
   if (request === undefined) return null;
   //   TODO: Add status to all view request types
   return (
     <>
+      {typeof request.exitHandoverForm !== "undefined" && (
+        <Navigate
+          to={appRoutes.handOverDetails(request.exitHandoverForm.id).path}
+        />
+      )}
+      {typeof request.promotionRequisition !== "undefined" && (
+        <PromotionRequestDetails
+          open={open}
+          handleClose={handleClose}
+          id={request.promotionRequisition.id}
+        />
+      )}
+      {typeof request.leave !== "undefined" && (
+        <LeaveDetails
+          open={open}
+          handleClose={handleClose}
+          id={request.leave.id}
+        />
+      )}
+      {typeof request.loan !== "undefined" && (
+        <LoanDetails
+          open={open}
+          handleClose={handleClose}
+          id={request.loan.id}
+        />
+      )}
+      {typeof request.conferenceRoomBooking !== "undefined" && (
+        <CRBBookingDetails
+          open={open}
+          handleClose={handleClose}
+          id={request.conferenceRoomBooking.id}
+        />
+      )}
       {typeof request.assetRequisition !== "undefined" && (
         <AssetRequestDetails
           open={open}
@@ -43,11 +83,11 @@ const ViewApprovalRequest: React.FC<IProps> = ({
           id={request.jobRequisition.id}
         />
       )}
-      {typeof request.travelRequisition !== "undefined" && (
+      {typeof request.travelRequest !== "undefined" && (
         <TravelRequestDetails
           open={open}
           handleClose={handleClose}
-          id={request.travelRequisition.id}
+          id={request.travelRequest.id}
         />
       )}
       {typeof request.transferRequisition !== "undefined" && (

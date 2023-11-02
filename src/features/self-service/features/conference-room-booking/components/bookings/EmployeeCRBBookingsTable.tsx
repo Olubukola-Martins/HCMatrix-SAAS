@@ -3,12 +3,13 @@ import { TApprovalStatus } from "types/statuses";
 import { MoreOutlined } from "@ant-design/icons";
 import type { ColumnsType } from "antd/es/table";
 import { usePagination } from "hooks/usePagination";
-import { Dropdown, Menu, Modal, Space, Table } from "antd";
+import { Dropdown, Menu, Space, Table } from "antd";
 import moment from "moment";
 import { getAppropriateColorForStatus } from "utils/colorHelpers/getAppropriateColorForStatus";
 import { useGetConferenceRoomBookings4AuthEmployee } from "../../hooks/useGetConferenceRoomBookings4AuthEmployee";
 import { TSingleConferenceRoomBooking } from "../../types";
 import CRBBookingDetails from "../CRBBookingDetails";
+import { DEFAULT_DATE_FORMAT } from "constants/dateFormats";
 
 export const EmployeeCRBBookingsTable: React.FC<{
   status?: TApprovalStatus[] | TApprovalStatus;
@@ -27,16 +28,18 @@ export const EmployeeCRBBookingsTable: React.FC<{
 
   const columns: ColumnsType<TSingleConferenceRoomBooking> = [
     {
-      title: "Date",
+      title: "Created At",
       dataIndex: "createdAt",
       key: "createdAt",
-      render: (val) => moment(val).format("YYYY-MM-DD"),
+      render: (val, item) => moment(item.createdAt).format(DEFAULT_DATE_FORMAT),
     },
     {
       title: "Room Name",
       dataIndex: "roomName",
       key: "roomName",
-      render: (val: string) => <span>{`Marketing`}</span>,
+      render: (_, item) => (
+        <span className="capitalize">{item.conferenceRoom.name}</span>
+      ),
 
       // ellipsis: true,
 
@@ -50,16 +53,12 @@ export const EmployeeCRBBookingsTable: React.FC<{
 
       // width: 100,
     },
-    {
-      title: "Department",
-      dataIndex: "department",
-      key: "department",
-    },
+
     {
       title: "Meeting Date",
       dataIndex: "date",
       key: "date",
-      render: (val) => moment(val).format("YYYY-MM-DD"),
+      render: (val) => moment(val).format(DEFAULT_DATE_FORMAT),
     },
     {
       title: "Start Time",
@@ -123,16 +122,13 @@ export const EmployeeCRBBookingsTable: React.FC<{
 
   return (
     <div>
-      <Modal
-        open={showD}
-        onCancel={() => setShowD(false)}
-        closeIcon={false}
-        title={"Booking Details"}
-        style={{ top: 10 }}
-        footer={null}
-      >
-        {bookingId && <CRBBookingDetails id={bookingId} />}
-      </Modal>
+      {bookingId && (
+        <CRBBookingDetails
+          id={bookingId}
+          open={showD}
+          handleClose={() => setShowD(false)}
+        />
+      )}
 
       <Table
         columns={columns}

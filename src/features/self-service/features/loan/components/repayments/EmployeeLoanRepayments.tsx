@@ -6,7 +6,7 @@ import { usePagination } from "hooks/usePagination";
 const EmployeeLoanRepayments = () => {
   const { pagination, onChange } = usePagination();
   const { data, isFetching } = useGetLoanRepayments({
-    type: "me",
+    type: "mine",
     props: {
       pagination,
     },

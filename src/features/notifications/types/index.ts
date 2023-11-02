@@ -2,6 +2,7 @@ import { TWorkflowApprovalType } from "features/core/workflows/types";
 import { ConferenceRoomBooking } from "./conference-booking-entity";
 import { Leave } from "./leave-entity";
 import { VehicleBooking } from "./vehicle-booking-entity";
+import { TApprovalRequest } from "features/core/workflows/types/approval-requests";
 export type TNotificationType = TWorkflowApprovalType;
 
 export type TNotification = {
@@ -17,16 +18,4 @@ export type TNotification = {
   updatedAt: string;
 };
 
-interface Content {
-  id: number;
-  status: string;
-  entityId: number;
-  createdAt: string;
-  updatedAt: string;
-  approverId: number;
-  entityType: string;
-  basicStageId: number;
-  vehicleBooking?: VehicleBooking;
-  leave?: Leave;
-  conferenceRoomBooking?: ConferenceRoomBooking;
-}
+type Content = TApprovalRequest;

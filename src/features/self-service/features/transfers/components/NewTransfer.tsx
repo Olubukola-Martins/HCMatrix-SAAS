@@ -4,7 +4,6 @@ import React from "react";
 import { IModalProps } from "types";
 import {
   dateHasToBeGreaterThanOrEqualToCurrentDayRule,
-  generalValidationRules,
   textInputValidationRules,
 } from "utils/formHelpers/validation";
 import { openNotification } from "utils/notifications";
@@ -17,6 +16,7 @@ import { QUERY_KEY_FOR_JOB_REQUISITIONS_FOR_AUTH_EMPLOYEE } from "../../requisit
 import { QUERY_KEY_FOR_APPROVAL_REQUESTS } from "features/core/workflows/hooks/useFetchApprovalRequests";
 import { QUERY_KEY_FOR_UNREAD_NOTIFICATION_COUNT } from "features/notifications/hooks/unRead/useGetUnReadNotificationCount";
 import { QUERY_KEY_FOR_NOTIFICATIONS } from "features/notifications/hooks/useGetAlerts";
+import { QUERY_KEY_FOR_TRANSFER_REQUISITIONS_FOR_AUTH_EMPLOYEE } from "../../requisitions/hooks/transfer/useGetTransferRequisitions4AuthEmployee";
 
 export const NewTransfer: React.FC<IModalProps> = ({ open, handleClose }) => {
   const queryClient = useQueryClient();
@@ -58,7 +58,7 @@ export const NewTransfer: React.FC<IModalProps> = ({ open, handleClose }) => {
             // exact: true,
           });
           queryClient.invalidateQueries({
-            queryKey: [QUERY_KEY_FOR_JOB_REQUISITIONS_FOR_AUTH_EMPLOYEE],
+            queryKey: [QUERY_KEY_FOR_TRANSFER_REQUISITIONS_FOR_AUTH_EMPLOYEE],
             // exact: true,
           });
           queryClient.invalidateQueries({

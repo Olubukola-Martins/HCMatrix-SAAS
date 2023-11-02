@@ -52,10 +52,10 @@ export type TApprovalRequest = {
   transferRequisition?: TransferRequestEntity;
   promotionRequisition?: PromotionRequestEntity;
   reimbursementRequisition?: ReimbursementRequestEntity;
-  travelRequisition?: TravelRequestEntity;
+  travelRequest?: TravelRequestEntity;
   positionChangeRequisition?: PositionChangeRequestEntity;
   moneyRequisition?: MoneyRequestEntity;
   payroll?: TPayrollListData;
   loan?: TLoanRequest;
-  handover?: TTHandOverForm;
+  exitHandoverForm?: TTHandOverForm;
 };

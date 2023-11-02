@@ -4,7 +4,7 @@ import { appRoutes } from "config/router/paths";
 import { TEmployee } from "features/core/employees/types";
 import { getEmployeeFullName } from "features/core/employees/utils/getEmployeeFullName";
 import { SelfBoxListContainer } from "features/self-service/pages/SelfServiceHome";
-import MyRecentRequestsCard from "./cards/MyRecentRequestsCard";
+// import MyRecentRequestsCard from "./cards/MyRecentRequestsCard";
 import moment from "moment";
 import LiveClock from "components/clock/LiveClock";
 import ClockInOrOut from "./ClockInOrOut";
@@ -14,6 +14,7 @@ import { Skeleton } from "antd";
 import { useGetCompanyEmployeeDashboard } from "features/core/company/hooks/dashboard/useGetCompanyEmployeeDashboard";
 import { ErrorWrapper } from "components/errorHandlers/ErrorWrapper";
 import ErrorBoundary from "components/errorHandlers/ErrorBoundary";
+import RecentApprovalRequestsCard from "features/core/workflows/components/approval-request/RecentApprovalRequestsCard";
 
 export const EmployeeHome: React.FC<{
   employee?: Pick<
@@ -138,7 +139,12 @@ export const EmployeeHome: React.FC<{
                 <div className="flex flex-col gap-5">
                   <ClockInOrOut />
 
-                  <MyRecentRequestsCard />
+                  {/* <MyRecentRequestsCard /> TODO: When possible implement tis */}
+                  <RecentApprovalRequestsCard
+                    title={`Pending Approvals (${data?.pendingApprovals?.totalCount})`}
+                    requests={data?.pendingApprovals?.result}
+                    emptyMessage="You have No Pending Approvals"
+                  />
                 </div>
               </div>
 

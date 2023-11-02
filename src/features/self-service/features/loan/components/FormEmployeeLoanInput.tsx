@@ -16,7 +16,7 @@ export const FormEmployeeLoanInput: React.FC<{
   const debouncedSearchTerm: string = useDebounce<string>(searchTerm);
 
   const { data, isFetching, isSuccess } = useGetLoanRequests({
-    type: "me",
+    type: "mine",
     props: {
       searchParams: {
         name: debouncedSearchTerm,

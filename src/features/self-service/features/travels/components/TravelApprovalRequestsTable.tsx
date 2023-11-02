@@ -47,7 +47,7 @@ const TravelApprovalRequestsTable: React.FC<{
       key: "date",
       render: (_, item) => (
         <span>
-          {moment(item.travelRequisition?.createdAt).format("YYYY/MM/DD")}{" "}
+          {moment(item.travelRequest?.createdAt).format("YYYY/MM/DD")}{" "}
         </span>
       ),
     },
@@ -57,7 +57,7 @@ const TravelApprovalRequestsTable: React.FC<{
       key: "adate",
       render: (_, item) => (
         <span>
-          {moment(item.travelRequisition?.arrivalDate).format("YYYY/MM/DD")}{" "}
+          {moment(item.travelRequest?.arrivalDate).format("YYYY/MM/DD")}{" "}
         </span>
       ),
     },
@@ -67,7 +67,7 @@ const TravelApprovalRequestsTable: React.FC<{
       key: "ddate",
       render: (_, item) => (
         <span>
-          {moment(item.travelRequisition?.departureDate).format("YYYY/MM/DD")}{" "}
+          {moment(item.travelRequest?.departureDate).format("YYYY/MM/DD")}{" "}
         </span>
       ),
     },
@@ -75,7 +75,7 @@ const TravelApprovalRequestsTable: React.FC<{
       title: "Travel ID",
       dataIndex: "id",
       key: "id",
-      render: (_, item) => <span>{item.travelRequisition?.id} </span>,
+      render: (_, item) => <span>{item.travelRequest?.id} </span>,
     },
 
     {
@@ -84,8 +84,8 @@ const TravelApprovalRequestsTable: React.FC<{
       key: "emp",
       render: (_, item) => (
         <span>
-          {item.travelRequisition
-            ? getEmployeeFullName(item.travelRequisition?.employee)
+          {item.travelRequest
+            ? getEmployeeFullName(item.travelRequest?.employee)
             : ""}
         </span>
       ),
@@ -95,7 +95,7 @@ const TravelApprovalRequestsTable: React.FC<{
       dataIndex: "reas",
       key: "reas",
       render: (_, item) => (
-        <span className="capitalize">{item.travelRequisition?.reason} </span>
+        <span className="capitalize">{item.travelRequest?.reason} </span>
       ),
     },
     {
@@ -103,7 +103,7 @@ const TravelApprovalRequestsTable: React.FC<{
       dataIndex: "dura",
       key: "dura",
       render: (_, item) => (
-        <span className="capitalize">{item.travelRequisition?.duration} </span>
+        <span className="capitalize">{item.travelRequest?.duration} </span>
       ),
     },
 
@@ -117,11 +117,11 @@ const TravelApprovalRequestsTable: React.FC<{
           className="capitalize"
           style={{
             color: getAppropriateColorForStatus(
-              item?.travelRequisition?.status ?? ""
+              item?.travelRequest?.status ?? ""
             ),
           }}
         >
-          {item?.travelRequisition?.status}
+          {item?.travelRequest?.status}
         </span>
       ),
     },
@@ -139,13 +139,13 @@ const TravelApprovalRequestsTable: React.FC<{
                   key="3"
                   onClick={() => {
                     setShowD(true);
-                    setRequestId(item?.travelRequisition?.id);
+                    setRequestId(item?.travelRequest?.id);
                   }}
                 >
                   View
                 </Menu.Item>
                 <Menu.Item
-                  hidden={item.travelRequisition?.status !== "pending"}
+                  hidden={item.travelRequest?.status !== "pending"}
                   key="2"
                   onClick={() =>
                     confirmApprovalAction({
@@ -159,7 +159,7 @@ const TravelApprovalRequestsTable: React.FC<{
                   Approve
                 </Menu.Item>
                 <Menu.Item
-                  hidden={item.travelRequisition?.status !== "pending"}
+                  hidden={item.travelRequest?.status !== "pending"}
                   key="1"
                   onClick={() =>
                     confirmApprovalAction({

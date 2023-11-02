@@ -28,8 +28,9 @@ export const useGetActivatedSelfServiceLinksAndAnalytics = (): {
   data?: TData;
   isLoading?: boolean;
   isError?: boolean;
+  error?: any;
 } => {
-  const { data, isLoading, isError } = useGetSelfServiceDBAnalytics();
+  const { data, isLoading, isError, error } = useGetSelfServiceDBAnalytics();
   const { userPermissions } = useGetUserPermissions();
 
   return {
@@ -294,5 +295,6 @@ export const useGetActivatedSelfServiceLinksAndAnalytics = (): {
       : undefined,
     isLoading,
     isError,
+    error,
   };
 };

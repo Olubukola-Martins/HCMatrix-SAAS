@@ -160,18 +160,6 @@ export interface ICreateEmpPersonalInfoProps
   employeeId: number;
 }
 
-export interface IUpdateEmpProps extends ICurrentCompany {
-  employeeId: number;
-  firstName?: string;
-  lastName?: string;
-  email?: string;
-  hasSelfService?: boolean;
-  empUid?: string;
-  roleId?: number;
-  designationId?: number;
-  avatarUrl?: string;
-}
-
 export interface ICreateEmpProps {
   firstName: string;
   lastName: string;

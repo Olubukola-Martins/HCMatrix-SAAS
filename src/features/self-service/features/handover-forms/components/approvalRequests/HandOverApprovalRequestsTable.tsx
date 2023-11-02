@@ -25,7 +25,7 @@ const HandOverApprovalRequestsTable: React.FC<{
   const { pagination, onChange } = usePagination();
   const { data, isFetching } = useFetchApprovalRequests({
     pagination,
-    type: "handover",
+    type: "exit-handover-form",
   });
 
   const { confirmApprovalAction } = useApproveORReject({
@@ -43,9 +43,9 @@ const HandOverApprovalRequestsTable: React.FC<{
       dataIndex: "emp",
       key: "emp",
       render: (_, item) => (
-        <Link to={appRoutes.handOverDetails(item.handover?.id).path}>
+        <Link to={appRoutes.handOverDetails(item.exitHandoverForm?.id).path}>
           <span className="capitalize text-caramel">
-            {getEmployeeFullName(item.handover?.employee)}{" "}
+            {getEmployeeFullName(item.exitHandoverForm?.employee)}{" "}
           </span>
         </Link>
       ),
@@ -56,7 +56,9 @@ const HandOverApprovalRequestsTable: React.FC<{
       key: "date",
       render: (_, item) => (
         <span>
-          {moment(item?.handover?.separationDate).format(DEFAULT_DATE_FORMAT)}{" "}
+          {moment(item?.exitHandoverForm?.separationDate).format(
+            DEFAULT_DATE_FORMAT
+          )}{" "}
         </span>
       ),
     },
@@ -65,21 +67,20 @@ const HandOverApprovalRequestsTable: React.FC<{
       dataIndex: "emp_uid",
       key: "emp_uid",
       render: (_, item) => (
-        <span className="capitalize">{item.handover?.employee.empUid} </span>
+        <span className="capitalize">
+          {item.exitHandoverForm?.employee.empUid}{" "}
+        </span>
       ),
     },
-    {
-      title: "Department",
-      dataIndex: "dep",
-      key: "dep",
-      render: (_, item) => <span className="capitalize">N/A</span>,
-    },
+
     {
       title: "Reason",
       dataIndex: "reas",
       key: "reas",
       render: (_, item) => (
-        <span className="capitalize">{item.handover?.reasonForLeaving}</span>
+        <span className="capitalize">
+          {item.exitHandoverForm?.reasonForLeaving}
+        </span>
       ),
     },
 
@@ -104,7 +105,7 @@ const HandOverApprovalRequestsTable: React.FC<{
             overlay={
               <Menu>
                 <Menu.Item
-                  hidden={item.handover?.status !== "pending"}
+                  hidden={item.exitHandoverForm?.status !== "pending"}
                   key="2"
                   onClick={() =>
                     confirmApprovalAction({
@@ -118,7 +119,7 @@ const HandOverApprovalRequestsTable: React.FC<{
                   Approve
                 </Menu.Item>
                 <Menu.Item
-                  hidden={item.handover?.status !== "pending"}
+                  hidden={item.exitHandoverForm?.status !== "pending"}
                   key="1"
                   onClick={() =>
                     confirmApprovalAction({

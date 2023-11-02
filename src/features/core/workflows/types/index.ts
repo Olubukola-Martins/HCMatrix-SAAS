@@ -34,7 +34,7 @@ export type TWorkflowApprovalType =
   | "travel"
   | "payroll"
   | "loan"
-  | "handover";
+  | "exit-handover-form";
 
 export type TStagingType = "employee" | "role" | "group" | "department-head";
 export type TStageCondition = "specific" | "at-least-one" | "everyone";

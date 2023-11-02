@@ -120,9 +120,18 @@ export const createFileValidationRule = (
     required,
 
     validator: async (_, value) => {
-      if (required === false) {
+      // non required
+      if (required === false && Array.isArray(value) === false) {
         return true;
       }
+      if (
+        required === false &&
+        Array.isArray(value) === true &&
+        value?.length === 0
+      ) {
+        return true;
+      }
+      // required
       if (Array.isArray(value) === false || value?.length === 0) {
         throw new Error("Please upload a file");
       }

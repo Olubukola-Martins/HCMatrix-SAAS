@@ -67,7 +67,7 @@ export const LoanTable: React.FC<{
     },
   });
 
-  const columns: ColumnsType<TLoanAndApproval> = [
+  const ogColumns: ColumnsType<TLoanAndApproval> = [
     {
       title: "Title",
       dataIndex: "title",
@@ -213,6 +213,9 @@ export const LoanTable: React.FC<{
       ),
     },
   ];
+  const columns = permitedActions.find((val) => val === "approve/reject")
+    ? ogColumns.filter((item) => item.key !== "disAt")
+    : ogColumns;
 
   return (
     <>

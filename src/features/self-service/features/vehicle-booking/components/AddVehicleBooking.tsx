@@ -12,6 +12,7 @@ import { AppButton } from "components/button/AppButton";
 import { useCreateVehicleBooking } from "../hooks/useCreateVehicleBooking";
 import { FormVehicleInput } from "./FormVehicleInput";
 import { QUERY_KEY_FOR_VEHICLE_BOOKINGS } from "../hooks/useFetchVehicleBookings";
+import { QUERY_KEY_FOR_VEHICLE_BOOKINGS_FOR_AUTH_EMPLOYEE } from "../hooks/booking/useGetVehicleBookings4AuthEmployee";
 
 interface IProps extends IModalProps {}
 
@@ -52,6 +53,10 @@ export const AddVehicleBooking: React.FC<IProps> = ({ handleClose, open }) => {
 
           queryClient.invalidateQueries({
             queryKey: [QUERY_KEY_FOR_VEHICLE_BOOKINGS],
+            // exact: true,
+          });
+          queryClient.invalidateQueries({
+            queryKey: [QUERY_KEY_FOR_VEHICLE_BOOKINGS_FOR_AUTH_EMPLOYEE],
             // exact: true,
           });
         },

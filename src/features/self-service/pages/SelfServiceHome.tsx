@@ -10,16 +10,11 @@ import SelfBox, {
 import { appRoutes } from "config/router/paths";
 import { ErrorWrapper } from "components/errorHandlers/ErrorWrapper";
 import ErrorBoundary from "components/errorHandlers/ErrorBoundary";
-import { RecentCard } from "components/cards/RecentCard";
-import { TSelfServiceDBAnalytics } from "../types";
-import { useState } from "react";
-import { TApprovalRequest } from "features/core/workflows/types/approval-requests";
-import ViewApprovalRequest from "features/core/workflows/components/approval-request/ViewApprovalRequest";
-import { truncateString } from "utils/dataHelpers/truncateString";
 import { useGetActivatedSelfServiceLinksAndAnalytics } from "../hooks/useGetActivatedSelfServiceLinksAndAnalytics";
+import RecentApprovalRequestsCard from "features/core/workflows/components/approval-request/RecentApprovalRequestsCard";
 
 const SelfServiceHome: React.FC = () => {
-  const { data, isError, isLoading } =
+  const { data, isError, isLoading, error } =
     useGetActivatedSelfServiceLinksAndAnalytics();
 
   return (
@@ -35,7 +30,10 @@ const SelfServiceHome: React.FC = () => {
             <ErrorWrapper
               isError={isError}
               backLink={appRoutes.home}
-              message="Please contact sytem administrator!"
+              message={
+                error?.response.data.message ??
+                error?.response.data.error.message
+              }
             >
               <Skeleton
                 active
@@ -60,7 +58,7 @@ const SelfServiceHome: React.FC = () => {
                     />
 
                     <div className="flex-1">
-                      <RecentSelfServiceRequests
+                      <RecentApprovalRequestsCard
                         requests={
                           data?.selfServiceDBAnalytics.analytics.recentRequests
                         }
@@ -139,54 +137,6 @@ const TotalCompanyAssetCount: React.FC<{ totalAssetCount?: number }> = ({
         </Link>
       </div>
     </div>
-  );
-};
-
-const RecentSelfServiceRequests: React.FC<{
-  requests?: TSelfServiceDBAnalytics["analytics"]["recentRequests"];
-}> = ({ requests }) => {
-  const [action, setAction] = useState<"view">();
-  const [approvalRequest, setApprovalRequest] = useState<TApprovalRequest>();
-  const onClose = () => {
-    setAction(undefined);
-    setApprovalRequest(undefined);
-  };
-  return (
-    <>
-      <ViewApprovalRequest
-        handleClose={onClose}
-        open={action === "view"}
-        request={approvalRequest}
-      />
-      <RecentCard
-        title="Recent Approval Requests"
-        data={requests?.map((item) => ({
-          title: truncateString(
-            `${item.entityType.split("-").join(" ")} Request`,
-            14
-          ),
-          features: [
-            {
-              name: "Status",
-              value: item.status,
-            },
-          ],
-
-          secondaryCol: {
-            type: "options",
-            options: [
-              {
-                name: "View",
-                onClick: () => {
-                  setAction("view");
-                  setApprovalRequest(item);
-                },
-              },
-            ],
-          },
-        }))}
-      />
-    </>
   );
 };
 

@@ -12,9 +12,7 @@ import React, { useState } from "react";
 import { IModalProps } from "types";
 import {
   dateHasToBeGreaterThanOrEqualToCurrentDayRule,
-  generalValidationRules,
   generalValidationRulesOp,
-  numberHasToBeAWholeNumberRule,
   numberHasToBeGreaterThanZeroRule,
   textInputValidationRules,
 } from "utils/formHelpers/validation";
@@ -24,6 +22,7 @@ import { PRIORITIES } from "constants/general";
 import { useCreateTravelRequisition } from "../../requisitions/hooks/travel/useCreateTravelRequisition";
 import { QUERY_KEY_FOR_TRAVEL_REQUESTS } from "../../requisitions/hooks/travel/useGetTravelRequisitions";
 import moment, { Moment } from "moment";
+import { QUERY_KEY_FOR_TRAVEL_REQUISITIONS_FOR_AUTH_EMPLOYEE } from "../../requisitions/hooks/travel/useGetTravelRequisitions4AuthEmployee";
 
 export const NewTravelRequest: React.FC<IModalProps> = ({
   open,
@@ -69,10 +68,16 @@ export const NewTravelRequest: React.FC<IModalProps> = ({
             // duration: 0.4,
           });
           form.resetFields();
+          setArrivalDate(null);
+          setDepartureDate(null);
           handleClose();
 
           queryClient.invalidateQueries({
             queryKey: [QUERY_KEY_FOR_TRAVEL_REQUESTS],
+            // exact: true,
+          });
+          queryClient.invalidateQueries({
+            queryKey: [QUERY_KEY_FOR_TRAVEL_REQUISITIONS_FOR_AUTH_EMPLOYEE],
             // exact: true,
           });
         },
@@ -134,10 +139,14 @@ export const NewTravelRequest: React.FC<IModalProps> = ({
             placeholder="Duration"
             className="w-full"
             disabled
-            value={moment
-              .duration(departureDate?.diff(arrivalDate))
-              .asDays()
-              .toFixed()}
+            value={
+              departureDate &&
+              arrivalDate &&
+              moment
+                .duration(departureDate?.diff(arrivalDate))
+                .asDays()
+                .toFixed()
+            }
           />
         </Form.Item>
         <Form.Item

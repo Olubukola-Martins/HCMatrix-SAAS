@@ -13,6 +13,7 @@ import { FormMeetingRoomsInput } from "./FormMeetingRoomsInput";
 import { PRIORITIES } from "constants/general";
 import { AppButton } from "components/button/AppButton";
 import { IModalProps } from "types";
+import { QUERY_KEY_FOR_CONFERENCE_ROOM_BOOKINGS_FOR_AUTH_EMPLOYEE } from "../hooks/useGetConferenceRoomBookings4AuthEmployee";
 
 const NewCRBBooking: React.FC<IModalProps> = ({ open, handleClose }) => {
   const queryClient = useQueryClient();
@@ -54,6 +55,12 @@ const NewCRBBooking: React.FC<IModalProps> = ({ open, handleClose }) => {
 
           queryClient.invalidateQueries({
             queryKey: [QUERY_KEY_FOR_ALL_CONFERENCE_ROOM_BOOKINGS],
+            // exact: true,
+          });
+          queryClient.invalidateQueries({
+            queryKey: [
+              QUERY_KEY_FOR_CONFERENCE_ROOM_BOOKINGS_FOR_AUTH_EMPLOYEE,
+            ],
             // exact: true,
           });
         },

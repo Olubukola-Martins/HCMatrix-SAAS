@@ -7,6 +7,7 @@ import { boxStyle } from "styles/reused";
 import { getAppropriateColorForStatus } from "utils/colorHelpers/getAppropriateColorForStatus";
 import { useGetSinglePromotionRequisition } from "../../requisitions/hooks/promotion/useGetSinglePromotionRequisition";
 import moment from "moment";
+import { DEFAULT_DATE_FORMAT } from "constants/dateFormats";
 
 interface IProps extends IModalProps {
   id: number;
@@ -27,10 +28,10 @@ export const PromotionRequestDetails: React.FC<IProps> = ({
   useEffect(() => {
     if (data) {
       form.setFieldsValue({
-        date: moment(data.date).format("YYYY-MM-DD"),
+        date: moment(data.date).format(DEFAULT_DATE_FORMAT),
         employeeName: `${data.employee.firstName} ${data.employee.lastName}`,
         preferredStartDate: moment(data.preferredStartDate).format(
-          "YYYY-MM-DD"
+          DEFAULT_DATE_FORMAT
         ),
         employeeID: data.employee.empUid,
         proposedDesignation: data.proposedDesignation.name,
@@ -91,9 +92,6 @@ export const PromotionRequestDetails: React.FC<IProps> = ({
             />
           </Form.Item>
         </Form>
-        <div className="flex justify-end">
-          <AppButton label="Download" type="button" />
-        </div>
       </Skeleton>
     </Modal>
   );

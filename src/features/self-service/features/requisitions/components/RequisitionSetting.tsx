@@ -1,5 +1,5 @@
 import PageSubHeader from "components/layout/PageSubHeader";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useQueryClient } from "react-query";
 import { useCreateOrUpdateRequisitionSetting } from "../../requisitions/hooks/setting/useCreateOrUpdateRequisitionSetting";
 import { Form, Skeleton, Switch } from "antd";
@@ -12,6 +12,7 @@ import {
   QUERY_KEY_FOR_SINGLE_REQUISITION_SETTING,
   useGetSingleRequisitionSetting,
 } from "../hooks/setting/useGetSingleRequisitionSetting";
+import AppSwitch from "components/switch/AppSwitch";
 
 export const REQUISITION_TYPES: TRequistionType[] = [
   "asset",
@@ -61,6 +62,7 @@ export const RequisitionPolicyForm: React.FC<{ type: TRequistionType }> = ({
   const queryClient = useQueryClient();
   const [form] = Form.useForm();
   const { companyId, token } = useApiAuth();
+  const [isActive, setIsActive] = useState(false);
 
   const { data, isFetching } = useGetSingleRequisitionSetting({
     type,
@@ -72,7 +74,9 @@ export const RequisitionPolicyForm: React.FC<{ type: TRequistionType }> = ({
     if (data) {
       form.setFieldsValue({
         workflowId: data.workflowId,
+        isActive: data.isActive,
       });
+      setIsActive(data?.isActive);
     }
   }, [data, form]);
 
@@ -83,7 +87,7 @@ export const RequisitionPolicyForm: React.FC<{ type: TRequistionType }> = ({
       {
         type,
         body: {
-          isActive: !!values.isActive,
+          isActive,
           workflowId: values.workflowId,
         },
       },
@@ -130,10 +134,11 @@ export const RequisitionPolicyForm: React.FC<{ type: TRequistionType }> = ({
                 {data?.type ? data?.type.split("-").join(" ") : type}
               </h6>
               <Form.Item name={"isActive"}>
-                <Switch
+                <AppSwitch
                   unCheckedChildren="No"
                   checkedChildren="Yes"
-                  defaultChecked={data?.isActive}
+                  checked={isActive}
+                  onChange={setIsActive}
                 />
               </Form.Item>
             </div>

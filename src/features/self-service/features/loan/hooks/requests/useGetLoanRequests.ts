@@ -13,7 +13,7 @@ interface IGetDataProps {
   date?: string;
 }
 
-type TLoanAPIRequestType = "me" | "all";
+type TLoanAPIRequestType = "mine" | undefined;
 export const QUERY_KEY_FOR_LOAN_REQUESTS = "loan-requests";
 
 const getData = async (props: {
@@ -26,7 +26,10 @@ const getData = async (props: {
   const offset = pagination?.offset ?? 0;
   const name = props.data.searchParams?.name ?? "";
 
-  const url = `${MICROSERVICE_ENDPOINTS.PAYROLL}/loan/request/${props.type}`;
+  let url = `${MICROSERVICE_ENDPOINTS.PAYROLL}/loan/request/`;
+  if (props.type === "mine") {
+    url = `${MICROSERVICE_ENDPOINTS.PAYROLL}/loan/request/${props.type}`;
+  }
 
   const config = {
     headers: {
