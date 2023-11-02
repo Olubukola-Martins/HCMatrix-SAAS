@@ -8,14 +8,16 @@ import { QUERY_KEY_FOR_NOTIFICATIONS } from "../hooks/useGetAlerts";
 import { useQueryClient } from "react-query";
 import { DeleteNotification } from "./DeleteNotification";
 import { LoadingOutlined } from "@ant-design/icons";
+import ViewNotification from "./ViewNotification";
 
-type TAction = "delete";
+type TAction = "delete" | "view";
 export const NotificationCard: React.FC<{ item: TNotification }> = ({
   item,
 }) => {
   const queryClient = useQueryClient();
 
   const { mutate: readMut, isLoading } = useReadSingleAlert();
+  const [content, setContent] = useState<TNotification["content"]>();
 
   const handleRead = () => {
     readMut(
@@ -73,6 +75,11 @@ export const NotificationCard: React.FC<{ item: TNotification }> = ({
         data={item}
         handleClose={onClear}
       />
+      <ViewNotification
+        handleClose={onClear}
+        open={action === "view"}
+        content={content}
+      />
       <div className="border rounded mt-4 px-3 py-3 cursor-pointer hover:bg-card flex md:justify-between gap-x-5">
         <div className="flex items-center gap-3">
           <Badge dot={!item.isRead}>
@@ -103,19 +110,28 @@ export const NotificationCard: React.FC<{ item: TNotification }> = ({
                     className="flex items-center gap-2 cursor-pointer group"
                     onClick={handleRead}
                   >
-                    <i className="ri-eye-line"></i>
+                    <i className="ri-chat-check-line"></i>
                     <span className="group-hover:text-caramel">
                       Mark as read
                     </span>
                     {isLoading ? <LoadingOutlined /> : null}
                   </div>
                 ) : null}
-                {/* <div className="flex items-center gap-2 cursor-pointer group" onClick={handleRead}>
-                <i className="ri-eye-line"></i>
-                <span className="group-hover:text-caramel">
-                  View Notification
-                </span>
-              </div> */}
+                <div
+                  className="flex items-center gap-2 cursor-pointer group"
+                  onClick={handleRead}
+                >
+                  <i className="ri-eye-line"></i>
+                  <span
+                    className="group-hover:text-caramel"
+                    onClick={() => {
+                      setAction("view");
+                      setContent(item.content);
+                    }}
+                  >
+                    View Notification
+                  </span>
+                </div>
                 <div
                   className="flex items-center gap-2 cursor-pointer group mt-2"
                   onClick={handleDel}
