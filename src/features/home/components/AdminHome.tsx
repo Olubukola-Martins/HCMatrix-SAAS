@@ -39,13 +39,19 @@ export const AdminHome = () => {
   };
   const [year, setYear] = useState<Moment | null>(moment());
 
-  const { data, isError, isLoading } = useGetCompanyOwnerDashboard({
+  const { data, isError, isLoading, error } = useGetCompanyOwnerDashboard({
     year: year?.format("YYYY"),
   });
   return (
     <ErrorBoundary>
       <Skeleton loading={isLoading} active paragraph={{ rows: 45 }}>
-        <ErrorWrapper isError={isError} message="Unanexpected Error!">
+        {/* TODO: For every error wrapper, ensure to display error message from server, like below */}
+        <ErrorWrapper
+          isError={isError}
+          message={
+            error?.response.data.message ?? error?.response.data.error.message
+          }
+        >
           <>
             <div className="Container">
               <div className="flex items-center justify-between mt-2">

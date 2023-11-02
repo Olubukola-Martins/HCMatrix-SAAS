@@ -28,11 +28,16 @@ export const EmployeeHome: React.FC<{
     | "designation"
   >;
 }> = ({ employee }) => {
-  const { data, isLoading, isError } = useGetCompanyEmployeeDashboard();
+  const { data, isLoading, isError, error } = useGetCompanyEmployeeDashboard();
   return (
     <ErrorBoundary>
       <Skeleton loading={isLoading} active paragraph={{ rows: 45 }}>
-        <ErrorWrapper isError={isError} message="Unanexpected Error!">
+        <ErrorWrapper
+          isError={isError}
+          message={
+            error?.response.data.message ?? error?.response.data.error.message
+          }
+        >
           <>
             <div className="Container">
               <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mt-5">
