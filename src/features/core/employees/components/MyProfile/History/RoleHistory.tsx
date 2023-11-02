@@ -3,45 +3,49 @@ import { Input, Table } from "antd";
 import moment from "moment";
 import React, { useEffect, useState } from "react";
 import { usePagination } from "hooks/usePagination";
-import { TRole } from "features/core/roles-and-permissions/types";
 import { DEFAULT_DATE_FORMAT } from "constants/dateFormats";
+import { TSingleEmployee } from "features/core/employees/types";
 
-type TRoleHistory = {
-  startDate: string;
-  endDate: string;
-} & TRole;
-export const RoleHistory: React.FC<{ data?: TRoleHistory[] }> = ({
-  data = [],
-}) => {
+interface IProps {
+  data?: TSingleEmployee["roleHistory"];
+}
+
+export const RoleHistory: React.FC<IProps> = ({ data = [] }) => {
   const { pagination, onChange } = usePagination({ pageSize: 7 });
-  const [roles, setRoles] = useState<TRoleHistory[]>([]);
+  const [roles, setRoles] = useState<TSingleEmployee["roleHistory"]>([]);
   const [search, setSearch] = useState<string>();
   useEffect(() => {
     const result = data?.filter(
       (item) =>
-        item.name.toLowerCase().indexOf(search?.toLowerCase() ?? "") !== -1
+        item.role.name.toLowerCase().indexOf(search?.toLowerCase() ?? "") !== -1
     );
     setRoles(result);
   }, [search, data]);
-  const columns: ColumnsType<TRoleHistory> = [
+  const columns: ColumnsType<TSingleEmployee["roleHistory"][0]> = [
     {
       title: "Name",
       dataIndex: "name",
       key: "name",
-      render: (val, item) => <span className="capitalize">{item?.name}</span>,
+      render: (val, item) => (
+        <span className="capitalize">{item?.role.name}</span>
+      ),
     },
 
     {
       title: "Started",
-      dataIndex: "createAr",
-      key: "createAr",
-      render: (_, item) => moment(item.startDate).format(DEFAULT_DATE_FORMAT),
+      dataIndex: "cs",
+      render: (_, val) => (
+        <span className="">{moment(val.from).format(DEFAULT_DATE_FORMAT)}</span>
+      ),
     },
     {
       title: "Ended",
-      dataIndex: "update",
-      key: "update",
-      render: (_, item) => moment(item.endDate).format(DEFAULT_DATE_FORMAT),
+      dataIndex: "ce",
+      render: (_, val) => (
+        <span className="">
+          {val.to ? moment(val.to).format(DEFAULT_DATE_FORMAT) : "Ongoing"}
+        </span>
+      ),
     },
   ];
   return (

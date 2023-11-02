@@ -3,26 +3,23 @@ import { Input, Table } from "antd";
 import moment from "moment";
 import React, { useEffect, useState } from "react";
 import { usePagination } from "hooks/usePagination";
+import { TSingleEmployee } from "../../types";
 
-type TEmployeeProject = {
-  name: string;
-  grossIncome: number;
-  id: number;
-  totalPaid: number;
-  noOfPaymentsMade: string;
-  startDate: string;
-  endDate: string;
+type TEmployeeProject = TSingleEmployee["userProjects"][0];
+
+type IProps = {
+  data?: TEmployeeProject[];
 };
-export const EmployeeProjects: React.FC<{ data?: TEmployeeProject[] }> = ({
-  data = [],
-}) => {
+export const EmployeeProjects: React.FC<IProps> = ({ data = [] }) => {
   const { pagination, onChange } = usePagination({ pageSize: 7 });
   const [projects, setProjects] = useState<TEmployeeProject[]>([]);
   const [search, setSearch] = useState<string>();
   useEffect(() => {
     const result = data?.filter(
       (item) =>
-        item.name.toLowerCase().indexOf(search?.toLowerCase() ?? "") !== -1
+        item?.project.name
+          .toLowerCase()
+          .indexOf(search?.toLowerCase() ?? "") !== -1
     );
     setProjects(result);
   }, [search, data]);
@@ -31,20 +28,22 @@ export const EmployeeProjects: React.FC<{ data?: TEmployeeProject[] }> = ({
       title: "Name",
       dataIndex: "name",
       key: "name",
-      render: (val, item) => <span className="capitalize">{item?.name}</span>,
+      render: (val, item) => (
+        <span className="capitalize">{item?.project.name}</span>
+      ),
     },
 
     {
       title: "Project Began",
       dataIndex: "createAr",
       key: "createAr",
-      render: (_, item) => moment(item.startDate).format(`YYYY-MM-DD`),
+      render: (_, item) => moment(item?.project.startDate).format(`YYYY-MM-DD`),
     },
     {
       title: "Project Ends At",
       dataIndex: "update",
       key: "update",
-      render: (_, item) => moment(item.endDate).format(`YYYY-MM-DD`),
+      render: (_, item) => moment(item?.project.endDate).format(`YYYY-MM-DD`),
     },
   ];
   return (

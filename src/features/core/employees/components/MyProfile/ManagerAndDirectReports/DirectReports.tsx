@@ -6,6 +6,7 @@ import { ColumnsType } from "antd/lib/table";
 
 import { getEmployeeFullName } from "features/core/employees/utils/getEmployeeFullName";
 import moment from "moment";
+import { DEFAULT_DATE_FORMAT } from "constants/dateFormats";
 
 interface IProps {
   reports?: TSingleEmployee["directReport"];
@@ -41,7 +42,7 @@ export const DirectReports: React.FC<IProps> = ({ reports = [] }) => {
       title: "Started",
       dataIndex: "cs",
       render: (_, val) => (
-        <span className="">{moment(val.from).format("YYYY-MM-DD")}</span>
+        <span className="">{moment(val.from).format(DEFAULT_DATE_FORMAT)}</span>
       ),
     },
     {
@@ -49,7 +50,7 @@ export const DirectReports: React.FC<IProps> = ({ reports = [] }) => {
       dataIndex: "ce",
       render: (_, val) => (
         <span className="">
-          {val.to ? moment(val.to).format("YYYY-MM-DD") : "Ongoing"}
+          {val.to ? moment(val.to).format(DEFAULT_DATE_FORMAT) : "Ongoing"}
         </span>
       ),
     },
