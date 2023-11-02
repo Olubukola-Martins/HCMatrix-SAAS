@@ -105,7 +105,6 @@ export const PayrollSingleProjectParticipantsContainer = ({
       });
       cancel();
     } catch (errInfo) {
-      console.log(errInfo, "ERRO");
     }
   };
   const columns: ColumnsType<TProjectParticipantTableEntry> = [

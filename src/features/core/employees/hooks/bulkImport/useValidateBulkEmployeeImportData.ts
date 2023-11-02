@@ -172,7 +172,6 @@ const validateData = async (props: {
       confirmationMessages,
     };
   } catch (error) {
-    console.log(error, "WHY");
     // TODO: Need to flesh out adequately
     return {
       isDataValid: false,

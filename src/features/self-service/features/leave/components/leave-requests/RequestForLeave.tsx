@@ -179,7 +179,6 @@ export const RequestForLeave: React.FC<IProps> = ({ handleClose, open }) => {
               rules={[
                 {
                   validator: async () => {
-                    console.log(specificDates, "specificDates");
                     if (
                       Array.isArray(specificDates) === false ||
                       specificDates?.length === 0

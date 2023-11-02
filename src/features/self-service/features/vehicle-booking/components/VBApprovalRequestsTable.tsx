@@ -30,7 +30,6 @@ const VBApprovalRequestsTable: React.FC<{
     pagination,
     type: "vehicle",
   });
-  console.log("vehi", data);
 
   const { confirmApprovalAction } = useApproveORReject({
     handleSuccess: () => {

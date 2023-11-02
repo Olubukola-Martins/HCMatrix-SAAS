@@ -57,12 +57,9 @@ export const UploadEmployeeBulkImport = ({
       const dataParse = XLSX.utils.sheet_to_json(ws, {
         header: 1,
       }) as unknown as string[][];
-      console.log(dataParse[0], "reader");
-      console.log("Data", dataParse);
+
       const columns: string[] = dataParse[0];
       const retrievedData: any[] = dataParse.splice(1);
-
-      console.log("FData", retrievedData);
 
       handleColumns(columns);
       handleRetrievedData(retrievedData);
@@ -112,7 +109,6 @@ export const UploadEmployeeBulkImport = ({
   };
 
   const handleSubmit = (data: any) => {
-    console.log("QW", data);
     if (submission.allow === false) {
       submission.errors.forEach((err) => message.error(err));
       return;

@@ -64,7 +64,6 @@ export const AddSalaryComponent: React.FC<IProps> = ({
 }) => {
   const defaultTitle =
     type === "allowance" ? `${formMode} allowance` : `${formMode} deduction`;
-  console.log(dependencies, salaryComponent?.label, "HELLO");
   return (
     <Modal
       open={open}

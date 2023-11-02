@@ -107,8 +107,6 @@ const EmployeeImportDataMapping = ({
     );
 
     handleDataToBeSubmitted(dataToBeSubmitted);
-
-    console.log("data to be submitted", dataToBeSubmitted, sections);
   };
   const handleConfirm = () => {
     setIsLoading(true);

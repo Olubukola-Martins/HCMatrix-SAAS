@@ -60,19 +60,16 @@ export const SaveCostCentre: React.FC<IProps> = ({
       const searchText = "Payment Successful";
 
       const checkText = () => {
-        console.log("Hello,", iframeDocument?.body.innerText);
         const textIsPresent =
           iframeDocument?.body.innerText.includes(searchText);
 
         if (textIsPresent) {
-          console.log("Text is present in the iframe!");
           onPaymentCompletion?.();
           // You can perform further actions here
         } else {
           // If the text is not found, set up a Mutation Observer
           const observer = new MutationObserver(() => {
             if (iframeDocument?.body.innerText.includes(searchText)) {
-              console.log("Text is present in the iframe!");
               onPaymentCompletion?.();
               // You can perform further actions here
               observer.disconnect(); // Stop observing once the text is found

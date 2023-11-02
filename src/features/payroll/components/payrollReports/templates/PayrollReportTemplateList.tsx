@@ -18,7 +18,6 @@ export const PayrollReportTemplateList: React.FC = () => {
   });
 
   const handleDelete = (data: { template: TPayrollTemplateListData }) => {
-    console.log("WHY");
     setAction("delete");
     setTemplate(data.template);
   };
