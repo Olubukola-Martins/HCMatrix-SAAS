@@ -1,6 +1,7 @@
 import React from "react";
 import { useApiAuth } from "hooks/useApiAuth";
 import { TPermissionLabel } from "features/core/roles-and-permissions/types";
+import { useGetAuthUser } from "features/authentication/hooks/useGetAuthUser";
 
 export const canUserAccessComponent = ({
   userPermissions,
@@ -19,18 +20,26 @@ export const canUserAccessComponent = ({
 };
 
 export const useGetUserPermissions = () => {
-  const { currentCompanyEmployeeDetails } = useApiAuth();
-  const hasSelfService = !!currentCompanyEmployeeDetails?.hasSelfService;
+  const { companyId } = useApiAuth(); //this hook data is stale, asides from token, n companyId, cos it was last updated/created on login
+  const { data } = useGetAuthUser(); //This hook is used so that data is not stale, but most in sync with server
+  const currentCompany = data?.payload.find(
+    (item) => item.company.id === companyId
+  );
+  const hasSelfService = !!currentCompany?.hasSelfService;
 
-  const userPermissions =
-    currentCompanyEmployeeDetails?.role?.permissions?.map(
+  const userPermissionsViaRole =
+    currentCompany?.role?.permissions?.map((item) => item.permission.label) ??
+    [];
+  const userPermissionsViaDelegations =
+    currentCompany?.delegation?.permissions?.map(
       (item) => item.permission.label
     ) ?? [];
-  //  TODO: APPEND PERMISSIONS FROM DELEGATIONS INTO USER PERMISSIONS
-  // TODO: refactor useApiAuth to use auth/me 4 evrything apart from token
 
   return {
-    userPermissions,
+    userPermissions: [
+      ...userPermissionsViaRole,
+      ...userPermissionsViaDelegations,
+    ],
     hasSelfService,
   };
 };
