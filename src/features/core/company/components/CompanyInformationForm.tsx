@@ -16,6 +16,7 @@ import { useEffect } from "react";
 
 import { FormIndustryInput } from "components/generalFormInputs/FormIndustryInput";
 import { FormAddressInput } from "components/generalFormInputs/FormAddressInput";
+import { QUERY_KEY_FOR_AUTHENTICATED_USER } from "features/authentication/hooks/useGetAuthUser";
 
 const CompanyInformationForm = () => {
   const queryClient = useQueryClient();
@@ -64,6 +65,10 @@ const CompanyInformationForm = () => {
 
           queryClient.invalidateQueries({
             queryKey: [QUERY_KEY_FOR_SINGLE_COMPANY],
+            // exact: true,
+          });
+          queryClient.invalidateQueries({
+            queryKey: [QUERY_KEY_FOR_AUTHENTICATED_USER],
             // exact: true,
           });
         },

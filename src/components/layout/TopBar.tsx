@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useLayoutEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { AutoComplete, Avatar, Button } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
@@ -14,12 +14,15 @@ import {
   useGetUserPermissions,
 } from "components/permission-restriction/PermissionRestrictor";
 import { appRoutes } from "config/router/paths";
+import useMostRecentApiAuth from "hooks/useMostRecentApiAuth";
+import { DEFAULT_LOGO_IMAGE_URL } from "constants/general";
 
+const ADD_COMPANY_KEY_VALUE = "";
 type TCompanyOption = {
   value: string;
   label: React.ReactNode;
   image?: string;
-  id: string;
+  id: number;
   hidden: boolean;
 };
 type TAction = "user-menu" | "add-company" | "search";
@@ -46,13 +49,12 @@ const TopBar = ({
   sidebarToggle,
   setSidebarToggle,
 }: IProps) => {
+  const { globalDispatch } = useApiAuth();
   const {
-    userCompanies,
-    currentUserEmployeeId,
-    authUserData: user,
-    currentCompanyEmployeeDetails: currentCompany,
-    globalDispatch,
-  } = useApiAuth();
+    companies: userCompanies,
+    currentCompany,
+    currentCompanyEmployeeDetails,
+  } = useMostRecentApiAuth();
   const { userPermissions } = useGetUserPermissions();
 
   const [action, setAction] = useState<TAction>();
@@ -67,7 +69,7 @@ const TopBar = ({
   };
 
   const onSelect = (val: string, data: any) => {
-    if (val === "") {
+    if (val === ADD_COMPANY_KEY_VALUE) {
       setAction("add-company");
       return;
     }
@@ -77,15 +79,16 @@ const TopBar = ({
     });
     window.location.reload();
   };
-  useEffect(() => {
+  useLayoutEffect(() => {
+    if (!userCompanies) return;
     const companies: TCompanyOption[] = userCompanies?.map((item: any) => ({
       value: item.company.name,
       id: item.company.id,
-      image: item.company?.logoUrl ?? "https://picsum.photos/190",
+      image: item.company?.logoUrl ?? DEFAULT_LOGO_IMAGE_URL,
       hidden: false,
       label: (
         <div className="flex gap-2 items-center">
-          <Avatar src={item.company?.logoUrl ?? "https://picsum.photos/190"} />
+          <Avatar src={item.company?.logoUrl ?? DEFAULT_LOGO_IMAGE_URL} />
           <span>{item.company.name}</span>
         </div>
       ),
@@ -136,17 +139,13 @@ const TopBar = ({
               />
               <div className="flex items-center gap-2">
                 <Avatar
-                  src={
-                    options?.find(
-                      (item) => item.id === currentCompany?.id.toString()
-                    )?.image
-                  }
+                  src={currentCompany?.logoUrl ?? DEFAULT_LOGO_IMAGE_URL}
                 />
                 <AutoComplete
                   options={[
                     ...options,
                     {
-                      value: "",
+                      value: ADD_COMPANY_KEY_VALUE,
                       id: "",
                       image: "",
                       hidden: !canUserAccessComponent({
@@ -163,7 +162,8 @@ const TopBar = ({
                       ),
                     },
                   ].filter((item) => item?.hidden === false)}
-                  defaultValue={currentCompany?.company.name}
+                  defaultValue={currentCompany?.name}
+                  value={currentCompany?.name}
                   style={{ width: 200, borderRadius: "100px" }}
                   onSelect={onSelect}
                   onSearch={onSearch}
@@ -213,7 +213,7 @@ const TopBar = ({
                 blue,
                 purple,
               }}
-              employeeId={currentUserEmployeeId}
+              avatarUrl={currentCompanyEmployeeDetails?.avatarUrl}
               onOpenChange={(val) => setAction(val ? "user-menu" : undefined)}
               open={action === "user-menu"}
               userPermissions={userPermissions}

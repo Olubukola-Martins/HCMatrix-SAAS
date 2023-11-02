@@ -6,7 +6,6 @@ import { Setup2FA } from "components/twoFactorAuth/SetUp2FA";
 import { appRoutes } from "config/router/paths";
 import { DEFAULT_PROFILE_IMAGE_URL } from "constants/general";
 import { useGetCompanyParamSetting } from "features/core/company/hooks/useGetCompanyParamSetting";
-import { useFetchSingleEmployee } from "features/core/employees/hooks/useFetchSingleEmployee";
 import { getEmployeeFullName } from "features/core/employees/utils/getEmployeeFullName";
 import { TPermissionLabel } from "features/core/roles-and-permissions/types";
 import { useApiAuth } from "hooks/useApiAuth";
@@ -32,7 +31,6 @@ const UserProfileMenu: React.FC<{
     signOut();
     localStorage.clear();
     navigate(appRoutes.login);
-    window.location.reload();
   };
   return (
     <div className="rounded-md py-5 px-5 text-center bg-card shadow-md">
@@ -221,14 +219,8 @@ const UserProfileMenuDropdown: React.FC<{
   onOpenChange: (val: boolean) => void;
   userPermissions: TPermissionLabel[];
   open: boolean;
-  employeeId: number;
-}> = ({ colorFns, open, onOpenChange, employeeId, userPermissions }) => {
-  // done to make changes to user employee profile real-time
-  const { data: employee } = useFetchSingleEmployee({
-    employeeId,
-  });
-  const avatarUrl = employee?.avatarUrl;
-
+  avatarUrl?: string;
+}> = ({ colorFns, open, onOpenChange, avatarUrl, userPermissions }) => {
   return (
     <Dropdown
       overlay={
@@ -245,7 +237,7 @@ const UserProfileMenuDropdown: React.FC<{
       onOpenChange={onOpenChange}
     >
       <Avatar
-        src={!!avatarUrl ? avatarUrl : DEFAULT_PROFILE_IMAGE_URL}
+        src={avatarUrl ?? DEFAULT_PROFILE_IMAGE_URL}
         alt=""
         className="h-6 md:h-9 cursor-pointer border-2 border-slate-300 rounded-full ml-1"
         onClick={() => onOpenChange(true)}

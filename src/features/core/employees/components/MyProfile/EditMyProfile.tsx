@@ -18,6 +18,7 @@ import { FormFileInput } from "components/generalFormInputs/FormFileInput";
 import { AppButton } from "components/button/AppButton";
 import AppSwitch from "components/switch/AppSwitch";
 import { bulkUploadFiles } from "hooks/useUploadFile";
+import { QUERY_KEY_FOR_AUTHENTICATED_USER } from "features/authentication/hooks/useGetAuthUser";
 
 interface IProps extends IDrawerProps {
   employee?: TSingleEmployee;
@@ -121,7 +122,9 @@ export const EditMyProfile = ({ open, handleClose, employee }: IProps) => {
           queryClient.invalidateQueries({
             queryKey: [QUERY_KEY_FOR_LIST_OF_EMPLOYEES],
           });
-          // TODO: Invalidate for auth/
+          queryClient.invalidateQueries({
+            queryKey: [QUERY_KEY_FOR_AUTHENTICATED_USER],
+          });
 
           // clear avatar field to prevent api error on subsequent edit
           form.setFieldValue("avatar", undefined);

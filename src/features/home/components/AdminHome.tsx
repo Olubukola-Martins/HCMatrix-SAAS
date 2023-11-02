@@ -1,11 +1,9 @@
 import { Affix, Skeleton, Tabs } from "antd";
-import { useContext, useState } from "react";
-import { useAuthUser } from "react-auth-kit";
+import { useState } from "react";
 import { Link } from "react-router-dom";
 import "../style/style.css";
-import { IAuthDets } from "features/authentication/types";
 import { settingNavItems } from "features/settings/constants/settingNavItems";
-import { GlobalContext, EGlobalOps } from "stateManagers/GlobalContextProvider";
+import { EGlobalOps } from "stateManagers/GlobalContextProvider";
 import { pluralOrSingular } from "utils/dataHelpers/pluralOrSingular";
 import EmployeeInfoChart from "features/core/employees/components/EmployeeInfoChart";
 import { Celebrations } from "./Celebrations";
@@ -19,22 +17,17 @@ import { ErrorWrapper } from "components/errorHandlers/ErrorWrapper";
 import moment, { Moment } from "moment";
 import { appRoutes } from "config/router/paths";
 import RecentApprovalRequestsCard from "features/core/workflows/components/approval-request/RecentApprovalRequestsCard";
+import { useApiAuth } from "hooks/useApiAuth";
+import { TAuthUser } from "features/authentication/types";
 
-export const AdminHome = () => {
-  const auth = useAuthUser();
-
-  const authDetails = auth() as unknown as IAuthDets;
-
-  const user = authDetails?.user;
+export const AdminHome: React.FC<{ user?: TAuthUser["user"] }> = ({ user }) => {
   const [openId, setOpenId] = useState("");
 
   const handlePendingClick = (val: string) => {
     setOpenId((preVal) => (preVal === val ? "" : val));
   };
 
-  const globalCtx = useContext(GlobalContext);
-
-  const { dispatch: globalDispatch } = globalCtx;
+  const { globalDispatch } = useApiAuth();
   const handleGetStarted = () => {
     globalDispatch({ type: EGlobalOps.setShowInitialSetup, payload: true });
   };
@@ -46,7 +39,6 @@ export const AdminHome = () => {
   return (
     <ErrorBoundary>
       <Skeleton loading={isLoading} active paragraph={{ rows: 45 }}>
-        {/* TODO: For every error wrapper, ensure to display error message from server, like below */}
         <ErrorWrapper
           isError={isError}
           message={
@@ -57,7 +49,7 @@ export const AdminHome = () => {
             <div className="Container">
               <div className="flex items-center justify-between mt-2">
                 <h1 className="text-xl md:text-2xl font-black">
-                  Welcome {user.fullName} ,
+                  Welcome {user?.fullName} ,
                 </h1>
               </div>
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-5 mt-6">

@@ -4,14 +4,10 @@ import { useQuery } from "react-query";
 import { Form, Input, Modal, Select, Typography } from "antd";
 import { Link } from "react-router-dom";
 import { useSignIn } from "react-auth-kit";
-
 import { BankOutlined } from "@ant-design/icons";
 import { AppButton } from "components/button/AppButton";
 import { FormPhoneInput } from "components/generalFormInputs/FormPhoneInput";
-import {
-  TOKEN_EXPIRES_IN,
-  REFRESH_TOKEN_EXPIRES_IN,
-} from "config/refreshTokenApi";
+import { TOKEN_EXPIRES_IN } from "config/refreshTokenApi";
 import { useFetchIndustries } from "hooks/useFetchIndutries";
 import { GlobalContext, EGlobalOps } from "stateManagers/GlobalContextProvider";
 import { openNotification } from "utils/notifications";

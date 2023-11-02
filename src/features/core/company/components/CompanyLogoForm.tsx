@@ -12,6 +12,7 @@ import { useQueryClient } from "react-query";
 import { bulkUploadFiles } from "hooks/useUploadFile";
 import { useApiAuth } from "hooks/useApiAuth";
 import { UploadOutlined } from "@ant-design/icons";
+import { QUERY_KEY_FOR_AUTHENTICATED_USER } from "features/authentication/hooks/useGetAuthUser";
 
 const CompanyLogoForm = () => {
   const { data: company, isFetching: isFetchingCompany } = useGetCompany();
@@ -78,6 +79,10 @@ const LogoForm: React.FC<{ onCancel: () => void }> = ({ onCancel }) => {
           onCancel();
           queryClient.invalidateQueries({
             queryKey: [QUERY_KEY_FOR_SINGLE_COMPANY],
+            // exact: true,
+          });
+          queryClient.invalidateQueries({
+            queryKey: [QUERY_KEY_FOR_AUTHENTICATED_USER],
             // exact: true,
           });
         },

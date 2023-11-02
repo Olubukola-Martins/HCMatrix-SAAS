@@ -13,6 +13,7 @@ import { useFetchSingleRole } from "../hooks/useFetchSingleRole";
 import { AppButton } from "components/button/AppButton";
 import { QUERY_KEY_FOR_ROLES } from "../hooks/useFetchRoles";
 import { useEditRole } from "../hooks/useEditRole";
+import { QUERY_KEY_FOR_AUTHENTICATED_USER } from "features/authentication/hooks/useGetAuthUser";
 
 export const EditRoleForm: React.FC<{ id: number }> = ({ id }) => {
   const queryClient = useQueryClient();
@@ -84,6 +85,10 @@ export const EditRoleForm: React.FC<{ id: number }> = ({ id }) => {
 
           queryClient.invalidateQueries({
             queryKey: [QUERY_KEY_FOR_ROLES],
+          });
+          queryClient.invalidateQueries({
+            queryKey: [QUERY_KEY_FOR_AUTHENTICATED_USER],
+            // exact: true,
           });
         },
       }

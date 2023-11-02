@@ -43,10 +43,9 @@ export const useGetAuthUser = () => {
       onError: (err: any) => {},
       onSuccess: (data) => {},
 
-      //TODO: Populate initial data with the stale data from useApiAuth
       // TODO: Ensure dashboard data uses this hook, make a list of things that will need to make use of this
-      // Might need to refactor useApiAuth type to use this & then union access token, and also do on login, for consistency
-
+      // 1. topbar, user profile ?,
+      // What needs to invalidate this query, adding a company, company settings, employee , profile, employee & admin home, creating roles, editing roles, creating delegations
       // TODO: Stop Refresh page when logout occurs
 
       initialData: {

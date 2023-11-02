@@ -29,6 +29,7 @@ import {
   QUERY_KEY_FOR_COMPANY_PARAMETER_SETTING,
   useGetCompanyParamSetting,
 } from "../hooks/useGetCompanyParamSetting";
+import { QUERY_KEY_FOR_AUTHENTICATED_USER } from "features/authentication/hooks/useGetAuthUser";
 
 const parentCompStyle = "grid md:grid-cols-2 border-0 border-b gap-4 py-2";
 const compStyle = "flex flex-col gap-2 items-start";
@@ -104,6 +105,10 @@ const CompanySettingsForm = () => {
 
           queryClient.invalidateQueries({
             queryKey: [QUERY_KEY_FOR_COMPANY_PARAMETER_SETTING],
+            // exact: true,
+          });
+          queryClient.invalidateQueries({
+            queryKey: [QUERY_KEY_FOR_AUTHENTICATED_USER],
             // exact: true,
           });
         },

@@ -10,6 +10,7 @@ import { FormRolePermissionsInput } from "features/core/roles-and-permissions/co
 import { useApiAuth } from "hooks/useApiAuth";
 import { QUERY_KEY_FOR_DELEGATED_DELEGATIONS } from "../hooks/useGetAllDelegatedDelegations";
 import { QUERY_KEY_FOR_DELEGATIONS_DELEGATED } from "../hooks/useGetAllDelegationsDelegated";
+import { QUERY_KEY_FOR_AUTHENTICATED_USER } from "features/authentication/hooks/useGetAuthUser";
 
 const { TextArea } = Input;
 const { RangePicker } = DatePicker;
@@ -59,6 +60,10 @@ export const AddDelegation = ({ open, handleClose }: IModalProps) => {
           });
           queryClient.invalidateQueries({
             queryKey: [QUERY_KEY_FOR_DELEGATIONS_DELEGATED],
+            // exact: true,
+          });
+          queryClient.invalidateQueries({
+            queryKey: [QUERY_KEY_FOR_AUTHENTICATED_USER],
             // exact: true,
           });
         },
