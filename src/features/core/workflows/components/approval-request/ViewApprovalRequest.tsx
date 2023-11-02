@@ -24,9 +24,10 @@ const ViewApprovalRequest: React.FC<IProps> = ({
   handleClose,
   open,
 }) => {
-  console.log(request, "WHY");
   if (request === undefined) return null;
   //   TODO: Add status to all view request types
+  // TODO: Add approve/reject buttons to all modals of approvals, for pages like exit handover add a param to page that will be resposible for displaying the approve/reject buttons
+  // for handover also display the status of the handover to the user
   return (
     <>
       {typeof request.exitHandoverForm !== "undefined" && (
