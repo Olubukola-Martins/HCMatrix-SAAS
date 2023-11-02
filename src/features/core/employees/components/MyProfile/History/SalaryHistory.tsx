@@ -5,6 +5,7 @@ import React, { useEffect, useState } from "react";
 import { usePagination } from "hooks/usePagination";
 import { DEFAULT_DATE_FORMAT } from "constants/dateFormats";
 import { TSingleEmployee } from "features/core/employees/types";
+import { formatNumberWithCommas } from "utils/dataHelpers/formatNumberWithCommas";
 
 export const SalaryHistory: React.FC<{
   data?: TSingleEmployee["salaryHistory"];
@@ -28,16 +29,16 @@ export const SalaryHistory: React.FC<{
       dataIndex: "monthly",
       key: "monthly",
       render: (_, item) => (
-        <span className="capitalize">{item?.monthlyGross}</span>
+        <span className="capitalize">
+          {formatNumberWithCommas(item?.monthlyGross)}
+        </span>
       ),
     },
     {
       title: "Scheme",
       dataIndex: "type",
       key: "type",
-      render: (_, item) => (
-        <span className="capitalize">{item?.monthlyGross}</span>
-      ),
+      render: (_, item) => <span className="capitalize">{item?.type}</span>,
     },
 
     {
@@ -50,7 +51,11 @@ export const SalaryHistory: React.FC<{
       title: "Ended",
       dataIndex: "update",
       key: "update",
-      render: (_, item) => moment(item.to).format(DEFAULT_DATE_FORMAT),
+      render: (_, item) => (
+        <span className="">
+          {item.to ? moment(item.to).format(DEFAULT_DATE_FORMAT) : "Ongoing"}
+        </span>
+      ),
     },
   ];
   return (
