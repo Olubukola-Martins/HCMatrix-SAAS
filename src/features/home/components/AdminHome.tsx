@@ -53,7 +53,7 @@ export const AdminHome: React.FC<{ user?: TAuthUser["user"] }> = ({ user }) => {
                 </h1>
               </div>
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-5 mt-6">
-                <div className="md:col-span-3">
+                <div className="md:col-span-4">
                   <div className="shadow rounded-lg p-3">
                     <div className="flex items-center justify-between">
                       <h4 className="text-base text-gray-500">
@@ -95,7 +95,7 @@ export const AdminHome: React.FC<{ user?: TAuthUser["user"] }> = ({ user }) => {
                     </div>
                   </div>
                 </div>
-                <div className="md:col-span-1">
+                <div className="md:col-span-2">
                   <div className="border shadow rounded-lg px-3 py-9 flex flex-col gap-3 text-center">
                     <h3 className="text-base text-gray-500">Attendance</h3>
                     <span className="font-medium text-xl">0</span>
@@ -107,21 +107,10 @@ export const AdminHome: React.FC<{ user?: TAuthUser["user"] }> = ({ user }) => {
                     <span className="font-medium text-xl">0</span>
                   </div>
                 </div>
-                <div className="bg-card rounded-lg md:col-span-2 p-3 text-accent w-full">
-                  <h5 className="font-semibold">Pending Setup</h5>
-                  <div className="flex flex-col gap-5 text-sm mt-4">
-                    {settingNavItems
-                      .filter((item) => item.category === "basic")
-                      .map((item) => (
-                        <PendingItem
-                          key={item.title}
-                          handleClick={handlePendingClick}
-                          openId={openId}
-                          item={item}
-                        />
-                      ))}
-                  </div>
-                </div>
+                {/* <PendingSetup
+                  handlePendingClick={handlePendingClick}
+                  openId={openId}
+                /> */}
               </div>
 
               <div className="grid grid-cols-1 lg:grid-cols-3 mt-7 gap-y-7 gap-x-5">
@@ -196,5 +185,28 @@ export const AdminHome: React.FC<{ user?: TAuthUser["user"] }> = ({ user }) => {
         </ErrorWrapper>
       </Skeleton>
     </ErrorBoundary>
+  );
+};
+
+const PendingSetup: React.FC<{
+  openId: string;
+  handlePendingClick: (val: string) => void;
+}> = ({ openId, handlePendingClick }) => {
+  return (
+    <div className="bg-card rounded-lg md:col-span-2 p-3 text-accent w-full">
+      <h5 className="font-semibold">Pending Setup</h5>
+      <div className="flex flex-col gap-5 text-sm mt-4">
+        {settingNavItems
+          .filter((item) => item.category === "basic")
+          .map((item) => (
+            <PendingItem
+              key={item.title}
+              handleClick={handlePendingClick}
+              openId={openId}
+              item={item}
+            />
+          ))}
+      </div>
+    </div>
   );
 };
