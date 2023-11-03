@@ -101,7 +101,6 @@ const CompanySettingsForm = () => {
             description: res.data.message,
             // duration: 0.4,
           });
-          form.resetFields();
 
           queryClient.invalidateQueries({
             queryKey: [QUERY_KEY_FOR_COMPANY_PARAMETER_SETTING],
