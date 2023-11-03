@@ -3,9 +3,6 @@ import peachBg from "../assets/images/peachBg.png";
 import lightBg from "../assets/images/lightBg.png";
 import logo from "../assets/images/logo.png";
 import microsoft from "../assets/images/microsoft.svg";
-import google from "../assets/images/google.svg";
-import office from "../assets/images/office.svg";
-import linkedin from "../assets/images/linkedin.svg";
 import { Divider } from "antd";
 import "../style/style.css";
 
@@ -16,6 +13,7 @@ import "aos/dist/aos.css";
 import { useIsAuthenticated } from "react-auth-kit";
 import CompanyRegistrationForm from "../components/CompanyRegistrationForm";
 import { loginUserWithMicrosoft } from "../hooks/useLoginWithMicrosoft";
+import { appRoutes } from "config/router/paths";
 
 export const Register = () => {
   const isAuthenticated = useIsAuthenticated();
@@ -34,7 +32,7 @@ export const Register = () => {
 
   return (
     <>
-      {isAuthenticated() && <Navigate to="/" replace={true} />}
+      {isAuthenticated() && <Navigate to={appRoutes.home} replace={true} />}
       <div className="grid grid-cols-1 lg:grid-cols-2">
         <div
           className="Container w-full text-white py-2 bg-cover bg-no-repeat authIntro"

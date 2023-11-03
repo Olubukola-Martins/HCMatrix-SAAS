@@ -40,6 +40,7 @@ export const useGetAuthUser = () => {
         },
       }),
     {
+      enabled: !!token,
       onError: (err: any) => {},
       onSuccess: (data) => {},
 
