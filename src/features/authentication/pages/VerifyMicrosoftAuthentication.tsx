@@ -15,6 +15,7 @@ import Aos from "aos";
 import "aos/dist/aos.css";
 import { useIsAuthenticated } from "react-auth-kit";
 import MicrosoftVerificationStatus from "../components/MicrosoftVerificationStatus";
+import { appRoutes } from "config/router/paths";
 
 export const VerifyMicrosoftAuthentication = () => {
   const isAuthenticated = useIsAuthenticated();
@@ -33,7 +34,7 @@ export const VerifyMicrosoftAuthentication = () => {
 
   return (
     <>
-      {isAuthenticated() && <Navigate to="/" replace={true} />}
+      {isAuthenticated() && <Navigate to={appRoutes.home} replace={true} />}
 
       <div className="grid grid-cols-1 lg:grid-cols-2">
         <div

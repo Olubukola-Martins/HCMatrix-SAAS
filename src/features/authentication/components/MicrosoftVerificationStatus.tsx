@@ -2,7 +2,7 @@ import { useContext, useState } from "react";
 import { LoadingOutlined } from "@ant-design/icons";
 import { useQuery } from "react-query";
 import { Form, Input, Modal, Select, Typography } from "antd";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useSignIn } from "react-auth-kit";
 import { BankOutlined } from "@ant-design/icons";
 import { AppButton } from "components/button/AppButton";
@@ -14,6 +14,7 @@ import { openNotification } from "utils/notifications";
 import { useCreateCompanyFromSocialAuth } from "../hooks/useCreateCompanyFromSocialAuth";
 import { o365MicrosoftRedirectUrl } from "../hooks/useO365MicrosoftRedirectUrl";
 import { IAuthDets } from "../types";
+import { appRoutes } from "config/router/paths";
 
 const MicrosoftVerificationStatus = ({
   code,
@@ -30,7 +31,7 @@ const MicrosoftVerificationStatus = ({
   const [tempAuthState, setTempAuthState] = useState<{
     state: IAuthDets;
   }>();
-
+  const navigate = useNavigate();
   const signIn = useSignIn();
   const { isError, isSuccess } = useQuery(
     "user-auth-details",
@@ -80,7 +81,7 @@ const MicrosoftVerificationStatus = ({
             state: "success",
 
             title: "Success",
-            description: "Logged in successfully!",
+            description: res.message,
           });
           // the company information has to be saved in a general state to be accessible accross the app
           // result.payload has the companies
@@ -93,7 +94,7 @@ const MicrosoftVerificationStatus = ({
             },
           });
           // }
-          // navigate("/");
+          navigate(appRoutes.home);
         }
       },
     }
