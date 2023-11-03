@@ -153,14 +153,11 @@ const CompanySettingsForm = () => {
       loading={isFetchingCompanyParams || isFetchingCountries}
       paragraph={{ rows: 8 }}
     >
-      {/* transfer ownership */}
-      {companyParams && (
-        <TransferOwnership
-          open={transferOwnershipModal}
-          handleClose={() => setTransferOwnershipModal(false)}
-          companyParams={companyParams}
-        />
-      )}
+      <TransferOwnership
+        open={transferOwnershipModal}
+        handleClose={() => setTransferOwnershipModal(false)}
+      />
+
       <Form
         className="flex flex-col gap-4"
         form={form}

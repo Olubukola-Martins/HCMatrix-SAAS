@@ -125,13 +125,10 @@ const UserActions: React.FC<{
   return (
     <>
       <Setup2FA open={action === "setup-2fa"} handleClose={clearAction} />
-      {companyParams && (
-        <TransferOwnership
-          open={action === "transfer-ownership"}
-          handleClose={() => clearAction()}
-          companyParams={companyParams}
-        />
-      )}
+      <TransferOwnership
+        open={action === "transfer-ownership"}
+        handleClose={() => clearAction()}
+      />
       <div className="flex flex-col gap-2 pt-2 text-accent font-medium text-sm">
         {USER_ACTIONS.map((item, i) => (
           <div

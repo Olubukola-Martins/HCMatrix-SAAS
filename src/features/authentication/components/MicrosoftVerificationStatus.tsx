@@ -2,7 +2,7 @@ import { useContext, useState } from "react";
 import { LoadingOutlined } from "@ant-design/icons";
 import { useQuery } from "react-query";
 import { Form, Input, Modal, Select, Typography } from "antd";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { useSignIn } from "react-auth-kit";
 import { BankOutlined } from "@ant-design/icons";
 import { AppButton } from "components/button/AppButton";
@@ -32,7 +32,6 @@ const MicrosoftVerificationStatus = ({
   const [tempAuthState, setTempAuthState] = useState<{
     state: IAuthDets;
   }>();
-  const navigate = useNavigate();
   const signIn = useSignIn();
   const { isError, isSuccess } = useQuery(
     "user-auth-details",
@@ -123,7 +122,7 @@ const MicrosoftVerificationStatus = ({
             const item = res.data;
             const authUserDetails: IAuthDets = {
               ...tempAuthState.state,
-              companies: [item],
+              companies: item.payload,
             };
             if (
               signIn({

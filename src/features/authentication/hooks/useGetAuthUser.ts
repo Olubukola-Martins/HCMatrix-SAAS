@@ -7,7 +7,7 @@ import { TAuthUser } from "../types";
 
 export const QUERY_KEY_FOR_AUTHENTICATED_USER = "authenticated-user";
 
-const getData = async (props: {
+export const getAuthenticatedUser = async (props: {
   auth: Pick<ICurrentCompany, "token">;
 }): Promise<TAuthUser> => {
   const url = `${MICROSERVICE_ENDPOINTS.AUTHENTICATION}/authenticate/me`;
@@ -34,7 +34,7 @@ export const useGetAuthUser = () => {
   const queryData = useQuery(
     [QUERY_KEY_FOR_AUTHENTICATED_USER],
     () =>
-      getData({
+      getAuthenticatedUser({
         auth: {
           token,
         },
