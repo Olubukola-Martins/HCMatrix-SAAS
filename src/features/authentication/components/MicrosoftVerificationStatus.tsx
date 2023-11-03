@@ -66,6 +66,7 @@ const MicrosoftVerificationStatus = ({
           setTempAuthState({
             state: authUserDetails,
           });
+          console.log("Payload was 0");
           return;
         }
 
