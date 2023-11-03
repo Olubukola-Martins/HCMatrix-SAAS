@@ -66,7 +66,8 @@ const SelfServiceSubNav = () => {
       <ErrorWrapper
         isError={isError}
         message={
-          error?.response.data.message ?? error?.response.data.error.message
+          error?.response?.data?.message ??
+          error?.response?.data?.error?.message
         }
       >
         <Skeleton loading={isLoading} paragraph={{ rows: 2 }}>

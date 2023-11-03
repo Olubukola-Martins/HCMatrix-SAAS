@@ -1,3 +1,4 @@
+import { QUERY_KEY_FOR_APPROVAL_REQUESTS } from "features/core/workflows/hooks/useFetchApprovalRequests";
 import { QUERY_KEY_FOR_UNREAD_NOTIFICATION_COUNT } from "features/notifications/hooks/unRead/useGetUnReadNotificationCount";
 import { QUERY_KEY_FOR_NOTIFICATIONS } from "features/notifications/hooks/useGetAlerts";
 import { useContext } from "react";
@@ -6,7 +7,7 @@ import { EGlobalOps, GlobalContext } from "stateManagers/GlobalContextProvider";
 import { TApprovalStatus } from "types/statuses";
 
 interface IProps {
-  handleSuccess?: () => void;
+  handleSuccess?: (status?: TApprovalStatus) => void;
 }
 
 export const useApproveORReject = ({ handleSuccess }: IProps = {}) => {
@@ -43,7 +44,13 @@ export const useApproveORReject = ({ handleSuccess }: IProps = {}) => {
             queryKey: [QUERY_KEY_FOR_UNREAD_NOTIFICATION_COUNT],
             // exact: true,
           });
-          handleSuccess?.();
+          // invalidate approval requests
+          queryClient.invalidateQueries({
+            queryKey: [QUERY_KEY_FOR_APPROVAL_REQUESTS],
+            // exact: true,
+          });
+
+          handleSuccess?.(status);
         },
       },
     });

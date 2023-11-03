@@ -35,11 +35,13 @@ const ViewApprovalRequest: React.FC<IProps> = ({
           to={appRoutes.handOverDetails(request.exitHandoverForm.id).path}
         />
       )}
+
       {typeof request.promotionRequisition !== "undefined" && (
         <PromotionRequestDetails
           open={open}
           handleClose={handleClose}
           id={request.promotionRequisition.id}
+          approvalRequest={request}
         />
       )}
       {typeof request.leave !== "undefined" && (
