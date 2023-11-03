@@ -6,7 +6,6 @@ import { ICurrentCompany } from "types";
 
 type TCreateProps = {
   date: string;
-  employeeId: number;
   assetId: number;
   description: string;
   attachmentUrls: string[];

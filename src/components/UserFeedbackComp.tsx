@@ -1,4 +1,4 @@
-import { Button, Modal, Progress, Steps } from "antd";
+import { Modal, Progress, Steps } from "antd";
 import React, { useContext, useEffect, useState } from "react";
 import { useAuthUser } from "react-auth-kit";
 import { Link } from "react-router-dom";
@@ -42,20 +42,16 @@ const initialsetUpSteps: TSetupStep[] = [
 const UserFeedbackComp = () => {
   const auth = useAuthUser();
   const authDetails = auth() as unknown as IAuthDets;
-  const token = authDetails.userToken;
   const user = authDetails?.user;
   const [progress, setProgress] = useState(0);
   const [steps, setSteps] = useState(initialsetUpSteps);
   const globalCtx = useContext(GlobalContext);
   const { state: globalState, dispatch } = globalCtx;
-  const companyId = globalState.currentCompany?.id as unknown as number;
   const provideFeedback = globalState.showInitialSetUp;
   const dismissFeedback = () => {
     dispatch({ type: EGlobalOps.setShowInitialSetup, payload: false });
   };
   const { isSuccess: isDepSuccess } = useFetchDepartments({
-    companyId,
-    token,
     pagination: {
       limit: 100, //temp suppose to allow search
       offset: 0,
@@ -73,8 +69,6 @@ const UserFeedbackComp = () => {
     },
   });
   const { isSuccess: isDegSuccess } = useFetchDesignations({
-    companyId,
-    token,
     pagination: {
       limit: 100, //temp suppose to allow search
       offset: 0,
@@ -92,8 +86,6 @@ const UserFeedbackComp = () => {
     },
   });
   const { isSuccess: isRoleSuccess } = useFetchRoles({
-    companyId,
-    token,
     pagination: {
       limit: 100, //temp suppose to allow search
       offset: 0,
@@ -142,7 +134,7 @@ const UserFeedbackComp = () => {
 
   const showModal =
     globalState.showInitialSetUp &&
-    user.isAdmin &&
+    user.isOwner &&
     isDepSuccess &&
     isDegSuccess &&
     isRoleSuccess &&

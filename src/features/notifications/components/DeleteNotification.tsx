@@ -6,6 +6,7 @@ import DeleteEntityModal from "components/entity/DeleteEntityModal";
 import { TNotification } from "../types";
 import { useDeleteAlert } from "../hooks/useDeleteAlert";
 import { QUERY_KEY_FOR_NOTIFICATIONS } from "../hooks/useGetAlerts";
+import { QUERY_KEY_FOR_UNREAD_NOTIFICATION_COUNT } from "../hooks/unRead/useGetUnReadNotificationCount";
 
 interface IProps extends IModalProps {
   data: TNotification;
@@ -53,6 +54,11 @@ export const DeleteNotification: React.FC<IProps> = ({
               return { data: updateData, total: prevData.total - 1 };
             }
           );
+
+          queryClient.invalidateQueries({
+            queryKey: [QUERY_KEY_FOR_UNREAD_NOTIFICATION_COUNT],
+            // exact: true,
+          });
 
           handleClose();
         },

@@ -5,11 +5,13 @@ import { ColumnsType, TablePaginationConfig, TableProps } from "antd/lib/table";
 import { TDesignation } from "../types";
 
 interface IProps {
-  data: TDesignation[];
-  loading: boolean;
-  pagination?: TablePaginationConfig;
   onChange?: TableProps<TDesignation>["onChange"];
-  editDesignation: (val: number) => void;
+  data?: TDesignation[];
+  loading?: boolean;
+  pagination?: TablePaginationConfig;
+  editDesignation: (val: TDesignation) => void;
+  viewDesignation: (val: TDesignation) => void;
+  deleteDesignation: (val: TDesignation) => void;
 }
 
 export const DesignationsTableView = ({
@@ -18,6 +20,8 @@ export const DesignationsTableView = ({
   pagination,
   onChange,
   editDesignation,
+  deleteDesignation,
+  viewDesignation,
 }: IProps) => {
   const columns: ColumnsType<TDesignation> = [
     {
@@ -44,9 +48,16 @@ export const DesignationsTableView = ({
         <div className="flex items-center gap-3 text-lg">
           <i
             className="ri-pencil-line cursor-pointer hover:text-caramel"
-            onClick={() => editDesignation(item.id)}
+            onClick={() => editDesignation(item)}
           ></i>
-          <i className="ri-delete-bin-line cursor-pointer hover:text-caramel"></i>
+          <i
+            className="ri-eye-line cursor-pointer hover:text-caramel"
+            onClick={() => viewDesignation(item)}
+          ></i>
+          <i
+            className="ri-delete-bin-line cursor-pointer hover:text-caramel"
+            onClick={() => deleteDesignation(item)}
+          ></i>
         </div>
       ),
     },

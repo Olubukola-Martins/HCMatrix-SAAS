@@ -78,32 +78,6 @@ const VehicleList = () => {
         </span>
       ),
     },
-    {
-      title: "Action",
-      key: "Action",
-      width: 100,
-      fixed: "right",
-      render: () => (
-        <Dropdown
-          overlay={
-            <Menu>
-              {[
-                { label: "edit", onClick: () => {} },
-                { label: "delete", onClick: () => {} },
-                { label: "download", onClick: () => {} },
-                { label: "add document", onClick: () => {} },
-              ].map((item) => (
-                <Menu.Item key={item.label} onClick={item.onClick}>
-                  <span className="capitalize">{item.label}</span>
-                </Menu.Item>
-              ))}
-            </Menu>
-          }
-        >
-          <Button type="text" icon={<MoreOutlined />} />
-        </Dropdown>
-      ),
-    },
   ];
   return (
     <div className="flex flex-col gap-6">

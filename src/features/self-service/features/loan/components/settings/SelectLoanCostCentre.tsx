@@ -4,7 +4,7 @@ import React from "react";
 import { boxStyle, boxTitle } from "styles/reused";
 
 const SelectLoanCostCentre: React.FC<{
-  Form: any;
+  Form: typeof Form;
 }> = ({ Form }) => {
   return (
     <div className={`${boxStyle} text-sm`}>

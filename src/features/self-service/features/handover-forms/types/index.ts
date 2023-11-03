@@ -1,3 +1,5 @@
+import { TApprovalStatus } from "types/statuses";
+
 export type TTHandOverForm = {
   id: number;
   employeeId: number;
@@ -9,7 +11,7 @@ export type TTHandOverForm = {
   otherComments: string;
   supportingDocumentUrl: string;
   supervisorClearanceUrl: string;
-  status: string;
+  status: TApprovalStatus;
   companyId: number;
   createdAt: string;
   updatedAt: string;

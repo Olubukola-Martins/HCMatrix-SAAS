@@ -36,7 +36,7 @@ const getData = async (props: {
 export const useGetSingleAlert = (props: IDataProps) => {
   const { token, companyId } = useApiAuth();
   const queryData = useQuery(
-    [QUERY_KEY_FOR_SINGLE_NOTIFICATION],
+    [QUERY_KEY_FOR_SINGLE_NOTIFICATION, props.id],
     () =>
       getData({
         auth: {

@@ -9,7 +9,9 @@ import { TApprovalStatus } from "types/statuses";
 interface IGetDataProps extends ICurrentCompany {
   pagination?: IPaginationProps;
   searchParams?: ISearchParams;
-  status?: TApprovalStatus;
+  status?: TApprovalStatus[] | TApprovalStatus;
+
+  employeeId?: number;
 }
 
 export const QUERY_KEY_FOR_JOB_REQUISITIONS = "job-requisitions";
@@ -34,7 +36,11 @@ const getData = async (
       limit,
       offset,
       search: name,
-      status: props.status,
+      employeeId: props.employeeId,
+      status:
+        typeof props.status === "string"
+          ? props.status
+          : props.status?.join(","),
     },
   };
 

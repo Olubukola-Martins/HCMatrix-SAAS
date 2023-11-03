@@ -7,19 +7,20 @@ export type TDesignation = {
   employeeCount: number;
 };
 
-export interface IGetSingleDesgProps extends ICurrentCompany {
+export interface IGetSingleDesgProps {
   designationId: number;
 }
 
-export interface ICreateDegProps extends ICurrentCompany {
+export interface ICreateDegProps {
   name: string;
   departmentId: string;
 }
-export interface IUpdateDegProps extends ICreateDegProps {
+export interface IUpdateDegProps {
   id: number;
+  data: ICreateDegProps;
 }
 
-export interface IGetDegsProps extends ICurrentCompany {
+export interface IGetDegsProps {
   pagination?: IPaginationProps;
   searchParams?: ISearchParams;
 }
@@ -28,7 +29,5 @@ export interface IFRQDesignationsProps {
   pagination?: IPaginationProps;
   searchParams?: ISearchParams;
 
-  companyId: number;
   onSuccess?: Function;
-  token: string;
 }

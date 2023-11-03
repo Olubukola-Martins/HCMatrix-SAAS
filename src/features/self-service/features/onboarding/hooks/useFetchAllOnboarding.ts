@@ -2,20 +2,24 @@ import axios from "axios";
 import { useQuery } from "react-query";
 import { ICurrentCompany, IPaginationProps, ISearchParams } from "types";
 import { TOnboarding } from "../types";
+import { DEFAULT_PAGE_SIZE } from "constants/general";
+import { useApiAuth } from "hooks/useApiAuth";
 
 const QUERY_KEY_FOR_ONBOARDING = "all-onboarding";
 
 // TO DO : need to exist in the general data entities and refactored
-interface IGetDataProps extends ICurrentCompany {
+interface IGetDataProps {
   pagination?: IPaginationProps;
   searchParams?: ISearchParams;
 }
 
-const getAllOnboarding = async (
-  props: IGetDataProps
-): Promise<{ data: TOnboarding[]; total: number }> => {
+const getAllOnboarding = async (vals: {
+  props: IGetDataProps;
+  auth: ICurrentCompany;
+}): Promise<{ data: TOnboarding[]; total: number }> => {
+  const { props, auth } = vals;
   const { pagination } = props;
-  const limit = pagination?.limit ?? 10;
+  const limit = pagination?.limit ?? DEFAULT_PAGE_SIZE;
   const offset = pagination?.offset ?? 0;
   const name = props.searchParams?.name ?? "";
 
@@ -24,8 +28,8 @@ const getAllOnboarding = async (
   const config = {
     headers: {
       Accept: "application/json",
-      Authorization: `Bearer ${props.token}`,
-      "x-company-id": props.companyId,
+      Authorization: `Bearer ${auth.token}`,
+      "x-company-id": auth.companyId,
     },
     params: {
       limit,
@@ -76,13 +80,18 @@ const getAllOnboarding = async (
   return ans;
 };
 
-export const useFetchAllOnboarding = (props: IGetDataProps) => {
+export const useFetchAllOnboarding = (props: IGetDataProps = {}) => {
+  const { companyId, token } = useApiAuth();
   const { pagination, searchParams } = props;
   const queryData = useQuery(
     [QUERY_KEY_FOR_ONBOARDING, pagination?.limit, searchParams?.name],
     () =>
       getAllOnboarding({
-        ...props,
+        auth: {
+          token,
+          companyId,
+        },
+        props,
       }),
     {
       onError: (err: any) => {},

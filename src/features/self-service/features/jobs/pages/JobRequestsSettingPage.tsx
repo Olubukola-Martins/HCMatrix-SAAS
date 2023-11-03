@@ -12,7 +12,7 @@ const JobRequestsSettingPage = () => {
       <div className="Container ">
         <PageIntro
           title="Job Request Settings"
-          link={appRoutes.selfServiceHome}
+          link={appRoutes.selfServiceJob}
         />
         <JobRequestSetting />
       </div>

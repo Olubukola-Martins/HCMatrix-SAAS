@@ -1,11 +1,11 @@
-import { Select, Spin } from "antd";
+import { Select, Spin, Form } from "antd";
 import { useGetExchangeRates } from "features/payroll/hooks/exhangeRates/useGetExchangeRates";
 import { useDebounce } from "hooks/useDebounce";
 import { useState } from "react";
 import { generalValidationRules } from "utils/formHelpers/validation";
 
 export const FormExchangeRateInput: React.FC<{
-  Form: any;
+  Form: typeof Form;
   showLabel?: boolean;
   control?: { label: string; name: string | (string | number)[] };
 }> = ({ Form, showLabel = true, control }) => {

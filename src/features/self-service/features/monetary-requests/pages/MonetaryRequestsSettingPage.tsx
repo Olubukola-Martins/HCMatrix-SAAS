@@ -12,7 +12,7 @@ const MonetaryRequestsSettingPage = () => {
       <div className="Container ">
         <PageIntro
           title="Monetary Request Settings"
-          link={appRoutes.selfServiceHome}
+          link={appRoutes.selfServiceMonetary}
         />
         <MonetaryRequestSetting />
       </div>

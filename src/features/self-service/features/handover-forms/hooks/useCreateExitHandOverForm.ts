@@ -5,7 +5,6 @@ import { useMutation } from "react-query";
 import { ICurrentCompany } from "types";
 
 type TCreateProps = {
-  employeeId: number;
   separationDate: string;
   reasonForLeaving: string;
   whatDidYouLikeTheMost: string;

@@ -12,7 +12,7 @@ const PositionChangeRequestsSettingPage = () => {
       <div className="Container ">
         <PageIntro
           title="Position Change Request Settings"
-          link={appRoutes.selfServiceHome}
+          link={appRoutes.selfServicePositionChange}
         />
         <PositionChangeRequestSetting />
       </div>

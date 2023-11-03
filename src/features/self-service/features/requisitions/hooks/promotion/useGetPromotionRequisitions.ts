@@ -9,7 +9,8 @@ import { TPromotionRequisition } from "../../types/promotion";
 interface IGetDataProps extends ICurrentCompany {
   pagination?: IPaginationProps;
   searchParams?: ISearchParams;
-  status?: TApprovalStatus;
+  status?: TApprovalStatus[] | TApprovalStatus;
+
   employeeId?: number;
 }
 
@@ -36,6 +37,10 @@ const getData = async (
       offset,
       search: name,
       employeeId: props.employeeId,
+      status:
+        typeof props.status === "string"
+          ? props.status
+          : props.status?.join(","),
     },
   };
 

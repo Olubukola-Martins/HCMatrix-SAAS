@@ -1,23 +1,28 @@
 import axios from "axios";
+import { MICROSERVICE_ENDPOINTS } from "config/enviroment";
+import { useApiAuth } from "hooks/useApiAuth";
 import { useMutation } from "react-query";
 import { ICurrentCompany } from "types";
 
-export interface ICreateRoleProps extends ICurrentCompany {
+export interface ICreateRoleProps {
   name: string;
   permissionIds: number[];
 }
-export const createRole = async (props: ICreateRoleProps) => {
-  const url = `${process.env.REACT_APP_AUTHENTICATION_BASE_URL}/permission/role`;
+export const createRole = async (
+  props: ICreateRoleProps,
+  auth: ICurrentCompany
+) => {
+  const url = `${MICROSERVICE_ENDPOINTS.AUTHENTICATION}/permission/role`;
   const config = {
     headers: {
       Accept: "application/json",
-      Authorization: `Bearer ${props.token}`,
-      "x-company-id": props.companyId,
+      Authorization: `Bearer ${auth.token}`,
+      "x-company-id": auth.companyId,
     },
   };
 
   // necessary to make immediate changes when in  a central place when schema changes
-  const data: any = {
+  const data = {
     name: props.name,
     permissionIds: props.permissionIds,
   };
@@ -27,5 +32,8 @@ export const createRole = async (props: ICreateRoleProps) => {
 };
 
 export const useCreateRole = () => {
-  return useMutation(createRole);
+  const { token, companyId } = useApiAuth();
+  return useMutation((props: ICreateRoleProps) =>
+    createRole(props, { token, companyId })
+  );
 };

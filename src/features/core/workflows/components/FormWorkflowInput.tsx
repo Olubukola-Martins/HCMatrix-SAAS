@@ -1,4 +1,4 @@
-import { Select, Spin } from "antd";
+import { Select, Spin, Form } from "antd";
 import { useDebounce } from "hooks/useDebounce";
 
 import React, { useState } from "react";
@@ -6,7 +6,7 @@ import { generalValidationRules } from "utils/formHelpers/validation";
 import { useFetchAllWorkflows } from "../hooks/useFetchAllWorkflows";
 
 export const FormWorkflowInput: React.FC<{
-  Form: any;
+  Form: typeof Form;
   showLabel?: boolean;
   control?: { label: string; name: string };
 }> = ({ Form, showLabel = true, control }) => {

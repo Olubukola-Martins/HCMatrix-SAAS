@@ -1,4 +1,4 @@
-import { Select, Spin } from "antd";
+import { Select, Spin, Form } from "antd";
 import { useGetPayrollTemplates } from "features/payroll/hooks/templates/useGetPayrollTemplates";
 import { TPayrollTemplateListData } from "features/payroll/types/template";
 import { useDebounce } from "hooks/useDebounce";
@@ -6,7 +6,7 @@ import { useState } from "react";
 import { generalValidationRules } from "utils/formHelpers/validation";
 
 export const FormPayrollReportTemplateInput: React.FC<{
-  Form: any;
+  Form: typeof Form;
   showLabel?: boolean;
   onSelect?: (val: number, option: TPayrollTemplateListData) => void;
   control?: { label: string; name: string | (string | number)[] };

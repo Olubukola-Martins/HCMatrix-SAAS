@@ -9,7 +9,6 @@ export const CRBApprovalRequestsContainer = () => {
   const [status, setStatus] = useState<TCRBookingStatus>();
   return (
     <div>
-      <p className="text-lg mb-4">Booking Request Approvals</p>
       <div className="flex flex-col gap-6">
         <div className="flex justify-between items-center">
           <Select

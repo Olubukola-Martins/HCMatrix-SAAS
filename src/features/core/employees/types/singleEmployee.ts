@@ -26,7 +26,54 @@ export type TSingleEmployee = {
   managerHistory: ManagerHistory[];
   directReport: DirectReport[];
   userGroups: UserGroup[];
+  roleHistory: RoleHistory[];
+  userProjects: UserProject[];
+  salaryHistory: SalaryHistory[];
   onboarding?: any; // TO DO: udpate all the anys
+  role: Role;
+};
+interface SalaryHistory {
+  id: number;
+  type: string;
+  employeeId: number;
+  monthlyGross: string;
+  from: string;
+  to?: any;
+  companyId: number;
+  createdAt: string;
+  updatedAt: string;
+}
+interface UserProject {
+  id: number;
+  projectId: number;
+  employeeId: number;
+  createdAt: string;
+  updatedAt: string;
+  project: Project;
+}
+
+interface Project {
+  id: number;
+  name: string;
+  label: string;
+  startDate: string;
+  endDate: string;
+  description: string;
+  status: string;
+  companyId: number;
+  createdAt: string;
+  updatedAt: string;
+}
+
+type RoleHistory = {
+  id: number;
+  employeeId: number;
+  roleId: number;
+  from: string;
+  to?: any;
+  companyId: number;
+  createdAt: string;
+  updatedAt: string;
   role: Role;
 };
 
@@ -35,6 +82,7 @@ interface Role {
   name: string;
   label: string;
   companyId: number;
+  employeeCount: number;
 }
 
 interface UserGroup {

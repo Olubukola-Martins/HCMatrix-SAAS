@@ -2,7 +2,6 @@ import { DatePicker, Form, Input, InputNumber, Modal } from "antd";
 import React, { useEffect } from "react";
 import { useQueryClient } from "react-query";
 
-import { FormEmployeeInput } from "features/core/employees/components/FormEmployeeInput";
 import { useCurrentFileUploadUrl } from "hooks/useCurrentFileUploadUrl";
 import { IModalProps } from "types";
 import {
@@ -13,11 +12,11 @@ import {
 import { openNotification } from "utils/notifications";
 import { FileUpload } from "components/FileUpload";
 import { AppButton } from "components/button/AppButton";
-import { FormAssetTypeInput } from "./FormAssetTypeInput";
 import { QUERY_KEY_FOR_SINGLE_ASSET } from "../hooks/useGetSingleAsset";
 import { useUpdateAsset } from "../hooks/useUpdateAsset";
 import { TAsset } from "../types";
 import moment from "moment";
+import { FormAssetTypeInput } from "./asset-type/FormAssetTypeInput";
 
 interface IProps extends IModalProps {
   asset: TAsset;

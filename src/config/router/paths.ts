@@ -15,9 +15,9 @@ export const appRoutes = {
   invitedEmployee: `/invited-employee-form`,
   //home routes
   home: `/`,
-  companyOrganogram: `/company-organogram`,
   // setting routes
   settings: "/settings",
+  companyOrganogram: `/settings/company-organogram`,
   projectSettings: "/settings/projects",
   singleProject: (id?: number) => ({
     format: `/settings/projects/:id`,
@@ -48,14 +48,10 @@ export const appRoutes = {
     format: `/settings/departments/:id`,
     path: `/settings/departments/${id}`,
   }),
-  // singleDelegation: (id?: number) => ({
-  //   format: `/settings/delegations/:id`,
-  //   path: `/settings/delegations/${id}`,
-  // }),
+
   delegationSettings: `/settings/delegations`,
 
   roleSettings: `/settings/roles`,
-  createRole: `/settings/roles/create`,
   editRole: (id?: number) => ({
     format: `/settings/roles/edit/:id`,
     path: `/settings/roles/edit/${id}`,
@@ -123,7 +119,6 @@ export const appRoutes = {
     format: `/settings/scheme/:scheme/payroll/:id`,
     path: `/settings/scheme/${scheme}/payroll/${id}`,
   }),
-  payrollPolicySettings: `/settings/probation_policy_PENDING`,
   payGradeSettings: `/settings/grades`,
   payGradeAndCategorySettings: `/settings/grades-and-settings`,
   taxAuthorities: `/settings/payroll/tax-authorities`,
@@ -131,8 +126,8 @@ export const appRoutes = {
   nsitfAuthorities: `/settings/payroll/nsitf-authorities`,
   pensionAdministrators: `/settings/payroll/pension-adminsistrators`,
   gradeCategorySettings: `/settings/grade_categories`,
-  probationPolicySettings: `/settings/probation_policy`,
-  resignationPolicySettings: `/settings/resignation_policy`,
+  probationPolicySettings: `/settings/probation-policy`,
+  resignationPolicySettings: `/settings/resignation-policy`,
 
   // Billing routes
   billingStatement: `/statement`,
@@ -164,7 +159,7 @@ export const appRoutes = {
   addPayrollReport: `/payroll/report/create`,
   payslips: `/payroll/payslip`,
   employeePayslips: `/payroll/employee-payslip`,
-  payslipTransactions: `/payslip-transactions`,
+  payslipTransactions: `/self-service/payslip-transactions`,
   createPayslipTemplate: `/payroll/create-payslip-template`,
   editPayslipTemplate: (id?: number) => ({
     format: `/payroll/edit-payslip-template/:id`,
@@ -207,6 +202,7 @@ export const appRoutes = {
   loanRequests: `/self-service/loan-request`,
   loanPolicies: `/self-service/loan-policies`,
   vehicleBooking: `/self-service/vehicle-booking`,
+  vehicleBookingSetting: `/self-service/vehicle-booking/setting`,
   vehicleDetails: (id?: number) => ({
     format: `/self-service/vehicle-details/:id`,
     path: `/self-service/vehicle-details/${id}`,
@@ -232,8 +228,8 @@ export const appRoutes = {
   newHandOverForm: `/self-service/handover-new-form`,
 
   handOverDetails: (id?: number) => ({
-    format: ` /self-service/handover-form/:id`,
-    path: ` /self-service/handover-form/${id}`,
+    format: `/self-service/handover-form/:id`,
+    path: `/self-service/handover-form/${id}`,
   }),
   hRLetters: `/self-service/hr-letters`,
   documents: `/self-service/documents`,

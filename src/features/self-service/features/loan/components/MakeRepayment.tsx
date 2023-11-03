@@ -8,6 +8,8 @@ import { useQueryClient } from "react-query";
 import { FormEmployeeLoanInput } from "./FormEmployeeLoanInput";
 import { QUERY_KEY_FOR_LOAN_REPAYMENTS } from "../hooks/repayment/useGetLoanRepayments";
 import { useMakeLoanRepayment } from "../hooks/repayment/useMakeLoanRepayment";
+import { QUERY_KEY_FOR_LOAN } from "../hooks/useGetLoan";
+import { QUERY_KEY_FOR_LOAN_ANALYTICS } from "../hooks/analytics/useGetLoanAnalytics";
 
 export const MakeRepayment: React.FC<IModalProps> = ({ open, handleClose }) => {
   const queryClient = useQueryClient();
@@ -40,20 +42,30 @@ export const MakeRepayment: React.FC<IModalProps> = ({ open, handleClose }) => {
           });
           setUrl(res.data.authorization_url);
           form.resetFields();
-
-          queryClient.invalidateQueries({
-            queryKey: [QUERY_KEY_FOR_LOAN_REPAYMENTS],
-            // exact: true,
-          });
         },
       }
     );
   };
   const [balance, setBalance] = useState<number>();
+  const onCancel = () => {
+    queryClient.invalidateQueries({
+      queryKey: [QUERY_KEY_FOR_LOAN_REPAYMENTS],
+      // exact: true,
+    });
+    queryClient.invalidateQueries({
+      queryKey: [QUERY_KEY_FOR_LOAN],
+      // exact: true,
+    });
+    queryClient.invalidateQueries({
+      queryKey: [QUERY_KEY_FOR_LOAN_ANALYTICS],
+      // exact: true,
+    });
+    handleClose();
+  };
   return (
     <Modal
       open={open}
-      onCancel={() => handleClose()}
+      onCancel={() => onCancel()}
       footer={null}
       title={"Make Repayment"}
       style={{ top: 20 }}

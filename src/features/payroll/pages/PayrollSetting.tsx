@@ -132,7 +132,7 @@ const PayrollSetting = () => {
 };
 
 const PayrollSettingContainer: React.FC<{
-  Form: any;
+  Form: typeof Form;
   form: FormInstance<any>;
   handleSubmit: (data: any) => void;
   handleBank: (data?: TPaystackBank) => void;

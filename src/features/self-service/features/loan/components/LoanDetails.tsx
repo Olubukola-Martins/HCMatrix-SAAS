@@ -22,7 +22,7 @@ export const LoanDetails = ({ id, open, handleClose }: IProps) => {
         date: moment(data.date).format(DEFAULT_DATE_FORMAT),
         type: data.type.name,
         paymentPlan: data.paymentPlan.name,
-        description: `${data.description} `,
+        description: data.description,
       });
     }
   }, [id, form, data]);

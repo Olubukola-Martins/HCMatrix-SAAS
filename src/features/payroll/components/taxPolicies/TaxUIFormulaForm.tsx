@@ -81,7 +81,6 @@ const EditableCell: React.FC<EditableCellProps> = ({
       toggleEdit();
       handleSave({ ...record, ...values });
     } catch (errInfo) {
-      console.log("Save failed:", errInfo);
     }
   };
 
@@ -159,7 +158,6 @@ export const TaxUIFormulaForm: React.FC<
     }
   );
 
-  console.log(convertedConditions);
 
   const [dataSource, setDataSource] = useState<DataType[]>(convertedConditions);
 

@@ -1,12 +1,8 @@
-import { Avatar, Drawer, Form, Input, Spin, Switch } from "antd";
+import { Avatar, Drawer, Form, Input } from "antd";
 import { FormDesignationInput } from "features/core/designations/components/FormDesignationInput";
-import { useFetchDesignations } from "features/core/designations/hooks/useFetchDesignations";
 import { FormRoleInput } from "features/core/roles-and-permissions/components/FormRoleInput";
-import { useFetchRoles } from "features/core/roles-and-permissions/hooks/useFetchRoles";
-import { useContext, useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useQueryClient } from "react-query";
-import { BeatLoader } from "react-spinners";
-import { GlobalContext } from "stateManagers/GlobalContextProvider";
 import { IDrawerProps } from "types";
 import {
   textInputValidationRules,
@@ -14,10 +10,15 @@ import {
 } from "utils/formHelpers/validation";
 import { openNotification } from "utils/notifications";
 import { useUpdateEmployee } from "../../hooks/useUpdateEmployee";
-import { TSingleEmployee, IUpdateEmpProps } from "../../types";
+import { TSingleEmployee } from "../../types";
 import { useApiAuth } from "hooks/useApiAuth";
-import { FileUpload } from "components/FileUpload";
-import { useCurrentFileUploadUrl } from "hooks/useCurrentFileUploadUrl";
+import { QUERY_KEY_FOR_SINGLE_EMPLOYEE } from "../../hooks/useFetchSingleEmployee";
+import { QUERY_KEY_FOR_LIST_OF_EMPLOYEES } from "../../hooks/useFetchEmployees";
+import { FormFileInput } from "components/generalFormInputs/FormFileInput";
+import { AppButton } from "components/button/AppButton";
+import AppSwitch from "components/switch/AppSwitch";
+import { bulkUploadFiles } from "hooks/useUploadFile";
+import { QUERY_KEY_FOR_AUTHENTICATED_USER } from "features/authentication/hooks/useGetAuthUser";
 
 interface IProps extends IDrawerProps {
   employee?: TSingleEmployee;
@@ -26,16 +27,13 @@ interface IProps extends IDrawerProps {
 export const EditMyProfile = ({ open, handleClose, employee }: IProps) => {
   const queryClient = useQueryClient();
   const [form] = Form.useForm();
-  const { token, companyId } = useApiAuth();
 
-  const globalCtx = useContext(GlobalContext);
-  const { state: globalState } = globalCtx;
-  const avatarUrl = useCurrentFileUploadUrl("avatarUrl");
+  const [avatarUrl, setAvatarUrl] = useState<string>();
+  const [isUploadingAvatar, setIsUploadingAvatar] = useState(false);
 
   useEffect(() => {
     if (employee) {
       form.setFieldsValue({
-        avatarUrl: avatarUrl,
         firstName: employee.firstName,
         lastName: employee.lastName,
         empUid: employee.empUid,
@@ -44,53 +42,65 @@ export const EditMyProfile = ({ open, handleClose, employee }: IProps) => {
         email: employee.email,
         hasSelfService: employee.hasSelfService,
       });
+      setAvatarUrl(employee.avatarUrl);
     }
-  }, [employee, form, avatarUrl]);
-
-  const { data: designations, isFetching: isDesgFetching } =
-    useFetchDesignations({
-      token,
-      companyId,
-      pagination: {
-        limit: 100,
-        offset: 0,
-      },
-    });
-  const { data: roles, isFetching: isRoleFetching } = useFetchRoles({
-    token,
-    companyId,
-    pagination: {
-      limit: 100,
-      offset: 0,
-    },
-  });
+  }, [employee, form]);
 
   const { mutate, isLoading } = useUpdateEmployee();
+  const { token, companyId, authUserData } = useApiAuth();
 
-  const handleFinish = (data: any) => {
-    if (companyId) {
-      const props: IUpdateEmpProps = {
-        token,
-        companyId,
-        firstName: data.firstName,
-        lastName: data.lastName,
-        email: data.email,
-        hasSelfService: data.hasSelfService,
-        empUid: data.empUid,
-        roleId: data.roleId,
-        designationId: data.designationId,
-        employeeId: employee?.id as number,
-        avatarUrl,
-      };
-      if (props.empUid === employee?.empUid) delete props.empUid;
+  const handleFinish = async (data: any) => {
+    if (!employee) return;
+    let uploadedUrl = employee.avatarUrl;
+    if (data.avatar) {
+      try {
+        setIsUploadingAvatar(true);
+        const avatarRes = await bulkUploadFiles({
+          auth: { companyId, token },
+          data: { files: data.avatar },
+        });
+        uploadedUrl = avatarRes[0];
 
-      // return;
-      openNotification({
-        state: "info",
-        title: "Wait a second ...",
-        description: <Spin />,
-      });
-      mutate(props, {
+        setIsUploadingAvatar(false);
+      } catch (err: any) {
+        openNotification({
+          state: "error",
+          title: "Error Occured",
+          description:
+            err?.response.data.message ?? err?.response.data.error.message,
+        });
+
+        setIsUploadingAvatar(false);
+      }
+    }
+    setAvatarUrl(uploadedUrl);
+
+    mutate(
+      {
+        employeeId: employee?.id,
+        body: {
+          // The pattern below is updated so that only value that are modified are sent to patch request
+          // TODO: Come up with a much efficient way to handle this
+          avatarUrl:
+            employee.avatarUrl === uploadedUrl ? undefined : uploadedUrl,
+          designationId:
+            employee.designationId === data.designationId
+              ? undefined
+              : data.designationId,
+          email: employee.email === data.email ? undefined : data.email,
+          empUid: employee.empUid === data.empUid ? undefined : data.empUid,
+          firstName:
+            employee.firstName === data.firstName ? undefined : data.firstName,
+          lastName:
+            employee.lastName === data.lastName ? undefined : data.lastName,
+          hasSelfService:
+            employee.hasSelfService === !!data.hasSelfService
+              ? undefined
+              : !!data.hasSelfService,
+          roleId: employee.roleId === data.roleId ? undefined : data.roleId,
+        },
+      },
+      {
         onError: (err: any) => {
           openNotification({
             state: "error",
@@ -107,13 +117,22 @@ export const EditMyProfile = ({ open, handleClose, employee }: IProps) => {
             description: res?.data?.message,
           });
           queryClient.invalidateQueries({
-            queryKey: ["single-employee", employee?.id],
+            queryKey: [QUERY_KEY_FOR_SINGLE_EMPLOYEE, employee?.id],
           });
+          queryClient.invalidateQueries({
+            queryKey: [QUERY_KEY_FOR_LIST_OF_EMPLOYEES],
+          });
+          queryClient.invalidateQueries({
+            queryKey: [QUERY_KEY_FOR_AUTHENTICATED_USER],
+          });
+
+          // clear avatar field to prevent api error on subsequent edit
+          form.setFieldValue("avatar", undefined);
 
           handleClose();
         },
-      });
-    }
+      }
+    );
   };
 
   return (
@@ -134,20 +153,25 @@ export const EditMyProfile = ({ open, handleClose, employee }: IProps) => {
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
           <div className="flex justify-center">
             <div>
-              <Avatar
-                src={!!avatarUrl ? avatarUrl : employee?.avatarUrl}
-                size={110}
-                shape="circle"
+              <FormFileInput
+                Form={Form}
+                name="avatar"
+                ruleOptions={{
+                  allowedFileTypes: ["image/png", "image/jpeg", "image/jpg"],
+                  required: false,
+                  maxFileUploadCount: 1,
+                }}
+                triggerComp={
+                  <div className="flex relative">
+                    <Avatar
+                      src={!!avatarUrl ? avatarUrl : employee?.avatarUrl}
+                      size={110}
+                      shape="circle"
+                    />
+                    <i className="ri-pencil-line cursor-pointer hover:text-caramel" />
+                  </div>
+                }
               />
-              <div className="mt-4">
-                <FileUpload
-                  allowedFileTypes={["image/png", "image/jpeg", "image/jpg"]}
-                  fileKey={"avatarUrl"}
-                />
-              </div>
-              <Form.Item name="image" noStyle>
-                <Input type="hidden" />
-              </Form.Item>
             </div>
           </div>
           <div className="col-span-2 gap-x-3 grid grid-cols-1 lg:grid-cols-2">
@@ -179,7 +203,7 @@ export const EditMyProfile = ({ open, handleClose, employee }: IProps) => {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-x-4 mt-2">
           <FormDesignationInput Form={Form} />
 
-          <FormRoleInput Form={Form} />
+          <FormRoleInput Form={Form} disabled={authUserData.isOwner} />
           <Form.Item
             name="email"
             label="Work/Official Email"
@@ -198,20 +222,21 @@ export const EditMyProfile = ({ open, handleClose, employee }: IProps) => {
             valuePropName="checked"
             initialValue
           >
-            <Switch unCheckedChildren="No" checkedChildren="Yes" />
+            <AppSwitch unCheckedChildren="No" checkedChildren="Yes" />
           </Form.Item>
         </div>
         <div className="flex items-center justify-between mt-2">
-          <button
+          <AppButton
             type="button"
-            onClick={() => handleClose()}
-            className="transparentButton"
-          >
-            Cancel
-          </button>
-          <button className="button" type="submit" disabled={isLoading}>
-            {isLoading ? <BeatLoader color="#fff" /> : "Submit"}
-          </button>
+            handleClick={() => handleClose()}
+            variant="transparent"
+            label="Cancel"
+          />
+          <AppButton
+            type="submit"
+            label="Save"
+            isLoading={isUploadingAvatar || isLoading}
+          />
         </div>
       </Form>
     </Drawer>

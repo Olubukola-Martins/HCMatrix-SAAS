@@ -1,4 +1,4 @@
-import { Select, Tabs } from "antd";
+import { Tabs } from "antd";
 import PageSubHeader from "components/layout/PageSubHeader";
 import React, { useState } from "react";
 import { FoldersTable } from "./FoldersTable";

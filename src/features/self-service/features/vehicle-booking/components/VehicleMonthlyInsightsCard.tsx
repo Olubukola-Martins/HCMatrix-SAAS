@@ -1,13 +1,15 @@
-import { Select, Skeleton } from "antd";
+import { DatePicker, Skeleton } from "antd";
 import { LineChart } from "components/charts/LineChart";
-import { MONTH_CHART_LABELS } from "constants/general";
 import { useGetVehicleOverviewAnalytics } from "../hooks/useGetVehicleOverviewAnalytics";
 import { useState } from "react";
+import moment, { Moment } from "moment";
 
 export const VehicleMonthlyInsightsCard = () => {
-  const [year, setYear] = useState<string>();
+  const [year, setYear] = useState<Moment | null>(moment());
 
-  const { data, isLoading } = useGetVehicleOverviewAnalytics({ year });
+  const { data, isLoading } = useGetVehicleOverviewAnalytics({
+    year: year?.format("YYYY"),
+  });
 
   return (
     <div className="col-span-3 bg-mainBg border mt-4 rounded-lg text-sm shadow p-3">
@@ -19,14 +21,11 @@ export const VehicleMonthlyInsightsCard = () => {
           </span>
         </div>
         <div>
-          <Select
+          <DatePicker
             value={year}
+            onChange={(val) => setYear(val)}
+            picker="year"
             placeholder="Year"
-            onSelect={(val: string) => setYear(val)}
-            options={["2023", "2022", "2021"].map((item) => ({
-              label: item,
-              value: item,
-            }))}
           />
         </div>
       </div>

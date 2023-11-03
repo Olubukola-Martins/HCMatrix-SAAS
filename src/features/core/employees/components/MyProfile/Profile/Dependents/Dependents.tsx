@@ -8,6 +8,7 @@ import { DeleteDependent } from "./DeleteDependent";
 import { ColumnsType } from "antd/lib/table";
 import moment from "moment";
 import { EditDependent } from "./EditDependant";
+import { DEFAULT_DATE_FORMAT } from "constants/dateFormats";
 
 interface IProps {
   dependents?: TSingleEmployee["dependents"];
@@ -56,17 +57,19 @@ export const Dependents: React.FC<IProps> = ({
     {
       title: "Date Of Birth",
       dataIndex: "dob",
-      render: (_, val) => moment(val.dob).format("YYYY/MM/DD"),
+      render: (_, val) => moment(val.dob).format(DEFAULT_DATE_FORMAT),
     },
     {
       title: "Phone Number",
       dataIndex: "phoneNumber",
-      render: (_, val) => <span className="">{val.phoneNumber}</span>,
+      render: (_, val) => <span className="">+{val.phoneNumber}</span>,
     },
     {
       title: "Relationship",
       dataIndex: "relationship",
-      render: (_, val) => <span className="">{val.relationship}</span>,
+      render: (_, val) => (
+        <span className="capitalize">{val.relationship}</span>
+      ),
     },
     {
       title: "Action",

@@ -23,7 +23,6 @@ const getData = async (props: {
   };
 
   const res = await axios.get(url, config);
-  console.log("ban", res);
   const fetchedData = res.data.data;
   const result = fetchedData;
 

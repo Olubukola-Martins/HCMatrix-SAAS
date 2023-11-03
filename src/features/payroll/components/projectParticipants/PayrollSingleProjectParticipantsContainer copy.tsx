@@ -75,9 +75,7 @@ const EditableCell: React.FC<EditableCellProps> = ({
         ...values,
         equivalent: record.exchangeRate.rate * values.amount,
       });
-    } catch (errInfo) {
-      console.log("Save failed:", errInfo);
-    }
+    } catch (errInfo) {}
   };
 
   let childNode = children;

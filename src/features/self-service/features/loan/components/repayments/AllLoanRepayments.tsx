@@ -6,7 +6,7 @@ import { useGetLoanRepayments } from "../../hooks/repayment/useGetLoanRepayments
 const AllLoanRepayments = () => {
   const { pagination, onChange } = usePagination();
   const { data, isFetching } = useGetLoanRepayments({
-    type: "all",
+    type: undefined,
     props: {
       pagination,
     },

@@ -5,12 +5,13 @@ import { ColumnsType, TablePaginationConfig, TableProps } from "antd/lib/table";
 import { TBranch } from "../types";
 
 interface IProps {
-  data: TBranch[];
-  loading: boolean;
+  data?: TBranch[];
+  loading?: boolean;
   pagination?: TablePaginationConfig;
   onChange?: TableProps<TBranch>["onChange"];
-  editBranch: (val: number) => void;
-  viewBranch: (val: number) => void;
+  editBranch: (val: TBranch) => void;
+  viewBranch: (val: TBranch) => void;
+  deleteBranch: (val: TBranch) => void;
 }
 
 export const BranchesTableView = ({
@@ -20,6 +21,7 @@ export const BranchesTableView = ({
   onChange,
   editBranch,
   viewBranch,
+  deleteBranch,
 }: IProps) => {
   const columns: ColumnsType<TBranch> = [
     {
@@ -47,20 +49,23 @@ export const BranchesTableView = ({
         <div className="flex items-center gap-3 text-lg">
           <i
             className="ri-pencil-line cursor-pointer hover:text-caramel"
-            onClick={() => editBranch(item.id)}
+            onClick={() => editBranch(item)}
           ></i>
           <i
             className="ri-eye-line cursor-pointer hover:text-caramel"
-            onClick={() => viewBranch(item.id)}
+            onClick={() => viewBranch(item)}
           ></i>
-          <i className="ri-delete-bin-line cursor-pointer hover:text-caramel"></i>
+          <i
+            className="ri-delete-bin-line cursor-pointer hover:text-caramel"
+            onClick={() => deleteBranch(item)}
+          ></i>
         </div>
       ),
     },
   ];
   return (
     <motion.div
-      className="  mt-4"
+      className="mt-4"
       initial={{ opacity: 0, y: 400 }}
       animate={{
         opacity: 1,

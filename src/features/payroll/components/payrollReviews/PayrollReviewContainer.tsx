@@ -10,6 +10,10 @@ import { TPayrollSchemeType } from "features/payroll/types/payrollSchemes";
 import { Select } from "antd";
 import { getAppropriateColorForStatus } from "utils/colorHelpers/getAppropriateColorForStatus";
 import { DEFAULT_DATE_FORMAT } from "constants/dateFormats";
+import {
+  canUserAccessComponent,
+  useGetUserPermissions,
+} from "components/permission-restriction/PermissionRestrictor";
 
 let OG_COLUMNS: ColumnsType<TPayrollListData> = [
   {
@@ -75,7 +79,7 @@ let OG_COLUMNS: ColumnsType<TPayrollListData> = [
     key: "drt",
     ellipsis: true,
     render: (_, item) => (
-      <span>{moment(item.disbursmentDate).format(DEFAULT_DATE_FORMAT)} </span>
+      <span>{moment(item.disbursementDate).format(DEFAULT_DATE_FORMAT)} </span>
     ),
   },
 ];
@@ -83,6 +87,7 @@ export const PayrollReviewContainer = () => {
   const [selectedColumns, setSelectedColumns] =
     useState<ColumnsType<TPayrollListData>>(OG_COLUMNS);
   const navigate = useNavigate();
+  const { userPermissions } = useGetUserPermissions();
   return (
     <>
       <div className="flex flex-col gap-6">
@@ -95,6 +100,10 @@ export const PayrollReviewContainer = () => {
               name: "Compare",
               handleClick: () => navigate(appRoutes.payrollComparison),
               btnVariant: "transparent",
+              hidden: !canUserAccessComponent({
+                userPermissions,
+                requiredPermissions: ["compare-payrolls"],
+              }),
             },
           ]}
           comps={[

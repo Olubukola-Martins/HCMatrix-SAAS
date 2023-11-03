@@ -1,26 +1,30 @@
+import { Skeleton } from "antd";
 import { Link } from "react-router-dom";
 
 type introProps = {
-  title: string;
+  title?: string;
   link?: string;
-  close?: any;
+  close?: () => void;
+  loading?: boolean;
   // close?: (event: React.MouseEvent<HTMLButtonElement>) => void
 };
-export const PageIntro = ({ title, link, close }: introProps) => {
+export const PageIntro = ({ title, link, close, loading }: introProps) => {
   return (
-    <div className="flex items-center gap-3 font-extrabold ">
-      {link && (
-        <Link to={link}>
-          <i className="ri-arrow-left-s-line text-lg cursor-pointer hover:text-caramel"></i>
-        </Link>
-      )}
-      {close && (
-        <i
-          onClick={close}
-          className="ri-arrow-left-s-line text-lg cursor-pointer hover:text-caramel"
-        ></i>
-      )}
-      <h2 className="text-xl text-accent capitalize">{title}</h2>
-    </div>
+    <Skeleton loading={loading} active paragraph={{ rows: 2 }}>
+      <div className="flex items-center gap-3 font-extrabold ">
+        {link && (
+          <Link to={link}>
+            <i className="ri-arrow-left-s-line text-lg cursor-pointer hover:text-caramel"></i>
+          </Link>
+        )}
+        {close && (
+          <i
+            onClick={close}
+            className="ri-arrow-left-s-line text-lg cursor-pointer hover:text-caramel"
+          ></i>
+        )}
+        <h2 className="text-xl text-accent capitalize">{title}</h2>
+      </div>
+    </Skeleton>
   );
 };

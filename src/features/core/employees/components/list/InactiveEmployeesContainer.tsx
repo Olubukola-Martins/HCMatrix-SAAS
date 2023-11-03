@@ -1,54 +1,44 @@
 import { TablePaginationConfig } from "antd";
 
 import InactiveEmpTableView from "./InactiveEmpTableView";
-import { DEFAULT_PAGE_SIZE } from "constants/general";
 import { useState } from "react";
 import { useFetchEmployees } from "../../hooks/useFetchEmployees";
 import { TEmployee } from "../../types";
+import BulkEmployeeActionHeader from "./bulkEmployeeActions/BulkEmployeeActionHeader";
+import { usePagination } from "hooks/usePagination";
+import { TEmployeeFilterProps } from "../../types/employee-filter";
 
-const InactiveEmployeesContainer = () => {
-  const [pagination, setPagination] = useState<TablePaginationConfig>({
-    current: 1,
-    pageSize: DEFAULT_PAGE_SIZE,
-    total: 0,
-    showSizeChanger: false,
-  });
-
-  const offset =
-    pagination.current && pagination.current !== 1
-      ? (pagination.pageSize ?? DEFAULT_PAGE_SIZE) * (pagination.current - 1)
-      : 0;
+type IProps = {
+  filterProps: TEmployeeFilterProps;
+};
+const InactiveEmployeesContainer: React.FC<IProps> = ({ filterProps }) => {
+  const { pagination, onChange } = usePagination();
   const {
     data: employeeData,
     isSuccess,
     isFetching,
   } = useFetchEmployees({
     status: ["suspended", "terminated"],
-    pagination: {
-      limit: pagination.pageSize,
-      offset,
-    },
-  });
+    ...filterProps,
 
+    pagination,
+  });
+  const [selectedEmployees, setSelectedEmployees] = useState<TEmployee[]>([]);
   const rowSelection = {
-    onChange: (selectedRowKeys: React.Key[], selectedRows: TEmployee[]) => {},
+    onChange: (selectedRowKeys: React.Key[], selectedRows: TEmployee[]) => {
+      setSelectedEmployees(selectedRows);
+    },
   };
-  const onChange = (newPagination: TablePaginationConfig | number) => {
-    if (typeof newPagination === "number") {
-      setPagination((val) => ({
-        ...val,
-        current: newPagination,
-      }));
-    } else {
-      setPagination((val) => ({
-        ...val,
-        current: newPagination.current,
-      }));
-    }
-  };
+
+  const clearSelectedEmployees = () => setSelectedEmployees([]);
 
   return (
-    <div>
+    <div className="flex flex-col gap-4">
+      <BulkEmployeeActionHeader
+        data={selectedEmployees}
+        clearSelectedEmployees={clearSelectedEmployees}
+      />
+
       <InactiveEmpTableView
         rowSelection={{
           type: "checkbox",

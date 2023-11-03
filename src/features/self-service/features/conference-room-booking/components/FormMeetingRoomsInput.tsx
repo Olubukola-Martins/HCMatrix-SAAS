@@ -1,11 +1,11 @@
-import { Select, Spin } from "antd";
+import { Select, Spin, Form } from "antd";
 import { useDebounce } from "hooks/useDebounce";
 import { useState } from "react";
 import { generalValidationRules } from "utils/formHelpers/validation";
 import { useFetchAllConferenceRooms } from "../hooks/useFetchAllConferenceRooms";
 
 export const FormMeetingRoomsInput: React.FC<{
-  Form: any;
+  Form: typeof Form;
   showLabel?: boolean;
   control?: { label: string; name: string; multiple?: boolean };
 }> = ({ Form, showLabel = true, control }) => {

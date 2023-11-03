@@ -17,7 +17,6 @@ import { getEmployeeFullName } from "features/core/employees/utils/getEmployeeFu
 import { TApprovalRequest } from "features/core/workflows/types/approval-requests";
 import { useQueryClient } from "react-query";
 import { useApproveORReject } from "hooks/useApproveORReject";
-import { QUERY_KEY_FOR_LEAVES } from "features/self-service/features/leave/hooks/useFetchLeaves";
 import { APPROVAL_STATUS_ACTION_OPTIONS } from "constants/statustes";
 import { LoanDetails } from "../LoanDetails";
 import { DEFAULT_DATE_FORMAT } from "constants/dateFormats";
@@ -68,7 +67,7 @@ export const LoanTable: React.FC<{
     },
   });
 
-  const columns: ColumnsType<TLoanAndApproval> = [
+  const ogColumns: ColumnsType<TLoanAndApproval> = [
     {
       title: "Title",
       dataIndex: "title",
@@ -144,15 +143,26 @@ export const LoanTable: React.FC<{
     },
 
     {
-      title: "Status",
+      title: permitedActions.find((val) => val === "approve/reject")
+        ? "Approval Status"
+        : "Loan Status",
       dataIndex: "status",
       key: "status",
+
       render: (_, item) => (
         <span
           className="capitalize"
-          style={{ color: getAppropriateColorForStatus(item.status) }}
+          style={{
+            color: getAppropriateColorForStatus(
+              permitedActions.find((val) => val === "approve/reject")
+                ? item?.approvalDetails?.status ?? ""
+                : item.status
+            ),
+          }}
         >
-          {item.status}{" "}
+          {permitedActions.find((val) => val === "approve/reject")
+            ? item?.approvalDetails?.status
+            : item.status}{" "}
         </span>
       ),
     },
@@ -175,7 +185,7 @@ export const LoanTable: React.FC<{
               {permitedActions.find((val) => val === "approve/reject") &&
                 APPROVAL_STATUS_ACTION_OPTIONS.map(({ value, label }) => (
                   <Menu.Item
-                    hidden={item?.status !== "pending"}
+                    hidden={item?.approvalDetails?.status !== "pending"}
                     key={value}
                     onClick={() =>
                       item?.approvalDetails &&
@@ -203,6 +213,9 @@ export const LoanTable: React.FC<{
       ),
     },
   ];
+  const columns = permitedActions.find((val) => val === "approve/reject")
+    ? ogColumns.filter((item) => item.key !== "disAt")
+    : ogColumns;
 
   return (
     <>

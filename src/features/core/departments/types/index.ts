@@ -40,17 +40,18 @@ export type TDepartment = {
   };
 };
 
-export interface ICreateDepProps extends ICurrentCompany {
+export interface TCreateDepProps {
   name: string;
   email: string;
-  departmentHeadId?: number;
-  parentDepartmentId?: number;
+  departmentHeadId?: number | null;
+  parentDepartmentId?: number | null;
 }
 
-export interface IUpdateDeptProps extends ICreateDepProps {
+export interface IUpdateDeptProps {
   id: number;
+  data: TCreateDepProps;
 }
 
-export interface IGetSingleDeptProps extends ICurrentCompany {
+export interface IGetSingleDeptProps {
   departmentId: number;
 }

@@ -1,16 +1,15 @@
 import { DatePicker, Form, Input, message, Select, Tooltip } from "antd";
 import { FileUpload } from "components/FileUpload";
 import { AppButton } from "components/button/AppButton";
-import { FormCountryInput } from "components/generalFormInputs/FormCountryInput";
-import { FormLGAInput } from "components/generalFormInputs/FormLGAInput";
+import { FormAddressInput } from "components/generalFormInputs/FormAddressInput";
 import { FormPhoneInput } from "components/generalFormInputs/FormPhoneInput";
-import { FormStateInput } from "components/generalFormInputs/FormStateInput";
+
+import { DEFAULT_DATE_FORMAT } from "constants/dateFormats";
 import {
   EMPLOYMENT_ELIGIBILITIES_OPTIONS,
   GENDERS,
   MARITAL_STATUSES,
 } from "constants/general";
-import { TIME_ZONES } from "constants/timeZones";
 import { useSaveEmployeePersonalInformation } from "features/core/employees/hooks/personalInformation/useSaveEmployeePersonalInformation";
 import { QUERY_KEY_FOR_SINGLE_EMPLOYEE } from "features/core/employees/hooks/useFetchSingleEmployee";
 import { TSingleEmployee } from "features/core/employees/types";
@@ -21,11 +20,12 @@ import moment from "moment";
 import { useState, useEffect } from "react";
 import { useQueryClient } from "react-query";
 import { TEmploymentEligibity } from "types/employementEligibilities";
+import { formatPhoneNumber } from "utils/dataHelpers/formatPhoneNumber";
+import { parsePhoneNumber } from "utils/dataHelpers/parsePhoneNumber";
 import {
+  dateHasToBeLesserThanOrEqualToCurrentDayRule,
   emailValidationRulesOp,
   generalValidationRules,
-  phoneNumberValidationRule,
-  textInputValidationRules,
 } from "utils/formHelpers/validation";
 import { openNotification } from "utils/notifications";
 
@@ -44,10 +44,9 @@ export const PersonalInformation: React.FC<IProps> = ({
   const [disable, setDisable] = useState(true);
   const [selectedEligibility, setSelectedEligibility] =
     useState<TEmploymentEligibity>();
-  const [stateId, setStateId] = useState<number>();
-  const [countryId, setCountryId] = useState<number>();
-  const documentUrl = useCurrentFileUploadUrl("documentUrl");
   const { data: countries } = useFetchCountries();
+
+  const documentUrl = useCurrentFileUploadUrl("documentUrl");
 
   const enableEdit = () => {
     setDisable(!disable);
@@ -57,101 +56,103 @@ export const PersonalInformation: React.FC<IProps> = ({
   };
 
   useEffect(() => {
-    if (personalInfo) {
-      setCountryId(personalInfo.address.countryId);
-      setStateId(personalInfo.address.stateId);
-      form.setFieldsValue({
-        dob: personalInfo.dob ? moment(personalInfo.dob) : null,
-        nationality: personalInfo.nationality,
-        gender: personalInfo.gender,
-        maritalStatus: personalInfo.maritalStatus,
-        exchangeRateId: personalInfo.exchangeRateId,
-        eligibility: personalInfo.eligibility,
-        timezone: personalInfo.address.timezone,
-        countryId: personalInfo.address.countryId,
-        stateId: personalInfo.address.stateId,
-        phone: {
-          number: personalInfo.phoneNumber.split("-")[1],
-          code: personalInfo.phoneNumber.split("-")[0].slice(1), //remove the plus
-        },
-        lgaId: personalInfo.address.lgaId,
-        streetAddress: personalInfo.address.streetAddress,
-        passportExpirationDate: personalInfo.passportExpirationDate
-          ? moment(personalInfo.passportExpirationDate)
-          : null,
-        alternativeEmail: personalInfo?.alternativeEmail,
-        alternativePhoneNumber: personalInfo?.alternativePhoneNumber,
-        nin: personalInfo?.nin,
-        taxId: personalInfo?.taxId,
-        taxAuthority: personalInfo?.taxAuthority,
-      });
-      setSelectedEligibility(
-        personalInfo.eligibility as unknown as TEmploymentEligibity
-      );
-    }
+    if (!personalInfo) return;
+
+    form.setFieldsValue({
+      dob: personalInfo.dob ? moment(personalInfo.dob) : null,
+      nationality: personalInfo.nationality,
+      gender: personalInfo.gender,
+      maritalStatus: personalInfo.maritalStatus,
+      exchangeRateId: personalInfo.exchangeRateId,
+      eligibility: personalInfo.eligibility,
+      timezone: personalInfo.address.timezone,
+      countryId: personalInfo.address.countryId,
+      stateId: personalInfo.address.stateId,
+      phone: {
+        code: parsePhoneNumber(personalInfo.phoneNumber).code,
+        number: parsePhoneNumber(personalInfo.phoneNumber).number,
+      },
+      lgaId: personalInfo.address.lgaId,
+      streetAddress: personalInfo.address.streetAddress,
+      passportExpirationDate: personalInfo.passportExpirationDate
+        ? moment(personalInfo.passportExpirationDate)
+        : null,
+      alternativeEmail: personalInfo?.alternativeEmail,
+      alternativePhoneNumber: {
+        code: parsePhoneNumber(personalInfo.alternativePhoneNumber).code,
+        number: parsePhoneNumber(personalInfo.alternativePhoneNumber).number,
+      },
+      nin: personalInfo?.nin,
+      address: {
+        timezone: personalInfo?.address.timezone,
+        streetAddress: personalInfo?.address.streetAddress,
+        countryId: personalInfo?.address.countryId,
+        stateId: personalInfo?.address.stateId,
+        lgaId: personalInfo?.address.lgaId,
+      },
+    });
+    setSelectedEligibility(
+      personalInfo.eligibility as unknown as TEmploymentEligibity
+    );
   }, [personalInfo, form]);
 
   const { mutate, isLoading } = useSaveEmployeePersonalInformation();
 
   const handleFinish = (data: any) => {
-    if (employeeId) {
-      mutate(
-        {
-          employeeId,
-          data: {
-            dob: data?.dob?.format("YYYY-MM-DD"),
-            gender: data.gender,
-            phoneNumber: `+${data.phone.code}-${data.phone.number}`,
-            eligibility: data.eligibility,
-            exchangeRateId: data.exchangeRateId,
-            maritalStatus: data.maritalStatus,
-            nationality:
-              countries?.find((item) => item.id === data.nationality)?.name ??
-              "",
-            address: {
-              streetAddress: data.streetAddress,
-              countryId: data.countryId,
-              stateId: data.stateId,
-              lgaId: data.lgaId,
-              timezone: data.timezone,
-            },
+    if (!employeeId) return;
 
-            validDocumentUrl: documentUrl,
-            passportExpirationDate:
-              data?.passportExpirationDate?.format("YYYY-MM-DD"),
-            alternativeEmail: data.alternativeEmail,
-            alternativePhoneNumber: data.alternativePhoneNumber,
-            nin: data.nin,
-            taxId: data.taxId,
-            taxAuthority: data.taxAuthority,
-          },
+    mutate(
+      {
+        employeeId,
+        data: {
+          dob: data?.dob?.format(DEFAULT_DATE_FORMAT),
+          gender: data.gender,
+          phoneNumber: formatPhoneNumber({
+            code: data.phone.code,
+            number: data.phone.number,
+          }),
+          eligibility: data.eligibility,
+          exchangeRateId: data.exchangeRateId,
+          maritalStatus: data.maritalStatus,
+          nationality: data.nationality,
+          address: { ...data.address, lgaId: data.lgaId ?? undefined },
+
+          validDocumentUrl: documentUrl,
+          passportExpirationDate:
+            data?.passportExpirationDate?.format(DEFAULT_DATE_FORMAT),
+          alternativeEmail: data.alternativeEmail,
+          alternativePhoneNumber: formatPhoneNumber({
+            code: data.alternativePhoneNumber.code,
+            number: data.alternativePhoneNumber.number,
+          }),
+          nin: data.nin,
         },
-        {
-          onError: (err: any) => {
-            openNotification({
-              state: "error",
-              title: "Error Occurred",
-              description:
-                err?.response.data.message ?? err?.response.data.error.message,
-            });
-          },
-          onSuccess: (res: any) => {
-            openNotification({
-              state: "success",
+      },
+      {
+        onError: (err: any) => {
+          openNotification({
+            state: "error",
+            title: "Error Occurred",
+            description:
+              err?.response.data.message ?? err?.response.data.error.message,
+          });
+        },
+        onSuccess: (res: any) => {
+          openNotification({
+            state: "success",
 
-              title: "Success",
-              description: res.data.message,
-              // duration: 0.4,
-            });
+            title: "Success",
+            description: res.data.message,
+            // duration: 0.4,
+          });
 
-            queryClient.invalidateQueries({
-              queryKey: [QUERY_KEY_FOR_SINGLE_EMPLOYEE],
-              // exact: true,
-            });
-          },
-        }
-      );
-    }
+          queryClient.invalidateQueries({
+            queryKey: [QUERY_KEY_FOR_SINGLE_EMPLOYEE],
+            // exact: true,
+          });
+        },
+      }
+    );
   };
 
   return (
@@ -183,17 +184,20 @@ export const PersonalInformation: React.FC<IProps> = ({
             <Form.Item
               name="dob"
               label="Date of Birth"
-              rules={[{ required: true }]}
+              rules={[dateHasToBeLesserThanOrEqualToCurrentDayRule]}
             >
-              <DatePicker
-                className="w-full"
-                format={"DD/MM/YYYY"}
-                disabledDate={(d) =>
-                  !d ||
-                  d.isSameOrAfter(
-                    moment(new Date().toLocaleDateString()).format("YYYY-MM-DD")
-                  )
-                }
+              <DatePicker className="w-full" format={DEFAULT_DATE_FORMAT} />
+            </Form.Item>
+            <Form.Item
+              name="nationality"
+              label="Nationality"
+              rules={generalValidationRules}
+            >
+              <Select
+                options={countries?.map((item) => ({
+                  label: item.name,
+                  value: item.name,
+                }))}
               />
             </Form.Item>
             <FormPhoneInput Form={Form} />
@@ -211,13 +215,6 @@ export const PersonalInformation: React.FC<IProps> = ({
                 options={EMPLOYMENT_ELIGIBILITIES_OPTIONS}
               />
             </Form.Item>
-            <Form.Item
-              name="timezone"
-              label="Time Zone"
-              rules={generalValidationRules}
-            >
-              <Select placeholder="Select" options={TIME_ZONES} />
-            </Form.Item>
 
             {selectedEligibility === "expatriate" && (
               <FormExchangeRateInput
@@ -229,8 +226,9 @@ export const PersonalInformation: React.FC<IProps> = ({
               <Form.Item
                 name="passportExpirationDate"
                 label="Passport Expiration Date"
+                rules={generalValidationRules}
               >
-                <DatePicker format="YYYY/MM/DD" className="w-full" />
+                <DatePicker format={DEFAULT_DATE_FORMAT} className="w-full" />
               </Form.Item>
             )}
             {!disable && selectedEligibility === "expatriate" && (
@@ -280,25 +278,6 @@ export const PersonalInformation: React.FC<IProps> = ({
               <Select options={MARITAL_STATUSES} />
             </Form.Item>
 
-            <FormCountryInput
-              Form={Form}
-              control={{ label: "Nationality", name: "nationality" }}
-            />
-            <FormCountryInput
-              Form={Form}
-              control={{ label: "Country", name: "countryId" }}
-              handleSelect={(val) => setCountryId(val)}
-              onClear={() => setCountryId(undefined)}
-            />
-            {countryId && (
-              <FormStateInput
-                countryId={countryId}
-                Form={Form}
-                handleSelect={(val) => setStateId(val)}
-              />
-            )}
-
-            {stateId && <FormLGAInput stateId={stateId} Form={Form} />}
             <Form.Item
               name="nin"
               label="National Identification Number"
@@ -313,24 +292,20 @@ export const PersonalInformation: React.FC<IProps> = ({
             >
               <Input className="w-full" />
             </Form.Item>
-            <Form.Item
-              name="alternativePhoneNumber"
-              label="Alternative Phone Number"
-              rules={[{ ...phoneNumberValidationRule, required: false }]}
-            >
-              <Input className="w-full" />
-            </Form.Item>
-            <Form.Item
-              name="streetAddress"
-              label="Street Address"
-              className="col-span-3"
-              rules={textInputValidationRules}
-            >
-              <Input.TextArea rows={3} />
-            </Form.Item>
+            <FormPhoneInput
+              Form={Form}
+              control={{
+                name: "alternativePhoneNumber",
+                label: "Alternative Phone Number",
+              }}
+              optional
+            />
 
+            <>
+              <FormAddressInput Form={Form} form={form} />
+            </>
             {!disable && (
-              <div className="flex items-center">
+              <div className="flex items-center justify-end md:col-span-2 lg:col-span-3">
                 <AppButton
                   label="Save Changes"
                   isLoading={isLoading}

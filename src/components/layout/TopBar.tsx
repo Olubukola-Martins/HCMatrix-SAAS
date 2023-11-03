@@ -1,25 +1,31 @@
-import { useContext, useState } from "react";
+import { useLayoutEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { AutoComplete, Avatar, Badge, Button, Dropdown } from "antd";
-import { useAuthUser } from "react-auth-kit";
+import { AutoComplete, Avatar, Button } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
-import Themes from "components/Themes";
 import SearchModal from "components/search/SearchModal";
-import { DEFAULT_PROFILE_IMAGE_URL } from "constants/general";
-import { IAuthDets } from "features/authentication/types";
 import { AddSisterCompanyForm } from "features/core/company/components/AddSisterCompanyForm";
-import { useFetchSingleEmployee } from "features/core/employees/hooks/useFetchSingleEmployee";
-import { GlobalContext, EGlobalOps } from "stateManagers/GlobalContextProvider";
+import { EGlobalOps } from "stateManagers/GlobalContextProvider";
 import logo from "../../assets/images/logo2.png";
-import UserProfileMenu from "./UserProfileMenu";
 import { UserNotificationsBadge } from "./UserNotificationsBadge";
+import { useApiAuth } from "hooks/useApiAuth";
+import UserProfileMenuDropdown from "./UserProfileMenuDropdown";
+import {
+  canUserAccessComponent,
+  useGetUserPermissions,
+} from "components/permission-restriction/PermissionRestrictor";
+import { appRoutes } from "config/router/paths";
+import useMostRecentApiAuth from "hooks/useMostRecentApiAuth";
+import { DEFAULT_LOGO_IMAGE_URL } from "constants/general";
 
-type TCompany = {
+const ADD_COMPANY_KEY_VALUE = "";
+type TCompanyOption = {
   value: string;
   label: React.ReactNode;
   image?: string;
-  id: string;
+  id: number;
+  hidden: boolean;
 };
+type TAction = "user-menu" | "add-company" | "search";
 
 interface IProps {
   switchTheme: Function;
@@ -43,69 +49,19 @@ const TopBar = ({
   sidebarToggle,
   setSidebarToggle,
 }: IProps) => {
-  const auth = useAuthUser();
-  const authDetails = auth() as unknown as IAuthDets;
+  const { globalDispatch } = useApiAuth();
+  const {
+    companies: userCompanies,
+    currentCompany,
+    currentCompanyEmployeeDetails,
+  } = useMostRecentApiAuth();
+  const { userPermissions } = useGetUserPermissions();
 
-  const user = authDetails?.user;
-
-  const globalCtx = useContext(GlobalContext);
-  const { state: globalState, dispatch: globalDispatch } = globalCtx;
-
-  const currentCompanyId = globalState.currentCompany?.id as unknown as string;
-  const currentCompany = authDetails?.companies.find(
-    (item) => item.companyId === +currentCompanyId
-  );
-  // done to make changes to user employee profile real-time
-
-  const employeeId = currentCompany?.id as number;
-  const { data: employee } = useFetchSingleEmployee({
-    employeeId: employeeId,
-  });
-  const avatarUrl = employee?.avatarUrl;
-  // done to make changes to user employee profile real-time
-
-  console.log(authDetails?.companies, "TEST");
-
-  const defaultCompanies = authDetails?.companies.map((item: any) => ({
-    value: item.company.name,
-    id: item.company.id,
-    image: item.company?.logoUrl ?? "https://picsum.photos/190",
-
-    label: (
-      <div className="flex gap-2 items-center">
-        <Avatar src={item.company?.logoUrl ?? "https://picsum.photos/190"} />
-        <span>{item.company.name}</span>
-      </div>
-    ),
-  }));
-
-  const companies: TCompany[] = authDetails?.companies
-    ? [
-        ...defaultCompanies,
-        {
-          value: "",
-          id: "",
-          image: "",
-
-          label: (
-            <div className="flex gap-2 items-center">
-              <Button type="text" icon={<PlusOutlined />}>
-                Add Company
-              </Button>
-            </div>
-          ),
-        },
-      ]
-    : [];
-  type TAction = "user-menu";
   const [action, setAction] = useState<TAction>();
-  const [options, setOptions] = useState<TCompany[]>(companies);
-  const [addCompanyModal, setAddCompanyModal] = useState(false);
-
-  const [openSearchModal, setOpenSearchModal] = useState(false);
+  const [options, setOptions] = useState<TCompanyOption[]>([]);
 
   const onSearch = (searchText: string) => {
-    const result = companies.filter(
+    const result = options.filter(
       (item) =>
         item.value.toLowerCase().indexOf(searchText.toLowerCase()) !== -1
     );
@@ -113,8 +69,8 @@ const TopBar = ({
   };
 
   const onSelect = (val: string, data: any) => {
-    if (val === "") {
-      setAddCompanyModal(true);
+    if (val === ADD_COMPANY_KEY_VALUE) {
+      setAction("add-company");
       return;
     }
     globalDispatch({
@@ -123,12 +79,27 @@ const TopBar = ({
     });
     window.location.reload();
   };
-
+  useLayoutEffect(() => {
+    if (!userCompanies) return;
+    const companies: TCompanyOption[] = userCompanies?.map((item: any) => ({
+      value: item.company.name,
+      id: item.company.id,
+      image: item.company?.logoUrl ?? DEFAULT_LOGO_IMAGE_URL,
+      hidden: false,
+      label: (
+        <div className="flex gap-2 items-center">
+          <Avatar src={item.company?.logoUrl ?? DEFAULT_LOGO_IMAGE_URL} />
+          <span>{item.company.name}</span>
+        </div>
+      ),
+    }));
+    setOptions(companies);
+  }, [userCompanies]);
   return (
     <>
       <AddSisterCompanyForm
-        open={addCompanyModal}
-        handleClose={() => setAddCompanyModal(false)}
+        open={action === "add-company"}
+        handleClose={() => setAction(undefined)}
       />
       <div className="bg-mainBg w-full py-3 sticky top-0 z-50 text-accent shadow-lg">
         <div className="px-5 lg:px-12 flex items-center justify-between Container">
@@ -152,40 +123,55 @@ const TopBar = ({
 
           <div className="flex gap-4 items-center">
             <i
-              onClick={() => setOpenSearchModal(true)}
+              onClick={() => setAction("search")}
               className="fa-solid fa-magnifying-glass lg:hidden cursor-pointer text-base"
             ></i>
             <div className="lg:flex items-center gap-6 hidden">
               <i
                 className="fa-solid fa-magnifying-glass cursor-pointer text-base"
                 title="Search HcMatrix application"
-                onClick={() => setOpenSearchModal(true)}
+                onClick={() => setAction("search")}
               ></i>
               <SearchModal
-                open={openSearchModal}
-                handleClose={() => setOpenSearchModal(false)}
+                open={action === "search"}
+                handleClose={() => setAction(undefined)}
+                userPermissions={userPermissions}
               />
-              {user?.isAdmin && (
-                <div className="flex items-center gap-2">
-                  <Avatar
-                    src={
-                      companies.find(
-                        (item) => item.id === globalState.currentCompany?.id
-                      )?.image
-                    }
-                  />
-                  <AutoComplete
-                    options={options}
-                    defaultValue={globalState.currentCompany?.name}
-                    style={{ width: 200, borderRadius: "100px" }}
-                    onSelect={onSelect}
-                    onSearch={onSearch}
-                    placeholder="Search Company"
-                    className="top-autocomplete-company"
-                    size="middle"
-                  />
-                </div>
-              )}
+              <div className="flex items-center gap-2">
+                <Avatar
+                  src={currentCompany?.logoUrl ?? DEFAULT_LOGO_IMAGE_URL}
+                />
+                <AutoComplete
+                  options={[
+                    ...options,
+                    {
+                      value: ADD_COMPANY_KEY_VALUE,
+                      id: "",
+                      image: "",
+                      hidden: !canUserAccessComponent({
+                        userPermissions,
+                        requiredPermissions: ["create-sister-company"],
+                      }),
+
+                      label: (
+                        <div className="flex gap-2 items-center">
+                          <Button type="text" icon={<PlusOutlined />}>
+                            Add Company
+                          </Button>
+                        </div>
+                      ),
+                    },
+                  ].filter((item) => item?.hidden === false)}
+                  defaultValue={currentCompany?.name}
+                  value={currentCompany?.name}
+                  style={{ width: 200, borderRadius: "100px" }}
+                  onSelect={onSelect}
+                  onSearch={onSearch}
+                  placeholder="Search Company"
+                  className="top-autocomplete-company"
+                  size="middle"
+                />
+              </div>
             </div>
 
             {/* Dark and Light */}
@@ -197,7 +183,7 @@ const TopBar = ({
               ></i>
             ) : (
               <img
-                src={sun}
+                src={"--"}
                 alt="sun"
                 onClick={() => switchTheme()}
                 className="cursor-pointer h-5"
@@ -205,51 +191,36 @@ const TopBar = ({
               />
             )} */}
 
-            <Link
-              to="/settings"
-              className={user?.isAdmin ? "hover:text-black" : "hidden"}
-            >
-              <i
-                className="ri-settings-3-line text-xl cursor-pointer hover:text-black"
-                title="Settings"
-              ></i>
-            </Link>
+            {canUserAccessComponent({
+              userPermissions,
+              requiredPermissions: ["manage-company-settings"],
+            }) && (
+              <Link to={appRoutes.settings} className={"hover:text-black"}>
+                <i
+                  className="ri-settings-3-line text-xl cursor-pointer hover:text-black"
+                  title="Settings"
+                ></i>
+              </Link>
+            )}
 
             <UserNotificationsBadge />
 
-            <Dropdown
-              overlay={
-                <Themes>
-                  <UserProfileMenu
-                    colorFns={{
-                      green,
-                      yellow,
-                      orange,
-                      blue,
-                      purple,
-                    }}
-                    closeMenu={() => setAction(undefined)}
-                  />
-                </Themes>
-              }
-              trigger={["click"]}
+            <UserProfileMenuDropdown
+              colorFns={{
+                green,
+                yellow,
+                orange,
+                blue,
+                purple,
+              }}
+              avatarUrl={currentCompanyEmployeeDetails?.avatarUrl}
+              onOpenChange={(val) => setAction(val ? "user-menu" : undefined)}
               open={action === "user-menu"}
-              onOpenChange={(val) =>
-                val ? setAction("user-menu") : setAction(undefined)
-              }
-            >
-              <Avatar
-                src={!!avatarUrl ? avatarUrl : DEFAULT_PROFILE_IMAGE_URL}
-                alt=""
-                className="h-6 md:h-9 cursor-pointer border-2 border-slate-300 rounded-full ml-1"
-                onClick={() => setAction("user-menu")}
-              />
-            </Dropdown>
+              userPermissions={userPermissions}
+            />
           </div>
         </div>
       </div>
-
-      {/* User profile dropdown*/}
     </>
   );
 };

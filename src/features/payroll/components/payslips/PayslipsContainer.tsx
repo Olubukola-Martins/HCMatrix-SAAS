@@ -11,19 +11,19 @@ import moment from "moment";
 
 interface IProps {
   role: TGetPayslipsProps["role"];
-  defaultScheme: TPayrollSchemeType;
+  defaultScheme?: TPayrollSchemeType;
 }
 
 // helper fns
 const generateScheme = (
-  scheme: TPayrollSchemeType,
+  scheme?: TPayrollSchemeType,
   projectId?: number
 ): TGetPayslipsProps["scheme"] => {
   let data: TGetPayslipsProps["scheme"] = "office";
   if (projectId && scheme === "project") {
     data = { scheme: scheme, projectId };
   }
-  if (scheme !== "project") {
+  if (scheme && scheme !== "project") {
     data = scheme;
   }
   return data;
@@ -34,8 +34,9 @@ export const PayslipsContainer: React.FC<IProps> = ({
 }) => {
   //   const [comp, setComp] = useState<"add-category" | "add-grade">();
   // const [scheme, setScheme] = useState<TPayrollSchemeType>();
-  const [selectedScheme, setSelectedScheme] =
-    useState<TPayrollSchemeType>(defaultScheme);
+  const [selectedScheme, setSelectedScheme] = useState<
+    TPayrollSchemeType | undefined
+  >(defaultScheme);
   const [projects, setProjects] = useState<TProjectPayrollScheme>([]);
   const [projectId, setProjectId] = useState<number>();
   const { data: payrollScheme, isLoading } = useGetPayrollSchemeByTypeOrId({

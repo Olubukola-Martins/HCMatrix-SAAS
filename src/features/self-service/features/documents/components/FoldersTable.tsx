@@ -1,4 +1,4 @@
-import { Dropdown, Menu, Modal, Table } from "antd";
+import { Dropdown, Menu, Table } from "antd";
 import { MoreOutlined } from "@ant-design/icons";
 
 import React, { useState } from "react";
@@ -6,68 +6,17 @@ import { ColumnsType } from "antd/lib/table";
 
 import { usePagination } from "hooks/usePagination";
 
-import { QUERY_KEY_FOR_FOLDERS, useGetFolders } from "../hooks/useGetFolders";
+import { useGetFolders } from "../hooks/useGetFolders";
 import { TFolderListItem } from "../types";
 import moment from "moment";
 import { EditFolder } from "./EditFolder";
-import { useDeleteFolder } from "../hooks/useDeleteFolder";
-import { openNotification } from "utils/notifications";
-import { useQueryClient } from "react-query";
-import { ExclamationCircleFilled } from "@ant-design/icons";
+import { DEFAULT_DATE_FORMAT } from "constants/dateFormats";
+import { DeleteFolder } from "./folders/DeleteFolder";
 
 export const FoldersTable: React.FC = () => {
-  const queryClient = useQueryClient();
-
-  const [showM, setShowM] = useState(false);
+  const [action, setAction] = useState<"edit" | "delete">();
   const [folder, setFolder] = useState<TFolderListItem>();
-  const handleEdit = (data: TFolderListItem) => {
-    setShowM(true);
-    setFolder(data);
-  };
-  const { mutate, isLoading } = useDeleteFolder();
-  const onDelete = (folderId: number) => {
-    mutate(
-      {
-        id: folderId,
-      },
-      {
-        onError: (err: any) => {
-          openNotification({
-            state: "error",
-            title: "Error Occurred",
-            description:
-              err?.response.data.message ?? err?.response.data.error.message,
-          });
-        },
-        onSuccess: (res: any) => {
-          openNotification({
-            state: "success",
 
-            title: "Success",
-            description: res.data.message,
-            // duration: 0.4,
-          });
-
-          queryClient.invalidateQueries({
-            queryKey: [QUERY_KEY_FOR_FOLDERS],
-            // exact: true,
-          });
-        },
-      }
-    );
-  };
-  const handleDelete = (id: number) => {
-    Modal.confirm({
-      title: `Are you sure you want to delete folder ?`,
-      icon: <ExclamationCircleFilled />,
-      content: `This will delete this folder!`,
-      width: 600,
-      okButtonProps: { loading: isLoading },
-      onOk() {
-        onDelete(id);
-      },
-    });
-  };
   const { pagination, onChange } = usePagination();
 
   const { data, isFetching } = useGetFolders({
@@ -87,7 +36,7 @@ export const FoldersTable: React.FC = () => {
       key: "createdAt",
       render: (val, item) => (
         <span className="capitalize text-caramel hover:underline">
-          {moment(item.createdAt).format("YYYY-MM-DD")}
+          {moment(item.createdAt).format(DEFAULT_DATE_FORMAT)}
         </span>
       ),
     },
@@ -97,7 +46,7 @@ export const FoldersTable: React.FC = () => {
       key: "updatedAt",
       render: (val, item) => (
         <span className="capitalize text-caramel hover:underline">
-          {moment(item.updatedAt).format("YYYY-MM-DD")}
+          {moment(item.updatedAt).format(DEFAULT_DATE_FORMAT)}
         </span>
       ),
     },
@@ -111,11 +60,21 @@ export const FoldersTable: React.FC = () => {
           overlay={
             <Menu
               items={[
-                { label: "Edit", key: "Edit", onClick: () => handleEdit(item) },
+                {
+                  label: "Edit",
+                  key: "Edit",
+                  onClick: () => {
+                    setFolder(item);
+                    setAction("edit");
+                  },
+                },
                 {
                   label: "Delete",
                   key: "Delete",
-                  onClick: () => handleDelete(item.id),
+                  onClick: () => {
+                    setFolder(item);
+                    setAction("delete");
+                  },
                 },
               ]}
             />
@@ -126,16 +85,26 @@ export const FoldersTable: React.FC = () => {
       ),
     },
   ];
-
+  const onClose = () => {
+    setAction(undefined);
+    setFolder(undefined);
+  };
   return (
     <div>
       {folder && (
         <EditFolder
-          open={showM}
+          open={action === "edit"}
           folder={folder}
-          handleClose={() => setShowM(false)}
+          handleClose={onClose}
         />
       )}
+
+      <DeleteFolder
+        open={action === "delete"}
+        folder={folder}
+        handleClose={onClose}
+      />
+
       <Table
         columns={columns}
         size="small"

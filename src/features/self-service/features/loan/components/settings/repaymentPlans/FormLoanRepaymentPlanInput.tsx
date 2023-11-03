@@ -4,11 +4,12 @@ import { useState } from "react";
 import { generalValidationRules } from "utils/formHelpers/validation";
 import { useGetLoanPaymentPlans } from "../../../hooks/paymentPlan/useGetPaymentPlans";
 import { TPaymentPlan } from "../../../types";
+import { Form } from "antd";
 
 export const FormLoanRepaymentPlanInput: React.FC<{
   handleSelect?: (val: number, plan?: TPaymentPlan) => void;
   handleClear?: () => void;
-  Form: any;
+  Form: typeof Form;
   showLabel?: boolean;
   control?: { label: string; name: string | (string | number)[] };
 }> = ({ Form, showLabel = true, control, handleClear, handleSelect }) => {

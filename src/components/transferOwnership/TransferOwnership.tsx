@@ -1,7 +1,7 @@
 import { Modal, Form } from "antd";
 import Themes from "components/Themes";
 import { AppButton } from "components/button/AppButton";
-import { QUERY_KEY_FOR_COMPANY_PARAMETERS } from "features/core/company/hooks/useGetCompanyParams";
+import { QUERY_KEY_FOR_COMPANY_PARAMETER_SETTING } from "features/core/company/hooks/useGetCompanyParamSetting";
 import { useTransferOwnership } from "features/core/company/hooks/useTransferOwnership";
 import { TCompanyParams } from "features/core/company/types/companyParams";
 import { FormEmployeeInput } from "features/core/employees/components/FormEmployeeInput";
@@ -112,7 +112,7 @@ const Confimation: React.FC<{
           });
           handleClose();
           queryClient.invalidateQueries({
-            queryKey: [QUERY_KEY_FOR_COMPANY_PARAMETERS],
+            queryKey: [QUERY_KEY_FOR_COMPANY_PARAMETER_SETTING],
             // exact: true,
           });
         },

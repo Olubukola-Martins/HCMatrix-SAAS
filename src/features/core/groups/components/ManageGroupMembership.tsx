@@ -16,21 +16,18 @@ export const ManageGroupMembership: React.FunctionComponent<IProps> = ({
 }) => {
   const [add, setAdd] = useState(false);
 
-  const { token, companyId } = useApiAuth();
-
   const {
     data: membersData,
 
     isLoading,
   } = useFetchSingleGroupMembers({
-    companyId,
     id: group.id as number,
-    pagination: {
-      limit: 100, //temp suppose to allow search
-      offset: 0,
+    props: {
+      pagination: {
+        limit: 100, //TODO: temp suppose to allow search
+        offset: 0,
+      },
     },
-
-    token,
   });
   return (
     <div className="flex flex-col gap-4">

@@ -1,6 +1,8 @@
 import { TEmploymentEligibity } from "types/employementEligibilities";
 import { TPriority } from "types/priorities";
 
+export const MAX_NO_OF_WORKING_DAYS_PER_WEEK = 7;
+
 // The purpose of this file to prevent repetition
 export const MONTH_CHART_LABELS = [
   "Jan",
@@ -16,7 +18,7 @@ export const MONTH_CHART_LABELS = [
   "Dec",
 ];
 
-export const DEFAULT_PAGE_SIZE = 5;
+export const DEFAULT_PAGE_SIZE = 15;
 export const DEFAULT_GRID_PAGE_SIZE = 10;
 export const PRIORITIES: { value: TPriority; label: string }[] = [
   { label: "High", value: "high" },
@@ -116,7 +118,8 @@ export const RELATIONSHIPS = [
   },
 ];
 export const DEFAULT_PROFILE_IMAGE_URL =
-  "https://res.cloudinary.com/ddvaelej7/image/upload/v1639659955/HCmatrix/User-Icon_wdkmsf.png";
+  "https://res.cloudinary.com/ddvaelej7/image/upload/v1655735373/samples/Ellipse_4_j0womm.png";
+export const DEFAULT_LOGO_IMAGE_URL = "https://picsum.photos/190";
 export const EMPLOYMENT_TYPES = [
   {
     label: "Contract",

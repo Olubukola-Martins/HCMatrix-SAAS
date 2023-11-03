@@ -8,6 +8,7 @@ import { openNotification } from "utils/notifications";
 import { useAddMemberToGroup } from "../hooks/useAddMemberToGroup";
 import { TGroup } from "../types";
 import { AppButton } from "components/button/AppButton";
+import { QUERY_KEY_FOR_SINGLE_GROUP_MEMBERS } from "../hooks/useFetchSingleGroupMembers";
 
 interface IProps {
   group: TGroup;
@@ -16,7 +17,6 @@ interface IProps {
 export const AddMemberToGroupForm: React.FC<IProps> = ({ group }) => {
   const queryClient = useQueryClient();
   const [form] = Form.useForm();
-  const { token, companyId } = useApiAuth();
 
   const [empSearch, setEmpSearch] = useState<string>("");
   const { data: empData, isSuccess: isEmpSuccess } = useFetchEmployees({
@@ -31,45 +31,42 @@ export const AddMemberToGroupForm: React.FC<IProps> = ({ group }) => {
   const { mutate, isLoading } = useAddMemberToGroup();
 
   const handleSubmit = (data: any) => {
-    if (companyId && group) {
-      mutate(
-        {
-          id: group.id as number,
-          companyId,
-
-          token,
-
+    mutate(
+      {
+        body: {
           employeeId: data.employeeId,
-          isLead: data.isLead,
+
+          isLead: !!data.isLead,
         },
-        {
-          onError: (err: any) => {
-            openNotification({
-              state: "error",
-              title: "Error Occurred",
-              description:
-                err?.response.data.message ?? err?.response.data.error.message,
-            });
-          },
-          onSuccess: (res: any) => {
-            openNotification({
-              state: "success",
+        id: group.id as number,
+      },
+      {
+        onError: (err: any) => {
+          openNotification({
+            state: "error",
+            title: "Error Occurred",
+            description:
+              err?.response.data.message ?? err?.response.data.error.message,
+          });
+        },
+        onSuccess: (res: any) => {
+          openNotification({
+            state: "success",
 
-              title: "Success",
-              description: res.data.message,
-              // duration: 0.4,
-            });
+            title: "Success",
+            description: res.data.message,
+            // duration: 0.4,
+          });
 
-            form.resetFields();
+          form.resetFields();
 
-            queryClient.invalidateQueries({
-              queryKey: ["single-group-members", group.id],
-              // exact: true,
-            });
-          },
-        }
-      );
-    }
+          queryClient.invalidateQueries({
+            queryKey: [QUERY_KEY_FOR_SINGLE_GROUP_MEMBERS],
+            // exact: true,
+          });
+        },
+      }
+    );
   };
 
   return (

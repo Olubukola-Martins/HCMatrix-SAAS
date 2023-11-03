@@ -108,12 +108,16 @@ export const PayrollTable: React.FC<{
       ),
     },
     {
-      title: "Disbursment Date",
+      title: "Disbursement Date",
       dataIndex: "drt",
       key: "drt",
       ellipsis: true,
       render: (_, item) => (
-        <span>{moment(item.disbursmentDate).format(DEFAULT_DATE_FORMAT)} </span>
+        <span>
+          {item?.disbursementDate
+            ? moment(item.disbursementDate).format(DEFAULT_DATE_FORMAT)
+            : ""}{" "}
+        </span>
       ),
     },
   ];

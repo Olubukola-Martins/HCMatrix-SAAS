@@ -3,7 +3,7 @@ import { AppButton } from "components/button/AppButton";
 import React, { useEffect, useState } from "react";
 import { IModalProps } from "types";
 import {
-  dateHasToBeGreaterThanDayRule,
+  dateHasToBeGreaterThanCurrentDayRule,
   generalValidationRules,
   generalValidationRulesOp,
 } from "utils/formHelpers/validation";
@@ -21,6 +21,7 @@ import LoanWorthiness from "./worthiness/LoanWorthiness";
 import { TLoanWorthinessInputData } from "../hooks/worthiness/useGetLoanWorthiness";
 import { useCurrentFileUploadUrl } from "hooks/useCurrentFileUploadUrl";
 import { QUERY_KEY_FOR_LOAN_ANALYTICS } from "../hooks/analytics/useGetLoanAnalytics";
+import { QUERY_KEY_FOR_APPROVAL_REQUESTS } from "features/core/workflows/hooks/useFetchApprovalRequests";
 
 export const NewLoan: React.FC<IModalProps> = ({ open, handleClose }) => {
   const queryClient = useQueryClient();
@@ -51,6 +52,7 @@ export const NewLoan: React.FC<IModalProps> = ({ open, handleClose }) => {
             title: "Error Occurred",
             description:
               err?.response.data.message ?? err?.response.data.error.message,
+            duration: 5,
           });
         },
         onSuccess: (res: any) => {
@@ -74,6 +76,10 @@ export const NewLoan: React.FC<IModalProps> = ({ open, handleClose }) => {
           });
           queryClient.invalidateQueries({
             queryKey: [QUERY_KEY_FOR_LOAN],
+            // exact: true,
+          });
+          queryClient.invalidateQueries({
+            queryKey: [QUERY_KEY_FOR_APPROVAL_REQUESTS],
             // exact: true,
           });
         },
@@ -103,7 +109,7 @@ export const NewLoan: React.FC<IModalProps> = ({ open, handleClose }) => {
           <Input className="w-full" placeholder="Title" />
         </Form.Item>
         <Form.Item
-          rules={[dateHasToBeGreaterThanDayRule]}
+          rules={[dateHasToBeGreaterThanCurrentDayRule]}
           name="date"
           label="Date"
         >

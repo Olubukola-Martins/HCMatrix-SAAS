@@ -44,11 +44,10 @@ const TransferApprovalRequestsTable: React.FC<{
       title: "Name",
       dataIndex: "name",
       key: "name",
+      ellipsis: true,
       render: (_, item) => (
         <span className="capitalize">
-          {item?.transferRequisition
-            ? getEmployeeFullName(item?.transferRequisition?.employee)
-            : ""}
+          {item ? getEmployeeFullName(item?.transferRequisition?.employee) : ""}
         </span>
       ),
     },
@@ -58,7 +57,7 @@ const TransferApprovalRequestsTable: React.FC<{
       key: "Employee ID",
       render: (_, item) => (
         <span className="capitalize">
-          {item.transferRequisition?.employee.empUid}{" "}
+          {item?.transferRequisition?.employee.empUid}{" "}
         </span>
       ),
     },
@@ -66,52 +65,80 @@ const TransferApprovalRequestsTable: React.FC<{
       title: "Current Designation",
       dataIndex: "Current Designation",
       key: "Current Designation",
-      render: (_, item) => <span className="capitalize">N/A </span>,
+      ellipsis: true,
+
+      render: (_, item) => (
+        <span className="capitalize">
+          {item?.transferRequisition?.employee?.designation?.name}
+        </span>
+      ),
     },
 
     {
       title: "Current Department",
       dataIndex: "Current Department",
       key: "Current Department",
-      render: (_, item) => <span>N/A</span>,
+
+      ellipsis: true,
+      render: (_, item) => (
+        <span className="capitalize">
+          {item?.transferRequisition?.employee?.designation?.department.name}
+        </span>
+      ),
     },
     {
-      title: "Current Location",
-      dataIndex: "Current Location",
-      key: "Current Location",
-      render: (_, item) => <span>N/A</span>,
+      title: "Current Branch",
+      dataIndex: "Current Branch",
+      ellipsis: true,
+      key: "Current Branch",
+
+      render: (_, item) => (
+        <span className="capitalize">
+          {item?.transferRequisition?.employee.jobInformation?.branch?.name}
+        </span>
+      ),
     },
     {
       title: "Proposed Designation",
       dataIndex: "Proposed Designation",
       key: "Proposed Designation",
+      ellipsis: true,
+
       render: (_, item) => (
-        <span>{item.transferRequisition?.proposedDesignation.name}</span>
+        <span className="capitalize">
+          {item?.transferRequisition?.proposedDesignation.name}
+        </span>
       ),
     },
     {
       title: "Proposed Department",
       dataIndex: "Proposed Department",
       key: "Proposed Department",
+      ellipsis: true,
+
       render: (_, item) => (
-        <span>
-          {item.transferRequisition?.proposedDesignation.department.name}
+        <span className="capitalize">
+          {item?.transferRequisition?.proposedDesignation.department.name}
         </span>
       ),
     },
     {
-      title: "Proposed Location",
-      dataIndex: "Proposed Location",
-      key: "Proposed Location",
-      render: (_, item) => <span>{"N/A"}</span>,
-    },
+      title: "Proposed branch",
+      dataIndex: "Proposed branch",
+      key: "Proposed branch",
+      ellipsis: true,
 
+      render: (_, item) => (
+        <span className="capitalize">
+          {item?.transferRequisition?.proposedBranch.name}
+        </span>
+      ),
+    },
     {
       title: "Status",
       dataIndex: "status",
-
       key: "status",
-      render: (val, item) => (
+      render: (_, item) => (
         <span
           className="capitalize"
           style={{
@@ -120,7 +147,7 @@ const TransferApprovalRequestsTable: React.FC<{
             ),
           }}
         >
-          {item?.transferRequisition?.status}
+          {item?.transferRequisition?.status}{" "}
         </span>
       ),
     },
@@ -144,7 +171,7 @@ const TransferApprovalRequestsTable: React.FC<{
                   View
                 </Menu.Item>
                 <Menu.Item
-                  hidden={item.transferRequisition?.status !== "pending"}
+                  hidden={item?.transferRequisition?.status !== "pending"}
                   key="2"
                   onClick={() =>
                     confirmApprovalAction({
@@ -158,7 +185,7 @@ const TransferApprovalRequestsTable: React.FC<{
                   Approve
                 </Menu.Item>
                 <Menu.Item
-                  hidden={item.transferRequisition?.status !== "pending"}
+                  hidden={item?.transferRequisition?.status !== "pending"}
                   key="1"
                   onClick={() =>
                     confirmApprovalAction({

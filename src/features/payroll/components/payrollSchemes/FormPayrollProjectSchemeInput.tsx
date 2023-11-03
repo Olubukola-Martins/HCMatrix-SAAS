@@ -1,11 +1,11 @@
-import { Select, Spin } from "antd";
+import { Select, Spin, Form } from "antd";
 import { useGetPayrollSchemeByTypeOrId } from "features/payroll/hooks/scheme/useGetPayrollSchemeByTypeOrId";
 import { TProjectPayrollScheme } from "features/payroll/types/payrollSchemes/project";
 import { useEffect, useState } from "react";
 import { generalValidationRules } from "utils/formHelpers/validation";
 
 export const FormPayrollProjectSchemeInput: React.FC<{
-  Form: any;
+  Form: typeof Form;
   showLabel?: boolean;
   onSelect?: (val: number, option: TProjectPayrollScheme[0]) => void;
   control?: { label: string; name: string | (string | number)[] };

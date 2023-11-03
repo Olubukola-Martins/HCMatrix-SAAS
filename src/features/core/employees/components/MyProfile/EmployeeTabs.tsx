@@ -95,7 +95,14 @@ export const EmployeeTabs: React.FC<IProps> = ({ employee, isLoading }) => {
     {
       key: "History",
       label: "History",
-      children: <History />,
+      children: (
+        <History
+          {...{
+            roleHistory: employee?.roleHistory,
+            salaryHistory: employee?.salaryHistory,
+          }}
+        />
+      ),
     },
     {
       key: "Finger Prints",
@@ -108,17 +115,7 @@ export const EmployeeTabs: React.FC<IProps> = ({ employee, isLoading }) => {
       children: (
         <EmployeeProjects
           {...{
-            data: [
-              {
-                endDate: "3/7/2023",
-                startDate: "3/7/2023",
-                grossIncome: 505000,
-                id: 1,
-                name: "HcMatrix",
-                noOfPaymentsMade: "2 out of 4",
-                totalPaid: 2 * 505000,
-              },
-            ],
+            data: employee?.userProjects,
           }}
         />
       ),

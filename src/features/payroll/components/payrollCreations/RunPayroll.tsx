@@ -9,7 +9,7 @@ import { QUERY_KEY_FOR_SINGLE_PAYROLL } from "features/payroll/hooks/payroll/use
 import { DEFAULT_DATE_FORMAT } from "constants/dateFormats";
 import { Moment } from "moment";
 import moment from "moment";
-import { dateHasToBeGreaterThanDayRule } from "utils/formHelpers/validation";
+import { dateHasToBeGreaterThanCurrentDayRule } from "utils/formHelpers/validation";
 
 interface IProps extends IModalProps {
   payrollId?: number;
@@ -89,7 +89,7 @@ export const RunPayroll: React.FC<IProps> = ({
               {
                 required: true,
               },
-              dateHasToBeGreaterThanDayRule,
+              dateHasToBeGreaterThanCurrentDayRule,
             ]}
           >
             <DatePicker className="w-full" />

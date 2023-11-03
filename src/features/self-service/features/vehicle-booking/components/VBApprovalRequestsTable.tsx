@@ -10,10 +10,12 @@ import { usePagination } from "hooks/usePagination";
 import { useQueryClient } from "react-query";
 import { useFetchApprovalRequests } from "features/core/workflows/hooks/useFetchApprovalRequests";
 import { useApproveORReject } from "hooks/useApproveORReject";
-import { QUERY_KEY_FOR_LEAVES } from "../../leave/hooks/useFetchLeaves";
 import { TApprovalRequest } from "features/core/workflows/types/approval-requests";
 import { ViewVehicleBooking } from "./ViewVehicleBooking";
 import { TApprovalStatus } from "types/statuses";
+import { QUERY_KEY_FOR_VEHICLE_BOOKINGS } from "../hooks/useFetchVehicleBookings";
+import { QUERY_KEY_FOR_VEHICLE_BOOKINGS_FOR_AUTH_EMPLOYEE } from "../hooks/booking/useGetVehicleBookings4AuthEmployee";
+import { QUERY_KEY_FOR_VEHICLE_BOOKING_ANALYTICS_FOR_EMPLOYEE } from "../hooks/useGetVehicleEmployeeBookingAnalytics";
 
 const VBApprovalRequestsTable: React.FC<{
   status?: TApprovalStatus;
@@ -28,12 +30,19 @@ const VBApprovalRequestsTable: React.FC<{
     pagination,
     type: "vehicle",
   });
-  console.log("vehi", data);
 
   const { confirmApprovalAction } = useApproveORReject({
     handleSuccess: () => {
       queryClient.invalidateQueries({
-        queryKey: [QUERY_KEY_FOR_LEAVES],
+        queryKey: [QUERY_KEY_FOR_VEHICLE_BOOKINGS],
+        // exact: true,
+      });
+      queryClient.invalidateQueries({
+        queryKey: [QUERY_KEY_FOR_VEHICLE_BOOKINGS_FOR_AUTH_EMPLOYEE],
+        // exact: true,
+      });
+      queryClient.invalidateQueries({
+        queryKey: [QUERY_KEY_FOR_VEHICLE_BOOKING_ANALYTICS_FOR_EMPLOYEE],
         // exact: true,
       });
     },

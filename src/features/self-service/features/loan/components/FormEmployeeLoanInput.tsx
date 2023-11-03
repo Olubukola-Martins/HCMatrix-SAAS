@@ -1,4 +1,4 @@
-import { Select, Spin } from "antd";
+import { Select, Spin, Form } from "antd";
 import { useDebounce } from "hooks/useDebounce";
 import { useState } from "react";
 import { generalValidationRules } from "utils/formHelpers/validation";
@@ -6,7 +6,7 @@ import { useGetLoanRequests } from "../hooks/requests/useGetLoanRequests";
 import { TLoanRequest } from "../types";
 
 export const FormEmployeeLoanInput: React.FC<{
-  Form: any;
+  Form: typeof Form;
   showLabel?: boolean;
   control?: { label: string; name: string | (string | number)[] };
   handleSelect?: (val: number, loan?: TLoanRequest) => void;
@@ -16,7 +16,7 @@ export const FormEmployeeLoanInput: React.FC<{
   const debouncedSearchTerm: string = useDebounce<string>(searchTerm);
 
   const { data, isFetching, isSuccess } = useGetLoanRequests({
-    type: "me",
+    type: "mine",
     props: {
       searchParams: {
         name: debouncedSearchTerm,

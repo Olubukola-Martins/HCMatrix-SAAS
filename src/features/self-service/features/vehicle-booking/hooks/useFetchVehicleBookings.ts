@@ -60,6 +60,7 @@ interface Vehicle {
 interface IGetDataProps extends ICurrentCompany {
   pagination?: IPaginationProps;
   searchParams?: ISearchParams;
+  employeeId?: number;
 }
 
 export const QUERY_KEY_FOR_VEHICLE_BOOKINGS = "vehicle-bookings";
@@ -84,6 +85,7 @@ const getVehicleBookings = async (
       limit,
       offset,
       search: name,
+      employeeId: props.employeeId,
     },
   };
 
@@ -104,9 +106,14 @@ const getVehicleBookings = async (
 };
 
 export const useFetchVehicleBookings = (props: IGetDataProps) => {
-  const { pagination, searchParams } = props;
+  const { pagination, searchParams, employeeId } = props;
   const queryData = useQuery(
-    [QUERY_KEY_FOR_VEHICLE_BOOKINGS, pagination?.limit, searchParams?.name],
+    [
+      QUERY_KEY_FOR_VEHICLE_BOOKINGS,
+      pagination?.limit,
+      searchParams?.name,
+      employeeId,
+    ],
     () =>
       getVehicleBookings({
         ...props,

@@ -1,97 +1,121 @@
-import { TablePaginationConfig, Tooltip } from "antd";
-
+import { Tooltip } from "antd";
 import { DesignationsGridView } from "./DesignationsGridView";
 import { DesignationsTableView } from "./DesignationsTableView";
-import { EditDesignationModal } from "./EditDesignationModal";
 import { TListDataTypeView } from "types";
-import { useApiAuth } from "hooks/useApiAuth";
-import { DEFAULT_GRID_PAGE_SIZE, DEFAULT_PAGE_SIZE } from "constants/general";
 import { useEffect, useState } from "react";
-import { DataContainerLoader } from "components/loaders/DataContainerLoader";
-import { ErrorComponent } from "components/errorHandlers/ErrorComponent";
-import { useFetchDesignations } from "../hooks/useFetchDesignations";
+import {
+  QUERY_KEY_FOR_DESIGNATIONS,
+  useFetchDesignations,
+} from "../hooks/useFetchDesignations";
+import { useQueryClient } from "react-query";
+import { usePagination } from "hooks/usePagination";
+import { ICreateDegProps, TDesignation } from "../types";
+import { useUpdateDesignation } from "../hooks/useUpdateDesignation";
+import { openNotification } from "utils/notifications";
+import { SaveDesignation } from "./SaveDesignation";
+import { DeleteDesignation } from "./DeleteDesignation";
+
+type TAction = "view" | "edit" | "delete";
 
 const DesignationsViewContainer = () => {
   const [viewId, setViewId] = useState<TListDataTypeView>("list");
   const handleViewId = (val: TListDataTypeView) => {
     setViewId(val);
   };
-  const { token, companyId } = useApiAuth();
+  const { pagination, onChange, resetPagination } = usePagination();
 
-  const [pagination, setPagination] = useState<TablePaginationConfig>({
-    current: 1,
-    pageSize: DEFAULT_PAGE_SIZE,
-    total: 0,
-    showSizeChanger: false,
-  });
-
-  const offset =
-    pagination.current && pagination.current !== 1
-      ? (pagination.pageSize ?? DEFAULT_PAGE_SIZE) * (pagination.current - 1)
-      : 0;
-
-  const onChange = (newPagination: TablePaginationConfig | number) => {
-    if (typeof newPagination === "number") {
-      setPagination((val) => ({
-        ...val,
-        current: newPagination,
-      }));
-    } else {
-      setPagination((val) => ({
-        ...val,
-        current: newPagination.current,
-      }));
-    }
-  };
-
-  const {
-    data: designationData,
-    isError,
-    isFetching,
-    isSuccess,
-  } = useFetchDesignations({
-    companyId,
-    pagination: {
-      limit: pagination.pageSize,
-      offset,
-    },
-    token,
+  const { data: designationData, isFetching } = useFetchDesignations({
+    pagination,
   });
 
   // to be able to maitain diff page size per diff view
   useEffect(() => {
-    if (viewId === "grid") {
-      setPagination((val) => ({
-        ...val,
-        pageSize: DEFAULT_GRID_PAGE_SIZE,
-        current: 1,
-      }));
-    } else {
-      setPagination((val) => ({
-        ...val,
-        pageSize: DEFAULT_PAGE_SIZE,
-        current: 1,
-      }));
-    }
-  }, [viewId]);
+    resetPagination();
+  }, [resetPagination, viewId]);
 
-  const [designationId, setDesignationId] = useState(0);
-  const [openEditModal, setOpenEditModal] = useState(false);
-  const editDesignation = (id: number) => {
-    setDesignationId(id);
-    setOpenEditModal(true);
-  };
-  const handleClose = () => {
-    setDesignationId(0);
-    setOpenEditModal(false);
+  const queryClient = useQueryClient();
+  const [selectedDesignation, setSelectedDesignation] =
+    useState<TDesignation>();
+
+  const [action, setAction] = useState<TAction>();
+  const {
+    mutate,
+    isLoading,
+    isSuccess: isSuccUpdateDesignation,
+  } = useUpdateDesignation();
+  const handleUpdateDesignation = (data: ICreateDegProps) => {
+    if (!selectedDesignation) return;
+    mutate(
+      {
+        id: selectedDesignation.id,
+        data,
+      },
+      {
+        onError: (err: any) => {
+          openNotification({
+            state: "error",
+            title: "Error Occurred",
+            description:
+              err?.response.data.message ?? err?.response.data.error.message,
+          });
+        },
+        onSuccess: (res: any) => {
+          openNotification({
+            state: "success",
+
+            title: "Success",
+            description: res.data.message,
+            // duration: 0.4,
+          });
+          setAction(undefined);
+          queryClient.invalidateQueries({
+            queryKey: [QUERY_KEY_FOR_DESIGNATIONS],
+            // exact: true,
+          });
+        },
+      }
+    );
   };
 
+  const editDesignation = (val: TDesignation) => {
+    setSelectedDesignation(val);
+    setAction("edit");
+  };
+  const viewDesignation = (val: TDesignation) => {
+    setSelectedDesignation(val);
+    setAction("view");
+  };
+  const deleteDesignation = (val: TDesignation) => {
+    setSelectedDesignation(val);
+    setAction("delete");
+  };
   return (
     <>
-      <EditDesignationModal
-        id={designationId}
-        open={openEditModal}
-        handleClose={handleClose}
+      <SaveDesignation
+        key="edit"
+        open={action === "edit"}
+        action="edit"
+        title="Edit Designation"
+        onSubmit={{
+          fn: handleUpdateDesignation,
+          isLoading,
+          isSuccess: isSuccUpdateDesignation,
+        }}
+        designation={selectedDesignation}
+        handleClose={() => setAction(undefined)}
+      />
+      <SaveDesignation
+        key="view"
+        open={action === "view"}
+        action="view"
+        title="View Designation"
+        designation={selectedDesignation}
+        handleClose={() => setAction(undefined)}
+      />
+      <DeleteDesignation
+        open={action === "delete"}
+        designation={selectedDesignation}
+        handleClose={() => setAction(undefined)}
       />
       <div className="mt-5 flex flex-col gap-4">
         <div className="view-toggler flex rounded overflow-hidden items-center">
@@ -120,30 +144,27 @@ const DesignationsViewContainer = () => {
           </Tooltip>
         </div>
         <div className="content overflow-y-hidden relative">
-          {!isSuccess && !isError && <DataContainerLoader />}
-          {isError && (
-            <ErrorComponent
-              message="Oops! Something went wrong."
-              supportText="Please check back in a minute"
-            />
-          )}
-          {viewId === "grid" && isSuccess && (
+          {viewId === "grid" && (
             <DesignationsGridView
-              data={designationData.data}
+              data={designationData?.data}
               loading={isFetching}
-              pagination={{ ...pagination, total: designationData.total }}
+              pagination={{ ...pagination, total: designationData?.total }}
               onChange={onChange}
               editDesignation={editDesignation}
+              viewDesignation={viewDesignation}
+              deleteDesignation={deleteDesignation}
             />
           )}
 
-          {viewId === "list" && isSuccess && (
+          {viewId === "list" && (
             <DesignationsTableView
-              data={designationData.data}
+              data={designationData?.data}
               loading={isFetching}
-              pagination={{ ...pagination, total: designationData.total }}
+              pagination={{ ...pagination, total: designationData?.total }}
               onChange={onChange}
               editDesignation={editDesignation}
+              viewDesignation={viewDesignation}
+              deleteDesignation={deleteDesignation}
             />
           )}
         </div>

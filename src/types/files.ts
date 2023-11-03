@@ -5,4 +5,5 @@ export type TFileType =
   | "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
   | "text/plain"
   | "application/pdf"
-  | "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+  | "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+  | "text/csv";

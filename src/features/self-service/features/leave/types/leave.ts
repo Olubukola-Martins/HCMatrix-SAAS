@@ -1,26 +1,63 @@
+import { TLeaveRecall } from "./leaveRecall";
+
 export interface TLeave {
   id: number;
   employeeId: number;
-  departmentId: number;
-  startDate: string;
-  endDate: string;
+  startDate?: string | null;
+  endDate?: string | null;
+  specificDates?: string[] | null;
   length: number;
   leaveTypeId: number;
   reason: string;
-  requestAllowance: boolean;
-  workAssigneeId: number;
+  relieverId?: number | null;
   documentUrls: string[];
   status: string;
   companyId: number;
   createdAt: string;
   updatedAt: string;
   employee: Employee;
-  department: Department;
-  leaveType: TLeaveType;
-  workAssignee: WorkAssignee;
+  leaveType: LeaveType;
+  reliever?: Reliever | null;
+  recall?: null | TLeaveRecall;
 }
 
-interface WorkAssignee {
+interface Reliever {
+  id: number;
+  firstName: string;
+  lastName: string;
+  email: string;
+  hasSelfService: boolean;
+  empUid: string;
+  roleId: number;
+  status: string;
+  companyId: number;
+  designationId: number;
+  userId: number;
+  avatarUrl?: any;
+  createdAt: string;
+  updatedAt: string;
+  deletedAt?: any;
+}
+
+interface LeaveType {
+  id: number;
+  name: string;
+  label: string;
+  length: number;
+  requireReliever: boolean;
+  employeesGetAllowance: boolean;
+  applicableToCertainGroup: boolean;
+  groupId?: any;
+  gender?: any;
+  maritalStatus?: any;
+  employeeStatus?: any;
+  isActive: boolean;
+  companyId: number;
+  createdAt: string;
+  updatedAt: string;
+}
+
+interface Employee {
   id: number;
   firstName: string;
   lastName: string;
@@ -36,20 +73,18 @@ interface WorkAssignee {
   createdAt: string;
   updatedAt: string;
   deletedAt?: any;
+  designation?: Designation;
 }
 
-interface TLeaveType {
+interface Designation {
   id: number;
   name: string;
   label: string;
-  length: number;
-  employeesGetAllowance: boolean;
-  calculation: string;
-  percentageAmount: number;
-  gender: string;
+  departmentId: number;
   companyId: number;
   createdAt: string;
   updatedAt: string;
+  department: Department;
 }
 
 interface Department {
@@ -58,26 +93,8 @@ interface Department {
   label: string;
   companyId: number;
   departmentHeadId?: any;
-  email?: any;
-  parentDepartmentId?: any;
-  createdAt: string;
-  updatedAt: string;
-  deletedAt?: any;
-}
-
-interface Employee {
-  id: number;
-  firstName: string;
-  lastName: string;
   email: string;
-  hasSelfService: boolean;
-  empUid: string;
-  roleId: number;
-  status: string;
-  companyId: number;
-  designationId: number;
-  userId: number;
-  avatarUrl?: any;
+  parentDepartmentId?: any;
   createdAt: string;
   updatedAt: string;
   deletedAt?: any;

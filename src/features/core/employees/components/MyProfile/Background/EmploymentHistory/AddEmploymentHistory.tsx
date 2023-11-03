@@ -2,11 +2,15 @@ import { DatePicker, Form, Input, Modal } from "antd";
 import { AppButton } from "components/button/AppButton";
 import React from "react";
 import { IModalProps } from "types";
-import { generalValidationRules } from "utils/formHelpers/validation";
+import {
+  dateHasToBeLesserThanOrEqualToCurrentDayRuleForRange,
+  textInputValidationRules,
+} from "utils/formHelpers/validation";
 import { openNotification } from "utils/notifications";
 import { useQueryClient } from "react-query";
 import { QUERY_KEY_FOR_SINGLE_EMPLOYEE } from "features/core/employees/hooks/useFetchSingleEmployee";
 import { useAddEmployeeEmploymentHistory } from "features/core/employees/hooks/employmentHistory/useAddEmployeeEmploymentHistory";
+import { DEFAULT_DATE_FORMAT } from "constants/dateFormats";
 
 interface IProps extends IModalProps {
   employeeId: number;
@@ -78,7 +82,7 @@ export const AddEmploymentHistory: React.FC<IProps> = ({
         <Form.Item
           name="organization"
           label="Organization"
-          rules={generalValidationRules}
+          rules={textInputValidationRules}
         >
           <Input
             className="generalInputStyle"
@@ -88,21 +92,22 @@ export const AddEmploymentHistory: React.FC<IProps> = ({
         <Form.Item
           name="position"
           label="Position"
-          rules={generalValidationRules}
+          rules={textInputValidationRules}
         >
           <Input className="generalInputStyle" placeholder="Enter Position" />
         </Form.Item>
         <Form.Item
           name="duration"
           label="Duration"
-          rules={generalValidationRules}
+          rules={[dateHasToBeLesserThanOrEqualToCurrentDayRuleForRange]}
         >
           <DatePicker.RangePicker
             placeholder={["Start Date", "End Date"]}
-            format="YYYY/MM/DD"
+            format={DEFAULT_DATE_FORMAT}
             className="generalInputStyle"
           />
         </Form.Item>
+
         <div className="flex justify-end">
           <AppButton type="submit" isLoading={isLoading} />
         </div>

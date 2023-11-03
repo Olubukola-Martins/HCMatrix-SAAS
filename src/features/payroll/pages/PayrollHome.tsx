@@ -10,6 +10,10 @@ import PayrollOverviewChart from "../components/graphs/PayrollOverviewChart";
 import { useGetPayrollAnalytics } from "../hooks/payroll/analytics/useGetPayrollAnalytics";
 import { Badge, Skeleton } from "antd";
 import { formatNumberWithCommas } from "utils/dataHelpers/formatNumberWithCommas";
+import {
+  canUserAccessComponent,
+  useGetUserPermissions,
+} from "components/permission-restriction/PermissionRestrictor";
 
 const outerStyle =
   "group  transition ease-in-out duration-500 cursor-pointer shadow-md col-span-3 md:col-span-1 rounded-xl flex flex-col gap-2 w-full  p-3 bg-card";
@@ -34,7 +38,7 @@ const PayrollHome = () => {
 
   const [showItems, setShowItems] = useState(false);
   const { data: analytics, isFetching } = useGetPayrollAnalytics();
-
+  const { userPermissions } = useGetUserPermissions();
   return (
     <>
       <PayrollSubNav />
@@ -48,13 +52,6 @@ const PayrollHome = () => {
 
         <Skeleton active loading={isFetching} paragraph={{ rows: 12 }}>
           <div className="grid grid-cols-1 lg:grid-cols-4 md:grid-cols-2 gap-x-4 gap-y-12 w-full ">
-            {/* <PayrollCard
-            {...{
-              image: DollarBox,
-              title: "Payroll Burden",
-              highlight: "N0.00",
-            }}
-          /> */}
             <PayrollCard
               key={1}
               {...{
@@ -94,8 +91,19 @@ const PayrollHome = () => {
                 image: PayrollCycle,
                 title: "Payroll Cycle",
                 highlight: "",
-                link: appRoutes.listOfPayrolls,
-                content: "View the list of payrolls",
+
+                link: canUserAccessComponent({
+                  userPermissions,
+                  requiredPermissions: ["view-all-payrolls"],
+                })
+                  ? appRoutes.listOfPayrolls
+                  : undefined,
+                content: canUserAccessComponent({
+                  userPermissions,
+                  requiredPermissions: ["view-all-payrolls"],
+                })
+                  ? "View the list of payrolls"
+                  : `You don't have access to this content!`,
               }}
             />
 

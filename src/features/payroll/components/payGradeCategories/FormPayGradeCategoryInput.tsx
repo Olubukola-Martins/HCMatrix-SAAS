@@ -1,4 +1,4 @@
-import { Select, Spin } from "antd";
+import { Select, Spin, Form } from "antd";
 import { useGetPayGradeCategories } from "features/payroll/hooks/payGrades/category/useGetPayGradeCategories";
 import { TPayGradeCategory } from "features/payroll/types";
 import { useDebounce } from "hooks/useDebounce";
@@ -6,7 +6,7 @@ import { useState } from "react";
 import { generalValidationRules } from "utils/formHelpers/validation";
 
 export const FormPayGradeCategoryInput: React.FC<{
-  Form: any;
+  Form: typeof Form;
   showLabel?: boolean;
   onSelect?: (val: number, option: TPayGradeCategory) => void;
   control?: { label: string; name: string | (string | number)[] };

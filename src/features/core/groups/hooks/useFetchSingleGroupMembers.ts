@@ -1,19 +1,24 @@
 import axios from "axios";
 import { useQuery } from "react-query";
-import {
-  IFRQSingleGroupMembersDataProps,
-  IGetSingleGroupMembersProps,
-  TGroupMember,
-} from "../types";
+import { TGroupMember } from "../types";
+import { DEFAULT_PAGE_SIZE } from "constants/general";
+import { ICurrentCompany, IPaginationProps, ISearchParams } from "types";
+import { useApiAuth } from "hooks/useApiAuth";
 
 export const QUERY_KEY_FOR_SINGLE_GROUP_MEMBERS = "single-group-members";
 
-export const getSingleGroupMembers = async (
-  props: IGetSingleGroupMembersProps
-): Promise<{ total: number; data: TGroupMember[] }> => {
-  const id = props.id;
+interface IGetDataProps {
+  pagination?: IPaginationProps;
+  searchParams?: ISearchParams;
+}
+export const getSingleGroupMembers = async (vals: {
+  props: IGetDataProps;
+  id: number;
+  auth: ICurrentCompany;
+}): Promise<{ total: number; data: TGroupMember[] }> => {
+  const { props, id, auth } = vals;
   const { pagination, searchParams } = props;
-  const limit = pagination?.limit ?? 10;
+  const limit = pagination?.limit ?? DEFAULT_PAGE_SIZE;
   const offset = pagination?.offset ?? 0;
   const search = searchParams?.name;
 
@@ -22,8 +27,8 @@ export const getSingleGroupMembers = async (
   const config = {
     headers: {
       Accept: "application/json",
-      Authorization: `Bearer ${props.token}`,
-      "x-company-id": props.companyId,
+      Authorization: `Bearer ${auth.token}`,
+      "x-company-id": auth.companyId,
     },
     params: {
       offset,
@@ -57,14 +62,14 @@ export const getSingleGroupMembers = async (
   return ans;
 };
 
-export const useFetchSingleGroupMembers = ({
-  pagination,
-  companyId,
-  onSuccess,
-  token,
-  searchParams,
-  id,
-}: IFRQSingleGroupMembersDataProps) => {
+export const useFetchSingleGroupMembers = (vals: {
+  props: IGetDataProps;
+  id: number;
+}) => {
+  const { token, companyId } = useApiAuth();
+
+  const { props, id } = vals;
+  const { pagination, searchParams } = props;
   const queryData = useQuery(
     [
       QUERY_KEY_FOR_SINGLE_GROUP_MEMBERS,
@@ -74,16 +79,15 @@ export const useFetchSingleGroupMembers = ({
     ],
     () =>
       getSingleGroupMembers({
-        companyId,
-        pagination,
-        searchParams,
-        token,
+        auth: {
+          companyId,
+          token,
+        },
         id,
+        props,
       }),
     {
-      onSuccess: (data) => {
-        onSuccess && onSuccess(data);
-      },
+      onSuccess: (data) => {},
     }
   );
 

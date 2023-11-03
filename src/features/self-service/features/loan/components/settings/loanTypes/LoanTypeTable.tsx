@@ -138,9 +138,7 @@ const LoanTypeTable = ({
           },
         }
       );
-    } catch (errInfo) {
-      console.log(errInfo, "ERRO");
-    }
+    } catch (errInfo) {}
   };
   const ogColumns: ColumnsType<TLoanType> = [
     {

@@ -5,22 +5,26 @@ import React from "react";
 import { boxStyle } from "styles/reused";
 import { IModalProps } from "types";
 import {
+  dateHasToBeGreaterThanOrEqualToCurrentDayRule,
   generalValidationRules,
+  numberHasToBeGreaterThanZeroRule,
   textInputValidationRules,
 } from "utils/formHelpers/validation";
 import { useCurrentFileUploadUrl } from "hooks/useCurrentFileUploadUrl";
 import { openNotification } from "utils/notifications";
 import { useQueryClient } from "react-query";
-import { useApiAuth } from "hooks/useApiAuth";
 import { useCreateMoneyRequisition } from "../../requisitions/hooks/money/useCreateMoneyRequisition";
 import { QUERY_KEY_FOR_MONEY_REQUISITIONS } from "../../requisitions/hooks/money/useGetMoneyRequisitions";
+import { QUERY_KEY_FOR_APPROVAL_REQUESTS } from "features/core/workflows/hooks/useFetchApprovalRequests";
+import { QUERY_KEY_FOR_UNREAD_NOTIFICATION_COUNT } from "features/notifications/hooks/unRead/useGetUnReadNotificationCount";
+import { QUERY_KEY_FOR_NOTIFICATIONS } from "features/notifications/hooks/useGetAlerts";
+import { QUERY_KEY_FOR_MONEY_REQUISITIONS_FOR_AUTH_EMPLOYEE } from "../../requisitions/hooks/money/useGetMoneyRequisitions4AuthEmployee";
 
 export const NewMonetaryRequest: React.FC<IModalProps> = ({
   open,
   handleClose,
 }) => {
   const queryClient = useQueryClient();
-  const { currentUserEmployeeId } = useApiAuth();
 
   const [form] = Form.useForm();
   const { mutate, isLoading } = useCreateMoneyRequisition();
@@ -32,7 +36,6 @@ export const NewMonetaryRequest: React.FC<IModalProps> = ({
         amount: data.amount,
         date: data.date.toString(),
         purpose: data.purpose,
-        employeeId: currentUserEmployeeId,
         title: data.title,
         attachmentUrls: !!documentUrl ? [documentUrl] : [],
       },
@@ -60,6 +63,22 @@ export const NewMonetaryRequest: React.FC<IModalProps> = ({
             queryKey: [QUERY_KEY_FOR_MONEY_REQUISITIONS],
             // exact: true,
           });
+          queryClient.invalidateQueries({
+            queryKey: [QUERY_KEY_FOR_MONEY_REQUISITIONS_FOR_AUTH_EMPLOYEE],
+            // exact: true,
+          });
+          queryClient.invalidateQueries({
+            queryKey: [QUERY_KEY_FOR_APPROVAL_REQUESTS],
+            // exact: true,
+          });
+          queryClient.invalidateQueries({
+            queryKey: [QUERY_KEY_FOR_NOTIFICATIONS],
+            // exact: true,
+          });
+          queryClient.invalidateQueries({
+            queryKey: [QUERY_KEY_FOR_UNREAD_NOTIFICATION_COUNT],
+            // exact: true,
+          });
         },
       }
     );
@@ -78,7 +97,11 @@ export const NewMonetaryRequest: React.FC<IModalProps> = ({
         onFinish={handleSubmit}
         requiredMark={false}
       >
-        <Form.Item rules={generalValidationRules} name="date" label="Date">
+        <Form.Item
+          name="date"
+          label="Date"
+          rules={[dateHasToBeGreaterThanOrEqualToCurrentDayRule]}
+        >
           <DatePicker placeholder="Date" className="w-full" />
         </Form.Item>
 
@@ -92,7 +115,11 @@ export const NewMonetaryRequest: React.FC<IModalProps> = ({
         >
           <Input.TextArea placeholder="purpose" />
         </Form.Item>
-        <Form.Item rules={generalValidationRules} name="amount" label="Amount">
+        <Form.Item
+          rules={[numberHasToBeGreaterThanZeroRule]}
+          name="amount"
+          label="Amount"
+        >
           <InputNumber placeholder="amount" className="w-full" />
         </Form.Item>
         <div className={boxStyle}>
@@ -102,6 +129,8 @@ export const NewMonetaryRequest: React.FC<IModalProps> = ({
               "image/png",
               "image/jpg",
               "application/pdf",
+              "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+              "text/csv",
             ]}
             fileKey="documentUrl"
             textToDisplay="Upload Attachments"

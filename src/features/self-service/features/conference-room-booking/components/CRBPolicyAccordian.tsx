@@ -8,7 +8,7 @@ const CRBPolicyAccordian = () => {
     <Collapse expandIconPosition="end" accordion>
       <Panel
         header={
-          <Typography.Title level={5}>Meeting Room Policy</Typography.Title>
+          <Typography.Title level={5}>Conference Room Policy</Typography.Title>
         }
         key="1"
       >

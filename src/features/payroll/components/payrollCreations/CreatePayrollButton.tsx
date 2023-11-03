@@ -1,4 +1,8 @@
 import { Dropdown, Menu } from "antd";
+import {
+  canUserAccessComponent,
+  useGetUserPermissions,
+} from "components/permission-restriction/PermissionRestrictor";
 import { appRoutes } from "config/router/paths";
 import React from "react";
 import { Link } from "react-router-dom";
@@ -27,6 +31,15 @@ export const createPayrollDropdownItems = [
 ];
 
 export const CreatePayrollButton = () => {
+  const { userPermissions } = useGetUserPermissions();
+  if (
+    !canUserAccessComponent({
+      userPermissions,
+      requiredPermissions: ["create-payroll"],
+    })
+  ) {
+    return null;
+  }
   return (
     <Dropdown
       overlay={

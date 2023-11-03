@@ -1,16 +1,17 @@
 import React, { useState } from "react";
 
-export type TChartTabItem = { name: string; handleClick: () => void };
+export type TChartTabItem = { name: string };
 
 interface IProps {
   items: TChartTabItem[];
+  handleChange?: (key: string) => void;
 }
 
-const ChartTabHeader = ({ items }: IProps) => {
+const ChartTabHeader = ({ items, handleChange }: IProps) => {
   const [active, setActive] = useState<string>(items[0].name);
   const handleClick = (val: TChartTabItem) => {
     setActive(val.name);
-    val.handleClick();
+    handleChange?.(val.name);
   };
 
   return (

@@ -11,7 +11,7 @@ interface IGetDataProps {
   searchParams?: ISearchParams;
 }
 
-type TLoanAPIRepaymentType = "me" | "all";
+type TLoanAPIRepaymentType = "mine" | undefined;
 export const QUERY_KEY_FOR_LOAN_REPAYMENTS = "loan-repayments";
 
 const getData = async (props: {
@@ -24,7 +24,10 @@ const getData = async (props: {
   const offset = pagination?.offset ?? 0;
   const name = props.data.searchParams?.name ?? "";
 
-  const url = `${MICROSERVICE_ENDPOINTS.PAYROLL}/loan/repayment/${props.type}`;
+  let url = `${MICROSERVICE_ENDPOINTS.PAYROLL}/loan/repayment/`;
+  if (props.type === "mine") {
+    url = `${MICROSERVICE_ENDPOINTS.PAYROLL}/loan/repayment/${props.type}`;
+  }
 
   const config = {
     headers: {

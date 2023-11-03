@@ -4,19 +4,23 @@ import { TDepartment } from "../types";
 import { getEmployeeFullName } from "features/core/employees/utils/getEmployeeFullName";
 
 interface IProps {
-  departments: TDepartment[];
-  loading: boolean;
+  data?: TDepartment[];
+  loading?: boolean;
   pagination?: TablePaginationConfig;
   onChange?: TableProps<TDepartment>["onChange"];
-  editDepartment: (val: number) => void;
+  editDepartment: (val: TDepartment) => void;
+  viewDepartment: (val: TDepartment) => void;
+  deleteDepartment: (val: TDepartment) => void;
 }
 
 export const DepartmentsTableView = ({
-  departments,
+  data,
   loading,
   pagination,
   onChange,
   editDepartment,
+  deleteDepartment,
+  viewDepartment,
 }: IProps) => {
   const columns: ColumnsType<TDepartment> = [
     {
@@ -63,9 +67,16 @@ export const DepartmentsTableView = ({
         <div className="flex items-center gap-3 text-lg">
           <i
             className="ri-pencil-line cursor-pointer hover:text-caramel"
-            onClick={() => editDepartment(item.id)}
+            onClick={() => editDepartment(item)}
           ></i>
-          <i className="ri-delete-bin-line cursor-pointer hover:text-caramel"></i>
+          <i
+            className="ri-eye-line cursor-pointer hover:text-caramel"
+            onClick={() => viewDepartment(item)}
+          ></i>
+          <i
+            className="ri-delete-bin-line cursor-pointer hover:text-caramel"
+            onClick={() => deleteDepartment(item)}
+          ></i>
         </div>
       ),
     },
@@ -75,7 +86,7 @@ export const DepartmentsTableView = ({
       <Table
         columns={columns}
         size="small"
-        dataSource={departments}
+        dataSource={data}
         loading={loading}
         pagination={pagination}
         onChange={onChange}

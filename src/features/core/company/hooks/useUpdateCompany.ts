@@ -4,15 +4,16 @@ import { useApiAuth } from "hooks/useApiAuth";
 import { useMutation } from "react-query";
 import { ICurrentCompany } from "types";
 
-interface TUpdateCompParams {
-  name?: string;
-  phoneNumber?: string;
-  industryId?: number;
-  color?: string;
+type Params = {
+  name: string;
+  phoneNumber: string;
+  industryId: number;
+  color: string;
   address: Address;
-  logoUrl?: string;
-  website?: string;
-}
+  logoUrl: string;
+  website: string;
+};
+type TUpdateCompParams = Partial<Params>;
 interface Address {
   streetAddress: string;
   countryId?: number;

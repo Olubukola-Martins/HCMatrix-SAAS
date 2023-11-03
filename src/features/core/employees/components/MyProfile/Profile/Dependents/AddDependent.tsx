@@ -3,6 +3,7 @@ import { AppButton } from "components/button/AppButton";
 import React from "react";
 import { IModalProps } from "types";
 import {
+  dateHasToBeLesserThanOrEqualToCurrentDayRule,
   generalValidationRules,
   textInputValidationRules,
 } from "utils/formHelpers/validation";
@@ -92,14 +93,18 @@ export const AddDependent: React.FC<IProps> = ({
           <Input placeholder="Full Name" />
         </Form.Item>
         <Form.Item
-          rules={generalValidationRules}
+          rules={[dateHasToBeLesserThanOrEqualToCurrentDayRule]}
           name="dob"
           label="Date of Birth"
         >
           <DatePicker placeholder="Date of Birth" className="w-full" />
         </Form.Item>
         <FormPhoneInput Form={Form} />
-        <Form.Item name="relationship" label="Relationship">
+        <Form.Item
+          name="relationship"
+          label="Relationship"
+          rules={generalValidationRules}
+        >
           <Select options={RELATIONSHIPS} />
         </Form.Item>
 

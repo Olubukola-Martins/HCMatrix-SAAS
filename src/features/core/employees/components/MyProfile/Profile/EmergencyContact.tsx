@@ -10,6 +10,10 @@ import { useState, useEffect } from "react";
 import { useQueryClient } from "react-query";
 import { formatPhoneNumber } from "utils/dataHelpers/formatPhoneNumber";
 import { parsePhoneNumber } from "utils/dataHelpers/parsePhoneNumber";
+import {
+  generalValidationRules,
+  textInputValidationRules,
+} from "utils/formHelpers/validation";
 
 import { openNotification } from "utils/notifications";
 
@@ -34,61 +38,59 @@ export const EmergencyContact: React.FC<IProps> = ({
   };
 
   useEffect(() => {
-    if (emergencyContact) {
-      form.setFieldsValue({
-        address: emergencyContact.address,
-        fullName: emergencyContact.fullName,
-        phone: {
-          code: parsePhoneNumber(emergencyContact.phoneNumber).code,
-          number: parsePhoneNumber(emergencyContact.phoneNumber).number,
-        },
-        relationship: emergencyContact.relationship,
-      });
-    }
+    if (!emergencyContact) return;
+    form.setFieldsValue({
+      address: emergencyContact.address,
+      fullName: emergencyContact.fullName,
+      phone: {
+        code: parsePhoneNumber(emergencyContact.phoneNumber).code,
+        number: parsePhoneNumber(emergencyContact.phoneNumber).number,
+      },
+      relationship: emergencyContact.relationship,
+    });
   }, [emergencyContact, form]);
   const { mutate, isLoading } = useSaveEmployeeEmergencyContact();
   const handleFinish = (data: any) => {
-    if (employeeId) {
-      mutate(
-        {
-          employeeId,
-          data: {
-            address: data.address,
-            fullName: data.fullName,
-            phoneNumber: formatPhoneNumber({
-              code: data.phone.code,
-              number: data.phone.number,
-            }),
+    if (!employeeId) return;
+    mutate(
+      {
+        employeeId,
+        data: {
+          address: data.address,
+          fullName: data.fullName,
+          phoneNumber: formatPhoneNumber({
+            code: data.phone.code,
+            number: data.phone.number,
+          }),
 
-            relationship: data.relationship,
-          },
+          relationship: data.relationship,
         },
-        {
-          onError: (err: any) => {
-            openNotification({
-              state: "error",
-              title: "Error Occurred",
-              description:
-                err?.response.data.message ?? err?.response.data.error.message,
-            });
-          },
-          onSuccess: (res: any) => {
-            openNotification({
-              state: "success",
+      },
+      {
+        onError: (err: any) => {
+          openNotification({
+            state: "error",
+            title: "Error Occurred",
+            description:
+              err?.response.data.message ?? err?.response.data.error.message,
+          });
+        },
+        onSuccess: (res: any) => {
+          openNotification({
+            state: "success",
 
-              title: "Success",
-              description: res.data.message,
-              // duration: 0.4,
-            });
+            title: "Success",
+            description: res.data.message,
+            // duration: 0.4,
+          });
 
-            queryClient.invalidateQueries({
-              queryKey: [QUERY_KEY_FOR_SINGLE_EMPLOYEE],
-              // exact: true,
-            });
-          },
-        }
-      );
-    }
+          queryClient.invalidateQueries({
+            queryKey: [QUERY_KEY_FOR_SINGLE_EMPLOYEE],
+            // exact: true,
+          });
+        },
+      }
+    );
   };
 
   return (
@@ -114,18 +116,39 @@ export const EmergencyContact: React.FC<IProps> = ({
           onFinish={handleFinish}
           form={form}
           disabled={disable}
+          requiredMark={false}
         >
-          <Form.Item name="fullName" label="Full Name">
+          <Form.Item
+            name="fullName"
+            label="Full Name"
+            rules={textInputValidationRules}
+          >
             <Input />
           </Form.Item>
-          <Form.Item name="address" label="Address">
+          <Form.Item
+            name="address"
+            label="Address"
+            rules={textInputValidationRules}
+          >
             <Input />
           </Form.Item>
-          <Form.Item name="relationship" label="Relationship">
+          <Form.Item
+            name="relationship"
+            label="Relationship"
+            rules={generalValidationRules}
+          >
             <Select options={RELATIONSHIPS} />
           </Form.Item>
           <FormPhoneInput Form={Form} />
-          {!disable && <AppButton label="Save Changes" isLoading={isLoading} />}
+          <div className="md:col-span-2 flex justify-end">
+            {!disable && (
+              <AppButton
+                label="Save Changes"
+                type="submit"
+                isLoading={isLoading}
+              />
+            )}
+          </div>
         </Form>
       </div>
     </div>

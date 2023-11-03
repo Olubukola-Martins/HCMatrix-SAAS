@@ -57,9 +57,15 @@ const getData = async (
 };
 
 export const useGetExitHandOverForms = (props: IGetDataProps) => {
-  const { pagination, searchParams } = props;
+  const { pagination, searchParams, status, employeeId } = props;
   const queryData = useQuery(
-    [QUERY_KEY_FOR_EXIT_HAND_OVER_FORMS, pagination, searchParams],
+    [
+      QUERY_KEY_FOR_EXIT_HAND_OVER_FORMS,
+      pagination,
+      searchParams,
+      status,
+      employeeId,
+    ],
     () =>
       getData({
         ...props,

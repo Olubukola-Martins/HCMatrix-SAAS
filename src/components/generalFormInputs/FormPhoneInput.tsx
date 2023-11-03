@@ -1,18 +1,26 @@
-import { Input, Select } from "antd";
+import { Input, Select, Form } from "antd";
 import { useFetchCountries } from "hooks/useFetchCountries";
 
 import React, { useState } from "react";
 import { TCountry } from "types/country";
 import {
   generalValidationRules,
-  textInputValidationRules,
   phoneNumberValidationRule,
+  generalValidationRulesOp,
+  phoneNumberValidationRuleOp,
 } from "utils/formHelpers/validation";
 
 export const FormPhoneInput: React.FC<{
-  Form: any;
+  Form: typeof Form;
   showLabel?: boolean;
-}> = ({ Form, showLabel = true }) => {
+  control?: { label: string; name: string };
+  optional?: boolean;
+}> = ({
+  Form,
+  showLabel = true,
+  control = { label: "Phone Number", name: "phone" },
+  optional = false,
+}) => {
   const { data: countries, isSuccess } = useFetchCountries();
   const [searchedCountries, setSearchedCountries] = useState<TCountry[]>();
 
@@ -34,12 +42,12 @@ export const FormPhoneInput: React.FC<{
   const mainCountries = !!searchedCountries ? searchedCountries : countries;
   if (isSuccess) {
     return (
-      <Form.Item name="phone" label={showLabel ? "Phone Number" : null}>
+      <Form.Item name={control.name} label={showLabel ? control?.label : null}>
         <Input.Group compact>
           <Form.Item
             noStyle
-            rules={generalValidationRules}
-            name={["phone", "code"]}
+            rules={optional ? generalValidationRulesOp : generalValidationRules}
+            name={[control.name, "code"]}
           >
             <Select
               showSearch
@@ -47,23 +55,27 @@ export const FormPhoneInput: React.FC<{
               onClear={() => setSearchedCountries([])}
               onSearch={handleCountrySearch}
               className="rounded border-slate-400"
-              style={{ width: "35%" }}
+              style={{ width: "25%" }}
               defaultActiveFirstOption={false}
               showArrow={false}
               filterOption={false}
               options={mainCountries?.map((item) => ({
-                label: `${item.name}`,
+                label: `+${item.code}`,
                 value: item.code,
               }))}
             />
           </Form.Item>
           <Form.Item
             noStyle
-            rules={[...textInputValidationRules, phoneNumberValidationRule]}
-            name={["phone", "number"]}
+            rules={
+              optional
+                ? [phoneNumberValidationRuleOp]
+                : [phoneNumberValidationRule]
+            }
+            name={[control.name, "number"]}
           >
             <Input
-              style={{ width: "65%" }}
+              style={{ width: "75%" }}
               placeholder="Phone"
               className="rounded border-slate-400 text-left"
               autoComplete="phone"

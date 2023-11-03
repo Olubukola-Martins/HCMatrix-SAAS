@@ -1,16 +1,18 @@
 import { useMutation } from "react-query";
-import { IUserLoginProps } from "../types";
+import { IUserLoginProps, TGeneralAuthResponse } from "../types";
 import axios from "axios";
 import { MICROSERVICE_ENDPOINTS } from "config/enviroment";
 
-export const loginUser = async (props: IUserLoginProps) => {
+export const loginUser = async (
+  props: IUserLoginProps
+): Promise<TGeneralAuthResponse> => {
   const url = `${MICROSERVICE_ENDPOINTS.AUTHENTICATION}/authenticate`;
 
-  // necessary to make immediate changes when in  a central place when schema changes
   const data = { ...props };
 
   const response = await axios.post(url, data);
-  return response;
+  const result = response.data as unknown as TGeneralAuthResponse;
+  return result;
 };
 
 export const useLoginUser = () => {

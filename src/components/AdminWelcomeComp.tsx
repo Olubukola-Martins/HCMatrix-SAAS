@@ -1,18 +1,16 @@
 import { Avatar, Modal } from "antd";
-import { IAuthDets } from "features/authentication/types";
 import React, { useContext } from "react";
-import { useAuthUser } from "react-auth-kit";
 import { GlobalContext, EGlobalOps } from "stateManagers/GlobalContextProvider";
 import Themes from "./Themes";
+import { useApiAuth } from "hooks/useApiAuth";
+import { getEmployeeFullName } from "features/core/employees/utils/getEmployeeFullName";
+import { DEFAULT_PROFILE_IMAGE_URL } from "constants/general";
 
 const AdminWelcomeComp = () => {
-  const auth = useAuthUser();
-  const authDetails = auth() as unknown as IAuthDets;
-  const token = authDetails.userToken;
-  const user = authDetails?.user;
+  const { currentCompanyEmployeeDetails: user, globalDispatch } = useApiAuth();
 
   const globalCtx = useContext(GlobalContext);
-  const { state: globalState, dispatch: globalDispatch } = globalCtx;
+  const { state: globalState } = globalCtx;
   const showModal = globalState.showAdminWelcomeMessage;
   const handleGetStarted = () => {
     globalDispatch({ type: EGlobalOps.setShowInitialSetup, payload: true });
@@ -33,15 +31,13 @@ const AdminWelcomeComp = () => {
             <div className="flex flex-col gap-3 items-center text-center mt-4">
               <Avatar
                 size={80}
-                src={
-                  user.avatarUrl ??
-                  "https://res.cloudinary.com/ddvaelej7/image/upload/v1655735373/samples/Ellipse_4_j0womm.png"
-                }
+                src={user?.avatarUrl ?? DEFAULT_PROFILE_IMAGE_URL}
               />
+              {/* TODO: Ensure that the proper message is shown, as in good day or good evening */}
               <p className="font-bold text-lg tracking-wider">
-                Good day, {user.fullName}! I'm Basil, the HCMatrix onboarding
-                specialist, and I'd love to walk you through the onboarding
-                process.{" "}
+                Good day, {getEmployeeFullName(user)}! I'm Basil, the HCMatrix
+                onboarding specialist, and I'd love to walk you through the
+                onboarding process.{" "}
               </p>
               <p>
                 Find out how to set up departments, roles & permissions,

@@ -1,4 +1,4 @@
-import { Select, Spin } from "antd";
+import { Select, Spin, Form } from "antd";
 import { useGetCostCentres } from "features/payroll/hooks/costCentres/useGetCostCentres";
 import { TCostCentre } from "features/payroll/types";
 import { useDebounce } from "hooks/useDebounce";
@@ -6,7 +6,7 @@ import { useState } from "react";
 import { generalValidationRules } from "utils/formHelpers/validation";
 
 export const FormCostCentreInput: React.FC<{
-  Form: any;
+  Form: typeof Form;
   showLabel?: boolean;
   onSelect?: (val: number, option: TCostCentre) => void;
   control?: { label: string; name: string | (string | number)[] };

@@ -12,7 +12,7 @@ const ReimbursementSettingPage = () => {
       <div className="Container ">
         <PageIntro
           title="Reimbursement Settings"
-          link={appRoutes.selfServiceHome}
+          link={appRoutes.selfServiceReimbursement}
         />
         <ReimbursmentSetting />
       </div>

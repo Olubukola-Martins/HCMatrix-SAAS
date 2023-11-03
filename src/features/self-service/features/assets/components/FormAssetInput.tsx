@@ -1,4 +1,4 @@
-import { Select, Spin } from "antd";
+import { Select, Spin, Form } from "antd";
 import { useApiAuth } from "hooks/useApiAuth";
 import { useDebounce } from "hooks/useDebounce";
 import { useState } from "react";
@@ -6,7 +6,7 @@ import { generalValidationRules } from "utils/formHelpers/validation";
 import { useGetAssets } from "../hooks/useGetAssets";
 
 export const FormAssetInput: React.FC<{
-  Form: any;
+  Form: typeof Form;
   showLabel?: boolean;
   control?: { label: string; name: string | (string | number)[] };
 }> = ({ Form, showLabel = true, control }) => {

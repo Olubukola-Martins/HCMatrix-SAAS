@@ -8,7 +8,7 @@ import { openNotification } from "utils/notifications";
 const QUERY_KEY_FOR_STATES = "states";
 
 export interface IStateProps {
-  countryId: number;
+  countryId?: number;
   searchParams?: ISearchParams;
 }
 
@@ -16,9 +16,10 @@ export const getStates = async ({
   countryId,
   searchParams,
 }: IStateProps): Promise<TState[]> => {
-  let url = `${MICROSERVICE_ENDPOINTS.UTILITY}/address/state/${countryId}`;
+  let url = `${MICROSERVICE_ENDPOINTS.UTILITY}/address/state`;
   const config = {
     params: {
+      countryId,
       search: searchParams?.name,
     },
   };
@@ -37,7 +38,10 @@ export const getStates = async ({
   return data;
 };
 
-export const useFetchStates = ({ countryId, searchParams }: IStateProps) => {
+export const useFetchStates = ({
+  countryId,
+  searchParams,
+}: IStateProps = {}) => {
   const queryData = useQuery(
     [QUERY_KEY_FOR_STATES, countryId, searchParams?.name],
     () => getStates({ countryId, searchParams }),
@@ -45,7 +49,7 @@ export const useFetchStates = ({ countryId, searchParams }: IStateProps) => {
       refetchInterval: false,
       refetchIntervalInBackground: false,
       refetchOnWindowFocus: false,
-      enabled: countryId ? true : false, // or countryId ? true : false,
+
       onError: (err: any) => {
         // show notification
         openNotification({

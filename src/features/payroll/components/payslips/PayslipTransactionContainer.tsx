@@ -99,7 +99,7 @@ const columns: ColumnsType<TTransaction> = [
 ];
 
 interface IProps {
-  employeePayrollType: TPayrollSchemeType;
+  employeePayrollType?: TPayrollSchemeType;
 }
 
 interface ComponentProps {}

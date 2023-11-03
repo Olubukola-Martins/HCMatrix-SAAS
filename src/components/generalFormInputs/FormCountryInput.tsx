@@ -1,4 +1,4 @@
-import { Select } from "antd";
+import { Select, Form } from "antd";
 import { useFetchCountries } from "hooks/useFetchCountries";
 import { useEffect, useState } from "react";
 import { TCountry } from "types/country";
@@ -7,7 +7,7 @@ import { generalValidationRules } from "utils/formHelpers/validation";
 export const FormCountryInput: React.FC<{
   onClear?: () => void;
   handleSelect?: (val: number) => void;
-  Form: any;
+  Form: typeof Form;
   showLabel?: boolean;
   control?: { label: string; name: string };
 }> = ({ Form, showLabel = true, control, handleSelect, onClear }) => {

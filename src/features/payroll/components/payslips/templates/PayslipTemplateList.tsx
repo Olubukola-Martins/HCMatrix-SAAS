@@ -1,4 +1,4 @@
-import { Pagination, Skeleton } from "antd";
+import { Empty, Pagination, Skeleton } from "antd";
 import { usePagination } from "hooks/usePagination";
 import { TemplateCard } from "components/cards/TemplateCard";
 import { useNavigate } from "react-router-dom";
@@ -35,30 +35,36 @@ export const PayslipTemplateList: React.FC = () => {
       )}
       <div>
         <Skeleton loading={isFetching}>
-          <>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
-              {data?.data.map((item) => (
-                <TemplateCard
-                  data={{
-                    name: item.name,
-                    title: "Payslip",
-                    link: appRoutes.viewPayslipTemplate(item.id).path,
-                  }}
-                  key={item.id}
-                  handleDelete={{
-                    fn: () => handleDelete({ template: { ...item } }),
-                  }}
-                  handleEdit={{
-                    fn: () =>
-                      navigate(appRoutes.editPayslipTemplate(item.id).path),
-                  }}
-                />
-              ))}
-            </div>
-            <div className="mt-4 flex justify-end">
-              <Pagination {...pagination} onChange={onChange} size="small" />
-            </div>
-          </>
+          {data && data?.data.length > 0 && (
+            <>
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
+                {data?.data.map((item) => (
+                  <TemplateCard
+                    data={{
+                      name: item.name,
+                      title: "Payslip",
+                      link: appRoutes.viewPayslipTemplate(item.id).path,
+                    }}
+                    key={item.id}
+                    handleDelete={{
+                      fn: () => handleDelete({ template: { ...item } }),
+                    }}
+                    handleEdit={{
+                      fn: () =>
+                        navigate(appRoutes.editPayslipTemplate(item.id).path),
+                    }}
+                  />
+                ))}
+              </div>
+              <div className="mt-4 flex justify-end">
+                <Pagination {...pagination} onChange={onChange} size="small" />
+              </div>
+            </>
+          )}
+          {data?.data && data?.data.length === 0 && (
+            // TODO: Create an AppEmpty Component
+            <Empty description="No Templates Found!" />
+          )}
         </Skeleton>
       </div>
     </>

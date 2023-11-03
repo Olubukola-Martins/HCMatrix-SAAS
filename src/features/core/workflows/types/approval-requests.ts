@@ -11,6 +11,8 @@ import { TransferRequestEntity } from "./approvalRequestEntities/transferRequest
 import { TravelRequestEntity } from "./approvalRequestEntities/travelRequestEntity";
 import { VehicleBookingEntity } from "./approvalRequestEntities/vehicleBookingEntity";
 import { TLoanRequest } from "features/self-service/features/loan/types";
+import { TTHandOverForm } from "features/self-service/features/handover-forms/types";
+import { TApprovalStatus } from "types/statuses";
 
 // TODO: Check for basic stage and update type
 interface AdvancedStage {
@@ -39,7 +41,7 @@ export type TApprovalRequest = {
 
   entityType: string;
   entityId: number;
-  status: string;
+  status: TApprovalStatus;
   approverId: number;
   createdAt: string;
   updatedAt: string;
@@ -51,9 +53,10 @@ export type TApprovalRequest = {
   transferRequisition?: TransferRequestEntity;
   promotionRequisition?: PromotionRequestEntity;
   reimbursementRequisition?: ReimbursementRequestEntity;
-  travelRequisition?: TravelRequestEntity;
+  travelRequest?: TravelRequestEntity;
   positionChangeRequisition?: PositionChangeRequestEntity;
   moneyRequisition?: MoneyRequestEntity;
   payroll?: TPayrollListData;
   loan?: TLoanRequest;
+  exitHandoverForm?: TTHandOverForm;
 };

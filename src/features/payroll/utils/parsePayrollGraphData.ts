@@ -47,7 +47,6 @@ export const parsePayrollGraphAnalyticsData = (props: {
       );
       return ans;
     });
-    console.log("last", value);
     value.data.totalGrossPay = Object.entries(
       data as TPayrollGraphAnalyticsItem4Waterfall
     ).map(([key, value]) => {

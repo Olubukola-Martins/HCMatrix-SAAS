@@ -1,3 +1,5 @@
+import { TPermissionLabel } from "features/core/roles-and-permissions/types";
+
 export type TRouteDataCategory = "doesnt-require-authentication";
 
 export type TRouteData = {
@@ -7,4 +9,12 @@ export type TRouteData = {
   title?: string;
   isSearchable: boolean;
   isPrimaryFeature?: boolean;
+  hidden?: boolean;
+};
+
+type TSubscription = {};
+export type TAppPageDataFnProps = {
+  userPermissions: TPermissionLabel[];
+  hasSelfService?: boolean;
+  subscription?: TSubscription;
 };

@@ -9,12 +9,14 @@ import { useCreateSisterCompany } from "../hooks/useCreateSisterCompany";
 import { AppButton } from "components/button/AppButton";
 import { openNotification } from "utils/notifications";
 import { FormIndustryInput } from "components/generalFormInputs/FormIndustryInput";
+import { useQueryClient } from "react-query";
+import { QUERY_KEY_FOR_AUTHENTICATED_USER } from "features/authentication/hooks/useGetAuthUser";
 
 export const AddSisterCompanyForm = ({ open, handleClose }: IModalProps) => {
   const [form] = Form.useForm();
 
   const { mutate, isLoading } = useCreateSisterCompany();
-
+  const queryClient = useQueryClient();
   const handleSubmit = (data: any) => {
     mutate(
       {
@@ -40,6 +42,7 @@ export const AddSisterCompanyForm = ({ open, handleClose }: IModalProps) => {
             description: res.data.message,
             // duration: 0.4,
           });
+          queryClient.invalidateQueries([QUERY_KEY_FOR_AUTHENTICATED_USER]);
           form.resetFields();
           handleClose();
         },

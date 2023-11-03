@@ -8,10 +8,11 @@ interface ComponentProps {}
 
 const Component: React.FC<ComponentProps & TApprovalStatusContainerProps> = ({
   status,
+  employeeId,
 }) => {
   return (
     <div>
-      <PromotionApprovalRequestsTable status={status} />
+      <PromotionApprovalRequestsTable status={status} employeeId={employeeId} />
     </div>
   );
 };

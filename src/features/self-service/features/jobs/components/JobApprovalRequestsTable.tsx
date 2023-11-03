@@ -15,6 +15,7 @@ import { useFetchApprovalRequests } from "features/core/workflows/hooks/useFetch
 import { useQueryClient } from "react-query";
 import { QUERY_KEY_FOR_JOB_REQUISITIONS } from "../../requisitions/hooks/job/useGetJobRequisitions";
 import { JobRequestDetails } from "./JobRequestDetails";
+import { DEFAULT_DATE_FORMAT } from "constants/dateFormats";
 
 const JobApprovalRequestsTable: React.FC<{
   status?: TApprovalStatus;
@@ -45,7 +46,9 @@ const JobApprovalRequestsTable: React.FC<{
       dataIndex: "date",
       key: "date",
       render: (_, item) => (
-        <span>{moment(item.jobRequisition?.date).format("YYYY/MM/DD")} </span>
+        <span>
+          {moment(item.jobRequisition?.date).format(DEFAULT_DATE_FORMAT)}{" "}
+        </span>
       ),
     },
     {
@@ -54,7 +57,9 @@ const JobApprovalRequestsTable: React.FC<{
       key: "preferredStartDate",
       render: (_, item) => (
         <span className="capitalize">
-          {moment(item.jobRequisition?.preferredStartDate).format("YYYY/MM/DD")}{" "}
+          {moment(item.jobRequisition?.preferredStartDate).format(
+            DEFAULT_DATE_FORMAT
+          )}{" "}
         </span>
       ),
     },

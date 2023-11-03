@@ -17,9 +17,7 @@ export const PromotionRequestsTable: React.FC<{
 }> = ({ status, employeeId }) => {
   const [requestId, setRequestId] = useState<number>();
   const { companyId, token } = useApiAuth();
-  const { pagination, onChange } = usePagination({
-    pageSize: 4,
-  });
+  const { pagination, onChange } = usePagination();
   const { data, isFetching } = useGetPromotionRequisitions({
     companyId,
     token,
