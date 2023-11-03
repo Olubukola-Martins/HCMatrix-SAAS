@@ -1,20 +1,26 @@
 import { appRoutes } from "config/router/paths";
+import { authRoutesDontRequireAuthentication } from "config/router/routes/auth";
 import { LOCAL_STORAGE_AUTH_KEY } from "constants/localStorageKeys";
 import { IAuthDets } from "features/authentication/types";
 import { useContext, useEffect } from "react";
 import { useAuthUser } from "react-auth-kit";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { GlobalContext } from "stateManagers/GlobalContextProvider";
 
 export const useApiAuth = () => {
   const navigate = useNavigate();
-
+  const { pathname } = useLocation();
+  const routesAllowedWithoutAuthentication =
+    authRoutesDontRequireAuthentication.map((item) => item.path);
   useEffect(() => {
-    if (localStorage.getItem(LOCAL_STORAGE_AUTH_KEY) === null) {
+    if (
+      localStorage.getItem(LOCAL_STORAGE_AUTH_KEY) === null &&
+      !routesAllowedWithoutAuthentication.includes(pathname)
+    ) {
       // Redirect to login
       navigate(appRoutes.login, { replace: true });
     }
-  }, [navigate]);
+  }, [navigate, pathname, routesAllowedWithoutAuthentication]);
   const auth = useAuthUser();
 
   const authDetails = auth() as unknown as IAuthDets;

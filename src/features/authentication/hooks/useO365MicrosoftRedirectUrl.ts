@@ -15,7 +15,6 @@ export const o365MicrosoftRedirectUrl = async ({
 
   url += `?code=${code}&client_info=${client_info}&session_state=${session_state}`;
   const response = await axios.get(url);
-  alert(JSON.stringify(response));
   const result = response.data as unknown as TGeneralAuthResponse;
   return result;
 };

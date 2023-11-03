@@ -96,7 +96,7 @@ const MicrosoftVerificationStatus = ({
             },
           });
           // }
-          navigate(appRoutes.home);
+          // navigate(appRoutes.home);
         }
       },
     }
