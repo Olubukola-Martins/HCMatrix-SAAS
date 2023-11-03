@@ -66,7 +66,7 @@ const MicrosoftVerificationStatus = ({
           setTempAuthState({
             state: authUserDetails,
           });
-          console.log("Payload was 0");
+
           return;
         }
 
@@ -229,7 +229,7 @@ const MicrosoftVerificationStatus = ({
           <Typography.Title level={4}>Invalid token !</Typography.Title>
           <p>
             Please try to{" "}
-            <Link to="/login" className="text-caramel">
+            <Link to={appRoutes.login} className="text-caramel">
               Login
             </Link>
             , instead.
@@ -243,7 +243,7 @@ const MicrosoftVerificationStatus = ({
           </Typography.Title>
           <p>
             Click here to{" "}
-            <Link to="/login" className="text-caramel">
+            <Link to={appRoutes.login} className="text-caramel">
               Login
             </Link>
             .

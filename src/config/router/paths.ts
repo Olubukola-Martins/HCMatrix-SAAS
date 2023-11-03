@@ -5,7 +5,7 @@ import { TPayrollSchemeType } from "features/payroll/types/payrollSchemes";
 // rather they are managed by a single file
 export const appRoutes = {
   // auth routes
-  microsoftCallback: `auth/microsoft/callback`,
+  microsoftCallback: `/auth/microsoft/callback`,
   login: `/login`,
   register: `/register`,
   verify: `/verify`,
