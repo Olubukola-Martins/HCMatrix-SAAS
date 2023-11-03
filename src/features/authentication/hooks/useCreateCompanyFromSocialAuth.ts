@@ -2,10 +2,12 @@ import axios from "axios";
 import { ICreateCompSocialAuthProps, TGeneralAuthResponse } from "../types";
 import { useMutation } from "react-query";
 import { MICROSERVICE_ENDPOINTS } from "config/enviroment";
+import { TCompany } from "features/core/company/types";
 
 type TResponse = {
   message: TGeneralAuthResponse["message"];
   data: TGeneralAuthResponse["data"]["payload"][0];
+  // data: TCompany;
 };
 export const createCompanyFromSocialAuth = async (
   props: ICreateCompSocialAuthProps

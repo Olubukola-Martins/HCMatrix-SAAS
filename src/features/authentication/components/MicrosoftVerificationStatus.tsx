@@ -15,6 +15,7 @@ import { useCreateCompanyFromSocialAuth } from "../hooks/useCreateCompanyFromSoc
 import { o365MicrosoftRedirectUrl } from "../hooks/useO365MicrosoftRedirectUrl";
 import { IAuthDets } from "../types";
 import { appRoutes } from "config/router/paths";
+import { saveMessagingDeviceToken } from "config/firebase/messaging";
 
 const MicrosoftVerificationStatus = ({
   code,
@@ -146,6 +147,11 @@ const MicrosoftVerificationStatus = ({
                   id: authUserDetails.companies[0].company.id,
                   name: authUserDetails.companies[0].company.name,
                 },
+              });
+              saveMessagingDeviceToken({
+                employeeId: authUserDetails.companies[0].id,
+                companyId: authUserDetails.companies[0].company.id,
+                token: authUserDetails.userToken,
               });
               setShowCreateCompanyModal(false);
             }
