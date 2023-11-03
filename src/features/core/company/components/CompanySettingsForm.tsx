@@ -176,7 +176,7 @@ const CompanySettingsForm = () => {
                 rules={
                   !!companyParams?.value.administrator.adminEmail
                     ? emailValidationRulesOp
-                    : [{ required: false }]
+                    : emailValidationRules
                 }
               >
                 <Input
