@@ -117,8 +117,7 @@ export const RELATIONSHIPS = [
     value: "cousin",
   },
 ];
-export const DEFAULT_PROFILE_IMAGE_URL =
-  "https://res.cloudinary.com/ddvaelej7/image/upload/v1655735373/samples/Ellipse_4_j0womm.png";
+export const DEFAULT_PROFILE_IMAGE_URL = "https://picsum.photos/193";
 export const DEFAULT_LOGO_IMAGE_URL = "https://picsum.photos/190";
 export const EMPLOYMENT_TYPES = [
   {
