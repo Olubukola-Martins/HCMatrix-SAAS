@@ -91,6 +91,7 @@ export const NewLoan: React.FC<IModalProps> = ({ open, handleClose }) => {
   const handleRequiresForm = (val: boolean) => {
     setRequiresForm(val);
   };
+  const [_, startTransition] = React.useTransition();
   return (
     <Modal
       open={open}
@@ -139,7 +140,9 @@ export const NewLoan: React.FC<IModalProps> = ({ open, handleClose }) => {
             placeholder="Amount"
             // TODO: Implement Debounce for this
             onChange={(val: number | null) =>
-              setWorthinessInput((prev) => ({ ...prev, amount: val ?? 0 }))
+              startTransition(() =>
+                setWorthinessInput((prev) => ({ ...prev, amount: val ?? 0 }))
+              )
             }
           />
         </Form.Item>
