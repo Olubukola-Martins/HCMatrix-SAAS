@@ -55,11 +55,11 @@ const EmpPageHeader: React.FC<{
         <PageIntro title="Employees" link="/settings" />
         <div className="flex items-center gap-3">
           {/* TODO: Create an Export Modal to allow for filtering before export */}
-          <Button
+          {/* <Button
             icon={<ExportOutlined />}
             type="text"
             title="Export Employee Data"
-          />
+          /> */}
           <DropdownButton
             label="Add Employee"
             items={[
