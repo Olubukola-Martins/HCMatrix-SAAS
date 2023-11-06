@@ -82,7 +82,7 @@ const EmpPageHeader: React.FC<{
             ]}
           />
 
-          <Dropdown
+          {/* <Dropdown
             overlay={
               <Menu>
                 <Menu.Item>Import from GApps</Menu.Item>
@@ -94,7 +94,7 @@ const EmpPageHeader: React.FC<{
             <button className="transparentButton flex items-center gap-2">
               <span>Sync</span> <i className="fa-solid fa-chevron-down"></i>
             </button>
-          </Dropdown>
+          </Dropdown> */}
           {/* <Button
             icon={<FilterOutlined />}
             type="text"
