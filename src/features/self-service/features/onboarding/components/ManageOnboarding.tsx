@@ -102,7 +102,7 @@ const ManageOnboarding = () => {
             type: "checkbox",
             ...rowSelection,
           }}
-          dataSource={data?.data}
+          dataSource={data?.data.map((item) => ({ ...item, key: item.id }))}
           loading={isLoading}
           columns={columns}
           pagination={{ ...pagination, total: data?.total }}
