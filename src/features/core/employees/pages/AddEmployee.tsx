@@ -31,13 +31,11 @@ export const AddEmployee = () => {
   const { mutate, isLoading } = useCreateEmployee();
 
   const navigate = useNavigate();
-  const [successData, setSuccessData] = useState<{
+
+  const handleNextAction = (successData: {
     employeeId: number;
     onboardingId: number;
-  }>();
-
-  const handleNextAction = () => {
-    if (!successData) return;
+  }) => {
     switch (nextAction) {
       case "complete-profile":
         navigate(appRoutes.singleEmployee(successData.employeeId).path);
@@ -99,12 +97,12 @@ export const AddEmployee = () => {
         },
         onSuccess: (res: any) => {
           const result = res.data.data;
-          setSuccessData({
+          const successData = {
             employeeId: result.id,
             onboardingId: result?.onboarding.id,
-          });
+          };
 
-          handleNextAction();
+          handleNextAction(successData);
 
           openNotification({
             state: "success",
@@ -125,7 +123,7 @@ export const AddEmployee = () => {
   return (
     <>
       <div className="Container">
-        <PageIntro title="Add Employee" link="/settings/employees" />
+        <PageIntro title="Add Employee" link={appRoutes.employeeSettings} />
 
         <div className="bg-card px-1 md:px-5 py-7 rounded-md mt-7 text-accent">
           <Form
