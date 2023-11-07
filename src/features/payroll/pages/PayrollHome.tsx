@@ -22,18 +22,16 @@ const innerStyle =
 
 const PayrollHome = () => {
   const pendingItems = [
-    { content: "Complete company profile", done: true },
-    { content: "Create cost center/branch", done: true },
-    { content: "Add Employees", done: true },
-    { content: "Create paygrades", done: true },
-    { content: "Create groups", done: false },
-    { content: "Create/Select Approval Workflow  ", done: false },
-    { content: "Set-up Salary Type/ scheme ", done: false },
-    { content: "Create Attendance/Time Track Team", done: false },
-    { content: "Create/Select Department", done: false },
-    { content: "Select	Payroll Frequency", done: false },
-    { content: "Create Wallet", done: false },
-    { content: "Run Payroll", done: false },
+    { content: "Setup company currency settings", done: true },
+    { content: "Setup cost centres", done: true },
+    { content: "Define exhchange rates", done: true },
+    { content: "Setup payroll schemes", done: false },
+    { content: "Setup Organizations", done: false },
+    { content: "Configure payroll settings", done: false },
+    { content: "Configure payroll reports", done: false },
+    { content: "Configure payslip templates", done: false },
+    { content: "Configure grades/categories", done: false },
+    { content: "Add Employees", done: false },
   ];
 
   const [showItems, setShowItems] = useState(false);
@@ -136,7 +134,10 @@ const PayrollHome = () => {
                     <div className="setUp_progress2 general_setup">
                       <div className="setUp_progress-bar2" />
                     </div>
-                    <span className="text-sm font-light">3/10 complete</span>
+                    <span className="text-sm font-light">
+                      {pendingItems.filter((item) => item.done).length}/
+                      {pendingItems.length} complete
+                    </span>
                   </div>
                   {/* items */}
                   <motion.div className="flex flex-col gap-4">
