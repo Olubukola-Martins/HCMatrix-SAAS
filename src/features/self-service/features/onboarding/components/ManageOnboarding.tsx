@@ -7,6 +7,7 @@ import { Link } from "react-router-dom";
 import { TOnboarding } from "../types";
 import BulkOnboardingActionHeader from "./BulkOnboardingActionHeader";
 import { useState } from "react";
+import { getAppropriateColorForStatus } from "utils/colorHelpers/getAppropriateColorForStatus";
 
 const ManageOnboarding = () => {
   const columns: ColumnsType<TOnboarding> = [
@@ -51,7 +52,14 @@ const ManageOnboarding = () => {
       title: "Status",
       dataIndex: "status",
       key: "status",
-      render: (val) => <span className="capitalize">{val}</span>,
+      render: (val) => (
+        <span
+          className="capitalize"
+          style={{ color: getAppropriateColorForStatus(val) }}
+        >
+          {val}
+        </span>
+      ),
     },
     {
       title: "Action",
