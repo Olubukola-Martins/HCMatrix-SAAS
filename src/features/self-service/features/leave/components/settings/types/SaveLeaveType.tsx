@@ -56,7 +56,10 @@ export const SaveLeaveType: React.FC<IProps> = ({
       requireReliever: data.requireReliever,
     });
   }, [form, data]);
-  const [leaveLengthType, setLeaveLengthType] = useState<string>("dynamic");
+  const [leaveLengthType, setLeaveLengthType] = useState<string>("fixed");
+  useEffect(() => {
+    form.setFieldValue("length", undefined);
+  }, [form, leaveLengthType]);
   return (
     <Themes>
       <Modal
@@ -77,6 +80,7 @@ export const SaveLeaveType: React.FC<IProps> = ({
           onFinish={(data) =>
             onSubmit.fn({
               name: data.name,
+              typeOfLength: data.typeOfLength,
               length: data.length,
               employeesGetAllowance: data.employeesGetAllowance,
               gender: data.eligibilityCriteria?.gender ?? null,
@@ -100,8 +104,8 @@ export const SaveLeaveType: React.FC<IProps> = ({
           </Form.Item>
           <Form.Item
             className="col-span-1"
-            rules={[]}
-            name="leaveLengthType"
+            rules={generalValidationRules}
+            name="typeOfLength"
             label={
               <AppTooltip
                 children={<span>Type of Leave Length</span>}

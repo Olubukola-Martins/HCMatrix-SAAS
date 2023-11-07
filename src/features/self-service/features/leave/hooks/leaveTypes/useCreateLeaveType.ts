@@ -10,6 +10,7 @@ import { QUERY_KEY_FOR_LEAVE_TYPES } from "./useGetLeaveTypes";
 export type TCreateLeaveTypeProps = Pick<
   TLeaveType,
   | "name"
+  | "typeOfLength"
   | "length"
   | "employeesGetAllowance"
   | "gender"

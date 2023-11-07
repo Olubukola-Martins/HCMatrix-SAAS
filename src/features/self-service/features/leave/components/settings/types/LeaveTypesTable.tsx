@@ -34,6 +34,14 @@ export const LeaveTypesTable: React.FC<{
       key: "Length",
       render: (val, item) => <span className="capitalize">{item.length}</span>,
     },
+    {
+      title: "Length Type",
+      dataIndex: "Length Type",
+      key: "Length Type",
+      render: (val, item) => (
+        <span className="capitalize">{item.typeOfLength}</span>
+      ),
+    },
 
     {
       title: "Status",
@@ -132,33 +140,10 @@ export const LeaveTypesTable: React.FC<{
       <Table
         columns={columns}
         size="small"
-        dataSource={
-          data
-            ? [
-                {
-                  id: 0,
-                  name: "Test",
-                  label: "test",
-                  length: "Dynamic: Employee Spillover",
-                  requireReliever: false,
-                  employeesGetAllowance: false,
-                  applicableToCertainGroup: true,
-                  groupId: 8,
-                  gender: "male",
-                  maritalStatus: "",
-                  employeeStatus: "confirmed",
-                  isActive: true,
-                  companyId: 5,
-                  createdAt: "2023-10-30T16:44:40.000Z",
-                  updatedAt: "2023-10-30T17:42:59.000Z",
-                } as unknown as TLeaveType,
-                ...data?.data.map((item) => ({
-                  key: item.id,
-                  ...item,
-                })),
-              ]
-            : undefined
-        }
+        dataSource={data?.data.map((item) => ({
+          key: item.id,
+          ...item,
+        }))}
         loading={isFetching}
         pagination={{ ...pagination, total: data?.total }}
         onChange={onChange}

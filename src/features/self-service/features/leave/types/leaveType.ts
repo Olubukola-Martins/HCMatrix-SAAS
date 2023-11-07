@@ -5,7 +5,8 @@ export interface TLeaveType {
   id: number;
   name: string;
   label: string;
-  length: number;
+  length: number | "spillover";
+  typeOfLength: "fixed" | "dynamic";
   employeesGetAllowance: boolean;
   calculation: string;
   percentageAmount: number;

@@ -23,6 +23,7 @@ import { bulkUploadFiles } from "hooks/useUploadFile";
 import { useApiAuth } from "hooks/useApiAuth";
 import { useGetLeavePolicySetting } from "../../hooks/leavePolicySetting/useGetLeavePolicySetting";
 import { useGetHolidays } from "features/core/holidays/hooks/useGetHolidays";
+import { useGetEmployeeLeaveDBAnalytics } from "../../hooks/leaveAnalytics/useGetEmployeeLeaveDBAnalytics";
 
 interface IProps extends IModalProps {}
 
@@ -118,12 +119,16 @@ export const RequestForLeave: React.FC<IProps> = ({ handleClose, open }) => {
     form.validateFields();
   }, [form, specificDates]);
   const [requiresLeaveReliever, setRequiresLeaveReliever] = useState(false);
-  const [leaveTypeMaxLength, setLeaveTypeMaxLength] = useState<number>(0);
+  const [leaveTypeMaxLength, setLeaveTypeMaxLength] = useState<number>();
   useEffect(() => {
     form.setFieldValue("duration", [null, null]);
     form.setFieldValue("specificDates", null);
     form.validateFields();
-  }, [leaveTypeMaxLength]);
+  }, [form, leaveTypeMaxLength]);
+  const {
+    data: employeeLeaveAnalytics,
+    isFetching: isFetchingEmployeeLeaveAnalytics,
+  } = useGetEmployeeLeaveDBAnalytics();
   return (
     <Modal
       open={open}
@@ -134,7 +139,11 @@ export const RequestForLeave: React.FC<IProps> = ({ handleClose, open }) => {
     >
       <Skeleton
         active
-        loading={isFetchingLeavePolicySetting || isFetchingHolidays}
+        loading={
+          isFetchingLeavePolicySetting ||
+          isFetchingHolidays ||
+          isFetchingEmployeeLeaveAnalytics
+        }
         paragraph={{ rows: 32 }}
       >
         <Form
@@ -144,7 +153,7 @@ export const RequestForLeave: React.FC<IProps> = ({ handleClose, open }) => {
           onFinish={handleSubmit}
         >
           <div className="flex flex-col gap-2">
-            {leaveTypeMaxLength > 0 && (
+            {leaveTypeMaxLength !== undefined && (
               <span className="text-red-400 text-xs">{`Only ${leaveTypeMaxLength} days or less are allowed for the selected leave type!`}</span>
             )}
             {leavePolicySetting?.includeWeekends === false && (
@@ -158,8 +167,30 @@ export const RequestForLeave: React.FC<IProps> = ({ handleClose, open }) => {
             Form={Form}
             control={{ name: "leaveTypeId", label: "Leave Type" }}
             handleSelect={(_, type) => {
+              const maxLength = employeeLeaveAnalytics?.spillOver ?? 0;
               setRequiresLeaveReliever(!!type?.requireReliever);
-              type && setLeaveTypeMaxLength(type?.length);
+              console.log(type, "WHY!1");
+
+              if (
+                type &&
+                typeof +type.length === "number" &&
+                type.typeOfLength === "fixed"
+              ) {
+                console.log(type, "WHY!2");
+                setLeaveTypeMaxLength(+type?.length);
+              }
+              // use spillover when the typeofLength is dynamic && length is spillover
+
+              if (
+                type &&
+                typeof type.length === "string" &&
+                type.typeOfLength === "dynamic" &&
+                type.length === "spillover"
+              ) {
+                console.log(type, "WHY!3");
+
+                setLeaveTypeMaxLength(maxLength);
+              }
             }}
           />
           <Form.Item label="How would you like to select your leave days?">
@@ -185,7 +216,10 @@ export const RequestForLeave: React.FC<IProps> = ({ handleClose, open }) => {
                     ) {
                       throw new Error("Please select a date");
                     }
-                    if (leaveLength > leaveTypeMaxLength) {
+                    if (
+                      leaveTypeMaxLength !== undefined &&
+                      leaveLength > leaveTypeMaxLength
+                    ) {
                       throw new Error(
                         `Leave cannot exceed ${leaveTypeMaxLength} days`
                       );
@@ -298,7 +332,10 @@ export const RequestForLeave: React.FC<IProps> = ({ handleClose, open }) => {
                       );
                     }
 
-                    if (leaveLength > leaveTypeMaxLength) {
+                    if (
+                      leaveTypeMaxLength !== undefined &&
+                      leaveLength > leaveTypeMaxLength
+                    ) {
                       throw new Error(
                         `Leave cannot exceed ${leaveTypeMaxLength} days`
                       );

@@ -9,7 +9,7 @@ const LeaveCards = () => {
         <>
           <SimpleCard
             title="Spill Over"
-            highlight={`${data?.spillOver}`}
+            highlight={`${data?.spillOver ?? 0}`}
             loading={isLoading}
           />
           <SimpleCard
