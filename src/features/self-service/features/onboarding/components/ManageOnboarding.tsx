@@ -5,6 +5,8 @@ import { ColumnsType } from "antd/lib/table";
 import { appRoutes } from "config/router/paths";
 import { Link } from "react-router-dom";
 import { TOnboarding } from "../types";
+import BulkOnboardingActionHeader from "./BulkOnboardingActionHeader";
+import { useState } from "react";
 
 const ManageOnboarding = () => {
   const columns: ColumnsType<TOnboarding> = [
@@ -71,18 +73,27 @@ const ManageOnboarding = () => {
   const { data, isLoading } = useFetchAllOnboarding({
     pagination,
   });
+  const [selectedData, setSelectedData] = useState<TOnboarding[]>([]);
+  const rowSelection = {
+    onChange: (selectedRowKeys: React.Key[], selectedRows: TOnboarding[]) => {
+      setSelectedData(selectedRows);
+    },
+  };
+  const clearSelected = () => setSelectedData([]);
   return (
     <>
-      {/* <div className="flex items-center gap-4 justify-end">
-          <button className="button">Start</button>
-          <button className="transparentButton text-caramel">
-            Mark as completed
-          </button>
-        </div> */}
+      <BulkOnboardingActionHeader
+        data={selectedData}
+        clearSelected={clearSelected}
+      />
 
       <div className="mt-7">
         <Table
           size="small"
+          rowSelection={{
+            type: "checkbox",
+            ...rowSelection,
+          }}
           dataSource={data?.data}
           loading={isLoading}
           columns={columns}

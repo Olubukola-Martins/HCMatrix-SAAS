@@ -5,7 +5,7 @@ import { TOnboarding } from "../types";
 import { DEFAULT_PAGE_SIZE } from "constants/general";
 import { useApiAuth } from "hooks/useApiAuth";
 
-const QUERY_KEY_FOR_ONBOARDING = "all-onboarding";
+export const QUERY_KEY_FOR_ONBOARDING = "all-onboarding";
 
 // TO DO : need to exist in the general data entities and refactored
 interface IGetDataProps {
