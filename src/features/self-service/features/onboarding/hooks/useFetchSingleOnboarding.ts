@@ -26,60 +26,10 @@ const getSingleOnboarding = async (vals: {
   };
 
   const res = await axios.get(url, config);
-  const item = res.data.data;
-
-  const tasks = item?.tasks?.map(
-    (item: any): TOnboardingTask => ({
-      id: item.id,
-      name: item.name,
-      description: item.description,
-      priority: item.priority,
-      supervisor: {
-        id: item.supervisor.id,
-        firstName: item.supervisor.firstName,
-        lastName: item.supervisor.lastName,
-      },
-      startDate: item.startDate,
-      endDate: item.endDate,
-    })
-  );
+  const item = res.data.data as unknown as TOnboarding;
 
   const data: TOnboarding = {
-    id: item.id,
-    status: item.status,
-    tasks,
-    resumptionInformation: item.resumptionInformation
-      ? {
-          branchId: item.resumptionInformation?.branchId,
-          documentUrl: item.resumptionInformation?.documentUrl,
-          whoToCallId: item.resumptionInformation?.whoToCallId,
-          resumptionDateAndTime:
-            item.resumptionInformation?.resumptionDateAndTime,
-        }
-      : undefined,
-
-    employee: {
-      companyId: item.employee.companyId,
-      avatarUrl: item.employee.avatarUrl,
-
-      createdAt: item.employee.createdAt,
-      deletedAt: item.employee.deletedAt,
-      designation: item.employee.designation, //adhered to backend
-      designationId: item.employee.designationId,
-      email: item.employee.email,
-      empUid: item.employee.empUid,
-      firstName: item.employee.firstName,
-      hasSelfService: item.employee.hasSelfService,
-      id: item.employee.id,
-      jobInformation: item.employee.jobInformation,
-      lastName: item.employee.lastName,
-      personalInformation: item.employee.personalInformation,
-      role: item.employee.role,
-      roleId: item.employee.roleId,
-      status: item.employee.status,
-      updatedAt: item.employee.updatedAt,
-      userId: item.employee.userId,
-    },
+    ...item,
   };
   return data;
 };

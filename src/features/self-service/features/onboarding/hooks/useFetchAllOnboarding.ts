@@ -4,6 +4,7 @@ import { ICurrentCompany, IPaginationProps, ISearchParams } from "types";
 import { TOnboarding } from "../types";
 import { DEFAULT_PAGE_SIZE } from "constants/general";
 import { useApiAuth } from "hooks/useApiAuth";
+import { MICROSERVICE_ENDPOINTS } from "config/enviroment";
 
 export const QUERY_KEY_FOR_ONBOARDING = "all-onboarding";
 
@@ -23,7 +24,7 @@ const getAllOnboarding = async (vals: {
   const offset = pagination?.offset ?? 0;
   const name = props.searchParams?.name ?? "";
 
-  const url = `${process.env.REACT_APP_UTILITY_BASE_URL}/self-service/onboarding`;
+  const url = `${MICROSERVICE_ENDPOINTS.UTILITY}/self-service/onboarding`;
 
   const config = {
     headers: {
@@ -43,32 +44,8 @@ const getAllOnboarding = async (vals: {
   const result = fetchedData.result;
 
   const data: TOnboarding[] = result.map(
-    (item: any): TOnboarding => ({
-      id: item.id,
-      status: item.status,
-
-      employee: {
-        companyId: item.employee.companyId,
-        avatarUrl: item.employee.avatarUrl,
-
-        createdAt: item.employee.createdAt,
-        deletedAt: item.employee.deletedAt,
-        designation: item.employee.designation, //adhered to backend
-        designationId: item.employee.designationId,
-        email: item.employee.email,
-        empUid: item.employee.empUid,
-        firstName: item.employee.firstName,
-        hasSelfService: item.employee.hasSelfService,
-        id: item.employee.id,
-        jobInformation: item.employee.jobInformation,
-        lastName: item.employee.lastName,
-        personalInformation: item.employee.personalInformation,
-        role: item.employee.role,
-        roleId: item.employee.roleId,
-        status: item.employee.status,
-        updatedAt: item.employee.updatedAt,
-        userId: item.employee.userId,
-      },
+    (item: TOnboarding): TOnboarding => ({
+      ...item,
     })
   );
 

@@ -15,6 +15,7 @@ import { useCurrentFileUploadUrl } from "hooks/useCurrentFileUploadUrl";
 import { FormBranchInput } from "features/core/branches/components/FormBranchInput";
 import { QUERY_KEY_FOR_SINGLE_ONBOARDING } from "../../hooks/useFetchSingleOnboarding";
 import { QUERY_KEY_FOR_AUTHENTICATED_EMPLOYEE_ONBOARDING } from "../../hooks/useGetAuthenticatedEmployeeOnboarding";
+import { appRoutes } from "config/router/paths";
 
 interface IProps {
   handleAddTask: () => void;
@@ -141,19 +142,21 @@ export const ResumptionInformation = ({
           </Form.Item>
         </div>
         <div className="flex justify-between items-center mt-4">
-          <Link to="/self-service/onboarding" className="transparentButton">
+          <Link to={appRoutes.onboarding} className="transparentButton">
             Cancel
           </Link>
-          {!onboarding?.resumptionInformation && (
-            <AppButton
-              label="Save & Set Tasks"
-              type="submit"
-              isLoading={isLoading}
-            />
-          )}
-          {onboarding?.resumptionInformation && (
-            <AppButton label="Add Task" handleClick={handleAddTask} />
-          )}
+          {!onboarding?.resumptionInformation &&
+            onboarding?.status !== "completed" && (
+              <AppButton
+                label="Save & Set Tasks"
+                type="submit"
+                isLoading={isLoading}
+              />
+            )}
+          {onboarding?.resumptionInformation &&
+            onboarding?.status !== "completed" && (
+              <AppButton label="Add Task" handleClick={handleAddTask} />
+            )}
         </div>
       </Form>
     </div>

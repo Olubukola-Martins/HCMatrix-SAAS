@@ -24,7 +24,7 @@ const BulkOnboardingActionHeader: React.FC<{
       <MarkSelectedOnboardingAsCompleted
         handleClose={handleClose}
         open={action === "mark-as-completed"}
-        employeeIds={data.map((item) => item.id)}
+        ids={data.map((item) => item.id)}
       />
 
       <div className="flex justify-end">

@@ -3,27 +3,30 @@ import { IModalProps } from "types";
 import { openNotification } from "utils/notifications";
 import { useQueryClient } from "react-query";
 import ConfirmationModal from "components/modals/ConfirmationModal";
-import { useDeleteFolder } from "features/self-service/features/documents/hooks/useDeleteFolder";
-import { pluralOrSingular } from "utils/dataHelpers/pluralOrSingular";
 import { QUERY_KEY_FOR_ONBOARDING } from "../hooks/useFetchAllOnboarding";
+import { TOnboarding } from "../types";
+import { useCompleteOnboarding } from "../hooks/useCompleteOnboarding";
+import { QUERY_KEY_FOR_SINGLE_ONBOARDING } from "../hooks/useFetchSingleOnboarding";
+import { getEmployeeFullName } from "features/core/employees/utils/getEmployeeFullName";
 
 interface IProps extends IModalProps {
-  ids: number[];
+  onboarding?: TOnboarding;
 }
 
-export const MarkSelectedOnboardingAsCompleted: React.FC<IProps> = ({
+export const MarkSingleOnboardingAsCompleted: React.FC<IProps> = ({
   open,
   handleClose,
-  ids,
+  onboarding,
 }) => {
   const queryClient = useQueryClient();
 
-  const { mutate, isLoading } = useDeleteFolder();
+  const { mutate, isLoading } = useCompleteOnboarding();
 
   const handleSubmit = () => {
+    if (!onboarding) return;
     mutate(
       {
-        id: 0, //TODO: Correct when endpoint is ready
+        onboardingId: onboarding.id,
       },
       {
         onError: (err: any) => {
@@ -49,6 +52,10 @@ export const MarkSelectedOnboardingAsCompleted: React.FC<IProps> = ({
             queryKey: [QUERY_KEY_FOR_ONBOARDING],
             // exact: true,
           });
+          queryClient.invalidateQueries({
+            queryKey: [QUERY_KEY_FOR_SINGLE_ONBOARDING],
+            // exact: true,
+          });
         },
       }
     );
@@ -58,11 +65,9 @@ export const MarkSelectedOnboardingAsCompleted: React.FC<IProps> = ({
     <>
       <ConfirmationModal
         title={`Mark as completed`}
-        description={`Are you sure you want to complete ${pluralOrSingular({
-          amount: ids.length,
-          plural: "employee onboardings",
-          singular: "employee onboarding",
-        })}?`}
+        description={`Are you sure you want to complete ${getEmployeeFullName(
+          onboarding?.employee
+        )}'s onboarding?`}
         handleClose={handleClose}
         open={open}
         handleConfirm={{
