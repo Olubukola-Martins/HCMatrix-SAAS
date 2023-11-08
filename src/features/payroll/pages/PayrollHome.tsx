@@ -14,30 +14,24 @@ import {
   canUserAccessComponent,
   useGetUserPermissions,
 } from "components/permission-restriction/PermissionRestrictor";
+import { useGetPayrollPendingSetup } from "../hooks/payroll/pendingSetup/useGetPayrollPendingSetup";
 
 const outerStyle =
   "group  transition ease-in-out duration-500 cursor-pointer shadow-md col-span-3 md:col-span-1 rounded-xl flex flex-col gap-2 w-full  p-3 bg-card";
 const innerStyle =
   "group-hover:shadow-md transition ease-in-out duration-500 bg-mainBg rounded-xl p-2 flex flex-col gap-4 flex-1";
 
-const PayrollHome = () => {
-  const pendingItems = [
-    { content: "Setup company currency settings", done: true },
-    { content: "Setup cost centres", done: true },
-    { content: "Setup payroll schemes", done: false },
-    { content: "Configure payroll report templates", done: false },
-    { content: "Configure payslip templates", done: false },
-    { content: "Setup ITF Authorities", done: false },
-    { content: "Setup NSITF Authorities", done: false },
-    { content: "Setup Pension Authorities", done: false },
-    { content: "Setup Tax Authorities", done: false },
-    { content: "Configure payroll settings", done: false },
-    { content: "Add Employees", done: false },
-  ];
+type IPendingItem = {
+  content: string;
+  done?: boolean;
+};
 
+const PayrollHome = () => {
   const [showItems, setShowItems] = useState(false);
   const { data: analytics, isFetching } = useGetPayrollAnalytics();
   const { userPermissions } = useGetUserPermissions();
+  const { data: pendingSetup, isLoading: pendingSetupLoading } =
+    useGetPayrollPendingSetup();
   return (
     <>
       <PayrollSubNav />
@@ -123,44 +117,56 @@ const PayrollHome = () => {
                 onClick={() => setShowItems((val) => !val)}
               >
                 <div className="rounded-xl p-2 flex flex-col gap-8">
-                  <div className="flex items-center justify-between group-hover:text-caramel">
-                    <h4 className="font-semibold text-base">Pending Setup</h4>
-                    <motion.i
-                      animate={{ rotate: showItems ? 180 : 0 }}
-                      className="ri-arrow-down-s-line text-xl"
-                      title="view"
-                    ></motion.i>
-                  </div>
-                  <div className="flex flex-col gap-3">
-                    <div className="setUp_progress2 general_setup">
-                      <div className="setUp_progress-bar2" />
-                    </div>
-                    <span className="text-sm font-light">
-                      {pendingItems.filter((item) => item.done).length}/
-                      {pendingItems.length} complete
-                    </span>
-                  </div>
-                  {/* items */}
-                  <motion.div className="flex flex-col gap-4">
-                    {showItems &&
-                      pendingItems.map((item, index) => (
-                        <div
-                          className="flex gap-4 items-center text-xs"
-                          key={item.content}
-                        >
-                          <div
-                            className={`min-h-min min-w-min ${
-                              item.done ? "bg-caramel" : "bg-gray-400"
-                            } flex items-center justify-center  rounded-full text-white p-1 h-4 w-4`}
-                          >
-                            <span className={`block`}>{index + 1}</span>
-                          </div>
-                          <p className={`block ${item.done && "text-caramel"}`}>
-                            {item.content}
-                          </p>
-                        </div>
-                      ))}
-                  </motion.div>
+                  <PayrollPendingSetup
+                    pendingItems={[
+                      {
+                        content: "Setup company currency settings",
+                        done: pendingSetup?.companyCurrencySettings,
+                      },
+                      {
+                        content: "Setup cost centres",
+                        done: pendingSetup?.costCentres,
+                      },
+                      {
+                        content: "Setup payroll schemes",
+                        done: pendingSetup?.payrollSchemes,
+                      },
+                      {
+                        content: "Configure payroll report templates",
+                        done: pendingSetup?.payrollReportTemplates,
+                      },
+                      {
+                        content: "Configure payslip templates",
+                        done: pendingSetup?.payslipTemplates,
+                      },
+                      {
+                        content: "Setup ITF Authorities",
+                        done: pendingSetup?.itfAuthorities,
+                      },
+                      {
+                        content: "Setup NSITF Authorities",
+                        done: pendingSetup?.nsitfAuthorities,
+                      },
+                      {
+                        content: "Setup Pension Authorities",
+                        done: pendingSetup?.pensionAdministators,
+                      },
+                      {
+                        content: "Setup Tax Authorities",
+                        done: pendingSetup?.taxAuthorities,
+                      },
+                      {
+                        content: "Configure payroll settings",
+                        done: pendingSetup?.payrollSettings,
+                      },
+                      {
+                        content: "Add Employees",
+                        done: pendingSetup?.employees,
+                      },
+                    ]}
+                    isLoading={pendingSetupLoading}
+                    showItems={showItems}
+                  />
                 </div>
               </motion.div>
               {/* <PayrollCard
@@ -195,6 +201,53 @@ const PayrollHome = () => {
         </Skeleton>
       </div>
     </>
+  );
+};
+
+const PayrollPendingSetup: React.FC<{
+  pendingItems: IPendingItem[];
+  showItems: boolean;
+  isLoading?: boolean;
+}> = ({ showItems, pendingItems, isLoading }) => {
+  return (
+    <Skeleton loading={isLoading} active paragraph={{ rows: 15 }}>
+      <>
+        <div className="flex items-center justify-between group-hover:text-caramel">
+          <h4 className="font-semibold text-base">Pending Setup</h4>
+          <motion.i
+            animate={{ rotate: showItems ? 180 : 0 }}
+            className="ri-arrow-down-s-line text-xl"
+            title="view"
+          ></motion.i>
+        </div>
+        <div className="flex flex-col gap-3">
+          <div className="setUp_progress2 general_setup">
+            <div className="setUp_progress-bar2" />
+          </div>
+          <span className="text-sm font-light">
+            {pendingItems.filter((item) => item.done).length}/
+            {pendingItems.length} complete
+          </span>
+        </div>
+        {/* items */}
+        <motion.div className="flex flex-col gap-4">
+          {pendingItems?.map((item, index) => (
+            <div className="flex gap-4 items-center text-xs" key={item.content}>
+              <div
+                className={`min-h-min min-w-min ${
+                  item.done ? "bg-caramel" : "bg-gray-400"
+                } flex items-center justify-center  rounded-full text-white p-1 h-4 w-4`}
+              >
+                <span className={`block`}>{index + 1}</span>
+              </div>
+              <p className={`block ${item.done && "text-caramel"}`}>
+                {item.content}
+              </p>
+            </div>
+          ))}
+        </motion.div>
+      </>
+    </Skeleton>
   );
 };
 
