@@ -15,6 +15,7 @@ import {
   useGetUserPermissions,
 } from "components/permission-restriction/PermissionRestrictor";
 import { useGetPayrollPendingSetup } from "../hooks/payroll/pendingSetup/useGetPayrollPendingSetup";
+import ProgressBar from "features/home/components/ProgressBar";
 
 const outerStyle =
   "group  transition ease-in-out duration-500 cursor-pointer shadow-md col-span-3 md:col-span-1 rounded-xl flex flex-col gap-2 w-full  p-3 bg-card";
@@ -221,9 +222,13 @@ const PayrollPendingSetup: React.FC<{
           ></motion.i>
         </div>
         <div className="flex flex-col gap-3">
-          <div className="setUp_progress2 general_setup">
-            <div className="setUp_progress-bar2" />
-          </div>
+          <ProgressBar
+            width={`${
+              (pendingItems.filter((item) => item.done).length /
+                pendingItems.length) *
+              100
+            }%`}
+          />
           <span className="text-sm font-light">
             {pendingItems.filter((item) => item.done).length}/
             {pendingItems.length} complete
@@ -232,23 +237,25 @@ const PayrollPendingSetup: React.FC<{
         {/* items */}
         <motion.div className="flex flex-col gap-4">
           {showItems &&
-            pendingItems?.map((item, index) => (
-              <div
-                className="flex gap-4 items-center text-xs"
-                key={item.content}
-              >
+            pendingItems
+              ?.sort((a, b) => (a.done ? -1 : 1))
+              ?.map((item, index) => (
                 <div
-                  className={`min-h-min min-w-min ${
-                    item.done ? "bg-caramel" : "bg-gray-400"
-                  } flex items-center justify-center  rounded-full text-white p-1 h-4 w-4`}
+                  className="flex gap-4 items-center text-xs"
+                  key={item.content}
                 >
-                  <span className={`block`}>{index + 1}</span>
+                  <div
+                    className={`min-h-min min-w-min ${
+                      item.done ? "bg-caramel" : "bg-gray-400"
+                    } flex items-center justify-center  rounded-full text-white p-1 h-4 w-4`}
+                  >
+                    <span className={`block`}>{index + 1}</span>
+                  </div>
+                  <p className={`block ${item.done && "text-caramel"}`}>
+                    {item.content}
+                  </p>
                 </div>
-                <p className={`block ${item.done && "text-caramel"}`}>
-                  {item.content}
-                </p>
-              </div>
-            ))}
+              ))}
         </motion.div>
       </>
     </Skeleton>
