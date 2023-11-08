@@ -9,44 +9,19 @@ import { GlobalContext, EGlobalOps } from "stateManagers/GlobalContextProvider";
 import Themes from "./Themes";
 import { useGetStartedAnalytics } from "features/core/company/hooks/dashboard/useGetStartedAnalytics";
 import { appRoutes } from "config/router/paths";
-
-const initialsetUpSteps: TSetupStep[] = [
-  {
-    text: EInitialSetUp.SET_UP_ROLES,
-    link: "/settings/roles",
-    completed: false,
-    hint: "This will enable you restrict system access via permissions",
-  },
-  {
-    text: EInitialSetUp.SET_UP_DEPTS,
-    link: "/settings/departments",
-    completed: false,
-    hint: "Setting up departments, will allow you setup designations",
-  },
-  {
-    text: EInitialSetUp.SET_UP_DESGS,
-    link: "/settings/designations",
-    completed: false,
-    hint: "Setting up designations, will allow you assign jobs to employees",
-  },
-  {
-    text: EInitialSetUp.ADD_EMPLOYEES,
-    link: "/settings/employees",
-    completed: false,
-    hint: "Adding employees will allow you to begin HR automation",
-  },
-];
-const DEFAULT_ROLES_CREATED_BY_SYSTEM = 2; //admin n employee
-const DEFAULT_EMPLOYEES_CREATED_BY_SYSTEM = 1; //the purchaser of the system
-const DEFAULT_DEPARTMENTS_CREATED_BY_SYSTEM = 0;
-const DEFAULT_DESIGNATIONS_CREATED_BY_SYSTEM = 0;
+import {
+  DEFAULT_ROLES_CREATED_BY_SYSTEM,
+  DEFAULT_DEPARTMENTS_CREATED_BY_SYSTEM,
+  DEFAULT_DESIGNATIONS_CREATED_BY_SYSTEM,
+  DEFAULT_EMPLOYEES_CREATED_BY_SYSTEM,
+} from "constants/general";
 
 const UserFeedbackComp = () => {
   const auth = useAuthUser();
   const authDetails = auth() as unknown as IAuthDets;
   const user = authDetails?.user;
   const [progress, setProgress] = useState(0);
-  const [steps, setSteps] = useState(initialsetUpSteps);
+  const [steps, setSteps] = useState<TSetupStep[]>([]);
   const globalCtx = useContext(GlobalContext);
   const { state: globalState, dispatch } = globalCtx;
   const provideFeedback = globalState.showInitialSetUp;

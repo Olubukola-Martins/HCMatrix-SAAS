@@ -19,6 +19,13 @@ import { appRoutes } from "config/router/paths";
 import RecentApprovalRequestsCard from "features/core/workflows/components/approval-request/RecentApprovalRequestsCard";
 import { useApiAuth } from "hooks/useApiAuth";
 import { TAuthUser } from "features/authentication/types";
+import { useGetStartedAnalytics } from "features/core/company/hooks/dashboard/useGetStartedAnalytics";
+import {
+  DEFAULT_ROLES_CREATED_BY_SYSTEM,
+  DEFAULT_DEPARTMENTS_CREATED_BY_SYSTEM,
+  DEFAULT_DESIGNATIONS_CREATED_BY_SYSTEM,
+  DEFAULT_EMPLOYEES_CREATED_BY_SYSTEM,
+} from "constants/general";
 
 export const AdminHome: React.FC<{ user?: TAuthUser["user"] }> = ({ user }) => {
   const [openId, setOpenId] = useState("");
@@ -115,15 +122,7 @@ export const AdminHome: React.FC<{ user?: TAuthUser["user"] }> = ({ user }) => {
 
               <div className="grid grid-cols-1 lg:grid-cols-3 mt-7 gap-y-7 gap-x-5">
                 <div className="col-span-2 bg-mainBg shadow border rounded-lg p-3 relative h-80">
-                  <Affix offsetBottom={20}>
-                    <button
-                      className="button flex gap-2 align-center"
-                      onClick={handleGetStarted}
-                    >
-                      <i className="ri-checkbox-circle-fill" />
-                      <span>Get Started</span>
-                    </button>
-                  </Affix>
+                  <GetStartedBtn handleGetStarted={handleGetStarted} />
 
                   <EmployeeInfoChart
                     setYear={setYear}
@@ -188,6 +187,38 @@ export const AdminHome: React.FC<{ user?: TAuthUser["user"] }> = ({ user }) => {
   );
 };
 
+const GetStartedBtn: React.FC<{ handleGetStarted: () => void }> = ({
+  handleGetStarted,
+}) => {
+  const {
+    data: getStartedAnalytics,
+    isLoading,
+    isSuccess,
+  } = useGetStartedAnalytics();
+  // ensures get started doesnot show if all steps are completed
+  if (
+    isSuccess &&
+    getStartedAnalytics.role > DEFAULT_ROLES_CREATED_BY_SYSTEM &&
+    getStartedAnalytics.department > DEFAULT_DEPARTMENTS_CREATED_BY_SYSTEM &&
+    getStartedAnalytics.designation > DEFAULT_DESIGNATIONS_CREATED_BY_SYSTEM &&
+    getStartedAnalytics.employee > DEFAULT_EMPLOYEES_CREATED_BY_SYSTEM
+  ) {
+    return null;
+  }
+  return (
+    <Affix offsetBottom={20}>
+      <button
+        className="button flex gap-2 align-center"
+        onClick={handleGetStarted}
+      >
+        <Skeleton active paragraph={{ rows: 1 }} loading={isLoading}>
+          <i className="ri-checkbox-circle-fill" />
+          <span>Get Started</span>
+        </Skeleton>
+      </button>
+    </Affix>
+  );
+};
 const PendingSetup: React.FC<{
   openId: string;
   handlePendingClick: (val: string) => void;

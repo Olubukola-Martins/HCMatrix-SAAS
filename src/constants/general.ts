@@ -1,6 +1,10 @@
 import { TEmploymentEligibity } from "types/employementEligibilities";
 import { TPriority } from "types/priorities";
 
+export const DEFAULT_ROLES_CREATED_BY_SYSTEM = 2; //admin n employee
+export const DEFAULT_EMPLOYEES_CREATED_BY_SYSTEM = 1; //the purchaser of the system
+export const DEFAULT_DEPARTMENTS_CREATED_BY_SYSTEM = 0;
+export const DEFAULT_DESIGNATIONS_CREATED_BY_SYSTEM = 0;
 export const MAX_NO_OF_WORKING_DAYS_PER_WEEK = 7;
 
 // The purpose of this file to prevent repetition
