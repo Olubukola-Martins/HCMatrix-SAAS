@@ -1,4 +1,4 @@
-import { Form, Spin, Drawer } from "antd";
+import { Form, Drawer } from "antd";
 import TextArea from "antd/lib/input/TextArea";
 import { useApiAuth } from "hooks/useApiAuth";
 import { useQueryClient } from "react-query";
@@ -7,12 +7,13 @@ import { textInputValidationRules } from "utils/formHelpers/validation";
 import { openNotification } from "utils/notifications";
 import { useInviteEmployees } from "../hooks/useInviteEmployees";
 import { IEmpInviteProps } from "../types";
+import { AppButton } from "components/button/AppButton";
 
 export const AddMultipleEmployees = ({ open, handleClose }: IDrawerProps) => {
   const queryClient = useQueryClient();
   const { token, companyId } = useApiAuth();
   const [form] = Form.useForm();
-  const { mutate } = useInviteEmployees();
+  const { mutate, isLoading } = useInviteEmployees();
 
   const handleSubmit = (data: any) => {
     if (companyId) {
@@ -21,12 +22,7 @@ export const AddMultipleEmployees = ({ open, handleClose }: IDrawerProps) => {
         companyId,
         emails: data.emails,
       };
-      // return;
-      openNotification({
-        state: "info",
-        title: "Wait a second ...",
-        description: <Spin />,
-      });
+
       mutate(props, {
         onError: (err: any) => {
           openNotification({
@@ -79,9 +75,7 @@ export const AddMultipleEmployees = ({ open, handleClose }: IDrawerProps) => {
             />
           </Form.Item>
 
-          <button type="submit" className="button">
-            Send Invite
-          </button>
+          <AppButton label="Send Invite" type="submit" isLoading={isLoading} />
         </Form>
       </div>
     </Drawer>

@@ -1,4 +1,4 @@
-import { Select, Spin, Form } from "antd";
+import { Select, Form } from "antd";
 import { useGetPayrollTemplates } from "features/payroll/hooks/templates/useGetPayrollTemplates";
 import { TPayrollTemplateListData } from "features/payroll/types/template";
 import { useDebounce } from "hooks/useDebounce";
@@ -14,7 +14,7 @@ export const FormPayslipTemplateInput: React.FC<{
   const [searchTerm, setSearchTerm] = useState<string>("");
   const debouncedSearchTerm: string = useDebounce<string>(searchTerm);
 
-  const { data, isFetching, isSuccess } = useGetPayrollTemplates({
+  const { data, isFetching } = useGetPayrollTemplates({
     type: "payslip",
     data: {
       searchParams: {
@@ -49,17 +49,11 @@ export const FormPayslipTemplateInput: React.FC<{
           grade && onSelect?.(val, grade);
         }}
       >
-        {isSuccess ? (
-          data.data.map((item) => (
-            <Select.Option key={item.id} value={item.id}>
-              {item.name}
-            </Select.Option>
-          ))
-        ) : (
-          <div className="flex justify-center items-center w-full">
-            <Spin size="small" />
-          </div>
-        )}
+        {data?.data.map((item) => (
+          <Select.Option key={item.id} value={item.id}>
+            {item.name}
+          </Select.Option>
+        ))}
       </Select>
     </Form.Item>
   );

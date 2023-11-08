@@ -1,4 +1,4 @@
-import { Select, Spin, Form } from "antd";
+import { Select, Form } from "antd";
 import { useGetExchangeRates } from "features/payroll/hooks/exhangeRates/useGetExchangeRates";
 import { useDebounce } from "hooks/useDebounce";
 import { useState } from "react";
@@ -12,7 +12,7 @@ export const FormExchangeRateInput: React.FC<{
   const [searchTerm, setSearchTerm] = useState<string>("");
   const debouncedSearchTerm: string = useDebounce<string>(searchTerm);
 
-  const { data, isFetching, isSuccess } = useGetExchangeRates({
+  const { data, isFetching } = useGetExchangeRates({
     searchParams: {
       name: debouncedSearchTerm,
     },
@@ -40,17 +40,11 @@ export const FormExchangeRateInput: React.FC<{
         showArrow={false}
         filterOption={false}
       >
-        {isSuccess ? (
-          data.data.map((item) => (
-            <Select.Option key={item.id} value={item.id}>
-              {item.currency}
-            </Select.Option>
-          ))
-        ) : (
-          <div className="flex justify-center items-center w-full">
-            <Spin size="small" />
-          </div>
-        )}
+        {data?.data.map((item) => (
+          <Select.Option key={item.id} value={item.id}>
+            {item.currency}
+          </Select.Option>
+        ))}
       </Select>
     </Form.Item>
   );

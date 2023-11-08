@@ -1,4 +1,4 @@
-import { Form, Input, Select, Spin } from "antd";
+import { Form, Input, Select,  } from "antd";
 import { useFetchEmployees } from "features/core/employees/hooks/useFetchEmployees";
 import { useState, useEffect } from "react";
 import {
@@ -32,7 +32,7 @@ const AddGroupForm = ({
     }
   }, [group, form]);
 
-  const { data: empData, isSuccess: isEmpSuccess } = useFetchEmployees({
+  const { data: empData, } = useFetchEmployees({
     pagination: {
       limit: 100, //temp suppose to allow search
       offset: 0,
@@ -98,16 +98,12 @@ const AddGroupForm = ({
           // onChange={handleChange}
           notFoundContent={null}
         >
-          {isEmpSuccess ? (
-            empData.data.map((item) => (
+          {(
+            empData?.data.map((item) => (
               <Select.Option key={item.id} value={item.id}>
                 {item.firstName} {item.lastName}
               </Select.Option>
             ))
-          ) : (
-            <div className="flex justify-center items-center w-full">
-              <Spin size="small" />
-            </div>
           )}
         </Select>
       </Form.Item>

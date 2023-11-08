@@ -1,4 +1,4 @@
-import { Select, Spin, Form } from "antd";
+import { Select, Form } from "antd";
 import { useApiAuth } from "hooks/useApiAuth";
 import { useDebounce } from "hooks/useDebounce";
 import { useState } from "react";
@@ -14,7 +14,7 @@ export const FormVehicleInput: React.FC<{
   const [searchTerm, setSearchTerm] = useState<string>("");
   const debouncedSearchTerm: string = useDebounce<string>(searchTerm);
 
-  const { data, isFetching, isSuccess } = useFetchVehicles({
+  const { data, isFetching } = useFetchVehicles({
     companyId,
     searchParams: {
       name: debouncedSearchTerm,
@@ -51,19 +51,11 @@ export const FormVehicleInput: React.FC<{
         showArrow={false}
         filterOption={false}
       >
-        {isSuccess ? (
-          data.data.map((item) => (
-            <Select.Option key={item.id} value={item.id} className="capitalize">
-              {item.brand} {item.type} ({item.plateNumber})
-            </Select.Option>
-          ))
-        ) : (
-          <Select.Option key={"loading"} value={""} disabled>
-            <div className="flex justify-center items-center w-full">
-              <Spin size="small" />
-            </div>
+        {data?.data.map((item) => (
+          <Select.Option key={item.id} value={item.id} className="capitalize">
+            {item.brand} {item.type} ({item.plateNumber})
           </Select.Option>
-        )}
+        ))}
       </Select>
     </Form.Item>
   );

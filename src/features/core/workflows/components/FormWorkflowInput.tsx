@@ -1,4 +1,4 @@
-import { Select, Spin, Form } from "antd";
+import { Select, Form } from "antd";
 import { useDebounce } from "hooks/useDebounce";
 
 import React, { useState } from "react";
@@ -13,7 +13,7 @@ export const FormWorkflowInput: React.FC<{
   const [searchTerm, setSearchTerm] = useState<string>("");
   const debouncedSearchTerm: string = useDebounce<string>(searchTerm);
 
-  const { data, isFetching, isSuccess } = useFetchAllWorkflows({
+  const { data, isFetching } = useFetchAllWorkflows({
     searchParams: {
       name: debouncedSearchTerm,
     },
@@ -45,21 +45,11 @@ export const FormWorkflowInput: React.FC<{
         showArrow={false}
         filterOption={false}
       >
-        {isSuccess ? (
-          data.data.map((item) => (
-            <Select.Option key={item.id} value={item.id}>
-              {item.name}
-            </Select.Option>
-          ))
-        ) : (
-          <Select.Option
-            className="flex justify-center items-center w-full"
-            key="_"
-            disabled
-          >
-            <Spin size="small" />
+        {data?.data.map((item) => (
+          <Select.Option key={item.id} value={item.id}>
+            {item.name}
           </Select.Option>
-        )}
+        ))}
       </Select>
     </Form.Item>
   );

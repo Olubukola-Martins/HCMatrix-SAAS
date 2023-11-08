@@ -1,4 +1,4 @@
-import { Select, Spin, Form } from "antd";
+import { Select, Form } from "antd";
 import { useGetTaxAuthorities } from "features/payroll/hooks/organization/taxAuthorities/useGetTaxAuthorities";
 import { TTaxAuthority } from "features/payroll/types";
 import { useDebounce } from "hooks/useDebounce";
@@ -14,7 +14,7 @@ export const FormTaxAuthInput: React.FC<{
   const [searchTerm, setSearchTerm] = useState<string>("");
   const debouncedSearchTerm: string = useDebounce<string>(searchTerm);
 
-  const { data, isFetching, isSuccess } = useGetTaxAuthorities({
+  const { data, isFetching } = useGetTaxAuthorities({
     searchParams: {
       name: debouncedSearchTerm,
     },
@@ -46,17 +46,11 @@ export const FormTaxAuthInput: React.FC<{
           grade && onSelect?.(val, grade);
         }}
       >
-        {isSuccess ? (
-          data.data.map((item) => (
-            <Select.Option key={item.id} value={item.id}>
-              {item.name}
-            </Select.Option>
-          ))
-        ) : (
-          <div className="flex justify-center items-center w-full">
-            <Spin size="small" />
-          </div>
-        )}
+        {data?.data.map((item) => (
+          <Select.Option key={item.id} value={item.id}>
+            {item.name}
+          </Select.Option>
+        ))}
       </Select>
     </Form.Item>
   );

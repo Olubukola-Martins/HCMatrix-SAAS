@@ -1,14 +1,13 @@
-import { Button, Form, Select, Spin, Switch } from "antd";
-import { useFetchEmployees } from "features/core/employees/hooks/useFetchEmployees";
-import { useApiAuth } from "hooks/useApiAuth";
+import { Form, Switch } from "antd";
 
-import React, { useState } from "react";
+import React from "react";
 import { useQueryClient } from "react-query";
 import { openNotification } from "utils/notifications";
 import { useAddMemberToGroup } from "../hooks/useAddMemberToGroup";
 import { TGroup } from "../types";
 import { AppButton } from "components/button/AppButton";
 import { QUERY_KEY_FOR_SINGLE_GROUP_MEMBERS } from "../hooks/useFetchSingleGroupMembers";
+import { FormEmployeeInput } from "features/core/employees/components/FormEmployeeInput";
 
 interface IProps {
   group: TGroup;
@@ -18,16 +17,6 @@ export const AddMemberToGroupForm: React.FC<IProps> = ({ group }) => {
   const queryClient = useQueryClient();
   const [form] = Form.useForm();
 
-  const [empSearch, setEmpSearch] = useState<string>("");
-  const { data: empData, isSuccess: isEmpSuccess } = useFetchEmployees({
-    pagination: {
-      limit: 100, //temp suppose to allow search
-      offset: 0,
-    },
-    searchParams: {
-      name: empSearch,
-    },
-  });
   const { mutate, isLoading } = useAddMemberToGroup();
 
   const handleSubmit = (data: any) => {
@@ -73,30 +62,10 @@ export const AddMemberToGroupForm: React.FC<IProps> = ({ group }) => {
     <div className="">
       <Form layout="vertical" onFinish={handleSubmit}>
         <div className="flex gap-4 w-full">
-          <Form.Item name="employeeId" label="Employee" className="flex-1">
-            <Select
-              onSearch={(val) => setEmpSearch(val)}
-              showSearch
-              value={empSearch}
-              defaultActiveFirstOption={false}
-              showArrow={false}
-              filterOption={false}
-              // onChange={handleChange}
-              notFoundContent={null}
-            >
-              {isEmpSuccess ? (
-                empData.data.map((item) => (
-                  <Select.Option key={item.id} value={item.id}>
-                    {item.firstName} {item.lastName}
-                  </Select.Option>
-                ))
-              ) : (
-                <div className="flex justify-center items-center w-full">
-                  <Spin size="small" />
-                </div>
-              )}
-            </Select>
-          </Form.Item>
+          <FormEmployeeInput
+            Form={Form}
+            control={{ name: "employeeId", label: "Employee" }}
+          />
           <Form.Item
             name="isLead"
             label="Is member a lead?"
