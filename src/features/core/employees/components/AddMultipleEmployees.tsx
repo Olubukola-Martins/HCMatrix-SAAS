@@ -3,7 +3,10 @@ import TextArea from "antd/lib/input/TextArea";
 import { useApiAuth } from "hooks/useApiAuth";
 import { useQueryClient } from "react-query";
 import { IDrawerProps } from "types";
-import { textInputValidationRules } from "utils/formHelpers/validation";
+import {
+  isEmailValid,
+  textInputValidationRules,
+} from "utils/formHelpers/validation";
 import { openNotification } from "utils/notifications";
 import { useInviteEmployees } from "../hooks/useInviteEmployees";
 import { IEmpInviteProps } from "../types";
@@ -67,7 +70,31 @@ export const AddMultipleEmployees = ({ open, handleClose }: IDrawerProps) => {
           the invitation.
         </p>
         <Form onFinish={handleSubmit} form={form}>
-          <Form.Item name="emails" rules={textInputValidationRules}>
+          <Form.Item
+            name="emails"
+            rules={[
+              {
+                validator: async (_, value) => {
+                  // non required
+                  if (typeof value !== "string") {
+                    throw new Error("Please enter a valid email!");
+                  }
+
+                  const emailValues = value
+                    .split(",")
+                    .map((item) => item.trim());
+
+                  emailValues.forEach((item, i) => {
+                    if (isEmailValid(item) === false) {
+                      throw new Error(`Please enter a valid email at ${i + 1}`);
+                    }
+                  });
+
+                  return true;
+                },
+              },
+            ]}
+          >
             <TextArea
               className="rounded"
               rows={7}

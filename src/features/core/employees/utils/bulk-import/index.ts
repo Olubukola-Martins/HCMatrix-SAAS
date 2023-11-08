@@ -21,6 +21,8 @@ import moment from "moment";
 import {
   isDateGreaterThanOrEqualToCurrentDay,
   isDateLesserThanOrEqualToCurrentDay,
+  isEmailValid,
+  isPhoneNumberValid,
 } from "utils/formHelpers/validation";
 import { PAYROLL_SCHEME_OPTIONS } from "features/payroll/constants";
 import { TLga } from "types/lgas";
@@ -1117,19 +1119,4 @@ const isValueEmpty = (value: unknown): boolean => {
     return true;
   }
   return false;
-};
-
-const isEmailValid = (val: string): boolean => {
-  // Regular expression pattern to match a valid email address
-  const emailPattern = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
-
-  // Test the provided value against the pattern
-  return emailPattern.test(val);
-};
-const isPhoneNumberValid = (val: string): boolean => {
-  // Regular expression pattern to match a valid North American phone number with dashes
-  const phonePattern = /^[0-9]*$/;
-
-  // Test the provided value against the pattern
-  return phonePattern.test(val);
 };

@@ -7,7 +7,20 @@ import moment, { Moment } from "moment";
 import { TFileType } from "types/files";
 
 // helpers
+export const isPhoneNumberValid = (val: string): boolean => {
+  // Regular expression pattern to match a valid North American phone number with dashes
+  const phonePattern = /^[0-9]*$/;
 
+  // Test the provided value against the pattern
+  return phonePattern.test(val);
+};
+export const isEmailValid = (val: string): boolean => {
+  // Regular expression pattern to match a valid email address
+  const emailPattern = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
+
+  // Test the provided value against the pattern
+  return emailPattern.test(val);
+};
 export const countMatchingDatesInclusive = (
   start: Moment,
   end: Moment,
@@ -411,9 +424,8 @@ export const phoneNumberValidationRule: Rule = {
   required: true,
   whitespace: true,
   validator: async (rule, value) => {
-    let paswd = /^[0-9]*$/;
-
-    if (!value.match(paswd)) throw new Error("Only digits are allowed");
+    if (value !== undefined && isPhoneNumberValid(value) === false)
+      throw new Error("Pleas enter a valid phone number");
     // if (false) throw new Error("Something wrong!");
     return true;
   },
@@ -422,9 +434,8 @@ export const phoneNumberValidationRuleOp: Rule = {
   required: false,
   whitespace: true,
   validator: async (rule, value) => {
-    let paswd = /^[0-9]*$/;
-
-    if (!value.match(paswd)) throw new Error("Only digits are allowed");
+    if (value !== undefined && isPhoneNumberValid(value) === false)
+      throw new Error("Pleas enter a valid phone number");
     // if (false) throw new Error("Something wrong!");
     return true;
   },
