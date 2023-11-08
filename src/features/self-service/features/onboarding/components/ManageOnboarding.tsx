@@ -69,7 +69,9 @@ const ManageOnboarding = () => {
       render: (val, item) => (
         <div className="cursor-pointer">
           <Link to={appRoutes.startOnBoarding(item.id).path}>
-            <button className="transparentButton text-caramel">Start</button>
+            <button className="transparentButton text-caramel">
+              {item.status === "pending" ? "Start" : "View"}
+            </button>
           </Link>
         </div>
       ),
