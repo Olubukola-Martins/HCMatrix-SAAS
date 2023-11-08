@@ -214,7 +214,12 @@ const PayrollPendingSetup: React.FC<{
     <Skeleton loading={isLoading} active paragraph={{ rows: 15 }}>
       <>
         <div className="flex items-center justify-between group-hover:text-caramel">
-          <h4 className="font-semibold text-base">Pending Setup</h4>
+          <h4 className="font-semibold text-base">
+            {pendingItems.length ===
+            pendingItems.filter((item) => item.done).length
+              ? "Completed Setup"
+              : "Pending Setup"}
+          </h4>
           <motion.i
             animate={{ rotate: showItems ? 180 : 0 }}
             className="ri-arrow-down-s-line text-xl"
