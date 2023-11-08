@@ -49,12 +49,6 @@ const TaxAuthTable: React.FC<{
     },
 
     {
-      title: "Employee Count",
-      dataIndex: "pay",
-      key: "pay",
-      render: (_, item) => 0,
-    },
-    {
       title: "Created At",
       dataIndex: "createAr",
       key: "createAr",

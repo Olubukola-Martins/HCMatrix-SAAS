@@ -24,12 +24,14 @@ const PayrollHome = () => {
   const pendingItems = [
     { content: "Setup company currency settings", done: true },
     { content: "Setup cost centres", done: true },
-    { content: "Define exhchange rates", done: true },
     { content: "Setup payroll schemes", done: false },
-    { content: "Setup Organizations", done: false },
-    { content: "Configure payroll settings", done: false },
-    { content: "Configure payroll reports", done: false },
+    { content: "Configure payroll report templates", done: false },
     { content: "Configure payslip templates", done: false },
+    { content: "Setup ITF Authorities", done: false },
+    { content: "Setup NSITF Authorities", done: false },
+    { content: "Setup Pension Authorities", done: false },
+    { content: "Setup Tax Authorities", done: false },
+    { content: "Configure payroll settings", done: false },
     { content: "Configure grades/categories", done: false },
     { content: "Add Employees", done: false },
   ];
