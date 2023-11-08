@@ -5,10 +5,12 @@ import { useMutation } from "react-query";
 import { ICurrentCompany } from "types";
 
 type TData = {
-  onboardingId: number;
+  onboardingIds: number[];
 };
 const createData = async (props: { data: TData; auth: ICurrentCompany }) => {
-  const url = `${MICROSERVICE_ENDPOINTS.UTILITY}/self-service/onboarding/${props.data.onboardingId}`;
+  const url = `${
+    MICROSERVICE_ENDPOINTS.UTILITY
+  }/self-service/onboarding/${props.data.onboardingIds.join(",")}`;
   const config = {
     headers: {
       Accept: "application/json",
@@ -24,7 +26,7 @@ const createData = async (props: { data: TData; auth: ICurrentCompany }) => {
   const response = await axios.patch(url, data, config);
   return response;
 };
-export const useCompleteOnboarding = () => {
+export const useCompleteOnboardings = () => {
   const { token, companyId } = useApiAuth();
   return useMutation((props: TData) =>
     createData({ data: props, auth: { token, companyId } })

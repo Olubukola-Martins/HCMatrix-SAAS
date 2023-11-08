@@ -5,9 +5,9 @@ import { useQueryClient } from "react-query";
 import ConfirmationModal from "components/modals/ConfirmationModal";
 import { QUERY_KEY_FOR_ONBOARDING } from "../hooks/useFetchAllOnboarding";
 import { TOnboarding } from "../types";
-import { useCompleteOnboarding } from "../hooks/useCompleteOnboarding";
 import { QUERY_KEY_FOR_SINGLE_ONBOARDING } from "../hooks/useFetchSingleOnboarding";
 import { getEmployeeFullName } from "features/core/employees/utils/getEmployeeFullName";
+import { useCompleteOnboardings } from "../hooks/useCompleteOnboarding";
 
 interface IProps extends IModalProps {
   onboarding?: TOnboarding;
@@ -20,13 +20,13 @@ export const MarkSingleOnboardingAsCompleted: React.FC<IProps> = ({
 }) => {
   const queryClient = useQueryClient();
 
-  const { mutate, isLoading } = useCompleteOnboarding();
+  const { mutate, isLoading } = useCompleteOnboardings();
 
   const handleSubmit = () => {
     if (!onboarding) return;
     mutate(
       {
-        onboardingId: onboarding.id,
+        onboardingIds: [onboarding.id],
       },
       {
         onError: (err: any) => {

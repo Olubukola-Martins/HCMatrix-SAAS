@@ -3,9 +3,9 @@ import { IModalProps } from "types";
 import { openNotification } from "utils/notifications";
 import { useQueryClient } from "react-query";
 import ConfirmationModal from "components/modals/ConfirmationModal";
-import { useDeleteFolder } from "features/self-service/features/documents/hooks/useDeleteFolder";
 import { pluralOrSingular } from "utils/dataHelpers/pluralOrSingular";
 import { QUERY_KEY_FOR_ONBOARDING } from "../hooks/useFetchAllOnboarding";
+import { useCompleteOnboardings } from "../hooks/useCompleteOnboarding";
 
 interface IProps extends IModalProps {
   ids: number[];
@@ -18,12 +18,12 @@ export const MarkSelectedOnboardingAsCompleted: React.FC<IProps> = ({
 }) => {
   const queryClient = useQueryClient();
 
-  const { mutate, isLoading } = useDeleteFolder();
+  const { mutate, isLoading } = useCompleteOnboardings();
 
   const handleSubmit = () => {
     mutate(
       {
-        id: 0, //TODO: Correct when endpoint is ready
+        onboardingIds: ids,
       },
       {
         onError: (err: any) => {
