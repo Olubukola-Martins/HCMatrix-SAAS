@@ -9,7 +9,7 @@ export const QUERY_KEY_FOR_PAYROLL_PENDING_SETUP = "payroll-pending-setup";
 const getData = async (props: {
   auth: ICurrentCompany;
 }): Promise<TPayrollPendingSetup> => {
-  const url = `${MICROSERVICE_ENDPOINTS.PAYROLL}/payroll/analytic/`;
+  const url = `${MICROSERVICE_ENDPOINTS.PAYROLL}/payroll/pending-setup/`;
 
   const config = {
     headers: {

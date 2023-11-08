@@ -231,20 +231,24 @@ const PayrollPendingSetup: React.FC<{
         </div>
         {/* items */}
         <motion.div className="flex flex-col gap-4">
-          {pendingItems?.map((item, index) => (
-            <div className="flex gap-4 items-center text-xs" key={item.content}>
+          {showItems &&
+            pendingItems?.map((item, index) => (
               <div
-                className={`min-h-min min-w-min ${
-                  item.done ? "bg-caramel" : "bg-gray-400"
-                } flex items-center justify-center  rounded-full text-white p-1 h-4 w-4`}
+                className="flex gap-4 items-center text-xs"
+                key={item.content}
               >
-                <span className={`block`}>{index + 1}</span>
+                <div
+                  className={`min-h-min min-w-min ${
+                    item.done ? "bg-caramel" : "bg-gray-400"
+                  } flex items-center justify-center  rounded-full text-white p-1 h-4 w-4`}
+                >
+                  <span className={`block`}>{index + 1}</span>
+                </div>
+                <p className={`block ${item.done && "text-caramel"}`}>
+                  {item.content}
+                </p>
               </div>
-              <p className={`block ${item.done && "text-caramel"}`}>
-                {item.content}
-              </p>
-            </div>
-          ))}
+            ))}
         </motion.div>
       </>
     </Skeleton>
