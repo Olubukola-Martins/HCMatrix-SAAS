@@ -32,7 +32,6 @@ const PayrollHome = () => {
     { content: "Setup Pension Authorities", done: false },
     { content: "Setup Tax Authorities", done: false },
     { content: "Configure payroll settings", done: false },
-    { content: "Configure grades/categories", done: false },
     { content: "Add Employees", done: false },
   ];
 
