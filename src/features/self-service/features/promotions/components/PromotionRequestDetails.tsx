@@ -60,8 +60,8 @@ export const PromotionRequestDetails: React.FC<IProps> = ({
       style={{ top: 20 }}
     >
       <Skeleton active loading={isFetching} paragraph={{ rows: 8 }}>
-        <div className="flex justify-end">
-          (
+        {/* <div className="flex justify-end">
+          
           <ApproveOrRejectButton
             request={approvalRequest}
             handleSuccess={() => {
@@ -87,8 +87,8 @@ export const PromotionRequestDetails: React.FC<IProps> = ({
               });
             }}
           />
-          )
-        </div>
+          
+        </div> */}
 
         <Form form={form} disabled layout="vertical">
           <Form.Item name={"date"} label="Date">
