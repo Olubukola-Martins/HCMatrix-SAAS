@@ -32,7 +32,13 @@ export class ErrorBoundary extends Component<
       return (
         <div className="flex items-center flex-col gap-2">
           <div>
-            <img src={ErrorImage} alt="error" className="object-contain h-40" />
+            {/* TODO: ENsure images are optimized properly! */}
+            <img
+              src={ErrorImage}
+              alt="error"
+              className="object-contain h-40"
+              loading="lazy"
+            />
           </div>
           <h1>
             {this.props?.message ? this.props?.message : "Something went wrong"}

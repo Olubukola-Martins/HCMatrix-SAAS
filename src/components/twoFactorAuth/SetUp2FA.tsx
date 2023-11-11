@@ -112,7 +112,7 @@ export const Setup2FA: React.FC<IModalProps> = ({ open, handleClose }) => {
         open={action === "display-qrcode"}
         component={
           <div className="flex flex-col gap-2">
-            <img src={image} alt={"qrcode"} />
+            <img src={image} alt={"qrcode"} loading="lazy" />
             <div className="flex gap-4">
               <Input
                 value={token}
