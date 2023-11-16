@@ -119,6 +119,7 @@ export const SaveLeaveType: React.FC<IProps> = ({
             }
           >
             <Select
+              disabled={!!data} //ensures that leaveLengthType cannot be editted
               className="w-full"
               placeholder="type of leave length"
               options={["dynamic", "fixed"].map((item) => ({
