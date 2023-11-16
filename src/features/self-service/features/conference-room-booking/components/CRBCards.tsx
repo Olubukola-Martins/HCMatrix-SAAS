@@ -97,7 +97,7 @@ const CRBCards = () => {
             />
           </div>
         </>
-        <div className="row-span-2">
+        <div className="row-span-3">
           <AvailableRoomsCard
             loading={isLoading}
             data={data?.availableRooms.map((item) => ({
