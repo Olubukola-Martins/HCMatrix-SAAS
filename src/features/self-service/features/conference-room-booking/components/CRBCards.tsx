@@ -75,21 +75,27 @@ const CRBCards = () => {
     <div>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mt-6">
         <>
-          <MeetingRoomRequestCard
-            title="Total Requests"
-            total={data?.requests.total}
-            loading={isLoading}
-          />
-          <MeetingRoomRequestCard
-            title="Pending Requests"
-            total={data?.requests.pending}
-            loading={isLoading}
-          />
-          <MeetingRoomRequestCard
-            title="Rejected Requests"
-            total={data?.requests.rejected}
-            loading={isLoading}
-          />
+          <div>
+            <MeetingRoomRequestCard
+              title="Total Requests"
+              total={data?.requests.total}
+              loading={isLoading}
+            />
+          </div>
+          <div>
+            <MeetingRoomRequestCard
+              title="Pending Requests"
+              total={data?.requests.pending}
+              loading={isLoading}
+            />
+          </div>
+          <div>
+            <MeetingRoomRequestCard
+              title="Rejected Requests"
+              total={data?.requests.rejected}
+              loading={isLoading}
+            />
+          </div>
         </>
         <AvailableRoomsCard
           loading={isLoading}
