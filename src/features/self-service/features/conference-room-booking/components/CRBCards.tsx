@@ -97,13 +97,15 @@ const CRBCards = () => {
             />
           </div>
         </>
-        <AvailableRoomsCard
-          loading={isLoading}
-          data={data?.availableRooms.map((item) => ({
-            name: item.name,
-            id: item.id,
-          }))}
-        />
+        <div className="row-span-2">
+          <AvailableRoomsCard
+            loading={isLoading}
+            data={data?.availableRooms.map((item) => ({
+              name: item.name,
+              id: item.id,
+            }))}
+          />
+        </div>
 
         <>
           <MeetingRoomRequestCard
