@@ -319,9 +319,12 @@ export const dateHasToBeLesserThanOrEqualToCurrentDayRuleForRange: Rule = {
 
 export const urlValidationRule: Rule = {
   validator: async (rule, value) => {
-    let paswd = /^(https?:\/\/)?([\da-z.-]+)\.([a-z.]{2,6})([/\w .-]*)*\/?$/;
+    if (!value) return true; //ensures that when value is not required it passes
+    let validUrlPattern =
+      /^https:\/\/([\da-z.-]+)\.([a-z.]{2,6})([/\w .-]*)*\/?$/; //note this pattern will only allow 4 https and not http or any other protocols
 
-    if (!value.match(paswd)) throw new Error("Please enter a valid url");
+    if (!value.match(validUrlPattern))
+      throw new Error("Please enter a valid url, eg: https://example.com");
     // if (false) throw new Error("Something wrong!");
     return true;
   },
