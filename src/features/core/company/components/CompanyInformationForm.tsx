@@ -42,7 +42,10 @@ const CompanyInformationForm = () => {
           ...data.address,
         },
 
-        website: company?.website === data.website ? undefined : data.website,
+        website:
+          company?.website === data.website || !data.website
+            ? undefined
+            : data.website,
       },
       {
         onError: (err: any) => {
