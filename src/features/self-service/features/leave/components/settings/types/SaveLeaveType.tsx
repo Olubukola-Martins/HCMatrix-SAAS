@@ -43,6 +43,7 @@ export const SaveLeaveType: React.FC<IProps> = ({
     setUsesGroup(data.applicableToCertainGroup);
     form.setFieldsValue({
       name: data.name,
+      typeOfLength: data.typeOfLength,
       length: data.length,
       employeesGetAllowance: data.employeesGetAllowance,
       eligibilityCriteria: {
@@ -55,6 +56,7 @@ export const SaveLeaveType: React.FC<IProps> = ({
 
       requireReliever: data.requireReliever,
     });
+    setLeaveLengthType(data.typeOfLength);
   }, [form, data]);
   const [leaveLengthType, setLeaveLengthType] = useState<string>("fixed");
   useEffect(() => {
