@@ -1,6 +1,7 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
 import App from "./App";
+import "react-chat-elements/dist/main.css";
 import "antd/dist/antd.min.css";
 import "./index.css";
 import reportWebVitals from "./reportWebVitals";
