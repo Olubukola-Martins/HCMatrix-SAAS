@@ -7,7 +7,7 @@ import { TTaskComment } from "../../types";
 
 export const QUERY_KEY_FOR_SINGLE_TASK_COMMENTS = "single-task-comments";
 interface IGetDataProps {
-  taskId: number;
+  taskId?: number;
 }
 const getData = async (props: {
   data: IGetDataProps;
@@ -51,6 +51,7 @@ export const useGetAllTaskComments = (props: IGetDataProps) => {
         },
       }),
     {
+      enabled: !!props.taskId,
       onError: (err: any) => {},
       onSuccess: (data) => {},
     }
