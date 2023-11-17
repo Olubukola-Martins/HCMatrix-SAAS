@@ -6,6 +6,8 @@ import { useSignIn } from "react-auth-kit";
 import { openNotification } from "utils/notifications";
 import { useCreateEmployeeAccount } from "../hooks/useCreateEmployeeAccount";
 import { IVerifyUserProps, IAuthDets } from "../types";
+import { passwordValidationRules } from "utils/formHelpers/validation";
+import { BeatLoader } from "react-spinners";
 
 export const EmployeeRegistrationForm = ({
   token,
@@ -75,20 +77,7 @@ export const EmployeeRegistrationForm = ({
             autoFocus
           />
         </Form.Item>
-        <Form.Item
-          name="password"
-          rules={[
-            {
-              required: true,
-              message: "Field is required",
-            },
-            {
-              min: 6,
-              message: "password must be at least 6 characters",
-            },
-          ]}
-          hasFeedback
-        >
+        <Form.Item name="password" rules={passwordValidationRules} hasFeedback>
           <Input.Password
             prefix={<LockOutlined className="site-form-item-icon pr-1" />}
             placeholder="Password"
@@ -127,7 +116,7 @@ export const EmployeeRegistrationForm = ({
         </Form.Item>
 
         <button className="authBtn w-full mt-4 mb-3">
-          {isLoading ? "Loading" : "Sign Up"}
+          {isLoading ? <BeatLoader color="#fff" /> : "Sign Up"}
         </button>
       </Form>
     </div>

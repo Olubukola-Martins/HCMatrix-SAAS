@@ -22,7 +22,7 @@ const createEmployeeAccount = async (
     confirmPassword: props.confirmPassword,
   };
 
-  const response = await axios.post(url, data);
+  const response = await axios.post(url, data, config);
   const result = response.data as unknown as TGeneralAuthResponse;
   return result;
 };
