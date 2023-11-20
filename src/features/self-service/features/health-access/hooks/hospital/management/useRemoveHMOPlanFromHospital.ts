@@ -8,7 +8,10 @@ type TData = {
   hospitalId: number;
   hmoPlanId: number;
 };
-const delData = async (props: { data: TData; auth: ICurrentCompany }) => {
+export const removeHMOPlanFromHospital = async (props: {
+  data: TData;
+  auth: ICurrentCompany;
+}) => {
   const url = `${MICROSERVICE_ENDPOINTS.UTILITY}/self-service/health-access/hospital/${props.data.hospitalId}/management/${props.data.hmoPlanId}`;
   const config = {
     headers: {
@@ -24,6 +27,6 @@ const delData = async (props: { data: TData; auth: ICurrentCompany }) => {
 export const useRemoveHMOPlanFromHospital = () => {
   const { token, companyId } = useApiAuth();
   return useMutation((props: TData) =>
-    delData({ data: props, auth: { token, companyId } })
+    removeHMOPlanFromHospital({ data: props, auth: { token, companyId } })
   );
 };

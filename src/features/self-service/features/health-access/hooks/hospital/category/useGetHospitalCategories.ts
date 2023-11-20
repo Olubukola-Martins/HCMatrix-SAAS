@@ -53,9 +53,7 @@ const getData = async (props: {
   return ans;
 };
 
-export const useGetHospitalCTHospitalCategoryCategories = (
-  props: IGetDataProps
-) => {
+export const useGetHospitalCategories = (props: IGetDataProps) => {
   const { token, companyId } = useApiAuth();
 
   const { pagination, searchParams } = props;

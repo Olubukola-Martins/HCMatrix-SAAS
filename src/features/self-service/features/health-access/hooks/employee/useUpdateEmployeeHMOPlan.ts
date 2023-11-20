@@ -21,8 +21,7 @@ const createData = async (props: { data: TData; auth: ICurrentCompany }) => {
   const data = {
     ...props.data.body,
   };
-
-  const response = await axios.put(url, data, config);
+  const response = await axios.patch(url, data, config);
   return response;
 };
 export const useUpdateEmployeeHMOPlan = () => {

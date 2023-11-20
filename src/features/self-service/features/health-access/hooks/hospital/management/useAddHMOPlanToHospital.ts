@@ -11,7 +11,7 @@ export type TAddProps = {
   };
 };
 
-const createData = async (props: {
+export const addHMOPlanToHospital = async (props: {
   data: TAddProps;
   auth: ICurrentCompany;
 }) => {
@@ -34,6 +34,6 @@ const createData = async (props: {
 export const useAddHMOPlanToHospital = () => {
   const { token, companyId } = useApiAuth();
   return useMutation((props: TAddProps) =>
-    createData({ data: props, auth: { token, companyId } })
+    addHMOPlanToHospital({ data: props, auth: { token, companyId } })
   );
 };

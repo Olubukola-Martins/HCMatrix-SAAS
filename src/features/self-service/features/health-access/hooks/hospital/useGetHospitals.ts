@@ -9,11 +9,13 @@ import { THospital } from "../../types/hospital/hospital";
 interface IGetDataProps {
   pagination?: IPaginationProps;
   searchParams?: ISearchParams;
+  stateId?: number;
 }
 
 export const QUERY_KEY_FOR_HOSPITALS = "hospitals";
 
 const getData = async (props: {
+  type?: "mine";
   data: IGetDataProps;
   auth: ICurrentCompany;
 }): Promise<{ data: THospital[]; total: number }> => {
@@ -22,8 +24,10 @@ const getData = async (props: {
   const offset = pagination?.offset ?? 0;
   const name = props.data.searchParams?.name ?? "";
 
-  const url = `${MICROSERVICE_ENDPOINTS.UTILITY}/self-service/health-access/hospital`;
-
+  let url = `${MICROSERVICE_ENDPOINTS.UTILITY}/self-service/health-access/hospital`;
+  if (props.type === "mine") {
+    url = `${MICROSERVICE_ENDPOINTS.UTILITY}/self-service/health-access/hospital/mine`;
+  }
   const config = {
     headers: {
       Accept: "application/json",
@@ -34,6 +38,7 @@ const getData = async (props: {
       limit,
       offset,
       search: name,
+      stateId: props.data.stateId,
     },
   };
 
@@ -53,12 +58,18 @@ const getData = async (props: {
   return ans;
 };
 
-export const useGetHospitals = (props: IGetDataProps) => {
+export const useGetHospitals = ({
+  props,
+  type,
+}: {
+  props: IGetDataProps;
+  type?: "mine";
+}) => {
   const { token, companyId } = useApiAuth();
 
   const { pagination, searchParams } = props;
   const queryData = useQuery(
-    [QUERY_KEY_FOR_HOSPITALS, pagination, searchParams],
+    [QUERY_KEY_FOR_HOSPITALS, type, pagination, searchParams],
     () =>
       getData({
         auth: { token, companyId },

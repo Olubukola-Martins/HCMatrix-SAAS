@@ -218,6 +218,10 @@ export const appRoutes = {
   leaveHome: `/self-service/leave`,
   leaveSettings: `/self-service/leave/settings`,
   healthAccessHome: `/self-service/health-access`,
+  healthAccessDetails: (id?: number) => ({
+    format: `/self-service/health-access/:id`,
+    path: `/self-service/health-access/${id}`,
+  }),
   healthAccessSettings: `/self-service/health-access/settings`,
   onboarding: `/self-service/onboarding`,
   startOnBoarding: (id?: number) => ({
