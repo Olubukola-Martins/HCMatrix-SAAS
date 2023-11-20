@@ -1,7 +1,28 @@
-// TODO: Start Here & populate all the hospitals hooks consequently
-// then ui
-// then workflow line manager update
-// then cancel for requests
-// then approve/reject for recent requests
-// then notifications ... being able to view
-// then authentication various flows[ensure all auth flows are covered, also forgot password] and tackling issues encountered by Favour
+import axios from "axios";
+import { MICROSERVICE_ENDPOINTS } from "config/enviroment";
+import { useApiAuth } from "hooks/useApiAuth";
+import { useMutation } from "react-query";
+import { ICurrentCompany } from "types";
+
+type TData = {
+  id: number;
+};
+const delData = async (props: { data: TData; auth: ICurrentCompany }) => {
+  const url = `${MICROSERVICE_ENDPOINTS.UTILITY}/self-service/health-access/hospital/${props.data.id}`;
+  const config = {
+    headers: {
+      Accept: "application/json",
+      Authorization: `Bearer ${props.auth.token}`,
+      "x-company-id": props.auth.companyId,
+    },
+  };
+
+  const response = await axios.delete(url, config);
+  return response;
+};
+export const useDeleteHospital = () => {
+  const { token, companyId } = useApiAuth();
+  return useMutation((props: TData) =>
+    delData({ data: props, auth: { token, companyId } })
+  );
+};
