@@ -425,6 +425,7 @@ export const SetUpPayrollForm: React.FC<{
                 // duration: 0.4,
               });
               form.resetFields();
+              setEditScheme(false);
 
               queryClient.invalidateQueries({
                 queryKey: [QUERY_KEY_FOR_PAYROLL_SCHEME_BY_TYPE_OR_ID],
@@ -511,6 +512,7 @@ export const SetUpPayrollForm: React.FC<{
               description: res.data.message,
               // duration: 0.4,
             });
+            setEditScheme(false);
 
             queryClient.invalidateQueries({
               queryKey: [QUERY_KEY_FOR_PAYROLL_SCHEME_BY_TYPE_OR_ID],
@@ -540,11 +542,9 @@ export const SetUpPayrollForm: React.FC<{
     (data: TSetupPayrollSchemeData) => {
       if (scheme) {
         handleUpdate(data);
-        setEditScheme(false);
         return;
       }
       handleSetup(data);
-      setEditScheme(false);
     },
     [scheme, handleUpdate, handleSetup]
   );
@@ -887,19 +887,19 @@ export const SetUpPayrollForm: React.FC<{
         description={description}
         actions={[
           {
-            hidden: editScheme,
-            name: "Edit",
+            hidden: false,
+            name: editScheme ? "Cancel" : "Edit",
             loading: isLoadingSetup,
             handleClick: () => {
-              setEditScheme(true);
+              setEditScheme((prev) => !prev);
             },
             btnVariant: "transparent",
           },
           {
             hidden: !editScheme,
+            loading: isLoadingSetup || isLoadingUpdate,
 
             name: "Save Changes",
-            loading: isLoadingSetup || isLoadingUpdate,
             handleClick: () => {
               form.submit();
             },
