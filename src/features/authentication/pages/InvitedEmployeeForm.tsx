@@ -1,8 +1,8 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import logo from "../../../assets/images/logo2.png";
 import { Form, Steps } from "antd";
 
-import { useIsAuthenticated } from "react-auth-kit";
+import { useIsAuthenticated, useSignOut } from "react-auth-kit";
 
 import { Navigate, useNavigate, useSearchParams } from "react-router-dom";
 import { useVerifyEmployeeInvite } from "../hooks/useVerifyEmployeeInvite";
@@ -12,6 +12,7 @@ import { PersonalInfo } from "../components/InvitedEmployee/PersonalInfo";
 import { ICreateInvitedEmpProps } from "../types";
 
 export const InvitedEmployeeForm = () => {
+  const signOut = useSignOut();
   const isAuthenticated = useIsAuthenticated();
   const [searchParams] = useSearchParams();
   const token = searchParams.get("token") ?? "";
@@ -28,6 +29,7 @@ export const InvitedEmployeeForm = () => {
     setCurrent(1);
   };
   const onFinishProfileForm = (data: any) => {
+    signOut();
     const props: ICreateInvitedEmpProps = {
       token,
       uid,
@@ -105,7 +107,7 @@ export const InvitedEmployeeForm = () => {
 
   return (
     <>
-      {isAuthenticated() && <Navigate to="/" replace={true} />}
+      {/* {isAuthenticated() && <Navigate to="/" replace={true} />} */}
 
       <div className="Container">
         <div className="flex justify-center">

@@ -8,6 +8,9 @@ import { useCreateEmployeeAccount } from "../hooks/useCreateEmployeeAccount";
 import { IVerifyUserProps, IAuthDets } from "../types";
 import { passwordValidationRules } from "utils/formHelpers/validation";
 import { BeatLoader } from "react-spinners";
+import { saveMessagingDeviceToken } from "config/firebase/messaging";
+import { useContext } from "react";
+import { GlobalContext, EGlobalOps } from "stateManagers/GlobalContextProvider";
 
 export const EmployeeRegistrationForm = ({
   token,
@@ -18,6 +21,8 @@ export const EmployeeRegistrationForm = ({
 
   const [form] = Form.useForm();
   const signIn = useSignIn();
+  const globalCtx = useContext(GlobalContext);
+  const { dispatch: globalDispatch } = globalCtx;
 
   const onFormSubmit = (data: any) => {
     mutate(
@@ -57,6 +62,18 @@ export const EmployeeRegistrationForm = ({
               description: res.message,
               // duration: 0.4,
             });
+          globalDispatch({
+            type: EGlobalOps.setCurrentCompanyId,
+            payload: {
+              id: authUserDetails.companies[0].company.id,
+              name: authUserDetails.companies[0].company.name,
+            },
+          });
+          saveMessagingDeviceToken({
+            employeeId: authUserDetails.companies[0].id,
+            companyId: authUserDetails.companies[0].company.id,
+            token: result.accessToken,
+          });
 
           form.resetFields();
         },

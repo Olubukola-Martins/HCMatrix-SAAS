@@ -34,7 +34,7 @@ export const PersonalInfo = ({
   const handleCitizen = (val: string) => {
     setHiddenInputs(val);
   };
-  const citizenCheck = hiddenInputs === "NotCitizen" ? false : true;
+  const citizenCheck = hiddenInputs === "expatriate" ? false : true;
 
   return (
     <div>
@@ -140,7 +140,7 @@ export const PersonalInfo = ({
           >
             <Select placeholder="Select" onChange={handleCitizen}>
               <Option value="citizen">Citizen</Option>
-              <Option value="NotCitizen">Not a citizen</Option>
+              <Option value="expatriate">Expatriate</Option>
             </Select>
           </Form.Item>
 
