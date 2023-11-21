@@ -11,7 +11,7 @@ interface IProps extends IModalProps {
   };
   handleDelete: {
     fn: () => void;
-    isLoading: boolean;
+    isLoading?: boolean;
   };
 }
 const DeleteEntityModal: React.FC<IProps> = ({

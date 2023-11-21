@@ -44,6 +44,7 @@ import PayslipsTransactionsPage from "features/self-service/features/payslips/Pa
 import Requisition from "features/self-service/features/requisitions/pages/Requisition";
 import { canUserAccessComponent } from "components/permission-restriction/PermissionRestrictor";
 import VehicleBookingSettings from "features/self-service/features/vehicle-booking/pages/VehicleBookingSettings";
+import EmployeeHealthAccessPage from "features/self-service/features/health-access/pages/EmployeeHealthAccessPage";
 
 // TO DO: This lazy loading might not be needed consider rethinking this, so just temporary
 // const Requisition = lazy(
@@ -362,6 +363,14 @@ export const selfServiceRoutes = (props: TAppPageDataFnProps): TRouteData[] => {
 
         requiredPermissions: ["manage-leave-settings"],
       }),
+    },
+    {
+      element: <EmployeeHealthAccessPage />,
+      path: appRoutes.healthAccessDetails().format,
+      isSearchable: false,
+      title: "Health Access Details",
+      isPrimaryFeature: false,
+      hidden: !hasSelfService,
     },
     {
       element: <HealthAccessHome />,

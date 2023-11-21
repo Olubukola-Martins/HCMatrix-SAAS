@@ -17,10 +17,11 @@ interface IData {
 interface IProps {
   data?: Partial<IData>;
   isLoading?: boolean;
-  handleResignation: () => void;
-  handleSuspension: () => void;
-  handleEdit: () => void;
-  handleActivate: () => void;
+  handleResignation?: () => void;
+  handleSuspension?: () => void;
+  handleEdit?: () => void;
+  handleActivate?: () => void;
+  showMoreActions?: boolean;
 }
 
 export const EmployeeOverviewCard: React.FC<IProps> = ({
@@ -30,6 +31,7 @@ export const EmployeeOverviewCard: React.FC<IProps> = ({
   handleResignation,
   handleSuspension,
   handleActivate,
+  showMoreActions = true,
 }) => {
   const {
     fullName = "No name",
@@ -62,10 +64,12 @@ export const EmployeeOverviewCard: React.FC<IProps> = ({
                 </h4>
                 <h5 className="text-sm text-accent">{role}</h5>
                 <div className="text-sm flex md:items-center gap-3 md:flex-row flex-col mt-1">
-                  <div className="flex items-center gap-2">
-                    <i className="ri-profile-line text-caramel"></i>
-                    <span>{empuid} | </span>
-                  </div>
+                  {empuid ? (
+                    <div className="flex items-center gap-2">
+                      <i className="ri-profile-line text-caramel"></i>
+                      <span>{empuid} | </span>
+                    </div>
+                  ) : null}
                   <div className="flex items-center gap-2">
                     <i className="ri-mail-line text-caramel"></i>
                     <span>{email} | </span>
@@ -82,48 +86,52 @@ export const EmployeeOverviewCard: React.FC<IProps> = ({
               </div>
             </div>
             <div className="flex gap-3 text-xl">
-              <i
-                title="Edit Employee"
-                className="ri-pencil-line cursor-pointer hover:text-caramel"
-                onClick={handleEdit}
-              />
-              <Dropdown
-                overlay={
-                  <div>
-                    {
-                      <ul className="bg-mainBg rounded border shadow-sm p-2 flex gap-1 flex-col mb-2">
-                        <li
-                          className="cursor-pointer hover:text-caramel"
-                          onClick={handleActivate}
-                        >
-                          Enable User
-                        </li>
-                        <li
-                          className="cursor-pointer hover:text-caramel"
-                          onClick={handleSuspension}
-                        >
-                          Suspend User
-                        </li>
-                      </ul>
-                    }
+              {handleEdit ? (
+                <i
+                  title="Edit Employee"
+                  className="ri-pencil-line cursor-pointer hover:text-caramel"
+                  onClick={handleEdit}
+                />
+              ) : null}
+              {showMoreActions ? (
+                <Dropdown
+                  overlay={
+                    <div>
+                      {
+                        <ul className="bg-mainBg rounded border shadow-sm p-2 flex gap-1 flex-col mb-2">
+                          <li
+                            className="cursor-pointer hover:text-caramel"
+                            onClick={handleActivate}
+                          >
+                            Enable User
+                          </li>
+                          <li
+                            className="cursor-pointer hover:text-caramel"
+                            onClick={handleSuspension}
+                          >
+                            Suspend User
+                          </li>
+                        </ul>
+                      }
 
-                    {
-                      <ul className="bg-mainBg rounded border shadow-sm p-2  mb-2">
-                        <li
-                          className="cursor-pointer hover:text-caramel"
-                          onClick={handleResignation}
-                        >
-                          Submit Resignation
-                        </li>
-                      </ul>
-                    }
-                  </div>
-                }
-                placement="topLeft"
-                trigger={["click"]}
-              >
-                <i className="ri-more-2-fill cursor-pointer hover:text-caramel"></i>
-              </Dropdown>
+                      {
+                        <ul className="bg-mainBg rounded border shadow-sm p-2  mb-2">
+                          <li
+                            className="cursor-pointer hover:text-caramel"
+                            onClick={handleResignation}
+                          >
+                            Submit Resignation
+                          </li>
+                        </ul>
+                      }
+                    </div>
+                  }
+                  placement="topLeft"
+                  trigger={["click"]}
+                >
+                  <i className="ri-more-2-fill cursor-pointer hover:text-caramel"></i>
+                </Dropdown>
+              ) : null}
             </div>
           </>
         </Skeleton>
