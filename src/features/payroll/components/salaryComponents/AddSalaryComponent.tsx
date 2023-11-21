@@ -27,6 +27,7 @@ const defaultCalculationModes: (TSalaryComponentCalculationMode | "table")[] = [
   "fixed",
 ];
 type IFormProps = {
+  disabled?: boolean;
   formMode?: "add" | "edit";
   dependencies?: string[];
   type?: "allowance" | "deduction";
@@ -91,6 +92,7 @@ export const AddSalaryComponent: React.FC<IProps> = ({
 
 const DEFAULT_DEPENDENCIES_FROM_API = ["gross_pay"];
 export const AddSalaryComponentForm: React.FC<IFormProps> = ({
+  disabled,
   dependencies = [],
   formMode = "add",
   type = "allowance",
@@ -321,6 +323,7 @@ export const AddSalaryComponentForm: React.FC<IFormProps> = ({
       form={form}
       requiredMark={false}
       onFinish={handleSubmit}
+      disabled={disabled}
     >
       <Form.Item
         label="Name"

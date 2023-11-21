@@ -712,8 +712,6 @@ export const SetUpPayrollForm: React.FC<{
       });
 
       setEditScheme(false);
-    } else {
-      setEditScheme(true);
     }
   }, [scheme, dispatch, form, project, type]);
 
@@ -889,7 +887,7 @@ export const SetUpPayrollForm: React.FC<{
         description={description}
         actions={[
           {
-            hidden: !editScheme,
+            hidden: editScheme,
             name: "Edit",
             loading: isLoadingSetup,
             handleClick: () => {
@@ -898,7 +896,7 @@ export const SetUpPayrollForm: React.FC<{
             btnVariant: "transparent",
           },
           {
-            hidden: editScheme,
+            hidden: !editScheme,
 
             name: "Save Changes",
             loading: isLoadingSetup || isLoadingUpdate,
@@ -911,7 +909,11 @@ export const SetUpPayrollForm: React.FC<{
       />
       <Skeleton active loading={isFetching} paragraph={{ rows: 20 }}>
         <div className="bg-card px-5 py-7  rounded-md mt-7 grid grid-cols-1 md:grid-cols-1 gap-5 text-accent">
-          <Form form={form} onFinish={handleSubmit} disabled={!editScheme}>
+          <Form
+            form={form}
+            onFinish={handleSubmit}
+            disabled={editScheme === false}
+          >
             {/* first row */}
             <div className="flex flex-col gap-4">
               <div className={boxStyle}>
@@ -1283,7 +1285,11 @@ export const SetUpPayrollForm: React.FC<{
               <div key={i} className={`${boxStyle} text-sm`}>
                 <div className="flex items-center justify-between">
                   <h5 className={boxTitle}>{item.title}</h5>{" "}
-                  <Switch checked={item.isActive} onChange={item.onSwitch} />
+                  <Switch
+                    checked={item.isActive}
+                    onChange={item.onSwitch}
+                    disabled={!editScheme}
+                  />
                 </div>
                 <p className="text-sm">{item.description}</p>
 
@@ -1292,6 +1298,7 @@ export const SetUpPayrollForm: React.FC<{
                     <div className="grid grid-cols-1 lg:grid-cols-1 gap-5 mt-5">
                       <div>
                         <AddSalaryComponentForm
+                          disabled={!editScheme}
                           type={item.type}
                           isDefault={item.isDefault}
                           isActive={item.isActive}
