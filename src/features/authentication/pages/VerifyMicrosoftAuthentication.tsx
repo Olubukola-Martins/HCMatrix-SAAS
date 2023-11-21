@@ -130,7 +130,7 @@ export const VerifyMicrosoftAuthentication = () => {
               className="flex items-center gap-2 justify-center text-xs py-5"
               style={{ color: "var(--authPrimary)" }}
             >
-              <span>Private Policy</span>
+              <span>Privacy Policy</span>
               <span className="text-black font-semibold text-xl">.</span>
               <span>Terms of service</span>
             </div>
