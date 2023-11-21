@@ -27,7 +27,7 @@ const HealthAccessHome = () => {
       <div className="Container">
         <div className="flex flex-col gap-6">
           <div>
-            <PageIntro title="Loans" link={appRoutes.selfServiceHome} />
+            <PageIntro title="Health Access" link={appRoutes.selfServiceHome} />
             <PageSubHeader
               hideBackground
               description={``}
@@ -40,7 +40,7 @@ const HealthAccessHome = () => {
 
                 {
                   name: "Settings",
-                  handleClick: () => navigate(appRoutes.loanPolicies),
+                  handleClick: () => navigate(appRoutes.healthAccessSettings),
                   btnVariant: "transparent",
                   hidden: !canUserAccessComponent({
                     userPermissions,

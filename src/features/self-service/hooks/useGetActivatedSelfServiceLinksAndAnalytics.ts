@@ -74,7 +74,7 @@ export const useGetActivatedSelfServiceLinksAndAnalytics = (): {
             },
 
             {
-              hidden: true, //Pending when its fleshed out
+              hidden: false, //Pending when its fleshed out
               item: {
                 icon: health,
                 link: appRoutes.healthAccessHome,
