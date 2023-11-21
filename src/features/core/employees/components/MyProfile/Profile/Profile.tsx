@@ -2,6 +2,7 @@ import { TSingleEmployee } from "features/core/employees/types";
 import { PersonalInformation } from "./PersonalInformation";
 import { EmergencyContact } from "./EmergencyContact";
 import { Dependents } from "./Dependents/Dependents";
+import EmployeeDependents from "./Dependents/EmployeeDependents";
 
 interface IProps {
   personalInfo?: TSingleEmployee["personalInformation"];
@@ -27,7 +28,7 @@ const Profile: React.FC<IProps> = ({
         emergencyContact={emergencyContact}
         employeeId={employeeId}
       />
-      <Dependents dependents={dependents} employeeId={employeeId} />
+      <EmployeeDependents dependents={dependents} employeeId={employeeId} />
     </>
   );
 };

@@ -1,6 +1,6 @@
 import axios from "axios";
 import { MICROSERVICE_ENDPOINTS } from "config/enviroment";
-import { TEmployeeMedicalHistory } from "features/self-service/features/health-access/types/employee";
+import { TEmployeeMedicalHistoryType } from "features/self-service/features/health-access/types/employee";
 import { useApiAuth } from "hooks/useApiAuth";
 import { useMutation } from "react-query";
 import { ICurrentCompany } from "types";
@@ -12,7 +12,7 @@ type TBody = {
 type TData = {
   body: TBody;
   employeeId: number;
-  type: TEmployeeMedicalHistory;
+  type: TEmployeeMedicalHistoryType;
   medicalHistoryId: number;
 };
 const createData = async (props: { data: TData; auth: ICurrentCompany }) => {

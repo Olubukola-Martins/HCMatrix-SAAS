@@ -1,7 +1,7 @@
 import { TEmployeeHealthAccess } from "./list";
 import { TSingleEmployeeHealthAccess } from "./single";
 
-type TEmployeeMedicalHistory =
+type TEmployeeMedicalHistoryType =
   | "current-condition"
   | "past-condition"
   | "sugeries"
@@ -11,5 +11,5 @@ type TEmployeeMedicalHistory =
 export {
   type TSingleEmployeeHealthAccess,
   type TEmployeeHealthAccess,
-  type TEmployeeMedicalHistory,
+  type TEmployeeMedicalHistoryType,
 };

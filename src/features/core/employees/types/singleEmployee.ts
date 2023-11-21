@@ -243,7 +243,8 @@ interface Dependent {
   fullName: string;
   dob: string;
   phoneNumber: string;
-  relationship: string;
+  relationship?: string;
+  gender?: string;
   companyId: number;
   createdAt: string;
   updatedAt: string;

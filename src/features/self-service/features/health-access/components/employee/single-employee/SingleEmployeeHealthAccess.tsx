@@ -32,6 +32,7 @@ const SingleEmployeeHealthAccess: React.FC<TProps> = ({ data }) => {
           medicalHistory: data?.medicalHistory,
           medicalInfo: data?.medicalInfo,
         }}
+        employeeId={data?.employeeId}
       />
     </div>
   );
