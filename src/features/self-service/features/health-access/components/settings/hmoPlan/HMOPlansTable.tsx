@@ -30,6 +30,7 @@ export const HMOPlansTable: React.FC<{
       title: "HMO Plan",
       dataIndex: "HMO Plan",
       key: "HMO Plan",
+
       render: (_, item) => <span>{item.name} </span>,
     },
 

@@ -10,10 +10,13 @@ const EmployeeHealthAccessContainer: React.FC<{ type?: "mine" }> = ({
   return (
     <div className="flex flex-col gap-4">
       <div className="flex justify-between">
-        <SelectDepartment
-          handleSelect={setDepartmentId}
-          handleClear={() => setDepartmentId(undefined)}
-        />
+        <div>
+          {" "}
+          <SelectDepartment
+            handleSelect={setDepartmentId}
+            handleClear={() => setDepartmentId(undefined)}
+          />
+        </div>
         <RegisterEmployeeHealthAccessBtn />
       </div>
       <EmployeeHealthAccessTable departmentId={departmentId} />

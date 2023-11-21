@@ -36,6 +36,7 @@ export const HospitalTable: React.FC<{
       title: "",
       dataIndex: "_",
       key: "_",
+      width: 50,
       render: (_, item) =>
         item.isRecommended ? (
           <div className="bg-caramel w-2 h-2 rounded-full" />

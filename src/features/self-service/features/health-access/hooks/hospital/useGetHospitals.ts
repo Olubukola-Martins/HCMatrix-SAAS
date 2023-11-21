@@ -67,9 +67,9 @@ export const useGetHospitals = ({
 }) => {
   const { token, companyId } = useApiAuth();
 
-  const { pagination, searchParams } = props;
+  const { pagination, searchParams, stateId } = props;
   const queryData = useQuery(
-    [QUERY_KEY_FOR_HOSPITALS, type, pagination, searchParams],
+    [QUERY_KEY_FOR_HOSPITALS, type, stateId, pagination, searchParams],
     () =>
       getData({
         auth: { token, companyId },

@@ -96,10 +96,10 @@ export const EditHMOPlan: React.FC<IProps> = ({
         </Form.Item>
         <Form.Item
           rules={[numberHasToBeAWholeNumberRule]}
-          name="name"
+          name="maxDependents"
           label="Max Dependents"
         >
-          <InputNumber placeholder="maxDependents" />
+          <InputNumber placeholder="Max Dependents" className="w-full" />
         </Form.Item>
         <Form.Item
           rules={textInputValidationRules}

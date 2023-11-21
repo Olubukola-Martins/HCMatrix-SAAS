@@ -71,10 +71,10 @@ export const AddHMOPlan: React.FC<IModalProps> = ({ open, handleClose }) => {
         </Form.Item>
         <Form.Item
           rules={[numberHasToBeAWholeNumberRule]}
-          name="name"
+          name="maxDependents"
           label="Max Dependents"
         >
-          <InputNumber placeholder="maxDependents" />
+          <InputNumber placeholder="Max Dependents" className="w-full" />
         </Form.Item>
         <Form.Item
           rules={textInputValidationRules}

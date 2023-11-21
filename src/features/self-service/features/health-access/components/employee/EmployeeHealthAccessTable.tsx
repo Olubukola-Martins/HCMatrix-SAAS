@@ -37,7 +37,7 @@ export const EmployeeHealthAccessTable: React.FC<{
       key: "Name",
       render: (_, item) => (
         <Link
-          to={`${appRoutes.healthAccessDetails(item.id).path}`}
+          to={`${appRoutes.healthAccessDetails(item.employeeId).path}`}
           className="text-caramel hover:underline hover:text-caramel"
         >
           {getEmployeeFullName(item.employee)}
