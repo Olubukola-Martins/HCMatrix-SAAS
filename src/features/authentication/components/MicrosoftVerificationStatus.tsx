@@ -94,6 +94,11 @@ const MicrosoftVerificationStatus = ({
               name: authUserDetails.companies[0].company.name,
             },
           });
+          saveMessagingDeviceToken({
+            employeeId: authUserDetails.companies[0].id,
+            companyId: authUserDetails.companies[0].company.id,
+            token: result.accessToken,
+          });
           // }
           // navigate(appRoutes.home);
         }
