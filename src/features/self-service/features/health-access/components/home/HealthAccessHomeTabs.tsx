@@ -1,6 +1,7 @@
 import { Tabs } from "antd";
 import HospitalContainer from "../settings/hospital/HospitalContainer";
 import EmployeeHealthAccessContainer from "../employee/EmployeeHealthAccessContainer";
+import AuthEmployeeHealthAccess from "../employee/AuthEmployeeHealthAccess";
 
 const HealthAccessHomeTabs = () => {
   return (
@@ -9,6 +10,7 @@ const HealthAccessHomeTabs = () => {
         {
           label: "My Health Access",
           key: "My Health Access",
+          children: <AuthEmployeeHealthAccess />,
         },
         {
           label: "Registered Employees",

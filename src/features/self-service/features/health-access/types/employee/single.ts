@@ -62,6 +62,8 @@ interface Employee {
   lastName: string;
   email: string;
   designation: Designation;
+  avatarUrl?:string;
+  empUid?:string;
   personalInformation: PersonalInformation;
 }
 

@@ -6,6 +6,8 @@ import { ErrorWrapper } from "components/errorHandlers/ErrorWrapper";
 import { Skeleton } from "antd";
 import SingleEmployeeHealthAccess from "../components/employee/single-employee/SingleEmployeeHealthAccess";
 import SelfServiceSubNav from "features/self-service/components/SelfServiceSubNav";
+import { PageIntro } from "components/layout/PageIntro";
+import { appRoutes } from "config/router/paths";
 
 const EmployeeHealthAccessPage = () => {
   const params = useParams();
@@ -25,6 +27,10 @@ const EmployeeHealthAccessPage = () => {
             }
           >
             <div className="Container">
+              <PageIntro
+                title="Employee Health Access"
+                link={appRoutes.healthAccessHome}
+              />
               <SingleEmployeeHealthAccess data={data} />
             </div>
           </ErrorWrapper>
