@@ -11,6 +11,8 @@ import { openNotification } from "utils/notifications";
 import { useInviteEmployees } from "../hooks/useInviteEmployees";
 import { IEmpInviteProps } from "../types";
 import { AppButton } from "components/button/AppButton";
+import { QUERY_KEY_FOR_INVITED_EMPLOYEES } from "../hooks/useFetchInvitedEmployees";
+import { QUERY_KEY_FOR_LIST_OF_EMPLOYEES } from "../hooks/useFetchEmployees";
 
 export const AddMultipleEmployees = ({ open, handleClose }: IDrawerProps) => {
   const queryClient = useQueryClient();
@@ -43,7 +45,11 @@ export const AddMultipleEmployees = ({ open, handleClose }: IDrawerProps) => {
           });
           form.resetFields();
           queryClient.invalidateQueries({
-            queryKey: ["invited-employees"],
+            queryKey: [QUERY_KEY_FOR_INVITED_EMPLOYEES],
+            // exact: true,
+          });
+          queryClient.invalidateQueries({
+            queryKey: [QUERY_KEY_FOR_LIST_OF_EMPLOYEES],
             // exact: true,
           });
         },
