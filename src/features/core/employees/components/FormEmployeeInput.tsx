@@ -7,6 +7,7 @@ import {
 } from "utils/formHelpers/validation";
 import { useFetchEmployees } from "../hooks/useFetchEmployees";
 import { TEmployee } from "../types";
+import { getEmployeeFullName } from "../utils/getEmployeeFullName";
 
 export const FormEmployeeInput: React.FC<{
   handleSelect?: (val: number, employee?: TEmployee) => void;
@@ -77,7 +78,7 @@ export const FormEmployeeInput: React.FC<{
       >
         {data?.data.map((item) => (
           <Select.Option key={item.id} value={item.id}>
-            {item.firstName} {item.lastName}
+            [{item.empUid}]{getEmployeeFullName(item)}
           </Select.Option>
         ))}
       </Select>
