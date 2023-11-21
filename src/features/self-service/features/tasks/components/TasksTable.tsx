@@ -16,8 +16,9 @@ import { EditTask } from "./EditTask";
 import { getEmployeeFullName } from "features/core/employees/utils/getEmployeeFullName";
 import { DeleteTask } from "./DeleteTask";
 import { DEFAULT_DATE_FORMAT } from "constants/dateFormats";
+import TaskComment from "./comment/TaskComment";
 
-type TAction = "edit" | "delete";
+type TAction = "edit" | "delete" | "comment";
 
 export const TasksTable: React.FC<{
   data?: TTask[];
@@ -121,6 +122,12 @@ export const TasksTable: React.FC<{
               >
                 Delete
               </Menu.Item>
+              <Menu.Item
+                key="comment"
+                onClick={() => handleAction({ task: item, action: "comment" })}
+              >
+                Comment
+              </Menu.Item>
             </Menu>
           }
           trigger={["click"]}
@@ -148,6 +155,12 @@ export const TasksTable: React.FC<{
           task={task}
         />
       )}
+      <TaskComment
+        taskId={task?.id}
+        open={action === "comment"}
+        handleClose={onClose}
+        taskName={task?.name ?? ""}
+      />
       <Table
         size="small"
         dataSource={data}

@@ -1,6 +1,8 @@
-export type TTaskPriority = "low" | "medium" | "high";
-export type TTaskStatus = "active" | "new" | "resolved" | "closed";
-export type TTask = {
+import { TTaskComment } from "./comment";
+type TTaskPriority = "low" | "medium" | "high";
+type TTaskStatus = "active" | "new" | "resolved" | "closed";
+
+type TTask = {
   id: number;
   name: string;
   description: string;
@@ -16,6 +18,8 @@ export type TTask = {
   assignee: Assignee;
   assignedTo: Assignee;
 };
+
+export type { TTaskComment, TTaskPriority, TTaskStatus, TTask };
 
 interface Assignee {
   id: number;
