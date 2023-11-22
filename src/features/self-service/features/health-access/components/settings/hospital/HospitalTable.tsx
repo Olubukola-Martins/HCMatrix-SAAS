@@ -14,7 +14,9 @@ export const HospitalTable: React.FC<{
   search?: string;
   stateId?: number;
   type?: "mine";
-}> = ({ search, stateId, type }) => {
+  showDelete?: boolean;
+  showEdit?: boolean;
+}> = ({ search, stateId, type, showDelete, showEdit }) => {
   const [hospital, setHospital] = useState<THospital>();
   const [action, setAction] = useState<TAction>();
   const { pagination, onChange } = usePagination();
@@ -96,11 +98,16 @@ export const HospitalTable: React.FC<{
               <Menu.Item key="view" onClick={() => handleAction("view", item)}>
                 View Details
               </Menu.Item>
-              <Menu.Item key="edit" onClick={() => handleAction("edit", item)}>
+              <Menu.Item
+                hidden={showEdit === false}
+                key="edit"
+                onClick={() => handleAction("edit", item)}
+              >
                 Edit
               </Menu.Item>
               <Menu.Item
                 key="delete"
+                hidden={showDelete === false}
                 onClick={() => handleAction("delete", item)}
               >
                 Delete

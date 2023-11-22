@@ -20,7 +20,14 @@ const HealthAccessHomeTabs = () => {
         {
           label: "Available Hospitals",
           key: "Available Hospitals",
-          children: <HospitalContainer type="mine" />,
+          children: (
+            <HospitalContainer
+              type="mine"
+              showAdd={false}
+              showDelete={false}
+              showEdit={false}
+            />
+          ),
         },
       ]}
     />
