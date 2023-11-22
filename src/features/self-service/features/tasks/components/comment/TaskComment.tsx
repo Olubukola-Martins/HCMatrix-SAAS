@@ -1,7 +1,6 @@
 import { Button, Drawer, Empty, Skeleton, Input } from "antd";
 import React, { useState } from "react";
 import { IModalProps } from "types";
-import { MessageList } from "react-chat-elements";
 import SendMessageIcon from "assets/svg-components/SendMessageIcon/SendMessageIcon";
 import PhotoIcon from "assets/svg-components/PhotoIcon/PhotoIcon";
 import AttachmentIcon from "assets/svg-components/AttachmentIcon/AttachmentIcon";
@@ -9,7 +8,6 @@ import {
   QUERY_KEY_FOR_SINGLE_TASK_COMMENTS,
   useGetAllTaskComments,
 } from "../../hooks/comment/useGetAllTaskComments";
-import { getEmployeeFullName } from "features/core/employees/utils/getEmployeeFullName";
 import useMostRecentApiAuth from "hooks/useMostRecentApiAuth";
 import { openNotification } from "utils/notifications";
 import { useQueryClient } from "react-query";
@@ -76,36 +74,21 @@ const TaskComment: React.FC<IProps> = ({
                 <Empty description="No comments yet" />
               </div>
             ) : null}
-            <MessageList
-              toBottomHeight={"100%"}
-              className="message-list"
-              dataSource={
-                !data
-                  ? []
-                  : data?.data.map((comment) => ({
-                      avatar: comment.commenter.avatarUrl,
-                      text: comment.comment,
-                      title: getEmployeeFullName(comment.commenter),
-                      date: new Date(comment.createdAt),
-                      type: "text",
-                      id: comment.id,
-                      titleColor: "red",
-                      position:
-                        comment.commenter.id === employee?.id
-                          ? "left"
-                          : "right",
-                      focus: false,
-                      forwarded: false,
-                      replyButton: false,
-                      removeButton: false,
-                      retracted: false,
-                      notch: false,
-                      status: "read",
-                    }))
-              }
-              referance={null}
-              lockable
-            />
+            {data && data?.total > 0
+              ? data.data.map((item, i) =>
+                  employee?.id !== item.commenter.id ? (
+                    <LeftMessage
+                      comment={item.comment}
+                      avatarUrl={item.commenter.avatarUrl}
+                    />
+                  ) : (
+                    <RightMessage
+                      comment={item.comment}
+                      avatarUrl={item.commenter.avatarUrl}
+                    />
+                  )
+                )
+              : null}
           </Skeleton>
         </div>
         <div className="px-6 pt-4 pb-10 flex gap-2 sticky bg-white shadow-2xl bottom-0 w-full right-0 left-0">
@@ -132,6 +115,43 @@ const TaskComment: React.FC<IProps> = ({
         </div>
       </div>
     </Drawer>
+  );
+};
+
+const LeftMessage: React.FC<{ comment: string; avatarUrl?: string }> = ({
+  avatarUrl,
+  comment,
+}) => {
+  return (
+    <div className="flex justify-start mb-4">
+      <img
+        src={avatarUrl}
+        className="object-cover h-8 w-8 rounded-full self-end"
+        alt=""
+        loading="lazy"
+      />
+      <div className="ml-2 py-3 px-4 bg-gray-400 rounded-br-3xl rounded-tr-3xl rounded-tl-xl text-white">
+        {comment}
+      </div>
+    </div>
+  );
+};
+const RightMessage: React.FC<{ comment: string; avatarUrl?: string }> = ({
+  avatarUrl,
+  comment,
+}) => {
+  return (
+    <div className="flex justify-end mb-4">
+      <div className="mr-2 py-3 px-4 bg-caramel rounded-br-3xl rounded-tl-3xl rounded-tr-xl text-white">
+        {comment}
+      </div>
+      <img
+        src={avatarUrl}
+        className="object-cover h-8 w-8 rounded-full self-start"
+        alt=""
+        loading="lazy"
+      />
+    </div>
   );
 };
 
