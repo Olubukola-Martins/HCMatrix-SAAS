@@ -36,14 +36,19 @@ export type TWorkflowApprovalType =
   | "loan"
   | "exit-handover-form";
 
-export type TStagingType = "employee" | "role" | "group" | "department-head";
+export type TStagingType =
+  | "employee"
+  | "role"
+  | "group"
+  | "department-head"
+  | "line-manager";
 export type TStageCondition = "specific" | "at-least-one" | "everyone";
 export type TWorkflowType = "advanced" | "basic";
 export type TStage = {
   id: number;
   name: string;
   type: TStagingType;
-  entityId: number;
+  entityId?: number;
   condition?: TStageCondition;
   count?: number;
   enableTwoFactorAuth?: boolean;
@@ -58,7 +63,7 @@ export interface TSingleWorkflow {
   companyId: number;
   createdAt: string;
   updatedAt: string;
-  deletedAt?: any;
+  deletedAt?: string;
   lastModifiedBy: LastModifiedBy;
   stages: Stage[];
 }
@@ -68,7 +73,7 @@ interface Stage {
   workflowId: number;
   name: string;
   type: TStagingType;
-  entityId: number;
+  entityId?: number;
   condition?: TStageCondition;
   count?: number;
   createdAt: string;

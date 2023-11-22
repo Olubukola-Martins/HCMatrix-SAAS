@@ -2,6 +2,7 @@ import { DatePicker, Form, Input, Modal } from "antd";
 import { AppButton } from "components/button/AppButton";
 import { DEFAULT_DATE_FORMAT } from "constants/dateFormats";
 import { useAddEmployeeMedicalHistory } from "features/self-service/features/health-access/hooks/employee/medical/history/useAddEmployeeMedicalHistory";
+import { QUERY_KEY_FOR_AUTHENTICATED_EMPLOYEE_HEALTH_ACCESS } from "features/self-service/features/health-access/hooks/employee/useGetAuthenticatedEmployeeHealthAccess";
 import { QUERY_KEY_FOR_SINGLE_EMPLOYEE_HEALTH_ACCESS } from "features/self-service/features/health-access/hooks/employee/useGetSingleEmployeeHealthAccess";
 import { TEmployeeMedicalHistoryType } from "features/self-service/features/health-access/types/employee";
 import { useQueryClient } from "react-query";
@@ -59,7 +60,11 @@ export const AddMedication = ({
           handleClose();
 
           queryClient.invalidateQueries({
-            queryKey: [QUERY_KEY_FOR_SINGLE_EMPLOYEE_HEALTH_ACCESS],
+            queryKey: [QUERY_KEY_FOR_SINGLE_EMPLOYEE_HEALTH_ACCESS, employeeId],
+            // exact: true,
+          });
+          queryClient.invalidateQueries({
+            queryKey: [QUERY_KEY_FOR_AUTHENTICATED_EMPLOYEE_HEALTH_ACCESS],
             // exact: true,
           });
         },

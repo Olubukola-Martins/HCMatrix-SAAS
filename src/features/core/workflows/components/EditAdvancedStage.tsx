@@ -188,21 +188,22 @@ export const EditAdvancedStage: React.FC<{
               control={{ label: "Group", name: "entityId" }}
             />
           )}
-          {!!stagingType && stagingType !== "employee" && (
-            <Form.Item
-              name={"condition"}
-              rules={generalValidationRules}
-              label="Condition"
-            >
-              <Select
-                placeholder="Condition"
-                options={WORKFLOW_STAGE_CONDITION_OPTIONS}
-                onSelect={(val: TStageCondition) => {
-                  setStagingCondition(val);
-                }}
-              />
-            </Form.Item>
-          )}
+          {!!stagingType &&
+            !["line-manager", "employee"].includes(stagingType) && (
+              <Form.Item
+                name={"condition"}
+                rules={generalValidationRules}
+                label="Condition"
+              >
+                <Select
+                  placeholder="Condition"
+                  options={WORKFLOW_STAGE_CONDITION_OPTIONS}
+                  onSelect={(val: TStageCondition) => {
+                    setStagingCondition(val);
+                  }}
+                />
+              </Form.Item>
+            )}
           {stagingCondition === "specific" && (
             // TO DO: validation of max/min based on count of entity, or no need as they can add to role at any moment
             <Form.Item

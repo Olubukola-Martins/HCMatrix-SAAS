@@ -35,9 +35,15 @@ export const CreateBasicWorkflow = () => {
   const handleSubmit = (data: any) => {
     const workflowStages: TBasicWorkflowStage[] = stages
       .map(({ name, entityId, type }): TBasicWorkflowStage => {
-        if (!!entityId && !!type) {
+        if (!!entityId && !!type && type !== "line-manager") {
           return {
             entityId: entityId,
+            type,
+            name,
+          };
+        }
+        if (type === "line-manager") {
+          return {
             type,
             name,
           };

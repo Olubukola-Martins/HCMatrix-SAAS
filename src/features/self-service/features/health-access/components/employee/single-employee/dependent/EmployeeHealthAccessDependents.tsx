@@ -12,6 +12,7 @@ import { QUERY_KEY_FOR_SINGLE_EMPLOYEE_HEALTH_ACCESS } from "features/self-servi
 import { useAddDependantInEmployeeHealthAccess } from "features/self-service/features/health-access/hooks/employee/dependent/useAddDependantInEmployeeHealthAccess";
 import { useRemoveDependantInEmployeeHealthAccess } from "features/self-service/features/health-access/hooks/employee/dependent/useRemoveDependantInEmployeeHealthAccess";
 import { useUpdateDependantInEmployeeHealthAccess } from "features/self-service/features/health-access/hooks/employee/dependent/useUpdateDependantInEmployeeHealthAccess";
+import { QUERY_KEY_FOR_AUTHENTICATED_EMPLOYEE_HEALTH_ACCESS } from "features/self-service/features/health-access/hooks/employee/useGetAuthenticatedEmployeeHealthAccess";
 
 const EmployeeHealthAccessDependents: React.FC<
   Pick<IDependentProps, "dependents" | "employeeId">
@@ -54,7 +55,11 @@ const EmployeeHealthAccessDependents: React.FC<
           });
           successCallBack?.();
           queryClient.invalidateQueries({
-            queryKey: [QUERY_KEY_FOR_SINGLE_EMPLOYEE_HEALTH_ACCESS],
+            queryKey: [QUERY_KEY_FOR_SINGLE_EMPLOYEE_HEALTH_ACCESS, employeeId],
+            // exact: true,
+          });
+          queryClient.invalidateQueries({
+            queryKey: [QUERY_KEY_FOR_AUTHENTICATED_EMPLOYEE_HEALTH_ACCESS],
             // exact: true,
           });
         },
@@ -101,7 +106,11 @@ const EmployeeHealthAccessDependents: React.FC<
           successCallBack?.();
 
           queryClient.invalidateQueries({
-            queryKey: [QUERY_KEY_FOR_SINGLE_EMPLOYEE_HEALTH_ACCESS],
+            queryKey: [QUERY_KEY_FOR_SINGLE_EMPLOYEE_HEALTH_ACCESS, employeeId],
+            // exact: true,
+          });
+          queryClient.invalidateQueries({
+            queryKey: [QUERY_KEY_FOR_AUTHENTICATED_EMPLOYEE_HEALTH_ACCESS],
             // exact: true,
           });
         },
@@ -143,7 +152,11 @@ const EmployeeHealthAccessDependents: React.FC<
           successCallBack?.();
 
           queryClient.invalidateQueries({
-            queryKey: [QUERY_KEY_FOR_SINGLE_EMPLOYEE_HEALTH_ACCESS],
+            queryKey: [QUERY_KEY_FOR_SINGLE_EMPLOYEE_HEALTH_ACCESS, employeeId],
+            // exact: true,
+          });
+          queryClient.invalidateQueries({
+            queryKey: [QUERY_KEY_FOR_AUTHENTICATED_EMPLOYEE_HEALTH_ACCESS],
             // exact: true,
           });
         },

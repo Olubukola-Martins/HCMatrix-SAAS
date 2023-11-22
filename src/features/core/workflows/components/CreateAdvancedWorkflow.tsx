@@ -51,7 +51,7 @@ export const CreateAdvancedWorkflow = () => {
           count,
           enableTwoFactorAuth,
         }): TAdvancedWorkflowStage => {
-          if (!!entityId && !!type) {
+          if (!!entityId && !!type && type !== "line-manager") {
             return {
               entityId: entityId,
               type,
@@ -59,6 +59,13 @@ export const CreateAdvancedWorkflow = () => {
               condition,
               count,
               enableTwoFactorAuth,
+            };
+          }
+
+          if (type === "line-manager") {
+            return {
+              type,
+              name,
             };
           }
           return {

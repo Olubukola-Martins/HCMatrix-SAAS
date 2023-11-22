@@ -9,6 +9,7 @@ import {
 } from "features/self-service/features/health-access/types/employee";
 import { useRemoveEmployeeMedicalHistory } from "features/self-service/features/health-access/hooks/employee/medical/history/useRemoveEmployeeMedicalHistory";
 import { QUERY_KEY_FOR_SINGLE_EMPLOYEE_HEALTH_ACCESS } from "features/self-service/features/health-access/hooks/employee/useGetSingleEmployeeHealthAccess";
+import { QUERY_KEY_FOR_AUTHENTICATED_EMPLOYEE_HEALTH_ACCESS } from "features/self-service/features/health-access/hooks/employee/useGetAuthenticatedEmployeeHealthAccess";
 
 interface IProps extends IModalProps {
   data?: TSingleEmployeeHealthAccess["medicalHistory"][0];
@@ -54,7 +55,11 @@ export const DeleteMedicalCondition: React.FC<IProps> = ({
           });
 
           queryClient.invalidateQueries({
-            queryKey: [QUERY_KEY_FOR_SINGLE_EMPLOYEE_HEALTH_ACCESS],
+            queryKey: [QUERY_KEY_FOR_SINGLE_EMPLOYEE_HEALTH_ACCESS, employeeId],
+            // exact: true,
+          });
+          queryClient.invalidateQueries({
+            queryKey: [QUERY_KEY_FOR_AUTHENTICATED_EMPLOYEE_HEALTH_ACCESS],
             // exact: true,
           });
 

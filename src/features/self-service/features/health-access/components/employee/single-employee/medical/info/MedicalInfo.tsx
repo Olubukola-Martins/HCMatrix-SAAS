@@ -2,6 +2,8 @@ import { Form, Input, message, Tooltip } from "antd";
 import { AppButton } from "components/button/AppButton";
 import { QUERY_KEY_FOR_SINGLE_EMPLOYEE } from "features/core/employees/hooks/useFetchSingleEmployee";
 import { useSaveEmployeeMedicalInfo } from "features/self-service/features/health-access/hooks/employee/medical/info/useSaveEmployeeMedicalInfo";
+import { QUERY_KEY_FOR_AUTHENTICATED_EMPLOYEE_HEALTH_ACCESS } from "features/self-service/features/health-access/hooks/employee/useGetAuthenticatedEmployeeHealthAccess";
+import { QUERY_KEY_FOR_SINGLE_EMPLOYEE_HEALTH_ACCESS } from "features/self-service/features/health-access/hooks/employee/useGetSingleEmployeeHealthAccess";
 import { TSingleEmployeeHealthAccess } from "features/self-service/features/health-access/types/employee";
 
 import { useState, useEffect } from "react";
@@ -66,7 +68,11 @@ export const MedicalInfo: React.FC<IProps> = ({ employeeId, medicalInfo }) => {
           });
 
           queryClient.invalidateQueries({
-            queryKey: [QUERY_KEY_FOR_SINGLE_EMPLOYEE],
+            queryKey: [QUERY_KEY_FOR_SINGLE_EMPLOYEE_HEALTH_ACCESS, employeeId],
+            // exact: true,
+          });
+          queryClient.invalidateQueries({
+            queryKey: [QUERY_KEY_FOR_AUTHENTICATED_EMPLOYEE_HEALTH_ACCESS],
             // exact: true,
           });
         },
