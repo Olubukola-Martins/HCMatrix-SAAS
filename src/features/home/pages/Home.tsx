@@ -18,8 +18,8 @@ function Home() {
   } = useMostRecentApiAuth();
   const [view, setView] = useState<TView>("employee");
   useLayoutEffect(() => {
-    setView(user?.isOwner ? "owner" : "employee");
-  }, [user]);
+    setView(employee?.isOwner ? "owner" : "employee");
+  }, [employee]);
 
   return (
     <ErrorBoundary>
@@ -34,7 +34,7 @@ function Home() {
           {isSuccess && (
             <div className="flex flex-col gap-4">
               <>
-                {user?.isOwner && (
+                {employee?.isOwner && (
                   <div className="Container flex justify-end mt-4">
                     <Select
                       options={[

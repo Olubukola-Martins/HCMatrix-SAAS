@@ -15,11 +15,10 @@ import {
   DEFAULT_DESIGNATIONS_CREATED_BY_SYSTEM,
   DEFAULT_EMPLOYEES_CREATED_BY_SYSTEM,
 } from "constants/general";
+import { useApiAuth } from "hooks/useApiAuth";
 
 const UserFeedbackComp = () => {
-  const auth = useAuthUser();
-  const authDetails = auth() as unknown as IAuthDets;
-  const user = authDetails?.user;
+  const { currentCompanyEmployeeDetails: employee } = useApiAuth();
   const [progress, setProgress] = useState(0);
   const [steps, setSteps] = useState<TSetupStep[]>([]);
   const globalCtx = useContext(GlobalContext);
@@ -84,7 +83,7 @@ const UserFeedbackComp = () => {
 
   const showModal =
     globalState.showInitialSetUp &&
-    user.isOwner &&
+    employee?.isOwner &&
     isSuccess &&
     steps.filter((item) => item.completed).length !== steps.length;
 

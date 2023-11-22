@@ -6,6 +6,7 @@ export type TAuthUser = {
 };
 
 interface Payload {
+  isOwner: boolean;
   id: number;
   firstName: string;
   lastName: string;
@@ -95,7 +96,6 @@ interface User {
   id: number;
   fullName: string;
   email: string;
-  isOwner: boolean;
   isSocial: boolean;
   isVerified: boolean;
   lastLogin: string;

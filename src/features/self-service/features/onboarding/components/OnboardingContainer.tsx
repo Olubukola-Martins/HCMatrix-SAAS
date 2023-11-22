@@ -9,14 +9,14 @@ import {
 } from "components/permission-restriction/PermissionRestrictor";
 
 export const OnboardingContainer = () => {
-  const { authUserData } = useApiAuth();
+  const { currentCompanyEmployeeDetails: employee } = useApiAuth();
   const { userPermissions } = useGetUserPermissions();
   const tabItems = [
     {
       key: "My Onboarding",
       label: "My Onboarding",
       children: <MyOnboarding />,
-      hidden: authUserData.isOwner === true, //hides onboarding if employee isOwner
+      hidden: employee?.isOwner === true, //hides onboarding if employee isOwner
     },
     {
       key: "Manage Onboarding",

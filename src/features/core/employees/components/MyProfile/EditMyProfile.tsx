@@ -47,7 +47,11 @@ export const EditMyProfile = ({ open, handleClose, employee }: IProps) => {
   }, [employee, form]);
 
   const { mutate, isLoading } = useUpdateEmployee();
-  const { token, companyId, authUserData } = useApiAuth();
+  const {
+    token,
+    companyId,
+    currentCompanyEmployeeDetails: authEmployee,
+  } = useApiAuth();
 
   const handleFinish = async (data: any) => {
     if (!employee) return;
@@ -203,7 +207,7 @@ export const EditMyProfile = ({ open, handleClose, employee }: IProps) => {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-x-4 mt-2">
           <FormDesignationInput Form={Form} />
 
-          <FormRoleInput Form={Form} disabled={authUserData.isOwner} />
+          <FormRoleInput Form={Form} disabled={authEmployee?.isOwner} />
           <Form.Item
             name="email"
             label="Work/Official Email"
