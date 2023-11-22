@@ -12,6 +12,7 @@ import moment from "moment";
 import { useGetHolidays } from "../hooks/useGetHolidays";
 import { EditHoliday } from "./EditHoliday";
 import { DeleteHoliday } from "./DeleteHoliday";
+import { DEFAULT_DATE_FORMAT } from "constants/dateFormats";
 
 export const HolidaysTable: React.FC = () => {
   const [showM, setShowM] = useState<"edit" | "delete">();
@@ -39,7 +40,7 @@ export const HolidaysTable: React.FC = () => {
       dataIndex: "name",
       key: "name",
       render: (val, item) => (
-        <span className="capitalize">
+        <span className="capitalize text-caramel">
           {moment(item.date).format("DD, MMMM")}
         </span>
       ),
@@ -49,8 +50,8 @@ export const HolidaysTable: React.FC = () => {
       dataIndex: "createdAt",
       key: "createdAt",
       render: (val, item) => (
-        <span className="capitalize text-caramel hover:underline">
-          {moment(item.createdAt).format("YYYY-MM-DD")}
+        <span className="capitalize ">
+          {moment(item.createdAt).format(DEFAULT_DATE_FORMAT)}
         </span>
       ),
     },
@@ -59,8 +60,8 @@ export const HolidaysTable: React.FC = () => {
       dataIndex: "updatedAt",
       key: "updatedAt",
       render: (val, item) => (
-        <span className="capitalize text-caramel hover:underline">
-          {moment(item.updatedAt).format("YYYY-MM-DD")}
+        <span className="capitalize">
+          {moment(item.updatedAt).format(DEFAULT_DATE_FORMAT)}
         </span>
       ),
     },
