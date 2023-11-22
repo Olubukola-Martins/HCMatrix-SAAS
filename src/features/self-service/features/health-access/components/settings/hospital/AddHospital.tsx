@@ -23,6 +23,7 @@ export const AddHospital: React.FC<IModalProps> = ({ open, handleClose }) => {
 
   const [form] = Form.useForm();
   const { mutate, isLoading } = useAddHospital();
+  const [isRecommended, setIsRecommended] = useState(false);
 
   const handleSubmit = (data: any) => {
     mutate(
@@ -103,7 +104,12 @@ export const AddHospital: React.FC<IModalProps> = ({ open, handleClose }) => {
           name="isRecommended"
           label="Is Recommended ?"
         >
-          <AppSwitch checkedChildren="Yes" unCheckedChildren="No" />
+          <AppSwitch
+            checkedChildren="Yes"
+            unCheckedChildren="No"
+            checked={isRecommended}
+            onChange={(val) => setIsRecommended(val)}
+          />
         </Form.Item>
         <FormAddressInput Form={Form} form={form} />
 

@@ -1,6 +1,6 @@
-import { Form, Input, Modal } from "antd";
+import { Form, Input, Modal, Switch } from "antd";
 import { AppButton } from "components/button/AppButton";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { IModalProps } from "types";
 import {
   generalValidationRules,
@@ -29,7 +29,7 @@ export const EditHospital: React.FC<IProps> = ({
   hospital,
 }) => {
   const queryClient = useQueryClient();
-
+  const [isRecommended, setIsRecommended] = useState(false);
   const [form] = Form.useForm();
   const { mutate, isLoading } = useUpdateHospital();
   useEffect(() => {
@@ -44,6 +44,7 @@ export const EditHospital: React.FC<IProps> = ({
       address: hospital?.address,
       hmoPlanIds: hospital?.hmoPlanManagement.map((item) => item.hmoPlanId),
     });
+    setIsRecommended(!!hospital?.isRecommended);
   }, [form, hospital]);
 
   const handleSubmit = (data: any) => {
@@ -132,7 +133,12 @@ export const EditHospital: React.FC<IProps> = ({
           name="isRecommended"
           label="Is Recommended ?"
         >
-          <AppSwitch checkedChildren="Yes" unCheckedChildren="No" />
+          <AppSwitch
+            checkedChildren="Yes"
+            unCheckedChildren="No"
+            checked={isRecommended}
+            onChange={(val) => setIsRecommended(val)}
+          />
         </Form.Item>
         <FormAddressInput Form={Form} form={form} />
 
