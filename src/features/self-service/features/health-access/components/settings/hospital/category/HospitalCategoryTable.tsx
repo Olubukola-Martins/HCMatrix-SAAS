@@ -53,11 +53,11 @@ export const HospitalCategoryTable: React.FC<{
               <Menu.Item key="view" onClick={() => handleAction("view", item)}>
                 View Details
               </Menu.Item>
-              <Menu.Item key="view" onClick={() => handleAction("edit", item)}>
+              <Menu.Item key="edit" onClick={() => handleAction("edit", item)}>
                 Edit
               </Menu.Item>
               <Menu.Item
-                key="view"
+                key="delete"
                 onClick={() => handleAction("delete", item)}
               >
                 Delete

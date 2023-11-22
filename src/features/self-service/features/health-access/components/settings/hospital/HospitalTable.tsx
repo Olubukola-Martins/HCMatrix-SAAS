@@ -39,7 +39,7 @@ export const HospitalTable: React.FC<{
       width: 50,
       render: (_, item) =>
         item.isRecommended ? (
-          <div className="bg-caramel w-2 h-2 rounded-full" />
+          <div className="mx-auto bg-caramel w-2 h-2 rounded-full" />
         ) : null,
     },
 
@@ -58,7 +58,7 @@ export const HospitalTable: React.FC<{
       ),
     },
     {
-      title: "HMO Plans",
+      title: "HMO Plan(s)",
       dataIndex: "HMO Plans",
       key: "HMO Plans",
       ellipsis: true,
@@ -77,9 +77,9 @@ export const HospitalTable: React.FC<{
       ),
     },
     {
-      title: "Addres",
-      dataIndex: "Addres",
-      key: "Addres",
+      title: "Address",
+      dataIndex: "Address",
+      key: "Address",
       ellipsis: true,
       render: (_, item) => (
         <span className="capitalize">{item.address.streetAddress}</span>
@@ -96,11 +96,11 @@ export const HospitalTable: React.FC<{
               <Menu.Item key="view" onClick={() => handleAction("view", item)}>
                 View Details
               </Menu.Item>
-              <Menu.Item key="view" onClick={() => handleAction("edit", item)}>
+              <Menu.Item key="edit" onClick={() => handleAction("edit", item)}>
                 Edit
               </Menu.Item>
               <Menu.Item
-                key="view"
+                key="delete"
                 onClick={() => handleAction("delete", item)}
               >
                 Delete

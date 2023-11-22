@@ -59,9 +59,14 @@ const getData = async (props: {
 export const useGetEmployeeHealthAccesses = (props: IGetDataProps) => {
   const { token, companyId } = useApiAuth();
 
-  const { pagination, searchParams } = props;
+  const { pagination, searchParams, departmentId } = props;
   const queryData = useQuery(
-    [QUERY_KEY_FOR_EMPLOYEE_HEALTH_ACCESSES, pagination, searchParams],
+    [
+      QUERY_KEY_FOR_EMPLOYEE_HEALTH_ACCESSES,
+      departmentId,
+      pagination,
+      searchParams,
+    ],
     () =>
       getData({
         auth: { token, companyId },

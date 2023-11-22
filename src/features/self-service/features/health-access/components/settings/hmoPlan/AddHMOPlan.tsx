@@ -5,6 +5,7 @@ import { IModalProps } from "types";
 import {
   numberHasToBeAWholeNumberRule,
   textInputValidationRules,
+  textInputValidationRulesOp,
 } from "utils/formHelpers/validation";
 import { openNotification } from "utils/notifications";
 import { useQueryClient } from "react-query";
@@ -77,7 +78,7 @@ export const AddHMOPlan: React.FC<IModalProps> = ({ open, handleClose }) => {
           <InputNumber placeholder="Max Dependents" className="w-full" />
         </Form.Item>
         <Form.Item
-          rules={textInputValidationRules}
+          rules={textInputValidationRulesOp}
           name="description"
           label="Description"
         >

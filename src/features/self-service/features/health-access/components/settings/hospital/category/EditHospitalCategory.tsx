@@ -84,7 +84,6 @@ export const EditHospitalCategory: React.FC<IProps> = ({
         form={form}
         requiredMark={false}
         onFinish={handleSubmit}
-        disabled
       >
         <Form.Item rules={textInputValidationRules} name="name" label="Name">
           <Input placeholder="Name" />

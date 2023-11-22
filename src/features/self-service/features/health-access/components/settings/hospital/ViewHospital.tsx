@@ -27,7 +27,10 @@ export const ViewHospital: React.FC<IProps> = ({
       name: hospital?.name,
       categoryId: hospital?.categoryId,
       isRecommended: hospital?.isRecommended,
-      phoneNumber: parsePhoneNumber(hospital?.phoneNumber),
+      phone: {
+        code: parsePhoneNumber(hospital?.phoneNumber).code,
+        number: parsePhoneNumber(hospital?.phoneNumber).number,
+      },
       address: hospital?.address,
       hmoPlanIds: hospital?.hmoPlanManagement.map((item) => item.hmoPlanId),
     });

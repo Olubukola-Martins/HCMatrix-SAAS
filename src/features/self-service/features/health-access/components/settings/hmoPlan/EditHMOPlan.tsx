@@ -4,6 +4,7 @@ import { IModalProps } from "types";
 import {
   numberHasToBeAWholeNumberRule,
   textInputValidationRules,
+  textInputValidationRulesOp,
 } from "utils/formHelpers/validation";
 import { THMOPlan } from "../../../types/hmoPlan";
 import { AppButton } from "components/button/AppButton";
@@ -89,7 +90,6 @@ export const EditHMOPlan: React.FC<IProps> = ({
         form={form}
         requiredMark={false}
         onFinish={handleSubmit}
-        disabled
       >
         <Form.Item rules={textInputValidationRules} name="name" label="Name">
           <Input placeholder="Name" />
@@ -102,7 +102,7 @@ export const EditHMOPlan: React.FC<IProps> = ({
           <InputNumber placeholder="Max Dependents" className="w-full" />
         </Form.Item>
         <Form.Item
-          rules={textInputValidationRules}
+          rules={textInputValidationRulesOp}
           name="description"
           label="Description"
         >
