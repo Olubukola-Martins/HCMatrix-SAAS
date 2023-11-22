@@ -41,7 +41,13 @@ export const EditHospital: React.FC<IProps> = ({
         code: parsePhoneNumber(hospital?.phoneNumber).code,
         number: parsePhoneNumber(hospital?.phoneNumber).number,
       },
-      address: hospital?.address,
+      address: {
+        streetAddress: hospital?.address?.streetAddress,
+        countryId: hospital?.address?.countryId,
+        stateId: hospital?.address?.stateId,
+        lgaId: hospital?.address?.lgaId ?? undefined, //Done to prevent sending null, instead send undefined
+        timezone: hospital?.address?.timezone,
+      },
       hmoPlanIds: hospital?.hmoPlanManagement.map((item) => item.hmoPlanId),
     });
     setIsRecommended(!!hospital?.isRecommended);
