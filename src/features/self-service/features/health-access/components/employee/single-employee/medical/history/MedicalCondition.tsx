@@ -77,14 +77,16 @@ export const MedicalCondition: React.FC<{
                       {moment(data.dateOfOnset).format(DEFAULT_DATE_FORMAT)}
                     </td>
                     <td>
-                      <i
-                        className="ri-pencil-line cursor-pointer hover:text-caramel"
-                        onClick={() => handleAction("edit", data)}
-                      />
-                      <i
-                        className="ri-delete-bin-5-line cursor-pointer hover:text-caramel"
-                        onClick={() => handleAction("delete", data)}
-                      />
+                      <div className="flex gap-2">
+                        <i
+                          className="ri-pencil-line cursor-pointer hover:text-caramel"
+                          onClick={() => handleAction("edit", data)}
+                        />
+                        <i
+                          className="ri-delete-bin-5-line cursor-pointer hover:text-caramel"
+                          onClick={() => handleAction("delete", data)}
+                        />
+                      </div>
                     </td>
                   </tr>
                 ))}

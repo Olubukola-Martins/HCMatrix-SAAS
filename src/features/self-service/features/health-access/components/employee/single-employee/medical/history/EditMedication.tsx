@@ -88,7 +88,7 @@ export const EditMedication = ({
   };
   return (
     <Modal
-      title="Edit Medication"
+      title="Edit Condition"
       open={open}
       onCancel={() => handleClose(false)}
       footer={null}
