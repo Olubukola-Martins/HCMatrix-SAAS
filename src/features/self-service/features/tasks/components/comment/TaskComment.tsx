@@ -142,12 +142,12 @@ const RightMessage: React.FC<{ comment: string; avatarUrl?: string }> = ({
 }) => {
   return (
     <div className="flex justify-end mb-4">
-      <div className="mr-2 py-3 px-4 bg-caramel rounded-br-3xl rounded-tl-3xl rounded-tr-xl text-white">
+      <div className="mr-2 py-3 px-4 bg-caramel rounded-bl-3xl rounded-br-3xl rounded-tl-xl text-white">
         {comment}
       </div>
       <img
         src={avatarUrl}
-        className="object-cover h-8 w-8 rounded-full self-start"
+        className="object-cover h-8 w-8 rounded-full self-start -top-2 relative"
         alt=""
         loading="lazy"
       />
