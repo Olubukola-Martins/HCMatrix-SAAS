@@ -14,6 +14,7 @@ const HospitalContainer: React.FC<{ type?: "mine" }> = ({ type }) => {
         />
         <AddHospitalBtn />
       </div>
+
       <HospitalTable stateId={stateId} type={type} />
     </div>
   );

@@ -76,6 +76,7 @@ export const useGetHospitals = ({
         data: {
           ...props,
         },
+        type,
       }),
     {
       onError: (err: any) => {},

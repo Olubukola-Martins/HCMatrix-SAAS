@@ -67,7 +67,7 @@ export const EditEmployeeHMOPlan: React.FC<IProps> = ({
       open={open}
       onCancel={() => handleClose()}
       footer={null}
-      title={"Edit Hospital"}
+      title={"Edit Employee HMO Plan"}
       style={{ top: 20 }}
     >
       <Form
