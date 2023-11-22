@@ -29,7 +29,7 @@ const createData = async (props: { data: TData; auth: ICurrentCompany }) => {
     ...props.data.body,
   };
 
-  const response = await axios.post(url, data, config);
+  const response = await axios.put(url, data, config);
   return response;
 };
 export const useUpdateDependantInEmployeeHealthAccess = () => {
