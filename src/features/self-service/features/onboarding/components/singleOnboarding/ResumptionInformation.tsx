@@ -106,7 +106,7 @@ export const ResumptionInformation = ({
         labelCol={{ span: 24 }}
         form={form}
         onFinish={handleFinish}
-        disabled={!!onboarding?.resumptionInformation}
+        disabled={!canSaveAndSetTasks || !!onboarding?.resumptionInformation}
         requiredMark={false}
       >
         <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
