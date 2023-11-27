@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { TOnboarding } from "../../types";
-import { Skeleton } from "antd";
+import { Empty, Skeleton } from "antd";
 import { ResumptionInformation } from "./ResumptionInformation";
 import { NewOnboardingTask } from "./NewOnboardingTask";
 import OnboardingTasks from "./OnboardingTasks";
@@ -13,7 +13,7 @@ import {
 import { MarkSingleOnboardingAsCompleted } from "../MarkSingleOnboardingAsCompleted";
 
 interface IProps {
-  data?: TOnboarding;
+  data?: TOnboarding | null;
   loading?: boolean;
 }
 
@@ -22,6 +22,18 @@ type TAction = "new-task" | "mark-as-completed";
 const SingleOnboardingContainer: React.FC<IProps> = ({ data, loading }) => {
   const [action, setAction] = useState<TAction>();
   const { userPermissions } = useGetUserPermissions();
+  console.log(data, "WHY");
+  if (!data)
+    return (
+      <>
+        <div>
+          <Empty
+            image={Empty.PRESENTED_IMAGE_SIMPLE}
+            description="No onboarding found!"
+          />
+        </div>
+      </>
+    );
   return (
     <>
       <NewOnboardingTask
@@ -60,13 +72,17 @@ const SingleOnboardingContainer: React.FC<IProps> = ({ data, loading }) => {
                   {getEmployeeFullName(data?.employee)}
                 </h3>
                 <h6 className="text-sm font-medium">
-                  {data?.employee.designation?.name}
+                  {data?.employee?.designation?.name}
                 </h6>
               </div>
               <ResumptionInformation
                 handleAddTask={() => setAction("new-task")}
                 handleCloseTask={() => setAction(undefined)}
                 onboarding={data}
+                canSaveAndSetTasks={canUserAccessComponent({
+                  requiredPermissions: ["manage-employee-onboarding"],
+                  userPermissions,
+                })}
               />
             </div>
             <OnboardingTasks data={data?.tasks} />

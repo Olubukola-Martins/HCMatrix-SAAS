@@ -23,9 +23,7 @@ const getData = async (props: {
   const res = await axios.get(url, config);
   const item: TOnboarding = res.data.data;
 
-  const data: TOnboarding = {
-    ...item,
-  };
+  const data: TOnboarding = item;
 
   return data;
 };

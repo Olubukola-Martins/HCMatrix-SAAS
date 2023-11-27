@@ -21,6 +21,7 @@ interface IProps {
   handleAddTask: () => void;
   handleCloseTask: () => void;
   onboarding?: TOnboarding;
+  canSaveAndSetTasks: boolean;
 }
 
 export const ResumptionInformation = ({
@@ -28,6 +29,7 @@ export const ResumptionInformation = ({
   handleCloseTask,
 
   onboarding,
+  canSaveAndSetTasks,
 }: IProps) => {
   const [form] = Form.useForm();
 
@@ -141,23 +143,25 @@ export const ResumptionInformation = ({
             )}
           </Form.Item>
         </div>
-        <div className="flex justify-between items-center mt-4">
-          <Link to={appRoutes.onboarding} className="transparentButton">
-            Cancel
-          </Link>
-          {!onboarding?.resumptionInformation &&
-            onboarding?.status !== "completed" && (
-              <AppButton
-                label="Save & Set Tasks"
-                type="submit"
-                isLoading={isLoading}
-              />
-            )}
-          {onboarding?.resumptionInformation &&
-            onboarding?.status !== "completed" && (
-              <AppButton label="Add Task" handleClick={handleAddTask} />
-            )}
-        </div>
+        {canSaveAndSetTasks ? (
+          <div className="flex justify-between items-center mt-4">
+            <Link to={appRoutes.onboarding} className="transparentButton">
+              Cancel
+            </Link>
+            {!onboarding?.resumptionInformation &&
+              onboarding?.status !== "completed" && (
+                <AppButton
+                  label="Save & Set Tasks"
+                  type="submit"
+                  isLoading={isLoading}
+                />
+              )}
+            {onboarding?.resumptionInformation &&
+              onboarding?.status !== "completed" && (
+                <AppButton label="Add Task" handleClick={handleAddTask} />
+              )}
+          </div>
+        ) : null}
       </Form>
     </div>
   );
