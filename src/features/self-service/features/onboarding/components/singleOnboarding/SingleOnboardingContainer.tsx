@@ -22,7 +22,6 @@ type TAction = "new-task" | "mark-as-completed";
 const SingleOnboardingContainer: React.FC<IProps> = ({ data, loading }) => {
   const [action, setAction] = useState<TAction>();
   const { userPermissions } = useGetUserPermissions();
-  console.log(data, "WHY");
   if (!data)
     return (
       <>
