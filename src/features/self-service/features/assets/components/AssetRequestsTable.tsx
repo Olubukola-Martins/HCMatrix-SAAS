@@ -66,6 +66,7 @@ export const AssetRequestsTable: React.FC<{
       title: "Description",
       dataIndex: "desc",
       key: "desc",
+      ellipsis: true,
       render: (_, item) => (
         <span className="capitalize">{item.description} </span>
       ),
@@ -76,7 +77,10 @@ export const AssetRequestsTable: React.FC<{
       dataIndex: "status",
       key: "status",
       render: (_, item) => (
-        <span style={{ color: getAppropriateColorForStatus(item.status) }}>
+        <span
+          style={{ color: getAppropriateColorForStatus(item.status) }}
+          className="capitalize"
+        >
           {item.status}{" "}
         </span>
       ),

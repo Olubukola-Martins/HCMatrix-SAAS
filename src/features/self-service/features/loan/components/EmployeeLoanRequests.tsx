@@ -31,6 +31,7 @@ const Component: React.FC<
         total={data?.total}
         pagination={pagination}
         onChange={onChange}
+        permitedActions={["view", "cancel"]}
       />
     </div>
   );

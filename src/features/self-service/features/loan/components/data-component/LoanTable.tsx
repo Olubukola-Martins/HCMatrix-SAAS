@@ -22,8 +22,9 @@ import { LoanDetails } from "../LoanDetails";
 import { DEFAULT_DATE_FORMAT } from "constants/dateFormats";
 import { QUERY_KEY_FOR_LOAN_REQUESTS } from "../../hooks/requests/useGetLoanRequests";
 import { QUERY_KEY_FOR_LOAN_ANALYTICS } from "../../hooks/analytics/useGetLoanAnalytics";
+import { CancelLoan } from "../CancelLoan";
 
-type TAction = "approve/reject" | "view";
+type TAction = "approve/reject" | "view" | "cancel";
 type TLoanAndApproval = TLoanRequest & { approvalDetails?: TApprovalRequest };
 export const LoanTable: React.FC<{
   data?: TLoanAndApproval[];
@@ -174,6 +175,15 @@ export const LoanTable: React.FC<{
         <Dropdown
           overlay={
             <Menu>
+              {permitedActions.find((val) => val === "cancel") && (
+                <Menu.Item
+                  hidden={item?.status !== "pending"}
+                  key="cancel"
+                  onClick={() => handleAction({ loan: item, action: "cancel" })}
+                >
+                  Cancel
+                </Menu.Item>
+              )}
               {permitedActions.find((val) => val === "view") && (
                 <Menu.Item
                   key="3"
@@ -226,6 +236,11 @@ export const LoanTable: React.FC<{
           id={loan.id}
         />
       )}
+      <CancelLoan
+        handleClose={onClose}
+        open={action === "cancel"}
+        data={loan}
+      />
       <Table
         size="small"
         dataSource={data}

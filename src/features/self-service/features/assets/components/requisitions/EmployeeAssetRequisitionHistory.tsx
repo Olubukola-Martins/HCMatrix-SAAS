@@ -1,9 +1,8 @@
-import { Table } from "antd";
+import { Table, Menu, Button, Dropdown } from "antd";
 import { ColumnsType } from "antd/lib/table";
 import { AppButton } from "components/button/AppButton";
 import { TAssetRequisition } from "features/self-service/features/requisitions/types/asset";
-import { AddVehicleBooking } from "features/self-service/features/vehicle-booking/components/AddVehicleBooking";
-import { ViewVehicleBooking } from "features/self-service/features/vehicle-booking/components/ViewVehicleBooking";
+import { MoreOutlined } from "@ant-design/icons";
 import moment from "moment";
 import React, { useState } from "react";
 import { getAppropriateColorForStatus } from "utils/colorHelpers/getAppropriateColorForStatus";
@@ -13,6 +12,8 @@ import { DEFAULT_DATE_FORMAT } from "constants/dateFormats";
 import { SelectApprovalStatus } from "features/core/workflows/components/SelectApprovalStatus";
 import { TApprovalStatus } from "types/statuses";
 import { NewAssetRequest } from "../NewAssetRequest";
+import { AssetRequestDetails } from "../AssetRequestDetails";
+import { CancelAssetRequistion } from "./CancelAssetRequistion";
 
 export const EmployeeAssetRequisitionHistory: React.FC<{
   title?: string;
@@ -23,7 +24,15 @@ export const EmployeeAssetRequisitionHistory: React.FC<{
     pagination,
   });
   const [status, setStatus] = useState<TApprovalStatus>();
-  const [showM, setShowM] = useState(false);
+  const [showM, setShowM] = useState<"add" | "cancel" | "view">();
+  const [request, setRequest] = useState<TAssetRequisition>();
+  const handleAction = (
+    action: "add" | "cancel" | "view",
+    item?: TAssetRequisition
+  ) => {
+    setShowM(action);
+    setRequest(item);
+  };
   const columns: ColumnsType<TAssetRequisition> = [
     {
       title: "Date",
@@ -47,9 +56,8 @@ export const EmployeeAssetRequisitionHistory: React.FC<{
       title: "Description",
       dataIndex: "desc",
       key: "desc",
-      render: (_, item) => (
-        <span className="capitalize">{item.description} </span>
-      ),
+      ellipsis: true,
+      render: (_, item) => <span>{item.description} </span>,
     },
 
     {
@@ -57,16 +65,66 @@ export const EmployeeAssetRequisitionHistory: React.FC<{
       dataIndex: "status",
       key: "status",
       render: (_, item) => (
-        <span style={{ color: getAppropriateColorForStatus(item.status) }}>
+        <span
+          style={{ color: getAppropriateColorForStatus(item.status) }}
+          className="capitalize"
+        >
           {item.status}{" "}
         </span>
+      ),
+    },
+    {
+      title: "Action",
+      key: "action",
+      render: (_, item) => (
+        <Dropdown
+          overlay={
+            <Menu>
+              <Menu.Item
+                key="cancel"
+                hidden={item.status !== "pending"}
+                onClick={() => {
+                  handleAction("cancel", item);
+                }}
+              >
+                Cancel
+              </Menu.Item>
+              <Menu.Item
+                key="3"
+                onClick={() => {
+                  handleAction("view", item);
+                }}
+              >
+                View Details
+              </Menu.Item>
+            </Menu>
+          }
+          trigger={["click"]}
+        >
+          <Button title="Actions" icon={<MoreOutlined />} type="text" />
+        </Dropdown>
       ),
     },
   ];
 
   return (
     <>
-      <NewAssetRequest open={showM} handleClose={() => setShowM(false)} />
+      <NewAssetRequest
+        open={showM === "add"}
+        handleClose={() => setShowM(undefined)}
+      />
+      {request && (
+        <AssetRequestDetails
+          open={showM === "view"}
+          handleClose={() => setShowM(undefined)}
+          id={request.id}
+        />
+      )}
+      <CancelAssetRequistion
+        handleClose={() => setShowM(undefined)}
+        data={request}
+        open={showM === "cancel"}
+      />
 
       <div className="flex flex-col gap-2">
         <h4 className="text-lg font-light">{title}</h4>
@@ -87,7 +145,7 @@ export const EmployeeAssetRequisitionHistory: React.FC<{
           <AppButton
             {...{
               label: "New Asset Request",
-              handleClick: () => setShowM(true),
+              handleClick: () => handleAction("add"),
             }}
           />
         </div>

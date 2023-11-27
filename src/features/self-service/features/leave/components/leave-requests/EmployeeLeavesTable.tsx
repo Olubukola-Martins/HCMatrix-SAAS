@@ -12,11 +12,13 @@ import { TLeave } from "../../types";
 import { LeaveDetails } from "../LeaveDetails";
 import { useGetEmployeeLeaves } from "../../hooks/useGetEmployeeLeaves";
 import { getEmployeeFullName } from "features/core/employees/utils/getEmployeeFullName";
+import { DEFAULT_DATE_FORMAT } from "constants/dateFormats";
+import { CancelLeaveRequest } from "./CancelLeaveRequest";
 
 const EmployeeLeavesTable: React.FC<{
   status?: TApprovalStatus[];
 }> = ({ status }) => {
-  const [showD, setShowD] = useState<"view">();
+  const [showD, setShowD] = useState<"view" | "cancel">();
 
   const [request, setRequest] = useState<TLeave>();
 
@@ -67,7 +69,9 @@ const EmployeeLeavesTable: React.FC<{
       key: "startDate",
       render: (val, item) => (
         <span>
-          {item.startDate ? moment(item.startDate).format("YYYY/MM/DD") : "N/A"}
+          {item.startDate
+            ? moment(item.startDate).format(DEFAULT_DATE_FORMAT)
+            : "N/A"}
         </span>
       ),
     },
@@ -77,7 +81,9 @@ const EmployeeLeavesTable: React.FC<{
       key: "endDate",
       render: (val, item) => (
         <span>
-          {item.endDate ? moment(item.endDate).format("YYYY/MM/DD") : "N/A"}
+          {item.endDate
+            ? moment(item.endDate).format(DEFAULT_DATE_FORMAT)
+            : "N/A"}
         </span>
       ),
     },
@@ -123,6 +129,16 @@ const EmployeeLeavesTable: React.FC<{
             overlay={
               <Menu>
                 <Menu.Item
+                  hidden={item.status !== "pending"}
+                  key="cancel"
+                  onClick={() => {
+                    setShowD("cancel");
+                    setRequest(item);
+                  }}
+                >
+                  Cancel
+                </Menu.Item>
+                <Menu.Item
                   key="3"
                   onClick={() => {
                     setShowD("view");
@@ -151,6 +167,12 @@ const EmployeeLeavesTable: React.FC<{
           handleClose={() => setShowD(undefined)}
         />
       )}
+
+      <CancelLeaveRequest
+        data={request}
+        open={showD === "cancel"}
+        handleClose={() => setShowD(undefined)}
+      />
 
       <Table
         columns={columns}
