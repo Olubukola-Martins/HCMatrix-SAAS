@@ -1,4 +1,14 @@
-import { DatePicker, Form, Input, Modal, Select, Skeleton, Tag } from "antd";
+import {
+  DatePicker,
+  Dropdown,
+  Form,
+  Input,
+  Menu,
+  Modal,
+  Select,
+  Skeleton,
+  Tag,
+} from "antd";
 import React, { useEffect, useState } from "react";
 import { useQueryClient } from "react-query";
 import { CloseCircleOutlined } from "@ant-design/icons";
@@ -24,10 +34,83 @@ import { useApiAuth } from "hooks/useApiAuth";
 import { useGetLeavePolicySetting } from "../../hooks/leavePolicySetting/useGetLeavePolicySetting";
 import { useGetHolidays } from "features/core/holidays/hooks/useGetHolidays";
 import { useGetEmployeeLeaveDBAnalytics } from "../../hooks/leaveAnalytics/useGetEmployeeLeaveDBAnalytics";
+import {
+  canUserAccessComponent,
+  useGetUserPermissions,
+} from "components/permission-restriction/PermissionRestrictor";
 
-interface IProps extends IModalProps {}
+interface IProps extends IModalProps {
+  showEmployeeInput?: boolean;
+}
+type TAction = "apply-for-myself" | "apply-for-unlisenced-employee";
+export const RequestForLeaveBtn = () => {
+  const { userPermissions } = useGetUserPermissions();
+  const [action, setAction] = useState<TAction>();
+  const onClose = () => {
+    setAction(undefined);
+  };
+  const handleAction = (action: TAction) => {
+    setAction(action);
+  };
+  const leaveActions: {
+    label: string;
+    onClick: () => void;
+    hidden: boolean;
+  }[] = [
+    {
+      label: "Myself",
+      onClick: () => handleAction("apply-for-myself"),
+      hidden: false,
+    },
+    {
+      label: "Unlisenced Employee",
+      onClick: () => handleAction("apply-for-unlisenced-employee"),
+      hidden: !canUserAccessComponent({
+        userPermissions,
+        requiredPermissions: ["manage-leave-settings"], //TODO: Correct when its done
+      }),
+    },
+  ];
+  return (
+    <>
+      <RequestForLeave
+        handleClose={onClose}
+        open={action !== undefined}
+        showEmployeeInput={action === "apply-for-unlisenced-employee"}
+      />
+      {leaveActions.filter((item) => item.hidden === false).length === 1 ? (
+        <AppButton handleClick={leaveActions[0].onClick} label="New Leave" />
+      ) : null}
+      {leaveActions.filter((item) => item.hidden === false).length > 1 ? (
+        <Dropdown
+          overlay={
+            <Menu
+              items={leaveActions
+                .filter((item) => item.hidden === false)
+                .map((item) => ({
+                  title: item.label,
+                  key: item.label,
+                  label: item.label,
+                  onClick: item.onClick,
+                }))}
+            />
+          }
+          trigger={["click"]}
+        >
+          <button className="button flex items-center gap-2">
+            <span>New Leave</span> <i className="fa-solid fa-chevron-down" />
+          </button>
+        </Dropdown>
+      ) : null}
+    </>
+  );
+};
 
-export const RequestForLeave: React.FC<IProps> = ({ handleClose, open }) => {
+export const RequestForLeave: React.FC<IProps> = ({
+  handleClose,
+  open,
+  showEmployeeInput,
+}) => {
   // should be from global state - user leave days left
   const [leaveLength, setLeaveLength] = useState(0);
   const queryClient = useQueryClient();
@@ -59,6 +142,7 @@ export const RequestForLeave: React.FC<IProps> = ({ handleClose, open }) => {
     setIsUploadingDocs(false);
     mutate(
       {
+        employeeId: showEmployeeInput ? data.employeeId : undefined,
         startDate:
           data?.duration?.length > 0 ? data.duration[0].toString() : undefined,
         endDate:
@@ -163,6 +247,15 @@ export const RequestForLeave: React.FC<IProps> = ({ handleClose, open }) => {
               <span className="text-red-400 text-xs">{`Leave policy dictates that holidays are excluded from leave calculations`}</span>
             )}
           </div>
+          {showEmployeeInput ? (
+            <FormEmployeeInput
+              Form={Form}
+              control={{
+                name: "employeeId",
+                label: "Select Unlinsenced Employee",
+              }}
+            />
+          ) : null}
           <FormLeaveTypeInput
             Form={Form}
             control={{ name: "leaveTypeId", label: "Leave Type" }}

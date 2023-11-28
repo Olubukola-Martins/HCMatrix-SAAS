@@ -5,14 +5,9 @@ import {
 import { appRoutes } from "config/router/paths";
 import React from "react";
 import { Link } from "react-router-dom";
+import { RequestForLeaveBtn } from "./leave-requests/RequestForLeave";
 
-const LeaveHomePageHeader = ({
-  handleShowNewLeave,
-  closeDrawer,
-}: {
-  handleShowNewLeave: Function;
-  closeDrawer: Function;
-}) => {
+const LeaveHomePageHeader = () => {
   const { userPermissions } = useGetUserPermissions();
   return (
     <div className="flex items-center justify-between">
@@ -23,9 +18,7 @@ const LeaveHomePageHeader = ({
         <h2 className="text-xl md:text-2xl text-accent">Leave</h2>
       </div>
       <div className="flex gap-2">
-        <button className="button" onClick={() => handleShowNewLeave()}>
-          New Leave
-        </button>
+        <RequestForLeaveBtn />
         {canUserAccessComponent({
           userPermissions,
           requiredPermissions: ["manage-leave-settings"],

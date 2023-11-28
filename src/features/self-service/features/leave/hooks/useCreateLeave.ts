@@ -15,7 +15,7 @@ export type TCreateLeaveProps = Pick<
   | "relieverId"
   | "documentUrls"
   | "specificDates"
->;
+> & { employeeId?: number };
 
 const createLeave = async (props: {
   data: TCreateLeaveProps;
