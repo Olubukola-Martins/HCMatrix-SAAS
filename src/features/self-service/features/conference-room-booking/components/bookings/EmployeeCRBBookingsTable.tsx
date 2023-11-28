@@ -10,12 +10,22 @@ import { useGetConferenceRoomBookings4AuthEmployee } from "../../hooks/useGetCon
 import { TSingleConferenceRoomBooking } from "../../types";
 import CRBBookingDetails from "../CRBBookingDetails";
 import { DEFAULT_DATE_FORMAT } from "constants/dateFormats";
+import { CancelCRBBooking } from "./CancelCRBBooking";
 
+type TAction = "cancel" | "view";
 export const EmployeeCRBBookingsTable: React.FC<{
   status?: TApprovalStatus[] | TApprovalStatus;
 }> = ({ status }) => {
-  const [bookingId, setBookingId] = useState<number>();
-  const [showD, setShowD] = useState(false);
+  const [request, setRequest] = useState<TSingleConferenceRoomBooking>();
+  const [action, setAction] = useState<TAction>();
+  const handleAction = (key: TAction, item?: TSingleConferenceRoomBooking) => {
+    setAction(key);
+    setRequest(item);
+  };
+  const onClose = () => {
+    setAction(undefined);
+    setRequest(undefined);
+  };
 
   const { pagination, onChange } = usePagination();
   const { data, isFetching } = useGetConferenceRoomBookings4AuthEmployee({
@@ -99,16 +109,15 @@ export const EmployeeCRBBookingsTable: React.FC<{
             overlay={
               <Menu>
                 <Menu.Item
-                  key="3"
-                  onClick={() => {
-                    setShowD(true);
-                    setBookingId(item.id);
-                  }}
+                  key="cancel"
+                  hidden={item.status !== "pending"}
+                  onClick={() => handleAction("cancel", item)}
                 >
-                  View
+                  Cancel
                 </Menu.Item>
-                {/* <Menu.Item key="2">Approve</Menu.Item>
-                <Menu.Item key="1">Reject</Menu.Item> */}
+                <Menu.Item key="3" onClick={() => handleAction("view", item)}>
+                  View Details
+                </Menu.Item>
               </Menu>
             }
             trigger={["click"]}
@@ -122,13 +131,18 @@ export const EmployeeCRBBookingsTable: React.FC<{
 
   return (
     <div>
-      {bookingId && (
+      {request && (
         <CRBBookingDetails
-          id={bookingId}
-          open={showD}
-          handleClose={() => setShowD(false)}
+          id={request.id}
+          open={action === "view"}
+          handleClose={onClose}
         />
       )}
+      <CancelCRBBooking
+        open={action === "cancel"}
+        handleClose={onClose}
+        data={request}
+      />
 
       <Table
         columns={columns}

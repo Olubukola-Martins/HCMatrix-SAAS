@@ -11,11 +11,23 @@ import { TravelRequestDetails } from "./TravelRequestDetails";
 import { getEmployeeFullName } from "features/core/employees/utils/getEmployeeFullName";
 import { DEFAULT_DATE_FORMAT } from "constants/dateFormats";
 import { useGetTravelRequisitions4AuthEmployee } from "../../requisitions/hooks/travel/useGetTravelRequisitions4AuthEmployee";
+import { CancelTravelRequest } from "./CancelTravelRequest";
+
+type TAction = "cancel" | "view";
 
 export const EmployeeTravelRequestsTable: React.FC<{
   status?: TApprovalStatus[] | TApprovalStatus;
 }> = ({ status }) => {
-  const [requestId, setRequestId] = useState<number>();
+  const [request, setRequest] = useState<TTravelRequest>();
+  const [action, setAction] = useState<TAction>();
+  const handleAction = (key: TAction, item?: TTravelRequest) => {
+    setAction(key);
+    setRequest(item);
+  };
+  const onClose = () => {
+    setAction(undefined);
+    setRequest(undefined);
+  };
   const { pagination, onChange } = usePagination();
   const { data, isFetching } = useGetTravelRequisitions4AuthEmployee({
     status,
@@ -97,23 +109,20 @@ export const EmployeeTravelRequestsTable: React.FC<{
           overlay={
             <Menu>
               <Menu.Item
-                key="3"
-                onClick={() => {
-                  setRequestId(item.id);
-                }}
+                key="cancel"
+                hidden={item.status !== "pending"}
+                onClick={() => handleAction("cancel", item)}
               >
+                Cancel
+              </Menu.Item>
+              <Menu.Item key="3" onClick={() => handleAction("view", item)}>
                 View Details
               </Menu.Item>
             </Menu>
           }
           trigger={["click"]}
         >
-          <Button
-            title="Actions"
-            icon={<MoreOutlined />}
-            type="text"
-            // onClick={() => handleEdit(item._id)}
-          />
+          <Button title="Actions" icon={<MoreOutlined />} type="text" />
         </Dropdown>
       ),
     },
@@ -121,13 +130,18 @@ export const EmployeeTravelRequestsTable: React.FC<{
 
   return (
     <div>
-      {requestId && (
+      {request && (
         <TravelRequestDetails
-          open={!!requestId}
-          handleClose={() => setRequestId(undefined)}
-          id={requestId}
+          open={action === "view"}
+          handleClose={onClose}
+          id={request.id}
         />
       )}
+      <CancelTravelRequest
+        open={action === "cancel"}
+        handleClose={onClose}
+        data={request}
+      />
       <Table
         size="small"
         dataSource={data?.data}

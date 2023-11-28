@@ -14,7 +14,9 @@ import { getAppropriateColorForStatus } from "utils/colorHelpers/getAppropriateC
 import { ViewVehicleBooking } from "../ViewVehicleBooking";
 import { getEmployeeFullName } from "features/core/employees/utils/getEmployeeFullName";
 import { useGetVehicleBookings4AuthEmployee } from "../../hooks/booking/useGetVehicleBookings4AuthEmployee";
+import { CancelVehicleBooking } from "./CancelVehicleBooking";
 
+type TAction = "add" | "view" | "cancel";
 export const EmployeeVehicleBookingHistory: React.FC<{
   title?: string;
 }> = ({ title }) => {
@@ -23,8 +25,12 @@ export const EmployeeVehicleBookingHistory: React.FC<{
   const { data, isFetching } = useGetVehicleBookings4AuthEmployee({
     pagination,
   });
-  const [showM, setShowM] = useState(false);
-  const [bookingId, setBookingId] = useState<number>();
+  const [showM, setShowM] = useState<TAction>();
+  const [booking, setBooking] = useState<TVehicleBooking>();
+  const handleAction = (action: TAction, item?: TVehicleBooking) => {
+    setBooking(item);
+    setShowM(action);
+  };
   const columns: ColumnsType<TVehicleBooking> = [
     {
       title: "Booking Date",
@@ -89,34 +95,46 @@ export const EmployeeVehicleBookingHistory: React.FC<{
     {
       title: "Action",
       key: "Action",
-      width: 100,
-      fixed: "right",
       render: (_, item) => (
         <div className="flex justify-end gap-3">
           <AppButton
             variant="transparent"
             label="View"
-            handleClick={() => setBookingId(item.id)}
+            handleClick={() => handleAction("view", item)}
           />
           <AppButton
             variant="style-with-class"
             label="Cancel"
-            additionalClassNames={["neutralButton"]}
-            handleClick={() => setBookingId(item.id)}
+            disabled={item.status !== "pending"}
+            additionalClassNames={[
+              "neutralButton",
+              "disabled:cursor-not-allowed",
+              "disabled:bg-slate-200",
+              "disabled:border-none",
+            ]}
+            handleClick={() => handleAction("cancel", item)}
           />
         </div>
       ),
     },
   ];
-
+  const onClose = () => {
+    setShowM(undefined);
+    setBooking(undefined);
+  };
   return (
     <>
-      <AddVehicleBooking open={showM} handleClose={() => setShowM(false)} />
-      {bookingId && (
+      <AddVehicleBooking open={showM === "add"} handleClose={onClose} />
+      <CancelVehicleBooking
+        open={showM === "cancel"}
+        data={booking}
+        handleClose={onClose}
+      />
+      {booking && (
         <ViewVehicleBooking
-          open={!!bookingId}
-          handleClose={() => setBookingId(undefined)}
-          bookingId={bookingId}
+          open={showM === "view"}
+          handleClose={onClose}
+          bookingId={booking.id}
         />
       )}
       <div className="flex flex-col gap-2">
@@ -126,7 +144,7 @@ export const EmployeeVehicleBookingHistory: React.FC<{
           <div className="my-5 flex justify-end gap-3">
             <AppButton
               label="Book Vehicle"
-              handleClick={() => setShowM(true)}
+              handleClick={() => setShowM("add")}
             />
           </div>
         </div>

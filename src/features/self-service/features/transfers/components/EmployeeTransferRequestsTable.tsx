@@ -9,11 +9,22 @@ import { TransferDetails } from "./TransferDetails";
 import { TTransferRequisition } from "../../requisitions/types/transfer";
 import { getAppropriateColorForStatus } from "utils/colorHelpers/getAppropriateColorForStatus";
 import { useGetTransferRequisitions4AuthEmployee } from "../../requisitions/hooks/transfer/useGetTransferRequisitions4AuthEmployee";
+import { CancelTransferRequest } from "./CancelTransferRequest";
 
+type TAction = "cancel" | "view";
 export const EmployeeTransferRequestsTable: React.FC<{
   status?: TApprovalStatus[] | TApprovalStatus;
 }> = ({ status }) => {
-  const [requestId, setRequestId] = useState<number>();
+  const [request, setRequest] = useState<TTransferRequisition>();
+  const [action, setAction] = useState<TAction>();
+  const handleAction = (key: TAction, item?: TTransferRequisition) => {
+    setAction(key);
+    setRequest(item);
+  };
+  const onClose = () => {
+    setAction(undefined);
+    setRequest(undefined);
+  };
   const { pagination, onChange } = usePagination();
   const { data, isFetching } = useGetTransferRequisitions4AuthEmployee({
     status,
@@ -132,23 +143,20 @@ export const EmployeeTransferRequestsTable: React.FC<{
           overlay={
             <Menu>
               <Menu.Item
-                key="3"
-                onClick={() => {
-                  setRequestId(item.id);
-                }}
+                key="cancel"
+                hidden={item.status !== "pending"}
+                onClick={() => handleAction("cancel", item)}
               >
+                Cancel
+              </Menu.Item>
+              <Menu.Item key="3" onClick={() => handleAction("view", item)}>
                 View Details
               </Menu.Item>
             </Menu>
           }
           trigger={["click"]}
         >
-          <Button
-            title="Actions"
-            icon={<MoreOutlined />}
-            type="text"
-            // onClick={() => handleEdit(item._id)}
-          />
+          <Button title="Actions" icon={<MoreOutlined />} type="text" />
         </Dropdown>
       ),
     },
@@ -156,13 +164,18 @@ export const EmployeeTransferRequestsTable: React.FC<{
 
   return (
     <div>
-      {requestId && (
+      {request && (
         <TransferDetails
-          open={!!requestId}
-          handleClose={() => setRequestId(undefined)}
-          id={requestId}
+          open={action === "view"}
+          handleClose={onClose}
+          id={request.id}
         />
       )}
+      <CancelTransferRequest
+        handleClose={onClose}
+        open={action === "cancel"}
+        data={request}
+      />
       <Table
         size="small"
         dataSource={data?.data}

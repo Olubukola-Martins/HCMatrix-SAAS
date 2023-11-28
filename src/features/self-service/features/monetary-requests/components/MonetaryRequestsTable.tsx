@@ -49,7 +49,8 @@ export const MonetaryRequestsTable: React.FC<{
       title: "Purpose",
       dataIndex: "desc",
       key: "desc",
-      render: (_, item) => <span className="capitalize">{item.purpose} </span>,
+      ellipsis: true,
+      render: (_, item) => <span className="">{item.purpose} </span>,
     },
 
     {
