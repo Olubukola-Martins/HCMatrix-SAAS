@@ -10,11 +10,23 @@ import { DEFAULT_DATE_FORMAT } from "constants/dateFormats";
 import { useGetJobRequisitions4AuthEmployee } from "../../requisitions/hooks/job/useGetJobRequisitions4AuthEmployee";
 import { TJobRequisition } from "../../requisitions/types/job";
 import { JobRequestDetails } from "./JobRequestDetails";
+import { CancelJobRequest } from "./CancelJobRequest";
+
+type TAction = "cancel" | "view";
 
 export const EmployeeJobRequestsTable: React.FC<{
   status?: TApprovalStatus[] | TApprovalStatus;
 }> = ({ status }) => {
-  const [requestId, setRequestId] = useState<number>();
+  const [request, setRequest] = useState<TJobRequisition>();
+  const [action, setAction] = useState<TAction>();
+  const handleAction = (key: TAction, item?: TJobRequisition) => {
+    setAction(key);
+    setRequest(item);
+  };
+  const onClose = () => {
+    setAction(undefined);
+    setRequest(undefined);
+  };
   const { pagination, onChange } = usePagination();
   const { data, isFetching } = useGetJobRequisitions4AuthEmployee({
     status,
@@ -80,23 +92,20 @@ export const EmployeeJobRequestsTable: React.FC<{
           overlay={
             <Menu>
               <Menu.Item
-                key="3"
-                onClick={() => {
-                  setRequestId(item.id);
-                }}
+                key="cancel"
+                hidden={item.status !== "pending"}
+                onClick={() => handleAction("cancel", item)}
               >
+                Cancel
+              </Menu.Item>
+              <Menu.Item key="3" onClick={() => handleAction("view", item)}>
                 View Details
               </Menu.Item>
             </Menu>
           }
           trigger={["click"]}
         >
-          <Button
-            title="Actions"
-            icon={<MoreOutlined />}
-            type="text"
-            // onClick={() => handleEdit(item._id)}
-          />
+          <Button title="Actions" icon={<MoreOutlined />} type="text" />
         </Dropdown>
       ),
     },
@@ -104,13 +113,18 @@ export const EmployeeJobRequestsTable: React.FC<{
 
   return (
     <div>
-      {requestId && (
+      {request && (
         <JobRequestDetails
-          open={!!requestId}
-          handleClose={() => setRequestId(undefined)}
-          id={requestId}
+          open={action === "view"}
+          handleClose={onClose}
+          id={request.id}
         />
       )}
+      <CancelJobRequest
+        open={action === "cancel"}
+        handleClose={onClose}
+        data={request}
+      />
       <Table
         size="small"
         dataSource={data?.data}
