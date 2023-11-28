@@ -92,11 +92,19 @@ export const EmployeeVehicleBookingHistory: React.FC<{
       width: 100,
       fixed: "right",
       render: (_, item) => (
-        <AppButton
-          variant="transparent"
-          label="View"
-          handleClick={() => setBookingId(item.id)}
-        />
+        <div className="flex justify-end gap-3">
+          <AppButton
+            variant="transparent"
+            label="View"
+            handleClick={() => setBookingId(item.id)}
+          />
+          <AppButton
+            variant="style-with-class"
+            label="Cancel"
+            additionalClassNames={["neutralButton"]}
+            handleClick={() => setBookingId(item.id)}
+          />
+        </div>
       ),
     },
   ];
