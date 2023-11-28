@@ -65,7 +65,11 @@ export type TPermissionLabel =
   | "rollback-payroll"
   | "delete-payroll"
   | "view-all-payrolls"
-  | "compare-payrolls";
+  | "compare-payrolls"
+  | "manage-hmo-plans"
+  | "manage-hospital-categories"
+  | "manage-hospitals"
+  | "manage-employee-health-access";
 
 export type TPermissionInDelegation = {
   id: number;

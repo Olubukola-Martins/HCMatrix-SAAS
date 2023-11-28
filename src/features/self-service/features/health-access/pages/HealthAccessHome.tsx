@@ -36,6 +36,10 @@ const HealthAccessHome = () => {
                   name: "Add Hospital",
                   handleClick: () => setAction("add-hospital"),
                   btnVariant: "default",
+                  hidden: !canUserAccessComponent({
+                    userPermissions,
+                    requiredPermissions: ["manage-hospitals"],
+                  }),
                 },
 
                 {
@@ -44,7 +48,11 @@ const HealthAccessHome = () => {
                   btnVariant: "transparent",
                   hidden: !canUserAccessComponent({
                     userPermissions,
-                    requiredPermissions: ["manage-loan-settings"],
+                    requiredPermissions: [
+                      "manage-hmo-plans",
+                      "manage-hospital-categories",
+                      "manage-hospitals",
+                    ],
                   }),
                 },
               ]}
