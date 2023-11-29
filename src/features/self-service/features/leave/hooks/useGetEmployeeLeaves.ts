@@ -24,7 +24,7 @@ const getData = async (
   const offset = pagination?.offset ?? 0;
   const name = props.searchParams?.name ?? "";
 
-  const url = `${MICROSERVICE_ENDPOINTS.UTILITY}/self-service/leave`;
+  const url = `${MICROSERVICE_ENDPOINTS.UTILITY}/self-service/leave/mine`;
 
   const config = {
     headers: {
