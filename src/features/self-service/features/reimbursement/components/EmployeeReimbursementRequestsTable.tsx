@@ -10,11 +10,23 @@ import { TReimbursementRequisition } from "../../requisitions/types/reimbursemen
 import { ReimbursementDetails } from "./ReimbursementDetails";
 import { DEFAULT_DATE_FORMAT } from "constants/dateFormats";
 import { useGetReimburements4AuthEmployee } from "../../requisitions/hooks/reimbursement/useGetReimburements4AuthEmployee";
+import { CancelReimbursementRequest } from "./CancelReimbursementRequest";
+
+type TAction = "cancel" | "view";
 
 export const EmployeeReimbursementRequestsTable: React.FC<{
   status?: TApprovalStatus[] | TApprovalStatus;
 }> = ({ status }) => {
-  const [requestId, setRequestId] = useState<number>();
+  const [request, setRequest] = useState<TReimbursementRequisition>();
+  const [action, setAction] = useState<TAction>();
+  const handleAction = (key: TAction, item?: TReimbursementRequisition) => {
+    setAction(key);
+    setRequest(item);
+  };
+  const onClose = () => {
+    setAction(undefined);
+    setRequest(undefined);
+  };
   const { pagination, onChange } = usePagination();
   const { data, isFetching } = useGetReimburements4AuthEmployee({
     status,
@@ -73,23 +85,20 @@ export const EmployeeReimbursementRequestsTable: React.FC<{
           overlay={
             <Menu>
               <Menu.Item
-                key="3"
-                onClick={() => {
-                  setRequestId(item.id);
-                }}
+                key="cancel"
+                hidden={item.status !== "pending"}
+                onClick={() => handleAction("cancel", item)}
               >
+                Cancel
+              </Menu.Item>
+              <Menu.Item key="3" onClick={() => handleAction("view", item)}>
                 View Details
               </Menu.Item>
             </Menu>
           }
           trigger={["click"]}
         >
-          <Button
-            title="Actions"
-            icon={<MoreOutlined />}
-            type="text"
-            // onClick={() => handleEdit(item._id)}
-          />
+          <Button title="Actions" icon={<MoreOutlined />} type="text" />
         </Dropdown>
       ),
     },
@@ -97,13 +106,18 @@ export const EmployeeReimbursementRequestsTable: React.FC<{
 
   return (
     <div>
-      {requestId && (
+      {request && (
         <ReimbursementDetails
-          open={!!requestId}
-          handleClose={() => setRequestId(undefined)}
-          id={requestId}
+          open={action === "view"}
+          handleClose={onClose}
+          id={request.id}
         />
       )}
+      <CancelReimbursementRequest
+        handleClose={onClose}
+        open={action === "cancel"}
+        data={request}
+      />
       <Table
         size="small"
         dataSource={data?.data}

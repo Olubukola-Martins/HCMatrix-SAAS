@@ -11,11 +11,23 @@ import { TPositionChangeRequisition } from "../../requisitions/types/positionCha
 import { DEFAULT_DATE_FORMAT } from "constants/dateFormats";
 import { getEmployeeFullName } from "features/core/employees/utils/getEmployeeFullName";
 import { PositionChangeRequestDetails } from "./PositionChangeRequestDetails";
+import { CancelPositionChangeRequest } from "./CancelPositionChangeRequest";
+
+type TAction = "cancel" | "view";
 
 export const EmployeePositionChangeRequestsTable: React.FC<{
   status?: TApprovalStatus[] | TApprovalStatus;
 }> = ({ status }) => {
-  const [requestId, setRequestId] = useState<number>();
+  const [request, setRequest] = useState<TPositionChangeRequisition>();
+  const [action, setAction] = useState<TAction>();
+  const handleAction = (key: TAction, item?: TPositionChangeRequisition) => {
+    setAction(key);
+    setRequest(item);
+  };
+  const onClose = () => {
+    setAction(undefined);
+    setRequest(undefined);
+  };
   const { pagination, onChange } = usePagination();
   const { data, isFetching } = useGetPositionChangeRequisitions4AuthEmployee({
     status,
@@ -76,23 +88,20 @@ export const EmployeePositionChangeRequestsTable: React.FC<{
           overlay={
             <Menu>
               <Menu.Item
-                key="3"
-                onClick={() => {
-                  setRequestId(item.id);
-                }}
+                key="cancel"
+                hidden={item.status !== "pending"}
+                onClick={() => handleAction("cancel", item)}
               >
+                Cancel
+              </Menu.Item>
+              <Menu.Item key="3" onClick={() => handleAction("view", item)}>
                 View Details
               </Menu.Item>
             </Menu>
           }
           trigger={["click"]}
         >
-          <Button
-            title="Actions"
-            icon={<MoreOutlined />}
-            type="text"
-            // onClick={() => handleEdit(item._id)}
-          />
+          <Button title="Actions" icon={<MoreOutlined />} type="text" />
         </Dropdown>
       ),
     },
@@ -100,13 +109,18 @@ export const EmployeePositionChangeRequestsTable: React.FC<{
 
   return (
     <div>
-      {requestId && (
+      {request && (
         <PositionChangeRequestDetails
-          open={!!requestId}
-          handleClose={() => setRequestId(undefined)}
-          id={requestId}
+          open={action === "view"}
+          handleClose={onClose}
+          id={request.id}
         />
       )}
+      <CancelPositionChangeRequest
+        handleClose={onClose}
+        open={action === "cancel"}
+        data={request}
+      />
       <Table
         size="small"
         dataSource={data?.data}
