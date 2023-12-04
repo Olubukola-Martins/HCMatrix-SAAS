@@ -25,6 +25,7 @@ const innerStyle =
 type IPendingItem = {
   content: string;
   done?: boolean;
+  link: string;
 };
 
 const PayrollHome = () => {
@@ -123,46 +124,57 @@ const PayrollHome = () => {
                       {
                         content: "Setup company currency settings",
                         done: pendingSetup?.companyCurrencySettings,
+                        link: appRoutes.companyDetailsSettings,
                       },
                       {
                         content: "Setup cost centres",
                         done: pendingSetup?.costCentres,
+                        link: appRoutes.payrollCostCentres,
                       },
                       {
                         content: "Setup payroll schemes",
                         done: pendingSetup?.payrollSchemes,
+                        link: appRoutes.payrollSchemes,
                       },
                       {
                         content: "Configure payroll report templates",
                         done: pendingSetup?.payrollReportTemplates,
+                        link: appRoutes.payrollReport,
                       },
                       {
                         content: "Configure payslip templates",
                         done: pendingSetup?.payslipTemplates,
+                        link: appRoutes.payslips,
                       },
                       {
                         content: "Setup ITF Authorities",
                         done: pendingSetup?.itfAuthorities,
+                        link: appRoutes.itfAuthorities,
                       },
                       {
                         content: "Setup NSITF Authorities",
                         done: pendingSetup?.nsitfAuthorities,
+                        link: appRoutes.nsitfAuthorities,
                       },
                       {
                         content: "Setup Pension Authorities",
                         done: pendingSetup?.pensionAdministators,
+                        link: appRoutes.pensionAdministrators,
                       },
                       {
                         content: "Setup Tax Authorities",
                         done: pendingSetup?.taxAuthorities,
+                        link: appRoutes.taxAuthorities,
                       },
                       {
                         content: "Configure payroll settings",
                         done: pendingSetup?.payrollSettings,
+                        link: appRoutes.payrollSettings,
                       },
                       {
                         content: "Add Employees",
                         done: pendingSetup?.employees,
+                        link: appRoutes.employeeSettings,
                       },
                     ]}
                     isLoading={pendingSetupLoading}
@@ -256,9 +268,15 @@ const PayrollPendingSetup: React.FC<{
                   >
                     <span className={`block`}>{index + 1}</span>
                   </div>
-                  <p className={`block ${item.done && "text-caramel"}`}>
-                    {item.content}
-                  </p>
+                  <Link to={item.link}>
+                    <p
+                      className={`block ${
+                        item.done && "text-caramel"
+                      } hover:underline`}
+                    >
+                      {item.content}
+                    </p>
+                  </Link>
                 </div>
               ))}
         </motion.div>
