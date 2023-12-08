@@ -21,7 +21,7 @@ const LeaveHomePageHeader = () => {
         <RequestForLeaveBtn />
         {canUserAccessComponent({
           userPermissions,
-          requiredPermissions: ["manage-leave-settings"],
+          requiredPermissions: ["manage-unlicensed-employees"],
         }) && (
           <Link
             to={appRoutes.leaveSettings}

@@ -27,6 +27,20 @@ const LoanTypeSetup = () => {
       {
         onError: (err: any) => {
           openNotification({
+            key: "employee-payroll",
+            state: "info",
+            title: "Employee Payroll Job Information",
+            description:
+              "Ensure all employees have a payroll job information set up!",
+          });
+          openNotification({
+            key: "loan-config",
+            state: "info",
+            title: "Payroll Loan Configuration",
+            description:
+              "Ensure loan congiguration in payroll is set up correctly and try again",
+          });
+          openNotification({
             state: "error",
             title: "Error Occurred",
             description:

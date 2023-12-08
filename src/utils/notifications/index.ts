@@ -8,14 +8,16 @@ export const openNotification = ({
   description,
   state,
   duration,
+  key = NOTIFICATION_KEY,
 }: {
   title: string;
   description: string | ReactNode;
   state?: "open" | "success" | "error" | "info";
   duration?: number;
+  key?: string;
 }) => {
   notification[state ?? "open"]({
-    key: NOTIFICATION_KEY,
+    key,
     message: title,
     description,
     duration: duration ?? DEFAULT_DURATION,

@@ -69,7 +69,8 @@ export type TPermissionLabel =
   | "manage-hmo-plans"
   | "manage-hospital-categories"
   | "manage-hospitals"
-  | "manage-employee-health-access";
+  | "manage-employee-health-access"
+  | "manage-unlicensed-employees";
 
 export type TPermissionInDelegation = {
   id: number;
