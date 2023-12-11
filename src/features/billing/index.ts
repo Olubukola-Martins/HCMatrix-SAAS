@@ -163,3 +163,7 @@ export interface StorageTransactionAttributeI {
 
   companyId: number;
 }
+
+// TODO: Fix loan congiguration issues
+// TODO: Create flow for subscriptions
+// Identify components and create them using solid, and context composition when needed
