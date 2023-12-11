@@ -115,7 +115,7 @@ export const PersonalInformation: React.FC<IProps> = ({
           exchangeRateId: data.exchangeRateId,
           maritalStatus: data.maritalStatus,
           nationality: data.nationality,
-          address: { ...data.address, lgaId: data.lgaId ?? undefined },
+          address: { ...data.address, lgaId: data?.address?.lgaId ?? undefined },
 
           validDocumentUrl: documentUrl,
           passportExpirationDate:
