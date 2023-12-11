@@ -79,6 +79,7 @@ export const useGetActivatedSelfServiceLinksAndAnalytics = (): {
                 icon: health,
                 link: appRoutes.healthAccessHome,
                 title: "Health Access",
+                desc: "You can now access and manage hmo plans and hospitals!",
               },
             },
             {
