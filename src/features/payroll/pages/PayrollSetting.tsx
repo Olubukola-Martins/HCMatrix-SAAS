@@ -19,7 +19,9 @@ const PayrollSetting = () => {
 
   const [form] = Form.useForm();
   const { mutate, isLoading } = useHandlelPayrollSetting();
-  const [bank, setBank] = useState<Pick<TPaystackBank, "code" | "name">>();
+  const [bank, setBank] = useState<
+    Pick<TPaystackBank, "code" | "name"> & { accountName?: string }
+  >();
   const [loanActivation, setLoanActivation] = useState(false);
   const handleLoanActivation = (val: boolean) => {
     setLoanActivation(val);
@@ -35,6 +37,7 @@ const PayrollSetting = () => {
     setBank({
       name: setting.companyBankDetails.bankName,
       code: setting.companyBankDetails.bankCode,
+      accountName: setting.companyBankDetails.accountName,
     });
     form.setFieldsValue({
       bankCode: setting.companyBankDetails.bankCode,
@@ -63,11 +66,13 @@ const PayrollSetting = () => {
           },
           loanConfiguration: {
             isActive: loanActivation,
-            schemes: data.schemes,
-            timeFrameForManualRepayment: {
-              startDay: data.timeFrameForManualRepayment.startDay,
-              endDay: data.timeFrameForManualRepayment.endDay,
-            },
+            schemes: loanActivation ? data?.schemes : undefined,
+            timeFrameForManualRepayment: loanActivation
+              ? {
+                  startDay: data?.timeFrameForManualRepayment?.startDay,
+                  endDay: data?.timeFrameForManualRepayment?.endDay,
+                }
+              : undefined,
           },
           payslipTemplate: {
             templateId: data.templateId,
@@ -96,7 +101,7 @@ const PayrollSetting = () => {
       }
     );
   };
-  const handleBank = (bank?: TPaystackBank) => {
+  const handleBank = (bank?: TPaystackBank & { accountName?: string }) => {
     setBank(bank);
   };
   return (
@@ -124,6 +129,7 @@ const PayrollSetting = () => {
             form={form}
             loanActivation={loanActivation}
             handleLoanActivation={handleLoanActivation}
+            bank={bank}
           />
         </Skeleton>
       </div>
@@ -138,6 +144,7 @@ const PayrollSettingContainer: React.FC<{
   handleBank: (data?: TPaystackBank) => void;
   loanActivation: boolean;
   handleLoanActivation: (val: boolean) => void;
+  bank?: Pick<TPaystackBank, "code" | "name"> & { accountName?: string };
 }> = ({
   Form,
   handleSubmit,
@@ -145,13 +152,18 @@ const PayrollSettingContainer: React.FC<{
   form,
   handleLoanActivation,
   loanActivation,
+  bank,
 }) => {
   return (
     <>
       <Form requiredMark={false} onFinish={handleSubmit} form={form}>
         <div className="bg-card px-5 py-7  rounded-md mt-7 grid grid-cols-1 md:grid-cols-2 gap-7 text-accent">
           <div className="flex flex-col gap-4">
-            <CompanyBankDetails Form={Form} handleBank={handleBank} />
+            <CompanyBankDetails
+              Form={Form}
+              handleBank={handleBank}
+              bank={bank}
+            />
             <LoanConfiguration
               Form={Form}
               loanActivation={loanActivation}

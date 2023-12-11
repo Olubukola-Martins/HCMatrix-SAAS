@@ -28,6 +28,7 @@ interface CompanyBankDetails {
   bankName: string;
   bankCode: string;
   accountNumber: string;
+  accountName?: string;
 }
 
 type TData = {

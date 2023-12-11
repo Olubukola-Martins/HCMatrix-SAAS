@@ -7,8 +7,9 @@ import { generalValidationRules } from "utils/formHelpers/validation";
 
 const CompanyBankDetails: React.FC<{
   Form: typeof Form;
-  handleBank: (data?: TPaystackBank) => void;
-}> = ({ Form, handleBank }) => {
+  handleBank: (data?: TPaystackBank & { accountName?: string }) => void;
+  bank?: Pick<TPaystackBank, "code" | "name"> & { accountName?: string };
+}> = ({ Form, handleBank, bank }) => {
   return (
     <div className={`${boxStyle} text-sm`}>
       <div className="flex items-center justify-between">
@@ -27,6 +28,15 @@ const CompanyBankDetails: React.FC<{
           <Form.Item name="accountNumber" rules={generalValidationRules}>
             <Input placeholder="Account Number" />
           </Form.Item>
+          {bank?.accountName ? (
+            <Form.Item>
+              <Input
+                placeholder="Account Name"
+                disabled
+                value={bank?.accountName}
+              />
+            </Form.Item>
+          ) : null}
         </div>
       </div>
     </div>
