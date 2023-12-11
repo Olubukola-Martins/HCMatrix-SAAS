@@ -9,6 +9,12 @@ import {
   generalValidationRules,
   textInputValidationRules,
 } from "utils/formHelpers/validation";
+import {
+  GeoapifyGeocoderAutocomplete,
+  GeoapifyContext,
+} from "@geoapify/react-geocoder-autocomplete";
+import "@geoapify/geocoder-autocomplete/styles/minimal.css";
+import { GEOLOCATION_PARAMETERS } from "config/enviroment";
 
 export const FormAddressInput: React.FC<{
   Form: typeof Form;
@@ -16,6 +22,10 @@ export const FormAddressInput: React.FC<{
   control?: { label: string; name: string };
   className?: string;
 }> = ({ Form, form, control, className = "md:col-span-2 lg:col-span-3" }) => {
+  const [geoDetails, setGeoDetails] = useState<{
+    longitude: string;
+    latitude: string;
+  }>();
   const [countryId, setCountryId] = useState<number>();
   const [stateId, setStateId] = useState<number>();
   const { data: countries, isFetching: isFetchingCountries } =
@@ -37,7 +47,40 @@ export const FormAddressInput: React.FC<{
               rules={textInputValidationRules}
               name={[name, "streetAddress"]}
             >
-              <Input.TextArea placeholder="Street Address" />
+              <GeoapifyContext apiKey={GEOLOCATION_PARAMETERS.GEOAPIFY_KEY}>
+                <GeoapifyGeocoderAutocomplete
+                  placeholder="Street Address"
+                  value={form.getFieldValue([name, "streetAddress"])}
+                  type={"street"}
+                  postprocessHook={(val) => {
+                    console.log(val, "HERE1");
+                    setGeoDetails({
+                      longitude: val?.geometry?.coordinates?.[0],
+                      latitude: val?.geometry?.coordinates?.[1],
+                    });
+                    form.setFieldValue(
+                      [name, "longitude"],
+                      val?.geometry?.coordinates?.[0]
+                    );
+                    form.setFieldValue(
+                      [name, "latitude"],
+                      val?.geometry?.coordinates?.[1]
+                    );
+                    form.setFieldValue(
+                      [name, "streetAddress"],
+                      val?.properties?.address_line2
+                    );
+
+                    return val?.properties?.address_line2;
+                  }}
+                  onUserInput={(val) => {
+                    console.log(val, "HERE2");
+                  }}
+                  placeSelect={(val) => {
+                    console.log(val, "HERE3");
+                  }}
+                />
+              </GeoapifyContext>
             </Form.Item>
           </div>
           <Form.Item
@@ -88,6 +131,12 @@ export const FormAddressInput: React.FC<{
               options={TIME_ZONES}
               placeholder="Select Timezone"
             />
+          </Form.Item>
+          <Form.Item noStyle name={[name, "longitude"]}>
+            <Input disabled placeholder="Longitude" />
+          </Form.Item>
+          <Form.Item noStyle name={[name, "latitude"]}>
+            <Input disabled placeholder="Latitude" />
           </Form.Item>
         </Input.Group>
       </Form.Item>
