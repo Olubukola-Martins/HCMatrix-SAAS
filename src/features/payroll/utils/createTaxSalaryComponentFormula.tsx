@@ -54,7 +54,7 @@ export interface TTaxCondition {
   rate: number;
 }
 
-export function calculateSalaryEvalStatement(
+export const calculateSalaryEvalStatement = (
   AH4: string,
   _conditions: {
     min: number;
@@ -63,7 +63,8 @@ export function calculateSalaryEvalStatement(
     rate: number;
   }[],
   _divisor?: number
-) {
+): string => {
+  console.log({ AH4, _conditions, _divisor });
   let divisor = _divisor ?? 12;
   const conditions = _conditions.map((item) => ({
     ...item,
@@ -82,7 +83,7 @@ export function calculateSalaryEvalStatement(
   }, "0");
 
   return evalStatement;
-}
+};
 export const dummyConditions = [
   { min: 0, max: 300000, yearlyTaxableIncome: 0, rate: 7 },
   {
@@ -116,3 +117,70 @@ export const dummyConditions = [
     rate: 24,
   },
 ];
+
+interface Condition {
+  min: number;
+  max: number | null;
+  yearlyTaxableIncome: number;
+  rate: number;
+  salary: number;
+}
+
+interface Params {
+  AH4: string | null;
+  _conditions: Condition[];
+}
+
+export const extractParamsFromInput = (input: string): Params => {
+  const AH4Match = input.match(/(\w+)\s*>\s*0\s*&&\s*(\w+)\s*<=\s*Infinity/);
+  const AH4: string | null = AH4Match ? AH4Match[1] : null;
+
+  const conditionsMatch =
+    input.match(
+      /(\w+)\s*>\s*(\d+(\.\d+)?)\s*&&\s*(\w+)\s*<=\s*(\d+(\.\d+)?)/g
+    ) ?? [];
+  const conditions: Condition[] = conditionsMatch.map((match) => {
+    const [, minVar, min, , maxVar, max] =
+      match.match(
+        /(\w+)\s*>\s*(\d+(\.\d+)?)\s*&&\s*(\w+)\s*<=\s*(\d+(\.\d+)?)/
+      ) || [];
+    return {
+      min: parseFloat(min),
+      max: max === "Infinity" ? null : parseFloat(max),
+      salary: 0,
+      rate: 0,
+      yearlyTaxableIncome: 0,
+    };
+  });
+
+  const ratesAndSalariesMatch = input.match(
+    /(\w+)\s*\+\s*\((\w+)\s*-\s*(\d+(\.\d+)?)\)\s*\*\s*(\d+(\.\d+)?)\)/g
+  );
+  ratesAndSalariesMatch?.forEach((match) => {
+    const [, varName, , , min, , rate] =
+      match.match(
+        /(\w+)\s*\+\s*\((\w+)\s*-\s*(\d+(\.\d+)?)\)\s*\*\s*(\d+(\.\d+)?)\)/
+      ) || [];
+    const condition = conditions.find((c) => c.min === parseFloat(min));
+    if (condition) {
+      condition.salary = parseFloat(min);
+      condition.rate = parseFloat(rate);
+      condition.yearlyTaxableIncome = parseFloat(min);
+    }
+  });
+
+  const outputConditions: Condition[] = conditions.map((condition) => ({
+    min: condition.min,
+    max: condition.max,
+    yearlyTaxableIncome: condition.yearlyTaxableIncome,
+    rate: condition.rate,
+    salary: condition.salary,
+  }));
+
+  const output: Params = {
+    AH4,
+    _conditions: outputConditions,
+  };
+
+  return output;
+};

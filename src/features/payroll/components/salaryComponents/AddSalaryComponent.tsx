@@ -20,6 +20,7 @@ import {
 import { openNotification } from "utils/notifications";
 import { TaxPolicyCreator } from "../taxPolicies";
 import { useUpdateAllowanceOrDeduction } from "features/payroll/hooks/scheme/allowanceAndDeductionHandlers/useUpdateAllowanceOrDeduction";
+import { extractParamsFromInput } from "features/payroll/utils/createTaxSalaryComponentFormula";
 
 const defaultCalculationModes: (TSalaryComponentCalculationMode | "table")[] = [
   "formula",
@@ -296,6 +297,12 @@ export const AddSalaryComponentForm: React.FC<IFormProps> = ({
   }, [isDefault, isActive, salaryComponent, handleUpdate]);
   useEffect(() => {
     if (salaryComponent) {
+      console.log(
+        "TAX DECOUPLE",
+        salaryComponent.name,
+        salaryComponent.amount,
+        extractParamsFromInput(`${salaryComponent.amount}`)
+      );
       form.setFieldsValue({
         name: salaryComponent.name?.split("_").join(" "),
         amount: salaryComponent.amount,
