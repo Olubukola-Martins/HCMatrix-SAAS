@@ -1,11 +1,8 @@
-import { Form, Input, Modal, Select, Skeleton } from "antd";
+import { Form, Input, Modal, Skeleton } from "antd";
 import { AppButton } from "components/button/AppButton";
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { IModalProps } from "types";
-import {
-  generalValidationRules,
-  textInputValidationRules,
-} from "utils/formHelpers/validation";
+import { textInputValidationRules } from "utils/formHelpers/validation";
 
 import { TBranch, TCreateBranchProps } from "../types";
 
@@ -56,7 +53,9 @@ export const SaveBranch: React.FC<IProps> = ({
           streetAddress: branch?.address.streetAddress,
           countryId: branch?.address.countryId,
           stateId: branch?.address.stateId,
-          lgaId: branch?.address.lgaId,
+          lgaId: branch?.address?.lgaId,
+          latitude: branch?.address?.latitude,
+          longitude: branch?.address?.longitude,
         },
       });
     }
@@ -92,7 +91,11 @@ export const SaveBranch: React.FC<IProps> = ({
           {/* TODO: Create a reusable address form component */}
           <>
             {" "}
-            <FormAddressInput Form={Form} form={form} />
+            <FormAddressInput
+              Form={Form}
+              form={form}
+              disabled={action === "view"}
+            />
           </>
 
           {action !== "view" ? (

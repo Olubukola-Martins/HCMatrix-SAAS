@@ -21,11 +21,14 @@ export const FormAddressInput: React.FC<{
   form: FormInstance;
   control?: { label: string; name: string };
   className?: string;
-}> = ({ Form, form, control, className = "md:col-span-2 lg:col-span-3" }) => {
-  const [geoDetails, setGeoDetails] = useState<{
-    longitude: string;
-    latitude: string;
-  }>();
+  disabled?: boolean;
+}> = ({
+  Form,
+  form,
+  control,
+  className = "md:col-span-2 lg:col-span-3",
+  disabled,
+}) => {
   const [countryId, setCountryId] = useState<number>();
   const [stateId, setStateId] = useState<number>();
   const { data: countries, isFetching: isFetchingCountries } =
@@ -37,6 +40,7 @@ export const FormAddressInput: React.FC<{
   // TODO: Refactor all forms that submit address to use this component
   const name = control?.name ?? "address";
   const label = control?.label ?? "Address";
+  console.log("fddfd", form.getFieldsValue());
   return (
     <>
       <Form.Item name={name} label={label} className={className}>
@@ -47,47 +51,49 @@ export const FormAddressInput: React.FC<{
               rules={textInputValidationRules}
               name={[name, "streetAddress"]}
             >
-              <GeoapifyContext apiKey={GEOLOCATION_PARAMETERS.GEOAPIFY_KEY}>
-                <GeoapifyGeocoderAutocomplete
-                  placeholder="Street Address"
-                  value={form.getFieldValue([name, "streetAddress"])}
-                  type={"amenity"}
-                  postprocessHook={(val) => {
-                    console.log(val, "HERE1");
-                    setGeoDetails({
-                      longitude: val?.geometry?.coordinates?.[0],
-                      latitude: val?.geometry?.coordinates?.[1],
-                    });
-                    form.setFieldValue(
-                      [name, "longitude"],
-                      `${val?.geometry?.coordinates?.[0] ?? ""}`
-                    );
-                    form.setFieldValue(
-                      [name, "latitude"],
-                      `${val?.geometry?.coordinates?.[1] ?? ""}`
-                    );
-                    form.setFieldValue(
-                      [name, "streetAddress"],
-                      val?.properties?.address_line2 ?? ""
-                    );
+              {disabled ? (
+                <Input.TextArea placeholder="Street Address" />
+              ) : (
+                <GeoapifyContext apiKey={GEOLOCATION_PARAMETERS.GEOAPIFY_KEY}>
+                  <GeoapifyGeocoderAutocomplete
+                    debounceDelay={500}
+                    placeholder="Street Address"
+                    value={form.getFieldValue([name, "streetAddress"])}
+                    type={"amenity"}
+                    postprocessHook={(val) => {
+                      console.log(val, "HERE1");
 
-                    return val?.properties?.address_line2;
-                  }}
-                  // filterByPlace={"nigeria"} //TODO: Neewd to figure out the allowed places type
-                  // onUserInput={(val) => {
-                  //   console.log(val, "HERE2");
-                  // }}
-                  // placeSelect={(val) => {
-                  //   console.log(val, "HERE3");
-                  // }}
-                  // onClose={() => {
-                  //   console.log("HERE4");
-                  //   form.setFieldValue([name, "longitude"], ``);
-                  //   form.setFieldValue([name, "latitude"], ``);
-                  //   form.setFieldValue([name, "streetAddress"], "");
-                  // }}
-                />
-              </GeoapifyContext>
+                      form.setFieldValue(
+                        [name, "longitude"],
+                        `${val?.geometry?.coordinates?.[0] ?? ""}`
+                      );
+                      form.setFieldValue(
+                        [name, "latitude"],
+                        `${val?.geometry?.coordinates?.[1] ?? ""}`
+                      );
+                      form.setFieldValue(
+                        [name, "streetAddress"],
+                        val?.properties?.address_line2 ?? ""
+                      );
+
+                      return val?.properties?.address_line2;
+                    }}
+                    // filterByPlace={"nigeria"} //TODO: Neewd to figure out the allowed places type
+                    // onUserInput={(val) => {
+                    //   console.log(val, "HERE2");
+                    // }}
+                    // placeSelect={(val) => {
+                    //   console.log(val, "HERE3");
+                    // }}
+                    // onClose={() => {
+                    //   console.log("HERE4");
+                    //   form.setFieldValue([name, "longitude"], ``);
+                    //   form.setFieldValue([name, "latitude"], ``);
+                    //   form.setFieldValue([name, "streetAddress"], "");
+                    // }}
+                  />
+                </GeoapifyContext>
+              )}
             </Form.Item>
           </div>
           <Form.Item
