@@ -14,6 +14,7 @@ export interface TTaxPolicyCreatorProps {
 export const TaxPolicyCreator: React.FC<
   TTaxPolicyCreatorProps & {
     formula: string;
+    _taxableIncome?: string; //refactor this n below to highlight as tax details
     componentDescription?: TTaxCondition[];
 
     setFormula: React.Dispatch<React.SetStateAction<string>>;
@@ -27,10 +28,11 @@ export const TaxPolicyCreator: React.FC<
   setFormula,
   setComponentDescription,
   componentDescription,
+  _taxableIncome,
 }) => {
   const [mode, setMode] = useState<TFormulaMode>("ui");
 
-  const [taxableIncome, setTaxableIncome] = useState("");
+  const [taxableIncome, setTaxableIncome] = useState(_taxableIncome);
   const handleFormula = (val: string) => {
     const regex = /taxable_income/g;
     let ans = val.replace(regex, `(${taxableIncome})`);

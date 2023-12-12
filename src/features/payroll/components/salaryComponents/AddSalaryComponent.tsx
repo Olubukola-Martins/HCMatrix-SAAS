@@ -303,6 +303,7 @@ export const AddSalaryComponentForm: React.FC<IFormProps> = ({
     }
   }, [isDefault, isActive, salaryComponent, handleUpdate]);
   const [conditions, setConditions] = useState<TTaxCondition[]>([]);
+  const [_taxableIncome, set_taxableIncome] = useState("");
   useEffect(() => {
     if (salaryComponent) {
       console.log(
@@ -327,6 +328,7 @@ export const AddSalaryComponentForm: React.FC<IFormProps> = ({
         // setComponentDescription(JSON.stringify(salaryComponent.description));
         const data = JSON.parse(salaryComponent.description);
         setConditions(data?.conditions);
+        set_taxableIncome(data?.taxableIncome);
         setMode("table");
       } else {
         setMode(salaryComponent.mode); //TODO: Account for the tabular mode
@@ -453,6 +455,7 @@ export const AddSalaryComponentForm: React.FC<IFormProps> = ({
             setFormula={setTaxFormula}
             setComponentDescription={setComponentDescription}
             componentDescription={conditions}
+            _taxableIncome={_taxableIncome}
           />
         </>
       )}
