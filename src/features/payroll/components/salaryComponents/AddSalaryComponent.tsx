@@ -20,7 +20,10 @@ import {
 import { openNotification } from "utils/notifications";
 import { TaxPolicyCreator } from "../taxPolicies";
 import { useUpdateAllowanceOrDeduction } from "features/payroll/hooks/scheme/allowanceAndDeductionHandlers/useUpdateAllowanceOrDeduction";
-import { extractParamsFromInput } from "features/payroll/utils/createTaxSalaryComponentFormula";
+import {
+  TTaxCondition,
+  extractParamsFromInput,
+} from "features/payroll/utils/createTaxSalaryComponentFormula";
 
 const defaultCalculationModes: (TSalaryComponentCalculationMode | "table")[] = [
   "formula",
@@ -109,6 +112,7 @@ export const AddSalaryComponentForm: React.FC<IFormProps> = ({
   defaultCalculationMode = "percentage",
 }) => {
   const [form] = Form.useForm();
+  const [componentDescription, setComponentDescription] = useState<string>();
 
   dependencies = [
     ...DEFAULT_DEPENDENCIES_FROM_API,
@@ -144,6 +148,7 @@ export const AddSalaryComponentForm: React.FC<IFormProps> = ({
               amount: mode === "table" ? taxFormula : vals.amount,
               isDefault,
               isActive,
+              description: componentDescription,
               label: (vals.name as string)
                 .toLocaleLowerCase()
                 .split(" ")
@@ -193,6 +198,7 @@ export const AddSalaryComponentForm: React.FC<IFormProps> = ({
         );
     },
     [
+      componentDescription,
       handleClose,
       isActive,
       isDefault,
@@ -213,6 +219,7 @@ export const AddSalaryComponentForm: React.FC<IFormProps> = ({
         amount: mode === "table" ? taxFormula : vals.amount,
         isDefault,
         isActive,
+        description: componentDescription,
         label: (vals.name as string).toLocaleLowerCase().split(" ").join("_"),
       });
 
@@ -295,12 +302,14 @@ export const AddSalaryComponentForm: React.FC<IFormProps> = ({
       handleUpdate({ ...salaryComponent, isActive: false });
     }
   }, [isDefault, isActive, salaryComponent, handleUpdate]);
+  const [conditions, setConditions] = useState<TTaxCondition[]>([]);
   useEffect(() => {
     if (salaryComponent) {
       console.log(
         "TAX DECOUPLE",
         salaryComponent.name,
         salaryComponent.amount,
+        salaryComponent.description,
         extractParamsFromInput(`${salaryComponent.amount}`)
       );
       form.setFieldsValue({
@@ -308,8 +317,20 @@ export const AddSalaryComponentForm: React.FC<IFormProps> = ({
         amount: salaryComponent.amount,
         mode: salaryComponent.mode,
       });
-
-      setMode(salaryComponent.mode); //TODO: Account for the tabular mode
+      if (salaryComponent.description) {
+        console.log(
+          "first",
+          salaryComponent.name,
+          "OOOOOOOOOOO",
+          salaryComponent.description
+        );
+        // setComponentDescription(JSON.stringify(salaryComponent.description));
+        const data = JSON.parse(salaryComponent.description);
+        setConditions(data?.conditions);
+        setMode("table");
+      } else {
+        setMode(salaryComponent.mode); //TODO: Account for the tabular mode
+      }
 
       return;
     }
@@ -430,6 +451,8 @@ export const AddSalaryComponentForm: React.FC<IFormProps> = ({
             dependencies={dependencies}
             formula={taxFormula}
             setFormula={setTaxFormula}
+            setComponentDescription={setComponentDescription}
+            componentDescription={conditions}
           />
         </>
       )}

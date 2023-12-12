@@ -7,6 +7,7 @@ export type TSalaryComponent = {
   mode: "fixed" | "percentage" | "formula";
   isDefault?: boolean;
   isActive?: boolean;
+  description?: string;
   amount: number | string;
   createdAt: string;
   updatedAt: string;

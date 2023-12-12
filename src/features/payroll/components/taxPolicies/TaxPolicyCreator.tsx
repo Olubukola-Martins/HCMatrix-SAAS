@@ -2,6 +2,7 @@ import { Form, Input, Select, Tag } from "antd";
 import React, { useEffect, useState } from "react";
 import { generalValidationRules } from "utils/formHelpers/validation";
 import { TaxUIFormulaForm } from "./TaxUIFormulaForm";
+import { TTaxCondition } from "features/payroll/utils/createTaxSalaryComponentFormula";
 
 type TFormulaMode = "raw" | "ui";
 
@@ -13,12 +14,19 @@ export interface TTaxPolicyCreatorProps {
 export const TaxPolicyCreator: React.FC<
   TTaxPolicyCreatorProps & {
     formula: string;
+    componentDescription?: TTaxCondition[];
+
     setFormula: React.Dispatch<React.SetStateAction<string>>;
+    setComponentDescription: React.Dispatch<
+      React.SetStateAction<string | undefined>
+    >;
   }
 > = ({
   dependencies = ["taxable_income", "gross_pay"],
   formula,
   setFormula,
+  setComponentDescription,
+  componentDescription,
 }) => {
   const [mode, setMode] = useState<TFormulaMode>("ui");
 
@@ -28,6 +36,10 @@ export const TaxPolicyCreator: React.FC<
     let ans = val.replace(regex, `(${taxableIncome})`);
     setFormula(() => ans);
   };
+  const handleComponentDescription = (val: string) => {
+    setComponentDescription(() => val);
+  };
+  console.log(componentDescription, "componentDescription", "first");
   return (
     <div className="flex flex-col gap-4 mb-4">
       {/* mode */}
@@ -69,7 +81,9 @@ export const TaxPolicyCreator: React.FC<
           <TaxUIFormulaForm
             dependencies={dependencies}
             handleFormula={handleFormula}
+            handleComponentDescription={handleComponentDescription}
             taxableIncome={taxableIncome}
+            componentDescription={componentDescription}
           />
         )}
         {mode === "raw" && (
