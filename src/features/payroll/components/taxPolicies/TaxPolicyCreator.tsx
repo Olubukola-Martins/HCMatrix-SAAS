@@ -3,20 +3,20 @@ import React, { useEffect, useState } from "react";
 import { generalValidationRules } from "utils/formHelpers/validation";
 import { TaxUIFormulaForm } from "./TaxUIFormulaForm";
 import { TTaxCondition } from "features/payroll/utils/createTaxSalaryComponentFormula";
+import { TTaxConfig } from "features/payroll/types/tax";
 
 type TFormulaMode = "raw" | "ui";
 
 const FORMULA_MODES: TFormulaMode[] = ["raw", "ui"];
 export interface TTaxPolicyCreatorProps {
   dependencies?: string[];
-  taxableIncome?: string;
 }
 export const TaxPolicyCreator: React.FC<
   TTaxPolicyCreatorProps & {
     formula: string;
-    _taxableIncome?: string; //refactor this n below to highlight as tax details
-    componentDescription?: TTaxCondition[];
+    taxConfig?: TTaxConfig;
 
+    setTaxConfig: React.Dispatch<React.SetStateAction<TTaxConfig | undefined>>;
     setFormula: React.Dispatch<React.SetStateAction<string>>;
     setComponentDescription: React.Dispatch<
       React.SetStateAction<string | undefined>
@@ -27,12 +27,11 @@ export const TaxPolicyCreator: React.FC<
   formula,
   setFormula,
   setComponentDescription,
-  componentDescription,
-  _taxableIncome,
+  taxConfig,
+  setTaxConfig,
 }) => {
   const [mode, setMode] = useState<TFormulaMode>("ui");
-
-  const [taxableIncome, setTaxableIncome] = useState(_taxableIncome);
+  const taxableIncome = taxConfig?.taxableIncome;
   const handleFormula = (val: string) => {
     const regex = /taxable_income/g;
     let ans = val.replace(regex, `(${taxableIncome})`);
@@ -41,7 +40,6 @@ export const TaxPolicyCreator: React.FC<
   const handleComponentDescription = (val: string) => {
     setComponentDescription(() => val);
   };
-  console.log(componentDescription, "componentDescription", "first");
   return (
     <div className="flex flex-col gap-4 mb-4">
       {/* mode */}
@@ -74,7 +72,16 @@ export const TaxPolicyCreator: React.FC<
         <h4 className="">Define Taxable Income</h4>
         <Input
           value={taxableIncome}
-          onChange={(e) => setTaxableIncome(e.target.value)}
+          onChange={(e) =>
+            setTaxConfig((prev) =>
+              prev
+                ? {
+                    ...prev,
+                    taxableIncome: e.target.value,
+                  }
+                : undefined
+            )
+          }
         />
       </div>
       {/* creator-forms */}
@@ -85,7 +92,7 @@ export const TaxPolicyCreator: React.FC<
             handleFormula={handleFormula}
             handleComponentDescription={handleComponentDescription}
             taxableIncome={taxableIncome}
-            componentDescription={componentDescription}
+            taxConditions={taxConfig?.conditions}
           />
         )}
         {mode === "raw" && (

@@ -22,8 +22,10 @@ import { TaxPolicyCreator } from "../taxPolicies";
 import { useUpdateAllowanceOrDeduction } from "features/payroll/hooks/scheme/allowanceAndDeductionHandlers/useUpdateAllowanceOrDeduction";
 import {
   TTaxCondition,
+  dummyConditions,
   extractParamsFromInput,
 } from "features/payroll/utils/createTaxSalaryComponentFormula";
+import { TTaxConfig } from "features/payroll/types/tax";
 
 const defaultCalculationModes: (TSalaryComponentCalculationMode | "table")[] = [
   "formula",
@@ -302,8 +304,7 @@ export const AddSalaryComponentForm: React.FC<IFormProps> = ({
       handleUpdate({ ...salaryComponent, isActive: false });
     }
   }, [isDefault, isActive, salaryComponent, handleUpdate]);
-  const [conditions, setConditions] = useState<TTaxCondition[]>([]);
-  const [_taxableIncome, set_taxableIncome] = useState("");
+  const [taxConfig, setTaxConfig] = useState<TTaxConfig>();
   useEffect(() => {
     if (salaryComponent) {
       console.log(
@@ -327,8 +328,16 @@ export const AddSalaryComponentForm: React.FC<IFormProps> = ({
         );
         // setComponentDescription(JSON.stringify(salaryComponent.description));
         const data = JSON.parse(salaryComponent.description);
-        setConditions(data?.conditions);
-        set_taxableIncome(data?.taxableIncome);
+        const conditions = data?.conditions ?? dummyConditions; // show default conditions if not provided
+        const divisor = data?.divisor;
+        const taxableIncome = data?.taxableIncome;
+        if (conditions && divisor && taxableIncome) {
+          setTaxConfig({
+            conditions,
+            divisor,
+            taxableIncome,
+          });
+        }
         setMode("table");
       } else {
         setMode(salaryComponent.mode); //TODO: Account for the tabular mode
@@ -454,8 +463,8 @@ export const AddSalaryComponentForm: React.FC<IFormProps> = ({
             formula={taxFormula}
             setFormula={setTaxFormula}
             setComponentDescription={setComponentDescription}
-            componentDescription={conditions}
-            _taxableIncome={_taxableIncome}
+            taxConfig={taxConfig}
+            setTaxConfig={setTaxConfig}
           />
         </>
       )}

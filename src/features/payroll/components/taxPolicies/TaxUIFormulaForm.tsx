@@ -128,19 +128,19 @@ export const TaxUIFormulaForm: React.FC<
   TTaxPolicyCreatorProps & {
     handleFormula: (val: string) => void;
     handleComponentDescription: (val: string) => void;
-    componentDescription?: TTaxCondition[];
+    taxConditions?: TTaxCondition[];
     taxableIncome?: string;
   }
 > = ({
   dependencies = [],
   handleFormula,
   taxableIncome,
-  componentDescription = [],
+  taxConditions = [],
   handleComponentDescription,
 }) => {
   const [dataSource, setDataSource] = useState<DataType[]>([]);
   useEffect(() => {
-    const convertedConditions = componentDescription.map(
+    const convertedConditions = taxConditions.map(
       (condition, index, conditions) => {
         let name = "";
         if (index === 0) {
@@ -164,7 +164,7 @@ export const TaxUIFormulaForm: React.FC<
       }
     );
     setDataSource(convertedConditions);
-  }, [componentDescription]);
+  }, [taxConditions]);
 
   const [count, setCount] = useState(2);
 
