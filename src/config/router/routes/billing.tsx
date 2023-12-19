@@ -1,6 +1,7 @@
 import SubsciptionManagement from "features/billing/pages/SubsciptionManagement";
 import { appRoutes } from "../paths";
 import { TRouteData } from "../types";
+import BillingHistory from "features/billing/pages/billing/BillingHistory";
 
 export const billingRoutes: TRouteData[] = [
   {
@@ -17,6 +18,13 @@ export const billingRoutes: TRouteData[] = [
     element: <div />,
     path: appRoutes.purchaseUserLicense,
     isSearchable: false,
+  },
+  // start here
+  {
+    element: <BillingHistory />,
+    path: appRoutes.billingHistory,
+    title: "Billing History",
+    isSearchable: true,
   },
   {
     element: <SubsciptionManagement />,

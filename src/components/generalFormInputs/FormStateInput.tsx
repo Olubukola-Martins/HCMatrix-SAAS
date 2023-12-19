@@ -6,7 +6,7 @@ import { generalValidationRules } from "utils/formHelpers/validation";
 
 export const FormStateInput: React.FC<{
   handleSelect?: (val: number) => void;
-  countryId: number;
+  countryId?: number;
   Form: typeof Form;
   showLabel?: boolean;
   control?: { label: string; name: string };

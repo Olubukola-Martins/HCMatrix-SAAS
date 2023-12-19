@@ -133,7 +133,9 @@ export const appRoutes = {
   billingStatement: `/statement`,
   billings: `/billings`,
   purchaseUserLicense: `/purchase-user-license`,
-  billingSubscriptions: `/subscriptions`,
+  // start here
+  billingSubscriptions: `/billings/subscriptions`,
+  billingHistory: `/billings/history`,
 
   // payroll routes
   payrollHome: `/payroll/home`,

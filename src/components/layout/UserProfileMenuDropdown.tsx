@@ -112,7 +112,13 @@ const UserActions: React.FC<{
     {
       url: "/billings",
       text: "Billings",
-      hidden: true,
+      hidden: false,
+      isLink: true,
+    },
+    {
+      url: appRoutes.billingSubscriptions,
+      text: "Subscriptions",
+      hidden: false,
       isLink: true,
     },
     {
