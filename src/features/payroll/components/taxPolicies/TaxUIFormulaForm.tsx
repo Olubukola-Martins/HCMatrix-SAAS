@@ -158,7 +158,7 @@ export const TaxUIFormulaForm: React.FC<
           name = `Over `;
         }
         return {
-          key: index.toString(),
+          key: index,
           name: name,
           amount:
             index === conditions.length - 1
@@ -189,7 +189,7 @@ export const TaxUIFormulaForm: React.FC<
           name = `Over `;
         }
         return {
-          key: index.toString(),
+          key: index,
           name: name,
           amount:
             index === conditions.length - 1
@@ -264,9 +264,9 @@ export const TaxUIFormulaForm: React.FC<
       taxRate: 0,
       taxAmountPayablePerYear: 0,
     };
-    setDataSource(() => {
-      const ans = [...dataSource, newData];
-      ans.map((item, i) => ({
+    setDataSource((prev) => {
+      const items = [...prev, newData];
+      const ans = items.map((item, i) => ({
         ...item,
         key: i,
         name: "Next",
@@ -282,16 +282,17 @@ export const TaxUIFormulaForm: React.FC<
     const newData = [...dataSource];
     const index = newData.findIndex((item) => row.key === item.key);
     const item = newData[index];
-    newData.splice(index, 1, {
-      ...item,
-      ...row,
-    });
+    console.log("first,", row.key, item.key);
+    const data = newData.map((item) =>
+      row.key === item.key ? { ...item, ...row } : item
+    );
+
     // Fix code below let it update last row based on the previous row amount
     // if (newData.length - 2 === index) {
     //   newData[newData.length - 1].amount = row.amount;
     // }
 
-    setDataSource(newData);
+    setDataSource(data);
   };
 
   const components = {
@@ -387,7 +388,7 @@ export const TaxUIFormulaForm: React.FC<
       <div className="flex justify-end items-center">
         {isDefaultConfig ? (
           <Button onClick={handleRemoveDefaultConfig} type="text">
-            Cancel Default Configuration
+            Clear Configuration
           </Button>
         ) : (
           <Button onClick={handleUseDefaultConfig} type="text">
