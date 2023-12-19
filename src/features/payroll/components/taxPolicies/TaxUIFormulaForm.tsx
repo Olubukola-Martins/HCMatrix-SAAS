@@ -262,8 +262,12 @@ export const TaxUIFormulaForm: React.FC<
     };
     setDataSource((dataSource) => {
       const ans = [...dataSource, newData];
+      ans.map((item) => ({
+        ...item,
+        name: "Next",
+      }));
 
-      ans[ans.length - 2].name = `Next`;
+      ans[0].name = `First`;
       ans[ans.length - 1].name = `Over`;
       return ans;
     });
