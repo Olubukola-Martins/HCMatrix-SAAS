@@ -10,6 +10,10 @@ import {
 } from "features/payroll/utils/createTaxSalaryComponentFormula";
 import { AppButton } from "components/button/AppButton";
 import AppTooltip from "components/tooltip/AppTooltip";
+import {
+  numberHasToBeGreaterThanValueRule,
+  numberHasToBeGreaterThanZeroRule,
+} from "utils/formHelpers/validation";
 
 const EditableContext = React.createContext<FormInstance<any> | null>(null);
 
@@ -89,13 +93,7 @@ const EditableCell: React.FC<EditableCellProps> = ({
       <Form.Item
         style={{ margin: 0 }}
         name={dataIndex}
-        rules={[
-          {
-            required: true,
-            message: `${title} is required.`,
-            type: "number",
-          },
-        ]}
+        rules={[numberHasToBeGreaterThanValueRule(-1)]}
       >
         <InputNumber
           ref={inputRef}
@@ -308,7 +306,7 @@ export const TaxUIFormulaForm: React.FC<
       (item, i, items): TTaxCondition => ({
         min: i === 0 ? 0 : items[i - 1].amount,
         max: i === items.length - 1 ? Infinity : item.amount,
-        yearlyTaxableIncome: i === 0 ? 0 : item.taxAmountPayablePerYear,
+        yearlyTaxableIncome: item.taxAmountPayablePerYear,
         rate: item.taxRate / 100,
       })
     );
