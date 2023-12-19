@@ -10,7 +10,7 @@ import { Link } from "react-router-dom";
 export const createPayrollDropdownItems = [
   {
     link: appRoutes.createOfficePayroll,
-    name: "Step Pay",
+    name: "Step Pay ",
     label: "office",
   },
   {

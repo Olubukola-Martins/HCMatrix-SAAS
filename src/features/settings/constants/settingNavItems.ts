@@ -75,7 +75,7 @@ export const settingNavItems: TSettNavItem[] = [
   {
     title: "Schemes",
     items: [
-      { name: "Step PayScheme", link: appRoutes.setupGradePayrollScheme },
+      { name: "Step Pay Scheme", link: appRoutes.setupGradePayrollScheme },
       {
         name: "Direct Salary Scheme",
         link: appRoutes.setupDirectSalaryPayrollScheme,
