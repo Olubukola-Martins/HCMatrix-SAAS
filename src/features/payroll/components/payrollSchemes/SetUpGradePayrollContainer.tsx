@@ -13,7 +13,7 @@ export const SetUpGradePayrollContainer = () => {
   return (
     <>
       <SetUpPayrollForm
-        name="Office Payroll Scheme"
+        name="Step PayPayroll Scheme"
         frequency={scheme?.frequency}
         type="office"
         scheme={scheme}

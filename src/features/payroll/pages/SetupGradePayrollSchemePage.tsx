@@ -9,7 +9,7 @@ const SetupGradePayrollSchemePage = () => {
       <PayrollSubNav />
       <div className="Container">
         <PageIntro
-          title="Office Payroll Setup"
+          title="Step PayPayroll Setup"
           link={appRoutes.payrollSchemes}
         />
         <SetUpGradePayrollContainer />
