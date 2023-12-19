@@ -1,4 +1,4 @@
-import { Form, InputNumber, Popconfirm, Table, Tag } from "antd";
+import { Button, Form, InputNumber, Popconfirm, Table, Tag } from "antd";
 import type { FormInstance } from "antd/es/form";
 import { DeleteFilled } from "@ant-design/icons";
 import React, { useContext, useEffect, useRef, useState } from "react";
@@ -85,30 +85,34 @@ const EditableCell: React.FC<EditableCellProps> = ({
   let childNode = children;
 
   if (editable) {
-    childNode =
-      editing && record?.name.toLowerCase().indexOf("over") === -1 ? (
-        <Form.Item
-          style={{ margin: 0 }}
-          name={dataIndex}
-          rules={[
-            {
-              required: true,
-              message: `${title} is required.`,
-              type: "number",
-            },
-          ]}
-        >
-          <InputNumber ref={inputRef} onPressEnter={save} onBlur={save} />
-        </Form.Item>
-      ) : (
-        <div
-          className="editable-cell-value-wrap"
-          style={{ paddingRight: 24 }}
-          onClick={toggleEdit}
-        >
-          {children}
-        </div>
-      );
+    childNode = editing ? (
+      <Form.Item
+        style={{ margin: 0 }}
+        name={dataIndex}
+        rules={[
+          {
+            required: true,
+            message: `${title} is required.`,
+            type: "number",
+          },
+        ]}
+      >
+        <InputNumber
+          ref={inputRef}
+          onPressEnter={save}
+          onBlur={save}
+          step={0.001}
+        />
+      </Form.Item>
+    ) : (
+      <div
+        className="editable-cell-value-wrap"
+        style={{ paddingRight: 24 }}
+        onClick={toggleEdit}
+      >
+        {children}
+      </div>
+    );
   }
 
   return <td {...restProps}>{childNode}</td>;
@@ -160,13 +164,39 @@ export const TaxUIFormulaForm: React.FC<
             index === conditions.length - 1
               ? conditions[index - 1].max
               : condition.max,
-          taxRate: condition.rate,
+          taxRate: (+condition.rate * 100).toFixed(3) as unknown as number, //to be in sync
           taxAmountPayablePerYear: condition.yearlyTaxableIncome,
         };
       }
     );
     setDataSource(convertedConditions);
   }, [taxConditions]);
+  const handleDefaultConfig = () => {
+    const convertedConditions = dummyConditions.map(
+      (condition, index, conditions) => {
+        let name = "";
+        if (index === 0) {
+          name = "First";
+        } else {
+          name = "Next";
+        }
+        if (index === conditions.length - 1) {
+          name = `Over `;
+        }
+        return {
+          key: index.toString(),
+          name: name,
+          amount:
+            index === conditions.length - 1
+              ? conditions[index - 1].max
+              : condition.max,
+          taxRate: condition.rate,
+          taxAmountPayablePerYear: condition.yearlyTaxableIncome,
+        };
+      }
+    );
+    setDataSource(convertedConditions);
+  };
 
   const [count, setCount] = useState(2);
 
@@ -205,19 +235,17 @@ export const TaxUIFormulaForm: React.FC<
       render: (_, record: unknown) =>
         dataSource.length >= 1 ? (
           <>
-            <div className="flex items-center gap-3 text-lg">
+            <div
+              className="flex items-center gap-3 text-lg"
+              // style={{ marginLeft: 70, whiteSpace: "nowrap" }}
+            >
               {/* <i className="ri-pencil-line cursor-pointer hover:text-caramel" /> */}
 
-              <Popconfirm
-                placement="topLeft"
-                getPopupContainer={(triggerNode) =>
-                  triggerNode.parentElement as HTMLElement
-                }
-                title="Are you sure, you want to delete?"
-                onConfirm={() => handleDelete((record as DataType).key)}
-              >
-                <DeleteFilled />
-              </Popconfirm>
+              <Button
+                type="text"
+                icon={<DeleteFilled />}
+                onClick={() => handleDelete((record as DataType).key)}
+              />
             </div>
           </>
         ) : null,
@@ -227,12 +255,18 @@ export const TaxUIFormulaForm: React.FC<
   const handleAdd = () => {
     const newData: DataType = {
       key: count,
-      name: `Next`,
+      name: `Over`,
       amount: 0,
       taxRate: 0,
       taxAmountPayablePerYear: 0,
     };
-    setDataSource([...dataSource, newData]);
+    setDataSource((dataSource) => {
+      const ans = [...dataSource, newData];
+
+      ans[ans.length - 2].name = `Next`;
+      ans[ans.length - 1].name = `Over`;
+      return ans;
+    });
     setCount(count + 1);
   };
 
@@ -306,7 +340,10 @@ export const TaxUIFormulaForm: React.FC<
     // ];
     const result = calculateSalaryEvalStatement(
       "taxable_income",
-      conditions.map((item) => ({ ...item, salary: item.yearlyTaxableIncome }))
+      conditions.map((item) => ({
+        ...item,
+        salary: item.yearlyTaxableIncome,
+      }))
     );
     // const result = createTaxyearlyTaxableIncomeComponentFormula({
     //   conditions,
@@ -339,12 +376,15 @@ export const TaxUIFormulaForm: React.FC<
   });
   return (
     <div className="flex flex-col gap-4">
-      <div>
+      <div className="flex justify-between items-center">
         <AppButton
           variant="transparent"
           label="Add a row"
           handleClick={handleAdd}
         />
+        <Button onClick={handleDefaultConfig} type="text">
+          Use Default Configuration
+        </Button>
       </div>
       <Table
         components={components}

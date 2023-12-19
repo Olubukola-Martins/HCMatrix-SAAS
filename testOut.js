@@ -10,6 +10,7 @@ let meal_allowance = 400000;
 // remove medical history
 // search for address input
 // remove unused items like employee count
+// ensure format is applied to money values
 
 let ans = eval(
   gross_pay * 20 > 3200000 && gross_pay * 20 <= Infinity
