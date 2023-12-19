@@ -114,6 +114,9 @@ const PayrollSchemeCardList = () => {
           );
           if (schemeFoundInFetchedData) {
             let name = schemeFoundInFetchedData.name;
+            if (schemeFoundInFetchedData.type === "office") {
+              name = "Step Pay Payroll";
+            }
             if (schemeFoundInFetchedData.type === "wages") {
               name = "Timesheet/Wages Payroll";
             }
