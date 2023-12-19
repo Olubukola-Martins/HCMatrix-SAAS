@@ -17,9 +17,9 @@ export const History: React.FC<IProps> = ({ roleHistory, salaryHistory }) => {
     <div className="bg-mainBg shadow-sm rounded-md py-6 md:px-4 mt-5 flex flex-col gap-4">
       <RoleHistory data={roleHistory} />
       <SalaryHistory data={salaryHistory} />
-      <TrainingHistory />
+      {/* <TrainingHistory />
       <DisciplinaryHistory />
-      <MedicalHistory />
+      <MedicalHistory /> */}
     </div>
   );
 };

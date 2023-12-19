@@ -173,6 +173,30 @@ export const createFileValidationRule = (
     },
   };
 };
+export const numberHasToBeInRange = (_min: number, _max: number): Rule => ({
+  validator: async (_: any, value: any) => {
+    if (typeof value !== "number") {
+      throw new Error("Please enter a valid number!");
+    }
+    if ((+value >= _min && +value <= _max) === false) {
+      throw new Error(`Please enter a within the range of ${_min} to ${_max}`);
+    }
+
+    return true;
+  },
+});
+export const numberHasToBeGreaterThanValueRule = (_value: number): Rule => ({
+  validator: async (_: any, value: any) => {
+    if (typeof value !== "number") {
+      throw new Error("Please enter a valid number!");
+    }
+    if (+value <= _value) {
+      throw new Error(`Please enter a number greater than ${_value}`);
+    }
+
+    return true;
+  },
+});
 export const numberHasToBeGreaterThanZeroRule: Rule = {
   validator: async (_: any, value: any) => {
     if (typeof value !== "number") {

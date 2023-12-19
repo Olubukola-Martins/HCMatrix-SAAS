@@ -41,6 +41,12 @@ export const FormAddressInput: React.FC<{
   const name = control?.name ?? "address";
   const label = control?.label ?? "Address";
   console.log("fddfd", form.getFieldsValue());
+  const [search, setSearch] = useState({
+    country: "",
+    state: "",
+    lga: "",
+    timezone: "",
+  });
   return (
     <>
       <Form.Item name={name} label={label} className={className}>
@@ -105,7 +111,25 @@ export const FormAddressInput: React.FC<{
             <Select
               getPopupContainer={(triggerNode) => triggerNode.parentElement}
               loading={isFetchingCountries}
-              options={countries?.map((c) => ({ label: c.name, value: c.id }))}
+              options={countries
+                ?.filter(
+                  (item) =>
+                    item.name
+                      .toLowerCase()
+                      .indexOf(search.country.toLowerCase()) !== -1
+                )
+                .map((c) => ({ label: c.name, value: c.id }))}
+              defaultActiveFirstOption={false}
+              showSearch
+              allowClear
+              onClear={() => {
+                setSearch((prev) => ({ ...prev, country: "" }));
+              }}
+              filterOption={false}
+              searchValue={search.country}
+              onSearch={(value) => {
+                setSearch((prev) => ({ ...prev, country: value }));
+              }}
               placeholder="Select Country"
               onSelect={(e: number) => {
                 setCountryId(e);
@@ -118,7 +142,25 @@ export const FormAddressInput: React.FC<{
             <Select
               getPopupContainer={(triggerNode) => triggerNode.parentElement}
               loading={isFetchingStates}
-              options={states?.map((s) => ({ label: s.name, value: s.id }))}
+              options={states
+                ?.filter(
+                  (item) =>
+                    item.name
+                      .toLowerCase()
+                      .indexOf(search.state.toLowerCase()) !== -1
+                )
+                .map((c) => ({ label: c.name, value: c.id }))}
+              defaultActiveFirstOption={false}
+              showSearch
+              allowClear
+              onClear={() => {
+                setSearch((prev) => ({ ...prev, state: "" }));
+              }}
+              filterOption={false}
+              searchValue={search.state}
+              onSearch={(value) => {
+                setSearch((prev) => ({ ...prev, state: value }));
+              }}
               placeholder="Select State"
               onSelect={(e: number) => {
                 setStateId(e);
@@ -130,7 +172,25 @@ export const FormAddressInput: React.FC<{
             <Select
               getPopupContainer={(triggerNode) => triggerNode.parentElement}
               loading={isFetchingLgas}
-              options={lgas?.map((l) => ({ label: l.name, value: l.id }))}
+              options={lgas
+                ?.filter(
+                  (item) =>
+                    item.name
+                      .toLowerCase()
+                      .indexOf(search.lga.toLowerCase()) !== -1
+                )
+                .map((c) => ({ label: c.name, value: c.id }))}
+              defaultActiveFirstOption={false}
+              showSearch
+              allowClear
+              onClear={() => {
+                setSearch((prev) => ({ ...prev, lga: "" }));
+              }}
+              filterOption={false}
+              searchValue={search.lga}
+              onSearch={(value) => {
+                setSearch((prev) => ({ ...prev, lga: value }));
+              }}
               placeholder="Select LGA"
             />
           </Form.Item>
@@ -141,7 +201,23 @@ export const FormAddressInput: React.FC<{
           >
             <Select
               getPopupContainer={(triggerNode) => triggerNode.parentElement}
-              options={TIME_ZONES}
+              options={TIME_ZONES?.filter(
+                (item) =>
+                  item.label
+                    .toLowerCase()
+                    .indexOf(search.timezone.toLowerCase()) !== -1
+              ).map((c) => ({ label: c.label, value: c.value }))}
+              defaultActiveFirstOption={false}
+              showSearch
+              allowClear
+              onClear={() => {
+                setSearch((prev) => ({ ...prev, timezone: "" }));
+              }}
+              filterOption={false}
+              searchValue={search.timezone}
+              onSearch={(value) => {
+                setSearch((prev) => ({ ...prev, timezone: value }));
+              }}
               placeholder="Select Timezone"
             />
           </Form.Item>

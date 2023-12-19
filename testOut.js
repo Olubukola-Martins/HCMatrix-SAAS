@@ -1,6 +1,16 @@
 let gross_pay = 300000.0;
 let meal_allowance = 400000;
-let overtime = 500000;
+
+// payroll
+// fix paygrade issue
+// fix payroll creation bug
+// workflow ui
+// apply on behalf of
+// test app n come up with scripts
+// remove medical history
+// search for address input
+// remove unused items like employee count
+
 let ans = eval(
   gross_pay * 20 > 3200000 && gross_pay * 20 <= Infinity
     ? 560000 + (gross_pay * 20 - 3200000) * 0.24

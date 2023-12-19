@@ -930,11 +930,8 @@ const CreatePayrollContainer: React.FC<{
                     </h5>
                     <p className="md:text-sm text-xs">
                       Modify the payroll by adding/removing salary components of
-                      employees or exluding employees from payroll
+                      employees or excluding employees from payroll
                     </p>
-                  </div>
-                  <div>
-                    <button className={buttonStyle}>Make Updates</button>
                   </div>
                 </div>
                 <div className="mt-4">
@@ -966,9 +963,6 @@ const CreatePayrollContainer: React.FC<{
                       Modify the payroll by adding/removing salary components of
                       employees or exluding employees from payroll
                     </p>
-                  </div>
-                  <div>
-                    <button className={buttonStyle}>Make Updates</button>
                   </div>
                 </div>
                 <div className="mt-4">

@@ -8,6 +8,8 @@ import {
   calculateSalaryEvalStatement,
   dummyConditions,
 } from "features/payroll/utils/createTaxSalaryComponentFormula";
+import { AppButton } from "components/button/AppButton";
+import AppTooltip from "components/tooltip/AppTooltip";
 
 const EditableContext = React.createContext<FormInstance<any> | null>(null);
 
@@ -202,12 +204,22 @@ export const TaxUIFormulaForm: React.FC<
       dataIndex: "operation",
       render: (_, record: unknown) =>
         dataSource.length >= 1 ? (
-          <Popconfirm
-            title="Sure to delete?"
-            onConfirm={() => handleDelete((record as DataType).key)}
-          >
-            <DeleteFilled />
-          </Popconfirm>
+          <>
+            <div className="flex items-center gap-3 text-lg">
+              {/* <i className="ri-pencil-line cursor-pointer hover:text-caramel" /> */}
+
+              <Popconfirm
+                placement="topLeft"
+                getPopupContainer={(triggerNode) =>
+                  triggerNode.parentElement as HTMLElement
+                }
+                title="Are you sure, you want to delete?"
+                onConfirm={() => handleDelete((record as DataType).key)}
+              >
+                <DeleteFilled />
+              </Popconfirm>
+            </div>
+          </>
         ) : null,
     },
   ];
@@ -327,6 +339,13 @@ export const TaxUIFormulaForm: React.FC<
   });
   return (
     <div className="flex flex-col gap-4">
+      <div>
+        <AppButton
+          variant="transparent"
+          label="Add a row"
+          handleClick={handleAdd}
+        />
+      </div>
       <Table
         components={components}
         rowClassName={() => "editable-row"}

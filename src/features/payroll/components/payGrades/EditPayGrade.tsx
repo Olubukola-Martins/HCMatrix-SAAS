@@ -4,6 +4,7 @@ import React, { useEffect, useState } from "react";
 import { IModalProps } from "types";
 import {
   generalValidationRules,
+  numberHasToBeInRange,
   textInputValidationRules,
 } from "utils/formHelpers/validation";
 import { openNotification } from "utils/notifications";
@@ -106,18 +107,16 @@ const EditPayGrade: React.FC<IProps> = ({ open, handleClose, grade }) => {
         />
 
         <Form.Item
-          rules={generalValidationRules}
+          rules={[numberHasToBeInRange(categoryRange.min, categoryRange.max)]}
           name="grossPay"
           label="Gross Pay"
         >
-          <InputNumber
-            min={categoryRange.min}
-            max={categoryRange.max}
-            placeholder="Gross Pay"
-            className="w-2/4"
-          />
+          <InputNumber placeholder="Gross Pay" className="w-2/4" />
         </Form.Item>
-        <Form.Item rules={generalValidationRules} name="grossPay">
+        <Form.Item
+          rules={[numberHasToBeInRange(categoryRange.min, categoryRange.max)]}
+          name="grossPay"
+        >
           <Slider min={categoryRange.min} max={categoryRange.max} />
         </Form.Item>
 

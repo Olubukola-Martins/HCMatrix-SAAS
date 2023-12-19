@@ -1,9 +1,11 @@
 import { Form, Input, InputNumber, Modal } from "antd";
 import { AppButton } from "components/button/AppButton";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { IModalProps } from "types";
 import {
   generalValidationRules,
+  numberHasToBeGreaterThanValueRule,
+  numberHasToBeGreaterThanZeroRule,
   textInputValidationRules,
 } from "utils/formHelpers/validation";
 import { openNotification } from "utils/notifications";
@@ -24,12 +26,16 @@ const EditPayGradeCategory: React.FC<IProps> = ({
 
   const [form] = Form.useForm();
   const { mutate, isLoading } = useUpdatePayGradeCategory();
+  const [minGrossPay, setMinGrossPay] = useState(0);
+
   useEffect(() => {
+    if (!category) return;
     form.setFieldsValue({
       name: category.name,
       maxGrossPay: category.maxGrossPay,
       minGrossPay: category.minGrossPay,
     });
+    setMinGrossPay(+category.minGrossPay);
   }, [form, category]);
 
   const handleSubmit = (data: any) => {
@@ -88,18 +94,23 @@ const EditPayGradeCategory: React.FC<IProps> = ({
           <Input placeholder="Category Name" />
         </Form.Item>
         <Form.Item
-          rules={generalValidationRules}
-          name="maxGrossPay"
-          label="Max Gross Pay"
-        >
-          <InputNumber min={0} className="w-full" />
-        </Form.Item>
-        <Form.Item
-          rules={generalValidationRules}
+          rules={[numberHasToBeGreaterThanZeroRule]}
           name="minGrossPay"
           label="Min Gross Pay"
         >
-          <InputNumber min={0} className="w-full" />
+          <InputNumber
+            min={0}
+            className="w-full"
+            onChange={(val) => setMinGrossPay(val ?? 0)}
+            placeholder="Min Gross Pay"
+          />
+        </Form.Item>
+        <Form.Item
+          rules={[numberHasToBeGreaterThanValueRule(minGrossPay)]}
+          name="maxGrossPay"
+          label="Max Gross Pay"
+        >
+          <InputNumber min={0} className="w-full" placeholder="Max Gross Pay" />
         </Form.Item>
 
         <div className="flex justify-end">
