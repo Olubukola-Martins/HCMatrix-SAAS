@@ -171,7 +171,12 @@ export const TaxUIFormulaForm: React.FC<
     );
     setDataSource(convertedConditions);
   }, [taxConditions]);
-  const handleDefaultConfig = () => {
+  const [isDefaultConfig, setIsDefaultConfig] = useState(false);
+  const handleRemoveDefaultConfig = () => {
+    setDataSource([]);
+    setIsDefaultConfig(false);
+  };
+  const handleUseDefaultConfig = () => {
     const convertedConditions = dummyConditions.map(
       (condition, index, conditions) => {
         let name = "";
@@ -196,9 +201,8 @@ export const TaxUIFormulaForm: React.FC<
       }
     );
     setDataSource(convertedConditions);
+    setIsDefaultConfig(true);
   };
-
-  const [count, setCount] = useState(2);
 
   const handleDelete = (key: React.Key) => {
     const newData = dataSource.filter((item) => item.key !== key);
@@ -254,16 +258,17 @@ export const TaxUIFormulaForm: React.FC<
 
   const handleAdd = () => {
     const newData: DataType = {
-      key: count,
+      key: 0,
       name: `Over`,
       amount: 0,
       taxRate: 0,
       taxAmountPayablePerYear: 0,
     };
-    setDataSource((dataSource) => {
+    setDataSource(() => {
       const ans = [...dataSource, newData];
-      ans.map((item) => ({
+      ans.map((item, i) => ({
         ...item,
+        key: i,
         name: "Next",
       }));
 
@@ -271,7 +276,6 @@ export const TaxUIFormulaForm: React.FC<
       ans[ans.length - 1].name = `Over`;
       return ans;
     });
-    setCount(count + 1);
   };
 
   const handleSave = (row: DataType) => {
@@ -380,24 +384,34 @@ export const TaxUIFormulaForm: React.FC<
   });
   return (
     <div className="flex flex-col gap-4">
-      <div className="flex justify-between items-center">
-        <AppButton
-          variant="transparent"
-          label="Add a row"
-          handleClick={handleAdd}
-        />
-        <Button onClick={handleDefaultConfig} type="text">
-          Use Default Configuration
-        </Button>
+      <div className="flex justify-end items-center">
+        {isDefaultConfig ? (
+          <Button onClick={handleRemoveDefaultConfig} type="text">
+            Cancel Default Configuration
+          </Button>
+        ) : (
+          <Button onClick={handleUseDefaultConfig} type="text">
+            Use Default Configuration
+          </Button>
+        )}
       </div>
       <Table
         components={components}
         rowClassName={() => "editable-row"}
         bordered
         pagination={false}
-        dataSource={dataSource}
+        dataSource={dataSource.map(
+          (item, i) => ({ ...item, key: i } as DataType)
+        )}
         columns={columns as ColumnTypes}
       />
+      <div className="flex justify-start items-center">
+        <AppButton
+          variant="transparent"
+          label="Add a row"
+          handleClick={handleAdd}
+        />
+      </div>
 
       {/* TODO: Handle proper adjustments for when a new row is added */}
       {/* <AppButton
