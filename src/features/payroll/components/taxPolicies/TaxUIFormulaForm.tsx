@@ -143,6 +143,8 @@ export const TaxUIFormulaForm: React.FC<
   handleComponentDescription,
 }) => {
   const [dataSource, setDataSource] = useState<DataType[]>([]);
+  const [isDefaultConfig, setIsDefaultConfig] = useState(false);
+
   useEffect(() => {
     const convertedConditions = taxConditions.map(
       (condition, index, conditions) => {
@@ -167,9 +169,9 @@ export const TaxUIFormulaForm: React.FC<
         };
       }
     );
+    setIsDefaultConfig(convertedConditions.length !== 0);
     setDataSource(convertedConditions);
   }, [taxConditions]);
-  const [isDefaultConfig, setIsDefaultConfig] = useState(false);
   const handleRemoveDefaultConfig = () => {
     setDataSource([]);
     setIsDefaultConfig(false);
