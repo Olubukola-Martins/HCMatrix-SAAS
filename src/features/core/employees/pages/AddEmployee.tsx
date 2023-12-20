@@ -208,7 +208,7 @@ export const AddEmployee = () => {
             <div className="bg-mainBg rounded-md md:px-4 pt-4 pb-3 shadow-sm mt-8">
               <Collapse defaultActiveKey={["1"]} ghost expandIconPosition="end">
                 <Panel
-                  header="Is this user licensed ?"
+                  header="Select user license type ?"
                   key="1"
                   className="collapseHeader"
                 >
