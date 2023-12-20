@@ -6,7 +6,7 @@ export const ModuleCards: React.FC<{
   loading?: boolean;
 }> = ({ data }) => {
   return (
-    <div className="w-full flex-col  items-stretch gap-[16px] relative">
+    <div className="w-full flex flex-col items-stretch gap-8">
       {data?.map((module, index) => (
         <ModuleCard key={index} {...module} />
       ))}
