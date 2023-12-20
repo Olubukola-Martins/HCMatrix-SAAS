@@ -29,6 +29,7 @@ import { TLga } from "types/lgas";
 import { TState } from "types/states";
 import { TIME_ZONES } from "constants/timeZones";
 import { BULK_EMPLOYEE_IMPORT_MAPPING_SECTIONS } from "../../constants";
+import { TLicenseType } from "features/authentication/types/auth-user";
 
 type TValidateProps = { employee: TBulkImportEmployeeProp; rowId: number };
 // TODO: Check for optional params as they might just want to import a section and therfore don't need validation for things like firstname
@@ -46,7 +47,11 @@ export const validateBulkEmployeeInfo = (
   const category: EmployeeMappingSectionKeyType = "employeeInformation";
   const errors: TBulkEmployeeImportError[] = [];
   const INDENTIFIER = employee?.empUid ?? `Row ${rowId}`;
-  const ACCEPTED_SELF_SERVICE_VALUES = ["Yes", "No"];
+  const ACCEPTED_LICENSE_TYPE_VALUES = [
+    "licensed",
+    "unlicensed",
+    "deactivated",
+  ];
   const section = BULK_EMPLOYEE_IMPORT_MAPPING_SECTIONS.find(
     (item) => item.key === "employeeInformation"
   );
@@ -82,25 +87,25 @@ export const validateBulkEmployeeInfo = (
       content: `${INDENTIFIER} is missing a last name`,
     });
   }
-  // has self service
+  // has license type
   if (
-    isValueEmpty(employee?.hasSelfService) &&
-    getConcernedInput("hasSelfService")?.optional === false
+    isValueEmpty(employee?.licenseType) &&
+    getConcernedInput("licenseType")?.optional === false
   ) {
     errors.push({
       category,
-      content: `${INDENTIFIER} is missing a self service value`,
+      content: `${INDENTIFIER} is missing a license type value`,
     });
   }
   if (
-    !isValueEmpty(employee?.hasSelfService) &&
-    ACCEPTED_SELF_SERVICE_VALUES.map((item) => item.toLowerCase()).includes(
-      `${(employee?.hasSelfService as unknown as string).toLowerCase()}`
+    !isValueEmpty(employee?.licenseType) &&
+    ACCEPTED_LICENSE_TYPE_VALUES.map((item) => item.toLowerCase()).includes(
+      `${(employee?.licenseType as unknown as string).toLowerCase()}`
     ) === false
   ) {
     errors.push({
       category,
-      content: `${INDENTIFIER} self service has to be one of the following ${ACCEPTED_SELF_SERVICE_VALUES.join(
+      content: `${INDENTIFIER} license type has to be one of the following ${ACCEPTED_LICENSE_TYPE_VALUES.join(
         ","
       )}.`,
     });
@@ -127,8 +132,7 @@ export const validateBulkEmployeeInfo = (
 
   transformedEmployee = {
     ...transformedEmployee,
-    hasSelfService:
-      `${employee?.hasSelfService}`.toLowerCase() === "yes" ? true : false,
+    licenseType: `${employee?.licenseType}`.toLowerCase() as TLicenseType,
   };
   return { isDataValid: errors.length === 0, errors, transformedEmployee };
 };

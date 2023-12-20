@@ -1,3 +1,5 @@
+import { TLicenseType } from "features/authentication/types/auth-user";
+
 export type TAssetAssigneeHistory = {
   id: number;
   assetId: number;
@@ -16,7 +18,7 @@ interface Assignee {
   firstName: string;
   lastName: string;
   email: string;
-  hasSelfService: boolean;
+  licenseType: TLicenseType;
   empUid: string;
   roleId: number;
   status: string;

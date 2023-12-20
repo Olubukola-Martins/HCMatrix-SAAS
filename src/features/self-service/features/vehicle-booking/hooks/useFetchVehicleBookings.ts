@@ -1,5 +1,6 @@
 import axios from "axios";
 import { MICROSERVICE_ENDPOINTS } from "config/enviroment";
+import { TLicenseType } from "features/authentication/types/auth-user";
 import { useQuery } from "react-query";
 import { ICurrentCompany, IPaginationProps, ISearchParams } from "types";
 
@@ -23,7 +24,7 @@ interface Employee {
   firstName: string;
   lastName: string;
   email: string;
-  hasSelfService: boolean;
+  licenseType: TLicenseType;
   empUid: string;
   roleId: number;
   status: string;

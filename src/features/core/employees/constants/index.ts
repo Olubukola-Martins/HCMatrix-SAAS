@@ -1,9 +1,19 @@
+import { TLicenseType } from "features/authentication/types/auth-user";
 import { TEmployeeStatus } from "../types";
 import {
   EmployeeMappingSectionEnum,
   TBulkEmployeeImportMappingSection,
 } from "../types/bulk-import";
 
+export const LICENSE_TYPES: TLicenseType[] = [
+  "licensed",
+  "unlicensed",
+  "deactivated",
+];
+export const LICENSE_TYPES_OPTIONS = LICENSE_TYPES.map((item) => ({
+  label: item,
+  value: item,
+}));
 export const EMPLOYEE_STATUSES: TEmployeeStatus[] = [
   "confirmed",
   "terminated",
@@ -29,7 +39,7 @@ const COMPULSORY_BULK_MAPPING_SECTION_FOR_EMPLOYEE_INFO: TBulkEmployeeImportMapp
       { name: "firstName", label: "First Name", optional: false },
       { name: "lastName", label: "Last Name", optional: false },
       { name: "email", label: "Email", optional: false },
-      { name: "hasSelfService", label: "Self Service", optional: true },
+      { name: "licenseType", label: "License Type", optional: true },
       { name: "empUid", label: "Employee ID", optional: false }, //Cos this is the unique key for import
     ],
   };

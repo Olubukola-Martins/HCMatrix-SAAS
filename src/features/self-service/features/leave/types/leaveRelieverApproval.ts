@@ -1,3 +1,4 @@
+import { TLicenseType } from "features/authentication/types/auth-user";
 import { TApprovalStatus } from "types/statuses";
 
 export type TLeaveRelieverApproval = {
@@ -35,7 +36,7 @@ interface Reliever {
   firstName: string;
   lastName: string;
   email: string;
-  hasSelfService: boolean;
+  licenseType: TLicenseType;
   empUid: string;
   roleId: number;
   status: string;
@@ -53,7 +54,7 @@ interface Employee {
   firstName: string;
   lastName: string;
   email: string;
-  hasSelfService: boolean;
+  licenseType: TLicenseType;
   empUid: string;
   roleId: number;
   status: string;

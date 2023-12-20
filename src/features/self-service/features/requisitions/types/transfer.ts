@@ -1,3 +1,4 @@
+import { TLicenseType } from "features/authentication/types/auth-user";
 import { TEmployee } from "features/core/employees/types";
 
 export type TTransferRequisition = {
@@ -58,7 +59,7 @@ type Employee = {
   firstName: string;
   lastName: string;
   email: string;
-  hasSelfService: boolean;
+  licenseType: TLicenseType;
   empUid: string;
   roleId: number;
   status: string;

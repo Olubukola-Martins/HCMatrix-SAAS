@@ -1,17 +1,6 @@
 import { TLicenseType } from "features/authentication/types/auth-user";
 
-export type TTaskComment = {
-  id: number;
-  taskId: number;
-  commenterId: number;
-  comment: string;
-  companyId: number;
-  createdAt: string;
-  updatedAt: string;
-  commenter: Commenter;
-};
-
-interface Commenter {
+export interface Employee {
   id: number;
   firstName: string;
   lastName: string;
@@ -26,5 +15,5 @@ interface Commenter {
   avatarUrl: string;
   createdAt: string;
   updatedAt: string;
-  deletedAt?: string;
+  deletedAt?: any;
 }

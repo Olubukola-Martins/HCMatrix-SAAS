@@ -1,4 +1,4 @@
-import { Collapse, Form, Input, Radio,  Dropdown } from "antd";
+import { Collapse, Form, Input, Radio, Dropdown } from "antd";
 import { PageIntro } from "components/layout/PageIntro";
 import { appRoutes } from "config/router/paths";
 import { useState } from "react";
@@ -66,7 +66,7 @@ export const AddEmployee = () => {
         email: data.email,
         firstName: data.firstName,
         lastName: data.lastName,
-        hasSelfService: !!data.hasSelfService,
+        licenseType: data.licenseType,
         roleId: data.roleId,
         empUid: data.empUid,
         jobInformation: {
@@ -131,7 +131,7 @@ export const AddEmployee = () => {
             layout="vertical"
             requiredMark={false}
             initialValues={{
-              hasSelfService: true,
+              licenseType: true,
             }}
             form={form}
           >
@@ -208,14 +208,14 @@ export const AddEmployee = () => {
             <div className="bg-mainBg rounded-md md:px-4 pt-4 pb-3 shadow-sm mt-8">
               <Collapse defaultActiveKey={["1"]} ghost expandIconPosition="end">
                 <Panel
-                  header="Grant Self Service Access"
+                  header="Is this user licensed ?"
                   key="1"
                   className="collapseHeader"
                 >
-                  <Form.Item name="hasSelfService">
-                    <Radio.Group name="hasSelfService">
-                      <Radio value={true}>Yes</Radio>
-                      <Radio value={false}>No</Radio>
+                  <Form.Item name="licenseType">
+                    <Radio.Group name="licenseType">
+                      <Radio value={"licensed"}>Licensed</Radio>
+                      <Radio value={"unlicensed"}>Unlicensed</Radio>
                     </Radio.Group>
                   </Form.Item>
                 </Panel>

@@ -1,3 +1,5 @@
+import { TLicenseType } from "features/authentication/types/auth-user";
+
 // crb
 export interface ConferenceRoomBookingEntity {
   id: number;
@@ -23,7 +25,7 @@ interface Employee {
   firstName: string;
   lastName: string;
   email: string;
-  hasSelfService: boolean;
+  licenseType: TLicenseType;
   empUid: string;
   roleId: number;
   status: string;

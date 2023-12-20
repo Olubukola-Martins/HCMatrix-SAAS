@@ -16,7 +16,8 @@ type TData = {
 };
 
 export const useGenerateDBSidebarLinks = (): TData => {
-  const { userPermissions, hasSelfService } = useGetUserPermissions();
+  const { userPermissions, licenseType } = useGetUserPermissions();
+  const isUserLicensed = licenseType === "licensed";
   const sidebarRoutes: TSideBarRoute[] = [
     {
       name: "Home",
@@ -28,7 +29,7 @@ export const useGenerateDBSidebarLinks = (): TData => {
       name: "Self-service",
       path: appRoutes.selfServiceHome,
       icon: <i className="ri-organization-chart" />,
-      hidden: !hasSelfService,
+      hidden: !isUserLicensed,
       matcherKeys: ["self-service"],
     },
     {

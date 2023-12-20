@@ -1,3 +1,4 @@
+import { TLicenseType } from "features/authentication/types/auth-user";
 import { TPermissionLabel } from "features/core/roles-and-permissions/types";
 
 export type TRouteDataCategory = "doesnt-require-authentication";
@@ -15,6 +16,6 @@ export type TRouteData = {
 type TSubscription = {};
 export type TAppPageDataFnProps = {
   userPermissions: TPermissionLabel[];
-  hasSelfService?: boolean;
+  licenseType?: TLicenseType;
   subscription?: TSubscription;
 };

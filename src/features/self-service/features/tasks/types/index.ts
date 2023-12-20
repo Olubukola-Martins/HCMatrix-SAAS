@@ -1,3 +1,4 @@
+import { TLicenseType } from "features/authentication/types/auth-user";
 import { TTaskComment } from "./comment";
 type TTaskPriority = "low" | "medium" | "high";
 type TTaskStatus = "active" | "new" | "resolved" | "closed";
@@ -26,7 +27,7 @@ interface Assignee {
   firstName: string;
   lastName: string;
   email: string;
-  hasSelfService: boolean;
+  licenseType: TLicenseType;
   empUid: string;
   roleId: number;
   status: string;

@@ -1,3 +1,5 @@
+import { TLicenseType } from "features/authentication/types/auth-user";
+
 export type TVehicleAssigneeHistory = {
   id: number;
   vehicleId: number;
@@ -38,7 +40,7 @@ interface Assignee {
   firstName: string;
   lastName: string;
   email: string;
-  hasSelfService: boolean;
+  licenseType: TLicenseType;
   empUid: string;
   roleId: number;
   status: string;

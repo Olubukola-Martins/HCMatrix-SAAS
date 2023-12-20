@@ -1,3 +1,4 @@
+import { TLicenseType } from "features/authentication/types/auth-user";
 import { TApprovalRequest } from "features/core/workflows/types/approval-requests";
 
 export type TCompanyEmployeeDashboard = {
@@ -66,7 +67,7 @@ interface Assignee {
   firstName: string;
   lastName: string;
   email: string;
-  hasSelfService: boolean;
+  licenseType: TLicenseType;
   empUid: string;
   roleId: number;
   status: string;

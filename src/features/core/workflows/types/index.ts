@@ -1,3 +1,5 @@
+import { TLicenseType } from "features/authentication/types/auth-user";
+
 export const something = "";
 
 export interface TWorkflowApprovalSetting {
@@ -99,7 +101,7 @@ interface Employee {
   firstName: string;
   lastName: string;
   email: string;
-  hasSelfService: boolean;
+  licenseType: TLicenseType;
   empUid: string;
   roleId: number;
   status: string;
@@ -127,7 +129,7 @@ interface LastModifiedBy {
   firstName: string;
   lastName: string;
   email: string;
-  hasSelfService: boolean;
+  licenseType: TLicenseType;
   empUid: string;
   roleId: number;
   status: string;

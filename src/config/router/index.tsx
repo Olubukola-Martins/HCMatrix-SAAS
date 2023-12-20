@@ -8,10 +8,10 @@ import DashboardLayout from "components/layout/DashboardLayout";
 import { useGetUserPermissions } from "components/permission-restriction/PermissionRestrictor";
 
 const Router = () => {
-  const { userPermissions, hasSelfService } = useGetUserPermissions();
+  const { userPermissions, licenseType } = useGetUserPermissions();
   const pageRoutes = appPagesData({
     userPermissions,
-    hasSelfService,
+    licenseType,
   }).map(({ path, element, category }: TRouteData) => {
     if (category === "doesnt-require-authentication") {
       return <Route key={path} path={`${path}`} element={element} />;

@@ -10,6 +10,7 @@ import {
 } from "./singleEmployee";
 import { RELATIONSHIPS } from "constants/general";
 import { TBranch } from "features/core/branches/types";
+import { TLicenseType } from "features/authentication/types/auth-user";
 
 export {
   type TSingleEmployee,
@@ -23,7 +24,7 @@ export type TBulkEmployeeImport = {
   employeeInformation: {
     email: string;
     empUid: string;
-    hasSelfService: boolean;
+    licenseType: TLicenseType;
   };
   personalInformation?: {
     firstName: string;
@@ -164,7 +165,7 @@ export interface ICreateEmpProps {
   firstName: string;
   lastName: string;
   email: string;
-  hasSelfService: boolean;
+  licenseType: TLicenseType;
   empUid?: string;
   roleId: number;
   designationId: number;
@@ -331,7 +332,7 @@ export type TEmployee = {
   email: string;
   empUid: string;
   firstName: string;
-  hasSelfService: boolean;
+  licenseType: TLicenseType;
   id: number;
   jobInformation?: TJobInfo & { branch?: TBranch; lineManager: TEmployee };
   lastName: string;

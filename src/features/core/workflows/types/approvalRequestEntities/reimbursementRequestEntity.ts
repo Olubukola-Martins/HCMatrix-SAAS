@@ -1,3 +1,5 @@
+import { TLicenseType } from "features/authentication/types/auth-user";
+
 export type ReimbursementRequestEntity = {
   id: number;
   date: string;
@@ -18,7 +20,7 @@ interface Employee {
   firstName: string;
   lastName: string;
   email: string;
-  hasSelfService: boolean;
+  licenseType: TLicenseType;
   empUid: string;
   roleId: number;
   status: string;
