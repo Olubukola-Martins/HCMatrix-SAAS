@@ -74,7 +74,7 @@ export const ViewHospital: React.FC<IProps> = ({
             onChange={(val) => setIsRecommended(val)}
           />
         </Form.Item>
-        <FormAddressInput Form={Form} form={form} />
+        <FormAddressInput Form={Form} form={form} disabled />
       </Form>
     </Modal>
   );

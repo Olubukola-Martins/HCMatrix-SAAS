@@ -50,17 +50,18 @@ const PayGradeCategoriesTable: React.FC = () => {
       // width: 100,
     },
     {
-      title: "Maximum Gross Pay",
-      dataIndex: "max",
-      key: "max",
-      render: (_, item) => item.minGrossPay,
-    },
-    {
       title: "Minimum Gross pay",
       dataIndex: "min",
       key: "min",
+      render: (_, item) => item.minGrossPay,
+    },
+    {
+      title: "Maximum Gross Pay",
+      dataIndex: "max",
+      key: "max",
       render: (_, item) => item.maxGrossPay,
     },
+
     {
       title: "Created At",
       dataIndex: "createAr",

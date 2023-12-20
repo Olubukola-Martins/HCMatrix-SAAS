@@ -1,5 +1,5 @@
 import { TPermissionLabel } from "features/core/roles-and-permissions/types";
-
+export type TLicenseType = "licensed" | "unlicensed" | "deactivated";
 export type TAuthUser = {
   user: User;
   payload: Payload[];
@@ -11,7 +11,7 @@ interface Payload {
   firstName: string;
   lastName: string;
   email: string;
-  hasSelfService: boolean;
+  licenseType: TLicenseType;
   empUid: string;
   roleId: number;
   status: string;

@@ -40,7 +40,6 @@ export const EditMyProfile = ({ open, handleClose, employee }: IProps) => {
         designationId: employee.designation?.id,
         roleId: employee.role.id,
         email: employee.email,
-        hasSelfService: employee.hasSelfService,
       });
       setAvatarUrl(employee.avatarUrl);
     }
@@ -97,10 +96,7 @@ export const EditMyProfile = ({ open, handleClose, employee }: IProps) => {
             employee.firstName === data.firstName ? undefined : data.firstName,
           lastName:
             employee.lastName === data.lastName ? undefined : data.lastName,
-          hasSelfService:
-            employee.hasSelfService === !!data.hasSelfService
-              ? undefined
-              : !!data.hasSelfService,
+
           roleId: employee.roleId === data.roleId ? undefined : data.roleId,
         },
       },
@@ -218,15 +214,6 @@ export const EditMyProfile = ({ open, handleClose, employee }: IProps) => {
               placeholder="Enter Email"
               disabled
             />
-          </Form.Item>
-          <Form.Item
-            name="hasSelfService"
-            label="Do you want to activate self-service for this employee?"
-            className="col-span-2"
-            valuePropName="checked"
-            initialValue
-          >
-            <AppSwitch unCheckedChildren="No" checkedChildren="Yes" />
           </Form.Item>
         </div>
         <div className="flex items-center justify-between mt-2">

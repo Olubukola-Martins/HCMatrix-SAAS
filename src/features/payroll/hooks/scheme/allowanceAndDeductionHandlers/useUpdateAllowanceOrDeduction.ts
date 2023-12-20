@@ -21,7 +21,7 @@ type IBody = {
   label: string;
   mode: TSalaryComponentCalculationMode;
   amount: number | string;
-} & Pick<TSalaryComponentInput, "isActive" | "isDefault">;
+} & Pick<TSalaryComponentInput, "isActive" | "isDefault" | "description">;
 const delData = async (props: { data: TDelData; auth: ICurrentCompany }) => {
   const url = `${MICROSERVICE_ENDPOINTS.PAYROLL}/scheme/${props.data.schemeId}/${props.data.type}/${props.data.allowanceOrDeductionId}`;
   const config = {

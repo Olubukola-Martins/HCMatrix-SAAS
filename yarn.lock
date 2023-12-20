@@ -1875,6 +1875,16 @@
     intl-messageformat "9.13.0"
     tslib "^2.1.0"
 
+"@geoapify/geocoder-autocomplete@^2.0.1":
+  version "2.0.1"
+  resolved "https://registry.npmjs.org/@geoapify/geocoder-autocomplete/-/geocoder-autocomplete-2.0.1.tgz#8d66003075ac7d48cc19269bd227d173b95490b2"
+  integrity sha512-uylT+V33dcYsCdTfmzx6kH6wgQLaGWeGYY4S1ko54W6wTYfua2VfMV6rOvaxqYg3J8WFCtWoUozWG8Xm3p3h+w==
+
+"@geoapify/react-geocoder-autocomplete@^2.0.0":
+  version "2.0.0"
+  resolved "https://registry.npmjs.org/@geoapify/react-geocoder-autocomplete/-/react-geocoder-autocomplete-2.0.0.tgz#5b0e4cf8fcd14062676cbcd0f39d03e2838e4a3f"
+  integrity sha512-O95xF1AQfbgUlBGKmzvmj6LX8w5pcoPIXqLKr4irzN1ROCfkyKqi+k4eNUD0OVDWK4dZDL2XPd7xPCZsJxMGWw==
+
 "@grpc/grpc-js@~1.7.0":
   version "1.7.3"
   resolved "https://registry.npmjs.org/@grpc/grpc-js/-/grpc-js-1.7.3.tgz#f2ea79f65e31622d7f86d4b4c9ae38f13ccab99a"

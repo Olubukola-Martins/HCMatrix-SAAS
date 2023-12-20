@@ -1,3 +1,4 @@
+import { TLicenseType } from "features/authentication/types/auth-user";
 import { ICurrentCompany } from "types";
 
 export type TDepartment = {
@@ -26,7 +27,7 @@ export type TDepartment = {
     firstName: string;
     lastName: string;
     email: string;
-    hasSelfService: boolean;
+    licenseType: TLicenseType;
     empUid: string;
     roleId: number;
     status: string;

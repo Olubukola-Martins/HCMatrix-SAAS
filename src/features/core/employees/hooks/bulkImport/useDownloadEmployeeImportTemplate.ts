@@ -82,7 +82,7 @@ const generateTemplate = async (props: {
       "First Name": "A Name",
       "Last Name": "A Name",
       "Employee ID": "A unique ID",
-      "Has Self Service": "Yes, or No",
+      "License Type": "licensed, unlicensed or deactivated",
       Email: "Valid Email Address",
       "Date of Birth": "Valid Date",
       Gender: GENDERS.map((item) => item.value).join(","),

@@ -41,21 +41,7 @@ export const getBranches = async (vals: {
   const fetchedData = res.data.data;
   const result = fetchedData.result;
 
-  const data: TBranch[] = result.map(
-    (item: any): TBranch => ({
-      id: item.id,
-      name: item.name,
-      description: item.description,
-      address: {
-        streetAddress: item.address.streetAddress,
-        countryId: item.address.countryId,
-        stateId: item.address.stateId,
-        lgaId: item.address.lgaId,
-        timezone: item.address.timezone,
-      },
-      employeeCount: item?.employeeCount,
-    })
-  );
+  const data: TBranch[] = result.map((item: TBranch): TBranch => item);
 
   const ans = {
     data,

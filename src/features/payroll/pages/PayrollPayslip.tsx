@@ -1,8 +1,6 @@
 import PayrollSubNav from "../components/PayrollSubNav";
-
-import { AppButton } from "components/button/AppButton";
 import { PageIntro } from "components/layout/PageIntro";
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { appRoutes } from "config/router/paths";
 import PageSubHeader from "components/layout/PageSubHeader";
 
@@ -13,6 +11,9 @@ import {
 } from "components/permission-restriction/PermissionRestrictor";
 
 export const PayrollPayslip = () => {
+  const navigate = useNavigate();
+  const { userPermissions } = useGetUserPermissions();
+
   return (
     <>
       <PayrollSubNav />
@@ -22,41 +23,44 @@ export const PayrollPayslip = () => {
           description={
             "You can manage payslip templates and view employee payslips"
           }
-          hideBackground
+          actions={[
+            {
+              name: "Create Template",
+              handleClick: () => navigate(appRoutes.createPayslipTemplate),
+              hidden: !canUserAccessComponent({
+                userPermissions,
+                requiredPermissions: ["manage-payslip-templates"],
+              }),
+            },
+            {
+              name: "Create Template",
+              btnVariant: "transparent",
+              handleClick: () => navigate(appRoutes.createPayslipTemplate),
+              hidden: !canUserAccessComponent({
+                userPermissions,
+                requiredPermissions: ["view-all-payslips"],
+              }),
+            },
+          ]}
         />
-        <PayslipContainer />
+        <PayslipContainer
+          canViewPayslipTemplates={canUserAccessComponent({
+            userPermissions,
+            requiredPermissions: ["view-payslip-templates"],
+          })}
+        />
       </div>
     </>
   );
 };
 
-const PayslipContainer = () => {
-  const { userPermissions } = useGetUserPermissions();
+const PayslipContainer: React.FC<{ canViewPayslipTemplates: boolean }> = ({
+  canViewPayslipTemplates,
+}) => {
   return (
     <>
       <div className="flex flex-col gap-6">
-        <div className="flex items-center justify-end gap-3">
-          {canUserAccessComponent({
-            userPermissions,
-            requiredPermissions: ["manage-payslip-templates"],
-          }) && (
-            <Link to={appRoutes.createPayslipTemplate}>
-              <AppButton label="Create template" />
-            </Link>
-          )}
-          {canUserAccessComponent({
-            userPermissions,
-            requiredPermissions: ["view-all-payslips"],
-          }) && (
-            <Link to={appRoutes.employeePayslips}>
-              <AppButton label="View Payslips" variant="transparent" />
-            </Link>
-          )}
-        </div>
-        {canUserAccessComponent({
-          userPermissions,
-          requiredPermissions: ["view-payslip-templates"],
-        }) && <PayslipTemplateList />}
+        {canViewPayslipTemplates && <PayslipTemplateList />}
       </div>
     </>
   );

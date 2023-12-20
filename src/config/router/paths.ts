@@ -24,10 +24,10 @@ export const appRoutes = {
     path: `/settings/projects/${id}`,
   }),
   companyDetailsSettings: `/settings/company-details`,
-  locationSettings: `/settings/locations`,
+  locationSettings: `/settings/branches`,
   singleLocation: (id?: number) => ({
-    format: `/settings/locations/:id`,
-    path: `/settings/locations/${id}`,
+    format: `/settings/branches/:id`,
+    path: `/settings/branches/${id}`,
   }),
   holidaySettings: `/settings/holidays`,
   userProfileSettings: `/settings/profile`,

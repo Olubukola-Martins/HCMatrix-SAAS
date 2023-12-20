@@ -613,7 +613,9 @@ export const EmployeePayrollUpdatesContainer: React.FC<IProps> = ({
           pagination={{ ...pagination, total: data?.total }}
           onChange={onChange}
           rowClassName={({ isActive }) =>
-            !isActive ? `bg-gray-200 text-slate-400` : ""
+            !isActive
+              ? `bg-gray-200 text-slate-400 hover:bg-gray-200 hover:text-slate-400`
+              : ""
           }
         />
       </div>

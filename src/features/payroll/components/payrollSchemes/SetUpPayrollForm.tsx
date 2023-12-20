@@ -830,22 +830,22 @@ export const SetUpPayrollForm: React.FC<{
         componentName: DEFAULT_COMPONENT_LABELS.itf,
         schemeId: scheme?.id,
       },
-      {
-        title: "Leave Allowance",
-        type: "allowance",
-        handleSave: handleAddAllowance,
-        isActive: displayLeaveAllowance,
-        isDefault: true,
-        dependencies,
-        description: `This allows you to create a leave allowance`,
-        salaryComponent: salaryComponents.find(
-          (item) => item.label === DEFAULT_COMPONENT_LABELS.leaveAllowance
-        ),
-        onSwitch: () => dispatch({ type: "displayLeaveAllowance" }),
+      // {
+      //   title: "Leave Allowance",
+      //   type: "allowance",
+      //   handleSave: handleAddAllowance,
+      //   isActive: displayLeaveAllowance,
+      //   isDefault: true,
+      //   dependencies,
+      //   description: `This allows you to create a leave allowance`,
+      //   salaryComponent: salaryComponents.find(
+      //     (item) => item.label === DEFAULT_COMPONENT_LABELS.leaveAllowance
+      //   ),
+      //   onSwitch: () => dispatch({ type: "displayLeaveAllowance" }),
 
-        componentName: DEFAULT_COMPONENT_LABELS.leaveAllowance,
-        schemeId: scheme?.id,
-      },
+      //   componentName: DEFAULT_COMPONENT_LABELS.leaveAllowance,
+      //   schemeId: scheme?.id,
+      // },
       {
         title: "Pension",
         type: "deduction",
@@ -919,7 +919,7 @@ export const SetUpPayrollForm: React.FC<{
                 <h5 className={boxTitle}>Payroll Scheme Type</h5>
                 <input
                   className={inputStyle}
-                  value={scheme?.name ?? name}
+                  value={name ?? scheme?.name}
                   disabled
                 />
               </div>

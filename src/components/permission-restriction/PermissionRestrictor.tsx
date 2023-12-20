@@ -20,7 +20,7 @@ export const canUserAccessComponent = ({
 
 export const useGetUserPermissions = () => {
   const { currentCompanyEmployeeDetails } = useMostRecentApiAuth();
-  const hasSelfService = !!currentCompanyEmployeeDetails?.hasSelfService;
+  const licenseType = currentCompanyEmployeeDetails?.licenseType;
   const userPermissionsViaRole =
     currentCompanyEmployeeDetails?.role?.permissions?.map(
       (item) => item.permission.label
@@ -35,7 +35,7 @@ export const useGetUserPermissions = () => {
       ...userPermissionsViaRole,
       ...userPermissionsViaDelegations,
     ],
-    hasSelfService,
+    licenseType,
   };
 };
 export const useCanUserAccessComponent = (props: {

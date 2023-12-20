@@ -1,9 +1,10 @@
 import { Form, Input, InputNumber, Modal } from "antd";
 import { AppButton } from "components/button/AppButton";
-import React from "react";
+import React, { useState } from "react";
 import { IModalProps } from "types";
 import {
-  generalValidationRules,
+  numberHasToBeGreaterThanValueRule,
+  numberHasToBeGreaterThanZeroRule,
   textInputValidationRules,
 } from "utils/formHelpers/validation";
 import { openNotification } from "utils/notifications";
@@ -55,6 +56,7 @@ const CreatePayGradeCategory: React.FC<IModalProps> = ({
       }
     );
   };
+  const [minGrossPay, setMinGrossPay] = useState(0);
   return (
     <Modal
       open={open}
@@ -73,18 +75,23 @@ const CreatePayGradeCategory: React.FC<IModalProps> = ({
           <Input placeholder="Category Name" />
         </Form.Item>
         <Form.Item
-          rules={generalValidationRules}
-          name="maxGrossPay"
-          label="Max Gross Pay"
-        >
-          <InputNumber min={0} className="w-full" />
-        </Form.Item>
-        <Form.Item
-          rules={generalValidationRules}
+          rules={[numberHasToBeGreaterThanZeroRule]}
           name="minGrossPay"
           label="Min Gross Pay"
         >
-          <InputNumber min={0} className="w-full" />
+          <InputNumber
+            min={0}
+            className="w-full"
+            onChange={(val) => setMinGrossPay(val ?? 0)}
+            placeholder="Min Gross Pay"
+          />
+        </Form.Item>
+        <Form.Item
+          rules={[numberHasToBeGreaterThanValueRule(minGrossPay)]}
+          name="maxGrossPay"
+          label="Max Gross Pay"
+        >
+          <InputNumber min={0} className="w-full" placeholder="Max Gross Pay" />
         </Form.Item>
 
         <div className="flex justify-end">

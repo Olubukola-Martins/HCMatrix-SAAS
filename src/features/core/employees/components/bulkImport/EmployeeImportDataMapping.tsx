@@ -48,7 +48,7 @@ const EmployeeImportDataMapping = ({
           empUid: item?.empUid,
           firstName: item?.firstName,
           lastName: item?.lastName,
-          hasSelfService: item?.hasSelfService,
+          licenseType: item?.licenseType,
           jobInformation: {
             startDate: item?.startDate,
             employmentType: item?.employmentType,

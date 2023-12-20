@@ -1,9 +1,11 @@
+import { TLicenseType } from "features/authentication/types/auth-user";
+
 export type TSingleEmployee = {
   id: number;
   firstName: string;
   lastName: string;
   email: string;
-  hasSelfService: boolean;
+  licenseType: TLicenseType;
   empUid: string;
   roleId: number;
   status: string;
@@ -324,7 +326,7 @@ interface LineManager {
   firstName: string;
   lastName: string;
   email: string;
-  hasSelfService: boolean;
+  licenseType: TLicenseType;
   empUid: string;
   roleId: number;
   status: string;

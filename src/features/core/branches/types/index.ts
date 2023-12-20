@@ -11,11 +11,5 @@ export type TBranch = {
 export interface TCreateBranchProps {
   name: string;
   description: string;
-  address: {
-    streetAddress: string;
-    countryId: number;
-    stateId: number;
-    lgaId?: number;
-    timezone: string;
-  };
+  address: TAddress;
 }

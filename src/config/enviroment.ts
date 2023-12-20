@@ -30,3 +30,7 @@ const getPaystackPublicKey = () => {
 export const PAYSTACK_PARAMETERS = {
   paystackPublicKey: getPaystackPublicKey(),
 };
+export const GEOLOCATION_PARAMETERS = {
+  GEOAPIFY_KEY:
+    process.env.REACT_APP_GEOAPIFY_KEY ?? "6fa425b087344f80a7827b15dce9f274",
+};

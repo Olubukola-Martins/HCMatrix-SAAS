@@ -51,21 +51,22 @@ import EmployeeHealthAccessPage from "features/self-service/features/health-acce
 //   () => import("features/self-service/features/requisitions/pages/Requisition")
 // );
 export const selfServiceRoutes = (props: TAppPageDataFnProps): TRouteData[] => {
-  const { userPermissions, hasSelfService } = props;
+  const { userPermissions, licenseType } = props;
+  const isUserLicensed = licenseType === "licensed";
   return [
     {
       element: <SelfServiceHome />,
       path: appRoutes.selfServiceHome,
       isSearchable: true,
       title: "My Self Service",
-      hidden: !hasSelfService,
+      hidden: !isUserLicensed,
     },
     {
       element: <PayslipsTransactionsPage />,
       path: appRoutes.payslipTransactions,
       isSearchable: true,
       title: "My Payslip & Transactions",
-      hidden: !hasSelfService,
+      hidden: !isUserLicensed,
     },
     {
       element: <TasksPage />,
@@ -73,7 +74,7 @@ export const selfServiceRoutes = (props: TAppPageDataFnProps): TRouteData[] => {
       isSearchable: true,
       title: "Tasks",
       isPrimaryFeature: true,
-      hidden: !hasSelfService,
+      hidden: !isUserLicensed,
     },
     {
       element: <Requisition />,
@@ -105,7 +106,7 @@ export const selfServiceRoutes = (props: TAppPageDataFnProps): TRouteData[] => {
       isSearchable: true,
       title: "Transfers",
       isPrimaryFeature: true,
-      hidden: !hasSelfService,
+      hidden: !isUserLicensed,
     },
     {
       element: <ReimbursementSettingPage />,
@@ -125,7 +126,7 @@ export const selfServiceRoutes = (props: TAppPageDataFnProps): TRouteData[] => {
       isSearchable: true,
       title: "Reimbursements",
       isPrimaryFeature: true,
-      hidden: !hasSelfService,
+      hidden: !isUserLicensed,
     },
     {
       element: <MonetaryRequestsSettingPage />,
@@ -145,7 +146,7 @@ export const selfServiceRoutes = (props: TAppPageDataFnProps): TRouteData[] => {
       isSearchable: true,
       title: "Monetary Requests",
       isPrimaryFeature: true,
-      hidden: !hasSelfService,
+      hidden: !isUserLicensed,
     },
     {
       element: <JobRequestsSettingPage />,
@@ -165,7 +166,7 @@ export const selfServiceRoutes = (props: TAppPageDataFnProps): TRouteData[] => {
       isSearchable: true,
       title: "Job Requests",
       isPrimaryFeature: true,
-      hidden: !hasSelfService,
+      hidden: !isUserLicensed,
     },
     {
       element: <PositionChangeRequestsSettingPage />,
@@ -185,7 +186,7 @@ export const selfServiceRoutes = (props: TAppPageDataFnProps): TRouteData[] => {
       isSearchable: true,
       title: "Position Change Requests",
       isPrimaryFeature: true,
-      hidden: !hasSelfService,
+      hidden: !isUserLicensed,
     },
     {
       element: <PromotionRequestsSettingPage />,
@@ -205,7 +206,7 @@ export const selfServiceRoutes = (props: TAppPageDataFnProps): TRouteData[] => {
       isSearchable: true,
       title: "Promotion Requests",
       isPrimaryFeature: true,
-      hidden: !hasSelfService,
+      hidden: !isUserLicensed,
     },
     {
       element: <TravelRequests />,
@@ -213,7 +214,7 @@ export const selfServiceRoutes = (props: TAppPageDataFnProps): TRouteData[] => {
       isSearchable: true,
       title: "Travel Requests",
       isPrimaryFeature: true,
-      hidden: !hasSelfService,
+      hidden: !isUserLicensed,
     },
     {
       element: <TravelRequestsSettingPage />,
@@ -233,7 +234,7 @@ export const selfServiceRoutes = (props: TAppPageDataFnProps): TRouteData[] => {
       isSearchable: true,
       title: "Assets",
       isPrimaryFeature: true,
-      hidden: !hasSelfService,
+      hidden: !isUserLicensed,
     },
     {
       element: <AssetRequestSettingsPage />,
@@ -253,7 +254,7 @@ export const selfServiceRoutes = (props: TAppPageDataFnProps): TRouteData[] => {
       path: appRoutes.assetDetails().format,
       isSearchable: false,
       title: "Asset Details",
-      hidden: !hasSelfService,
+      hidden: !isUserLicensed,
     },
     {
       element: <LoanHome />,
@@ -261,7 +262,7 @@ export const selfServiceRoutes = (props: TAppPageDataFnProps): TRouteData[] => {
       isSearchable: true,
       title: "Loans",
       isPrimaryFeature: true,
-      hidden: !hasSelfService,
+      hidden: !isUserLicensed,
     },
 
     {
@@ -281,7 +282,7 @@ export const selfServiceRoutes = (props: TAppPageDataFnProps): TRouteData[] => {
       isSearchable: true,
       title: "Vehicle Booking",
       isPrimaryFeature: true,
-      hidden: !hasSelfService,
+      hidden: !isUserLicensed,
     },
     {
       element: <VehicleBookingSettings />,
@@ -351,7 +352,7 @@ export const selfServiceRoutes = (props: TAppPageDataFnProps): TRouteData[] => {
       isSearchable: true,
       title: "Leave",
       isPrimaryFeature: true,
-      hidden: !hasSelfService,
+      hidden: !isUserLicensed,
     },
     {
       element: <LeaveSettings />,
@@ -370,7 +371,7 @@ export const selfServiceRoutes = (props: TAppPageDataFnProps): TRouteData[] => {
       isSearchable: false,
       title: "Health Access Details",
       isPrimaryFeature: false,
-      hidden: !hasSelfService,
+      hidden: !isUserLicensed,
     },
     {
       element: <HealthAccessHome />,
@@ -378,7 +379,7 @@ export const selfServiceRoutes = (props: TAppPageDataFnProps): TRouteData[] => {
       isSearchable: true,
       title: "Health Access",
       isPrimaryFeature: true,
-      hidden: !hasSelfService,
+      hidden: !isUserLicensed,
     },
     {
       element: <HealthAccessSettings />,
@@ -397,7 +398,7 @@ export const selfServiceRoutes = (props: TAppPageDataFnProps): TRouteData[] => {
       isSearchable: true,
       title: "Onboarding",
       isPrimaryFeature: true,
-      hidden: !hasSelfService,
+      hidden: !isUserLicensed,
     },
     {
       element: <StartOnboarding />,
@@ -415,7 +416,7 @@ export const selfServiceRoutes = (props: TAppPageDataFnProps): TRouteData[] => {
       isSearchable: true,
       title: "HandOver",
       isPrimaryFeature: true,
-      hidden: !hasSelfService,
+      hidden: !isUserLicensed,
     },
     {
       element: <HandOverNewForm />,
@@ -423,7 +424,7 @@ export const selfServiceRoutes = (props: TAppPageDataFnProps): TRouteData[] => {
       isSearchable: true,
       title: "New Handover Form",
       isPrimaryFeature: true,
-      hidden: !hasSelfService,
+      hidden: !isUserLicensed,
     },
     {
       element: <HandOverDetails />,

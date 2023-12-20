@@ -12,26 +12,42 @@ export const PAYROLL_FREQUENCIES_OPTIONS = PAYROLL_FREQUENCIES.map((item) => ({
   label: <span className="capitalize">{item.split("-").join(" ")}</span>,
   value: item,
 }));
-export const ESSENTIAL_PAYROLL_TYPES_OPTIONS = ESSENTIAL_PAYROLL_TYPES.map(
-  (item) => ({
-    label: <span className="capitalize">{item.split("-").join(" ")}</span>,
-    value: item,
-  })
-);
-
-const PAYROLL_SCHEMES: TPayrollSchemeType[] = [
-  "direct-salary",
-  "office",
-  "project",
-  "wages",
+export const ESSENTIAL_PAYROLL_TYPES_OPTIONS = [
+  {
+    label: "Direct Salary",
+    value: "direct-salary",
+  },
+  {
+    label: "Set Pay",
+    value: "office",
+  },
+  {
+    label: "Wages",
+    value: "wages",
+  },
 ];
+
 export const PAYROLL_SCHEME_OPTIONS: {
   value: TPayrollSchemeType;
   label: string;
-}[] = PAYROLL_SCHEMES.map((item) => ({
-  label: item.split("-").join(" "),
-  value: item,
-}));
+}[] = [
+  {
+    label: "Direct Salary",
+    value: "direct-salary",
+  },
+  {
+    label: "Set Pay",
+    value: "office",
+  },
+  {
+    label: "Wages",
+    value: "wages",
+  },
+  {
+    label: "Project",
+    value: "project",
+  },
+];
 
 const TRANSACTION_STATUSES: TTransactionStatus[] = [
   "processing",

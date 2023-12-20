@@ -115,7 +115,10 @@ export const PersonalInformation: React.FC<IProps> = ({
           exchangeRateId: data.exchangeRateId,
           maritalStatus: data.maritalStatus,
           nationality: data.nationality,
-          address: { ...data.address, lgaId: data.lgaId ?? undefined },
+          address: {
+            ...data.address,
+            lgaId: data?.address?.lgaId ?? undefined,
+          },
 
           validDocumentUrl: documentUrl,
           passportExpirationDate:
@@ -302,7 +305,7 @@ export const PersonalInformation: React.FC<IProps> = ({
             />
 
             <>
-              <FormAddressInput Form={Form} form={form} />
+              <FormAddressInput Form={Form} form={form} disabled={disable} />
             </>
             {!disable && (
               <div className="flex items-center justify-end md:col-span-2 lg:col-span-3">

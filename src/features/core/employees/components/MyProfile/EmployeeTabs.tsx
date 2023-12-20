@@ -104,11 +104,11 @@ export const EmployeeTabs: React.FC<IProps> = ({ employee, isLoading }) => {
         />
       ),
     },
-    {
-      key: "Finger Prints",
-      label: "Finger Prints",
-      children: <FingerPrint />,
-    },
+    // {
+    //   key: "Finger Prints",
+    //   label: "Finger Prints",
+    //   children: <FingerPrint />,
+    // },
     {
       key: "Projects",
       label: "Projects",

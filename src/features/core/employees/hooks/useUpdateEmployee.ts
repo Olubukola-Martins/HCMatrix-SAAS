@@ -3,6 +3,7 @@ import axios from "axios";
 import { useMutation } from "react-query";
 import { useApiAuth } from "hooks/useApiAuth";
 import { ICurrentCompany } from "types";
+import { TLicenseType } from "features/authentication/types/auth-user";
 
 type IUpdateEmpProps = {
   employeeId: number;
@@ -10,7 +11,7 @@ type IUpdateEmpProps = {
     firstName: string;
     lastName: string;
     email: string;
-    hasSelfService: boolean;
+    licenseType: TLicenseType;
     empUid: string;
     roleId: number;
     designationId: number;

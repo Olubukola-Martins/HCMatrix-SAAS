@@ -1,10 +1,11 @@
+import { TLicenseType } from "features/authentication/types/auth-user";
 import { TEmergencyContact, TJobInfo, TPersonalInfo } from ".";
 
 export type TBulkImportEmployeeProp = {
   firstName: string;
   lastName: string;
   email: string;
-  hasSelfService: boolean;
+  licenseType: TLicenseType;
   empUid: string;
   personalInformation?: TPersonalInfo;
   jobInformation?: TJobInfo;

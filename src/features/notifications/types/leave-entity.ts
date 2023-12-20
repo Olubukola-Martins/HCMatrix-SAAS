@@ -1,3 +1,5 @@
+import { TLicenseType } from "features/authentication/types/auth-user";
+
 export interface Leave {
   id: number;
   length: number;
@@ -36,7 +38,7 @@ interface WorkAssignee {
   firstName: string;
   updatedAt: string;
   designationId: number;
-  hasSelfService: boolean;
+  licenseType: TLicenseType;
 }
 
 interface Department {
@@ -81,5 +83,5 @@ interface Employee {
   firstName: string;
   updatedAt: string;
   designationId: number;
-  hasSelfService: boolean;
+  licenseType: TLicenseType;
 }

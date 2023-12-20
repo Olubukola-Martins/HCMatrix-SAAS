@@ -201,9 +201,7 @@ const CreateWagePayroll = () => {
                     employees or exluding employees from payroll
                   </p>
                 </div>
-                <div>
-                  <button className={buttonStyle}>Make Updates</button>
-                </div>
+               
               </div>
               <div className="mt-4">
                 <EmployeePayrollUpdatesContainer expatriate={false} />
@@ -222,9 +220,7 @@ const CreateWagePayroll = () => {
                     employees or exluding employees from payroll
                   </p>
                 </div>
-                <div>
-                  <button className={buttonStyle}>Make Updates</button>
-                </div>
+                
               </div>
               <div className="mt-4">
                 <EmployeePayrollUpdatesContainer expatriate={true} />

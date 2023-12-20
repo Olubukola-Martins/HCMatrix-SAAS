@@ -91,7 +91,7 @@ export const payrollRoutes = (props: TAppPageDataFnProps): TRouteData[] => {
       element: <SetupGradePayrollSchemePage />,
       path: appRoutes.setupGradePayrollScheme,
       isSearchable: true,
-      title: "Office Payroll Scheme",
+      title: "Step Pay Payroll Scheme",
       isPrimaryFeature: false,
       hidden: !canUserAccessComponent({
         userPermissions,

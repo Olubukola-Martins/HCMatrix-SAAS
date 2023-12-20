@@ -64,7 +64,6 @@ export const calculateSalaryEvalStatement = (
   }[],
   _divisor?: number
 ): string => {
-  console.log({ AH4, _conditions, _divisor });
   let divisor = _divisor ?? 12;
   const conditions = _conditions.map((item) => ({
     ...item,
@@ -72,6 +71,8 @@ export const calculateSalaryEvalStatement = (
     max: item.max / divisor,
     salary: item.salary / divisor,
   }));
+  const starterValue = 0;
+  console.log({ AH4, _conditions, _divisor }, starterValue);
   const evalStatement = conditions.reduce((statement, condition, index) => {
     const conditionStatement = `(${AH4} > ${condition.min} && ${AH4} <= ${condition.max}) ? (${condition.salary} + (${AH4} - ${condition.min}) * ${condition.rate}) : ${statement}`;
 
@@ -80,7 +81,7 @@ export const calculateSalaryEvalStatement = (
     } else {
       return `(${conditionStatement})`;
     }
-  }, "0");
+  }, `${starterValue}`);
 
   return evalStatement;
 };
