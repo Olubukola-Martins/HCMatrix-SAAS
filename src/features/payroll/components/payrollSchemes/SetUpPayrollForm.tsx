@@ -919,7 +919,7 @@ export const SetUpPayrollForm: React.FC<{
                 <h5 className={boxTitle}>Payroll Scheme Type</h5>
                 <input
                   className={inputStyle}
-                  value={scheme?.name ?? name}
+                  value={name ?? scheme?.name}
                   disabled
                 />
               </div>

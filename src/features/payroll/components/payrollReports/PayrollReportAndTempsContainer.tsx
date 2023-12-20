@@ -62,6 +62,7 @@ export const PayrollReportAndTempsContainer = () => {
               handleClick: () => {
                 setAction("create-report");
               },
+              btnVariant: "transparent",
               hidden: !canUserAccessComponent({
                 userPermissions,
                 requiredPermissions: ["manage-payroll-reports"],
