@@ -1,7 +1,6 @@
-import { Form, Input, Select, Button, InputNumber } from "antd";
+import { Form, Input, Select, InputNumber } from "antd";
 
 import { useEffect, useState } from "react";
-import { EditOutlined, DeleteOutlined, SaveOutlined } from "@ant-design/icons";
 import { FormEmployeeInput } from "features/core/employees/components/FormEmployeeInput";
 import { FormGroupInput } from "features/core/groups/components/FormGroupInput";
 import { FormRoleInput } from "features/core/roles-and-permissions/components/FormRoleInput";
@@ -15,6 +14,7 @@ import {
   WORKFLOW_STAGE_CONDITION_OPTIONS,
   WORKFLOW_STAGE_TYPE_OPTIONS,
 } from "../constants";
+import { AppButton } from "components/button/AppButton";
 
 export const CreateAdvancedStage: React.FC<{
   stage: OptionalTypeParams<
@@ -41,7 +41,7 @@ export const CreateAdvancedStage: React.FC<{
     }
   }, [form, stage]);
   return (
-    <div className="flex gap-4 items-end">
+    <div className="flex flex-col gap-4 w-full">
       <Form
         form={form}
         onFinish={handleFinish}
@@ -49,7 +49,7 @@ export const CreateAdvancedStage: React.FC<{
         labelCol={{ span: 24 }}
         requiredMark={false}
       >
-        <div className="flex gap-4">
+        <div className="grid grid-cols-2 md:gap-8 gap-4">
           <Form.Item
             name={"name"}
             label={`Stage Name`}
@@ -131,23 +131,17 @@ export const CreateAdvancedStage: React.FC<{
           )}
         </div>
       </Form>
-      <div className="flex gap-4 mb-6">
+      <div className="flex gap-4 justify-end mb-6">
+        <AppButton
+          label="Delete"
+          variant="transparent"
+          handleClick={() => removeStage(stage.id)}
+        />
         {!stage.editable ? (
-          <Button icon={<EditOutlined />} onClick={() => enableEdit(stage.id)}>
-            Edit
-          </Button>
+          <AppButton label="Edit" handleClick={() => enableEdit(stage.id)} />
         ) : (
-          <Button
-            icon={<SaveOutlined />}
-            type="text"
-            onClick={() => form.submit()}
-          >
-            Save
-          </Button>
+          <AppButton label="Save" handleClick={() => form.submit()} />
         )}
-        <Button icon={<DeleteOutlined />} onClick={() => removeStage(stage.id)}>
-          Delete
-        </Button>
       </div>
     </div>
   );
