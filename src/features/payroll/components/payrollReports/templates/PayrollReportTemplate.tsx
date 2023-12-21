@@ -1,5 +1,6 @@
 import { Form, Input, Select, Skeleton } from "antd";
 import { AppButton } from "components/button/AppButton";
+import { FormItemSelectionHandler } from "components/generalFormInputs/helperComps/FormItemSelectionHandler";
 import { useGetPayrollTemplateInfo } from "features/payroll/hooks/templates/information/useGetPayrollTemplateInfo";
 import { useChangeInfoFromPayrollTemplate } from "features/payroll/hooks/templates/management/useChangeInfoFromPayrollTemplate";
 import { TAddPayrollTemplateData } from "features/payroll/hooks/templates/useAddPayrollTemplate";
@@ -121,37 +122,52 @@ const PayrollReportTemplate: React.FC<{
               <Input className="w-full" placeholder="Template Name" />
             </Form.Item>
 
-            <Form.Item
-              rules={generalValidationRules}
-              name="employeeInformation"
-              label="Employee Information"
-            >
-              <Select
-                options={employeeInformation?.map((item) => ({
-                  label: <span className="capitalize">{item.name}</span>,
-                  value: item.id,
-                }))}
-                loading={empLoading}
-                onSelect={(val: number) =>
-                  handleInformationChange({
-                    action: "add",
-                    value: val,
-                    infoType: "employee",
-                  })
+            <div className="flex flex-col gap-2">
+              <Form.Item
+                rules={generalValidationRules}
+                name="employeeInformation"
+                label="Employee Information"
+              >
+                <Select
+                  options={employeeInformation?.map((item) => ({
+                    label: <span className="capitalize">{item.name}</span>,
+                    value: item.id,
+                  }))}
+                  loading={empLoading}
+                  onSelect={(val: number) =>
+                    handleInformationChange({
+                      action: "add",
+                      value: val,
+                      infoType: "employee",
+                    })
+                  }
+                  onDeselect={(val: number) =>
+                    handleInformationChange({
+                      action: "delete",
+                      value: val,
+                      infoType: "employee",
+                    })
+                  }
+                  mode="multiple"
+                  className="w-full"
+                  getPopupContainer={(triggerNode) => triggerNode.parentElement}
+                  placeholder="Employee Information to display in report"
+                />
+              </Form.Item>
+              <FormItemSelectionHandler
+                hidden={disabled || !!template}
+                handleClearAll={() =>
+                  form.setFieldValue("employeeInformation", [])
                 }
-                onDeselect={(val: number) =>
-                  handleInformationChange({
-                    action: "delete",
-                    value: val,
-                    infoType: "employee",
-                  })
-                }
-                mode="multiple"
-                className="w-full"
-                getPopupContainer={(triggerNode) => triggerNode.parentElement}
-                placeholder="Employee Information to display in report"
+                handleSelectAll={() => {
+                  form.setFieldValue(
+                    "employeeInformation",
+                    employeeInformation?.map((item) => item.id)
+                  );
+                  form.validateFields();
+                }}
               />
-            </Form.Item>
+            </div>
             <Form.Item
               rules={textInputValidationRules}
               name="description"
@@ -162,37 +178,52 @@ const PayrollReportTemplate: React.FC<{
                 placeholder="Describe the report template"
               />
             </Form.Item>
-            <Form.Item
-              rules={generalValidationRules}
-              name="payrollInformation"
-              label="Payroll Information"
-            >
-              <Select
-                options={payrollInformation?.map((item) => ({
-                  label: <span className="capitalize">{item.name}</span>,
-                  value: item.id,
-                }))}
-                loading={payLoading}
-                onSelect={(val: number) =>
-                  handleInformationChange({
-                    action: "add",
-                    value: val,
-                    infoType: "payroll",
-                  })
+            <div className="flex flex-col gap-2">
+              <Form.Item
+                rules={generalValidationRules}
+                name="payrollInformation"
+                label="Payroll Information"
+              >
+                <Select
+                  options={payrollInformation?.map((item) => ({
+                    label: <span className="capitalize">{item.name}</span>,
+                    value: item.id,
+                  }))}
+                  loading={payLoading}
+                  onSelect={(val: number) =>
+                    handleInformationChange({
+                      action: "add",
+                      value: val,
+                      infoType: "payroll",
+                    })
+                  }
+                  onDeselect={(val: number) =>
+                    handleInformationChange({
+                      action: "delete",
+                      value: val,
+                      infoType: "payroll",
+                    })
+                  }
+                  mode="multiple"
+                  className="w-full"
+                  getPopupContainer={(triggerNode) => triggerNode.parentElement}
+                  placeholder="Payroll Information to display in report"
+                />
+              </Form.Item>
+              <FormItemSelectionHandler
+                hidden={disabled || !!template}
+                handleClearAll={() =>
+                  form.setFieldValue("payrollInformation", [])
                 }
-                onDeselect={(val: number) =>
-                  handleInformationChange({
-                    action: "delete",
-                    value: val,
-                    infoType: "payroll",
-                  })
-                }
-                mode="multiple"
-                className="w-full"
-                getPopupContainer={(triggerNode) => triggerNode.parentElement}
-                placeholder="Payroll Information to display in report"
+                handleSelectAll={() => {
+                  form.setFieldValue(
+                    "payrollInformation",
+                    payrollInformation?.map((item) => item.id)
+                  );
+                  form.validateFields();
+                }}
               />
-            </Form.Item>
+            </div>
           </div>
         </Form>
       </Skeleton>
