@@ -1,18 +1,23 @@
 import { DatePicker, Form, Input, Select } from "antd";
 
-import { BeatLoader } from "react-spinners";
 import { useContext, useState } from "react";
 import { GlobalContext } from "stateManagers/GlobalContextProvider";
 import {
   textInputValidationRules,
   generalValidationRules,
+  dateHasToBeLesserThanOrEqualToCurrentDayRule,
 } from "utils/formHelpers/validation";
-import { useFetchCountries } from "hooks/useFetchCountries";
-import { useFetchLgas } from "hooks/useFetchLGAs";
-import { useFetchStates } from "hooks/useFetchStates";
+
 import { stepperInputProps } from "features/authentication/types";
-import { MARITAL_STATUSES } from "constants/general";
-const { Option } = Select;
+import {
+  EMPLOYMENT_ELIGIBILITIES_OPTIONS,
+  GENDERS,
+  MARITAL_STATUSES,
+} from "constants/general";
+import { FormPhoneInput } from "components/generalFormInputs/FormPhoneInput";
+import { FormAddressInput } from "components/generalFormInputs/FormAddressInput";
+import { AppButton } from "components/button/AppButton";
+import { FormNationalityInput } from "components/generalFormInputs/FormNationalityInput";
 
 export const PersonalInfo = ({
   onFinished,
@@ -23,14 +28,9 @@ export const PersonalInfo = ({
 }: stepperInputProps) => {
   const globalCtx = useContext(GlobalContext);
   const { state: globalState } = globalCtx;
+  // TODO: Implement file upload for passport n also refactor passport expiration date input
   const fileUrl = globalState.upLoadFileString;
-  const [stateId, setStateId] = useState(0);
-  const [countryId, setCountryId] = useState(0);
-  const { data: countries, isSuccess } = useFetchCountries();
-  const { data: states, isSuccess: stateSuccess } = useFetchStates({
-    countryId,
-  });
-  const { data: lga, isSuccess: lgaSuccess } = useFetchLgas({ stateId });
+
   const [hiddenInputs, setHiddenInputs] = useState("");
   const handleCitizen = (val: string) => {
     setHiddenInputs(val);
@@ -61,52 +61,13 @@ export const PersonalInfo = ({
           >
             <Input placeholder="Enter last name" />
           </Form.Item>
-          <Form.Item
-            name="streetAddress"
-            label="Street address"
-            rules={textInputValidationRules}
-          >
-            <Input placeholder="No 2 United Estate" />
-          </Form.Item>
 
-          <Form.Item name="phone" label="Business phone">
-            <Input.Group compact>
-              <Form.Item
-                noStyle
-                rules={generalValidationRules}
-                name={["phone", "code"]}
-                initialValue="+234"
-              >
-                {isSuccess && (
-                  <Select
-                    className="rounded border-slate-400"
-                    style={{ width: "30%" }}
-                    options={countries?.map((item) => ({
-                      label: `+${item.code}`,
-                      value: item.id,
-                    }))}
-                  />
-                )}
-              </Form.Item>
-              <Form.Item
-                noStyle
-                rules={textInputValidationRules}
-                name={["phone", "number"]}
-              >
-                <Input
-                  style={{ width: "70%" }}
-                  placeholder="9036849235"
-                  className="rounded border-slate-400 text-left"
-                  autoComplete="phone"
-                />
-              </Form.Item>
-            </Input.Group>
-          </Form.Item>
+          <FormPhoneInput Form={Form} />
 
           <Form.Item
             name="dob"
             label="Date of Birth"
-            rules={generalValidationRules}
+            rules={[dateHasToBeLesserThanOrEqualToCurrentDayRule]}
           >
             <DatePicker className="w-full" format="YYYY-MM-DD" />
           </Form.Item>
@@ -116,10 +77,7 @@ export const PersonalInfo = ({
             label="Gender"
             rules={generalValidationRules}
           >
-            <Select className="w-full" placeholder="Gender">
-              <Option value="male">Male</Option>
-              <Option value="female">Female</Option>
-            </Select>
+            <Select className="w-full" placeholder="Gender" options={GENDERS} />
           </Form.Item>
           <Form.Item
             name="maritalStatus"
@@ -137,10 +95,11 @@ export const PersonalInfo = ({
             label="Employment Eligibility"
             rules={generalValidationRules}
           >
-            <Select placeholder="Select" onChange={handleCitizen}>
-              <Option value="citizen">Citizen</Option>
-              <Option value="expatriate">Expatriate</Option>
-            </Select>
+            <Select
+              placeholder="Select"
+              onChange={handleCitizen}
+              options={EMPLOYMENT_ELIGIBILITIES_OPTIONS}
+            />
           </Form.Item>
 
           <Form.Item
@@ -168,72 +127,19 @@ export const PersonalInfo = ({
             />
           </Form.Item> */}
 
-          <Form.Item
-            name="countryId"
-            label="Nationality"
-            rules={generalValidationRules}
-          >
-            <Select
-              showSearch
-              allowClear
-              optionLabelProp="label"
-              placeholder="Select"
-              onChange={(val) => setCountryId(val)}
-            >
-              {countries?.map((data) => (
-                <Option key={data.id} value={data.id} label={data.name}>
-                  {data.name}
-                </Option>
-              ))}
-            </Select>
-          </Form.Item>
-          <Form.Item
-            name="stateId"
-            label="State"
-            rules={generalValidationRules}
-          >
-            <Select
-              showSearch
-              allowClear
-              optionLabelProp="label"
-              placeholder="Select state"
-              onChange={(val) => setStateId(val)}
-            >
-              {states?.map((data) => (
-                <Option key={data.id} value={data.id} label={data.name}>
-                  {data.name}
-                </Option>
-              ))}
-            </Select>
-          </Form.Item>
-          {lgaSuccess && lga.length > 0 && (
-            <Form.Item name="lgaId" label="LGA" rules={generalValidationRules}>
-              <Select
-                showSearch
-                allowClear
-                optionLabelProp="label"
-                placeholder="Select"
-              >
-                {lga?.map((data) => (
-                  <Option key={data.id} value={data.id} label={data.name}>
-                    {data.name}
-                  </Option>
-                ))}
-              </Select>
-            </Form.Item>
-          )}
+          <FormNationalityInput
+            Form={Form}
+            control={{ label: "Nationality", name: "nationality" }}
+          />
+          {form && <FormAddressInput Form={Form} form={form} />}
         </div>
         <div className="flex justify-between mt-3">
-          <button
-            onClick={() => setCurrent(0)}
-            type="button"
-            className="transparentButton"
-          >
-            Prev
-          </button>
-          <button type="submit" className="button">
-            {isLoading ? <BeatLoader color="#fff" /> : "Continue"}
-          </button>
+          <AppButton
+            variant="transparent"
+            label="Previous"
+            handleClick={() => setCurrent(0)}
+          />
+          <AppButton type="submit" isLoading={isLoading} label="Continue" />
         </div>
       </Form>
     </div>

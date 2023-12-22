@@ -10,6 +10,7 @@ import { openNotification } from "utils/notifications";
 import { CreatePassword } from "../components/InvitedEmployee/CreatePassword";
 import { PersonalInfo } from "../components/InvitedEmployee/PersonalInfo";
 import { ICreateInvitedEmpProps } from "../types";
+import { formatPhoneNumber } from "utils/dataHelpers/formatPhoneNumber";
 
 export const InvitedEmployeeForm = () => {
   const signOut = useSignOut();
@@ -40,18 +41,16 @@ export const InvitedEmployeeForm = () => {
       personalInformation: {
         dob: data.dob.format("YYYY-MM-DD"),
         gender: data.gender,
-        phoneNumber: `${data.phone.code}-${data.phone.number}`,
+        phoneNumber: formatPhoneNumber({
+          code: data.phone.code,
+          number: data.phone.number,
+        }),
         eligibility: data.eligibility,
         maritalStatus: data.maritalStatus,
-        nationality: "Nigeria", //TODO: Make dynamic
+        nationality: data.nationality, //TODO: Make dynamic
         address: {
-          streetAddress: data.streetAddress,
-          countryId: data.countryId,
-          stateId: data.stateId,
-          lgaId: data.lgaId,
-          timezone: data.timezone,
-          latitude: "0.0000",
-          longitude: "0.0000",
+          ...data.address,
+          lgaId: data?.address?.lgaId ?? undefined,
         },
         passportExpirationDate: data.passportExpirationDate,
         validDocumentUrl: data.validDocumentUrl,
