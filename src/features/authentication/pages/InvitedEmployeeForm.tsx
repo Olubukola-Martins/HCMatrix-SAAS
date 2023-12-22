@@ -43,13 +43,15 @@ export const InvitedEmployeeForm = () => {
         phoneNumber: `${data.phone.code}-${data.phone.number}`,
         eligibility: data.eligibility,
         maritalStatus: data.maritalStatus,
-        nationality: "Nigeria",
+        nationality: "Nigeria", //TODO: Make dynamic
         address: {
           streetAddress: data.streetAddress,
           countryId: data.countryId,
           stateId: data.stateId,
           lgaId: data.lgaId,
           timezone: data.timezone,
+          latitude: "",
+          longitude: "",
         },
         passportExpirationDate: data.passportExpirationDate,
         validDocumentUrl: data.validDocumentUrl,
