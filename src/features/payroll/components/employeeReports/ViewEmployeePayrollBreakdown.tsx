@@ -17,6 +17,7 @@ import { useQueryClient } from "react-query";
 import { IModalProps } from "types";
 import { openNotification } from "utils/notifications";
 import "../../style/style.css";
+import { hcMatrixWatermarkSvg } from "assets/images";
 
 interface IProps extends IModalProps {
   params: {
@@ -163,7 +164,10 @@ const ViewEmployeePayrollBreakdown: React.FC<IProps> = ({
           paragraph={{ rows: 28 }}
           active
         >
-          <div className="scrollBar overflow-auto">
+          <div
+            className="scrollBar overflow-auto bg-contain bg-center bg-no-repeat "
+            style={{ backgroundImage: `url(${hcMatrixWatermarkSvg})` }}
+          >
             <div className="text-sm mt-5 font-medium">
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-2 my-2">
                 {payrollAttrs.map((item, i) => (

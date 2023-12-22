@@ -1,5 +1,5 @@
 import { Avatar } from "antd";
-import { TCompany } from "features/core/company/types";
+import { hcMatrixWatermarkSvg } from "assets/images";
 import { TPayrollBreakdownAttr } from "features/payroll/types";
 import { TSinglePayslip } from "features/payroll/types/payslip";
 import { TPayrollTemplate } from "features/payroll/types/template";
@@ -86,7 +86,10 @@ const PayslipPrintTemplate = forwardRef<
           <h4 className="font-semibold text-lg">{company.name}</h4>
         </div>
 
-        <div className="">
+        <div
+          className="bg-contain bg-center bg-no-repeat "
+          style={{ backgroundImage: `url(${hcMatrixWatermarkSvg})` }}
+        >
           <h6 className="text-xl text-center">Employee Payslip</h6>
 
           <div className="text-sm mt-5 font-medium gap-4">

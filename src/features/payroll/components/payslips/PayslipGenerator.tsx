@@ -23,7 +23,7 @@ export const PayslipGenerator = forwardRef<HTMLDivElement, IProps>(
     const { baseCurrency, loading: baseCurrLoading } =
       useGetCompanyBaseCurrency();
 
-    const { data: employeePayroll, isLoading } = useGetSingleEmployeePayroll({
+    const { data: employeePayroll } = useGetSingleEmployeePayroll({
       employeeId,
       payrollId,
     });

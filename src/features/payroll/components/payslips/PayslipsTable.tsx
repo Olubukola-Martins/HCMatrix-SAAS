@@ -13,7 +13,6 @@ import moment from "moment";
 import { PayslipGenerator } from "./PayslipGenerator";
 import ReactToPrint from "react-to-print";
 import { useGetPayrollSetting } from "features/payroll/hooks/payroll/setting/useGetPayrollSetting";
-import { formatNumberWithCommas } from "utils/dataHelpers/formatNumberWithCommas";
 
 type TAction = "view";
 
@@ -56,7 +55,6 @@ const PayslipsTable: React.FC<IProps> = ({
     role,
     scheme,
   });
-  const componentRef = useRef<HTMLDivElement>(null);
 
   const columns: ColumnsType<TPayslip> = [
     {
@@ -82,54 +80,38 @@ const PayslipsTable: React.FC<IProps> = ({
       dataIndex: "_s",
       key: "_s",
       render: (_, item) => (
-        <span className="capitalize">
-          {item.payroll?.scheme.type === "office"
-            ? "Step pay Payroll Scheme"
-            : item.payroll?.scheme.name}
-        </span>
+        <span className="capitalize">{item.payroll?.scheme.name}</span>
       ),
     },
     {
       title: "Net Pay",
       dataIndex: "_n",
       key: "_n",
-      render: (_, item) => (
-        <span className="capitalize">
-          {formatNumberWithCommas(item.netPay)}
-        </span>
-      ),
+      render: (_, item) => <span className="capitalize">{item.netPay}</span>,
     },
     {
       title: "Gross Pay",
       dataIndex: "_g",
       key: "_g",
-      render: (_, item) => (
-        <span className="">{formatNumberWithCommas(item.grossPay)}</span>
-      ),
+      render: (_, item) => <span className="">{item.grossPay}</span>,
     },
     {
       title: "Total Allowances",
       dataIndex: "_ta",
       key: "_ta",
-      render: (_, item) => (
-        <span className="">{formatNumberWithCommas(item.totalAllowances)}</span>
-      ),
+      render: (_, item) => <span className="">{item.totalAllowances}</span>,
     },
     {
       title: "Total Deductions",
       dataIndex: "_td",
       key: "_td",
-      render: (_, item) => (
-        <span className="">{formatNumberWithCommas(item.totalDeductions)}</span>
-      ),
+      render: (_, item) => <span className="">{item.totalDeductions}</span>,
     },
     {
       title: "Tax",
       dataIndex: "_tax",
       key: "_tax",
-      render: (_, item) => (
-        <span className="">{formatNumberWithCommas(item.tax)}</span>
-      ),
+      render: (_, item) => <span className="">{item.tax}</span>,
     },
 
     {
@@ -141,24 +123,14 @@ const PayslipsTable: React.FC<IProps> = ({
             className="ri-eye-fill text-lg cursor-pointer"
             onClick={() => handleAction({ action: "view", grade: item })}
           />
-          <ReactToPrint
-            trigger={() => {
-              setGrade(item);
-              return <i className="ri-printer-line  text-lg cursor-pointer" />;
-            }}
-            content={() => componentRef.current}
-            bodyClass={"w-full justify-stretch items-center"}
-          />
+          <PrintBtn data={item} />
         </div>
       ),
     },
   ];
 
-  const { data: payrollSetting } = useGetPayrollSetting();
-
   return (
     <>
-      {/* TODO: PAsss proper id when endpoint is available */}
       <ViewEmployeePayrollBreakdown
         params={{
           employeeId: grade?.employeeId,
@@ -168,16 +140,6 @@ const PayslipsTable: React.FC<IProps> = ({
         open={action === "view"}
         showControls={false}
       />
-      <div className="hidden">
-        <PayslipGenerator
-          ref={componentRef}
-          params={{
-            employeeId: grade?.employeeId,
-            payrollId: grade?.payrollId,
-          }}
-          defaultPayslipTemplateId={payrollSetting?.payslipTemplate.templateId}
-        />
-      </div>
 
       <Table
         columns={columns}
@@ -186,8 +148,34 @@ const PayslipsTable: React.FC<IProps> = ({
         loading={isFetching}
         pagination={{ ...pagination, total: data?.total }}
         onChange={onChange}
-        scroll={{ x: "max-content" }}
       />
+    </>
+  );
+};
+const PrintBtn: React.FC<{ data?: TPayslip }> = ({ data }) => {
+  const componentRef = useRef<HTMLDivElement>(null);
+
+  const { data: payrollSetting } = useGetPayrollSetting();
+
+  return (
+    <>
+      <ReactToPrint
+        trigger={() => {
+          return <i className="ri-printer-line  text-lg cursor-pointer" />;
+        }}
+        content={() => componentRef.current}
+        bodyClass={"w-full justify-stretch items-center"}
+      />
+      <div className="hidden">
+        <PayslipGenerator
+          ref={componentRef}
+          params={{
+            employeeId: data?.employeeId,
+            payrollId: data?.payrollId,
+          }}
+          defaultPayslipTemplateId={payrollSetting?.payslipTemplate.templateId}
+        />
+      </div>
     </>
   );
 };
