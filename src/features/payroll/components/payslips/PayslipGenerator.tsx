@@ -1,6 +1,5 @@
 import { useGetSingleEmployeePayroll } from "features/payroll/hooks/payroll/employee/useGetSingleEmployeePayroll";
 import PayslipPrintTemplate from "./templates/PayslipPrintTemplate";
-import { useGetCompanyBaseCurrency } from "hooks/useGetCompanyBaseCurrency";
 import React, { forwardRef } from "react";
 import { useGetSinglePayrollTemplate } from "features/payroll/hooks/templates/useGetSinglePayrollTemplate";
 import { useApiAuth } from "hooks/useApiAuth";
@@ -20,9 +19,6 @@ export const PayslipGenerator = forwardRef<HTMLDivElement, IProps>(
       type: "payslip",
     });
 
-    const { baseCurrency, loading: baseCurrLoading } =
-      useGetCompanyBaseCurrency();
-
     const { data: employeePayroll } = useGetSingleEmployeePayroll({
       employeeId,
       payrollId,
@@ -32,14 +28,12 @@ export const PayslipGenerator = forwardRef<HTMLDivElement, IProps>(
 
     return (
       <div ref={ref}>
-        {baseCurrency &&
-          employeePayroll &&
+        {employeePayroll &&
           payslipTemplate &&
           currentCompanyEmployeeDetails?.company && (
             <PayslipPrintTemplate
               defaultPayslipTemplate={payslipTemplate}
               employeePayroll={employeePayroll}
-              baseCurrency={baseCurrency}
               company={currentCompanyEmployeeDetails?.company}
             />
           )}

@@ -13,6 +13,7 @@ import moment from "moment";
 import { PayslipGenerator } from "./PayslipGenerator";
 import ReactToPrint from "react-to-print";
 import { useGetPayrollSetting } from "features/payroll/hooks/payroll/setting/useGetPayrollSetting";
+import { formatNumberWithCommas } from "utils/dataHelpers/formatNumberWithCommas";
 
 type TAction = "view";
 
@@ -87,38 +88,50 @@ const PayslipsTable: React.FC<IProps> = ({
       title: "Net Pay",
       dataIndex: "_n",
       key: "_n",
-      render: (_, item) => <span className="capitalize">{item.netPay}</span>,
+      render: (_, item) => (
+        <span className="capitalize">
+          {formatNumberWithCommas(item.netPay)}
+        </span>
+      ),
     },
     {
       title: "Gross Pay",
       dataIndex: "_g",
       key: "_g",
-      render: (_, item) => <span className="">{item.grossPay}</span>,
+      render: (_, item) => (
+        <span className="">{formatNumberWithCommas(item.grossPay)}</span>
+      ),
     },
     {
       title: "Total Allowances",
       dataIndex: "_ta",
       key: "_ta",
-      render: (_, item) => <span className="">{item.totalAllowances}</span>,
+      render: (_, item) => (
+        <span className="">{formatNumberWithCommas(item.totalAllowances)}</span>
+      ),
     },
     {
       title: "Total Deductions",
       dataIndex: "_td",
       key: "_td",
-      render: (_, item) => <span className="">{item.totalDeductions}</span>,
+      render: (_, item) => (
+        <span className="">{formatNumberWithCommas(item.totalDeductions)}</span>
+      ),
     },
     {
       title: "Tax",
       dataIndex: "_tax",
       key: "_tax",
-      render: (_, item) => <span className="">{item.tax}</span>,
+      render: (_, item) => (
+        <span className="">{formatNumberWithCommas(item.tax)}</span>
+      ),
     },
 
     {
       title: "Action",
       key: "action",
       render: (_, item) => (
-        <div className="flex gap-2">
+        <div className="flex gap-2 text-slate-600">
           <i
             className="ri-eye-fill text-lg cursor-pointer"
             onClick={() => handleAction({ action: "view", grade: item })}
@@ -136,7 +149,7 @@ const PayslipsTable: React.FC<IProps> = ({
           employeeId: grade?.employeeId,
           payrollId: grade?.payrollId,
         }}
-        handleClose={() => setAction(undefined)}
+        handleClose={cancelAction}
         open={action === "view"}
         showControls={false}
       />
@@ -161,7 +174,7 @@ const PrintBtn: React.FC<{ data?: TPayslip }> = ({ data }) => {
     <>
       <ReactToPrint
         trigger={() => {
-          return <i className="ri-printer-line  text-lg cursor-pointer" />;
+          return <i className="ri-printer-line text-lg cursor-pointer" />;
         }}
         content={() => componentRef.current}
         bodyClass={"w-full justify-stretch items-center"}

@@ -135,7 +135,7 @@ const ViewEmployeePayrollBreakdown: React.FC<IProps> = ({
     },
     {
       label: "Gross Pay",
-      value: moment(employeePayroll?.createdAt).format("YYYY-MM-DD"),
+      value: formatValueWithCurrency(employeePayroll?.grossPay),
     },
 
     {
