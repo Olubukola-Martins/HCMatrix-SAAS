@@ -11,6 +11,7 @@ import { useFetchCountries } from "hooks/useFetchCountries";
 import { useFetchLgas } from "hooks/useFetchLGAs";
 import { useFetchStates } from "hooks/useFetchStates";
 import { stepperInputProps } from "features/authentication/types";
+import { MARITAL_STATUSES } from "constants/general";
 const { Option } = Select;
 
 export const PersonalInfo = ({
@@ -125,13 +126,11 @@ export const PersonalInfo = ({
             label="Marital Status"
             rules={generalValidationRules}
           >
-            <Select className="w-full" placeholder="Select">
-              <Option value="married">Married</Option>
-              <Option value="single">Single</Option>
-              <Option value="widowed">Widowed</Option>
-              <Option value="divorced">Divorced</Option>
-              <Option value="separated">Separated</Option>
-            </Select>
+            <Select
+              className="w-full"
+              placeholder="Select"
+              options={MARITAL_STATUSES}
+            />
           </Form.Item>
           <Form.Item
             name="eligibility"
