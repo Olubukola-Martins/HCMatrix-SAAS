@@ -89,6 +89,8 @@ export const PersonalInformation: React.FC<IProps> = ({
         countryId: personalInfo?.address.countryId,
         stateId: personalInfo?.address.stateId,
         lgaId: personalInfo?.address.lgaId,
+        latitude: personalInfo?.address?.latitude,
+        longitude: personalInfo?.address?.longitude,
       },
     });
     setSelectedEligibility(
