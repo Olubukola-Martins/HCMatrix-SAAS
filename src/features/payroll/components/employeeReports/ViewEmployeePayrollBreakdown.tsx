@@ -34,7 +34,7 @@ const ViewEmployeePayrollBreakdown: React.FC<IProps> = ({
 }) => {
   const queryClient = useQueryClient();
 
-  const { baseCurrency, loading: baseCurrLoading } =
+  const { loading: baseCurrLoading, formatValueWithCurrency } =
     useGetCompanyBaseCurrency();
   const { payrollId, employeeId } = params;
   const { data: employeePayroll, isLoading } = useGetSingleEmployeePayroll({
@@ -121,16 +121,16 @@ const ViewEmployeePayrollBreakdown: React.FC<IProps> = ({
     },
     {
       label: "Year to Date Net",
-      value: employeePayroll?.ytdNet,
+      value: formatValueWithCurrency(employeePayroll?.ytdNet),
     },
 
     {
       label: "Year to Date Tax",
-      value: employeePayroll?.ytdTax,
+      value: formatValueWithCurrency(employeePayroll?.ytdTax),
     },
     {
       label: "Year to Date Gross",
-      value: employeePayroll?.ytdGross,
+      value: formatValueWithCurrency(employeePayroll?.ytdGross),
     },
     {
       label: "Gross Pay",
@@ -174,10 +174,7 @@ const ViewEmployeePayrollBreakdown: React.FC<IProps> = ({
                     } bg-transparent border shadow-md border-slate-300 flex items-center justify-between px-5 py-2`}
                   >
                     <span>{item.label}</span>
-                    <span>
-                      {item?.amount ? baseCurrency?.currencySymbol : ""}
-                      {item.value}
-                    </span>
+                    <span>{item.value}</span>
                   </div>
                 ))}
               </div>
@@ -203,8 +200,7 @@ const ViewEmployeePayrollBreakdown: React.FC<IProps> = ({
                             <tr key={i}>
                               <td className="capitalize">{item.name}</td>
                               <td>
-                                {baseCurrency?.currencySymbol}
-                                {item.calculatedAmount}
+                                {formatValueWithCurrency(item.calculatedAmount)}
                               </td>
                               {showControls && (
                                 <td>
@@ -231,10 +227,11 @@ const ViewEmployeePayrollBreakdown: React.FC<IProps> = ({
                         <tr>
                           <td>Sub Total</td>
                           <td colSpan={showControls ? 2 : 1}>
-                            {baseCurrency?.currencySymbol}
-                            {comp.type === "allowance"
-                              ? employeePayroll?.totalAllowances
-                              : employeePayroll?.totalDeductions}
+                            {formatValueWithCurrency(
+                              comp.type === "allowance"
+                                ? employeePayroll?.totalAllowances
+                                : employeePayroll?.totalDeductions
+                            )}
                           </td>
                         </tr>
                       </tbody>
@@ -245,10 +242,7 @@ const ViewEmployeePayrollBreakdown: React.FC<IProps> = ({
 
               <div className="bg-mainBg flex items-center justify-between px-5 py-2">
                 <span> Net Pay</span>
-                <span>
-                  {baseCurrency?.currencySymbol}
-                  {employeePayroll?.netPay}
-                </span>
+                <span>{formatValueWithCurrency(employeePayroll?.netPay)}</span>
               </div>
               <div className="bg-mainBg flex items-center justify-between px-5 py-2 mt-3">
                 <span>Account Number</span>

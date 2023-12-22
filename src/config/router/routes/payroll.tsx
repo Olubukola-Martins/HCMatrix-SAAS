@@ -312,11 +312,11 @@ export const payrollRoutes = (props: TAppPageDataFnProps): TRouteData[] => {
       }),
     },
     {
-      element: <CreatePayroll scheme={"office"} />,
+      element: <CreatePayroll scheme={"office"} title="Create Step Pay Payroll"/>,
 
       path: appRoutes.createOfficePayroll,
       isSearchable: true,
-      title: "Create Office Payroll",
+      title: "Create Step Pay Payroll",
       hidden: !canUserAccessComponent({
         userPermissions,
         requiredPermissions: ["create-payroll"],

@@ -14,6 +14,7 @@ import {
   canUserAccessComponent,
   useGetUserPermissions,
 } from "components/permission-restriction/PermissionRestrictor";
+import { formatNumberWithCommas } from "utils/dataHelpers/formatNumberWithCommas";
 
 let OG_COLUMNS: ColumnsType<TPayrollListData> = [
   {
@@ -47,31 +48,39 @@ let OG_COLUMNS: ColumnsType<TPayrollListData> = [
     title: "Allowances",
     dataIndex: "allowances",
     key: "allowances",
-    render: (_, item) => <span>{item.totalAllowances} </span>,
+    render: (_, item) => (
+      <span>{formatNumberWithCommas(item.totalAllowances)} </span>
+    ),
   },
   {
     title: "Deductions",
     dataIndex: "deductions",
     key: "deductions",
-    render: (_, item) => <span>{item.totalDeductions} </span>,
+    render: (_, item) => (
+      <span>{formatNumberWithCommas(item.totalDeductions)} </span>
+    ),
   },
   {
     title: "Tax",
     dataIndex: "tax",
     key: "tax",
-    render: (_, item) => <span>{item.totalTax} </span>,
+    render: (_, item) => <span>{formatNumberWithCommas(item.totalTax)} </span>,
   },
   {
     title: "Gross Pay",
     dataIndex: "grossPay",
     key: "grossPay",
-    render: (_, item) => <span>{item.totalGrossPay} </span>,
+    render: (_, item) => (
+      <span>{formatNumberWithCommas(item.totalGrossPay)} </span>
+    ),
   },
   {
     title: "Net Pay",
     dataIndex: "netPay",
     key: "netPay",
-    render: (_, item) => <span>{item.totalNetPay} </span>,
+    render: (_, item) => (
+      <span>{formatNumberWithCommas(item.totalNetPay)} </span>
+    ),
   },
   {
     title: "Disbursment Date",

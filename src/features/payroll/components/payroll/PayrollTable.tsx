@@ -6,6 +6,7 @@ import { TPayrollListData } from "features/payroll/types/payroll";
 import { TPayrollSchemeType } from "features/payroll/types/payrollSchemes";
 import moment from "moment";
 import { Link } from "react-router-dom";
+import { formatNumberWithCommas } from "utils/dataHelpers/formatNumberWithCommas";
 
 export const PayrollTable: React.FC<{
   isProject?: boolean;
@@ -72,31 +73,41 @@ export const PayrollTable: React.FC<{
       title: "Allowances",
       dataIndex: "allowances",
       key: "allowances",
-      render: (_, item) => <span>{item.totalAllowances} </span>,
+      render: (_, item) => (
+        <span>{formatNumberWithCommas(item.totalAllowances)} </span>
+      ),
     },
     {
       title: "Deductions",
       dataIndex: "deductions",
       key: "deductions",
-      render: (_, item) => <span>{item.totalDeductions} </span>,
+      render: (_, item) => (
+        <span>{formatNumberWithCommas(item.totalDeductions)} </span>
+      ),
     },
     {
       title: "Tax",
       dataIndex: "tax",
       key: "tax",
-      render: (_, item) => <span>{item.totalTax} </span>,
+      render: (_, item) => (
+        <span>{formatNumberWithCommas(item.totalTax)} </span>
+      ),
     },
     {
       title: "Gross Pay",
       dataIndex: "grossPay",
       key: "grossPay",
-      render: (_, item) => <span>{item.totalGrossPay} </span>,
+      render: (_, item) => (
+        <span>{formatNumberWithCommas(item.totalGrossPay)} </span>
+      ),
     },
     {
       title: "Net Pay",
       dataIndex: "netPay",
       key: "netPay",
-      render: (_, item) => <span>{item.totalNetPay} </span>,
+      render: (_, item) => (
+        <span>{formatNumberWithCommas(item.totalNetPay)} </span>
+      ),
     },
     {
       title: "Status",
@@ -143,6 +154,7 @@ export const PayrollTable: React.FC<{
         loading={loading}
         pagination={{ ...pagination, total }}
         onChange={onChange}
+        scroll={{ x: "max-content" }}
       />
     </>
   );

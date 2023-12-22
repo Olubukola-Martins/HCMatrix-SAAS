@@ -13,6 +13,7 @@ import moment from "moment";
 import { PayslipGenerator } from "./PayslipGenerator";
 import ReactToPrint from "react-to-print";
 import { useGetPayrollSetting } from "features/payroll/hooks/payroll/setting/useGetPayrollSetting";
+import { formatNumberWithCommas } from "utils/dataHelpers/formatNumberWithCommas";
 
 type TAction = "view";
 
@@ -81,38 +82,54 @@ const PayslipsTable: React.FC<IProps> = ({
       dataIndex: "_s",
       key: "_s",
       render: (_, item) => (
-        <span className="capitalize">{item.payroll?.scheme.name}</span>
+        <span className="capitalize">
+          {item.payroll?.scheme.type === "office"
+            ? "Step pay Payroll Scheme"
+            : item.payroll?.scheme.name}
+        </span>
       ),
     },
     {
       title: "Net Pay",
       dataIndex: "_n",
       key: "_n",
-      render: (_, item) => <span className="capitalize">{item.netPay}</span>,
+      render: (_, item) => (
+        <span className="capitalize">
+          {formatNumberWithCommas(item.netPay)}
+        </span>
+      ),
     },
     {
       title: "Gross Pay",
       dataIndex: "_g",
       key: "_g",
-      render: (_, item) => <span className="">{item.grossPay}</span>,
+      render: (_, item) => (
+        <span className="">{formatNumberWithCommas(item.grossPay)}</span>
+      ),
     },
     {
       title: "Total Allowances",
       dataIndex: "_ta",
       key: "_ta",
-      render: (_, item) => <span className="">{item.totalAllowances}</span>,
+      render: (_, item) => (
+        <span className="">{formatNumberWithCommas(item.totalAllowances)}</span>
+      ),
     },
     {
       title: "Total Deductions",
       dataIndex: "_td",
       key: "_td",
-      render: (_, item) => <span className="">{item.totalDeductions}</span>,
+      render: (_, item) => (
+        <span className="">{formatNumberWithCommas(item.totalDeductions)}</span>
+      ),
     },
     {
       title: "Tax",
       dataIndex: "_tax",
       key: "_tax",
-      render: (_, item) => <span className="">{item.tax}</span>,
+      render: (_, item) => (
+        <span className="">{formatNumberWithCommas(item.tax)}</span>
+      ),
     },
 
     {
@@ -169,6 +186,7 @@ const PayslipsTable: React.FC<IProps> = ({
         loading={isFetching}
         pagination={{ ...pagination, total: data?.total }}
         onChange={onChange}
+        scroll={{ x: "max-content" }}
       />
     </>
   );

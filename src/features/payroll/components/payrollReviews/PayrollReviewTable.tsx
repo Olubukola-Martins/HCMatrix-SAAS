@@ -31,6 +31,7 @@ const PayrollReviewTable: React.FC<IProps> = ({ columns }) => {
         loading={isFetching}
         pagination={{ ...pagination, total: data?.total }}
         onChange={onChange}
+        scroll={{ x: "max-content" }}
       />
     </>
   );
