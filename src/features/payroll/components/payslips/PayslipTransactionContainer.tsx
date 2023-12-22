@@ -1,5 +1,4 @@
 import { Tabs } from "antd";
-import PageSubHeader from "components/layout/PageSubHeader";
 import { TPayrollSchemeType } from "features/payroll/types/payrollSchemes";
 import React from "react";
 import { PayslipsContainer } from "./PayslipsContainer";
@@ -130,7 +129,7 @@ const PayslipTransactionContainer: React.FC<IProps> = ({
       label: "Payslips",
       children: (
         <PayslipsContainer
-          role="employee"
+          role="employee" //TODO: Refactor the comp in folder to exists in selfservice/payslips
           defaultScheme={employeePayrollType}
         />
       ),
@@ -145,10 +144,6 @@ const PayslipTransactionContainer: React.FC<IProps> = ({
   return (
     <>
       <div className="flex flex-col gap-6">
-        <PageSubHeader
-          description={`You can now view your payslips and transactions`}
-          hideBackground
-        />
         <Tabs items={tabItems} />
       </div>
     </>

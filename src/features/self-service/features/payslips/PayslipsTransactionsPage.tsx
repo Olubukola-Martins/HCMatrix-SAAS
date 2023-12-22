@@ -7,6 +7,7 @@ import { Skeleton } from "antd";
 import { ErrorWrapper } from "components/errorHandlers/ErrorWrapper";
 import SelfServiceSubNav from "features/self-service/components/SelfServiceSubNav";
 import PayslipTransactionContainer from "features/payroll/components/payslips/PayslipTransactionContainer";
+import PayslipCards from "./PayslipCards";
 
 const PayslipsTransactionsPage = () => {
   const { currentUserEmployeeId } = useApiAuth();
@@ -21,17 +22,17 @@ const PayslipsTransactionsPage = () => {
     <>
       <SelfServiceSubNav />
       <div className="Container">
-        <PageIntro
-          title="My Payslips & Transactions"
-          link={appRoutes.payslips}
-        />
+        <PageIntro title="Payslips & Transactions" link={appRoutes.payslips} />
         <Skeleton loading={isFetching}>
           <ErrorWrapper backLink={appRoutes.selfServiceHome} isError={isError}>
-            {employee ? (
-              <PayslipTransactionContainer
-                employeePayrollType={employee?.jobInformation?.payrollType}
-              />
-            ) : null}
+            <div className="flex flex-col gap-6">
+              <PayslipCards />
+              {employee ? (
+                <PayslipTransactionContainer
+                  employeePayrollType={employee?.jobInformation?.payrollType}
+                />
+              ) : null}
+            </div>
           </ErrorWrapper>
         </Skeleton>
       </div>

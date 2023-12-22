@@ -90,7 +90,7 @@ const PayslipPrintTemplate = forwardRef<
           className="bg-contain bg-center bg-no-repeat "
           style={{ backgroundImage: `url(${hcMatrixWatermarkSvg})` }}
         >
-          <h6 className="text-xl text-center">Employee Payslip</h6>
+          {/* <h6 className="text-xl text-center">Employee Payslip</h6> */}
 
           <div className="text-sm mt-5 font-medium gap-4">
             <div className="grid grid-cols-2 gap-2 my-2">
