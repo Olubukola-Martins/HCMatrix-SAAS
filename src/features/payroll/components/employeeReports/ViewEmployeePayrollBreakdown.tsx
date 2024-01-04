@@ -17,6 +17,7 @@ import { useQueryClient } from "react-query";
 import { IModalProps } from "types";
 import { openNotification } from "utils/notifications";
 import "../../style/style.css";
+import { hcMatrixWatermarkSvg } from "assets/images";
 
 interface IProps extends IModalProps {
   params: {
@@ -34,7 +35,7 @@ const ViewEmployeePayrollBreakdown: React.FC<IProps> = ({
 }) => {
   const queryClient = useQueryClient();
 
-  const { baseCurrency, loading: baseCurrLoading } =
+  const { loading: baseCurrLoading, formatValueWithCurrency } =
     useGetCompanyBaseCurrency();
   const { payrollId, employeeId } = params;
   const { data: employeePayroll, isLoading } = useGetSingleEmployeePayroll({
@@ -121,20 +122,20 @@ const ViewEmployeePayrollBreakdown: React.FC<IProps> = ({
     },
     {
       label: "Year to Date Net",
-      value: employeePayroll?.ytdNet,
+      value: formatValueWithCurrency(employeePayroll?.ytdNet),
     },
 
     {
       label: "Year to Date Tax",
-      value: employeePayroll?.ytdTax,
+      value: formatValueWithCurrency(employeePayroll?.ytdTax),
     },
     {
       label: "Year to Date Gross",
-      value: employeePayroll?.ytdGross,
+      value: formatValueWithCurrency(employeePayroll?.ytdGross),
     },
     {
       label: "Gross Pay",
-      value: moment(employeePayroll?.createdAt).format("YYYY-MM-DD"),
+      value: formatValueWithCurrency(employeePayroll?.grossPay),
     },
 
     {
@@ -163,7 +164,10 @@ const ViewEmployeePayrollBreakdown: React.FC<IProps> = ({
           paragraph={{ rows: 28 }}
           active
         >
-          <div className="scrollBar overflow-auto">
+          <div
+            className="scrollBar overflow-auto bg-contain bg-center bg-no-repeat "
+            style={{ backgroundImage: `url(${hcMatrixWatermarkSvg})` }}
+          >
             <div className="text-sm mt-5 font-medium">
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-2 my-2">
                 {payrollAttrs.map((item, i) => (
@@ -174,10 +178,7 @@ const ViewEmployeePayrollBreakdown: React.FC<IProps> = ({
                     } bg-transparent border shadow-md border-slate-300 flex items-center justify-between px-5 py-2`}
                   >
                     <span>{item.label}</span>
-                    <span>
-                      {item?.amount ? baseCurrency?.currencySymbol : ""}
-                      {item.value}
-                    </span>
+                    <span>{item.value}</span>
                   </div>
                 ))}
               </div>
@@ -203,8 +204,7 @@ const ViewEmployeePayrollBreakdown: React.FC<IProps> = ({
                             <tr key={i}>
                               <td className="capitalize">{item.name}</td>
                               <td>
-                                {baseCurrency?.currencySymbol}
-                                {item.calculatedAmount}
+                                {formatValueWithCurrency(item.calculatedAmount)}
                               </td>
                               {showControls && (
                                 <td>
@@ -231,10 +231,11 @@ const ViewEmployeePayrollBreakdown: React.FC<IProps> = ({
                         <tr>
                           <td>Sub Total</td>
                           <td colSpan={showControls ? 2 : 1}>
-                            {baseCurrency?.currencySymbol}
-                            {comp.type === "allowance"
-                              ? employeePayroll?.totalAllowances
-                              : employeePayroll?.totalDeductions}
+                            {formatValueWithCurrency(
+                              comp.type === "allowance"
+                                ? employeePayroll?.totalAllowances
+                                : employeePayroll?.totalDeductions
+                            )}
                           </td>
                         </tr>
                       </tbody>
@@ -245,10 +246,7 @@ const ViewEmployeePayrollBreakdown: React.FC<IProps> = ({
 
               <div className="bg-mainBg flex items-center justify-between px-5 py-2">
                 <span> Net Pay</span>
-                <span>
-                  {baseCurrency?.currencySymbol}
-                  {employeePayroll?.netPay}
-                </span>
+                <span>{formatValueWithCurrency(employeePayroll?.netPay)}</span>
               </div>
               <div className="bg-mainBg flex items-center justify-between px-5 py-2 mt-3">
                 <span>Account Number</span>

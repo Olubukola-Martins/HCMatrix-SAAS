@@ -1,6 +1,7 @@
 import { FormInstance } from "antd";
 import { TAuthUser } from "./auth-user";
 import { TGeneralAuthResponse } from "./general-auth-response";
+import { TAddress } from "types/address";
 
 export { type TAuthUser, type TGeneralAuthResponse };
 export interface IRefreshTokenProps {
@@ -90,13 +91,7 @@ export interface ICreateInvitedEmpProps {
     eligibility: string;
     maritalStatus: string;
     nationality: string;
-    address: {
-      streetAddress: string;
-      countryId: number;
-      stateId: number;
-      lgaId: number;
-      timezone?: string;
-    };
+    address: TAddress;
     passportExpirationDate?: string;
     validDocumentUrl?: string;
   };

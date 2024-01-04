@@ -33,9 +33,9 @@ export const PayrollPayslip = () => {
               }),
             },
             {
-              name: "Create Template",
+              name: "View Payslips",
               btnVariant: "transparent",
-              handleClick: () => navigate(appRoutes.createPayslipTemplate),
+              handleClick: () => navigate(appRoutes.employeePayslips),
               hidden: !canUserAccessComponent({
                 userPermissions,
                 requiredPermissions: ["view-all-payslips"],

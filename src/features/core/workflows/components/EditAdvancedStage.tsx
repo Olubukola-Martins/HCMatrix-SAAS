@@ -22,6 +22,7 @@ import useEditAdvancedStage from "../hooks/useEditAdvancedStage";
 import { QUERY_KEY_FOR_SINGLE_WORKFLOW } from "../hooks/useFetchSingleWorkflow";
 import { TAdvancedWorkflowStage } from "../hooks/useCreateAdvancedWorkflow";
 import useDeleteAdvancedStage from "../hooks/useDeleteAdvancedStage";
+import { AppButton } from "components/button/AppButton";
 
 export const EditAdvancedStage: React.FC<{
   workflowId: number;
@@ -128,7 +129,7 @@ export const EditAdvancedStage: React.FC<{
     );
   };
   return (
-    <div className="flex gap-4 items-end">
+    <div className="flex flex-col gap-4 w-full">
       <Form
         form={form}
         onFinish={handleFinish}
@@ -136,7 +137,7 @@ export const EditAdvancedStage: React.FC<{
         labelCol={{ span: 24 }}
         requiredMark={false}
       >
-        <div className="flex gap-4">
+        <div className="grid grid-cols-2 md:gap-8 gap-4">
           <Form.Item
             name={"name"}
             label={`Stage Name`}
@@ -216,29 +217,22 @@ export const EditAdvancedStage: React.FC<{
           )}
         </div>
       </Form>
-      <div className="flex gap-4 mb-6">
+      <div className="flex gap-4 justify-end mb-6">
+        <AppButton
+          label="Delete"
+          variant="transparent"
+          isLoading={isDelLoading}
+          handleClick={() => removeStage()}
+        />
         {!edit ? (
-          <Button icon={<EditOutlined />} onClick={() => setEdit(true)}>
-            Edit
-          </Button>
+          <AppButton label="Edit" handleClick={() => setEdit(true)} />
         ) : (
-          <Button
-            icon={<SaveOutlined />}
-            type="primary"
-            onClick={() => form.submit()}
-            loading={isLoading}
-          >
-            Save
-          </Button>
+          <AppButton
+            label="Save"
+            handleClick={() => form.submit()}
+            isLoading={isLoading}
+          />
         )}
-        <Button
-          icon={<DeleteOutlined />}
-          type="dashed"
-          loading={isDelLoading}
-          onClick={() => removeStage()}
-        >
-          Delete
-        </Button>
       </div>
     </div>
   );

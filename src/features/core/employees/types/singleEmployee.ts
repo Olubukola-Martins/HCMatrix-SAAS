@@ -384,6 +384,8 @@ interface Address {
   country: Country;
   state: State;
   lga: Lga;
+  latitude?: string;
+  longitude?: string;
 }
 
 interface Lga {

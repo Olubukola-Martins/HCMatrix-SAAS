@@ -544,10 +544,11 @@ const CreatePayrollContainer: React.FC<{
     useRollbackPayroll();
 
   const handleRollback = () => {
-    if (payrollId) {
+    const _payrollId = payrollD?.payrollId ?? payrollId ?? payroll?.id;
+    if (_payrollId) {
       mutateRollback(
         {
-          id: payrollId,
+          id: _payrollId,
         },
         {
           onError: (err: any) => {
@@ -582,10 +583,11 @@ const CreatePayrollContainer: React.FC<{
   const navigate = useNavigate();
 
   const handleDelete = () => {
-    if (payrollId) {
+    const _payrollId = payrollD?.payrollId ?? payrollId ?? payroll?.id;
+    if (_payrollId) {
       mutateDelete(
         {
-          id: payrollId,
+          id: _payrollId,
         },
         {
           onError: (err: any) => {

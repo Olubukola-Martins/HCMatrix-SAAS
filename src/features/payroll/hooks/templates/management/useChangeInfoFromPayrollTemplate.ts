@@ -16,7 +16,10 @@ type TData = {
   templateInfoId: number;
   action: TChangeInfoFromPayrollTemplateAction;
 };
-const createData = async (props: { data: TData; auth: ICurrentCompany }) => {
+export const changeInfoFromPayrollTemplate = async (props: {
+  data: TData;
+  auth: ICurrentCompany;
+}) => {
   const url = `${MICROSERVICE_ENDPOINTS.PAYROLL}/template/${props.data.type}/${props.data.templateId}/management/${props.data.infoType}/${props.data.templateInfoId}`;
   const config = {
     headers: {
@@ -39,6 +42,6 @@ const createData = async (props: { data: TData; auth: ICurrentCompany }) => {
 export const useChangeInfoFromPayrollTemplate = () => {
   const { token, companyId } = useApiAuth();
   return useMutation((props: TData) =>
-    createData({ data: props, auth: { token, companyId } })
+    changeInfoFromPayrollTemplate({ data: props, auth: { token, companyId } })
   );
 };

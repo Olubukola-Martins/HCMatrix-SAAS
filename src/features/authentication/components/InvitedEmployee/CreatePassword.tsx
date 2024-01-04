@@ -1,6 +1,6 @@
 import { Form, Input } from "antd";
 import { stepperInputProps } from "features/authentication/types";
-import { generalValidationRules } from "utils/formHelpers/validation";
+import { passwordValidationRules } from "utils/formHelpers/validation";
 
 export const CreatePassword = ({
   onFinished,
@@ -21,7 +21,7 @@ export const CreatePassword = ({
         <Form.Item
           name="password"
           label="Enter Password"
-          rules={generalValidationRules}
+          rules={passwordValidationRules}
         >
           <Input.Password placeholder="Password" />
         </Form.Item>

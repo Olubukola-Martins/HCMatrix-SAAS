@@ -28,6 +28,8 @@ export const verifyEmployeeInvite = async (props: ICreateInvitedEmpProps) => {
         stateId: props.personalInformation.address.stateId,
         lgaId: props.personalInformation.address.lgaId,
         timezone: props.personalInformation.address.timezone,
+        latitude: props.personalInformation.address.latitude,
+        longitude: props.personalInformation.address.longitude,
       },
       passportExpirationDate: props.personalInformation.passportExpirationDate,
       validDocumentUrl: props.personalInformation.validDocumentUrl,
