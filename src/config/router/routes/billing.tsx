@@ -28,7 +28,7 @@ export const billingRoutes: TRouteData[] = [
   },
   {
     element: <SubsciptionManagement />,
-    path: appRoutes.billingSubscriptions,
+    path: appRoutes.billingSubscription,
     title: "Subscriptions",
     isSearchable: true,
   },

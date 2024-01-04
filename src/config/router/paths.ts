@@ -133,9 +133,14 @@ export const appRoutes = {
   billingStatement: `/statement`,
   billings: `/billings`,
   purchaseUserLicense: `/purchase-user-license`,
+
+  billingHistory: `billing/history`, //to be removed
   // start here
-  billingSubscriptions: `/billings/subscriptions`,
-  billingHistory: `/billings/history`,
+  billingSubscription: `/billings/subscription`,
+  billingSubscriptionPurshaseUserLicense: `/billings/subscriptions/purchase-user-license`,
+  billingSummary: `/billings/summary`,
+  billingStorageManagement: `/billings/storage-management`,
+  billingTrainingSession: `/billings/training-session`,
 
   // payroll routes
   payrollHome: `/payroll/home`,
