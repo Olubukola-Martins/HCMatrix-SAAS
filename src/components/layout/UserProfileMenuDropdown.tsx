@@ -109,12 +109,7 @@ const UserActions: React.FC<{
       hidden: false,
       isLink: false,
     },
-    {
-      url: "/billings",
-      text: "Billings",
-      hidden: false,
-      isLink: true,
-    },
+
     {
       url: appRoutes.billingSubscription,
       text: "Subscriptions",
@@ -123,13 +118,13 @@ const UserActions: React.FC<{
     },
     {
       url: appRoutes.billingSummary,
-      text: "Billing Summary",
+      text: "Billing",
       hidden: false,
       isLink: true,
     },
     {
       url: appRoutes.billingStorageManagement,
-      text: "Storage Management",
+      text: "Storage",
       hidden: false,
       isLink: true,
     },
