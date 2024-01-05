@@ -1,15 +1,15 @@
-import { Form, Input, Select } from "antd";
-import { FormCountryInput } from "components/generalFormInputs/FormCountryInput";
+import { Form, FormInstance, Input } from "antd";
+import { FormAddressInput } from "components/generalFormInputs/FormAddressInput";
 import { FormPhoneInput } from "components/generalFormInputs/FormPhoneInput";
-import { FormStateInput } from "components/generalFormInputs/FormStateInput";
 import React from "react";
 import { boxStyle, boxTitle } from "styles/reused";
 import { generalValidationRules } from "utils/formHelpers/validation";
 
 type IProps = {
   Form: typeof Form;
+  form: FormInstance;
 };
-type TInputType = "input" | "select" | "phone" | "country" | "state";
+type TInputType = "input" | "phone" | "address";
 const BILLING_FORM_ITEMS: {
   name: string;
   title: string;
@@ -17,42 +17,23 @@ const BILLING_FORM_ITEMS: {
   options?: { value: string; label: string }[];
 }[] = [
   {
-    name: "Billing Name/Company Name",
+    name: "billingName",
     title: "Billing Name/Company Name",
     inputType: "input",
   },
   {
-    name: "Phone Number",
+    name: "phoneNumber",
     title: "Phone Number",
     inputType: "phone",
   },
+
   {
-    name: "Country",
-    title: "Country",
-    inputType: "country",
-  },
-  {
-    name: "Street Address",
-    title: "Street Address",
-    inputType: "input",
-  },
-  {
-    name: "State",
-    title: "State",
-    inputType: "state",
-  },
-  {
-    name: "City",
-    title: "City",
-    inputType: "input",
-  },
-  {
-    name: "Zip Code",
-    title: "Zip Code",
-    inputType: "input",
+    name: "address",
+    title: "Address",
+    inputType: "address",
   },
 ];
-const BillingDetailsSection: React.FC<IProps> = ({ Form }) => {
+const BillingDetailsSection: React.FC<IProps> = ({ Form, form }) => {
   return (
     <div className={`${boxStyle} text-sm bg-card`}>
       <div className="flex items-center justify-between">
@@ -62,6 +43,7 @@ const BillingDetailsSection: React.FC<IProps> = ({ Form }) => {
         <div className="flex flex-col gap-2 mt-5">
           {BILLING_FORM_ITEMS.map(({ name, options, title, inputType }, i) => (
             <BillingFormItem
+              form={form}
               Form={Form}
               name={name}
               title={title}
@@ -77,13 +59,13 @@ const BillingDetailsSection: React.FC<IProps> = ({ Form }) => {
 };
 
 const BillingFormItem: React.FC<
-  Pick<IProps, "Form"> & {
+  Pick<IProps, "Form" | "form"> & {
     name: string;
     title: string;
     options?: { label: string; value: string }[];
     inputType: TInputType;
   }
-> = ({ Form, name, title, options, inputType }) => {
+> = ({ Form, name, title, options, inputType, form }) => {
   return (
     <div className={`${boxStyle} text-sm`}>
       <div className="flex items-center justify-between mb-4">
@@ -94,22 +76,16 @@ const BillingFormItem: React.FC<
           <Input placeholder={title} />
         </Form.Item>
       )}
-      {inputType === "select" && (
-        <Form.Item name={name} rules={generalValidationRules}>
-          <Select placeholder={title} options={options} />
-        </Form.Item>
-      )}
-      {inputType === "country" && (
-        <FormCountryInput
-          Form={Form}
-          control={{ name: "countryId", label: "" }}
-        />
-      )}
-      {inputType === "state" && (
-        <FormStateInput Form={Form} control={{ label: "", name: "stateId" }} />
-      )}
+
       {inputType === "phone" && (
         <FormPhoneInput Form={Form} control={{ name, label: "" }} />
+      )}
+      {inputType === "address" && (
+        <FormAddressInput
+          form={form}
+          Form={Form}
+          control={{ name, label: "" }}
+        />
       )}
     </div>
   );

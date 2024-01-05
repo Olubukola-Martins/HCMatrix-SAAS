@@ -4,6 +4,7 @@ import { useQuery } from "react-query";
 import { ICurrentCompany, IPaginationProps } from "types";
 import { DEFAULT_PAGE_SIZE } from "constants/general";
 import { useApiAuth } from "hooks/useApiAuth";
+import { TBillingCycle } from "features/billing/types/billingCycle";
 
 interface IGetDataProps {
   pagination?: IPaginationProps;
@@ -18,7 +19,7 @@ type TResponseData = {
   licensedEmployeeCount: number;
   unlicensedEmployeeCount: number;
   totalAmount: string;
-  billingCycle: string;
+  billingCycle: TBillingCycle;
   createdAt: string;
   updatedAt: string;
 };

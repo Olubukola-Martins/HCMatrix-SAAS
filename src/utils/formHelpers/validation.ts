@@ -100,11 +100,12 @@ export const textInputValidationRulesOp: Rule[] = [
   },
 ];
 export const numberHasToBeAWholeNumberRule: Rule = {
-  validator: async (val, value: any) => {
+  validator: async (val, _value: any) => {
+    const value = +_value;
     if (typeof value !== "number") {
       throw new Error("Please enter a valid number!");
     }
-    if (typeof value === "number" && +value === 0) {
+    if (typeof value === "number" && value === 0) {
       throw new Error("Please enter a value greater than 0!");
     }
     if (!Number.isInteger(value)) {

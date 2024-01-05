@@ -35,7 +35,7 @@ const getData = async (props: {
   return ans;
 };
 
-export const useGetAllTrainingSessions = () => {
+export const useGetAllSupportCases = () => {
   const { token, companyId } = useApiAuth();
 
   const queryData = useQuery(

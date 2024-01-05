@@ -115,7 +115,7 @@ export interface CompanySubscriptionAttributeI {
 
   autoRenew: boolean;
 
-  billingCycle: string;
+  billingCycle: IBillingCycle;
 
   startDate: Date;
 

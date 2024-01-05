@@ -25,12 +25,9 @@ export const SUBSCRIPTION_ADD_ONS: TAddOn[] = [
       { label: "Support Case 2", value: "Support Case 2" },
     ],
   },
-  {
-    name: "billingCycle",
-    title: "Select your Billing Cycle",
-    options: [
-      { label: "Support Case 1", value: "Support Case 1" },
-      { label: "Support Case 2", value: "Support Case 2" },
-    ],
-  },
 ];
+
+export const PRICE_TYPE_CURRENCY = {
+  ngn: "₦",
+  usd: "$",
+};

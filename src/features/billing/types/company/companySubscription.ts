@@ -1,11 +1,14 @@
+import { TBillingCycle } from "../billingCycle";
+import { TSubscriptionPriceType } from "../priceType";
+
 export type TCompanySubscription = {
   id: number;
   companyId: number;
   isActive: boolean;
   isFreeTrial: boolean;
   autoRenew: boolean;
-  billingCycle: string;
-  priceType: string;
+  billingCycle: TBillingCycle;
+  priceType: TSubscriptionPriceType;
   startDate: string;
   endDate: string;
   licensedEmployeeCount: number;

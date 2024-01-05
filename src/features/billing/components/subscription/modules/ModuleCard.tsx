@@ -3,7 +3,7 @@ import FramerAccordian from "components/accordian/FramerAccordian";
 import React from "react";
 
 export interface IModuleCardProps {
-  pricePerEmployee: {
+  pricePerLicensedEmployee: {
     amount: number;
     currency: string;
   };
@@ -14,23 +14,28 @@ export interface IModuleCardProps {
   };
   features?: string[];
   disabled?: boolean;
+  subscriptionId?: number;
 }
-const ModuleCard: React.FC<IModuleCardProps> = ({
+const ModuleCard: React.FC<
+  IModuleCardProps & { Checkbox: typeof Checkbox }
+> = ({
   features,
   disabled,
   icon,
-  pricePerEmployee,
+  pricePerLicensedEmployee,
   title,
+  subscriptionId,
+  Checkbox,
 }) => {
   return (
     <>
       <FramerAccordian
         heading={
           <div className="flex gap-4 items-center py-1">
-            <Checkbox disabled={disabled} />
+            <Checkbox disabled={disabled} value={subscriptionId} />
             <div className="flex gap-10 items-center">
               {icon}
-              <h5 className="text-base lg:text-2xl  font-semibold">
+              <h5 className="text-base lg:text-xl text-accent  font-semibold">
                 {title.mainText}
               </h5>
               {title?.supportingText ? (
@@ -55,10 +60,10 @@ const ModuleCard: React.FC<IModuleCardProps> = ({
             <div className="inline-flex flex-col items-center justify-center gap-[2px] relative flex-[0_0_auto]">
               <div className="inline-flex items-start gap-[2px] relative flex-[0_0_auto]">
                 <div className="relative w-fit mt-[-1.00px] [font-family:'Inter',Helvetica] font-semibold text-black text-[18px] text-center tracking-[-0.18px] leading-[normal]">
-                  {pricePerEmployee.currency}
+                  {pricePerLicensedEmployee.currency}
                 </div>
                 <div className="relative w-fit mt-[-1.00px] [font-family:'Inter',Helvetica] font-semibold text-[#3a3a3a] text-[34px] text-center tracking-[-0.34px] leading-[normal]">
-                  {pricePerEmployee.amount}
+                  {pricePerLicensedEmployee.amount}
                 </div>
               </div>
               <div className="relative w-fit [font-family:'Roboto',Helvetica] font-normal text-text-slate-color40 text-[14px] text-center tracking-[0.14px] leading-[normal] whitespace-nowrap">

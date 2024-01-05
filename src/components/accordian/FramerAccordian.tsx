@@ -28,16 +28,14 @@ const FramerAccordian: React.FC<IProps> = ({
       <motion.div
         className="heading px-3 lg:px-6 py-4 border-0 border-b flex justify-between cursor-pointer"
         style={{ height: headerHeight }}
+        onClick={() => setIsOpen(!isOpen)}
       >
         {heading}
         <motion.div
           className="dropdown-btn"
           animate={{ rotate: isOpen ? 180 : 0 }}
         >
-          <i
-            className="fa fa-caret-down cursor-pointer"
-            onClick={() => setIsOpen(!isOpen)}
-          />
+          <i className="fa fa-caret-down cursor-pointer" />
         </motion.div>
       </motion.div>
       <AnimatePresence>
