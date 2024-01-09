@@ -8,15 +8,22 @@ import { useState } from "react";
 import { boxStyle } from "styles/reused";
 import { formatNumberWithCommas } from "utils/dataHelpers/formatNumberWithCommas";
 import { CancelSubscription } from "../../subscription/CancelSubscription";
+import BillingInvoice from "../BillingInvoice";
 
 const BillingSubscriptionBalance = () => {
   const { isFetching, data } = useGetCompanyActiveSubscription();
-  const [action, setAction] = useState<"cancel-subscription">();
+  const [action, setAction] = useState<"cancel-subscription" |  "download-invoice">();
+
   return (
     <div className="grid grid-cols-2">
       <CancelSubscription
         open={action === "cancel-subscription"}
         handleClose={() => setAction(undefined)}
+      />
+      <BillingInvoice
+        open={action === "download-invoice"}
+        handleClose={() => setAction(undefined)}
+        subscription={data}
       />
       <div
         className={`${boxStyle} text-sm bg-card flex flex-col gap-4 items-stretch`}
@@ -73,7 +80,7 @@ const BillingSubscriptionBalance = () => {
           type="button"
           additionalClassNames={["button", "w-full"]}
         />
-        <p className="text-center capitalize text-caramel cursor-pointer underline hover:no-underline my-4">
+        <p onClick={() => setAction('download-invoice')} className="text-center capitalize text-caramel cursor-pointer underline hover:no-underline my-4">
           Download Invoice
         </p>
         <p className="text-center">
