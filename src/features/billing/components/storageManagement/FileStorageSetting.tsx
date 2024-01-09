@@ -67,7 +67,7 @@ export const FileStorageSetting: React.FC<IModalProps> = ({ open, handleClose })
         onFinish={handleSubmit}
         requiredMark={false}
       >
-        <Form.Item rules={textInputValidationRules} name="maxFileSizePerUpload" label="Set max file size per upload">
+        <Form.Item  name="maxFileSizePerUpload" label="Set max file size per upload">
         <Input.Group compact>
           <Form.Item
             noStyle
