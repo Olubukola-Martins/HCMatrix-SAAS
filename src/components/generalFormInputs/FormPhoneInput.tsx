@@ -22,7 +22,7 @@ export const FormPhoneInput: React.FC<{
   optional = false,
 }) => {
   const { data: countries, isSuccess } = useFetchCountries();
-  const [searchedCountries, setSearchedCountries] = useState<TCountry[]>();
+  const [searchedCountries, setSearchedCountries] = useState<TCountry[]>([]);
 
   const handleCountrySearch = (val: string) => {
     if (isSuccess) {
@@ -39,7 +39,8 @@ export const FormPhoneInput: React.FC<{
     }
   };
 
-  const mainCountries = !!searchedCountries ? searchedCountries : countries;
+  const mainCountries =
+    searchedCountries.length > 0 ? searchedCountries : countries;
   if (isSuccess) {
     return (
       <Form.Item name={control.name} label={showLabel ? control?.label : null}>
@@ -78,7 +79,6 @@ export const FormPhoneInput: React.FC<{
               style={{ width: "75%" }}
               placeholder="Phone"
               className="rounded border-slate-400 text-left"
-              autoComplete="phone"
             />
           </Form.Item>
         </Input.Group>

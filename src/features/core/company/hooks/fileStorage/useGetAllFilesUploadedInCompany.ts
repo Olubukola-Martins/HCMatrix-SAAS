@@ -1,38 +1,29 @@
 import axios from "axios";
 import { MICROSERVICE_ENDPOINTS } from "config/enviroment";
 import { useQuery } from "react-query";
-import { ICurrentCompany, IPaginationProps } from "types";
+import { ICurrentCompany, IPaginationProps, ISearchParams } from "types";
 import { DEFAULT_PAGE_SIZE } from "constants/general";
 import { useApiAuth } from "hooks/useApiAuth";
-import { TBillingCycle } from "features/billing/types/billingCycle";
+import { TFileUploadedInCompany } from "../../types/fileStorage/fileUploadedInCompany";
 
 interface IGetDataProps {
   pagination?: IPaginationProps;
+  searchParams?: ISearchParams;
+  stateId?: number;
 }
 
-export const QUERY_KEY_FOR_ALL_COMPANY_SUBCRIPTION_TRANSACTIONS =
-  "all-company-subscription-transactions";
-
-export type TBillingTransaction = {
-  id: number;
-  purchasedCount: number;
-  licensedEmployeeCount: number;
-  unlicensedEmployeeCount: number;
-  totalAmount: string;
-  billingCycle: TBillingCycle;
-  createdAt: string;
-  updatedAt: string;
-};
+export const QUERY_KEY_FOR_ALL_FILES_UPLOADED_IN = "files-uploaded-in-company";
 
 const getData = async (props: {
   data: IGetDataProps;
   auth: ICurrentCompany;
-}): Promise<{ data: TBillingTransaction[]; total: number }> => {
+}): Promise<{ data: TFileUploadedInCompany[]; total: number }> => {
   const { pagination } = props.data;
   const limit = pagination?.limit ?? DEFAULT_PAGE_SIZE;
   const offset = pagination?.offset ?? 0;
+  const name = props.data.searchParams?.name ?? "";
 
-  let url = `${MICROSERVICE_ENDPOINTS.UTILITY}/subscription/company/transaction`;
+  let url = `${MICROSERVICE_ENDPOINTS.UTILITY}/company/file-storage`;
 
   const config = {
     headers: {
@@ -43,6 +34,8 @@ const getData = async (props: {
     params: {
       limit,
       offset,
+      search: name,
+      stateId: props.data.stateId,
     },
   };
 
@@ -50,8 +43,8 @@ const getData = async (props: {
   const fetchedData = res.data.data;
   const result = fetchedData.result;
 
-  const data: TBillingTransaction[] = result.map(
-    (item: TBillingTransaction): TBillingTransaction => ({ ...item })
+  const data: TFileUploadedInCompany[] = result.map(
+    (item: TFileUploadedInCompany): TFileUploadedInCompany => ({ ...item })
   );
 
   const ans = {
@@ -62,16 +55,16 @@ const getData = async (props: {
   return ans;
 };
 
-export const useGetAllSubscriptionTransactions = ({
+export const useGetAllFilesUploadedInCompany = ({
   props,
 }: {
   props: IGetDataProps;
 }) => {
   const { token, companyId } = useApiAuth();
 
-  const { pagination } = props;
+  const { pagination, searchParams, stateId } = props;
   const queryData = useQuery(
-    [QUERY_KEY_FOR_ALL_COMPANY_SUBCRIPTION_TRANSACTIONS, pagination],
+    [QUERY_KEY_FOR_ALL_FILES_UPLOADED_IN, stateId, pagination, searchParams],
     () =>
       getData({
         auth: { token, companyId },

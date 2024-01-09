@@ -22,7 +22,7 @@ export const PageIntro = ({
 }: IntroProps) => {
   return (
     <Skeleton loading={loading} active paragraph={{ rows: 2 }}>
-      <div className="flex justify-between items-center">
+      <div className="flex gap-y-3 flex-col lg:flex-row lg:justify-between lg:items-center">
         <div className="flex items-center gap-3 font-extrabold ">
           {link && (
             <Link to={link}>

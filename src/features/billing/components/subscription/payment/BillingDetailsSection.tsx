@@ -8,12 +8,14 @@ import { generalValidationRules } from "utils/formHelpers/validation";
 type IProps = {
   Form: typeof Form;
   form: FormInstance;
+  size?: "lg" | "sm";
 };
 type TInputType = "input" | "phone" | "address";
 const BILLING_FORM_ITEMS: {
   name: string;
   title: string;
   inputType: TInputType;
+  gridSpanClass?: string;
   options?: { value: string; label: string }[];
 }[] = [
   {
@@ -33,14 +35,18 @@ const BILLING_FORM_ITEMS: {
     inputType: "address",
   },
 ];
-const BillingDetailsSection: React.FC<IProps> = ({ Form, form }) => {
+const BillingDetailsSection: React.FC<IProps> = ({
+  Form,
+  form,
+  size = "sm",
+}) => {
   return (
     <div className={`${boxStyle} text-sm bg-card`}>
       <div className="flex items-center justify-between">
         <h5 className={boxTitle}>Billing Details</h5>
       </div>
       <div>
-        <div className="flex flex-col gap-2 mt-5">
+        <div className="grid grid-cols-2 gap-2 mt-5">
           {BILLING_FORM_ITEMS.map(({ name, options, title, inputType }, i) => (
             <BillingFormItem
               form={form}
@@ -50,6 +56,13 @@ const BillingDetailsSection: React.FC<IProps> = ({ Form, form }) => {
               options={options}
               key={i}
               inputType={inputType}
+              gridSpanClass={
+                size === "lg"
+                  ? inputType === "address"
+                    ? "col-span-2"
+                    : "col-span-1"
+                  : undefined
+              }
             />
           ))}
         </div>
@@ -64,10 +77,19 @@ const BillingFormItem: React.FC<
     title: string;
     options?: { label: string; value: string }[];
     inputType: TInputType;
+    gridSpanClass?: string;
   }
-> = ({ Form, name, title, options, inputType, form }) => {
+> = ({
+  Form,
+  name,
+  title,
+  options,
+  inputType,
+  form,
+  gridSpanClass = "col-span-2",
+}) => {
   return (
-    <div className={`${boxStyle} text-sm`}>
+    <div className={`${boxStyle} text-sm ${gridSpanClass}`}>
       <div className="flex items-center justify-between mb-4">
         <h5 className={boxTitle}>{title}</h5>
       </div>

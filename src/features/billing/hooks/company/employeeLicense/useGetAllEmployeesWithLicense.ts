@@ -53,11 +53,7 @@ const getData = async (props: {
   return ans;
 };
 
-export const useGetAllEmployeesWithLicense = ({
-  props,
-}: {
-  props: IGetDataProps;
-}) => {
+export const useGetAllEmployeesWithLicense = (props: IGetDataProps) => {
   const { token, companyId } = useApiAuth();
 
   const { pagination } = props;
@@ -66,9 +62,7 @@ export const useGetAllEmployeesWithLicense = ({
     () =>
       getData({
         auth: { token, companyId },
-        data: {
-          ...props,
-        },
+        data: props,
       }),
     {
       onError: (err: any) => {},

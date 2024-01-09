@@ -3,6 +3,8 @@ import { appRoutes } from "../paths";
 import { TRouteData } from "../types";
 import BillingHistory from "features/billing/pages/billing/BillingHistory";
 import PurchaseEmployeeLicenses from "features/billing/pages/PurchaseEmployeeLicenses";
+import SingleBillingHistory from "features/billing/pages/billing/SingleBillingHistory";
+import StorageManagements from "features/billing/pages/StorageManagements";
 
 export const billingRoutes: TRouteData[] = [
   {
@@ -11,8 +13,13 @@ export const billingRoutes: TRouteData[] = [
     isSearchable: false,
   },
   {
-    element: <div />,
-    path: appRoutes.billings,
+    element: <SingleBillingHistory />,
+    path: appRoutes.singleBillingSummary().format,
+    isSearchable: false,
+  },
+  {
+    element: <BillingHistory />,
+    path: appRoutes.billingSummary,
     isSearchable: false,
   },
   {
@@ -20,17 +27,17 @@ export const billingRoutes: TRouteData[] = [
     path: appRoutes.purchaseUserLicense,
     isSearchable: false,
   },
-  // start here
-  {
-    element: <BillingHistory />,
-    path: appRoutes.billingHistory,
-    title: "Billing History",
-    isSearchable: true,
-  },
+
   {
     element: <SubsciptionManagement />,
     path: appRoutes.billingSubscription,
     title: "Subscriptions",
+    isSearchable: true,
+  },
+  {
+    element: <StorageManagements />,
+    path: appRoutes.billingStorageManagement,
+    title: "Storage Management",
     isSearchable: true,
   },
 ];

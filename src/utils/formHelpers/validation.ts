@@ -452,8 +452,9 @@ export const phoneNumberValidationRule: Rule = {
   required: true,
   whitespace: true,
   validator: async (rule, value) => {
+    if (value === undefined) throw new Error("Please enter a number");
     if (value !== undefined && isPhoneNumberValid(value) === false)
-      throw new Error("Pleas enter a valid phone number");
+      throw new Error("Please enter a valid phone number");
     // if (false) throw new Error("Something wrong!");
     return true;
   },

@@ -18,7 +18,7 @@ export const SupplementaryActions: React.FC<SupplementaryActionsProps> = ({
   comps,
 }) => {
   return (
-    <div className="flex gap-4 items-center ">
+    <div className="flex flex-row flex-wrap lg:flex-nowrap gap-4 lg:items-center ">
       {actions?.some((item) => item.hidden)
         ? actions
             ?.filter((item) => item.hidden === false)

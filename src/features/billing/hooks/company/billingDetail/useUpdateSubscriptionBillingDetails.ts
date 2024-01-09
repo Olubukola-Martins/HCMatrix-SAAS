@@ -5,13 +5,16 @@ import { useMutation } from "react-query";
 import { ICurrentCompany } from "types";
 import { TAddress } from "types/address";
 
-type TProps = {
+export type TUpdateBillingDetailsProps = {
   billingName: string;
   phoneNumber: string;
   address: TAddress;
 };
 
-const createData = async (props: { data: TProps; auth: ICurrentCompany }) => {
+const createData = async (props: {
+  data: TUpdateBillingDetailsProps;
+  auth: ICurrentCompany;
+}) => {
   const url = `${MICROSERVICE_ENDPOINTS.UTILITY}/subscription/company/billing-detail`;
   const config = {
     headers: {
@@ -21,7 +24,7 @@ const createData = async (props: { data: TProps; auth: ICurrentCompany }) => {
     },
   };
 
-  const data: TProps = {
+  const data: TUpdateBillingDetailsProps = {
     ...props.data,
   };
 
@@ -30,7 +33,7 @@ const createData = async (props: { data: TProps; auth: ICurrentCompany }) => {
 };
 export const useUpdateSubscriptionBillingDetails = () => {
   const { token, companyId } = useApiAuth();
-  return useMutation((props: TProps) =>
+  return useMutation((props: TUpdateBillingDetailsProps) =>
     createData({ data: props, auth: { token, companyId } })
   );
 };

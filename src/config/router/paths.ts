@@ -138,6 +138,11 @@ export const appRoutes = {
   purchaseUserLicense: `/purchase-user-license`,
   billingSubscription: `/billings/subscription`,
   billingSummary: `/billings/summary`,
+  singleBillingSummary: (id?: number) => ({
+    format: `/billings/summary/:id`,
+    path: `/billings/summary/${id}`,
+  }),
+
   billingStorageManagement: `/billings/storage-management`,
   billingTrainingSession: `/billings/training-session`,
 
