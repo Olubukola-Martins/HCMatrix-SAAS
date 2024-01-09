@@ -5,15 +5,11 @@ import { ICurrentCompany } from "types";
 import { useApiAuth } from "hooks/useApiAuth";
 import { TFileStorageSetting } from "features/core/company/types/fileStorage/fileStorageSetting";
 
-interface IDataProps {
-  id: number;
-}
 export const QUERY_KEY_FOR_FILE_STORAGE_SETTING = "file-storage-setting";
 const getData = async (props: {
-  data: IDataProps;
   auth: ICurrentCompany;
 }): Promise<TFileStorageSetting> => {
-  const url = `${MICROSERVICE_ENDPOINTS.UTILITY}/self-service/task/${props.data.id}`;
+  const url = `${MICROSERVICE_ENDPOINTS.UTILITY}/company/file-storage/setting`;
 
   const config = {
     headers: {
@@ -33,7 +29,7 @@ const getData = async (props: {
   return data;
 };
 
-export const useGetFileStorageSetting = (props: IDataProps) => {
+export const useGetFileStorageSetting = () => {
   const { token, companyId } = useApiAuth();
   const queryData = useQuery(
     [QUERY_KEY_FOR_FILE_STORAGE_SETTING],
@@ -43,7 +39,6 @@ export const useGetFileStorageSetting = (props: IDataProps) => {
           companyId,
           token,
         },
-        data: { ...props },
       }),
     {
       onError: (err: any) => {},
