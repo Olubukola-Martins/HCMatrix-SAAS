@@ -1,7 +1,7 @@
 import { Form, Select } from "antd";
 import React from "react";
 import { boxStyle, boxTitle } from "styles/reused";
-import { generalValidationRules } from "utils/formHelpers/validation";
+import { generalValidationRulesOp } from "utils/formHelpers/validation";
 import AppSwitch from "components/switch/AppSwitch";
 import { AddNoOfUsers } from "./AddNoOfUsers";
 import { useGetAllSupportCases } from "features/billing/hooks/addOns/supportCase/useGetAllSupportCases";
@@ -140,7 +140,7 @@ const SelectAddon: React.FC<
       <div className="flex items-center justify-between mb-4">
         <h5 className={boxTitle}>{title}</h5>
       </div>
-      <Form.Item name={name} rules={generalValidationRules}>
+      <Form.Item name={name} rules={generalValidationRulesOp}>
         <Select
           placeholder={title}
           options={options}

@@ -26,7 +26,7 @@ const createData = async (props: { data: TData; auth: ICurrentCompany }) => {
   const response = await axios.post(url, data, config);
   return response;
 };
-export const useUpgradeExtraStorage = () => {
+export const useUpgradeCompanyStorage = () => {
   const { token, companyId } = useApiAuth();
   return useMutation((props: TData) =>
     createData({ data: props, auth: { token, companyId } })

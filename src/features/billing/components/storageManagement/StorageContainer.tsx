@@ -2,9 +2,12 @@ import React from "react";
 import { StorageTransactionTable } from "./StorageTransactionTable";
 import { useGetFileStorageSetting } from "features/core/company/hooks/fileStorage/setting/useGetFileStorageSetting";
 import { Skeleton, Slider } from "antd";
+import { TFileStorageSetting } from "features/core/company/types/fileStorage/fileStorageSetting";
 
-const StorageContainer = () => {
-  const { isLoading, data } = useGetFileStorageSetting();
+const StorageContainer: React.FC<{
+  data?: TFileStorageSetting;
+  isLoading?: boolean;
+}> = ({ data, isLoading }) => {
   return (
     <Skeleton active loading={isLoading} paragraph={{ rows: 24 }}>
       <div className="space-y-6">

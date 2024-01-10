@@ -1,4 +1,4 @@
-import { Form, Input, InputNumber, Modal, Select } from "antd";
+import { Form, Input, Modal, Select } from "antd";
 import { AppButton } from "components/button/AppButton";
 import React from "react";
 import { IModalProps } from "types";
@@ -9,11 +9,13 @@ import {
 } from "utils/formHelpers/validation";
 import { openNotification } from "utils/notifications";
 import { useQueryClient } from "react-query";
-import { useSetMaxSizeFilePerUpload } from "features/core/company/hooks/fileStorage/setting/useSetMaxSizeFilePerUpload";
 import { QUERY_KEY_FOR_FILE_STORAGE_SETTING } from "features/core/company/hooks/fileStorage/setting/useGetFileStorageSetting";
+import { useUpgradeCompanyStorage } from "features/billing/hooks/addOns/extraStorage/useUpgradeCompanyStorage";
+import { TSubscriptionPriceType } from "features/billing/types/priceType";
+import { useGetAllExtraStorages } from "features/billing/hooks/addOns/extraStorage/useGetAllExtraStorages";
 
 type FormProps = {
-  maxFileSizePerUpload: { size: number; unit: "MB" | "KB" | "GB" };
+  extraStorage: { id: number; priceType: TSubscriptionPriceType };
 };
 export const UpgradeFileStorage: React.FC<IModalProps> = ({
   open,
@@ -22,12 +24,15 @@ export const UpgradeFileStorage: React.FC<IModalProps> = ({
   const queryClient = useQueryClient();
 
   const [form] = Form.useForm<FormProps>();
-  const { mutate, isLoading } = useSetMaxSizeFilePerUpload();
+  const { mutate, isLoading } = useUpgradeCompanyStorage();
+  const { data: storages, isFetching: isFetchingStorages } =
+    useGetAllExtraStorages();
 
   const handleSubmit = (data: FormProps) => {
     mutate(
       {
-        ...data.maxFileSizePerUpload,
+        extraStorageId: data.extraStorage.id,
+        priceType: data.extraStorage.priceType,
       },
       {
         onError: (err: any) => {
@@ -62,7 +67,7 @@ export const UpgradeFileStorage: React.FC<IModalProps> = ({
       open={open}
       onCancel={() => handleClose()}
       footer={null}
-      title={"Upgrade File Storage (API needed)"}
+      title={"Upgrade File Storage"}
       style={{ top: 20 }}
     >
       <Form
@@ -71,27 +76,32 @@ export const UpgradeFileStorage: React.FC<IModalProps> = ({
         onFinish={handleSubmit}
         requiredMark={false}
       >
-        <Form.Item
-          rules={textInputValidationRules}
-          name="maxFileSizePerUpload"
-          label="Set max file size per upload"
-        >
+        <Form.Item name="extraStorage" label="Extra Storage">
           <Input.Group compact>
             <Form.Item
               noStyle
-              rules={[numberHasToBeGreaterThanValueRule(0)]}
-              name={["maxFileSizePerUpload", "size"]}
+              rules={generalValidationRules}
+              name={["extraStorage", "id"]}
             >
-              <InputNumber placeholder="size" style={{ width: "75%" }} />
+              <Select
+                loading={isFetchingStorages}
+                placeholder="Size"
+                style={{ width: "75%" }}
+                options={storages?.data.map((item) => ({
+                  label: item.name,
+                  value: item.id,
+                }))}
+              />
             </Form.Item>
             <Form.Item
               noStyle
               rules={generalValidationRules}
-              name={["maxFileSizePerUpload", "unit"]}
+              name={["extraStorage", "priceType"]}
             >
               <Select
+                placeholder="Currency"
                 style={{ width: "25%" }}
-                options={["MB", "KB", "GB"].map((item) => ({
+                options={["ngn", "usd"].map((item) => ({
                   label: item,
                   value: item,
                 }))}
@@ -101,7 +111,7 @@ export const UpgradeFileStorage: React.FC<IModalProps> = ({
         </Form.Item>
 
         <div className="flex justify-end">
-          <AppButton type="submit" isLoading={isLoading} disabled />
+          <AppButton type="submit" isLoading={isLoading} />
         </div>
       </Form>
     </Modal>
