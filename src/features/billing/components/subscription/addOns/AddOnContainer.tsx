@@ -9,6 +9,7 @@ import { PRICE_TYPE_CURRENCY } from "features/billing/constants";
 import { useGetCreateCompanySubscriptionSummary } from "features/billing/hooks/useGetCreateCompanySubscriptionSummary";
 import { TSubscription } from "features/billing/types/subscription";
 import SummarySection from "../SummarySection";
+import { formatNumberWithCommas } from "utils/dataHelpers/formatNumberWithCommas";
 
 const AddOnContainer: React.FC<{
   Form: typeof Form;
@@ -42,12 +43,16 @@ const AddOnContainer: React.FC<{
         <div className="flex flex-col gap-4">
           <SelectedModulesSection
             Form={Form}
-            pricePerUser={`${PRICE_TYPE_CURRENCY[selectedPriceType]} ${pricePerLicensedEmployee}`}
+            pricePerUser={`${
+              PRICE_TYPE_CURRENCY[selectedPriceType]
+            } ${formatNumberWithCommas(pricePerLicensedEmployee)}`}
             selectedModules={selectedModules.map((item) => item.name)}
           />
           <AddOnSection
             Form={Form}
-            pricePerUser={`${PRICE_TYPE_CURRENCY[selectedPriceType]} ${pricePerUnLicensedEmployee}`}
+            pricePerUser={`${
+              PRICE_TYPE_CURRENCY[selectedPriceType]
+            } ${formatNumberWithCommas(pricePerUnLicensedEmployee)}`}
             autoRenewal={autoRenewal}
             handleAutoRenewal={handleAutoRenewal}
           />

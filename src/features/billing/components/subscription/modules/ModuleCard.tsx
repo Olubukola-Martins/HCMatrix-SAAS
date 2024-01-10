@@ -1,6 +1,7 @@
 import { Checkbox } from "antd";
 import FramerAccordian from "components/accordian/FramerAccordian";
 import React from "react";
+import { formatNumberWithCommas } from "utils/dataHelpers/formatNumberWithCommas";
 
 export interface IModuleCardProps {
   pricePerLicensedEmployee?: {
@@ -63,7 +64,7 @@ const ModuleCard: React.FC<
                   {pricePerLicensedEmployee?.currency}
                 </div>
                 <div className="relative w-fit mt-[-1.00px] [font-family:'Inter',Helvetica] font-semibold text-[#3a3a3a] text-[34px] text-center tracking-[-0.34px] leading-[normal]">
-                  {pricePerLicensedEmployee?.amount}
+                  {formatNumberWithCommas(pricePerLicensedEmployee?.amount)}
                 </div>
               </div>
               <div className="relative w-fit [font-family:'Roboto',Helvetica] font-normal text-text-slate-color40 text-[14px] text-center tracking-[0.14px] leading-[normal] whitespace-nowrap">
