@@ -110,7 +110,6 @@ const PurchasedModules: React.FC<{
               </div>
             }
             title={item.subscription.name}
-            desc={item.subscription.description}
             loading={isLoading}
             key={i}
           />
