@@ -64,11 +64,11 @@ const ModuleCard: React.FC<
                   {pricePerLicensedEmployee?.currency}
                 </div>
                 <div className="relative w-fit mt-[-1.00px] [font-family:'Inter',Helvetica] font-semibold text-[#3a3a3a] text-[34px] text-center tracking-[-0.34px] leading-[normal]">
-                  {formatNumberWithCommas(pricePerLicensedEmployee?.amount)}
+                  {pricePerLicensedEmployee?.amount}
                 </div>
               </div>
               <div className="relative w-fit [font-family:'Roboto',Helvetica] font-normal text-text-slate-color40 text-[14px] text-center tracking-[0.14px] leading-[normal] whitespace-nowrap">
-                {pricePerLicensedEmployee && "per employee"}
+                {pricePerLicensedEmployee ? "per employee" : ""}
               </div>
             </div>
           </div>

@@ -7,6 +7,7 @@ export type TSubscription = {
   createdAt: string;
   updatedAt: string;
   prices: Price[];
+  iconUrl?: string | null;
   resources: Resource2[];
 };
 

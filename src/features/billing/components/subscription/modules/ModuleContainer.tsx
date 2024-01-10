@@ -49,7 +49,7 @@ const ModuleContainer: React.FC<{
                 <img
                   className="w-[16px] h-[16px]"
                   alt="Employee Management"
-                  src={employeeManagementSvg}
+                  src={item?.iconUrl ? item.iconUrl : employeeManagementSvg}
                 />
               </div>
             ),
