@@ -49,7 +49,11 @@ const UserProfileMenu: React.FC<{
         </Link>
       </div>
 
-      <UserActions userPermissions={userPermissions} closeMenu={closeMenu} />
+      <UserActions
+        userPermissions={userPermissions}
+        closeMenu={closeMenu}
+        isOwner={!!employee?.isOwner}
+      />
       <ThemeChanger colorFns={colorFns} />
       <div
         onClick={handleLogOut}
@@ -63,9 +67,10 @@ const UserProfileMenu: React.FC<{
 };
 
 const UserActions: React.FC<{
+  isOwner: boolean;
   userPermissions: TPermissionLabel[];
   closeMenu: () => void;
-}> = ({ userPermissions, closeMenu }) => {
+}> = ({ userPermissions, closeMenu, isOwner }) => {
   type TAction = "transfer-ownership" | "setup-2fa";
   const [action, setAction] = useState<TAction>();
   const { data: companyParams } = useGetCompanyParamSetting();
@@ -92,10 +97,12 @@ const UserActions: React.FC<{
     {
       url: appRoutes.delegationSettings,
       text: "Delegations",
-      hidden: !canUserAccessComponent({
-        userPermissions,
-        requiredPermissions: ["create-delegations", "view-all-delegations"],
-      }),
+      hidden: !(
+        canUserAccessComponent({
+          userPermissions,
+          requiredPermissions: ["create-delegations", "view-all-delegations"],
+        }) && isOwner
+      ),
       isLink: true,
     },
     {
@@ -113,25 +120,28 @@ const UserActions: React.FC<{
     {
       url: appRoutes.billingSubscription,
       text: "Subscriptions",
-      hidden: false,
+      hidden: isOwner === false,
       isLink: true,
     },
     {
       url: appRoutes.billingSummary,
       text: "Billing",
-      hidden: false,
+      hidden: isOwner === false,
+
       isLink: true,
     },
     {
       url: appRoutes.billingStorageManagement,
       text: "Storage",
-      hidden: false,
+      hidden: isOwner === false,
+
       isLink: true,
     },
     {
       url: appRoutes.billingTrainingSession,
       text: "Training Session",
-      hidden: false,
+      hidden: isOwner === false,
+
       isLink: true,
     },
     {

@@ -16,7 +16,7 @@ type TData = {
 };
 
 export const useGenerateDBSidebarLinks = (): TData => {
-  const { userPermissions, licenseType } = useGetUserPermissions();
+  const { userPermissions, licenseType, isOwner } = useGetUserPermissions();
   const isUserLicensed = licenseType === "licensed";
   const sidebarRoutes: TSideBarRoute[] = [
     {
@@ -72,9 +72,9 @@ export const useGenerateDBSidebarLinks = (): TData => {
     },
     {
       name: "Subscriptions",
-      path: "/subscriptions",
+      path: `${appRoutes.billingSubscription}`,
       icon: <i className="ri-bill-line" />,
-      hidden: false,
+      hidden: isOwner === false,
       matcherKeys: ["subscription"],
     },
   ];

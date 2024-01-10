@@ -36,6 +36,7 @@ export const useGetUserPermissions = () => {
       ...userPermissionsViaDelegations,
     ],
     licenseType,
+    isOwner: !!currentCompanyEmployeeDetails?.isOwner,
   };
 };
 export const useCanUserAccessComponent = (props: {
