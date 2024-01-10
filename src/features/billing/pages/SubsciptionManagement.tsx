@@ -19,9 +19,9 @@ const SubsciptionManagement = () => {
   } = useGetCompanyActiveSubscription();
   return (
     <>
-      {subscription && subscription.isActive && (
+      {/* {subscription && subscription.isActive && (
         <Navigate to={appRoutes.purchaseUserLicense} replace={true} />
-      )}
+      )} */}
       <ErrorBoundary>
         <Skeleton loading={isLoading} active paragraph={{ rows: 45 }}>
           <ErrorWrapper
