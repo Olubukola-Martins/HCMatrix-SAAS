@@ -18,6 +18,7 @@ export const useGetCreateCompanySubscriptionSummary = (props: {
       unlicensedEmployeeCount,
       priceType = "usd",
       billingCycle = "yearly",
+      addOns,
     },
   } = useCreateCompanySubscriptionStateAndDispatch();
   const selectedSubscriptionIds = useMemo(
@@ -82,21 +83,24 @@ export const useGetCreateCompanySubscriptionSummary = (props: {
     useGetAllTrainingSessions();
   const vat = 0;
   const discount = 0;
-  const supportCasePrice = +(
-    supportCases?.data?.find((item) =>
-      priceType === "ngn" ? item.priceInNgn : item.priceInUsd
-    )?.priceInNgn ?? 0
+  const supportCase = supportCases?.data?.find(
+    (item) => item.id === addOns?.supportCaseId
   );
-  const storagePrice = +(
-    storages?.data?.find((item) =>
-      priceType === "ngn" ? item.priceInNgn : item.priceInUsd
-    )?.priceInNgn ?? 0
+  const supportCasePrice = (priceType === "ngn"
+    ? supportCase?.priceInNgn
+    : supportCase?.priceInUsd) as unknown as number;
+  const storage = storages?.data?.find((item) =>
+    priceType === "ngn" ? item.priceInNgn : item.priceInUsd
   );
-  const trainingSessionPrice = +(
-    trainingSessions?.data?.find((item) =>
-      priceType === "ngn" ? item.priceInNgn : item.priceInUsd
-    )?.priceInNgn ?? 0
+  const storagePrice = (priceType === "ngn"
+    ? storage?.priceInNgn
+    : storage?.priceInUsd) as unknown as number;
+  const trainingSession = trainingSessions?.data?.find((item) =>
+    priceType === "ngn" ? item.priceInNgn : item.priceInUsd
   );
+  const trainingSessionPrice = (priceType === "ngn"
+    ? trainingSession?.priceInNgn
+    : trainingSession?.priceInUsd) as unknown as number;
   return {
     isLoading:
       isFetchingStorages ||
