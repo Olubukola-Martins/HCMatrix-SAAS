@@ -67,7 +67,7 @@ const ModuleCard: React.FC<
                 </div>
               </div>
               <div className="relative w-fit [font-family:'Roboto',Helvetica] font-normal text-text-slate-color40 text-[14px] text-center tracking-[0.14px] leading-[normal] whitespace-nowrap">
-                per employee
+                {pricePerLicensedEmployee && "per employee"}
               </div>
             </div>
           </div>
