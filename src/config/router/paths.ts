@@ -132,7 +132,19 @@ export const appRoutes = {
   // Billing routes
   billingStatement: `/statement`,
   billings: `/billings`,
+
+  billingHistory: `billing/history`, //to be removed
+  // start here
   purchaseUserLicense: `/purchase-user-license`,
+  billingSubscription: `/billings/subscription`,
+  billingSummary: `/billings/summary`,
+  singleBillingSummary: (id?: number) => ({
+    format: `/billings/summary/:id`,
+    path: `/billings/summary/${id}`,
+  }),
+
+  billingStorageManagement: `/billings/storage-management`,
+  billingTrainingSession: `/billings/training-session`,
 
   // payroll routes
   payrollHome: `/payroll/home`,

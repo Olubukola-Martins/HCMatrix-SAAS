@@ -1,21 +1,13 @@
-import { AppButton, TBtnVariant } from "components/button/AppButton";
-
 // Define a btn component
 
-interface IProps {
+import {
+  SupplementaryActionsProps,
+  SupplementaryActions,
+} from "SupplementaryActions";
+
+interface IProps extends SupplementaryActionsProps {
   description: string | { content: string; className: string };
   hideBackground?: boolean;
-  actions?: {
-    hidden?: boolean;
-    name: string;
-    handleClick: Function;
-    btnVariant?: TBtnVariant;
-    loading?: boolean;
-    type?: "submit" | "reset" | "button";
-    additionalClassNames?: string[];
-    disabled?: boolean;
-  }[];
-  comps?: React.ReactNode[];
 }
 
 const PageSubHeader = ({
@@ -35,36 +27,7 @@ const PageSubHeader = ({
         <p className={description.className}>{description.content}</p>
       )}
 
-      <div className="flex gap-4 items-center ">
-        {actions?.some((item) => item.hidden)
-          ? actions
-              ?.filter((item) => item.hidden === false)
-              .map((item, i) => (
-                <AppButton
-                  key={i}
-                  label={item.name}
-                  handleClick={() => item.handleClick()}
-                  variant={item.btnVariant}
-                  isLoading={item.loading}
-                  additionalClassNames={item.additionalClassNames}
-                  disabled={item.disabled}
-                />
-              ))
-          : actions?.map((item, i) => (
-              <AppButton
-                key={i}
-                label={item.name}
-                handleClick={() => item.handleClick()}
-                variant={item.btnVariant}
-                isLoading={item.loading}
-                additionalClassNames={item.additionalClassNames}
-                disabled={item.disabled}
-              />
-            ))}
-        {comps?.map((item, i) => (
-          <div key={i ** 23 + "09"}>{item}</div>
-        ))}
-      </div>
+      <SupplementaryActions actions={actions} comps={comps} />
     </div>
   );
 };

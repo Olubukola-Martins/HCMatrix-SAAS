@@ -49,7 +49,6 @@ export const AppButton: React.FunctionComponent<IAppBtnProps> = ({
           type={type}
           onClick={() => handleClick?.()}
           disabled={disabled}
-          style={{ color: "var(--neutral)" }}
         >
           {isLoading ? <BeatLoader color="#aaa" /> : label}
         </button>
@@ -57,7 +56,7 @@ export const AppButton: React.FunctionComponent<IAppBtnProps> = ({
     );
   }
   return (
-    <Themes>
+    <Themes isBg={false}>
       <button
         className={`${additionalClassNames?.join(" ")} capitalize`}
         type={type}

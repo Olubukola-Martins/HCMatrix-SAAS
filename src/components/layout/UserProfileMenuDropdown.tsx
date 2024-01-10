@@ -109,10 +109,29 @@ const UserActions: React.FC<{
       hidden: false,
       isLink: false,
     },
+
     {
-      url: "/billings",
-      text: "Billings",
-      hidden: true,
+      url: appRoutes.billingSubscription,
+      text: "Subscriptions",
+      hidden: false,
+      isLink: true,
+    },
+    {
+      url: appRoutes.billingSummary,
+      text: "Billing",
+      hidden: false,
+      isLink: true,
+    },
+    {
+      url: appRoutes.billingStorageManagement,
+      text: "Storage",
+      hidden: false,
+      isLink: true,
+    },
+    {
+      url: appRoutes.billingTrainingSession,
+      text: "Training Session",
+      hidden: false,
       isLink: true,
     },
     {
