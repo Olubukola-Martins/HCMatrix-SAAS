@@ -3,7 +3,7 @@ import FramerAccordian from "components/accordian/FramerAccordian";
 import React from "react";
 
 export interface IModuleCardProps {
-  pricePerLicensedEmployee: {
+  pricePerLicensedEmployee?: {
     amount: number;
     currency: string;
   };
@@ -35,7 +35,7 @@ const ModuleCard: React.FC<
             <Checkbox disabled={disabled} value={subscriptionId} />
             <div className="flex gap-10 items-center">
               {icon}
-              <h5 className="text-base lg:text-xl text-accent  font-semibold">
+              <h5 className="text-base lg:text-lg text-accent  font-semibold">
                 {title.mainText}
               </h5>
               {title?.supportingText ? (
@@ -60,10 +60,10 @@ const ModuleCard: React.FC<
             <div className="inline-flex flex-col items-center justify-center gap-[2px] relative flex-[0_0_auto]">
               <div className="inline-flex items-start gap-[2px] relative flex-[0_0_auto]">
                 <div className="relative w-fit mt-[-1.00px] [font-family:'Inter',Helvetica] font-semibold text-black text-[18px] text-center tracking-[-0.18px] leading-[normal]">
-                  {pricePerLicensedEmployee.currency}
+                  {pricePerLicensedEmployee?.currency}
                 </div>
                 <div className="relative w-fit mt-[-1.00px] [font-family:'Inter',Helvetica] font-semibold text-[#3a3a3a] text-[34px] text-center tracking-[-0.34px] leading-[normal]">
-                  {pricePerLicensedEmployee.amount}
+                  {pricePerLicensedEmployee?.amount}
                 </div>
               </div>
               <div className="relative w-fit [font-family:'Roboto',Helvetica] font-normal text-text-slate-color40 text-[14px] text-center tracking-[0.14px] leading-[normal] whitespace-nowrap">

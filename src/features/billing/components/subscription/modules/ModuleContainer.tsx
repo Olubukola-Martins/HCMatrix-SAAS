@@ -51,15 +51,18 @@ const ModuleContainer: React.FC<{
                 />
               </div>
             ),
-            pricePerLicensedEmployee: {
-              amount: getPricePerEmployee({
-                selectedPriceType,
-                selectedBillingCycle,
-                subscription: item,
-                type: "licensed",
-              }),
-              currency: PRICE_TYPE_CURRENCY[selectedPriceType],
-            },
+            pricePerLicensedEmployee:
+              item.label === "employee-management"
+                ? undefined
+                : {
+                    amount: getPricePerEmployee({
+                      selectedPriceType,
+                      selectedBillingCycle,
+                      subscription: item,
+                      type: "licensed",
+                    }),
+                    currency: PRICE_TYPE_CURRENCY[selectedPriceType],
+                  },
             title: {
               mainText: item.name,
               supportingText: item.description,
