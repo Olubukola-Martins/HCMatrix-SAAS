@@ -202,12 +202,16 @@ const BillingInvoiceInfo: React.FC<{
           <table className="w-2/5">
             <tbody>
               {[
-                { name: "Total", value: "0001", capitalize: true },
-                { name: "VAT 0%", value: "00001" },
-                { name: "Discount", value: "00001" },
+                {
+                  name: "Total",
+                  value: subscription?.transaction.totalAmount,
+                  capitalize: true,
+                },
+                { name: "VAT 0%", value: "$0" },
+                { name: "Discount", value: "$0" },
                 {
                   name: "TOTAL INCLUDING VAT",
-                  value: "August 02, 2022",
+                  value: subscription?.transaction.totalAmountPaid,
                   capitalize: true,
                 },
               ].map(({ name, value, capitalize }, i) => (
@@ -215,7 +219,7 @@ const BillingInvoiceInfo: React.FC<{
                   <td>
                     <h6
                       className={`font-light text-sm ${
-                        capitalize ? "capitalize" : "uppercase"
+                        capitalize ? "uppercase" : "capitalize"
                       }`}
                     >
                       {name}
