@@ -2,11 +2,11 @@ import React from "react";
 import { IModalProps } from "types";
 import { openNotification } from "utils/notifications";
 import { useQueryClient } from "react-query";
-import DeleteEntityModal from "components/entity/DeleteEntityModal";
 import { QUERY_KEY_FOR_ACTIVE_COMPANY_SUBSCRITION } from "features/billing/hooks/company/useGetCompanyActiveSubscription";
 import { useCancelCompanySubscription } from "features/billing/hooks/company/useCancelCompanySubscription";
 import { useNavigate } from "react-router-dom";
 import { appRoutes } from "config/router/paths";
+import ConfirmationModal from "components/modals/ConfirmationModal";
 
 interface IProps extends IModalProps {}
 export const CancelSubscription: React.FC<IProps> = ({ open, handleClose }) => {
@@ -46,12 +46,12 @@ export const CancelSubscription: React.FC<IProps> = ({ open, handleClose }) => {
   };
 
   return (
-    <DeleteEntityModal
+    <ConfirmationModal
       title="Cancel Subscription"
-      entity={{ type: "subscription", name: "" }}
+      description={`Are you sure you want to cancel your subscription?`}
       handleClose={handleClose}
       open={open}
-      handleDelete={{ fn: handleDelete, isLoading: isLoading }}
+      handleConfirm={{ fn: handleDelete, isLoading: isLoading }}
     />
   );
 };
