@@ -184,7 +184,7 @@ const SubscriptionContainer: React.FC<{
                   />
                 )}
                 {STEPS.length - 1 !== activeStep &&
-                  [1, 2].includes(activeStep) && (
+                  [0].includes(activeStep) && (
                     <AppButton label="Next" handleClick={handleNext} />
                   )}
               </div>
