@@ -86,21 +86,27 @@ export const useGetCreateCompanySubscriptionSummary = (props: {
   const supportCase = supportCases?.data?.find(
     (item) => item.id === addOns?.supportCaseId
   );
-  const supportCasePrice = (priceType === "ngn"
-    ? supportCase?.priceInNgn
-    : supportCase?.priceInUsd) as unknown as number;
-  const storage = storages?.data?.find((item) =>
-    priceType === "ngn" ? item.priceInNgn : item.priceInUsd
+  const supportCasePrice = +(
+    ((priceType === "ngn"
+      ? supportCase?.priceInNgn
+      : supportCase?.priceInUsd) as unknown as number) ?? 0
   );
-  const storagePrice = (priceType === "ngn"
-    ? storage?.priceInNgn
-    : storage?.priceInUsd) as unknown as number;
-  const trainingSession = trainingSessions?.data?.find((item) =>
-    priceType === "ngn" ? item.priceInNgn : item.priceInUsd
+  const storage = storages?.data?.find(
+    (item) => item.id === addOns?.extraStorageId
   );
-  const trainingSessionPrice = (priceType === "ngn"
-    ? trainingSession?.priceInNgn
-    : trainingSession?.priceInUsd) as unknown as number;
+  const storagePrice = +(
+    ((priceType === "ngn"
+      ? storage?.priceInNgn
+      : storage?.priceInUsd) as unknown as number) ?? 0
+  );
+  const trainingSession = trainingSessions?.data?.find(
+    (item) => item.id === addOns?.trainingSessionId
+  );
+  const trainingSessionPrice = +(
+    ((priceType === "ngn"
+      ? trainingSession?.priceInNgn
+      : trainingSession?.priceInUsd) as unknown as number) ?? 0
+  );
   return {
     isLoading:
       isFetchingStorages ||

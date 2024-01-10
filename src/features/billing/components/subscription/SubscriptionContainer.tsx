@@ -82,6 +82,7 @@ const SubscriptionContainer: React.FC<{
     mutate(
       {
         ...data,
+        autoRenew: !!autoRenewal,
       },
       {
         onError: (err: any) => {
