@@ -5,6 +5,7 @@ import BillingHistory from "features/billing/pages/billing/BillingHistory";
 import PurchaseEmployeeLicenses from "features/billing/pages/PurchaseEmployeeLicenses";
 import SingleBillingHistory from "features/billing/pages/billing/SingleBillingHistory";
 import StorageManagements from "features/billing/pages/StorageManagements";
+import CompanyTrainingSessionManagement from "features/billing/pages/CompanyTrainingSessionManagement";
 
 export const billingRoutes: TRouteData[] = [
   {
@@ -37,6 +38,12 @@ export const billingRoutes: TRouteData[] = [
   {
     element: <StorageManagements />,
     path: appRoutes.billingStorageManagement,
+    title: "Storage Management",
+    isSearchable: true,
+  },
+  {
+    element: <CompanyTrainingSessionManagement />,
+    path: appRoutes.billingTrainingSession,
     title: "Storage Management",
     isSearchable: true,
   },
