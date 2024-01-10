@@ -1,10 +1,9 @@
-import { Divider, Modal, Skeleton } from "antd";
-import { hcMatrixLogo } from "assets/images";
+import { Modal, Skeleton } from "antd";
 import LogoHeading from "components/LogoHeading";
-import { useGetSubsciptionBillingDetails } from "features/billing/hooks/company/billingDetail/useGetSubsciptionBillingDetails";
 import { useGetCompanyActiveSubscription } from "features/billing/hooks/company/useGetCompanyActiveSubscription";
 import { TCompanySubscription } from "features/billing/types/company/companySubscription";
-import React from "react";
+import React, { useRef } from "react";
+import ReactToPrint from "react-to-print";
 import { IModalProps } from "types";
 interface IProps extends IModalProps {
   subscription?: TCompanySubscription;
@@ -22,68 +21,102 @@ const BillingSupportPlan: React.FC<IProps> = ({ open, handleClose }) => {
       title={null}
     >
       <Skeleton loading={isLoading} active paragraph={{ rows: 24 }}>
-        <div className="flex flex-col gap-y-10">
-          <div className="flex justify-between items-end">
-            <LogoHeading title="Support Plan" />
-
-            <button className="rounded-full  bg-white shadow-md flex justify-center items-center">
-              <i className="ri-download-2-line px-2 py-2" />
-            </button>
-          </div>
-
-          {/* table info */}
-          <div>
-            <TableInfo
-              data={[
-                {
-                  feature: "Price",
-                  liteSupport: "$0",
-                  enterpriseSupport: "$0",
-                },
-                {
-                  feature: "User Guide",
-                  liteSupport: "Yes",
-                  enterpriseSupport: "Yes",
-                },
-                {
-                  feature: "Number of Users",
-                  liteSupport: "All Customers",
-                  enterpriseSupport: "All Customers",
-                },
-                {
-                  feature: "Response Time (by email)",
-                  liteSupport: "_",
-                  enterpriseSupport: "_",
-                },
-                {
-                  feature: "Phone Support",
-                  liteSupport: "Available",
-                  enterpriseSupport: "Available",
-                },
-                {
-                  feature: "Live Chat Support",
-                  liteSupport: "Available",
-                  enterpriseSupport: "Available",
-                },
-                {
-                  feature: "Technical Account Manager",
-                  liteSupport: "Available",
-                  enterpriseSupport: "Available",
-                },
-                {
-                  feature: "Training",
-                  liteSupport: "Paid",
-                  enterpriseSupport: "4 hours",
-                },
-              ]}
-            />
+        <div className="relative">
+          <div className="absolute right-0 top-8">
+            <PrintBtn subscription={subscription} />
           </div>
         </div>
+        <SupportInfo subscription={subscription} />
       </Skeleton>
     </Modal>
   );
 };
 
+const PrintBtn: React.FC<{
+  subscription?: TCompanySubscription;
+}> = ({ subscription }) => {
+  const componentRef = useRef<HTMLDivElement>(null);
+
+  return (
+    <>
+      <ReactToPrint
+        trigger={() => {
+          return (
+            <button className="rounded-full  bg-white shadow-md flex justify-center items-center">
+              <i className="ri-download-2-line px-2 py-2" />
+            </button>
+          );
+        }}
+        content={() => componentRef.current}
+        bodyClass={"w-full justify-stretch items-center"}
+      />
+      <div className="hidden">
+        <div ref={componentRef} className="w-full px-4 py-5">
+          <SupportInfo subscription={subscription} />
+        </div>
+      </div>
+    </>
+  );
+};
+const SupportInfo: React.FC<{ subscription?: TCompanySubscription }> = ({
+  subscription,
+}) => {
+  return (
+    <div className="flex flex-col gap-y-10">
+      <div className="flex justify-between items-end">
+        <LogoHeading title="Support Plan" />
+      </div>
+
+      {/* table info */}
+      <div>
+        <TableInfo
+          data={[
+            {
+              feature: "Price",
+              liteSupport: "$0",
+              enterpriseSupport: "$0",
+            },
+            {
+              feature: "User Guide",
+              liteSupport: "Yes",
+              enterpriseSupport: "Yes",
+            },
+            {
+              feature: "Number of Users",
+              liteSupport: "All Customers",
+              enterpriseSupport: "All Customers",
+            },
+            {
+              feature: "Response Time (by email)",
+              liteSupport: "_",
+              enterpriseSupport: "_",
+            },
+            {
+              feature: "Phone Support",
+              liteSupport: "Available",
+              enterpriseSupport: "Available",
+            },
+            {
+              feature: "Live Chat Support",
+              liteSupport: "Available",
+              enterpriseSupport: "Available",
+            },
+            {
+              feature: "Technical Account Manager",
+              liteSupport: "Available",
+              enterpriseSupport: "Available",
+            },
+            {
+              feature: "Training",
+              liteSupport: "Paid",
+              enterpriseSupport: "4 hours",
+            },
+          ]}
+        />
+      </div>
+    </div>
+  );
+};
 const TableInfo: React.FC<{
   data?: {
     feature: string;
