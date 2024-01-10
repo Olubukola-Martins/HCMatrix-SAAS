@@ -204,14 +204,14 @@ const BillingInvoiceInfo: React.FC<{
               {[
                 {
                   name: "Total",
-                  value: subscription?.transaction.totalAmount,
+                  value: subscription?.transaction?.totalAmount,
                   capitalize: true,
                 },
                 { name: "VAT 0%", value: "$0" },
                 { name: "Discount", value: "$0" },
                 {
                   name: "TOTAL INCLUDING VAT",
-                  value: subscription?.transaction.totalAmountPaid,
+                  value: subscription?.transaction?.totalAmountPaid,
                   capitalize: true,
                 },
               ].map(({ name, value, capitalize }, i) => (
