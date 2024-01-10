@@ -125,7 +125,7 @@ const SubscriptionContainer: React.FC<{
         url={url}
         onPaymentCompletion={() => navigate(appRoutes.purchaseUserLicense)}
       />
-      <div className="w-full flex flex-col  gap-12">
+      <div className="w-full flex flex-col  gap-12 ">
         <div className="self-center">
           <Steps progressDot current={activeStep}>
             {STEPS.map((item) => (

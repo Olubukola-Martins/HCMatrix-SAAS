@@ -35,7 +35,7 @@ const ModuleCard: React.FC<
             <Checkbox disabled={disabled} value={subscriptionId} />
             <div className="flex gap-10 items-center">
               {icon}
-              <h5 className="text-base lg:text-lg text-accent  font-semibold">
+              <h5 className="text-base text-accent  font-semibold">
                 {title.mainText}
               </h5>
               {title?.supportingText ? (

@@ -52,6 +52,7 @@ export const FormPhoneInput: React.FC<{
           >
             <Select
               showSearch
+              placeholder="Code"
               allowClear
               onClear={() => setSearchedCountries([])}
               onSearch={handleCountrySearch}
@@ -61,7 +62,14 @@ export const FormPhoneInput: React.FC<{
               showArrow={false}
               filterOption={false}
               options={mainCountries?.map((item) => ({
-                label: `+${item.code}`,
+                label: (
+                  <span>
+                    <span
+                      className={`flag-icon flag-icon-${item.sortName.toLowerCase()}`}
+                    />
+                    +{item.code}
+                  </span>
+                ),
                 value: item.code,
               }))}
             />

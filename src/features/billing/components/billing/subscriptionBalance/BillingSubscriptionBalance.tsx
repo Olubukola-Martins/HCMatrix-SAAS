@@ -12,7 +12,9 @@ import BillingInvoice from "../BillingInvoice";
 
 const BillingSubscriptionBalance = () => {
   const { isFetching, data } = useGetCompanyActiveSubscription();
-  const [action, setAction] = useState<"cancel-subscription" |  "download-invoice">();
+  const [action, setAction] = useState<
+    "cancel-subscription" | "download-invoice"
+  >();
 
   return (
     <div className="grid grid-cols-2">
@@ -74,13 +76,18 @@ const BillingSubscriptionBalance = () => {
           ]}
         />
 
-        <AppButton
-          label="Cancel Subscription"
-          handleClick={() => setAction("cancel-subscription")}
-          type="button"
-          additionalClassNames={["button", "w-full"]}
-        />
-        <p onClick={() => setAction('download-invoice')} className="text-center capitalize text-caramel cursor-pointer underline hover:no-underline my-4">
+        {!!data?.autoRenew && (
+          <AppButton
+            label="Cancel Subscription"
+            handleClick={() => setAction("cancel-subscription")}
+            type="button"
+            additionalClassNames={["button", "w-full"]}
+          />
+        )}
+        <p
+          onClick={() => setAction("download-invoice")}
+          className="text-center capitalize text-caramel cursor-pointer underline hover:no-underline my-4"
+        >
           Download Invoice
         </p>
         <p className="text-center">

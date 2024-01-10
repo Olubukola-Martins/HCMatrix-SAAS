@@ -27,8 +27,10 @@ const ModuleContainer: React.FC<{
 }) => {
   const { dispatch } = useCreateCompanySubscriptionStateAndDispatch();
   return (
-    <div className="flex flex-col gap-2 w-full">
-      <p>Checkbox the module you would like to purchase.</p>
+    <div className="flex flex-col gap-2 ">
+      <p className="text-left">
+        Checkbox the module you would like to purchase.
+      </p>
       <Skeleton loading={isLoading} active paragraph={{ rows: 40 }}>
         <ModuleCards
           Form={Form}
