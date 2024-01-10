@@ -1,8 +1,11 @@
-import { DatePicker, Form, Modal } from "antd";
+import { DatePicker, Form, Input, Modal } from "antd";
 import { AppButton } from "components/button/AppButton";
 import React from "react";
 import { IModalProps } from "types";
-import { dateHasToBeGreaterThanOrEqualToCurrentDayRuleForRange } from "utils/formHelpers/validation";
+import {
+  dateHasToBeGreaterThanOrEqualToCurrentDayRuleForRange,
+  textInputValidationRules,
+} from "utils/formHelpers/validation";
 import { openNotification } from "utils/notifications";
 import { useQueryClient } from "react-query";
 import { useSetMaxSizeFilePerUpload } from "features/core/company/hooks/fileStorage/setting/useSetMaxSizeFilePerUpload";
@@ -11,6 +14,7 @@ import { Moment } from "moment";
 
 type FormProps = {
   duration: [Moment, Moment];
+  title: string;
 };
 export const BookCompanyTrainingSession: React.FC<IModalProps> = ({
   open,
@@ -60,7 +64,7 @@ export const BookCompanyTrainingSession: React.FC<IModalProps> = ({
       open={open}
       onCancel={() => handleClose()}
       footer={null}
-      title={"Book training session"}
+      title={"Book Training Session"}
       style={{ top: 20 }}
     >
       <Form
@@ -70,6 +74,9 @@ export const BookCompanyTrainingSession: React.FC<IModalProps> = ({
         onFinish={(vals) => console.log(vals, ">>")}
         requiredMark={false}
       >
+        <Form.Item name="title" label="Title" rules={textInputValidationRules}>
+          <Input placeholder="Title" />
+        </Form.Item>
         <Form.Item
           name="duration"
           label="Duration"
@@ -82,7 +89,14 @@ export const BookCompanyTrainingSession: React.FC<IModalProps> = ({
           />
         </Form.Item>
 
-        <div className="flex justify-end">
+        <div className="flex justify-between">
+          <AppButton
+            type="button"
+            variant="transparent"
+            handleClick={() => handleClose()}
+            disabled={isLoading}
+            label="Cancel"
+          />
           <AppButton type="submit" isLoading={isLoading} />
         </div>
       </Form>
