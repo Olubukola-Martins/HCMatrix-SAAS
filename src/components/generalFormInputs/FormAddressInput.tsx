@@ -40,7 +40,6 @@ export const FormAddressInput: React.FC<{
   // TODO: Refactor all forms that submit address to use this component
   const name = control?.name ?? "address";
   const label = control?.label ?? "Address";
-  console.log("fddfd", form.getFieldsValue());
   const [search, setSearch] = useState({
     country: "",
     state: "",

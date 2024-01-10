@@ -22,6 +22,8 @@ import { QUERY_KEY_FOR_ACTIVE_COMPANY_SUBSCRITION } from "features/billing/hooks
 import { SubscriptionPaymentModal } from "./payment/SubscriptionPaymentModal";
 import { appRoutes } from "config/router/paths";
 import { Navigate, useNavigate } from "react-router-dom";
+import { useGetSubsciptionBillingDetails } from "features/billing/hooks/company/billingDetail/useGetSubsciptionBillingDetails";
+import { parsePhoneNumber } from "utils/dataHelpers/parsePhoneNumber";
 
 const STEPS = ["Select Module", "Add Ons", "Payment", "Select Users"];
 const SubscriptionContainer: React.FC<{
@@ -29,6 +31,8 @@ const SubscriptionContainer: React.FC<{
   type?: "module" | "plan";
 }> = ({ subscription, type = "module" }) => {
   const [form] = Form.useForm<TCreateCompanySubscriptionProps>();
+  const { data: billingDetails, isFetching: isFetchingDetails } =
+    useGetSubsciptionBillingDetails();
   const { data: subscriptions, isFetching: isFetchingSubscriptions } =
     useGetAllSubscriptions({
       type,
@@ -43,12 +47,27 @@ const SubscriptionContainer: React.FC<{
   } = useCreateCompanySubscriptionStateAndDispatch();
   useLayoutEffect(() => {
     if (subscription) {
+      const address = billingDetails?.address;
+
       form.setFieldsValue({
         priceType: subscription?.priceType,
         purchased: subscription.purchased.map((item) => item.subscriptionId),
         billingCycle: subscription.billingCycle,
         licensedEmployeeCount: subscription.licensedEmployeeCount,
         unlicensedEmployeeCount: subscription.unlicensedEmployeeCount,
+        address: address
+          ? {
+              countryId: address.countryId,
+              latitude: address.latitude,
+              longitude: address.longitude,
+              lgaId: address?.lgaId ?? undefined,
+              stateId: address.stateId,
+              streetAddress: address.streetAddress,
+              timezone: address?.timezone ?? undefined,
+            }
+          : undefined,
+        billingName: billingDetails?.billingName,
+        phoneNumber: parsePhoneNumber(billingDetails?.phoneNumber),
       });
       dispatch({
         type: ECreateCompanySubscriptionOps.update,
@@ -68,7 +87,7 @@ const SubscriptionContainer: React.FC<{
         billingCycle: "yearly",
       });
     }
-  }, [dispatch, form, subscription]);
+  }, [dispatch, form, subscription, billingDetails]);
   const [activeStep, setActiveStep] = useState(0);
   const [showD, setShowD] = useState(false);
 
@@ -221,7 +240,7 @@ const SubscriptionContainer: React.FC<{
               <PaymentsContainer
                 Form={Form}
                 subscriptions={subscriptions?.data}
-                isLoading={isFetchingSubscriptions}
+                isLoading={isFetchingSubscriptions || isFetchingDetails}
                 form={form}
                 isPayingForSubscription={isPaying}
               />
