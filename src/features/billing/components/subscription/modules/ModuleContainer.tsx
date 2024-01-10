@@ -40,6 +40,7 @@ const ModuleContainer: React.FC<{
           }
           data={subscriptions?.map((item) => ({
             subscriptionId: item.id,
+            disabled: item.label === "employee-management",
             icon: (
               // TODO: Refactor to a module icon component
               <div className="bg-[#3A3A3A] p-2 rounded-md">
