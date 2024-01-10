@@ -21,9 +21,9 @@ import { openNotification } from "utils/notifications";
 import { QUERY_KEY_FOR_ACTIVE_COMPANY_SUBSCRITION } from "features/billing/hooks/company/useGetCompanyActiveSubscription";
 import { SubscriptionPaymentModal } from "./payment/SubscriptionPaymentModal";
 import { appRoutes } from "config/router/paths";
-import { useNavigate } from "react-router-dom";
+import { Navigate, useNavigate } from "react-router-dom";
 
-const STEPS = ["Select Module", "Add Ons", "Payment", "Confirmation"];
+const STEPS = ["Select Module", "Add Ons", "Payment", "Select Users"];
 const SubscriptionContainer: React.FC<{
   subscription?: TCompanySubscription;
   type?: "module" | "plan";
@@ -224,6 +224,9 @@ const SubscriptionContainer: React.FC<{
                 isPayingForSubscription={isPaying}
               />
             </div>
+            {activeStep === 3 && (
+              <Navigate to={appRoutes.purchaseUserLicense} replace={true} />
+            )}
           </Form>
         </>
       </div>
