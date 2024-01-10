@@ -183,9 +183,10 @@ const SubscriptionContainer: React.FC<{
                     variant="transparent"
                   />
                 )}
-                {STEPS.length - 1 !== activeStep && (
-                  <AppButton label="Next" handleClick={handleNext} />
-                )}
+                {STEPS.length - 1 !== activeStep &&
+                  [1, 2].includes(activeStep) && (
+                    <AppButton label="Next" handleClick={handleNext} />
+                  )}
               </div>
             </div>
             <div className={activeStep === 0 ? "block" : "hidden"}>

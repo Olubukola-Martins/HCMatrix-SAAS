@@ -2,7 +2,7 @@ import { PageIntro } from "components/layout/PageIntro";
 import { appRoutes } from "config/router/paths";
 import React from "react";
 import SubscriptionContainer from "../components/subscription/SubscriptionContainer";
-import { Navigate, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useGetCompanyActiveSubscription } from "../hooks/company/useGetCompanyActiveSubscription";
 import { ErrorBoundary } from "components/errorHandlers/ErrorBoundary";
 import { Skeleton } from "antd";
@@ -19,9 +19,6 @@ const SubsciptionManagement = () => {
   } = useGetCompanyActiveSubscription();
   return (
     <>
-      {/* {subscription && subscription.isActive && (
-        <Navigate to={appRoutes.purchaseUserLicense} replace={true} />
-      )} */}
       <ErrorBoundary>
         <Skeleton loading={isLoading} active paragraph={{ rows: 45 }}>
           <ErrorWrapper
@@ -40,12 +37,6 @@ const SubsciptionManagement = () => {
                     {
                       name: "Billing Summary",
                       handleClick: () => navigate(appRoutes.billingSummary),
-                    },
-                    {
-                      name: "Purchase User License",
-                      handleClick: () =>
-                        navigate(appRoutes.purchaseUserLicense),
-                      btnVariant: "transparent",
                     },
                   ]}
                 />

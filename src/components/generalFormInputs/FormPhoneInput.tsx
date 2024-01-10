@@ -57,17 +57,17 @@ export const FormPhoneInput: React.FC<{
               onClear={() => setSearchedCountries([])}
               onSearch={handleCountrySearch}
               className="rounded border-slate-400"
-              style={{ width: "25%" }}
+              style={{ width: "20%" }}
               defaultActiveFirstOption={false}
               showArrow={false}
               filterOption={false}
               options={mainCountries?.map((item) => ({
                 label: (
-                  <span>
+                  <span className="flex gap-x-2">
                     <span
                       className={`flag-icon flag-icon-${item.sortName.toLowerCase()}`}
                     />
-                    +{item.code}
+                    <span>{item.code}</span>
                   </span>
                 ),
                 value: item.code,
@@ -84,7 +84,7 @@ export const FormPhoneInput: React.FC<{
             name={[control.name, "number"]}
           >
             <Input
-              style={{ width: "75%" }}
+              style={{ width: "80%" }}
               placeholder="Phone"
               className="rounded border-slate-400 text-left"
             />
