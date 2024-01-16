@@ -2,7 +2,10 @@ import { Form, Input, Modal } from "antd";
 import { AppButton } from "components/button/AppButton";
 import React, { useState } from "react";
 import { IModalProps } from "types";
-import { textInputValidationRules } from "utils/formHelpers/validation";
+import {
+  textInputValidationRules,
+  textInputValidationRulesOp,
+} from "utils/formHelpers/validation";
 import { openNotification } from "utils/notifications";
 import { useQueryClient } from "react-query";
 import { useAddHospitalCategory } from "features/self-service/features/health-access/hooks/hospital/category/useAddHospitalCategory";
@@ -70,7 +73,7 @@ export const AddHospitalCategory: React.FC<IModalProps> = ({
         </Form.Item>
 
         <Form.Item
-          rules={textInputValidationRules}
+          rules={textInputValidationRulesOp}
           name="description"
           label="Description"
         >
