@@ -135,10 +135,12 @@ export const RequestForLeave: React.FC<IProps> = ({
   const [isUploadingDocs, setIsUploadingDocs] = useState(false);
   const handleSubmit = async (data: any) => {
     setIsUploadingDocs(true);
-    const documentUrls = await bulkUploadFiles({
-      auth: { companyId, token },
-      data: { files: data?.documents },
-    });
+    const documentUrls = data?.documents
+      ? await bulkUploadFiles({
+          auth: { companyId, token },
+          data: { files: data?.documents },
+        })
+      : [];
     setIsUploadingDocs(false);
     mutate(
       {
@@ -495,6 +497,7 @@ export const RequestForLeave: React.FC<IProps> = ({
             multiple={true}
             ruleOptions={{
               maxFileUploadCount: 3,
+              required: false,
               allowedFileTypes: [
                 "application/pdf",
                 "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
