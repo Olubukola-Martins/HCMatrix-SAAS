@@ -14,15 +14,22 @@ import useCreateAdvancedWorkflow, {
 import { CreateAdvancedStage } from "./CreateAdvancedStage";
 import { appRoutes } from "config/router/paths";
 import { useNavigate } from "react-router-dom";
+import { borderCardStyle } from "styles/reused";
 
 export const CreateAdvancedWorkflow = () => {
   const queryClient = useQueryClient();
   const [stages, setStages] = useState<
-    ({ editable: boolean } & OptionalTypeParams<TStage, "entityId" | "type">)[]
+    ({ editable: boolean } & OptionalTypeParams<
+      TStage,
+      "entityId" | "type" | "enableTwoFactorAuth"
+    >)[]
   >([]);
   const [form] = Form.useForm();
   const addStage = (id: number) => {
-    setStages((prev) => [...prev, { id, name: "", editable: true }]);
+    setStages((prev) => [
+      ...prev,
+      { id, name: "", editable: true, enableTwoFactorAuth: false },
+    ]);
   };
   const removeStage = (id: number) => {
     setStages((prev) => {
@@ -43,14 +50,23 @@ export const CreateAdvancedWorkflow = () => {
           type,
           condition,
           count,
+          enableTwoFactorAuth,
         }): TAdvancedWorkflowStage => {
-          if (!!entityId && !!type) {
+          if (!!entityId && !!type && type !== "line-manager") {
             return {
               entityId: entityId,
               type,
               name,
               condition,
               count,
+              enableTwoFactorAuth,
+            };
+          }
+
+          if (type === "line-manager") {
+            return {
+              type,
+              name,
             };
           }
           return {
@@ -100,24 +116,28 @@ export const CreateAdvancedWorkflow = () => {
 
   return (
     <div className="flex flex-col gap-4">
-      <Form
-        layout="vertical"
-        requiredMark={false}
-        form={form}
-        onFinish={handleSubmit}
-      >
-        <Form.Item
-          name="name"
-          label="Advanced Workflow Name"
-          rules={textInputValidationRules}
+      <div className={borderCardStyle}>
+        <Form
+          layout="vertical"
+          requiredMark={false}
+          form={form}
+          onFinish={handleSubmit}
         >
-          <Input placeholder="Workflow name" className="w-40" />
-        </Form.Item>
-      </Form>
+          <Form.Item
+            name="name"
+            label="Workflow Name"
+            rules={textInputValidationRules}
+          >
+            <Input placeholder="Workflow name" className="w-full" />
+          </Form.Item>
+        </Form>
+      </div>
       <div className="flex flex-col gap-3">
-        <Typography.Text>Advanced Workflow Stages</Typography.Text>
+        <Typography.Text className="font-bold text-base">
+          Advanced Workflow Stages
+        </Typography.Text>
         {stages.map((stage, id) => (
-          <div className="flex gap-4" key={id}>
+          <div className={`flex gap-4 ${borderCardStyle}`} key={id}>
             <CreateAdvancedStage
               stage={stage}
               removeStage={removeStage}
@@ -145,6 +165,7 @@ export const CreateAdvancedWorkflow = () => {
                           entityId: data.entityId,
                           condition: data.condition,
                           count: data.count,
+                          enableTwoFactorAuth: data.enableTwoFactorAuth,
                           editable: false,
                         }
                       : stage
@@ -154,20 +175,27 @@ export const CreateAdvancedWorkflow = () => {
             />
           </div>
         ))}
-        <Button icon={<PlusOutlined />} onClick={() => addStage(stages.length)}>
-          Add Stage
-        </Button>
       </div>
-      <div className="flex justify-end">
+      <div className="flex justify-end gap-4">
         <AppButton
-          label="Submit"
-          handleClick={() => form.submit()}
-          disabled={
-            stages.length === 0 ||
-            (stages.length >= 1 && stages[0].editable === true)
-          }
-          isLoading={isLoading}
+          label="Add Stage"
+          variant="transparent"
+          handleClick={() => addStage(stages.length)}
         />
+        {!(
+          stages.length === 0 ||
+          (stages.length >= 1 && stages[0].editable === true)
+        ) && (
+          <AppButton
+            label="Submit"
+            handleClick={() => form.submit()}
+            disabled={
+              stages.length === 0 ||
+              (stages.length >= 1 && stages[0].editable === true)
+            }
+            isLoading={isLoading}
+          />
+        )}
       </div>
     </div>
   );

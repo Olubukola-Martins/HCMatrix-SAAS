@@ -12,7 +12,7 @@ const PromotionRequestsSettingPage = () => {
       <div className="Container ">
         <PageIntro
           title="Promotion Request Settings"
-          link={appRoutes.selfServiceHome}
+          link={appRoutes.selfServicePromotion}
         />
         <PromotionRequestSetting />
       </div>

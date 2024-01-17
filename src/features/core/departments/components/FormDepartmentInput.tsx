@@ -1,28 +1,25 @@
-import { Select, Spin } from "antd";
-import { useApiAuth } from "hooks/useApiAuth";
+import { Select, Form } from "antd";
 import { useDebounce } from "hooks/useDebounce";
-
 import React, { useState } from "react";
-import { generalValidationRules } from "utils/formHelpers/validation";
+import {
+  generalValidationRules,
+  generalValidationRulesOp,
+} from "utils/formHelpers/validation";
 import { useFetchDepartments } from "../hooks/useFetchDepartments";
 
 export const FormDepartmentInput: React.FC<{
-  Form: any;
+  Form: typeof Form;
   showLabel?: boolean;
   control?: { label: string; name: string; multiple?: boolean };
-}> = ({ Form, showLabel = true, control }) => {
-  const { token, companyId } = useApiAuth();
-
+  optional?: boolean;
+}> = ({ Form, showLabel = true, control, optional = false }) => {
   const [searchTerm, setSearchTerm] = useState<string>("");
   const debouncedSearchTerm: string = useDebounce<string>(searchTerm);
 
-  const { data, isFetching, isSuccess } = useFetchDepartments({
-    companyId,
+  const { data, isFetching } = useFetchDepartments({
     searchParams: {
       name: debouncedSearchTerm,
     },
-
-    token,
   });
 
   const handleSearch = (val: string) => {
@@ -33,7 +30,7 @@ export const FormDepartmentInput: React.FC<{
     <Form.Item
       name={control?.name ?? "departmentId"}
       label={showLabel ? control?.label ?? "Department" : null}
-      rules={generalValidationRules}
+      rules={optional ? generalValidationRulesOp : generalValidationRules}
     >
       <Select
         mode={control?.multiple ? "multiple" : undefined}
@@ -48,17 +45,11 @@ export const FormDepartmentInput: React.FC<{
         showArrow={false}
         filterOption={false}
       >
-        {isSuccess ? (
-          data.data.map((item) => (
-            <Select.Option key={item.id} value={item.id}>
-              {item.name}
-            </Select.Option>
-          ))
-        ) : (
-          <div className="flex justify-center items-center w-full">
-            <Spin size="small" />
-          </div>
-        )}
+        {data?.data.map((item) => (
+          <Select.Option key={item.id} value={item.id}>
+            {item.name}
+          </Select.Option>
+        ))}
       </Select>
     </Form.Item>
   );

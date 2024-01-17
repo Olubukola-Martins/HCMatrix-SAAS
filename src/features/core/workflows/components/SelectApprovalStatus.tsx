@@ -6,17 +6,22 @@ interface IProps {
   onSelect?: (val: TApprovalStatus) => void;
   onClear?: () => void;
   value?: TApprovalStatus;
+  size?: "small" | "middle" | "large";
+  mode?: "multiple" | "tags";
 }
 
 export const SelectApprovalStatus: React.FC<IProps> = ({
   value,
   onSelect,
   onClear,
+  size = "middle",
+  mode,
 }) => {
   return (
     <div>
       <Select
-        size="small"
+        mode={mode}
+        size={size}
         value={value}
         placeholder="Select Status"
         options={APPROVAL_STATUS_OPTIONS}

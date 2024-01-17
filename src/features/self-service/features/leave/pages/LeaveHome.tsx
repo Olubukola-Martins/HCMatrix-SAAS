@@ -1,43 +1,18 @@
-import React, { useState } from "react";
-
 import SelfServiceSubNav from "features/self-service/components/SelfServiceSubNav";
-import { RequestForLeave } from "../components/RequestForLeave";
 import LeaveCards from "../components/LeaveCards";
 import LeaveHomePageHeader from "../components/LeaveHomePageHeader";
-import LeaveHistoryContainer from "../components/LeaveHistoryContainer";
-import LeaveApprovalRequestsContainer from "../components/LeaveApprovalRequestsContainer";
-
-const ECOMP = {
-  ADD_NEW_LEAVE: "New Leave",
-  SHOW_LEAVE_DETAILS: "Leave Details",
-};
+import "../styles/leave.css";
+import LeaveHomeTabs from "../components/LeaveHomeTabs";
 
 const LeaveHome = () => {
-  const [showDrawer, setShowDrawer] = useState(false);
-  const [comp, setComp] = useState("");
-  const handleShowNewLeave = () => {
-    setShowDrawer(true);
-    setComp(ECOMP.ADD_NEW_LEAVE);
-  };
-
   return (
     <div>
       <SelfServiceSubNav />
 
-      {comp === ECOMP.ADD_NEW_LEAVE && (
-        <RequestForLeave
-          open={showDrawer}
-          handleClose={() => setShowDrawer(false)}
-        />
-      )}
-
       <div>
         <div className="Container">
           {/* header */}
-          <LeaveHomePageHeader
-            handleShowNewLeave={handleShowNewLeave}
-            closeDrawer={() => setShowDrawer(false)}
-          />
+          <LeaveHomePageHeader />
 
           <div>
             {/* cards */}
@@ -46,8 +21,7 @@ const LeaveHome = () => {
 
             {/* table section*/}
             <div className="mt-12 flex flex-col gap-4">
-              <LeaveApprovalRequestsContainer />
-              <LeaveHistoryContainer />
+              <LeaveHomeTabs />
             </div>
           </div>
         </div>

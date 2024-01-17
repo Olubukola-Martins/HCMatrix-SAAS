@@ -1,13 +1,16 @@
 import axios from "axios";
-import { useSignOut } from "react-auth-kit";
 import { useQuery } from "react-query";
 import { IFRQDesignationsProps, IGetDegsProps, TDesignation } from "../types";
+import { ICurrentCompany } from "types";
+import { useApiAuth } from "hooks/useApiAuth";
 
 export const QUERY_KEY_FOR_DESIGNATIONS = "designations";
 
-export const getDesignations = async (
-  props: IGetDegsProps
-): Promise<{ data: TDesignation[]; total: number }> => {
+export const getDesignations = async (vals: {
+  props: IGetDegsProps;
+  auth: ICurrentCompany;
+}): Promise<{ data: TDesignation[]; total: number }> => {
+  const { props, auth } = vals;
   const { pagination } = props;
   const limit = pagination?.limit ?? 10;
   const offset = pagination?.offset ?? 0;
@@ -17,8 +20,8 @@ export const getDesignations = async (
   const config = {
     headers: {
       Accept: "application/json",
-      Authorization: `Bearer ${props.token}`,
-      "x-company-id": props.companyId,
+      Authorization: `Bearer ${auth.token}`,
+      "x-company-id": auth.companyId,
     },
     params: {
       limit,
@@ -32,15 +35,7 @@ export const getDesignations = async (
   const result = fetchedData.result;
 
   const data: TDesignation[] = result.map(
-    (item: any): TDesignation => ({
-      id: item.id,
-      name: item.name,
-      department: {
-        id: item.department.id ?? "",
-        name: item.department.name ?? "",
-      },
-      employeeCount: item.employeeCount ?? 0,
-    })
+    (item: TDesignation): TDesignation => item
   );
 
   const ans = {
@@ -55,33 +50,27 @@ export const useFetchDesignations = ({
   pagination,
   searchParams,
 
-  companyId,
   onSuccess,
-  token,
 }: IFRQDesignationsProps) => {
-  const signOut = useSignOut();
+  const { token, companyId } = useApiAuth();
 
   const queryData = useQuery(
     [QUERY_KEY_FOR_DESIGNATIONS, pagination?.limit, searchParams?.name],
     () =>
       getDesignations({
-        companyId,
-        pagination: { limit: pagination?.limit, offset: pagination?.offset },
-        searchParams,
-
-        token,
+        props: {
+          pagination,
+          searchParams,
+        },
+        auth: {
+          companyId,
+          token,
+        },
       }),
     {
-      // refetchInterval: false,
-      // refetchIntervalInBackground: false,
-      // refetchOnWindowFocus: false,
-      onError: (err: any) => {
-        // show notification
-        signOut();
-        localStorage.clear();
-      },
+      onError: (err: any) => {},
       onSuccess: (data) => {
-        onSuccess && onSuccess(data);
+        onSuccess?.(data);
       },
     }
   );

@@ -1,17 +1,10 @@
-import {
-  Button as AntBtn,
-  DatePicker,
-  Form,
-  Input,
-  Select,
-  TimePicker,
-} from "antd";
+import { DatePicker, Form, Input, Modal, Select, TimePicker } from "antd";
 import Themes from "components/Themes";
-import { useApiAuth } from "hooks/useApiAuth";
 import { useQueryClient } from "react-query";
 import {
   textInputValidationRules,
   generalValidationRules,
+  dateHasToBeGreaterThanOrEqualToCurrentDayRule,
 } from "utils/formHelpers/validation";
 import { openNotification } from "utils/notifications";
 import { useCreateConferenceRoomBooking } from "../hooks/useCreateConferenceRoomBooking";
@@ -19,24 +12,20 @@ import { QUERY_KEY_FOR_ALL_CONFERENCE_ROOM_BOOKINGS } from "../hooks/useFetchAll
 import { FormMeetingRoomsInput } from "./FormMeetingRoomsInput";
 import { PRIORITIES } from "constants/general";
 import { AppButton } from "components/button/AppButton";
+import { IModalProps } from "types";
+import { QUERY_KEY_FOR_CONFERENCE_ROOM_BOOKINGS_FOR_AUTH_EMPLOYEE } from "../hooks/useGetConferenceRoomBookings4AuthEmployee";
 
-interface IProps {
-  handleClose: Function;
-}
-
-const NewCRBBooking = ({ handleClose }: IProps) => {
+const NewCRBBooking: React.FC<IModalProps> = ({ open, handleClose }) => {
   const queryClient = useQueryClient();
 
   const [form] = Form.useForm();
   const { mutate, isLoading } = useCreateConferenceRoomBooking();
-  const { currentUserEmployeeId } = useApiAuth();
 
   const handleSubmit = (data: any) => {
     mutate(
       {
         conferenceRoomId: data.roomId,
         date: data.date.toString(),
-        employeeId: currentUserEmployeeId,
         endTime: data.duration[0].toString(),
         startTime: data.duration[1].toString(),
         priority: data.priority,
@@ -68,12 +57,24 @@ const NewCRBBooking = ({ handleClose }: IProps) => {
             queryKey: [QUERY_KEY_FOR_ALL_CONFERENCE_ROOM_BOOKINGS],
             // exact: true,
           });
+          queryClient.invalidateQueries({
+            queryKey: [
+              QUERY_KEY_FOR_CONFERENCE_ROOM_BOOKINGS_FOR_AUTH_EMPLOYEE,
+            ],
+            // exact: true,
+          });
         },
       }
     );
   };
   return (
-    <div>
+    <Modal
+      open={open}
+      onCancel={() => handleClose()}
+      footer={null}
+      title={"New Conference Room Booking"}
+      style={{ top: 20 }}
+    >
       <Form
         labelCol={{ span: 24 }}
         requiredMark={false}
@@ -86,7 +87,7 @@ const NewCRBBooking = ({ handleClose }: IProps) => {
         />
         <Form.Item
           name="date"
-          rules={[{ required: true, message: "Meeting Date is required!" }]}
+          rules={[dateHasToBeGreaterThanOrEqualToCurrentDayRule]}
         >
           <DatePicker className="w-full" />
         </Form.Item>
@@ -96,28 +97,20 @@ const NewCRBBooking = ({ handleClose }: IProps) => {
         >
           <TimePicker.RangePicker className="w-full" use12Hours />
         </Form.Item>
-        <Form.Item name="reason" rules={textInputValidationRules}>
-          <Input placeholder="Reason" />
-        </Form.Item>
         <Form.Item name={"priority"} rules={generalValidationRules}>
           <Select placeholder="Priority" options={PRIORITIES} />
         </Form.Item>
+        <Form.Item name="reason" rules={textInputValidationRules}>
+          <Input.TextArea placeholder="Reason" />
+        </Form.Item>
+
         <Themes>
-          <div className="flex justify-between items-center">
-            <AntBtn type="text" onClick={() => handleClose()}>
-              Cancel
-            </AntBtn>
-            <div className="flex gap-3">
-              {/* <button className="transparentButton">
-                Save And Add Another
-              </button> */}
-              <AntBtn type="ghost">Save And Add Another</AntBtn>
-              <AppButton type="submit" label="Submit" isLoading={isLoading} />
-            </div>
+          <div className="flex justify-end">
+            <AppButton type="submit" label="Submit" isLoading={isLoading} />
           </div>
         </Themes>
       </Form>
-    </div>
+    </Modal>
   );
 };
 

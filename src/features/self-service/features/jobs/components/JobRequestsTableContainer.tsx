@@ -10,14 +10,17 @@ interface ComponentProps {
 
 const Component: React.FC<ComponentProps & TApprovalStatusContainerProps> = ({
   status,
+  employeeId,
 }) => {
   return (
     <div>
-      <JobRequestsTable status={status} />
+      <JobRequestsTable status={status} employeeId={employeeId} />
     </div>
   );
 };
-const ComponentWithHOC = withApprovalStatusContainer(Component);
+const ComponentWithHOC = withApprovalStatusContainer(Component, {
+  filtersToDisplay: ["employee", "status"],
+});
 
 export const JobRequestsTableContainer: React.FC = () => {
   return <ComponentWithHOC export={() => {}} />;

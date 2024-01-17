@@ -1,3 +1,4 @@
+import { TAppPageDataFnProps, TRouteData } from "../types";
 import { attendanceRoutes } from "./attendance";
 import { authRoutesDontRequireAuthentication } from "./auth";
 import { billingRoutes } from "./billing";
@@ -11,24 +12,20 @@ import { selfServiceRoutes } from "./selfService";
 import { settingRoutes } from "./settings";
 import { systemAdminRoutes } from "./systemAdmins";
 
-export const appPagesData = [
-  ...authRoutesDontRequireAuthentication,
-  ...billingRoutes,
-  ...homeRoutes,
-  ...notFoundRoutes,
-  ...notificationRoutes,
-  ...payrollRoutes,
-  ...selfServiceRoutes,
-  ...settingRoutes,
-  ...systemAdminRoutes,
-  ...performanceRoutes,
-  ...attendanceRoutes,
-  ...leaningRoutes,
-  // ...leaningRoutes.map((item) => {
-  //   return {
-  //     ...item,
-  //     category:
-  //       "doesnt-require-authentication" as "doesnt-require-authentication",
-  //   };
-  // }),
-];
+export const appPagesData = (props: TAppPageDataFnProps): TRouteData[] => {
+  const { userPermissions, licenseType } = props;
+  return [
+    ...authRoutesDontRequireAuthentication,
+    ...billingRoutes,
+    ...homeRoutes,
+    ...notFoundRoutes,
+    ...notificationRoutes,
+    ...payrollRoutes({ userPermissions, licenseType }),
+    ...selfServiceRoutes({ userPermissions, licenseType }),
+    ...settingRoutes({ userPermissions }),
+    ...systemAdminRoutes,
+    ...performanceRoutes,
+    ...attendanceRoutes,
+    ...leaningRoutes,
+  ].filter((item) => item?.hidden === false || item.hidden === undefined);
+};

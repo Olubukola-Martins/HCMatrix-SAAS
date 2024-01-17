@@ -1,3 +1,4 @@
+import { TPayrollListData } from "features/payroll/types/payroll";
 import { AssetRequestEntity } from "./approvalRequestEntities/assetRequestEntity";
 import { ConferenceRoomBookingEntity } from "./approvalRequestEntities/conferenceRoomBookingEntity";
 import { JobRequestEnitity } from "./approvalRequestEntities/jobRequestEntity";
@@ -9,13 +10,38 @@ import { ReimbursementRequestEntity } from "./approvalRequestEntities/reimbursem
 import { TransferRequestEntity } from "./approvalRequestEntities/transferRequestEntity";
 import { TravelRequestEntity } from "./approvalRequestEntities/travelRequestEntity";
 import { VehicleBookingEntity } from "./approvalRequestEntities/vehicleBookingEntity";
+import { TLoanRequest } from "features/self-service/features/loan/types";
+import { TTHandOverForm } from "features/self-service/features/handover-forms/types";
+import { TApprovalStatus } from "types/statuses";
+
+// TODO: Check for basic stage and update type
+interface AdvancedStage {
+  id: number;
+  workflowId: number;
+  name: string;
+  type: string;
+  entityId: number;
+  enableTwoFactorAuth: boolean;
+  condition?: any;
+  count?: any;
+  createdAt: string;
+  updatedAt: string;
+}
 
 export type TApprovalRequest = {
   id: number;
-  basicStageId: number;
+  advancedStageId?: number;
+  basicStageId?: number;
+
+  processed: boolean;
+  comment?: string;
+
+  advancedStage: AdvancedStage;
+  //
+
   entityType: string;
   entityId: number;
-  status: string;
+  status: TApprovalStatus;
   approverId: number;
   createdAt: string;
   updatedAt: string;
@@ -27,7 +53,10 @@ export type TApprovalRequest = {
   transferRequisition?: TransferRequestEntity;
   promotionRequisition?: PromotionRequestEntity;
   reimbursementRequisition?: ReimbursementRequestEntity;
-  travelRequisition?: TravelRequestEntity;
+  travelRequest?: TravelRequestEntity;
   positionChangeRequisition?: PositionChangeRequestEntity;
   moneyRequisition?: MoneyRequestEntity;
+  payroll?: TPayrollListData;
+  loan?: TLoanRequest;
+  exitHandoverForm?: TTHandOverForm;
 };

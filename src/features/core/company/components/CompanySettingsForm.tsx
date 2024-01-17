@@ -10,12 +10,7 @@ import {
 } from "antd";
 import TransferOwnership from "components/transferOwnership/TransferOwnership";
 import { useEffect, useState } from "react";
-import {
-  QUERY_KEY_FOR_COMPANY_PARAMETERS,
-  useGetCompanyParams,
-} from "../hooks/useGetCompanyParams";
 
-import { useSaveCompanyParams } from "../hooks/useSaveCompanyParams";
 import { useQueryClient } from "react-query";
 import { openNotification } from "utils/notifications";
 import { AppButton } from "components/button/AppButton";
@@ -28,6 +23,13 @@ import {
   emailValidationRulesOp,
   generalValidationRules,
 } from "utils/formHelpers/validation";
+import { CURRENCY_OPTIONS } from "constants/currencies";
+import { useSaveCompanyParamSetting } from "../hooks/useSaveCompanyParamSetting";
+import {
+  QUERY_KEY_FOR_COMPANY_PARAMETER_SETTING,
+  useGetCompanyParamSetting,
+} from "../hooks/useGetCompanyParamSetting";
+import { QUERY_KEY_FOR_AUTHENTICATED_USER } from "features/authentication/hooks/useGetAuthUser";
 
 const parentCompStyle = "grid md:grid-cols-2 border-0 border-b gap-4 py-2";
 const compStyle = "flex flex-col gap-2 items-start";
@@ -40,10 +42,10 @@ const CompanySettingsForm = () => {
   const [adminEmail, setAdminEmail] = useState("");
 
   const { data: companyParams, isFetching: isFetchingCompanyParams } =
-    useGetCompanyParams();
+    useGetCompanyParamSetting();
 
   const [form] = Form.useForm();
-  const { mutate, isLoading } = useSaveCompanyParams();
+  const { mutate, isLoading } = useSaveCompanyParamSetting();
 
   const handleSubmit = (data: any) => {
     mutate(
@@ -77,6 +79,10 @@ const CompanySettingsForm = () => {
           hidePhoneNumber: !!data.hidePhoneNumber,
           hideWorkAnniversary: !!data.hideWorkAnniversary,
         },
+        currencySettings: {
+          showCurrencySymbol: !!data.showCurrencySymbol,
+          baseCurrency: data.baseCurrency,
+        },
       },
       {
         onError: (err: any) => {
@@ -95,10 +101,13 @@ const CompanySettingsForm = () => {
             description: res.data.message,
             // duration: 0.4,
           });
-          form.resetFields();
 
           queryClient.invalidateQueries({
-            queryKey: [QUERY_KEY_FOR_COMPANY_PARAMETERS],
+            queryKey: [QUERY_KEY_FOR_COMPANY_PARAMETER_SETTING],
+            // exact: true,
+          });
+          queryClient.invalidateQueries({
+            queryKey: [QUERY_KEY_FOR_AUTHENTICATED_USER],
             // exact: true,
           });
         },
@@ -116,6 +125,11 @@ const CompanySettingsForm = () => {
         timezone: data.locationSettings.timezone,
         dateFormat: data.dateAndTimeSettings.dateFormat,
         timeFormat: data.dateAndTimeSettings.timeFormat,
+        hideBirthday: data.employeeSettings.hideBirthday,
+        hidePhoneNumber: data.employeeSettings.hidePhoneNumber,
+        hideWorkAnniversary: data.employeeSettings.hideWorkAnniversary,
+        baseCurrency: data.currencySettings?.baseCurrency,
+        showCurrencySymbol: data.currencySettings?.showCurrencySymbol,
         modifyUsersProfile: [
           data.profilePhotoSettings.modifyUsersProfile.administrator
             ? "administrator"
@@ -124,7 +138,6 @@ const CompanySettingsForm = () => {
             ? "employee"
             : "",
         ].filter((item) => item !== ""),
-        enableChatFeature: true,
         notificationSettings: [
           data.notificationSettings.email ? "email" : "",
           data.notificationSettings.inApp ? "inApp" : "",
@@ -139,14 +152,11 @@ const CompanySettingsForm = () => {
       loading={isFetchingCompanyParams || isFetchingCountries}
       paragraph={{ rows: 8 }}
     >
-      {/* transfer ownership */}
-      {companyParams && (
-        <TransferOwnership
-          open={transferOwnershipModal}
-          handleClose={() => setTransferOwnershipModal(false)}
-          companyParams={companyParams}
-        />
-      )}
+      <TransferOwnership
+        open={transferOwnershipModal}
+        handleClose={() => setTransferOwnershipModal(false)}
+      />
+
       <Form
         className="flex flex-col gap-4"
         form={form}
@@ -165,7 +175,7 @@ const CompanySettingsForm = () => {
                 rules={
                   !!companyParams?.value.administrator.adminEmail
                     ? emailValidationRulesOp
-                    : [{ required: false }]
+                    : emailValidationRules
                 }
               >
                 <Input
@@ -275,18 +285,6 @@ const CompanySettingsForm = () => {
                 />
               </Form.Item>
             </div>
-
-            <div className={compStyle}>
-              <Typography.Title level={5}>Chat Settings</Typography.Title>
-              <Form.Item
-                labelCol={{ span: 24 }}
-                label="Would you like to enable the chat feature ?"
-                name={`enableChatFeature`}
-                className="w-3/4"
-              >
-                <Switch unCheckedChildren="No" checkedChildren="Yes" />
-              </Form.Item>
-            </div>
           </div>
           {/* 5*/}
           <div className={parentCompStyle}>
@@ -347,6 +345,34 @@ const CompanySettingsForm = () => {
                 checkedChildren="Yes"
                 defaultChecked={
                   companyParams?.value.employeeSettings.hideWorkAnniversary
+                }
+              />
+            </Form.Item>
+          </div>
+          {/* 7*/}
+          <div className={parentCompStyle}>
+            <Typography.Title level={5} className="mb-4 md:col-span-2">
+              Currency Settings
+            </Typography.Title>
+            <Form.Item
+              label="What is your base currency ?"
+              name={`baseCurrency`}
+              colon={false}
+              className="w-3/4"
+            >
+              <Select placeholder="Base Currency" options={CURRENCY_OPTIONS} />
+            </Form.Item>
+            <Form.Item
+              label="Do you want to show currency symbol ?"
+              name={`showCurrencySymbol`}
+              colon={false}
+              className="w-3/4"
+            >
+              <Switch
+                unCheckedChildren="No"
+                checkedChildren="Yes"
+                defaultChecked={
+                  companyParams?.value?.currencySettings?.showCurrencySymbol
                 }
               />
             </Form.Item>

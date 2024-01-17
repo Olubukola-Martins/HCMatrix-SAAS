@@ -6,6 +6,8 @@ import { ICurrentCompany } from "types";
 
 type TCreateProps = {
   status: "approved" | "rejected";
+  comment?: string;
+  otp?: string;
 };
 
 const updateApproval = async (props: {

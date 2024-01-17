@@ -1,5 +1,6 @@
 import axios from "axios";
 import { MICROSERVICE_ENDPOINTS } from "config/enviroment";
+import { TLicenseType } from "features/authentication/types/auth-user";
 import { useQuery } from "react-query";
 import { ICurrentCompany, IPaginationProps, ISearchParams } from "types";
 
@@ -23,7 +24,7 @@ interface Employee {
   firstName: string;
   lastName: string;
   email: string;
-  hasSelfService: boolean;
+  licenseType: TLicenseType;
   empUid: string;
   roleId: number;
   status: string;
@@ -60,6 +61,7 @@ interface Vehicle {
 interface IGetDataProps extends ICurrentCompany {
   pagination?: IPaginationProps;
   searchParams?: ISearchParams;
+  employeeId?: number;
 }
 
 export const QUERY_KEY_FOR_VEHICLE_BOOKINGS = "vehicle-bookings";
@@ -84,6 +86,7 @@ const getVehicleBookings = async (
       limit,
       offset,
       search: name,
+      employeeId: props.employeeId,
     },
   };
 
@@ -104,9 +107,14 @@ const getVehicleBookings = async (
 };
 
 export const useFetchVehicleBookings = (props: IGetDataProps) => {
-  const { pagination, searchParams } = props;
+  const { pagination, searchParams, employeeId } = props;
   const queryData = useQuery(
-    [QUERY_KEY_FOR_VEHICLE_BOOKINGS, pagination?.limit, searchParams?.name],
+    [
+      QUERY_KEY_FOR_VEHICLE_BOOKINGS,
+      pagination?.limit,
+      searchParams?.name,
+      employeeId,
+    ],
     () =>
       getVehicleBookings({
         ...props,

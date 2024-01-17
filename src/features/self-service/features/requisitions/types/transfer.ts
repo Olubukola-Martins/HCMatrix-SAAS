@@ -1,3 +1,6 @@
+import { TLicenseType } from "features/authentication/types/auth-user";
+import { TEmployee } from "features/core/employees/types";
+
 export type TTransferRequisition = {
   id: number;
   date: string;
@@ -51,20 +54,23 @@ interface ProposedBranch {
   deletedAt?: any;
 }
 
-interface Employee {
+type Employee = {
   id: number;
   firstName: string;
   lastName: string;
   email: string;
-  hasSelfService: boolean;
+  licenseType: TLicenseType;
   empUid: string;
   roleId: number;
   status: string;
   companyId: number;
-  designationId: number;
+  designationId?: number;
+  designation?: TEmployee["designation"];
+  jobInformation?: TEmployee["jobInformation"];
+
   userId: number;
   avatarUrl: string;
   createdAt: string;
   updatedAt: string;
   deletedAt?: any;
-}
+};

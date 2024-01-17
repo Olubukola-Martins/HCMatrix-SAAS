@@ -7,6 +7,7 @@ import {
   Tooltip,
 } from "chart.js";
 import { Line } from "react-chartjs-2";
+import { IChartProps } from "./types";
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip);
 
@@ -24,35 +25,34 @@ export const options = {
   },
 };
 
-interface IProps {
-  labels: string[];
-  data?: number[];
-  axis?: "x" | "y";
-  bgColors?: string | string[];
-  dataEntityLabel?: string;
-}
-export const LineChart: React.FC<IProps> = ({
+export const LineChart: React.FC<IChartProps> = ({
   labels,
   data = [],
   axis = "x",
   bgColors = "#1B59F8CC",
   dataEntityLabel = "items",
+  useDataSet = false,
+  dataSets = [],
+  maintainAspectRatio = true,
 }) => {
   const dataSrc = {
     labels,
-    datasets: [
-      {
-        label: dataEntityLabel,
-
-        data,
-        backgroundColor: bgColors,
-      },
-    ],
+    datasets: useDataSet
+      ? dataSets
+      : [
+          {
+            label: dataEntityLabel,
+            borderColor: bgColors,
+            data,
+            backgroundColor: bgColors,
+          },
+        ],
   };
   return (
     <Line
       options={{
         ...options,
+        maintainAspectRatio,
         indexAxis: axis,
 
         scales: {

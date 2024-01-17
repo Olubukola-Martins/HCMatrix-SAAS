@@ -1,26 +1,28 @@
 // TO DO: REMOVE and refactor all mui icons used
-import { MailOutlined, LockOutlined } from "@mui/icons-material";
+import { MailOutlined, LockOutlined } from "@ant-design/icons";
 import { Form, Input } from "antd";
-import {
-  TOKEN_EXPIRES_IN,
-  REFRESH_TOKEN_EXPIRES_IN,
-} from "config/refreshTokenApi";
+import { TOKEN_EXPIRES_IN } from "config/refreshTokenApi";
 import { useSignIn } from "react-auth-kit";
-import { useQueryClient, useMutation } from "react-query";
 import { openNotification } from "utils/notifications";
-import { createEmployeeAccount } from "../hooks/useCreateEmployeeAccount";
+import { useCreateEmployeeAccount } from "../hooks/useCreateEmployeeAccount";
 import { IVerifyUserProps, IAuthDets } from "../types";
+import { passwordValidationRules } from "utils/formHelpers/validation";
+import { BeatLoader } from "react-spinners";
+import { saveMessagingDeviceToken } from "config/firebase/messaging";
+import { useContext } from "react";
+import { GlobalContext, EGlobalOps } from "stateManagers/GlobalContextProvider";
 
 export const EmployeeRegistrationForm = ({
   token,
   email,
   uid,
 }: IVerifyUserProps) => {
-  const { mutate, isLoading } = useMutation(createEmployeeAccount);
+  const { mutate, isLoading } = useCreateEmployeeAccount();
 
-  const queryClient = useQueryClient();
   const [form] = Form.useForm();
   const signIn = useSignIn();
+  const globalCtx = useContext(GlobalContext);
+  const { dispatch: globalDispatch } = globalCtx;
 
   const onFormSubmit = (data: any) => {
     mutate(
@@ -39,78 +41,11 @@ export const EmployeeRegistrationForm = ({
               err?.response.data.message ?? err?.response.data.error.message,
           });
         },
-        onSuccess: (res: any) => {
-          const result = res.data.data;
+        onSuccess: (res) => {
+          const result = res.data;
           const authUserDetails: IAuthDets = {
-            user: {
-              avatarUrl: result?.user?.avatarUrl,
-              fullName: result?.user?.fullName,
-              email: result?.user?.email,
-              lastLogin: result?.user?.lastLogin,
-              id: result?.user?.id,
-              isAdmin: result?.user?.isAdmin,
-              isSocial: result?.user?.isSocial,
-              isVerified: result?.user?.isVerified,
-            },
-            companies: result?.payload?.map((item: any) => ({
-              id: item?.id,
-              firstName: item?.firstName,
-              lastName: item?.lastName,
-              email: item?.email,
-              hasSelfService: item?.hasSelfService,
-              empUid: item?.empUid,
-              roleId: item?.roleId,
-              status: item?.status,
-              companyId: item?.companyId,
-              designationId: item?.designationId,
-              userId: item?.userId,
-              createdAt: item?.createdAt,
-              updatedAt: item?.updatedAt,
-              deletedAt: item?.deletedAt,
-              departmentId: item?.departmentId,
-              company: {
-                id: item?.company?.id,
-                name: item?.company?.name,
-                label: item?.company?.label,
-                email: item?.company?.email,
-                phoneNumber: item?.company?.phoneNumber,
-                isParent: item?.company?.isParent,
-                isActive: item?.company?.isActive,
-                color: item?.company?.color,
-                industryId: item?.company?.industryId,
-                userId: item?.company?.userId,
-                addressId: item?.company?.addressId,
-                logoUrl: item?.company?.logoUrl,
-                website: item?.company?.website,
-                parentId: item?.company?.parentId,
-                createdAt: item?.company?.createdAt,
-                updatedAt: item?.company?.updatedAt,
-                deletedAt: item?.company?.deletedAt,
-              },
-              role: {
-                id: item?.role?.id,
-                name: item?.role?.name,
-                companyId: item?.role?.companyId,
-                createdAt: item?.role?.createdAt,
-                updatedAt: item?.role?.updatedAt,
-                permissions: item?.role?.permissions.map((pem: any) => ({
-                  id: pem?.id,
-                  permissionId: pem?.permissionId,
-                  roleId: pem?.roleId,
-                  createdAt: pem?.createdAt,
-                  updatedAt: pem?.updatedAt,
-                  permission: {
-                    id: pem?.permission?.id,
-                    name: pem?.permission?.name,
-                    label: pem?.permission?.label,
-                    categoryId: pem?.permission?.categoryId,
-                    description: pem?.permission?.description,
-                    createdAt: pem?.permission?.createdAt,
-                    updatedAt: pem?.permission?.updatedAt,
-                  },
-                })),
-              },
-            })),
+            user: result.user,
+            companies: result.payload,
             userToken: result.accessToken,
           };
           if (
@@ -124,15 +59,23 @@ export const EmployeeRegistrationForm = ({
             openNotification({
               state: "success",
               title: "Success",
-              description: res.data.message,
+              description: res.message,
               // duration: 0.4,
             });
+          globalDispatch({
+            type: EGlobalOps.setCurrentCompanyId,
+            payload: {
+              id: authUserDetails.companies[0].company.id,
+              name: authUserDetails.companies[0].company.name,
+            },
+          });
+          saveMessagingDeviceToken({
+            employeeId: authUserDetails.companies[0].id,
+            companyId: authUserDetails.companies[0].company.id,
+            token: result.accessToken,
+          });
 
           form.resetFields();
-          queryClient.invalidateQueries({
-            queryKey: ["employeeAccount"],
-            exact: true,
-          });
         },
       }
     );
@@ -151,20 +94,7 @@ export const EmployeeRegistrationForm = ({
             autoFocus
           />
         </Form.Item>
-        <Form.Item
-          name="password"
-          rules={[
-            {
-              required: true,
-              message: "Field is required",
-            },
-            {
-              min: 6,
-              message: "password must be at least 6 characters",
-            },
-          ]}
-          hasFeedback
-        >
+        <Form.Item name="password" rules={passwordValidationRules} hasFeedback>
           <Input.Password
             prefix={<LockOutlined className="site-form-item-icon pr-1" />}
             placeholder="Password"
@@ -203,7 +133,7 @@ export const EmployeeRegistrationForm = ({
         </Form.Item>
 
         <button className="authBtn w-full mt-4 mb-3">
-          {isLoading ? "Loading" : "Sign Up"}
+          {isLoading ? <BeatLoader color="#fff" /> : "Sign Up"}
         </button>
       </Form>
     </div>

@@ -2,22 +2,25 @@ import axios from "axios";
 import { useQuery } from "react-query";
 import { ICurrentCompany } from "types";
 import { TRole, TPermission } from "../types";
+import { useApiAuth } from "hooks/useApiAuth";
 
 const QUERY_KEY_FOR_SINGLE_ROLE = "single-role";
 
-// TO DO : need to exist in the general data entities and refactored
-interface IGetDataProps extends ICurrentCompany {
+interface IGetDataProps {
   id: number;
 }
 
-const getSingleRole = async (props: IGetDataProps): Promise<TRole> => {
+const getSingleRole = async (
+  props: IGetDataProps,
+  auth: ICurrentCompany
+): Promise<TRole> => {
   const url = `${process.env.REACT_APP_AUTHENTICATION_BASE_URL}/permission/role/${props.id}`;
 
   const config = {
     headers: {
       Accept: "application/json",
-      Authorization: `Bearer ${props.token}`,
-      "x-company-id": props.companyId,
+      Authorization: `Bearer ${auth.token}`,
+      "x-company-id": auth.companyId,
     },
   };
 
@@ -33,14 +36,8 @@ const getSingleRole = async (props: IGetDataProps): Promise<TRole> => {
 
     userCount: item.employeeCount ?? 0,
     permissions: item?.permissions.map(
-      (item: any): TPermission => ({
-        permissionId: item.permissionId,
-        name: item.permission.name,
-        label: item.permission.label,
-        categoryId: item.permission.categoryId,
-        description: item.permission.description,
-
-        id: item.permission.id,
+      (item: TPermission): TPermission => ({
+        ...item,
       })
     ),
   };
@@ -48,11 +45,14 @@ const getSingleRole = async (props: IGetDataProps): Promise<TRole> => {
 };
 
 export const useFetchSingleRole = (props: IGetDataProps) => {
+  const { companyId, token } = useApiAuth();
+
   const queryData = useQuery(
     [QUERY_KEY_FOR_SINGLE_ROLE, props.id],
     () =>
-      getSingleRole({
-        ...props,
+      getSingleRole(props, {
+        companyId,
+        token,
       }),
     {
       enabled: props.id !== 0,

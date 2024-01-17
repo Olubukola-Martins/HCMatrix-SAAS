@@ -4,6 +4,7 @@ import moment from "moment";
 import { Link } from "react-router-dom";
 import { appRoutes } from "config/router/paths";
 import { TAllWorkflow } from "../types/allWorkflows";
+import { DEFAULT_DATE_FORMAT } from "constants/dateFormats";
 
 interface IProps {
   data: TAllWorkflow[];
@@ -30,10 +31,16 @@ export const WorkflowsTable = ({
       key: "numberOfStages",
     },
     {
+      title: "Type",
+      dataIndex: "type",
+      key: "type",
+      render: (_, item) => <span className="capitalize">{item.type}</span>,
+    },
+    {
       title: "Last modified",
       dataIndex: "updatedAt",
       key: "updatedAt",
-      render: (val) => moment(val).format("YYYY-DD-MM"),
+      render: (val) => moment(val).format(DEFAULT_DATE_FORMAT),
     },
     {
       title: "Last modified by",

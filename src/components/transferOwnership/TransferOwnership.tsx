@@ -1,9 +1,8 @@
 import { Modal, Form } from "antd";
 import Themes from "components/Themes";
 import { AppButton } from "components/button/AppButton";
-import { QUERY_KEY_FOR_COMPANY_PARAMETERS } from "features/core/company/hooks/useGetCompanyParams";
+import { QUERY_KEY_FOR_COMPANY_PARAMETER_SETTING } from "features/core/company/hooks/useGetCompanyParamSetting";
 import { useTransferOwnership } from "features/core/company/hooks/useTransferOwnership";
-import { TCompanyParams } from "features/core/company/types/companyParams";
 import { FormEmployeeInput } from "features/core/employees/components/FormEmployeeInput";
 import { getEmployeeFullName } from "features/core/employees/utils/getEmployeeFullName";
 import { useState } from "react";
@@ -13,10 +12,9 @@ import { openNotification } from "utils/notifications";
 interface IProps {
   open: boolean;
   handleClose: () => void;
-  companyParams: TCompanyParams;
 }
 // TO DO: Refactor to code to be more descriptive as to what is going on and why
-const TransferOwnership = ({ open, handleClose, companyParams }: IProps) => {
+const TransferOwnership = ({ open, handleClose }: IProps) => {
   const [formState, setFormState] = useState<"fill-form" | "form-filled">(
     "fill-form"
   );
@@ -68,7 +66,6 @@ const TransferOwnership = ({ open, handleClose, companyParams }: IProps) => {
               <Confimation
                 data={user}
                 onCancel={() => setFormState("fill-form")}
-                companyParams={companyParams}
                 handleClose={handleClose}
               />
             )}
@@ -82,7 +79,6 @@ const Confimation: React.FC<{
   data: { name: string; id: number };
   onCancel: () => void;
   handleClose: () => void;
-  companyParams: TCompanyParams;
 }> = ({ data, onCancel, handleClose }) => {
   const queryClient = useQueryClient();
 
@@ -112,7 +108,7 @@ const Confimation: React.FC<{
           });
           handleClose();
           queryClient.invalidateQueries({
-            queryKey: [QUERY_KEY_FOR_COMPANY_PARAMETERS],
+            queryKey: [QUERY_KEY_FOR_COMPANY_PARAMETER_SETTING],
             // exact: true,
           });
         },

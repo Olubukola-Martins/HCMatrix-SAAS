@@ -7,7 +7,7 @@ import { useQueryClient } from "react-query";
 import { QUERY_KEY_FOR_SINGLE_ASSET } from "../hooks/useGetSingleAsset";
 import { useUpdateAsset } from "../hooks/useUpdateAsset";
 import { TAsset } from "../types";
-import { generalValidationRules } from "utils/formHelpers/validation";
+import { dateHasToBeGreaterThanOrEqualToCurrentDayRule } from "utils/formHelpers/validation";
 import { FormEmployeeInput } from "features/core/employees/components/FormEmployeeInput";
 
 interface IProps extends IModalProps {
@@ -80,7 +80,7 @@ export const AssignAsset: React.FC<IProps> = ({ open, handleClose, asset }) => {
           control={{ label: "Assignee", name: "assigneeId" }}
         />
         <Form.Item
-          rules={generalValidationRules}
+          rules={[dateHasToBeGreaterThanOrEqualToCurrentDayRule]}
           name="dateAssigned"
           label="Date assigned"
         >

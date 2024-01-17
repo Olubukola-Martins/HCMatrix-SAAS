@@ -10,6 +10,7 @@ import { getAppropriateColorForStatus } from "utils/colorHelpers/getAppropriateC
 import { useGeTPositionChangeRequisitionRequisitions } from "../../requisitions/hooks/position-change/useGetPositionChangeRequisitions";
 import { TPositionChangeRequisition } from "../../requisitions/types/positionChange";
 import { PositionChangeRequestDetails } from "./PositionChangeRequestDetails";
+import { DEFAULT_DATE_FORMAT } from "constants/dateFormats";
 
 export const PositionChangeRequestsTable: React.FC<{
   status?: TApprovalStatus;
@@ -17,9 +18,7 @@ export const PositionChangeRequestsTable: React.FC<{
 }> = ({ status, employeeId }) => {
   const [requestId, setRequestId] = useState<number>();
   const { companyId, token } = useApiAuth();
-  const { pagination, onChange } = usePagination({
-    pageSize: 4,
-  });
+  const { pagination, onChange } = usePagination();
   const { data, isFetching } = useGeTPositionChangeRequisitionRequisitions({
     companyId,
     token,
@@ -37,7 +36,7 @@ export const PositionChangeRequestsTable: React.FC<{
       dataIndex: "date",
       key: "date",
       render: (_, item) => (
-        <span>{moment(item.date).format("YYYY/MM/DD")} </span>
+        <span>{moment(item.date).format(DEFAULT_DATE_FORMAT)} </span>
       ),
     },
     {

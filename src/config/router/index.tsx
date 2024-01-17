@@ -5,28 +5,34 @@ import { TRouteData } from "./types";
 import { RequireAuth } from "react-auth-kit";
 import { appRoutes } from "./paths";
 import DashboardLayout from "components/layout/DashboardLayout";
+import { useGetUserPermissions } from "components/permission-restriction/PermissionRestrictor";
 
 const Router = () => {
-  const pageRoutes = appPagesData.map(
-    ({ path, element, category }: TRouteData) => {
-      if (category === "doesnt-require-authentication") {
-        return <Route key={path} path={`${path}`} element={element} />;
-      }
-      return (
-        <Route element={<DashboardLayout />} key={path}>
-          <Route
-            key={path}
-            path={`${path}`}
-            element={
-              <RequireAuth loginPath={appRoutes.login}>{element}</RequireAuth>
-            }
-          />
-        </Route>
-      );
+  const { userPermissions, licenseType } = useGetUserPermissions();
+  const pageRoutes = appPagesData({
+    userPermissions,
+    licenseType,
+  }).map(({ path, element, category }: TRouteData) => {
+    if (category === "doesnt-require-authentication") {
+      return <Route key={path} path={`${path}`} element={element} />;
     }
-  );
+    return (
+      <Route element={<DashboardLayout />} key={path}>
+        <Route
+          path={`${path}`}
+          element={
+            <RequireAuth loginPath={appRoutes.login}>{element}</RequireAuth>
+          }
+        />
+      </Route>
+    );
+  });
 
-  return <Routes key={"app"}>{pageRoutes}</Routes>;
+  return (
+    <>
+      <Routes key={"app"}>{pageRoutes}</Routes>
+    </>
+  );
 };
 
 export default Router;

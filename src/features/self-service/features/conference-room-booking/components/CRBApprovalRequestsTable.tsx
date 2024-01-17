@@ -1,4 +1,4 @@
-import { Space, Dropdown, Menu, Table, Modal } from "antd";
+import { Space, Dropdown, Menu, Table } from "antd";
 import { MoreOutlined } from "@ant-design/icons";
 
 import React, { useState } from "react";
@@ -16,6 +16,8 @@ import { useQueryClient } from "react-query";
 import { useFetchApprovalRequests } from "features/core/workflows/hooks/useFetchApprovalRequests";
 import { useApproveORReject } from "hooks/useApproveORReject";
 import { TApprovalRequest } from "features/core/workflows/types/approval-requests";
+import { DEFAULT_DATE_FORMAT } from "constants/dateFormats";
+import { getEmployeeFullName } from "features/core/employees/utils/getEmployeeFullName";
 
 const CRBApprovalRequestsTable: React.FC<{
   status?: TCRBookingStatus;
@@ -46,10 +48,7 @@ const CRBApprovalRequestsTable: React.FC<{
       dataIndex: "name",
       key: "name",
       render: (val, item) => (
-        <span>
-          {item.conferenceRoomBooking?.employee.firstName}{" "}
-          {item.conferenceRoomBooking?.employee.lastName}
-        </span>
+        <span>{getEmployeeFullName(item.conferenceRoomBooking?.employee)}</span>
       ),
     },
     {
@@ -57,7 +56,9 @@ const CRBApprovalRequestsTable: React.FC<{
       dataIndex: "createdAt",
       key: "createdAt",
       render: (val, item) =>
-        moment(item.conferenceRoomBooking?.createdAt).format("YYYY-MM-DD"),
+        moment(item.conferenceRoomBooking?.createdAt).format(
+          DEFAULT_DATE_FORMAT
+        ),
     },
     {
       title: "Room Name",
@@ -93,7 +94,7 @@ const CRBApprovalRequestsTable: React.FC<{
       dataIndex: "date",
       key: "date",
       render: (val, item) =>
-        moment(item.conferenceRoomBooking?.date).format("YYYY-MM-DD"),
+        moment(item.conferenceRoomBooking?.date).format(DEFAULT_DATE_FORMAT),
     },
     {
       title: "Start Time",
@@ -152,6 +153,7 @@ const CRBApprovalRequestsTable: React.FC<{
                       approvalStageId: item?.id,
                       status: "approved",
                       workflowType: !!item?.basicStageId ? "basic" : "advanced",
+                      requires2FA: item?.advancedStage?.enableTwoFactorAuth,
                     })
                   }
                 >
@@ -185,16 +187,13 @@ const CRBApprovalRequestsTable: React.FC<{
     : originalColumns;
   return (
     <div>
-      <Modal
-        open={showD}
-        onCancel={() => setShowD(false)}
-        closeIcon={false}
-        title={"Booking Details"}
-        style={{ top: 10 }}
-        footer={null}
-      >
-        {requestId && <CRBBookingDetails id={requestId} />}
-      </Modal>
+      {requestId && (
+        <CRBBookingDetails
+          id={requestId}
+          open={showD}
+          handleClose={() => setShowD(false)}
+        />
+      )}
 
       <Table
         columns={columns}

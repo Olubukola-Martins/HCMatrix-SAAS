@@ -1,7 +1,6 @@
-import { Form, Input, Select, Button, InputNumber } from "antd";
+import { Form, Input, Select, InputNumber } from "antd";
 
 import { useEffect, useState } from "react";
-import { EditOutlined, DeleteOutlined, SaveOutlined } from "@ant-design/icons";
 import { FormEmployeeInput } from "features/core/employees/components/FormEmployeeInput";
 import { FormGroupInput } from "features/core/groups/components/FormGroupInput";
 import { FormRoleInput } from "features/core/roles-and-permissions/components/FormRoleInput";
@@ -15,9 +14,13 @@ import {
   WORKFLOW_STAGE_CONDITION_OPTIONS,
   WORKFLOW_STAGE_TYPE_OPTIONS,
 } from "../constants";
+import { AppButton } from "components/button/AppButton";
 
 export const CreateAdvancedStage: React.FC<{
-  stage: OptionalTypeParams<TStage, "entityId" | "type"> & {
+  stage: OptionalTypeParams<
+    TStage,
+    "entityId" | "type" | "enableTwoFactorAuth"
+  > & {
     editable: boolean;
   };
   handleFinish: (data: any) => void;
@@ -33,11 +36,12 @@ export const CreateAdvancedStage: React.FC<{
         name: stage.name,
         type: stage.type,
         entityId: stage.entityId,
+        enableTwoFactorAuth: stage.enableTwoFactorAuth,
       });
     }
   }, [form, stage]);
   return (
-    <div className="flex gap-4 items-end">
+    <div className="flex flex-col gap-4 w-full">
       <Form
         form={form}
         onFinish={handleFinish}
@@ -45,13 +49,26 @@ export const CreateAdvancedStage: React.FC<{
         labelCol={{ span: 24 }}
         requiredMark={false}
       >
-        <div className="flex gap-4">
+        <div className="grid grid-cols-2 md:gap-8 gap-4">
           <Form.Item
             name={"name"}
             label={`Stage Name`}
             rules={textInputValidationRules}
           >
             <Input placeholder="Stage name" />
+          </Form.Item>
+          <Form.Item
+            name={"enableTwoFactorAuth"}
+            label={`Enable 2FA`}
+            rules={generalValidationRules}
+          >
+            <Select
+              placeholder="Enable 2FA"
+              options={[
+                { label: "Yes", value: true },
+                { label: "No", value: false },
+              ]}
+            />
           </Form.Item>
           <Form.Item
             name={"type"}
@@ -85,21 +102,22 @@ export const CreateAdvancedStage: React.FC<{
               control={{ label: "Group", name: "entityId" }}
             />
           )}
-          {!!stagingType && stagingType !== "employee" && (
-            <Form.Item
-              name={"condition"}
-              rules={generalValidationRules}
-              label="Condition"
-            >
-              <Select
-                placeholder="Condition"
-                options={WORKFLOW_STAGE_CONDITION_OPTIONS}
-                onSelect={(val: TStageCondition) => {
-                  setStagingCondition(val);
-                }}
-              />
-            </Form.Item>
-          )}
+          {!!stagingType &&
+            !["line-manager", "employee"].includes(stagingType) && (
+              <Form.Item
+                name={"condition"}
+                rules={generalValidationRules}
+                label="Condition"
+              >
+                <Select
+                  placeholder="Condition"
+                  options={WORKFLOW_STAGE_CONDITION_OPTIONS}
+                  onSelect={(val: TStageCondition) => {
+                    setStagingCondition(val);
+                  }}
+                />
+              </Form.Item>
+            )}
 
           {stagingCondition === "specific" && (
             // TO DO: validation of max/min based on count of entity, or no need as they can add to role at any moment
@@ -113,23 +131,17 @@ export const CreateAdvancedStage: React.FC<{
           )}
         </div>
       </Form>
-      <div className="flex gap-4 mb-6">
+      <div className="flex gap-4 justify-end mb-6">
+        <AppButton
+          label="Delete"
+          variant="transparent"
+          handleClick={() => removeStage(stage.id)}
+        />
         {!stage.editable ? (
-          <Button icon={<EditOutlined />} onClick={() => enableEdit(stage.id)}>
-            Edit
-          </Button>
+          <AppButton label="Edit" handleClick={() => enableEdit(stage.id)} />
         ) : (
-          <Button
-            icon={<SaveOutlined />}
-            type="text"
-            onClick={() => form.submit()}
-          >
-            Save
-          </Button>
+          <AppButton label="Save" handleClick={() => form.submit()} />
         )}
-        <Button icon={<DeleteOutlined />} onClick={() => removeStage(stage.id)}>
-          Delete
-        </Button>
       </div>
     </div>
   );

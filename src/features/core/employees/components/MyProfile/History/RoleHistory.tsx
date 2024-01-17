@@ -1,92 +1,75 @@
-import Search from "antd/lib/input/Search";
-import { Space, Table } from "antd";
-import React, { useState } from "react";
 import { ColumnsType } from "antd/lib/table";
-import { AssignNewRole } from "./AssignNewRole";
+import { Input, Table } from "antd";
+import moment from "moment";
+import React, { useEffect, useState } from "react";
+import { usePagination } from "hooks/usePagination";
+import { DEFAULT_DATE_FORMAT } from "constants/dateFormats";
+import { TSingleEmployee } from "features/core/employees/types";
 
-interface DataType {
-  key: React.Key;
-  jobRole: string;
-  department: string;
-  startedOn: string;
-  ended: string;
-  action: any;
+interface IProps {
+  data?: TSingleEmployee["roleHistory"];
 }
 
-const columns: ColumnsType<DataType> = [
-  {
-    title: "Job Role",
-    dataIndex: "jobRole",
-  },
-  {
-    title: "Department",
-    dataIndex: "department",
-  },
-  {
-    title: "Started On",
-    dataIndex: "startedOn",
-  },
-  {
-    title: "Ended",
-    dataIndex: "ended",
-  },
-  {
-    title: "Action",
-    key: "action",
-    render: (_, record) => (
-      <Space size="middle">
-        <i className="ri-delete-bin-line text-lg cursor-pointer"></i>
-        <a>
-          <i className="ri-pencil-line text-xl cursor-pointer"></i>
-        </a>
-      </Space>
-    ),
-  },
-];
+export const RoleHistory: React.FC<IProps> = ({ data = [] }) => {
+  const { pagination, onChange } = usePagination({ pageSize: 7 });
+  const [roles, setRoles] = useState<TSingleEmployee["roleHistory"]>([]);
+  const [search, setSearch] = useState<string>();
+  useEffect(() => {
+    const result = data?.filter(
+      (item) =>
+        item.role.name.toLowerCase().indexOf(search?.toLowerCase() ?? "") !== -1
+    );
+    setRoles(result);
+  }, [search, data]);
+  const columns: ColumnsType<TSingleEmployee["roleHistory"][0]> = [
+    {
+      title: "Name",
+      dataIndex: "name",
+      key: "name",
+      render: (val, item) => (
+        <span className="capitalize">{item?.role.name}</span>
+      ),
+    },
 
-const data: DataType[] = [];
-// for (let i = 0; i < 10; i++) {
-//   data.push({
-//       key: i,
-//       jobRole: "",
-//       startedOn: "",
-//       ended: "",
-//       department: "",
-//       action: action
-//   });
-// }
-
-export const RoleHistory = () => {
-  const [openDrawer, setOpenDrawer] = useState(false);
+    {
+      title: "Started",
+      dataIndex: "cs",
+      render: (_, val) => (
+        <span className="">{moment(val.from).format(DEFAULT_DATE_FORMAT)}</span>
+      ),
+    },
+    {
+      title: "Ended",
+      dataIndex: "ce",
+      render: (_, val) => (
+        <span className="">
+          {val.to ? moment(val.to).format(DEFAULT_DATE_FORMAT) : "Ongoing"}
+        </span>
+      ),
+    },
+  ];
   return (
     <div>
       <div className="bg-card p-3 rounded">
         <div className="border-b border-gray-400 w-full mb-7">
           <h2 className="text-accent text-base pb-1">Role History</h2>
         </div>
-        <div className="flex md:items-center gap-5  flex-col-reverse md:flex-row md:justify-between my-3">
-          <Search
-            placeholder="input search text"
+        <div className="my-3 flex justify-end">
+          <Input.Search
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            placeholder="Search Role"
             style={{ width: 200 }}
             className="rounded"
           />
-          <div>
-            <button className="button" onClick={() => setOpenDrawer(true)}>
-              Assign New Role
-            </button>
-          </div>
         </div>
-
-        <AssignNewRole
-          open={openDrawer}
-          handleClose={() => setOpenDrawer(false)}
-        />
 
         <Table
           columns={columns}
-          dataSource={data}
-          pagination={{ pageSize: 50 }}
-          scroll={{ y: 240 }}
+          size="small"
+          dataSource={roles}
+          pagination={{ ...pagination, total: roles.length }}
+          onChange={onChange}
         />
       </div>
     </div>

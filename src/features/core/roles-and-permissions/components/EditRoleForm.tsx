@@ -1,16 +1,5 @@
-import {
-  Button,
-  Checkbox,
-  Form,
-  Input,
-  Select,
-  Skeleton,
-  Spin,
-  Table,
-  Typography,
-} from "antd";
+import { Checkbox, Form, Input, Skeleton, Typography } from "antd";
 import { appRoutes } from "config/router/paths";
-import { useApiAuth } from "hooks/useApiAuth";
 import { useState, useEffect } from "react";
 import { useQueryClient } from "react-query";
 import { Navigate } from "react-router-dom";
@@ -19,18 +8,17 @@ import {
   generalValidationRules,
 } from "utils/formHelpers/validation";
 import { openNotification } from "utils/notifications";
-import { useCreateRole, ICreateRoleProps } from "../hooks/useCreateRole";
 import { useFetchPermissions } from "../hooks/useFetchPermissions";
 import { useFetchSingleRole } from "../hooks/useFetchSingleRole";
 import { AppButton } from "components/button/AppButton";
+import { QUERY_KEY_FOR_ROLES } from "../hooks/useFetchRoles";
+import { useEditRole } from "../hooks/useEditRole";
+import { QUERY_KEY_FOR_AUTHENTICATED_USER } from "features/authentication/hooks/useGetAuthUser";
 
 export const EditRoleForm: React.FC<{ id: number }> = ({ id }) => {
   const queryClient = useQueryClient();
-  const { companyId, token } = useApiAuth();
-  const { data: roleData, isFetching } = useFetchSingleRole({
-    companyId,
+  const { data: roleData, isFetching: isFetchingRole } = useFetchSingleRole({
     id,
-    token,
   });
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedCategory, setSelectedCategory] = useState(0);
@@ -50,20 +38,12 @@ export const EditRoleForm: React.FC<{ id: number }> = ({ id }) => {
     if (roleData) {
       form.setFieldsValue({
         name: roleData?.name,
-        permissionIds: roleData?.permissions?.map((item) => item.id),
+        permissionIds: roleData?.permissions?.map((item) => item.permission.id),
       });
     }
   }, [form, roleData, notAbleToEditRole]);
 
-  const {
-    data,
-    isError: isPError,
-    isFetching: isPFetching,
-    isSuccess: isPSuccess,
-  } = useFetchPermissions({
-    companyId,
-    token,
-  });
+  const { data, isFetching: isFetchingPermissions } = useFetchPermissions();
 
   const handleSearch = (e: any) => {
     const val = e.target.value;
@@ -74,24 +54,19 @@ export const EditRoleForm: React.FC<{ id: number }> = ({ id }) => {
     setSelectedCategory(val);
   };
 
-  const { mutate, isLoading } = useCreateRole();
+  const { mutate, isLoading } = useEditRole();
 
   const handleSubmit = (data: any) => {
-    if (companyId) {
-      const props: ICreateRoleProps = {
-        companyId,
-        name: data.name,
-        permissionIds: data.permissionIds,
-        token,
-      };
-      // return;
-      openNotification({
-        state: "info",
-        title: "Wait a second ...",
-        // description: <Progress percent={80} status="active" />,
-        description: <Spin />,
-      });
-      mutate(props, {
+    if (!roleData) return;
+    mutate(
+      {
+        data: {
+          name: data.name,
+          permissionIds: data.permissionIds,
+        },
+        roleId: roleData.id,
+      },
+      {
         onError: (err: any) => {
           openNotification({
             state: "error",
@@ -101,154 +76,24 @@ export const EditRoleForm: React.FC<{ id: number }> = ({ id }) => {
           });
         },
         onSuccess: (res: any) => {
-          const result = res.data.data;
-
           openNotification({
             state: "success",
 
             title: "Success",
             description: res.data.message,
-            // duration: 0.4,
           });
-
-          form.resetFields();
 
           queryClient.invalidateQueries({
-            queryKey: ["roles"],
+            queryKey: [QUERY_KEY_FOR_ROLES],
+          });
+          queryClient.invalidateQueries({
+            queryKey: [QUERY_KEY_FOR_AUTHENTICATED_USER],
+            // exact: true,
           });
         },
-      });
-    }
+      }
+    );
   };
-
-  const columns = [
-    {
-      title: "Permission/Priviledges",
-      dataIndex: "name",
-      key: "name",
-    },
-
-    {
-      title: "Record Permission",
-      dataIndex: "Record Permission",
-      key: "Record Permission",
-      children: [
-        {
-          title: "View",
-          dataIndex: "View",
-          key: "View",
-        },
-        {
-          title: "Add",
-          dataIndex: "Add",
-          key: "Add",
-        },
-        {
-          title: "Edit",
-          dataIndex: "Edit",
-          key: "Edit",
-        },
-        {
-          title: "Delete",
-          dataIndex: "Delete",
-          key: "Delete",
-        },
-      ],
-    },
-
-    {
-      title: "Field Permission",
-      dataIndex: "Field Permission",
-      key: "Field Permission",
-      children: [
-        {
-          title: "Fill",
-          dataIndex: "Fill",
-          key: "Fill",
-        },
-      ],
-    },
-    {
-      title: "Action Permission",
-      dataIndex: "Action Permission",
-      key: "Action Permission",
-      children: [
-        {
-          title: "Import",
-          dataIndex: "Import",
-          key: "Import",
-        },
-        {
-          title: "Export",
-          dataIndex: "Export",
-          key: "Export",
-        },
-        {
-          title: "Activate",
-          dataIndex: "Activate",
-          key: "Activate",
-        },
-      ],
-    },
-  ];
-
-  const ans: any[] = [
-    {
-      name: "Company Details",
-      View: <Checkbox />,
-      Edit: <Checkbox />,
-      Add: <Checkbox />,
-      Fill: <Checkbox />,
-      Import: <Checkbox />,
-      Export: <Checkbox />,
-      Activate: <Checkbox />,
-      Delete: <Checkbox />,
-    },
-    {
-      name: "Department Details",
-      View: <Checkbox />,
-      Edit: <Checkbox />,
-      Add: <Checkbox />,
-      Fill: <Checkbox />,
-      Import: <Checkbox />,
-      Export: <Checkbox />,
-      Activate: <Checkbox />,
-      Delete: <Checkbox />,
-    },
-    {
-      name: "Group Details",
-      View: <Checkbox />,
-      Edit: <Checkbox />,
-      Add: <Checkbox />,
-      Fill: <Checkbox />,
-      Import: <Checkbox />,
-      Export: <Checkbox />,
-      Activate: <Checkbox />,
-      Delete: <Checkbox />,
-    },
-    {
-      name: "Payroll Details",
-      View: <Checkbox />,
-      Edit: <Checkbox />,
-      Add: <Checkbox />,
-      Fill: <Checkbox />,
-      Import: <Checkbox />,
-      Export: <Checkbox />,
-      Activate: <Checkbox />,
-      Delete: <Checkbox />,
-    },
-    {
-      name: "Wallet Details",
-      View: <Checkbox />,
-      Edit: <Checkbox />,
-      Add: <Checkbox />,
-      Fill: <Checkbox />,
-      Import: <Checkbox />,
-      Export: <Checkbox />,
-      Activate: <Checkbox />,
-      Delete: <Checkbox />,
-    },
-  ];
 
   return (
     <>
@@ -256,35 +101,38 @@ export const EditRoleForm: React.FC<{ id: number }> = ({ id }) => {
         <Navigate to={appRoutes.roleSettings} replace={true} />
       )}
       <div>
-        <Skeleton
-          active
-          loading={!isPSuccess || isPFetching}
-          paragraph={{ rows: 40 }}
-        >
-          {isPSuccess && (
-            <Form
-              layout="vertical"
-              requiredMark={false}
-              form={form}
-              onFinish={handleSubmit}
+        <Skeleton active loading={isFetchingRole} paragraph={{ rows: 40 }}>
+          <Form
+            layout="vertical"
+            requiredMark={false}
+            form={form}
+            onFinish={handleSubmit}
+          >
+            <div className="flex flex-col gap-4">
+              <Typography.Title level={5}>Role name</Typography.Title>
+              <Form.Item
+                name="name"
+                rules={textInputValidationRules}
+                className="w-1/5"
+              >
+                <Input
+                  placeholder="role name"
+                  disabled={roleData?.label === "employee"}
+                />
+              </Form.Item>
+            </div>
+            <Skeleton
+              loading={isFetchingPermissions}
+              active
+              paragraph={{ rows: 35 }}
             >
-              <div className="flex flex-col gap-4">
-                <Typography.Title level={5}>Role name</Typography.Title>
-                <Form.Item
-                  name="name"
-                  rules={textInputValidationRules}
-                  className="w-1/5"
-                >
-                  <Input placeholder="role name" />
-                </Form.Item>
-              </div>
               <div className="flex flex-col gap-4">
                 <Typography.Title level={5}>
                   Assign Permissions
                 </Typography.Title>
                 {/* permission categories */}
                 <div className="flex flex-wrap gap-4 pb-3 border-b ">
-                  {data.categories.map((item) => (
+                  {data?.categories.map((item) => (
                     <div className="" key={item.id}>
                       <button
                         type="button"
@@ -305,27 +153,25 @@ export const EditRoleForm: React.FC<{ id: number }> = ({ id }) => {
                     onChange={handleSearch}
                     className="w-48"
                     placeholder="Search permissions"
-                    disabled
+                    value={searchTerm}
                   />
                 </div>
-                {/* <div className="bg-white p-4 rounded-md mb-4">
-                  <Table columns={columns} dataSource={ans} size="small" />
-                </div> */}
+
                 <Form.Item name="permissionIds" rules={generalValidationRules}>
                   <Checkbox.Group style={{ width: "100%" }}>
                     <div className="my-6 grid grid-cols-4 gap-4">
-                      {data.permissions.map((item) => (
+                      {data?.permissions.map((item) => (
                         <Checkbox
                           key={item.id}
                           value={item.id}
+                          //TODO: Fix search functionality, and also implement the ability to select all in a category, and also all in all categories
                           className={`${
                             item.categoryId === selectedCategory ||
-                            selectedCategory === 0
-                              ? //   ||
-                                //   searchTerm
-                                //     .toLowerCase()
-                                //     .search(item.name.toLowerCase()) !== -1
-                                "flex"
+                            selectedCategory === 0 ||
+                            searchTerm
+                              .toLowerCase()
+                              .search(item.name.toLowerCase()) !== -1
+                              ? "flex"
                               : "hidden"
                           }`}
                         >
@@ -336,10 +182,12 @@ export const EditRoleForm: React.FC<{ id: number }> = ({ id }) => {
                   </Checkbox.Group>
                 </Form.Item>
               </div>
+            </Skeleton>
 
-              <AppButton type="submit" isLoading={isLoading} />
-            </Form>
-          )}
+            <div className="flex justify-end">
+              <AppButton type="submit" isLoading={isLoading} label="Save" />
+            </div>
+          </Form>
         </Skeleton>
       </div>
     </>

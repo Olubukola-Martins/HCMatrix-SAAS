@@ -1,25 +1,26 @@
 import { UploadOutlined } from "@ant-design/icons";
 import { UploadProps, message, Upload, Button, Typography } from "antd";
-import { IAuthDets } from "features/authentication/types";
+import { MICROSERVICE_ENDPOINTS } from "config/enviroment";
+import { useApiAuth } from "hooks/useApiAuth";
 import { useContext } from "react";
-import { useAuthUser } from "react-auth-kit";
 import { GlobalContext, EGlobalOps } from "stateManagers/GlobalContextProvider";
+import { TFileType } from "types/files";
 
 // TO DO: HANDLE And account for the delete of a file from context
 
-type TFileType =
-  | "image/png"
-  | "image/jpeg"
-  | "image/jpg"
-  | "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
-  | "text/plain"
-  | "application/pdf"
-  | "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
-  | "video/mp4"
-  | "audio/mpeg";
+// type TFileType =
+//   | "image/png"
+//   | "image/jpeg"
+//   | "image/jpg"
+//   | "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+//   | "text/plain"
+//   | "application/pdf"
+//   | "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+//   | "video/mp4"
+//   | "audio/mpeg";
 interface IFilesProps {
   allowedFileTypes: TFileType[];
-  displayType?: "icon" | "button" | "form-space-between";
+  displayType?: "icon" | "button" | "form-space-between" | "dotted-box";
   textToDisplay?: string;
   fileKey: string;
 }
@@ -30,12 +31,9 @@ export const FileUpload = ({
   textToDisplay = "Click to Upload",
   fileKey,
 }: IFilesProps) => {
-  const auth = useAuthUser();
-  const authDetails = auth() as unknown as IAuthDets;
-  const token = authDetails.userToken;
+  const { token, companyId } = useApiAuth();
   const globalCtx = useContext(GlobalContext);
-  const { state: globalState, dispatch } = globalCtx;
-  const companyId = globalState.currentCompany?.id;
+  const { dispatch } = globalCtx;
 
   const props: UploadProps = {
     beforeUpload: (file) => {
@@ -50,11 +48,11 @@ export const FileUpload = ({
     },
     name: "file",
     // showUploadList: false,
-    action: `${process.env.REACT_APP_UTILITY_BASE_URL}/file`,
+    action: `${MICROSERVICE_ENDPOINTS.UTILITY}/file`,
     headers: {
       Accept: "application/json",
       Authorization: `Bearer ${token}`,
-      "x-company-id": companyId as string,
+      "x-company-id": companyId.toString(),
     },
     onChange(info) {
       if (info.file.status !== "uploading") {
@@ -93,6 +91,12 @@ export const FileUpload = ({
               className="text-3xl"
             />
             <Typography.Text>{textToDisplay}</Typography.Text>
+          </div>
+        )}
+        {displayType === "dotted-box" && (
+          <div className="w-full border border-dotted border-caramel px-2 py-1 rounded text-caramel text-sm flex flex-col gap-1 items-center justify-center">
+            <i className="ri-download-2-line text-2xl"></i>
+            <span className="text-xs font-medium">Upload File</span>
           </div>
         )}
       </Upload>

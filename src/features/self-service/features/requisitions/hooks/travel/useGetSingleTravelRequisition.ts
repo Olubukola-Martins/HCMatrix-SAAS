@@ -9,7 +9,7 @@ interface IGetDataProps extends ICurrentCompany {
 }
 export const QUERY_KEY_FOR_SINGLE_TRAVEL_REQUEST = "single-travel-request";
 const getData = async (props: IGetDataProps): Promise<TTravelRequest> => {
-  const url = `${MICROSERVICE_ENDPOINTS.UTILITY}/self-service/travel-request/${props.id}`;
+  const url = `${MICROSERVICE_ENDPOINTS.UTILITY}/self-service/requisition/travel/${props.id}`;
 
   const config = {
     headers: {

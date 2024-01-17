@@ -16,6 +16,8 @@ import { useQueryClient } from "react-query";
 import { PromotionRequestDetails } from "./PromotionRequestDetails";
 import { QUERY_KEY_FOR_PROMOTION_REQUISITIONS } from "../../requisitions/hooks/promotion/useGetPromotionRequisitions";
 import { getEmployeeFullName } from "features/core/employees/utils/getEmployeeFullName";
+import { QUERY_KEY_FOR_PROMOTION_REQUISITIONS_FOR_AUTH_EMPLOYEE } from "../../requisitions/hooks/promotion/useGetPromotionRequisitions4AuthEmployee";
+import { DEFAULT_DATE_FORMAT } from "constants/dateFormats";
 
 const PromotionApprovalRequestsTable: React.FC<{
   status?: TApprovalStatus;
@@ -35,6 +37,10 @@ const PromotionApprovalRequestsTable: React.FC<{
     handleSuccess: () => {
       queryClient.invalidateQueries({
         queryKey: [QUERY_KEY_FOR_PROMOTION_REQUISITIONS],
+        // exact: true,
+      });
+      queryClient.invalidateQueries({
+        queryKey: [QUERY_KEY_FOR_PROMOTION_REQUISITIONS_FOR_AUTH_EMPLOYEE],
         // exact: true,
       });
     },
@@ -59,7 +65,7 @@ const PromotionApprovalRequestsTable: React.FC<{
       key: "date",
       render: (_, item) => (
         <span>
-          {moment(item?.promotionRequisition?.date).format("YYYY/MM/DD")}{" "}
+          {moment(item?.promotionRequisition?.date).format(DEFAULT_DATE_FORMAT)}{" "}
         </span>
       ),
     },
@@ -70,7 +76,7 @@ const PromotionApprovalRequestsTable: React.FC<{
       render: (_, item) => (
         <span>
           {moment(item?.promotionRequisition?.preferredStartDate).format(
-            "YYYY/MM/DD"
+            DEFAULT_DATE_FORMAT
           )}{" "}
         </span>
       ),
@@ -131,6 +137,7 @@ const PromotionApprovalRequestsTable: React.FC<{
                       approvalStageId: item?.id,
                       status: "approved",
                       workflowType: !!item?.basicStageId ? "basic" : "advanced",
+                      requires2FA: item?.advancedStage?.enableTwoFactorAuth,
                     })
                   }
                 >

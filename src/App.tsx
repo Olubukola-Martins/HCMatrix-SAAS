@@ -4,10 +4,9 @@ import { ReactQueryDevtools } from "react-query/devtools";
 import { AuthProvider } from "react-auth-kit";
 import { Suspense, useEffect } from "react";
 import Router from "config/router";
-import refreshApi from "config/refreshTokenApi";
 import GlobalContextProvider from "stateManagers/GlobalContextProvider";
-import UserFeedbackContainer from "components/UserFeedbackContainer";
-import AdminWelcomeContainer from "components/AdminWelcomeContainer";
+import ErrorBoundary from "components/errorHandlers/ErrorBoundary";
+import { LOCAL_STORAGE_AUTH_KEY } from "constants/localStorageKeys";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -15,6 +14,7 @@ const queryClient = new QueryClient({
       refetchInterval: false,
       refetchIntervalInBackground: false,
       refetchOnWindowFocus: false,
+      retry: false, //Prevent Multiple Requests from being made on faliure
     },
   },
 });
@@ -22,30 +22,33 @@ const queryClient = new QueryClient({
 function App() {
   // clear darkmode
   useEffect(() => {
-    localStorage.removeItem("dark");
+    const dark = localStorage.getItem("dark");
+    if (dark) {
+      localStorage.removeItem("dark");
+    }
     // localStorage.clear(); //to clear all changes tommorow
   }, []);
   return (
-    <BrowserRouter>
-      <AuthProvider
-        authType={"localstorage"}
-        authName={"hcmatrix_app"}
-        // cookieDomain={window.location.hostname}
-        // cookieSecure={window.location.protocol === "https:"}
-        // refresh={refreshApi}
-      >
-        <QueryClientProvider client={queryClient}>
-          <GlobalContextProvider>
-            <UserFeedbackContainer />
-            <AdminWelcomeContainer />
-            <Suspense fallback={<div>temporary Loading...</div>}>
-              <Router />
-            </Suspense>
-          </GlobalContextProvider>
-          <ReactQueryDevtools initialIsOpen={false} position="bottom-right" />
-        </QueryClientProvider>
-      </AuthProvider>
-    </BrowserRouter>
+    <ErrorBoundary message="Please contact administrator!">
+      <BrowserRouter>
+        <AuthProvider
+          authType={"localstorage"}
+          authName={LOCAL_STORAGE_AUTH_KEY}
+          // cookieDomain={window.location.hostname}
+          // cookieSecure={window.location.protocol === "https:"}
+          // refresh={refreshApi}
+        >
+          <QueryClientProvider client={queryClient}>
+            <GlobalContextProvider>
+              <Suspense fallback={<div>temporary Loading...</div>}>
+                <Router />
+              </Suspense>
+            </GlobalContextProvider>
+            <ReactQueryDevtools initialIsOpen={false} position="bottom-right" />
+          </QueryClientProvider>
+        </AuthProvider>
+      </BrowserRouter>
+    </ErrorBoundary>
   );
 }
 

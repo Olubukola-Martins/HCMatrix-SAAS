@@ -1,27 +1,34 @@
+import { appRoutes } from "config/router/paths";
+import { authRoutesDontRequireAuthentication } from "config/router/routes/auth";
+import { LOCAL_STORAGE_AUTH_KEY } from "constants/localStorageKeys";
 import { IAuthDets } from "features/authentication/types";
 import { useContext, useEffect } from "react";
-import { useAuthUser, useIsAuthenticated } from "react-auth-kit";
-import { useNavigate } from "react-router-dom";
+import { useAuthUser } from "react-auth-kit";
+import { useLocation, useNavigate } from "react-router-dom";
 import { GlobalContext } from "stateManagers/GlobalContextProvider";
 
 export const useApiAuth = () => {
   const navigate = useNavigate();
-  const isAuthenticated = useIsAuthenticated();
-
+  const { pathname } = useLocation();
+  const routesAllowedWithoutAuthentication =
+    authRoutesDontRequireAuthentication.map((item) => item.path);
   useEffect(() => {
-    if (isAuthenticated() || localStorage.getItem("hcmatrix_app")) {
-      // Redirect to Dashboard
-    } else {
-      navigate("/login", { replace: true });
+    if (
+      localStorage.getItem(LOCAL_STORAGE_AUTH_KEY) === null &&
+      !routesAllowedWithoutAuthentication.includes(pathname)
+    ) {
+      // Redirect to login
+      navigate(appRoutes.login, { replace: true });
     }
-  }, [navigate, isAuthenticated]);
+  }, [navigate, pathname, routesAllowedWithoutAuthentication]);
   const auth = useAuthUser();
 
   const authDetails = auth() as unknown as IAuthDets;
+  const authUserData = authDetails?.user;
 
   const token = authDetails?.userToken;
   const globalCtx = useContext(GlobalContext);
-  const { state: globalState } = globalCtx;
+  const { state: globalState, dispatch: globalDispatch } = globalCtx;
   const companyId = +(globalState.currentCompany?.id as unknown as string); // make a number
   const companies = authDetails?.companies;
 
@@ -39,5 +46,8 @@ export const useApiAuth = () => {
     currentUserId,
     currentUserEmployeeId,
     currentCompanyEmployeeDetails: currentCompany,
+    authUserData,
+    userCompanies: companies,
+    globalDispatch,
   };
 };

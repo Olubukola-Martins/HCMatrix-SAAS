@@ -1,82 +1,57 @@
-import { ExclamationCircleOutlined } from "@ant-design/icons";
-import { Modal } from "antd";
 import { QUERY_KEY_FOR_APPROVAL_REQUESTS } from "features/core/workflows/hooks/useFetchApprovalRequests";
-import { useUpdateApproval } from "features/core/workflows/hooks/useUpdateApproval";
+import { QUERY_KEY_FOR_UNREAD_NOTIFICATION_COUNT } from "features/notifications/hooks/unRead/useGetUnReadNotificationCount";
+import { QUERY_KEY_FOR_NOTIFICATIONS } from "features/notifications/hooks/useGetAlerts";
+import { useContext } from "react";
 import { useQueryClient } from "react-query";
-import { openNotification } from "utils/notifications";
+import { EGlobalOps, GlobalContext } from "stateManagers/GlobalContextProvider";
+import { TApprovalStatus } from "types/statuses";
 
 interface IProps {
-  handleSuccess?: () => void;
+  handleSuccess?: (status?: TApprovalStatus) => void;
 }
 
 export const useApproveORReject = ({ handleSuccess }: IProps = {}) => {
+  // TODO: handle the `handleSuccess` prop by passing dispatching to global state and having it called onSuccess
+  const globalCtx = useContext(GlobalContext);
+  const { dispatch: globalDispatch } = globalCtx;
   const queryClient = useQueryClient();
-  const { mutate, isLoading } = useUpdateApproval();
-  const handleApproveOrReject = ({
-    approvalStageId,
-    workflowType,
-    status,
-  }: {
-    approvalStageId: number;
-    workflowType: "basic" | "advanced";
-    status: "approved" | "rejected";
-  }) => {
-    mutate(
-      {
-        approvalStageId,
-        workflowType,
-        data: {
-          status,
-        },
-      },
-      {
-        onError: (err: any) => {
-          openNotification({
-            state: "error",
-            title: "Error Occurred",
-            description:
-              err?.response.data.message ?? err?.response.data.error.message,
-          });
-        },
-        onSuccess: (res: any) => {
-          openNotification({
-            state: "success",
 
-            title: "Success",
-            description: res.data.message,
-            // duration: 0.4,
-          });
-          handleSuccess?.();
-
-          queryClient.invalidateQueries({
-            queryKey: [QUERY_KEY_FOR_APPROVAL_REQUESTS],
-            // exact: true,
-          });
-        },
-      }
-    );
-  };
   const confirmApprovalAction = ({
     approvalStageId,
     workflowType,
     status,
+    requires2FA,
   }: {
     approvalStageId: number;
+    requires2FA?: boolean;
     workflowType: "basic" | "advanced";
-    status: "approved" | "rejected";
+    status: TApprovalStatus;
   }) => {
-    Modal.confirm({
-      title: `Do you want to ${
-        status === "approved" ? "approve" : "reject"
-      } this request?`,
-      icon: <ExclamationCircleOutlined />,
-      content: `This will ${
-        status === "approved" ? "approve" : "reject"
-      } this request!`,
-      width: 600,
-      okButtonProps: { loading: isLoading },
-      onOk() {
-        handleApproveOrReject({ approvalStageId, status, workflowType });
+    globalDispatch({
+      type: EGlobalOps.setCurrentApproval,
+      payload: {
+        approvalStageId,
+        workflowType,
+        status,
+        requires2FA,
+        handleSuccess: () => {
+          // This ensures that notifications is updated once an item is approved/rejected
+          queryClient.invalidateQueries({
+            queryKey: [QUERY_KEY_FOR_NOTIFICATIONS],
+            // exact: true,
+          });
+          queryClient.invalidateQueries({
+            queryKey: [QUERY_KEY_FOR_UNREAD_NOTIFICATION_COUNT],
+            // exact: true,
+          });
+          // invalidate approval requests
+          queryClient.invalidateQueries({
+            queryKey: [QUERY_KEY_FOR_APPROVAL_REQUESTS],
+            // exact: true,
+          });
+
+          handleSuccess?.(status);
+        },
       },
     });
   };

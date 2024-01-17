@@ -2,19 +2,23 @@ import axios from "axios";
 import { ICurrentCompany, IPaginationProps, ISearchParams } from "types";
 import { TBranch } from "../types";
 import { useQuery } from "react-query";
+import { useApiAuth } from "hooks/useApiAuth";
+import { DEFAULT_PAGE_SIZE } from "constants/general";
 
 export const QUERY_KEY_FOR_BRANCHES = "branches";
 
-interface IGetDataProps extends ICurrentCompany {
+interface IGetDataProps {
   pagination?: IPaginationProps;
   searchParams?: ISearchParams;
 }
 
-export const getBranches = async (
-  props: IGetDataProps
-): Promise<{ data: TBranch[]; total: number }> => {
+export const getBranches = async (vals: {
+  auth: ICurrentCompany;
+  props: IGetDataProps;
+}): Promise<{ data: TBranch[]; total: number }> => {
+  const { auth, props } = vals;
   const { pagination } = props;
-  const limit = pagination?.limit ?? 10;
+  const limit = pagination?.limit ?? DEFAULT_PAGE_SIZE;
   const offset = pagination?.offset ?? 0;
   const name = props.searchParams?.name ?? "";
 
@@ -23,8 +27,8 @@ export const getBranches = async (
   const config = {
     headers: {
       Accept: "application/json",
-      Authorization: `Bearer ${props.token}`,
-      "x-company-id": props.companyId,
+      Authorization: `Bearer ${auth.token}`,
+      "x-company-id": auth.companyId,
     },
     params: {
       limit,
@@ -37,21 +41,7 @@ export const getBranches = async (
   const fetchedData = res.data.data;
   const result = fetchedData.result;
 
-  const data: TBranch[] = result.map(
-    (item: any): TBranch => ({
-      id: item.id,
-      name: item.name,
-      description: item.description,
-      address: {
-        streetAddress: item.address.streetAddress,
-        countryId: item.address.countryId,
-        stateId: item.address.stateId,
-        lgaId: item.address.lgaId,
-        timezone: item.address.timezone,
-      },
-      employeeCount: item?.employeeCount,
-    })
-  );
+  const data: TBranch[] = result.map((item: TBranch): TBranch => item);
 
   const ans = {
     data,
@@ -61,22 +51,13 @@ export const getBranches = async (
   return ans;
 };
 
-interface IFRQDataProps {
-  pagination?: IPaginationProps;
-  searchParams?: ISearchParams;
-
-  companyId: number;
-  onSuccess?: Function;
-  token: string;
-}
-
 export const useFetchBranches = ({
   pagination,
-  companyId,
-  onSuccess,
-  token,
+
   searchParams,
-}: IFRQDataProps) => {
+}: IGetDataProps) => {
+  const { token, companyId } = useApiAuth();
+
   const queryData = useQuery(
     [
       QUERY_KEY_FOR_BRANCHES,
@@ -86,19 +67,19 @@ export const useFetchBranches = ({
     ],
     () =>
       getBranches({
-        companyId,
-        pagination,
-        searchParams,
-        token,
+        auth: {
+          companyId,
+          token,
+        },
+
+        props: {
+          pagination,
+          searchParams,
+        },
       }),
     {
-      // refetchInterval: false,
-      // refetchIntervalInBackground: false,
-      // refetchOnWindowFocus: false,
       onError: (err: any) => {},
-      onSuccess: (data) => {
-        onSuccess && onSuccess(data);
-      },
+      onSuccess: (data) => {},
     }
   );
 

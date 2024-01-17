@@ -1,20 +1,32 @@
 import axios from "axios";
-import { ICreateEmpProps } from "../types";
+import { ICreateEmpProps, TGeneralAuthResponse } from "../types";
 import { MICROSERVICE_ENDPOINTS } from "config/enviroment";
+import { useMutation } from "react-query";
 
-export const createEmployeeAccount = async (props: ICreateEmpProps) => {
-  const url = `${MICROSERVICE_ENDPOINTS.AUTHENTICATION}/user/verification/employee?token=${props.token}&uid=${props.uid}`;
+const createEmployeeAccount = async (
+  props: ICreateEmpProps
+): Promise<TGeneralAuthResponse> => {
+  const url = `${MICROSERVICE_ENDPOINTS.AUTHENTICATION}/user/verification/employee`;
   const config = {
     headers: {
       Accept: "application/json",
     },
+    params: {
+      uid: props.uid,
+      token: props.token,
+    },
   };
 
-  const data: any = {
+  const data = {
     password: props.password,
     confirmPassword: props.confirmPassword,
   };
 
   const response = await axios.post(url, data, config);
-  return response;
+  const result = response.data as unknown as TGeneralAuthResponse;
+  return result;
+};
+
+export const useCreateEmployeeAccount = () => {
+  return useMutation(createEmployeeAccount);
 };

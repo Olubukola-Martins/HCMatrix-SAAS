@@ -1,3 +1,4 @@
+import { TLicenseType } from "features/authentication/types/auth-user";
 import { ICurrentCompany } from "types";
 
 export type TDepartment = {
@@ -6,20 +7,52 @@ export type TDepartment = {
   email: string;
   departmentHeadId?: number;
   parentDepartmentId?: number;
+  parentDepartment?: {
+    id: number;
+    name: string;
+    label: string;
+    companyId: number;
+    departmentHeadId?: number;
+    email: string;
+    parentDepartmentId?: number;
+    createdAt: string;
+    updatedAt: string;
+    deletedAt?: string;
+  };
+
   employeeCount: number;
+
+  departmentHead?: {
+    id: number;
+    firstName: string;
+    lastName: string;
+    email: string;
+    licenseType: TLicenseType;
+    empUid: string;
+    roleId: number;
+    status: string;
+    companyId: number;
+    designationId: number;
+    userId: number;
+    avatarUrl?: any;
+    createdAt: string;
+    updatedAt: string;
+    deletedAt?: string;
+  };
 };
 
-export interface ICreateDepProps extends ICurrentCompany {
+export interface TCreateDepProps {
   name: string;
   email: string;
-  departmentHeadId: string;
-  parentDepartmentId: string;
+  departmentHeadId?: number | null;
+  parentDepartmentId?: number | null;
 }
 
-export interface IUpdateDeptProps extends ICreateDepProps {
+export interface IUpdateDeptProps {
   id: number;
+  data: TCreateDepProps;
 }
 
-export interface IGetSingleDeptProps extends ICurrentCompany {
+export interface IGetSingleDeptProps {
   departmentId: number;
 }

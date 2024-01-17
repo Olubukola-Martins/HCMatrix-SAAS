@@ -7,6 +7,7 @@ import { AppButton } from "components/button/AppButton";
 import { boxStyle } from "styles/reused";
 import { getAppropriateColorForStatus } from "utils/colorHelpers/getAppropriateColorForStatus";
 import moment from "moment";
+import { getEmployeeFullName } from "features/core/employees/utils/getEmployeeFullName";
 
 interface IProps extends IModalProps {
   id: number;
@@ -28,9 +29,8 @@ export const ReimbursementDetails: React.FC<IProps> = ({
     if (data) {
       form.setFieldsValue({
         date: data.date ? moment(data.date) : null,
-        employeeName: `${data.employee.firstName} ${data.employee.lastName}`,
+        employeeName: `${getEmployeeFullName(data.employee)}`,
         employeeID: data.employee.empUid,
-        department: "N/A",
         description: data.description,
         status: data.status,
         amount: data.amount,
@@ -59,9 +59,7 @@ export const ReimbursementDetails: React.FC<IProps> = ({
           <Form.Item name={"amount"} label="Amount">
             <Input />
           </Form.Item>
-          <Form.Item name={"department"} label="Department">
-            <Input />
-          </Form.Item>
+
           <Form.Item name={"description"} label="Description">
             <Input.TextArea />
           </Form.Item>
@@ -88,9 +86,6 @@ export const ReimbursementDetails: React.FC<IProps> = ({
             />
           </Form.Item>
         </Form>
-        <div className="flex justify-end">
-          <AppButton label="Download" type="button" />
-        </div>
       </Skeleton>
     </Modal>
   );

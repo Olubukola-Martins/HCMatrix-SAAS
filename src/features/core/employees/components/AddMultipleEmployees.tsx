@@ -1,18 +1,24 @@
-import { Form, Spin, Drawer } from "antd";
+import { Form, Drawer } from "antd";
 import TextArea from "antd/lib/input/TextArea";
 import { useApiAuth } from "hooks/useApiAuth";
 import { useQueryClient } from "react-query";
 import { IDrawerProps } from "types";
-import { textInputValidationRules } from "utils/formHelpers/validation";
+import {
+  isEmailValid,
+  textInputValidationRules,
+} from "utils/formHelpers/validation";
 import { openNotification } from "utils/notifications";
 import { useInviteEmployees } from "../hooks/useInviteEmployees";
 import { IEmpInviteProps } from "../types";
+import { AppButton } from "components/button/AppButton";
+import { QUERY_KEY_FOR_INVITED_EMPLOYEES } from "../hooks/useFetchInvitedEmployees";
+import { QUERY_KEY_FOR_LIST_OF_EMPLOYEES } from "../hooks/useFetchEmployees";
 
 export const AddMultipleEmployees = ({ open, handleClose }: IDrawerProps) => {
   const queryClient = useQueryClient();
   const { token, companyId } = useApiAuth();
   const [form] = Form.useForm();
-  const { mutate } = useInviteEmployees();
+  const { mutate, isLoading } = useInviteEmployees();
 
   const handleSubmit = (data: any) => {
     if (companyId) {
@@ -21,12 +27,7 @@ export const AddMultipleEmployees = ({ open, handleClose }: IDrawerProps) => {
         companyId,
         emails: data.emails,
       };
-      // return;
-      openNotification({
-        state: "info",
-        title: "Wait a second ...",
-        description: <Spin />,
-      });
+
       mutate(props, {
         onError: (err: any) => {
           openNotification({
@@ -44,7 +45,11 @@ export const AddMultipleEmployees = ({ open, handleClose }: IDrawerProps) => {
           });
           form.resetFields();
           queryClient.invalidateQueries({
-            queryKey: ["invited-employees"],
+            queryKey: [QUERY_KEY_FOR_INVITED_EMPLOYEES],
+            // exact: true,
+          });
+          queryClient.invalidateQueries({
+            queryKey: [QUERY_KEY_FOR_LIST_OF_EMPLOYEES],
             // exact: true,
           });
         },
@@ -71,7 +76,31 @@ export const AddMultipleEmployees = ({ open, handleClose }: IDrawerProps) => {
           the invitation.
         </p>
         <Form onFinish={handleSubmit} form={form}>
-          <Form.Item name="emails" rules={textInputValidationRules}>
+          <Form.Item
+            name="emails"
+            rules={[
+              {
+                validator: async (_, value) => {
+                  // non required
+                  if (typeof value !== "string") {
+                    throw new Error("Please enter a valid email!");
+                  }
+
+                  const emailValues = value
+                    .split(",")
+                    .map((item) => item.trim());
+
+                  emailValues.forEach((item, i) => {
+                    if (isEmailValid(item) === false) {
+                      throw new Error(`Please enter a valid email at ${i + 1}`);
+                    }
+                  });
+
+                  return true;
+                },
+              },
+            ]}
+          >
             <TextArea
               className="rounded"
               rows={7}
@@ -79,9 +108,7 @@ export const AddMultipleEmployees = ({ open, handleClose }: IDrawerProps) => {
             />
           </Form.Item>
 
-          <button type="submit" className="button">
-            Send Invite
-          </button>
+          <AppButton label="Send Invite" type="submit" isLoading={isLoading} />
         </Form>
       </div>
     </Drawer>

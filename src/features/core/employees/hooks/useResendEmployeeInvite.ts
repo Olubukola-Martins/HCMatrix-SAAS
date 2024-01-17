@@ -2,9 +2,10 @@ import axios from "axios";
 import { IFRQResendInviteProps } from "../types";
 import { useQuery } from "react-query";
 import { useSignOut } from "react-auth-kit";
+import { MICROSERVICE_ENDPOINTS } from "config/enviroment";
 
 export const resendEmployeeInvite = async (props: IFRQResendInviteProps) => {
-  const url = `${process.env.REACT_APP_UTILITY_BASE_URL}/employee/invite/${props.id}`;
+  const url = `${MICROSERVICE_ENDPOINTS.UTILITY}/employee/invite/${props.id}`;
 
   const config = {
     headers: {

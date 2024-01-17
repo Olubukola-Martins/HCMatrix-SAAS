@@ -1,4 +1,4 @@
-import { Button, Form, Input } from "antd";
+import { Button, Form, Input, Typography } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
 import { useEffect, useState } from "react";
 import { EditBasicStage } from "./EditBasicStage";
@@ -13,6 +13,8 @@ import useAddStageToBasicWorkflow from "../hooks/useAddStageToBasicWorkflow";
 import { QUERY_KEY_FOR_SINGLE_WORKFLOW } from "../hooks/useFetchSingleWorkflow";
 import { TSingleWorkflow, TStage } from "../types";
 import useUpdateSingleWorkflow from "../hooks/useUpdateSingleWorkflow";
+import { borderCardStyle } from "styles/reused";
+import { AppButton } from "components/button/AppButton";
 
 export const EditBasicWorkflow: React.FC<{ data: TSingleWorkflow }> = ({
   data,
@@ -64,10 +66,10 @@ export const EditBasicWorkflow: React.FC<{ data: TSingleWorkflow }> = ({
 
   const { mutate, isLoading } = useUpdateSingleWorkflow();
 
-  const handleSubmit = (data: any) => {
+  const handleSubmit = (values: any) => {
     mutate(
       {
-        name: data.name,
+        name: values.name,
         id: data.id,
       },
       {
@@ -105,47 +107,43 @@ export const EditBasicWorkflow: React.FC<{ data: TSingleWorkflow }> = ({
           layout="vertical"
           requiredMark={false}
           form={form}
+          labelCol={{ span: 24 }}
           onFinish={handleSubmit}
+          className={borderCardStyle}
         >
-          <div className="flex gap-4">
+          <div className="flex flex-col gap-4">
             <Form.Item
               name="name"
-              label={<span className="font-bold">Basic Workflow Name</span>}
+              label={<span>Workflow Name</span>}
               rules={textInputValidationRules}
             >
               <Input
-                placeholder="Workflow name"
-                className="w-40"
+                placeholder="Basic Workflow name"
+                className="w-full"
                 disabled={!editName}
               />
             </Form.Item>
-            <div className="flex gap-4 mt-8 relative bottom-1">
+            <div className="flex gap-4 justify-end">
               {!editName && (
-                <Button
-                  icon={<EditOutlined />}
-                  onClick={() => setEditName(true)}
-                >
-                  Edit
-                </Button>
+                <AppButton label="Edit" handleClick={() => setEditName(true)} />
               )}
               {editName && (
-                <Button
-                  icon={<SaveOutlined />}
-                  type="primary"
-                  loading={isLoading}
-                  onClick={() => form.submit()}
-                >
-                  Save
-                </Button>
+                <AppButton
+                  label="Save"
+                  isLoading={isLoading}
+                  handleClick={() => form.submit()}
+                />
               )}
             </div>
           </div>
         </Form>
 
         <div className="flex flex-col gap-3">
-          <span className="font-bold">Basic Workflow Stages</span>
+          <Typography.Text className="font-bold text-base">
+            Basic Workflow Stages
+          </Typography.Text>
           {data?.stages.map((stage) => (
-            <div className="flex gap-4" key={stage.id}>
+            <div className={`flex gap-4 ${borderCardStyle}`} key={stage.id}>
               <EditBasicStage stage={stage} workflowId={data.id} />
             </div>
           ))}
@@ -164,9 +162,12 @@ export const EditBasicWorkflow: React.FC<{ data: TSingleWorkflow }> = ({
             />
           )}
 
-          <Button icon={<PlusOutlined />} onClick={() => setShowCreate(true)}>
-            Add Stage
-          </Button>
+          <div className="flex justify-end">
+            <AppButton
+              label="Add Stage"
+              handleClick={() => setShowCreate(true)}
+            />
+          </div>
         </div>
       </>
     </div>

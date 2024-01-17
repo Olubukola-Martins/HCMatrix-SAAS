@@ -1,4 +1,11 @@
+import { TEmploymentEligibity } from "types/employementEligibilities";
 import { TPriority } from "types/priorities";
+
+export const DEFAULT_ROLES_CREATED_BY_SYSTEM = 2; //admin n employee
+export const DEFAULT_EMPLOYEES_CREATED_BY_SYSTEM = 1; //the purchaser of the system
+export const DEFAULT_DEPARTMENTS_CREATED_BY_SYSTEM = 0;
+export const DEFAULT_DESIGNATIONS_CREATED_BY_SYSTEM = 0;
+export const MAX_NO_OF_WORKING_DAYS_PER_WEEK = 7;
 
 // The purpose of this file to prevent repetition
 export const MONTH_CHART_LABELS = [
@@ -15,7 +22,7 @@ export const MONTH_CHART_LABELS = [
   "Dec",
 ];
 
-export const DEFAULT_PAGE_SIZE = 5;
+export const DEFAULT_PAGE_SIZE = 15;
 export const DEFAULT_GRID_PAGE_SIZE = 10;
 export const PRIORITIES: { value: TPriority; label: string }[] = [
   { label: "High", value: "high" },
@@ -66,16 +73,13 @@ export const MARITAL_STATUSES = [
   },
 ];
 
-export const EMPLOYMENT_ELIGIBILITIES = [
-  {
-    label: "Citizen",
-    value: "citizen",
-  },
-  {
-    label: "Not a citizen",
-    value: "not a citizen",
-  },
+export const EMPLOYMENT_ELIGIBILITIES: TEmploymentEligibity[] = [
+  "citizen",
+  "expatriate",
 ];
+export const EMPLOYMENT_ELIGIBILITIES_OPTIONS = EMPLOYMENT_ELIGIBILITIES.map(
+  (item) => ({ label: item, value: item })
+);
 
 export const WORK_MODELS = [
   {
@@ -117,8 +121,8 @@ export const RELATIONSHIPS = [
     value: "cousin",
   },
 ];
-export const DEFAULT_PROFILE_IMAGE_URL =
-  "https://res.cloudinary.com/ddvaelej7/image/upload/v1639659955/HCmatrix/User-Icon_wdkmsf.png";
+export const DEFAULT_PROFILE_IMAGE_URL = "https://picsum.photos/193";
+export const DEFAULT_LOGO_IMAGE_URL = "https://picsum.photos/190";
 export const EMPLOYMENT_TYPES = [
   {
     label: "Contract",

@@ -1,5 +1,5 @@
 import PageSubHeader from "components/layout/PageSubHeader";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useQueryClient } from "react-query";
 import { useCreateOrUpdateRequisitionSetting } from "../../requisitions/hooks/setting/useCreateOrUpdateRequisitionSetting";
 import { Form, Skeleton, Switch } from "antd";
@@ -7,9 +7,12 @@ import { AppButton } from "components/button/AppButton";
 import { FormWorkflowInput } from "features/core/workflows/components/FormWorkflowInput";
 import { useApiAuth } from "hooks/useApiAuth";
 import { openNotification } from "utils/notifications";
-import { QUERY_KEY_FOR_REQUISITION_SETTING } from "../hooks/setting/useGetRequisitionSetting";
 import { TRequistionType } from "../types";
-import { useGetSingleRequisitionSetting } from "../hooks/setting/useGetSingleRequisitionSetting";
+import {
+  QUERY_KEY_FOR_SINGLE_REQUISITION_SETTING,
+  useGetSingleRequisitionSetting,
+} from "../hooks/setting/useGetSingleRequisitionSetting";
+import AppSwitch from "components/switch/AppSwitch";
 
 export const REQUISITION_TYPES: TRequistionType[] = [
   "asset",
@@ -53,12 +56,13 @@ const RequisitionPolicyFormList = () => {
     </>
   );
 };
-const RequisitionPolicyForm: React.FC<{ type: TRequistionType }> = ({
+export const RequisitionPolicyForm: React.FC<{ type: TRequistionType }> = ({
   type,
 }) => {
   const queryClient = useQueryClient();
   const [form] = Form.useForm();
   const { companyId, token } = useApiAuth();
+  const [isActive, setIsActive] = useState(false);
 
   const { data, isFetching } = useGetSingleRequisitionSetting({
     type,
@@ -70,7 +74,9 @@ const RequisitionPolicyForm: React.FC<{ type: TRequistionType }> = ({
     if (data) {
       form.setFieldsValue({
         workflowId: data.workflowId,
+        isActive: data.isActive,
       });
+      setIsActive(data?.isActive);
     }
   }, [data, form]);
 
@@ -81,7 +87,7 @@ const RequisitionPolicyForm: React.FC<{ type: TRequistionType }> = ({
       {
         type,
         body: {
-          isActive: !!values.isActive,
+          isActive,
           workflowId: values.workflowId,
         },
       },
@@ -106,7 +112,7 @@ const RequisitionPolicyForm: React.FC<{ type: TRequistionType }> = ({
           form.resetFields();
 
           queryClient.invalidateQueries({
-            queryKey: [QUERY_KEY_FOR_REQUISITION_SETTING],
+            queryKey: [QUERY_KEY_FOR_SINGLE_REQUISITION_SETTING, type],
             // exact: true,
           });
         },
@@ -128,10 +134,11 @@ const RequisitionPolicyForm: React.FC<{ type: TRequistionType }> = ({
                 {data?.type ? data?.type.split("-").join(" ") : type}
               </h6>
               <Form.Item name={"isActive"}>
-                <Switch
+                <AppSwitch
                   unCheckedChildren="No"
                   checkedChildren="Yes"
-                  defaultChecked={data?.isActive}
+                  checked={isActive}
+                  onChange={setIsActive}
                 />
               </Form.Item>
             </div>

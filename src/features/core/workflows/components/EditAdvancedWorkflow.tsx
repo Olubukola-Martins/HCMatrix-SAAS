@@ -1,23 +1,20 @@
-import { Button, Form, Input } from "antd";
+import { Button, Form, Input, Typography } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
 import { useEffect, useState } from "react";
-import { EditBasicStage } from "./EditBasicStage";
 
 import { useQueryClient } from "react-query";
 import { EditOutlined, SaveOutlined } from "@ant-design/icons";
 
-import { AddBasicStage } from "./AddBasicStage";
 import { textInputValidationRules } from "utils/formHelpers/validation";
 import { openNotification } from "utils/notifications";
-import useAddStageToBasicWorkflow from "../hooks/useAddStageToBasicWorkflow";
-import useEditBasicWorkflow, {
-  useUpdateSingleWorkflow,
-} from "../hooks/useUpdateSingleWorkflow";
+import { useUpdateSingleWorkflow } from "../hooks/useUpdateSingleWorkflow";
 import { QUERY_KEY_FOR_SINGLE_WORKFLOW } from "../hooks/useFetchSingleWorkflow";
 import { TSingleWorkflow, TStage } from "../types";
 import { EditAdvancedStage } from "./EditAdvancedStage";
 import useAddStageToAdvancedWorkflow from "../hooks/useAddStageToAdvancedWorkflow";
 import { AddAdvancedStage } from "./AddAdvancedStage";
+import { AppButton } from "components/button/AppButton";
+import { borderCardStyle } from "styles/reused";
 
 export const EditAdvancedWorkflow: React.FC<{ data: TSingleWorkflow }> = ({
   data,
@@ -35,7 +32,15 @@ export const EditAdvancedWorkflow: React.FC<{ data: TSingleWorkflow }> = ({
 
   const { mutate: stageMutate } = useAddStageToAdvancedWorkflow();
   const addStage = (
-    stage: Pick<TStage, "name" | "entityId" | "type" | "condition" | "count">
+    stage: Pick<
+      TStage,
+      | "name"
+      | "entityId"
+      | "type"
+      | "condition"
+      | "count"
+      | "enableTwoFactorAuth"
+    >
   ) => {
     stageMutate(
       {
@@ -71,10 +76,10 @@ export const EditAdvancedWorkflow: React.FC<{ data: TSingleWorkflow }> = ({
 
   const { mutate, isLoading } = useUpdateSingleWorkflow();
 
-  const handleSubmit = (data: any) => {
+  const handleSubmit = (values: any) => {
     mutate(
       {
-        name: data.name,
+        name: values.name,
         id: data.id,
       },
       {
@@ -113,8 +118,9 @@ export const EditAdvancedWorkflow: React.FC<{ data: TSingleWorkflow }> = ({
           requiredMark={false}
           form={form}
           onFinish={handleSubmit}
+          className={borderCardStyle}
         >
-          <div className="flex gap-4">
+          <div className="flex flex-col gap-4">
             <Form.Item
               name="name"
               label={<span className="font-bold">Advanced Workflow Name</span>}
@@ -122,37 +128,31 @@ export const EditAdvancedWorkflow: React.FC<{ data: TSingleWorkflow }> = ({
             >
               <Input
                 placeholder="Workflow name"
-                className="w-40"
+                className="w-full"
                 disabled={!editName}
               />
             </Form.Item>
-            <div className="flex gap-4 mt-8 relative bottom-1">
+            <div className="flex gap-4 justify-end">
               {!editName && (
-                <Button
-                  icon={<EditOutlined />}
-                  onClick={() => setEditName(true)}
-                >
-                  Edit
-                </Button>
+                <AppButton label="Edit" handleClick={() => setEditName(true)} />
               )}
               {editName && (
-                <Button
-                  icon={<SaveOutlined />}
-                  type="primary"
-                  loading={isLoading}
-                  onClick={() => form.submit()}
-                >
-                  Save
-                </Button>
+                <AppButton
+                  label="Save"
+                  isLoading={isLoading}
+                  handleClick={() => form.submit()}
+                />
               )}
             </div>
           </div>
         </Form>
 
         <div className="flex flex-col gap-3">
-          <span className="font-bold">Advanced Workflow Stages</span>
+          <Typography.Text className="font-bold text-base">
+            Advanced Workflow Stages
+          </Typography.Text>
           {data?.stages.map((stage) => (
-            <div className="flex gap-4" key={stage.id}>
+            <div className={`flex gap-4 ${borderCardStyle}`} key={stage.id}>
               <EditAdvancedStage stage={stage} workflowId={data.id} />
             </div>
           ))}
@@ -168,14 +168,18 @@ export const EditAdvancedWorkflow: React.FC<{ data: TSingleWorkflow }> = ({
                   type: data.type,
                   condition: data.condition,
                   count: data.count,
+                  enableTwoFactorAuth: data.enableTwoFactorAuth,
                 });
               }}
             />
           )}
 
-          <Button icon={<PlusOutlined />} onClick={() => setShowCreate(true)}>
-            Add Stage
-          </Button>
+          <div className="flex justify-end">
+            <AppButton
+              label="Add Stage"
+              handleClick={() => setShowCreate(true)}
+            />
+          </div>
         </div>
       </>
     </div>

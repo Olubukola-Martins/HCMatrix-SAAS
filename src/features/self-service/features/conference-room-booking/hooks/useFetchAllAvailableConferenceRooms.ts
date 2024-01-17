@@ -12,7 +12,8 @@ interface IGetDataProps {
   searchParams?: ISearchParams;
 }
 
-export const QUERY_KEY_FOR_ALL_CONFERENCE_ROOMS = "conference-rooms";
+export const QUERY_KEY_FOR_AVAILABLE_CONFERENCE_ROOMS =
+  "available-conference-rooms";
 
 const getBAllConferenceRooms = async (
   props: IGetDataProps & ICurrentCompany
@@ -60,7 +61,7 @@ export const useFetchAllAvailableConferenceRooms = (props: IGetDataProps) => {
   const { token, companyId } = useApiAuth();
 
   const queryData = useQuery(
-    [QUERY_KEY_FOR_ALL_CONFERENCE_ROOMS, props.pagination],
+    [QUERY_KEY_FOR_AVAILABLE_CONFERENCE_ROOMS, props.pagination],
     () =>
       getBAllConferenceRooms({
         ...props,

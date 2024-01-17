@@ -11,6 +11,7 @@ import { TTravelRequest } from "../../requisitions/types/travel";
 import { TravelRequestDetails } from "./TravelRequestDetails";
 import { getEmployeeFullName } from "features/core/employees/utils/getEmployeeFullName";
 import { useGetTravelRequisitions } from "../../requisitions/hooks/travel/useGetTravelRequisitions";
+import { DEFAULT_DATE_FORMAT } from "constants/dateFormats";
 
 export const TravelRequestsTable: React.FC<{
   status?: TApprovalStatus;
@@ -18,9 +19,7 @@ export const TravelRequestsTable: React.FC<{
 }> = ({ status, employeeId }) => {
   const [requestId, setRequestId] = useState<number>();
   const { companyId, token } = useApiAuth();
-  const { pagination, onChange } = usePagination({
-    pageSize: 4,
-  });
+  const { pagination, onChange } = usePagination();
   const { data, isFetching } = useGetTravelRequisitions({
     companyId,
     token,
@@ -29,6 +28,7 @@ export const TravelRequestsTable: React.FC<{
       limit: pagination.limit,
       offset: pagination.offset,
     },
+    employeeId,
   });
 
   const columns: ColumnsType<TTravelRequest> = [
@@ -37,7 +37,7 @@ export const TravelRequestsTable: React.FC<{
       dataIndex: "date",
       key: "date",
       render: (_, item) => (
-        <span>{moment(item.createdAt).format("YYYY/MM/DD")} </span>
+        <span>{moment(item.createdAt).format(DEFAULT_DATE_FORMAT)} </span>
       ),
     },
     {
@@ -45,7 +45,7 @@ export const TravelRequestsTable: React.FC<{
       dataIndex: "adate",
       key: "adate",
       render: (_, item) => (
-        <span>{moment(item.arrivalDate).format("YYYY/MM/DD")} </span>
+        <span>{moment(item.arrivalDate).format(DEFAULT_DATE_FORMAT)} </span>
       ),
     },
     {
@@ -53,7 +53,7 @@ export const TravelRequestsTable: React.FC<{
       dataIndex: "ddate",
       key: "ddate",
       render: (_, item) => (
-        <span>{moment(item.departureDate).format("YYYY/MM/DD")} </span>
+        <span>{moment(item.departureDate).format(DEFAULT_DATE_FORMAT)} </span>
       ),
     },
     {
@@ -90,7 +90,7 @@ export const TravelRequestsTable: React.FC<{
           className="capitalize"
           style={{ color: getAppropriateColorForStatus(item.status) }}
         >
-          {item.status}{" "}
+          {item.status}
         </span>
       ),
     },

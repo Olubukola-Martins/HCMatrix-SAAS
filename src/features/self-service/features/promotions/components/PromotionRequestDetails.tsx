@@ -2,20 +2,31 @@ import { Form, Input, Modal, Skeleton } from "antd";
 import React, { useEffect } from "react";
 import { IModalProps } from "types";
 import { useApiAuth } from "hooks/useApiAuth";
-import { AppButton } from "components/button/AppButton";
 import { boxStyle } from "styles/reused";
 import { getAppropriateColorForStatus } from "utils/colorHelpers/getAppropriateColorForStatus";
-import { useGetSinglePromotionRequisition } from "../../requisitions/hooks/promotion/useGetSinglePromotionRequisition";
+import {
+  QUERY_KEY_FOR_SINGLE_PROMOTION_REQUISITION,
+  useGetSinglePromotionRequisition,
+} from "../../requisitions/hooks/promotion/useGetSinglePromotionRequisition";
 import moment from "moment";
+import { DEFAULT_DATE_FORMAT } from "constants/dateFormats";
+import ApproveOrRejectButton from "features/core/workflows/components/approval-request/ApproveOrRejectButton";
+import { TApprovalRequest } from "features/core/workflows/types/approval-requests";
+import { useQueryClient } from "react-query";
+import { QUERY_KEY_FOR_PROMOTION_REQUISITIONS } from "../../requisitions/hooks/promotion/useGetPromotionRequisitions";
+import { QUERY_KEY_FOR_PROMOTION_REQUISITIONS_FOR_AUTH_EMPLOYEE } from "../../requisitions/hooks/promotion/useGetPromotionRequisitions4AuthEmployee";
+import { QUERY_KEY_FOR_SELF_SERVICE_DB_ANALYTICS } from "features/self-service/hooks/useGetSelfServiceDashboardAnalytics";
 
 interface IProps extends IModalProps {
   id: number;
+  approvalRequest?: TApprovalRequest;
 }
 
 export const PromotionRequestDetails: React.FC<IProps> = ({
   open,
   handleClose,
   id,
+  approvalRequest,
 }) => {
   const { companyId, token } = useApiAuth();
   const [form] = Form.useForm();
@@ -27,10 +38,10 @@ export const PromotionRequestDetails: React.FC<IProps> = ({
   useEffect(() => {
     if (data) {
       form.setFieldsValue({
-        date: moment(data.date).format("YYYY-MM-DD"),
+        date: moment(data.date).format(DEFAULT_DATE_FORMAT),
         employeeName: `${data.employee.firstName} ${data.employee.lastName}`,
         preferredStartDate: moment(data.preferredStartDate).format(
-          "YYYY-MM-DD"
+          DEFAULT_DATE_FORMAT
         ),
         employeeID: data.employee.empUid,
         proposedDesignation: data.proposedDesignation.name,
@@ -39,6 +50,7 @@ export const PromotionRequestDetails: React.FC<IProps> = ({
       });
     }
   }, [id, form, data]);
+  const queryClient = useQueryClient();
   return (
     <Modal
       open={open}
@@ -48,6 +60,36 @@ export const PromotionRequestDetails: React.FC<IProps> = ({
       style={{ top: 20 }}
     >
       <Skeleton active loading={isFetching} paragraph={{ rows: 8 }}>
+        {/* <div className="flex justify-end">
+          
+          <ApproveOrRejectButton
+            request={approvalRequest}
+            handleSuccess={() => {
+              queryClient.invalidateQueries({
+                queryKey: [QUERY_KEY_FOR_PROMOTION_REQUISITIONS],
+                // exact: true,
+              });
+              queryClient.invalidateQueries({
+                queryKey: [
+                  QUERY_KEY_FOR_PROMOTION_REQUISITIONS_FOR_AUTH_EMPLOYEE,
+                ],
+                // exact: true,
+              });
+              queryClient.invalidateQueries({
+                queryKey: [QUERY_KEY_FOR_SINGLE_PROMOTION_REQUISITION, id],
+                // exact: true,
+              });
+
+              // TODO: invalidate just the part concerned in the query
+              queryClient.invalidateQueries({
+                queryKey: [QUERY_KEY_FOR_SELF_SERVICE_DB_ANALYTICS],
+                // exact: true,
+              });
+            }}
+          />
+          
+        </div> */}
+
         <Form form={form} disabled layout="vertical">
           <Form.Item name={"date"} label="Date">
             <Input className="w-full" />
@@ -91,9 +133,6 @@ export const PromotionRequestDetails: React.FC<IProps> = ({
             />
           </Form.Item>
         </Form>
-        <div className="flex justify-end">
-          <AppButton label="Download" type="button" />
-        </div>
       </Skeleton>
     </Modal>
   );

@@ -25,7 +25,6 @@ import { openNotification } from "utils/notifications";
 import { FileUpload } from "components/FileUpload";
 import { AppButton } from "components/button/AppButton";
 import moment from "moment";
-import { data } from "features/payroll/components/WaterFallChart";
 
 interface IProps extends IModalProps {
   vehicle: TVehicle;

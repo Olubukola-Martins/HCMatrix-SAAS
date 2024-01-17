@@ -3,6 +3,7 @@ import SelfServiceSubNav from "features/self-service/components/SelfServiceSubNa
 import React from "react";
 import { appRoutes } from "config/router/paths";
 import { AssetRequestSetting } from "../components/AssetRequestSetting";
+import PageSubHeader from "components/layout/PageSubHeader";
 
 const AssetRequestSettingsPage = () => {
   return (
@@ -13,6 +14,9 @@ const AssetRequestSettingsPage = () => {
         <PageIntro
           title="Asset Request Settings"
           link={appRoutes.selfServiceHome}
+        />
+        <PageSubHeader
+          description={`You can now select the workflow approval for asset requisition`}
         />
         <AssetRequestSetting />
       </div>

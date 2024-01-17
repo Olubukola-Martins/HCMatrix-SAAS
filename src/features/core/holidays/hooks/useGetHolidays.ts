@@ -53,7 +53,7 @@ const getData = async (props: {
   return ans;
 };
 
-export const useGetHolidays = (props: IGetDataProps) => {
+export const useGetHolidays = (props: IGetDataProps = {}) => {
   const { token, companyId } = useApiAuth();
 
   const { pagination, searchParams } = props;

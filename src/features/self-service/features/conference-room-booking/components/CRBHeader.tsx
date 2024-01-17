@@ -1,50 +1,47 @@
-import { Button, Modal } from "antd";
+import { Button } from "antd";
 import React, { useState } from "react";
 import NewCRBBooking from "./NewCRBBooking";
-import NewMeetingRoomForm from "./NewMeetingRoomForm";
 import { Link } from "react-router-dom";
 import { appRoutes } from "config/router/paths";
 
 import { SettingFilled } from "@ant-design/icons";
+import NewMeetingRoom from "./NewMeetingRoom";
+import {
+  canUserAccessComponent,
+  useGetUserPermissions,
+} from "components/permission-restriction/PermissionRestrictor";
 
 interface IProps {
   title?: string;
+  backLink: string;
 }
 
 enum EAction {
   NEW_BOOKING = "New Booking",
   NEW_MEETING_ROOM = "New Meeting Room",
-  NO_ACTION = "",
 }
 
-const CRBHeader = ({ title = "Meeting Rooms" }: IProps) => {
-  const [showD, setShowD] = useState(false);
-  const [action, setAction] = useState<EAction>(EAction.NO_ACTION);
+const CRBHeader = ({ title = "Conference Rooms", backLink }: IProps) => {
+  const [action, setAction] = useState<EAction>();
   const handleAction = (val: EAction) => {
     setAction(val);
-    setShowD(true);
   };
+  const { userPermissions } = useGetUserPermissions();
   return (
     <>
-      <Modal
-        open={showD}
-        onCancel={() => setShowD(false)}
-        title={action}
-        footer={null}
-        style={{ top: 10 }}
-      >
-        {action === EAction.NEW_BOOKING && (
-          <NewCRBBooking handleClose={() => setShowD(false)} />
-        )}
-        {action === EAction.NEW_MEETING_ROOM && (
-          <NewMeetingRoomForm handleClose={() => setShowD(false)} />
-        )}
-      </Modal>
+      <NewCRBBooking
+        open={action === EAction.NEW_BOOKING}
+        handleClose={() => setAction(undefined)}
+      />
+      <NewMeetingRoom
+        open={action === EAction.NEW_MEETING_ROOM}
+        handleClose={() => setAction(undefined)}
+      />
 
       {/* TO DO: Refactor to use the comp header */}
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-3 font-extrabold ">
-          <Link to={appRoutes.selfServiceHome}>
+          <Link to={backLink}>
             <i className="ri-arrow-left-s-line text-lg cursor-pointer hover:text-caramel" />
           </Link>
           <h2 className="text-xl md:text-2xl text-accent">{title}</h2>
@@ -56,15 +53,25 @@ const CRBHeader = ({ title = "Meeting Rooms" }: IProps) => {
           >
             New Booking
           </button>
-          <button
-            className="borderButton"
-            onClick={() => handleAction(EAction.NEW_MEETING_ROOM)}
-          >
-            Add Meeting Room
-          </button>
-          <Link to={appRoutes.conferenceRoomBookingSetting}>
-            <Button icon={<SettingFilled />} type="text" />
-          </Link>
+          {canUserAccessComponent({
+            userPermissions,
+            requiredPermissions: ["manage-conference-room"],
+          }) && (
+            <button
+              className="borderButton"
+              onClick={() => handleAction(EAction.NEW_MEETING_ROOM)}
+            >
+              Add Meeting Room
+            </button>
+          )}
+          {canUserAccessComponent({
+            userPermissions,
+            requiredPermissions: ["manage-conference-room-settings"],
+          }) && (
+            <Link to={appRoutes.conferenceRoomBookingSetting}>
+              <Button icon={<SettingFilled />} type="text" />
+            </Link>
+          )}
         </div>
       </div>
     </>

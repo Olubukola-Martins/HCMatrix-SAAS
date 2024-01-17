@@ -2,7 +2,6 @@ import { DatePicker, Form, Input, Modal, Skeleton } from "antd";
 import React, { useEffect } from "react";
 import { IModalProps } from "types";
 import { useApiAuth } from "hooks/useApiAuth";
-import { AppButton } from "components/button/AppButton";
 import { getAppropriateColorForStatus } from "utils/colorHelpers/getAppropriateColorForStatus";
 import moment from "moment";
 import { useGetSingleTranferRequisition } from "../../requisitions/hooks/transfer/useGetSingleTransferRequisition";
@@ -76,9 +75,6 @@ export const TransferDetails: React.FC<IProps> = ({
             />
           </Form.Item>
         </Form>
-        <div className="flex justify-end">
-          <AppButton label="Download" type="button" />
-        </div>
       </Skeleton>
     </Modal>
   );

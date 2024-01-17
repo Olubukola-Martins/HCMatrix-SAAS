@@ -2,12 +2,10 @@ import axios from "axios";
 import { useApiAuth } from "hooks/useApiAuth";
 import { useMutation } from "react-query";
 import { ICurrentCompany } from "types";
-
-type TPriority = "low" | "medium" | "high";
+import { TPriority } from "types/priorities";
 
 type TCreateProps = {
   conferenceRoomId: number;
-  employeeId: number;
   departmentId?: number;
   date: string;
   startTime: string;
@@ -17,14 +15,15 @@ type TCreateProps = {
 };
 
 const createConferenceRoomBooking = async (
-  props: TCreateProps & ICurrentCompany
+  props: TCreateProps,
+  auth: ICurrentCompany
 ) => {
   const url = `${process.env.REACT_APP_UTILITY_BASE_URL}/self-service/conference-room/booking`;
   const config = {
     headers: {
       Accept: "application/json",
-      Authorization: `Bearer ${props.token}`,
-      "x-company-id": props.companyId,
+      Authorization: `Bearer ${auth.token}`,
+      "x-company-id": auth.companyId,
     },
   };
 
@@ -38,10 +37,9 @@ const createConferenceRoomBooking = async (
   return response;
 };
 
-
 export const useCreateConferenceRoomBooking = () => {
   const { token, companyId } = useApiAuth();
   return useMutation((props: TCreateProps) =>
-    createConferenceRoomBooking({ ...props, token, companyId })
+    createConferenceRoomBooking({ ...props }, { token, companyId })
   );
 };

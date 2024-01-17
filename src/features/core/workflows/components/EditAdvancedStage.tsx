@@ -22,6 +22,7 @@ import useEditAdvancedStage from "../hooks/useEditAdvancedStage";
 import { QUERY_KEY_FOR_SINGLE_WORKFLOW } from "../hooks/useFetchSingleWorkflow";
 import { TAdvancedWorkflowStage } from "../hooks/useCreateAdvancedWorkflow";
 import useDeleteAdvancedStage from "../hooks/useDeleteAdvancedStage";
+import { AppButton } from "components/button/AppButton";
 
 export const EditAdvancedStage: React.FC<{
   workflowId: number;
@@ -42,6 +43,7 @@ export const EditAdvancedStage: React.FC<{
       entityId: stage.entityId,
       condition: stage.condition,
       count: stage.count,
+      enableTwoFactorAuth: stage.enableTwoFactorAuth,
     });
     setStagingType(stage.type);
     setStagingCondition(stage.condition);
@@ -55,6 +57,7 @@ export const EditAdvancedStage: React.FC<{
       entityId: data.entityId,
       condition: data.condition,
       count: data.count,
+      enableTwoFactorAuth: data.enableTwoFactorAuth,
     };
 
     mutate(
@@ -126,7 +129,7 @@ export const EditAdvancedStage: React.FC<{
     );
   };
   return (
-    <div className="flex gap-4 items-end">
+    <div className="flex flex-col gap-4 w-full">
       <Form
         form={form}
         onFinish={handleFinish}
@@ -134,13 +137,26 @@ export const EditAdvancedStage: React.FC<{
         labelCol={{ span: 24 }}
         requiredMark={false}
       >
-        <div className="flex gap-4">
+        <div className="grid grid-cols-2 md:gap-8 gap-4">
           <Form.Item
             name={"name"}
             label={`Stage Name`}
             rules={textInputValidationRules}
           >
             <Input placeholder="Stage name" />
+          </Form.Item>
+          <Form.Item
+            name={"enableTwoFactorAuth"}
+            label={`Enable 2FA`}
+            rules={generalValidationRules}
+          >
+            <Select
+              placeholder="Enable 2FA"
+              options={[
+                { label: "Yes", value: true },
+                { label: "No", value: false },
+              ]}
+            />
           </Form.Item>
           <Form.Item
             name={"type"}
@@ -173,21 +189,22 @@ export const EditAdvancedStage: React.FC<{
               control={{ label: "Group", name: "entityId" }}
             />
           )}
-          {!!stagingType && stagingType !== "employee" && (
-            <Form.Item
-              name={"condition"}
-              rules={generalValidationRules}
-              label="Condition"
-            >
-              <Select
-                placeholder="Condition"
-                options={WORKFLOW_STAGE_CONDITION_OPTIONS}
-                onSelect={(val: TStageCondition) => {
-                  setStagingCondition(val);
-                }}
-              />
-            </Form.Item>
-          )}
+          {!!stagingType &&
+            !["line-manager", "employee"].includes(stagingType) && (
+              <Form.Item
+                name={"condition"}
+                rules={generalValidationRules}
+                label="Condition"
+              >
+                <Select
+                  placeholder="Condition"
+                  options={WORKFLOW_STAGE_CONDITION_OPTIONS}
+                  onSelect={(val: TStageCondition) => {
+                    setStagingCondition(val);
+                  }}
+                />
+              </Form.Item>
+            )}
           {stagingCondition === "specific" && (
             // TO DO: validation of max/min based on count of entity, or no need as they can add to role at any moment
             <Form.Item
@@ -200,29 +217,22 @@ export const EditAdvancedStage: React.FC<{
           )}
         </div>
       </Form>
-      <div className="flex gap-4 mb-6">
+      <div className="flex gap-4 justify-end mb-6">
+        <AppButton
+          label="Delete"
+          variant="transparent"
+          isLoading={isDelLoading}
+          handleClick={() => removeStage()}
+        />
         {!edit ? (
-          <Button icon={<EditOutlined />} onClick={() => setEdit(true)}>
-            Edit
-          </Button>
+          <AppButton label="Edit" handleClick={() => setEdit(true)} />
         ) : (
-          <Button
-            icon={<SaveOutlined />}
-            type="primary"
-            onClick={() => form.submit()}
-            loading={isLoading}
-          >
-            Save
-          </Button>
+          <AppButton
+            label="Save"
+            handleClick={() => form.submit()}
+            isLoading={isLoading}
+          />
         )}
-        <Button
-          icon={<DeleteOutlined />}
-          type="dashed"
-          loading={isDelLoading}
-          onClick={() => removeStage()}
-        >
-          Delete
-        </Button>
       </div>
     </div>
   );

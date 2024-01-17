@@ -9,7 +9,6 @@ export const AssetApprovalRequestsContainer = () => {
   const [status, setStatus] = useState<TApprovalStatus>();
   return (
     <div>
-      <p className="text-lg mb-4">Asset Request Approvals</p>
       <div className="flex flex-col gap-6">
         <div className="flex justify-between items-center">
           <Select

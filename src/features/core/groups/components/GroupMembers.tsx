@@ -1,13 +1,13 @@
 import { Avatar, Button, Form, Input, Switch, Table } from "antd";
 import { ColumnsType, TablePaginationConfig, TableProps } from "antd/lib/table";
-import { LoadingOutlined } from "@ant-design/icons";
 import { useState } from "react";
 import { useQueryClient } from "react-query";
 import { openNotification } from "utils/notifications";
-import { useRemoveMemberFromGroup } from "../hooks/useRemoveMemberFromGroup";
 import { useUpdateMemberInGroup } from "../hooks/useUpdateMemberInGroup";
 import { TGroup, TGroupMember } from "../types";
-import { useApiAuth } from "hooks/useApiAuth";
+import { QUERY_KEY_FOR_SINGLE_GROUP_MEMBERS } from "../hooks/useFetchSingleGroupMembers";
+import { RemoveGroupMember } from "./RemoveGroupMember";
+import { getEmployeeFullName } from "features/core/employees/utils/getEmployeeFullName";
 
 interface IProps {
   group: TGroup;
@@ -79,7 +79,6 @@ export const GroupMembers = ({
   const queryClient = useQueryClient();
 
   const [form] = Form.useForm();
-  const { token, companyId } = useApiAuth();
 
   const { mutate, isLoading } = useUpdateMemberInGroup();
 
@@ -100,16 +99,16 @@ export const GroupMembers = ({
       const member = data?.find(
         (item) => item.id === key
       ) as unknown as TGroupMember;
-      if (companyId && group) {
+      if (group) {
         mutate(
           {
-            id: group.id as number,
-            companyId,
+            groupId: group.id as number,
 
-            token,
             managementId: member.id,
-            employeeId: member.employeeId,
-            isLead: row.isLead,
+            body: {
+              employeeId: member.employeeId,
+              isLead: !!row.isLead,
+            },
           },
           {
             onError: (err: any) => {
@@ -134,7 +133,7 @@ export const GroupMembers = ({
               cancel();
 
               queryClient.invalidateQueries({
-                queryKey: ["single-group-members", group.id],
+                queryKey: [QUERY_KEY_FOR_SINGLE_GROUP_MEMBERS],
                 // exact: true,
               });
             },
@@ -199,8 +198,6 @@ export const GroupMembers = ({
                 onClick={() => handleMemberRemoval(item)}
               />
             )}
-
-            {isDeleteLoading && deleteKey === item.id && <LoadingOutlined />}
           </div>
         );
       },
@@ -221,68 +218,48 @@ export const GroupMembers = ({
       }),
     };
   });
-  const { mutate: deleteMutate, isLoading: isDeleteLoading } =
-    useRemoveMemberFromGroup();
+  const [concernedMember, setConcernedMember] = useState<TGroupMember>();
   const [deleteKey, setDeleteKey] = useState<number>();
+  const [action, setAction] = useState<"remove-member">();
   const handleMemberRemoval = (member: TGroupMember) => {
+    setConcernedMember(member);
     setDeleteKey(member.id);
-    if (companyId && group) {
-      deleteMutate(
-        {
-          id: group.id as number,
-          companyId,
-
-          token,
-          managementId: member.id,
-          employeeId: member.employeeId,
-        },
-        {
-          onError: (err: any) => {
-            openNotification({
-              state: "error",
-              title: "Error Occurred",
-              description:
-                err?.response.data.message ?? err?.response.data.error.message,
-            });
-          },
-          onSuccess: (res: any) => {
-            openNotification({
-              state: "success",
-
-              title: "Success",
-              description: res.data.message,
-              // duration: 0.4,
-            });
-
-            // form.resetFields(); //will be added if it was empty vals under to prevent it from being used in the row below on edit
-            setDeleteKey(undefined);
-
-            queryClient.invalidateQueries({
-              queryKey: ["single-group-members", group.id],
-              // exact: true,
-            });
-          },
-        }
-      );
-    }
+    setAction("remove-member");
+  };
+  const onClose = () => {
+    setAction(undefined);
+    setDeleteKey(undefined);
+    setConcernedMember(undefined);
   };
 
   return (
-    <Form form={form} component={false}>
-      <Table
-        components={{
-          body: {
-            cell: EditableCell,
-          },
-        }}
-        bordered
-        columns={mergedColumns as any}
-        size="small"
-        dataSource={data}
-        loading={loading}
-        pagination={pagination}
-        onChange={onChange}
-      />
-    </Form>
+    <>
+      {concernedMember && (
+        <RemoveGroupMember
+          groupId={group.id}
+          groupName={group.name}
+          groupMemberName={getEmployeeFullName(concernedMember)}
+          managementId={concernedMember?.id}
+          open={action === "remove-member"}
+          handleClose={onClose}
+        />
+      )}
+      <Form form={form} component={false}>
+        <Table
+          components={{
+            body: {
+              cell: EditableCell,
+            },
+          }}
+          bordered
+          columns={mergedColumns as any}
+          size="small"
+          dataSource={data}
+          loading={loading}
+          pagination={pagination}
+          onChange={onChange}
+        />
+      </Form>
+    </>
   );
 };

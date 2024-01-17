@@ -114,7 +114,7 @@ body {
 }
 
 .transparentButton {
-  @apply border border-slate-400 hover:border-slate-800 rounded font-medium bg-transparent transition ease-in-out duration-500 text-sm tracking-wider;
+  @apply border border-caramel text-caramel hover:text-slate-800 hover:border-slate-800 rounded font-medium bg-transparent transition ease-in-out duration-500 text-sm tracking-wider;
   padding: 6px 8.5px;
 }
 

@@ -1,8 +1,8 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import logo from "../../../assets/images/logo2.png";
 import { Form, Steps } from "antd";
 
-import { useIsAuthenticated } from "react-auth-kit";
+import { useIsAuthenticated, useSignOut } from "react-auth-kit";
 
 import { Navigate, useNavigate, useSearchParams } from "react-router-dom";
 import { useVerifyEmployeeInvite } from "../hooks/useVerifyEmployeeInvite";
@@ -10,8 +10,10 @@ import { openNotification } from "utils/notifications";
 import { CreatePassword } from "../components/InvitedEmployee/CreatePassword";
 import { PersonalInfo } from "../components/InvitedEmployee/PersonalInfo";
 import { ICreateInvitedEmpProps } from "../types";
+import { formatPhoneNumber } from "utils/dataHelpers/formatPhoneNumber";
 
 export const InvitedEmployeeForm = () => {
+  const signOut = useSignOut();
   const isAuthenticated = useIsAuthenticated();
   const [searchParams] = useSearchParams();
   const token = searchParams.get("token") ?? "";
@@ -28,6 +30,7 @@ export const InvitedEmployeeForm = () => {
     setCurrent(1);
   };
   const onFinishProfileForm = (data: any) => {
+    signOut();
     const props: ICreateInvitedEmpProps = {
       token,
       uid,
@@ -38,16 +41,16 @@ export const InvitedEmployeeForm = () => {
       personalInformation: {
         dob: data.dob.format("YYYY-MM-DD"),
         gender: data.gender,
-        phoneNumber: `${data.phone.code}-${data.phone.number}`,
+        phoneNumber: formatPhoneNumber({
+          code: data.phone.code,
+          number: data.phone.number,
+        }),
         eligibility: data.eligibility,
         maritalStatus: data.maritalStatus,
-        nationality: "Nigeria",
+        nationality: data.nationality, //TODO: Make dynamic
         address: {
-          streetAddress: data.streetAddress,
-          countryId: data.countryId,
-          stateId: data.stateId,
-          lgaId: data.lgaId,
-          timezone: data.timezone,
+          ...data.address,
+          lgaId: data?.address?.lgaId ?? undefined,
         },
         passportExpirationDate: data.passportExpirationDate,
         validDocumentUrl: data.validDocumentUrl,
@@ -105,7 +108,7 @@ export const InvitedEmployeeForm = () => {
 
   return (
     <>
-      {isAuthenticated() && <Navigate to="/" replace={true} />}
+      {/* {isAuthenticated() && <Navigate to="/" replace={true} />} */}
 
       <div className="Container">
         <div className="flex justify-center">

@@ -1,57 +1,59 @@
 import React, { useState } from "react";
-
 import { AssetMonthlyInsightsCard } from "./AssetMonthlyInsightsCard";
-
 import { AppButtonList } from "components/button/AppButtonList";
 import AddSingleAsset from "./AddSingleAsset";
-import AddAssetType from "./AddAssetsType";
 import { NewAssetRequest } from "./NewAssetRequest";
 import { RecentAssetRequestsCard } from "./RecentAssetRequestsCard";
 import { AssetTypeCardList } from "./AssetTypeCardList";
 import { AssetsByStatusCard } from "./AssetsByStatusCard";
 import { TAssetTabKey } from "../pages/Assets";
+import DropdownButton from "components/button/DropdownButton";
+import { ImportAssets } from "./bulk/ImportAssets";
+import AddAssetTypeButton from "./asset-type/AddAssetTypeButton";
 
 interface IProps {
   handleTabKey: (val: TAssetTabKey) => void;
 }
 
 const AssetOverview: React.FC<IProps> = ({ handleTabKey }) => {
-  type TAction = "add-asset" | "add-asset-type" | "request-asset";
+  type TAction = "add-asset" | "request-asset" | "add-asset-in-bulk";
   const [action, setAction] = useState<TAction>();
 
   return (
     <>
+      <ImportAssets
+        open={action === "add-asset-in-bulk"}
+        handleClose={() => setAction(undefined)}
+      />
       <AddSingleAsset
         open={action === "add-asset"}
         handleClose={() => setAction(undefined)}
       />
-      <AddAssetType
-        open={action === "add-asset-type"}
-        handleClose={() => setAction(undefined)}
-      />
+
       <NewAssetRequest
         open={action === "request-asset"}
         handleClose={() => setAction(undefined)}
       />
       <div>
-        <div className="flex justify-end">
+        <div className="flex justify-end gap-4">
+          <DropdownButton
+            label="Add Asset"
+            items={[
+              {
+                key: "add-asset",
+                label: "Add Single Asset",
+                onClick: () => setAction("add-asset"),
+              },
+              {
+                key: "bulk-import",
+                label: "Import Assets",
+                onClick: () => setAction("add-asset-in-bulk"),
+              },
+            ]}
+          />
+          <AddAssetTypeButton />
           <AppButtonList
             data={[
-              {
-                handleClick: () => {
-                  setAction("add-asset");
-                },
-                label: "Add Assest",
-                variant: "default",
-              },
-              {
-                handleClick: () => {
-                  setAction("add-asset-type");
-                },
-
-                label: "Add Assest Type",
-                variant: "transparent",
-              },
               {
                 handleClick: () => {
                   setAction("request-asset");
@@ -70,9 +72,8 @@ const AssetOverview: React.FC<IProps> = ({ handleTabKey }) => {
 
           <div>
             <RecentAssetRequestsCard
-              handleSeeAll={() => handleTabKey("My Requests")}
+              handleSeeAll={() => handleTabKey("All Requests")}
             />
-
           </div>
         </div>
 

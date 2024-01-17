@@ -1,18 +1,15 @@
-import React from "react";
-import { TApprovalStatus } from "types/statuses";
-import { useFetchLeaves } from "../hooks/useFetchLeaves";
-import { ISimpleCard, SimpleCard } from "components/cards/SimpleCard";
-import { useGetLeaveAnalytics } from "../hooks/useGetLeaveAnalytics";
+import { SimpleCard } from "components/cards/SimpleCard";
+import { useGetEmployeeLeaveDBAnalytics } from "../hooks/leaveAnalytics/useGetEmployeeLeaveDBAnalytics";
 
 const LeaveCards = () => {
-  const { data, isLoading } = useGetLeaveAnalytics();
+  const { data, isLoading } = useGetEmployeeLeaveDBAnalytics();
   return (
     <div>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mt-6">
         <>
           <SimpleCard
             title="Spill Over"
-            highlight={`${data?.spillOver}`}
+            highlight={`${data?.spillOver ?? 0}`}
             loading={isLoading}
           />
           <SimpleCard

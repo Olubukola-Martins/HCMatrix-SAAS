@@ -1,5 +1,5 @@
 import { TEmployee } from "features/core/employees/types";
-import { TPermission } from "features/core/roles-and-permissions/types";
+import { TPermissionInDelegation } from "features/core/roles-and-permissions/types";
 
 export type TDelegation = {
   id: number;
@@ -7,6 +7,6 @@ export type TDelegation = {
   delegatee: TEmployee;
   startDate: string;
   endDate: string;
-  permissions: TPermission[];
+  permissions: TPermissionInDelegation[];
   description: string;
 };

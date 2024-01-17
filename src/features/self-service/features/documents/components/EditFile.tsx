@@ -167,12 +167,14 @@ const FileContentContainer: React.FC<{
             <div className={boxStyle}>
               <FileUpload
                 allowedFileTypes={[
-                  "image/jpeg",
                   "image/png",
+                  "image/jpeg",
                   "image/jpg",
-                  "application/pdf",
                   "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+                  "text/plain",
+                  "application/pdf",
                   "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+                  "text/csv",
                 ]}
                 fileKey="documentUrl"
                 textToDisplay="Upload File"
@@ -181,7 +183,7 @@ const FileContentContainer: React.FC<{
             </div>
 
             <div className="flex justify-end">
-              <AppButton type="submit" isLoading={isLoading} />
+              <AppButton type="submit" label="Save" isLoading={isLoading} />
             </div>
           </Form>
         </Skeleton>

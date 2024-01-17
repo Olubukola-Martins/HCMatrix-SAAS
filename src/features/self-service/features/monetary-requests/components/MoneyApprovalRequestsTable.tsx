@@ -117,6 +117,7 @@ const MoneyApprovalRequestsTable: React.FC<{
                       approvalStageId: item?.id,
                       status: "approved",
                       workflowType: !!item?.basicStageId ? "basic" : "advanced",
+                      requires2FA: item?.advancedStage?.enableTwoFactorAuth,
                     })
                   }
                 >

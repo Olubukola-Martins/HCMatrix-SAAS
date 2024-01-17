@@ -9,10 +9,32 @@ import { DEFAULT_PAGE_SIZE } from "constants/general";
 
 export const QUERY_KEY_FOR_LIST_OF_EMPLOYEES = "employees";
 
+type OtherProps = {
+  status?: TEmployeeStatus[];
+  gender?: "male" | "female";
+  roleId?: number;
+  designationId?: number;
+  departmentId?: number;
+  branchId?: number;
+};
 export const getEmployees = async (
-  props: TFetchListDataProps & { status?: TEmployeeStatus[] }
-): Promise<{ data: TEmployee[]; total: number }> => {
-  const { pagination } = props;
+  props: TFetchListDataProps & OtherProps
+): Promise<{
+  data: Omit<
+    TEmployee,
+    | "personalInformation"
+    | "userGroups"
+    | "directReports"
+    | "managerHistory"
+    | "skills"
+    | "emergencyContact"
+    | "dependents"
+    | "finance"
+  >[];
+  total: number;
+}> => {
+  const { pagination, roleId, departmentId, designationId, branchId, gender } =
+    props;
   const limit = pagination?.limit ?? DEFAULT_PAGE_SIZE;
   const offset = pagination?.offset ?? 0;
 
@@ -25,6 +47,11 @@ export const getEmployees = async (
       "x-company-id": props.companyId,
     },
     params: {
+      roleId,
+      departmentId,
+      designationId,
+      branchId,
+      gender,
       status: props?.status?.toString(),
       search: props?.searchParams?.name,
       limit,
@@ -56,21 +83,41 @@ export const useFetchEmployees = ({
   searchParams,
   onSuccess,
   status,
-}: TFetchListDataExtraProps & { status?: TEmployeeStatus[] } & {
-  onSuccess?: Function;
-} = {}) => {
+  roleId,
+  departmentId,
+  designationId,
+  branchId,
+  gender,
+}: TFetchListDataExtraProps &
+  OtherProps & {
+    onSuccess?: Function;
+  } = {}) => {
   const { token, companyId } = useApiAuth();
 
   const queryData = useQuery(
-    [QUERY_KEY_FOR_LIST_OF_EMPLOYEES, pagination, status, searchParams?.name],
+    [
+      QUERY_KEY_FOR_LIST_OF_EMPLOYEES,
+      pagination,
+      status,
+      searchParams?.name,
+      roleId,
+      departmentId,
+      designationId,
+      branchId,
+      gender,
+    ],
     () =>
       getEmployees({
         companyId,
+        token,
         pagination,
         searchParams,
-
-        token,
         status,
+        roleId,
+        departmentId,
+        designationId,
+        branchId,
+        gender,
       }),
     {
       // refetchInterval: false,

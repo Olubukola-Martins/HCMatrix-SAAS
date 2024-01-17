@@ -1,4 +1,4 @@
-import { Dropdown, Menu, Modal, Table } from "antd";
+import { Dropdown, Menu, Table } from "antd";
 import { MoreOutlined } from "@ant-design/icons";
 
 import React, { useState } from "react";
@@ -8,69 +8,20 @@ import { usePagination } from "hooks/usePagination";
 
 import { THoliday } from "../types";
 import moment from "moment";
-import { openNotification } from "utils/notifications";
-import { useQueryClient } from "react-query";
-import { ExclamationCircleFilled } from "@ant-design/icons";
-import { useDeleteHoliday } from "../hooks/useDeleteHoliday";
-import {
-  QUERY_KEY_FOR_HOLIDAYS,
-  useGetHolidays,
-} from "../hooks/useGetHolidays";
+
+import { useGetHolidays } from "../hooks/useGetHolidays";
 import { EditHoliday } from "./EditHoliday";
+import { DeleteHoliday } from "./DeleteHoliday";
+import { DEFAULT_DATE_FORMAT } from "constants/dateFormats";
 
 export const HolidaysTable: React.FC = () => {
-  const queryClient = useQueryClient();
-
-  const [showM, setShowM] = useState(false);
+  const [showM, setShowM] = useState<"edit" | "delete">();
   const [holiday, setHoliday] = useState<THoliday>();
-  const handleEdit = (data: THoliday) => {
-    setShowM(true);
+  const handleAction = (data: THoliday, action: "edit" | "delete") => {
+    setShowM(action);
     setHoliday(data);
   };
-  const { mutate, isLoading } = useDeleteHoliday();
-  const onDelete = (folderId: number) => {
-    mutate(
-      {
-        id: folderId,
-      },
-      {
-        onError: (err: any) => {
-          openNotification({
-            state: "error",
-            title: "Error Occurred",
-            description:
-              err?.response.data.message ?? err?.response.data.error.message,
-          });
-        },
-        onSuccess: (res: any) => {
-          openNotification({
-            state: "success",
 
-            title: "Success",
-            description: res.data.message,
-            // duration: 0.4,
-          });
-
-          queryClient.invalidateQueries({
-            queryKey: [QUERY_KEY_FOR_HOLIDAYS],
-            // exact: true,
-          });
-        },
-      }
-    );
-  };
-  const handleDelete = (id: number) => {
-    Modal.confirm({
-      title: `Are you sure you want to delete holiday ?`,
-      icon: <ExclamationCircleFilled />,
-      content: `This will delete this holiday!`,
-      width: 600,
-      okButtonProps: { loading: isLoading },
-      onOk() {
-        onDelete(id);
-      },
-    });
-  };
   const { pagination, onChange } = usePagination();
 
   const { data, isFetching } = useGetHolidays({
@@ -89,7 +40,7 @@ export const HolidaysTable: React.FC = () => {
       dataIndex: "name",
       key: "name",
       render: (val, item) => (
-        <span className="capitalize">
+        <span className="capitalize text-caramel">
           {moment(item.date).format("DD, MMMM")}
         </span>
       ),
@@ -99,8 +50,8 @@ export const HolidaysTable: React.FC = () => {
       dataIndex: "createdAt",
       key: "createdAt",
       render: (val, item) => (
-        <span className="capitalize text-caramel hover:underline">
-          {moment(item.createdAt).format("YYYY-MM-DD")}
+        <span className="capitalize ">
+          {moment(item.createdAt).format(DEFAULT_DATE_FORMAT)}
         </span>
       ),
     },
@@ -109,8 +60,8 @@ export const HolidaysTable: React.FC = () => {
       dataIndex: "updatedAt",
       key: "updatedAt",
       render: (val, item) => (
-        <span className="capitalize text-caramel hover:underline">
-          {moment(item.updatedAt).format("YYYY-MM-DD")}
+        <span className="capitalize">
+          {moment(item.updatedAt).format(DEFAULT_DATE_FORMAT)}
         </span>
       ),
     },
@@ -124,11 +75,15 @@ export const HolidaysTable: React.FC = () => {
           overlay={
             <Menu
               items={[
-                { label: "Edit", key: "Edit", onClick: () => handleEdit(item) },
+                {
+                  label: "Edit",
+                  key: "Edit",
+                  onClick: () => handleAction(item, "edit"),
+                },
                 {
                   label: "Delete",
                   key: "Delete",
-                  onClick: () => handleDelete(item.id),
+                  onClick: () => handleAction(item, "delete"),
                 },
               ]}
             />
@@ -144,11 +99,16 @@ export const HolidaysTable: React.FC = () => {
     <div>
       {holiday && (
         <EditHoliday
-          open={showM}
+          open={showM === "edit"}
           holiday={holiday}
-          handleClose={() => setShowM(false)}
+          handleClose={() => setShowM(undefined)}
         />
       )}
+      <DeleteHoliday
+        open={showM === "delete"}
+        holiday={holiday}
+        handleClose={() => setShowM(undefined)}
+      />
       <Table
         columns={columns}
         size="small"

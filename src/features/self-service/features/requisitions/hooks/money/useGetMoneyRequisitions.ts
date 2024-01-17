@@ -9,7 +9,8 @@ import { TMoneyRequisition } from "../../types/money";
 interface IGetDataProps extends ICurrentCompany {
   pagination?: IPaginationProps;
   searchParams?: ISearchParams;
-  status?: TApprovalStatus;
+  status?: TApprovalStatus[] | TApprovalStatus;
+
   employeeId?: number;
 }
 
@@ -35,8 +36,11 @@ const getData = async (
       limit,
       offset,
       search: name,
-      status: props.status,
       employeeId: props.employeeId,
+      status:
+        typeof props.status === "string"
+          ? props.status
+          : props.status?.join(","),
     },
   };
 

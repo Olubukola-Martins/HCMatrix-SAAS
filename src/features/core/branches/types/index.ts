@@ -7,3 +7,9 @@ export type TBranch = {
   address: TAddress;
   employeeCount: number;
 };
+
+export interface TCreateBranchProps {
+  name: string;
+  description: string;
+  address: TAddress;
+}

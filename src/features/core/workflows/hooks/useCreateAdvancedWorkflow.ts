@@ -11,9 +11,10 @@ export type TAdvancedWorkflowStage = {
   id?: number;
   name: string;
   type: TStagingType;
-  entityId: number;
+  entityId?: number;
   condition?: TStageCondition;
   count?: number;
+  enableTwoFactorAuth?: boolean;
 };
 type TCreateProps = {
   name: string;

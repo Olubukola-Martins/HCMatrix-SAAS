@@ -17,13 +17,12 @@ export const JobRequestsTable: React.FC<{
 }> = ({ status, employeeId }) => {
   const [requestId, setRequestId] = useState<number>();
   const { companyId, token } = useApiAuth();
-  const { pagination, onChange } = usePagination({
-    pageSize: 4,
-  });
+  const { pagination, onChange } = usePagination();
   const { data, isFetching } = useGeTJobRequisitions({
     companyId,
     token,
     status,
+    employeeId,
     pagination: {
       limit: pagination.limit,
       offset: pagination.offset,

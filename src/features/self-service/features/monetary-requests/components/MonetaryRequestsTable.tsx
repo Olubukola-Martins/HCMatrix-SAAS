@@ -10,6 +10,7 @@ import { getAppropriateColorForStatus } from "utils/colorHelpers/getAppropriateC
 import { MonetaryRequestDetails } from "./MonetaryRequestDetails";
 import { TMoneyRequisition } from "../../requisitions/types/money";
 import { useGetMoneyRequisitions } from "../../requisitions/hooks/money/useGetMoneyRequisitions";
+import { DEFAULT_DATE_FORMAT } from "constants/dateFormats";
 
 export const MonetaryRequestsTable: React.FC<{
   status?: TApprovalStatus;
@@ -17,9 +18,7 @@ export const MonetaryRequestsTable: React.FC<{
 }> = ({ status, employeeId }) => {
   const [requestId, setRequestId] = useState<number>();
   const { companyId, token } = useApiAuth();
-  const { pagination, onChange } = usePagination({
-    pageSize: 4,
-  });
+  const { pagination, onChange } = usePagination();
   const { data, isFetching } = useGetMoneyRequisitions({
     companyId,
     token,
@@ -37,7 +36,7 @@ export const MonetaryRequestsTable: React.FC<{
       dataIndex: "date",
       key: "date",
       render: (_, item) => (
-        <span>{moment(item.date).format("YYYY/MM/DD")} </span>
+        <span>{moment(item.date).format(DEFAULT_DATE_FORMAT)} </span>
       ),
     },
     {
@@ -50,7 +49,8 @@ export const MonetaryRequestsTable: React.FC<{
       title: "Purpose",
       dataIndex: "desc",
       key: "desc",
-      render: (_, item) => <span className="capitalize">{item.purpose} </span>,
+      ellipsis: true,
+      render: (_, item) => <span className="">{item.purpose} </span>,
     },
 
     {

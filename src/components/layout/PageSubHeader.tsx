@@ -1,22 +1,20 @@
-import { AppButton, TBtnVariant } from "components/button/AppButton";
-
 // Define a btn component
 
-interface IProps {
+import {
+  SupplementaryActionsProps,
+  SupplementaryActions,
+} from "SupplementaryActions";
+
+interface IProps extends SupplementaryActionsProps {
   description: string | { content: string; className: string };
   hideBackground?: boolean;
-  actions?: {
-    name: string;
-    handleClick: Function;
-    btnVariant?: TBtnVariant;
-    loading?: boolean;
-  }[];
 }
 
 const PageSubHeader = ({
   description,
   actions,
   hideBackground = false,
+  comps,
 }: IProps) => {
   return (
     <div
@@ -29,16 +27,7 @@ const PageSubHeader = ({
         <p className={description.className}>{description.content}</p>
       )}
 
-      <div className="flex gap-4 items-center">
-        {actions?.map((item) => (
-          <AppButton
-            label={item.name}
-            handleClick={() => item.handleClick()}
-            variant={item.btnVariant}
-            isLoading={item.loading}
-          />
-        ))}
-      </div>
+      <SupplementaryActions actions={actions} comps={comps} />
     </div>
   );
 };
