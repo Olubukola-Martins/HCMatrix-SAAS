@@ -14,10 +14,10 @@ export const AttendanceSettingsIntro = ({ title, description }: AProps) => {
         <PageIntro title={title} link={appRoutes.settings} />
 
         <div className="flex items-center gap-x-4">
-          <span className="underline text-caramel cursor-pointer hover:text-accent">
+          {/* <span className="underline text-caramel cursor-pointer hover:text-accent">
             I will do this later
           </span>
-          <AppButton label="Next" />
+          <AppButton label="Next" /> */}
         </div>
       </div>
       <p className="pt-3 text-sm">{description}</p>

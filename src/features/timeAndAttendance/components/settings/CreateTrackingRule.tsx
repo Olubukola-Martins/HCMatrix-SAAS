@@ -25,14 +25,13 @@ export const CreateTrackingRule = ({ handleClose, open }: IDrawerProps) => {
   const { dispatch } = globalCtx;
   const { mutate, isLoading } = useCreateTimeTrackingRule();
   const { drawerSize } = UseWindowWidth();
-  const { data } = useGetActiveTrackingPolicy();
+  const { data} = useGetActiveTrackingPolicy();
 
   const handleOptionChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSelectedOption(event.target.value);
     setError("");
   };
 
-  console.log(data);
 
   const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault();
@@ -77,7 +76,9 @@ export const CreateTrackingRule = ({ handleClose, open }: IDrawerProps) => {
       open={open}
       onClose={() => handleClose()}
       title="Create Tracking Rule"
+      
     >
+      
       <form onSubmit={handleSubmit}>
         {radioFormOptions.map((option) => (
           <label

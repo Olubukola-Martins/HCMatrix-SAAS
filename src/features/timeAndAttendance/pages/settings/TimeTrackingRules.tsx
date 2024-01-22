@@ -1,9 +1,8 @@
 import { AppButton } from "components/button/AppButton";
 import { AttendanceSettingsIntro } from "features/timeAndAttendance/components/settings/AttendanceSettingsIntro";
 import { TimeAttendanceSettingsNav } from "features/timeAndAttendance/components/settings/TimeAttendanceSettingsNav";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import "../../assets/style.css";
-import { useGetTimeTrackingRule } from "features/timeAndAttendance/hooks/useGetTimeTrackingRule";
 import { CreateTrackingRule } from "features/timeAndAttendance/components/settings/CreateTrackingRule";
 import { radioFormOptions } from "features/timeAndAttendance/constants";
 import checkboxBase from "../../assets/images/CheckboxBase.svg";
@@ -16,28 +15,8 @@ import { useGetActiveTrackingPolicy } from "features/timeAndAttendance/hooks/use
 
 export const TimeTrackingRules = () => {
   const [openAddTRule, setOpenAddTRule] = useState<boolean>(false);
-  const [filteredOptions, setFilteredOptions] = useState(radioFormOptions);
   const { data, isLoading } = useGetActiveTrackingPolicy();
 
-  const {data: testData} = useGetTimeTrackingRule()
-  // const {token, companyId} = GetTokenAndCompanyId()
-  const {} = useGetActiveTrackingPolicy()
-
-  
-
-  
-
-  // useEffect(() => {
-  //   if (data && data?.policy) {
-  //     const filtered = radioFormOptions.filter(
-  //       (option) =>
-  //         option.label === data?.policy || option.value === data?.policy
-  //     );
-  //     setFilteredOptions(filtered);
-  //   }
-  // }, [data]);
-
-  
   return (
     <>
       <TimeAttendanceSettingsNav active={"time tracking rules"} />
@@ -53,7 +32,7 @@ export const TimeTrackingRules = () => {
       <div className="Container mt-2">
         <div className="flex justify-end">
           <AppButton
-            label="Create Time Policy"
+            label="Set Time Policy"
             handleClick={() => setOpenAddTRule(true)}
           />
         </div>
@@ -61,9 +40,10 @@ export const TimeTrackingRules = () => {
           <ScaleLoader color="var(--caramel)" loading={isLoading} />
         </div>
         <div className="mt-6">
-          {/* {data?.policy ? (
-            <div>
-              {filteredOptions.map((option) => (
+          <div>
+            {radioFormOptions
+              .filter((option) => option.id === data?.id)
+              .map((option) => (
                 <label
                   key={option.value}
                   htmlFor={option.value}
@@ -128,7 +108,7 @@ export const TimeTrackingRules = () => {
                     type="radio"
                     name="plan"
                     id={option.value}
-                    value={option.value}
+                    value={option.id}
                     className="absolute h-0 w-0 appearance-none"
                     disabled
                   />
@@ -201,18 +181,15 @@ export const TimeTrackingRules = () => {
                   </span>
                 </label>
               ))}
-              <div className="flex justify-center mt-2">
-                <button
-                  onClick={() => setOpenAddTRule(true)}
-                  className="hover:border-caramel justify-center shadow border rounded px-3 border-slate-300 flex items-center gap-x-2"
-                >
-                  <i className="ri-pencil-line text-lg"></i> <span>Change</span>
-                </button>
-              </div>
+            <div className="flex justify-center mt-2">
+              <button
+                onClick={() => setOpenAddTRule(true)}
+                className="hover:border-caramel justify-center shadow border rounded px-3 border-slate-300 flex items-center gap-x-2"
+              >
+                <i className="ri-pencil-line text-lg"></i> <span>Change</span>
+              </button>
             </div>
-          ) : (
-            <Empty />
-          )} */}
+          </div>
         </div>
       </div>
     </>
