@@ -6,4 +6,6 @@ export type TFileType =
   | "text/plain"
   | "application/pdf"
   | "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
-  | "text/csv";
+  | "text/csv"
+  | "video/mp4"
+ | "audio/mpeg";

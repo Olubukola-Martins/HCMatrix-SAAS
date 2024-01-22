@@ -30,11 +30,11 @@ export const AddLocation = ({ handleClose, open }: IDrawerProps) => {
     data: branchData,
     isFetching,
   } = useFetchBranches({
-    companyId,
+    // companyId,
     searchParams: {
       name: debouncedSearchTerm,
     },
-    token,
+    // token,
   });
 
   const handleSearch = (val: string) => {
