@@ -8,16 +8,6 @@ import { TFileType } from "types/files";
 
 // TO DO: HANDLE And account for the delete of a file from context
 
-// type TFileType =
-//   | "image/png"
-//   | "image/jpeg"
-//   | "image/jpg"
-//   | "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
-//   | "text/plain"
-//   | "application/pdf"
-//   | "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
-//   | "video/mp4"
-//   | "audio/mpeg";
 interface IFilesProps {
   allowedFileTypes: TFileType[];
   displayType?: "icon" | "button" | "form-space-between" | "dotted-box";

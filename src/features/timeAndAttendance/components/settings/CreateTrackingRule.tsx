@@ -3,8 +3,6 @@ import { AppButton } from "components/button/AppButton";
 import { radioFormOptions } from "features/timeAndAttendance/constants";
 import { UseWindowWidth } from "features/timeAndAttendance/hooks/UseWindowWidth";
 import { useCreateTimeTrackingRule } from "features/timeAndAttendance/hooks/useCreateTimeTrackingRule";
-import { QUERY_KEY_FOR_COMPANY_POLICY } from "features/timeAndAttendance/hooks/useGetTimeTrackingRule";
-import { useApiAuth } from "hooks/useApiAuth";
 import { useState, useContext } from "react";
 import { useQueryClient } from "react-query";
 import { GlobalContext, EGlobalOps } from "stateManagers/GlobalContextProvider";
@@ -14,59 +12,62 @@ import checkboxBase from "../../assets/images/CheckboxBase.svg";
 import faceReg from "../../assets/images/lucide_scan-face.svg";
 import locationIcon from "../../assets/images/symbols_location.svg";
 import editPenIcon from "../../assets/images/edit-outline.svg";
+import {
+  QUERY_KEY_FOR_ACTIVE_TRACKING_POLICY,
+  useGetActiveTrackingPolicy,
+} from "features/timeAndAttendance/hooks/useGetActiveTrackingPolicy";
 
 export const CreateTrackingRule = ({ handleClose, open }: IDrawerProps) => {
-  const [selectedOption, setSelectedOption] = useState<string>("");
+  const [selectedOption, setSelectedOption] = useState<any>();
   const [error, setError] = useState<string>("");
-  const { companyId, token, currentUserId } = useApiAuth();
   const queryClient = useQueryClient();
   const globalCtx = useContext(GlobalContext);
   const { dispatch } = globalCtx;
   const { mutate, isLoading } = useCreateTimeTrackingRule();
   const { drawerSize } = UseWindowWidth();
+  const { data } = useGetActiveTrackingPolicy();
 
   const handleOptionChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSelectedOption(event.target.value);
     setError("");
   };
 
+  console.log(data);
+
   const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault();
+
     if (!selectedOption) {
       setError("Please select an option");
     } else {
-      if (companyId) {
-        mutate(
-          {
-            companyId,
-            token,
-            adminId: currentUserId,
-            policy: selectedOption,
+      mutate(
+        {
+          policyId: selectedOption,
+        },
+        {
+          onError: (err: any) => {
+            openNotification({
+              state: "error",
+              title: "Error Occurred",
+              description:
+                err?.response.data.message ?? err?.response.data.error.message,
+              duration: 5.0,
+            });
           },
-          {
-            onError: (err: any) => {
-              openNotification({
-                state: "error",
-                title: "Error Occurred",
-                description:
-                  err?.response.data.message ??
-                  err?.response.data.error.message,
-                duration: 5.0,
-              });
-            },
-            onSuccess: (res: any) => {
-              openNotification({
-                state: "success",
-                title: "Success",
-                description: "Time tracking created successfully",
-              });
-              dispatch({ type: EGlobalOps.setShowInitialSetup, payload: true });
-              queryClient.invalidateQueries([QUERY_KEY_FOR_COMPANY_POLICY]);
-              handleClose();
-            },
-          }
-        );
-      }
+          onSuccess: (res: any) => {
+            openNotification({
+              state: "success",
+              title: "Success",
+              description: res.data.message,
+            });
+            dispatch({ type: EGlobalOps.setShowInitialSetup, payload: true });
+            queryClient.invalidateQueries([
+              QUERY_KEY_FOR_ACTIVE_TRACKING_POLICY,
+            ]);
+            handleClose();
+          },
+        }
+      );
     }
   };
 
@@ -133,9 +134,10 @@ export const CreateTrackingRule = ({ handleClose, open }: IDrawerProps) => {
               type="radio"
               name="plan"
               id={option.value}
-              value={option.value}
+              value={option.id}
               className="absolute h-0 w-0 appearance-none"
               onChange={handleOptionChange}
+              defaultChecked={option.id === data?.id}
             />
             <span
               style={{ background: "#fff" }}

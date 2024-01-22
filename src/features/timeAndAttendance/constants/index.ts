@@ -5,8 +5,10 @@ export const radioFormOptions: {
   faceRTitle: string;
   locationTitle: string;
   faceRDes: string;
+  id:number;
 }[] = [
   {
+    id: 1,
     label: "Flexible",
     description: "Good for times with higher onsite autonomy",
     value: "Flexible",
@@ -15,14 +17,17 @@ export const radioFormOptions: {
     faceRDes: "Self capturing not allowed",
   },
   {
+    id: 2,
     label: "Moderate",
     description: "Good for teams with fixed hours and location",
     value: "Moderate",
     faceRTitle: "Face Recognition Enabled",
     locationTitle: "GPS Location not required",
     faceRDes: "If unrecognized flag time entry",
+
   },
   {
+    id: 3,
     label: "Mandatory",
     description: "Good for teams monitoring flexible offsite members",
     value: "Mandatory",

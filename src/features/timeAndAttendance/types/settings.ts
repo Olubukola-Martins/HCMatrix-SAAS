@@ -26,9 +26,9 @@ interface biometricDeviceLocationDetails {
 }
 
 // Time tracking rules
-export interface ITimeTrackingRule extends ICurrentCompany {
-  adminId: number;
-  policy: string;
+export interface ITimeTrackingRule {
+  id?: number;
+  policyId: number;
 }
 
 // time off policy rule
@@ -47,7 +47,7 @@ interface TimeOffPolicy {
 export interface IAllTimeOff extends ICurrentCompany {
   reason: string;
   date: string;
-  timeOffPolicyId: number
+  timeOffPolicyId: number;
   userId: number;
 }
 

@@ -12,21 +12,32 @@ import locationIcon from "../../assets/images/symbols_location.svg";
 import editPenIcon from "../../assets/images/edit-outline.svg";
 import { Empty } from "antd";
 import { ScaleLoader } from "react-spinners";
+import { useGetActiveTrackingPolicy } from "features/timeAndAttendance/hooks/useGetActiveTrackingPolicy";
 
 export const TimeTrackingRules = () => {
   const [openAddTRule, setOpenAddTRule] = useState<boolean>(false);
   const [filteredOptions, setFilteredOptions] = useState(radioFormOptions);
-  const { data, isLoading } = useGetTimeTrackingRule();
+  const { data, isLoading } = useGetActiveTrackingPolicy();
 
-  useEffect(() => {
-    if (data && data?.policy) {
-      const filtered = radioFormOptions.filter(
-        (option) =>
-          option.label === data?.policy || option.value === data?.policy
-      );
-      setFilteredOptions(filtered);
-    }
-  }, [data]);
+  const {data: testData} = useGetTimeTrackingRule()
+  // const {token, companyId} = GetTokenAndCompanyId()
+  const {} = useGetActiveTrackingPolicy()
+
+  
+
+  
+
+  // useEffect(() => {
+  //   if (data && data?.policy) {
+  //     const filtered = radioFormOptions.filter(
+  //       (option) =>
+  //         option.label === data?.policy || option.value === data?.policy
+  //     );
+  //     setFilteredOptions(filtered);
+  //   }
+  // }, [data]);
+
+  
   return (
     <>
       <TimeAttendanceSettingsNav active={"time tracking rules"} />
@@ -50,7 +61,7 @@ export const TimeTrackingRules = () => {
           <ScaleLoader color="var(--caramel)" loading={isLoading} />
         </div>
         <div className="mt-6">
-          {data?.policy ? (
+          {/* {data?.policy ? (
             <div>
               {filteredOptions.map((option) => (
                 <label
@@ -201,7 +212,7 @@ export const TimeTrackingRules = () => {
             </div>
           ) : (
             <Empty />
-          )}
+          )} */}
         </div>
       </div>
     </>
