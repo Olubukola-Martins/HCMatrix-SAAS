@@ -17,10 +17,11 @@ export const WorkFixed: React.FC<{ data: any }> = () => {
   const { mutate, isLoading } = useCreateFixedSchedule();
   const { data, isSuccess } = useGetFixedSchedule();
 
+
   useEffect(() => {
     let initialFormValues;
 
-    if (isSuccess && data) {
+    if (isSuccess && data && data.length !== 0) {
       initialFormValues = data?.map((item: any) => ({
         day: item.day,
         time: [
@@ -30,13 +31,13 @@ export const WorkFixed: React.FC<{ data: any }> = () => {
       }));
     } else {
       initialFormValues = [
-        { day: "Monday" },
-        { day: "Tuesday" },
-        { day: "Wednesday" },
-        { day: "Thursday" },
-        { day: "Friday" },
-        { day: "Saturday" },
-        { day: "Sunday" },
+        { day: "monday" },
+        { day: "tuesday" },
+        { day: "wednesday" },
+        { day: "thursday" },
+        { day: "friday" },
+        { day: "saturday" },
+        { day: "sunday" },
       ];
     }
 
@@ -55,15 +56,15 @@ export const WorkFixed: React.FC<{ data: any }> = () => {
       if (!item.time || item.time.length < 2) {
         return {
           day: item.day,
-          startTime: "00:00",
-          endTime: "00:00",
+          startTime: "00:00:00",
+          endTime: "00:00:00",
         };
       }
       const [startTime, endTime] = item.time;
       return {
         day: item.day,
-        startTime: startTime && startTime.format("HH:mm"),
-        endTime: endTime && endTime.format("HH:mm"),
+        startTime: startTime && startTime.format("HH:mm:ss"),
+        endTime: endTime && endTime.format("HH:mm:ss"),
       };
     });
 

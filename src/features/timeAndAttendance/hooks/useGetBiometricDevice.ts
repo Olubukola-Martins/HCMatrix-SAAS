@@ -1,6 +1,6 @@
 import axios from "axios";
 import { useQuery } from "react-query";
-import { BiometricDevice } from "../types/settings";
+import { BiometricDevice, biometricProps } from "../types/settings";
 import { MICROSERVICE_ENDPOINTS } from "config/enviroment";
 import { useApiAuth } from "hooks/useApiAuth";
 
@@ -9,7 +9,7 @@ export const QUERY_KEY_FOR_BIOMETRIC_DEVICE = "Biometric_Device";
 const getData = async (props: {
   token: string;
   companyId: number;
-}): Promise<BiometricDevice[]> => {
+}): Promise<biometricProps[]> => {
   const url = `${MICROSERVICE_ENDPOINTS.TIME_AND_ATTENDANCE}/settings/biometrics/devices`;
   const config = {
     headers: {
@@ -20,7 +20,7 @@ const getData = async (props: {
   };
   const res = await axios.get(url, config);
 
-  const item: BiometricDevice[] = res.data;
+  const item: biometricProps[] = res.data.data.result;
   return item;
 };
 export const useGetBiometricDevice = () => {

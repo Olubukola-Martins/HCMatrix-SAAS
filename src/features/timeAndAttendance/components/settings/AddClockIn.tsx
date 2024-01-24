@@ -38,6 +38,8 @@ export const AddClockIn = ({ handleClose, open }: IDrawerProps) => {
       { data },
       {
         onError: (err: any) => {
+          console.log(err);
+          
           openNotification({
             state: "error",
             title: "Error Occurred",
@@ -46,12 +48,10 @@ export const AddClockIn = ({ handleClose, open }: IDrawerProps) => {
           });
         },
         onSuccess: (res: any) => {
-          console.log(res);
-
           openNotification({
             state: "success",
             title: "Success",
-            description: "Successfully created",
+            description: res.data.message,
           });
 
           form.resetFields();

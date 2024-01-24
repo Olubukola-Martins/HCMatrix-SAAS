@@ -159,7 +159,7 @@ export const AddLocation = ({ handleClose, open }: IDrawerProps) => {
                       className="w-full"
                       rules={generalValidationRules}
                     >
-                      <Select
+                      {/* <Select
                         className="w-full"
                         options={BiometricDevice?.map((item) => ({
                           value: item.id,
@@ -168,7 +168,7 @@ export const AddLocation = ({ handleClose, open }: IDrawerProps) => {
                         allowClear
                         placeholder="Select"
                         loading={loadBiometricDevice}
-                      />
+                      /> */}
                     </Form.Item>
 
                     <i

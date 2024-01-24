@@ -90,4 +90,4 @@ export interface workScheduleFixedProps {
 export interface biometricProps {
   name: string;
   serialNumber: string;
-}[]
+}

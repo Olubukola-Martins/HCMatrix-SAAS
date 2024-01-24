@@ -6,13 +6,10 @@ import { AddClockIn } from "features/timeAndAttendance/components/settings/AddCl
 import Table, { ColumnsType } from "antd/lib/table";
 import { Dropdown, Menu } from "antd";
 import { useGetBiometricDevice } from "features/timeAndAttendance/hooks/useGetBiometricDevice";
+import { biometricProps } from "features/timeAndAttendance/types/settings";
 
-interface IClockIn {
-  name: string;
-  serialNumber: string;
-}
 
-const columns: ColumnsType<IClockIn> = [
+const columns: ColumnsType<biometricProps> = [
   {
     title: "Biometrics Device",
     dataIndex: "name",
@@ -44,6 +41,7 @@ const columns: ColumnsType<IClockIn> = [
 export const ClockIn = () => {
   const [addClockIn, setAddClockIn] = useState(false);
   const { data, isLoading } = useGetBiometricDevice();
+
   return (
     <>
       <TimeAttendanceSettingsNav active="clock in settings" />
@@ -52,14 +50,14 @@ export const ClockIn = () => {
       <div className="Container mt-4">
         <div className="flex justify-end">
           <AppButton
-            label="Set clock in"
+            label="Create Biometrics"
             handleClick={() => setAddClockIn(true)}
           />
         </div>
 
         <Table
           columns={columns}
-          dataSource={[]}
+          dataSource={data}
           loading={isLoading}
           className="mt-5"
         />

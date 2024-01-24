@@ -20,7 +20,7 @@ export const createData = async (props: {
 
   const data = props.data;
 
-  const response = await axios.put(url, data, config);
+  const response = await axios.post(url, data, config);
   return response;
 };
 
