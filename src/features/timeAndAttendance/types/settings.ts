@@ -26,10 +26,6 @@ interface biometricDeviceLocationDetails {
 }
 
 // Time tracking rules
-export interface ITimeTrackingRule {
-  id?: number;
-  policyId: number;
-}
 
 // time off policy rule
 export interface ITimeOffPolicyRule extends ICurrentCompany {
@@ -74,3 +70,24 @@ interface WorkDaysAndTime {
   shift?: string;
   hours?: string;
 }
+
+// ====  NEW METHOD === ////
+
+export interface ITimeTrackingRule {
+  id?: number;
+  policyId: number;
+}
+
+export interface workScheduleFixedProps {
+  schedule: {
+    day: string;
+    startTime: string;
+    endTime: string;
+  }[];
+  allowTrackingBeforeStart: boolean;
+}
+
+export interface biometricProps {
+  name: string;
+  serialNumber: string;
+}[]

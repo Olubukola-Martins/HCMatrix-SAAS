@@ -1,28 +1,27 @@
 import { Checkbox, Form, Input, TimePicker } from "antd";
 import { AppButton } from "components/button/AppButton";
-import { useCreateWorkSchedule } from "features/timeAndAttendance/hooks/useCreateWorkSchedule";
+import { useCreateFixedSchedule } from "features/timeAndAttendance/hooks/useCreateFixedSchedule";
+import { useGetFixedSchedule } from "features/timeAndAttendance/hooks/useGetFixedSchedule";
 import { QUERY_KEY_FOR_WORK_SCHEDULE } from "features/timeAndAttendance/hooks/useGetWorkSchedule";
-import { useApiAuth } from "hooks/useApiAuth";
 import moment from "moment";
 import { useContext, useEffect } from "react";
 import { useQueryClient } from "react-query";
 import { EGlobalOps, GlobalContext } from "stateManagers/GlobalContextProvider";
 import { openNotification } from "utils/notifications";
 
-// const boxStyle = "border py-3 px-7 text-accent font-medium text-base";
-export const WorkFixed: React.FC<{ data: any }> = ({ data }) => {
+export const WorkFixed: React.FC<{ data: any }> = () => {
   const [form] = Form.useForm();
   const queryClient = useQueryClient();
-  const { companyId, token, currentUserId } = useApiAuth();
   const globalCtx = useContext(GlobalContext);
   const { dispatch } = globalCtx;
-  const { mutate, isLoading } = useCreateWorkSchedule();
+  const { mutate, isLoading } = useCreateFixedSchedule();
+  const { data, isSuccess } = useGetFixedSchedule();
 
   useEffect(() => {
     let initialFormValues;
 
-    if (data && data.workArrangement === "Fixed") {
-      initialFormValues = data?.workDaysAndTime.map((item: any) => ({
+    if (isSuccess && data) {
+      initialFormValues = data?.map((item: any) => ({
         day: item.day,
         time: [
           moment(`2013-02-07 ${item.startTime}`),
@@ -42,12 +41,17 @@ export const WorkFixed: React.FC<{ data: any }> = ({ data }) => {
     }
 
     form.setFieldsValue({
-      workDaysAndTime: initialFormValues,
+      schedule: initialFormValues,
+      // allowTrackingBeforeStart:
     });
-  }, [data, form]);
+
+    console.log(initialFormValues);
+  }, [form, isSuccess, data]);
 
   const onFinish = (values: any) => {
-    const workDaysAndTime = values?.workDaysAndTime.map((item: any) => {
+    console.log(values);
+
+    const workDaysAndTime = values?.schedule.map((item: any) => {
       if (!item.time || item.time.length < 2) {
         return {
           day: item.day,
@@ -62,39 +66,35 @@ export const WorkFixed: React.FC<{ data: any }> = ({ data }) => {
         endTime: endTime && endTime.format("HH:mm"),
       };
     });
-    if (companyId) {
-      mutate(
-        {
-          companyId,
-          token,
-          adminId: currentUserId,
-          workArrangement: "Fixed",
-          workDaysAndTime: workDaysAndTime,
-        },
-        {
-          onError: (err: any) => {
-            openNotification({
-              state: "error",
-              title: "Error Occurred",
-              description:
-                err?.response.data.message ?? err?.response.data.error.message,
-              duration: 7.0,
-            });
-          },
-          onSuccess: (res: any) => {
-            openNotification({
-              state: "success",
-              title: "Success",
-              description: "Schedule Created Successfully",
-            });
 
-            // form.resetFields();
-            dispatch({ type: EGlobalOps.setShowInitialSetup, payload: true });
-            queryClient.invalidateQueries([QUERY_KEY_FOR_WORK_SCHEDULE]);
-          },
-        }
-      );
-    }
+    mutate(
+      {
+        schedule: workDaysAndTime,
+        allowTrackingBeforeStart: false,
+      },
+      {
+        onError: (err: any) => {
+          openNotification({
+            state: "error",
+            title: "Error Occurred",
+            description:
+              err?.response.data.message ?? err?.response.data.error.message,
+            duration: 7.0,
+          });
+        },
+        onSuccess: (res: any) => {
+          openNotification({
+            state: "success",
+            title: "Success",
+            description: "Schedule Created Successfully",
+          });
+
+          // form.resetFields();
+          dispatch({ type: EGlobalOps.setShowInitialSetup, payload: true });
+          queryClient.invalidateQueries([QUERY_KEY_FOR_WORK_SCHEDULE]);
+        },
+      }
+    );
   };
 
   return (
@@ -129,7 +129,7 @@ export const WorkFixed: React.FC<{ data: any }> = ({ data }) => {
       {/* form */}
       <div className="mt-6">
         <Form form={form} onFinish={onFinish}>
-          <Form.List name="workDaysAndTime">
+          <Form.List name="schedule">
             {(fields) => (
               <>
                 {fields.map((field, index) => (
@@ -173,7 +173,7 @@ export const WorkFixed: React.FC<{ data: any }> = ({ data }) => {
           <div className="flex justify-between md:flex-row flex-col items-start">
             <div className="flex items-start gap-2 md:gap-5">
               <h4 className="pt-1">Payroll hours</h4>
-              <Form.Item>
+              <Form.Item name="allowTrackingBeforeStart">
                 <Checkbox>
                   Include time tracked before scheduled start time
                 </Checkbox>

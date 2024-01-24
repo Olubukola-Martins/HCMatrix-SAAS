@@ -1,10 +1,9 @@
 import { Drawer, Form, Input, InputNumber, Switch } from "antd";
 import { AppButton } from "components/button/AppButton";
 import { UseWindowWidth } from "features/timeAndAttendance/hooks/UseWindowWidth";
-import { useCreateClockIn } from "features/timeAndAttendance/hooks/useCreateClockIn";
+import { useCreateBiometric } from "features/timeAndAttendance/hooks/useCreateBiometric";
 import { QUERY_KEY_FOR_BIOMETRIC_DEVICE } from "features/timeAndAttendance/hooks/useGetBiometricDevice";
-import { useApiAuth } from "hooks/useApiAuth";
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect } from "react";
 import { useQueryClient } from "react-query";
 import { GlobalContext, EGlobalOps } from "stateManagers/GlobalContextProvider";
 import { IDrawerProps } from "types";
@@ -16,8 +15,7 @@ const formWrapStyle =
 export const AddClockIn = ({ handleClose, open }: IDrawerProps) => {
   const { drawerSize } = UseWindowWidth();
   const [form] = Form.useForm();
-  const { mutate, isLoading } = useCreateClockIn();
-  const { companyId, token, currentUserId } = useApiAuth();
+  const { mutate, isLoading } = useCreateBiometric();
   const globalCtx = useContext(GlobalContext);
   const { dispatch } = globalCtx;
   const queryClient = useQueryClient();
@@ -26,53 +24,47 @@ export const AddClockIn = ({ handleClose, open }: IDrawerProps) => {
     const defaultField = {
       name: "",
       serialNumber: "",
-      adminId: currentUserId,
-      companyId: companyId,
     };
     form.setFieldsValue({ biometricDevices: [defaultField] });
   }, []);
 
   const handleFormSubmit = (values: any) => {
-    if (companyId) {
-      mutate(
-        {
-          companyId,
-          adminId: currentUserId,
-          isSoftClockIn: values.softClockIn,
-          isBiometricClockIn: values.allowBiometrics,
-          biometricDevices: values.biometricDevices,
-          token,
-        },
-        {
-          onError: (err: any) => {
-            openNotification({
-              state: "error",
-              title: "Error Occurred",
-              description:
-                err?.response.data.message ?? err?.response.data.error.message,
-            });
-          },
-          onSuccess: (res: any) => {
-            console.log(res);
+    const data = values.biometricDevices.map((value: any) => ({
+      name: value.name,
+      serialNumber: value.serialNumber,
+    }));
 
-            openNotification({
-              state: "success",
-              title: "Success",
-              description: "Successfully created",
-            });
-          
-            form.resetFields();
-            dispatch({ type: EGlobalOps.setShowInitialSetup, payload: true });
-            queryClient.invalidateQueries([QUERY_KEY_FOR_BIOMETRIC_DEVICE]);
-            handleClose();
-          },
-        }
-      );
-    }
+    mutate(
+      { data },
+      {
+        onError: (err: any) => {
+          openNotification({
+            state: "error",
+            title: "Error Occurred",
+            description:
+              err?.response.data.message ?? err?.response.data.error.message,
+          });
+        },
+        onSuccess: (res: any) => {
+          console.log(res);
+
+          openNotification({
+            state: "success",
+            title: "Success",
+            description: "Successfully created",
+          });
+
+          form.resetFields();
+          dispatch({ type: EGlobalOps.setShowInitialSetup, payload: true });
+          queryClient.invalidateQueries([QUERY_KEY_FOR_BIOMETRIC_DEVICE]);
+          handleClose();
+        },
+      }
+    );
   };
   const handleAddField = () => {
     const biometricDevices = form.getFieldValue("biometricDevices") || [];
-    const newDevice = { companyId: companyId, serialNumber: null };
+    const newDevice = { serialNumber: null };
     form.setFieldsValue({ biometricDevices: [...biometricDevices, newDevice] });
   };
 
@@ -102,13 +94,13 @@ export const AddClockIn = ({ handleClose, open }: IDrawerProps) => {
           allowBiometrics: true,
         }}
       >
-        <div className={`${formWrapStyle} flex justify-between items-center`}>
+        {/* <div className={`${formWrapStyle} flex justify-between items-center`}>
           <h3 className="font-medium">Allow soft clock-in</h3>
           <Form.Item name="softClockIn" className="flex justify-end items-end">
             <Switch defaultChecked />
           </Form.Item>
-        </div>
-        <div className={`${formWrapStyle} flex justify-between items-center`}>
+        </div> */}
+        {/* <div className={`${formWrapStyle} flex justify-between items-center`}>
           <h3 className="font-medium">Allow Biometrics device clock-in</h3>
           <Form.Item
             name="allowBiometrics"
@@ -116,7 +108,7 @@ export const AddClockIn = ({ handleClose, open }: IDrawerProps) => {
           >
             <Switch defaultChecked />
           </Form.Item>
-        </div>
+        </div> */}
         <Form.List name="biometricDevices">
           {(fields) => (
             <>
@@ -143,7 +135,7 @@ export const AddClockIn = ({ handleClose, open }: IDrawerProps) => {
                       className="w-full"
                       rules={generalValidationRules}
                     >
-                      <InputNumber className="w-full" />
+                      <Input className="w-full" />
                     </Form.Item>
 
                     <i

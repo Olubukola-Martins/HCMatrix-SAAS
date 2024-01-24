@@ -2,23 +2,22 @@ import axios from "axios";
 import { useQuery } from "react-query";
 import { ITimeTrackingRule } from "../types/settings";
 import { MICROSERVICE_ENDPOINTS } from "config/enviroment";
-import { GetToken } from "hooks/GetToken";
+import { useApiAuth } from "hooks/useApiAuth";
+import { ICurrentCompany } from "types";
 
 export const QUERY_KEY_FOR_COMPANY_POLICY = "companyPolicy";
 
-const getData = async (): Promise<ITimeTrackingRule> => {
-  const {token, companyId} = GetToken()
-
+const getData = async (props: ICurrentCompany): Promise<ITimeTrackingRule> => {
   const url = `${MICROSERVICE_ENDPOINTS.TIME_AND_ATTENDANCE}/settings/time-tracking-policies`;
   const config = {
     headers: {
       Accept: "application/json",
-      Authorization: `Bearer ${token}`,
-      "x-company-id": companyId,
+      Authorization: `Bearer ${props.token}`,
+      "x-company-id": props.companyId,
     },
   };
   const res = await axios.get(url, config);
-  
+
   const item: ITimeTrackingRule = res.data;
   const data: ITimeTrackingRule = {
     ...item,
@@ -27,9 +26,10 @@ const getData = async (): Promise<ITimeTrackingRule> => {
   return data;
 };
 export const useGetTimeTrackingRule = () => {
+  const { companyId, token } = useApiAuth();
   const queryData = useQuery(
     [QUERY_KEY_FOR_COMPANY_POLICY],
-    () => getData(),
+    () => getData({ token, companyId }),
     {
       onError: (err: any) => {},
       onSuccess: (data) => {},

@@ -59,7 +59,7 @@ export const ClockIn = () => {
 
         <Table
           columns={columns}
-          dataSource={data}
+          dataSource={[]}
           loading={isLoading}
           className="mt-5"
         />
