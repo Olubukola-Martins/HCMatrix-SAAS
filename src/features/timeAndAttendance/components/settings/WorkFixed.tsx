@@ -17,7 +17,6 @@ export const WorkFixed: React.FC<{ data: any }> = () => {
   const { mutate, isLoading } = useCreateFixedSchedule();
   const { data, isSuccess } = useGetFixedSchedule();
 
-
   useEffect(() => {
     let initialFormValues;
 
@@ -43,10 +42,9 @@ export const WorkFixed: React.FC<{ data: any }> = () => {
 
     form.setFieldsValue({
       schedule: initialFormValues,
-      // allowTrackingBeforeStart:
+      // allowTrackingBeforeStart: data?.allowTrackingBeforeStart
+      allowTrackingBeforeStart: true
     });
-
-    console.log(initialFormValues);
   }, [form, isSuccess, data]);
 
   const onFinish = (values: any) => {
@@ -71,7 +69,7 @@ export const WorkFixed: React.FC<{ data: any }> = () => {
     mutate(
       {
         schedule: workDaysAndTime,
-        allowTrackingBeforeStart: false,
+        allowTrackingBeforeStart: values.allowTrackingBeforeStart,
       },
       {
         onError: (err: any) => {
@@ -152,30 +150,17 @@ export const WorkFixed: React.FC<{ data: any }> = () => {
             )}
           </Form.List>
 
-          {/* <Form.List name="workDaysAndTime">
-            {(fields) => (
-              <>
-                {fields.map((field, index) => (
-                  <div key={field.key} className="flex gap-5">
-                    <Form.Item {...field} name={[field.name, "day"]}>
-                      <Input placeholder="day" disabled className="w-32" />
-                    </Form.Item>
-                    <div className="flex-1 w-full">
-                      <Form.Item {...field} name={[field.name, "time"]} noStyle>
-                        <TimePicker.RangePicker className="flex-1 w-full" />
-                      </Form.Item>
-                    </div>
-                  </div>
-                ))}
-              </>
-            )}
-          </Form.List> */}
-
           <div className="flex justify-between md:flex-row flex-col items-start">
             <div className="flex items-start gap-2 md:gap-5">
               <h4 className="pt-1">Payroll hours</h4>
-              <Form.Item name="allowTrackingBeforeStart">
-                <Checkbox>
+              <Form.Item
+                name="allowTrackingBeforeStart"
+                valuePropName="checked"
+              >
+                <Checkbox
+                  // checked={true}
+                  onChange={(val) => console.log(val.target.checked)}
+                >
                   Include time tracked before scheduled start time
                 </Checkbox>
               </Form.Item>

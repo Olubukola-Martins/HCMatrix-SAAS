@@ -47,15 +47,7 @@ export interface IAllTimeOff extends ICurrentCompany {
   userId: number;
 }
 
-export interface IOtherSettings extends ICurrentCompany {
-  adminId: number;
-  longitude: string;
-  latitude: string;
-  isSoftClockInEnabled: boolean;
-  geoFenceRadiusInKm: number;
-  manualAttendanceWorkFlowId: number;
-  overtimeAttendanceWorkFlowId: number;
-}
+
 
 export interface workScheduleProps extends ICurrentCompany {
   adminId: number;
@@ -91,3 +83,14 @@ export interface biometricProps {
   name: string;
   serialNumber: string;
 }
+
+export interface IOtherSettings {
+  attendanceWorkFlowId: number;
+  overtimeConfirmationWorkflowId: number;
+  longitude: string;
+  latitude: string;
+  enforceGeoFencing: boolean;
+  enforceStrictDistance: boolean;
+  geoFencingRadius: number;
+}
+

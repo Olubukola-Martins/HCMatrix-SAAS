@@ -3,14 +3,12 @@ import { useQuery } from "react-query";
 import { IOtherSettings } from "../types/settings";
 import { MICROSERVICE_ENDPOINTS } from "config/enviroment";
 import { useApiAuth } from "hooks/useApiAuth";
+import { ICurrentCompany } from "types";
 
 export const QUERY_KEY_FOR_COMPANY_POLICY = "companyPolicy";
 
-const getData = async (props: {
-  token: string;
-  companyId: number;
-}): Promise<IOtherSettings> => {
-  const url = `${MICROSERVICE_ENDPOINTS.TIME_AND_ATTENDANCE}/company-policy/${props.companyId}`;
+const getData = async (props: ICurrentCompany): Promise<IOtherSettings> => {
+  const url = `${MICROSERVICE_ENDPOINTS.TIME_AND_ATTENDANCE}/settings/general`;
   const config = {
     headers: {
       Accept: "application/json",
@@ -19,7 +17,8 @@ const getData = async (props: {
     },
   };
   const res = await axios.get(url, config);
-  const item: IOtherSettings = res.data;
+
+  const item: IOtherSettings = res.data.data;
   const data: IOtherSettings = {
     ...item,
   };

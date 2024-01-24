@@ -2,26 +2,24 @@ import axios from "axios";
 import { useMutation } from "react-query";
 import { IOtherSettings } from "../types/settings";
 import { MICROSERVICE_ENDPOINTS } from "config/enviroment";
+import { ICurrentCompany } from "types";
+import { useApiAuth } from "hooks/useApiAuth";
 
-export const createOtherSettings = async (props: IOtherSettings) => {
-  const url = `${MICROSERVICE_ENDPOINTS.TIME_AND_ATTENDANCE}/company-policy`;
+export const createData = async (props: {
+  data: IOtherSettings;
+  auth: ICurrentCompany;
+}) => {
+  const url = `${MICROSERVICE_ENDPOINTS.TIME_AND_ATTENDANCE}/settings/general/others`;
   const config = {
     headers: {
       Accept: "application/json",
-      Authorization: `Bearer ${props.token}`,
-      "x-company-id": props.companyId,
+      Authorization: `Bearer ${props.auth.token}`,
+      "x-company-id": props.auth.companyId,
     },
   };
 
   const data: any = {
-    companyId: props.companyId,
-    adminId: props.adminId,
-    longitude: props.longitude,
-    latitude: props.latitude,
-    isSoftClockInEnabled: props.isSoftClockInEnabled,
-    geoFenceRadiusInKm: props.geoFenceRadiusInKm,
-    manualAttendanceWorkFlowId: props.manualAttendanceWorkFlowId,
-    overtimeAttendanceWorkFlowId: props.overtimeAttendanceWorkFlowId,
+    ...props.data,
   };
 
   const response = await axios.post(url, data, config);
@@ -29,5 +27,8 @@ export const createOtherSettings = async (props: IOtherSettings) => {
 };
 
 export const useCreateOtherSettings = () => {
-  return useMutation(createOtherSettings);
+  const { token, companyId } = useApiAuth();
+  return useMutation((props: IOtherSettings) =>
+    createData({ data: props, auth: { companyId, token } })
+  );
 };

@@ -18,9 +18,10 @@ const getData = async (props: ICurrentCompany): Promise<workScheduleFixedProps[]
     },
   };
   const res = await axios.get(url, config);
-
-
   
+console.log(res);
+
+
   const data: workScheduleFixedProps[] = res.data.data.map(
     (item: workScheduleFixedProps) => ({
       ...item,
