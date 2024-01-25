@@ -9,38 +9,40 @@ import { useGetBiometricDevice } from "features/timeAndAttendance/hooks/useGetBi
 import { biometricProps } from "features/timeAndAttendance/types/settings";
 
 
-const columns: ColumnsType<biometricProps> = [
-  {
-    title: "Biometrics Device",
-    dataIndex: "name",
-  },
-  {
-    title: "Serial Number",
-    dataIndex: "serialNumber",
-  },
-  {
-    title: "Action",
-    render: (_, val) => (
-      <div>
-        <Dropdown
-          trigger={["click"]}
-          overlay={
-            <Menu>
-              <Menu.Item key="1">Edit</Menu.Item>
-              <Menu.Item key="2">Delete</Menu.Item>
-            </Menu>
-          }
-        >
-          <i className="ri-more-2-fill text-lg cursor-pointer"></i>
-        </Dropdown>
-      </div>
-    ),
-  },
-];
-
 export const ClockIn = () => {
   const [addClockIn, setAddClockIn] = useState(false);
   const { data, isLoading } = useGetBiometricDevice();
+
+  const columns: ColumnsType<biometricProps> = [
+    {
+      title: "Biometrics Device",
+      dataIndex: "name",
+    },
+    {
+      title: "Serial Number",
+      dataIndex: "serialNumber",
+    },
+    {
+      title: "Action",
+      render: (_, val) => (
+        <div>
+          <Dropdown
+            trigger={["click"]}
+            overlay={
+              <Menu>
+                <Menu.Item key="1">Edit</Menu.Item>
+                <Menu.Item key="2">Delete</Menu.Item>
+              </Menu>
+            }
+          >
+            <i className="ri-more-2-fill text-lg cursor-pointer"></i>
+          </Dropdown>
+        </div>
+      ),
+    },
+  ];
+
+
 
   return (
     <>

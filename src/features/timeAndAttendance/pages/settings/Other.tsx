@@ -9,7 +9,10 @@ import { QUERY_KEY_FOR_COMPANY_POLICY } from "features/timeAndAttendance/hooks/u
 import { useContext, useEffect } from "react";
 import { useQueryClient } from "react-query";
 import { EGlobalOps, GlobalContext } from "stateManagers/GlobalContextProvider";
-import { generalValidationRules, textInputValidationRules } from "utils/formHelpers/validation";
+import {
+  generalValidationRules,
+  textInputValidationRules,
+} from "utils/formHelpers/validation";
 import { openNotification } from "utils/notifications";
 const formWrapStyle =
   "bg-card px-4 pt-4 rounded grid grid-cols-1 md:grid-cols-2 gap-x-10 mb-5 shadow-sm";
@@ -21,8 +24,7 @@ export const Other = () => {
   const { mutate, isLoading: isLoadingPost } = useCreateOtherSettings();
   const queryClient = useQueryClient();
 
-  console.log(data);
-  
+  // console.log(data);
 
   useEffect(() => {
     if (isSuccess && data) {
@@ -33,6 +35,8 @@ export const Other = () => {
   }, [data, isSuccess, form]);
 
   const onSubmit = (values: any) => {
+    console.log("values", values);
+
     mutate(
       {
         ...values,
@@ -79,7 +83,7 @@ export const Other = () => {
               onFinish={onSubmit}
               initialValues={{ isSoftClockInEnabled: true }}
               form={form}
-              disabled={isLoading}
+              // disabled={isLoading}
             >
               <div className={formWrapStyle}>
                 <FormWorkflowInput
@@ -98,10 +102,18 @@ export const Other = () => {
                 />
               </div>
               <div className={formWrapStyle}>
-                <Form.Item name="longitude" label="Company longitude" rules={textInputValidationRules}>
+                <Form.Item
+                  name="longitude"
+                  label="Company longitude"
+                  rules={textInputValidationRules}
+                >
                   <Input placeholder="00.00" className="w-full" />
                 </Form.Item>
-                <Form.Item name="latitude" label="Company latitude" rules={textInputValidationRules}>
+                <Form.Item
+                  name="latitude"
+                  label="Company latitude"
+                  rules={textInputValidationRules}
+                >
                   <Input placeholder="0.0" className="w-full" />
                 </Form.Item>
               </div>
@@ -114,6 +126,7 @@ export const Other = () => {
                     name="enforceGeoFencing"
                     className="flex justify-end items-end"
                     valuePropName="checked"
+                    initialValue={false}
                   >
                     <Switch />
                   </Form.Item>
@@ -126,6 +139,7 @@ export const Other = () => {
                     name="enforceStrictDistance"
                     className="flex justify-end items-end"
                     valuePropName="checked"
+                    initialValue={false}
                   >
                     <Switch />
                   </Form.Item>
