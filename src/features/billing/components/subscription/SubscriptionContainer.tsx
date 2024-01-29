@@ -51,10 +51,10 @@ const SubscriptionContainer: React.FC<{
 
       form.setFieldsValue({
         priceType: subscription?.priceType,
-        purchased: subscription.purchased.map((item) => item.subscriptionId),
-        billingCycle: subscription.billingCycle,
-        licensedEmployeeCount: subscription.licensedEmployeeCount,
-        unlicensedEmployeeCount: subscription.unlicensedEmployeeCount,
+        purchased: subscription?.purchased?.map((item) => item.subscriptionId),
+        billingCycle: subscription?.billingCycle,
+        licensedEmployeeCount: subscription?.licensedEmployeeCount,
+        unlicensedEmployeeCount: subscription?.unlicensedEmployeeCount,
         address: address
           ? {
               countryId: address.countryId,
@@ -72,12 +72,14 @@ const SubscriptionContainer: React.FC<{
       dispatch({
         type: ECreateCompanySubscriptionOps.update,
         payload: {
-          licensedEmployeeCount: subscription.licensedEmployeeCount,
-          unlicensedEmployeeCount: subscription.unlicensedEmployeeCount,
-          autoRenew: subscription.autoRenew,
-          purchased: subscription.purchased.map((item) => item.subscriptionId),
-          priceType: subscription.priceType,
-          billingCycle: subscription.billingCycle,
+          licensedEmployeeCount: subscription?.licensedEmployeeCount,
+          unlicensedEmployeeCount: subscription?.unlicensedEmployeeCount,
+          autoRenew: subscription?.autoRenew,
+          purchased: subscription?.purchased?.map(
+            (item) => item.subscriptionId
+          ),
+          priceType: subscription?.priceType,
+          billingCycle: subscription?.billingCycle,
         },
       });
     } else {

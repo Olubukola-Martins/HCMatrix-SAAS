@@ -9,7 +9,7 @@ export const QUERY_KEY_FOR_ACTIVE_COMPANY_SUBSCRITION =
   "active-company-subscription";
 const getData = async (props: {
   auth: ICurrentCompany;
-}): Promise<TCompanySubscription> => {
+}): Promise<TCompanySubscription | undefined> => {
   const url = `${MICROSERVICE_ENDPOINTS.UTILITY}/subscription/company`;
 
   const config = {
@@ -21,11 +21,8 @@ const getData = async (props: {
   };
 
   const res = await axios.get(url, config);
-  const item: TCompanySubscription = res.data.data;
-
-  const data: TCompanySubscription = {
-    ...item,
-  };
+  const item: TCompanySubscription | null = res.data.data;
+  const data = item === null ? undefined : item;
 
   return data;
 };

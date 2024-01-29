@@ -22,11 +22,11 @@ const BillingSubscriptionBalance = () => {
         open={action === "cancel-subscription"}
         handleClose={() => setAction(undefined)}
       />
-      <BillingInvoice
+      {data ? <BillingInvoice
         open={action === "download-invoice"}
         handleClose={() => setAction(undefined)}
         subscription={data}
-      />
+      /> : null}
       <div
         className={`${boxStyle} text-sm bg-card flex flex-col gap-4 items-stretch`}
       >

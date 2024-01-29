@@ -32,7 +32,6 @@ export class ErrorBoundary extends Component<
       return (
         <div className="flex items-center flex-col gap-2">
           <div>
-            {/* TODO: ENsure images are optimized properly! */}
             <img
               src={ErrorImage}
               alt="error"

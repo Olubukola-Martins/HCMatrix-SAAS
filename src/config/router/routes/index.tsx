@@ -13,10 +13,10 @@ import { settingRoutes } from "./settings";
 import { systemAdminRoutes } from "./systemAdmins";
 
 export const appPagesData = (props: TAppPageDataFnProps): TRouteData[] => {
-  const { userPermissions, licenseType } = props;
+  const { userPermissions, licenseType, isOwner } = props;
   return [
     ...authRoutesDontRequireAuthentication,
-    ...billingRoutes,
+    ...billingRoutes({ userPermissions, licenseType, isOwner: !!isOwner }),
     ...homeRoutes,
     ...notFoundRoutes,
     ...notificationRoutes,
