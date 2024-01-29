@@ -13,6 +13,7 @@ const Router = () => {
   const pageRoutes = appPagesData({
     userPermissions,
     licenseType,
+    isOwner,
   }).map(({ path, element, category }: TRouteData) => {
     if (category === "doesnt-require-authentication") {
       return <Route key={path} path={`${path}`} element={element} />;
