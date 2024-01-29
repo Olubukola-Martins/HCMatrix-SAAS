@@ -5,11 +5,16 @@ import { getPricePerEmployee } from "../utils";
 import { useGetAllExtraStorages } from "./addOns/extraStorage/useGetAllExtraStorages";
 import { useGetAllSupportCases } from "./addOns/supportCase/useGetAllSupportCases";
 import { useGetAllTrainingSessions } from "./addOns/trainingSession/useGetAllTrainingSessions";
+import { useGetCompanySubsriptionDiscount } from "./discount/useGetCompanySubsriptionDiscount";
+import { useGetBillingVat } from "./vat/useGetBillingVat";
 
 export const useGetCreateCompanySubscriptionSummary = (props: {
   subscriptions?: TSubscription[];
 }) => {
   const { subscriptions } = props;
+  const { data: discountData, isLoading: isFetchingDiscount } =
+    useGetCompanySubsriptionDiscount();
+  const { data: vatData, isLoading: isFetchingVat } = useGetBillingVat();
 
   const {
     state: {
@@ -81,8 +86,8 @@ export const useGetCreateCompanySubscriptionSummary = (props: {
     useGetAllSupportCases();
   const { data: trainingSessions, isFetching: isFetchingTrainingSessions } =
     useGetAllTrainingSessions();
-  const vat = 0;
-  const discount = 0;
+  const vatPercentage = +(vatData?.value ?? 0);
+  const discountPercentage = +(discountData?.value ?? 0);
   const supportCase = supportCases?.data?.find(
     (item) => item.id === addOns?.supportCaseId
   );
@@ -107,11 +112,20 @@ export const useGetCreateCompanySubscriptionSummary = (props: {
       ? trainingSession?.priceInNgn
       : trainingSession?.priceInUsd) as unknown as number) ?? 0
   );
+  const initialTotalCost =
+    totalEmployeeCost + trainingSessionPrice + supportCasePrice + storagePrice;
+  const vat = vatPercentage ? initialTotalCost * (vatPercentage / 100) : 0;
+  const discount = discountPercentage
+    ? initialTotalCost * (discountPercentage / 100)
+    : 0;
+  const totalCost = initialTotalCost + vat - discount;
   return {
     isLoading:
       isFetchingStorages ||
       isFetchingSupportCases ||
-      isFetchingTrainingSessions,
+      isFetchingTrainingSessions ||
+      isFetchingDiscount ||
+      isFetchingVat,
     selectedModules,
     pricePerLicensedEmployee,
     pricePerUnLicensedEmployee,
@@ -122,15 +136,13 @@ export const useGetCreateCompanySubscriptionSummary = (props: {
     unlicensedEmployeeCount,
     vat,
     discount,
-    totalCost:
-      totalEmployeeCost +
-      trainingSessionPrice +
-      supportCasePrice +
-      storagePrice +
-      vat -
-      discount,
+    totalCost,
     trainingSessionPrice,
     storagePrice,
     supportCasePrice,
+    vatPercentage,
+    discountPercentage,
   };
 };
+
+// TODO: Update the discount to account for when its an amount and not a percentage, also add type, refer to backend for this
