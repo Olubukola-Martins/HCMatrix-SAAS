@@ -55,7 +55,8 @@ const TopBar = ({
     currentCompany,
     currentCompanyEmployeeDetails,
   } = useMostRecentApiAuth();
-  const { userPermissions } = useGetUserPermissions();
+  const { userPermissions, companyActiveSubscription } =
+    useGetUserPermissions();
 
   const [action, setAction] = useState<TAction>();
   const [options, setOptions] = useState<TCompanyOption[]>([]);
@@ -217,6 +218,7 @@ const TopBar = ({
               onOpenChange={(val) => setAction(val ? "user-menu" : undefined)}
               open={action === "user-menu"}
               userPermissions={userPermissions}
+              activeSubscription={companyActiveSubscription}
             />
           </div>
         </div>

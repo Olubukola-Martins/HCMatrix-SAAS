@@ -5,7 +5,7 @@ import TransferOwnership from "components/transferOwnership/TransferOwnership";
 import { Setup2FA } from "components/twoFactorAuth/SetUp2FA";
 import { appRoutes } from "config/router/paths";
 import { DEFAULT_PROFILE_IMAGE_URL } from "constants/general";
-import { useGetCompanyParamSetting } from "features/core/company/hooks/useGetCompanyParamSetting";
+import { TCompanySubscription } from "features/billing/types/company/companySubscription";
 import { getEmployeeFullName } from "features/core/employees/utils/getEmployeeFullName";
 import { TPermissionLabel } from "features/core/roles-and-permissions/types";
 import { useApiAuth } from "hooks/useApiAuth";
@@ -15,6 +15,7 @@ import { Link, useNavigate } from "react-router-dom";
 
 const UserProfileMenu: React.FC<{
   userPermissions: TPermissionLabel[];
+  activeSubscription?: TCompanySubscription;
   colorFns: {
     green: Function;
     yellow: Function;
@@ -23,7 +24,7 @@ const UserProfileMenu: React.FC<{
     purple: Function;
   };
   closeMenu: () => void;
-}> = ({ colorFns, closeMenu, userPermissions }) => {
+}> = ({ colorFns, closeMenu, userPermissions, activeSubscription }) => {
   const { currentCompanyEmployeeDetails: employee } = useApiAuth();
   const signOut = useSignOut();
   const navigate = useNavigate();
@@ -42,7 +43,7 @@ const UserProfileMenu: React.FC<{
           {employee?.email}
         </span>
         <Link
-          to="/settings/profile"
+          to={appRoutes.userProfileSettings}
           className="font-semibold border border-red-500 rounded bg-red-500 text-white transition ease-in-out duration-300 text-sm py-2 px-3 tracking-wider hover:opacity-70"
         >
           My Profile
@@ -53,6 +54,7 @@ const UserProfileMenu: React.FC<{
         userPermissions={userPermissions}
         closeMenu={closeMenu}
         isOwner={!!employee?.isOwner}
+        activeSubscription={activeSubscription}
       />
       <ThemeChanger colorFns={colorFns} />
       <div
@@ -70,10 +72,10 @@ const UserActions: React.FC<{
   isOwner: boolean;
   userPermissions: TPermissionLabel[];
   closeMenu: () => void;
-}> = ({ userPermissions, closeMenu, isOwner }) => {
+  activeSubscription?: TCompanySubscription;
+}> = ({ userPermissions, closeMenu, isOwner, activeSubscription }) => {
   type TAction = "transfer-ownership" | "setup-2fa";
   const [action, setAction] = useState<TAction>();
-  const { data: companyParams } = useGetCompanyParamSetting();
   const clearAction = () => {
     setAction(undefined);
   };
@@ -91,56 +93,107 @@ const UserActions: React.FC<{
       hidden: !canUserAccessComponent({
         userPermissions,
         requiredPermissions: ["transfer-company-ownership"],
+        activeSubscription,
+        requiredSubscriptionState: {
+          label: "employee-management",
+          resources: [],
+        },
       }),
       isLink: false,
     },
     {
       url: appRoutes.delegationSettings,
       text: "Delegations",
-      hidden: !(
-        canUserAccessComponent({
-          userPermissions,
-          requiredPermissions: ["create-delegations", "view-all-delegations"],
-        }) && isOwner
-      ),
+      hidden: !canUserAccessComponent({
+        userPermissions,
+        requiredPermissions: ["create-delegations", "view-all-delegations"],
+        activeSubscription,
+        requiredSubscriptionState: {
+          label: "employee-management",
+          resources: [],
+        },
+      }),
       isLink: true,
     },
-    {
-      text: "Advanced Settings",
-      hidden: true,
-      isLink: false,
-    },
+
     {
       text: "Enable 2FA",
       onClick: () => setAction("setup-2fa"),
-      hidden: false,
+      hidden: !canUserAccessComponent({
+        userPermissions,
+        requiredPermissions: [],
+        activeSubscription,
+        requiredSubscriptionState: {
+          label: "employee-management",
+          resources: [],
+        },
+      }),
       isLink: false,
     },
 
     {
       url: appRoutes.billingSubscription,
       text: "Subscriptions",
-      hidden: isOwner === false,
+      hidden:
+        isOwner === false &&
+        !canUserAccessComponent({
+          userPermissions,
+          requiredPermissions: [],
+          activeSubscription,
+          requiredSubscriptionState: {
+            label: "employee-management",
+            resources: [],
+          },
+        }),
       isLink: true,
     },
     {
       url: appRoutes.billingSummary,
       text: "Billing",
-      hidden: isOwner === false,
+      hidden:
+        isOwner === false &&
+        !canUserAccessComponent({
+          userPermissions,
+          requiredPermissions: [],
+          activeSubscription,
+          requiredSubscriptionState: {
+            label: "employee-management",
+            resources: [],
+          },
+        }),
 
       isLink: true,
     },
     {
       url: appRoutes.billingStorageManagement,
       text: "Storage",
-      hidden: isOwner === false,
-
+      hidden:
+        isOwner === false &&
+        !canUserAccessComponent({
+          userPermissions,
+          requiredPermissions: [],
+          activeSubscription,
+          requiredSubscriptionState: {
+            label: "employee-management",
+            resources: [],
+          },
+        }),
       isLink: true,
     },
     {
       url: appRoutes.billingTrainingSession,
       text: "Training Session",
-      hidden: isOwner === false,
+      hidden:
+        isOwner === false &&
+        !canUserAccessComponent({
+          userPermissions,
+          requiredPermissions: [],
+          activeSubscription,
+          requiredSubscriptionState: {
+            label: "employee-management",
+            resources: [],
+          },
+        }),
 
       isLink: true,
     },
@@ -244,9 +297,18 @@ const UserProfileMenuDropdown: React.FC<{
   };
   onOpenChange: (val: boolean) => void;
   userPermissions: TPermissionLabel[];
+  activeSubscription?: TCompanySubscription;
+
   open: boolean;
   avatarUrl?: string;
-}> = ({ colorFns, open, onOpenChange, avatarUrl, userPermissions }) => {
+}> = ({
+  colorFns,
+  open,
+  onOpenChange,
+  avatarUrl,
+  userPermissions,
+  activeSubscription,
+}) => {
   return (
     <Dropdown
       overlay={
@@ -255,6 +317,7 @@ const UserProfileMenuDropdown: React.FC<{
             colorFns={colorFns}
             closeMenu={() => onOpenChange(false)}
             userPermissions={userPermissions}
+            activeSubscription={activeSubscription}
           />
         </Themes>
       }
