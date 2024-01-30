@@ -6,7 +6,7 @@ const InformEmployeeOfInActiveSubscription = () => {
     <div className="Container space-y-8 lg:space-y-16">
       <PageIntro title="Inactive Subscription" />
       <ErrorComponent
-        message="Inctive Subscription"
+        message="Inactive Subscription"
         supportText="Please contact administrator to renew subscription!"
         showImage
       />
