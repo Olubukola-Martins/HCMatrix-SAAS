@@ -14,9 +14,10 @@ type TSideBarRoute = {
 type TData = {
   sidebarRoutes: TSideBarRoute[];
 };
-
+// TODO: Fill requiredSubsciptionState resources when fleshed out and updated by team
 export const useGenerateDBSidebarLinks = (): TData => {
-  const { userPermissions, licenseType, isOwner } = useGetUserPermissions();
+  const { userPermissions, licenseType, isOwner, companyActiveSubscription } =
+    useGetUserPermissions();
   const isUserLicensed = licenseType === "licensed";
   const sidebarRoutes: TSideBarRoute[] = [
     {
@@ -39,6 +40,11 @@ export const useGenerateDBSidebarLinks = (): TData => {
       hidden: !canUserAccessComponent({
         userPermissions,
         requiredPermissions: ["view-payroll-dashboard"],
+        activeSubscription: companyActiveSubscription,
+        requiredSubscriptionState: {
+          label: "payroll",
+          resources: ["payroll-analytics", "payroll-disbursement"],
+        },
       }),
       matcherKeys: ["payroll"],
     },
@@ -46,28 +52,60 @@ export const useGenerateDBSidebarLinks = (): TData => {
       name: "Recruitment",
       path: "/recruitment",
       icon: <i className="ri-line-chart-line" />,
-      hidden: false,
+      hidden: !canUserAccessComponent({
+        userPermissions,
+        requiredPermissions: [],
+        activeSubscription: companyActiveSubscription,
+        requiredSubscriptionState: {
+          label: "recruitment",
+          resources: [],
+        },
+      }),
       matcherKeys: ["recruitment"],
     },
     {
       name: "Performance",
       path: `${appRoutes.balanceScorecard}`,
       icon: <i className="ri-check-double-line" />,
-      hidden: false,
+      hidden: !canUserAccessComponent({
+        userPermissions,
+        requiredPermissions: [],
+        activeSubscription: companyActiveSubscription,
+        requiredSubscriptionState: {
+          label: "performance",
+          resources: [],
+        },
+      }),
       matcherKeys: ["performance"],
     },
     {
       name: "Time & Attendance",
       path: `${appRoutes.attendanceHome}`,
       icon: <i className="ri-check-double-line" />,
-      hidden: false,
+      hidden: !canUserAccessComponent({
+        userPermissions,
+        requiredPermissions: [],
+        activeSubscription: companyActiveSubscription,
+        requiredSubscriptionState: {
+          label: "time-and-attendance",
+          resources: [],
+        },
+      }),
       matcherKeys: ["attendance"],
     },
     {
       name: "Learning & Development",
       path: `${appRoutes.leaningHome}`,
       icon: <i className="ri-check-double-line" />,
-      hidden: false,
+      hidden: !canUserAccessComponent({
+        userPermissions,
+        requiredPermissions: [],
+        activeSubscription: companyActiveSubscription,
+        requiredSubscriptionState: {
+          label: "learning-and-development",
+          resources: [],
+        },
+      }),
       matcherKeys: [],
     },
     {

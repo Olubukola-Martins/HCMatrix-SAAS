@@ -3,12 +3,13 @@ import { MICROSERVICE_ENDPOINTS } from "config/enviroment";
 import { useQuery } from "react-query";
 import { ICurrentCompany } from "types";
 import { useApiAuth } from "hooks/useApiAuth";
-import { TSubscription } from "../types/subscription";
+import { TSubscription, TSubscriptionType } from "../types/subscription";
+import { TSubscriptionPriceType } from "../types/priceType";
 
 export const QUERY_KEY_FOR_SUBSCRIPTIONS = "subscriptions";
 interface IGetDataProps {
-  type: "module" | "plan";
-  priceType?: "ngn" | "usd";
+  type: TSubscriptionType;
+  priceType?: TSubscriptionPriceType;
 }
 const getData = async (props: {
   data: IGetDataProps;

@@ -9,11 +9,13 @@ import { useGetUserPermissions } from "components/permission-restriction/Permiss
 import ActiveSubscriptionMiddleware from "components/middlewares/ActiveSubscriptionMiddleware";
 
 const Router = () => {
-  const { userPermissions, licenseType, isOwner } = useGetUserPermissions();
+  const { userPermissions, licenseType, isOwner, companyActiveSubscription } =
+    useGetUserPermissions();
   const pageRoutes = appPagesData({
     userPermissions,
     licenseType,
     isOwner,
+    activeSubscription: companyActiveSubscription,
   }).map(({ path, element, category }: TRouteData) => {
     if (category === "doesnt-require-authentication") {
       return <Route key={path} path={`${path}`} element={element} />;

@@ -40,7 +40,7 @@ import { canUserAccessComponent } from "components/permission-restriction/Permis
 
 // NOTE: The subscription pattern will !doesSubscriptionContains({companySubscriptionRespources, requiredResources: ["payroll"]}) && !canUserAccessComponent({userPermissions, requiredPermissions: ["manage-payroll"]})
 export const payrollRoutes = (props: TAppPageDataFnProps): TRouteData[] => {
-  const { userPermissions } = props;
+  const { userPermissions, activeSubscription } = props;
   return [
     {
       element: <SingleCostCentrePage />,
@@ -49,6 +49,11 @@ export const payrollRoutes = (props: TAppPageDataFnProps): TRouteData[] => {
       hidden: !canUserAccessComponent({
         userPermissions,
         requiredPermissions: ["manage-cost-centres"],
+        activeSubscription,
+        requiredSubscriptionState: {
+          label: "payroll",
+          resources: ["payroll-analytics", "payroll-disbursement"],
+        },
       }),
       isPrimaryFeature: false,
     },
@@ -61,6 +66,11 @@ export const payrollRoutes = (props: TAppPageDataFnProps): TRouteData[] => {
       hidden: !canUserAccessComponent({
         userPermissions,
         requiredPermissions: ["manage-cost-centres"],
+        activeSubscription,
+        requiredSubscriptionState: {
+          label: "payroll",
+          resources: ["payroll-analytics", "payroll-disbursement"],
+        },
       }),
     },
 
@@ -73,6 +83,11 @@ export const payrollRoutes = (props: TAppPageDataFnProps): TRouteData[] => {
       hidden: !canUserAccessComponent({
         userPermissions,
         requiredPermissions: ["manage-exchange-rates"],
+        activeSubscription,
+        requiredSubscriptionState: {
+          label: "payroll",
+          resources: ["payroll-analytics", "payroll-disbursement"],
+        },
       }),
     },
 
@@ -85,6 +100,11 @@ export const payrollRoutes = (props: TAppPageDataFnProps): TRouteData[] => {
       hidden: !canUserAccessComponent({
         userPermissions,
         requiredPermissions: ["manage-payroll-schemes"],
+        activeSubscription,
+        requiredSubscriptionState: {
+          label: "payroll",
+          resources: ["payroll-analytics", "payroll-disbursement"],
+        },
       }),
     },
     {
@@ -96,6 +116,11 @@ export const payrollRoutes = (props: TAppPageDataFnProps): TRouteData[] => {
       hidden: !canUserAccessComponent({
         userPermissions,
         requiredPermissions: ["manage-payroll-schemes"],
+        activeSubscription,
+        requiredSubscriptionState: {
+          label: "payroll",
+          resources: ["payroll-analytics", "payroll-disbursement"],
+        },
       }),
     },
     {
@@ -107,6 +132,11 @@ export const payrollRoutes = (props: TAppPageDataFnProps): TRouteData[] => {
       hidden: !canUserAccessComponent({
         userPermissions,
         requiredPermissions: ["manage-payroll-schemes"],
+        activeSubscription,
+        requiredSubscriptionState: {
+          label: "payroll",
+          resources: ["payroll-analytics", "payroll-disbursement"],
+        },
       }),
     },
     {
@@ -118,6 +148,11 @@ export const payrollRoutes = (props: TAppPageDataFnProps): TRouteData[] => {
       hidden: !canUserAccessComponent({
         userPermissions,
         requiredPermissions: ["manage-payroll-schemes"],
+        activeSubscription,
+        requiredSubscriptionState: {
+          label: "payroll",
+          resources: ["payroll-analytics", "payroll-disbursement"],
+        },
       }),
     },
     {
@@ -130,6 +165,11 @@ export const payrollRoutes = (props: TAppPageDataFnProps): TRouteData[] => {
       hidden: !canUserAccessComponent({
         userPermissions,
         requiredPermissions: ["manage-payroll-schemes"],
+        activeSubscription,
+        requiredSubscriptionState: {
+          label: "payroll",
+          resources: ["payroll-analytics", "payroll-disbursement"],
+        },
       }),
     },
     {
@@ -141,6 +181,11 @@ export const payrollRoutes = (props: TAppPageDataFnProps): TRouteData[] => {
       hidden: !canUserAccessComponent({
         userPermissions,
         requiredPermissions: ["manage-payroll-schemes"],
+        activeSubscription,
+        requiredSubscriptionState: {
+          label: "payroll",
+          resources: ["payroll-analytics", "payroll-disbursement"],
+        },
       }),
     },
     {
@@ -152,6 +197,11 @@ export const payrollRoutes = (props: TAppPageDataFnProps): TRouteData[] => {
       hidden: !canUserAccessComponent({
         userPermissions,
         requiredPermissions: ["manage-payroll-schemes"],
+        activeSubscription,
+        requiredSubscriptionState: {
+          label: "payroll",
+          resources: ["payroll-analytics", "payroll-disbursement"],
+        },
       }),
     },
     {
@@ -163,6 +213,11 @@ export const payrollRoutes = (props: TAppPageDataFnProps): TRouteData[] => {
       hidden: !canUserAccessComponent({
         userPermissions,
         requiredPermissions: ["manage-payroll-schemes"],
+        activeSubscription,
+        requiredSubscriptionState: {
+          label: "payroll",
+          resources: ["payroll-analytics", "payroll-disbursement"],
+        },
       }),
     },
     {
@@ -175,6 +230,11 @@ export const payrollRoutes = (props: TAppPageDataFnProps): TRouteData[] => {
       hidden: !canUserAccessComponent({
         userPermissions,
         requiredPermissions: ["manage-payroll-schemes"],
+        activeSubscription,
+        requiredSubscriptionState: {
+          label: "payroll",
+          resources: ["payroll-analytics", "payroll-disbursement"],
+        },
       }),
     },
     {
@@ -186,6 +246,11 @@ export const payrollRoutes = (props: TAppPageDataFnProps): TRouteData[] => {
       hidden: !canUserAccessComponent({
         userPermissions,
         requiredPermissions: ["manage-payroll-schemes"],
+        activeSubscription,
+        requiredSubscriptionState: {
+          label: "payroll",
+          resources: ["payroll-analytics", "payroll-disbursement"],
+        },
       }),
     },
     {
@@ -198,6 +263,11 @@ export const payrollRoutes = (props: TAppPageDataFnProps): TRouteData[] => {
       hidden: !canUserAccessComponent({
         userPermissions,
         requiredPermissions: ["manage-payroll-schemes"],
+        activeSubscription,
+        requiredSubscriptionState: {
+          label: "payroll",
+          resources: ["payroll-analytics", "payroll-disbursement"],
+        },
       }),
     },
     {
@@ -209,6 +279,11 @@ export const payrollRoutes = (props: TAppPageDataFnProps): TRouteData[] => {
       hidden: !canUserAccessComponent({
         userPermissions,
         requiredPermissions: ["view-all-payrolls"],
+        activeSubscription,
+        requiredSubscriptionState: {
+          label: "payroll",
+          resources: ["payroll-analytics", "payroll-disbursement"],
+        },
       }),
     },
     {
@@ -220,6 +295,11 @@ export const payrollRoutes = (props: TAppPageDataFnProps): TRouteData[] => {
       hidden: !canUserAccessComponent({
         userPermissions,
         requiredPermissions: ["manage-payroll-settings"],
+        activeSubscription,
+        requiredSubscriptionState: {
+          label: "payroll",
+          resources: ["payroll-analytics", "payroll-disbursement"],
+        },
       }),
     },
 
@@ -232,6 +312,11 @@ export const payrollRoutes = (props: TAppPageDataFnProps): TRouteData[] => {
       hidden: !canUserAccessComponent({
         userPermissions,
         requiredPermissions: ["manage-pay-grades-and-categories"],
+        activeSubscription,
+        requiredSubscriptionState: {
+          label: "payroll",
+          resources: ["payroll-analytics", "payroll-disbursement"],
+        },
       }),
     },
     {
@@ -243,6 +328,11 @@ export const payrollRoutes = (props: TAppPageDataFnProps): TRouteData[] => {
       hidden: !canUserAccessComponent({
         userPermissions,
         requiredPermissions: ["manage-tax-authorities"],
+        activeSubscription,
+        requiredSubscriptionState: {
+          label: "payroll",
+          resources: ["payroll-analytics", "payroll-disbursement"],
+        },
       }),
     },
     {
@@ -254,6 +344,11 @@ export const payrollRoutes = (props: TAppPageDataFnProps): TRouteData[] => {
       hidden: !canUserAccessComponent({
         userPermissions,
         requiredPermissions: ["manage-itf-authorities"],
+        activeSubscription,
+        requiredSubscriptionState: {
+          label: "payroll",
+          resources: ["payroll-analytics", "payroll-disbursement"],
+        },
       }),
     },
     {
@@ -265,6 +360,11 @@ export const payrollRoutes = (props: TAppPageDataFnProps): TRouteData[] => {
       hidden: !canUserAccessComponent({
         userPermissions,
         requiredPermissions: ["manage-nsitf-authorities"],
+        activeSubscription,
+        requiredSubscriptionState: {
+          label: "payroll",
+          resources: ["payroll-analytics", "payroll-disbursement"],
+        },
       }),
     },
     {
@@ -276,6 +376,11 @@ export const payrollRoutes = (props: TAppPageDataFnProps): TRouteData[] => {
       hidden: !canUserAccessComponent({
         userPermissions,
         requiredPermissions: ["manage-pension-authorities"],
+        activeSubscription,
+        requiredSubscriptionState: {
+          label: "payroll",
+          resources: ["payroll-analytics", "payroll-disbursement"],
+        },
       }),
     },
 
@@ -287,6 +392,11 @@ export const payrollRoutes = (props: TAppPageDataFnProps): TRouteData[] => {
       hidden: !canUserAccessComponent({
         userPermissions,
         requiredPermissions: ["view-payroll-dashboard"],
+        activeSubscription,
+        requiredSubscriptionState: {
+          label: "payroll",
+          resources: ["payroll-analytics", "payroll-disbursement"],
+        },
       }),
     },
 
@@ -298,6 +408,11 @@ export const payrollRoutes = (props: TAppPageDataFnProps): TRouteData[] => {
       hidden: !canUserAccessComponent({
         userPermissions,
         requiredPermissions: ["view-payroll-dashboard"],
+        activeSubscription,
+        requiredSubscriptionState: {
+          label: "payroll",
+          resources: ["payroll-analytics", "payroll-disbursement"],
+        },
       }),
     },
 
@@ -309,10 +424,17 @@ export const payrollRoutes = (props: TAppPageDataFnProps): TRouteData[] => {
       hidden: !canUserAccessComponent({
         userPermissions,
         requiredPermissions: ["compare-payrolls"],
+        activeSubscription,
+        requiredSubscriptionState: {
+          label: "payroll",
+          resources: ["payroll-analytics", "payroll-disbursement"],
+        },
       }),
     },
     {
-      element: <CreatePayroll scheme={"office"} title="Create Step Pay Payroll"/>,
+      element: (
+        <CreatePayroll scheme={"office"} title="Create Step Pay Payroll" />
+      ),
 
       path: appRoutes.createOfficePayroll,
       isSearchable: true,
@@ -331,6 +453,11 @@ export const payrollRoutes = (props: TAppPageDataFnProps): TRouteData[] => {
       hidden: !canUserAccessComponent({
         userPermissions,
         requiredPermissions: ["create-payroll"],
+        activeSubscription,
+        requiredSubscriptionState: {
+          label: "payroll",
+          resources: ["payroll-analytics", "payroll-disbursement"],
+        },
       }),
     },
     {
@@ -342,6 +469,11 @@ export const payrollRoutes = (props: TAppPageDataFnProps): TRouteData[] => {
       hidden: !canUserAccessComponent({
         userPermissions,
         requiredPermissions: ["create-payroll"],
+        activeSubscription,
+        requiredSubscriptionState: {
+          label: "payroll",
+          resources: ["payroll-analytics", "payroll-disbursement"],
+        },
       }),
     },
     {
@@ -352,6 +484,11 @@ export const payrollRoutes = (props: TAppPageDataFnProps): TRouteData[] => {
       hidden: !canUserAccessComponent({
         userPermissions,
         requiredPermissions: ["create-payroll"],
+        activeSubscription,
+        requiredSubscriptionState: {
+          label: "payroll",
+          resources: ["payroll-analytics", "payroll-disbursement"],
+        },
       }),
     },
     {
@@ -361,6 +498,11 @@ export const payrollRoutes = (props: TAppPageDataFnProps): TRouteData[] => {
       hidden: !canUserAccessComponent({
         userPermissions,
         requiredPermissions: ["view-all-payrolls"],
+        activeSubscription,
+        requiredSubscriptionState: {
+          label: "payroll",
+          resources: ["payroll-analytics", "payroll-disbursement"],
+        },
       }),
     },
     {
@@ -371,6 +513,11 @@ export const payrollRoutes = (props: TAppPageDataFnProps): TRouteData[] => {
       hidden: !canUserAccessComponent({
         userPermissions,
         requiredPermissions: ["view-payroll-reports"],
+        activeSubscription,
+        requiredSubscriptionState: {
+          label: "payroll",
+          resources: ["payroll-analytics", "payroll-disbursement"],
+        },
       }),
     },
     {
@@ -381,6 +528,11 @@ export const payrollRoutes = (props: TAppPageDataFnProps): TRouteData[] => {
       hidden: !canUserAccessComponent({
         userPermissions,
         requiredPermissions: ["manage-payroll-report-templates"],
+        activeSubscription,
+        requiredSubscriptionState: {
+          label: "payroll",
+          resources: ["payroll-analytics", "payroll-disbursement"],
+        },
       }),
     },
     {
@@ -391,6 +543,11 @@ export const payrollRoutes = (props: TAppPageDataFnProps): TRouteData[] => {
       hidden: !canUserAccessComponent({
         userPermissions,
         requiredPermissions: ["manage-payroll-report-templates"],
+        activeSubscription,
+        requiredSubscriptionState: {
+          label: "payroll",
+          resources: ["payroll-analytics", "payroll-disbursement"],
+        },
       }),
     },
     {
@@ -401,6 +558,11 @@ export const payrollRoutes = (props: TAppPageDataFnProps): TRouteData[] => {
       hidden: !canUserAccessComponent({
         userPermissions,
         requiredPermissions: ["view-payroll-report-templates"],
+        activeSubscription,
+        requiredSubscriptionState: {
+          label: "payroll",
+          resources: ["payroll-analytics", "payroll-disbursement"],
+        },
       }),
     },
     {
@@ -412,6 +574,11 @@ export const payrollRoutes = (props: TAppPageDataFnProps): TRouteData[] => {
       hidden: !canUserAccessComponent({
         userPermissions,
         requiredPermissions: ["view-all-payslips", "view-payslip-templates"],
+        activeSubscription,
+        requiredSubscriptionState: {
+          label: "payroll",
+          resources: ["payroll-analytics", "payroll-disbursement"],
+        },
       }),
     },
     {
@@ -422,6 +589,11 @@ export const payrollRoutes = (props: TAppPageDataFnProps): TRouteData[] => {
       hidden: !canUserAccessComponent({
         userPermissions,
         requiredPermissions: ["view-all-payslips"],
+        activeSubscription,
+        requiredSubscriptionState: {
+          label: "payroll",
+          resources: ["payroll-analytics", "payroll-disbursement"],
+        },
       }),
     },
 
@@ -433,6 +605,11 @@ export const payrollRoutes = (props: TAppPageDataFnProps): TRouteData[] => {
       hidden: !canUserAccessComponent({
         userPermissions,
         requiredPermissions: ["manage-payslip-templates"],
+        activeSubscription,
+        requiredSubscriptionState: {
+          label: "payroll",
+          resources: ["payroll-analytics", "payroll-disbursement"],
+        },
       }),
     },
     {
@@ -443,6 +620,11 @@ export const payrollRoutes = (props: TAppPageDataFnProps): TRouteData[] => {
       hidden: !canUserAccessComponent({
         userPermissions,
         requiredPermissions: ["manage-payslip-templates"],
+        activeSubscription,
+        requiredSubscriptionState: {
+          label: "payroll",
+          resources: ["payroll-analytics", "payroll-disbursement"],
+        },
       }),
     },
     {
@@ -453,6 +635,11 @@ export const payrollRoutes = (props: TAppPageDataFnProps): TRouteData[] => {
       hidden: !canUserAccessComponent({
         userPermissions,
         requiredPermissions: ["view-payslip-templates"],
+        activeSubscription,
+        requiredSubscriptionState: {
+          label: "payroll",
+          resources: ["payroll-analytics", "payroll-disbursement"],
+        },
       }),
     },
   ];
