@@ -9,7 +9,8 @@ type TData = {
   navRoutes: TNavRoute[];
 };
 const useGeneratePayrollNavRoutes = (): TData => {
-  const { userPermissions } = useGetUserPermissions();
+  const { userPermissions, companyActiveSubscription: activeSubscription } =
+    useGetUserPermissions();
 
   return {
     navRoutes: [
@@ -19,6 +20,11 @@ const useGeneratePayrollNavRoutes = (): TData => {
         hidden: !canUserAccessComponent({
           userPermissions,
           requiredPermissions: ["view-payroll-dashboard"],
+          activeSubscription,
+          requiredSubscriptionState: {
+            label: "payroll",
+            resources: ["payroll-analytics", "payroll-disbursement"],
+          },
         }),
       },
       {
@@ -27,6 +33,11 @@ const useGeneratePayrollNavRoutes = (): TData => {
         hidden: !canUserAccessComponent({
           userPermissions,
           requiredPermissions: ["manage-cost-centres"],
+          activeSubscription,
+          requiredSubscriptionState: {
+            label: "payroll",
+            resources: ["payroll-analytics", "payroll-disbursement"],
+          },
         }),
       },
       {
@@ -35,6 +46,11 @@ const useGeneratePayrollNavRoutes = (): TData => {
         hidden: !canUserAccessComponent({
           userPermissions,
           requiredPermissions: ["manage-exchange-rates"],
+          activeSubscription,
+          requiredSubscriptionState: {
+            label: "payroll",
+            resources: ["payroll-analytics", "payroll-disbursement"],
+          },
         }),
       },
       {
@@ -43,6 +59,11 @@ const useGeneratePayrollNavRoutes = (): TData => {
         hidden: !canUserAccessComponent({
           userPermissions,
           requiredPermissions: ["manage-payroll-schemes"],
+          activeSubscription,
+          requiredSubscriptionState: {
+            label: "payroll",
+            resources: ["payroll-analytics", "payroll-disbursement"],
+          },
         }),
       },
       {
@@ -51,6 +72,11 @@ const useGeneratePayrollNavRoutes = (): TData => {
         hidden: !canUserAccessComponent({
           userPermissions,
           requiredPermissions: ["manage-pay-grades-and-categories"],
+          activeSubscription,
+          requiredSubscriptionState: {
+            label: "payroll",
+            resources: ["payroll-analytics", "payroll-disbursement"],
+          },
         }),
       },
       {
@@ -63,6 +89,11 @@ const useGeneratePayrollNavRoutes = (): TData => {
             "manage-pension-authorities",
             "manage-tax-authorities",
           ],
+          activeSubscription,
+          requiredSubscriptionState: {
+            label: "payroll",
+            resources: ["payroll-analytics", "payroll-disbursement"],
+          },
         }),
         children: [
           {
@@ -71,6 +102,11 @@ const useGeneratePayrollNavRoutes = (): TData => {
             hidden: !canUserAccessComponent({
               userPermissions,
               requiredPermissions: ["manage-tax-authorities"],
+              activeSubscription,
+              requiredSubscriptionState: {
+                label: "payroll",
+                resources: ["payroll-analytics", "payroll-disbursement"],
+              },
             }),
           },
           {
@@ -79,6 +115,11 @@ const useGeneratePayrollNavRoutes = (): TData => {
             hidden: !canUserAccessComponent({
               userPermissions,
               requiredPermissions: ["manage-pension-authorities"],
+              activeSubscription,
+              requiredSubscriptionState: {
+                label: "payroll",
+                resources: ["payroll-analytics", "payroll-disbursement"],
+              },
             }),
           },
           {
@@ -87,6 +128,11 @@ const useGeneratePayrollNavRoutes = (): TData => {
             hidden: !canUserAccessComponent({
               userPermissions,
               requiredPermissions: ["manage-itf-authorities"],
+              activeSubscription,
+              requiredSubscriptionState: {
+                label: "payroll",
+                resources: ["payroll-analytics", "payroll-disbursement"],
+              },
             }),
           },
           {
@@ -95,6 +141,11 @@ const useGeneratePayrollNavRoutes = (): TData => {
             hidden: !canUserAccessComponent({
               userPermissions,
               requiredPermissions: ["manage-nsitf-authorities"],
+              activeSubscription,
+              requiredSubscriptionState: {
+                label: "payroll",
+                resources: ["payroll-analytics", "payroll-disbursement"],
+              },
             }),
           },
         ],
@@ -110,6 +161,11 @@ const useGeneratePayrollNavRoutes = (): TData => {
             "view-payroll-reports",
             "view-payroll-report-templates",
           ],
+          activeSubscription,
+          requiredSubscriptionState: {
+            label: "payroll",
+            resources: ["payroll-analytics", "payroll-disbursement"],
+          },
         }),
       },
       {
@@ -122,6 +178,11 @@ const useGeneratePayrollNavRoutes = (): TData => {
             "view-all-payslips",
             "manage-payslip-templates",
           ],
+          activeSubscription,
+          requiredSubscriptionState: {
+            label: "payroll",
+            resources: ["payroll-analytics", "payroll-disbursement"],
+          },
         }),
       },
       {
@@ -130,6 +191,11 @@ const useGeneratePayrollNavRoutes = (): TData => {
         hidden: !canUserAccessComponent({
           userPermissions,
           requiredPermissions: ["manage-payroll-settings"],
+          activeSubscription,
+          requiredSubscriptionState: {
+            label: "payroll",
+            resources: ["payroll-analytics", "payroll-disbursement"],
+          },
         }),
       },
     ],
