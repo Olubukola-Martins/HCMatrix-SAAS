@@ -1,13 +1,13 @@
 import axios from "axios";
 import { useQuery } from "react-query";
-import { IOtherSettings } from "../types/settings";
+import { IOtherSettings, getOtherSettingsProps } from "../types/settings";
 import { MICROSERVICE_ENDPOINTS } from "config/enviroment";
 import { useApiAuth } from "hooks/useApiAuth";
 import { ICurrentCompany } from "types";
 
 export const QUERY_KEY_FOR_COMPANY_POLICY = "companyPolicy";
 
-const getData = async (props: ICurrentCompany): Promise<IOtherSettings> => {
+const getData = async (props: ICurrentCompany): Promise<getOtherSettingsProps> => {
   const url = `${MICROSERVICE_ENDPOINTS.TIME_AND_ATTENDANCE}/settings/general`;
   const config = {
     headers: {
@@ -18,8 +18,8 @@ const getData = async (props: ICurrentCompany): Promise<IOtherSettings> => {
   };
   const res = await axios.get(url, config);
 
-  const item: IOtherSettings = res.data.data;
-  const data: IOtherSettings = {
+  const item: getOtherSettingsProps = res.data.data;
+  const data: getOtherSettingsProps = {
     ...item,
   };
 

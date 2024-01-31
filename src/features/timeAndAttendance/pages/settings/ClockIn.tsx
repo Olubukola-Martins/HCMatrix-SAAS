@@ -4,14 +4,21 @@ import { TimeAttendanceSettingsNav } from "features/timeAndAttendance/components
 import { useState } from "react";
 import { AddClockIn } from "features/timeAndAttendance/components/settings/AddClockIn";
 import Table, { ColumnsType } from "antd/lib/table";
-import { Dropdown, Menu } from "antd";
-import { useGetBiometricDevice } from "features/timeAndAttendance/hooks/useGetBiometricDevice";
+import { Dropdown, Menu, Popconfirm } from "antd";
+import {
+  QUERY_KEY_FOR_BIOMETRIC_DEVICE,
+  useGetBiometricDevice,
+} from "features/timeAndAttendance/hooks/useGetBiometricDevice";
 import { biometricProps } from "features/timeAndAttendance/types/settings";
-
+import { useDeleteTimeAndAttendance } from "features/timeAndAttendance/hooks/useDeleteTimeAndAttendance";
 
 export const ClockIn = () => {
   const [addClockIn, setAddClockIn] = useState(false);
   const { data, isLoading } = useGetBiometricDevice();
+  const { removeData } = useDeleteTimeAndAttendance({
+    EndPointUrl: "settings/biometrics/devices",
+    queryKey: QUERY_KEY_FOR_BIOMETRIC_DEVICE,
+  });
 
   const columns: ColumnsType<biometricProps> = [
     {
@@ -31,7 +38,14 @@ export const ClockIn = () => {
             overlay={
               <Menu>
                 <Menu.Item key="1">Edit</Menu.Item>
-                <Menu.Item key="2">Delete</Menu.Item>
+                <Menu.Item key="2">
+                  <Popconfirm
+                    title={`Delete ${val.name}`}
+                    onConfirm={() => removeData(val.id)}
+                  >
+                    Delete
+                  </Popconfirm>
+                </Menu.Item>
               </Menu>
             }
           >
@@ -41,8 +55,6 @@ export const ClockIn = () => {
       ),
     },
   ];
-
-
 
   return (
     <>

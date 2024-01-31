@@ -1,4 +1,4 @@
-import { Drawer, Form, Input, InputNumber, Switch } from "antd";
+import { Drawer, Form, Input } from "antd";
 import { AppButton } from "components/button/AppButton";
 import { UseWindowWidth } from "features/timeAndAttendance/hooks/UseWindowWidth";
 import { useCreateBiometric } from "features/timeAndAttendance/hooks/useCreateBiometric";
@@ -39,7 +39,7 @@ export const AddClockIn = ({ handleClose, open }: IDrawerProps) => {
       {
         onError: (err: any) => {
           console.log(err);
-          
+
           openNotification({
             state: "error",
             title: "Error Occurred",
@@ -94,21 +94,7 @@ export const AddClockIn = ({ handleClose, open }: IDrawerProps) => {
           allowBiometrics: true,
         }}
       >
-        {/* <div className={`${formWrapStyle} flex justify-between items-center`}>
-          <h3 className="font-medium">Allow soft clock-in</h3>
-          <Form.Item name="softClockIn" className="flex justify-end items-end">
-            <Switch defaultChecked />
-          </Form.Item>
-        </div> */}
-        {/* <div className={`${formWrapStyle} flex justify-between items-center`}>
-          <h3 className="font-medium">Allow Biometrics device clock-in</h3>
-          <Form.Item
-            name="allowBiometrics"
-            className="flex justify-end items-end"
-          >
-            <Switch defaultChecked />
-          </Form.Item>
-        </div> */}
+      
         <Form.List name="biometricDevices">
           {(fields) => (
             <>

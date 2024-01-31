@@ -12,14 +12,6 @@ type TLocation = {
   biometricDevice: string;
 };
 
-const data: TLocation[] = [];
-for (let i = 0; i < 4; i++) {
-  data.push({
-    key: i,
-    branch: `Abuja road 12`,
-    biometricDevice: `Abuja device`,
-  });
-}
 
 const columns: ColumnsType<TLocation> = [
   {
@@ -71,7 +63,7 @@ const Location = () => {
             handleClick={() => setOpenAddLocation(true)}
           />
         </div>
-        <Table columns={columns} dataSource={data} />
+        <Table columns={columns} dataSource={[]} />
       </div>
     </>
   );

@@ -24,19 +24,26 @@ export const Other = () => {
   const { mutate, isLoading: isLoadingPost } = useCreateOtherSettings();
   const queryClient = useQueryClient();
 
-  // console.log(data);
 
   useEffect(() => {
     if (isSuccess && data) {
       form.setFieldsValue({
-        ...data,
+        attendanceWorkFlowId: parseInt(data.manual_attendance_workflow, 10),
+        overtimeConfirmationWorkflowId: parseInt(
+          data.overtime_confirmation_workflow,
+          10
+        ),
+        longitude: data.company_longitude,
+        latitude: data.company_latitude,
+        enforceGeoFencing: data.enforce_geo_fencing === "1" ? true : false,
+        enforceStrictDistance:
+          data.enforce_strict_distance === "1" ? true : false,
+        geoFencingRadius: data.geo_fencing_radius,
       });
     }
   }, [data, isSuccess, form]);
 
   const onSubmit = (values: any) => {
-    console.log("values", values);
-
     mutate(
       {
         ...values,
@@ -83,7 +90,7 @@ export const Other = () => {
               onFinish={onSubmit}
               initialValues={{ isSoftClockInEnabled: true }}
               form={form}
-              // disabled={isLoading}
+              disabled={isLoading}
             >
               <div className={formWrapStyle}>
                 <FormWorkflowInput
