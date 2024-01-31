@@ -1,13 +1,12 @@
 import { PageIntro } from "components/layout/PageIntro";
 import { appRoutes } from "config/router/paths";
-import React from "react";
 import SubscriptionContainer from "../components/subscription/SubscriptionContainer";
 import { useNavigate } from "react-router-dom";
 import { useGetCompanyActiveSubscription } from "../hooks/company/useGetCompanyActiveSubscription";
 import { ErrorBoundary } from "components/errorHandlers/ErrorBoundary";
 import { Skeleton } from "antd";
-import { ErrorWrapper } from "components/errorHandlers/ErrorWrapper";
 import { CreateCompanySubscriptionContextProvider } from "../stateManagers";
+import { ErrorWrapper } from "components/errorHandlers/ErrorWrapper";
 
 const SubsciptionManagement = () => {
   const navigate = useNavigate();

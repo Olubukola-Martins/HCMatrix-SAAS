@@ -24,11 +24,12 @@ import { appRoutes } from "config/router/paths";
 import { Navigate, useNavigate } from "react-router-dom";
 import { useGetSubsciptionBillingDetails } from "features/billing/hooks/company/billingDetail/useGetSubsciptionBillingDetails";
 import { parsePhoneNumber } from "utils/dataHelpers/parsePhoneNumber";
+import { TSubscriptionType } from "features/billing/types/subscription";
 
 const STEPS = ["Select Module", "Add Ons", "Payment", "Select Users"];
 const SubscriptionContainer: React.FC<{
   subscription?: TCompanySubscription;
-  type?: "module" | "plan";
+  type?: TSubscriptionType;
 }> = ({ subscription, type = "module" }) => {
   const [form] = Form.useForm<TCreateCompanySubscriptionProps>();
   const { data: billingDetails, isFetching: isFetchingDetails } =
@@ -51,10 +52,10 @@ const SubscriptionContainer: React.FC<{
 
       form.setFieldsValue({
         priceType: subscription?.priceType,
-        purchased: subscription.purchased.map((item) => item.subscriptionId),
-        billingCycle: subscription.billingCycle,
-        licensedEmployeeCount: subscription.licensedEmployeeCount,
-        unlicensedEmployeeCount: subscription.unlicensedEmployeeCount,
+        purchased: subscription?.purchased?.map((item) => item.subscriptionId),
+        billingCycle: subscription?.billingCycle,
+        licensedEmployeeCount: subscription?.licensedEmployeeCount,
+        unlicensedEmployeeCount: subscription?.unlicensedEmployeeCount,
         address: address
           ? {
               countryId: address.countryId,
@@ -72,12 +73,14 @@ const SubscriptionContainer: React.FC<{
       dispatch({
         type: ECreateCompanySubscriptionOps.update,
         payload: {
-          licensedEmployeeCount: subscription.licensedEmployeeCount,
-          unlicensedEmployeeCount: subscription.unlicensedEmployeeCount,
-          autoRenew: subscription.autoRenew,
-          purchased: subscription.purchased.map((item) => item.subscriptionId),
-          priceType: subscription.priceType,
-          billingCycle: subscription.billingCycle,
+          licensedEmployeeCount: subscription?.licensedEmployeeCount,
+          unlicensedEmployeeCount: subscription?.unlicensedEmployeeCount,
+          autoRenew: subscription?.autoRenew,
+          purchased: subscription?.purchased?.map(
+            (item) => item.subscriptionId
+          ),
+          priceType: subscription?.priceType,
+          billingCycle: subscription?.billingCycle,
         },
       });
     } else {

@@ -31,14 +31,23 @@ export const useGetActivatedSelfServiceLinksAndAnalytics = (): {
   error?: any;
 } => {
   const { data, isLoading, isError, error } = useGetSelfServiceDBAnalytics();
-  const { userPermissions } = useGetUserPermissions();
+  const { userPermissions, companyActiveSubscription: activeSubscription } =
+    useGetUserPermissions();
 
   return {
     data: data
       ? {
           primaryData: [
             {
-              hidden: false,
+              hidden: !canUserAccessComponent({
+                requiredPermissions: [],
+                userPermissions,
+                activeSubscription,
+                requiredSubscriptionState: {
+                  label: "employee-management",
+                  resources: [],
+                },
+              }),
               item: {
                 icon: Onboarding,
                 link: appRoutes.onboarding,
@@ -50,7 +59,16 @@ export const useGetActivatedSelfServiceLinksAndAnalytics = (): {
               hidden:
                 data?.settings.some(
                   (item) => item.type === "loan" && item.isActive
-                ) === false,
+                ) === false &&
+                !canUserAccessComponent({
+                  requiredPermissions: [],
+                  userPermissions,
+                  activeSubscription,
+                  requiredSubscriptionState: {
+                    label: "payroll",
+                    resources: [],
+                  },
+                }),
               item: {
                 icon: loan,
                 link: appRoutes.loans,
@@ -63,7 +81,16 @@ export const useGetActivatedSelfServiceLinksAndAnalytics = (): {
               hidden:
                 data?.settings.some(
                   (item) => item.type === "leave" && item.isActive
-                ) === false,
+                ) === false &&
+                !canUserAccessComponent({
+                  requiredPermissions: [],
+                  userPermissions,
+                  activeSubscription,
+                  requiredSubscriptionState: {
+                    label: "hr-admin",
+                    resources: [],
+                  },
+                }),
 
               item: {
                 icon: leave,
@@ -74,7 +101,15 @@ export const useGetActivatedSelfServiceLinksAndAnalytics = (): {
             },
 
             {
-              hidden: false, //Pending when its fleshed out
+              hidden: !canUserAccessComponent({
+                requiredPermissions: [],
+                userPermissions,
+                activeSubscription,
+                requiredSubscriptionState: {
+                  label: "employee-management",
+                  resources: [],
+                },
+              }),
               item: {
                 icon: health,
                 link: appRoutes.healthAccessHome,
@@ -83,7 +118,15 @@ export const useGetActivatedSelfServiceLinksAndAnalytics = (): {
               },
             },
             {
-              hidden: false, //Subscription
+              hidden: !canUserAccessComponent({
+                userPermissions,
+                requiredPermissions: [],
+                activeSubscription,
+                requiredSubscriptionState: {
+                  label: "payroll",
+                  resources: [],
+                },
+              }),
               item: {
                 icon: payslip,
                 link: appRoutes.payslipTransactions,
@@ -95,7 +138,16 @@ export const useGetActivatedSelfServiceLinksAndAnalytics = (): {
               hidden:
                 data?.settings.some(
                   (item) => item.type === "exit-handover-form" && item.isActive
-                ) === false,
+                ) === false &&
+                !canUserAccessComponent({
+                  requiredPermissions: [],
+                  userPermissions,
+                  activeSubscription,
+                  requiredSubscriptionState: {
+                    label: "employee-management",
+                    resources: [],
+                  },
+                }),
               item: {
                 icon: attendance,
                 link: appRoutes.newHandOverForm,
@@ -107,7 +159,16 @@ export const useGetActivatedSelfServiceLinksAndAnalytics = (): {
               hidden:
                 data?.settings.some(
                   (item) => item.type === "vehicle" && item.isActive
-                ) === false,
+                ) === false &&
+                !canUserAccessComponent({
+                  requiredPermissions: [],
+                  userPermissions,
+                  activeSubscription,
+                  requiredSubscriptionState: {
+                    label: "hr-admin",
+                    resources: [],
+                  },
+                }),
               item: {
                 icon: vehicle,
                 link: appRoutes.vehicleBooking,
@@ -119,7 +180,16 @@ export const useGetActivatedSelfServiceLinksAndAnalytics = (): {
               hidden:
                 data?.settings.some(
                   (item) => item.type === "asset" && item.isActive
-                ) === false,
+                ) === false &&
+                !canUserAccessComponent({
+                  requiredPermissions: [],
+                  userPermissions,
+                  activeSubscription,
+                  requiredSubscriptionState: {
+                    label: "hr-admin",
+                    resources: [],
+                  },
+                }),
               item: {
                 icon: attendance,
                 link: appRoutes.selfServiceAssets,
@@ -131,7 +201,16 @@ export const useGetActivatedSelfServiceLinksAndAnalytics = (): {
               hidden:
                 data?.settings.some(
                   (item) => item.type === "conference-room" && item.isActive
-                ) === false,
+                ) === false &&
+                !canUserAccessComponent({
+                  requiredPermissions: [],
+                  userPermissions,
+                  activeSubscription,
+                  requiredSubscriptionState: {
+                    label: "hr-admin",
+                    resources: [],
+                  },
+                }),
               item: {
                 icon: leave,
                 link: appRoutes.conferenceRoomBooking,
@@ -140,7 +219,15 @@ export const useGetActivatedSelfServiceLinksAndAnalytics = (): {
               },
             },
             {
-              hidden: false,
+              hidden: !canUserAccessComponent({
+                requiredPermissions: [],
+                userPermissions,
+                activeSubscription,
+                requiredSubscriptionState: {
+                  label: "hr-admin",
+                  resources: [],
+                },
+              }),
               item: {
                 icon: payslip,
                 link: appRoutes.selfServiceTasks,
@@ -152,6 +239,11 @@ export const useGetActivatedSelfServiceLinksAndAnalytics = (): {
               hidden: !canUserAccessComponent({
                 userPermissions,
                 requiredPermissions: ["manage-documents"],
+                activeSubscription,
+                requiredSubscriptionState: {
+                  label: "employee-management",
+                  resources: [],
+                },
               }),
               item: {
                 icon: payslip,
@@ -170,7 +262,16 @@ export const useGetActivatedSelfServiceLinksAndAnalytics = (): {
                 hidden:
                   data?.settings.some(
                     (item) => item.type === "travel" && item.isActive
-                  ) === false,
+                  ) === false &&
+                  !canUserAccessComponent({
+                    requiredPermissions: [],
+                    userPermissions,
+                    activeSubscription,
+                    requiredSubscriptionState: {
+                      label: "hr-admin",
+                      resources: [],
+                    },
+                  }),
               },
               {
                 link: appRoutes.selfServiceAssets,
@@ -178,7 +279,16 @@ export const useGetActivatedSelfServiceLinksAndAnalytics = (): {
                 hidden:
                   data?.settings.some(
                     (item) => item.type === "asset" && item.isActive
-                  ) === false,
+                  ) === false &&
+                  !canUserAccessComponent({
+                    requiredPermissions: [],
+                    userPermissions,
+                    activeSubscription,
+                    requiredSubscriptionState: {
+                      label: "hr-admin",
+                      resources: [],
+                    },
+                  }),
               },
               {
                 link: appRoutes.selfServiceJob,
@@ -186,7 +296,16 @@ export const useGetActivatedSelfServiceLinksAndAnalytics = (): {
                 hidden:
                   data?.settings.some(
                     (item) => item.type === "job" && item.isActive
-                  ) === false,
+                  ) === false &&
+                  !canUserAccessComponent({
+                    requiredPermissions: [],
+                    userPermissions,
+                    activeSubscription,
+                    requiredSubscriptionState: {
+                      label: "hr-admin",
+                      resources: [],
+                    },
+                  }),
               },
               {
                 link: appRoutes.selfServicePositionChange,
@@ -194,7 +313,16 @@ export const useGetActivatedSelfServiceLinksAndAnalytics = (): {
                 hidden:
                   data?.settings.some(
                     (item) => item.type === "position-change" && item.isActive
-                  ) === false,
+                  ) === false &&
+                  !canUserAccessComponent({
+                    requiredPermissions: [],
+                    userPermissions,
+                    activeSubscription,
+                    requiredSubscriptionState: {
+                      label: "hr-admin",
+                      resources: [],
+                    },
+                  }),
               },
               {
                 link: appRoutes.selfServicePromotion,
@@ -202,7 +330,16 @@ export const useGetActivatedSelfServiceLinksAndAnalytics = (): {
                 hidden:
                   data?.settings.some(
                     (item) => item.type === "promotion" && item.isActive
-                  ) === false,
+                  ) === false &&
+                  !canUserAccessComponent({
+                    requiredPermissions: [],
+                    userPermissions,
+                    activeSubscription,
+                    requiredSubscriptionState: {
+                      label: "hr-admin",
+                      resources: [],
+                    },
+                  }),
               },
               {
                 link: appRoutes.selfServiceReimbursement,
@@ -210,7 +347,16 @@ export const useGetActivatedSelfServiceLinksAndAnalytics = (): {
                 hidden:
                   data?.settings.some(
                     (item) => item.type === "reimbursement" && item.isActive
-                  ) === false,
+                  ) === false &&
+                  !canUserAccessComponent({
+                    requiredPermissions: [],
+                    userPermissions,
+                    activeSubscription,
+                    requiredSubscriptionState: {
+                      label: "hr-admin",
+                      resources: [],
+                    },
+                  }),
               },
               {
                 link: appRoutes.selfServiceTransfer,
@@ -218,7 +364,16 @@ export const useGetActivatedSelfServiceLinksAndAnalytics = (): {
                 hidden:
                   data?.settings.some(
                     (item) => item.type === "transfer" && item.isActive
-                  ) === false,
+                  ) === false &&
+                  !canUserAccessComponent({
+                    requiredPermissions: [],
+                    userPermissions,
+                    activeSubscription,
+                    requiredSubscriptionState: {
+                      label: "hr-admin",
+                      resources: [],
+                    },
+                  }),
               },
               {
                 link: appRoutes.selfServiceMonetary,
@@ -226,7 +381,16 @@ export const useGetActivatedSelfServiceLinksAndAnalytics = (): {
                 hidden:
                   data?.settings.some(
                     (item) => item.type === "money" && item.isActive
-                  ) === false,
+                  ) === false &&
+                  !canUserAccessComponent({
+                    requiredPermissions: [],
+                    userPermissions,
+                    activeSubscription,
+                    requiredSubscriptionState: {
+                      label: "hr-admin",
+                      resources: [],
+                    },
+                  }),
               },
             ],
           },
@@ -239,6 +403,11 @@ export const useGetActivatedSelfServiceLinksAndAnalytics = (): {
                 hidden: !canUserAccessComponent({
                   requiredPermissions: ["manage-requsition-settings"],
                   userPermissions,
+                  activeSubscription,
+                  requiredSubscriptionState: {
+                    label: "hr-admin",
+                    resources: [],
+                  },
                 }),
               },
               {
@@ -247,6 +416,11 @@ export const useGetActivatedSelfServiceLinksAndAnalytics = (): {
                 hidden: !canUserAccessComponent({
                   requiredPermissions: ["manage-resignation"],
                   userPermissions,
+                  activeSubscription,
+                  requiredSubscriptionState: {
+                    label: "hr-admin",
+                    resources: [],
+                  },
                 }),
               },
               {
@@ -255,6 +429,11 @@ export const useGetActivatedSelfServiceLinksAndAnalytics = (): {
                 hidden: !canUserAccessComponent({
                   requiredPermissions: ["manage-assets"],
                   userPermissions,
+                  activeSubscription,
+                  requiredSubscriptionState: {
+                    label: "hr-admin",
+                    resources: [],
+                  },
                 }),
               },
               {
@@ -263,6 +442,11 @@ export const useGetActivatedSelfServiceLinksAndAnalytics = (): {
                 hidden: !canUserAccessComponent({
                   requiredPermissions: ["manage-vehicle-settings"],
                   userPermissions,
+                  activeSubscription,
+                  requiredSubscriptionState: {
+                    label: "hr-admin",
+                    resources: [],
+                  },
                 }),
               },
               {
@@ -271,6 +455,11 @@ export const useGetActivatedSelfServiceLinksAndAnalytics = (): {
                 hidden: !canUserAccessComponent({
                   requiredPermissions: ["manage-conference-room-settings"],
                   userPermissions,
+                  activeSubscription,
+                  requiredSubscriptionState: {
+                    label: "hr-admin",
+                    resources: [],
+                  },
                 }),
               },
               {
@@ -279,6 +468,11 @@ export const useGetActivatedSelfServiceLinksAndAnalytics = (): {
                 hidden: !canUserAccessComponent({
                   requiredPermissions: ["manage-leave-settings"],
                   userPermissions,
+                  activeSubscription,
+                  requiredSubscriptionState: {
+                    label: "hr-admin",
+                    resources: [],
+                  },
                 }),
               },
               {
@@ -287,6 +481,11 @@ export const useGetActivatedSelfServiceLinksAndAnalytics = (): {
                 hidden: !canUserAccessComponent({
                   requiredPermissions: ["manage-loan-settings"],
                   userPermissions,
+                  activeSubscription,
+                  requiredSubscriptionState: {
+                    label: "hr-admin",
+                    resources: [],
+                  },
                 }),
               },
             ],

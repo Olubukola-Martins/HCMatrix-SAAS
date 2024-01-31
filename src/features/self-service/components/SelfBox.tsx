@@ -45,48 +45,50 @@ export const SelfServiceSettingBox = ({
     return null;
   }
   return (
-    <div className="bg-card p-2 rounded-lg shadow cursor-pointer group text-accent">
-      <div className="bg-mainBg transition ease-in-out duration-300 py-2 px-3 rounded-lg group-hover:border-b-2 group-hover:border-caramel group-hover:shadow-md">
-        <div className="flex items-center gap-2 justify-between">
-          <div className="flex items-center gap-2">
-            <div className="border rounded-full h-11 w-11 flex items-center justify-center">
-              <img src={icon} alt="self-service setting" />
+    <div>
+      <div className="bg-card p-2 rounded-lg shadow cursor-pointer group text-accent">
+        <div className="bg-mainBg transition ease-in-out duration-300 py-2 px-3 rounded-lg group-hover:border-b-2 group-hover:border-caramel group-hover:shadow-md">
+          <div className="flex items-center gap-2 justify-between">
+            <div className="flex items-center gap-2">
+              <div className="border rounded-full h-11 w-11 flex items-center justify-center">
+                <img src={icon} alt="self-service setting" />
+              </div>
+              <h5 className="font-medium capitalize text-sm md:text-base">
+                Setting
+              </h5>
             </div>
-            <h5 className="font-medium capitalize text-sm md:text-base">
-              Setting
-            </h5>
+            {
+              <Dropdown
+                overlayStyle={{ top: 1000 }}
+                overlay={
+                  <Themes>
+                    <div className="py-3 shadow-md px-4 text-sm font-medium rounded-md flex flex-col gap-3">
+                      {settings
+                        .filter((item) => item.hidden === false)
+                        .map((item, i) => (
+                          <Link
+                            key={i}
+                            to={item.link}
+                            className="cursor-pointer hover:text-caramel"
+                          >
+                            {item.title}
+                          </Link>
+                        ))}
+                    </div>
+                  </Themes>
+                }
+                trigger={["click"]}
+                placement="bottom"
+              >
+                <i className="ri-more-fill text-lg"></i>
+              </Dropdown>
+            }
           </div>
-          {
-            <Dropdown
-              overlayStyle={{ top: 1000 }}
-              overlay={
-                <Themes>
-                  <div className="py-3 shadow-md px-4 text-sm font-medium rounded-md flex flex-col gap-3">
-                    {settings
-                      .filter((item) => item.hidden === false)
-                      .map((item, i) => (
-                        <Link
-                          key={i}
-                          to={item.link}
-                          className="cursor-pointer hover:text-caramel"
-                        >
-                          {item.title}
-                        </Link>
-                      ))}
-                  </div>
-                </Themes>
-              }
-              trigger={["click"]}
-              placement="bottom"
-            >
-              <i className="ri-more-fill text-lg"></i>
-            </Dropdown>
-          }
+          <p className="text-xs md:text-sm py-3">
+            You can now manage different self service settings within your
+            organization
+          </p>
         </div>
-        <p className="text-xs md:text-sm py-3">
-          You can now manage different self service settings within your
-          organization
-        </p>
       </div>
     </div>
   );
@@ -99,47 +101,49 @@ export const RequisitionBox = ({
     return null;
   }
   return (
-    <div className="bg-card p-2 rounded-lg shadow cursor-pointer group text-accent">
-      <div className="bg-mainBg transition ease-in-out duration-300 py-2 px-3 rounded-lg group-hover:border-b-2 group-hover:border-caramel group-hover:shadow-md">
-        <div className="flex items-center gap-2 justify-between">
-          <div className="flex items-center gap-2">
-            <div className="border rounded-full h-11 w-11 flex items-center justify-center">
-              <img src={icon} alt="requisition" />
+    <div>
+      <div className="bg-card p-2 rounded-lg shadow cursor-pointer group text-accent">
+        <div className="bg-mainBg transition ease-in-out duration-300 py-2 px-3 rounded-lg group-hover:border-b-2 group-hover:border-caramel group-hover:shadow-md">
+          <div className="flex items-center gap-2 justify-between">
+            <div className="flex items-center gap-2">
+              <div className="border rounded-full h-11 w-11 flex items-center justify-center">
+                <img src={icon} alt="requisition" />
+              </div>
+              <h5 className="font-medium capitalize text-sm md:text-base">
+                Requisition
+              </h5>
             </div>
-            <h5 className="font-medium capitalize text-sm md:text-base">
-              Requisition
-            </h5>
+            {
+              <Dropdown
+                overlayStyle={{ top: 1000 }}
+                overlay={
+                  <Themes>
+                    <div className="py-3 shadow-md px-4 text-sm font-medium rounded-md flex flex-col gap-3">
+                      {requisitions
+                        .filter((item) => item.hidden === false)
+                        .map((item, i) => (
+                          <Link
+                            key={i}
+                            to={item.link}
+                            className="cursor-pointer hover:text-caramel"
+                          >
+                            {item.title}
+                          </Link>
+                        ))}
+                    </div>
+                  </Themes>
+                }
+                trigger={["click"]}
+                placement="bottom"
+              >
+                <i className="ri-more-fill text-lg"></i>
+              </Dropdown>
+            }
           </div>
-          {
-            <Dropdown
-              overlayStyle={{ top: 1000 }}
-              overlay={
-                <Themes>
-                  <div className="py-3 shadow-md px-4 text-sm font-medium rounded-md flex flex-col gap-3">
-                    {requisitions
-                      .filter((item) => item.hidden === false)
-                      .map((item, i) => (
-                        <Link
-                          key={i}
-                          to={item.link}
-                          className="cursor-pointer hover:text-caramel"
-                        >
-                          {item.title}
-                        </Link>
-                      ))}
-                  </div>
-                </Themes>
-              }
-              trigger={["click"]}
-              placement="bottom"
-            >
-              <i className="ri-more-fill text-lg"></i>
-            </Dropdown>
-          }
+          <p className="text-xs md:text-sm py-3">
+            You can now manage different requisitions within your organization
+          </p>
         </div>
-        <p className="text-xs md:text-sm py-3">
-          You can now manage different requisitions within your organization
-        </p>
       </div>
     </div>
   );

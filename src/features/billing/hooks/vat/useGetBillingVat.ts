@@ -3,14 +3,13 @@ import { MICROSERVICE_ENDPOINTS } from "config/enviroment";
 import { useQuery } from "react-query";
 import { ICurrentCompany } from "types";
 import { useApiAuth } from "hooks/useApiAuth";
-import { TCompanySubscription } from "features/billing/types/company/companySubscription";
+import { TBillingVat } from "features/billing/types/vat";
 
-export const QUERY_KEY_FOR_ACTIVE_COMPANY_SUBSCRITION =
-  "active-company-subscription";
+export const QUERY_KEY_FOR_BILLING_VAT = "billing-vat";
 const getData = async (props: {
   auth: ICurrentCompany;
-}): Promise<TCompanySubscription | undefined> => {
-  const url = `${MICROSERVICE_ENDPOINTS.UTILITY}/subscription/company`;
+}): Promise<TBillingVat | undefined> => {
+  const url = `${MICROSERVICE_ENDPOINTS.UTILITY}/subscription/vat`;
 
   const config = {
     headers: {
@@ -21,16 +20,16 @@ const getData = async (props: {
   };
 
   const res = await axios.get(url, config);
-  const item: TCompanySubscription | null = res.data.data;
+  const item: TBillingVat | null = res.data.data;
   const data = item === null ? undefined : item;
 
   return data;
 };
 
-export const useGetCompanyActiveSubscription = () => {
+export const useGetBillingVat = () => {
   const { token, companyId } = useApiAuth();
   const queryData = useQuery(
-    [QUERY_KEY_FOR_ACTIVE_COMPANY_SUBSCRITION],
+    [QUERY_KEY_FOR_BILLING_VAT],
     () =>
       getData({
         auth: {

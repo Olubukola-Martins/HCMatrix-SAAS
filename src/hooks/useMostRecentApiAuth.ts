@@ -1,3 +1,4 @@
+import { useGetCompanyActiveSubscription } from "features/billing/hooks/company/useGetCompanyActiveSubscription";
 import { useApiAuth } from "./useApiAuth";
 import { useGetAuthUser } from "features/authentication/hooks/useGetAuthUser";
 
@@ -6,6 +7,10 @@ const useMostRecentApiAuth = () => {
   const { data, isError, isSuccess, isStale, error, isLoading } =
     useGetAuthUser(); //This hook is used so that data is not stale, but most in sync with server
   const user = data?.user;
+  const {
+    data: companyActiveSubscription,
+    isLoading: isLoadingCompanyActiveSubscription,
+  } = useGetCompanyActiveSubscription();
   const companies = data?.payload;
   const currentCompanyEmployeeDetails = companies?.find(
     (item) => item.company.id === companyId
@@ -22,9 +27,10 @@ const useMostRecentApiAuth = () => {
     currentCompanyId,
     isError,
     error,
-    isLoading,
+    isLoading: isLoading || isLoadingCompanyActiveSubscription,
     isSuccess,
     isStale,
+    companyActiveSubscription,
   };
 };
 

@@ -51,7 +51,7 @@ import EmployeeHealthAccessPage from "features/self-service/features/health-acce
 //   () => import("features/self-service/features/requisitions/pages/Requisition")
 // );
 export const selfServiceRoutes = (props: TAppPageDataFnProps): TRouteData[] => {
-  const { userPermissions, licenseType } = props;
+  const { userPermissions, licenseType, activeSubscription } = props;
   const isUserLicensed = licenseType === "licensed";
   return [
     {
@@ -66,7 +66,18 @@ export const selfServiceRoutes = (props: TAppPageDataFnProps): TRouteData[] => {
       path: appRoutes.payslipTransactions,
       isSearchable: true,
       title: "My Payslip & Transactions",
-      hidden: !isUserLicensed,
+      hidden:
+        !isUserLicensed &&
+        !canUserAccessComponent({
+          userPermissions,
+
+          requiredPermissions: [],
+          activeSubscription,
+          requiredSubscriptionState: {
+            label: "payroll",
+            resources: [],
+          },
+        }),
     },
     {
       element: <TasksPage />,
@@ -74,7 +85,18 @@ export const selfServiceRoutes = (props: TAppPageDataFnProps): TRouteData[] => {
       isSearchable: true,
       title: "Tasks",
       isPrimaryFeature: true,
-      hidden: !isUserLicensed,
+      hidden:
+        !isUserLicensed &&
+        !canUserAccessComponent({
+          userPermissions,
+
+          requiredPermissions: [],
+          activeSubscription,
+          requiredSubscriptionState: {
+            label: "hr-admin",
+            resources: [],
+          },
+        }),
     },
     {
       element: <Requisition />,
@@ -86,6 +108,11 @@ export const selfServiceRoutes = (props: TAppPageDataFnProps): TRouteData[] => {
         userPermissions,
 
         requiredPermissions: ["manage-requsition-settings"],
+        activeSubscription,
+        requiredSubscriptionState: {
+          label: "hr-admin",
+          resources: [],
+        },
       }),
     },
     {
@@ -98,6 +125,11 @@ export const selfServiceRoutes = (props: TAppPageDataFnProps): TRouteData[] => {
         userPermissions,
 
         requiredPermissions: ["manage-requsition-settings"],
+        activeSubscription,
+        requiredSubscriptionState: {
+          label: "hr-admin",
+          resources: [],
+        },
       }),
     },
     {
@@ -106,7 +138,18 @@ export const selfServiceRoutes = (props: TAppPageDataFnProps): TRouteData[] => {
       isSearchable: true,
       title: "Transfers",
       isPrimaryFeature: true,
-      hidden: !isUserLicensed,
+      hidden:
+        !isUserLicensed &&
+        !canUserAccessComponent({
+          userPermissions,
+
+          requiredPermissions: [],
+          activeSubscription,
+          requiredSubscriptionState: {
+            label: "hr-admin",
+            resources: [],
+          },
+        }),
     },
     {
       element: <ReimbursementSettingPage />,
@@ -118,6 +161,11 @@ export const selfServiceRoutes = (props: TAppPageDataFnProps): TRouteData[] => {
         userPermissions,
 
         requiredPermissions: ["manage-requsition-settings"],
+        activeSubscription,
+        requiredSubscriptionState: {
+          label: "hr-admin",
+          resources: [],
+        },
       }),
     },
     {
@@ -126,7 +174,18 @@ export const selfServiceRoutes = (props: TAppPageDataFnProps): TRouteData[] => {
       isSearchable: true,
       title: "Reimbursements",
       isPrimaryFeature: true,
-      hidden: !isUserLicensed,
+      hidden:
+        !isUserLicensed &&
+        !canUserAccessComponent({
+          userPermissions,
+
+          requiredPermissions: [],
+          activeSubscription,
+          requiredSubscriptionState: {
+            label: "hr-admin",
+            resources: [],
+          },
+        }),
     },
     {
       element: <MonetaryRequestsSettingPage />,
@@ -138,6 +197,11 @@ export const selfServiceRoutes = (props: TAppPageDataFnProps): TRouteData[] => {
         userPermissions,
 
         requiredPermissions: ["manage-requsition-settings"],
+        activeSubscription,
+        requiredSubscriptionState: {
+          label: "hr-admin",
+          resources: [],
+        },
       }),
     },
     {
@@ -146,7 +210,18 @@ export const selfServiceRoutes = (props: TAppPageDataFnProps): TRouteData[] => {
       isSearchable: true,
       title: "Monetary Requests",
       isPrimaryFeature: true,
-      hidden: !isUserLicensed,
+      hidden:
+        !isUserLicensed &&
+        !canUserAccessComponent({
+          userPermissions,
+
+          requiredPermissions: [],
+          activeSubscription,
+          requiredSubscriptionState: {
+            label: "hr-admin",
+            resources: [],
+          },
+        }),
     },
     {
       element: <JobRequestsSettingPage />,
@@ -158,6 +233,11 @@ export const selfServiceRoutes = (props: TAppPageDataFnProps): TRouteData[] => {
         userPermissions,
 
         requiredPermissions: ["manage-requsition-settings"],
+        activeSubscription,
+        requiredSubscriptionState: {
+          label: "hr-admin",
+          resources: [],
+        },
       }),
     },
     {
@@ -166,7 +246,18 @@ export const selfServiceRoutes = (props: TAppPageDataFnProps): TRouteData[] => {
       isSearchable: true,
       title: "Job Requests",
       isPrimaryFeature: true,
-      hidden: !isUserLicensed,
+      hidden:
+        !isUserLicensed &&
+        !canUserAccessComponent({
+          userPermissions,
+
+          requiredPermissions: [],
+          activeSubscription,
+          requiredSubscriptionState: {
+            label: "hr-admin",
+            resources: [],
+          },
+        }),
     },
     {
       element: <PositionChangeRequestsSettingPage />,
@@ -178,6 +269,11 @@ export const selfServiceRoutes = (props: TAppPageDataFnProps): TRouteData[] => {
         userPermissions,
 
         requiredPermissions: ["manage-requsition-settings"],
+        activeSubscription,
+        requiredSubscriptionState: {
+          label: "hr-admin",
+          resources: [],
+        },
       }),
     },
     {
@@ -186,7 +282,18 @@ export const selfServiceRoutes = (props: TAppPageDataFnProps): TRouteData[] => {
       isSearchable: true,
       title: "Position Change Requests",
       isPrimaryFeature: true,
-      hidden: !isUserLicensed,
+      hidden:
+        !isUserLicensed &&
+        !canUserAccessComponent({
+          userPermissions,
+
+          requiredPermissions: [],
+          activeSubscription,
+          requiredSubscriptionState: {
+            label: "hr-admin",
+            resources: [],
+          },
+        }),
     },
     {
       element: <PromotionRequestsSettingPage />,
@@ -198,6 +305,11 @@ export const selfServiceRoutes = (props: TAppPageDataFnProps): TRouteData[] => {
         userPermissions,
 
         requiredPermissions: ["manage-requsition-settings"],
+        activeSubscription,
+        requiredSubscriptionState: {
+          label: "hr-admin",
+          resources: [],
+        },
       }),
     },
     {
@@ -206,7 +318,18 @@ export const selfServiceRoutes = (props: TAppPageDataFnProps): TRouteData[] => {
       isSearchable: true,
       title: "Promotion Requests",
       isPrimaryFeature: true,
-      hidden: !isUserLicensed,
+      hidden:
+        !isUserLicensed &&
+        !canUserAccessComponent({
+          userPermissions,
+
+          requiredPermissions: [],
+          activeSubscription,
+          requiredSubscriptionState: {
+            label: "hr-admin",
+            resources: [],
+          },
+        }),
     },
     {
       element: <TravelRequests />,
@@ -214,7 +337,18 @@ export const selfServiceRoutes = (props: TAppPageDataFnProps): TRouteData[] => {
       isSearchable: true,
       title: "Travel Requests",
       isPrimaryFeature: true,
-      hidden: !isUserLicensed,
+      hidden:
+        !isUserLicensed &&
+        !canUserAccessComponent({
+          userPermissions,
+
+          requiredPermissions: [],
+          activeSubscription,
+          requiredSubscriptionState: {
+            label: "hr-admin",
+            resources: [],
+          },
+        }),
     },
     {
       element: <TravelRequestsSettingPage />,
@@ -226,6 +360,11 @@ export const selfServiceRoutes = (props: TAppPageDataFnProps): TRouteData[] => {
         userPermissions,
 
         requiredPermissions: ["manage-requsition-settings"],
+        activeSubscription,
+        requiredSubscriptionState: {
+          label: "hr-admin",
+          resources: [],
+        },
       }),
     },
     {
@@ -234,7 +373,18 @@ export const selfServiceRoutes = (props: TAppPageDataFnProps): TRouteData[] => {
       isSearchable: true,
       title: "Assets",
       isPrimaryFeature: true,
-      hidden: !isUserLicensed,
+      hidden:
+        !isUserLicensed &&
+        !canUserAccessComponent({
+          userPermissions,
+
+          requiredPermissions: [],
+          activeSubscription,
+          requiredSubscriptionState: {
+            label: "hr-admin",
+            resources: [],
+          },
+        }),
     },
     {
       element: <AssetRequestSettingsPage />,
@@ -246,6 +396,11 @@ export const selfServiceRoutes = (props: TAppPageDataFnProps): TRouteData[] => {
         userPermissions,
 
         requiredPermissions: ["manage-requsition-settings"],
+        activeSubscription,
+        requiredSubscriptionState: {
+          label: "hr-admin",
+          resources: [],
+        },
       }),
     },
 
@@ -254,7 +409,18 @@ export const selfServiceRoutes = (props: TAppPageDataFnProps): TRouteData[] => {
       path: appRoutes.assetDetails().format,
       isSearchable: false,
       title: "Asset Details",
-      hidden: !isUserLicensed,
+      hidden:
+        !isUserLicensed &&
+        !canUserAccessComponent({
+          userPermissions,
+
+          requiredPermissions: [],
+          activeSubscription,
+          requiredSubscriptionState: {
+            label: "hr-admin",
+            resources: [],
+          },
+        }),
     },
     {
       element: <LoanHome />,
@@ -262,7 +428,18 @@ export const selfServiceRoutes = (props: TAppPageDataFnProps): TRouteData[] => {
       isSearchable: true,
       title: "Loans",
       isPrimaryFeature: true,
-      hidden: !isUserLicensed,
+      hidden:
+        !isUserLicensed &&
+        !canUserAccessComponent({
+          userPermissions,
+
+          requiredPermissions: [],
+          activeSubscription,
+          requiredSubscriptionState: {
+            label: "payroll",
+            resources: [],
+          },
+        }),
     },
 
     {
@@ -274,6 +451,11 @@ export const selfServiceRoutes = (props: TAppPageDataFnProps): TRouteData[] => {
         userPermissions,
 
         requiredPermissions: ["manage-loan-settings"],
+        activeSubscription,
+        requiredSubscriptionState: {
+          label: "payroll",
+          resources: [],
+        },
       }),
     },
     {
@@ -282,7 +464,18 @@ export const selfServiceRoutes = (props: TAppPageDataFnProps): TRouteData[] => {
       isSearchable: true,
       title: "Vehicle Booking",
       isPrimaryFeature: true,
-      hidden: !isUserLicensed,
+      hidden:
+        !isUserLicensed &&
+        !canUserAccessComponent({
+          userPermissions,
+
+          requiredPermissions: [],
+          activeSubscription,
+          requiredSubscriptionState: {
+            label: "hr-admin",
+            resources: [],
+          },
+        }),
     },
     {
       element: <VehicleBookingSettings />,
@@ -294,6 +487,11 @@ export const selfServiceRoutes = (props: TAppPageDataFnProps): TRouteData[] => {
         userPermissions,
 
         requiredPermissions: ["manage-vehicle-settings"],
+        activeSubscription,
+        requiredSubscriptionState: {
+          label: "hr-admin",
+          resources: [],
+        },
       }),
     },
     {
@@ -305,6 +503,11 @@ export const selfServiceRoutes = (props: TAppPageDataFnProps): TRouteData[] => {
         userPermissions,
 
         requiredPermissions: ["manage-vehicle-settings"],
+        activeSubscription,
+        requiredSubscriptionState: {
+          label: "hr-admin",
+          resources: [],
+        },
       }),
     },
     {
@@ -334,6 +537,18 @@ export const selfServiceRoutes = (props: TAppPageDataFnProps): TRouteData[] => {
       isSearchable: true,
       title: "Conference Room Booking",
       isPrimaryFeature: true,
+      hidden:
+        !isUserLicensed &&
+        !canUserAccessComponent({
+          userPermissions,
+
+          requiredPermissions: [],
+          activeSubscription,
+          requiredSubscriptionState: {
+            label: "hr-admin",
+            resources: [],
+          },
+        }),
     },
     {
       element: <CRBHomeSettings />,
@@ -344,6 +559,11 @@ export const selfServiceRoutes = (props: TAppPageDataFnProps): TRouteData[] => {
         userPermissions,
 
         requiredPermissions: ["manage-conference-room-settings"],
+        activeSubscription,
+        requiredSubscriptionState: {
+          label: "hr-admin",
+          resources: [],
+        },
       }),
     },
     {
@@ -352,7 +572,18 @@ export const selfServiceRoutes = (props: TAppPageDataFnProps): TRouteData[] => {
       isSearchable: true,
       title: "Leave",
       isPrimaryFeature: true,
-      hidden: !isUserLicensed,
+      hidden:
+        !isUserLicensed &&
+        !canUserAccessComponent({
+          userPermissions,
+
+          requiredPermissions: [],
+          activeSubscription,
+          requiredSubscriptionState: {
+            label: "hr-admin",
+            resources: [],
+          },
+        }),
     },
     {
       element: <LeaveSettings />,
@@ -363,6 +594,11 @@ export const selfServiceRoutes = (props: TAppPageDataFnProps): TRouteData[] => {
         userPermissions,
 
         requiredPermissions: ["manage-leave-settings"],
+        activeSubscription,
+        requiredSubscriptionState: {
+          label: "hr-admin",
+          resources: [],
+        },
       }),
     },
     {
@@ -371,7 +607,18 @@ export const selfServiceRoutes = (props: TAppPageDataFnProps): TRouteData[] => {
       isSearchable: false,
       title: "Health Access Details",
       isPrimaryFeature: false,
-      hidden: !isUserLicensed,
+      hidden:
+        !isUserLicensed &&
+        !canUserAccessComponent({
+          userPermissions,
+
+          requiredPermissions: [],
+          activeSubscription,
+          requiredSubscriptionState: {
+            label: "employee-management",
+            resources: [],
+          },
+        }),
     },
     {
       element: <HealthAccessHome />,
@@ -379,18 +626,34 @@ export const selfServiceRoutes = (props: TAppPageDataFnProps): TRouteData[] => {
       isSearchable: true,
       title: "Health Access",
       isPrimaryFeature: true,
-      hidden: !isUserLicensed,
+      hidden:
+        !isUserLicensed &&
+        !canUserAccessComponent({
+          userPermissions,
+
+          requiredPermissions: [],
+          activeSubscription,
+          requiredSubscriptionState: {
+            label: "hr-admin",
+            resources: [],
+          },
+        }),
     },
     {
       element: <HealthAccessSettings />,
       path: appRoutes.healthAccessSettings,
       isSearchable: true,
       title: "Health Access Settings",
-      // hidden: !canUserAccessComponent({
-      //   userPermissions,
+      hidden: !canUserAccessComponent({
+        userPermissions,
 
-      //   requiredPermissions: ["health-access-settings"],
-      // }), //Pending: When feature is fleshed out
+        requiredPermissions: ["manage-employee-health-access"],
+        activeSubscription,
+        requiredSubscriptionState: {
+          label: "employee-management",
+          resources: [],
+        },
+      }),
     },
     {
       element: <Onboarding />,
@@ -398,7 +661,18 @@ export const selfServiceRoutes = (props: TAppPageDataFnProps): TRouteData[] => {
       isSearchable: true,
       title: "Onboarding",
       isPrimaryFeature: true,
-      hidden: !isUserLicensed,
+      hidden:
+        !isUserLicensed &&
+        !canUserAccessComponent({
+          userPermissions,
+
+          requiredPermissions: [],
+          activeSubscription,
+          requiredSubscriptionState: {
+            label: "employee-management",
+            resources: [],
+          },
+        }),
     },
     {
       element: <StartOnboarding />,
@@ -408,6 +682,11 @@ export const selfServiceRoutes = (props: TAppPageDataFnProps): TRouteData[] => {
         userPermissions,
 
         requiredPermissions: ["manage-employee-onboarding"],
+        activeSubscription,
+        requiredSubscriptionState: {
+          label: "hr-admin",
+          resources: [],
+        },
       }),
     },
     {
@@ -416,7 +695,18 @@ export const selfServiceRoutes = (props: TAppPageDataFnProps): TRouteData[] => {
       isSearchable: true,
       title: "HandOver",
       isPrimaryFeature: true,
-      hidden: !isUserLicensed,
+      hidden:
+        !isUserLicensed &&
+        !canUserAccessComponent({
+          userPermissions,
+
+          requiredPermissions: [],
+          activeSubscription,
+          requiredSubscriptionState: {
+            label: "employee-management",
+            resources: [],
+          },
+        }),
     },
     {
       element: <HandOverNewForm />,
@@ -424,7 +714,18 @@ export const selfServiceRoutes = (props: TAppPageDataFnProps): TRouteData[] => {
       isSearchable: true,
       title: "New Handover Form",
       isPrimaryFeature: true,
-      hidden: !isUserLicensed,
+      hidden:
+        !isUserLicensed &&
+        !canUserAccessComponent({
+          userPermissions,
+
+          requiredPermissions: [],
+          activeSubscription,
+          requiredSubscriptionState: {
+            label: "employee-management",
+            resources: [],
+          },
+        }),
     },
     {
       element: <HandOverDetails />,
@@ -435,6 +736,11 @@ export const selfServiceRoutes = (props: TAppPageDataFnProps): TRouteData[] => {
         userPermissions,
 
         requiredPermissions: ["view-all-exit-handover-forms"],
+        activeSubscription,
+        requiredSubscriptionState: {
+          label: "employee-management",
+          resources: [],
+        },
       }),
     },
     {
@@ -454,6 +760,11 @@ export const selfServiceRoutes = (props: TAppPageDataFnProps): TRouteData[] => {
         userPermissions,
 
         requiredPermissions: ["manage-documents"],
+        activeSubscription,
+        requiredSubscriptionState: {
+          label: "employee-management",
+          resources: [],
+        },
       }),
     },
   ];

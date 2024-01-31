@@ -31,6 +31,8 @@ const SummarySection: React.FC<{
     trainingSessionPrice,
     storagePrice,
     isLoading,
+    vatPercentage,
+    discountPercentage,
   } = useGetCreateCompanySubscriptionSummary({ subscriptions });
 
   return (
@@ -80,13 +82,13 @@ const SummarySection: React.FC<{
             )}`,
           },
           {
-            name: "Vat(%)",
+            name: `Vat(${vatPercentage}%)`,
             value: `${PRICE_TYPE_CURRENCY[priceType]} ${formatNumberWithCommas(
               vat
             )}`,
           },
           {
-            name: "Discount",
+            name: `Discount(${discountPercentage}%)`,
             value: `${PRICE_TYPE_CURRENCY[priceType]} ${formatNumberWithCommas(
               discount
             )}`,

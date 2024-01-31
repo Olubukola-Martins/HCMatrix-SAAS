@@ -24,7 +24,7 @@ import { canUserAccessComponent } from "components/permission-restriction/Permis
 import ProbationSettingsPage from "features/core/policies/pages/ProbationSettingsPage";
 
 export const settingRoutes = (props: TAppPageDataFnProps): TRouteData[] => {
-  const { userPermissions } = props;
+  const { userPermissions, activeSubscription } = props;
   return [
     {
       element: <ProjectsPage />,
@@ -35,6 +35,11 @@ export const settingRoutes = (props: TAppPageDataFnProps): TRouteData[] => {
         userPermissions,
 
         requiredPermissions: ["manage-projects"],
+        activeSubscription,
+        requiredSubscriptionState: {
+          label: "employee-management",
+          resources: [],
+        },
       }),
     },
     {
@@ -45,6 +50,11 @@ export const settingRoutes = (props: TAppPageDataFnProps): TRouteData[] => {
         userPermissions,
 
         requiredPermissions: ["manage-projects"],
+        activeSubscription,
+        requiredSubscriptionState: {
+          label: "employee-management",
+          resources: [],
+        },
       }),
     },
     {
@@ -56,6 +66,11 @@ export const settingRoutes = (props: TAppPageDataFnProps): TRouteData[] => {
         userPermissions,
 
         requiredPermissions: ["manage-company-settings"],
+        activeSubscription,
+        requiredSubscriptionState: {
+          label: "employee-management",
+          resources: [],
+        },
       }),
     },
 
@@ -67,6 +82,11 @@ export const settingRoutes = (props: TAppPageDataFnProps): TRouteData[] => {
         userPermissions,
 
         requiredPermissions: ["manage-company-settings"],
+        activeSubscription,
+        requiredSubscriptionState: {
+          label: "employee-management",
+          resources: [],
+        },
       }),
       title: "Company Details",
     },
@@ -80,6 +100,11 @@ export const settingRoutes = (props: TAppPageDataFnProps): TRouteData[] => {
         userPermissions,
 
         requiredPermissions: ["manage-branches"],
+        activeSubscription,
+        requiredSubscriptionState: {
+          label: "employee-management",
+          resources: [],
+        },
       }),
     },
 
@@ -92,6 +117,11 @@ export const settingRoutes = (props: TAppPageDataFnProps): TRouteData[] => {
         userPermissions,
 
         requiredPermissions: ["manage-holidays"],
+        activeSubscription,
+        requiredSubscriptionState: {
+          label: "employee-management",
+          resources: [],
+        },
       }),
     },
 
@@ -109,6 +139,11 @@ export const settingRoutes = (props: TAppPageDataFnProps): TRouteData[] => {
         userPermissions,
 
         requiredPermissions: ["manage-employees"],
+        activeSubscription,
+        requiredSubscriptionState: {
+          label: "employee-management",
+          resources: [],
+        },
       }),
     },
     {
@@ -120,6 +155,11 @@ export const settingRoutes = (props: TAppPageDataFnProps): TRouteData[] => {
         userPermissions,
 
         requiredPermissions: ["manage-employees"],
+        activeSubscription,
+        requiredSubscriptionState: {
+          label: "employee-management",
+          resources: [],
+        },
       }),
     },
     {
@@ -131,6 +171,11 @@ export const settingRoutes = (props: TAppPageDataFnProps): TRouteData[] => {
         userPermissions,
 
         requiredPermissions: ["manage-employees"],
+        activeSubscription,
+        requiredSubscriptionState: {
+          label: "employee-management",
+          resources: [],
+        },
       }),
     },
     {
@@ -142,6 +187,11 @@ export const settingRoutes = (props: TAppPageDataFnProps): TRouteData[] => {
         userPermissions,
 
         requiredPermissions: ["manage-designations"],
+        activeSubscription,
+        requiredSubscriptionState: {
+          label: "employee-management",
+          resources: [],
+        },
       }),
     },
 
@@ -154,6 +204,11 @@ export const settingRoutes = (props: TAppPageDataFnProps): TRouteData[] => {
         userPermissions,
 
         requiredPermissions: ["manage-groups"],
+        activeSubscription,
+        requiredSubscriptionState: {
+          label: "employee-management",
+          resources: [],
+        },
       }),
     },
     {
@@ -164,6 +219,11 @@ export const settingRoutes = (props: TAppPageDataFnProps): TRouteData[] => {
         userPermissions,
 
         requiredPermissions: ["manage-departments"],
+        activeSubscription,
+        requiredSubscriptionState: {
+          label: "employee-management",
+          resources: [],
+        },
       }),
     },
 
@@ -176,6 +236,11 @@ export const settingRoutes = (props: TAppPageDataFnProps): TRouteData[] => {
         userPermissions,
 
         requiredPermissions: ["create-delegations", "view-all-delegations"],
+        activeSubscription,
+        requiredSubscriptionState: {
+          label: "employee-management",
+          resources: [],
+        },
       }),
       title: "Delegations",
     },
@@ -188,6 +253,11 @@ export const settingRoutes = (props: TAppPageDataFnProps): TRouteData[] => {
         userPermissions,
 
         requiredPermissions: ["manage-roles"],
+        activeSubscription,
+        requiredSubscriptionState: {
+          label: "employee-management",
+          resources: [],
+        },
       }),
     },
 
@@ -199,6 +269,11 @@ export const settingRoutes = (props: TAppPageDataFnProps): TRouteData[] => {
         userPermissions,
 
         requiredPermissions: ["manage-roles"],
+        activeSubscription,
+        requiredSubscriptionState: {
+          label: "employee-management",
+          resources: [],
+        },
       }),
     },
     {
@@ -210,6 +285,11 @@ export const settingRoutes = (props: TAppPageDataFnProps): TRouteData[] => {
         userPermissions,
 
         requiredPermissions: ["manage-workflows"],
+        activeSubscription,
+        requiredSubscriptionState: {
+          label: "employee-management",
+          resources: [],
+        },
       }),
     },
     {
@@ -221,6 +301,11 @@ export const settingRoutes = (props: TAppPageDataFnProps): TRouteData[] => {
         userPermissions,
 
         requiredPermissions: ["manage-workflows"],
+        activeSubscription,
+        requiredSubscriptionState: {
+          label: "employee-management",
+          resources: [],
+        },
       }),
     },
     {
@@ -231,6 +316,11 @@ export const settingRoutes = (props: TAppPageDataFnProps): TRouteData[] => {
         userPermissions,
 
         requiredPermissions: ["manage-workflows"],
+        activeSubscription,
+        requiredSubscriptionState: {
+          label: "employee-management",
+          resources: [],
+        },
       }),
     },
     {
@@ -242,6 +332,11 @@ export const settingRoutes = (props: TAppPageDataFnProps): TRouteData[] => {
         userPermissions,
 
         requiredPermissions: ["manage-resignation"],
+        activeSubscription,
+        requiredSubscriptionState: {
+          label: "employee-management",
+          resources: [],
+        },
       }),
     },
     {
@@ -253,6 +348,11 @@ export const settingRoutes = (props: TAppPageDataFnProps): TRouteData[] => {
         userPermissions,
 
         requiredPermissions: ["manage-probation"],
+        activeSubscription,
+        requiredSubscriptionState: {
+          label: "employee-management",
+          resources: [],
+        },
       }),
     },
   ];

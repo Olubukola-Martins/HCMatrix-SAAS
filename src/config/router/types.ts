@@ -1,7 +1,10 @@
 import { TLicenseType } from "features/authentication/types/auth-user";
+import { TCompanySubscription } from "features/billing/types/company/companySubscription";
 import { TPermissionLabel } from "features/core/roles-and-permissions/types";
 
-export type TRouteDataCategory = "doesnt-require-authentication";
+export type TRouteDataCategory =
+  | "doesnt-require-authentication"
+  | "doesnt-require-active-subscription";
 
 export type TRouteData = {
   path: string;
@@ -13,9 +16,9 @@ export type TRouteData = {
   hidden?: boolean;
 };
 
-type TSubscription = {};
 export type TAppPageDataFnProps = {
   userPermissions: TPermissionLabel[];
   licenseType?: TLicenseType;
-  subscription?: TSubscription;
+  activeSubscription?: TCompanySubscription;
+  isOwner?: boolean;
 };
