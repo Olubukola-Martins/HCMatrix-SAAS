@@ -195,6 +195,11 @@ const TopBar = ({
             {canUserAccessComponent({
               userPermissions,
               requiredPermissions: ["manage-company-settings"],
+              activeSubscription: companyActiveSubscription,
+              requiredSubscriptionState: {
+                label: "employee-management",
+                resources: [],
+              },
             }) && (
               <Link to={appRoutes.settings} className={"hover:text-black"}>
                 <i

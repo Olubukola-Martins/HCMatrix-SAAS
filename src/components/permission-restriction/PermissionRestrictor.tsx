@@ -40,9 +40,10 @@ export const canUserAccessComponent = ({
     }
   );
   // then check permissions
-  let canAccessViaPermissions = !!userPermissions?.some((item) =>
-    requiredPermissions?.includes(item)
-  );
+  let canAccessViaPermissions =
+    requiredPermissions.length === 0
+      ? true
+      : !!userPermissions?.some((item) => requiredPermissions?.includes(item));
   canAccess = canAccessViaSubscription && canAccessViaPermissions;
   return canAccess;
 };
