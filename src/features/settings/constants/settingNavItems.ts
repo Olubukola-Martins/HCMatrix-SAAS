@@ -212,7 +212,7 @@ export const settingNavItems: TSettNavItem[] = [
         link: appRoutes.workSchedule,
       },
       { name: "Time Off Policy", link: appRoutes.timeOffPolicy },
-      { name: "Clock in settings", link: appRoutes.clockInSettings },
+      { name: "Clock in settings", link: appRoutes.biometrics },
       { name: "Location", link: appRoutes.location },
       { name: "Other Settings", link: appRoutes.otherSettings },
     ],

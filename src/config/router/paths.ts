@@ -290,7 +290,7 @@ export const appRoutes = {
   timeTrackingRules: `/attendance/time-tracking-rules`,
   workSchedule: `/attendance/work-schedule`,
   timeOffPolicy: `/attendance/time-off-policy`,
-  clockInSettings: `/attendance/clock-in-settings`,
+  biometrics: `/attendance/biometrics`,
   location: `/attendance/location`,
   otherSettings: `/attendance/other-settings`,
 

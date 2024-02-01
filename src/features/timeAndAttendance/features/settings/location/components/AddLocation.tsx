@@ -2,39 +2,31 @@ import { Drawer, Form, Select } from "antd";
 import { AppButton } from "components/button/AppButton";
 import { useFetchBranches } from "features/core/branches/hooks/useFetchBranches";
 import { UseWindowWidth } from "features/timeAndAttendance/hooks/UseWindowWidth";
-import { useCreateAttendanceLocation } from "features/timeAndAttendance/hooks/useCreateAttendanceLocation";
-import { useGetBiometricDevice } from "features/timeAndAttendance/hooks/useGetBiometricDevice";
-import { useApiAuth } from "hooks/useApiAuth";
 import { useDebounce } from "hooks/useDebounce";
 import { useContext, useEffect, useState } from "react";
 import { GlobalContext, EGlobalOps } from "stateManagers/GlobalContextProvider";
 import { IDrawerProps } from "types";
 import { generalValidationRules } from "utils/formHelpers/validation";
 import { openNotification } from "utils/notifications";
+import { useGetBiometricDevice } from "../../Biometrics/hooks/useGetBiometricDevice";
+import { useCreateLocation } from "../hooks/useCreateLocation";
 const formWrapStyle =
   "bg-card px-4 pt-4 rounded grid grid-cols-1 md:grid-cols-2 gap-x-10 mb-5 shadow-sm";
-export const AddLocation = ({ handleClose, open }: IDrawerProps) => {
+export const AddLocation = ({ handleClose, open, id }: IDrawerProps) => {
   const { drawerSize } = UseWindowWidth();
   const [form] = Form.useForm();
-  const { companyId, token } = useApiAuth();
-  const { mutate, isLoading } = useCreateAttendanceLocation();
+  const { mutate, isLoading } = useCreateLocation();
   const globalCtx = useContext(GlobalContext);
   const { dispatch } = globalCtx;
-  const { data: BiometricDevice, isLoading: loadBiometricDevice } =
-    useGetBiometricDevice();
-
   const [searchTerm, setSearchTerm] = useState<string>("");
   const debouncedSearchTerm: string = useDebounce<string>(searchTerm);
+  const { data: biometricData, isLoading: loadBiometric } =
+    useGetBiometricDevice();
 
-  const {
-    data: branchData,
-    isFetching,
-  } = useFetchBranches({
-    // companyId,
+  const { data: branchData, isFetching } = useFetchBranches({
     searchParams: {
       name: debouncedSearchTerm,
     },
-    // token,
   });
 
   const handleSearch = (val: string) => {
@@ -45,43 +37,39 @@ export const AddLocation = ({ handleClose, open }: IDrawerProps) => {
     const defaultField = {
       branchId: "",
       biometricDeviceId: "",
-      companyId: companyId,
     };
     form.setFieldsValue({ biometricDeviceLocations: [defaultField] });
   }, []);
 
   const handleFormSubmit = (values: any) => {
-    if (companyId) {
-      mutate(
-        {
-          companyId,
-          token,
-          biometricDeviceLocations: values.biometricDeviceLocations,
+    const data = values.biometricDeviceLocations.map((value: any) => ({
+      branchId: value.branchId,
+      biometricDeviceId: value.biometricDeviceId,
+    }));
+    mutate(
+      { data, id },
+      {
+        onError: (err: any) => {
+          openNotification({
+            state: "error",
+            title: "Error Occurred",
+            description:
+              err?.response.data.message ?? err?.response.data.error.message,
+            duration: 6.0,
+          });
         },
-        {
-          onError: (err: any) => {
-            openNotification({
-              state: "error",
-              title: "Error Occurred",
-              description:
-                err?.response.data.message ?? err?.response.data.error.message,
-              duration: 6.0,
-            });
-          },
-          onSuccess: (res: any) => {
-            openNotification({
-              state: "success",
-              title: "Success",
-              description: res.data.message,
-              // duration: 0.4,
-            });
-
-            form.resetFields();
-            dispatch({ type: EGlobalOps.setShowInitialSetup, payload: true });
-          },
-        }
-      );
-    }
+        onSuccess: (res: any) => {
+          openNotification({
+            state: "success",
+            title: "Success",
+            description: res.data.message,
+          });
+          form.resetFields();
+          handleClose();
+          dispatch({ type: EGlobalOps.setShowInitialSetup, payload: true });
+        },
+      }
+    );
   };
   const handleAddField = () => {
     const biometricDeviceLocations =
@@ -89,7 +77,6 @@ export const AddLocation = ({ handleClose, open }: IDrawerProps) => {
     const newLocation = {
       branchId: "",
       biometricDeviceId: "",
-      companyId: companyId,
     };
     form.setFieldsValue({
       biometricDeviceLocations: [...biometricDeviceLocations, newLocation],
@@ -159,31 +146,35 @@ export const AddLocation = ({ handleClose, open }: IDrawerProps) => {
                       className="w-full"
                       rules={generalValidationRules}
                     >
-                      {/* <Select
+                      <Select
                         className="w-full"
-                        options={BiometricDevice?.map((item) => ({
+                        options={biometricData?.map((item) => ({
                           value: item.id,
                           label: item.name,
                         }))}
                         allowClear
                         placeholder="Select"
-                        loading={loadBiometricDevice}
-                      /> */}
+                        loading={loadBiometric}
+                      />
                     </Form.Item>
 
-                    <i
-                      className="ri-delete-bin-line text-xl cursor-pointer hover:text-caramel"
-                      onClick={() => handleRemoveField(index)}
-                    ></i>
+                    {!id && (
+                      <i
+                        className="ri-delete-bin-line text-xl cursor-pointer hover:text-caramel"
+                        onClick={() => handleRemoveField(index)}
+                      ></i>
+                    )}
                   </div>
                 </div>
               ))}
 
-              <AppButton
-                variant="transparent"
-                label="+ Add More"
-                handleClick={() => handleAddField()}
-              />
+              {!id && (
+                <AppButton
+                  variant="transparent"
+                  label="+ Add Location"
+                  handleClick={() => handleAddField()}
+                />
+              )}
             </>
           )}
         </Form.List>

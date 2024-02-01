@@ -1,15 +1,19 @@
 import axios from "axios";
 import { useMutation } from "react-query";
-import { biometricProps } from "../types/settings";
 import { MICROSERVICE_ENDPOINTS } from "config/enviroment";
 import { ICurrentCompany } from "types";
 import { useApiAuth } from "hooks/useApiAuth";
+import { biometricProps } from "../types";
 
 export const createData = async (props: {
   data: biometricProps;
   auth: ICurrentCompany;
+  id?: number;
 }) => {
-  const url = `${MICROSERVICE_ENDPOINTS.TIME_AND_ATTENDANCE}/settings/biometrics/devices/multiple`;
+  const updateUrl = `${props.id}`;
+  const addUrl = "multiple";
+  const acceptedUrl = props.id ? updateUrl : addUrl;
+  const url = `${MICROSERVICE_ENDPOINTS.TIME_AND_ATTENDANCE}/settings/biometrics/devices/${acceptedUrl}`;
   const config = {
     headers: {
       Accept: "application/json",
@@ -20,13 +24,14 @@ export const createData = async (props: {
 
   const data = props.data;
 
-  const response = await axios.post(url, data, config);
+  const requestType = props.id ? axios.put : axios.post;
+  const response = await requestType(url, data, config);
   return response;
 };
 
 export const useCreateBiometric = () => {
   const { token, companyId } = useApiAuth();
-  return useMutation((props: { data: biometricProps }) =>
-    createData({ data: props.data, auth: { companyId, token } })
+  return useMutation((props: { data: biometricProps; id?: number }) =>
+    createData({ data: props.data, auth: { companyId, token }, id: props.id })
   );
 };

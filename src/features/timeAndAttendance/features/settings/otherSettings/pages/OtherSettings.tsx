@@ -1,10 +1,6 @@
 import { Form, Input, InputNumber, Switch } from "antd";
 import { AppButton } from "components/button/AppButton";
 import { FormWorkflowInput } from "features/core/workflows/components/FormWorkflowInput";
-import { AttendanceSettingsIntro } from "features/timeAndAttendance/components/settings/AttendanceSettingsIntro";
-import { TimeAttendanceSettingsNav } from "features/timeAndAttendance/components/settings/TimeAttendanceSettingsNav";
-import { useCreateOtherSettings } from "features/timeAndAttendance/hooks/useCreateOtherSettings";
-import { useGetOtherSettings } from "features/timeAndAttendance/hooks/useGetOtherSettings";
 import { QUERY_KEY_FOR_COMPANY_POLICY } from "features/timeAndAttendance/hooks/useGetTimeTrackingRule";
 import { useContext, useEffect } from "react";
 import { useQueryClient } from "react-query";
@@ -14,16 +10,20 @@ import {
   textInputValidationRules,
 } from "utils/formHelpers/validation";
 import { openNotification } from "utils/notifications";
+import { useGetOtherSettings } from "../hooks/useGetOtherSettings";
+import { useCreateOtherSettings } from "../hooks/useCreateOtherSettings";
+import { TimeAttendanceSettingsNav } from "../../components/TimeAttendanceSettingsNav";
+import { AttendanceSettingsIntro } from "../../components/AttendanceSettingsIntro";
 const formWrapStyle =
   "bg-card px-4 pt-4 rounded grid grid-cols-1 md:grid-cols-2 gap-x-10 mb-5 shadow-sm";
-export const Other = () => {
+
+export const OtherSettings = () => {
   const [form] = Form.useForm();
   const globalCtx = useContext(GlobalContext);
   const { dispatch } = globalCtx;
   const { data, isLoading, isSuccess } = useGetOtherSettings();
   const { mutate, isLoading: isLoadingPost } = useCreateOtherSettings();
   const queryClient = useQueryClient();
-
 
   useEffect(() => {
     if (isSuccess && data) {

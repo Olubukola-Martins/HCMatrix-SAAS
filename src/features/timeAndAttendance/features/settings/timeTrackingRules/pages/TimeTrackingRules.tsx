@@ -1,29 +1,33 @@
 import { AppButton } from "components/button/AppButton";
-import { AttendanceSettingsIntro } from "features/timeAndAttendance/components/settings/AttendanceSettingsIntro";
-import { TimeAttendanceSettingsNav } from "features/timeAndAttendance/components/settings/TimeAttendanceSettingsNav";
 import { useState } from "react";
-import "../../assets/style.css";
-import { CreateTrackingRule } from "features/timeAndAttendance/components/settings/CreateTrackingRule";
+// import "../../assets/style.css";
 import { radioFormOptions } from "features/timeAndAttendance/constants";
-import checkboxBase from "../../assets/images/CheckboxBase.svg";
-import faceReg from "../../assets/images/lucide_scan-face.svg";
-import locationIcon from "../../assets/images/symbols_location.svg";
-import editPenIcon from "../../assets/images/edit-outline.svg";
+import checkboxBase from "../../../../assets/images/CheckboxBase.svg";
+
+import faceReg from "../../../../assets/images/lucide_scan-face.svg";
+import locationIcon from "../../../../assets/images/symbols_location.svg";
+import editPenIcon from "../../../../assets/images/edit-outline.svg";
 import { Empty } from "antd";
 import { ScaleLoader } from "react-spinners";
-import { useGetActiveTrackingPolicy } from "features/timeAndAttendance/hooks/useGetActiveTrackingPolicy";
+// import { useGetActiveTrackingPolicy } from "features/timeAndAttendance/hooks/useGetActiveTrackingPolicy";
+import { AttendanceSettingsIntro } from "../../components/AttendanceSettingsIntro";
+import { CreateTrackingRule } from "../components/CreateTrackingRule";
+import { TimeAttendanceSettingsNav } from "../../components/TimeAttendanceSettingsNav";
+import { useGetActiveTrackingPolicy } from "../hooks/useGetActiveTrackingPolicy";
 
-export const TimeTrackingRules = () => {
+const TimeTrackingRules = () => {
   const [openAddTRule, setOpenAddTRule] = useState<boolean>(false);
   const { data, isLoading } = useGetActiveTrackingPolicy();
 
   return (
     <>
       <TimeAttendanceSettingsNav active={"time tracking rules"} />
+
       <AttendanceSettingsIntro
         title="Time tracking policies"
         description="Take control of how your team members clock in and out. Choose from presets and make advanced changes Later."
       />
+
       <CreateTrackingRule
         open={openAddTRule}
         handleClose={() => setOpenAddTRule(false)}
@@ -181,17 +185,21 @@ export const TimeTrackingRules = () => {
                   </span>
                 </label>
               ))}
-            <div className="flex justify-center mt-2">
-              <button
-                onClick={() => setOpenAddTRule(true)}
-                className="hover:border-caramel justify-center shadow border rounded px-3 border-slate-300 flex items-center gap-x-2"
-              >
-                <i className="ri-pencil-line text-lg"></i> <span>Change</span>
-              </button>
-            </div>
+            {!isLoading && (
+              <div className="flex justify-center mt-2">
+                <button
+                  onClick={() => setOpenAddTRule(true)}
+                  className="hover:border-caramel justify-center shadow border rounded px-3 border-slate-300 flex items-center gap-x-2"
+                >
+                  <i className="ri-pencil-line text-lg"></i> <span>Change</span>
+                </button>
+              </div>
+            )}
           </div>
         </div>
       </div>
     </>
   );
 };
+
+export default TimeTrackingRules;

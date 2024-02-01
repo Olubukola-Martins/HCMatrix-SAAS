@@ -1,14 +1,16 @@
 import axios from "axios";
 import { useQuery } from "react-query";
-import { IOtherSettings, getOtherSettingsProps } from "../types/settings";
 import { MICROSERVICE_ENDPOINTS } from "config/enviroment";
 import { useApiAuth } from "hooks/useApiAuth";
-import { ICurrentCompany } from "types";
+import { locationProps } from "../types";
 
-export const QUERY_KEY_FOR_COMPANY_POLICY = "companyPolicy";
+export const QUERY_KEY_FOR_LOCATION = "locations";
 
-const getData = async (props: ICurrentCompany): Promise<getOtherSettingsProps> => {
-  const url = `${MICROSERVICE_ENDPOINTS.TIME_AND_ATTENDANCE}/settings/general`;
+const getData = async (props: {
+  token: string;
+  companyId: number;
+}): Promise<locationProps[]> => {
+  const url = `${MICROSERVICE_ENDPOINTS.TIME_AND_ATTENDANCE}/settings/branch-locations`;
   const config = {
     headers: {
       Accept: "application/json",
@@ -18,17 +20,13 @@ const getData = async (props: ICurrentCompany): Promise<getOtherSettingsProps> =
   };
   const res = await axios.get(url, config);
 
-  const item: getOtherSettingsProps = res.data.data;
-  const data: getOtherSettingsProps = {
-    ...item,
-  };
-
-  return data;
+  const item: locationProps[] = res.data.data.result;
+  return item;
 };
-export const useGetOtherSettings = () => {
+export const useGetLocations = () => {
   const { companyId, token } = useApiAuth();
   const queryData = useQuery(
-    [QUERY_KEY_FOR_COMPANY_POLICY],
+    [QUERY_KEY_FOR_LOCATION],
     () => getData({ token, companyId }),
     {
       onError: (err: any) => {},

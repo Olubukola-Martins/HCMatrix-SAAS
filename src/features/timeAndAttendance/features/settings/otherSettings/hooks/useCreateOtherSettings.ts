@@ -1,9 +1,9 @@
 import axios from "axios";
 import { useMutation } from "react-query";
-import { IOtherSettings } from "../types/settings";
 import { MICROSERVICE_ENDPOINTS } from "config/enviroment";
 import { ICurrentCompany } from "types";
 import { useApiAuth } from "hooks/useApiAuth";
+import { IOtherSettings } from "../types";
 
 export const createData = async (props: {
   data: IOtherSettings;

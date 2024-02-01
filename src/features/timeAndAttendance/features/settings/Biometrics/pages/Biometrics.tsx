@@ -1,24 +1,27 @@
 import { AppButton } from "components/button/AppButton";
-import { AttendanceSettingsIntro } from "features/timeAndAttendance/components/settings/AttendanceSettingsIntro";
-import { TimeAttendanceSettingsNav } from "features/timeAndAttendance/components/settings/TimeAttendanceSettingsNav";
 import { useState } from "react";
-import { AddClockIn } from "features/timeAndAttendance/components/settings/AddClockIn";
 import Table, { ColumnsType } from "antd/lib/table";
 import { Dropdown, Menu, Popconfirm } from "antd";
-import {
-  QUERY_KEY_FOR_BIOMETRIC_DEVICE,
-  useGetBiometricDevice,
-} from "features/timeAndAttendance/hooks/useGetBiometricDevice";
-import { biometricProps } from "features/timeAndAttendance/types/settings";
 import { useDeleteTimeAndAttendance } from "features/timeAndAttendance/hooks/useDeleteTimeAndAttendance";
+import { AddBiometric } from "../components/AddBiometric";
+import { TimeAttendanceSettingsNav } from "../../components/TimeAttendanceSettingsNav";
+import { AttendanceSettingsIntro } from "../../components/AttendanceSettingsIntro";
+import { biometricProps } from "../types";
+import { QUERY_KEY_FOR_BIOMETRIC_DEVICE, useGetBiometricDevice } from "../hooks/useGetBiometricDevice";
 
-export const ClockIn = () => {
+export const Biometrics = () => {
   const [addClockIn, setAddClockIn] = useState(false);
+  const [biometricId, setBiometricId] = useState<number>();
   const { data, isLoading } = useGetBiometricDevice();
   const { removeData } = useDeleteTimeAndAttendance({
     EndPointUrl: "settings/biometrics/devices",
     queryKey: QUERY_KEY_FOR_BIOMETRIC_DEVICE,
   });
+
+  const handleEdit = (id: number) => {
+    setAddClockIn(true);
+    setBiometricId(id);
+  };
 
   const columns: ColumnsType<biometricProps> = [
     {
@@ -37,7 +40,9 @@ export const ClockIn = () => {
             trigger={["click"]}
             overlay={
               <Menu>
-                <Menu.Item key="1">Edit</Menu.Item>
+                <Menu.Item key="1" onClick={() => handleEdit(val.id)}>
+                  Edit
+                </Menu.Item>
                 <Menu.Item key="2">
                   <Popconfirm
                     title={`Delete ${val.name}`}
@@ -60,7 +65,14 @@ export const ClockIn = () => {
     <>
       <TimeAttendanceSettingsNav active="clock in settings" />
       <AttendanceSettingsIntro title={"Clock in Settings"} description="" />
-      <AddClockIn open={addClockIn} handleClose={() => setAddClockIn(false)} />
+      <AddBiometric
+        id={biometricId}
+        open={addClockIn}
+        handleClose={() => {
+          setAddClockIn(false);
+          setBiometricId(undefined);
+        }}
+      />
       <div className="Container mt-4">
         <div className="flex justify-end">
           <AppButton
@@ -74,8 +86,11 @@ export const ClockIn = () => {
           dataSource={data}
           loading={isLoading}
           className="mt-5"
+          pagination={{ pageSize: 10, total: data?.length }}
         />
       </div>
     </>
   );
 };
+
+export default Biometrics;

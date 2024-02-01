@@ -2,20 +2,17 @@ import { Drawer } from "antd";
 import { AppButton } from "components/button/AppButton";
 import { radioFormOptions } from "features/timeAndAttendance/constants";
 import { UseWindowWidth } from "features/timeAndAttendance/hooks/UseWindowWidth";
-import { useCreateTimeTrackingRule } from "features/timeAndAttendance/hooks/useCreateTimeTrackingRule";
 import { useState, useContext } from "react";
 import { useQueryClient } from "react-query";
 import { GlobalContext, EGlobalOps } from "stateManagers/GlobalContextProvider";
 import { IDrawerProps } from "types";
 import { openNotification } from "utils/notifications";
-import checkboxBase from "../../assets/images/CheckboxBase.svg";
-import faceReg from "../../assets/images/lucide_scan-face.svg";
-import locationIcon from "../../assets/images/symbols_location.svg";
-import editPenIcon from "../../assets/images/edit-outline.svg";
-import {
-  QUERY_KEY_FOR_ACTIVE_TRACKING_POLICY,
-  useGetActiveTrackingPolicy,
-} from "features/timeAndAttendance/hooks/useGetActiveTrackingPolicy";
+import checkboxBase from "../../../../assets/images/CheckboxBase.svg";
+import faceReg from "../../../../assets/images/lucide_scan-face.svg";
+import locationIcon from "../../../../assets/images/symbols_location.svg";
+import editPenIcon from "../../../../assets/images/edit-outline.svg";
+import { useCreateTimeTrackingRule } from "../hooks/useCreateTimeTrackingRule";
+import { QUERY_KEY_FOR_ACTIVE_TRACKING_POLICY, useGetActiveTrackingPolicy } from "../hooks/useGetActiveTrackingPolicy";
 
 export const CreateTrackingRule = ({ handleClose, open }: IDrawerProps) => {
   const [selectedOption, setSelectedOption] = useState<any>();

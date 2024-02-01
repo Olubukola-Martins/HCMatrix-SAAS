@@ -1,8 +1,8 @@
 import axios from "axios";
 import { useQuery } from "react-query";
-import { ITimeTrackingRule } from "../types/settings";
 import { MICROSERVICE_ENDPOINTS } from "config/enviroment";
 import { useApiAuth } from "hooks/useApiAuth";
+import { ITimeTrackingRule } from "../types";
 
 export const QUERY_KEY_FOR_ACTIVE_TRACKING_POLICY = "activeTrackingPolicy";
 
