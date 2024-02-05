@@ -8,12 +8,8 @@ import { biometricProps } from "../types";
 export const createData = async (props: {
   data: biometricProps;
   auth: ICurrentCompany;
-  id?: number;
 }) => {
-  const updateUrl = `${props.id}`;
-  const addUrl = "multiple";
-  const acceptedUrl = props.id ? updateUrl : addUrl;
-  const url = `${MICROSERVICE_ENDPOINTS.TIME_AND_ATTENDANCE}/settings/biometrics/devices/${acceptedUrl}`;
+  const url = `${MICROSERVICE_ENDPOINTS.TIME_AND_ATTENDANCE}/settings/biometrics/devices/multiple`;
   const config = {
     headers: {
       Accept: "application/json",
@@ -24,14 +20,13 @@ export const createData = async (props: {
 
   const data = props.data;
 
-  const requestType = props.id ? axios.put : axios.post;
-  const response = await requestType(url, data, config);
+  const response = await axios.post(url, data, config);
   return response;
 };
 
 export const useCreateBiometric = () => {
   const { token, companyId } = useApiAuth();
-  return useMutation((props: { data: biometricProps; id?: number }) =>
-    createData({ data: props.data, auth: { companyId, token }, id: props.id })
+  return useMutation((props: { data: biometricProps }) =>
+    createData({ data: props.data, auth: { companyId, token } })
   );
 };

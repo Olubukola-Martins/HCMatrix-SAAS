@@ -10,6 +10,7 @@ import { generalValidationRules } from "utils/formHelpers/validation";
 import { openNotification } from "utils/notifications";
 import { useGetBiometricDevice } from "../../Biometrics/hooks/useGetBiometricDevice";
 import { useCreateLocation } from "../hooks/useCreateLocation";
+import { useGetSingleLocation } from "../hooks/useGetSingleLocation";
 const formWrapStyle =
   "bg-card px-4 pt-4 rounded grid grid-cols-1 md:grid-cols-2 gap-x-10 mb-5 shadow-sm";
 export const AddLocation = ({ handleClose, open, id }: IDrawerProps) => {
@@ -28,7 +29,7 @@ export const AddLocation = ({ handleClose, open, id }: IDrawerProps) => {
       name: debouncedSearchTerm,
     },
   });
-
+  const { data, isSuccess } = useGetSingleLocation(id as number);
   const handleSearch = (val: string) => {
     setSearchTerm(val);
   };
@@ -38,16 +39,29 @@ export const AddLocation = ({ handleClose, open, id }: IDrawerProps) => {
       branchId: "",
       biometricDeviceId: "",
     };
-    form.setFieldsValue({ biometricDeviceLocations: [defaultField] });
-  }, []);
+
+    if (data && isSuccess) {
+      form.setFieldsValue({
+        biometricDeviceLocations: [
+          {
+            branchId: data.branchId,
+            biometricDeviceId: data.biometricDeviceId,
+          },
+        ],
+      });
+    } else {
+      form.setFieldsValue({ biometricDeviceLocations: [defaultField] });
+    }
+  }, [data, id, isSuccess]);
 
   const handleFormSubmit = (values: any) => {
     const data = values.biometricDeviceLocations.map((value: any) => ({
+      id: id ? id : null,
       branchId: value.branchId,
       biometricDeviceId: value.biometricDeviceId,
     }));
     mutate(
-      { data, id },
+      { data },
       {
         onError: (err: any) => {
           openNotification({

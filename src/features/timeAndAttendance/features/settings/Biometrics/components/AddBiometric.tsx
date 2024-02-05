@@ -44,14 +44,17 @@ export const AddBiometric = ({ handleClose, open, id }: IDrawerProps) => {
 
   const handleFormSubmit = (values: any) => {
     const data = values.biometricDevices.map((value: any) => ({
+      id: id ? id : null,
       name: value.name,
       serialNumber: value.serialNumber,
     }));
 
     mutate(
-      { data, id },
+      { data },
       {
         onError: (err: any) => {
+          console.log(err);
+          
           openNotification({
             state: "error",
             title: "Error Occurred",
@@ -60,6 +63,8 @@ export const AddBiometric = ({ handleClose, open, id }: IDrawerProps) => {
           });
         },
         onSuccess: (res: any) => {
+          console.log(res);
+          
           openNotification({
             state: "success",
             title: "Success",

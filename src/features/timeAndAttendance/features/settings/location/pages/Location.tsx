@@ -87,7 +87,12 @@ const Location = () => {
             handleClick={() => setOpenAddLocation(true)}
           />
         </div>
-        <Table columns={columns} dataSource={data} loading={isLoading} />
+        <Table
+          columns={columns}
+          dataSource={data}
+          loading={isLoading}
+          pagination={{ pageSize: 10, total: data?.length }}
+        />
       </div>
     </>
   );

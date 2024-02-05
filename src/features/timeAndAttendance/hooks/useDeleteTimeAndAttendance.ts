@@ -47,8 +47,6 @@ export const useDeleteTimeAndAttendance = ({
       { data: { id, EndPointUrl } },
       {
         onError: (err: any) => {
-          console.log(err);
-
           openNotification({
             title: "Error",
             state: "error",
@@ -57,8 +55,6 @@ export const useDeleteTimeAndAttendance = ({
           });
         },
         onSuccess: (res: any) => {
-          console.log(res);
-
           openNotification({
             title: "Success",
             state: "success",

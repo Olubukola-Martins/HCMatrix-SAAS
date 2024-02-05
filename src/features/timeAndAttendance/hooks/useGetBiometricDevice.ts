@@ -1,8 +1,9 @@
 import axios from "axios";
 import { useQuery } from "react-query";
-import {biometricProps } from "../types/settings";
+// import {biometricProps } from "../types/settings";
 import { MICROSERVICE_ENDPOINTS } from "config/enviroment";
 import { useApiAuth } from "hooks/useApiAuth";
+import { biometricProps } from "../features/settings/Biometrics/types";
 
 export const QUERY_KEY_FOR_BIOMETRIC_DEVICE = "Biometric_Device";
 
