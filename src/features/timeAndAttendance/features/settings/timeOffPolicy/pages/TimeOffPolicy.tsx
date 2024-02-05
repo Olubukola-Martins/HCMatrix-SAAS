@@ -1,16 +1,16 @@
 import { Dropdown, Menu } from "antd";
 import Table, { ColumnsType } from "antd/lib/table";
 import { AppButton } from "components/button/AppButton";
-import { AttendanceSettingsIntro } from "features/timeAndAttendance/components/settings/AttendanceSettingsIntro";
-import { CreateTimeOffPolicy } from "features/timeAndAttendance/components/settings/CreateTimeOffPolicy";
-import { TimeAttendanceSettingsNav } from "features/timeAndAttendance/components/settings/TimeAttendanceSettingsNav";
-import { useGetTimeOffPolicy } from "features/timeAndAttendance/hooks/useGetTimeOffPolicy";
-import { ITimeOffPolicyRule } from "features/timeAndAttendance/types/settings";
 import { useState } from "react";
+import { ITimeOffPolicyRule } from "../types";
+import { TimeAttendanceSettingsNav } from "../../components/TimeAttendanceSettingsNav";
+import { AttendanceSettingsIntro } from "../../components/AttendanceSettingsIntro";
+import { useGetTimeOffPolicy } from "../hooks/useGetTimeOffPolicy";
+import { CreateTimeOffPolicy } from "../components/CreateTimeOffPolicy";
 
 const columns: ColumnsType<ITimeOffPolicyRule> = [
   {
-    title: "Policy Name",
+    title: "Branch Name",
     dataIndex: "name",
   },
   {
@@ -44,6 +44,9 @@ const columns: ColumnsType<ITimeOffPolicyRule> = [
 export const TimeOffPolicy = () => {
   const [openAddPolicy, setOpenAddPolicy] = useState(false);
   const { data, isLoading } = useGetTimeOffPolicy();
+
+//   console.log(data);
+  
   
   return (
     <>
@@ -69,3 +72,5 @@ export const TimeOffPolicy = () => {
     </>
   );
 };
+
+export default TimeOffPolicy;
