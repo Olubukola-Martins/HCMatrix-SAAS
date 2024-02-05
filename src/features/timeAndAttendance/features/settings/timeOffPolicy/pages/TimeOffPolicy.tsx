@@ -1,53 +1,75 @@
-import { Dropdown, Menu } from "antd";
+import { Dropdown, Menu, Popconfirm } from "antd";
 import Table, { ColumnsType } from "antd/lib/table";
 import { AppButton } from "components/button/AppButton";
 import { useState } from "react";
 import { ITimeOffPolicyRule } from "../types";
 import { TimeAttendanceSettingsNav } from "../../components/TimeAttendanceSettingsNav";
 import { AttendanceSettingsIntro } from "../../components/AttendanceSettingsIntro";
-import { useGetTimeOffPolicy } from "../hooks/useGetTimeOffPolicy";
+import {
+  QUERY_KEY_FOR_TIME_OFF_POLICY,
+  useGetTimeOffPolicy,
+} from "../hooks/useGetTimeOffPolicy";
 import { CreateTimeOffPolicy } from "../components/CreateTimeOffPolicy";
-
-const columns: ColumnsType<ITimeOffPolicyRule> = [
-  {
-    title: "Branch Name",
-    dataIndex: "name",
-  },
-  {
-    title: "Duration In Days",
-    dataIndex: "duration",
-  },
-  {
-    title: "Comment",
-    dataIndex: "comment",
-  },
-  {
-    title: "Action",
-    render: (_, val) => (
-      <div>
-        <Dropdown
-          trigger={["click"]}
-          overlay={
-            <Menu>
-              <Menu.Item key="1">Edit</Menu.Item>
-              <Menu.Item key="2">Delete</Menu.Item>
-            </Menu>
-          }
-        >
-          <i className="ri-more-2-fill text-lg cursor-pointer"></i>
-        </Dropdown>
-      </div>
-    ),
-  },
-];
+import { useDeleteTimeAndAttendance } from "features/timeAndAttendance/hooks/useDeleteTimeAndAttendance";
 
 export const TimeOffPolicy = () => {
   const [openAddPolicy, setOpenAddPolicy] = useState(false);
+  const [policyId, setPolicyId] = useState<number>();
   const { data, isLoading } = useGetTimeOffPolicy();
+  const { removeData } = useDeleteTimeAndAttendance({
+    EndPointUrl: "settings/branch-locations",
+    queryKey: QUERY_KEY_FOR_TIME_OFF_POLICY,
+  });
 
-//   console.log(data);
-  
-  
+  const handleEdit = (id: number) => {
+    setOpenAddPolicy(true);
+    setPolicyId(id);
+  };
+
+  const columns: ColumnsType<ITimeOffPolicyRule> = [
+    {
+      title: "Branch Name",
+      dataIndex: "title",
+    },
+    {
+      title: "Duration In Days",
+      dataIndex: "duration",
+    },
+    {
+      title: "Comment",
+      dataIndex: "comment",
+    },
+    {
+      title: "Action",
+      render: (_, val) => (
+        <div>
+          <Dropdown
+            trigger={["click"]}
+            overlay={
+              <Menu>
+                <Menu.Item key="1" onClick={() => handleEdit(val.id)}>
+                  Edit
+                </Menu.Item>
+                <Menu.Item key="2">
+                  <Popconfirm
+                    title={`Delete ${val.title}`}
+                    onConfirm={() => removeData(val.id)}
+                  >
+                    Delete
+                  </Popconfirm>
+                </Menu.Item>
+              </Menu>
+            }
+          >
+            <i className="ri-more-2-fill text-lg cursor-pointer"></i>
+          </Dropdown>
+        </div>
+      ),
+    },
+  ];
+
+  //   console.log(data)
+
   return (
     <>
       <TimeAttendanceSettingsNav active="time off policy" />
@@ -56,6 +78,7 @@ export const TimeOffPolicy = () => {
         description="Plan work by setting your team's work and break time. Manage overtime rules in settings."
       />
       <CreateTimeOffPolicy
+        id={policyId}
         open={openAddPolicy}
         handleClose={() => setOpenAddPolicy(false)}
       />
@@ -63,7 +86,10 @@ export const TimeOffPolicy = () => {
         <div className="flex justify-end mb-5">
           <AppButton
             label="Add time off policy"
-            handleClick={() => setOpenAddPolicy(true)}
+            handleClick={() => {
+              setOpenAddPolicy(true);
+              setPolicyId(undefined);
+            }}
           />
         </div>
 

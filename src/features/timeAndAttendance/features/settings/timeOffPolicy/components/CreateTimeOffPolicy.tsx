@@ -2,8 +2,6 @@ import { Drawer, Form, Input, InputNumber } from "antd";
 import TextArea from "antd/lib/input/TextArea";
 import { AppButton } from "components/button/AppButton";
 import { UseWindowWidth } from "features/timeAndAttendance/hooks/UseWindowWidth";
-import { QUERY_KEY_FOR_TIME_OFF_POLICY } from "features/timeAndAttendance/hooks/useGetTimeOffPolicy";
-import { useApiAuth } from "hooks/useApiAuth";
 import { useContext, useEffect } from "react";
 import { useQueryClient } from "react-query";
 import { GlobalContext, EGlobalOps } from "stateManagers/GlobalContextProvider";
@@ -11,6 +9,7 @@ import { IDrawerProps } from "types";
 import { generalValidationRules } from "utils/formHelpers/validation";
 import { openNotification } from "utils/notifications";
 import { useCreateTimeOffPolicy } from "../hooks/useCreateTimeOffPolicy";
+import { QUERY_KEY_FOR_TIME_OFF_POLICY } from "../hooks/useGetTimeOffPolicy";
 
 export const CreateTimeOffPolicy = ({
   handleClose,
@@ -20,7 +19,6 @@ export const CreateTimeOffPolicy = ({
   const { drawerSize } = UseWindowWidth();
   const queryClient = useQueryClient();
   const [form] = Form.useForm();
-  const { companyId, token, currentUserId } = useApiAuth();
   const { mutate, isLoading } = useCreateTimeOffPolicy();
   const globalCtx = useContext(GlobalContext);
   const { dispatch } = globalCtx;
