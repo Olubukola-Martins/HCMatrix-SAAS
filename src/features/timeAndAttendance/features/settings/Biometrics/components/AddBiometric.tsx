@@ -44,7 +44,7 @@ export const AddBiometric = ({ handleClose, open, id }: IDrawerProps) => {
 
   const handleFormSubmit = (values: any) => {
     const data = values.biometricDevices.map((value: any) => ({
-      id: id ? id : null,
+      id: id ? id : undefined,
       name: value.name,
       serialNumber: value.serialNumber,
     }));

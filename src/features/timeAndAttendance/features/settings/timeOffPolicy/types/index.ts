@@ -1,6 +1,6 @@
 export interface ITimeOffPolicyRule {
   id: number;
   title: string;
-  durationInDays: number;
+  duration: number;
   comment: string;
 }

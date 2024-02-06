@@ -70,7 +70,7 @@ export const CreateTimeOffPolicy = ({ handleClose, open }: IDrawerProps) => {
     const fields = form.getFieldValue("fields") || [];
     const newField = {
       name: "",
-      durationInDays: "",
+      duration: "",
       comment: "",
       adminId: currentUserId,
       companyId: companyId,
@@ -111,7 +111,7 @@ export const CreateTimeOffPolicy = ({ handleClose, open }: IDrawerProps) => {
 
                     <Form.Item
                       {...field}
-                      name={[field.name, "durationInDays"]}
+                      name={[field.name, "duration"]}
                       label="Duration in days"
                       className="w-full"
                       rules={generalValidationRules}

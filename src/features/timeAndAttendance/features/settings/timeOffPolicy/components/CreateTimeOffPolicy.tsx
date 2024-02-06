@@ -10,6 +10,7 @@ import { generalValidationRules } from "utils/formHelpers/validation";
 import { openNotification } from "utils/notifications";
 import { useCreateTimeOffPolicy } from "../hooks/useCreateTimeOffPolicy";
 import { QUERY_KEY_FOR_TIME_OFF_POLICY } from "../hooks/useGetTimeOffPolicy";
+import { useGetSinglePolicy } from "../hooks/useGetSinglePolicy";
 
 export const CreateTimeOffPolicy = ({
   handleClose,
@@ -20,14 +21,15 @@ export const CreateTimeOffPolicy = ({
   const queryClient = useQueryClient();
   const [form] = Form.useForm();
   const { mutate, isLoading } = useCreateTimeOffPolicy();
+  const { data, isSuccess } = useGetSinglePolicy(id as number);
   const globalCtx = useContext(GlobalContext);
   const { dispatch } = globalCtx;
 
   const handleFormSubmit = (values: any) => {
     const data = values.fields.map((value: any) => ({
-      id: id ? id : null,
+      id: id ? id : undefined,
       title: value.title,
-      durationInDays: value.durationInDays,
+      duration: value.duration,
       comment: value.comment,
     }));
     mutate(
@@ -62,17 +64,29 @@ export const CreateTimeOffPolicy = ({
   useEffect(() => {
     const defaultField = {
       title: "",
-      durationInDays: "",
+      duration: "",
       comment: "",
     };
-    form.setFieldsValue({ fields: [defaultField] });
-  }, []);
+    if (data && isSuccess) {
+      form.setFieldsValue({
+        fields: [
+          {
+            title: data.title,
+            duration: data.duration,
+            comment: data.comment,
+          },
+        ],
+      });
+    } else {
+      form.setFieldsValue({ fields: [defaultField] });
+    }
+  }, [id, data, isSuccess]);
 
   const handleAddField = () => {
     const fields = form.getFieldValue("fields") || [];
     const newField = {
       title: "",
-      durationInDays: "",
+      duration: "",
       comment: "",
     };
     form.setFieldsValue({ fields: [...fields, newField] });
@@ -89,7 +103,7 @@ export const CreateTimeOffPolicy = ({
       size={drawerSize}
       open={open}
       onClose={() => handleClose()}
-      title="Create Time Off Policy"
+      title={` ${id ? "Edit" : "Create"} Time Off Policy`}
     >
       <Form form={form} onFinish={handleFormSubmit} layout="vertical">
         <Form.List name="fields">
@@ -111,7 +125,7 @@ export const CreateTimeOffPolicy = ({
 
                     <Form.Item
                       {...field}
-                      name={[field.name, "durationInDays"]}
+                      name={[field.name, "duration"]}
                       label="Duration in days"
                       className="w-full"
                       rules={generalValidationRules}
@@ -130,19 +144,23 @@ export const CreateTimeOffPolicy = ({
                     <TextArea className="w-full " rows={3} />
                   </Form.Item>
                   <div className="flex justify-end">
-                    <i
-                      className="ri-delete-bin-line -mt-3 text-xl text-red-400 cursor-pointer hover:text-caramel"
-                      onClick={() => handleRemoveField(index)}
-                    ></i>
+                    {!id && (
+                      <i
+                        className="ri-delete-bin-line -mt-3 text-xl text-red-400 cursor-pointer hover:text-caramel"
+                        onClick={() => handleRemoveField(index)}
+                      ></i>
+                    )}
                   </div>
                 </div>
               ))}
 
-              <AppButton
-                variant="transparent"
-                label="+ Add Time off policy"
-                handleClick={() => handleAddField()}
-              />
+              {!id && (
+                <AppButton
+                  variant="transparent"
+                  label="+ Add Time off policy"
+                  handleClick={() => handleAddField()}
+                />
+              )}
             </>
           )}
         </Form.List>

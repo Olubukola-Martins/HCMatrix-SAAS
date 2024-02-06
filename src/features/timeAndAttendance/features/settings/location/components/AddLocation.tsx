@@ -56,7 +56,7 @@ export const AddLocation = ({ handleClose, open, id }: IDrawerProps) => {
 
   const handleFormSubmit = (values: any) => {
     const data = values.biometricDeviceLocations.map((value: any) => ({
-      id: id ? id : null,
+      id: id ? id : undefined,
       branchId: value.branchId,
       biometricDeviceId: value.biometricDeviceId,
     }));

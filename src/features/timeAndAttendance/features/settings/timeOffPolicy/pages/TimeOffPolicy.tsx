@@ -17,7 +17,7 @@ export const TimeOffPolicy = () => {
   const [policyId, setPolicyId] = useState<number>();
   const { data, isLoading } = useGetTimeOffPolicy();
   const { removeData } = useDeleteTimeAndAttendance({
-    EndPointUrl: "settings/branch-locations",
+    EndPointUrl: "settings/time-off-policies",
     queryKey: QUERY_KEY_FOR_TIME_OFF_POLICY,
   });
 
@@ -93,7 +93,12 @@ export const TimeOffPolicy = () => {
           />
         </div>
 
-        <Table columns={columns} dataSource={data} loading={isLoading} />
+        <Table
+          columns={columns}
+          dataSource={data}
+          loading={isLoading}
+          pagination={{ pageSize: 10, total: data?.length }}
+        />
       </div>
     </>
   );
