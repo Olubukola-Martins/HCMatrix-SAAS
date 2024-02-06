@@ -3,7 +3,6 @@ import {
   useGetUserPermissions,
 } from "components/permission-restriction/PermissionRestrictor";
 import { appRoutes } from "config/router/paths";
-import React from "react";
 import { TNavRoute } from "types/navigation-routes";
 type TData = {
   navRoutes: TNavRoute[];

@@ -36,6 +36,15 @@ export const CreatePayrollButton = () => {
     !canUserAccessComponent({
       userPermissions,
       requiredPermissions: ["create-payroll"],
+      requiredSubscriptionState: {
+        label: "payroll",
+        resources: [
+          "wages-payroll",
+          "office-payroll",
+          "direct-salary-payroll",
+          "project-payroll",
+        ],
+      },
     })
   ) {
     return null;
