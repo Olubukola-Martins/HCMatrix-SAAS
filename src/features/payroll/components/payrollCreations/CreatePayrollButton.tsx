@@ -31,11 +31,13 @@ export const createPayrollDropdownItems = [
 ];
 
 export const CreatePayrollButton = () => {
-  const { userPermissions } = useGetUserPermissions();
+  const { userPermissions, companyActiveSubscription: activeSubscription } =
+    useGetUserPermissions();
   if (
     !canUserAccessComponent({
       userPermissions,
       requiredPermissions: ["create-payroll"],
+      activeSubscription,
       requiredSubscriptionState: {
         label: "payroll",
         resources: [
