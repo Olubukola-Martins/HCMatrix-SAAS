@@ -441,7 +441,17 @@ export const payrollRoutes = (props: TAppPageDataFnProps): TRouteData[] => {
       title: "Create Step Pay Payroll",
       hidden: !canUserAccessComponent({
         userPermissions,
+        activeSubscription,
         requiredPermissions: ["create-payroll"],
+        requiredSubscriptionState: {
+          label: "payroll",
+          resources: [
+            "wages-payroll",
+            "office-payroll",
+            "direct-salary-payroll",
+            "project-payroll",
+          ],
+        },
       }),
     },
     {
