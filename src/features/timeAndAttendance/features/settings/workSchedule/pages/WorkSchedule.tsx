@@ -1,16 +1,16 @@
 import { Skeleton } from "antd";
-import { AttendanceSettingsIntro } from "features/timeAndAttendance/components/settings/AttendanceSettingsIntro";
-import { TimeAttendanceSettingsNav } from "features/timeAndAttendance/components/settings/TimeAttendanceSettingsNav";
-import { WeeklyWork } from "features/timeAndAttendance/components/settings/WeeklyWork";
-import { WorkBreak } from "features/timeAndAttendance/components/settings/WorkBreak";
-import { WorkFixed } from "features/timeAndAttendance/components/settings/WorkFixed";
-import { WorkFlexible } from "features/timeAndAttendance/components/settings/WorkFlexible";
-import { WorkShift } from "features/timeAndAttendance/components/settings/WorkShift";
 import { useGetWorkSchedule } from "features/timeAndAttendance/hooks/useGetWorkSchedule";
 import { useState } from "react";
+import { TimeAttendanceSettingsNav } from "../../components/TimeAttendanceSettingsNav";
+import { AttendanceSettingsIntro } from "../../components/AttendanceSettingsIntro";
+import { WorkFixed } from "../components/WorkFixed";
+import { WorkFlexible } from "../components/WorkFlexible";
+import { WeeklyWork } from "../components/WeeklyWork";
+import { WorkShift } from "../components/WorkShift";
 
 const boxStyle =
   "border py-3 px-7 text-accent font-medium text-base cursor-pointer";
+
 export const WorkSchedule = () => {
   const { data, isLoading } = useGetWorkSchedule();
   const [switchWorkArr, setSwitchWorkArr] = useState(
@@ -87,7 +87,7 @@ export const WorkSchedule = () => {
               </div>
               {/* Initialization of the components */}
               <Skeleton active loading={isLoading}>
-                {switchWorkArr === "Fixed" && <WorkFixed data={data} />}
+                {switchWorkArr === "Fixed" && <WorkFixed />}
                 {switchWorkArr === "Flexible" && <WorkFlexible data={data} />}
                 {switchWorkArr === "Weekly" && <WeeklyWork data={data} />}
               </Skeleton>
@@ -96,8 +96,10 @@ export const WorkSchedule = () => {
             </div>
           </div>
         </div>
-        {switchWorkArr === "break" && <WorkBreak />}
+        {/* {switchWorkArr === "break" && <WorkBreak />} */}
       </div>
     </>
   );
 };
+
+export default WorkSchedule;

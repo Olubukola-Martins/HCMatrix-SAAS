@@ -19,6 +19,7 @@ const getData = async (props: {
     },
   };
   const res = await axios.get(url, config);
+  console.log(res);
 
   const item: locationProps[] = res.data.data.result;
   return item;

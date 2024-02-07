@@ -68,13 +68,5 @@ export interface ITimeTrackingRule {
   policyId: number;
 }
 
-export interface workScheduleFixedProps {
-  schedule: {
-    day: string;
-    startTime: string;
-    endTime: string;
-  }[];
-  allowTrackingBeforeStart: boolean;
-}
 
 

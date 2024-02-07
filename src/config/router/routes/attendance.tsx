@@ -5,7 +5,6 @@ import { TimeSheet } from "features/timeAndAttendance/pages/TimeSheet";
 import { TimeOff } from "features/timeAndAttendance/pages/TimeOff";
 import { UploadTimesheet } from "features/timeAndAttendance/pages/UploadTimesheet";
 import { TimeSheetDetails } from "features/timeAndAttendance/pages/TimeSheetDetails";
-import { WorkSchedule } from "features/timeAndAttendance/pages/settings/WorkSchedule";
 import { ShiftPerEmployee } from "features/timeAndAttendance/pages/report/ShiftPerEmployee";
 import { HoursPerEmployee } from "features/timeAndAttendance/pages/report/HoursPerEmployee";
 import { EmployeesPerShift } from "features/timeAndAttendance/pages/report/EmployeesPerShift";
@@ -14,6 +13,7 @@ import { OtherSettings } from "features/timeAndAttendance/features/settings/othe
 import Biometrics from "features/timeAndAttendance/features/settings/Biometrics/pages/Biometrics";
 import Location from "features/timeAndAttendance/features/settings/location/pages/Location";
 import TimeOffPolicy from "features/timeAndAttendance/features/settings/timeOffPolicy/pages/TimeOffPolicy";
+import WorkSchedule from "features/timeAndAttendance/features/settings/workSchedule/pages/WorkSchedule";
 
 export const attendanceRoutes: TRouteData[] = [
   {

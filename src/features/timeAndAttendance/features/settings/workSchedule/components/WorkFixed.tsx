@@ -1,21 +1,22 @@
 import { Checkbox, Form, Input, TimePicker } from "antd";
 import { AppButton } from "components/button/AppButton";
-import { useCreateFixedSchedule } from "features/timeAndAttendance/hooks/useCreateFixedSchedule";
-import { useGetFixedSchedule } from "features/timeAndAttendance/hooks/useGetFixedSchedule";
-import { QUERY_KEY_FOR_WORK_SCHEDULE } from "features/timeAndAttendance/hooks/useGetWorkSchedule";
 import moment from "moment";
 import { useContext, useEffect } from "react";
 import { useQueryClient } from "react-query";
 import { EGlobalOps, GlobalContext } from "stateManagers/GlobalContextProvider";
 import { openNotification } from "utils/notifications";
+import { useCreateFixedSchedule } from "../hooks/useCreateFixedSchedule";
+import { QUERY_KEY_FOR_WORK_SCHEDULE_FIXED, useGetFixedSchedule } from "../hooks/useGetFixedSchedule";
 
-export const WorkFixed: React.FC<{ data: any }> = () => {
+
+export const WorkFixed = () => {
   const [form] = Form.useForm();
   const queryClient = useQueryClient();
   const globalCtx = useContext(GlobalContext);
   const { dispatch } = globalCtx;
   const { mutate, isLoading } = useCreateFixedSchedule();
   const { data, isSuccess } = useGetFixedSchedule();
+
 
   useEffect(() => {
     let initialFormValues;
@@ -43,7 +44,6 @@ export const WorkFixed: React.FC<{ data: any }> = () => {
     form.setFieldsValue({
       schedule: initialFormValues,
       // allowTrackingBeforeStart: data?.allowTrackingBeforeStart
-      allowTrackingBeforeStart: true
     });
   }, [form, isSuccess, data]);
 
@@ -88,9 +88,8 @@ export const WorkFixed: React.FC<{ data: any }> = () => {
             description: "Schedule Created Successfully",
           });
 
-          // form.resetFields();
           dispatch({ type: EGlobalOps.setShowInitialSetup, payload: true });
-          queryClient.invalidateQueries([QUERY_KEY_FOR_WORK_SCHEDULE]);
+          queryClient.invalidateQueries([QUERY_KEY_FOR_WORK_SCHEDULE_FIXED]);
         },
       }
     );

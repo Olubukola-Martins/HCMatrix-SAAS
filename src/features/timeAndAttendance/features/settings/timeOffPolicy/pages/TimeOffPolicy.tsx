@@ -68,8 +68,6 @@ export const TimeOffPolicy = () => {
     },
   ];
 
-  //   console.log(data)
-
   return (
     <>
       <TimeAttendanceSettingsNav active="time off policy" />

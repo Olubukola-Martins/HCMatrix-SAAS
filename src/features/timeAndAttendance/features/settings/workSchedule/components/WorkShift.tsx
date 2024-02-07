@@ -1,4 +1,4 @@
-import "../../assets/style.css";
+import "../../../../assets/style.css";
 import { Checkbox, Form, Input, TimePicker } from "antd";
 import { AppButton } from "components/button/AppButton";
 import { useCreateWorkSchedule } from "features/timeAndAttendance/hooks/useCreateWorkSchedule";
