@@ -53,7 +53,7 @@ const columns: ColumnsType<TReportDetails> = [
   },
 ];
 
-export const EmployeesPerShift = () => {
+ const EmployeesPerShift = () => {
   return (
     <>
       <ReportNav active="Employee_Per_shift" />
@@ -63,3 +63,5 @@ export const EmployeesPerShift = () => {
     </>
   );
 };
+
+export default EmployeesPerShift;

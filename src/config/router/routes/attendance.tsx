@@ -5,15 +5,15 @@ import { TimeSheet } from "features/timeAndAttendance/pages/TimeSheet";
 import { TimeOff } from "features/timeAndAttendance/pages/TimeOff";
 import { UploadTimesheet } from "features/timeAndAttendance/pages/UploadTimesheet";
 import { TimeSheetDetails } from "features/timeAndAttendance/pages/TimeSheetDetails";
-import { ShiftPerEmployee } from "features/timeAndAttendance/pages/report/ShiftPerEmployee";
-import { HoursPerEmployee } from "features/timeAndAttendance/pages/report/HoursPerEmployee";
-import { EmployeesPerShift } from "features/timeAndAttendance/pages/report/EmployeesPerShift";
 import TimeTrackingRules from "features/timeAndAttendance/features/settings/timeTrackingRules/pages/TimeTrackingRules";
 import { OtherSettings } from "features/timeAndAttendance/features/settings/otherSettings/pages/OtherSettings";
 import Biometrics from "features/timeAndAttendance/features/settings/Biometrics/pages/Biometrics";
 import Location from "features/timeAndAttendance/features/settings/location/pages/Location";
 import TimeOffPolicy from "features/timeAndAttendance/features/settings/timeOffPolicy/pages/TimeOffPolicy";
 import WorkSchedule from "features/timeAndAttendance/features/settings/workSchedule/pages/WorkSchedule";
+import ShiftPerEmployee from "features/timeAndAttendance/features/reports/pages/ShiftPerEmployee";
+import HoursPerEmployee from "features/timeAndAttendance/features/reports/pages/HoursPerEmployee";
+import EmployeesPerShift from "features/timeAndAttendance/features/reports/pages/EmployeesPerShift";
 
 export const attendanceRoutes: TRouteData[] = [
   {

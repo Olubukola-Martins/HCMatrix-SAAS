@@ -7,12 +7,17 @@ import { AddBiometric } from "../components/AddBiometric";
 import { TimeAttendanceSettingsNav } from "../../components/TimeAttendanceSettingsNav";
 import { AttendanceSettingsIntro } from "../../components/AttendanceSettingsIntro";
 import { biometricProps } from "../types";
-import { QUERY_KEY_FOR_BIOMETRIC_DEVICE, useGetBiometricDevice } from "../hooks/useGetBiometricDevice";
+import {
+  QUERY_KEY_FOR_BIOMETRIC_DEVICE,
+  useGetBiometricDevice,
+} from "../hooks/useGetBiometricDevice";
+import { usePagination } from "hooks/usePagination";
 
 export const Biometrics = () => {
   const [addClockIn, setAddClockIn] = useState(false);
   const [biometricId, setBiometricId] = useState<number>();
-  const { data, isLoading } = useGetBiometricDevice();
+  const { pagination, onChange } = usePagination({ pageSize: 10 });
+  const { data, isLoading } = useGetBiometricDevice({ pagination });
   const { removeData } = useDeleteTimeAndAttendance({
     EndPointUrl: "settings/biometrics/devices",
     queryKey: QUERY_KEY_FOR_BIOMETRIC_DEVICE,
@@ -83,10 +88,11 @@ export const Biometrics = () => {
 
         <Table
           columns={columns}
-          dataSource={data}
+          dataSource={data?.data}
           loading={isLoading}
           className="mt-5"
-          pagination={{ pageSize: 10, total: data?.length }}
+          pagination={{ ...pagination, total: data?.total }}
+          onChange={onChange}
         />
       </div>
     </>

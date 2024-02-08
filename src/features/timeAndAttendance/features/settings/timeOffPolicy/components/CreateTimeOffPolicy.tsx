@@ -6,7 +6,10 @@ import { useContext, useEffect } from "react";
 import { useQueryClient } from "react-query";
 import { GlobalContext, EGlobalOps } from "stateManagers/GlobalContextProvider";
 import { IDrawerProps } from "types";
-import { generalValidationRules } from "utils/formHelpers/validation";
+import {
+  generalValidationRules,
+  textInputValidationRules,
+} from "utils/formHelpers/validation";
 import { openNotification } from "utils/notifications";
 import { useCreateTimeOffPolicy } from "../hooks/useCreateTimeOffPolicy";
 import { QUERY_KEY_FOR_TIME_OFF_POLICY } from "../hooks/useGetTimeOffPolicy";
@@ -105,7 +108,12 @@ export const CreateTimeOffPolicy = ({
       onClose={() => handleClose()}
       title={` ${id ? "Edit" : "Create"} Time Off Policy`}
     >
-      <Form form={form} onFinish={handleFormSubmit} layout="vertical">
+      <Form
+        form={form}
+        onFinish={handleFormSubmit}
+        layout="vertical"
+        requiredMark={false}
+      >
         <Form.List name="fields">
           {(fields, { add, remove }) => (
             <>
@@ -117,8 +125,7 @@ export const CreateTimeOffPolicy = ({
                       name={[field.name, "title"]}
                       label="Enter policy name"
                       className="w-full"
-                      rules={generalValidationRules}
-                      required={false}
+                      rules={textInputValidationRules}
                     >
                       <Input placeholder="eg: medical policy" />
                     </Form.Item>
@@ -129,7 +136,6 @@ export const CreateTimeOffPolicy = ({
                       label="Duration in days"
                       className="w-full"
                       rules={generalValidationRules}
-                      required={false}
                     >
                       <InputNumber className="w-full" />
                     </Form.Item>
@@ -139,7 +145,7 @@ export const CreateTimeOffPolicy = ({
                     name={[field.name, "comment"]}
                     label="Enter Comment"
                     className="w-full"
-                    requiredMark="optional"
+                    rules={textInputValidationRules}
                   >
                     <TextArea className="w-full " rows={3} />
                   </Form.Item>

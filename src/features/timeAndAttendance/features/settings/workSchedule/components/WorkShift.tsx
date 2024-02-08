@@ -21,7 +21,7 @@ export const WorkShift: React.FC<{ data: any }> = ({ data }) => {
 
   useEffect(() => {
     let initialFormValues;
-    if (data && data.workArrangement === "Shift") {
+    if (data) {
       initialFormValues = data?.workDaysAndTime.map((item: any) => ({
         day: item.day,
         shift: item.shift,
@@ -184,7 +184,10 @@ export const WorkShift: React.FC<{ data: any }> = ({ data }) => {
                             name={[field.name, "time"]}
                             noStyle
                           >
-                            <TimePicker.RangePicker className="flex-1 w-full" format="HH:mm"/>
+                            <TimePicker.RangePicker
+                              className="flex-1 w-full"
+                              format="HH:mm"
+                            />
                           </Form.Item>
                         </div>
                       </>

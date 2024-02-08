@@ -52,13 +52,15 @@ const columns: ColumnsType<TReportDetails> = [
   },
 ];
 
-export const HoursPerEmployee = () => {
+export const ShiftPerEmployee = () => {
   return (
     <>
-      <ReportNav active="Hours_Per_Employee" />
+      <ReportNav active="Shift_Per_Employee" />
       <div className="Container">
         <Table columns={columns} dataSource={data} />
       </div>
     </>
   );
 };
+
+export default ShiftPerEmployee;

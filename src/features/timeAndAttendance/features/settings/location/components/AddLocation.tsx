@@ -52,7 +52,7 @@ export const AddLocation = ({ handleClose, open, id }: IDrawerProps) => {
     } else {
       form.setFieldsValue({ biometricDeviceLocations: [defaultField] });
     }
-  }, [data, id, isSuccess]);
+  }, [data, id, isSuccess, form]);
 
   const handleFormSubmit = (values: any) => {
     const data = values.biometricDeviceLocations.map((value: any) => ({
@@ -162,7 +162,7 @@ export const AddLocation = ({ handleClose, open, id }: IDrawerProps) => {
                     >
                       <Select
                         className="w-full"
-                        options={biometricData?.map((item) => ({
+                        options={biometricData?.data?.map((item) => ({
                           value: item.id,
                           label: item.name,
                         }))}
