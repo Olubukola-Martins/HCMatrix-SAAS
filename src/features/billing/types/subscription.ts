@@ -19,7 +19,7 @@ export type TSubscriptionResourceLabel =
   | "basic-workflow"
   | "health-access"
   | "company-organogram"
-  | "asset-requisition"
+  | "asset-management"
   | "vehicle-booking"
   | "conference-room-booking"
   | "job-requisition"
