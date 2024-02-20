@@ -9,7 +9,20 @@ export interface workScheduleFixedProps {
 
 export interface WorkDay {
   day: string;
-  duration: string; // Assuming duration is in minutes as a string
+  duration: string;
 }
 
 export type workScheduleFlexibleProps = WorkDay[];
+
+export type workScheduleWeeklyProps = {
+  duration: string;
+};
+
+export interface settingsBreakProps {
+  name: string;
+  isPaid: boolean;
+  enforcePeriod: boolean;
+  // "duration": "0h:30m"
+  startAt: string;
+  endAt: string;
+}

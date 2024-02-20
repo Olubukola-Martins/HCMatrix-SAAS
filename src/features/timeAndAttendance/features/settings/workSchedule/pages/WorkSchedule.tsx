@@ -7,6 +7,7 @@ import { WorkFixed } from "../components/WorkFixed";
 import { WorkFlexible } from "../components/WorkFlexible";
 import { WeeklyWork } from "../components/WeeklyWork";
 import { WorkShift } from "../components/WorkShift";
+import { WorkBreak } from "../components/WorkBreak";
 
 const boxStyle =
   "border py-3 px-7 text-accent font-medium text-base cursor-pointer";
@@ -89,14 +90,14 @@ export const WorkSchedule = () => {
               <Skeleton active loading={isLoading}>
                 {switchWorkArr === "Fixed" && <WorkFixed />}
                 {switchWorkArr === "Flexible" && <WorkFlexible />}
-                {switchWorkArr === "Weekly" && <WeeklyWork data={data} />}
+                {switchWorkArr === "Weekly" && <WeeklyWork />}
               </Skeleton>
 
               {switchWorkArr === "Shift" && <WorkShift data={data} />}
             </div>
           </div>
         </div>
-        {/* {switchWorkArr === "break" && <WorkBreak />} */}
+        {switchWorkArr === "break" && <WorkBreak />}
       </div>
     </>
   );
