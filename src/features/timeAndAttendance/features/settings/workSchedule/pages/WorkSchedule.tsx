@@ -88,7 +88,7 @@ export const WorkSchedule = () => {
               {/* Initialization of the components */}
               <Skeleton active loading={isLoading}>
                 {switchWorkArr === "Fixed" && <WorkFixed />}
-                {switchWorkArr === "Flexible" && <WorkFlexible data={data} />}
+                {switchWorkArr === "Flexible" && <WorkFlexible />}
                 {switchWorkArr === "Weekly" && <WeeklyWork data={data} />}
               </Skeleton>
 

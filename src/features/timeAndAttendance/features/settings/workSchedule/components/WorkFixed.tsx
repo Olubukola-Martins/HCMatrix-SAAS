@@ -48,7 +48,6 @@ export const WorkFixed = () => {
   }, [form, isSuccess, data]);
 
   const onFinish = (values: any) => {
-    console.log(values);
 
     const workDaysAndTime = values?.schedule.map((item: any) => {
       if (!item.time || item.time.length < 2) {

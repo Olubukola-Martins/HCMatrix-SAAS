@@ -5,12 +5,12 @@ import { ICurrentCompany } from "types";
 import { useApiAuth } from "hooks/useApiAuth";
 import { workScheduleFixedProps } from "../types";
 
-export const QUERY_KEY_FOR_WORK_SCHEDULE_FIXED = "FixedWorkSchedule";
+export const QUERY_KEY_FOR_WORK_SCHEDULE_FLEXIBLE = "FlexibleWorkSchedule";
 
 const getData = async (
   props: ICurrentCompany
 ): Promise<workScheduleFixedProps[]> => {
-  const url = `${MICROSERVICE_ENDPOINTS.TIME_AND_ATTENDANCE}/settings/work-schedules/fixed`;
+  const url = `${MICROSERVICE_ENDPOINTS.TIME_AND_ATTENDANCE}/settings/work-schedules/flexible`;
   const config = {
     headers: {
       Accept: "application/json",
@@ -24,10 +24,10 @@ const getData = async (
 
   return data;
 };
-export const useGetFixedSchedule = () => {
+export const useGetFlexibleSchedule = () => {
   const { token, companyId } = useApiAuth();
   const queryData = useQuery(
-    [QUERY_KEY_FOR_WORK_SCHEDULE_FIXED],
+    [QUERY_KEY_FOR_WORK_SCHEDULE_FLEXIBLE],
     () => getData({ token, companyId }),
     {
       onError: (err: any) => {},
