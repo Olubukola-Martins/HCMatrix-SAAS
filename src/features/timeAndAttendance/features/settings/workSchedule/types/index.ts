@@ -19,10 +19,11 @@ export type workScheduleWeeklyProps = {
 };
 
 export interface settingsBreakProps {
+  id: number;
   name: string;
   isPaid: boolean;
   enforcePeriod: boolean;
-  // "duration": "0h:30m"
+  duration: string;
   startAt: string;
   endAt: string;
 }

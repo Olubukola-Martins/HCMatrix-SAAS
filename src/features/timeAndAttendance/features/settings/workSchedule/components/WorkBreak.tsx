@@ -2,40 +2,67 @@ import { AppButton } from "components/button/AppButton";
 import { useState } from "react";
 import { AddBreak } from "./AddBreak";
 import Table, { ColumnsType } from "antd/lib/table";
-import { Dropdown, Menu } from "antd";
-
-type TBreak = {
-  key: React.Key;
-  name: string;
-  duration: string;
-  status: string;
-};
-
-const data: TBreak[] = [];
-for (let i = 0; i < 4; i++) {
-  data.push({
-    key: i,
-    name: `Morning Break`,
-    status: `Paid`,
-    duration: `1:30mins`,
-  });
-}
+import { Dropdown, Menu, Popconfirm } from "antd";
+import { settingsBreakProps } from "../types";
+import {
+  QUERY_KEY_FOR_BREAK_POLICY,
+  useGetBreakPolicy,
+} from "../hooks/useGetBreakPolicy";
+import { usePagination } from "hooks/usePagination";
+import moment from "moment";
+import { useDeleteTimeAndAttendance } from "features/timeAndAttendance/hooks/useDeleteTimeAndAttendance";
 
 export const WorkBreak = () => {
   const [openBreak, setOpenBreak] = useState(false);
+  const [breakPolicyId, setBreakPolicyId] = useState<number>();
+  const { pagination, onChange } = usePagination({ pageSize: 10 });
+  const { data, isLoading } = useGetBreakPolicy({ pagination });
+  const { removeData } = useDeleteTimeAndAttendance({
+    EndPointUrl: "settings/break-policies",
+    queryKey: QUERY_KEY_FOR_BREAK_POLICY,
+  });
 
-  const columns: ColumnsType<TBreak> = [
+  const handleEdit = (id: number) => {
+    setOpenBreak(true);
+    setBreakPolicyId(id);
+  };
+
+  const columns: ColumnsType<settingsBreakProps> = [
     {
       title: "Name",
       dataIndex: "name",
     },
+
+    {
+      title: "Payment Status",
+      dataIndex: "isPaid",
+      render: (_, val) => <span>{val?.isPaid ? "Yes" : "No"}</span>,
+    },
+
+    {
+      title: "Enforce Period",
+      dataIndex: "enforcePeriod",
+      render: (_, val) => <span>{val?.enforcePeriod ? "Yes" : "No"}</span>,
+    },
+    {
+      title: "Start At",
+      dataIndex: "startAt",
+      render: (_, val) => <span>{val?.startAt ? val?.startAt : "....."}</span>,
+    },
+    {
+      title: "End At",
+      dataIndex: "endAt",
+      render: (_, val) => <span>{val?.endAt ? val?.endAt : "....."}</span>,
+    },
     {
       title: "Break duration",
       dataIndex: "duration",
-    },
-    {
-      title: "Status",
-      dataIndex: "status",
+      render: (_, val) => {
+        const duration = moment.duration(val?.duration, "minutes");
+        const hours = Math.floor(duration.asHours());
+        const minutes = duration.minutes();
+        return `${hours}h:${minutes}m`;
+      },
     },
     {
       title: "Action",
@@ -45,8 +72,18 @@ export const WorkBreak = () => {
             trigger={["click"]}
             overlay={
               <Menu>
-                <Menu.Item key="1">Edit</Menu.Item>
-                <Menu.Item key="2">Delete</Menu.Item>
+                <Menu.Item key="1" onClick={() => handleEdit(val?.id)}>
+                  Edit
+                </Menu.Item>
+                <Menu.Item key="2">
+                  {" "}
+                  <Popconfirm
+                    title={`Delete ${val?.name}`}
+                    onConfirm={() => removeData(val?.id)}
+                  >
+                    Delete
+                  </Popconfirm>
+                </Menu.Item>
               </Menu>
             }
           >
@@ -59,7 +96,7 @@ export const WorkBreak = () => {
 
   return (
     <>
-      <AddBreak open={openBreak} handleClose={() => setOpenBreak(false)} />
+      <AddBreak open={openBreak} id={breakPolicyId} handleClose={() => setOpenBreak(false)} />
       <div className="border rounded-md p-3 md:p-5 mt-5">
         <div className="flex items-start flex-col gap-3 lg:flex-row justify-between">
           <div>
@@ -72,7 +109,14 @@ export const WorkBreak = () => {
           <AppButton label="Add break" handleClick={() => setOpenBreak(true)} />
         </div>
 
-        <Table className="mt-5" columns={columns} dataSource={data} />
+        <Table
+          className="mt-5"
+          columns={columns}
+          dataSource={data?.data}
+          loading={isLoading}
+          pagination={{ ...pagination, total: data?.total }}
+          onChange={onChange}
+        />
       </div>
     </>
   );
