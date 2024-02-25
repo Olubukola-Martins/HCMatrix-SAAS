@@ -8,7 +8,6 @@ import { openNotification } from "utils/notifications";
 import { useCreateFixedSchedule } from "../hooks/useCreateFixedSchedule";
 import { QUERY_KEY_FOR_WORK_SCHEDULE_FIXED, useGetFixedSchedule } from "../hooks/useGetFixedSchedule";
 
-
 export const WorkFixed = () => {
   const [form] = Form.useForm();
   const queryClient = useQueryClient();
@@ -16,7 +15,6 @@ export const WorkFixed = () => {
   const { dispatch } = globalCtx;
   const { mutate, isLoading } = useCreateFixedSchedule();
   const { data, isSuccess } = useGetFixedSchedule();
-
 
   useEffect(() => {
     let initialFormValues;
@@ -31,13 +29,13 @@ export const WorkFixed = () => {
       }));
     } else {
       initialFormValues = [
-        { day: "monday" },
-        { day: "tuesday" },
-        { day: "wednesday" },
-        { day: "thursday" },
-        { day: "friday" },
-        { day: "saturday" },
-        { day: "sunday" },
+        { day: "Monday" },
+        { day: "Tuesday" },
+        { day: "Wednesday" },
+        { day: "Thursday" },
+        { day: "Friday" },
+        { day: "Saturday" },
+        { day: "Sunday" },
       ];
     }
 
@@ -59,7 +57,7 @@ export const WorkFixed = () => {
       }
       const [startTime, endTime] = item.time;
       return {
-        day: item.day,
+        day: item.day.toLowerCase(),
         startTime: startTime && startTime.format("HH:mm:ss"),
         endTime: endTime && endTime.format("HH:mm:ss"),
       };

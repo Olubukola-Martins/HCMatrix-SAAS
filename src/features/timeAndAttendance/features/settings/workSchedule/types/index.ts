@@ -1,18 +1,27 @@
+interface scheduleProps {
+  day: string;
+  startTime: string;
+  endTime: string;
+}
+
 export interface workScheduleFixedProps {
-  schedule: {
-    day: string;
-    startTime: string;
-    endTime: string;
-  }[];
+  schedule: scheduleProps[];
   allowTrackingBeforeStart: boolean;
 }
 
-export interface WorkDay {
+export interface IFlexible {
   day: string;
   duration: string;
 }
 
-export type workScheduleFlexibleProps = WorkDay[];
+export type workScheduleFlexibleProps = IFlexible[];
+
+export interface IShift {
+  type: string;
+  schedule: scheduleProps[];
+}
+
+export type workScheduleShiftProps = IShift[];
 
 export type workScheduleWeeklyProps = {
   duration: string;

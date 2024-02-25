@@ -27,13 +27,13 @@ export const WorkFlexible = () => {
       }));
     } else {
       initialFormValues = [
-        { day: "monday" },
-        { day: "tuesday" },
-        { day: "wednesday" },
-        { day: "thursday" },
-        { day: "friday" },
-        { day: "saturday" },
-        { day: "sunday" },
+        { day: "Monday" },
+        { day: "Tuesday" },
+        { day: "Wednesday" },
+        { day: "Thursday" },
+        { day: "Friday" },
+        { day: "Saturday" },
+        { day: "Sunday" },
       ];
     }
 
@@ -44,7 +44,7 @@ export const WorkFlexible = () => {
 
   const onFinish = (values: any) => {
     const data = values.workDaysAndTime.map((item: any) => ({
-      day: item.day,
+      day: item.day.toLowerCase(),
       duration: item.hours.toString(),
     }));
 

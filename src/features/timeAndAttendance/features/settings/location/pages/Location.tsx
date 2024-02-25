@@ -28,7 +28,7 @@ const Location = () => {
 
   const columns: ColumnsType<locationProps> = [
     {
-      title: "Brand Name",
+      title: "Branch Name",
       dataIndex: "branchId",
     },
     {

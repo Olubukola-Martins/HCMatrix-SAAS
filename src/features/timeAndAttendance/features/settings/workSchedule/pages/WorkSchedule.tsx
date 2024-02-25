@@ -13,11 +13,11 @@ const boxStyle =
   "border py-3 px-7 text-accent font-medium text-base cursor-pointer";
 
 export const WorkSchedule = () => {
-  const { data, isLoading } = useGetWorkSchedule();
+  const { data } = useGetWorkSchedule();
   const [switchWorkArr, setSwitchWorkArr] = useState(
     data ? data?.workArrangement : "Fixed"
   );
- 
+
   return (
     <>
       <TimeAttendanceSettingsNav active="Create Work Schedule" />
@@ -87,16 +87,15 @@ export const WorkSchedule = () => {
                 </div>
               </div>
               {/* Initialization of the components */}
-              <Skeleton active loading={isLoading}>
-                {switchWorkArr === "Fixed" && <WorkFixed />}
-                {switchWorkArr === "Flexible" && <WorkFlexible />}
-                {switchWorkArr === "Weekly" && <WeeklyWork />}
-              </Skeleton>
-
-              {switchWorkArr === "Shift" && <WorkShift data={data} />}
+              {/* <Skeleton active loading={isLoading}> */}
+              {switchWorkArr === "Fixed" && <WorkFixed />}
+              {switchWorkArr === "Flexible" && <WorkFlexible />}
+              {switchWorkArr === "Weekly" && <WeeklyWork />}
+              {/* </Skeleton> */}
             </div>
           </div>
         </div>
+        {switchWorkArr === "Shift" && <WorkShift />}
         {switchWorkArr === "break" && <WorkBreak />}
       </div>
     </>
