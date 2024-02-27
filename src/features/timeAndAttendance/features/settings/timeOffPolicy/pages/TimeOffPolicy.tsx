@@ -11,11 +11,13 @@ import {
 } from "../hooks/useGetTimeOffPolicy";
 import { CreateTimeOffPolicy } from "../components/CreateTimeOffPolicy";
 import { useDeleteTimeAndAttendance } from "features/timeAndAttendance/hooks/useDeleteTimeAndAttendance";
+import { usePagination } from "hooks/usePagination";
 
 export const TimeOffPolicy = () => {
   const [openAddPolicy, setOpenAddPolicy] = useState(false);
   const [policyId, setPolicyId] = useState<number>();
-  const { data, isLoading } = useGetTimeOffPolicy();
+  const { pagination, onChange } = usePagination({ pageSize: 10 });
+  const { data, isLoading } = useGetTimeOffPolicy({pagination});
   const { removeData } = useDeleteTimeAndAttendance({
     EndPointUrl: "settings/time-off-policies",
     queryKey: QUERY_KEY_FOR_TIME_OFF_POLICY,
@@ -93,9 +95,10 @@ export const TimeOffPolicy = () => {
 
         <Table
           columns={columns}
-          dataSource={data}
+          dataSource={data?.data}
           loading={isLoading}
-          pagination={{ pageSize: 10, total: data?.length }}
+          pagination={{ ...pagination, total: data?.total }}
+          onChange={onChange}
         />
       </div>
     </>

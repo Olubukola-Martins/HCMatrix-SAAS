@@ -11,11 +11,13 @@ import {
   useGetLocations,
 } from "../hooks/useGetLocations";
 import { useDeleteTimeAndAttendance } from "features/timeAndAttendance/hooks/useDeleteTimeAndAttendance";
+import { usePagination } from "hooks/usePagination";
 
 const Location = () => {
   const [openAddLocation, setOpenAddLocation] = useState(false);
-  const { data, isLoading } = useGetLocations();
   const [locationId, setLocationId] = useState<number>();
+  const { pagination, onChange } = usePagination({ pageSize: 10 });
+  const { data, isLoading } = useGetLocations({ pagination });
   const { removeData } = useDeleteTimeAndAttendance({
     EndPointUrl: "settings/branch-locations",
     queryKey: QUERY_KEY_FOR_LOCATION,
@@ -30,10 +32,12 @@ const Location = () => {
     {
       title: "Branch Name",
       dataIndex: "branchId",
+      render: (_, val) => <span>{val?.branch?.name}</span>,
     },
     {
       title: "Biometric Device",
       dataIndex: "biometricDeviceId",
+      render: (_, val) => <span>{val?.biometricDevice?.name}</span>,
     },
     {
       title: "Action",
@@ -89,9 +93,10 @@ const Location = () => {
         </div>
         <Table
           columns={columns}
-          dataSource={data}
+          dataSource={data?.data}
           loading={isLoading}
-          pagination={{ pageSize: 10, total: data?.length }}
+          pagination={{ ...pagination, total: data?.total }}
+          onChange={onChange}
         />
       </div>
     </>
