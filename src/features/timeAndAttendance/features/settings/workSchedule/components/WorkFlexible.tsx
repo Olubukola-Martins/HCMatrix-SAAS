@@ -16,7 +16,7 @@ export const WorkFlexible = () => {
   const globalCtx = useContext(GlobalContext);
   const { dispatch } = globalCtx;
   const { mutate, isLoading } = useCreateFlexibleSchedule();
-  const { data, isSuccess } = useGetFlexibleSchedule();
+  const { data, isSuccess, isLoading: isFetchLoading } = useGetFlexibleSchedule();
 
   useEffect(() => {
     let initialFormValues;
@@ -78,7 +78,7 @@ export const WorkFlexible = () => {
     <div>
       {/* form */}
       <div className="mt-6">
-        <Form form={form} onFinish={onFinish}>
+        <Form form={form} onFinish={onFinish} disabled={isFetchLoading}>
           <Form.List name="workDaysAndTime">
             {(fields) => (
               <>

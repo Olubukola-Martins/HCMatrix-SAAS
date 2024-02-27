@@ -6,7 +6,11 @@ import { useQueryClient } from "react-query";
 import { EGlobalOps, GlobalContext } from "stateManagers/GlobalContextProvider";
 import { openNotification } from "utils/notifications";
 import { useCreateFixedSchedule } from "../hooks/useCreateFixedSchedule";
-import { QUERY_KEY_FOR_WORK_SCHEDULE_FIXED, useGetFixedSchedule } from "../hooks/useGetFixedSchedule";
+import {
+  QUERY_KEY_FOR_WORK_SCHEDULE_FIXED,
+  useGetFixedSchedule,
+} from "../hooks/useGetFixedSchedule";
+import { capitalizeWord } from "../../Utils";
 
 export const WorkFixed = () => {
   const [form] = Form.useForm();
@@ -14,14 +18,19 @@ export const WorkFixed = () => {
   const globalCtx = useContext(GlobalContext);
   const { dispatch } = globalCtx;
   const { mutate, isLoading } = useCreateFixedSchedule();
-  const { data, isSuccess } = useGetFixedSchedule();
+  const { data, isSuccess, isLoading: isFetchLoading } = useGetFixedSchedule();
+
+  const allowTracking = data?.map((item: any) => item.allowTrackingBeforeStart);
+  const allowTrackingResult = allowTracking?.find(
+    (element) => element === false || true
+  );
 
   useEffect(() => {
     let initialFormValues;
 
     if (isSuccess && data && data.length !== 0) {
       initialFormValues = data?.map((item: any) => ({
-        day: item.day,
+        day: capitalizeWord(item.day),
         time: [
           moment(`2013-02-07 ${item.startTime}`),
           moment(`2013-02-08 ${item.endTime}`),
@@ -41,12 +50,11 @@ export const WorkFixed = () => {
 
     form.setFieldsValue({
       schedule: initialFormValues,
-      // allowTrackingBeforeStart: data?.allowTrackingBeforeStart
+      allowTrackingBeforeStart: allowTrackingResult,
     });
   }, [form, isSuccess, data]);
 
   const onFinish = (values: any) => {
-
     const workDaysAndTime = values?.schedule.map((item: any) => {
       if (!item.time || item.time.length < 2) {
         return {
@@ -123,7 +131,7 @@ export const WorkFixed = () => {
 
       {/* form */}
       <div className="mt-6">
-        <Form form={form} onFinish={onFinish}>
+        <Form form={form} onFinish={onFinish} disabled={isFetchLoading}>
           <Form.List name="schedule">
             {(fields) => (
               <>
@@ -152,6 +160,7 @@ export const WorkFixed = () => {
               <Form.Item
                 name="allowTrackingBeforeStart"
                 valuePropName="checked"
+                initialValue={false}
               >
                 <Checkbox
                   // checked={true}

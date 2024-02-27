@@ -2,6 +2,7 @@ interface scheduleProps {
   day: string;
   startTime: string;
   endTime: string;
+  allowTrackingBeforeStart: boolean;
 }
 
 export interface workScheduleFixedProps {

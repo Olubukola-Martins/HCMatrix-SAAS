@@ -14,11 +14,7 @@ export const WeeklyWork = () => {
   const { dispatch } = globalCtx;
   const queryClient = useQueryClient();
   const { mutate, isLoading } = useCreateWeeklySchedule();
-  const { data, isSuccess } = useGetWeeklySchedule();
-
-
-  // console.log(data);
-  
+  const { data, isSuccess, isLoading: isFetchLoading } = useGetWeeklySchedule();
 
   useEffect(() => {
     form.setFieldsValue({
@@ -56,12 +52,12 @@ export const WeeklyWork = () => {
   return (
     <div>
       {/* form */}
-      <Form form={form} className="mt-6" onFinish={handleSubmit}>
+      <Form form={form} className="mt-6" onFinish={handleSubmit} disabled={isFetchLoading}>
         <Form.Item name="duration" label="Enter hours" rules={generalValidationRules}>
           <InputNumber className="w-full" min={1} />
         </Form.Item>
         <div className="flex justify-end">
-          <AppButton label="Save" type="submit" isLoading={isLoading} />
+          <AppButton label="Save Changes" type="submit"  isLoading={isLoading} />
         </div>
       </Form>
     </div>

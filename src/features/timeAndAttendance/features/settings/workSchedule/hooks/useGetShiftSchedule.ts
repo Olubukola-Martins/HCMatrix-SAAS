@@ -19,7 +19,7 @@ const getData = async (
     },
   };
   const res = await axios.get(url, config);
-
+  
   const data: workScheduleShiftProps[] = res.data.data;
 
   return data;

@@ -10,6 +10,8 @@ import {
   QUERY_KEY_FOR_WORK_SCHEDULE_SHIFT,
   useGetShiftSchedule,
 } from "../hooks/useGetShiftSchedule";
+import { capitalizeWord } from "../../Utils";
+import moment from "moment";
 
 export const WorkShift = () => {
   const [form] = Form.useForm();
@@ -17,7 +19,7 @@ export const WorkShift = () => {
   const { dispatch } = globalCtx;
   const queryClient = useQueryClient();
   const { mutate, isLoading: isLoadingUpdate } = useCreateShiftSchedule();
-  const { data, isLoading: isLoadingGet } = useGetShiftSchedule();
+  const { data, isLoading: isLoadingGet, isSuccess } = useGetShiftSchedule();
 
   const theInitialFormValues = [
     {
@@ -61,8 +63,17 @@ export const WorkShift = () => {
 
   useEffect(() => {
     let initialFormValues;
-    if (3 > 6) {
-      console.log("Yes");
+    if (isSuccess && data && data.length !== 0) {
+      initialFormValues = data?.map((item: any) => ({
+        type: capitalizeWord(item.type),
+        schedule: item.schedule.map((val: any) => ({
+          day: capitalizeWord(val.day),
+          time: [
+            moment(val?.startTime, "HH:mm:ss"),
+            moment(val?.endTime, "HH:mm:ss"),
+          ],
+        })),
+      }));
     } else {
       initialFormValues = theInitialFormValues;
     }
@@ -70,14 +81,14 @@ export const WorkShift = () => {
     form.setFieldsValue({
       workDaysAndTime: initialFormValues,
     });
-  }, [form]);
+  }, [form, data, isSuccess]);
 
   const onFinish = (values: any) => {
     const data = values?.workDaysAndTime.map((item: any) => {
       const schedule = item?.schedule.map((val: any) => {
         if (!val.time || val.time.length < 2) {
           return {
-            day: val.day,
+            day: val.day.toLowerCase(),
             startTime: "00:00:00",
             endTime: "00:00:00",
           };
@@ -181,8 +192,8 @@ export const WorkShift = () => {
         </Form.List>
 
         <div className="flex gap-3 mt-5">
-          <AppButton label="Upload Template" />
-          <AppButton type="submit" isLoading={isLoadingUpdate} />
+          {/* <AppButton label="Upload Template" /> */}
+          <AppButton type="submit" label="Save Changes" isLoading={isLoadingUpdate} />
         </div>
       </Form>
     </div>

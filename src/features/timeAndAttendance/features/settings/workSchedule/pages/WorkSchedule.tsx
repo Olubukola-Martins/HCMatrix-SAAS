@@ -1,5 +1,3 @@
-import { Skeleton } from "antd";
-import { useGetWorkSchedule } from "features/timeAndAttendance/hooks/useGetWorkSchedule";
 import { useState } from "react";
 import { TimeAttendanceSettingsNav } from "../../components/TimeAttendanceSettingsNav";
 import { AttendanceSettingsIntro } from "../../components/AttendanceSettingsIntro";
@@ -13,10 +11,7 @@ const boxStyle =
   "border py-3 px-7 text-accent font-medium text-base cursor-pointer";
 
 export const WorkSchedule = () => {
-  const { data } = useGetWorkSchedule();
-  const [switchWorkArr, setSwitchWorkArr] = useState(
-    data ? data?.workArrangement : "Fixed"
-  );
+  const [switchWorkArr, setSwitchWorkArr] = useState("Fixed");
 
   return (
     <>
@@ -87,11 +82,10 @@ export const WorkSchedule = () => {
                 </div>
               </div>
               {/* Initialization of the components */}
-              {/* <Skeleton active loading={isLoading}> */}
+
               {switchWorkArr === "Fixed" && <WorkFixed />}
               {switchWorkArr === "Flexible" && <WorkFlexible />}
               {switchWorkArr === "Weekly" && <WeeklyWork />}
-              {/* </Skeleton> */}
             </div>
           </div>
         </div>
