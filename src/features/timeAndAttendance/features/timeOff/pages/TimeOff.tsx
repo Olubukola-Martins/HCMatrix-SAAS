@@ -1,49 +1,62 @@
-import React, { useState } from "react";
-import { AttendanceSubToper } from "../components/AttendanceSubToper";
+import { useState } from "react";
 import { PageIntro } from "components/layout/PageIntro";
 import { appRoutes } from "config/router/paths";
 import { AppButton } from "components/button/AppButton";
 import Table, { ColumnsType } from "antd/lib/table";
-import { Dropdown, Menu } from "antd";
+import { Dropdown, Menu, Popconfirm } from "antd";
+import { ITimeOffProps } from "../types";
 import { AddTimeOff } from "../components/AddTimeOff";
-import { IAllTimeOff } from "../types/settings";
-import { useGetTimeOff } from "../hooks/useGetTimeOff";
-import moment from "moment";
+import { AttendanceSubToper } from "features/timeAndAttendance/components/AttendanceSubToper";
+import { QUERY_KEY_FOR_TIME_OFF, useGetTimeOff } from "../hooks/useGetTimeOff";
+import { usePagination } from "hooks/usePagination";
+import { useDeleteTimeAndAttendance } from "features/timeAndAttendance/hooks/useDeleteTimeAndAttendance";
 
 export const TimeOff = () => {
   const [newTimeOffModal, setNewTimeOffModal] = useState(false);
-  const { data } = useGetTimeOff();
-  const [selectedRowKeys, setSelectedRowKeys] = useState<React.Key[]>([]);
-  const onSelectChange = (newSelectedRowKeys: React.Key[]) => {
-    console.log("selectedRowKeys changed: ", newSelectedRowKeys);
-    setSelectedRowKeys(newSelectedRowKeys);
+  const [timeOffId, settimeOffId] = useState<number>();
+  const { pagination, onChange } = usePagination({ pageSize: 10 });
+  const { data, isLoading } = useGetTimeOff({ pagination });
+  const { removeData } = useDeleteTimeAndAttendance({
+    EndPointUrl: "time-off-requests",
+    queryKey: QUERY_KEY_FOR_TIME_OFF,
+  });
+
+  const handleEdit = (id: number) => {
+    setNewTimeOffModal(true);
+    settimeOffId(id);
   };
 
-  const rowSelection = {
-    selectedRowKeys,
-    onChange: onSelectChange,
-  };
-  const hasSelected = selectedRowKeys.length > 0;
+  //   const [selectedRowKeys, setSelectedRowKeys] = useState<React.Key[]>([]);
+  //   const onSelectChange = (newSelectedRowKeys: React.Key[]) => {
+  //     console.log("selectedRowKeys changed: ", newSelectedRowKeys);
+  //     setSelectedRowKeys(newSelectedRowKeys);
+  //   };
+  //   const rowSelection = {
+  //     selectedRowKeys,
+  //     onChange: onSelectChange,
+  //   };
+  //   const hasSelected = selectedRowKeys.length > 0;
 
-  const columns: ColumnsType<IAllTimeOff> = [
-    {
-      title: "Date",
-      dataIndex: "date",
-      render: (_, val) => (
-        <span>{moment(val?.date).format("MMM Do YYYY")}</span>
-      ),
-    },
+  const columns: ColumnsType<ITimeOffProps> = [
     {
       title: "Time off Policy",
       dataIndex: "timeOffPolicy",
+    },
+    {
+      title: "Date",
+      dataIndex: "date",
+    },
+    {
+      title: "Time",
+      dataIndex: "time",
     },
     {
       title: "Status",
       dataIndex: "status",
     },
     {
-      title: "Reason",
-      dataIndex: "reason",
+      title: "Comment",
+      dataIndex: "comment",
     },
     {
       title: "Action",
@@ -53,8 +66,15 @@ export const TimeOff = () => {
             trigger={["click"]}
             overlay={
               <Menu>
-                <Menu.Item key="1">Edit</Menu.Item>
-                <Menu.Item key="2">Cancel</Menu.Item>
+                <Menu.Item key="1" onClick={() => handleEdit(val.id as number)}>Edit</Menu.Item>
+                <Menu.Item key="2">
+                  <Popconfirm
+                    title={`Delete ${val.policyId}`}
+                    onConfirm={() => removeData(val.id as number)}
+                  >
+                    Delete
+                  </Popconfirm>
+                </Menu.Item>
                 <Menu.Item key="3">Reject</Menu.Item>
                 <Menu.Item key="4">Approve</Menu.Item>
               </Menu>
@@ -70,6 +90,7 @@ export const TimeOff = () => {
     <>
       <AttendanceSubToper active="time-off" />
       <AddTimeOff
+        id={timeOffId}
         open={newTimeOffModal}
         handleClose={() => setNewTimeOffModal(false)}
       />
@@ -97,18 +118,21 @@ export const TimeOff = () => {
           </div>
         </div>
 
-        {hasSelected && (
+        {/* {hasSelected && (
           <div className="flex gap-3 mb-5">
             <AppButton label="Reject" variant="transparent" />
             <AppButton label="Approve" variant="transparent" />
           </div>
-        )}
+        )} */}
 
         <Table
           className="mt-3"
           columns={columns}
-          dataSource={data}
-          rowSelection={rowSelection}
+          dataSource={data?.data}
+          //   rowSelection={rowSelection}
+          loading={isLoading}
+          pagination={{ ...pagination, total: data?.total }}
+          onChange={onChange}
         />
       </div>
     </>

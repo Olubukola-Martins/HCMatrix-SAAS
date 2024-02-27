@@ -1,4 +1,4 @@
-import { DatePicker, Form, Modal, Select } from "antd";
+import { DatePicker, Form, Modal, Select, TimePicker } from "antd";
 import TextArea from "antd/lib/input/TextArea";
 import { AppButton } from "components/button/AppButton";
 import { IModalProps } from "types";
@@ -6,32 +6,44 @@ import {
   generalValidationRules,
   textInputValidationRulesOp,
 } from "utils/formHelpers/validation";
-import { useGetTimeOffPolicy } from "../hooks/useGetTimeOffPolicy";
-import { useCreateTimeOff } from "../hooks/useCreateTimeOff";
-import { useApiAuth } from "hooks/useApiAuth";
 import { openNotification } from "utils/notifications";
 import { EGlobalOps, GlobalContext } from "stateManagers/GlobalContextProvider";
-import { useContext } from "react";
-import { QUERY_KEY_FOR_TIME_OFF } from "../hooks/useGetTimeOff";
+import { useContext, useEffect } from "react";
 import { useQueryClient } from "react-query";
+import { useCreateTimeOff } from "../hooks/useCreateTimeOff";
+import { useGetTimeOffPolicy } from "../../settings/timeOffPolicy/hooks/useGetTimeOffPolicy";
+import { QUERY_KEY_FOR_TIME_OFF } from "../hooks/useGetTimeOff";
+import { useGetSingleTimeOff } from "../hooks/useGetSingleTimeOff";
 
-export const AddTimeOff = ({ open, handleClose }: IModalProps) => {
-  const { companyId, token, currentUserId } = useApiAuth();
+export const AddTimeOff = ({ open, handleClose, id }: IModalProps) => {
   const [form] = Form.useForm();
   const globalCtx = useContext(GlobalContext);
   const { dispatch } = globalCtx;
-  const { data, isLoading: loadPolicy } = useGetTimeOffPolicy();
-  const { mutate, isLoading } = useCreateTimeOff();
+  const { data: timeOffPolicyData, isLoading: loadPolicy } =
+    useGetTimeOffPolicy();
+
+  const { mutate, isLoading: isLoadingCreate } = useCreateTimeOff();
   const queryClient = useQueryClient();
+  const { data, isSuccess } = useGetSingleTimeOff(id as unknown as number);
+
+  useEffect(() => {
+    if (isSuccess && id) {
+      form.setFieldsValue({
+        ...data,
+      });
+    } else {
+      form.resetFields();
+    }
+  }, [form, id, data, isSuccess]);
+
   const handleSubmit = (values: any) => {
     mutate(
       {
-        reason: values.reason,
-        date: values.date.format(),
-        timeOffPolicyId: values.policy,
-        userId: currentUserId,
-        companyId,
-        token,
+        id: id ? id : undefined,
+        policyId: values.policyId,
+        date: values.date.format("YYYY-MM-DD"),
+        time: values.time.format("HH:mm:ss"),
+        comment: values.comment,
       },
       {
         onError: (err: any) => {
@@ -47,9 +59,8 @@ export const AddTimeOff = ({ open, handleClose }: IModalProps) => {
           openNotification({
             state: "success",
             title: "Success",
-            description: "Time off Successfully created",
+            description: res.data.message,
           });
-
           form.resetFields();
           dispatch({ type: EGlobalOps.setShowInitialSetup, payload: true });
           queryClient.invalidateQueries([QUERY_KEY_FOR_TIME_OFF]);
@@ -64,12 +75,17 @@ export const AddTimeOff = ({ open, handleClose }: IModalProps) => {
       open={open}
       onCancel={() => handleClose()}
       footer={null}
-      title="Add New"
+      title={`${id ? "Edit" : "Create"} Timeoff`}
       style={{ top: 15 }}
     >
-      <Form layout="vertical" form={form} onFinish={handleSubmit}>
+      <Form
+        layout="vertical"
+        requiredMark={false}
+        form={form}
+        onFinish={handleSubmit}
+      >
         <Form.Item
-          name="policy"
+          name="policyId"
           label="Time off policy"
           rules={generalValidationRules}
         >
@@ -77,25 +93,28 @@ export const AddTimeOff = ({ open, handleClose }: IModalProps) => {
             allowClear
             loading={loadPolicy}
             placeholder="Select"
-            options={data?.map((item: any) => ({
+            options={timeOffPolicyData?.data?.map((item: any) => ({
               value: item.id,
-              label: item.name,
+              label: item.title,
             }))}
           />
+        </Form.Item>
+        <Form.Item name="time" label="Date" rules={generalValidationRules}>
+          <TimePicker className="w-full" />
         </Form.Item>
         <Form.Item name="date" label="Date" rules={generalValidationRules}>
           <DatePicker className="w-full" />
         </Form.Item>
 
         <Form.Item
-          name="reason"
-          label="Reason"
+          name="comment"
+          label="Comment"
           requiredMark="optional"
           rules={textInputValidationRulesOp}
         >
           <TextArea />
         </Form.Item>
-        <AppButton type="submit" isLoading={isLoading} />
+        <AppButton type="submit" isLoading={isLoadingCreate} />
       </Form>
     </Modal>
   );

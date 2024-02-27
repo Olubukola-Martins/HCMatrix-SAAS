@@ -30,7 +30,7 @@ export const TimeOffPolicy = () => {
 
   const columns: ColumnsType<ITimeOffPolicyRule> = [
     {
-      title: "Branch Name",
+      title: "Policy Name",
       dataIndex: "title",
     },
     {
