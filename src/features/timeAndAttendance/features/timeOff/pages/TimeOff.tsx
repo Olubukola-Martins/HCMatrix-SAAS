@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { PageIntro } from "components/layout/PageIntro";
 import { appRoutes } from "config/router/paths";
 import { AppButton } from "components/button/AppButton";
@@ -30,26 +30,43 @@ export const TimeOff = () => {
     setNewTimeOffModal(true);
     settimeOffId(id);
   };
+  // ======================
 
-  const [lat, setLat] = useState([]);
-  const [long, setLong] = useState([]);
+  const [lat, setLat] = useState<number | null>(null);
+  const [long, setLong] = useState<number | null>(null);
 
   useEffect(() => {
-    navigator.geolocation.getCurrentPosition(function(position) {
-      setLat(position.coords.latitude);
-      setLong(position.coords.longitude);
-    });
+    const getLocation = () => {
+      navigator.geolocation.getCurrentPosition(
+        function (position) {
+          setLat(position.coords.latitude);
+          setLong(position.coords.longitude);
+        },
+        function (error) {
+          console.error("Error getting geolocation:", error);
+        }
+      );
+    };
 
-    console.log("Latitude is:", lat)
-    console.log("Longitude is:", long)
+    getLocation();
+  }, []); // Empty dependency array ensures that this effect runs only once
+
+  // The following useEffect will run whenever lat or long changes
+  useEffect(() => {
+    if (lat !== null && long !== null) {
+      console.log("Latitude is:", lat);
+      console.log("Longitude is:", long);
+    }
   }, [lat, long]);
+
+  //   ===================
 
   const columns: ColumnsType<ITimeOffProps> = [
     {
-        title: "Employee",
-        dataIndex: "employee",
-        // render: (_, val) => <span>{val.policy?.title}</span>,
-      },
+      title: "Employee",
+      dataIndex: "employee",
+      // render: (_, val) => <span>{val.policy?.title}</span>,
+    },
     {
       title: "Time off Policy",
       dataIndex: "timeOffPolicy",
@@ -163,8 +180,8 @@ export const TimeOff = () => {
             <AppButton
               label="Add Time off"
               handleClick={() => {
-                setNewTimeOffModal(true)
-                settimeOffId(undefined)
+                setNewTimeOffModal(true);
+                settimeOffId(undefined);
               }}
             />
           </div>
@@ -178,6 +195,18 @@ export const TimeOff = () => {
           pagination={{ ...pagination, total: data?.total }}
           onChange={onChange}
         />
+
+        {/* j */}
+        <div>
+          {lat !== null && long !== null ? (
+            <div>
+              <p>Latitude: {lat}</p>
+              <p>Longitude: {long}</p>
+            </div>
+          ) : (
+            <p>Fetching location...</p>
+          )}
+        </div>
       </div>
     </>
   );
