@@ -4,4 +4,8 @@ export interface ITimeOffProps {
   date: string;
   time: string;
   comment: string;
+  policy?: {
+    title: string;
+    duration: number;
+  };
 }

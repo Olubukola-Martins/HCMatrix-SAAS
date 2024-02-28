@@ -22,7 +22,10 @@ export const createData = async (props: {
   };
 
   const data: any = {
-    ...props.data,
+    policyId: props.data.policyId,
+    date: props.data.date,
+    time: props.data.time,
+    comment: props.data.comment,
   };
 
   const requestType = props.data.id ? axios.put : axios.post;

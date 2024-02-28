@@ -90,7 +90,7 @@ export const WorkFixed = () => {
           openNotification({
             state: "success",
             title: "Success",
-            description: "Schedule Created Successfully",
+            description: res.data.message,
           });
 
           dispatch({ type: EGlobalOps.setShowInitialSetup, payload: true });

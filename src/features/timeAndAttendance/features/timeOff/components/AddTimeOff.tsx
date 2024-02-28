@@ -14,6 +14,7 @@ import { useCreateTimeOff } from "../hooks/useCreateTimeOff";
 import { useGetTimeOffPolicy } from "../../settings/timeOffPolicy/hooks/useGetTimeOffPolicy";
 import { QUERY_KEY_FOR_TIME_OFF } from "../hooks/useGetTimeOff";
 import { useGetSingleTimeOff } from "../hooks/useGetSingleTimeOff";
+import moment from "moment";
 
 export const AddTimeOff = ({ open, handleClose, id }: IModalProps) => {
   const [form] = Form.useForm();
@@ -24,12 +25,17 @@ export const AddTimeOff = ({ open, handleClose, id }: IModalProps) => {
 
   const { mutate, isLoading: isLoadingCreate } = useCreateTimeOff();
   const queryClient = useQueryClient();
-  const { data, isSuccess } = useGetSingleTimeOff(id as unknown as number);
+  const { data, isSuccess, isLoading } = useGetSingleTimeOff(
+    id as unknown as number
+  );
 
   useEffect(() => {
-    if (isSuccess && id) {
+    if (data && id) {
       form.setFieldsValue({
-        ...data,
+        policyId: data?.policyId,
+        date: moment(data?.date),
+        time: moment(data?.time, "HH:mm:ss"),
+        comment: data?.comment,
       });
     } else {
       form.resetFields();
@@ -83,6 +89,7 @@ export const AddTimeOff = ({ open, handleClose, id }: IModalProps) => {
         requiredMark={false}
         form={form}
         onFinish={handleSubmit}
+        disabled={isLoading}
       >
         <Form.Item
           name="policyId"

@@ -128,7 +128,7 @@ export const AddBreak = ({ handleClose, open, id }: IDrawerProps) => {
           openNotification({
             state: "success",
             title: "Success",
-            description: "Schedule Created Successfully",
+            description: res.data.message,
           });
           dispatch({ type: EGlobalOps.setShowInitialSetup, payload: true });
           queryClient.invalidateQueries([QUERY_KEY_FOR_BREAK_POLICY]);

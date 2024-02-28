@@ -10,6 +10,7 @@ import { AttendanceSubToper } from "features/timeAndAttendance/components/Attend
 import { QUERY_KEY_FOR_TIME_OFF, useGetTimeOff } from "../hooks/useGetTimeOff";
 import { usePagination } from "hooks/usePagination";
 import { useDeleteTimeAndAttendance } from "features/timeAndAttendance/hooks/useDeleteTimeAndAttendance";
+import { useHandleTimeAndAttendanceStatus } from "features/timeAndAttendance/hooks/useHandleTimeAndAttendanceStatus";
 
 export const TimeOff = () => {
   const [newTimeOffModal, setNewTimeOffModal] = useState(false);
@@ -21,27 +22,43 @@ export const TimeOff = () => {
     EndPointUrl: "time-off-requests",
     queryKey: QUERY_KEY_FOR_TIME_OFF,
   });
+  const { requestType } = useHandleTimeAndAttendanceStatus({
+    queryKey: QUERY_KEY_FOR_TIME_OFF,
+  });
 
   const handleEdit = (id: number) => {
     setNewTimeOffModal(true);
     settimeOffId(id);
   };
 
-  //   const [selectedRowKeys, setSelectedRowKeys] = useState<React.Key[]>([]);
-  //   const onSelectChange = (newSelectedRowKeys: React.Key[]) => {
-  //     console.log("selectedRowKeys changed: ", newSelectedRowKeys);
-  //     setSelectedRowKeys(newSelectedRowKeys);
-  //   };
-  //   const rowSelection = {
-  //     selectedRowKeys,
-  //     onChange: onSelectChange,
-  //   };
-  //   const hasSelected = selectedRowKeys.length > 0;
+  const [lat, setLat] = useState([]);
+  const [long, setLong] = useState([]);
+
+  useEffect(() => {
+    navigator.geolocation.getCurrentPosition(function(position) {
+      setLat(position.coords.latitude);
+      setLong(position.coords.longitude);
+    });
+
+    console.log("Latitude is:", lat)
+    console.log("Longitude is:", long)
+  }, [lat, long]);
 
   const columns: ColumnsType<ITimeOffProps> = [
     {
+        title: "Employee",
+        dataIndex: "employee",
+        // render: (_, val) => <span>{val.policy?.title}</span>,
+      },
+    {
       title: "Time off Policy",
       dataIndex: "timeOffPolicy",
+      render: (_, val) => <span>{val.policy?.title}</span>,
+    },
+    {
+      title: "Duration in days",
+      dataIndex: "duration",
+      render: (_, val) => <span>{val.policy?.duration}</span>,
     },
     {
       title: "Date",
@@ -72,14 +89,36 @@ export const TimeOff = () => {
                 </Menu.Item>
                 <Menu.Item key="2">
                   <Popconfirm
-                    title={`Delete ${val.policyId}`}
+                    title={`Delete ${val.policy?.title}`}
                     onConfirm={() => removeData(val.id as number)}
                   >
                     Delete
                   </Popconfirm>
                 </Menu.Item>
-                <Menu.Item key="3">Reject</Menu.Item>
-                <Menu.Item key="4">Approve</Menu.Item>
+                <Menu.Item key="5">
+                  <Popconfirm
+                    title={`Cancel ${val.policy?.title}`}
+                    onConfirm={() => requestType(val.id as number, "cancelled")}
+                  >
+                    Cancel
+                  </Popconfirm>
+                </Menu.Item>
+                <Menu.Item key="3">
+                  <Popconfirm
+                    title={`Reject ${val.policy?.title}`}
+                    onConfirm={() => requestType(val.id as number, "rejected")}
+                  >
+                    Reject
+                  </Popconfirm>
+                </Menu.Item>
+                <Menu.Item key="4">
+                  <Popconfirm
+                    title={`Approve ${val.policy?.title}`}
+                    onConfirm={() => requestType(val.id as number, "approved")}
+                  >
+                    Approve
+                  </Popconfirm>
+                </Menu.Item>
               </Menu>
             }
           >
@@ -123,23 +162,18 @@ export const TimeOff = () => {
             />
             <AppButton
               label="Add Time off"
-              handleClick={() => setNewTimeOffModal(true)}
+              handleClick={() => {
+                setNewTimeOffModal(true)
+                settimeOffId(undefined)
+              }}
             />
           </div>
         </div>
-
-        {/* {hasSelected && (
-          <div className="flex gap-3 mb-5">
-            <AppButton label="Reject" variant="transparent" />
-            <AppButton label="Approve" variant="transparent" />
-          </div>
-        )} */}
 
         <Table
           className="mt-3"
           columns={columns}
           dataSource={data?.data}
-          //   rowSelection={rowSelection}
           loading={isLoading}
           pagination={{ ...pagination, total: data?.total }}
           onChange={onChange}

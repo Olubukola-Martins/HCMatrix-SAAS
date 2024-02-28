@@ -125,7 +125,7 @@ export const WorkShift = () => {
           openNotification({
             state: "success",
             title: "Success",
-            description: "Schedule Created Successfully",
+            description: res.data.message,
           });
           dispatch({ type: EGlobalOps.setShowInitialSetup, payload: true });
           queryClient.invalidateQueries([QUERY_KEY_FOR_WORK_SCHEDULE_SHIFT]);
@@ -193,7 +193,11 @@ export const WorkShift = () => {
 
         <div className="flex gap-3 mt-5">
           {/* <AppButton label="Upload Template" /> */}
-          <AppButton type="submit" label="Save Changes" isLoading={isLoadingUpdate} />
+          <AppButton
+            type="submit"
+            label="Save Changes"
+            isLoading={isLoadingUpdate}
+          />
         </div>
       </Form>
     </div>
