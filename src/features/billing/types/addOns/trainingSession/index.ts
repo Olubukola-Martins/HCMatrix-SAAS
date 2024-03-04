@@ -9,3 +9,8 @@ export type TTrainingSession = {
   createdAt: string;
   updatedAt: string;
 };
+
+export {
+  type TTrainingSessionBooking,
+  type TTrainingSessionBookingStatus,
+} from "./booking";

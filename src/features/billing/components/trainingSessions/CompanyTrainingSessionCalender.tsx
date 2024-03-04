@@ -7,48 +7,58 @@ import Skeleton from "antd/lib/skeleton/Skeleton";
 import { ErrorWrapper } from "components/errorHandlers/ErrorWrapper";
 import "../../styles/big-calender-override.css";
 import { CancelCompanyTrainingSession } from "./CancelCompanyTrainingSession";
+import { useGetTrainingBookings } from "features/billing/hooks/addOns/trainingSession/booking/useGetTrainingBookings";
+import { truncateString } from "utils/dataHelpers/truncateString";
+import { TTrainingSessionBooking } from "features/billing/types/addOns/trainingSession";
 
 const localizer = momentLocalizer(moment);
-const CompanyTrainingSessionCalender = () => {
-  // TODO: Get event list from api
+const CompanyTrainingSessionCalender: React.FC<{
+  filter?: Partial<
+    Pick<TTrainingSessionBooking, "startDate" | "endDate" | "status">
+  >;
+}> = ({ filter }) => {
+  const {
+    data: bookings,
+    isLoading,
+    error,
+    isError,
+  } = useGetTrainingBookings({ props: filter });
   const [action, setAction] = React.useState<"cancel-training-session">();
   const [selectedEvent, setSelectedEvent] = React.useState<{
+    id: number;
     title: string;
     start: Moment;
     end: Moment;
   }>();
   return (
     <ErrorBoundary>
-      <Skeleton loading={false} active paragraph={{ rows: 45 }}>
+      <Skeleton loading={isLoading} active paragraph={{ rows: 45 }}>
         <ErrorWrapper
-          isError={false}
-          message={`error?.response?.data?.message ??
-              error?.response?.data?.error?.message`}
+          isError={isError}
+          message={
+            error?.response?.data?.message ??
+            error?.response?.data?.error?.message
+          }
         >
-          <CancelCompanyTrainingSession
-            open={action === "cancel-training-session"}
-            handleClose={() => setAction(undefined)}
-            event={selectedEvent}
-          />
+          {selectedEvent ? (
+            <CancelCompanyTrainingSession
+              open={action === "cancel-training-session"}
+              handleClose={() => setAction(undefined)}
+              booking={{
+                endDate: selectedEvent?.end?.toISOString(),
+                startDate: selectedEvent?.start?.toISOString(),
+                id: selectedEvent?.id,
+              }}
+            />
+          ) : null}
           <Calendar
             localizer={localizer}
-            events={[
-              {
-                start: moment("2024-01-11T12:00:00"),
-                end: moment("2024-01-11T14:00:00"),
-                title: "Training Session 1",
-              },
-              {
-                start: moment("2024-01-11T15:00:00"),
-                end: moment("2024-01-11T16:00:00"),
-                title: "Training Session 2",
-              },
-              {
-                start: moment("2024-01-24T15:00:00"),
-                end: moment("2024-01-27T16:00:00"),
-                title: "Training Session 3",
-              },
-            ]}
+            events={bookings?.data.map((item) => ({
+              id: item.id,
+              start: moment(item.startDate),
+              end: moment(item.endDate),
+              title: truncateString(item.reason ?? ""),
+            }))}
             onSelectEvent={(event) => {
               setSelectedEvent(event);
               setAction("cancel-training-session");

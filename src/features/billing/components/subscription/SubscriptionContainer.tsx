@@ -47,9 +47,11 @@ const SubscriptionContainer: React.FC<{
     dispatch,
   } = useCreateCompanySubscriptionStateAndDispatch();
   useLayoutEffect(() => {
+    const ASSUMED_EMPLOYEE_SUBSCRIPTION_ID = 1;
+    const EMPLOYEMENT_SUBSCRIPTION_ID =
+      subscriptions?.data.find((item) => item.label === "employee-management")
+        ?.id ?? ASSUMED_EMPLOYEE_SUBSCRIPTION_ID;
     if (subscription) {
-      // TODO: Get this from backend, via api
-      const EMPLOYEMENT_SUBSCRIPTION_ID = 1; //Please confirm with your backend
       const address = billingDetails?.address;
 
       form.setFieldsValue({
@@ -94,11 +96,11 @@ const SubscriptionContainer: React.FC<{
     } else {
       form.setFieldsValue({
         priceType: "usd",
-
+        purchased: [EMPLOYEMENT_SUBSCRIPTION_ID],
         billingCycle: "yearly",
       });
     }
-  }, [dispatch, form, subscription, billingDetails]);
+  }, [dispatch, form, subscription, billingDetails, subscriptions?.data]);
   const [activeStep, setActiveStep] = useState(0);
   const [showD, setShowD] = useState(false);
 

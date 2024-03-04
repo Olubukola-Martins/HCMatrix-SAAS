@@ -1,15 +1,44 @@
 import React from "react";
 import CompanyTrainingSessionCalender from "./CompanyTrainingSessionCalender";
+import { Moment } from "moment";
+import { TTrainingSessionBookingStatus } from "features/billing/types/addOns/trainingSession";
+import { DatePicker } from "antd";
+import { SelectTrainingBookingStatus } from "./booking/SelectTrainingBookingStatus";
 
 const CompanyTrainingSessionContainer = () => {
+  const [duration, setDuration] =
+    React.useState<[Moment | null, Moment | null]>();
+  const [status, setStatus] = React.useState<TTrainingSessionBookingStatus>();
   return (
     <div className="flex flex-col gap-4">
       <p className=" font-light">
         Schedule your training session and cancel them by clicking on the event
         on the calender.
       </p>
+      <div className="flex gap-4 justify-end">
+        <DatePicker.RangePicker
+          allowClear
+          value={duration}
+          onChange={(vals) =>
+            vals &&
+            Array.isArray(vals) &&
+            vals?.length === 2 &&
+            setDuration([vals?.[0], vals?.[1]])
+          }
+        />
+        <SelectTrainingBookingStatus
+          onSelect={setStatus}
+          onClear={() => setStatus(undefined)}
+        />
+      </div>
       <div>
-        <CompanyTrainingSessionCalender />
+        <CompanyTrainingSessionCalender
+          filter={{
+            startDate: duration?.[0]?.toISOString(),
+            endDate: duration?.[1]?.toISOString(),
+            status,
+          }}
+        />
       </div>
     </div>
   );

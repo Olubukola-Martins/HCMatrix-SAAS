@@ -8,9 +8,9 @@ import {
 } from "utils/formHelpers/validation";
 import { openNotification } from "utils/notifications";
 import { useQueryClient } from "react-query";
-import { useSetMaxSizeFilePerUpload } from "features/core/company/hooks/fileStorage/setting/useSetMaxSizeFilePerUpload";
-import { QUERY_KEY_FOR_FILE_STORAGE_SETTING } from "features/core/company/hooks/fileStorage/setting/useGetFileStorageSetting";
 import { Moment } from "moment";
+import { useCreateTrainingBooking } from "features/billing/hooks/addOns/trainingSession/booking/useCreateTrainingBooking";
+import { QUERY_KEY_FOR_TRAINING_SESSION_BOOKINGS } from "features/billing/hooks/addOns/trainingSession/booking/useGetTrainingBookings";
 
 type FormProps = {
   duration: [Moment, Moment];
@@ -23,13 +23,13 @@ export const BookCompanyTrainingSession: React.FC<IModalProps> = ({
   const queryClient = useQueryClient();
 
   const [form] = Form.useForm<FormProps>();
-  const { mutate, isLoading } = useSetMaxSizeFilePerUpload();
+  const { mutate, isLoading } = useCreateTrainingBooking();
 
   const handleSubmit = (data: FormProps) => {
     mutate(
       {
-        size: 10,
-        unit: "KB",
+        endDate: data?.duration[1]?.toISOString(),
+        startDate: data?.duration[0]?.toISOString(),
       },
       {
         onError: (err: any) => {
@@ -52,7 +52,7 @@ export const BookCompanyTrainingSession: React.FC<IModalProps> = ({
           handleClose();
 
           queryClient.invalidateQueries({
-            queryKey: [QUERY_KEY_FOR_FILE_STORAGE_SETTING],
+            queryKey: [QUERY_KEY_FOR_TRAINING_SESSION_BOOKINGS],
             // exact: true,
           });
         },
@@ -70,8 +70,7 @@ export const BookCompanyTrainingSession: React.FC<IModalProps> = ({
       <Form
         layout="vertical"
         form={form}
-        // onFinish={handleSubmit}
-        onFinish={(vals) => console.log(vals, ">>")}
+        onFinish={handleSubmit}
         requiredMark={false}
       >
         <Form.Item name="title" label="Title" rules={textInputValidationRules}>
