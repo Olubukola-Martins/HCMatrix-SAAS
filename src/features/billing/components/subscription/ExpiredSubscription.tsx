@@ -28,7 +28,7 @@ export const ExpiredSubscription: React.FC<IProps> = ({
       hideImage={true}
       open={open}
       loading={isLoading}
-      handleConfirm={{ fn: handleConfirm }}
+      handleConfirm={{ fn: handleConfirm, text: "Renew Subscription" }}
     />
   );
 };

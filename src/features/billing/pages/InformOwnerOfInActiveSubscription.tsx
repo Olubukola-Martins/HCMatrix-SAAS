@@ -21,9 +21,11 @@ const InformOwnerOfInActiveSubscription = () => {
           supportText="Please renew your subscription, to continue using our services!"
           showImage
         />
-        <Link to={appRoutes.billingSubscription}>
-          <AppButton label="Renew Subcription" />
-        </Link>
+        <div className="w-full flex items-center">
+          <Link to={appRoutes.billingSubscription}>
+            <AppButton label="Renew Subcription" />
+          </Link>
+        </div>
       </div>
     </>
   );
