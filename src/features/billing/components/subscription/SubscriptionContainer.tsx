@@ -48,11 +48,17 @@ const SubscriptionContainer: React.FC<{
   } = useCreateCompanySubscriptionStateAndDispatch();
   useLayoutEffect(() => {
     if (subscription) {
+      // TODO: Get this from backend, via api
+      const EMPLOYEMENT_SUBSCRIPTION_ID = 1; //Please confirm with your backend
       const address = billingDetails?.address;
 
       form.setFieldsValue({
         priceType: subscription?.priceType,
-        purchased: subscription?.purchased?.map((item) => item.subscriptionId),
+        purchased:
+          subscription?.purchased === undefined ||
+          subscription?.purchased?.length > 0
+            ? subscription?.purchased?.map((item) => item.subscriptionId)
+            : [EMPLOYEMENT_SUBSCRIPTION_ID],
         billingCycle: subscription?.billingCycle,
         licensedEmployeeCount: subscription?.licensedEmployeeCount,
         unlicensedEmployeeCount: subscription?.unlicensedEmployeeCount,
@@ -76,9 +82,11 @@ const SubscriptionContainer: React.FC<{
           licensedEmployeeCount: subscription?.licensedEmployeeCount,
           unlicensedEmployeeCount: subscription?.unlicensedEmployeeCount,
           autoRenew: subscription?.autoRenew,
-          purchased: subscription?.purchased?.map(
-            (item) => item.subscriptionId
-          ),
+          purchased:
+            subscription?.purchased === undefined ||
+            subscription?.purchased?.length > 0
+              ? subscription?.purchased?.map((item) => item.subscriptionId)
+              : [EMPLOYEMENT_SUBSCRIPTION_ID],
           priceType: subscription?.priceType,
           billingCycle: subscription?.billingCycle,
         },
