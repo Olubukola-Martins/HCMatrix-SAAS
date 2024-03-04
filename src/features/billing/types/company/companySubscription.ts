@@ -1,3 +1,6 @@
+import { TExtraStorage } from "../addOns/extraStorage";
+import { TSupportCase } from "../addOns/supportCase";
+import { TTrainingSession } from "../addOns/trainingSession";
 import { TBillingCycle } from "../billingCycle";
 import { TSubscriptionPriceType } from "../priceType";
 import { TSubscription } from "../subscription";
@@ -18,8 +21,21 @@ export type TCompanySubscription = {
   createdAt: string;
   updatedAt: string;
   purchased: Purchased[];
+  addOns: TAddOns;
   transaction: Transaction;
 };
+interface TAddOns {
+  id: number;
+  companySubscriptionId: number;
+  supportCaseId: number;
+  extraStorageId: number;
+  trainingSessionId: number;
+  createdAt: string;
+  updatedAt: string;
+  supportCase: TSupportCase;
+  extraStorage: TExtraStorage;
+  trainingSession: TTrainingSession;
+}
 
 interface Transaction {
   id: number;
