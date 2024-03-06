@@ -9,12 +9,10 @@ import {
   generalValidationRules,
   textInputValidationRules,
 } from "utils/formHelpers/validation";
-import {
-  GeoapifyGeocoderAutocomplete,
-  GeoapifyContext,
-} from "@geoapify/react-geocoder-autocomplete";
+
 import "@geoapify/geocoder-autocomplete/styles/minimal.css";
-import { GEOLOCATION_PARAMETERS } from "config/enviroment";
+
+import { SelectAddressGeoDetails } from "components/selectEntity/SelectAddressGeoDetails";
 
 export const FormAddressInput: React.FC<{
   Form: typeof Form;
@@ -46,6 +44,7 @@ export const FormAddressInput: React.FC<{
     lga: "",
     timezone: "",
   });
+
   return (
     <>
       <Form.Item name={name} label={label} className={className}>
@@ -59,45 +58,18 @@ export const FormAddressInput: React.FC<{
               {disabled ? (
                 <Input.TextArea placeholder="Street Address" />
               ) : (
-                <GeoapifyContext apiKey={GEOLOCATION_PARAMETERS.GEOAPIFY_KEY}>
-                  <GeoapifyGeocoderAutocomplete
-                    debounceDelay={500}
-                    placeholder="Street Address"
-                    value={form.getFieldValue([name, "streetAddress"])}
-                    type={"amenity"}
-                    postprocessHook={(val) => {
-                      console.log(val, "HERE1");
-
-                      form.setFieldValue(
-                        [name, "longitude"],
-                        `${val?.geometry?.coordinates?.[0] ?? ""}`
-                      );
-                      form.setFieldValue(
-                        [name, "latitude"],
-                        `${val?.geometry?.coordinates?.[1] ?? ""}`
-                      );
-                      form.setFieldValue(
-                        [name, "streetAddress"],
-                        val?.properties?.address_line2 ?? ""
-                      );
-
-                      return val?.properties?.address_line2;
-                    }}
-                    // filterByPlace={"nigeria"} //TODO: Neewd to figure out the allowed places type
-                    // onUserInput={(val) => {
-                    //   console.log(val, "HERE2");
-                    // }}
-                    // placeSelect={(val) => {
-                    //   console.log(val, "HERE3");
-                    // }}
-                    // onClose={() => {
-                    //   console.log("HERE4");
-                    //   form.setFieldValue([name, "longitude"], ``);
-                    //   form.setFieldValue([name, "latitude"], ``);
-                    //   form.setFieldValue([name, "streetAddress"], "");
-                    // }}
-                  />
-                </GeoapifyContext>
+                <SelectAddressGeoDetails
+                  handleSelect={(_, detail) => {
+                    form.setFieldValue(
+                      [name, "longitude"],
+                      `${detail?.geometry.location.lng}`
+                    );
+                    form.setFieldValue(
+                      [name, "latitude"],
+                      `${detail?.geometry.location.lat}`
+                    );
+                  }}
+                />
               )}
             </Form.Item>
           </div>
