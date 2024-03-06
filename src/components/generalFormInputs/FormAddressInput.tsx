@@ -52,7 +52,7 @@ export const FormAddressInput: React.FC<{
           <div className="col-span-2">
             <Form.Item
               noStyle
-              rules={textInputValidationRules}
+              rules={generalValidationRules}
               name={[name, "streetAddress"]}
             >
               {disabled ? (
@@ -60,6 +60,10 @@ export const FormAddressInput: React.FC<{
               ) : (
                 <SelectAddressGeoDetails
                   handleSelect={(_, detail) => {
+                    form.setFieldValue(
+                      [name, "streetAddress"],
+                      detail?.formatted_address
+                    );
                     form.setFieldValue(
                       [name, "longitude"],
                       `${detail?.geometry.location.lng}`
