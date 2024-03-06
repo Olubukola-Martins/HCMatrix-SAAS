@@ -59,6 +59,11 @@ export const FormAddressInput: React.FC<{
                 <Input.TextArea placeholder="Street Address" />
               ) : (
                 <SelectAddressGeoDetails
+                  handleClear={() => {
+                    form.setFieldValue([name, "streetAddress"], undefined);
+                    form.setFieldValue([name, "longitude"], undefined);
+                    form.setFieldValue([name, "latitude"], undefined);
+                  }}
                   handleSelect={(_, detail) => {
                     form.setFieldValue(
                       [name, "streetAddress"],
