@@ -7,17 +7,25 @@ import { Button, Dropdown, Menu, Table } from "antd";
 import { useApiAuth } from "hooks/useApiAuth";
 import moment from "moment";
 import { getAppropriateColorForStatus } from "utils/colorHelpers/getAppropriateColorForStatus";
-
 import { AssetRequestDetails } from "./AssetRequestDetails";
 import { TAssetRequisition } from "../../requisitions/types/asset";
 import { useGetAssetRequisitions } from "../../requisitions/hooks/asset/useGetAssetRequisitions";
 import { getEmployeeFullName } from "features/core/employees/utils/getEmployeeFullName";
+import ViewApprovalStages from "features/core/workflows/components/approval-request/ViewApprovalStages";
 
 export const AssetRequestsTable: React.FC<{
   status?: TApprovalStatus;
   employeeId?: number;
 }> = ({ status, employeeId }) => {
   const [requestId, setRequestId] = useState<number>();
+  const [action, setAction] = useState<"view" | "view-approval-stages">();
+  const handleAction = (
+    action: "view" | "view-approval-stages",
+    item?: TAssetRequisition
+  ) => {
+    setRequestId(item?.id);
+    setAction(action);
+  };
   const { companyId, token } = useApiAuth();
   const { pagination, onChange } = usePagination({
     pageSize: 4,
@@ -93,24 +101,20 @@ export const AssetRequestsTable: React.FC<{
         <Dropdown
           overlay={
             <Menu>
-              <Menu.Item
-                key="3"
-                onClick={() => {
-                  setRequestId(item.id);
-                }}
-              >
+              <Menu.Item key="3" onClick={() => handleAction("view", item)}>
                 View Details
+              </Menu.Item>
+              <Menu.Item
+                key="300"
+                onClick={() => handleAction("view-approval-stages", item)}
+              >
+                View Approval Stages
               </Menu.Item>
             </Menu>
           }
           trigger={["click"]}
         >
-          <Button
-            title="Actions"
-            icon={<MoreOutlined />}
-            type="text"
-            // onClick={() => handleEdit(item._id)}
-          />
+          <Button title="Actions" icon={<MoreOutlined />} type="text" />
         </Dropdown>
       ),
     },
@@ -120,9 +124,17 @@ export const AssetRequestsTable: React.FC<{
     <div>
       {requestId && (
         <AssetRequestDetails
-          open={!!requestId}
-          handleClose={() => setRequestId(undefined)}
+          open={action === "view"}
+          handleClose={() => setAction(undefined)}
           id={requestId}
+        />
+      )}
+      {requestId && (
+        <ViewApprovalStages
+          handleClose={() => setAction(undefined)}
+          open={action === "view-approval-stages"}
+          id={requestId}
+          type="asset"
         />
       )}
       <Table

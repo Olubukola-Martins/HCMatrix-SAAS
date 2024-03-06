@@ -23,10 +23,10 @@ interface Workflow {
   deletedAt?: any;
 }
 export type TWorkflowApprovalType =
+  | "asset"
   | "vehicle"
   | "conference-room"
   | "leave"
-  | "asset"
   | "job"
   | "money"
   | "position-change"

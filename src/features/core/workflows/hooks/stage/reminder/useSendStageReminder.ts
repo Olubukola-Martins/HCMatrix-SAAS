@@ -5,16 +5,16 @@ import { useApiAuth } from "hooks/useApiAuth";
 import { useMutation } from "react-query";
 import { ICurrentCompany } from "types";
 
-type TSendReminderProps = {
+export type TSendApprovalStageReminderProps = {
   entityType: TWorkflowApprovalType;
   entityId: number;
   approvalStageId: number;
 };
 const sendReminder = async (
-  props: TSendReminderProps,
+  props: TSendApprovalStageReminderProps,
   auth: ICurrentCompany
 ) => {
-  const url = `${MICROSERVICE_ENDPOINTS.UTILITY}/workflow/approval/stage/${props.approvalStageId}/${props.entityType}/${props.entityId}`;
+  const url = `${MICROSERVICE_ENDPOINTS.UTILITY}/workflow/approval/stage/${props.approvalStageId}/reminder/${props.entityType}/${props.entityId}`;
   const config = {
     headers: {
       Accept: "application/json",
@@ -31,7 +31,11 @@ const sendReminder = async (
 export const useSendStageReminder = () => {
   const { token, companyId } = useApiAuth();
   return useMutation(
-    ({ approvalStageId, entityId, entityType }: TSendReminderProps) =>
+    ({
+      approvalStageId,
+      entityId,
+      entityType,
+    }: TSendApprovalStageReminderProps) =>
       sendReminder(
         {
           approvalStageId,
