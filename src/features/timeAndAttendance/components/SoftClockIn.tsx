@@ -1,10 +1,11 @@
 import { openNotification } from "utils/notifications";
 import offIndicator from "../assets/images/offIndicator.svg";
 import { useSoftClockIn } from "../hooks/useSoftClockIn";
-import { useContext } from "react";
+import { useContext, useEffect, useState } from "react";
 import { EGlobalOps, GlobalContext } from "stateManagers/GlobalContextProvider";
 import { useQueryClient } from "react-query";
-import { Popconfirm } from "antd";
+import { Dropdown } from "antd";
+import { AppButton } from "components/button/AppButton";
 
 export const SoftClockIn = () => {
   const globalCtx = useContext(GlobalContext);
@@ -12,10 +13,32 @@ export const SoftClockIn = () => {
   const queryClient = useQueryClient();
   const { mutate, isLoading } = useSoftClockIn();
 
-  const onSubmit = (values: any) => {
+  const [lat, setLat] = useState<number | null>(null);
+  const [long, setLong] = useState<number | null>(null);
+
+  useEffect(() => {
+    const getLocation = () => {
+      navigator.geolocation.getCurrentPosition(
+        function (position) {
+          setLat(position.coords.latitude);
+          setLong(position.coords.longitude);
+        },
+        function (error) {
+          console.error("Error getting geolocation:", error);
+        }
+      );
+    };
+
+    getLocation();
+  }, []);
+
+  const onSubmit = () => {
     mutate(
       {
-        ...values,
+        location: {
+          longitude: long ? long : null,
+          latitude: lat ? lat : null,
+        },
       },
       {
         onError: (err: any) => {
@@ -43,9 +66,32 @@ export const SoftClockIn = () => {
 
   return (
     <div>
-      <Popconfirm title={`Want to clock in ?`} onConfirm={() => onSubmit}>
-        <img src={offIndicator} alt="off indicator" className="cursor-pointer" title="Clock in"/>
-      </Popconfirm>
+      <Dropdown
+        trigger={["click"]}
+        overlay={
+          <div className="bg-mainBg rounded py-3 px-3 border shadow mt-3">
+            <p className="font-medium">Want to clock in ?</p>
+
+            <div className="flex justify-between items-center mt-5">
+              <AppButton variant="transparent" label="No" />
+
+              <AppButton
+                label="Yes"
+                type="submit"
+                isLoading={isLoading}
+                handleClick={() => onSubmit()}
+              />
+            </div>
+          </div>
+        }
+      >
+        <img
+          src={offIndicator}
+          alt="off indicator"
+          className="cursor-pointer"
+          title="Clock in"
+        />
+      </Dropdown>
     </div>
   );
 };

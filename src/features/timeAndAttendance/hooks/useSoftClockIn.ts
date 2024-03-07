@@ -3,7 +3,7 @@ import { useMutation } from "react-query";
 import { MICROSERVICE_ENDPOINTS } from "config/enviroment";
 import { ICurrentCompany } from "types";
 import { useApiAuth } from "hooks/useApiAuth";
-import {  softClockInProps } from "../types";
+import { softClockInProps } from "../types";
 
 export const createData = async (props: {
   data: softClockInProps;
@@ -19,7 +19,10 @@ export const createData = async (props: {
   };
 
   const data: any = {
-    ...props.data,
+    location: {
+      longitude: props.data.location.longitude?.toString(),
+      latitude: props.data.location.latitude?.toString(),
+    },
   };
 
   const response = await axios.post(url, data, config);

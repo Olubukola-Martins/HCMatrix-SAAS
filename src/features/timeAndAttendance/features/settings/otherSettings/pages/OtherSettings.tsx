@@ -9,7 +9,10 @@ import {
   textInputValidationRules,
 } from "utils/formHelpers/validation";
 import { openNotification } from "utils/notifications";
-import { QUERY_KEY_FOR_COMPANY_POLICY, useGetOtherSettings } from "../hooks/useGetOtherSettings";
+import {
+  QUERY_KEY_FOR_COMPANY_POLICY,
+  useGetOtherSettings,
+} from "../hooks/useGetOtherSettings";
 import { useCreateOtherSettings } from "../hooks/useCreateOtherSettings";
 import { TimeAttendanceSettingsNav } from "../../components/TimeAttendanceSettingsNav";
 import { AttendanceSettingsIntro } from "../../components/AttendanceSettingsIntro";
@@ -38,6 +41,9 @@ export const OtherSettings = () => {
         enforceStrictDistance:
           data.enforce_strict_distance === "1" ? true : false,
         geoFencingRadius: data.geo_fencing_radius,
+        allowSoftClocking: data.allow_soft_clocking === "1" ? true : false,
+        allowBiometricClocking:
+          data.allow_biometric_clocking === "1" ? true : false,
       });
     }
   }, [data, isSuccess, form]);
@@ -123,6 +129,7 @@ export const OtherSettings = () => {
                   <Input placeholder="0.0" className="w-full" />
                 </Form.Item>
               </div>
+
               <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                 <div
                   className={`${formWrapStyle} flex justify-between items-center`}
@@ -151,6 +158,36 @@ export const OtherSettings = () => {
                   </Form.Item>
                 </div>
               </div>
+              {/* ==== */}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                <div
+                  className={`${formWrapStyle} flex justify-between items-center`}
+                >
+                  <h3>Allow Soft Clock-in</h3>
+                  <Form.Item
+                    name="allowSoftClocking"
+                    className="flex justify-end items-end"
+                    valuePropName="checked"
+                    initialValue={false}
+                  >
+                    <Switch />
+                  </Form.Item>
+                </div>
+                <div
+                  className={`${formWrapStyle} flex justify-between items-center`}
+                >
+                  <h3>Allow Biometrics Device clock-in</h3>
+                  <Form.Item
+                    name="allowBiometricClocking"
+                    className="flex justify-end items-end"
+                    valuePropName="checked"
+                    initialValue={false}
+                  >
+                    <Switch />
+                  </Form.Item>
+                </div>
+              </div>
+
               <div
                 className={`${formWrapStyle} flex justify-between items-center`}
               >

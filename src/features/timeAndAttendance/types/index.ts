@@ -1,6 +1,6 @@
 export interface softClockInProps {
   location: {
-    longitude: string;
-    latitude: string;
+    longitude: number | null;
+    latitude: number | null;
   };
 }
