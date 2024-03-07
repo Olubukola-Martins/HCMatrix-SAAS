@@ -18,7 +18,10 @@ const ActiveSubscriptionMiddleware: React.FC<TProps> = ({
     <>
       <Skeleton active loading={isLoading} paragraph={{ rows: 10 }}>
         {!isCompanySubscriptionActive && isOwner ? (
-          <Navigate to={appRoutes.billingSubscription} replace={true} />
+          <Navigate
+            to={appRoutes.billingInactiveSubscriptionInformOwner}
+            replace={true}
+          />
         ) : null}
         {!isCompanySubscriptionActive && !isOwner ? (
           <Navigate

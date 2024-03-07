@@ -7,6 +7,7 @@ import SingleBillingHistory from "features/billing/pages/billing/SingleBillingHi
 import StorageManagements from "features/billing/pages/StorageManagements";
 import CompanyTrainingSessionManagement from "features/billing/pages/CompanyTrainingSessionManagement";
 import InformEmployeeOfInActiveSubscription from "features/billing/pages/InformEmployeeOfInActiveSubscription";
+import InformOwnerOfInActiveSubscription from "features/billing/pages/InformOwnerOfInActiveSubscription";
 
 export const billingRoutes = (
   props: Omit<TAppPageDataFnProps, "isOwner" & { isOwner: boolean }>
@@ -48,6 +49,12 @@ export const billingRoutes = (
     {
       element: <InformEmployeeOfInActiveSubscription />,
       path: appRoutes.billingInactiveSubscriptionInformEmployee,
+      isSearchable: false,
+      category: "doesnt-require-active-subscription",
+    },
+    {
+      element: <InformOwnerOfInActiveSubscription />,
+      path: appRoutes.billingInactiveSubscriptionInformOwner,
       isSearchable: false,
       category: "doesnt-require-active-subscription",
     },

@@ -146,6 +146,7 @@ const SelectAddon: React.FC<
           options={options}
           loading={isLoading}
           onChange={(val) => onChange?.(val)}
+          allowClear
         />
       </Form.Item>
     </div>

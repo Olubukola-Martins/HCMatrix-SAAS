@@ -144,34 +144,38 @@ export const TaxUIFormulaForm: React.FC<
 }) => {
   const [dataSource, setDataSource] = useState<DataType[]>([]);
   const [isDefaultConfig, setIsDefaultConfig] = useState(false);
+  useEffect(() => {
+    setIsDefaultConfig(taxConditions.length !== 0);
+  }, [taxConditions]);
 
   useEffect(() => {
-    const convertedConditions = taxConditions.map(
-      (condition, index, conditions) => {
-        let name = "";
-        if (index === 0) {
-          name = "First";
-        } else {
-          name = "Next";
+    setDataSource(() => {
+      const convertedConditions = taxConditions.map(
+        (condition, index, conditions) => {
+          let name = "";
+          if (index === 0) {
+            name = "First";
+          } else {
+            name = "Next";
+          }
+          if (index === conditions.length - 1) {
+            name = `Over `;
+          }
+          return {
+            key: index,
+            name: name,
+            amount:
+              index === conditions.length - 1
+                ? conditions[index - 1].max
+                : condition.max,
+            taxRate: (+condition.rate * 100).toFixed(3) as unknown as number, //to be in sync
+            taxAmountPayablePerYear: condition.yearlyTaxableIncome,
+          };
         }
-        if (index === conditions.length - 1) {
-          name = `Over `;
-        }
-        return {
-          key: index,
-          name: name,
-          amount:
-            index === conditions.length - 1
-              ? conditions[index - 1].max
-              : condition.max,
-          taxRate: (+condition.rate * 100).toFixed(3) as unknown as number, //to be in sync
-          taxAmountPayablePerYear: condition.yearlyTaxableIncome,
-        };
-      }
-    );
-    setIsDefaultConfig(convertedConditions.length !== 0);
-    setDataSource(convertedConditions);
-  }, [taxConditions]);
+      );
+      return convertedConditions;
+    });
+  }, []);
   const handleRemoveDefaultConfig = () => {
     setDataSource([]);
     setIsDefaultConfig(false);

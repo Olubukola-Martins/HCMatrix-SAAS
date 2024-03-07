@@ -47,12 +47,20 @@ const SubscriptionContainer: React.FC<{
     dispatch,
   } = useCreateCompanySubscriptionStateAndDispatch();
   useLayoutEffect(() => {
+    const ASSUMED_EMPLOYEE_SUBSCRIPTION_ID = 1;
+    const EMPLOYEMENT_SUBSCRIPTION_ID =
+      subscriptions?.data.find((item) => item.label === "employee-management")
+        ?.id ?? ASSUMED_EMPLOYEE_SUBSCRIPTION_ID;
     if (subscription) {
       const address = billingDetails?.address;
 
       form.setFieldsValue({
         priceType: subscription?.priceType,
-        purchased: subscription?.purchased?.map((item) => item.subscriptionId),
+        purchased:
+          subscription?.purchased === undefined ||
+          subscription?.purchased?.length > 0
+            ? subscription?.purchased?.map((item) => item.subscriptionId)
+            : [EMPLOYEMENT_SUBSCRIPTION_ID],
         billingCycle: subscription?.billingCycle,
         licensedEmployeeCount: subscription?.licensedEmployeeCount,
         unlicensedEmployeeCount: subscription?.unlicensedEmployeeCount,
@@ -76,9 +84,11 @@ const SubscriptionContainer: React.FC<{
           licensedEmployeeCount: subscription?.licensedEmployeeCount,
           unlicensedEmployeeCount: subscription?.unlicensedEmployeeCount,
           autoRenew: subscription?.autoRenew,
-          purchased: subscription?.purchased?.map(
-            (item) => item.subscriptionId
-          ),
+          purchased:
+            subscription?.purchased === undefined ||
+            subscription?.purchased?.length > 0
+              ? subscription?.purchased?.map((item) => item.subscriptionId)
+              : [EMPLOYEMENT_SUBSCRIPTION_ID],
           priceType: subscription?.priceType,
           billingCycle: subscription?.billingCycle,
         },
@@ -86,11 +96,11 @@ const SubscriptionContainer: React.FC<{
     } else {
       form.setFieldsValue({
         priceType: "usd",
-
+        purchased: [EMPLOYEMENT_SUBSCRIPTION_ID],
         billingCycle: "yearly",
       });
     }
-  }, [dispatch, form, subscription, billingDetails]);
+  }, [dispatch, form, subscription, billingDetails, subscriptions?.data]);
   const [activeStep, setActiveStep] = useState(0);
   const [showD, setShowD] = useState(false);
 

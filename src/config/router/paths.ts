@@ -138,6 +138,7 @@ export const appRoutes = {
   purchaseUserLicense: `/purchase-user-license`,
   billingSubscription: `/billings/subscription`,
   billingInactiveSubscriptionInformEmployee: `/billings/subscription/inactive/inform-employee`,
+  billingInactiveSubscriptionInformOwner: `/billings/subscription/inactive/inform-owner`,
   billingSummary: `/billings/summary`,
   singleBillingSummary: (id?: number) => ({
     format: `/billings/summary/:id`,

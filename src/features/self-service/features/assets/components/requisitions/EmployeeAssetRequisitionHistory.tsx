@@ -14,7 +14,8 @@ import { TApprovalStatus } from "types/statuses";
 import { NewAssetRequest } from "../NewAssetRequest";
 import { AssetRequestDetails } from "../AssetRequestDetails";
 import { CancelAssetRequistion } from "./CancelAssetRequistion";
-
+import ViewApprovalStages from "features/core/workflows/components/approval-request/ViewApprovalStages";
+type TAction = "add" | "cancel" | "view" | "view-approval-stages";
 export const EmployeeAssetRequisitionHistory: React.FC<{
   title?: string;
 }> = ({ title }) => {
@@ -24,12 +25,9 @@ export const EmployeeAssetRequisitionHistory: React.FC<{
     pagination,
   });
   const [status, setStatus] = useState<TApprovalStatus>();
-  const [showM, setShowM] = useState<"add" | "cancel" | "view">();
+  const [showM, setShowM] = useState<TAction>();
   const [request, setRequest] = useState<TAssetRequisition>();
-  const handleAction = (
-    action: "add" | "cancel" | "view",
-    item?: TAssetRequisition
-  ) => {
+  const handleAction = (action: TAction, item?: TAssetRequisition) => {
     setShowM(action);
     setRequest(item);
   };
@@ -90,6 +88,14 @@ export const EmployeeAssetRequisitionHistory: React.FC<{
                 Cancel
               </Menu.Item>
               <Menu.Item
+                key="5"
+                onClick={() => {
+                  handleAction("view-approval-stages", item);
+                }}
+              >
+                Approval Stages
+              </Menu.Item>
+              <Menu.Item
                 key="3"
                 onClick={() => {
                   handleAction("view", item);
@@ -118,6 +124,14 @@ export const EmployeeAssetRequisitionHistory: React.FC<{
           open={showM === "view"}
           handleClose={() => setShowM(undefined)}
           id={request.id}
+        />
+      )}
+      {request && (
+        <ViewApprovalStages
+          handleClose={() => setShowM(undefined)}
+          open={showM === "view-approval-stages"}
+          id={request?.id}
+          type="asset"
         />
       )}
       <CancelAssetRequistion

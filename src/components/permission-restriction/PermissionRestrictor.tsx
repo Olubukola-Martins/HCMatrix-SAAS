@@ -7,6 +7,10 @@ import {
   TSubscriptionResourceLabel,
 } from "features/billing/types/subscription";
 
+type TRequiredSubscriptionState = {
+  label?: TSubscriptionLabel;
+  resources?: TSubscriptionResourceLabel[];
+};
 // TODO: Put a default active subscription state from local storage
 export const canUserAccessComponent = ({
   userPermissions,
@@ -17,33 +21,41 @@ export const canUserAccessComponent = ({
   userPermissions: TPermissionLabel[];
   requiredPermissions: TPermissionLabel[];
   activeSubscription?: TCompanySubscription;
-  requiredSubscriptionState?: {
-    label?: TSubscriptionLabel;
-    resources?: TSubscriptionResourceLabel[];
-  };
+  requiredSubscriptionState?: TRequiredSubscriptionState;
 }) => {
   let canAccess = false;
+  const activeSubscriptionWasNotDefined = activeSubscription === undefined;
   // check subscription first
-  let canAccessViaSubscription = !!activeSubscription?.purchased.some(
-    (item) => {
-      if (item.subscription.type === "module") {
-        return item.subscription.label === requiredSubscriptionState?.label;
-      }
-      if (item.subscription.type === "plan") {
-        return item.subscription.resources?.some((resource) =>
-          requiredSubscriptionState?.resources?.includes(
-            resource.resource.label
-          )
-        );
-      }
-      return false;
-    }
-  );
+  let canAccessViaSubscription = activeSubscriptionWasNotDefined
+    ? true
+    : !!activeSubscription?.purchased.some((item) => {
+        if (item.subscription.type === "module") {
+          const labelWasNotDefined =
+            requiredSubscriptionState?.label === undefined;
+          return labelWasNotDefined
+            ? true
+            : item.subscription.label === requiredSubscriptionState?.label;
+        }
+        if (item.subscription.type === "plan") {
+          const resourcesWereNotDefined =
+            item.subscription.resources === undefined ||
+            item.subscription.resources?.length === 0;
+          return resourcesWereNotDefined
+            ? true
+            : item.subscription.resources?.some((resource) =>
+                requiredSubscriptionState?.resources?.includes(
+                  resource.resource.label
+                )
+              );
+        }
+        return false;
+      });
+  const requiredPermissionsWereNotDefined =
+    requiredPermissions === undefined || requiredPermissions.length === 0;
   // then check permissions
-  let canAccessViaPermissions =
-    requiredPermissions.length === 0
-      ? true
-      : !!userPermissions?.some((item) => requiredPermissions?.includes(item));
+  let canAccessViaPermissions = requiredPermissionsWereNotDefined
+    ? true
+    : !!userPermissions?.some((item) => requiredPermissions?.includes(item));
   canAccess = canAccessViaSubscription && canAccessViaPermissions;
   return canAccess;
 };
@@ -73,8 +85,9 @@ export const useGetUserPermissions = () => {
 };
 export const useCanUserAccessComponent = (props: {
   requiredPermissions: TPermissionLabel[];
+  requiredSubscriptionState?: TRequiredSubscriptionState;
 }) => {
-  const { requiredPermissions } = props;
+  const { requiredPermissions, requiredSubscriptionState } = props;
   const { userPermissions, companyActiveSubscription } =
     useGetUserPermissions();
 
@@ -83,6 +96,7 @@ export const useCanUserAccessComponent = (props: {
       userPermissions,
       requiredPermissions,
       activeSubscription: companyActiveSubscription,
+      requiredSubscriptionState,
     }),
     userPermissions,
   };
@@ -91,7 +105,8 @@ export const useCanUserAccessComponent = (props: {
 export const PermissionRestrictor: React.FC<{
   children: React.ReactNode;
   requiredPermissions: TPermissionLabel[];
-}> = ({ requiredPermissions, children }) => {
+  requiredSubscriptionState?: TRequiredSubscriptionState;
+}> = ({ requiredPermissions, requiredSubscriptionState, children }) => {
   const { userPermissions, companyActiveSubscription } =
     useGetUserPermissions();
 
@@ -101,6 +116,7 @@ export const PermissionRestrictor: React.FC<{
         userPermissions,
         requiredPermissions,
         activeSubscription: companyActiveSubscription,
+        requiredSubscriptionState,
       }) ? (
         <>{children}</>
       ) : null}

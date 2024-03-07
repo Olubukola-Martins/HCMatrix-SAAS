@@ -30,7 +30,7 @@ const CompanyTrainingSessionManagement = () => {
       />
       <AppButton
         disabled
-        label={`Lite Support (API_ADDON)`}
+        label={subscription?.addOns?.trainingSession?.name}
         isLoading={isLoading}
       />
 
