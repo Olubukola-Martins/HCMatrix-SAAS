@@ -1,4 +1,4 @@
-import { DatePicker, Form, Modal, Select, TimePicker } from "antd";
+import { DatePicker, Form, Modal, Select, Spin, TimePicker } from "antd";
 import TextArea from "antd/lib/input/TextArea";
 import { AppButton } from "components/button/AppButton";
 import { IModalProps } from "types";
@@ -8,26 +8,33 @@ import {
 } from "utils/formHelpers/validation";
 import { openNotification } from "utils/notifications";
 import { EGlobalOps, GlobalContext } from "stateManagers/GlobalContextProvider";
-import { useContext, useEffect } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useQueryClient } from "react-query";
 import { useCreateTimeOff } from "../hooks/useCreateTimeOff";
 import { useGetTimeOffPolicy } from "../../settings/timeOffPolicy/hooks/useGetTimeOffPolicy";
 import { QUERY_KEY_FOR_TIME_OFF } from "../hooks/useGetTimeOff";
 import { useGetSingleTimeOff } from "../hooks/useGetSingleTimeOff";
 import moment from "moment";
+import { useDebounce } from "hooks/useDebounce";
 
 export const AddTimeOff = ({ open, handleClose, id }: IModalProps) => {
   const [form] = Form.useForm();
+  const [searchTerm, setSearchTerm] = useState<string>("");
+  const debouncedSearchTerm: string = useDebounce<string>(searchTerm);
   const globalCtx = useContext(GlobalContext);
   const { dispatch } = globalCtx;
-  const { data: timeOffPolicyData, isLoading: loadPolicy } =
-    useGetTimeOffPolicy();
+  const { data: timeOffPolicyData, isLoading: loadPolicy, isSuccess: timeOffPolicySuccess  } =
+    useGetTimeOffPolicy({ search: debouncedSearchTerm });
 
   const { mutate, isLoading: isLoadingCreate } = useCreateTimeOff();
   const queryClient = useQueryClient();
   const { data, isSuccess, isLoading } = useGetSingleTimeOff(
     id as unknown as number
   );
+
+  const handleSearch = (val: string) => {
+    setSearchTerm(val);
+  };
 
   useEffect(() => {
     if (data && id) {
@@ -98,13 +105,24 @@ export const AddTimeOff = ({ open, handleClose, id }: IModalProps) => {
         >
           <Select
             allowClear
+            showSearch
+            onClear={() => setSearchTerm("")}
+            onSearch={handleSearch}
             loading={loadPolicy}
             placeholder="Select"
-            options={timeOffPolicyData?.data?.map((item: any) => ({
-              value: item.id,
-              label: item.title,
-            }))}
-          />
+          >
+            {timeOffPolicySuccess ? (
+              timeOffPolicyData?.data.map((item) => (
+                <Select.Option key={item.id} value={item.id}>
+                  {item.title}
+                </Select.Option>
+              ))
+            ) : (
+              <div className="flex justify-center items-center w-full">
+                <Spin size="small" />
+              </div>
+            )}
+          </Select>
         </Form.Item>
         <Form.Item name="time" label="Date" rules={generalValidationRules}>
           <TimePicker className="w-full" />

@@ -1,8 +1,9 @@
 import { Link } from "react-router-dom";
 import onIndicator from "../assets/images/indicatorOn.svg";
-import offIndicator from "../assets/images/offIndicator.svg";
+
 import breakIndicator from "../assets/images/breakIndicate.svg";
 import { appRoutes } from "config/router/paths";
+import { SoftClockIn } from "./SoftClockIn";
 
 interface IProps {
   active: "time-sheet" | "time-off" | "reports" | "none-active";
@@ -55,7 +56,7 @@ export const AttendanceSubToper = (props: IProps) => {
         <span>2:24:32</span>
         <img src={onIndicator} alt="on indicator" />
         <img src={breakIndicator} alt="break indicator" />
-        <img src={offIndicator} alt="off indicator" />
+        <SoftClockIn />
       </div>
     </div>
   );

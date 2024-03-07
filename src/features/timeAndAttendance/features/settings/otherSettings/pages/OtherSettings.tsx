@@ -1,7 +1,6 @@
 import { Form, Input, InputNumber, Switch } from "antd";
 import { AppButton } from "components/button/AppButton";
 import { FormWorkflowInput } from "features/core/workflows/components/FormWorkflowInput";
-import { QUERY_KEY_FOR_COMPANY_POLICY } from "features/timeAndAttendance/hooks/useGetTimeTrackingRule";
 import { useContext, useEffect } from "react";
 import { useQueryClient } from "react-query";
 import { EGlobalOps, GlobalContext } from "stateManagers/GlobalContextProvider";
@@ -10,7 +9,7 @@ import {
   textInputValidationRules,
 } from "utils/formHelpers/validation";
 import { openNotification } from "utils/notifications";
-import { useGetOtherSettings } from "../hooks/useGetOtherSettings";
+import { QUERY_KEY_FOR_COMPANY_POLICY, useGetOtherSettings } from "../hooks/useGetOtherSettings";
 import { useCreateOtherSettings } from "../hooks/useCreateOtherSettings";
 import { TimeAttendanceSettingsNav } from "../../components/TimeAttendanceSettingsNav";
 import { AttendanceSettingsIntro } from "../../components/AttendanceSettingsIntro";

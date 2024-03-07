@@ -9,7 +9,6 @@ import locationIcon from "../../../../assets/images/symbols_location.svg";
 import editPenIcon from "../../../../assets/images/edit-outline.svg";
 import { Empty } from "antd";
 import { ScaleLoader } from "react-spinners";
-// import { useGetActiveTrackingPolicy } from "features/timeAndAttendance/hooks/useGetActiveTrackingPolicy";
 import { AttendanceSettingsIntro } from "../../components/AttendanceSettingsIntro";
 import { CreateTrackingRule } from "../components/CreateTrackingRule";
 import { TimeAttendanceSettingsNav } from "../../components/TimeAttendanceSettingsNav";

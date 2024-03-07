@@ -1,15 +1,15 @@
 import axios from "axios";
 import { useMutation } from "react-query";
-import { ITimeTrackingRule } from "../types/settings";
 import { MICROSERVICE_ENDPOINTS } from "config/enviroment";
 import { ICurrentCompany } from "types";
 import { useApiAuth } from "hooks/useApiAuth";
+import {  softClockInProps } from "../types";
 
-export const createTimeTrackingRule = async (props: {
-  data: ITimeTrackingRule;
+export const createData = async (props: {
+  data: softClockInProps;
   auth: ICurrentCompany;
 }) => {
-  const url = `${MICROSERVICE_ENDPOINTS.TIME_AND_ATTENDANCE}/settings/time-tracking-policies/set-active`;
+  const url = `${MICROSERVICE_ENDPOINTS.TIME_AND_ATTENDANCE}/attendance/soft-clock-in`;
   const config = {
     headers: {
       Accept: "application/json",
@@ -22,13 +22,13 @@ export const createTimeTrackingRule = async (props: {
     ...props.data,
   };
 
-  const response = await axios.put(url, data, config);
+  const response = await axios.post(url, data, config);
   return response;
 };
 
-export const useCreateTimeTrackingRule = () => {
+export const useSoftClockIn = () => {
   const { token, companyId } = useApiAuth();
-  return useMutation((props: ITimeTrackingRule) =>
-    createTimeTrackingRule({ data: props, auth: { companyId, token } })
+  return useMutation((props: softClockInProps) =>
+    createData({ data: props, auth: { companyId, token } })
   );
 };

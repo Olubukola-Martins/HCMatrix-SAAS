@@ -32,32 +32,33 @@ export const TimeOff = () => {
   };
   // ======================
 
-  const [lat, setLat] = useState<number | null>(null);
-  const [long, setLong] = useState<number | null>(null);
+  // const [lat, setLat] = useState<number | null>(null);
+  // const [long, setLong] = useState<number | null>(null);
 
-  useEffect(() => {
-    const getLocation = () => {
-      navigator.geolocation.getCurrentPosition(
-        function (position) {
-          setLat(position.coords.latitude);
-          setLong(position.coords.longitude);
-        },
-        function (error) {
-          console.error("Error getting geolocation:", error);
-        }
-      );
-    };
+  // useEffect(() => {
+  //   const getLocation = () => {
+  //     navigator.geolocation.getCurrentPosition(
+  //       function (position) {
+  //         setLat(position.coords.latitude);
+  //         setLong(position.coords.longitude);
+  //       },
+  //       function (error) {
+  //         console.error("Error getting geolocation:", error);
+  //       }
+  //     );
+  //   };
 
-    getLocation();
-  }, []); // Empty dependency array ensures that this effect runs only once
+  //   getLocation();
+  // }, []); 
+  // Empty dependency array ensures that this effect runs only once
 
   // The following useEffect will run whenever lat or long changes
-  useEffect(() => {
-    if (lat !== null && long !== null) {
-      console.log("Latitude is:", lat);
-      console.log("Longitude is:", long);
-    }
-  }, [lat, long]);
+  // useEffect(() => {
+  //   if (lat !== null && long !== null) {
+  //     console.log("Latitude is:", lat);
+  //     console.log("Longitude is:", long);
+  //   }
+  // }, [lat, long]);
 
   //   ===================
 
@@ -65,7 +66,7 @@ export const TimeOff = () => {
     {
       title: "Employee",
       dataIndex: "employee",
-      // render: (_, val) => <span>{val.policy?.title}</span>,
+      render: (_, val) => <span>{val?.employee?.firstName} {val?.employee?.lastName}</span>,
     },
     {
       title: "Time off Policy",
@@ -115,7 +116,7 @@ export const TimeOff = () => {
                 <Menu.Item key="5">
                   <Popconfirm
                     title={`Cancel ${val.policy?.title}`}
-                    onConfirm={() => requestType(val.id as number, "cancelled")}
+                    onConfirm={() => requestType(val.id as number, "canceled")}
                   >
                     Cancel
                   </Popconfirm>
@@ -171,6 +172,7 @@ export const TimeOff = () => {
                 { value: "pending", label: "Pending" },
                 { value: "approved", label: "Approved" },
                 { value: "rejected", label: "Rejected" },
+                { value: "canceled", label: "Canceled" },
               ]}
               className="w-[7.8rem]"
               placeholder="Filter"
@@ -197,7 +199,7 @@ export const TimeOff = () => {
         />
 
         {/* j */}
-        <div>
+        {/* <div>
           {lat !== null && long !== null ? (
             <div>
               <p>Latitude: {lat}</p>
@@ -206,7 +208,7 @@ export const TimeOff = () => {
           ) : (
             <p>Fetching location...</p>
           )}
-        </div>
+        </div> */}
       </div>
     </>
   );

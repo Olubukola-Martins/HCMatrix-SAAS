@@ -8,4 +8,8 @@ export interface ITimeOffProps {
     title: string;
     duration: number;
   };
+  employee? : {
+    firstName: string;
+    lastName: string;
+  }
 }
