@@ -9,6 +9,7 @@ import {
   useGetFlexibleSchedule,
 } from "../hooks/useGetFlexibleSchedule";
 import { useCreateFlexibleSchedule } from "../hooks/useCreateFlexibleSchedule";
+import { hourList } from "features/timeAndAttendance/constants";
 
 export const WorkFlexible = () => {
   const [form] = Form.useForm();
@@ -97,10 +98,7 @@ export const WorkFlexible = () => {
                           className="flex-1 w-full"
                           placeholder="Select hours"
                           allowClear
-                          options={[
-                            1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15,
-                            16, 17, 18, 19, 20, 21, 22, 23, 24,
-                          ].map((item: number) => ({
+                          options={hourList.map((item: number) => ({
                             value: item,
                             label: `${item} ${item === 1 ? "hour" : "hours"}`,
                           }))}

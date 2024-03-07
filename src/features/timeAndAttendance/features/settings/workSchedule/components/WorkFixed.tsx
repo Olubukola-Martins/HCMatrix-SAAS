@@ -162,10 +162,7 @@ export const WorkFixed = () => {
                 valuePropName="checked"
                 initialValue={false}
               >
-                <Checkbox
-                  // checked={true}
-                  onChange={(val) => console.log(val.target.checked)}
-                >
+                <Checkbox>
                   Include time tracked before scheduled start time
                 </Checkbox>
               </Form.Item>

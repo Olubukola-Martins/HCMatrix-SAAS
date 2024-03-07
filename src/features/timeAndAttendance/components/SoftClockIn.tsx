@@ -12,8 +12,8 @@ export const SoftClockIn = () => {
   const globalCtx = useContext(GlobalContext);
   const { dispatch } = globalCtx;
   const queryClient = useQueryClient();
-  const { mutate, isLoading } = useSoftClockIn();
-
+  const { mutate } = useSoftClockIn();
+  const [dropdownVisible, setDropdownVisible] = useState(false);
   const [lat, setLat] = useState<number | null>(null);
   const [long, setLong] = useState<number | null>(null);
 
@@ -68,18 +68,25 @@ export const SoftClockIn = () => {
         },
       }
     );
+    setDropdownVisible(false);
   };
 
   return (
     <div>
       <Dropdown
         trigger={["click"]}
+        visible={dropdownVisible}
+        onVisibleChange={(visible) => setDropdownVisible(visible)}
         overlay={
           <div className="bg-mainBg rounded py-3 px-3 border shadow mt-3">
             <p className="font-medium">Want to clock in ?</p>
 
             <div className="flex justify-between items-center mt-5">
-              <AppButton variant="transparent" label="No" />
+              <AppButton
+                variant="transparent"
+                label="No"
+                handleClick={() => setDropdownVisible(false)}
+              />
 
               <AppButton
                 label="Yes"

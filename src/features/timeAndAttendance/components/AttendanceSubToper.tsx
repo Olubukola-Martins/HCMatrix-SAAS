@@ -1,9 +1,11 @@
 import { Link } from "react-router-dom";
 import onIndicator from "../assets/images/indicatorOn.svg";
-
 import breakIndicator from "../assets/images/breakIndicate.svg";
 import { appRoutes } from "config/router/paths";
 import { SoftClockIn } from "./SoftClockIn";
+import { SoftClockOut } from "./SoftClockOut";
+import LiveClock from "components/clock/LiveClock";
+import { useClockingAndBreakStatus } from "../hooks/useClockingAndBreakStatus";
 
 interface IProps {
   active: "time-sheet" | "time-off" | "reports" | "none-active";
@@ -11,6 +13,9 @@ interface IProps {
 
 export const AttendanceSubToper = (props: IProps) => {
   const applyStyle = "text-caramel pb-3";
+  const {data} = useClockingAndBreakStatus()
+  console.log(data);
+  
   return (
     <div className="flex items-center justify-between py-3 mb-5 bg-card Container">
       <div className="flex items-center gap-x-4 text-sm font-medium">
@@ -53,10 +58,11 @@ export const AttendanceSubToper = (props: IProps) => {
       </div>
 
       <div className="flex items-center gap-x-4 mt-2">
-        <span>2:24:32</span>
+      <LiveClock format="hh:mm:ss A" />
         <img src={onIndicator} alt="on indicator" />
         <img src={breakIndicator} alt="break indicator" />
-        <SoftClockIn />
+        {/* <SoftClockIn /> */}
+        <SoftClockOut/>
       </div>
     </div>
   );
