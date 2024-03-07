@@ -15,7 +15,7 @@ export const SelectAddressGeoDetails: React.FC<{
   handleClear,
 }) => {
   const [searchTerm, setSearchTerm] = useState<string>("");
-  const debouncedSearchTerm: string = useDebounce<string>(searchTerm);
+  const debouncedSearchTerm: string = useDebounce<string>(searchTerm, 100);
 
   const { data, isLoading } = useGetAddressGeoCodeDetails({
     address: debouncedSearchTerm,
