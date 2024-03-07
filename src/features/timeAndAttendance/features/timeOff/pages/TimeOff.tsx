@@ -30,37 +30,7 @@ export const TimeOff = () => {
     setNewTimeOffModal(true);
     settimeOffId(id);
   };
-  // ======================
 
-  // const [lat, setLat] = useState<number | null>(null);
-  // const [long, setLong] = useState<number | null>(null);
-
-  // useEffect(() => {
-  //   const getLocation = () => {
-  //     navigator.geolocation.getCurrentPosition(
-  //       function (position) {
-  //         setLat(position.coords.latitude);
-  //         setLong(position.coords.longitude);
-  //       },
-  //       function (error) {
-  //         console.error("Error getting geolocation:", error);
-  //       }
-  //     );
-  //   };
-
-  //   getLocation();
-  // }, []); 
-  // Empty dependency array ensures that this effect runs only once
-
-  // The following useEffect will run whenever lat or long changes
-  // useEffect(() => {
-  //   if (lat !== null && long !== null) {
-  //     console.log("Latitude is:", lat);
-  //     console.log("Longitude is:", long);
-  //   }
-  // }, [lat, long]);
-
-  //   ===================
 
   const columns: ColumnsType<ITimeOffProps> = [
     {
@@ -197,18 +167,6 @@ export const TimeOff = () => {
           pagination={{ ...pagination, total: data?.total }}
           onChange={onChange}
         />
-
-        {/* j */}
-        {/* <div>
-          {lat !== null && long !== null ? (
-            <div>
-              <p>Latitude: {lat}</p>
-              <p>Longitude: {long}</p>
-            </div>
-          ) : (
-            <p>Fetching location...</p>
-          )}
-        </div> */}
       </div>
     </>
   );

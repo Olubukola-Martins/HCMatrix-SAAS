@@ -6,6 +6,7 @@ import { EGlobalOps, GlobalContext } from "stateManagers/GlobalContextProvider";
 import { useQueryClient } from "react-query";
 import { Dropdown } from "antd";
 import { AppButton } from "components/button/AppButton";
+import { LoadingOutlined } from "@ant-design/icons";
 
 export const SoftClockIn = () => {
   const globalCtx = useContext(GlobalContext);
@@ -33,6 +34,11 @@ export const SoftClockIn = () => {
   }, []);
 
   const onSubmit = () => {
+    openNotification({
+      state: "info",
+      title: "Wait a second ...",
+      description: <LoadingOutlined />,
+    });
     mutate(
       {
         location: {
@@ -78,7 +84,6 @@ export const SoftClockIn = () => {
               <AppButton
                 label="Yes"
                 type="submit"
-                isLoading={isLoading}
                 handleClick={() => onSubmit()}
               />
             </div>
