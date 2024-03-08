@@ -19,7 +19,16 @@ export const createData = async (props: {
   };
 
   const data: any = {
-    ...props.data,
+    comment: props.data.comment,
+    endWork: props.data.endWork,
+    extraHours: props.data.extraHours,
+    payExtraHours: props.data.payExtraHours,
+    location: {
+      //   longitude: props.data.location.longitude?.toString(),
+      //   latitude: props.data.location.latitude?.toString(),
+      longitude: "3.4667278",
+      latitude: "6.4432149",
+    },
   };
 
   const response = await axios.post(url, data, config);

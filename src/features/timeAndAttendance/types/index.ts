@@ -10,6 +10,10 @@ export interface softClockOutProps {
   endWork: boolean;
   extraHours: number;
   payExtraHours: boolean;
+  location: {
+    longitude: number | null;
+    latitude: number | null;
+  };
 }
 
 export interface ClockingAndBreakStatusProps {

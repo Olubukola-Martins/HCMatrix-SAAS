@@ -1,12 +1,13 @@
 import { openNotification } from "utils/notifications";
 import offIndicator from "../assets/images/offIndicator.svg";
 import { useSoftClockIn } from "../hooks/useSoftClockIn";
-import { useContext, useEffect, useState } from "react";
+import { useContext, useState } from "react";
 import { EGlobalOps, GlobalContext } from "stateManagers/GlobalContextProvider";
 import { useQueryClient } from "react-query";
 import { Dropdown } from "antd";
 import { AppButton } from "components/button/AppButton";
 import { LoadingOutlined } from "@ant-design/icons";
+import { useManageLocation } from "../hooks/useManageLocation";
 
 export const SoftClockIn = () => {
   const globalCtx = useContext(GlobalContext);
@@ -14,24 +15,7 @@ export const SoftClockIn = () => {
   const queryClient = useQueryClient();
   const { mutate } = useSoftClockIn();
   const [dropdownVisible, setDropdownVisible] = useState(false);
-  const [lat, setLat] = useState<number | null>(null);
-  const [long, setLong] = useState<number | null>(null);
-
-  useEffect(() => {
-    const getLocation = () => {
-      navigator.geolocation.getCurrentPosition(
-        function (position) {
-          setLat(position.coords.latitude);
-          setLong(position.coords.longitude);
-        },
-        function (error) {
-          console.error("Error getting geolocation:", error);
-        }
-      );
-    };
-
-    getLocation();
-  }, []);
+  const {lat, long} = useManageLocation()
 
   const onSubmit = () => {
     openNotification({

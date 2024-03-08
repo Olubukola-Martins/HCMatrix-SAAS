@@ -14,6 +14,7 @@ import { hourList } from "../constants";
 import LiveClock from "components/clock/LiveClock";
 import moment from "moment";
 import { useSoftClockOut } from "../hooks/useSoftClockOut";
+import { useManageLocation } from "../hooks/useManageLocation";
 
 export const SoftClockOut = () => {
   const globalCtx = useContext(GlobalContext);
@@ -24,6 +25,7 @@ export const SoftClockOut = () => {
   const [openClockOutForm, setOpenClockOutForm] = useState(false);
   const [toggleWorkEnd, setToggleWorkEnd] = useState(false);
   const [formattedDate, setFormattedDate] = useState<string>("");
+  const { lat, long } = useManageLocation();
 
   useEffect(() => {
     const currentDate = moment();
@@ -38,7 +40,14 @@ export const SoftClockOut = () => {
   const onSubmit = (values: any) => {
     mutate(
       {
-        ...values,
+        comment: values.comment,
+        endWork: values.endWork,
+        extraHours: values.extraHours,
+        payExtraHours: values.payExtraHours,
+        location: {
+          longitude: long ? long : null,
+          latitude: lat ? lat : null,
+        },
       },
       {
         onError: (err: any) => {
@@ -143,7 +152,7 @@ export const SoftClockOut = () => {
             </div>
           )}
 
-          <AppButton label="Clock Out" type="submit" isLoading={isLoading}/>
+          <AppButton label="Clock Out" type="submit" isLoading={isLoading} />
         </Form>
       </Modal>
     </div>
