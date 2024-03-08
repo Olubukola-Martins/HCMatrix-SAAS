@@ -60,32 +60,32 @@ export const PromotionRequestDetails: React.FC<IProps> = ({
       style={{ top: 20 }}
     >
       <Skeleton active loading={isFetching} paragraph={{ rows: 8 }}>
-          <ApproveOrRejectButton
+        <ApproveOrRejectButton
           className="flex justify-end"
-            request={approvalRequest}
-            handleSuccess={() => {
-              queryClient.invalidateQueries({
-                queryKey: [QUERY_KEY_FOR_PROMOTION_REQUISITIONS],
-                // exact: true,
-              });
-              queryClient.invalidateQueries({
-                queryKey: [
-                  QUERY_KEY_FOR_PROMOTION_REQUISITIONS_FOR_AUTH_EMPLOYEE,
-                ],
-                // exact: true,
-              });
-              queryClient.invalidateQueries({
-                queryKey: [QUERY_KEY_FOR_SINGLE_PROMOTION_REQUISITION, id],
-                // exact: true,
-              });
+          request={approvalRequest}
+          handleSuccess={() => {
+            queryClient.invalidateQueries({
+              queryKey: [QUERY_KEY_FOR_PROMOTION_REQUISITIONS],
+              // exact: true,
+            });
+            queryClient.invalidateQueries({
+              queryKey: [
+                QUERY_KEY_FOR_PROMOTION_REQUISITIONS_FOR_AUTH_EMPLOYEE,
+              ],
+              // exact: true,
+            });
+            queryClient.invalidateQueries({
+              queryKey: [QUERY_KEY_FOR_SINGLE_PROMOTION_REQUISITION, id],
+              // exact: true,
+            });
 
-              // TODO: invalidate just the part concerned in the query
-              queryClient.invalidateQueries({
-                queryKey: [QUERY_KEY_FOR_SELF_SERVICE_DB_ANALYTICS],
-                // exact: true,
-              });
-            }}
-          />
+            queryClient.invalidateQueries({
+              queryKey: [QUERY_KEY_FOR_SELF_SERVICE_DB_ANALYTICS],
+              // exact: true,
+            });
+            handleClose();
+          }}
+        />
 
         <Form form={form} disabled layout="vertical">
           <Form.Item name={"date"} label="Date">
