@@ -20,7 +20,7 @@ const AssetApprovalRequestsTable: React.FC<{
   const queryClient = useQueryClient();
 
   const [showD, setShowD] = useState(false);
-  const [requestId, setRequestId] = useState<number>();
+  const [request, setRequest] = useState<TApprovalRequest>();
   const { pagination, onChange } = usePagination();
   const { data, isFetching } = useFetchApprovalRequests({
     pagination,
@@ -94,7 +94,7 @@ const AssetApprovalRequestsTable: React.FC<{
                   key="3"
                   onClick={() => {
                     setShowD(true);
-                    setRequestId(item.assetRequisition?.id);
+                    setRequest(item);
                   }}
                 >
                   View
@@ -142,18 +142,22 @@ const AssetApprovalRequestsTable: React.FC<{
     : originalColumns;
   return (
     <div>
-      {requestId && (
+      {request?.assetRequisition && (
         <AssetRequestDetails
-          id={requestId}
+          id={request.assetRequisition?.id}
           open={showD}
           handleClose={() => setShowD(false)}
+          approvalRequest={request}
         />
       )}
 
       <Table
         columns={columns}
         size="small"
-        dataSource={data?.data}
+        dataSource={data?.data.map((item) => ({
+          ...item,
+          key: item.id,
+        }))}
         loading={isFetching}
         pagination={{ ...pagination, total: data?.total }}
         onChange={onChange}

@@ -70,6 +70,7 @@ const ViewApprovalRequest: React.FC<IProps> = ({
           open={open}
           handleClose={handleClose}
           id={request.assetRequisition.id}
+          approvalRequest={request}
         />
       )}
       {typeof request.vehicleBooking !== "undefined" && (
