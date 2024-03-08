@@ -14,7 +14,6 @@ const ApproveOrRejectButton: React.FC<
   const [updatedStatus, setUpdatedStatus] = useState<TApprovalStatus>();
   const { confirmApprovalAction } = useApproveORReject({
     handleSuccess: (status) => {
-      console.log("STATATATATA", status);
       setUpdatedStatus(status);
       handleSuccess?.();
     },

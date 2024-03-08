@@ -76,6 +76,7 @@ export const AssetRequestDetails: React.FC<IProps> = ({
               queryKey: [QUERY_KEY_FOR_ASSET_ANALYTICS],
               // exact: true,
             });
+            handleClose();
           }}
         />
         <Form form={form} disabled layout="vertical">
