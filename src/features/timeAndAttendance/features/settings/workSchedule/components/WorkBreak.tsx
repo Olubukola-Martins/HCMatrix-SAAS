@@ -9,8 +9,8 @@ import {
   useGetBreakPolicy,
 } from "../hooks/useGetBreakPolicy";
 import { usePagination } from "hooks/usePagination";
-import moment from "moment";
 import { useDeleteTimeAndAttendance } from "features/timeAndAttendance/hooks/useDeleteTimeAndAttendance";
+import { convertMinutesToHours } from "features/timeAndAttendance/utils";
 
 export const WorkBreak = () => {
   const [openBreak, setOpenBreak] = useState(false);
@@ -26,6 +26,7 @@ export const WorkBreak = () => {
     setOpenBreak(true);
     setBreakPolicyId(id);
   };
+
 
   const columns: ColumnsType<settingsBreakProps> = [
     {
@@ -57,12 +58,7 @@ export const WorkBreak = () => {
     {
       title: "Break duration",
       dataIndex: "duration",
-      render: (_, val) => {
-        const duration = moment.duration(val?.duration, "minutes");
-        const hours = Math.floor(duration.asHours());
-        const minutes = duration.minutes();
-        return `${hours}h:${minutes}m`;
-      },
+      render: (_, val) => convertMinutesToHours(val?.duration),
     },
     {
       title: "Action",
@@ -96,7 +92,11 @@ export const WorkBreak = () => {
 
   return (
     <>
-      <AddBreak open={openBreak} id={breakPolicyId} handleClose={() => setOpenBreak(false)} />
+      <AddBreak
+        open={openBreak}
+        id={breakPolicyId}
+        handleClose={() => setOpenBreak(false)}
+      />
       <div className="border rounded-md p-3 md:p-5 mt-5">
         <div className="flex items-start flex-col gap-3 lg:flex-row justify-between">
           <div>

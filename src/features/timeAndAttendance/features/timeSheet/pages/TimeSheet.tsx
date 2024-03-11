@@ -1,60 +1,64 @@
 import Table, { ColumnsType } from "antd/lib/table";
-// import { AttendanceSubToper } from "../components/AttendanceSubToper";
 import { PageIntro } from "components/layout/PageIntro";
 import { appRoutes } from "config/router/paths";
 import { Input } from "antd";
 import { Link } from "react-router-dom";
 import { useState } from "react";
+import { AttendanceSubToper } from "features/timeAndAttendance/components/AttendanceSubToper";
+import { useGetTimeSheet } from "../hooks/useGetTimeSheet";
+import { timeSheetProps } from "../types";
+import { usePagination } from "hooks/usePagination";
+import { convertMinutesToHours } from "features/timeAndAttendance/utils";
 // import { FilterTimeSheet } from "../components/FilterTimeSheet";
 
-interface DataType {
-  key: string;
-  name: string;
-  monday: number;
-  tuesday: number;
-  wednesday: number;
-  thursday: number;
-  friday: number;
-  saturday: number;
-  sunday: number;
-  total: number;
-}
-
-const columns: ColumnsType<DataType> = [
+const columns: ColumnsType<timeSheetProps> = [
   {
     title: "Name",
     dataIndex: "name",
     render: (_, val) => (
-      <Link to={appRoutes.timeSheetDetails(1).path}>{val.name}</Link>
+      <span className="capitalize">
+        {val?.employee?.firstName} {val?.employee?.lastName}
+      </span>
     ),
   },
   {
     title: "Monday",
     dataIndex: "monday",
+    render: (_, val) => convertMinutesToHours(val?.days?.Monday?.totalTimeTracked),
   },
   {
     title: "Tuesday",
     dataIndex: "tuesday",
+    render: (_, val) =>
+      convertMinutesToHours(val?.days?.Tuesday?.totalTimeTracked),
   },
   {
     title: "Wednesday",
     dataIndex: "wednesday",
+    render: (_, val) =>
+      convertMinutesToHours(val?.days?.Wednesday?.totalTimeTracked),
   },
   {
     title: "Thursday",
     dataIndex: "thursday",
+    render: (_, val) =>
+      convertMinutesToHours(val?.days.Thursday?.totalTimeTracked),
   },
   {
     title: "Friday",
     dataIndex: "friday",
+    render: (_, val) => convertMinutesToHours(val?.days?.Friday?.totalTimeTracked),
   },
   {
     title: "Saturday",
     dataIndex: "saturday",
+    render: (_, val) =>
+      convertMinutesToHours(val?.days?.Saturday?.totalTimeTracked),
   },
   {
     title: "Sunday",
     dataIndex: "sunday",
+    render: (_, val) => convertMinutesToHours(val?.days?.Sunday?.totalTimeTracked),
   },
   {
     title: "Total",
@@ -62,38 +66,16 @@ const columns: ColumnsType<DataType> = [
   },
 ];
 
-const data: DataType[] = [
-  {
-    key: "1",
-    name: "Godswill Omenuko",
-    friday: 3,
-    monday: 2,
-    saturday: 6,
-    sunday: 3,
-    thursday: 6,
-    tuesday: 3,
-    total: 10,
-    wednesday: 8,
-  },
-  {
-    key: "2",
-    name: "Ruth Godwin",
-    friday: 3,
-    monday: 2,
-    saturday: 6,
-    sunday: 3,
-    thursday: 6,
-    tuesday: 3,
-    total: 10,
-    wednesday: 8,
-  },
-];
-
- const TimeSheet = () => {
+const TimeSheet = () => {
   const [filterSheet, setFilterSheet] = useState(false);
+  const { pagination, onChange } = usePagination({ pageSize: 10 });
+  const { data, isLoading } = useGetTimeSheet({ pagination });
+
+  console.log(data?.data);
+  
   return (
     <>
-      {/* <AttendanceSubToper active="time-sheet" /> */}
+      <AttendanceSubToper active="time-sheet" />
       {/* <FilterTimeSheet
         open={filterSheet}
         handleClose={() => setFilterSheet(false)}
@@ -108,7 +90,7 @@ const data: DataType[] = [
         <div className="flex justify-between items-center mt-10 mb-7">
           <Input.Search
             placeholder="Search branch"
-            style={{ width: "35%" }}
+            style={{ width: "25%" }}
             allowClear
           />
           <div className="flex items-center gap-x-3">
@@ -156,7 +138,14 @@ const data: DataType[] = [
         </div>
       </div> */}
 
-        <Table columns={columns} dataSource={data} scroll={{ x: 500 }} />
+        <Table
+          columns={columns}
+          dataSource={data?.data}
+          loading={isLoading}
+          pagination={{ ...pagination, total: data?.total }}
+          onChange={onChange}
+          scroll={{ x: 500 }}
+        />
       </div>
     </>
   );

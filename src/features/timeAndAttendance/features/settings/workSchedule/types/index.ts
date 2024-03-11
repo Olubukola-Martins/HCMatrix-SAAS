@@ -33,7 +33,7 @@ export interface settingsBreakProps {
   name: string;
   isPaid: boolean;
   enforcePeriod: boolean;
-  duration: string;
+  duration: number;
   startAt: string;
   endAt: string;
 }
