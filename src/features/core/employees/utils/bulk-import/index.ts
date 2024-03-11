@@ -1102,7 +1102,7 @@ export const validateBulkPersonalInformation = (
     // },
   };
 
-  delete personalInformation["address"];
+  delete (personalInformation as unknown as any)["address"];
 
   return { isDataValid: errors.length === 0, errors, personalInformation };
 };
