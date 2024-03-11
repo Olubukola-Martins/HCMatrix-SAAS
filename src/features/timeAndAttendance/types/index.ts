@@ -25,5 +25,10 @@ export interface ClockingAndBreakStatusProps {
 }
 
 export interface goBreakProps {
-    breakPolicyId: number;
+  breakPolicyId: number;
+}
+
+export interface switchActivityProps {
+  projectId: number;
+  comment: string;
 }

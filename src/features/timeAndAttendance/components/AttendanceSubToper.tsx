@@ -8,6 +8,7 @@ import LiveClock from "components/clock/LiveClock";
 import { useClockingAndBreakStatus } from "../hooks/useClockingAndBreakStatus";
 import { useState } from "react";
 import { GoBreak } from "./GoBreak";
+import { SwitchActivity } from "./SwitchActivity";
 
 interface IProps {
   active: "time-sheet" | "time-off" | "reports" | "none-active";
@@ -17,9 +18,14 @@ export const AttendanceSubToper = (props: IProps) => {
   const applyStyle = "text-caramel pb-3";
   const { data } = useClockingAndBreakStatus();
   const [goOnBreak, setGoOnBreak] = useState(false);
+  const [switchActivity, setSwitchActivity] = useState(false);
 
   return (
     <>
+      <SwitchActivity
+        open={switchActivity}
+        handleClose={() => setSwitchActivity(false)}
+      />
       <GoBreak open={goOnBreak} handleClose={() => setGoOnBreak(false)} />
       <div className="flex items-center justify-between py-3 mb-5 bg-card Container">
         <div className="flex items-center gap-x-4 text-sm font-medium">
@@ -63,7 +69,13 @@ export const AttendanceSubToper = (props: IProps) => {
 
         <div className="flex items-center gap-x-4 mt-2">
           <LiveClock format="hh:mm:ss A" />
-          <img src={onIndicator} alt="on indicator" />
+          <img
+            src={onIndicator}
+            alt="on indicator"
+            title="Switch Activity"
+            onClick={() => setSwitchActivity(true)}
+            className="cursor-pointer"
+          />
 
           <img
             src={breakIndicator}

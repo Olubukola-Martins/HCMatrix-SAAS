@@ -1,6 +1,6 @@
 import { openNotification } from "utils/notifications";
 import offIndicator from "../assets/images/offIndicator.svg";
-import { useContext, useEffect, useState } from "react";
+import { useContext, useState } from "react";
 import { EGlobalOps, GlobalContext } from "stateManagers/GlobalContextProvider";
 import { useQueryClient } from "react-query";
 import { Checkbox, Form, Modal, Select } from "antd";
@@ -12,10 +12,10 @@ import {
 } from "utils/formHelpers/validation";
 import { hourList } from "../constants";
 import LiveClock from "components/clock/LiveClock";
-import moment from "moment";
 import { useSoftClockOut } from "../hooks/useSoftClockOut";
 import { useManageLocation } from "../hooks/useManageLocation";
 import { QUERY_KEY_FOR_CLOCKING_AND_BREAK_STATUS } from "../hooks/useClockingAndBreakStatus";
+import { useGetFormattedDate } from "hooks/useGetFormattedDate";
 
 export const SoftClockOut = () => {
   const globalCtx = useContext(GlobalContext);
@@ -25,18 +25,10 @@ export const SoftClockOut = () => {
   const { mutate, isLoading } = useSoftClockOut();
   const [openClockOutForm, setOpenClockOutForm] = useState(false);
   const [toggleWorkEnd, setToggleWorkEnd] = useState(false);
-  const [formattedDate, setFormattedDate] = useState<string>("");
   const { lat, long } = useManageLocation();
+  const {formattedDate} = useGetFormattedDate()
 
-  useEffect(() => {
-    const currentDate = moment();
-    const dayOfWeek = currentDate.format("dddd"); // Get day of the week
-    const month = currentDate.format("MMM"); // Get abbreviated month
-    const year = currentDate.format("YYYY"); // Get full year
 
-    const formattedDateString = `${dayOfWeek}, ${month} ${year}`;
-    setFormattedDate(formattedDateString);
-  }, []);
 
   const onSubmit = (values: any) => {
     mutate(
