@@ -24,10 +24,8 @@ export const createData = async (props: {
     extraHours: props.data.extraHours,
     payExtraHours: props.data.payExtraHours,
     location: {
-      //   longitude: props.data.location.longitude?.toString(),
-      //   latitude: props.data.location.latitude?.toString(),
-      longitude: "3.4667278",
-      latitude: "6.4432149",
+        longitude: props.data.location.longitude?.toString(),
+        latitude: props.data.location.latitude?.toString(),
     },
   };
 

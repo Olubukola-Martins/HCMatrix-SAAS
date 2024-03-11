@@ -8,6 +8,7 @@ import { Dropdown } from "antd";
 import { AppButton } from "components/button/AppButton";
 import { LoadingOutlined } from "@ant-design/icons";
 import { useManageLocation } from "../hooks/useManageLocation";
+import { QUERY_KEY_FOR_CLOCKING_AND_BREAK_STATUS } from "../hooks/useClockingAndBreakStatus";
 
 export const SoftClockIn = () => {
   const globalCtx = useContext(GlobalContext);
@@ -48,7 +49,7 @@ export const SoftClockIn = () => {
             duration: 4,
           });
           dispatch({ type: EGlobalOps.setShowInitialSetup, payload: true });
-          queryClient.invalidateQueries([]);
+          queryClient.invalidateQueries([QUERY_KEY_FOR_CLOCKING_AND_BREAK_STATUS]);
         },
       }
     );

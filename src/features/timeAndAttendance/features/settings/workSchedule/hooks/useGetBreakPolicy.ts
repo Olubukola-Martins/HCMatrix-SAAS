@@ -12,6 +12,7 @@ const getData = async (props: {
   token: string;
   companyId: number;
   pagination?: IPaginationProps;
+  search?: string;
 }): Promise<{ data: settingsBreakProps[]; total: number }> => {
   const limit = props.pagination?.limit ?? DEFAULT_PAGE_SIZE;
   const offset = props.pagination?.offset ?? 0;
@@ -26,6 +27,7 @@ const getData = async (props: {
     params: {
       limit,
       offset,
+      search: props.search
     },
   };
 
@@ -46,11 +48,12 @@ const getData = async (props: {
 };
 export const useGetBreakPolicy = (props?: {
   pagination?: IPaginationProps;
+  search?: string;
 }) => {
   const { companyId, token } = useApiAuth();
   const queryData = useQuery(
-    [QUERY_KEY_FOR_BREAK_POLICY, props?.pagination],
-    () => getData({ token, companyId, pagination: props?.pagination }),
+    [QUERY_KEY_FOR_BREAK_POLICY, props?.pagination, props?.search],
+    () => getData({ token, companyId, pagination: props?.pagination, search: props?.search}),
     {
       onError: (err: any) => {},
       onSuccess: (data) => {},

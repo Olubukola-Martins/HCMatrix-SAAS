@@ -23,3 +23,7 @@ export interface ClockingAndBreakStatusProps {
   };
   activeBreakSession: null;
 }
+
+export interface goBreakProps {
+    breakPolicyId: number;
+}

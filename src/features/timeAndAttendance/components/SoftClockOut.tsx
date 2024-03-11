@@ -15,6 +15,7 @@ import LiveClock from "components/clock/LiveClock";
 import moment from "moment";
 import { useSoftClockOut } from "../hooks/useSoftClockOut";
 import { useManageLocation } from "../hooks/useManageLocation";
+import { QUERY_KEY_FOR_CLOCKING_AND_BREAK_STATUS } from "../hooks/useClockingAndBreakStatus";
 
 export const SoftClockOut = () => {
   const globalCtx = useContext(GlobalContext);
@@ -67,7 +68,7 @@ export const SoftClockOut = () => {
             duration: 4,
           });
           dispatch({ type: EGlobalOps.setShowInitialSetup, payload: true });
-          queryClient.invalidateQueries([]);
+          queryClient.invalidateQueries([QUERY_KEY_FOR_CLOCKING_AND_BREAK_STATUS]);
           form.resetFields();
           setOpenClockOutForm(false);
         },
