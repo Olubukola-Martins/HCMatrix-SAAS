@@ -13,6 +13,7 @@ import { TApprovalStatus } from "types/statuses";
 import { getAppropriateColorForStatus } from "utils/colorHelpers/getAppropriateColorForStatus";
 import { AssetRequestDetails } from "./AssetRequestDetails";
 import { getEmployeeFullName } from "features/core/employees/utils/getEmployeeFullName";
+import { QUERY_KEY_FOR_ASSET_REQUISITIONS_FOR_AUTH_EMPLOYEE } from "../hooks/requisitions/useGetAssetRequisitions4AuthEmployee";
 const AssetApprovalRequestsTable: React.FC<{
   status?: TApprovalStatus;
   employeeId?: number;
@@ -31,6 +32,10 @@ const AssetApprovalRequestsTable: React.FC<{
     handleSuccess: () => {
       queryClient.invalidateQueries({
         queryKey: [QUERY_KEY_FOR_ASSET_REQUISITIONS],
+        // exact: true,
+      });
+      queryClient.invalidateQueries({
+        queryKey: [QUERY_KEY_FOR_ASSET_REQUISITIONS_FOR_AUTH_EMPLOYEE],
         // exact: true,
       });
     },

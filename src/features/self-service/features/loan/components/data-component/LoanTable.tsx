@@ -42,6 +42,7 @@ export const LoanTable: React.FC<{
   permitedActions = ["view"],
 }) => {
   const queryClient = useQueryClient();
+  const [request, setRequest] = useState<TApprovalRequest>();
 
   const [loan, setLoan] = useState<TLoanRequest>();
   const [action, setAction] = useState<TAction>();
@@ -50,8 +51,13 @@ export const LoanTable: React.FC<{
     setLoan(undefined);
   };
 
-  const handleAction = (props: { action: TAction; loan: TLoanRequest }) => {
-    const { loan, action } = props;
+  const handleAction = (props: {
+    action: TAction;
+    loan: TLoanRequest;
+    approvalRequest?: TApprovalRequest;
+  }) => {
+    const { loan, action, approvalRequest } = props;
+    setRequest(approvalRequest);
     setAction(action);
     setLoan(loan);
   };
@@ -187,7 +193,13 @@ export const LoanTable: React.FC<{
               {permitedActions.find((val) => val === "view") && (
                 <Menu.Item
                   key="3"
-                  onClick={() => handleAction({ loan: item, action: "view" })}
+                  onClick={() =>
+                    handleAction({
+                      loan: item,
+                      action: "view",
+                      approvalRequest: item.approvalDetails,
+                    })
+                  }
                 >
                   View Details
                 </Menu.Item>
@@ -234,6 +246,9 @@ export const LoanTable: React.FC<{
           handleClose={onClose}
           open={action === "view"}
           id={loan.id}
+          approvalRequest={
+            permitedActions.includes("approve/reject") ? request : undefined
+          }
         />
       )}
       <CancelLoan

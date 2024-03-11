@@ -1,13 +1,10 @@
 import { Space, Dropdown, Menu, Table } from "antd";
 import { MoreOutlined } from "@ant-design/icons";
-
 import React, { useState } from "react";
 import { ColumnsType } from "antd/lib/table";
-
 import { getAppropriateColorForStatus } from "utils/colorHelpers/getAppropriateColorForStatus";
 import { usePagination } from "hooks/usePagination";
 import { TApprovalStatus } from "types/statuses";
-
 import moment from "moment";
 import { useApproveORReject } from "hooks/useApproveORReject";
 import { TApprovalRequest } from "features/core/workflows/types/approval-requests";
@@ -22,9 +19,9 @@ const JobApprovalRequestsTable: React.FC<{
   employeeId?: number;
 }> = ({ status, employeeId }) => {
   const queryClient = useQueryClient();
+  const [request, setRequest] = useState<TApprovalRequest>();
 
   const [showD, setShowD] = useState(false);
-  const [requestId, setRequestId] = useState<number>();
   const { pagination, onChange } = usePagination();
   const { data, isFetching } = useFetchApprovalRequests({
     pagination,
@@ -113,7 +110,7 @@ const JobApprovalRequestsTable: React.FC<{
                   key="3"
                   onClick={() => {
                     setShowD(true);
-                    setRequestId(item?.jobRequisition?.id);
+                    setRequest(item);
                   }}
                 >
                   View
@@ -160,11 +157,12 @@ const JobApprovalRequestsTable: React.FC<{
 
   return (
     <div>
-      {requestId && (
+      {request?.jobRequisition?.id && (
         <JobRequestDetails
           open={showD}
           handleClose={() => setShowD(false)}
-          id={requestId}
+          id={request.jobRequisition?.id}
+          approvalRequest={request}
         />
       )}
 

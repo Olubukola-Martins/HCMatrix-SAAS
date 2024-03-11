@@ -1,16 +1,31 @@
 import { DatePicker, Form, Input, Modal, Skeleton, TimePicker } from "antd";
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 import { useFetchSingleConferenceRoomBooking } from "../hooks/useFetchSingleConferenceRoomBooking";
 import moment from "moment";
 
 import { getAppropriateColorForStatus } from "utils/colorHelpers/getAppropriateColorForStatus";
 import { IModalProps } from "types";
 import { getEmployeeFullName } from "features/core/employees/utils/getEmployeeFullName";
+import { TApprovalRequest } from "features/core/workflows/types/approval-requests";
+import { useQueryClient } from "react-query";
+import ApproveOrRejectButton from "features/core/workflows/components/approval-request/ApproveOrRejectButton";
+import { QUERY_KEY_FOR_ALL_CONFERENCE_ROOM_BOOKINGS } from "../hooks/useFetchAllConferenceRoomBookings";
+import { QUERY_KEY_FOR_CONFERENCE_ROOM_BOOKINGS_FOR_AUTH_EMPLOYEE } from "../hooks/useGetConferenceRoomBookings4AuthEmployee";
+import { QUERY_KEY_FOR_CONFERENCE_ROOM_ANALYTICS } from "../hooks/useGetConferenceRoomAnalytics";
+import { QUERY_KEY_FOR_SELF_SERVICE_DB_ANALYTICS } from "features/self-service/hooks/useGetSelfServiceDashboardAnalytics";
 
 interface IProps extends IModalProps {
   id: number;
+  approvalRequest?: TApprovalRequest;
 }
-const CRBBookingDetails = ({ id, handleClose, open }: IProps) => {
+const CRBBookingDetails = ({
+  id,
+  handleClose,
+  open,
+  approvalRequest,
+}: IProps) => {
+  const queryClient = useQueryClient();
+
   const [form] = Form.useForm();
   const { data, isFetching } = useFetchSingleConferenceRoomBooking({ id });
   useEffect(() => {
@@ -36,6 +51,32 @@ const CRBBookingDetails = ({ id, handleClose, open }: IProps) => {
       style={{ top: 10 }}
     >
       <Skeleton loading={isFetching} active paragraph={{ rows: 16 }}>
+        <ApproveOrRejectButton
+          className="flex justify-end"
+          request={approvalRequest}
+          handleSuccess={() => {
+            queryClient.invalidateQueries({
+              queryKey: [QUERY_KEY_FOR_ALL_CONFERENCE_ROOM_BOOKINGS],
+              // exact: true,
+            });
+            queryClient.invalidateQueries({
+              queryKey: [
+                QUERY_KEY_FOR_CONFERENCE_ROOM_BOOKINGS_FOR_AUTH_EMPLOYEE,
+              ],
+              // exact: true,
+            });
+            queryClient.invalidateQueries({
+              queryKey: [QUERY_KEY_FOR_CONFERENCE_ROOM_ANALYTICS, id],
+              // exact: true,
+            });
+
+            queryClient.invalidateQueries({
+              queryKey: [QUERY_KEY_FOR_SELF_SERVICE_DB_ANALYTICS],
+              // exact: true,
+            });
+            handleClose();
+          }}
+        />
         <Form labelCol={{ span: 24 }} requiredMark={false} form={form} disabled>
           <Form.Item name="date" label="Booking Date">
             <DatePicker className="w-full" placeholder="Meeting Date" />

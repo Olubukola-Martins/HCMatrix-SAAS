@@ -1,22 +1,31 @@
 import { DatePicker, Form, Input, Modal, Skeleton } from "antd";
 import React, { useEffect } from "react";
 import { IModalProps } from "types";
-import { useGetSingleReimbursementRequisition } from "../../requisitions/hooks/reimbursement/useGetSingleReimbursementRequisition";
+import {
+  QUERY_KEY_FOR_SINGLE_REIMBURSEMENT_REQUISITION,
+  useGetSingleReimbursementRequisition,
+} from "../../requisitions/hooks/reimbursement/useGetSingleReimbursementRequisition";
 import { useApiAuth } from "hooks/useApiAuth";
-import { AppButton } from "components/button/AppButton";
 import { boxStyle } from "styles/reused";
 import { getAppropriateColorForStatus } from "utils/colorHelpers/getAppropriateColorForStatus";
 import moment from "moment";
 import { getEmployeeFullName } from "features/core/employees/utils/getEmployeeFullName";
+import { TApprovalRequest } from "features/core/workflows/types/approval-requests";
+import { useQueryClient } from "react-query";
+import ApproveOrRejectButton from "features/core/workflows/components/approval-request/ApproveOrRejectButton";
+import { QUERY_KEY_FOR_REIMBURSEMENT_REQUISITIONS } from "../../requisitions/hooks/reimbursement/useGetReimbursementRequisitions";
+import { QUERY_KEY_FOR_REIMBURSEMENT_REQUISITIONS_FOR_AUTH_EMPLOYEE } from "../../requisitions/hooks/reimbursement/useGetReimburements4AuthEmployee";
 
 interface IProps extends IModalProps {
   id: number;
+  approvalRequest?: TApprovalRequest;
 }
 
 export const ReimbursementDetails: React.FC<IProps> = ({
   open,
   handleClose,
   id,
+  approvalRequest,
 }) => {
   const { companyId, token } = useApiAuth();
   const [form] = Form.useForm();
@@ -37,6 +46,8 @@ export const ReimbursementDetails: React.FC<IProps> = ({
       });
     }
   }, [id, form, data]);
+  const queryClient = useQueryClient();
+
   return (
     <Modal
       open={open}
@@ -46,6 +57,28 @@ export const ReimbursementDetails: React.FC<IProps> = ({
       style={{ top: 20 }}
     >
       <Skeleton active loading={isFetching} paragraph={{ rows: 8 }}>
+        <ApproveOrRejectButton
+          className="flex justify-end"
+          request={approvalRequest}
+          handleSuccess={() => {
+            queryClient.invalidateQueries({
+              queryKey: [QUERY_KEY_FOR_REIMBURSEMENT_REQUISITIONS],
+              // exact: true,
+            });
+            queryClient.invalidateQueries({
+              queryKey: [
+                QUERY_KEY_FOR_REIMBURSEMENT_REQUISITIONS_FOR_AUTH_EMPLOYEE,
+              ],
+              // exact: true,
+            });
+            queryClient.invalidateQueries({
+              queryKey: [QUERY_KEY_FOR_SINGLE_REIMBURSEMENT_REQUISITION, id],
+              // exact: true,
+            });
+
+            handleClose();
+          }}
+        />
         <Form form={form} disabled layout="vertical">
           <Form.Item name={"date"} label="Date">
             <DatePicker className="w-full" />
