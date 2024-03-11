@@ -762,7 +762,7 @@ export const validateBulkPersonalInformation = (
   ) {
     errors.push({
       category,
-      content: `${INDENTIFIER} work model has to be one of the following ${ACCEPTED_GENDER_VALUES.join(
+      content: `${INDENTIFIER} gender has to be one of the following ${ACCEPTED_GENDER_VALUES.join(
         ","
       )}.`,
     });
@@ -1074,6 +1074,7 @@ export const validateBulkPersonalInformation = (
 
   personalInformation = {
     ...personalInformation,
+    nin: personalInformation.nin?.toString(),
     passportExpirationDate: "04-07-2029",
     exchangeRateId: exchangeRates?.find(
       (item) =>
