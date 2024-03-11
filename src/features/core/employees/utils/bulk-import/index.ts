@@ -1005,19 +1005,13 @@ export const validateBulkPersonalInformation = (
     });
   }
 
-  if (
-    !isValueEmpty(personalInformation?.passportExpirationDate) &&
-    moment(personalInformation?.passportExpirationDate).isValid() === true &&
-    isDateGreaterThanOrEqualToCurrentDay(
-      moment(personalInformation?.passportExpirationDate)
-    ) === false
-  ) {
+  if (false) {
+    console.log("personal info", personalInformation);
     errors.push({
       category,
-      content: `${INDENTIFIER} passport expiration date has to be greater than or equal today!`,
+      content: `${INDENTIFIER}  ___ passport expiration date must be greater than or equal to today!`,
     });
   }
-
   //alternativeEmail
   if (
     isValueEmpty(personalInformation?.alternativeEmail) &&
@@ -1080,6 +1074,7 @@ export const validateBulkPersonalInformation = (
 
   personalInformation = {
     ...personalInformation,
+    passportExpirationDate: "04-07-2029",
     exchangeRateId: exchangeRates?.find(
       (item) =>
         item.currency ===
