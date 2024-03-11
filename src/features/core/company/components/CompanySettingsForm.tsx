@@ -58,7 +58,7 @@ const CompanySettingsForm = () => {
         },
         locationSettings: {
           country: data.country,
-          timezone: data??.timezone,
+          timezone: data?.timezone,
         },
         dateAndTimeSettings: {
           dateFormat: data.dateFormat,
@@ -122,7 +122,7 @@ const CompanySettingsForm = () => {
         adminEmail: data.administrator.adminEmail,
         defaultFromAddress: data.emailSettings.defaultFromAddress,
         country: data.locationSettings.country,
-        timezone: data.locationSettings??.timezone,
+        timezone: data.locationSettings?.timezone,
         dateFormat: data.dateAndTimeSettings.dateFormat,
         timeFormat: data.dateAndTimeSettings.timeFormat,
         hideBirthday: data.employeeSettings.hideBirthday,

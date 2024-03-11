@@ -27,7 +27,7 @@ export const verifyEmployeeInvite = async (props: ICreateInvitedEmpProps) => {
         countryId: props.personalInformation.address.countryId,
         stateId: props.personalInformation.address.stateId,
         lgaId: props.personalInformation.address.lgaId,
-        timezone: props.personalInformation.address??.timezone,
+        timezone: props.personalInformation.address?.timezone,
         latitude: props.personalInformation.address.latitude,
         longitude: props.personalInformation.address.longitude,
       },

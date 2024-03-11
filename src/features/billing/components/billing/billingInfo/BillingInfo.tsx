@@ -36,7 +36,7 @@ const BillingInfo = () => {
         lgaId: address.lgaId ?? undefined,
         stateId: address.stateId,
         streetAddress: address.streetAddress,
-        timezone: address??.timezone ?? undefined,
+        timezone: address?.timezone ?? undefined,
       },
       billingName: data.billingName,
       phoneNumber: parsePhoneNumber(data.phoneNumber),
