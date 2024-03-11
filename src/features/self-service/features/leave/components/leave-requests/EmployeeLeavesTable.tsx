@@ -1,9 +1,7 @@
 import { Space, Dropdown, Menu, Table } from "antd";
 import { MoreOutlined } from "@ant-design/icons";
-
 import React, { useState } from "react";
 import { ColumnsType } from "antd/lib/table";
-
 import { getAppropriateColorForStatus } from "utils/colorHelpers/getAppropriateColorForStatus";
 import { usePagination } from "hooks/usePagination";
 import { TApprovalStatus } from "types/statuses";
@@ -14,11 +12,13 @@ import { useGetEmployeeLeaves } from "../../hooks/useGetEmployeeLeaves";
 import { getEmployeeFullName } from "features/core/employees/utils/getEmployeeFullName";
 import { DEFAULT_DATE_FORMAT } from "constants/dateFormats";
 import { CancelLeaveRequest } from "./CancelLeaveRequest";
+import ViewApprovalStages from "features/core/workflows/components/approval-request/ViewApprovalStages";
 
+type TAction = "view" | "cancel" | "view-approval-stages";
 const EmployeeLeavesTable: React.FC<{
   status?: TApprovalStatus[];
 }> = ({ status }) => {
-  const [showD, setShowD] = useState<"view" | "cancel">();
+  const [showD, setShowD] = useState<TAction>();
 
   const [request, setRequest] = useState<TLeave>();
 
@@ -147,6 +147,15 @@ const EmployeeLeavesTable: React.FC<{
                 >
                   View
                 </Menu.Item>
+                <Menu.Item
+                  key="4"
+                  onClick={() => {
+                    setShowD("view-approval-stages");
+                    setRequest(item);
+                  }}
+                >
+                  View Stages
+                </Menu.Item>
               </Menu>
             }
             trigger={["click"]}
@@ -165,6 +174,14 @@ const EmployeeLeavesTable: React.FC<{
           id={request?.id}
           open={showD === "view"}
           handleClose={() => setShowD(undefined)}
+        />
+      )}
+      {request && (
+        <ViewApprovalStages
+          handleClose={() => setShowD(undefined)}
+          open={showD === "view-approval-stages"}
+          id={request?.id}
+          type="conference-room"
         />
       )}
 

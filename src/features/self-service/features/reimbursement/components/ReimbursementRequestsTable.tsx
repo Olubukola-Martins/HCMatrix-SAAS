@@ -10,12 +10,26 @@ import { useApiAuth } from "hooks/useApiAuth";
 import moment from "moment";
 import { getAppropriateColorForStatus } from "utils/colorHelpers/getAppropriateColorForStatus";
 import { ReimbursementDetails } from "./ReimbursementDetails";
+import { DEFAULT_DATE_FORMAT } from "constants/dateFormats";
+import ViewApprovalStages from "features/core/workflows/components/approval-request/ViewApprovalStages";
+
+type TAction = "cancel" | "view" | "view-approval-stages";
 
 export const ReimbursementRequestsTable: React.FC<{
   status?: TApprovalStatus;
   employeeId?: number;
 }> = ({ status, employeeId }) => {
-  const [requestId, setRequestId] = useState<number>();
+  const [request, setRequest] = useState<TReimbursementRequisition>();
+  const [action, setAction] = useState<TAction>();
+  const handleAction = (key: TAction, item?: TReimbursementRequisition) => {
+    setAction(key);
+    setRequest(item);
+  };
+  const onClose = () => {
+    setAction(undefined);
+    setRequest(undefined);
+  };
+
   const { companyId, token } = useApiAuth();
   const { pagination, onChange } = usePagination();
   const { data, isFetching } = useGetReimbursementRequisitions({
@@ -35,7 +49,7 @@ export const ReimbursementRequestsTable: React.FC<{
       dataIndex: "date",
       key: "date",
       render: (_, item) => (
-        <span>{moment(item.date).format("YYYY/MM/DD")} </span>
+        <span>{moment(item.date).format(DEFAULT_DATE_FORMAT)} </span>
       ),
     },
     {
@@ -78,23 +92,19 @@ export const ReimbursementRequestsTable: React.FC<{
           overlay={
             <Menu>
               <Menu.Item
-                key="3"
-                onClick={() => {
-                  setRequestId(item.id);
-                }}
+                key="39090"
+                onClick={() => handleAction("view-approval-stages", item)}
               >
+                View Stages
+              </Menu.Item>
+              <Menu.Item key="3" onClick={() => handleAction("view", item)}>
                 View Details
               </Menu.Item>
             </Menu>
           }
           trigger={["click"]}
         >
-          <Button
-            title="Actions"
-            icon={<MoreOutlined />}
-            type="text"
-            // onClick={() => handleEdit(item._id)}
-          />
+          <Button title="Actions" icon={<MoreOutlined />} type="text" />
         </Dropdown>
       ),
     },
@@ -102,11 +112,20 @@ export const ReimbursementRequestsTable: React.FC<{
 
   return (
     <div>
-      {requestId && (
+      {request && (
         <ReimbursementDetails
-          open={!!requestId}
-          handleClose={() => setRequestId(undefined)}
-          id={requestId}
+          open={action === "view"}
+          handleClose={onClose}
+          id={request.id}
+        />
+      )}
+
+      {request && (
+        <ViewApprovalStages
+          handleClose={onClose}
+          open={action === "view-approval-stages"}
+          id={request?.id}
+          type="reimbursement"
         />
       )}
       <Table

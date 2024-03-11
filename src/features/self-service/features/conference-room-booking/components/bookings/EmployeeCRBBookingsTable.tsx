@@ -11,8 +11,9 @@ import { TSingleConferenceRoomBooking } from "../../types";
 import CRBBookingDetails from "../CRBBookingDetails";
 import { DEFAULT_DATE_FORMAT } from "constants/dateFormats";
 import { CancelCRBBooking } from "./CancelCRBBooking";
+import ViewApprovalStages from "features/core/workflows/components/approval-request/ViewApprovalStages";
 
-type TAction = "cancel" | "view";
+type TAction = "cancel" | "view" | "view-approval-stages";
 export const EmployeeCRBBookingsTable: React.FC<{
   status?: TApprovalStatus[] | TApprovalStatus;
 }> = ({ status }) => {
@@ -118,6 +119,12 @@ export const EmployeeCRBBookingsTable: React.FC<{
                 <Menu.Item key="3" onClick={() => handleAction("view", item)}>
                   View Details
                 </Menu.Item>
+                <Menu.Item
+                  key="4"
+                  onClick={() => handleAction("view-approval-stages", item)}
+                >
+                  View Stages
+                </Menu.Item>
               </Menu>
             }
             trigger={["click"]}
@@ -136,6 +143,14 @@ export const EmployeeCRBBookingsTable: React.FC<{
           id={request.id}
           open={action === "view"}
           handleClose={onClose}
+        />
+      )}
+      {request && (
+        <ViewApprovalStages
+          handleClose={onClose}
+          open={action === "view-approval-stages"}
+          id={request?.id}
+          type="conference-room"
         />
       )}
       <CancelCRBBooking

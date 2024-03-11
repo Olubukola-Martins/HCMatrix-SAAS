@@ -23,8 +23,9 @@ import { DEFAULT_DATE_FORMAT } from "constants/dateFormats";
 import { QUERY_KEY_FOR_LOAN_REQUESTS } from "../../hooks/requests/useGetLoanRequests";
 import { QUERY_KEY_FOR_LOAN_ANALYTICS } from "../../hooks/analytics/useGetLoanAnalytics";
 import { CancelLoan } from "../CancelLoan";
+import ViewApprovalStages from "features/core/workflows/components/approval-request/ViewApprovalStages";
 
-type TAction = "approve/reject" | "view" | "cancel";
+type TAction = "approve/reject" | "view" | "cancel" | "view-approval-stages";
 type TLoanAndApproval = TLoanRequest & { approvalDetails?: TApprovalRequest };
 export const LoanTable: React.FC<{
   data?: TLoanAndApproval[];
@@ -39,7 +40,7 @@ export const LoanTable: React.FC<{
   pagination,
   onChange,
   total,
-  permitedActions = ["view"],
+  permitedActions = ["view", "view-approval-stages"],
 }) => {
   const queryClient = useQueryClient();
   const [request, setRequest] = useState<TApprovalRequest>();
@@ -196,6 +197,19 @@ export const LoanTable: React.FC<{
                   onClick={() =>
                     handleAction({
                       loan: item,
+                      action: "view-approval-stages",
+                    })
+                  }
+                >
+                  View Stages
+                </Menu.Item>
+              )}
+              {permitedActions.find((val) => val === "view") && (
+                <Menu.Item
+                  key="3"
+                  onClick={() =>
+                    handleAction({
+                      loan: item,
                       action: "view",
                       approvalRequest: item.approvalDetails,
                     })
@@ -249,6 +263,14 @@ export const LoanTable: React.FC<{
           approvalRequest={
             permitedActions.includes("approve/reject") ? request : undefined
           }
+        />
+      )}
+      {loan && (
+        <ViewApprovalStages
+          handleClose={onClose}
+          open={action === "view-approval-stages"}
+          id={loan?.id}
+          type="loan"
         />
       )}
       <CancelLoan

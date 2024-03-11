@@ -11,12 +11,24 @@ import { useGeTPositionChangeRequisitionRequisitions } from "../../requisitions/
 import { TPositionChangeRequisition } from "../../requisitions/types/positionChange";
 import { PositionChangeRequestDetails } from "./PositionChangeRequestDetails";
 import { DEFAULT_DATE_FORMAT } from "constants/dateFormats";
+import ViewApprovalStages from "features/core/workflows/components/approval-request/ViewApprovalStages";
+
+type TAction = "cancel" | "view" | "view-approval-stages";
 
 export const PositionChangeRequestsTable: React.FC<{
   status?: TApprovalStatus;
   employeeId?: number;
 }> = ({ status, employeeId }) => {
-  const [requestId, setRequestId] = useState<number>();
+  const [request, setRequest] = useState<TPositionChangeRequisition>();
+  const [action, setAction] = useState<TAction>();
+  const handleAction = (key: TAction, item?: TPositionChangeRequisition) => {
+    setAction(key);
+    setRequest(item);
+  };
+  const onClose = () => {
+    setAction(undefined);
+    setRequest(undefined);
+  };
   const { companyId, token } = useApiAuth();
   const { pagination, onChange } = usePagination();
   const { data, isFetching } = useGeTPositionChangeRequisitionRequisitions({
@@ -83,9 +95,17 @@ export const PositionChangeRequestsTable: React.FC<{
           overlay={
             <Menu>
               <Menu.Item
+                key="3009"
+                onClick={() => {
+                  handleAction("view-approval-stages", item);
+                }}
+              >
+                View Stages
+              </Menu.Item>
+              <Menu.Item
                 key="3"
                 onClick={() => {
-                  setRequestId(item.id);
+                  handleAction("view", item);
                 }}
               >
                 View Details
@@ -107,11 +127,19 @@ export const PositionChangeRequestsTable: React.FC<{
 
   return (
     <div>
-      {requestId && (
+      {request && (
         <PositionChangeRequestDetails
-          open={!!requestId}
-          handleClose={() => setRequestId(undefined)}
-          id={requestId}
+          open={action === "view"}
+          handleClose={onClose}
+          id={request.id}
+        />
+      )}
+      {request && (
+        <ViewApprovalStages
+          handleClose={onClose}
+          open={action === "view-approval-stages"}
+          id={request?.id}
+          type="position-change"
         />
       )}
       <Table

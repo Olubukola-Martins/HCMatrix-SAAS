@@ -15,6 +15,7 @@ import { NewAssetRequest } from "../NewAssetRequest";
 import { AssetRequestDetails } from "../AssetRequestDetails";
 import { CancelAssetRequistion } from "./CancelAssetRequistion";
 import ViewApprovalStages from "features/core/workflows/components/approval-request/ViewApprovalStages";
+
 type TAction = "add" | "cancel" | "view" | "view-approval-stages";
 export const EmployeeAssetRequisitionHistory: React.FC<{
   title?: string;

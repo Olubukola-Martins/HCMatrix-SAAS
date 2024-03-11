@@ -12,12 +12,24 @@ import { TravelRequestDetails } from "./TravelRequestDetails";
 import { getEmployeeFullName } from "features/core/employees/utils/getEmployeeFullName";
 import { useGetTravelRequisitions } from "../../requisitions/hooks/travel/useGetTravelRequisitions";
 import { DEFAULT_DATE_FORMAT } from "constants/dateFormats";
+import ViewApprovalStages from "features/core/workflows/components/approval-request/ViewApprovalStages";
+
+type TAction = "cancel" | "view" | "view-approval-stages";
 
 export const TravelRequestsTable: React.FC<{
   status?: TApprovalStatus;
   employeeId?: number;
 }> = ({ status, employeeId }) => {
-  const [requestId, setRequestId] = useState<number>();
+  const [request, setRequest] = useState<TTravelRequest>();
+  const [action, setAction] = useState<TAction>();
+  const handleAction = (key: TAction, item?: TTravelRequest) => {
+    setAction(key);
+    setRequest(item);
+  };
+  const onClose = () => {
+    setAction(undefined);
+    setRequest(undefined);
+  };
   const { companyId, token } = useApiAuth();
   const { pagination, onChange } = usePagination();
   const { data, isFetching } = useGetTravelRequisitions({
@@ -104,10 +116,11 @@ export const TravelRequestsTable: React.FC<{
             <Menu>
               <Menu.Item
                 key="3"
-                onClick={() => {
-                  setRequestId(item.id);
-                }}
+                onClick={() => handleAction("view-approval-stages", item)}
               >
+                View Stages
+              </Menu.Item>
+              <Menu.Item key="39090" onClick={() => handleAction("view", item)}>
                 View Details
               </Menu.Item>
             </Menu>
@@ -127,11 +140,19 @@ export const TravelRequestsTable: React.FC<{
 
   return (
     <div>
-      {requestId && (
+      {request && (
         <TravelRequestDetails
-          open={!!requestId}
-          handleClose={() => setRequestId(undefined)}
-          id={requestId}
+          open={action === "view"}
+          handleClose={onClose}
+          id={request.id}
+        />
+      )}
+      {request && (
+        <ViewApprovalStages
+          handleClose={onClose}
+          open={action === "view-approval-stages"}
+          id={request?.id}
+          type="travel"
         />
       )}
       <Table

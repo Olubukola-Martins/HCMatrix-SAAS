@@ -1,22 +1,36 @@
 import { TApprovalStatus } from "types/statuses";
 import type { ColumnsType } from "antd/es/table";
 import { usePagination } from "hooks/usePagination";
-import { Table } from "antd";
+import { Button, Dropdown, Menu, Table } from "antd";
 import { useApiAuth } from "hooks/useApiAuth";
 import moment from "moment";
 import { getAppropriateColorForStatus } from "utils/colorHelpers/getAppropriateColorForStatus";
-
 import { getEmployeeFullName } from "features/core/employees/utils/getEmployeeFullName";
 import { useGetExitHandOverForms } from "../hooks/useGetExitHandOverForms";
 import { Link } from "react-router-dom";
 import { TTHandOverForm } from "../types";
 import { DEFAULT_DATE_FORMAT } from "constants/dateFormats";
 import { appRoutes } from "config/router/paths";
+import { useState } from "react";
+import { MoreOutlined } from "@ant-design/icons";
+import ViewApprovalStages from "features/core/workflows/components/approval-request/ViewApprovalStages";
+
+type TAction = "view-approval-stages";
 
 export const HandOverTable: React.FC<{
   status?: TApprovalStatus;
   employeeId?: number;
 }> = ({ status, employeeId }) => {
+  const [request, setRequest] = useState<TTHandOverForm>();
+  const [action, setAction] = useState<TAction>();
+  const handleAction = (key: TAction, item?: TTHandOverForm) => {
+    setAction(key);
+    setRequest(item);
+  };
+  const onClose = () => {
+    setAction(undefined);
+    setRequest(undefined);
+  };
   const { companyId, token } = useApiAuth();
   const { pagination, onChange } = usePagination({
     pageSize: 4,
@@ -83,10 +97,41 @@ export const HandOverTable: React.FC<{
         </span>
       ),
     },
+    {
+      title: "Action",
+      key: "action",
+      render: (_, item) => (
+        <Dropdown
+          overlay={
+            <Menu>
+              <Menu.Item
+                key="stages"
+                onClick={() => {
+                  handleAction("view-approval-stages", item);
+                }}
+              >
+                View Stages
+              </Menu.Item>
+            </Menu>
+          }
+          trigger={["click"]}
+        >
+          <Button title="Actions" icon={<MoreOutlined />} type="text" />
+        </Dropdown>
+      ),
+    },
   ];
 
   return (
     <div>
+      {request && (
+        <ViewApprovalStages
+          handleClose={onClose}
+          open={action === "view-approval-stages"}
+          id={request?.id}
+          type="exit-handover-form"
+        />
+      )}
       <Table
         size="small"
         dataSource={data?.data}

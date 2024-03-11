@@ -10,12 +10,25 @@ import { getAppropriateColorForStatus } from "utils/colorHelpers/getAppropriateC
 import { useGeTJobRequisitions } from "../../requisitions/hooks/job/useGetJobRequisitions";
 import { TJobRequisition } from "../../requisitions/types/job";
 import { JobRequestDetails } from "./JobRequestDetails";
+import { DEFAULT_DATE_FORMAT } from "constants/dateFormats";
+import ViewApprovalStages from "features/core/workflows/components/approval-request/ViewApprovalStages";
+
+type TAction = "cancel" | "view" | "view-approval-stages";
 
 export const JobRequestsTable: React.FC<{
   status?: TApprovalStatus;
   employeeId?: number;
 }> = ({ status, employeeId }) => {
-  const [requestId, setRequestId] = useState<number>();
+  const [request, setRequest] = useState<TJobRequisition>();
+  const [action, setAction] = useState<TAction>();
+  const handleAction = (key: TAction, item?: TJobRequisition) => {
+    setAction(key);
+    setRequest(item);
+  };
+  const onClose = () => {
+    setAction(undefined);
+    setRequest(undefined);
+  };
   const { companyId, token } = useApiAuth();
   const { pagination, onChange } = usePagination();
   const { data, isFetching } = useGeTJobRequisitions({
@@ -35,7 +48,7 @@ export const JobRequestsTable: React.FC<{
       dataIndex: "date",
       key: "date",
       render: (_, item) => (
-        <span>{moment(item.date).format("YYYY/MM/DD")} </span>
+        <span>{moment(item.date).format(DEFAULT_DATE_FORMAT)} </span>
       ),
     },
     {
@@ -44,7 +57,7 @@ export const JobRequestsTable: React.FC<{
       key: "preferredStartDate",
       render: (_, item) => (
         <span className="capitalize">
-          {moment(item.preferredStartDate).format("YYYY/MM/DD")}{" "}
+          {moment(item.preferredStartDate).format(DEFAULT_DATE_FORMAT)}{" "}
         </span>
       ),
     },
@@ -85,9 +98,17 @@ export const JobRequestsTable: React.FC<{
           overlay={
             <Menu>
               <Menu.Item
+                key="4444"
+                onClick={() => {
+                  handleAction("view-approval-stages", item);
+                }}
+              >
+                View Stages
+              </Menu.Item>
+              <Menu.Item
                 key="3"
                 onClick={() => {
-                  setRequestId(item.id);
+                  handleAction("view", item);
                 }}
               >
                 View Details
@@ -96,12 +117,7 @@ export const JobRequestsTable: React.FC<{
           }
           trigger={["click"]}
         >
-          <Button
-            title="Actions"
-            icon={<MoreOutlined />}
-            type="text"
-            // onClick={() => handleEdit(item._id)}
-          />
+          <Button title="Actions" icon={<MoreOutlined />} type="text" />
         </Dropdown>
       ),
     },
@@ -109,11 +125,19 @@ export const JobRequestsTable: React.FC<{
 
   return (
     <div>
-      {requestId && (
+      {request && (
         <JobRequestDetails
-          open={!!requestId}
-          handleClose={() => setRequestId(undefined)}
-          id={requestId}
+          open={action === "view"}
+          handleClose={onClose}
+          id={request.id}
+        />
+      )}
+      {request && (
+        <ViewApprovalStages
+          handleClose={onClose}
+          open={action === "view-approval-stages"}
+          id={request?.id}
+          type="job"
         />
       )}
       <Table

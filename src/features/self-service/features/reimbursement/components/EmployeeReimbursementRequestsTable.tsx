@@ -11,8 +11,9 @@ import { ReimbursementDetails } from "./ReimbursementDetails";
 import { DEFAULT_DATE_FORMAT } from "constants/dateFormats";
 import { useGetReimburements4AuthEmployee } from "../../requisitions/hooks/reimbursement/useGetReimburements4AuthEmployee";
 import { CancelReimbursementRequest } from "./CancelReimbursementRequest";
+import ViewApprovalStages from "features/core/workflows/components/approval-request/ViewApprovalStages";
 
-type TAction = "cancel" | "view";
+type TAction = "cancel" | "view" | "view-approval-stages";
 
 export const EmployeeReimbursementRequestsTable: React.FC<{
   status?: TApprovalStatus[] | TApprovalStatus;
@@ -94,6 +95,12 @@ export const EmployeeReimbursementRequestsTable: React.FC<{
               <Menu.Item key="3" onClick={() => handleAction("view", item)}>
                 View Details
               </Menu.Item>
+              <Menu.Item
+                key="3 stages"
+                onClick={() => handleAction("view-approval-stages", item)}
+              >
+                View Stages
+              </Menu.Item>
             </Menu>
           }
           trigger={["click"]}
@@ -111,6 +118,14 @@ export const EmployeeReimbursementRequestsTable: React.FC<{
           open={action === "view"}
           handleClose={onClose}
           id={request.id}
+        />
+      )}
+      {request && (
+        <ViewApprovalStages
+          handleClose={onClose}
+          open={action === "view-approval-stages"}
+          id={request?.id}
+          type="reimbursement"
         />
       )}
       <CancelReimbursementRequest

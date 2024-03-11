@@ -12,8 +12,9 @@ import { PromotionRequestDetails } from "./PromotionRequestDetails";
 import { getEmployeeFullName } from "features/core/employees/utils/getEmployeeFullName";
 import { useGetPromotionRequisitions4AuthEmployee } from "../../requisitions/hooks/promotion/useGetPromotionRequisitions4AuthEmployee";
 import { CancelPromotionRequest } from "./CancelPromotionRequest";
+import ViewApprovalStages from "features/core/workflows/components/approval-request/ViewApprovalStages";
 
-type TAction = "cancel" | "view";
+type TAction = "cancel" | "view" | "view-approval-stages";
 
 export const EmployeePromotionRequestsTable: React.FC<{
   status?: TApprovalStatus[] | TApprovalStatus;
@@ -99,6 +100,12 @@ export const EmployeePromotionRequestsTable: React.FC<{
               <Menu.Item key="3" onClick={() => handleAction("view", item)}>
                 View Details
               </Menu.Item>
+              <Menu.Item
+                key="3223"
+                onClick={() => handleAction("view-approval-stages", item)}
+              >
+                View Stages
+              </Menu.Item>
             </Menu>
           }
           trigger={["click"]}
@@ -116,6 +123,14 @@ export const EmployeePromotionRequestsTable: React.FC<{
           open={action === "view"}
           handleClose={onClose}
           id={request.id}
+        />
+      )}
+      {request && (
+        <ViewApprovalStages
+          handleClose={onClose}
+          open={action === "view-approval-stages"}
+          id={request?.id}
+          type="promotion"
         />
       )}
       <CancelPromotionRequest

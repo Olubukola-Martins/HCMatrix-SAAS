@@ -2,11 +2,7 @@ import { Table } from "antd";
 import { ColumnsType } from "antd/lib/table";
 import { AppButton } from "components/button/AppButton";
 import React, { useState } from "react";
-import {
-  TVehicleBooking,
-  useFetchVehicleBookings,
-} from "../../hooks/useFetchVehicleBookings";
-import { useApiAuth } from "hooks/useApiAuth";
+import { TVehicleBooking } from "../../hooks/useFetchVehicleBookings";
 import { usePagination } from "hooks/usePagination";
 import moment from "moment";
 import { AddVehicleBooking } from "../AddVehicleBooking";
@@ -15,8 +11,9 @@ import { ViewVehicleBooking } from "../ViewVehicleBooking";
 import { getEmployeeFullName } from "features/core/employees/utils/getEmployeeFullName";
 import { useGetVehicleBookings4AuthEmployee } from "../../hooks/booking/useGetVehicleBookings4AuthEmployee";
 import { CancelVehicleBooking } from "./CancelVehicleBooking";
+import ViewApprovalStages from "features/core/workflows/components/approval-request/ViewApprovalStages";
 
-type TAction = "add" | "view" | "cancel";
+type TAction = "add" | "view" | "cancel" | "view-approval-stages";
 export const EmployeeVehicleBookingHistory: React.FC<{
   title?: string;
 }> = ({ title }) => {
@@ -98,9 +95,14 @@ export const EmployeeVehicleBookingHistory: React.FC<{
       render: (_, item) => (
         <div className="flex justify-end gap-3">
           <AppButton
-            variant="transparent"
             label="View"
             handleClick={() => handleAction("view", item)}
+            variant="default"
+          />
+          <AppButton
+            variant="transparent"
+            label="View Stages"
+            handleClick={() => handleAction("view-approval-stages", item)}
           />
           <AppButton
             variant="style-with-class"
@@ -135,6 +137,14 @@ export const EmployeeVehicleBookingHistory: React.FC<{
           open={showM === "view"}
           handleClose={onClose}
           bookingId={booking.id}
+        />
+      )}
+      {booking && (
+        <ViewApprovalStages
+          handleClose={onClose}
+          open={showM === "view-approval-stages"}
+          id={booking?.id}
+          type="vehicle"
         />
       )}
       <div className="flex flex-col gap-2">

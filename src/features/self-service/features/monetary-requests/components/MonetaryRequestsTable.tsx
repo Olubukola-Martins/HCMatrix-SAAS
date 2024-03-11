@@ -11,12 +11,24 @@ import { MonetaryRequestDetails } from "./MonetaryRequestDetails";
 import { TMoneyRequisition } from "../../requisitions/types/money";
 import { useGetMoneyRequisitions } from "../../requisitions/hooks/money/useGetMoneyRequisitions";
 import { DEFAULT_DATE_FORMAT } from "constants/dateFormats";
+import ViewApprovalStages from "features/core/workflows/components/approval-request/ViewApprovalStages";
+
+type TAction = "cancel" | "view" | "view-approval-stages";
 
 export const MonetaryRequestsTable: React.FC<{
   status?: TApprovalStatus;
   employeeId?: number;
 }> = ({ status, employeeId }) => {
-  const [requestId, setRequestId] = useState<number>();
+  const [request, setRequest] = useState<TMoneyRequisition>();
+  const [action, setAction] = useState<TAction>();
+  const handleAction = (key: TAction, item?: TMoneyRequisition) => {
+    setAction(key);
+    setRequest(item);
+  };
+  const onClose = () => {
+    setAction(undefined);
+    setRequest(undefined);
+  };
   const { companyId, token } = useApiAuth();
   const { pagination, onChange } = usePagination();
   const { data, isFetching } = useGetMoneyRequisitions({
@@ -83,10 +95,18 @@ export const MonetaryRequestsTable: React.FC<{
               <Menu.Item
                 key="3"
                 onClick={() => {
-                  setRequestId(item.id);
+                  handleAction("view", item);
                 }}
               >
                 View Details
+              </Menu.Item>
+              <Menu.Item
+                key="30000"
+                onClick={() => {
+                  handleAction("view-approval-stages", item);
+                }}
+              >
+                View Stages
               </Menu.Item>
             </Menu>
           }
@@ -105,11 +125,19 @@ export const MonetaryRequestsTable: React.FC<{
 
   return (
     <div>
-      {requestId && (
+      {request && (
         <MonetaryRequestDetails
-          open={!!requestId}
-          handleClose={() => setRequestId(undefined)}
-          id={requestId}
+          open={action === "view"}
+          handleClose={onClose}
+          id={request.id}
+        />
+      )}
+      {request && (
+        <ViewApprovalStages
+          handleClose={onClose}
+          open={action === "view-approval-stages"}
+          id={request?.id}
+          type="money"
         />
       )}
       <Table
