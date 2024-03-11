@@ -89,7 +89,7 @@ const TimeSheet = () => {
 
         <div className="flex justify-between items-center mt-10 mb-7">
           <Input.Search
-            placeholder="Search branch"
+            placeholder="Search..."
             style={{ width: "25%" }}
             allowClear
           />

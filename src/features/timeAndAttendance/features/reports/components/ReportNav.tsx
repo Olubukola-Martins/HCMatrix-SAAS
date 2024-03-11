@@ -1,4 +1,4 @@
-import { AttendanceSubToper } from "../AttendanceSubToper";
+import { AttendanceSubToper } from "../../../components/AttendanceSubToper";
 import { Link } from "react-router-dom";
 import { appRoutes } from "config/router/paths";
 import { PageIntro } from "components/layout/PageIntro";
@@ -10,19 +10,6 @@ export const ReportNav = (props: IProps) => {
   const applyStyle = "border-b-4 border-caramel md:mx-3 pt-2";
   return (
     <>
-      <AttendanceSubToper active="reports" />
-      <div className="Container flex items-center justify-between mb-5">
-        <PageIntro title="Report" link={appRoutes.attendanceHome} />
-        <div className="flex items-center gap-x-3">
-          <button className="flex items-center gap-x-2 transparentButton">
-            <span className="text-caramel font-medium">Filter</span>
-            <i className="ri-filter-2-line text-caramel"></i>
-          </button>
-          <a href="#" className="button">
-            <span>Export</span>
-          </a>
-        </div>
-      </div>
       <div className="Container">
         <div className="flex items-center gap-x-6 font-medium border-b md:text-base mb-7">
           <Link to={appRoutes.shiftPerEmployee}>
