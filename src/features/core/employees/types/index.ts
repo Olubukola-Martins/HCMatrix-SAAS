@@ -228,7 +228,7 @@ export type TPersonalInfo = {
   exchangeRateId?: number;
   maritalStatus: string;
   nationality: string;
-  address: TAddress;
+  address?: TAddress;
   passportExpirationDate: string;
   validDocumentUrl?: string;
   alternativeEmail?: string;

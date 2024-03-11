@@ -126,7 +126,7 @@ export const validateBulkEmployeeInfo = (
   ) {
     errors.push({
       category,
-      content: `${INDENTIFIER} has an invalid email address.`,
+      content: `${INDENTIFIER} has an invalid email address?.`,
     });
   }
 
@@ -884,7 +884,7 @@ export const validateBulkPersonalInformation = (
   }
   // Address: streetAddress
   if (
-    isValueEmpty(personalInformation?.address.streetAddress) &&
+    isValueEmpty(personalInformation?.address?.streetAddress) &&
     getConcernedInput("streetAddress")?.optional === false
   ) {
     errors.push({
@@ -900,7 +900,7 @@ export const validateBulkPersonalInformation = (
   }
   // Address: country
   if (
-    isValueEmpty(personalInformation?.address.countryId) &&
+    isValueEmpty(personalInformation?.address?.countryId) &&
     getConcernedInput("countryId")?.optional === false
   ) {
     errors.push({
@@ -924,7 +924,7 @@ export const validateBulkPersonalInformation = (
   }
   // Address: state
   if (
-    isValueEmpty(personalInformation?.address.stateId) &&
+    isValueEmpty(personalInformation?.address?.stateId) &&
     getConcernedInput("stateId")?.optional === false
   ) {
     errors.push({
@@ -949,7 +949,7 @@ export const validateBulkPersonalInformation = (
   }
   // Address: lga
   if (
-    isValueEmpty(personalInformation?.address.lgaId) &&
+    isValueEmpty(personalInformation?.address?.lgaId) &&
     getConcernedInput("lgaId")?.optional === false
   ) {
     errors.push({
@@ -974,7 +974,7 @@ export const validateBulkPersonalInformation = (
   }
   // Address: timezone
   if (
-    isValueEmpty(personalInformation?.address.timezone) &&
+    isValueEmpty(personalInformation?.address?.timezone) &&
     getConcernedInput("timezone")?.optional === false
   ) {
     errors.push({
@@ -1085,22 +1085,24 @@ export const validateBulkPersonalInformation = (
     //   countryId: countries?.find(
     //     (item) =>
     //       item.name ===
-    //       (personalInformation?.address.countryId as unknown as string)
+    //       (personalInformation?.address?.countryId as unknown as string)
     //   )?.id as number,
     //   stateId: states?.find(
     //     (item) =>
     //       item.name ===
-    //       (personalInformation?.address.stateId as unknown as string)
+    //       (personalInformation?.address?.stateId as unknown as string)
     //   )?.id as number,
     //   lgaId: lgas?.find(
     //     (item) =>
     //       item.name ===
-    //       (personalInformation?.address.lgaId as unknown as string)
+    //       (personalInformation?.address?.lgaId as unknown as string)
     //   )?.id as number,
-    //   streetAddress: personalInformation.address.streetAddress,
-    //   timezone: personalInformation.address.timezone,
+    //   streetAddress: personalInformation.address?.streetAddress,
+    //   timezone: personalInformation.address?.timezone,
     // },
   };
+
+  delete personalInformation["address"];
 
   return { isDataValid: errors.length === 0, errors, personalInformation };
 };
