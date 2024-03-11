@@ -849,7 +849,7 @@ export const validateBulkPersonalInformation = (
   if (
     !isValueEmpty(personalInformation?.maritalStatus) &&
     ACCEPTED_MARITAL_STATUS_VALUES.map((item) => item.toLowerCase()).includes(
-      `${personalInformation?.maritalStatus}.`.toLowerCase()
+      `${personalInformation?.maritalStatus}`.toLowerCase()
     ) === false
   ) {
     errors.push({
@@ -983,12 +983,10 @@ export const validateBulkPersonalInformation = (
     });
   }
   if (
-    (!isValueEmpty(personalInformation?.address?.timezone) &&
-      !!TIME_ZONES?.find(
-        (item) =>
-          item.value ===
-          (personalInformation?.address?.timezone as unknown as string)
-      ) === true) === false
+    !isValueEmpty(personalInformation?.address?.timezone) &&
+    TIME_ZONES.map((item) => item.value.toLowerCase()).includes(
+      `${(employee?.licenseType as unknown as string).toLowerCase()}`
+    ) === false
   ) {
     errors.push({
       category,
