@@ -1074,32 +1074,32 @@ export const validateBulkPersonalInformation = (
 
   personalInformation = {
     ...personalInformation,
-    nin: personalInformation.nin?.toString(),
+    nin: `${personalInformation.nin}`,
     passportExpirationDate: "04-07-2029",
     exchangeRateId: exchangeRates?.find(
       (item) =>
         item.currency ===
         (personalInformation?.exchangeRateId as unknown as string)
     )?.id,
-    address: {
-      countryId: countries?.find(
-        (item) =>
-          item.name ===
-          (personalInformation?.address.countryId as unknown as string)
-      )?.id as number,
-      stateId: states?.find(
-        (item) =>
-          item.name ===
-          (personalInformation?.address.stateId as unknown as string)
-      )?.id as number,
-      lgaId: lgas?.find(
-        (item) =>
-          item.name ===
-          (personalInformation?.address.lgaId as unknown as string)
-      )?.id as number,
-      streetAddress: personalInformation.address.streetAddress,
-      timezone: personalInformation.address.timezone,
-    },
+    // address: {
+    //   countryId: countries?.find(
+    //     (item) =>
+    //       item.name ===
+    //       (personalInformation?.address.countryId as unknown as string)
+    //   )?.id as number,
+    //   stateId: states?.find(
+    //     (item) =>
+    //       item.name ===
+    //       (personalInformation?.address.stateId as unknown as string)
+    //   )?.id as number,
+    //   lgaId: lgas?.find(
+    //     (item) =>
+    //       item.name ===
+    //       (personalInformation?.address.lgaId as unknown as string)
+    //   )?.id as number,
+    //   streetAddress: personalInformation.address.streetAddress,
+    //   timezone: personalInformation.address.timezone,
+    // },
   };
 
   return { isDataValid: errors.length === 0, errors, personalInformation };
