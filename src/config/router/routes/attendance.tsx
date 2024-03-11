@@ -1,7 +1,6 @@
 import { AttendanceHome } from "features/timeAndAttendance/pages/AttendanceHome";
 import { TRouteData } from "../types";
 import { appRoutes } from "../paths";
-import { TimeSheet } from "features/timeAndAttendance/pages/TimeSheet";
 import { UploadTimesheet } from "features/timeAndAttendance/pages/UploadTimesheet";
 import { TimeSheetDetails } from "features/timeAndAttendance/pages/TimeSheetDetails";
 import TimeTrackingRules from "features/timeAndAttendance/features/settings/timeTrackingRules/pages/TimeTrackingRules";
@@ -14,6 +13,7 @@ import ShiftPerEmployee from "features/timeAndAttendance/features/reports/pages/
 import HoursPerEmployee from "features/timeAndAttendance/features/reports/pages/HoursPerEmployee";
 import EmployeesPerShift from "features/timeAndAttendance/features/reports/pages/EmployeesPerShift";
 import { TimeOff } from "features/timeAndAttendance/features/timeOff/pages/TimeOff";
+import TimeSheet from "features/timeAndAttendance/features/timeSheet/pages/TimeSheet";
 
 export const attendanceRoutes: TRouteData[] = [
   {

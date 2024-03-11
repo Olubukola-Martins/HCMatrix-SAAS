@@ -1,5 +1,5 @@
 import { openNotification } from "utils/notifications";
-import offIndicator from "../assets/images/offIndicator.svg";
+import offIndicator from "../assets/images/onIndicator.svg";
 import { useSoftClockIn } from "../hooks/useSoftClockIn";
 import { useContext, useState } from "react";
 import { EGlobalOps, GlobalContext } from "stateManagers/GlobalContextProvider";

@@ -1,11 +1,11 @@
 import Table, { ColumnsType } from "antd/lib/table";
-import { AttendanceSubToper } from "../components/AttendanceSubToper";
+// import { AttendanceSubToper } from "../components/AttendanceSubToper";
 import { PageIntro } from "components/layout/PageIntro";
 import { appRoutes } from "config/router/paths";
 import { Input } from "antd";
 import { Link } from "react-router-dom";
 import { useState } from "react";
-import { FilterTimeSheet } from "../components/FilterTimeSheet";
+// import { FilterTimeSheet } from "../components/FilterTimeSheet";
 
 interface DataType {
   key: string;
@@ -89,15 +89,15 @@ const data: DataType[] = [
   },
 ];
 
-export const TimeSheet = () => {
+ const TimeSheet = () => {
   const [filterSheet, setFilterSheet] = useState(false);
   return (
     <>
-      <AttendanceSubToper active="time-sheet" />
-      <FilterTimeSheet
+      {/* <AttendanceSubToper active="time-sheet" /> */}
+      {/* <FilterTimeSheet
         open={filterSheet}
         handleClose={() => setFilterSheet(false)}
-      />
+      /> */}
       <div className="Container">
         <PageIntro title="Timesheet" link={appRoutes.attendanceHome} />
         <p className="pt-2">
@@ -161,3 +161,5 @@ export const TimeSheet = () => {
     </>
   );
 };
+
+export default TimeSheet;
