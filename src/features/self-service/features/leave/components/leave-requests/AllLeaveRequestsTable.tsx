@@ -13,13 +13,15 @@ import { LeaveDetails } from "../LeaveDetails";
 import { RecallLeave } from "../leave-recalls/RecallLeave";
 import { useGetAllLeaves } from "../../hooks/useGetAllLeaves";
 import { getEmployeeFullName } from "features/core/employees/utils/getEmployeeFullName";
+import ViewApprovalStages from "features/core/workflows/components/approval-request/ViewApprovalStages";
 
+type TAction = "view" | "recall" | "view-approval-stages";
 const AllLeaveRequestsTable: React.FC<{
   status?: TApprovalStatus[];
   employeeId?: number;
   search?: string;
 }> = ({ status, employeeId, search }) => {
-  const [showD, setShowD] = useState<"view" | "recall">();
+  const [showD, setShowD] = useState<TAction>();
   const [request, setRequest] = useState<TLeave>();
   const { pagination, onChange } = usePagination();
 
@@ -126,6 +128,15 @@ const AllLeaveRequestsTable: React.FC<{
             overlay={
               <Menu>
                 <Menu.Item
+                  key="3444"
+                  onClick={() => {
+                    setShowD("view-approval-stages");
+                    setRequest(item);
+                  }}
+                >
+                  View Stages
+                </Menu.Item>
+                <Menu.Item
                   key="3"
                   onClick={() => {
                     setShowD("view");
@@ -162,6 +173,15 @@ const AllLeaveRequestsTable: React.FC<{
           id={request?.id}
           open={showD === "view"}
           handleClose={() => setShowD(undefined)}
+        />
+      )}
+
+      {request && (
+        <ViewApprovalStages
+          handleClose={() => setShowD(undefined)}
+          open={showD === "view-approval-stages"}
+          id={request?.id}
+          type="leave"
         />
       )}
 

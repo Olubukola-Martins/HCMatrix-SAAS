@@ -23,8 +23,9 @@ import { DEFAULT_DATE_FORMAT } from "constants/dateFormats";
 import { QUERY_KEY_FOR_LOAN_REQUESTS } from "../../hooks/requests/useGetLoanRequests";
 import { QUERY_KEY_FOR_LOAN_ANALYTICS } from "../../hooks/analytics/useGetLoanAnalytics";
 import { CancelLoan } from "../CancelLoan";
+import ViewApprovalStages from "features/core/workflows/components/approval-request/ViewApprovalStages";
 
-type TAction = "approve/reject" | "view" | "cancel";
+type TAction = "approve/reject" | "view" | "cancel" | "view-approval-stages";
 type TLoanAndApproval = TLoanRequest & { approvalDetails?: TApprovalRequest };
 export const LoanTable: React.FC<{
   data?: TLoanAndApproval[];
@@ -39,9 +40,10 @@ export const LoanTable: React.FC<{
   pagination,
   onChange,
   total,
-  permitedActions = ["view"],
+  permitedActions = ["view", "view-approval-stages"],
 }) => {
   const queryClient = useQueryClient();
+  const [request, setRequest] = useState<TApprovalRequest>();
 
   const [loan, setLoan] = useState<TLoanRequest>();
   const [action, setAction] = useState<TAction>();
@@ -50,8 +52,13 @@ export const LoanTable: React.FC<{
     setLoan(undefined);
   };
 
-  const handleAction = (props: { action: TAction; loan: TLoanRequest }) => {
-    const { loan, action } = props;
+  const handleAction = (props: {
+    action: TAction;
+    loan: TLoanRequest;
+    approvalRequest?: TApprovalRequest;
+  }) => {
+    const { loan, action, approvalRequest } = props;
+    setRequest(approvalRequest);
     setAction(action);
     setLoan(loan);
   };
@@ -187,7 +194,26 @@ export const LoanTable: React.FC<{
               {permitedActions.find((val) => val === "view") && (
                 <Menu.Item
                   key="3"
-                  onClick={() => handleAction({ loan: item, action: "view" })}
+                  onClick={() =>
+                    handleAction({
+                      loan: item,
+                      action: "view-approval-stages",
+                    })
+                  }
+                >
+                  View Stages
+                </Menu.Item>
+              )}
+              {permitedActions.find((val) => val === "view") && (
+                <Menu.Item
+                  key="3"
+                  onClick={() =>
+                    handleAction({
+                      loan: item,
+                      action: "view",
+                      approvalRequest: item.approvalDetails,
+                    })
+                  }
                 >
                   View Details
                 </Menu.Item>
@@ -234,6 +260,17 @@ export const LoanTable: React.FC<{
           handleClose={onClose}
           open={action === "view"}
           id={loan.id}
+          approvalRequest={
+            permitedActions.includes("approve/reject") ? request : undefined
+          }
+        />
+      )}
+      {loan && (
+        <ViewApprovalStages
+          handleClose={onClose}
+          open={action === "view-approval-stages"}
+          id={loan?.id}
+          type="loan"
         />
       )}
       <CancelLoan

@@ -23,7 +23,8 @@ const TransferApprovalRequestsTable: React.FC<{
   const queryClient = useQueryClient();
 
   const [showD, setShowD] = useState(false);
-  const [requestId, setRequestId] = useState<number>();
+  const [request, setRequest] = useState<TApprovalRequest>();
+
   const { pagination, onChange } = usePagination();
   const { data, isFetching } = useFetchApprovalRequests({
     pagination,
@@ -165,7 +166,7 @@ const TransferApprovalRequestsTable: React.FC<{
                   key="3"
                   onClick={() => {
                     setShowD(true);
-                    setRequestId(item?.transferRequisition?.id);
+                    setRequest(item);
                   }}
                 >
                   View
@@ -212,11 +213,12 @@ const TransferApprovalRequestsTable: React.FC<{
 
   return (
     <div>
-      {requestId && (
+      {request?.transferRequisition?.id && (
         <TransferDetails
           open={showD}
           handleClose={() => setShowD(false)}
-          id={requestId}
+          id={request?.transferRequisition?.id}
+          approvalRequest={request}
         />
       )}
 

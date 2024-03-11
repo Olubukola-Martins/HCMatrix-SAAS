@@ -1,13 +1,10 @@
 import { Space, Dropdown, Menu, Table } from "antd";
 import { MoreOutlined } from "@ant-design/icons";
-
 import React, { useState } from "react";
 import { ColumnsType } from "antd/lib/table";
-
 import { getAppropriateColorForStatus } from "utils/colorHelpers/getAppropriateColorForStatus";
 import { usePagination } from "hooks/usePagination";
 import { TApprovalStatus } from "types/statuses";
-
 import moment from "moment";
 import { useApproveORReject } from "hooks/useApproveORReject";
 import { TApprovalRequest } from "features/core/workflows/types/approval-requests";
@@ -24,7 +21,8 @@ const TravelApprovalRequestsTable: React.FC<{
   const queryClient = useQueryClient();
 
   const [showD, setShowD] = useState(false);
-  const [requestId, setRequestId] = useState<number>();
+  const [request, setRequest] = useState<TApprovalRequest>();
+
   const { pagination, onChange } = usePagination();
   const { data, isFetching } = useFetchApprovalRequests({
     pagination,
@@ -139,7 +137,7 @@ const TravelApprovalRequestsTable: React.FC<{
                   key="3"
                   onClick={() => {
                     setShowD(true);
-                    setRequestId(item?.travelRequest?.id);
+                    setRequest(item);
                   }}
                 >
                   View
@@ -186,11 +184,12 @@ const TravelApprovalRequestsTable: React.FC<{
 
   return (
     <div>
-      {requestId && (
+      {request?.travelRequest?.id && (
         <TravelRequestDetails
           open={showD}
           handleClose={() => setShowD(false)}
-          id={requestId}
+          id={request?.travelRequest?.id}
+          approvalRequest={request}
         />
       )}
 

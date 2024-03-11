@@ -25,7 +25,8 @@ const LeavesApprovalRequestsTable: React.FC<{
   const queryClient = useQueryClient();
 
   const [showD, setShowD] = useState<"view">();
-  const [requestId, setRequestId] = useState<number>();
+  const [request, setRequest] = useState<TApprovalRequest>();
+
   const { pagination, onChange } = usePagination();
   const { data, isFetching } = useFetchApprovalRequests({
     pagination,
@@ -146,7 +147,7 @@ const LeavesApprovalRequestsTable: React.FC<{
                   key="3"
                   onClick={() => {
                     setShowD("view");
-                    setRequestId(item?.leave?.id);
+                    setRequest(item);
                   }}
                 >
                   View
@@ -193,11 +194,12 @@ const LeavesApprovalRequestsTable: React.FC<{
 
   return (
     <div>
-      {requestId && (
+      {request?.leave && (
         <LeaveDetails
-          id={requestId}
+          id={request.leave.id}
           handleClose={() => setShowD(undefined)}
           open={showD === "view"}
+          approvalRequest={request}
         />
       )}
 

@@ -1,7 +1,5 @@
 import React from "react";
-
-export interface IconProps
-  extends React.ButtonHTMLAttributes<HTMLOrSVGElement> {}
+import { IconProps } from "types/html";
 
 const PageNotFoundIcon: React.FC<IconProps> = (props) => {
   return (

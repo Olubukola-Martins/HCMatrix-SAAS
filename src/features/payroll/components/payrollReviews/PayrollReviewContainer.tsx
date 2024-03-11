@@ -7,7 +7,7 @@ import moment from "moment";
 import { Link, useNavigate } from "react-router-dom";
 import { appRoutes } from "config/router/paths";
 import { TPayrollSchemeType } from "features/payroll/types/payrollSchemes";
-import { Select } from "antd";
+import { Button, Dropdown, Menu, Select } from "antd";
 import { getAppropriateColorForStatus } from "utils/colorHelpers/getAppropriateColorForStatus";
 import { DEFAULT_DATE_FORMAT } from "constants/dateFormats";
 import {
@@ -15,6 +15,10 @@ import {
   useGetUserPermissions,
 } from "components/permission-restriction/PermissionRestrictor";
 import { formatNumberWithCommas } from "utils/dataHelpers/formatNumberWithCommas";
+import { MoreOutlined } from "@ant-design/icons";
+import ViewApprovalStages from "features/core/workflows/components/approval-request/ViewApprovalStages";
+
+type TAction = "view-approval-stages";
 
 let OG_COLUMNS: ColumnsType<TPayrollListData> = [
   {
@@ -26,24 +30,6 @@ let OG_COLUMNS: ColumnsType<TPayrollListData> = [
     ),
   },
 
-  // {
-  //   title: "Cycle",
-  //   dataIndex: "frequency",
-  //   key: "frequency",
-  //   render: (_, item) => (
-  //     <span className="capitalize">
-  //       {item.scheme.type === "project"
-  //         ? `Payment ${item.frequency}`
-  //         : item.frequency}{" "}
-  //     </span>
-  //   ),
-  // },
-  // {
-  //   title: "Date",
-  //   dataIndex: "Date",
-  //   key: "Date",
-  //   render: (_, item) => <span>{item.date} </span>,
-  // },
   {
     title: "Allowances",
     dataIndex: "allowances",
@@ -97,8 +83,26 @@ export const PayrollReviewContainer = () => {
     useState<ColumnsType<TPayrollListData>>(OG_COLUMNS);
   const navigate = useNavigate();
   const { userPermissions } = useGetUserPermissions();
+  const [request, setRequest] = useState<TPayrollListData>();
+  const [action, setAction] = useState<TAction>();
+  const handleAction = (key: TAction, item?: TPayrollListData) => {
+    setAction(key);
+    setRequest(item);
+  };
+  const onClose = () => {
+    setAction(undefined);
+    setRequest(undefined);
+  };
   return (
     <>
+      {request && (
+        <ViewApprovalStages
+          handleClose={onClose}
+          open={action === "view-approval-stages"}
+          id={request?.id}
+          type="payroll"
+        />
+      )}
       <div className="flex flex-col gap-6">
         {/* <NewTransfer open={showM} handleClose={() => setShowM(false)} /> */}
         <PageSubHeader
@@ -158,6 +162,29 @@ export const PayrollReviewContainer = () => {
                 >
                   {item.status.split("-").join(" ")}{" "}
                 </span>
+              ),
+            },
+            {
+              title: "Action",
+              key: "action",
+              render: (_, item) => (
+                <Dropdown
+                  overlay={
+                    <Menu>
+                      <Menu.Item
+                        key="stages"
+                        onClick={() => {
+                          handleAction("view-approval-stages", item);
+                        }}
+                      >
+                        View Stages
+                      </Menu.Item>
+                    </Menu>
+                  }
+                  trigger={["click"]}
+                >
+                  <Button title="Actions" icon={<MoreOutlined />} type="text" />
+                </Dropdown>
               ),
             },
           ]}

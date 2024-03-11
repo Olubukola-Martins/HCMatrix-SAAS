@@ -15,13 +15,27 @@ import CRBBookingDetails from "./CRBBookingDetails";
 import { usePagination } from "hooks/usePagination";
 import { getEmployeeFullName } from "features/core/employees/utils/getEmployeeFullName";
 import { DEFAULT_DATE_FORMAT } from "constants/dateFormats";
+import ViewApprovalStages from "features/core/workflows/components/approval-request/ViewApprovalStages";
+
+type TAction = "add" | "view" | "cancel" | "view-approval-stages";
 
 const CRBHistoryTable: React.FC<{
   status?: TCRBookingStatus;
   employeeId?: number;
 }> = ({ status, employeeId }) => {
-  const [showD, setShowD] = useState(false);
-  const [bookingId, setBookingId] = useState<number>();
+  const [showM, setShowM] = useState<TAction>();
+  const [booking, setBooking] = useState<TSingleConferenceRoomBooking>();
+  const handleAction = (
+    action: TAction,
+    item?: TSingleConferenceRoomBooking
+  ) => {
+    setBooking(item);
+    setShowM(action);
+  };
+  const onClose = () => {
+    setShowM(undefined);
+    setBooking(undefined);
+  };
   const { pagination, onChange } = usePagination();
 
   const { data, isFetching } = useFetchAllConferenceRoomBookings({
@@ -111,16 +125,21 @@ const CRBHistoryTable: React.FC<{
             overlay={
               <Menu>
                 <Menu.Item
+                  key="4"
+                  onClick={() => {
+                    handleAction("view-approval-stages", item);
+                  }}
+                >
+                  View Stages
+                </Menu.Item>
+                <Menu.Item
                   key="3"
                   onClick={() => {
-                    setShowD(true);
-                    setBookingId(item.id);
+                    handleAction("view", item);
                   }}
                 >
                   View
                 </Menu.Item>
-                {/* <Menu.Item key="2">Approve</Menu.Item>
-                <Menu.Item key="1">Reject</Menu.Item> */}
               </Menu>
             }
             trigger={["click"]}
@@ -134,11 +153,19 @@ const CRBHistoryTable: React.FC<{
 
   return (
     <div>
-      {bookingId && (
+      {booking && (
         <CRBBookingDetails
-          id={bookingId}
-          open={showD}
-          handleClose={() => setShowD(false)}
+          id={booking.id}
+          open={showM === "view"}
+          handleClose={onClose}
+        />
+      )}
+      {booking && (
+        <ViewApprovalStages
+          handleClose={onClose}
+          open={showM === "view-approval-stages"}
+          id={booking?.id}
+          type="conference-room"
         />
       )}
 

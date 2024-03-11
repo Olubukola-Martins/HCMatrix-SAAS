@@ -13,8 +13,8 @@ import { VehicleBookingEntity } from "./approvalRequestEntities/vehicleBookingEn
 import { TLoanRequest } from "features/self-service/features/loan/types";
 import { TTHandOverForm } from "features/self-service/features/handover-forms/types";
 import { TApprovalStatus } from "types/statuses";
+import { TStageCondition } from ".";
 
-// TODO: Check for basic stage and update type
 interface AdvancedStage {
   id: number;
   workflowId: number;
@@ -22,8 +22,18 @@ interface AdvancedStage {
   type: string;
   entityId: number;
   enableTwoFactorAuth: boolean;
-  condition?: any;
-  count?: any;
+  condition?: TStageCondition | null;
+  count?: number | null;
+  createdAt: string;
+  updatedAt: string;
+}
+
+interface BasicStage {
+  id: number;
+  workflowId: number;
+  name: string;
+  type: string;
+  entityId: number;
   createdAt: string;
   updatedAt: string;
 }
@@ -37,6 +47,7 @@ export type TApprovalRequest = {
   comment?: string;
 
   advancedStage: AdvancedStage;
+  basicStage: BasicStage;
   //
 
   entityType: string;

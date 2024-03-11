@@ -14,6 +14,9 @@ import { getAppropriateColorForStatus } from "utils/colorHelpers/getAppropriateC
 import { ViewVehicleBooking } from "../ViewVehicleBooking";
 import { getEmployeeFullName } from "features/core/employees/utils/getEmployeeFullName";
 import { SelectEmployee } from "features/core/employees/components/SelectEmployee";
+import ViewApprovalStages from "features/core/workflows/components/approval-request/ViewApprovalStages";
+
+type TAction = "add" | "cancel" | "view" | "view-approval-stages";
 
 export const AllVehicleBookingHistory: React.FC<{
   title?: string;
@@ -28,8 +31,12 @@ export const AllVehicleBookingHistory: React.FC<{
     pagination,
     employeeId,
   });
-  const [showM, setShowM] = useState(false);
-  const [bookingId, setBookingId] = useState<number>();
+  const [showM, setShowM] = useState<TAction>();
+  const [request, setRequest] = useState<TVehicleBooking>();
+  const handleAction = (action: TAction, item?: TVehicleBooking) => {
+    setShowM(action);
+    setRequest(item);
+  };
   const columns: ColumnsType<TVehicleBooking> = [
     {
       title: "Booking Date",
@@ -97,23 +104,45 @@ export const AllVehicleBookingHistory: React.FC<{
       width: 100,
       fixed: "right",
       render: (_, item) => (
-        <AppButton
-          variant="transparent"
-          label="View"
-          handleClick={() => setBookingId(item.id)}
-        />
+        <div className="space-x-4">
+          <AppButton
+            variant="default"
+            label="View"
+            handleClick={() => {
+              handleAction("view", item);
+            }}
+          />
+          <AppButton
+            variant="transparent"
+            label="View Stages"
+            handleClick={() => {
+              handleAction("view-approval-stages", item);
+            }}
+          />
+        </div>
       ),
     },
   ];
 
   return (
     <>
-      <AddVehicleBooking open={showM} handleClose={() => setShowM(false)} />
-      {bookingId && (
+      <AddVehicleBooking
+        open={showM === "add"}
+        handleClose={() => setShowM(undefined)}
+      />
+      {request && (
         <ViewVehicleBooking
-          open={!!bookingId}
-          handleClose={() => setBookingId(undefined)}
-          bookingId={bookingId}
+          open={showM === "view"}
+          handleClose={() => setShowM(undefined)}
+          bookingId={request.id}
+        />
+      )}
+      {request && (
+        <ViewApprovalStages
+          handleClose={() => setShowM(undefined)}
+          open={showM === "view-approval-stages"}
+          id={request?.id}
+          type="vehicle"
         />
       )}
       <div className="flex flex-col gap-2">
@@ -129,7 +158,7 @@ export const AllVehicleBookingHistory: React.FC<{
             <i className="ri-download-2-line text-lg"></i>
             <AppButton
               label="Book Vehicle"
-              handleClick={() => setShowM(true)}
+              handleClick={() => setShowM("add")}
             />
           </div>
         </div>

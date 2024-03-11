@@ -23,7 +23,8 @@ const MoneyApprovalRequestsTable: React.FC<{
   const queryClient = useQueryClient();
 
   const [showD, setShowD] = useState(false);
-  const [requestId, setRequestId] = useState<number>();
+  const [request, setRequest] = useState<TApprovalRequest>();
+
   const { pagination, onChange } = usePagination();
   const { data, isFetching } = useFetchApprovalRequests({
     pagination,
@@ -104,7 +105,7 @@ const MoneyApprovalRequestsTable: React.FC<{
                   key="3"
                   onClick={() => {
                     setShowD(true);
-                    setRequestId(item?.moneyRequisition?.id);
+                    setRequest(item);
                   }}
                 >
                   View
@@ -151,11 +152,12 @@ const MoneyApprovalRequestsTable: React.FC<{
 
   return (
     <div>
-      {requestId && (
+      {request?.moneyRequisition?.id && (
         <MonetaryRequestDetails
           open={showD}
           handleClose={() => setShowD(false)}
-          id={requestId}
+          id={request?.moneyRequisition?.id}
+          approvalRequest={request}
         />
       )}
 

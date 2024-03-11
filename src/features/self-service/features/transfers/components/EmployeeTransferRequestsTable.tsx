@@ -10,8 +10,9 @@ import { TTransferRequisition } from "../../requisitions/types/transfer";
 import { getAppropriateColorForStatus } from "utils/colorHelpers/getAppropriateColorForStatus";
 import { useGetTransferRequisitions4AuthEmployee } from "../../requisitions/hooks/transfer/useGetTransferRequisitions4AuthEmployee";
 import { CancelTransferRequest } from "./CancelTransferRequest";
+import ViewApprovalStages from "features/core/workflows/components/approval-request/ViewApprovalStages";
 
-type TAction = "cancel" | "view";
+type TAction = "cancel" | "view" | "view-approval-stages";
 export const EmployeeTransferRequestsTable: React.FC<{
   status?: TApprovalStatus[] | TApprovalStatus;
 }> = ({ status }) => {
@@ -152,6 +153,12 @@ export const EmployeeTransferRequestsTable: React.FC<{
               <Menu.Item key="3" onClick={() => handleAction("view", item)}>
                 View Details
               </Menu.Item>
+              <Menu.Item
+                key="stages"
+                onClick={() => handleAction("view-approval-stages", item)}
+              >
+                View Stages
+              </Menu.Item>
             </Menu>
           }
           trigger={["click"]}
@@ -169,6 +176,14 @@ export const EmployeeTransferRequestsTable: React.FC<{
           open={action === "view"}
           handleClose={onClose}
           id={request.id}
+        />
+      )}
+      {request && (
+        <ViewApprovalStages
+          handleClose={onClose}
+          open={action === "view-approval-stages"}
+          id={request?.id}
+          type="transfer"
         />
       )}
       <CancelTransferRequest

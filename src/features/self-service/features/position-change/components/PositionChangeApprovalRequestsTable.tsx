@@ -25,7 +25,8 @@ const PositionChangeApprovalRequestsTable: React.FC<{
   const queryClient = useQueryClient();
 
   const [showD, setShowD] = useState(false);
-  const [requestId, setRequestId] = useState<number>();
+  const [request, setRequest] = useState<TApprovalRequest>();
+
   const { pagination, onChange } = usePagination();
   const { data, isFetching } = useFetchApprovalRequests({
     pagination,
@@ -116,7 +117,7 @@ const PositionChangeApprovalRequestsTable: React.FC<{
                   key="3"
                   onClick={() => {
                     setShowD(true);
-                    setRequestId(item?.positionChangeRequisition?.id);
+                    setRequest(item);
                   }}
                 >
                   View
@@ -163,11 +164,12 @@ const PositionChangeApprovalRequestsTable: React.FC<{
 
   return (
     <div>
-      {requestId && (
+      {request?.positionChangeRequisition?.id && (
         <PositionChangeRequestDetails
           open={showD}
           handleClose={() => setShowD(false)}
-          id={requestId}
+          id={request?.positionChangeRequisition?.id}
+          approvalRequest={request}
         />
       )}
 

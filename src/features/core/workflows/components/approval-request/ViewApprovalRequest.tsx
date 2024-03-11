@@ -14,6 +14,7 @@ import { LoanDetails } from "features/self-service/features/loan/components/Loan
 import { PromotionRequestDetails } from "features/self-service/features/promotions/components/PromotionRequestDetails";
 import { Navigate } from "react-router-dom";
 import { appRoutes } from "config/router/paths";
+import { TPayrollSchemeType } from "features/payroll/types/payrollSchemes";
 
 interface IProps extends IModalProps {
   request?: TApprovalRequest;
@@ -25,11 +26,21 @@ const ViewApprovalRequest: React.FC<IProps> = ({
   open,
 }) => {
   if (request === undefined) return null;
-  //   TODO: Add status to all view request types
-  // TODO: Add approve/reject buttons to all modals of approvals, for pages like exit handover add a param to page that will be resposible for displaying the approve/reject buttons
+
   // for handover also display the status of the handover to the user
   return (
     <>
+      {typeof request.payroll !== "undefined" && (
+        <Navigate
+          to={
+            appRoutes.singlePayroll({
+              id: request.payroll.id,
+              scheme: request.payroll.scheme
+                .type as unknown as TPayrollSchemeType,
+            }).path
+          }
+        />
+      )}
       {typeof request.exitHandoverForm !== "undefined" && (
         <Navigate
           to={appRoutes.handOverDetails(request.exitHandoverForm.id).path}
@@ -49,6 +60,7 @@ const ViewApprovalRequest: React.FC<IProps> = ({
           open={open}
           handleClose={handleClose}
           id={request.leave.id}
+          approvalRequest={request}
         />
       )}
       {typeof request.loan !== "undefined" && (
@@ -56,6 +68,7 @@ const ViewApprovalRequest: React.FC<IProps> = ({
           open={open}
           handleClose={handleClose}
           id={request.loan.id}
+          approvalRequest={request}
         />
       )}
       {typeof request.conferenceRoomBooking !== "undefined" && (
@@ -63,6 +76,7 @@ const ViewApprovalRequest: React.FC<IProps> = ({
           open={open}
           handleClose={handleClose}
           id={request.conferenceRoomBooking.id}
+          approvalRequest={request}
         />
       )}
       {typeof request.assetRequisition !== "undefined" && (
@@ -70,6 +84,7 @@ const ViewApprovalRequest: React.FC<IProps> = ({
           open={open}
           handleClose={handleClose}
           id={request.assetRequisition.id}
+          approvalRequest={request}
         />
       )}
       {typeof request.vehicleBooking !== "undefined" && (
@@ -77,6 +92,7 @@ const ViewApprovalRequest: React.FC<IProps> = ({
           open={open}
           handleClose={handleClose}
           bookingId={request.vehicleBooking.id}
+          approvalRequest={request}
         />
       )}
       {typeof request.jobRequisition !== "undefined" && (
@@ -84,6 +100,7 @@ const ViewApprovalRequest: React.FC<IProps> = ({
           open={open}
           handleClose={handleClose}
           id={request.jobRequisition.id}
+          approvalRequest={request}
         />
       )}
       {typeof request.travelRequest !== "undefined" && (
@@ -91,6 +108,7 @@ const ViewApprovalRequest: React.FC<IProps> = ({
           open={open}
           handleClose={handleClose}
           id={request.travelRequest.id}
+          approvalRequest={request}
         />
       )}
       {typeof request.transferRequisition !== "undefined" && (
@@ -98,6 +116,7 @@ const ViewApprovalRequest: React.FC<IProps> = ({
           open={open}
           handleClose={handleClose}
           id={request.transferRequisition.id}
+          approvalRequest={request}
         />
       )}
       {typeof request.positionChangeRequisition !== "undefined" && (
@@ -105,6 +124,7 @@ const ViewApprovalRequest: React.FC<IProps> = ({
           open={open}
           handleClose={handleClose}
           id={request.positionChangeRequisition.id}
+          approvalRequest={request}
         />
       )}
       {typeof request.moneyRequisition !== "undefined" && (
@@ -112,6 +132,7 @@ const ViewApprovalRequest: React.FC<IProps> = ({
           open={open}
           handleClose={handleClose}
           id={request.moneyRequisition.id}
+          approvalRequest={request}
         />
       )}
       {typeof request.reimbursementRequisition !== "undefined" && (
@@ -119,6 +140,7 @@ const ViewApprovalRequest: React.FC<IProps> = ({
           open={open}
           handleClose={handleClose}
           id={request.reimbursementRequisition.id}
+          approvalRequest={request}
         />
       )}
       {/* TODO: Fill for other type of approval requests */}

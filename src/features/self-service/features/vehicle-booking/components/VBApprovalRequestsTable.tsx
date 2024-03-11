@@ -24,7 +24,8 @@ const VBApprovalRequestsTable: React.FC<{
   const queryClient = useQueryClient();
 
   const [showD, setShowD] = useState(false);
-  const [requestId, setRequestId] = useState<number>();
+  const [request, setRequest] = useState<TApprovalRequest>();
+
   const { pagination, onChange } = usePagination();
   const { data, isFetching } = useFetchApprovalRequests({
     pagination,
@@ -123,7 +124,7 @@ const VBApprovalRequestsTable: React.FC<{
                   key="3"
                   onClick={() => {
                     setShowD(true);
-                    setRequestId(item.vehicleBooking?.id);
+                    setRequest(item);
                   }}
                 >
                   View
@@ -170,11 +171,12 @@ const VBApprovalRequestsTable: React.FC<{
     : originalColumns;
   return (
     <div>
-      {requestId && (
+      {request?.vehicleBooking && (
         <ViewVehicleBooking
-          bookingId={requestId}
+          bookingId={request.vehicleBooking.id}
           handleClose={() => setShowD(false)}
           open={showD}
+          approvalRequest={request}
         />
       )}
 

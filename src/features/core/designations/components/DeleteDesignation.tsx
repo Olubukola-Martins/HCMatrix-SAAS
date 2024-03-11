@@ -4,7 +4,6 @@ import { openNotification } from "utils/notifications";
 import { useQueryClient } from "react-query";
 import DeleteEntityModal from "components/entity/DeleteEntityModal";
 import { TDesignation } from "../types";
-import { useDeleteTask } from "features/self-service/features/tasks/hooks/useDeleteTask";
 import { QUERY_KEY_FOR_DESIGNATIONS } from "../hooks/useFetchDesignations";
 import { useDeleteDesignation } from "../hooks/useDeleteDesignation";
 

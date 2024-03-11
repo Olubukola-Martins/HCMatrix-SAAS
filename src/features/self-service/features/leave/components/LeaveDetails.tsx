@@ -2,18 +2,35 @@ import { DatePicker, Form, Input, Modal, Skeleton, Switch, Tag } from "antd";
 import { CloseCircleOutlined } from "@ant-design/icons";
 import moment from "moment";
 import { useEffect } from "react";
-import { useGetSingleLeave } from "../hooks/useGetSingleLeave";
+import {
+  QUERY_KEY_FOR_SINGLE_LEAVE,
+  useGetSingleLeave,
+} from "../hooks/useGetSingleLeave";
 import { IModalProps } from "types";
 import { getEmployeeFullName } from "features/core/employees/utils/getEmployeeFullName";
 import { DEFAULT_DATE_FORMAT } from "constants/dateFormats";
+import { TApprovalRequest } from "features/core/workflows/types/approval-requests";
+import ApproveOrRejectButton from "features/core/workflows/components/approval-request/ApproveOrRejectButton";
+import { useQueryClient } from "react-query";
+import { QUERY_KEY_FOR_ALL_LEAVES } from "../hooks/useGetAllLeaves";
+import { QUERY_KEY_FOR_EMPLOYEE_LEAVES } from "../hooks/useGetEmployeeLeaves";
+import { QUERY_KEY_FOR_LEAVE_EMPLOYEE_DB_ANALYTICS } from "../hooks/leaveAnalytics/useGetEmployeeLeaveDBAnalytics";
 
 interface IProps extends IModalProps {
   id: number;
+  approvalRequest?: TApprovalRequest;
 }
 const boxStyle = "px-4 py-3 shadow rounded-md bg-mainBg mb-4";
 
-export const LeaveDetails = ({ id, open, handleClose }: IProps) => {
+export const LeaveDetails = ({
+  id,
+  open,
+  handleClose,
+  approvalRequest,
+}: IProps) => {
   const [form] = Form.useForm();
+  const queryClient = useQueryClient();
+
   const { data, isFetching } = useGetSingleLeave({ id });
   useEffect(() => {
     if (data) {
@@ -38,6 +55,30 @@ export const LeaveDetails = ({ id, open, handleClose }: IProps) => {
       style={{ top: 20 }}
     >
       <Skeleton loading={isFetching} active paragraph={{ rows: 16 }}>
+        <ApproveOrRejectButton
+          className="flex justify-end"
+          request={approvalRequest}
+          handleSuccess={() => {
+            queryClient.invalidateQueries({
+              queryKey: [QUERY_KEY_FOR_ALL_LEAVES],
+              // exact: true,
+            });
+            queryClient.invalidateQueries({
+              queryKey: [QUERY_KEY_FOR_EMPLOYEE_LEAVES],
+              // exact: true,
+            });
+            queryClient.invalidateQueries({
+              queryKey: [QUERY_KEY_FOR_SINGLE_LEAVE, id],
+              // exact: true,
+            });
+
+            queryClient.invalidateQueries({
+              queryKey: [QUERY_KEY_FOR_LEAVE_EMPLOYEE_DB_ANALYTICS],
+              // exact: true,
+            });
+            handleClose();
+          }}
+        />
         <Form layout="vertical" requiredMark={false} form={form} disabled>
           <Form.Item label="Employee" name="employee">
             <Input placeholder="Employee" />

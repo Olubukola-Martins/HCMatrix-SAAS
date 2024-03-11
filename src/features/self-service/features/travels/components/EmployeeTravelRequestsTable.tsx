@@ -12,8 +12,9 @@ import { getEmployeeFullName } from "features/core/employees/utils/getEmployeeFu
 import { DEFAULT_DATE_FORMAT } from "constants/dateFormats";
 import { useGetTravelRequisitions4AuthEmployee } from "../../requisitions/hooks/travel/useGetTravelRequisitions4AuthEmployee";
 import { CancelTravelRequest } from "./CancelTravelRequest";
+import ViewApprovalStages from "features/core/workflows/components/approval-request/ViewApprovalStages";
 
-type TAction = "cancel" | "view";
+type TAction = "cancel" | "view" | "view-approval-stages";
 
 export const EmployeeTravelRequestsTable: React.FC<{
   status?: TApprovalStatus[] | TApprovalStatus;
@@ -118,6 +119,12 @@ export const EmployeeTravelRequestsTable: React.FC<{
               <Menu.Item key="3" onClick={() => handleAction("view", item)}>
                 View Details
               </Menu.Item>
+              <Menu.Item
+                key="stages"
+                onClick={() => handleAction("view-approval-stages", item)}
+              >
+                View Stages
+              </Menu.Item>
             </Menu>
           }
           trigger={["click"]}
@@ -135,6 +142,14 @@ export const EmployeeTravelRequestsTable: React.FC<{
           open={action === "view"}
           handleClose={onClose}
           id={request.id}
+        />
+      )}
+      {request && (
+        <ViewApprovalStages
+          handleClose={onClose}
+          open={action === "view-approval-stages"}
+          id={request?.id}
+          type="travel"
         />
       )}
       <CancelTravelRequest

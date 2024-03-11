@@ -11,8 +11,9 @@ import { useGetJobRequisitions4AuthEmployee } from "../../requisitions/hooks/job
 import { TJobRequisition } from "../../requisitions/types/job";
 import { JobRequestDetails } from "./JobRequestDetails";
 import { CancelJobRequest } from "./CancelJobRequest";
+import ViewApprovalStages from "features/core/workflows/components/approval-request/ViewApprovalStages";
 
-type TAction = "cancel" | "view";
+type TAction = "cancel" | "view" | "view-approval-stages";
 
 export const EmployeeJobRequestsTable: React.FC<{
   status?: TApprovalStatus[] | TApprovalStatus;
@@ -101,6 +102,12 @@ export const EmployeeJobRequestsTable: React.FC<{
               <Menu.Item key="3" onClick={() => handleAction("view", item)}>
                 View Details
               </Menu.Item>
+              <Menu.Item
+                key="3333"
+                onClick={() => handleAction("view-approval-stages", item)}
+              >
+                View Stages
+              </Menu.Item>
             </Menu>
           }
           trigger={["click"]}
@@ -120,6 +127,15 @@ export const EmployeeJobRequestsTable: React.FC<{
           id={request.id}
         />
       )}
+      {request && (
+        <ViewApprovalStages
+          handleClose={onClose}
+          open={action === "view-approval-stages"}
+          id={request?.id}
+          type="job"
+        />
+      )}
+
       <CancelJobRequest
         open={action === "cancel"}
         handleClose={onClose}
