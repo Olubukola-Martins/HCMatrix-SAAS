@@ -1006,11 +1006,11 @@ export const validateBulkPersonalInformation = (
   }
 
   if (
-    (!isValueEmpty(personalInformation?.passportExpirationDate) &&
-      moment(personalInformation?.passportExpirationDate).isValid() === true &&
-      isDateGreaterThanOrEqualToCurrentDay(
-        moment(personalInformation?.passportExpirationDate)
-      ) === true) === false
+    !isValueEmpty(personalInformation?.passportExpirationDate) &&
+    moment(personalInformation?.passportExpirationDate).isValid() === true &&
+    isDateGreaterThanOrEqualToCurrentDay(
+      moment(personalInformation?.passportExpirationDate)
+    ) === false
   ) {
     errors.push({
       category,
