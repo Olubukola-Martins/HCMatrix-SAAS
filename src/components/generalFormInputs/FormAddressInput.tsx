@@ -185,7 +185,7 @@ export const FormAddressInput: React.FC<{
                 (item) =>
                   item.label
                     .toLowerCase()
-                    .indexOf(search.timezone.toLowerCase()) !== -1
+                    .indexOf(search??.timezone.toLowerCase()) !== -1
               ).map((c) => ({ label: c.label, value: c.value }))}
               defaultActiveFirstOption={false}
               showSearch
@@ -194,7 +194,7 @@ export const FormAddressInput: React.FC<{
                 setSearch((prev) => ({ ...prev, timezone: "" }));
               }}
               filterOption={false}
-              searchValue={search.timezone}
+              searchValue={search??.timezone}
               onSearch={(value) => {
                 setSearch((prev) => ({ ...prev, timezone: value }));
               }}

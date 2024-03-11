@@ -65,7 +65,7 @@ export const PersonalInformation: React.FC<IProps> = ({
       maritalStatus: personalInfo.maritalStatus,
       exchangeRateId: personalInfo.exchangeRateId,
       eligibility: personalInfo.eligibility,
-      timezone: personalInfo.address.timezone,
+      timezone: personalInfo.address??.timezone,
       countryId: personalInfo.address.countryId,
       stateId: personalInfo.address.stateId,
       phone: {
@@ -84,7 +84,7 @@ export const PersonalInformation: React.FC<IProps> = ({
       },
       nin: personalInfo?.nin,
       address: {
-        timezone: personalInfo?.address.timezone,
+        timezone: personalInfo?.address??.timezone,
         streetAddress: personalInfo?.address.streetAddress,
         countryId: personalInfo?.address.countryId,
         stateId: personalInfo?.address.stateId,

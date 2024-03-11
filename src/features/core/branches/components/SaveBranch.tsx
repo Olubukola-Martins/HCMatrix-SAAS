@@ -49,7 +49,7 @@ export const SaveBranch: React.FC<IProps> = ({
       form.setFieldsValue({
         ...branch,
         address: {
-          timezone: branch?.address.timezone,
+          timezone: branch?.address??.timezone,
           streetAddress: branch?.address.streetAddress,
           countryId: branch?.address.countryId,
           stateId: branch?.address.stateId,
