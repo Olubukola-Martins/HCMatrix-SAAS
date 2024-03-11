@@ -39,7 +39,7 @@ export const BranchesTableView = ({
       dataIndex: "address",
       key: "address",
       ellipsis: true,
-      render: (_, item) => `${item.address.streetAddress}`,
+      render: (_, item) => `${item.address?.streetAddress}`,
     },
 
     {

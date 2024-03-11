@@ -50,9 +50,9 @@ export const SaveBranch: React.FC<IProps> = ({
         ...branch,
         address: {
           timezone: branch?.address?.timezone,
-          streetAddress: branch?.address.streetAddress,
-          countryId: branch?.address.countryId,
-          stateId: branch?.address.stateId,
+          streetAddress: branch?.address?.streetAddress,
+          countryId: branch?.address?.countryId,
+          stateId: branch?.address?.stateId,
           lgaId: branch?.address?.lgaId,
           latitude: branch?.address?.latitude,
           longitude: branch?.address?.longitude,

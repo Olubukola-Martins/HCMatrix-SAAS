@@ -84,7 +84,7 @@ export const HospitalTable: React.FC<{
       key: "Address",
       ellipsis: true,
       render: (_, item) => (
-        <span className="capitalize">{item.address.streetAddress}</span>
+        <span className="capitalize">{item.address?.streetAddress}</span>
       ),
     },
 

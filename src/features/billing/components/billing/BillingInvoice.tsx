@@ -91,11 +91,11 @@ const BillingInvoiceInfo: React.FC<{
         </div>
 
         <div>
-          <span>{billingDetail?.address.streetAddress}</span>
+          <span>{billingDetail?.address?.streetAddress}</span>
           <br />
-          <span>{billingDetail?.address.state.name}</span>
+          <span>{billingDetail?.address?.state.name}</span>
           <br />
-          <span>{billingDetail?.address.country.name}</span>
+          <span>{billingDetail?.address?.country.name}</span>
         </div>
       </div>
       {/* details */}

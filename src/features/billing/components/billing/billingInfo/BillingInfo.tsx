@@ -30,12 +30,12 @@ const BillingInfo = () => {
     const address = data.address;
     form.setFieldsValue({
       address: {
-        countryId: address.countryId,
-        latitude: address.latitude,
-        longitude: address.longitude,
-        lgaId: address.lgaId ?? undefined,
-        stateId: address.stateId,
-        streetAddress: address.streetAddress,
+        countryId: address?.countryId,
+        latitude: address?.latitude,
+        longitude: address?.longitude,
+        lgaId: address?.lgaId ?? undefined,
+        stateId: address?.stateId,
+        streetAddress: address?.streetAddress,
         timezone: address?.timezone ?? undefined,
       },
       billingName: data.billingName,

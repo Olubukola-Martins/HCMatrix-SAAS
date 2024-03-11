@@ -66,14 +66,14 @@ export const PersonalInformation: React.FC<IProps> = ({
       exchangeRateId: personalInfo.exchangeRateId,
       eligibility: personalInfo.eligibility,
       timezone: personalInfo.address?.timezone,
-      countryId: personalInfo.address.countryId,
-      stateId: personalInfo.address.stateId,
+      countryId: personalInfo.address?.countryId,
+      stateId: personalInfo.address?.stateId,
       phone: {
         code: parsePhoneNumber(personalInfo.phoneNumber).code,
         number: parsePhoneNumber(personalInfo.phoneNumber).number,
       },
-      lgaId: personalInfo.address.lgaId,
-      streetAddress: personalInfo.address.streetAddress,
+      lgaId: personalInfo.address?.lgaId,
+      streetAddress: personalInfo.address?.streetAddress,
       passportExpirationDate: personalInfo.passportExpirationDate
         ? moment(personalInfo.passportExpirationDate)
         : null,
@@ -85,10 +85,10 @@ export const PersonalInformation: React.FC<IProps> = ({
       nin: personalInfo?.nin,
       address: {
         timezone: personalInfo?.address?.timezone,
-        streetAddress: personalInfo?.address.streetAddress,
-        countryId: personalInfo?.address.countryId,
-        stateId: personalInfo?.address.stateId,
-        lgaId: personalInfo?.address.lgaId,
+        streetAddress: personalInfo?.address?.streetAddress,
+        countryId: personalInfo?.address?.countryId,
+        stateId: personalInfo?.address?.stateId,
+        lgaId: personalInfo?.address?.lgaId,
         latitude: personalInfo?.address?.latitude,
         longitude: personalInfo?.address?.longitude,
       },
