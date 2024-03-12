@@ -8,6 +8,7 @@ export interface shiftPerEmployeeProps {
   };
   status: string;
   shiftType: string;
+  date: string;
 }
 
 export interface filterReportProps {

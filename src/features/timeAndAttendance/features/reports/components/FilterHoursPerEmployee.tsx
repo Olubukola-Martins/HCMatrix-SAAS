@@ -22,12 +22,7 @@ export const FilterHoursPerEmployee = ({
     const startD = data.duration ? data.duration[0].format("MM/DD/YYYY") : null;
     const endD = data.duration ? data.duration[1].format("MM/DD/YYYY") : null;
 
-    if (
-      data.departmentId ||
-      data.employeeId ||
-      data.shiftTypes ||
-      data.duration
-    ) {
+    if (data.departmentId || data.employeeId || data.duration) {
       setFilterData({
         departmentId: data.departmentId,
         employeeId: data.employeeId,
