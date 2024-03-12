@@ -89,6 +89,9 @@ export const GoBreak = ({ handleClose, open }: IModalProps) => {
             onSearch={handleSearch}
             loading={breakPolicyLoad}
             placeholder="Select"
+            defaultActiveFirstOption={false}
+            showArrow={false}
+            filterOption={false}
           >
             {isSuccess ? (
               breakPolicyData?.data.map((item) => (

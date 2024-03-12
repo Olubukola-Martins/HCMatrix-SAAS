@@ -9,6 +9,7 @@ import { timeSheetFilterProps, timeSheetProps } from "../types";
 import { usePagination } from "hooks/usePagination";
 import { convertMinutesToHours } from "features/timeAndAttendance/utils";
 import { FilterTimeSheet } from "../components/FilterTimeSheet";
+import { AppButton } from "components/button/AppButton";
 
 const columns: ColumnsType<timeSheetProps> = [
   {
@@ -83,7 +84,6 @@ const TimeSheet = () => {
       period: filterData?.period,
     },
   });
-  console.log(filterData);
 
   return (
     <>
@@ -101,17 +101,30 @@ const TimeSheet = () => {
         </p>
 
         <div className="flex justify-between items-center mt-10 mb-7">
-          <button
-            className="flex items-center gap-x-2 transparentButton"
-            onClick={() => setFilterSheet(true)}
-          >
-            <span className="text-caramel font-medium">Filter</span>
-            <i className="ri-filter-2-line text-caramel"></i>
-          </button>
-          <div className="flex items-center gap-x-3">
+          <div className="flex items-center gap-x-5">
             <Link className="button" to={appRoutes.uploadAttendance}>
               Upload Timesheet
             </Link>
+            {filterData !== undefined && (
+            <AppButton
+              variant="transparent"
+              label="Reset Report"
+              handleClick={() => setFilterData(undefined)}
+            />
+          )}
+          </div>
+
+          <div className="flex items-center gap-x-3">
+            <button
+              className="flex items-center gap-x-2 transparentButton"
+              onClick={() => setFilterSheet(true)}
+            >
+              <span className="text-caramel font-medium">Filter</span>
+              <i className="ri-filter-2-line text-caramel"></i>
+            </button>
+            <a href="#" className="button">
+            <span>Export</span>
+          </a>
           </div>
         </div>
 

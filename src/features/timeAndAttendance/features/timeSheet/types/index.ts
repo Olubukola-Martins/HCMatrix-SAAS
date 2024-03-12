@@ -40,5 +40,5 @@ export interface timeSheetFilterProps {
   startDate?: string;
   endDate?: string;
   date?: string;
-  employeeId?: number;
+  employeeId?: number | string;
 }

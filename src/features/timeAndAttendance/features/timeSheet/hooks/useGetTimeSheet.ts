@@ -26,6 +26,11 @@ const getData = async (props: {
     params: {
       limit,
       offset,
+      date: props.filter?.date,
+      period: props.filter?.period,
+      empUid: props.filter?.employeeId,
+      startDate: props.filter?.startDate,
+      endDate: props.filter?.endDate,
     },
   };
 

@@ -23,8 +23,11 @@ export const AddTimeOff = ({ open, handleClose, id }: IModalProps) => {
   const debouncedSearchTerm: string = useDebounce<string>(searchTerm);
   const globalCtx = useContext(GlobalContext);
   const { dispatch } = globalCtx;
-  const { data: timeOffPolicyData, isLoading: loadPolicy, isSuccess: timeOffPolicySuccess  } =
-    useGetTimeOffPolicy({ search: debouncedSearchTerm });
+  const {
+    data: timeOffPolicyData,
+    isLoading: loadPolicy,
+    isSuccess: timeOffPolicySuccess,
+  } = useGetTimeOffPolicy({ search: debouncedSearchTerm });
 
   const { mutate, isLoading: isLoadingCreate } = useCreateTimeOff();
   const queryClient = useQueryClient();
@@ -110,6 +113,9 @@ export const AddTimeOff = ({ open, handleClose, id }: IModalProps) => {
             onSearch={handleSearch}
             loading={loadPolicy}
             placeholder="Select"
+            defaultActiveFirstOption={false}
+            showArrow={false}
+            filterOption={false}
           >
             {timeOffPolicySuccess ? (
               timeOffPolicyData?.data.map((item) => (

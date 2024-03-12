@@ -11,7 +11,7 @@ export const AttendanceSettingsIntro = ({ title, description }: AProps) => {
   return (
     <div className="Container">
       <div className="flex md:items-center flex-col md:flex-row gap-3 justify-between">
-        <PageIntro title={title} link={appRoutes.settings} />
+        <PageIntro title={title} link={appRoutes.attendanceHome} />
 
         <div className="flex items-center gap-x-4">
           {/* <span className="underline text-caramel cursor-pointer hover:text-accent">

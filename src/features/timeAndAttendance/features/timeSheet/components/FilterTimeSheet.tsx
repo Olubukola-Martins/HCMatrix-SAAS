@@ -19,7 +19,8 @@ export const FilterTimeSheet = ({
   setFilterData,
 }: FilterProps) => {
   const [form] = Form.useForm();
-  const [selectedPeriod, setSelectedPeriod] = useState<string>("");
+  const [selectedPeriod, setSelectedPeriod] = useState<string>();
+  const [empUid, setEmpUid] = useState<string>();
 
   const onSubmit = (data: any) => {
     const startD = data.duration ? data.duration[0].format("YYYY-MM-DD") : null;
@@ -27,7 +28,7 @@ export const FilterTimeSheet = ({
     const date = data.date ? data.date.format("MM/DD/YYYY") : null;
     if (data.period || data.employeeId) {
       setFilterData({
-        employeeId: data.employeeId,
+        employeeId: empUid,
         period: data.period,
         endDate: endD,
         startDate: startD,
@@ -53,7 +54,11 @@ export const FilterTimeSheet = ({
         onFinish={onSubmit}
         requiredMark={false}
       >
-        <FormEmployeeInput Form={Form} optional={true} />
+        <FormEmployeeInput
+          Form={Form}
+          optional={true}
+          handleSelect={(_, val) => setEmpUid(val?.empUid)}
+        />
 
         <Form.Item name="period" label="Period">
           <Select
