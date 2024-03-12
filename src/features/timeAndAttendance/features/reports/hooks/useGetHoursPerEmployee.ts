@@ -6,7 +6,7 @@ import { filterReportProps, shiftPerEmployeeProps } from "../types";
 import { ICurrentCompany, IPaginationProps } from "types";
 import { DEFAULT_PAGE_SIZE } from "constants/general";
 
-export const QUERY_KEY_FOR_SHIFT_PER_EMPLOYEE = "ShiftPerEmployee";
+export const QUERY_KEY_FOR_HOURS_PER_EMPLOYEE = "HoursPerEmployee";
 
 const getData = async (props: {
   auth: ICurrentCompany;
@@ -16,7 +16,7 @@ const getData = async (props: {
   const limit = props.pagination?.limit ?? DEFAULT_PAGE_SIZE;
   const offset = props.pagination?.offset ?? 0;
 
-  const url = `${MICROSERVICE_ENDPOINTS.TIME_AND_ATTENDANCE}/reports/shift-per-employee`;
+  const url = `${MICROSERVICE_ENDPOINTS.TIME_AND_ATTENDANCE}/reports/hours-per-employee`;
   const config = {
     headers: {
       Accept: "application/json",
@@ -27,7 +27,6 @@ const getData = async (props: {
       limit,
       offset,
       departmentId: props.filter?.departmentId,
-      shiftTypes: props.filter?.shiftTypes,
       startDate: props.filter?.startDate,
       endDate: props.filter?.endDate,
       employeeId: props.filter?.employeeId,
@@ -49,7 +48,7 @@ const getData = async (props: {
 
   return ans;
 };
-export const useGetShiftPerEmployee = ({
+export const useGetHoursPerEmployee = ({
   pagination,
   filter,
 }: {
@@ -57,23 +56,21 @@ export const useGetShiftPerEmployee = ({
   filter?: filterReportProps;
 } = {}) => {
   const { companyId, token } = useApiAuth();
-  const { departmentId, employeeId, endDate, shiftTypes, startDate } =
-    filter ?? {};
+  const { departmentId, employeeId, endDate, startDate } = filter ?? {};
   const queryData = useQuery(
     [
-        QUERY_KEY_FOR_SHIFT_PER_EMPLOYEE,
+      QUERY_KEY_FOR_HOURS_PER_EMPLOYEE,
       pagination,
       departmentId,
       employeeId,
       endDate,
-      shiftTypes,
       startDate,
     ],
     () =>
       getData({
         auth: { token, companyId },
         pagination,
-        filter: { departmentId, employeeId, endDate, shiftTypes, startDate },
+        filter: { departmentId, employeeId, endDate, startDate },
       }),
     {
       onError: (err: any) => {},

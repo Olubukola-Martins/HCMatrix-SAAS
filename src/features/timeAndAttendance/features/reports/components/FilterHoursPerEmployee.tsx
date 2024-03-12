@@ -12,7 +12,7 @@ interface FilterShiftPerEmployeeProps extends IDrawerProps {
   >;
 }
 
-export const FilterShiftPerEmployee = ({
+export const FilterHoursPerEmployee = ({
   handleClose,
   open,
   setFilterData,
@@ -31,7 +31,6 @@ export const FilterShiftPerEmployee = ({
       setFilterData({
         departmentId: data.departmentId,
         employeeId: data.employeeId,
-        shiftTypes: data.shiftTypes,
         endDate: endD,
         startDate: startD,
       });
@@ -51,17 +50,7 @@ export const FilterShiftPerEmployee = ({
       <Form form={form} layout="vertical" onFinish={onSubmit}>
         <FormEmployeeInput Form={Form} optional={true} />
         <FormDepartmentInput Form={Form} optional={true} />
-        <Form.Item name="shiftTypes" label="Shifts">
-          <Select
-            options={[
-              { value: "Morning", label: "Morning" },
-              { value: "Afternoon", label: "Afternoon" },
-              { value: "Evening", label: "Evening" },
-            ]}
-            allowClear
-            placeholder="Select"
-          />
-        </Form.Item>
+
         <Form.Item name="duration" label="Duration" requiredMark="optional">
           <DatePicker.RangePicker className="w-full" format="MM/DD/YYYY" />
         </Form.Item>
