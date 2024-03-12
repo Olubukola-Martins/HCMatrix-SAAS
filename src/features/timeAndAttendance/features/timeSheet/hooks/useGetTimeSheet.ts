@@ -2,7 +2,7 @@ import axios from "axios";
 import { useQuery } from "react-query";
 import { MICROSERVICE_ENDPOINTS } from "config/enviroment";
 import { useApiAuth } from "hooks/useApiAuth";
-import { timeSheetProps } from "../types";
+import { timeSheetFilterProps, timeSheetProps } from "../types";
 import { ICurrentCompany, IPaginationProps } from "types";
 import { DEFAULT_PAGE_SIZE } from "constants/general";
 
@@ -11,7 +11,7 @@ export const QUERY_KEY_FOR_TIME_SHEET = "Time_sheet";
 const getData = async (props: {
   auth: ICurrentCompany;
   pagination?: IPaginationProps;
-  search?: string;
+  filter?: timeSheetFilterProps;
 }): Promise<{ data: timeSheetProps[]; total: number }> => {
   const limit = props.pagination?.limit ?? DEFAULT_PAGE_SIZE;
   const offset = props.pagination?.offset ?? 0;
@@ -26,7 +26,6 @@ const getData = async (props: {
     params: {
       limit,
       offset,
-      search: props.search,
     },
   };
 
@@ -45,18 +44,30 @@ const getData = async (props: {
 
   return ans;
 };
-export const useGetTimeSheet = (props?: {
+export const useGetTimeSheet = ({
+  pagination,
+  filter,
+}: {
   pagination?: IPaginationProps;
-  search?: string;
-}) => {
+  filter?: timeSheetFilterProps;
+} = {}) => {
   const { companyId, token } = useApiAuth();
+  const { employeeId, endDate, startDate, date, period } = filter ?? {};
   const queryData = useQuery(
-    [QUERY_KEY_FOR_TIME_SHEET, props?.pagination, props?.search],
+    [
+      QUERY_KEY_FOR_TIME_SHEET,
+      pagination,
+      employeeId,
+      endDate,
+      startDate,
+      date,
+      period,
+    ],
     () =>
       getData({
         auth: { token, companyId },
-        pagination: props?.pagination,
-        search: props?.search,
+        pagination: pagination,
+        filter: { employeeId, endDate, startDate, date, period },
       }),
     {
       onError: (err: any) => {},

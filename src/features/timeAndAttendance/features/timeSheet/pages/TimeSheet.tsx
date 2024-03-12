@@ -65,6 +65,7 @@ const columns: ColumnsType<timeSheetProps> = [
   {
     title: "Total",
     dataIndex: "total",
+    render: (_, val) => convertMinutesToHours(val?.totalWeeklyTimeTracked),
   },
 ];
 
@@ -72,7 +73,17 @@ const TimeSheet = () => {
   const [filterSheet, setFilterSheet] = useState(false);
   const [filterData, setFilterData] = useState<timeSheetFilterProps>();
   const { pagination, onChange } = usePagination({ pageSize: 10 });
-  const { data, isLoading } = useGetTimeSheet({ pagination });
+  const { data, isLoading } = useGetTimeSheet({
+    pagination,
+    filter: {
+      employeeId: filterData?.employeeId,
+      startDate: filterData?.startDate,
+      endDate: filterData?.endDate,
+      date: filterData?.date,
+      period: filterData?.period,
+    },
+  });
+  console.log(filterData);
 
   return (
     <>

@@ -61,7 +61,7 @@ export const useGetShiftPerEmployee = ({
     filter ?? {};
   const queryData = useQuery(
     [
-        QUERY_KEY_FOR_SHIFT_PER_EMPLOYEE,
+      QUERY_KEY_FOR_SHIFT_PER_EMPLOYEE,
       pagination,
       departmentId,
       employeeId,
