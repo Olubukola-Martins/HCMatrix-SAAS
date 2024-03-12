@@ -53,7 +53,6 @@ export const AddBiometric = ({ handleClose, open, id }: IDrawerProps) => {
       { data },
       {
         onError: (err: any) => {
-          console.log(err);
           
           openNotification({
             state: "error",
@@ -63,7 +62,7 @@ export const AddBiometric = ({ handleClose, open, id }: IDrawerProps) => {
           });
         },
         onSuccess: (res: any) => {
-          console.log(res);
+  
           
           openNotification({
             state: "success",

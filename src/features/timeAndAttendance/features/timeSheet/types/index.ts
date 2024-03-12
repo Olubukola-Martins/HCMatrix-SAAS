@@ -33,3 +33,11 @@ export interface timeSheetProps {
       };
   };
 }
+
+export interface timeSheetFilterProps {
+    period?: string;
+    startDate?: string;
+    endDate?: string;
+    date?: string;
+    employeeId?: number;
+}

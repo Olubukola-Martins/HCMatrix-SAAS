@@ -1,15 +1,14 @@
 import Table, { ColumnsType } from "antd/lib/table";
 import { PageIntro } from "components/layout/PageIntro";
 import { appRoutes } from "config/router/paths";
-import { Input } from "antd";
 import { Link } from "react-router-dom";
 import { useState } from "react";
 import { AttendanceSubToper } from "features/timeAndAttendance/components/AttendanceSubToper";
 import { useGetTimeSheet } from "../hooks/useGetTimeSheet";
-import { timeSheetProps } from "../types";
+import { timeSheetFilterProps, timeSheetProps } from "../types";
 import { usePagination } from "hooks/usePagination";
 import { convertMinutesToHours } from "features/timeAndAttendance/utils";
-// import { FilterTimeSheet } from "../components/FilterTimeSheet";
+import { FilterTimeSheet } from "../components/FilterTimeSheet";
 
 const columns: ColumnsType<timeSheetProps> = [
   {
@@ -24,7 +23,8 @@ const columns: ColumnsType<timeSheetProps> = [
   {
     title: "Monday",
     dataIndex: "monday",
-    render: (_, val) => convertMinutesToHours(val?.days?.Monday?.totalTimeTracked),
+    render: (_, val) =>
+      convertMinutesToHours(val?.days?.Monday?.totalTimeTracked),
   },
   {
     title: "Tuesday",
@@ -47,7 +47,8 @@ const columns: ColumnsType<timeSheetProps> = [
   {
     title: "Friday",
     dataIndex: "friday",
-    render: (_, val) => convertMinutesToHours(val?.days?.Friday?.totalTimeTracked),
+    render: (_, val) =>
+      convertMinutesToHours(val?.days?.Friday?.totalTimeTracked),
   },
   {
     title: "Saturday",
@@ -58,7 +59,8 @@ const columns: ColumnsType<timeSheetProps> = [
   {
     title: "Sunday",
     dataIndex: "sunday",
-    render: (_, val) => convertMinutesToHours(val?.days?.Sunday?.totalTimeTracked),
+    render: (_, val) =>
+      convertMinutesToHours(val?.days?.Sunday?.totalTimeTracked),
   },
   {
     title: "Total",
@@ -68,18 +70,18 @@ const columns: ColumnsType<timeSheetProps> = [
 
 const TimeSheet = () => {
   const [filterSheet, setFilterSheet] = useState(false);
+  const [filterData, setFilterData] = useState<timeSheetFilterProps>();
   const { pagination, onChange } = usePagination({ pageSize: 10 });
   const { data, isLoading } = useGetTimeSheet({ pagination });
 
-  console.log(data?.data);
-  
   return (
     <>
       <AttendanceSubToper active="time-sheet" />
-      {/* <FilterTimeSheet
+      <FilterTimeSheet
         open={filterSheet}
         handleClose={() => setFilterSheet(false)}
-      /> */}
+        setFilterData={setFilterData}
+      />
       <div className="Container">
         <PageIntro title="Timesheet" link={appRoutes.attendanceHome} />
         <p className="pt-2">
@@ -88,55 +90,19 @@ const TimeSheet = () => {
         </p>
 
         <div className="flex justify-between items-center mt-10 mb-7">
-          <Input.Search
-            placeholder="Search..."
-            style={{ width: "25%" }}
-            allowClear
-          />
+          <button
+            className="flex items-center gap-x-2 transparentButton"
+            onClick={() => setFilterSheet(true)}
+          >
+            <span className="text-caramel font-medium">Filter</span>
+            <i className="ri-filter-2-line text-caramel"></i>
+          </button>
           <div className="flex items-center gap-x-3">
-            <button
-              className="flex items-center gap-x-2 transparentButton"
-              onClick={() => setFilterSheet(true)}
-            >
-              <span className="text-caramel font-medium">Filter</span>
-              <i className="ri-filter-2-line text-caramel"></i>
-            </button>
             <Link className="button" to={appRoutes.uploadAttendance}>
               Upload Timesheet
             </Link>
           </div>
         </div>
-
-        {/* <div className="flex items-center justify-between mb-6">
-        <div className="flex gap-3">
-          <Select
-            defaultValue="Weekly"
-            style={{ width: 120 }}
-            options={[{ value: "weekly", label: "weekly" }]}
-          />
-          <AppButton
-            label="Feb 27-Mar 5"
-            additionalClassNames={[" transparentButton text-accent"]}
-          />
-        </div>
-        <div className="flex items-center gap-3">
-          <Select
-            defaultValue="Tracked hours"
-            style={{ width: 150 }}
-            options={[{ value: "hours", label: "hours" }]}
-          />
-          <Select
-            defaultValue="Status"
-            style={{ width: 120 }}
-            options={[{ value: "hours", label: "hours" }]}
-          />
-          <Select
-            defaultValue="Clocked in"
-            style={{ width: 120 }}
-            options={[{ value: "hours", label: "hours" }]}
-          />
-        </div>
-      </div> */}
 
         <Table
           columns={columns}
