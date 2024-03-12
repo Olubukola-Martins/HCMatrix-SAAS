@@ -1,10 +1,7 @@
+import { TEmployeeProps } from "features/timeAndAttendance/types";
+
 export interface timeSheetProps {
-  employee: {
-    id: number;
-    firstName: string;
-    lastName: string;
-    email: string;
-  };
+  employee: TEmployeeProps;
   days: {
     Sunday: {
       dayOfWeek: string;

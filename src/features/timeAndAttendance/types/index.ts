@@ -32,3 +32,10 @@ export interface switchActivityProps {
   projectId: number;
   comment: string;
 }
+
+export interface TEmployeeProps {
+  id: number;
+  firstName: string;
+  lastName: string;
+  email: string;
+}
