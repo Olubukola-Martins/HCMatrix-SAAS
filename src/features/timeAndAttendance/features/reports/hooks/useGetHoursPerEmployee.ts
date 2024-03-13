@@ -29,7 +29,7 @@ const getData = async (props: {
       departmentId: props.filter?.departmentId,
       startDate: props.filter?.startDate,
       endDate: props.filter?.endDate,
-      employeeId: props.filter?.employeeId,
+      empUid: props.filter?.employeeId,
     },
   };
 

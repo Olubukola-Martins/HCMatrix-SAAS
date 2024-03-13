@@ -30,7 +30,7 @@ const getData = async (props: {
       shiftTypes: props.filter?.shiftTypes,
       startDate: props.filter?.startDate,
       endDate: props.filter?.endDate,
-      employeeId: props.filter?.employeeId,
+      empUid: props.filter?.employeeId,
     },
   };
 

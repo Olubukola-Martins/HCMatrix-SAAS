@@ -5,6 +5,7 @@ import { FormEmployeeInput } from "features/core/employees/components/FormEmploy
 import { IDrawerProps } from "types";
 import { filterReportProps } from "../types";
 import { openNotification } from "utils/notifications";
+import { useState } from "react";
 
 interface FilterShiftPerEmployeeProps extends IDrawerProps {
   setFilterData: React.Dispatch<
@@ -17,6 +18,7 @@ export const FilterHoursPerEmployee = ({
   open,
   setFilterData,
 }: FilterShiftPerEmployeeProps) => {
+  const [empUid, setEmpUid] = useState<string>();
   const [form] = Form.useForm();
   const onSubmit = (data: any) => {
     const startD = data.duration ? data.duration[0].format("MM/DD/YYYY") : null;
@@ -25,7 +27,7 @@ export const FilterHoursPerEmployee = ({
     if (data.departmentId || data.employeeId || data.duration) {
       setFilterData({
         departmentId: data.departmentId,
-        employeeId: data.employeeId,
+        employeeId: empUid,
         endDate: endD,
         startDate: startD,
       });
@@ -43,7 +45,7 @@ export const FilterHoursPerEmployee = ({
   return (
     <Drawer onClose={() => handleClose()} open={open} title="Filter Report">
       <Form form={form} layout="vertical" onFinish={onSubmit}>
-        <FormEmployeeInput Form={Form} optional={true} />
+        <FormEmployeeInput Form={Form} optional={true}  handleSelect={(_, val) => setEmpUid(val?.empUid)}/>
         <FormDepartmentInput Form={Form} optional={true} />
 
         <Form.Item name="duration" label="Duration" requiredMark="optional">
