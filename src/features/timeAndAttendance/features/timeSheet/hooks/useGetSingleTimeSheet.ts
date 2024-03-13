@@ -12,7 +12,7 @@ const getData = async (props: {
   id: number;
   date: string;
 }): Promise<singleTimeSheetProps> => {
-  const url = `${MICROSERVICE_ENDPOINTS.TIME_AND_ATTENDANCE}/attendance/employee-work-hours/${props.id}`;
+  const url = `${MICROSERVICE_ENDPOINTS.TIME_AND_ATTENDANCE}/attendance/time-sheet/${props.id}`;
   const config = {
     headers: {
       Accept: "application/json",

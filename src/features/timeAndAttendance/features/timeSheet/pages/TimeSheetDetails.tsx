@@ -20,12 +20,12 @@ const TimeSheetDetails = () => {
   const { data: employeeData } = useFetchSingleEmployee({
     employeeId: id as unknown as number,
   });
-  const { data, isLoading } = useGetSingleTimeSheet(
+  const { data, isLoading, error, isError } = useGetSingleTimeSheet(
     id as unknown as number,
     date as unknown as string
   );
 
-  console.log(employeeData);
+  // console.log(error, isError, undefined);
 
   return (
     <>

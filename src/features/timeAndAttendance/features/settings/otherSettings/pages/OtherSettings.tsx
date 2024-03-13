@@ -96,6 +96,7 @@ export const OtherSettings = () => {
               initialValues={{ isSoftClockInEnabled: true }}
               form={form}
               disabled={isLoading}
+              requiredMark={false}
             >
               <div className={formWrapStyle}>
                 <FormWorkflowInput

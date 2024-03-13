@@ -52,8 +52,8 @@ export const SoftClockIn = () => {
           dispatch({ type: EGlobalOps.setShowInitialSetup, payload: true });
           queryClient.invalidateQueries([
             QUERY_KEY_FOR_CLOCKING_AND_BREAK_STATUS,
-            QUERY_KEY_FOR_TIME_SHEET,
           ]);
+          queryClient.invalidateQueries([QUERY_KEY_FOR_TIME_SHEET]);
         },
       }
     );
