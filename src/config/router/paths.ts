@@ -273,9 +273,9 @@ export const appRoutes = {
   // Time and Attendance routes
   attendanceHome: `/attendance/home`,
   timeSheet: `/attendance/time-sheet`,
-  timeSheetDetails: (id?: number) => ({
-    format: `/attendance/time-sheet/:id`,
-    path: `/attendance/time-sheet/${id}`,
+  timeSheetDetails: (id?: number, date?: string) => ({
+    format: `/attendance/time-sheet/:id/:date`,
+    path: `/attendance/time-sheet/${id}/${date}`,
   }),
   timeOff: `/attendance/time-off`,
   attendanceReport: `/attendance/reports`,

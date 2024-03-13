@@ -1,18 +1,35 @@
 import { PageIntro } from "components/layout/PageIntro";
-import { AttendanceSubToper } from "../components/AttendanceSubToper";
+import { AttendanceSubToper } from "../../../components/AttendanceSubToper";
 import { appRoutes } from "config/router/paths";
 import { SimpleCard } from "components/cards/SimpleCard";
 import { AppButton } from "components/button/AppButton";
 import { DatePicker } from "antd";
 import { useState } from "react";
-import { AddTimeEntry } from "../components/AddTimeEntry/AddTimeEntry";
+import { AddTimeEntry } from "../../../components/AddTimeEntry/AddTimeEntry";
+import { useParams } from "react-router-dom";
+import { useGetSingleTimeSheet } from "../hooks/useGetSingleTimeSheet";
+import { useFetchSingleEmployee } from "features/core/employees/hooks/useFetchSingleEmployee";
 
-export const TimeSheetDetails = () => {
+const placeholderAvatar = "https://picsum.photos/193";
+
+const TimeSheetDetails = () => {
   const [addTimeEntryModal, setAddTimeEntryModal] = useState(false);
+  const params = useParams();
+  const id = params.id;
+  const date = params.date;
+  const { data: employeeData } = useFetchSingleEmployee({
+    employeeId: id as unknown as number,
+  });
+  const { data, isLoading } = useGetSingleTimeSheet(
+    id as unknown as number,
+    date as unknown as string
+  );
+
+  console.log(employeeData);
 
   return (
     <>
-      <AttendanceSubToper active="time-sheet"/>
+      <AttendanceSubToper active="time-sheet" />
       <AddTimeEntry
         open={addTimeEntryModal}
         handleClose={() => setAddTimeEntryModal(false)}
@@ -28,18 +45,29 @@ export const TimeSheetDetails = () => {
         </p>
 
         <div className="bg-card rounded p-3 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 mt-3">
-          <div className="bg-mainBg rounded-md px-2 py-3 flex justify-center gap-3">
-            <div>
+          <div className="bg-mainBg rounded-md px-2 py-3 flex justify-center gap-5">
+           <div className="flex items-center">
+           <div className="h-28 w-28">
               <img
-                src="https://res.cloudinary.com/ddvaelej7/image/upload/v1657714689/samples/personal-info_vgptbq.png"
+                src={`${
+                  employeeData?.avatarUrl
+                    ? employeeData?.avatarUrl
+                    : placeholderAvatar
+                }`}
                 alt="user"
-                className="h-28"
+                className="h-full w-full rounded-full object-cover object-top"
               />
             </div>
+           </div>
             <div className="flex flex-col gap-2">
-              <h3 className="font-medium">Godswill Omenuko</h3>
-              <h3 className="font-medium">Frontend Developer</h3>
-              <span>Manager | App Dev</span>
+              <h3 className="font-medium">
+                {employeeData?.firstName} {employeeData?.lastName}
+              </h3>
+              <h3 className="font-medium">{employeeData?.designation.name}</h3>
+              <span>
+                {employeeData?.role.name} | &nbsp;
+                {employeeData?.designation.department.name}
+              </span>
               <span>Clocked in from GTM +1</span>
             </div>
           </div>
@@ -73,7 +101,7 @@ export const TimeSheetDetails = () => {
             </div>
           </div>
         </div>
-        
+
         <div className="flex items-center justify-between my-5">
           <DatePicker />
           <AppButton
@@ -91,3 +119,5 @@ export const TimeSheetDetails = () => {
     </>
   );
 };
+
+export default TimeSheetDetails;

@@ -24,14 +24,21 @@ const columns: ColumnsType<timeSheetProps> = [
   {
     title: "Monday",
     dataIndex: "monday",
-    render: (_, val) =>
-      convertMinutesToHours(val?.days?.Monday?.totalTimeTracked),
+    render: (_, val) => (
+      <Link className="hover:text-caramel" to={appRoutes.timeSheetDetails(val?.employee?.id, val?.days?.Monday?.date).path}>
+        {convertMinutesToHours(val?.days?.Monday?.totalTimeTracked)}
+      </Link>
+    ),
   },
   {
     title: "Tuesday",
     dataIndex: "tuesday",
     render: (_, val) =>
-      convertMinutesToHours(val?.days?.Tuesday?.totalTimeTracked),
+    (
+      <Link className="hover:text-caramel" to={appRoutes.timeSheetDetails(val?.employee?.id, val?.days?.Tuesday?.date).path}>
+        {convertMinutesToHours(val?.days?.Tuesday?.totalTimeTracked)}
+      </Link>
+    )
   },
   {
     title: "Wednesday",
@@ -106,12 +113,12 @@ const TimeSheet = () => {
               Upload Timesheet
             </Link>
             {filterData !== undefined && (
-            <AppButton
-              variant="transparent"
-              label="Reset Report"
-              handleClick={() => setFilterData(undefined)}
-            />
-          )}
+              <AppButton
+                variant="transparent"
+                label="Reset Report"
+                handleClick={() => setFilterData(undefined)}
+              />
+            )}
           </div>
 
           <div className="flex items-center gap-x-3">
@@ -123,8 +130,8 @@ const TimeSheet = () => {
               <i className="ri-filter-2-line text-caramel"></i>
             </button>
             <a href="#" className="button">
-            <span>Export</span>
-          </a>
+              <span>Export</span>
+            </a>
           </div>
         </div>
 

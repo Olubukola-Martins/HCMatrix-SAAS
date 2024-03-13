@@ -89,7 +89,7 @@ export const AttendanceSubToper = (props: IProps) => {
           data?.clocking.clockOut === null ? (
             <SoftClockOut />
           ) : (
-            <SoftClockIn />
+            <SoftClockOut />
           )}
         </div>
       </div>

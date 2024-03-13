@@ -6,30 +6,37 @@ export interface timeSheetProps {
     Sunday: {
       dayOfWeek: string;
       totalTimeTracked: number;
+      date: string;
     };
     Monday: {
       dayOfWeek: string;
       totalTimeTracked: number;
+      date: string;
     };
     Tuesday: {
       dayOfWeek: string;
       totalTimeTracked: number;
+      date: string;
     };
     Wednesday: {
       dayOfWeek: string;
       totalTimeTracked: number;
+      date: string;
     };
     Thursday: {
       dayOfWeek: string;
       totalTimeTracked: number;
+      date: string;
     };
     Friday: {
       dayOfWeek: string;
       totalTimeTracked: number;
+      date: string;
     };
     Saturday: {
       dayOfWeek: string;
       totalTimeTracked: number;
+      date: string;
     };
   };
   totalWeeklyTimeTracked: number;
@@ -41,4 +48,8 @@ export interface timeSheetFilterProps {
   endDate?: string;
   date?: string;
   employeeId?: number | string;
+}
+
+export interface singleTimeSheetProps {
+  employee: TEmployeeProps;
 }
