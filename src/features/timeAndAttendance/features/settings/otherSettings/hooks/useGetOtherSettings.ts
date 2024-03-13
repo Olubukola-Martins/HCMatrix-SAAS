@@ -19,7 +19,6 @@ const getData = async (
     },
   };
   const res = await axios.get(url, config);
-
   const item: getOtherSettingsProps = res.data.data;
   const data: getOtherSettingsProps = {
     ...item,

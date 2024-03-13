@@ -13,7 +13,6 @@ import EmployeesPerShift from "features/timeAndAttendance/features/reports/pages
 import { TimeOff } from "features/timeAndAttendance/features/timeOff/pages/TimeOff";
 import TimeSheet from "features/timeAndAttendance/features/timeSheet/pages/TimeSheet";
 import TimeSheetDetails from "features/timeAndAttendance/features/timeSheet/pages/TimeSheetDetails";
-import UploadTimeSheet from "features/timeAndAttendance/features/timeSheet/pages/UploadTimesheet";
 
 export const attendanceRoutes: TRouteData[] = [
   {
@@ -35,11 +34,7 @@ export const attendanceRoutes: TRouteData[] = [
     isSearchable: true,
     title: "Time-off",
   },
-  {
-    element: <UploadTimeSheet />,
-    path: appRoutes.uploadAttendance,
-    isSearchable: false,
-  },
+ 
   {
     element: <TimeSheetDetails />,
     path: appRoutes.timeSheetDetails().format,

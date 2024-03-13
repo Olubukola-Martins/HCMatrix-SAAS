@@ -1,4 +1,4 @@
-import { Form, Input, InputNumber, Switch } from "antd";
+import { Form, Input, InputNumber, Select, Switch } from "antd";
 import { AppButton } from "components/button/AppButton";
 import { FormWorkflowInput } from "features/core/workflows/components/FormWorkflowInput";
 import { useContext, useEffect } from "react";
@@ -44,6 +44,7 @@ export const OtherSettings = () => {
         allowSoftClocking: data.allow_soft_clocking === "1" ? true : false,
         allowBiometricClocking:
           data.allow_biometric_clocking === "1" ? true : false,
+          workArrangement: data.work_arrangement,
       });
     }
   }, [data, isSuccess, form]);
@@ -189,9 +190,8 @@ export const OtherSettings = () => {
                 </div>
               </div>
 
-              <div
-                className={`${formWrapStyle} flex justify-between items-center`}
-              >
+              {/* <div className="grid grid-cols-1 md:grid-cols-2 gap-3"> */}
+              <div className={`${formWrapStyle}`}>
                 <Form.Item
                   name="geoFencingRadius"
                   label="Allow clock-in distance from company (km)"
@@ -199,7 +199,26 @@ export const OtherSettings = () => {
                 >
                   <InputNumber className="w-full" placeholder="0.00" />
                 </Form.Item>
+
+                <Form.Item
+                  name="workArrangement"
+                  label="Work Arrangement"
+                  rules={generalValidationRules}
+                >
+                  <Select
+                    className="w-full"
+                    placeholder="Select"
+                    options={[
+                      { value: "shift", label: "Shift" },
+                      { value: "fixed", label: "Fixed" },
+                      { value: "weekly", label: "Weekly" },
+                      { value: "flexible", label: "Flexible" },
+                    ]}
+                    allowClear
+                  />
+                </Form.Item>
               </div>
+
               <div className="flex justify-end my-2">
                 <AppButton
                   label="Save"

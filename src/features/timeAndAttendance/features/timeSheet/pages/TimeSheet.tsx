@@ -11,9 +11,12 @@ import { convertMinutesToHours } from "features/timeAndAttendance/utils";
 import { FilterTimeSheet } from "../components/FilterTimeSheet";
 import { AppButton } from "components/button/AppButton";
 import { openNotification } from "utils/notifications";
+import { AddManuelAttendance } from "../components/AddManuelAttendance";
+import { Dropdown, Menu } from "antd";
 
 const TimeSheet = () => {
   const [filterSheet, setFilterSheet] = useState(false);
+  const [addAttendance, setAddAttendance] = useState(false);
   const [filterData, setFilterData] = useState<timeSheetFilterProps>();
   const { pagination, onChange } = usePagination({ pageSize: 10 });
   const { data, isLoading } = useGetTimeSheet({
@@ -237,6 +240,10 @@ const TimeSheet = () => {
         handleClose={() => setFilterSheet(false)}
         setFilterData={setFilterData}
       />
+      <AddManuelAttendance
+        open={addAttendance}
+        handleClose={() => setAddAttendance(false)}
+      />
       <div className="Container">
         <PageIntro title="Timesheet" link={appRoutes.attendanceHome} />
         <p className="pt-2">
@@ -246,9 +253,19 @@ const TimeSheet = () => {
 
         <div className="flex justify-between items-center mt-10 mb-7">
           <div className="flex items-center gap-x-5">
-            <Link className="button" to={appRoutes.uploadAttendance}>
-              Upload Timesheet
-            </Link>
+            <Dropdown
+              trigger={["click"]}
+              overlay={
+                <Menu>
+                  <Menu.Item key="1" onClick={() => setAddAttendance(true)}>
+                    Add Single
+                  </Menu.Item>
+                  <Menu.Item key="2">Add bulk</Menu.Item>
+                </Menu>
+              }
+            >
+              <button className="button">Upload Timesheet</button>
+            </Dropdown>
             {filterData !== undefined && (
               <AppButton
                 variant="transparent"

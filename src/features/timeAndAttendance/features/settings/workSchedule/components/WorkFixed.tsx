@@ -64,6 +64,7 @@ export const WorkFixed = () => {
         };
       }
       const [startTime, endTime] = item.time;
+      
       return {
         day: item.day.toLowerCase(),
         startTime: startTime && startTime.format("HH:mm:ss"),

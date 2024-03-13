@@ -8,6 +8,7 @@ export interface IOtherSettings {
   geoFencingRadius: number;
   allowSoftClocking: boolean;
   allowBiometricClocking: boolean;
+  workArrangement: string;
 }
 
 export interface getOtherSettingsProps {
@@ -21,4 +22,5 @@ export interface getOtherSettingsProps {
   overtime_confirmation_workflow: string;
   allow_biometric_clocking: string;
   allow_soft_clocking: string;
+  work_arrangement: string;
 }

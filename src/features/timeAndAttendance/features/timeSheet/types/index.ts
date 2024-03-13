@@ -51,13 +51,19 @@ export interface timeSheetFilterProps {
 }
 
 export interface singleTimeSheetProps {
-  employee: TEmployeeProps;
+  timeIn: string;
+  timeOut: string;
+  totalBreakUsage: number;
+  totalTimeTracked: number;
+  extraWorkedHours: number;
+  date: string;
+  totalWorkingHours: number;
 }
 
 export interface uploadedTimeSheetProps {
-  employee: TEmployeeProps;
+  empUid: string;
   timeIn: string;
   timeOut: string;
   date: string;
-  reason: string;
+  comment: string;
 }
