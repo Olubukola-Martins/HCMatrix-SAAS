@@ -53,3 +53,11 @@ export interface timeSheetFilterProps {
 export interface singleTimeSheetProps {
   employee: TEmployeeProps;
 }
+
+export interface uploadedTimeSheetProps {
+  employee: TEmployeeProps;
+  timeIn: string;
+  timeOut: string;
+  date: string;
+  reason: string;
+}

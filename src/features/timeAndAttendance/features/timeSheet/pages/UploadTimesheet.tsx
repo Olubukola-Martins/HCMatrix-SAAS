@@ -1,22 +1,15 @@
 import { PageIntro } from "components/layout/PageIntro";
-import { AttendanceSubToper } from "../components/AttendanceSubToper";
+import { AttendanceSubToper } from "../../../components/AttendanceSubToper";
 import { appRoutes } from "config/router/paths";
-import { Dropdown, Input, Menu } from "antd";
+import { Dropdown, Menu } from "antd";
 import { AppButton } from "components/button/AppButton";
 import Table, { ColumnsType } from "antd/lib/table";
 import { useState } from "react";
-import { NewAttendanceModal } from "../components/NewAttendanceModal";
-import { FilterManualTimeSheet } from "../components/FilterManualTimeSheet";
+import { FilterUploadedAttendance } from "../components/FilterUploadedAttendance";
+import { uploadedTimeSheetProps } from "../types";
+import { AddManuelAttendance } from "../components/AddManuelAttendance";
 
-interface DataType {
-  key: string;
-  employee: string;
-  timeIn: string;
-  timeOut: string;
-  status: string;
-}
-
-const columns: ColumnsType<DataType> = [
+const columns: ColumnsType<uploadedTimeSheetProps> = [
   {
     title: "Employee",
     dataIndex: "employee",
@@ -32,6 +25,10 @@ const columns: ColumnsType<DataType> = [
   {
     title: "Date",
     dataIndex: "date",
+  },
+  {
+    title: "Reason",
+    dataIndex: "reason",
   },
   {
     title: "Action",
@@ -54,7 +51,7 @@ const columns: ColumnsType<DataType> = [
   },
 ];
 
-export const UploadTimesheet = () => {
+const UploadTimeSheet = () => {
   const [addNewModal, setAddNewModal] = useState(false);
   const [openFilter, setOpenFilter] = useState(false);
 
@@ -62,13 +59,13 @@ export const UploadTimesheet = () => {
     <>
       <AttendanceSubToper active="time-sheet" />
       <div className="Container">
-        <NewAttendanceModal
+        <AddManuelAttendance
           open={addNewModal}
           handleClose={() => setAddNewModal(false)}
         />
 
         <PageIntro title="Upload Attendance" link={appRoutes.attendanceHome} />
-        <FilterManualTimeSheet
+        <FilterUploadedAttendance
           open={openFilter}
           handleClose={() => setOpenFilter(false)}
         />
@@ -78,12 +75,6 @@ export const UploadTimesheet = () => {
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-3 mt-6 mb-8">
           <div className="flex gap-3 md:justify-start justify-between">
-            <Input.Search
-              placeholder="Search employee"
-              allowClear
-              className="md:w-72 w-52"
-            />
-
             <button
               className="flex items-center gap-x-2 transparentButton"
               onClick={() => setOpenFilter(true)}
@@ -107,3 +98,5 @@ export const UploadTimesheet = () => {
     </>
   );
 };
+
+export default UploadTimeSheet;

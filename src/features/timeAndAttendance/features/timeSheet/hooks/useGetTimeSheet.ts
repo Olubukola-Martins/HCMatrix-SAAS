@@ -6,7 +6,7 @@ import { timeSheetFilterProps, timeSheetProps } from "../types";
 import { ICurrentCompany, IPaginationProps } from "types";
 import { DEFAULT_PAGE_SIZE } from "constants/general";
 
-export const QUERY_KEY_FOR_TIME_SHEET = "Time_sheet";
+export const QUERY_KEY_FOR_TIME_SHEET = "Time_Sheet";
 
 const getData = async (props: {
   auth: ICurrentCompany;
@@ -35,7 +35,7 @@ const getData = async (props: {
   };
 
   const res = await axios.get(url, config);
-  
+
   const fetchedData = res.data.data;
 
   const result = fetchedData;

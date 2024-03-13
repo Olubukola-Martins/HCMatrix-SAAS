@@ -2,9 +2,16 @@ import { DatePicker, Form, Input, Modal, TimePicker } from "antd";
 import { AppButton } from "components/button/AppButton";
 import { FormEmployeeInput } from "features/core/employees/components/FormEmployeeInput";
 import { IModalProps } from "types";
-import { generalValidationRules } from "utils/formHelpers/validation";
+import {
+  generalValidationRules,
+  generalValidationRulesOp,
+} from "utils/formHelpers/validation";
 
-export const NewAttendanceModal = ({ open, handleClose }: IModalProps) => {
+export const AddManuelAttendance = ({ open, handleClose }: IModalProps) => {
+  const onSubmit = (values: any) => {
+    console.log(values);
+  };
+
   return (
     <Modal
       open={open}
@@ -13,15 +20,10 @@ export const NewAttendanceModal = ({ open, handleClose }: IModalProps) => {
       title="Add New"
       style={{ top: 15 }}
     >
-      <Form
-        layout="vertical"
-        // requiredMark={false}
-        onFinish={(val) => console.log(val)}
-      >
+      <Form layout="vertical" requiredMark={false} onFinish={onSubmit}>
         <FormEmployeeInput
           Form={Form}
           control={{ name: "employee", label: "Select Employee" }}
-          mode="multiple"
         />
         <Form.Item name="time" label="Time" rules={generalValidationRules}>
           <TimePicker.RangePicker
@@ -33,7 +35,12 @@ export const NewAttendanceModal = ({ open, handleClose }: IModalProps) => {
         <Form.Item name="date" label="Date" rules={generalValidationRules}>
           <DatePicker className="w-full" />
         </Form.Item>
-        <Form.Item name="reasons" label="Reasons" requiredMark="optional">
+        <Form.Item
+          name="comment"
+          label="Reasons"
+          requiredMark="optional"
+          rules={generalValidationRulesOp}
+        >
           <Input.TextArea />
         </Form.Item>
         <AppButton type="submit" />
