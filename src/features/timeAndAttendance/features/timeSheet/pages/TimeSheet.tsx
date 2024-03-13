@@ -25,7 +25,13 @@ const columns: ColumnsType<timeSheetProps> = [
     title: "Monday",
     dataIndex: "monday",
     render: (_, val) => (
-      <Link className="hover:text-caramel" to={appRoutes.timeSheetDetails(val?.employee?.id, val?.days?.Monday?.date).path}>
+      <Link
+        className="hover:text-caramel"
+        to={
+          appRoutes.timeSheetDetails(val?.employee?.id, val?.days?.Monday?.date)
+            .path
+        }
+      >
         {convertMinutesToHours(val?.days?.Monday?.totalTimeTracked)}
       </Link>
     ),
@@ -33,42 +39,100 @@ const columns: ColumnsType<timeSheetProps> = [
   {
     title: "Tuesday",
     dataIndex: "tuesday",
-    render: (_, val) =>
-    (
-      <Link className="hover:text-caramel" to={appRoutes.timeSheetDetails(val?.employee?.id, val?.days?.Tuesday?.date).path}>
+    render: (_, val) => (
+      <Link
+        className="hover:text-caramel"
+        to={
+          appRoutes.timeSheetDetails(
+            val?.employee?.id,
+            val?.days?.Tuesday?.date
+          ).path
+        }
+      >
         {convertMinutesToHours(val?.days?.Tuesday?.totalTimeTracked)}
       </Link>
-    )
+    ),
   },
   {
     title: "Wednesday",
     dataIndex: "wednesday",
-    render: (_, val) =>
-      convertMinutesToHours(val?.days?.Wednesday?.totalTimeTracked),
+    render: (_, val) => (
+      <Link
+        className="hover:text-caramel"
+        to={
+          appRoutes.timeSheetDetails(
+            val?.employee?.id,
+            val?.days?.Wednesday?.date
+          ).path
+        }
+      >
+        {convertMinutesToHours(val?.days?.Wednesday?.totalTimeTracked)}
+      </Link>
+    ),
   },
   {
     title: "Thursday",
     dataIndex: "thursday",
-    render: (_, val) =>
-      convertMinutesToHours(val?.days.Thursday?.totalTimeTracked),
+    render: (_, val) => (
+      <Link
+        className="hover:text-caramel"
+        to={
+          appRoutes.timeSheetDetails(
+            val?.employee?.id,
+            val?.days?.Thursday?.date
+          ).path
+        }
+      >
+        {convertMinutesToHours(val?.days?.Thursday?.totalTimeTracked)}
+      </Link>
+    ),
   },
   {
     title: "Friday",
     dataIndex: "friday",
-    render: (_, val) =>
-      convertMinutesToHours(val?.days?.Friday?.totalTimeTracked),
+    render: (_, val) => (
+      <Link
+        className="hover:text-caramel"
+        to={
+          appRoutes.timeSheetDetails(val?.employee?.id, val?.days?.Friday?.date)
+            .path
+        }
+      >
+        {convertMinutesToHours(val?.days?.Friday?.totalTimeTracked)}
+      </Link>
+    ),
   },
   {
     title: "Saturday",
     dataIndex: "saturday",
-    render: (_, val) =>
-      convertMinutesToHours(val?.days?.Saturday?.totalTimeTracked),
+    render: (_, val) => (
+      <Link
+        className="hover:text-caramel"
+        to={
+          appRoutes.timeSheetDetails(
+            val?.employee?.id,
+            val?.days?.Saturday?.date
+          ).path
+        }
+      >
+        {convertMinutesToHours(val?.days?.Saturday?.totalTimeTracked)}
+      </Link>
+    ),
   },
   {
     title: "Sunday",
     dataIndex: "sunday",
-    render: (_, val) =>
-      convertMinutesToHours(val?.days?.Sunday?.totalTimeTracked),
+    render: (_, val) => (
+      <Link
+        className="hover:text-caramel"
+        to={
+          appRoutes.timeSheetDetails(val?.employee?.id, val?.days?.Sunday?.date)
+            .path
+        }
+      >
+        {convertMinutesToHours(val?.days?.Sunday?.totalTimeTracked)}
+      </Link>
+    ),
   },
   {
     title: "Total",

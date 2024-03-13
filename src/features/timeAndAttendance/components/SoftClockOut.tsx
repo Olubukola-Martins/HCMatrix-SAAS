@@ -16,6 +16,7 @@ import { useSoftClockOut } from "../hooks/useSoftClockOut";
 import { useManageLocation } from "../hooks/useManageLocation";
 import { QUERY_KEY_FOR_CLOCKING_AND_BREAK_STATUS } from "../hooks/useClockingAndBreakStatus";
 import { useGetFormattedDate } from "hooks/useGetFormattedDate";
+import { QUERY_KEY_FOR_TIME_SHEET } from "../features/timeSheet/hooks/useGetTimeSheet";
 
 export const SoftClockOut = () => {
   const globalCtx = useContext(GlobalContext);
@@ -26,9 +27,7 @@ export const SoftClockOut = () => {
   const [openClockOutForm, setOpenClockOutForm] = useState(false);
   const [toggleWorkEnd, setToggleWorkEnd] = useState(false);
   const { lat, long } = useManageLocation();
-  const {formattedDate} = useGetFormattedDate()
-
-
+  const { formattedDate } = useGetFormattedDate();
 
   const onSubmit = (values: any) => {
     mutate(
@@ -60,7 +59,10 @@ export const SoftClockOut = () => {
             duration: 4,
           });
           dispatch({ type: EGlobalOps.setShowInitialSetup, payload: true });
-          queryClient.invalidateQueries([QUERY_KEY_FOR_CLOCKING_AND_BREAK_STATUS]);
+          queryClient.invalidateQueries([
+            QUERY_KEY_FOR_CLOCKING_AND_BREAK_STATUS,
+            QUERY_KEY_FOR_TIME_SHEET,
+          ]);
           form.resetFields();
           setOpenClockOutForm(false);
         },

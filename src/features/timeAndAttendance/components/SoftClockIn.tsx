@@ -9,6 +9,7 @@ import { AppButton } from "components/button/AppButton";
 import { LoadingOutlined } from "@ant-design/icons";
 import { useManageLocation } from "../hooks/useManageLocation";
 import { QUERY_KEY_FOR_CLOCKING_AND_BREAK_STATUS } from "../hooks/useClockingAndBreakStatus";
+import { QUERY_KEY_FOR_TIME_SHEET } from "../features/timeSheet/hooks/useGetTimeSheet";
 
 export const SoftClockIn = () => {
   const globalCtx = useContext(GlobalContext);
@@ -16,7 +17,7 @@ export const SoftClockIn = () => {
   const queryClient = useQueryClient();
   const { mutate } = useSoftClockIn();
   const [dropdownVisible, setDropdownVisible] = useState(false);
-  const {lat, long} = useManageLocation()
+  const { lat, long } = useManageLocation();
 
   const onSubmit = () => {
     openNotification({
@@ -49,7 +50,10 @@ export const SoftClockIn = () => {
             duration: 4,
           });
           dispatch({ type: EGlobalOps.setShowInitialSetup, payload: true });
-          queryClient.invalidateQueries([QUERY_KEY_FOR_CLOCKING_AND_BREAK_STATUS]);
+          queryClient.invalidateQueries([
+            QUERY_KEY_FOR_CLOCKING_AND_BREAK_STATUS,
+            QUERY_KEY_FOR_TIME_SHEET,
+          ]);
         },
       }
     );
