@@ -8,6 +8,7 @@ import { useFetchSingleEmployee } from "features/core/employees/hooks/useFetchSi
 import { convertMinutesToHours } from "features/timeAndAttendance/utils";
 import { useGetFormattedDate } from "hooks/useGetFormattedDate";
 import { Skeleton } from "antd";
+import { DailySwitchActivityTable } from "../components/DailySwitchActivityTable";
 
 const placeholderAvatar = "https://picsum.photos/193";
 
@@ -64,12 +65,16 @@ const TimeSheetDetails = () => {
                   {employeeData?.firstName} {employeeData?.lastName}
                 </h3>
                 <h3 className="font-medium">
-                  {employeeData?.designation.name}
+                {employeeData?.designation.department.name}
+                 
                 </h3>
                 <span>
-                  {employeeData?.role.name} | &nbsp;
-                  {employeeData?.designation.department.name}
+                  {employeeData?.role.name}
+                
                 </span>
+                <h3 className="font-medium">
+                {employeeData?.designation.name}
+                </h3>
               </div>
             </div>
 
@@ -131,6 +136,16 @@ const TimeSheetDetails = () => {
               highlight={convertMinutesToHours(data?.extraWorkedHours || 0)}
             />
           </div>
+
+          <div className="bg-card rounded px-3 py-4 mt-6 mb-10">
+            <h3 className="font-semibold pb-2 text-[16px]">
+              Clock Out Comment:
+            </h3>
+            <p className="text-sm">
+              Lorem, ipsum dolor sit amet consectetur adipisicing elit. Minus,
+            </p>
+          </div>
+          <DailySwitchActivityTable />
         </div>
       )}
     </>

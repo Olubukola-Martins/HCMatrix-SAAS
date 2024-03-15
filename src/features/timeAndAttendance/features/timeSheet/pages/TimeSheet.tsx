@@ -292,10 +292,11 @@ const TimeSheet = () => {
         <Table
           columns={columns}
           dataSource={data?.data}
+          scroll={{ x: 500 }}
           loading={isLoading}
           pagination={{ ...pagination, total: data?.total }}
           onChange={onChange}
-          scroll={{ x: 500 }}
+        
         />
       </div>
     </>

@@ -67,3 +67,14 @@ export interface uploadedTimeSheetProps {
   date: string;
   comment: string;
 }
+
+export interface switchActivityTableProps {
+  id: number;
+  project: {
+    name: string;
+    id: number;
+  }
+  date: string;
+  comment: string;
+  time: string;
+}
