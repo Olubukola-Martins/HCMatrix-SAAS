@@ -22,14 +22,17 @@ const columns: ColumnsType<switchActivityTableProps> = [
     dataIndex: "comment",
   },
 ];
-export const DailySwitchActivityTable = () => {
-  const data = [];
+export const DailySwitchActivityTable: React.FC<{
+  data: switchActivityTableProps[];
+  isLoading?: boolean;
+}> = ({ data, isLoading }) => {
   return (
     <>
       <Table
         columns={columns}
-        dataSource={[]}
+        dataSource={data}
         scroll={{ x: 500 }}
+        loading={isLoading}
         pagination={{ pageSize: 5, total: data?.length }}
       />
     </>

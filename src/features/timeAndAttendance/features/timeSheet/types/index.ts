@@ -51,13 +51,24 @@ export interface timeSheetFilterProps {
 }
 
 export interface singleTimeSheetProps {
-  timeIn: string;
-  timeOut: string;
+  attendance: {
+    clockIn: {
+      time: string;
+      latitude: string;
+      longitude: string;
+    };
+    clockOut: {
+      time: string;
+      comment: string;
+      payExtraHours: boolean;
+    };
+    activities: switchActivityTableProps[];
+  };
   totalBreakUsage: number;
   totalTimeTracked: number;
   extraWorkedHours: number;
   date: string;
-  totalWorkingHours: number;
+  expectedWorkingHours: number;
 }
 
 export interface uploadedTimeSheetProps {
@@ -73,7 +84,7 @@ export interface switchActivityTableProps {
   project: {
     name: string;
     id: number;
-  }
+  };
   date: string;
   comment: string;
   time: string;

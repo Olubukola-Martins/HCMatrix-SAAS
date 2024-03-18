@@ -12,6 +12,7 @@ import { useQueryClient } from "react-query";
 import { useContext, useState } from "react";
 import { EGlobalOps, GlobalContext } from "stateManagers/GlobalContextProvider";
 import { QUERY_KEY_FOR_TIME_SHEET } from "../hooks/useGetTimeSheet";
+import moment from "moment";
 
 export const AddManuelAttendance = ({ open, handleClose }: IModalProps) => {
   const [form] = Form.useForm();
@@ -84,7 +85,7 @@ export const AddManuelAttendance = ({ open, handleClose }: IModalProps) => {
           />
         </Form.Item>
         <Form.Item name="date" label="Date" rules={generalValidationRules}>
-          <DatePicker className="w-full" />
+          <DatePicker className="w-full"  disabledDate={(current) => current && current >= moment().endOf('day')}/>
         </Form.Item>
         <Form.Item
           name="comment"

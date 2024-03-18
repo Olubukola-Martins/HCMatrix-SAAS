@@ -65,15 +65,11 @@ const TimeSheetDetails = () => {
                   {employeeData?.firstName} {employeeData?.lastName}
                 </h3>
                 <h3 className="font-medium">
-                {employeeData?.designation.department.name}
-                 
+                  {employeeData?.designation.department.name}
                 </h3>
-                <span>
-                  {employeeData?.role.name}
-                
-                </span>
+                <span>{employeeData?.role.name}</span>
                 <h3 className="font-medium">
-                {employeeData?.designation.name}
+                  {employeeData?.designation.name}
                 </h3>
               </div>
             </div>
@@ -88,13 +84,15 @@ const TimeSheetDetails = () => {
                 </h3>
                 <h3>
                   Expected work hours:
-                  <span className="pl-5">{data?.totalWorkingHours}hrs</span>
+                  <span className="pl-5">
+                    {convertMinutesToHours(data?.expectedWorkingHours || 0)}hrs
+                  </span>
                 </h3>
                 <h3>
-                  Payable extra hours: <span className="pl-5">---</span>
-                </h3>
-                <h3>
-                  Un-payable extra hours: <span className="pl-5">---</span>
+                  Pay extra hours:
+                  <span className="pl-5">
+                    {data?.attendance.clockOut.payExtraHours ? "Yes" : "No"}
+                  </span>
                 </h3>
               </div>
             </div>
@@ -102,13 +100,7 @@ const TimeSheetDetails = () => {
             <div className="bg-mainBg rounded-md px-2 py-3 flex justify-center gap-2">
               <div className="flex flex-col gap-2  font-medium">
                 <h3>
-                  Employee Address:{" "}
-                  <span className="pl-5">
-                    {employeeData?.personalInformation.address.streetAddress}.
-                  </span>
-                </h3>
-                <h3>
-                  Clocked-in Address: <span className="pl-5">---</span>
+                  Clocked-in From: <span className="pl-5">---</span>
                 </h3>
               </div>
             </div>
@@ -121,8 +113,14 @@ const TimeSheetDetails = () => {
             </button>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
-            <SimpleCard title="Clocked in" highlight={data?.timeIn} />
-            <SimpleCard title="Clocked out" highlight={data?.timeOut} />
+            <SimpleCard
+              title="Clocked in"
+              highlight={data?.attendance?.clockIn?.time}
+            />
+            <SimpleCard
+              title="Clocked out"
+              highlight={data?.attendance?.clockOut?.time}
+            />
             <SimpleCard
               title="Break"
               highlight={convertMinutesToHours(data?.totalBreakUsage || 0)}
@@ -142,10 +140,13 @@ const TimeSheetDetails = () => {
               Clock Out Comment:
             </h3>
             <p className="text-sm">
-              Lorem, ipsum dolor sit amet consectetur adipisicing elit. Minus,
+              {`${data?.attendance?.clockOut?.comment}` || `....`}
             </p>
           </div>
-          <DailySwitchActivityTable />
+          <DailySwitchActivityTable
+            isLoading={isLoading}
+            data={data ? data?.attendance?.activities : []}
+          />
         </div>
       )}
     </>
