@@ -18,7 +18,7 @@ export const ESSENTIAL_PAYROLL_TYPES_OPTIONS = [
     value: "direct-salary",
   },
   {
-    label: "Set Pay",
+    label: "Step Pay",
     value: "office",
   },
   {
@@ -36,7 +36,7 @@ export const PAYROLL_SCHEME_OPTIONS: {
     value: "direct-salary",
   },
   {
-    label: "Set Pay",
+    label: "Step Pay",
     value: "office",
   },
   {
