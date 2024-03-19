@@ -35,6 +35,7 @@ export const AdminHome: React.FC<{ user?: TAuthUser["user"] }> = ({ user }) => {
   };
 
   const { globalDispatch } = useApiAuth();
+  
   const handleGetStarted = () => {
     globalDispatch({ type: EGlobalOps.setShowInitialSetup, payload: true });
   };
@@ -43,6 +44,7 @@ export const AdminHome: React.FC<{ user?: TAuthUser["user"] }> = ({ user }) => {
   const { data, isError, isLoading, error } = useGetCompanyOwnerDashboard({
     year: year?.format("YYYY"),
   });
+
   return (
     <ErrorBoundary>
       <Skeleton loading={isLoading} active paragraph={{ rows: 45 }}>

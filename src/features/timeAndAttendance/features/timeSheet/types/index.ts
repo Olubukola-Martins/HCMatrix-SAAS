@@ -89,3 +89,7 @@ export interface switchActivityTableProps {
   comment: string;
   time: string;
 }
+
+export interface multipleAttendanceProps {
+  csvFile: any;
+}

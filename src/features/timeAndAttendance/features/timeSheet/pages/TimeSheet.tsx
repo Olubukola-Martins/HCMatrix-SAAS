@@ -13,9 +13,11 @@ import { AppButton } from "components/button/AppButton";
 import { openNotification } from "utils/notifications";
 import { AddManuelAttendance } from "../components/AddManuelAttendance";
 import { Dropdown, Menu } from "antd";
+import { AddMultipleAttendance } from "../components/AddMultipleAttendance";
 
 const TimeSheet = () => {
   const [filterSheet, setFilterSheet] = useState(false);
+  const [addMultiple, setAddMultiple] = useState(false);
   const [addAttendance, setAddAttendance] = useState(false);
   const [filterData, setFilterData] = useState<timeSheetFilterProps>();
   const { pagination, onChange } = usePagination({ pageSize: 10 });
@@ -244,6 +246,10 @@ const TimeSheet = () => {
         open={addAttendance}
         handleClose={() => setAddAttendance(false)}
       />
+      <AddMultipleAttendance
+        open={addMultiple}
+        handleClose={() => setAddMultiple(false)}
+      />
       <div className="Container">
         <PageIntro title="Timesheet" link={appRoutes.attendanceHome} />
         <p className="pt-2">
@@ -260,11 +266,16 @@ const TimeSheet = () => {
                   <Menu.Item key="1" onClick={() => setAddAttendance(true)}>
                     Add Single
                   </Menu.Item>
-                  <Menu.Item key="2">Add bulk</Menu.Item>
+                  <Menu.Item key="2" onClick={() => setAddMultiple(true)}>
+                    Add Bulk
+                  </Menu.Item>
                 </Menu>
               }
             >
-              <button className="button">Upload Timesheet</button>
+              <button className="button flex items-center gap-3">
+                <span>Upload Timesheet</span>
+                <i className="fa-solid fa-chevron-down"></i>
+              </button>
             </Dropdown>
             {filterData !== undefined && (
               <AppButton
@@ -296,7 +307,6 @@ const TimeSheet = () => {
           loading={isLoading}
           pagination={{ ...pagination, total: data?.total }}
           onChange={onChange}
-        
         />
       </div>
     </>
