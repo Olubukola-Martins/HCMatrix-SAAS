@@ -1,4 +1,4 @@
-import { AttendanceHome } from "features/timeAndAttendance/pages/AttendanceHome";
+import { AttendanceHome } from "features/timeAndAttendance/features/home/pages/AttendanceHome";
 import { TRouteData } from "../types";
 import { appRoutes } from "../paths";
 import TimeTrackingRules from "features/timeAndAttendance/features/settings/timeTrackingRules/pages/TimeTrackingRules";

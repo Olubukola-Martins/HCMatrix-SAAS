@@ -1,9 +1,9 @@
-import { AttendanceSubToper } from "../components/AttendanceSubToper";
+import { AttendanceSubToper } from "../../../components/AttendanceSubToper";
 import { SimpleCard } from "components/cards/SimpleCard";
-import { AttendanceMonthCard } from "../components/AttendanceMonthCard";
-import { TimesheetCard } from "../components/TimesheetCard";
+import { AttendanceMonthCard } from "../../../components/AttendanceMonthCard";
+import { TimesheetCard } from "../../../components/TimesheetCard";
 import { Tabs } from "antd";
-import { TimeOffRequestCard } from "../components/TimeOffRequestCard";
+import { TimeOffRequestCard } from "../../../components/TimeOffRequestCard";
 
 export const AttendanceHome = () => {
   const today = new Date();

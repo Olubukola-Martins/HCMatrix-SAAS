@@ -9,6 +9,7 @@ import { convertMinutesToHours } from "features/timeAndAttendance/utils";
 import { useGetFormattedDate } from "hooks/useGetFormattedDate";
 import { Skeleton } from "antd";
 import { DailySwitchActivityTable } from "../components/DailySwitchActivityTable";
+import { useGetAddressGeoCodeDetails } from "hooks/address/useGetAddressGeoCodeDetails";
 
 const placeholderAvatar = "https://picsum.photos/193";
 
@@ -25,6 +26,11 @@ const TimeSheetDetails = () => {
     date as unknown as string
   );
   const { formattedDate } = useGetFormattedDate();
+
+  const { data: address } = useGetAddressGeoCodeDetails({
+    lat: data?.attendance?.clockIn?.latitude || "",
+    lng: data?.attendance.clockIn?.longitude || "",
+  });
 
   return (
     <>
@@ -100,7 +106,10 @@ const TimeSheetDetails = () => {
             <div className="bg-mainBg rounded-md px-2 py-3 flex justify-center gap-2">
               <div className="flex flex-col gap-2  font-medium">
                 <h3>
-                  Clocked-in From: <span className="pl-5">---</span>
+                  Clocked-in From:{" "}
+                  <span className="pl-5">
+                    {address?.[0]?.formatted_address || "..."}
+                  </span>
                 </h3>
               </div>
             </div>

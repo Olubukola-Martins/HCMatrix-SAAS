@@ -24,9 +24,6 @@ const getData = async (props: {
     },
   };
   const res = await axios.get(url, config);
-
-  console.log("result",res);
-
   const item: singleTimeSheetProps = res.data.data;
   const data: singleTimeSheetProps = {
     ...item,
