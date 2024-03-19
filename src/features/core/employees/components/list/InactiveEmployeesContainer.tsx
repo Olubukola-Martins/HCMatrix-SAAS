@@ -1,4 +1,4 @@
-import { TablePaginationConfig } from "antd";
+import { Input } from "antd";
 
 import InactiveEmpTableView from "./InactiveEmpTableView";
 import { useState } from "react";
@@ -13,6 +13,8 @@ type IProps = {
 };
 const InactiveEmployeesContainer: React.FC<IProps> = ({ filterProps }) => {
   const { pagination, onChange } = usePagination();
+  const [search, setSearch] = useState("");
+
   const {
     data: employeeData,
     isSuccess,
@@ -20,6 +22,9 @@ const InactiveEmployeesContainer: React.FC<IProps> = ({ filterProps }) => {
   } = useFetchEmployees({
     status: ["suspended", "terminated"],
     ...filterProps,
+    searchParams: {
+      name: search,
+    },
 
     pagination,
   });
@@ -38,17 +43,26 @@ const InactiveEmployeesContainer: React.FC<IProps> = ({ filterProps }) => {
         data={selectedEmployees}
         clearSelectedEmployees={clearSelectedEmployees}
       />
-
-      <InactiveEmpTableView
-        rowSelection={{
-          type: "checkbox",
-          ...rowSelection,
-        }}
-        pagination={{ ...pagination, total: employeeData?.total }}
-        loading={isFetching}
-        employees={isSuccess ? employeeData.data : []}
-        onChange={onChange}
-      />
+      <div className="space-y-4">
+        <div className="flex justify-end">
+          <Input.Search
+            className="w-1/6"
+            onSearch={(val) => setSearch(val)}
+            placeholder="Search"
+            allowClear
+          />
+        </div>
+        <InactiveEmpTableView
+          rowSelection={{
+            type: "checkbox",
+            ...rowSelection,
+          }}
+          pagination={{ ...pagination, total: employeeData?.total }}
+          loading={isFetching}
+          employees={isSuccess ? employeeData.data : []}
+          onChange={onChange}
+        />
+      </div>
     </div>
   );
 };
