@@ -52,6 +52,7 @@ const ActiveEmployeesContainer: React.FC<IProps> = ({ filterProps }) => {
         <ActiveEmpTableView
           rowSelection={{
             type: "checkbox",
+            selectedRowKeys: selectedEmployees.map((item) => item.id),
             ...rowSelection,
           }}
           pagination={{ ...pagination, total: employeeData?.total }}
