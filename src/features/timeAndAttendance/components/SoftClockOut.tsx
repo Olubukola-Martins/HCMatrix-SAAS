@@ -17,6 +17,7 @@ import { useManageLocation } from "../hooks/useManageLocation";
 import { QUERY_KEY_FOR_CLOCKING_AND_BREAK_STATUS } from "../hooks/useClockingAndBreakStatus";
 import { useGetFormattedDate } from "hooks/useGetFormattedDate";
 import { QUERY_KEY_FOR_TIME_SHEET } from "../features/timeSheet/hooks/useGetTimeSheet";
+import { QUERY_KEY_FOR_ANALYTICS_RECORDS } from "../features/home/hooks/useGetAnalyticsRecord";
 
 export const SoftClockOut = () => {
   const globalCtx = useContext(GlobalContext);
@@ -63,6 +64,7 @@ export const SoftClockOut = () => {
             QUERY_KEY_FOR_CLOCKING_AND_BREAK_STATUS,
           ]);
           queryClient.invalidateQueries([QUERY_KEY_FOR_TIME_SHEET]);
+          queryClient.invalidateQueries([QUERY_KEY_FOR_ANALYTICS_RECORDS]);
           form.resetFields();
           setOpenClockOutForm(false);
         },

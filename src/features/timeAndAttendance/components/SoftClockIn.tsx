@@ -10,6 +10,7 @@ import { LoadingOutlined } from "@ant-design/icons";
 import { useManageLocation } from "../hooks/useManageLocation";
 import { QUERY_KEY_FOR_CLOCKING_AND_BREAK_STATUS } from "../hooks/useClockingAndBreakStatus";
 import { QUERY_KEY_FOR_TIME_SHEET } from "../features/timeSheet/hooks/useGetTimeSheet";
+import { QUERY_KEY_FOR_ANALYTICS_RECORDS } from "../features/home/hooks/useGetAnalyticsRecord";
 
 export const SoftClockIn = () => {
   const globalCtx = useContext(GlobalContext);
@@ -54,6 +55,7 @@ export const SoftClockIn = () => {
             QUERY_KEY_FOR_CLOCKING_AND_BREAK_STATUS,
           ]);
           queryClient.invalidateQueries([QUERY_KEY_FOR_TIME_SHEET]);
+          queryClient.invalidateQueries([QUERY_KEY_FOR_ANALYTICS_RECORDS]);
         },
       }
     );

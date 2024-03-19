@@ -10,6 +10,7 @@ import { openNotification } from "utils/notifications";
 import { EGlobalOps, GlobalContext } from "stateManagers/GlobalContextProvider";
 import { useQueryClient } from "react-query";
 import { QUERY_KEY_FOR_CLOCKING_AND_BREAK_STATUS } from "../hooks/useClockingAndBreakStatus";
+import { QUERY_KEY_FOR_ANALYTICS_RECORDS } from "../features/home/hooks/useGetAnalyticsRecord";
 
 export const GoBreak = ({ handleClose, open }: IModalProps) => {
   const globalCtx = useContext(GlobalContext);
@@ -56,6 +57,7 @@ export const GoBreak = ({ handleClose, open }: IModalProps) => {
           queryClient.invalidateQueries([
             QUERY_KEY_FOR_CLOCKING_AND_BREAK_STATUS,
           ]);
+          queryClient.invalidateQueries([QUERY_KEY_FOR_ANALYTICS_RECORDS]);
           form.resetFields();
           handleClose();
         },
