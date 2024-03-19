@@ -130,7 +130,7 @@ export const AddTimeOff = ({ open, handleClose, id }: IModalProps) => {
             )}
           </Select>
         </Form.Item>
-        <Form.Item name="time" label="Date" rules={generalValidationRules}>
+        <Form.Item name="time" label="Time" rules={generalValidationRules}>
           <TimePicker className="w-full" />
         </Form.Item>
         <Form.Item name="date" label="Date" rules={generalValidationRules}>

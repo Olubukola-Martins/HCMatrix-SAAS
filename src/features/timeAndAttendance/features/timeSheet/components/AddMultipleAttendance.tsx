@@ -7,12 +7,41 @@ import { useQueryClient } from "react-query";
 import { useContext } from "react";
 import { EGlobalOps, GlobalContext } from "stateManagers/GlobalContextProvider";
 import { QUERY_KEY_FOR_TIME_SHEET } from "../hooks/useGetTimeSheet";
+import { useGetImportedTimeSheet } from "../hooks/useGetImportedTimeSheet";
 
 export const AddMultipleAttendance = ({ open, handleClose }: IModalProps) => {
   const { mutate, isLoading } = useUploadMultipleAttendance();
   const queryClient = useQueryClient();
   const globalCtx = useContext(GlobalContext);
   const { dispatch } = globalCtx;
+  const { mutate: mutateImportedTimeSheet, isLoading: loadImportedTimeSheet } =
+    useGetImportedTimeSheet();
+
+  const handleMutateImportedTimeSheet = () => {
+    mutateImportedTimeSheet(
+      { data: {} },
+
+      {
+        onError: (err: any) => {
+          openNotification({
+            state: "error",
+            title: "Error Occurred",
+            description:
+              err?.response.data.message ?? err?.response.data.error.message,
+          });
+        },
+        onSuccess: (res: any) => {
+          openNotification({
+            state: "success",
+
+            title: "Success",
+            description: res.data.message,
+            // duration: 0.4,
+          });
+        },
+      }
+    );
+  };
 
   const onsubmit = () => {
     mutate(
@@ -57,18 +86,21 @@ export const AddMultipleAttendance = ({ open, handleClose }: IModalProps) => {
       <Form>
         <div className="flex gap-2 items-center mt-4 mb-1">
           <span className="text-red-500">
-            This import is based on Employee Id
+            This import is based on Employee Uid
           </span>
           <Tooltip
             showArrow={false}
-            title="Please note that the employee id for each row will have to be unique"
+            title="Please note that the employee Uid for each row will have to be unique"
           >
             <i className="ri-information-fill text-lg" />
           </Tooltip>
         </div>
         <div className="border border-dotted border-slate-500 rounded flex flex-col items-center gap-2 py-3 px-2">
           <p>Select file to be Imported</p>
-          <Typography.Text title="Please Download template and populate">
+          <Typography.Text
+            title="Please Download template and populate"
+            onClick={() => handleMutateImportedTimeSheet()}
+          >
             <span className="text-sm pt-1 font-medium cursor-pointer hover:text-caramel underline">
               Download template
             </span>
