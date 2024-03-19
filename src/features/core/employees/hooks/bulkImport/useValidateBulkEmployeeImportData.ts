@@ -1,6 +1,4 @@
-import { useApiAuth } from "hooks/useApiAuth";
 import { useMutation } from "react-query";
-import { ICurrentCompany } from "types";
 import {
   EmployeeMappingSectionKeyType,
   TBulkImportEmployeeProp,

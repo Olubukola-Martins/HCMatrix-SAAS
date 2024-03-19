@@ -29,7 +29,7 @@ export const updateBranch = async (vals: {
     ...props.data,
     address: {
       ...props.data.address,
-      lgaId: props.data.address.lgaId ?? undefined,
+      lgaId: props.data.address?.lgaId ?? undefined,
     },
   };
 

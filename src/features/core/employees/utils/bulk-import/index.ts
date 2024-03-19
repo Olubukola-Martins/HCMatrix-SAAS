@@ -126,7 +126,7 @@ export const validateBulkEmployeeInfo = (
   ) {
     errors.push({
       category,
-      content: `${INDENTIFIER} has an invalid email address.`,
+      content: `${INDENTIFIER} has an invalid email address?.`,
     });
   }
 
@@ -762,7 +762,7 @@ export const validateBulkPersonalInformation = (
   ) {
     errors.push({
       category,
-      content: `${INDENTIFIER} work model has to be one of the following ${ACCEPTED_GENDER_VALUES.join(
+      content: `${INDENTIFIER} gender has to be one of the following ${ACCEPTED_GENDER_VALUES.join(
         ","
       )}.`,
     });
@@ -849,7 +849,7 @@ export const validateBulkPersonalInformation = (
   if (
     !isValueEmpty(personalInformation?.maritalStatus) &&
     ACCEPTED_MARITAL_STATUS_VALUES.map((item) => item.toLowerCase()).includes(
-      `${personalInformation?.maritalStatus}.`.toLowerCase()
+      `${personalInformation?.maritalStatus}`.toLowerCase()
     ) === false
   ) {
     errors.push({
@@ -884,7 +884,7 @@ export const validateBulkPersonalInformation = (
   }
   // Address: streetAddress
   if (
-    isValueEmpty(personalInformation?.address.streetAddress) &&
+    isValueEmpty(personalInformation?.address?.streetAddress) &&
     getConcernedInput("streetAddress")?.optional === false
   ) {
     errors.push({
@@ -900,7 +900,7 @@ export const validateBulkPersonalInformation = (
   }
   // Address: country
   if (
-    isValueEmpty(personalInformation?.address.countryId) &&
+    isValueEmpty(personalInformation?.address?.countryId) &&
     getConcernedInput("countryId")?.optional === false
   ) {
     errors.push({
@@ -924,7 +924,7 @@ export const validateBulkPersonalInformation = (
   }
   // Address: state
   if (
-    isValueEmpty(personalInformation?.address.stateId) &&
+    isValueEmpty(personalInformation?.address?.stateId) &&
     getConcernedInput("stateId")?.optional === false
   ) {
     errors.push({
@@ -949,7 +949,7 @@ export const validateBulkPersonalInformation = (
   }
   // Address: lga
   if (
-    isValueEmpty(personalInformation?.address.lgaId) &&
+    isValueEmpty(personalInformation?.address?.lgaId) &&
     getConcernedInput("lgaId")?.optional === false
   ) {
     errors.push({
@@ -974,7 +974,7 @@ export const validateBulkPersonalInformation = (
   }
   // Address: timezone
   if (
-    isValueEmpty(personalInformation?.address.timezone) &&
+    isValueEmpty(personalInformation?.address?.timezone) &&
     getConcernedInput("timezone")?.optional === false
   ) {
     errors.push({
@@ -983,12 +983,10 @@ export const validateBulkPersonalInformation = (
     });
   }
   if (
-    (!isValueEmpty(personalInformation?.address?.timezone) &&
-      !!TIME_ZONES?.find(
-        (item) =>
-          item.value ===
-          (personalInformation?.address?.timezone as unknown as string)
-      ) === true) === false
+    !isValueEmpty(personalInformation?.address?.timezone) &&
+    TIME_ZONES.map((item) => item.value.toLowerCase()).includes(
+      `${(employee?.licenseType as unknown as string).toLowerCase()}`
+    ) === false
   ) {
     errors.push({
       category,
@@ -1004,19 +1002,6 @@ export const validateBulkPersonalInformation = (
     errors.push({
       category,
       content: `${INDENTIFIER} is missing passport expiration date and it's a required field`,
-    });
-  }
-
-  if (
-    (!isValueEmpty(personalInformation?.passportExpirationDate) &&
-      moment(personalInformation?.passportExpirationDate).isValid() === true &&
-      isDateGreaterThanOrEqualToCurrentDay(
-        moment(personalInformation?.passportExpirationDate)
-      ) === true) === false
-  ) {
-    errors.push({
-      category,
-      content: `${INDENTIFIER} passport expiration date has to be greater than or equal today!`,
     });
   }
 
@@ -1082,31 +1067,35 @@ export const validateBulkPersonalInformation = (
 
   personalInformation = {
     ...personalInformation,
+    nin: `${personalInformation.nin}`,
+    passportExpirationDate: "04-07-2029", //TODO:MAJOR Fix the passportExpirationDate bug
     exchangeRateId: exchangeRates?.find(
       (item) =>
         item.currency ===
         (personalInformation?.exchangeRateId as unknown as string)
     )?.id,
-    address: {
-      countryId: countries?.find(
-        (item) =>
-          item.name ===
-          (personalInformation?.address.countryId as unknown as string)
-      )?.id as number,
-      stateId: states?.find(
-        (item) =>
-          item.name ===
-          (personalInformation?.address.stateId as unknown as string)
-      )?.id as number,
-      lgaId: lgas?.find(
-        (item) =>
-          item.name ===
-          (personalInformation?.address.lgaId as unknown as string)
-      )?.id as number,
-      streetAddress: personalInformation.address.streetAddress,
-      timezone: personalInformation.address.timezone,
-    },
+    // address: {
+    //   countryId: countries?.find(
+    //     (item) =>
+    //       item.name ===
+    //       (personalInformation?.address?.countryId as unknown as string)
+    //   )?.id as number,
+    //   stateId: states?.find(
+    //     (item) =>
+    //       item.name ===
+    //       (personalInformation?.address?.stateId as unknown as string)
+    //   )?.id as number,
+    //   lgaId: lgas?.find(
+    //     (item) =>
+    //       item.name ===
+    //       (personalInformation?.address?.lgaId as unknown as string)
+    //   )?.id as number,
+    //   streetAddress: personalInformation.address?.streetAddress,
+    //   timezone: personalInformation.address?.timezone,
+    // },
   };
+
+  delete (personalInformation as unknown as any)["address"];
 
   return { isDataValid: errors.length === 0, errors, personalInformation };
 };

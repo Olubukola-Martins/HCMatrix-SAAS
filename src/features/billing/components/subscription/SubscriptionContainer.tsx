@@ -66,12 +66,12 @@ const SubscriptionContainer: React.FC<{
         unlicensedEmployeeCount: subscription?.unlicensedEmployeeCount,
         address: address
           ? {
-              countryId: address.countryId,
-              latitude: address.latitude,
-              longitude: address.longitude,
+              countryId: address?.countryId,
+              latitude: address?.latitude,
+              longitude: address?.longitude,
               lgaId: address?.lgaId ?? undefined,
-              stateId: address.stateId,
-              streetAddress: address.streetAddress,
+              stateId: address?.stateId,
+              streetAddress: address?.streetAddress,
               timezone: address?.timezone ?? undefined,
             }
           : undefined,
