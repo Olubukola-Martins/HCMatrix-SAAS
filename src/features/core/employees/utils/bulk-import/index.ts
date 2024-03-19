@@ -1005,13 +1005,6 @@ export const validateBulkPersonalInformation = (
     });
   }
 
-  if (false) {
-    console.log("personal info", personalInformation);
-    errors.push({
-      category,
-      content: `${INDENTIFIER}  ___ passport expiration date must be greater than or equal to today!`,
-    });
-  }
   //alternativeEmail
   if (
     isValueEmpty(personalInformation?.alternativeEmail) &&
@@ -1075,7 +1068,7 @@ export const validateBulkPersonalInformation = (
   personalInformation = {
     ...personalInformation,
     nin: `${personalInformation.nin}`,
-    passportExpirationDate: "04-07-2029",
+    passportExpirationDate: "04-07-2029", //TODO:MAJOR Fix the passportExpirationDate bug
     exchangeRateId: exchangeRates?.find(
       (item) =>
         item.currency ===
