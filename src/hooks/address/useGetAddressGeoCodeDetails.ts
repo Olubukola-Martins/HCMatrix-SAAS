@@ -5,9 +5,14 @@ import { useApiAuth } from "hooks/useApiAuth";
 import { TAddressGeoCodeDetails } from "types/address-geo-details";
 import { GEOLOCATION_PARAMETERS } from "config/enviroment";
 
-interface IDataProps {
+type TAddressInput = {
   address: string;
-}
+};
+type TLatLngInput = {
+  lat: string;
+  lng: string;
+};
+type IDataProps = TAddressInput | TLatLngInput;
 export const QUERY_KEY_FOR_ADDRESS_GEO_CODE_DETAILS =
   "address-geo-code-details";
 const getData = async (props: {
@@ -22,7 +27,9 @@ const getData = async (props: {
       "Content-Type": "application/json",
     },
     params: {
-      address: props.data.address,
+      address: "address" in props.data ? props.data.address : undefined,
+      latlng:
+        "lat" in props.data ? `${props.data.lat},${props.data.lng}` : undefined,
       key: GEOLOCATION_PARAMETERS.GOOGLE_GEO_CODE_API_KEY,
     },
   };
@@ -36,7 +43,7 @@ const getData = async (props: {
 export const useGetAddressGeoCodeDetails = (props: IDataProps) => {
   const { token, companyId } = useApiAuth();
   const queryData = useQuery(
-    [QUERY_KEY_FOR_ADDRESS_GEO_CODE_DETAILS, props.address],
+    [QUERY_KEY_FOR_ADDRESS_GEO_CODE_DETAILS, props],
     () =>
       getData({
         auth: {
