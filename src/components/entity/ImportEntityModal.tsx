@@ -26,6 +26,7 @@ export const ImportEntityModal: React.FC<IImportEntityModalProps> = ({
   handleDownloadTemplate,
   handleSubmit,
 }) => {
+  
   const [form] = Form.useForm();
 
   const [fileList, setFilelist] = useState<any>([]);

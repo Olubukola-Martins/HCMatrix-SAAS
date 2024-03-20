@@ -1,11 +1,11 @@
 import axios from "axios";
-import { useMutation } from "react-query";
 import { MICROSERVICE_ENDPOINTS } from "config/enviroment";
-import { ICurrentCompany } from "types";
 import { useApiAuth } from "hooks/useApiAuth";
+import { useMutation } from "react-query";
+import { ICurrentCompany } from "types";
 import { multipleAttendanceProps } from "../types";
 
-export const createData = async (props: {
+const createData = async (props: {
   data: multipleAttendanceProps;
   auth: ICurrentCompany;
 }) => {
@@ -18,17 +18,19 @@ export const createData = async (props: {
     },
   };
 
-  const data: any = {
+  const data: multipleAttendanceProps = {
     ...props.data,
   };
 
-  const response = await axios.post(url, data, config);
+  const response = await axios.postForm(url, data, config);
   return response;
 };
-
 export const useUploadMultipleAttendance = () => {
   const { token, companyId } = useApiAuth();
-  return useMutation((props: multipleAttendanceProps) =>
-    createData({ data: props, auth: { companyId, token } })
+  return useMutation((props: { data: multipleAttendanceProps }) =>
+    createData({
+      data: props.data,
+      auth: { token, companyId },
+    })
   );
 };
