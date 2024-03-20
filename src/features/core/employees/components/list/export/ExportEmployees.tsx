@@ -1,7 +1,7 @@
 import { Button, Drawer, Form, InputNumber, Select } from "antd";
 import Themes from "components/Themes";
 import { AppButton } from "components/button/AppButton";
-import { GENDERS } from "constants/general";
+import { DEFAULT_EXPORT_PAGE_SIZE, GENDERS } from "constants/general";
 import { FormBranchInput } from "features/core/branches/components/FormBranchInput";
 import { FormDepartmentInput } from "features/core/departments/components/FormDepartmentInput";
 import { FormDesignationInput } from "features/core/designations/components/FormDesignationInput";
@@ -42,7 +42,7 @@ const ExportEmployees: React.FC<{
             form={form}
             onFinish={handleSubmit}
             initialValues={{
-              limit: 500,
+              limit: DEFAULT_EXPORT_PAGE_SIZE,
             }}
           >
             <Form.Item
