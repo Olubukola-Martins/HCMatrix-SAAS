@@ -91,6 +91,7 @@ const FilesViewWrapper: React.FC<{
   useEffect(() => {
     resetPagination();
   }, [view, resetPagination]);
+  
   if (files?.total === 0) {
     return (
       <div className="flex flex-col items-center">

@@ -212,8 +212,8 @@ export const settingNavItems: TSettNavItem[] = [
         link: appRoutes.workSchedule,
       },
       { name: "Time Off Policy", link: appRoutes.timeOffPolicy },
-      { name: "Clock in settings", link: appRoutes.clockInSettings },
-      { name: "Add Location", link: appRoutes.addLocation },
+      { name: "Clock in settings", link: appRoutes.biometrics },
+      { name: "Location", link: appRoutes.location },
       { name: "Other Settings", link: appRoutes.otherSettings },
     ],
     category: "attendance",
@@ -222,9 +222,9 @@ export const settingNavItems: TSettNavItem[] = [
   {
     title: "General",
     items: [
-      { name: "Training", link: appRoutes.training },
+      { name: "Training", link: appRoutes.trainingSettings },
 
-      { name: "Gamification", link: appRoutes.gamification },
+      { name: "Gamification", link: appRoutes.gamificationSettings },
 
       { name: "Notification", link: appRoutes.notification },
       {

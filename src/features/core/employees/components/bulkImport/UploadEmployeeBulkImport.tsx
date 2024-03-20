@@ -41,6 +41,7 @@ export const UploadEmployeeBulkImport = ({
   maxFileSizeInMB = DEFAULT_MAX_FILE_UPLOAD_SIZE_IN_MB,
   onError,
 }: IProps) => {
+  
   const [loading, setLoading] = useState(false);
 
   const handleChange: UploadProps["onChange"] = (

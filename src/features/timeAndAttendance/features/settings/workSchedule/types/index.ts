@@ -1,0 +1,39 @@
+interface scheduleProps {
+  day: string;
+  startTime: string;
+  endTime: string;
+  allowTrackingBeforeStart: boolean;
+}
+
+export interface workScheduleFixedProps {
+  schedule: scheduleProps[];
+  allowTrackingBeforeStart: boolean;
+}
+
+export interface IFlexible {
+  day: string;
+  duration: string;
+}
+
+export type workScheduleFlexibleProps = IFlexible[];
+
+export interface IShift {
+  type: string;
+  schedule: scheduleProps[];
+}
+
+export type workScheduleShiftProps = IShift[];
+
+export type workScheduleWeeklyProps = {
+  duration: string;
+};
+
+export interface settingsBreakProps {
+  id: number;
+  name: string;
+  isPaid: boolean;
+  enforcePeriod: boolean;
+  duration: number;
+  startAt: string;
+  endAt: string;
+}

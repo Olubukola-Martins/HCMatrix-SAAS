@@ -273,9 +273,9 @@ export const appRoutes = {
   // Time and Attendance routes
   attendanceHome: `/attendance/home`,
   timeSheet: `/attendance/time-sheet`,
-  timeSheetDetails: (id?: number) => ({
-    format: `/attendance/time-sheet/:id`,
-    path: `/attendance/time-sheet/${id}`,
+  timeSheetDetails: (id?: number, date?: string) => ({
+    format: `/attendance/time-sheet/:id/:date`,
+    path: `/attendance/time-sheet/${id}/${date}`,
   }),
   timeOff: `/attendance/time-off`,
   attendanceReport: `/attendance/reports`,
@@ -287,18 +287,35 @@ export const appRoutes = {
   hoursPerEmployee: `/attendance/hours-per-employee`,
   employeesPerShift: `/attendance/employees-per-shift`,
 
-  uploadAttendance: `/attendance/upload-attendance`,
   timeTrackingRules: `/attendance/time-tracking-rules`,
   workSchedule: `/attendance/work-schedule`,
   timeOffPolicy: `/attendance/time-off-policy`,
-  clockInSettings: `/attendance/clock-in-settings`,
-  addLocation: `/attendance/add-location`,
+  biometrics: `/attendance/biometrics`,
+  location: `/attendance/location`,
   otherSettings: `/attendance/other-settings`,
 
   // Leaning and development
+  learningHome: `/learning/home`,
+  trainingSettings: `/learning/training-settings`,
+  feedbackTemplate: `/learning/feedback-template`,
+  gamificationSettings: `/learning/gamification-settings`,
+  notification: `/learning/notification`,
+  trackProgress: `/learning/track-progress`,
+  trackProgressDetails: (id?: number) => ({
+    format: `/learning/track-progress/:id`,
+    path: `/learning/track-progress/${id}`,
+  }),
+  training: `/learning/training`,
+  trainingDetails: (id?: number) => ({
+    format: `/learning/training/:id`,
+    path: `/learning/training/${id}`,
+  }),
+
+  gamification: `/learning/gamification`,
+  paidTraining: `/learning/paid-training`,
+  budgets: `/learning/budgets`,
+  addTraining: `/learning/add-training`,
+  lAndDReport: `/learning/report`,
+  udemy: `/learning/udemy`,
   leaningHome: `/leaning/home`,
-  training: `/leaning/training`,
-  feedbackTemplate: `/leaning/feedback-template`,
-  gamification: `/leaning/gamification`,
-  notification: `/leaning/notification`,
 };

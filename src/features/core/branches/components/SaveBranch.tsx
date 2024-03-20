@@ -3,9 +3,7 @@ import { AppButton } from "components/button/AppButton";
 import React, { useEffect } from "react";
 import { IModalProps } from "types";
 import { textInputValidationRules } from "utils/formHelpers/validation";
-
 import { TBranch, TCreateBranchProps } from "../types";
-
 import { FormAddressInput } from "components/generalFormInputs/FormAddressInput";
 
 interface IProps extends IModalProps {

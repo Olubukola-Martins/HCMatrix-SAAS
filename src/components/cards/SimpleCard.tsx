@@ -6,7 +6,7 @@ import { truncateString } from "utils/dataHelpers/truncateString";
 
 export interface ISimpleCard {
   title: string;
-  highlight?: string;
+  highlight?: string | number;
   url?: string;
   action?: IAppBtnProps;
   center?: boolean;

@@ -1,19 +1,18 @@
-import { AttendanceHome } from "features/timeAndAttendance/pages/AttendanceHome";
+import { AttendanceHome } from "features/timeAndAttendance/features/home/pages/AttendanceHome";
 import { TRouteData } from "../types";
 import { appRoutes } from "../paths";
-import { TimeSheet } from "features/timeAndAttendance/pages/TimeSheet";
-import { TimeOff } from "features/timeAndAttendance/pages/TimeOff";
-import { UploadTimesheet } from "features/timeAndAttendance/pages/UploadTimesheet";
-import { TimeSheetDetails } from "features/timeAndAttendance/pages/TimeSheetDetails";
-import { TimeTrackingRules } from "features/timeAndAttendance/pages/settings/TimeTrackingRules";
-import { WorkSchedule } from "features/timeAndAttendance/pages/settings/WorkSchedule";
-import { TimeOffPolicy } from "features/timeAndAttendance/pages/settings/TimeOffPolicy";
-import { ClockIn } from "features/timeAndAttendance/pages/settings/ClockIn";
-import { AddLocation } from "features/timeAndAttendance/pages/settings/AddLocation";
-import { Other } from "features/timeAndAttendance/pages/settings/Other";
-import { ShiftPerEmployee } from "features/timeAndAttendance/pages/report/ShiftPerEmployee";
-import { HoursPerEmployee } from "features/timeAndAttendance/pages/report/HoursPerEmployee";
-import { EmployeesPerShift } from "features/timeAndAttendance/pages/report/EmployeesPerShift";
+import TimeTrackingRules from "features/timeAndAttendance/features/settings/timeTrackingRules/pages/TimeTrackingRules";
+import { OtherSettings } from "features/timeAndAttendance/features/settings/otherSettings/pages/OtherSettings";
+import Biometrics from "features/timeAndAttendance/features/settings/Biometrics/pages/Biometrics";
+import Location from "features/timeAndAttendance/features/settings/location/pages/Location";
+import TimeOffPolicy from "features/timeAndAttendance/features/settings/timeOffPolicy/pages/TimeOffPolicy";
+import WorkSchedule from "features/timeAndAttendance/features/settings/workSchedule/pages/WorkSchedule";
+import ShiftPerEmployee from "features/timeAndAttendance/features/reports/pages/ShiftPerEmployee";
+import HoursPerEmployee from "features/timeAndAttendance/features/reports/pages/HoursPerEmployee";
+import EmployeesPerShift from "features/timeAndAttendance/features/reports/pages/EmployeesPerShift";
+import { TimeOff } from "features/timeAndAttendance/features/timeOff/pages/TimeOff";
+import TimeSheet from "features/timeAndAttendance/features/timeSheet/pages/TimeSheet";
+import TimeSheetDetails from "features/timeAndAttendance/features/timeSheet/pages/TimeSheetDetails";
 
 export const attendanceRoutes: TRouteData[] = [
   {
@@ -35,11 +34,7 @@ export const attendanceRoutes: TRouteData[] = [
     isSearchable: true,
     title: "Time-off",
   },
-  {
-    element: <UploadTimesheet />,
-    path: appRoutes.uploadAttendance,
-    isSearchable: false,
-  },
+ 
   {
     element: <TimeSheetDetails />,
     path: appRoutes.timeSheetDetails().format,
@@ -61,17 +56,17 @@ export const attendanceRoutes: TRouteData[] = [
     isSearchable: false,
   },
   {
-    element: <ClockIn />,
-    path: appRoutes.clockInSettings,
+    element: <Biometrics />,
+    path: appRoutes.biometrics,
     isSearchable: false,
   },
   {
-    element: <AddLocation />,
-    path: appRoutes.addLocation,
+    element: <Location />,
+    path: appRoutes.location,
     isSearchable: false,
   },
   {
-    element: <Other />,
+    element: <OtherSettings />,
     path: appRoutes.otherSettings,
     isSearchable: false,
   },

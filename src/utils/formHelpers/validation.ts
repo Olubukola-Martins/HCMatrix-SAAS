@@ -459,6 +459,25 @@ export const phoneNumberValidationRule: Rule = {
     return true;
   },
 };
+
+export const validateUrl1 = (_: any, value: string) => {
+  if (value && !/^https?:\/\/\S+$/.test(value)) {
+    return Promise.reject("Invalid URL");
+  }
+  return Promise.resolve();
+};
+
+export const validateUrl: Rule[] = [
+  { required: true, message: "Please enter a URL" },
+  {
+    validator: (_: any, value: string) => {
+      if (value && !/^https?:\/\/\S+$/.test(value)) {
+        return Promise.reject("Invalid URL");
+      }
+      return Promise.resolve();
+    },
+  },
+];
 export const phoneNumberValidationRuleOp: Rule = {
   required: false,
   whitespace: true,
