@@ -57,6 +57,7 @@ export const AttendanceHome = () => {
             title="Break"
             highlight={analyticsData?.employeesOnBreak || 0}
           />
+
           <SimpleCard
             title="Remote workers"
             highlight={analyticsData?.remoteWorkers?.count || 0}
@@ -73,7 +74,6 @@ export const AttendanceHome = () => {
 
           <div className="col-span-4 bg-mainBg shadow border rounded-lg p-3">
             <h3 className="text-base">Who is out?</h3>
-
             <Tabs
               defaultActiveKey="1"
               items={[

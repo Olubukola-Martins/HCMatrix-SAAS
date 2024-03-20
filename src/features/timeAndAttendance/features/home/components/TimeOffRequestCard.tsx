@@ -1,13 +1,20 @@
 import { RecentCard } from "components/cards/RecentCard";
 import { usePagination } from "hooks/usePagination";
-import { useGetTimeOff } from "../../timeOff/hooks/useGetTimeOff";
-import { Dropdown, Empty, Menu, Skeleton } from "antd";
+import {
+  QUERY_KEY_FOR_TIME_OFF,
+  useGetTimeOff,
+} from "../../timeOff/hooks/useGetTimeOff";
+import { Dropdown, Empty, Menu, Popconfirm, Skeleton } from "antd";
 import { Link } from "react-router-dom";
 import { appRoutes } from "config/router/paths";
+import { useHandleTimeAndAttendanceStatus } from "features/timeAndAttendance/hooks/useHandleTimeAndAttendanceStatus";
 
 export const TimeOffRequestCard = () => {
   const { pagination } = usePagination({ pageSize: 2 });
   const { data, isLoading } = useGetTimeOff({ pagination });
+  const { requestType } = useHandleTimeAndAttendanceStatus({
+    queryKey: QUERY_KEY_FOR_TIME_OFF,
+  });
 
   return (
     <div className="bg-mainBg pb-3 border rounded-lg text-sm shadow">
@@ -51,17 +58,35 @@ export const TimeOffRequestCard = () => {
                   trigger={["click"]}
                   overlay={
                     <Menu>
-                      <Menu.Item key={1}>
-                        {/* <Link
-                          to={
-                            appRoutes.timeSheetDetails(
-                              item?.employee?.id,
-                              item.clockIn.date
-                            ).path
+                      <Menu.Item key="5">
+                        <Popconfirm
+                          title={`Cancel ${item.policy?.title}`}
+                          onConfirm={() =>
+                            requestType(item.id as number, "canceled")
                           }
                         >
-                          View details
-                        </Link> */}
+                          Cancel
+                        </Popconfirm>
+                      </Menu.Item>
+                      <Menu.Item key="3">
+                        <Popconfirm
+                          title={`Reject ${item.policy?.title}`}
+                          onConfirm={() =>
+                            requestType(item.id as number, "rejected")
+                          }
+                        >
+                          Reject
+                        </Popconfirm>
+                      </Menu.Item>
+                      <Menu.Item key="4">
+                        <Popconfirm
+                          title={`Approve ${item.policy?.title}`}
+                          onConfirm={() =>
+                            requestType(item.id as number, "approved")
+                          }
+                        >
+                          Approve
+                        </Popconfirm>
                       </Menu.Item>
                     </Menu>
                   }

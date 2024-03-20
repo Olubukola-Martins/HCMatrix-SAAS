@@ -9,7 +9,7 @@ export const TimesheetCard = () => {
   const { data, isLoading } = useGetTimeSheetRecord({ pagination });
 
   return (
-    <div className="bg-mainBg pb-3 border rounded-lg text-sm shadow">
+    <div className="bg-mainBg pb-3 border rounded-lg text-sm shadow mt-4">
       <div className="flex items-center justify-between px-3 py-3 border-b">
         <p className="font-medium">Timesheet</p>
         <span className="text-xs capitalize"></span>
