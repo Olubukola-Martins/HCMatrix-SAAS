@@ -4,6 +4,7 @@ import { useApiAuth } from "hooks/useApiAuth";
 import { MICROSERVICE_ENDPOINTS } from "config/enviroment";
 import { openNotification } from "utils/notifications";
 import { ICurrentCompany } from "types";
+import { LoadingOutlined } from "@ant-design/icons";
 
 interface IDProps {
   queryKey: string;
@@ -43,6 +44,11 @@ export const useHandleTimeAndAttendanceStatus = ({ queryKey }: IDProps) => {
   );
 
   const requestType = (id: number, status: string) => {
+    openNotification({
+      state: "info",
+      title: "Wait a second ...",
+      description: <LoadingOutlined />,
+    });
     mutate(
       { data: { id, status } },
       {
