@@ -1,5 +1,4 @@
-import { Form, Modal, Tooltip, Typography, Upload } from "antd";
-import { AppButton } from "components/button/AppButton";
+import { Tooltip } from "antd";
 import { IModalProps } from "types";
 import { useUploadMultipleAttendance } from "../hooks/useUploadMultipleAttendance";
 import { openNotification } from "utils/notifications";
@@ -77,47 +76,24 @@ export const AddMultipleAttendance = ({ open, handleClose }: IModalProps) => {
   };
 
   return (
-    // <Modal
-    //   open={open}
-    //   onCancel={() => handleClose()}
-    //   footer={null}
-    //   title="Add New"
-    //   style={{ top: 15 }}
-    // >
-    //   <p className="text-xs pb-3 text-yellow-500">
-    //     Please note that attendance once created can not be edited or deleted!
-    //   </p>
-    //   <Form>
-    //     <div className="flex gap-2 items-center mt-4 mb-1">
-    //       <span className="text-red-500">
-    //         This import is based on Employee Uid
-    //       </span>
-    //       <Tooltip
-    //         showArrow={false}
-    //         title="Please note that the employee Uid for each row will have to be unique"
-    //       >
-    //         <i className="ri-information-fill text-lg" />
-    //       </Tooltip>
-    //     </div>
-    //     <div className="border border-dotted border-slate-500 rounded flex flex-col items-center gap-2 py-3 px-2">
-    //       <p>Select file to be Imported</p>
-    //       <Typography.Text
-    //         title="Please Download template and populate"
-    //         onClick={() => handleMutateImportedTimeSheet()}
-    //       >
-    //         <span className="text-sm pt-1 font-medium cursor-pointer hover:text-caramel underline">
-    //           Download template
-    //         </span>
-    //       </Typography.Text>
-    //     </div>
-
-    //     <div className="mt-5">
-    //       <AppButton type="submit" isLoading={isLoading} />
-    //     </div>
-    //   </Form>
-    // </Modal>
     <ImportEntityModal
       title="Import Timesheet"
+      description={
+        <div>
+          <p className="text-xs pb-3 text-yellow-500">
+            Please note that attendance once created can not be edited or
+            deleted!
+          </p>
+          <div className="flex justify-center">
+            <Tooltip
+              showArrow={false}
+              title="Please note that the employee Uid for each row will have to be unique"
+            >
+              <i className="ri-information-fill text-lg" />
+            </Tooltip>
+          </div>
+        </div>
+      }
       handleClose={handleClose}
       open={open}
       handleDownloadTemplate={{
@@ -129,4 +105,3 @@ export const AddMultipleAttendance = ({ open, handleClose }: IModalProps) => {
   );
 };
 
-// new ones
