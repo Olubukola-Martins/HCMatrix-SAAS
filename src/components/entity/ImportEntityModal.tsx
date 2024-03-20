@@ -8,6 +8,7 @@ import { TFileType } from "types/files";
 
 export interface IImportEntityModalProps extends IModalProps {
   title: string;
+  description?: React.ReactNode;
   allowedFileTypes?: TFileType[];
   maxFileSizeInMB?: number;
   handleDownloadTemplate: { fn: () => void; isLoading?: boolean };
@@ -25,6 +26,7 @@ export const ImportEntityModal: React.FC<IImportEntityModalProps> = ({
   maxFileSizeInMB = DEFAULT_MAX_FILE_UPLOAD_SIZE_IN_MB,
   handleDownloadTemplate,
   handleSubmit,
+  description,
 }) => {
   const [form] = Form.useForm();
 
@@ -80,6 +82,7 @@ export const ImportEntityModal: React.FC<IImportEntityModalProps> = ({
     >
       <Form form={form} onFinish={onFinish} requiredMark={false}>
         <div className="border border-dotted border-slate-500 rounded flex flex-col items-center gap-2 py-3 px-2">
+          {description}
           <p>Select file to be Imported</p>
           <Typography.Text title="Please Download template and populate">
             <span
