@@ -39,3 +39,10 @@ export interface TEmployeeProps {
   lastName: string;
   email: string;
 }
+
+export interface clockInProps {
+  time: string;
+  latitude: string;
+  longitude: string;
+  date: string;
+}

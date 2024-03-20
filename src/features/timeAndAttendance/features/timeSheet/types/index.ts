@@ -1,4 +1,6 @@
-import { TEmployeeProps } from "features/timeAndAttendance/types";
+import {
+  TEmployeeProps, clockInProps,
+} from "features/timeAndAttendance/types";
 
 export interface timeSheetProps {
   employee: TEmployeeProps;
@@ -52,11 +54,7 @@ export interface timeSheetFilterProps {
 
 export interface singleTimeSheetProps {
   attendance: {
-    clockIn: {
-      time: string;
-      latitude: string;
-      longitude: string;
-    };
+    clockIn: clockInProps;
     clockOut: {
       time: string;
       comment: string;

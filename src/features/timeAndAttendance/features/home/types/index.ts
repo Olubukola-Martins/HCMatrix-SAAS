@@ -1,3 +1,5 @@
+import { TEmployeeProps, clockInProps } from "features/timeAndAttendance/types";
+
 export interface AnalyticsRecordProps {
   clockIns: number;
   clockOuts: number;
@@ -8,4 +10,9 @@ export interface AnalyticsRecordProps {
   employeesOnLeave: {
     count: number;
   };
+}
+
+export interface timeSheetRecordProps {
+  clockIn: clockInProps;
+  employee: TEmployeeProps;
 }

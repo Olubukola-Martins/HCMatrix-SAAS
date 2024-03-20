@@ -1,9 +1,9 @@
 import { AttendanceSubToper } from "../../../components/AttendanceSubToper";
 import { SimpleCard } from "components/cards/SimpleCard";
 import { AttendanceMonthCard } from "../../../components/AttendanceMonthCard";
-import { TimesheetCard } from "../../../components/TimesheetCard";
+import { TimesheetCard } from "../components/TimesheetCard";
 import { Tabs } from "antd";
-import { TimeOffRequestCard } from "../../../components/TimeOffRequestCard";
+import { TimeOffRequestCard } from "../components/TimeOffRequestCard";
 import { useGetCompanyOwnerDashboard } from "features/core/company/hooks/dashboard/useGetCompanyOwnerDashboard";
 import ErrorBoundary from "components/errorHandlers/ErrorBoundary";
 import { LeaveWhoIsOut } from "features/home/components/whoIsOut/LeaveWhoIsOut";
