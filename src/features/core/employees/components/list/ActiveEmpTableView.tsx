@@ -3,15 +3,14 @@ import { TablePaginationConfig, TableProps } from "antd/lib/table";
 import { ColumnsType, TableRowSelection } from "antd/lib/table/interface";
 import { TEmployee } from "../../types";
 import { EMPLOYEE_TABLE_COLUMNS } from "./employeeTableColumns";
-
-interface IProps {
+export type TActiveEmpTableViewProps = {
   employees: TEmployee[];
   loading: boolean;
   pagination?: TablePaginationConfig;
   rowSelection: TableRowSelection<TEmployee>;
   onChange?: TableProps<TEmployee>["onChange"];
   columns?: ColumnsType<TEmployee>;
-}
+};
 
 const ActiveEmpTableView = ({
   employees,
@@ -20,7 +19,7 @@ const ActiveEmpTableView = ({
   rowSelection,
   onChange,
   columns = EMPLOYEE_TABLE_COLUMNS,
-}: IProps) => {
+}: TActiveEmpTableViewProps) => {
   return (
     <div>
       <Table

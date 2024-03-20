@@ -1,19 +1,45 @@
 import React, { useState } from "react";
-import ActiveEmpTableView from "./ActiveEmpTableView";
 import { useFetchEmployees } from "../../hooks/useFetchEmployees";
 import { TEmployee } from "../../types";
 import { usePagination } from "hooks/usePagination";
 import BulkEmployeeActionHeader from "./bulkEmployeeActions/BulkEmployeeActionHeader";
 import { TEmployeeFilterProps } from "../../types/employee-filter";
-import { Input } from "antd";
+import { EMPLOYEE_TABLE_COLUMNS } from "./employeeTableColumns";
+import { ColumnsType } from "antd/lib/table";
+import {
+  TGenericEntityTableHOCProps,
+  withGenericEntityTableHOCProps,
+} from "components/hoc/GenericEntityTableHOC";
+import ActiveEmpTableView from "./ActiveEmpTableView";
+import { EmployeeCountInfoBtnList } from "./employeeInfoBtns/EmployeeCountInfoBtn";
 
 type IProps = {
   filterProps: TEmployeeFilterProps;
+  columns?: ColumnsType<TEmployee>;
+  search?: string;
 };
 
-const ActiveEmployeesContainer: React.FC<IProps> = ({ filterProps }) => {
+const Component: React.FC<IProps & TGenericEntityTableHOCProps> = ({
+  ...props
+}) => {
+  return (
+    <div>
+      <OriginalActiveEmployeesContainer {...props} />
+    </div>
+  );
+};
+
+const ActiveEmployeesContainer = withGenericEntityTableHOCProps(Component, {
+  columns: EMPLOYEE_TABLE_COLUMNS,
+  leftComp: <EmployeeCountInfoBtnList statuses={["probation", "confirmed"]} />,
+});
+
+const OriginalActiveEmployeesContainer: React.FC<IProps> = ({
+  filterProps,
+  columns,
+  search,
+}) => {
   const { pagination, onChange } = usePagination();
-  const [search, setSearch] = useState("");
   const {
     data: employeeData,
     isSuccess,
@@ -41,14 +67,6 @@ const ActiveEmployeesContainer: React.FC<IProps> = ({ filterProps }) => {
         clearSelectedEmployees={clearSelectedEmployees}
       />
       <div className="space-y-4">
-        <div className="flex justify-end">
-          <Input.Search
-            className="w-1/6"
-            onSearch={(val) => setSearch(val)}
-            placeholder="Search"
-            allowClear
-          />
-        </div>
         <ActiveEmpTableView
           rowSelection={{
             type: "checkbox",
@@ -59,6 +77,7 @@ const ActiveEmployeesContainer: React.FC<IProps> = ({ filterProps }) => {
           loading={isFetching}
           employees={isSuccess ? employeeData.data : []}
           onChange={onChange}
+          columns={columns}
         />
       </div>
     </div>
