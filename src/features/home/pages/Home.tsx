@@ -18,7 +18,7 @@ function Home() {
   } = useMostRecentApiAuth();
   const [view, setView] = useState<TView>("employee");
   useLayoutEffect(() => {
-    setView(employee?.isOwner ? "owner" : "employee");
+    setView(employee?.isOwner ? "employee" : "owner");
   }, [employee]);
 
   return (

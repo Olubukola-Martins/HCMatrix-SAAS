@@ -14,6 +14,8 @@ import { PRIORITIES } from "constants/general";
 import { AppButton } from "components/button/AppButton";
 import { IModalProps } from "types";
 import { QUERY_KEY_FOR_CONFERENCE_ROOM_BOOKINGS_FOR_AUTH_EMPLOYEE } from "../hooks/useGetConferenceRoomBookings4AuthEmployee";
+import { Moment } from "moment";
+import { DEFAULT_DATE_FORMAT } from "constants/dateFormats";
 
 const NewCRBBooking: React.FC<IModalProps> = ({ open, handleClose }) => {
   const queryClient = useQueryClient();
@@ -26,8 +28,12 @@ const NewCRBBooking: React.FC<IModalProps> = ({ open, handleClose }) => {
       {
         conferenceRoomId: data.roomId,
         date: data.date.toString(),
-        endTime: data.duration[0].toString(),
-        startTime: data.duration[1].toString(),
+        endTime: `${(data.date as Moment).format(DEFAULT_DATE_FORMAT)} ${(
+          data.duration[1] as Moment
+        ).format("h:mm:ss a")}`,
+        startTime: `${(data.date as Moment).format(DEFAULT_DATE_FORMAT)} ${(
+          data.duration[0] as Moment
+        ).format("h:mm:ss a")}`,
         priority: data.priority,
         reason: data.reason,
         departmentId: data.departmentId,
