@@ -14,7 +14,9 @@ export const EmployeeCountInfoBtn: React.FC<{ status: TEmployeeStatus }> = ({
     <AppButton
       label={`${status} (${employeeData?.total})`}
       isLoading={isFetching}
+      //   TODO: Currect the color of this to be generated based on the status
       variant="transparent"
+      additionalClassNames={["border-green-200"]}
     />
   );
 };

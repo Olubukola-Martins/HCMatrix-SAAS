@@ -1,5 +1,3 @@
-import { ExportOutlined } from "@ant-design/icons";
-import { Dropdown, Menu, Button } from "antd";
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { AddMultipleEmployees } from "../AddMultipleEmployees";
@@ -8,25 +6,7 @@ import { PageIntro } from "components/layout/PageIntro";
 import ImportEmployees from "../bulkImport/ImportEmployees";
 import { TEmployeeFilterProps } from "../../types/employee-filter";
 import DropdownButton from "components/button/DropdownButton";
-
-// TODO: Use +234 in number imports as opposed to country name
-
-// Personal
-// Job
-// Employee Info - add branch
-// Emergency Contact
-
-// thehcmsnapnetsolutionsdb
-
-// TODO: Update Activity log
-
-// TODO: Probably weekend work on aws: fin: cloud practitioner this week
-// TODO: For holiday, refactor input to be a datepicker(month), and a day(with validation based on month picked)
-
-// TODO: Work on add single employee, refactor
-// TODO: Also ability to change employee status, and the different statuses [probation, active, inactive{on-leave}, disengaged]
-// TODO: Also ability to delete employee provided there are no connections
-// TODO: Implement BUlk actions for employee table like add 2 department, assign job, refer to hcm v2, ... assign line manager
+import ExportEmployees from "./export/ExportEmployees";
 
 type TAction = "bulk-import" | "invite" | "filter-employees" | "test-import";
 const EmpPageHeader: React.FC<{
@@ -54,12 +34,7 @@ const EmpPageHeader: React.FC<{
       <div className="flex justify-between">
         <PageIntro title="Employees" link="/settings" />
         <div className="flex items-center gap-3">
-          {/* TODO: Create an Export Modal to allow for filtering before export */}
-          {/* <Button
-            icon={<ExportOutlined />}
-            type="text"
-            title="Export Employee Data"
-          /> */}
+          <ExportEmployees />
           <DropdownButton
             label="Add Employee"
             items={[
