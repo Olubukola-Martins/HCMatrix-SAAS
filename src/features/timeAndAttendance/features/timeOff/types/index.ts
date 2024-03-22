@@ -12,4 +12,5 @@ export interface ITimeOffProps {
     firstName: string;
     lastName: string;
   }
+  status?: string;
 }

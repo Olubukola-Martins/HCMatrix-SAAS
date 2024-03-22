@@ -6,7 +6,7 @@ import { timeSheetRecordProps } from "../types";
 import { ICurrentCompany, IPaginationProps } from "types";
 import { DEFAULT_PAGE_SIZE } from "constants/general";
 
-export const QUERY_KEY_FOR_TIME_SHEET = "Time_Sheet";
+export const QUERY_KEY_FOR_TIME_SHEET_DASHBOARD = "Time_Sheet_dashboard";
 
 const getData = async (props: {
   auth: ICurrentCompany;
@@ -30,8 +30,6 @@ const getData = async (props: {
 
   const res = await axios.get(url, config);
 
-  console.log(res);
-  
   const fetchedData = res.data.data.result;
 
   const result = fetchedData;
@@ -52,7 +50,7 @@ export const useGetTimeSheetRecord = ({
 } = {}) => {
   const { companyId, token } = useApiAuth();
   const queryData = useQuery(
-    [QUERY_KEY_FOR_TIME_SHEET, pagination],
+    [QUERY_KEY_FOR_TIME_SHEET_DASHBOARD, pagination],
     () =>
       getData({
         auth: { token, companyId },

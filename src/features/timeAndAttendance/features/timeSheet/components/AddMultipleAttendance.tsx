@@ -70,6 +70,7 @@ export const AddMultipleAttendance = ({ open, handleClose }: IModalProps) => {
           queryClient.invalidateQueries({
             queryKey: [QUERY_KEY_FOR_TIME_SHEET],
           });
+          handleClose();
         },
       }
     );

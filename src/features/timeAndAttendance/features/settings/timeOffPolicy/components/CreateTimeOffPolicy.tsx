@@ -83,7 +83,7 @@ export const CreateTimeOffPolicy = ({
     } else {
       form.setFieldsValue({ fields: [defaultField] });
     }
-  }, [id, data, isSuccess]);
+  }, [id, data, isSuccess, form]);
 
   const handleAddField = () => {
     const fields = form.getFieldValue("fields") || [];
@@ -137,7 +137,7 @@ export const CreateTimeOffPolicy = ({
                       className="w-full"
                       rules={generalValidationRules}
                     >
-                      <InputNumber className="w-full" />
+                      <InputNumber className="w-full" min={1} />
                     </Form.Item>
                   </div>
                   <Form.Item
