@@ -6,7 +6,7 @@ import { ICurrentCompany } from "types";
 import { useApiAuth } from "hooks/useApiAuth";
 import { TNotificationState, openNotification } from "utils/notifications";
 
-type TResponse = void | {
+type TResponse = {
   state: TNotificationState;
   message: string;
 };
@@ -82,7 +82,7 @@ export const useExportEmployees = ({
         openNotification({
           state: res?.state,
 
-          title: res?.state.toUpperCase() ?? "",
+          title: res?.state ?? "",
           description: res?.message,
         });
         handleSuccess?.();

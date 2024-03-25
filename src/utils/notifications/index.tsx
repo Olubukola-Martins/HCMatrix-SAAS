@@ -19,7 +19,7 @@ export const openNotification = ({
 }) => {
   notification[state ?? "open"]({
     key,
-    message: title,
+    message: <span className="capitalize">{title}</span>,
     description,
     duration: duration ?? DEFAULT_DURATION,
     onClick: () => {},
