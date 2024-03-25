@@ -1,10 +1,11 @@
-import { Button, Drawer, Form, InputNumber, Select } from "antd";
+import { Button, Drawer, Form, Input, InputNumber, Select } from "antd";
 import Themes from "components/Themes";
 import { AppButton } from "components/button/AppButton";
 import { DEFAULT_EXPORT_PAGE_SIZE, GENDERS } from "constants/general";
 import { FormBranchInput } from "features/core/branches/components/FormBranchInput";
 import { FormDepartmentInput } from "features/core/departments/components/FormDepartmentInput";
 import { FormDesignationInput } from "features/core/designations/components/FormDesignationInput";
+import { useExportEmployees } from "features/core/employees/hooks/export/useExportEmployees";
 import { TEmployeeFilterProps } from "features/core/employees/types/employee-filter";
 import { FormRoleInput } from "features/core/roles-and-permissions/components/FormRoleInput";
 
@@ -25,8 +26,16 @@ const ExportEmployees: React.FC<{
     setOpen(true);
   };
   const [form] = Form.useForm<TEmployeeFilterProps>();
+  const { mutate, isLoading } = useExportEmployees({
+    handleSuccess: () => {
+      form.resetFields();
+      handleClose();
+    },
+  });
   const handleSubmit = (data: TEmployeeFilterProps) => {
-    console.log(data);
+    mutate({
+      ...data,
+    });
   };
   return (
     <>
@@ -42,18 +51,24 @@ const ExportEmployees: React.FC<{
             form={form}
             onFinish={handleSubmit}
             initialValues={{
-              limit: DEFAULT_EXPORT_PAGE_SIZE,
+              pagination: {
+                limit: DEFAULT_EXPORT_PAGE_SIZE,
+              },
             }}
           >
-            <Form.Item
-              name={"limit"}
-              label="Limit"
-              rules={[numberHasToBeGreaterThanValueRule(0)]}
-            >
-              <InputNumber
-                placeholder="What is max limit of dataset"
-                className="w-full"
-              />
+            <Form.Item name="pagination">
+              <Input.Group>
+                <Form.Item
+                  name={["pagination", "limit"]}
+                  label="Limit"
+                  rules={[numberHasToBeGreaterThanValueRule(0)]}
+                >
+                  <InputNumber
+                    placeholder="What is max limit of dataset"
+                    className="w-full"
+                  />
+                </Form.Item>
+              </Input.Group>
             </Form.Item>
             <Form.Item name={"gender"} label="Gender">
               <Select
@@ -93,7 +108,7 @@ const ExportEmployees: React.FC<{
                     form.resetFields();
                   }}
                 />
-                <AppButton label="Export" type="submit" />
+                <AppButton label="Export" type="submit" isLoading={isLoading} />
               </div>
             </div>
           </Form>
