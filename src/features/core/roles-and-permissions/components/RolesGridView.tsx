@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { TablePaginationConfig, Tooltip, Pagination, Skeleton } from "antd";
+import { TablePaginationConfig, Pagination, Skeleton } from "antd";
 import type { PaginationProps } from "antd";
 
 import moment from "moment";
@@ -8,6 +8,10 @@ import { TRole } from "../types";
 import { motion } from "framer-motion";
 import { DEFAULT_DATE_FORMAT } from "constants/dateFormats";
 import AppTooltip from "components/tooltip/AppTooltip";
+import {
+  PREDEFINED_LABEL_NAME_FOR_EMPLOYEE_ROLE,
+  PREDEFINED_LABEL_NAME_FOR_ADMIN_ROLE,
+} from "../hooks/useFetchPermissions";
 
 interface IProps {
   data?: TRole[];
@@ -58,8 +62,10 @@ const RoleBox = ({
   deleteRole: (item: TRole) => void;
 }) => {
   const hideDeleteBtn =
-    data.label === "employee" || data.label === "admin" || data.userCount > 0;
-  const hideEditBtn = data.label === "admin";
+    data.label === PREDEFINED_LABEL_NAME_FOR_EMPLOYEE_ROLE ||
+    data.label === PREDEFINED_LABEL_NAME_FOR_ADMIN_ROLE ||
+    data.userCount > 0;
+  const hideEditBtn = data.label === PREDEFINED_LABEL_NAME_FOR_ADMIN_ROLE;
   // TO DO : apply logic to edit Role page
   return (
     <>

@@ -1,4 +1,4 @@
-import { Checkbox, Form, Input, Skeleton, Typography } from "antd";
+import { Button, Checkbox, Form, Input, Skeleton, Typography } from "antd";
 import { appRoutes } from "config/router/paths";
 import { useState, useEffect } from "react";
 import { useQueryClient } from "react-query";
@@ -8,7 +8,12 @@ import {
   generalValidationRules,
 } from "utils/formHelpers/validation";
 import { openNotification } from "utils/notifications";
-import { useFetchPermissions } from "../hooks/useFetchPermissions";
+import {
+  ARTIFICIAL_KEY_FOR_ALL_PERMISSIONS_CATEGORY,
+  PREDEFINED_LABEL_NAME_FOR_ADMIN_ROLE,
+  PREDEFINED_LABEL_NAME_FOR_EMPLOYEE_ROLE,
+  useFetchPermissions,
+} from "../hooks/useFetchPermissions";
 import { useFetchSingleRole } from "../hooks/useFetchSingleRole";
 import { AppButton } from "components/button/AppButton";
 import { QUERY_KEY_FOR_ROLES } from "../hooks/useFetchRoles";
@@ -21,9 +26,12 @@ export const EditRoleForm: React.FC<{ id: number }> = ({ id }) => {
     id,
   });
   const [searchTerm, setSearchTerm] = useState("");
-  const [selectedCategory, setSelectedCategory] = useState(0);
+  const [selectedCategory, setSelectedCategory] = useState(
+    ARTIFICIAL_KEY_FOR_ALL_PERMISSIONS_CATEGORY
+  );
   const [form] = Form.useForm();
-  const notAbleToEditRole = roleData?.label === "admin";
+  const notAbleToEditRole =
+    roleData?.label === PREDEFINED_LABEL_NAME_FOR_ADMIN_ROLE;
 
   useEffect(() => {
     // notify user of inablity to edit 'admin' role
@@ -45,8 +53,7 @@ export const EditRoleForm: React.FC<{ id: number }> = ({ id }) => {
 
   const { data, isFetching: isFetchingPermissions } = useFetchPermissions();
 
-  const handleSearch = (e: any) => {
-    const val = e.target.value;
+  const handleSearch = (val: string) => {
     setSearchTerm(val);
   };
 
@@ -56,13 +63,13 @@ export const EditRoleForm: React.FC<{ id: number }> = ({ id }) => {
 
   const { mutate, isLoading } = useEditRole();
 
-  const handleSubmit = (data: any) => {
+  const handleSubmit = (data: { name: string; permissionIds?: number[] }) => {
     if (!roleData) return;
     mutate(
       {
         data: {
           name: data.name,
-          permissionIds: data.permissionIds,
+          permissionIds: [...(data.permissionIds ?? [])],
         },
         roleId: roleData.id,
       },
@@ -94,6 +101,24 @@ export const EditRoleForm: React.FC<{ id: number }> = ({ id }) => {
       }
     );
   };
+  const selectedCategoryPermissionIds = data?.permissions
+    .filter((item) => item.categoryId === selectedCategory)
+    .map((item) => item.id);
+  const permissionIdsSelectedCurrently: number[] | undefined =
+    form.getFieldValue("permissionIds");
+  const handleClearAll = () => {
+    form.setFieldsValue({
+      permissionIds: [],
+    });
+  };
+  const handleSelectAll = () => {
+    form.setFieldsValue({
+      permissionIds: [
+        ...(permissionIdsSelectedCurrently ?? []),
+        ...(selectedCategoryPermissionIds ?? []),
+      ],
+    });
+  };
 
   return (
     <>
@@ -117,7 +142,9 @@ export const EditRoleForm: React.FC<{ id: number }> = ({ id }) => {
               >
                 <Input
                   placeholder="role name"
-                  disabled={roleData?.label === "employee"}
+                  disabled={
+                    roleData?.label === PREDEFINED_LABEL_NAME_FOR_EMPLOYEE_ROLE
+                  }
                 />
               </Form.Item>
             </div>
@@ -148,37 +175,51 @@ export const EditRoleForm: React.FC<{ id: number }> = ({ id }) => {
                     </div>
                   ))}
                 </div>
-                <div className="flex justify-end my-2">
-                  <Input
-                    onChange={handleSearch}
-                    className="w-48"
+                <div className="flex justify-end my-2 gap-x-4">
+                  <Button
+                    type="primary"
+                    shape="round"
+                    danger
+                    onClick={handleSelectAll}
+                  >
+                    Select All
+                  </Button>
+                  <Button
+                    type="primary"
+                    shape="round"
+                    ghost
+                    onClick={handleClearAll}
+                  >
+                    Clear All
+                  </Button>
+                  <Input.Search
+                    onSearch={handleSearch}
+                    className="w-52"
                     placeholder="Search permissions"
-                    value={searchTerm}
+                    allowClear
                   />
                 </div>
 
-                <Form.Item name="permissionIds" rules={generalValidationRules}>
-                  <Checkbox.Group style={{ width: "100%" }}>
-                    <div className="my-6 grid grid-cols-4 gap-4">
-                      {data?.permissions.map((item) => (
-                        <Checkbox
-                          key={item.id}
-                          value={item.id}
-                          //TODO: Fix search functionality, and also implement the ability to select all in a category, and also all in all categories
-                          className={`${
-                            item.categoryId === selectedCategory ||
-                            selectedCategory === 0 ||
-                            searchTerm
-                              .toLowerCase()
-                              .search(item.name.toLowerCase()) !== -1
-                              ? "flex"
-                              : "hidden"
-                          }`}
-                        >
-                          {item.name}
-                        </Checkbox>
-                      ))}
-                    </div>
+                <Form.Item
+                  name="permissionIds"
+                  rules={generalValidationRules}
+                  noStyle
+                >
+                  <Checkbox.Group className="lg:px-10 lg:py-4 grid lg:grid-cols-3 grid-cols-2 lg:gap-x-12 lg:gap-y-4 gap-x-4 gap-y-4">
+                    {data?.permissions.map((item) => (
+                      <Checkbox
+                        key={`${item.id} ${item.categoryId}`} //this is done to remove duplicates as a result of the all category
+                        value={item.id}
+                        className={`items-center border rounded-sm px-4 py-3 ${
+                          item.categoryId === selectedCategory &&
+                          new RegExp(searchTerm, "i").test(item.name)
+                            ? "flex"
+                            : "hidden"
+                        }`}
+                      >
+                        {item.name}
+                      </Checkbox>
+                    ))}
                   </Checkbox.Group>
                 </Form.Item>
               </div>

@@ -16,7 +16,7 @@ interface IGetPemProps {
 export const getPermissions = async (
   props: IGetPemProps,
   auth: ICurrentCompany
-) => {
+): Promise<TResponse> => {
   const { pagination } = props;
   const limit = pagination?.limit ?? DEFAULT_PAGE_SIZE;
   const offset = pagination?.offset ?? 0;
@@ -36,7 +36,7 @@ export const getPermissions = async (
   };
 
   const response = await axios.get(url, config);
-  return response;
+  return response.data as unknown as TResponse;
 };
 
 interface ICategory {
@@ -49,6 +49,25 @@ interface IFRQDataReturnProps {
   categories: ICategory[];
 }
 
+// response
+interface TResponse {
+  message: string;
+  data: Datum[];
+}
+
+interface Datum {
+  id: number;
+  name: string;
+  createdAt: string;
+  updatedAt: string;
+  permissions: TPermission[];
+}
+
+// response
+
+export const ARTIFICIAL_KEY_FOR_ALL_PERMISSIONS_CATEGORY = 0;
+export const PREDEFINED_LABEL_NAME_FOR_ADMIN_ROLE = "admin";
+export const PREDEFINED_LABEL_NAME_FOR_EMPLOYEE_ROLE = "employee";
 export const useFetchPermissions = (props: IGetPemProps = {}) => {
   const { companyId, token } = useApiAuth();
   const queryData = useQuery(
@@ -72,27 +91,34 @@ export const useFetchPermissions = (props: IGetPemProps = {}) => {
         });
       },
 
-      select: (res: any) => {
+      select: (res) => {
         // for all for now
-        const result = res.data.data;
+        const result = res.data;
 
         const categories: ICategory[] = [];
         const permissions: TPermission[] = [];
 
-        result.forEach((category: any) => {
+        result.forEach((category: Datum) => {
           categories.push({ id: category.id, name: category.name });
-          category.permissions.forEach((item: TPermission) => {
+          category.permissions.forEach((item) => {
             permissions.push({
               ...item,
             });
           });
         });
         const ans: IFRQDataReturnProps = {
-          permissions,
+          permissions: [
+            ...permissions,
+            ...permissions.map((item) => ({
+              //group all permissions under all permisions category
+              ...item,
+              categoryId: ARTIFICIAL_KEY_FOR_ALL_PERMISSIONS_CATEGORY,
+            })),
+          ],
           categories: [
             {
-              id: 0,
-              name: "all",
+              id: ARTIFICIAL_KEY_FOR_ALL_PERMISSIONS_CATEGORY,
+              name: "all", //all permissions category
             },
             ...categories,
           ],

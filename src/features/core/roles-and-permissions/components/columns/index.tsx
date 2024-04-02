@@ -4,6 +4,10 @@ import { appRoutes } from "config/router/paths";
 import { DEFAULT_DATE_FORMAT } from "constants/dateFormats";
 import moment from "moment";
 import { Link } from "react-router-dom";
+import {
+  PREDEFINED_LABEL_NAME_FOR_ADMIN_ROLE,
+  PREDEFINED_LABEL_NAME_FOR_EMPLOYEE_ROLE,
+} from "../../hooks/useFetchPermissions";
 
 export const ROLES_TABLE_COLUMNS = (
   deleteRole: (val: TRole) => void
@@ -48,10 +52,10 @@ export const ROLES_TABLE_COLUMNS = (
     key: "action",
     render: (_, item) => {
       const hideDeleteBtn =
-        item.label === "employee" ||
-        item.label === "admin" ||
+        item.label === PREDEFINED_LABEL_NAME_FOR_EMPLOYEE_ROLE ||
+        item.label === PREDEFINED_LABEL_NAME_FOR_ADMIN_ROLE ||
         item.userCount > 0;
-      const hideEditBtn = item.label === "admin";
+      const hideEditBtn = item.label === PREDEFINED_LABEL_NAME_FOR_ADMIN_ROLE;
       return (
         <div className="flex items-center gap-3 text-lg">
           {hideEditBtn ? null : (
