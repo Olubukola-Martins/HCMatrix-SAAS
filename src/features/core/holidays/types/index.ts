@@ -6,3 +6,5 @@ export type THoliday = {
   createdAt: string;
   updatedAt: string;
 };
+
+export type THolidayAction = "edit" | "delete";
