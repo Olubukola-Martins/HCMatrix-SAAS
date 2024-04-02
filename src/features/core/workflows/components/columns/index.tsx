@@ -14,8 +14,9 @@ export const WORKFLOW_TABLE_COLUMNS = (): ColumnsType<TAllWorkflow> => [
   },
   {
     title: "Number of stages",
-    dataIndex: "numberOfStages",
-    key: "numberOfStages",
+    dataIndex: "Number of stages",
+    key: "Number of stages",
+    render: (_, item) => <span className="capitalize">{item.numberOfStages}</span>,
   },
   {
     title: "Type",
@@ -25,14 +26,14 @@ export const WORKFLOW_TABLE_COLUMNS = (): ColumnsType<TAllWorkflow> => [
   },
   {
     title: "Last modified",
-    dataIndex: "updatedAt",
-    key: "updatedAt",
-    render: (val) => moment(val).format(DEFAULT_DATE_FORMAT),
+    dataIndex: "Last modified",
+    key: "Last modified",
+    render: (_, val) => moment(val.updatedAt).format(DEFAULT_DATE_FORMAT),
   },
   {
-    title: "Last modified by",
-    dataIndex: "lastModifier",
-    key: "lastModifier",
+    title: "Last modified By",
+    dataIndex: "Last modified By",
+    key: "Last modified By",
     render: (_, val) => (
       <span className="capitalize">
         {getEmployeeFullName(val.lastModifiedBy)}
