@@ -1,10 +1,10 @@
 import { useMutation } from "react-query";
 import { getEmployees } from "../useFetchEmployees";
-import * as XLSX from "xlsx";
 import { EMPLOYEE_EXPORT_COLUMNS } from "../../components/list/employeeTableColumns";
 import { ICurrentCompany } from "types";
 import { useApiAuth } from "hooks/useApiAuth";
 import { TNotificationState, openNotification } from "utils/notifications";
+import { exportEntityAsFile } from "utils/exportHelpers";
 
 type TResponse = {
   state: TNotificationState;
@@ -12,7 +12,7 @@ type TResponse = {
 };
 
 type TProps = Omit<Parameters<typeof getEmployees>[0], "companyId" | "token">;
-const DEFAULT_EXPORT_FILE_NAME = "employees.xlsx";
+
 const generateExport = async ({
   auth,
   props,
@@ -31,18 +31,12 @@ const generateExport = async ({
       };
     }
     const employeeRows = EMPLOYEE_EXPORT_COLUMNS(data.data);
-    const primaryWorksheet = XLSX.utils.json_to_sheet(employeeRows) as any;
-    /* calculate column width */
-    primaryWorksheet["!cols"] = Object.keys(employeeRows[0]).map((key) => ({
-      wch: employeeRows.reduce(
-        (w, r: { [key: string]: string | number }) =>
-          Math.max(w, Math.max(`${r[key]}`?.length, key.length)),
-        12
-      ),
-    }));
-    const workbook = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(workbook, primaryWorksheet, "Employees");
-    XLSX.writeFile(workbook, fileName ?? DEFAULT_EXPORT_FILE_NAME);
+    exportEntityAsFile({
+      fileName,
+      entityRows: employeeRows,
+      workSheetName: "Employees",
+    });
+
     return {
       state: "success",
       message: "Data exported successfully!",
@@ -60,7 +54,7 @@ export const useExportEmployees = ({
   const { token, companyId } = useApiAuth();
 
   return useMutation(
-    (props: TProps, fileName?: string) =>
+    ({ props, fileName }: { props: TProps; fileName?: string }) =>
       generateExport({
         auth: {
           token,

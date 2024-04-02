@@ -34,7 +34,9 @@ const ExportEmployees: React.FC<{
   });
   const handleSubmit = (data: TEmployeeFilterProps) => {
     mutate({
-      ...data,
+      props: {
+        ...data,
+      },
     });
   };
   return (

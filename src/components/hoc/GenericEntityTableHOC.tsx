@@ -1,6 +1,6 @@
-import { Checkbox, Dropdown, Input, Space } from "antd";
+import { Input } from "antd";
 import { ColumnsType } from "antd/lib/table";
-import { AppButton } from "components/button/AppButton";
+import { TableFocusTypeBtn } from "components/table";
 import React, { ComponentType, useState } from "react";
 
 export interface TGenericEntityTableHOCProps {}
@@ -44,37 +44,11 @@ export function withGenericEntityTableHOCProps<
                 placeholder="Search"
                 allowClear
               />
-              <Dropdown
-                trigger={["click"]}
-                overlay={
-                  <div className="bg-white px-2 py-3 shadow-lg">
-                    <Checkbox.Group
-                      value={selectedColumns.map(
-                        (column, i) => column.key?.toString() ?? ""
-                      )}
-                      onChange={(value: (number | string | boolean)[]) =>
-                        setSelectedColumns(
-                          data.columns.filter((column, i) =>
-                            value.includes(column.key?.toString() ?? "")
-                          )
-                        )
-                      }
-                    >
-                      <Space direction="vertical">
-                        {data.columns.map((column, i) => (
-                          <Checkbox key={column.key} value={column.key}>
-                            <span className="capitalize">{column.key}</span>
-                          </Checkbox>
-                        ))}
-                      </Space>
-                    </Checkbox.Group>
-                  </div>
-                }
-              >
-                <div>
-                  <AppButton label="Focus Type" variant="default" />
-                </div>
-              </Dropdown>
+              {TableFocusTypeBtn<TEntity>({
+                selectedColumns,
+                setSelectedColumns,
+                data,
+              })}
             </div>
           </div>
           <WrappedComponent {...newProps} />
@@ -85,5 +59,3 @@ export function withGenericEntityTableHOCProps<
 
   return WithAdditionalProp;
 }
-
-// Usage example
