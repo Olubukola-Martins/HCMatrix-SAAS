@@ -44,7 +44,7 @@ export function TableFocusTypeBtn<TEntity>({
       }
     >
       <div>
-        <AppButton label="Focus Type" variant="default" />
+        <AppButton label="Focus Type" variant="transparent" />
       </div>
     </Dropdown>
   );
