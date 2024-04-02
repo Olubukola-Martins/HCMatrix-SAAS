@@ -41,7 +41,7 @@ export const ProjectsTable: React.FC<IProps> = ({ status }) => {
       </div>
       <Table
         size="small"
-        dataSource={data?.data}
+        dataSource={data?.data.map((item) => ({ key: item.id, ...item }))}
         loading={isFetching}
         columns={selectedColumns}
         pagination={{ ...pagination, total: data?.total }}

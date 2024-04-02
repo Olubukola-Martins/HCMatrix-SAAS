@@ -56,7 +56,7 @@ export const HolidaysTable: React.FC = () => {
       <Table
         columns={selectedColumns}
         size="small"
-        dataSource={data?.data}
+        dataSource={data?.data.map((item) => ({ key: item.id, ...item }))}
         loading={isFetching}
         pagination={{ ...pagination, total: data?.total }}
         onChange={onChange}

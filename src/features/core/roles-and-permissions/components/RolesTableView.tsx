@@ -37,7 +37,7 @@ export const RolesTableView = ({
       <Table
         columns={selectedColumns}
         size="small"
-        dataSource={data}
+        dataSource={data?.map((item) => ({ key: item.id, ...item }))}
         loading={loading}
         pagination={pagination}
         onChange={onChange}

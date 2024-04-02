@@ -41,7 +41,7 @@ const GroupsGridView = ({
       <Table
         columns={selectedColumns}
         size="small"
-        dataSource={groups}
+        dataSource={groups?.map((item) => ({ key: item.id, ...item }))}
         loading={loading}
         pagination={pagination}
         onChange={onChange}
