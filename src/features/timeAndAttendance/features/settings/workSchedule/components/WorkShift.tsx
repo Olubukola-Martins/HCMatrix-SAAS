@@ -1,5 +1,5 @@
 import "../../../../assets/style.css";
-import { Form, Input, TimePicker } from "antd";
+import { Form, Input, Tabs, TimePicker } from "antd";
 import { AppButton } from "components/button/AppButton";
 import { useContext, useEffect } from "react";
 import { useQueryClient } from "react-query";
@@ -136,6 +136,26 @@ export const WorkShift = () => {
 
   return (
     <div className="border rounded-md p-3 md:p-5 mt-5">
+      {/* <Tabs
+        defaultActiveKey="1"
+        items={[
+          {
+            key: "1",
+            label: `Schedule Employee`,
+            children: <div>First</div>,
+          },
+          {
+            key: "2",
+            label: `Remote Work`,
+            children: <div>Second</div>,
+          },
+        ]}
+      /> */}
+
+      <div className="flex justify-end mb-3">
+        <AppButton label="Upload Template" />
+      </div>
+
       <Form onFinish={onFinish} form={form} disabled={isLoadingGet}>
         <Form.List name="workDaysAndTime">
           {(fields) => (
@@ -191,7 +211,7 @@ export const WorkShift = () => {
           )}
         </Form.List>
 
-        <div className="flex gap-3 mt-5">
+        <div className="flex justify-end gap-3 mt-5">
           {/* <AppButton label="Upload Template" /> */}
           <AppButton
             type="submit"
