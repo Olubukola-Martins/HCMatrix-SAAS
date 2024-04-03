@@ -1,7 +1,7 @@
 import "../../../../assets/style.css";
-import { Form, Input, Tabs, TimePicker } from "antd";
+import { Form, Input, TimePicker } from "antd";
 import { AppButton } from "components/button/AppButton";
-import { useContext, useEffect } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useQueryClient } from "react-query";
 import { EGlobalOps, GlobalContext } from "stateManagers/GlobalContextProvider";
 import { openNotification } from "utils/notifications";
@@ -12,8 +12,10 @@ import {
 } from "../hooks/useGetShiftSchedule";
 import { capitalizeWord } from "../../Utils";
 import moment from "moment";
+import { AddMultipleEmployeeShift } from "./AddMultipleEmployeeShift";
 
 export const WorkShift = () => {
+  const [addMultiple, setAddMultiple] = useState(false);
   const [form] = Form.useForm();
   const globalCtx = useContext(GlobalContext);
   const { dispatch } = globalCtx;
@@ -135,91 +137,85 @@ export const WorkShift = () => {
   };
 
   return (
-    <div className="border rounded-md p-3 md:p-5 mt-5">
-      {/* <Tabs
-        defaultActiveKey="1"
-        items={[
-          {
-            key: "1",
-            label: `Schedule Employee`,
-            children: <div>First</div>,
-          },
-          {
-            key: "2",
-            label: `Remote Work`,
-            children: <div>Second</div>,
-          },
-        ]}
-      /> */}
-
-      <div className="flex justify-end mb-3">
-        <AppButton label="Upload Template" />
-      </div>
-
-      <Form onFinish={onFinish} form={form} disabled={isLoadingGet}>
-        <Form.List name="workDaysAndTime">
-          {(fields) => (
-            <div className="grid grid-cols-3 gap-5">
-              {fields.map((field, index) => (
-                <div key={field.key} className="">
-                  <div>
-                    <Form.Item {...field} name={[field.name, "type"]}>
-                      <Input placeholder="type" disabled className="w-32" />
-                    </Form.Item>
-
-                    <Form.List name={[field.name, "schedule"]}>
-                      {(inputs) => (
-                        <>
-                          {inputs.map((item, subIndex) => (
-                            <div
-                              key={item.key}
-                              className="flex items-center gap-4 mt-5"
-                            >
-                              <Form.Item
-                                {...item}
-                                name={[item.name, "day"]}
-                                initialValue={
-                                  theInitialFormValues[index].schedule[subIndex]
-                                    .day
-                                }
-                                noStyle
-                              >
-                                <Input
-                                  disabled
-                                  placeholder="day"
-                                  className="w-[6.5rem]"
-                                />
-                              </Form.Item>
-                              <div className="flex-1">
-                                <Form.Item
-                                  {...item}
-                                  name={[item.name, "time"]}
-                                  noStyle
-                                >
-                                  <TimePicker.RangePicker format="HH:mm" />
-                                </Form.Item>
-                              </div>
-                            </div>
-                          ))}
-                        </>
-                      )}
-                    </Form.List>
-                  </div>
-                </div>
-              ))}
-            </div>
-          )}
-        </Form.List>
-
-        <div className="flex justify-end gap-3 mt-5">
-          {/* <AppButton label="Upload Template" /> */}
+    <>
+      <AddMultipleEmployeeShift
+        open={addMultiple}
+        handleClose={() => setAddMultiple(false)}
+      />
+      <div className="border rounded-md p-3 md:p-5 mt-5">
+        <div className="flex justify-end mb-3">
           <AppButton
-            type="submit"
-            label="Save Changes"
-            isLoading={isLoadingUpdate}
+            label="Upload Template"
+            handleClick={() => setAddMultiple(true)}
           />
         </div>
-      </Form>
-    </div>
+
+        <Form onFinish={onFinish} form={form} disabled={isLoadingGet}>
+          <Form.List name="workDaysAndTime">
+            {(fields) => (
+              <div className="grid grid-cols-3 gap-5">
+                {fields.map((field, index) => (
+                  <div key={field.key} className="">
+                    <div>
+                      <Form.Item {...field} name={[field.name, "type"]}>
+                        <Input placeholder="type" disabled className="w-32" />
+                      </Form.Item>
+
+                      <Form.List name={[field.name, "schedule"]}>
+                        {(inputs) => (
+                          <>
+                            {inputs.map((item, subIndex) => (
+                              <div
+                                key={item.key}
+                                className="flex items-center gap-4 mt-5"
+                              >
+                                <Form.Item
+                                  {...item}
+                                  name={[item.name, "day"]}
+                                  initialValue={
+                                    theInitialFormValues[index].schedule[
+                                      subIndex
+                                    ].day
+                                  }
+                                  noStyle
+                                >
+                                  <Input
+                                    disabled
+                                    placeholder="day"
+                                    className="w-[6.5rem]"
+                                  />
+                                </Form.Item>
+                                <div className="flex-1">
+                                  <Form.Item
+                                    {...item}
+                                    name={[item.name, "time"]}
+                                    noStyle
+                                  >
+                                    <TimePicker.RangePicker format="HH:mm" />
+                                  </Form.Item>
+                                </div>
+                              </div>
+                            ))}
+                          </>
+                        )}
+                      </Form.List>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
+          </Form.List>
+
+          <div className="flex justify-end gap-3 mt-5">
+            {/* <AppButton label="Upload Template" /> */}
+            <AppButton
+              type="submit"
+              label="Save Changes"
+              isLoading={isLoadingUpdate}
+            />
+          </div>
+        </Form>
+      </div>
+    </>
   );
 };
