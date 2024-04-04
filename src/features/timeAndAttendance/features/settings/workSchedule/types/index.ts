@@ -1,3 +1,5 @@
+import { TEmployeeProps } from "features/timeAndAttendance/types";
+
 interface scheduleProps {
   day: string;
   startTime: string;
@@ -36,4 +38,10 @@ export interface settingsBreakProps {
   duration: number;
   startAt: string;
   endAt: string;
+}
+
+export interface scheduleEmployeesShiftProps {
+  id: number;
+  employee: TEmployeeProps;
+  shiftType: string;
 }

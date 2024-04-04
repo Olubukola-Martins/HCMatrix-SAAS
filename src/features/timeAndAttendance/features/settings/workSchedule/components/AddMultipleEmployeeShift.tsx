@@ -77,12 +77,11 @@ export const AddMultipleEmployeeShift = ({
 
   return (
     <ImportEntityModal
-      title="Import Timesheet"
+      title="Import Shift"
       description={
         <div>
           <p className="text-xs pb-3 text-yellow-500">
-            Please note that attendance once created can not be edited or
-            deleted!
+            Please note that shift once created can not be deleted!
           </p>
           <div className="flex justify-center">
             <Tooltip
