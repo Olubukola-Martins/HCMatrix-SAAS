@@ -1,4 +1,4 @@
-import { Form, Input, InputNumber, Select, Switch } from "antd";
+import { Form, InputNumber, Select, Switch } from "antd";
 import { AppButton } from "components/button/AppButton";
 import { FormWorkflowInput } from "features/core/workflows/components/FormWorkflowInput";
 import { useContext, useEffect } from "react";
@@ -6,7 +6,6 @@ import { useQueryClient } from "react-query";
 import { EGlobalOps, GlobalContext } from "stateManagers/GlobalContextProvider";
 import {
   generalValidationRules,
-  textInputValidationRules,
 } from "utils/formHelpers/validation";
 import { openNotification } from "utils/notifications";
 import {
@@ -35,8 +34,6 @@ export const OtherSettings = () => {
           data.overtime_confirmation_workflow,
           10
         ),
-        longitude: data.company_longitude,
-        latitude: data.company_latitude,
         enforceGeoFencing: data.enforce_geo_fencing === "1" ? true : false,
         enforceStrictDistance:
           data.enforce_strict_distance === "1" ? true : false,
@@ -44,7 +41,7 @@ export const OtherSettings = () => {
         allowSoftClocking: data.allow_soft_clocking === "1" ? true : false,
         allowBiometricClocking:
           data.allow_biometric_clocking === "1" ? true : false,
-          workArrangement: data.work_arrangement,
+        workArrangement: data.work_arrangement,
       });
     }
   }, [data, isSuccess, form]);
@@ -114,22 +111,6 @@ export const OtherSettings = () => {
                     name: "overtimeConfirmationWorkflowId",
                   }}
                 />
-              </div>
-              <div className={formWrapStyle}>
-                <Form.Item
-                  name="longitude"
-                  label="Company longitude"
-                  rules={textInputValidationRules}
-                >
-                  <Input placeholder="00.00" className="w-full" />
-                </Form.Item>
-                <Form.Item
-                  name="latitude"
-                  label="Company latitude"
-                  rules={textInputValidationRules}
-                >
-                  <Input placeholder="0.0" className="w-full" />
-                </Form.Item>
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-3">

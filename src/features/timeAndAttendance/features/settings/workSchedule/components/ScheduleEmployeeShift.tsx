@@ -26,6 +26,7 @@ export const ScheduleEmployeeShift = () => {
     {
       title: "Shift Type",
       dataIndex: "shiftType",
+      render: (_, val) => <span className="capitalize">{val?.shiftType}</span>,
     },
     {
       title: "Action",
