@@ -15,16 +15,15 @@ import { VEHICLE_TYPES } from "./VehicleTypeCardList";
 import { VEHICLE_STATUSES } from "./SelectVehicleStatus";
 
 import { useEditVehicle } from "../hooks/useEditVehicle";
-import { useCurrentFileUploadUrl } from "hooks/useCurrentFileUploadUrl";
 import { IModalProps } from "types";
 import {
   generalValidationRules,
   textInputValidationRules,
 } from "utils/formHelpers/validation";
 import { openNotification } from "utils/notifications";
-import { FileUpload } from "components/FileUpload";
 import { AppButton } from "components/button/AppButton";
 import moment from "moment";
+import { FormFileInput } from "components/generalFormInputs/FormFileInput";
 
 interface IProps extends IModalProps {
   vehicle: TVehicle;
@@ -42,8 +41,6 @@ export const EditSingleVehicle: React.FC<IProps> = ({
   const [form] = Form.useForm();
   const { mutate, isLoading } = useEditVehicle();
   const [moreInfo, setMoreInfo] = useState(false);
-  const documentUrl = useCurrentFileUploadUrl("documentUrl");
-  const imageUrl = useCurrentFileUploadUrl("imageUrl");
 
   useEffect(() => {
     form.setFieldsValue({
@@ -69,14 +66,14 @@ export const EditSingleVehicle: React.FC<IProps> = ({
           brand: data?.brand,
           model: data?.model,
           plateNumber: data?.plateNumber,
-          imageUrl: imageUrl,
+          image: data?.image,
           color: data?.color,
           description: data?.description,
           purchaseDate: data?.purchaseDate,
           cost: data?.cost,
           status: data?.status ?? vehicle?.status,
 
-          documentUrls: !!documentUrl ? [documentUrl] : [],
+          documents: data?.documents,
         },
         id: vehicle.id,
       },
@@ -123,14 +120,16 @@ export const EditSingleVehicle: React.FC<IProps> = ({
         form={form}
         onFinish={handleSubmit}
       >
-        <div className={boxStyle}>
-          <FileUpload
-            allowedFileTypes={["image/jpeg", "image/png", "image/jpg"]}
-            fileKey="imageUrl"
-            textToDisplay="Upload Vehicle Image"
-            displayType="icon"
-          />
-        </div>
+        <FormFileInput
+          Form={Form}
+          ruleOptions={{
+            required: true,
+
+            allowedFileTypes: ["image/jpeg", "image/png", "image/jpg"],
+          }}
+          label="Upload Vehicle Image"
+          name={"image"}
+        />
         <Form.Item name="type" label="Type" rules={generalValidationRules}>
           <Select
             placeholder="Vehicle Type"
@@ -196,18 +195,23 @@ export const EditSingleVehicle: React.FC<IProps> = ({
           )}
         </div>
 
-        <Form.Item label="Documents">
-          <FileUpload
-            allowedFileTypes={[
+        <FormFileInput
+          Form={Form}
+          ruleOptions={{
+            required: false,
+
+            allowedFileTypes: [
               "image/jpeg",
               "image/png",
               "image/jpg",
               "application/pdf",
-            ]}
-            fileKey="documentUrl"
-            textToDisplay="Upload Related Documents"
-          />
-        </Form.Item>
+            ],
+          }}
+          multiple
+          label="Documents"
+          name={"documents"}
+        />
+
         <AppButton isLoading={isLoading} type="submit" />
       </Form>
     </Modal>

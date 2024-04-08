@@ -3,6 +3,7 @@ import { MICROSERVICE_ENDPOINTS } from "config/enviroment";
 import { TLicenseType } from "features/authentication/types/auth-user";
 import { useQuery } from "react-query";
 import { ICurrentCompany, IPaginationProps, ISearchParams } from "types";
+import { TVehicleStatus, TVehicleType } from "./useCreateVehicle";
 
 export type TVehicleBooking = {
   id: number;
@@ -40,11 +41,11 @@ interface Employee {
 interface Vehicle {
   id: number;
   label: string;
-  type: string;
+  type: TVehicleType;
   brand: string;
   model: string;
   plateNumber: string;
-  status: string;
+  status: TVehicleStatus;
   imageUrl: string;
   cost: string;
   color: string;

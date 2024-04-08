@@ -7,22 +7,21 @@ import {
   Select,
   Switch,
 } from "antd";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { useQueryClient } from "react-query";
 import { TVehicleStatus, useCreateVehicle } from "../hooks/useCreateVehicle";
 import { QUERY_KEY_FOR_VEHICLES } from "../hooks/useFetchVehicles";
 import { VEHICLE_TYPES } from "./VehicleTypeCardList";
 import { VEHICLE_STATUSES } from "./SelectVehicleStatus";
 import { FormEmployeeInput } from "features/core/employees/components/FormEmployeeInput";
-import { useCurrentFileUploadUrl } from "hooks/useCurrentFileUploadUrl";
 import { IModalProps } from "types";
 import {
   generalValidationRules,
   textInputValidationRules,
 } from "utils/formHelpers/validation";
 import { openNotification } from "utils/notifications";
-import { FileUpload } from "components/FileUpload";
 import { AppButton } from "components/button/AppButton";
+import { FormFileInput } from "components/generalFormInputs/FormFileInput";
 
 interface IProps extends IModalProps {}
 
@@ -36,8 +35,6 @@ export const AddSingleVehicle: React.FC<IProps> = ({ handleClose, open }) => {
   const [form] = Form.useForm();
   const { mutate, isLoading } = useCreateVehicle();
   const [moreInfo, setMoreInfo] = useState(false);
-  const documentUrl = useCurrentFileUploadUrl("documentUrl");
-  const imageUrl = useCurrentFileUploadUrl("imageUrl");
 
   const handleSubmit = (data: any) => {
     mutate(
@@ -46,7 +43,7 @@ export const AddSingleVehicle: React.FC<IProps> = ({ handleClose, open }) => {
         brand: data?.brand,
         model: data?.model,
         plateNumber: data?.plateNumber,
-        imageUrl: imageUrl,
+        image: data?.image,
         color: data?.color,
         description: data?.description,
         purchaseDate: data?.purchaseDate,
@@ -54,7 +51,7 @@ export const AddSingleVehicle: React.FC<IProps> = ({ handleClose, open }) => {
         cost: data?.cost,
         status: vehicleStatus,
         assigneeId: data?.assigneeId,
-        documentUrls: !!documentUrl ? [documentUrl] : [],
+        documents: data?.documents,
       },
       {
         onError: (err: any) => {
@@ -100,14 +97,16 @@ export const AddSingleVehicle: React.FC<IProps> = ({ handleClose, open }) => {
         form={form}
         onFinish={handleSubmit}
       >
-        <div className={boxStyle}>
-          <FileUpload
-            allowedFileTypes={["image/jpeg", "image/png", "image/jpg"]}
-            fileKey="imageUrl"
-            textToDisplay="Upload Vehicle Image"
-            displayType="icon"
-          />
-        </div>
+        <FormFileInput
+          Form={Form}
+          ruleOptions={{
+            required: true,
+
+            allowedFileTypes: ["image/jpeg", "image/png", "image/jpg"],
+          }}
+          label="Upload Vehicle Image"
+          name={"image"}
+        />
         <Form.Item name="type" rules={generalValidationRules}>
           <Select
             placeholder="Vehicle Type"
@@ -191,19 +190,23 @@ export const AddSingleVehicle: React.FC<IProps> = ({ handleClose, open }) => {
             </div>
           )}
         </div>
+        <FormFileInput
+          Form={Form}
+          ruleOptions={{
+            required: false,
 
-        <Form.Item label="Documents">
-          <FileUpload
-            allowedFileTypes={[
+            allowedFileTypes: [
               "image/jpeg",
               "image/png",
               "image/jpg",
               "application/pdf",
-            ]}
-            fileKey="documentUrl"
-            textToDisplay="Upload Related Documents"
-          />
-        </Form.Item>
+            ],
+          }}
+          multiple
+          label="Documents"
+          name={"documents"}
+        />
+
         <AppButton isLoading={isLoading} type="submit" />
       </Form>
     </Modal>

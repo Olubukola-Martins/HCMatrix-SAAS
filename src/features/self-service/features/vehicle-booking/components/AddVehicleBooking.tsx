@@ -82,7 +82,7 @@ export const AddVehicleBooking: React.FC<IProps> = ({ handleClose, open }) => {
           rules={[dateHasToBeGreaterThanOrEqualToCurrentDayRule]}
           label="Booking Date"
         >
-          <DatePicker placeholder="Booking Date" className="w-full" />
+          <DatePicker showTime placeholder="Booking Date" className="w-full" />
         </Form.Item>
         <FormVehicleInput Form={Form} />
         <Form.Item
