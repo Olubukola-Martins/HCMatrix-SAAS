@@ -12,7 +12,7 @@ const createData = async (props: {
   data: IDataProps;
   auth: ICurrentCompany;
 }): Promise<TResponse> => {
-  const url = `${MICROSERVICE_ENDPOINTS.TIME_AND_ATTENDANCE}/settings/work-schedules/shift/template`;
+  const url = `${MICROSERVICE_ENDPOINTS.TIME_AND_ATTENDANCE}/settings/work-schedules/shift/employees/template`;
 
   const config = {
     headers: {

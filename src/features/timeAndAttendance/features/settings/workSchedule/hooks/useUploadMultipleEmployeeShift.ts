@@ -9,7 +9,7 @@ const createData = async (props: {
   data: multipleAttendanceProps;
   auth: ICurrentCompany;
 }) => {
-  const url = `${MICROSERVICE_ENDPOINTS.TIME_AND_ATTENDANCE}/settings/work-schedules/shift/assign-employees-shifts`;
+  const url = `${MICROSERVICE_ENDPOINTS.TIME_AND_ATTENDANCE}/settings/work-schedules/shift/employees/assign`;
   const config = {
     headers: {
       Accept: "application/json",

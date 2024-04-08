@@ -8,6 +8,7 @@ import {
 } from "components/entity/ImportEntityModal";
 import { useUploadMultipleEmployeeShift } from "../hooks/useUploadMultipleEmployeeShift";
 import { useGetImportedWorkShift } from "../hooks/useGetImportedWorkShift";
+import { QUERY_KEY_FOR_SCHEDULE_EMPLOYEE_SHIFT } from "../hooks/useGetScheduleEmployeeShift";
 
 export const AddMultipleEmployeeShift = ({
   open,
@@ -68,7 +69,9 @@ export const AddMultipleEmployeeShift = ({
             title: "Success",
             description: res.data.message,
           });
-
+          queryClient.invalidateQueries([
+            QUERY_KEY_FOR_SCHEDULE_EMPLOYEE_SHIFT,
+          ]);
           handleClose();
         },
       }

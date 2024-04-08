@@ -5,11 +5,13 @@ import Table, { ColumnsType } from "antd/lib/table";
 import { scheduleEmployeesShiftProps } from "../types";
 import { usePagination } from "hooks/usePagination";
 import { useGetScheduleEmployeeShift } from "../hooks/useGetScheduleEmployeeShift";
+import { AddEmployeeShift } from "./AddEmployeeShift";
 
 export const ScheduleEmployeeShift = () => {
   const [addMultiple, setAddMultiple] = useState(false);
   const { pagination, onChange } = usePagination({ pageSize: 10 });
   const { data, isLoading } = useGetScheduleEmployeeShift({ pagination });
+  const [assignEmployee, setAssignEmployee] = useState(false);
 
   const columns: ColumnsType<scheduleEmployeesShiftProps> = [
     {
@@ -50,12 +52,18 @@ export const ScheduleEmployeeShift = () => {
         open={addMultiple}
         handleClose={() => setAddMultiple(false)}
       />
+      <AddEmployeeShift
+        open={assignEmployee}
+        handleClose={() => setAssignEmployee(false)}
+      />
       <div className="flex justify-end mb-5">
         <Dropdown
           trigger={["click"]}
           overlay={
             <Menu>
-              <Menu.Item key="1">Add Shift</Menu.Item>
+              <Menu.Item key="1" onClick={() => setAssignEmployee(true)}>
+                Add Shift
+              </Menu.Item>
               <Menu.Item key="2" onClick={() => setAddMultiple(true)}>
                 Import Shift
               </Menu.Item>

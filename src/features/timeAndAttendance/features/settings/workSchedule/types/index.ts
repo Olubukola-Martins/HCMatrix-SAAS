@@ -44,4 +44,5 @@ export interface scheduleEmployeesShiftProps {
   id: number;
   employee: TEmployeeProps;
   shiftType: string;
+  employeeIds: number[]
 }

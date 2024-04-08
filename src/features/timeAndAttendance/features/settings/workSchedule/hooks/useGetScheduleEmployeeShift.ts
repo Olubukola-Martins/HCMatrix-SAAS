@@ -6,7 +6,7 @@ import { IPaginationProps } from "types";
 import { DEFAULT_PAGE_SIZE } from "constants/general";
 import { scheduleEmployeesShiftProps } from "../types";
 
-export const QUERY_KEY_FOR_SCHEDULE_EMPLOYEE_SHIFT = "timeOffPolicy";
+export const QUERY_KEY_FOR_SCHEDULE_EMPLOYEE_SHIFT = "scheduleEmployeesShift";
 
 
 const getData = async (props: {
@@ -18,7 +18,7 @@ const getData = async (props: {
   const limit = props.pagination?.limit ?? DEFAULT_PAGE_SIZE;
   const offset = props.pagination?.offset ?? 0;
 
-  const url = `${MICROSERVICE_ENDPOINTS.TIME_AND_ATTENDANCE}/settings/time-off-policies`;
+  const url = `${MICROSERVICE_ENDPOINTS.TIME_AND_ATTENDANCE}/settings/work-schedules/shift/employees`;
   const config = {
     headers: {
       Accept: "application/json",
