@@ -42,7 +42,10 @@ export const ScheduleEmployeeShift = () => {
             trigger={["click"]}
             overlay={
               <Menu>
-                <Menu.Item key="1" onClick={() => handleEdit(val.id)}>
+                <Menu.Item
+                  key="1"
+                  onClick={() => handleEdit(val.id as unknown as number)}
+                >
                   Update
                 </Menu.Item>
               </Menu>
@@ -64,7 +67,10 @@ export const ScheduleEmployeeShift = () => {
       <AddEmployeeShift
         id={assignId}
         open={assignEmployee}
-        handleClose={() => setAssignEmployee(false)}
+        handleClose={() => {
+          setAssignEmployee(false);
+          setAssignId(undefined);
+        }}
       />
       <div className="flex justify-end mb-5">
         <Dropdown

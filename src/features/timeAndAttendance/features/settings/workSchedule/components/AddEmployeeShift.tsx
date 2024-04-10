@@ -23,14 +23,11 @@ export const AddEmployeeShift = ({ handleClose, open, id }: IDrawerProps) => {
     isSuccess,
   } = useGetSingleShiftSchedule(id as unknown as number);
 
-console.log(data);
-
-
   useEffect(() => {
     if (data && isSuccess) {
       form.setFieldsValue({
         shiftType: data.shiftType,
-        employeeIds: data.employee.id,
+        employeeIds: data?.employee?.id,
       });
     }
   }, [id, data, isSuccess, form]);
@@ -38,7 +35,11 @@ console.log(data);
   const handleSubmit = (values: any) => {
     mutate(
       {
-        data: { ...values },
+        data: {
+          employeeIds: values.employeeIds,
+          shiftType: values.shiftType,
+          id: id ? id : undefined,
+        },
       },
       {
         onError: (err: any) => {

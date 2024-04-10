@@ -41,8 +41,8 @@ export interface settingsBreakProps {
 }
 
 export interface scheduleEmployeesShiftProps {
-  id: number;
-  employee: TEmployeeProps;
+  id: number | undefined;
+  employee?: TEmployeeProps;
   shiftType: string;
   employeeIds: number[]
 }
