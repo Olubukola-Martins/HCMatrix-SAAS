@@ -5,10 +5,11 @@ import { IDrawerProps } from "types";
 import { generalValidationRules } from "utils/formHelpers/validation";
 import { useAddEmployeeShift } from "../hooks/useAddEmployeeShift";
 import { EGlobalOps, GlobalContext } from "stateManagers/GlobalContextProvider";
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import { openNotification } from "utils/notifications";
 import { useQueryClient } from "react-query";
 import { QUERY_KEY_FOR_SCHEDULE_EMPLOYEE_SHIFT } from "../hooks/useGetScheduleEmployeeShift";
+import { useGetSingleShiftSchedule } from "../hooks/useGetSingleShiftSchedule";
 
 export const AddEmployeeShift = ({ handleClose, open, id }: IDrawerProps) => {
   const globalCtx = useContext(GlobalContext);
@@ -16,6 +17,23 @@ export const AddEmployeeShift = ({ handleClose, open, id }: IDrawerProps) => {
   const [form] = Form.useForm();
   const queryClient = useQueryClient();
   const { mutate, isLoading } = useAddEmployeeShift();
+  const {
+    data,
+    isLoading: loadShift,
+    isSuccess,
+  } = useGetSingleShiftSchedule(id as unknown as number);
+
+console.log(data);
+
+
+  useEffect(() => {
+    if (data && isSuccess) {
+      form.setFieldsValue({
+        shiftType: data.shiftType,
+        employeeIds: data.employee.id,
+      });
+    }
+  }, [id, data, isSuccess, form]);
 
   const handleSubmit = (values: any) => {
     mutate(
@@ -57,7 +75,13 @@ export const AddEmployeeShift = ({ handleClose, open, id }: IDrawerProps) => {
       onCancel={() => handleClose()}
       style={{ top: 10 }}
     >
-      <Form requiredMark={false} layout="vertical" onFinish={handleSubmit}>
+      <Form
+        requiredMark={false}
+        form={form}
+        layout="vertical"
+        onFinish={handleSubmit}
+        disabled={loadShift}
+      >
         <FormEmployeeInput
           Form={Form}
           optional={true}

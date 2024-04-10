@@ -9,9 +9,15 @@ import { AddEmployeeShift } from "./AddEmployeeShift";
 
 export const ScheduleEmployeeShift = () => {
   const [addMultiple, setAddMultiple] = useState(false);
-  const { pagination, onChange } = usePagination({ pageSize: 10 });
+  const { pagination, onChange } = usePagination({ pageSize: 5 });
   const { data, isLoading } = useGetScheduleEmployeeShift({ pagination });
   const [assignEmployee, setAssignEmployee] = useState(false);
+  const [assignId, setAssignId] = useState<number>();
+
+  const handleEdit = (id: number) => {
+    setAssignEmployee(true);
+    setAssignId(id);
+  };
 
   const columns: ColumnsType<scheduleEmployeesShiftProps> = [
     {
@@ -36,7 +42,9 @@ export const ScheduleEmployeeShift = () => {
             trigger={["click"]}
             overlay={
               <Menu>
-                <Menu.Item key="1">Update</Menu.Item>
+                <Menu.Item key="1" onClick={() => handleEdit(val.id)}>
+                  Update
+                </Menu.Item>
               </Menu>
             }
           >
@@ -54,6 +62,7 @@ export const ScheduleEmployeeShift = () => {
         handleClose={() => setAddMultiple(false)}
       />
       <AddEmployeeShift
+        id={assignId}
         open={assignEmployee}
         handleClose={() => setAssignEmployee(false)}
       />
@@ -62,7 +71,13 @@ export const ScheduleEmployeeShift = () => {
           trigger={["click"]}
           overlay={
             <Menu>
-              <Menu.Item key="1" onClick={() => setAssignEmployee(true)}>
+              <Menu.Item
+                key="1"
+                onClick={() => {
+                  setAssignEmployee(true);
+                  setAssignId(undefined);
+                }}
+              >
                 Add Shift
               </Menu.Item>
               <Menu.Item key="2" onClick={() => setAddMultiple(true)}>
