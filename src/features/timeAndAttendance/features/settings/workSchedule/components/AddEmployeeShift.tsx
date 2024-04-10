@@ -30,7 +30,7 @@ export const AddEmployeeShift = ({ handleClose, open, id }: IDrawerProps) => {
         employeeIds: data?.employee?.id,
       });
     }
-  }, [id, data, isSuccess, form]);
+  }, [form, id, data, isSuccess]);
 
   const handleSubmit = (values: any) => {
     mutate(

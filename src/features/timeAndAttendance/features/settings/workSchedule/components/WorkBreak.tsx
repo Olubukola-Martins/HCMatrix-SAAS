@@ -105,7 +105,13 @@ export const WorkBreak = () => {
               empty, members can clock into breaks freely.
             </p>
           </div>
-          <AppButton label="Add break" handleClick={() => setOpenBreak(true)} />
+          <AppButton
+            label="Add break"
+            handleClick={() => {
+              setOpenBreak(true);
+              setBreakPolicyId(undefined);
+            }}
+          />
         </div>
 
         <Table

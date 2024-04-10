@@ -46,3 +46,8 @@ export interface scheduleEmployeesShiftProps {
   shiftType: string;
   employeeIds: number[]
 }
+
+export interface scheduleFilterProps {
+  empUid: string | undefined;
+  shiftType: "morning" | "afternoon" | "evening"
+}
