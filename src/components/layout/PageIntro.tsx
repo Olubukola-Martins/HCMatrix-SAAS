@@ -3,7 +3,7 @@ import {
   SupplementaryActionsProps,
 } from "SupplementaryActions";
 import { Skeleton } from "antd";
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 type IntroProps = {
   title?: string;
@@ -20,14 +20,17 @@ export const PageIntro = ({
   actions,
   comps,
 }: IntroProps) => {
+  const navigate = useNavigate();
+  const handleBack = () => navigate(-1);
   return (
     <Skeleton loading={loading} active paragraph={{ rows: 2 }}>
       <div className="flex gap-y-3 flex-col lg:flex-row lg:justify-between lg:items-center">
         <div className="flex items-center gap-3 font-extrabold ">
           {link && (
-            <Link to={link}>
-              <i className="ri-arrow-left-s-line text-lg cursor-pointer hover:text-caramel"></i>
-            </Link>
+            <i
+              onClick={handleBack}
+              className="ri-arrow-left-s-line text-lg cursor-pointer hover:text-caramel"
+            ></i>
           )}
           {close && (
             <i
