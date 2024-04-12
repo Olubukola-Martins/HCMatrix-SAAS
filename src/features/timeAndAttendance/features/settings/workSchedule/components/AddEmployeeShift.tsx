@@ -100,7 +100,7 @@ export const AddEmployeeShift = ({ handleClose, open, id }: IDrawerProps) => {
             options={[
               { value: "morning", label: "Morning" },
               { value: "afternoon", label: "Afternoon" },
-              { value: "evening", label: "Evening" },
+              { value: "night", label: "Night" },
             ]}
             allowClear
           />

@@ -4,16 +4,15 @@ import { MICROSERVICE_ENDPOINTS } from "config/enviroment";
 import { useApiAuth } from "hooks/useApiAuth";
 import { IPaginationProps } from "types";
 import { DEFAULT_PAGE_SIZE } from "constants/general";
-import { scheduleEmployeesShiftProps } from "../types";
+import { scheduleEmployeesShiftProps, scheduleFilterProps } from "../types";
 
 export const QUERY_KEY_FOR_SCHEDULE_EMPLOYEE_SHIFT = "scheduleEmployeesShift";
-
 
 const getData = async (props: {
   token: string;
   companyId: number;
   pagination?: IPaginationProps;
-  search?: string;
+  filter?: scheduleFilterProps;
 }): Promise<{ data: scheduleEmployeesShiftProps[]; total: number }> => {
   const limit = props.pagination?.limit ?? DEFAULT_PAGE_SIZE;
   const offset = props.pagination?.offset ?? 0;
@@ -28,7 +27,8 @@ const getData = async (props: {
     params: {
       limit,
       offset,
-      search: props.search,
+      empUid: props?.filter?.empUid,
+      shiftTypes: props?.filter?.shiftTypes,
     },
   };
 
@@ -49,12 +49,23 @@ const getData = async (props: {
 };
 export const useGetScheduleEmployeeShift = (props?: {
   pagination?: IPaginationProps;
-  search?: string;
+  filter?: scheduleFilterProps;
 }) => {
   const { companyId, token } = useApiAuth();
   const queryData = useQuery(
-    [QUERY_KEY_FOR_SCHEDULE_EMPLOYEE_SHIFT, props?.pagination, props?.search],
-    () => getData({ token, companyId, pagination: props?.pagination, search: props?.search}),
+    [
+      QUERY_KEY_FOR_SCHEDULE_EMPLOYEE_SHIFT,
+      props?.pagination,
+      props?.filter?.empUid,
+      props?.filter?.shiftTypes,
+    ],
+    () =>
+      getData({
+        token,
+        companyId,
+        pagination: props?.pagination,
+        filter: props?.filter,
+      }),
     {
       onError: (err: any) => {},
       onSuccess: (data) => {},
@@ -63,4 +74,3 @@ export const useGetScheduleEmployeeShift = (props?: {
 
   return queryData;
 };
-

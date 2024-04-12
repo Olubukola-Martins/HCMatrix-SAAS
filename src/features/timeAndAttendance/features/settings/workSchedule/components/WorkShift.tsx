@@ -2,7 +2,6 @@ import "../../../../assets/style.css";
 import { Tabs } from "antd";
 import { AppButton } from "components/button/AppButton";
 import { useState } from "react";
-
 import { AddMultipleEmployeeShift } from "./AddMultipleEmployeeShift";
 import { ScheduleEmployeeShift } from "./ScheduleEmployeeShift";
 import { GeneralEmployeeShift } from "./GeneralEmployeeShift";

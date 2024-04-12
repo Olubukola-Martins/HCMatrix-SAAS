@@ -20,11 +20,11 @@ export const FilterScheduledEmp = ({
   const [form] = Form.useForm();
   const [empUid, setEmpUid] = useState<string>();
 
-  const submit = (value: any) => {
-    if (value.employeeId || value.shiftType) {
+  const onSubmit = (value: any) => {
+    if (value.employeeId || value.shiftTypes) {
         setFilterData({
           empUid: empUid,
-          shiftType: value.shiftType,
+          shiftTypes: value.shiftTypes,
         })
         handleClose();
         form.resetFields();
@@ -40,20 +40,20 @@ export const FilterScheduledEmp = ({
 
   return (
     <Drawer title="Filter" open={open} onClose={() => handleClose()}>
-      <Form layout="vertical" form={form}>
+      <Form layout="vertical" form={form} onFinish={onSubmit}>
         <FormEmployeeInput
           Form={Form}
           optional={true}
           handleSelect={(_, val) => setEmpUid(val?.empUid)}
         />
-        <Form.Item name="shiftType" label="Shift Type">
+        <Form.Item name="shiftTypes" label="Shift Type">
           <Select
             className="w-full"
             placeholder="Select"
             options={[
               { value: "morning", label: "Morning" },
               { value: "afternoon", label: "Afternoon" },
-              { value: "evening", label: "Evening" },
+              { value: "night", label: "Night" },
             ]}
             allowClear
           />

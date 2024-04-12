@@ -29,13 +29,13 @@ const columns: ColumnsType<shiftPerEmployeeProps> = [
     ),
   },
   {
-    title: "Tracked time",
-    dataIndex: "trackedTime",
-    render: (_, val) => convertMinutesToHours(val?.trackedTime),
+    title: "Date",
+    dataIndex: "date",
   },
   {
-    title: "Status",
-    dataIndex: "status",
+    title: "Tracked time",
+    dataIndex: "totalTimeTracked",
+    render: (_, val) => convertMinutesToHours(val?.totalTimeTracked),
   },
 ];
 
@@ -74,7 +74,10 @@ const HoursPerEmployee = () => {
           )}
         </div>
         <div className="flex items-center gap-x-3">
-          <button className="flex items-center gap-x-2 transparentButton"  onClick={() => setOpenFilter(true)}>
+          <button
+            className="flex items-center gap-x-2 transparentButton"
+            onClick={() => setOpenFilter(true)}
+          >
             <span className="text-caramel font-medium">Filter</span>
             <i className="ri-filter-2-line text-caramel"></i>
           </button>

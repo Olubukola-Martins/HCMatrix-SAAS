@@ -33,7 +33,6 @@ const columns: ColumnsType<shiftPerEmployeeProps> = [
       <span className="capitalize">{val?.department?.name}</span>
     ),
   },
-
   {
     title: "Date",
     dataIndex: "date",

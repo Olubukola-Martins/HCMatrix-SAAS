@@ -44,10 +44,10 @@ export interface scheduleEmployeesShiftProps {
   id: number | undefined;
   employee?: TEmployeeProps;
   shiftType: string;
-  employeeIds: number[]
+  employeeIds: number[];
 }
 
 export interface scheduleFilterProps {
-  empUid: string | undefined;
-  shiftType: "morning" | "afternoon" | "evening"
+  empUid?: string | undefined;
+  shiftTypes?: "morning" | "afternoon" | "night";
 }

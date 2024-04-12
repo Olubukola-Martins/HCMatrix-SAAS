@@ -60,9 +60,9 @@ export const FilterShiftPerEmployee = ({
         <Form.Item name="shiftTypes" label="Shifts">
           <Select
             options={[
-              { value: "Morning", label: "Morning" },
-              { value: "Afternoon", label: "Afternoon" },
-              { value: "Evening", label: "Evening" },
+              { value: "morning", label: "Morning" },
+              { value: "afternoon", label: "Afternoon" },
+              { value: "night", label: "Night" },
             ]}
             allowClear
             placeholder="Select"

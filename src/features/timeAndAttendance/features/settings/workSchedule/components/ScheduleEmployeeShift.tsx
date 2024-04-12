@@ -7,12 +7,19 @@ import { usePagination } from "hooks/usePagination";
 import { useGetScheduleEmployeeShift } from "../hooks/useGetScheduleEmployeeShift";
 import { AddEmployeeShift } from "./AddEmployeeShift";
 import { FilterScheduledEmp } from "./FilterScheduledEmp";
+import { AppButton } from "components/button/AppButton";
 
 export const ScheduleEmployeeShift = () => {
   const [addMultiple, setAddMultiple] = useState(false);
   const [filterData, setFilterData] = useState<scheduleFilterProps>();
   const { pagination, onChange } = usePagination({ pageSize: 5 });
-  const { data, isLoading } = useGetScheduleEmployeeShift({ pagination });
+  const { data, isLoading } = useGetScheduleEmployeeShift({
+    pagination,
+    filter: {
+      empUid: filterData?.empUid,
+      shiftTypes: filterData?.shiftTypes,
+    },
+  });
   const [assignEmployee, setAssignEmployee] = useState(false);
   const [assignId, setAssignId] = useState<number>();
   const [filterDrawer, setFilterDrawer] = useState(false);
@@ -80,7 +87,16 @@ export const ScheduleEmployeeShift = () => {
         open={filterDrawer}
         handleClose={() => setFilterDrawer(false)}
       />
-      <div className="flex justify-end mb-5">
+      <div className="flex justify-between mb-5">
+         <div>
+         {filterData !== undefined && (
+          <AppButton
+            variant="transparent"
+            label="Reset Report"
+            handleClick={() => setFilterData(undefined)}
+          />
+        )}
+         </div>
         <div className="flex items-center gap-3">
           <button
             className="button flex items-center gap-3"
