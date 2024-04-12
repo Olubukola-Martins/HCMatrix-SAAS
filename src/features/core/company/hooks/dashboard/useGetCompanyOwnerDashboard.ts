@@ -2,8 +2,8 @@ import axios from "axios";
 import { MICROSERVICE_ENDPOINTS } from "config/enviroment";
 import { useQuery } from "react-query";
 import { ICurrentCompany } from "types";
-import { useApiAuth } from "hooks/useApiAuth";
 import { TCompanyOwnerDashboard } from "../../types/companyDashboard";
+import useMostRecentApiAuth from "hooks/useMostRecentApiAuth";
 
 interface IGetDataProps {
   year?: string;
@@ -37,7 +37,11 @@ const getData = async (
 };
 
 export const useGetCompanyOwnerDashboard = (props: IGetDataProps = {}) => {
-  const { token, companyId } = useApiAuth();
+  const {
+    token,
+    companyId,
+    currentCompanyEmployeeDetails: employee,
+  } = useMostRecentApiAuth();
   const queryData = useQuery(
     [QUERY_KEY_FOR_COMPANY_OWNER_DASHBOARD, props.year],
     () =>
@@ -50,6 +54,7 @@ export const useGetCompanyOwnerDashboard = (props: IGetDataProps = {}) => {
     {
       onError: (err: any) => {},
       onSuccess: (data) => {},
+      enabled: employee?.isOwner === true,
     }
   );
 

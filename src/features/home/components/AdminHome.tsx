@@ -2,12 +2,12 @@ import { Affix, Skeleton, Tabs } from "antd";
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import "../style/style.css";
-import { settingNavItems } from "features/settings/constants/settingNavItems";
+// import { settingNavItems } from "features/settings/constants/settingNavItems";
 import { EGlobalOps } from "stateManagers/GlobalContextProvider";
 import { pluralOrSingular } from "utils/dataHelpers/pluralOrSingular";
 import EmployeeInfoChart from "features/core/employees/components/EmployeeInfoChart";
 import { Celebrations } from "./Celebrations";
-import { PendingItem } from "./PendingItem";
+// import { PendingItem } from "./PendingItem";
 import { DoughnutChart } from "components/charts/DoughnutChart";
 import { LeaveWhoIsOut } from "./whoIsOut/LeaveWhoIsOut";
 import { RemoteWhoIsOut } from "./whoIsOut/RemoteWhoIsOut";
@@ -28,14 +28,8 @@ import {
 } from "constants/general";
 
 export const AdminHome: React.FC<{ user?: TAuthUser["user"] }> = ({ user }) => {
-  const [openId, setOpenId] = useState("");
-
-  const handlePendingClick = (val: string) => {
-    setOpenId((preVal) => (preVal === val ? "" : val));
-  };
-
   const { globalDispatch } = useApiAuth();
-  
+
   const handleGetStarted = () => {
     globalDispatch({ type: EGlobalOps.setShowInitialSetup, payload: true });
   };
@@ -221,25 +215,25 @@ const GetStartedBtn: React.FC<{ handleGetStarted: () => void }> = ({
     </Affix>
   );
 };
-const PendingSetup: React.FC<{
-  openId: string;
-  handlePendingClick: (val: string) => void;
-}> = ({ openId, handlePendingClick }) => {
-  return (
-    <div className="bg-card rounded-lg md:col-span-2 p-3 text-accent w-full">
-      <h5 className="font-semibold">Pending Setup</h5>
-      <div className="flex flex-col gap-5 text-sm mt-4">
-        {settingNavItems
-          .filter((item) => item.category === "basic")
-          .map((item) => (
-            <PendingItem
-              key={item.title}
-              handleClick={handlePendingClick}
-              openId={openId}
-              item={item}
-            />
-          ))}
-      </div>
-    </div>
-  );
-};
+// const PendingSetup: React.FC<{
+//   openId: string;
+//   handlePendingClick: (val: string) => void;
+// }> = ({ openId, handlePendingClick }) => {
+//   return (
+//     <div className="bg-card rounded-lg md:col-span-2 p-3 text-accent w-full">
+//       <h5 className="font-semibold">Pending Setup</h5>
+//       <div className="flex flex-col gap-5 text-sm mt-4">
+//         {settingNavItems
+//           .filter((item) => item.category === "basic")
+//           .map((item) => (
+//             <PendingItem
+//               key={item.title}
+//               handleClick={handlePendingClick}
+//               openId={openId}
+//               item={item}
+//             />
+//           ))}
+//       </div>
+//     </div>
+//   );
+// };

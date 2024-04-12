@@ -1,7 +1,7 @@
 import { Select, Skeleton } from "antd";
 import { AdminHome } from "../components/AdminHome";
 import { EmployeeHome } from "../components/EmployeeHome";
-import { useEffect, useLayoutEffect, useState } from "react";
+import { useState } from "react";
 import useMostRecentApiAuth from "hooks/useMostRecentApiAuth";
 import ErrorBoundary from "components/errorHandlers/ErrorBoundary";
 import { ErrorWrapper } from "components/errorHandlers/ErrorWrapper";
@@ -17,9 +17,6 @@ function Home() {
     isSuccess,
   } = useMostRecentApiAuth();
   const [view, setView] = useState<TView>("employee");
-  useLayoutEffect(() => {
-    setView(employee?.isOwner ? "employee" : "owner");
-  }, [employee]);
 
   return (
     <ErrorBoundary>
