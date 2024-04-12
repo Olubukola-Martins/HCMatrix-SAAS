@@ -7,7 +7,7 @@ import { useNavigate } from "react-router-dom";
 
 type IntroProps = {
   title?: string;
-  link?: string;
+  link?: string; //TODO: make this boolean, so that it aligns with the current go back implementation
   close?: () => void;
   loading?: boolean;
   // close?: (event: React.MouseEvent<HTMLButtonElement>) => void
