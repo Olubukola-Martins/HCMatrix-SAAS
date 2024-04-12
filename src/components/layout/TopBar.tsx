@@ -1,5 +1,5 @@
 import { useLayoutEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { AutoComplete, Avatar, Button } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
 import SearchModal from "components/search/SearchModal";
@@ -60,7 +60,7 @@ const TopBar = ({
 
   const [action, setAction] = useState<TAction>();
   const [options, setOptions] = useState<TCompanyOption[]>([]);
-
+  const navigate = useNavigate();
   const onSearch = (searchText: string) => {
     const result = options.filter(
       (item) =>
@@ -78,6 +78,7 @@ const TopBar = ({
       type: EGlobalOps.setCurrentCompanyId,
       payload: { id: data.id, name: data.value },
     });
+    navigate(appRoutes.home); //this ensures that the user is redirected to home page, because this is the only page that all users have access to regardless of permissions
     window.location.reload();
   };
   useLayoutEffect(() => {
