@@ -43,6 +43,7 @@ import { useGetOvertimeSheetTemplate } from "features/payroll/hooks/payroll/over
 import { FormPayrollProjectSchemeInput } from "../payrollSchemes/FormPayrollProjectSchemeInput";
 import SinglePayrollReview from "../payrollReviews/SinglePayrollReview";
 import { RunPayroll } from "./RunPayroll";
+import { PermissionRestrictor } from "components/permission-restriction/PermissionRestrictor";
 
 const boxStyle =
   "bg-mainBg flex justify-between items-start md:items-center px-6 py-5 rounded lg:flex-row flex-col gap-y-5";
@@ -80,15 +81,12 @@ export const UploadTimesheet: React.FC<ITimesheetProps> = ({
     setFilelist(val.fileList);
   };
   const beforeUpload = (file: RcFile) => {
-    let allowSubmission = true;
     const isLt2M = file.size / 1024 / 1024 < 2;
     const isSpreadSheetFile = file.type === "text/csv";
     if (!isSpreadSheetFile) {
-      allowSubmission = false;
       message.error("You can only upload CSV file!");
     }
     if (!isLt2M) {
-      allowSubmission = false;
       message.error("File must smaller than 2MB!");
     }
     return false; //this is done so that it prevents dafault value
@@ -675,30 +673,54 @@ const CreatePayrollContainer: React.FC<{
           <div className="flex gap-5">
             {(payroll?.status === "draft" ||
               payroll?.status === "rejected") && (
-              <AppButton
-                label="Run Payroll"
-                variant="style-with-class"
-                additionalClassNames={["neutralButton"]}
-                handleClick={() => setAction("run-payroll")}
-              />
+              <PermissionRestrictor
+                requiredPermissions={["run-payroll"]}
+                requiredSubscriptionState={{
+                  label: "payroll",
+                  resources: [],
+                }}
+              >
+                <AppButton
+                  label="Run Payroll"
+                  variant="style-with-class"
+                  additionalClassNames={["neutralButton"]}
+                  handleClick={() => setAction("run-payroll")}
+                />
+              </PermissionRestrictor>
             )}
             {(payroll?.status === "draft" ||
               payroll?.status === "rejected") && (
-              <AppButton
-                label="Rollback"
-                handleClick={() => setAction("rollback-payroll")}
-              />
+              <PermissionRestrictor
+                requiredPermissions={["rollback-payroll"]}
+                requiredSubscriptionState={{
+                  label: "payroll",
+                  resources: [],
+                }}
+              >
+                <AppButton
+                  label="Rollback"
+                  handleClick={() => setAction("rollback-payroll")}
+                />
+              </PermissionRestrictor>
             )}
             {(payroll?.status === "draft" ||
               payroll?.status === "rejected") && (
-              <AppButton
-                label="Delete"
-                variant="style-with-class"
-                additionalClassNames={[
-                  "border border-red-400 hover:text-caramel rounded px-2 py-1 font-medium text-sm text-neutral",
-                ]}
-                handleClick={() => setAction("delete-payroll")}
-              />
+              <PermissionRestrictor
+                requiredPermissions={["delete-payroll"]}
+                requiredSubscriptionState={{
+                  label: "payroll",
+                  resources: [],
+                }}
+              >
+                <AppButton
+                  label="Delete"
+                  variant="style-with-class"
+                  additionalClassNames={[
+                    "border border-red-400 hover:text-caramel rounded px-2 py-1 font-medium text-sm text-neutral",
+                  ]}
+                  handleClick={() => setAction("delete-payroll")}
+                />
+              </PermissionRestrictor>
             )}
           </div>
         </div>
