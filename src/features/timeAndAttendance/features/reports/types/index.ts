@@ -6,9 +6,9 @@ export interface shiftPerEmployeeProps {
   department: {
     name: string;
   };
-  status: string;
   shiftType: string;
   date: string;
+  totalTimeTracked: number;
 }
 
 export interface filterReportProps {
@@ -16,5 +16,5 @@ export interface filterReportProps {
   departmentId?: number;
   startDate?: string;
   endDate?: string;
-  shiftTypes?: "Afternoon" | "Evening" | "Morning";
+  shiftTypes?: "afternoon" | "night" | "morning";
 }
