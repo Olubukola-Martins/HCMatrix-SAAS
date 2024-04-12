@@ -3,20 +3,17 @@ import { MICROSERVICE_ENDPOINTS } from "config/enviroment";
 import { useQuery } from "react-query";
 import { ICurrentCompany } from "types";
 import { TTHandOverForm } from "../types";
+import { useApiAuth } from "hooks/useApiAuth";
 
-interface IGetDataProps extends ICurrentCompany {
-  id: number;
-}
-export const QUERY_KEY_FOR_SINGLE_EXIT_HANDOVER_FORM =
-  "single-exit-handover-form";
-const getData = async (props: IGetDataProps): Promise<TTHandOverForm> => {
-  const url = `${MICROSERVICE_ENDPOINTS.UTILITY}/self-service/exit-handover-form/${props.id}`;
+export const QUERY_KEY_FOR_AUTH_EXIT_HANDOVER_FORM = "auth-exit-handover-form";
+const getData = async (auth: ICurrentCompany): Promise<TTHandOverForm> => {
+  const url = `${MICROSERVICE_ENDPOINTS.UTILITY}/self-service/exit-handover-form/mine`;
 
   const config = {
     headers: {
       Accept: "application/json",
-      Authorization: `Bearer ${props.token}`,
-      "x-company-id": props.companyId,
+      Authorization: `Bearer ${auth.token}`,
+      "x-company-id": auth.companyId,
     },
   };
 
@@ -30,12 +27,14 @@ const getData = async (props: IGetDataProps): Promise<TTHandOverForm> => {
   return data;
 };
 
-export const useGetSingleExitHandOverForm = (props: IGetDataProps) => {
+export const useGetAuthExitHandOverForm = () => {
+  const { companyId, token } = useApiAuth();
   const queryData = useQuery(
-    [QUERY_KEY_FOR_SINGLE_EXIT_HANDOVER_FORM, props.id],
+    [QUERY_KEY_FOR_AUTH_EXIT_HANDOVER_FORM],
     () =>
       getData({
-        ...props,
+        companyId,
+        token,
       }),
     {
       onError: (err: any) => {},

@@ -74,7 +74,7 @@ export const EmployeeHandOverForm: React.FC<IProps> = ({
         separationDate: data.separationDate,
         supervisorClearanceUrl: supervisorClearanceUrl,
         supportingDocumentUrl: supportingDocumentUrl,
-        assetChecklist: data.assetChecklist.map((item: number) => ({
+        assetChecklist: data?.assetChecklist?.map((item: number) => ({
           assetRequisitionId: item,
           isReturned: true,
         })),
@@ -122,7 +122,7 @@ export const EmployeeHandOverForm: React.FC<IProps> = ({
         form={form}
         onFinish={handleSubmit}
         disabled={
-          handover?.status === "pending" || handover?.status === "approved"
+          handover && ["pending", "approved"].includes(handover?.status)
         } //the employee should only able to edit/create handover when it is neither pending or approved
       >
         <div className="grid grid-cols-1 md:grid-cols-2 gap-5 text-accent">
@@ -214,39 +214,44 @@ export const EmployeeHandOverForm: React.FC<IProps> = ({
 
           {/* second grid */}
           <div className="flex flex-col gap-4">
-            <div className={`${boxStyle} `}>
-              <h5 className={boxTitle}>Asset Checklist</h5>
-              <Form.Item
-                name="assetChecklist"
-                className="w-full"
-                rules={
-                  assets && assets?.total > 0
-                    ? generalValidationRules
-                    : generalValidationRulesOp
-                }
-              >
-                <Checkbox.Group className="w-full">
-                  <div className="px-4 py-2 grid grid-cols-1 md:grid-cols-2 gap-3 text-xs">
-                    {/* 1 */}
-                    {assets &&
-                      assets.data?.map((item, i) => (
-                        <div className={`${assetCheckListWrap}  gap-2`} key={i}>
-                          <div className="flex gap-2  pb-2">
-                            <Checkbox value={item.id} />
-                            <AssetDetail
-                              {...{
-                                ID: item.asset.uid,
-                                uid: item.asset.uid,
-                                name: item.asset.name,
-                              }}
-                            />
+            {assets && assets.data.length > 0 ? (
+              <div className={`${boxStyle} `}>
+                <h5 className={boxTitle}>Asset Checklist</h5>
+                <Form.Item
+                  name="assetChecklist"
+                  className="w-full"
+                  rules={
+                    assets && assets?.total > 0
+                      ? generalValidationRules
+                      : generalValidationRulesOp
+                  }
+                >
+                  <Checkbox.Group className="w-full">
+                    <div className="px-4 py-2 grid grid-cols-1 md:grid-cols-2 gap-3 text-xs">
+                      {/* 1 */}
+                      {assets &&
+                        assets.data?.map((item, i) => (
+                          <div
+                            className={`${assetCheckListWrap}  gap-2`}
+                            key={i}
+                          >
+                            <div className="flex gap-2  pb-2">
+                              <Checkbox value={item.id} />
+                              <AssetDetail
+                                {...{
+                                  ID: item.asset.uid,
+                                  uid: item.asset.uid,
+                                  name: item.asset.name,
+                                }}
+                              />
+                            </div>
                           </div>
-                        </div>
-                      ))}
-                  </div>
-                </Checkbox.Group>
-              </Form.Item>
-            </div>
+                        ))}
+                    </div>
+                  </Checkbox.Group>
+                </Form.Item>
+              </div>
+            ) : null}
 
             <div className={boxStyle}>
               <h5 className={boxTitle}>Upload Supporting Document</h5>
@@ -282,12 +287,11 @@ export const EmployeeHandOverForm: React.FC<IProps> = ({
             </div>
           </div>
         </div>
-        {!handover && (
-          <div className="flex justify-between items-center mt-5">
-            <AppButton label="cancel" type="button" variant="transparent" />
-            <AppButton label="Submit" type="submit" isLoading={isLoading} />
-          </div>
-        )}
+
+        <div className="flex justify-between items-center mt-5">
+          <AppButton label="cancel" type="button" variant="transparent" />
+          <AppButton label="Submit" type="submit" isLoading={isLoading} />
+        </div>
       </Form>
     </Skeleton>
   );
