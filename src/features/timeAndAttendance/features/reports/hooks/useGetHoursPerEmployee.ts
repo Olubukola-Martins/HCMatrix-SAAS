@@ -35,7 +35,9 @@ const getData = async (props: {
 
   const res = await axios.get(url, config);
 
-  const fetchedData = res.data.data.result;
+  console.log(res);
+
+  const fetchedData = res.data.data;
 
   const result = fetchedData;
 

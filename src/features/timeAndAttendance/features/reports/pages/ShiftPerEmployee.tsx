@@ -29,13 +29,13 @@ const columns: ColumnsType<shiftPerEmployeeProps> = [
     ),
   },
   {
+    title: "Date",
+    dataIndex: "date",
+  },
+  {
     title: "Tracked time",
     dataIndex: "trackedTime",
     render: (_, val) => convertMinutesToHours(val?.trackedTime),
-  },
-  {
-    title: "Status",
-    dataIndex: "status",
   },
   {
     title: "Shift Type",

@@ -15,7 +15,7 @@ import { convertMinutesToHours } from "features/timeAndAttendance/utils";
 export const WorkBreak = () => {
   const [openBreak, setOpenBreak] = useState(false);
   const [breakPolicyId, setBreakPolicyId] = useState<number>();
-  const { pagination, onChange } = usePagination({ pageSize: 10 });
+  const { pagination, onChange } = usePagination({ pageSize: 5 });
   const { data, isLoading } = useGetBreakPolicy({ pagination });
   const { removeData } = useDeleteTimeAndAttendance({
     EndPointUrl: "settings/break-policies",
@@ -26,7 +26,6 @@ export const WorkBreak = () => {
     setOpenBreak(true);
     setBreakPolicyId(id);
   };
-
 
   const columns: ColumnsType<settingsBreakProps> = [
     {
@@ -106,7 +105,13 @@ export const WorkBreak = () => {
               empty, members can clock into breaks freely.
             </p>
           </div>
-          <AppButton label="Add break" handleClick={() => setOpenBreak(true)} />
+          <AppButton
+            label="Add break"
+            handleClick={() => {
+              setOpenBreak(true);
+              setBreakPolicyId(undefined);
+            }}
+          />
         </div>
 
         <Table
