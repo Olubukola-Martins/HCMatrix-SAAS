@@ -18,7 +18,7 @@ export const HandOverNewForm = () => {
         <EmployeeHandOverContainer
           handover={data}
           isLoading={isLoading}
-          canSubmitOrCancelForm
+          canSubmitOrCancelForm //only the auth employee can submit/cancel
         />
       </div>
     </>

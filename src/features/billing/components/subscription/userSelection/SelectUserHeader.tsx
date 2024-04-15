@@ -7,6 +7,7 @@ const ACTIVE_BTN_CLASS_NAME =
 const INACTIVE_BTN_CLASS_NAME =
   "border hover:border-caramel hover:text-caramel border-slate-800 font-semibold rounded-full px-4 py-2  bg-transparent transition ease-in-out duration-500 text-sm tracking-wider";
 const SelectUserHeader: React.FC<{
+  onClearDepartment: () => void;
   onSelectDepartment: (id: number) => void;
   onSearchEmployee: (value: string) => void;
   onSelectLicenseType: (type: "licensed" | "unlicensed") => void;
@@ -16,6 +17,7 @@ const SelectUserHeader: React.FC<{
   onSearchEmployee,
   onSelectLicenseType,
   licenseType,
+  onClearDepartment,
 }) => {
   return (
     <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 items-center">
@@ -51,13 +53,17 @@ const SelectUserHeader: React.FC<{
       </div>
       <div className="flex flex-col gap-4">
         <p>Select Department</p>
-        <SelectDepartment handleSelect={(val) => onSelectDepartment(val)} />
+        <SelectDepartment
+          handleSelect={(val) => onSelectDepartment(val)}
+          handleClear={onClearDepartment}
+        />
       </div>
       <div className="flex flex-col gap-4">
         <p>Search Employee</p>
         <Input
           placeholder="Search"
           onChange={(e) => onSearchEmployee(e.target.value)}
+          allowClear
         />
       </div>
     </div>

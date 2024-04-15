@@ -76,6 +76,9 @@ const UserSelectionContainer = () => {
           onSelectDepartment={(departmentId) =>
             setDetails((prev) => ({ ...prev, departmentId }))
           }
+          onClearDepartment={() =>
+            setDetails((prev) => ({ ...prev, departmentId: undefined }))
+          }
         />
         <SelectUserContent
           departmentId={details.departmentId}
