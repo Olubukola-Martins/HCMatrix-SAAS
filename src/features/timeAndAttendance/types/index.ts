@@ -38,6 +38,12 @@ export interface TEmployeeProps {
   firstName: string;
   lastName: string;
   email: string;
+  designation: {
+    department: {
+      id: number;
+      name: string;
+    };
+  };
 }
 
 export interface clockInProps {
@@ -45,4 +51,8 @@ export interface clockInProps {
   latitude: string;
   longitude: string;
   date: string;
+}
+
+export interface softClockInAndOutProps {
+  componentType: "button" | "image";
 }

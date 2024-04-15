@@ -50,7 +50,7 @@ export const AttendanceSubToper = (props: IProps) => {
             Timeoff
           </Link>
           <Link
-            to={appRoutes.shiftPerEmployee}
+            to={appRoutes.hoursPerEmployee}
             className={
               props.active === "reports"
                 ? `${applyStyle}`
@@ -87,9 +87,9 @@ export const AttendanceSubToper = (props: IProps) => {
 
           {data?.clocking.clockIn !== null &&
           data?.clocking.clockOut === null ? (
-            <SoftClockOut />
+            <SoftClockOut componentType="image" />
           ) : (
-            <SoftClockIn />
+            <SoftClockIn componentType="image" />
           )}
         </div>
       </div>

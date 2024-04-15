@@ -7,7 +7,6 @@ import Biometrics from "features/timeAndAttendance/features/settings/Biometrics/
 import Location from "features/timeAndAttendance/features/settings/location/pages/Location";
 import TimeOffPolicy from "features/timeAndAttendance/features/settings/timeOffPolicy/pages/TimeOffPolicy";
 import WorkSchedule from "features/timeAndAttendance/features/settings/workSchedule/pages/WorkSchedule";
-import ShiftPerEmployee from "features/timeAndAttendance/features/reports/pages/ShiftPerEmployee";
 import HoursPerEmployee from "features/timeAndAttendance/features/reports/pages/HoursPerEmployee";
 import EmployeesPerShift from "features/timeAndAttendance/features/reports/pages/EmployeesPerShift";
 import { TimeOff } from "features/timeAndAttendance/features/timeOff/pages/TimeOff";
@@ -68,12 +67,6 @@ export const attendanceRoutes: TRouteData[] = [
   {
     element: <OtherSettings />,
     path: appRoutes.otherSettings,
-    isSearchable: false,
-  },
-
-  {
-    element: <ShiftPerEmployee/>,
-    path: appRoutes.shiftPerEmployee,
     isSearchable: false,
   },
   {

@@ -4,7 +4,7 @@ import { appRoutes } from "config/router/paths";
 import { PageIntro } from "components/layout/PageIntro";
 
 interface IProps {
-  active: "Shift_Per_Employee" | "Hours_Per_Employee" | "Employee_Per_shift";
+  active: "Hours_Per_Employee" | "Employee_Per_shift";
 }
 export const ReportNav = (props: IProps) => {
   const applyStyle = "border-b-4 border-caramel md:mx-3 pt-2";
@@ -12,7 +12,7 @@ export const ReportNav = (props: IProps) => {
     <>
       <div className="Container">
         <div className="flex items-center gap-x-6 font-medium border-b md:text-base mb-7">
-          <Link to={appRoutes.shiftPerEmployee}>
+          {/* <Link to={appRoutes.shiftPerEmployee}>
             <span className="cursor-pointer">Shift Per Employee</span>
             <div
               className={
@@ -21,7 +21,7 @@ export const ReportNav = (props: IProps) => {
                   : "md:mx-3 pt-2"
               }
             />
-          </Link>
+          </Link> */}
 
           <Link to={appRoutes.hoursPerEmployee}>
             <span className="cursor-pointer">Hours Per Employee</span>
