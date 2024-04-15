@@ -15,7 +15,11 @@ export const HandOverNewForm = () => {
           link={appRoutes.selfServiceHome}
         />
 
-        <EmployeeHandOverContainer handover={data} isLoading={isLoading} />
+        <EmployeeHandOverContainer
+          handover={data}
+          isLoading={isLoading}
+          canSubmitOrCancelForm
+        />
       </div>
     </>
   );

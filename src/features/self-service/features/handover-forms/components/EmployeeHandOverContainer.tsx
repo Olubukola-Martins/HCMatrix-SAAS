@@ -12,10 +12,14 @@ import {
 type IProps = {
   handover?: TTHandOverForm;
   isLoading?: boolean;
+  canSubmitOrCancelForm?:boolean
+
 };
 const EmployeeHandOverContainer: React.FC<IProps> = ({
   isLoading,
   handover,
+  canSubmitOrCancelForm = false
+
 }) => {
   const navigate = useNavigate();
   const { userPermissions } = useGetUserPermissions();
@@ -43,7 +47,15 @@ const EmployeeHandOverContainer: React.FC<IProps> = ({
           ]}
         />
       }
-      <EmployeeHandOverForm handover={handover} isLoading={isLoading} />
+      <EmployeeHandOverForm
+        handover={handover}
+        isLoading={isLoading}
+        canSubmitOrCancelForm={ 
+        canSubmitOrCancelForm
+
+        }
+
+      />
     </div>
   );
 };

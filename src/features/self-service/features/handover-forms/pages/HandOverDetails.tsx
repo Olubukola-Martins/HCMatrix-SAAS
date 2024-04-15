@@ -45,6 +45,7 @@ const HandOverDetails = () => {
               <EmployeeHandOverContainer
                 handover={data}
                 isLoading={isLoading}
+                
               />
             </ErrorWrapper>
           </Skeleton>
