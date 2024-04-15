@@ -44,7 +44,9 @@ export const SalaryHistory: React.FC<{
       title: "Scheme",
       dataIndex: "type",
       key: "type",
-      render: (_, item) => <span className="capitalize">{item?.type}</span>,
+      render: (_, item) => (
+        <span className="capitalize">{item?.type.split("_").join(" ")}</span>
+      ),
     },
     {
       title: "Frequency",
