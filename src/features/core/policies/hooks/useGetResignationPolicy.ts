@@ -21,9 +21,7 @@ const getData = async (props: IGetDataProps): Promise<TResignationPolicy> => {
   const res = await axios.get(url, config);
   const item: TResignationPolicy = res.data.data;
 
-  const data: TResignationPolicy = {
-    ...item,
-  };
+  const data: TResignationPolicy = item;
 
   return data;
 };

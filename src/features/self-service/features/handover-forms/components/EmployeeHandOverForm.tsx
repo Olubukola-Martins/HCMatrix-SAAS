@@ -52,7 +52,7 @@ export const EmployeeHandOverForm: React.FC<IProps> = ({
     form.setFieldsValue({
       ...handover,
       separationDate: moment(handover.separationDate),
-      assetChecklist: handover.assetChecklist.map(
+      assetChecklist: handover?.assetChecklist?.map(
         (item) => item.assetRequisitionId
       ),
     });
