@@ -101,7 +101,6 @@ export const EmployeeHandOverForm: React.FC<IProps> = ({
             description: res.data.message,
             // duration: 0.4,
           });
-          form.resetFields();
 
           queryClient.invalidateQueries({
             queryKey: [QUERY_KEY_FOR_EXIT_HAND_OVER_FORMS],
@@ -111,7 +110,8 @@ export const EmployeeHandOverForm: React.FC<IProps> = ({
       }
     );
   };
-  const disabled = handover && ["pending", "approved"].includes(handover?.status)
+  const disabled =
+    handover && ["pending", "approved"].includes(handover?.status);
   return (
     <Skeleton
       loading={
@@ -124,9 +124,7 @@ export const EmployeeHandOverForm: React.FC<IProps> = ({
         className="bg-card px-5 py-7  rounded-md mt-7 "
         form={form}
         onFinish={handleSubmit}
-        disabled={
-          disabled
-        } //the employee should only able to edit/create handover when it is neither pending or approved
+        disabled={disabled} //the employee should only able to edit/create handover when it is neither pending or approved
       >
         <div className="grid grid-cols-1 md:grid-cols-2 gap-5 text-accent">
           {/* first grid */}
@@ -293,8 +291,18 @@ export const EmployeeHandOverForm: React.FC<IProps> = ({
 
         {canSubmitOrCancelForm ? (
           <div className="flex justify-between items-center mt-5">
-            <AppButton label="cancel" type="button" variant="transparent" disabled={disabled}/>
-            <AppButton label="Submit" type="submit" isLoading={isLoading} disabled={disabled}/>
+            <AppButton
+              label="cancel"
+              type="button"
+              variant="transparent"
+              disabled={disabled}
+            />
+            <AppButton
+              label="Submit"
+              type="submit"
+              isLoading={isLoading}
+              disabled={disabled}
+            />
           </div>
         ) : null}
       </Form>
