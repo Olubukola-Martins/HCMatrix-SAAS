@@ -12,8 +12,9 @@ import { QUERY_KEY_FOR_CLOCKING_AND_BREAK_STATUS } from "../hooks/useClockingAnd
 import { QUERY_KEY_FOR_TIME_SHEET } from "../features/timeSheet/hooks/useGetTimeSheet";
 import { QUERY_KEY_FOR_ANALYTICS_RECORDS } from "../features/home/hooks/useGetAnalyticsRecord";
 import { QUERY_KEY_FOR_TIME_SHEET_DASHBOARD } from "../features/home/hooks/useGetTimeSheetRecord";
+import { softClockInAndOutProps } from "../types";
 
-export const SoftClockIn = () => {
+export const SoftClockIn = ({ componentType }: softClockInAndOutProps) => {
   const globalCtx = useContext(GlobalContext);
   const { dispatch } = globalCtx;
   const queryClient = useQueryClient();
@@ -90,12 +91,16 @@ export const SoftClockIn = () => {
           </div>
         }
       >
-        <img
-          src={offIndicator}
-          alt="off indicator"
-          className="cursor-pointer"
-          title="Clock in"
-        />
+        {componentType === "image" ? (
+          <img
+            src={offIndicator}
+            alt="off indicator"
+            className="cursor-pointer"
+            title="Clock in"
+          />
+        ) : (
+          <button className="button w-full">Clock - In</button>
+        )}
       </Dropdown>
     </div>
   );

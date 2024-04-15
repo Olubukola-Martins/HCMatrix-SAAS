@@ -19,10 +19,14 @@ export const createData = async (props: {
   };
 
   const data: any = {
-    employeeIds: props.data.id ? [props.data.employeeIds] : props.data.employeeIds,
+    employeeIds: props.data.id
+      ? [props.data.employeeIds]
+      : props.data.employeeIds,
     shiftType: props.data.shiftType,
+    startDate: props.data.startDate,
+    endDate: props.data.endDate,
+    isPermanent: props.data.isPermanent,
   };
-
 
   const response = await axios.post(url, data, config);
   return response;
