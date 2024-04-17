@@ -15,7 +15,10 @@ export const ExpiredSubscription: React.FC<IProps> = ({
   const handleConfirm = () => {
     navigate(appRoutes.billingSubscription, { replace: true });
   };
-  const { user, isLoading } = useMostRecentApiAuth();
+  const { user, isLoading, currentCompanyEmployeeDetails } =
+    useMostRecentApiAuth();
+
+  if (currentCompanyEmployeeDetails?.isOwner === false) return null;
 
   return (
     <ConfirmationModal

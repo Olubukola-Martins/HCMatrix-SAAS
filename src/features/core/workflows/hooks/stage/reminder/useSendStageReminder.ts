@@ -1,12 +1,13 @@
 import axios from "axios";
 import { MICROSERVICE_ENDPOINTS } from "config/enviroment";
-import { TWorkflowApprovalType } from "features/core/workflows/types";
+import { TApprovalStage } from "features/core/workflows/types/approval-stage";
+import { sendReminderForLeaveRelieverStage } from "features/self-service/features/leave/hooks/leaveRelieverApproval/stage/useSendReminderForLeaveRelieverStage";
 import { useApiAuth } from "hooks/useApiAuth";
 import { useMutation } from "react-query";
 import { ICurrentCompany } from "types";
 
 export type TSendApprovalStageReminderProps = {
-  entityType: TWorkflowApprovalType;
+  entityType: TApprovalStage["type"];
   entityId: number;
   approvalStageId: number;
 };
@@ -35,14 +36,26 @@ export const useSendStageReminder = () => {
       approvalStageId,
       entityId,
       entityType,
-    }: TSendApprovalStageReminderProps) =>
-      sendReminder(
+    }: TSendApprovalStageReminderProps) => {
+      if (entityType === "leave-relieve") {
+        return sendReminderForLeaveRelieverStage(
+          {
+            leaveId: entityId,
+          },
+          {
+            token,
+            companyId,
+          }
+        );
+      }
+      return sendReminder(
         {
           approvalStageId,
           entityId,
           entityType,
         },
         { token, companyId }
-      )
+      );
+    }
   );
 };

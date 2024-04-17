@@ -48,7 +48,11 @@ const ViewApprovalStages: React.FC<
               <div className="w-full">
                 <Steps className="w-full" size="small" direction="vertical">
                   {data?.data?.map((stage) => {
+                    const leaveRelieverName = stage.leaveReliever
+                      ? getEmployeeFullName(stage.leaveReliever)
+                      : undefined;
                     const approverFullName =
+                      leaveRelieverName ??
                       stage.group?.name ??
                       stage.role?.name ??
                       stage.approvals
@@ -56,19 +60,18 @@ const ViewApprovalStages: React.FC<
                           getEmployeeFullName(approval.approver)
                         )
                         .join(",");
-
                     const approverName = truncateString(approverFullName, 12);
                     return (
                       <Steps.Step
                         title={
                           <div className="grid grid-cols-3 gap-x-4 capitalize">
                             <h4 title={approverFullName}>{approverName}</h4>
-                            <h4>{stage.type}</h4>
+                            <h4>{stage.type.split("-").join(" ")}</h4>
                             {stage.status === "pending" ? (
                               <SendReminderToStageApprover
                                 approvalStageId={stage.id}
                                 entityId={id}
-                                entityType={type}
+                                entityType={stage.type}
                               />
                             ) : (
                               <AppButton label={stage.status} />

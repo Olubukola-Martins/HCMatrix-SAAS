@@ -1,22 +1,24 @@
 import { TApprovalStatus } from "types/statuses";
-import { TWorkflowType } from "..";
+import { TWorkflowApprovalType, TWorkflowType } from "..";
+import { TLeaveRelieveApprovalStage } from "features/self-service/features/leave/hooks/leaveRelieverApproval/stage/useGetLeaveRelieveApprovalStage";
 
 export type TApprovalStage = {
   id: number;
-  workflowId: number;
+  workflowId?: number;
   name: string;
-  type: string;
+  type: TWorkflowApprovalType | "leave-relieve"; //this does not exist on api, done to ensure consistency, for the exception that is leave-relieve
   entityId: number;
   enableTwoFactorAuth: boolean;
   condition?: string;
   count?: number;
   createdAt: string;
   updatedAt: string;
-  workflow: Workflow;
+  workflow?: Workflow | null;
   approvals: Approval[];
-  role?: Role;
   status: TApprovalStatus;
+  role?: Role;
   group?: Group;
+  leaveReliever?: TLeaveRelieveApprovalStage["leave"]["reliever"]; //this does not exist by default(from api), but is added so the user can see th leave reliver when the type is a leave type(please refer to useGetApprovalStages for more info)
 };
 
 interface Group {

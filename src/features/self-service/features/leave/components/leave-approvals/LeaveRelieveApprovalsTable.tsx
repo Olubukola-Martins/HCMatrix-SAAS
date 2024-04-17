@@ -87,7 +87,7 @@ const LeaveRelieveApprovalsTable: React.FC<{
             color: getAppropriateColorForStatus(item?.status),
           }}
         >
-          {item?.leave?.status}
+          {item?.status}
         </span>
       ),
     },
