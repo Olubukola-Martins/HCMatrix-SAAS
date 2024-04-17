@@ -1,10 +1,11 @@
-import { Form, Input, Select,  } from "antd";
+import { Form, Input, Select } from "antd";
 import { useFetchEmployees } from "features/core/employees/hooks/useFetchEmployees";
 import { useState, useEffect } from "react";
 import {
   textInputValidationRules,
   emailValidationRules,
   generalValidationRules,
+  textInputValidationRulesOp,
 } from "utils/formHelpers/validation";
 import { TGroup } from "../types";
 import { TGroupDataInput } from "../hooks/useAddGroup";
@@ -32,7 +33,7 @@ const AddGroupForm = ({
     }
   }, [group, form]);
 
-  const { data: empData, } = useFetchEmployees({
+  const { data: empData } = useFetchEmployees({
     pagination: {
       limit: 100, //temp suppose to allow search
       offset: 0,
@@ -52,6 +53,7 @@ const AddGroupForm = ({
       })),
       name: data.name,
     });
+    form.resetFields();
   };
   return (
     <Form
@@ -71,7 +73,11 @@ const AddGroupForm = ({
         <Input placeholder="john@gmail.com" />
       </Form.Item>
 
-      <Form.Item name="description" label="Description (Optional)">
+      <Form.Item
+        name="description"
+        label="Description (Optional)"
+        rules={textInputValidationRulesOp}
+      >
         <Input.TextArea placeholder="description" />
       </Form.Item>
       <Form.Item
@@ -98,13 +104,11 @@ const AddGroupForm = ({
           // onChange={handleChange}
           notFoundContent={null}
         >
-          {(
-            empData?.data.map((item) => (
-              <Select.Option key={item.id} value={item.id}>
-                {item.firstName} {item.lastName}
-              </Select.Option>
-            ))
-          )}
+          {empData?.data.map((item) => (
+            <Select.Option key={item.id} value={item.id}>
+              {item.firstName} {item.lastName}
+            </Select.Option>
+          ))}
         </Select>
       </Form.Item>
 

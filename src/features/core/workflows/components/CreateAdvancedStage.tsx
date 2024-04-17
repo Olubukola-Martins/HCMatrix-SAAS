@@ -119,16 +119,18 @@ export const CreateAdvancedStage: React.FC<{
               </Form.Item>
             )}
 
-          {stagingCondition === "specific" && (
-            // TO DO: validation of max/min based on count of entity, or no need as they can add to role at any moment
-            <Form.Item
-              name={"count"}
-              rules={generalValidationRules}
-              label="Count"
-            >
-              <InputNumber placeholder="count" />
-            </Form.Item>
-          )}
+          {stagingCondition === "specific" &&
+            !!stagingType &&
+            !["line-manager", "employee"].includes(stagingType) && (
+              // TO DO: validation of max/min based on count of entity, or no need as they can add to role at any moment
+              <Form.Item
+                name={"count"}
+                rules={generalValidationRules}
+                label="Count"
+              >
+                <InputNumber placeholder="count" />
+              </Form.Item>
+            )}
         </div>
       </Form>
       <div className="flex gap-4 justify-end mb-6">

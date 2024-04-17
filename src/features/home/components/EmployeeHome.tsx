@@ -15,6 +15,7 @@ import { useGetCompanyEmployeeDashboard } from "features/core/company/hooks/dash
 import { ErrorWrapper } from "components/errorHandlers/ErrorWrapper";
 import ErrorBoundary from "components/errorHandlers/ErrorBoundary";
 import RecentApprovalRequestsCard from "features/core/workflows/components/approval-request/RecentApprovalRequestsCard";
+import { DEFAULT_DATE_FORMAT } from "constants/dateFormats";
 
 export const EmployeeHome: React.FC<{
   employee?: Pick<
@@ -50,7 +51,7 @@ export const EmployeeHome: React.FC<{
                     <div className="flex items-center gap-3 mt-3">
                       <span className="flex items-center gap-2 text-xs text-accent">
                         <i className="ri-calendar-todo-line"></i>
-                        <span>{moment().format("DD MMMM YYYY")}</span>
+                        <span>{moment().format(DEFAULT_DATE_FORMAT)}</span>
                       </span>
                       <span className="flex items-center gap-2 text-xs text-green-700">
                         <i className="ri-time-line"></i>

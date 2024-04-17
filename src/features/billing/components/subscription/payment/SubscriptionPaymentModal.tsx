@@ -1,12 +1,6 @@
-import { Form, Input, InputNumber, Modal } from "antd";
+import { Form, Modal } from "antd";
 import Themes from "components/Themes";
-import { AppButton } from "components/button/AppButton";
-import { TCreateCompanySubscriptionProps } from "features/billing/hooks/company/useCreateCompanySubscription";
 import { QUERY_KEY_FOR_ACTIVE_COMPANY_SUBSCRITION } from "features/billing/hooks/company/useGetCompanyActiveSubscription";
-import { QUERY_KEY_FOR_COST_CENTRE_TRANSACTIONS } from "features/payroll/hooks/costCentres/transactions/useGetCostCentreTransactions";
-import { QUERY_KEY_FOR_COST_CENTRES } from "features/payroll/hooks/costCentres/useGetCostCentres";
-import { QUERY_KEY_FOR_SINGLE_COST_CENTRE } from "features/payroll/hooks/costCentres/useGetSingleCostCentre";
-import { QUERY_KEY_FOR_TRANSACTIONS_BY_API_ENTITY } from "features/payroll/hooks/transactions/useGetTransactionsByApiEntity";
 import { TCostCentre } from "features/payroll/types";
 import React, { useEffect } from "react";
 import { useQueryClient } from "react-query";
@@ -93,7 +87,7 @@ export const SubscriptionPaymentModal: React.FC<IProps> = ({
       queryKey: [QUERY_KEY_FOR_ACTIVE_COMPANY_SUBSCRITION],
       // exact: true,
     });
-
+    onPaymentCompletion?.();
     handleClose();
   };
   return (

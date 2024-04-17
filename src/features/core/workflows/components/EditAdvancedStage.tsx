@@ -1,7 +1,6 @@
-import { Form, Input, Select, Button, InputNumber } from "antd";
+import { Form, Input, Select,  InputNumber } from "antd";
 
 import { useEffect, useState } from "react";
-import { EditOutlined, DeleteOutlined, SaveOutlined } from "@ant-design/icons";
 import { FormEmployeeInput } from "features/core/employees/components/FormEmployeeInput";
 import { FormGroupInput } from "features/core/groups/components/FormGroupInput";
 import { FormRoleInput } from "features/core/roles-and-permissions/components/FormRoleInput";
@@ -11,8 +10,6 @@ import {
   generalValidationRules,
 } from "utils/formHelpers/validation";
 import { openNotification } from "utils/notifications";
-import { TBasicWorkflowStage } from "../hooks/useCreateBasicWorkflow";
-import useDeleteBasicStage from "../hooks/useDeleteBasicStage";
 import { TStage, TStageCondition, TStagingType } from "../types";
 import {
   WORKFLOW_STAGE_CONDITION_OPTIONS,
@@ -205,7 +202,9 @@ export const EditAdvancedStage: React.FC<{
                 />
               </Form.Item>
             )}
-          {stagingCondition === "specific" && (
+          {stagingCondition === "specific" &&
+            !!stagingType &&
+            !["line-manager", "employee"].includes(stagingType) &&(
             // TO DO: validation of max/min based on count of entity, or no need as they can add to role at any moment
             <Form.Item
               name={"count"}

@@ -4,7 +4,6 @@ import React from "react";
 import { IModalProps } from "types";
 import { openNotification } from "utils/notifications";
 import { useQueryClient } from "react-query";
-
 import { dateHasToBeGreaterThanOrEqualToCurrentDayRule } from "utils/formHelpers/validation";
 import { FormEmployeeInput } from "features/core/employees/components/FormEmployeeInput";
 import { TVehicle } from "../hooks/useFetchVehicles";
@@ -34,7 +33,6 @@ export const AssignVehicle: React.FC<IProps> = ({
           brand: data?.brand,
           model: data?.model,
           plateNumber: data?.plateNumber,
-          imageUrl: data.imageUrl,
           color: data?.color,
           description: data?.description,
           purchaseDate: data?.purchaseDate,
@@ -42,7 +40,6 @@ export const AssignVehicle: React.FC<IProps> = ({
           cost: data?.cost,
           status: data.status,
           assigneeId: values.assigneeId,
-          documentUrls: data.documentUrls ?? [],
         },
         id: vehicle.id,
       },

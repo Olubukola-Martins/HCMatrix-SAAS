@@ -84,6 +84,7 @@ const RecentApprovalRequestsCard: React.FC<{
                 },
                 {
                   name: "Reject",
+                  hidden: item.status !== "pending",
 
                   onClick: () =>
                     confirmApprovalAction({
@@ -95,7 +96,7 @@ const RecentApprovalRequestsCard: React.FC<{
                 },
                 {
                   name: "Approve",
-
+                  hidden: item.status !== "pending",
                   onClick: () =>
                     confirmApprovalAction({
                       approvalStageId: item?.id,

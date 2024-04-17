@@ -1,6 +1,9 @@
 import { ColumnsType, TablePaginationConfig, TableProps } from "antd/lib/table";
 import { Table } from "antd";
 import { TGroup } from "../types";
+import { GROUPS_TABLE_COLUMNS } from "./columns";
+import { TableFocusTypeBtn } from "components/table";
+import { useState } from "react";
 
 interface IProps {
   groups?: TGroup[];
@@ -18,49 +21,27 @@ const GroupsGridView = ({
   editGroup,
   deleteGroup,
 }: IProps) => {
-  const columns: ColumnsType<TGroup> = [
-    {
-      title: "Name",
-      dataIndex: "name",
-      key: "name",
-    },
-    {
-      title: "Group Email",
-      dataIndex: "email",
-      key: "email",
-    },
-
-    {
-      title: "Description",
-      dataIndex: "description",
-      key: "description",
-      ellipsis: true,
-    },
-    {
-      title: "Action",
-      dataIndex: "action",
-      width: 80,
-
-      render: (_, item) => (
-        <div className="flex items-center gap-3 text-lg">
-          <i
-            className="ri-eye-line cursor-pointer hover:text-caramel"
-            onClick={() => editGroup(item)}
-          />
-          <i
-            className="ri-delete-bin-line cursor-pointer hover:text-caramel"
-            onClick={() => deleteGroup(item)}
-          />
-        </div>
-      ),
-    },
-  ];
+  const columns: ColumnsType<TGroup> = GROUPS_TABLE_COLUMNS(
+    editGroup,
+    deleteGroup
+  );
+  const [selectedColumns, setSelectedColumns] =
+    useState<ColumnsType<TGroup>>(columns);
   return (
-    <div>
+    <div className="space-y-6">
+      <div className="flex justify-end">
+        {TableFocusTypeBtn<TGroup>({
+          selectedColumns,
+          setSelectedColumns,
+          data: {
+            columns,
+          },
+        })}
+      </div>
       <Table
-        columns={columns}
+        columns={selectedColumns}
         size="small"
-        dataSource={groups}
+        dataSource={groups?.map((item) => ({ key: item.id, ...item }))}
         loading={loading}
         pagination={pagination}
         onChange={onChange}

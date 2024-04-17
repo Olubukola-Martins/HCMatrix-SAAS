@@ -18,8 +18,14 @@ export const SalaryHistory: React.FC<{
   useEffect(() => {
     const result = data?.filter(
       (item) =>
-        item.monthlyGross.toLowerCase().indexOf(search?.toLowerCase() ?? "") !==
-        -1
+        item?.monthlyGross
+          ?.toLowerCase()
+          .indexOf(search?.toLowerCase() ?? "") !== -1 ||
+        item?.hourlyRate?.toLowerCase().indexOf(search?.toLowerCase() ?? "") !==
+          -1 ||
+        item?.frequency?.toLowerCase().indexOf(search?.toLowerCase() ?? "") !==
+          -1 ||
+        item?.type?.toLowerCase().indexOf(search?.toLowerCase() ?? "") !== -1
     );
     setHistories(result);
   }, [search, data]);
@@ -30,7 +36,7 @@ export const SalaryHistory: React.FC<{
       key: "monthly",
       render: (_, item) => (
         <span className="capitalize">
-          {formatNumberWithCommas(item?.monthlyGross)}
+          {formatNumberWithCommas(item?.monthlyGross ?? 0)}
         </span>
       ),
     },
@@ -38,7 +44,25 @@ export const SalaryHistory: React.FC<{
       title: "Scheme",
       dataIndex: "type",
       key: "type",
-      render: (_, item) => <span className="capitalize">{item?.type}</span>,
+      render: (_, item) => (
+        <span className="capitalize">{item?.type.split("_").join(" ")}</span>
+      ),
+    },
+    {
+      title: "Frequency",
+      dataIndex: "frequency",
+      key: "frequency",
+      render: (_, item) => (
+        <span className="capitalize">{item?.frequency}</span>
+      ),
+    },
+    {
+      title: "Hourly Rate",
+      dataIndex: "hourly rate",
+      key: "hourly rate",
+      render: (_, item) => (
+        <span className="capitalize">{item?.hourlyRate}</span>
+      ),
     },
 
     {

@@ -176,27 +176,7 @@ export const useGetActivatedSelfServiceLinksAndAnalytics = (): {
                 desc: "You can now manage vehicles and their bookings",
               },
             },
-            {
-              hidden:
-                data?.settings.some(
-                  (item) => item.type === "asset" && item.isActive
-                ) === false &&
-                !canUserAccessComponent({
-                  requiredPermissions: [],
-                  userPermissions,
-                  activeSubscription,
-                  requiredSubscriptionState: {
-                    label: "hr-admin",
-                    resources: [],
-                  },
-                }),
-              item: {
-                icon: attendance,
-                link: appRoutes.selfServiceAssets,
-                title: "Asset",
-                desc: "You can now manage assets within your organization",
-              },
-            },
+
             {
               hidden:
                 data?.settings.some(

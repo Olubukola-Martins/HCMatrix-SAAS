@@ -17,7 +17,10 @@ interface IProps {
     features?: { name?: string; value: string; color?: string }[];
     secondaryCol?:
       | { type: "text"; text: string }
-      | { type: "options"; options: { name: string; onClick: () => void }[] };
+      | {
+          type: "options";
+          options: { name: string; hidden?: boolean; onClick: () => void }[];
+        };
   }[];
   handleViewMore?: () => void;
   total?: number;
@@ -63,17 +66,19 @@ export const RecentCard: React.FC<IProps> = ({
                     className="overflow-hidden"
                     overlay={
                       <div className="bg-mainBg flex flex-col gap-2 rounded shadow-sm py-2 relative -top-2  px-2 text-xs border font-medium">
-                        {item.secondaryCol.options.map((option, i) => (
-                          <div
-                            key={i}
-                            className="cursor-pointer "
-                            onClick={option.onClick}
-                          >
-                            <span className="hover:text-caramel">
-                              {option.name}
-                            </span>
-                          </div>
-                        ))}
+                        {item.secondaryCol.options
+                          .filter((item) => item.hidden !== true)
+                          .map((option, i) => (
+                            <div
+                              key={i}
+                              className="cursor-pointer "
+                              onClick={option.onClick}
+                            >
+                              <span className="hover:text-caramel">
+                                {option.name}
+                              </span>
+                            </div>
+                          ))}
                       </div>
                     }
                     trigger={["click"]}

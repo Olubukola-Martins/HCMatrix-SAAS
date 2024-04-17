@@ -1,7 +1,9 @@
 import { Table } from "antd";
 import { ColumnsType, TablePaginationConfig, TableProps } from "antd/lib/table";
 import { TDepartment } from "../types";
-import { getEmployeeFullName } from "features/core/employees/utils/getEmployeeFullName";
+import { DEPARTMENT_TABLE_COLUMNS } from "./columns";
+import { useState } from "react";
+import { TableFocusTypeBtn } from "components/table";
 
 interface IProps {
   data?: TDepartment[];
@@ -22,71 +24,28 @@ export const DepartmentsTableView = ({
   deleteDepartment,
   viewDepartment,
 }: IProps) => {
-  const columns: ColumnsType<TDepartment> = [
-    {
-      title: "Name",
-      dataIndex: "name",
-      key: "name",
-    },
-    {
-      title: "Department Email",
-      dataIndex: "email",
-      key: "email",
-    },
-    {
-      title: "Department Head",
-      dataIndex: "departmentHeadId",
-      key: "departmentHeadId",
-      render: (_, item) => (
-        <span className="capitalize">
-          {item?.departmentHead
-            ? getEmployeeFullName(item?.departmentHead)
-            : ""}
-        </span>
-      ),
-    },
-    {
-      title: "Parent Department",
-      dataIndex: "parentDepartmentId",
-      key: "parentDepartmentId",
-      render: (_, item) => (
-        <span className="capitalize">
-          {item?.parentDepartment ? item.parentDepartment.name : ""}
-        </span>
-      ),
-    },
-    {
-      title: "Employee Count",
-      dataIndex: "employeeCount",
-      key: "employeeCount",
-    },
-    {
-      title: "Action",
-      dataIndex: "action",
-      render: (_, item) => (
-        <div className="flex items-center gap-3 text-lg">
-          <i
-            className="ri-pencil-line cursor-pointer hover:text-caramel"
-            onClick={() => editDepartment(item)}
-          ></i>
-          <i
-            className="ri-eye-line cursor-pointer hover:text-caramel"
-            onClick={() => viewDepartment(item)}
-          ></i>
-          <i
-            className="ri-delete-bin-line cursor-pointer hover:text-caramel"
-            onClick={() => deleteDepartment(item)}
-          ></i>
-        </div>
-      ),
-    },
-  ];
+  const columns: ColumnsType<TDepartment> = DEPARTMENT_TABLE_COLUMNS(
+    editDepartment,
+    viewDepartment,
+    deleteDepartment
+  );
+  const [selectedColumns, setSelectedColumns] =
+    useState<ColumnsType<TDepartment>>(columns);
   return (
-    <div>
+    <div className="space-y-4">
+      <div className="flex justify-end">
+        {TableFocusTypeBtn<TDepartment>({
+          selectedColumns,
+          setSelectedColumns,
+          data: {
+            columns,
+          },
+        })}
+      </div>
       <Table
-        columns={columns}
+        columns={selectedColumns}
         size="small"
-        dataSource={data}
+        dataSource={data?.map((item) => ({ key: item.id, ...item }))}
         loading={loading}
         pagination={pagination}
         onChange={onChange}

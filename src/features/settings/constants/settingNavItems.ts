@@ -87,15 +87,12 @@ export const settingNavItems: TSettNavItem[] = [
   },
   {
     title: "Tax",
-    items: [
-      { name: "Authorities", link: "" },
-      { name: "Policies", link: appRoutes.payrollTaxPolicies },
-    ],
+    items: [{ name: "Authorities", link: appRoutes.taxAuthorities }],
     category: "payroll",
   },
   {
     title: "Pension",
-    items: [{ name: "Administrators", link: "" }],
+    items: [{ name: "Administrators", link: appRoutes.pensionAdministrators }],
     category: "payroll",
   },
   {

@@ -19,31 +19,19 @@ export const SupplementaryActions: React.FC<SupplementaryActionsProps> = ({
 }) => {
   return (
     <div className="flex flex-row flex-wrap lg:flex-nowrap gap-4 lg:items-center ">
-      {actions?.some((item) => item.hidden)
-        ? actions
-            ?.filter((item) => item.hidden === false)
-            .map((item, i) => (
-              <AppButton
-                key={i}
-                label={item.name}
-                handleClick={() => item.handleClick()}
-                variant={item.btnVariant}
-                isLoading={item.loading}
-                additionalClassNames={item.additionalClassNames}
-                disabled={item.disabled}
-              />
-            ))
-        : actions?.map((item, i) => (
-            <AppButton
-              key={i}
-              label={item.name}
-              handleClick={() => item.handleClick()}
-              variant={item.btnVariant}
-              isLoading={item.loading}
-              additionalClassNames={item.additionalClassNames}
-              disabled={item.disabled}
-            />
-          ))}
+      {actions
+        ?.filter((item) => item.hidden !== true)
+        .map((item, i) => (
+          <AppButton
+            key={i}
+            label={item.name}
+            handleClick={() => item.handleClick()}
+            variant={item.btnVariant}
+            isLoading={item.loading}
+            additionalClassNames={item.additionalClassNames}
+            disabled={item.disabled}
+          />
+        ))}
       {comps?.map((item, i) => (
         <div key={i ** 23 + "09"}>{item}</div>
       ))}

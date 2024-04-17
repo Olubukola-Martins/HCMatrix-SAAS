@@ -17,7 +17,7 @@ export type TTHandOverForm = {
   createdAt: string;
   updatedAt: string;
   employee: Employee;
-  assetChecklist: AssetChecklist[];
+  assetChecklist?: AssetChecklist[];
 };
 
 interface AssetChecklist {

@@ -2,6 +2,7 @@ import React, { ReactNode, useState } from "react";
 import { AddSingleVehicle } from "./AddSingleVehicle";
 import { AppButton } from "components/button/AppButton";
 import { ImportVehicles } from "./bulk/ImportVehicles";
+import ExportVehicles from "./export/ExportVehicles";
 
 type TAction = "import" | "add";
 export const VehicleWrapper: React.FC<{
@@ -23,7 +24,7 @@ export const VehicleWrapper: React.FC<{
         {showAddVehicleAndDownlaod && (
           <div className="flex justify-between">
             {/* download */}
-            <i className="ri-download-2-line text-xl" />
+            <ExportVehicles />
             <div className="flex items-end gap-4 justify-end">
               <AppButton
                 label="Add Vehicle"

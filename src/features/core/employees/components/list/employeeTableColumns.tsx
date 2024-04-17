@@ -69,3 +69,22 @@ export const EMPLOYEE_TABLE_COLUMNS: ColumnsType<TEmployee> = [
     ),
   },
 ];
+export const EMPLOYEE_EXPORT_COLUMNS = (
+  items?: TEmployee[]
+): Record<string, string | number>[] => {
+  return (
+    items?.map((item) => ({
+      Name: getEmployeeFullName(item),
+
+      "Employee ID": item.empUid,
+
+      Branch: item?.jobInformation?.branch?.name ?? "none",
+      Department: item.designation?.department?.name ?? "none",
+      Designation: item.designation?.name ?? "none",
+      Role: item.role.name,
+
+      Email: item.email,
+      "Employee Status": item.status,
+    })) ?? []
+  );
+};

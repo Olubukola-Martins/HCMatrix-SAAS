@@ -165,6 +165,23 @@ const UserActions: React.FC<{
       isLink: true,
     },
     {
+      url: appRoutes.purchaseUserLicense,
+      text: "Manage User License",
+      hidden:
+        isOwner === false &&
+        !canUserAccessComponent({
+          userPermissions,
+          requiredPermissions: [],
+          activeSubscription,
+          requiredSubscriptionState: {
+            label: "employee-management",
+            resources: [],
+          },
+        }),
+
+      isLink: true,
+    },
+    {
       url: appRoutes.billingStorageManagement,
       text: "Storage",
       hidden:

@@ -30,10 +30,12 @@ const assetCheckListWrap = "flex flex-col";
 type IProps = {
   handover?: TTHandOverForm;
   isLoading?: boolean;
+  canSubmitOrCancelForm?: boolean;
 };
 export const EmployeeHandOverForm: React.FC<IProps> = ({
   handover,
   isLoading: isLoadingHandover,
+  canSubmitOrCancelForm = false,
 }) => {
   const queryClient = useQueryClient();
 
@@ -52,7 +54,7 @@ export const EmployeeHandOverForm: React.FC<IProps> = ({
     form.setFieldsValue({
       ...handover,
       separationDate: moment(handover.separationDate),
-      assetChecklist: handover.assetChecklist.map(
+      assetChecklist: handover?.assetChecklist?.map(
         (item) => item.assetRequisitionId
       ),
     });
@@ -74,7 +76,7 @@ export const EmployeeHandOverForm: React.FC<IProps> = ({
         separationDate: data.separationDate,
         supervisorClearanceUrl: supervisorClearanceUrl,
         supportingDocumentUrl: supportingDocumentUrl,
-        assetChecklist: data.assetChecklist.map((item: number) => ({
+        assetChecklist: data?.assetChecklist?.map((item: number) => ({
           assetRequisitionId: item,
           isReturned: true,
         })),
@@ -99,7 +101,6 @@ export const EmployeeHandOverForm: React.FC<IProps> = ({
             description: res.data.message,
             // duration: 0.4,
           });
-          form.resetFields();
 
           queryClient.invalidateQueries({
             queryKey: [QUERY_KEY_FOR_EXIT_HAND_OVER_FORMS],
@@ -109,6 +110,8 @@ export const EmployeeHandOverForm: React.FC<IProps> = ({
       }
     );
   };
+  const disabled =
+    handover && ["pending", "approved"].includes(handover?.status);
   return (
     <Skeleton
       loading={
@@ -121,9 +124,7 @@ export const EmployeeHandOverForm: React.FC<IProps> = ({
         className="bg-card px-5 py-7  rounded-md mt-7 "
         form={form}
         onFinish={handleSubmit}
-        disabled={
-          handover?.status === "pending" || handover?.status === "approved"
-        } //the employee should only able to edit/create handover when it is neither pending or approved
+        disabled={disabled} //the employee should only able to edit/create handover when it is neither pending or approved
       >
         <div className="grid grid-cols-1 md:grid-cols-2 gap-5 text-accent">
           {/* first grid */}
@@ -214,39 +215,44 @@ export const EmployeeHandOverForm: React.FC<IProps> = ({
 
           {/* second grid */}
           <div className="flex flex-col gap-4">
-            <div className={`${boxStyle} `}>
-              <h5 className={boxTitle}>Asset Checklist</h5>
-              <Form.Item
-                name="assetChecklist"
-                className="w-full"
-                rules={
-                  assets && assets?.total > 0
-                    ? generalValidationRules
-                    : generalValidationRulesOp
-                }
-              >
-                <Checkbox.Group className="w-full">
-                  <div className="px-4 py-2 grid grid-cols-1 md:grid-cols-2 gap-3 text-xs">
-                    {/* 1 */}
-                    {assets &&
-                      assets.data?.map((item, i) => (
-                        <div className={`${assetCheckListWrap}  gap-2`} key={i}>
-                          <div className="flex gap-2  pb-2">
-                            <Checkbox value={item.id} />
-                            <AssetDetail
-                              {...{
-                                ID: item.asset.uid,
-                                uid: item.asset.uid,
-                                name: item.asset.name,
-                              }}
-                            />
+            {assets && assets.data.length > 0 ? (
+              <div className={`${boxStyle} `}>
+                <h5 className={boxTitle}>Asset Checklist</h5>
+                <Form.Item
+                  name="assetChecklist"
+                  className="w-full"
+                  rules={
+                    assets && assets?.total > 0
+                      ? generalValidationRules
+                      : generalValidationRulesOp
+                  }
+                >
+                  <Checkbox.Group className="w-full">
+                    <div className="px-4 py-2 grid grid-cols-1 md:grid-cols-2 gap-3 text-xs">
+                      {/* 1 */}
+                      {assets &&
+                        assets.data?.map((item, i) => (
+                          <div
+                            className={`${assetCheckListWrap}  gap-2`}
+                            key={i}
+                          >
+                            <div className="flex gap-2  pb-2">
+                              <Checkbox value={item.id} />
+                              <AssetDetail
+                                {...{
+                                  ID: item.asset.uid,
+                                  uid: item.asset.uid,
+                                  name: item.asset.name,
+                                }}
+                              />
+                            </div>
                           </div>
-                        </div>
-                      ))}
-                  </div>
-                </Checkbox.Group>
-              </Form.Item>
-            </div>
+                        ))}
+                    </div>
+                  </Checkbox.Group>
+                </Form.Item>
+              </div>
+            ) : null}
 
             <div className={boxStyle}>
               <h5 className={boxTitle}>Upload Supporting Document</h5>
@@ -282,12 +288,23 @@ export const EmployeeHandOverForm: React.FC<IProps> = ({
             </div>
           </div>
         </div>
-        {!handover && (
+
+        {canSubmitOrCancelForm ? (
           <div className="flex justify-between items-center mt-5">
-            <AppButton label="cancel" type="button" variant="transparent" />
-            <AppButton label="Submit" type="submit" isLoading={isLoading} />
+            <AppButton
+              label="cancel"
+              type="button"
+              variant="transparent"
+              disabled={disabled}
+            />
+            <AppButton
+              label="Submit"
+              type="submit"
+              isLoading={isLoading}
+              disabled={disabled}
+            />
           </div>
-        )}
+        ) : null}
       </Form>
     </Skeleton>
   );

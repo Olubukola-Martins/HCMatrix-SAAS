@@ -1,6 +1,7 @@
 import { notification } from "antd";
 import { ReactNode } from "react";
 
+export type TNotificationState = "open" | "success" | "error" | "info";
 const NOTIFICATION_KEY = "general notification";
 const DEFAULT_DURATION = 8;
 export const openNotification = ({
@@ -12,13 +13,13 @@ export const openNotification = ({
 }: {
   title: string;
   description: string | ReactNode;
-  state?: "open" | "success" | "error" | "info";
+  state?: TNotificationState;
   duration?: number;
   key?: string;
 }) => {
   notification[state ?? "open"]({
     key,
-    message: title,
+    message: <span className="capitalize">{title}</span>,
     description,
     duration: duration ?? DEFAULT_DURATION,
     onClick: () => {},

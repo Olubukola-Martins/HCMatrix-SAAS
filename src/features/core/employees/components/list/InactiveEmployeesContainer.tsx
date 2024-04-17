@@ -1,20 +1,45 @@
-import { Input } from "antd";
-
-import InactiveEmpTableView from "./InactiveEmpTableView";
-import { useState } from "react";
+import React, { useState } from "react";
 import { useFetchEmployees } from "../../hooks/useFetchEmployees";
 import { TEmployee } from "../../types";
-import BulkEmployeeActionHeader from "./bulkEmployeeActions/BulkEmployeeActionHeader";
 import { usePagination } from "hooks/usePagination";
+import BulkEmployeeActionHeader from "./bulkEmployeeActions/BulkEmployeeActionHeader";
 import { TEmployeeFilterProps } from "../../types/employee-filter";
+import { EMPLOYEE_TABLE_COLUMNS } from "./employeeTableColumns";
+import { ColumnsType } from "antd/lib/table";
+import {
+  TGenericEntityTableHOCProps,
+  withGenericEntityTableHOCProps,
+} from "components/hoc/GenericEntityTableHOC";
+import { EmployeeCountInfoBtnList } from "./employeeInfoBtns/EmployeeCountInfoBtn";
+import InactiveEmpTableView from "./InactiveEmpTableView";
 
 type IProps = {
   filterProps: TEmployeeFilterProps;
+  columns?: ColumnsType<TEmployee>;
+  search?: string;
 };
-const InactiveEmployeesContainer: React.FC<IProps> = ({ filterProps }) => {
-  const { pagination, onChange } = usePagination();
-  const [search, setSearch] = useState("");
 
+const Component: React.FC<IProps & TGenericEntityTableHOCProps> = ({
+  ...props
+}) => {
+  return (
+    <div>
+      <OriginalInactiveEmployeesContainer {...props} />
+    </div>
+  );
+};
+
+const InactiveEmployeesContainer = withGenericEntityTableHOCProps(Component, {
+  columns: EMPLOYEE_TABLE_COLUMNS,
+  leftComp: <EmployeeCountInfoBtnList statuses={["suspended", "terminated"]} />,
+});
+
+const OriginalInactiveEmployeesContainer: React.FC<IProps> = ({
+  filterProps,
+  columns,
+  search,
+}) => {
+  const { pagination, onChange } = usePagination();
   const {
     data: employeeData,
     isSuccess,
@@ -34,35 +59,25 @@ const InactiveEmployeesContainer: React.FC<IProps> = ({ filterProps }) => {
       setSelectedEmployees(selectedRows);
     },
   };
-
   const clearSelectedEmployees = () => setSelectedEmployees([]);
-
   return (
-    <div className="flex flex-col gap-4">
+    <div className="flex flex-col gap-6">
       <BulkEmployeeActionHeader
         data={selectedEmployees}
         clearSelectedEmployees={clearSelectedEmployees}
       />
       <div className="space-y-4">
-        <div className="flex justify-end">
-          <Input.Search
-            className="w-1/6"
-            onSearch={(val) => setSearch(val)}
-            placeholder="Search"
-            allowClear
-          />
-        </div>
         <InactiveEmpTableView
           rowSelection={{
             type: "checkbox",
             selectedRowKeys: selectedEmployees.map((item) => item.id),
-
             ...rowSelection,
           }}
           pagination={{ ...pagination, total: employeeData?.total }}
           loading={isFetching}
           employees={isSuccess ? employeeData.data : []}
           onChange={onChange}
+          columns={columns}
         />
       </div>
     </div>

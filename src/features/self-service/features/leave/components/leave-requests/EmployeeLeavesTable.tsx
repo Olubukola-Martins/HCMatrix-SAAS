@@ -181,7 +181,7 @@ const EmployeeLeavesTable: React.FC<{
           handleClose={() => setShowD(undefined)}
           open={showD === "view-approval-stages"}
           id={request?.id}
-          type="conference-room"
+          type="leave"
         />
       )}
 

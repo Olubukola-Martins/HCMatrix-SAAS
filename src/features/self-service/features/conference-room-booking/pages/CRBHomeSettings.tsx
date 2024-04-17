@@ -1,7 +1,7 @@
 import SelfServiceSubNav from "features/self-service/components/SelfServiceSubNav";
-import CRBHeader from "../components/CRBHeader";
 import CRBSettingsAccordian from "../components/CRBSettingsAccordian";
 import { appRoutes } from "config/router/paths";
+import { PageIntro } from "components/layout/PageIntro";
 
 export const CRBHomeSettings = () => {
   return (
@@ -10,9 +10,9 @@ export const CRBHomeSettings = () => {
 
       <div>
         <div className="Container">
-          <CRBHeader
+          <PageIntro
             title="Conference Room Settings"
-            backLink={appRoutes.conferenceRoomBooking}
+            link={appRoutes.conferenceRoomBooking}
           />
           <CRBSettingsAccordian />
         </div>

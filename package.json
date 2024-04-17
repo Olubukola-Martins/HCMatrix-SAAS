@@ -31,6 +31,7 @@
     "react-chartjs-2": "^4.3.1",
     "react-dom": "^18.2.0",
     "react-form-builder2": "^0.14.0",
+    "react-icons": "^5.0.1",
     "react-multi-date-picker": "^4.4.0",
     "react-organizational-chart": "^2.1.1",
     "react-paystack": "^4.0.3",

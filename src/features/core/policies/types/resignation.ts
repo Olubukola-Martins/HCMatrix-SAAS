@@ -6,7 +6,7 @@ export type TResignationPolicy = {
   createdAt: string;
   updatedAt: string;
   workflow: Workflow;
-};
+} | null;
 
 interface Workflow {
   id: number;

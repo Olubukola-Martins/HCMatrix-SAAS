@@ -10,6 +10,7 @@ import {
   canUserAccessComponent,
   useGetUserPermissions,
 } from "components/permission-restriction/PermissionRestrictor";
+import { PageIntro } from "components/layout/PageIntro";
 
 interface IProps {
   title?: string;
@@ -40,12 +41,7 @@ const CRBHeader = ({ title = "Conference Rooms", backLink }: IProps) => {
 
       {/* TO DO: Refactor to use the comp header */}
       <div className="flex items-center justify-between">
-        <div className="flex items-center gap-3 font-extrabold ">
-          <Link to={backLink}>
-            <i className="ri-arrow-left-s-line text-lg cursor-pointer hover:text-caramel" />
-          </Link>
-          <h2 className="text-xl md:text-2xl text-accent">{title}</h2>
-        </div>
+        <PageIntro link={backLink} title={title} />
         <div className="flex gap-2 items-center">
           <button
             className="button"

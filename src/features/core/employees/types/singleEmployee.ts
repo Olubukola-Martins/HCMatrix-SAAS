@@ -1,4 +1,7 @@
 import { TLicenseType } from "features/authentication/types/auth-user";
+import { TPayrollFrequency } from "features/payroll/types/payroll";
+import { TPayrollSchemeType } from "features/payroll/types/payrollSchemes";
+import { TOnboarding } from "features/self-service/features/onboarding/types";
 
 export type TSingleEmployee = {
   id: number;
@@ -31,14 +34,16 @@ export type TSingleEmployee = {
   roleHistory: RoleHistory[];
   userProjects: UserProject[];
   salaryHistory: SalaryHistory[];
-  onboarding?: any; // TO DO: udpate all the anys
+  onboarding?: null | TOnboarding;
   role: Role;
 };
 interface SalaryHistory {
   id: number;
-  type: string;
+  type: TPayrollSchemeType;
   employeeId: number;
-  monthlyGross: string;
+  monthlyGross?: string | null;
+  hourlyRate?: string | null;
+  frequency?: TPayrollFrequency;
   from: string;
   to?: any;
   companyId: number;

@@ -1,4 +1,4 @@
-import { Checkbox, Skeleton } from "antd";
+import {  Skeleton } from "antd";
 import { PageIntro } from "components/layout/PageIntro";
 import { appRoutes } from "config/router/paths";
 import SelfServiceSubNav from "features/self-service/components/SelfServiceSubNav";
@@ -45,6 +45,7 @@ const HandOverDetails = () => {
               <EmployeeHandOverContainer
                 handover={data}
                 isLoading={isLoading}
+                
               />
             </ErrorWrapper>
           </Skeleton>

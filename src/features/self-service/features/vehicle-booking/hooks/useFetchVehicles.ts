@@ -102,7 +102,7 @@ export interface TVehicleMaintenance {
 export interface TVehicleRepair extends TVehicleMaintenance {}
 export const QUERY_KEY_FOR_VEHICLES = "vehicles";
 
-const getVehicles = async (
+export const getVehicles = async (
   props: IGetDataProps
 ): Promise<{ data: TVehicle[]; total: number }> => {
   const { pagination, status } = props;

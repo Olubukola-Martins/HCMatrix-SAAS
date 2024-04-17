@@ -1,4 +1,3 @@
-import Reminder from "../components/Reminder";
 import VehicleList from "../components/VehicleList";
 import VehicleOverview from "../components/VehicleOverview";
 import { Tabs } from "antd";
