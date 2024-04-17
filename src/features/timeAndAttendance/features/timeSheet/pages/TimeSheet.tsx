@@ -14,6 +14,7 @@ import { openNotification } from "utils/notifications";
 import { AddManuelAttendance } from "../components/AddManuelAttendance";
 import { Dropdown, Menu } from "antd";
 import { AddMultipleAttendance } from "../components/AddMultipleAttendance";
+import { useGetActiveTrackingPolicy } from "../../settings/timeTrackingRules/hooks/useGetActiveTrackingPolicy";
 
 const TimeSheet = () => {
   const [filterSheet, setFilterSheet] = useState(false);
@@ -31,6 +32,7 @@ const TimeSheet = () => {
       period: filterData?.period,
     },
   });
+  const { data: policyData } = useGetActiveTrackingPolicy();
 
   const noAttendance = () => {
     openNotification({
@@ -261,6 +263,7 @@ const TimeSheet = () => {
           <div className="flex items-center gap-x-5">
             <Dropdown
               trigger={["click"]}
+              disabled={policyData?.title === "Mandatory" ? true : false}
               overlay={
                 <Menu>
                   <Menu.Item key="1" onClick={() => setAddAttendance(true)}>

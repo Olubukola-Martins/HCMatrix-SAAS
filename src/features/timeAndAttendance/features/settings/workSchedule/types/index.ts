@@ -45,6 +45,9 @@ export interface scheduleEmployeesShiftProps {
   employee?: TEmployeeProps;
   shiftType: string;
   employeeIds: number[];
+  startDate: string;
+  endDate: string;
+  isPermanent: boolean;
 }
 
 export interface scheduleFilterProps {

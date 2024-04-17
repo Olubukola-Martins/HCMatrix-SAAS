@@ -283,7 +283,6 @@ export const appRoutes = {
     format: `/attendance/reports/:id`,
     path: `/attendance/reports/${id}`,
   }),
-  shiftPerEmployee: `/attendance/shift-per-employee`,
   hoursPerEmployee: `/attendance/hours-per-employee`,
   employeesPerShift: `/attendance/employees-per-shift`,
 

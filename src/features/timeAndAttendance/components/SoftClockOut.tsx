@@ -19,8 +19,9 @@ import { useGetFormattedDate } from "hooks/useGetFormattedDate";
 import { QUERY_KEY_FOR_TIME_SHEET } from "../features/timeSheet/hooks/useGetTimeSheet";
 import { QUERY_KEY_FOR_ANALYTICS_RECORDS } from "../features/home/hooks/useGetAnalyticsRecord";
 import { QUERY_KEY_FOR_TIME_SHEET_DASHBOARD } from "../features/home/hooks/useGetTimeSheetRecord";
+import { softClockInAndOutProps } from "../types";
 
-export const SoftClockOut = () => {
+export const SoftClockOut = ({ componentType }: softClockInAndOutProps) => {
   const globalCtx = useContext(GlobalContext);
   const { dispatch } = globalCtx;
   const queryClient = useQueryClient();
@@ -76,13 +77,17 @@ export const SoftClockOut = () => {
 
   return (
     <div>
-      <img
-        src={offIndicator}
-        alt="off indicator"
-        className="cursor-pointer"
-        title="Clock out"
-        onClick={() => setOpenClockOutForm(true)}
-      />
+      {componentType === "image" ? (
+        <img
+          src={offIndicator}
+          alt="off indicator"
+          className="cursor-pointer"
+          title="Clock out"
+          onClick={() => setOpenClockOutForm(true)}
+        />
+      ) : (
+        <button className="button w-full">Clock - Out</button>
+      )}
 
       <Modal
         title="Clock Out"

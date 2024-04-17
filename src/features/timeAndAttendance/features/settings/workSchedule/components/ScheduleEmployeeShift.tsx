@@ -40,6 +40,25 @@ export const ScheduleEmployeeShift = () => {
       ),
     },
     {
+      title: "Shift Method",
+      dataIndex: "isPermanent",
+      render: (_, val) => (
+        <span>{val?.isPermanent ? "Permanent" : "Temporary"}</span>
+      ),
+    },
+    {
+      title: "Start Date",
+      dataIndex: "startDate",
+      render: (_, val) => (
+        <span>{val?.startDate ? val?.startDate : "---"}</span>
+      ),
+    },
+    {
+      title: "End Date",
+      dataIndex: "endDate",
+      render: (_, val) => <span>{val?.endDate ? val?.endDate : "---"}</span>,
+    },
+    {
       title: "Shift Type",
       dataIndex: "shiftType",
       render: (_, val) => <span className="capitalize">{val?.shiftType}</span>,
@@ -88,15 +107,15 @@ export const ScheduleEmployeeShift = () => {
         handleClose={() => setFilterDrawer(false)}
       />
       <div className="flex justify-between mb-5">
-         <div>
-         {filterData !== undefined && (
-          <AppButton
-            variant="transparent"
-            label="Reset Report"
-            handleClick={() => setFilterData(undefined)}
-          />
-        )}
-         </div>
+        <div>
+          {filterData !== undefined && (
+            <AppButton
+              variant="transparent"
+              label="Reset Report"
+              handleClick={() => setFilterData(undefined)}
+            />
+          )}
+        </div>
         <div className="flex items-center gap-3">
           <button
             className="button flex items-center gap-3"
@@ -120,6 +139,15 @@ export const ScheduleEmployeeShift = () => {
                 </Menu.Item>
                 <Menu.Item key="2" onClick={() => setAddMultiple(true)}>
                   Import Shift
+                </Menu.Item>
+                <Menu.Item
+                  key="3"
+                  onClick={() => {
+                    setAssignEmployee(true);
+                    setAssignId(undefined);
+                  }}
+                >
+                  Shift Bulk Update
                 </Menu.Item>
               </Menu>
             }
