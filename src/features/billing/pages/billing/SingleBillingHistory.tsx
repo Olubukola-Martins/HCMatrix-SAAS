@@ -3,7 +3,7 @@ import { PageIntro } from "components/layout/PageIntro";
 import { appRoutes } from "config/router/paths";
 import PageSubHeader from "components/layout/PageSubHeader";
 import { useGetSubscriptionTransaction } from "features/billing/hooks/company/transaction/useGetSubscriptionTransaction";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import ErrorBoundary from "components/errorHandlers/ErrorBoundary";
 import { Skeleton } from "antd";
 import { ErrorWrapper } from "components/errorHandlers/ErrorWrapper";
@@ -19,6 +19,7 @@ const SingleBillingHistory = () => {
   } = useGetSubscriptionTransaction({
     id: +id,
   });
+  const navigate = useNavigate();
   return (
     <ErrorBoundary>
       <Skeleton loading={isLoading} active paragraph={{ rows: 45 }}>
@@ -37,6 +38,12 @@ const SingleBillingHistory = () => {
             <PageSubHeader
               description={`Below are the purchased modules`}
               hideBackground
+              actions={[
+                {
+                  name: "Manage User Licenses",
+                  handleClick: () => navigate(appRoutes.purchaseUserLicense),
+                },
+              ]}
             />
 
             <BillingTransactionDetails
