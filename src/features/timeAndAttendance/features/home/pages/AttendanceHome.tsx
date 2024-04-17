@@ -9,6 +9,7 @@ import ErrorBoundary from "components/errorHandlers/ErrorBoundary";
 import { LeaveWhoIsOut } from "features/home/components/whoIsOut/LeaveWhoIsOut";
 import { RemoteWhoIsOut } from "features/home/components/whoIsOut/RemoteWhoIsOut";
 import { useGetAnalyticsRecord } from "../hooks/useGetAnalyticsRecord";
+import { useGetDashboardGraph } from "../hooks/useGetDashboardGraph";
 
 export const AttendanceHome = () => {
   const today = new Date();
@@ -21,6 +22,8 @@ export const AttendanceHome = () => {
 
   const { data: analyticsData, isLoading: analyticsLoading } =
     useGetAnalyticsRecord();
+
+  const {} = useGetDashboardGraph();
 
   return (
     <ErrorBoundary>
