@@ -33,7 +33,7 @@ export const AttendanceHome = () => {
           <div>
             <h2 className="font-medium text-lg pb-2">Good morning Esther</h2>
             <p>
-              Welcome to border, here is a breakdown summary of all employee
+              Welcome on board, here is a breakdown summary of all employee
               attendance today.
             </p>
           </div>
