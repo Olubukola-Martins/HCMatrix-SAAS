@@ -30,7 +30,9 @@ const columns: ColumnsType<shiftPerEmployeeProps> = [
     title: "Supervisors/shift-in-charge",
     dataIndex: "supervisor",
     render: (_, val) => (
-      <span className="capitalize">{val?.department?.name}</span>
+      <span className="capitalize">
+        {val?.departmentHead?.firstName} {val?.departmentHead?.lastName}
+      </span>
     ),
   },
   {
