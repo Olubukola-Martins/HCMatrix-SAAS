@@ -25,6 +25,11 @@ export const AddEmployeeShift = ({ handleClose, open, id }: IDrawerProps) => {
     isSuccess,
   } = useGetSingleShiftSchedule(id as unknown as number);
 
+  const onClose = () => {
+    handleClose();
+    form.resetFields();
+  };
+
   useEffect(() => {
     if (data && isSuccess) {
       const startDate = moment(data.startDate);
@@ -89,7 +94,7 @@ export const AddEmployeeShift = ({ handleClose, open, id }: IDrawerProps) => {
       footer={false}
       title="Assign & Update Employee Shift"
       open={open}
-      onCancel={() => handleClose()}
+      onCancel={() => onClose()}
       style={{ top: 10 }}
     >
       <Form

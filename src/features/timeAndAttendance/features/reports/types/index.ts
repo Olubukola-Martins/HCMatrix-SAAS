@@ -8,7 +8,7 @@ export interface shiftPerEmployeeProps {
   };
   shiftType: string;
   totalTimeTracked: number;
-
+  departmentHead: TEmployeeProps;
 }
 
 export interface filterReportProps {

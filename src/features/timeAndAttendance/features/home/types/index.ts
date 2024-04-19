@@ -16,3 +16,7 @@ export interface timeSheetRecordProps {
   clockIn: clockInProps;
   employee: TEmployeeProps;
 }
+
+export interface dashboardGraphProps {
+
+}

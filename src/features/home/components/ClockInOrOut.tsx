@@ -12,13 +12,11 @@ const ClockInOrOut = () => {
         {/* TODO: Implement 12 hr format when accounted from company settings */}
       </h2>
 
-      {data?.clocking.clockIn !== null &&
-          data?.clocking.clockOut === null ? (
-            <SoftClockOut componentType="button" />
-          ) : (
-            <SoftClockIn componentType="button" />
-          )}
-     
+      {data?.clocking.clockIn !== null && data?.clocking.clockOut === null ? (
+        <SoftClockOut componentType="button" />
+      ) : (
+        <SoftClockIn componentType="button" />
+      )}
     </div>
   );
 };

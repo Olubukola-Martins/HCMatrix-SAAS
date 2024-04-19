@@ -9,6 +9,7 @@ import ErrorBoundary from "components/errorHandlers/ErrorBoundary";
 import { LeaveWhoIsOut } from "features/home/components/whoIsOut/LeaveWhoIsOut";
 import { RemoteWhoIsOut } from "features/home/components/whoIsOut/RemoteWhoIsOut";
 import { useGetAnalyticsRecord } from "../hooks/useGetAnalyticsRecord";
+import { useGetDashboardGraph } from "../hooks/useGetDashboardGraph";
 
 export const AttendanceHome = () => {
   const today = new Date();
@@ -22,6 +23,8 @@ export const AttendanceHome = () => {
   const { data: analyticsData, isLoading: analyticsLoading } =
     useGetAnalyticsRecord();
 
+  const {} = useGetDashboardGraph();
+
   return (
     <ErrorBoundary>
       <AttendanceSubToper active="none-active" />
@@ -30,7 +33,7 @@ export const AttendanceHome = () => {
           <div>
             <h2 className="font-medium text-lg pb-2">Good morning Esther</h2>
             <p>
-              Welcome to border, here is a breakdown summary of all employee
+              Welcome on board, here is a breakdown summary of all employee
               attendance today.
             </p>
           </div>
