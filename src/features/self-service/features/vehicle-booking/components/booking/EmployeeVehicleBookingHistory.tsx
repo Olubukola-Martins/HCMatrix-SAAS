@@ -15,6 +15,7 @@ import {
 } from "../columns/employee-vehicle-booking";
 import { TableFocusTypeBtn } from "components/table";
 import { stringIsIncludedInArray } from "utils/dataHelpers/stringIsIncludedInArray";
+import ExportAuthVehicleBookings from "../export/ExportAuthVehicleBookings";
 
 export const EmployeeVehicleBookingHistory: React.FC<{
   title?: string;
@@ -77,7 +78,9 @@ export const EmployeeVehicleBookingHistory: React.FC<{
       <div className="flex flex-col gap-2">
         <h4 className="text-lg font-light">{title}</h4>
         <div className="flex items-center gap-3 justify-between">
-          <i className="ri-download-2-line text-lg"></i>
+          <ExportAuthVehicleBookings
+            trigger={<i className="ri-download-2-line text-lg" />}
+          />
           <div className="my-5 flex justify-end gap-3">
             <AppButton
               label="Book Vehicle"

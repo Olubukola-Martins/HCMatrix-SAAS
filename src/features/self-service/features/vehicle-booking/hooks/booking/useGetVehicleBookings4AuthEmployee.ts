@@ -16,7 +16,7 @@ interface IGetDataProps {
 export const QUERY_KEY_FOR_VEHICLE_BOOKINGS_FOR_AUTH_EMPLOYEE =
   "vehicle-bookings-for-auth-employee";
 
-const getData = async (props: {
+export const getVehicleBookingsForAuthEmployee = async (props: {
   data: IGetDataProps;
   auth: ICurrentCompany;
 }): Promise<{ data: TVehicleBooking[]; total: number }> => {
@@ -72,7 +72,7 @@ export const useGetVehicleBookings4AuthEmployee = (props: IGetDataProps) => {
       status,
     ],
     () =>
-      getData({
+      getVehicleBookingsForAuthEmployee({
         auth: { token, companyId },
         data: {
           ...props,

@@ -121,24 +121,26 @@ const VehicleBookingHome = () => {
           <Tabs
             activeKey={key}
             onChange={(val) => setKey(val as unknown as TVehicleTabKey)}
-            items={tabItems.map((item) => ({
-              ...item,
+            items={tabItems
+              .filter((item) => item.hidden !== true)
+              .map((item) => ({
+                ...item,
 
-              children: (
-                <VehicleWrapper
-                  showAddVehicleAndDownlaod={
-                    item.key === "My Bookings" ||
-                    item.key === "My Approvals" ||
-                    item.key === "All Bookings" ||
-                    item.key === "Assignee History"
-                      ? false
-                      : true
-                  }
-                >
-                  {item.children}
-                </VehicleWrapper>
-              ),
-            }))}
+                children: (
+                  <VehicleWrapper
+                    showAddVehicleAndDownlaod={
+                      item.key === "My Bookings" ||
+                      item.key === "My Approvals" ||
+                      item.key === "All Bookings" ||
+                      item.key === "Assignee History"
+                        ? false
+                        : true
+                    }
+                  >
+                    {item.children}
+                  </VehicleWrapper>
+                ),
+              }))}
           />
         </div>
       </div>
