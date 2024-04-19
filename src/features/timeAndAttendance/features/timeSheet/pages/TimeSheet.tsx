@@ -1,13 +1,11 @@
-import Table, { ColumnsType } from "antd/lib/table";
+import Table from "antd/lib/table";
 import { PageIntro } from "components/layout/PageIntro";
 import { appRoutes } from "config/router/paths";
-import { Link } from "react-router-dom";
 import { useState } from "react";
 import { AttendanceSubToper } from "features/timeAndAttendance/components/AttendanceSubToper";
 import { useGetTimeSheet } from "../hooks/useGetTimeSheet";
-import { timeSheetFilterProps, timeSheetProps } from "../types";
+import { timeSheetFilterProps } from "../types";
 import { usePagination } from "hooks/usePagination";
-import { convertMinutesToHours } from "features/timeAndAttendance/utils";
 import { FilterTimeSheet } from "../components/FilterTimeSheet";
 import { AppButton } from "components/button/AppButton";
 import { openNotification } from "utils/notifications";

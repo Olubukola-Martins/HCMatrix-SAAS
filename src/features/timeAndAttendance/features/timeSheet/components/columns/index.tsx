@@ -13,7 +13,6 @@ export const TIME_SHEET_TABLE_COLUMNS = (
     dataIndex: "name",
     render: (_, val) => (
       <span className="capitalize">
-        {/* {val?.employee?.firstName} {val?.employee?.lastName} */}
         {getEmployeeFullName(val?.employee)}
       </span>
     ),
