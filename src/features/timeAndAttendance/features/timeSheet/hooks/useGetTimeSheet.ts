@@ -8,7 +8,7 @@ import { DEFAULT_PAGE_SIZE } from "constants/general";
 
 export const QUERY_KEY_FOR_TIME_SHEET = "Time_Sheet";
 
-const getData = async (props: {
+export const getTimeSheet = async (props: {
   auth: ICurrentCompany;
   pagination?: IPaginationProps;
   filter?: timeSheetFilterProps;
@@ -69,7 +69,7 @@ export const useGetTimeSheet = ({
       period,
     ],
     () =>
-      getData({
+      getTimeSheet({
         auth: { token, companyId },
         pagination: pagination,
         filter: { employeeId, endDate, startDate, date, period },

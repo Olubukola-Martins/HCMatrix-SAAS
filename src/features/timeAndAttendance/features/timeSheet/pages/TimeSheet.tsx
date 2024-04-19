@@ -15,6 +15,8 @@ import { AddManuelAttendance } from "../components/AddManuelAttendance";
 import { Dropdown, Menu } from "antd";
 import { AddMultipleAttendance } from "../components/AddMultipleAttendance";
 import { useGetActiveTrackingPolicy } from "../../settings/timeTrackingRules/hooks/useGetActiveTrackingPolicy";
+import { TIME_SHEET_TABLE_COLUMNS } from "../components/columns";
+import ExportTimeSheet from "../components/exports/ExportTimeSheet";
 
 const TimeSheet = () => {
   const [filterSheet, setFilterSheet] = useState(false);
@@ -43,198 +45,7 @@ const TimeSheet = () => {
     });
   };
 
-  // table column
-  const columns: ColumnsType<timeSheetProps> = [
-    {
-      title: "Name",
-      dataIndex: "name",
-      render: (_, val) => (
-        <span className="capitalize">
-          {val?.employee?.firstName} {val?.employee?.lastName}
-        </span>
-      ),
-    },
-    {
-      title: "Monday",
-      dataIndex: "monday",
-      render: (_, val) =>
-        val?.days?.Monday?.date ? (
-          <Link
-            className="hover:text-caramel"
-            to={
-              appRoutes.timeSheetDetails(
-                val?.employee?.id,
-                val?.days?.Monday?.date
-              ).path
-            }
-          >
-            {convertMinutesToHours(val?.days?.Monday?.totalTimeTracked)}
-          </Link>
-        ) : (
-          <div
-            className="hover:text-caramel cursor-pointer"
-            onClick={() => noAttendance()}
-          >
-            {convertMinutesToHours(val?.days?.Monday?.totalTimeTracked)}
-          </div>
-        ),
-    },
-    {
-      title: "Tuesday",
-      dataIndex: "tuesday",
-      render: (_, val) =>
-        val?.days?.Tuesday?.date ? (
-          <Link
-            className="hover:text-caramel"
-            to={
-              appRoutes.timeSheetDetails(
-                val?.employee?.id,
-                val?.days?.Tuesday?.date
-              ).path
-            }
-          >
-            {convertMinutesToHours(val?.days?.Tuesday?.totalTimeTracked)}
-          </Link>
-        ) : (
-          <div
-            className="hover:text-caramel cursor-pointer"
-            onClick={() => noAttendance()}
-          >
-            {convertMinutesToHours(val?.days?.Tuesday?.totalTimeTracked)}
-          </div>
-        ),
-    },
-    {
-      title: "Wednesday",
-      dataIndex: "wednesday",
-      render: (_, val) =>
-        val?.days?.Wednesday?.date ? (
-          <Link
-            className="hover:text-caramel"
-            to={
-              appRoutes.timeSheetDetails(
-                val?.employee?.id,
-                val?.days?.Wednesday?.date
-              ).path
-            }
-          >
-            {convertMinutesToHours(val?.days?.Wednesday?.totalTimeTracked)}
-          </Link>
-        ) : (
-          <div
-            className="hover:text-caramel cursor-pointer"
-            onClick={() => noAttendance()}
-          >
-            {convertMinutesToHours(val?.days?.Wednesday?.totalTimeTracked)}
-          </div>
-        ),
-    },
-    {
-      title: "Thursday",
-      dataIndex: "thursday",
-      render: (_, val) =>
-        val?.days?.Thursday?.date ? (
-          <Link
-            className="hover:text-caramel"
-            to={
-              appRoutes.timeSheetDetails(
-                val?.employee?.id,
-                val?.days?.Thursday?.date
-              ).path
-            }
-          >
-            {convertMinutesToHours(val?.days?.Thursday?.totalTimeTracked)}
-          </Link>
-        ) : (
-          <div
-            className="hover:text-caramel cursor-pointer"
-            onClick={() => noAttendance()}
-          >
-            {convertMinutesToHours(val?.days?.Thursday?.totalTimeTracked)}
-          </div>
-        ),
-    },
-    {
-      title: "Friday",
-      dataIndex: "friday",
-      render: (_, val) =>
-        val?.days?.Friday?.date ? (
-          <Link
-            className="hover:text-caramel"
-            to={
-              appRoutes.timeSheetDetails(
-                val?.employee?.id,
-                val?.days?.Friday?.date
-              ).path
-            }
-          >
-            {convertMinutesToHours(val?.days?.Friday?.totalTimeTracked)}
-          </Link>
-        ) : (
-          <div
-            className="hover:text-caramel cursor-pointer"
-            onClick={() => noAttendance()}
-          >
-            {convertMinutesToHours(val?.days?.Friday?.totalTimeTracked)}
-          </div>
-        ),
-    },
-    {
-      title: "Saturday",
-      dataIndex: "saturday",
-      render: (_, val) =>
-        val?.days?.Saturday?.date ? (
-          <Link
-            className="hover:text-caramel"
-            to={
-              appRoutes.timeSheetDetails(
-                val?.employee?.id,
-                val?.days?.Saturday?.date
-              ).path
-            }
-          >
-            {convertMinutesToHours(val?.days?.Saturday?.totalTimeTracked)}
-          </Link>
-        ) : (
-          <div
-            className="hover:text-caramel cursor-pointer"
-            onClick={() => noAttendance()}
-          >
-            {convertMinutesToHours(val?.days?.Saturday?.totalTimeTracked)}
-          </div>
-        ),
-    },
-    {
-      title: "Sunday",
-      dataIndex: "sunday",
-      render: (_, val) =>
-        val?.days?.Sunday?.date ? (
-          <Link
-            className="hover:text-caramel"
-            to={
-              appRoutes.timeSheetDetails(
-                val?.employee?.id,
-                val?.days?.Sunday?.date
-              ).path
-            }
-          >
-            {convertMinutesToHours(val?.days?.Sunday?.totalTimeTracked)}
-          </Link>
-        ) : (
-          <div
-            className="hover:text-caramel cursor-pointer"
-            onClick={() => noAttendance()}
-          >
-            {convertMinutesToHours(val?.days?.Sunday?.totalTimeTracked)}
-          </div>
-        ),
-    },
-    {
-      title: "Total",
-      dataIndex: "total",
-      render: (_, val) => convertMinutesToHours(val?.totalWeeklyTimeTracked),
-    },
-  ];
+  const columns = TIME_SHEET_TABLE_COLUMNS(noAttendance);
 
   return (
     <>
@@ -297,9 +108,9 @@ const TimeSheet = () => {
               <span className="text-caramel font-medium">Filter</span>
               <i className="ri-filter-2-line text-caramel"></i>
             </button>
-            <a href="#" className="button">
-              <span>Export</span>
-            </a>
+            <ExportTimeSheet
+              trigger={<button className="button">Export</button>}
+            />
           </div>
         </div>
 

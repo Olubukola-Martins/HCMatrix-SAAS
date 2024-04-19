@@ -53,7 +53,6 @@ export const BRANCHES_EXPORT_COLUMNS = (
     items?.map((item) => ({
       Name: item.name,
       Address: item.address?.streetAddress,
-
       "Emloyee Count": item.employeeCount,
     })) ?? []
   );
