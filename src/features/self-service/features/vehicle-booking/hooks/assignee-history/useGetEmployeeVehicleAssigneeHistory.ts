@@ -13,7 +13,7 @@ interface IGetDataProps {
 export const QUERY_KEY_FOR_EMPLOYEE_VEHICLE_ASSIGNEE_HISTORY =
   "employee-vehicle-assignee-history";
 
-const getData = async (props: {
+export const getEmployeeVehicleAssigneeHistory = async (props: {
   data: IGetDataProps;
   auth: ICurrentCompany;
 }): Promise<{ data: TVehicleAssigneeHistory[]; total: number }> => {
@@ -58,7 +58,7 @@ export const useGetEmployeeVehicleAssigneeHistory = (props: IGetDataProps) => {
   const queryData = useQuery(
     [QUERY_KEY_FOR_EMPLOYEE_VEHICLE_ASSIGNEE_HISTORY, pagination],
     () =>
-      getData({
+      getEmployeeVehicleAssigneeHistory({
         auth: { token, companyId },
         data: {
           ...props,

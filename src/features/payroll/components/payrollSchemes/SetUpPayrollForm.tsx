@@ -30,6 +30,8 @@ import { useUpdateProjectParticipantGrossPay } from "features/payroll/hooks/sche
 import { generalValidationRules } from "utils/formHelpers/validation";
 import moment from "moment";
 import { DEFAULT_DATE_FORMAT } from "constants/dateFormats";
+import { Link } from "react-router-dom";
+import { appRoutes } from "config/router/paths";
 
 const DEFAULT_COMPONENT_LABELS = {
   thirteenthMonthSalary: "thirteenth_month_salary",
@@ -1154,11 +1156,14 @@ export const SetUpPayrollForm: React.FC<{
                 {allowApproval && (
                   <div className="mt-2">
                     <div className="flex items-center lg:justify-between">
-                      <div className="w-2/5">
+                      <div className="w-2/5 space-y-4">
                         <FormWorkflowInput
                           Form={Form}
                           control={{ name: "workflowId", label: "" }}
                         />
+                        <Link to={appRoutes.createWorkflow}>
+                          Create Workflow
+                        </Link>
                       </div>
                     </div>
                   </div>

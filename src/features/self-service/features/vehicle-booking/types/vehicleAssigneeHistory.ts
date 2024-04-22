@@ -1,4 +1,5 @@
 import { TLicenseType } from "features/authentication/types/auth-user";
+import { TVehicle } from "../hooks/useFetchVehicles";
 
 export type TVehicleAssigneeHistory = {
   id: number;
@@ -11,29 +12,8 @@ export type TVehicleAssigneeHistory = {
   createdAt: string;
   updatedAt: string;
   assignee: Assignee;
-  vehicle: Vehicle;
+  vehicle: TVehicle;
 };
-
-interface Vehicle {
-  id: number;
-  label: string;
-  type: string;
-  brand: string;
-  model: string;
-  plateNumber: string;
-  status: string;
-  imageUrl: string;
-  cost: string;
-  color: string;
-  description: string;
-  purchaseDate: string;
-  assigneeId: number;
-  dateAssigned: string;
-  documentUrls?: any;
-  companyId: number;
-  createdAt: string;
-  updatedAt: string;
-}
 
 interface Assignee {
   id: number;

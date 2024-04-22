@@ -16,6 +16,7 @@ import { TApprovalStatus } from "types/statuses";
 import { QUERY_KEY_FOR_VEHICLE_BOOKINGS } from "../hooks/useFetchVehicleBookings";
 import { QUERY_KEY_FOR_VEHICLE_BOOKINGS_FOR_AUTH_EMPLOYEE } from "../hooks/booking/useGetVehicleBookings4AuthEmployee";
 import { QUERY_KEY_FOR_VEHICLE_BOOKING_ANALYTICS_FOR_EMPLOYEE } from "../hooks/useGetVehicleEmployeeBookingAnalytics";
+import { getEmployeeFullName } from "features/core/employees/utils/getEmployeeFullName";
 
 const VBApprovalRequestsTable: React.FC<{
   status?: TApprovalStatus;
@@ -62,10 +63,7 @@ const VBApprovalRequestsTable: React.FC<{
       dataIndex: "name",
       key: "name",
       render: (val, item) => (
-        <span>
-          {item.vehicleBooking?.employee.firstName}{" "}
-          {item.vehicleBooking?.employee.lastName}
-        </span>
+        <span>{getEmployeeFullName(item.vehicleBooking?.employee)}</span>
       ),
     },
 

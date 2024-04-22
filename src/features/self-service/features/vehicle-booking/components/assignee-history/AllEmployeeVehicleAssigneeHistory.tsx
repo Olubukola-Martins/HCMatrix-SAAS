@@ -1,11 +1,12 @@
 import { Table } from "antd";
-import { ColumnsType } from "antd/lib/table";
 import { usePagination } from "hooks/usePagination";
-import moment from "moment";
 import { useGetEmployeeVehicleAssigneeHistory } from "../../hooks/assignee-history/useGetEmployeeVehicleAssigneeHistory";
+import { EMPLOYEE_VEHICLE_ASSIGNEE_HISTORY_TABLE_COLUMNS } from "../columns/employee-vehicle-assignee-history";
 import { TVehicleAssigneeHistory } from "../../types/vehicleAssigneeHistory";
-import { DEFAULT_DATE_FORMAT } from "constants/dateFormats";
-import { getEmployeeFullName } from "features/core/employees/utils/getEmployeeFullName";
+import { ColumnsType } from "antd/lib/table";
+import { useState } from "react";
+import { TableFocusTypeBtn } from "components/table";
+import ExportEmployeeVehicleAssigneeHistory from "../export/ExportEmployeeVehicleAssigneeHistory";
 
 export const AllEmployeeVehicleAssigneeHistory = () => {
   const { pagination, onChange } = usePagination();
@@ -14,56 +15,26 @@ export const AllEmployeeVehicleAssigneeHistory = () => {
     pagination,
   });
 
-  const columns: ColumnsType<TVehicleAssigneeHistory> = [
-    {
-      title: "Date Returned",
-      dataIndex: "Date Returned",
-      key: "Date Returned",
-      render: (_, item) =>
-        moment(item.dateReturned).format(DEFAULT_DATE_FORMAT),
-    },
-    {
-      title: "Vehicle Brand",
-      dataIndex: "brand",
-      key: "brand",
-      render: (_, item) => item.vehicle.brand,
-    },
-    {
-      title: "Plate No",
-      dataIndex: "Plate No",
-      key: "Plate No",
-      render: (_, item) => item.vehicle.plateNumber,
-    },
-    {
-      title: "Vehicle Type",
-      dataIndex: "Vehicle Type",
-      key: "Vehicle Type",
-      render: (_, item) => item.vehicle.type,
-    },
-
-    {
-      title: "Assignee",
-      dataIndex: "Assignee",
-      key: "Assignee",
-      render: (_, item) => (
-        <span className={`capitalize`}>
-          {getEmployeeFullName(item.assignee)}
-        </span>
-      ),
-    },
-    {
-      title: "Duration(hrs)",
-      dataIndex: "duration",
-      key: "duration",
-      render: (_, item) => item.duration,
-    },
-  ];
-
+  const columns = EMPLOYEE_VEHICLE_ASSIGNEE_HISTORY_TABLE_COLUMNS();
+  const [selectedColumns, setSelectedColumns] =
+    useState<ColumnsType<TVehicleAssigneeHistory>>(columns);
   return (
     <>
       <div className="flex flex-col gap-2">
+        <div className="flex justify-between items-center">
+          <ExportEmployeeVehicleAssigneeHistory
+            trigger={<i className="ri-download-2-line text-lg" />}
+          />
+          {TableFocusTypeBtn<TVehicleAssigneeHistory>({
+            selectedColumns,
+            setSelectedColumns,
+            data: {
+              columns,
+            },
+          })}
+        </div>
         <Table
-          columns={columns}
+          columns={selectedColumns}
           size="small"
           dataSource={data?.data}
           loading={isFetching}
