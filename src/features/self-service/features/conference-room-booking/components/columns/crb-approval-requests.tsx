@@ -1,59 +1,83 @@
-import { Dropdown, Menu, Space } from "antd";
+import { Space, Dropdown, Menu } from "antd";
 import { ColumnsType } from "antd/lib/table";
 import { DEFAULT_DATE_FORMAT } from "constants/dateFormats";
 import { getEmployeeFullName } from "features/core/employees/utils/getEmployeeFullName";
 import { TApprovalRequest } from "features/core/workflows/types/approval-requests";
-import moment from "moment";
-import { getAppropriateColorForStatus } from "utils/colorHelpers/getAppropriateColorForStatus";
-import { AiOutlineMore } from "react-icons/ai";
 import { TConfirmApprovalActionProps } from "hooks/useApproveORReject";
+import moment from "moment";
+import { AiOutlineMore } from "react-icons/ai";
+import { getAppropriateColorForStatus } from "utils/colorHelpers/getAppropriateColorForStatus";
 
-export const VEHICLE_BOOKING_APPROVAL_REQUEST_TABLE_COLUMNS = (
+export const CRB_APPROVAL_REQUESTS_TABLE_COLUMNS = (
   confirmApprovalAction: (val: TConfirmApprovalActionProps) => void,
   setRequest: (val: TApprovalRequest) => void,
   setShowD: (val: boolean) => void
 ): ColumnsType<TApprovalRequest> => [
   {
-    title: "Date",
-    dataIndex: "createdAt",
-    key: "createdAt",
-    render: (val, item) =>
-      moment(item.vehicleBooking?.createdAt).format(DEFAULT_DATE_FORMAT),
-  },
-  {
     title: "Name",
     dataIndex: "name",
     key: "name",
     render: (val, item) => (
-      <span>{getEmployeeFullName(item.vehicleBooking?.employee)}</span>
+      <span>{getEmployeeFullName(item.conferenceRoomBooking?.employee)}</span>
     ),
   },
-
   {
-    title: "Employee ID",
-    dataIndex: "Employee ID",
-    key: "Employee ID",
-    render: (_, item) => <span>{item.vehicleBooking?.employee.empUid}</span>,
+    title: "Date",
+    dataIndex: "createdAt",
+    key: "createdAt",
+    render: (val, item) =>
+      moment(item.conferenceRoomBooking?.createdAt).format(DEFAULT_DATE_FORMAT),
+  },
+  {
+    title: "Room Name",
+    dataIndex: "roomName",
+    key: "roomName",
+    render: (_, item) => (
+      <span>{item.conferenceRoomBooking?.conferenceRoom.name}</span>
+    ),
+
+    // ellipsis: true,
+
+    // width: 100,
+  },
+  {
+    title: "Reason",
+    dataIndex: "reason",
+    key: "reason",
+    ellipsis: true,
+    render: (_, item) => <span>{item.conferenceRoomBooking?.reason}</span>,
+
+    // width: 100,
+  },
+  {
+    title: "Department",
+    dataIndex: "department",
+    key: "department",
+    render: (_, item) => (
+      <span>{item.conferenceRoomBooking?.department?.name ?? "N/A"}</span>
+    ),
+  },
+  {
+    title: "Meeting Date",
+    dataIndex: "date",
+    key: "date",
+    render: (val, item) =>
+      moment(item.conferenceRoomBooking?.date).format(DEFAULT_DATE_FORMAT),
+  },
+  {
+    title: "Start Time",
+    dataIndex: "startTime",
+    key: "startTime",
+    render: (_, item) =>
+      moment(item.conferenceRoomBooking?.startTime).format("h:mm:ss"),
   },
 
-  //   {
-  //     title: "Department",
-  //     dataIndex: "department",
-  //     key: "department",
-  //     render: (_, item) => <span>{"N/A"}</span>,
-  //   },
   {
-    title: "Destination",
-    dataIndex: "Destination",
-    key: "Destination",
-    render: (_, item) => <span>{item.vehicleBooking?.destination}</span>,
-  },
-
-  {
-    title: "Duration(hrs)",
+    title: "End Time",
     dataIndex: "endTime",
     key: "endTime",
-    render: (_, item) => item.vehicleBooking?.duration,
+    render: (_, item) =>
+      moment(item.conferenceRoomBooking?.endTime).format("h:mm:ss"),
   },
 
   {
@@ -90,7 +114,7 @@ export const VEHICLE_BOOKING_APPROVAL_REQUEST_TABLE_COLUMNS = (
                 View
               </Menu.Item>
               <Menu.Item
-                hidden={item.vehicleBooking?.status !== "pending"}
+                hidden={item.conferenceRoomBooking?.status !== "pending"}
                 key="2"
                 onClick={() =>
                   confirmApprovalAction({
@@ -104,7 +128,7 @@ export const VEHICLE_BOOKING_APPROVAL_REQUEST_TABLE_COLUMNS = (
                 Approve
               </Menu.Item>
               <Menu.Item
-                hidden={item.vehicleBooking?.status !== "pending"}
+                hidden={item.conferenceRoomBooking?.status !== "pending"}
                 key="1"
                 onClick={() =>
                   confirmApprovalAction({

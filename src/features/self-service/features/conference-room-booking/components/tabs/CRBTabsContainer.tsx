@@ -3,7 +3,7 @@ import { EmployeeCRBBookings } from "../bookings/EmployeeCRBBookings";
 import { CRBApprovalRequestsContainer } from "../CRBApprovalRequestsContainer";
 import CRBHistoryContainer from "../CRBHistoryContainer";
 import { AvailableConferenceRooms } from "../conference-rooms/AvailableConferenceRooms";
-import { AllConferenceRooms } from "../conference-rooms/AllConferenceRooms";
+import { AllConferenceRooms } from "../conference-rooms/AllConferenceRooms.1";
 import {
   canUserAccessComponent,
   useGetUserPermissions,
@@ -49,7 +49,7 @@ const CRBTabsContainer = () => {
 
   return (
     <div className="flex flex-col gap-6">
-      <Tabs items={tabItems} />
+      <Tabs items={tabItems.filter((item) => item.hidden !== true)} />
     </div>
   );
 };

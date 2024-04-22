@@ -1,11 +1,11 @@
-import React from "react";
+import React, { useState } from "react";
 import type { ColumnsType } from "antd/es/table";
 import { usePagination } from "hooks/usePagination";
 import { Table } from "antd";
-import moment from "moment";
-import { DEFAULT_DATE_FORMAT } from "constants/dateFormats";
 import { TSingleConferenceRoom } from "../../types";
 import { useFetchAllAvailableConferenceRooms } from "../../hooks/useFetchAllAvailableConferenceRooms";
+import { TableFocusTypeBtn } from "components/table";
+import { CRB_AVAILABLE_ROOMS_TABLE_COLUMNS } from "../columns/available-rooms";
 
 export const AvailableConferenceRooms: React.FC = () => {
   const { pagination, onChange } = usePagination();
@@ -16,31 +16,24 @@ export const AvailableConferenceRooms: React.FC = () => {
     },
   });
 
-  const columns: ColumnsType<TSingleConferenceRoom> = [
-    {
-      title: "Room Name",
-      dataIndex: "roomName",
-      key: "roomName",
-      render: (_, item) => <span>{item.name}</span>,
-    },
-    {
-      title: "Created At",
-      dataIndex: "createdAt",
-      key: "createdAt",
-      render: (val) => moment(val).format(DEFAULT_DATE_FORMAT),
-    },
-    {
-      title: "Updated At",
-      dataIndex: "updatedAt",
-      key: "updatedAt",
-      render: (val) => moment(val).format(DEFAULT_DATE_FORMAT),
-    },
-  ];
+  const columns: ColumnsType<TSingleConferenceRoom> =
+    CRB_AVAILABLE_ROOMS_TABLE_COLUMNS();
+  const [selectedColumns, setSelectedColumns] =
+    useState<ColumnsType<TSingleConferenceRoom>>(columns);
 
   return (
-    <div>
+    <div className="space-y-6">
+      <div className="flex justify-end">
+        {TableFocusTypeBtn<TSingleConferenceRoom>({
+          selectedColumns,
+          setSelectedColumns,
+          data: {
+            columns,
+          },
+        })}
+      </div>
       <Table
-        columns={columns}
+        columns={selectedColumns}
         size="small"
         dataSource={data?.data}
         loading={isFetching}
