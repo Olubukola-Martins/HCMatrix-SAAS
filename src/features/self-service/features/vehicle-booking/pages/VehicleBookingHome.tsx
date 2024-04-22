@@ -26,19 +26,19 @@ export type TVehicleTabKey =
   | "My Bookings"
   | "Assignee History"
   | "All Bookings";
-
+type TTabItem = {
+  label: TVehicleTabKey;
+  key: TVehicleTabKey;
+  children: React.ReactNode;
+  hidden: boolean;
+};
 const VehicleBookingHome = () => {
   const [key, setKey] = useState<TVehicleTabKey>("Vehicle Overview");
   const handleTabKey = (val: TVehicleTabKey) => {
     setKey(val);
   };
   const { userPermissions } = useGetUserPermissions();
-  const tabItems: {
-    label: TVehicleTabKey;
-    key: TVehicleTabKey;
-    children: React.ReactNode;
-    hidden: boolean;
-  }[] = [
+  const tabItems: TTabItem[] = [
     {
       label: "Vehicle Overview",
       children: <VehicleOverview handleTabKey={handleTabKey} />,
@@ -96,6 +96,7 @@ const VehicleBookingHome = () => {
       hidden: false,
     },
   ];
+  const filteredTabItems = tabItems.filter((item) => item.hidden !== true);
   const navigate = useNavigate();
   return (
     <>
@@ -121,26 +122,24 @@ const VehicleBookingHome = () => {
           <Tabs
             activeKey={key}
             onChange={(val) => setKey(val as unknown as TVehicleTabKey)}
-            items={tabItems
-              .filter((item) => item.hidden !== true)
-              .map((item) => ({
-                ...item,
+            items={filteredTabItems.map((item) => ({
+              ...item,
 
-                children: (
-                  <VehicleWrapper
-                    showAddVehicleAndDownlaod={
-                      item.key === "My Bookings" ||
-                      item.key === "My Approvals" ||
-                      item.key === "All Bookings" ||
-                      item.key === "Assignee History"
-                        ? false
-                        : true
-                    }
-                  >
-                    {item.children}
-                  </VehicleWrapper>
-                ),
-              }))}
+              children: (
+                <VehicleWrapper
+                  showAddVehicleAndDownlaod={
+                    item.key === "My Bookings" ||
+                    item.key === "My Approvals" ||
+                    item.key === "All Bookings" ||
+                    item.key === "Assignee History"
+                      ? false
+                      : true
+                  }
+                >
+                  {item.children}
+                </VehicleWrapper>
+              ),
+            }))}
           />
         </div>
       </div>
