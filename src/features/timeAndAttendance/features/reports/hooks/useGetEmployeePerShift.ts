@@ -8,7 +8,7 @@ import { DEFAULT_PAGE_SIZE } from "constants/general";
 
 export const QUERY_KEY_FOR_EMPLOYEE_PER_SHIFT = "EmployeePerShift";
 
-const getData = async (props: {
+export const getEmployeePerShift = async (props: {
   auth: ICurrentCompany;
   pagination?: IPaginationProps;
   filter?: filterReportProps;
@@ -70,7 +70,7 @@ export const useGetEmployeePerShift = ({
       startDate,
     ],
     () =>
-      getData({
+    getEmployeePerShift({
         auth: { token, companyId },
         pagination,
         filter: { departmentId, employeeId, endDate, shiftTypes, startDate },
