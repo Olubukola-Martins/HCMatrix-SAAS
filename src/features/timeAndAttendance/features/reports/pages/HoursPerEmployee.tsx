@@ -79,9 +79,6 @@ const HoursPerEmployee = () => {
             <span className="text-caramel font-medium">Filter</span>
             <i className="ri-filter-2-line text-caramel"></i>
           </button>
-          <a href="#" className="button">
-            <span>Export</span>
-          </a>
         </div>
       </div>
       <div className="Container">

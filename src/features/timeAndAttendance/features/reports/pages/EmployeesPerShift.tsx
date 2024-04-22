@@ -10,6 +10,7 @@ import { useGetShiftPerEmployee } from "../hooks/useGetShiftPerEmployee";
 import { FilterShiftPerEmployee } from "../components/FilterShiftPerEmployee";
 import { AppButton } from "components/button/AppButton";
 import { convertMinutesToHours } from "features/timeAndAttendance/utils";
+import ExportEmployeePerShift from "../components/exports/ExportEmployeePerShift";
 
 const columns: ColumnsType<shiftPerEmployeeProps> = [
   {
@@ -84,9 +85,9 @@ const EmployeesPerShift = () => {
             <span className="text-caramel font-medium">Filter</span>
             <i className="ri-filter-2-line text-caramel"></i>
           </button>
-          <a href="#" className="button">
-            <span>Export</span>
-          </a>
+          <ExportEmployeePerShift
+            trigger={<button className="button">Export</button>}
+          />
         </div>
       </div>
 
