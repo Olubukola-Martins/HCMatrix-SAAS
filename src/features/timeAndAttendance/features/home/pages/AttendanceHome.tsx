@@ -10,20 +10,35 @@ import { LeaveWhoIsOut } from "features/home/components/whoIsOut/LeaveWhoIsOut";
 import { RemoteWhoIsOut } from "features/home/components/whoIsOut/RemoteWhoIsOut";
 import { useGetAnalyticsRecord } from "../hooks/useGetAnalyticsRecord";
 import { useGetDashboardGraph } from "../hooks/useGetDashboardGraph";
+import useMostRecentApiAuth from "hooks/useMostRecentApiAuth";
+import { useEffect, useState } from "react";
+import { useWelcomeNote } from "../hooks/useWelcomeNote";
 
 export const AttendanceHome = () => {
+  const [greeting, setGreeting] = useState("");
   const today = new Date();
   const month = today.toLocaleString("default", { month: "long" });
   const fullYear = today.getFullYear();
-
   const { data, isError, isLoading, error } = useGetCompanyOwnerDashboard({
     year: fullYear.toString(),
   });
+  const hour = today.getHours();
 
   const { data: analyticsData, isLoading: analyticsLoading } =
     useGetAnalyticsRecord();
-
+  const { user } = useMostRecentApiAuth();
+  const { data: welcomeNoteData } = useWelcomeNote();
   const {} = useGetDashboardGraph();
+  
+  useEffect(() => {
+    if (hour >= 5 && hour < 12) {
+      setGreeting("Morning");
+    } else if (hour >= 12 && hour < 18) {
+      setGreeting("Afternoon");
+    } else {
+      setGreeting("Evening");
+    }
+  }, [hour]);
 
   return (
     <ErrorBoundary>
@@ -31,11 +46,10 @@ export const AttendanceHome = () => {
       <div className="Container">
         <div className="flex justify-between">
           <div>
-            <h2 className="font-medium text-lg pb-2">Good morning Esther</h2>
-            <p>
-              Welcome on board, here is a breakdown summary of all employee
-              attendance today.
-            </p>
+            <h2 className="font-medium text-lg pb-2">
+              Good {greeting} {user?.fullName}
+            </h2>
+            <p>{welcomeNoteData}</p>
           </div>
           <div>
             <button className="border rounded px-3 py-2 flex items-center gap-x-3 font-medium">

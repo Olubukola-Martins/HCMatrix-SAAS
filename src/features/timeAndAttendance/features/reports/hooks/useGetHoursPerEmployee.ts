@@ -8,7 +8,7 @@ import { DEFAULT_PAGE_SIZE } from "constants/general";
 
 export const QUERY_KEY_FOR_HOURS_PER_EMPLOYEE = "HoursPerEmployee";
 
-const getData = async (props: {
+export const getHoursPerEmployee = async (props: {
   auth: ICurrentCompany;
   pagination?: IPaginationProps;
   filter?: filterReportProps;
@@ -67,7 +67,7 @@ export const useGetHoursPerEmployee = ({
       startDate,
     ],
     () =>
-      getData({
+    getHoursPerEmployee({
         auth: { token, companyId },
         pagination,
         filter: { departmentId, employeeId, endDate, startDate },
