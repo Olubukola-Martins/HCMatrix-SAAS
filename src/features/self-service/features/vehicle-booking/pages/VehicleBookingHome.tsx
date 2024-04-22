@@ -33,7 +33,7 @@ type TTabItem = {
   hidden: boolean;
 };
 const VehicleBookingHome = () => {
-  const [key, setKey] = useState<TVehicleTabKey>("Vehicle Overview");
+  const [key, setKey] = useState<TVehicleTabKey>("My Bookings");
   const handleTabKey = (val: TVehicleTabKey) => {
     setKey(val);
   };
