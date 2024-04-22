@@ -1,41 +1,18 @@
-import Table, { ColumnsType } from "antd/lib/table";
+import Table from "antd/lib/table";
 import { ReportNav } from "../components/ReportNav";
 import { AttendanceSubToper } from "features/timeAndAttendance/components/AttendanceSubToper";
 import { PageIntro } from "components/layout/PageIntro";
 import { appRoutes } from "config/router/paths";
-import { filterReportProps, shiftPerEmployeeProps } from "../types";
+import { filterReportProps } from "../types";
 import { useGetHoursPerEmployee } from "../hooks/useGetHoursPerEmployee";
 import { usePagination } from "hooks/usePagination";
 import { useState } from "react";
 import { AppButton } from "components/button/AppButton";
-import { convertMinutesToHours } from "features/timeAndAttendance/utils";
 import { FilterHoursPerEmployee } from "../components/FilterHoursPerEmployee";
+import { HOURS_PER_SHIFT_TABLE_COLUMNS } from "../components/columns/hoursPerShiftColumn";
+import ExportHourPerEmployee from "../components/exports/ExportHourPerEmployee";
 
-const columns: ColumnsType<shiftPerEmployeeProps> = [
-  {
-    title: "Employees",
-    dataIndex: "employee",
-    render: (_, val) => (
-      <span className="capitalize">
-        {val?.employee?.firstName} {val?.employee?.lastName}
-      </span>
-    ),
-  },
-  {
-    title: "Department",
-    dataIndex: "designation",
-    render: (_, val) => (
-      <span className="capitalize">
-        {val?.employee?.designation?.department?.name}
-      </span>
-    ),
-  },
-  {
-    title: "Tracked time",
-    dataIndex: "totalTimeTracked",
-    render: (_, val) => convertMinutesToHours(val?.totalTimeTracked),
-  },
-];
+const columns = HOURS_PER_SHIFT_TABLE_COLUMNS();
 
 const HoursPerEmployee = () => {
   const [filterData, setFilterData] = useState<filterReportProps>();
@@ -79,6 +56,9 @@ const HoursPerEmployee = () => {
             <span className="text-caramel font-medium">Filter</span>
             <i className="ri-filter-2-line text-caramel"></i>
           </button>
+          <ExportHourPerEmployee
+            trigger={<button className="button">Export</button>}
+          />
         </div>
       </div>
       <div className="Container">

@@ -1,47 +1,18 @@
-import Table, { ColumnsType } from "antd/lib/table";
+import Table from "antd/lib/table";
 import { ReportNav } from "../components/ReportNav";
 import { AttendanceSubToper } from "features/timeAndAttendance/components/AttendanceSubToper";
 import { PageIntro } from "components/layout/PageIntro";
 import { appRoutes } from "config/router/paths";
-import { filterReportProps, shiftPerEmployeeProps } from "../types";
+import { filterReportProps } from "../types";
 import { useState } from "react";
 import { usePagination } from "hooks/usePagination";
 import { useGetShiftPerEmployee } from "../hooks/useGetShiftPerEmployee";
 import { FilterShiftPerEmployee } from "../components/FilterShiftPerEmployee";
 import { AppButton } from "components/button/AppButton";
-import { convertMinutesToHours } from "features/timeAndAttendance/utils";
 import ExportEmployeePerShift from "../components/exports/ExportEmployeePerShift";
+import { EMPLOYEE_PER_SHIFT_TABLE_COLUMNS } from "../components/columns/employeePerShiftColumn";
 
-const columns: ColumnsType<shiftPerEmployeeProps> = [
-  {
-    title: "Employees",
-    dataIndex: "employee",
-    render: (_, val) => (
-      <span className="capitalize">
-        {val?.employee?.firstName} {val?.employee?.lastName}
-      </span>
-    ),
-  },
-  {
-    title: "Tracked time",
-    dataIndex: "trackedTime",
-    render: (_, val) => convertMinutesToHours(val?.trackedTime),
-  },
-  {
-    title: "Supervisors/shift-in-charge",
-    dataIndex: "supervisor",
-    render: (_, val) => (
-      <span className="capitalize">
-        {val?.departmentHead?.firstName} {val?.departmentHead?.lastName}
-      </span>
-    ),
-  },
-  {
-    title: "Shift Type",
-    dataIndex: "shiftType",
-    render: (_, val) => <span className="capitalize">{val?.shiftType}</span>,
-  },
-];
+const columns = EMPLOYEE_PER_SHIFT_TABLE_COLUMNS();
 
 const EmployeesPerShift = () => {
   const [filterData, setFilterData] = useState<filterReportProps>();
