@@ -22,6 +22,8 @@ import { EditFile } from "./EditFile";
 import { SelectFolder } from "./folders/SelectFolder";
 import { DeleteFile } from "./files/DeleteFile";
 import ErrorBoundary from "components/errorHandlers/ErrorBoundary";
+import { TableFocusTypeBtn } from "components/table";
+import { FILE_TABLE_COLUMNS } from "./columns/files";
 
 export const FilesContainer = () => {
   const [folder, setFolder] = useState<TFolderListItem>();
@@ -91,7 +93,7 @@ const FilesViewWrapper: React.FC<{
   useEffect(() => {
     resetPagination();
   }, [view, resetPagination]);
-  
+
   if (files?.total === 0) {
     return (
       <div className="flex flex-col items-center">
@@ -174,75 +176,27 @@ const FileListTable: React.FC<
   handleEdit,
   handleDelete,
 }) => {
-  const columns: ColumnsType<TFileListItem> = [
-    {
-      title: "Name",
-      dataIndex: "name",
-      key: "name",
-      width: 200,
-      ellipsis: true,
+  const columns: ColumnsType<TFileListItem> = FILE_TABLE_COLUMNS(
+    handleView,
+    handleEdit,
+    handleDelete
+  );
+  const [selectedColumns, setSelectedColumns] =
+    useState<ColumnsType<TFileListItem>>(columns);
 
-      render: (_, item) => <span className="capitalize">{item.name}</span>,
-    },
-    {
-      title: "Description",
-      dataIndex: "Description",
-      key: "Description",
-      render: (_, item) => (
-        <span className="capitalize">{item.description}</span>
-      ),
-      ellipsis: true,
-    },
-
-    {
-      title: "Actions",
-      dataIndex: "act",
-      key: "act",
-      width: 100,
-
-      render: (_, file) => (
-        <Dropdown
-          overlay={
-            <Menu
-              items={[
-                {
-                  label: (
-                    <a href={file.url} rel="noreferrer">
-                      <span className="text-caramel cursor-pointer">
-                        Download
-                      </span>
-                    </a>
-                  ),
-                  key: "Download",
-                },
-                {
-                  label: "View",
-                  key: "View",
-                  onClick: () => handleView({ file }),
-                },
-                {
-                  label: "Edit",
-                  key: "Edit",
-                  onClick: () => handleEdit({ file }),
-                },
-                {
-                  label: "Delete",
-                  key: "Delete",
-                  onClick: () => handleDelete({ file }),
-                },
-              ]}
-            />
-          }
-          children={<MoreOutlined />}
-          trigger={["click"]}
-        />
-      ),
-    },
-  ];
   return (
-    <div>
+    <div className="space-y-6">
+      <div className="flex justify-end">
+        {TableFocusTypeBtn<TFileListItem>({
+          selectedColumns,
+          setSelectedColumns,
+          data: {
+            columns,
+          },
+        })}
+      </div>
       <Table
-        columns={columns}
+        columns={selectedColumns}
         size="small"
         dataSource={data}
         loading={loading}

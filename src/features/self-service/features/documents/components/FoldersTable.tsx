@@ -1,20 +1,20 @@
-import { Dropdown, Menu, Table } from "antd";
-import { MoreOutlined } from "@ant-design/icons";
+
 
 import React, { useState } from "react";
 import { ColumnsType } from "antd/lib/table";
-
+import {Table} from "antd"
 import { usePagination } from "hooks/usePagination";
 
 import { useGetFolders } from "../hooks/useGetFolders";
 import { TFolderListItem } from "../types";
-import moment from "moment";
 import { EditFolder } from "./EditFolder";
-import { DEFAULT_DATE_FORMAT } from "constants/dateFormats";
 import { DeleteFolder } from "./folders/DeleteFolder";
+import { TableFocusTypeBtn } from "components/table";
+import { FOLDER_TABLE_COLUMNS } from "./columns/folders";
 
+export type TFolderAction = "edit" | "delete";
 export const FoldersTable: React.FC = () => {
-  const [action, setAction] = useState<"edit" | "delete">();
+  const [action, setAction] = useState<TFolderAction>();
   const [folder, setFolder] = useState<TFolderListItem>();
 
   const { pagination, onChange } = usePagination();
@@ -23,74 +23,18 @@ export const FoldersTable: React.FC = () => {
     pagination,
   });
 
-  const columns: ColumnsType<TFolderListItem> = [
-    {
-      title: "Folder Name",
-      dataIndex: "name",
-      key: "name",
-      render: (val, item) => <span className="capitalize">{item.name}</span>,
-    },
-    {
-      title: "Created At",
-      dataIndex: "createdAt",
-      key: "createdAt",
-      render: (val, item) => (
-        <span className="capitalize text-caramel hover:underline">
-          {moment(item.createdAt).format(DEFAULT_DATE_FORMAT)}
-        </span>
-      ),
-    },
-    {
-      title: "Last Modified",
-      dataIndex: "updatedAt",
-      key: "updatedAt",
-      render: (val, item) => (
-        <span className="capitalize text-caramel hover:underline">
-          {moment(item.updatedAt).format(DEFAULT_DATE_FORMAT)}
-        </span>
-      ),
-    },
-
-    {
-      title: "Actions",
-      dataIndex: "act",
-      key: "act",
-      render: (_, item) => (
-        <Dropdown
-          overlay={
-            <Menu
-              items={[
-                {
-                  label: "Edit",
-                  key: "Edit",
-                  onClick: () => {
-                    setFolder(item);
-                    setAction("edit");
-                  },
-                },
-                {
-                  label: "Delete",
-                  key: "Delete",
-                  onClick: () => {
-                    setFolder(item);
-                    setAction("delete");
-                  },
-                },
-              ]}
-            />
-          }
-          children={<MoreOutlined />}
-          trigger={["click"]}
-        />
-      ),
-    },
-  ];
+  const columns: ColumnsType<TFolderListItem> = FOLDER_TABLE_COLUMNS(
+    setFolder,
+    setAction
+  );
+  const [selectedColumns, setSelectedColumns] =
+    useState<ColumnsType<TFolderListItem>>(columns);
   const onClose = () => {
     setAction(undefined);
     setFolder(undefined);
   };
   return (
-    <div>
+    <div className="space-y-6">
       {folder && (
         <EditFolder
           open={action === "edit"}
@@ -104,9 +48,17 @@ export const FoldersTable: React.FC = () => {
         folder={folder}
         handleClose={onClose}
       />
-
+ <div className="flex justify-end">
+        {TableFocusTypeBtn<TFolderListItem>({
+          selectedColumns,
+          setSelectedColumns,
+          data: {
+            columns,
+          },
+        })}
+      </div>
       <Table
-        columns={columns}
+        columns={selectedColumns}
         size="small"
         dataSource={data?.data}
         loading={isFetching}

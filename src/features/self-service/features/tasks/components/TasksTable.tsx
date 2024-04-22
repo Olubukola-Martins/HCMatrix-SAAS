@@ -1,24 +1,14 @@
 import React, { useState } from "react";
-import { MoreOutlined } from "@ant-design/icons";
 import type { ColumnsType } from "antd/es/table";
-import {
-  Button,
-  Dropdown,
-  Menu,
-  Table,
-  TablePaginationConfig,
-  TableProps,
-} from "antd";
-import moment from "moment";
-import { getAppropriateColorForStatus } from "utils/colorHelpers/getAppropriateColorForStatus";
+import { Table, TablePaginationConfig, TableProps } from "antd";
 import { TTask } from "../types";
 import { EditTask } from "./EditTask";
-import { getEmployeeFullName } from "features/core/employees/utils/getEmployeeFullName";
 import { DeleteTask } from "./DeleteTask";
-import { DEFAULT_DATE_FORMAT } from "constants/dateFormats";
 import TaskComment from "./comment/TaskComment";
+import { TASK_TABLE_COLUMNS } from "./columns";
+import { TableFocusTypeBtn } from "components/table";
 
-type TAction = "edit" | "delete" | "comment";
+export type TTaskAction = "edit" | "delete" | "comment";
 
 export const TasksTable: React.FC<{
   data?: TTask[];
@@ -29,117 +19,23 @@ export const TasksTable: React.FC<{
   isTaskAssigner: boolean;
 }> = ({ data, loading, pagination, onChange, total, isTaskAssigner }) => {
   const [task, setTask] = useState<TTask>();
-  const [action, setAction] = useState<TAction>();
+  const [action, setAction] = useState<TTaskAction>();
   const onClose = () => {
     setAction(undefined);
     setTask(undefined);
   };
 
-  const handleAction = (props: { action: TAction; task: TTask }) => {
+  const handleAction = (props: { action: TTaskAction; task: TTask }) => {
     const { task, action } = props;
     setAction(action);
     setTask(task);
   };
 
-  const columns: ColumnsType<TTask> = [
-    {
-      title: "Name",
-      dataIndex: "Name",
-      key: "Name",
-      render: (_, item) => <span className="capitalize">{item.name} </span>,
-    },
-    {
-      title: "Assigned To",
-      dataIndex: "ass",
-      key: "ass",
-      render: (_, item) => (
-        <span className="capitalize">
-          {getEmployeeFullName(item.assignedTo)}{" "}
-        </span>
-      ),
-    },
-
-    {
-      title: "Status",
-      dataIndex: "status",
-      key: "status",
-      render: (_, item) => (
-        <span
-          className="capitalize"
-          style={{ color: getAppropriateColorForStatus(item.status) }}
-        >
-          {item.status}{" "}
-        </span>
-      ),
-    },
-    {
-      title: "Priority",
-      dataIndex: "Priority",
-      key: "Priority",
-      render: (_, item) => (
-        <span
-          className="capitalize"
-          style={{ color: getAppropriateColorForStatus(item.priority) }}
-        >
-          {item.priority}{" "}
-        </span>
-      ),
-    },
-    {
-      title: "Date Assigned",
-      dataIndex: "Date Assigned",
-      key: "Date Assigned",
-      render: (_, item) => (
-        <span>{moment(item.dateAssigned).format(DEFAULT_DATE_FORMAT)} </span>
-      ),
-    },
-    {
-      title: "Due Date",
-      dataIndex: "Due Date",
-      key: "Due Date",
-      render: (_, item) => (
-        <span>{moment(item.dueDate).format(DEFAULT_DATE_FORMAT)} </span>
-      ),
-    },
-
-    {
-      title: "Action",
-      key: "action",
-      render: (_, item) => (
-        <Dropdown
-          overlay={
-            <Menu>
-              <Menu.Item
-                key="3"
-                onClick={() => handleAction({ task: item, action: "edit" })}
-              >
-                {item.status === "closed" ? "View" : "Update"}
-              </Menu.Item>
-              <Menu.Item
-                hidden={item.status === "closed"}
-                key="4"
-                onClick={() => handleAction({ task: item, action: "delete" })}
-              >
-                Delete
-              </Menu.Item>
-              <Menu.Item
-                key="comment"
-                onClick={() => handleAction({ task: item, action: "comment" })}
-              >
-                Comment
-              </Menu.Item>
-            </Menu>
-          }
-          trigger={["click"]}
-        >
-          <Button title="Actions" icon={<MoreOutlined />} type="text" />
-        </Dropdown>
-      ),
-    },
-  ];
-
+  const columns: ColumnsType<TTask> = TASK_TABLE_COLUMNS(handleAction);
+  const [selectedColumns, setSelectedColumns] =
+    useState<ColumnsType<TTask>>(columns);
   return (
-    <div>
+    <div className="space-y-6">
       {task && (
         <DeleteTask
           open={action === "delete"}
@@ -161,11 +57,20 @@ export const TasksTable: React.FC<{
         handleClose={onClose}
         taskName={task?.name ?? ""}
       />
+      <div className="flex justify-end">
+        {TableFocusTypeBtn<TTask>({
+          selectedColumns,
+          setSelectedColumns,
+          data: {
+            columns,
+          },
+        })}
+      </div>
       <Table
         size="small"
         dataSource={data}
         loading={loading}
-        columns={columns}
+        columns={selectedColumns}
         pagination={{ ...pagination, total }}
         onChange={onChange}
       />
