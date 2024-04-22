@@ -5,7 +5,6 @@ import { WorkFixed } from "../components/WorkFixed";
 import { WorkFlexible } from "../components/WorkFlexible";
 import { WeeklyWork } from "../components/WeeklyWork";
 import { WorkShift } from "../components/WorkShift";
-import { WorkBreak } from "../components/WorkBreak";
 
 const boxStyle =
   "border py-3 px-7 text-accent font-medium text-base cursor-pointer";
@@ -90,7 +89,6 @@ export const WorkSchedule = () => {
           </div>
         </div>
         {switchWorkArr === "Shift" && <WorkShift />}
-        {switchWorkArr === "break" && <WorkBreak />}
       </div>
     </>
   );

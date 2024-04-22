@@ -2,7 +2,7 @@ import { Form, Modal, Select, Spin } from "antd";
 import { AppButton } from "components/button/AppButton";
 import { useContext, useState } from "react";
 import { IModalProps } from "types";
-import { useGetBreakPolicy } from "../features/settings/workSchedule/hooks/useGetBreakPolicy";
+import { useGetBreakPolicy } from "../features/settings/break/hooks/useGetBreakPolicy";
 import { useDebounce } from "hooks/useDebounce";
 import { generalValidationRules } from "utils/formHelpers/validation";
 import { useGoBreak } from "../hooks/useGoBreak";

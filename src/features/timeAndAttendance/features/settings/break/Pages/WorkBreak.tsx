@@ -1,9 +1,9 @@
 import { AppButton } from "components/button/AppButton";
 import { useState } from "react";
-import { AddBreak } from "./AddBreak";
+import { AddBreak } from "../components/AddBreak";
 import Table, { ColumnsType } from "antd/lib/table";
 import { Dropdown, Menu, Popconfirm } from "antd";
-import { settingsBreakProps } from "../types";
+import { settingsBreakProps } from "../../workSchedule/types";
 import {
   QUERY_KEY_FOR_BREAK_POLICY,
   useGetBreakPolicy,
@@ -11,8 +11,10 @@ import {
 import { usePagination } from "hooks/usePagination";
 import { useDeleteTimeAndAttendance } from "features/timeAndAttendance/hooks/useDeleteTimeAndAttendance";
 import { convertMinutesToHours } from "features/timeAndAttendance/utils";
+import { TimeAttendanceSettingsNav } from "../../components/TimeAttendanceSettingsNav";
+import { AttendanceSettingsIntro } from "../../components/AttendanceSettingsIntro";
 
-export const WorkBreak = () => {
+const WorkBreak = () => {
   const [openBreak, setOpenBreak] = useState(false);
   const [breakPolicyId, setBreakPolicyId] = useState<number>();
   const { pagination, onChange } = usePagination({ pageSize: 5 });
@@ -96,15 +98,14 @@ export const WorkBreak = () => {
         id={breakPolicyId}
         handleClose={() => setOpenBreak(false)}
       />
-      <div className="border rounded-md p-3 md:p-5 mt-5">
-        <div className="flex items-start flex-col gap-3 lg:flex-row justify-between">
-          <div>
-            <h3 className="font-semibold text-lg">Breaks</h3>
-            <p>
-              Schedule breaks by setting fixed times or durations here. If left
-              empty, members can clock into breaks freely.
-            </p>
-          </div>
+      <TimeAttendanceSettingsNav active="workBreak" />
+      <AttendanceSettingsIntro
+        title={"Work Break"}
+        description=" Schedule breaks by setting fixed times or durations here. If left
+        empty, members can clock into breaks freely."
+      />
+      <div className="Container mt-7">
+        <div className="flex justify-end">
           <AppButton
             label="Add break"
             handleClick={() => {
@@ -126,3 +127,5 @@ export const WorkBreak = () => {
     </>
   );
 };
+
+export default WorkBreak;
