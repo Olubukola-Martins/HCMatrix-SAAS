@@ -9,6 +9,7 @@ import ErrorBoundary from "components/errorHandlers/ErrorBoundary";
 import { LOCAL_STORAGE_AUTH_KEY } from "constants/localStorageKeys";
 import { useNetworkState } from "hooks/network/useNetworkState";
 import { ErrorWrapper } from "components/errorHandlers/ErrorWrapper";
+import PageNotFoundIcon from "assets/svg-components/PageNotFoundIcon/PageNotFoundIcon";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -37,6 +38,7 @@ function App() {
     <ErrorBoundary message="Please contact administrator!">
       <ErrorWrapper
         isError={!isOnline}
+        errImage={<PageNotFoundIcon />}
         message="Please check your internet connection!"
       >
         <BrowserRouter>
