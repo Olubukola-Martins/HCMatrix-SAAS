@@ -9,7 +9,12 @@ import { TApprovalStatus } from "types/statuses";
 interface IProps {
   handleSuccess?: (status?: TApprovalStatus) => void;
 }
-
+export type TConfirmApprovalActionProps = {
+  approvalStageId: number;
+  requires2FA?: boolean;
+  workflowType: "basic" | "advanced";
+  status: TApprovalStatus;
+};
 export const useApproveORReject = ({ handleSuccess }: IProps = {}) => {
   // TODO: handle the `handleSuccess` prop by passing dispatching to global state and having it called onSuccess
   const globalCtx = useContext(GlobalContext);
@@ -21,12 +26,7 @@ export const useApproveORReject = ({ handleSuccess }: IProps = {}) => {
     workflowType,
     status,
     requires2FA,
-  }: {
-    approvalStageId: number;
-    requires2FA?: boolean;
-    workflowType: "basic" | "advanced";
-    status: TApprovalStatus;
-  }) => {
+  }: TConfirmApprovalActionProps) => {
     globalDispatch({
       type: EGlobalOps.setCurrentApproval,
       payload: {
