@@ -21,7 +21,6 @@ const getData = async (
     params: { year: params.year, month: params.month, week: params.week },
   };
   const res = await axios.get(url, config);
-  console.log(res);
 
   const item: dashboardGraphProps = res.data.data;
   const data: dashboardGraphProps = {
