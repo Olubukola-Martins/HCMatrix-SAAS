@@ -28,8 +28,8 @@ export const AttendanceHome = () => {
     useGetAnalyticsRecord();
   const { user } = useMostRecentApiAuth();
   const { data: welcomeNoteData } = useWelcomeNote();
-  const {} = useGetDashboardGraph();
-  
+
+
   useEffect(() => {
     if (hour >= 5 && hour < 12) {
       setGreeting("Morning");

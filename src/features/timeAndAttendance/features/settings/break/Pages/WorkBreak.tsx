@@ -104,7 +104,7 @@ const WorkBreak = () => {
         description=" Schedule breaks by setting fixed times or durations here. If left
         empty, members can clock into breaks freely."
       />
-      <div className="Container mt-7">
+      <div className="Container">
         <div className="flex justify-end">
           <AppButton
             label="Add break"

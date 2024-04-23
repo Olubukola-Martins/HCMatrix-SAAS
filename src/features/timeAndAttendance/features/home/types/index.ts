@@ -17,7 +17,10 @@ export interface timeSheetRecordProps {
   employee: TEmployeeProps;
 }
 
-export interface dashboardGraphProps {
+export type dashboardGraphProps = Record<string, number>;
 
+export interface graphFilterProps {
+  year: number;
+  month: number;
+  week: number;
 }
-
