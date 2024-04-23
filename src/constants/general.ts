@@ -28,9 +28,8 @@ export const DEFAULT_PAGE_SIZE_OPTIONS = [
   25,
   50,
   100,
-  1,
-  2,
-  3,
+  200,
+  500,
 ];
 export const DEFAULT_EXPORT_PAGE_SIZE = 500;
 export const DEFAULT_GRID_PAGE_SIZE = 10;
