@@ -1,6 +1,9 @@
 import { useCallback, useState } from "react";
 import { TablePaginationConfig } from "antd/es/table";
-import { DEFAULT_PAGE_SIZE } from "constants/general";
+import {
+  DEFAULT_PAGE_SIZE,
+  DEFAULT_PAGE_SIZE_OPTIONS,
+} from "constants/general";
 
 export const usePagination = ({
   pageSize = DEFAULT_PAGE_SIZE,
@@ -42,7 +45,17 @@ export const usePagination = ({
     pagination: {
       ...pagination,
       limit: pagination.pageSize,
+      pageSize: pagination.pageSize,
       offset,
+      showSizeChanger: true,
+      pageSizeOptions: DEFAULT_PAGE_SIZE_OPTIONS,
+      onChange: (page: number, pageSize: number) => {
+        setPagination((prev) => ({
+          ...prev,
+          pageSize,
+          current: 1,
+        }));
+      },
     },
     resetPagination,
   };

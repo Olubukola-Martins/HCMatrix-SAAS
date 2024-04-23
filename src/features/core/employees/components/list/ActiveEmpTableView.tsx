@@ -33,7 +33,7 @@ const ActiveEmpTableView = ({
         loading={loading}
         className="mt-5"
         size="small"
-        pagination={pagination}
+        pagination={{ ...pagination }}
         onChange={onChange}
       />
     </div>
