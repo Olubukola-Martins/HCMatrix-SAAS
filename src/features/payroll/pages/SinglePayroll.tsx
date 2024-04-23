@@ -9,12 +9,13 @@ const SinglePayroll = () => {
   const params = useParams();
   const scheme = params.scheme;
   const payrollId = params.id as string;
+  const schemeName = scheme === "office" ? "Step Pay" : scheme;
   return (
     <>
       <PayrollSubNav />
       <div className="Container">
         <PageIntro
-          title={`${scheme} payroll`}
+          title={`${schemeName} payroll`}
           link={appRoutes.listOfPayrolls}
         />
         <CreatePayrollContainer
