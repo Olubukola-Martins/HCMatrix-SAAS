@@ -33,7 +33,7 @@ const getData = async (
 export const useGetDashboardGraph = (params: graphFilterProps) => {
   const { companyId, token } = useApiAuth();
   const queryData = useQuery(
-    [QUERY_KEY_FOR_DASHBOARD_GRAPH],
+    [QUERY_KEY_FOR_DASHBOARD_GRAPH, params],
     () => getData({ token, companyId }, params),
     {
       onError: (err: any) => {},

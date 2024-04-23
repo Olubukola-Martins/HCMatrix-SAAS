@@ -20,7 +20,7 @@ export interface timeSheetRecordProps {
 export type dashboardGraphProps = Record<string, number>;
 
 export interface graphFilterProps {
-  year: number;
-  month: number;
-  week: number;
+  year?: number;
+  month?: number;
+  week?: number;
 }
