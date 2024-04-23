@@ -1,6 +1,6 @@
 import { Tabs } from "antd";
 import { TPayrollSchemeType } from "features/payroll/types/payrollSchemes";
-import React from "react";
+import React, { useState } from "react";
 import { PayslipsContainer } from "./PayslipsContainer";
 import { TransactionsContainer } from "../transactions/TransactionsContainer";
 import { TTransaction } from "features/payroll/types";
@@ -10,6 +10,7 @@ import {
   withFilterTransactionContainer,
 } from "../transactions/hoc/FilterTransactionContainerProps";
 import { PAYSLIP_TRANSACTION_TABLE_COLUMNS } from "./columns/payslip-transaction";
+import { TableFocusTypeBtn } from "components/table";
 
 const columns: ColumnsType<TTransaction> = PAYSLIP_TRANSACTION_TABLE_COLUMNS;
 
