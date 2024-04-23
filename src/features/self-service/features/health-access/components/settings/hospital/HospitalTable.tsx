@@ -43,7 +43,7 @@ export const HospitalTable: React.FC<{
     useState<ColumnsType<THospital>>(columns);
 
   return (
-    <div>
+    <div className="space-y-6">
       <ViewHospital
         handleClose={() => setAction(undefined)}
         hospital={hospital}
