@@ -2,7 +2,7 @@ import axios from "axios";
 import { useQuery } from "react-query";
 import { MICROSERVICE_ENDPOINTS } from "config/enviroment";
 import { useApiAuth } from "hooks/useApiAuth";
-import { settingsBreakProps } from "../types";
+import { settingsBreakProps } from "../../workSchedule/types";
 import { IPaginationProps } from "types";
 import { DEFAULT_PAGE_SIZE } from "constants/general";
 

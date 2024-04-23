@@ -69,7 +69,7 @@ export const Biometrics = () => {
   return (
     <>
       <TimeAttendanceSettingsNav active="clock in settings" />
-      <AttendanceSettingsIntro title={"Clock in Settings"} description="" />
+      <AttendanceSettingsIntro title={"Clock in Settings"} description="Set up Biometric..." />
       <AddBiometric
         id={biometricId}
         open={addClockIn}
@@ -78,7 +78,7 @@ export const Biometrics = () => {
           setBiometricId(undefined);
         }}
       />
-      <div className="Container mt-4">
+      <div className="Container">
         <div className="flex justify-end">
           <AppButton
             label="Create Biometrics"

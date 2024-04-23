@@ -12,6 +12,7 @@ import EmployeesPerShift from "features/timeAndAttendance/features/reports/pages
 import { TimeOff } from "features/timeAndAttendance/features/timeOff/pages/TimeOff";
 import TimeSheet from "features/timeAndAttendance/features/timeSheet/pages/TimeSheet";
 import TimeSheetDetails from "features/timeAndAttendance/features/timeSheet/pages/TimeSheetDetails";
+import WorkBreak from "features/timeAndAttendance/features/settings/break/Pages/WorkBreak";
 
 export const attendanceRoutes: TRouteData[] = [
   {
@@ -69,6 +70,13 @@ export const attendanceRoutes: TRouteData[] = [
     path: appRoutes.otherSettings,
     isSearchable: false,
   },
+  {
+    element: <WorkBreak />,
+    path: appRoutes.breakSetUp,
+    isSearchable: false,
+  },
+
+
   {
     element: <HoursPerEmployee/>,
     path: appRoutes.hoursPerEmployee,
