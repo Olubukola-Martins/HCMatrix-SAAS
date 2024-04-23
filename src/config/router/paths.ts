@@ -292,6 +292,7 @@ export const appRoutes = {
   biometrics: `/attendance/biometrics`,
   location: `/attendance/location`,
   otherSettings: `/attendance/other-settings`,
+  breakSetUp: `/attendance/break-setup`,
 
   // Leaning and development
   learningHome: `/learning/home`,

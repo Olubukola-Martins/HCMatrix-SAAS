@@ -4,13 +4,13 @@ import { UseWindowWidth } from "features/timeAndAttendance/hooks/UseWindowWidth"
 import { useContext, useEffect } from "react";
 import { IDrawerProps } from "types";
 import { generalValidationRules } from "utils/formHelpers/validation";
-import { useSetUpBreak } from "../hooks/useSetUpBreak";
+import { useSetUpBreak } from "../../workSchedule/hooks/useSetUpBreak";
 import { openNotification } from "utils/notifications";
 import { EGlobalOps, GlobalContext } from "stateManagers/GlobalContextProvider";
 import { useQueryClient } from "react-query";
 import moment from "moment";
 import { QUERY_KEY_FOR_BREAK_POLICY } from "../hooks/useGetBreakPolicy";
-import { useGetSingleBreakPolicy } from "../hooks/useGetSingleBreakPolicy";
+import { useGetSingleBreakPolicy } from "../../workSchedule/hooks/useGetSingleBreakPolicy";
 
 export const AddBreak = ({ handleClose, open, id }: IDrawerProps) => {
   const { drawerSize } = UseWindowWidth();

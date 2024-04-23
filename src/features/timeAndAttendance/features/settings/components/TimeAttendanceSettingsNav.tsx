@@ -8,7 +8,8 @@ interface NProps {
     | "clock in settings"
     | "time off policy"
     | "other settings"
-    | "location";
+    | "location"
+    | "workBreak";
 }
 
 export const TimeAttendanceSettingsNav = (props: NProps) => {
@@ -16,7 +17,7 @@ export const TimeAttendanceSettingsNav = (props: NProps) => {
 
   return (
     <div className="flex justify-center">
-      <div className="grid grid-cols-2 text-center md:grid-cols-3 lg:grid-cols-6 gap-x-5 gap-y-2 Container text-base py-2 border-b mb-6 mt-3">
+      <div className="grid grid-cols-2 text-center md:grid-cols-3 lg:grid-cols-7 gap-x-2 gap-y-2 Container text-sm py-2 border-b mb-6 mt-3">
         <Link
           to={appRoutes.timeTrackingRules}
           className={
@@ -59,6 +60,16 @@ export const TimeAttendanceSettingsNav = (props: NProps) => {
           Clock In Settings
         </Link>
         <Link
+          to={appRoutes.breakSetUp}
+          className={
+            props.active === "workBreak"
+              ? `${applyStyle}`
+              : "pb-3 hover:text-caramel"
+          }
+        >
+        Set up Break
+        </Link>
+        <Link
           to={appRoutes.location}
           className={
             props.active === "location"
@@ -66,8 +77,9 @@ export const TimeAttendanceSettingsNav = (props: NProps) => {
               : "pb-3 hover:text-caramel"
           }
         >
-          Location
+         Work Location
         </Link>
+
         <Link
           to={appRoutes.otherSettings}
           className={
