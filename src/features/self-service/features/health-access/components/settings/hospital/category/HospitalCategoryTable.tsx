@@ -1,79 +1,41 @@
 import React, { useState } from "react";
-import { MoreOutlined } from "@ant-design/icons";
 import type { ColumnsType } from "antd/es/table";
 import { usePagination } from "hooks/usePagination";
-import { Button, Dropdown, Menu, Table } from "antd";
+import { Table } from "antd";
 import { useGetHospitalCategories } from "features/self-service/features/health-access/hooks/hospital/category/useGetHospitalCategories";
 import { THospitalCategory } from "features/self-service/features/health-access/types/hospital/category";
 import { ViewHospitalCategory } from "./ViewHospitalCategory";
 import { EditHospitalCategory } from "./EditHospitalCategory";
 import { DeleteHospitalCategory } from "./DeleteHospitalCategory";
+import { HOSPITAL_CATEGORY_TABLE_COLUMNS } from "../../../columns/hospital-category";
+import { TableFocusTypeBtn } from "components/table";
 
-type TAction = "edit" | "view" | "delete";
+export type THospitalCategoryAction = "edit" | "view" | "delete";
 export const HospitalCategoryTable: React.FC<{
   search?: string;
 }> = ({ search }) => {
   const [category, setCategory] = useState<THospitalCategory>();
-  const [action, setAction] = useState<TAction>();
+  const [action, setAction] = useState<THospitalCategoryAction>();
   const { pagination, onChange } = usePagination();
   const { data, isFetching } = useGetHospitalCategories({
     pagination,
     searchParams: { name: search },
   });
-  const handleAction = (action: TAction, category: THospitalCategory) => {
+  const handleAction = (
+    action: THospitalCategoryAction,
+    category: THospitalCategory
+  ) => {
     setAction(action);
     setCategory(category);
   };
 
-  const columns: ColumnsType<THospitalCategory> = [
-    {
-      title: "Category",
-      dataIndex: "Category",
-      key: "Category",
-      render: (_, item) => <span>{item.name} </span>,
-    },
+  const columns: ColumnsType<THospitalCategory> =
+    HOSPITAL_CATEGORY_TABLE_COLUMNS(handleAction);
 
-    {
-      title: "Description",
-      dataIndex: "Description",
-      key: "Description",
-      ellipsis: true,
-      render: (_, item) => (
-        <span className="capitalize">{item.description} </span>
-      ),
-    },
-
-    {
-      title: "Action",
-      key: "action",
-      render: (_, item) => (
-        <Dropdown
-          overlay={
-            <Menu>
-              <Menu.Item key="view" onClick={() => handleAction("view", item)}>
-                View Details
-              </Menu.Item>
-              <Menu.Item key="edit" onClick={() => handleAction("edit", item)}>
-                Edit
-              </Menu.Item>
-              <Menu.Item
-                key="delete"
-                onClick={() => handleAction("delete", item)}
-              >
-                Delete
-              </Menu.Item>
-            </Menu>
-          }
-          trigger={["click"]}
-        >
-          <Button title="Actions" icon={<MoreOutlined />} type="text" />
-        </Dropdown>
-      ),
-    },
-  ];
-
+  const [selectedColumns, setSelectedColumns] =
+    useState<ColumnsType<THospitalCategory>>(columns);
   return (
-    <div>
+    <div className="space-y-6">
       <ViewHospitalCategory
         handleClose={() => setAction(undefined)}
         hospitalCategory={category}
@@ -89,11 +51,20 @@ export const HospitalCategoryTable: React.FC<{
         category={category}
         open={action === "delete"}
       />
+      <div className="flex justify-end">
+        {TableFocusTypeBtn<THospitalCategory>({
+          selectedColumns,
+          setSelectedColumns,
+          data: {
+            columns,
+          },
+        })}
+      </div>
       <Table
         size="small"
         dataSource={data?.data}
         loading={isFetching}
-        columns={columns}
+        columns={selectedColumns}
         pagination={{ ...pagination, total: data?.total }}
         onChange={onChange}
       />

@@ -1,86 +1,34 @@
 import React, { useState } from "react";
-import { MoreOutlined } from "@ant-design/icons";
 import type { ColumnsType } from "antd/es/table";
 import { usePagination } from "hooks/usePagination";
-import { Button, Dropdown, Menu, Table } from "antd";
+import { Table } from "antd";
 import { useGetHMOPlans } from "../../../hooks/hmoPlan/useGetHMOPlans";
 import { THMOPlan } from "../../../types/hmoPlan";
 import { ViewHMOPlan } from "./ViewHMOPlan";
 import { EditHMOPlan } from "./EditHMOPlan";
 import { DeleteHMOPlan } from "./DeleteHMOPlan";
+import { HMO_PLAN_TABLE_COLUMNS } from "../../columns/hmo-plan";
+import { TableFocusTypeBtn } from "components/table";
 
-type TAction = "edit" | "view" | "delete";
+export type THMOPlanAction = "edit" | "view" | "delete";
 export const HMOPlansTable: React.FC<{
   search?: string;
 }> = ({ search }) => {
   const [hmoPlan, setHmoPlan] = useState<THMOPlan>();
-  const [action, setAction] = useState<TAction>();
+  const [action, setAction] = useState<THMOPlanAction>();
   const { pagination, onChange } = usePagination();
   const { data, isFetching } = useGetHMOPlans({
     pagination,
     searchParams: { name: search },
   });
-  const handleAction = (action: TAction, plan: THMOPlan) => {
+  const handleAction = (action: THMOPlanAction, plan: THMOPlan) => {
     setAction(action);
     setHmoPlan(plan);
   };
 
-  const columns: ColumnsType<THMOPlan> = [
-    {
-      title: "HMO Plan",
-      dataIndex: "HMO Plan",
-      key: "HMO Plan",
-
-      render: (_, item) => <span>{item.name} </span>,
-    },
-
-    {
-      title: "Number of allowed dependents ",
-      dataIndex: "Number of allowed dependents ",
-      key: "Number of allowed dependents ",
-      render: (_, item) => (
-        <span className="capitalize">{item.maxDependents} </span>
-      ),
-    },
-    {
-      title: "Description",
-      dataIndex: "Description",
-      key: "Description",
-      ellipsis: true,
-      render: (_, item) => (
-        <span className="capitalize">{item.description} </span>
-      ),
-    },
-
-    {
-      title: "Action",
-      key: "action",
-      render: (_, item) => (
-        <Dropdown
-          overlay={
-            <Menu>
-              <Menu.Item key="view" onClick={() => handleAction("view", item)}>
-                View Details
-              </Menu.Item>
-              <Menu.Item key="edit" onClick={() => handleAction("edit", item)}>
-                Edit
-              </Menu.Item>
-              <Menu.Item
-                key="delete"
-                onClick={() => handleAction("delete", item)}
-              >
-                Delete
-              </Menu.Item>
-            </Menu>
-          }
-          trigger={["click"]}
-        >
-          <Button title="Actions" icon={<MoreOutlined />} type="text" />
-        </Dropdown>
-      ),
-    },
-  ];
-
+  const columns: ColumnsType<THMOPlan> = HMO_PLAN_TABLE_COLUMNS(handleAction);
+  const [selectedColumns, setSelectedColumns] =
+    useState<ColumnsType<THMOPlan>>(columns);
   return (
     <div>
       <ViewHMOPlan
@@ -98,11 +46,20 @@ export const HMOPlansTable: React.FC<{
         plan={hmoPlan}
         open={action === "delete"}
       />
+      <div className="flex justify-end">
+        {TableFocusTypeBtn<THMOPlan>({
+          selectedColumns,
+          setSelectedColumns,
+          data: {
+            columns,
+          },
+        })}
+      </div>
       <Table
         size="small"
         dataSource={data?.data}
         loading={isFetching}
-        columns={columns}
+        columns={selectedColumns}
         pagination={{ ...pagination, total: data?.total }}
         onChange={onChange}
       />
