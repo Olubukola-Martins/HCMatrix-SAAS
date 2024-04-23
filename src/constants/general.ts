@@ -22,15 +22,8 @@ export const MONTH_CHART_LABELS = [
   "Dec",
 ];
 
-export const DEFAULT_PAGE_SIZE = 15;
-export const DEFAULT_PAGE_SIZE_OPTIONS = [
-  DEFAULT_PAGE_SIZE,
-  25,
-  50,
-  100,
-  200,
-  500,
-];
+export const DEFAULT_PAGE_SIZE = 10;
+export const DEFAULT_PAGE_SIZE_OPTIONS = [DEFAULT_PAGE_SIZE, 20, 50, 100];
 export const DEFAULT_EXPORT_PAGE_SIZE = 500;
 export const DEFAULT_GRID_PAGE_SIZE = 10;
 export const PRIORITIES: { value: TPriority; label: string }[] = [
