@@ -26,23 +26,27 @@ const PayrollSetting = () => {
   const handleLoanActivation = (val: boolean) => {
     setLoanActivation(val);
   };
-
   useEffect(() => {
-    if (!setting) {
+    if (loanActivation === true) {
       // set the loan config to have office && direct-salary ticked by default(if no setting exists)
       form.setFieldValue("schemes", ["office", "direct-salary"]);
       return;
     }
+  }, [form, loanActivation]);
+  useEffect(() => {
+    if (!setting) return;
+
     setLoanActivation(setting.loanConfiguration.isActive);
-    setBank({
-      name: setting.companyBankDetails.bankName,
-      code: setting.companyBankDetails.bankCode,
-      accountName: setting.companyBankDetails.accountName,
-    });
+    setting?.companyBankDetails &&
+      setBank({
+        name: setting?.companyBankDetails?.bankName,
+        code: setting?.companyBankDetails?.bankCode,
+        accountName: setting?.companyBankDetails?.accountName,
+      });
     form.setFieldsValue({
-      bankCode: setting.companyBankDetails.bankCode,
-      accountNumber: setting.companyBankDetails.accountNumber,
-      bankName: setting.companyBankDetails.bankName,
+      bankCode: setting.companyBankDetails?.bankCode,
+      accountNumber: setting.companyBankDetails?.accountNumber,
+      bankName: setting.companyBankDetails?.bankName,
       isActive: setting.loanConfiguration.isActive,
       schemes: setting.loanConfiguration.schemes,
       templateId: setting.payslipTemplate.templateId,
@@ -55,15 +59,17 @@ const PayrollSetting = () => {
   }, [form, setting]);
 
   const handleSubmit = (data: any) => {
-    if (!bank) return;
+    const companyBankDetails = bank
+      ? {
+          bankCode: data.bankCode,
+          accountNumber: data.accountNumber,
+          bankName: bank.name,
+        }
+      : undefined;
     mutate(
       {
         data: {
-          companyBankDetails: {
-            bankCode: data.bankCode,
-            accountNumber: data.accountNumber,
-            bankName: bank.name,
-          },
+          companyBankDetails,
           loanConfiguration: {
             isActive: loanActivation,
             schemes: loanActivation ? data?.schemes : undefined,

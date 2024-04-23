@@ -1,4 +1,5 @@
 import { Select, Form } from "antd";
+import { Rule } from "antd/lib/form";
 import { useGetBanksFromPaystack } from "hooks/useGetBanksFromPaystack";
 import { useEffect, useState } from "react";
 import { TPaystackBank } from "types/paystackBank";
@@ -12,6 +13,7 @@ export const FormBankInput: React.FC<{
   control?: { label: string; name: string };
   noStyle?: boolean;
   className?: string;
+  rules?: Rule[];
 }> = ({
   Form,
   showLabel = true,
@@ -20,6 +22,7 @@ export const FormBankInput: React.FC<{
   onClear,
   noStyle,
   className = "rounded border-slate-400",
+  rules = generalValidationRules,
 }) => {
   const { data: banks, isFetching } = useGetBanksFromPaystack();
 
@@ -40,7 +43,7 @@ export const FormBankInput: React.FC<{
     <Form.Item
       name={control?.name ?? "bankCode"}
       label={showLabel ? control?.label ?? "Bank" : null}
-      rules={generalValidationRules}
+      rules={rules}
       noStyle={noStyle}
     >
       <Select

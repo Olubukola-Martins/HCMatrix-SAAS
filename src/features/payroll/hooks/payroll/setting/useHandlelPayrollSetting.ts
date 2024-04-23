@@ -6,7 +6,7 @@ import { useMutation } from "react-query";
 import { ICurrentCompany } from "types";
 
 export type TPayrolSettingData = {
-  companyBankDetails: CompanyBankDetails;
+  companyBankDetails?: CompanyBankDetails;
   loanConfiguration: LoanConfiguration;
   payslipTemplate: PayslipTemplate;
 };
