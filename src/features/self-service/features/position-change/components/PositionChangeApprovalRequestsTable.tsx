@@ -1,5 +1,6 @@
-import { Space, Dropdown, Menu, Table } from "antd";
-import { MoreOutlined } from "@ant-design/icons";
+import { Space, Dropdown, Menu } from "antd";
+import { TableWithFocusType } from "components/table";
+import { AiOutlineMore } from "react-icons/ai";
 
 import React, { useState } from "react";
 import { ColumnsType } from "antd/lib/table";
@@ -153,7 +154,7 @@ const PositionChangeApprovalRequestsTable: React.FC<{
             }
             trigger={["click"]}
           >
-            <MoreOutlined />
+            <AiOutlineMore />
           </Dropdown>
         </Space>
       ),
@@ -173,7 +174,7 @@ const PositionChangeApprovalRequestsTable: React.FC<{
         />
       )}
 
-      <Table
+      <TableWithFocusType
         columns={columns}
         size="small"
         dataSource={data?.data}
