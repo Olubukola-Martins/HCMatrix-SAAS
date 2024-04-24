@@ -1,4 +1,4 @@
-import { Button,  Tag } from "antd";
+import { Button, Tag } from "antd";
 
 import React, { useState } from "react";
 import { ColumnsType } from "antd/lib/table";
@@ -85,8 +85,8 @@ const PayrollReportTable: React.FC = () => {
     },
     {
       title: "Description",
-      dataIndex: "name",
-      key: "name",
+      dataIndex: "Description",
+      key: "Description",
       render: (val, item) => (
         <span className="capitalize">{item?.description}</span>
       ),
@@ -95,21 +95,21 @@ const PayrollReportTable: React.FC = () => {
     },
     {
       title: "Template",
-      dataIndex: "max",
-      key: "max",
+      dataIndex: "Template",
+      key: "Template",
       render: (_, item) => <span>{item.template.name}</span>,
     },
 
     {
       title: "From",
-      dataIndex: "update",
-      key: "update",
+      dataIndex: "From",
+      key: "From",
       render: (_, item) => moment(item.fromDate).format(`MMMM DD, YYYY`),
     },
     {
       title: "To",
-      dataIndex: "update",
-      key: "update",
+      dataIndex: "To",
+      key: "To",
       render: (_, item) => moment(item.toDate).format(`MMMM DD, YYYY`),
     },
     {
@@ -130,8 +130,8 @@ const PayrollReportTable: React.FC = () => {
     },
     {
       title: "Created At",
-      dataIndex: "createAr",
-      key: "createAr",
+      dataIndex: "Created At",
+      key: "Created At",
       render: (_, item) => moment(item.createdAt).format(`YYYY-MM-DD`),
     },
 
