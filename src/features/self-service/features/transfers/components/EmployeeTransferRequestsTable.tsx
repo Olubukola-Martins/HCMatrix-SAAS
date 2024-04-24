@@ -1,9 +1,10 @@
 import React, { useState } from "react";
 import { TApprovalStatus } from "types/statuses";
-import { MoreOutlined } from "@ant-design/icons";
+import { TableWithFocusType } from "components/table";
+import { AiOutlineMore } from "react-icons/ai";
 import type { ColumnsType } from "antd/es/table";
 import { usePagination } from "hooks/usePagination";
-import { Button, Dropdown, Menu, Table } from "antd";
+import { Button, Dropdown, Menu } from "antd";
 import { getEmployeeFullName } from "features/core/employees/utils/getEmployeeFullName";
 import { TransferDetails } from "./TransferDetails";
 import { TTransferRequisition } from "../../requisitions/types/transfer";
@@ -163,7 +164,7 @@ export const EmployeeTransferRequestsTable: React.FC<{
           }
           trigger={["click"]}
         >
-          <Button title="Actions" icon={<MoreOutlined />} type="text" />
+          <Button title="Actions" icon={<AiOutlineMore />} type="text" />
         </Dropdown>
       ),
     },
@@ -191,7 +192,7 @@ export const EmployeeTransferRequestsTable: React.FC<{
         open={action === "cancel"}
         data={request}
       />
-      <Table
+      <TableWithFocusType
         size="small"
         dataSource={data?.data}
         loading={isFetching}

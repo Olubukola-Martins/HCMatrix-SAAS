@@ -1,9 +1,11 @@
 import React, { useState } from "react";
 import { TApprovalStatus } from "types/statuses";
-import { MoreOutlined } from "@ant-design/icons";
+
+import { TableWithFocusType } from "components/table";
+import { AiOutlineMore } from "react-icons/ai";
 import type { ColumnsType } from "antd/es/table";
 import { usePagination } from "hooks/usePagination";
-import { Button, Dropdown, Menu, Table } from "antd";
+import { Button, Dropdown, Menu,  } from "antd";
 import { useApiAuth } from "hooks/useApiAuth";
 import { getAppropriateColorForStatus } from "utils/colorHelpers/getAppropriateColorForStatus";
 
@@ -165,9 +167,9 @@ export const TransferRequestsTable: React.FC<{
         >
           <Button
             title="Actions"
-            icon={<MoreOutlined />}
+            icon={<AiOutlineMore />}
             type="text"
-            // onClick={() => handleEdit(item._id)}
+        
           />
         </Dropdown>
       ),
@@ -191,7 +193,7 @@ export const TransferRequestsTable: React.FC<{
           type="transfer"
         />
       )}
-      <Table
+      <TableWithFocusType
         size="small"
         dataSource={data?.data}
         loading={isFetching}
