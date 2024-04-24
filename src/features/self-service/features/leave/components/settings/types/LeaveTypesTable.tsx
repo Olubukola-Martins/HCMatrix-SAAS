@@ -1,4 +1,4 @@
-import { Switch, Dropdown, Menu, Table } from "antd";
+import { Switch, Dropdown, Menu } from "antd";
 import { ColumnsType } from "antd/lib/table";
 import { DEFAULT_DATE_FORMAT } from "constants/dateFormats";
 import moment from "moment";
@@ -8,6 +8,7 @@ import { MoreOutlined } from "@ant-design/icons";
 import { usePagination } from "hooks/usePagination";
 import { TLeaveType } from "../../../types";
 import { useGetLeaveTypes } from "../../../hooks/leaveTypes/useGetLeaveTypes";
+import { TableWithFocusType } from "components/table";
 
 export const LeaveTypesTable: React.FC<{
   handleEdit?: (item: TLeaveType) => void;
@@ -137,7 +138,7 @@ export const LeaveTypesTable: React.FC<{
 
   return (
     <div>
-      <Table
+      <TableWithFocusType
         columns={columns}
         size="small"
         dataSource={data?.data.map((item) => ({

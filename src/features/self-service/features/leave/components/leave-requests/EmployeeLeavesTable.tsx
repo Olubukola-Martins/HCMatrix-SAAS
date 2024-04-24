@@ -1,4 +1,4 @@
-import { Space, Dropdown, Menu, Table } from "antd";
+import { Space, Dropdown, Menu } from "antd";
 import { MoreOutlined } from "@ant-design/icons";
 import React, { useState } from "react";
 import { ColumnsType } from "antd/lib/table";
@@ -13,6 +13,7 @@ import { getEmployeeFullName } from "features/core/employees/utils/getEmployeeFu
 import { DEFAULT_DATE_FORMAT } from "constants/dateFormats";
 import { CancelLeaveRequest } from "./CancelLeaveRequest";
 import ViewApprovalStages from "features/core/workflows/components/approval-request/ViewApprovalStages";
+import { TableWithFocusType } from "components/table";
 
 type TAction = "view" | "cancel" | "view-approval-stages";
 const EmployeeLeavesTable: React.FC<{
@@ -191,7 +192,7 @@ const EmployeeLeavesTable: React.FC<{
         handleClose={() => setShowD(undefined)}
       />
 
-      <Table
+      <TableWithFocusType
         columns={columns}
         size="small"
         dataSource={data?.data}

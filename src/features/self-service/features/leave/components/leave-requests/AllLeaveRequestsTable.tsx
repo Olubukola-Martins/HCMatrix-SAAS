@@ -1,9 +1,7 @@
-import { Space, Dropdown, Menu, Table } from "antd";
+import { Space, Dropdown, Menu } from "antd";
 import { MoreOutlined } from "@ant-design/icons";
-
 import React, { useState } from "react";
 import { ColumnsType } from "antd/lib/table";
-
 import { getAppropriateColorForStatus } from "utils/colorHelpers/getAppropriateColorForStatus";
 import { usePagination } from "hooks/usePagination";
 import { TApprovalStatus } from "types/statuses";
@@ -14,6 +12,7 @@ import { RecallLeave } from "../leave-recalls/RecallLeave";
 import { useGetAllLeaves } from "../../hooks/useGetAllLeaves";
 import { getEmployeeFullName } from "features/core/employees/utils/getEmployeeFullName";
 import ViewApprovalStages from "features/core/workflows/components/approval-request/ViewApprovalStages";
+import { TableWithFocusType } from "components/table";
 
 type TAction = "view" | "recall" | "view-approval-stages";
 const AllLeaveRequestsTable: React.FC<{
@@ -55,14 +54,14 @@ const AllLeaveRequestsTable: React.FC<{
 
     {
       title: "Leave Type",
-      dataIndex: "leaveType",
-      key: "leaveType",
+      dataIndex: "Leave Type",
+      key: "Leave Type",
       render: (val, item) => <span>{item.leaveType.name}</span>,
     },
     {
       title: "Specific Dates",
-      dataIndex: "specificDates",
-      key: "specificDates",
+      dataIndex: "Specific Dates",
+      key: "Specific Dates",
       ellipsis: true,
       render: (val, item) => <span>{item.specificDates?.join(",")}</span>,
     },
@@ -78,8 +77,8 @@ const AllLeaveRequestsTable: React.FC<{
     },
     {
       title: "End Date",
-      dataIndex: "endDate",
-      key: "endDate",
+      dataIndex: "End Date",
+      key: "End Date",
       render: (val, item) => (
         <span>
           {item.endDate ? moment(item.endDate).format("YYYY/MM/DD") : "N/A"}
@@ -89,15 +88,15 @@ const AllLeaveRequestsTable: React.FC<{
 
     {
       title: "Leave Length",
-      dataIndex: "leaveLength",
-      key: "leaveLength",
+      dataIndex: "Leave Length",
+      key: "Leave Length",
       render: (val, item) => <span>{item.length}</span>,
     },
     {
       title: "With Pay",
-      dataIndex: "withPay",
+      dataIndex: "With Pay",
 
-      key: "withPay",
+      key: "With Pay",
       render: (val, item) => (
         <span>{item.leaveType.employeesGetAllowance ? "Yes" : "No"}</span>
       ),
@@ -191,7 +190,7 @@ const AllLeaveRequestsTable: React.FC<{
         leave={request}
       />
 
-      <Table
+      <TableWithFocusType
         columns={columns}
         size="small"
         dataSource={data?.data}

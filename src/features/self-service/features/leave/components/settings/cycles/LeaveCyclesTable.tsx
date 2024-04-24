@@ -1,4 +1,4 @@
-import { Dropdown, Menu, Table } from "antd";
+import { Dropdown, Menu } from "antd";
 import { ColumnsType } from "antd/lib/table";
 import { DEFAULT_DATE_FORMAT } from "constants/dateFormats";
 import moment from "moment";
@@ -6,7 +6,7 @@ import { useState } from "react";
 import { getAppropriateColorForStatus } from "utils/colorHelpers/getAppropriateColorForStatus";
 import { MoreOutlined } from "@ant-design/icons";
 import AppSwitch from "components/switch/AppSwitch";
-
+import { TableWithFocusType } from "components/table";
 import { TLeaveCycle } from "../../../types";
 
 export const LeaveCyclesTable: React.FC<{
@@ -130,7 +130,7 @@ export const LeaveCyclesTable: React.FC<{
 
   return (
     <div>
-      <Table
+      <TableWithFocusType
         columns={columns}
         size="small"
         dataSource={data}

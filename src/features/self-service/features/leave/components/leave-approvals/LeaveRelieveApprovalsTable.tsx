@@ -1,4 +1,4 @@
-import { Space, Dropdown, Menu, Table } from "antd";
+import { Space, Dropdown, Menu } from "antd";
 import { MoreOutlined } from "@ant-design/icons";
 
 import React, { useState } from "react";
@@ -8,7 +8,7 @@ import { getAppropriateColorForStatus } from "utils/colorHelpers/getAppropriateC
 import { usePagination } from "hooks/usePagination";
 import { TApprovalStatus } from "types/statuses";
 import moment from "moment";
-
+import { TableWithFocusType } from "components/table";
 import { LeaveDetails } from "../LeaveDetails";
 import { useGetLeaveRelieverApprovals } from "../../hooks/leaveRelieverApproval/useGetLeaveRelieverApprovals";
 import { TLeaveRelieverApproval } from "../../types";
@@ -164,7 +164,7 @@ const LeaveRelieveApprovalsTable: React.FC<{
           }}
         />
       )}
-      <Table
+      <TableWithFocusType
         columns={columns}
         size="small"
         dataSource={data?.data}

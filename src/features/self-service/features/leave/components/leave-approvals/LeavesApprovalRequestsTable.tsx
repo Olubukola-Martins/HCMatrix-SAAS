@@ -1,9 +1,7 @@
-import { Space, Dropdown, Menu, Table } from "antd";
+import { Space, Dropdown, Menu, } from "antd";
 import { MoreOutlined } from "@ant-design/icons";
-
 import React, { useState } from "react";
 import { ColumnsType } from "antd/lib/table";
-
 import { getAppropriateColorForStatus } from "utils/colorHelpers/getAppropriateColorForStatus";
 import { usePagination } from "hooks/usePagination";
 import { TApprovalStatus } from "types/statuses";
@@ -17,6 +15,7 @@ import { QUERY_KEY_FOR_ALL_LEAVES } from "../../hooks/useGetAllLeaves";
 import { QUERY_KEY_FOR_EMPLOYEE_LEAVES } from "../../hooks/useGetEmployeeLeaves";
 import { getEmployeeFullName } from "features/core/employees/utils/getEmployeeFullName";
 import { DEFAULT_DATE_FORMAT } from "constants/dateFormats";
+import { TableWithFocusType } from "components/table";
 
 const LeavesApprovalRequestsTable: React.FC<{
   status?: TApprovalStatus;
@@ -203,7 +202,7 @@ const LeavesApprovalRequestsTable: React.FC<{
         />
       )}
 
-      <Table
+      <TableWithFocusType
         columns={columns}
         size="small"
         dataSource={data?.data}

@@ -1,4 +1,4 @@
-import { Space, Dropdown, Menu, Table } from "antd";
+import { Space, Dropdown, Menu } from "antd";
 import { MoreOutlined } from "@ant-design/icons";
 
 import React, { useState } from "react";
@@ -9,7 +9,7 @@ import moment from "moment";
 import { TLeaveRecall } from "../../types";
 import { LeaveDetails } from "../LeaveDetails";
 import { getEmployeeFullName } from "features/core/employees/utils/getEmployeeFullName";
-import { useGetAllLeaveRecalls } from "../../hooks/leaveRecall/useGetAllLeaveRecalls";
+import { TableWithFocusType } from "components/table";
 import { DEFAULT_DATE_FORMAT } from "constants/dateFormats";
 import { useGetEmployeeLeaveRecalls } from "../../hooks/leaveRecall/useGetEmployeeLeaveRecalls";
 
@@ -144,7 +144,7 @@ const EmployeeLeaveRecallsTable: React.FC = () => {
         />
       )}
 
-      <Table
+      <TableWithFocusType
         columns={columns}
         size="small"
         dataSource={data?.data}
