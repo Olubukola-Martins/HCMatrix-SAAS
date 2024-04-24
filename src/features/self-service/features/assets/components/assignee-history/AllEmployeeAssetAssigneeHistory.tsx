@@ -1,8 +1,7 @@
-import { Table } from "antd";
 import { ColumnsType } from "antd/lib/table";
 import { usePagination } from "hooks/usePagination";
 import moment from "moment";
-
+import { TableWithFocusType } from "components/table";
 import { DEFAULT_DATE_FORMAT } from "constants/dateFormats";
 import { getEmployeeFullName } from "features/core/employees/utils/getEmployeeFullName";
 import { TAssetAssigneeHistory } from "../../types/assetAssigneeHistory";
@@ -60,7 +59,7 @@ export const AllEmployeeAssetAssigneeHistory = () => {
   return (
     <>
       <div className="flex flex-col gap-2">
-        <Table
+        <TableWithFocusType
           columns={columns}
           size="small"
           dataSource={data?.data}

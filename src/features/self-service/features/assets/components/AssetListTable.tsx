@@ -1,7 +1,5 @@
-import { Space, Dropdown, Menu, Table, Modal } from "antd";
-import { MoreOutlined } from "@ant-design/icons";
-
-import React, { useState } from "react";
+import { TableWithFocusType } from "components/table";
+import React from "react";
 import { ColumnsType } from "antd/lib/table";
 
 import { usePagination } from "hooks/usePagination";
@@ -99,7 +97,7 @@ const AssetListTable: React.FC<{
     : originalColumns;
   return (
     <div>
-      <Table
+      <TableWithFocusType
         columns={columns}
         size="small"
         dataSource={data?.data}

@@ -1,4 +1,4 @@
-import { Table, Menu, Button, Dropdown } from "antd";
+import {  Menu, Button, Dropdown } from "antd";
 import { ColumnsType } from "antd/lib/table";
 import { AppButton } from "components/button/AppButton";
 import { TAssetRequisition } from "features/self-service/features/requisitions/types/asset";
@@ -15,6 +15,7 @@ import { NewAssetRequest } from "../NewAssetRequest";
 import { AssetRequestDetails } from "../AssetRequestDetails";
 import { CancelAssetRequistion } from "./CancelAssetRequistion";
 import ViewApprovalStages from "features/core/workflows/components/approval-request/ViewApprovalStages";
+import { TableWithFocusType } from "components/table";
 
 type TAction = "add" | "cancel" | "view" | "view-approval-stages";
 export const EmployeeAssetRequisitionHistory: React.FC<{
@@ -164,7 +165,7 @@ export const EmployeeAssetRequisitionHistory: React.FC<{
             }}
           />
         </div>
-        <Table
+        <TableWithFocusType
           columns={columns}
           size="small"
           dataSource={data?.data}

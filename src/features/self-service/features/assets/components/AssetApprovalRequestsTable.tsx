@@ -1,4 +1,5 @@
-import { Space, Dropdown, Menu, Table } from "antd";
+import { Space, Dropdown, Menu } from "antd";
+import { TableWithFocusType } from "components/table";
 import { MoreOutlined } from "@ant-design/icons";
 import React, { useState } from "react";
 import { ColumnsType } from "antd/lib/table";
@@ -156,7 +157,7 @@ const AssetApprovalRequestsTable: React.FC<{
         />
       )}
 
-      <Table
+      <TableWithFocusType
         columns={columns}
         size="small"
         dataSource={data?.data.map((item) => ({

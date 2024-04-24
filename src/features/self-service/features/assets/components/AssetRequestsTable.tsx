@@ -3,7 +3,7 @@ import { TApprovalStatus } from "types/statuses";
 import { MoreOutlined } from "@ant-design/icons";
 import type { ColumnsType } from "antd/es/table";
 import { usePagination } from "hooks/usePagination";
-import { Button, Dropdown, Menu, Table } from "antd";
+import { Button, Dropdown, Menu } from "antd";
 import { useApiAuth } from "hooks/useApiAuth";
 import moment from "moment";
 import { getAppropriateColorForStatus } from "utils/colorHelpers/getAppropriateColorForStatus";
@@ -12,6 +12,7 @@ import { TAssetRequisition } from "../../requisitions/types/asset";
 import { useGetAssetRequisitions } from "../../requisitions/hooks/asset/useGetAssetRequisitions";
 import { getEmployeeFullName } from "features/core/employees/utils/getEmployeeFullName";
 import ViewApprovalStages from "features/core/workflows/components/approval-request/ViewApprovalStages";
+import { TableWithFocusType } from "components/table";
 
 export const AssetRequestsTable: React.FC<{
   status?: TApprovalStatus;
@@ -137,7 +138,7 @@ export const AssetRequestsTable: React.FC<{
           type="asset"
         />
       )}
-      <Table
+      <TableWithFocusType
         size="small"
         dataSource={data?.data}
         loading={isFetching}
