@@ -1,4 +1,4 @@
-import { Table, Dropdown, Menu, Select } from "antd";
+import {  Dropdown, Menu, Select } from "antd";
 import { ColumnsType } from "antd/lib/table";
 import { AppButton } from "components/button/AppButton";
 import { usePagination } from "hooks/usePagination";
@@ -22,6 +22,8 @@ import {
 } from "features/payroll/hooks/payroll/employee/useGetEmployeesInPayroll";
 import { useQueryClient } from "react-query";
 import { useConfigureTaxForAnExapatriate } from "features/payroll/hooks/payroll/employee/salaryComponent/configureTax/useConfigureTaxForAnExapatriate";
+import { TableWithFocusType } from "components/table";
+
 
 interface IProps {
   expatriate: boolean;
@@ -586,7 +588,7 @@ export const EmployeePayrollUpdatesContainer: React.FC<IProps> = ({
         </div>
 
         {/* table */}
-        <Table
+        <TableWithFocusType
           rowSelection={
             allowMultipleSelect
               ? {
