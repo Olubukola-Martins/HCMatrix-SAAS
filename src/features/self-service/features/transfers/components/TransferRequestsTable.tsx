@@ -1,14 +1,12 @@
 import React, { useState } from "react";
 import { TApprovalStatus } from "types/statuses";
-
 import { TableWithFocusType } from "components/table";
 import { AiOutlineMore } from "react-icons/ai";
 import type { ColumnsType } from "antd/es/table";
 import { usePagination } from "hooks/usePagination";
-import { Button, Dropdown, Menu,  } from "antd";
+import { Button, Dropdown, Menu } from "antd";
 import { useApiAuth } from "hooks/useApiAuth";
 import { getAppropriateColorForStatus } from "utils/colorHelpers/getAppropriateColorForStatus";
-
 import { TransferDetails } from "./TransferDetails";
 import { TTransferRequisition } from "../../requisitions/types/transfer";
 import { useGetTransferRequisitions } from "../../requisitions/hooks/transfer/useGetTransferRequisitions";
@@ -165,12 +163,7 @@ export const TransferRequestsTable: React.FC<{
           }
           trigger={["click"]}
         >
-          <Button
-            title="Actions"
-            icon={<AiOutlineMore />}
-            type="text"
-        
-          />
+          <Button title="Actions" icon={<AiOutlineMore />} type="text" />
         </Dropdown>
       ),
     },
