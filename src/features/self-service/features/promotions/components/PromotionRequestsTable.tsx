@@ -1,11 +1,13 @@
 import React, { useState } from "react";
 import { TApprovalStatus } from "types/statuses";
-import { MoreOutlined } from "@ant-design/icons";
 import type { ColumnsType } from "antd/es/table";
 import { usePagination } from "hooks/usePagination";
-import { Button, Dropdown, Menu, Table } from "antd";
+import { Button, Dropdown, Menu } from "antd";
 import { useApiAuth } from "hooks/useApiAuth";
 import moment from "moment";
+
+import { TableWithFocusType } from "components/table";
+import { AiOutlineMore } from "react-icons/ai";
 import { getAppropriateColorForStatus } from "utils/colorHelpers/getAppropriateColorForStatus";
 import { TPromotionRequisition } from "../../requisitions/types/promotion";
 import { PromotionRequestDetails } from "./PromotionRequestDetails";
@@ -118,12 +120,7 @@ export const PromotionRequestsTable: React.FC<{
           }
           trigger={["click"]}
         >
-          <Button
-            title="Actions"
-            icon={<MoreOutlined />}
-            type="text"
-            // onClick={() => handleEdit(item._id)}
-          />
+          <Button title="Actions" icon={<AiOutlineMore />} type="text" />
         </Dropdown>
       ),
     },
@@ -146,7 +143,7 @@ export const PromotionRequestsTable: React.FC<{
           type="promotion"
         />
       )}
-      <Table
+      <TableWithFocusType
         size="small"
         dataSource={data?.data}
         loading={isFetching}
