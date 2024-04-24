@@ -1,14 +1,12 @@
-import { Button, Table } from "antd";
-
+import { Button } from "antd";
 import React, { useState } from "react";
 import { ColumnsType } from "antd/lib/table";
-
 import { usePagination } from "hooks/usePagination";
-
+import { TableWithFocusType } from "components/table";
+import { AiFillDelete, AiFillEdit } from "react-icons/ai";
 import { TPayGradeCategory } from "features/payroll/types";
 import { useGetPayGradeCategories } from "features/payroll/hooks/payGrades/category/useGetPayGradeCategories";
 import moment from "moment";
-import { DeleteFilled, EditFilled } from "@ant-design/icons";
 import DeletePayGradeCategory from "./DeletePayGradeCategory";
 import EditPayGradeCategory from "./EditPayGradeCategory";
 
@@ -51,27 +49,27 @@ const PayGradeCategoriesTable: React.FC = () => {
     },
     {
       title: "Minimum Gross pay",
-      dataIndex: "min",
-      key: "min",
+      dataIndex: "Minimum Gross pay",
+      key: "Minimum Gross pay",
       render: (_, item) => item.minGrossPay,
     },
     {
       title: "Maximum Gross Pay",
-      dataIndex: "max",
-      key: "max",
+      dataIndex: "Maximum Gross Pay",
+      key: "Maximum Gross Pay",
       render: (_, item) => item.maxGrossPay,
     },
 
     {
       title: "Created At",
-      dataIndex: "createAr",
-      key: "createAr",
+      dataIndex: "Created At",
+      key: "Created At",
       render: (_, item) => moment(item.createdAt).format(`YYYY-MM-DD`),
     },
     {
       title: "Updated At",
-      dataIndex: "update",
-      key: "update",
+      dataIndex: "Updated At",
+      key: "Updated At",
       render: (_, item) => moment(item.updatedAt).format(`YYYY-MM-DD`),
     },
 
@@ -82,12 +80,12 @@ const PayGradeCategoriesTable: React.FC = () => {
       render: (_, item) => (
         <div>
           <Button
-            icon={<EditFilled />}
+            icon={<AiFillEdit />}
             type="text"
             onClick={() => handleAction({ action: "edit", category: item })}
           />
           <Button
-            icon={<DeleteFilled />}
+            icon={<AiFillDelete />}
             type="text"
             onClick={() => handleAction({ action: "delete", category: item })}
           />
@@ -112,7 +110,7 @@ const PayGradeCategoriesTable: React.FC = () => {
           handleClose={() => cancelAction()}
         />
       )}
-      <Table
+      <TableWithFocusType
         columns={columns}
         size="small"
         dataSource={data?.data}

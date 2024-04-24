@@ -1,4 +1,4 @@
-import { Button, Table } from "antd";
+import { Button } from "antd";
 
 import React, { useState } from "react";
 import { ColumnsType } from "antd/lib/table";
@@ -7,8 +7,8 @@ import { usePagination } from "hooks/usePagination";
 
 import { TTaxAuthority } from "features/payroll/types";
 import moment from "moment";
-
-import { DeleteFilled, EditFilled } from "@ant-design/icons";
+import { TableWithFocusType } from "components/table";
+import { AiFillDelete, AiFillEdit } from "react-icons/ai";
 import DeleteITFAuth from "./DeleteITFAuth";
 import EditITFAuth from "./EditITFAuth";
 import { useGetITFAuthorities } from "features/payroll/hooks/organization/itfAuthorities/useGetITFAuthorities";
@@ -67,12 +67,12 @@ const ITFAuthTable: React.FC<{
       render: (_, item) => (
         <div>
           <Button
-            icon={<EditFilled />}
+            icon={<AiFillEdit />}
             type="text"
             onClick={() => handleAction({ action: "edit", data: item })}
           />
           <Button
-            icon={<DeleteFilled />}
+            icon={<AiFillDelete />}
             type="text"
             onClick={() => handleAction({ action: "delete", data: item })}
           />
@@ -97,7 +97,7 @@ const ITFAuthTable: React.FC<{
           handleClose={() => cancelAction()}
         />
       )}
-      <Table
+      <TableWithFocusType
         columns={columns}
         size="small"
         dataSource={data?.data}

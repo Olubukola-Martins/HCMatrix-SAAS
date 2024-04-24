@@ -1,4 +1,4 @@
-import { TableProps, TablePaginationConfig, Table } from "antd";
+import { TableProps, TablePaginationConfig } from "antd";
 import { ColumnsType } from "antd/lib/table";
 import { appRoutes } from "config/router/paths";
 import { DEFAULT_DATE_FORMAT } from "constants/dateFormats";
@@ -7,6 +7,7 @@ import { TPayrollSchemeType } from "features/payroll/types/payrollSchemes";
 import moment from "moment";
 import { Link } from "react-router-dom";
 import { formatNumberWithCommas } from "utils/dataHelpers/formatNumberWithCommas";
+import { TableWithFocusType } from "components/table";
 
 export const PayrollTable: React.FC<{
   isProject?: boolean;
@@ -26,8 +27,8 @@ export const PayrollTable: React.FC<{
   let ogColumns: ColumnsType<TPayrollListData> = [
     {
       title: "Created At",
-      dataIndex: "crt",
-      key: "crt",
+      dataIndex: "Created At",
+      key: "Created At",
       render: (_, item) => (
         <span>{moment(item.createdAt).format(DEFAULT_DATE_FORMAT)} </span>
       ),
@@ -53,8 +54,8 @@ export const PayrollTable: React.FC<{
     },
     {
       title: "Cycle",
-      dataIndex: "frequency",
-      key: "frequency",
+      dataIndex: "Cycle",
+      key: "Cycle",
       render: (_, item) => (
         <span className="capitalize">
           {item.scheme.type === "project"
@@ -95,8 +96,8 @@ export const PayrollTable: React.FC<{
     },
     {
       title: "Gross Pay",
-      dataIndex: "grossPay",
-      key: "grossPay",
+      dataIndex: "Gross Pay",
+      key: "Gross Pay",
       render: (_, item) => (
         <span>{formatNumberWithCommas(item.totalGrossPay)} </span>
       ),
@@ -120,8 +121,8 @@ export const PayrollTable: React.FC<{
     },
     {
       title: "Disbursement Date",
-      dataIndex: "drt",
-      key: "drt",
+      dataIndex: "Disbursement Date",
+      key: "Disbursement Date",
       ellipsis: true,
       render: (_, item) => (
         <span>
@@ -147,7 +148,7 @@ export const PayrollTable: React.FC<{
 
   return (
     <>
-      <Table
+      <TableWithFocusType
         size="small"
         dataSource={data}
         columns={columns}

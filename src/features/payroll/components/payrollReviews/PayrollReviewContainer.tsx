@@ -23,8 +23,8 @@ type TAction = "view-approval-stages";
 let OG_COLUMNS: ColumnsType<TPayrollListData> = [
   {
     title: "Created At",
-    dataIndex: "crt",
-    key: "crt",
+    dataIndex: "Created At",
+    key: "Created At",
     render: (_, item) => (
       <span>{moment(item.createdAt).format("YYYY-MM-DD")} </span>
     ),
@@ -62,16 +62,16 @@ let OG_COLUMNS: ColumnsType<TPayrollListData> = [
   },
   {
     title: "Net Pay",
-    dataIndex: "netPay",
-    key: "netPay",
+    dataIndex: "Net Pay",
+    key: "Net Pay",
     render: (_, item) => (
       <span>{formatNumberWithCommas(item.totalNetPay)} </span>
     ),
   },
   {
     title: "Disbursment Date",
-    dataIndex: "drt",
-    key: "drt",
+    dataIndex: "Disbursment Date",
+    key: "Disbursment Date",
     ellipsis: true,
     render: (_, item) => (
       <span>{moment(item.disbursementDate).format(DEFAULT_DATE_FORMAT)} </span>
@@ -79,8 +79,6 @@ let OG_COLUMNS: ColumnsType<TPayrollListData> = [
   },
 ];
 export const PayrollReviewContainer = () => {
-  const [selectedColumns, setSelectedColumns] =
-    useState<ColumnsType<TPayrollListData>>(OG_COLUMNS);
   const navigate = useNavigate();
   const { userPermissions } = useGetUserPermissions();
   const [request, setRequest] = useState<TPayrollListData>();
@@ -119,12 +117,6 @@ export const PayrollReviewContainer = () => {
               }),
             },
           ]}
-          comps={[
-            <SelectColumnsBtn
-              selectedColumns={selectedColumns}
-              setSelectedColumns={setSelectedColumns}
-            />,
-          ]}
         />
 
         <PayrollReviewTable
@@ -148,7 +140,7 @@ export const PayrollReviewContainer = () => {
                 </Link>
               ),
             },
-            ...selectedColumns,
+            ...OG_COLUMNS,
             {
               title: "Status",
               dataIndex: "status",

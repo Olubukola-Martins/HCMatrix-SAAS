@@ -1,4 +1,4 @@
-import { Button, Table } from "antd";
+import { Button, } from "antd";
 
 import React, { useState } from "react";
 import { ColumnsType } from "antd/lib/table";
@@ -8,8 +8,8 @@ import { usePagination } from "hooks/usePagination";
 import { TPayGrade } from "features/payroll/types";
 import { useGetPayGrades } from "features/payroll/hooks/payGrades/useGetPayGrades";
 import moment from "moment";
-
-import { DeleteFilled, EditFilled } from "@ant-design/icons";
+import { TableWithFocusType } from "components/table";
+import { AiFillDelete, AiFillEdit } from "react-icons/ai";
 import EditPayGrade from "./EditPayGrade";
 import DeletePayGrade from "./DeletePayGrade";
 
@@ -46,21 +46,17 @@ const PayGradesTable: React.FC<{
       dataIndex: "name",
       key: "name",
       render: (val, item) => <span className="capitalize">{item?.name}</span>,
-
-      // ellipsis: true,
-
-      // width: 100,
     },
     {
       title: "Category",
-      dataIndex: "cat",
-      key: "cat",
+      dataIndex: "Category",
+      key: "Category",
       render: (_, item) => item.category.name,
     },
     {
       title: "Gross pay",
-      dataIndex: "pay",
-      key: "pay",
+      dataIndex: "Gross pay",
+      key: "Gross pay",
       render: (_, item) => item.grossPay,
     },
     {
@@ -82,12 +78,12 @@ const PayGradesTable: React.FC<{
       render: (_, item) => (
         <div>
           <Button
-            icon={<EditFilled />}
+            icon={<AiFillEdit />}
             type="text"
             onClick={() => handleAction({ action: "edit", grade: item })}
           />
           <Button
-            icon={<DeleteFilled />}
+            icon={<AiFillDelete />}
             type="text"
             onClick={() => handleAction({ action: "delete", grade: item })}
           />
@@ -112,7 +108,7 @@ const PayGradesTable: React.FC<{
           handleClose={() => cancelAction()}
         />
       )}
-      <Table
+      <TableWithFocusType
         columns={columns}
         size="small"
         dataSource={data?.data}

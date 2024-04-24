@@ -1,7 +1,7 @@
-import { Empty, Table } from "antd";
+import { Empty } from "antd";
 import PageSubHeader from "components/layout/PageSubHeader";
 import { TPayrollListData } from "features/payroll/types/payroll";
-
+import { TableWithFocusType } from "components/table";
 import React, { useMemo, useState } from "react";
 import { SelectPayrolls } from "./SelectPayrolls";
 import { ColumnsType } from "antd/lib/table";
@@ -215,7 +215,7 @@ type TCompareProps = {
 const TableComparison: React.FC<TCompareProps> = ({ data, columns }) => {
   return (
     <div>
-      <Table
+      <TableWithFocusType
         columns={columns}
         size="small"
         dataSource={data}

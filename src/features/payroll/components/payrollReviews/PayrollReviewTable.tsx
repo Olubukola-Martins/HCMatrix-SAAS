@@ -1,5 +1,4 @@
-import { Table } from "antd";
-
+import { TableWithFocusType } from "components/table";
 import { ColumnsType } from "antd/lib/table";
 
 import { usePagination } from "hooks/usePagination";
@@ -19,7 +18,7 @@ const PayrollReviewTable: React.FC<IProps> = ({ columns }) => {
 
   return (
     <>
-      <Table
+      <TableWithFocusType
         columns={columns}
         size="small"
         dataSource={data?.data

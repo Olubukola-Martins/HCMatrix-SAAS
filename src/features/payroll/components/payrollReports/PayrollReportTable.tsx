@@ -1,8 +1,8 @@
-import { Button, Table, Tag } from "antd";
+import { Button,  Tag } from "antd";
 
 import React, { useState } from "react";
 import { ColumnsType } from "antd/lib/table";
-
+import { TableWithFocusType } from "components/table";
 import { usePagination } from "hooks/usePagination";
 import moment from "moment";
 import { DeleteFilled, DownloadOutlined } from "@ant-design/icons";
@@ -166,7 +166,7 @@ const PayrollReportTable: React.FC = () => {
           handleClose={() => cancelAction()}
         />
       )}
-      <Table
+      <TableWithFocusType
         columns={columns}
         size="small"
         dataSource={data?.data}
