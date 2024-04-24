@@ -1,11 +1,12 @@
 import React, { useState } from "react";
 import { TApprovalStatus } from "types/statuses";
-import { MoreOutlined } from "@ant-design/icons";
+import { TableWithFocusType } from "components/table";
+import { AiOutlineMore } from "react-icons/ai";
 import type { ColumnsType } from "antd/es/table";
 import { useGetReimbursementRequisitions } from "../../requisitions/hooks/reimbursement/useGetReimbursementRequisitions";
 import { usePagination } from "hooks/usePagination";
 import { TReimbursementRequisition } from "../../requisitions/types/reimbursement";
-import { Button, Dropdown, Menu, Table } from "antd";
+import { Button, Dropdown, Menu } from "antd";
 import { useApiAuth } from "hooks/useApiAuth";
 import moment from "moment";
 import { getAppropriateColorForStatus } from "utils/colorHelpers/getAppropriateColorForStatus";
@@ -104,7 +105,7 @@ export const ReimbursementRequestsTable: React.FC<{
           }
           trigger={["click"]}
         >
-          <Button title="Actions" icon={<MoreOutlined />} type="text" />
+          <Button title="Actions" icon={<AiOutlineMore />} type="text" />
         </Dropdown>
       ),
     },
@@ -128,7 +129,7 @@ export const ReimbursementRequestsTable: React.FC<{
           type="reimbursement"
         />
       )}
-      <Table
+      <TableWithFocusType
         size="small"
         dataSource={data?.data}
         loading={isFetching}
