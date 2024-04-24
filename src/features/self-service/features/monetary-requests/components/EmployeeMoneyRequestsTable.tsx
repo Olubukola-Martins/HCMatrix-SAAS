@@ -3,7 +3,7 @@ import { TApprovalStatus } from "types/statuses";
 import { MoreOutlined } from "@ant-design/icons";
 import type { ColumnsType } from "antd/es/table";
 import { usePagination } from "hooks/usePagination";
-import { Button, Dropdown, Menu, Table } from "antd";
+import { Button, Dropdown, Menu } from "antd";
 import moment from "moment";
 import { getAppropriateColorForStatus } from "utils/colorHelpers/getAppropriateColorForStatus";
 import { DEFAULT_DATE_FORMAT } from "constants/dateFormats";
@@ -12,6 +12,7 @@ import { useGetMoneyRequisitions4AuthEmployee } from "../../requisitions/hooks/m
 import { MonetaryRequestDetails } from "./MonetaryRequestDetails";
 import { CancelMoneyRequest } from "./CancelMoneyRequest";
 import ViewApprovalStages from "features/core/workflows/components/approval-request/ViewApprovalStages";
+import { TableWithFocusType } from "components/table";
 
 type TAction = "cancel" | "view" | "view-approval-stages";
 
@@ -135,7 +136,7 @@ export const EmployeeMoneyRequestsTable: React.FC<{
         handleClose={onClose}
         data={request}
       />
-      <Table
+      <TableWithFocusType
         size="small"
         dataSource={data?.data}
         loading={isFetching}

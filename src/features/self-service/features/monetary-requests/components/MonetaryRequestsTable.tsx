@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import { TApprovalStatus } from "types/statuses";
-import { MoreOutlined } from "@ant-design/icons";
+import { AiOutlineMore } from "react-icons/ai";
 import type { ColumnsType } from "antd/es/table";
 import { usePagination } from "hooks/usePagination";
-import { Button, Dropdown, Menu, Table } from "antd";
+import { Button, Dropdown, Menu } from "antd";
 import { useApiAuth } from "hooks/useApiAuth";
 import moment from "moment";
 import { getAppropriateColorForStatus } from "utils/colorHelpers/getAppropriateColorForStatus";
@@ -12,6 +12,7 @@ import { TMoneyRequisition } from "../../requisitions/types/money";
 import { useGetMoneyRequisitions } from "../../requisitions/hooks/money/useGetMoneyRequisitions";
 import { DEFAULT_DATE_FORMAT } from "constants/dateFormats";
 import ViewApprovalStages from "features/core/workflows/components/approval-request/ViewApprovalStages";
+import { TableWithFocusType } from "components/table";
 
 type TAction = "cancel" | "view" | "view-approval-stages";
 
@@ -114,7 +115,7 @@ export const MonetaryRequestsTable: React.FC<{
         >
           <Button
             title="Actions"
-            icon={<MoreOutlined />}
+            icon={<AiOutlineMore />}
             type="text"
             // onClick={() => handleEdit(item._id)}
           />
@@ -140,7 +141,7 @@ export const MonetaryRequestsTable: React.FC<{
           type="money"
         />
       )}
-      <Table
+      <TableWithFocusType
         size="small"
         dataSource={data?.data}
         loading={isFetching}
