@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import { TApprovalStatus } from "types/statuses";
-import { MoreOutlined } from "@ant-design/icons";
+import { AiOutlineMore } from "react-icons/ai";
 import type { ColumnsType } from "antd/es/table";
 import { usePagination } from "hooks/usePagination";
-import { Button, Dropdown, Menu, Table } from "antd";
+import { Button, Dropdown, Menu } from "antd";
 import moment from "moment";
 import { getAppropriateColorForStatus } from "utils/colorHelpers/getAppropriateColorForStatus";
 import { DEFAULT_DATE_FORMAT } from "constants/dateFormats";
@@ -12,6 +12,7 @@ import { TJobRequisition } from "../../requisitions/types/job";
 import { JobRequestDetails } from "./JobRequestDetails";
 import { CancelJobRequest } from "./CancelJobRequest";
 import ViewApprovalStages from "features/core/workflows/components/approval-request/ViewApprovalStages";
+import { TableWithFocusType } from "components/table";
 
 type TAction = "cancel" | "view" | "view-approval-stages";
 
@@ -112,7 +113,7 @@ export const EmployeeJobRequestsTable: React.FC<{
           }
           trigger={["click"]}
         >
-          <Button title="Actions" icon={<MoreOutlined />} type="text" />
+          <Button title="Actions" icon={<AiOutlineMore />} type="text" />
         </Dropdown>
       ),
     },
@@ -141,7 +142,7 @@ export const EmployeeJobRequestsTable: React.FC<{
         handleClose={onClose}
         data={request}
       />
-      <Table
+      <TableWithFocusType
         size="small"
         dataSource={data?.data}
         loading={isFetching}

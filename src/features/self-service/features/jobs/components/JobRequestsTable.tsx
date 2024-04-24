@@ -1,10 +1,11 @@
 import React, { useState } from "react";
 import { TApprovalStatus } from "types/statuses";
-import { MoreOutlined } from "@ant-design/icons";
+import { AiOutlineMore } from "react-icons/ai";
 import type { ColumnsType } from "antd/es/table";
 import { usePagination } from "hooks/usePagination";
-import { Button, Dropdown, Menu, Table } from "antd";
+import { Button, Dropdown, Menu } from "antd";
 import { useApiAuth } from "hooks/useApiAuth";
+import { TableWithFocusType } from "components/table";
 import moment from "moment";
 import { getAppropriateColorForStatus } from "utils/colorHelpers/getAppropriateColorForStatus";
 import { useGeTJobRequisitions } from "../../requisitions/hooks/job/useGetJobRequisitions";
@@ -117,7 +118,7 @@ export const JobRequestsTable: React.FC<{
           }
           trigger={["click"]}
         >
-          <Button title="Actions" icon={<MoreOutlined />} type="text" />
+          <Button title="Actions" icon={<AiOutlineMore />} type="text" />
         </Dropdown>
       ),
     },
@@ -140,7 +141,7 @@ export const JobRequestsTable: React.FC<{
           type="job"
         />
       )}
-      <Table
+      <TableWithFocusType
         size="small"
         dataSource={data?.data}
         loading={isFetching}

@@ -1,5 +1,5 @@
-import { Space, Dropdown, Menu, Table } from "antd";
-import { MoreOutlined } from "@ant-design/icons";
+import { Space, Dropdown, Menu } from "antd";
+import { AiOutlineMore } from "react-icons/ai";
 import React, { useState } from "react";
 import { ColumnsType } from "antd/lib/table";
 import { getAppropriateColorForStatus } from "utils/colorHelpers/getAppropriateColorForStatus";
@@ -13,6 +13,7 @@ import { useQueryClient } from "react-query";
 import { QUERY_KEY_FOR_JOB_REQUISITIONS } from "../../requisitions/hooks/job/useGetJobRequisitions";
 import { JobRequestDetails } from "./JobRequestDetails";
 import { DEFAULT_DATE_FORMAT } from "constants/dateFormats";
+import { TableWithFocusType } from "components/table";
 
 const JobApprovalRequestsTable: React.FC<{
   status?: TApprovalStatus;
@@ -146,7 +147,7 @@ const JobApprovalRequestsTable: React.FC<{
             }
             trigger={["click"]}
           >
-            <MoreOutlined />
+            <AiOutlineMore />
           </Dropdown>
         </Space>
       ),
@@ -166,7 +167,7 @@ const JobApprovalRequestsTable: React.FC<{
         />
       )}
 
-      <Table
+      <TableWithFocusType
         columns={columns}
         size="small"
         dataSource={data?.data}
