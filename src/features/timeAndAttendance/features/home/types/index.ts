@@ -24,3 +24,14 @@ export interface graphFilterProps {
   month?: number;
   week?: number;
 }
+
+export interface attendancePendingSetupProps {
+  timeTrackingRules: boolean;
+  workSchedule: boolean;
+  break: boolean;
+  scheduleEmployeeShift: boolean;
+  timeOffPolicy: boolean;
+  biometrics: boolean;
+  locations: boolean;
+  others: boolean;
+}
