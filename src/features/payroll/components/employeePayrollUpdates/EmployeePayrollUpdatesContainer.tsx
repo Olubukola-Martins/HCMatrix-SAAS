@@ -168,33 +168,33 @@ export const EmployeePayrollUpdatesContainer: React.FC<IProps> = ({
   const columns: ColumnsType<TEmployeesInPayrollData> = [
     {
       title: "Name",
-      dataIndex: "uid",
-      key: "uid",
+      dataIndex: "Name",
+      key: "Name",
       render: (_, item) => item.fullName,
     },
 
     {
       title: "Net Pay",
-      dataIndex: "np",
-      key: "np",
+      dataIndex: "Net Pay",
+      key: "Net Pay",
       render: (_, item) => item.netPay,
     },
     {
       title: "Gross Pay",
-      dataIndex: "gp",
-      key: "gp",
+      dataIndex: "Gross Pay",
+      key: "Gross Pay",
       render: (_, item) => item.grossPay,
     },
     {
       title: "Total Deductions",
-      dataIndex: "td",
-      key: "td",
+      dataIndex: "Gross Pay",
+      key: "Gross Pay",
       render: (_, item) => item.totalDeductions,
     },
     {
       title: "Total Allowances",
-      dataIndex: "ta",
-      key: "ta",
+      dataIndex: "Total Allowances",
+      key: "Total Allowances",
       render: (_, item) => item.totalAllowances,
     },
     {
