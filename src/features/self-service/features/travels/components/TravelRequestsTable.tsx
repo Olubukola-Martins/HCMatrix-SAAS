@@ -1,9 +1,10 @@
 import React, { useState } from "react";
 import { TApprovalStatus } from "types/statuses";
-import { MoreOutlined } from "@ant-design/icons";
+import { TableWithFocusType } from "components/table";
+import { AiOutlineMore } from "react-icons/ai";
 import type { ColumnsType } from "antd/es/table";
 import { usePagination } from "hooks/usePagination";
-import { Button, Dropdown, Menu, Table } from "antd";
+import { Button, Dropdown, Menu } from "antd";
 import { useApiAuth } from "hooks/useApiAuth";
 import moment from "moment";
 import { getAppropriateColorForStatus } from "utils/colorHelpers/getAppropriateColorForStatus";
@@ -54,43 +55,43 @@ export const TravelRequestsTable: React.FC<{
     },
     {
       title: "Arrival Date",
-      dataIndex: "adate",
-      key: "adate",
+      dataIndex: "Arrival Date",
+      key: "Arrival Date",
       render: (_, item) => (
         <span>{moment(item.arrivalDate).format(DEFAULT_DATE_FORMAT)} </span>
       ),
     },
     {
       title: "Departure Date",
-      dataIndex: "ddate",
-      key: "ddate",
+      dataIndex: "Departure Date",
+      key: "Departure Date",
       render: (_, item) => (
         <span>{moment(item.departureDate).format(DEFAULT_DATE_FORMAT)} </span>
       ),
     },
     {
       title: "Travel ID",
-      dataIndex: "id",
-      key: "id",
+      dataIndex: "Travel ID",
+      key: "Travel ID",
       render: (_, item) => <span>{item.id} </span>,
     },
 
     {
       title: "Employee",
-      dataIndex: "emp",
-      key: "emp",
+      dataIndex: "Employee",
+      key: "Employee",
       render: (_, item) => <span>{getEmployeeFullName(item.employee)} </span>,
     },
     {
       title: "Reason",
-      dataIndex: "reas",
-      key: "reas",
+      dataIndex: "Reason",
+      key: "Reason",
       render: (_, item) => <span className="capitalize">{item.reason} </span>,
     },
     {
       title: "Duration (days)",
-      dataIndex: "dura",
-      key: "dura",
+      dataIndex: "Duration (days)",
+      key: "Duration (days)",
       render: (_, item) => <span className="capitalize">{item.duration} </span>,
     },
     {
@@ -127,12 +128,7 @@ export const TravelRequestsTable: React.FC<{
           }
           trigger={["click"]}
         >
-          <Button
-            title="Actions"
-            icon={<MoreOutlined />}
-            type="text"
-            // onClick={() => handleEdit(item._id)}
-          />
+          <Button title="Actions" icon={<AiOutlineMore />} type="text" />
         </Dropdown>
       ),
     },
@@ -155,7 +151,7 @@ export const TravelRequestsTable: React.FC<{
           type="travel"
         />
       )}
-      <Table
+      <TableWithFocusType
         size="small"
         dataSource={data?.data}
         loading={isFetching}
