@@ -5,7 +5,6 @@ import {
   Button,
   Dropdown,
   Menu,
-  Table,
   TablePaginationConfig,
   TableProps,
 } from "antd";
@@ -24,6 +23,7 @@ import { QUERY_KEY_FOR_LOAN_REQUESTS } from "../../hooks/requests/useGetLoanRequ
 import { QUERY_KEY_FOR_LOAN_ANALYTICS } from "../../hooks/analytics/useGetLoanAnalytics";
 import { CancelLoan } from "../CancelLoan";
 import ViewApprovalStages from "features/core/workflows/components/approval-request/ViewApprovalStages";
+import { TableWithFocusType } from "components/table";
 
 type TAction = "approve/reject" | "view" | "cancel" | "view-approval-stages";
 type TLoanAndApproval = TLoanRequest & { approvalDetails?: TApprovalRequest };
@@ -103,16 +103,16 @@ export const LoanTable: React.FC<{
     },
     {
       title: "Employee ID",
-      dataIndex: "empuid",
-      key: "empuid",
+      dataIndex: "Employee ID",
+      key: "Employee ID",
       render: (_, item) => (
         <span className="capitalize">{item.employee.empUid} </span>
       ),
     },
     {
       title: "Department",
-      dataIndex: "dept",
-      key: "dept",
+      dataIndex: "Department",
+      key: "Department",
       render: (_, item) => (
         <span className="capitalize">
           {item.employee.designation.department.name}{" "}
@@ -121,26 +121,26 @@ export const LoanTable: React.FC<{
     },
     {
       title: "Loan Type",
-      dataIndex: "ass",
-      key: "ass",
+      dataIndex: "Loan Type",
+      key: "Loan Type",
       render: (_, item) => <span className="capitalize">{item.type.name}</span>,
     },
     {
       title: "Balance",
-      dataIndex: "dept",
-      key: "dept",
+      dataIndex: "Balance",
+      key: "Balance",
       render: (_, item) => <span className="capitalize">{item.balance} </span>,
     },
     {
       title: "Amount",
-      dataIndex: "dept",
-      key: "dept",
+      dataIndex: "Amount",
+      key: "Amount",
       render: (_, item) => <span className="capitalize">{item.amount} </span>,
     },
     {
       title: "Disbursed At",
-      dataIndex: "disAt",
-      key: "disAt",
+      dataIndex: "Disbursed At",
+      key: "Disbursed At",
       render: (_, item) => (
         <span className="capitalize">
           {item.disbursedAt
@@ -278,7 +278,7 @@ export const LoanTable: React.FC<{
         open={action === "cancel"}
         data={loan}
       />
-      <Table
+      <TableWithFocusType<TLoanAndApproval>
         size="small"
         dataSource={data}
         loading={loading}

@@ -5,7 +5,6 @@ import {
   Button,
   Dropdown,
   Menu,
-  Table,
   TablePaginationConfig,
   TableProps,
 } from "antd";
@@ -14,6 +13,7 @@ import { getAppropriateColorForStatus } from "utils/colorHelpers/getAppropriateC
 import { TLoanRepayment } from "../../types";
 import { DEFAULT_DATE_FORMAT } from "constants/dateFormats";
 import { RepaymentDetails } from "../repayments/RepaymentDetails";
+import { TableWithFocusType } from "components/table";
 
 type TAction = "view";
 
@@ -148,7 +148,7 @@ const RepaymentTable: React.FC<{
           data={repayment}
         />
       )}
-      <Table
+      <TableWithFocusType
         size="small"
         dataSource={data}
         loading={loading}
