@@ -14,6 +14,7 @@ import useMostRecentApiAuth from "hooks/useMostRecentApiAuth";
 import { useEffect, useState } from "react";
 import { useWelcomeNote } from "../hooks/useWelcomeNote";
 import { AttendancePendingSetup } from "../components/AttendancePendingSetup";
+import { useApiAuth } from "hooks/useApiAuth";
 
 export const AttendanceHome = () => {
   const [greeting, setGreeting] = useState("");
@@ -39,6 +40,10 @@ export const AttendanceHome = () => {
       setGreeting("Evening");
     }
   }, [hour]);
+
+  const { currentCompanyEmployeeDetails } = useApiAuth();
+
+  console.log(currentCompanyEmployeeDetails);
 
   return (
     <ErrorBoundary>

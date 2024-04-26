@@ -25,13 +25,4 @@ export interface graphFilterProps {
   week?: number;
 }
 
-export interface attendancePendingSetupProps {
-  timeTrackingRules: boolean;
-  workSchedule: boolean;
-  break: boolean;
-  scheduleEmployeeShift: boolean;
-  timeOffPolicy: boolean;
-  biometrics: boolean;
-  locations: boolean;
-  others: boolean;
-}
+export type attendancePendingSetupProps = Record<string, boolean>;
