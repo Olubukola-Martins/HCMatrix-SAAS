@@ -13,6 +13,8 @@ import { useGetDashboardGraph } from "../hooks/useGetDashboardGraph";
 import useMostRecentApiAuth from "hooks/useMostRecentApiAuth";
 import { useEffect, useState } from "react";
 import { useWelcomeNote } from "../hooks/useWelcomeNote";
+import { AttendancePendingSetup } from "../components/AttendancePendingSetup";
+import { useApiAuth } from "hooks/useApiAuth";
 
 export const AttendanceHome = () => {
   const [greeting, setGreeting] = useState("");
@@ -29,7 +31,6 @@ export const AttendanceHome = () => {
   const { user } = useMostRecentApiAuth();
   const { data: welcomeNoteData } = useWelcomeNote();
 
-
   useEffect(() => {
     if (hour >= 5 && hour < 12) {
       setGreeting("Morning");
@@ -39,6 +40,10 @@ export const AttendanceHome = () => {
       setGreeting("Evening");
     }
   }, [hour]);
+
+  const { currentCompanyEmployeeDetails } = useApiAuth();
+
+  console.log(currentCompanyEmployeeDetails);
 
   return (
     <ErrorBoundary>
@@ -75,10 +80,11 @@ export const AttendanceHome = () => {
             highlight={analyticsData?.employeesOnBreak || 0}
           />
 
-          <SimpleCard
+          {/* <SimpleCard
             title="Remote workers"
             highlight={analyticsData?.remoteWorkers?.count || 0}
-          />
+          /> */}
+          <AttendancePendingSetup />
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-6 gap-5">

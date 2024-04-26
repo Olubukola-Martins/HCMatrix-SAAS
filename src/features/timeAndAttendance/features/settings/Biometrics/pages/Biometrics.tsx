@@ -68,8 +68,11 @@ export const Biometrics = () => {
 
   return (
     <>
-      <TimeAttendanceSettingsNav active="clock in settings" />
-      <AttendanceSettingsIntro title={"Clock in Settings"} description="Set up Biometric..." />
+      <TimeAttendanceSettingsNav active="biometrics" />
+      <AttendanceSettingsIntro
+        title={"Clock in Settings"}
+        description="Set up Biometric..."
+      />
       <AddBiometric
         id={biometricId}
         open={addClockIn}

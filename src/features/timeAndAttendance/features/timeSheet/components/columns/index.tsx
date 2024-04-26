@@ -10,7 +10,7 @@ export const TIME_SHEET_TABLE_COLUMNS = (
 ): ColumnsType<timeSheetProps> => [
   {
     title: "Name",
-    dataIndex: "name",
+    key: "name",
     render: (_, val) => (
       <span className="capitalize">
         {getEmployeeFullName(val?.employee)}
@@ -19,7 +19,7 @@ export const TIME_SHEET_TABLE_COLUMNS = (
   },
   {
     title: "Monday",
-    dataIndex: "monday",
+    key: "monday",
     render: (_, val) =>
       val?.days?.Monday?.date ? (
         <Link
@@ -44,7 +44,7 @@ export const TIME_SHEET_TABLE_COLUMNS = (
   },
   {
     title: "Tuesday",
-    dataIndex: "tuesday",
+    key: "tuesday",
     render: (_, val) =>
       val?.days?.Tuesday?.date ? (
         <Link
@@ -69,7 +69,7 @@ export const TIME_SHEET_TABLE_COLUMNS = (
   },
   {
     title: "Wednesday",
-    dataIndex: "wednesday",
+    key: "wednesday",
     render: (_, val) =>
       val?.days?.Wednesday?.date ? (
         <Link
@@ -94,7 +94,7 @@ export const TIME_SHEET_TABLE_COLUMNS = (
   },
   {
     title: "Thursday",
-    dataIndex: "thursday",
+    key: "thursday",
     render: (_, val) =>
       val?.days?.Thursday?.date ? (
         <Link
@@ -119,7 +119,7 @@ export const TIME_SHEET_TABLE_COLUMNS = (
   },
   {
     title: "Friday",
-    dataIndex: "friday",
+    key: "friday",
     render: (_, val) =>
       val?.days?.Friday?.date ? (
         <Link
@@ -144,7 +144,7 @@ export const TIME_SHEET_TABLE_COLUMNS = (
   },
   {
     title: "Saturday",
-    dataIndex: "saturday",
+    key: "saturday",
     render: (_, val) =>
       val?.days?.Saturday?.date ? (
         <Link
@@ -169,7 +169,7 @@ export const TIME_SHEET_TABLE_COLUMNS = (
   },
   {
     title: "Sunday",
-    dataIndex: "sunday",
+    key: "sunday",
     render: (_, val) =>
       val?.days?.Sunday?.date ? (
         <Link
@@ -194,7 +194,7 @@ export const TIME_SHEET_TABLE_COLUMNS = (
   },
   {
     title: "Total",
-    dataIndex: "total",
+    key: "total",
     render: (_, val) => convertMinutesToHours(val?.totalWeeklyTimeTracked),
   },
 ];

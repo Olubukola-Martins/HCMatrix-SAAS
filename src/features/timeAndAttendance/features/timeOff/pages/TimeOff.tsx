@@ -146,7 +146,7 @@ export const TimeOff = () => {
                 { value: "canceled", label: "Canceled" },
               ]}
               className="w-[7.8rem]"
-              placeholder="Filter"
+              placeholder="Status"
               onChange={(val) => setStatus(val)}
               allowClear
             />

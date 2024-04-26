@@ -56,7 +56,7 @@ export const AttendanceMonthCard = () => {
           picker="month"
           format="M"
           className="w-full"
-          value={moment(`${graphFilter.year}-${graphFilter.month}`, "YYYY-MM")}
+          value={moment(`${graphFilter.year}-${graphFilter.month}`, "YYYY-M")}
         />
 
         <Select
@@ -69,6 +69,7 @@ export const AttendanceMonthCard = () => {
           }
           placeholder="Week"
           className="w-full"
+          allowClear
         >
           {options.map((option) => (
             <Option key={option} value={option}>

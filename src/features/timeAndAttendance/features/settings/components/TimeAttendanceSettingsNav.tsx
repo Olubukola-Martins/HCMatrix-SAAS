@@ -5,7 +5,7 @@ interface NProps {
   active:
     | "time tracking rules"
     | "Create Work Schedule"
-    | "clock in settings"
+    | "biometrics"
     | "time off policy"
     | "other settings"
     | "location"
@@ -52,12 +52,12 @@ export const TimeAttendanceSettingsNav = (props: NProps) => {
         <Link
           to={appRoutes.biometrics}
           className={
-            props.active === "clock in settings"
+            props.active === "biometrics"
               ? `${applyStyle}`
               : "pb-3 hover:text-caramel"
           }
         >
-          Clock In Settings
+          Biometrics
         </Link>
         <Link
           to={appRoutes.breakSetUp}
@@ -67,7 +67,7 @@ export const TimeAttendanceSettingsNav = (props: NProps) => {
               : "pb-3 hover:text-caramel"
           }
         >
-        Set up Break
+          Set up Break
         </Link>
         <Link
           to={appRoutes.location}
@@ -77,7 +77,7 @@ export const TimeAttendanceSettingsNav = (props: NProps) => {
               : "pb-3 hover:text-caramel"
           }
         >
-         Work Location
+          Work Location
         </Link>
 
         <Link

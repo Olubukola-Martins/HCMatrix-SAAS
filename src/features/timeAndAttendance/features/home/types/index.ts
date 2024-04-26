@@ -24,3 +24,5 @@ export interface graphFilterProps {
   month?: number;
   week?: number;
 }
+
+export type attendancePendingSetupProps = Record<string, boolean>;
