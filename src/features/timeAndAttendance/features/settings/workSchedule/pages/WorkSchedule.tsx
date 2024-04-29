@@ -62,21 +62,11 @@ export const WorkSchedule = () => {
                     onClick={() => setSwitchWorkArr("Shift")}
                     className={
                       switchWorkArr === "Shift"
-                        ? `${boxStyle} bg-caramel`
-                        : `${boxStyle}`
+                        ? `${boxStyle} bg-caramel rounded-r`
+                        : `${boxStyle} rounded-r`
                     }
                   >
                     <h5>Shift</h5>
-                  </div>
-                  <div
-                    onClick={() => setSwitchWorkArr("break")}
-                    className={
-                      switchWorkArr === "break"
-                        ? `${boxStyle} rounded-r bg-card shadow`
-                        : `${boxStyle} rounded-r bg-card shadow`
-                    }
-                  >
-                    <h5 className="text-caramel">Break</h5>
                   </div>
                 </div>
               </div>

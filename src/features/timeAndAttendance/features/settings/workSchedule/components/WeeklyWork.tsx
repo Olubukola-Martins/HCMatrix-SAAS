@@ -6,7 +6,10 @@ import { EGlobalOps, GlobalContext } from "stateManagers/GlobalContextProvider";
 import { generalValidationRules } from "utils/formHelpers/validation";
 import { openNotification } from "utils/notifications";
 import { useCreateWeeklySchedule } from "../hooks/useCreateWeeklySchedule";
-import { QUERY_KEY_FOR_WORK_SCHEDULE_WEEKLY, useGetWeeklySchedule } from "../hooks/useGetWeeklySchedule";
+import {
+  QUERY_KEY_FOR_WORK_SCHEDULE_WEEKLY,
+  useGetWeeklySchedule,
+} from "../hooks/useGetWeeklySchedule";
 
 export const WeeklyWork = () => {
   const [form] = Form.useForm();
@@ -18,7 +21,7 @@ export const WeeklyWork = () => {
 
   useEffect(() => {
     form.setFieldsValue({
-      duration: data?.duration
+      duration: data?.duration,
     });
   }, [form, data, isSuccess]);
 
@@ -52,12 +55,21 @@ export const WeeklyWork = () => {
   return (
     <div>
       {/* form */}
-      <Form form={form} className="mt-6" onFinish={handleSubmit} disabled={isFetchLoading}>
-        <Form.Item name="duration" label="Enter hours" rules={generalValidationRules}>
+      <Form
+        form={form}
+        className="mt-6"
+        onFinish={handleSubmit}
+        disabled={isFetchLoading}
+      >
+        <Form.Item
+          name="duration"
+          label="Enter number of hours"
+          rules={generalValidationRules}
+        >
           <InputNumber className="w-full" min={1} />
         </Form.Item>
         <div className="flex justify-end">
-          <AppButton label="Save Changes" type="submit"  isLoading={isLoading} />
+          <AppButton label="Save Changes" type="submit" isLoading={isLoading} />
         </div>
       </Form>
     </div>

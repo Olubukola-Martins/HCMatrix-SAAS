@@ -15,6 +15,7 @@ import { AddMultipleAttendance } from "../components/AddMultipleAttendance";
 import { useGetActiveTrackingPolicy } from "../../settings/timeTrackingRules/hooks/useGetActiveTrackingPolicy";
 import { TIME_SHEET_TABLE_COLUMNS } from "../components/columns";
 import ExportTimeSheet from "../components/exports/ExportTimeSheet";
+import { TableWithFocusType } from "components/table";
 
 const TimeSheet = () => {
   const [filterSheet, setFilterSheet] = useState(false);
@@ -112,7 +113,7 @@ const TimeSheet = () => {
           </div>
         </div>
 
-        <Table
+        <TableWithFocusType
           columns={columns}
           dataSource={data?.data}
           scroll={{ x: 500 }}

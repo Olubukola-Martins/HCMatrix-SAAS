@@ -19,7 +19,7 @@ export const TimeOffRequestCard = () => {
   return (
     <div className="bg-mainBg pb-3 border rounded-lg text-sm shadow">
       <div className="flex items-center justify-between px-3 py-3 border-b">
-        <p className="font-medium">Timesheet</p>
+        <p className="font-medium">TimeOff Request</p>
         <span className="text-xs capitalize"></span>
       </div>
       <div className="flex flex-col gap-3 px-3 py-2">
