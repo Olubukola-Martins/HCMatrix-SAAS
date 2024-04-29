@@ -1,7 +1,6 @@
 import { Select, Form } from "antd";
 import { useFetchCountries } from "hooks/useFetchCountries";
-import { useEffect, useState } from "react";
-import { TCountry } from "types/country";
+import { useState } from "react";
 import { generalValidationRules } from "utils/formHelpers/validation";
 
 export const FormCountryInput: React.FC<{
@@ -13,18 +12,12 @@ export const FormCountryInput: React.FC<{
 }> = ({ Form, showLabel = true, control, handleSelect, onClear }) => {
   const { data: countries, isFetching } = useFetchCountries();
 
-  const [data, setData] = useState<TCountry[]>([]);
-  const [search, setSearch] = useState<string>();
-  useEffect(() => {
-    if (countries) {
-      const result = countries?.filter(
-        (item) =>
-          item.name.toLowerCase().indexOf(search?.toLowerCase() ?? "") !== -1
-      );
-
-      setData(result);
-    }
-  }, [countries, search]);
+  const [search, setSearch] = useState<string>("");
+  const options = countries
+    ?.filter(
+      (item) => item.name.toLowerCase().indexOf(search.toLowerCase()) !== -1
+    )
+    .map((c) => ({ label: c.name, value: c.id }));
 
   return (
     <Form.Item
@@ -40,7 +33,7 @@ export const FormCountryInput: React.FC<{
         showSearch
         allowClear
         onClear={() => {
-          countries && setData(countries);
+          setSearch("");
           onClear?.();
         }}
         onSearch={(val) => setSearch(val)}
@@ -48,10 +41,7 @@ export const FormCountryInput: React.FC<{
         defaultActiveFirstOption={false}
         showArrow={false}
         filterOption={false}
-        options={data?.map((item) => ({
-          label: `${item.name}`,
-          value: item.id,
-        }))}
+        options={options}
       />
     </Form.Item>
   );

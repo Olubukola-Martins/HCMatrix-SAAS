@@ -2,8 +2,8 @@ import { DatePicker, Form, Input, message, Select, Tooltip } from "antd";
 import { FileUpload } from "components/FileUpload";
 import { AppButton } from "components/button/AppButton";
 import { FormAddressInput } from "components/generalFormInputs/FormAddressInput";
+import { FormNationalityInput } from "components/generalFormInputs/FormNationalityInput";
 import { FormPhoneInput } from "components/generalFormInputs/FormPhoneInput";
-
 import { DEFAULT_DATE_FORMAT } from "constants/dateFormats";
 import {
   EMPLOYMENT_ELIGIBILITIES_OPTIONS,
@@ -15,7 +15,6 @@ import { QUERY_KEY_FOR_SINGLE_EMPLOYEE } from "features/core/employees/hooks/use
 import { TSingleEmployee } from "features/core/employees/types";
 import { FormExchangeRateInput } from "features/payroll/components/exchangeRates/FormExchangeRateInput";
 import { useCurrentFileUploadUrl } from "hooks/useCurrentFileUploadUrl";
-import { useFetchCountries } from "hooks/useFetchCountries";
 import moment from "moment";
 import { useState, useEffect } from "react";
 import { useQueryClient } from "react-query";
@@ -44,7 +43,6 @@ export const PersonalInformation: React.FC<IProps> = ({
   const [disable, setDisable] = useState(true);
   const [selectedEligibility, setSelectedEligibility] =
     useState<TEmploymentEligibity>();
-  const { data: countries } = useFetchCountries();
 
   const documentUrl = useCurrentFileUploadUrl("documentUrl");
 
@@ -193,18 +191,10 @@ export const PersonalInformation: React.FC<IProps> = ({
             >
               <DatePicker className="w-full" format={DEFAULT_DATE_FORMAT} />
             </Form.Item>
-            <Form.Item
-              name="nationality"
-              label="Nationality"
-              rules={generalValidationRules}
-            >
-              <Select
-                options={countries?.map((item) => ({
-                  label: item.name,
-                  value: item.name,
-                }))}
-              />
-            </Form.Item>
+            <FormNationalityInput
+              Form={Form}
+              control={{ label: "Nationality", name: "nationality" }}
+            />
             <FormPhoneInput Form={Form} />
             <Form.Item
               name="eligibility"
