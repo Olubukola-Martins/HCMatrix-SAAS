@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from "react";
-
 import { Pagination, Skeleton } from "antd";
 import { usePagination } from "hooks/usePagination";
-
+import AppTooltip from "components/tooltip/AppTooltip";
 import { AppButton } from "components/button/AppButton";
 import PageSubHeader from "components/layout/PageSubHeader";
 import { appRoutes } from "config/router/paths";
@@ -30,31 +29,40 @@ type TScheme = {
   updatedAt?: string;
   projectCount?: number;
   setUpLink: string;
+  tooltipInfo: string;
 };
 const PAYROLL_SCHEMES: TScheme[] = [
   {
-    name: "Office/Grade Payroll",
+    name: "Step Pay Payroll",
     type: "office",
 
     setUpLink: appRoutes.setupGradePayrollScheme,
+    tooltipInfo:
+      "This is the sought of payroll that is built on a grade system, where multiple employees can belong to a grade",
   },
   {
     name: "Direct Salary Payroll",
     type: "direct-salary",
 
     setUpLink: appRoutes.setupDirectSalaryPayrollScheme,
+    tooltipInfo:
+      "This is the sought of payroll where a particular amount is assigned directly to an employee",
   },
   {
     name: "Timesheet/Wages Payroll",
     type: "wages",
 
     setUpLink: appRoutes.setupWagesPayrollScheme,
+    tooltipInfo:
+      "This is the sought of payroll where employees are paid a certain rate based on the number of hours worked",
   },
   {
     name: "Project/Contract Payroll",
     type: "project",
 
     setUpLink: appRoutes.setupProjectPayrollScheme,
+    tooltipInfo:
+      "This is the sought of payroll where employees/contract staff are paid based on the stipulation of a particular project",
   },
 ];
 const PayrollSchemeCardList = () => {
@@ -168,6 +176,7 @@ const PayrollSchemeCard: React.FC<TScheme> = ({
   updatedAt = "Pending",
   setUpLink,
   projectCount,
+  tooltipInfo,
 }) => {
   const btnLabel =
     createdAt === "Pending" ? "Set Up Payroll" : "Modify Payroll";
@@ -177,7 +186,13 @@ const PayrollSchemeCard: React.FC<TScheme> = ({
       {/* view */}
       <div className="rounded border shadow bg-mainBg">
         <div className="bg-card p-3 flex justify-between items-center">
-          <h4 className="font-medium text-lg">{name}</h4>
+          <AppTooltip
+            children={<h4 className="font-medium text-lg">{name}</h4>}
+            tooltipProps={{
+              title: tooltipInfo,
+            }}
+          />
+
           <div className="flex gap-2 ">
             <Link to={setUpLink}>
               <AppButton label={btnLabel} variant={btnVariant} />
