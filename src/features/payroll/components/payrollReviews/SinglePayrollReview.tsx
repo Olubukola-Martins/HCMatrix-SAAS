@@ -2,8 +2,7 @@ import { TSinglePayroll } from "features/payroll/types/payroll";
 import React, { useState } from "react";
 import { EmployeePayrollUpdatesContainer } from "../employeePayrollUpdates/EmployeePayrollUpdatesContainer";
 import PageSubHeader from "components/layout/PageSubHeader";
-import { MoreOutlined } from "@ant-design/icons";
-import { Button, Dropdown, Menu, Skeleton, Tag } from "antd";
+import { Skeleton, Tag } from "antd";
 import PayrollBreakdown from "./PayrollBreakdown";
 import { useApproveORReject } from "hooks/useApproveORReject";
 import { QUERY_KEY_FOR_PAYROLLS_BY_SCHEME } from "features/payroll/hooks/payroll/useGetAllPayrollsByScheme";
@@ -11,6 +10,7 @@ import { useQueryClient } from "react-query";
 import { useFetchApprovalRequests } from "features/core/workflows/hooks/useFetchApprovalRequests";
 import { useNavigate } from "react-router-dom";
 import { appRoutes } from "config/router/paths";
+import { SupplementaryActionsProps } from "SupplementaryActions";
 
 interface IProps {
   payroll: TSinglePayroll;
@@ -49,6 +49,18 @@ const SinglePayrollReview: React.FC<IProps> = ({ payroll }) => {
       navigate(appRoutes.payrollReview);
     },
   });
+  const DEFAULT_PAYROLL_REVIEW_ACTIONS: SupplementaryActionsProps["actions"] = [
+    {
+      name: "Summary",
+      handleClick: () => handleAction({ action: "view-summary" }),
+      btnVariant: "default",
+    },
+    {
+      name: "Compare",
+      handleClick: () => handleAction({ action: "compare" }),
+      btnVariant: "transparent",
+    },
+  ];
   return (
     <>
       <PayrollBreakdown
@@ -101,32 +113,10 @@ const SinglePayrollReview: React.FC<IProps> = ({ payroll }) => {
                       btnVariant: "style-with-class",
                       additionalClassNames: ["neutralButton"],
                     },
+                    ...DEFAULT_PAYROLL_REVIEW_ACTIONS,
                   ]
-                : undefined
+                : DEFAULT_PAYROLL_REVIEW_ACTIONS
             }
-            comps={[
-              <Dropdown
-                overlay={
-                  <Menu
-                    items={[
-                      {
-                        key: "view",
-                        label: "View Total Summary",
-                        onClick: () => handleAction({ action: "view-summary" }),
-                      },
-                      {
-                        // TO DO: Add the compare functionality, you probably need to use context
-                        key: "compare",
-                        label: "Compare",
-                        onClick: () => handleAction({ action: "compare" }),
-                      },
-                    ]}
-                  />
-                }
-              >
-                <Button type="text" icon={<MoreOutlined />} />
-              </Dropdown>,
-            ]}
           />
           <div className="flex justify-end">
             <Tag
