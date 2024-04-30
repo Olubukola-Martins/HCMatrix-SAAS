@@ -42,6 +42,8 @@ const DEFAULT_COMPONENT_LABELS = {
   pension: "pension",
   overtime: "overtime",
   leaveAllowance: "leave_allowance",
+  employerPensionContribution: "employer_pension_contribution",
+  bonus: "bonus",
 };
 const boxStyle = "px-4 py-3 shadow rounded-md bg-mainBg";
 const boxTitle = "font-medium text-base pb-1";
@@ -65,6 +67,9 @@ const initialState: TActionState = {
   displayPension: false,
   displayOvertime: false,
   displayTax: false,
+  displayEmployerPensionContribution: false,
+  displayBonus: false,
+
   displayProjectParticipantsExpatriate: false,
   displayProjectParticipantsNonExpatriate: false,
   allowances: [],
@@ -87,6 +92,9 @@ interface TActionState {
   displayPension: boolean;
   displayOvertime: boolean;
   displayTax: boolean;
+  displayEmployerPensionContribution: boolean;
+  displayBonus: boolean;
+
   displayProjectParticipantsExpatriate: boolean;
   displayProjectParticipantsNonExpatriate: boolean;
   allowances: TSalaryComponent[];
@@ -95,6 +103,8 @@ interface TActionState {
 }
 
 type TActionType =
+  | "displayEmployerPensionContribution"
+  | "displayBonus"
   | "allowDisbursement"
   | "allowApproval"
   | "issuePayslip"
@@ -234,6 +244,16 @@ function reducer(
         ...state,
         displayNIF: !state.displayNIF,
       };
+    case "displayEmployerPensionContribution":
+      return {
+        ...state,
+        displayNIF: !state.displayEmployerPensionContribution,
+      };
+    case "displayBonus":
+      return {
+        ...state,
+        displayNIF: !state.displayBonus,
+      };
     case "handleProjectParticipants":
       return {
         ...state,
@@ -302,6 +322,8 @@ export const SetUpPayrollForm: React.FC<{
     allowances,
     deductions,
     projectParticipants,
+    displayEmployerPensionContribution,
+    displayBonus,
   } = state;
   const {
     mutate: mutateProjectPartcipant,
@@ -646,6 +668,15 @@ export const SetUpPayrollForm: React.FC<{
           allowApproval: scheme?.allowApproval,
           runAutomatically:
             scheme.type === "wages" ? false : scheme?.runAutomatically,
+
+          displayEmployerPensionContribution: !!ogSalaryComponents.find(
+            (item) =>
+              item.label ===
+              DEFAULT_COMPONENT_LABELS.employerPensionContribution
+          )?.isActive,
+          displayBonus: !!ogSalaryComponents.find(
+            (item) => item.label === DEFAULT_COMPONENT_LABELS.bonus
+          )?.isActive,
           display13thMonth: !!ogSalaryComponents.find(
             (item) =>
               item.label === DEFAULT_COMPONENT_LABELS.thirteenthMonthSalary
@@ -863,6 +894,38 @@ export const SetUpPayrollForm: React.FC<{
         componentName: DEFAULT_COMPONENT_LABELS.pension,
         schemeId: scheme?.id,
       },
+      {
+        title: "Employer Pension Contribution",
+        type: "deduction",
+        handleSave: handleAddAllowance,
+        isActive: displayEmployerPensionContribution,
+        isDefault: true,
+        dependencies,
+        description: `This allows you to create an employer pension contribution(deduction)`,
+        onSwitch: () =>
+          dispatch({ type: "displayEmployerPensionContribution" }),
+        salaryComponent: salaryComponents.find(
+          (item) =>
+            item.label === DEFAULT_COMPONENT_LABELS.employerPensionContribution
+        ),
+        componentName: DEFAULT_COMPONENT_LABELS.employerPensionContribution,
+        schemeId: scheme?.id,
+      },
+      {
+        title: "Bonus",
+        type: "allowance",
+        handleSave: handleAddAllowance,
+        isActive: displayBonus,
+        isDefault: true,
+        dependencies,
+        description: `This allows you to create a bonus (allowance)`,
+        onSwitch: () => dispatch({ type: "displayBonus" }),
+        salaryComponent: salaryComponents.find(
+          (item) => item.label === DEFAULT_COMPONENT_LABELS.bonus
+        ),
+        componentName: DEFAULT_COMPONENT_LABELS.bonus,
+        schemeId: scheme?.id,
+      },
     ],
     [
       salaryComponents,
@@ -875,6 +938,8 @@ export const SetUpPayrollForm: React.FC<{
       displayOvertime,
       displayPension,
       displayTax,
+      displayBonus,
+      displayEmployerPensionContribution,
       handleAddAllowance,
       handleAddDeduction,
       scheme,
