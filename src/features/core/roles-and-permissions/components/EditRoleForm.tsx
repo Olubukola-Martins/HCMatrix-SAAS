@@ -69,7 +69,7 @@ export const EditRoleForm: React.FC<{ id: number }> = ({ id }) => {
       {
         data: {
           name: data.name,
-          permissionIds: [...(data.permissionIds ?? [])],
+          permissionIds: [...(data?.permissionIds ?? [])],
         },
         roleId: roleData.id,
       },
