@@ -4,10 +4,8 @@ import moment, { Moment } from "moment";
 import React, { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { useQueryClient } from "react-query";
 import {
-  dateHasToBeGreaterThanCurrentDayRule,
   dateHasToBeLesserThanOrEqualToCurrentDayRule,
   generalValidationRules,
-  isDateLesserThanOrEqualToCurrentDay,
 } from "utils/formHelpers/validation";
 import { openNotification } from "utils/notifications";
 import { TSingleEmployee } from "../../types";
@@ -31,6 +29,7 @@ import {
   PAYROLL_FREQUENCIES_OPTIONS,
 } from "features/payroll/constants";
 import { DEFAULT_DATE_FORMAT } from "constants/dateFormats";
+import AppTooltip from "components/tooltip/AppTooltip";
 
 interface IProps {
   employeeId?: number;
@@ -300,7 +299,15 @@ export const JobInformationFormItems: React.FC<{
 
       <Form.Item
         name="workModel"
-        label="Work Model"
+        label={
+          <AppTooltip
+            children={<span>Work Model</span>}
+            tooltipProps={{
+              title:
+                "This describes the operational environment of the employee, remote, on site, or hybrid.",
+            }}
+          />
+        }
         rules={generalValidationRules}
       >
         <Select placeholder="Work Model" options={WORK_MODELS} />
