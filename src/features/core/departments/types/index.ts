@@ -1,5 +1,4 @@
 import { TLicenseType } from "features/authentication/types/auth-user";
-import { ICurrentCompany } from "types";
 
 export type TDepartment = {
   id: number;
@@ -34,7 +33,7 @@ export type TDepartment = {
     companyId: number;
     designationId: number;
     userId: number;
-    avatarUrl?: any;
+    avatarUrl?: string | null;
     createdAt: string;
     updatedAt: string;
     deletedAt?: string;
