@@ -34,6 +34,7 @@ export const useApiAuth = () => {
     ) {
       // Redirect to login
       navigate(appRoutes.login, { replace: true });
+      return;
     }
   }, [navigate, pathname, routesAllowedWithoutAuthentication]);
   const auth = useAuthUser();
