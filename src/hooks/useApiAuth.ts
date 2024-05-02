@@ -25,6 +25,7 @@ export const useApiAuth = () => {
     ) {
       // logout user if they are accessing a page that requires them to be logged out
       logout();
+      navigate(pathname, { replace: true }); // this is done so after logging user out it takes them to the intended page, because by default when a user is logged out they are redirected to the login page
       return;
     }
     if (
