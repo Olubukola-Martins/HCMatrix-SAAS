@@ -42,9 +42,14 @@ const GlobalSupport = () => {
                   </li>
                   <li className="flex items-center gap-x-5 border-b-2 pb-1  cursor-pointer group">
                     <i className="ri-book-line text-xl"></i>
-                    <span className="group-hover:text-caramel">
-                      Read Article
-                    </span>
+                    <a
+                      target="_blank"
+                      rel="noreferrer"
+                      href="https://user-guide-frontend-h3-0.vercel.app/"
+                      className="group-hover:text-caramel"
+                    >
+                      User Guide
+                    </a>
                   </li>
                   <li className="flex items-center gap-x-5 border-b-2 pb-1  cursor-pointer group">
                     <i className="ri-phone-line text-xl"></i>
