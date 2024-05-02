@@ -18,12 +18,14 @@ export const useApiAuth = () => {
     authRoutesDontRequireAuthentication.map((item) => item.path);
   useEffect(() => {
     if (
+      localStorage.getItem(LOCAL_STORAGE_AUTH_KEY) !== null &&
       ROUTES_THAT_REQUIRE_API_REDIRECT_AND_LOGOUT_IF_AUTHENTICATED.includes(
         pathname
       )
     ) {
       // logout user if they are accessing a page that requires them to be logged out
       logout();
+      return;
     }
     if (
       localStorage.getItem(LOCAL_STORAGE_AUTH_KEY) === null &&
