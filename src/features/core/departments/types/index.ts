@@ -43,7 +43,7 @@ export type TDepartment = {
 
 export interface TCreateDepProps {
   name: string;
-  email: string;
+  email?: string;
   departmentHeadId?: number | null;
   parentDepartmentId?: number | null;
 }
