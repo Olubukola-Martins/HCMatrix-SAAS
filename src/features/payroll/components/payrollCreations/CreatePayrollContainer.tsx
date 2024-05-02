@@ -253,11 +253,23 @@ export const CreatePayrollInitialForm: React.FC<IFormProps> = ({
         },
         {
           onError: (err: any) => {
+            const constructError = (): string => {
+              let primaryMessage: string =
+                err?.response.data.message ?? err?.response.data.error.message;
+              const employeeWithErrorIds: string[] =
+                err.response?.data?.error?.error;
+              if (employeeWithErrorIds?.length > 0) {
+                primaryMessage = `${primaryMessage}. The employees' with the following employee ids have this issue: ${employeeWithErrorIds.join(
+                  ","
+                )}.`;
+              }
+              return primaryMessage;
+            };
             openNotification({
               state: "error",
               title: "Error Occurred",
-              description:
-                err?.response.data.message ?? err?.response.data.error.message,
+              duration: 8,
+              description: constructError(),
             });
           },
           onSuccess: (res: any) => {
