@@ -12,7 +12,7 @@ import { GlobalContext } from "stateManagers/GlobalContextProvider";
 
 export const useApiAuth = () => {
   const navigate = useNavigate();
-  const { pathname } = useLocation();
+  const { pathname, search } = useLocation();
   const logout = useSignOut();
   const routesAllowedWithoutAuthentication =
     authRoutesDontRequireAuthentication.map((item) => item.path);
@@ -25,7 +25,9 @@ export const useApiAuth = () => {
     ) {
       // logout user if they are accessing a page that requires them to be logged out
       logout();
-      navigate(pathname, { replace: true }); // this is done so after logging user out it takes them to the intended page, because by default when a user is logged out they are redirected to the login page
+      // navigate user to the initial path
+      const navigationPath = `${pathname}${search}`; //where search is the query params
+      navigate(navigationPath, { replace: true }); // this is done so after logging user out it takes them to the intended page, because by default when a user is logged out they are redirected to the login page
       return;
     }
     if (
