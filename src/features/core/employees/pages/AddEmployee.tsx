@@ -228,7 +228,7 @@ export const AddEmployee = () => {
                       <Radio value={"unlicensed"}>
                         {" "}
                         <AppTooltip
-                          children={<span>Licensed</span>}
+                          children={<span>Unlicensed</span>}
                           tooltipProps={{
                             title:
                               "Unlicensed Users will be unable to access the system and use features like self service, onboarding, payslips, etc.",

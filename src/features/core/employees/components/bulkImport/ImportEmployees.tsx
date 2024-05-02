@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { IModalProps } from "types";
 import Themes from "components/Themes";
-import { Modal, Steps } from "antd";
+import { Modal, Skeleton, Steps } from "antd";
 import { EMPLOYEE_BULK_IMPORT_STEPS } from "../../constants";
 import { UploadEmployeeBulkImport } from "./UploadEmployeeBulkImport";
 import {
@@ -11,6 +11,7 @@ import {
 import EmployeeImportDataMapping from "./EmployeeImportDataMapping";
 import EmployeeDataVerification from "./EmployeeDataVerification";
 import EmployeeDataImportConfirmation from "./EmployeeDataImportConfirmation";
+import { useGetEmployeeLicenseCountLeft } from "features/billing/hooks/company/employeeLicense/count/useGetEmployeeLicenseCountLeft";
 
 interface IProps extends IModalProps {}
 
@@ -27,7 +28,11 @@ const ImportEmployees: React.FC<IProps> = ({ open, handleClose }) => {
   const [confirmationMessages, setConfirmationMessages] = useState<string[]>(
     []
   );
-
+  const { data: employeeCountData, isLoading: isLoadingEmployeeCount } =
+    useGetEmployeeLicenseCountLeft();
+  const totalEmployeesAllowed =
+    (employeeCountData?.licensedEmployeeCountLeft ?? 0) +
+    (employeeCountData?.unlicensedEmployeeCountLeft ?? 0);
   return (
     <Modal
       title="Import Employees"
@@ -40,14 +45,16 @@ const ImportEmployees: React.FC<IProps> = ({ open, handleClose }) => {
     >
       <Themes>
         {/* header */}
-        <ImportEmpHeader
-          {...{
-            employeeCount: dataToBeSubmitted.length,
-            maxEmployeesAllowed: 100, //Confirm wether there is a limit to maxEmpAllowed
-            activeStep,
-            steps: EMPLOYEE_BULK_IMPORT_STEPS,
-          }}
-        />
+        <Skeleton loading={isLoadingEmployeeCount}>
+          <ImportEmpHeader
+            {...{
+              employeeCount: dataToBeSubmitted.length,
+              maxEmployeesAllowed: totalEmployeesAllowed,
+              activeStep,
+              steps: EMPLOYEE_BULK_IMPORT_STEPS,
+            }}
+          />
+        </Skeleton>
 
         {/* components */}
         <div className="w-full mt-6">
@@ -126,9 +133,9 @@ const ImportEmpHeader: React.FC<{
     <div className="w-full flex flex-col gap-8">
       {/* liscence */}
       <div className="px-4 py-2 flex justify-between  bg-faded rounded-md">
-        <h6 className="text-xs">Employee Added: {employeeCount}</h6>
+        <h6 className="text-xs">Employee to be added: {employeeCount}</h6>
         <h6 className="text-xs">
-          License count left: {maxEmployeesAllowed - employeeCount}
+          Max Employees: {maxEmployeesAllowed - employeeCount}
         </h6>
       </div>
 
