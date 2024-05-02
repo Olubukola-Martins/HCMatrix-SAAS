@@ -1,18 +1,30 @@
-import { appRoutes } from "config/router/paths";
+import {
+  ROUTES_THAT_REQUIRE_API_REDIRECT_AND_LOGOUT_IF_AUTHENTICATED,
+  appRoutes,
+} from "config/router/paths";
 import { authRoutesDontRequireAuthentication } from "config/router/routes/auth";
 import { LOCAL_STORAGE_AUTH_KEY } from "constants/localStorageKeys";
 import { IAuthDets } from "features/authentication/types";
 import { useContext, useEffect } from "react";
-import { useAuthUser } from "react-auth-kit";
+import { useAuthUser, useSignOut } from "react-auth-kit";
 import { useLocation, useNavigate } from "react-router-dom";
 import { GlobalContext } from "stateManagers/GlobalContextProvider";
 
 export const useApiAuth = () => {
   const navigate = useNavigate();
   const { pathname } = useLocation();
+  const logout = useSignOut();
   const routesAllowedWithoutAuthentication =
     authRoutesDontRequireAuthentication.map((item) => item.path);
   useEffect(() => {
+    if (
+      ROUTES_THAT_REQUIRE_API_REDIRECT_AND_LOGOUT_IF_AUTHENTICATED.includes(
+        pathname
+      )
+    ) {
+      // logout user if they are accessing a page that requires them to be logged out
+      logout();
+    }
     if (
       localStorage.getItem(LOCAL_STORAGE_AUTH_KEY) === null &&
       !routesAllowedWithoutAuthentication.includes(pathname)

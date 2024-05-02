@@ -319,3 +319,12 @@ export const appRoutes = {
   udemy: `/learning/udemy`,
   leaningHome: `/leaning/home`,
 };
+
+// Routes that require API redirect and logout if authenticated, so the user is not automatically redirected to the login page, as that is the typical behaviour of such routes
+export const ROUTES_THAT_REQUIRE_API_REDIRECT_AND_LOGOUT_IF_AUTHENTICATED = [
+  appRoutes.microsoftCallback,
+  appRoutes.verify,
+  appRoutes.verifyEmployee,
+  appRoutes.resetPassword,
+  appRoutes.invitedEmployee,
+];
