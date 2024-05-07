@@ -24,9 +24,10 @@ jobs:
 
       - name: npm install, build, and test
         run: |
-          npm install -f
-          npm run build --if-present
-          npm run test --if-present
+          npm install -g yarn
+          yarn install
+          yarn run build --if-present
+          yarn run test --if-present
       # Copy the web config for the project
       - name: Copy web.config to be used online (azure)
         run: |
