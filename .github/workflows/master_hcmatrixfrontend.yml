@@ -25,6 +25,7 @@ jobs:
         run: |
           npm i -g yarn
           yarn install
+          npx browserslist@latest --update-db
           yarn run build --if-present
           yarn run test --if-present
 
