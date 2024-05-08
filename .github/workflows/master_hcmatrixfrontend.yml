@@ -27,11 +27,7 @@ jobs:
           yarn install
           npx browserslist@latest --update-db
           CI=false yarn run build 
-
-      - name: Copy web.config to be used online (azure)
-        run: |
-          cp deployment-config/Web.config dist/Web.config
-      # zip the build directory
+          
       - name: Zip Release
 
         uses: TheDoctor0/zip-release@0.7.6
