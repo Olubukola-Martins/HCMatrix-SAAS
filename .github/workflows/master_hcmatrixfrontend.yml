@@ -28,11 +28,24 @@ jobs:
           npx browserslist@latest --update-db
           CI=false yarn run build 
 
+      - name: Copy web.config to be used online (azure)
+        run: |
+          cp deployment-config/Web.config dist/Web.config
+      # zip the build directory
+      - name: Zip Release
+
+        uses: TheDoctor0/zip-release@0.7.6
+        with:
+          # Filename for archive
+          filename: release.zip
+          # Base path for archive files
+          path: ./dist/*
+
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v3
         with:
           name: node-app
-          path: dist
+          path: release.zip
 
   deploy:
     runs-on: ubuntu-latest
@@ -57,5 +70,5 @@ jobs:
           app-name: 'hcmatrixfrontend'
           slot-name: 'Production'
           publish-profile: <publishData><publishProfile profileName="hcmatrixfrontend - Web Deploy" publishMethod="MSDeploy" publishUrl="hcmatrixfrontend.scm.azurewebsites.net:443" msdeploySite="hcmatrixfrontend" userName="$hcmatrixfrontend" userPWD="bmDGBoRJZ6nk0e5vKNMXHQoxWkumGiaNvqB3XMW2Q6v78ftMcsZkraGuuY2s" destinationAppUrl="https://hcmatrixfrontend.azurewebsites.net" SQLServerDBConnectionString="" mySQLDBConnectionString="" hostingProviderForumLink="" controlPanelLink="https://portal.azure.com" webSystem="WebSites"><databases /></publishProfile><publishProfile profileName="hcmatrixfrontend - FTP" publishMethod="FTP" publishUrl="ftps://waws-prod-blu-505.ftp.azurewebsites.windows.net/site/wwwroot" ftpPassiveMode="True" userName="hcmatrixfrontend\$hcmatrixfrontend" userPWD="bmDGBoRJZ6nk0e5vKNMXHQoxWkumGiaNvqB3XMW2Q6v78ftMcsZkraGuuY2s" destinationAppUrl="https://hcmatrixfrontend.azurewebsites.net" SQLServerDBConnectionString="" mySQLDBConnectionString="" hostingProviderForumLink="" controlPanelLink="https://portal.azure.com" webSystem="WebSites"><databases /></publishProfile><publishProfile profileName="hcmatrixfrontend - Zip Deploy" publishMethod="ZipDeploy" publishUrl="hcmatrixfrontend.scm.azurewebsites.net:443" userName="$hcmatrixfrontend" userPWD="bmDGBoRJZ6nk0e5vKNMXHQoxWkumGiaNvqB3XMW2Q6v78ftMcsZkraGuuY2s" destinationAppUrl="https://hcmatrixfrontend.azurewebsites.net" SQLServerDBConnectionString="" mySQLDBConnectionString="" hostingProviderForumLink="" controlPanelLink="https://portal.azure.com" webSystem="WebSites"><databases /></publishProfile></publishData>
-          package: .
+          package: release.zip
           
