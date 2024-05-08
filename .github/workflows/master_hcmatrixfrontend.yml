@@ -28,14 +28,11 @@ jobs:
           npx browserslist@latest --update-db
           CI=false yarn run build 
 
-      - name: Zip artifact for deployment
-        run: zip release.zip ./* -r
-
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v3
         with:
           name: node-app
-          path: release.zip
+          path: dist
 
   deploy:
     runs-on: ubuntu-latest
@@ -51,16 +48,7 @@ jobs:
         uses: actions/download-artifact@v3
         with:
           name: node-app
-
-      - name: Unzip artifact for deployment
-        run: unzip release.zip
       
-      - name: Login to Azure
-        uses: azure/login@v1
-        with:
-          client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_A88E05B674A346A78E0D30F9360F9A08 }}
-          tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_8BBEF75CFF9842F4A8BFC676F538846B }}
-          subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_53B7EE54F35C4D6FAFB5B4AD478BC543 }}
 
       - name: 'Deploy to Azure Web App'
         id: deploy-to-webapp
@@ -68,5 +56,6 @@ jobs:
         with:
           app-name: 'hcmatrixfrontend'
           slot-name: 'Production'
+          publish-profile: <publishData><publishProfile profileName="hcmatrixfrontend - Web Deploy" publishMethod="MSDeploy" publishUrl="hcmatrixfrontend.scm.azurewebsites.net:443" msdeploySite="hcmatrixfrontend" userName="$hcmatrixfrontend" userPWD="bmDGBoRJZ6nk0e5vKNMXHQoxWkumGiaNvqB3XMW2Q6v78ftMcsZkraGuuY2s" destinationAppUrl="https://hcmatrixfrontend.azurewebsites.net" SQLServerDBConnectionString="" mySQLDBConnectionString="" hostingProviderForumLink="" controlPanelLink="https://portal.azure.com" webSystem="WebSites"><databases /></publishProfile><publishProfile profileName="hcmatrixfrontend - FTP" publishMethod="FTP" publishUrl="ftps://waws-prod-blu-505.ftp.azurewebsites.windows.net/site/wwwroot" ftpPassiveMode="True" userName="hcmatrixfrontend\$hcmatrixfrontend" userPWD="bmDGBoRJZ6nk0e5vKNMXHQoxWkumGiaNvqB3XMW2Q6v78ftMcsZkraGuuY2s" destinationAppUrl="https://hcmatrixfrontend.azurewebsites.net" SQLServerDBConnectionString="" mySQLDBConnectionString="" hostingProviderForumLink="" controlPanelLink="https://portal.azure.com" webSystem="WebSites"><databases /></publishProfile><publishProfile profileName="hcmatrixfrontend - Zip Deploy" publishMethod="ZipDeploy" publishUrl="hcmatrixfrontend.scm.azurewebsites.net:443" userName="$hcmatrixfrontend" userPWD="bmDGBoRJZ6nk0e5vKNMXHQoxWkumGiaNvqB3XMW2Q6v78ftMcsZkraGuuY2s" destinationAppUrl="https://hcmatrixfrontend.azurewebsites.net" SQLServerDBConnectionString="" mySQLDBConnectionString="" hostingProviderForumLink="" controlPanelLink="https://portal.azure.com" webSystem="WebSites"><databases /></publishProfile></publishData>
           package: .
           
