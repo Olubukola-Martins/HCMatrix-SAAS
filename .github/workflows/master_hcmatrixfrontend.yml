@@ -24,6 +24,9 @@ jobs:
 
       - name: npm install, build, and test
         run: |
+          yarn config delete proxy
+          npm config rm proxy
+          npm config rm https-proxy
           npm install -g yarn
           yarn install -f
           yarn run build --if-present
