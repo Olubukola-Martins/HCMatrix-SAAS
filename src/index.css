@@ -3,13 +3,14 @@
 @tailwind utilities;
 
 @import url("https://fonts.googleapis.com/css2?family=Manrope:wght@200;300;400;500;600;700;800&display=swap");
+@import "antd/dist/antd.min.css";
+
 /* antd */
 /* @import "~antd/dist/antd.dark.css";
 @import "~antd/dist/antd.compact.css"; */
 /* @import "./custom.css"; */
 :root {
   --modal-content-bg: #ff6647;
-
   --background: #ffffff;
   --text-color: #252526;
   --caramel: #ff6647;
@@ -35,6 +36,7 @@
 [color-theme="orange"] {
   --caramel: #d69a00;
 }
+
 
 [color-theme="green"] {
   --caramel: #01966b;
@@ -125,7 +127,7 @@ body {
 }
 
 .transparentButton {
-  @apply border border-slate-400 hover:border-slate-800 rounded font-medium bg-transparent transition ease-in-out duration-500 text-sm tracking-wider;
+  @apply border border-caramel text-caramel hover:text-slate-800 hover:border-slate-800 rounded font-medium bg-transparent transition ease-in-out duration-500 text-sm tracking-wider;
   padding: 6px 8.5px;
 }
 .borderButton {
@@ -218,10 +220,10 @@ body {
   background: var(--card) !important;
   color: var(--accent) !important;
 }
-.ant-table-thead > tr > th {
+/* .ant-table-thead > tr > th {
   background: var(--card);
   color: var(--accent) !important;
-}
+} */
 .ant-table-tbody > tr.ant-table-row:hover > td,
 .ant-table-tbody > tr > td.ant-table-cell-hover {
   background: var(--background) !important;
@@ -245,7 +247,6 @@ body {
 /* ant select */
 .ant-select,
 textarea.ant-input,
-input[type="text"].ant-input,
 .ant-form-item-label > label,
 .ant-btn-text,
 .ant-btn-ghost,
@@ -257,11 +258,46 @@ input[type="text"].ant-input,
 }
 .ant-select-selector,
 textarea.ant-input,
-input[type="text"].ant-input,
 .ant-picker,
 .ant-select-dropdown {
-  background: var(--background) !important;
+  /* commented out so disabled form items can have proper effect */
+  /* background: var(--background) !important; */
 }
+
+/* enable disabled date inputs to be grayed out as intended */
+.ant-picker.ant-picker-disabled {
+  background: #f5f5f5 !important;
+  border-color: #d9d9d9 !important;
+  cursor: not-allowed;
+}
+.ant-picker-input > input[disabled] {
+  color: rgba(18, 18, 18, 0.838) !important;
+  background-color: #f5f5f5 !important;
+  border-color: #d9d9d9 !important;
+  box-shadow: none;
+  cursor: not-allowed;
+  opacity: 1;
+}
+
+.ant-select[disabled],
+.ant-select-disabled {
+  color: rgba(0, 0, 0, 0.25);
+  background-color: green !important;
+  border-color: #d9d9d9 !important;
+  box-shadow: none;
+  cursor: not-allowed;
+  opacity: 1;
+}
+.ant-input[disabled] {
+  color: rgba(0, 0, 0, 0.25);
+  background-color: #f5f5f5 !important;
+  border-color: #d9d9d9 !important;
+  box-shadow: none;
+  cursor: not-allowed;
+  opacity: 1;
+}
+
+/* enable disabled date inputs to be grayed out  ___ end */
 
 .ant-select-arrow {
   color: var(--accent) !important;
@@ -272,10 +308,6 @@ input[type="text"].ant-input,
 .ant-drawer-header {
   padding: 0 !important;
 } */
-
-.ant-drawer-close {
-  display: none;
-}
 
 /* ant card */
 .ant-card-head,
@@ -291,6 +323,10 @@ input[type="text"].ant-input,
 
 .ant-tabs-ink-bar {
   background: var(--caramel);
+}
+
+.tabBlackActive .ant-tabs-tab.ant-tabs-tab-active .ant-tabs-tab-btn {
+  color: var(--accent);
 }
 
 /* modal  */
@@ -333,4 +369,104 @@ input[type="text"].ant-input,
 }
 .ant-popover-title {
   background: var(--caramel);
+}
+
+/* Select */
+.SelectTag.ant-select:not(.ant-select-customize-input) .ant-select-selector {
+  border-radius: 3px;
+}
+
+/* General input style */
+.generalInputStyle {
+  padding: 7.3px 6px;
+  width: 100%;
+  border-radius: 3px;
+  background: var(--background);
+}
+
+.drawerBg .ant-drawer-wrapper-body {
+  background: var(--card);
+}
+
+/* antd customization for menu horizontal sub nav */
+.ant-menu-horizontal > .ant-menu-item a:hover {
+  color: var(--caramel);
+}
+.ant-menu-item-active {
+  color: var(--caramel);
+}
+.ant-menu-horizontal:not(.ant-menu-dark) > .ant-menu-item:hover:after {
+  border-color: var(--caramel);
+}
+
+/* Accordion */
+.collapseHeader .ant-collapse-header-text {
+  @apply text-base font-medium;
+}
+
+/* Stepper */
+.ant-steps-item-process > .ant-steps-item-container > .ant-steps-item-icon {
+  background: var(--caramel);
+}
+.ant-steps-item-process .ant-steps-item-icon {
+  border-color: var(--caramel);
+}
+.ant-steps-item-finish .ant-steps-item-icon {
+  border-color: var(--caramel);
+}
+.ant-steps-item-finish
+  > .ant-steps-item-container
+  > .ant-steps-item-tail:after {
+  border-color: var(--caramel);
+}
+
+.ant-steps-item-finish
+  > .ant-steps-item-container
+  > .ant-steps-item-tail:after {
+  background-color: var(--caramel);
+}
+
+.ant-steps-item-finish .ant-steps-item-icon > .ant-steps-icon {
+  color: var(--caramel);
+}
+
+/* customization to allow userfeedbackComp to have side icon*/
+.ant-steps-vertical.ant-steps-small
+  .ant-steps-item-container
+  .ant-steps-item-title {
+  width: 100%;
+}
+
+/* steps progress dot */
+.ant-steps-item-process
+  .ant-steps-item-icon
+  > .ant-steps-icon
+  .ant-steps-icon-dot {
+  background: var(--caramel);
+}
+
+.ant-steps-item-finish
+  .ant-steps-item-icon
+  > .ant-steps-icon
+  .ant-steps-icon-dot {
+  background: var(--caramel);
+}
+
+/* legibility for disabled inputs */
+.ant-input[disabled],
+.ant-input-number-disabled,
+.ant-select-disabled.ant-select:not(.ant-select-customize-input)
+  .ant-select-selector,
+.ant-radio-button-wrapper-disabled.ant-radio-button-wrapper-checked {
+  color: rgba(18, 18, 18, 0.838);
+}
+
+/* pop over arrow */
+.ant-tooltip-arrow-content {
+  --antd-arrow-background-color: var(--card);
+}
+
+/* allow upload to occupy entire width */
+.resusable-file-upload .ant-upload {
+  width: 100%;
 }

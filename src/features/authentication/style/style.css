@@ -1,0 +1,42 @@
+:root {
+  --authPrimary: #ff6647;
+  /* --authPrimary: #01966b; */
+}
+
+.authBtn[type="submit"],
+.authBtn {
+  @apply border rounded font-medium text-white transition ease-in-out duration-300 text-sm tracking-wider hover:opacity-70;
+  padding: 7px 8.5px;
+  background: var(--authPrimary);
+  border-color: (var(--authPrimary));
+}
+
+.formWrap {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 90%;
+}
+
+.authIntro {
+  height: 100vh;
+}
+
+.authIntroInner {
+  height: 80vh;
+}
+
+.authSelectTag.ant-select:not(.ant-select-customize-input)
+  .ant-select-selector {
+  @apply rounded border-slate-400;
+}
+
+@media (max-width: 768px) {
+  .authIntro {
+    height: 65vh;
+  }
+  .authIntroInner {
+    height: 50vh;
+  }
+}
