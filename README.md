@@ -23,7 +23,5 @@ The codebase is primarily written in typescript. The following technologies were
 
 ## Contribution Rules
 
-tssting a
-
 
 
