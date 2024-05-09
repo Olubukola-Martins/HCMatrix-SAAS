@@ -26,6 +26,10 @@ jobs:
           npm i -g yarn
           yarn install
           CI=false yarn run build 
+      # Copy the web config for the project
+      - name: Copy web.config to be used online (azure)
+        run: |
+          cp deployment-config/Web.config build/Web.config
           
       - name: Zip artifact for deployment
         run: zip release.zip ./build/* -r
