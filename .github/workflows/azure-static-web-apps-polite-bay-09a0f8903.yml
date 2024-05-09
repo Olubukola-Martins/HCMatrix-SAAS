@@ -36,9 +36,9 @@ jobs:
           ###### End of Repository/Build Configurations ######
           app_build_command: 'npm run build'
       # Copy the web config for the project
-      - name: Copy staticwebapp.config.json to be used online (azure)
-        run: |
-          cp deployment-config/staticwebapp.config.json build/staticwebapp.config.json
+      # - name: Copy staticwebapp.config.json to be used online (azure)
+      #   run: |
+      #     cp deployment-config/staticwebapp.config.json build/staticwebapp.config.json
 
   close_pull_request_job:
     if: github.event_name == 'pull_request' && github.event.action == 'closed'
