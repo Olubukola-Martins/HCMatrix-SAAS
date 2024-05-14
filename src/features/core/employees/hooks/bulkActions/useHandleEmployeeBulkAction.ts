@@ -29,14 +29,16 @@ type TData =
   | {
       employeeIds: number[];
       groupId: number;
-    };
-type TEmployeeBulkAction =
+    }
+  | undefined;
+export type TEmployeeBulkAction =
   | "change-status"
   | "assign-line-manager"
   | "assign-branch"
   | "assign-designation"
   | "add-to-group"
-  | "assign-role";
+  | "assign-role"
+  | "send-verification-to-unverified";
 const createData = async (props: {
   action: TEmployeeBulkAction;
   data: TData;
@@ -51,9 +53,7 @@ const createData = async (props: {
     },
   };
 
-  const data: TData = {
-    ...props.data,
-  };
+  const data: TData = props?.data;
 
   const response = await axios.patch(url, data, config);
   return response;

@@ -68,6 +68,20 @@ export const EMPLOYEE_TABLE_COLUMNS: ColumnsType<TEmployee> = [
       </span>
     ),
   },
+  {
+    title: "Verification Status",
+    dataIndex: "verification",
+    key: "verification",
+    render: (_, item) => (
+      <>
+        {item.user.isVerified ? (
+          <span className="text-green-700">Verified</span>
+        ) : (
+          <span className="text-red-500">Unverified</span>
+        )}
+      </>
+    ),
+  },
 ];
 export const EMPLOYEE_EXPORT_COLUMNS = (
   items?: TEmployee[]
