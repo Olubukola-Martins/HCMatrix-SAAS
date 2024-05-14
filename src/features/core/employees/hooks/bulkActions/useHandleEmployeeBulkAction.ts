@@ -30,7 +30,9 @@ type TData =
       employeeIds: number[];
       groupId: number;
     }
-  | undefined;
+  | {
+      employeeIds: number[];
+    };
 export type TEmployeeBulkAction =
   | "change-status"
   | "assign-line-manager"
