@@ -7,29 +7,23 @@ import { BulkAssignDesignation } from "./BulkAssignDesignation";
 import { BulkAssignToGroup } from "./BulkAssignToGroup";
 import { BulkAssignRole } from "./BulkAssignRole";
 import { BulkAssignBranch } from "./BulkAssignBranch";
+import { BulkSendVerification } from "./BulkSendVerification";
+import { TEmployeeBulkAction } from "features/core/employees/hooks/bulkActions/useHandleEmployeeBulkAction";
 
-type TAction =
-  | "change status"
-  | "assign line manager"
-  | "assign designation"
-  | "assign branch"
-  | "add to group"
-  | "assign role";
-// | "delete";
-const EMPLOYEE_BULK_ACTIONS: TAction[] = [
-  "change status",
-  "assign line manager",
-  "assign branch",
-  "assign designation",
-  "add to group",
-  "assign role",
-  // "delete",
+const EMPLOYEE_BULK_ACTIONS: TEmployeeBulkAction[] = [
+  "change-status",
+  "assign-line-manager",
+  "assign-branch",
+  "assign-designation",
+  "add-to-group",
+  "assign-role",
+  "send-verification-to-unverified",
 ];
 const BulkEmployeeActionHeader: React.FC<{
   data: TEmployee[];
   clearSelectedEmployees: () => void;
 }> = ({ data, clearSelectedEmployees }) => {
-  const [action, setAction] = useState<TAction>();
+  const [action, setAction] = useState<TEmployeeBulkAction>();
 
   if (data.length === 0) {
     return null;
@@ -42,43 +36,44 @@ const BulkEmployeeActionHeader: React.FC<{
     <>
       <BulkChangeStatus
         handleClose={handleClose}
-        open={action === "change status"}
+        open={action === "change-status"}
         employeeIds={data.map((item) => item.id)}
       />
       <BulkAssignLineManager
         handleClose={handleClose}
-        open={action === "assign line manager"}
+        open={action === "assign-line-manager"}
         employeeIds={data.map((item) => item.id)}
       />
       <BulkAssignBranch
         handleClose={handleClose}
-        open={action === "assign branch"}
+        open={action === "assign-branch"}
         employeeIds={data.map((item) => item.id)}
       />
       <BulkAssignDesignation
         handleClose={handleClose}
-        open={action === "assign designation"}
+        open={action === "assign-designation"}
         employeeIds={data.map((item) => item.id)}
       />
       <BulkAssignToGroup
         handleClose={handleClose}
-        open={action === "add to group"}
+        open={action === "add-to-group"}
         employeeIds={data.map((item) => item.id)}
       />
       <BulkAssignRole
         handleClose={handleClose}
-        open={action === "assign role"}
+        open={action === "assign-role"}
         employeeIds={data.map((item) => item.id)}
       />
-      {/* <BulkDeleteEmployees
+      <BulkSendVerification
         handleClose={handleClose}
-        open={action === "delete"}
+        open={action === "send-verification-to-unverified"}
         employeeIds={data.map((item) => item.id)}
-      /> */}
+      />
+
       <div className="flex justify-end">
         <AppButtonList
           data={EMPLOYEE_BULK_ACTIONS.map((item) => ({
-            label: item,
+            label: item.split("-").join(" "),
             handleClick: () => setAction(item),
             variant: "transparent",
           }))}

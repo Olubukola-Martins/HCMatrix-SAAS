@@ -322,6 +322,13 @@ export type TManagerHistory = {
 
 // TO DO: refactor types to match api exactly - employee, authData, ..............
 export type TEmployee = {
+  user: {
+    id: number;
+    fullName: string;
+    email: string;
+    isSocial: boolean;
+    isVerified: boolean;
+  };
   companyId: number;
   avatarUrl?: string;
 
