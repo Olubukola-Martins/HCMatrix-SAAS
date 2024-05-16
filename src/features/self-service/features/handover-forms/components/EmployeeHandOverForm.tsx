@@ -20,6 +20,7 @@ import { useGetResignationPolicy } from "features/core/policies/hooks/useGetResi
 import { DEFAULT_DATE_FORMAT } from "constants/dateFormats";
 import { TTHandOverForm } from "../types";
 import moment from "moment";
+import { FormUnlicensedEmployeeSSRequestInput } from "features/core/employees/components/FormEmployeeInput";
 
 const boxStyle = "px-4 py-3 shadow rounded-md bg-mainBg";
 const boxTitle = "font-medium text-base pb-1";
@@ -72,6 +73,7 @@ export const EmployeeHandOverForm: React.FC<IProps> = ({
   const handleSubmit = (data: any) => {
     mutate(
       {
+        employeeId: data?.employeeId,
         reasonForLeaving: data.reasonForLeaving,
         separationDate: data.separationDate,
         supervisorClearanceUrl: supervisorClearanceUrl,
@@ -129,6 +131,13 @@ export const EmployeeHandOverForm: React.FC<IProps> = ({
         <div className="grid grid-cols-1 md:grid-cols-2 gap-5 text-accent">
           {/* first grid */}
           <div className="flex flex-col gap-4">
+            <FormUnlicensedEmployeeSSRequestInput
+              Form={Form}
+              control={{
+                name: "employeeId",
+                label: "Select Unlinsenced Employee",
+              }}
+            />
             <div className={boxStyle}>
               <h5 className={boxTitle}>Separation Date</h5>
               <Form.Item
