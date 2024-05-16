@@ -10,7 +10,7 @@ type TCreateProps = {
   skillsAndQualifications: string;
   reason: string;
   justification: string;
-};
+} & { employeeId?: number };
 
 const createData = async (props: {
   data: TCreateProps;

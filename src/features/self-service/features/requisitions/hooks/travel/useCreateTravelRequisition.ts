@@ -15,7 +15,7 @@ type TCreateProps = {
   cost: number;
   billableToClient: boolean;
   priority?: TPriority;
-};
+} & { employeeId?: number };
 
 const createData = async (props: {
   data: TCreateProps;

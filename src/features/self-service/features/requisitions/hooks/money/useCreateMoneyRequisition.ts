@@ -10,7 +10,7 @@ type TCreateProps = {
   purpose: string;
   amount: number;
   attachmentUrls: string[];
-};
+} & { employeeId?: number };
 
 const createData = async (props: {
   data: TCreateProps;

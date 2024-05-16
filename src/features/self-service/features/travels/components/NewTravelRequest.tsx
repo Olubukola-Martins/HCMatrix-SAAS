@@ -23,6 +23,7 @@ import { useCreateTravelRequisition } from "../../requisitions/hooks/travel/useC
 import { QUERY_KEY_FOR_TRAVEL_REQUESTS } from "../../requisitions/hooks/travel/useGetTravelRequisitions";
 import moment, { Moment } from "moment";
 import { QUERY_KEY_FOR_TRAVEL_REQUISITIONS_FOR_AUTH_EMPLOYEE } from "../../requisitions/hooks/travel/useGetTravelRequisitions4AuthEmployee";
+import { FormUnlicensedEmployeeSSRequestInput } from "features/core/employees/components/FormEmployeeInput";
 
 export const NewTravelRequest: React.FC<IModalProps> = ({
   open,
@@ -37,6 +38,8 @@ export const NewTravelRequest: React.FC<IModalProps> = ({
   const handleSubmit = (data: any) => {
     mutate(
       {
+        employeeId: data?.employeeId,
+
         arrivalDate: (data.arrivalDate as Moment).toString(),
         cost: data.cost,
         duration: +moment
@@ -99,6 +102,13 @@ export const NewTravelRequest: React.FC<IModalProps> = ({
         onFinish={handleSubmit}
         requiredMark={false}
       >
+        <FormUnlicensedEmployeeSSRequestInput
+          Form={Form}
+          control={{
+            name: "employeeId",
+            label: "Select Unlinsenced Employee",
+          }}
+        />
         <Form.Item
           rules={[dateHasToBeGreaterThanOrEqualToCurrentDayRule]}
           name="arrivalDate"
