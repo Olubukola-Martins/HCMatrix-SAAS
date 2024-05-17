@@ -99,6 +99,26 @@ export const textInputValidationRulesOp: Rule[] = [
     whitespace: true,
   },
 ];
+export const fullNameHasToHaveFirstAndLastName: Rule = {
+  validator: async (val, value: string) => {
+    if (typeof value !== "string") {
+      throw new Error("Please enter a valid string!");
+    }
+    // check if the first and last name exist
+    const fullName = value.split(" ");
+    if (fullName.length < 2) {
+      throw new Error("Please enter a first and last name!");
+    }
+    if (fullName?.[0]?.trim() === "") {
+      throw new Error("Please enter a non empty first name!");
+    }
+    if (fullName?.[1]?.trim() === "") {
+      throw new Error("Please enter a non empty last name!");
+    }
+
+    return true;
+  },
+};
 export const numberHasToBeAWholeNumberRule: Rule = {
   validator: async (val, _value: any) => {
     const value = +_value;
