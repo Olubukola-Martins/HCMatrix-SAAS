@@ -21,14 +21,10 @@ const PayrollReviewTable: React.FC<IProps> = ({ handleAction }) => {
   const extraColumnsToDisplay: ColumnsType<TPayrollListData> =
     data?.componentHeadersToDisplay
       ? data?.componentHeadersToDisplay?.map((name) => ({
-          title: name,
+          title: <span className="capitalize">{name}</span>,
           dataIndex: name,
           key: name,
-          render: (_, item) => (
-            <span className="capitalize">
-              {item.componentsToDisplay?.[name]}
-            </span>
-          ),
+          render: (_, item) => item.componentsToDisplay?.[name],
         }))
       : [];
   return (
