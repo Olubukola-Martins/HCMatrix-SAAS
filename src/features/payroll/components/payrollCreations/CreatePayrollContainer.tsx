@@ -44,6 +44,7 @@ import { FormPayrollProjectSchemeInput } from "../payrollSchemes/FormPayrollProj
 import SinglePayrollReview from "../payrollReviews/SinglePayrollReview";
 import { RunPayroll } from "./RunPayroll";
 import { PermissionRestrictor } from "components/permission-restriction/PermissionRestrictor";
+import { QUERY_KEY_FOR_EMPLOYEES_IN_PAYROLL } from "features/payroll/hooks/payroll/employee/useGetEmployeesInPayroll";
 
 const boxStyle =
   "bg-mainBg flex justify-between items-start md:items-center px-6 py-5 rounded lg:flex-row flex-col gap-y-5";
@@ -581,6 +582,10 @@ const CreatePayrollContainer: React.FC<{
 
             queryClient.invalidateQueries({
               queryKey: [QUERY_KEY_FOR_SINGLE_PAYROLL],
+              // exact: true,
+            });
+            queryClient.invalidateQueries({
+              queryKey: [QUERY_KEY_FOR_EMPLOYEES_IN_PAYROLL],
               // exact: true,
             });
           },
