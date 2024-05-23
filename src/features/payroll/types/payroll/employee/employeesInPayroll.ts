@@ -2,6 +2,8 @@ import { TEmploymentEligibity } from "types/employementEligibilities";
 
 export interface TEmployeesInPayrollData {
   id: number;
+  componentsToDisplay?: Record<string, number> | null;
+
   payrollId: number;
   employeeId: number;
   empUid: string;
