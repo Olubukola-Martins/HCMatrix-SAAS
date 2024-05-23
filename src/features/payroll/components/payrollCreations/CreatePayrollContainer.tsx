@@ -260,7 +260,7 @@ export const CreatePayrollInitialForm: React.FC<IFormProps> = ({
               const employeeWithErrorIds: string[] =
                 err.response?.data?.error?.error;
               if (employeeWithErrorIds?.length > 0) {
-                primaryMessage = `${primaryMessage}. The employees' with the following employee ids have this issue: ${employeeWithErrorIds.join(
+                primaryMessage = `${primaryMessage}. The employees' with the following employee ids have this issue :  ${employeeWithErrorIds.join(
                   ","
                 )}.`;
               }
@@ -278,7 +278,7 @@ export const CreatePayrollInitialForm: React.FC<IFormProps> = ({
               state: "success",
 
               title: "Success",
-              description: res.data.message,
+              description: res.message,
               // duration: 0.4,
             });
             form.resetFields();
@@ -292,7 +292,7 @@ export const CreatePayrollInitialForm: React.FC<IFormProps> = ({
               frequency: type === "project" ? data.frequency : payrollFrequency,
 
               costCentre: costCentre,
-              payrollId: res.data.data.id,
+              payrollId: res.data.id,
             });
             handleClose();
           },
