@@ -104,7 +104,7 @@ const PayrollComparer: React.FC<{ payrolls: TPayrollListData[] }> = ({
     "Employee Count": [
       payrolls?.reduce(
         (values: Record<string, string | number>, item, i) => {
-          values[`payroll${i + 1}`] = item.employeePayrolls.length;
+          values[`payroll${i + 1}`] = item.employeePayrolls?.length ?? 0;
           return values;
         },
         { name: "Employee Count" }
@@ -237,7 +237,7 @@ const GraphComparison: React.FC<TCompareProps> = ({
         dataSets={[
           ...payrolls.map((payroll) => ({
             data: [
-              payroll.employeePayrolls.length,
+              payroll.employeePayrolls?.length ?? 0,
               payroll.totalNetPay,
               payroll.totalNetPay,
               payroll.totalGrossPay,

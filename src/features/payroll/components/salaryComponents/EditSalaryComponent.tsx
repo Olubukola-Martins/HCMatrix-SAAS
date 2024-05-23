@@ -1,4 +1,4 @@
-import { Form, Input, InputNumber, Modal, Select, Tag } from "antd";
+import { Checkbox, Form, Input, InputNumber, Modal, Select, Tag } from "antd";
 import { AppButton } from "components/button/AppButton";
 import { useUpdateAllowanceOrDeduction } from "features/payroll/hooks/scheme/allowanceAndDeductionHandlers/useUpdateAllowanceOrDeduction";
 import { QUERY_KEY_FOR_PAYROLL_SCHEME_BY_TYPE_OR_ID } from "features/payroll/hooks/scheme/useGetPayrollSchemeByTypeOrId";
@@ -120,6 +120,7 @@ export const EditSalaryComponentForm: React.FC<IFormProps> = ({
           isActive,
           amount: vals.amount,
           label: (vals.name as string).toLocaleLowerCase().split(" ").join("_"),
+          shouldDisplayOnReviewTable: vals?.shouldDisplayOnReviewTable,
         },
       },
       {
@@ -233,6 +234,9 @@ export const EditSalaryComponentForm: React.FC<IFormProps> = ({
           </Form.Item>
         </>
       )}
+      <Form.Item name="shouldDisplayOnReviewTable" label="">
+        <Checkbox>Should be displayed on review table</Checkbox>
+      </Form.Item>
 
       <div className="flex justify-end">
         <AppButton label="Save" type="submit" isLoading={isLoading} />

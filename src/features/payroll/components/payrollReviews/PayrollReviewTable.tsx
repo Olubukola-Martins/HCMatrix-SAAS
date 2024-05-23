@@ -5,21 +5,35 @@ import { usePagination } from "hooks/usePagination";
 
 import { useFetchApprovalRequests } from "features/core/workflows/hooks/useFetchApprovalRequests";
 import { TPayrollListData } from "features/payroll/types/payroll";
+import { PAYROLL_REVIEW_TABLE_COLUMNS } from "./columns";
+import { TPayrollReviewAction } from "./PayrollReviewContainer";
 
 interface IProps {
-  columns?: ColumnsType<TPayrollListData>;
+  handleAction: (key: TPayrollReviewAction, item?: TPayrollListData) => void;
 }
-const PayrollReviewTable: React.FC<IProps> = ({ columns }) => {
+const PayrollReviewTable: React.FC<IProps> = ({ handleAction }) => {
   const { pagination, onChange } = usePagination();
   const { data, isFetching } = useFetchApprovalRequests({
     pagination,
     type: "payroll",
   });
 
+  const extraColumnsToDisplay: ColumnsType<TPayrollListData> =
+    data?.componentHeadersToDisplay
+      ? data?.componentHeadersToDisplay?.map((name) => ({
+          title: name,
+          dataIndex: name,
+          key: name,
+          render: (_, item) => item.componentsToDisplay?.[name],
+        }))
+      : [];
   return (
     <>
       <TableWithFocusType
-        columns={columns}
+        columns={PAYROLL_REVIEW_TABLE_COLUMNS(
+          handleAction,
+          extraColumnsToDisplay
+        )}
         size="small"
         dataSource={data?.data
           .filter((item) => !!item.payroll)

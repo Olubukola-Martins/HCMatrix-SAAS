@@ -44,7 +44,9 @@ interface TPayrollListData {
   updatedAt: string;
   disbursementDate?: string;
   scheme: Scheme;
-  employeePayrolls: EmployeePayroll[];
+  componentsToDisplay?: Record<string, number> | null;
+
+  employeePayrolls?: EmployeePayroll[];
 }
 
 interface EmployeePayroll {

@@ -1,4 +1,4 @@
-import { Form, Input, InputNumber, Modal, Select, Tag } from "antd";
+import { Checkbox, Form, Input, InputNumber, Modal, Select, Tag } from "antd";
 import { AppButton } from "components/button/AppButton";
 import { useAddAllowanceOrDeduction } from "features/payroll/hooks/scheme/allowanceAndDeductionHandlers/useAddAllowanceOrDeduction";
 import { QUERY_KEY_FOR_PAYROLL_SCHEME_BY_TYPE_OR_ID } from "features/payroll/hooks/scheme/useGetPayrollSchemeByTypeOrId";
@@ -155,6 +155,7 @@ export const AddSalaryComponentForm: React.FC<IFormProps> = ({
                 .toLocaleLowerCase()
                 .split(" ")
                 .join("_"),
+              shouldDisplayOnReviewTable: vals?.shouldDisplayOnReviewTable,
             },
           },
           {
@@ -223,6 +224,7 @@ export const AddSalaryComponentForm: React.FC<IFormProps> = ({
         isActive,
         description: componentDescription,
         label: (vals.name as string).toLocaleLowerCase().split(" ").join("_"),
+        shouldDisplayOnReviewTable: vals?.shouldDisplayOnReviewTable,
       });
 
       return;
@@ -242,6 +244,7 @@ export const AddSalaryComponentForm: React.FC<IFormProps> = ({
               .toLocaleLowerCase()
               .split(" ")
               .join("_"),
+            shouldDisplayOnReviewTable: vals?.shouldDisplayOnReviewTable,
           },
         },
         {
@@ -318,6 +321,7 @@ export const AddSalaryComponentForm: React.FC<IFormProps> = ({
         name: salaryComponent.name?.split("_").join(" "),
         amount: salaryComponent.amount,
         mode: salaryComponent.mode,
+        shouldDisplayOnReviewTable: salaryComponent.shouldDisplayOnReviewTable,
       });
       if (salaryComponent.description) {
         console.log(
@@ -468,6 +472,13 @@ export const AddSalaryComponentForm: React.FC<IFormProps> = ({
           />
         </>
       )}
+      <Form.Item
+        name="shouldDisplayOnReviewTable"
+        label=""
+        valuePropName="checked"
+      >
+        <Checkbox>Should be displayed on review table</Checkbox>
+      </Form.Item>
 
       <div className="flex justify-end">
         <AppButton

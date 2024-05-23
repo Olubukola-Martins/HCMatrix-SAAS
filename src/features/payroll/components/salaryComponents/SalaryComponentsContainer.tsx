@@ -44,20 +44,20 @@ export const SalaryComponentsContainer: React.FC<IProps> = ({
   const ogColumns: ColumnsType<TSalaryComponent> = [
     {
       title: "Name",
-      dataIndex: "uid",
-      key: "uid",
+      dataIndex: "Name",
+      key: "Name",
       render: (_, item) => <span className="capitalize">{item.name}</span>,
     },
     {
       title: "Identifier",
-      dataIndex: "id",
-      key: "id",
+      dataIndex: "Identifier",
+      key: "Identifier",
       render: (_, item) => item.name.trim().split(" ").join("_"),
     },
     {
       title: "Calculation Type",
-      dataIndex: "asty",
-      key: "asty",
+      dataIndex: "Calculation Type",
+      key: "Calculation Type",
       render: (_, item) => <span className="capitalize">{item.mode}</span>,
 
       // ellipsis: true,
@@ -66,10 +66,21 @@ export const SalaryComponentsContainer: React.FC<IProps> = ({
     },
     {
       title: "Amount",
-      dataIndex: "State",
-      key: "State",
+      dataIndex: "Amount",
+      key: "Amount",
       ellipsis: true,
       render: (_, item) => <span className="">{item.amount}</span>,
+    },
+    {
+      title: "Display on Review Table",
+      dataIndex: "Display on Review Table",
+      key: "Display on Review Table",
+      ellipsis: true,
+      render: (_, item) => (
+        <span className="">
+          {item.shouldDisplayOnReviewTable ? "Yes" : "No"}
+        </span>
+      ),
     },
     {
       title: "Action",
