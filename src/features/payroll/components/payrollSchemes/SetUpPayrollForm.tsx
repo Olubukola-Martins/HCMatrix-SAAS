@@ -247,12 +247,13 @@ function reducer(
     case "displayEmployerPensionContribution":
       return {
         ...state,
-        displayNIF: !state.displayEmployerPensionContribution,
+        displayEmployerPensionContribution:
+          !state.displayEmployerPensionContribution,
       };
     case "displayBonus":
       return {
         ...state,
-        displayNIF: !state.displayBonus,
+        displayBonus: !state.displayBonus,
       };
     case "handleProjectParticipants":
       return {

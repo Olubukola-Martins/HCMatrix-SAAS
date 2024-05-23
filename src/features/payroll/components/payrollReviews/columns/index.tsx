@@ -61,14 +61,6 @@ export const PAYROLL_REVIEW_TABLE_COLUMNS = (
       ),
     },
     {
-      title: "Tax",
-      dataIndex: "tax",
-      key: "tax",
-      render: (_, item) => (
-        <span>{formatNumberWithCommas(item.totalTax)} </span>
-      ),
-    },
-    {
       title: "Gross Pay",
       dataIndex: "grossPay",
       key: "grossPay",
