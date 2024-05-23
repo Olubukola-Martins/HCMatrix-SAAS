@@ -24,7 +24,11 @@ const PayrollReviewTable: React.FC<IProps> = ({ handleAction }) => {
           title: name,
           dataIndex: name,
           key: name,
-          render: (_, item) => item.componentsToDisplay?.[name],
+          render: (_, item) => (
+            <span className="capitalize">
+              {item.componentsToDisplay?.[name]}
+            </span>
+          ),
         }))
       : [];
   return (
