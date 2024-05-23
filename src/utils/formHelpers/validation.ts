@@ -219,8 +219,11 @@ export const numberHasToBeGreaterThanValueRule = (_value: number): Rule => ({
   },
 });
 export const numberHasToBeGreaterThanZeroRule: Rule = {
-  validator: async (_: any, value: any) => {
-    if (typeof value !== "number") {
+  validator: async (_: any, value: string | number) => {
+    const isValidNumber =
+      !isNaN(parseFloat(value.toString())) && isFinite(+value);
+
+    if (!isValidNumber) {
       throw new Error("Please enter a valid number!");
     }
     if (+value <= 0) {

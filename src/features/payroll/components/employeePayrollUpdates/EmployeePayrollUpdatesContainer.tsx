@@ -1,8 +1,7 @@
-import { Dropdown, Menu, Select } from "antd";
+import { Select } from "antd";
 import { ColumnsType } from "antd/lib/table";
 import { AppButton } from "components/button/AppButton";
 import { usePagination } from "hooks/usePagination";
-import { MoreOutlined } from "@ant-design/icons";
 import React, { useState } from "react";
 import { AddSalaryComponent } from "../salaryComponents/AddSalaryComponent";
 import { TEmployeesInPayrollData } from "features/payroll/types";
