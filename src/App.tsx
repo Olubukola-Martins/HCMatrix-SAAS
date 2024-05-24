@@ -35,7 +35,11 @@ function App() {
   // check online status
   const { isOnline } = useNetworkState();
   return (
-    <ErrorBoundary message="Please contact administrator!">
+    <ErrorBoundary
+      // message="Please contact administrator!"
+      message="Server is down. Please contact server administrators for help!"
+      errImageOrIcon={<PageNotFoundIcon />}
+    >
       <ErrorWrapper
         isError={!isOnline}
         errImage={<PageNotFoundIcon />}

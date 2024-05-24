@@ -9,8 +9,12 @@ import {
   useGetUserPermissions,
 } from "components/permission-restriction/PermissionRestrictor";
 import ViewApprovalStages from "features/core/workflows/components/approval-request/ViewApprovalStages";
+import { ComparePayroll } from "../payrollComparism/ComparePayroll";
 
-export type TPayrollReviewAction = "view-approval-stages";
+export type TPayrollReviewAction =
+  | "view-approval-stages"
+  | "comapare-payroll-basic"
+  | "compare-payroll-advanced";
 
 export const PayrollReviewContainer = () => {
   const navigate = useNavigate();
@@ -35,8 +39,20 @@ export const PayrollReviewContainer = () => {
           type="payroll"
         />
       )}
+      {request && (
+        <ComparePayroll
+          handleClose={onClose}
+          open={
+            action !== undefined &&
+            ["comapare-payroll-basic", "compare-payroll-advanced"].includes(
+              action
+            )
+          }
+          payrollId={request?.id}
+          type={action === "comapare-payroll-basic" ? "basic" : "advanced"}
+        />
+      )}
       <div className="flex flex-col gap-6">
-        {/* <NewTransfer open={showM} handleClose={() => setShowM(false)} /> */}
         <PageSubHeader
           hideBackground
           description={`You can now review and approve/reject payrolls`}

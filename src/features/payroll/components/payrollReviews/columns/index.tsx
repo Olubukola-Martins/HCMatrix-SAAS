@@ -110,6 +110,25 @@ export const PAYROLL_REVIEW_TABLE_COLUMNS = (
         <Dropdown
           overlay={
             <Menu>
+              <Menu.SubMenu key="comparison" title="Compare">
+                <Menu.Item
+                  key="comparison-basic"
+                  onClick={() => {
+                    handleAction("comapare-payroll-basic", item);
+                  }}
+                >
+                  Basic
+                </Menu.Item>
+                <Menu.Item
+                  key="comparison-advanced"
+                  onClick={() => {
+                    handleAction("compare-payroll-advanced", item);
+                  }}
+                >
+                  Advanced
+                </Menu.Item>
+              </Menu.SubMenu>
+
               <Menu.Item
                 key="stages"
                 onClick={() => {
