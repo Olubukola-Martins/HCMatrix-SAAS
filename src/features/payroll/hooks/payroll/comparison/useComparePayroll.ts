@@ -3,6 +3,7 @@ import { MICROSERVICE_ENDPOINTS } from "config/enviroment";
 import { useQuery } from "react-query";
 import { ICurrentCompany } from "types";
 import { useApiAuth } from "hooks/useApiAuth";
+import { TPayrollListData } from "features/payroll/types/payroll";
 
 export type TPayrollComaparisonType = "basic" | "advanced";
 interface IGetDataProps {
@@ -62,53 +63,8 @@ export const useComparePayroll = (props: { data: IGetDataProps }) => {
   return queryData;
 };
 
-interface PayrollComparisonData {
+export interface PayrollComparisonData {
   componentHeadersToDisplay: string[];
-  selectedPayroll: PayrollData;
-  againstPayroll: PayrollData;
+  selectedPayroll: TPayrollListData;
+  againstPayroll: TPayrollListData;
 }
-
-interface PayrollData {
-  componentsToDisplay: ComponentsToDisplay;
-  totalAllowances: number;
-  totalDeductions: number;
-  totalNetPay: number;
-  totalGrossPay: number;
-  totalTax: number;
-  totalPension: number;
-  id: number;
-  schemeId: number;
-  name: string;
-  date: string;
-  disbursementDate: null;
-  description: string;
-  frequency: string;
-  status: string;
-  costCentreId: number;
-  employeeId: number;
-  companyId: number;
-  createdAt: string;
-  updatedAt: string;
-  employeePayrolls: EmployeePayroll[];
-}
-
-interface EmployeePayroll {
-  componentsToDisplay: ComponentsToDisplay;
-  id: number;
-  payrollId: number;
-  employeeId: number;
-  empUid: string;
-  eligibility: string;
-  fullName: string;
-  netPay: string;
-  grossPay: string;
-  totalAllowances: string;
-  totalDeductions: string;
-  tax: string;
-  pension: string;
-  currency: string;
-  exchangeRate: string;
-  isActive: boolean;
-}
-
-type ComponentsToDisplay = Record<string, number>;

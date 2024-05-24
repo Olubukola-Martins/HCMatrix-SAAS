@@ -13,7 +13,7 @@ import { AiOutlineMore } from "react-icons/ai";
 
 export const PAYROLL_REVIEW_TABLE_COLUMNS = (
   handleAction: (key: TPayrollReviewAction, item?: TPayrollListData) => void,
-  extraColumns: ColumnsType<TPayrollListData>
+  extraColumns?: ColumnsType<TPayrollListData>
 ): ColumnsType<TPayrollListData> => {
   return [
     {
@@ -68,7 +68,7 @@ export const PAYROLL_REVIEW_TABLE_COLUMNS = (
         <span>{formatNumberWithCommas(item.totalGrossPay)} </span>
       ),
     },
-    ...extraColumns,
+    ...(extraColumns ?? []),
     {
       title: "Net Pay",
       dataIndex: "Net Pay",

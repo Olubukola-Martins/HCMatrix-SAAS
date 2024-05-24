@@ -43,7 +43,7 @@ export const ComparePayroll: React.FC<TProps> = ({
         navigate(
           `${
             appRoutes.payrollComparison
-          }?id=${payrollId}&type=${type}/&selected=${period.selected.year.format(
+          }?payrollId=${payrollId}&type=${type}/&selected=${period.selected.year.format(
             "YYYY"
           )}-${period.selected.month.format(
             "MM"

@@ -46,29 +46,7 @@ interface TPayrollListData {
   scheme: Scheme;
   componentsToDisplay?: Record<string, number> | null;
 
-  employeePayrolls?: EmployeePayroll[];
-}
-
-interface EmployeePayroll {
-  id: number;
-  payrollId: number;
-  employeeId: number;
-  empUid: string;
-  eligibility: string;
-  fullName: string;
-  netPay: string;
-  grossPay: string;
-  totalAllowances: string;
-  totalDeductions: string;
-  tax: string;
-  currency: string;
-  rate: string;
-  hourlyRate?: any;
-  hoursCompleted: number;
-  isActive: boolean;
-  companyId: number;
-  createdAt: string;
-  updatedAt: string;
+  employeePayrolls?: TEmployeesInPayrollData[];
 }
 
 interface Scheme {
