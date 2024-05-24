@@ -10,6 +10,7 @@ import { getAppropriateColorForStatus } from "utils/colorHelpers/getAppropriateC
 import { formatNumberWithCommas } from "utils/dataHelpers/formatNumberWithCommas";
 import { TPayrollReviewAction } from "../PayrollReviewContainer";
 import { AiOutlineMore } from "react-icons/ai";
+import { PermissionRestrictor } from "components/permission-restriction/PermissionRestrictor";
 
 export const PAYROLL_REVIEW_TABLE_COLUMNS = (
   handleAction: (key: TPayrollReviewAction, item?: TPayrollListData) => void,
@@ -33,6 +34,14 @@ export const PAYROLL_REVIEW_TABLE_COLUMNS = (
         >
           <span>{item.name} </span>
         </Link>
+      ),
+    },
+    {
+      title: "Date",
+      dataIndex: "Date",
+      key: "Date",
+      render: (_, item) => (
+        <span>{moment(item.date).format("YYYY-MM-DD")} </span>
       ),
     },
     {
@@ -110,24 +119,25 @@ export const PAYROLL_REVIEW_TABLE_COLUMNS = (
         <Dropdown
           overlay={
             <Menu>
-              <Menu.SubMenu key="comparison" title="Compare">
+              <PermissionRestrictor requiredPermissions={["compare-payrolls"]}>
                 <Menu.Item
                   key="comparison-basic"
                   onClick={() => {
                     handleAction("comapare-payroll-basic", item);
                   }}
                 >
-                  Basic
+                  Basic Comparison
                 </Menu.Item>
+
                 <Menu.Item
                   key="comparison-advanced"
                   onClick={() => {
                     handleAction("compare-payroll-advanced", item);
                   }}
                 >
-                  Advanced
+                  Advanced Comparison
                 </Menu.Item>
-              </Menu.SubMenu>
+              </PermissionRestrictor>
 
               <Menu.Item
                 key="stages"

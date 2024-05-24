@@ -2,12 +2,15 @@ import { Form, Input, Modal, Typography, DatePicker } from "antd";
 import { AppButton } from "components/button/AppButton";
 import { appRoutes } from "config/router/paths";
 import { TPayrollComaparisonType } from "features/payroll/hooks/payroll/comparison/useComparePayroll";
+import moment from "moment";
+import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { IModalProps } from "types";
 
 type TProps = IModalProps & {
   payrollId: number;
   type: TPayrollComaparisonType;
+  payrollDate: string;
 };
 
 const CONTENT_MAPPING: Record<
@@ -32,9 +35,20 @@ export const ComparePayroll: React.FC<TProps> = ({
   handleClose,
   payrollId,
   type,
+  payrollDate,
 }) => {
   const [form] = Form.useForm();
   const navigate = useNavigate();
+  useEffect(() => {
+    form.setFieldsValue({
+      period: {
+        selected: {
+          month: moment(payrollDate),
+          year: moment(payrollDate),
+        },
+      },
+    });
+  }, [payrollDate, form]);
   const handleSubmit = (data: any) => {
     console.log(data, "compare data ...");
     const period = data.period;
@@ -43,7 +57,7 @@ export const ComparePayroll: React.FC<TProps> = ({
         navigate(
           `${
             appRoutes.payrollComparison
-          }?payrollId=${payrollId}&type=${type}/&selected=${period.selected.year.format(
+          }?payrollId=${payrollId}&type=${type}&selected=${period.selected.year.format(
             "YYYY"
           )}-${period.selected.month.format(
             "MM"

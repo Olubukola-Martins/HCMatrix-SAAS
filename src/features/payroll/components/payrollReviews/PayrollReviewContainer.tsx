@@ -2,12 +2,6 @@ import PageSubHeader from "components/layout/PageSubHeader";
 import { useState } from "react";
 import PayrollReviewTable from "./PayrollReviewTable";
 import { TPayrollListData } from "features/payroll/types/payroll";
-import { useNavigate } from "react-router-dom";
-import { appRoutes } from "config/router/paths";
-import {
-  canUserAccessComponent,
-  useGetUserPermissions,
-} from "components/permission-restriction/PermissionRestrictor";
 import ViewApprovalStages from "features/core/workflows/components/approval-request/ViewApprovalStages";
 import { ComparePayroll } from "../payrollComparism/ComparePayroll";
 
@@ -17,8 +11,6 @@ export type TPayrollReviewAction =
   | "compare-payroll-advanced";
 
 export const PayrollReviewContainer = () => {
-  const navigate = useNavigate();
-  const { userPermissions } = useGetUserPermissions();
   const [request, setRequest] = useState<TPayrollListData>();
   const [action, setAction] = useState<TPayrollReviewAction>();
   const handleAction = (key: TPayrollReviewAction, item?: TPayrollListData) => {
@@ -49,6 +41,7 @@ export const PayrollReviewContainer = () => {
             )
           }
           payrollId={request?.id}
+          payrollDate={request.date}
           type={action === "comapare-payroll-basic" ? "basic" : "advanced"}
         />
       )}
@@ -56,17 +49,6 @@ export const PayrollReviewContainer = () => {
         <PageSubHeader
           hideBackground
           description={`You can now review and approve/reject payrolls`}
-          actions={[
-            {
-              name: "Compare",
-              handleClick: () => navigate(appRoutes.payrollComparison),
-              btnVariant: "transparent",
-              hidden: !canUserAccessComponent({
-                userPermissions,
-                requiredPermissions: ["compare-payrolls"],
-              }),
-            },
-          ]}
         />
 
         <PayrollReviewTable handleAction={handleAction} />

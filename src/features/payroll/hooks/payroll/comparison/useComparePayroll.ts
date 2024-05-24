@@ -4,6 +4,7 @@ import { useQuery } from "react-query";
 import { ICurrentCompany } from "types";
 import { useApiAuth } from "hooks/useApiAuth";
 import { TPayrollListData } from "features/payroll/types/payroll";
+import { openNotification } from "utils/notifications";
 
 export type TPayrollComaparisonType = "basic" | "advanced";
 interface IGetDataProps {
@@ -55,8 +56,14 @@ export const useComparePayroll = (props: { data: IGetDataProps }) => {
         },
       }),
     {
-      onError: (err: any) => {},
-      onSuccess: (data) => {},
+      onError: (err: any) => {
+        openNotification({
+          state: "error",
+          title: "Error Occurred",
+          description:
+            err?.response.data.message ?? err?.response.data.error.message,
+        });
+      },
     }
   );
 

@@ -1,11 +1,9 @@
 import React, { useState } from "react";
 import PayrollSubNav from "../components/PayrollSubNav";
-
 import { PageIntro } from "components/layout/PageIntro";
 import { appRoutes } from "config/router/paths";
-
 import { Select } from "antd";
-import { useParams } from "react-router-dom";
+import { useSearchParams } from "react-router-dom";
 import {
   PayrollComparisonPerSelection,
   PayrollComparisonPerEmployee,
@@ -22,7 +20,11 @@ const PayrollComparison: React.FC = () => {
   const [view, setView] =
     useState<(typeof PAYROLL_COMPARISON_VIEWS)[number]>("View per Employee");
   // get the selected, against, type, payrollId from query params
-  const { selected = "", against = "", type = "", payrollId = 0 } = useParams();
+  const [searchParams] = useSearchParams();
+  const selected = searchParams.get("selected") ?? "";
+  const against = searchParams.get("against") ?? "";
+  const type = searchParams.get("type") ?? "";
+  const payrollId = searchParams.get("payrollId") ?? "";
   return (
     <>
       <PayrollSubNav />
@@ -46,20 +48,20 @@ const PayrollComparison: React.FC = () => {
         {view === "View per Employee" && (
           <PayrollComparisonPerEmployee
             {...{
-              selected,
-              against,
+              selected: selected as string,
+              against: against as string,
               type: type as TPayrollComaparisonType,
-              payrollId: payrollId as number,
+              payrollId: payrollId as unknown as number,
             }}
           />
         )}
         {view === "View per Total" && (
           <PayrollComparisonPerTotal
             {...{
-              selected,
-              against,
+              selected: selected as string,
+              against: against as string,
               type: type as TPayrollComaparisonType,
-              payrollId: payrollId as number,
+              payrollId: payrollId as unknown as number,
             }}
           />
         )}
