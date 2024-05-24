@@ -37,7 +37,7 @@ const getData = async (props: {
   };
 
   const res = await axios.get(url, config);
-  const fetchedData: PayrollComparisonData | null = res.data;
+  const fetchedData: PayrollComparisonData | null = res.data.data;
 
   return fetchedData;
 };
