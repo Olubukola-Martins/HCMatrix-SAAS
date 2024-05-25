@@ -71,7 +71,7 @@ export const AttrCompsToDisplayText: React.FC<{
       {!Number.isNaN(difference) && difference !== 0 ? (
         <span
           className={`${
-            difference > 0 ? "text-green-500" : "text-red-500"
+            difference > 0 ? "text-red-500" : "text-green-500"
           } text-xs`}
         >
           ({difference})
