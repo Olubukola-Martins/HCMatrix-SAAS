@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import PayrollSubNav from "../components/PayrollSubNav";
 import { PageIntro } from "components/layout/PageIntro";
 import { appRoutes } from "config/router/paths";
-import { Select } from "antd";
+import { Button, Select } from "antd";
 import { useSearchParams } from "react-router-dom";
 import {
   PayrollComparisonPerSelection,
@@ -10,6 +10,7 @@ import {
   PayrollComparisonPerTotal,
 } from "../components/payrollComparism/perViews";
 import { TPayrollComaparisonType } from "../hooks/payroll/comparison/useComparePayroll";
+import { TbFileExport } from "react-icons/tb";
 
 const PAYROLL_COMPARISON_VIEWS = [
   "View per Employee",
@@ -34,14 +35,17 @@ const PayrollComparison: React.FC = () => {
           className={`flex flex-col mt-5 gap-2 md:flex-row md:justify-between md:items-center  p-2 rounded text-sm `}
         >
           <span>{`Compare two different payroll data`}</span>
-          <Select
-            value={view}
-            onSelect={setView}
-            options={PAYROLL_COMPARISON_VIEWS.map((item) => ({
-              label: item,
-              value: item,
-            }))}
-          />
+          <div className="flex items-center gap-x-4">
+            <Button icon={<TbFileExport className="text-2xl" />} type="text" />
+            <Select
+              value={view}
+              onSelect={setView}
+              options={PAYROLL_COMPARISON_VIEWS.map((item) => ({
+                label: item,
+                value: item,
+              }))}
+            />
+          </div>
         </div>
 
         {view === "View per Selection" && <PayrollComparisonPerSelection />}
