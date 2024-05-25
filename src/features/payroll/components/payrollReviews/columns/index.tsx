@@ -128,7 +128,7 @@ export const PAYROLL_REVIEW_TABLE_COLUMNS = (
                 >
                   Basic Comparison
                 </Menu.Item>
-
+                {/* 
                 <Menu.Item
                   key="comparison-advanced"
                   onClick={() => {
@@ -136,7 +136,7 @@ export const PAYROLL_REVIEW_TABLE_COLUMNS = (
                   }}
                 >
                   Advanced Comparison
-                </Menu.Item>
+                </Menu.Item> */}
               </PermissionRestrictor>
 
               <Menu.Item
