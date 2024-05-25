@@ -4,9 +4,9 @@ import { TEmployeesInPayrollData } from "features/payroll/types";
 type TColData = ColumnsType<TEmployeesInPayrollData>;
 const getEmployee = (
   employeesData: TEmployeesInPayrollData[],
-  employeeId: number
+  empuid: string
 ): TEmployeesInPayrollData | undefined =>
-  employeesData.find((employee) => employee.id === employeeId);
+  employeesData.find((employee) => employee.empUid === empuid);
 const compareEmployeeNumericCompsToDisplayValues = (
   againstEmployeesData: TEmployeesInPayrollData[],
   selectedEmployee: TEmployeesInPayrollData,
@@ -15,7 +15,7 @@ const compareEmployeeNumericCompsToDisplayValues = (
 ): number => {
   const againstEmployee = getEmployee(
     againstEmployeesData,
-    selectedEmployee.id
+    selectedEmployee.empUid
   );
   let value = 0;
   if (againstEmployee === undefined) {
@@ -35,7 +35,7 @@ const compareEmployeeNumericValues = (
 ): number => {
   const againstEmployee = getEmployee(
     againstEmployeesData,
-    selectedEmployee.id
+    selectedEmployee.empUid
   );
   let value = 0;
   if (againstEmployee === undefined) {
@@ -58,18 +58,22 @@ export const AttrCompsToDisplayText: React.FC<{
   againstEmployeesData?: TEmployeesInPayrollData[];
   selectedEmployee: TEmployeesInPayrollData;
 
-  key: keyof TEmployeesInPayrollData["componentsToDisplay"] | string;
-}> = ({ againstEmployeesData = [], key, selectedEmployee }) => {
+  _key: keyof TEmployeesInPayrollData["componentsToDisplay"] | string;
+}> = ({ againstEmployeesData = [], _key, selectedEmployee }) => {
   const difference = compareEmployeeNumericCompsToDisplayValues(
     againstEmployeesData,
     selectedEmployee,
-    key
+    _key
   );
   return (
     <span>
-      {selectedEmployee["componentsToDisplay"]?.[key]}{" "}
-      {difference === 0 ? (
-        <span className={difference > 0 ? "text-green-500" : "text-red-500"}>
+      {selectedEmployee["componentsToDisplay"]?.[_key].toString()}{" "}
+      {!Number.isNaN(difference) && difference !== 0 ? (
+        <span
+          className={`${
+            difference > 0 ? "text-green-500" : "text-red-500"
+          } text-xs`}
+        >
           ({difference})
         </span>
       ) : null}
@@ -80,20 +84,23 @@ const AttrText: React.FC<{
   againstEmployeesData: TEmployeesInPayrollData[];
   selectedEmployee: TEmployeesInPayrollData;
 
-  key: keyof TEmployeesInPayrollData;
-}> = ({ againstEmployeesData, key, selectedEmployee }) => {
+  _key: keyof TEmployeesInPayrollData;
+}> = ({ againstEmployeesData, _key, selectedEmployee }) => {
   const difference = compareEmployeeNumericValues(
     againstEmployeesData,
     selectedEmployee,
-    key
+    _key
   );
+
   return (
     <span>
-      {["string", "number"].includes(
-        typeof selectedEmployee[key] ? (selectedEmployee[key] as string) : ""
-      )}{" "}
-      {difference === 0 ? (
-        <span className={difference > 0 ? "text-green-500" : "text-red-500"}>
+      {selectedEmployee?.[_key]?.toString()}{" "}
+      {!Number.isNaN(difference) && difference !== 0 ? (
+        <span
+          className={`${
+            difference > 0 ? "text-green-500" : "text-red-500"
+          } text-xs`}
+        >
           ({difference})
         </span>
       ) : null}
@@ -123,7 +130,7 @@ export const PAYROLL_COMPARISON_PER_EMPLOYEE_TABLE_COLUMNS = ({
         <AttrText
           {...{
             againstEmployeesData: againstEmployeesPayrollData,
-            key: "netPay",
+            _key: "netPay",
             selectedEmployee: item,
           }}
         />
@@ -137,7 +144,7 @@ export const PAYROLL_COMPARISON_PER_EMPLOYEE_TABLE_COLUMNS = ({
         <AttrText
           {...{
             againstEmployeesData: againstEmployeesPayrollData,
-            key: "grossPay",
+            _key: "grossPay",
             selectedEmployee: item,
           }}
         />
@@ -145,13 +152,13 @@ export const PAYROLL_COMPARISON_PER_EMPLOYEE_TABLE_COLUMNS = ({
     },
     {
       title: "Total Deductions",
-      dataIndex: "Gross Pay",
-      key: "Gross Pay",
+      dataIndex: "Total Deductions",
+      key: "Total Deductions",
       render: (_, item) => (
         <AttrText
           {...{
             againstEmployeesData: againstEmployeesPayrollData,
-            key: "totalDeductions",
+            _key: "totalDeductions",
             selectedEmployee: item,
           }}
         />
@@ -165,7 +172,7 @@ export const PAYROLL_COMPARISON_PER_EMPLOYEE_TABLE_COLUMNS = ({
         <AttrText
           {...{
             againstEmployeesData: againstEmployeesPayrollData,
-            key: "totalAllowances",
+            _key: "totalAllowances",
             selectedEmployee: item,
           }}
         />
@@ -180,7 +187,7 @@ export const PAYROLL_COMPARISON_PER_EMPLOYEE_TABLE_COLUMNS = ({
         <AttrText
           {...{
             againstEmployeesData: againstEmployeesPayrollData,
-            key: "currency",
+            _key: "currency",
             selectedEmployee: item,
           }}
         />

@@ -31,7 +31,7 @@ const PayrollComparisonPerEmployee: React.FC<IProps> = (props) => {
             <AttrCompsToDisplayText
               {...{
                 againstEmployeesData: data.againstPayroll.employeePayrolls,
-                key: name,
+                _key: name,
                 selectedEmployee: item,
               }}
             />
