@@ -14,7 +14,7 @@ import { TPayrollComaparisonType } from "../hooks/payroll/comparison/useCompareP
 const PAYROLL_COMPARISON_VIEWS = [
   "View per Employee",
   "View per Total",
-  "View per Selection",
+  // "View per Selection", //Done bcos design didn't specify the need for this, this feature was added at the discretion of the developer(and still needs a bit of tweaking)
 ];
 const PayrollComparison: React.FC = () => {
   const [view, setView] =
