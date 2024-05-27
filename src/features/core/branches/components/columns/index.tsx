@@ -17,6 +17,11 @@ export const BRANCHES_TABLE_COLUMNS = (
     key: "employeeCount",
   },
   {
+    title: "Child Branches' Count",
+    dataIndex: "childBranchesCount",
+    key: "childBranchesCount",
+  },
+  {
     title: "Address",
     dataIndex: "address",
     key: "address",

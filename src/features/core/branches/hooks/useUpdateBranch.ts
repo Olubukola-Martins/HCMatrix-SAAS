@@ -3,8 +3,6 @@ import { useMutation } from "react-query";
 import { TCreateBranchProps } from "../types";
 import { ICurrentCompany } from "types";
 import { useApiAuth } from "hooks/useApiAuth";
-import { removeUndefinedProperties } from "utils/dataHelpers/removeUndefinedProperties";
-import { TAddress } from "features/core/employees/types";
 
 interface IUpdateBranchProps {
   id: number;
