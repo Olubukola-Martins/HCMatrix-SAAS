@@ -41,7 +41,7 @@ export const PAYROLL_REVIEW_TABLE_COLUMNS = (
       dataIndex: "Date",
       key: "Date",
       render: (_, item) => (
-        <span>{moment(item.date).format("YYYY-MM-DD")} </span>
+        <span>{moment(item.date).format("MMMM,YYYY")} </span>
       ),
     },
 

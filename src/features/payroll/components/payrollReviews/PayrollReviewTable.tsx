@@ -7,6 +7,7 @@ import { useFetchApprovalRequests } from "features/core/workflows/hooks/useFetch
 import { TPayrollListData } from "features/payroll/types/payroll";
 import { PAYROLL_REVIEW_TABLE_COLUMNS } from "./columns";
 import { TPayrollReviewAction } from "./PayrollReviewContainer";
+import { formatNumberWithCommas } from "utils/dataHelpers/formatNumberWithCommas";
 
 interface IProps {
   handleAction: (key: TPayrollReviewAction, item?: TPayrollListData) => void;
@@ -24,7 +25,8 @@ const PayrollReviewTable: React.FC<IProps> = ({ handleAction }) => {
           title: <span className="capitalize">{name}</span>,
           dataIndex: name,
           key: name,
-          render: (_, item) => item.componentsToDisplay?.[name],
+          render: (_, item) =>
+            formatNumberWithCommas(item.componentsToDisplay?.[name]),
         }))
       : [];
   return (

@@ -1,5 +1,6 @@
 import { ColumnsType } from "antd/lib/table";
 import { TPayrollListData } from "features/payroll/types/payroll";
+import { formatNumberWithCommas } from "utils/dataHelpers/formatNumberWithCommas";
 
 type TPayrollComparisonPerTableData = {
   attrName: string;
@@ -64,13 +65,13 @@ export const PAYROLL_COMPARISON_PER_TOTAL_TABLE_COLUMNS = (props: {
       title: <span className="capitalize">{selectedPayroll?.name}</span>,
       dataIndex: selectedPayroll?.name,
       key: selectedPayroll?.name,
-      render: (_, item) => item.selected,
+      render: (_, item) => formatNumberWithCommas(item.selected),
     },
     {
       title: <span className="capitalize">{againstPayroll?.name}</span>,
       dataIndex: againstPayroll?.name,
       key: againstPayroll?.name,
-      render: (_, item) => item.against,
+      render: (_, item) => formatNumberWithCommas(item.against),
     },
   ];
 };

@@ -1,5 +1,8 @@
 import { ColumnsType } from "antd/lib/table";
 import { TEmployeesInPayrollData } from "features/payroll/types";
+import moment from "moment";
+import { formatNumberWithCommas } from "utils/dataHelpers/formatNumberWithCommas";
+import { isValidNumber } from "utils/dataHelpers/isValidNumber";
 
 type TColData = ColumnsType<TEmployeesInPayrollData>;
 const getEmployee = (
@@ -65,21 +68,24 @@ export const AttrCompsToDisplayText: React.FC<{
     selectedEmployee,
     _key
   );
+  const keyValue = selectedEmployee["componentsToDisplay"]?.[_key]?.toString();
+  const keyValueFormatted = formatNumberWithCommas(keyValue);
   return (
     <span>
-      {selectedEmployee["componentsToDisplay"]?.[_key]?.toString()}{" "}
+      {!isValidNumber({ str: keyValue }) ? keyValue : keyValueFormatted}{" "}
       {!Number.isNaN(difference) && difference !== 0 ? (
         <span
           className={`${
             difference > 0 ? "text-red-500" : "text-green-500"
           } text-xs`}
         >
-          ({difference})
+          ({formatNumberWithCommas(difference)})
         </span>
       ) : null}
     </span>
   );
 };
+
 const AttrText: React.FC<{
   againstEmployeesData: TEmployeesInPayrollData[];
   selectedEmployee: TEmployeesInPayrollData;
@@ -91,17 +97,19 @@ const AttrText: React.FC<{
     selectedEmployee,
     _key
   );
+  const keyValue = selectedEmployee?.[_key]?.toString();
+  const keyValueFormatted = formatNumberWithCommas(keyValue);
 
   return (
     <span>
-      {selectedEmployee?.[_key]?.toString()}{" "}
+      {!isValidNumber({ str: keyValue }) ? keyValue : keyValueFormatted}{" "}
       {!Number.isNaN(difference) && difference !== 0 ? (
         <span
           className={`${
             difference > 0 ? "text-red-500" : "text-green-500"
           } text-xs`}
         >
-          ({difference})
+          ({formatNumberWithCommas(difference)})
         </span>
       ) : null}
     </span>
@@ -116,10 +124,22 @@ export const PAYROLL_COMPARISON_PER_EMPLOYEE_TABLE_COLUMNS = ({
 }): TColData => {
   return [
     {
+      title: "UID",
+      dataIndex: "UID",
+      key: "UID",
+      render: (_, item) => item.empUid,
+    },
+    {
       title: "Name",
       dataIndex: "Name",
       key: "Name",
       render: (_, item) => item.fullName,
+    },
+    {
+      title: "Date",
+      dataIndex: "Date",
+      key: "Date",
+      render: (_, item) => moment(item?.payrollDate).format("MMMM,YYYY"),
     },
 
     {
