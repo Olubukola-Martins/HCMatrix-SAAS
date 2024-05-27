@@ -3,12 +3,13 @@ import { AppButton } from "components/button/AppButton";
 import React, { useEffect } from "react";
 import { IModalProps } from "types";
 import { textInputValidationRules } from "utils/formHelpers/validation";
-import { TBranch, TCreateBranchProps } from "../types";
+import { TCreateBranchProps } from "../types";
 import { FormAddressInput } from "components/generalFormInputs/FormAddressInput";
 import { FormBranchInput } from "./FormBranchInput";
+import { useFetchSingleBranch } from "../hooks/useFetchSingleBranch";
 
 interface IProps extends IModalProps {
-  branch?: TBranch;
+  branchId?: number;
   action?: "add" | "edit" | "view";
   title?: string;
   onSubmit?: {
@@ -16,20 +17,20 @@ interface IProps extends IModalProps {
     isLoading?: boolean;
     isSuccess?: boolean;
   };
-  loading?: boolean;
 }
 
 export const SaveBranch: React.FC<IProps> = ({
   open,
   handleClose,
   action = "add",
-  branch,
+  branchId,
   title = "Add Branch",
   onSubmit,
-  loading,
 }) => {
   const [form] = Form.useForm<TCreateBranchProps>();
-
+  const { data: branch, isLoading: loading } = useFetchSingleBranch({
+    branchId,
+  });
   const handleSubmit = (data: TCreateBranchProps) => {
     onSubmit?.fn({
       ...data,
