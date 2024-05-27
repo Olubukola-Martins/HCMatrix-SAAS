@@ -44,14 +44,6 @@ export const PAYROLL_REVIEW_TABLE_COLUMNS = (
         <span>{moment(item.date).format("YYYY-MM-DD")} </span>
       ),
     },
-    {
-      title: "Created At",
-      dataIndex: "Created At",
-      key: "Created At",
-      render: (_, item) => (
-        <span>{moment(item.createdAt).format("YYYY-MM-DD")} </span>
-      ),
-    },
 
     {
       title: "Allowances",
@@ -98,9 +90,24 @@ export const PAYROLL_REVIEW_TABLE_COLUMNS = (
       ),
     },
     {
-      title: "Status",
-      dataIndex: "status",
-      key: "status",
+      title: "Approval Status",
+      dataIndex: "Approval Status",
+      key: "Approval Status",
+      render: (_, item) => (
+        <span
+          className="capitalize"
+          style={{
+            color: getAppropriateColorForStatus(item?.approvalStatus ?? ""),
+          }}
+        >
+          {item?.approvalStatus?.split("-").join(" ")}{" "}
+        </span>
+      ),
+    },
+    {
+      title: "Payroll Status",
+      dataIndex: "Payroll Status",
+      key: "Payroll Status",
       render: (_, item) => (
         <span
           className="capitalize"

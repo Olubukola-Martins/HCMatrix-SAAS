@@ -39,7 +39,11 @@ const PayrollReviewTable: React.FC<IProps> = ({ handleAction }) => {
           .filter((item) => !!item.payroll)
           .map(
             (item) =>
-              ({ ...item.payroll, key: item.payroll?.id } as TPayrollListData)
+              ({
+                ...item.payroll,
+                key: item.payroll?.id,
+                approvalStatus: item.status,
+              } as TPayrollListData)
           )}
         loading={isFetching}
         pagination={{ ...pagination, total: data?.total }}

@@ -38,6 +38,7 @@ interface TPayrollListData {
   description: string;
   frequency: string;
   status: string;
+  approvalStatus?: string;
   costCentreId: number;
   companyId: number;
   createdAt: string;
