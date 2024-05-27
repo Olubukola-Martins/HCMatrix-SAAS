@@ -67,7 +67,7 @@ export const AttrCompsToDisplayText: React.FC<{
   );
   return (
     <span>
-      {selectedEmployee["componentsToDisplay"]?.[_key].toString()}{" "}
+      {selectedEmployee["componentsToDisplay"]?.[_key]?.toString()}{" "}
       {!Number.isNaN(difference) && difference !== 0 ? (
         <span
           className={`${
