@@ -224,20 +224,7 @@ export const validateBulkEmergencyContact = (
       content: `${INDENTIFIER} has an invalid phone number`,
     });
   }
-  if (
-    !isValueEmpty(emergencyContact?.phoneNumber) &&
-    isPhoneNumberValid(emergencyContact?.phoneNumber) === true &&
-    !!countries?.find(
-      (item) =>
-        `${item.code.toLowerCase()}` ===
-        `${emergencyContact?.phoneNumber.split("-")[0]}`
-    ) === false
-  ) {
-    errors.push({
-      category,
-      content: `${INDENTIFIER} phone number has an incorrect country code`,
-    });
-  }
+
   emergencyContact = {
     ...emergencyContact,
     // TODO: Remove all +, like +234 from numbers before going to prod
