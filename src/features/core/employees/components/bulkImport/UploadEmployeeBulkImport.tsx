@@ -41,7 +41,6 @@ export const UploadEmployeeBulkImport = ({
   maxFileSizeInMB = DEFAULT_MAX_FILE_UPLOAD_SIZE_IN_MB,
   onError,
 }: IProps) => {
-  
   const [loading, setLoading] = useState(false);
 
   const handleChange: UploadProps["onChange"] = (
@@ -65,7 +64,7 @@ export const UploadEmployeeBulkImport = ({
       handleColumns(columns);
       handleRetrievedData(retrievedData);
     };
-    reader.readAsBinaryString(info.file as unknown as any);
+    reader?.readAsBinaryString(info.file as unknown as any);
     if (info.file.status === "uploading") {
       setLoading(true);
       return;
