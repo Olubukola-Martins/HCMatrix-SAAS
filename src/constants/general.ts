@@ -111,6 +111,34 @@ export const RELATIONSHIPS = [
     value: "girlfriend",
   },
   {
+    label: "Boyfriend",
+    value: "boyfriend",
+  },
+  {
+    label: "Husband",
+    value: "husband",
+  },
+  {
+    label: "Wife",
+    value: "wife",
+  },
+  {
+    label: "Father",
+    value: "father",
+  },
+  {
+    label: "Mother",
+    value: "mother",
+  },
+  {
+    label: "Son",
+    value: "son",
+  },
+  {
+    label: "Daughter",
+    value: "daughter",
+  },
+  {
     label: "Nephew",
     value: "nephew",
   },
@@ -122,7 +150,68 @@ export const RELATIONSHIPS = [
     label: "Cousin",
     value: "cousin",
   },
+  {
+    label: "Uncle",
+    value: "uncle",
+  },
+  {
+    label: "Aunt",
+    value: "aunt",
+  },
+  {
+    label: "Grandfather",
+    value: "grandfather",
+  },
+  {
+    label: "Grandmother",
+    value: "grandmother",
+  },
+  {
+    label: "Grandson",
+    value: "grandson",
+  },
+  {
+    label: "Granddaughter",
+    value: "granddaughter",
+  },
+  {
+    label: "Stepfather",
+    value: "stepfather",
+  },
+  {
+    label: "Stepmother",
+    value: "stepmother",
+  },
+  {
+    label: "Stepson",
+    value: "stepson",
+  },
+  {
+    label: "Stepdaughter",
+    value: "stepdaughter",
+  },
+  {
+    label: "Step-brother",
+    value: "step-brother",
+  },
+  {
+    label: "Step-sister",
+    value: "step-sister",
+  },
+  {
+    label: "Friend",
+    value: "friend",
+  },
+  {
+    label: "Fiancé",
+    value: "fiance",
+  },
+  {
+    label: "Fiancée",
+    value: "fiancee",
+  },
 ];
+
 export const DEFAULT_PROFILE_IMAGE_URL = "https://picsum.photos/193";
 export const DEFAULT_LOGO_IMAGE_URL = "https://picsum.photos/190";
 export const EMPLOYMENT_TYPES = [

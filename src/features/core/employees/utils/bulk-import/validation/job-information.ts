@@ -14,7 +14,9 @@ type TValidateProps = {
 const ACCEPTED_EMPLOYMENT_TYPE_VALUES = EMPLOYMENT_TYPES.map((item) =>
   item.value.toLowerCase()
 );
-const ACCEPTED_WORK_MODEL_VALUES = WORK_MODELS.map((item) => item.value);
+const ACCEPTED_WORK_MODEL_VALUES = WORK_MODELS.map((item) =>
+  item.value.toLowerCase()
+);
 const ACCEPTED_PAYROLL_FREQUENCY_VALUES = ["daily", "monthly"];
 const ACCEPTED_PAYROLL_TYPE_VALUES = PAYROLL_SCHEME_OPTIONS.filter(
   (item) => item.value !== "project"
