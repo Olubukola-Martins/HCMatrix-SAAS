@@ -8,6 +8,7 @@ import { confirmActionSvg } from "assets/images";
 import { useEmployeeBulkUpload } from "../../hooks/useEmployeeBulkUpload";
 import { QUERY_KEY_FOR_LIST_OF_EMPLOYEES } from "../../hooks/useFetchEmployees";
 import { useQueryClient } from "react-query";
+import { errorFormatter } from "utils/errorHelpers";
 
 interface IProps {
   handleClose: () => void;
@@ -30,12 +31,14 @@ const EmployeeDataImportConfirmation: React.FC<IProps> = ({
         data: dataToBeSubmitted,
       },
       {
-        onError: (err: any) => {
+        onError: (_err) => {
+          const formattedErr = errorFormatter(_err);
           openNotification({
             state: "error",
-            title: "Error Occurred",
-            description:
-              err?.response.data.message ?? err?.response.data.error.message,
+            title: formattedErr.message,
+            description: formattedErr.errors
+              ?.map((err) => `${err.path}: ${err.message}`)
+              .join(","),
           });
         },
         onSuccess: (res: any) => {

@@ -2,6 +2,7 @@ import {
   GENDERS,
   MARITAL_STATUSES,
   EMPLOYMENT_ELIGIBILITIES,
+  EMPLOYMENT_TYPES,
 } from "constants/general";
 import { TIME_ZONES } from "constants/timeZones";
 import { TExchangeRateListItem } from "features/payroll/types";
@@ -44,7 +45,7 @@ export const personalInfoValidationSchema = (props: TValidateProps) => {
               (item) => item.currency.toLowerCase() === val.toLowerCase()
             )?.id;
           }
-          return null;
+          return undefined;
         }),
       maritalStatus: z.string().transform((val) => val.toLowerCase()),
       nationality: z.string().transform((val) => val.toLowerCase()),
@@ -57,7 +58,7 @@ export const personalInfoValidationSchema = (props: TValidateProps) => {
               (item) => item.name.toLowerCase() === val.toLowerCase()
             )?.id;
           }
-          return null;
+          return undefined;
         }),
         stateId: z.string().transform((val) => {
           if (val) {
@@ -65,7 +66,7 @@ export const personalInfoValidationSchema = (props: TValidateProps) => {
               (item) => item.name.toLowerCase() === val.toLowerCase()
             )?.id;
           }
-          return null;
+          return undefined;
         }),
         lgaId: z
           .string()
@@ -76,7 +77,7 @@ export const personalInfoValidationSchema = (props: TValidateProps) => {
                 (item) => item.name.toLowerCase() === val.toLowerCase()
               )?.id;
             }
-            return null;
+            return undefined;
           }),
       }),
       passportExpirationDate: z
@@ -85,13 +86,16 @@ export const personalInfoValidationSchema = (props: TValidateProps) => {
           if (val !== "" || val) {
             return val;
           }
-          return null;
+          return undefined;
         })
         .optional(),
       validDocumentUrl: z.string().url().optional(),
       alternativeEmail: z.string().email().optional(),
       alternativePhoneNumber: z.string().optional(),
-      nin: z.number().optional(),
+      nin: z
+        .number()
+        .optional()
+        .transform((val) => (val ? `${val}` : null)), // TODO: add validation for needed if eligibility is citizen
     })
     .superRefine((data, ctx) => {
       // dob should be in format ACCEPTED_DATE_FORMAT, and not in future

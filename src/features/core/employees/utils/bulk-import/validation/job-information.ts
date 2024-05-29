@@ -4,7 +4,6 @@ import { TEmployee } from "features/core/employees/types";
 import { PAYROLL_SCHEME_OPTIONS } from "features/payroll/constants";
 import { TPayGrade } from "features/payroll/types";
 import { TPayrollSchemeType } from "features/payroll/types/payrollSchemes";
-
 import { z } from "zod";
 
 type TValidateProps = {
@@ -12,8 +11,8 @@ type TValidateProps = {
   branches?: TBranch[];
   payGrades?: TPayGrade[];
 };
-const ACCEPTED_EMPLOYMENT_TYPE_VALUES = EMPLOYMENT_TYPES.map(
-  (item) => item.value
+const ACCEPTED_EMPLOYMENT_TYPE_VALUES = EMPLOYMENT_TYPES.map((item) =>
+  item.value.toLowerCase()
 );
 const ACCEPTED_WORK_MODEL_VALUES = WORK_MODELS.map((item) => item.value);
 const ACCEPTED_PAYROLL_FREQUENCY_VALUES = ["daily", "monthly"];
@@ -31,17 +30,35 @@ export const jobInformationValidationSchema = (props: TValidateProps) => {
       employmentType: z.string().transform((val) => val.toLowerCase()),
       workModel: z.string().transform((val) => val.toLowerCase()),
       numberOfDaysPerWeek: z.number().min(1).max(7),
-      lineManagerId: z.number().optional().nullable(),
+      lineManagerId: z
+        .string()
+        .optional()
+        .nullable()
+        .transform((val) => {
+          if (val) {
+            return employees?.find((item) => item.empUid === val)?.id;
+          }
+          return undefined;
+        }),
       branchId: z.string().transform((val) => {
         if (val) {
           return branches?.find(
             (item) => item.name.toLowerCase() === val.toLowerCase()
           )?.id;
         }
-        return null;
+        return undefined;
       }),
       payrollType: z.string().transform((val) => val.toLowerCase()),
-      monthlyGross: z.number().optional().nullable(),
+      monthlyGross: z
+        .number()
+        .optional()
+        .nullable()
+        .transform((val) => {
+          if (val) {
+            return +val;
+          }
+          return undefined;
+        }),
       payGradeId: z
         .string()
         .nullable()
@@ -52,10 +69,19 @@ export const jobInformationValidationSchema = (props: TValidateProps) => {
               (item) => item.name.toLowerCase() === val.toLowerCase()
             )?.id;
           }
-          return null;
+          return undefined;
         }),
       frequency: z.string().transform((val) => val.toLowerCase()),
-      hourlyRate: z.number().optional().nullable(),
+      hourlyRate: z
+        .number()
+        .optional()
+        .nullable()
+        .transform((val) => {
+          if (val) {
+            return +val;
+          }
+          return undefined;
+        }),
     })
     .superRefine((data, ctx) => {
       // hire date should not be in the future
@@ -176,7 +202,7 @@ export const jobInformationValidationSchema = (props: TValidateProps) => {
       }
       // if payroll type is direct salary, then monthly gross should be specified
       const monthlyGross = data.monthlyGross ?? 0;
-      if (data.payrollType === "direct-salary" && monthlyGross > 0) {
+      if (data.payrollType === "direct-salary" && monthlyGross <= 0) {
         ctx.addIssue({
           code: "custom",
           message: `Monthly Gross has to be greater than 0 for payroll type ${data.payrollType}`,
@@ -186,7 +212,7 @@ export const jobInformationValidationSchema = (props: TValidateProps) => {
 
       // if payroll type is wages, then hourly rate should be specified
       const hourlyRate = data.hourlyRate ?? 0;
-      if (data.payrollType === "wages" && hourlyRate > 0) {
+      if (data.payrollType === "wages" && hourlyRate <= 0) {
         ctx.addIssue({
           code: "custom",
           message: `Hourly rate has to be greater than 0 for payroll type ${data.payrollType}`,
