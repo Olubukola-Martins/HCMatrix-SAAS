@@ -135,7 +135,7 @@ const ImportEmpHeader: React.FC<{
       <div className="px-4 py-2 flex justify-between  bg-faded rounded-md">
         <h6 className="text-xs">Employee to be added: {employeeCount}</h6>
         <h6 className="text-xs">
-          Max Employees: {maxEmployeesAllowed - employeeCount}
+          Max Employees Allowed: {maxEmployeesAllowed}
         </h6>
       </div>
 

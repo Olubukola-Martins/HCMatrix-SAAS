@@ -22,42 +22,11 @@ const EmployeeDataImportConfirmation: React.FC<IProps> = ({
   dataToBeSubmitted,
   confirmationMessages,
 }) => {
-  const queryClient = useQueryClient();
-
-  const { mutate, isLoading } = useEmployeeBulkUpload();
+  const { mutate, isLoading } = useEmployeeBulkUpload(handleClose);
   const handleVerification = () => {
-    mutate(
-      {
-        data: dataToBeSubmitted,
-      },
-      {
-        onError: (_err) => {
-          const formattedErr = errorFormatter(_err);
-          openNotification({
-            state: "error",
-            title: formattedErr.message,
-            description: formattedErr.errors
-              ?.map((err) => `${err.path}: ${err.message}`)
-              .join(","),
-          });
-        },
-        onSuccess: (res: any) => {
-          openNotification({
-            state: "success",
-
-            title: "Success",
-            description: res.data.message,
-            // duration: 0.4,
-          });
-          handleClose();
-
-          queryClient.invalidateQueries({
-            queryKey: [QUERY_KEY_FOR_LIST_OF_EMPLOYEES],
-            // exact: true,
-          });
-        },
-      }
-    );
+    mutate({
+      data: dataToBeSubmitted,
+    });
   };
   return (
     <div>

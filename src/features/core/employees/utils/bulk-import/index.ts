@@ -1,12 +1,3 @@
-import {
-  EMPLOYMENT_ELIGIBILITIES,
-  EMPLOYMENT_TYPES,
-  GENDERS,
-  MARITAL_STATUSES,
-  MAX_NO_OF_WORKING_DAYS_PER_WEEK,
-  RELATIONSHIPS,
-  WORK_MODELS,
-} from "constants/general";
 import { TBulkEmployeeImportError } from "../../hooks/bulkImport/useValidateBulkEmployeeImportData";
 import { TCountry, TEmployee } from "../../types";
 import {
@@ -15,26 +6,18 @@ import {
 } from "../../types/bulk-import";
 import { TBranch } from "features/core/branches/types";
 import { TExchangeRateListItem, TPayGrade } from "features/payroll/types";
-import moment from "moment";
-import {
-  isDateGreaterThanOrEqualToCurrentDay,
-  isDateLesserThanOrEqualToCurrentDay,
-  isEmailValid,
-  isPhoneNumberValid,
-} from "utils/formHelpers/validation";
-import { PAYROLL_SCHEME_OPTIONS } from "features/payroll/constants";
+import { isEmailValid } from "utils/formHelpers/validation";
 import { TLga } from "types/lgas";
 import { TState } from "types/states";
-import { TIME_ZONES } from "constants/timeZones";
 import { BULK_EMPLOYEE_IMPORT_MAPPING_SECTIONS } from "../../constants";
 import { TLicenseType } from "features/authentication/types/auth-user";
 import { personalInfoValidationSchema } from "./validation/personal-information";
 import { ZodError } from "zod";
 import { emergencyContactValidationSchema } from "./validation/emergency-contact";
 import { jobInformationValidationSchema } from "./validation/job-information";
+import { employeeInformationValidationSchema } from "./validation/employee-information";
 
 type TValidateProps = { employee: TBulkImportEmployeeProp; rowId: number };
-// TODO: Check for optional params as they might just want to import a section and therfore don't need validation for things like firstname
 export const validateBulkEmployeeInfo = (
   props: TValidateProps
 ): {
@@ -44,98 +27,41 @@ export const validateBulkEmployeeInfo = (
 } => {
   const { employee, rowId } = props;
 
-  let transformedEmployee: TBulkImportEmployeeProp = employee;
+  let transformedEmployee: Pick<
+    TBulkImportEmployeeProp,
+    "email" | "empUid" | "firstName" | "lastName" | "licenseType"
+  > = employee;
 
   const category: EmployeeMappingSectionKeyType = "employeeInformation";
   const errors: TBulkEmployeeImportError[] = [];
   const INDENTIFIER = employee?.empUid ?? `Row ${rowId}`;
-  const ACCEPTED_LICENSE_TYPE_VALUES = [
-    "licensed",
-    "unlicensed",
-    "deactivated",
-  ];
-  const section = BULK_EMPLOYEE_IMPORT_MAPPING_SECTIONS.find(
-    (item) => item.key === "employeeInformation"
-  );
-  const getConcernedInput = (inputName: string) =>
-    section?.inputs.find((item) => item.name === inputName);
-  // empUid
-  if (
-    isValueEmpty(employee?.empUid) &&
-    getConcernedInput("empUid")?.optional === false
-  ) {
-    errors.push({
-      category,
-      content: `${INDENTIFIER} is missing an employee ID`,
-    });
-  }
-  // first name
-  if (
-    isValueEmpty(employee?.firstName) &&
-    getConcernedInput("firstName")?.optional === false
-  ) {
-    errors.push({
-      category,
-      content: `${INDENTIFIER} is missing a first name`,
-    });
-  }
-  // last name
-  if (
-    isValueEmpty(employee?.lastName) &&
-    getConcernedInput("lastName")?.optional === false
-  ) {
-    errors.push({
-      category,
-      content: `${INDENTIFIER} is missing a last name`,
-    });
-  }
-  // has license type
-  if (
-    isValueEmpty(employee?.licenseType) &&
-    getConcernedInput("licenseType")?.optional === false
-  ) {
-    errors.push({
-      category,
-      content: `${INDENTIFIER} is missing a license type value`,
-    });
-  }
-  if (
-    !isValueEmpty(employee?.licenseType) &&
-    ACCEPTED_LICENSE_TYPE_VALUES.map((item) => item.toLowerCase()).includes(
-      `${(employee?.licenseType as unknown as string).toLowerCase()}`
-    ) === false
-  ) {
-    errors.push({
-      category,
-      content: `${INDENTIFIER} license type has to be one of the following ${ACCEPTED_LICENSE_TYPE_VALUES.join(
-        ","
-      )}.`,
-    });
-  }
-  // email
-  if (
-    isValueEmpty(employee?.email) &&
-    getConcernedInput("email")?.optional === false
-  ) {
-    errors.push({
-      category,
-      content: `${INDENTIFIER} is missing an email value`,
-    });
-  }
-  if (
-    !isValueEmpty(employee?.email) &&
-    isEmailValid(employee?.email) === false
-  ) {
-    errors.push({
-      category,
-      content: `${INDENTIFIER} has an invalid email address?.`,
-    });
+  const schema = employeeInformationValidationSchema();
+
+  try {
+    const parsedEmployee = schema.parse(transformedEmployee);
+    transformedEmployee = {
+      ...parsedEmployee,
+      licenseType:
+        parsedEmployee.licenseType as TBulkImportEmployeeProp["licenseType"],
+    };
+  } catch (error) {
+    if (error instanceof ZodError) {
+      const validationErrors = error.issues.map((issue) => ({
+        content: `${INDENTIFIER}: ${issue.path.join(",")} - ${
+          issue.message
+        }. Value provided ${
+          transformedEmployee?.[
+            issue.path?.[0] as keyof typeof transformedEmployee
+          ]
+        }`,
+        category,
+      }));
+      errors.push(...validationErrors);
+    } else {
+      console.error("Unexpected error:", error);
+    }
   }
 
-  transformedEmployee = {
-    ...transformedEmployee,
-    licenseType: `${employee?.licenseType}`.toLowerCase() as TLicenseType,
-  };
   return { isDataValid: errors.length === 0, errors, transformedEmployee };
 };
 export const validateBulkEmergencyContact = (
