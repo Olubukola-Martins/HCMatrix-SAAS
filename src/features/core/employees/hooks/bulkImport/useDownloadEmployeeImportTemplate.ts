@@ -30,7 +30,11 @@ import {
   RELATIONSHIPS,
   WORK_MODELS,
 } from "constants/general";
-import { PAYROLL_SCHEME_OPTIONS } from "features/payroll/constants";
+import {
+  PAYROLL_FREQUENCIES,
+  PAYROLL_FREQUENCIES_OPTIONS,
+  PAYROLL_SCHEME_OPTIONS,
+} from "features/payroll/constants";
 import { TState } from "types/states";
 import { TLga } from "types/lgas";
 import { useFetchStates } from "hooks/useFetchStates";
@@ -75,57 +79,71 @@ const generateTemplate = async (props: {
 
   //   This Data will just be to create AND NOT update for the time being
 
-  //   TODO: Address duplicate inputs as error
   // Process Data (add a new row)
-  const rows = [
-    {
-      "First Name": "A Name",
-      "Last Name": "A Name",
-      "Employee ID": "A unique ID",
-      "License Type": "licensed, unlicensed or deactivated",
-      Email: "Valid Email Address",
-      "Date of Birth": "Valid Date",
-      Gender: GENDERS.map((item) => item.value).join(","),
-      "Phone Number": "Valid Phone Number",
-      Eligibility: EMPLOYMENT_ELIGIBILITIES.join(","),
-      "Exchange Rate": "A valid Name of Exchange Rate",
-      "Marital Status": MARITAL_STATUSES.map((item) => item.value).join(","),
-      Nationality: "A valid Country Name",
-      "Street Address": "A non empty value",
-      "Country of Residence": "A valid country name",
-      "State of Residence": "A valid state name",
-      "LGA of Residence": "A valid lga name",
-      "Timezone of Residence": "A valid timezone",
-      "Passport Expiration Date": "A valid Date",
-      "Alternative Email": "Valid Email",
-      "Alternative Phone Number": "Valid Phone Number",
-      NIN: "A valid NIN Number",
-      "Start Date": "A valid date",
-      "Employment Type": EMPLOYMENT_TYPES.map((item) => item.value).join(","),
-      "Work Model": WORK_MODELS.map((item) => item.value).join(","),
-      "No of Days Per Week": "1 - 7",
-      "Hire Date": "Valid Date",
-      "Probation End Date": "Valid Date",
-      "Confirmation Date": "Valid Date",
-      "Line Manager": "An Existing Employee ID",
-      Branch: "An Existing Branch Name",
-      "Payroll Type": PAYROLL_SCHEME_OPTIONS.filter(
-        (item) => item.value !== "project"
-      )
-        .map((item) => item.value)
-        .join(","),
-      "Monthly Gross": "An amount greater than 0",
-      "Pay Grade": "An Existing Paygrade Name",
-      "Payroll Frequency": ["daily", "monthly"].join(","),
-      "Hourly Rate": "An Amount greater than 0",
-      "Emergency Contact Name": "Full name",
-      "Emergency Contact Relationship": RELATIONSHIPS.map(
-        (item) => item.value
-      ).join(","),
-      "Emergency Contact Address": "An address",
-      "Emergency Contact Phone": "A valid phone number",
-    },
-  ];
+  const creareBaseRow = (indexIncrement: number) => ({
+    "First Name": "Uche",
+    "Last Name": "Labidi",
+    "Employee ID": `SNAP000${indexIncrement + 1}`,
+    "License Type": "licensed",
+    Email: "uche@example.com",
+    "Date of Birth": "12/28/1995",
+    Gender: GENDERS?.[indexIncrement]?.value ?? GENDERS?.[0]?.value,
+    "Phone Number": "08000000000",
+    Eligibility:
+      EMPLOYMENT_ELIGIBILITIES?.[indexIncrement] ??
+      EMPLOYMENT_ELIGIBILITIES?.[0],
+    "Exchange Rate":
+      exchangeRates?.[indexIncrement]?.currency ??
+      "Please set up exhange rate in settings",
+    "Marital Status":
+      MARITAL_STATUSES?.[indexIncrement]?.value ?? MARITAL_STATUSES?.[0]?.value,
+    Nationality:
+      countries?.[indexIncrement].name ?? "Please set up country in settings",
+    "Street Address": "no.9 James Boulevard, Victoria Island",
+    "Country of Residence":
+      countries?.[indexIncrement].name ?? "Please set up country in settings",
+    "State of Residence":
+      states?.[indexIncrement].name ?? "Please set up state in settings",
+    "LGA of Residence":
+      lgas?.[indexIncrement].name ?? "Please set up lga in settings",
+    "Timezone of Residence":
+      timezones?.[indexIncrement].value ?? "Please set up timezone in settings",
+    "Passport Expiration Date": "12/28/2025",
+    "Alternative Email": "uche.alt@example.com",
+    "Alternative Phone Number": "08000000000",
+    NIN: "56787023555000",
+    "Employment Type":
+      EMPLOYMENT_TYPES?.[indexIncrement]?.value ?? EMPLOYMENT_TYPES?.[0]?.value,
+    "Work Model":
+      WORK_MODELS?.[indexIncrement]?.value ?? WORK_MODELS?.[0]?.value,
+    "No of Days Per Week": "5",
+    "Hire Date": "01/10/2024",
+    "Start Date": "01/11/2024",
+    "Probation End Date": "01/12/2024",
+    "Confirmation Date": "01/13/2024",
+    "Line Manager": `SNAP000${indexIncrement * (2 + 23)}`,
+    Branch:
+      branches?.[indexIncrement]?.name ?? "Please set up branch in settings",
+    "Payroll Type":
+      PAYROLL_SCHEME_OPTIONS?.[indexIncrement]?.value ??
+      PAYROLL_SCHEME_OPTIONS?.[0]?.value,
+    "Monthly Gross": "10000000",
+    "Pay Grade":
+      payGrades?.[indexIncrement]?.name ??
+      "Please set up pay grade in settings",
+    "Payroll Frequency":
+      PAYROLL_FREQUENCIES?.[indexIncrement] ?? PAYROLL_FREQUENCIES?.[0],
+    "Hourly Rate": "7300",
+    "Emergency Contact Name": "Uche Okeke",
+    "Emergency Contact Relationship":
+      RELATIONSHIPS?.[indexIncrement].value ?? RELATIONSHIPS?.[0].value,
+    "Emergency Contact Address": "no.9 James Boulevard, Victoria Island",
+    "Emergency Contact Phone": "08000000010",
+  });
+  const NO_OF_EXAMPLES_PROVIDED_TO_USER = 10;
+  const rows = Array(NO_OF_EXAMPLES_PROVIDED_TO_USER)
+    .fill(0)
+    .map((_, index) => creareBaseRow(index));
   const importWorkSheet = XLSX.utils.json_to_sheet(rows);
   const statesWorksheet = XLSX.utils.json_to_sheet(
     states?.map((item) => ({
