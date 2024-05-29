@@ -2,7 +2,6 @@ import {
   GENDERS,
   MARITAL_STATUSES,
   EMPLOYMENT_ELIGIBILITIES,
-  EMPLOYMENT_TYPES,
 } from "constants/general";
 import { TIME_ZONES } from "constants/timeZones";
 import { TExchangeRateListItem } from "features/payroll/types";
