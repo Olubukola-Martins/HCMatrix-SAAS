@@ -13,7 +13,7 @@ export const EMPLOYEE_TABLE_COLUMNS: ColumnsType<TEmployee> = [
     render: (val, item) => (
       <Link
         to={`${appRoutes.singleEmployee(item.id).path}`}
-        className="text-caramel hover:underline hover:text-caramel"
+        className="text-caramel hover:underline hover:text-caramel capitalize"
       >
         {getEmployeeFullName(item)}
       </Link>
@@ -30,32 +30,42 @@ export const EMPLOYEE_TABLE_COLUMNS: ColumnsType<TEmployee> = [
     title: "License Type",
     dataIndex: "licenseType",
     key: "licenseType",
-    render: (_, item) => item.licenseType,
+    render: (_, item) => <span className="capitalize">{item.licenseType}</span>,
   },
   {
     title: "Branch",
     dataIndex: "Branch",
     key: "Branch",
-    render: (_, item) => item?.jobInformation?.branch?.name ?? "none",
+    render: (_, item) => (
+      <span className="capitalize">
+        {item?.jobInformation?.branch?.name ?? "none"}
+      </span>
+    ),
   },
   {
     title: "Department",
     dataIndex: "department",
     key: "department",
-    render: (_, item) => item.designation?.department?.name ?? "none",
+    render: (_, item) => (
+      <span className="capitalize">
+        {item.designation?.department?.name ?? "none"}
+      </span>
+    ),
   },
   {
     title: "Designation",
     dataIndex: "Designation",
     key: "Designation",
-    render: (_, item) => item.designation?.name ?? "none",
+    render: (_, item) => (
+      <span className="capitalize">{item.designation?.name ?? "none"}</span>
+    ),
   },
 
   {
     title: "Role",
     dataIndex: "role",
     key: "role",
-    render: (_, item) => item.role.name,
+    render: (_, item) => <span className="capitalize">{item.role.name}</span>,
   },
   {
     title: "Email",
@@ -81,9 +91,9 @@ export const EMPLOYEE_TABLE_COLUMNS: ColumnsType<TEmployee> = [
     render: (_, item) => (
       <>
         {item.user?.isVerified ? (
-          <span className="text-green-700">Verified</span>
+          <span className="text-green-700 capitalize">Verified</span>
         ) : (
-          <span className="text-red-500">Unverified</span>
+          <span className="text-red-500 capitalize">Unverified</span>
         )}
       </>
     ),
