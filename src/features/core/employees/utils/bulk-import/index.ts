@@ -161,11 +161,7 @@ export const validateBulkEmergencyContact = (
   }
   const schema = emergencyContactValidationSchema(props);
   try {
-    schema.parse(emergencyContact);
-    emergencyContact = {
-      ...emergencyContact,
-      phoneNumber: `${emergencyContact.phoneNumber}`,
-    };
+    emergencyContact = schema.parse(emergencyContact);
   } catch (error) {
     if (error instanceof ZodError) {
       const validationErrors = error.issues.map((issue) => ({
@@ -214,10 +210,9 @@ export const validateBulkJobInformation = (
   // jobInformationValidationSchema
   const schema = jobInformationValidationSchema(props);
   try {
-    schema.parse(jobInformation);
-    jobInformation = {
-      ...jobInformation,
-    };
+    jobInformation = schema.parse(
+      jobInformation
+    ) as TBulkImportEmployeeProp["jobInformation"];
   } catch (error) {
     if (error instanceof ZodError) {
       const validationErrors = error.issues.map((issue) => ({
@@ -267,18 +262,12 @@ export const validateBulkPersonalInformation = (
 
   const schema = personalInfoValidationSchema(props);
   try {
-    schema.parse(personalInformation);
-    personalInformation = {
-      ...personalInformation,
-      nin: `${personalInformation.nin}`,
-      passportExpirationDate: personalInformation.passportExpirationDate, //TODO:MAJOR Fix the passportExpirationDate bug
-
-      //
-    };
+    personalInformation = schema.parse(
+      personalInformation
+    ) as TBulkImportEmployeeProp["personalInformation"];
 
     delete (personalInformation as unknown as any)["address"]; //done because backend does not accept address in bulk import as of the time of writing this code
   } catch (error) {
-    console.log("Err zode was reached 1");
     if (error instanceof ZodError) {
       const validationErrors = error.issues.map((issue) => ({
         content: `${INDENTIFIER}: ${issue.path.join(",")} - ${
@@ -294,7 +283,6 @@ export const validateBulkPersonalInformation = (
         category,
       }));
       errors.push(...validationErrors);
-      console.log("Err zode was reached 2", errors, validationErrors);
     } else {
       console.error("Unexpected error:", error);
     }
