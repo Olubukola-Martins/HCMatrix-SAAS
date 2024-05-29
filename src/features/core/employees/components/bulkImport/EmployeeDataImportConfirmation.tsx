@@ -78,7 +78,7 @@ const EmployeeDataImportConfirmation: React.FC<IProps> = ({
 
         <>
           <AppButton
-            label="Verify"
+            label="Confirm"
             handleClick={handleVerification}
             isLoading={isLoading}
           />
