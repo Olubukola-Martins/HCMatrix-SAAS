@@ -27,6 +27,12 @@ export const EMPLOYEE_TABLE_COLUMNS: ColumnsType<TEmployee> = [
     render: (_, item) => item.empUid,
   },
   {
+    title: "License Type",
+    dataIndex: "licenseType",
+    key: "licenseType",
+    render: (_, item) => item.licenseType,
+  },
+  {
     title: "Branch",
     dataIndex: "Branch",
     key: "Branch",
@@ -92,12 +98,14 @@ export const EMPLOYEE_EXPORT_COLUMNS = (
 
       "Employee ID": item.empUid,
 
+      "License Type": item?.licenseType ?? "none",
       Branch: item?.jobInformation?.branch?.name ?? "none",
       Department: item.designation?.department?.name ?? "none",
       Designation: item.designation?.name ?? "none",
-      Role: item.role.name,
+      Role: item?.role?.name ?? "none",
 
       Email: item.email,
+      "Verification Status": item?.user?.isVerified ? "Verified" : "Unverified",
       "Employee Status": item.status,
     })) ?? []
   );
