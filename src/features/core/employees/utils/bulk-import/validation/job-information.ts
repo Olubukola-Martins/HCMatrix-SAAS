@@ -1,4 +1,9 @@
-import { EMPLOYMENT_TYPES, WORK_MODELS } from "constants/general";
+import {
+  EMPLOYMENT_TYPES,
+  MAX_NO_OF_WORKING_DAYS_PER_WEEK,
+  MIN_NO_OF_WORKING_DAYS_PER_WEEK,
+  WORK_MODELS,
+} from "constants/general";
 import { TBranch } from "features/core/branches/types";
 import { TEmployee } from "features/core/employees/types";
 import { PAYROLL_SCHEME_OPTIONS } from "features/payroll/constants";
@@ -31,7 +36,10 @@ export const jobInformationValidationSchema = (props: TValidateProps) => {
       confirmationDate: z.string().datetime(),
       employmentType: z.string().transform((val) => val.toLowerCase()),
       workModel: z.string().transform((val) => val.toLowerCase()),
-      numberOfDaysPerWeek: z.number().min(1).max(7),
+      numberOfDaysPerWeek: z
+        .number()
+        .min(MIN_NO_OF_WORKING_DAYS_PER_WEEK)
+        .max(MAX_NO_OF_WORKING_DAYS_PER_WEEK),
       lineManagerId: z
         .string()
         .optional()

@@ -74,7 +74,7 @@ export const EMPLOYEE_TABLE_COLUMNS: ColumnsType<TEmployee> = [
     key: "verification",
     render: (_, item) => (
       <>
-        {item.user.isVerified ? (
+        {item.user?.isVerified ? (
           <span className="text-green-700">Verified</span>
         ) : (
           <span className="text-red-500">Unverified</span>

@@ -6,6 +6,7 @@ export const DEFAULT_EMPLOYEES_CREATED_BY_SYSTEM = 1; //the purchaser of the sys
 export const DEFAULT_DEPARTMENTS_CREATED_BY_SYSTEM = 0;
 export const DEFAULT_DESIGNATIONS_CREATED_BY_SYSTEM = 0;
 export const MAX_NO_OF_WORKING_DAYS_PER_WEEK = 7;
+export const MIN_NO_OF_WORKING_DAYS_PER_WEEK = 1;
 
 // The purpose of this file to prevent repetition
 export const MONTH_CHART_LABELS = [
