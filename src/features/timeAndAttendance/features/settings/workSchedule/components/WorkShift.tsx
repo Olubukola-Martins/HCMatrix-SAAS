@@ -5,6 +5,8 @@ import { useState } from "react";
 import { AddMultipleEmployeeShift } from "./AddMultipleEmployeeShift";
 import { ScheduleEmployeeShift } from "./ScheduleEmployeeShift";
 import { GeneralEmployeeShift } from "./GeneralEmployeeShift";
+import { AutoShiftRotation } from "./AutoShiftRotation";
+import { ShiftSwapConfig } from "./ShiftSwapConfig";
 
 export const WorkShift = () => {
   return (
@@ -22,6 +24,16 @@ export const WorkShift = () => {
               key: "2",
               label: `Schedule Employee Shift`,
               children: <ScheduleEmployeeShift />,
+            },
+            {
+              key: "3",
+              label: `Shift Settings`,
+              children: (
+                <div>
+                  <AutoShiftRotation />
+                  <ShiftSwapConfig />
+                </div>
+              ),
             },
           ]}
         />
