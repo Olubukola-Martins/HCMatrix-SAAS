@@ -47,18 +47,6 @@ export const ScheduleEmployeeShift = () => {
       ),
     },
     {
-      title: "Start Date",
-      dataIndex: "startDate",
-      render: (_, val) => (
-        <span>{val?.startDate ? val?.startDate : "---"}</span>
-      ),
-    },
-    {
-      title: "End Date",
-      dataIndex: "endDate",
-      render: (_, val) => <span>{val?.endDate ? val?.endDate : "---"}</span>,
-    },
-    {
       title: "Shift Type",
       dataIndex: "shiftType",
       render: (_, val) => <span className="capitalize">{val?.shiftType}</span>,

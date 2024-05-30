@@ -23,8 +23,6 @@ export const createData = async (props: {
       ? [props.data.employeeIds]
       : props.data.employeeIds,
     shiftType: props.data.shiftType,
-    startDate: props.data.startDate,
-    endDate: props.data.endDate,
     isPermanent: props.data.isPermanent,
   };
 
