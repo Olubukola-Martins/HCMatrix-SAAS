@@ -3,17 +3,16 @@ import { formWrapStyle } from "../style";
 import { FormGroupInput } from "features/core/groups/components/FormGroupInput";
 import { AppButton } from "components/button/AppButton";
 
-export const LatenessPolicy = () => {
+export const AbsenteeismPolicy = () => {
   const [form] = Form.useForm();
 
   const onSubmit = (val: any) => {
     console.log(val);
   };
-
   return (
     <>
       <div className="bg-mainBg py-4 px-4 rounded">
-        <h3 className="font-medium text-base pb-3 pt-1">Attendance settings</h3>
+        <h3 className="font-medium text-base pb-3 pt-1">Absenteeism Policy</h3>
 
         <Form
           layout="vertical"
@@ -22,38 +21,26 @@ export const LatenessPolicy = () => {
           form={form}
           requiredMark={false}
         >
-          <div className={formWrapStyle}>
+          <div className={`${formWrapStyle} flex justify-between items-center`}>
+            <h3>
+              Mark an employee as absent if they fail to clock in for the day
+            </h3>
             <Form.Item
-              name="period"
-              label="Specify grace period after resumption time"
+              name="failToClockIn"
+              className="flex justify-end items-end"
+              valuePropName="checked"
+              initialValue={false}
             >
-              <Select
-                options={[
-                  {
-                    value: 10,
-                    label: "10 Minutes",
-                  },
-                  {
-                    value: 20,
-                    label: "20 Minutes",
-                  },
-                  {
-                    value: 30,
-                    label: "30 Minutes",
-                  },
-                ]}
-                placeholder="Select"
-                allowClear
-              />
+              <Switch />
             </Form.Item>
           </div>
           <div className={`${formWrapStyle} flex justify-between items-center`}>
             <h3>
-              Notify employees and their managers when an instance of lateness
-              is recorded
+              Notify employees and their managers when an instance of absence is
+              recorded
             </h3>
             <Form.Item
-              name="latenessRecord"
+              name="notifyEmployee"
               className="flex justify-end items-end"
               valuePropName="checked"
               initialValue={false}
@@ -62,9 +49,9 @@ export const LatenessPolicy = () => {
             </Form.Item>
           </div>
           <div className={formWrapStyle}>
-            <h3>Email lateness report</h3>
+            <h3>Email absenteeism report.</h3>
             <Form.Item
-              name="emailLatenessReport"
+              name="emailAbsenteeismReport"
               className="flex justify-end items-end"
               valuePropName="checked"
               initialValue={false}
@@ -97,7 +84,7 @@ export const LatenessPolicy = () => {
             <FormGroupInput
               Form={Form}
               control={{
-                label: "Select who should receive lateness report ",
+                label: "Select who should receive absenteeism report ",
                 name: "",
               }}
             />
