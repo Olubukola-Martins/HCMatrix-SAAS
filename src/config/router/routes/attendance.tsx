@@ -13,6 +13,7 @@ import { TimeOff } from "features/timeAndAttendance/features/timeOff/pages/TimeO
 import TimeSheet from "features/timeAndAttendance/features/timeSheet/pages/TimeSheet";
 import TimeSheetDetails from "features/timeAndAttendance/features/timeSheet/pages/TimeSheetDetails";
 import WorkBreak from "features/timeAndAttendance/features/settings/break/Pages/WorkBreak";
+import SwapShiftRequest from "features/timeAndAttendance/features/swapShiftRequest/pages/SwapShiftRequest";
 
 export const attendanceRoutes: TRouteData[] = [
   {
@@ -34,7 +35,14 @@ export const attendanceRoutes: TRouteData[] = [
     isSearchable: true,
     title: "Time-off",
   },
- 
+
+  {
+    element: <SwapShiftRequest />,
+    path: appRoutes.swapShiftRequest,
+    isSearchable: true,
+    title: "Swap Shift Request",
+  },
+
   {
     element: <TimeSheetDetails />,
     path: appRoutes.timeSheetDetails().format,
@@ -76,14 +84,13 @@ export const attendanceRoutes: TRouteData[] = [
     isSearchable: false,
   },
 
-
   {
-    element: <HoursPerEmployee/>,
+    element: <HoursPerEmployee />,
     path: appRoutes.hoursPerEmployee,
     isSearchable: false,
   },
   {
-    element: <EmployeesPerShift/>,
+    element: <EmployeesPerShift />,
     path: appRoutes.employeesPerShift,
     isSearchable: false,
   },

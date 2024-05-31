@@ -11,7 +11,12 @@ import { GoBreak } from "./GoBreak";
 import { SwitchActivity } from "./SwitchActivity";
 
 interface IProps {
-  active: "time-sheet" | "time-off" | "reports" | "none-active";
+  active:
+    | "time-sheet"
+    | "time-off"
+    | "reports"
+    | "none-active"
+    | "swap-shift-request";
 }
 
 export const AttendanceSubToper = (props: IProps) => {
@@ -48,6 +53,16 @@ export const AttendanceSubToper = (props: IProps) => {
             }
           >
             Timeoff
+          </Link>
+          <Link
+            to={appRoutes.swapShiftRequest}
+            className={
+              props.active === "swap-shift-request"
+                ? `${applyStyle}`
+                : "pb-3 hover:text-caramel"
+            }
+          >
+            Swap Shift Request
           </Link>
           <Link
             to={appRoutes.hoursPerEmployee}

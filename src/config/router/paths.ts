@@ -293,6 +293,7 @@ export const appRoutes = {
   location: `/attendance/location`,
   otherSettings: `/attendance/other-settings`,
   breakSetUp: `/attendance/break-setup`,
+  swapShiftRequest: `/attendance/swap-shift-request`,
 
   // Leaning and development
   learningHome: `/learning/home`,
