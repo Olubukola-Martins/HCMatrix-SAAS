@@ -42,7 +42,13 @@ export const UploadEmployeeBulkImport = ({
   onError,
 }: IProps) => {
   const [loading, setLoading] = useState(false);
-
+  const [submission, setSubmission] = useState<{
+    allow: boolean;
+    errors: string[];
+  }>({
+    allow: false,
+    errors: [],
+  });
   const handleChange: UploadProps["onChange"] = (
     info: UploadChangeParam<UploadFile>
   ) => {
@@ -68,6 +74,7 @@ export const UploadEmployeeBulkImport = ({
         if (
           (err?.message as string)?.toLowerCase().indexOf("encrypted") !== -1
         ) {
+          setSubmission((val) => ({ ...val, allow: false }));
           openNotification({
             state: "error",
             title: "Encryted file detected!",
@@ -93,13 +100,7 @@ export const UploadEmployeeBulkImport = ({
       });
     }
   };
-  const [submission, setSubmission] = useState<{
-    allow: boolean;
-    errors: string[];
-  }>({
-    allow: false,
-    errors: [],
-  });
+
   const beforeUpload = (file: RcFile) => {
     const isLt2M = file.size / 1024 / 1024 <= maxFileSizeInMB;
     let allowSubmission = true;
