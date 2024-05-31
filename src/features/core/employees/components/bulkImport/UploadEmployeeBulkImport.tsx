@@ -48,23 +48,39 @@ export const UploadEmployeeBulkImport = ({
   ) => {
     var reader = new FileReader();
     reader.onload = function (e: any) {
-      var data = e.target.result;
-      let readedData = XLSX.read(data, { type: "binary" });
-      const wsname = readedData.SheetNames[0];
-      const ws = readedData.Sheets[wsname];
+      try {
+        var data = e.target.result;
+        let readedData = XLSX.read(data, { type: "binary" });
+        const wsname = readedData.SheetNames[0];
+        const ws = readedData.Sheets[wsname];
 
-      /* Convert array to json*/
-      const dataParse = XLSX.utils.sheet_to_json(ws, {
-        header: 1,
-      }) as unknown as string[][];
+        /* Convert array to json*/
+        const dataParse = XLSX.utils.sheet_to_json(ws, {
+          header: 1,
+        }) as unknown as string[][];
 
-      const columns: string[] = dataParse[0];
-      const retrievedData: any[] = dataParse.splice(1);
+        const columns: string[] = dataParse[0];
+        const retrievedData: any[] = dataParse.splice(1);
 
-      handleColumns(columns);
-      handleRetrievedData(retrievedData);
+        handleColumns(columns);
+        handleRetrievedData(retrievedData);
+      } catch (err: any) {
+        if (
+          (err?.message as string)?.toLowerCase().indexOf("encrypted") !== -1
+        ) {
+          openNotification({
+            state: "error",
+            title: "Encryted file detected!",
+            description:
+              "Please ensure this file is not encrypted! Ensure that the file sensitivity is not set to private or better yet set the sensitivity to general/public!",
+            duration: 0,
+          });
+        }
+      }
     };
-    reader?.readAsBinaryString(info.file as unknown as any);
+    if (info?.file instanceof Blob) {
+      reader?.readAsBinaryString(info?.file as unknown as any);
+    }
     if (info.file.status === "uploading") {
       setLoading(true);
       return;
@@ -119,8 +135,7 @@ export const UploadEmployeeBulkImport = ({
     handleSections(selectedSections);
     handleNext();
   };
-  const { mutate: mutateDownload, isLoading: downloadLoading } =
-    useDownloadEmployeeImportTemplate();
+  const { mutate: mutateDownload } = useDownloadEmployeeImportTemplate();
 
   const handleDownload = () => {
     mutateDownload(undefined, {
