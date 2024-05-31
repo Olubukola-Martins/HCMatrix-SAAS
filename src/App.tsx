@@ -10,6 +10,7 @@ import { LOCAL_STORAGE_AUTH_KEY } from "constants/localStorageKeys";
 import { useNetworkState } from "hooks/network/useNetworkState";
 import { ErrorWrapper } from "components/errorHandlers/ErrorWrapper";
 import PageNotFoundIcon from "assets/svg-components/PageNotFoundIcon/PageNotFoundIcon";
+import { useInitializeGoogleAnalyticsTracking } from "hooks/analtyics";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -23,6 +24,8 @@ const queryClient = new QueryClient({
 });
 
 function App() {
+  // initialize react-ga to track page views on google analytics
+  useInitializeGoogleAnalyticsTracking();
   // clear darkmode
   useEffect(() => {
     const dark = localStorage.getItem("dark");
