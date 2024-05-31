@@ -127,14 +127,14 @@ export const NewPositionChangeRequest: React.FC<IModalProps> = ({
         <Form.Item
           rules={textInputValidationRules}
           name="reason"
-          label="reason"
+          label="Reason"
         >
-          <Input.TextArea placeholder="reason" />
+          <Input.TextArea placeholder="Reason" />
         </Form.Item>
         <Form.Item
           rules={textInputValidationRules}
           name="justification"
-          label="justification"
+          label="Justification"
         >
           <Input.TextArea placeholder="justification" />
         </Form.Item>

@@ -95,10 +95,10 @@ export const PositionChangeRequestDetails: React.FC<IProps> = ({
             <Input.TextArea />
           </Form.Item>
 
-          <Form.Item name={"reason"} label="reason">
+          <Form.Item name={"reason"} label="Reason">
             <Input.TextArea />
           </Form.Item>
-          <Form.Item name={"justification"} label="justification">
+          <Form.Item name={"justification"} label="Justification">
             <Input.TextArea />
           </Form.Item>
 
