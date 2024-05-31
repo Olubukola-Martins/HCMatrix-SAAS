@@ -38,6 +38,10 @@ export const Biometrics = () => {
       dataIndex: "serialNumber",
     },
     {
+      title: "Status",
+      dataIndex: "status",
+    },
+    {
       title: "Action",
       render: (_, val) => (
         <div>
@@ -45,9 +49,9 @@ export const Biometrics = () => {
             trigger={["click"]}
             overlay={
               <Menu>
-                <Menu.Item key="1" onClick={() => handleEdit(val.id)}>
+                {/* <Menu.Item key="1" onClick={() => handleEdit(val.id)}>
                   Edit
-                </Menu.Item>
+                </Menu.Item> */}
                 <Menu.Item key="2">
                   <Popconfirm
                     title={`Delete ${val.name}`}

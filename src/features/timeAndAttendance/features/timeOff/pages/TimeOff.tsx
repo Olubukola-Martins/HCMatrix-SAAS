@@ -45,7 +45,7 @@ export const TimeOff = () => {
       render: (_, val) => <span>{val.policy?.title}</span>,
     },
     {
-      title: "Duration in days",
+      title: "Duration in hours",
       dataIndex: "duration",
       render: (_, val) => <span>{val.policy?.duration}</span>,
     },

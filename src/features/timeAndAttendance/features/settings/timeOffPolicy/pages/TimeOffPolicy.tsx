@@ -34,7 +34,7 @@ export const TimeOffPolicy = () => {
       dataIndex: "title",
     },
     {
-      title: "Duration In Days",
+      title: "Duration In Hours",
       dataIndex: "duration",
     },
     {

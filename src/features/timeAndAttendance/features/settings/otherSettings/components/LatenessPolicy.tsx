@@ -13,7 +13,7 @@ export const LatenessPolicy = () => {
   return (
     <>
       <div className="bg-mainBg py-4 px-4 rounded">
-        <h3 className="font-medium text-base pb-3 pt-1">Attendance settings</h3>
+        <h3 className="font-medium text-base pb-3 pt-1">Lateness settings</h3>
 
         <Form
           layout="vertical"
