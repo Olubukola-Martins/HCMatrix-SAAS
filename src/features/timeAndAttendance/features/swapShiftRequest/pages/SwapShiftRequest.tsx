@@ -6,6 +6,9 @@ import { AttendanceSubToper } from "features/timeAndAttendance/components/Attend
 import { TbFileExport } from "react-icons/tb";
 import { NewRequest } from "../components/NewRequest";
 import { useState } from "react";
+import { AllRequest } from "../components/AllRequest";
+import { MySwapApprovals } from "../components/MySwapApprovals";
+import { MyRequest } from "../components/MyRequest";
 
 const SwapShiftRequest = () => {
   const [creteRequest, setCreteRequest] = useState(false);
@@ -34,17 +37,17 @@ const SwapShiftRequest = () => {
             {
               key: "1",
               label: `My Requests`,
-              children: <div></div>,
+              children: <MyRequest/>,
             },
             {
               key: "2",
               label: `My Swap Approvals`,
-              children: <div></div>,
+              children: <MySwapApprovals/>,
             },
             {
               key: "3",
               label: `All Requests`,
-              children: <div></div>,
+              children: <AllRequest/>,
             },
           ]}
           tabBarExtraContent={

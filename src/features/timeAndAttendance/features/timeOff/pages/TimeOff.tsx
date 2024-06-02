@@ -1,8 +1,8 @@
-import { useState, useEffect } from "react";
+import { useState} from "react";
 import { PageIntro } from "components/layout/PageIntro";
 import { appRoutes } from "config/router/paths";
 import { AppButton } from "components/button/AppButton";
-import Table, { ColumnsType } from "antd/lib/table";
+import { ColumnsType } from "antd/lib/table";
 import { Dropdown, Menu, Popconfirm, Select } from "antd";
 import { ITimeOffProps } from "../types";
 import { AddTimeOff } from "../components/AddTimeOff";
@@ -11,6 +11,7 @@ import { QUERY_KEY_FOR_TIME_OFF, useGetTimeOff } from "../hooks/useGetTimeOff";
 import { usePagination } from "hooks/usePagination";
 import { useDeleteTimeAndAttendance } from "features/timeAndAttendance/hooks/useDeleteTimeAndAttendance";
 import { useHandleTimeAndAttendanceStatus } from "features/timeAndAttendance/hooks/useHandleTimeAndAttendanceStatus";
+import { TableWithFocusType } from "components/table";
 
 export const TimeOff = () => {
   const [newTimeOffModal, setNewTimeOffModal] = useState(false);
@@ -159,8 +160,8 @@ export const TimeOff = () => {
             />
           </div>
         </div>
-
-        <Table
+        
+        <TableWithFocusType
           className="mt-3"
           columns={columns}
           dataSource={data?.data}
