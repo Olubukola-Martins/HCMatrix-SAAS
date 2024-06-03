@@ -9,7 +9,7 @@ import { useFetchEmployees } from "../useFetchEmployees";
 import { useFetchBranches } from "features/core/branches/hooks/useFetchBranches";
 import { useGetPayGrades } from "features/payroll/hooks/payGrades/useGetPayGrades";
 import { useGetExchangeRates } from "features/payroll/hooks/exhangeRates/useGetExchangeRates";
-import * as XLSX from "xlsx";
+import ExcelJS from "exceljs";
 import { getEmployeeFullName } from "../../utils/getEmployeeFullName";
 import {
   EMPLOYMENT_ELIGIBILITIES,
@@ -20,6 +20,7 @@ import {
   WORK_MODELS,
 } from "constants/general";
 import {
+  ESSENTIAL_PAYROLL_TYPES_OPTIONS,
   PAYROLL_FREQUENCIES,
   PAYROLL_SCHEME_OPTIONS,
 } from "features/payroll/constants";
@@ -28,6 +29,12 @@ import { TLga } from "types/lgas";
 import { useFetchStates } from "hooks/useFetchStates";
 import { useFetchLgas } from "hooks/useFetchLGAs";
 import { TIME_ZONES } from "constants/timeZones";
+import download from "js-file-download";
+import { LICENSE_TYPES } from "../../constants";
+import {
+  EXCEL_COLUMN_LETTER_MAPPING,
+  REASONABLE_AMOUNT_OF_ROWS_TO_HAVE_EXCEL_CELL_VALIDATION,
+} from "constants/excel";
 
 type TResponse = any;
 const EMPLOYEE_IMPORT_DOWNLOAD = "employee-import.xlsx";
@@ -47,13 +54,11 @@ type TDependencies = {
   payGrades?: TPayGrade[];
   exchangeRates?: TExchangeRateListItem[];
 };
+
 const generateTemplate = async (props: {
-  // auth: ICurrentCompany;
   dependencies: TDependencies;
 }): Promise<TResponse> => {
   const { dependencies } = props;
-
-  //   dependcies
   const {
     countries,
     branches,
@@ -64,11 +69,9 @@ const generateTemplate = async (props: {
     states,
     timezones,
   } = dependencies;
+  const NO_OF_EXAMPLES_PROVIDED_TO_USER = 10;
 
-  //   This Data will just be to create AND NOT update for the time being
-
-  // Process Data (add a new row)
-  const creareBaseRow = (indexIncrement: number) => ({
+  const createBaseRow = (indexIncrement: number): Record<string, string> => ({
     "First Name": "Uche",
     "Last Name": "Labidi",
     "Employee ID": `SNAP000${indexIncrement + 1}`,
@@ -82,20 +85,21 @@ const generateTemplate = async (props: {
       EMPLOYMENT_ELIGIBILITIES?.[0],
     "Exchange Rate":
       exchangeRates?.[indexIncrement]?.currency ??
-      "Please set up exhange rate in settings",
+      "Please set up exchange rate in settings",
     "Marital Status":
       MARITAL_STATUSES?.[indexIncrement]?.value ?? MARITAL_STATUSES?.[0]?.value,
     Nationality:
-      countries?.[indexIncrement].name ?? "Please set up country in settings",
+      countries?.[indexIncrement]?.name ?? "Please set up country in settings",
     "Street Address": "no.9 James Boulevard, Victoria Island",
     "Country of Residence":
-      countries?.[indexIncrement].name ?? "Please set up country in settings",
+      countries?.[indexIncrement]?.name ?? "Please set up country in settings",
     "State of Residence":
-      states?.[indexIncrement].name ?? "Please set up state in settings",
+      states?.[indexIncrement]?.name ?? "Please set up state in settings",
     "LGA of Residence":
-      lgas?.[indexIncrement].name ?? "Please set up lga in settings",
+      lgas?.[indexIncrement]?.name ?? "Please set up lga in settings",
     "Timezone of Residence":
-      timezones?.[indexIncrement].value ?? "Please set up timezone in settings",
+      timezones?.[indexIncrement]?.value ??
+      "Please set up timezone in settings",
     "Passport Expiration Date": "12/28/2025",
     "Alternative Email": "uche.alt@example.com",
     "Alternative Phone Number": "08000000000",
@@ -124,106 +128,339 @@ const generateTemplate = async (props: {
     "Hourly Rate": "7300",
     "Emergency Contact Name": "Uche Okeke",
     "Emergency Contact Relationship":
-      RELATIONSHIPS?.[indexIncrement].value ?? RELATIONSHIPS?.[0].value,
+      RELATIONSHIPS?.[indexIncrement]?.value ?? RELATIONSHIPS?.[0]?.value,
     "Emergency Contact Address": "no.9 James Boulevard, Victoria Island",
     "Emergency Contact Phone": "08000000010",
   });
-  const NO_OF_EXAMPLES_PROVIDED_TO_USER = 10;
+
   const rows = Array(NO_OF_EXAMPLES_PROVIDED_TO_USER)
     .fill(0)
-    .map((_, index) => creareBaseRow(index));
-  const importWorkSheet = XLSX.utils.json_to_sheet(rows);
-  const statesWorksheet = XLSX.utils.json_to_sheet(
-    states?.map((item) => ({
-      Name: item.name,
-    })) ?? []
+    .map((_, index) => createBaseRow(index));
+
+  const workbook = new ExcelJS.Workbook();
+
+  // Function to add a worksheet with data
+  const addWorksheet = (name: string, data: any[]) => {
+    const worksheet = workbook.addWorksheet(name);
+    // set  the column widths
+    worksheet.columns = Object.keys(data?.[0] || {}).map((key) => ({
+      header: key,
+      key: key,
+      width:
+        Math.max(
+          ...data.map((row) => (row[key] ? row[key].length : 0)),
+          key.length
+        ) + 2,
+    }));
+    worksheet.addRows(data);
+    return worksheet;
+  };
+
+  const importWorkSheet = addWorksheet("MAIN IMPORT FILE", rows);
+  addWorksheet(
+    "Countries",
+    countries?.map((item) => ({ Name: item.name })) ?? []
   );
-  const lgasWorksheet = XLSX.utils.json_to_sheet(
-    lgas?.map((item) => ({
-      Name: item.name,
-    })) ?? []
+  addWorksheet("States", states?.map((item) => ({ Name: item.name })) ?? []);
+  addWorksheet(
+    "Local Governments",
+    lgas?.map((item) => ({ Name: item.name })) ?? []
   );
-  const timezoneWorksheet = XLSX.utils.json_to_sheet(
-    timezones?.map((item) => ({
-      Name: item.value,
-    })) ?? []
+  addWorksheet(
+    "Timezones",
+    timezones?.map((item) => ({ Name: item.value })) ?? []
   );
-  const branchesWorksheet = XLSX.utils.json_to_sheet(
+  addWorksheet(
+    "Branches",
     branches?.map((item) => ({
       Name: item.name,
-      Desciption: item.description,
+      Description: item.description,
     })) ?? []
   );
-  const exchangeRatesWorksheet = XLSX.utils.json_to_sheet(
-    exchangeRates?.map((item) => ({
-      Name: item.currency,
-    })) ?? []
+  addWorksheet(
+    "Exchange Rates",
+    exchangeRates?.map((item) => ({ Name: item.currency })) ?? []
   );
-  const employeesWorksheet = XLSX.utils.json_to_sheet(
+  addWorksheet(
+    "Employees",
     employees?.map((item) => ({
       "Employee ID": item.empUid,
       Name: getEmployeeFullName(item),
     })) ?? []
   );
-  const countriesWorksheet = XLSX.utils.json_to_sheet(
-    countries?.map((item) => ({
-      Name: item.name,
-    })) ?? []
-  );
-  const payGradesWorksheet = XLSX.utils.json_to_sheet(
+  addWorksheet(
+    "Pay Grades",
     payGrades?.map((item) => ({
       Name: item.name,
       "Gross Pay": item.grossPay,
     })) ?? []
   );
-  const workbook = XLSX.utils.book_new();
 
-  /* calculate column width */
-  importWorkSheet["!cols"] = Object.keys(rows[0]).map((key) => ({
-    wch: rows.reduce(
-      (w, r: { [key: string]: string }) =>
-        Math.max(w, Math.max(r[key].length, key.length)),
-      12
-    ),
-  }));
-  //   XLSX.utils.sheet_set_array_formula(importWorkSheet, "D2", "=Yes, No");
-  XLSX.utils.book_append_sheet(workbook, importWorkSheet, "MAIN IMPORT FILE");
-  XLSX.utils.book_append_sheet(workbook, countriesWorksheet, "Countries");
-  XLSX.utils.book_append_sheet(workbook, statesWorksheet, "States");
-  XLSX.utils.book_append_sheet(workbook, lgasWorksheet, "Local Governments");
-  XLSX.utils.book_append_sheet(workbook, timezoneWorksheet, "Timezones");
-  XLSX.utils.book_append_sheet(workbook, payGradesWorksheet, "Pay Grades");
-  XLSX.utils.book_append_sheet(workbook, branchesWorksheet, "Branches");
-  XLSX.utils.book_append_sheet(
-    workbook,
-    exchangeRatesWorksheet,
-    "Exchange Rates"
+  const importWorkSheetColumns = Object.keys(rows[0]);
+
+  // Add data validation to cells
+  validateImportWorkSheetCells(
+    importWorkSheet,
+    importWorkSheetColumns,
+    dependencies
   );
-  XLSX.utils.book_append_sheet(workbook, employeesWorksheet, "Employees");
-  //   XLSX.utils.sheet_add_aoa(ws, [["Created "+new Date().toISOString()]], {origin:-1});
 
-  // Package and Release Data (`writeFile` tries to write and save an XLSB file)
-  return XLSX.writeFile(workbook, EMPLOYEE_IMPORT_DOWNLOAD);
-  //   return download(response, EMPLOYEE_IMPORT_DOWNLOAD);
+  // Write the workbook to a buffer
+  const buffer = await workbook.xlsx.writeBuffer();
+
+  // Use FileSaver to save the file
+  download(new Blob([buffer]), EMPLOYEE_IMPORT_DOWNLOAD);
+};
+
+const validateImportWorkSheetCells = (
+  worksheet: ExcelJS.Worksheet,
+  importWorkSheetColumns: string[],
+  dependencies: TDependencies
+) => {
+  const {
+    countries,
+    branches,
+    employees,
+    payGrades,
+    exchangeRates,
+    lgas,
+    states,
+    timezones,
+  } = dependencies;
+  const getIndexOfColumn = (col: string): number => {
+    return importWorkSheetColumns.indexOf(col) + 1;
+  };
+  for (
+    let i = 2;
+    i < REASONABLE_AMOUNT_OF_ROWS_TO_HAVE_EXCEL_CELL_VALIDATION;
+    i++
+  ) {
+    worksheet.getCell(
+      `${
+        EXCEL_COLUMN_LETTER_MAPPING?.[getIndexOfColumn("Timezone of Residence")]
+      }${i}`
+    ).dataValidation = {
+      type: "list",
+      allowBlank: false,
+      formulae: [`"${timezones?.map((item) => item.value).join(",")}"`],
+      showErrorMessage: true,
+      errorTitle: "Invalid input",
+      error: "Please select a value from the dropdown",
+    };
+    worksheet.getCell(
+      `${EXCEL_COLUMN_LETTER_MAPPING?.[getIndexOfColumn("Branch")]}${i}`
+    ).dataValidation = {
+      type: "list",
+      allowBlank: false,
+      formulae: [`"${branches?.map((item) => item.name).join(",")}"`],
+      showErrorMessage: true,
+      errorTitle: "Invalid input",
+      error: "Please select a value from the dropdown",
+    };
+    worksheet.getCell(
+      `${EXCEL_COLUMN_LETTER_MAPPING?.[getIndexOfColumn("Line Manager")]}${i}`
+    ).dataValidation = {
+      type: "list",
+      allowBlank: true,
+      formulae: [`"${employees?.map((item) => item.empUid).join(",")}"`],
+      showErrorMessage: true,
+      errorTitle: "Invalid input",
+      error: "Please select a value from the dropdown",
+    };
+    worksheet.getCell(
+      `${EXCEL_COLUMN_LETTER_MAPPING?.[getIndexOfColumn("License Type")]}${i}`
+    ).dataValidation = {
+      type: "list",
+      allowBlank: false,
+      formulae: [`"${LICENSE_TYPES.join(",")}"`],
+      showErrorMessage: true,
+      errorTitle: "Invalid input",
+      error: "Please select a value from the dropdown",
+    };
+    worksheet.getCell(
+      `${EXCEL_COLUMN_LETTER_MAPPING?.[getIndexOfColumn("Pay Grade")]}${i}`
+    ).dataValidation = {
+      type: "list",
+      allowBlank: true,
+      formulae: [`"${payGrades?.map((item) => item.name).join(",")}"`],
+      showErrorMessage: true,
+      errorTitle: "Invalid input",
+      error: "Please select a value from the dropdown",
+    };
+    worksheet.getCell(
+      `${
+        EXCEL_COLUMN_LETTER_MAPPING?.[getIndexOfColumn("Payroll Frequency")]
+      }${i}`
+    ).dataValidation = {
+      type: "list",
+      allowBlank: false,
+      formulae: [`"${PAYROLL_FREQUENCIES.map((item) => item).join(",")}"`],
+      showErrorMessage: true,
+      errorTitle: "Invalid input",
+      error: "Please select a value from the dropdown",
+    };
+    worksheet.getCell(
+      `${EXCEL_COLUMN_LETTER_MAPPING?.[getIndexOfColumn("Payroll Type")]}${i}`
+    ).dataValidation = {
+      type: "list",
+      allowBlank: false,
+      formulae: [
+        `"${ESSENTIAL_PAYROLL_TYPES_OPTIONS.map((item) => item.value).join(
+          ","
+        )}"`,
+      ],
+      showErrorMessage: true,
+      errorTitle: "Invalid input",
+      error: "Please select a value from the dropdown",
+    };
+    // TODO: Refactor to use enums as keys
+    // TODO: FIx too long dropdown error
+    // TODO: Use Essentail Payroll on the file mapping validation as well
+    // TODO: Add non list validation to other fields
+    worksheet.getCell(
+      `${
+        EXCEL_COLUMN_LETTER_MAPPING?.[
+          getIndexOfColumn("Emergency Contact Relationship")
+        ]
+      }${i}`
+    ).dataValidation = {
+      type: "list",
+      allowBlank: false,
+      formulae: [`"${RELATIONSHIPS.map((item) => item.value).join(",")}"`],
+      showErrorMessage: true,
+      errorTitle: "Invalid input",
+      error: "Please select a value from the dropdown",
+    };
+    worksheet.getCell(
+      `${EXCEL_COLUMN_LETTER_MAPPING?.[getIndexOfColumn("Work Model")]}${i}`
+    ).dataValidation = {
+      type: "list",
+      allowBlank: false,
+      formulae: [`"${WORK_MODELS.map((item) => item.value).join(",")}"`],
+      showErrorMessage: true,
+      errorTitle: "Invalid input",
+      error: "Please select a value from the dropdown",
+    };
+    worksheet.getCell(
+      `${
+        EXCEL_COLUMN_LETTER_MAPPING?.[getIndexOfColumn("Employment Type")]
+      }${i}`
+    ).dataValidation = {
+      type: "list",
+      allowBlank: false,
+      formulae: [`"${EMPLOYMENT_TYPES.map((item) => item.value).join(",")}"`],
+      showErrorMessage: true,
+      errorTitle: "Invalid input",
+      error: "Please select a value from the dropdown",
+    };
+    worksheet.getCell(
+      `${
+        EXCEL_COLUMN_LETTER_MAPPING?.[getIndexOfColumn("LGA of Residence")]
+      }${i}`
+    ).dataValidation = {
+      type: "list",
+      allowBlank: true,
+      formulae: [`"${lgas?.map((item) => item.name).join(",")}"`],
+      showErrorMessage: true,
+      errorTitle: "Invalid input",
+      error: "Please select a value from the dropdown",
+    };
+    worksheet.getCell(
+      `${
+        EXCEL_COLUMN_LETTER_MAPPING?.[getIndexOfColumn("State of Residence")]
+      }${i}`
+    ).dataValidation = {
+      type: "list",
+      allowBlank: false,
+      formulae: [`"${states?.map((item) => item.name).join(",")}"`],
+      showErrorMessage: true,
+      errorTitle: "Invalid input",
+      error: "Please select a value from the dropdown",
+    };
+    worksheet.getCell(
+      `${
+        EXCEL_COLUMN_LETTER_MAPPING?.[getIndexOfColumn("Country of Residence")]
+      }${i}`
+    ).dataValidation = {
+      type: "list",
+      allowBlank: false,
+      formulae: [`"${countries?.map((item) => item.name).join(",")}"`],
+      showErrorMessage: true,
+      errorTitle: "Invalid input",
+      error: "Please select a value from the dropdown",
+    };
+    worksheet.getCell(
+      `${EXCEL_COLUMN_LETTER_MAPPING?.[getIndexOfColumn("Nationality")]}${i}`
+    ).dataValidation = {
+      type: "list",
+      allowBlank: false,
+      formulae: [`"${countries?.map((item) => item.name).join(",")}"`],
+      showErrorMessage: true,
+      errorTitle: "Invalid input",
+      error: "Please select a value from the dropdown",
+    };
+    worksheet.getCell(
+      `${EXCEL_COLUMN_LETTER_MAPPING?.[getIndexOfColumn("Exchange Rate")]}${i}`
+    ).dataValidation = {
+      type: "list",
+      allowBlank: false,
+      formulae: [`"${exchangeRates?.map((item) => item.currency).join(",")}"`],
+      showErrorMessage: true,
+      errorTitle: "Invalid input",
+      error: "Please select a value from the dropdown",
+    };
+    // TODO: Make all key column indexes enums for reusablity & consistency
+    worksheet.getCell(
+      `${EXCEL_COLUMN_LETTER_MAPPING?.[getIndexOfColumn("Gender")]}${i}`
+    ).dataValidation = {
+      type: "list",
+      allowBlank: false,
+      formulae: [`"${GENDERS.map((item) => item.value).join(",")}"`],
+      showErrorMessage: true,
+      errorTitle: "Invalid input",
+      error: "Please select a value from the dropdown",
+    };
+    worksheet.getCell(
+      `${EXCEL_COLUMN_LETTER_MAPPING?.[getIndexOfColumn("Marital Status")]}${i}`
+    ).dataValidation = {
+      type: "list",
+      allowBlank: false,
+      formulae: [`"${MARITAL_STATUSES.map((item) => item.value).join(",")}"`],
+      showErrorMessage: true,
+      errorTitle: "Invalid input",
+      error: "Please select a value from the dropdown",
+    };
+    worksheet.getCell(
+      `${EXCEL_COLUMN_LETTER_MAPPING?.[getIndexOfColumn("Eligibility")]}${i}`
+    ).dataValidation = {
+      type: "list",
+      allowBlank: false,
+      formulae: [`"${EMPLOYMENT_ELIGIBILITIES.map((item) => item).join(",")}"`],
+      showErrorMessage: true,
+      errorTitle: "Invalid input",
+      error: "Please select a value from the dropdown",
+    };
+  }
 };
 
 export const useDownloadEmployeeImportTemplate = () => {
-  const REASONABLE_LIMIT_FOR_ENTITITY_POPULATON = 500;
+  const REASONABLE_LIMIT_FOR_ENTITY_POPULATION = 500;
   const { data: countries } = useFetchCountries();
   const { data: states } = useFetchStates();
   const { data: lgas } = useFetchLgas();
   const { data: employees } = useFetchEmployees({
-    pagination: { limit: REASONABLE_LIMIT_FOR_ENTITITY_POPULATON },
+    pagination: { limit: REASONABLE_LIMIT_FOR_ENTITY_POPULATION },
   });
   const { data: branches } = useFetchBranches({
-    pagination: { limit: REASONABLE_LIMIT_FOR_ENTITITY_POPULATON },
+    pagination: { limit: REASONABLE_LIMIT_FOR_ENTITY_POPULATION },
   });
   const { data: payGrades } = useGetPayGrades({
-    pagination: { limit: REASONABLE_LIMIT_FOR_ENTITITY_POPULATON },
+    pagination: { limit: REASONABLE_LIMIT_FOR_ENTITY_POPULATION },
   });
   const { data: exchangeRates } = useGetExchangeRates({
-    pagination: { limit: REASONABLE_LIMIT_FOR_ENTITITY_POPULATON },
+    pagination: { limit: REASONABLE_LIMIT_FOR_ENTITY_POPULATION },
   });
+
   return useMutation(
     () =>
       generateTemplate({
