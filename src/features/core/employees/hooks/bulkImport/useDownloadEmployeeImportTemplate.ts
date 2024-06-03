@@ -32,7 +32,6 @@ import {
 } from "constants/general";
 import {
   PAYROLL_FREQUENCIES,
-  PAYROLL_FREQUENCIES_OPTIONS,
   PAYROLL_SCHEME_OPTIONS,
 } from "features/payroll/constants";
 import { TState } from "types/states";
@@ -220,20 +219,21 @@ const generateTemplate = async (props: {
 };
 
 export const useDownloadEmployeeImportTemplate = () => {
+  const REASONABLE_LIMIT_FOR_ENTITITY_POPULATON = 500;
   const { data: countries } = useFetchCountries();
   const { data: states } = useFetchStates();
   const { data: lgas } = useFetchLgas();
   const { data: employees } = useFetchEmployees({
-    pagination: { limit: 500, offset: 0 },
+    pagination: { limit: REASONABLE_LIMIT_FOR_ENTITITY_POPULATON },
   });
   const { data: branches } = useFetchBranches({
-    pagination: { limit: 500, offset: 0 },
+    pagination: { limit: REASONABLE_LIMIT_FOR_ENTITITY_POPULATON },
   });
   const { data: payGrades } = useGetPayGrades({
-    pagination: { limit: 500, offset: 0 },
+    pagination: { limit: REASONABLE_LIMIT_FOR_ENTITITY_POPULATON },
   });
   const { data: exchangeRates } = useGetExchangeRates({
-    pagination: { limit: 500, offset: 0 },
+    pagination: { limit: REASONABLE_LIMIT_FOR_ENTITITY_POPULATON },
   });
   return useMutation(
     () =>
