@@ -1,14 +1,3 @@
-// TODO: 1.) Work on Endpoints created recently
-// 2.) Work on the buttons on group members management
-// 3.) Work on organogram
-// 4.) Work on upload company handbook/download handbook
-// 5.) Look at the user dashboard and make comparison btwn admin n employee
-// 6.) Look at employee - add single employee, also branch on table, and employee profile
-// 7.) Look at document is anything unaccounted for
-// 8.) Create payroll: Need to ensure it behaves as intended
-// 9.) Roles & Permissions Implementation - leading to the the organization current resources
-// *.) UGL Payroll Taxation
-
 import { useMutation } from "react-query";
 import { EmployeeMappingSectionKeyType } from "../../types/bulk-import";
 import { useFetchCountries } from "hooks/useFetchCountries";
