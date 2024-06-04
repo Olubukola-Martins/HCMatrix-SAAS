@@ -7,7 +7,6 @@ export const DEFAULT_PENSION_ADMINISTRATORS = [
   "ARM Pension Managers Limited",
   "Crusader Sterling Pensions Limited",
   "FCMB Pensions Limited",
-  "FCMB Pensions Limited",
   "Guaranty Trust Pension Managers Limited",
   "Leadway Pensure PFA Limited",
   "Nigerian University Pension Management Company (NUPEMCO)",
@@ -21,7 +20,7 @@ export const DEFAULT_PENSION_ADMINISTRATORS = [
   "Stanbic IBTC Pension Managers Limited",
   "Tangerine APT Pensions Limited",
   "Trustfund Pensions Limited",
-  "Veritas Glanvills Pensions Limited"
+  "Veritas Glanvills Pensions Limited",
 ];
 export const PAYROLL_FREQUENCIES: TPayrollFrequency[] = ["daily", "monthly"];
 export const ESSENTIAL_PAYROLL_TYPES: TEssentialPayrollType[] = [
