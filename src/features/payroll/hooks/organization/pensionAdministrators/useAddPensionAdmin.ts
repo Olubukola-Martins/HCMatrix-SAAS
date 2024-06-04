@@ -5,7 +5,7 @@ import { useMutation } from "react-query";
 import { ICurrentCompany } from "types";
 
 type TData = {
-  name: string;
+  name: string[];
 };
 const createData = async (props: { data: TData; auth: ICurrentCompany }) => {
   const url = `${MICROSERVICE_ENDPOINTS.PAYROLL}/organization/pension-administrator`;
