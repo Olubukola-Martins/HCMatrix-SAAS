@@ -286,7 +286,7 @@ export const SetUpPayrollForm: React.FC<{
 }) => {
   const [state, dispatch] = useReducer(reducer, {
     ...initialState,
-    projectParticipants: project?.employees.map((item) => ({
+    projectParticipants: project?.employees?.map((item) => ({
       id: item.id,
       key: item.employee.empUid,
 
