@@ -158,7 +158,7 @@ export const SalaryComponentsContainer: React.FC<IProps> = ({
           <div className="flex justify-between">
             <AppButton label="Delete" variant="transparent" />
             <div className="flex gap-2">
-              <AppButton label="Bulk Upload" variant="transparent" />
+              {/* <AppButton label="Bulk Upload" variant="transparent" /> */}
               <AppButton
                 label={`Add ${type}`}
                 handleClick={() => setShowD("add-comp")}
