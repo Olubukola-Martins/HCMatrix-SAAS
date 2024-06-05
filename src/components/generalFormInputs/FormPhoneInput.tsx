@@ -3,6 +3,7 @@ import { useFetchCountries } from "hooks/useFetchCountries";
 
 import React, { useState } from "react";
 import { TCountry } from "types/country";
+import { removeDuplicateAttributeEntriesFromArray } from "utils/dataHelpers/removeDuplicateAttributeEntriesFromArray";
 import {
   generalValidationRules,
   phoneNumberValidationRule,
@@ -61,7 +62,10 @@ export const FormPhoneInput: React.FC<{
               defaultActiveFirstOption={false}
               showArrow={false}
               filterOption={false}
-              options={mainCountries?.map((item) => ({
+              options={removeDuplicateAttributeEntriesFromArray(
+                mainCountries ?? [],
+                "code"
+              )?.map((item) => ({
                 label: (
                   <span className="flex gap-x-2">
                     <span

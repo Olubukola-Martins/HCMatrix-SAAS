@@ -1132,7 +1132,7 @@ export const SetUpPayrollForm: React.FC<{
                 <div className="flex items-center justify-between">
                   <h5
                     className={boxTitle}
-                    title="Manage all of the postive finiacial benefits that make up employees' pay"
+                    title="Manage all of the postive financial benefits that make up employees' pay"
                   >
                     Allowances
                   </h5>
@@ -1142,7 +1142,7 @@ export const SetUpPayrollForm: React.FC<{
                   />
                 </div>
                 <p className="text-sm">
-                  Manage all of the postive finiacial benefits that make up
+                  Manage all of the postive financial benefits that make up
                   employees' pay
                 </p>
                 {displayAllowances && (
@@ -1169,7 +1169,7 @@ export const SetUpPayrollForm: React.FC<{
                 <div className="flex items-center justify-between">
                   <h5
                     className={boxTitle}
-                    title="Manage all of the negative finiacial benefits that make up employees' pay"
+                    title="Manage all of the negative financial benefits that make up employees' pay"
                   >
                     Deductions
                   </h5>
@@ -1179,7 +1179,7 @@ export const SetUpPayrollForm: React.FC<{
                   />
                 </div>
                 <p className="text-sm">
-                  Manage all of the negative finiacial benefits that make up
+                  Manage all of the negative financial benefits that make up
                   employees' pay
                 </p>
                 {displayDeductions && (
