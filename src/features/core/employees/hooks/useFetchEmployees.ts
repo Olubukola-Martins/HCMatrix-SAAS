@@ -54,8 +54,8 @@ export const getEmployees = async (
       designationId,
       branchId,
       gender,
-      status: props?.status?.toString(),
-      licenseType: props?.licenseType?.toString(),
+      status: props?.status?.join(","),
+      licenseType: props?.licenseType?.join(","),
       search: props?.searchParams?.name,
       limit,
       offset,
@@ -91,6 +91,7 @@ export const useFetchEmployees = ({
   designationId,
   branchId,
   gender,
+  licenseType,
 }: TFetchListDataExtraProps &
   TEmployeeFilterProps & {
     onSuccess?: Function;
@@ -108,6 +109,7 @@ export const useFetchEmployees = ({
       designationId,
       branchId,
       gender,
+      licenseType,
     ],
     () =>
       getEmployees({
@@ -121,6 +123,7 @@ export const useFetchEmployees = ({
         designationId,
         branchId,
         gender,
+        licenseType,
       }),
     {
       // refetchInterval: false,
