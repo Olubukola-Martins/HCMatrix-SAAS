@@ -17,9 +17,7 @@ const createData = async (props: { data: TData; auth: ICurrentCompany }) => {
     },
   };
 
-  const data: TData = {
-    ...props.data,
-  };
+  const data = props.data.name.map((val) => ({ name: val }));
 
   const response = await axios.post(url, data, config);
   return response;
