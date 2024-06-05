@@ -20,6 +20,7 @@
     "aos": "^2.3.4",
     "axios": "^0.27.2",
     "chart.js": "^3.9.1",
+    "exceljs": "^4.4.0",
     "faker": "^6.6.6",
     "firebase": "^9.21.0",
     "framer-motion": "^6.3.11",

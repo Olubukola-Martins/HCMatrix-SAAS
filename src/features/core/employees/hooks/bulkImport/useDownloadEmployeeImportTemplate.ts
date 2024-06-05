@@ -1,5 +1,9 @@
 import { useMutation } from "react-query";
-import { EmployeeMappingSectionKeyType } from "../../types/bulk-import";
+import {
+  EmployeeBulkTemplateColumnName,
+  EmployeeBulkTemplateExportSheetName,
+  EmployeeMappingSectionKeyType,
+} from "../../types/bulk-import";
 import { useFetchCountries } from "hooks/useFetchCountries";
 import { TCountry } from "types/country";
 import { TEmployee } from "../../types";
@@ -9,7 +13,7 @@ import { useFetchEmployees } from "../useFetchEmployees";
 import { useFetchBranches } from "features/core/branches/hooks/useFetchBranches";
 import { useGetPayGrades } from "features/payroll/hooks/payGrades/useGetPayGrades";
 import { useGetExchangeRates } from "features/payroll/hooks/exhangeRates/useGetExchangeRates";
-import * as XLSX from "xlsx";
+import ExcelJS from "exceljs";
 import { getEmployeeFullName } from "../../utils/getEmployeeFullName";
 import {
   EMPLOYMENT_ELIGIBILITIES,
@@ -20,18 +24,24 @@ import {
   WORK_MODELS,
 } from "constants/general";
 import {
+  ESSENTIAL_PAYROLL_TYPES,
   PAYROLL_FREQUENCIES,
-  PAYROLL_SCHEME_OPTIONS,
 } from "features/payroll/constants";
 import { TState } from "types/states";
 import { TLga } from "types/lgas";
 import { useFetchStates } from "hooks/useFetchStates";
 import { useFetchLgas } from "hooks/useFetchLGAs";
 import { TIME_ZONES } from "constants/timeZones";
+import download from "js-file-download";
+import { LICENSE_TYPES } from "../../constants";
+import {
+  EXCEL_COLUMN_LETTER_MAPPING,
+  REASONABLE_AMOUNT_OF_ROWS_TO_HAVE_EXCEL_CELL_VALIDATION,
+} from "constants/excel";
 
 type TResponse = any;
 const EMPLOYEE_IMPORT_DOWNLOAD = "employee-import.xlsx";
-
+const REASONABLE_LIMIT_FOR_ENTITY_POPULATION = 500;
 export type TBulkEmployeeImportError = {
   content: string;
   category: EmployeeMappingSectionKeyType;
@@ -47,13 +57,11 @@ type TDependencies = {
   payGrades?: TPayGrade[];
   exchangeRates?: TExchangeRateListItem[];
 };
+
 const generateTemplate = async (props: {
-  // auth: ICurrentCompany;
   dependencies: TDependencies;
 }): Promise<TResponse> => {
   const { dependencies } = props;
-
-  //   dependcies
   const {
     countries,
     branches,
@@ -65,165 +73,253 @@ const generateTemplate = async (props: {
     timezones,
   } = dependencies;
 
-  //   This Data will just be to create AND NOT update for the time being
-
-  // Process Data (add a new row)
-  const creareBaseRow = (indexIncrement: number) => ({
-    "First Name": "Uche",
-    "Last Name": "Labidi",
-    "Employee ID": `SNAP000${indexIncrement + 1}`,
-    "License Type": "licensed",
-    Email: "uche@example.com",
-    "Date of Birth": "12/28/1995",
-    Gender: GENDERS?.[indexIncrement]?.value ?? GENDERS?.[0]?.value,
-    "Phone Number": "08000000000",
-    Eligibility:
-      EMPLOYMENT_ELIGIBILITIES?.[indexIncrement] ??
-      EMPLOYMENT_ELIGIBILITIES?.[0],
-    "Exchange Rate":
-      exchangeRates?.[indexIncrement]?.currency ??
-      "Please set up exhange rate in settings",
-    "Marital Status":
-      MARITAL_STATUSES?.[indexIncrement]?.value ?? MARITAL_STATUSES?.[0]?.value,
-    Nationality:
-      countries?.[indexIncrement].name ?? "Please set up country in settings",
-    "Street Address": "no.9 James Boulevard, Victoria Island",
-    "Country of Residence":
-      countries?.[indexIncrement].name ?? "Please set up country in settings",
-    "State of Residence":
-      states?.[indexIncrement].name ?? "Please set up state in settings",
-    "LGA of Residence":
-      lgas?.[indexIncrement].name ?? "Please set up lga in settings",
-    "Timezone of Residence":
-      timezones?.[indexIncrement].value ?? "Please set up timezone in settings",
-    "Passport Expiration Date": "12/28/2025",
-    "Alternative Email": "uche.alt@example.com",
-    "Alternative Phone Number": "08000000000",
-    NIN: "56787023555000",
-    "Employment Type":
-      EMPLOYMENT_TYPES?.[indexIncrement]?.value ?? EMPLOYMENT_TYPES?.[0]?.value,
-    "Work Model":
-      WORK_MODELS?.[indexIncrement]?.value ?? WORK_MODELS?.[0]?.value,
-    "No of Days Per Week": "5",
-    "Hire Date": "01/10/2024",
-    "Start Date": "01/11/2024",
-    "Probation End Date": "01/12/2024",
-    "Confirmation Date": "01/13/2024",
-    "Line Manager": `SNAP000${indexIncrement * (2 + 23)}`,
-    Branch:
-      branches?.[indexIncrement]?.name ?? "Please set up branch in settings",
-    "Payroll Type":
-      PAYROLL_SCHEME_OPTIONS?.[indexIncrement]?.value ??
-      PAYROLL_SCHEME_OPTIONS?.[0]?.value,
-    "Monthly Gross": "10000000",
-    "Pay Grade":
-      payGrades?.[indexIncrement]?.name ??
-      "Please set up pay grade in settings",
-    "Payroll Frequency":
-      PAYROLL_FREQUENCIES?.[indexIncrement] ?? PAYROLL_FREQUENCIES?.[0],
-    "Hourly Rate": "7300",
-    "Emergency Contact Name": "Uche Okeke",
-    "Emergency Contact Relationship":
-      RELATIONSHIPS?.[indexIncrement].value ?? RELATIONSHIPS?.[0].value,
-    "Emergency Contact Address": "no.9 James Boulevard, Victoria Island",
-    "Emergency Contact Phone": "08000000010",
-  });
   const NO_OF_EXAMPLES_PROVIDED_TO_USER = 10;
-  const rows = Array(NO_OF_EXAMPLES_PROVIDED_TO_USER)
-    .fill(0)
-    .map((_, index) => creareBaseRow(index));
-  const importWorkSheet = XLSX.utils.json_to_sheet(rows);
-  const statesWorksheet = XLSX.utils.json_to_sheet(
-    states?.map((item) => ({
-      Name: item.name,
-    })) ?? []
+
+  const rows = createExampleRows(
+    employees,
+    exchangeRates,
+    countries,
+    states,
+    lgas,
+    timezones,
+    branches,
+    payGrades,
+    NO_OF_EXAMPLES_PROVIDED_TO_USER
   );
-  const lgasWorksheet = XLSX.utils.json_to_sheet(
-    lgas?.map((item) => ({
-      Name: item.name,
-    })) ?? []
+
+  const workbook = new ExcelJS.Workbook();
+
+  // Function to add a worksheet with data
+  const addWorksheet = (
+    name: EmployeeBulkTemplateExportSheetName,
+    data: Record<string, string | undefined | null>[],
+    headers?: string[]
+  ) => {
+    data = data ?? [];
+    headers = headers ?? Object.keys(data?.[0] || {});
+    const worksheet = workbook.addWorksheet(name);
+    // set  the column widths
+    worksheet.columns = headers.map((key) => ({
+      header: key,
+      key: key,
+      width:
+        Math.max(
+          ...data?.map((row) => {
+            const defaultWidth = 30;
+            if (row?.[key]?.length) {
+              return row?.[key]?.length ?? defaultWidth;
+            }
+            return defaultWidth;
+          }),
+          key.length
+        ) + 2,
+    }));
+    worksheet.addRows(data);
+    return worksheet;
+  };
+
+  const importWorkSheet = addWorksheet(
+    EmployeeBulkTemplateExportSheetName.MAIN_IMPORT_FILE,
+    rows
+    // Object.keys(rows?.[0] || {})
   );
-  const timezoneWorksheet = XLSX.utils.json_to_sheet(
-    timezones?.map((item) => ({
-      Name: item.value,
-    })) ?? []
+  addWorksheet(
+    EmployeeBulkTemplateExportSheetName.COUNTRIES,
+    countries?.map((item) => ({ Name: item.name })) ?? []
   );
-  const branchesWorksheet = XLSX.utils.json_to_sheet(
+  addWorksheet(
+    EmployeeBulkTemplateExportSheetName.STATES,
+    states?.map((item) => ({ Name: item.name })) ?? []
+  );
+  addWorksheet(
+    EmployeeBulkTemplateExportSheetName.LOCAL_GOVERNMENTS,
+    lgas?.map((item) => ({ Name: item.name })) ?? []
+  );
+  addWorksheet(
+    EmployeeBulkTemplateExportSheetName.TIMEZONES,
+    timezones?.map((item) => ({ Name: item.value })) ?? []
+  );
+  addWorksheet(
+    EmployeeBulkTemplateExportSheetName.BRANCHES,
     branches?.map((item) => ({
       Name: item.name,
-      Desciption: item.description,
+      Description: item.description,
     })) ?? []
   );
-  const exchangeRatesWorksheet = XLSX.utils.json_to_sheet(
-    exchangeRates?.map((item) => ({
-      Name: item.currency,
-    })) ?? []
+  addWorksheet(
+    EmployeeBulkTemplateExportSheetName.EXCHANGE_RATES,
+    exchangeRates?.map((item) => ({ Name: item.currency })) ?? []
   );
-  const employeesWorksheet = XLSX.utils.json_to_sheet(
+  addWorksheet(
+    EmployeeBulkTemplateExportSheetName.EMPLOYEES,
     employees?.map((item) => ({
       "Employee ID": item.empUid,
       Name: getEmployeeFullName(item),
     })) ?? []
   );
-  const countriesWorksheet = XLSX.utils.json_to_sheet(
-    countries?.map((item) => ({
-      Name: item.name,
-    })) ?? []
-  );
-  const payGradesWorksheet = XLSX.utils.json_to_sheet(
+  addWorksheet(
+    EmployeeBulkTemplateExportSheetName.PAYGRADES,
     payGrades?.map((item) => ({
       Name: item.name,
       "Gross Pay": item.grossPay,
     })) ?? []
   );
-  const workbook = XLSX.utils.book_new();
 
-  /* calculate column width */
-  importWorkSheet["!cols"] = Object.keys(rows[0]).map((key) => ({
-    wch: rows.reduce(
-      (w, r: { [key: string]: string }) =>
-        Math.max(w, Math.max(r[key].length, key.length)),
-      12
-    ),
-  }));
-  //   XLSX.utils.sheet_set_array_formula(importWorkSheet, "D2", "=Yes, No");
-  XLSX.utils.book_append_sheet(workbook, importWorkSheet, "MAIN IMPORT FILE");
-  XLSX.utils.book_append_sheet(workbook, countriesWorksheet, "Countries");
-  XLSX.utils.book_append_sheet(workbook, statesWorksheet, "States");
-  XLSX.utils.book_append_sheet(workbook, lgasWorksheet, "Local Governments");
-  XLSX.utils.book_append_sheet(workbook, timezoneWorksheet, "Timezones");
-  XLSX.utils.book_append_sheet(workbook, payGradesWorksheet, "Pay Grades");
-  XLSX.utils.book_append_sheet(workbook, branchesWorksheet, "Branches");
-  XLSX.utils.book_append_sheet(
-    workbook,
-    exchangeRatesWorksheet,
-    "Exchange Rates"
-  );
-  XLSX.utils.book_append_sheet(workbook, employeesWorksheet, "Employees");
-  //   XLSX.utils.sheet_add_aoa(ws, [["Created "+new Date().toISOString()]], {origin:-1});
+  const importWorkSheetColumns = Object.keys(rows[0]);
 
-  // Package and Release Data (`writeFile` tries to write and save an XLSB file)
-  return XLSX.writeFile(workbook, EMPLOYEE_IMPORT_DOWNLOAD);
-  //   return download(response, EMPLOYEE_IMPORT_DOWNLOAD);
+  // Add data validation to cells
+  validateImportWorkSheetCells(importWorkSheet, importWorkSheetColumns);
+
+  // Write the workbook to a buffer
+  const buffer = await workbook.xlsx.writeBuffer();
+
+  // Use FileSaver to save the file
+  download(new Blob([buffer]), EMPLOYEE_IMPORT_DOWNLOAD);
+};
+
+const validateImportWorkSheetCells = (
+  worksheet: ExcelJS.Worksheet,
+  importWorkSheetColumns: string[]
+) => {
+  const getIndexOfColumn = (col: EmployeeBulkTemplateColumnName): number => {
+    return importWorkSheetColumns.indexOf(col) + 1;
+  };
+  const columnFormulaMappings: {
+    name: EmployeeBulkTemplateColumnName;
+    formulae: string[];
+    allowBlank?: boolean;
+  }[] = [
+    {
+      name: EmployeeBulkTemplateColumnName.LICENSE_TYPE,
+      formulae: [`"${LICENSE_TYPES.join(",")}"`],
+    },
+    {
+      name: EmployeeBulkTemplateColumnName.GENDER,
+      formulae: [`"${GENDERS.map((item) => item.value).join(",")}"`],
+    },
+    {
+      name: EmployeeBulkTemplateColumnName.EMPLOYMENT_TYPE,
+      formulae: [`"${EMPLOYMENT_TYPES.map((item) => item.value).join(",")}"`],
+    },
+    {
+      name: EmployeeBulkTemplateColumnName.WORK_MODEL,
+      formulae: [`"${WORK_MODELS.map((item) => item.value).join(",")}"`],
+    },
+    {
+      name: EmployeeBulkTemplateColumnName.ELIGIBILITY,
+      formulae: [`"${EMPLOYMENT_ELIGIBILITIES.join(",")}"`],
+    },
+    {
+      name: EmployeeBulkTemplateColumnName.PAYROLL_TYPE,
+      formulae: [`"${ESSENTIAL_PAYROLL_TYPES.join(",")}"`],
+    },
+    {
+      name: EmployeeBulkTemplateColumnName.PAYROLL_FREQUENCY,
+      formulae: [`"${PAYROLL_FREQUENCIES.join(",")}"`],
+    },
+    {
+      name: EmployeeBulkTemplateColumnName.EMERGENCY_CONTACT_RELATIONSHIP,
+      formulae: [`"${RELATIONSHIPS.map((item) => item.value).join(",")}"`],
+    },
+    {
+      name: EmployeeBulkTemplateColumnName.LINE_MANAGER,
+      formulae: [
+        `${EmployeeBulkTemplateExportSheetName.EMPLOYEES}!$A$2:$A$${REASONABLE_LIMIT_FOR_ENTITY_POPULATION}`,
+      ],
+    },
+    {
+      name: EmployeeBulkTemplateColumnName.EXCHANGE_RATE,
+      formulae: [
+        `${EmployeeBulkTemplateExportSheetName.EXCHANGE_RATES}!$A$2:$A$${REASONABLE_LIMIT_FOR_ENTITY_POPULATION}`,
+      ],
+    },
+    {
+      name: EmployeeBulkTemplateColumnName.MARITAL_STATUS,
+      formulae: [`"${MARITAL_STATUSES.map((item) => item.value).join(",")}"`],
+    },
+    {
+      name: EmployeeBulkTemplateColumnName.NATIONALITY,
+      formulae: [
+        `${EmployeeBulkTemplateExportSheetName.COUNTRIES}!$A$2:$A$${REASONABLE_LIMIT_FOR_ENTITY_POPULATION}`,
+      ],
+    },
+    {
+      name: EmployeeBulkTemplateColumnName.COUNTRY_OF_RESIDENCE,
+      formulae: [
+        `${EmployeeBulkTemplateExportSheetName.COUNTRIES}!$A$2:$A$${REASONABLE_LIMIT_FOR_ENTITY_POPULATION}`,
+      ],
+    },
+    {
+      name: EmployeeBulkTemplateColumnName.STATE_OF_RESIDENCE,
+      formulae: [
+        `${EmployeeBulkTemplateExportSheetName.STATES}!$A$2:$A$${REASONABLE_LIMIT_FOR_ENTITY_POPULATION}`,
+      ],
+    },
+    {
+      name: EmployeeBulkTemplateColumnName.LGA_OF_RESIDENCE,
+      allowBlank: true,
+      formulae: [
+        `${EmployeeBulkTemplateExportSheetName.LOCAL_GOVERNMENTS}!$A$2:$A$${REASONABLE_LIMIT_FOR_ENTITY_POPULATION}`,
+      ],
+    },
+    {
+      name: EmployeeBulkTemplateColumnName.TIMEZONE_OF_RESIDENCE,
+      formulae: [
+        `${EmployeeBulkTemplateExportSheetName.TIMEZONES}!$A$2:$A$${REASONABLE_LIMIT_FOR_ENTITY_POPULATION}`,
+      ],
+    },
+    {
+      name: EmployeeBulkTemplateColumnName.BRANCH,
+      formulae: [
+        `${EmployeeBulkTemplateExportSheetName.BRANCHES}!$A$2:$A$${REASONABLE_LIMIT_FOR_ENTITY_POPULATION}`,
+      ],
+    },
+    {
+      name: EmployeeBulkTemplateColumnName.PAY_GRADE,
+      allowBlank: true,
+      formulae: [
+        `${EmployeeBulkTemplateExportSheetName.PAYGRADES}!$A$2:$A$${REASONABLE_LIMIT_FOR_ENTITY_POPULATION}`,
+      ],
+    },
+  ];
+  for (
+    let i = 2;
+    i < REASONABLE_AMOUNT_OF_ROWS_TO_HAVE_EXCEL_CELL_VALIDATION;
+    i++
+  ) {
+    columnFormulaMappings.forEach(({ name, formulae, allowBlank = false }) => {
+      worksheet.getCell(
+        `${EXCEL_COLUMN_LETTER_MAPPING?.[getIndexOfColumn(name)]}${i}`
+      ).dataValidation = {
+        type: "list",
+        allowBlank,
+        formulae,
+        showErrorMessage: true,
+        errorTitle: "Invalid input",
+        error: "Please select a value from the dropdown",
+      };
+    });
+  }
+  Promise.resolve();
 };
 
 export const useDownloadEmployeeImportTemplate = () => {
-  const REASONABLE_LIMIT_FOR_ENTITITY_POPULATON = 500;
   const { data: countries } = useFetchCountries();
   const { data: states } = useFetchStates();
   const { data: lgas } = useFetchLgas();
   const { data: employees } = useFetchEmployees({
-    pagination: { limit: REASONABLE_LIMIT_FOR_ENTITITY_POPULATON },
+    pagination: { limit: REASONABLE_LIMIT_FOR_ENTITY_POPULATION },
   });
   const { data: branches } = useFetchBranches({
-    pagination: { limit: REASONABLE_LIMIT_FOR_ENTITITY_POPULATON },
+    pagination: { limit: REASONABLE_LIMIT_FOR_ENTITY_POPULATION },
   });
   const { data: payGrades } = useGetPayGrades({
-    pagination: { limit: REASONABLE_LIMIT_FOR_ENTITITY_POPULATON },
+    pagination: { limit: REASONABLE_LIMIT_FOR_ENTITY_POPULATION },
   });
   const { data: exchangeRates } = useGetExchangeRates({
-    pagination: { limit: REASONABLE_LIMIT_FOR_ENTITITY_POPULATON },
+    pagination: { limit: REASONABLE_LIMIT_FOR_ENTITY_POPULATION },
   });
+
   return useMutation(
     () =>
       generateTemplate({
@@ -240,4 +336,85 @@ export const useDownloadEmployeeImportTemplate = () => {
       }),
     {}
   );
+};
+const createExampleRows = (
+  employees: TEmployee[] | undefined,
+  exchangeRates: TExchangeRateListItem[] | undefined,
+  countries: TCountry[] | undefined,
+  states: TState[] | undefined,
+  lgas: TLga[] | undefined,
+  timezones: { label: string; value: string }[] | undefined,
+  branches: TBranch[] | undefined,
+  payGrades: TPayGrade[] | undefined,
+  NO_OF_EXAMPLES_PROVIDED_TO_USER: number
+) => {
+  const createBaseRow = (
+    indexIncrement: number
+  ): Record<EmployeeBulkTemplateColumnName, string | undefined | null> => ({
+    [EmployeeBulkTemplateColumnName.FIRST_NAME]: "Uche",
+    [EmployeeBulkTemplateColumnName.LAST_NAME]: "Labidi",
+    [EmployeeBulkTemplateColumnName.EMPLOYEE_ID]: `SNAP000${indexIncrement}`,
+    [EmployeeBulkTemplateColumnName.LICENSE_TYPE]:
+      LICENSE_TYPES?.[indexIncrement] ?? LICENSE_TYPES?.[0],
+    [EmployeeBulkTemplateColumnName.EMAIL]: "uche@example.com",
+    [EmployeeBulkTemplateColumnName.DATE_OF_BIRTH]: "12/28/1995",
+    [EmployeeBulkTemplateColumnName.GENDER]:
+      GENDERS?.[indexIncrement]?.value ?? GENDERS?.[0]?.value,
+    [EmployeeBulkTemplateColumnName.PHONE_NUMBER]: "08000000000",
+    [EmployeeBulkTemplateColumnName.ELIGIBILITY]:
+      EMPLOYMENT_ELIGIBILITIES?.[indexIncrement] ??
+      EMPLOYMENT_ELIGIBILITIES?.[0],
+    [EmployeeBulkTemplateColumnName.EXCHANGE_RATE]:
+      exchangeRates?.[indexIncrement]?.currency ?? exchangeRates?.[0]?.currency,
+    [EmployeeBulkTemplateColumnName.MARITAL_STATUS]:
+      MARITAL_STATUSES?.[indexIncrement]?.value ?? MARITAL_STATUSES?.[0]?.value,
+    [EmployeeBulkTemplateColumnName.NATIONALITY]:
+      countries?.[indexIncrement]?.name ?? countries?.[0]?.name,
+    [EmployeeBulkTemplateColumnName.STREET_ADDRESS]:
+      "no.9 James Boulevard, Victoria Island",
+    [EmployeeBulkTemplateColumnName.COUNTRY_OF_RESIDENCE]:
+      countries?.[indexIncrement]?.name ?? countries?.[0]?.name,
+    [EmployeeBulkTemplateColumnName.STATE_OF_RESIDENCE]:
+      states?.[indexIncrement]?.name ?? states?.[0]?.name,
+    [EmployeeBulkTemplateColumnName.LGA_OF_RESIDENCE]:
+      lgas?.[indexIncrement]?.name ?? lgas?.[0]?.name,
+    [EmployeeBulkTemplateColumnName.TIMEZONE_OF_RESIDENCE]:
+      timezones?.[indexIncrement]?.value ?? timezones?.[0]?.value,
+    [EmployeeBulkTemplateColumnName.PASSPORT_EXPIRATION_DATE]: "12/28/2025",
+    [EmployeeBulkTemplateColumnName.ALTERNATIVE_EMAIL]: "uche.alt@example.com",
+    [EmployeeBulkTemplateColumnName.ALTERNATIVE_PHONE_NUMBER]: "08000000000",
+    [EmployeeBulkTemplateColumnName.NIN]: "56787023555000",
+    [EmployeeBulkTemplateColumnName.EMPLOYMENT_TYPE]:
+      EMPLOYMENT_TYPES?.[indexIncrement]?.value ?? EMPLOYMENT_TYPES?.[0]?.value,
+    [EmployeeBulkTemplateColumnName.WORK_MODEL]:
+      WORK_MODELS?.[indexIncrement]?.value ?? WORK_MODELS?.[0]?.value,
+    [EmployeeBulkTemplateColumnName.NO_OF_DAYS_PER_WEEK]: "5",
+    [EmployeeBulkTemplateColumnName.HIRE_DATE]: "01/10/2024",
+    [EmployeeBulkTemplateColumnName.START_DATE]: "01/11/2024",
+    [EmployeeBulkTemplateColumnName.PROBATION_END_DATE]: "01/12/2024",
+    [EmployeeBulkTemplateColumnName.CONFIRMATION_DATE]: "01/13/2024",
+    [EmployeeBulkTemplateColumnName.LINE_MANAGER]:
+      employees?.[indexIncrement]?.empUid ?? employees?.[0]?.empUid,
+    [EmployeeBulkTemplateColumnName.BRANCH]:
+      branches?.[indexIncrement]?.name ?? branches?.[0]?.name,
+    [EmployeeBulkTemplateColumnName.PAYROLL_TYPE]:
+      ESSENTIAL_PAYROLL_TYPES?.[indexIncrement] ?? ESSENTIAL_PAYROLL_TYPES?.[0],
+    [EmployeeBulkTemplateColumnName.MONTHLY_GROSS]: `1000${indexIncrement}000`,
+    [EmployeeBulkTemplateColumnName.PAY_GRADE]:
+      payGrades?.[indexIncrement]?.name ?? payGrades?.[0]?.name,
+    [EmployeeBulkTemplateColumnName.PAYROLL_FREQUENCY]:
+      PAYROLL_FREQUENCIES?.[indexIncrement] ?? PAYROLL_FREQUENCIES?.[0],
+    [EmployeeBulkTemplateColumnName.HOURLY_RATE]: "7300",
+    [EmployeeBulkTemplateColumnName.EMERGENCY_CONTACT_NAME]: "Uche Okeke",
+    [EmployeeBulkTemplateColumnName.EMERGENCY_CONTACT_RELATIONSHIP]:
+      RELATIONSHIPS?.[indexIncrement]?.value ?? RELATIONSHIPS?.[0]?.value,
+    [EmployeeBulkTemplateColumnName.EMERGENCY_CONTACT_ADDRESS]:
+      "no.9 James Boulevard, Victoria Island",
+    [EmployeeBulkTemplateColumnName.EMERGENCY_CONTACT_PHONE]: "08000000010",
+  });
+
+  const rows = Array(NO_OF_EXAMPLES_PROVIDED_TO_USER)
+    .fill(0)
+    .map((_, index) => createBaseRow(index));
+  return rows;
 };
