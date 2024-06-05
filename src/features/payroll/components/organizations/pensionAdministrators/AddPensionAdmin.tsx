@@ -66,6 +66,7 @@ const AddPensionAdmin: React.FC<IModalProps> = ({ open, handleClose }) => {
         <Form.Item rules={generalValidationRules} name="name" label="Name">
           <Select
             placeholder="Name"
+            mode="multiple"
             options={DEFAULT_PENSION_ADMINISTRATORS.map((item) => ({
               label: <span className="capitalize">{item}</span>,
               value: item,
