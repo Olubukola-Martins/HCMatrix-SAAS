@@ -1,5 +1,6 @@
 import React from "react";
 import { IDivProps } from "types/html";
+import FilterDBBtn, { TFilterAttendanceDBBtnProps } from "./FilterDBBtn";
 
 type IProps = IDivProps & {
   greeting: string;
@@ -7,6 +8,7 @@ type IProps = IDivProps & {
   welcomeNoteData: string;
   month: string;
   fullYear: string | number;
+  filterProps: TFilterAttendanceDBBtnProps;
 };
 const AttendanceWelcomeHeader: React.FC<IProps> = ({
   className = "flex justify-between",
@@ -15,6 +17,7 @@ const AttendanceWelcomeHeader: React.FC<IProps> = ({
   month,
   fullYear,
   welcomeNoteData,
+  filterProps,
 }) => {
   return (
     <div className={className}>
@@ -24,13 +27,14 @@ const AttendanceWelcomeHeader: React.FC<IProps> = ({
         </h2>
         <p>{welcomeNoteData}</p>
       </div>
-      <div>
+      <div className="space-x-4 flex items-start">
         <button className="border rounded px-3 py-2 flex items-center gap-x-3 font-medium">
           <i className="ri-calendar-2-line"></i>
           <span>
             {month} {fullYear}
           </span>
         </button>
+        <FilterDBBtn {...filterProps} />
       </div>
     </div>
   );

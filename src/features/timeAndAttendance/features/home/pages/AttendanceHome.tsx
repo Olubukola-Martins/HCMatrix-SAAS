@@ -13,6 +13,7 @@ import WhoIsOut from "features/home/components/whoIsOut/WhoIsOut";
 import AttendancePunctualityHomeCard from "../components/home/AttendancePunctualityHomeCard";
 import AttendanceStatusHomeCard from "../components/home/AttendanceStatusHomeCard";
 import AttendanceWelcomeHeader from "../components/home/AttendanceWelcomeHeader";
+import { TFilterAttendanceDBFormProps } from "../components/home/FilterDBBtn";
 
 export const AttendanceHome = () => {
   const [greeting, setGreeting] = useState("");
@@ -26,6 +27,9 @@ export const AttendanceHome = () => {
 
   const { user } = useMostRecentApiAuth();
   const { data: welcomeNoteData } = useWelcomeNote();
+  const [filterProps, setFilterProps] = useState<TFilterAttendanceDBFormProps>(
+    {}
+  );
 
   useEffect(() => {
     if (hour >= 5 && hour < 12) {
@@ -52,6 +56,10 @@ export const AttendanceHome = () => {
             greeting,
             userFullName: user?.fullName,
             welcomeNoteData,
+            filterProps: {
+              handleSubmit: (val) => setFilterProps(val),
+              formData: filterProps,
+            },
           }}
           className="flex justify-between col-span-4"
         />
