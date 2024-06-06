@@ -28,7 +28,7 @@ const createData = async (props: {
   return fetchedData;
 };
 
-export const useSaveMultipleWorkSheduleCategories = () => {
+export const useCreateWorkSheduleShiftCategory = () => {
   const { token, companyId } = useApiAuth();
   return useMutation((data: TData) =>
     createData({ data, auth: { token, companyId } })
