@@ -8,6 +8,7 @@ import { confirmActionSvg } from "assets/images";
 import { useEmployeeBulkUpload } from "../../hooks/useEmployeeBulkUpload";
 import { QUERY_KEY_FOR_LIST_OF_EMPLOYEES } from "../../hooks/useFetchEmployees";
 import { useQueryClient } from "react-query";
+import { errorFormatter } from "utils/errorHelpers";
 
 interface IProps {
   handleClose: () => void;
@@ -21,40 +22,11 @@ const EmployeeDataImportConfirmation: React.FC<IProps> = ({
   dataToBeSubmitted,
   confirmationMessages,
 }) => {
-  const queryClient = useQueryClient();
-
-  const { mutate, isLoading } = useEmployeeBulkUpload();
+  const { mutate, isLoading } = useEmployeeBulkUpload(handleClose);
   const handleVerification = () => {
-    mutate(
-      {
-        data: dataToBeSubmitted,
-      },
-      {
-        onError: (err: any) => {
-          openNotification({
-            state: "error",
-            title: "Error Occurred",
-            description:
-              err?.response.data.message ?? err?.response.data.error.message,
-          });
-        },
-        onSuccess: (res: any) => {
-          openNotification({
-            state: "success",
-
-            title: "Success",
-            description: res.data.message,
-            // duration: 0.4,
-          });
-          handleClose();
-
-          queryClient.invalidateQueries({
-            queryKey: [QUERY_KEY_FOR_LIST_OF_EMPLOYEES],
-            // exact: true,
-          });
-        },
-      }
-    );
+    mutate({
+      data: dataToBeSubmitted,
+    });
   };
   return (
     <div>
@@ -75,7 +47,7 @@ const EmployeeDataImportConfirmation: React.FC<IProps> = ({
 
         <>
           <AppButton
-            label="Verify"
+            label="Confirm"
             handleClick={handleVerification}
             isLoading={isLoading}
           />

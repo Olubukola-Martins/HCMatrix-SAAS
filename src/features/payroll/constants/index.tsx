@@ -2,6 +2,26 @@ import { TTransactionStatus, TTransactionType } from "../types";
 import { TPayrollFrequency, TEssentialPayrollType } from "../types/payroll";
 import { TPayrollSchemeType } from "../types/payrollSchemes";
 
+export const DEFAULT_PENSION_ADMINISTRATORS = [
+  "Access Pensions Limited",
+  "ARM Pension Managers Limited",
+  "Crusader Sterling Pensions Limited",
+  "FCMB Pensions Limited",
+  "Guaranty Trust Pension Managers Limited",
+  "Leadway Pensure PFA Limited",
+  "Nigerian University Pension Management Company (NUPEMCO)",
+  "NLPC Pension Fund Administrators Limited",
+  "Norrenberger Pensions Limited",
+  "NPF Pensions Fund Administrators Limited",
+  "OAK Pensions Limited",
+  "Pensions Alliance Limited",
+  "Premium Pension Limited",
+  "Radix Pension Managers Limited",
+  "Stanbic IBTC Pension Managers Limited",
+  "Tangerine APT Pensions Limited",
+  "Trustfund Pensions Limited",
+  "Veritas Glanvills Pensions Limited",
+];
 export const PAYROLL_FREQUENCIES: TPayrollFrequency[] = ["daily", "monthly"];
 export const ESSENTIAL_PAYROLL_TYPES: TEssentialPayrollType[] = [
   "direct-salary",

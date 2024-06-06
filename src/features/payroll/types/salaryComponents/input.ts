@@ -10,4 +10,5 @@ export type TSalaryComponentInput = {
   description?: string;
   isDefault?: boolean;
   isActive?: boolean;
+  shouldDisplayOnReviewTable: boolean;
 };

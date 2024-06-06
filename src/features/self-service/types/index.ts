@@ -15,3 +15,6 @@ interface Analytics {
   totalAssetCount: number;
   recentRequests: TApprovalRequest[];
 }
+export type TSelfServiceApplicationMode =
+  | "apply-for-myself"
+  | "apply-for-unlisenced-employee";

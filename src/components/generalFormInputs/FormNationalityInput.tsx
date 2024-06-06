@@ -1,7 +1,6 @@
 import { Select, Form } from "antd";
 import { useFetchCountries } from "hooks/useFetchCountries";
-import { useEffect, useState } from "react";
-import { TCountry } from "types/country";
+import { useState } from "react";
 import { generalValidationRules } from "utils/formHelpers/validation";
 
 export const FormNationalityInput: React.FC<{
@@ -13,19 +12,12 @@ export const FormNationalityInput: React.FC<{
 }> = ({ Form, showLabel = true, control, handleSelect, onClear }) => {
   const { data: countries, isFetching } = useFetchCountries();
 
-  const [data, setData] = useState<TCountry[]>([]);
-  const [search, setSearch] = useState<string>();
-  useEffect(() => {
-    if (countries) {
-      const result = countries?.filter(
-        (item) =>
-          item.name.toLowerCase().indexOf(search?.toLowerCase() ?? "") !== -1
-      );
-
-      setData(result);
-    }
-  }, [countries, search]);
-
+  const [search, setSearch] = useState<string>("");
+  const options = countries
+    ?.filter(
+      (item) => item.name.toLowerCase().indexOf(search.toLowerCase()) !== -1
+    )
+    .map((c) => ({ label: c.name, value: c.name }));
   return (
     <Form.Item
       name={control?.name ?? "nationality"}
@@ -36,22 +28,19 @@ export const FormNationalityInput: React.FC<{
         getPopupContainer={(triggerNode) => triggerNode.parentElement}
         loading={isFetching}
         onSelect={handleSelect}
-        searchValue={search}
         showSearch
         allowClear
         onClear={() => {
-          countries && setData(countries);
+          setSearch("");
           onClear?.();
         }}
-        onSearch={(val) => setSearch(val)}
         className="rounded border-slate-400"
         defaultActiveFirstOption={false}
         showArrow={false}
         filterOption={false}
-        options={data?.map((item) => ({
-          label: `${item.name}`,
-          value: item.name,
-        }))}
+        searchValue={search}
+        onSearch={(val) => setSearch(val)}
+        options={options}
       />
     </Form.Item>
   );

@@ -40,4 +40,5 @@ type SalaryComponent = {
   amount: number | string;
   createdAt: string;
   updatedAt: string;
+  shouldDisplayOnReviewTable: boolean;
 };

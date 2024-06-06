@@ -4,6 +4,7 @@ import React, { useEffect } from "react";
 import { IModalProps } from "types";
 import {
   emailValidationRules,
+  emailValidationRulesOp,
   textInputValidationRules,
 } from "utils/formHelpers/validation";
 
@@ -75,7 +76,7 @@ export const SaveDepartment: React.FC<IProps> = ({
           <Form.Item
             name="email"
             label="Mail Alias"
-            rules={emailValidationRules}
+            rules={emailValidationRulesOp}
           >
             <Input placeholder="john@gmail.com" />
           </Form.Item>

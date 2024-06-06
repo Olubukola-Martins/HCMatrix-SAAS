@@ -12,7 +12,7 @@ type TCreateProps = {
   endTime: string;
   reason: string;
   priority?: TPriority;
-};
+}& { employeeId?: number };
 
 const createConferenceRoomBooking = async (
   props: TCreateProps,
@@ -27,11 +27,11 @@ const createConferenceRoomBooking = async (
     },
   };
 
-  const data: any = {
+  const data = {
     ...props,
   };
-  delete data["token"];
-  delete data["companyId"];
+  
+
 
   const response = await axios.post(url, data, config);
   return response;

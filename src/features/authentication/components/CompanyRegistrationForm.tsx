@@ -20,6 +20,7 @@ import {
   generalValidationRules,
   emailValidationRules,
   passwordValidationRules,
+  fullNameHasToHaveFirstAndLastName,
 } from "utils/formHelpers/validation";
 import { openNotification } from "utils/notifications";
 import { createCompany } from "../hooks/useCreateCompany";
@@ -29,10 +30,7 @@ const CompanyRegistrationForm = () => {
   const [showM, setShowM] = useState(false);
   const [email, setEmail] = useState("");
   const [form] = Form.useForm();
-  const {
-    data: industries,
-    isSuccess: isISuccess,
-  } = useFetchIndustries();
+  const { data: industries, isSuccess: isISuccess } = useFetchIndustries();
   const { isSuccess: isCSuccess } = useFetchCountries();
   const { mutate, isLoading } = useMutation(createCompany);
 
@@ -101,7 +99,7 @@ const CompanyRegistrationForm = () => {
         >
           <Form.Item
             name="fullName"
-            rules={textInputValidationRules}
+            rules={[fullNameHasToHaveFirstAndLastName]}
             hasFeedback
           >
             <Input

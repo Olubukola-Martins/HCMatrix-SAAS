@@ -14,5 +14,14 @@ export const TIME_ZONES = [
   { label: "Australian Eastern Standard Time", value: "Australia/Sydney" },
   { label: "Australian Central Standard Time", value: "Australia/Adelaide" },
   { label: "Australian Western Standard Time", value: "Australia/Perth" },
-  // Add more time zones here
+  { label: "West Africa Time (Nigeria)", value: "Africa/Lagos" },
+  { label: "West Africa Time (Ghana)", value: "Africa/Accra" },
+  { label: "West Africa Time (Ivory Coast)", value: "Africa/Abidjan" },
+  { label: "West Africa Time (Senegal)", value: "Africa/Dakar" },
+  { label: "West Africa Time (Gambia)", value: "Africa/Banjul" },
+  { label: "West Africa Time (Liberia)", value: "Africa/Monrovia" },
+  { label: "West Africa Time (Sierra Leone)", value: "Africa/Freetown" },
+  { label: "West Africa Time (Mali)", value: "Africa/Bamako" },
+  { label: "West Africa Time (Burkina Faso)", value: "Africa/Ouagadougou" },
+  { label: "West Africa Time (Guinea)", value: "Africa/Conakry" },
 ];

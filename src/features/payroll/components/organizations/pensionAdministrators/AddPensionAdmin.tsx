@@ -1,12 +1,13 @@
-import { Form, Input, Modal } from "antd";
+import { Form, Select, Modal } from "antd";
 import { AppButton } from "components/button/AppButton";
 import React from "react";
 import { IModalProps } from "types";
-import { textInputValidationRules } from "utils/formHelpers/validation";
+import { generalValidationRules } from "utils/formHelpers/validation";
 import { openNotification } from "utils/notifications";
 import { useQueryClient } from "react-query";
 import { useAddPensionAdmin } from "features/payroll/hooks/organization/pensionAdministrators/useAddPensionAdmin";
 import { QUERY_KEY_FOR_PENSION_ADMINS } from "features/payroll/hooks/organization/pensionAdministrators/useGetPensionAdmins";
+import { DEFAULT_PENSION_ADMINISTRATORS } from "features/payroll/constants";
 
 const AddPensionAdmin: React.FC<IModalProps> = ({ open, handleClose }) => {
   const queryClient = useQueryClient();
@@ -62,8 +63,15 @@ const AddPensionAdmin: React.FC<IModalProps> = ({ open, handleClose }) => {
         onFinish={handleSubmit}
         requiredMark={false}
       >
-        <Form.Item rules={textInputValidationRules} name="name" label="Name">
-          <Input placeholder="Name" />
+        <Form.Item rules={generalValidationRules} name="name" label="Name">
+          <Select
+            placeholder="Name"
+            mode="multiple"
+            options={DEFAULT_PENSION_ADMINISTRATORS.map((item) => ({
+              label: <span className="capitalize">{item}</span>,
+              value: item,
+            }))}
+          />
         </Form.Item>
 
         <div className="flex justify-end">

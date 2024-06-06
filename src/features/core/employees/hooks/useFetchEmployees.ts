@@ -6,19 +6,21 @@ import { useQuery } from "react-query";
 import { useApiAuth } from "hooks/useApiAuth";
 import { MICROSERVICE_ENDPOINTS } from "config/enviroment";
 import { DEFAULT_PAGE_SIZE } from "constants/general";
+import { TLicenseType } from "features/authentication/types/auth-user";
 
 export const QUERY_KEY_FOR_LIST_OF_EMPLOYEES = "employees";
 
-type OtherProps = {
+export type TEmployeeFilterProps = {
   status?: TEmployeeStatus[];
   gender?: "male" | "female";
   roleId?: number;
   designationId?: number;
   departmentId?: number;
   branchId?: number;
+  licenseType?: TLicenseType[];
 };
 export const getEmployees = async (
-  props: TFetchListDataProps & OtherProps
+  props: TFetchListDataProps & TEmployeeFilterProps
 ): Promise<{
   data: Omit<
     TEmployee,
@@ -52,7 +54,8 @@ export const getEmployees = async (
       designationId,
       branchId,
       gender,
-      status: props?.status?.toString(),
+      status: props?.status?.join(","),
+      licenseType: props?.licenseType?.join(","),
       search: props?.searchParams?.name,
       limit,
       offset,
@@ -88,8 +91,9 @@ export const useFetchEmployees = ({
   designationId,
   branchId,
   gender,
+  licenseType,
 }: TFetchListDataExtraProps &
-  OtherProps & {
+  TEmployeeFilterProps & {
     onSuccess?: Function;
   } = {}) => {
   const { token, companyId } = useApiAuth();
@@ -105,6 +109,7 @@ export const useFetchEmployees = ({
       designationId,
       branchId,
       gender,
+      licenseType,
     ],
     () =>
       getEmployees({
@@ -118,6 +123,7 @@ export const useFetchEmployees = ({
         designationId,
         branchId,
         gender,
+        licenseType,
       }),
     {
       // refetchInterval: false,

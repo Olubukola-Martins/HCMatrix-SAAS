@@ -16,6 +16,7 @@ import { FormAssetInput } from "./FormAssetInput";
 import { FileUpload } from "components/FileUpload";
 import { boxStyle } from "styles/reused";
 import { QUERY_KEY_FOR_ASSET_REQUISITIONS_FOR_AUTH_EMPLOYEE } from "../hooks/requisitions/useGetAssetRequisitions4AuthEmployee";
+import { FormUnlicensedEmployeeSSRequestInput } from "features/core/employees/components/FormEmployeeInput";
 
 export const NewAssetRequest: React.FC<IModalProps> = ({
   open,
@@ -30,6 +31,7 @@ export const NewAssetRequest: React.FC<IModalProps> = ({
   const handleSubmit = (data: any) => {
     mutate(
       {
+        employeeId: data?.employeeId,
         date: data.date.toString(),
         assetId: data.assetId,
         description: data.description,
@@ -81,6 +83,13 @@ export const NewAssetRequest: React.FC<IModalProps> = ({
         onFinish={handleSubmit}
         requiredMark={false}
       >
+        <FormUnlicensedEmployeeSSRequestInput
+          Form={Form}
+          control={{
+            name: "employeeId",
+            label: "Select Unlinsenced Employee",
+          }}
+        />
         <FormAssetInput
           Form={Form}
           control={{ name: "assetId", label: "Asset" }}

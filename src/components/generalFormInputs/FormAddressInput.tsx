@@ -5,10 +5,7 @@ import { useFetchCountries } from "hooks/useFetchCountries";
 import { useFetchLgas } from "hooks/useFetchLGAs";
 import { useFetchStates } from "hooks/useFetchStates";
 import { useState } from "react";
-import {
-  generalValidationRules,
-  textInputValidationRules,
-} from "utils/formHelpers/validation";
+import { generalValidationRules } from "utils/formHelpers/validation";
 
 import "@geoapify/geocoder-autocomplete/styles/minimal.css";
 

@@ -38,35 +38,16 @@ interface TPayrollListData {
   description: string;
   frequency: string;
   status: string;
+  approvalStatus?: string;
   costCentreId: number;
   companyId: number;
   createdAt: string;
   updatedAt: string;
   disbursementDate?: string;
   scheme: Scheme;
-  employeePayrolls: EmployeePayroll[];
-}
+  componentsToDisplay?: Record<string, number> | null;
 
-interface EmployeePayroll {
-  id: number;
-  payrollId: number;
-  employeeId: number;
-  empUid: string;
-  eligibility: string;
-  fullName: string;
-  netPay: string;
-  grossPay: string;
-  totalAllowances: string;
-  totalDeductions: string;
-  tax: string;
-  currency: string;
-  rate: string;
-  hourlyRate?: any;
-  hoursCompleted: number;
-  isActive: boolean;
-  companyId: number;
-  createdAt: string;
-  updatedAt: string;
+  employeePayrolls?: TEmployeesInPayrollData[];
 }
 
 interface Scheme {

@@ -5,11 +5,16 @@ import {
   generalValidationRules,
   generalValidationRulesOp,
 } from "utils/formHelpers/validation";
-import { useFetchEmployees } from "../hooks/useFetchEmployees";
+import {
+  TEmployeeFilterProps,
+  useFetchEmployees,
+} from "../hooks/useFetchEmployees";
 import { TEmployee } from "../types";
 import { getEmployeeFullName } from "../utils/getEmployeeFullName";
+import { PermissionRestrictor } from "components/permission-restriction/PermissionRestrictor";
+import { TSelfServiceApplicationMode } from "features/self-service/types";
 
-export const FormEmployeeInput: React.FC<{
+type FormEmployeeInputProps = {
   handleSelect?: (val: number, employee?: TEmployee) => void;
   handleClear?: () => void;
   fieldKey?: number;
@@ -20,7 +25,9 @@ export const FormEmployeeInput: React.FC<{
   mode?: "multiple" | "tags";
   disabled?: boolean;
   control?: { label: string; name: string | (string | number)[] };
-}> = ({
+  filter?: TEmployeeFilterProps;
+};
+export const FormEmployeeInput: React.FC<FormEmployeeInputProps> = ({
   Form,
   showLabel = true,
   control,
@@ -31,6 +38,9 @@ export const FormEmployeeInput: React.FC<{
   noStyle,
   handleClear,
   disabled,
+  filter = {
+    status: ["confirmed", "probation"],
+  },
 }) => {
   const [searchTerm, setSearchTerm] = useState<string>("");
   const debouncedSearchTerm: string = useDebounce<string>(searchTerm);
@@ -39,7 +49,7 @@ export const FormEmployeeInput: React.FC<{
     searchParams: {
       name: debouncedSearchTerm,
     },
-    status: ["confirmed", "probation"],
+    ...filter,
   });
 
   const handleSearch = (val: string) => {
@@ -83,5 +93,44 @@ export const FormEmployeeInput: React.FC<{
         ))}
       </Select>
     </Form.Item>
+  );
+};
+
+const SELF_SERVICE_APPLICATION_MODE_OPTIONS: {
+  label: string;
+  value: TSelfServiceApplicationMode;
+}[] = [
+  { label: "Myself", value: "apply-for-myself" },
+  { label: "Unlisenced Employee", value: "apply-for-unlisenced-employee" },
+];
+// The component below is typically used when applying for self service services on behalf of unlicensed users
+export const FormUnlicensedEmployeeSSRequestInput: React.FC<
+  FormEmployeeInputProps
+> = ({ Form, ...props }) => {
+  const [mode, setMode] =
+    useState<TSelfServiceApplicationMode>("apply-for-myself");
+  return (
+    <PermissionRestrictor requiredPermissions={["manage-unlicensed-employees"]}>
+      <Form.Item label="On behalf of">
+        <Select
+          value={mode}
+          options={SELF_SERVICE_APPLICATION_MODE_OPTIONS}
+          onSelect={setMode}
+          placeholder="Who are you applying on behalf of ?"
+        />
+      </Form.Item>
+      {mode === "apply-for-unlisenced-employee" ? (
+        <FormEmployeeInput
+          {...{
+            ...props,
+            Form: Form,
+            filter: {
+              status: ["confirmed", "probation"],
+              licenseType: ["unlicensed"],
+            },
+          }}
+        />
+      ) : null}
+    </PermissionRestrictor>
   );
 };

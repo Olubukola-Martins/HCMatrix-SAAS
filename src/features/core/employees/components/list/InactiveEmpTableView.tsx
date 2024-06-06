@@ -30,7 +30,7 @@ const InactiveEmpTableView = ({
         }}
         columns={columns}
         dataSource={employees.map((item) => ({ ...item, key: item.id }))}
-        scroll={{ x: "max-content" }}
+        scroll={{ x: "max-content", y: 570 }}
         loading={loading}
         className="mt-5"
         size="small"

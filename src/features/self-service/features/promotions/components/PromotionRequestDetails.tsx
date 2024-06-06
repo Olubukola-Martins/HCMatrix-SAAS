@@ -103,7 +103,7 @@ export const PromotionRequestDetails: React.FC<IProps> = ({
           <Form.Item name={"proposedDesignation"} label="Proposed Designation">
             <Input />
           </Form.Item>
-          <Form.Item name={"justification"} label="justification">
+          <Form.Item name={"justification"} label="Justification">
             <Input.TextArea />
           </Form.Item>
 

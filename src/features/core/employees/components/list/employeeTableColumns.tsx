@@ -13,7 +13,7 @@ export const EMPLOYEE_TABLE_COLUMNS: ColumnsType<TEmployee> = [
     render: (val, item) => (
       <Link
         to={`${appRoutes.singleEmployee(item.id).path}`}
-        className="text-caramel hover:underline hover:text-caramel"
+        className="text-caramel hover:underline hover:text-caramel capitalize"
       >
         {getEmployeeFullName(item)}
       </Link>
@@ -27,29 +27,45 @@ export const EMPLOYEE_TABLE_COLUMNS: ColumnsType<TEmployee> = [
     render: (_, item) => item.empUid,
   },
   {
+    title: "License Type",
+    dataIndex: "licenseType",
+    key: "licenseType",
+    render: (_, item) => <span className="capitalize">{item.licenseType}</span>,
+  },
+  {
     title: "Branch",
     dataIndex: "Branch",
     key: "Branch",
-    render: (_, item) => item?.jobInformation?.branch?.name ?? "none",
+    render: (_, item) => (
+      <span className="capitalize">
+        {item?.jobInformation?.branch?.name ?? "none"}
+      </span>
+    ),
   },
   {
     title: "Department",
     dataIndex: "department",
     key: "department",
-    render: (_, item) => item.designation?.department?.name ?? "none",
+    render: (_, item) => (
+      <span className="capitalize">
+        {item.designation?.department?.name ?? "none"}
+      </span>
+    ),
   },
   {
     title: "Designation",
     dataIndex: "Designation",
     key: "Designation",
-    render: (_, item) => item.designation?.name ?? "none",
+    render: (_, item) => (
+      <span className="capitalize">{item.designation?.name ?? "none"}</span>
+    ),
   },
 
   {
     title: "Role",
     dataIndex: "role",
     key: "role",
-    render: (_, item) => item.role.name,
+    render: (_, item) => <span className="capitalize">{item.role.name}</span>,
   },
   {
     title: "Email",
@@ -68,6 +84,20 @@ export const EMPLOYEE_TABLE_COLUMNS: ColumnsType<TEmployee> = [
       </span>
     ),
   },
+  {
+    title: "Verification Status",
+    dataIndex: "verification",
+    key: "verification",
+    render: (_, item) => (
+      <>
+        {item.user?.isVerified ? (
+          <span className="text-green-700 capitalize">Verified</span>
+        ) : (
+          <span className="text-red-500 capitalize">Unverified</span>
+        )}
+      </>
+    ),
+  },
 ];
 export const EMPLOYEE_EXPORT_COLUMNS = (
   items?: TEmployee[]
@@ -78,12 +108,14 @@ export const EMPLOYEE_EXPORT_COLUMNS = (
 
       "Employee ID": item.empUid,
 
+      "License Type": item?.licenseType ?? "none",
       Branch: item?.jobInformation?.branch?.name ?? "none",
       Department: item.designation?.department?.name ?? "none",
       Designation: item.designation?.name ?? "none",
-      Role: item.role.name,
+      Role: item?.role?.name ?? "none",
 
       Email: item.email,
+      "Verification Status": item?.user?.isVerified ? "Verified" : "Unverified",
       "Employee Status": item.status,
     })) ?? []
   );

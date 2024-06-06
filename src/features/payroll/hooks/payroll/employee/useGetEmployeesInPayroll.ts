@@ -19,7 +19,11 @@ const getData = async (props: {
   data: IGetDataProps;
   auth: ICurrentCompany;
   payrollId?: number;
-}): Promise<{ data: TEmployeesInPayrollData[]; total: number }> => {
+}): Promise<{
+  data: TEmployeesInPayrollData[];
+  total: number;
+  componentHeadersToDisplay?: string[];
+}> => {
   const { pagination } = props.data;
   const limit = pagination?.limit ?? DEFAULT_PAGE_SIZE;
   const offset = pagination?.offset ?? 0;
@@ -53,6 +57,7 @@ const getData = async (props: {
   const ans = {
     data,
     total: fetchedData.totalCount,
+    componentHeadersToDisplay: fetchedData.componentHeadersToDisplay,
   };
 
   return ans;

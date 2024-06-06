@@ -13,10 +13,18 @@ import { useCreateVehicleBooking } from "../hooks/useCreateVehicleBooking";
 import { FormVehicleInput } from "./FormVehicleInput";
 import { QUERY_KEY_FOR_VEHICLE_BOOKINGS } from "../hooks/useFetchVehicleBookings";
 import { QUERY_KEY_FOR_VEHICLE_BOOKINGS_FOR_AUTH_EMPLOYEE } from "../hooks/booking/useGetVehicleBookings4AuthEmployee";
+import { TSelfServiceApplicationMode } from "features/self-service/types";
+import { FormUnlicensedEmployeeSSRequestInput } from "features/core/employees/components/FormEmployeeInput";
 
-interface IProps extends IModalProps {}
+interface IProps extends IModalProps {
+  mode?: TSelfServiceApplicationMode;
+}
 
-export const AddVehicleBooking: React.FC<IProps> = ({ handleClose, open }) => {
+export const AddVehicleBooking: React.FC<IProps> = ({
+  handleClose,
+  open,
+  mode = "apply-for-myself",
+}) => {
   const queryClient = useQueryClient();
   const [form] = Form.useForm();
   const { mutate, isLoading } = useCreateVehicleBooking();
@@ -29,6 +37,7 @@ export const AddVehicleBooking: React.FC<IProps> = ({ handleClose, open }) => {
         destination: data.destination,
         duration: data.duration,
         vehicleId: data.vehicleId,
+        employeeId: data?.employeeId,
       },
       {
         onError: (err: any) => {
@@ -68,7 +77,7 @@ export const AddVehicleBooking: React.FC<IProps> = ({ handleClose, open }) => {
       open={open}
       onCancel={() => handleClose()}
       footer={null}
-      title={"Add Vehicle Booking"}
+      title={"Book Vehicle"}
       style={{ top: 20 }}
     >
       <Form
@@ -77,6 +86,13 @@ export const AddVehicleBooking: React.FC<IProps> = ({ handleClose, open }) => {
         form={form}
         onFinish={handleSubmit}
       >
+        <FormUnlicensedEmployeeSSRequestInput
+          Form={Form}
+          control={{
+            name: "employeeId",
+            label: "Select Unlinsenced Employee",
+          }}
+        />
         <Form.Item
           name="date"
           rules={[dateHasToBeGreaterThanOrEqualToCurrentDayRule]}

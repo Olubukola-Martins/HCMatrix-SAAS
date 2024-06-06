@@ -61,8 +61,13 @@ export const canUserAccessComponent = ({
 };
 
 export const useGetUserPermissions = () => {
-  const { currentCompanyEmployeeDetails, companyActiveSubscription } =
-    useMostRecentApiAuth();
+  const {
+    currentCompanyEmployeeDetails,
+    companyActiveSubscription,
+    isError,
+    isLoading,
+    isSuccess,
+  } = useMostRecentApiAuth();
   const licenseType = currentCompanyEmployeeDetails?.licenseType;
   const userPermissionsViaRole =
     currentCompanyEmployeeDetails?.role?.permissions?.map(
@@ -81,6 +86,9 @@ export const useGetUserPermissions = () => {
     licenseType,
     isOwner: !!currentCompanyEmployeeDetails?.isOwner,
     companyActiveSubscription,
+    isError,
+    isLoading,
+    isSuccess,
   };
 };
 export const useCanUserAccessComponent = (props: {

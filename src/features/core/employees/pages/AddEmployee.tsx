@@ -19,6 +19,7 @@ import { DEFAULT_DATE_FORMAT } from "constants/dateFormats";
 import { FormRoleInput } from "features/core/roles-and-permissions/components/FormRoleInput";
 import { FormDesignationInput } from "features/core/designations/components/FormDesignationInput";
 import { BeatLoader } from "react-spinners";
+import AppTooltip from "components/tooltip/AppTooltip";
 
 const { Panel } = Collapse;
 
@@ -208,14 +209,32 @@ export const AddEmployee = () => {
             <div className="bg-mainBg rounded-md md:px-4 pt-4 pb-3 shadow-sm mt-8">
               <Collapse defaultActiveKey={["1"]} ghost expandIconPosition="end">
                 <Panel
-                  header="Select user license type ?"
+                  header={"Select user license type ?"}
                   key="1"
                   className="collapseHeader"
                 >
                   <Form.Item name="licenseType">
                     <Radio.Group name="licenseType">
-                      <Radio value={"licensed"}>Licensed</Radio>
-                      <Radio value={"unlicensed"}>Unlicensed</Radio>
+                      Licensed
+                      <Radio value={"licensed"}>
+                        <AppTooltip
+                          children={<span>Licensed</span>}
+                          tooltipProps={{
+                            title:
+                              "Licensed Users will be able to access the system and use features like self service, onboarding, payslips, etc.",
+                          }}
+                        />
+                      </Radio>
+                      <Radio value={"unlicensed"}>
+                        {" "}
+                        <AppTooltip
+                          children={<span>Unlicensed</span>}
+                          tooltipProps={{
+                            title:
+                              "Unlicensed Users will be unable to access the system and use features like self service, onboarding, payslips, etc.",
+                          }}
+                        />
+                      </Radio>
                     </Radio.Group>
                   </Form.Item>
                 </Panel>

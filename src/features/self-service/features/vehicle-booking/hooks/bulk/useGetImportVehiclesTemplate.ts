@@ -7,7 +7,7 @@ import download from "js-file-download";
 
 type TResponse = any;
 interface IDataProps {}
-const TEMPLATE_NAME = "department-template.csv";
+const TEMPLATE_NAME = "vehicle-template.csv";
 const createData = async (props: {
   data: IDataProps;
   auth: ICurrentCompany;

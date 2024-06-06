@@ -8,6 +8,7 @@ import { FormDepartmentInput } from "features/core/departments/components/FormDe
 import { FormRoleInput } from "features/core/roles-and-permissions/components/FormRoleInput";
 import { AppButton } from "components/button/AppButton";
 import { FormDesignationInput } from "features/core/designations/components/FormDesignationInput";
+import { LICENSE_TYPES_OPTIONS } from "../constants";
 
 interface IProps extends IDrawerProps {
   handleFilter: (props: TEmployeeFilterProps) => void; //TODO: find n replace type TEmployeeFilterProps
@@ -50,6 +51,13 @@ const FilterEmployeeDrawer = ({ handleClose, open, handleFilter }: IProps) => {
             optional={true}
             control={{ name: "roleId", label: "Role" }}
           />
+          <Form.Item name={`licenseType`} label="License Type">
+            <Select
+              options={LICENSE_TYPES_OPTIONS}
+              mode="multiple"
+              placeholder="Select License Type"
+            />
+          </Form.Item>
 
           <div className="flex justify-end">
             <div className="flex gap-2">

@@ -7,7 +7,7 @@ import { useApiAuth } from "hooks/useApiAuth";
 export const QUERY_KEY_FOR_SINGLE_BRANCH = "single-branch";
 
 export interface IGetSingleBranchProps {
-  branchId: number;
+  branchId?: number;
 }
 
 export const getSingleBranch = async (vals: {
@@ -49,6 +49,7 @@ export const useFetchSingleBranch = ({ branchId }: IGetSingleBranchProps) => {
         },
       }),
     {
+      enabled: typeof branchId === "number",
       // refetchInterval: false,
       // refetchIntervalInBackground: false,
       // refetchOnWindowFocus: false,

@@ -6,7 +6,6 @@ import { boxStyle } from "styles/reused";
 import { IModalProps } from "types";
 import {
   dateHasToBeGreaterThanOrEqualToCurrentDayRule,
-  generalValidationRules,
   numberHasToBeGreaterThanZeroRule,
   textInputValidationRules,
 } from "utils/formHelpers/validation";
@@ -19,6 +18,7 @@ import { QUERY_KEY_FOR_APPROVAL_REQUESTS } from "features/core/workflows/hooks/u
 import { QUERY_KEY_FOR_UNREAD_NOTIFICATION_COUNT } from "features/notifications/hooks/unRead/useGetUnReadNotificationCount";
 import { QUERY_KEY_FOR_NOTIFICATIONS } from "features/notifications/hooks/useGetAlerts";
 import { QUERY_KEY_FOR_MONEY_REQUISITIONS_FOR_AUTH_EMPLOYEE } from "../../requisitions/hooks/money/useGetMoneyRequisitions4AuthEmployee";
+import { FormUnlicensedEmployeeSSRequestInput } from "features/core/employees/components/FormEmployeeInput";
 
 export const NewMonetaryRequest: React.FC<IModalProps> = ({
   open,
@@ -33,6 +33,7 @@ export const NewMonetaryRequest: React.FC<IModalProps> = ({
   const handleSubmit = (data: any) => {
     mutate(
       {
+        employeeId: data?.employeeId,
         amount: data.amount,
         date: data.date.toString(),
         purpose: data.purpose,
@@ -97,6 +98,13 @@ export const NewMonetaryRequest: React.FC<IModalProps> = ({
         onFinish={handleSubmit}
         requiredMark={false}
       >
+        <FormUnlicensedEmployeeSSRequestInput
+          Form={Form}
+          control={{
+            name: "employeeId",
+            label: "Select Unlinsenced Employee",
+          }}
+        />
         <Form.Item
           name="date"
           label="Date"

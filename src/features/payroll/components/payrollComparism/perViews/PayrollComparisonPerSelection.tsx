@@ -3,7 +3,7 @@ import PageSubHeader from "components/layout/PageSubHeader";
 import { TPayrollListData } from "features/payroll/types/payroll";
 import { TableWithFocusType } from "components/table";
 import React, { useMemo, useState } from "react";
-import { SelectPayrolls } from "./SelectPayrolls";
+import { SelectPayrolls } from "../SelectPayrolls";
 import { ColumnsType } from "antd/lib/table";
 import { BarChart } from "components/charts/BarChart";
 import { generateHexColor } from "utils/colorHelpers/generateHexColor";
@@ -18,7 +18,7 @@ const LABELS = [
   "Pension",
   "Total Tax",
 ] as const;
-export const ComparismContainer = () => {
+export const PayrollComparisonPerSelection = () => {
   const [action, setAction] = useState<TAction>();
   const clearAction = () => {
     setAction(undefined);
@@ -90,12 +90,6 @@ const PayrollComparer: React.FC<{ payrolls: TPayrollListData[] }> = ({
           dataIndex: `payroll${i + 1}`,
           key: `payroll${i + 1}`,
         })),
-        {
-          title: "Variant",
-          dataIndex: "variant",
-          key: "variant",
-          render: (val, item) => <span className="capitalize">{"N/A"}</span>,
-        },
       ];
     }
     return data;
@@ -104,7 +98,7 @@ const PayrollComparer: React.FC<{ payrolls: TPayrollListData[] }> = ({
     "Employee Count": [
       payrolls?.reduce(
         (values: Record<string, string | number>, item, i) => {
-          values[`payroll${i + 1}`] = item.employeePayrolls.length;
+          values[`payroll${i + 1}`] = item.employeePayrolls?.length ?? 0;
           return values;
         },
         { name: "Employee Count" }
@@ -237,7 +231,7 @@ const GraphComparison: React.FC<TCompareProps> = ({
         dataSets={[
           ...payrolls.map((payroll) => ({
             data: [
-              payroll.employeePayrolls.length,
+              payroll.employeePayrolls?.length ?? 0,
               payroll.totalNetPay,
               payroll.totalNetPay,
               payroll.totalGrossPay,

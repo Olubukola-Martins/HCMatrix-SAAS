@@ -17,7 +17,11 @@ interface IGetDataProps {
 
 const getData = async (
   props: IGetDataProps & ICurrentCompany
-): Promise<{ data: TApprovalRequest[]; total: number }> => {
+): Promise<{
+  data: TApprovalRequest[];
+  total: number;
+  componentHeadersToDisplay?: string[];
+}> => {
   const { pagination, type } = props;
   const limit = pagination?.limit ?? DEFAULT_PAGE_SIZE;
   const offset = pagination?.offset ?? 0;
@@ -49,7 +53,8 @@ const getData = async (
 
   const ans = {
     data,
-    total: fetchedData.totalCount,
+    total: fetchedData?.totalCount,
+    componentHeadersToDisplay: fetchedData?.componentHeadersToDisplay,
   };
 
   return ans;

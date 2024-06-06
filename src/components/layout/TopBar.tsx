@@ -83,7 +83,7 @@ const TopBar = ({
   };
   useLayoutEffect(() => {
     if (!userCompanies) return;
-    const companies: TCompanyOption[] = userCompanies?.map((item: any) => ({
+    const companies: TCompanyOption[] = userCompanies?.map((item) => ({
       value: item.company.name,
       id: item.company.id,
       image: item.company?.logoUrl ?? DEFAULT_LOGO_IMAGE_URL,
