@@ -1,4 +1,5 @@
 export interface IChartProps {
+  maintainAspectRatio?: boolean;
   labels: string[];
   data?: number[];
   axis?: "x" | "y";

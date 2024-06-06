@@ -12,6 +12,7 @@ import {
 import { TStage, TStagingType } from "../types";
 import { OptionalTypeParams } from "types/optionalTypes";
 import { WORKFLOW_STAGE_TYPE_OPTIONS } from "../constants";
+import { AppButton } from "components/button/AppButton";
 
 export const CreateBasicStage: React.FC<{
   stage: OptionalTypeParams<TStage, "entityId" | "type"> & {
@@ -33,7 +34,7 @@ export const CreateBasicStage: React.FC<{
     }
   }, [form, stage]);
   return (
-    <div className="flex gap-4 items-end">
+    <div className="flex flex-col gap-4 w-full">
       <Form
         form={form}
         onFinish={handleFinish}
@@ -41,8 +42,9 @@ export const CreateBasicStage: React.FC<{
         labelCol={{ span: 24 }}
         requiredMark={false}
       >
-        <div className="flex gap-4">
+        <div className="grid grid-cols-2 md:gap-8 gap-4">
           <Form.Item
+            className=""
             name={"name"}
             label={`Stage Name`}
             rules={textInputValidationRules}
@@ -82,23 +84,18 @@ export const CreateBasicStage: React.FC<{
           )}
         </div>
       </Form>
-      <div className="flex gap-4 mb-6">
+      <div className="flex gap-4 justify-end mb-6">
+        <AppButton
+          label="Delete"
+          variant="transparent"
+          handleClick={() => removeStage(stage.id)}
+        />
+
         {!stage.editable ? (
-          <Button icon={<EditOutlined />} onClick={() => enableEdit(stage.id)}>
-            Edit
-          </Button>
+          <AppButton label="Edit" handleClick={() => enableEdit(stage.id)} />
         ) : (
-          <Button
-            icon={<SaveOutlined />}
-            type="text"
-            onClick={() => form.submit()}
-          >
-            Save
-          </Button>
+          <AppButton label="Save" handleClick={() => form.submit()} />
         )}
-        <Button icon={<DeleteOutlined />} onClick={() => removeStage(stage.id)}>
-          Delete
-        </Button>
       </div>
     </div>
   );

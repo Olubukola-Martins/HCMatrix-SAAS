@@ -132,9 +132,7 @@ const RepaymentPlanTable = ({
           },
         }
       );
-    } catch (errInfo) {
-      console.log(errInfo, "ERRO");
-    }
+    } catch (errInfo) {}
   };
   const [action, setAction] = useState<TAction>();
   const [selectedPlan, setSelectedPlan] = useState<TPaymentPlan>();

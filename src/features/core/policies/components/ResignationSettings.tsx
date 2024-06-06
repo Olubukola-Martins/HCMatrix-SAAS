@@ -94,12 +94,29 @@ const ResignationPolicyForm = () => {
               Form={Form}
               control={{ label: "Workflow", name: "workflowId" }}
             />
-            <Form.Item name="noticePeriod" label="Notice Period (weeks)">
+            <Form.Item
+              name="noticePeriod"
+              label="Notice Period (weeks)"
+              rules={[
+                {
+                  required: true,
+
+                  validator: async (_, value) => {
+                    if (typeof value !== "number") {
+                      throw new Error("Please enter a valid number!");
+                    }
+                    if (+value <= 0) {
+                      throw new Error("Please enter a number greater than 0");
+                    }
+
+                    return true;
+                  },
+                },
+              ]}
+            >
               <InputNumber
                 className="w-1/2"
                 placeholder="What is your notice period?"
-                min={1}
-                max={8}
               />
             </Form.Item>
           </div>

@@ -1,29 +1,25 @@
-import { Form, Input, Select, Spin } from "antd";
+import { Form, Input, Select } from "antd";
 import { useFetchEmployees } from "features/core/employees/hooks/useFetchEmployees";
-import { useApiAuth } from "hooks/useApiAuth";
 import { useState, useEffect } from "react";
-
-import { useQueryClient } from "react-query";
-import { BeatLoader } from "react-spinners";
 import {
   textInputValidationRules,
   emailValidationRules,
   generalValidationRules,
+  textInputValidationRulesOp,
 } from "utils/formHelpers/validation";
-import { openNotification } from "utils/notifications";
-import { useSaveGroup } from "../hooks/useSaveGroup";
 import { TGroup } from "../types";
+import { TGroupDataInput } from "../hooks/useAddGroup";
+
+import { AppButton } from "components/button/AppButton";
 
 const AddGroupForm = ({
-  handleClose,
   group,
+  handleSubmit,
 }: {
-  handleClose: Function;
+  handleSubmit: { fn: (props: TGroupDataInput) => void; isLoading?: boolean };
   group?: TGroup;
 }) => {
-  const queryClient = useQueryClient();
   const [empSearch, setEmpSearch] = useState<string>("");
-  const { token, companyId } = useApiAuth();
 
   const [form] = Form.useForm();
   useEffect(() => {
@@ -36,9 +32,8 @@ const AddGroupForm = ({
       });
     }
   }, [group, form]);
-  const { mutate, isLoading } = useSaveGroup();
 
-  const { data: empData, isSuccess: isEmpSuccess } = useFetchEmployees({
+  const { data: empData } = useFetchEmployees({
     pagination: {
       limit: 100, //temp suppose to allow search
       offset: 0,
@@ -48,63 +43,24 @@ const AddGroupForm = ({
     },
   });
 
-  const handleSubmit = (data: any) => {
-    if (companyId) {
-      // return;
-      openNotification({
-        state: "info",
-        title: "Wait a second ...",
-        description: <Spin />,
-      });
-      mutate(
-        {
-          id: group?.id,
-          companyId,
-          description: data.description,
-          email: data.email,
-          token,
-          employees: data.employees.map((id: number, index: number) => ({
-            employeeId: id,
-            isLead: index === 0 ? true : false,
-          })),
-          name: data.name,
-        },
-        {
-          onError: (err: any) => {
-            openNotification({
-              state: "error",
-              title: "Error Occurred",
-              description:
-                err?.response.data.message ?? err?.response.data.error.message,
-            });
-          },
-          onSuccess: (res: any) => {
-            openNotification({
-              state: "success",
-
-              title: "Success",
-              description: res.data.message,
-              // duration: 0.4,
-            });
-
-            !group && form.resetFields();
-            handleClose();
-
-            queryClient.invalidateQueries({
-              queryKey: ["groups"],
-              // exact: true,
-            });
-          },
-        }
-      );
-    }
+  const onSubmit = (data: any) => {
+    handleSubmit.fn({
+      description: data?.description,
+      email: data.email,
+      employees: data.employees.map((id: number, index: number) => ({
+        employeeId: id,
+        isLead: index === 0 ? true : false,
+      })),
+      name: data.name,
+    });
+    form.resetFields();
   };
   return (
     <Form
       layout="vertical"
       requiredMark={false}
       form={form}
-      onFinish={handleSubmit}
+      onFinish={onSubmit}
     >
       <Form.Item
         name="name"
@@ -117,7 +73,11 @@ const AddGroupForm = ({
         <Input placeholder="john@gmail.com" />
       </Form.Item>
 
-      <Form.Item name="description" label="Description (Optional)">
+      <Form.Item
+        name="description"
+        label="Description (Optional)"
+        rules={textInputValidationRulesOp}
+      >
         <Input.TextArea placeholder="description" />
       </Form.Item>
       <Form.Item
@@ -144,23 +104,19 @@ const AddGroupForm = ({
           // onChange={handleChange}
           notFoundContent={null}
         >
-          {isEmpSuccess ? (
-            empData.data.map((item) => (
-              <Select.Option key={item.id} value={item.id}>
-                {item.firstName} {item.lastName}
-              </Select.Option>
-            ))
-          ) : (
-            <div className="flex justify-center items-center w-full">
-              <Spin size="small" />
-            </div>
-          )}
+          {empData?.data.map((item) => (
+            <Select.Option key={item.id} value={item.id}>
+              {item.firstName} {item.lastName}
+            </Select.Option>
+          ))}
         </Select>
       </Form.Item>
 
-      <button className="button" type="submit">
-        {isLoading ? <BeatLoader color="#fff" /> : "Submit"}
-      </button>
+      <AppButton
+        isLoading={handleSubmit.isLoading}
+        label="Save"
+        type={`submit`}
+      />
     </Form>
   );
 };

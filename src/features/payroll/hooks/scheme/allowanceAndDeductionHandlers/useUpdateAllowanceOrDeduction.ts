@@ -21,7 +21,10 @@ type IBody = {
   label: string;
   mode: TSalaryComponentCalculationMode;
   amount: number | string;
-} & Pick<TSalaryComponentInput, "isActive" | "isDefault">;
+} & Pick<
+  TSalaryComponentInput,
+  "isActive" | "isDefault" | "description" | "shouldDisplayOnReviewTable"
+>;
 const delData = async (props: { data: TDelData; auth: ICurrentCompany }) => {
   const url = `${MICROSERVICE_ENDPOINTS.PAYROLL}/scheme/${props.data.schemeId}/${props.data.type}/${props.data.allowanceOrDeductionId}`;
   const config = {
@@ -32,8 +35,10 @@ const delData = async (props: { data: TDelData; auth: ICurrentCompany }) => {
     },
   };
 
-  const data = {
+  const data: IBody = {
     ...props.data.body,
+    shouldDisplayOnReviewTable:
+      props.data.body.shouldDisplayOnReviewTable ?? false,
   };
 
   const response = await axios.put(url, data, config);

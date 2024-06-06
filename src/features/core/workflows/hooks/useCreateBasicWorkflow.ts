@@ -11,7 +11,7 @@ export type TBasicWorkflowStage = {
   id?: number;
   name: string;
   type: TStagingType;
-  entityId: number;
+  entityId?: number;
 };
 type TCreateProps = {
   name: string;

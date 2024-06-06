@@ -1,6 +1,9 @@
-export type TTaskPriority = "low" | "medium" | "high";
-export type TTaskStatus = "active" | "new" | "resolved" | "closed";
-export type TTask = {
+import { TLicenseType } from "features/authentication/types/auth-user";
+import { TTaskComment } from "./comment";
+type TTaskPriority = "low" | "medium" | "high";
+type TTaskStatus = "active" | "new" | "resolved" | "closed";
+
+type TTask = {
   id: number;
   name: string;
   description: string;
@@ -17,12 +20,14 @@ export type TTask = {
   assignedTo: Assignee;
 };
 
+export type { TTaskComment, TTaskPriority, TTaskStatus, TTask };
+
 interface Assignee {
   id: number;
   firstName: string;
   lastName: string;
   email: string;
-  hasSelfService: boolean;
+  licenseType: TLicenseType;
   empUid: string;
   roleId: number;
   status: string;

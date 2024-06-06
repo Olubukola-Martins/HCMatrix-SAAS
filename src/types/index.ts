@@ -19,6 +19,7 @@ export type TFetchListDataExtraProps = {
 export type TFetchListDataProps = TFetchListDataExtraProps & ICurrentCompany;
 
 export interface IDrawerProps {
+  id?: number;
   open: boolean;
   handleClose: Function;
 }

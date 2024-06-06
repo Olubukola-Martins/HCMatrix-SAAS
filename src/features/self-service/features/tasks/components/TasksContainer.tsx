@@ -23,7 +23,7 @@ export const TasksContainer = () => {
     <div className="flex flex-col gap-6">
       <AddTask open={showM} handleClose={() => setShowM(false)} />
       <PageSubHeader
-        description={`Assign tasks to your new employees easily`}
+        description={`Manage tasks within your organization!`}
         actions={[{ name: "Add Task", handleClick: () => setShowM(true) }]}
       />
       <Tabs items={tabItems} />

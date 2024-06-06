@@ -1,33 +1,76 @@
-import { Button, Drawer, Form, Select } from "antd";
+import { Drawer, Form, Select } from "antd";
 import Themes from "components/Themes";
-import React from "react";
 import { IDrawerProps } from "types";
+import { TEmployeeFilterProps } from "../types/employee-filter";
+import { GENDERS } from "constants/general";
+import { FormBranchInput } from "features/core/branches/components/FormBranchInput";
+import { FormDepartmentInput } from "features/core/departments/components/FormDepartmentInput";
+import { FormRoleInput } from "features/core/roles-and-permissions/components/FormRoleInput";
+import { AppButton } from "components/button/AppButton";
+import { FormDesignationInput } from "features/core/designations/components/FormDesignationInput";
+import { LICENSE_TYPES_OPTIONS } from "../constants";
 
-const FilterEmployeeDrawer = ({ handleClose, open }: IDrawerProps) => {
+interface IProps extends IDrawerProps {
+  handleFilter: (props: TEmployeeFilterProps) => void; //TODO: find n replace type TEmployeeFilterProps
+}
+
+const FilterEmployeeDrawer = ({ handleClose, open, handleFilter }: IProps) => {
+  const [form] = Form.useForm<TEmployeeFilterProps>();
+  const handleSubmit = (data: TEmployeeFilterProps) => {
+    handleFilter(data);
+  };
   return (
     <Drawer open={open} onClose={() => handleClose()} title="Filter Employees">
       <Themes>
-        <Form requiredMark={false} layout="vertical">
+        <Form
+          requiredMark={false}
+          layout="vertical"
+          form={form}
+          onFinish={handleSubmit}
+        >
           <Form.Item name={"gender"} label="Gender">
-            <Select placeholder="Select a gender" />
+            <Select placeholder="Select a gender" options={GENDERS} />
           </Form.Item>
-          <Form.Item name={"departmentId"} label="Department">
-            <Select placeholder="Select a department" />
+          <FormBranchInput
+            Form={Form}
+            optional={true}
+            control={{ name: "branchId", label: "Branch" }}
+          />
+          <FormDepartmentInput
+            optional={true}
+            Form={Form}
+            control={{ name: "departmentId", label: "Department" }}
+          />
+          <FormDesignationInput
+            optional={true}
+            Form={Form}
+            control={{ name: "designationId", label: "Designation" }}
+          />
+          <FormRoleInput
+            Form={Form}
+            optional={true}
+            control={{ name: "roleId", label: "Role" }}
+          />
+          <Form.Item name={`licenseType`} label="License Type">
+            <Select
+              options={LICENSE_TYPES_OPTIONS}
+              mode="multiple"
+              placeholder="Select License Type"
+            />
           </Form.Item>
-          <Form.Item name={"designationId"} label="Designation">
-            <Select placeholder="Select a designation" />
-          </Form.Item>
-          <Form.Item name={"roleId"} label="Role">
-            <Select placeholder="Select a role" />
-          </Form.Item>
-          <Form.Item name={"status"} label="Status">
-            <Select placeholder="Select an employment status" />
-          </Form.Item>
+
           <div className="flex justify-end">
-            {/* disabled based on wthr filter is applied     */}
             <div className="flex gap-2">
-              <button className="button">Apply Filter</button>
-              <Button type="text">Clear Filter</Button>
+              <AppButton label="Apply Filter" type="submit" />
+              <AppButton
+                label="Clear Filter"
+                type="button"
+                variant="transparent"
+                handleClick={() => {
+                  form.resetFields();
+                  handleFilter({});
+                }}
+              />
             </div>
           </div>
         </Form>

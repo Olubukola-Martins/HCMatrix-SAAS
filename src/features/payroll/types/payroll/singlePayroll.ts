@@ -6,6 +6,7 @@ export type TSinglePayroll = {
   name: string;
   label: string;
   date: string;
+  disbursementDate?: string;
   description: string;
   frequency: string;
   status:
@@ -14,6 +15,7 @@ export type TSinglePayroll = {
     | "approved"
     | "rejected"
     | "in-disbursement"
+    | "awaiting-disbursement"
     | "confirmed";
   companyId: number;
   createdAt: string;

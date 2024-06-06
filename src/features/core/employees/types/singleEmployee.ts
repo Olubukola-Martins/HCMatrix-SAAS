@@ -1,9 +1,14 @@
+import { TLicenseType } from "features/authentication/types/auth-user";
+import { TPayrollFrequency } from "features/payroll/types/payroll";
+import { TPayrollSchemeType } from "features/payroll/types/payrollSchemes";
+import { TOnboarding } from "features/self-service/features/onboarding/types";
+
 export type TSingleEmployee = {
   id: number;
   firstName: string;
   lastName: string;
   email: string;
-  hasSelfService: boolean;
+  licenseType: TLicenseType;
   empUid: string;
   roleId: number;
   status: string;
@@ -26,7 +31,56 @@ export type TSingleEmployee = {
   managerHistory: ManagerHistory[];
   directReport: DirectReport[];
   userGroups: UserGroup[];
-  onboarding?: any; // TO DO: udpate all the anys
+  roleHistory: RoleHistory[];
+  userProjects: UserProject[];
+  salaryHistory: SalaryHistory[];
+  onboarding?: null | TOnboarding;
+  role: Role;
+};
+interface SalaryHistory {
+  id: number;
+  type: TPayrollSchemeType;
+  employeeId: number;
+  monthlyGross?: string | null;
+  hourlyRate?: string | null;
+  frequency?: TPayrollFrequency;
+  from: string;
+  to?: any;
+  companyId: number;
+  createdAt: string;
+  updatedAt: string;
+}
+interface UserProject {
+  id: number;
+  projectId: number;
+  employeeId: number;
+  createdAt: string;
+  updatedAt: string;
+  project: Project;
+}
+
+interface Project {
+  id: number;
+  name: string;
+  label: string;
+  startDate: string;
+  endDate: string;
+  description: string;
+  status: string;
+  companyId: number;
+  createdAt: string;
+  updatedAt: string;
+}
+
+type RoleHistory = {
+  id: number;
+  employeeId: number;
+  roleId: number;
+  from: string;
+  to?: any;
+  companyId: number;
+  createdAt: string;
+  updatedAt: string;
   role: Role;
 };
 
@@ -35,6 +89,7 @@ interface Role {
   name: string;
   label: string;
   companyId: number;
+  employeeCount: number;
 }
 
 interface UserGroup {
@@ -195,7 +250,8 @@ interface Dependent {
   fullName: string;
   dob: string;
   phoneNumber: string;
-  relationship: string;
+  relationship?: string;
+  gender?: string;
   companyId: number;
   createdAt: string;
   updatedAt: string;
@@ -275,7 +331,7 @@ interface LineManager {
   firstName: string;
   lastName: string;
   email: string;
-  hasSelfService: boolean;
+  licenseType: TLicenseType;
   empUid: string;
   roleId: number;
   status: string;
@@ -333,6 +389,8 @@ interface Address {
   country: Country;
   state: State;
   lga: Lga;
+  latitude?: string;
+  longitude?: string;
 }
 
 interface Lga {

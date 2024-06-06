@@ -1,7 +1,6 @@
-import { Form, Input, Select, Button, InputNumber } from "antd";
+import { Form, Input, Select, InputNumber } from "antd";
 
 import { useState } from "react";
-import { EditOutlined, DeleteOutlined, SaveOutlined } from "@ant-design/icons";
 import { FormEmployeeInput } from "features/core/employees/components/FormEmployeeInput";
 import { FormRoleInput } from "features/core/roles-and-permissions/components/FormRoleInput";
 import {
@@ -14,6 +13,8 @@ import {
   WORKFLOW_STAGE_CONDITION_OPTIONS,
   WORKFLOW_STAGE_TYPE_OPTIONS,
 } from "../constants";
+import { AppButton } from "components/button/AppButton";
+import { borderCardStyle } from "styles/reused";
 
 export const AddAdvancedStage: React.FC<{
   editable: boolean;
@@ -26,7 +27,7 @@ export const AddAdvancedStage: React.FC<{
   const [stagingCondition, setStagingCondition] = useState<TStageCondition>();
 
   return (
-    <div className="flex gap-4 items-end">
+    <div className={`flex flex-col gap-4 w-full ${borderCardStyle}`}>
       <Form
         form={form}
         onFinish={handleFinish}
@@ -34,7 +35,7 @@ export const AddAdvancedStage: React.FC<{
         labelCol={{ span: 24 }}
         requiredMark={false}
       >
-        <div className="flex gap-4">
+        <div className="grid grid-cols-2 md:gap-8 gap-4">
           <Form.Item
             name={"name"}
             label={`Stage Name`}
@@ -68,6 +69,7 @@ export const AddAdvancedStage: React.FC<{
               }}
             />
           </Form.Item>
+
           {stagingType === "employee" && (
             <FormEmployeeInput
               Form={Form}
@@ -86,21 +88,22 @@ export const AddAdvancedStage: React.FC<{
               control={{ label: "Group", name: "entityId" }}
             />
           )}
-          {!!stagingType && stagingType !== "employee" && (
-            <Form.Item
-              name={"condition"}
-              rules={generalValidationRules}
-              label="Condition"
-            >
-              <Select
-                placeholder="Condition"
-                options={WORKFLOW_STAGE_CONDITION_OPTIONS}
-                onSelect={(val: TStageCondition) => {
-                  setStagingCondition(val);
-                }}
-              />
-            </Form.Item>
-          )}
+          {!!stagingType &&
+            !["line-manager", "employee"].includes(stagingType) && (
+              <Form.Item
+                name={"condition"}
+                rules={generalValidationRules}
+                label="Condition"
+              >
+                <Select
+                  placeholder="Condition"
+                  options={WORKFLOW_STAGE_CONDITION_OPTIONS}
+                  onSelect={(val: TStageCondition) => {
+                    setStagingCondition(val);
+                  }}
+                />
+              </Form.Item>
+            )}
 
           {stagingCondition === "specific" && (
             // TO DO: validation of max/min based on count of entity, or no need as they can add to role at any moment
@@ -114,23 +117,17 @@ export const AddAdvancedStage: React.FC<{
           )}
         </div>
       </Form>
-      <div className="flex gap-4 mb-6">
+      <div className="flex gap-4 justify-end mb-6">
+        <AppButton
+          label="Delete"
+          variant="transparent"
+          handleClick={() => removeStage()}
+        />
         {!editable ? (
-          <Button icon={<EditOutlined />} onClick={() => enableEdit()}>
-            Edit
-          </Button>
+          <AppButton label="Edit" handleClick={() => enableEdit()} />
         ) : (
-          <Button
-            icon={<SaveOutlined />}
-            type="text"
-            onClick={() => form.submit()}
-          >
-            Save
-          </Button>
+          <AppButton label="Save" handleClick={() => form.submit()} />
         )}
-        <Button icon={<DeleteOutlined />} onClick={() => removeStage()}>
-          Delete
-        </Button>
       </div>
     </div>
   );

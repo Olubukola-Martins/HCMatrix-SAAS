@@ -4,6 +4,7 @@ import { useQuery } from "react-query";
 import { ICurrentCompany, IPaginationProps, ISearchParams } from "types";
 import { TVehicleType, TVehicleStatus } from "./useCreateVehicle";
 import { DEFAULT_PAGE_SIZE } from "constants/general";
+import { TLicenseType } from "features/authentication/types/auth-user";
 
 // TO DO : need to exist in the general data entities and refactored
 interface IGetDataProps extends ICurrentCompany {
@@ -57,7 +58,7 @@ export interface TVehicleAssignee {
   firstName: string;
   lastName: string;
   email: string;
-  hasSelfService: boolean;
+  licenseType: TLicenseType;
   empUid: string;
   roleId: number;
   status: string;
@@ -101,7 +102,7 @@ export interface TVehicleMaintenance {
 export interface TVehicleRepair extends TVehicleMaintenance {}
 export const QUERY_KEY_FOR_VEHICLES = "vehicles";
 
-const getVehicles = async (
+export const getVehicles = async (
   props: IGetDataProps
 ): Promise<{ data: TVehicle[]; total: number }> => {
   const { pagination, status } = props;

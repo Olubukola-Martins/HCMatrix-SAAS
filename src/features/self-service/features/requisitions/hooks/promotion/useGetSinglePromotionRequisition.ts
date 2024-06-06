@@ -7,7 +7,7 @@ import { TPromotionRequisition } from "../../types/promotion";
 interface IGetDataProps extends ICurrentCompany {
   id: number;
 }
-export const QUERY_KEY_FOR_SINGLE_MONEY_REQUISITION =
+export const QUERY_KEY_FOR_SINGLE_PROMOTION_REQUISITION =
   "single-promotion-requisition";
 const getData = async (
   props: IGetDataProps
@@ -34,7 +34,7 @@ const getData = async (
 
 export const useGetSinglePromotionRequisition = (props: IGetDataProps) => {
   const queryData = useQuery(
-    [QUERY_KEY_FOR_SINGLE_MONEY_REQUISITION, props.id],
+    [QUERY_KEY_FOR_SINGLE_PROMOTION_REQUISITION, props.id],
     () =>
       getData({
         ...props,

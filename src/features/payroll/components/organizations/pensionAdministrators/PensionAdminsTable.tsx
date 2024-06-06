@@ -1,4 +1,4 @@
-import { Button, Table } from "antd";
+import { Button } from "antd";
 
 import React, { useState } from "react";
 import { ColumnsType } from "antd/lib/table";
@@ -6,12 +6,13 @@ import { ColumnsType } from "antd/lib/table";
 import { usePagination } from "hooks/usePagination";
 
 import moment from "moment";
-
-import { DeleteFilled, EditFilled } from "@ant-design/icons";
+import { TableWithFocusType } from "components/table";
+import { AiFillDelete } from "react-icons/ai";
 import { TPensionAdministrator } from "features/payroll/types";
 import EditPensionAdmin from "./EditPensionAdmin";
 import DeletePensionAdmin from "./DeletePensionAdmin";
 import { useGetPensionAdmins } from "features/payroll/hooks/organization/pensionAdministrators/useGetPensionAdmins";
+import { DEFAULT_DATE_FORMAT } from "constants/dateFormats";
 
 type TAction = "edit" | "delete";
 
@@ -49,22 +50,16 @@ const PensionAdminTable: React.FC<{
     },
 
     {
-      title: "Employee Count",
-      dataIndex: "pay",
-      key: "pay",
-      render: (_, item) => 0,
-    },
-    {
       title: "Created At",
-      dataIndex: "createAr",
-      key: "createAr",
-      render: (_, item) => moment(item.createdAt).format(`YYYY-MM-DD`),
+      dataIndex: "Created At",
+      key: "Created At",
+      render: (_, item) => moment(item.createdAt).format(DEFAULT_DATE_FORMAT),
     },
     {
       title: "Updated At",
       dataIndex: "update",
       key: "update",
-      render: (_, item) => moment(item.updatedAt).format(`YYYY-MM-DD`),
+      render: (_, item) => moment(item.updatedAt).format(DEFAULT_DATE_FORMAT),
     },
     {
       title: "",
@@ -72,13 +67,13 @@ const PensionAdminTable: React.FC<{
       key: "actions",
       render: (_, item) => (
         <div>
-          <Button
-            icon={<EditFilled />}
+          {/* <Button
+            icon={<AiFillEdit />}
             type="text"
             onClick={() => handleAction({ action: "edit", data: item })}
-          />
+          /> */}
           <Button
-            icon={<DeleteFilled />}
+            icon={<AiFillDelete />}
             type="text"
             onClick={() => handleAction({ action: "delete", data: item })}
           />
@@ -103,7 +98,7 @@ const PensionAdminTable: React.FC<{
           handleClose={() => cancelAction()}
         />
       )}
-      <Table
+      <TableWithFocusType
         columns={columns}
         size="small"
         dataSource={data?.data}

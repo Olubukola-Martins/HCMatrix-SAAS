@@ -1,5 +1,4 @@
-import { Select } from "antd";
-import { useApiAuth } from "hooks/useApiAuth";
+import { Select, Form } from "antd";
 import { useState } from "react";
 import { generalValidationRules } from "utils/formHelpers/validation";
 import { useFetchSingleRole } from "../hooks/useFetchSingleRole";
@@ -8,31 +7,34 @@ import { TPermission } from "../types";
 export const FormRolePermissionsInput: React.FC<{
   handleSelect?: (val: number) => void;
   roleId: number;
-  Form: any;
+  Form: typeof Form;
   showLabel?: boolean;
   control?: { label: string; name: string };
 }> = ({ Form, showLabel = true, control, roleId, handleSelect }) => {
   const [searchedData, setSearchedData] = useState<TPermission[]>();
-  const { companyId, token } = useApiAuth();
   const { data, isSuccess } = useFetchSingleRole({
     id: roleId,
-    companyId,
-    token,
   });
 
   const handleDataSearch = (val: string) => {
     if (isSuccess && data?.permissions) {
       if (val.length > 0) {
-        const sData = data?.permissions.filter(
-          (item) => item.name.toLowerCase().indexOf(val.toLowerCase()) !== -1
-        );
+        const sData = data?.permissions
+          .filter(
+            (item) =>
+              item.permission.name.toLowerCase().indexOf(val.toLowerCase()) !==
+              -1
+          )
+          .map((item) => item.permission);
         setSearchedData(sData);
       } else {
         setSearchedData([]);
       }
     }
   };
-  const mainData = !!searchedData ? searchedData : data?.permissions;
+  const mainData: TPermission[] | undefined = !!searchedData
+    ? searchedData
+    : data?.permissions?.map((item) => item.permission);
 
   return (
     <Form.Item
@@ -41,6 +43,7 @@ export const FormRolePermissionsInput: React.FC<{
       rules={generalValidationRules}
     >
       <Select
+        getPopupContainer={(triggerNode) => triggerNode.parentElement}
         mode="tags"
         onSelect={handleSelect}
         showSearch
@@ -53,7 +56,7 @@ export const FormRolePermissionsInput: React.FC<{
         filterOption={false}
         options={mainData?.map((item) => ({
           label: `${item.name}`,
-          value: item.permissionId,
+          value: item.id,
         }))}
       />
     </Form.Item>

@@ -28,6 +28,7 @@ const createData = async (props: {
       mode: item.mode,
       isDefault: item.isDefault,
       amount: item.amount,
+      shouldDisplayOnReviewTable: item.shouldDisplayOnReviewTable,
     })),
   };
 

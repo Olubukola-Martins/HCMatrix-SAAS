@@ -5,6 +5,12 @@ import { AuthProvider } from "react-auth-kit";
 import { Suspense, useEffect } from "react";
 import Router from "config/router";
 import GlobalContextProvider from "stateManagers/GlobalContextProvider";
+import ErrorBoundary from "components/errorHandlers/ErrorBoundary";
+import { LOCAL_STORAGE_AUTH_KEY } from "constants/localStorageKeys";
+import { useNetworkState } from "hooks/network/useNetworkState";
+import { ErrorWrapper } from "components/errorHandlers/ErrorWrapper";
+import PageNotFoundIcon from "assets/svg-components/PageNotFoundIcon/PageNotFoundIcon";
+import { useInitializeGoogleAnalyticsTracking } from "hooks/analtyics";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -12,35 +18,58 @@ const queryClient = new QueryClient({
       refetchInterval: false,
       refetchIntervalInBackground: false,
       refetchOnWindowFocus: false,
+      retry: false, //Prevent Multiple Requests from being made on faliure
     },
   },
 });
 
 function App() {
+  // initialize react-ga to track page views on google analytics
+  useInitializeGoogleAnalyticsTracking();
   // clear darkmode
   useEffect(() => {
-    localStorage.removeItem("dark");
+    const dark = localStorage.getItem("dark");
+    if (dark) {
+      localStorage.removeItem("dark");
+    }
     // localStorage.clear(); //to clear all changes tommorow
   }, []);
+
+  // check online status
+  const { isOnline } = useNetworkState();
   return (
-    <BrowserRouter>
-      <AuthProvider
-        authType={"localstorage"}
-        authName={"hcmatrix_app"}
-        // cookieDomain={window.location.hostname}
-        // cookieSecure={window.location.protocol === "https:"}
-        // refresh={refreshApi}
+    <ErrorBoundary
+      message="Please contact administrator!"
+      errImageOrIcon={<PageNotFoundIcon />}
+    >
+      <ErrorWrapper
+        isError={!isOnline}
+        errImage={<PageNotFoundIcon />}
+        message="Please check your internet connection!"
       >
-        <QueryClientProvider client={queryClient}>
-          <GlobalContextProvider>
-            <Suspense fallback={<div>temporary Loading...</div>}>
-              <Router />
-            </Suspense>
-          </GlobalContextProvider>
-          <ReactQueryDevtools initialIsOpen={false} position="bottom-right" />
-        </QueryClientProvider>
-      </AuthProvider>
-    </BrowserRouter>
+        <BrowserRouter>
+          <AuthProvider
+            authType={"localstorage"}
+            authName={LOCAL_STORAGE_AUTH_KEY}
+            // cookieDomain={window.location.hostname}
+            // cookieSecure={window.location.protocol === "https:"}
+            // refresh={refreshApi}
+          >
+            <QueryClientProvider client={queryClient}>
+              <GlobalContextProvider>
+                <Suspense fallback={<div>temporary Loading...</div>}>
+                  <Router />
+                </Suspense>
+              </GlobalContextProvider>
+              <ReactQueryDevtools
+                initialIsOpen={false}
+                position="bottom-right"
+              />
+            </QueryClientProvider>
+          </AuthProvider>
+        </BrowserRouter>
+      </ErrorWrapper>
+    </ErrorBoundary>
   );
 }
 

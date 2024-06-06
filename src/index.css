@@ -3,6 +3,8 @@
 @tailwind utilities;
 
 @import url("https://fonts.googleapis.com/css2?family=Manrope:wght@200;300;400;500;600;700;800&display=swap");
+@import "antd/dist/antd.min.css";
+
 /* antd */
 /* @import "~antd/dist/antd.dark.css";
 @import "~antd/dist/antd.compact.css"; */
@@ -125,7 +127,7 @@ body {
 }
 
 .transparentButton {
-  @apply border border-slate-400 hover:border-slate-800 rounded font-medium bg-transparent transition ease-in-out duration-500 text-sm tracking-wider;
+  @apply border border-caramel text-caramel hover:text-slate-800 hover:border-slate-800 rounded font-medium bg-transparent transition ease-in-out duration-500 text-sm tracking-wider;
   padding: 6px 8.5px;
 }
 .borderButton {

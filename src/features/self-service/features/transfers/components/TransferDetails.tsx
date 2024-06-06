@@ -2,19 +2,28 @@ import { DatePicker, Form, Input, Modal, Skeleton } from "antd";
 import React, { useEffect } from "react";
 import { IModalProps } from "types";
 import { useApiAuth } from "hooks/useApiAuth";
-import { AppButton } from "components/button/AppButton";
 import { getAppropriateColorForStatus } from "utils/colorHelpers/getAppropriateColorForStatus";
 import moment from "moment";
-import { useGetSingleTranferRequisition } from "../../requisitions/hooks/transfer/useGetSingleTransferRequisition";
+import {
+  QUERY_KEY_FOR_SINGLE_TRANSFER_REQUISITION,
+  useGetSingleTranferRequisition,
+} from "../../requisitions/hooks/transfer/useGetSingleTransferRequisition";
+import { TApprovalRequest } from "features/core/workflows/types/approval-requests";
+import ApproveOrRejectButton from "features/core/workflows/components/approval-request/ApproveOrRejectButton";
+import { useQueryClient } from "react-query";
+import { QUERY_KEY_FOR_TRANSFER_REQUISITIONS } from "../../requisitions/hooks/transfer/useGetTransferRequisitions";
+import { QUERY_KEY_FOR_TRANSFER_REQUISITIONS_FOR_AUTH_EMPLOYEE } from "../../requisitions/hooks/transfer/useGetTransferRequisitions4AuthEmployee";
 
 interface IProps extends IModalProps {
   id: number;
+  approvalRequest?: TApprovalRequest;
 }
 
 export const TransferDetails: React.FC<IProps> = ({
   open,
   handleClose,
   id,
+  approvalRequest,
 }) => {
   const { companyId, token } = useApiAuth();
   const [form] = Form.useForm();
@@ -37,6 +46,8 @@ export const TransferDetails: React.FC<IProps> = ({
       });
     }
   }, [id, form, data]);
+  const queryClient = useQueryClient();
+
   return (
     <Modal
       open={open}
@@ -46,6 +57,26 @@ export const TransferDetails: React.FC<IProps> = ({
       style={{ top: 20 }}
     >
       <Skeleton active loading={isFetching} paragraph={{ rows: 8 }}>
+        <ApproveOrRejectButton
+          className="flex justify-end"
+          request={approvalRequest}
+          handleSuccess={() => {
+            queryClient.invalidateQueries({
+              queryKey: [QUERY_KEY_FOR_TRANSFER_REQUISITIONS],
+              // exact: true,
+            });
+            queryClient.invalidateQueries({
+              queryKey: [QUERY_KEY_FOR_TRANSFER_REQUISITIONS_FOR_AUTH_EMPLOYEE],
+              // exact: true,
+            });
+            queryClient.invalidateQueries({
+              queryKey: [QUERY_KEY_FOR_SINGLE_TRANSFER_REQUISITION, id],
+              // exact: true,
+            });
+
+            handleClose();
+          }}
+        />
         <Form form={form} disabled layout="vertical">
           <Form.Item name={"date"} label="Date">
             <DatePicker className="w-full" />
@@ -76,9 +107,6 @@ export const TransferDetails: React.FC<IProps> = ({
             />
           </Form.Item>
         </Form>
-        <div className="flex justify-end">
-          <AppButton label="Download" type="button" />
-        </div>
       </Skeleton>
     </Modal>
   );

@@ -10,12 +10,7 @@ import {
 } from "antd";
 import TransferOwnership from "components/transferOwnership/TransferOwnership";
 import { useEffect, useState } from "react";
-import {
-  QUERY_KEY_FOR_COMPANY_PARAMETERS,
-  useGetCompanyParams,
-} from "../hooks/useGetCompanyParams";
 
-import { useSaveCompanyParams } from "../hooks/useSaveCompanyParams";
 import { useQueryClient } from "react-query";
 import { openNotification } from "utils/notifications";
 import { AppButton } from "components/button/AppButton";
@@ -29,6 +24,13 @@ import {
   generalValidationRules,
 } from "utils/formHelpers/validation";
 import { CURRENCY_OPTIONS } from "constants/currencies";
+import { useSaveCompanyParamSetting } from "../hooks/useSaveCompanyParamSetting";
+import {
+  QUERY_KEY_FOR_COMPANY_PARAMETER_SETTING,
+  useGetCompanyParamSetting,
+} from "../hooks/useGetCompanyParamSetting";
+import { QUERY_KEY_FOR_AUTHENTICATED_USER } from "features/authentication/hooks/useGetAuthUser";
+import { FormCountryNameInput } from "components/generalFormInputs/FormCountryInput";
 
 const parentCompStyle = "grid md:grid-cols-2 border-0 border-b gap-4 py-2";
 const compStyle = "flex flex-col gap-2 items-start";
@@ -41,10 +43,10 @@ const CompanySettingsForm = () => {
   const [adminEmail, setAdminEmail] = useState("");
 
   const { data: companyParams, isFetching: isFetchingCompanyParams } =
-    useGetCompanyParams();
+    useGetCompanyParamSetting();
 
   const [form] = Form.useForm();
-  const { mutate, isLoading } = useSaveCompanyParams();
+  const { mutate, isLoading } = useSaveCompanyParamSetting();
 
   const handleSubmit = (data: any) => {
     mutate(
@@ -57,7 +59,7 @@ const CompanySettingsForm = () => {
         },
         locationSettings: {
           country: data.country,
-          timezone: data.timezone,
+          timezone: data?.timezone,
         },
         dateAndTimeSettings: {
           dateFormat: data.dateFormat,
@@ -100,10 +102,13 @@ const CompanySettingsForm = () => {
             description: res.data.message,
             // duration: 0.4,
           });
-          form.resetFields();
 
           queryClient.invalidateQueries({
-            queryKey: [QUERY_KEY_FOR_COMPANY_PARAMETERS],
+            queryKey: [QUERY_KEY_FOR_COMPANY_PARAMETER_SETTING],
+            // exact: true,
+          });
+          queryClient.invalidateQueries({
+            queryKey: [QUERY_KEY_FOR_AUTHENTICATED_USER],
             // exact: true,
           });
         },
@@ -118,7 +123,7 @@ const CompanySettingsForm = () => {
         adminEmail: data.administrator.adminEmail,
         defaultFromAddress: data.emailSettings.defaultFromAddress,
         country: data.locationSettings.country,
-        timezone: data.locationSettings.timezone,
+        timezone: data.locationSettings?.timezone,
         dateFormat: data.dateAndTimeSettings.dateFormat,
         timeFormat: data.dateAndTimeSettings.timeFormat,
         hideBirthday: data.employeeSettings.hideBirthday,
@@ -148,14 +153,11 @@ const CompanySettingsForm = () => {
       loading={isFetchingCompanyParams || isFetchingCountries}
       paragraph={{ rows: 8 }}
     >
-      {/* transfer ownership */}
-      {companyParams && (
-        <TransferOwnership
-          open={transferOwnershipModal}
-          handleClose={() => setTransferOwnershipModal(false)}
-          companyParams={companyParams}
-        />
-      )}
+      <TransferOwnership
+        open={transferOwnershipModal}
+        handleClose={() => setTransferOwnershipModal(false)}
+      />
+
       <Form
         className="flex flex-col gap-4"
         form={form}
@@ -174,7 +176,7 @@ const CompanySettingsForm = () => {
                 rules={
                   !!companyParams?.value.administrator.adminEmail
                     ? emailValidationRulesOp
-                    : [{ required: false }]
+                    : emailValidationRules
                 }
               >
                 <Input
@@ -214,19 +216,14 @@ const CompanySettingsForm = () => {
             </Typography.Title>
 
             <div className={compStyle}>
-              <Form.Item
-                label="Country"
-                name={`country`}
-                className="w-3/4"
-                rules={generalValidationRules}
-              >
-                <Select
-                  options={countries?.map((item) => ({
-                    label: item.name,
-                    value: item.name,
-                  }))}
+              <div className="w-3/4">
+                <FormCountryNameInput
+                  Form={Form}
+                  control={{ label: "Country", name: "country" }}
+                  countries={countries}
+                  isLoading={isFetchingCountries}
                 />
-              </Form.Item>
+              </div>
             </div>
             <div className={compStyle}>
               <Form.Item

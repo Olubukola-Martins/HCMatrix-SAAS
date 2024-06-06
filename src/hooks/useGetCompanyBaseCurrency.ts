@@ -1,15 +1,16 @@
 import { appRoutes } from "config/router/paths";
 import { CURRENCIES } from "constants/currencies";
-import { useGetCompanyParams } from "features/core/company/hooks/useGetCompanyParams";
+import { useGetCompanyParamSetting } from "features/core/company/hooks/useGetCompanyParamSetting";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { TCurrency } from "types/currencies";
+import { formatNumberWithCommas } from "utils/dataHelpers/formatNumberWithCommas";
 import { openNotification } from "utils/notifications";
 
 export const useGetCompanyBaseCurrency = () => {
   const navigate = useNavigate();
   const { data: companyParams, isFetching: isFetchingCompanyParams } =
-    useGetCompanyParams();
+    useGetCompanyParamSetting();
 
   const [baseCurrency, setBaseCurrency] = useState<TCurrency>();
 
@@ -30,9 +31,14 @@ export const useGetCompanyBaseCurrency = () => {
       });
     }
   }, [baseCurrency, companyParams, isFetchingCompanyParams, navigate]);
-
+  const formatValueWithCurrency = (value?: number | string): string => {
+    return `${baseCurrency?.currencySymbol ?? ""} ${formatNumberWithCommas(
+      value
+    )}`;
+  };
   return {
     baseCurrency,
     loading: isFetchingCompanyParams,
+    formatValueWithCurrency,
   };
 };

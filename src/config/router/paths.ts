@@ -1,15 +1,13 @@
 // These object helps to ensure that the routes in the application are not manually hardcorded and littered everywhere
 
-
 import { format } from "path";
 
 import { TPayrollSchemeType } from "features/payroll/types/payrollSchemes";
 
-
 // rather they are managed by a single file
 export const appRoutes = {
   // auth routes
-  microsoftCallback: `auth/microsoft/callback`,
+  microsoftCallback: `/auth/microsoft/callback`,
   login: `/login`,
   register: `/register`,
   verify: `/verify`,
@@ -19,19 +17,19 @@ export const appRoutes = {
   invitedEmployee: `/invited-employee-form`,
   //home routes
   home: `/`,
-  companyOrganogram: `/company-organogram`,
   // setting routes
   settings: "/settings",
+  companyOrganogram: `/settings/company-organogram`,
   projectSettings: "/settings/projects",
   singleProject: (id?: number) => ({
     format: `/settings/projects/:id`,
     path: `/settings/projects/${id}`,
   }),
   companyDetailsSettings: `/settings/company-details`,
-  locationSettings: `/settings/locations`,
+  locationSettings: `/settings/branches`,
   singleLocation: (id?: number) => ({
-    format: `/settings/locations/:id`,
-    path: `/settings/locations/${id}`,
+    format: `/settings/branches/:id`,
+    path: `/settings/branches/${id}`,
   }),
   holidaySettings: `/settings/holidays`,
   userProfileSettings: `/settings/profile`,
@@ -52,14 +50,10 @@ export const appRoutes = {
     format: `/settings/departments/:id`,
     path: `/settings/departments/${id}`,
   }),
-  // singleDelegation: (id?: number) => ({
-  //   format: `/settings/delegations/:id`,
-  //   path: `/settings/delegations/${id}`,
-  // }),
+
   delegationSettings: `/settings/delegations`,
 
   roleSettings: `/settings/roles`,
-  createRole: `/settings/roles/create`,
   editRole: (id?: number) => ({
     format: `/settings/roles/edit/:id`,
     path: `/settings/roles/edit/${id}`,
@@ -127,7 +121,6 @@ export const appRoutes = {
     format: `/settings/scheme/:scheme/payroll/:id`,
     path: `/settings/scheme/${scheme}/payroll/${id}`,
   }),
-  payrollPolicySettings: `/settings/probation_policy_PENDING`,
   payGradeSettings: `/settings/grades`,
   payGradeAndCategorySettings: `/settings/grades-and-settings`,
   taxAuthorities: `/settings/payroll/tax-authorities`,
@@ -135,13 +128,27 @@ export const appRoutes = {
   nsitfAuthorities: `/settings/payroll/nsitf-authorities`,
   pensionAdministrators: `/settings/payroll/pension-adminsistrators`,
   gradeCategorySettings: `/settings/grade_categories`,
-  probationPolicySettings: `/settings/probation_policy`,
-  resignationPolicySettings: `/settings/resignation_policy`,
+  probationPolicySettings: `/settings/probation-policy`,
+  resignationPolicySettings: `/settings/resignation-policy`,
 
   // Billing routes
   billingStatement: `/statement`,
   billings: `/billings`,
+
+  billingHistory: `billing/history`, //to be removed
+  // start here
   purchaseUserLicense: `/purchase-user-license`,
+  billingSubscription: `/billings/subscription`,
+  billingInactiveSubscriptionInformEmployee: `/billings/subscription/inactive/inform-employee`,
+  billingInactiveSubscriptionInformOwner: `/billings/subscription/inactive/inform-owner`,
+  billingSummary: `/billings/summary`,
+  singleBillingSummary: (id?: number) => ({
+    format: `/billings/summary/:id`,
+    path: `/billings/summary/${id}`,
+  }),
+
+  billingStorageManagement: `/billings/storage-management`,
+  billingTrainingSession: `/billings/training-session`,
 
   // payroll routes
   payrollHome: `/payroll/home`,
@@ -168,7 +175,7 @@ export const appRoutes = {
   addPayrollReport: `/payroll/report/create`,
   payslips: `/payroll/payslip`,
   employeePayslips: `/payroll/employee-payslip`,
-  payslipTransactions: `/payslip-transactions`,
+  payslipTransactions: `/self-service/payslip-transactions`,
   createPayslipTemplate: `/payroll/create-payslip-template`,
   editPayslipTemplate: (id?: number) => ({
     format: `/payroll/edit-payslip-template/:id`,
@@ -211,6 +218,7 @@ export const appRoutes = {
   loanRequests: `/self-service/loan-request`,
   loanPolicies: `/self-service/loan-policies`,
   vehicleBooking: `/self-service/vehicle-booking`,
+  vehicleBookingSetting: `/self-service/vehicle-booking/setting`,
   vehicleDetails: (id?: number) => ({
     format: `/self-service/vehicle-details/:id`,
     path: `/self-service/vehicle-details/${id}`,
@@ -226,6 +234,10 @@ export const appRoutes = {
   leaveHome: `/self-service/leave`,
   leaveSettings: `/self-service/leave/settings`,
   healthAccessHome: `/self-service/health-access`,
+  healthAccessDetails: (id?: number) => ({
+    format: `/self-service/health-access/:id`,
+    path: `/self-service/health-access/${id}`,
+  }),
   healthAccessSettings: `/self-service/health-access/settings`,
   onboarding: `/self-service/onboarding`,
   startOnBoarding: (id?: number) => ({
@@ -236,8 +248,8 @@ export const appRoutes = {
   newHandOverForm: `/self-service/handover-new-form`,
 
   handOverDetails: (id?: number) => ({
-    format: ` /self-service/handover-form/:id`,
-    path: ` /self-service/handover-form/${id}`,
+    format: `/self-service/handover-form/:id`,
+    path: `/self-service/handover-form/${id}`,
   }),
   hRLetters: `/self-service/hr-letters`,
   documents: `/self-service/documents`,
@@ -263,9 +275,9 @@ export const appRoutes = {
   // Time and Attendance routes
   attendanceHome: `/attendance/home`,
   timeSheet: `/attendance/time-sheet`,
-  timeSheetDetails: (id?: number) => ({
-    format: `/attendance/time-sheet/:id`,
-    path: `/attendance/time-sheet/${id}`,
+  timeSheetDetails: (id?: number, date?: string) => ({
+    format: `/attendance/time-sheet/:id/:date`,
+    path: `/attendance/time-sheet/${id}/${date}`,
   }),
   timeOff: `/attendance/time-off`,
   attendanceReport: `/attendance/reports`,
@@ -273,16 +285,15 @@ export const appRoutes = {
     format: `/attendance/reports/:id`,
     path: `/attendance/reports/${id}`,
   }),
-  shiftPerEmployee: `/attendance/shift-per-employee`,
   hoursPerEmployee: `/attendance/hours-per-employee`,
   employeesPerShift: `/attendance/employees-per-shift`,
-  uploadAttendance: `/attendance/upload-attendance`,
   timeTrackingRules: `/attendance/time-tracking-rules`,
   workSchedule: `/attendance/work-schedule`,
   timeOffPolicy: `/attendance/time-off-policy`,
-  clockInSettings: `/attendance/clock-in-settings`,
-  addLocation: `/attendance/add-location`,
+  biometrics: `/attendance/biometrics`,
+  location: `/attendance/location`,
   otherSettings: `/attendance/other-settings`,
+  breakSetUp: `/attendance/break-setup`,
 
   // Leaning and development
   learningHome: `/learning/home`,
@@ -306,43 +317,14 @@ export const appRoutes = {
   addTraining: `/learning/add-training`,
   lAndDReport: `/learning/report`,
   udemy: `/learning/udemy`,
-
-  // Recruitment
-  recruitmentSettings: `/recruitment/settings`,
-  recruitmentDashboard: `/recruitment/dashboard`,
-  recruitmentReport: `/recruitment/report`,
-  recruitmentAddJobOpening: `/recruitment/add-job-opening`,
-  candidateStatus: `/recruitment/candidate-status`,
-  candidateSources: `/recruitment/candidate-sources`,
-  recruitmentEmailTemplate: `/recruitment/email-template`,
-  recruitmentOfferTemplate: `/recruitment/offer-template`,
-  recruitmentJobTemplate: `/recruitment/job-template`,
-  recruitmentOtherSettings: `/recruitment/other-settings`,
-  addEmailTemplate: `/recruitment/add-email-template`,
-  emailTemplateDetails: (id?: number) => ({
-    format: `/recruitment/email-template/:id`,
-    path: `/recruitment/email-template/${id}`,
-  }),
-  offerTemplateDetails: (id?: number) => ({
-    format: `/recruitment/offer-template/:id`,
-    path: `/recruitment/offer-template/${id}`,
-  }),
-  jobTemplateDetails: (id?: number) => ({
-    format: `/recruitment/job-template/:id`,
-    path: `/recruitment/job-template/${id}`,
-  }),
-  addJobTemplate: `/recruitment/add-job-template`,
-  addOfferTemplate: `/recruitment/add-offer-template`,
-  applicationsList: `/recruitment/applications-list`,
-  applicationsDescription: `/recruitment/applications-description`,
-  applicationsInfo: `/recruitment/applications-info`,
-  applicantDetails: (id?: number) => ({
-    format: `/recruitment/dashboard/:id/applicantDetails`,
-    path: `/recruitment/dashboard/${id}/applicantDetails`,
-  }),
-  applicationDetails: (id?: number) => ({
-    format: `/recruitment/dashboard/:id/applicationDetails`,
-    path: `/recruitment/dashboard/${id}/applicationDetails`,
-  }),
-  applicantEmailPage: `/recruitment/dashboard/applicantEmailPage`,
+  leaningHome: `/leaning/home`,
 };
+
+// Routes that require API redirect and logout if authenticated, so the user is not automatically redirected to the login page, as that is the typical behaviour of such routes
+export const ROUTES_THAT_REQUIRE_API_REDIRECT_AND_LOGOUT_IF_AUTHENTICATED = [
+  appRoutes.microsoftCallback,
+  appRoutes.verify,
+  appRoutes.verifyEmployee,
+  appRoutes.resetPassword,
+  appRoutes.invitedEmployee,
+];

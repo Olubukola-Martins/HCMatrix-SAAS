@@ -2,8 +2,7 @@ import { TSinglePayroll } from "features/payroll/types/payroll";
 import React, { useState } from "react";
 import { EmployeePayrollUpdatesContainer } from "../employeePayrollUpdates/EmployeePayrollUpdatesContainer";
 import PageSubHeader from "components/layout/PageSubHeader";
-import { MoreOutlined } from "@ant-design/icons";
-import { Button, Dropdown, Menu, Skeleton } from "antd";
+import { Skeleton, Tag } from "antd";
 import PayrollBreakdown from "./PayrollBreakdown";
 import { useApproveORReject } from "hooks/useApproveORReject";
 import { QUERY_KEY_FOR_PAYROLLS_BY_SCHEME } from "features/payroll/hooks/payroll/useGetAllPayrollsByScheme";
@@ -11,12 +10,17 @@ import { useQueryClient } from "react-query";
 import { useFetchApprovalRequests } from "features/core/workflows/hooks/useFetchApprovalRequests";
 import { useNavigate } from "react-router-dom";
 import { appRoutes } from "config/router/paths";
+import { SupplementaryActionsProps } from "SupplementaryActions";
+import { ComparePayroll } from "../payrollComparism/ComparePayroll";
 
 interface IProps {
   payroll: TSinglePayroll;
 }
 const SinglePayrollReview: React.FC<IProps> = ({ payroll }) => {
-  type TAction = "view-summary" | "compare";
+  type TAction =
+    | "view-summary"
+    | "comapare-payroll-basic"
+    | "compare-payroll-advanced";
   const queryClient = useQueryClient();
 
   const [action, setAction] = useState<TAction>();
@@ -49,12 +53,36 @@ const SinglePayrollReview: React.FC<IProps> = ({ payroll }) => {
       navigate(appRoutes.payrollReview);
     },
   });
+  const DEFAULT_PAYROLL_REVIEW_ACTIONS: SupplementaryActionsProps["actions"] = [
+    {
+      name: "Summary",
+      handleClick: () => handleAction({ action: "view-summary" }),
+      btnVariant: "default",
+    },
+    {
+      name: "Compare",
+      handleClick: () => handleAction({ action: "comapare-payroll-basic" }),
+      btnVariant: "transparent",
+    },
+  ];
   return (
     <>
       <PayrollBreakdown
         open={action === "view-summary"}
         handleClose={clearAction}
         payroll={payroll}
+      />
+      <ComparePayroll
+        handleClose={clearAction}
+        open={
+          action !== undefined &&
+          ["comapare-payroll-basic", "compare-payroll-advanced"].includes(
+            action
+          )
+        }
+        payrollId={payroll?.id}
+        payrollDate={payroll.date}
+        type={action === "comapare-payroll-basic" ? "basic" : "advanced"}
       />
       <Skeleton
         active
@@ -63,10 +91,13 @@ const SinglePayrollReview: React.FC<IProps> = ({ payroll }) => {
       >
         <div className="flex flex-col gap-6">
           <PageSubHeader
-            description={`Review ${payroll.name} payroll being processed`}
+            description={{
+              content: `${payroll.name} payroll`,
+              className: "text-lg",
+            }}
             hideBackground
             actions={
-              payrollRequestItem
+              payrollRequestItem && payroll.status === "in-review"
                 ? [
                     {
                       name: "Approve",
@@ -98,33 +129,20 @@ const SinglePayrollReview: React.FC<IProps> = ({ payroll }) => {
                       btnVariant: "style-with-class",
                       additionalClassNames: ["neutralButton"],
                     },
+                    ...DEFAULT_PAYROLL_REVIEW_ACTIONS,
                   ]
-                : undefined
+                : DEFAULT_PAYROLL_REVIEW_ACTIONS
             }
-            comps={[
-              <Dropdown
-                overlay={
-                  <Menu
-                    items={[
-                      {
-                        key: "view",
-                        label: "View Total Summary",
-                        onClick: () => handleAction({ action: "view-summary" }),
-                      },
-                      {
-                        // TO DO: Add the compare functionality, you probably need to use context
-                        key: "compare",
-                        label: "Compare",
-                        onClick: () => handleAction({ action: "compare" }),
-                      },
-                    ]}
-                  />
-                }
-              >
-                <Button type="text" icon={<MoreOutlined />} />
-              </Dropdown>,
-            ]}
           />
+          <div className="flex justify-end">
+            <Tag
+              children={
+                <span className="capitalize">
+                  {payroll.status.split("-").join(" ")}
+                </span>
+              }
+            />
+          </div>
           <EmployeePayrollUpdatesContainer
             expatriate={false}
             payrollId={payroll?.id}

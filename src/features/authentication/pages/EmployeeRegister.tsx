@@ -2,10 +2,6 @@ import peachBg from "../assets/images/peachBg.png";
 // import greenBg from "../assets/images/greenBg.png";
 import lightBg from "../assets/images/lightBg.png";
 import logo from "../assets/images/logo.png";
-import microsoft from "../assets/images/microsoft.svg";
-import google from "../assets/images/google.svg";
-import office from "../assets/images/office.svg";
-import linkedin from "../assets/images/linkedin.svg";
 import { Divider } from "antd";
 import "../style/style.css";
 import { Link, Navigate, useSearchParams } from "react-router-dom";
@@ -87,32 +83,6 @@ export const EmployeeRegister = () => {
                   <Divider>
                     <span className="text-sm">Sign Up with</span>
                   </Divider>
-                  <div className="flex items-center justify-center gap-6">
-                    <img
-                      src={microsoft}
-                      alt="microsoft"
-                      className="cursor-pointer"
-                      title="Microsoft"
-                    />
-                    <img
-                      src={google}
-                      alt="google"
-                      className="cursor-pointer"
-                      title="Google"
-                    />
-                    <img
-                      src={linkedin}
-                      alt="microsoft"
-                      className="cursor-pointer"
-                      title="Linkedin"
-                    />
-                    <img
-                      src={office}
-                      alt="microsoft"
-                      className="-ml-4 cursor-pointer"
-                      title="Microsoft"
-                    />
-                  </div>
                 </div>
               </div>
             </div>
@@ -120,7 +90,7 @@ export const EmployeeRegister = () => {
               className="flex items-center gap-2 justify-center text-xs py-5"
               style={{ color: "var(--authPrimary)" }}
             >
-              <span>Private Policy</span>
+              <span>Privacy Policy</span>
               <span className="text-black font-semibold text-xl">.</span>
               <span>Terms of service</span>
             </div>

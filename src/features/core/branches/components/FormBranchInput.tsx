@@ -1,26 +1,25 @@
-import { Select, Spin } from "antd";
-import { useApiAuth } from "hooks/useApiAuth";
+import { Select, Form } from "antd";
 import { useDebounce } from "hooks/useDebounce";
 import { useState } from "react";
-import { generalValidationRules } from "utils/formHelpers/validation";
+import {
+  generalValidationRules,
+  generalValidationRulesOp,
+} from "utils/formHelpers/validation";
 import { useFetchBranches } from "../hooks/useFetchBranches";
 
 export const FormBranchInput: React.FC<{
-  Form: any;
+  Form: typeof Form;
   showLabel?: boolean;
   control?: { label: string; name: string | (string | number)[] };
-}> = ({ Form, showLabel = true, control }) => {
-  const { companyId, token } = useApiAuth();
-
+  optional?: boolean;
+}> = ({ Form, showLabel = true, control, optional = false }) => {
   const [searchTerm, setSearchTerm] = useState<string>("");
   const debouncedSearchTerm: string = useDebounce<string>(searchTerm);
 
-  const { data, isFetching, isSuccess } = useFetchBranches({
-    companyId,
+  const { data, isFetching } = useFetchBranches({
     searchParams: {
       name: debouncedSearchTerm,
     },
-    token,
   });
 
   const handleSearch = (val: string) => {
@@ -31,7 +30,7 @@ export const FormBranchInput: React.FC<{
     <Form.Item
       name={control?.name ?? "branchId"}
       label={showLabel ? control?.label ?? "Branch" : null}
-      rules={generalValidationRules}
+      rules={optional ? generalValidationRulesOp : generalValidationRules}
     >
       <Select
         placeholder="Select branch"
@@ -45,17 +44,11 @@ export const FormBranchInput: React.FC<{
         showArrow={false}
         filterOption={false}
       >
-        {isSuccess ? (
-          data.data.map((item) => (
-            <Select.Option key={item.id} value={item.id}>
-              {item.name}
-            </Select.Option>
-          ))
-        ) : (
-          <div className="flex justify-center items-center w-full">
-            <Spin size="small" />
-          </div>
-        )}
+        {data?.data.map((item) => (
+          <Select.Option key={item.id} value={item.id}>
+            {item.name}
+          </Select.Option>
+        ))}
       </Select>
     </Form.Item>
   );

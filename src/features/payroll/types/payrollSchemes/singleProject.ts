@@ -1,3 +1,4 @@
+import { TLicenseType } from "features/authentication/types/auth-user";
 import { TProjectPayrollScheme } from "./project";
 
 export type TSingleProjectPayrollScheme = TProjectPayrollScheme[0] & {
@@ -23,7 +24,7 @@ interface Employee {
   firstName: string;
   lastName: string;
   email: string;
-  hasSelfService: boolean;
+  licenseType: TLicenseType;
   empUid: string;
   roleId: number;
   status: string;
@@ -66,4 +67,5 @@ type SalaryComponent = {
   amount: number | string;
   createdAt: string;
   updatedAt: string;
+  shouldDisplayOnReviewTable: boolean;
 };

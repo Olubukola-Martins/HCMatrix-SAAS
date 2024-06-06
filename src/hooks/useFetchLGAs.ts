@@ -8,16 +8,17 @@ import { openNotification } from "utils/notifications";
 export const QUERY_KEY_FOR_LGA = "lga";
 
 export interface ILgaProps {
-  stateId: number;
+  stateId?: number;
   searchParams?: ISearchParams;
 }
 export const getLgas = async ({
   stateId,
   searchParams,
 }: ILgaProps): Promise<TLga[]> => {
-  let url = `${MICROSERVICE_ENDPOINTS.UTILITY}/address/lga/${stateId}`;
+  let url = `${MICROSERVICE_ENDPOINTS.UTILITY}/address/lga`;
   const config = {
     params: {
+      stateId,
       search: searchParams?.name,
     },
   };
@@ -37,7 +38,7 @@ export const getLgas = async ({
 };
 
 // Get states by LGA
-export const useFetchLgas = ({ stateId, searchParams }: ILgaProps) => {
+export const useFetchLgas = ({ stateId, searchParams }: ILgaProps = {}) => {
   const queryData = useQuery(
     [QUERY_KEY_FOR_LGA, stateId, searchParams?.name],
     () => getLgas({ stateId, searchParams }),
@@ -45,7 +46,6 @@ export const useFetchLgas = ({ stateId, searchParams }: ILgaProps) => {
       refetchInterval: false,
       refetchIntervalInBackground: false,
       refetchOnWindowFocus: false,
-      enabled: stateId ? true : false, // or stateId ? true : false,
       onError: (err: any) => {
         // show notification
         openNotification({

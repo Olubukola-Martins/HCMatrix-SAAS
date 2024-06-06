@@ -1,4 +1,4 @@
-import { MailOutlined } from "@mui/icons-material";
+import { MailOutlined } from "@ant-design/icons";
 import { Form, Input } from "antd";
 import { useMutation, useQueryClient } from "react-query";
 import { BeatLoader } from "react-spinners";

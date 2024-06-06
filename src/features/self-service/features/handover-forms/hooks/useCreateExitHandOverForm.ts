@@ -5,7 +5,6 @@ import { useMutation } from "react-query";
 import { ICurrentCompany } from "types";
 
 type TCreateProps = {
-  employeeId: number;
   separationDate: string;
   reasonForLeaving: string;
   whatDidYouLikeTheMost: string;
@@ -14,7 +13,7 @@ type TCreateProps = {
   supportingDocumentUrl?: string;
   supervisorClearanceUrl?: string;
   assetChecklist?: AssetChecklist[];
-};
+} & { employeeId?: number };
 
 interface AssetChecklist {
   assetRequisitionId: number;

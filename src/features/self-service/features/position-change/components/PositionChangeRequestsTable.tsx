@@ -1,25 +1,37 @@
 import React, { useState } from "react";
 import { TApprovalStatus } from "types/statuses";
-import { MoreOutlined } from "@ant-design/icons";
+import { TableWithFocusType } from "components/table";
+import { AiOutlineMore } from "react-icons/ai";
 import type { ColumnsType } from "antd/es/table";
 import { usePagination } from "hooks/usePagination";
-import { Button, Dropdown, Menu, Table } from "antd";
+import { Button, Dropdown, Menu,  } from "antd";
 import { useApiAuth } from "hooks/useApiAuth";
 import moment from "moment";
 import { getAppropriateColorForStatus } from "utils/colorHelpers/getAppropriateColorForStatus";
 import { useGeTPositionChangeRequisitionRequisitions } from "../../requisitions/hooks/position-change/useGetPositionChangeRequisitions";
 import { TPositionChangeRequisition } from "../../requisitions/types/positionChange";
 import { PositionChangeRequestDetails } from "./PositionChangeRequestDetails";
+import { DEFAULT_DATE_FORMAT } from "constants/dateFormats";
+import ViewApprovalStages from "features/core/workflows/components/approval-request/ViewApprovalStages";
+
+type TAction = "cancel" | "view" | "view-approval-stages";
 
 export const PositionChangeRequestsTable: React.FC<{
   status?: TApprovalStatus;
   employeeId?: number;
 }> = ({ status, employeeId }) => {
-  const [requestId, setRequestId] = useState<number>();
+  const [request, setRequest] = useState<TPositionChangeRequisition>();
+  const [action, setAction] = useState<TAction>();
+  const handleAction = (key: TAction, item?: TPositionChangeRequisition) => {
+    setAction(key);
+    setRequest(item);
+  };
+  const onClose = () => {
+    setAction(undefined);
+    setRequest(undefined);
+  };
   const { companyId, token } = useApiAuth();
-  const { pagination, onChange } = usePagination({
-    pageSize: 4,
-  });
+  const { pagination, onChange } = usePagination();
   const { data, isFetching } = useGeTPositionChangeRequisitionRequisitions({
     companyId,
     token,
@@ -37,7 +49,7 @@ export const PositionChangeRequestsTable: React.FC<{
       dataIndex: "date",
       key: "date",
       render: (_, item) => (
-        <span>{moment(item.date).format("YYYY/MM/DD")} </span>
+        <span>{moment(item.date).format(DEFAULT_DATE_FORMAT)} </span>
       ),
     },
     {
@@ -84,9 +96,17 @@ export const PositionChangeRequestsTable: React.FC<{
           overlay={
             <Menu>
               <Menu.Item
+                key="3009"
+                onClick={() => {
+                  handleAction("view-approval-stages", item);
+                }}
+              >
+                View Stages
+              </Menu.Item>
+              <Menu.Item
                 key="3"
                 onClick={() => {
-                  setRequestId(item.id);
+                  handleAction("view", item);
                 }}
               >
                 View Details
@@ -97,7 +117,7 @@ export const PositionChangeRequestsTable: React.FC<{
         >
           <Button
             title="Actions"
-            icon={<MoreOutlined />}
+            icon={<AiOutlineMore />}
             type="text"
             // onClick={() => handleEdit(item._id)}
           />
@@ -108,14 +128,22 @@ export const PositionChangeRequestsTable: React.FC<{
 
   return (
     <div>
-      {requestId && (
+      {request && (
         <PositionChangeRequestDetails
-          open={!!requestId}
-          handleClose={() => setRequestId(undefined)}
-          id={requestId}
+          open={action === "view"}
+          handleClose={onClose}
+          id={request.id}
         />
       )}
-      <Table
+      {request && (
+        <ViewApprovalStages
+          handleClose={onClose}
+          open={action === "view-approval-stages"}
+          id={request?.id}
+          type="position-change"
+        />
+      )}
+      <TableWithFocusType
         size="small"
         dataSource={data?.data}
         loading={isFetching}

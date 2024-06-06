@@ -6,6 +6,7 @@ import { ColumnsType } from "antd/lib/table";
 
 import { getEmployeeFullName } from "features/core/employees/utils/getEmployeeFullName";
 import moment from "moment";
+import { DEFAULT_DATE_FORMAT } from "constants/dateFormats";
 
 interface IProps {
   reports?: TSingleEmployee["directReport"];
@@ -41,7 +42,7 @@ export const DirectReports: React.FC<IProps> = ({ reports = [] }) => {
       title: "Started",
       dataIndex: "cs",
       render: (_, val) => (
-        <span className="">{moment(val.from).format("YYYY-MM-DD")}</span>
+        <span className="">{moment(val.from).format(DEFAULT_DATE_FORMAT)}</span>
       ),
     },
     {
@@ -49,7 +50,7 @@ export const DirectReports: React.FC<IProps> = ({ reports = [] }) => {
       dataIndex: "ce",
       render: (_, val) => (
         <span className="">
-          {val.to ? moment(val.to).format("YYYY-MM-DD") : "Ongoing"}
+          {val.to ? moment(val.to).format(DEFAULT_DATE_FORMAT) : "Ongoing"}
         </span>
       ),
     },
@@ -65,7 +66,7 @@ export const DirectReports: React.FC<IProps> = ({ reports = [] }) => {
     <>
       {" "}
       <div className="bg-mainBg shadow-sm rounded-md p-4 mt-5">
-        <h2 className="font-medium text-lg mb-4">Birect Reports</h2>
+        <h2 className="font-medium text-lg mb-4">Direct Reports</h2>
         <div className="bg-card p-3 rounded">
           <div className="flex md:items-center gap-5  flex-col-reverse md:flex-row md:justify-between my-3">
             <Input

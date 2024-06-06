@@ -1,6 +1,6 @@
 import { appRoutes } from "../paths";
-import { TRouteData } from "../types";
-import React, { lazy } from "react";
+import { TAppPageDataFnProps, TRouteData } from "../types";
+// import React, { lazy } from "react";
 import SelfServiceHome from "features/self-service/pages/SelfServiceHome";
 import Reimbursements from "features/self-service/features/reimbursement/pages/Reimbursements";
 import Assets from "features/self-service/features/assets/pages/Assets";
@@ -40,279 +40,732 @@ import TravelRequests from "features/self-service/features/travels/pages/TravelR
 import TravelRequestsSettingPage from "features/self-service/features/travels/pages/TravelRequestsSettingPage";
 import DocumentsPage from "features/self-service/features/documents/pages/DocumentsPage";
 import TasksPage from "features/self-service/features/tasks/pages/TasksPage";
+import PayslipsTransactionsPage from "features/self-service/features/payslips/PayslipsTransactionsPage";
+import Requisition from "features/self-service/features/requisitions/pages/Requisition";
+import { canUserAccessComponent } from "components/permission-restriction/PermissionRestrictor";
+import VehicleBookingSettings from "features/self-service/features/vehicle-booking/pages/VehicleBookingSettings";
+import EmployeeHealthAccessPage from "features/self-service/features/health-access/pages/EmployeeHealthAccessPage";
 
 // TO DO: This lazy loading might not be needed consider rethinking this, so just temporary
-const Requisition = lazy(
-  () => import("features/self-service/features/requisitions/pages/Requisition")
-);
+// const Requisition = lazy(
+//   () => import("features/self-service/features/requisitions/pages/Requisition")
+// );
+export const selfServiceRoutes = (props: TAppPageDataFnProps): TRouteData[] => {
+  const { userPermissions, licenseType, activeSubscription } = props;
+  const isUserLicensed = licenseType === "licensed";
+  return [
+    {
+      element: <SelfServiceHome />,
+      path: appRoutes.selfServiceHome,
+      isSearchable: true,
+      title: "My Self Service",
+      hidden: !isUserLicensed,
+    },
+    {
+      element: <PayslipsTransactionsPage />,
+      path: appRoutes.payslipTransactions,
+      isSearchable: true,
+      title: "My Payslip & Transactions",
+      hidden:
+        !isUserLicensed &&
+        !canUserAccessComponent({
+          userPermissions,
 
-export const selfServiceRoutes: TRouteData[] = [
-  {
-    element: <SelfServiceHome />,
-    path: appRoutes.selfServiceHome,
-    isSearchable: true,
-    title: "My Self Service",
-  },
-  {
-    element: <TasksPage />,
-    path: appRoutes.selfServiceTasks,
-    isSearchable: true,
-    title: "Tasks",
-    isPrimaryFeature: true,
-  },
-  {
-    element: <Requisition />,
-    path: appRoutes.selfServiceRequisition,
-    isSearchable: true,
-    title: "Requisitions",
-    isPrimaryFeature: true,
-  },
-  {
-    element: <TransfersSettingPage />,
-    path: appRoutes.selfServiceTransferSetting,
-    isSearchable: true,
-    title: "Transfer Setting",
-    isPrimaryFeature: false,
-  },
-  {
-    element: <Transfers />,
-    path: appRoutes.selfServiceTransfer,
-    isSearchable: true,
-    title: "Transfers",
-    isPrimaryFeature: true,
-  },
-  {
-    element: <ReimbursementSettingPage />,
-    path: appRoutes.selfServiceReimbursementSetting,
-    isSearchable: true,
-    title: "Reimbursement Setting",
-    isPrimaryFeature: false,
-  },
-  {
-    element: <Reimbursements />,
-    path: appRoutes.selfServiceReimbursement,
-    isSearchable: true,
-    title: "Reimbursements",
-    isPrimaryFeature: true,
-  },
-  {
-    element: <MonetaryRequestsSettingPage />,
-    path: appRoutes.selfServiceMonetarySetting,
-    isSearchable: true,
-    title: "Monetary Request Setting",
-    isPrimaryFeature: false,
-  },
-  {
-    element: <MonetaryRequests />,
-    path: appRoutes.selfServiceMonetary,
-    isSearchable: true,
-    title: "Monetary Requests",
-    isPrimaryFeature: true,
-  },
-  {
-    element: <JobRequestsSettingPage />,
-    path: appRoutes.selfServiceJobSetting,
-    isSearchable: true,
-    title: "Job Request Setting",
-    isPrimaryFeature: false,
-  },
-  {
-    element: <JobRequests />,
-    path: appRoutes.selfServiceJob,
-    isSearchable: true,
-    title: "Job Requests",
-    isPrimaryFeature: true,
-  },
-  {
-    element: <PositionChangeRequestsSettingPage />,
-    path: appRoutes.selfServicePositionChangeSetting,
-    isSearchable: true,
-    title: "Position Change Request Setting",
-    isPrimaryFeature: false,
-  },
-  {
-    element: <PositionChangeRequests />,
-    path: appRoutes.selfServicePositionChange,
-    isSearchable: true,
-    title: "Position Change Requests",
-    isPrimaryFeature: true,
-  },
-  {
-    element: <PromotionRequestsSettingPage />,
-    path: appRoutes.selfServicePromotionSetting,
-    isSearchable: true,
-    title: "Promotion Request Setting",
-    isPrimaryFeature: false,
-  },
-  {
-    element: <PromotionRequests />,
-    path: appRoutes.selfServicePromotion,
-    isSearchable: true,
-    title: "Promotion Requests",
-    isPrimaryFeature: true,
-  },
-  {
-    element: <TravelRequests />,
-    path: appRoutes.selfServiceTravels,
-    isSearchable: true,
-    title: "Travel Requests",
-    isPrimaryFeature: true,
-  },
-  {
-    element: <TravelRequestsSettingPage />,
-    path: appRoutes.selfServiceTravelSetting,
-    isSearchable: true,
-    title: "Travel Request Settings",
-    isPrimaryFeature: false,
-  },
-  {
-    element: <Assets />,
-    path: appRoutes.selfServiceAssets,
-    isSearchable: true,
-    title: "Assets",
-    isPrimaryFeature: true,
-  },
-  {
-    element: <AssetRequestSettingsPage />,
-    path: appRoutes.selfServiceAssetSetting,
-    isSearchable: true,
-    title: "Asset Settings",
-    isPrimaryFeature: false,
-  },
+          requiredPermissions: [],
+          activeSubscription,
+          requiredSubscriptionState: {
+            label: "payroll",
+            resources: [],
+          },
+        }),
+    },
+    {
+      element: <TasksPage />,
+      path: appRoutes.selfServiceTasks,
+      isSearchable: true,
+      title: "Tasks",
+      isPrimaryFeature: true,
+      hidden:
+        !isUserLicensed &&
+        !canUserAccessComponent({
+          userPermissions,
 
-  {
-    element: <AssetDetails />,
-    path: appRoutes.assetDetails().format,
-    isSearchable: false,
-    title: "Asset Details",
-  },
-  {
-    element: <LoanHome />,
-    path: appRoutes.loans,
-    isSearchable: true,
-    title: "Loans",
-    isPrimaryFeature: true,
-  },
+          requiredPermissions: [],
+          activeSubscription,
+          requiredSubscriptionState: {
+            label: "hr-admin",
+            resources: [],
+          },
+        }),
+    },
+    {
+      element: <Requisition />,
+      path: appRoutes.selfServiceRequisition,
+      isSearchable: true,
+      title: "Requisitions",
+      isPrimaryFeature: true,
+      hidden: !canUserAccessComponent({
+        userPermissions,
 
-  {
-    element: <LoanPolicies />,
-    path: appRoutes.loanPolicies,
-    isSearchable: true,
-    title: "Loan Policies",
-  },
-  {
-    element: <VehicleBookingHome />,
-    path: appRoutes.vehicleBooking,
-    isSearchable: true,
-    title: "Vehicle Booking",
-    isPrimaryFeature: true,
-  },
-  {
-    element: <VehicleDetails />,
-    path: appRoutes.vehicleDetails().format,
-    isSearchable: false,
-    title: "Vehicle Details",
-  },
-  {
-    element: <SurveyHome />,
-    path: appRoutes.surveyHome,
-    isSearchable: true,
-    title: "Surveys",
-    isPrimaryFeature: true,
-  },
-  {
-    element: <NewSurveyForm />,
-    path: appRoutes.newSurvey,
-    isSearchable: true,
-    title: "New Survey",
-  },
-  {
-    element: <SingleSurveyForm />,
-    path: appRoutes.singleSurveyForm().format,
-    isSearchable: false,
-  },
-  {
-    element: <CRBHomePage />,
-    path: appRoutes.conferenceRoomBooking,
-    isSearchable: true,
-    title: "Conference Room Booking",
-    isPrimaryFeature: true,
-  },
-  {
-    element: <CRBHomeSettings />,
-    path: appRoutes.conferenceRoomBookingSetting,
-    isSearchable: true,
-    title: "Conference Room Booking Setting",
-  },
-  {
-    element: <LeaveHome />,
-    path: appRoutes.leaveHome,
-    isSearchable: true,
-    title: "Leave",
-    isPrimaryFeature: true,
-  },
-  {
-    element: <LeaveSettings />,
-    path: appRoutes.leaveSettings,
-    isSearchable: true,
-    title: "Leave Settings",
-  },
-  {
-    element: <HealthAccessHome />,
-    path: appRoutes.healthAccessHome,
-    isSearchable: true,
-    title: "Health Access",
-    isPrimaryFeature: true,
-  },
-  {
-    element: <HealthAccessSettings />,
-    path: appRoutes.healthAccessSettings,
-    isSearchable: true,
-    title: "Health Access Settings",
-  },
-  {
-    element: <Onboarding />,
-    path: appRoutes.onboarding,
-    isSearchable: true,
-    title: "Onboarding",
-    isPrimaryFeature: true,
-  },
-  {
-    element: <StartOnboarding />,
-    path: appRoutes.startOnBoarding().format,
-    isSearchable: false,
-  },
-  {
-    element: <HandOver />,
-    path: appRoutes.handOver,
-    isSearchable: true,
-    title: "HandOver",
-    isPrimaryFeature: true,
-  },
-  {
-    element: <HandOverNewForm />,
-    path: appRoutes.newHandOverForm,
-    isSearchable: true,
-    title: "New Handover Form",
-    isPrimaryFeature: true,
-  },
-  {
-    element: <HandOverDetails />,
-    path: appRoutes.handOverDetails().format,
-    isSearchable: true,
-    title: "Handover Details",
-  },
-  {
-    element: <HRLetters />,
-    path: appRoutes.hRLetters,
-    isSearchable: true,
-    title: "HR Letters",
-  },
-  {
-    element: <DocumentsPage />,
-    path: appRoutes.documents,
-    isSearchable: true,
-    title: "Files",
-    isPrimaryFeature: true,
-  },
-];
+        requiredPermissions: ["manage-requsition-settings"],
+        activeSubscription,
+        requiredSubscriptionState: {
+          label: "hr-admin",
+          resources: [],
+        },
+      }),
+    },
+    {
+      element: <TransfersSettingPage />,
+      path: appRoutes.selfServiceTransferSetting,
+      isSearchable: true,
+      title: "Transfer Setting",
+      isPrimaryFeature: false,
+      hidden: !canUserAccessComponent({
+        userPermissions,
+
+        requiredPermissions: ["manage-requsition-settings"],
+        activeSubscription,
+        requiredSubscriptionState: {
+          label: "hr-admin",
+          resources: [],
+        },
+      }),
+    },
+    {
+      element: <Transfers />,
+      path: appRoutes.selfServiceTransfer,
+      isSearchable: true,
+      title: "Transfers",
+      isPrimaryFeature: true,
+      hidden:
+        !isUserLicensed &&
+        !canUserAccessComponent({
+          userPermissions,
+
+          requiredPermissions: [],
+          activeSubscription,
+          requiredSubscriptionState: {
+            label: "hr-admin",
+            resources: [],
+          },
+        }),
+    },
+    {
+      element: <ReimbursementSettingPage />,
+      path: appRoutes.selfServiceReimbursementSetting,
+      isSearchable: true,
+      title: "Reimbursement Setting",
+      isPrimaryFeature: false,
+      hidden: !canUserAccessComponent({
+        userPermissions,
+
+        requiredPermissions: ["manage-requsition-settings"],
+        activeSubscription,
+        requiredSubscriptionState: {
+          label: "hr-admin",
+          resources: [],
+        },
+      }),
+    },
+    {
+      element: <Reimbursements />,
+      path: appRoutes.selfServiceReimbursement,
+      isSearchable: true,
+      title: "Reimbursements",
+      isPrimaryFeature: true,
+      hidden:
+        !isUserLicensed &&
+        !canUserAccessComponent({
+          userPermissions,
+
+          requiredPermissions: [],
+          activeSubscription,
+          requiredSubscriptionState: {
+            label: "hr-admin",
+            resources: [],
+          },
+        }),
+    },
+    {
+      element: <MonetaryRequestsSettingPage />,
+      path: appRoutes.selfServiceMonetarySetting,
+      isSearchable: true,
+      title: "Monetary Request Setting",
+      isPrimaryFeature: false,
+      hidden: !canUserAccessComponent({
+        userPermissions,
+
+        requiredPermissions: ["manage-requsition-settings"],
+        activeSubscription,
+        requiredSubscriptionState: {
+          label: "hr-admin",
+          resources: [],
+        },
+      }),
+    },
+    {
+      element: <MonetaryRequests />,
+      path: appRoutes.selfServiceMonetary,
+      isSearchable: true,
+      title: "Monetary Requests",
+      isPrimaryFeature: true,
+      hidden:
+        !isUserLicensed &&
+        !canUserAccessComponent({
+          userPermissions,
+
+          requiredPermissions: [],
+          activeSubscription,
+          requiredSubscriptionState: {
+            label: "hr-admin",
+            resources: [],
+          },
+        }),
+    },
+    {
+      element: <JobRequestsSettingPage />,
+      path: appRoutes.selfServiceJobSetting,
+      isSearchable: true,
+      title: "Job Request Setting",
+      isPrimaryFeature: false,
+      hidden: !canUserAccessComponent({
+        userPermissions,
+
+        requiredPermissions: ["manage-requsition-settings"],
+        activeSubscription,
+        requiredSubscriptionState: {
+          label: "hr-admin",
+          resources: [],
+        },
+      }),
+    },
+    {
+      element: <JobRequests />,
+      path: appRoutes.selfServiceJob,
+      isSearchable: true,
+      title: "Job Requests",
+      isPrimaryFeature: true,
+      hidden:
+        !isUserLicensed &&
+        !canUserAccessComponent({
+          userPermissions,
+
+          requiredPermissions: [],
+          activeSubscription,
+          requiredSubscriptionState: {
+            label: "hr-admin",
+            resources: [],
+          },
+        }),
+    },
+    {
+      element: <PositionChangeRequestsSettingPage />,
+      path: appRoutes.selfServicePositionChangeSetting,
+      isSearchable: true,
+      title: "Position Change Request Setting",
+      isPrimaryFeature: false,
+      hidden: !canUserAccessComponent({
+        userPermissions,
+
+        requiredPermissions: ["manage-requsition-settings"],
+        activeSubscription,
+        requiredSubscriptionState: {
+          label: "hr-admin",
+          resources: [],
+        },
+      }),
+    },
+    {
+      element: <PositionChangeRequests />,
+      path: appRoutes.selfServicePositionChange,
+      isSearchable: true,
+      title: "Position Change Requests",
+      isPrimaryFeature: true,
+      hidden:
+        !isUserLicensed &&
+        !canUserAccessComponent({
+          userPermissions,
+
+          requiredPermissions: [],
+          activeSubscription,
+          requiredSubscriptionState: {
+            label: "hr-admin",
+            resources: [],
+          },
+        }),
+    },
+    {
+      element: <PromotionRequestsSettingPage />,
+      path: appRoutes.selfServicePromotionSetting,
+      isSearchable: true,
+      title: "Promotion Request Setting",
+      isPrimaryFeature: false,
+      hidden: !canUserAccessComponent({
+        userPermissions,
+
+        requiredPermissions: ["manage-requsition-settings"],
+        activeSubscription,
+        requiredSubscriptionState: {
+          label: "hr-admin",
+          resources: [],
+        },
+      }),
+    },
+    {
+      element: <PromotionRequests />,
+      path: appRoutes.selfServicePromotion,
+      isSearchable: true,
+      title: "Promotion Requests",
+      isPrimaryFeature: true,
+      hidden:
+        !isUserLicensed &&
+        !canUserAccessComponent({
+          userPermissions,
+
+          requiredPermissions: [],
+          activeSubscription,
+          requiredSubscriptionState: {
+            label: "hr-admin",
+            resources: [],
+          },
+        }),
+    },
+    {
+      element: <TravelRequests />,
+      path: appRoutes.selfServiceTravels,
+      isSearchable: true,
+      title: "Travel Requests",
+      isPrimaryFeature: true,
+      hidden:
+        !isUserLicensed &&
+        !canUserAccessComponent({
+          userPermissions,
+
+          requiredPermissions: [],
+          activeSubscription,
+          requiredSubscriptionState: {
+            label: "hr-admin",
+            resources: [],
+          },
+        }),
+    },
+    {
+      element: <TravelRequestsSettingPage />,
+      path: appRoutes.selfServiceTravelSetting,
+      isSearchable: true,
+      title: "Travel Request Settings",
+      isPrimaryFeature: false,
+      hidden: !canUserAccessComponent({
+        userPermissions,
+
+        requiredPermissions: ["manage-requsition-settings"],
+        activeSubscription,
+        requiredSubscriptionState: {
+          label: "hr-admin",
+          resources: [],
+        },
+      }),
+    },
+    {
+      element: <Assets />,
+      path: appRoutes.selfServiceAssets,
+      isSearchable: true,
+      title: "Assets",
+      isPrimaryFeature: true,
+      hidden:
+        !isUserLicensed &&
+        !canUserAccessComponent({
+          userPermissions,
+
+          requiredPermissions: [],
+          activeSubscription,
+          requiredSubscriptionState: {
+            label: "hr-admin",
+            resources: [],
+          },
+        }),
+    },
+    {
+      element: <AssetRequestSettingsPage />,
+      path: appRoutes.selfServiceAssetSetting,
+      isSearchable: true,
+      title: "Asset Settings",
+      isPrimaryFeature: false,
+      hidden: !canUserAccessComponent({
+        userPermissions,
+
+        requiredPermissions: ["manage-requsition-settings"],
+        activeSubscription,
+        requiredSubscriptionState: {
+          label: "hr-admin",
+          resources: [],
+        },
+      }),
+    },
+
+    {
+      element: <AssetDetails />,
+      path: appRoutes.assetDetails().format,
+      isSearchable: false,
+      title: "Asset Details",
+      hidden:
+        !isUserLicensed &&
+        !canUserAccessComponent({
+          userPermissions,
+
+          requiredPermissions: [],
+          activeSubscription,
+          requiredSubscriptionState: {
+            label: "hr-admin",
+            resources: [],
+          },
+        }),
+    },
+    {
+      element: <LoanHome />,
+      path: appRoutes.loans,
+      isSearchable: true,
+      title: "Loans",
+      isPrimaryFeature: true,
+      hidden:
+        !isUserLicensed &&
+        !canUserAccessComponent({
+          userPermissions,
+
+          requiredPermissions: [],
+          activeSubscription,
+          requiredSubscriptionState: {
+            label: "payroll",
+            resources: [],
+          },
+        }),
+    },
+
+    {
+      element: <LoanPolicies />,
+      path: appRoutes.loanPolicies,
+      isSearchable: true,
+      title: "Loan Policies",
+      hidden: !canUserAccessComponent({
+        userPermissions,
+
+        requiredPermissions: ["manage-loan-settings"],
+        activeSubscription,
+        requiredSubscriptionState: {
+          label: "payroll",
+          resources: [],
+        },
+      }),
+    },
+    {
+      element: <VehicleBookingHome />,
+      path: appRoutes.vehicleBooking,
+      isSearchable: true,
+      title: "Vehicle Booking",
+      isPrimaryFeature: true,
+      hidden:
+        !isUserLicensed &&
+        !canUserAccessComponent({
+          userPermissions,
+
+          requiredPermissions: [],
+          activeSubscription,
+          requiredSubscriptionState: {
+            label: "hr-admin",
+            resources: [],
+          },
+        }),
+    },
+    {
+      element: <VehicleBookingSettings />,
+      path: appRoutes.vehicleBookingSetting,
+      isSearchable: true,
+      title: "Vehicle Booking Setting",
+      isPrimaryFeature: true,
+      hidden: !canUserAccessComponent({
+        userPermissions,
+
+        requiredPermissions: ["manage-vehicle-settings"],
+        activeSubscription,
+        requiredSubscriptionState: {
+          label: "hr-admin",
+          resources: [],
+        },
+      }),
+    },
+    {
+      element: <VehicleDetails />,
+      path: appRoutes.vehicleDetails().format,
+      isSearchable: false,
+      title: "Vehicle Details",
+      hidden: !canUserAccessComponent({
+        userPermissions,
+
+        requiredPermissions: ["manage-vehicle-settings"],
+        activeSubscription,
+        requiredSubscriptionState: {
+          label: "hr-admin",
+          resources: [],
+        },
+      }),
+    },
+    {
+      element: <SurveyHome />,
+      path: appRoutes.surveyHome,
+      isSearchable: true,
+      title: "Surveys",
+      isPrimaryFeature: true,
+      hidden: true, //Pending when this feature is giving a go ahead
+    },
+    {
+      element: <NewSurveyForm />,
+      path: appRoutes.newSurvey,
+      isSearchable: true,
+      title: "New Survey",
+      hidden: true, //Pending when this feature is giving a go ahead
+    },
+    {
+      element: <SingleSurveyForm />,
+      path: appRoutes.singleSurveyForm().format,
+      isSearchable: false,
+      hidden: true, //Pending when this feature is giving a go ahead
+    },
+    {
+      element: <CRBHomePage />,
+      path: appRoutes.conferenceRoomBooking,
+      isSearchable: true,
+      title: "Conference Room Booking",
+      isPrimaryFeature: true,
+      hidden:
+        !isUserLicensed &&
+        !canUserAccessComponent({
+          userPermissions,
+
+          requiredPermissions: [],
+          activeSubscription,
+          requiredSubscriptionState: {
+            label: "hr-admin",
+            resources: [],
+          },
+        }),
+    },
+    {
+      element: <CRBHomeSettings />,
+      path: appRoutes.conferenceRoomBookingSetting,
+      isSearchable: true,
+      title: "Conference Room Booking Setting",
+      hidden: !canUserAccessComponent({
+        userPermissions,
+
+        requiredPermissions: ["manage-conference-room-settings"],
+        activeSubscription,
+        requiredSubscriptionState: {
+          label: "hr-admin",
+          resources: [],
+        },
+      }),
+    },
+    {
+      element: <LeaveHome />,
+      path: appRoutes.leaveHome,
+      isSearchable: true,
+      title: "Leave",
+      isPrimaryFeature: true,
+      hidden:
+        !isUserLicensed &&
+        !canUserAccessComponent({
+          userPermissions,
+
+          requiredPermissions: [],
+          activeSubscription,
+          requiredSubscriptionState: {
+            label: "hr-admin",
+            resources: [],
+          },
+        }),
+    },
+    {
+      element: <LeaveSettings />,
+      path: appRoutes.leaveSettings,
+      isSearchable: true,
+      title: "Leave Settings",
+      hidden: !canUserAccessComponent({
+        userPermissions,
+
+        requiredPermissions: ["manage-leave-settings"],
+        activeSubscription,
+        requiredSubscriptionState: {
+          label: "hr-admin",
+          resources: [],
+        },
+      }),
+    },
+    {
+      element: <EmployeeHealthAccessPage />,
+      path: appRoutes.healthAccessDetails().format,
+      isSearchable: false,
+      title: "Health Access Details",
+      isPrimaryFeature: false,
+      hidden:
+        !isUserLicensed &&
+        !canUserAccessComponent({
+          userPermissions,
+
+          requiredPermissions: [],
+          activeSubscription,
+          requiredSubscriptionState: {
+            label: "employee-management",
+            resources: [],
+          },
+        }),
+    },
+    {
+      element: <HealthAccessHome />,
+      path: appRoutes.healthAccessHome,
+      isSearchable: true,
+      title: "Health Access",
+      isPrimaryFeature: true,
+      hidden:
+        !isUserLicensed &&
+        !canUserAccessComponent({
+          userPermissions,
+
+          requiredPermissions: [],
+          activeSubscription,
+          requiredSubscriptionState: {
+            label: "hr-admin",
+            resources: [],
+          },
+        }),
+    },
+    {
+      element: <HealthAccessSettings />,
+      path: appRoutes.healthAccessSettings,
+      isSearchable: true,
+      title: "Health Access Settings",
+      hidden: !canUserAccessComponent({
+        userPermissions,
+
+        requiredPermissions: ["manage-employee-health-access"],
+        activeSubscription,
+        requiredSubscriptionState: {
+          label: "employee-management",
+          resources: [],
+        },
+      }),
+    },
+    {
+      element: <Onboarding />,
+      path: appRoutes.onboarding,
+      isSearchable: true,
+      title: "Onboarding",
+      isPrimaryFeature: true,
+      hidden:
+        !isUserLicensed &&
+        !canUserAccessComponent({
+          userPermissions,
+
+          requiredPermissions: [],
+          activeSubscription,
+          requiredSubscriptionState: {
+            label: "employee-management",
+            resources: [],
+          },
+        }),
+    },
+    {
+      element: <StartOnboarding />,
+      path: appRoutes.startOnBoarding().format,
+      isSearchable: false,
+      hidden: !canUserAccessComponent({
+        userPermissions,
+
+        requiredPermissions: ["manage-employee-onboarding"],
+        activeSubscription,
+        requiredSubscriptionState: {
+          label: "hr-admin",
+          resources: [],
+        },
+      }),
+    },
+    {
+      element: <HandOver />,
+      path: appRoutes.handOver,
+      isSearchable: true,
+      title: "HandOver",
+      isPrimaryFeature: true,
+      hidden:
+        !isUserLicensed &&
+        !canUserAccessComponent({
+          userPermissions,
+
+          requiredPermissions: [],
+          activeSubscription,
+          requiredSubscriptionState: {
+            label: "employee-management",
+            resources: [],
+          },
+        }),
+    },
+    {
+      element: <HandOverNewForm />,
+      path: appRoutes.newHandOverForm,
+      isSearchable: true,
+      title: "New Handover Form",
+      isPrimaryFeature: true,
+      hidden:
+        !isUserLicensed &&
+        !canUserAccessComponent({
+          userPermissions,
+
+          requiredPermissions: [],
+          activeSubscription,
+          requiredSubscriptionState: {
+            label: "employee-management",
+            resources: [],
+          },
+        }),
+    },
+    {
+      element: <HandOverDetails />,
+      path: appRoutes.handOverDetails().format,
+      isSearchable: true,
+      title: "Handover Details",
+      hidden: !canUserAccessComponent({
+        userPermissions,
+
+        requiredPermissions: ["view-all-exit-handover-forms"],
+        activeSubscription,
+        requiredSubscriptionState: {
+          label: "employee-management",
+          resources: [],
+        },
+      }),
+    },
+    {
+      element: <HRLetters />,
+      path: appRoutes.hRLetters,
+      isSearchable: true,
+      title: "HR Letters",
+      hidden: true, //Pending when this feature is giving a go ahead or needed
+    },
+    {
+      element: <DocumentsPage />,
+      path: appRoutes.documents,
+      isSearchable: true,
+      title: "Files",
+      isPrimaryFeature: true,
+      hidden: !canUserAccessComponent({
+        userPermissions,
+
+        requiredPermissions: ["manage-documents"],
+        activeSubscription,
+        requiredSubscriptionState: {
+          label: "employee-management",
+          resources: [],
+        },
+      }),
+    },
+  ];
+};

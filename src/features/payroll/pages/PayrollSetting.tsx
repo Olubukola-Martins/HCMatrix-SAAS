@@ -19,46 +19,66 @@ const PayrollSetting = () => {
 
   const [form] = Form.useForm();
   const { mutate, isLoading } = useHandlelPayrollSetting();
-  const [bank, setBank] = useState<Pick<TPaystackBank, "code" | "name">>();
+  const [bank, setBank] = useState<
+    Pick<TPaystackBank, "code" | "name"> & { accountName?: string }
+  >();
   const [loanActivation, setLoanActivation] = useState(false);
   const handleLoanActivation = (val: boolean) => {
     setLoanActivation(val);
   };
-
   useEffect(() => {
-    if (!setting) {
+    if (loanActivation === true) {
       // set the loan config to have office && direct-salary ticked by default(if no setting exists)
       form.setFieldValue("schemes", ["office", "direct-salary"]);
       return;
     }
+  }, [form, loanActivation]);
+  useEffect(() => {
+    if (!setting) return;
+
     setLoanActivation(setting.loanConfiguration.isActive);
-    setBank({
-      name: setting.companyBankDetails.bankName,
-      code: setting.companyBankDetails.bankCode,
-    });
+    setting?.companyBankDetails &&
+      setBank({
+        name: setting?.companyBankDetails?.bankName,
+        code: setting?.companyBankDetails?.bankCode,
+        accountName: setting?.companyBankDetails?.accountName,
+      });
     form.setFieldsValue({
-      bankCode: setting.companyBankDetails.bankCode,
-      accountNumber: setting.companyBankDetails.accountNumber,
-      bankName: setting.companyBankDetails.bankName,
+      bankCode: setting.companyBankDetails?.bankCode,
+      accountNumber: setting.companyBankDetails?.accountNumber,
+      bankName: setting.companyBankDetails?.bankName,
       isActive: setting.loanConfiguration.isActive,
       schemes: setting.loanConfiguration.schemes,
       templateId: setting.payslipTemplate.templateId,
+      timeFrameForManualRepayment: {
+        startDay:
+          setting.loanConfiguration?.timeFrameForManualRepayment?.startDay,
+        endDay: setting.loanConfiguration?.timeFrameForManualRepayment?.endDay,
+      },
     });
   }, [form, setting]);
 
   const handleSubmit = (data: any) => {
-    if (!bank) return;
+    const companyBankDetails = bank
+      ? {
+          bankCode: data.bankCode,
+          accountNumber: data.accountNumber,
+          bankName: bank.name,
+        }
+      : undefined;
     mutate(
       {
         data: {
-          companyBankDetails: {
-            bankCode: data.bankCode,
-            accountNumber: data.accountNumber,
-            bankName: bank.name,
-          },
+          companyBankDetails,
           loanConfiguration: {
             isActive: loanActivation,
-            schemes: data.schemes,
+            schemes: loanActivation ? data?.schemes : undefined,
+            timeFrameForManualRepayment: loanActivation
+              ? {
+                  startDay: data?.timeFrameForManualRepayment?.startDay,
+                  endDay: data?.timeFrameForManualRepayment?.endDay,
+                }
+              : undefined,
           },
           payslipTemplate: {
             templateId: data.templateId,
@@ -87,7 +107,7 @@ const PayrollSetting = () => {
       }
     );
   };
-  const handleBank = (bank?: TPaystackBank) => {
+  const handleBank = (bank?: TPaystackBank & { accountName?: string }) => {
     setBank(bank);
   };
   return (
@@ -115,6 +135,7 @@ const PayrollSetting = () => {
             form={form}
             loanActivation={loanActivation}
             handleLoanActivation={handleLoanActivation}
+            bank={bank}
           />
         </Skeleton>
       </div>
@@ -123,12 +144,13 @@ const PayrollSetting = () => {
 };
 
 const PayrollSettingContainer: React.FC<{
-  Form: any;
+  Form: typeof Form;
   form: FormInstance<any>;
   handleSubmit: (data: any) => void;
   handleBank: (data?: TPaystackBank) => void;
   loanActivation: boolean;
   handleLoanActivation: (val: boolean) => void;
+  bank?: Pick<TPaystackBank, "code" | "name"> & { accountName?: string };
 }> = ({
   Form,
   handleSubmit,
@@ -136,13 +158,18 @@ const PayrollSettingContainer: React.FC<{
   form,
   handleLoanActivation,
   loanActivation,
+  bank,
 }) => {
   return (
     <>
       <Form requiredMark={false} onFinish={handleSubmit} form={form}>
         <div className="bg-card px-5 py-7  rounded-md mt-7 grid grid-cols-1 md:grid-cols-2 gap-7 text-accent">
           <div className="flex flex-col gap-4">
-            <CompanyBankDetails Form={Form} handleBank={handleBank} />
+            <CompanyBankDetails
+              Form={Form}
+              handleBank={handleBank}
+              bank={bank}
+            />
             <LoanConfiguration
               Form={Form}
               loanActivation={loanActivation}

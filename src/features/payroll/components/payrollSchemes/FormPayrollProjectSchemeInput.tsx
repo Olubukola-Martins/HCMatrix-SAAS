@@ -1,11 +1,11 @@
-import { Select, Spin } from "antd";
+import { Select, Form } from "antd";
 import { useGetPayrollSchemeByTypeOrId } from "features/payroll/hooks/scheme/useGetPayrollSchemeByTypeOrId";
 import { TProjectPayrollScheme } from "features/payroll/types/payrollSchemes/project";
 import { useEffect, useState } from "react";
 import { generalValidationRules } from "utils/formHelpers/validation";
 
 export const FormPayrollProjectSchemeInput: React.FC<{
-  Form: any;
+  Form: typeof Form;
   showLabel?: boolean;
   onSelect?: (val: number, option: TProjectPayrollScheme[0]) => void;
   control?: { label: string; name: string | (string | number)[] };
@@ -13,11 +13,7 @@ export const FormPayrollProjectSchemeInput: React.FC<{
   const [searchTerm, setSearchTerm] = useState<string>("");
   const [data, setData] = useState<TProjectPayrollScheme[0][]>([]);
 
-  const {
-    data: schemes,
-    isFetching,
-    isSuccess,
-  } = useGetPayrollSchemeByTypeOrId({
+  const { data: schemes, isFetching } = useGetPayrollSchemeByTypeOrId({
     typeOrId: "project",
   });
   const fetchedProjectSchemes = schemes as TProjectPayrollScheme;
@@ -61,17 +57,11 @@ export const FormPayrollProjectSchemeInput: React.FC<{
           scheme && onSelect?.(val, scheme);
         }}
       >
-        {isSuccess ? (
-          data?.map((item) => (
-            <Select.Option key={item.projectId} value={item.projectId}>
-              {item.name}
-            </Select.Option>
-          ))
-        ) : (
-          <div className="flex justify-center items-center w-full">
-            <Spin size="small" />
-          </div>
-        )}
+        {data?.map((item) => (
+          <Select.Option key={item.projectId} value={item.projectId}>
+            {item.name}
+          </Select.Option>
+        ))}
       </Select>
     </Form.Item>
   );

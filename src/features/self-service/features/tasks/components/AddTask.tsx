@@ -1,8 +1,9 @@
 import { DatePicker, Form, Input, Modal, Select } from "antd";
 import { AppButton } from "components/button/AppButton";
-import React from "react";
+import React, { useState } from "react";
 import { IModalProps } from "types";
 import {
+  dateHasToBeGreaterThanOrEqualToCurrentDayRule,
   generalValidationRules,
   textInputValidationRules,
 } from "utils/formHelpers/validation";
@@ -13,6 +14,8 @@ import { QUERY_KEY_FOR_TASKS_ASSIGNED_BY_EMPLOYEE } from "../hooks/assignee/useG
 import { QUERY_KEY_FOR_TASKS_ASSIGNED_TO_EMPLOYEE } from "../hooks/assignedFor/useGetAllTasksAssignedToEmployee";
 import { FormEmployeeInput } from "features/core/employees/components/FormEmployeeInput";
 import { PRIORITIES } from "constants/general";
+import { DEFAULT_DATE_FORMAT } from "constants/dateFormats";
+import { Moment } from "moment";
 
 export const AddTask: React.FC<IModalProps> = ({ open, handleClose }) => {
   const queryClient = useQueryClient();
@@ -27,8 +30,8 @@ export const AddTask: React.FC<IModalProps> = ({ open, handleClose }) => {
         description: data.description,
         assignedToId: data.assignedToId,
         priority: data.priority, // enum: low, medium, high
-        dateAssigned: data.dateAssigned.format("YYYY-MM-DD"),
-        dueDate: data.dueDate.format("YYYY-MM-DD"),
+        dateAssigned: data.dateAssigned.format(DEFAULT_DATE_FORMAT),
+        dueDate: data.dueDate.format(DEFAULT_DATE_FORMAT),
       },
       {
         onError: (err: any) => {
@@ -62,6 +65,7 @@ export const AddTask: React.FC<IModalProps> = ({ open, handleClose }) => {
       }
     );
   };
+  const [dateAssigned, setDateAssigned] = useState<Moment | null>(null);
   return (
     <Modal
       open={open}
@@ -98,14 +102,29 @@ export const AddTask: React.FC<IModalProps> = ({ open, handleClose }) => {
           <Select placeholder="Priority" options={PRIORITIES} />
         </Form.Item>
         <Form.Item
-          rules={generalValidationRules}
+          rules={[dateHasToBeGreaterThanOrEqualToCurrentDayRule]}
           name="dateAssigned"
           label="Date Assigned"
         >
-          <DatePicker placeholder="Date Assigned" className="w-full" />
+          <DatePicker
+            placeholder="Date Assigned"
+            className="w-full"
+            onChange={(val) => setDateAssigned(val)}
+          />
         </Form.Item>
         <Form.Item
-          rules={generalValidationRules}
+          rules={[
+            {
+              required: true,
+              validator: async (_, value: Moment) => {
+                if (value.isBefore(dateAssigned)) {
+                  throw new Error("Due date cannot be before date assigned!");
+                }
+
+                return true;
+              },
+            },
+          ]}
           name="dueDate"
           label="Due Date"
         >

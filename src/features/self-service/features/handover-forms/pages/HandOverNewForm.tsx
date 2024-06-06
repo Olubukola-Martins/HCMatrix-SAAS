@@ -1,10 +1,11 @@
 import { PageIntro } from "components/layout/PageIntro";
 import { appRoutes } from "config/router/paths";
 import SelfServiceSubNav from "features/self-service/components/SelfServiceSubNav";
-import React from "react";
-import { EmployeeHandOverForm } from "../components/EmployeeHandOverForm";
+import EmployeeHandOverContainer from "../components/EmployeeHandOverContainer";
+import { useGetAuthExitHandOverForm } from "../hooks/useGetAuthExitHandOverForm";
 
 export const HandOverNewForm = () => {
+  const { data, isLoading } = useGetAuthExitHandOverForm();
   return (
     <>
       <SelfServiceSubNav />
@@ -13,7 +14,12 @@ export const HandOverNewForm = () => {
           title="Exit Hand over Form"
           link={appRoutes.selfServiceHome}
         />
-        <EmployeeHandOverForm />
+
+        <EmployeeHandOverContainer
+          handover={data}
+          isLoading={isLoading}
+          canSubmitOrCancelForm //only the auth employee can submit/cancel
+        />
       </div>
     </>
   );

@@ -75,7 +75,7 @@ export const settingNavItems: TSettNavItem[] = [
   {
     title: "Schemes",
     items: [
-      { name: "Office Scheme", link: appRoutes.setupGradePayrollScheme },
+      { name: "Step Pay Scheme", link: appRoutes.setupGradePayrollScheme },
       {
         name: "Direct Salary Scheme",
         link: appRoutes.setupDirectSalaryPayrollScheme,
@@ -87,15 +87,12 @@ export const settingNavItems: TSettNavItem[] = [
   },
   {
     title: "Tax",
-    items: [
-      { name: "Authorities", link: "" },
-      { name: "Policies", link: appRoutes.payrollTaxPolicies },
-    ],
+    items: [{ name: "Authorities", link: appRoutes.taxAuthorities }],
     category: "payroll",
   },
   {
     title: "Pension",
-    items: [{ name: "Administrators", link: "" }],
+    items: [{ name: "Administrators", link: appRoutes.pensionAdministrators }],
     category: "payroll",
   },
   {
@@ -212,8 +209,8 @@ export const settingNavItems: TSettNavItem[] = [
         link: appRoutes.workSchedule,
       },
       { name: "Time Off Policy", link: appRoutes.timeOffPolicy },
-      { name: "Clock in settings", link: appRoutes.clockInSettings },
-      { name: "Add Location", link: appRoutes.addLocation },
+      { name: "Clock in settings", link: appRoutes.biometrics },
+      { name: "Location", link: appRoutes.location },
       { name: "Other Settings", link: appRoutes.otherSettings },
     ],
     category: "attendance",

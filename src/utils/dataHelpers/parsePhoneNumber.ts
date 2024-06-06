@@ -1,11 +1,22 @@
 export const parsePhoneNumber = (
-  phoneNumber: string
+  phoneNumber?: string
 ): {
   code: string;
   number: string;
 } => {
-  const code = phoneNumber.split("-")[0];
-  const number = phoneNumber.split("-")[1];
+  if (!phoneNumber)
+    return {
+      code: "",
+      number: "",
+    };
+  let code, number;
+  if (phoneNumber.split("-").length === 2) {
+    code = phoneNumber.split("-")[0];
+    number = phoneNumber.split("-")[1];
+  } else {
+    code = "";
+    number = phoneNumber.split("-")[1];
+  }
   return {
     code,
     number,

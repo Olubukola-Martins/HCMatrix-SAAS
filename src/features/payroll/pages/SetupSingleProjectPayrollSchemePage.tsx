@@ -11,7 +11,6 @@ const SetupSingleProjectPayrollSchemePage = () => {
   const params = useParams();
   const schemeId = params.schemeId;
   const projectId = params.projectId;
-  console.log("schem", schemeId, projectId);
   const {
     data: project,
     isFetching,

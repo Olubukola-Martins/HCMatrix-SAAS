@@ -1,13 +1,16 @@
 import axios from "axios";
-import { useSignOut } from "react-auth-kit";
 import { useQuery } from "react-query";
 import { IGetSingleDesgProps, TDesignation } from "../types";
 import { MICROSERVICE_ENDPOINTS } from "config/enviroment";
+import { ICurrentCompany } from "types";
+import { useApiAuth } from "hooks/useApiAuth";
 
 export const QUERY_KEY_FOR_SINGLE_DESIGNATION = "single-designation";
-export const getSingleDesignation = async (
-  props: IGetSingleDesgProps
-): Promise<TDesignation> => {
+export const getSingleDesignation = async (vals: {
+  props: IGetSingleDesgProps;
+  auth: ICurrentCompany;
+}): Promise<TDesignation> => {
+  const { props, auth } = vals;
   const id = props.designationId;
 
   const url = `${MICROSERVICE_ENDPOINTS.UTILITY}/company/designation/${id}`;
@@ -15,48 +18,36 @@ export const getSingleDesignation = async (
   const config = {
     headers: {
       Accept: "application/json",
-      Authorization: `Bearer ${props.token}`,
-      "x-company-id": props.companyId,
+      Authorization: `Bearer ${auth.token}`,
+      "x-company-id": auth.companyId,
     },
   };
 
   const res = await axios.get(url, config);
-  const item = res.data.data;
+  const item: TDesignation = res.data.data;
 
-  const data: TDesignation = {
-    id: item.id,
-    name: item.name,
-    department: {
-      id: item.department.id ?? "",
-      name: item.department.name ?? "",
-    },
-    employeeCount: item.employeeCount ?? 0,
-  };
-
-  return data;
+  return item;
 };
 
 export const useFetchSingleDesignation = ({
   designationId,
-  companyId,
-
-  token,
 }: IGetSingleDesgProps) => {
-  const signOut = useSignOut();
+  const { token, companyId } = useApiAuth();
 
   const queryData = useQuery(
     [QUERY_KEY_FOR_SINGLE_DESIGNATION, designationId],
     () =>
       getSingleDesignation({
-        companyId,
-        designationId,
-        token,
+        auth: {
+          companyId,
+          token,
+        },
+        props: {
+          designationId,
+        },
       }),
     {
-      onError: (err: any) => {
-        signOut();
-        localStorage.clear();
-      },
+      onError: (err: any) => {},
     }
   );
 

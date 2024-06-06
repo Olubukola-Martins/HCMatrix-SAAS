@@ -1,60 +1,26 @@
 import React, { useState } from "react";
-import useDeleteVehicle from "../hooks/useDeleteVehicle";
-import { useQueryClient } from "react-query";
 import { TVehicle } from "../hooks/useFetchVehicles";
-import { QUERY_KEY_FOR_SINGLE_VEHICLE } from "../hooks/useFetchSingleVehicle";
 import { EditSingleVehicle } from "./EditSingleVehicle";
 import PageSubHeader from "components/layout/PageSubHeader";
-import { openNotification } from "utils/notifications";
-import { useNavigate } from "react-router-dom";
-import { appRoutes } from "config/router/paths";
+import { DeleteVehicle } from "./vehicle/DeleteVehicle";
 
+type TAction = "edit" | "delete";
 export const VehicleDetailsSubHeader: React.FC<{ vehicle: TVehicle }> = ({
   vehicle,
 }) => {
-  const queryClient = useQueryClient();
-  const navigate = useNavigate();
-
-  const { mutate, isLoading } = useDeleteVehicle();
-
-  const deleteVehicle = () => {
-    mutate(
-      {
-        id: vehicle.id,
-      },
-      {
-        onError: (err: any) => {
-          openNotification({
-            state: "error",
-            title: "Error Occurred",
-            description:
-              err?.response.data.message ?? err?.response.data.error.message,
-          });
-        },
-        onSuccess: (res: any) => {
-          openNotification({
-            state: "success",
-
-            title: "Success",
-            description: res.data.message,
-          });
-
-          queryClient.invalidateQueries({
-            queryKey: [QUERY_KEY_FOR_SINGLE_VEHICLE],
-          });
-          navigate(appRoutes.vehicleBooking);
-        },
-      }
-    );
-  };
-  const [showE, setShowE] = useState(false);
+  const [action, setAction] = useState<TAction>();
 
   return (
     <div>
       <EditSingleVehicle
         vehicle={vehicle}
-        handleClose={() => setShowE(false)}
-        open={showE}
+        handleClose={() => setAction(undefined)}
+        open={action === "edit"}
+      />
+      <DeleteVehicle
+        vehicle={vehicle}
+        handleClose={() => setAction(undefined)}
+        open={action === "delete"}
       />
 
       <PageSubHeader
@@ -64,14 +30,16 @@ export const VehicleDetailsSubHeader: React.FC<{ vehicle: TVehicle }> = ({
           {
             name: "Edit",
             handleClick: () => {
-              setShowE(true);
+              setAction("edit");
             },
           },
           {
             name: "Delete",
-            handleClick: deleteVehicle,
+            handleClick: () => {
+              setAction("delete");
+            },
+
             btnVariant: "transparent",
-            loading: isLoading,
           },
         ]}
       />

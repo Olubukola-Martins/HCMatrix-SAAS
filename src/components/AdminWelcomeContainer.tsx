@@ -1,20 +1,17 @@
 import React from "react";
-import { useAuthUser, useIsAuthenticated } from "react-auth-kit";
+import { useIsAuthenticated } from "react-auth-kit";
 import AdminWelcomeComp from "./AdminWelcomeComp";
+import { useApiAuth } from "hooks/useApiAuth";
 
 const AdminWelcomeContainer = () => {
   const isAuthenticated = useIsAuthenticated();
 
-  const auth = useAuthUser();
-
-  const authDetails = auth();
-
-  const user = authDetails?.user;
+  const { currentCompanyEmployeeDetails: employee } = useApiAuth();
 
   if (!isAuthenticated()) {
     return null;
   }
-  if (isAuthenticated() && user.isAdmin === false) {
+  if (isAuthenticated() && employee?.isOwner === false) {
     return null;
   }
 

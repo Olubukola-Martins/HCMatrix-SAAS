@@ -3,11 +3,12 @@ import { MICROSERVICE_ENDPOINTS } from "config/enviroment";
 import { useApiAuth } from "hooks/useApiAuth";
 import { useMutation } from "react-query";
 import { ICurrentCompany } from "types";
+import { removeUndefinedProperties } from "utils/dataHelpers/removeUndefinedProperties";
 
 type TPayrollData = {
   id: number;
   body: {
-    disbursementDate: string;
+    disbursementDate?: string;
   };
 };
 const createData = async (props: {
@@ -24,10 +25,10 @@ const createData = async (props: {
   };
 
   const data = {
-    ...props.data.body,
+    ...removeUndefinedProperties(props.data.body),
   };
 
-  const response = await axios.postForm(url, data, config);
+  const response = await axios.post(url, data, config);
   return response;
 };
 export const useRunPayroll = () => {

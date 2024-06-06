@@ -1,32 +1,34 @@
 import { DatePicker, Form, InputNumber, message, Select, Tooltip } from "antd";
-import moment from "moment";
-
-import React, { useEffect, useState } from "react";
+import moment, { Moment } from "moment";
+import React, { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { useQueryClient } from "react-query";
-import { generalValidationRules } from "utils/formHelpers/validation";
+import {
+  dateHasToBeLesserThanOrEqualToCurrentDayRule,
+  generalValidationRules,
+} from "utils/formHelpers/validation";
 import { openNotification } from "utils/notifications";
-import { useFetchEmployees } from "../../hooks/useFetchEmployees";
 import { TSingleEmployee } from "../../types";
-import { EMPLOYMENT_TYPES, WORK_MODELS } from "constants/general";
+import {
+  EMPLOYMENT_TYPES,
+  MAX_NO_OF_WORKING_DAYS_PER_WEEK,
+  WORK_MODELS,
+} from "constants/general";
 import { FormPayGradeInput } from "features/payroll/components/payGrades/FormPayGradeInput";
 import { FormBranchInput } from "features/core/branches/components/FormBranchInput";
 import { useSaveEmployeeJobInformation } from "../../hooks/jobInformation/useSaveEmployeeJobInformation";
 import { AppButton } from "components/button/AppButton";
 import { QUERY_KEY_FOR_SINGLE_EMPLOYEE } from "../../hooks/useFetchSingleEmployee";
-const { Option } = Select;
-
-type TPayrollType = "direct-salary" | "office" | "wages";
-type TPayrollFrequency = "daily" | "monthly";
-const PAYROLL_FREQUENCIES: TPayrollFrequency[] = ["daily", "monthly"];
-const PAYROLL_TYPES: TPayrollType[] = ["direct-salary", "office", "wages"];
-const PAYROLL_FREQUENCIES_OPTIONS = PAYROLL_FREQUENCIES.map((item) => ({
-  label: <span className="capitalize">{item.split("-").join(" ")}</span>,
-  value: item,
-}));
-const PAYROLL_TYPES_OPTIONS = PAYROLL_TYPES.map((item) => ({
-  label: <span className="capitalize">{item.split("-").join(" ")}</span>,
-  value: item,
-}));
+import { FormEmployeeInput } from "../FormEmployeeInput";
+import {
+  TEssentialPayrollType,
+  TPayrollFrequency,
+} from "features/payroll/types/payroll";
+import {
+  ESSENTIAL_PAYROLL_TYPES_OPTIONS,
+  PAYROLL_FREQUENCIES_OPTIONS,
+} from "features/payroll/constants";
+import { DEFAULT_DATE_FORMAT } from "constants/dateFormats";
+import AppTooltip from "components/tooltip/AppTooltip";
 
 interface IProps {
   employeeId?: number;
@@ -36,9 +38,8 @@ export const JobInformation: React.FC<IProps> = ({
   jobInformation,
   employeeId,
 }) => {
-  const [payrollType, setPayrollType] = useState<
-    "direct-salary" | "office" | "wages"
-  >("direct-salary");
+  const [payrollType, setPayrollType] =
+    useState<TEssentialPayrollType>("direct-salary");
   const [form] = Form.useForm();
   const queryClient = useQueryClient();
 
@@ -49,12 +50,6 @@ export const JobInformation: React.FC<IProps> = ({
       disable ? "Editing enabled Successfully" : "Editing disabled successfully"
     );
   };
-  const { data: employees, isSuccess } = useFetchEmployees({
-    pagination: {
-      limit: 100,
-      offset: 0,
-    },
-  });
 
   useEffect(() => {
     const jobInfo = jobInformation;
@@ -93,14 +88,14 @@ export const JobInformation: React.FC<IProps> = ({
           employeeId,
 
           data: {
-            startDate: data.startDate.format("YYYY-MM-DD"),
+            startDate: data.startDate.format(DEFAULT_DATE_FORMAT),
             monthlyGross: data.monthlyGross,
             employmentType: data.employmentType,
             workModel: data.workModel,
             numberOfDaysPerWeek: data.numberOfDaysPerWeek,
-            hireDate: data.hireDate.format("YYYY-MM-DD"),
-            probationEndDate: data.probationEndDate.format("YYYY-MM-DD"),
-            confirmationDate: data.confirmationDate.format("YYYY-MM-DD"),
+            hireDate: data.hireDate.format(DEFAULT_DATE_FORMAT),
+            probationEndDate: data.probationEndDate.format(DEFAULT_DATE_FORMAT),
+            confirmationDate: data.confirmationDate.format(DEFAULT_DATE_FORMAT),
             lineManagerId: data.lineManagerId,
             payGradeId: data.payGradeId,
             payrollType: data.payrollType,
@@ -152,149 +147,20 @@ export const JobInformation: React.FC<IProps> = ({
       <div className="bg-card p-3 rounded">
         <Form
           layout="vertical"
-          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5"
+          className="flex flex-col gap-4"
           form={form}
           onFinish={handleFinish}
           requiredMark={false}
           disabled={disable}
         >
-          <Form.Item
-            label="Payroll Type"
-            name={`payrollType`}
-            rules={[...generalValidationRules]}
-          >
-            <Select
-              value={payrollType}
-              className="capitalize"
-              options={PAYROLL_TYPES_OPTIONS}
-              onSelect={(val: TPayrollType) => setPayrollType(val)}
-            />
-          </Form.Item>
-          {payrollType === "wages" && (
-            <Form.Item
-              name="frequency"
-              label="Type of Wage"
-              rules={[...generalValidationRules]}
-            >
-              <Select
-                value={frequency}
-                className="capitalize"
-                options={PAYROLL_FREQUENCIES_OPTIONS}
-                onSelect={(val: TPayrollFrequency) => setFrequency(val)}
-              />
-            </Form.Item>
-          )}
-          {payrollType === "wages" && (
-            <Form.Item
-              name="hourlyRate"
-              label="Hourly Gross"
-              rules={[...generalValidationRules, { type: "number" }]}
-            >
-              <InputNumber min={1} className="w-full" />
-            </Form.Item>
-          )}
-
-          {payrollType === "direct-salary" && (
-            <Form.Item
-              name="monthlyGross"
-              label="Monthly Gross"
-              rules={[...generalValidationRules, { type: "number" }]}
-            >
-              <InputNumber min={1} className="w-full" />
-            </Form.Item>
-          )}
-          {payrollType === "office" && (
-            <FormPayGradeInput
-              Form={Form}
-              control={{ name: "payGradeId", label: "Pay Grade" }}
-            />
-          )}
-          <Form.Item
-            name="numberOfDaysPerWeek"
-            label="Number of days per week"
-            rules={[...generalValidationRules, { type: "number" }]}
-          >
-            <InputNumber min={1} className="w-full" />
-          </Form.Item>
-          <Form.Item
-            name="startDate"
-            label="Resumption Date"
-            rules={generalValidationRules}
-          >
-            <DatePicker format="YYYY/MM/DD" className="w-full" />
-          </Form.Item>
-          <Form.Item
-            name="hireDate"
-            label="Hire Date"
-            rules={generalValidationRules}
-          >
-            <DatePicker
-              className="w-full"
-              format={"DD/MM/YYYY"}
-              disabledDate={(d) =>
-                !d ||
-                d.isAfter(
-                  //hire date should be before or on current date, and not a future date
-                  moment(new Date().toLocaleDateString())
-                    .add(1, "day")
-                    .format("YYYY-MM-DD")
-                )
-              }
-            />
-          </Form.Item>
-          <FormBranchInput
+          <JobInformationFormItems
             Form={Form}
-            control={{ label: "Branch", name: "branchId" }}
+            frequency={frequency}
+            setFrequency={setFrequency}
+            payrollType={payrollType}
+            setPayrollType={setPayrollType}
           />
-          <Form.Item name="lineManagerId" label="Line Manager (optional)">
-            <Select
-              showSearch
-              allowClear
-              optionLabelProp="label"
-              placeholder="Select"
-            >
-              {isSuccess &&
-                employees?.data?.map((data) => (
-                  <Option
-                    key={data.id}
-                    value={data.id}
-                    label={`${data.firstName} ${data.lastName}`}
-                  >
-                    {data.firstName} {data.lastName}
-                  </Option>
-                ))}
-            </Select>
-          </Form.Item>
-
-          <Form.Item
-            name="employmentType"
-            label="Employment Type"
-            rules={generalValidationRules}
-          >
-            <Select placeholder="Select" options={EMPLOYMENT_TYPES} />
-          </Form.Item>
-          <Form.Item
-            name="probationEndDate"
-            label="Probation End Date"
-            rules={generalValidationRules}
-          >
-            <DatePicker format="YYYY/MM/DD" className="w-full" />
-          </Form.Item>
-          <Form.Item
-            name="workModel"
-            label="Work Model"
-            rules={generalValidationRules}
-          >
-            <Select placeholder="Select" options={WORK_MODELS} />
-          </Form.Item>
-          <Form.Item
-            name="confirmationDate"
-            label="Confirmation Date"
-            rules={generalValidationRules}
-          >
-            <DatePicker format="YYYY/MM/DD" className="w-full" />
-          </Form.Item>
-          <div className="flex justify-end items-end lg:col-span-3 md:col-span-3">
+          <div className="flex justify-end items-end ">
             {!disable && (
               <AppButton
                 type="submit"
@@ -305,6 +171,230 @@ export const JobInformation: React.FC<IProps> = ({
           </div>
         </Form>
       </div>
+    </div>
+  );
+};
+const rateAndGrossValidation = {
+  required: true,
+
+  validator: async (_: any, value: any) => {
+    if (typeof value !== "number") {
+      throw new Error("Please enter a valid number!");
+    }
+    if (+value <= 0) {
+      throw new Error("Please enter a number greater than 0");
+    }
+
+    return true;
+  },
+};
+const workingDaysValidation = {
+  required: true,
+
+  validator: async (_: any, value: any) => {
+    if (typeof value !== "number") {
+      throw new Error("Please enter a valid number!");
+    }
+    if (!(+value >= 1 && value <= MAX_NO_OF_WORKING_DAYS_PER_WEEK)) {
+      throw new Error(
+        `Please enter a value ranging from 1 to ${MAX_NO_OF_WORKING_DAYS_PER_WEEK}`
+      );
+    }
+
+    return true;
+  },
+};
+export const JobInformationFormItems: React.FC<{
+  Form: typeof Form;
+  frequency: TPayrollFrequency;
+  setFrequency: Dispatch<SetStateAction<TPayrollFrequency>>;
+  payrollType: TEssentialPayrollType;
+  setPayrollType: Dispatch<SetStateAction<TEssentialPayrollType>>;
+}> = ({ Form, frequency, setFrequency, payrollType, setPayrollType }) => {
+  const [hireDate, setHireDate] = useState<Moment | null>(null);
+  const [startDate, setStartDate] = useState<Moment | null>(null);
+  const [probationEndDate, setProbationEndDate] = useState<Moment | null>(null);
+
+  return (
+    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+      <Form.Item
+        label="Payroll Type"
+        name={`payrollType`}
+        rules={[...generalValidationRules]}
+      >
+        <Select
+          value={payrollType}
+          className="capitalize"
+          options={ESSENTIAL_PAYROLL_TYPES_OPTIONS}
+          onSelect={(val: TEssentialPayrollType) => setPayrollType(val)}
+          placeholder="Payroll Type"
+        />
+      </Form.Item>
+      {payrollType === "wages" && (
+        <Form.Item
+          name="frequency"
+          label="Type of Wage"
+          rules={[...generalValidationRules]}
+        >
+          <Select
+            value={frequency}
+            className="capitalize"
+            options={PAYROLL_FREQUENCIES_OPTIONS}
+            onSelect={(val: TPayrollFrequency) => setFrequency(val)}
+            placeholder="Wage Type"
+          />
+        </Form.Item>
+      )}
+      {payrollType === "wages" && (
+        <Form.Item
+          name="hourlyRate"
+          label="Hourly Gross"
+          rules={[rateAndGrossValidation]}
+        >
+          <InputNumber min={1} className="w-full" placeholder="Hourly Gross" />
+        </Form.Item>
+      )}
+
+      {payrollType === "direct-salary" && (
+        <Form.Item
+          name="monthlyGross"
+          label="Monthly Gross"
+          rules={[rateAndGrossValidation]}
+        >
+          <InputNumber min={1} className="w-full" placeholder="Monthly Gross" />
+        </Form.Item>
+      )}
+      {payrollType === "office" && (
+        <FormPayGradeInput
+          Form={Form}
+          control={{ name: "payGradeId", label: "Pay Grade" }}
+        />
+      )}
+      <Form.Item
+        name="numberOfDaysPerWeek"
+        label="Number of days per week"
+        rules={[workingDaysValidation]}
+      >
+        <InputNumber min={1} className="w-full" placeholder="Working Days" />
+      </Form.Item>
+
+      <FormBranchInput
+        Form={Form}
+        control={{ label: "Branch", name: "branchId" }}
+      />
+      <FormEmployeeInput
+        Form={Form}
+        control={{ name: "lineManagerId", label: "Line Manager (optional)" }}
+        optional
+      />
+
+      <Form.Item
+        name="employmentType"
+        label="Employment Type"
+        rules={generalValidationRules}
+      >
+        <Select placeholder="Employment Type" options={EMPLOYMENT_TYPES} />
+      </Form.Item>
+
+      <Form.Item
+        name="workModel"
+        label={
+          <AppTooltip
+            children={<span>Work Model</span>}
+            tooltipProps={{
+              title:
+                "This describes the operational environment of the employee, remote, on site, or hybrid.",
+            }}
+          />
+        }
+        rules={generalValidationRules}
+      >
+        <Select placeholder="Work Model" options={WORK_MODELS} />
+      </Form.Item>
+      <Form.Item
+        name="hireDate"
+        label="Hire Date"
+        rules={[dateHasToBeLesserThanOrEqualToCurrentDayRule]}
+      >
+        <DatePicker
+          className="w-full"
+          format={DEFAULT_DATE_FORMAT}
+          placeholder="Hire Date"
+          onChange={(val) => setHireDate(val)}
+        />
+      </Form.Item>
+      <Form.Item
+        name="startDate"
+        label="Start Date"
+        rules={[
+          {
+            required: true,
+            validator: async (rule: any, value: Moment) => {
+              if (value.isBefore(hireDate)) {
+                throw new Error("Start Date cannot be before hire date!");
+              }
+
+              return true;
+            },
+          },
+        ]}
+      >
+        <DatePicker
+          format={DEFAULT_DATE_FORMAT}
+          className="w-full"
+          placeholder="Start Date"
+          onChange={(val) => setStartDate(val)}
+        />
+      </Form.Item>
+      <Form.Item
+        name="probationEndDate"
+        label="Probation End Date"
+        rules={[
+          {
+            required: true,
+            validator: async (rule: any, value: Moment) => {
+              if (value.isBefore(startDate)) {
+                throw new Error(
+                  "Probation End Date cannot be before start date!"
+                );
+              }
+
+              return true;
+            },
+          },
+        ]}
+      >
+        <DatePicker
+          format={DEFAULT_DATE_FORMAT}
+          className="w-full"
+          placeholder="Probation End Date"
+          onChange={(val) => setProbationEndDate(val)}
+        />
+      </Form.Item>
+      <Form.Item
+        name="confirmationDate"
+        label="Confirmation Date"
+        rules={[
+          {
+            required: true,
+            validator: async (rule: any, value: Moment) => {
+              if (value.isBefore(probationEndDate)) {
+                throw new Error(
+                  "Confirmation date cannot be before probation end date!"
+                );
+              }
+
+              return true;
+            },
+          },
+        ]}
+      >
+        <DatePicker
+          format={DEFAULT_DATE_FORMAT}
+          className="w-full"
+          placeholder="Confirmation Date"
+        />
+      </Form.Item>
     </div>
   );
 };

@@ -1,8 +1,7 @@
-import { Table, Dropdown, Menu, Select } from "antd";
+import { Select } from "antd";
 import { ColumnsType } from "antd/lib/table";
 import { AppButton } from "components/button/AppButton";
 import { usePagination } from "hooks/usePagination";
-import { MoreOutlined } from "@ant-design/icons";
 import React, { useState } from "react";
 import { AddSalaryComponent } from "../salaryComponents/AddSalaryComponent";
 import { TEmployeesInPayrollData } from "features/payroll/types";
@@ -22,6 +21,8 @@ import {
 } from "features/payroll/hooks/payroll/employee/useGetEmployeesInPayroll";
 import { useQueryClient } from "react-query";
 import { useConfigureTaxForAnExapatriate } from "features/payroll/hooks/payroll/employee/salaryComponent/configureTax/useConfigureTaxForAnExapatriate";
+import { TableWithFocusType } from "components/table";
+import { EMPLOYEE_PAYROLL_UPDATE_TABLE_COLUMNS } from "./columns";
 
 interface IProps {
   expatriate: boolean;
@@ -31,7 +32,11 @@ interface IProps {
   allowMultipleSelect?: boolean;
   allowedEmployeeActions?: TAction[];
 }
-
+export type TEmployeePayrollUpdateActionItem = {
+  label: string;
+  key: TAction;
+  onClick: () => void;
+};
 type TAction =
   | "add-allowance"
   | "add-deduction"
@@ -107,12 +112,11 @@ export const EmployeePayrollUpdatesContainer: React.FC<IProps> = ({
     setEmployee(undefined);
   };
 
-  type TActionItem = { label: string; key: TAction; onClick: () => void };
-  const actionItems = (props: {
+  const EMPLOYEE_PAYROLL_UPDATE_ACTION_ITEMS = (props: {
     employee: TEmployeesInPayrollData;
-  }): TActionItem[] => {
+  }): TEmployeePayrollUpdateActionItem[] => {
     const { employee } = props;
-    const items: TActionItem[] = [
+    const items: TEmployeePayrollUpdateActionItem[] = [
       {
         label: "Add Allowance",
         key: "add-allowance",
@@ -162,84 +166,22 @@ export const EmployeePayrollUpdatesContainer: React.FC<IProps> = ({
     ];
     return items.filter((item) => allowedEmployeeActions.includes(item.key));
   };
-
-  const columns: ColumnsType<TEmployeesInPayrollData> = [
-    {
-      title: "Name",
-      dataIndex: "uid",
-      key: "uid",
-      render: (_, item) => item.fullName,
-    },
-
-    {
-      title: "Net Pay",
-      dataIndex: "np",
-      key: "np",
-      render: (_, item) => item.netPay,
-    },
-    {
-      title: "Gross Pay",
-      dataIndex: "gp",
-      key: "gp",
-      render: (_, item) => item.grossPay,
-    },
-    {
-      title: "Total Deductions",
-      dataIndex: "td",
-      key: "td",
-      render: (_, item) => item.totalDeductions,
-    },
-    {
-      title: "Total Allowances",
-      dataIndex: "ta",
-      key: "ta",
-      render: (_, item) => item.totalAllowances,
-    },
-    {
-      title: "Tax",
-      dataIndex: "tax",
-      key: "tax",
-      render: (_, item) => item.tax,
-    },
-    {
-      title: "Exchange Rate",
-      dataIndex: "Exchange Rate",
-      key: "Exchange Rate",
-      render: (_, item) => item.currency,
-    },
-
-    {
-      title: "Action",
-      key: "action",
-      dataIndex: "action",
-      width: 100,
-
-      render: (_, employee) => (
-        <div className="flex gap-4">
-          <Dropdown
-            disabled={!employee.isActive || employeeIds.length > 0}
-            overlay={
-              <Menu
-                getPopupContainer={(triggerNode) =>
-                  triggerNode.parentElement as HTMLElement
-                }
-                items={
-                  expatriate
-                    ? actionItems({ employee })
-                    : actionItems({ employee }).filter(
-                        (item) => item.label !== "Configure Tax"
-                      )
-                }
-              />
-            }
-            trigger={["click"]}
-          >
-            <MoreOutlined />
-          </Dropdown>
-        </div>
-      ),
-    },
-  ];
+  const extraColumnsToDisplay: ColumnsType<TEmployeesInPayrollData> =
+    data?.componentHeadersToDisplay
+      ? data?.componentHeadersToDisplay?.map((name) => ({
+          title: <span className="capitalize">{name}</span>,
+          dataIndex: name,
+          key: name,
+          render: (_, item) => item.componentsToDisplay?.[name],
+        }))
+      : [];
+  const columns: ColumnsType<TEmployeesInPayrollData> =
+    EMPLOYEE_PAYROLL_UPDATE_TABLE_COLUMNS(
+      employeeIds,
+      expatriate,
+      EMPLOYEE_PAYROLL_UPDATE_ACTION_ITEMS,
+      extraColumnsToDisplay
+    );
 
   const rowSelection = {
     onChange: (
@@ -586,7 +528,7 @@ export const EmployeePayrollUpdatesContainer: React.FC<IProps> = ({
         </div>
 
         {/* table */}
-        <Table
+        <TableWithFocusType
           rowSelection={
             allowMultipleSelect
               ? {
@@ -613,7 +555,9 @@ export const EmployeePayrollUpdatesContainer: React.FC<IProps> = ({
           pagination={{ ...pagination, total: data?.total }}
           onChange={onChange}
           rowClassName={({ isActive }) =>
-            !isActive ? `bg-gray-200 text-slate-400` : ""
+            !isActive
+              ? `bg-gray-200 text-slate-400 hover:bg-gray-200 hover:text-slate-400`
+              : ""
           }
         />
       </div>

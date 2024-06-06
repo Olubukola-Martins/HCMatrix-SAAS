@@ -3,6 +3,7 @@ import { AppButton } from "components/button/AppButton";
 import React, { useEffect, useState } from "react";
 import { IModalProps } from "types";
 import {
+  dateHasToBeGreaterThanCurrentDayRule,
   generalValidationRules,
   generalValidationRulesOp,
 } from "utils/formHelpers/validation";
@@ -20,6 +21,7 @@ import LoanWorthiness from "./worthiness/LoanWorthiness";
 import { TLoanWorthinessInputData } from "../hooks/worthiness/useGetLoanWorthiness";
 import { useCurrentFileUploadUrl } from "hooks/useCurrentFileUploadUrl";
 import { QUERY_KEY_FOR_LOAN_ANALYTICS } from "../hooks/analytics/useGetLoanAnalytics";
+import { QUERY_KEY_FOR_APPROVAL_REQUESTS } from "features/core/workflows/hooks/useFetchApprovalRequests";
 
 export const NewLoan: React.FC<IModalProps> = ({ open, handleClose }) => {
   const queryClient = useQueryClient();
@@ -50,6 +52,7 @@ export const NewLoan: React.FC<IModalProps> = ({ open, handleClose }) => {
             title: "Error Occurred",
             description:
               err?.response.data.message ?? err?.response.data.error.message,
+            duration: 5,
           });
         },
         onSuccess: (res: any) => {
@@ -75,6 +78,10 @@ export const NewLoan: React.FC<IModalProps> = ({ open, handleClose }) => {
             queryKey: [QUERY_KEY_FOR_LOAN],
             // exact: true,
           });
+          queryClient.invalidateQueries({
+            queryKey: [QUERY_KEY_FOR_APPROVAL_REQUESTS],
+            // exact: true,
+          });
         },
       }
     );
@@ -84,6 +91,7 @@ export const NewLoan: React.FC<IModalProps> = ({ open, handleClose }) => {
   const handleRequiresForm = (val: boolean) => {
     setRequiresForm(val);
   };
+  const [_, startTransition] = React.useTransition();
   return (
     <Modal
       open={open}
@@ -101,7 +109,11 @@ export const NewLoan: React.FC<IModalProps> = ({ open, handleClose }) => {
         <Form.Item rules={generalValidationRules} name="title" label="Title">
           <Input className="w-full" placeholder="Title" />
         </Form.Item>
-        <Form.Item rules={generalValidationRules} name="date" label="Date">
+        <Form.Item
+          rules={[dateHasToBeGreaterThanCurrentDayRule]}
+          name="date"
+          label="Date"
+        >
           <DatePicker className="w-full" />
         </Form.Item>
         <FormLoanTypeInput
@@ -128,7 +140,9 @@ export const NewLoan: React.FC<IModalProps> = ({ open, handleClose }) => {
             placeholder="Amount"
             // TODO: Implement Debounce for this
             onChange={(val: number | null) =>
-              setWorthinessInput((prev) => ({ ...prev, amount: val ?? 0 }))
+              startTransition(() =>
+                setWorthinessInput((prev) => ({ ...prev, amount: val ?? 0 }))
+              )
             }
           />
         </Form.Item>

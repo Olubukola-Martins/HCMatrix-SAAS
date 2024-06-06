@@ -1,18 +1,18 @@
 import AssetListTable from "./AssetListTable";
-import { AppButton } from "components/button/AppButton";
 import { Select } from "antd";
 import { useState } from "react";
 import AddSingleAsset from "./AddSingleAsset";
 import { TAssetStatus } from "../types";
 import { ASSET_STATUSES } from "../constants";
-import { useGetAssetTypes } from "../hooks/useGetAssetTypes";
 import { useApiAuth } from "hooks/useApiAuth";
-
-// TO DO : Refactor to use antd comps
+import DropdownButton from "components/button/DropdownButton";
+import { ImportAssets } from "./bulk/ImportAssets";
+import { useGetAssetTypes } from "../hooks/asset-type/useGetAssetTypes";
 
 const AssetList = () => {
   const { companyId, token } = useApiAuth();
-  const [showD, setShowD] = useState(false);
+  type TAction = "add-asset" | "add-asset-in-bulk";
+  const [action, setAction] = useState<TAction>();
   const [assetStatus, setAssetStatus] = useState<TAssetStatus>();
   const [typeId, setTypeId] = useState<number>();
   const { data: assetTypes, isLoading: isAssTypeLoading } = useGetAssetTypes({
@@ -23,11 +23,17 @@ const AssetList = () => {
 
   return (
     <>
-      <AddSingleAsset open={showD} handleClose={() => setShowD(false)} />
+      <ImportAssets
+        open={action === "add-asset-in-bulk"}
+        handleClose={() => setAction(undefined)}
+      />
+      <AddSingleAsset
+        open={action === "add-asset"}
+        handleClose={() => setAction(undefined)}
+      />
 
       <div className="flex flex-col gap-4">
         <div className="flex justify-between">
-          {/* TO DO: Refactor asset status && type to be their own comps && type should be debounce searchable */}
           <div className="flex gap-2">
             <Select
               loading={isAssTypeLoading}
@@ -53,7 +59,21 @@ const AssetList = () => {
               onSelect={(val: TAssetStatus) => setAssetStatus(val)}
             />
           </div>
-          <AppButton label="Add Asset" handleClick={() => setShowD(true)} />
+          <DropdownButton
+            label="Add Asset"
+            items={[
+              {
+                key: "add-asset",
+                label: "Add Single Asset",
+                onClick: () => setAction("add-asset"),
+              },
+              {
+                key: "bulk-import",
+                label: "Import Assets",
+                onClick: () => setAction("add-asset-in-bulk"),
+              },
+            ]}
+          />
         </div>
 
         <AssetListTable status={assetStatus} typeId={typeId} />

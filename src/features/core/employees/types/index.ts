@@ -8,6 +8,9 @@ import {
   TSingleEmployee,
   TWalletValue,
 } from "./singleEmployee";
+import { RELATIONSHIPS } from "constants/general";
+import { TBranch } from "features/core/branches/types";
+import { TLicenseType } from "features/authentication/types/auth-user";
 
 export {
   type TSingleEmployee,
@@ -21,7 +24,7 @@ export type TBulkEmployeeImport = {
   employeeInformation: {
     email: string;
     empUid: string;
-    hasSelfService: boolean;
+    licenseType: TLicenseType;
   };
   personalInformation?: {
     firstName: string;
@@ -158,36 +161,15 @@ export interface ICreateEmpPersonalInfoProps
   employeeId: number;
 }
 
-export interface IUpdateEmpProps extends ICurrentCompany {
-  employeeId: number;
-  firstName?: string;
-  lastName?: string;
-  email?: string;
-  hasSelfService?: boolean;
-  empUid?: string;
-  roleId?: number;
-  designationId?: number;
-  avatarUrl?: string;
-}
-
-export interface ICreateEmpProps extends ICurrentCompany {
+export interface ICreateEmpProps {
   firstName: string;
   lastName: string;
   email: string;
-  hasSelfService: boolean;
+  licenseType: TLicenseType;
   empUid?: string;
   roleId: number;
   designationId: number;
-  jobInformation: {
-    startDate: string;
-    jobTitle: string;
-    monthlyGross: number;
-    employmentType: string;
-    workModel: string;
-    numberOfDaysPerWeek: number;
-
-    lineManagerId?: number;
-  };
+  jobInformation: TJobInfo;
 }
 
 interface IResendInviteProps extends ICurrentCompany {
@@ -212,7 +194,7 @@ export interface IFRQEmpDataProps {
 export type TEmergencyContact = {
   fullName: string;
   address: string;
-  relationship: string;
+  relationship: (typeof RELATIONSHIPS)[number]["value"];
   phoneNumber: string;
 };
 
@@ -234,7 +216,7 @@ export type TAddress = {
   streetAddress: string;
   countryId: number;
   stateId: number;
-  lgaId: number;
+  lgaId?: number;
   timezone: string;
 };
 
@@ -243,17 +225,19 @@ export type TPersonalInfo = {
   gender: string;
   phoneNumber: string;
   eligibility: string;
+  exchangeRateId?: number;
   maritalStatus: string;
   nationality: string;
   address: TAddress;
-  exchangeRateId?: number;
-  passportExpirationDate?: string;
+  passportExpirationDate: string;
   validDocumentUrl?: string;
+  alternativeEmail?: string;
+  alternativePhoneNumber?: string;
+  nin?: string;
 };
 
 export type TJobInfo = {
   startDate: string;
-  monthlyGross: number;
   employmentType: string;
   workModel: string;
   numberOfDaysPerWeek: number;
@@ -261,9 +245,12 @@ export type TJobInfo = {
   probationEndDate: string;
   confirmationDate: string;
   lineManagerId?: number;
-  payGradeId?: number;
   branchId?: number;
   payrollType?: "direct-salary" | "office" | "wages";
+  monthlyGross: number;
+  payGradeId?: number;
+  frequency?: "daily" | "monthly";
+  hourlyRate: number;
 };
 
 export type TWallet = {
@@ -335,6 +322,13 @@ export type TManagerHistory = {
 
 // TO DO: refactor types to match api exactly - employee, authData, ..............
 export type TEmployee = {
+  user: {
+    id: number;
+    fullName: string;
+    email: string;
+    isSocial: boolean;
+    isVerified?: boolean;
+  };
   companyId: number;
   avatarUrl?: string;
 
@@ -345,9 +339,9 @@ export type TEmployee = {
   email: string;
   empUid: string;
   firstName: string;
-  hasSelfService: boolean;
+  licenseType: TLicenseType;
   id: number;
-  jobInformation?: TJobInfo;
+  jobInformation?: TJobInfo & { branch?: TBranch; lineManager: TEmployee };
   lastName: string;
   personalInformation?: TPersonalInfo;
   role: TRole;

@@ -1,74 +1,69 @@
 import axios from "axios";
-import { useMutation } from "react-query";
-import { IBulkEmployeeUploadProps } from "../types";
+import { useMutation, useQueryClient } from "react-query";
+import { ICurrentCompany } from "types";
+import { TBulkImportEmployeeProp } from "../types/bulk-import";
+import { useApiAuth } from "hooks/useApiAuth";
+import { errorFormatter } from "utils/errorHelpers";
+import { openNotification } from "utils/notifications";
+import { QUERY_KEY_FOR_LIST_OF_EMPLOYEES } from "./useFetchEmployees";
 
-export const employeeBulkUpload = async (props: IBulkEmployeeUploadProps) => {
+type TData = { data: TBulkImportEmployeeProp[] };
+export const employeeBulkUpload = async (vals: {
+  auth: ICurrentCompany;
+  props: TData;
+}) => {
+  const { auth, props } = vals;
   const url = `${process.env.REACT_APP_UTILITY_BASE_URL}/employee/bulk`;
   const config = {
     headers: {
       // Accept: "application/json",
-      Authorization: `Bearer ${props.token}`,
-      "x-company-id": props.companyId,
+      Authorization: `Bearer ${auth.token}`,
+      "x-company-id": auth.companyId,
     },
   };
 
-  const data = props.data.map((item) => ({
-    firstName: item.personalInformation?.firstName,
-    lastName: item.personalInformation?.lastName,
-    email: item.employeeInformation.email,
-    hasSelfService: item.employeeInformation.hasSelfService,
-    empUid: item.employeeInformation.empUid,
-    personalInformation: {
-      dob: item.personalInformation?.dob,
-      gender: item.personalInformation?.gender,
-      phoneNumber: item.personalInformation?.alternativePhoneNumber,
-      eligibility: item.personalInformation?.eligibility,
-      maritalStatus: item.personalInformation?.maritalStatus,
-      nationality: item.personalInformation?.nationality,
-      passportExpirationDate: item.personalInformation?.passportExpirationDate,
-      alternativeEmail: item.personalInformation?.alternativeEmail,
-      alternativePhoneNumber: item.personalInformation?.alternativePhoneNumber,
-      nin: item.personalInformation?.nin,
-      taxId: item.personalInformation?.taxId,
-      taxAuthority: item.personalInformation?.taxAuthority,
-    },
-    finance: [
-      {
-        key: "wallet",
-        wallet: {
-          accountProvider: item.walletInformation?.accountProvider,
-          accountNumber: item.walletInformation?.accountNumber,
-        },
-      },
-      {
-        key: "bank",
-        bank: {
-          bankName: item.bankInformation?.bankName,
-          accountNumber: item.bankInformation?.accountNumber,
-          bvn: item.bankInformation?.bvn,
-        },
-      },
-      {
-        key: "pension",
-        pension: {
-          fundAdministrator: item.pensionInformation?.fundAdministrator,
-          accountNumber: item.pensionInformation?.accountNumber,
-          pensionType: item.pensionInformation?.pensionType,
-        },
-      },
-    ],
-    emergencyContact: {
-      fullName: item.emergencyContact?.fullName,
-      address: item.emergencyContact?.address,
-      relationship: item.emergencyContact?.relationship,
-      phoneNumber: item.emergencyContact?.phoneNumber,
-    },
-  }));
+  try {
+    const data: TBulkImportEmployeeProp[] = props.data;
 
-  const response = await axios.post(url, data, config);
-  return response;
+    const response = await axios.post(url, data, config);
+    return response;
+  } catch (error) {
+    throw error;
+  }
 };
 
-export const useEmployeeBulkUpload = () => {
-  return useMutation(employeeBulkUpload);
+export const useEmployeeBulkUpload = (handleClose: () => void) => {
+  const { token, companyId } = useApiAuth();
+  const queryClient = useQueryClient();
+
+  return useMutation(
+    (props: TData) => employeeBulkUpload({ props, auth: { token, companyId } }),
+    {
+      onError: (_err) => {
+        const formattedErr = errorFormatter(_err);
+        openNotification({
+          state: "error",
+          title: formattedErr.message,
+          description: formattedErr.errors
+            ?.map((err) => `${err.path}: ${err.message}`)
+            .join(","),
+        });
+      },
+      onSuccess: (res: any) => {
+        openNotification({
+          state: "success",
+
+          title: "Success",
+          description: res.data.message,
+          // duration: 0.4,
+        });
+
+        queryClient.invalidateQueries({
+          queryKey: [QUERY_KEY_FOR_LIST_OF_EMPLOYEES],
+          // exact: true,
+        });
+        handleClose();
+      },
+    }
+  );
 };

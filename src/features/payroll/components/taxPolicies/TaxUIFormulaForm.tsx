@@ -1,15 +1,19 @@
-import { Form, Input, InputNumber, Popconfirm, Table, Tag } from "antd";
+import { Button, Form, InputNumber, Popconfirm, Table, Tag } from "antd";
 import type { FormInstance } from "antd/es/form";
-import { AppButton } from "components/button/AppButton";
 import { DeleteFilled } from "@ant-design/icons";
 import React, { useContext, useEffect, useRef, useState } from "react";
 import { TTaxPolicyCreatorProps } from "./TaxPolicyCreator";
-import { AddSalaryComponentForm } from "../salaryComponents/AddSalaryComponent";
 import {
   TTaxCondition,
-  createTaxyearlyTaxableIncomeComponentFormula,
+  calculateSalaryEvalStatement,
   dummyConditions,
 } from "features/payroll/utils/createTaxSalaryComponentFormula";
+import { AppButton } from "components/button/AppButton";
+import AppTooltip from "components/tooltip/AppTooltip";
+import {
+  numberHasToBeGreaterThanValueRule,
+  numberHasToBeGreaterThanZeroRule,
+} from "utils/formHelpers/validation";
 
 const EditableContext = React.createContext<FormInstance<any> | null>(null);
 
@@ -79,38 +83,34 @@ const EditableCell: React.FC<EditableCellProps> = ({
 
       toggleEdit();
       handleSave({ ...record, ...values });
-    } catch (errInfo) {
-      console.log("Save failed:", errInfo);
-    }
+    } catch (errInfo) {}
   };
 
   let childNode = children;
 
   if (editable) {
-    childNode =
-      editing && record?.name.toLowerCase().indexOf("over") === -1 ? (
-        <Form.Item
-          style={{ margin: 0 }}
-          name={dataIndex}
-          rules={[
-            {
-              required: true,
-              message: `${title} is required.`,
-              type: "number",
-            },
-          ]}
-        >
-          <InputNumber ref={inputRef} onPressEnter={save} onBlur={save} />
-        </Form.Item>
-      ) : (
-        <div
-          className="editable-cell-value-wrap"
-          style={{ paddingRight: 24 }}
-          onClick={toggleEdit}
-        >
-          {children}
-        </div>
-      );
+    childNode = editing ? (
+      <Form.Item
+        style={{ margin: 0 }}
+        name={dataIndex}
+        rules={[numberHasToBeGreaterThanValueRule(-1)]}
+      >
+        <InputNumber
+          ref={inputRef}
+          onPressEnter={save}
+          onBlur={save}
+          step={0.001}
+        />
+      </Form.Item>
+    ) : (
+      <div
+        className="editable-cell-value-wrap"
+        style={{ paddingRight: 24 }}
+        onClick={toggleEdit}
+      >
+        {children}
+      </div>
+    );
   }
 
   return <td {...restProps}>{childNode}</td>;
@@ -131,38 +131,82 @@ type ColumnTypes = Exclude<EditableTableProps["columns"], undefined>;
 export const TaxUIFormulaForm: React.FC<
   TTaxPolicyCreatorProps & {
     handleFormula: (val: string) => void;
+    handleComponentDescription: (val: string) => void;
+    taxConditions?: TTaxCondition[];
     taxableIncome?: string;
   }
-> = ({ dependencies = [], handleFormula, taxableIncome }) => {
-  const convertedConditions = dummyConditions.map(
-    (condition, index, conditions) => {
-      let name = "";
-      if (index === 0) {
-        name = "First";
-      } else {
-        name = "Next";
+> = ({
+  dependencies = [],
+  handleFormula,
+  taxableIncome,
+  taxConditions = [],
+  handleComponentDescription,
+}) => {
+  const [dataSource, setDataSource] = useState<DataType[]>([]);
+  const [isDefaultConfig, setIsDefaultConfig] = useState(false);
+  useEffect(() => {
+    setIsDefaultConfig(taxConditions.length !== 0);
+  }, [taxConditions]);
+
+  useEffect(() => {
+    setDataSource(() => {
+      const convertedConditions = taxConditions.map(
+        (condition, index, conditions) => {
+          let name = "";
+          if (index === 0) {
+            name = "First";
+          } else {
+            name = "Next";
+          }
+          if (index === conditions.length - 1) {
+            name = `Over `;
+          }
+          return {
+            key: index,
+            name: name,
+            amount:
+              index === conditions.length - 1
+                ? conditions[index - 1].max
+                : condition.max,
+            taxRate: (+condition.rate * 100).toFixed(3) as unknown as number, //to be in sync
+            taxAmountPayablePerYear: condition.yearlyTaxableIncome,
+          };
+        }
+      );
+      return convertedConditions;
+    });
+  }, []);
+  const handleRemoveDefaultConfig = () => {
+    setDataSource([]);
+    setIsDefaultConfig(false);
+  };
+  const handleUseDefaultConfig = () => {
+    const convertedConditions = dummyConditions.map(
+      (condition, index, conditions) => {
+        let name = "";
+        if (index === 0) {
+          name = "First";
+        } else {
+          name = "Next";
+        }
+        if (index === conditions.length - 1) {
+          name = `Over `;
+        }
+        return {
+          key: index,
+          name: name,
+          amount:
+            index === conditions.length - 1
+              ? conditions[index - 1].max
+              : condition.max,
+          taxRate: condition.rate,
+          taxAmountPayablePerYear: condition.yearlyTaxableIncome,
+        };
       }
-      if (index === conditions.length - 1) {
-        name = `Over `;
-      }
-      return {
-        key: index.toString(),
-        name: name,
-        amount:
-          index === conditions.length - 1
-            ? conditions[index - 1].max
-            : condition.max,
-        taxRate: condition.rate,
-        taxAmountPayablePerYear: condition.yearlyTaxableIncome,
-      };
-    }
-  );
-
-  console.log(convertedConditions);
-
-  const [dataSource, setDataSource] = useState<DataType[]>(convertedConditions);
-
-  const [count, setCount] = useState(2);
+    );
+    setDataSource(convertedConditions);
+    setIsDefaultConfig(true);
+  };
 
   const handleDelete = (key: React.Key) => {
     const newData = dataSource.filter((item) => item.key !== key);
@@ -198,42 +242,61 @@ export const TaxUIFormulaForm: React.FC<
       dataIndex: "operation",
       render: (_, record: unknown) =>
         dataSource.length >= 1 ? (
-          <Popconfirm
-            title="Sure to delete?"
-            onConfirm={() => handleDelete((record as DataType).key)}
-          >
-            <DeleteFilled />
-          </Popconfirm>
+          <>
+            <div
+              className="flex items-center gap-3 text-lg"
+              // style={{ marginLeft: 70, whiteSpace: "nowrap" }}
+            >
+              {/* <i className="ri-pencil-line cursor-pointer hover:text-caramel" /> */}
+
+              <Button
+                type="text"
+                icon={<DeleteFilled />}
+                onClick={() => handleDelete((record as DataType).key)}
+              />
+            </div>
+          </>
         ) : null,
     },
   ];
 
   const handleAdd = () => {
     const newData: DataType = {
-      key: count,
-      name: `Next`,
+      key: 0,
+      name: `Over`,
       amount: 0,
       taxRate: 0,
       taxAmountPayablePerYear: 0,
     };
-    setDataSource([...dataSource, newData]);
-    setCount(count + 1);
+    setDataSource((prev) => {
+      const items = [...prev, newData];
+      const ans = items.map((item, i) => ({
+        ...item,
+        key: i,
+        name: "Next",
+      }));
+
+      ans[0].name = `First`;
+      ans[ans.length - 1].name = `Over`;
+      return ans;
+    });
   };
 
   const handleSave = (row: DataType) => {
     const newData = [...dataSource];
     const index = newData.findIndex((item) => row.key === item.key);
     const item = newData[index];
-    newData.splice(index, 1, {
-      ...item,
-      ...row,
-    });
+    console.log("first,", row.key, item.key);
+    const data = newData.map((item) =>
+      row.key === item.key ? { ...item, ...row } : item
+    );
+
     // Fix code below let it update last row based on the previous row amount
     // if (newData.length - 2 === index) {
     //   newData[newData.length - 1].amount = row.amount;
     // }
 
-    setDataSource(newData);
+    setDataSource(data);
   };
 
   const components = {
@@ -249,18 +312,66 @@ export const TaxUIFormulaForm: React.FC<
       (item, i, items): TTaxCondition => ({
         min: i === 0 ? 0 : items[i - 1].amount,
         max: i === items.length - 1 ? Infinity : item.amount,
-        yearlyTaxableIncome: i === 0 ? 0 : item.taxAmountPayablePerYear,
+        yearlyTaxableIncome: item.taxAmountPayablePerYear,
         rate: item.taxRate / 100,
       })
     );
-    const result = createTaxyearlyTaxableIncomeComponentFormula({
-      conditions,
-      taxableIncome: taxableIncome ?? "taxable_income",
-      divisor: 1,
-    });
-    console.log("first", result);
+    console.log("conditions", conditions);
+
+    // const conditions = [
+    //   { min: 0, max: 300000 / 12, yearlyTaxableIncome: 0, rate: 0.07 },
+    //   {
+    //     min: 300000 / 12,
+    //     max: 600000 / 12,
+    //     yearlyTaxableIncome: 21000 / 12,
+    //     rate: 0.11,
+    //   },
+    //   {
+    //     min: 600000 / 12,
+    //     max: 1100000 / 12,
+    //     yearlyTaxableIncome: 54000 / 12,
+    //     rate: 0.15,
+    //   },
+    //   {
+    //     min: 1100000 / 12,
+    //     max: 1600000 / 12,
+    //     yearlyTaxableIncome: 129000 / 12,
+    //     rate: 0.19,
+    //   },
+    //   {
+    //     min: 1600000 / 12,
+    //     max: 3200000 / 12,
+    //     yearlyTaxableIncome: 224000 / 12,
+    //     rate: 0.21,
+    //   },
+    //   {
+    //     min: 3200000 / 12,
+    //     max: Infinity,
+    //     yearlyTaxableIncome: 560000 / 12,
+    //     rate: 0.24,
+    //   },
+    // ];
+    const result = calculateSalaryEvalStatement(
+      "taxable_income",
+      conditions.map((item) => ({
+        ...item,
+        salary: item.yearlyTaxableIncome,
+      }))
+    );
+    // const result = createTaxyearlyTaxableIncomeComponentFormula({
+    //   conditions,
+    //   taxableIncome: "taxable_income",
+    //   divisor: 1,
+    // });
+    handleComponentDescription(
+      JSON.stringify({
+        conditions,
+        taxableIncome,
+        divisor: 1,
+      })
+    );
     handleFormula(result);
-  }, [dataSource, handleFormula, taxableIncome]);
+  }, [dataSource, handleComponentDescription, handleFormula, taxableIncome]);
   const columns = defaultColumns.map((col) => {
     if (!col.editable) {
       return col;
@@ -278,14 +389,34 @@ export const TaxUIFormulaForm: React.FC<
   });
   return (
     <div className="flex flex-col gap-4">
+      <div className="flex justify-end items-center">
+        {isDefaultConfig ? (
+          <Button onClick={handleRemoveDefaultConfig} type="text">
+            Clear Configuration
+          </Button>
+        ) : (
+          <Button onClick={handleUseDefaultConfig} type="text">
+            Use Default Configuration
+          </Button>
+        )}
+      </div>
       <Table
         components={components}
         rowClassName={() => "editable-row"}
         bordered
         pagination={false}
-        dataSource={dataSource}
+        dataSource={dataSource.map(
+          (item, i) => ({ ...item, key: i } as DataType)
+        )}
         columns={columns as ColumnTypes}
       />
+      <div className="flex justify-start items-center">
+        <AppButton
+          variant="transparent"
+          label="Add a row"
+          handleClick={handleAdd}
+        />
+      </div>
 
       {/* TODO: Handle proper adjustments for when a new row is added */}
       {/* <AppButton

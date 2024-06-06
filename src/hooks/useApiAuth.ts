@@ -1,20 +1,44 @@
+import {
+  ROUTES_THAT_REQUIRE_API_REDIRECT_AND_LOGOUT_IF_AUTHENTICATED,
+  appRoutes,
+} from "config/router/paths";
+import { authRoutesDontRequireAuthentication } from "config/router/routes/auth";
+import { LOCAL_STORAGE_AUTH_KEY } from "constants/localStorageKeys";
 import { IAuthDets } from "features/authentication/types";
 import { useContext, useEffect } from "react";
-import { useAuthUser, useIsAuthenticated } from "react-auth-kit";
-import { useNavigate } from "react-router-dom";
+import { useAuthUser, useSignOut } from "react-auth-kit";
+import { useLocation, useNavigate } from "react-router-dom";
 import { GlobalContext } from "stateManagers/GlobalContextProvider";
 
 export const useApiAuth = () => {
   const navigate = useNavigate();
-  const isAuthenticated = useIsAuthenticated();
-
+  const { pathname, search } = useLocation();
+  const logout = useSignOut();
+  const routesAllowedWithoutAuthentication =
+    authRoutesDontRequireAuthentication.map((item) => item.path);
   useEffect(() => {
-    if (isAuthenticated() || localStorage.getItem("hcmatrix_app")) {
-      // Redirect to Dashboard
-    } else {
-      navigate("/login", { replace: true });
+    if (
+      localStorage.getItem(LOCAL_STORAGE_AUTH_KEY) !== null &&
+      ROUTES_THAT_REQUIRE_API_REDIRECT_AND_LOGOUT_IF_AUTHENTICATED.includes(
+        pathname
+      )
+    ) {
+      // logout user if they are accessing a page that requires them to be logged out
+      logout();
+      // navigate user to the initial path
+      const navigationPath = `${pathname}${search}`; //where search is the query params
+      navigate(navigationPath, { replace: true }); // this is done so after logging user out it takes them to the intended page, because by default when a user is logged out they are redirected to the login page
+      return;
     }
-  }, [navigate, isAuthenticated]);
+    if (
+      localStorage.getItem(LOCAL_STORAGE_AUTH_KEY) === null &&
+      !routesAllowedWithoutAuthentication.includes(pathname)
+    ) {
+      // Redirect to login
+      navigate(appRoutes.login, { replace: true });
+      return;
+    }
+  }, [navigate, pathname, routesAllowedWithoutAuthentication]);
   const auth = useAuthUser();
 
   const authDetails = auth() as unknown as IAuthDets;
@@ -22,7 +46,7 @@ export const useApiAuth = () => {
 
   const token = authDetails?.userToken;
   const globalCtx = useContext(GlobalContext);
-  const { state: globalState } = globalCtx;
+  const { state: globalState, dispatch: globalDispatch } = globalCtx;
   const companyId = +(globalState.currentCompany?.id as unknown as string); // make a number
   const companies = authDetails?.companies;
 
@@ -41,5 +65,7 @@ export const useApiAuth = () => {
     currentUserEmployeeId,
     currentCompanyEmployeeDetails: currentCompany,
     authUserData,
+    userCompanies: companies,
+    globalDispatch,
   };
 };

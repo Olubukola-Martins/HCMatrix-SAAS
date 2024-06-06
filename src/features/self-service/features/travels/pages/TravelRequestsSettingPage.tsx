@@ -12,7 +12,7 @@ const TravelRequestsSettingPage = () => {
       <div className="Container ">
         <PageIntro
           title="Travel Request Settings"
-          link={appRoutes.selfServiceHome}
+          link={appRoutes.selfServiceTravels}
         />
         <TravelRequestSetting />
       </div>

@@ -1,27 +1,31 @@
 import axios from "axios";
 import { useMutation } from "react-query";
 import { IUpdateDegProps } from "../types";
+import { ICurrentCompany } from "types";
+import { useApiAuth } from "hooks/useApiAuth";
 
-export const updateDesignation = async (props: IUpdateDegProps) => {
+export const updateDesignation = async (vals: {
+  props: IUpdateDegProps;
+  auth: ICurrentCompany;
+}) => {
+  const { props, auth } = vals;
   const url = `${process.env.REACT_APP_UTILITY_BASE_URL}/company/designation/${props.id}`;
   const config = {
     headers: {
       Accept: "application/json",
-      Authorization: `Bearer ${props.token}`,
-      "x-company-id": props.companyId,
+      Authorization: `Bearer ${auth.token}`,
+      "x-company-id": auth.companyId,
     },
   };
 
-  // necessary to make immediate changes when in  a central place when schema changes
-  const data: any = props;
-
-  delete data["companyId"];
-  delete data["token"];
-  delete data["id"];
+  const data = props.data;
 
   const response = await axios.put(url, data, config);
   return response;
 };
 export const useUpdateDesignation = () => {
-  return useMutation(updateDesignation);
+  const { token, companyId } = useApiAuth();
+  return useMutation((props: IUpdateDegProps) =>
+    updateDesignation({ props, auth: { token, companyId } })
+  );
 };

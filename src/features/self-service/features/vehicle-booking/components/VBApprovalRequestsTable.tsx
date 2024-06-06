@@ -1,19 +1,18 @@
-import { Space, Dropdown, Menu, Table } from "antd";
-import { MoreOutlined } from "@ant-design/icons";
-
+import { Table } from "antd";
 import React, { useState } from "react";
 import { ColumnsType } from "antd/lib/table";
-
-import moment from "moment";
-import { getAppropriateColorForStatus } from "utils/colorHelpers/getAppropriateColorForStatus";
 import { usePagination } from "hooks/usePagination";
 import { useQueryClient } from "react-query";
 import { useFetchApprovalRequests } from "features/core/workflows/hooks/useFetchApprovalRequests";
 import { useApproveORReject } from "hooks/useApproveORReject";
-import { QUERY_KEY_FOR_LEAVES } from "../../leave/hooks/useFetchLeaves";
 import { TApprovalRequest } from "features/core/workflows/types/approval-requests";
 import { ViewVehicleBooking } from "./ViewVehicleBooking";
 import { TApprovalStatus } from "types/statuses";
+import { QUERY_KEY_FOR_VEHICLE_BOOKINGS } from "../hooks/useFetchVehicleBookings";
+import { QUERY_KEY_FOR_VEHICLE_BOOKINGS_FOR_AUTH_EMPLOYEE } from "../hooks/booking/useGetVehicleBookings4AuthEmployee";
+import { QUERY_KEY_FOR_VEHICLE_BOOKING_ANALYTICS_FOR_EMPLOYEE } from "../hooks/useGetVehicleEmployeeBookingAnalytics";
+import { VEHICLE_BOOKING_APPROVAL_REQUEST_TABLE_COLUMNS } from "./columns/vb-approval-requests";
+import { TableFocusTypeBtn } from "components/table";
 
 const VBApprovalRequestsTable: React.FC<{
   status?: TApprovalStatus;
@@ -22,155 +21,61 @@ const VBApprovalRequestsTable: React.FC<{
   const queryClient = useQueryClient();
 
   const [showD, setShowD] = useState(false);
-  const [requestId, setRequestId] = useState<number>();
+  const [request, setRequest] = useState<TApprovalRequest>();
+
   const { pagination, onChange } = usePagination();
   const { data, isFetching } = useFetchApprovalRequests({
     pagination,
     type: "vehicle",
   });
-  console.log("vehi", data);
 
   const { confirmApprovalAction } = useApproveORReject({
     handleSuccess: () => {
       queryClient.invalidateQueries({
-        queryKey: [QUERY_KEY_FOR_LEAVES],
+        queryKey: [QUERY_KEY_FOR_VEHICLE_BOOKINGS],
+        // exact: true,
+      });
+      queryClient.invalidateQueries({
+        queryKey: [QUERY_KEY_FOR_VEHICLE_BOOKINGS_FOR_AUTH_EMPLOYEE],
+        // exact: true,
+      });
+      queryClient.invalidateQueries({
+        queryKey: [QUERY_KEY_FOR_VEHICLE_BOOKING_ANALYTICS_FOR_EMPLOYEE],
         // exact: true,
       });
     },
   });
 
-  const originalColumns: ColumnsType<TApprovalRequest> = [
-    {
-      title: "Date",
-      dataIndex: "createdAt",
-      key: "createdAt",
-      render: (val, item) =>
-        moment(item.vehicleBooking?.createdAt).format("YYYY-MM-DD"),
-    },
-    {
-      title: "Name",
-      dataIndex: "name",
-      key: "name",
-      render: (val, item) => (
-        <span>
-          {item.vehicleBooking?.employee.firstName}{" "}
-          {item.vehicleBooking?.employee.lastName}
-        </span>
-      ),
-    },
-
-    {
-      title: "Employee ID",
-      dataIndex: "Employee ID",
-      key: "Employee ID",
-      render: (_, item) => <span>{item.vehicleBooking?.employee.empUid}</span>,
-    },
-
-    {
-      title: "Department",
-      dataIndex: "department",
-      key: "department",
-      render: (_, item) => <span>{"N/A"}</span>,
-    },
-    {
-      title: "Destination",
-      dataIndex: "Destination",
-      key: "Destination",
-      render: (_, item) => <span>{item.vehicleBooking?.destination}</span>,
-    },
-
-    {
-      title: "Duration(hrs)",
-      dataIndex: "endTime",
-      key: "endTime",
-      render: (_, item) => item.vehicleBooking?.duration,
-    },
-
-    {
-      title: "Status",
-      dataIndex: "status",
-
-      key: "status",
-      render: (val: string) => (
-        <span
-          className="capitalize"
-          style={{ color: getAppropriateColorForStatus(val) }}
-        >
-          {val}
-        </span>
-      ),
-    },
-
-    {
-      title: "Action",
-      key: "action",
-      width: 100,
-      render: (_, item) => (
-        <Space align="center" className="cursor-pointer">
-          <Dropdown
-            overlay={
-              <Menu>
-                <Menu.Item
-                  key="3"
-                  onClick={() => {
-                    setShowD(true);
-                    setRequestId(item.vehicleBooking?.id);
-                  }}
-                >
-                  View
-                </Menu.Item>
-                <Menu.Item
-                  hidden={item.vehicleBooking?.status !== "pending"}
-                  key="2"
-                  onClick={() =>
-                    confirmApprovalAction({
-                      approvalStageId: item?.id,
-                      status: "rejected",
-                      workflowType: !!item?.basicStageId ? "basic" : "advanced",
-                      requires2FA: item?.advancedStage?.enableTwoFactorAuth,
-                    })
-                  }
-                >
-                  Approve
-                </Menu.Item>
-                <Menu.Item
-                  hidden={item.vehicleBooking?.status !== "pending"}
-                  key="1"
-                  onClick={() =>
-                    confirmApprovalAction({
-                      approvalStageId: item?.id,
-                      status: "rejected",
-                      workflowType: !!item?.basicStageId ? "basic" : "advanced",
-                    })
-                  }
-                >
-                  Reject
-                </Menu.Item>
-              </Menu>
-            }
-            trigger={["click"]}
-          >
-            <MoreOutlined />
-          </Dropdown>
-        </Space>
-      ),
-    },
-  ];
-  const columns = employeeId
-    ? originalColumns.filter((item) => item.key !== "name")
-    : originalColumns;
+  const columns: ColumnsType<TApprovalRequest> =
+    VEHICLE_BOOKING_APPROVAL_REQUEST_TABLE_COLUMNS(
+      confirmApprovalAction,
+      setRequest,
+      setShowD
+    );
+  const [selectedColumns, setSelectedColumns] =
+    useState<ColumnsType<TApprovalRequest>>(columns);
   return (
-    <div>
-      {requestId && (
+    <div className="space-y-6">
+      {request?.vehicleBooking && (
         <ViewVehicleBooking
-          bookingId={requestId}
+          bookingId={request.vehicleBooking.id}
           handleClose={() => setShowD(false)}
           open={showD}
+          approvalRequest={request}
         />
       )}
+      <div className="flex justify-end">
+        {TableFocusTypeBtn<TApprovalRequest>({
+          selectedColumns,
+          setSelectedColumns,
+          data: {
+            columns,
+          },
+        })}
+      </div>
 
       <Table
-        columns={columns}
+        columns={selectedColumns}
         size="small"
         dataSource={data?.data}
         loading={isFetching}

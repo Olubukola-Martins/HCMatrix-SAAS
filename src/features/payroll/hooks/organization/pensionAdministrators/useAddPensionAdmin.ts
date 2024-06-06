@@ -5,7 +5,7 @@ import { useMutation } from "react-query";
 import { ICurrentCompany } from "types";
 
 type TData = {
-  name: string;
+  name: string[];
 };
 const createData = async (props: { data: TData; auth: ICurrentCompany }) => {
   const url = `${MICROSERVICE_ENDPOINTS.PAYROLL}/organization/pension-administrator`;
@@ -17,9 +17,7 @@ const createData = async (props: { data: TData; auth: ICurrentCompany }) => {
     },
   };
 
-  const data: TData = {
-    ...props.data,
-  };
+  const data = props.data.name.map((val) => ({ name: val }));
 
   const response = await axios.post(url, data, config);
   return response;

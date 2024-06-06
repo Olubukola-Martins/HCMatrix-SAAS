@@ -1,21 +1,18 @@
-import { Space, Dropdown, Menu, Table, Modal } from "antd";
-import { MoreOutlined } from "@ant-design/icons";
-
+import { Table } from "antd";
 import React, { useState } from "react";
 import { ColumnsType } from "antd/lib/table";
-
-import moment from "moment";
 import {
   QUERY_KEY_FOR_ALL_CONFERENCE_ROOM_BOOKINGS,
   TCRBookingStatus,
 } from "../hooks/useFetchAllConferenceRoomBookings";
-import { getAppropriateColorForStatus } from "utils/colorHelpers/getAppropriateColorForStatus";
 import CRBBookingDetails from "./CRBBookingDetails";
 import { usePagination } from "hooks/usePagination";
 import { useQueryClient } from "react-query";
 import { useFetchApprovalRequests } from "features/core/workflows/hooks/useFetchApprovalRequests";
 import { useApproveORReject } from "hooks/useApproveORReject";
 import { TApprovalRequest } from "features/core/workflows/types/approval-requests";
+import { CRB_APPROVAL_REQUESTS_TABLE_COLUMNS } from "./columns/crb-approval-requests";
+import { TableFocusTypeBtn } from "components/table";
 
 const CRBApprovalRequestsTable: React.FC<{
   status?: TCRBookingStatus;
@@ -24,7 +21,8 @@ const CRBApprovalRequestsTable: React.FC<{
   const queryClient = useQueryClient();
 
   const [showD, setShowD] = useState(false);
-  const [requestId, setRequestId] = useState<number>();
+  const [request, setRequest] = useState<TApprovalRequest>();
+
   const { pagination, onChange } = usePagination();
   const { data, isFetching } = useFetchApprovalRequests({
     pagination,
@@ -40,165 +38,36 @@ const CRBApprovalRequestsTable: React.FC<{
     },
   });
 
-  const originalColumns: ColumnsType<TApprovalRequest> = [
-    {
-      title: "Name",
-      dataIndex: "name",
-      key: "name",
-      render: (val, item) => (
-        <span>
-          {item.conferenceRoomBooking?.employee.firstName}{" "}
-          {item.conferenceRoomBooking?.employee.lastName}
-        </span>
-      ),
-    },
-    {
-      title: "Date",
-      dataIndex: "createdAt",
-      key: "createdAt",
-      render: (val, item) =>
-        moment(item.conferenceRoomBooking?.createdAt).format("YYYY-MM-DD"),
-    },
-    {
-      title: "Room Name",
-      dataIndex: "roomName",
-      key: "roomName",
-      render: (_, item) => (
-        <span>{item.conferenceRoomBooking?.conferenceRoom.name}</span>
-      ),
+  const columns: ColumnsType<TApprovalRequest> =
+    CRB_APPROVAL_REQUESTS_TABLE_COLUMNS(
+      confirmApprovalAction,
+      setRequest,
+      setShowD
+    );
 
-      // ellipsis: true,
-
-      // width: 100,
-    },
-    {
-      title: "Reason",
-      dataIndex: "reason",
-      key: "reason",
-      ellipsis: true,
-      render: (_, item) => <span>{item.conferenceRoomBooking?.reason}</span>,
-
-      // width: 100,
-    },
-    {
-      title: "Department",
-      dataIndex: "department",
-      key: "department",
-      render: (_, item) => (
-        <span>{item.conferenceRoomBooking?.department?.name ?? "N/A"}</span>
-      ),
-    },
-    {
-      title: "Meeting Date",
-      dataIndex: "date",
-      key: "date",
-      render: (val, item) =>
-        moment(item.conferenceRoomBooking?.date).format("YYYY-MM-DD"),
-    },
-    {
-      title: "Start Time",
-      dataIndex: "startTime",
-      key: "startTime",
-      render: (_, item) =>
-        moment(item.conferenceRoomBooking?.startTime).format("h:mm:ss"),
-    },
-
-    {
-      title: "End Time",
-      dataIndex: "endTime",
-      key: "endTime",
-      render: (_, item) =>
-        moment(item.conferenceRoomBooking?.endTime).format("h:mm:ss"),
-    },
-
-    {
-      title: "Status",
-      dataIndex: "status",
-
-      key: "status",
-      render: (val: string) => (
-        <span
-          className="capitalize"
-          style={{ color: getAppropriateColorForStatus(val) }}
-        >
-          {val}
-        </span>
-      ),
-    },
-
-    {
-      title: "Action",
-      key: "action",
-      width: 100,
-      render: (_, item) => (
-        <Space align="center" className="cursor-pointer">
-          <Dropdown
-            overlay={
-              <Menu>
-                <Menu.Item
-                  key="3"
-                  onClick={() => {
-                    setShowD(true);
-                    setRequestId(item.conferenceRoomBooking?.id);
-                  }}
-                >
-                  View
-                </Menu.Item>
-                <Menu.Item
-                  hidden={item.conferenceRoomBooking?.status !== "pending"}
-                  key="2"
-                  onClick={() =>
-                    confirmApprovalAction({
-                      approvalStageId: item?.id,
-                      status: "rejected",
-                      workflowType: !!item?.basicStageId ? "basic" : "advanced",
-                      requires2FA: item?.advancedStage?.enableTwoFactorAuth,
-                    })
-                  }
-                >
-                  Approve
-                </Menu.Item>
-                <Menu.Item
-                  hidden={item.conferenceRoomBooking?.status !== "pending"}
-                  key="1"
-                  onClick={() =>
-                    confirmApprovalAction({
-                      approvalStageId: item?.id,
-                      status: "rejected",
-                      workflowType: !!item?.basicStageId ? "basic" : "advanced",
-                    })
-                  }
-                >
-                  Reject
-                </Menu.Item>
-              </Menu>
-            }
-            trigger={["click"]}
-          >
-            <MoreOutlined />
-          </Dropdown>
-        </Space>
-      ),
-    },
-  ];
-  const columns = employeeId
-    ? originalColumns.filter((item) => item.key !== "name")
-    : originalColumns;
+  const [selectedColumns, setSelectedColumns] =
+    useState<ColumnsType<TApprovalRequest>>(columns);
   return (
-    <div>
-      <Modal
-        open={showD}
-        onCancel={() => setShowD(false)}
-        closeIcon={false}
-        title={"Booking Details"}
-        style={{ top: 10 }}
-        footer={null}
-      >
-        {requestId && <CRBBookingDetails id={requestId} />}
-      </Modal>
-
+    <div className="space-y-6">
+      {request?.conferenceRoomBooking && (
+        <CRBBookingDetails
+          id={request.conferenceRoomBooking?.id}
+          open={showD}
+          handleClose={() => setShowD(false)}
+          approvalRequest={request}
+        />
+      )}
+      <div className="flex justify-end">
+        {TableFocusTypeBtn<TApprovalRequest>({
+          selectedColumns,
+          setSelectedColumns,
+          data: {
+            columns,
+          },
+        })}
+      </div>
       <Table
-        columns={columns}
+        columns={selectedColumns}
         size="small"
         dataSource={data?.data}
         loading={isFetching}

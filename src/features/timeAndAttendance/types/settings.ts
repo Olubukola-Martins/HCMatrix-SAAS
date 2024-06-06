@@ -7,10 +7,11 @@ export interface IClockInPolicy extends ICurrentCompany {
   biometricDevices: BiometricDevice[];
 }
 
-interface BiometricDevice {
+export interface BiometricDevice {
   name: string;
   companyId: number;
-  serialNumber: number;
+  serialNumber: string;
+  id: number;
 }
 
 // Add location
@@ -25,10 +26,6 @@ interface biometricDeviceLocationDetails {
 }
 
 // Time tracking rules
-export interface ITimeTrackingRule extends ICurrentCompany {
-  adminId: number;
-  policy: string;
-}
 
 // time off policy rule
 export interface ITimeOffPolicyRule extends ICurrentCompany {
@@ -43,16 +40,15 @@ interface TimeOffPolicy {
   adminId: number;
 }
 
-export interface IOtherSettings extends ICurrentCompany {
-  adminId: number;
-  longitude: string;
-  latitude: string;
-  isSoftClockinEnabled: boolean;
-  geoFenceRadiusInKm: string;
+export interface IAllTimeOff extends ICurrentCompany {
+  reason: string;
+  date: string;
+  timeOffPolicyId: number;
+  userId: number;
 }
 
 export interface workScheduleProps extends ICurrentCompany {
-  adminId: number,
+  adminId: number;
   workArrangement: string;
   workDaysAndTime: WorkDaysAndTime[];
 }
@@ -62,4 +58,15 @@ interface WorkDaysAndTime {
   startTime: string;
   endTime: string;
   shift?: string;
+  hours?: string;
 }
+
+// ====  NEW METHOD === ////
+
+export interface ITimeTrackingRule {
+  id?: number;
+  policyId: number;
+}
+
+
+

@@ -1,158 +1,39 @@
 import { NavLink, useLocation } from "react-router-dom";
 import "./style/style.css";
+import { useGenerateDBSidebarLinks } from "hooks/dashboard/useGenerateDBSidebarLinks";
+import { Skeleton } from "antd";
 
 const SideBar = () => {
   const { pathname } = useLocation();
-
-  const isActiveRoute = ({
-    routeName,
-    pathName,
-  }: {
-    routeName: string;
-    pathName: string;
-  }) => {
-    return pathName.toLowerCase().indexOf(routeName.toLowerCase()) !== -1;
-  };
-  const appBaseRoutes = {
-    home: "/",
-    selfService: "/self-service",
-    payroll: "/payroll",
-    performance: "/performance",
-    attendance: "/attendance",
-    leaning: "/leaning",
-    recruitment: "/recruitment",
+  const { sidebarRoutes, isLoading } = useGenerateDBSidebarLinks();
+  const isActiveRoute = (matcherKeys?: string[]) => {
+    return matcherKeys?.some(
+      (item) => pathname.toLowerCase().indexOf(item.toLowerCase()) !== -1
+    );
   };
   return (
-    <>
+    <Skeleton loading={isLoading} paragraph={{ rows: 7 }}>
       <div className="h-screen overflow-y-auto flex-col bg-card flex items-center px-2 text-center pb-32 scrollBar">
-        <NavLink
-          to={appBaseRoutes.home}
-          className={`sideBarItemWrap ${
-            appBaseRoutes.home === pathname && "active"
-          }`}
-        >
-          <div className="flex justify-center">
-            <span className="sideBarList">
-              <i className="ri-home-smile-line"></i>
-            </span>
-          </div>
-          <span className="sideBarName">Home</span>
-        </NavLink>
+        {sidebarRoutes
+          .filter((item) => item.hidden === false)
+          .map((route) => {
+            const isActive = isActiveRoute(route.matcherKeys);
 
-        <NavLink
-          to={`${appBaseRoutes.selfService}/home`}
-          className={`sideBarItemWrap ${
-            isActiveRoute({
-              pathName: pathname,
-              routeName: appBaseRoutes.selfService,
-            }) && "active"
-          }`}
-        >
-          <div className="flex justify-center">
-            <span className="sideBarList">
-              <i className="ri-organization-chart"></i>
-            </span>
-          </div>
-          <span className="sideBarName">Self-service</span>
-        </NavLink>
-
-        <NavLink
-          className={`sideBarItemWrap ${
-            isActiveRoute({
-              pathName: pathname,
-              routeName: appBaseRoutes.payroll,
-            }) && "active"
-          }`}
-          to={`${appBaseRoutes.payroll}/home`}
-        >
-          <div className="flex justify-center">
-            <span className="sideBarList">
-              <i className="ri-check-double-line"></i>
-            </span>
-          </div>
-
-          <span className="sideBarName">Payroll</span>
-        </NavLink>
-
-        <NavLink
-          className={`sideBarItemWrap ${
-            isActiveRoute({
-              pathName: pathname,
-              routeName: appBaseRoutes.recruitment,
-            }) && "active"
-          }`}
-          to={`${appBaseRoutes.recruitment}/dashboard`}
-        >
-          <div className="flex justify-center">
-            <span className="sideBarList">
-              <i className="ri-check-double-line"></i>
-            </span>
-          </div>
-
-          <span className="sideBarName">Recruitment</span>
-        </NavLink>
-        <NavLink
-          className={`sideBarItemWrap ${
-            isActiveRoute({
-              pathName: pathname,
-              routeName: appBaseRoutes.performance,
-            }) && "active"
-          }`}
-          to={`${appBaseRoutes.performance}/balance-scorecard`}
-        >
-          <div className="flex justify-center">
-            <span className="sideBarList">
-              <i className="ri-check-double-line"></i>
-            </span>
-          </div>
-
-          <span className="sideBarName">Performance</span>
-        </NavLink>
-
-        <NavLink
-          className={`sideBarItemWrap ${
-            isActiveRoute({
-              pathName: pathname,
-              routeName: appBaseRoutes.attendance,
-            }) && "active"
-          }`}
-          to={`${appBaseRoutes.attendance}/home`}
-        >
-          <div className="flex justify-center">
-            <span className="sideBarList">
-              <i className="ri-check-double-line"></i>
-            </span>
-          </div>
-
-          <span className="sideBarName">Time & Attendance</span>
-        </NavLink>
-        <NavLink
-          className={`sideBarItemWrap ${
-            isActiveRoute({
-              pathName: pathname,
-              routeName: appBaseRoutes.leaning,
-            }) && "active"
-          }`}
-          to={`${appBaseRoutes.leaning}/home`}
-        >
-          <div className="flex justify-center">
-            <span className="sideBarList">
-              <i className="ri-check-double-line"></i>
-            </span>
-          </div>
-          <span className="sideBarName">Learning & Development</span>
-        </NavLink>
-
-        <div className="sideBarItemWrap">
-          <div className="flex justify-center">
-            <span className="sideBarList">
-              <i className="ri-bill-line"></i>
-            </span>
-          </div>
-          <span className="sideBarName">Subscriptions</span>
-        </div>
+            return (
+              <NavLink
+                key={route.path}
+                to={route.path}
+                className={`sideBarItemWrap ${isActive ? "active" : ""}`}
+              >
+                <div className="flex justify-center">
+                  <span className="sideBarList">{route.icon}</span>
+                </div>
+                <span className="sideBarName">{route.name}</span>
+              </NavLink>
+            );
+          })}
       </div>
-    </>
+    </Skeleton>
   );
 };
 

@@ -28,6 +28,7 @@ const Component: React.FC<
           onChange,
           pagination,
           total: data?.total,
+          isTaskAssigner: false,
         }}
       />
     </div>

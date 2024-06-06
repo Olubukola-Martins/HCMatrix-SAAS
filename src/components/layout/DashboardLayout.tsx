@@ -78,8 +78,8 @@ const DashboardLayout = () => {
             <div
               className={
                 sidebarToggle
-                  ? "w-full lg:pl-28 mt-1 pb-10"
-                  : "lg:pl-0 w-full transition-all duration-500 ease-in-out mt-1 pb-10"
+                  ? "w-full lg:pl-28 mt-4 pb-10"
+                  : "lg:pl-0 w-full transition-all duration-500 ease-in-out mt-4 pb-10"
               }
             >
               <main className="Containe">

@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 
 import { Link, useNavigate } from "react-router-dom";
 import { Modal } from "antd";
@@ -6,32 +6,43 @@ import { appPagesData } from "config/router/routes";
 import { IModalProps } from "types";
 import Themes from "components/Themes";
 import { TSearchLink } from "./types";
-
-let links = appPagesData.filter((item) => item.isSearchable === true);
+import { TPermissionLabel } from "features/core/roles-and-permissions/types";
 
 const TEXT_FOR_NOT_SPECIFIED_TITLE = "_______________";
-
-const SearchModal = ({ open, handleClose }: IModalProps) => {
+interface IProps extends IModalProps {
+  userPermissions: TPermissionLabel[];
+}
+const SearchModal = ({ open, handleClose, userPermissions }: IProps) => {
+  let links = useMemo(
+    () =>
+      appPagesData({ userPermissions }).filter(
+        (item) => item.isSearchable === true
+      ),
+    [userPermissions]
+  );
   const navigate = useNavigate();
   const [value, setValue] = useState<string>("");
   const [searchResults, setSearchResults] = useState<TSearchLink[]>([]);
-  const handleSearch = useCallback((val: string) => {
-    const result: TSearchLink[] = links
-      .filter(
-        (item) => item.path.toLowerCase().indexOf(val.toLowerCase()) !== -1
-      )
-      .map(
-        (item): TSearchLink => ({
-          name: item.title ?? TEXT_FOR_NOT_SPECIFIED_TITLE,
-          link: item.path,
-        })
-      );
+  const handleSearch = useCallback(
+    (val: string) => {
+      const result: TSearchLink[] = links
+        .filter(
+          (item) => item.path.toLowerCase().indexOf(val.toLowerCase()) !== -1
+        )
+        .map(
+          (item): TSearchLink => ({
+            name: item.title ?? TEXT_FOR_NOT_SPECIFIED_TITLE,
+            link: item.path,
+          })
+        );
 
-    if (val !== "") {
-      return result;
-    }
-    return [];
-  }, []);
+      if (val !== "") {
+        return result;
+      }
+      return [];
+    },
+    [links]
+  );
   useEffect(() => {
     const result = handleSearch(value);
     setSearchResults(() => result);

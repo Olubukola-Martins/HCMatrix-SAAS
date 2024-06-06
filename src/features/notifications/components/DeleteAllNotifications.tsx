@@ -5,6 +5,7 @@ import { useQueryClient } from "react-query";
 import ConfirmationModal from "components/modals/ConfirmationModal";
 import { QUERY_KEY_FOR_NOTIFICATIONS } from "../hooks/useGetAlerts";
 import { useDeleteAllAlert } from "../hooks/useDeleteAllAlert";
+import { QUERY_KEY_FOR_UNREAD_NOTIFICATION_COUNT } from "../hooks/unRead/useGetUnReadNotificationCount";
 
 export const DeleteAllNotifications: React.FC<IModalProps> = ({
   open,
@@ -37,6 +38,10 @@ export const DeleteAllNotifications: React.FC<IModalProps> = ({
 
         queryClient.invalidateQueries({
           queryKey: [QUERY_KEY_FOR_NOTIFICATIONS],
+          // exact: true,
+        });
+        queryClient.invalidateQueries({
+          queryKey: [QUERY_KEY_FOR_UNREAD_NOTIFICATION_COUNT],
           // exact: true,
         });
       },

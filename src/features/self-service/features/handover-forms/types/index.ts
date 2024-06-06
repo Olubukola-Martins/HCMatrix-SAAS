@@ -1,3 +1,6 @@
+import { TApprovalStatus } from "types/statuses";
+import { Employee } from "./Employee";
+
 export type TTHandOverForm = {
   id: number;
   employeeId: number;
@@ -9,12 +12,12 @@ export type TTHandOverForm = {
   otherComments: string;
   supportingDocumentUrl: string;
   supervisorClearanceUrl: string;
-  status: string;
+  status: TApprovalStatus;
   companyId: number;
   createdAt: string;
   updatedAt: string;
   employee: Employee;
-  assetChecklist: AssetChecklist[];
+  assetChecklist?: AssetChecklist[];
 };
 
 interface AssetChecklist {
@@ -62,22 +65,4 @@ interface Asset {
   companyId: number;
   createdAt: string;
   updatedAt: string;
-}
-
-interface Employee {
-  id: number;
-  firstName: string;
-  lastName: string;
-  email: string;
-  hasSelfService: boolean;
-  empUid: string;
-  roleId: number;
-  status: string;
-  companyId: number;
-  designationId: number;
-  userId: number;
-  avatarUrl: string;
-  createdAt: string;
-  updatedAt: string;
-  deletedAt?: any;
 }

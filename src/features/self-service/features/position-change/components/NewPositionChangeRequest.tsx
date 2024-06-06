@@ -3,22 +3,25 @@ import { AppButton } from "components/button/AppButton";
 import React from "react";
 import { IModalProps } from "types";
 import {
-  generalValidationRules,
+  dateHasToBeGreaterThanOrEqualToCurrentDayRule,
   textInputValidationRules,
 } from "utils/formHelpers/validation";
 import { openNotification } from "utils/notifications";
 import { useQueryClient } from "react-query";
-import { useApiAuth } from "hooks/useApiAuth";
 import { useCreatePositionChangeRequisition } from "../../requisitions/hooks/position-change/useCreatePositionChangeRequisition";
 import { FormDesignationInput } from "features/core/designations/components/FormDesignationInput";
 import { QUERY_KEY_FOR_POSITION_CHANGE_REQUISITIONS } from "../../requisitions/hooks/position-change/useGetPositionChangeRequisitions";
+import { QUERY_KEY_FOR_POSITION_CHANGE_REQUISITIONS_FOR_AUTH_EMPLOYEE } from "../../requisitions/hooks/position-change/useGetPositionChangeRequisitions4AuthEmployee";
+import { QUERY_KEY_FOR_APPROVAL_REQUESTS } from "features/core/workflows/hooks/useFetchApprovalRequests";
+import { QUERY_KEY_FOR_UNREAD_NOTIFICATION_COUNT } from "features/notifications/hooks/unRead/useGetUnReadNotificationCount";
+import { QUERY_KEY_FOR_NOTIFICATIONS } from "features/notifications/hooks/useGetAlerts";
+import { FormUnlicensedEmployeeSSRequestInput } from "features/core/employees/components/FormEmployeeInput";
 
 export const NewPositionChangeRequest: React.FC<IModalProps> = ({
   open,
   handleClose,
 }) => {
   const queryClient = useQueryClient();
-  const { currentUserEmployeeId } = useApiAuth();
 
   const [form] = Form.useForm();
   const { mutate, isLoading } = useCreatePositionChangeRequisition();
@@ -26,9 +29,9 @@ export const NewPositionChangeRequest: React.FC<IModalProps> = ({
   const handleSubmit = (data: any) => {
     mutate(
       {
+        employeeId: data?.employeeId,
         date: data.date.toString(),
         proposedDesignationId: data.proposedDesignationId,
-        employeeId: currentUserEmployeeId,
         skillsAndQualifications: data.skillsAndQualifications,
         reason: data.reason,
         justification: data.justification,
@@ -57,6 +60,24 @@ export const NewPositionChangeRequest: React.FC<IModalProps> = ({
             queryKey: [QUERY_KEY_FOR_POSITION_CHANGE_REQUISITIONS],
             // exact: true,
           });
+          queryClient.invalidateQueries({
+            queryKey: [
+              QUERY_KEY_FOR_POSITION_CHANGE_REQUISITIONS_FOR_AUTH_EMPLOYEE,
+            ],
+            // exact: true,
+          });
+          queryClient.invalidateQueries({
+            queryKey: [QUERY_KEY_FOR_APPROVAL_REQUESTS],
+            // exact: true,
+          });
+          queryClient.invalidateQueries({
+            queryKey: [QUERY_KEY_FOR_NOTIFICATIONS],
+            // exact: true,
+          });
+          queryClient.invalidateQueries({
+            queryKey: [QUERY_KEY_FOR_UNREAD_NOTIFICATION_COUNT],
+            // exact: true,
+          });
         },
       }
     );
@@ -75,7 +96,18 @@ export const NewPositionChangeRequest: React.FC<IModalProps> = ({
         onFinish={handleSubmit}
         requiredMark={false}
       >
-        <Form.Item rules={generalValidationRules} name="date" label="Date">
+        <FormUnlicensedEmployeeSSRequestInput
+          Form={Form}
+          control={{
+            name: "employeeId",
+            label: "Select Unlinsenced Employee",
+          }}
+        />
+        <Form.Item
+          rules={[dateHasToBeGreaterThanOrEqualToCurrentDayRule]}
+          name="date"
+          label="Date"
+        >
           <DatePicker placeholder="Date" className="w-full" />
         </Form.Item>
         <FormDesignationInput
@@ -95,14 +127,14 @@ export const NewPositionChangeRequest: React.FC<IModalProps> = ({
         <Form.Item
           rules={textInputValidationRules}
           name="reason"
-          label="reason"
+          label="Reason"
         >
-          <Input.TextArea placeholder="reason" />
+          <Input.TextArea placeholder="Reason" />
         </Form.Item>
         <Form.Item
           rules={textInputValidationRules}
           name="justification"
-          label="justification"
+          label="Justification"
         >
           <Input.TextArea placeholder="justification" />
         </Form.Item>

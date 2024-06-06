@@ -1,6 +1,7 @@
-import { Space, Dropdown, Menu, Table } from "antd";
-import { MoreOutlined } from "@ant-design/icons";
+import { Space, Dropdown, Menu, } from "antd";
 
+import { TableWithFocusType } from "components/table";
+import { AiOutlineMore } from "react-icons/ai";
 import React, { useState } from "react";
 import { ColumnsType } from "antd/lib/table";
 
@@ -123,7 +124,7 @@ const ReimbursementApprovalRequestsTable: React.FC<{
                   onClick={() =>
                     confirmApprovalAction({
                       approvalStageId: item?.id,
-                      status: "rejected",
+                      status: "approved",
                       workflowType: !!item?.basicStageId ? "basic" : "advanced",
                       requires2FA: item?.advancedStage?.enableTwoFactorAuth,
                     })
@@ -148,7 +149,7 @@ const ReimbursementApprovalRequestsTable: React.FC<{
             }
             trigger={["click"]}
           >
-            <MoreOutlined />
+            <AiOutlineMore />
           </Dropdown>
         </Space>
       ),
@@ -167,7 +168,7 @@ const ReimbursementApprovalRequestsTable: React.FC<{
         />
       )}
 
-      <Table
+      <TableWithFocusType
         columns={columns}
         size="small"
         dataSource={data?.data}

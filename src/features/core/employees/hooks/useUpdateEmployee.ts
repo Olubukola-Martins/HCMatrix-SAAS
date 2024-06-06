@@ -1,33 +1,46 @@
 import axios from "axios";
-import { IUpdateEmpProps } from "../types";
-import { useMutation } from "react-query";
 
-export const updateEmployee = async (props: IUpdateEmpProps) => {
+import { useMutation } from "react-query";
+import { useApiAuth } from "hooks/useApiAuth";
+import { ICurrentCompany } from "types";
+import { TLicenseType } from "features/authentication/types/auth-user";
+
+type IUpdateEmpProps = {
+  employeeId: number;
+  body: Partial<{
+    firstName: string;
+    lastName: string;
+    email: string;
+    licenseType: TLicenseType;
+    empUid: string;
+    roleId: number;
+    designationId: number;
+    avatarUrl: string;
+  }>;
+};
+
+export const updateEmployee = async (
+  props: IUpdateEmpProps,
+  auth: ICurrentCompany
+) => {
   const url = `${process.env.REACT_APP_UTILITY_BASE_URL}/employee/${props.employeeId}`;
   const config = {
     headers: {
       // Accept: "application/json",
-      Authorization: `Bearer ${props.token}`,
-      "x-company-id": props.companyId,
+      Authorization: `Bearer ${auth.token}`,
+      "x-company-id": auth.companyId,
     },
   };
 
-  // necessary to make immediate changes when in  a central place when schema changes
-
-  // made the data any so that the props that are not needed can be deleted
-  const data: any = {
-    ...props,
-  };
-  // delete the props that are not needed as the will result in an error
-  delete data["token"]; //not needed
-  delete data["companyId"]; //not needed
-  delete data["employeeId"]; //not needed
-  delete data["email"]; //not needed
+  const data = props.body;
 
   const response = await axios.patch(url, data, config);
   return response;
 };
 
 export const useUpdateEmployee = () => {
-  return useMutation(updateEmployee);
+  const { token, companyId } = useApiAuth();
+  return useMutation((props: IUpdateEmpProps) =>
+    updateEmployee(props, { token, companyId })
+  );
 };

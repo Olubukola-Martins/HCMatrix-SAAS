@@ -1,3 +1,5 @@
+import { TLicenseType } from "features/authentication/types/auth-user";
+
 export const something = "";
 
 export interface TWorkflowApprovalSetting {
@@ -21,10 +23,10 @@ interface Workflow {
   deletedAt?: any;
 }
 export type TWorkflowApprovalType =
+  | "asset"
   | "vehicle"
   | "conference-room"
   | "leave"
-  | "asset"
   | "job"
   | "money"
   | "position-change"
@@ -33,16 +35,22 @@ export type TWorkflowApprovalType =
   | "transfer"
   | "travel"
   | "payroll"
-  | "loan";
+  | "loan"
+  | "exit-handover-form";
 
-export type TStagingType = "employee" | "role" | "group" | "department-head";
+export type TStagingType =
+  | "employee"
+  | "role"
+  | "group"
+  | "department-head"
+  | "line-manager";
 export type TStageCondition = "specific" | "at-least-one" | "everyone";
 export type TWorkflowType = "advanced" | "basic";
 export type TStage = {
   id: number;
   name: string;
   type: TStagingType;
-  entityId: number;
+  entityId?: number;
   condition?: TStageCondition;
   count?: number;
   enableTwoFactorAuth?: boolean;
@@ -57,7 +65,7 @@ export interface TSingleWorkflow {
   companyId: number;
   createdAt: string;
   updatedAt: string;
-  deletedAt?: any;
+  deletedAt?: string;
   lastModifiedBy: LastModifiedBy;
   stages: Stage[];
 }
@@ -67,7 +75,7 @@ interface Stage {
   workflowId: number;
   name: string;
   type: TStagingType;
-  entityId: number;
+  entityId?: number;
   condition?: TStageCondition;
   count?: number;
   createdAt: string;
@@ -93,7 +101,7 @@ interface Employee {
   firstName: string;
   lastName: string;
   email: string;
-  hasSelfService: boolean;
+  licenseType: TLicenseType;
   empUid: string;
   roleId: number;
   status: string;
@@ -121,7 +129,7 @@ interface LastModifiedBy {
   firstName: string;
   lastName: string;
   email: string;
-  hasSelfService: boolean;
+  licenseType: TLicenseType;
   empUid: string;
   roleId: number;
   status: string;

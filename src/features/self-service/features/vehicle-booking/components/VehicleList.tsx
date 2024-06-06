@@ -1,16 +1,14 @@
-import { Button, Dropdown, Menu, Table } from "antd";
+import {  Table } from "antd";
 import { SelectVehicleStatus } from "./SelectVehicleStatus";
 import { SelectVehicleType } from "./SelectVehicleType";
 import { useState } from "react";
 import { TVehicle, useFetchVehicles } from "../hooks/useFetchVehicles";
 import { useApiAuth } from "hooks/useApiAuth";
 import { ColumnsType } from "antd/lib/table";
-import { Link } from "react-router-dom";
-import { MoreOutlined } from "@ant-design/icons";
-
 import { TVehicleStatus, TVehicleType } from "../hooks/useCreateVehicle";
 import { usePagination } from "hooks/usePagination";
-import { appRoutes } from "config/router/paths";
+import { TableFocusTypeBtn } from "components/table";
+import { VEHICLES_TABLE_COLUMNS } from "./columns/vehicle";
 
 const VehicleList = () => {
   const { token, companyId } = useApiAuth();
@@ -29,82 +27,9 @@ const VehicleList = () => {
     status,
   });
 
-  const columns: ColumnsType<TVehicle> = [
-    {
-      title: "Vehicle Name",
-      dataIndex: "name",
-      key: "name",
-      render: (val, item) => (
-        <Link
-          to={`${appRoutes.vehicleDetails(item.id).path}`}
-          className="text-caramel hover:underline hover:text-caramel"
-        >
-          {item.model} {item.brand}
-        </Link>
-      ),
-    },
-    {
-      title: "Plate No",
-      dataIndex: "Plate No",
-      key: "Plate No",
-      render: (_, item) => item.plateNumber,
-    },
-    {
-      title: "Vehicle Type",
-      dataIndex: "Vehicle Type",
-      key: "Vehicle Type",
-      render: (_, item) => item.type,
-    },
-
-    {
-      title: "Status",
-      dataIndex: "Status",
-      key: "Status",
-      render: (_, item) => item.status,
-    },
-    {
-      title: "Color",
-      dataIndex: "Color",
-      key: "Color",
-      render: (_, item) => item.color,
-    },
-    {
-      title: "Assigned to",
-      dataIndex: "Assigned to",
-      key: "Assigned to",
-      render: (_, item) => (
-        <span className="capitalize">
-          {item.assignee?.firstName} {item.assignee?.lastName} N/A
-        </span>
-      ),
-    },
-    {
-      title: "Action",
-      key: "Action",
-      width: 100,
-      fixed: "right",
-      render: () => (
-        <Dropdown
-          overlay={
-            <Menu>
-              {[
-                { label: "edit", onClick: () => {} },
-                { label: "delete", onClick: () => {} },
-                { label: "download", onClick: () => {} },
-                { label: "add document", onClick: () => {} },
-              ].map((item) => (
-                <Menu.Item key={item.label} onClick={item.onClick}>
-                  <span className="capitalize">{item.label}</span>
-                </Menu.Item>
-              ))}
-            </Menu>
-          }
-        >
-          <Button type="text" icon={<MoreOutlined />} />
-        </Dropdown>
-      ),
-    },
-  ];
+  const columns: ColumnsType<TVehicle> = VEHICLES_TABLE_COLUMNS();
+  const [selectedColumns, setSelectedColumns] =
+    useState<ColumnsType<TVehicle>>(columns);
   return (
     <div className="flex flex-col gap-6">
       <div className="flex justify-between items-center gap-3">
@@ -119,9 +44,18 @@ const VehicleList = () => {
             onClear={() => setStatus(undefined)}
           />
         </div>
+        <div className="flex justify-end">
+        {TableFocusTypeBtn<TVehicle>({
+          selectedColumns,
+          setSelectedColumns,
+          data: {
+            columns,
+          },
+        })}
+      </div>
       </div>
       <Table
-        columns={columns}
+        columns={selectedColumns}
         size="small"
         dataSource={data?.data}
         loading={isFetching}

@@ -1,59 +1,63 @@
-import { ExportOutlined } from "@ant-design/icons";
-import { Dropdown, Menu, Button } from "antd";
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { AddMultipleEmployees } from "../AddMultipleEmployees";
 import FilterEmployeeDrawer from "../FilterEmployeeDrawer";
-import UploadFileModal from "../UploadFileModal";
 import { PageIntro } from "components/layout/PageIntro";
+import ImportEmployees from "../bulkImport/ImportEmployees";
+import { TEmployeeFilterProps } from "../../types/employee-filter";
+import DropdownButton from "components/button/DropdownButton";
+import ExportEmployees from "./export/ExportEmployees";
 
-const EmpPageHeader = () => {
-  const [importEmployeeDrawer, setImportEmployeeDrawer] = useState(false);
-  const [openF, setOpenF] = useState(false);
-
-  const [addMEmployees, setAddMEmployees] = useState(false);
+type TAction = "bulk-import" | "invite" | "filter-employees" | "test-import";
+const EmpPageHeader: React.FC<{
+  handleFilter: (props: TEmployeeFilterProps) => void;
+}> = ({ handleFilter }) => {
+  const [action, setAction] = useState<TAction>();
+  const clearAction = () => {
+    setAction(undefined);
+  };
   return (
     <>
-      <UploadFileModal
-        open={importEmployeeDrawer}
-        handleClose={() => setImportEmployeeDrawer(false)}
+      <FilterEmployeeDrawer
+        open={action === "filter-employees"}
+        handleClose={clearAction}
+        handleFilter={handleFilter}
       />
-      <FilterEmployeeDrawer open={openF} handleClose={() => setOpenF(false)} />
       <AddMultipleEmployees
-        open={addMEmployees}
-        handleClose={() => setAddMEmployees(false)}
+        open={action === "invite"}
+        handleClose={clearAction}
+      />
+      <ImportEmployees
+        open={action === "bulk-import"}
+        handleClose={clearAction}
       />
       <div className="flex justify-between">
         <PageIntro title="Employees" link="/settings" />
         <div className="flex items-center gap-3">
-          <Button
-            icon={<ExportOutlined />}
-            type="text"
-            title="Export Employee Data"
-          />
-          <Dropdown
-            overlay={
-              <Menu>
-                <Menu.Item>
+          <ExportEmployees />
+          <DropdownButton
+            label="Add Employee"
+            items={[
+              {
+                label: (
                   <Link to="/settings/add-employee">Add Single Employee</Link>
-                </Menu.Item>
-                <Menu.Item onClick={() => setAddMEmployees(true)}>
-                  Invite Multiple Users
-                </Menu.Item>
-                <Menu.Item onClick={() => setImportEmployeeDrawer(true)}>
-                  Import Employees
-                </Menu.Item>
-              </Menu>
-            }
-            trigger={["click"]}
-          >
-            <button className="button flex items-center gap-2">
-              <span>Add Employees</span>{" "}
-              <i className="fa-solid fa-chevron-down"></i>
-            </button>
-          </Dropdown>
+                ),
+                key: "Add employee",
+              },
+              {
+                key: "invite",
+                label: "Invite Multiple Employees",
+                onClick: () => setAction("invite"),
+              },
+              {
+                key: "bulk-import",
+                label: "Import Employees",
+                onClick: () => setAction("bulk-import"),
+              },
+            ]}
+          />
 
-          <Dropdown
+          {/* <Dropdown
             overlay={
               <Menu>
                 <Menu.Item>Import from GApps</Menu.Item>
@@ -65,7 +69,7 @@ const EmpPageHeader = () => {
             <button className="transparentButton flex items-center gap-2">
               <span>Sync</span> <i className="fa-solid fa-chevron-down"></i>
             </button>
-          </Dropdown>
+          </Dropdown> */}
           {/* <Button
             icon={<FilterOutlined />}
             type="text"
@@ -74,7 +78,7 @@ const EmpPageHeader = () => {
           /> */}
           <button
             className="transparentButton flex items-center gap-2"
-            onClick={() => setOpenF(true)}
+            onClick={() => setAction("filter-employees")}
           >
             <span>Filter</span>
           </button>

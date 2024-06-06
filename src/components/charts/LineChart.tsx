@@ -33,6 +33,7 @@ export const LineChart: React.FC<IChartProps> = ({
   dataEntityLabel = "items",
   useDataSet = false,
   dataSets = [],
+  maintainAspectRatio = true,
 }) => {
   const dataSrc = {
     labels,
@@ -51,6 +52,7 @@ export const LineChart: React.FC<IChartProps> = ({
     <Line
       options={{
         ...options,
+        maintainAspectRatio,
         indexAxis: axis,
 
         scales: {

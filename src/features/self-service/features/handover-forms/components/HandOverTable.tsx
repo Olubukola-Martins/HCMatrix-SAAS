@@ -1,26 +1,41 @@
 import { TApprovalStatus } from "types/statuses";
-import { MoreOutlined } from "@ant-design/icons";
 import type { ColumnsType } from "antd/es/table";
 import { usePagination } from "hooks/usePagination";
 import { Button, Dropdown, Menu, Table } from "antd";
 import { useApiAuth } from "hooks/useApiAuth";
 import moment from "moment";
 import { getAppropriateColorForStatus } from "utils/colorHelpers/getAppropriateColorForStatus";
-
 import { getEmployeeFullName } from "features/core/employees/utils/getEmployeeFullName";
 import { useGetExitHandOverForms } from "../hooks/useGetExitHandOverForms";
-import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { TTHandOverForm } from "../types";
+import { DEFAULT_DATE_FORMAT } from "constants/dateFormats";
+import { appRoutes } from "config/router/paths";
+import { useState } from "react";
+import { MoreOutlined } from "@ant-design/icons";
+import ViewApprovalStages from "features/core/workflows/components/approval-request/ViewApprovalStages";
+
+type TAction = "view-approval-stages";
 
 export const HandOverTable: React.FC<{
   status?: TApprovalStatus;
   employeeId?: number;
 }> = ({ status, employeeId }) => {
+  const [request, setRequest] = useState<TTHandOverForm>();
+  const [action, setAction] = useState<TAction>();
+  const handleAction = (key: TAction, item?: TTHandOverForm) => {
+    setAction(key);
+    setRequest(item);
+  };
+  const onClose = () => {
+    setAction(undefined);
+    setRequest(undefined);
+  };
   const { companyId, token } = useApiAuth();
   const { pagination, onChange } = usePagination({
     pageSize: 4,
   });
-  const navigate = useNavigate();
+
   const { data, isFetching } = useGetExitHandOverForms({
     companyId,
     token,
@@ -34,22 +49,23 @@ export const HandOverTable: React.FC<{
 
   const columns: ColumnsType<TTHandOverForm> = [
     {
-      title: "Seperation Date",
-      dataIndex: "date",
-      key: "date",
-      render: (_, item) => (
-        <span>{moment(item.separationDate).format("YYYY/MM/DD")} </span>
-      ),
-    },
-
-    {
       title: "Employee Name",
       dataIndex: "emp",
       key: "emp",
       render: (_, item) => (
-        <span className="capitalize">
-          {getEmployeeFullName(item.employee)}{" "}
-        </span>
+        <Link to={appRoutes.handOverDetails(item.id).path}>
+          <span className="capitalize text-caramel">
+            {getEmployeeFullName(item.employee)}{" "}
+          </span>
+        </Link>
+      ),
+    },
+    {
+      title: "Seperation Date",
+      dataIndex: "date",
+      key: "date",
+      render: (_, item) => (
+        <span>{moment(item.separationDate).format(DEFAULT_DATE_FORMAT)} </span>
       ),
     },
     {
@@ -60,16 +76,12 @@ export const HandOverTable: React.FC<{
         <span className="capitalize">{item.employee.empUid} </span>
       ),
     },
-    {
-      title: "Department",
-      dataIndex: "dep",
-      key: "dep",
-      render: (_, item) => <span className="capitalize">N/A</span>,
-    },
+
     {
       title: "Reason",
       dataIndex: "reas",
       key: "reas",
+      ellipsis: true,
       render: (_, item) => (
         <span className="capitalize">{item.reasonForLeaving}</span>
       ),
@@ -85,7 +97,6 @@ export const HandOverTable: React.FC<{
         </span>
       ),
     },
-
     {
       title: "Action",
       key: "action",
@@ -94,23 +105,18 @@ export const HandOverTable: React.FC<{
           overlay={
             <Menu>
               <Menu.Item
-                key="3"
+                key="stages"
                 onClick={() => {
-                  navigate(item.id);
+                  handleAction("view-approval-stages", item);
                 }}
               >
-                View Details
+                View Stages
               </Menu.Item>
             </Menu>
           }
           trigger={["click"]}
         >
-          <Button
-            title="Actions"
-            icon={<MoreOutlined />}
-            type="text"
-            // onClick={() => handleEdit(item._id)}
-          />
+          <Button title="Actions" icon={<MoreOutlined />} type="text" />
         </Dropdown>
       ),
     },
@@ -118,6 +124,14 @@ export const HandOverTable: React.FC<{
 
   return (
     <div>
+      {request && (
+        <ViewApprovalStages
+          handleClose={onClose}
+          open={action === "view-approval-stages"}
+          id={request?.id}
+          type="exit-handover-form"
+        />
+      )}
       <Table
         size="small"
         dataSource={data?.data}

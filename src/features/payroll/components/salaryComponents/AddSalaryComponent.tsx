@@ -1,4 +1,4 @@
-import { Form, Input, InputNumber, Modal, Select, Tag } from "antd";
+import { Checkbox, Form, Input, Modal, Select, Tag } from "antd";
 import { AppButton } from "components/button/AppButton";
 import { useAddAllowanceOrDeduction } from "features/payroll/hooks/scheme/allowanceAndDeductionHandlers/useAddAllowanceOrDeduction";
 import { QUERY_KEY_FOR_PAYROLL_SCHEME_BY_TYPE_OR_ID } from "features/payroll/hooks/scheme/useGetPayrollSchemeByTypeOrId";
@@ -15,11 +15,16 @@ import {
   isFormulaValid,
   isValidEvalExpression,
   jsVariableNameValidationRule,
-  numberInputValidationRules,
+  numberHasToBeGreaterThanZeroRule,
 } from "utils/formHelpers/validation";
 import { openNotification } from "utils/notifications";
 import { TaxPolicyCreator } from "../taxPolicies";
 import { useUpdateAllowanceOrDeduction } from "features/payroll/hooks/scheme/allowanceAndDeductionHandlers/useUpdateAllowanceOrDeduction";
+import {
+  dummyConditions,
+  extractParamsFromInput,
+} from "features/payroll/utils/createTaxSalaryComponentFormula";
+import { TTaxConfig } from "features/payroll/types/tax";
 
 const defaultCalculationModes: (TSalaryComponentCalculationMode | "table")[] = [
   "formula",
@@ -27,6 +32,7 @@ const defaultCalculationModes: (TSalaryComponentCalculationMode | "table")[] = [
   "fixed",
 ];
 type IFormProps = {
+  disabled?: boolean;
   formMode?: "add" | "edit";
   dependencies?: string[];
   type?: "allowance" | "deduction";
@@ -64,7 +70,6 @@ export const AddSalaryComponent: React.FC<IProps> = ({
 }) => {
   const defaultTitle =
     type === "allowance" ? `${formMode} allowance` : `${formMode} deduction`;
-
   return (
     <Modal
       open={open}
@@ -92,6 +97,7 @@ export const AddSalaryComponent: React.FC<IProps> = ({
 
 const DEFAULT_DEPENDENCIES_FROM_API = ["gross_pay"];
 export const AddSalaryComponentForm: React.FC<IFormProps> = ({
+  disabled,
   dependencies = [],
   formMode = "add",
   type = "allowance",
@@ -107,8 +113,12 @@ export const AddSalaryComponentForm: React.FC<IFormProps> = ({
   defaultCalculationMode = "percentage",
 }) => {
   const [form] = Form.useForm();
+  const [componentDescription, setComponentDescription] = useState<string>();
 
-  dependencies = [...DEFAULT_DEPENDENCIES_FROM_API, ...dependencies];
+  dependencies = [
+    ...DEFAULT_DEPENDENCIES_FROM_API,
+    ...dependencies.filter((item) => item !== salaryComponent?.label),
+  ];
   const queryClient = useQueryClient();
   const [taxFormula, setTaxFormula] = useState("");
 
@@ -123,7 +133,7 @@ export const AddSalaryComponentForm: React.FC<IFormProps> = ({
   const { mutate: updateMutate, isLoading: isUpdateLoading } =
     useUpdateAllowanceOrDeduction();
 
-  //TODO: write a function that makes use of amntRestrict to set max/min of inputNumber
+  //TODO: write a function that makes use of amntRestrict to set max/min of input
   const handleUpdate = useCallback(
     (vals: any) => {
       salaryComponent &&
@@ -139,10 +149,12 @@ export const AddSalaryComponentForm: React.FC<IFormProps> = ({
               amount: mode === "table" ? taxFormula : vals.amount,
               isDefault,
               isActive,
+              description: componentDescription,
               label: (vals.name as string)
                 .toLocaleLowerCase()
                 .split(" ")
                 .join("_"),
+              shouldDisplayOnReviewTable: vals?.shouldDisplayOnReviewTable,
             },
           },
           {
@@ -188,6 +200,7 @@ export const AddSalaryComponentForm: React.FC<IFormProps> = ({
         );
     },
     [
+      componentDescription,
       handleClose,
       isActive,
       isDefault,
@@ -208,7 +221,9 @@ export const AddSalaryComponentForm: React.FC<IFormProps> = ({
         amount: mode === "table" ? taxFormula : vals.amount,
         isDefault,
         isActive,
+        description: componentDescription,
         label: (vals.name as string).toLocaleLowerCase().split(" ").join("_"),
+        shouldDisplayOnReviewTable: vals?.shouldDisplayOnReviewTable,
       });
 
       return;
@@ -228,6 +243,7 @@ export const AddSalaryComponentForm: React.FC<IFormProps> = ({
               .toLocaleLowerCase()
               .split(" ")
               .join("_"),
+            shouldDisplayOnReviewTable: vals?.shouldDisplayOnReviewTable,
           },
         },
         {
@@ -290,15 +306,45 @@ export const AddSalaryComponentForm: React.FC<IFormProps> = ({
       handleUpdate({ ...salaryComponent, isActive: false });
     }
   }, [isDefault, isActive, salaryComponent, handleUpdate]);
+  const [taxConfig, setTaxConfig] = useState<TTaxConfig>();
   useEffect(() => {
     if (salaryComponent) {
+      console.log(
+        "TAX DECOUPLE",
+        salaryComponent.name,
+        salaryComponent.amount,
+        salaryComponent.description,
+        extractParamsFromInput(`${salaryComponent.amount}`)
+      );
       form.setFieldsValue({
         name: salaryComponent.name?.split("_").join(" "),
         amount: salaryComponent.amount,
         mode: salaryComponent.mode,
+        shouldDisplayOnReviewTable: salaryComponent.shouldDisplayOnReviewTable,
       });
-
-      setMode(salaryComponent.mode); //TODO: Account for the tabular mode
+      if (salaryComponent.description) {
+        console.log(
+          "first",
+          salaryComponent.name,
+          "OOOOOOOOOOO",
+          salaryComponent.description
+        );
+        // setComponentDescription(JSON.stringify(salaryComponent.description));
+        const data = JSON.parse(salaryComponent.description);
+        const conditions = data?.conditions ?? dummyConditions; // show default conditions if not provided
+        const divisor = data?.divisor;
+        const taxableIncome = data?.taxableIncome;
+        if (conditions && divisor && taxableIncome) {
+          setTaxConfig({
+            conditions,
+            divisor,
+            taxableIncome,
+          });
+        }
+        setMode("table");
+      } else {
+        setMode(salaryComponent.mode); //TODO: Account for the tabular mode
+      }
 
       return;
     }
@@ -319,6 +365,7 @@ export const AddSalaryComponentForm: React.FC<IFormProps> = ({
       form={form}
       requiredMark={false}
       onFinish={handleSubmit}
+      disabled={disabled}
     >
       <Form.Item
         label="Name"
@@ -346,22 +393,18 @@ export const AddSalaryComponentForm: React.FC<IFormProps> = ({
         <Form.Item
           label="What percentage of gross pay?"
           name="amount"
-          rules={numberInputValidationRules}
+          rules={[numberHasToBeGreaterThanZeroRule]}
         >
-          <InputNumber
-            min={0}
-            placeholder="Percentage of Gross"
-            className="w-full"
-          />
+          <Input min={0} placeholder="Percentage of Gross" className="w-full" />
         </Form.Item>
       )}
       {mode === "fixed" && (
         <Form.Item
           label="Amount"
-          rules={numberInputValidationRules}
+          rules={[numberHasToBeGreaterThanZeroRule]}
           name="amount"
         >
-          <InputNumber min={0} placeholder="Amount" className="w-full" />
+          <Input min={0} placeholder="Amount" className="w-full" />
         </Form.Item>
       )}
 
@@ -418,9 +461,19 @@ export const AddSalaryComponentForm: React.FC<IFormProps> = ({
             dependencies={dependencies}
             formula={taxFormula}
             setFormula={setTaxFormula}
+            setComponentDescription={setComponentDescription}
+            taxConfig={taxConfig}
+            setTaxConfig={setTaxConfig}
           />
         </>
       )}
+      <Form.Item
+        name="shouldDisplayOnReviewTable"
+        label=""
+        valuePropName="checked"
+      >
+        <Checkbox>Should be displayed on review table</Checkbox>
+      </Form.Item>
 
       <div className="flex justify-end">
         <AppButton

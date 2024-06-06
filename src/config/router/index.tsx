@@ -1,33 +1,23 @@
-import { appPagesData } from "./routes";
-
-import { Route, Routes } from "react-router-dom";
-import { TRouteData } from "./types";
-import { RequireAuth } from "react-auth-kit";
-import { appRoutes } from "./paths";
-import DashboardLayout from "components/layout/DashboardLayout";
+import { Routes } from "react-router-dom";
+import { useGetUserPermissions } from "components/permission-restriction/PermissionRestrictor";
+import { pageRoutes } from "./utils";
+import { useSendGoogleAnalyticsPageView } from "hooks/analtyics";
 
 const Router = () => {
-  const pageRoutes = appPagesData.map(
-    ({ path, element, category }: TRouteData) => {
-      if (category === "doesnt-require-authentication") {
-        return <Route key={path} path={`${path}`} element={element} />;
-      }
-      return (
-        <Route element={<DashboardLayout />} key={path}>
-          <Route
-            path={`${path}`}
-            element={
-              <RequireAuth loginPath={appRoutes.login}>{element}</RequireAuth>
-            }
-          />
-        </Route>
-      );
-    }
-  );
+  const { userPermissions, licenseType, isOwner, companyActiveSubscription } =
+    useGetUserPermissions();
+  const appPageRoutes = pageRoutes({
+    userPermissions,
+    licenseType,
+    isOwner,
+    activeSubscription: companyActiveSubscription,
+  });
+
+  useSendGoogleAnalyticsPageView();
 
   return (
     <>
-      <Routes key={"app"}>{pageRoutes}</Routes>
+      <Routes key={"app"}>{appPageRoutes}</Routes>
     </>
   );
 };

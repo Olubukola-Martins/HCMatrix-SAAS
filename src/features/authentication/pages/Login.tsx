@@ -3,9 +3,9 @@ import peachBg from "../assets/images/peachBg.png";
 import lightBg from "../assets/images/lightBg.png";
 import logo from "../assets/images/logo.png";
 import microsoft from "../assets/images/microsoft.svg";
-import google from "../assets/images/google.svg";
-import office from "../assets/images/office.svg";
-import linkedin from "../assets/images/linkedin.svg";
+// import google from "../assets/images/google.svg";
+// import office from "../assets/images/office.svg";
+// import linkedin from "../assets/images/linkedin.svg";
 import { Divider } from "antd";
 import "../style/style.css";
 import { Link, Navigate, useSearchParams } from "react-router-dom";
@@ -15,6 +15,7 @@ import "aos/dist/aos.css";
 import { useIsAuthenticated } from "react-auth-kit";
 import UserLoginForm from "../components/UserLoginForm";
 import { loginUserWithMicrosoft } from "../hooks/useLoginWithMicrosoft";
+import { appRoutes } from "config/router/paths";
 
 export const Login = () => {
   const isAuthenticated = useIsAuthenticated();
@@ -37,7 +38,7 @@ export const Login = () => {
   }, []);
   return (
     <>
-      {isAuthenticated() && <Navigate to="/" replace={true} />}
+      {isAuthenticated() && <Navigate to={appRoutes.home} replace={true} />}
 
       <div className="grid grid-cols-1 lg:grid-cols-2">
         <div
@@ -61,7 +62,7 @@ export const Login = () => {
                 </p>
                 <div className="flex justify-center">
                   <Link
-                    to="/register"
+                    to={appRoutes.register}
                     className="border justify-center flex items-center gap-3 border-white rounded px-16 py-1 text-white hover:border-gray-700 font-medium text-base transition duration-300 ease-in-out"
                   >
                     <i className="ri-arrow-left-line"></i> <span>Sign Up</span>
@@ -97,13 +98,13 @@ export const Login = () => {
                   )}
                   <div className="flex justify-between mb-6 pt-2 text-slate-500">
                     <Link
-                      to="/register"
+                      to={appRoutes.register}
                       className="cursor-pointer text-sm hover:text-caramel hover:underline"
                     >
                       Sign up
                     </Link>
                     <Link
-                      to="/forgot-password"
+                      to={appRoutes.forgotPassword}
                       className="cursor-pointer text-sm hover:text-caramel hover:underline"
                     >
                       Forgot password ?
@@ -147,7 +148,7 @@ export const Login = () => {
               className="flex items-center gap-2 justify-center text-xs py-5"
               style={{ color: "var(--authPrimary)" }}
             >
-              <span>Private Policy</span>
+              <span>Privacy Policy</span>
               <span className="text-black font-semibold text-xl">.</span>
               <span>Terms of service</span>
             </div>

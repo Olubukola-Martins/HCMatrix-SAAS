@@ -17,6 +17,7 @@ import useEditBasicStage from "../hooks/useEditBasicStage";
 import { TStage, TStagingType } from "../types";
 import { WORKFLOW_STAGE_TYPE_OPTIONS } from "../constants";
 import { QUERY_KEY_FOR_SINGLE_WORKFLOW } from "../hooks/useFetchSingleWorkflow";
+import { AppButton } from "components/button/AppButton";
 
 export const EditBasicStage: React.FC<{
   workflowId: number;
@@ -115,7 +116,7 @@ export const EditBasicStage: React.FC<{
     );
   };
   return (
-    <div className="flex gap-4 items-end">
+    <div className="flex flex-col gap-4 w-full">
       <Form
         form={form}
         onFinish={handleFinish}
@@ -123,7 +124,7 @@ export const EditBasicStage: React.FC<{
         labelCol={{ span: 24 }}
         requiredMark={false}
       >
-        <div className="flex gap-4">
+        <div className="grid grid-cols-2 md:gap-8 gap-4">
           <Form.Item
             name={"name"}
             label={`Stage Name`}
@@ -164,29 +165,22 @@ export const EditBasicStage: React.FC<{
           )}
         </div>
       </Form>
-      <div className="flex gap-4 mb-6">
+      <div className="flex gap-4 justify-end mb-6">
+        <AppButton
+          label="Delete"
+          variant="transparent"
+          isLoading={isDelLoading}
+          handleClick={() => removeStage()}
+        />
         {!edit ? (
-          <Button icon={<EditOutlined />} onClick={() => setEdit(true)}>
-            Edit
-          </Button>
+          <AppButton label="Edit" handleClick={() => setEdit(true)} />
         ) : (
-          <Button
-            icon={<SaveOutlined />}
-            type="primary"
-            onClick={() => form.submit()}
-            loading={isLoading}
-          >
-            Save
-          </Button>
+          <AppButton
+            label="Save"
+            handleClick={() => form.submit()}
+            isLoading={isLoading}
+          />
         )}
-        <Button
-          icon={<DeleteOutlined />}
-          type="dashed"
-          loading={isDelLoading}
-          onClick={() => removeStage()}
-        >
-          Delete
-        </Button>
       </div>
     </div>
   );

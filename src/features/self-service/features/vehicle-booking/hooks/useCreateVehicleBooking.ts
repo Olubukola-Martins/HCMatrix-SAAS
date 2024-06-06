@@ -5,11 +5,10 @@ import { ICurrentCompany } from "types";
 
 type TCreateProps = {
   vehicleId: number;
-  employeeId: number;
   date: string;
   duration: number; //number (in hours)
   destination: string;
-};
+} & { employeeId?: number };
 
 const createVehicleBooking = async (props: {
   data: TCreateProps;

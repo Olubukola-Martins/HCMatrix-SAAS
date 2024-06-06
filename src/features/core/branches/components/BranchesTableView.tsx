@@ -1,16 +1,19 @@
-import React from "react";
+import React, { useState } from "react";
 import { motion } from "framer-motion";
 import { Table } from "antd";
 import { ColumnsType, TablePaginationConfig, TableProps } from "antd/lib/table";
 import { TBranch } from "../types";
+import { BRANCHES_TABLE_COLUMNS } from "./columns";
+import { TableFocusTypeBtn } from "components/table";
 
 interface IProps {
-  data: TBranch[];
-  loading: boolean;
+  data?: TBranch[];
+  loading?: boolean;
   pagination?: TablePaginationConfig;
   onChange?: TableProps<TBranch>["onChange"];
-  editBranch: (val: number) => void;
-  viewBranch: (val: number) => void;
+  editBranch: (val: TBranch) => void;
+  viewBranch: (val: TBranch) => void;
+  deleteBranch: (val: TBranch) => void;
 }
 
 export const BranchesTableView = ({
@@ -20,47 +23,18 @@ export const BranchesTableView = ({
   onChange,
   editBranch,
   viewBranch,
+  deleteBranch,
 }: IProps) => {
-  const columns: ColumnsType<TBranch> = [
-    {
-      title: "Name",
-      dataIndex: "name",
-      key: "name",
-    },
-    {
-      title: "EmployeeCount",
-      dataIndex: "employeeCount",
-      key: "employeeCount",
-    },
-    {
-      title: "Address",
-      dataIndex: "address",
-      key: "address",
-      ellipsis: true,
-      render: (_, item) => `${item.address.streetAddress}`,
-    },
-
-    {
-      title: "Action",
-      dataIndex: "action",
-      render: (_, item) => (
-        <div className="flex items-center gap-3 text-lg">
-          <i
-            className="ri-pencil-line cursor-pointer hover:text-caramel"
-            onClick={() => editBranch(item.id)}
-          ></i>
-          <i
-            className="ri-eye-line cursor-pointer hover:text-caramel"
-            onClick={() => viewBranch(item.id)}
-          ></i>
-          <i className="ri-delete-bin-line cursor-pointer hover:text-caramel"></i>
-        </div>
-      ),
-    },
-  ];
+  const columns: ColumnsType<TBranch> = BRANCHES_TABLE_COLUMNS(
+    editBranch,
+    viewBranch,
+    deleteBranch
+  );
+  const [selectedColumns, setSelectedColumns] =
+    useState<ColumnsType<TBranch>>(columns);
   return (
     <motion.div
-      className="  mt-4"
+      className="mt-4 space-y-6"
       initial={{ opacity: 0, y: 400 }}
       animate={{
         opacity: 1,
@@ -70,10 +44,19 @@ export const BranchesTableView = ({
       transition={{ ease: "easeIn" }}
       exit={{ opacity: 0, y: 400 }}
     >
+      <div className="flex justify-end">
+        {TableFocusTypeBtn<TBranch>({
+          selectedColumns,
+          setSelectedColumns,
+          data: {
+            columns,
+          },
+        })}
+      </div>
       <Table
-        columns={columns}
+        columns={selectedColumns}
         size="small"
-        dataSource={data}
+        dataSource={data?.map((item) => ({ key: item.id, ...item }))}
         loading={loading}
         pagination={pagination}
         onChange={onChange}

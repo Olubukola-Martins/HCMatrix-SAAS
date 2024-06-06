@@ -1,9 +1,9 @@
 import React from "react";
 import { TAsset, TAssetAssigneeHistory } from "../types";
 import { usePagination } from "hooks/usePagination";
-import { Table } from "antd";
 import { ColumnsType } from "antd/es/table";
 import moment from "moment";
+import { TableWithFocusType } from "components/table";
 
 export const AssetAssigneeHistoryList: React.FC<{ asset: TAsset }> = ({
   asset,
@@ -64,7 +64,7 @@ export const AssetAssigneeHistoryList: React.FC<{ asset: TAsset }> = ({
   ];
   return (
     <div className="flex flex-col gap-6">
-      <Table
+      <TableWithFocusType
         columns={columns}
         size="small"
         dataSource={asset.assigneeHistory}

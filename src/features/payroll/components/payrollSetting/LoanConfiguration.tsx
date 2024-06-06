@@ -1,11 +1,15 @@
-import { Checkbox, Switch } from "antd";
+import { Checkbox, Input, InputNumber, Switch, Tooltip, Form } from "antd";
 import React from "react";
 import { boxStyle, boxTitle } from "styles/reused";
-import { generalValidationRulesOp } from "utils/formHelpers/validation";
+import {
+  generalValidationRulesOp,
+  validateTimeFrameForManualRepayment,
+} from "utils/formHelpers/validation";
 import { PAYROLL_SCHEME_OPTIONS } from "features/payroll/constants";
+import AppTooltip from "components/tooltip/AppTooltip";
 
 const LoanConfiguration: React.FC<{
-  Form: any;
+  Form: typeof Form;
   loanActivation: boolean;
   handleLoanActivation: (val: boolean) => void;
 }> = ({ Form, loanActivation, handleLoanActivation }) => {
@@ -18,16 +22,22 @@ const LoanConfiguration: React.FC<{
           onChange={(value) => {
             handleLoanActivation(value);
           }}
+          title="Toggling switch will activate or deactivate loan"
         />
       </div>
       <p className="text-sm pt-2">
-        Select the payroll schemes that will be eligible for loan
+        You can activate loan and select the payroll schemes that will be
+        eligible for loan
       </p>
 
       {loanActivation && (
         <div>
           <div className="flex flex-col gap-4 mt-5">
-            <Form.Item rules={generalValidationRulesOp} name="schemes" label="">
+            <Form.Item
+              rules={generalValidationRulesOp}
+              name="schemes"
+              label="Select Schemes"
+            >
               <Checkbox.Group>
                 {PAYROLL_SCHEME_OPTIONS.filter(
                   (item) => item.value !== "project"
@@ -39,6 +49,39 @@ const LoanConfiguration: React.FC<{
                     </Checkbox>
                   ))}
               </Checkbox.Group>
+            </Form.Item>
+
+            <Form.Item
+              labelCol={{ span: 24 }}
+              name="timeFrameForManualRepayment"
+              label={
+                <AppTooltip
+                  children={<span>Time frame for manual repayment</span>}
+                  tooltipProps={{
+                    title:
+                      "Please not this will affect payroll creation, as per depending on what is set it will limit the time period within which payrolls can be created.",
+                  }}
+                />
+              }
+            >
+              <Input.Group className="flex gap-4 w-full">
+                <Form.Item
+                  rules={[validateTimeFrameForManualRepayment]}
+                  name={["timeFrameForManualRepayment", "startDay"]}
+                  className="flex-1"
+                  label={<span className="text-xs">Start Day</span>}
+                >
+                  <InputNumber placeholder="Start Day" className="w-full" />
+                </Form.Item>
+                <Form.Item
+                  rules={[validateTimeFrameForManualRepayment]}
+                  name={["timeFrameForManualRepayment", "endDay"]}
+                  className="flex-1"
+                  label={<span className="text-xs">End Day</span>}
+                >
+                  <InputNumber placeholder="End Day" className="w-full" />
+                </Form.Item>
+              </Input.Group>
             </Form.Item>
           </div>
         </div>

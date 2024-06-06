@@ -7,6 +7,8 @@ export type TSalaryComponentInput = {
   label: string;
   mode: "fixed" | "percentage" | "formula";
   amount: number | string;
+  description?: string;
   isDefault?: boolean;
   isActive?: boolean;
+  shouldDisplayOnReviewTable: boolean;
 };

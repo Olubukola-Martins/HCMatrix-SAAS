@@ -20,7 +20,7 @@ const VehicleOverview: React.FC<IProps> = ({ handleTabKey }) => {
         <VehicleMonthlyInsightsCard />
 
         <RecentVehicleRequestsCard
-          handleSeeAll={() => handleTabKey("My Bookings")}
+          handleSeeAll={() => handleTabKey("All Bookings")}
         />
       </div>
 

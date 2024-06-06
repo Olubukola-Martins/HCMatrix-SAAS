@@ -1,8 +1,9 @@
 import { FormWorkflowInput } from "features/core/workflows/components/FormWorkflowInput";
 import { boxStyle, boxTitle } from "styles/reused";
+import { Form } from "antd";
 
 export const WorkflowSetUp: React.FC<{
-  Form: any;
+  Form: typeof Form;
 }> = ({ Form }) => {
   return (
     <div className={boxStyle}>

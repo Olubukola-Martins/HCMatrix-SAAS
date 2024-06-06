@@ -1,6 +1,6 @@
-import { Space, Dropdown, Menu, Table } from "antd";
-import { MoreOutlined } from "@ant-design/icons";
-
+import { Space, Dropdown, Menu } from "antd";
+import { TableWithFocusType } from "components/table";
+import { AiOutlineMore } from "react-icons/ai";
 import React, { useState } from "react";
 import { ColumnsType } from "antd/lib/table";
 
@@ -16,6 +16,8 @@ import { useQueryClient } from "react-query";
 import { PromotionRequestDetails } from "./PromotionRequestDetails";
 import { QUERY_KEY_FOR_PROMOTION_REQUISITIONS } from "../../requisitions/hooks/promotion/useGetPromotionRequisitions";
 import { getEmployeeFullName } from "features/core/employees/utils/getEmployeeFullName";
+import { QUERY_KEY_FOR_PROMOTION_REQUISITIONS_FOR_AUTH_EMPLOYEE } from "../../requisitions/hooks/promotion/useGetPromotionRequisitions4AuthEmployee";
+import { DEFAULT_DATE_FORMAT } from "constants/dateFormats";
 
 const PromotionApprovalRequestsTable: React.FC<{
   status?: TApprovalStatus;
@@ -24,7 +26,8 @@ const PromotionApprovalRequestsTable: React.FC<{
   const queryClient = useQueryClient();
 
   const [showD, setShowD] = useState(false);
-  const [requestId, setRequestId] = useState<number>();
+  const [request, setRequest] = useState<TApprovalRequest>();
+
   const { pagination, onChange } = usePagination();
   const { data, isFetching } = useFetchApprovalRequests({
     pagination,
@@ -35,6 +38,10 @@ const PromotionApprovalRequestsTable: React.FC<{
     handleSuccess: () => {
       queryClient.invalidateQueries({
         queryKey: [QUERY_KEY_FOR_PROMOTION_REQUISITIONS],
+        // exact: true,
+      });
+      queryClient.invalidateQueries({
+        queryKey: [QUERY_KEY_FOR_PROMOTION_REQUISITIONS_FOR_AUTH_EMPLOYEE],
         // exact: true,
       });
     },
@@ -59,7 +66,7 @@ const PromotionApprovalRequestsTable: React.FC<{
       key: "date",
       render: (_, item) => (
         <span>
-          {moment(item?.promotionRequisition?.date).format("YYYY/MM/DD")}{" "}
+          {moment(item?.promotionRequisition?.date).format(DEFAULT_DATE_FORMAT)}{" "}
         </span>
       ),
     },
@@ -70,7 +77,7 @@ const PromotionApprovalRequestsTable: React.FC<{
       render: (_, item) => (
         <span>
           {moment(item?.promotionRequisition?.preferredStartDate).format(
-            "YYYY/MM/DD"
+            DEFAULT_DATE_FORMAT
           )}{" "}
         </span>
       ),
@@ -118,7 +125,7 @@ const PromotionApprovalRequestsTable: React.FC<{
                   key="3"
                   onClick={() => {
                     setShowD(true);
-                    setRequestId(item?.promotionRequisition?.id);
+                    setRequest(item);
                   }}
                 >
                   View
@@ -129,7 +136,7 @@ const PromotionApprovalRequestsTable: React.FC<{
                   onClick={() =>
                     confirmApprovalAction({
                       approvalStageId: item?.id,
-                      status: "rejected",
+                      status: "approved",
                       workflowType: !!item?.basicStageId ? "basic" : "advanced",
                       requires2FA: item?.advancedStage?.enableTwoFactorAuth,
                     })
@@ -154,7 +161,7 @@ const PromotionApprovalRequestsTable: React.FC<{
             }
             trigger={["click"]}
           >
-            <MoreOutlined />
+            <AiOutlineMore />
           </Dropdown>
         </Space>
       ),
@@ -165,15 +172,16 @@ const PromotionApprovalRequestsTable: React.FC<{
 
   return (
     <div>
-      {requestId && (
+      {request?.promotionRequisition && (
         <PromotionRequestDetails
           open={showD}
           handleClose={() => setShowD(false)}
-          id={requestId}
+          id={request.promotionRequisition.id}
+          approvalRequest={request}
         />
       )}
 
-      <Table
+      <TableWithFocusType
         columns={columns}
         size="small"
         dataSource={data?.data}

@@ -1,27 +1,26 @@
-import { Select, Spin } from "antd";
-import { useApiAuth } from "hooks/useApiAuth";
+import { Select, Spin, Form } from "antd";
 import { useDebounce } from "hooks/useDebounce";
 import { useState } from "react";
-import { generalValidationRules } from "utils/formHelpers/validation";
+import {
+  generalValidationRules,
+  generalValidationRulesOp,
+} from "utils/formHelpers/validation";
 import { useFetchRoles } from "../hooks/useFetchRoles";
 
 export const FormRoleInput: React.FC<{
-  Form: any;
+  Form: typeof Form;
   showLabel?: boolean;
   control?: { label: string; name: string | (string | number)[] };
-}> = ({ Form, showLabel = true, control }) => {
-  const { token, companyId } = useApiAuth();
-
+  optional?: boolean;
+  disabled?: boolean;
+}> = ({ Form, showLabel = true, control, optional = false, disabled }) => {
   const [searchTerm, setSearchTerm] = useState<string>("");
   const debouncedSearchTerm: string = useDebounce<string>(searchTerm);
 
   const { data, isFetching, isSuccess } = useFetchRoles({
-    companyId,
     searchParams: {
       name: debouncedSearchTerm,
     },
-
-    token,
   });
 
   const handleSearch = (val: string) => {
@@ -30,13 +29,14 @@ export const FormRoleInput: React.FC<{
 
   return (
     <Form.Item
-      rules={generalValidationRules}
+      rules={optional ? generalValidationRulesOp : generalValidationRules}
       name={control?.name ?? "roleId"}
       label={showLabel ? control?.label ?? "Role" : null}
     >
       <Select
+        disabled={disabled}
         placeholder="Select role"
-        loading={isFetching} //TO DO : this should be added to all custom Fetch Form Inputs
+        loading={isFetching}
         showSearch
         allowClear
         onClear={() => setSearchTerm("")}
@@ -46,17 +46,11 @@ export const FormRoleInput: React.FC<{
         showArrow={false}
         filterOption={false}
       >
-        {isSuccess ? (
-          data.data.map((item) => (
-            <Select.Option key={item.id} value={item.id}>
-              {item.name}
-            </Select.Option>
-          ))
-        ) : (
-          <div className="flex justify-center items-center w-full">
-            <Spin size="small" />
-          </div>
-        )}
+        {data?.data.map((item) => (
+          <Select.Option key={item.id} value={item.id}>
+            {item.name}
+          </Select.Option>
+        ))}
       </Select>
     </Form.Item>
   );

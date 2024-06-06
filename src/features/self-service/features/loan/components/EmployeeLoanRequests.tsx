@@ -16,7 +16,7 @@ const Component: React.FC<
   const { pagination, onChange } = usePagination();
 
   const { data, isFetching } = useGetLoanRequests({
-    type: "me",
+    type: "mine",
     props: {
       pagination,
       date,
@@ -31,6 +31,7 @@ const Component: React.FC<
         total={data?.total}
         pagination={pagination}
         onChange={onChange}
+        permitedActions={["view", "cancel"]}
       />
     </div>
   );

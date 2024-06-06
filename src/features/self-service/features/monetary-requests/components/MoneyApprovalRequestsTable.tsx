@@ -1,13 +1,11 @@
-import { Space, Dropdown, Menu, Table } from "antd";
-import { MoreOutlined } from "@ant-design/icons";
-
+import { Space, Dropdown, Menu } from "antd";
+import { AiOutlineMore } from "react-icons/ai";
 import React, { useState } from "react";
 import { ColumnsType } from "antd/lib/table";
-
 import { getAppropriateColorForStatus } from "utils/colorHelpers/getAppropriateColorForStatus";
 import { usePagination } from "hooks/usePagination";
 import { TApprovalStatus } from "types/statuses";
-
+import { TableWithFocusType } from "components/table";
 import moment from "moment";
 import { useApproveORReject } from "hooks/useApproveORReject";
 import { TApprovalRequest } from "features/core/workflows/types/approval-requests";
@@ -23,7 +21,8 @@ const MoneyApprovalRequestsTable: React.FC<{
   const queryClient = useQueryClient();
 
   const [showD, setShowD] = useState(false);
-  const [requestId, setRequestId] = useState<number>();
+  const [request, setRequest] = useState<TApprovalRequest>();
+
   const { pagination, onChange } = usePagination();
   const { data, isFetching } = useFetchApprovalRequests({
     pagination,
@@ -104,7 +103,7 @@ const MoneyApprovalRequestsTable: React.FC<{
                   key="3"
                   onClick={() => {
                     setShowD(true);
-                    setRequestId(item?.moneyRequisition?.id);
+                    setRequest(item);
                   }}
                 >
                   View
@@ -115,7 +114,7 @@ const MoneyApprovalRequestsTable: React.FC<{
                   onClick={() =>
                     confirmApprovalAction({
                       approvalStageId: item?.id,
-                      status: "rejected",
+                      status: "approved",
                       workflowType: !!item?.basicStageId ? "basic" : "advanced",
                       requires2FA: item?.advancedStage?.enableTwoFactorAuth,
                     })
@@ -140,7 +139,7 @@ const MoneyApprovalRequestsTable: React.FC<{
             }
             trigger={["click"]}
           >
-            <MoreOutlined />
+            <AiOutlineMore />
           </Dropdown>
         </Space>
       ),
@@ -151,15 +150,16 @@ const MoneyApprovalRequestsTable: React.FC<{
 
   return (
     <div>
-      {requestId && (
+      {request?.moneyRequisition?.id && (
         <MonetaryRequestDetails
           open={showD}
           handleClose={() => setShowD(false)}
-          id={requestId}
+          id={request?.moneyRequisition?.id}
+          approvalRequest={request}
         />
       )}
 
-      <Table
+      <TableWithFocusType
         columns={columns}
         size="small"
         dataSource={data?.data}

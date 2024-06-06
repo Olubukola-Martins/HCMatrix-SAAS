@@ -137,9 +137,7 @@ export const ExchangeRatesTable = ({
           },
         }
       );
-    } catch (errInfo) {
-      console.log(errInfo, "ERRO");
-    }
+    } catch (errInfo) {}
   };
   const ogColumns: ColumnsType<TExchangeRateListItem> = [
     {

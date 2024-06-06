@@ -1,10 +1,10 @@
 import { InputNumber } from "antd";
-import { AppButton } from "components/button/AppButton";
+import { Form } from "antd";
 import { boxStyle, boxTitle } from "styles/reused";
 import { generalValidationRules } from "utils/formHelpers/validation";
 
 export const EmployeeApplicationConfiguration: React.FC<{
-  Form: any;
+  Form: typeof Form;
 }> = ({ Form }) => {
   return (
     <div className={boxStyle}>

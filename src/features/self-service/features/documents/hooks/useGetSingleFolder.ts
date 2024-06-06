@@ -36,7 +36,7 @@ const getData = async (props: {
 export const useGetSingleFolder = (props: IDataProps) => {
   const { token, companyId } = useApiAuth();
   const queryData = useQuery(
-    [QUERY_KEY_FOR_SINGLE_FOLDER],
+    [QUERY_KEY_FOR_SINGLE_FOLDER, props.id],
     () =>
       getData({
         auth: {

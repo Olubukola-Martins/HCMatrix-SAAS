@@ -6,18 +6,48 @@ import { AppButton } from "components/button/AppButton";
 import { AddDependent } from "./AddDependent";
 import { DeleteDependent } from "./DeleteDependent";
 import { ColumnsType } from "antd/lib/table";
-import moment from "moment";
 import { EditDependent } from "./EditDependant";
 
-interface IProps {
+export interface IDependentProps {
   dependents?: TSingleEmployee["dependents"];
   employeeId?: number;
+  columns?: (props: {
+    handleDelete: (item: TSingleEmployee["dependents"][0]) => void;
+    handleEdit: (item: TSingleEmployee["dependents"][0]) => void;
+  }) => ColumnsType<TSingleEmployee["dependents"][0]>;
+  addDependent: {
+    fn: (data: any, successCallBack?: () => void) => void;
+    isLoading?: boolean;
+  };
+  editDependent: {
+    fn: (
+      dependent: TSingleEmployee["dependents"][0],
+      data: any,
+      successCallBack?: () => void
+    ) => void;
+    isLoading?: boolean;
+  };
+  deleteDependent: {
+    fn: (
+      dependent: TSingleEmployee["dependents"][0],
+      successCallBack?: () => void
+    ) => void;
+    isLoading?: boolean;
+  };
+  showGender: boolean;
+  showRelationship: boolean;
 }
 
 type TAction = "add" | "edit" | "delete";
-export const Dependents: React.FC<IProps> = ({
+export const Dependents: React.FC<IDependentProps> = ({
   dependents = [],
   employeeId,
+  columns,
+  addDependent,
+  editDependent,
+  deleteDependent,
+  showGender,
+  showRelationship,
 }) => {
   const [action, setAction] = useState<TAction>();
   const [dependent, setDependent] =
@@ -47,44 +77,7 @@ export const Dependents: React.FC<IProps> = ({
     );
     setData(result);
   }, [search, dependents]);
-  const columns: ColumnsType<TSingleEmployee["dependents"][0]> = [
-    {
-      title: "Name",
-      dataIndex: "fullName",
-      render: (_, val) => <span className="capitalize">{val.fullName}</span>,
-    },
-    {
-      title: "Date Of Birth",
-      dataIndex: "dob",
-      render: (_, val) => moment(val.dob).format("YYYY/MM/DD"),
-    },
-    {
-      title: "Phone Number",
-      dataIndex: "phoneNumber",
-      render: (_, val) => <span className="">{val.phoneNumber}</span>,
-    },
-    {
-      title: "Relationship",
-      dataIndex: "relationship",
-      render: (_, val) => <span className="">{val.relationship}</span>,
-    },
-    {
-      title: "Action",
-      key: "action",
-      render: (_, val) => (
-        <div className="flex gap-2">
-          <i
-            className="ri-pencil-line text-lg cursor-pointer"
-            onClick={() => handleAction({ action: "edit", dependent: val })}
-          />
-          <i
-            className="ri-delete-bin-line text-xl cursor-pointer"
-            onClick={() => handleAction({ action: "delete", dependent: val })}
-          />
-        </div>
-      ),
-    },
-  ];
+
   return (
     <>
       {" "}
@@ -93,6 +86,9 @@ export const Dependents: React.FC<IProps> = ({
           open={action === "add"}
           handleClose={cancelAction}
           employeeId={employeeId}
+          onSubmit={addDependent}
+          showGender={showGender}
+          showRelationship={showRelationship}
         />
       )}
       {employeeId && dependent && (
@@ -101,6 +97,9 @@ export const Dependents: React.FC<IProps> = ({
           handleClose={cancelAction}
           employeeId={employeeId}
           dependent={dependent}
+          onSubmit={editDependent}
+          showGender={showGender}
+          showRelationship={showRelationship}
         />
       )}
       {employeeId && dependent && (
@@ -109,6 +108,7 @@ export const Dependents: React.FC<IProps> = ({
           handleClose={cancelAction}
           employeeId={employeeId}
           dependent={dependent}
+          onSubmit={deleteDependent}
         />
       )}
       <div className="bg-mainBg shadow-sm rounded-md p-4 mt-5">
@@ -131,7 +131,12 @@ export const Dependents: React.FC<IProps> = ({
           </div>
 
           <Table
-            columns={columns}
+            columns={columns?.({
+              handleEdit: (val) =>
+                handleAction({ action: "edit", dependent: val }),
+              handleDelete: (val) =>
+                handleAction({ action: "delete", dependent: val }),
+            })}
             size="small"
             dataSource={data}
             pagination={{ ...pagination, total: data.length }}

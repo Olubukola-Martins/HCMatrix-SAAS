@@ -41,9 +41,10 @@ import Upload, { RcFile } from "antd/lib/upload";
 import { useAddOvertimeSheet } from "features/payroll/hooks/payroll/overtimeSheet/useAddOvertimeSheet";
 import { useGetOvertimeSheetTemplate } from "features/payroll/hooks/payroll/overtimeSheet/useGetOvertimeSheetTemplate";
 import { FormPayrollProjectSchemeInput } from "../payrollSchemes/FormPayrollProjectSchemeInput";
-import { useRunPayroll } from "features/payroll/hooks/payroll/useRunPayroll";
 import SinglePayrollReview from "../payrollReviews/SinglePayrollReview";
 import { RunPayroll } from "./RunPayroll";
+import { PermissionRestrictor } from "components/permission-restriction/PermissionRestrictor";
+import { QUERY_KEY_FOR_EMPLOYEES_IN_PAYROLL } from "features/payroll/hooks/payroll/employee/useGetEmployeesInPayroll";
 
 const boxStyle =
   "bg-mainBg flex justify-between items-start md:items-center px-6 py-5 rounded lg:flex-row flex-col gap-y-5";
@@ -73,6 +74,7 @@ export const UploadTimesheet: React.FC<ITimesheetProps> = ({
   handleClose,
   payrollId,
 }) => {
+  // TODO : Refactor to use ImportEntityModal, in its own comp
   const [form] = Form.useForm();
   const { mutate, isLoading } = useAddOvertimeSheet();
   const [fileList, setFilelist] = useState<any>([]);
@@ -80,15 +82,15 @@ export const UploadTimesheet: React.FC<ITimesheetProps> = ({
     setFilelist(val.fileList);
   };
   const beforeUpload = (file: RcFile) => {
+    const isLt2M = file.size / 1024 / 1024 < 2;
     const isSpreadSheetFile = file.type === "text/csv";
     if (!isSpreadSheetFile) {
       message.error("You can only upload CSV file!");
     }
-    const isLt2M = file.size / 1024 / 1024 < 2;
     if (!isLt2M) {
       message.error("File must smaller than 2MB!");
     }
-    return false;
+    return false; //this is done so that it prevents dafault value
   };
   const { mutate: mutateGetTemplate } = useGetOvertimeSheetTemplate();
 
@@ -252,11 +254,23 @@ export const CreatePayrollInitialForm: React.FC<IFormProps> = ({
         },
         {
           onError: (err: any) => {
+            const constructError = (): string => {
+              let primaryMessage: string =
+                err?.response.data.message ?? err?.response.data.error.message;
+              const employeeWithErrorIds: string[] =
+                err.response?.data?.error?.error;
+              if (employeeWithErrorIds?.length > 0) {
+                primaryMessage = `${primaryMessage}. The employees' with the following employee ids have this issue :  ${employeeWithErrorIds.join(
+                  ","
+                )}.`;
+              }
+              return primaryMessage;
+            };
             openNotification({
               state: "error",
               title: "Error Occurred",
-              description:
-                err?.response.data.message ?? err?.response.data.error.message,
+              duration: 8,
+              description: constructError(),
             });
           },
           onSuccess: (res: any) => {
@@ -264,7 +278,7 @@ export const CreatePayrollInitialForm: React.FC<IFormProps> = ({
               state: "success",
 
               title: "Success",
-              description: res.data.message,
+              description: res.message,
               // duration: 0.4,
             });
             form.resetFields();
@@ -278,7 +292,7 @@ export const CreatePayrollInitialForm: React.FC<IFormProps> = ({
               frequency: type === "project" ? data.frequency : payrollFrequency,
 
               costCentre: costCentre,
-              payrollId: res.data.data.id,
+              payrollId: res.data.id,
             });
             handleClose();
           },
@@ -541,10 +555,11 @@ const CreatePayrollContainer: React.FC<{
     useRollbackPayroll();
 
   const handleRollback = () => {
-    if (payrollId) {
+    const _payrollId = payrollD?.payrollId ?? payrollId ?? payroll?.id;
+    if (_payrollId) {
       mutateRollback(
         {
-          id: payrollId,
+          id: _payrollId,
         },
         {
           onError: (err: any) => {
@@ -569,6 +584,10 @@ const CreatePayrollContainer: React.FC<{
               queryKey: [QUERY_KEY_FOR_SINGLE_PAYROLL],
               // exact: true,
             });
+            queryClient.invalidateQueries({
+              queryKey: [QUERY_KEY_FOR_EMPLOYEES_IN_PAYROLL],
+              // exact: true,
+            });
           },
         }
       );
@@ -579,10 +598,11 @@ const CreatePayrollContainer: React.FC<{
   const navigate = useNavigate();
 
   const handleDelete = () => {
-    if (payrollId) {
+    const _payrollId = payrollD?.payrollId ?? payrollId ?? payroll?.id;
+    if (_payrollId) {
       mutateDelete(
         {
-          id: payrollId,
+          id: _payrollId,
         },
         {
           onError: (err: any) => {
@@ -608,7 +628,12 @@ const CreatePayrollContainer: React.FC<{
       );
     }
   };
-  if (payroll && payroll.status === "in-review") {
+  if (
+    payroll &&
+    (payroll.status === "in-review" ||
+      payroll.status === "confirmed" ||
+      payroll.status === "awaiting-disbursement")
+  ) {
     return <SinglePayrollReview payroll={payroll} />;
   }
   return (
@@ -650,6 +675,7 @@ const CreatePayrollContainer: React.FC<{
       />
       <RunPayroll
         payrollId={payroll?.id}
+        allowDisbursement={payroll?.scheme?.allowDisbursement}
         handleClose={() => clearAction()}
         open={action === "run-payroll"}
       />
@@ -664,30 +690,54 @@ const CreatePayrollContainer: React.FC<{
           <div className="flex gap-5">
             {(payroll?.status === "draft" ||
               payroll?.status === "rejected") && (
-              <AppButton
-                label="Run Payroll"
-                variant="style-with-class"
-                additionalClassNames={["neutralButton"]}
-                handleClick={() => setAction("run-payroll")}
-              />
+              <PermissionRestrictor
+                requiredPermissions={["run-payroll"]}
+                requiredSubscriptionState={{
+                  label: "payroll",
+                  resources: [],
+                }}
+              >
+                <AppButton
+                  label="Run Payroll"
+                  variant="style-with-class"
+                  additionalClassNames={["neutralButton"]}
+                  handleClick={() => setAction("run-payroll")}
+                />
+              </PermissionRestrictor>
             )}
             {(payroll?.status === "draft" ||
               payroll?.status === "rejected") && (
-              <AppButton
-                label="Rollback"
-                handleClick={() => setAction("rollback-payroll")}
-              />
+              <PermissionRestrictor
+                requiredPermissions={["rollback-payroll"]}
+                requiredSubscriptionState={{
+                  label: "payroll",
+                  resources: [],
+                }}
+              >
+                <AppButton
+                  label="Rollback"
+                  handleClick={() => setAction("rollback-payroll")}
+                />
+              </PermissionRestrictor>
             )}
             {(payroll?.status === "draft" ||
               payroll?.status === "rejected") && (
-              <AppButton
-                label="Delete"
-                variant="style-with-class"
-                additionalClassNames={[
-                  "border border-red-400 hover:text-caramel rounded px-2 py-1 font-medium text-sm text-neutral",
-                ]}
-                handleClick={() => setAction("delete-payroll")}
-              />
+              <PermissionRestrictor
+                requiredPermissions={["delete-payroll"]}
+                requiredSubscriptionState={{
+                  label: "payroll",
+                  resources: [],
+                }}
+              >
+                <AppButton
+                  label="Delete"
+                  variant="style-with-class"
+                  additionalClassNames={[
+                    "border border-red-400 hover:text-caramel rounded px-2 py-1 font-medium text-sm text-neutral",
+                  ]}
+                  handleClick={() => setAction("delete-payroll")}
+                />
+              </PermissionRestrictor>
             )}
           </div>
         </div>
@@ -921,11 +971,8 @@ const CreatePayrollContainer: React.FC<{
                     </h5>
                     <p className="md:text-sm text-xs">
                       Modify the payroll by adding/removing salary components of
-                      employees or exluding employees from payroll
+                      employees or excluding employees from payroll
                     </p>
-                  </div>
-                  <div>
-                    <button className={buttonStyle}>Make Updates</button>
                   </div>
                 </div>
                 <div className="mt-4">
@@ -957,9 +1004,6 @@ const CreatePayrollContainer: React.FC<{
                       Modify the payroll by adding/removing salary components of
                       employees or exluding employees from payroll
                     </p>
-                  </div>
-                  <div>
-                    <button className={buttonStyle}>Make Updates</button>
                   </div>
                 </div>
                 <div className="mt-4">

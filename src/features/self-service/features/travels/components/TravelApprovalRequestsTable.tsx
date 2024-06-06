@@ -1,13 +1,11 @@
-import { Space, Dropdown, Menu, Table } from "antd";
-import { MoreOutlined } from "@ant-design/icons";
-
+import { Space, Dropdown, Menu } from "antd";
+import { TableWithFocusType } from "components/table";
+import { AiOutlineMore } from "react-icons/ai";
 import React, { useState } from "react";
 import { ColumnsType } from "antd/lib/table";
-
 import { getAppropriateColorForStatus } from "utils/colorHelpers/getAppropriateColorForStatus";
 import { usePagination } from "hooks/usePagination";
 import { TApprovalStatus } from "types/statuses";
-
 import moment from "moment";
 import { useApproveORReject } from "hooks/useApproveORReject";
 import { TApprovalRequest } from "features/core/workflows/types/approval-requests";
@@ -24,7 +22,8 @@ const TravelApprovalRequestsTable: React.FC<{
   const queryClient = useQueryClient();
 
   const [showD, setShowD] = useState(false);
-  const [requestId, setRequestId] = useState<number>();
+  const [request, setRequest] = useState<TApprovalRequest>();
+
   const { pagination, onChange } = usePagination();
   const { data, isFetching } = useFetchApprovalRequests({
     pagination,
@@ -47,7 +46,7 @@ const TravelApprovalRequestsTable: React.FC<{
       key: "date",
       render: (_, item) => (
         <span>
-          {moment(item.travelRequisition?.createdAt).format("YYYY/MM/DD")}{" "}
+          {moment(item.travelRequest?.createdAt).format("YYYY/MM/DD")}{" "}
         </span>
       ),
     },
@@ -57,7 +56,7 @@ const TravelApprovalRequestsTable: React.FC<{
       key: "adate",
       render: (_, item) => (
         <span>
-          {moment(item.travelRequisition?.arrivalDate).format("YYYY/MM/DD")}{" "}
+          {moment(item.travelRequest?.arrivalDate).format("YYYY/MM/DD")}{" "}
         </span>
       ),
     },
@@ -67,7 +66,7 @@ const TravelApprovalRequestsTable: React.FC<{
       key: "ddate",
       render: (_, item) => (
         <span>
-          {moment(item.travelRequisition?.departureDate).format("YYYY/MM/DD")}{" "}
+          {moment(item.travelRequest?.departureDate).format("YYYY/MM/DD")}{" "}
         </span>
       ),
     },
@@ -75,7 +74,7 @@ const TravelApprovalRequestsTable: React.FC<{
       title: "Travel ID",
       dataIndex: "id",
       key: "id",
-      render: (_, item) => <span>{item.travelRequisition?.id} </span>,
+      render: (_, item) => <span>{item.travelRequest?.id} </span>,
     },
 
     {
@@ -84,8 +83,8 @@ const TravelApprovalRequestsTable: React.FC<{
       key: "emp",
       render: (_, item) => (
         <span>
-          {item.travelRequisition
-            ? getEmployeeFullName(item.travelRequisition?.employee)
+          {item.travelRequest
+            ? getEmployeeFullName(item.travelRequest?.employee)
             : ""}
         </span>
       ),
@@ -95,7 +94,7 @@ const TravelApprovalRequestsTable: React.FC<{
       dataIndex: "reas",
       key: "reas",
       render: (_, item) => (
-        <span className="capitalize">{item.travelRequisition?.reason} </span>
+        <span className="capitalize">{item.travelRequest?.reason} </span>
       ),
     },
     {
@@ -103,7 +102,7 @@ const TravelApprovalRequestsTable: React.FC<{
       dataIndex: "dura",
       key: "dura",
       render: (_, item) => (
-        <span className="capitalize">{item.travelRequisition?.duration} </span>
+        <span className="capitalize">{item.travelRequest?.duration} </span>
       ),
     },
 
@@ -117,11 +116,11 @@ const TravelApprovalRequestsTable: React.FC<{
           className="capitalize"
           style={{
             color: getAppropriateColorForStatus(
-              item?.travelRequisition?.status ?? ""
+              item?.travelRequest?.status ?? ""
             ),
           }}
         >
-          {item?.travelRequisition?.status}
+          {item?.travelRequest?.status}
         </span>
       ),
     },
@@ -139,18 +138,18 @@ const TravelApprovalRequestsTable: React.FC<{
                   key="3"
                   onClick={() => {
                     setShowD(true);
-                    setRequestId(item?.travelRequisition?.id);
+                    setRequest(item);
                   }}
                 >
                   View
                 </Menu.Item>
                 <Menu.Item
-                  hidden={item.travelRequisition?.status !== "pending"}
+                  hidden={item.travelRequest?.status !== "pending"}
                   key="2"
                   onClick={() =>
                     confirmApprovalAction({
                       approvalStageId: item?.id,
-                      status: "rejected",
+                      status: "approved",
                       workflowType: !!item?.basicStageId ? "basic" : "advanced",
                       requires2FA: item?.advancedStage?.enableTwoFactorAuth,
                     })
@@ -159,7 +158,7 @@ const TravelApprovalRequestsTable: React.FC<{
                   Approve
                 </Menu.Item>
                 <Menu.Item
-                  hidden={item.travelRequisition?.status !== "pending"}
+                  hidden={item.travelRequest?.status !== "pending"}
                   key="1"
                   onClick={() =>
                     confirmApprovalAction({
@@ -175,7 +174,7 @@ const TravelApprovalRequestsTable: React.FC<{
             }
             trigger={["click"]}
           >
-            <MoreOutlined />
+            <AiOutlineMore />
           </Dropdown>
         </Space>
       ),
@@ -186,15 +185,16 @@ const TravelApprovalRequestsTable: React.FC<{
 
   return (
     <div>
-      {requestId && (
+      {request?.travelRequest?.id && (
         <TravelRequestDetails
           open={showD}
           handleClose={() => setShowD(false)}
-          id={requestId}
+          id={request?.travelRequest?.id}
+          approvalRequest={request}
         />
       )}
 
-      <Table
+      <TableWithFocusType
         columns={columns}
         size="small"
         dataSource={data?.data}

@@ -76,7 +76,6 @@ const EntityFormModal: React.FC<IProps> = ({
   const [form] = Form.useForm();
 
   useEffect(() => {
-    console.log("I rendered");
     const fieldValues = formFields.reduce((values: any, field) => {
       // For custom jsx elements
       values[field.name] = field.render.value;

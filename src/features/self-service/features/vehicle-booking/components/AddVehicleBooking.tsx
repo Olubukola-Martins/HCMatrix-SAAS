@@ -4,23 +4,26 @@ import { useQueryClient } from "react-query";
 import { IModalProps } from "types";
 import {
   textInputValidationRules,
-  generalValidationRules,
+  dateHasToBeGreaterThanOrEqualToCurrentDayRule,
+  numberInputValidationRules,
 } from "utils/formHelpers/validation";
 import { openNotification } from "utils/notifications";
 import { AppButton } from "components/button/AppButton";
 import { useCreateVehicleBooking } from "../hooks/useCreateVehicleBooking";
 import { FormVehicleInput } from "./FormVehicleInput";
-import { FormEmployeeInput } from "features/core/employees/components/FormEmployeeInput";
 import { QUERY_KEY_FOR_VEHICLE_BOOKINGS } from "../hooks/useFetchVehicleBookings";
+import { QUERY_KEY_FOR_VEHICLE_BOOKINGS_FOR_AUTH_EMPLOYEE } from "../hooks/booking/useGetVehicleBookings4AuthEmployee";
+import { TSelfServiceApplicationMode } from "features/self-service/types";
+import { FormUnlicensedEmployeeSSRequestInput } from "features/core/employees/components/FormEmployeeInput";
 
 interface IProps extends IModalProps {
-  employeeId?: number;
+  mode?: TSelfServiceApplicationMode;
 }
 
 export const AddVehicleBooking: React.FC<IProps> = ({
   handleClose,
   open,
-  employeeId,
+  mode = "apply-for-myself",
 }) => {
   const queryClient = useQueryClient();
   const [form] = Form.useForm();
@@ -30,10 +33,11 @@ export const AddVehicleBooking: React.FC<IProps> = ({
     mutate(
       {
         date: data.date.toString(),
-        employeeId: employeeId ? employeeId : data.employeeId,
+
         destination: data.destination,
         duration: data.duration,
         vehicleId: data.vehicleId,
+        employeeId: data?.employeeId,
       },
       {
         onError: (err: any) => {
@@ -60,6 +64,10 @@ export const AddVehicleBooking: React.FC<IProps> = ({
             queryKey: [QUERY_KEY_FOR_VEHICLE_BOOKINGS],
             // exact: true,
           });
+          queryClient.invalidateQueries({
+            queryKey: [QUERY_KEY_FOR_VEHICLE_BOOKINGS_FOR_AUTH_EMPLOYEE],
+            // exact: true,
+          });
         },
       }
     );
@@ -69,7 +77,7 @@ export const AddVehicleBooking: React.FC<IProps> = ({
       open={open}
       onCancel={() => handleClose()}
       footer={null}
-      title={"Add Vehicle Booking"}
+      title={"Book Vehicle"}
       style={{ top: 20 }}
     >
       <Form
@@ -78,20 +86,25 @@ export const AddVehicleBooking: React.FC<IProps> = ({
         form={form}
         onFinish={handleSubmit}
       >
+        <FormUnlicensedEmployeeSSRequestInput
+          Form={Form}
+          control={{
+            name: "employeeId",
+            label: "Select Unlinsenced Employee",
+          }}
+        />
         <Form.Item
           name="date"
-          rules={generalValidationRules}
+          rules={[dateHasToBeGreaterThanOrEqualToCurrentDayRule]}
           label="Booking Date"
         >
-          <DatePicker placeholder="Booking Date" className="w-full" />
+          <DatePicker showTime placeholder="Booking Date" className="w-full" />
         </Form.Item>
         <FormVehicleInput Form={Form} />
-        {!employeeId && <FormEmployeeInput Form={Form} />}
-        {/* to enable admin to create vehicle booking 4 employee, incase of future need */}
         <Form.Item
           label="Duration(hrs)"
           name="duration"
-          rules={generalValidationRules}
+          rules={[...numberInputValidationRules]}
         >
           <InputNumber placeholder="duration" className="w-full" />
         </Form.Item>

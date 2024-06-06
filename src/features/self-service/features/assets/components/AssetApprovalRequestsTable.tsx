@@ -1,4 +1,5 @@
-import { Space, Dropdown, Menu, Table } from "antd";
+import { Space, Dropdown, Menu } from "antd";
+import { TableWithFocusType } from "components/table";
 import { MoreOutlined } from "@ant-design/icons";
 import React, { useState } from "react";
 import { ColumnsType } from "antd/lib/table";
@@ -13,6 +14,7 @@ import { TApprovalStatus } from "types/statuses";
 import { getAppropriateColorForStatus } from "utils/colorHelpers/getAppropriateColorForStatus";
 import { AssetRequestDetails } from "./AssetRequestDetails";
 import { getEmployeeFullName } from "features/core/employees/utils/getEmployeeFullName";
+import { QUERY_KEY_FOR_ASSET_REQUISITIONS_FOR_AUTH_EMPLOYEE } from "../hooks/requisitions/useGetAssetRequisitions4AuthEmployee";
 const AssetApprovalRequestsTable: React.FC<{
   status?: TApprovalStatus;
   employeeId?: number;
@@ -20,7 +22,7 @@ const AssetApprovalRequestsTable: React.FC<{
   const queryClient = useQueryClient();
 
   const [showD, setShowD] = useState(false);
-  const [requestId, setRequestId] = useState<number>();
+  const [request, setRequest] = useState<TApprovalRequest>();
   const { pagination, onChange } = usePagination();
   const { data, isFetching } = useFetchApprovalRequests({
     pagination,
@@ -31,6 +33,10 @@ const AssetApprovalRequestsTable: React.FC<{
     handleSuccess: () => {
       queryClient.invalidateQueries({
         queryKey: [QUERY_KEY_FOR_ASSET_REQUISITIONS],
+        // exact: true,
+      });
+      queryClient.invalidateQueries({
+        queryKey: [QUERY_KEY_FOR_ASSET_REQUISITIONS_FOR_AUTH_EMPLOYEE],
         // exact: true,
       });
     },
@@ -94,7 +100,7 @@ const AssetApprovalRequestsTable: React.FC<{
                   key="3"
                   onClick={() => {
                     setShowD(true);
-                    setRequestId(item.assetRequisition?.id);
+                    setRequest(item);
                   }}
                 >
                   View
@@ -142,18 +148,22 @@ const AssetApprovalRequestsTable: React.FC<{
     : originalColumns;
   return (
     <div>
-      {requestId && (
+      {request?.assetRequisition && (
         <AssetRequestDetails
-          id={requestId}
+          id={request.assetRequisition?.id}
           open={showD}
           handleClose={() => setShowD(false)}
+          approvalRequest={request}
         />
       )}
 
-      <Table
+      <TableWithFocusType
         columns={columns}
         size="small"
-        dataSource={data?.data}
+        dataSource={data?.data.map((item) => ({
+          ...item,
+          key: item.id,
+        }))}
         loading={isFetching}
         pagination={{ ...pagination, total: data?.total }}
         onChange={onChange}

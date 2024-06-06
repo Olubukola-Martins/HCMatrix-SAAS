@@ -4,10 +4,10 @@ import LoanTypeSetup from "./loanTypes/LoanTypeSetup";
 import MaxloanPercentSetup from "./MaxloanPercentSetup";
 import SelectLoanCostCentre from "./SelectLoanCostCentre";
 import { EmployeeApplicationConfiguration } from "./EmployeeApplicationConfiguration";
-import { FormInstance } from "antd";
+import { FormInstance, Form } from "antd";
 
 const LoanSettings: React.FC<{
-  Form: any;
+  Form: typeof Form;
   form: FormInstance<any>;
   handleSubmit: (data: any) => void;
 }> = ({ Form, form, handleSubmit }) => {

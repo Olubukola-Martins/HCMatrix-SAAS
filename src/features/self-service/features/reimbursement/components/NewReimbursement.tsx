@@ -1,12 +1,12 @@
 import { DatePicker, Form, Input, InputNumber, Modal } from "antd";
 import { FileUpload } from "components/FileUpload";
 import { AppButton } from "components/button/AppButton";
-import { FormEmployeeInput } from "features/core/employees/components/FormEmployeeInput";
 import React from "react";
 import { boxStyle } from "styles/reused";
 import { IModalProps } from "types";
 import {
-  generalValidationRules,
+  dateHasToBeGreaterThanOrEqualToCurrentDayRule,
+  numberHasToBeGreaterThanZeroRule,
   textInputValidationRules,
 } from "utils/formHelpers/validation";
 import { useCreateReimbursementRequisition } from "../../requisitions/hooks/reimbursement/useCreateReimbursementRequisition";
@@ -14,14 +14,17 @@ import { useCurrentFileUploadUrl } from "hooks/useCurrentFileUploadUrl";
 import { openNotification } from "utils/notifications";
 import { useQueryClient } from "react-query";
 import { QUERY_KEY_FOR_REIMBURSEMENT_REQUISITIONS } from "../../requisitions/hooks/reimbursement/useGetReimbursementRequisitions";
-import { useApiAuth } from "hooks/useApiAuth";
+import { QUERY_KEY_FOR_REIMBURSEMENT_REQUISITIONS_FOR_AUTH_EMPLOYEE } from "../../requisitions/hooks/reimbursement/useGetReimburements4AuthEmployee";
+import { QUERY_KEY_FOR_APPROVAL_REQUESTS } from "features/core/workflows/hooks/useFetchApprovalRequests";
+import { QUERY_KEY_FOR_UNREAD_NOTIFICATION_COUNT } from "features/notifications/hooks/unRead/useGetUnReadNotificationCount";
+import { QUERY_KEY_FOR_NOTIFICATIONS } from "features/notifications/hooks/useGetAlerts";
+import { FormUnlicensedEmployeeSSRequestInput } from "features/core/employees/components/FormEmployeeInput";
 
 export const NewReimbursement: React.FC<IModalProps> = ({
   open,
   handleClose,
 }) => {
   const queryClient = useQueryClient();
-  const { currentUserEmployeeId } = useApiAuth();
 
   const [form] = Form.useForm();
   const { mutate, isLoading } = useCreateReimbursementRequisition();
@@ -30,10 +33,10 @@ export const NewReimbursement: React.FC<IModalProps> = ({
   const handleSubmit = (data: any) => {
     mutate(
       {
+        employeeId: data?.employeeId,
         amount: data.amount,
         date: data.date.toString(),
         description: data.description,
-        employeeId: currentUserEmployeeId,
         title: data.title,
         attachmentUrls: !!documentUrl ? [documentUrl] : [],
       },
@@ -61,6 +64,24 @@ export const NewReimbursement: React.FC<IModalProps> = ({
             queryKey: [QUERY_KEY_FOR_REIMBURSEMENT_REQUISITIONS],
             // exact: true,
           });
+          queryClient.invalidateQueries({
+            queryKey: [
+              QUERY_KEY_FOR_REIMBURSEMENT_REQUISITIONS_FOR_AUTH_EMPLOYEE,
+            ],
+            // exact: true,
+          });
+          queryClient.invalidateQueries({
+            queryKey: [QUERY_KEY_FOR_APPROVAL_REQUESTS],
+            // exact: true,
+          });
+          queryClient.invalidateQueries({
+            queryKey: [QUERY_KEY_FOR_NOTIFICATIONS],
+            // exact: true,
+          });
+          queryClient.invalidateQueries({
+            queryKey: [QUERY_KEY_FOR_UNREAD_NOTIFICATION_COUNT],
+            // exact: true,
+          });
         },
       }
     );
@@ -79,7 +100,18 @@ export const NewReimbursement: React.FC<IModalProps> = ({
         onFinish={handleSubmit}
         requiredMark={false}
       >
-        <Form.Item rules={generalValidationRules} name="date" label="Date">
+        <FormUnlicensedEmployeeSSRequestInput
+          Form={Form}
+          control={{
+            name: "employeeId",
+            label: "Select Unlinsenced Employee",
+          }}
+        />
+        <Form.Item
+          rules={[dateHasToBeGreaterThanOrEqualToCurrentDayRule]}
+          name="date"
+          label="Date"
+        >
           <DatePicker placeholder="Date" className="w-full" />
         </Form.Item>
 
@@ -93,7 +125,11 @@ export const NewReimbursement: React.FC<IModalProps> = ({
         >
           <Input.TextArea placeholder="description" />
         </Form.Item>
-        <Form.Item rules={generalValidationRules} name="amount" label="Amount">
+        <Form.Item
+          rules={[numberHasToBeGreaterThanZeroRule]}
+          name="amount"
+          label="Amount"
+        >
           <InputNumber placeholder="amount" className="w-full" />
         </Form.Item>
         <div className={boxStyle}>

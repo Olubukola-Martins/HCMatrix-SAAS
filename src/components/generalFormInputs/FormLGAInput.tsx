@@ -1,4 +1,4 @@
-import { Select } from "antd";
+import { Select, Form } from "antd";
 import { useFetchLgas } from "hooks/useFetchLGAs";
 import { useState } from "react";
 import { TLga } from "types/lgas";
@@ -6,7 +6,7 @@ import { generalValidationRules } from "utils/formHelpers/validation";
 
 export const FormLGAInput: React.FC<{
   stateId: number;
-  Form: any;
+  Form: typeof Form;
   showLabel?: boolean;
   control?: { label: string; name: string };
 }> = ({ Form, showLabel = true, control, stateId }) => {

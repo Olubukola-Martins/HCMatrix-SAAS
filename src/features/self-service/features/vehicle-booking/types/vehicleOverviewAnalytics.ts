@@ -1,3 +1,5 @@
+import { TVehicleStatus, TVehicleType } from "../hooks/useCreateVehicle";
+
 export type TVehicleOverviewAnalytics = {
   car: number;
   motorcycle: number;
@@ -11,11 +13,11 @@ export type TVehicleOverviewAnalytics = {
 interface RecentlyAddedVehicle {
   id: number;
   label: string;
-  type: string;
+  type: TVehicleType;
   brand: string;
   model: string;
   plateNumber: string;
-  status: string;
+  status: TVehicleStatus;
   imageUrl: string;
   cost: string;
   color: string;

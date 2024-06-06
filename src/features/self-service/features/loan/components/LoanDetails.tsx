@@ -2,15 +2,26 @@ import { Form, Input, Modal, Skeleton } from "antd";
 import moment from "moment";
 import { useEffect } from "react";
 import { IModalProps } from "types";
-import { useGetLoan } from "../hooks/useGetLoan";
+import { QUERY_KEY_FOR_LOAN, useGetLoan } from "../hooks/useGetLoan";
 import { getEmployeeFullName } from "features/core/employees/utils/getEmployeeFullName";
 import { DEFAULT_DATE_FORMAT } from "constants/dateFormats";
+import { TApprovalRequest } from "features/core/workflows/types/approval-requests";
+import { useQueryClient } from "react-query";
+import ApproveOrRejectButton from "features/core/workflows/components/approval-request/ApproveOrRejectButton";
+import { QUERY_KEY_FOR_LOAN_REQUESTS } from "../hooks/requests/useGetLoanRequests";
+import { QUERY_KEY_FOR_LOAN_ANALYTICS } from "../hooks/analytics/useGetLoanAnalytics";
 
 interface IProps extends IModalProps {
   id: number;
+  approvalRequest?: TApprovalRequest;
 }
 
-export const LoanDetails = ({ id, open, handleClose }: IProps) => {
+export const LoanDetails = ({
+  id,
+  open,
+  handleClose,
+  approvalRequest,
+}: IProps) => {
   const [form] = Form.useForm();
   const { data, isFetching } = useGetLoan({ id });
   useEffect(() => {
@@ -22,10 +33,12 @@ export const LoanDetails = ({ id, open, handleClose }: IProps) => {
         date: moment(data.date).format(DEFAULT_DATE_FORMAT),
         type: data.type.name,
         paymentPlan: data.paymentPlan.name,
-        description: `${data.description} `,
+        description: data.description,
       });
     }
   }, [id, form, data]);
+  const queryClient = useQueryClient();
+
   return (
     <Modal
       open={open}
@@ -36,6 +49,27 @@ export const LoanDetails = ({ id, open, handleClose }: IProps) => {
       footer={null}
     >
       <Skeleton loading={isFetching} active paragraph={{ rows: 16 }}>
+        <ApproveOrRejectButton
+          className="flex justify-end"
+          request={approvalRequest}
+          handleSuccess={() => {
+            queryClient.invalidateQueries({
+              queryKey: [QUERY_KEY_FOR_LOAN_REQUESTS],
+              // exact: true,
+            });
+
+            queryClient.invalidateQueries({
+              queryKey: [QUERY_KEY_FOR_LOAN, id],
+              // exact: true,
+            });
+
+            queryClient.invalidateQueries({
+              queryKey: [QUERY_KEY_FOR_LOAN_ANALYTICS],
+              // exact: true,
+            });
+            handleClose();
+          }}
+        />
         <Form layout="vertical" requiredMark={false} form={form} disabled>
           <Form.Item label="Employee" name="employee">
             <Input placeholder="Employee" />

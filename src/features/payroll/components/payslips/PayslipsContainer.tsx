@@ -7,22 +7,23 @@ import { useGetPayrollSchemeByTypeOrId } from "features/payroll/hooks/scheme/use
 import { TProjectPayrollScheme } from "features/payroll/types/payrollSchemes/project";
 import { TGetPayslipsProps } from "features/payroll/hooks/payslips/useGetPayslips";
 import { DEFAULT_DATE_FORMAT } from "constants/dateFormats";
+import moment from "moment";
 
 interface IProps {
   role: TGetPayslipsProps["role"];
-  defaultScheme: TPayrollSchemeType;
+  defaultScheme?: TPayrollSchemeType;
 }
 
 // helper fns
 const generateScheme = (
-  scheme: TPayrollSchemeType,
+  scheme?: TPayrollSchemeType,
   projectId?: number
 ): TGetPayslipsProps["scheme"] => {
   let data: TGetPayslipsProps["scheme"] = "office";
   if (projectId && scheme === "project") {
     data = { scheme: scheme, projectId };
   }
-  if (scheme !== "project") {
+  if (scheme && scheme !== "project") {
     data = scheme;
   }
   return data;
@@ -33,8 +34,9 @@ export const PayslipsContainer: React.FC<IProps> = ({
 }) => {
   //   const [comp, setComp] = useState<"add-category" | "add-grade">();
   // const [scheme, setScheme] = useState<TPayrollSchemeType>();
-  const [selectedScheme, setSelectedScheme] =
-    useState<TPayrollSchemeType>(defaultScheme);
+  const [selectedScheme, setSelectedScheme] = useState<
+    TPayrollSchemeType | undefined
+  >(defaultScheme);
   const [projects, setProjects] = useState<TProjectPayrollScheme>([]);
   const [projectId, setProjectId] = useState<number>();
   const { data: payrollScheme, isLoading } = useGetPayrollSchemeByTypeOrId({
@@ -54,7 +56,10 @@ export const PayslipsContainer: React.FC<IProps> = ({
     }
   }, [payrollScheme, selectedScheme]);
 
-  const [duration, setDuration] = useState<[string, string]>();
+  const [duration, setDuration] = useState<[string, string]>([
+    moment().subtract(25, "days").format("YYYY-MM-DD"),
+    moment().add(25, "days").format("YYYY-MM-DD"),
+  ]);
 
   return (
     <>
@@ -86,6 +91,7 @@ export const PayslipsContainer: React.FC<IProps> = ({
             <DatePicker.RangePicker
               picker={"date"}
               placeholder={["From", "To"]}
+              value={[moment(duration[0]), moment(duration[1])]}
               onChange={(val) => {
                 if (val && val.length === 2 && val[0] && val[1])
                   setDuration([

@@ -1,9 +1,5 @@
 import { TPayrollSchemeType } from "../payrollSchemes";
-import {
-  TAllowanceInput,
-  TDeductionInput,
-  TSalaryComponentInput,
-} from "../salaryComponents";
+import { TSalaryComponentInput } from "../salaryComponents";
 // import { TDirectSalarySetupSchemeInputData } from "./directSalary";
 // import { TOfficeSetupSchemeInputData } from "./office";
 // import { TProjectSetupSchemeInputData } from "./project";

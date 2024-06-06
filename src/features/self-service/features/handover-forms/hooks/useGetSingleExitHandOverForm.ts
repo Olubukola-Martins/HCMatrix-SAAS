@@ -7,7 +7,8 @@ import { TTHandOverForm } from "../types";
 interface IGetDataProps extends ICurrentCompany {
   id: number;
 }
-export const QUERY_KEY_FOR_SINGLE_ASSET_TYPE = "single-asset-type";
+export const QUERY_KEY_FOR_SINGLE_EXIT_HANDOVER_FORM =
+  "single-exit-handover-form";
 const getData = async (props: IGetDataProps): Promise<TTHandOverForm> => {
   const url = `${MICROSERVICE_ENDPOINTS.UTILITY}/self-service/exit-handover-form/${props.id}`;
 
@@ -31,7 +32,7 @@ const getData = async (props: IGetDataProps): Promise<TTHandOverForm> => {
 
 export const useGetSingleExitHandOverForm = (props: IGetDataProps) => {
   const queryData = useQuery(
-    [QUERY_KEY_FOR_SINGLE_ASSET_TYPE, props.id],
+    [QUERY_KEY_FOR_SINGLE_EXIT_HANDOVER_FORM, props.id],
     () =>
       getData({
         ...props,

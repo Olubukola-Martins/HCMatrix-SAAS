@@ -5,7 +5,6 @@ import {
   Button,
   Dropdown,
   Menu,
-  Table,
   TablePaginationConfig,
   TableProps,
 } from "antd";
@@ -17,14 +16,16 @@ import { getEmployeeFullName } from "features/core/employees/utils/getEmployeeFu
 import { TApprovalRequest } from "features/core/workflows/types/approval-requests";
 import { useQueryClient } from "react-query";
 import { useApproveORReject } from "hooks/useApproveORReject";
-import { QUERY_KEY_FOR_LEAVES } from "features/self-service/features/leave/hooks/useFetchLeaves";
 import { APPROVAL_STATUS_ACTION_OPTIONS } from "constants/statustes";
 import { LoanDetails } from "../LoanDetails";
 import { DEFAULT_DATE_FORMAT } from "constants/dateFormats";
 import { QUERY_KEY_FOR_LOAN_REQUESTS } from "../../hooks/requests/useGetLoanRequests";
 import { QUERY_KEY_FOR_LOAN_ANALYTICS } from "../../hooks/analytics/useGetLoanAnalytics";
+import { CancelLoan } from "../CancelLoan";
+import ViewApprovalStages from "features/core/workflows/components/approval-request/ViewApprovalStages";
+import { TableWithFocusType } from "components/table";
 
-type TAction = "approve/reject" | "view";
+type TAction = "approve/reject" | "view" | "cancel" | "view-approval-stages";
 type TLoanAndApproval = TLoanRequest & { approvalDetails?: TApprovalRequest };
 export const LoanTable: React.FC<{
   data?: TLoanAndApproval[];
@@ -39,9 +40,10 @@ export const LoanTable: React.FC<{
   pagination,
   onChange,
   total,
-  permitedActions = ["view"],
+  permitedActions = ["view", "view-approval-stages"],
 }) => {
   const queryClient = useQueryClient();
+  const [request, setRequest] = useState<TApprovalRequest>();
 
   const [loan, setLoan] = useState<TLoanRequest>();
   const [action, setAction] = useState<TAction>();
@@ -50,8 +52,13 @@ export const LoanTable: React.FC<{
     setLoan(undefined);
   };
 
-  const handleAction = (props: { action: TAction; loan: TLoanRequest }) => {
-    const { loan, action } = props;
+  const handleAction = (props: {
+    action: TAction;
+    loan: TLoanRequest;
+    approvalRequest?: TApprovalRequest;
+  }) => {
+    const { loan, action, approvalRequest } = props;
+    setRequest(approvalRequest);
     setAction(action);
     setLoan(loan);
   };
@@ -68,7 +75,7 @@ export const LoanTable: React.FC<{
     },
   });
 
-  const columns: ColumnsType<TLoanAndApproval> = [
+  const ogColumns: ColumnsType<TLoanAndApproval> = [
     {
       title: "Title",
       dataIndex: "title",
@@ -96,16 +103,16 @@ export const LoanTable: React.FC<{
     },
     {
       title: "Employee ID",
-      dataIndex: "empuid",
-      key: "empuid",
+      dataIndex: "Employee ID",
+      key: "Employee ID",
       render: (_, item) => (
         <span className="capitalize">{item.employee.empUid} </span>
       ),
     },
     {
       title: "Department",
-      dataIndex: "dept",
-      key: "dept",
+      dataIndex: "Department",
+      key: "Department",
       render: (_, item) => (
         <span className="capitalize">
           {item.employee.designation.department.name}{" "}
@@ -114,33 +121,56 @@ export const LoanTable: React.FC<{
     },
     {
       title: "Loan Type",
-      dataIndex: "ass",
-      key: "ass",
+      dataIndex: "Loan Type",
+      key: "Loan Type",
       render: (_, item) => <span className="capitalize">{item.type.name}</span>,
     },
     {
       title: "Balance",
-      dataIndex: "dept",
-      key: "dept",
+      dataIndex: "Balance",
+      key: "Balance",
       render: (_, item) => <span className="capitalize">{item.balance} </span>,
     },
     {
       title: "Amount",
-      dataIndex: "dept",
-      key: "dept",
+      dataIndex: "Amount",
+      key: "Amount",
       render: (_, item) => <span className="capitalize">{item.amount} </span>,
+    },
+    {
+      title: "Disbursed At",
+      dataIndex: "Disbursed At",
+      key: "Disbursed At",
+      render: (_, item) => (
+        <span className="capitalize">
+          {item.disbursedAt
+            ? moment(item.disbursedAt).format(DEFAULT_DATE_FORMAT)
+            : ""}{" "}
+        </span>
+      ),
     },
 
     {
-      title: "Status",
+      title: permitedActions.find((val) => val === "approve/reject")
+        ? "Approval Status"
+        : "Loan Status",
       dataIndex: "status",
       key: "status",
+
       render: (_, item) => (
         <span
           className="capitalize"
-          style={{ color: getAppropriateColorForStatus(item.status) }}
+          style={{
+            color: getAppropriateColorForStatus(
+              permitedActions.find((val) => val === "approve/reject")
+                ? item?.approvalDetails?.status ?? ""
+                : item.status
+            ),
+          }}
         >
-          {item.status}{" "}
+          {permitedActions.find((val) => val === "approve/reject")
+            ? item?.approvalDetails?.status
+            : item.status}{" "}
         </span>
       ),
     },
@@ -152,10 +182,38 @@ export const LoanTable: React.FC<{
         <Dropdown
           overlay={
             <Menu>
+              {permitedActions.find((val) => val === "cancel") && (
+                <Menu.Item
+                  hidden={item?.status !== "pending"}
+                  key="cancel"
+                  onClick={() => handleAction({ loan: item, action: "cancel" })}
+                >
+                  Cancel
+                </Menu.Item>
+              )}
               {permitedActions.find((val) => val === "view") && (
                 <Menu.Item
                   key="3"
-                  onClick={() => handleAction({ loan: item, action: "view" })}
+                  onClick={() =>
+                    handleAction({
+                      loan: item,
+                      action: "view-approval-stages",
+                    })
+                  }
+                >
+                  View Stages
+                </Menu.Item>
+              )}
+              {permitedActions.find((val) => val === "view") && (
+                <Menu.Item
+                  key="3"
+                  onClick={() =>
+                    handleAction({
+                      loan: item,
+                      action: "view",
+                      approvalRequest: item.approvalDetails,
+                    })
+                  }
                 >
                   View Details
                 </Menu.Item>
@@ -163,7 +221,7 @@ export const LoanTable: React.FC<{
               {permitedActions.find((val) => val === "approve/reject") &&
                 APPROVAL_STATUS_ACTION_OPTIONS.map(({ value, label }) => (
                   <Menu.Item
-                    hidden={item?.status !== "pending"}
+                    hidden={item?.approvalDetails?.status !== "pending"}
                     key={value}
                     onClick={() =>
                       item?.approvalDetails &&
@@ -191,6 +249,9 @@ export const LoanTable: React.FC<{
       ),
     },
   ];
+  const columns = permitedActions.find((val) => val === "approve/reject")
+    ? ogColumns.filter((item) => item.key !== "disAt")
+    : ogColumns;
 
   return (
     <>
@@ -199,9 +260,25 @@ export const LoanTable: React.FC<{
           handleClose={onClose}
           open={action === "view"}
           id={loan.id}
+          approvalRequest={
+            permitedActions.includes("approve/reject") ? request : undefined
+          }
         />
       )}
-      <Table
+      {loan && (
+        <ViewApprovalStages
+          handleClose={onClose}
+          open={action === "view-approval-stages"}
+          id={loan?.id}
+          type="loan"
+        />
+      )}
+      <CancelLoan
+        handleClose={onClose}
+        open={action === "cancel"}
+        data={loan}
+      />
+      <TableWithFocusType<TLoanAndApproval>
         size="small"
         dataSource={data}
         loading={loading}

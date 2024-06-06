@@ -3,72 +3,38 @@ import { AppButton } from "components/button/AppButton";
 import React from "react";
 import { IModalProps } from "types";
 import {
+  dateHasToBeLesserThanOrEqualToCurrentDayRule,
   generalValidationRules,
   textInputValidationRules,
 } from "utils/formHelpers/validation";
-import { openNotification } from "utils/notifications";
-import { useQueryClient } from "react-query";
-import { useAddEmployeeDependent } from "features/core/employees/hooks/dependents/useAddEmployeeDependent";
-import { formatPhoneNumber } from "utils/dataHelpers/formatPhoneNumber";
-import { QUERY_KEY_FOR_SINGLE_EMPLOYEE } from "features/core/employees/hooks/useFetchSingleEmployee";
 import { FormPhoneInput } from "components/generalFormInputs/FormPhoneInput";
-import { RELATIONSHIPS } from "constants/general";
+import { GENDERS, RELATIONSHIPS } from "constants/general";
 
 interface IProps extends IModalProps {
   employeeId: number;
+  onSubmit: {
+    fn: (data: any, successCallBack?: () => void) => void;
+    isLoading?: boolean;
+  };
+  showGender: boolean;
+  showRelationship: boolean;
 }
 
 export const AddDependent: React.FC<IProps> = ({
   open,
   handleClose,
   employeeId,
+  onSubmit,
+  showGender,
+  showRelationship,
 }) => {
-  const queryClient = useQueryClient();
-
   const [form] = Form.useForm();
-  const { mutate, isLoading } = useAddEmployeeDependent();
 
   const handleSubmit = (data: any) => {
-    mutate(
-      {
-        employeeId,
-        data: {
-          dob: data.dob,
-          fullName: data.fullName,
-          phoneNumber: formatPhoneNumber({
-            code: data.phone.code,
-            number: data.phone.number,
-          }),
-          relationship: data.relationship,
-        },
-      },
-      {
-        onError: (err: any) => {
-          openNotification({
-            state: "error",
-            title: "Error Occurred",
-            description:
-              err?.response.data.message ?? err?.response.data.error.message,
-          });
-        },
-        onSuccess: (res: any) => {
-          openNotification({
-            state: "success",
-
-            title: "Success",
-            description: res.data.message,
-            // duration: 0.4,
-          });
-          form.resetFields();
-          handleClose();
-
-          queryClient.invalidateQueries({
-            queryKey: [QUERY_KEY_FOR_SINGLE_EMPLOYEE],
-            // exact: true,
-          });
-        },
-      }
-    );
+    onSubmit.fn(data, () => {
+      form.resetFields();
+      handleClose();
+    });
   };
   return (
     <Modal
@@ -92,19 +58,34 @@ export const AddDependent: React.FC<IProps> = ({
           <Input placeholder="Full Name" />
         </Form.Item>
         <Form.Item
-          rules={generalValidationRules}
+          rules={[dateHasToBeLesserThanOrEqualToCurrentDayRule]}
           name="dob"
           label="Date of Birth"
         >
           <DatePicker placeholder="Date of Birth" className="w-full" />
         </Form.Item>
         <FormPhoneInput Form={Form} />
-        <Form.Item name="relationship" label="Relationship">
-          <Select options={RELATIONSHIPS} />
-        </Form.Item>
+        {showRelationship && (
+          <Form.Item
+            name="relationship"
+            label="Relationship"
+            rules={generalValidationRules}
+          >
+            <Select options={RELATIONSHIPS} />
+          </Form.Item>
+        )}
+        {showGender && (
+          <Form.Item
+            name="gender"
+            label="Gender"
+            rules={generalValidationRules}
+          >
+            <Select options={GENDERS} />
+          </Form.Item>
+        )}
 
         <div className="flex justify-end">
-          <AppButton type="submit" isLoading={isLoading} />
+          <AppButton type="submit" isLoading={onSubmit?.isLoading} />
         </div>
       </Form>
     </Modal>

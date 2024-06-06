@@ -6,12 +6,11 @@ import { ICurrentCompany } from "types";
 
 type TCreateProps = {
   date: string;
-  employeeId: number;
   title: string;
   purpose: string;
   amount: number;
   attachmentUrls: string[];
-};
+} & { employeeId?: number };
 
 const createData = async (props: {
   data: TCreateProps;

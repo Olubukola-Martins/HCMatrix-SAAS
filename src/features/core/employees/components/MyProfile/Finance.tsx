@@ -5,12 +5,7 @@ import { useQueryClient } from "react-query";
 import { textInputValidationRules } from "utils/formHelpers/validation";
 import { openNotification } from "utils/notifications";
 
-import {
-  TBankValue,
-  TPensionValue,
-  TSingleEmployee,
-  TWalletValue,
-} from "../../types";
+import { TBankValue, TPensionValue, TSingleEmployee } from "../../types";
 import { useSaveEmployeeFinance } from "../../hooks/finance/useSaveEmployeeFinance";
 import { AppButton } from "components/button/AppButton";
 import { QUERY_KEY_FOR_SINGLE_EMPLOYEE } from "../../hooks/useFetchSingleEmployee";
@@ -37,9 +32,6 @@ export const Finance = ({ finance = [], employeeId }: IProps) => {
     );
   };
 
-  const walletValue = finance.find((item) => item.key === "wallet")?.value as
-    | TWalletValue
-    | undefined;
   const pensionValue = finance.find((item) => item.key === "pension")?.value as
     | TPensionValue
     | undefined;
@@ -71,12 +63,6 @@ export const Finance = ({ finance = [], employeeId }: IProps) => {
         </Tooltip>
       </div>
       <div className="bg-card p-3 rounded">
-        <WalletDetailsForm
-          employeeId={employeeId}
-          disabled={disable}
-          value={walletValue}
-        />
-
         <BankDetailsForm
           employeeId={employeeId}
           disabled={disable}
@@ -107,95 +93,6 @@ export const Finance = ({ finance = [], employeeId }: IProps) => {
   );
 };
 
-const WalletDetailsForm: React.FC<{
-  employeeId?: number;
-  disabled?: boolean;
-  value?: TWalletValue;
-}> = ({ employeeId, disabled = false, value }) => {
-  const [form] = Form.useForm();
-  const queryClient = useQueryClient();
-  const { mutate, isLoading } = useSaveEmployeeFinance();
-
-  const handleFinish = (data: any) => {
-    if (employeeId) {
-      mutate(
-        {
-          employeeId,
-          data: {
-            key: "wallet",
-            value: {
-              accountNumber: data.accountNumber,
-              accountProvider: data.accountProvider,
-            },
-          },
-        },
-        {
-          onError: (err: any) => {
-            openNotification({
-              state: "error",
-              title: "Error Occured",
-              description:
-                err?.response.data.message ?? err?.response.data.error.message,
-            });
-          },
-          onSuccess: (res: any) => {
-            openNotification({
-              state: "success",
-
-              title: "Success",
-              description: res?.data?.message,
-            });
-            queryClient.invalidateQueries({
-              queryKey: [QUERY_KEY_FOR_SINGLE_EMPLOYEE],
-              exact: true,
-            });
-          },
-        }
-      );
-    }
-  };
-  useEffect(() => {
-    if (value) {
-      form.setFieldsValue({
-        accountNumber: value.accountNumber,
-        accountProvider: value.accountProvider,
-      });
-    }
-  }, [form, value]);
-  return (
-    <Form
-      layout="vertical"
-      disabled={disabled}
-      form={form}
-      onFinish={handleFinish}
-      requiredMark={false}
-    >
-      <div className="border-b border-gray-400 w-full mb-3">
-        <h2 className="text-accent text-base pb-1">Wallet Details</h2>
-      </div>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
-        <Form.Item
-          name="accountNumber"
-          label="Account Number"
-          rules={textInputValidationRules}
-        >
-          <Input />
-        </Form.Item>
-        <Form.Item
-          name="accountProvider"
-          label="Account Provider"
-          rules={textInputValidationRules}
-        >
-          <Input />
-        </Form.Item>
-      </div>
-
-      <div className="flex items-center justify-end">
-        <AppButton label="Save Changes" type="submit" isLoading={isLoading} />
-      </div>
-    </Form>
-  );
-};
 const PensionDetailsForm: React.FC<{
   employeeId?: number;
   disabled?: boolean;

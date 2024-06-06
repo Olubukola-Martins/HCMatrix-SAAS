@@ -1,13 +1,10 @@
-import { Space, Dropdown, Menu, Table } from "antd";
-import { MoreOutlined } from "@ant-design/icons";
-
+import { Space, Dropdown, Menu } from "antd";
+import { AiOutlineMore } from "react-icons/ai";
 import React, { useState } from "react";
 import { ColumnsType } from "antd/lib/table";
-
 import { getAppropriateColorForStatus } from "utils/colorHelpers/getAppropriateColorForStatus";
 import { usePagination } from "hooks/usePagination";
 import { TApprovalStatus } from "types/statuses";
-
 import moment from "moment";
 import { useApproveORReject } from "hooks/useApproveORReject";
 import { TApprovalRequest } from "features/core/workflows/types/approval-requests";
@@ -15,15 +12,17 @@ import { useFetchApprovalRequests } from "features/core/workflows/hooks/useFetch
 import { useQueryClient } from "react-query";
 import { QUERY_KEY_FOR_JOB_REQUISITIONS } from "../../requisitions/hooks/job/useGetJobRequisitions";
 import { JobRequestDetails } from "./JobRequestDetails";
+import { DEFAULT_DATE_FORMAT } from "constants/dateFormats";
+import { TableWithFocusType } from "components/table";
 
 const JobApprovalRequestsTable: React.FC<{
   status?: TApprovalStatus;
   employeeId?: number;
 }> = ({ status, employeeId }) => {
   const queryClient = useQueryClient();
+  const [request, setRequest] = useState<TApprovalRequest>();
 
   const [showD, setShowD] = useState(false);
-  const [requestId, setRequestId] = useState<number>();
   const { pagination, onChange } = usePagination();
   const { data, isFetching } = useFetchApprovalRequests({
     pagination,
@@ -45,7 +44,9 @@ const JobApprovalRequestsTable: React.FC<{
       dataIndex: "date",
       key: "date",
       render: (_, item) => (
-        <span>{moment(item.jobRequisition?.date).format("YYYY/MM/DD")} </span>
+        <span>
+          {moment(item.jobRequisition?.date).format(DEFAULT_DATE_FORMAT)}{" "}
+        </span>
       ),
     },
     {
@@ -54,7 +55,9 @@ const JobApprovalRequestsTable: React.FC<{
       key: "preferredStartDate",
       render: (_, item) => (
         <span className="capitalize">
-          {moment(item.jobRequisition?.preferredStartDate).format("YYYY/MM/DD")}{" "}
+          {moment(item.jobRequisition?.preferredStartDate).format(
+            DEFAULT_DATE_FORMAT
+          )}{" "}
         </span>
       ),
     },
@@ -108,7 +111,7 @@ const JobApprovalRequestsTable: React.FC<{
                   key="3"
                   onClick={() => {
                     setShowD(true);
-                    setRequestId(item?.jobRequisition?.id);
+                    setRequest(item);
                   }}
                 >
                   View
@@ -119,7 +122,7 @@ const JobApprovalRequestsTable: React.FC<{
                   onClick={() =>
                     confirmApprovalAction({
                       approvalStageId: item?.id,
-                      status: "rejected",
+                      status: "approved",
                       workflowType: !!item?.basicStageId ? "basic" : "advanced",
                       requires2FA: item?.advancedStage?.enableTwoFactorAuth,
                     })
@@ -144,7 +147,7 @@ const JobApprovalRequestsTable: React.FC<{
             }
             trigger={["click"]}
           >
-            <MoreOutlined />
+            <AiOutlineMore />
           </Dropdown>
         </Space>
       ),
@@ -155,15 +158,16 @@ const JobApprovalRequestsTable: React.FC<{
 
   return (
     <div>
-      {requestId && (
+      {request?.jobRequisition?.id && (
         <JobRequestDetails
           open={showD}
           handleClose={() => setShowD(false)}
-          id={requestId}
+          id={request.jobRequisition?.id}
+          approvalRequest={request}
         />
       )}
 
-      <Table
+      <TableWithFocusType
         columns={columns}
         size="small"
         dataSource={data?.data}

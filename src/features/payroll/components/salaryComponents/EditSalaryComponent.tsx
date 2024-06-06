@@ -1,4 +1,4 @@
-import { Form, Input, InputNumber, Modal, Select, Tag } from "antd";
+import { Checkbox, Form, Input, Modal, Select, Tag } from "antd";
 import { AppButton } from "components/button/AppButton";
 import { useUpdateAllowanceOrDeduction } from "features/payroll/hooks/scheme/allowanceAndDeductionHandlers/useUpdateAllowanceOrDeduction";
 import { QUERY_KEY_FOR_PAYROLL_SCHEME_BY_TYPE_OR_ID } from "features/payroll/hooks/scheme/useGetPayrollSchemeByTypeOrId";
@@ -11,8 +11,8 @@ import React, { useState, useEffect } from "react";
 import { useQueryClient } from "react-query";
 import { IModalProps } from "types";
 import {
-  generalValidationRules,
   jsVariableNameValidationRule,
+  numberHasToBeGreaterThanZeroRule,
   textInputValidationRules,
 } from "utils/formHelpers/validation";
 import { openNotification } from "utils/notifications";
@@ -92,7 +92,7 @@ export const EditSalaryComponentForm: React.FC<IFormProps> = ({
     setMode(salaryComponent.mode);
   }, [form, salaryComponent]);
 
-  //   TO DO write a function that makes use of amntRestrict to set max/min of inputNumber
+  //   TO DO write a function that makes use of amntRestrict to set max/min of input
   const handleSubmit = (vals: any) => {
     if (handleSave) {
       handleSave({
@@ -120,6 +120,7 @@ export const EditSalaryComponentForm: React.FC<IFormProps> = ({
           isActive,
           amount: vals.amount,
           label: (vals.name as string).toLocaleLowerCase().split(" ").join("_"),
+          shouldDisplayOnReviewTable: vals?.shouldDisplayOnReviewTable,
         },
       },
       {
@@ -198,19 +199,15 @@ export const EditSalaryComponentForm: React.FC<IFormProps> = ({
       {mode === "percentage" && (
         <Form.Item
           label="What percentage of gross pay?"
-          rules={generalValidationRules}
+          rules={[numberHasToBeGreaterThanZeroRule]}
           name="amount"
         >
-          <InputNumber
-            min={0}
-            placeholder="Percentage of Gross"
-            className="w-full"
-          />
+          <Input min={0} placeholder="Percentage of Gross" className="w-full" />
         </Form.Item>
       )}
       {mode === "fixed" && (
-        <Form.Item label="Amount" rules={generalValidationRules} name="amount">
-          <InputNumber min={0} placeholder="Amount" className="w-full" />
+        <Form.Item label="Amount" rules={[numberHasToBeGreaterThanZeroRule]} name="amount">
+          <Input min={0} placeholder="Amount" className="w-full" />
         </Form.Item>
       )}
 
@@ -233,6 +230,9 @@ export const EditSalaryComponentForm: React.FC<IFormProps> = ({
           </Form.Item>
         </>
       )}
+      <Form.Item name="shouldDisplayOnReviewTable" label="">
+        <Checkbox>Should be displayed on review table</Checkbox>
+      </Form.Item>
 
       <div className="flex justify-end">
         <AppButton label="Save" type="submit" isLoading={isLoading} />

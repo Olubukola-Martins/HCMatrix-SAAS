@@ -8,4 +8,24 @@ export type TFileType =
   | "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
   | "audio/mpeg"
   | "video/mp4";
-  ;
+  
+  | "text/csv"
+  | "video/mp4"
+  | "audio/mpeg";
+
+export type TFormFileInput = TFormSingleFileInput[];
+export interface TFormSingleFileInput {
+  uid: string;
+  lastModified: number;
+  lastModifiedDate: string;
+  name: string;
+  size: number;
+  type: string;
+  percent: number;
+  originFileObj: OriginFileObj;
+  status: string;
+}
+
+interface OriginFileObj {
+  uid: string;
+}

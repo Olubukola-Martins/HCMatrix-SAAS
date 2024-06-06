@@ -16,7 +16,7 @@ const Component: React.FC<
   const { pagination, onChange } = usePagination();
 
   const { data, isFetching } = useGetLoanRequests({
-    type: "all",
+    type: undefined,
     props: {
       pagination,
       date,

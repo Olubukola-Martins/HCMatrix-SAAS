@@ -1,4 +1,4 @@
-import { Button, Table } from "antd";
+import { Button } from "antd";
 
 import React, { useState } from "react";
 import { ColumnsType } from "antd/lib/table";
@@ -7,8 +7,8 @@ import { usePagination } from "hooks/usePagination";
 
 import { TTaxAuthority } from "features/payroll/types";
 import moment from "moment";
-
-import { DeleteFilled, EditFilled } from "@ant-design/icons";
+import { TableWithFocusType } from "components/table";
+import { AiFillDelete, AiFillEdit } from "react-icons/ai";
 import DeleteNSITFAuth from "./DeleteNSITFAuth";
 import EditNSITFAuth from "./EditNSITFAuth";
 import { useGetNSITFAuthorities } from "features/payroll/hooks/organization/nsitfAuthorities/useGetNSITFAuthorities";
@@ -49,12 +49,6 @@ const NSITFAuthTable: React.FC<{
     },
 
     {
-      title: "Employee Count",
-      dataIndex: "pay",
-      key: "pay",
-      render: (_, item) => 0,
-    },
-    {
       title: "Created At",
       dataIndex: "createAr",
       key: "createAr",
@@ -73,12 +67,12 @@ const NSITFAuthTable: React.FC<{
       render: (_, item) => (
         <div>
           <Button
-            icon={<EditFilled />}
+            icon={<AiFillEdit />}
             type="text"
             onClick={() => handleAction({ action: "edit", data: item })}
           />
           <Button
-            icon={<DeleteFilled />}
+            icon={<AiFillDelete />}
             type="text"
             onClick={() => handleAction({ action: "delete", data: item })}
           />
@@ -103,7 +97,7 @@ const NSITFAuthTable: React.FC<{
           handleClose={() => cancelAction()}
         />
       )}
-      <Table
+      <TableWithFocusType
         columns={columns}
         size="small"
         dataSource={data?.data}

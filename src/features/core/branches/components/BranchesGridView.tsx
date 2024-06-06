@@ -6,17 +6,19 @@ import {
   Menu,
   Pagination,
   PaginationProps,
+  Skeleton,
   TablePaginationConfig,
 } from "antd";
 import { TBranch } from "../types";
 
 interface IProps {
-  data: TBranch[];
-  loading: boolean;
+  data?: TBranch[];
+  loading?: boolean;
   pagination?: TablePaginationConfig;
   onChange: PaginationProps["onChange"];
-  editBranch: (val: number) => void;
-  viewBranch: (val: number) => void;
+  editBranch: (val: TBranch) => void;
+  viewBranch: (val: TBranch) => void;
+  deleteBranch: (val: TBranch) => void;
 }
 
 // TO DO: Use the grid component in components folder instead
@@ -28,33 +30,37 @@ export const BranchesGridView = ({
   onChange,
   editBranch,
   viewBranch,
+  deleteBranch,
 }: IProps) => {
   return (
-    <motion.div
-      className="mt-4 flex flex-col gap-4"
-      initial={{ opacity: 0, y: 400 }}
-      animate={{
-        opacity: 1,
-        y: 0,
-      }}
-      key={0}
-      transition={{ ease: "easeIn" }}
-      exit={{ opacity: 0, y: 400 }}
-    >
-      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-        {data.map((item) => (
-          <Box
-            key={item.id}
-            data={item}
-            editBranch={editBranch}
-            viewBranch={viewBranch}
-          />
-        ))}
-      </div>
-      <div className="flex justify-end">
-        <Pagination {...pagination} onChange={onChange} size="small" />
-      </div>
-    </motion.div>
+    <Skeleton loading={loading} paragraph={{ rows: 20 }}>
+      <motion.div
+        className="mt-4 flex flex-col gap-4"
+        initial={{ opacity: 0, y: 400 }}
+        animate={{
+          opacity: 1,
+          y: 0,
+        }}
+        key={0}
+        transition={{ ease: "easeIn" }}
+        exit={{ opacity: 0, y: 400 }}
+      >
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+          {data?.map((item) => (
+            <Box
+              key={item.id}
+              data={item}
+              editBranch={editBranch}
+              viewBranch={viewBranch}
+              deleteBranch={deleteBranch}
+            />
+          ))}
+        </div>
+        <div className="flex justify-end">
+          <Pagination {...pagination} onChange={onChange} size="small" />
+        </div>
+      </motion.div>
+    </Skeleton>
   );
 };
 
@@ -62,10 +68,12 @@ const Box = ({
   data,
   editBranch,
   viewBranch,
+  deleteBranch,
 }: {
   data: TBranch;
-  editBranch: (val: number) => void;
-  viewBranch: (val: number) => void;
+  editBranch: (val: TBranch) => void;
+  viewBranch: (val: TBranch) => void;
+  deleteBranch: (val: TBranch) => void;
 }) => {
   return (
     <>
@@ -78,9 +86,9 @@ const Box = ({
           <Dropdown
             overlay={
               <Menu>
-                <Menu.Item onClick={() => editBranch(data.id)}>Edit</Menu.Item>
-                <Menu.Item onClick={() => viewBranch(data.id)}>View</Menu.Item>
-                <Menu.Item>Delete</Menu.Item>
+                <Menu.Item onClick={() => editBranch(data)}>Edit</Menu.Item>
+                <Menu.Item onClick={() => viewBranch(data)}>View</Menu.Item>
+                <Menu.Item onClick={() => deleteBranch(data)}>Delete</Menu.Item>
               </Menu>
             }
             trigger={["click"]}

@@ -1,3 +1,5 @@
+import { TLicenseType } from "features/authentication/types/auth-user";
+
 export interface ConferenceRoomBooking {
   id: number;
   date: string;
@@ -41,5 +43,5 @@ interface Employee {
   firstName: string;
   updatedAt: string;
   designationId: number;
-  hasSelfService: boolean;
+  licenseType: TLicenseType;
 }

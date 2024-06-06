@@ -1,9 +1,10 @@
 import React, { useState } from "react";
 import { TApprovalStatus } from "types/statuses";
-import { MoreOutlined } from "@ant-design/icons";
+import { TableWithFocusType } from "components/table";
+import { AiOutlineMore } from "react-icons/ai";
 import type { ColumnsType } from "antd/es/table";
 import { usePagination } from "hooks/usePagination";
-import { Button, Dropdown, Menu, Table } from "antd";
+import { Button, Dropdown, Menu } from "antd";
 import { useApiAuth } from "hooks/useApiAuth";
 import moment from "moment";
 import { getAppropriateColorForStatus } from "utils/colorHelpers/getAppropriateColorForStatus";
@@ -11,16 +12,27 @@ import { TTravelRequest } from "../../requisitions/types/travel";
 import { TravelRequestDetails } from "./TravelRequestDetails";
 import { getEmployeeFullName } from "features/core/employees/utils/getEmployeeFullName";
 import { useGetTravelRequisitions } from "../../requisitions/hooks/travel/useGetTravelRequisitions";
+import { DEFAULT_DATE_FORMAT } from "constants/dateFormats";
+import ViewApprovalStages from "features/core/workflows/components/approval-request/ViewApprovalStages";
+
+type TAction = "cancel" | "view" | "view-approval-stages";
 
 export const TravelRequestsTable: React.FC<{
   status?: TApprovalStatus;
   employeeId?: number;
 }> = ({ status, employeeId }) => {
-  const [requestId, setRequestId] = useState<number>();
+  const [request, setRequest] = useState<TTravelRequest>();
+  const [action, setAction] = useState<TAction>();
+  const handleAction = (key: TAction, item?: TTravelRequest) => {
+    setAction(key);
+    setRequest(item);
+  };
+  const onClose = () => {
+    setAction(undefined);
+    setRequest(undefined);
+  };
   const { companyId, token } = useApiAuth();
-  const { pagination, onChange } = usePagination({
-    pageSize: 4,
-  });
+  const { pagination, onChange } = usePagination();
   const { data, isFetching } = useGetTravelRequisitions({
     companyId,
     token,
@@ -29,6 +41,7 @@ export const TravelRequestsTable: React.FC<{
       limit: pagination.limit,
       offset: pagination.offset,
     },
+    employeeId,
   });
 
   const columns: ColumnsType<TTravelRequest> = [
@@ -37,48 +50,48 @@ export const TravelRequestsTable: React.FC<{
       dataIndex: "date",
       key: "date",
       render: (_, item) => (
-        <span>{moment(item.createdAt).format("YYYY/MM/DD")} </span>
+        <span>{moment(item.createdAt).format(DEFAULT_DATE_FORMAT)} </span>
       ),
     },
     {
       title: "Arrival Date",
-      dataIndex: "adate",
-      key: "adate",
+      dataIndex: "Arrival Date",
+      key: "Arrival Date",
       render: (_, item) => (
-        <span>{moment(item.arrivalDate).format("YYYY/MM/DD")} </span>
+        <span>{moment(item.arrivalDate).format(DEFAULT_DATE_FORMAT)} </span>
       ),
     },
     {
       title: "Departure Date",
-      dataIndex: "ddate",
-      key: "ddate",
+      dataIndex: "Departure Date",
+      key: "Departure Date",
       render: (_, item) => (
-        <span>{moment(item.departureDate).format("YYYY/MM/DD")} </span>
+        <span>{moment(item.departureDate).format(DEFAULT_DATE_FORMAT)} </span>
       ),
     },
     {
       title: "Travel ID",
-      dataIndex: "id",
-      key: "id",
+      dataIndex: "Travel ID",
+      key: "Travel ID",
       render: (_, item) => <span>{item.id} </span>,
     },
 
     {
       title: "Employee",
-      dataIndex: "emp",
-      key: "emp",
+      dataIndex: "Employee",
+      key: "Employee",
       render: (_, item) => <span>{getEmployeeFullName(item.employee)} </span>,
     },
     {
       title: "Reason",
-      dataIndex: "reas",
-      key: "reas",
+      dataIndex: "Reason",
+      key: "Reason",
       render: (_, item) => <span className="capitalize">{item.reason} </span>,
     },
     {
       title: "Duration (days)",
-      dataIndex: "dura",
-      key: "dura",
+      dataIndex: "Duration (days)",
+      key: "Duration (days)",
       render: (_, item) => <span className="capitalize">{item.duration} </span>,
     },
     {
@@ -90,7 +103,7 @@ export const TravelRequestsTable: React.FC<{
           className="capitalize"
           style={{ color: getAppropriateColorForStatus(item.status) }}
         >
-          {item.status}{" "}
+          {item.status}
         </span>
       ),
     },
@@ -104,22 +117,18 @@ export const TravelRequestsTable: React.FC<{
             <Menu>
               <Menu.Item
                 key="3"
-                onClick={() => {
-                  setRequestId(item.id);
-                }}
+                onClick={() => handleAction("view-approval-stages", item)}
               >
+                View Stages
+              </Menu.Item>
+              <Menu.Item key="39090" onClick={() => handleAction("view", item)}>
                 View Details
               </Menu.Item>
             </Menu>
           }
           trigger={["click"]}
         >
-          <Button
-            title="Actions"
-            icon={<MoreOutlined />}
-            type="text"
-            // onClick={() => handleEdit(item._id)}
-          />
+          <Button title="Actions" icon={<AiOutlineMore />} type="text" />
         </Dropdown>
       ),
     },
@@ -127,14 +136,22 @@ export const TravelRequestsTable: React.FC<{
 
   return (
     <div>
-      {requestId && (
+      {request && (
         <TravelRequestDetails
-          open={!!requestId}
-          handleClose={() => setRequestId(undefined)}
-          id={requestId}
+          open={action === "view"}
+          handleClose={onClose}
+          id={request.id}
         />
       )}
-      <Table
+      {request && (
+        <ViewApprovalStages
+          handleClose={onClose}
+          open={action === "view-approval-stages"}
+          id={request?.id}
+          type="travel"
+        />
+      )}
+      <TableWithFocusType
         size="small"
         dataSource={data?.data}
         loading={isFetching}

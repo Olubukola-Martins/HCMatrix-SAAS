@@ -1,7 +1,11 @@
 import axios from "axios";
 import { MICROSERVICE_ENDPOINTS } from "config/enviroment";
+import { TLicenseType } from "features/authentication/types/auth-user";
 import { useQuery } from "react-query";
 import { ICurrentCompany, IPaginationProps, ISearchParams } from "types";
+import { TVehicleStatus, TVehicleType } from "./useCreateVehicle";
+import { DEFAULT_PAGE_SIZE } from "constants/general";
+import { TApprovalStatus } from "types/statuses";
 
 export type TVehicleBooking = {
   id: number;
@@ -23,7 +27,7 @@ interface Employee {
   firstName: string;
   lastName: string;
   email: string;
-  hasSelfService: boolean;
+  licenseType: TLicenseType;
   empUid: string;
   roleId: number;
   status: string;
@@ -39,11 +43,11 @@ interface Employee {
 interface Vehicle {
   id: number;
   label: string;
-  type: string;
+  type: TVehicleType;
   brand: string;
   model: string;
   plateNumber: string;
-  status: string;
+  status: TVehicleStatus;
   imageUrl: string;
   cost: string;
   color: string;
@@ -60,15 +64,17 @@ interface Vehicle {
 interface IGetDataProps extends ICurrentCompany {
   pagination?: IPaginationProps;
   searchParams?: ISearchParams;
+  employeeId?: number;
+  status?: TApprovalStatus[] | TApprovalStatus;
 }
 
 export const QUERY_KEY_FOR_VEHICLE_BOOKINGS = "vehicle-bookings";
 
-const getVehicleBookings = async (
+export const getVehicleBookings = async (
   props: IGetDataProps
 ): Promise<{ data: TVehicleBooking[]; total: number }> => {
   const { pagination } = props;
-  const limit = pagination?.limit ?? 10;
+  const limit = pagination?.limit ?? DEFAULT_PAGE_SIZE;
   const offset = pagination?.offset ?? 0;
   const name = props.searchParams?.name ?? "";
 
@@ -84,6 +90,11 @@ const getVehicleBookings = async (
       limit,
       offset,
       search: name,
+      employeeId: props?.employeeId,
+      status:
+        typeof props?.status === "string"
+          ? props?.status
+          : props?.status?.join(","),
     },
   };
 
@@ -104,9 +115,14 @@ const getVehicleBookings = async (
 };
 
 export const useFetchVehicleBookings = (props: IGetDataProps) => {
-  const { pagination, searchParams } = props;
+  const { pagination, searchParams, employeeId } = props;
   const queryData = useQuery(
-    [QUERY_KEY_FOR_VEHICLE_BOOKINGS, pagination?.limit, searchParams?.name],
+    [
+      QUERY_KEY_FOR_VEHICLE_BOOKINGS,
+      pagination?.limit,
+      searchParams?.name,
+      employeeId,
+    ],
     () =>
       getVehicleBookings({
         ...props,

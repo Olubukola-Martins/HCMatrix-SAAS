@@ -1,5 +1,7 @@
-import { Space, Dropdown, Menu, Table } from "antd";
-import { MoreOutlined } from "@ant-design/icons";
+import { Space, Dropdown, Menu } from "antd";
+
+import { TableWithFocusType } from "components/table";
+import { AiOutlineMore } from "react-icons/ai";
 
 import React, { useState } from "react";
 import { ColumnsType } from "antd/lib/table";
@@ -23,7 +25,8 @@ const TransferApprovalRequestsTable: React.FC<{
   const queryClient = useQueryClient();
 
   const [showD, setShowD] = useState(false);
-  const [requestId, setRequestId] = useState<number>();
+  const [request, setRequest] = useState<TApprovalRequest>();
+
   const { pagination, onChange } = usePagination();
   const { data, isFetching } = useFetchApprovalRequests({
     pagination,
@@ -44,11 +47,10 @@ const TransferApprovalRequestsTable: React.FC<{
       title: "Name",
       dataIndex: "name",
       key: "name",
+      ellipsis: true,
       render: (_, item) => (
         <span className="capitalize">
-          {item?.transferRequisition
-            ? getEmployeeFullName(item?.transferRequisition?.employee)
-            : ""}
+          {item ? getEmployeeFullName(item?.transferRequisition?.employee) : ""}
         </span>
       ),
     },
@@ -58,7 +60,7 @@ const TransferApprovalRequestsTable: React.FC<{
       key: "Employee ID",
       render: (_, item) => (
         <span className="capitalize">
-          {item.transferRequisition?.employee.empUid}{" "}
+          {item?.transferRequisition?.employee.empUid}{" "}
         </span>
       ),
     },
@@ -66,52 +68,80 @@ const TransferApprovalRequestsTable: React.FC<{
       title: "Current Designation",
       dataIndex: "Current Designation",
       key: "Current Designation",
-      render: (_, item) => <span className="capitalize">N/A </span>,
+      ellipsis: true,
+
+      render: (_, item) => (
+        <span className="capitalize">
+          {item?.transferRequisition?.employee?.designation?.name}
+        </span>
+      ),
     },
 
     {
       title: "Current Department",
       dataIndex: "Current Department",
       key: "Current Department",
-      render: (_, item) => <span>N/A</span>,
+
+      ellipsis: true,
+      render: (_, item) => (
+        <span className="capitalize">
+          {item?.transferRequisition?.employee?.designation?.department.name}
+        </span>
+      ),
     },
     {
-      title: "Current Location",
-      dataIndex: "Current Location",
-      key: "Current Location",
-      render: (_, item) => <span>N/A</span>,
+      title: "Current Branch",
+      dataIndex: "Current Branch",
+      ellipsis: true,
+      key: "Current Branch",
+
+      render: (_, item) => (
+        <span className="capitalize">
+          {item?.transferRequisition?.employee.jobInformation?.branch?.name}
+        </span>
+      ),
     },
     {
       title: "Proposed Designation",
       dataIndex: "Proposed Designation",
       key: "Proposed Designation",
+      ellipsis: true,
+
       render: (_, item) => (
-        <span>{item.transferRequisition?.proposedDesignation.name}</span>
+        <span className="capitalize">
+          {item?.transferRequisition?.proposedDesignation.name}
+        </span>
       ),
     },
     {
       title: "Proposed Department",
       dataIndex: "Proposed Department",
       key: "Proposed Department",
+      ellipsis: true,
+
       render: (_, item) => (
-        <span>
-          {item.transferRequisition?.proposedDesignation.department.name}
+        <span className="capitalize">
+          {item?.transferRequisition?.proposedDesignation.department.name}
         </span>
       ),
     },
     {
-      title: "Proposed Location",
-      dataIndex: "Proposed Location",
-      key: "Proposed Location",
-      render: (_, item) => <span>{"N/A"}</span>,
-    },
+      title: "Proposed branch",
+      dataIndex: "Proposed branch",
+      key: "Proposed branch",
+      ellipsis: true,
 
+      render: (_, item) => (
+        <span className="capitalize">
+          {item?.transferRequisition?.proposedBranch.name}
+        </span>
+      ),
+    },
     {
       title: "Status",
       dataIndex: "status",
-
       key: "status",
-      render: (val, item) => (
+      render: (_, item) => (
         <span
           className="capitalize"
           style={{
@@ -120,7 +150,7 @@ const TransferApprovalRequestsTable: React.FC<{
             ),
           }}
         >
-          {item?.transferRequisition?.status}
+          {item?.transferRequisition?.status}{" "}
         </span>
       ),
     },
@@ -138,18 +168,18 @@ const TransferApprovalRequestsTable: React.FC<{
                   key="3"
                   onClick={() => {
                     setShowD(true);
-                    setRequestId(item?.transferRequisition?.id);
+                    setRequest(item);
                   }}
                 >
                   View
                 </Menu.Item>
                 <Menu.Item
-                  hidden={item.transferRequisition?.status !== "pending"}
+                  hidden={item?.transferRequisition?.status !== "pending"}
                   key="2"
                   onClick={() =>
                     confirmApprovalAction({
                       approvalStageId: item?.id,
-                      status: "rejected",
+                      status: "approved",
                       workflowType: !!item?.basicStageId ? "basic" : "advanced",
                       requires2FA: item?.advancedStage?.enableTwoFactorAuth,
                     })
@@ -158,7 +188,7 @@ const TransferApprovalRequestsTable: React.FC<{
                   Approve
                 </Menu.Item>
                 <Menu.Item
-                  hidden={item.transferRequisition?.status !== "pending"}
+                  hidden={item?.transferRequisition?.status !== "pending"}
                   key="1"
                   onClick={() =>
                     confirmApprovalAction({
@@ -174,7 +204,7 @@ const TransferApprovalRequestsTable: React.FC<{
             }
             trigger={["click"]}
           >
-            <MoreOutlined />
+            <AiOutlineMore />
           </Dropdown>
         </Space>
       ),
@@ -185,15 +215,16 @@ const TransferApprovalRequestsTable: React.FC<{
 
   return (
     <div>
-      {requestId && (
+      {request?.transferRequisition?.id && (
         <TransferDetails
           open={showD}
           handleClose={() => setShowD(false)}
-          id={requestId}
+          id={request?.transferRequisition?.id}
+          approvalRequest={request}
         />
       )}
 
-      <Table
+      <TableWithFocusType
         columns={columns}
         size="small"
         dataSource={data?.data}

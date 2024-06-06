@@ -6,7 +6,6 @@ import { ICurrentCompany } from "types";
 import { TPriority } from "types/priorities";
 
 type TCreateProps = {
-  employeeId: number;
   location: string;
   reason: string;
   departureDate: string;
@@ -16,13 +15,13 @@ type TCreateProps = {
   cost: number;
   billableToClient: boolean;
   priority?: TPriority;
-};
+} & { employeeId?: number };
 
 const createData = async (props: {
   data: TCreateProps;
   auth: ICurrentCompany;
 }) => {
-  const url = `${MICROSERVICE_ENDPOINTS.UTILITY}/self-service/travel-request`;
+  const url = `${MICROSERVICE_ENDPOINTS.UTILITY}/self-service/requisition/travel`;
   const config = {
     headers: {
       Accept: "application/json",

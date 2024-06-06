@@ -1,15 +1,19 @@
-import React from "react";
+import React, { useState } from "react";
 import { motion } from "framer-motion";
 import { Table } from "antd";
 import { ColumnsType, TablePaginationConfig, TableProps } from "antd/lib/table";
 import { TDesignation } from "../types";
+import { DESIGNATION_TABLE_COLUMNS } from "./columns";
+import { TableFocusTypeBtn } from "components/table";
 
 interface IProps {
-  data: TDesignation[];
-  loading: boolean;
-  pagination?: TablePaginationConfig;
   onChange?: TableProps<TDesignation>["onChange"];
-  editDesignation: (val: number) => void;
+  data?: TDesignation[];
+  loading?: boolean;
+  pagination?: TablePaginationConfig;
+  editDesignation: (val: TDesignation) => void;
+  viewDesignation: (val: TDesignation) => void;
+  deleteDesignation: (val: TDesignation) => void;
 }
 
 export const DesignationsTableView = ({
@@ -18,42 +22,20 @@ export const DesignationsTableView = ({
   pagination,
   onChange,
   editDesignation,
+  deleteDesignation,
+  viewDesignation,
 }: IProps) => {
-  const columns: ColumnsType<TDesignation> = [
-    {
-      title: "Name",
-      dataIndex: "name",
-      key: "name",
-    },
-    {
-      title: "Department",
-      dataIndex: "department",
-      key: "department",
-      render: (val) => val.name,
-    },
+  const columns: ColumnsType<TDesignation> = DESIGNATION_TABLE_COLUMNS(
+    editDesignation,
+    viewDesignation,
+    deleteDesignation
+  );
+  const [selectedColumns, setSelectedColumns] =
+    useState<ColumnsType<TDesignation>>(columns);
 
-    {
-      title: "Emloyee Count",
-      dataIndex: "employeeCount",
-      key: "employeeCount",
-    },
-    {
-      title: "Action",
-      dataIndex: "action",
-      render: (_, item) => (
-        <div className="flex items-center gap-3 text-lg">
-          <i
-            className="ri-pencil-line cursor-pointer hover:text-caramel"
-            onClick={() => editDesignation(item.id)}
-          ></i>
-          <i className="ri-delete-bin-line cursor-pointer hover:text-caramel"></i>
-        </div>
-      ),
-    },
-  ];
   return (
     <motion.div
-      className="  mt-4"
+      className="  mt-4 space-y-4"
       initial={{ opacity: 0, y: 400 }}
       animate={{
         opacity: 1,
@@ -63,10 +45,19 @@ export const DesignationsTableView = ({
       transition={{ ease: "easeIn" }}
       exit={{ opacity: 0, y: 400 }}
     >
+      <div className="flex justify-end">
+        {TableFocusTypeBtn<TDesignation>({
+          selectedColumns,
+          setSelectedColumns,
+          data: {
+            columns,
+          },
+        })}
+      </div>
       <Table
-        columns={columns}
+        columns={selectedColumns}
         size="small"
-        dataSource={data}
+        dataSource={data?.map((item) => ({ key: item.id, ...item }))}
         loading={loading}
         pagination={pagination}
         onChange={onChange}

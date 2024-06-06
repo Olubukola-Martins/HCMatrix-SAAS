@@ -1,3 +1,5 @@
+import { TLicenseType } from "features/authentication/types/auth-user";
+
 export interface VehicleBooking {
   id: number;
   date: string;
@@ -28,7 +30,7 @@ interface Employee {
   firstName: string;
   updatedAt: string;
   designationId: number;
-  hasSelfService: boolean;
+  licenseType: TLicenseType;
 }
 
 interface Vehicle {

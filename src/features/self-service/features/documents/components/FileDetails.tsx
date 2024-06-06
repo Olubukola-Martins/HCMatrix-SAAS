@@ -26,7 +26,7 @@ export const FileDetails: React.FC<IProps> = ({
       open={open}
       handleClose={handleClose}
       loading={isFetching}
-      title={`${file?.name} File`}
+      title={file ? `${file?.name} File` : ""}
       formFields={[
         {
           label: "Name",

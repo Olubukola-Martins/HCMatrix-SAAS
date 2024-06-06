@@ -1,6 +1,6 @@
 import PayrollHome from "features/payroll/pages/PayrollHome";
 import { appRoutes } from "../paths";
-import { TRouteData } from "../types";
+import { TAppPageDataFnProps, TRouteData } from "../types";
 import PayrollReview from "features/payroll/pages/PayrollReview";
 import PayrollComparison from "features/payroll/pages/PayrollComparison";
 import PayrollReport from "features/payroll/pages/PayrollReport";
@@ -33,293 +33,624 @@ import EditPayrollReportTemplate from "features/payroll/pages/EditPayrollReportT
 import ViewPayrollReportTemplate from "features/payroll/pages/ViewPayrollReportTemplate";
 import ViewPayslipTemplate from "features/payroll/pages/ViewPayslipTemplate";
 import SingleCostCentrePage from "features/payroll/pages/SingleCostCentrePage";
-import PayslipsTransactionsPage from "features/payroll/pages/PayslipsTransactionsPage";
 import PayrollSetting from "features/payroll/pages/PayrollSetting";
+import { canUserAccessComponent } from "components/permission-restriction/PermissionRestrictor";
 
-export const payrollRoutes: TRouteData[] = [
-  {
-    element: <SingleCostCentrePage />,
-    path: appRoutes.singleCostCentre().format,
-    isSearchable: false,
+// TODO: Perm Restrict payroll pages [Done], then move to home dashboard, then handbook, then company organogram, then back to self service restrictions as per components, then payroll bug fixes n removal of leave comp, and then tax finale
 
-    isPrimaryFeature: false,
-  },
-  {
-    element: <PayrollCostCentresPage />,
-    path: appRoutes.payrollCostCentres,
-    isSearchable: true,
-    title: "Cost Centres",
-    isPrimaryFeature: true,
-  },
-  {
-    // This is made false cos this feature will not be used in mvp, so the tax will simply be set in the corresponding payroll schemes
-    element: <PayrollTaxPoliciesPage />,
-    path: appRoutes.payrollTaxPolicies,
-    isSearchable: false,
-    title: "Tax Policies",
-    isPrimaryFeature: false,
-  },
-  {
-    element: <CreateTaxPolicyPage />,
-    path: appRoutes.createTaxPolicy,
-    isSearchable: true,
-    title: "Create Tax Policy",
-    isPrimaryFeature: false,
-  },
-  {
-    element: <ExchangeRatesPage />,
-    path: appRoutes.payrollExchangeRates,
-    isSearchable: true,
-    title: "Exchange Rates",
-    isPrimaryFeature: true,
-  },
+// NOTE: The subscription pattern will !doesSubscriptionContains({companySubscriptionRespources, requiredResources: ["payroll"]}) && !canUserAccessComponent({userPermissions, requiredPermissions: ["manage-payroll"]})
+export const payrollRoutes = (props: TAppPageDataFnProps): TRouteData[] => {
+  const { userPermissions, activeSubscription } = props;
+  return [
+    {
+      element: <SingleCostCentrePage />,
+      path: appRoutes.singleCostCentre().format,
+      isSearchable: false,
+      hidden: !canUserAccessComponent({
+        userPermissions,
+        requiredPermissions: ["manage-cost-centres"],
+        activeSubscription,
+        requiredSubscriptionState: {
+          label: "payroll",
+          resources: ["payroll-analytics", "payroll-disbursement"],
+        },
+      }),
+      isPrimaryFeature: false,
+    },
+    {
+      element: <PayrollCostCentresPage />,
+      path: appRoutes.payrollCostCentres,
+      isSearchable: true,
+      title: "Cost Centres",
+      isPrimaryFeature: true,
+      hidden: !canUserAccessComponent({
+        userPermissions,
+        requiredPermissions: ["manage-cost-centres"],
+        activeSubscription,
+        requiredSubscriptionState: {
+          label: "payroll",
+          resources: ["payroll-analytics", "payroll-disbursement"],
+        },
+      }),
+    },
 
-  {
-    element: <PayrollSchemesPage />,
-    path: appRoutes.payrollSchemes,
-    isSearchable: true,
-    title: "Payroll Schemes",
-    isPrimaryFeature: true,
-  },
-  {
-    element: <SetupGradePayrollSchemePage />,
-    path: appRoutes.setupGradePayrollScheme,
-    isSearchable: true,
-    title: "Office Payroll Scheme",
-    isPrimaryFeature: false,
-  },
-  {
-    element: <SetupDirectSalaryPayrollSchemePage />,
-    path: appRoutes.setupDirectSalaryPayrollScheme,
-    isSearchable: true,
-    title: "Direct Salary Payroll Scheme",
-    isPrimaryFeature: false,
-  },
-  {
-    element: <SetupProjectPayrollSchemePage />,
-    path: appRoutes.setupProjectPayrollScheme,
-    isSearchable: true,
-    title: "Project Payroll Scheme",
-    isPrimaryFeature: false,
-  },
-  {
-    element: <SetupSingleProjectPayrollSchemePage />,
-    path: appRoutes.setupSingleProjectPayrollSchemeWithoutExistingScheme()
-      .format,
-    isSearchable: false,
-    title: "Single Project Payroll Scheme",
-    isPrimaryFeature: false,
-  },
-  {
-    element: <SetupSingleProjectPayrollSchemePage />,
-    path: appRoutes.setupSingleProjectPayrollScheme().format,
-    isSearchable: false,
-    title: "Single Project Payroll Scheme",
-    isPrimaryFeature: false,
-  },
-  {
-    element: <SetupWagesPayrollSchemePage />,
-    path: appRoutes.setupWagesPayrollScheme,
-    isSearchable: true,
-    title: "Wages Payroll Scheme",
-    isPrimaryFeature: false,
-  },
-  {
-    element: <SetupDailyWagesPayrollSchemePage />,
-    path: appRoutes.setupDailyWagesPayrollScheme,
-    isSearchable: false,
-    title: "Daily Wages Payroll Scheme",
-    isPrimaryFeature: false,
-  },
-  {
-    element: <SetupDailyWagesPayrollSchemePage />,
-    path: appRoutes.setupWagesPayrollSchemeById({ frequency: "daily" }).format,
-    isSearchable: false,
-    title: "Daily Wages Payroll Scheme(done-setup)",
-    isPrimaryFeature: false,
-  },
-  {
-    element: <SetupMonthlyWagesPayrollSchemePage />,
-    path: appRoutes.setupMonthlyWagesPayrollScheme,
-    isSearchable: false,
-    title: "Monthly Wages Payroll Scheme",
-    isPrimaryFeature: false,
-  },
-  {
-    element: <SetupMonthlyWagesPayrollSchemePage />,
-    path: appRoutes.setupWagesPayrollSchemeById({ frequency: "monthly" })
-      .format,
-    isSearchable: false,
-    title: "Monthly Wages Payroll Scheme(done-setup)",
-    isPrimaryFeature: false,
-  },
-  {
-    element: <ListOfPayrollsPage />,
-    path: appRoutes.listOfPayrolls,
-    isSearchable: true,
-    title: "Monthly Wages Payroll Scheme",
-    isPrimaryFeature: false,
-  },
-  {
-    element: <PayrollSetting />,
-    path: appRoutes.payrollSettings,
-    isSearchable: true,
-    title: "Payroll Settings",
-    isPrimaryFeature: false,
-  },
+    {
+      element: <ExchangeRatesPage />,
+      path: appRoutes.payrollExchangeRates,
+      isSearchable: true,
+      title: "Exchange Rates",
+      isPrimaryFeature: true,
+      hidden: !canUserAccessComponent({
+        userPermissions,
+        requiredPermissions: ["manage-exchange-rates"],
+        activeSubscription,
+        requiredSubscriptionState: {
+          label: "payroll",
+          resources: ["payroll-analytics", "payroll-disbursement"],
+        },
+      }),
+    },
 
-  {
-    element: <PayGradesAndCategoriesPage />,
-    path: appRoutes.payGradeAndCategorySettings,
-    title: "Grade & Categories",
-    isSearchable: true,
-    isPrimaryFeature: true,
-  },
-  {
-    element: <TaxAuthPage />,
-    path: appRoutes.taxAuthorities,
-    title: "Tax Authorities",
-    isSearchable: true,
-    isPrimaryFeature: true,
-  },
-  {
-    element: <ITFAuthPage />,
-    path: appRoutes.itfAuthorities,
-    title: "ITF Authorities",
-    isSearchable: true,
-    isPrimaryFeature: true,
-  },
-  {
-    element: <NSITFAuthPage />,
-    path: appRoutes.nsitfAuthorities,
-    title: "NSITF Authorities",
-    isSearchable: true,
-    isPrimaryFeature: true,
-  },
-  {
-    element: <PensionAdminsPage />,
-    path: appRoutes.pensionAdministrators,
-    title: "Pension Administrators",
-    isSearchable: true,
-    isPrimaryFeature: true,
-  },
-  {
-    element: <div />,
-    path: appRoutes.payrollSettings,
-    isSearchable: true,
-    title: "Payroll Policy",
-  },
-  {
-    element: <PayrollHome />,
-    path: appRoutes.payrollHome,
-    isSearchable: true,
-    title: "Payroll",
-  },
+    {
+      element: <PayrollSchemesPage />,
+      path: appRoutes.payrollSchemes,
+      isSearchable: true,
+      title: "Payroll Schemes",
+      isPrimaryFeature: true,
+      hidden: !canUserAccessComponent({
+        userPermissions,
+        requiredPermissions: ["manage-payroll-schemes"],
+        activeSubscription,
+        requiredSubscriptionState: {
+          label: "payroll",
+          resources: ["payroll-analytics", "payroll-disbursement"],
+        },
+      }),
+    },
+    {
+      element: <SetupGradePayrollSchemePage />,
+      path: appRoutes.setupGradePayrollScheme,
+      isSearchable: true,
+      title: "Step Pay Payroll Scheme",
+      isPrimaryFeature: false,
+      hidden: !canUserAccessComponent({
+        userPermissions,
+        requiredPermissions: ["manage-payroll-schemes"],
+        activeSubscription,
+        requiredSubscriptionState: {
+          label: "payroll",
+          resources: ["payroll-analytics", "payroll-disbursement"],
+        },
+      }),
+    },
+    {
+      element: <SetupDirectSalaryPayrollSchemePage />,
+      path: appRoutes.setupDirectSalaryPayrollScheme,
+      isSearchable: true,
+      title: "Direct Salary Payroll Scheme",
+      isPrimaryFeature: false,
+      hidden: !canUserAccessComponent({
+        userPermissions,
+        requiredPermissions: ["manage-payroll-schemes"],
+        activeSubscription,
+        requiredSubscriptionState: {
+          label: "payroll",
+          resources: ["payroll-analytics", "payroll-disbursement"],
+        },
+      }),
+    },
+    {
+      element: <SetupProjectPayrollSchemePage />,
+      path: appRoutes.setupProjectPayrollScheme,
+      isSearchable: true,
+      title: "Project Payroll Scheme",
+      isPrimaryFeature: false,
+      hidden: !canUserAccessComponent({
+        userPermissions,
+        requiredPermissions: ["manage-payroll-schemes"],
+        activeSubscription,
+        requiredSubscriptionState: {
+          label: "payroll",
+          resources: ["payroll-analytics", "payroll-disbursement"],
+        },
+      }),
+    },
+    {
+      element: <SetupSingleProjectPayrollSchemePage />,
+      path: appRoutes.setupSingleProjectPayrollSchemeWithoutExistingScheme()
+        .format,
+      isSearchable: false,
+      title: "Single Project Payroll Scheme",
+      isPrimaryFeature: false,
+      hidden: !canUserAccessComponent({
+        userPermissions,
+        requiredPermissions: ["manage-payroll-schemes"],
+        activeSubscription,
+        requiredSubscriptionState: {
+          label: "payroll",
+          resources: ["payroll-analytics", "payroll-disbursement"],
+        },
+      }),
+    },
+    {
+      element: <SetupSingleProjectPayrollSchemePage />,
+      path: appRoutes.setupSingleProjectPayrollScheme().format,
+      isSearchable: false,
+      title: "Single Project Payroll Scheme",
+      isPrimaryFeature: false,
+      hidden: !canUserAccessComponent({
+        userPermissions,
+        requiredPermissions: ["manage-payroll-schemes"],
+        activeSubscription,
+        requiredSubscriptionState: {
+          label: "payroll",
+          resources: ["payroll-analytics", "payroll-disbursement"],
+        },
+      }),
+    },
+    {
+      element: <SetupWagesPayrollSchemePage />,
+      path: appRoutes.setupWagesPayrollScheme,
+      isSearchable: true,
+      title: "Wages Payroll Scheme",
+      isPrimaryFeature: false,
+      hidden: !canUserAccessComponent({
+        userPermissions,
+        requiredPermissions: ["manage-payroll-schemes"],
+        activeSubscription,
+        requiredSubscriptionState: {
+          label: "payroll",
+          resources: ["payroll-analytics", "payroll-disbursement"],
+        },
+      }),
+    },
+    {
+      element: <SetupDailyWagesPayrollSchemePage />,
+      path: appRoutes.setupDailyWagesPayrollScheme,
+      isSearchable: false,
+      title: "Daily Wages Payroll Scheme",
+      isPrimaryFeature: false,
+      hidden: !canUserAccessComponent({
+        userPermissions,
+        requiredPermissions: ["manage-payroll-schemes"],
+        activeSubscription,
+        requiredSubscriptionState: {
+          label: "payroll",
+          resources: ["payroll-analytics", "payroll-disbursement"],
+        },
+      }),
+    },
+    {
+      element: <SetupDailyWagesPayrollSchemePage />,
+      path: appRoutes.setupWagesPayrollSchemeById({ frequency: "daily" })
+        .format,
+      isSearchable: false,
+      title: "Daily Wages Payroll Scheme(done-setup)",
+      isPrimaryFeature: false,
+      hidden: !canUserAccessComponent({
+        userPermissions,
+        requiredPermissions: ["manage-payroll-schemes"],
+        activeSubscription,
+        requiredSubscriptionState: {
+          label: "payroll",
+          resources: ["payroll-analytics", "payroll-disbursement"],
+        },
+      }),
+    },
+    {
+      element: <SetupMonthlyWagesPayrollSchemePage />,
+      path: appRoutes.setupMonthlyWagesPayrollScheme,
+      isSearchable: false,
+      title: "Monthly Wages Payroll Scheme",
+      isPrimaryFeature: false,
+      hidden: !canUserAccessComponent({
+        userPermissions,
+        requiredPermissions: ["manage-payroll-schemes"],
+        activeSubscription,
+        requiredSubscriptionState: {
+          label: "payroll",
+          resources: ["payroll-analytics", "payroll-disbursement"],
+        },
+      }),
+    },
+    {
+      element: <SetupMonthlyWagesPayrollSchemePage />,
+      path: appRoutes.setupWagesPayrollSchemeById({ frequency: "monthly" })
+        .format,
+      isSearchable: false,
+      title: "Monthly Wages Payroll Scheme(done-setup)",
+      isPrimaryFeature: false,
+      hidden: !canUserAccessComponent({
+        userPermissions,
+        requiredPermissions: ["manage-payroll-schemes"],
+        activeSubscription,
+        requiredSubscriptionState: {
+          label: "payroll",
+          resources: ["payroll-analytics", "payroll-disbursement"],
+        },
+      }),
+    },
+    {
+      element: <ListOfPayrollsPage />,
+      path: appRoutes.listOfPayrolls,
+      isSearchable: true,
+      title: "Monthly Wages Payroll Scheme",
+      isPrimaryFeature: false,
+      hidden: !canUserAccessComponent({
+        userPermissions,
+        requiredPermissions: ["view-all-payrolls"],
+        activeSubscription,
+        requiredSubscriptionState: {
+          label: "payroll",
+          resources: ["payroll-analytics", "payroll-disbursement"],
+        },
+      }),
+    },
+    {
+      element: <PayrollSetting />,
+      path: appRoutes.payrollSettings,
+      isSearchable: true,
+      title: "Payroll Settings",
+      isPrimaryFeature: false,
+      hidden: !canUserAccessComponent({
+        userPermissions,
+        requiredPermissions: ["manage-payroll-settings"],
+        activeSubscription,
+        requiredSubscriptionState: {
+          label: "payroll",
+          resources: ["payroll-analytics", "payroll-disbursement"],
+        },
+      }),
+    },
 
-  {
-    element: <PayrollReview />,
-    path: appRoutes.payrollReview,
-    isSearchable: true,
-    title: "Payroll Review",
-  },
+    {
+      element: <PayGradesAndCategoriesPage />,
+      path: appRoutes.payGradeAndCategorySettings,
+      title: "Grade & Categories",
+      isSearchable: true,
+      isPrimaryFeature: true,
+      hidden: !canUserAccessComponent({
+        userPermissions,
+        requiredPermissions: ["manage-pay-grades-and-categories"],
+        activeSubscription,
+        requiredSubscriptionState: {
+          label: "payroll",
+          resources: ["payroll-analytics", "payroll-disbursement"],
+        },
+      }),
+    },
+    {
+      element: <TaxAuthPage />,
+      path: appRoutes.taxAuthorities,
+      title: "Tax Authorities",
+      isSearchable: true,
+      isPrimaryFeature: true,
+      hidden: !canUserAccessComponent({
+        userPermissions,
+        requiredPermissions: ["manage-tax-authorities"],
+        activeSubscription,
+        requiredSubscriptionState: {
+          label: "payroll",
+          resources: ["payroll-analytics", "payroll-disbursement"],
+        },
+      }),
+    },
+    {
+      element: <ITFAuthPage />,
+      path: appRoutes.itfAuthorities,
+      title: "ITF Authorities",
+      isSearchable: true,
+      isPrimaryFeature: true,
+      hidden: !canUserAccessComponent({
+        userPermissions,
+        requiredPermissions: ["manage-itf-authorities"],
+        activeSubscription,
+        requiredSubscriptionState: {
+          label: "payroll",
+          resources: ["payroll-analytics", "payroll-disbursement"],
+        },
+      }),
+    },
+    {
+      element: <NSITFAuthPage />,
+      path: appRoutes.nsitfAuthorities,
+      title: "NSITF Authorities",
+      isSearchable: true,
+      isPrimaryFeature: true,
+      hidden: !canUserAccessComponent({
+        userPermissions,
+        requiredPermissions: ["manage-nsitf-authorities"],
+        activeSubscription,
+        requiredSubscriptionState: {
+          label: "payroll",
+          resources: ["payroll-analytics", "payroll-disbursement"],
+        },
+      }),
+    },
+    {
+      element: <PensionAdminsPage />,
+      path: appRoutes.pensionAdministrators,
+      title: "Pension Administrators",
+      isSearchable: true,
+      isPrimaryFeature: true,
+      hidden: !canUserAccessComponent({
+        userPermissions,
+        requiredPermissions: ["manage-pension-authorities"],
+        activeSubscription,
+        requiredSubscriptionState: {
+          label: "payroll",
+          resources: ["payroll-analytics", "payroll-disbursement"],
+        },
+      }),
+    },
 
-  {
-    element: <PayrollComparison />,
-    path: appRoutes.payrollComparison,
-    isSearchable: true,
-    title: "Payroll Comparison",
-  },
-  {
-    element: <CreatePayroll scheme={"office"} />,
+    {
+      element: <PayrollHome />,
+      path: appRoutes.payrollHome,
+      isSearchable: true,
+      title: "Payroll",
+      hidden: !canUserAccessComponent({
+        userPermissions,
+        requiredPermissions: ["view-payroll-dashboard"],
+        activeSubscription,
+        requiredSubscriptionState: {
+          label: "payroll",
+          resources: ["payroll-analytics", "payroll-disbursement"],
+        },
+      }),
+    },
 
-    path: appRoutes.createOfficePayroll,
-    isSearchable: true,
-    title: "Create Office Payroll",
-  },
-  {
-    element: <CreatePayroll scheme={"direct-salary"} />,
+    {
+      element: <PayrollReview />,
+      path: appRoutes.payrollReview,
+      isSearchable: true,
+      title: "Payroll Review",
+      hidden: !canUserAccessComponent({
+        userPermissions,
+        requiredPermissions: ["view-payroll-dashboard"],
+        activeSubscription,
+        requiredSubscriptionState: {
+          label: "payroll",
+          resources: ["payroll-analytics", "payroll-disbursement"],
+        },
+      }),
+    },
 
-    path: appRoutes.createDirectSalaryPayroll,
-    isSearchable: true,
-    title: "Create Direct Salary Payroll",
-  },
-  {
-    element: <CreatePayroll scheme={"wages"} />,
+    {
+      element: <PayrollComparison />,
+      path: appRoutes.payrollComparison,
+      isSearchable: true,
+      title: "Payroll Comparison",
+      hidden: !canUserAccessComponent({
+        userPermissions,
+        requiredPermissions: ["compare-payrolls"],
+        activeSubscription,
+        requiredSubscriptionState: {
+          label: "payroll",
+          resources: ["payroll-analytics", "payroll-disbursement"],
+        },
+      }),
+    },
+    {
+      element: (
+        <CreatePayroll scheme={"office"} title="Create Step Pay Payroll" />
+      ),
 
-    path: appRoutes.createWagesPayroll,
-    isSearchable: true,
-    title: "Create Wages Payroll",
-  },
-  {
-    element: <CreatePayroll scheme={"project"} />,
-    path: appRoutes.createProjectPayroll,
-    isSearchable: true,
-    title: "Create Project Payroll",
-  },
-  {
-    element: <SinglePayroll />,
-    path: appRoutes.singlePayroll().format,
-    isSearchable: false,
-  },
-  {
-    element: <PayrollReport />,
-    path: appRoutes.payrollReport,
-    isSearchable: true,
-    title: "Payroll Report",
-  },
-  {
-    element: <CreatePayrollReportTemplate />,
-    path: appRoutes.createPayrollReportTemplate,
-    isSearchable: true,
-    title: "Create Payroll Report Template",
-  },
-  {
-    element: <EditPayrollReportTemplate />,
-    path: appRoutes.editPayrollReportTemplate().format,
-    isSearchable: false,
-    title: "Edit Payroll Report Template",
-  },
-  {
-    element: <ViewPayrollReportTemplate />,
-    path: appRoutes.viewPayrollReportTemplate().format,
-    isSearchable: false,
-    title: "Payroll Report Template",
-  },
-  {
-    element: <PayrollPayslip />,
-    path: appRoutes.payslips,
-    isSearchable: true,
-    title: "Payslips",
-    isPrimaryFeature: true,
-  },
-  {
-    element: <EmployeePayslips />,
-    path: appRoutes.employeePayslips,
-    isSearchable: true,
-    title: "Employee Payslips",
-  },
-  {
-    element: <PayslipsTransactionsPage />,
-    path: appRoutes.payslipTransactions,
-    isSearchable: true,
-    title: "Payslip & Transactions",
-  },
-  {
-    element: <CreatePayslipTemplate />,
-    path: appRoutes.createPayslipTemplate,
-    isSearchable: true,
-    title: "Create Payslip Template",
-  },
-  {
-    element: <EditPayslipTemplate />,
-    path: appRoutes.editPayslipTemplate().format,
-    isSearchable: false,
-    title: "Edit Payslip Template",
-  },
-  {
-    element: <ViewPayslipTemplate />,
-    path: appRoutes.viewPayslipTemplate().format,
-    isSearchable: false,
-    title: "Payslip Template",
-  },
-];
+      path: appRoutes.createOfficePayroll,
+      isSearchable: true,
+      title: "Create Step Pay Payroll",
+      hidden: !canUserAccessComponent({
+        userPermissions,
+        activeSubscription,
+        requiredPermissions: ["create-payroll"],
+        requiredSubscriptionState: {
+          label: "payroll",
+          resources: [
+            "wages-payroll",
+            "office-payroll",
+            "direct-salary-payroll",
+            "project-payroll",
+          ],
+        },
+      }),
+    },
+    {
+      element: <CreatePayroll scheme={"direct-salary"} />,
+
+      path: appRoutes.createDirectSalaryPayroll,
+      isSearchable: true,
+      title: "Create Direct Salary Payroll",
+      hidden: !canUserAccessComponent({
+        userPermissions,
+        requiredPermissions: ["create-payroll"],
+        activeSubscription,
+        requiredSubscriptionState: {
+          label: "payroll",
+          resources: ["payroll-analytics", "payroll-disbursement"],
+        },
+      }),
+    },
+    {
+      element: <CreatePayroll scheme={"wages"} />,
+
+      path: appRoutes.createWagesPayroll,
+      isSearchable: true,
+      title: "Create Wages Payroll",
+      hidden: !canUserAccessComponent({
+        userPermissions,
+        requiredPermissions: ["create-payroll"],
+        activeSubscription,
+        requiredSubscriptionState: {
+          label: "payroll",
+          resources: ["payroll-analytics", "payroll-disbursement"],
+        },
+      }),
+    },
+    {
+      element: <CreatePayroll scheme={"project"} />,
+      path: appRoutes.createProjectPayroll,
+      isSearchable: true,
+      title: "Create Project Payroll",
+      hidden: !canUserAccessComponent({
+        userPermissions,
+        requiredPermissions: ["create-payroll"],
+        activeSubscription,
+        requiredSubscriptionState: {
+          label: "payroll",
+          resources: ["payroll-analytics", "payroll-disbursement"],
+        },
+      }),
+    },
+    {
+      element: <SinglePayroll />,
+      path: appRoutes.singlePayroll().format,
+      isSearchable: false,
+      hidden: !canUserAccessComponent({
+        userPermissions,
+        requiredPermissions: ["view-all-payrolls"],
+        activeSubscription,
+        requiredSubscriptionState: {
+          label: "payroll",
+          resources: ["payroll-analytics", "payroll-disbursement"],
+        },
+      }),
+    },
+    {
+      element: <PayrollReport />,
+      path: appRoutes.payrollReport,
+      isSearchable: true,
+      title: "Payroll Report",
+      hidden: !canUserAccessComponent({
+        userPermissions,
+        requiredPermissions: ["view-payroll-reports"],
+        activeSubscription,
+        requiredSubscriptionState: {
+          label: "payroll",
+          resources: ["payroll-analytics", "payroll-disbursement"],
+        },
+      }),
+    },
+    {
+      element: <CreatePayrollReportTemplate />,
+      path: appRoutes.createPayrollReportTemplate,
+      isSearchable: true,
+      title: "Create Payroll Report Template",
+      hidden: !canUserAccessComponent({
+        userPermissions,
+        requiredPermissions: ["manage-payroll-report-templates"],
+        activeSubscription,
+        requiredSubscriptionState: {
+          label: "payroll",
+          resources: ["payroll-analytics", "payroll-disbursement"],
+        },
+      }),
+    },
+    {
+      element: <EditPayrollReportTemplate />,
+      path: appRoutes.editPayrollReportTemplate().format,
+      isSearchable: false,
+      title: "Edit Payroll Report Template",
+      hidden: !canUserAccessComponent({
+        userPermissions,
+        requiredPermissions: ["manage-payroll-report-templates"],
+        activeSubscription,
+        requiredSubscriptionState: {
+          label: "payroll",
+          resources: ["payroll-analytics", "payroll-disbursement"],
+        },
+      }),
+    },
+    {
+      element: <ViewPayrollReportTemplate />,
+      path: appRoutes.viewPayrollReportTemplate().format,
+      isSearchable: false,
+      title: "Payroll Report Template",
+      hidden: !canUserAccessComponent({
+        userPermissions,
+        requiredPermissions: ["view-payroll-report-templates"],
+        activeSubscription,
+        requiredSubscriptionState: {
+          label: "payroll",
+          resources: ["payroll-analytics", "payroll-disbursement"],
+        },
+      }),
+    },
+    {
+      element: <PayrollPayslip />,
+      path: appRoutes.payslips,
+      isSearchable: true,
+      title: "Payslips",
+      isPrimaryFeature: true,
+      hidden: !canUserAccessComponent({
+        userPermissions,
+        requiredPermissions: ["view-all-payslips", "view-payslip-templates"],
+        activeSubscription,
+        requiredSubscriptionState: {
+          label: "payroll",
+          resources: ["payroll-analytics", "payroll-disbursement"],
+        },
+      }),
+    },
+    {
+      element: <EmployeePayslips />,
+      path: appRoutes.employeePayslips,
+      isSearchable: true,
+      title: "Employee Payslips",
+      hidden: !canUserAccessComponent({
+        userPermissions,
+        requiredPermissions: ["view-all-payslips"],
+        activeSubscription,
+        requiredSubscriptionState: {
+          label: "payroll",
+          resources: ["payroll-analytics", "payroll-disbursement"],
+        },
+      }),
+    },
+
+    {
+      element: <CreatePayslipTemplate />,
+      path: appRoutes.createPayslipTemplate,
+      isSearchable: true,
+      title: "Create Payslip Template",
+      hidden: !canUserAccessComponent({
+        userPermissions,
+        requiredPermissions: ["manage-payslip-templates"],
+        activeSubscription,
+        requiredSubscriptionState: {
+          label: "payroll",
+          resources: ["payroll-analytics", "payroll-disbursement"],
+        },
+      }),
+    },
+    {
+      element: <EditPayslipTemplate />,
+      path: appRoutes.editPayslipTemplate().format,
+      isSearchable: false,
+      title: "Edit Payslip Template",
+      hidden: !canUserAccessComponent({
+        userPermissions,
+        requiredPermissions: ["manage-payslip-templates"],
+        activeSubscription,
+        requiredSubscriptionState: {
+          label: "payroll",
+          resources: ["payroll-analytics", "payroll-disbursement"],
+        },
+      }),
+    },
+    {
+      element: <ViewPayslipTemplate />,
+      path: appRoutes.viewPayslipTemplate().format,
+      isSearchable: false,
+      title: "Payslip Template",
+      hidden: !canUserAccessComponent({
+        userPermissions,
+        requiredPermissions: ["view-payslip-templates"],
+        activeSubscription,
+        requiredSubscriptionState: {
+          label: "payroll",
+          resources: ["payroll-analytics", "payroll-disbursement"],
+        },
+      }),
+    },
+  ];
+};

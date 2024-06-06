@@ -1,4 +1,8 @@
 import { Dropdown, Menu } from "antd";
+import {
+  canUserAccessComponent,
+  useGetUserPermissions,
+} from "components/permission-restriction/PermissionRestrictor";
 import { appRoutes } from "config/router/paths";
 import React from "react";
 import { Link } from "react-router-dom";
@@ -6,7 +10,7 @@ import { Link } from "react-router-dom";
 export const createPayrollDropdownItems = [
   {
     link: appRoutes.createOfficePayroll,
-    name: "Office",
+    name: "Step Pay ",
     label: "office",
   },
   {
@@ -27,6 +31,26 @@ export const createPayrollDropdownItems = [
 ];
 
 export const CreatePayrollButton = () => {
+  const { userPermissions, companyActiveSubscription: activeSubscription } =
+    useGetUserPermissions();
+  if (
+    !canUserAccessComponent({
+      userPermissions,
+      requiredPermissions: ["create-payroll"],
+      activeSubscription,
+      requiredSubscriptionState: {
+        label: "payroll",
+        resources: [
+          "wages-payroll",
+          "office-payroll",
+          "direct-salary-payroll",
+          "project-payroll",
+        ],
+      },
+    })
+  ) {
+    return null;
+  }
   return (
     <Dropdown
       overlay={

@@ -58,7 +58,7 @@ interface EmployeeSalaryComponent {
   name: string;
   label: string;
   mode: string;
-  isFromScheme: boolean;
+  isLoan: boolean;
   isActive: boolean;
   amount: string;
   calculatedAmount: string;

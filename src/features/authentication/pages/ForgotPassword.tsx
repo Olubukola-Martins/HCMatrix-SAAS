@@ -8,6 +8,7 @@ import Aos from "aos";
 import "aos/dist/aos.css";
 import { useIsAuthenticated } from "react-auth-kit";
 import { ForgotPasswordForm } from "../components/ForgotPasswordForm";
+import { appRoutes } from "config/router/paths";
 
 export const ForgotPassword = () => {
   const isAuthenticated = useIsAuthenticated();
@@ -16,7 +17,9 @@ export const ForgotPassword = () => {
   }, []);
   return (
     <>
-      {isAuthenticated() && <Navigate to="/" replace={true} />}
+      {isAuthenticated() && (
+        <Navigate to={appRoutes.forgotPassword} replace={true} />
+      )}
 
       <div className="grid grid-cols-1 lg:grid-cols-2">
         <div
@@ -40,7 +43,7 @@ export const ForgotPassword = () => {
                 </p>
                 <div className="flex justify-center">
                   <Link
-                    to="/register"
+                    to={appRoutes.login}
                     className="border justify-center flex items-center gap-3 border-white rounded px-16 py-1 text-white hover:border-gray-700 font-medium text-base transition duration-300 ease-in-out"
                   >
                     <i className="ri-arrow-left-line"></i> <span>Sign In</span>
@@ -80,7 +83,7 @@ export const ForgotPassword = () => {
               className="flex items-center gap-2 justify-center text-xs py-5"
               style={{ color: "var(--authPrimary)" }}
             >
-              <span>Private Policy</span>
+              <span>Privacy Policy</span>
               <span className="text-black font-semibold text-xl">.</span>
               <span>Terms of service</span>
             </div>

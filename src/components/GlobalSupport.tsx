@@ -1,5 +1,5 @@
-import { Modal, Popover, Tooltip } from "antd";
-import React, { useState } from "react";
+import { Popover, } from "antd";
+import { useState } from "react";
 import Themes from "./Themes";
 import CustomerComplaintModal from "./customerComplaint/CustomerComplaintModal";
 
@@ -42,14 +42,21 @@ const GlobalSupport = () => {
                   </li>
                   <li className="flex items-center gap-x-5 border-b-2 pb-1  cursor-pointer group">
                     <i className="ri-book-line text-xl"></i>
-                    <span className="group-hover:text-caramel">
-                      Read Article
-                    </span>
+                    <a
+                      target="_blank"
+                      rel="noreferrer"
+                      href="https://user-guide-frontend-h3-0.vercel.app/"
+                      className="group-hover:text-caramel"
+                    >
+                      User Guide
+                    </a>
                   </li>
                   <li className="flex items-center gap-x-5 border-b-2 pb-1  cursor-pointer group">
                     <i className="ri-phone-line text-xl"></i>
                     <a
-                      href="tel: +1 (254) 244-0305"
+                      target="_blank"
+                      rel="noreferrer"
+                      href="https://snapnet.3cx.ng/LiveChat397407"
                       className="group-hover:text-caramel"
                     >
                       Call
@@ -67,13 +74,21 @@ const GlobalSupport = () => {
                     </a>
                   </li>
                   <li
-                    onClick={() => setQueryModal(true)}
+                    // onClick={() => setQueryModal(true)}
                     className="flex items-center gap-x-5 pb-1  cursor-pointer group"
                   >
                     <i className="ri-mail-line text-xl"></i>
-                    <span className="group-hover:text-caramel">
+                    <a
+                      target="_blank"
+                      rel="noreferrer"
+                      href="https://hcmatrixsupport.powerappsportals.com/Account/Login/Register?returnUrl=%2Fsupport%2Fcreate-case%2F"
+                      className="group-hover:text-green-500"
+                    >
                       Drop Complaint
-                    </span>
+                    </a>
+                    {/* <span className="group-hover:text-caramel">
+                      Drop Complaint
+                    </span> */}
                   </li>
                 </ul>
               </div>

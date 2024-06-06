@@ -1,9 +1,11 @@
-import { DatePicker, Form, Input, Modal, Select } from "antd";
+import { DatePicker, Form, Input, InputNumber, Modal, Select } from "antd";
 import { AppButton } from "components/button/AppButton";
-import React from "react";
+import React, { useState } from "react";
 import { IModalProps } from "types";
 import {
+  dateHasToBeGreaterThanOrEqualToCurrentDayRule,
   generalValidationRules,
+  numberHasToBeGreaterThanZeroRule,
   textInputValidationRules,
 } from "utils/formHelpers/validation";
 import { openNotification } from "utils/notifications";
@@ -12,6 +14,11 @@ import { QUERY_KEY_FOR_JOB_REQUISITIONS } from "../../requisitions/hooks/job/use
 import { useCreateJobRequisition } from "../../requisitions/hooks/job/useCreateJobRequisition";
 import { FormDesignationInput } from "features/core/designations/components/FormDesignationInput";
 import { EMPLOYMENT_TYPES } from "constants/general";
+import { QUERY_KEY_FOR_JOB_REQUISITIONS_FOR_AUTH_EMPLOYEE } from "../../requisitions/hooks/job/useGetJobRequisitions4AuthEmployee";
+import { QUERY_KEY_FOR_APPROVAL_REQUESTS } from "features/core/workflows/hooks/useFetchApprovalRequests";
+import { QUERY_KEY_FOR_NOTIFICATIONS } from "features/notifications/hooks/useGetAlerts";
+import { QUERY_KEY_FOR_UNREAD_NOTIFICATION_COUNT } from "features/notifications/hooks/unRead/useGetUnReadNotificationCount";
+import { FormUnlicensedEmployeeSSRequestInput } from "features/core/employees/components/FormEmployeeInput";
 
 export const NewJobRequest: React.FC<IModalProps> = ({ open, handleClose }) => {
   const queryClient = useQueryClient();
@@ -22,10 +29,11 @@ export const NewJobRequest: React.FC<IModalProps> = ({ open, handleClose }) => {
   const handleSubmit = (data: any) => {
     mutate(
       {
+        employeeId: data?.employeeId,
         designationId: data.designationId,
         date: data.date.toString(),
         employmentType: data.employmentType,
-        salaryRange: data.salaryRange,
+        salaryRange: `${data.salaryRange.from} - ${data.salaryRange.to}`,
         educationRequirements: data.educationRequirements,
         skillsAndQualifications: data.skillsAndQualifications,
         preferredStartDate: data.preferredStartDate,
@@ -54,10 +62,27 @@ export const NewJobRequest: React.FC<IModalProps> = ({ open, handleClose }) => {
             queryKey: [QUERY_KEY_FOR_JOB_REQUISITIONS],
             // exact: true,
           });
+          queryClient.invalidateQueries({
+            queryKey: [QUERY_KEY_FOR_JOB_REQUISITIONS_FOR_AUTH_EMPLOYEE],
+            // exact: true,
+          });
+          queryClient.invalidateQueries({
+            queryKey: [QUERY_KEY_FOR_APPROVAL_REQUESTS],
+            // exact: true,
+          });
+          queryClient.invalidateQueries({
+            queryKey: [QUERY_KEY_FOR_NOTIFICATIONS],
+            // exact: true,
+          });
+          queryClient.invalidateQueries({
+            queryKey: [QUERY_KEY_FOR_UNREAD_NOTIFICATION_COUNT],
+            // exact: true,
+          });
         },
       }
     );
   };
+  const [salaryRangeFrom, setSalaryRangeFrom] = useState<number>();
   return (
     <Modal
       open={open}
@@ -72,15 +97,27 @@ export const NewJobRequest: React.FC<IModalProps> = ({ open, handleClose }) => {
         onFinish={handleSubmit}
         requiredMark={false}
       >
+        <FormUnlicensedEmployeeSSRequestInput
+          Form={Form}
+          control={{
+            name: "employeeId",
+            label: "Select Unlinsenced Employee",
+          }}
+        />
+        <Form.Item
+          rules={[dateHasToBeGreaterThanOrEqualToCurrentDayRule]}
+          name="date"
+          label="Date"
+        >
+          <DatePicker placeholder="Date" className="w-full" />
+        </Form.Item>
         <FormDesignationInput
           Form={Form}
           control={{ name: "designationId", label: "Designation" }}
         />
-        <Form.Item rules={generalValidationRules} name="date" label="Date">
-          <DatePicker placeholder="Date" className="w-full" />
-        </Form.Item>
+
         <Form.Item
-          rules={generalValidationRules}
+          rules={[dateHasToBeGreaterThanOrEqualToCurrentDayRule]}
           name="preferredStartDate"
           label="Preferred Start Date"
         >
@@ -88,18 +125,50 @@ export const NewJobRequest: React.FC<IModalProps> = ({ open, handleClose }) => {
         </Form.Item>
 
         <Form.Item
-          rules={textInputValidationRules}
+          rules={generalValidationRules}
           name="employmentType"
           label="Employment Type"
         >
           <Select options={EMPLOYMENT_TYPES} placeholder="Employment Type" />
         </Form.Item>
-        <Form.Item
-          rules={textInputValidationRules}
-          name="salaryRange"
-          label="Salary Range"
-        >
-          <Input placeholder="Salary Range (from - to)" />
+        <Form.Item name="salaryRange" label="Salary Range">
+          <Input.Group className="flex gap-4 w-full">
+            <Form.Item
+              name={["salaryRange", "from"]}
+              rules={[numberHasToBeGreaterThanZeroRule]}
+              noStyle
+            >
+              <InputNumber
+                placeholder="From"
+                className="w-full"
+                onChange={(val) => val && setSalaryRangeFrom(+val?.toString())}
+              />
+            </Form.Item>
+            <Form.Item
+              name={["salaryRange", "to"]}
+              noStyle
+              rules={[
+                {
+                  required: true,
+
+                  validator: async (_: any, value: any) => {
+                    if (typeof value !== "number") {
+                      throw new Error("Please enter a valid number!");
+                    }
+                    if (salaryRangeFrom && +value <= salaryRangeFrom) {
+                      throw new Error(
+                        "Please enter a number greater than From value"
+                      );
+                    }
+
+                    return true;
+                  },
+                },
+              ]}
+            >
+              <InputNumber placeholder="To" className="w-full" />
+            </Form.Item>
+          </Input.Group>
         </Form.Item>
         <Form.Item
           rules={textInputValidationRules}

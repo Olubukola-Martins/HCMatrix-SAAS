@@ -1,14 +1,16 @@
-import React from "react";
-
+import { useState } from "react";
 import { Table } from "antd";
 import { ColumnsType, TablePaginationConfig, TableProps } from "antd/lib/table";
 import { TRole } from "../types";
+import { ROLES_TABLE_COLUMNS } from "./columns";
+import { TableFocusTypeBtn } from "components/table";
 
 interface IProps {
-  data: TRole[];
-  loading: boolean;
+  data?: TRole[];
+  loading?: boolean;
   pagination?: TablePaginationConfig;
   onChange?: TableProps<TRole>["onChange"];
+  deleteRole: (val: TRole) => void;
 }
 
 export const RolesTableView = ({
@@ -16,36 +18,26 @@ export const RolesTableView = ({
   loading,
   pagination,
   onChange,
+  deleteRole,
 }: IProps) => {
-  const columns: ColumnsType<TRole> = [
-    {
-      title: "Name",
-      dataIndex: "name",
-      key: "name",
-    },
-
-    {
-      title: "User Count",
-      dataIndex: "userCount",
-      key: "userCount",
-    },
-    {
-      title: "Action",
-      dataIndex: "action",
-      render: () => (
-        <div className="flex items-center gap-3 text-lg">
-          <i className="ri-pencil-line cursor-pointer hover:text-caramel"></i>
-          <i className="ri-delete-bin-line cursor-pointer hover:text-caramel"></i>
-        </div>
-      ),
-    },
-  ];
+  const columns: ColumnsType<TRole> = ROLES_TABLE_COLUMNS(deleteRole);
+  const [selectedColumns, setSelectedColumns] =
+    useState<ColumnsType<TRole>>(columns);
   return (
-    <div>
+    <div className="space-y-6">
+      <div className="flex justify-end">
+        {TableFocusTypeBtn<TRole>({
+          selectedColumns,
+          setSelectedColumns,
+          data: {
+            columns,
+          },
+        })}
+      </div>
       <Table
-        columns={columns}
+        columns={selectedColumns}
         size="small"
-        dataSource={data}
+        dataSource={data?.map((item) => ({ key: item.id, ...item }))}
         loading={loading}
         pagination={pagination}
         onChange={onChange}

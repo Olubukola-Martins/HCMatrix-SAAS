@@ -1,3 +1,5 @@
+import { TVehicleStatus, TVehicleType } from "../hooks/useCreateVehicle";
+
 export type TVehicleBookingAnalytics = {
   approved: number;
   pending: number;
@@ -8,11 +10,11 @@ export type TVehicleBookingAnalytics = {
 export interface TVehicleInUse {
   id: number;
   label: string;
-  type: string;
+  type: TVehicleType;
   brand: string;
   model: string;
   plateNumber: string;
-  status: string;
+  status: TVehicleStatus;
   imageUrl: string;
   cost: string;
   color: string;

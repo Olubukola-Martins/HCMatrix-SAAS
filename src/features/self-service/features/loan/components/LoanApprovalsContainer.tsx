@@ -24,6 +24,7 @@ const LoanApprovalsContainer = () => {
           .map((item) => ({
             ...(item.loan as TLoanRequest),
             approvalDetails: item,
+            disbursedAt: item?.loan?.disbursedAt,
           }))}
       />
     </div>

@@ -1,25 +1,42 @@
-import { Space, Dropdown, Menu, Table, Modal } from "antd";
-import { MoreOutlined } from "@ant-design/icons";
+import { Table } from "antd";
 
 import React, { useState } from "react";
 import { ColumnsType } from "antd/lib/table";
 
-import moment from "moment";
 import {
   TCRBookingStatus,
   useFetchAllConferenceRoomBookings,
 } from "../hooks/useFetchAllConferenceRoomBookings";
 import { TSingleConferenceRoomBooking } from "../types";
-import { getAppropriateColorForStatus } from "utils/colorHelpers/getAppropriateColorForStatus";
 import CRBBookingDetails from "./CRBBookingDetails";
 import { usePagination } from "hooks/usePagination";
+import ViewApprovalStages from "features/core/workflows/components/approval-request/ViewApprovalStages";
+import { ALL_CRB_BOOKINGS_TABLE_COLUMNS } from "./columns/all-crb-bookings";
+import { TableFocusTypeBtn } from "components/table";
+
+export type TCRBHistoryAction =
+  | "add"
+  | "view"
+  | "cancel"
+  | "view-approval-stages";
 
 const CRBHistoryTable: React.FC<{
   status?: TCRBookingStatus;
   employeeId?: number;
 }> = ({ status, employeeId }) => {
-  const [showD, setShowD] = useState(false);
-  const [bookingId, setBookingId] = useState<number>();
+  const [showM, setShowM] = useState<TCRBHistoryAction>();
+  const [booking, setBooking] = useState<TSingleConferenceRoomBooking>();
+  const handleAction = (
+    action: TCRBHistoryAction,
+    item?: TSingleConferenceRoomBooking
+  ) => {
+    setBooking(item);
+    setShowM(action);
+  };
+  const onClose = () => {
+    setShowM(undefined);
+    setBooking(undefined);
+  };
   const { pagination, onChange } = usePagination();
 
   const { data, isFetching } = useFetchAllConferenceRoomBookings({
@@ -28,133 +45,40 @@ const CRBHistoryTable: React.FC<{
     employeeId,
   });
 
-  const originalColumns: ColumnsType<TSingleConferenceRoomBooking> = [
-    {
-      title: "Name",
-      dataIndex: "name",
-      key: "name",
-      render: (val, item) => (
-        <span>
-          {item.employee.firstName} {item.employee.lastName}
-        </span>
-      ),
-
-      // ellipsis: true,
-
-      // width: 100,
-    },
-    {
-      title: "Date",
-      dataIndex: "createdAt",
-      key: "createdAt",
-      render: (val) => moment(val).format("YYYY-MM-DD"),
-    },
-    {
-      title: "Room Name",
-      dataIndex: "roomName",
-      key: "roomName",
-      render: (val: string) => <span>{`Marketing`}</span>,
-
-      // ellipsis: true,
-
-      // width: 100,
-    },
-    {
-      title: "Reason",
-      dataIndex: "reason",
-      key: "reason",
-      ellipsis: true,
-
-      // width: 100,
-    },
-    {
-      title: "Department",
-      dataIndex: "department",
-      key: "department",
-    },
-    {
-      title: "Meeting Date",
-      dataIndex: "date",
-      key: "date",
-      render: (val) => moment(val).format("YYYY-MM-DD"),
-    },
-    {
-      title: "Start Time",
-      dataIndex: "startTime",
-      key: "startTime",
-      render: (val) => moment(val).format("h:mm:ss"),
-    },
-
-    {
-      title: "End Time",
-      dataIndex: "endTime",
-      key: "endTime",
-      render: (val) => moment(val).format("h:mm:ss"),
-    },
-
-    {
-      title: "Status",
-      dataIndex: "status",
-
-      key: "status",
-      render: (val: string) => (
-        <span
-          className="capitalize"
-          style={{ color: getAppropriateColorForStatus(val) }}
-        >
-          {val}
-        </span>
-      ),
-    },
-
-    {
-      title: "Action",
-      key: "action",
-      width: 100,
-      render: (_, item) => (
-        <Space align="center" className="cursor-pointer">
-          <Dropdown
-            overlay={
-              <Menu>
-                <Menu.Item
-                  key="3"
-                  onClick={() => {
-                    setShowD(true);
-                    setBookingId(item.id);
-                  }}
-                >
-                  View
-                </Menu.Item>
-                {/* <Menu.Item key="2">Approve</Menu.Item>
-                <Menu.Item key="1">Reject</Menu.Item> */}
-              </Menu>
-            }
-            trigger={["click"]}
-          >
-            <MoreOutlined />
-          </Dropdown>
-        </Space>
-      ),
-    },
-  ];
-  const columns = employeeId
-    ? originalColumns.filter((item) => item.key !== "name")
-    : originalColumns;
+  const columns: ColumnsType<TSingleConferenceRoomBooking> =
+    ALL_CRB_BOOKINGS_TABLE_COLUMNS(handleAction);
+  const [selectedColumns, setSelectedColumns] =
+    useState<ColumnsType<TSingleConferenceRoomBooking>>(columns);
   return (
-    <div>
-      <Modal
-        open={showD}
-        onCancel={() => setShowD(false)}
-        closeIcon={false}
-        title={"Booking Details"}
-        style={{ top: 10 }}
-        footer={null}
-      >
-        {bookingId && <CRBBookingDetails id={bookingId} />}
-      </Modal>
+    <div className="space-y-6">
+      {booking && (
+        <CRBBookingDetails
+          id={booking.id}
+          open={showM === "view"}
+          handleClose={onClose}
+        />
+      )}
+      {booking && (
+        <ViewApprovalStages
+          handleClose={onClose}
+          open={showM === "view-approval-stages"}
+          id={booking?.id}
+          type="conference-room"
+        />
+      )}
+
+      <div className="flex justify-end">
+        {TableFocusTypeBtn<TSingleConferenceRoomBooking>({
+          selectedColumns,
+          setSelectedColumns,
+          data: {
+            columns,
+          },
+        })}
+      </div>
 
       <Table
-        columns={columns}
+        columns={selectedColumns}
         size="small"
         dataSource={data?.data}
         loading={isFetching}

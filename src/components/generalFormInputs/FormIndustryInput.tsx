@@ -1,11 +1,11 @@
-import { Select } from "antd";
+import { Select, Form } from "antd";
 import { useFetchIndustries } from "hooks/useFetchIndutries";
 import { useState } from "react";
 import { TIndustry } from "types/industry";
 import { generalValidationRules } from "utils/formHelpers/validation";
 
 export const FormIndustryInput: React.FC<{
-  Form: any;
+  Form: typeof Form;
   showLabel?: boolean;
   control?: { label: string; name: string };
 }> = ({ Form, showLabel = true, control }) => {

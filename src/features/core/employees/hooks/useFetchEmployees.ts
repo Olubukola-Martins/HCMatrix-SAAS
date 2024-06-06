@@ -6,13 +6,37 @@ import { useQuery } from "react-query";
 import { useApiAuth } from "hooks/useApiAuth";
 import { MICROSERVICE_ENDPOINTS } from "config/enviroment";
 import { DEFAULT_PAGE_SIZE } from "constants/general";
+import { TLicenseType } from "features/authentication/types/auth-user";
 
 export const QUERY_KEY_FOR_LIST_OF_EMPLOYEES = "employees";
 
+export type TEmployeeFilterProps = {
+  status?: TEmployeeStatus[];
+  gender?: "male" | "female";
+  roleId?: number;
+  designationId?: number;
+  departmentId?: number;
+  branchId?: number;
+  licenseType?: TLicenseType[];
+};
 export const getEmployees = async (
-  props: TFetchListDataProps & { status?: TEmployeeStatus[] }
-): Promise<{ data: TEmployee[]; total: number }> => {
-  const { pagination } = props;
+  props: TFetchListDataProps & TEmployeeFilterProps
+): Promise<{
+  data: Omit<
+    TEmployee,
+    | "personalInformation"
+    | "userGroups"
+    | "directReports"
+    | "managerHistory"
+    | "skills"
+    | "emergencyContact"
+    | "dependents"
+    | "finance"
+  >[];
+  total: number;
+}> => {
+  const { pagination, roleId, departmentId, designationId, branchId, gender } =
+    props;
   const limit = pagination?.limit ?? DEFAULT_PAGE_SIZE;
   const offset = pagination?.offset ?? 0;
 
@@ -25,7 +49,13 @@ export const getEmployees = async (
       "x-company-id": props.companyId,
     },
     params: {
-      status: props?.status?.toString(),
+      roleId,
+      departmentId,
+      designationId,
+      branchId,
+      gender,
+      status: props?.status?.join(","),
+      licenseType: props?.licenseType?.join(","),
       search: props?.searchParams?.name,
       limit,
       offset,
@@ -56,21 +86,44 @@ export const useFetchEmployees = ({
   searchParams,
   onSuccess,
   status,
-}: TFetchListDataExtraProps & { status?: TEmployeeStatus[] } & {
-  onSuccess?: Function;
-} = {}) => {
+  roleId,
+  departmentId,
+  designationId,
+  branchId,
+  gender,
+  licenseType,
+}: TFetchListDataExtraProps &
+  TEmployeeFilterProps & {
+    onSuccess?: Function;
+  } = {}) => {
   const { token, companyId } = useApiAuth();
 
   const queryData = useQuery(
-    [QUERY_KEY_FOR_LIST_OF_EMPLOYEES, pagination, status, searchParams?.name],
+    [
+      QUERY_KEY_FOR_LIST_OF_EMPLOYEES,
+      pagination,
+      status,
+      searchParams?.name,
+      roleId,
+      departmentId,
+      designationId,
+      branchId,
+      gender,
+      licenseType,
+    ],
     () =>
       getEmployees({
         companyId,
+        token,
         pagination,
         searchParams,
-
-        token,
         status,
+        roleId,
+        departmentId,
+        designationId,
+        branchId,
+        gender,
+        licenseType,
       }),
     {
       // refetchInterval: false,

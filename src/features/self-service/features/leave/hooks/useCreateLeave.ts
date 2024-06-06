@@ -3,22 +3,22 @@ import { MICROSERVICE_ENDPOINTS } from "config/enviroment";
 import { useApiAuth } from "hooks/useApiAuth";
 import { useMutation } from "react-query";
 import { ICurrentCompany } from "types";
+import { TLeave } from "../types";
 
-type TCreateProps = {
-  employeeId: number;
-  departmentId: number;
-  startDate: string;
-  endDate: string;
-  length: number;
-  leaveTypeId: number;
-  reason: string;
-  requestAllowance: boolean;
-  workAssigneeId: number;
-  documentUrls: string[];
-};
+export type TCreateLeaveProps = Pick<
+  TLeave,
+  | "startDate"
+  | "endDate"
+  | "length"
+  | "leaveTypeId"
+  | "reason"
+  | "relieverId"
+  | "documentUrls"
+  | "specificDates"
+> & { employeeId?: number };
 
 const createLeave = async (props: {
-  data: TCreateProps;
+  data: TCreateLeaveProps;
   auth: ICurrentCompany;
 }) => {
   const url = `${MICROSERVICE_ENDPOINTS.UTILITY}/self-service/leave`;
@@ -30,7 +30,7 @@ const createLeave = async (props: {
     },
   };
 
-  const data: TCreateProps = {
+  const data: TCreateLeaveProps = {
     ...props.data,
   };
 
@@ -39,7 +39,7 @@ const createLeave = async (props: {
 };
 export const useCreateLeave = () => {
   const { token, companyId } = useApiAuth();
-  return useMutation((props: TCreateProps) =>
+  return useMutation((props: TCreateLeaveProps) =>
     createLeave({ data: props, auth: { token, companyId } })
   );
 };

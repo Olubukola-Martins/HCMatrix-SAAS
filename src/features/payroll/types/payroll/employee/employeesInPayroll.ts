@@ -2,6 +2,8 @@ import { TEmploymentEligibity } from "types/employementEligibilities";
 
 export interface TEmployeesInPayrollData {
   id: number;
+  componentsToDisplay?: Record<string, number> | null;
+  payrollDate?: string;
   payrollId: number;
   employeeId: number;
   empUid: string;
@@ -28,7 +30,7 @@ interface EmployeeSalaryComponent {
   name: string;
   label: string;
   mode: string;
-  isFromScheme: boolean;
+  isLoan: boolean;
   isActive: boolean;
   amount: string;
   calculatedAmount: string;

@@ -1,5 +1,6 @@
-import { Space, Dropdown, Menu, Table } from "antd";
-import { MoreOutlined } from "@ant-design/icons";
+import { Space, Dropdown, Menu } from "antd";
+import { TableWithFocusType } from "components/table";
+import { AiOutlineMore } from "react-icons/ai";
 
 import React, { useState } from "react";
 import { ColumnsType } from "antd/lib/table";
@@ -25,7 +26,8 @@ const PositionChangeApprovalRequestsTable: React.FC<{
   const queryClient = useQueryClient();
 
   const [showD, setShowD] = useState(false);
-  const [requestId, setRequestId] = useState<number>();
+  const [request, setRequest] = useState<TApprovalRequest>();
+
   const { pagination, onChange } = usePagination();
   const { data, isFetching } = useFetchApprovalRequests({
     pagination,
@@ -116,7 +118,7 @@ const PositionChangeApprovalRequestsTable: React.FC<{
                   key="3"
                   onClick={() => {
                     setShowD(true);
-                    setRequestId(item?.positionChangeRequisition?.id);
+                    setRequest(item);
                   }}
                 >
                   View
@@ -127,7 +129,7 @@ const PositionChangeApprovalRequestsTable: React.FC<{
                   onClick={() =>
                     confirmApprovalAction({
                       approvalStageId: item?.id,
-                      status: "rejected",
+                      status: "approved",
                       workflowType: !!item?.basicStageId ? "basic" : "advanced",
                       requires2FA: item?.advancedStage?.enableTwoFactorAuth,
                     })
@@ -152,7 +154,7 @@ const PositionChangeApprovalRequestsTable: React.FC<{
             }
             trigger={["click"]}
           >
-            <MoreOutlined />
+            <AiOutlineMore />
           </Dropdown>
         </Space>
       ),
@@ -163,15 +165,16 @@ const PositionChangeApprovalRequestsTable: React.FC<{
 
   return (
     <div>
-      {requestId && (
+      {request?.positionChangeRequisition?.id && (
         <PositionChangeRequestDetails
           open={showD}
           handleClose={() => setShowD(false)}
-          id={requestId}
+          id={request?.positionChangeRequisition?.id}
+          approvalRequest={request}
         />
       )}
 
-      <Table
+      <TableWithFocusType
         columns={columns}
         size="small"
         dataSource={data?.data}

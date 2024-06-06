@@ -6,7 +6,7 @@ import { useMutation } from "react-query";
 import { ICurrentCompany } from "types";
 
 export type TPayrolSettingData = {
-  companyBankDetails: CompanyBankDetails;
+  companyBankDetails?: CompanyBankDetails;
   loanConfiguration: LoanConfiguration;
   payslipTemplate: PayslipTemplate;
 };
@@ -18,12 +18,17 @@ interface PayslipTemplate {
 interface LoanConfiguration {
   isActive: boolean;
   schemes: TPayrollSchemeType[];
+  timeFrameForManualRepayment?: {
+    startDay: number; // min of 1, max of 25
+    endDay: number; // min of 1, max of 25
+  };
 }
 
 interface CompanyBankDetails {
   bankName: string;
   bankCode: string;
   accountNumber: string;
+  accountName?: string;
 }
 
 type TData = {

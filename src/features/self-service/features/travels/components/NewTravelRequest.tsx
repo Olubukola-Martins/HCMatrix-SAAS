@@ -8,20 +8,22 @@ import {
   Switch,
 } from "antd";
 import { AppButton } from "components/button/AppButton";
-import React from "react";
+import React, { useState } from "react";
 import { IModalProps } from "types";
 import {
-  generalValidationRules,
+  dateHasToBeGreaterThanOrEqualToCurrentDayRule,
   generalValidationRulesOp,
+  numberHasToBeGreaterThanZeroRule,
   textInputValidationRules,
 } from "utils/formHelpers/validation";
 import { openNotification } from "utils/notifications";
 import { useQueryClient } from "react-query";
-import { FormDesignationInput } from "features/core/designations/components/FormDesignationInput";
-import { EMPLOYMENT_TYPES, PRIORITIES } from "constants/general";
+import { PRIORITIES } from "constants/general";
 import { useCreateTravelRequisition } from "../../requisitions/hooks/travel/useCreateTravelRequisition";
-import { useApiAuth } from "hooks/useApiAuth";
 import { QUERY_KEY_FOR_TRAVEL_REQUESTS } from "../../requisitions/hooks/travel/useGetTravelRequisitions";
+import moment, { Moment } from "moment";
+import { QUERY_KEY_FOR_TRAVEL_REQUISITIONS_FOR_AUTH_EMPLOYEE } from "../../requisitions/hooks/travel/useGetTravelRequisitions4AuthEmployee";
+import { FormUnlicensedEmployeeSSRequestInput } from "features/core/employees/components/FormEmployeeInput";
 
 export const NewTravelRequest: React.FC<IModalProps> = ({
   open,
@@ -31,18 +33,22 @@ export const NewTravelRequest: React.FC<IModalProps> = ({
 
   const [form] = Form.useForm();
   const { mutate, isLoading } = useCreateTravelRequisition();
-  const { currentUserEmployeeId } = useApiAuth();
-
+  const [arrivalDate, setArrivalDate] = useState<Moment | null>(null);
+  const [departureDate, setDepartureDate] = useState<Moment | null>(null);
   const handleSubmit = (data: any) => {
     mutate(
       {
-        employeeId: currentUserEmployeeId,
-        arrivalDate: data.arrivalDate.toString(),
+        employeeId: data?.employeeId,
+
+        arrivalDate: (data.arrivalDate as Moment).toString(),
         cost: data.cost,
-        duration: data.duration,
+        duration: +moment
+          .duration(departureDate?.diff(arrivalDate))
+          .asDays()
+          .toFixed(),
         location: data.location,
         reason: data.reason,
-        departureDate: data.departureDate.toString(),
+        departureDate: (data.departureDate as Moment).toString(),
         priority: data.priority,
         clientName: data.clientName,
         billableToClient: !!data.billableToClient,
@@ -65,16 +71,23 @@ export const NewTravelRequest: React.FC<IModalProps> = ({
             // duration: 0.4,
           });
           form.resetFields();
+          setArrivalDate(null);
+          setDepartureDate(null);
           handleClose();
 
           queryClient.invalidateQueries({
             queryKey: [QUERY_KEY_FOR_TRAVEL_REQUESTS],
             // exact: true,
           });
+          queryClient.invalidateQueries({
+            queryKey: [QUERY_KEY_FOR_TRAVEL_REQUISITIONS_FOR_AUTH_EMPLOYEE],
+            // exact: true,
+          });
         },
       }
     );
   };
+
   return (
     <Modal
       open={open}
@@ -89,27 +102,71 @@ export const NewTravelRequest: React.FC<IModalProps> = ({
         onFinish={handleSubmit}
         requiredMark={false}
       >
+        <FormUnlicensedEmployeeSSRequestInput
+          Form={Form}
+          control={{
+            name: "employeeId",
+            label: "Select Unlinsenced Employee",
+          }}
+        />
         <Form.Item
-          rules={generalValidationRules}
-          name="departureDate"
-          label="Departure Date"
-        >
-          <DatePicker placeholder="Departure Date" className="w-full" />
-        </Form.Item>
-        <Form.Item
-          rules={generalValidationRules}
+          rules={[dateHasToBeGreaterThanOrEqualToCurrentDayRule]}
           name="arrivalDate"
           label="Arrival Date"
         >
-          <DatePicker placeholder="Arrival Date" className="w-full" />
+          <DatePicker
+            placeholder="Arrival Date"
+            className="w-full"
+            onChange={setArrivalDate}
+          />
         </Form.Item>
         <Form.Item
-          rules={generalValidationRules}
-          name="duration"
-          label="Duration (days)"
+          rules={[
+            {
+              required: true,
+              validator: async (rule: any, value: Moment) => {
+                if (value.isBefore(arrivalDate)) {
+                  throw new Error(
+                    "Departure Date cannot be before arrival date!"
+                  );
+                }
+
+                return true;
+              },
+            },
+          ]}
+          name="departureDate"
+          label="Departure Date"
         >
-          <InputNumber placeholder="Duration" className="w-full" />
+          <DatePicker
+            placeholder="Departure Date"
+            className="w-full"
+            onChange={setDepartureDate}
+          />
         </Form.Item>
+        <Form.Item label="Duration (days)">
+          <InputNumber
+            placeholder="Duration"
+            className="w-full"
+            disabled
+            value={
+              departureDate &&
+              arrivalDate &&
+              moment
+                .duration(departureDate?.diff(arrivalDate))
+                .asDays()
+                .toFixed()
+            }
+          />
+        </Form.Item>
+        <Form.Item
+          rules={textInputValidationRules}
+          name="clientName"
+          label="Client Name"
+        >
+          <Input placeholder="Client Name" />
+        </Form.Item>
+
         <Form.Item
           rules={generalValidationRulesOp}
           name="priority"
@@ -117,16 +174,19 @@ export const NewTravelRequest: React.FC<IModalProps> = ({
         >
           <Select options={PRIORITIES} placeholder="Priority" />
         </Form.Item>
-        <Form.Item rules={generalValidationRules} name="cost" label="Cost">
+        <Form.Item
+          rules={[
+            {
+              required: true,
+              ...numberHasToBeGreaterThanZeroRule,
+            },
+          ]}
+          name="cost"
+          label="Cost"
+        >
           <InputNumber placeholder="Cost" className="w-full" />
         </Form.Item>
-        <Form.Item
-          rules={textInputValidationRules}
-          name="clientName"
-          label="Client Name"
-        >
-          <Input />
-        </Form.Item>
+
         <Form.Item
           rules={textInputValidationRules}
           name="location"

@@ -13,28 +13,51 @@ type TPayrollData = {
   costCentreId: number;
   csvFile?: any;
 };
-const createData = async (props: {
+type CreatePayrollResponse = {
+  message: string;
+  data: {
+    status: string;
+    id: number;
+    schemeId: number;
+    name: string;
+    label: string;
+    date: string;
+    description: string;
+    frequency: string;
+    costCentreId: number;
+    companyId: number;
+    updatedAt: string;
+    createdAt: string;
+  };
+  errors?: string[];
+};
+const createPayroll = async (props: {
   projectId?: number;
   data: TPayrollData;
   auth: ICurrentCompany;
   schemeType: TPayrollSchemeType;
-}) => {
-  const url = `${MICROSERVICE_ENDPOINTS.PAYROLL}/payroll/${props.schemeType}`;
-  const config = {
-    headers: {
-      Accept: "application/json",
-      Authorization: `Bearer ${props.auth.token}`,
-      "x-company-id": props.auth.companyId,
-    },
-    params: { projectId: props.projectId },
-  };
+}): Promise<CreatePayrollResponse> => {
+  try {
+    const url = `${MICROSERVICE_ENDPOINTS.PAYROLL}/payroll/${props.schemeType}`;
+    const config = {
+      headers: {
+        Accept: "application/json",
+        Authorization: `Bearer ${props.auth.token}`,
+        "x-company-id": props.auth.companyId,
+      },
+      params: { projectId: props.projectId },
+    };
 
-  const data: TPayrollData = {
-    ...props.data,
-  };
+    const data: TPayrollData = {
+      ...props.data,
+    };
 
-  const response = await axios.postForm(url, data, config);
-  return response;
+    const response = await axios.postForm(url, data, config);
+    const result = response?.data as CreatePayrollResponse;
+    return result;
+  } catch (error) {
+    throw error;
+  }
 };
 export const useCreatePayroll = () => {
   const { token, companyId } = useApiAuth();
@@ -44,7 +67,7 @@ export const useCreatePayroll = () => {
       schemeType: TPayrollSchemeType;
       projectId?: number;
     }) =>
-      createData({
+      createPayroll({
         projectId: props.projectId,
         data: props.data,
         schemeType: props.schemeType,

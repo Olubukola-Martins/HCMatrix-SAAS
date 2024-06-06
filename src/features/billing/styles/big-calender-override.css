@@ -1,0 +1,4 @@
+.rbc-event,
+.rbc-event.rbc-selected {
+  background: var(--caramel) !important;
+}

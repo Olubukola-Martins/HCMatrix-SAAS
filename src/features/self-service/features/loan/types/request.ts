@@ -1,3 +1,5 @@
+import { TLicenseType } from "features/authentication/types/auth-user";
+
 export type TLoanRequestStatus =
   | "pending"
   | "approved"
@@ -22,6 +24,7 @@ export type TLoanRequest = {
   createdAt: string;
   updatedAt: string;
   deletedAt?: string;
+  disbursedAt?: string;
   type: Type;
   paymentPlan: PaymentPlan;
   employee: Employee;
@@ -32,7 +35,7 @@ interface Employee {
   firstName: string;
   lastName: string;
   email: string;
-  hasSelfService: boolean;
+  licenseType: TLicenseType;
   empUid: string;
   roleId: number;
   status: string;

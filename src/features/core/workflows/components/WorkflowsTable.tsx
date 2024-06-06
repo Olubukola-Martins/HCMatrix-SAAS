@@ -1,9 +1,9 @@
 import { Table } from "antd";
 import { ColumnsType, TablePaginationConfig, TableProps } from "antd/lib/table";
-import moment from "moment";
-import { Link } from "react-router-dom";
-import { appRoutes } from "config/router/paths";
 import { TAllWorkflow } from "../types/allWorkflows";
+import { WORKFLOW_TABLE_COLUMNS } from "./columns";
+import { useState } from "react";
+import { TableFocusTypeBtn } from "components/table";
 
 interface IProps {
   data: TAllWorkflow[];
@@ -18,51 +18,23 @@ export const WorkflowsTable = ({
   pagination,
   onChange,
 }: IProps) => {
-  const columns: ColumnsType<TAllWorkflow> = [
-    {
-      title: "Name",
-      dataIndex: "name",
-      key: "name",
-    },
-    {
-      title: "Number of stages",
-      dataIndex: "numberOfStages",
-      key: "numberOfStages",
-    },
-    {
-      title: "Last modified",
-      dataIndex: "updatedAt",
-      key: "updatedAt",
-      render: (val) => moment(val).format("YYYY-DD-MM"),
-    },
-    {
-      title: "Last modified by",
-      dataIndex: "lastModifier",
-      key: "lastModifier",
-      render: (_, val) => (
-        <span className="capitalize">
-          {val.lastModifiedBy.firstName} {val.lastModifiedBy.lastName}
-        </span>
-      ),
-    },
-
-    {
-      title: "Action",
-      dataIndex: "action",
-      render: (_, item) => (
-        <div className="flex items-center gap-3 text-lg">
-          <Link to={appRoutes.editWorkflow(item.id).path}>
-            <i className="ri-pencil-line cursor-pointer hover:text-caramel" />
-          </Link>
-          {/* <i className="ri-delete-bin-line cursor-pointer hover:text-caramel" /> */}
-        </div>
-      ),
-    },
-  ];
+  const columns: ColumnsType<TAllWorkflow> = WORKFLOW_TABLE_COLUMNS();
+  const [selectedColumns, setSelectedColumns] =
+    useState<ColumnsType<TAllWorkflow>>(columns);
   return (
-    <div>
+    <div className="space-y-4">
+      <div className="flex justify-end">
+        {TableFocusTypeBtn<TAllWorkflow>({
+          selectedColumns,
+          setSelectedColumns,
+          data: {
+            columns,
+          },
+        })}
+      </div>
+
       <Table
-        columns={columns}
+        columns={selectedColumns}
         size="small"
         dataSource={data}
         loading={loading}

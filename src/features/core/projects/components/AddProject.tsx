@@ -1,4 +1,4 @@
-import { DatePicker, Form, Input, Modal } from "antd";
+import { DatePicker, Form, Input, Modal, Select } from "antd";
 import { AppButton } from "components/button/AppButton";
 import React from "react";
 import { IModalProps } from "types";
@@ -11,6 +11,7 @@ import { useQueryClient } from "react-query";
 import { FormEmployeeInput } from "features/core/employees/components/FormEmployeeInput";
 import { useAddProject } from "../hooks/useAddProject";
 import { QUERY_KEY_FOR_PROJECTS } from "../hooks/useGetProjects";
+import { PROJECT_STATUS_OPTIONS } from "../constants";
 
 const AddProject: React.FC<IModalProps> = ({ open, handleClose }) => {
   const queryClient = useQueryClient();
@@ -26,6 +27,7 @@ const AddProject: React.FC<IModalProps> = ({ open, handleClose }) => {
           startDate: data.duration[0].toString(),
           endDate: data.duration[1].toString(),
           description: data.description,
+          status: data.status,
           employees: data.employees.map((item: number) => ({
             employeeId: item,
           })),
@@ -88,6 +90,13 @@ const AddProject: React.FC<IModalProps> = ({ open, handleClose }) => {
           <DatePicker.RangePicker
             placeholder={["Start Date", "End Date"]}
             className="w-full"
+          />
+        </Form.Item>
+        <Form.Item rules={generalValidationRules} name="status" label="Status">
+          <Select
+            options={PROJECT_STATUS_OPTIONS.filter(
+              (item) => item.value !== "closed"
+            )}
           />
         </Form.Item>
 

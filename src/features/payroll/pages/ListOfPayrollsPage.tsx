@@ -30,7 +30,7 @@ const ListOfPayrollsContainer = () => {
   const tabItems = [
     {
       key: "office",
-      label: "Office",
+      label: "Step Pay",
     },
     {
       key: "direct-salary",

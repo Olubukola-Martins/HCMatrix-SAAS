@@ -1,13 +1,14 @@
-import { Form, Input, Modal } from "antd";
+import { Form, Select, Modal } from "antd";
 import { AppButton } from "components/button/AppButton";
 import React, { useEffect } from "react";
 import { IModalProps } from "types";
-import { textInputValidationRules } from "utils/formHelpers/validation";
+import { generalValidationRules } from "utils/formHelpers/validation";
 import { openNotification } from "utils/notifications";
 import { useQueryClient } from "react-query";
 import { TPensionAdministrator } from "features/payroll/types";
 import { QUERY_KEY_FOR_PENSION_ADMINS } from "features/payroll/hooks/organization/pensionAdministrators/useGetPensionAdmins";
 import { useUpdatePensionAdmin } from "features/payroll/hooks/organization/pensionAdministrators/useUpdatePensionAdmin";
+import { DEFAULT_PENSION_ADMINISTRATORS } from "features/payroll/constants";
 
 interface IProps extends IModalProps {
   pensionAdmin: TPensionAdministrator;
@@ -79,10 +80,15 @@ const EditPensionAdmin: React.FC<IProps> = ({
         onFinish={handleSubmit}
         requiredMark={false}
       >
-        <Form.Item rules={textInputValidationRules} name="name" label="Name">
-          <Input placeholder="Name" />
+        <Form.Item rules={generalValidationRules} name="name" label="Name">
+          <Select
+            placeholder="Name"
+            options={DEFAULT_PENSION_ADMINISTRATORS.map((item) => ({
+              label: <span className="capitalize">{item}</span>,
+              value: item,
+            }))}
+          />
         </Form.Item>
-
         <div className="flex justify-end">
           <AppButton type="submit" isLoading={isLoading} />
         </div>

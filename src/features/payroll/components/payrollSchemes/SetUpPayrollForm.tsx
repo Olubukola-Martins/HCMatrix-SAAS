@@ -30,6 +30,8 @@ import { useUpdateProjectParticipantGrossPay } from "features/payroll/hooks/sche
 import { generalValidationRules } from "utils/formHelpers/validation";
 import moment from "moment";
 import { DEFAULT_DATE_FORMAT } from "constants/dateFormats";
+import { Link } from "react-router-dom";
+import { appRoutes } from "config/router/paths";
 
 const DEFAULT_COMPONENT_LABELS = {
   thirteenthMonthSalary: "thirteenth_month_salary",
@@ -40,13 +42,14 @@ const DEFAULT_COMPONENT_LABELS = {
   pension: "pension",
   overtime: "overtime",
   leaveAllowance: "leave_allowance",
+  employerPensionContribution: "employer_pension_contribution",
+  bonus: "bonus",
 };
 const boxStyle = "px-4 py-3 shadow rounded-md bg-mainBg";
 const boxTitle = "font-medium text-base pb-1";
 const inputStyle =
   "w-full rounded-md border border-gray-300 py-2 px-2 text-sm bg-mainBg focus:outline-none";
-const taxTableWrap =
-  "flex item-center text-xs justify-between gap-2 border-b border-slate-400 pb-1";
+
 const initialState: TActionState = {
   allowDisbursement: false,
 
@@ -64,6 +67,9 @@ const initialState: TActionState = {
   displayPension: false,
   displayOvertime: false,
   displayTax: false,
+  displayEmployerPensionContribution: false,
+  displayBonus: false,
+
   displayProjectParticipantsExpatriate: false,
   displayProjectParticipantsNonExpatriate: false,
   allowances: [],
@@ -86,6 +92,9 @@ interface TActionState {
   displayPension: boolean;
   displayOvertime: boolean;
   displayTax: boolean;
+  displayEmployerPensionContribution: boolean;
+  displayBonus: boolean;
+
   displayProjectParticipantsExpatriate: boolean;
   displayProjectParticipantsNonExpatriate: boolean;
   allowances: TSalaryComponent[];
@@ -94,6 +103,8 @@ interface TActionState {
 }
 
 type TActionType =
+  | "displayEmployerPensionContribution"
+  | "displayBonus"
   | "allowDisbursement"
   | "allowApproval"
   | "issuePayslip"
@@ -233,6 +244,17 @@ function reducer(
         ...state,
         displayNIF: !state.displayNIF,
       };
+    case "displayEmployerPensionContribution":
+      return {
+        ...state,
+        displayEmployerPensionContribution:
+          !state.displayEmployerPensionContribution,
+      };
+    case "displayBonus":
+      return {
+        ...state,
+        displayBonus: !state.displayBonus,
+      };
     case "handleProjectParticipants":
       return {
         ...state,
@@ -264,7 +286,7 @@ export const SetUpPayrollForm: React.FC<{
 }) => {
   const [state, dispatch] = useReducer(reducer, {
     ...initialState,
-    projectParticipants: project?.employees.map((item) => ({
+    projectParticipants: project?.employees?.map((item) => ({
       id: item.id,
       key: item.employee.empUid,
 
@@ -301,6 +323,8 @@ export const SetUpPayrollForm: React.FC<{
     allowances,
     deductions,
     projectParticipants,
+    displayEmployerPensionContribution,
+    displayBonus,
   } = state;
   const {
     mutate: mutateProjectPartcipant,
@@ -425,6 +449,7 @@ export const SetUpPayrollForm: React.FC<{
                 // duration: 0.4,
               });
               form.resetFields();
+              setEditScheme(false);
 
               queryClient.invalidateQueries({
                 queryKey: [QUERY_KEY_FOR_PAYROLL_SCHEME_BY_TYPE_OR_ID],
@@ -511,6 +536,7 @@ export const SetUpPayrollForm: React.FC<{
               description: res.data.message,
               // duration: 0.4,
             });
+            setEditScheme(false);
 
             queryClient.invalidateQueries({
               queryKey: [QUERY_KEY_FOR_PAYROLL_SCHEME_BY_TYPE_OR_ID],
@@ -540,11 +566,9 @@ export const SetUpPayrollForm: React.FC<{
     (data: TSetupPayrollSchemeData) => {
       if (scheme) {
         handleUpdate(data);
-        setEditScheme(false);
         return;
       }
       handleSetup(data);
-      setEditScheme(false);
     },
     [scheme, handleUpdate, handleSetup]
   );
@@ -645,6 +669,15 @@ export const SetUpPayrollForm: React.FC<{
           allowApproval: scheme?.allowApproval,
           runAutomatically:
             scheme.type === "wages" ? false : scheme?.runAutomatically,
+
+          displayEmployerPensionContribution: !!ogSalaryComponents.find(
+            (item) =>
+              item.label ===
+              DEFAULT_COMPONENT_LABELS.employerPensionContribution
+          )?.isActive,
+          displayBonus: !!ogSalaryComponents.find(
+            (item) => item.label === DEFAULT_COMPONENT_LABELS.bonus
+          )?.isActive,
           display13thMonth: !!ogSalaryComponents.find(
             (item) =>
               item.label === DEFAULT_COMPONENT_LABELS.thirteenthMonthSalary
@@ -712,8 +745,6 @@ export const SetUpPayrollForm: React.FC<{
       });
 
       setEditScheme(false);
-    } else {
-      setEditScheme(true);
     }
   }, [scheme, dispatch, form, project, type]);
 
@@ -833,22 +864,22 @@ export const SetUpPayrollForm: React.FC<{
         componentName: DEFAULT_COMPONENT_LABELS.itf,
         schemeId: scheme?.id,
       },
-      {
-        title: "Leave Allowance",
-        type: "allowance",
-        handleSave: handleAddAllowance,
-        isActive: displayLeaveAllowance,
-        isDefault: true,
-        dependencies,
-        description: `This allows you to create a leave allowance`,
-        salaryComponent: salaryComponents.find(
-          (item) => item.label === DEFAULT_COMPONENT_LABELS.leaveAllowance
-        ),
-        onSwitch: () => dispatch({ type: "displayLeaveAllowance" }),
+      // {
+      //   title: "Leave Allowance",
+      //   type: "allowance",
+      //   handleSave: handleAddAllowance,
+      //   isActive: displayLeaveAllowance,
+      //   isDefault: true,
+      //   dependencies,
+      //   description: `This allows you to create a leave allowance`,
+      //   salaryComponent: salaryComponents.find(
+      //     (item) => item.label === DEFAULT_COMPONENT_LABELS.leaveAllowance
+      //   ),
+      //   onSwitch: () => dispatch({ type: "displayLeaveAllowance" }),
 
-        componentName: DEFAULT_COMPONENT_LABELS.leaveAllowance,
-        schemeId: scheme?.id,
-      },
+      //   componentName: DEFAULT_COMPONENT_LABELS.leaveAllowance,
+      //   schemeId: scheme?.id,
+      // },
       {
         title: "Pension",
         type: "deduction",
@@ -864,6 +895,38 @@ export const SetUpPayrollForm: React.FC<{
         componentName: DEFAULT_COMPONENT_LABELS.pension,
         schemeId: scheme?.id,
       },
+      {
+        title: "Employer Pension Contribution",
+        type: "deduction",
+        handleSave: handleAddAllowance,
+        isActive: displayEmployerPensionContribution,
+        isDefault: true,
+        dependencies,
+        description: `This allows you to create an employer pension contribution(deduction)`,
+        onSwitch: () =>
+          dispatch({ type: "displayEmployerPensionContribution" }),
+        salaryComponent: salaryComponents.find(
+          (item) =>
+            item.label === DEFAULT_COMPONENT_LABELS.employerPensionContribution
+        ),
+        componentName: DEFAULT_COMPONENT_LABELS.employerPensionContribution,
+        schemeId: scheme?.id,
+      },
+      {
+        title: "Bonus",
+        type: "allowance",
+        handleSave: handleAddAllowance,
+        isActive: displayBonus,
+        isDefault: true,
+        dependencies,
+        description: `This allows you to create a bonus (allowance)`,
+        onSwitch: () => dispatch({ type: "displayBonus" }),
+        salaryComponent: salaryComponents.find(
+          (item) => item.label === DEFAULT_COMPONENT_LABELS.bonus
+        ),
+        componentName: DEFAULT_COMPONENT_LABELS.bonus,
+        schemeId: scheme?.id,
+      },
     ],
     [
       salaryComponents,
@@ -876,6 +939,8 @@ export const SetUpPayrollForm: React.FC<{
       displayOvertime,
       displayPension,
       displayTax,
+      displayBonus,
+      displayEmployerPensionContribution,
       handleAddAllowance,
       handleAddDeduction,
       scheme,
@@ -889,19 +954,19 @@ export const SetUpPayrollForm: React.FC<{
         description={description}
         actions={[
           {
-            hidden: !editScheme,
-            name: "Edit",
+            hidden: false,
+            name: editScheme ? "Cancel" : "Edit",
             loading: isLoadingSetup,
             handleClick: () => {
-              setEditScheme(true);
+              setEditScheme((prev) => !prev);
             },
             btnVariant: "transparent",
           },
           {
-            hidden: editScheme,
+            hidden: !editScheme,
+            loading: isLoadingSetup || isLoadingUpdate,
 
             name: "Save Changes",
-            loading: isLoadingSetup || isLoadingUpdate,
             handleClick: () => {
               form.submit();
             },
@@ -911,14 +976,18 @@ export const SetUpPayrollForm: React.FC<{
       />
       <Skeleton active loading={isFetching} paragraph={{ rows: 20 }}>
         <div className="bg-card px-5 py-7  rounded-md mt-7 grid grid-cols-1 md:grid-cols-1 gap-5 text-accent">
-          <Form form={form} onFinish={handleSubmit} disabled={!editScheme}>
+          <Form
+            form={form}
+            onFinish={handleSubmit}
+            disabled={editScheme === false}
+          >
             {/* first row */}
             <div className="flex flex-col gap-4">
               <div className={boxStyle}>
                 <h5 className={boxTitle}>Payroll Scheme Type</h5>
                 <input
                   className={inputStyle}
-                  value={scheme?.name ?? name}
+                  value={name ?? scheme?.name}
                   disabled
                 />
               </div>
@@ -1063,7 +1132,7 @@ export const SetUpPayrollForm: React.FC<{
                 <div className="flex items-center justify-between">
                   <h5
                     className={boxTitle}
-                    title="Manage all of the postive finiacial benefits that make up employees' pay"
+                    title="Manage all of the postive financial benefits that make up employees' pay"
                   >
                     Allowances
                   </h5>
@@ -1073,7 +1142,7 @@ export const SetUpPayrollForm: React.FC<{
                   />
                 </div>
                 <p className="text-sm">
-                  Manage all of the postive finiacial benefits that make up
+                  Manage all of the postive financial benefits that make up
                   employees' pay
                 </p>
                 {displayAllowances && (
@@ -1100,7 +1169,7 @@ export const SetUpPayrollForm: React.FC<{
                 <div className="flex items-center justify-between">
                   <h5
                     className={boxTitle}
-                    title="Manage all of the negative finiacial benefits that make up employees' pay"
+                    title="Manage all of the negative financial benefits that make up employees' pay"
                   >
                     Deductions
                   </h5>
@@ -1110,7 +1179,7 @@ export const SetUpPayrollForm: React.FC<{
                   />
                 </div>
                 <p className="text-sm">
-                  Manage all of the negative finiacial benefits that make up
+                  Manage all of the negative financial benefits that make up
                   employees' pay
                 </p>
                 {displayDeductions && (
@@ -1153,11 +1222,14 @@ export const SetUpPayrollForm: React.FC<{
                 {allowApproval && (
                   <div className="mt-2">
                     <div className="flex items-center lg:justify-between">
-                      <div className="w-2/5">
+                      <div className="w-2/5 space-y-4">
                         <FormWorkflowInput
                           Form={Form}
                           control={{ name: "workflowId", label: "" }}
                         />
+                        <Link to={appRoutes.createWorkflow}>
+                          Create Workflow
+                        </Link>
                       </div>
                     </div>
                   </div>
@@ -1283,7 +1355,11 @@ export const SetUpPayrollForm: React.FC<{
               <div key={i} className={`${boxStyle} text-sm`}>
                 <div className="flex items-center justify-between">
                   <h5 className={boxTitle}>{item.title}</h5>{" "}
-                  <Switch checked={item.isActive} onChange={item.onSwitch} />
+                  <Switch
+                    checked={item.isActive}
+                    onChange={item.onSwitch}
+                    disabled={!editScheme}
+                  />
                 </div>
                 <p className="text-sm">{item.description}</p>
 
@@ -1292,6 +1368,7 @@ export const SetUpPayrollForm: React.FC<{
                     <div className="grid grid-cols-1 lg:grid-cols-1 gap-5 mt-5">
                       <div>
                         <AddSalaryComponentForm
+                          disabled={!editScheme}
                           type={item.type}
                           isDefault={item.isDefault}
                           isActive={item.isActive}
