@@ -43,9 +43,9 @@ export const CandidateChartDiagram = () => {
     "March",
   ];
   const tabItems: TChartTabItem[] = [
-    { name: "Weekly", handleClick: () => {} },
-    { name: "Monthly", handleClick: () => {} },
-    { name: "Yearly", handleClick: () => {} },
+    { name: "Weekly" },
+    { name: "Monthly" },
+    { name: "Yearly" },
   ];
 
   return (

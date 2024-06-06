@@ -1,7 +1,5 @@
 // These object helps to ensure that the routes in the application are not manually hardcorded and littered everywhere
 
-import { format } from "path";
-
 import { TPayrollSchemeType } from "features/payroll/types/payrollSchemes";
 
 // rather they are managed by a single file
@@ -287,6 +285,7 @@ export const appRoutes = {
   }),
   hoursPerEmployee: `/attendance/hours-per-employee`,
   employeesPerShift: `/attendance/employees-per-shift`,
+  uploadAttendance: `/attendance/upload-attendance`,
   timeTrackingRules: `/attendance/time-tracking-rules`,
   workSchedule: `/attendance/work-schedule`,
   timeOffPolicy: `/attendance/time-off-policy`,
@@ -318,6 +317,45 @@ export const appRoutes = {
   lAndDReport: `/learning/report`,
   udemy: `/learning/udemy`,
   leaningHome: `/leaning/home`,
+
+  // Recruitment
+  recruitmentSettings: `/recruitment/settings`,
+  recruitmentDashboard: `/recruitment/dashboard`,
+  recruitmentReport: `/recruitment/report`,
+  recruitmentAddJobOpening: `/recruitment/add-job-opening`,
+  candidateStatus: `/recruitment/candidate-status`,
+  candidateSources: `/recruitment/candidate-sources`,
+  recruitmentEmailTemplate: `/recruitment/email-template`,
+  recruitmentOfferTemplate: `/recruitment/offer-template`,
+  recruitmentJobTemplate: `/recruitment/job-template`,
+  recruitmentOtherSettings: `/recruitment/other-settings`,
+  addEmailTemplate: `/recruitment/add-email-template`,
+  emailTemplateDetails: (id?: number) => ({
+    format: `/recruitment/email-template/:id`,
+    path: `/recruitment/email-template/${id}`,
+  }),
+  offerTemplateDetails: (id?: number) => ({
+    format: `/recruitment/offer-template/:id`,
+    path: `/recruitment/offer-template/${id}`,
+  }),
+  jobTemplateDetails: (id?: number) => ({
+    format: `/recruitment/job-template/:id`,
+    path: `/recruitment/job-template/${id}`,
+  }),
+  addJobTemplate: `/recruitment/add-job-template`,
+  addOfferTemplate: `/recruitment/add-offer-template`,
+  applicationsList: `/recruitment/applications-list`,
+  applicationsDescription: `/recruitment/applications-description`,
+  applicationsInfo: `/recruitment/applications-info`,
+  applicantDetails: (id?: number) => ({
+    format: `/recruitment/dashboard/:id/applicantDetails`,
+    path: `/recruitment/dashboard/${id}/applicantDetails`,
+  }),
+  applicationDetails: (id?: number) => ({
+    format: `/recruitment/dashboard/:id/applicationDetails`,
+    path: `/recruitment/dashboard/${id}/applicationDetails`,
+  }),
+  applicantEmailPage: `/recruitment/dashboard/applicantEmailPage`,
 };
 
 // Routes that require API redirect and logout if authenticated, so the user is not automatically redirected to the login page, as that is the typical behaviour of such routes

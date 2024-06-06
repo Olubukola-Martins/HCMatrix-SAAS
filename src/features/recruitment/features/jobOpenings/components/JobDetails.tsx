@@ -1,21 +1,17 @@
 import { Form, Input, Select, FormInstance } from "antd";
 import { textInputValidationRules } from "utils/formHelpers/validation";
 import { useState } from "react";
-import {  WORK_MODELS } from "constants/general";
+import { WORK_MODELS } from "constants/general";
 import { AppButton } from "components/button/AppButton";
 import { useNavigate } from "react-router-dom";
 import { appRoutes } from "config/router/paths";
 import { openNotification } from "utils/notifications";
 import { useGetEmploymentTypes } from "features/recruitment/settings/hooks/useGetEmploymentTypes";
 import { useGetExperienceType } from "features/recruitment/settings/hooks/useGetExperienceType";
-import {
-  IFRQDataReturnProps,
-  useFetchAllDepartments,
-} from "features/core/departments/hooks/useFetchDepartments";
-import { useApiAuth } from "hooks/useApiAuth";
-import { useFetchEmployees } from "features/core/employees/hooks/useFetchEmployees";
+import { useFetchDepartments as useFetchAllDepartments } from "features/core/departments/hooks/useFetchDepartments";
 import { FormEmployeeInput } from "features/core/employees/components/FormEmployeeInput";
-import { getEmployeeFullName } from "features/core/employees/utils/getEmployeeFullName";
+
+const { TextArea } = Input;
 
 interface ChildProps {
   stepperCurrentState: number;
@@ -28,21 +24,11 @@ export const JobDetails: React.FC<ChildProps> = ({
   updateCount,
   form,
 }) => {
-
   const { data: employTypData } = useGetEmploymentTypes();
   const { data: experncTypData } = useGetExperienceType();
-  const onDeptSuccess = (data: IFRQDataReturnProps) => {
-    console.log(data);
-  };
 
-  const { data: departmentsData, error: departDataError } =
-    useFetchAllDepartments(onDeptSuccess);
+  const { data: departmentsData } = useFetchAllDepartments({});
 
-  const { data: employeeData } = useFetchEmployees({pagination:{
-  limit: 10,
-  offset: 0
-}, onSuccess:onDeptSuccess});
-  const { TextArea } = Input;
   const navigator = useNavigate();
 
   // on cancel, handle fields reset

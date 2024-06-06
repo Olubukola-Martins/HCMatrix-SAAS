@@ -61,17 +61,18 @@ export const useGenerateDBSidebarLinks = (): TData => {
         },
         {
           name: "Recruitment",
-          path: "/recruitment",
+          path: appRoutes.recruitmentDashboard,
           icon: <i className="ri-line-chart-line" />,
-          hidden: !canUserAccessComponent({
-            userPermissions,
-            requiredPermissions: [],
-            activeSubscription: companyActiveSubscription,
-            requiredSubscriptionState: {
-              label: "recruitment",
-              resources: [],
-            },
-          }),
+          hidden: false,
+          // hidden: !canUserAccessComponent({
+          //   userPermissions,
+          //   requiredPermissions: [],
+          //   activeSubscription: companyActiveSubscription,
+          //   requiredSubscriptionState: {
+          //     label: "recruitment",
+          //     resources: [],
+          //   },
+          // }),
           matcherKeys: ["recruitment"],
         },
         {
