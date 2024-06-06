@@ -52,3 +52,13 @@ export interface scheduleFilterProps {
   empUid?: string | undefined;
   shiftTypes?: "morning" | "afternoon" | "night";
 }
+
+export interface TWorkSheduleShiftCategory {
+  id: number;
+  name: string;
+  label: string;
+  isEnabled: boolean;
+  companyId: number;
+  createdAt: string;
+  updatedAt: string;
+}
