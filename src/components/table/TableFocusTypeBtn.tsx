@@ -35,7 +35,7 @@ export function TableFocusTypeBtn<TEntity>({
             <Space direction="vertical">
               {data.columns.map((column) => (
                 <Checkbox key={column.key} value={column.key}>
-                  <span className="capitalize">{column.key}</span>
+                  <span className="capitalize">{`${column.key}`}</span>
                 </Checkbox>
               ))}
             </Space>
