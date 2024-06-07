@@ -54,7 +54,7 @@ export const ProjectMembersTable: React.FC<IProps> = ({
       dataIndex: "desc",
       key: "desc",
       render: (_, item) => (
-        <Link to={appRoutes.singleProject(item.id).path}>
+        <Link to={appRoutes.singleEmployee(item.id).path}>
           <span className="capitalize">
             {getEmployeeFullName(item.employee)}
           </span>
