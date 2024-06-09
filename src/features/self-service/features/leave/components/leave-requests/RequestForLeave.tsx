@@ -28,7 +28,6 @@ import { useCreateLeave } from "../../hooks/useCreateLeave";
 import { FormFileInput } from "components/generalFormInputs/FormFileInput";
 import { FormLeaveTypeInput } from "../settings/types/FormLeaveTypeInput";
 import MultiDatePicker, { DateObject } from "react-multi-date-picker";
-import moment from "moment";
 import { QUERY_KEY_FOR_ALL_LEAVES } from "../../hooks/useGetAllLeaves";
 import { QUERY_KEY_FOR_EMPLOYEE_LEAVES } from "../../hooks/useGetEmployeeLeaves";
 import { bulkUploadFiles } from "hooks/useUploadFile";
@@ -42,6 +41,7 @@ import {
 } from "components/permission-restriction/PermissionRestrictor";
 import { TSelfServiceApplicationMode } from "features/self-service/types";
 import AppTooltip from "components/tooltip/AppTooltip";
+import dayjs from "dayjs";
 
 interface IProps extends IModalProps {}
 export const RequestForLeaveBtn = () => {
@@ -295,7 +295,7 @@ export const RequestForLeave: React.FC<IProps> = ({ handleClose, open }) => {
                     specificDates &&
                       specificDates.forEach((item, i) => {
                         if (
-                          !isDateGreaterThanCurrentDay(moment(item.toString()))
+                          !isDateGreaterThanCurrentDay(dayjs(item.toString()))
                         ) {
                           throw new Error(
                             "Please select a date greater than the current day"
@@ -304,8 +304,8 @@ export const RequestForLeave: React.FC<IProps> = ({ handleClose, open }) => {
                         if (
                           leavePolicySetting?.includeWeekends === false &&
                           countWeekendsInclusive(
-                            moment(item.toString()),
-                            moment(item.toString())
+                            dayjs(item.toString()),
+                            dayjs(item.toString())
                           )
                         ) {
                           throw new Error(
@@ -316,9 +316,9 @@ export const RequestForLeave: React.FC<IProps> = ({ handleClose, open }) => {
                           leavePolicySetting?.includeHolidays === false &&
                           holidays &&
                           countMatchingDatesInclusive(
-                            moment(item.toString()),
-                            moment(item.toString()),
-                            holidays.data.map((item) => moment(item.date))
+                            dayjs(item.toString()),
+                            dayjs(item.toString()),
+                            holidays.data.map((item) => dayjs(item.date))
                           )
                         ) {
                           throw new Error(
@@ -435,7 +435,7 @@ export const RequestForLeave: React.FC<IProps> = ({ handleClose, open }) => {
                         countMatchingDatesInclusive(
                           period[0],
                           period[1],
-                          holidays.data.map((item) => moment(item.date))
+                          holidays.data.map((item) => dayjs(item.date))
                         );
                     }
                   }

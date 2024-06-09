@@ -1,8 +1,7 @@
 import { Link } from "react-router-dom";
 import { TablePaginationConfig, Pagination, Skeleton } from "antd";
 import type { PaginationProps } from "antd";
-
-import moment from "moment";
+import dayjs from "dayjs";
 import { appRoutes } from "config/router/paths";
 import { TRole } from "../types";
 import { motion } from "framer-motion";
@@ -92,11 +91,11 @@ const RoleBox = ({
             <div className="py-7">
               <p className="pb-2">
                 Date Created:{" "}
-                {moment(data.createdAt).format(DEFAULT_DATE_FORMAT)}
+                {dayjs(data.createdAt).format(DEFAULT_DATE_FORMAT)}
               </p>
               <p>
                 Last Modified:{" "}
-                {moment(data.updatedAt).format(DEFAULT_DATE_FORMAT)}
+                {dayjs(data.updatedAt).format(DEFAULT_DATE_FORMAT)}
               </p>
             </div>
             <div className="border-r-2" />

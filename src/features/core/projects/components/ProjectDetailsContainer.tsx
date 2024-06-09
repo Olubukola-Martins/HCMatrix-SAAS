@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { TSingleProject } from "../types";
 import { ProjectOverview } from "./ProjectOverview";
 import { ProjectMembersTableContainer } from "./management/ProjectMembersTableContainer";
-import moment from "moment";
+import dayjs from "dayjs";
 import { EditProject } from "./EditProject";
 import { AddMemberToProject } from "./management/AddMemberToProject";
 import DeleteProject from "./DeleteProject";
@@ -48,10 +48,10 @@ export const ProjectDetailsContainer: React.FC<IProps> = ({ project }) => {
         <ProjectOverview
           {...{
             data: {
-              startDate: moment(project?.startDate).format("YYYY-MM-DD"),
-              endDate: moment(project?.endDate).format("YYYY-MM-DD"),
-              createdAt: moment(project?.createdAt).format("YYYY-MM-DD"),
-              updatedAt: moment(project?.updatedAt).format("YYYY-MM-DD"),
+              startDate: dayjs(project?.startDate).format("YYYY-MM-DD"),
+              endDate: dayjs(project?.endDate).format("YYYY-MM-DD"),
+              createdAt: dayjs(project?.createdAt).format("YYYY-MM-DD"),
+              updatedAt: dayjs(project?.updatedAt).format("YYYY-MM-DD"),
               description: project?.description,
               status: project?.status,
             },

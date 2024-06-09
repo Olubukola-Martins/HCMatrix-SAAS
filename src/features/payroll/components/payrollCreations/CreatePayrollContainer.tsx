@@ -31,7 +31,8 @@ import {
   QUERY_KEY_FOR_SINGLE_PAYROLL,
   useGetSinglePayroll,
 } from "features/payroll/hooks/payroll/useGetSinglePayroll";
-import moment from "moment";
+import dayjs from "dayjs";
+
 import { EmployeeTimesheet } from "./EmployeeTimesheet";
 import { useRollbackPayroll } from "features/payroll/hooks/payroll/rollback/useRollbackPayroll";
 import { useQueryClient } from "react-query";
@@ -787,7 +788,7 @@ const CreatePayrollContainer: React.FC<{
                   {typeof payroll?.frequency === "number" && (
                     <input
                       disabled
-                      value={moment(payroll?.date).format("YYYY-MM-DD")}
+                      value={dayjs(payroll?.date).format("YYYY-MM-DD")}
                       type="date"
                       placeholder="Select day"
                       className=" bg-slate-100 cursor-not-allowed border text-accent rounded px-3 py-1 border-gray-400 bg-mainBg"
@@ -796,7 +797,7 @@ const CreatePayrollContainer: React.FC<{
                   {payroll?.frequency === "daily" && (
                     <input
                       disabled
-                      value={moment(payroll?.date).format("YYYY-MM-DD")}
+                      value={dayjs(payroll?.date).format("YYYY-MM-DD")}
                       type="date"
                       placeholder="Select day"
                       className=" bg-slate-100 cursor-not-allowed border text-accent rounded px-3 py-1 border-gray-400 bg-mainBg"
@@ -805,7 +806,7 @@ const CreatePayrollContainer: React.FC<{
                   {payroll?.frequency === "monthly" && (
                     <input
                       disabled
-                      value={moment(payroll?.date).format("YYYY-MM")}
+                      value={dayjs(payroll?.date).format("YYYY-MM")}
                       type="month"
                       placeholder="Select month"
                       className=" bg-slate-100 cursor-not-allowed border text-accent rounded px-3 py-1 border-gray-400 bg-mainBg"

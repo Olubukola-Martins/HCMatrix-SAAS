@@ -15,7 +15,7 @@ import { QUERY_KEY_FOR_SINGLE_EMPLOYEE } from "features/core/employees/hooks/use
 import { TSingleEmployee } from "features/core/employees/types";
 import { FormExchangeRateInput } from "features/payroll/components/exchangeRates/FormExchangeRateInput";
 import { useCurrentFileUploadUrl } from "hooks/useCurrentFileUploadUrl";
-import moment from "moment";
+import dayjs from "dayjs";
 import { useState, useEffect } from "react";
 import { useQueryClient } from "react-query";
 import { TEmploymentEligibity } from "types/employementEligibilities";
@@ -57,7 +57,7 @@ export const PersonalInformation: React.FC<IProps> = ({
     if (!personalInfo) return;
 
     form.setFieldsValue({
-      dob: personalInfo.dob ? moment(personalInfo.dob) : null,
+      dob: personalInfo.dob ? dayjs(personalInfo.dob) : null,
       nationality: personalInfo.nationality,
       gender: personalInfo.gender,
       maritalStatus: personalInfo.maritalStatus,
@@ -73,7 +73,7 @@ export const PersonalInformation: React.FC<IProps> = ({
       lgaId: personalInfo.address?.lgaId,
       streetAddress: personalInfo.address?.streetAddress,
       passportExpirationDate: personalInfo.passportExpirationDate
-        ? moment(personalInfo.passportExpirationDate)
+        ? dayjs(personalInfo.passportExpirationDate)
         : null,
       alternativeEmail: personalInfo?.alternativeEmail,
       alternativePhoneNumber: {

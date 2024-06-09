@@ -3,7 +3,7 @@ import React, { useState } from "react";
 // import { Line } from "react-chartjs-2";
 import ChartTabHeader, { TChartTabItem } from "./ChartTabHeader";
 import { DatePicker } from "antd";
-import { Moment } from "moment";
+import { Dayjs } from "dayjs";
 import { Histogram, LineChart } from "components/charts";
 import { generateHexColor } from "utils/colorHelpers/generateHexColor";
 import { TCompanyOwnerDashboard } from "features/core/company/types/companyDashboard";
@@ -14,8 +14,8 @@ const tabItems: TChartTabItem[] = [
   // { name: "Turn Over" },
 ];
 type TProps = {
-  year: Moment | null;
-  setYear: (props: Moment | null) => void;
+  year: Dayjs | null;
+  setYear: (props: Dayjs | null) => void;
   data?: TCompanyOwnerDashboard["employeesBreakdown"];
 };
 const EmployeeInfoChart: React.FC<TProps> = ({ setYear, year, data }) => {

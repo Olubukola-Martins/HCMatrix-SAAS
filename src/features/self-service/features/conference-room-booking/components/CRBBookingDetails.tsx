@@ -1,8 +1,7 @@
 import { DatePicker, Form, Input, Modal, Skeleton, TimePicker } from "antd";
 import { useEffect } from "react";
 import { useFetchSingleConferenceRoomBooking } from "../hooks/useFetchSingleConferenceRoomBooking";
-import moment from "moment";
-
+import dayjs from "dayjs";
 import { getAppropriateColorForStatus } from "utils/colorHelpers/getAppropriateColorForStatus";
 import { IModalProps } from "types";
 import { getEmployeeFullName } from "features/core/employees/utils/getEmployeeFullName";
@@ -31,14 +30,14 @@ const CRBBookingDetails = ({
   useEffect(() => {
     if (data) {
       form.setFieldsValue({
-        date: data.date ? moment(data.date) : null,
+        date: data.date ? dayjs(data.date) : null,
         bookedBy: `${getEmployeeFullName(data.employee)}`,
         employeeID: data.employee.empUid,
         roomName: data.conferenceRoom.name,
         priority: data.priority,
         reason: data.reason,
         status: data.status,
-        duration: [moment(data.startTime), moment(data.endTime)],
+        duration: [dayjs(data.startTime), dayjs(data.endTime)],
       });
     }
   }, [id, form, data]);

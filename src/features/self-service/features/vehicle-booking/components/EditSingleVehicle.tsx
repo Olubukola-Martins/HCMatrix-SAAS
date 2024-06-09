@@ -22,7 +22,7 @@ import {
 } from "utils/formHelpers/validation";
 import { openNotification } from "utils/notifications";
 import { AppButton } from "components/button/AppButton";
-import moment from "moment";
+import dayjs from "dayjs";
 import { FormFileInput } from "components/generalFormInputs/FormFileInput";
 
 interface IProps extends IModalProps {
@@ -51,7 +51,7 @@ export const EditSingleVehicle: React.FC<IProps> = ({
       imageUrl: vehicle.imageUrl,
       color: vehicle.color,
       description: vehicle.description,
-      purchaseDate: vehicle.purchaseDate ? moment(vehicle.purchaseDate) : null,
+      purchaseDate: vehicle.purchaseDate ? dayjs(vehicle.purchaseDate) : null,
       cost: vehicle.cost,
       status: vehicle.status,
       assigneeId: vehicle.assigneeId,

@@ -8,7 +8,7 @@ import {
   TEmployeeMedicalHistoryType,
   TSingleEmployeeHealthAccess,
 } from "features/self-service/features/health-access/types/employee";
-import moment from "moment";
+import dayjs from "dayjs";
 import { useEffect } from "react";
 import { useQueryClient } from "react-query";
 import { IModalProps } from "types";
@@ -36,7 +36,7 @@ export const EditMedication = ({
   useEffect(() => {
     form.setFieldsValue({
       condition: data?.condition,
-      dateOfOnset: moment(data?.dateOfOnset),
+      dateOfOnset: dayjs(data?.dateOfOnset),
     });
   }, [form, data]);
   const { mutate, isLoading } = useUpdateEmployeeMedicalHistory();

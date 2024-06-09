@@ -8,7 +8,8 @@ import { useNavigate } from "react-router-dom";
 import { appRoutes } from "config/router/paths";
 import { useCancelTrainingBooking } from "features/billing/hooks/addOns/trainingSession/booking/useCancelTrainingBooking";
 import { TTrainingSessionBooking } from "features/billing/types/addOns/trainingSession";
-import moment from "moment";
+import dayjs from "dayjs";
+
 
 interface IProps extends IModalProps {
   booking?: Pick<TTrainingSessionBooking, "id" | "startDate" | "endDate">;
@@ -64,9 +65,9 @@ export const CancelCompanyTrainingSession: React.FC<IProps> = ({
       title="Cancel Training Session"
       entity={{
         type: "training session",
-        name: `${moment(booking?.startDate).format(
+        name: `${dayjs(booking?.startDate).format(
           "hh:mm a dd MMM, yyyy"
-        )} - ${moment(booking?.endDate).format("hh:mm a dd MMM, yyyy")}`,
+        )} - ${dayjs(booking?.endDate).format("hh:mm a dd MMM, yyyy")}`,
       }}
       handleClose={handleClose}
       open={open}

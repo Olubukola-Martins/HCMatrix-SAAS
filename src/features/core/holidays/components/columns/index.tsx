@@ -1,6 +1,6 @@
 import { ColumnsType } from "antd/lib/table";
 import { THoliday, THolidayAction } from "../../types";
-import moment from "moment";
+import dayjs from "dayjs";
 import { DEFAULT_DATE_FORMAT } from "constants/dateFormats";
 import { Dropdown, Menu } from "antd";
 import { MoreOutlined } from "@ant-design/icons";
@@ -20,7 +20,7 @@ export const HOLIDAY_TABLE_COLUMNS = (
     key: "date",
     render: (val, item) => (
       <span className="capitalize text-caramel">
-        {moment(item.date).format("DD, MMMM")}
+        {dayjs(item.date).format("DD, MMMM")}
       </span>
     ),
   },
@@ -30,7 +30,7 @@ export const HOLIDAY_TABLE_COLUMNS = (
     key: "createdAt",
     render: (val, item) => (
       <span className="capitalize ">
-        {moment(item.createdAt).format(DEFAULT_DATE_FORMAT)}
+        {dayjs(item.createdAt).format(DEFAULT_DATE_FORMAT)}
       </span>
     ),
   },
@@ -40,7 +40,7 @@ export const HOLIDAY_TABLE_COLUMNS = (
     key: "updatedAt",
     render: (val, item) => (
       <span className="capitalize">
-        {moment(item.updatedAt).format(DEFAULT_DATE_FORMAT)}
+        {dayjs(item.updatedAt).format(DEFAULT_DATE_FORMAT)}
       </span>
     ),
   },
@@ -80,9 +80,9 @@ export const HOLIDAY_EXPORT_COLUMNS = (
     items?.map((item) => ({
       "Holiday Name": item.title,
 
-      Date: moment(item.date).format("DD, MMMM"),
-      "Created At": moment(item.createdAt).format(DEFAULT_DATE_FORMAT),
-      "Last Modified": moment(item.updatedAt).format(DEFAULT_DATE_FORMAT),
+      Date: dayjs(item.date).format("DD, MMMM"),
+      "Created At": dayjs(item.createdAt).format(DEFAULT_DATE_FORMAT),
+      "Last Modified": dayjs(item.updatedAt).format(DEFAULT_DATE_FORMAT),
     })) ?? []
   );
 };
