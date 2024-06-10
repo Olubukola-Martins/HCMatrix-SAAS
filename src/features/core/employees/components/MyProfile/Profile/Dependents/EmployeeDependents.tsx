@@ -71,8 +71,8 @@ const EmployeeDependents: React.FC<
           dob: data.dob,
           fullName: data.fullName,
           phoneNumber: formatPhoneNumber({
-            code: data.phone.code,
-            number: data.phone.number,
+            code: data?.phone?.code,
+            number: data?.phone.number,
           }),
           relationship: data.relationship,
         },
@@ -113,8 +113,8 @@ const EmployeeDependents: React.FC<
           dob: data.dob,
           fullName: data.fullName,
           phoneNumber: formatPhoneNumber({
-            code: data.phone.code,
-            number: data.phone.number,
+            code: data?.phone?.code,
+            number: data?.phone.number,
           }),
           relationship: data.relationship,
         },

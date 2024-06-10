@@ -32,9 +32,9 @@ const CompanyInformationForm = () => {
       {
         name: company?.name === data.name ? undefined : data.name,
         phoneNumber:
-          company?.phoneNumber === data.phoneNumber
+          company?.phoneNumber === data?.phoneNumber
             ? undefined
-            : data.phoneNumber,
+            : data?.phoneNumber,
         industryId:
           company?.industryId === data.industryId ? undefined : data.industryId,
         color: company?.color === data.color ? undefined : data.color,
@@ -81,7 +81,7 @@ const CompanyInformationForm = () => {
     if (company) {
       form.setFieldsValue({
         name: company.name,
-        phoneNumber: company.phoneNumber,
+        phoneNumber: company?.phoneNumber,
         industryId: company.industryId,
         color: company.color,
         logoUrl: company.logoUrl,

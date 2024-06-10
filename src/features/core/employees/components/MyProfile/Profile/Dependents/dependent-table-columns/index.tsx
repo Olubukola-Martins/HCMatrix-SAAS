@@ -24,7 +24,7 @@ export const generateEmployeeHealthAccessDependantColumns = ({
     {
       title: "Phone Number",
       dataIndex: "phoneNumber",
-      render: (_, val) => <span className="">+{val.phoneNumber}</span>,
+      render: (_, val) => <span className="">+{val?.phoneNumber}</span>,
     },
 
     {
@@ -67,7 +67,7 @@ export const generateEmployeeDependantColumns = ({
     {
       title: "Phone Number",
       dataIndex: "phoneNumber",
-      render: (_, val) => <span className="">+{val.phoneNumber}</span>,
+      render: (_, val) => <span className="">+{val?.phoneNumber}</span>,
     },
     {
       title: "Relationship",

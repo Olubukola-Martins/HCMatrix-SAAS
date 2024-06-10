@@ -42,8 +42,8 @@ export const InvitedEmployeeForm = () => {
         dob: data.dob.format("YYYY-MM-DD"),
         gender: data.gender,
         phoneNumber: formatPhoneNumber({
-          code: data.phone.code,
-          number: data.phone.number,
+          code: data?.phone?.code,
+          number: data?.phone.number,
         }),
         eligibility: data.eligibility,
         maritalStatus: data.maritalStatus,

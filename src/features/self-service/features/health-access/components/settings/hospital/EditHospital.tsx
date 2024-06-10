@@ -1,4 +1,4 @@
-import { Form, Input, Modal, Switch } from "antd";
+import { Form, Input, Modal } from "antd";
 import { AppButton } from "components/button/AppButton";
 import React, { useEffect, useState } from "react";
 import { IModalProps } from "types";
@@ -38,7 +38,7 @@ export const EditHospital: React.FC<IProps> = ({
       categoryId: hospital?.categoryId,
       isRecommended: hospital?.isRecommended,
       phone: {
-        code: parsePhoneNumber(hospital?.phoneNumber).code,
+        code: parsePhoneNumber(hospital?.phoneNumber)?.code,
         number: parsePhoneNumber(hospital?.phoneNumber).number,
       },
       address: {
@@ -65,8 +65,8 @@ export const EditHospital: React.FC<IProps> = ({
             categoryId: data.categoryId,
             isRecommended: !!data.isRecommended,
             phoneNumber: formatPhoneNumber({
-              code: data.phone.code,
-              number: data.phone.number,
+              code: data?.phone?.code,
+              number: data?.phone.number,
             }),
             address: data.address,
           },

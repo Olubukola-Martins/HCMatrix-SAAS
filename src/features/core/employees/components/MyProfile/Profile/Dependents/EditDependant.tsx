@@ -43,8 +43,8 @@ export const EditDependent: React.FC<IProps> = ({
       dob: dependent.dob ? moment(dependent.dob) : null,
       fullName: dependent.fullName,
       phone: {
-        code: parsePhoneNumber(dependent.phoneNumber).code,
-        number: parsePhoneNumber(dependent.phoneNumber).number,
+        code: parsePhoneNumber(dependent?.phoneNumber)?.code,
+        number: parsePhoneNumber(dependent?.phoneNumber).number,
       },
       relationship: dependent.relationship,
       gender: dependent.gender,
