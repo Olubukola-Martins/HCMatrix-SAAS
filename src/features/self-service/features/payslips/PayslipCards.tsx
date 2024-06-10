@@ -1,42 +1,45 @@
 import { SimpleCard } from "components/cards/SimpleCard";
-import React from "react";
-import { useGetConferenceRoomAnalytics } from "../conference-room-booking/hooks/useGetConferenceRoomAnalytics";
-import moment from "moment";
+import { useFetchSingleEmployee } from "features/core/employees/hooks/useFetchSingleEmployee";
+import useMostRecentApiAuth from "hooks/useMostRecentApiAuth";
 import { useGetCompanyBaseCurrency } from "hooks/useGetCompanyBaseCurrency";
+import { determineEmployeeGrossPay } from "features/payroll/utils/determineEmployeeGrossPay";
 
-// TODO: Refactor parent foleder to use standard structure
 const PayslipCards = () => {
-  const { data, isLoading } = useGetConferenceRoomAnalytics();
-  const { formatValueWithCurrency } = useGetCompanyBaseCurrency();
+  const { currentCompanyEmployeeId: employeeId, isLoading: isLoadingAuth } =
+    useMostRecentApiAuth();
+  const { data: employee, isLoading: isLoadingEmployee } =
+    useFetchSingleEmployee({ employeeId });
+  const { loading: baseCurrLoading, formatValueWithCurrency } =
+    useGetCompanyBaseCurrency();
+  const isLoading = isLoadingAuth || isLoadingEmployee || baseCurrLoading;
+  const employeeGrossPay = determineEmployeeGrossPay(employee?.jobInformation);
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mt-6">
+    <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-3 gap-4 mt-6">
       <>
         <div>
           <SimpleCard
             title="Payment Cycle"
-            highlight="Monthly"
+            highlight={employee?.jobInformation.frequency}
             loading={isLoading}
           />
         </div>
         <div>
           <SimpleCard
-            title="Current Period"
-            highlight="May, 2023"
+            title="Payroll Scheme"
+            highlight={
+              employee?.jobInformation.payrollType === "office"
+                ? "Step Pay"
+                : employee?.jobInformation.payrollType
+            }
             loading={isLoading}
           />
         </div>
-        <div>
-          <SimpleCard
-            title="Next Pay Day"
-            highlight={moment().add(1, "month").format("DD, MMMM, YYYY")}
-            loading={isLoading}
-          />
-        </div>
+
         <div>
           <SimpleCard
             title="Gross Salary"
-            highlight={formatValueWithCurrency(12_000_000)}
+            highlight={formatValueWithCurrency(employeeGrossPay)}
             loading={isLoading}
           />
         </div>
