@@ -1,5 +1,5 @@
 import { DatePicker, Form, Modal, Input, Skeleton, Select } from "antd";
-import moment from "moment";
+import dayjs from "dayjs";
 import { useEffect } from "react";
 import { IModalProps } from "types";
 import { generalValidationRules } from "utils/formHelpers/validation";
@@ -26,7 +26,7 @@ export const DelegationDetail: React.FC<IProps> = ({
         delegatee: getEmployeeFullName(data.delegatee),
         delegator: getEmployeeFullName(data.delegator),
         description: data.description,
-        period: [moment(data.startDate), moment(data.endDate)],
+        period: [dayjs(data.startDate), dayjs(data.endDate)],
         permissions: data.permissions.map((item) => item.permissionId),
       });
     }
@@ -70,7 +70,7 @@ export const DelegationDetail: React.FC<IProps> = ({
           <Form.Item
             name="description"
             label="Description (Optional)"
-            requiredMark="optional"
+          
           >
             <Input.TextArea
               rows={3}

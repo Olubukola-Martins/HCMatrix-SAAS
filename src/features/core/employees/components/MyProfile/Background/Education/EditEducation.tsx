@@ -11,7 +11,7 @@ import { useQueryClient } from "react-query";
 import { QUERY_KEY_FOR_SINGLE_EMPLOYEE } from "features/core/employees/hooks/useFetchSingleEmployee";
 import { TSingleEmployee } from "features/core/employees/types";
 import { useUpdateEmployeeEducation } from "features/core/employees/hooks/educationDetail/useUpdateEmployeeEducation";
-import moment from "moment";
+import dayjs from "dayjs";
 import { DEFAULT_DATE_FORMAT } from "constants/dateFormats";
 
 interface IProps extends IModalProps {
@@ -35,8 +35,8 @@ export const EditEducation: React.FC<IProps> = ({
       degree: educationDetail.degree,
       school: educationDetail.school,
       duration: [
-        moment(educationDetail.startDate),
-        moment(educationDetail.endDate),
+        dayjs(educationDetail.startDate),
+        dayjs(educationDetail.endDate),
       ],
     });
   }, [form, educationDetail]);

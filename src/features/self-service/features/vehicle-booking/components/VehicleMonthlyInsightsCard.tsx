@@ -2,10 +2,10 @@ import { DatePicker, Skeleton } from "antd";
 import { LineChart } from "components/charts/LineChart";
 import { useGetVehicleOverviewAnalytics } from "../hooks/useGetVehicleOverviewAnalytics";
 import { useState } from "react";
-import moment, { Moment } from "moment";
+import dayjs, { Dayjs } from "dayjs";
 
 export const VehicleMonthlyInsightsCard = () => {
-  const [year, setYear] = useState<Moment | null>(moment());
+  const [year, setYear] = useState<Dayjs | null>(dayjs());
 
   const { data, isLoading } = useGetVehicleOverviewAnalytics({
     year: year?.format("YYYY"),

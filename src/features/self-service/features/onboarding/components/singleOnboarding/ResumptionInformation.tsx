@@ -1,7 +1,7 @@
 import { Form, DatePicker } from "antd";
 import { FormEmployeeInput } from "features/core/employees/components/FormEmployeeInput";
 import { useApiAuth } from "hooks/useApiAuth";
-import moment from "moment";
+import dayjs from "dayjs";
 import { useEffect } from "react";
 import { useQueryClient } from "react-query";
 import { Link } from "react-router-dom";
@@ -38,7 +38,7 @@ export const ResumptionInformation = ({
       const data = onboarding?.resumptionInformation;
       form.setFieldsValue({
         resumptionDateAndTime: data.resumptionDateAndTime
-          ? moment(data.resumptionDateAndTime)
+          ? dayjs(data.resumptionDateAndTime)
           : null,
         whoToCallId: data.whoToCallId,
         branchId: data.branchId,
@@ -62,7 +62,7 @@ export const ResumptionInformation = ({
           ? documentUrl
           : onboarding?.resumptionInformation?.documentUrl ?? "",
         resumptionDateAndTime: data.resumptionDateAndTime
-          ? moment(data.resumptionDateAndTime).toISOString()
+          ? dayjs(data.resumptionDateAndTime).toISOString()
           : "",
         whoToCallId: data.whoToCallId,
         id: onboarding?.id,

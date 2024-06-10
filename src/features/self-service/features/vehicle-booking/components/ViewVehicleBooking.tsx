@@ -7,7 +7,7 @@ import {
 } from "utils/formHelpers/validation";
 import { useFetchSingleVehicleBooking } from "../hooks/useFetchSingleVehicleBooking";
 import { useApiAuth } from "hooks/useApiAuth";
-import moment from "moment";
+import dayjs from "dayjs";
 import { getAppropriateColorForStatus } from "utils/colorHelpers/getAppropriateColorForStatus";
 import { TApprovalRequest } from "features/core/workflows/types/approval-requests";
 import ApproveOrRejectButton from "features/core/workflows/components/approval-request/ApproveOrRejectButton";
@@ -41,7 +41,7 @@ export const ViewVehicleBooking: React.FC<IProps> = ({
   useEffect(() => {
     if (isSuccess) {
       form.setFieldsValue({
-        date: moment(data.date),
+        date: dayjs(data.date),
         employeeId: data.employeeId,
         destination: data.destination,
         duration: data.duration,

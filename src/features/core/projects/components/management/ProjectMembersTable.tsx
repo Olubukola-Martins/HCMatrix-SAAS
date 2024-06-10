@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import type { ColumnsType } from "antd/es/table";
 import { usePagination } from "hooks/usePagination";
 import { Button, Table } from "antd";
-import moment from "moment";
+import dayjs from "dayjs";
 import { TProjectMember } from "../../types";
 import { appRoutes } from "config/router/paths";
 import { Link } from "react-router-dom";
@@ -67,7 +67,7 @@ export const ProjectMembersTable: React.FC<IProps> = ({
       dataIndex: "startD",
       key: "startD",
       render: (_, item) => (
-        <span>{moment(item.createdAt).format("YYYY-MM-DD")} </span>
+        <span>{dayjs(item.createdAt).format("YYYY-MM-DD")} </span>
       ),
     },
     {

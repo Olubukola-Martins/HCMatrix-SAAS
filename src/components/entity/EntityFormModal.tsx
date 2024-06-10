@@ -1,6 +1,5 @@
 import { DatePicker, Form, Input, Modal, Skeleton, Switch } from "antd";
 import { AppButton } from "components/button/AppButton";
-import moment, { Moment } from "moment";
 import React, { useEffect } from "react";
 import { boxStyle } from "styles/reused";
 import { IModalProps } from "types";
@@ -8,6 +7,7 @@ import { Rule } from "antd/lib/form";
 import { FileUpload } from "components/FileUpload";
 import { TFileType } from "types/files";
 import { FormEmployeeInput } from "features/core/employees/components/FormEmployeeInput";
+import dayjs, {Dayjs} from "dayjs";
 
 type FormStrInputType = "text" | "text-area";
 type FormArrInputType = "date-range-picker";
@@ -48,7 +48,7 @@ type FormItemRender =
   //     allowedFileTypes: TFileType[];
   //     required?: boolean;
   //   }
-  | { value?: string[] | string | Moment; component: JSX.Element };
+  | { value?: string[] | string | Dayjs; component: JSX.Element };
 interface TFormField {
   label: string;
   name: string;
@@ -81,12 +81,12 @@ const EntityFormModal: React.FC<IProps> = ({
       values[field.name] = field.render.value;
       // for types defined
       if (field.render.component === "date") {
-        values[field.name] = moment(field.render.value);
+        values[field.name] = dayjs(field.render.value);
       }
       if (field.render.component === "date-range-picker") {
         values[field.name] = [
-          moment(field.render.value ? field.render.value[0] : null),
-          moment(field.render.value ? field.render.value[1] : null),
+          dayjs(field.render.value ? field.render.value[0] : null),
+          dayjs(field.render.value ? field.render.value[1] : null),
         ];
       }
       if (

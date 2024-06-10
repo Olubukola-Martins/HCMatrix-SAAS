@@ -1,6 +1,6 @@
 import { ColumnsType } from "antd/lib/table";
 import { Input, Table } from "antd";
-import moment from "moment";
+import dayjs from "dayjs";
 import React, { useEffect, useState } from "react";
 import { usePagination } from "hooks/usePagination";
 import { TSingleEmployee } from "../../types";
@@ -37,13 +37,13 @@ export const EmployeeProjects: React.FC<IProps> = ({ data = [] }) => {
       title: "Project Began",
       dataIndex: "createAr",
       key: "createAr",
-      render: (_, item) => moment(item?.project.startDate).format(`YYYY-MM-DD`),
+      render: (_, item) => dayjs(item?.project.startDate).format(`YYYY-MM-DD`),
     },
     {
       title: "Project Ends At",
       dataIndex: "update",
       key: "update",
-      render: (_, item) => moment(item?.project.endDate).format(`YYYY-MM-DD`),
+      render: (_, item) => dayjs(item?.project.endDate).format(`YYYY-MM-DD`),
     },
   ];
   return (

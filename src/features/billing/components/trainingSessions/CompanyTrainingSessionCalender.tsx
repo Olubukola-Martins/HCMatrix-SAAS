@@ -1,6 +1,6 @@
 import React from "react";
-import { Calendar, momentLocalizer } from "react-big-calendar";
-import moment, { Moment } from "moment";
+import { Calendar, dayjsLocalizer } from "react-big-calendar";
+import dayjs, { Dayjs } from "dayjs";
 import "react-big-calendar/lib/css/react-big-calendar.css";
 import ErrorBoundary from "components/errorHandlers/ErrorBoundary";
 import Skeleton from "antd/lib/skeleton/Skeleton";
@@ -11,7 +11,7 @@ import { useGetTrainingBookings } from "features/billing/hooks/addOns/trainingSe
 import { truncateString } from "utils/dataHelpers/truncateString";
 import { TTrainingSessionBooking } from "features/billing/types/addOns/trainingSession";
 
-const localizer = momentLocalizer(moment);
+const localizer = dayjsLocalizer(dayjs);
 const CompanyTrainingSessionCalender: React.FC<{
   filter?: Partial<
     Pick<TTrainingSessionBooking, "startDate" | "endDate" | "status">
@@ -27,8 +27,8 @@ const CompanyTrainingSessionCalender: React.FC<{
   const [selectedEvent, setSelectedEvent] = React.useState<{
     id: number;
     title: string;
-    start: Moment;
-    end: Moment;
+    start: Dayjs;
+    end: Dayjs;
   }>();
   return (
     <ErrorBoundary>
@@ -55,8 +55,8 @@ const CompanyTrainingSessionCalender: React.FC<{
             localizer={localizer}
             events={bookings?.data.map((item) => ({
               id: item.id,
-              start: moment(item.startDate),
-              end: moment(item.endDate),
+              start: dayjs(item.startDate),
+              end: dayjs(item.endDate),
               title: truncateString(item.reason ?? ""),
             }))}
             onSelectEvent={(event) => {

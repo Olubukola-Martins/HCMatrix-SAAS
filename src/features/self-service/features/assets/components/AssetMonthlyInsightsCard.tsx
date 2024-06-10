@@ -1,14 +1,11 @@
 import { DatePicker, Skeleton } from "antd";
 import { LineChart } from "components/charts/LineChart";
-import { ChartSwitcher } from "components/controls/ChartSwitcher";
-import { useGetAssetAnalytics } from "../hooks/useGetAssetAnalytics";
 import { useState } from "react";
-import { Moment } from "moment";
-import moment from "moment";
+import dayjs, { Dayjs } from "dayjs";
+import { useGetAssetAnalytics } from "../hooks/useGetAssetAnalytics";
 
-const items = ["Total Assets Cost", "Total Assets Issued Out"];
 export const AssetMonthlyInsightsCard = () => {
-  const [year, setYear] = useState<Moment | null>(moment());
+  const [year, setYear] = useState<Dayjs | null>(dayjs());
 
   const { data, isLoading } = useGetAssetAnalytics({
     year: year?.format("YYYY"),
