@@ -10,7 +10,7 @@ import { openNotification } from "utils/notifications";
 import { useQueryClient } from "react-query";
 import { QUERY_KEY_FOR_SCHEDULE_EMPLOYEE_SHIFT } from "../hooks/useGetScheduleEmployeeShift";
 import { useGetSingleShiftSchedule } from "../hooks/useGetSingleShiftSchedule";
-import dayjs from "dayjs";
+import moment from "moment";
 
 export const AddEmployeeShift = ({ handleClose, open, id }: IDrawerProps) => {
   const globalCtx = useContext(GlobalContext);
@@ -32,8 +32,8 @@ export const AddEmployeeShift = ({ handleClose, open, id }: IDrawerProps) => {
 
   useEffect(() => {
     if (data && isSuccess) {
-      const startDate = dayjs(data.startDate);
-      const endDate = dayjs(data.endDate);
+      const startDate = moment(data.startDate);
+      const endDate = moment(data.endDate);
       setMethodSwitch(data.isPermanent);
       form.setFieldsValue({
         shiftType: data.shiftType,

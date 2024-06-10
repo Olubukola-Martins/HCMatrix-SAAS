@@ -1,6 +1,15 @@
-import { DatePicker, Select } from "antd";
+import { DatePicker, Select, Skeleton } from "antd";
 import { ChartSwitcher } from "components/controls/ChartSwitcher";
 import { useState } from "react";
+import { LineChart } from "components/charts/LineChart";
+import { BarChart } from "components/charts/BarChart";
+import { PieChart } from "components/charts/PieChart";
+import { WaterFallChart } from "components/charts/WaterFallChart";
+import { generateHexColor } from "utils/colorHelpers/generateHexColor";
+import { ScatterChart } from "components/charts/ScatterChart";
+import { Histogram } from "components/charts/Histogram";
+import { AreaChart } from "components/charts/AreaChart";
+import { RadarChart } from "components/charts/RadarChart";
 import { TPayrollGraphAnalyticsItemType } from "features/payroll/types/payroll";
 import { useGetPayrollGraphAnalytics } from "features/payroll/hooks/payroll/analytics/useGetPayrollGraphAnalytics";
 import { TPayrollGraphTabItem } from "features/payroll/types/payroll/analytics";
@@ -9,7 +18,7 @@ import {
   selectPayrollGraphAnalyticsData,
 } from "features/payroll/utils/parsePayrollGraphData";
 import PayrollGraphsContainer from "./PayrollGraphsContainer";
-import dayjs from "dayjs";
+import moment from "moment";
 import { CURRENT_YEAR } from "constants/dateFormats";
 
 const CHART_ITEMS: TPayrollGraphAnalyticsItemType[] = [
@@ -76,11 +85,11 @@ const PayrollOverviewChart = () => {
           </div>
           <div>
             <DatePicker
-              value={dayjs(year)}
+              value={moment(year)}
               picker="year"
               className="w-full"
               placeholder="Select Year"
-              onChange={(val) => setYear(val.format("YYYY"))}
+              onSelect={(val) => setYear(val.format("YYYY"))}
             />
           </div>
         </div>

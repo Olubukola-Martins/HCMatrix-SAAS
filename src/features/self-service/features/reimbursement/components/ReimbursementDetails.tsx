@@ -8,7 +8,7 @@ import {
 import { useApiAuth } from "hooks/useApiAuth";
 import { boxStyle } from "styles/reused";
 import { getAppropriateColorForStatus } from "utils/colorHelpers/getAppropriateColorForStatus";
-import dayjs from "dayjs";
+import moment from "moment";
 import { getEmployeeFullName } from "features/core/employees/utils/getEmployeeFullName";
 import { TApprovalRequest } from "features/core/workflows/types/approval-requests";
 import { useQueryClient } from "react-query";
@@ -37,7 +37,7 @@ export const ReimbursementDetails: React.FC<IProps> = ({
   useEffect(() => {
     if (data) {
       form.setFieldsValue({
-        date: data.date ? dayjs(data.date) : null,
+        date: data.date ? moment(data.date) : null,
         employeeName: `${getEmployeeFullName(data.employee)}`,
         employeeID: data.employee.empUid,
         description: data.description,

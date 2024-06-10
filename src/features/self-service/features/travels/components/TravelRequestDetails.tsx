@@ -3,7 +3,7 @@ import React, { useEffect } from "react";
 import { IModalProps } from "types";
 import { useApiAuth } from "hooks/useApiAuth";
 import { getAppropriateColorForStatus } from "utils/colorHelpers/getAppropriateColorForStatus";
-import dayjs from "dayjs";
+import moment from "moment";
 import {
   QUERY_KEY_FOR_SINGLE_TRAVEL_REQUEST,
   useGetSingleTravelRequisition,
@@ -37,8 +37,8 @@ export const TravelRequestDetails: React.FC<IProps> = ({
   useEffect(() => {
     if (data) {
       form.setFieldsValue({
-        arrivalDate: data.arrivalDate ? dayjs(data.arrivalDate) : null,
-        departureDate: data.departureDate ? dayjs(data.departureDate) : null,
+        arrivalDate: data.arrivalDate ? moment(data.arrivalDate) : null,
+        departureDate: data.departureDate ? moment(data.departureDate) : null,
         employee: getEmployeeFullName(data.employee),
         cost: data.cost,
         duration: data.duration,

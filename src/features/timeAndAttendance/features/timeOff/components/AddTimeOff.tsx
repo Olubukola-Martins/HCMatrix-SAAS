@@ -14,7 +14,7 @@ import { useCreateTimeOff } from "../hooks/useCreateTimeOff";
 import { useGetTimeOffPolicy } from "../../settings/timeOffPolicy/hooks/useGetTimeOffPolicy";
 import { QUERY_KEY_FOR_TIME_OFF } from "../hooks/useGetTimeOff";
 import { useGetSingleTimeOff } from "../hooks/useGetSingleTimeOff";
-import dayjs from "dayjs";
+import moment from "moment";
 import { useDebounce } from "hooks/useDebounce";
 
 export const AddTimeOff = ({ open, handleClose, id }: IModalProps) => {
@@ -43,8 +43,8 @@ export const AddTimeOff = ({ open, handleClose, id }: IModalProps) => {
     if (data && id) {
       form.setFieldsValue({
         policyId: data?.policyId,
-        date: dayjs(data?.date),
-        time: dayjs(data?.time, "HH:mm:ss"),
+        date: moment(data?.date),
+        time: moment(data?.time, "HH:mm:ss"),
         comment: data?.comment,
       });
     } else {
@@ -140,6 +140,7 @@ export const AddTimeOff = ({ open, handleClose, id }: IModalProps) => {
         <Form.Item
           name="comment"
           label="Comment"
+          requiredMark="optional"
           rules={textInputValidationRulesOp}
         >
           <TextArea />

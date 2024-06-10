@@ -3,7 +3,7 @@ import { useQuery } from "react-query";
 import { ICurrentCompany, IPaginationProps, ISearchParams } from "types";
 import { IFRQEmpDataProps, TEmployeeStatus } from "../types";
 import { TInvitedEmployee } from "../types";
-import dayjs from "dayjs";
+import moment from "moment";
 import axios from "axios";
 
 export const QUERY_KEY_FOR_INVITED_EMPLOYEES = "invited-employees";
@@ -43,7 +43,7 @@ export const getInvitedEmployees = async (
   const data: TInvitedEmployee[] = result.map(
     (item: any): TInvitedEmployee => ({
       id: item.id,
-      lastSent: dayjs(item.updatedAt).format("YYYY-MM-DD"),
+      lastSent: moment(item.updatedAt).format("YYYY-MM-DD"),
 
       email: item?.email,
     })

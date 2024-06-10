@@ -1,5 +1,5 @@
 import { DatePicker, Form, InputNumber, message, Select, Tooltip } from "antd";
-import dayjs from "dayjs";
+import moment, { Moment } from "moment";
 import React, { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { useQueryClient } from "react-query";
 import {
@@ -29,7 +29,6 @@ import {
 } from "features/payroll/constants";
 import { DEFAULT_DATE_FORMAT } from "constants/dateFormats";
 import AppTooltip from "components/tooltip/AppTooltip";
-import { Dayjs } from "dayjs";
 
 interface IProps {
   employeeId?: number;
@@ -59,7 +58,7 @@ export const JobInformation: React.FC<IProps> = ({
         lineManagerId: jobInfo.lineManagerId,
         branchId: jobInfo.branchId,
         payGradeId: jobInfo?.payGradeId,
-        startDate: jobInfo.startDate ? dayjs(jobInfo.startDate) : null,
+        startDate: jobInfo.startDate ? moment(jobInfo.startDate) : null,
         monthlyGross: +jobInfo.monthlyGross, // to covert to number
         employmentType: jobInfo.employmentType,
         workModel: jobInfo.workModel,
@@ -67,12 +66,12 @@ export const JobInformation: React.FC<IProps> = ({
         frequency: jobInfo?.frequency,
         hourlyRate: jobInfo?.hourlyRate ? +jobInfo?.hourlyRate : 0,
         numberOfDaysPerWeek: jobInfo.numberOfDaysPerWeek,
-        hireDate: jobInfo?.hireDate ? dayjs(jobInfo?.hireDate) : null,
+        hireDate: jobInfo?.hireDate ? moment(jobInfo?.hireDate) : null,
         probationEndDate: jobInfo.probationEndDate
-          ? dayjs(jobInfo.probationEndDate)
+          ? moment(jobInfo.probationEndDate)
           : null,
         confirmationDate: jobInfo.confirmationDate
-          ? dayjs(jobInfo.confirmationDate)
+          ? moment(jobInfo.confirmationDate)
           : null,
       });
       jobInfo.payrollType && setPayrollType(jobInfo.payrollType);
@@ -212,9 +211,9 @@ export const JobInformationFormItems: React.FC<{
   payrollType: TEssentialPayrollType;
   setPayrollType: Dispatch<SetStateAction<TEssentialPayrollType>>;
 }> = ({ Form, frequency, setFrequency, payrollType, setPayrollType }) => {
-  const [hireDate, setHireDate] = useState<Dayjs | null>(null);
-  const [startDate, setStartDate] = useState<Dayjs | null>(null);
-  const [probationEndDate, setProbationEndDate] = useState<Dayjs | null>(null);
+  const [hireDate, setHireDate] = useState<Moment | null>(null);
+  const [startDate, setStartDate] = useState<Moment | null>(null);
+  const [probationEndDate, setProbationEndDate] = useState<Moment | null>(null);
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
@@ -330,7 +329,7 @@ export const JobInformationFormItems: React.FC<{
         rules={[
           {
             required: true,
-            validator: async (rule: any, value: Dayjs) => {
+            validator: async (rule: any, value: Moment) => {
               if (value.isBefore(hireDate)) {
                 throw new Error("Start Date cannot be before hire date!");
               }
@@ -353,7 +352,7 @@ export const JobInformationFormItems: React.FC<{
         rules={[
           {
             required: true,
-            validator: async (rule: any, value: Dayjs) => {
+            validator: async (rule: any, value: Moment) => {
               if (value.isBefore(startDate)) {
                 throw new Error(
                   "Probation End Date cannot be before start date!"
@@ -378,7 +377,7 @@ export const JobInformationFormItems: React.FC<{
         rules={[
           {
             required: true,
-            validator: async (rule: any, value: Dayjs) => {
+            validator: async (rule: any, value: Moment) => {
               if (value.isBefore(probationEndDate)) {
                 throw new Error(
                   "Confirmation date cannot be before probation end date!"

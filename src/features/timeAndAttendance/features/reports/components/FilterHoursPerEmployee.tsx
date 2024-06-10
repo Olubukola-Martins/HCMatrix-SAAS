@@ -1,4 +1,4 @@
-import { DatePicker, Drawer, Form } from "antd";
+import { DatePicker, Drawer, Form, Select } from "antd";
 import { AppButton } from "components/button/AppButton";
 import { FormDepartmentInput } from "features/core/departments/components/FormDepartmentInput";
 import { FormEmployeeInput } from "features/core/employees/components/FormEmployeeInput";
@@ -45,14 +45,10 @@ export const FilterHoursPerEmployee = ({
   return (
     <Drawer onClose={() => handleClose()} open={open} title="Filter Report">
       <Form form={form} layout="vertical" onFinish={onSubmit}>
-        <FormEmployeeInput
-          Form={Form}
-          optional={true}
-          handleSelect={(_, val) => setEmpUid(val?.empUid)}
-        />
+        <FormEmployeeInput Form={Form} optional={true}  handleSelect={(_, val) => setEmpUid(val?.empUid)}/>
         <FormDepartmentInput Form={Form} optional={true} />
 
-        <Form.Item name="duration" label="Duration">
+        <Form.Item name="duration" label="Duration" requiredMark="optional">
           <DatePicker.RangePicker className="w-full" format="MM/DD/YYYY" />
         </Form.Item>
         <AppButton label="Apply Filter" type="submit" />

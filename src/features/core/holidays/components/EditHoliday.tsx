@@ -8,11 +8,11 @@ import {
 } from "utils/formHelpers/validation";
 import { openNotification } from "utils/notifications";
 import { useQueryClient } from "react-query";
+
 import { THoliday } from "../types";
 import { useUpdateHoliday } from "../hooks/useUpdateHoliday";
 import { QUERY_KEY_FOR_HOLIDAYS } from "../hooks/useGetHolidays";
-import dayjs from "dayjs";
-
+import moment from "moment";
 
 interface IProps extends IModalProps {
   holiday: THoliday;
@@ -67,7 +67,7 @@ export const EditHoliday: React.FC<IProps> = ({
   useEffect(() => {
     form.setFieldsValue({
       title: holiday.title,
-      date: dayjs(holiday.date),
+      date: moment(holiday.date),
     });
   }, [form, holiday]);
 

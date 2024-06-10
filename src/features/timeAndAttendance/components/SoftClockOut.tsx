@@ -108,6 +108,7 @@ export const SoftClockOut = ({ componentType }: softClockInAndOutProps) => {
           <Form.Item
             rules={textInputValidationRulesOpt}
             label="Add note"
+            requiredMark="optional"
             name="comment"
           >
             <TextArea />

@@ -1,5 +1,5 @@
 import { Form, Input, Modal, Skeleton } from "antd";
-import dayjs from "dayjs";
+import moment from "moment";
 import { useEffect } from "react";
 import { IModalProps } from "types";
 import { QUERY_KEY_FOR_LOAN, useGetLoan } from "../hooks/useGetLoan";
@@ -30,7 +30,7 @@ export const LoanDetails = ({
         employee: `${getEmployeeFullName(data.employee)} `,
         title: `${data.title} `,
         amount: `${data.amount} `,
-        date: dayjs(data.date).format(DEFAULT_DATE_FORMAT),
+        date: moment(data.date).format(DEFAULT_DATE_FORMAT),
         type: data.type.name,
         paymentPlan: data.paymentPlan.name,
         description: data.description,

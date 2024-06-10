@@ -2,7 +2,7 @@ import { Form, Input, TimePicker } from "antd";
 import { AppButton } from "components/button/AppButton";
 import { useContext, useEffect } from "react";
 import { capitalizeWord } from "../../Utils";
-import dayjs from "dayjs";
+import moment from "moment";
 import { useQueryClient } from "react-query";
 import { useCreateShiftSchedule } from "../hooks/useCreateShiftSchedule";
 import {
@@ -68,8 +68,8 @@ export const GeneralEmployeeShift = () => {
         schedule: item.schedule.map((val: any) => ({
           day: capitalizeWord(val.day),
           time: [
-            dayjs(val?.startTime, "HH:mm:ss"),
-            dayjs(val?.endTime, "HH:mm:ss"),
+            moment(val?.startTime, "HH:mm:ss"),
+            moment(val?.endTime, "HH:mm:ss"),
           ],
         })),
       }));

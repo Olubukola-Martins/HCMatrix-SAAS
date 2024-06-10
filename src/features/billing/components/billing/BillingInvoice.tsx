@@ -5,8 +5,7 @@ import { INVOICE_QUOTATION_BOTTOM_INFO } from "features/billing/constants";
 import { useGetSubsciptionBillingDetails } from "features/billing/hooks/company/billingDetail/useGetSubsciptionBillingDetails";
 import { TCompanySubscriptionBillingDetail } from "features/billing/types/company/billingDetails/companySubscriptionBillingDetail";
 import { TCompanySubscription } from "features/billing/types/company/companySubscription";
-import dayjs from "dayjs";
-
+import moment from "moment";
 import React, { useRef } from "react";
 import ReactToPrint from "react-to-print";
 import { IModalProps } from "types";
@@ -119,8 +118,8 @@ const BillingInvoiceInfo: React.FC<{
           <h6 className=" uppercase font-semibold">HR Management Software</h6>
           <p>
             Summary for{" "}
-            {dayjs(subscription?.startDate).format("MMMM DD, YYYY")} -{" "}
-            {dayjs(subscription?.endDate).format("MMMM DD, YYYY")}
+            {moment(subscription?.startDate).format("MMMM DD, YYYY")} -{" "}
+            {moment(subscription?.endDate).format("MMMM DD, YYYY")}
           </p>
           <Divider className="my-1 border-slate-400" />
           <div>
@@ -244,7 +243,7 @@ const BillingInvoiceInfo: React.FC<{
         </td>
         <td>
           <p className={`font-bold text-right`}>
-            {dayjs(subscription?.endDate).format(DEFAULT_DATE_FORMAT)}
+            {moment(subscription?.endDate).format(DEFAULT_DATE_FORMAT)}
           </p>
         </td>
       </div>

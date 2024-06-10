@@ -15,7 +15,7 @@ import { QUERY_KEY_FOR_TASKS_ASSIGNED_TO_EMPLOYEE } from "../hooks/assignedFor/u
 import { FormEmployeeInput } from "features/core/employees/components/FormEmployeeInput";
 import { PRIORITIES } from "constants/general";
 import { DEFAULT_DATE_FORMAT } from "constants/dateFormats";
-import { Dayjs } from "dayjs";
+import { Moment } from "moment";
 
 export const AddTask: React.FC<IModalProps> = ({ open, handleClose }) => {
   const queryClient = useQueryClient();
@@ -65,7 +65,7 @@ export const AddTask: React.FC<IModalProps> = ({ open, handleClose }) => {
       }
     );
   };
-  const [dateAssigned, setDateAssigned] = useState<Dayjs | null>(null);
+  const [dateAssigned, setDateAssigned] = useState<Moment | null>(null);
   return (
     <Modal
       open={open}
@@ -116,7 +116,7 @@ export const AddTask: React.FC<IModalProps> = ({ open, handleClose }) => {
           rules={[
             {
               required: true,
-              validator: async (_, value: Dayjs) => {
+              validator: async (_, value: Moment) => {
                 if (value.isBefore(dateAssigned)) {
                   throw new Error("Due date cannot be before date assigned!");
                 }

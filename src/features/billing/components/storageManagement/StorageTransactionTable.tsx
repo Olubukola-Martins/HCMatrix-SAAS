@@ -4,7 +4,7 @@ import { usePagination } from "hooks/usePagination";
 import { useGetAllStorageTransactions } from "features/billing/hooks/addOns/extraStorage/transaction/useGetAllStorageTransactions";
 import { TStorageTransaction } from "features/billing/types/addOns/extraStorage/strorageTransaction";
 import { formatNumberWithCommas } from "utils/dataHelpers/formatNumberWithCommas";
-import dayjs from "dayjs";
+import moment from "moment";
 import { DEFAULT_DATE_FORMAT } from "constants/dateFormats";
 import { Table } from "antd";
 
@@ -37,7 +37,7 @@ export const StorageTransactionTable: React.FC = () => {
       dataIndex: "Date Purchased",
       key: "Date Purchased",
       render: (_, item) => (
-        <span className="uppercase">{dayjs(item.purchasedDate).format(DEFAULT_DATE_FORMAT)} </span>
+        <span className="uppercase">{moment(item.purchasedDate).format(DEFAULT_DATE_FORMAT)} </span>
       ),
     },
    

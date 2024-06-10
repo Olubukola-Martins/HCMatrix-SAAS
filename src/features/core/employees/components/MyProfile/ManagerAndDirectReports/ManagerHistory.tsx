@@ -3,8 +3,9 @@ import { TSingleEmployee } from "features/core/employees/types";
 import { useState, useEffect } from "react";
 import { usePagination } from "hooks/usePagination";
 import { ColumnsType } from "antd/lib/table";
+
 import { getEmployeeFullName } from "features/core/employees/utils/getEmployeeFullName";
-import dayjs from "dayjs";
+import moment from "moment";
 
 interface IProps {
   histories?: TSingleEmployee["managerHistory"];
@@ -42,7 +43,7 @@ export const ManagerHistory: React.FC<IProps> = ({ histories = [] }) => {
       title: "Started",
       dataIndex: "cs",
       render: (_, val) => (
-        <span className="">{dayjs(val.from).format("YYYY-MM-DD")}</span>
+        <span className="">{moment(val.from).format("YYYY-MM-DD")}</span>
       ),
     },
     {
@@ -50,7 +51,7 @@ export const ManagerHistory: React.FC<IProps> = ({ histories = [] }) => {
       dataIndex: "ce",
       render: (_, val) => (
         <span className="">
-          {val.to ? dayjs(val.to).format("YYYY-MM-DD") : "Ongoing"}
+          {val.to ? moment(val.to).format("YYYY-MM-DD") : "Ongoing"}
         </span>
       ),
     },

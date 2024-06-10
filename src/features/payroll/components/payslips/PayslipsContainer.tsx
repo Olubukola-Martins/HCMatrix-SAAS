@@ -8,7 +8,6 @@ import { TProjectPayrollScheme } from "features/payroll/types/payrollSchemes/pro
 import { TGetPayslipsProps } from "features/payroll/hooks/payslips/useGetPayslips";
 import { DEFAULT_DATE_FORMAT } from "constants/dateFormats";
 import moment from "moment";
-import dayjs from "dayjs";
 
 interface IProps {
   role: TGetPayslipsProps["role"];
@@ -92,7 +91,7 @@ export const PayslipsContainer: React.FC<IProps> = ({
             <DatePicker.RangePicker
               picker={"date"}
               placeholder={["From", "To"]}
-              value={[dayjs(duration[0]), dayjs(duration[1])]}
+              value={[moment(duration[0]), moment(duration[1])]}
               onChange={(val) => {
                 if (val && val.length === 2 && val[0] && val[1])
                   setDuration([
