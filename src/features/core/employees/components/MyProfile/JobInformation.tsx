@@ -60,7 +60,7 @@ export const JobInformation: React.FC<IProps> = ({
         branchId: jobInfo.branchId,
         payGradeId: jobInfo?.payGradeId,
         startDate: jobInfo.startDate ? dayjs(jobInfo.startDate) : null,
-        monthlyGross: +jobInfo.monthlyGross, // to covert to number
+        monthlyGross: jobInfo?.monthlyGross ? +jobInfo?.monthlyGross : 0, // to covert to number
         employmentType: jobInfo.employmentType,
         workModel: jobInfo.workModel,
         payrollType: jobInfo?.payrollType,
