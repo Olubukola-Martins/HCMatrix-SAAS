@@ -24,11 +24,12 @@ const PayslipCards: React.FC<{
         <div>
           <SimpleCard
             title="Payroll Scheme"
-            highlight={
-              jobInfo?.payrollType === "office"
-                ? "Step Pay"
-                : jobInfo?.payrollType
-            }
+            highlight={(jobInfo?.payrollType === "office"
+              ? "Step Pay"
+              : jobInfo?.payrollType
+            )
+              ?.split("-")
+              .join(" ")}
             loading={isLoading}
           />
         </div>
