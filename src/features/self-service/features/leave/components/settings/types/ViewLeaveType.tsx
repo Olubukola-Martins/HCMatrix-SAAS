@@ -90,7 +90,7 @@ export const ViewLeaveType: React.FC<IProps> = ({
                 }
                 tooltipProps={{
                   title:
-                    "This is an indication of wether the employee will receive pay while on leave",
+                    "This is an indication of whether the employee will receive pay while on leave",
                 }}
               />
             }
