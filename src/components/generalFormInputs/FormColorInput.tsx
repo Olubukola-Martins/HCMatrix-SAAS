@@ -25,7 +25,7 @@ export const FormColorInput: React.FC<{
         return color?.toHexString();
       }}
       rules={optional ? generalValidationRulesOp : generalValidationRules}
-    >
+    >   
       <ColorPicker
         showText={(color) => <span>Color {optional ? "(optional)" : ""} </span>}
       />

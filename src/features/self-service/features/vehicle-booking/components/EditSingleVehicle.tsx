@@ -24,6 +24,7 @@ import { openNotification } from "utils/notifications";
 import { AppButton } from "components/button/AppButton";
 import dayjs from "dayjs";
 import { FormFileInput } from "components/generalFormInputs/FormFileInput";
+import { FormColorInput } from "components/generalFormInputs/FormColorInput";
 
 interface IProps extends IModalProps {
   vehicle: TVehicle;
@@ -182,9 +183,12 @@ export const EditSingleVehicle: React.FC<IProps> = ({
               <Form.Item name="cost" label="Cost">
                 <InputNumber placeholder="Cost(optional)" className="w-full" />
               </Form.Item>
-              <Form.Item name="color" label="Color">
-                <Input placeholder="Color(optional)" />
-              </Form.Item>
+              <FormColorInput
+                Form={Form}
+                control={{ label: "Color", name: "color" }}
+                showLabel={false}
+                optional
+              />
               <Form.Item name="purchaseDate" label="Purchase Date">
                 <DatePicker
                   placeholder="Purchase Date (optional)"
