@@ -3,9 +3,8 @@ import { TSingleEmployee } from "features/core/employees/types";
 import { useState, useEffect } from "react";
 import { usePagination } from "hooks/usePagination";
 import { ColumnsType } from "antd/lib/table";
-
 import { getEmployeeFullName } from "features/core/employees/utils/getEmployeeFullName";
-import moment from "moment";
+import dayjs from "dayjs";
 import { DEFAULT_DATE_FORMAT } from "constants/dateFormats";
 
 interface IProps {
@@ -40,17 +39,17 @@ export const DirectReports: React.FC<IProps> = ({ reports = [] }) => {
     },
     {
       title: "Started",
-      dataIndex: "cs",
+      dataIndex: "Started",
       render: (_, val) => (
-        <span className="">{moment(val.from).format(DEFAULT_DATE_FORMAT)}</span>
+        <span className="">{dayjs(val.from).format(DEFAULT_DATE_FORMAT)}</span>
       ),
     },
     {
       title: "Ended",
-      dataIndex: "ce",
+      dataIndex: "Ended",
       render: (_, val) => (
         <span className="">
-          {val.to ? moment(val.to).format(DEFAULT_DATE_FORMAT) : "Ongoing"}
+          {val.to ? dayjs(val.to).format(DEFAULT_DATE_FORMAT) : "Ongoing"}
         </span>
       ),
     },

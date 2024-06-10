@@ -1,4 +1,5 @@
-import moment from "moment";
+import dayjs from "dayjs";
+
 
 export const DATE_FORMATS = [
   { label: "YYYY-MM-DD", value: "YYYY-MM-DD" },
@@ -21,4 +22,4 @@ export const DATE_FORMATS = [
 export const DEFAULT_DATE_FORMAT = DATE_FORMATS[0].value;
 export const DEFAULT_TIME_FORMAT = "HH:mm:ss";
 
-export const CURRENT_YEAR = moment().format("YYYY");
+export const CURRENT_YEAR = dayjs().format("YYYY");

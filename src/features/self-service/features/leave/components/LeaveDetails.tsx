@@ -1,6 +1,6 @@
 import { DatePicker, Form, Input, Modal, Skeleton, Switch, Tag } from "antd";
 import { CloseCircleOutlined } from "@ant-design/icons";
-import moment from "moment";
+import dayjs from "dayjs";
 import { useEffect } from "react";
 import {
   QUERY_KEY_FOR_SINGLE_LEAVE,
@@ -42,7 +42,7 @@ export const LeaveDetails = ({
         leaveType: data.leaveType.name,
         reason: data.reason,
         employeesGetAllowance: data.leaveType.employeesGetAllowance,
-        duration: [moment(data.startDate), moment(data.endDate)],
+        duration: [dayjs(data.startDate), dayjs(data.endDate)],
       });
     }
   }, [id, form, data]);
@@ -101,7 +101,7 @@ export const LeaveDetails = ({
                   <Tag color="blue">
                     <div className="flex items-center gap-2">
                       <span>
-                        {moment(item.toString()).format(DEFAULT_DATE_FORMAT)}
+                        {dayjs(item.toString()).format(DEFAULT_DATE_FORMAT)}
                       </span>
                       <CloseCircleOutlined />
                     </div>

@@ -68,7 +68,7 @@ export const FilterShiftPerEmployee = ({
             placeholder="Select"
           />
         </Form.Item>
-        <Form.Item name="duration" label="Duration" requiredMark="optional">
+        <Form.Item name="duration" label="Duration">
           <DatePicker.RangePicker className="w-full" format="MM/DD/YYYY" />
         </Form.Item>
         <AppButton label="Apply Filter" type="submit" />

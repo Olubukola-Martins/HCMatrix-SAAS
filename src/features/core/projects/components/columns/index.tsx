@@ -1,5 +1,5 @@
 import { ColumnsType } from "antd/lib/table";
-import moment from "moment";
+import dayjs from "dayjs";
 import { DEFAULT_DATE_FORMAT } from "constants/dateFormats";
 import { TProjectListItem } from "../../types";
 import { appRoutes } from "config/router/paths";
@@ -36,7 +36,7 @@ export const PROJECT_TABLE_COLUMNS = (): ColumnsType<TProjectListItem> => [
     dataIndex: "Start Date",
     key: "Start Date",
     render: (_, item) => (
-      <span>{moment(item.startDate).format(DEFAULT_DATE_FORMAT)} </span>
+      <span>{dayjs(item.startDate).format(DEFAULT_DATE_FORMAT)} </span>
     ),
   },
   {
@@ -44,7 +44,7 @@ export const PROJECT_TABLE_COLUMNS = (): ColumnsType<TProjectListItem> => [
     dataIndex: "End Date",
     key: "End Date",
     render: (_, item) => (
-      <span>{moment(item.endDate).format(DEFAULT_DATE_FORMAT)} </span>
+      <span>{dayjs(item.endDate).format(DEFAULT_DATE_FORMAT)} </span>
     ),
   },
 ];
@@ -57,8 +57,8 @@ export const PROJECT_EXPORT_COLUMNS = (
 
       "Participant Count": item.employeeCount,
       "Project Status": item.status,
-      "Start Date": moment(item.startDate).format(DEFAULT_DATE_FORMAT),
-      "End Date": moment(item.endDate).format(DEFAULT_DATE_FORMAT),
+      "Start Date": dayjs(item.startDate).format(DEFAULT_DATE_FORMAT),
+      "End Date": dayjs(item.endDate).format(DEFAULT_DATE_FORMAT),
     })) ?? []
   );
 };

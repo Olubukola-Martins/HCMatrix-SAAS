@@ -3,7 +3,7 @@ import { SummaryCard } from "components/cards/SummaryCard";
 import { DEFAULT_DATE_FORMAT } from "constants/dateFormats";
 import { PRICE_TYPE_CURRENCY } from "features/billing/constants";
 import { useGetCompanyActiveSubscription } from "features/billing/hooks/company/useGetCompanyActiveSubscription";
-import moment from "moment";
+import dayjs from "dayjs";
 import { useState } from "react";
 import { boxStyle } from "styles/reused";
 import { formatNumberWithCommas } from "utils/dataHelpers/formatNumberWithCommas";
@@ -57,11 +57,11 @@ const BillingSubscriptionBalance = () => {
           details={[
             {
               name: "Start Date",
-              value: moment(data?.startDate).format(DEFAULT_DATE_FORMAT),
+              value: dayjs(data?.startDate).format(DEFAULT_DATE_FORMAT),
             },
             {
               name: "Expiry Date",
-              value: moment(data?.endDate).format(DEFAULT_DATE_FORMAT),
+              value: dayjs(data?.endDate).format(DEFAULT_DATE_FORMAT),
             },
             {
               name: "Total Amount for License Purchase",
