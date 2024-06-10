@@ -2,8 +2,7 @@ import { ColumnsType } from "antd/lib/table";
 import { TDelegation } from "../../types";
 import { getEmployeeFullName } from "features/core/employees/utils/getEmployeeFullName";
 import { DEFAULT_DATE_FORMAT } from "constants/dateFormats";
-import dayjs from "dayjs";
-
+import moment from "moment";
 
 export const DELEGATIONS_TABLE_COLUMNS = (
   view: (id: number) => void
@@ -29,7 +28,7 @@ export const DELEGATIONS_TABLE_COLUMNS = (
     dataIndex: "Start Date",
     key: "Start Date",
     render: (_, item) => {
-      return <span>{dayjs(item.startDate).format(DEFAULT_DATE_FORMAT)}</span>;
+      return <span>{moment(item.startDate).format(DEFAULT_DATE_FORMAT)}</span>;
     },
   },
   {
@@ -37,7 +36,7 @@ export const DELEGATIONS_TABLE_COLUMNS = (
     dataIndex: "Expires On",
     key: "Expires On",
     render: (_, item) => (
-      <span>{dayjs(item.endDate).format(DEFAULT_DATE_FORMAT)}</span>
+      <span>{moment(item.endDate).format(DEFAULT_DATE_FORMAT)}</span>
     ),
   },
   {
@@ -70,8 +69,8 @@ export const DELEGATIONS_EXPORT_COLUMNS = (
       Delegator: getEmployeeFullName(item.delegator),
 
       Delegatee: getEmployeeFullName(item.delegatee),
-      "Start Date": dayjs(item.startDate).format(DEFAULT_DATE_FORMAT),
-      "Expires On": dayjs(item.endDate).format(DEFAULT_DATE_FORMAT),
+      "Start Date": moment(item.startDate).format(DEFAULT_DATE_FORMAT),
+      "Expires On": moment(item.endDate).format(DEFAULT_DATE_FORMAT),
       "Permission Count": item.permissions.length,
     })) ?? []
   );

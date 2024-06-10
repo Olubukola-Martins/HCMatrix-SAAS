@@ -3,8 +3,7 @@ import {
   DEFAULT_MAX_FILE_UPLOAD_COUNT,
   DEFAULT_MAX_FILE_UPLOAD_SIZE_IN_MB,
 } from "constants/files";
-import { Dayjs } from "dayjs";
-import moment from "moment";
+import moment, { Moment } from "moment";
 import { TFileType } from "types/files";
 
 // helpers
@@ -23,13 +22,10 @@ export const isEmailValid = (val: string): boolean => {
   return emailPattern.test(val);
 };
 export const countMatchingDatesInclusive = (
-  _start: Dayjs,
-  _end: Dayjs,
-  _dates: Dayjs[]
+  start: Moment,
+  end: Moment,
+  dates: Moment[]
 ): number => {
-  let start = moment(_start.toString());
-  let end = moment(_end.toString());
-  let dates = _dates.map((b) => moment(b.toString()));
   // Make sure the start date is before or equal to the end date
   if (end.isBefore(start)) {
     [start, end] = [end, start];
@@ -48,9 +44,7 @@ export const countMatchingDatesInclusive = (
   return matchingCount;
 };
 
-export const countWeekendsInclusive = (_start: Dayjs, _end: Dayjs): number => {
-  let start = moment(_start.toString());
-  let end = moment(_end.toString());
+export const countWeekendsInclusive = (start: Moment, end: Moment): number => {
   // Make sure the start date is before or equal to the end date
   if (end.isBefore(start)) {
     [start, end] = [end, start];
@@ -70,21 +64,18 @@ export const countWeekendsInclusive = (_start: Dayjs, _end: Dayjs): number => {
   return weekendCount;
 };
 
-export const isDateGreaterThanCurrentDay = (_date:Dayjs) => {
+export const isDateGreaterThanCurrentDay = (date: Moment) => {
   const currentDate = moment();
-  const date  = moment(_date.toString())
   if (!date) return;
   return date.isAfter(currentDate, "day"); // Check if selected date is greater than the current day
 };
-export const isDateGreaterThanOrEqualToCurrentDay = (_date:Dayjs) => {
+export const isDateGreaterThanOrEqualToCurrentDay = (date: Moment) => {
   const currentDate = moment();
-  const date  = moment(_date.toString())
   if (!date) return;
   return date.isSameOrAfter(currentDate, "day"); // Check if selected date is greater than the current day
 };
-export const isDateLesserThanOrEqualToCurrentDay = (_date:Dayjs) => {
+export const isDateLesserThanOrEqualToCurrentDay = (date: Moment) => {
   const currentDate = moment();
-  const date  = moment(_date.toString())
   if (!date) return;
   return date.isSameOrBefore(currentDate, "day"); // Check if selected date is greater than the current day
 };

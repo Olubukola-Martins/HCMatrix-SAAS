@@ -3,7 +3,7 @@ import { AppButton } from "components/button/AppButton";
 import React, { useEffect } from "react";
 import { IModalProps } from "types";
 import { dateHasToBeGreaterThanOrEqualToCurrentDayRuleForRange } from "utils/formHelpers/validation";
-import dayjs, { Dayjs } from "dayjs";
+import moment, { Moment } from "moment";
 import { TLeaveCycle } from "../../../types";
 import { TSaveLeaveCycleProps } from "../../../hooks/leaveCycles/useSaveLeaveCycle";
 
@@ -29,13 +29,13 @@ export const SaveLeaveCycle: React.FC<IProps> = ({
     if (!defaultData) return;
     form.setFieldsValue({
       duration: [
-        dayjs(
-          `${dayjs().format("YYYY")}-${defaultData.endMonth + 1}-${
+        moment(
+          `${moment().format("YYYY")}-${defaultData.endMonth + 1}-${
             defaultData.endDay
           }`
         ),
-        dayjs(
-          `${dayjs().format("YYYY")}-${defaultData.startMonth + 1}-${
+        moment(
+          `${moment().format("YYYY")}-${defaultData.startMonth + 1}-${
             defaultData.startDay
           }`
         ),
@@ -61,10 +61,10 @@ export const SaveLeaveCycle: React.FC<IProps> = ({
         form={form}
         onFinish={(data) =>
           onSubmit.fn({
-            endDay: +(data.duration[1] as Dayjs).format(`DD`),
-            startDay: +(data.duration[0] as Dayjs).format(`DD`),
-            endMonth: +(data.duration[1] as Dayjs).format(`MM`) - 1, //cos of backend api, using 0 - 11 for month
-            startMonth: +(data.duration[0] as Dayjs).format(`MM`) - 1, //cos of backend api, using 0 - 11 for month
+            endDay: +(data.duration[1] as Moment).format(`DD`),
+            startDay: +(data.duration[0] as Moment).format(`DD`),
+            endMonth: +(data.duration[1] as Moment).format(`MM`) - 1, //cos of backend api, using 0 - 11 for month
+            startMonth: +(data.duration[0] as Moment).format(`MM`) - 1, //cos of backend api, using 0 - 11 for month
           })
         }
         requiredMark={false}

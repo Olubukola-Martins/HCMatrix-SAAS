@@ -78,7 +78,7 @@ export const UpdateTraining = () => {
             <Form.Item
               name="classSize"
               label="Class size"
-             
+              requiredMark="optional"
             >
               <InputNumber className="w-full" placeholder="0" />
             </Form.Item>

@@ -1,7 +1,7 @@
 import { Dropdown, Menu } from "antd";
+import { ItemType } from "antd/lib/menu/hooks/useItems";
 import React from "react";
 import { TBtnVariant } from "./AppButton";
-import { ItemType } from "antd/es/menu/interface";
 
 interface IProps {
   items: ItemType[];

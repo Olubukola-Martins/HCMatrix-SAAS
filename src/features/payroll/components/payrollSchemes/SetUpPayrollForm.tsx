@@ -1251,6 +1251,7 @@ export const SetUpPayrollForm: React.FC<{
                   {runAutomatically && type !== "project" && (
                     <div className="mt-6">
                       <Form.Item
+                        requiredMark={false}
                         name={`automaticRunDay`}
                         noStyle
                         rules={generalValidationRules}
@@ -1270,6 +1271,7 @@ export const SetUpPayrollForm: React.FC<{
                         .fill(0)
                         .map((item, i) => (
                           <Form.Item
+                            requiredMark={false}
                             className="w-full flex"
                             key={i}
                             name={`Payment${i + 1}`}

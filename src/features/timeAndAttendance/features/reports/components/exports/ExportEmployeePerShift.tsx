@@ -12,7 +12,10 @@ import { AppButton } from "components/button/AppButton";
 import { DEFAULT_EXPORT_PAGE_SIZE } from "constants/general";
 import React, { useState } from "react";
 import { TbFileExport } from "react-icons/tb";
-import { numberHasToBeGreaterThanValueRule } from "utils/formHelpers/validation";
+import {
+  generalValidationRules,
+  numberHasToBeGreaterThanValueRule,
+} from "utils/formHelpers/validation";
 import { FormEmployeeInput } from "features/core/employees/components/FormEmployeeInput";
 import { useExportEmployeePerShift } from "../../hooks/exports/useExportEmployeePerShift";
 import { getEmployeePerShift } from "../../hooks/useGetEmployeePerShift";
@@ -52,7 +55,7 @@ const ExportEmployeePerShift: React.FC<{
           shiftTypes: data.shiftTypes,
           endDate: endD,
           startDate: startD,
-          //   empUid: empUid,
+        //   empUid: empUid,
         },
       },
     });
@@ -109,7 +112,7 @@ const ExportEmployeePerShift: React.FC<{
                 placeholder="Select"
               />
             </Form.Item>
-            <Form.Item name="duration" label="Duration">
+            <Form.Item name="duration" label="Duration" requiredMark="optional">
               <DatePicker.RangePicker className="w-full" format="MM/DD/YYYY" />
             </Form.Item>
 

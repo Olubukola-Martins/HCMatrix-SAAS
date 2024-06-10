@@ -1,6 +1,6 @@
 import { Checkbox, Form, Input, TimePicker } from "antd";
 import { AppButton } from "components/button/AppButton";
-import dayjs from "dayjs";
+import moment from "moment";
 import { useContext, useEffect } from "react";
 import { useQueryClient } from "react-query";
 import { EGlobalOps, GlobalContext } from "stateManagers/GlobalContextProvider";
@@ -32,8 +32,8 @@ export const WorkFixed = () => {
       initialFormValues = data?.map((item: any) => ({
         day: capitalizeWord(item.day),
         time: [
-          dayjs(`2013-02-07 ${item.startTime}`),
-          dayjs(`2013-02-08 ${item.endTime}`),
+          moment(`2013-02-07 ${item.startTime}`),
+          moment(`2013-02-08 ${item.endTime}`),
         ],
       }));
     } else {

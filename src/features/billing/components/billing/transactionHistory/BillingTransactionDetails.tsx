@@ -4,7 +4,7 @@ import { FeatureInfoCard } from "components/cards/FeatureInfoCard";
 import { DEFAULT_DATE_FORMAT } from "constants/dateFormats";
 import { TCompanySubscriptionTransaction } from "features/billing/types/company/transaction/companySubscriptionTransaction";
 import { getEmployeeFullName } from "features/core/employees/utils/getEmployeeFullName";
-import dayjs from "dayjs";
+import moment from "moment";
 import React from "react";
 import { boxStyle } from "styles/reused";
 import { formatNumberWithCommas } from "utils/dataHelpers/formatNumberWithCommas";
@@ -21,7 +21,7 @@ const BillingTransactionDetails: React.FC<{
         isLoading={isLoading}
         data={{
           billingCycle: subscription?.billingCycle,
-          createdAt: dayjs(billingTransaction?.createdAt).format(
+          createdAt: moment(billingTransaction?.createdAt).format(
             DEFAULT_DATE_FORMAT
           ),
           licensedEmployeeCount: subscription?.licensedEmployeeCount,

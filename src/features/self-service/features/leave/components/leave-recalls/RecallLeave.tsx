@@ -5,8 +5,7 @@ import { IModalProps } from "types";
 import { openNotification } from "utils/notifications";
 import { useQueryClient } from "react-query";
 import { TLeave } from "../../types";
-import dayjs, { Dayjs } from "dayjs";
-import moment from "moment";
+import moment, { Moment } from "moment";
 import { DEFAULT_DATE_FORMAT } from "constants/dateFormats";
 import { getEmployeeFullName } from "features/core/employees/utils/getEmployeeFullName";
 import { useRecallLeave } from "../../hooks/leaveRecall/useRecallLeave";
@@ -21,14 +20,14 @@ export const RecallLeave: React.FC<IProps> = ({ open, handleClose, leave }) => {
 
   const [form] = Form.useForm();
   const { mutate, isLoading } = useRecallLeave();
-  const [newEndDate, setNewEndDate] = useState<Dayjs | null>(null);
+  const [newEndDate, setNewEndDate] = useState<Moment | null>(null);
   const [newLeaveLength, setNewLeaveLength] = useState<number>(0);
   useEffect(() => {
     if (leave) {
       form.setFieldsValue({
         name: leave.leaveType.name,
-        startDate: dayjs(leave.startDate ?? null),
-        endDate: dayjs(leave.endDate ?? null),
+        startDate: moment(leave.startDate ?? null),
+        endDate: moment(leave.endDate ?? null),
         leaveLength: leave.length,
         employeeName: getEmployeeFullName(leave.employee),
       });
@@ -126,9 +125,9 @@ export const RecallLeave: React.FC<IProps> = ({ open, handleClose, leave }) => {
                     }
                     if (
                       Number.isInteger(value) &&
-                      dayjs(leave?.startDate)
+                      moment(leave?.startDate)
                         .add(value, "days")
-                        .isBefore(dayjs(leave?.endDate)) === false
+                        .isBefore(moment(leave?.endDate)) === false
                     ) {
                       throw new Error(
                         "Please enter a number that results in a date lesser than the previous end date"
@@ -144,13 +143,7 @@ export const RecallLeave: React.FC<IProps> = ({ open, handleClose, leave }) => {
                 placeholder="Days"
                 className="w-full"
                 onChange={(val) =>
-                  setNewEndDate(
-                    dayjs(
-                      moment(leave?.startDate)
-                        .add(val?.toString(), "days")
-                        .toString()
-                    )
-                  )
+                  setNewEndDate(moment(leave?.startDate).add(val, "days"))
                 }
               />
             </Form.Item>
@@ -180,7 +173,9 @@ export const RecallLeave: React.FC<IProps> = ({ open, handleClose, leave }) => {
                 }
                 options={leave?.specificDates?.map((item) => ({
                   value: item,
-                  label: <span>{dayjs(item).format(DEFAULT_DATE_FORMAT)}</span>,
+                  label: (
+                    <span>{moment(item).format(DEFAULT_DATE_FORMAT)}</span>
+                  ),
                 }))}
               />
             </Form.Item>

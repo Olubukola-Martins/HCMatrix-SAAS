@@ -105,7 +105,11 @@ export const AddDelegation = ({ open, handleClose }: IModalProps) => {
           />
         ) : null}
 
-        <Form.Item name="description" label="Description (Optional)">
+        <Form.Item
+          name="description"
+          label="Description (Optional)"
+          requiredMark="optional"
+        >
           <TextArea
             rows={3}
             className="generalInputStyle"

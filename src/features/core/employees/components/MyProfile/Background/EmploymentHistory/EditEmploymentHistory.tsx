@@ -11,7 +11,7 @@ import { useQueryClient } from "react-query";
 import { QUERY_KEY_FOR_SINGLE_EMPLOYEE } from "features/core/employees/hooks/useFetchSingleEmployee";
 import { TSingleEmployee } from "features/core/employees/types";
 import { useUpdateEmployeeEmploymentHistory } from "features/core/employees/hooks/employmentHistory/useUpdateEmployeeEmploymentHistory";
-import dayjs from "dayjs";
+import moment from "moment";
 import { DEFAULT_DATE_FORMAT } from "constants/dateFormats";
 
 interface IProps extends IModalProps {
@@ -33,7 +33,7 @@ export const EditEmploymentHistory: React.FC<IProps> = ({
     form.setFieldsValue({
       organization: history.organization,
       position: history.position,
-      duration: [dayjs(history.startDate), dayjs(history.endDate)],
+      duration: [moment(history.startDate), moment(history.endDate)],
     });
   }, [form, history]);
 

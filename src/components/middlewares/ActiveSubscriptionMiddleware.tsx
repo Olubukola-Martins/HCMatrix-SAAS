@@ -10,7 +10,7 @@ type TProps = {
   isOwner: boolean;
 };
 const COMMON_ERROR_CAUSE_MESSAGE =
-  "Sorry for the inconvenience! Please contact administrator if the issue is not resloved in the next 30 minutes.";
+  "It Seems the server is down, Please contact CSI team! Sorry for the incovenience!";
 const ActiveSubscriptionMiddleware: React.FC<TProps> = ({
   children,
   isOwner,
@@ -24,8 +24,8 @@ const ActiveSubscriptionMiddleware: React.FC<TProps> = ({
           isError={isError}
           backLink={appRoutes.home}
           message={
-            error?.response?.data?.message ??
-            error?.response?.data?.error?.message ??
+            error?.response.data.message ??
+            error?.response.data.error.message ??
             COMMON_ERROR_CAUSE_MESSAGE
           }
         >

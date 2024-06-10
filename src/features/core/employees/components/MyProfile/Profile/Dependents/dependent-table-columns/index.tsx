@@ -1,8 +1,7 @@
 import { ColumnsType } from "antd/lib/table";
 import { DEFAULT_DATE_FORMAT } from "constants/dateFormats";
 import { TSingleEmployee } from "features/core/employees/types";
-import dayjs from "dayjs";
-
+import moment from "moment";
 
 export const generateEmployeeHealthAccessDependantColumns = ({
   handleDelete,
@@ -20,7 +19,7 @@ export const generateEmployeeHealthAccessDependantColumns = ({
     {
       title: "Date Of Birth",
       dataIndex: "dob",
-      render: (_, val) => dayjs(val.dob).format(DEFAULT_DATE_FORMAT),
+      render: (_, val) => moment(val.dob).format(DEFAULT_DATE_FORMAT),
     },
     {
       title: "Phone Number",
@@ -63,7 +62,7 @@ export const generateEmployeeDependantColumns = ({
     {
       title: "Date Of Birth",
       dataIndex: "dob",
-      render: (_, val) => dayjs(val.dob).format(DEFAULT_DATE_FORMAT),
+      render: (_, val) => moment(val.dob).format(DEFAULT_DATE_FORMAT),
     },
     {
       title: "Phone Number",

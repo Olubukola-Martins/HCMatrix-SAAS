@@ -15,7 +15,7 @@ import { AppButton } from "components/button/AppButton";
 import { QUERY_KEY_FOR_SINGLE_ASSET } from "../hooks/useGetSingleAsset";
 import { useUpdateAsset } from "../hooks/useUpdateAsset";
 import { TAsset } from "../types";
-import dayjs from "dayjs";
+import moment from "moment";
 import { FormAssetTypeInput } from "./asset-type/FormAssetTypeInput";
 
 interface IProps extends IModalProps {
@@ -48,7 +48,7 @@ export const EditSingleAsset: React.FC<IProps> = ({
       serialNumber: asset.serialNumber,
       uid: asset.uid,
 
-      purchaseDate: asset.purchaseDate ? dayjs(asset.purchaseDate) : null,
+      purchaseDate: asset.purchaseDate ? moment(asset.purchaseDate) : null,
       imageUrl: asset.imageUrl,
     });
   }, [form, asset]);

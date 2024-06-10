@@ -3,7 +3,7 @@ import { useGetDashboardGraph } from "../features/home/hooks/useGetDashboardGrap
 import { useState } from "react";
 import { graphFilterProps } from "../features/home/types";
 import { DatePicker, DatePickerProps, Input, Select } from "antd";
-import dayjs from "dayjs";
+import moment from "moment";
 const { Option } = Select;
 
 const options = [1, 2, 3, 4, 5];
@@ -14,7 +14,7 @@ export const AttendanceMonthCard = () => {
     month: +new Date().getMonth() + 1,
     week: 1,
   });
-  const { data } = useGetDashboardGraph(graphFilter);
+  const { data, isLoading } = useGetDashboardGraph(graphFilter);
 
   const onChangeMonth: DatePickerProps["onChange"] = (__, value) => {
     setGraphFilter((val) => ({
@@ -56,7 +56,7 @@ export const AttendanceMonthCard = () => {
           picker="month"
           format="M"
           className="w-full"
-          value={dayjs(`${graphFilter.year}-${graphFilter.month}`, "YYYY-M")}
+          value={moment(`${graphFilter.year}-${graphFilter.month}`, "YYYY-M")}
         />
 
         <Select

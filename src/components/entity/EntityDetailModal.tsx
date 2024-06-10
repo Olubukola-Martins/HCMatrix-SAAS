@@ -1,5 +1,5 @@
 import { DatePicker, Form, Input, Modal, Skeleton, Switch } from "antd";
-import dayjs from "dayjs";
+import moment from "moment";
 import React, { useEffect } from "react";
 import { boxStyle } from "styles/reused";
 import { IModalProps } from "types";
@@ -47,8 +47,8 @@ export const EntityDetailModal: React.FC<IProps> = ({
     const fieldValues = formFields.reduce((values: any, field) => {
       if (field.render.component === "date-range-picker") {
         values[field.name] = [
-          dayjs(field.render.value[0]),
-          dayjs(field.render.value[1]),
+          moment(field.render.value[0]),
+          moment(field.render.value[1]),
         ];
       }
       if (
