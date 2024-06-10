@@ -64,8 +64,8 @@ export const RequestForLeaveBtn = () => {
       hidden: false,
     },
     {
-      label: "Unlisenced Employee",
-      onClick: () => handleAction("apply-for-unlisenced-employee"),
+      label: "Unlicensed Employee",
+      onClick: () => handleAction("apply-for-unlicensed-employee"),
       hidden: !canUserAccessComponent({
         userPermissions,
         requiredPermissions: ["manage-unlicensed-employees"],
