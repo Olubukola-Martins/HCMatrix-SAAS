@@ -1,18 +1,15 @@
 import { SimpleCard } from "components/cards/SimpleCard";
-import { useFetchSingleEmployee } from "features/core/employees/hooks/useFetchSingleEmployee";
-import useMostRecentApiAuth from "hooks/useMostRecentApiAuth";
 import { useGetCompanyBaseCurrency } from "hooks/useGetCompanyBaseCurrency";
 import { determineEmployeeGrossPay } from "features/payroll/utils/determineEmployeeGrossPay";
+import { TSingleEmployee } from "features/core/employees/types";
 
-const PayslipCards = () => {
-  const { currentCompanyEmployeeId: employeeId, isLoading: isLoadingAuth } =
-    useMostRecentApiAuth();
-  const { data: employee, isLoading: isLoadingEmployee } =
-    useFetchSingleEmployee({ employeeId });
+const PayslipCards: React.FC<{
+  jobInfo?: TSingleEmployee["jobInformation"];
+}> = ({ jobInfo }) => {
   const { loading: baseCurrLoading, formatValueWithCurrency } =
     useGetCompanyBaseCurrency();
-  const isLoading = isLoadingAuth || isLoadingEmployee || baseCurrLoading;
-  const employeeGrossPay = determineEmployeeGrossPay(employee?.jobInformation);
+  const isLoading = baseCurrLoading;
+  const employeeGrossPay = determineEmployeeGrossPay(jobInfo);
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-3 gap-4 mt-6">
@@ -20,7 +17,7 @@ const PayslipCards = () => {
         <div>
           <SimpleCard
             title="Payment Cycle"
-            highlight={employee?.jobInformation.frequency}
+            highlight={jobInfo?.frequency}
             loading={isLoading}
           />
         </div>
@@ -28,9 +25,9 @@ const PayslipCards = () => {
           <SimpleCard
             title="Payroll Scheme"
             highlight={
-              employee?.jobInformation.payrollType === "office"
+              jobInfo?.payrollType === "office"
                 ? "Step Pay"
-                : employee?.jobInformation.payrollType
+                : jobInfo?.payrollType
             }
             loading={isLoading}
           />
