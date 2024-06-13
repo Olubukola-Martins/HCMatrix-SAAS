@@ -62,3 +62,39 @@ export interface TWorkSheduleShiftCategory {
   createdAt: string;
   updatedAt: string;
 }
+
+export interface TWorkSheduleShiftSwapSetting {
+  id: number;
+  enableRotation: boolean;
+  rotationFrequency: number;
+  rotationFrequencyUnit: string;
+  enableShiftSwap: boolean;
+  swapWorkflowId: number;
+  swapEligibility: string;
+  companyId: number;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface TWorkSheduleShiftRotationSetting {
+  id: number;
+  enableRotation: boolean;
+  rotationFrequency: number;
+  rotationFrequencyUnit: string;
+  enableShiftSwap: boolean;
+  swapWorkflowId: null;
+  swapEligibility: null;
+  companyId: number;
+  createdAt: string;
+  updatedAt: string;
+  pattern: Pattern[];
+}
+
+interface Pattern {
+  id: number;
+  shiftFromId: number;
+  shiftToId: number;
+  companyId: number;
+  createdAt: string;
+  updatedAt: string;
+}
