@@ -1,5 +1,4 @@
 import React from "react";
-
 import { SimpleCard } from "components/cards/SimpleCard";
 import { useGetLoanAnalytics } from "../../hooks/analytics/useGetLoanAnalytics";
 // import { useGetLeaveAnalytics } from "../hooks/useGetLeaveAnalytics";
@@ -18,22 +17,22 @@ const LoanOverviewCards = () => {
         <>
           <SimpleCard
             title="My Total Loan Requests"
-            highlight={`${employeeData?.total}`}
+            highlight={`${employeeData?.total ?? 0}`}
             loading={isFetchingEmpData}
           />
           <SimpleCard
             title="My Pending Loan Requests"
-            highlight={`${employeeData?.pending}`}
+            highlight={`${employeeData?.pending ?? 0}`}
             loading={isFetchingEmpData}
           />
           <SimpleCard
             title="My Approved Loan Requests"
-            highlight={`${employeeData?.approved}`}
+            highlight={`${employeeData?.approved ?? 0}`}
             loading={isFetchingEmpData}
           />
           <SimpleCard
             title="My Rejected Loan Requests"
-            highlight={`${employeeData?.rejected}`}
+            highlight={`${employeeData?.rejected ?? 0}`}
             loading={isFetchingEmpData}
           />
         </>
@@ -41,22 +40,22 @@ const LoanOverviewCards = () => {
         <>
           <SimpleCard
             title="Total Loan Requests"
-            highlight={`${allData?.total}`}
+            highlight={`${allData?.total ?? 0}`}
             loading={isFetchingAllData}
           />
           <SimpleCard
             title="Pending Loan Requests"
-            highlight={`${allData?.pending}`}
+            highlight={`${allData?.pending ?? 0}`}
             loading={isFetchingAllData}
           />
           <SimpleCard
             title="Approved Loan Requests"
-            highlight={`${allData?.approved}`}
+            highlight={`${allData?.approved ?? 0}`}
             loading={isFetchingAllData}
           />
           <SimpleCard
             title="Rejected Loan Requests"
-            highlight={`${allData?.rejected}`}
+            highlight={`${allData?.rejected ?? 0}`}
             loading={isFetchingAllData}
           />
         </>

@@ -30,7 +30,7 @@ export const ViewHospital: React.FC<IProps> = ({
       categoryId: hospital?.categoryId,
       isRecommended: hospital?.isRecommended,
       phone: {
-        code: parsePhoneNumber(hospital?.phoneNumber).code,
+        code: parsePhoneNumber(hospital?.phoneNumber)?.code,
         number: parsePhoneNumber(hospital?.phoneNumber).number,
       },
       address: hospital?.address,

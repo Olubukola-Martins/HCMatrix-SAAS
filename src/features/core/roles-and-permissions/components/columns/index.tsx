@@ -2,7 +2,7 @@ import { ColumnsType } from "antd/lib/table";
 import { TRole } from "../../types";
 import { appRoutes } from "config/router/paths";
 import { DEFAULT_DATE_FORMAT } from "constants/dateFormats";
-import moment from "moment";
+import dayjs from "dayjs";
 import { Link } from "react-router-dom";
 import {
   PREDEFINED_LABEL_NAME_FOR_ADMIN_ROLE,
@@ -31,7 +31,7 @@ export const ROLES_TABLE_COLUMNS = (
     key: "createdAt",
     render: (val, item) => (
       <span className="">
-        {moment(item.createdAt).format(DEFAULT_DATE_FORMAT)}
+        {dayjs(item.createdAt).format(DEFAULT_DATE_FORMAT)}
       </span>
     ),
   },
@@ -41,7 +41,7 @@ export const ROLES_TABLE_COLUMNS = (
     key: "updatedAt",
     render: (val, item) => (
       <span className="">
-        {moment(item.updatedAt).format(DEFAULT_DATE_FORMAT)}
+        {dayjs(item.updatedAt).format(DEFAULT_DATE_FORMAT)}
       </span>
     ),
   },
@@ -83,8 +83,8 @@ export const ROLES_EXPORT_COLUMNS = (
       Name: item.name,
       "User Count": item.userCount,
 
-      "Created At": moment(item.createdAt).format(DEFAULT_DATE_FORMAT),
-      "Last Modified": moment(item.updatedAt).format(DEFAULT_DATE_FORMAT),
+      "Created At": dayjs(item.createdAt).format(DEFAULT_DATE_FORMAT),
+      "Last Modified": dayjs(item.updatedAt).format(DEFAULT_DATE_FORMAT),
     })) ?? []
   );
 };

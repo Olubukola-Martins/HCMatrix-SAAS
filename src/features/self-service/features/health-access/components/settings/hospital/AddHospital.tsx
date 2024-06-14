@@ -32,8 +32,8 @@ export const AddHospital: React.FC<IModalProps> = ({ open, handleClose }) => {
         categoryId: data.categoryId,
         isRecommended: !!data.isRecommended,
         phoneNumber: formatPhoneNumber({
-          code: data.phone.code,
-          number: data.phone.number,
+          code: data?.phone?.code,
+          number: data?.phone.number,
         }),
         address: data.address,
         hmoPlanManagement: (data.hmoPlanIds as unknown as number[]).map(

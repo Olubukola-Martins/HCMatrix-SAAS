@@ -2,7 +2,6 @@ import { Button } from "antd";
 import React, { useState } from "react";
 import { AddMemberToGroupForm } from "./AddMemberToGroupForm";
 import { PlusOutlined, MinusOutlined } from "@ant-design/icons";
-import { useApiAuth } from "hooks/useApiAuth";
 import { useFetchSingleGroupMembers } from "../hooks/useFetchSingleGroupMembers";
 import { TGroup } from "../types";
 import { GroupMembers } from "./GroupMembers";
@@ -34,7 +33,7 @@ export const ManageGroupMembership: React.FunctionComponent<IProps> = ({
       {/* add member to group form */}
       <div className="flex justify-end">
         <Button
-          type="ghost"
+          ghost
           icon={!add ? <PlusOutlined /> : <MinusOutlined />}
           onClick={() => setAdd((val) => !val)}
         >

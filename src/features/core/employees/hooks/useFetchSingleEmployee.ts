@@ -8,7 +8,7 @@ import { TSingleEmployee } from "../types";
 export const QUERY_KEY_FOR_SINGLE_EMPLOYEE = "single-employee";
 
 export const getSingleEmployee = async (
-  props: ICurrentCompany & { employeeId: number }
+  props: ICurrentCompany & { employeeId?: number }
 ): Promise<TSingleEmployee> => {
   let url = `${MICROSERVICE_ENDPOINTS.UTILITY}/employee/${props.employeeId}`;
 
@@ -32,7 +32,7 @@ export const getSingleEmployee = async (
 export const useFetchSingleEmployee = ({
   employeeId,
 }: {
-  employeeId: number;
+  employeeId?: number;
 }) => {
   const { token, companyId } = useApiAuth();
   const queryData = useQuery(

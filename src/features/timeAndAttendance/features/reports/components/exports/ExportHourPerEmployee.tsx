@@ -1,12 +1,4 @@
-import {
-  Button,
-  DatePicker,
-  Drawer,
-  Form,
-  Input,
-  InputNumber,
-  Select,
-} from "antd";
+import { Button, DatePicker, Drawer, Form, Input, InputNumber } from "antd";
 import Themes from "components/Themes";
 import { AppButton } from "components/button/AppButton";
 import { DEFAULT_EXPORT_PAGE_SIZE } from "constants/general";
@@ -98,7 +90,7 @@ const ExportHourPerEmployee: React.FC<{
 
             <FormDepartmentInput Form={Form} optional={true} />
 
-            <Form.Item name="duration" label="Duration" requiredMark="optional">
+            <Form.Item name="duration" label="Duration">
               <DatePicker.RangePicker className="w-full" format="MM/DD/YYYY" />
             </Form.Item>
 

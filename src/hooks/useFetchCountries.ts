@@ -23,7 +23,7 @@ export const getCountries = async (search?: string): Promise<TCountry[]> => {
       id: item.id,
       name: item.name,
       sortName: item.sortName,
-      code: item.code,
+      code: item?.code,
     })
   );
 

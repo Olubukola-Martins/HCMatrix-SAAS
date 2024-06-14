@@ -15,7 +15,9 @@ export const ModuleCards: React.FC<{
         onChange={(val) => onChange?.(val as number[] | string[])}
       >
         {data?.map((module, index) => (
-          <ModuleCard Checkbox={Checkbox} key={index} {...module} />
+          <div key={index} className="w-full">
+            <ModuleCard Checkbox={Checkbox} {...module} />
+          </div>
         ))}
       </Checkbox.Group>
     </Form.Item>

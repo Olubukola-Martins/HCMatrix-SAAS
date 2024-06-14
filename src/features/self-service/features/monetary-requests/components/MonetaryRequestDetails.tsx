@@ -4,7 +4,7 @@ import { IModalProps } from "types";
 import { useApiAuth } from "hooks/useApiAuth";
 import { boxStyle } from "styles/reused";
 import { getAppropriateColorForStatus } from "utils/colorHelpers/getAppropriateColorForStatus";
-import moment from "moment";
+import dayjs from "dayjs";
 import {
   QUERY_KEY_FOR_SINGLE_MONEY_REQUISITION,
   useGetSingleMoneyRequisition,
@@ -37,7 +37,7 @@ export const MonetaryRequestDetails: React.FC<IProps> = ({
   useEffect(() => {
     if (data) {
       form.setFieldsValue({
-        date: data.date ? moment(data.date) : null,
+        date: data.date ? dayjs(data.date) : null,
         employeeName: getEmployeeFullName(data.employee),
         employeeID: data.employee.empUid,
         purpose: data.purpose,

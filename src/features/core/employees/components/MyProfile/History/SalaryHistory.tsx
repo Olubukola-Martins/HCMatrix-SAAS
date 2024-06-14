@@ -1,6 +1,6 @@
 import { ColumnsType } from "antd/lib/table";
 import { Input, Table } from "antd";
-import moment from "moment";
+import dayjs from "dayjs";
 import React, { useEffect, useState } from "react";
 import { usePagination } from "hooks/usePagination";
 import { DEFAULT_DATE_FORMAT } from "constants/dateFormats";
@@ -67,17 +67,17 @@ export const SalaryHistory: React.FC<{
 
     {
       title: "Started",
-      dataIndex: "createAr",
-      key: "createAr",
-      render: (_, item) => moment(item.from).format(DEFAULT_DATE_FORMAT),
+      dataIndex: "Started",
+      key: "Started",
+      render: (_, item) => dayjs(item.from).format(DEFAULT_DATE_FORMAT),
     },
     {
       title: "Ended",
-      dataIndex: "update",
-      key: "update",
+      dataIndex: "Ended",
+      key: "Ended",
       render: (_, item) => (
         <span className="">
-          {item.to ? moment(item.to).format(DEFAULT_DATE_FORMAT) : "Ongoing"}
+          {item.to ? dayjs(item.to).format(DEFAULT_DATE_FORMAT) : "Ongoing"}
         </span>
       ),
     },

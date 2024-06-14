@@ -5,7 +5,8 @@ import {
   useGetAllSubscriptionTransactions,
 } from "features/billing/hooks/company/transaction/useGetAllSubscriptionTransactions";
 import { usePagination } from "hooks/usePagination";
-import moment from "moment";
+import dayjs from "dayjs";
+
 import { formatNumberWithCommas } from "utils/dataHelpers/formatNumberWithCommas";
 import { MoreOutlined } from "@ant-design/icons";
 import { Dropdown, Menu, Button } from "antd";
@@ -29,7 +30,7 @@ const BillingTransactionHistory = () => {
       key: "Date",
       render: (_, item) => (
         <span className="">
-          {moment(item.createdAt).format(DEFAULT_DATE_FORMAT)}{" "}
+          {dayjs(item.createdAt).format(DEFAULT_DATE_FORMAT)}{" "}
         </span>
       ),
     },

@@ -1,7 +1,6 @@
-import { DatePicker, Select, Skeleton } from "antd";
+import { DatePicker, Skeleton } from "antd";
 import { LineChart } from "components/charts/LineChart";
 import { ChartSwitcher } from "components/controls/ChartSwitcher";
-
 import { useState } from "react";
 import { useGetLoanAnalytics } from "../../hooks/analytics/useGetLoanAnalytics";
 import { APPROVAL_STATUS_OPTIONS } from "constants/statustes";
@@ -33,7 +32,7 @@ export const LoanInsightsCard = () => {
             picker="year"
             className="w-full"
             placeholder="Select Year"
-            onSelect={(val) => setYear(val.format("YYYY"))}
+            onChange={(val) => setYear(val.format("YYYY"))}
           />
         </div>
       </div>

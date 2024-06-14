@@ -43,8 +43,8 @@ export const EmergencyContact: React.FC<IProps> = ({
       address: emergencyContact.address,
       fullName: emergencyContact.fullName,
       phone: {
-        code: parsePhoneNumber(emergencyContact.phoneNumber).code,
-        number: parsePhoneNumber(emergencyContact.phoneNumber).number,
+        code: parsePhoneNumber(emergencyContact?.phoneNumber)?.code,
+        number: parsePhoneNumber(emergencyContact?.phoneNumber).number,
       },
       relationship: emergencyContact.relationship,
     });
@@ -59,8 +59,8 @@ export const EmergencyContact: React.FC<IProps> = ({
           address: data.address,
           fullName: data.fullName,
           phoneNumber: formatPhoneNumber({
-            code: data.phone.code,
-            number: data.phone.number,
+            code: data?.phone?.code,
+            number: data?.phone.number,
           }),
 
           relationship: data.relationship,

@@ -22,7 +22,7 @@ export const AddSisterCompanyForm = ({ open, handleClose }: IModalProps) => {
       {
         name: data.name,
         email: data.email,
-        phoneNumber: data.phoneNumber,
+        phoneNumber: data?.phoneNumber,
         industryId: data.industryId,
       },
       {

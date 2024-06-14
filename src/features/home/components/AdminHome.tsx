@@ -13,7 +13,7 @@ import { DoughnutChart } from "components/charts/DoughnutChart";
 import { useGetCompanyOwnerDashboard } from "features/core/company/hooks/dashboard/useGetCompanyOwnerDashboard";
 import ErrorBoundary from "components/errorHandlers/ErrorBoundary";
 import { ErrorWrapper } from "components/errorHandlers/ErrorWrapper";
-import moment, { Moment } from "moment";
+import dayjs, {Dayjs} from "dayjs";
 import { appRoutes } from "config/router/paths";
 import RecentApprovalRequestsCard from "features/core/workflows/components/approval-request/RecentApprovalRequestsCard";
 import { useApiAuth } from "hooks/useApiAuth";
@@ -33,7 +33,7 @@ export const AdminHome: React.FC<{ user?: TAuthUser["user"] }> = ({ user }) => {
   const handleGetStarted = () => {
     globalDispatch({ type: EGlobalOps.setShowInitialSetup, payload: true });
   };
-  const [year, setYear] = useState<Moment | null>(moment());
+  const [year, setYear] = useState<Dayjs | null>(dayjs());
 
   const { data, isError, isLoading, error } = useGetCompanyOwnerDashboard({
     year: year?.format("YYYY"),

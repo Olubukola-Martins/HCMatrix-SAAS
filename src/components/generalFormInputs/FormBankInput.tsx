@@ -50,7 +50,7 @@ export const FormBankInput: React.FC<{
         getPopupContainer={(triggerNode) => triggerNode.parentElement}
         loading={isFetching}
         onSelect={(val: string) => {
-          const item = banks?.data.find((item) => item.code === val);
+          const item = banks?.data.find((item) => item?.code === val);
           handleSelect?.(val, item);
         }}
         searchValue={search}
@@ -67,7 +67,7 @@ export const FormBankInput: React.FC<{
         filterOption={false}
         options={data?.map((item) => ({
           label: `${item.name}`,
-          value: item.code,
+          value: item?.code,
         }))}
         placeholder="Select a Bank"
       />
