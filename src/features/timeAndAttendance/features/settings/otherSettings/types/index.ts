@@ -20,3 +20,33 @@ export interface getOtherSettingsProps {
   allow_soft_clocking: string;
   work_arrangement: string;
 }
+type TPolicyReportFrequency = "daily" | "weekly" | "monthly";
+type TPolicyGracePeriod =
+  | "0 minutes"
+  | "10 minutes"
+  | "20 minutes"
+  | "30 minutes";
+
+export type TLatenessPolicy = {
+  id: number;
+  gracePeriod: TPolicyGracePeriod;
+  sendNotification: boolean;
+  sendReport: boolean;
+  reportFrequency: TPolicyReportFrequency;
+  reportToRoleId: number;
+  companyId: number;
+  createdAt: string;
+  updatedAt: string;
+};
+
+export type TAbsenteeismPolicy = {
+  id: number;
+  markAbsent: boolean;
+  sendNotification: boolean;
+  sendReport: boolean;
+  reportFrequency: TPolicyReportFrequency;
+  reportToRoleId: number;
+  companyId: number;
+  createdAt: string;
+  updatedAt: string;
+};
