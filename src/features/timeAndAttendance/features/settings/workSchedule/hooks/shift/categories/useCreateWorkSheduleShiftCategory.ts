@@ -23,7 +23,7 @@ const createData = async (props: {
     },
   };
 
-  const res = await axios.patch(url, data, config);
+  const res = await axios.post(url, data, config);
   const fetchedData: TWorkSheduleShiftCategory = res.data.data;
   return fetchedData;
 };
