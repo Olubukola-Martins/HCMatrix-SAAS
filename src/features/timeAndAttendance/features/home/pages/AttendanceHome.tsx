@@ -14,15 +14,21 @@ import AttendancePunctualityHomeCard from "../components/home/AttendancePunctual
 import AttendanceStatusHomeCard from "../components/home/AttendanceStatusHomeCard";
 import AttendanceWelcomeHeader from "../components/home/AttendanceWelcomeHeader";
 import { TFilterAttendanceDBFormProps } from "../components/home/FilterDBBtn";
+import { useGetDashboardGraph } from "../hooks/useGetDashboardGraph";
 
 export const AttendanceHome = () => {
   const [greeting, setGreeting] = useState("");
   const today = new Date();
   const month = today.toLocaleString("default", { month: "long" });
   const fullYear = today.getFullYear();
-  const { data, isLoading } = useGetCompanyOwnerDashboard({
-    year: fullYear.toString(),
-  });
+  const { data: timeDBData, isLoading: isLoadingTimeDBData } =
+    useGetDashboardGraph({
+      year: fullYear,
+    });
+  const { data: ownerDBData, isLoading: isLoadingOwnerDBData } =
+    useGetCompanyOwnerDashboard({
+      year: fullYear.toString(),
+    });
   const hour = today.getHours();
 
   const { user } = useMostRecentApiAuth();
@@ -68,11 +74,16 @@ export const AttendanceHome = () => {
         <AttendanceStatusHomeCard className="bg-mainBg pb-3 border rounded-lg text-sm shadow  col-span-1" />
         <AttendanceOverviewHomeCard className="bg-mainBg pb-3 border rounded-lg text-sm shadow  col-span-2" />
         <TimesheetCard className="bg-mainBg pb-3 border rounded-lg text-sm shadow col-span-1 flex flex-col" />
-        <AttendancePunctualityHomeCard className="col-span-3 bg-mainBg border rounded-lg text-sm shadow p-3" />
+        <AttendancePunctualityHomeCard
+          className="col-span-3 bg-mainBg border rounded-lg text-sm shadow p-3"
+          data={timeDBData ? Object.values(timeDBData) : []}
+          labels={timeDBData ? Object.keys(timeDBData) : []}
+          isLoading={isLoadingTimeDBData}
+        />
         <TimeOffRequestCard className="bg-mainBg pb-3 border rounded-lg text-sm shadow col-span-1 flex flex-col" />
         <WhoIsOut
-          data={data}
-          isLoading={isLoading}
+          data={ownerDBData}
+          isLoading={isLoadingOwnerDBData}
           className="col-span-4 bg-mainBg shadow border rounded-lg p-3"
         />
       </div>
