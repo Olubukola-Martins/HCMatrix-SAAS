@@ -8,6 +8,8 @@ import { TWorkSheduleShiftCategory } from "../../../types";
 
 interface IGetDataProps {
   pagination?: IPaginationProps;
+  isEnabled?: boolean;
+  search?: string;
 }
 
 export const QUERY_KEY_WORK_SCHEDULE_SHIFT_CATEGORIES =
@@ -17,7 +19,7 @@ const getData = async (props: {
   data: IGetDataProps;
   auth: ICurrentCompany;
 }): Promise<{ data: TWorkSheduleShiftCategory[]; total: number }> => {
-  const { pagination } = props.data;
+  const { pagination, isEnabled, search } = props.data;
   const limit = pagination?.limit ?? DEFAULT_PAGE_SIZE;
   const offset = pagination?.offset ?? 0;
 
@@ -32,6 +34,8 @@ const getData = async (props: {
     params: {
       limit,
       offset,
+      isEnabled,
+      search,
     },
   };
 
@@ -60,9 +64,9 @@ export const useGetWorkSheduleShiftCategories = ({
 }) => {
   const { token, companyId } = useApiAuth();
 
-  const { pagination } = props;
+  const { pagination, search, isEnabled } = props;
   const queryData = useQuery(
-    [QUERY_KEY_WORK_SCHEDULE_SHIFT_CATEGORIES, pagination],
+    [QUERY_KEY_WORK_SCHEDULE_SHIFT_CATEGORIES, pagination, search, isEnabled],
     () =>
       getData({
         auth: { token, companyId },

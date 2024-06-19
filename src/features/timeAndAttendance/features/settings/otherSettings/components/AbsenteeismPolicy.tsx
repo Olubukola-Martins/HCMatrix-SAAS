@@ -9,6 +9,7 @@ import {
 } from "../hooks/useSaveAbsenteeismPolicy";
 import { useEffect } from "react";
 import { POLICY_REPORT_FREQUENCIES } from "../constants";
+import { generalValidationRules } from "utils/formHelpers/validation";
 
 export const AbsenteeismPolicy = () => {
   const [form] = Form.useForm<TSaveAbsenteeismPolicyData>();
@@ -84,6 +85,7 @@ export const AbsenteeismPolicy = () => {
               <Form.Item<TSaveAbsenteeismPolicyData>
                 name={`reportFrequency`}
                 label="Select Frequency"
+                rules={generalValidationRules}
               >
                 <Select
                   options={POLICY_REPORT_FREQUENCIES.map((value) => ({

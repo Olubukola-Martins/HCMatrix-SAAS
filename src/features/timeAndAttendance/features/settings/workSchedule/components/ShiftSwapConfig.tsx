@@ -1,20 +1,44 @@
-import { Form, Switch } from "antd";
+import { Form, Radio, Skeleton, Switch } from "antd";
 import { AppButton } from "components/button/AppButton";
 import { appRoutes } from "config/router/paths";
 import { FormWorkflowInput } from "features/core/workflows/components/FormWorkflowInput";
 import { Link } from "react-router-dom";
+import { useGetShiftSwapSetting } from "../hooks/shift/other-settings/useGetShiftSwapSetting";
+import { useEffect } from "react";
+import {
+  TSaveShiftSwapSettingData,
+  useSaveShiftSwapSetting,
+} from "../hooks/shift/other-settings/useSaveShiftSwapSetting";
+import { SHIFT_SWAP_ELIGIBILITY_VALUE_OPTIONS } from "../constants";
 
 export const ShiftSwapConfig = () => {
+  const [form] = Form.useForm<TSaveShiftSwapSettingData>();
+  const { isLoading: isLoadingSetting, data: setting } =
+    useGetShiftSwapSetting();
+  useEffect(() => {
+    form.setFieldsValue({
+      enableShiftSwap: setting?.enableShiftSwap,
+      swapEligibility: setting?.swapEligibility,
+      swapWorkflowId: setting?.swapWorkflowId,
+    });
+  }, [setting, form]);
+  const { handleSubmit, isLoading: isSaving } = useSaveShiftSwapSetting();
   return (
-    <>
-      <Form layout="vertical" className="mt-10">
+    <Skeleton loading={isLoadingSetting} paragraph={{ rows: 8 }}>
+      <Form
+        onFinish={handleSubmit}
+        form={form}
+        requiredMark={false}
+        layout="vertical"
+        className="mt-10"
+      >
         <div className="bg-card rounded px-3 pt-4 pb-3">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-x-10">
             <h3 className="font-semibold">
               Enable shift swap between employees on temporary shift
             </h3>
-            <Form.Item
-              name="EnableShiftSwap"
+            <Form.Item<TSaveShiftSwapSettingData>
+              name="enableShiftSwap"
               className="flex justify-end items-end"
               valuePropName="checked"
               initialValue={false}
@@ -28,7 +52,7 @@ export const ShiftSwapConfig = () => {
                 Form={Form}
                 control={{
                   label: "Select Workflow",
-                  name: "attendanceWorkFlowId",
+                  name: "swapWorkflowId",
                 }}
               />
               <div className="flex justify-end">
@@ -50,56 +74,24 @@ export const ShiftSwapConfig = () => {
             </h3>
             <p className="text-sm pt-1">Only one criteria can be selected</p>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-x-10 mt-5">
-            <h3>Employees must belong to the same department</h3>
-            <Form.Item
-              name="sameDepartment"
-              className="flex justify-end items-end"
-              valuePropName="checked"
-              initialValue={false}
-            >
-              <Switch />
-            </Form.Item>
-          </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-x-10">
-            <h3>Employees must have the same designation</h3>
-            <Form.Item
-              name="sameDesignation"
-              className="flex justify-end items-end"
-              valuePropName="checked"
-              initialValue={false}
-            >
-              <Switch />
-            </Form.Item>
-          </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-x-10">
-            <h3>Employees must have the same role</h3>
-            <Form.Item
-              name="sameRole"
-              className="flex justify-end items-end"
-              valuePropName="checked"
-              initialValue={false}
-            >
-              <Switch />
-            </Form.Item>
-          </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-x-10">
-            <h3>Employees can swap with anyone in the organization</h3>
-            <Form.Item
-              name="swap"
-              className="flex justify-end items-end"
-              valuePropName="checked"
-              initialValue={false}
-            >
-              <Switch />
-            </Form.Item>
-          </div>
+          {/* SHIFT_SWAP_ELIGIBILITY_VALUE_OPTIONS */}
+          <Form.Item<TSaveShiftSwapSettingData> name="swapEligibility">
+            <Radio.Group name="swapEligibility">
+              {SHIFT_SWAP_ELIGIBILITY_VALUE_OPTIONS.map(({ label, value }) => (
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-x-10 mt-5">
+                  <Radio value={value}>
+                    <h3>{label}</h3>
+                  </Radio>
+                </div>
+              ))}
+            </Radio.Group>
+          </Form.Item>
 
           <div className="flex justify-end mt-2 mr-3">
-          <AppButton type="submit" label="Save" />
-        </div>
+            <AppButton type="submit" label="Save" isLoading={isSaving} />
+          </div>
         </div>
       </Form>
-    </>
+    </Skeleton>
   );
 };

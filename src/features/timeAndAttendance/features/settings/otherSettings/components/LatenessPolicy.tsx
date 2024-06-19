@@ -9,6 +9,7 @@ import {
   useSaveLatenessPolicy,
 } from "../hooks/useSaveLatenessPolicy";
 import { POLICY_GRACE_PERIODS, POLICY_REPORT_FREQUENCIES } from "../constants";
+import { generalValidationRules } from "utils/formHelpers/validation";
 
 export const LatenessPolicy = () => {
   const [form] = Form.useForm<TSaveLatenessPolicyData>();
@@ -84,6 +85,7 @@ export const LatenessPolicy = () => {
               <Form.Item<TSaveLatenessPolicyData>
                 name={`reportFrequency`}
                 label="Select Frequency"
+                rules={generalValidationRules}
               >
                 <Select
                   options={POLICY_REPORT_FREQUENCIES.map((value) => ({

@@ -37,7 +37,7 @@ export const AddShiftCategory: React.FC<IModalProps> = ({
             state: "success",
 
             title: "Success",
-            description: res.data.message,
+            description: res?.data?.message,
             // duration: 0.4,
           });
           form.resetFields();

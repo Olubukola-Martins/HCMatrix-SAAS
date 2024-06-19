@@ -1,16 +1,19 @@
 import axios from "axios";
 import { MICROSERVICE_ENDPOINTS } from "config/enviroment";
-import { useMutation } from "react-query";
+import { useMutation, useQueryClient } from "react-query";
 import { ICurrentCompany } from "types";
 import { useApiAuth } from "hooks/useApiAuth";
 import { TWorkSheduleShiftSwapSetting } from "../../../types";
-type TData = {
+import { openNotification } from "utils/notifications";
+import { QUERY_KEY_WORK_SCHEDULE_SWAP_SETTING } from "./useGetShiftSwapSetting";
+
+export type TSaveShiftSwapSettingData = {
   enableShiftSwap: boolean;
   swapWorkflowId: number;
-  swapEligibility: string;
+  swapEligibility: TWorkSheduleShiftSwapSetting["swapEligibility"];
 };
 const createData = async (props: {
-  data: TData;
+  data: TSaveShiftSwapSettingData;
   auth: ICurrentCompany;
 }): Promise<TWorkSheduleShiftSwapSetting> => {
   const { data, auth } = props;
@@ -30,9 +33,41 @@ const createData = async (props: {
   return fetchedData;
 };
 
-export const useSaveShiftSwapSetting = () => {
+export const useSaveShiftSwapSetting = ({
+  onClose,
+}: {
+  onClose?: () => void;
+} = {}) => {
   const { token, companyId } = useApiAuth();
-  return useMutation((data: TData) =>
+  const queryClient = useQueryClient();
+  const { mutate, isLoading } = useMutation((data: TSaveShiftSwapSettingData) =>
     createData({ data, auth: { token, companyId } })
   );
+  const handleSubmit = (data: TSaveShiftSwapSettingData) =>
+    mutate(data, {
+      onError: (err: any) => {
+        openNotification({
+          state: "error",
+          title: "Error Occurred",
+          description:
+            err?.response.data.message ?? err?.response.data.error.message,
+        });
+      },
+      onSuccess: (res: any) => {
+        openNotification({
+          state: "success",
+
+          title: "Success",
+          description: res?.data?.message,
+          // duration: 0.4,
+        });
+
+        onClose?.();
+        queryClient.invalidateQueries({
+          queryKey: [QUERY_KEY_WORK_SCHEDULE_SWAP_SETTING],
+          // exact: true,
+        });
+      },
+    });
+  return { isLoading, handleSubmit };
 };

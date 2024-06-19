@@ -70,7 +70,7 @@ export interface TWorkSheduleShiftSwapSetting {
   rotationFrequencyUnit: string;
   enableShiftSwap: boolean;
   swapWorkflowId: number;
-  swapEligibility: string;
+  swapEligibility: "same_department" | "same_designation" | "same_role" | "any";
   companyId: number;
   createdAt: string;
   updatedAt: string;
@@ -80,7 +80,7 @@ export interface TWorkSheduleShiftRotationSetting {
   id: number;
   enableRotation: boolean;
   rotationFrequency: number;
-  rotationFrequencyUnit: string;
+  rotationFrequencyUnit: "days";
   enableShiftSwap: boolean;
   swapWorkflowId: null;
   swapEligibility: null;
