@@ -24,7 +24,7 @@ export const FormShiftCategoryInput: React.FC<{
       pagination: {
         limit: DEFAULT_PAGE_SIZE,
       },
-      isEnabled: true,
+      enabled: true,
       search: debouncedSearchTerm,
     },
   });
@@ -36,7 +36,7 @@ export const FormShiftCategoryInput: React.FC<{
   return (
     <Form.Item
       noStyle={noStyle}
-      name={control?.name ?? "categoryId"}
+      name={control?.name ?? "shiftCategoryId"}
       label={showLabel ? control?.label ?? "Shift Category" : null}
       rules={optional ? generalValidationRulesOp : generalValidationRules}
     >

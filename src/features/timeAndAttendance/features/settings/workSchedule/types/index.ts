@@ -43,14 +43,17 @@ export interface settingsBreakProps {
 export interface scheduleEmployeesShiftProps {
   id: number | undefined;
   employee?: TEmployeeProps;
-  shiftType: string;
+  shiftCategoryId: number;
   employeeIds: number[];
   isPermanent: boolean;
+  shiftCategory?: {
+    name: string;
+  };
 }
 
 export interface scheduleFilterProps {
   empUid?: string | undefined;
-  shiftTypes?: "morning" | "afternoon" | "night";
+  shiftTypes?: number;
 }
 
 export interface TWorkSheduleShiftCategory {

@@ -10,6 +10,7 @@ import { openNotification } from "utils/notifications";
 import { useQueryClient } from "react-query";
 import { QUERY_KEY_FOR_SCHEDULE_EMPLOYEE_SHIFT } from "../hooks/useGetScheduleEmployeeShift";
 import { useGetSingleShiftSchedule } from "../hooks/useGetSingleShiftSchedule";
+import { FormShiftCategoryInput } from "./shiftCategory/FormShiftCategoryInput";
 
 export const AddEmployeeShift = ({ handleClose, open, id }: IDrawerProps) => {
   const globalCtx = useContext(GlobalContext);
@@ -31,7 +32,7 @@ export const AddEmployeeShift = ({ handleClose, open, id }: IDrawerProps) => {
   useEffect(() => {
     if (data && isSuccess) {
       form.setFieldsValue({
-        shiftType: data.shiftType,
+        shiftCategoryId: data.shiftCategoryId,
         employeeIds: data.employee?.id,
         isPermanent: data.isPermanent,
       });
@@ -43,9 +44,8 @@ export const AddEmployeeShift = ({ handleClose, open, id }: IDrawerProps) => {
       {
         data: {
           employeeIds: values.employeeIds,
-          shiftType: values.shiftType,
+          shiftCategoryId: values.shiftCategoryId,
           id: id ? id : undefined,
-
           isPermanent: values.isPermanent,
         },
       },
@@ -97,22 +97,8 @@ export const AddEmployeeShift = ({ handleClose, open, id }: IDrawerProps) => {
           mode="multiple"
           control={{ label: "Employee", name: "employeeIds" }}
         />
-        <Form.Item
-          name="shiftType"
-          label="Shift Type"
-          rules={generalValidationRules}
-        >
-          <Select
-            className="w-full"
-            placeholder="Select"
-            options={[
-              { value: "morning", label: "Morning" },
-              { value: "afternoon", label: "Afternoon" },
-              { value: "night", label: "Night" },
-            ]}
-            allowClear
-          />
-        </Form.Item>
+        <FormShiftCategoryInput Form={Form} />
+
         <Form.Item
           name="isPermanent"
           label="Shift Method"

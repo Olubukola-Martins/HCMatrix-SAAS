@@ -74,8 +74,8 @@ export const AutoShiftRotation = () => {
           </div>
         </div>
 
-        <div className="bg-card rounded px-3 pt-4 mt-3">
-          <h3 className="font-semibold pb-2">
+        <div className="bg-card rounded px-3 pt-4 mt-3 pb-5">
+          <h3 className="font-semibold pb-4">
             Configure rotation pattern for temporary shift
           </h3>
 

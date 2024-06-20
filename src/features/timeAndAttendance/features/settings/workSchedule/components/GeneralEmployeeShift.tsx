@@ -35,7 +35,7 @@ export const GeneralEmployeeShift = () => {
   const { data: categoriesData, isLoading: isLoadingCategories } =
     useGetWorkSheduleShiftCategories({
       props: {
-        isEnabled: true,
+        enabled: true,
         pagination: {
           limit: REASONABLE_AMOUNT_OF_SHIFT_CATEGORIES,
         },

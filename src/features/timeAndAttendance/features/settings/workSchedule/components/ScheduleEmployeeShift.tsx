@@ -24,6 +24,7 @@ export const ScheduleEmployeeShift = () => {
   const [assignId, setAssignId] = useState<number>();
   const [filterDrawer, setFilterDrawer] = useState(false);
 
+
   const handleEdit = (id: number) => {
     setAssignEmployee(true);
     setAssignId(id);
@@ -49,7 +50,7 @@ export const ScheduleEmployeeShift = () => {
     {
       title: "Shift Type",
       dataIndex: "shiftType",
-      render: (_, val) => <span className="capitalize">{val?.shiftType}</span>,
+      render: (_, val) => <span className="capitalize">{val?.shiftCategory?.name}</span>,
     },
     {
       title: "Action",
