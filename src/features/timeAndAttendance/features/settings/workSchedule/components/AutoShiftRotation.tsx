@@ -13,7 +13,7 @@ import { usePagination } from "hooks/usePagination";
 
 export const AutoShiftRotation = () => {
   const [form] = Form.useForm<TSaveShiftRotationSettingData>();
-  const { pagination, onChange } = usePagination();
+  const { pagination } = usePagination();
   const { isLoading: isLoadingSetting, data: setting } =
     useGetShiftRotationSetting();
   const { data: ShiftCategoriesData } = useGetWorkSheduleShiftCategories({
@@ -23,12 +23,11 @@ export const AutoShiftRotation = () => {
     },
   });
 
-  console.log(ShiftCategoriesData?.data?.length);
 
   useEffect(() => {
     form.setFieldsValue({
       enableRotation: setting?.enableRotation,
-      pattern: setting?.pattern?.map(({ shiftFromId, shiftToId }) => ({
+      pattern: setting?.rotationPattern?.map(({ shiftFromId, shiftToId }) => ({
         shiftFromId,
         shiftToId,
       })),
@@ -37,7 +36,7 @@ export const AutoShiftRotation = () => {
     });
   }, [setting, form]);
 
-  // console.log(setting);
+  console.log(setting);
 
   const { handleSubmit, isLoading: isSaving } = useSaveShiftRotationSetting();
 

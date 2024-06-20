@@ -91,6 +91,7 @@ export interface TWorkSheduleShiftRotationSetting {
   createdAt: string;
   updatedAt: string;
   pattern: Pattern[];
+  rotationPattern: { id: number; shiftFromId: number; shiftToId: number }[];
 }
 
 interface Pattern {
