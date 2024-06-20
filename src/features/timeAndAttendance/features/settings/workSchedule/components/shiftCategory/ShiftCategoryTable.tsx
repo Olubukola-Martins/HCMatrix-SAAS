@@ -17,6 +17,7 @@ export const ShiftCategoryTable: React.FC = () => {
   const { data, isFetching } = useGetWorkSheduleShiftCategories({
     props: {
       pagination,
+      
     },
   });
   const handleAction = (

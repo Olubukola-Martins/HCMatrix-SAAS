@@ -8,11 +8,23 @@ import { useEffect } from "react";
 import { useGetShiftRotationSetting } from "../hooks/shift/other-settings/useGetShiftRotationSetting";
 import { numberHasToBeGreaterThanValueRule } from "utils/formHelpers/validation";
 import { FormShiftCategoryInput } from "./shiftCategory/FormShiftCategoryInput";
+import { useGetWorkSheduleShiftCategories } from "../hooks/shift/categories/useGetWorkSheduleShiftCategories";
+import { usePagination } from "hooks/usePagination";
 
 export const AutoShiftRotation = () => {
   const [form] = Form.useForm<TSaveShiftRotationSettingData>();
+  const { pagination, onChange } = usePagination();
   const { isLoading: isLoadingSetting, data: setting } =
     useGetShiftRotationSetting();
+  const { data: ShiftCategoriesData } = useGetWorkSheduleShiftCategories({
+    props: {
+      pagination,
+      enabled: true,
+    },
+  });
+
+  console.log(ShiftCategoriesData?.data?.length);
+
   useEffect(() => {
     form.setFieldsValue({
       enableRotation: setting?.enableRotation,
@@ -24,6 +36,9 @@ export const AutoShiftRotation = () => {
       rotationFrequencyUnit: setting?.rotationFrequencyUnit ?? "days",
     });
   }, [setting, form]);
+
+  // console.log(setting);
+
   const { handleSubmit, isLoading: isSaving } = useSaveShiftRotationSetting();
 
   const handleAddField = () => {
@@ -83,7 +98,7 @@ export const AutoShiftRotation = () => {
           </div>
         </div>
 
-        <div className="bg-card rounded px-3 pt-4 mt-3 pb-5">
+        <div className="bg-card rounded px-3 pt-4 mt-3 pb-5 scrollBar overflow-y-auto h-[18rem]">
           <h3 className="font-semibold pb-4">
             Configure rotation pattern for temporary shift
           </h3>
@@ -120,11 +135,13 @@ export const AutoShiftRotation = () => {
                     </div>
                   ))}
 
-                  <AppButton
-                    variant="transparent"
-                    label="+ Add Pattern"
-                    handleClick={() => handleAddField()}
-                  />
+                  {fields.length < (ShiftCategoriesData?.data?.length || 0) && (
+                    <AppButton
+                      variant="transparent"
+                      label="+ Add Pattern"
+                      handleClick={() => handleAddField()}
+                    />
+                  )}
                 </div>
               )}
             </Form.List>
