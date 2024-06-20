@@ -44,7 +44,7 @@ export const GeneralEmployeeShift = () => {
   useEffect(() => {
     if (!categoriesData?.data) return;
     const transformedData =
-      categoriesData?.data.map(
+      categoriesData?.data?.map(
         (item): TTransformedShiftCategory => ({
           type: item.name,
           schedule: [
@@ -63,7 +63,7 @@ export const GeneralEmployeeShift = () => {
 
   useEffect(() => {
     let initialFormValues;
-    if (isSuccess && data && data.length !== 0) {
+    if (isSuccess && data && data?.length !== 0) {
       initialFormValues = data?.map((item: any) => ({
         type: capitalizeWord(item.type),
         schedule: item.schedule.map((val: any) => ({
