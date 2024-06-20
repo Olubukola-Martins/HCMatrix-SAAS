@@ -28,16 +28,16 @@ export const WorkShift = () => {
               label: `Schedule Employee Shift`,
               children: <ScheduleEmployeeShift />,
             },
-            // {
-            //   key: "3",
-            //   label: `Shift Settings`,
-            //   children: (
-            //     <div>
-            //       <AutoShiftRotation />
-            //       <ShiftSwapConfig />
-            //     </div>
-            //   ),
-            // },
+            {
+              key: "3",
+              label: `Shift Settings`,
+              children: (
+                <div>
+                  <AutoShiftRotation />
+                  <ShiftSwapConfig />
+                </div>
+              ),
+            },
           ]}
         />
       </div>

@@ -54,7 +54,7 @@ export const WORK_SCHEDULE_SHIFT_CATEGORY_TABLE_COLUMNS = (
         }
         trigger={["click"]}
       >
-        <Button title="Actions" icon={<AiOutlineMore />} type="text" />
+        <Button title="Actions" icon={ <i className="ri-more-2-fill text-lg cursor-pointer"></i>} type="text" />
       </Dropdown>
     ),
   },

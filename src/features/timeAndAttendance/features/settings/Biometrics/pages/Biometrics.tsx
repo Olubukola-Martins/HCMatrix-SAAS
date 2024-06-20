@@ -23,6 +23,9 @@ export const Biometrics = () => {
     queryKey: QUERY_KEY_FOR_BIOMETRIC_DEVICE,
   });
 
+  console.log(data);
+  
+
   const handleEdit = (id: number) => {
     setAddClockIn(true);
     setBiometricId(id);

@@ -16,7 +16,7 @@ export const AutoShiftRotation = () => {
   useEffect(() => {
     form.setFieldsValue({
       enableRotation: setting?.enableRotation,
-      pattern: setting?.pattern.map(({ shiftFromId, shiftToId }) => ({
+      pattern: setting?.pattern?.map(({ shiftFromId, shiftToId }) => ({
         shiftFromId,
         shiftToId,
       })),
@@ -25,6 +25,7 @@ export const AutoShiftRotation = () => {
     });
   }, [setting, form]);
   const { handleSubmit, isLoading: isSaving } = useSaveShiftRotationSetting();
+
   const handleAddField = () => {
     const patterns = form.getFieldValue("pattern") || [];
     const data: TSaveShiftRotationSettingData["pattern"][number] = {
@@ -33,6 +34,14 @@ export const AutoShiftRotation = () => {
     };
     form.setFieldsValue({ pattern: [...patterns, data] });
   };
+  const handleRemoveField = (index: number) => {
+    const patterns = form.getFieldValue("pattern") || [];
+    if (patterns.length > 0) {
+      patterns.splice(index, 1);
+      form.setFieldsValue({ pattern: patterns });
+    }
+  };
+
   return (
     <Skeleton loading={isLoadingSetting} paragraph={{ rows: 8 }}>
       <Form
@@ -85,20 +94,29 @@ export const AutoShiftRotation = () => {
                 <div className="space-y-4">
                   {fields.map((field, index) => (
                     <div key={field.key} className="flex gap-5">
-                      <FormShiftCategoryInput
-                        Form={Form}
-                        control={{
-                          name: [field.name, "shiftFromId"],
-                          label: "",
-                        }}
-                      />
-                      <i className="ri-arrow-right-line text-xl pt-1"></i>
-                      <FormShiftCategoryInput
-                        Form={Form}
-                        control={{ name: [field.name, "shiftToId"], label: "" }}
-                        {...field}
-                        noStyle
-                      />
+                      <div className="flex gap-5">
+                        <FormShiftCategoryInput
+                          Form={Form}
+                          control={{
+                            name: [field.name, "shiftFromId"],
+                            label: "",
+                          }}
+                        />
+                        <i className="ri-arrow-right-line text-xl pt-1"></i>
+                        <FormShiftCategoryInput
+                          Form={Form}
+                          control={{
+                            name: [field.name, "shiftToId"],
+                            label: "",
+                          }}
+                          {...field}
+                          noStyle
+                        />
+                      </div>
+                      <i
+                        className="ri-delete-bin-line text-red-500 text-[22px] cursor-pointer hover:text-slate-500"
+                        onClick={() => handleRemoveField(index)}
+                      ></i>
                     </div>
                   ))}
 
