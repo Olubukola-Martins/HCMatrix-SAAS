@@ -19,7 +19,7 @@ export const LatenessPolicy = () => {
       gracePeriod: policy?.gracePeriod, //N?A from backend
       reportFrequency: policy?.reportFrequency,
       reportToRoleId: policy?.reportToRoleId,
-      sendNotification: policy?.sendNotification,
+      sendNotification: policy?.sendNotification ?? false,
       sendReport: policy?.sendReport ?? false,
     });
   }, [policy, form]);

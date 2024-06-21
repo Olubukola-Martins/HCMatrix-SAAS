@@ -6,10 +6,12 @@ import { QUERY_KEY_FOR_ACTIVE_COMPANY_SUBSCRITION } from "features/billing/hooks
 import ConfirmationModal from "components/modals/ConfirmationModal";
 import { useToogleWorkSheduleShiftCategory } from "../../hooks/shift/categories/useToogleWorkSheduleShiftCategory";
 import { TWorkSheduleShiftCategory } from "../../types";
+import { QUERY_KEY_WORK_SCHEDULE_SHIFT_CATEGORIES } from "../../hooks/shift/categories/useGetWorkSheduleShiftCategories";
 
 interface IProps extends IModalProps {
   data: Pick<TWorkSheduleShiftCategory, "id" | "isEnabled" | "name">;
 }
+
 export const ToggleShiftCategory: React.FC<IProps> = ({
   open,
   handleClose,
@@ -35,22 +37,26 @@ export const ToggleShiftCategory: React.FC<IProps> = ({
             title: "Error Occurred",
             duration: 2,
             description:
-              err?.response.data.message ?? err?.response.data.error.message,
+              err?.response?.data?.message ??
+              err?.response?.data?.error?.message ??
+              "An unexpected error occurred.",
           });
         },
         onSuccess: (res: any) => {
           openNotification({
             state: "success",
-
             title: "Success",
-            description: res.data.message,
-            // duration: 0.4,
+            description:
+              res?.data?.message ?? "Shift category updated successfully",
           });
 
           queryClient.invalidateQueries({
             queryKey: [QUERY_KEY_FOR_ACTIVE_COMPANY_SUBSCRITION],
-            // exact: true,
           });
+          queryClient.invalidateQueries({
+            queryKey: [QUERY_KEY_WORK_SCHEDULE_SHIFT_CATEGORIES],
+          });
+
           handleClose();
         },
       }

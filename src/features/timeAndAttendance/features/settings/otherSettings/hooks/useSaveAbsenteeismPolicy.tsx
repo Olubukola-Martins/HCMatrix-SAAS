@@ -14,6 +14,7 @@ export type TSaveAbsenteeismPolicyData = {
   reportFrequency: TAbsenteeismPolicy["reportFrequency"];
   reportToRoleId: number;
 };
+
 const createData = async (props: {
   data: TSaveAbsenteeismPolicyData;
   auth: ICurrentCompany;
@@ -44,33 +45,31 @@ export const useSaveAbsenteeismPolicy = ({
   const queryClient = useQueryClient();
   const { mutate, isLoading } = useMutation(
     (data: TSaveAbsenteeismPolicyData) =>
-      createData({ data, auth: { token, companyId } })
-  );
-  const handleSubmit = (data: TSaveAbsenteeismPolicyData) =>
-    mutate(data, {
+      createData({ data, auth: { token, companyId } }),
+    {
       onError: (err: any) => {
         openNotification({
           state: "error",
           title: "Error Occurred",
-          description:
-            err?.response.data.message ?? err?.response.data.error.message,
+          description: err?.response?.data?.message ?? err?.response?.data?.error?.message ?? "An error occurred",
         });
       },
-      onSuccess: (res: any) => {
+      onSuccess: (res: TAbsenteeismPolicy) => {
         openNotification({
           state: "success",
-
           title: "Success",
-          description: res.data.message,
-          // duration: 0.4,
+          description: "Absenteeism policy saved successfully",
         });
 
         onClose?.();
         queryClient.invalidateQueries({
           queryKey: [QUERY_KEY_FOR_ABSENTEEISM_POLICY],
-          // exact: true,
         });
       },
-    });
+    }
+  );
+
+  const handleSubmit = (data: TSaveAbsenteeismPolicyData) => mutate(data);
+
   return { isLoading, handleSubmit };
 };
