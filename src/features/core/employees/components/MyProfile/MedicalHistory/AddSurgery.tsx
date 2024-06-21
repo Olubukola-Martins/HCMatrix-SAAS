@@ -19,14 +19,14 @@ export const AddSurgery = ({ open, handleClose }: IModalProps) => {
           label="Condition"
           rules={textInputValidationRules}
         >
-          <Input className="generalInputStyle" placeholder="Enter Condition" />
+          <Input className="w-full" placeholder="Enter Condition" />
         </Form.Item>
         <Form.Item
           name="onsetDate"
           label="Date of Onset"
           rules={generalValidationRules}
         >
-          <DatePicker format="YYYY/MM/DD" className="generalInputStyle" />
+          <DatePicker format="YYYY/MM/DD" className="w-full" />
         </Form.Item>
         <button className="button">Submit</button>
       </Form>

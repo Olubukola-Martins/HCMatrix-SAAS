@@ -96,17 +96,14 @@ export const EditEmploymentHistory: React.FC<IProps> = ({
           label="Organization"
           rules={textInputValidationRules}
         >
-          <Input
-            className="generalInputStyle"
-            placeholder="Enter Organization"
-          />
+          <Input className="w-full" placeholder="Enter Organization" />
         </Form.Item>
         <Form.Item
           name="position"
           label="Position"
           rules={textInputValidationRules}
         >
-          <Input className="generalInputStyle" placeholder="Enter Position" />
+          <Input className="w-full" placeholder="Enter Position" />
         </Form.Item>
         <Form.Item
           name="duration"
@@ -116,7 +113,7 @@ export const EditEmploymentHistory: React.FC<IProps> = ({
           <DatePicker.RangePicker
             placeholder={["Start Date", "End Date"]}
             format={DEFAULT_DATE_FORMAT}
-            className="generalInputStyle"
+            className="w-full"
           />
         </Form.Item>
 

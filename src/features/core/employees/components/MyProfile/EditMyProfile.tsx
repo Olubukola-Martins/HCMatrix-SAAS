@@ -180,7 +180,7 @@ export const EditMyProfile = ({ open, handleClose, employee }: IProps) => {
               label="First Name"
               rules={textInputValidationRules}
             >
-              <Input className="generalInputStyle" placeholder="First Name" />
+              <Input className="w-full" placeholder="First Name" />
             </Form.Item>
 
             <Form.Item
@@ -188,14 +188,14 @@ export const EditMyProfile = ({ open, handleClose, employee }: IProps) => {
               label="Last Name"
               rules={textInputValidationRules}
             >
-              <Input className="generalInputStyle" placeholder="Last Name" />
+              <Input className="w-full" placeholder="Last Name" />
             </Form.Item>
             <Form.Item
               name="empUid"
               label="Employee ID"
               rules={textInputValidationRules}
             >
-              <Input className="generalInputStyle" placeholder="Employee ID" />
+              <Input className="w-full" placeholder="Employee ID" />
             </Form.Item>
           </div>
         </div>
@@ -209,11 +209,7 @@ export const EditMyProfile = ({ open, handleClose, employee }: IProps) => {
             label="Work/Official Email"
             rules={emailValidationRules}
           >
-            <Input
-              className="generalInputStyle"
-              placeholder="Enter Email"
-              disabled
-            />
+            <Input className="w-full" placeholder="Enter Email" disabled />
           </Form.Item>
         </div>
         <div className="flex items-center justify-between mt-2">

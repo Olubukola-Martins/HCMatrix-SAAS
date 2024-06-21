@@ -17,6 +17,14 @@ const AntdConfigProvider: React.FC<{ children: React.ReactNode }> = ({
             fontFamily: "Sen, sans-serif",
             colorPrimary: color,
           },
+          components: {
+            // Dropdown: {
+            //   colorBgBase: "red",
+            //   colorBgContainer: "red",
+            //   colorBgLayout: "red",
+            //   colorBgMask: "red",
+            // },
+          },
         }
       : {
           cssVar: true,

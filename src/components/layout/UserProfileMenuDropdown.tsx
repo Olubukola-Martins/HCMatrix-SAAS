@@ -9,6 +9,7 @@ import { DEFAULT_PROFILE_IMAGE_URL } from "constants/general";
 import { TCompanySubscription } from "features/billing/types/company/companySubscription";
 import { getEmployeeFullName } from "features/core/employees/utils/getEmployeeFullName";
 import { TPermissionLabel } from "features/core/roles-and-permissions/types";
+import useHandleColorTheme from "hooks/theme/useHandleColorTheme";
 import { useApiAuth } from "hooks/useApiAuth";
 import React, { useState } from "react";
 import { useSignOut } from "react-auth-kit";
@@ -28,13 +29,24 @@ const UserProfileMenu: React.FC<{
     localStorage.clear();
     navigate(appRoutes.login);
   };
+  const { mode } = useHandleColorTheme();
   return (
-    <div className="rounded-md py-5 px-5 text-center bg-card shadow-md">
+    <div
+      className="py-5 px-5 text-center text-accent shadow-md"
+      style={{
+        background: mode === "dark" ? "#1a202c" : "#fff",
+      }}
+    >
       <div className="border-b-2 border-slate-600 pb-4">
-        <h4 className="font-extrabold text-lg">
+        <h4
+          className="font-extrabold text-lg"
+          style={{
+            color: mode === "dark" ? "#fff" : "#1a202c",
+          }}
+        >
           {getEmployeeFullName(employee)}
         </h4>
-        <span className="block text-xs pb-5 pt-1 text-gray-500">
+        <span className="block text-xs pb-5 pt-1 text-accent dark:text-[#e2e8f0]">
           {employee?.email}
         </span>
         <Link
@@ -54,7 +66,7 @@ const UserProfileMenu: React.FC<{
       <ThemeSwitcher />
       <div
         onClick={handleLogOut}
-        className="flex items-center gap-2 mt-7 cursor-pointer font-medium text-gray-500 group"
+        className="flex items-center gap-2 mt-7 cursor-pointer font-medium text-accent dark:text-[#e2e8f0] group"
       >
         <i className="ri-logout-box-r-line group-hover:text-caramel"></i>
         <span className="group-hover:text-caramel">Logout</span>
@@ -223,14 +235,14 @@ const UserActions: React.FC<{
         open={action === "transfer-ownership"}
         handleClose={() => clearAction()}
       />
-      <div className="flex flex-col gap-2 pt-2 text-accent font-medium text-sm">
+      <div className="flex flex-col gap-2 pt-2 text-accent dark:text-[#e2e8f0] font-medium text-sm">
         {USER_ACTIONS.map((item, i) => (
           <div
             key={i}
             className={
               item.hidden
                 ? "hidden"
-                : "border-b-2 pb-2 w-full cursor-pointer hover:text-caramel"
+                : "border-b-2 pb-2 w-full cursor-pointer text-accent dark:text-[#afb3b7cf] hover:text-caramel"
             }
           >
             {item.isLink && item.url ? (
