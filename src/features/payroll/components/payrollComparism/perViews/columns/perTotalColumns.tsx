@@ -59,7 +59,7 @@ export const PAYROLL_COMPARISON_PER_TOTAL_TABLE_COLUMNS = (props: {
       title: "",
       dataIndex: "Attribute Name",
       key: "Attribute Name",
-      render: (_, item) => item.attrName,
+      render: (_, item) => <span className="capitalize">{item.attrName}</span>,
     },
     {
       title: <span className="capitalize">{selectedPayroll?.name}</span>,
