@@ -14,7 +14,7 @@ import { RemoteWhoIsOut } from "./whoIsOut/RemoteWhoIsOut";
 import { useGetCompanyOwnerDashboard } from "features/core/company/hooks/dashboard/useGetCompanyOwnerDashboard";
 import ErrorBoundary from "components/errorHandlers/ErrorBoundary";
 import { ErrorWrapper } from "components/errorHandlers/ErrorWrapper";
-import dayjs, {Dayjs} from "dayjs";
+import dayjs, { Dayjs } from "dayjs";
 import { appRoutes } from "config/router/paths";
 import RecentApprovalRequestsCard from "features/core/workflows/components/approval-request/RecentApprovalRequestsCard";
 import { useApiAuth } from "hooks/useApiAuth";
@@ -57,7 +57,7 @@ export const AdminHome: React.FC<{ user?: TAuthUser["user"] }> = ({ user }) => {
               </div>
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-5 mt-6">
                 <div className="md:col-span-4">
-                  <div className="shadow rounded-lg p-3">
+                  <div className="border shadow rounded-lg p-3">
                     <div className="flex items-center justify-between">
                       <h4 className="text-base text-gray-500">
                         Total Employee

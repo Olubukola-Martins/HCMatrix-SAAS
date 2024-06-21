@@ -7,7 +7,7 @@ const PayrollSubNav = () => {
   return (
     <div className="">
       <Menu
-        className="bg-white py-4 px-3 text-accent rounded mb-9 shadow-md  text-sm font-medium"
+        className="bg-mainBg py-4 px-3 text-accent rounded mb-9 shadow-md  text-sm font-medium"
         mode="horizontal"
         items={navRoutes
           .filter((item) => item.hidden === false)
