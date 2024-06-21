@@ -75,7 +75,7 @@ export type TPermissionLabel =
   | "view-time-and-attendance-reports"
   | "view-all-swap-shif-requests"
   | "view-all-time-off-requests"
-  | "	upload-time-and-attendance-timesheet"
+  | "upload-time-and-attendance-timesheet"
   | "view-all-time-and-attendance-timesheet"
   | "view-time-and-attendance-dashboard-summary";
 
