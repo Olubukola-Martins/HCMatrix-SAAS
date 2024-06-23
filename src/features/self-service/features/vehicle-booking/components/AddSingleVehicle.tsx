@@ -22,6 +22,7 @@ import {
 import { openNotification } from "utils/notifications";
 import { AppButton } from "components/button/AppButton";
 import { FormFileInput } from "components/generalFormInputs/FormFileInput";
+import { FormColorInput } from "components/generalFormInputs/FormColorInput";
 
 interface IProps extends IModalProps {}
 
@@ -178,9 +179,12 @@ export const AddSingleVehicle: React.FC<IProps> = ({ handleClose, open }) => {
               <Form.Item name="cost">
                 <InputNumber placeholder="Cost(optional)" className="w-full" />
               </Form.Item>
-              <Form.Item name="color">
-                <Input placeholder="Color(optional)" />
-              </Form.Item>
+              <FormColorInput
+                Form={Form}
+                control={{ label: "Color", name: "color" }}
+                showLabel={false}
+                optional
+              />
               <Form.Item name="purchaseDate">
                 <DatePicker
                   placeholder="Purchase Date (optional)"

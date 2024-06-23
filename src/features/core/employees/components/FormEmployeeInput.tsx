@@ -101,7 +101,7 @@ const SELF_SERVICE_APPLICATION_MODE_OPTIONS: {
   value: TSelfServiceApplicationMode;
 }[] = [
   { label: "Myself", value: "apply-for-myself" },
-  { label: "Unlisenced Employee", value: "apply-for-unlisenced-employee" },
+  { label: "Unlicensed Employee", value: "apply-for-unlicensed-employee" },
 ];
 // The component below is typically used when applying for self service services on behalf of unlicensed users
 export const FormUnlicensedEmployeeSSRequestInput: React.FC<
@@ -119,7 +119,7 @@ export const FormUnlicensedEmployeeSSRequestInput: React.FC<
           placeholder="Who are you applying on behalf of ?"
         />
       </Form.Item>
-      {mode === "apply-for-unlisenced-employee" ? (
+      {mode === "apply-for-unlicensed-employee" ? (
         <FormEmployeeInput
           {...{
             ...props,

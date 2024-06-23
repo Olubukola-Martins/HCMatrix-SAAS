@@ -1,5 +1,5 @@
-import moment from "moment";
 import React, { useState, useEffect } from "react";
+import dayjs from "dayjs";
 
 const LiveClock: React.FC<{ format?: string }> = ({ format }) => {
   const [currentDateTime, setCurrentDateTime] = useState(new Date());
@@ -16,7 +16,7 @@ const LiveClock: React.FC<{ format?: string }> = ({ format }) => {
 
   const formattedDateTime = currentDateTime.toLocaleString(); // Format the date and time
 
-  return <>{moment(formattedDateTime).format(format)}</>;
+  return <>{dayjs(formattedDateTime).format(format)}</>;
 };
 
 export default LiveClock;

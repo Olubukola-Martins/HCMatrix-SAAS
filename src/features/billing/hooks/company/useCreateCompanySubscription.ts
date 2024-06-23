@@ -85,7 +85,7 @@ export const useCreateCompanySubscription = () => {
         billingDetail: {
           address: props.address,
           billingName: props.billingName,
-          phoneNumber: formatPhoneNumber(props.phoneNumber),
+          phoneNumber: formatPhoneNumber(props?.phoneNumber),
         },
       },
       auth: { token, companyId },

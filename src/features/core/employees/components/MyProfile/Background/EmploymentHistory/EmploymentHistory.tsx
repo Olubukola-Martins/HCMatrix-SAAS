@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import { usePagination } from "hooks/usePagination";
 import { AppButton } from "components/button/AppButton";
 import { ColumnsType } from "antd/lib/table";
-import moment from "moment";
+import dayjs from "dayjs";
 import { AddEmploymentHistory } from "./AddEmploymentHistory";
 import { EditEmploymentHistory } from "./EditEmploymentHistory";
 import { DeleteEmploymentHistory } from "./DeleteEmploymentHistory";
@@ -68,16 +68,16 @@ export const EmploymentHistory: React.FC<IProps> = ({
     },
     {
       title: "Started",
-      dataIndex: "cs",
+      dataIndex: "Started",
       render: (_, val) => (
-        <span className="">{moment(val.startDate).format("YYYY-MM-DD")}</span>
+        <span className="">{dayjs(val.startDate).format("YYYY-MM-DD")}</span>
       ),
     },
     {
       title: "Ended",
-      dataIndex: "ce",
+      dataIndex: "Ended",
       render: (_, val) => (
-        <span className="">{moment(val.endDate).format("YYYY-MM-DD")}</span>
+        <span className="">{dayjs(val.endDate).format("YYYY-MM-DD")}</span>
       ),
     },
 

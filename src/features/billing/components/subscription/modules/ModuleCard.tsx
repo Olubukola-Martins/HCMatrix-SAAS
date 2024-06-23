@@ -1,7 +1,6 @@
 import { Checkbox } from "antd";
 import FramerAccordian from "components/accordian/FramerAccordian";
 import React from "react";
-import { formatNumberWithCommas } from "utils/dataHelpers/formatNumberWithCommas";
 
 export interface IModuleCardProps {
   pricePerLicensedEmployee?: {

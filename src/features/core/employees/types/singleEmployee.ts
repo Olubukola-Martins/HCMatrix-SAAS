@@ -284,8 +284,7 @@ interface JobInformation {
   branchId: number;
   payrollType: "direct-salary" | "office" | "wages";
   frequency: "monthly" | "daily";
-
-  monthlyGross?: any;
+  monthlyGross?: number;
   payGradeId: number;
   hourlyRate?: number;
   createdAt: string;

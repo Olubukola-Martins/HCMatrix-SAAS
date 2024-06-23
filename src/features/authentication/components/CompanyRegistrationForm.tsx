@@ -35,7 +35,7 @@ const CompanyRegistrationForm = () => {
   const { mutate, isLoading } = useMutation(createCompany);
 
   const handleSignUp = (data: any) => {
-    const phoneNumber = `${data.phone.code}-${data.phone.number}`;
+    const phoneNumber = `${data?.phone?.code}-${data?.phone.number}`;
     const props: ICreateCompProps = {
       name: data.organization,
       email: data.email,

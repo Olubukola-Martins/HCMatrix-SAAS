@@ -3,7 +3,7 @@ import React, { useEffect } from "react";
 import { IModalProps } from "types";
 import { useApiAuth } from "hooks/useApiAuth";
 import { getAppropriateColorForStatus } from "utils/colorHelpers/getAppropriateColorForStatus";
-import moment from "moment";
+import dayjs from "dayjs";
 import {
   QUERY_KEY_FOR_SINGLE_JOB_REQUISITION,
   useGetSingleJobRequisition,
@@ -35,7 +35,7 @@ export const JobRequestDetails: React.FC<IProps> = ({
   useEffect(() => {
     if (data) {
       form.setFieldsValue({
-        date: data.date ? moment(data.date) : null,
+        date: data.date ? dayjs(data.date) : null,
         designation: data.designation.name,
         employmentType: data.employmentType,
         salaryRange: data.salaryRange,
@@ -43,7 +43,7 @@ export const JobRequestDetails: React.FC<IProps> = ({
         educationRequirements: data.educationRequirements,
         skillsAndQualifications: data.skillsAndQualifications,
         preferredStartDate: data.preferredStartDate
-          ? moment(data.preferredStartDate)
+          ? dayjs(data.preferredStartDate)
           : null,
       });
     }

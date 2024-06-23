@@ -17,4 +17,4 @@ interface Analytics {
 }
 export type TSelfServiceApplicationMode =
   | "apply-for-myself"
-  | "apply-for-unlisenced-employee";
+  | "apply-for-unlicensed-employee";

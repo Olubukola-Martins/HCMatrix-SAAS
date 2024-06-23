@@ -1,6 +1,6 @@
 import { DatePicker, Drawer, Form, Input, Upload } from "antd";
 import TextArea from "antd/lib/input/TextArea";
-import moment from "moment";
+import dayjs from "dayjs";
 import { IDrawerProps } from "types";
 
 export const Resignation = ({ open, handleClose }: IDrawerProps) => {
@@ -31,7 +31,7 @@ export const Resignation = ({ open, handleClose }: IDrawerProps) => {
             format="YYYY/MM/DD"
             className="generalInputStyle"
             disabled
-            defaultPickerValue={moment("2020-06-09T12:40:14+0000")}
+            defaultPickerValue={dayjs("2020-06-09T12:40:14+0000")}
           />
         </Form.Item>
         <Form.Item

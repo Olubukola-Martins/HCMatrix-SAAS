@@ -11,7 +11,8 @@ import { FormPhoneInput } from "components/generalFormInputs/FormPhoneInput";
 import { GENDERS, RELATIONSHIPS } from "constants/general";
 import { TSingleEmployee } from "features/core/employees/types";
 import { parsePhoneNumber } from "utils/dataHelpers/parsePhoneNumber";
-import moment from "moment";
+import dayjs from "dayjs";
+
 
 interface IProps extends IModalProps {
   employeeId: number;
@@ -40,11 +41,11 @@ export const EditDependent: React.FC<IProps> = ({
   const [form] = Form.useForm();
   useEffect(() => {
     form.setFieldsValue({
-      dob: dependent.dob ? moment(dependent.dob) : null,
+      dob: dependent.dob ? dayjs(dependent.dob) : null,
       fullName: dependent.fullName,
       phone: {
-        code: parsePhoneNumber(dependent.phoneNumber).code,
-        number: parsePhoneNumber(dependent.phoneNumber).number,
+        code: parsePhoneNumber(dependent?.phoneNumber)?.code,
+        number: parsePhoneNumber(dependent?.phoneNumber).number,
       },
       relationship: dependent.relationship,
       gender: dependent.gender,

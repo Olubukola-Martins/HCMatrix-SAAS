@@ -39,14 +39,14 @@ const BillingInfo = () => {
         timezone: address?.timezone ?? undefined,
       },
       billingName: data.billingName,
-      phoneNumber: parsePhoneNumber(data.phoneNumber),
+      phoneNumber: parsePhoneNumber(data?.phoneNumber),
     });
   }, [data, form]);
   const handleSubmit = (data: FormProps) => {
     mutate(
       {
         ...data,
-        phoneNumber: formatPhoneNumber(data.phoneNumber),
+        phoneNumber: formatPhoneNumber(data?.phoneNumber),
       },
       {
         onError: (err: any) => {

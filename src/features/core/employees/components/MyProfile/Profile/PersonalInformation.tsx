@@ -15,7 +15,7 @@ import { QUERY_KEY_FOR_SINGLE_EMPLOYEE } from "features/core/employees/hooks/use
 import { TSingleEmployee } from "features/core/employees/types";
 import { FormExchangeRateInput } from "features/payroll/components/exchangeRates/FormExchangeRateInput";
 import { useCurrentFileUploadUrl } from "hooks/useCurrentFileUploadUrl";
-import moment from "moment";
+import dayjs from "dayjs";
 import { useState, useEffect } from "react";
 import { useQueryClient } from "react-query";
 import { TEmploymentEligibity } from "types/employementEligibilities";
@@ -57,7 +57,7 @@ export const PersonalInformation: React.FC<IProps> = ({
     if (!personalInfo) return;
 
     form.setFieldsValue({
-      dob: personalInfo.dob ? moment(personalInfo.dob) : null,
+      dob: personalInfo.dob ? dayjs(personalInfo.dob) : null,
       nationality: personalInfo.nationality,
       gender: personalInfo.gender,
       maritalStatus: personalInfo.maritalStatus,
@@ -67,17 +67,17 @@ export const PersonalInformation: React.FC<IProps> = ({
       countryId: personalInfo.address?.countryId,
       stateId: personalInfo.address?.stateId,
       phone: {
-        code: parsePhoneNumber(personalInfo.phoneNumber).code,
-        number: parsePhoneNumber(personalInfo.phoneNumber).number,
+        code: parsePhoneNumber(personalInfo?.phoneNumber)?.code,
+        number: parsePhoneNumber(personalInfo?.phoneNumber).number,
       },
       lgaId: personalInfo.address?.lgaId,
       streetAddress: personalInfo.address?.streetAddress,
       passportExpirationDate: personalInfo.passportExpirationDate
-        ? moment(personalInfo.passportExpirationDate)
+        ? dayjs(personalInfo.passportExpirationDate)
         : null,
       alternativeEmail: personalInfo?.alternativeEmail,
       alternativePhoneNumber: {
-        code: parsePhoneNumber(personalInfo.alternativePhoneNumber).code,
+        code: parsePhoneNumber(personalInfo.alternativePhoneNumber)?.code,
         number: parsePhoneNumber(personalInfo.alternativePhoneNumber).number,
       },
       nin: personalInfo?.nin,
@@ -108,8 +108,8 @@ export const PersonalInformation: React.FC<IProps> = ({
           dob: data?.dob?.format(DEFAULT_DATE_FORMAT),
           gender: data.gender,
           phoneNumber: formatPhoneNumber({
-            code: data.phone.code,
-            number: data.phone.number,
+            code: data?.phone?.code,
+            number: data?.phone.number,
           }),
           eligibility: data.eligibility,
           exchangeRateId: data.exchangeRateId,
@@ -125,7 +125,7 @@ export const PersonalInformation: React.FC<IProps> = ({
             data?.passportExpirationDate?.format(DEFAULT_DATE_FORMAT),
           alternativeEmail: data.alternativeEmail,
           alternativePhoneNumber: formatPhoneNumber({
-            code: data.alternativePhoneNumber.code,
+            code: data.alternativePhoneNumber?.code,
             number: data.alternativePhoneNumber.number,
           }),
           nin: data.nin,

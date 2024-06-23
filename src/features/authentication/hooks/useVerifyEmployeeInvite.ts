@@ -18,7 +18,7 @@ export const verifyEmployeeInvite = async (props: ICreateInvitedEmpProps) => {
     personalInformation: {
       dob: props.personalInformation.dob,
       gender: props.personalInformation.gender,
-      phoneNumber: props.personalInformation.phoneNumber,
+      phoneNumber: props.personalInformation?.phoneNumber,
       eligibility: props.personalInformation.eligibility,
       maritalStatus: props.personalInformation.maritalStatus,
       nationality: props.personalInformation.nationality,

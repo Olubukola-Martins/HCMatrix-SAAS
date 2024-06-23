@@ -18,8 +18,9 @@ import {
   TASK_ASSIGNEE_TASK_STATUS_OPTIONS,
   TASK_ASSIGNER_TASK_STATUS_OPTIONS,
 } from "../constants";
-import moment, { Moment } from "moment";
+import dayjs from "dayjs";
 import { FormEmployeeInput } from "features/core/employees/components/FormEmployeeInput";
+import { Dayjs } from "dayjs";
 
 interface IProps extends IModalProps {
   task: TTask;
@@ -44,8 +45,8 @@ export const EditTask: React.FC<IProps> = ({
         body: {
           status: data.status,
           priority: data.priority,
-          dueDate: (data.dueDate as Moment).toISOString(),
-          dateAssigned: (data.dateAssigned as Moment).toISOString(),
+          dueDate: (data.dueDate as Dayjs).toISOString(),
+          dateAssigned: (data.dateAssigned as Dayjs).toISOString(),
           assignedToId: data.assignedToId,
           description: data.description,
           name: data?.name,
@@ -90,12 +91,12 @@ export const EditTask: React.FC<IProps> = ({
       description: data.description,
       assignedToId: data.assignedTo.id,
       priority: data.priority, // enum: low, medium, high
-      dateAssigned: moment(data.dateAssigned),
-      dueDate: moment(data.dueDate),
+      dateAssigned: dayjs(data.dateAssigned),
+      dueDate: dayjs(data.dueDate),
       status: data.status,
     });
   }, [form, task]);
-  const [dateAssigned, setDateAssigned] = useState<Moment | null>(null);
+  const [dateAssigned, setDateAssigned] = useState<Dayjs | null>(null);
 
   return (
     <Modal
@@ -168,7 +169,7 @@ export const EditTask: React.FC<IProps> = ({
           rules={[
             {
               required: true,
-              validator: async (_, value: Moment) => {
+              validator: async (_, value: Dayjs) => {
                 if (value.isBefore(dateAssigned)) {
                   throw new Error("Due date cannot be before date assigned!");
                 }

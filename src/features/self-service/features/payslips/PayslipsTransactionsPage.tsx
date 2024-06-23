@@ -26,7 +26,7 @@ const PayslipsTransactionsPage = () => {
         <Skeleton loading={isFetching}>
           <ErrorWrapper backLink={appRoutes.selfServiceHome} isError={isError}>
             <div className="flex flex-col gap-6">
-              <PayslipCards />
+              <PayslipCards jobInfo={employee?.jobInformation} />
               {employee ? (
                 <PayslipTransactionContainer
                   employeePayrollType={employee?.jobInformation?.payrollType}

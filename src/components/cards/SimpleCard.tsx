@@ -2,7 +2,6 @@ import { Skeleton } from "antd";
 import { AppButton, IAppBtnProps } from "components/button/AppButton";
 import React from "react";
 import { Link } from "react-router-dom";
-import { truncateString } from "utils/dataHelpers/truncateString";
 
 export interface ISimpleCard {
   title: string;
@@ -37,7 +36,7 @@ export const SimpleCard: React.FC<ISimpleCard> = ({
           <Skeleton loading={loading} paragraph={{ rows: 3 }}>
             <>
               <p className="text-sm font-medium py-3 capitalize">{title}</p>
-              <h2 className="font-semibold text-lg">{highlight}</h2>
+              <h2 className="font-semibold text-lg capitalize">{highlight}</h2>
             </>
           </Skeleton>
         </div>
@@ -64,7 +63,9 @@ export const SimpleCard: React.FC<ISimpleCard> = ({
               </div>
             </div>
             {highlight && (
-              <h2 className="font-semibold text-lg mb-2">{highlight}</h2>
+              <h2 className="font-semibold text-lg mb-2 capitalize">
+                {highlight}
+              </h2>
             )}
             {action && <AppButton {...action} />}
           </>

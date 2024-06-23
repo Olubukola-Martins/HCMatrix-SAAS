@@ -1,15 +1,15 @@
 import { SelectApprovalStatus } from "features/core/workflows/components/SelectApprovalStatus";
-import React, { useState } from "react";
+import { useState } from "react";
 import { TApprovalStatus } from "types/statuses";
 import EmployeeLeavesTable from "./EmployeeLeavesTable";
-import moment, { Moment } from "moment";
 import { DatePicker } from "antd";
+import dayjs, { Dayjs } from "dayjs";
 
 const EmployeeLeaveRequests = () => {
   const [status, setStatus] = useState<TApprovalStatus>();
-  const [duration, setDuration] = useState<[Moment | null, Moment | null]>([
-    moment(),
-    moment(),
+  const [duration, setDuration] = useState<[Dayjs | null, Dayjs | null]>([
+    dayjs(),
+    dayjs(),
   ]);
 
   return (

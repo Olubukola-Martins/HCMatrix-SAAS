@@ -24,7 +24,7 @@ export const createCompanyFromSocialAuth = async (
 
   const data = {
     name: props.name,
-    phoneNumber: props.phoneNumber,
+    phoneNumber: props?.phoneNumber,
     industryId: props.industryId,
   };
 
