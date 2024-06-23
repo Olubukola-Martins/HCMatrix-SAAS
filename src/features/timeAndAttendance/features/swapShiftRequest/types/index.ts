@@ -30,4 +30,11 @@ export interface PostMySwapShiftRequestProps {
   shiftTo: IShiftProps;
   shiftPartner: TEmployeeProps;
   status: string;
+  employee: TEmployeeProps;
+}
+
+export interface IGeneralRequestFilter {
+  status?: string;
+  departmentId?: number;
+  employeeId?: number;
 }

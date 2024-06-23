@@ -3,8 +3,10 @@ import { PostMySwapShiftRequestProps } from "../types";
 import { TableWithFocusType } from "components/table";
 import { Dropdown, Menu, Select } from "antd";
 import { useGetMyShiftSwapRequest } from "../hooks/useGetMyShiftSwapRequest";
+import { usePagination } from "hooks/usePagination";
 
 export const MyRequest = () => {
+  const { pagination, onChange } = usePagination({ pageSize: 10 });
   const { data, isLoading } = useGetMyShiftSwapRequest();
 
   const columns: ColumnsType<PostMySwapShiftRequestProps> = [
@@ -50,7 +52,7 @@ export const MyRequest = () => {
   ];
   return (
     <div className="mt-5">
-      <Select
+      {/* <Select
         options={[
           { value: "pending", label: "Pending" },
           { value: "approved", label: "Approved" },
@@ -60,11 +62,15 @@ export const MyRequest = () => {
         className="w-[7.8rem]"
         placeholder="Status"
         allowClear
-      />
+      /> */}
       <TableWithFocusType
+        className="mt-3"
         columns={columns}
         dataSource={data?.data}
         loading={isLoading}
+        pagination={{ ...pagination, total: data?.total }}
+        onChange={onChange}
+
       />
     </div>
   );

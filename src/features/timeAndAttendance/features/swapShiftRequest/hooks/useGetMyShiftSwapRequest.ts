@@ -30,7 +30,6 @@ const getData = async (props: {
   };
 
   const res = await axios.get(url, config);
-  console.log(res, "log here");
   const fetchedData = res.data.data;
 
   const result = fetchedData.result;

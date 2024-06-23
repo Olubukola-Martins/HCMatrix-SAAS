@@ -1,11 +1,15 @@
 import React from "react";
-import { allSwapRequestProps } from "../types";
+import { PostMySwapShiftRequestProps } from "../types";
 import { ColumnsType } from "antd/lib/table";
 import { Dropdown, Menu, Select } from "antd";
 import { TableWithFocusType } from "components/table";
+import { useGetGeneralRequest } from "../hooks/useGetGeneralRequest";
+import { usePagination } from "hooks/usePagination";
 
 export const AllRequest = () => {
-  const columns: ColumnsType<allSwapRequestProps> = [
+  const { data, isLoading } = useGetGeneralRequest();
+  const { pagination, onChange } = usePagination({ pageSize: 10 });
+  const columns: ColumnsType<PostMySwapShiftRequestProps> = [
     {
       title: "Date",
       key: "date",
@@ -66,7 +70,14 @@ export const AllRequest = () => {
         placeholder="Status"
         allowClear
       />
-      <TableWithFocusType columns={columns} dataSource={[]} />
+      <TableWithFocusType
+        className="mt-3"
+        columns={columns}
+        dataSource={data?.data}
+        loading={isLoading}
+        pagination={{ ...pagination, total: data?.total }}
+        onChange={onChange}
+      />
     </div>
   );
 };
