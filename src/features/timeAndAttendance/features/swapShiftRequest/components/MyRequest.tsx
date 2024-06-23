@@ -2,8 +2,11 @@ import { ColumnsType } from "antd/lib/table";
 import { PostMySwapShiftRequestProps } from "../types";
 import { TableWithFocusType } from "components/table";
 import { Dropdown, Menu, Select } from "antd";
+import { useGetMyShiftSwapRequest } from "../hooks/useGetMyShiftSwapRequest";
 
 export const MyRequest = () => {
+  const { data, isLoading } = useGetMyShiftSwapRequest();
+
   const columns: ColumnsType<PostMySwapShiftRequestProps> = [
     {
       title: "Date",
@@ -58,7 +61,11 @@ export const MyRequest = () => {
         placeholder="Status"
         allowClear
       />
-      <TableWithFocusType columns={columns} dataSource={[]} />
+      <TableWithFocusType
+        columns={columns}
+        dataSource={data?.data}
+        loading={isLoading}
+      />
     </div>
   );
 };

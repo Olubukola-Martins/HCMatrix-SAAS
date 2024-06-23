@@ -6,7 +6,7 @@ import { IPaginationProps } from "types";
 import { DEFAULT_PAGE_SIZE } from "constants/general";
 import { PostMySwapShiftRequestProps } from "../types";
 
-export const QUERY_KEY_FOR_BIOMETRIC_DEVICE = "Biometric_Device";
+export const QUERY_KEY_FOR_MY_SHIFT_REQUEST = "All_Shifts_Request";
 
 const getData = async (props: {
   token: string;
@@ -30,7 +30,7 @@ const getData = async (props: {
   };
 
   const res = await axios.get(url, config);
-
+  console.log(res, "log here");
   const fetchedData = res.data.data;
 
   const result = fetchedData.result;
@@ -49,7 +49,7 @@ export const useGetMyShiftSwapRequest = (props?: {
 }) => {
   const { companyId, token } = useApiAuth();
   const queryData = useQuery(
-    [QUERY_KEY_FOR_BIOMETRIC_DEVICE, props?.pagination],
+    [QUERY_KEY_FOR_MY_SHIFT_REQUEST, props?.pagination],
     () => getData({ token, companyId, pagination: props?.pagination }),
     {
       onError: (err: any) => {},

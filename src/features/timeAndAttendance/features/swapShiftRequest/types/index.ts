@@ -29,4 +29,5 @@ export interface PostMySwapShiftRequestProps {
   shiftFrom: IShiftProps;
   shiftTo: IShiftProps;
   shiftPartner: TEmployeeProps;
+  status: string;
 }

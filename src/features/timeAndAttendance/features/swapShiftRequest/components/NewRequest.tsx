@@ -10,6 +10,7 @@ import { AppButton } from "components/button/AppButton";
 import { useCreateShiftRequest } from "../hooks/useCreateShiftRequest";
 import { openNotification } from "utils/notifications";
 import { useQueryClient } from "react-query";
+import { QUERY_KEY_FOR_MY_SHIFT_REQUEST } from "../hooks/useGetMyShiftSwapRequest";
 
 export const NewRequest = ({ handleClose, open }: IDrawerProps) => {
   const globalCtx = useContext(GlobalContext);
@@ -40,7 +41,7 @@ export const NewRequest = ({ handleClose, open }: IDrawerProps) => {
           form.resetFields();
           dispatch({ type: EGlobalOps.setShowInitialSetup, payload: true });
           handleClose();
-          queryClient.invalidateQueries([]);
+          queryClient.invalidateQueries([QUERY_KEY_FOR_MY_SHIFT_REQUEST]);
         },
       }
     );
