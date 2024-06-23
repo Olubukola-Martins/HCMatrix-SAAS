@@ -3,10 +3,10 @@ import { useMutation } from "react-query";
 import { MICROSERVICE_ENDPOINTS } from "config/enviroment";
 import { ICurrentCompany } from "types";
 import { useApiAuth } from "hooks/useApiAuth";
-import { SwapShiftRequestProps } from "../types";
+import { PostMySwapShiftRequestProps } from "../types";
 
 export const createData = async (props: {
-  data: SwapShiftRequestProps;
+  data: PostMySwapShiftRequestProps;
   auth: ICurrentCompany;
 }) => {
   const url = `${MICROSERVICE_ENDPOINTS.TIME_AND_ATTENDANCE}/shift-swap`;
@@ -29,7 +29,7 @@ export const createData = async (props: {
 
 export const useCreateShiftRequest = () => {
   const { token, companyId } = useApiAuth();
-  return useMutation((props: SwapShiftRequestProps) =>
+  return useMutation((props: PostMySwapShiftRequestProps) =>
     createData({ data: props, auth: { companyId, token } })
   );
 };

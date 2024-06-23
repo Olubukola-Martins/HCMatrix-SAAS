@@ -1,10 +1,10 @@
 import { ColumnsType } from "antd/lib/table";
-import { allSwapRequestProps } from "../types";
+import { PostMySwapShiftRequestProps } from "../types";
 import { TableWithFocusType } from "components/table";
 import { Dropdown, Menu, Select } from "antd";
 
 export const MyRequest = () => {
-  const columns: ColumnsType<allSwapRequestProps> = [
+  const columns: ColumnsType<PostMySwapShiftRequestProps> = [
     {
       title: "Date",
       key: "date",
@@ -34,7 +34,6 @@ export const MyRequest = () => {
             trigger={["click"]}
             overlay={
               <Menu>
-                <Menu.Item key="1">Edit</Menu.Item>
                 <Menu.Item key="2">Delete</Menu.Item>
                 <Menu.Item key="5">Cancel</Menu.Item>
               </Menu>

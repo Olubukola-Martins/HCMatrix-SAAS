@@ -10,9 +10,23 @@ export interface allSwapRequestProps {
   status: string;
 }
 
-export interface SwapShiftRequestProps {
+export interface PostMySwapShiftRequestProps {
   shiftFromId: number;
   shiftToId: number;
   shiftPartnerId: number;
   comment: string;
+}
+
+interface IShiftProps {
+  id: number;
+  name: string;
+  isEnabled: boolean;
+}
+
+export interface PostMySwapShiftRequestProps {
+  createdAt: string;
+  reason: string;
+  shiftFrom: IShiftProps;
+  shiftTo: IShiftProps;
+  shiftPartner: TEmployeeProps;
 }
