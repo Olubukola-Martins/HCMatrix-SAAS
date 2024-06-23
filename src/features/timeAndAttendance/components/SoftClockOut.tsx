@@ -96,7 +96,7 @@ export const SoftClockOut = ({ componentType }: softClockInAndOutProps) => {
         footer={null}
         style={{ top: 10 }}
       >
-        <Form layout="vertical" requiredMark="optional" onFinish={onSubmit}>
+        <Form layout="vertical" requiredMark={false} onFinish={onSubmit}>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-3 mb-4">
             <div className="w-full bg-gray-100 py-1 px-2 rounded border">
               <LiveClock format="hh:mm:ss A" />

@@ -195,7 +195,7 @@ export const JobDetails: React.FC<ChildProps> = ({
           control={{ name: "teamLead", label: "Team Lead" }}
         />
 
-        <Form.Item label="Compensation" requiredMark="optional">
+        <Form.Item label="Compensation">
           <Select
             onChange={handleSelectChange}
             placeholder="Select compensation"
@@ -224,7 +224,7 @@ export const JobDetails: React.FC<ChildProps> = ({
       </div>
 
       <div>
-        <Form.Item label="Job Description" requiredMark="optional">
+        <Form.Item label="Job Description">
           <Select
             onChange={handleJobDescType}
             placeholder="Choose job description"
@@ -246,7 +246,7 @@ export const JobDetails: React.FC<ChildProps> = ({
           style={{
             display: selectJobDesType === "Use job template" ? "block" : "none",
           }}
-          // requiredMark="optional"
+      
         >
           <Select
             placeholder="Search job template"

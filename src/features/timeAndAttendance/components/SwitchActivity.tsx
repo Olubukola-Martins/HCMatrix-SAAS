@@ -58,7 +58,7 @@ export const SwitchActivity = ({ handleClose, open }: IModalProps) => {
     >
       <Form
         layout="vertical"
-        requiredMark="optional"
+        requiredMark={false}
         form={form}
         onFinish={onSubmit}
       >
