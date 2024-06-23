@@ -70,7 +70,14 @@ export type TPermissionLabel =
   | "manage-hospital-categories"
   | "manage-hospitals"
   | "manage-employee-health-access"
-  | "manage-unlicensed-employees";
+  | "manage-unlicensed-employees"
+  | "manage-time-and-attendance-settings" //time & attendance permissions begin here
+  | "view-time-and-attendance-reports"
+  | "view-all-swap-shif-requests"
+  | "view-all-time-off-requests"
+  | "upload-time-and-attendance-timesheet"
+  | "view-all-time-and-attendance-timesheet"
+  | "view-time-and-attendance-dashboard-summary";
 
 export type TPermissionInDelegation = {
   id: number;
