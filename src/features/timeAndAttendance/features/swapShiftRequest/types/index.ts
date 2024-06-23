@@ -9,3 +9,10 @@ export interface allSwapRequestProps {
   swapPartner: TEmployeeProps;
   status: string;
 }
+
+export interface SwapShiftRequestProps {
+  shiftFromId: number;
+  shiftToId: number;
+  shiftPartnerId: number;
+  comment: string;
+}
