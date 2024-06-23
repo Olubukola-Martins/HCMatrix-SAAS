@@ -10,6 +10,7 @@ import { QUERY_KEY_WORK_SCHEDULE_SHIFT_CATEGORIES } from "../../hooks/shift/cate
 interface IProps extends IModalProps {
   category?: TWorkSheduleShiftCategory;
 }
+
 export const DeleteShiftCategory: React.FC<IProps> = ({
   open,
   handleClose,
@@ -18,12 +19,11 @@ export const DeleteShiftCategory: React.FC<IProps> = ({
   const queryClient = useQueryClient();
 
   const { mutate, isLoading } = useDeleteWorkSheduleShiftCategory();
+
   const handleDelete = () => {
     if (!category) return;
     mutate(
-      {
-        id: category.id,
-      },
+      { id: category.id },
       {
         onError: (err: any) => {
           openNotification({
@@ -31,21 +31,18 @@ export const DeleteShiftCategory: React.FC<IProps> = ({
             title: "Error Occurred",
             duration: 2,
             description:
-              err?.response.data.message ?? err?.response.data.error.message,
+              err?.response?.data?.message ?? err?.response?.data?.error?.message ?? "An unexpected error occurred.",
           });
         },
         onSuccess: (res: any) => {
           openNotification({
             state: "success",
-
             title: "Success",
-            description: res.data.message,
-            // duration: 0.4,
+            description: res?.data?.message ?? "Shift category deleted successfully",
           });
 
           queryClient.invalidateQueries({
             queryKey: [QUERY_KEY_WORK_SCHEDULE_SHIFT_CATEGORIES],
-            // exact: true,
           });
 
           handleClose();
@@ -56,7 +53,7 @@ export const DeleteShiftCategory: React.FC<IProps> = ({
 
   return (
     <DeleteEntityModal
-      title="Delete Shift Tyep"
+      title="Delete Shift Type"
       entity={{
         type: "shift type",
         name: category?.name ?? "",

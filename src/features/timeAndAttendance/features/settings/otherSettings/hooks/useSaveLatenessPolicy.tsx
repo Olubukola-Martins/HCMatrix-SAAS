@@ -15,10 +15,16 @@ export type TSaveLatenessPolicyData = {
 
   gracePeriod: TLatenessPolicy["gracePeriod"]; // Any of: '0 minutes', '10 minutes', '20 minutes', '30 minutes'
 };
+
+type ApiResponse<T> = {
+  message: string;
+  data: T;
+};
+
 const createData = async (props: {
   data: TSaveLatenessPolicyData;
   auth: ICurrentCompany;
-}): Promise<TLatenessPolicy> => {
+}): Promise<ApiResponse<TLatenessPolicy>> => {
   const { data, auth } = props;
 
   let url = `${MICROSERVICE_ENDPOINTS.TIME_AND_ATTENDANCE}/settings/lateness-policy`;
@@ -32,7 +38,7 @@ const createData = async (props: {
   };
 
   const res = await axios.put(url, data, config);
-  const fetchedData: TLatenessPolicy = res.data.data;
+  const fetchedData: ApiResponse<TLatenessPolicy> = res.data;
   return fetchedData;
 };
 
@@ -56,12 +62,11 @@ export const useSaveLatenessPolicy = ({
             err?.response.data.message ?? err?.response.data.error.message,
         });
       },
-      onSuccess: (res: any) => {
+      onSuccess: (res) => {
         openNotification({
           state: "success",
-
           title: "Success",
-          description: res.data.message,
+          description: res?.message,
           // duration: 0.4,
         });
 

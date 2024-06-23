@@ -12,6 +12,7 @@ import {
   useGetBiometricDevice,
 } from "../hooks/useGetBiometricDevice";
 import { usePagination } from "hooks/usePagination";
+import { useHandleBiometricStatus } from "../hooks/useHandleBiometricStatus";
 
 export const Biometrics = () => {
   const [addClockIn, setAddClockIn] = useState(false);
@@ -22,9 +23,9 @@ export const Biometrics = () => {
     EndPointUrl: "settings/biometrics/devices",
     queryKey: QUERY_KEY_FOR_BIOMETRIC_DEVICE,
   });
-
-  console.log(data);
-  
+  const { requestType } = useHandleBiometricStatus({
+    queryKey: QUERY_KEY_FOR_BIOMETRIC_DEVICE,
+  });
 
   const handleEdit = (id: number) => {
     setAddClockIn(true);
@@ -43,6 +44,9 @@ export const Biometrics = () => {
     {
       title: "Status",
       dataIndex: "status",
+      render: (_, val) => (
+        <span> {val.isEnabled ? "Enabled" : "Disabled"}</span>
+      ),
     },
     {
       title: "Action",
@@ -52,15 +56,25 @@ export const Biometrics = () => {
             trigger={["click"]}
             overlay={
               <Menu>
-                {/* <Menu.Item key="1" onClick={() => handleEdit(val.id)}>
+                <Menu.Item key="3" onClick={() => handleEdit(val.id)}>
                   Edit
-                </Menu.Item> */}
+                </Menu.Item>
                 <Menu.Item key="2">
                   <Popconfirm
                     title={`Delete ${val.name}`}
                     onConfirm={() => removeData(val.id)}
                   >
                     Delete
+                  </Popconfirm>
+                </Menu.Item>
+                <Menu.Item key="1">
+                  <Popconfirm
+                    title={`${val.isEnabled ? "Disable" : "Enable"}  ${
+                      val.name
+                    }`}
+                    onConfirm={() => requestType(val.id)}
+                  >
+                    {val.isEnabled ? "Disable" : "Enable"}
                   </Popconfirm>
                 </Menu.Item>
               </Menu>
