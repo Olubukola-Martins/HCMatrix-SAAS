@@ -1,8 +1,8 @@
 import { Form, Input, Modal, Typography, DatePicker } from "antd";
 import { AppButton } from "components/button/AppButton";
 import { appRoutes } from "config/router/paths";
+import dayjs from "dayjs";
 import { TPayrollComaparisonType } from "features/payroll/hooks/payroll/comparison/useComparePayroll";
-import moment from "moment";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { IModalProps } from "types";
@@ -43,14 +43,13 @@ export const ComparePayroll: React.FC<TProps> = ({
     form.setFieldsValue({
       period: {
         selected: {
-          month: moment(payrollDate),
-          year: moment(payrollDate),
+          month: dayjs(payrollDate),
+          year: dayjs(payrollDate),
         },
       },
     });
   }, [payrollDate, form]);
   const handleSubmit = (data: any) => {
-    console.log(data, "compare data ...");
     const period = data.period;
     switch (type) {
       case "basic":
