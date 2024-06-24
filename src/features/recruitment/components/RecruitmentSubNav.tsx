@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 
 const RecruitmentSubNav = () => {
   const navigate = useNavigate();
+  // TODO: Recruitment:: Update the route primary features and make use of a hook for generating links because of permissions implementation
   return (
     <div className="">
       <Menu

@@ -1,8 +1,7 @@
 import JoditEditor from "jodit-react";
 import Form from "antd/es/form";
-import { useEffect, useRef, useState } from "react";
-//import { textInputValidationRules } from "utils/formHelpers/validation";
 
+// TODO: Recruitment:: Test viablity of component, and make it a global component to account for a scope change
 const config = {
   height: 400,
   iframe: true,
