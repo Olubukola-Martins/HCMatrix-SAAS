@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { Form, Steps } from "antd";
-import "antd/dist/antd.min.css";
 import { JobDetails } from "features/recruitment/features/jobOpenings/components/JobDetails";
 import { ApplicationQuestions } from "features/recruitment/features/jobOpenings/components/ApplicationQuestions";
 import { AdditionalQuestions } from "features/recruitment/features/jobOpenings/components/AdditionalQuestions";
