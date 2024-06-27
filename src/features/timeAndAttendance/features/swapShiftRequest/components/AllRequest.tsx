@@ -119,11 +119,13 @@ export const AllRequest = () => {
         data={request}
       />
       <div className="mt-5">
-        <SelectApprovalStatus
-          value={status}
-          onSelect={setStatus}
-          onClear={() => setStatus(undefined)}
-        />
+        <div className="w-[7rem]">
+          <SelectApprovalStatus
+            value={status}
+            onSelect={setStatus}
+            onClear={() => setStatus(undefined)}
+          />
+        </div>
         <TableWithFocusType
           className="mt-3"
           columns={columns}
