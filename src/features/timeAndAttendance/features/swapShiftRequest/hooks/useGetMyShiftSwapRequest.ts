@@ -4,7 +4,7 @@ import { MICROSERVICE_ENDPOINTS } from "config/enviroment";
 import { useApiAuth } from "hooks/useApiAuth";
 import { IPaginationProps } from "types";
 import { DEFAULT_PAGE_SIZE } from "constants/general";
-import { PostMySwapShiftRequestProps } from "../types";
+import { TShiftSwapRequest } from "../types";
 
 export const QUERY_KEY_FOR_MY_SHIFT_REQUEST = "All_Shifts_Request";
 
@@ -12,7 +12,7 @@ const getData = async (props: {
   token: string;
   companyId: number;
   pagination?: IPaginationProps;
-}): Promise<{ data: PostMySwapShiftRequestProps[]; total: number }> => {
+}): Promise<{ data: TShiftSwapRequest[]; total: number }> => {
   const limit = props.pagination?.limit ?? DEFAULT_PAGE_SIZE;
   const offset = props.pagination?.offset ?? 0;
 
@@ -34,7 +34,7 @@ const getData = async (props: {
 
   const result = fetchedData.result;
 
-  const data: PostMySwapShiftRequestProps[] = result;
+  const data: TShiftSwapRequest[] = result;
 
   const ans = {
     data,

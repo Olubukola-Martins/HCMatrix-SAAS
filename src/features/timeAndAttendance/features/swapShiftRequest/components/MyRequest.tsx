@@ -1,48 +1,106 @@
+import { TShiftSwapRequest } from "../types";
 import { ColumnsType } from "antd/lib/table";
-import { PostMySwapShiftRequestProps } from "../types";
+import { Dropdown } from "antd";
 import { TableWithFocusType } from "components/table";
-import { Dropdown, Menu, Select } from "antd";
-import { useGetMyShiftSwapRequest } from "../hooks/useGetMyShiftSwapRequest";
 import { usePagination } from "hooks/usePagination";
+import dayjs from "dayjs";
+import { DEFAULT_DATE_FORMAT } from "constants/dateFormats";
+import { getEmployeeFullName } from "features/core/employees/utils/getEmployeeFullName";
+import { getAppropriateColorForStatus } from "utils/colorHelpers/getAppropriateColorForStatus";
+import { useState } from "react";
+import { ViewShiftSwapRequest } from "./ViewShiftSwapRequest";
+import { useGetMyShiftSwapRequest } from "../hooks/useGetMyShiftSwapRequest";
+import { CancelShiftSwapRequest } from "./CancelShiftSwapRequest";
 
+type TAction = "view" | "cancel";
 export const MyRequest = () => {
   const { pagination, onChange } = usePagination({ pageSize: 10 });
-  const { data, isLoading } = useGetMyShiftSwapRequest();
+  const { data, isLoading } = useGetMyShiftSwapRequest({
+    pagination,
+  });
 
-  const columns: ColumnsType<PostMySwapShiftRequestProps> = [
+  const [request, setRequest] = useState<TShiftSwapRequest>();
+  const [action, setAction] = useState<TAction>();
+  const handleAction = (action: TAction, request?: TShiftSwapRequest) => {
+    setAction(action);
+    setRequest(request);
+  };
+  const onClose = () => {
+    setAction(undefined);
+    setRequest(undefined);
+  };
+  const columns: ColumnsType<TShiftSwapRequest> = [
     {
       title: "Date",
-      key: "date",
+      key: "Date",
+      render: (_, item) => (
+        <span>{dayjs(item.createdAt).format(DEFAULT_DATE_FORMAT)}</span>
+      ),
+    },
+    {
+      title: "Name",
+      key: "employee",
+      render: (_, item) => (
+        <span className="capitalize">{getEmployeeFullName(item.employee)}</span>
+      ),
+    },
+    {
+      title: "Department",
+      key: "department",
+      render: (_, item) => <span className="capitalize">{`N/A`}</span>,
     },
     {
       title: "Default Shift",
       key: "defaultShift",
+      render: (_, item) => (
+        <span className="capitalize">{item.shiftFrom.name}</span>
+      ),
     },
     {
       title: "New Shift",
       key: "newShift",
+      render: (_, item) => (
+        <span className="capitalize">{item.shiftTo.name}</span>
+      ),
     },
     {
       title: "Swap partner",
       key: "swapPartner",
+      render: (_, item) => (
+        <span className="capitalize">
+          {getEmployeeFullName(item.shiftPartner)}
+        </span>
+      ),
     },
     {
       title: "Status",
       key: "status",
+      render: (_, item) => (
+        <span
+          style={{ color: getAppropriateColorForStatus(item.status) }}
+          className="capitalize"
+        >
+          {item.status}{" "}
+        </span>
+      ),
     },
     {
       title: "Action",
       key: "action",
-      render: (_, val) => (
+      render: (_, item) => (
         <div>
           <Dropdown
             trigger={["click"]}
-            overlay={
-              <Menu>
-                <Menu.Item key="2">Delete</Menu.Item>
-                <Menu.Item key="5">Cancel</Menu.Item>
-              </Menu>
-            }
+            menu={{
+              items: [
+                {
+                  label: "View",
+                  key: "view",
+                  type: "item",
+                  onClick: () => handleAction("view", item),
+                },
+              ],
+            }}
           >
             <i className="ri-more-2-fill text-lg cursor-pointer"></i>
           </Dropdown>
@@ -51,27 +109,27 @@ export const MyRequest = () => {
     },
   ];
   return (
-    <div className="mt-5">
-      {/* <Select
-        options={[
-          { value: "pending", label: "Pending" },
-          { value: "approved", label: "Approved" },
-          { value: "rejected", label: "Rejected" },
-          { value: "canceled", label: "Canceled" },
-        ]}
-        className="w-[7.8rem]"
-        placeholder="Status"
-        allowClear
-      /> */}
-      <TableWithFocusType
-        className="mt-3"
-        columns={columns}
-        dataSource={data?.data}
-        loading={isLoading}
-        pagination={{ ...pagination, total: data?.total }}
-        onChange={onChange}
-
+    <>
+      <ViewShiftSwapRequest
+        handleClose={onClose}
+        open={action === "view"}
+        data={request}
       />
-    </div>
+      <CancelShiftSwapRequest
+        handleClose={onClose}
+        open={action === "cancel"}
+        data={request}
+      />
+      <div>
+        <TableWithFocusType
+          className="mt-3"
+          columns={columns}
+          dataSource={data?.data}
+          loading={isLoading}
+          pagination={{ ...pagination, total: data?.total }}
+          onChange={onChange}
+        />
+      </div>
+    </>
   );
 };

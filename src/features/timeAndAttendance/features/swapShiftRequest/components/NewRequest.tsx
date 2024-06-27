@@ -71,8 +71,8 @@ export const NewRequest = ({ handleClose, open }: IDrawerProps) => {
           control={{ label: "Select Swap Partner", name: "shiftPartnerId" }}
         />
         <Form.Item
-          label="Comment"
-          name="comment"
+          label="Reason"
+          name="reason"
           rules={textInputValidationRules}
         >
           <TextArea className="w-full " rows={3} />

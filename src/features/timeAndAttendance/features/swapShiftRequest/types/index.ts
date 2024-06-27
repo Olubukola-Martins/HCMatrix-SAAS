@@ -1,4 +1,5 @@
 import { TEmployeeProps } from "features/timeAndAttendance/types";
+import { TApprovalStatus } from "types/statuses";
 
 export interface allSwapRequestProps {
   date: string;
@@ -14,7 +15,7 @@ export interface PostMySwapShiftRequestProps {
   shiftFromId: number;
   shiftToId: number;
   shiftPartnerId: number;
-  comment: string;
+  reason: string;
 }
 
 interface IShiftProps {
@@ -37,4 +38,71 @@ export interface IGeneralRequestFilter {
   status?: string;
   departmentId?: number;
   employeeId?: number;
+}
+
+// the actual shift request entity
+export interface TShiftSwapRequest {
+  id: number;
+  employeeId: number;
+  departmentId: number;
+  shiftFromId: number;
+  shiftToId: number;
+  shiftPartnerId: number;
+  reason: string;
+  status: TApprovalStatus;
+  companyId: number;
+  createdAt: string;
+  updatedAt: string;
+  shiftFrom: ShiftFrom;
+  shiftTo: ShiftFrom;
+  shiftPartner: ShiftPartner;
+  employee: Employee;
+}
+
+interface Employee {
+  id: number;
+  firstName: string;
+  lastName: string;
+  email: string;
+  isOwner: boolean;
+  licenseType: string;
+  empUid: string;
+  roleId: number;
+  status: string;
+  companyId: number;
+  designationId: number;
+  userId: number;
+  avatarUrl: string;
+  personalInformation: PersonalInformation;
+}
+
+interface ShiftPartner {
+  id: number;
+  firstName: string;
+  lastName: string;
+  email: string;
+  isOwner: boolean;
+  licenseType: string;
+  empUid: string;
+  roleId: number;
+  status: string;
+  companyId: number;
+  designationId: number;
+  userId: number;
+  personalInformation: PersonalInformation;
+}
+
+interface PersonalInformation {
+  gender: string;
+  phoneNumber: string;
+  eligibility: string;
+  exchangeRateId: number;
+  addressId: number;
+  nin: string;
+}
+
+interface ShiftFrom {
+  id: number;
+  name: string;
+  isEnabled: boolean;
 }

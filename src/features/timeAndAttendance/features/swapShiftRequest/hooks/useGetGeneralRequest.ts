@@ -2,7 +2,7 @@ import axios from "axios";
 import { useQuery } from "react-query";
 import { MICROSERVICE_ENDPOINTS } from "config/enviroment";
 import { useApiAuth } from "hooks/useApiAuth";
-import { IGeneralRequestFilter, PostMySwapShiftRequestProps } from "../types";
+import { IGeneralRequestFilter, TShiftSwapRequest } from "../types";
 import { ICurrentCompany, IPaginationProps } from "types";
 import { DEFAULT_PAGE_SIZE } from "constants/general";
 
@@ -13,7 +13,7 @@ export const getEmployeePerShift = async (props: {
   auth: ICurrentCompany;
   pagination?: IPaginationProps;
   filter?: IGeneralRequestFilter;
-}): Promise<{ data: PostMySwapShiftRequestProps[]; total: number }> => {
+}): Promise<{ data: TShiftSwapRequest[]; total: number }> => {
   const limit = props.pagination?.limit ?? DEFAULT_PAGE_SIZE;
   const offset = props.pagination?.offset ?? 0;
 
@@ -39,7 +39,7 @@ export const getEmployeePerShift = async (props: {
 
   const result = fetchedData;
 
-  const data: PostMySwapShiftRequestProps[] = result;
+  const data: TShiftSwapRequest[] = result;
 
   const ans = {
     data,
