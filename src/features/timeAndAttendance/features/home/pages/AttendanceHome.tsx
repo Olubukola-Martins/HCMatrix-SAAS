@@ -15,6 +15,7 @@ import AttendanceStatusHomeCard from "../components/home/AttendanceStatusHomeCar
 import AttendanceWelcomeHeader from "../components/home/AttendanceWelcomeHeader";
 import { TFilterAttendanceDBFormProps } from "../components/home/FilterDBBtn";
 import { useGetDashboardGraph } from "../hooks/useGetDashboardGraph";
+import AttendanceLocationCard from "../components/home/AttendanceLocationCard";
 
 export const AttendanceHome = () => {
   const [greeting, setGreeting] = useState("");
@@ -31,7 +32,7 @@ export const AttendanceHome = () => {
     });
   const hour = today.getHours();
 
-  const { user } = useMostRecentApiAuth();
+  const { user, isLoading: isRetrievingUserData } = useMostRecentApiAuth();
   const { data: welcomeNoteData } = useWelcomeNote();
   const [filterProps, setFilterProps] = useState<TFilterAttendanceDBFormProps>(
     {}
@@ -74,13 +75,19 @@ export const AttendanceHome = () => {
         <AttendanceStatusHomeCard className="bg-mainBg pb-3 border rounded-lg text-sm shadow  col-span-1" />
         <AttendanceOverviewHomeCard className="bg-mainBg pb-3 border rounded-lg text-sm shadow  col-span-2" />
         <TimesheetCard className="bg-mainBg pb-3 border rounded-lg text-sm shadow col-span-1 flex flex-col" />
+
         <AttendancePunctualityHomeCard
           className="col-span-3 bg-mainBg border rounded-lg text-sm shadow p-3"
           data={timeDBData ? Object.values(timeDBData) : []}
           labels={timeDBData ? Object.keys(timeDBData) : []}
           isLoading={isLoadingTimeDBData}
         />
+
         <TimeOffRequestCard className="bg-mainBg pb-3 border rounded-lg text-sm shadow col-span-1 flex flex-col" />
+        <AttendanceLocationCard
+          className="col-span-3 bg-mainBg border rounded-lg text-sm shadow p-3"
+          isLoading={isRetrievingUserData}
+        />
         <WhoIsOut
           data={ownerDBData}
           isLoading={isLoadingOwnerDBData}
