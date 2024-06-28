@@ -9,9 +9,37 @@ import { useState } from "react";
 import { AllRequest } from "../components/AllRequest";
 import { MySwapApprovals } from "../components/MySwapApprovals";
 import { MyRequest } from "../components/MyRequest";
+import { canUserAccessComponent, useGetUserPermissions } from "components/permission-restriction/PermissionRestrictor";
 
 const SwapShiftRequest = () => {
   const [creteRequest, setCreteRequest] = useState(false);
+  const { userPermissions } = useGetUserPermissions();
+
+  const tabItems = [
+    {
+      key: "1",
+      label: `My Requests`,
+      children: <MyRequest/>,
+      hidden: false,
+    },
+    {
+      key: "2",
+      label: `My Swap Approvals`,
+      children: <MySwapApprovals/>,
+      hidden: false,
+    },
+    {
+      key: "3",
+      label: `All Requests`,
+      children: <AllRequest/>,
+      hidden: !canUserAccessComponent({
+        userPermissions,
+        requiredPermissions: ["view-all-swap-shif-requests"],
+      }),
+    },
+  ]
+
+
   return (
     <>
       <AttendanceSubToper active="swap-shift-request" />
@@ -32,23 +60,7 @@ const SwapShiftRequest = () => {
 
         <Tabs
           defaultActiveKey="1"
-          items={[
-            {
-              key: "1",
-              label: `My Requests`,
-              children: <MyRequest/>,
-            },
-            {
-              key: "2",
-              label: `My Swap Approvals`,
-              children: <MySwapApprovals/>,
-            },
-            {
-              key: "3",
-              label: `All Requests`,
-              children: <AllRequest/>,
-            },
-          ]}
+          items={tabItems.filter((item) => item.hidden !== true)}
           tabBarExtraContent={
             <div className="flex items-center gap-4">
               <TbFileExport className="text-2xl" />
