@@ -1,5 +1,5 @@
 import { Drawer, Form } from "antd";
-import { FormEmployeeInput } from "features/core/employees/components/FormEmployeeInput";
+import { FormEmployeeInput, FormUnlicensedEmployeeSSRequestInput } from "features/core/employees/components/FormEmployeeInput";
 import { useContext } from "react";
 import { EGlobalOps, GlobalContext } from "stateManagers/GlobalContextProvider";
 import { IDrawerProps } from "types";
@@ -56,6 +56,14 @@ export const NewRequest = ({ handleClose, open }: IDrawerProps) => {
         className="mt-4"
         requiredMark={false}
       >
+          <FormUnlicensedEmployeeSSRequestInput
+          Form={Form}
+          control={{
+            name: "employeeId",
+            label: "Select Unlicensed Employee",
+          }}
+        />
+
         <FormShiftCategoryInput
           Form={Form}
           control={{ label: "Select Current Shift", name: "shiftFromId" }}

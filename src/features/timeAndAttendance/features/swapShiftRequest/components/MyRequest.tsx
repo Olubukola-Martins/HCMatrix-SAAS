@@ -99,6 +99,12 @@ export const MyRequest = () => {
                   type: "item",
                   onClick: () => handleAction("view", item),
                 },
+                {
+                  label: "Cancel",
+                  key: "cancel",
+                  type: "item",
+                  onClick: () => handleAction("cancel", item),
+                },
               ],
             }}
           >

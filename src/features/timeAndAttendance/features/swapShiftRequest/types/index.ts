@@ -16,6 +16,7 @@ export interface PostMySwapShiftRequestProps {
   shiftToId: number;
   shiftPartnerId: number;
   reason: string;
+  employeeId?: number;
 }
 
 interface IShiftProps {
