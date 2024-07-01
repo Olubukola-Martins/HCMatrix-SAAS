@@ -1,10 +1,9 @@
 import { Menu } from "antd";
 import { Link } from "react-router-dom";
-import useGenerateRecruitmentNavRoutes from "../hooks/useGenerateRecruitmentNavRoutes";
+import useGenrateRecruitmentSettingNavRoutes from "../hooks/useGenrateRecruitmentSettingNavRoutes";
 
-
-const RecruitmentSubNav = () => {
-  const { navRoutes } = useGenerateRecruitmentNavRoutes();
+const RecruitmentSettingSubNav = () => {
+  const { navRoutes } = useGenrateRecruitmentSettingNavRoutes();
   return (
     <div className="">
       <Menu
@@ -48,4 +47,4 @@ const RecruitmentSubNav = () => {
   );
 };
 
-export default RecruitmentSubNav;
+export default RecruitmentSettingSubNav;

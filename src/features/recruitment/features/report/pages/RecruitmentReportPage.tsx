@@ -5,7 +5,6 @@ import CandidateSources from "./CandidateSources";
 import CandidateChart from "./CandidateChart";
 import { DatePicker, Form, Select, Tabs } from "antd";
 import { AppButton } from "components/button/AppButton";
-import form from "antd/lib/form";
 
 // recruitment report tab
 export const ReportTabWrapper = () => {
@@ -32,7 +31,7 @@ export const ReportTabWrapper = () => {
   );
 };
 
-const RecruitmentReport = () => {
+const RecruitmentReportPage = () => {
   const { RangePicker } = DatePicker;
   const handleSubmit = (value: any) => {
     console.log("Values:", value);
@@ -131,4 +130,4 @@ const RecruitmentReport = () => {
     </>
   );
 };
-export default RecruitmentReport;
+export default RecruitmentReportPage;

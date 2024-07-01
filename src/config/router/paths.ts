@@ -322,40 +322,13 @@ export const appRoutes = {
   recruitmentSettings: `/recruitment/settings`,
   recruitmentDashboard: `/recruitment/dashboard`,
   recruitmentReport: `/recruitment/report`,
-  recruitmentAddJobOpening: `/recruitment/add-job-opening`,
-  candidateStatus: `/recruitment/candidate-status`,
-  candidateSources: `/recruitment/candidate-sources`,
-  recruitmentEmailTemplate: `/recruitment/email-template`,
-  recruitmentOfferTemplate: `/recruitment/offer-template`,
-  recruitmentJobTemplate: `/recruitment/job-template`,
+  recruitmentHiredCandidate: `/recruitment/hired-candidate`,
+  recruitmentConfigureCandidateStatus: `/recruitment/configure-candidate-status`,
+  recruitmentRecruitmentChannels: `/recruitment/recruitment-channels`,
+  recruitmentEmailTemplates: `/recruitment/email-templates`,
+  recruitmentOfferTemplates: `/recruitment/offer-templates`,
+  recruitmentJobTemplates: `/recruitment/job-templates`,
   recruitmentOtherSettings: `/recruitment/other-settings`,
-  addEmailTemplate: `/recruitment/add-email-template`,
-  emailTemplateDetails: (id?: number) => ({
-    format: `/recruitment/email-template/:id`,
-    path: `/recruitment/email-template/${id}`,
-  }),
-  offerTemplateDetails: (id?: number) => ({
-    format: `/recruitment/offer-template/:id`,
-    path: `/recruitment/offer-template/${id}`,
-  }),
-  jobTemplateDetails: (id?: number) => ({
-    format: `/recruitment/job-template/:id`,
-    path: `/recruitment/job-template/${id}`,
-  }),
-  addJobTemplate: `/recruitment/add-job-template`,
-  addOfferTemplate: `/recruitment/add-offer-template`,
-  applicationsList: `/recruitment/applications-list`,
-  applicationsDescription: `/recruitment/applications-description`,
-  applicationsInfo: `/recruitment/applications-info`,
-  applicantDetails: (id?: number) => ({
-    format: `/recruitment/dashboard/:id/applicantDetails`,
-    path: `/recruitment/dashboard/${id}/applicantDetails`,
-  }),
-  applicationDetails: (id?: number) => ({
-    format: `/recruitment/dashboard/:id/applicationDetails`,
-    path: `/recruitment/dashboard/${id}/applicationDetails`,
-  }),
-  applicantEmailPage: `/recruitment/dashboard/applicantEmailPage`,
 };
 
 // Routes that require API redirect and logout if authenticated, so the user is not automatically redirected to the login page, as that is the typical behaviour of such routes
