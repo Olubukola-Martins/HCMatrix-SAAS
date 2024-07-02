@@ -1,7 +1,7 @@
 import React from "react";
 import { IEmailTemplateDescriptionProps } from "../types";
 import "../../../assets/style.css";
-import { Dropdown, Menu } from "antd";
+import { Dropdown } from "antd";
 import type { MenuProps } from "antd";
 
 export const RecruitmentEmailsDescription: React.FC<
