@@ -8,6 +8,14 @@
   @apply bg-white rounded border border-[#686868] p-2 mt-1 md:w-[20rem] w-[17rem] lg:w-[23rem];
 }
 
+.recruitmentEmailSubject {
+  @apply text-sm text-[#3A3A3A66] py-2;
+}
+
+.recruitmentEmailMessage {
+  @apply text-caramel font-medium text-lg;
+}
+
 /* ADD JOB OPENING CONTAINER STYLE */
 /* STEPPER STYLES*/
 .add-job-opening-step .ant-steps {
@@ -215,9 +223,10 @@ div #addJobOpeningSection #addJobOpening #integration-text {
   text-decoration: underline;
 }
 
-  .last-pg-btns, .last-pg-btns div {
-    background-color: var(--background) !important;
-  }
+.last-pg-btns,
+.last-pg-btns div {
+  background-color: var(--background) !important;
+}
 /* MEDIA QUERIES */
 @media (max-width: 1023px) {
   /* stepper */
@@ -299,9 +308,13 @@ div #addJobOpeningSection #addJobOpening #integration-text {
 
 @media (max-width: 574px) {
   /* stepper */
-  .add-job-opening-step .ant-steps .ant-steps-item:last-child .ant-steps-item-container .ant-steps-item-content {
+  .add-job-opening-step
+    .ant-steps
+    .ant-steps-item:last-child
+    .ant-steps-item-container
+    .ant-steps-item-content {
     position: relative;
-}
+  }
   .Container .add-job-opening-step {
     height: fit-content;
   }
