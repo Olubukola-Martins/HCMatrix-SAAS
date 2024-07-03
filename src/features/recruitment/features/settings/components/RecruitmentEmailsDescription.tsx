@@ -4,21 +4,20 @@ import "../../../assets/style.css";
 import { Dropdown } from "antd";
 import type { MenuProps } from "antd";
 import { Link } from "react-router-dom";
-import { appRoutes } from "config/router/paths";
 
 export const RecruitmentEmailsDescription: React.FC<
   IEmailTemplateDescriptionProps
-> = ({ emailMessage, emailSubject, candidateStatus, body,email }) => {
+> = ({ emailMessage, emailSubject, candidateStatus, body,email, linkUrl }) => {
   const menuItems: MenuProps["items"] = [
     {
       label: (
-        <Link to={appRoutes.recruitmentEmailTemplateDetails().path}>View</Link>
+        <Link to={linkUrl}>View</Link>
       ),
       key: "1",
     },
     {
       label: (
-        <Link to={appRoutes.recruitmentEmailTemplateDetails().path}>Edit</Link>
+        <Link to={linkUrl}>Edit</Link>
       ),
       key: "2",
     },
