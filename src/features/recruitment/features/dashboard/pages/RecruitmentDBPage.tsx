@@ -14,7 +14,10 @@ const RecruitmentDBPage = () => {
         <div className="grid">
           {/* // TODO: Recruitment:: Style text below to match design */}
           <h3>Welcome to the recruitment module</h3>
-          <RecruitmentDBCards />
+          <div >
+            <RecruitmentDBCards title="Hey" count={0} link={""} />
+            <RecruitmentDBCards title="Hello" count={0} link={""} />
+          </div>
           <EmploymentTypeAnalyticsCard />
           <ApplicationReceivedByDepartmentCard />
           <ApplicantDetailsCard />

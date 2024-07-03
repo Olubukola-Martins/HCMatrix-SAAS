@@ -9,12 +9,7 @@ import { GlobalContext, EGlobalOps } from "stateManagers/GlobalContextProvider";
 import Themes from "./Themes";
 import { useGetStartedAnalytics } from "features/core/company/hooks/dashboard/useGetStartedAnalytics";
 import { appRoutes } from "config/router/paths";
-import {
-  DEFAULT_ROLES_CREATED_BY_SYSTEM,
-  DEFAULT_DEPARTMENTS_CREATED_BY_SYSTEM,
-  DEFAULT_DESIGNATIONS_CREATED_BY_SYSTEM,
-  DEFAULT_EMPLOYEES_CREATED_BY_SYSTEM,
-} from "constants/general";
+import { DEFAULT_ROLES_CREATED_BY_SYSTEM, DEFAULT_DEPARTMENTS_CREATED_BY_SYSTEM, DEFAULT_DESIGNATIONS_CREATED_BY_SYSTEM, DEFAULT_EMPLOYEES_CREATED_BY_SYSTEM } from "constants/general";
 import { useApiAuth } from "hooks/useApiAuth";
 
 const UserFeedbackComp = () => {
@@ -28,11 +23,7 @@ const UserFeedbackComp = () => {
     dispatch({ type: EGlobalOps.setShowInitialSetup, payload: false });
   };
 
-  const {
-    data: getStartedAnalytics,
-    isLoading,
-    isSuccess,
-  } = useGetStartedAnalytics();
+  const { data: getStartedAnalytics, isLoading, isSuccess } = useGetStartedAnalytics();
   useEffect(() => {
     if (!getStartedAnalytics) return;
     const initialsetUpSteps: TSetupStep[] = [
@@ -45,24 +36,19 @@ const UserFeedbackComp = () => {
       {
         text: EInitialSetUp.SET_UP_DEPTS,
         link: appRoutes.departmentSettings,
-        completed:
-          getStartedAnalytics.department >
-          DEFAULT_DEPARTMENTS_CREATED_BY_SYSTEM,
+        completed: getStartedAnalytics.department > DEFAULT_DEPARTMENTS_CREATED_BY_SYSTEM,
         hint: "Setting up departments, will allow you setup designations",
       },
       {
         text: EInitialSetUp.SET_UP_DESGS,
         link: appRoutes.designationSettings,
-        completed:
-          getStartedAnalytics.designation >
-          DEFAULT_DESIGNATIONS_CREATED_BY_SYSTEM,
+        completed: getStartedAnalytics.designation > DEFAULT_DESIGNATIONS_CREATED_BY_SYSTEM,
         hint: "Setting up designations, will allow you assign jobs to employees",
       },
       {
         text: EInitialSetUp.ADD_EMPLOYEES,
         link: appRoutes.employeeSettings,
-        completed:
-          getStartedAnalytics.employee > DEFAULT_EMPLOYEES_CREATED_BY_SYSTEM,
+        completed: getStartedAnalytics.employee > DEFAULT_EMPLOYEES_CREATED_BY_SYSTEM,
         hint: "Adding employees will allow you to begin HR automation",
       },
     ];
@@ -81,11 +67,7 @@ const UserFeedbackComp = () => {
     setProgress(progress);
   }, [dispatch, steps]);
 
-  const showModal =
-    globalState.showInitialSetUp &&
-    employee?.isOwner &&
-    isSuccess &&
-    steps.filter((item) => item.completed).length !== steps.length;
+  const showModal = globalState.showInitialSetUp && employee?.isOwner && isSuccess && steps.filter((item) => item.completed).length !== steps.length;
 
   return (
     <>
@@ -96,79 +78,36 @@ const UserFeedbackComp = () => {
           footer={null}
           width={380}
           // style={{ top: 160, left: "-20vw" }}
-          style={{ top: 160, right: "calc(100vw - 77%)" }}
-        >
+          style={{ top: 160, right: "calc(100vw - 77%)" }}>
           <Themes>
             <Skeleton active loading={isLoading}>
               <div className="flex flex-col gap-4">
                 <div className="flex flex-col gap-4">
                   <h3 className="text-xl ">Get Started</h3>
-                  <p className="text-normal mb-2">
-                    {progress !== 100 ? (
-                      <span>
-                        You are to complete the following steps, in order to
-                        utilize the system
-                      </span>
-                    ) : (
-                      <span>
-                        Congratulations, on completing the required steps!
-                      </span>
-                    )}
-                  </p>
+                  <p className="text-normal mb-2">{progress !== 100 ? <span>You are to complete the following steps, in order to utilize the system</span> : <span>Congratulations, on completing the required steps!</span>}</p>
                 </div>
                 <div className="flex flex-col gap-1  relative bottom-4">
-                  <Progress percent={progress} strokeColor={"var(--caramel)"} />
+                  <Progress percent={progress} strokeColor={"var(--)"} />
                   <span>
-                    {steps.filter((item) => item.completed).length}/
-                    {steps.length} complete
+                    {steps.filter((item) => item.completed).length}/{steps.length} complete
                   </span>
                 </div>
                 <div className="flex flex-col gap-2 w-full">
                   {provideFeedback && (
-                    <Steps
-                      className="w-full"
-                      size="small"
-                      direction="vertical"
-                      current={steps.filter((item) => item.completed).length}
-                    >
+                    <Steps className="w-full" size="small" direction="vertical" current={steps.filter((item) => item.completed).length}>
                       {steps
                         .sort((item) => (item.completed ? -1 : 1))
                         .map((item, index) => (
-                          <Steps.Step
-                            description={
-                              <span className="text-caramel text-xs">
-                                Watch Video Tutorial
-                              </span>
-                            }
-                            key={index}
-                            title={
-                              <FeedBackTitle
-                                item={item}
-                                handleClick={dismissFeedback}
-                              />
-                            }
-                          />
+                          <Steps.Step description={<span className="text-caramel text-xs">Watch Video Tutorial</span>} key={index} title={<FeedBackTitle item={item} handleClick={dismissFeedback} />} />
                         ))}
                     </Steps>
                   )}
                 </div>
                 <div className="mt-3 flex justify-between">
-                  <button
-                    disabled={
-                      steps.filter((item) => item.completed === false)
-                        .length !== steps.length
-                    }
-                    className={`disabled:cursor-not-allowed text-green-700 disabled:text-slate-300`}
-                    onClick={() => dismissFeedback()}
-                  >
-                    <span className=" underline text-sm">
-                      Done with onboarding
-                    </span>
+                  <button disabled={steps.filter((item) => item.completed === false).length !== steps.length} className={`disabled:cursor-not-allowed text-green-700 disabled:text-slate-300`} onClick={() => dismissFeedback()}>
+                    <span className=" underline text-sm">Done with onboarding</span>
                   </button>
-                  <Link
-                    to="/"
-                    className="underline text-caramel hover:text-black"
-                  >
+                  <Link to="/" className="underline text-caramel hover:text-black">
                     Get Help
                   </Link>
                 </div>
