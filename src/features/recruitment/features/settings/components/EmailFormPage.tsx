@@ -12,7 +12,7 @@ export const EmailFormPage: React.FC<IEmailFormPageProps> = ({
   panelistSwitch,
   handleSubmit,
   pageDescription,
-  pageTitle
+  pageTitle,
 }) => {
   const [form] = Form.useForm();
   return (
@@ -83,6 +83,16 @@ export const EmailFormPage: React.FC<IEmailFormPageProps> = ({
             )}
           </div>
         </div>
+
+        {!panelistSwitch && (
+          <div>
+            <h2 className="text-lg font-bold p-1">Offer Email/Letter</h2>
+            <p className="px-2 py-1 mb-5">
+              This is the email the candidate will receive notifying them of
+              their offer.
+            </p>
+          </div>
+        )}
 
         <JoditEditorComponent />
 

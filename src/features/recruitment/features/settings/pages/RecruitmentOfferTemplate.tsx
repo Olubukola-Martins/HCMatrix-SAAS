@@ -3,6 +3,8 @@ import { RecruitmentSettingsIntro } from "features/recruitment/components/Recrui
 import { useState } from "react";
 import { RecruitmentEmailsDescription } from "../components/RecruitmentEmailsDescription";
 import { RecruitmentMappedVariables } from "../components/RecruitmentMappedVariables.";
+import { Link } from "react-router-dom";
+import { appRoutes } from "config/router/paths";
 
 export const RecruitmentOfferTemplate = () => {
   const [openMappedVariables, setOpenDrawerVariables] =
@@ -17,6 +19,7 @@ export const RecruitmentOfferTemplate = () => {
         <RecruitmentMappedVariables
           handleClose={() => setOpenDrawerVariables(false)}
           open={openMappedVariables}
+          showPanelistName={false}
         />
         <div className="flex gap-8 p-3 m-2 items-center">
           <button
@@ -27,11 +30,13 @@ export const RecruitmentOfferTemplate = () => {
           >
             Mapped Variables
           </button>
-          <AppButton
-            label="+ Add Offer Template"
-            variant="transparent"
-            additionalClassNames={["font-bold"]}
-          />
+          <Link to={appRoutes.recruitmentOfferTemplateDetails().path}>
+            <AppButton
+              label="+ Add Offer Template"
+              variant="transparent"
+              additionalClassNames={["font-bold"]}
+            />
+          </Link>
         </div>
         <p className="px-4 pb-3">
           This email template will automatically be sent to applicants when they

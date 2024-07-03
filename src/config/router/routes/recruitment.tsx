@@ -11,6 +11,7 @@ import { RecruitmentJobTemplate } from "features/recruitment/features/settings/p
 import { RecruitmentOfferTemplate } from "features/recruitment/features/settings/pages/RecruitmentOfferTemplate";
 import { RecruitementOtherSettings } from "features/recruitment/features/settings/pages/RecruitmentOtherSettings";
 import EmailTemplateDetailsPage from "features/recruitment/features/settings/pages/EmailTemplateDetailsPage";
+import OfferTemplateDetailsPage from "features/recruitment/features/settings/pages/OfferTemplateDetailsPage";
 
 export const recruitmentRoutes: TRouteData[] = [
   {
@@ -91,5 +92,12 @@ export const recruitmentRoutes: TRouteData[] = [
     isSearchable: true,
     isPrimaryFeature: true,
     title: "Email Template",
+  },
+  {
+    element: <OfferTemplateDetailsPage />,
+    path: appRoutes.recruitmentOfferTemplateDetails().format,
+    isSearchable: true,
+    isPrimaryFeature: true,
+    title: "Offer Template",
   },
 ];
