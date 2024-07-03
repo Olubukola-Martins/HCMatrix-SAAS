@@ -11,6 +11,17 @@ export interface IMappedVariableProps {
 
 export interface IEmailTemplateDescriptionProps {
   emailSubject: string;
-    emailMessage: string;
-    candidateStatus?:string
+  emailMessage: string;
+  candidateStatus?: string;
+  email: string
+  body:string
+}
+
+export interface IEmailFormPageProps {
+  templateLabel: string;
+  candidateStatusLabel?: string;
+  panelistSwitch?: boolean;
+  handleSubmit: (val: any) => void;
+  pageDescription: string;
+  pageTitle: string;
 }

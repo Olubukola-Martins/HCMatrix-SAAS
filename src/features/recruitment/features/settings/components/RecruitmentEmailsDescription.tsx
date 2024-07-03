@@ -1,19 +1,25 @@
 import React from "react";
 import { IEmailTemplateDescriptionProps } from "../types";
 import "../../../assets/style.css";
-import { Dropdown, Menu } from "antd";
+import { Dropdown } from "antd";
 import type { MenuProps } from "antd";
+import { Link } from "react-router-dom";
+import { appRoutes } from "config/router/paths";
 
 export const RecruitmentEmailsDescription: React.FC<
   IEmailTemplateDescriptionProps
-> = ({ emailMessage, emailSubject, candidateStatus }) => {
+> = ({ emailMessage, emailSubject, candidateStatus, body,email }) => {
   const menuItems: MenuProps["items"] = [
     {
-      label: "View",
+      label: (
+        <Link to={appRoutes.recruitmentEmailTemplateDetails().path}>View</Link>
+      ),
       key: "1",
     },
     {
-      label: "Edit",
+      label: (
+        <Link to={appRoutes.recruitmentEmailTemplateDetails().path}>Edit</Link>
+      ),
       key: "2",
     },
     {
@@ -27,11 +33,11 @@ export const RecruitmentEmailsDescription: React.FC<
   };
 
   return (
-    <div className="border-b p-2 m-3 flex justify-between">
+    <div className="border-b p-2 m-2 flex justify-between">
       <div>
-        <h3 className="recruitmentEmailSubject">Email Subject -:</h3>
+        <h3 className="recruitmentEmailSubject">{email }</h3>
         <h2 className="recruitmentEmailMessage"> {emailSubject}</h2>
-        <h3 className="recruitmentEmailSubject">Email Message -:</h3>
+        <h3 className="recruitmentEmailSubject">{body }</h3>
         <p className="font-medium">{emailMessage}</p>
         {candidateStatus && (
           <>

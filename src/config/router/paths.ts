@@ -330,6 +330,10 @@ export const appRoutes = {
   recruitmentOfferTemplates: `/recruitment/offer-templates`,
   recruitmentJobTemplates: `/recruitment/job-templates`,
   recruitmentOtherSettings: `/recruitment/other-settings`,
+  recruitmentEmailTemplateDetails: (id?: number) => ({
+    format: `/recruitment/email-template-details/:id`,
+    path: `/recruitment/email-template-details/${id}`,
+  }),
 };
 
 // Routes that require API redirect and logout if authenticated, so the user is not automatically redirected to the login page, as that is the typical behaviour of such routes
