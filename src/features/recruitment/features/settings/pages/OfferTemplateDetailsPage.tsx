@@ -1,4 +1,3 @@
-import React from "react";
 import { EmailFormPage } from "../components/EmailFormPage";
 
 const OfferTemplateDetailsPage = () => {

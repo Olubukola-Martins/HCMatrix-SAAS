@@ -65,6 +65,7 @@ export const RecruitmentEmailTemplate = () => {
           candidateStatus="Applied"
           body="Email Message -:"
           email="Email Subject -:"
+          linkUrl={appRoutes.recruitmentEmailTemplateDetails().path}
         />
         <p className="px-4">
           These are additional email templates required by a candidate or
@@ -76,6 +77,7 @@ export const RecruitmentEmailTemplate = () => {
             email="Email Subject -:"
             emailMessage={item.emailBody}
             emailSubject={item.emailSubject}
+            linkUrl={appRoutes.recruitmentEmailTemplateDetails().path}
           />
         ))}
       </div>
