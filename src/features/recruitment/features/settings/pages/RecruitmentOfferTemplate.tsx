@@ -48,7 +48,5 @@
 
 
 export const RecruitmentOfferTemplate = () => {
-  return (
-    <div>RecruitmentOfferTemplate</div>
-  )
-}
+  return <div>RecruitmentOfferTemplate</div>;
+};

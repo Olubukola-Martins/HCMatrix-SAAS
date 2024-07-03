@@ -14,7 +14,8 @@ export interface IEmailTemplateDescriptionProps {
   emailMessage: string;
   candidateStatus?: string;
   email: string
-  body:string
+  body: string
+  linkUrl:string
 }
 
 export interface IEmailFormPageProps {

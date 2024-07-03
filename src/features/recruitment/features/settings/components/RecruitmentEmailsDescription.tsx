@@ -4,22 +4,17 @@ import "../../../assets/style.css";
 import { Dropdown } from "antd";
 import type { MenuProps } from "antd";
 import { Link } from "react-router-dom";
-import { appRoutes } from "config/router/paths";
 
 export const RecruitmentEmailsDescription: React.FC<
   IEmailTemplateDescriptionProps
-> = ({ emailMessage, emailSubject, candidateStatus, body,email }) => {
+> = ({ emailMessage, emailSubject, candidateStatus, body, email, linkUrl }) => {
   const menuItems: MenuProps["items"] = [
     {
-      label: (
-        <Link to={appRoutes.recruitmentEmailTemplateDetails().path}>View</Link>
-      ),
+      label: <Link to={linkUrl}>View</Link>,
       key: "1",
     },
     {
-      label: (
-        <Link to={appRoutes.recruitmentEmailTemplateDetails().path}>Edit</Link>
-      ),
+      label: <Link to={linkUrl}>Edit</Link>,
       key: "2",
     },
     {
@@ -35,9 +30,9 @@ export const RecruitmentEmailsDescription: React.FC<
   return (
     <div className="border-b p-2 m-2 flex justify-between">
       <div>
-        <h3 className="recruitmentEmailSubject">{email }</h3>
+        <h3 className="recruitmentEmailSubject">{email}</h3>
         <h2 className="recruitmentEmailMessage"> {emailSubject}</h2>
-        <h3 className="recruitmentEmailSubject">{body }</h3>
+        <h3 className="recruitmentEmailSubject">{body}</h3>
         <p className="font-medium">{emailMessage}</p>
         {candidateStatus && (
           <>
