@@ -36,6 +36,7 @@ export const RecruitmentEmailTemplate = () => {
         <RecruitmentMappedVariables
           handleClose={() => setOpenDrawerVariables(false)}
           open={openMappedVariables}
+          showPanelistName={true}
         />
         <div className="flex gap-8 p-3 m-2 items-center">
           <button

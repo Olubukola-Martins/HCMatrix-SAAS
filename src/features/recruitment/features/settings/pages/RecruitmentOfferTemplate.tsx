@@ -28,7 +28,7 @@
 //             Mapped Variables
 //           </button>
 //           <AppButton
-//             label="+ Add Email Template"
+//             label="+ Add Offer Template"
 //             variant="transparent"
 //             additionalClassNames={["font-bold"]}
 //           />
@@ -40,11 +40,14 @@
 //         <RecruitmentEmailsDescription
 //           emailMessage="Thank you for applying at ... "
 //           emailSubject="Full Time - At Will"
+//           body=""
+//           email=""
 //         />
 //       </div>
 //     </div>
 //   );
 // };
+
 
 
 export const RecruitmentOfferTemplate = () => {

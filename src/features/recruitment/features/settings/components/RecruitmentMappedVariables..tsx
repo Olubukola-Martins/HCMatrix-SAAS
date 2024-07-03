@@ -5,6 +5,7 @@ import { IMappedVariableProps } from "../types";
 export const RecruitmentMappedVariables: React.FC<IMappedVariableProps> = ({
   handleClose,
   open,
+  showPanelistName,
 }) => {
   return (
     <Modal onCancel={handleClose} open={open} footer={null}>
@@ -32,15 +33,17 @@ export const RecruitmentMappedVariables: React.FC<IMappedVariableProps> = ({
               Job opening
             </p>
           </div>
-          <div className="flex h-fit mx-auto w-full">
-            <p className="px-4 py-3 border border-gray-100 bg-gray-100 rounded-lg w-5/12">
-              {"{panelist_name}"}
-            </p>
-            <span className="w-[10.5%] h-3.5 my-auto bg-gray-100"></span>
-            <p className="px-4 py-3 border border-gray-100 bg-gray-100 rounded-lg w-5/12">
-              Employee Name
-            </p>
-          </div>
+          {showPanelistName && (
+            <div className="flex h-fit mx-auto w-full">
+              <p className="px-4 py-3 border border-gray-100 bg-gray-100 rounded-lg w-5/12">
+                {"{panelist_name}"}
+              </p>
+              <span className="w-[10.5%] h-3.5 my-auto bg-gray-100"></span>
+              <p className="px-4 py-3 border border-gray-100 bg-gray-100 rounded-lg w-5/12">
+                Employee Name
+              </p>
+            </div>
+          )}
         </div>
       </div>
     </Modal>

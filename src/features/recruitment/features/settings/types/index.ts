@@ -7,6 +7,7 @@ export interface IRecruitmentSettingsSwitchFormProps {
 export interface IMappedVariableProps {
   open: boolean;
   handleClose: () => void;
+  showPanelistName?: boolean;
 }
 
 export interface IEmailTemplateDescriptionProps {
