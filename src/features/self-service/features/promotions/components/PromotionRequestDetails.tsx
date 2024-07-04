@@ -8,7 +8,7 @@ import {
   QUERY_KEY_FOR_SINGLE_PROMOTION_REQUISITION,
   useGetSinglePromotionRequisition,
 } from "../../requisitions/hooks/promotion/useGetSinglePromotionRequisition";
-import moment from "moment";
+import dayjs from "dayjs";
 import { DEFAULT_DATE_FORMAT } from "constants/dateFormats";
 import ApproveOrRejectButton from "features/core/workflows/components/approval-request/ApproveOrRejectButton";
 import { TApprovalRequest } from "features/core/workflows/types/approval-requests";
@@ -38,9 +38,9 @@ export const PromotionRequestDetails: React.FC<IProps> = ({
   useEffect(() => {
     if (data) {
       form.setFieldsValue({
-        date: moment(data.date).format(DEFAULT_DATE_FORMAT),
+        date: dayjs(data.date).format(DEFAULT_DATE_FORMAT),
         employeeName: `${data.employee.firstName} ${data.employee.lastName}`,
-        preferredStartDate: moment(data.preferredStartDate).format(
+        preferredStartDate: dayjs(data.preferredStartDate).format(
           DEFAULT_DATE_FORMAT
         ),
         employeeID: data.employee.empUid,
@@ -103,7 +103,7 @@ export const PromotionRequestDetails: React.FC<IProps> = ({
           <Form.Item name={"proposedDesignation"} label="Proposed Designation">
             <Input />
           </Form.Item>
-          <Form.Item name={"justification"} label="justification">
+          <Form.Item name={"justification"} label="Justification">
             <Input.TextArea />
           </Form.Item>
 

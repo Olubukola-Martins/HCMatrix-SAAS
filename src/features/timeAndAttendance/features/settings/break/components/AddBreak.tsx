@@ -8,6 +8,7 @@ import { useSetUpBreak } from "../../workSchedule/hooks/useSetUpBreak";
 import { openNotification } from "utils/notifications";
 import { EGlobalOps, GlobalContext } from "stateManagers/GlobalContextProvider";
 import { useQueryClient } from "react-query";
+import dayjs from "dayjs";
 import moment from "moment";
 import { QUERY_KEY_FOR_BREAK_POLICY } from "../hooks/useGetBreakPolicy";
 import { useGetSingleBreakPolicy } from "../../workSchedule/hooks/useGetSingleBreakPolicy";
@@ -40,8 +41,8 @@ export const AddBreak = ({ handleClose, open, id }: IDrawerProps) => {
             name: data?.name,
             isPaid: data?.isPaid,
             time: [
-              moment(data?.startAt? data?.startAt : '00:00:00', "HH:mm:ss"),
-              moment(data?.endAt ? data?.endAt : '00:00:00', "HH:mm:ss"),
+              dayjs(data?.startAt ? data?.startAt : "00:00:00", "HH:mm:ss"),
+              dayjs(data?.endAt ? data?.endAt : "00:00:00", "HH:mm:ss"),
             ],
             enforcePeriod: data?.enforcePeriod,
           },
@@ -84,8 +85,8 @@ export const AddBreak = ({ handleClose, open, id }: IDrawerProps) => {
       }
 
       const [startAt, endAt] = item.time;
-      const startTime = startAt && moment(startAt, "HH:mm:ss");
-      const endTime = endAt && moment(endAt, "HH:mm:ss");
+      const startTime = startAt && dayjs(startAt, "HH:mm:ss");
+      const endTime = endAt && dayjs(endAt, "HH:mm:ss");
 
       let startAtValue, endAtValue, durationValue;
 
@@ -93,7 +94,9 @@ export const AddBreak = ({ handleClose, open, id }: IDrawerProps) => {
         startAtValue = startTime && startTime.format("HH:mm:ss");
         endAtValue = endTime && endTime.format("HH:mm:ss");
       } else {
-        const duration = moment.duration(endTime.diff(startTime));
+        const duration = moment.duration(
+          moment(endTime.toString()).diff(startTime)
+        );
         const totalHours = duration.hours();
         const totalMinutes = duration.minutes();
         durationValue = `${totalHours}h:${totalMinutes}m`;

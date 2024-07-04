@@ -8,6 +8,7 @@ import {
 import { BULK_EMPLOYEE_IMPORT_MAPPING_SECTIONS } from "../../constants";
 import { useState } from "react";
 import FramerAccordian from "components/accordian/FramerAccordian";
+import { excelSerialToDate } from "utils/dataHelpers/excelSerialToDate";
 
 interface IProps {
   handleNext: () => void;
@@ -50,13 +51,13 @@ const EmployeeImportDataMapping = ({
           lastName: item?.lastName,
           licenseType: item?.licenseType,
           jobInformation: {
-            startDate: item?.startDate,
+            startDate: excelSerialToDate(item?.startDate),
             employmentType: item?.employmentType,
             workModel: item?.workModel,
             numberOfDaysPerWeek: item?.numberOfDaysPerWeek,
-            hireDate: item?.hireDate,
-            probationEndDate: item?.probationEndDate,
-            confirmationDate: item?.confirmationDate,
+            hireDate: excelSerialToDate(item?.hireDate),
+            probationEndDate: excelSerialToDate(item?.probationEndDate),
+            confirmationDate: excelSerialToDate(item?.confirmationDate),
             lineManagerId: item?.lineManagerId,
             branchId: item?.branchId,
             payrollType: item?.payrollType,
@@ -66,7 +67,7 @@ const EmployeeImportDataMapping = ({
             hourlyRate: item?.hourlyRate,
           },
           personalInformation: {
-            dob: item?.dob,
+            dob: excelSerialToDate(item?.dob),
             gender: item?.gender,
             phoneNumber: item?.phoneNumber,
             eligibility: item?.eligibility,
@@ -80,7 +81,9 @@ const EmployeeImportDataMapping = ({
               timezone: item?.timezone,
               lgaId: item?.lgaId,
             },
-            passportExpirationDate: item?.passportExpirationDate,
+            passportExpirationDate: excelSerialToDate(
+              item?.passportExpirationDate
+            ),
             validDocumentUrl: item?.validDocumentUrl,
             alternativeEmail: item?.alternativeEmail,
             alternativePhoneNumber: item?.alternativePhoneNumber,
@@ -105,6 +108,7 @@ const EmployeeImportDataMapping = ({
         return employeeData;
       }
     );
+    console.log(dataToBeSubmitted, "Data to be ..");
 
     handleDataToBeSubmitted(dataToBeSubmitted);
   };

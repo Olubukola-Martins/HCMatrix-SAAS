@@ -1,18 +1,20 @@
 import {
   DatePicker,
-  Dropdown,
   Form,
   Input,
-  Menu,
   Modal,
   Select,
   Skeleton,
   Tag,
+  Typography,
 } from "antd";
 import React, { useEffect, useState } from "react";
 import { useQueryClient } from "react-query";
 import { CloseCircleOutlined } from "@ant-design/icons";
-import { FormEmployeeInput } from "features/core/employees/components/FormEmployeeInput";
+import {
+  FormEmployeeInput,
+  FormUnlicensedEmployeeSSRequestInput,
+} from "features/core/employees/components/FormEmployeeInput";
 import { IModalProps } from "types";
 import {
   countMatchingDatesInclusive,
@@ -26,7 +28,6 @@ import { useCreateLeave } from "../../hooks/useCreateLeave";
 import { FormFileInput } from "components/generalFormInputs/FormFileInput";
 import { FormLeaveTypeInput } from "../settings/types/FormLeaveTypeInput";
 import MultiDatePicker, { DateObject } from "react-multi-date-picker";
-import moment from "moment";
 import { QUERY_KEY_FOR_ALL_LEAVES } from "../../hooks/useGetAllLeaves";
 import { QUERY_KEY_FOR_EMPLOYEE_LEAVES } from "../../hooks/useGetEmployeeLeaves";
 import { bulkUploadFiles } from "hooks/useUploadFile";
@@ -38,18 +39,18 @@ import {
   canUserAccessComponent,
   useGetUserPermissions,
 } from "components/permission-restriction/PermissionRestrictor";
+import { TSelfServiceApplicationMode } from "features/self-service/types";
+import AppTooltip from "components/tooltip/AppTooltip";
+import dayjs from "dayjs";
 
-interface IProps extends IModalProps {
-  showEmployeeInput?: boolean;
-}
-type TAction = "apply-for-myself" | "apply-for-unlisenced-employee";
+interface IProps extends IModalProps {}
 export const RequestForLeaveBtn = () => {
   const { userPermissions } = useGetUserPermissions();
-  const [action, setAction] = useState<TAction>();
+  const [action, setAction] = useState<TSelfServiceApplicationMode>();
   const onClose = () => {
     setAction(undefined);
   };
-  const handleAction = (action: TAction) => {
+  const handleAction = (action: TSelfServiceApplicationMode) => {
     setAction(action);
   };
   const leaveActions: {
@@ -63,54 +64,23 @@ export const RequestForLeaveBtn = () => {
       hidden: false,
     },
     {
-      label: "Unlisenced Employee",
-      onClick: () => handleAction("apply-for-unlisenced-employee"),
+      label: "Unlicensed Employee",
+      onClick: () => handleAction("apply-for-unlicensed-employee"),
       hidden: !canUserAccessComponent({
         userPermissions,
-        requiredPermissions: ["manage-leave-settings"], //TODO: Correct when its done
+        requiredPermissions: ["manage-unlicensed-employees"],
       }),
     },
   ];
   return (
     <>
-      <RequestForLeave
-        handleClose={onClose}
-        open={action !== undefined}
-        showEmployeeInput={action === "apply-for-unlisenced-employee"}
-      />
-      {leaveActions.filter((item) => item.hidden === false).length === 1 ? (
-        <AppButton handleClick={leaveActions[0].onClick} label="New Leave" />
-      ) : null}
-      {leaveActions.filter((item) => item.hidden === false).length > 1 ? (
-        <Dropdown
-          overlay={
-            <Menu
-              items={leaveActions
-                .filter((item) => item.hidden === false)
-                .map((item) => ({
-                  title: item.label,
-                  key: item.label,
-                  label: item.label,
-                  onClick: item.onClick,
-                }))}
-            />
-          }
-          trigger={["click"]}
-        >
-          <button className="button flex items-center gap-2">
-            <span>New Leave</span> <i className="fa-solid fa-chevron-down" />
-          </button>
-        </Dropdown>
-      ) : null}
+      <RequestForLeave handleClose={onClose} open={action !== undefined} />
+      <AppButton handleClick={leaveActions[0].onClick} label="New Leave" />
     </>
   );
 };
 
-export const RequestForLeave: React.FC<IProps> = ({
-  handleClose,
-  open,
-  showEmployeeInput,
-}) => {
+export const RequestForLeave: React.FC<IProps> = ({ handleClose, open }) => {
   // should be from global state - user leave days left
   const [leaveLength, setLeaveLength] = useState(0);
   const queryClient = useQueryClient();
@@ -144,7 +114,7 @@ export const RequestForLeave: React.FC<IProps> = ({
     setIsUploadingDocs(false);
     mutate(
       {
-        employeeId: showEmployeeInput ? data.employeeId : undefined,
+        employeeId: data?.employeeId,
         startDate:
           data?.duration?.length > 0 ? data.duration[0].toString() : undefined,
         endDate:
@@ -220,7 +190,26 @@ export const RequestForLeave: React.FC<IProps> = ({
       open={open}
       onCancel={() => handleClose()}
       footer={null}
-      title={"Apply for Leave"}
+      title={
+        <AppTooltip
+          children={
+            <Typography.Title level={5}>Apply for Leave</Typography.Title>
+          }
+          tooltipProps={{
+            title: (
+              <LeaveInfo
+                {...{
+                  leavePolicyIncludesHolidays:
+                    leavePolicySetting?.includeHolidays,
+                  leaveTypeMaxLength: leaveTypeMaxLength,
+                  leavePolicyIncludesWeekends:
+                    leavePolicySetting?.includeWeekends,
+                }}
+              />
+            ),
+          }}
+        />
+      }
       style={{ top: 20 }}
     >
       <Skeleton
@@ -238,40 +227,25 @@ export const RequestForLeave: React.FC<IProps> = ({
           form={form}
           onFinish={handleSubmit}
         >
-          <div className="flex flex-col gap-2">
-            {leaveTypeMaxLength !== undefined && (
-              <span className="text-red-400 text-xs">{`Only ${leaveTypeMaxLength} days or less are allowed for the selected leave type!`}</span>
-            )}
-            {leavePolicySetting?.includeWeekends === false && (
-              <span className="text-red-400 text-xs">{`Leave policy dictates that weekends are excluded from leave calculations`}</span>
-            )}
-            {leavePolicySetting?.includeHolidays === false && (
-              <span className="text-red-400 text-xs">{`Leave policy dictates that holidays are excluded from leave calculations`}</span>
-            )}
-          </div>
-          {showEmployeeInput ? (
-            <FormEmployeeInput
-              Form={Form}
-              control={{
-                name: "employeeId",
-                label: "Select Unlinsenced Employee",
-              }}
-            />
-          ) : null}
+          <FormUnlicensedEmployeeSSRequestInput
+            Form={Form}
+            control={{
+              name: "employeeId",
+              label: "Select Unlinsenced Employee",
+            }}
+          />
           <FormLeaveTypeInput
             Form={Form}
             control={{ name: "leaveTypeId", label: "Leave Type" }}
             handleSelect={(_, type) => {
               const maxLength = employeeLeaveAnalytics?.spillOver ?? 0;
               setRequiresLeaveReliever(!!type?.requireReliever);
-              console.log(type, "WHY!1");
 
               if (
                 type &&
                 typeof +type.length === "number" &&
                 type.typeOfLength === "fixed"
               ) {
-                console.log(type, "WHY!2");
                 setLeaveTypeMaxLength(+type?.length);
               }
               // use spillover when the typeofLength is dynamic && length is spillover
@@ -282,8 +256,6 @@ export const RequestForLeave: React.FC<IProps> = ({
                 type.typeOfLength === "dynamic" &&
                 type.length === "spillover"
               ) {
-                console.log(type, "WHY!3");
-
                 setLeaveTypeMaxLength(maxLength);
               }
             }}
@@ -316,14 +288,14 @@ export const RequestForLeave: React.FC<IProps> = ({
                       leaveLength > leaveTypeMaxLength
                     ) {
                       throw new Error(
-                        `Leave cannot exceed ${leaveTypeMaxLength} days`
+                        `The selected leave type cannot exceed ${leaveTypeMaxLength} days`
                       );
                     }
 
                     specificDates &&
                       specificDates.forEach((item, i) => {
                         if (
-                          !isDateGreaterThanCurrentDay(moment(item.toString()))
+                          !isDateGreaterThanCurrentDay(dayjs(item.toString()))
                         ) {
                           throw new Error(
                             "Please select a date greater than the current day"
@@ -332,8 +304,8 @@ export const RequestForLeave: React.FC<IProps> = ({
                         if (
                           leavePolicySetting?.includeWeekends === false &&
                           countWeekendsInclusive(
-                            moment(item.toString()),
-                            moment(item.toString())
+                            dayjs(item.toString()),
+                            dayjs(item.toString())
                           )
                         ) {
                           throw new Error(
@@ -344,9 +316,9 @@ export const RequestForLeave: React.FC<IProps> = ({
                           leavePolicySetting?.includeHolidays === false &&
                           holidays &&
                           countMatchingDatesInclusive(
-                            moment(item.toString()),
-                            moment(item.toString()),
-                            holidays.data.map((item) => moment(item.date))
+                            dayjs(item.toString()),
+                            dayjs(item.toString()),
+                            holidays.data.map((item) => dayjs(item.date))
                           )
                         ) {
                           throw new Error(
@@ -463,7 +435,7 @@ export const RequestForLeave: React.FC<IProps> = ({
                         countMatchingDatesInclusive(
                           period[0],
                           period[1],
-                          holidays.data.map((item) => moment(item.date))
+                          holidays.data.map((item) => dayjs(item.date))
                         );
                     }
                   }
@@ -513,5 +485,29 @@ export const RequestForLeave: React.FC<IProps> = ({
         </Form>
       </Skeleton>
     </Modal>
+  );
+};
+
+const LeaveInfo: React.FC<{
+  leaveTypeMaxLength?: number;
+  leavePolicyIncludesWeekends?: boolean;
+  leavePolicyIncludesHolidays?: boolean;
+}> = ({
+  leaveTypeMaxLength,
+  leavePolicyIncludesHolidays,
+  leavePolicyIncludesWeekends,
+}) => {
+  return (
+    <div className="flex flex-col gap-2">
+      {leaveTypeMaxLength !== undefined && (
+        <span className="text-red-400 text-xs">{`Only ${leaveTypeMaxLength} days or less are allowed for the selected leave type!`}</span>
+      )}
+      {leavePolicyIncludesWeekends === false && (
+        <span className="text-red-400 text-xs">{`Leave policy dictates that weekends are excluded from leave calculations`}</span>
+      )}
+      {leavePolicyIncludesHolidays === false && (
+        <span className="text-red-400 text-xs">{`Leave policy dictates that holidays are excluded from leave calculations`}</span>
+      )}
+    </div>
   );
 };

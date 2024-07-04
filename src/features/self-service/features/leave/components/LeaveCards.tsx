@@ -14,17 +14,17 @@ const LeaveCards = () => {
           />
           <SimpleCard
             title="Leave Bank"
-            highlight={`${data?.leaveBank}`}
+            highlight={`${data?.leaveBank ?? 0}`}
             loading={isLoading}
           />
           <SimpleCard
             title="Used Leave"
-            highlight={`${data?.usedLeave}`}
+            highlight={`${data?.usedLeave ?? 0}`}
             loading={isLoading}
           />
           <SimpleCard
             title="Leave Balance"
-            highlight={`${data?.leaveBalance}`}
+            highlight={`${data?.leaveBalance ?? 0}`}
             loading={isLoading}
           />
         </>

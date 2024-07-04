@@ -101,7 +101,7 @@ const BranchesViewContainer = () => {
           isLoading,
           isSuccess: isSuccUpdateBranch,
         }}
-        branch={selectedBranch}
+        branchId={selectedBranch?.id}
         handleClose={() => setAction(undefined)}
       />
       <SaveBranch
@@ -109,7 +109,7 @@ const BranchesViewContainer = () => {
         open={action === "view"}
         action="view"
         title="View Branch"
-        branch={selectedBranch}
+        branchId={selectedBranch?.id}
         handleClose={() => setAction(undefined)}
       />
       <DeleteBranch

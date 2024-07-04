@@ -1,7 +1,1 @@
-export type TEmployeeFilterProps = {
-  gender?: "male" | "female";
-  roleId?: number;
-  designationId?: number;
-  departmentId?: number;
-  branchId?: number;
-};
+export { type TEmployeeFilterProps } from "../hooks/useFetchEmployees";

@@ -30,6 +30,7 @@ import {
   useGetCompanyParamSetting,
 } from "../hooks/useGetCompanyParamSetting";
 import { QUERY_KEY_FOR_AUTHENTICATED_USER } from "features/authentication/hooks/useGetAuthUser";
+import { FormCountryNameInput } from "components/generalFormInputs/FormCountryInput";
 
 const parentCompStyle = "grid md:grid-cols-2 border-0 border-b gap-4 py-2";
 const compStyle = "flex flex-col gap-2 items-start";
@@ -215,19 +216,14 @@ const CompanySettingsForm = () => {
             </Typography.Title>
 
             <div className={compStyle}>
-              <Form.Item
-                label="Country"
-                name={`country`}
-                className="w-3/4"
-                rules={generalValidationRules}
-              >
-                <Select
-                  options={countries?.map((item) => ({
-                    label: item.name,
-                    value: item.name,
-                  }))}
+              <div className="w-3/4">
+                <FormCountryNameInput
+                  Form={Form}
+                  control={{ label: "Country", name: "country" }}
+                  countries={countries}
+                  isLoading={isFetchingCountries}
                 />
-              </Form.Item>
+              </div>
             </div>
             <div className={compStyle}>
               <Form.Item

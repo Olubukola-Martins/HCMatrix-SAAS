@@ -212,7 +212,7 @@ const BankDetailsForm: React.FC<{
               bvn: data.bvn,
               bankName: selectedBank.name,
               accountNumber: data?.accountNumber,
-              bankCode: data.bankcode ?? selectedBank.code,
+              bankCode: data.bankcode ?? selectedBank?.code,
             },
           },
         },

@@ -1,4 +1,4 @@
-import { Dropdown, Skeleton } from "antd";
+import { Dropdown } from "antd";
 import Themes from "components/Themes";
 import { FeatureInfoCard } from "components/cards/FeatureInfoCard";
 import { appRoutes } from "config/router/paths";
@@ -59,26 +59,24 @@ export const SelfServiceSettingBox = ({
             </div>
             {
               <Dropdown
-                overlayStyle={{ top: 1000 }}
-                overlay={
-                  <Themes>
-                    <div className="py-3 shadow-md px-4 text-sm font-medium rounded-md flex flex-col gap-3">
-                      {settings
-                        .filter((item) => item.hidden === false)
-                        .map((item, i) => (
-                          <Link
-                            key={i}
-                            to={item.link}
-                            className="cursor-pointer hover:text-caramel"
-                          >
-                            {item.title}
-                          </Link>
-                        ))}
-                    </div>
-                  </Themes>
-                }
+                menu={{
+                  items: settings
+                    .filter((item) => item.hidden === false)
+                    .map((item, i) => ({
+                      key: i,
+                      type: "item",
+                      label: (
+                        <Link
+                          key={i}
+                          to={item.link}
+                          className="cursor-pointer hover:text-caramel"
+                        >
+                          {item.title}
+                        </Link>
+                      ),
+                    })),
+                }}
                 trigger={["click"]}
-                placement="bottom"
               >
                 <i className="ri-more-fill text-lg"></i>
               </Dropdown>
@@ -115,26 +113,24 @@ export const RequisitionBox = ({
             </div>
             {
               <Dropdown
-                overlayStyle={{ top: 1000 }}
-                overlay={
-                  <Themes>
-                    <div className="py-3 shadow-md px-4 text-sm font-medium rounded-md flex flex-col gap-3">
-                      {requisitions
-                        .filter((item) => item.hidden === false)
-                        .map((item, i) => (
-                          <Link
-                            key={i}
-                            to={item.link}
-                            className="cursor-pointer hover:text-caramel"
-                          >
-                            {item.title}
-                          </Link>
-                        ))}
-                    </div>
-                  </Themes>
-                }
+                menu={{
+                  items: requisitions
+                    .filter((item) => item.hidden === false)
+                    .map((item, i) => ({
+                      key: i,
+                      type: "item",
+                      label: (
+                        <Link
+                          key={i}
+                          to={item.link}
+                          className="cursor-pointer hover:text-caramel"
+                        >
+                          {item.title}
+                        </Link>
+                      ),
+                    })),
+                }}
                 trigger={["click"]}
-                placement="bottom"
               >
                 <i className="ri-more-fill text-lg"></i>
               </Dropdown>

@@ -11,12 +11,16 @@ import { useFetchApprovalRequests } from "features/core/workflows/hooks/useFetch
 import { useNavigate } from "react-router-dom";
 import { appRoutes } from "config/router/paths";
 import { SupplementaryActionsProps } from "SupplementaryActions";
+import { ComparePayroll } from "../payrollComparism/ComparePayroll";
 
 interface IProps {
   payroll: TSinglePayroll;
 }
 const SinglePayrollReview: React.FC<IProps> = ({ payroll }) => {
-  type TAction = "view-summary" | "compare";
+  type TAction =
+    | "view-summary"
+    | "comapare-payroll-basic"
+    | "compare-payroll-advanced";
   const queryClient = useQueryClient();
 
   const [action, setAction] = useState<TAction>();
@@ -57,7 +61,7 @@ const SinglePayrollReview: React.FC<IProps> = ({ payroll }) => {
     },
     {
       name: "Compare",
-      handleClick: () => handleAction({ action: "compare" }),
+      handleClick: () => handleAction({ action: "comapare-payroll-basic" }),
       btnVariant: "transparent",
     },
   ];
@@ -67,6 +71,18 @@ const SinglePayrollReview: React.FC<IProps> = ({ payroll }) => {
         open={action === "view-summary"}
         handleClose={clearAction}
         payroll={payroll}
+      />
+      <ComparePayroll
+        handleClose={clearAction}
+        open={
+          action !== undefined &&
+          ["comapare-payroll-basic", "compare-payroll-advanced"].includes(
+            action
+          )
+        }
+        payrollId={payroll?.id}
+        payrollDate={payroll.date}
+        type={action === "comapare-payroll-basic" ? "basic" : "advanced"}
       />
       <Skeleton
         active

@@ -50,7 +50,7 @@ export const HOSPITAL_TABLE_COLUMNS = (
     dataIndex: "Contact",
     key: "Contact",
     render: (_, item) => (
-      <span className="capitalize">{item.phoneNumber} </span>
+      <span className="capitalize">{item?.phoneNumber} </span>
     ),
   },
   {

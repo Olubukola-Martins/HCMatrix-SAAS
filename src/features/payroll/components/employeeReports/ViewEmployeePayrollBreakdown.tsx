@@ -200,6 +200,7 @@ const ViewEmployeePayrollBreakdown: React.FC<IProps> = ({
                       <tbody>
                         {employeePayroll?.employeeSalaryComponents
                           .filter((item) => item.type === comp.type)
+                          .filter((item) => item.isActive)
                           .map((item, i) => (
                             <tr key={i}>
                               <td className="capitalize">{item.name}</td>

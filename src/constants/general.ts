@@ -6,6 +6,7 @@ export const DEFAULT_EMPLOYEES_CREATED_BY_SYSTEM = 1; //the purchaser of the sys
 export const DEFAULT_DEPARTMENTS_CREATED_BY_SYSTEM = 0;
 export const DEFAULT_DESIGNATIONS_CREATED_BY_SYSTEM = 0;
 export const MAX_NO_OF_WORKING_DAYS_PER_WEEK = 7;
+export const MIN_NO_OF_WORKING_DAYS_PER_WEEK = 1;
 
 // The purpose of this file to prevent repetition
 export const MONTH_CHART_LABELS = [
@@ -111,6 +112,34 @@ export const RELATIONSHIPS = [
     value: "girlfriend",
   },
   {
+    label: "Boyfriend",
+    value: "boyfriend",
+  },
+  {
+    label: "Husband",
+    value: "husband",
+  },
+  {
+    label: "Wife",
+    value: "wife",
+  },
+  {
+    label: "Father",
+    value: "father",
+  },
+  {
+    label: "Mother",
+    value: "mother",
+  },
+  {
+    label: "Son",
+    value: "son",
+  },
+  {
+    label: "Daughter",
+    value: "daughter",
+  },
+  {
     label: "Nephew",
     value: "nephew",
   },
@@ -122,7 +151,68 @@ export const RELATIONSHIPS = [
     label: "Cousin",
     value: "cousin",
   },
+  {
+    label: "Uncle",
+    value: "uncle",
+  },
+  {
+    label: "Aunt",
+    value: "aunt",
+  },
+  {
+    label: "Grandfather",
+    value: "grandfather",
+  },
+  {
+    label: "Grandmother",
+    value: "grandmother",
+  },
+  {
+    label: "Grandson",
+    value: "grandson",
+  },
+  {
+    label: "Granddaughter",
+    value: "granddaughter",
+  },
+  {
+    label: "Stepfather",
+    value: "stepfather",
+  },
+  {
+    label: "Stepmother",
+    value: "stepmother",
+  },
+  {
+    label: "Stepson",
+    value: "stepson",
+  },
+  {
+    label: "Stepdaughter",
+    value: "stepdaughter",
+  },
+  {
+    label: "Step-brother",
+    value: "step-brother",
+  },
+  {
+    label: "Step-sister",
+    value: "step-sister",
+  },
+  {
+    label: "Friend",
+    value: "friend",
+  },
+  {
+    label: "Fiancé",
+    value: "fiance",
+  },
+  {
+    label: "Fiancée",
+    value: "fiancee",
+  },
 ];
+
 export const DEFAULT_PROFILE_IMAGE_URL = "https://picsum.photos/193";
 export const DEFAULT_LOGO_IMAGE_URL = "https://picsum.photos/190";
 export const EMPLOYMENT_TYPES = [

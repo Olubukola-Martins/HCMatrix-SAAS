@@ -88,18 +88,18 @@ const validateData = async (props: {
       }
       uniqueEmpUids.push(employee.empUid);
       // validate ensure employee does not exist
-      const employeeAlreadyExists = employeeFetchedData?.find(
-        (item) => item.empUid === employee.empUid
-      );
-      if (employeeAlreadyExists) {
-        errors = [
-          ...errors,
-          {
-            category: "employeeInformation",
-            content: `${employee.empUid} already exists!`,
-          },
-        ];
-      }
+      // const employeeAlreadyExists = employeeFetchedData?.find(
+      //   (item) => item.empUid === employee.empUid
+      // );
+      // if (employeeAlreadyExists) {
+      //   errors = [
+      //     ...errors,
+      //     {
+      //       category: "employeeInformation",
+      //       content: `${employee.empUid} already exists!`,
+      //     },
+      //   ];
+      // }
       // validate employee info
       let validateEmpInfo = validateBulkEmployeeInfo({ employee, rowId });
       if (validateEmpInfo.isDataValid === false) {

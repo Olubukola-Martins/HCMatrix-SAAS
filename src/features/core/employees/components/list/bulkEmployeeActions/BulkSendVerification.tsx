@@ -1,4 +1,4 @@
-import { Form,  } from "antd";
+import { Form } from "antd";
 import React from "react";
 import { IModalProps } from "types";
 import { openNotification } from "utils/notifications";
@@ -27,7 +27,9 @@ export const BulkSendVerification: React.FC<IProps> = ({
     mutate(
       {
         action: "send-verification-to-unverified",
-        data: undefined,
+        data: {
+          employeeIds,
+        },
       },
       {
         onError: (err: any) => {
@@ -63,18 +65,20 @@ export const BulkSendVerification: React.FC<IProps> = ({
   };
   return (
     <ConfirmationModal
-    title={`Send Verification`}
-    description={`Are you sure you want to send verification to ${pluralOrSingular({
-      amount: employeeIds.length,
-      plural: "employees",
-      singular: "employee",
-    })}?`}
-    handleClose={handleClose}
-    open={open}
-    handleConfirm={{
-      fn: () => handleSubmit(),
-      isLoading: isLoading,
-    }}
-  />
+      title={`Send Verification`}
+      description={`Are you sure you want to send verification to ${pluralOrSingular(
+        {
+          amount: employeeIds.length,
+          plural: "employees",
+          singular: "employee",
+        }
+      )}?`}
+      handleClose={handleClose}
+      open={open}
+      handleConfirm={{
+        fn: () => handleSubmit(),
+        isLoading: isLoading,
+      }}
+    />
   );
 };

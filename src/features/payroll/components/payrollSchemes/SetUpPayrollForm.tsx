@@ -247,12 +247,13 @@ function reducer(
     case "displayEmployerPensionContribution":
       return {
         ...state,
-        displayNIF: !state.displayEmployerPensionContribution,
+        displayEmployerPensionContribution:
+          !state.displayEmployerPensionContribution,
       };
     case "displayBonus":
       return {
         ...state,
-        displayNIF: !state.displayBonus,
+        displayBonus: !state.displayBonus,
       };
     case "handleProjectParticipants":
       return {
@@ -285,7 +286,7 @@ export const SetUpPayrollForm: React.FC<{
 }) => {
   const [state, dispatch] = useReducer(reducer, {
     ...initialState,
-    projectParticipants: project?.employees.map((item) => ({
+    projectParticipants: project?.employees?.map((item) => ({
       id: item.id,
       key: item.employee.empUid,
 
@@ -1131,7 +1132,7 @@ export const SetUpPayrollForm: React.FC<{
                 <div className="flex items-center justify-between">
                   <h5
                     className={boxTitle}
-                    title="Manage all of the postive finiacial benefits that make up employees' pay"
+                    title="Manage all of the postive financial benefits that make up employees' pay"
                   >
                     Allowances
                   </h5>
@@ -1141,7 +1142,7 @@ export const SetUpPayrollForm: React.FC<{
                   />
                 </div>
                 <p className="text-sm">
-                  Manage all of the postive finiacial benefits that make up
+                  Manage all of the postive financial benefits that make up
                   employees' pay
                 </p>
                 {displayAllowances && (
@@ -1168,7 +1169,7 @@ export const SetUpPayrollForm: React.FC<{
                 <div className="flex items-center justify-between">
                   <h5
                     className={boxTitle}
-                    title="Manage all of the negative finiacial benefits that make up employees' pay"
+                    title="Manage all of the negative financial benefits that make up employees' pay"
                   >
                     Deductions
                   </h5>
@@ -1178,7 +1179,7 @@ export const SetUpPayrollForm: React.FC<{
                   />
                 </div>
                 <p className="text-sm">
-                  Manage all of the negative finiacial benefits that make up
+                  Manage all of the negative financial benefits that make up
                   employees' pay
                 </p>
                 {displayDeductions && (
@@ -1250,7 +1251,6 @@ export const SetUpPayrollForm: React.FC<{
                   {runAutomatically && type !== "project" && (
                     <div className="mt-6">
                       <Form.Item
-                        requiredMark={false}
                         name={`automaticRunDay`}
                         noStyle
                         rules={generalValidationRules}
@@ -1270,7 +1270,6 @@ export const SetUpPayrollForm: React.FC<{
                         .fill(0)
                         .map((item, i) => (
                           <Form.Item
-                            requiredMark={false}
                             className="w-full flex"
                             key={i}
                             name={`Payment${i + 1}`}

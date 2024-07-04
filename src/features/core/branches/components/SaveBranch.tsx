@@ -1,13 +1,15 @@
-import { Form, Input, Modal, Skeleton } from "antd";
+import { Form, Input, Modal, Select, Skeleton } from "antd";
 import { AppButton } from "components/button/AppButton";
 import React, { useEffect } from "react";
 import { IModalProps } from "types";
 import { textInputValidationRules } from "utils/formHelpers/validation";
-import { TBranch, TCreateBranchProps } from "../types";
+import { TCreateBranchProps } from "../types";
 import { FormAddressInput } from "components/generalFormInputs/FormAddressInput";
+import { FormBranchInput } from "./FormBranchInput";
+import { useFetchSingleBranch } from "../hooks/useFetchSingleBranch";
 
 interface IProps extends IModalProps {
-  branch?: TBranch;
+  branchId?: number;
   action?: "add" | "edit" | "view";
   title?: string;
   onSubmit?: {
@@ -15,20 +17,20 @@ interface IProps extends IModalProps {
     isLoading?: boolean;
     isSuccess?: boolean;
   };
-  loading?: boolean;
 }
 
 export const SaveBranch: React.FC<IProps> = ({
   open,
   handleClose,
   action = "add",
-  branch,
+  branchId,
   title = "Add Branch",
   onSubmit,
-  loading,
 }) => {
   const [form] = Form.useForm<TCreateBranchProps>();
-
+  const { data: branch, isLoading: loading } = useFetchSingleBranch({
+    branchId,
+  });
   const handleSubmit = (data: TCreateBranchProps) => {
     onSubmit?.fn({
       ...data,
@@ -78,6 +80,7 @@ export const SaveBranch: React.FC<IProps> = ({
           <Form.Item rules={textInputValidationRules} name="name" label="Name">
             <Input placeholder="Name" />
           </Form.Item>
+
           <Form.Item
             rules={textInputValidationRules}
             name="description"
@@ -85,8 +88,25 @@ export const SaveBranch: React.FC<IProps> = ({
           >
             <Input.TextArea placeholder="Description" />
           </Form.Item>
+          <FormBranchInput
+            Form={Form}
+            control={{ label: "Parent Branch", name: "parentBranchId" }}
+            optional
+          />
+          {["view"].includes(action) && (
+            <Form.Item label={`Child Branch(es)`}>
+              <Select
+                disabled
+                mode="tags"
+                value={branch?.childBranches?.map((item) => item.id)}
+                options={branch?.childBranches?.map((item) => ({
+                  label: <span className="capitalize">{item.name}</span>,
+                  value: item.id,
+                }))}
+              />
+            </Form.Item>
+          )}
 
-          {/* TODO: Create a reusable address form component */}
           <>
             {" "}
             <FormAddressInput

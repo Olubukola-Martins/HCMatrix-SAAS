@@ -12,7 +12,7 @@ type TCreateProps = {
   preferredStartDate: string;
   skillsAndQualifications: string;
   educationRequirements: string;
-};
+} & { employeeId?: number };
 
 const createData = async (props: {
   data: TCreateProps;

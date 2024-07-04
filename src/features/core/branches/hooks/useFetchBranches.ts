@@ -7,6 +7,10 @@ import { DEFAULT_PAGE_SIZE } from "constants/general";
 
 export const QUERY_KEY_FOR_BRANCHES = "branches";
 
+type TListBranch = Omit<TBranch, "childBranches"> & {
+  childBranchesCount: number;
+  employeeCount: number;
+};
 interface IGetDataProps {
   pagination?: IPaginationProps;
   searchParams?: ISearchParams;
@@ -15,7 +19,7 @@ interface IGetDataProps {
 export const getBranches = async (vals: {
   auth: ICurrentCompany;
   props: IGetDataProps;
-}): Promise<{ data: TBranch[]; total: number }> => {
+}): Promise<{ data: TListBranch[]; total: number }> => {
   const { auth, props } = vals;
   const { pagination } = props;
   const limit = pagination?.limit ?? DEFAULT_PAGE_SIZE;
@@ -41,7 +45,9 @@ export const getBranches = async (vals: {
   const fetchedData = res.data.data;
   const result = fetchedData.result;
 
-  const data: TBranch[] = result.map((item: TBranch): TBranch => item);
+  const data: TListBranch[] = result.map(
+    (item: TListBranch): TListBranch => item
+  );
 
   const ans = {
     data,

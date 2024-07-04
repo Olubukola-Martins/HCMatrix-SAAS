@@ -1,13 +1,13 @@
 import React from "react";
 import CompanyTrainingSessionCalender from "./CompanyTrainingSessionCalender";
-import { Moment } from "moment";
 import { TTrainingSessionBookingStatus } from "features/billing/types/addOns/trainingSession";
 import { DatePicker } from "antd";
 import { SelectTrainingBookingStatus } from "./booking/SelectTrainingBookingStatus";
+import { Dayjs } from "dayjs";
 
 const CompanyTrainingSessionContainer = () => {
   const [duration, setDuration] =
-    React.useState<[Moment | null, Moment | null]>();
+    React.useState<[Dayjs | null, Dayjs | null]>();
   const [status, setStatus] = React.useState<TTrainingSessionBookingStatus>();
   return (
     <div className="flex flex-col gap-4">

@@ -18,6 +18,7 @@ import { QUERY_KEY_FOR_JOB_REQUISITIONS_FOR_AUTH_EMPLOYEE } from "../../requisit
 import { QUERY_KEY_FOR_APPROVAL_REQUESTS } from "features/core/workflows/hooks/useFetchApprovalRequests";
 import { QUERY_KEY_FOR_NOTIFICATIONS } from "features/notifications/hooks/useGetAlerts";
 import { QUERY_KEY_FOR_UNREAD_NOTIFICATION_COUNT } from "features/notifications/hooks/unRead/useGetUnReadNotificationCount";
+import { FormUnlicensedEmployeeSSRequestInput } from "features/core/employees/components/FormEmployeeInput";
 
 export const NewJobRequest: React.FC<IModalProps> = ({ open, handleClose }) => {
   const queryClient = useQueryClient();
@@ -28,6 +29,7 @@ export const NewJobRequest: React.FC<IModalProps> = ({ open, handleClose }) => {
   const handleSubmit = (data: any) => {
     mutate(
       {
+        employeeId: data?.employeeId,
         designationId: data.designationId,
         date: data.date.toString(),
         employmentType: data.employmentType,
@@ -95,6 +97,13 @@ export const NewJobRequest: React.FC<IModalProps> = ({ open, handleClose }) => {
         onFinish={handleSubmit}
         requiredMark={false}
       >
+        <FormUnlicensedEmployeeSSRequestInput
+          Form={Form}
+          control={{
+            name: "employeeId",
+            label: "Select Unlinsenced Employee",
+          }}
+        />
         <Form.Item
           rules={[dateHasToBeGreaterThanOrEqualToCurrentDayRule]}
           name="date"

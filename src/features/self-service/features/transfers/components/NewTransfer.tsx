@@ -12,11 +12,11 @@ import { useCreateTranferRequisition } from "../../requisitions/hooks/transfer/u
 import { FormBranchInput } from "features/core/branches/components/FormBranchInput";
 import { FormDesignationInput } from "features/core/designations/components/FormDesignationInput";
 import { QUERY_KEY_FOR_TRANSFER_REQUISITIONS } from "../../requisitions/hooks/transfer/useGetTransferRequisitions";
-import { QUERY_KEY_FOR_JOB_REQUISITIONS_FOR_AUTH_EMPLOYEE } from "../../requisitions/hooks/job/useGetJobRequisitions4AuthEmployee";
 import { QUERY_KEY_FOR_APPROVAL_REQUESTS } from "features/core/workflows/hooks/useFetchApprovalRequests";
 import { QUERY_KEY_FOR_UNREAD_NOTIFICATION_COUNT } from "features/notifications/hooks/unRead/useGetUnReadNotificationCount";
 import { QUERY_KEY_FOR_NOTIFICATIONS } from "features/notifications/hooks/useGetAlerts";
 import { QUERY_KEY_FOR_TRANSFER_REQUISITIONS_FOR_AUTH_EMPLOYEE } from "../../requisitions/hooks/transfer/useGetTransferRequisitions4AuthEmployee";
+import { FormUnlicensedEmployeeSSRequestInput } from "features/core/employees/components/FormEmployeeInput";
 
 export const NewTransfer: React.FC<IModalProps> = ({ open, handleClose }) => {
   const queryClient = useQueryClient();
@@ -27,6 +27,8 @@ export const NewTransfer: React.FC<IModalProps> = ({ open, handleClose }) => {
   const handleSubmit = (data: any) => {
     mutate(
       {
+        employeeId: data?.employeeId,
+
         date: data.date.toString(),
         proposedBranchId: data.proposedBranchId,
         proposedDesignationId: data.proposedDesignationId,
@@ -91,6 +93,13 @@ export const NewTransfer: React.FC<IModalProps> = ({ open, handleClose }) => {
         onFinish={handleSubmit}
         requiredMark={false}
       >
+        <FormUnlicensedEmployeeSSRequestInput
+          Form={Form}
+          control={{
+            name: "employeeId",
+            label: "Select Unlinsenced Employee",
+          }}
+        />
         <Form.Item
           rules={[dateHasToBeGreaterThanOrEqualToCurrentDayRule]}
           name="date"

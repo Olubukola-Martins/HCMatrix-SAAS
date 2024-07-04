@@ -7,11 +7,12 @@ import { usePagination } from "hooks/usePagination";
 
 import moment from "moment";
 import { TableWithFocusType } from "components/table";
-import { AiFillDelete, AiFillEdit } from "react-icons/ai";
+import { AiFillDelete } from "react-icons/ai";
 import { TPensionAdministrator } from "features/payroll/types";
 import EditPensionAdmin from "./EditPensionAdmin";
 import DeletePensionAdmin from "./DeletePensionAdmin";
 import { useGetPensionAdmins } from "features/payroll/hooks/organization/pensionAdministrators/useGetPensionAdmins";
+import { DEFAULT_DATE_FORMAT } from "constants/dateFormats";
 
 type TAction = "edit" | "delete";
 
@@ -50,15 +51,15 @@ const PensionAdminTable: React.FC<{
 
     {
       title: "Created At",
-      dataIndex: "createAr",
-      key: "createAr",
-      render: (_, item) => moment(item.createdAt).format(`YYYY-MM-DD`),
+      dataIndex: "Created At",
+      key: "Created At",
+      render: (_, item) => moment(item.createdAt).format(DEFAULT_DATE_FORMAT),
     },
     {
       title: "Updated At",
       dataIndex: "update",
       key: "update",
-      render: (_, item) => moment(item.updatedAt).format(`YYYY-MM-DD`),
+      render: (_, item) => moment(item.updatedAt).format(DEFAULT_DATE_FORMAT),
     },
     {
       title: "",
@@ -66,11 +67,11 @@ const PensionAdminTable: React.FC<{
       key: "actions",
       render: (_, item) => (
         <div>
-          <Button
+          {/* <Button
             icon={<AiFillEdit />}
             type="text"
             onClick={() => handleAction({ action: "edit", data: item })}
-          />
+          /> */}
           <Button
             icon={<AiFillDelete />}
             type="text"

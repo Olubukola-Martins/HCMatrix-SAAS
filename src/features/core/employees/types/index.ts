@@ -327,7 +327,7 @@ export type TEmployee = {
     fullName: string;
     email: string;
     isSocial: boolean;
-    isVerified: boolean;
+    isVerified?: boolean;
   };
   companyId: number;
   avatarUrl?: string;

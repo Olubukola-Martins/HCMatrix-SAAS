@@ -13,7 +13,7 @@ type TCreateProps = {
   supportingDocumentUrl?: string;
   supervisorClearanceUrl?: string;
   assetChecklist?: AssetChecklist[];
-};
+} & { employeeId?: number };
 
 interface AssetChecklist {
   assetRequisitionId: number;

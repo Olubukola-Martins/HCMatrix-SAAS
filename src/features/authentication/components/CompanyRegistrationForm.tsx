@@ -20,24 +20,33 @@ import {
   generalValidationRules,
   emailValidationRules,
   passwordValidationRules,
+  fullNameHasToHaveFirstAndLastName,
 } from "utils/formHelpers/validation";
 import { openNotification } from "utils/notifications";
 import { createCompany } from "../hooks/useCreateCompany";
 import { ICreateCompProps } from "../types";
+import { validateCaptcha } from "react-simple-captcha";
+import Recaptcha from "components/recaptcha/Recaptcha";
 
 const CompanyRegistrationForm = () => {
   const [showM, setShowM] = useState(false);
   const [email, setEmail] = useState("");
   const [form] = Form.useForm();
-  const {
-    data: industries,
-    isSuccess: isISuccess,
-  } = useFetchIndustries();
+  const { data: industries, isSuccess: isISuccess } = useFetchIndustries();
   const { isSuccess: isCSuccess } = useFetchCountries();
   const { mutate, isLoading } = useMutation(createCompany);
 
   const handleSignUp = (data: any) => {
-    const phoneNumber = `${data.phone.code}-${data.phone.number}`;
+    if (validateCaptcha(data?.recaptcha) === false) {
+      openNotification({
+        state: "error",
+        title: "Validation Error",
+        description: "Please validate captcha",
+      });
+
+      return;
+    }
+    const phoneNumber = `${data?.phone?.code}-${data?.phone.number}`;
     const props: ICreateCompProps = {
       name: data.organization,
       email: data.email,
@@ -101,7 +110,7 @@ const CompanyRegistrationForm = () => {
         >
           <Form.Item
             name="fullName"
-            rules={textInputValidationRules}
+            rules={[fullNameHasToHaveFirstAndLastName]}
             hasFeedback
           >
             <Input
@@ -217,6 +226,14 @@ const CompanyRegistrationForm = () => {
               autoComplete="new-password"
             />
           </Form.Item>
+          <Form.Item name="recaptcha" rules={textInputValidationRules}>
+            <Input
+              placeholder="Enter recaptcha"
+              className="rounded border-slate-400"
+              style={{ padding: "6px 5px" }}
+            />
+          </Form.Item>
+          <Recaptcha />
           <Form.Item>
             <button
               className="authBtn w-full mt-4 mb-3"

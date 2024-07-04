@@ -3,7 +3,8 @@ import {
   DEFAULT_MAX_FILE_UPLOAD_COUNT,
   DEFAULT_MAX_FILE_UPLOAD_SIZE_IN_MB,
 } from "constants/files";
-import moment, { Moment } from "moment";
+import { Dayjs } from "dayjs";
+import moment from "moment";
 import { TFileType } from "types/files";
 
 // helpers
@@ -22,10 +23,13 @@ export const isEmailValid = (val: string): boolean => {
   return emailPattern.test(val);
 };
 export const countMatchingDatesInclusive = (
-  start: Moment,
-  end: Moment,
-  dates: Moment[]
+  _start: Dayjs,
+  _end: Dayjs,
+  _dates: Dayjs[]
 ): number => {
+  let start = moment(_start.toString());
+  let end = moment(_end.toString());
+  let dates = _dates.map((b) => moment(b.toString()));
   // Make sure the start date is before or equal to the end date
   if (end.isBefore(start)) {
     [start, end] = [end, start];
@@ -44,7 +48,9 @@ export const countMatchingDatesInclusive = (
   return matchingCount;
 };
 
-export const countWeekendsInclusive = (start: Moment, end: Moment): number => {
+export const countWeekendsInclusive = (_start: Dayjs, _end: Dayjs): number => {
+  let start = moment(_start.toString());
+  let end = moment(_end.toString());
   // Make sure the start date is before or equal to the end date
   if (end.isBefore(start)) {
     [start, end] = [end, start];
@@ -64,18 +70,21 @@ export const countWeekendsInclusive = (start: Moment, end: Moment): number => {
   return weekendCount;
 };
 
-export const isDateGreaterThanCurrentDay = (date: Moment) => {
+export const isDateGreaterThanCurrentDay = (_date:Dayjs) => {
   const currentDate = moment();
+  const date  = moment(_date.toString())
   if (!date) return;
   return date.isAfter(currentDate, "day"); // Check if selected date is greater than the current day
 };
-export const isDateGreaterThanOrEqualToCurrentDay = (date: Moment) => {
+export const isDateGreaterThanOrEqualToCurrentDay = (_date:Dayjs) => {
   const currentDate = moment();
+  const date  = moment(_date.toString())
   if (!date) return;
   return date.isSameOrAfter(currentDate, "day"); // Check if selected date is greater than the current day
 };
-export const isDateLesserThanOrEqualToCurrentDay = (date: Moment) => {
+export const isDateLesserThanOrEqualToCurrentDay = (_date:Dayjs) => {
   const currentDate = moment();
+  const date  = moment(_date.toString())
   if (!date) return;
   return date.isSameOrBefore(currentDate, "day"); // Check if selected date is greater than the current day
 };
@@ -99,6 +108,26 @@ export const textInputValidationRulesOp: Rule[] = [
     whitespace: true,
   },
 ];
+export const fullNameHasToHaveFirstAndLastName: Rule = {
+  validator: async (val, value: string) => {
+    if (typeof value !== "string") {
+      throw new Error("Please enter a valid string!");
+    }
+    // check if the first and last name exist
+    const fullName = value.split(" ");
+    if (fullName.length < 2) {
+      throw new Error("Please enter a first and last name!");
+    }
+    if (fullName?.[0]?.trim() === "") {
+      throw new Error("Please enter a non empty first name!");
+    }
+    if (fullName?.[1]?.trim() === "") {
+      throw new Error("Please enter a non empty last name!");
+    }
+
+    return true;
+  },
+};
 export const numberHasToBeAWholeNumberRule: Rule = {
   validator: async (val, _value: any) => {
     const value = +_value;
@@ -199,8 +228,11 @@ export const numberHasToBeGreaterThanValueRule = (_value: number): Rule => ({
   },
 });
 export const numberHasToBeGreaterThanZeroRule: Rule = {
-  validator: async (_: any, value: any) => {
-    if (typeof value !== "number") {
+  validator: async (_: any, value: string | number) => {
+    const isValidNumber =
+      !isNaN(parseFloat(value.toString())) && isFinite(+value);
+
+    if (!isValidNumber) {
       throw new Error("Please enter a valid number!");
     }
     if (+value <= 0) {

@@ -3,7 +3,7 @@ import React, { useEffect } from "react";
 import { IModalProps } from "types";
 import { useApiAuth } from "hooks/useApiAuth";
 import { getAppropriateColorForStatus } from "utils/colorHelpers/getAppropriateColorForStatus";
-import moment from "moment";
+import dayjs from "dayjs";
 import {
   QUERY_KEY_FOR_SINGLE_POSITION_CHANGE_REQUISITION,
   useGetSinglePositionChangeRequisition,
@@ -35,7 +35,7 @@ export const PositionChangeRequestDetails: React.FC<IProps> = ({
   useEffect(() => {
     if (data) {
       form.setFieldsValue({
-        date: data.date ? moment(data.date) : null,
+        date: data.date ? dayjs(data.date) : null,
         employeeName: `${data.employee.firstName} ${data.employee.lastName}`,
         proposedDesignation: data.proposedDesignation.name,
         skillsAndQualifications: data.skillsAndQualifications,
@@ -95,10 +95,10 @@ export const PositionChangeRequestDetails: React.FC<IProps> = ({
             <Input.TextArea />
           </Form.Item>
 
-          <Form.Item name={"reason"} label="reason">
+          <Form.Item name={"reason"} label="Reason">
             <Input.TextArea />
           </Form.Item>
-          <Form.Item name={"justification"} label="justification">
+          <Form.Item name={"justification"} label="Justification">
             <Input.TextArea />
           </Form.Item>
 

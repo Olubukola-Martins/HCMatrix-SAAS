@@ -38,7 +38,7 @@ const LoanWorthiness: React.FC<{
               : "text-red-500"
           }`}
         >
-          Loan Worthiness
+          Loan Eligibility
         </p>
         <Input.TextArea value={data?.worthinessMessage} disabled size="small" />
         {data?.requiresForm && (

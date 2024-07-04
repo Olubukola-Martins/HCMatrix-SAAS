@@ -1,4 +1,4 @@
-import { Form, Input, InputNumber, Modal, Select, Tag } from "antd";
+import { Checkbox, Form, Input, Modal, Select, Tag } from "antd";
 import { AppButton } from "components/button/AppButton";
 import { useAddAllowanceOrDeduction } from "features/payroll/hooks/scheme/allowanceAndDeductionHandlers/useAddAllowanceOrDeduction";
 import { QUERY_KEY_FOR_PAYROLL_SCHEME_BY_TYPE_OR_ID } from "features/payroll/hooks/scheme/useGetPayrollSchemeByTypeOrId";
@@ -15,13 +15,12 @@ import {
   isFormulaValid,
   isValidEvalExpression,
   jsVariableNameValidationRule,
-  numberInputValidationRules,
+  numberHasToBeGreaterThanZeroRule,
 } from "utils/formHelpers/validation";
 import { openNotification } from "utils/notifications";
 import { TaxPolicyCreator } from "../taxPolicies";
 import { useUpdateAllowanceOrDeduction } from "features/payroll/hooks/scheme/allowanceAndDeductionHandlers/useUpdateAllowanceOrDeduction";
 import {
-  TTaxCondition,
   dummyConditions,
   extractParamsFromInput,
 } from "features/payroll/utils/createTaxSalaryComponentFormula";
@@ -134,7 +133,7 @@ export const AddSalaryComponentForm: React.FC<IFormProps> = ({
   const { mutate: updateMutate, isLoading: isUpdateLoading } =
     useUpdateAllowanceOrDeduction();
 
-  //TODO: write a function that makes use of amntRestrict to set max/min of inputNumber
+  //TODO: write a function that makes use of amntRestrict to set max/min of input
   const handleUpdate = useCallback(
     (vals: any) => {
       salaryComponent &&
@@ -155,6 +154,7 @@ export const AddSalaryComponentForm: React.FC<IFormProps> = ({
                 .toLocaleLowerCase()
                 .split(" ")
                 .join("_"),
+              shouldDisplayOnReviewTable: vals?.shouldDisplayOnReviewTable,
             },
           },
           {
@@ -223,6 +223,7 @@ export const AddSalaryComponentForm: React.FC<IFormProps> = ({
         isActive,
         description: componentDescription,
         label: (vals.name as string).toLocaleLowerCase().split(" ").join("_"),
+        shouldDisplayOnReviewTable: vals?.shouldDisplayOnReviewTable,
       });
 
       return;
@@ -242,6 +243,7 @@ export const AddSalaryComponentForm: React.FC<IFormProps> = ({
               .toLocaleLowerCase()
               .split(" ")
               .join("_"),
+            shouldDisplayOnReviewTable: vals?.shouldDisplayOnReviewTable,
           },
         },
         {
@@ -318,6 +320,7 @@ export const AddSalaryComponentForm: React.FC<IFormProps> = ({
         name: salaryComponent.name?.split("_").join(" "),
         amount: salaryComponent.amount,
         mode: salaryComponent.mode,
+        shouldDisplayOnReviewTable: salaryComponent.shouldDisplayOnReviewTable,
       });
       if (salaryComponent.description) {
         console.log(
@@ -390,22 +393,18 @@ export const AddSalaryComponentForm: React.FC<IFormProps> = ({
         <Form.Item
           label="What percentage of gross pay?"
           name="amount"
-          rules={numberInputValidationRules}
+          rules={[numberHasToBeGreaterThanZeroRule]}
         >
-          <InputNumber
-            min={0}
-            placeholder="Percentage of Gross"
-            className="w-full"
-          />
+          <Input min={0} placeholder="Percentage of Gross" className="w-full" />
         </Form.Item>
       )}
       {mode === "fixed" && (
         <Form.Item
           label="Amount"
-          rules={numberInputValidationRules}
+          rules={[numberHasToBeGreaterThanZeroRule]}
           name="amount"
         >
-          <InputNumber min={0} placeholder="Amount" className="w-full" />
+          <Input min={0} placeholder="Amount" className="w-full" />
         </Form.Item>
       )}
 
@@ -468,6 +467,13 @@ export const AddSalaryComponentForm: React.FC<IFormProps> = ({
           />
         </>
       )}
+      <Form.Item
+        name="shouldDisplayOnReviewTable"
+        label=""
+        valuePropName="checked"
+      >
+        <Checkbox>Should be displayed on review table</Checkbox>
+      </Form.Item>
 
       <div className="flex justify-end">
         <AppButton

@@ -31,7 +31,8 @@ import {
   QUERY_KEY_FOR_SINGLE_PAYROLL,
   useGetSinglePayroll,
 } from "features/payroll/hooks/payroll/useGetSinglePayroll";
-import moment from "moment";
+import dayjs from "dayjs";
+
 import { EmployeeTimesheet } from "./EmployeeTimesheet";
 import { useRollbackPayroll } from "features/payroll/hooks/payroll/rollback/useRollbackPayroll";
 import { useQueryClient } from "react-query";
@@ -44,6 +45,7 @@ import { FormPayrollProjectSchemeInput } from "../payrollSchemes/FormPayrollProj
 import SinglePayrollReview from "../payrollReviews/SinglePayrollReview";
 import { RunPayroll } from "./RunPayroll";
 import { PermissionRestrictor } from "components/permission-restriction/PermissionRestrictor";
+import { QUERY_KEY_FOR_EMPLOYEES_IN_PAYROLL } from "features/payroll/hooks/payroll/employee/useGetEmployeesInPayroll";
 
 const boxStyle =
   "bg-mainBg flex justify-between items-start md:items-center px-6 py-5 rounded lg:flex-row flex-col gap-y-5";
@@ -259,7 +261,7 @@ export const CreatePayrollInitialForm: React.FC<IFormProps> = ({
               const employeeWithErrorIds: string[] =
                 err.response?.data?.error?.error;
               if (employeeWithErrorIds?.length > 0) {
-                primaryMessage = `${primaryMessage}. The employees' with the following employee ids have this issue: ${employeeWithErrorIds.join(
+                primaryMessage = `${primaryMessage}. The employees' with the following employee ids have this issue :  ${employeeWithErrorIds.join(
                   ","
                 )}.`;
               }
@@ -277,7 +279,7 @@ export const CreatePayrollInitialForm: React.FC<IFormProps> = ({
               state: "success",
 
               title: "Success",
-              description: res.data.message,
+              description: res.message,
               // duration: 0.4,
             });
             form.resetFields();
@@ -291,7 +293,7 @@ export const CreatePayrollInitialForm: React.FC<IFormProps> = ({
               frequency: type === "project" ? data.frequency : payrollFrequency,
 
               costCentre: costCentre,
-              payrollId: res.data.data.id,
+              payrollId: res.data.id,
             });
             handleClose();
           },
@@ -583,6 +585,10 @@ const CreatePayrollContainer: React.FC<{
               queryKey: [QUERY_KEY_FOR_SINGLE_PAYROLL],
               // exact: true,
             });
+            queryClient.invalidateQueries({
+              queryKey: [QUERY_KEY_FOR_EMPLOYEES_IN_PAYROLL],
+              // exact: true,
+            });
           },
         }
       );
@@ -782,7 +788,7 @@ const CreatePayrollContainer: React.FC<{
                   {typeof payroll?.frequency === "number" && (
                     <input
                       disabled
-                      value={moment(payroll?.date).format("YYYY-MM-DD")}
+                      value={dayjs(payroll?.date).format("YYYY-MM-DD")}
                       type="date"
                       placeholder="Select day"
                       className=" bg-slate-100 cursor-not-allowed border text-accent rounded px-3 py-1 border-gray-400 bg-mainBg"
@@ -791,7 +797,7 @@ const CreatePayrollContainer: React.FC<{
                   {payroll?.frequency === "daily" && (
                     <input
                       disabled
-                      value={moment(payroll?.date).format("YYYY-MM-DD")}
+                      value={dayjs(payroll?.date).format("YYYY-MM-DD")}
                       type="date"
                       placeholder="Select day"
                       className=" bg-slate-100 cursor-not-allowed border text-accent rounded px-3 py-1 border-gray-400 bg-mainBg"
@@ -800,7 +806,7 @@ const CreatePayrollContainer: React.FC<{
                   {payroll?.frequency === "monthly" && (
                     <input
                       disabled
-                      value={moment(payroll?.date).format("YYYY-MM")}
+                      value={dayjs(payroll?.date).format("YYYY-MM")}
                       type="month"
                       placeholder="Select month"
                       className=" bg-slate-100 cursor-not-allowed border text-accent rounded px-3 py-1 border-gray-400 bg-mainBg"

@@ -16,6 +16,7 @@ import { IModalProps } from "types";
 import { QUERY_KEY_FOR_CONFERENCE_ROOM_BOOKINGS_FOR_AUTH_EMPLOYEE } from "../hooks/useGetConferenceRoomBookings4AuthEmployee";
 import { Moment } from "moment";
 import { DEFAULT_DATE_FORMAT } from "constants/dateFormats";
+import { FormUnlicensedEmployeeSSRequestInput } from "features/core/employees/components/FormEmployeeInput";
 
 const NewCRBBooking: React.FC<IModalProps> = ({ open, handleClose }) => {
   const queryClient = useQueryClient();
@@ -26,6 +27,7 @@ const NewCRBBooking: React.FC<IModalProps> = ({ open, handleClose }) => {
   const handleSubmit = (data: any) => {
     mutate(
       {
+        employeeId: data?.employeeId,
         conferenceRoomId: data.roomId,
         date: data.date.toString(),
         endTime: `${(data.date as Moment).format(DEFAULT_DATE_FORMAT)} ${(
@@ -87,6 +89,13 @@ const NewCRBBooking: React.FC<IModalProps> = ({ open, handleClose }) => {
         onFinish={handleSubmit}
         form={form}
       >
+        <FormUnlicensedEmployeeSSRequestInput
+          Form={Form}
+          control={{
+            name: "employeeId",
+            label: "Select Unlinsenced Employee",
+          }}
+        />
         <FormMeetingRoomsInput
           Form={Form}
           control={{ label: "", name: "roomId" }}
