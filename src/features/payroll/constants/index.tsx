@@ -1,6 +1,10 @@
 import { TTransactionStatus, TTransactionType } from "../types";
 import { TPayrollFrequency, TEssentialPayrollType } from "../types/payroll";
 import { TPayrollSchemeType } from "../types/payrollSchemes";
+import {
+  TWalletTransactionStatus,
+  TWalletTransactionType,
+} from "../types/payrollWallet";
 
 export const DEFAULT_PENSION_ADMINISTRATORS = [
   "Access Pensions Limited",
@@ -87,3 +91,12 @@ export const TRANSACTION_TYPE_OPTIONS: {
   value: TTransactionType;
   label: string;
 }[] = TRANSACTION_TYPES.map((item) => ({ label: item, value: item }));
+
+export const WALLET_TRANSACTION_TYPES: TWalletTransactionType[] = [
+  "credit",
+  "debit",
+];
+export const WALLET_TRANSACTION_STATUSES: TWalletTransactionStatus[] = [
+  "completed",
+  "pending",
+];

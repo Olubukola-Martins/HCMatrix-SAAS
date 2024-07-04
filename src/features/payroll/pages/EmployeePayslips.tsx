@@ -1,4 +1,3 @@
-import React from "react";
 import { PageIntro } from "components/layout/PageIntro";
 import PayrollSubNav from "../components/PayrollSubNav";
 import { appRoutes } from "config/router/paths";

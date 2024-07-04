@@ -64,6 +64,7 @@ export const appRoutes = {
   }),
   payrollSettings: `/settings/payroll`,
   payrollCostCentres: `/settings/payroll/cost-centres`,
+  payrollWallet: `/settings/payroll/wallet`,
   singleCostCentre: (id?: number) => ({
     format: `/settings/payroll/cost-centres/:id`,
     path: `/settings/payroll/cost-centres/${id}`,
