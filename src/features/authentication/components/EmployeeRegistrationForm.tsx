@@ -1,4 +1,3 @@
-// TO DO: REMOVE and refactor all mui icons used
 import { MailOutlined, LockOutlined } from "@ant-design/icons";
 import { Form, Input } from "antd";
 import { TOKEN_EXPIRES_IN } from "config/refreshTokenApi";
@@ -6,11 +5,16 @@ import { useSignIn } from "react-auth-kit";
 import { openNotification } from "utils/notifications";
 import { useCreateEmployeeAccount } from "../hooks/useCreateEmployeeAccount";
 import { IVerifyUserProps, IAuthDets } from "../types";
-import { passwordValidationRules } from "utils/formHelpers/validation";
+import {
+  passwordValidationRules,
+  textInputValidationRules,
+} from "utils/formHelpers/validation";
 import { BeatLoader } from "react-spinners";
 import { saveMessagingDeviceToken } from "config/firebase/messaging";
 import { useContext } from "react";
 import { GlobalContext, EGlobalOps } from "stateManagers/GlobalContextProvider";
+import { validateCaptcha } from "react-simple-captcha";
+import Recaptcha from "components/recaptcha/Recaptcha";
 
 export const EmployeeRegistrationForm = ({
   token,
@@ -25,6 +29,16 @@ export const EmployeeRegistrationForm = ({
   const { dispatch: globalDispatch } = globalCtx;
 
   const onFormSubmit = (data: any) => {
+    if (validateCaptcha(data?.recaptcha) === false) {
+      openNotification({
+        state: "error",
+        title: "Validation Error",
+        description: "Please validate captcha",
+      });
+
+      return;
+    }
+
     mutate(
       {
         password: data.password,
@@ -131,6 +145,14 @@ export const EmployeeRegistrationForm = ({
             style={{ padding: "6px 5px" }}
           />
         </Form.Item>
+        <Form.Item name="recaptcha" rules={textInputValidationRules}>
+          <Input
+            placeholder="Enter recaptcha"
+            className="rounded border-slate-400"
+            style={{ padding: "6px 5px" }}
+          />
+        </Form.Item>
+        <Recaptcha />
 
         <button className="authBtn w-full mt-4 mb-3">
           {isLoading ? <BeatLoader color="#fff" /> : "Sign Up"}
