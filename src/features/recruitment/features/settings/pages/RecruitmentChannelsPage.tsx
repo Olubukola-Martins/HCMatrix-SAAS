@@ -8,20 +8,20 @@ const candidateSources = [
   },
 ];
 
-export const RecruitmentChannels = () => {
+const RecruitmentChannelsPage = () => {
   const onChange = (checked: boolean) => {
     console.log(`switch to ${checked}`);
   };
   return (
-    <div>
+    <div className="Container mt-5">
       <RecruitmentSettingsIntro
         title="Recruitment Channels"
         description="Integrate more platforms to the system."
       />
 
-      <div className="Container mt-5">
+      <div>
         <div className="bg-white rounded md:p-5 p-3">
-          <h2 className="pb-5 font-medium text-base">Sources</h2>
+          <h2 className="p-2 font-medium text-base">Sources</h2>
           <div className="bg-mainBg py-4 px-4 rounded">
             {candidateSources.map((item) => (
               <RecruitmentSettingsSwitchForm
@@ -37,6 +37,4 @@ export const RecruitmentChannels = () => {
   );
 };
 
-
-
-
+export default RecruitmentChannelsPage;

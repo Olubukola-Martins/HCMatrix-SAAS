@@ -331,8 +331,8 @@ export const appRoutes = {
   recruitmentJobTemplates: `/recruitment/job-templates`,
   recruitmentOtherSettings: `/recruitment/other-settings`,
   recruitmentEmailTemplateDetails: (id?: number) => ({
-    format: `/recruitment/email-template-details/:id`,
-    path: `/recruitment/email-template-details/${id}`,
+    format: `/recruitment/email-templates-details/:id`,
+    path: `/recruitment/email-templates-details/${id}`,
   }),
 };
 

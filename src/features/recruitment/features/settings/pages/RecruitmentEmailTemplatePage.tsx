@@ -21,7 +21,7 @@ const additionalEmailTemplates = [
   },
 ];
 
-export const RecruitmentEmailTemplate = () => {
+ const RecruitmentEmailTemplatePage = () => {
   const [openMappedVariables, setOpenDrawerVariables] =
     useState<boolean>(false);
 
@@ -87,3 +87,5 @@ export const RecruitmentEmailTemplate = () => {
     </div>
   );
 };
+
+export default RecruitmentEmailTemplatePage
