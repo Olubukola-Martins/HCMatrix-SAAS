@@ -32,20 +32,20 @@ const candidateStatus = [
   },
 ];
 
-export const RecruitmentCandidateStatus = () => {
+const RecruitmentCandidateStatusPage = () => {
   const onChange = (checked: boolean) => {
     console.log(`switch to ${checked}`);
   };
   return (
-    <div>
+    <div className="Container mt-5">
       <RecruitmentSettingsIntro
         title="Configure Candidate Status"
         description="Set up your candidate status, by toggling on/off the status your organization want to work with."
       />
 
-      <div className="Container mt-5">
+      <div>
         <div className="bg-white rounded md:p-5 p-3">
-          <h2 className="pb-5 font-medium text-base">Status</h2>
+          <h2 className="p-2 font-medium text-base">Status</h2>
           <div className="bg-mainBg py-4 px-4 rounded">
             {candidateStatus.map((item) => (
               <RecruitmentSettingsSwitchForm
@@ -61,5 +61,4 @@ export const RecruitmentCandidateStatus = () => {
   );
 };
 
-
-
+export default RecruitmentCandidateStatusPage;
