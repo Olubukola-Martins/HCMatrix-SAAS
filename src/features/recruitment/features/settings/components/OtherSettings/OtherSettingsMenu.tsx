@@ -67,8 +67,8 @@ export const OtherSettingsMenu = () => {
   }, [selectedMenu]);
 
   return (
-    <div className="h-full my-4 grid grid-cols-12 gap-4 border-t p-2">
-      <div className="col-span-2">
+    <div className="my-4 flex flex-col lg:grid lg:grid-cols-12 gap-4 border-t p-2">
+      <div className="lg:col-span-2 flex lg:flex-col overflow-auto">
         {OtherSettingsMenuArray.map((item, index) => (
           <div key={index}>
             <div
@@ -108,7 +108,7 @@ export const OtherSettingsMenu = () => {
           </div>
         ))}
       </div>
-      <div className="col-span-10 border-l p-3">
+      <div className="lg:col-span-10 border-l lg:border-t-0 border-t lg:p-3 p-2">
         <div>
           {selectedMenu.title === "Interview Settings" && selectedChild
             ? selectedChild.childrenComponent
