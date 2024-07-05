@@ -1,4 +1,4 @@
-import { Form, Input, Select, Switch } from "antd";
+import { Form, Input, Switch } from "antd";
 import { AppButton } from "components/button/AppButton";
 import { generalValidationRules } from "utils/formHelpers/validation";
 import { benfitsSettings } from "./constants/DefaultOtherSettings";
