@@ -70,3 +70,22 @@ export const experienceTypeSettings = [
     name: "seniorExecutive",
   },
 ];
+
+export const jobStatusSettings = [
+  {
+    label: "Suspend",
+    name: "suspend",
+  },
+  {
+    label: "Filled",
+    name: "filled",
+  },
+  {
+    label: "Open",
+    name: "open",
+  },
+  {
+    label: "Closed",
+    name: "closed",
+  },
+];
