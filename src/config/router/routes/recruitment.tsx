@@ -5,12 +5,12 @@ import RecruitmentDBPage from "features/recruitment/features/dashboard/pages/Rec
 import RecruitmentHiredCandidatePage from "features/recruitment/features/hiredCandidate/pages/RecruitmentHiredCandidatePage";
 import RecruitmentReportPage from "features/recruitment/features/report/pages/RecruitmentReportPage";
 import { RecruitmentChannels } from "features/recruitment/features/settings/pages/RecruitmentChannels";
-import { RecruitmentCandidateStatus } from "features/recruitment/features/settings/pages/RecruitmentCandidateStatus";
 import { RecruitmentEmailTemplate } from "features/recruitment/features/settings/pages/RecruitmentEmailTemplate";
 import { RecruitmentJobTemplate } from "features/recruitment/features/settings/pages/RecruitmentJobTemplate";
 import { RecruitmentOfferTemplate } from "features/recruitment/features/settings/pages/RecruitmentOfferTemplate";
 import { RecruitementOtherSettings } from "features/recruitment/features/settings/pages/RecruitmentOtherSettings";
 import { EmailTemplateDetails } from "features/recruitment/features/settings/pages/EmailTemplateDetails";
+import RecruitmentCandidateStatusPage from "features/recruitment/features/settings/pages/RecruitmentCandidateStatusPage";
 
 export const recruitmentRoutes: TRouteData[] = [
   {
@@ -51,7 +51,7 @@ export const recruitmentRoutes: TRouteData[] = [
     title: "Recruitment Channels",
   },
   {
-    element: <RecruitmentCandidateStatus />,
+    element: <RecruitmentCandidateStatusPage />,
     path: appRoutes.recruitmentConfigureCandidateStatus,
     isSearchable: true,
     isPrimaryFeature: true,
