@@ -24,6 +24,10 @@ export const RecruitmentBenefits = () => {
   };
   return (
     <div>
+      <p className="p-2 text-base mb-3">
+        Toggle on the benefit you want for your organization and add more
+        benefits if need be.
+      </p>
       <Form
         form={form}
         onFinish={handleSubmit}
