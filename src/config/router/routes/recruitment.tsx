@@ -4,12 +4,13 @@ import { TRouteData } from "../types";
 import RecruitmentDBPage from "features/recruitment/features/dashboard/pages/RecruitmentDBPage";
 import RecruitmentHiredCandidatePage from "features/recruitment/features/hiredCandidate/pages/RecruitmentHiredCandidatePage";
 import RecruitmentReportPage from "features/recruitment/features/report/pages/RecruitmentReportPage";
-import { RecruitmentChannels } from "features/recruitment/features/settings/pages/RecruitmentChannels";
-import { RecruitmentCandidateStatus } from "features/recruitment/features/settings/pages/RecruitmentCandidateStatus";
 import { RecruitmentEmailTemplate } from "features/recruitment/features/settings/pages/RecruitmentEmailTemplate";
 import { RecruitmentJobTemplate } from "features/recruitment/features/settings/pages/RecruitmentJobTemplate";
 import { RecruitmentOfferTemplate } from "features/recruitment/features/settings/pages/RecruitmentOfferTemplate";
 import { RecruitementOtherSettings } from "features/recruitment/features/settings/pages/RecruitmentOtherSettings";
+import { EmailTemplateDetails } from "features/recruitment/features/settings/pages/EmailTemplateDetails";
+import RecruitmentCandidateStatusPage from "features/recruitment/features/settings/pages/RecruitmentCandidateStatusPage";
+import RecruitmentChannelsPage from "features/recruitment/features/settings/pages/RecruitmentChannelsPage";
 
 export const recruitmentRoutes: TRouteData[] = [
   {
@@ -43,45 +44,52 @@ export const recruitmentRoutes: TRouteData[] = [
 
   // SETTINGS
   {
-    element: <RecruitmentChannels />,
+    element: <RecruitmentChannelsPage />,
     path: appRoutes.recruitmentRecruitmentChannels,
     isSearchable: true,
     isPrimaryFeature: true,
     title: "Recruitment Channels",
   },
   {
-    element: <RecruitmentCandidateStatus />,
+    element: <RecruitmentCandidateStatusPage />,
     path: appRoutes.recruitmentConfigureCandidateStatus,
     isSearchable: true,
     isPrimaryFeature: true,
     title: "Configure Candidate Status",
   },
   {
-    element: <RecruitmentEmailTemplate/>,
+    element: <RecruitmentEmailTemplate />,
     path: appRoutes.recruitmentEmailTemplates,
     isSearchable: true,
     isPrimaryFeature: true,
     title: "Email Template",
   },
   {
-    element: <RecruitmentJobTemplate/>,
+    element: <RecruitmentJobTemplate />,
     path: appRoutes.recruitmentJobTemplates,
     isSearchable: true,
     isPrimaryFeature: true,
     title: "Job Template",
   },
   {
-    element: <RecruitmentOfferTemplate/>,
+    element: <RecruitmentOfferTemplate />,
     path: appRoutes.recruitmentOfferTemplates,
     isSearchable: true,
     isPrimaryFeature: true,
     title: "Offer Template",
   },
   {
-    element: <RecruitementOtherSettings/>,
+    element: <RecruitementOtherSettings />,
     path: appRoutes.recruitmentOtherSettings,
     isSearchable: true,
     isPrimaryFeature: true,
     title: "Other Settings",
+  },
+  {
+    element: <EmailTemplateDetails />,
+    path: appRoutes.recruitmentEmailTemplateDetails,
+    isSearchable: true,
+    isPrimaryFeature: true,
+    title: "Email Template Details",
   },
 ];
