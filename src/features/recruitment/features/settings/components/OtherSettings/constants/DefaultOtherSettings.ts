@@ -43,3 +43,30 @@ export const employmentTypeSettings = [
     name: "nysc",
   },
 ];
+
+export const experienceTypeSettings = [
+  {
+    label: "Entry Level",
+    name: "entryLevel",
+  },
+  {
+    label: "Mid Level",
+    name: "midLevel",
+  },
+  {
+    label: "Manager/Supervisor",
+    name: "managerSupervisor",
+  },
+  {
+    label: "Senior Manager/Supervisor",
+    name: "seniorManagerSupervisor",
+  },
+  {
+    label: "Executive",
+    name: "executive",
+  },
+  {
+    label: "Senior Executive",
+    name: "seniorExecutive",
+  },
+];
