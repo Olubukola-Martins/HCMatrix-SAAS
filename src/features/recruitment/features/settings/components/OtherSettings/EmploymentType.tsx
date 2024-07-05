@@ -11,7 +11,7 @@ export const EmploymentType = () => {
   };
 
   const handleAddField = () => {
-    const newEmploymentType = form.getFieldValue("newEmploymentTyps") || [];
+    const newEmploymentType = form.getFieldValue("newEmploymentType") || [];
     const initialEmploymentType = {
       employmentName: "",
       employmentStatus: true,
