@@ -6,7 +6,7 @@ import { RecruitmentMappedVariables } from "../components/RecruitmentMappedVaria
 import { Link } from "react-router-dom";
 import { appRoutes } from "config/router/paths";
 
-export const RecruitmentOfferTemplate = () => {
+const RecruitmentOfferTemplatePage = () => {
   const [openMappedVariables, setOpenDrawerVariables] =
     useState<boolean>(false);
   return (
@@ -53,3 +53,5 @@ export const RecruitmentOfferTemplate = () => {
     </div>
   );
 };
+
+export default RecruitmentOfferTemplatePage;
