@@ -59,7 +59,7 @@ export const EmploymentType = () => {
                     className="w-full"
                     rules={generalValidationRules}
                   >
-                    <Input placeholder="Add Benefit" />
+                    <Input placeholder="Add Employment Type" />
                   </Form.Item>
 
                   <div className="flex items-center justify-end gap-3 w-full">
