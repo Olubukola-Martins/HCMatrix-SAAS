@@ -1,5 +1,5 @@
 import { RecruitmentSettingsIntro } from "features/recruitment/components/RecruitmentSettingsIntro";
-import { OtherSettingsMenu } from "../../../components/OtherSettings/OtherSettingsMenu";
+import { OtherSettingsMenu } from "../components/OtherSettingsMenu";
 
 export const RecruitementOtherSettings = () => {
   return (

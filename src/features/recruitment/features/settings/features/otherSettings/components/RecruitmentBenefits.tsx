@@ -1,37 +1,32 @@
 import { Form, Input, Switch } from "antd";
 import { AppButton } from "components/button/AppButton";
 import { generalValidationRules } from "utils/formHelpers/validation";
-import { jobStatusSettings } from "./constants/DefaultOtherSettings";
+import { benfitsSettings } from "../constants/defaultOtherSettings";
 import { OtherSettingsFormSwitch } from "./OtherSettingsFormSwitch";
 
-export const JobStatus = () => {
+export const RecruitmentBenefits = () => {
   const [form] = Form.useForm();
   const handleSubmit = (val: any) => {
     console.log("values of form", val);
   };
 
   const handleAddField = () => {
-    const newJobStatus = form.getFieldValue("newJobStatus") || [];
-    const initialJobStatus = {
-      jobStatusName: "",
-      jobStatus: true,
-    };
-    form.setFieldsValue({
-      newJobStatus: [...newJobStatus, initialJobStatus],
-    });
+    const newBenefits = form.getFieldValue("newBenefits") || [];
+    const initialBenefits = { benefitName: "", benefitStatus: true };
+    form.setFieldsValue({ newBenefits: [...newBenefits, initialBenefits] });
   };
 
   const handleRemoveField = (index: number) => {
-    const newJobStatus = form.getFieldValue("newJobStatus") || [];
+    const newBenefits = form.getFieldValue("newBenefits") || [];
     form.setFieldsValue({
-      newJobStatus: newJobStatus.filter((_: any, i: number) => i !== index),
+      newBenefits: newBenefits.filter((_: any, i: number) => i !== index),
     });
   };
   return (
     <div>
       <p className="p-2 text-base mb-3">
-        Toggle on the job status you want for your organization and add more job
-        statuses if need be.
+        Toggle on the benefit you want for your organization and add more
+        benefits if need be.
       </p>
       <Form
         form={form}
@@ -39,10 +34,10 @@ export const JobStatus = () => {
         layout="vertical"
         requiredMark={false}
       >
-        {jobStatusSettings.map((item) => (
+        {benfitsSettings.map((item) => (
           <OtherSettingsFormSwitch label={item.label} name={item.name} />
         ))}
-        <Form.List name="newJobStatus">
+        <Form.List name="newBenefits">
           {(fields) => (
             <>
               {fields.map((field, index) => (
@@ -52,18 +47,18 @@ export const JobStatus = () => {
                 >
                   <Form.Item
                     {...field}
-                    name={[field.name, "jobStatusName"]}
-                    label="Job Status Name"
+                    name={[field.name, "benefitName"]}
+                    label="Benefit Name"
                     className="w-full"
                     rules={generalValidationRules}
                   >
-                    <Input placeholder="Add Job Status" />
+                    <Input placeholder="Add Benefit" />
                   </Form.Item>
 
                   <div className="flex items-center justify-end gap-3 w-full">
                     <Form.Item
                       valuePropName="checked"
-                      name={[field.name, "jobStatus"]}
+                      name={[field.name, "benefitStatus"]}
                       className="flex justify-end items-end"
                       noStyle
                     >
@@ -80,7 +75,7 @@ export const JobStatus = () => {
 
               <AppButton
                 variant="transparent"
-                label="Add New Job Status"
+                label="Add New Benefit"
                 handleClick={() => handleAddField()}
               />
             </>

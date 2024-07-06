@@ -1,32 +1,39 @@
 import { Form, Input, Switch } from "antd";
 import { AppButton } from "components/button/AppButton";
 import { generalValidationRules } from "utils/formHelpers/validation";
-import { benfitsSettings } from "./constants/DefaultOtherSettings";
 import { OtherSettingsFormSwitch } from "./OtherSettingsFormSwitch";
+import { experienceTypeSettings } from "../constants/defaultOtherSettings";
 
-export const RecruitmentBenefits = () => {
+export const ExperienceType = () => {
   const [form] = Form.useForm();
   const handleSubmit = (val: any) => {
     console.log("values of form", val);
   };
 
   const handleAddField = () => {
-    const newBenefits = form.getFieldValue("newBenefits") || [];
-    const initialBenefits = { benefitName: "", benefitStatus: true };
-    form.setFieldsValue({ newBenefits: [...newBenefits, initialBenefits] });
+    const newExperienceType = form.getFieldValue("newExperienceType") || [];
+    const initialEexperienceType = {
+      experienceName: "",
+      experienceStatus: true,
+    };
+    form.setFieldsValue({
+      newExperienceType: [...newExperienceType, initialEexperienceType],
+    });
   };
 
   const handleRemoveField = (index: number) => {
-    const newBenefits = form.getFieldValue("newBenefits") || [];
+    const newExperienceType = form.getFieldValue("newExperienceType") || [];
     form.setFieldsValue({
-      newBenefits: newBenefits.filter((_: any, i: number) => i !== index),
+      newExperienceType: newExperienceType.filter(
+        (_: any, i: number) => i !== index
+      ),
     });
   };
   return (
     <div>
       <p className="p-2 text-base mb-3">
-        Toggle on the benefit you want for your organization and add more
-        benefits if need be.
+        Toggle on the experience type you want for your organization and add
+        more experience types if need be.
       </p>
       <Form
         form={form}
@@ -34,10 +41,10 @@ export const RecruitmentBenefits = () => {
         layout="vertical"
         requiredMark={false}
       >
-        {benfitsSettings.map((item) => (
+        {experienceTypeSettings.map((item) => (
           <OtherSettingsFormSwitch label={item.label} name={item.name} />
         ))}
-        <Form.List name="newBenefits">
+        <Form.List name="newExperienceType">
           {(fields) => (
             <>
               {fields.map((field, index) => (
@@ -47,18 +54,18 @@ export const RecruitmentBenefits = () => {
                 >
                   <Form.Item
                     {...field}
-                    name={[field.name, "benefitName"]}
-                    label="Benefit Name"
+                    name={[field.name, "experienceName"]}
+                    label="Experience Name"
                     className="w-full"
                     rules={generalValidationRules}
                   >
-                    <Input placeholder="Add Benefit" />
+                    <Input placeholder="Add Experience Type" />
                   </Form.Item>
 
                   <div className="flex items-center justify-end gap-3 w-full">
                     <Form.Item
                       valuePropName="checked"
-                      name={[field.name, "benefitStatus"]}
+                      name={[field.name, "experienceStatus"]}
                       className="flex justify-end items-end"
                       noStyle
                     >
@@ -75,7 +82,7 @@ export const RecruitmentBenefits = () => {
 
               <AppButton
                 variant="transparent"
-                label="Add New Benefit"
+                label="Add New Experience Type"
                 handleClick={() => handleAddField()}
               />
             </>
