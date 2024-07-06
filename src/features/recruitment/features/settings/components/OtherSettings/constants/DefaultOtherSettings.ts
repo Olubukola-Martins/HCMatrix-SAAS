@@ -89,3 +89,26 @@ export const jobStatusSettings = [
     name: "closed",
   },
 ];
+
+export const notificationSettings = [
+  {
+    label: "Allow Notification when an applicant send me a chat",
+    name: "allowNotif",
+  },
+  {
+    label: "Allow SMS Notification for appllicant",
+    name: "smsNotif",
+  },
+  {
+    label: "Allow notification when panelist decline the invite",
+    name: "panelistNotif",
+  },
+  {
+    label: "Include ICS file that allows you see the mail in your calendar",
+    name: "icsFile",
+  },
+  // {
+  //   label: "Include ICS file that allows you see the mail in your calendar",
+  //   name: "icsFile",
+  // },
+];
