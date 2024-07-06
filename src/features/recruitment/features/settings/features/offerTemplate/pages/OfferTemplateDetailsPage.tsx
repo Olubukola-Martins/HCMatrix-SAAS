@@ -1,4 +1,4 @@
-import { EmailFormPage } from "../components/EmailFormPage";
+import { EmailFormPage } from "../../../components/EmailFormPage";
 
 const OfferTemplateDetailsPage = () => {
   const handleSubmit = (val: any) => {
@@ -13,7 +13,6 @@ const OfferTemplateDetailsPage = () => {
         templateLabel="Offer Template Subject"
         handleSubmit={handleSubmit}
       />
-     
     </div>
   );
 };
