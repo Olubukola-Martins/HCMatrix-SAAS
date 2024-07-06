@@ -4,13 +4,13 @@ import { TRouteData } from "../types";
 import RecruitmentDBPage from "features/recruitment/features/dashboard/pages/RecruitmentDBPage";
 import RecruitmentHiredCandidatePage from "features/recruitment/features/hiredCandidate/pages/RecruitmentHiredCandidatePage";
 import RecruitmentReportPage from "features/recruitment/features/report/pages/RecruitmentReportPage";
-import { RecruitmentEmailTemplate } from "features/recruitment/features/settings/pages/RecruitmentEmailTemplate";
 import { RecruitmentJobTemplate } from "features/recruitment/features/settings/pages/RecruitmentJobTemplate";
 import { RecruitmentOfferTemplate } from "features/recruitment/features/settings/pages/RecruitmentOfferTemplate";
 import { RecruitementOtherSettings } from "features/recruitment/features/settings/pages/RecruitmentOtherSettings";
 import { EmailTemplateDetails } from "features/recruitment/features/settings/pages/EmailTemplateDetails";
 import RecruitmentCandidateStatusPage from "features/recruitment/features/settings/features/configureCandidateStatus/pages/RecruitmentCandidateStatusPage";
 import RecruitmentChannelsPage from "features/recruitment/features/settings/features/recruitmentChannels/pages/RecruitmentChannelsPage";
+import RecruitmentEmailTemplatePage from "features/recruitment/features/settings/features/emailTemplate/pages/RecruitmentEmailTemplatePage";
 
 export const recruitmentRoutes: TRouteData[] = [
   {
@@ -58,7 +58,7 @@ export const recruitmentRoutes: TRouteData[] = [
     title: "Configure Candidate Status",
   },
   {
-    element: <RecruitmentEmailTemplate />,
+    element: <RecruitmentEmailTemplatePage />,
     path: appRoutes.recruitmentEmailTemplates,
     isSearchable: true,
     isPrimaryFeature: true,
@@ -87,7 +87,7 @@ export const recruitmentRoutes: TRouteData[] = [
   },
   {
     element: <EmailTemplateDetails />,
-    path: appRoutes.recruitmentEmailTemplateDetails,
+    path: appRoutes.recruitmentEmailTemplateDetails().format,
     isSearchable: true,
     isPrimaryFeature: true,
     title: "Email Template Details",

@@ -1,29 +1,17 @@
 import { AppButton } from "components/button/AppButton";
 import { RecruitmentSettingsIntro } from "features/recruitment/components/RecruitmentSettingsIntro";
-import { RecruitmentMappedVariables } from "../components/RecruitmentMappedVariables.";
 import { useState } from "react";
-import { RecruitmentEmailsDescription } from "../components/RecruitmentEmailsDescription";
 import { Link } from "react-router-dom";
 import { appRoutes } from "config/router/paths";
+import { RecruitmentEmailsDescription } from "../../../components/RecruitmentEmailsDescription";
+import { RecruitmentMappedVariables } from "../../../components/RecruitmentMappedVariables.";
+import { additionalEmailTemplates } from "../constants";
 
-const additionalEmailTemplates = [
-  {
-    emailSubject: "Invitation for Interview as a Panelist",
-    emailBody: "Thank you for applying at Lefff......",
-  },
-  {
-    emailSubject: "Invite for Panelist Acceptance",
-    emailBody: "Thank you for applying at Lefff......",
-  },
-  {
-    emailSubject: "Send A Job Opening Invite",
-    emailBody: "Thank you for applying at Lefff......",
-  },
-];
-
-export const RecruitmentEmailTemplate = () => {
+const RecruitmentEmailTemplatePage = () => {
   const [openMappedVariables, setOpenDrawerVariables] =
     useState<boolean>(false);
+
+  // const [isNewTemplate, setIsNewTemplate] = useState<boolean>(false);
   return (
     <div>
       <RecruitmentSettingsIntro
@@ -34,6 +22,7 @@ export const RecruitmentEmailTemplate = () => {
         <RecruitmentMappedVariables
           handleClose={() => setOpenDrawerVariables(false)}
           open={openMappedVariables}
+          showPanelistName={true}
         />
         <div className="flex gap-8 p-3 m-2 items-center">
           <button
@@ -44,11 +33,11 @@ export const RecruitmentEmailTemplate = () => {
           >
             Mapped Variables
           </button>
-          <Link to={appRoutes.recruitmentEmailTemplateDetails}>
+          <Link to={appRoutes.recruitmentEmailTemplateDetails().path}>
             <AppButton
               label="+ Add Email Template"
               variant="transparent"
-              additionalClassNames={["font-bold"]}
+              // handleClick={() => setIsNewTemplate(true)}
             />
           </Link>
         </div>
@@ -60,18 +49,30 @@ export const RecruitmentEmailTemplate = () => {
           emailMessage="Thank you for applying at ... "
           emailSubject="Application Confirmation Email"
           candidateStatus="Applied"
+          body="Email Message -:"
+          email="Email Subject -:"
+          linkUrl={appRoutes.recruitmentEmailTemplateDetails().path}
         />
-        <p className="px-4">
+        <p className="px-4 border-b pb-2">
           These are additional email templates required by a candidate or
           application selection.
         </p>
-        {additionalEmailTemplates.map((item) => (
+        {additionalEmailTemplates.map((item, i) => (
           <RecruitmentEmailsDescription
+            key={i}
+            body="Email Message -:"
+            email="Email Subject -:"
             emailMessage={item.emailBody}
             emailSubject={item.emailSubject}
+            linkUrl={appRoutes.recruitmentEmailTemplateDetails().path}
           />
         ))}
       </div>
+      {/* {isNewTemplate && (
+        <EmailTemplateDetailsPage isNewTemplate={isNewTemplate} />
+      )} */}
     </div>
   );
 };
+
+export default RecruitmentEmailTemplatePage;

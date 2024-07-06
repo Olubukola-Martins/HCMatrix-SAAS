@@ -3,21 +3,25 @@ import { IEmailTemplateDescriptionProps } from "../types";
 import "../../../assets/style.css";
 import { Dropdown } from "antd";
 import type { MenuProps } from "antd";
+import { Link } from "react-router-dom";
 
 export const RecruitmentEmailsDescription: React.FC<
   IEmailTemplateDescriptionProps
-> = ({ emailMessage, emailSubject, candidateStatus }) => {
+> = ({ emailMessage, emailSubject, candidateStatus, body, email, linkUrl }) => {
   const menuItems: MenuProps["items"] = [
     {
-      label: "View",
+      label: <Link to={linkUrl}>View</Link>,
+      type: "item",
       key: "1",
     },
     {
-      label: "Edit",
+      label: <Link to={linkUrl}>Edit</Link>,
+      type: "item",
       key: "2",
     },
     {
       label: "Delete",
+      type: "item",
       key: "3",
     },
   ];
@@ -27,11 +31,11 @@ export const RecruitmentEmailsDescription: React.FC<
   };
 
   return (
-    <div className="border-b p-2 m-3 flex justify-between">
+    <div className="border-b p-2 m-2 flex justify-between">
       <div>
-        <h3 className="recruitmentEmailSubject">Email Subject -:</h3>
+        <h3 className="recruitmentEmailSubject">{email}</h3>
         <h2 className="recruitmentEmailMessage"> {emailSubject}</h2>
-        <h3 className="recruitmentEmailSubject">Email Message -:</h3>
+        <h3 className="recruitmentEmailSubject">{body}</h3>
         <p className="font-medium">{emailMessage}</p>
         {candidateStatus && (
           <>
