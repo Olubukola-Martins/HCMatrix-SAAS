@@ -10,7 +10,7 @@ import { RecruitmentOfferTemplate } from "features/recruitment/features/settings
 import { RecruitementOtherSettings } from "features/recruitment/features/settings/pages/RecruitmentOtherSettings";
 import { EmailTemplateDetails } from "features/recruitment/features/settings/pages/EmailTemplateDetails";
 import RecruitmentCandidateStatusPage from "features/recruitment/features/settings/features/configureCandidateStatus/pages/RecruitmentCandidateStatusPage";
-import RecruitmentChannelsPage from "features/recruitment/features/settings/pages/RecruitmentChannelsPage";
+import RecruitmentChannelsPage from "features/recruitment/features/settings/features/recruitmentChannels/pages/RecruitmentChannelsPage";
 
 export const recruitmentRoutes: TRouteData[] = [
   {
