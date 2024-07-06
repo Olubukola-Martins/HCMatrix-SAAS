@@ -12,7 +12,7 @@ export const EmailFormPage: React.FC<IEmailFormPageProps> = ({
   panelistSwitch,
   handleSubmit,
   pageDescription,
-  pageTitle
+  pageTitle,
 }) => {
   const [form] = Form.useForm();
   return (
@@ -21,10 +21,15 @@ export const EmailFormPage: React.FC<IEmailFormPageProps> = ({
         description={pageDescription}
         title={pageTitle}
       />
-      <Form layout="vertical" form={form} onFinish={handleSubmit}>
-        <div className="flex justify-between items-center p-3 m-2">
-          <div className="flex gap-8">
-            <div>
+      <Form
+        layout="vertical"
+        form={form}
+        onFinish={handleSubmit}
+        requiredMark={false}
+      >
+        <div className="flex flex-col lg:flex-row lg:justify-between lg:items-center p-3 m-2">
+          <div className="flex md:flex-col lg:flex-row gap-8 w-full items-center">
+            <div className="w-full lg:w-1/3">
               <h2 className="text-lg py-2 ">
                 {templateLabel} <span className="text-red-600">*</span>
               </h2>
@@ -38,7 +43,7 @@ export const EmailFormPage: React.FC<IEmailFormPageProps> = ({
             </div>
 
             {candidateStatusLabel && (
-              <div>
+              <div className="w-full lg:w-1/3">
                 <h2 className="text-lg py-2 ">
                   {candidateStatusLabel}
                   <span className="text-red-600">*</span>
@@ -54,8 +59,8 @@ export const EmailFormPage: React.FC<IEmailFormPageProps> = ({
             )}
           </div>
 
-          <div className="grid grid-rows-2 gap-4">
-            <div className="grid grid-cols-2 gap-3">
+          <div className="grid grid-rows-2 gap-4 -full items-center lg:w-1/3">
+            <div className="grid grid-cols-2 lg:gap-1 items-center">
               <p>Send automatically</p>
               <Form.Item
                 valuePropName="checked"
@@ -70,7 +75,7 @@ export const EmailFormPage: React.FC<IEmailFormPageProps> = ({
               </Form.Item>
             </div>
             {panelistSwitch && (
-              <div className="grid grid-cols-2 gap-3">
+              <div className="grid grid-cols-2 lg:gap-3 items-center">
                 <p>For panelist</p>
                 <Form.Item valuePropName="checked" name="panelist" noStyle>
                   <Switch
