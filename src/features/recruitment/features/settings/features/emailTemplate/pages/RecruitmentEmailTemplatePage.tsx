@@ -1,27 +1,13 @@
 import { AppButton } from "components/button/AppButton";
 import { RecruitmentSettingsIntro } from "features/recruitment/components/RecruitmentSettingsIntro";
-import { RecruitmentMappedVariables } from "../components/RecruitmentMappedVariables.";
 import { useState } from "react";
-import { RecruitmentEmailsDescription } from "../components/RecruitmentEmailsDescription";
 import { Link } from "react-router-dom";
 import { appRoutes } from "config/router/paths";
+import { RecruitmentEmailsDescription } from "../../../components/RecruitmentEmailsDescription";
+import { RecruitmentMappedVariables } from "../../../components/RecruitmentMappedVariables.";
+import { additionalEmailTemplates } from "../constants";
 
-const additionalEmailTemplates = [
-  {
-    emailSubject: "Invitation for Interview as a Panelist",
-    emailBody: "Thank you for applying at Lefff......",
-  },
-  {
-    emailSubject: "Invite for Panelist Acceptance",
-    emailBody: "Thank you for applying at Lefff......",
-  },
-  {
-    emailSubject: "Send A Job Opening Invite",
-    emailBody: "Thank you for applying at Lefff......",
-  },
-];
-
- const RecruitmentEmailTemplatePage = () => {
+const RecruitmentEmailTemplatePage = () => {
   const [openMappedVariables, setOpenDrawerVariables] =
     useState<boolean>(false);
 
@@ -67,12 +53,13 @@ const additionalEmailTemplates = [
           email="Email Subject -:"
           linkUrl={appRoutes.recruitmentEmailTemplateDetails().path}
         />
-        <p className="px-4">
+        <p className="px-4 border-b pb-2">
           These are additional email templates required by a candidate or
           application selection.
         </p>
-        {additionalEmailTemplates.map((item) => (
+        {additionalEmailTemplates.map((item, i) => (
           <RecruitmentEmailsDescription
+            key={i}
             body="Email Message -:"
             email="Email Subject -:"
             emailMessage={item.emailBody}
@@ -88,4 +75,4 @@ const additionalEmailTemplates = [
   );
 };
 
-export default RecruitmentEmailTemplatePage
+export default RecruitmentEmailTemplatePage;
