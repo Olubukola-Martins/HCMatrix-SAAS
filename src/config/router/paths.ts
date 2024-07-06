@@ -324,11 +324,13 @@ export const appRoutes = {
   recruitmentReport: `/recruitment/report`,
   recruitmentHiredCandidate: `/recruitment/hired-candidate`,
   recruitmentConfigureCandidateStatus: `/recruitment/configure-candidate-status`,
+  // recruitmentConfigureCandidateStatus: `/recruitment/settings`, // configure candidate status needs to be the default page when settings loads
   recruitmentRecruitmentChannels: `/recruitment/recruitment-channels`,
   recruitmentEmailTemplates: `/recruitment/email-templates`,
   recruitmentOfferTemplates: `/recruitment/offer-templates`,
   recruitmentJobTemplates: `/recruitment/job-templates`,
   recruitmentOtherSettings: `/recruitment/other-settings`,
+  recruitmentEmailTemplateDetails: `/recruitment/email-templates-details`,
 };
 
 // Routes that require API redirect and logout if authenticated, so the user is not automatically redirected to the login page, as that is the typical behaviour of such routes
