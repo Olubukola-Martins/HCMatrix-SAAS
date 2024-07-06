@@ -4,13 +4,13 @@ import { TRouteData } from "../types";
 import RecruitmentDBPage from "features/recruitment/features/dashboard/pages/RecruitmentDBPage";
 import RecruitmentHiredCandidatePage from "features/recruitment/features/hiredCandidate/pages/RecruitmentHiredCandidatePage";
 import RecruitmentReportPage from "features/recruitment/features/report/pages/RecruitmentReportPage";
-import { RecruitmentChannels } from "features/recruitment/features/settings/pages/RecruitmentChannels";
 import { RecruitmentEmailTemplate } from "features/recruitment/features/settings/pages/RecruitmentEmailTemplate";
 import { RecruitmentJobTemplate } from "features/recruitment/features/settings/pages/RecruitmentJobTemplate";
 import { RecruitmentOfferTemplate } from "features/recruitment/features/settings/pages/RecruitmentOfferTemplate";
 import { RecruitementOtherSettings } from "features/recruitment/features/settings/pages/RecruitmentOtherSettings";
 import { EmailTemplateDetails } from "features/recruitment/features/settings/pages/EmailTemplateDetails";
 import RecruitmentCandidateStatusPage from "features/recruitment/features/settings/features/configureCandidateStatus/pages/RecruitmentCandidateStatusPage";
+import RecruitmentChannelsPage from "features/recruitment/features/settings/features/recruitmentChannels/pages/RecruitmentChannelsPage";
 
 export const recruitmentRoutes: TRouteData[] = [
   {
@@ -44,7 +44,7 @@ export const recruitmentRoutes: TRouteData[] = [
 
   // SETTINGS
   {
-    element: <RecruitmentChannels />,
+    element: <RecruitmentChannelsPage />,
     path: appRoutes.recruitmentRecruitmentChannels,
     isSearchable: true,
     isPrimaryFeature: true,
