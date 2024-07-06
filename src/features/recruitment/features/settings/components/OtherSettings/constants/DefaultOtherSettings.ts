@@ -19,5 +19,54 @@ export const benfitsSettings = [
     label: "Vision Insurance",
     name: "vision",
   },
-  
+];
+
+export const employmentTypeSettings = [
+  {
+    label: "Contract",
+    name: "contract",
+  },
+  {
+    label: "Full - Time",
+    name: "fullTime",
+  },
+  {
+    label: "Intern",
+    name: "intern",
+  },
+  {
+    label: "Part - Time",
+    name: "partTime",
+  },
+  {
+    label: "NYSC",
+    name: "nysc",
+  },
+];
+
+export const experienceTypeSettings = [
+  {
+    label: "Enty Level",
+    name: "entryLevel",
+  },
+  {
+    label: "Mid Level",
+    name: "midLevel",
+  },
+  {
+    label: "Manager/Supervisor",
+    name: "managerSupervisor",
+  },
+  {
+    label: "Senior Manager/Supervisor",
+    name: "seniorManagerSupervisor",
+  },
+  {
+    label: "Executive",
+    name: "executive",
+  },
+  {
+    label: "Senior Executive",
+    name: "seniorExecutive",
+  },
 ];
