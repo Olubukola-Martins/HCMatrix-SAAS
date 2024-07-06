@@ -4,15 +4,15 @@ import { TRouteData } from "../types";
 import RecruitmentDBPage from "features/recruitment/features/dashboard/pages/RecruitmentDBPage";
 import RecruitmentHiredCandidatePage from "features/recruitment/features/hiredCandidate/pages/RecruitmentHiredCandidatePage";
 import RecruitmentReportPage from "features/recruitment/features/report/pages/RecruitmentReportPage";
-import { RecruitmentJobTemplate } from "features/recruitment/features/settings/pages/RecruitmentJobTemplate";
-import { RecruitementOtherSettings } from "features/recruitment/features/settings/pages/RecruitmentOtherSettings";
-import JobTemplateDetailsPage from "features/recruitment/features/settings/pages/JobTemplateDetailsPage";
 import { EmailTemplateDetails } from "features/recruitment/features/settings/pages/EmailTemplateDetails";
 import RecruitmentCandidateStatusPage from "features/recruitment/features/settings/features/configureCandidateStatus/pages/RecruitmentCandidateStatusPage";
 import RecruitmentChannelsPage from "features/recruitment/features/settings/features/recruitmentChannels/pages/RecruitmentChannelsPage";
 import RecruitmentEmailTemplatePage from "features/recruitment/features/settings/features/emailTemplate/pages/RecruitmentEmailTemplatePage";
 import RecruitmentOfferTemplatePage from "features/recruitment/features/settings/features/offerTemplate/pages/RecruitmentOfferTemplatePage";
 import OfferTemplateDetailsPage from "features/recruitment/features/settings/features/offerTemplate/pages/OfferTemplateDetailsPage";
+import { RecruitmentJobTemplate } from "features/recruitment/features/settings/features/jobTemplate/pages/RecruitmentJobTemplate";
+import JobTemplateDetailsPage from "features/recruitment/features/settings/features/jobTemplate/pages/JobTemplateDetailsPage";
+import { RecruitementOtherSettings } from "features/recruitment/features/settings/features/otherSettings/pages/RecruitmentOtherSettings";
 
 export const recruitmentRoutes: TRouteData[] = [
   {
