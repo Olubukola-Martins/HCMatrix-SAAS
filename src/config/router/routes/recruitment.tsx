@@ -7,11 +7,11 @@ import RecruitmentReportPage from "features/recruitment/features/report/pages/Re
 import { RecruitmentJobTemplate } from "features/recruitment/features/settings/pages/RecruitmentJobTemplate";
 import { RecruitementOtherSettings } from "features/recruitment/features/settings/pages/RecruitmentOtherSettings";
 import { EmailTemplateDetails } from "features/recruitment/features/settings/pages/EmailTemplateDetails";
-import RecruitmentCandidateStatusPage from "features/recruitment/features/settings/pages/RecruitmentCandidateStatusPage";
-import RecruitmentChannelsPage from "features/recruitment/features/settings/pages/RecruitmentChannelsPage";
-import RecruitmentEmailTemplatePage from "features/recruitment/features/settings/pages/RecruitmentEmailTemplatePage";
 import OfferTemplateDetailsPage from "features/recruitment/features/settings/pages/OfferTemplateDetailsPage";
 import RecruitmentOfferTemplatePage from "features/recruitment/features/settings/pages/RecruitmentOfferTemplatePage";
+import RecruitmentCandidateStatusPage from "features/recruitment/features/settings/features/configureCandidateStatus/pages/RecruitmentCandidateStatusPage";
+import RecruitmentChannelsPage from "features/recruitment/features/settings/features/recruitmentChannels/pages/RecruitmentChannelsPage";
+import RecruitmentEmailTemplatePage from "features/recruitment/features/settings/features/emailTemplate/pages/RecruitmentEmailTemplatePage";
 
 export const recruitmentRoutes: TRouteData[] = [
   {
