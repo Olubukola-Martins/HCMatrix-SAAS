@@ -5,7 +5,7 @@ import { IMappedVariableProps } from "../types";
 export const RecruitmentMappedVariables: React.FC<IMappedVariableProps> = ({
   handleClose,
   open,
-  showPanelistName,
+  showPanelistName
 }) => {
   return (
     <Modal onCancel={handleClose} open={open} footer={null}>
