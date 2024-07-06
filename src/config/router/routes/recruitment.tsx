@@ -10,7 +10,7 @@ import { RecruitmentJobTemplate } from "features/recruitment/features/settings/p
 import { RecruitmentOfferTemplate } from "features/recruitment/features/settings/pages/RecruitmentOfferTemplate";
 import { RecruitementOtherSettings } from "features/recruitment/features/settings/pages/RecruitmentOtherSettings";
 import { EmailTemplateDetails } from "features/recruitment/features/settings/pages/EmailTemplateDetails";
-import RecruitmentCandidateStatusPage from "features/recruitment/features/settings/pages/RecruitmentCandidateStatusPage";
+import RecruitmentCandidateStatusPage from "features/recruitment/features/settings/features/configureCandidateStatus/pages/RecruitmentCandidateStatusPage";
 
 export const recruitmentRoutes: TRouteData[] = [
   {
@@ -58,35 +58,35 @@ export const recruitmentRoutes: TRouteData[] = [
     title: "Configure Candidate Status",
   },
   {
-    element: <RecruitmentEmailTemplate/>,
+    element: <RecruitmentEmailTemplate />,
     path: appRoutes.recruitmentEmailTemplates,
     isSearchable: true,
     isPrimaryFeature: true,
     title: "Email Template",
   },
   {
-    element: <RecruitmentJobTemplate/>,
+    element: <RecruitmentJobTemplate />,
     path: appRoutes.recruitmentJobTemplates,
     isSearchable: true,
     isPrimaryFeature: true,
     title: "Job Template",
   },
   {
-    element: <RecruitmentOfferTemplate/>,
+    element: <RecruitmentOfferTemplate />,
     path: appRoutes.recruitmentOfferTemplates,
     isSearchable: true,
     isPrimaryFeature: true,
     title: "Offer Template",
   },
   {
-    element: <RecruitementOtherSettings/>,
+    element: <RecruitementOtherSettings />,
     path: appRoutes.recruitmentOtherSettings,
     isSearchable: true,
     isPrimaryFeature: true,
     title: "Other Settings",
   },
   {
-    element: <EmailTemplateDetails/>,
+    element: <EmailTemplateDetails />,
     path: appRoutes.recruitmentEmailTemplateDetails,
     isSearchable: true,
     isPrimaryFeature: true,
