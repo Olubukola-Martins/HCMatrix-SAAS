@@ -1,5 +1,5 @@
 import { RecruitmentSettingsIntro } from "features/recruitment/components/RecruitmentSettingsIntro";
-import { JobTemplateForm } from "../components/JobTemplateForm";
+import { JobTemplateForm } from "../../../components/JobTemplateForm";
 
 const JobTemplateDetailsPage = () => {
   const handleSubmit = (val: any) => {
