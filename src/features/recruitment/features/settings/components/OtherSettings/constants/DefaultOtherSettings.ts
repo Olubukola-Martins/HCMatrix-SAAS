@@ -46,7 +46,7 @@ export const employmentTypeSettings = [
 
 export const experienceTypeSettings = [
   {
-    label: "Enty Level",
+    label: "Entry Level",
     name: "entryLevel",
   },
   {
