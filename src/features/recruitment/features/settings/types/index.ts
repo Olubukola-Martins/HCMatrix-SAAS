@@ -11,6 +11,6 @@ export interface IMappedVariableProps {
 
 export interface IEmailTemplateDescriptionProps {
   emailSubject: string;
-    emailMessage: string;
-    candidateStatus?:string
+  emailMessage: string;
+  candidateStatus?: string;
 }
