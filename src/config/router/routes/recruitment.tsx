@@ -6,6 +6,7 @@ import RecruitmentHiredCandidatePage from "features/recruitment/features/hiredCa
 import RecruitmentReportPage from "features/recruitment/features/report/pages/RecruitmentReportPage";
 import { RecruitmentJobTemplate } from "features/recruitment/features/settings/pages/RecruitmentJobTemplate";
 import { RecruitementOtherSettings } from "features/recruitment/features/settings/pages/RecruitmentOtherSettings";
+import JobTemplateDetailsPage from "features/recruitment/features/settings/pages/JobTemplateDetailsPage";
 import { EmailTemplateDetails } from "features/recruitment/features/settings/pages/EmailTemplateDetails";
 import RecruitmentCandidateStatusPage from "features/recruitment/features/settings/features/configureCandidateStatus/pages/RecruitmentCandidateStatusPage";
 import RecruitmentChannelsPage from "features/recruitment/features/settings/features/recruitmentChannels/pages/RecruitmentChannelsPage";
@@ -99,5 +100,12 @@ export const recruitmentRoutes: TRouteData[] = [
     isSearchable: true,
     isPrimaryFeature: true,
     title: "Offer Template Details",
+  },
+  {
+    element: <JobTemplateDetailsPage />,
+    path: appRoutes.recruitmentJobTemplateDetails().format,
+    isSearchable: true,
+    isPrimaryFeature: true,
+    title: "Job Template",
   },
 ];

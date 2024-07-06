@@ -47,7 +47,7 @@ const RecruitmentOfferTemplatePage = () => {
           emailSubject="Full Time - At Will"
           body=""
           email=""
-          linkUrl={appRoutes.recruitmentEmailTemplateDetails().path}
+          linkUrl={appRoutes.recruitmentOfferTemplateDetails().path}
         />
       </div>
     </div>
