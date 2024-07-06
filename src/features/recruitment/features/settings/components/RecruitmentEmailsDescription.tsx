@@ -11,14 +11,17 @@ export const RecruitmentEmailsDescription: React.FC<
   const menuItems: MenuProps["items"] = [
     {
       label: <Link to={linkUrl}>View</Link>,
+      type: "item",
       key: "1",
     },
     {
       label: <Link to={linkUrl}>Edit</Link>,
+      type: "item",
       key: "2",
     },
     {
       label: "Delete",
+      type: "item",
       key: "3",
     },
   ];
