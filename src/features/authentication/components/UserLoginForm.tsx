@@ -2,13 +2,9 @@ import { LockOutlined, MailOutlined } from "@ant-design/icons";
 import { Form, Input } from "antd";
 import { useSignIn } from "react-auth-kit";
 import { useContext, useEffect } from "react";
-
 import { BeatLoader } from "react-spinners";
 import { useLoginUser } from "../hooks/useLoginUser";
-import {
-  TOKEN_EXPIRES_IN,
-  REFRESH_TOKEN_EXPIRES_IN,
-} from "config/refreshTokenApi";
+import { TOKEN_EXPIRES_IN } from "config/refreshTokenApi";
 import { GlobalContext, EGlobalOps } from "stateManagers/GlobalContextProvider";
 import { textInputValidationRules } from "utils/formHelpers/validation";
 import { openNotification } from "utils/notifications";
