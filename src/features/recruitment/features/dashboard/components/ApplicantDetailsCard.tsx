@@ -34,20 +34,20 @@ const ApplicantDetailsCard = () => {
     },
   ];
   return (
-    // <CardWrapper>
-    //   <div className="flex flex-col justify-between gap-4 ">
-    //     <div className="flex flex-col gap-2 md:flex-row justify-between  ">
-    //       <p className="font-bold">Applicant Details</p>
-    //       <p>Recent Application</p>
-    //     </div>
+    <CardWrapper>
+      <div className="flex flex-col justify-between gap-4 ">
+        <div className="flex flex-col gap-2 md:flex-row justify-between  ">
+          <p className="font-bold">Applicant Details</p>
+          <p>Recent Application</p>
+        </div>
 
-        // {/* table */}
+         {/* table */}
         <Table columns={columns} dataSource={viewAll ? mockData : mockData.slice(0, 5)} pagination={viewAll ? { pageSize: 10 } : false}  scroll={{ x: 700 }} />
-    //     <p className={`text-center text-[var(--caramel)] cursor-pointer underline-offset-2 ${viewAll ? "decoration-[var(--caramel)] underline" : ""}`} onClick={() => setviewAll(!viewAll)}>
-    //       View {viewAll ? "Less" : "All"}
-    //     </p>
-    //   </div>
-    // </CardWrapper>
+       <p className={`text-center text-[var(--caramel)] cursor-pointer underline-offset-2 ${viewAll ? "decoration-[var(--caramel)] underline" : ""}`} onClick={() => setviewAll(!viewAll)}>
+          View {viewAll ? "Less" : "All"}
+       </p>
+       </div>
+     </CardWrapper>
   );
 };
 
