@@ -50,7 +50,7 @@ const RecruitmentHiredCandidatePage = () => {
                 <Menu.Item
                   key="1"
                   onClick={() => {
-                    setSelectedCandidate((prev) => record);
+                    setSelectedCandidate( record);
                     setViewModalIsOpen(true);
                   }}>
                   View
@@ -64,28 +64,20 @@ const RecruitmentHiredCandidatePage = () => {
     },
   ];
 
-  // const ViewModal = React.useCallback(() => {
-  //  return <ViewCandidateModal
-  //     candidate={selectedCandidate}
-  //     onCancel={() => {
-  //       setViewModalIsOpen(false);
-  //     }}
-  //     visible={viewModalIsOpen}
-  //   />;
-  // }, [selectedCandidate, viewModalIsOpen]);
+  const ViewModal = React.useCallback(() => {
+    if(viewModalIsOpen) { return <ViewCandidateModal
+      candidate={selectedCandidate}
+      onCancel={() => {
+        setViewModalIsOpen(false);
+      }}
+      visible={viewModalIsOpen}
+    />}
+  }, [selectedCandidate, viewModalIsOpen]);
   
-React.useEffect(() => {
-}, [selectedCandidate])
 
   return (
     <>
-      <ViewCandidateModal
-        candidate={selectedCandidate}
-        onCancel={() => {
-          setViewModalIsOpen(false);
-        }}
-        visible={viewModalIsOpen}
-      />
+      {ViewModal()}
       <RecruitmentSubNav />
       <div className="Container flex flex-col gap-7 md:gap-10">
         <PageIntro title="Hired Candidates" link={appRoutes.recruitmentDashboard} />
