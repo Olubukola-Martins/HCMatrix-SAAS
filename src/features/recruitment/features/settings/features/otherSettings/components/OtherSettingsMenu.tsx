@@ -58,7 +58,7 @@ export const OtherSettingsMenu = () => {
     OtherSettingsMenuArray[0]
   );
   const [selectedChild, setSelectedChild] =
-    useState<IOtherSettingsSubMenuComponent | null>(null);
+    useState<IOtherSettingsSubMenuComponent>();
 
   useEffect(() => {
     if (selectedMenu.title === "Interview Settings" && selectedMenu.children) {
@@ -82,7 +82,6 @@ export const OtherSettingsMenu = () => {
               }`}
               onClick={() => {
                 setSelectedMenu(item);
-                setSelectedChild(null);
               }}
             >
               {item.title}
