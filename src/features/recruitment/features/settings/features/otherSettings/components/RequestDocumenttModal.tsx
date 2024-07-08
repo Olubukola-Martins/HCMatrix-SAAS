@@ -25,12 +25,14 @@ export const RequestDocumentModal = ({
       open={open}
       onCancel={onCancel}
       afterClose={() => form.resetFields()}
+      
     >
       <Form
         layout="vertical"
         form={form}
         onFinish={handleSubmit}
         initialValues={initialValues}
+        requiredMark={false}
       >
         <Form.Item
           label="Document Name"
@@ -53,7 +55,7 @@ export const RequestDocumentModal = ({
             ]}
           />
         </Form.Item>
-        <div className="flex justify-between items-center">
+        <div className="flex justify-between items-center gap-5">
           <Form.Item
             label="Maximum Size"
             name="maxSize"

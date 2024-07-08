@@ -2,7 +2,6 @@ import { Table } from "antd";
 import { useState } from "react";
 import { RequestDocumentModal } from "./RequestDocumenttModal";
 
-
 export const RequestDocument = () => {
   const [openModal, setOpenModal] = useState<boolean>(false);
   const [editIndex, setEditIndex] = useState<number | null>(null);
@@ -67,7 +66,6 @@ export const RequestDocument = () => {
     }
 
     setOpenModal(false);
-    
   };
 
   const handleDelete = (index: number) => {
@@ -112,7 +110,7 @@ export const RequestDocument = () => {
         handleSubmit={handleFormSubmit}
         initialValues={initialValues}
       />
-      <Table dataSource={dataSource} columns={columns} />
+      <Table dataSource={dataSource} columns={columns} scroll={{ x: 500 }} />
     </div>
   );
 };
