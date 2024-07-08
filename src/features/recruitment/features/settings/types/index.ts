@@ -14,9 +14,9 @@ export interface IEmailTemplateDescriptionProps {
   emailSubject: string;
   emailMessage: string;
   candidateStatus?: string;
-  email: string
-  body: string
-  linkUrl:string
+  email: string;
+  body: string;
+  linkUrl: string;
 }
 
 export interface IEmailFormPageProps {
@@ -26,16 +26,4 @@ export interface IEmailFormPageProps {
   handleSubmit: (val: any) => void;
   pageDescription: string;
   pageTitle: string;
-}
-
-// Types for Recruitment Other Settings
-export interface IOtherSettingsMenuComponent {
-  title: string;
-  menuComponent?: React.ReactNode;
-  children?: IOtherSettingsSubMenuComponent[];
-}
-
-export interface IOtherSettingsSubMenuComponent {
-  title: string;
-  childrenComponent: React.ReactNode;
 }
