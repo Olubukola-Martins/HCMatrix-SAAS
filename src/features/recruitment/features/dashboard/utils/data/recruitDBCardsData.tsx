@@ -9,8 +9,7 @@ export const cardData = [
     cardCount: 10,
   },
   {
-    // link: appRoutes.recruitmentJobOpenings,
-    link: appRoutes.recruitmentDashboard,
+    link: appRoutes.recruitmentJobOpenings,
     cardName: "Total Job Openings",
     cardCount: 20,
   },
