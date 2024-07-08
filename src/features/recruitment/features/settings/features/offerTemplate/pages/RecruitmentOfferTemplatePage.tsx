@@ -1,12 +1,12 @@
 import { AppButton } from "components/button/AppButton";
 import { RecruitmentSettingsIntro } from "features/recruitment/components/RecruitmentSettingsIntro";
 import { useState } from "react";
-import { RecruitmentEmailsDescription } from "../components/RecruitmentEmailsDescription";
-import { RecruitmentMappedVariables } from "../components/RecruitmentMappedVariables.";
 import { Link } from "react-router-dom";
 import { appRoutes } from "config/router/paths";
+import { RecruitmentEmailsDescription } from "../../../components/RecruitmentEmailsDescription";
+import { RecruitmentMappedVariables } from "../../../components/RecruitmentMappedVariables.";
 
-export const RecruitmentOfferTemplate = () => {
+const RecruitmentOfferTemplatePage = () => {
   const [openMappedVariables, setOpenDrawerVariables] =
     useState<boolean>(false);
   return (
@@ -53,3 +53,5 @@ export const RecruitmentOfferTemplate = () => {
     </div>
   );
 };
+
+export default RecruitmentOfferTemplatePage;

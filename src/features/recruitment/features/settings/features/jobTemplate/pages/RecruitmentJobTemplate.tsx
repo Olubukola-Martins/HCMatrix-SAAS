@@ -1,27 +1,13 @@
 import { AppButton } from "components/button/AppButton";
 import { RecruitmentSettingsIntro } from "features/recruitment/components/RecruitmentSettingsIntro";
 import { useState } from "react";
-import { RecruitmentEmailsDescription } from "../components/RecruitmentEmailsDescription";
-import { RecruitmentMappedVariables } from "../components/RecruitmentMappedVariables.";
 import { FormDepartmentInput } from "features/core/departments/components/FormDepartmentInput";
 import { Form } from "antd";
 import { appRoutes } from "config/router/paths";
 import { Link } from "react-router-dom";
-
-const additionalEmailTemplates = [
-  {
-    emailSubject: "UI/UX Designer",
-    emailBody: "We are seeking a talented UI/UX Designer.......",
-  },
-  {
-    emailSubject: "Frontend Developer (JS)",
-    emailBody: "We are seeking a talented Frontend Developer.......",
-  },
-  {
-    emailSubject: "Mobile Developer",
-    emailBody: "We are seeking a talented Mobile Developer.......",
-  },
-];
+import { RecruitmentEmailsDescription } from "../../../components/RecruitmentEmailsDescription";
+import { RecruitmentMappedVariables } from "../../../components/RecruitmentMappedVariables.";
+import { additionalJobTemplates } from "../constants";
 
 export const RecruitmentJobTemplate = () => {
   const [openMappedVariables, setOpenDrawerVariables] =
@@ -50,7 +36,7 @@ export const RecruitmentJobTemplate = () => {
           </Link>
         </div>
 
-        {additionalEmailTemplates.map((item) => (
+        {additionalJobTemplates.map((item) => (
           <RecruitmentEmailsDescription
             emailMessage={item.emailBody}
             emailSubject={item.emailSubject}
