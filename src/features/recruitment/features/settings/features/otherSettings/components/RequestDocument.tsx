@@ -2,8 +2,6 @@ import { Table } from "antd";
 import { useState } from "react";
 import { RequestDocumentModal } from "./RequestDocumenttModal";
 
-// update how columns and datasource are passed
-// look into modal bug
 
 export const RequestDocument = () => {
   const [openModal, setOpenModal] = useState<boolean>(false);

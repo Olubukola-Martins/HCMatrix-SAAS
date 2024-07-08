@@ -1,30 +1,30 @@
 import { Form, Input, Switch } from "antd";
 import { AppButton } from "components/button/AppButton";
 import { generalValidationRules } from "utils/formHelpers/validation";
-import { experienceTypeSettings } from "./constants/DefaultOtherSettings";
 import { OtherSettingsFormSwitch } from "./OtherSettingsFormSwitch";
+import { employmentTypeSettings } from "../constants/defaultOtherSettings";
 
-export const ExperienceType = () => {
+export const EmploymentType = () => {
   const [form] = Form.useForm();
   const handleSubmit = (val: any) => {
     console.log("values of form", val);
   };
 
   const handleAddField = () => {
-    const newExperienceType = form.getFieldValue("newExperienceType") || [];
-    const initialEexperienceType = {
-      experienceName: "",
-      experienceStatus: true,
+    const newEmploymentType = form.getFieldValue("newEmploymentType") || [];
+    const initialEmploymentType = {
+      employmentName: "",
+      employmentStatus: true,
     };
     form.setFieldsValue({
-      newExperienceType: [...newExperienceType, initialEexperienceType],
+      newEmploymentType: [...newEmploymentType, initialEmploymentType],
     });
   };
 
   const handleRemoveField = (index: number) => {
-    const newExperienceType = form.getFieldValue("newExperienceType") || [];
+    const newEmploymentType = form.getFieldValue("newEmploymentType") || [];
     form.setFieldsValue({
-      newExperienceType: newExperienceType.filter(
+      newEmploymentType: newEmploymentType.filter(
         (_: any, i: number) => i !== index
       ),
     });
@@ -32,8 +32,8 @@ export const ExperienceType = () => {
   return (
     <div>
       <p className="p-2 text-base mb-3">
-        Toggle on the experience type you want for your organization and add
-        more experience types if need be.
+        Toggle on the employment type you want for your organization and add
+        more employment types if need be.
       </p>
       <Form
         form={form}
@@ -41,10 +41,10 @@ export const ExperienceType = () => {
         layout="vertical"
         requiredMark={false}
       >
-        {experienceTypeSettings.map((item) => (
+        {employmentTypeSettings.map((item) => (
           <OtherSettingsFormSwitch label={item.label} name={item.name} />
         ))}
-        <Form.List name="newExperienceType">
+        <Form.List name="newEmploymentType">
           {(fields) => (
             <>
               {fields.map((field, index) => (
@@ -54,18 +54,18 @@ export const ExperienceType = () => {
                 >
                   <Form.Item
                     {...field}
-                    name={[field.name, "experienceName"]}
-                    label="Experience Name"
+                    name={[field.name, "employmentName"]}
+                    label="Employment Name"
                     className="w-full"
                     rules={generalValidationRules}
                   >
-                    <Input placeholder="Add Experience Type" />
+                    <Input placeholder="Add Employment Type" />
                   </Form.Item>
 
                   <div className="flex items-center justify-end gap-3 w-full">
                     <Form.Item
                       valuePropName="checked"
-                      name={[field.name, "experienceStatus"]}
+                      name={[field.name, "employmentStatus"]}
                       className="flex justify-end items-end"
                       noStyle
                     >
@@ -82,7 +82,7 @@ export const ExperienceType = () => {
 
               <AppButton
                 variant="transparent"
-                label="Add New Experience Type"
+                label="Add New Employment Type"
                 handleClick={() => handleAddField()}
               />
             </>

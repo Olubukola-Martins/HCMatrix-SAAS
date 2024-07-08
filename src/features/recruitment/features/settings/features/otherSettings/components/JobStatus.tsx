@@ -1,39 +1,37 @@
 import { Form, Input, Switch } from "antd";
 import { AppButton } from "components/button/AppButton";
 import { generalValidationRules } from "utils/formHelpers/validation";
-import { employmentTypeSettings } from "./constants/DefaultOtherSettings";
+import { jobStatusSettings } from "../constants/defaultOtherSettings";
 import { OtherSettingsFormSwitch } from "./OtherSettingsFormSwitch";
 
-export const EmploymentType = () => {
+export const JobStatus = () => {
   const [form] = Form.useForm();
   const handleSubmit = (val: any) => {
     console.log("values of form", val);
   };
 
   const handleAddField = () => {
-    const newEmploymentType = form.getFieldValue("newEmploymentType") || [];
-    const initialEmploymentType = {
-      employmentName: "",
-      employmentStatus: true,
+    const newJobStatus = form.getFieldValue("newJobStatus") || [];
+    const initialJobStatus = {
+      jobStatusName: "",
+      jobStatus: true,
     };
     form.setFieldsValue({
-      newEmploymentType: [...newEmploymentType, initialEmploymentType],
+      newJobStatus: [...newJobStatus, initialJobStatus],
     });
   };
 
   const handleRemoveField = (index: number) => {
-    const newEmploymentType = form.getFieldValue("newEmploymentType") || [];
+    const newJobStatus = form.getFieldValue("newJobStatus") || [];
     form.setFieldsValue({
-      newEmploymentType: newEmploymentType.filter(
-        (_: any, i: number) => i !== index
-      ),
+      newJobStatus: newJobStatus.filter((_: any, i: number) => i !== index),
     });
   };
   return (
     <div>
       <p className="p-2 text-base mb-3">
-        Toggle on the employment type you want for your organization and add
-        more employment types if need be.
+        Toggle on the job status you want for your organization and add more job
+        statuses if need be.
       </p>
       <Form
         form={form}
@@ -41,10 +39,10 @@ export const EmploymentType = () => {
         layout="vertical"
         requiredMark={false}
       >
-        {employmentTypeSettings.map((item) => (
+        {jobStatusSettings.map((item) => (
           <OtherSettingsFormSwitch label={item.label} name={item.name} />
         ))}
-        <Form.List name="newEmploymentType">
+        <Form.List name="newJobStatus">
           {(fields) => (
             <>
               {fields.map((field, index) => (
@@ -54,18 +52,18 @@ export const EmploymentType = () => {
                 >
                   <Form.Item
                     {...field}
-                    name={[field.name, "employmentName"]}
-                    label="Employment Name"
+                    name={[field.name, "jobStatusName"]}
+                    label="Job Status Name"
                     className="w-full"
                     rules={generalValidationRules}
                   >
-                    <Input placeholder="Add Employment Type" />
+                    <Input placeholder="Add Job Status" />
                   </Form.Item>
 
                   <div className="flex items-center justify-end gap-3 w-full">
                     <Form.Item
                       valuePropName="checked"
-                      name={[field.name, "employmentStatus"]}
+                      name={[field.name, "jobStatus"]}
                       className="flex justify-end items-end"
                       noStyle
                     >
@@ -82,7 +80,7 @@ export const EmploymentType = () => {
 
               <AppButton
                 variant="transparent"
-                label="Add New Employment Type"
+                label="Add New Job Status"
                 handleClick={() => handleAddField()}
               />
             </>

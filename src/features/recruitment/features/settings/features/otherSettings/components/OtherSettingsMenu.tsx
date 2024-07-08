@@ -12,7 +12,7 @@ import { RequestDocument } from "./RequestDocument";
 import {
   IOtherSettingsMenuComponent,
   IOtherSettingsSubMenuComponent,
-} from "../../types";
+} from "../types";
 
 const OtherSettingsMenuArray: IOtherSettingsMenuComponent[] = [
   { title: "Benefits", menuComponent: <RecruitmentBenefits /> },

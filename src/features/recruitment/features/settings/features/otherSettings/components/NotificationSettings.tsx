@@ -5,7 +5,7 @@ import { OtherSettingsFormSwitch } from "./OtherSettingsFormSwitch";
 import { FormEmployeeInput } from "features/core/employees/components/FormEmployeeInput";
 import { FormRoleInput } from "features/core/roles-and-permissions/components/FormRoleInput";
 import { FormGroupInput } from "features/core/groups/components/FormGroupInput";
-import { notificationSettings } from "./constants/DefaultOtherSettings";
+import { notificationSettings } from "../constants/defaultOtherSettings";
 
 export const NotificationSettings = () => {
   const [form] = Form.useForm();
