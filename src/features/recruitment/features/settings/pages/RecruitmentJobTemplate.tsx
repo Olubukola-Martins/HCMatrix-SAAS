@@ -37,7 +37,7 @@ export const RecruitmentJobTemplate = () => {
           handleClose={() => setOpenDrawerVariables(false)}
           open={openMappedVariables}
         />
-        <div className="flex p-2 m-1 items-center justify-between">
+        <div className="flex p-2 m-1 justify-between">
           <div className="w-1/3">
             <FormDepartmentInput Form={Form} showLabel={false} />
           </div>
@@ -45,7 +45,7 @@ export const RecruitmentJobTemplate = () => {
             <AppButton
               label="+ Add Email Template"
               variant="transparent"
-              additionalClassNames={["font-bold"]}
+              additionalClassNames={["border, border-green-500"]}
             />
           </Link>
         </div>
