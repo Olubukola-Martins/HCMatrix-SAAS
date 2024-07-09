@@ -4,8 +4,9 @@ import { AppButton } from "components/button/AppButton";
 import { useState } from "react";
 import { DisableTwoFA } from "../components/DisableTwoFA";
 import { GenerateBackupCodes } from "../components/GenerateBackupCodes";
+import { EnterBackupCodes } from "../components/EnterBackupCodes";
 
-type TAction = "disable-2fa" | "g-backup-codes";
+type TAction = "disable-2fa" | "g-backup-codes" | "use-backup-codes";
 const TwoFactorAuthentication = () => {
   const [useCheckTwoFA, setUseCheckTwoFA] = useState<boolean>(true);
   const [action, setAction] = useState<TAction>();
@@ -13,16 +14,22 @@ const TwoFactorAuthentication = () => {
   const clearAction = () => {
     setAction(undefined);
   };
-  
+
   return (
     <>
       <DisableTwoFA
+        setAction={setAction}
         open={action === "disable-2fa"}
         handleClose={() => clearAction()}
       />
 
       <GenerateBackupCodes
         open={action === "g-backup-codes"}
+        handleClose={() => clearAction()}
+      />
+
+      <EnterBackupCodes
+        open={action === "use-backup-codes"}
         handleClose={() => clearAction()}
       />
 

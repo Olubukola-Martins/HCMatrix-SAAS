@@ -3,7 +3,11 @@ import { AppButton } from "components/button/AppButton";
 import { IModalProps } from "types";
 import { generalValidationRules } from "utils/formHelpers/validation";
 
-export const DisableTwoFA = ({ open, handleClose }: IModalProps) => {
+interface DisableTwoFAProps extends IModalProps {
+    setAction: (action: "disable-2fa" | "g-backup-codes" | "use-backup-codes") => void;
+  }
+
+export const DisableTwoFA = ({ open, handleClose, setAction }: DisableTwoFAProps) => {
   const [form] = Form.useForm();
 
   const handleFormSubmit = (values: any) => {
@@ -36,7 +40,7 @@ export const DisableTwoFA = ({ open, handleClose }: IModalProps) => {
           </Form.Item>
 
           <div className="flex justify-between mt-3">
-            <p className="text-[#01966B] font-medium cursor-pointer">
+            <p  onClick={() => setAction("use-backup-codes")} className="text-[#01966B] font-medium cursor-pointer">
               Use a backup code instead
             </p>
             <AppButton label="Disable" type="submit" />
