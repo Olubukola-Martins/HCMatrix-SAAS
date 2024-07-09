@@ -3,8 +3,9 @@ import twoFA from "../assets/images/enableAuth.svg";
 import { AppButton } from "components/button/AppButton";
 import { useState } from "react";
 import { DisableTwoFA } from "../components/DisableTwoFA";
+import { GenerateBackupCodes } from "../components/GenerateBackupCodes";
 
-type TAction = "disable-2fa" | "setup-2fa";
+type TAction = "disable-2fa" | "g-backup-codes";
 const TwoFactorAuthentication = () => {
   const [useCheckTwoFA, setUseCheckTwoFA] = useState<boolean>(true);
   const [action, setAction] = useState<TAction>();
@@ -12,13 +13,19 @@ const TwoFactorAuthentication = () => {
   const clearAction = () => {
     setAction(undefined);
   };
+  
   return (
     <>
       <DisableTwoFA
         open={action === "disable-2fa"}
         handleClose={() => clearAction()}
       />
-      
+
+      <GenerateBackupCodes
+        open={action === "g-backup-codes"}
+        handleClose={() => clearAction()}
+      />
+
       <div className="relative mb-10">
         <BackgroundCurves />
         <div className="absolute top-4 Container mt-8 w-full">
@@ -51,6 +58,7 @@ const TwoFactorAuthentication = () => {
                     <AppButton
                       label="Generate Backup codes"
                       variant="transparent"
+                      handleClick={() => setAction("g-backup-codes")}
                     />
                     <AppButton
                       label="Disable 2FA"
