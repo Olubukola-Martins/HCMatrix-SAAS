@@ -5,18 +5,23 @@ import { useState } from "react";
 import { DisableTwoFA } from "../components/DisableTwoFA";
 import { GenerateBackupCodes } from "../components/GenerateBackupCodes";
 import { EnterBackupCodes } from "../components/EnterBackupCodes";
+import { TAction } from "../types";
+import { SetupTwoFA } from "../components/SetupTwoFA";
+import { EnableTwoFA } from "../components/EnableTwoFA";
 
-type TAction = "disable-2fa" | "g-backup-codes" | "use-backup-codes";
 const TwoFactorAuthentication = () => {
-  const [useCheckTwoFA, setUseCheckTwoFA] = useState<boolean>(true);
+  const [useCheckTwoFA, setUseCheckTwoFA] = useState<boolean>(false);
   const [action, setAction] = useState<TAction>();
-
   const clearAction = () => {
     setAction(undefined);
   };
 
   return (
     <>
+      <SetupTwoFA
+        open={action === "setup-2fa"}
+        handleClose={() => clearAction()}
+      />
       <DisableTwoFA
         setAction={setAction}
         open={action === "disable-2fa"}
@@ -74,14 +79,7 @@ const TwoFactorAuthentication = () => {
                   </div>
                 </div>
               ) : (
-                <div>
-                  <p className="pb-5">
-                    2FA adds an extra layer of security by requiring a second{" "}
-                    <br className="md:flex hidden" /> form of verification in
-                    addition to your password.
-                  </p>
-                  <AppButton label="Enable 2FA" />
-                </div>
+                <EnableTwoFA setAction={setAction} />
               )}
             </div>
           </div>
