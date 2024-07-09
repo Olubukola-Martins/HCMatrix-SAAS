@@ -75,7 +75,9 @@ const UserActions: React.FC<{
   activeSubscription?: TCompanySubscription;
 }> = ({ userPermissions, closeMenu, isOwner, activeSubscription }) => {
   type TAction = "transfer-ownership" | "setup-2fa";
+
   const [action, setAction] = useState<TAction>();
+  
   const clearAction = () => {
     setAction(undefined);
   };
@@ -117,8 +119,9 @@ const UserActions: React.FC<{
     },
 
     {
-      text: "Enable 2FA",
-      onClick: () => setAction("setup-2fa"),
+      text: "Two Factor Authentication",
+      url: appRoutes.twoFactorAuthentication,
+      // onClick: () => setAction("setup-2fa"),
       hidden: !canUserAccessComponent({
         userPermissions,
         requiredPermissions: [],
@@ -128,7 +131,7 @@ const UserActions: React.FC<{
           resources: [],
         },
       }),
-      isLink: false,
+      isLink: true,
     },
 
     {
@@ -224,6 +227,7 @@ const UserActions: React.FC<{
   return (
     <>
       <Setup2FA open={action === "setup-2fa"} handleClose={clearAction} />
+
       <TransferOwnership
         open={action === "transfer-ownership"}
         handleClose={() => clearAction()}
