@@ -1,8 +1,6 @@
 import React from "react";
-import { OtherSettingsFormSwitch } from "./OtherSettingsFormSwitch";
-import { ReorderableCardProps } from "../types";
-
-
+import { OtherSettingsFormSwitch } from "../OtherSettingsFormSwitch";
+import { ReorderableCardProps } from "../../types";
 
 export const ReorderableCard: React.FC<ReorderableCardProps> = ({
   label,
@@ -20,7 +18,7 @@ export const ReorderableCard: React.FC<ReorderableCardProps> = ({
       onDragOver={onDragOver}
       onDrop={onDrop}
       onDragEnd={onDragEnd}
-      >
+    >
       <OtherSettingsFormSwitch label={label} name={name} />
     </div>
   );

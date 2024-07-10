@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { ReorderableCard } from "./ReorderableCard";
-import { INTERVIEW_STAGE_SETTINGS_ARRAY } from "../constants/defaultOtherSettings";
+import { INTERVIEW_STAGE_SETTINGS_ARRAY } from "../../constants/defaultOtherSettings";
 
 export const InterviewStageReorderDivs = () => {
   const [items, setItems] = useState(INTERVIEW_STAGE_SETTINGS_ARRAY);
