@@ -13,19 +13,19 @@ import { Skeleton } from "antd";
 
 const TwoFactorAuthentication = () => {
   const { isLoading, data: checkOtpData } = useGetTwoFA();
-  const [useCheckTwoFA, setUseCheckTwoFA] = useState<boolean>(true);
+  const [image, setImage] = useState<string>();
   const [action, setAction] = useState<TAction>();
   const clearAction = () => {
     setAction(undefined);
   };
-
-  // console.log(data);
 
   return (
     <>
       <SetupTwoFA
         open={action === "setup-2fa"}
         handleClose={() => clearAction()}
+        image={image}
+        setAction={setAction}
       />
       <DisableTwoFA
         setAction={setAction}
@@ -50,14 +50,15 @@ const TwoFactorAuthentication = () => {
             Two-Factor Authentication (2FA)
           </h2>
 
-          <Skeleton loading={isLoading} active={true}>
+          <Skeleton loading={isLoading} active={true} className="mt-20">
             <div className="flex justify-center mt-3 text-center">
               <div>
                 <div className="flex justify-center mb-3">
-                  <img src={twoFA} alt="authentication" />
+                  <img src={twoFA} alt="authentication" loading="lazy" />
                 </div>
 
-                {!checkOtpData?.isDisabled ? (
+                {checkOtpData?.isDisabled !== null &&
+                checkOtpData?.isVerified === null ? (
                   <div className="text-sm">
                     <p>
                       Your account is already protected with Two-Factor
@@ -86,7 +87,7 @@ const TwoFactorAuthentication = () => {
                     </div>
                   </div>
                 ) : (
-                  <EnableTwoFA setAction={setAction} />
+                  <EnableTwoFA setAction={setAction} setImage={setImage} />
                 )}
               </div>
             </div>

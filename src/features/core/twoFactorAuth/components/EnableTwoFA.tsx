@@ -1,19 +1,19 @@
 import { AppButton } from "components/button/AppButton";
 import { TAction } from "../types";
-import { useSetup2FA } from "../hooks/useSetup2FA";
-import { useState } from "react";
+import { Dispatch, SetStateAction } from "react";
 import { useQueryClient } from "react-query";
 import { openNotification } from "utils/notifications";
+import { useEnable2FA } from "../hooks/useEnable2FA";
 
 interface IProps {
   setAction: (action: TAction) => void;
+  setImage: Dispatch<SetStateAction<string | undefined>>;
 }
 
-export const EnableTwoFA = ({ setAction }: IProps) => {
-  const { mutate, isLoading } = useSetup2FA();
-  const [image, setImage] = useState<string>();
-  const queryClient = useQueryClient();
+export const EnableTwoFA = ({ setAction, setImage }: IProps) => {
+  const { mutate, isLoading } = useEnable2FA();
 
+  const queryClient = useQueryClient();
 
   const handleSubmit = () => {
     mutate(
@@ -30,15 +30,12 @@ export const EnableTwoFA = ({ setAction }: IProps) => {
         onSuccess: (res) => {
           openNotification({
             state: "success",
-
             title: "Success",
             description: res.data.message,
-            // duration: 0.4,
           });
-        //   setAction("display-qrcode");
-          setImage(res.data.data);
-        //   handleClose();
-
+          setAction("setup-2fa");
+          console.log(res);
+          setImage(res.data.data.qrCode);
           queryClient.invalidateQueries({
             queryKey: [],
             // exact: true,

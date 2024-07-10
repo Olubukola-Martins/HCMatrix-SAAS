@@ -1,3 +1,5 @@
+import { IModalProps } from "types";
+
 export type TAction =
   | "disable-2fa"
   | "g-backup-codes"
@@ -10,3 +12,8 @@ export interface IGetTwoFAProps {
   isDisabled: boolean;
   companyId: number;
 }
+
+export interface DoublePropTwoFA extends IModalProps {
+    setAction: (action: TAction) => void;
+    image?: string;
+  }

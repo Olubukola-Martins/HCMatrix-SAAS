@@ -21,6 +21,9 @@ const getData = async (props: {
   };
 
   const res = await axios.get(url, config);
+
+  console.log(res);
+  
   const ans: IGetTwoFAProps = res.data.data;
 
   return ans;
