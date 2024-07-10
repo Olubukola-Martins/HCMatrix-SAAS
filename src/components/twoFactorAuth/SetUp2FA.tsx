@@ -97,6 +97,7 @@ export const Setup2FA: React.FC<IModalProps> = ({ open, handleClose }) => {
       }
     );
   };
+  
   const onClose = () => {
     handleClose();
     setAction(undefined);

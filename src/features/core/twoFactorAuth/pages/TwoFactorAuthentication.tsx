@@ -8,13 +8,18 @@ import { EnterBackupCodes } from "../components/EnterBackupCodes";
 import { TAction } from "../types";
 import { SetupTwoFA } from "../components/SetupTwoFA";
 import { EnableTwoFA } from "../components/EnableTwoFA";
+import { useGetTwoFA } from "../hooks/useGetTwoFA";
+import { Skeleton } from "antd";
 
 const TwoFactorAuthentication = () => {
-  const [useCheckTwoFA, setUseCheckTwoFA] = useState<boolean>(false);
+  const { isLoading, data: checkOtpData } = useGetTwoFA();
+  const [useCheckTwoFA, setUseCheckTwoFA] = useState<boolean>(true);
   const [action, setAction] = useState<TAction>();
   const clearAction = () => {
     setAction(undefined);
   };
+
+  // console.log(data);
 
   return (
     <>
@@ -45,44 +50,47 @@ const TwoFactorAuthentication = () => {
             Two-Factor Authentication (2FA)
           </h2>
 
-          <div className="flex justify-center mt-3 text-center">
-            <div>
-              <div className="flex justify-center mb-3">
-                <img src={twoFA} alt="authentication" />
-              </div>
-
-              {useCheckTwoFA ? (
-                <div className="text-sm">
-                  <p>
-                    Your account is already protected with Two-Factor
-                    <br className="md:flex hidden" />
-                    Authentication (2FA). This extra layer of security helps
-                    <br className="md:flex hidden" /> keep your account safe
-                    from unauthorized access.
-                  </p>
-                  <p className="pt-3">
-                    If you lose access to your authentication device, use any of
-                    <br className="md:flex hidden" />
-                    your backup codes to login to your account.
-                  </p>
-
-                  <div className="flex items-center justify-between mt-7">
-                    <AppButton
-                      label="Generate Backup codes"
-                      variant="transparent"
-                      handleClick={() => setAction("g-backup-codes")}
-                    />
-                    <AppButton
-                      label="Disable 2FA"
-                      handleClick={() => setAction("disable-2fa")}
-                    />
-                  </div>
+          <Skeleton loading={isLoading} active={true}>
+            <div className="flex justify-center mt-3 text-center">
+              <div>
+                <div className="flex justify-center mb-3">
+                  <img src={twoFA} alt="authentication" />
                 </div>
-              ) : (
-                <EnableTwoFA setAction={setAction} />
-              )}
+
+                {!checkOtpData?.isDisabled ? (
+                  <div className="text-sm">
+                    <p>
+                      Your account is already protected with Two-Factor
+                      <br className="md:flex hidden" />
+                      Authentication (2FA). This extra layer of security helps
+                      <br className="md:flex hidden" /> keep your account safe
+                      from unauthorized access.
+                    </p>
+                    <p className="pt-3">
+                      If you lose access to your authentication device, use any
+                      of
+                      <br className="md:flex hidden" />
+                      your backup codes to login to your account.
+                    </p>
+
+                    <div className="flex items-center justify-between mt-7">
+                      <AppButton
+                        label="Generate Backup codes"
+                        variant="transparent"
+                        handleClick={() => setAction("g-backup-codes")}
+                      />
+                      <AppButton
+                        label="Disable 2FA"
+                        handleClick={() => setAction("disable-2fa")}
+                      />
+                    </div>
+                  </div>
+                ) : (
+                  <EnableTwoFA setAction={setAction} />
+                )}
+              </div>
             </div>
-          </div>
+          </Skeleton>
         </div>
       </div>
     </>
