@@ -20,10 +20,7 @@ const getData = async (props: {
     },
   };
 
-  const res = await axios.get(url, config);
-
-  console.log(res);
-  
+  const res = await axios.get(url, config); 
   const ans: IGetTwoFAProps = res.data.data;
 
   return ans;

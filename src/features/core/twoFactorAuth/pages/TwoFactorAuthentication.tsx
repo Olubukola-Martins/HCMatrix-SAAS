@@ -6,10 +6,10 @@ import { DisableTwoFA } from "../components/DisableTwoFA";
 import { GenerateBackupCodes } from "../components/GenerateBackupCodes";
 import { EnterBackupCodes } from "../components/EnterBackupCodes";
 import { TAction } from "../types";
-import { SetupTwoFA } from "../components/SetupTwoFA";
 import { EnableTwoFA } from "../components/EnableTwoFA";
 import { useGetTwoFA } from "../hooks/useGetTwoFA";
 import { Skeleton } from "antd";
+import { VerifyTwoFA } from "../components/VerifyTwoFA";
 
 const TwoFactorAuthentication = () => {
   const { isLoading, data: checkOtpData } = useGetTwoFA();
@@ -18,10 +18,11 @@ const TwoFactorAuthentication = () => {
   const clearAction = () => {
     setAction(undefined);
   };
+  console.log(checkOtpData);
 
   return (
     <>
-      <SetupTwoFA
+      <VerifyTwoFA
         open={action === "setup-2fa"}
         handleClose={() => clearAction()}
         image={image}
@@ -57,8 +58,8 @@ const TwoFactorAuthentication = () => {
                   <img src={twoFA} alt="authentication" loading="lazy" />
                 </div>
 
-                {checkOtpData?.isDisabled !== null &&
-                checkOtpData?.isVerified === null ? (
+                {checkOtpData?.isDisabled === null &&
+                checkOtpData?.isVerified !== null ? (
                   <div className="text-sm">
                     <p>
                       Your account is already protected with Two-Factor

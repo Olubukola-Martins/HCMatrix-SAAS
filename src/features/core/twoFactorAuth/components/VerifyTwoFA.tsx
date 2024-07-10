@@ -3,12 +3,44 @@ import { AppButton } from "components/button/AppButton";
 import { IModalProps } from "types";
 import { generalValidationRules } from "utils/formHelpers/validation";
 import { DoublePropTwoFA } from "../types";
+import { useVerify2FA } from "../hooks/useVerify2Fa";
+import { openNotification } from "utils/notifications";
+import { useQueryClient } from "react-query";
+import { QUERY_KEY_FOR_CHECK_OTP } from "../hooks/useGetTwoFA";
 
-export const SetupTwoFA = ({ open, handleClose, image }: DoublePropTwoFA) => {
+export const VerifyTwoFA = ({ open, handleClose, image }: DoublePropTwoFA) => {
   const [form] = Form.useForm();
+  const queryClient = useQueryClient();
+  const { mutate, isLoading } = useVerify2FA();
 
   const handleFormSubmit = (val: any) => {
-    
+    mutate(
+      {
+        ...val,
+      },
+      {
+        onError: (err: any) => {
+          openNotification({
+            state: "error",
+            title: "Error Occurred",
+            description:
+              err?.response.data.message ?? err?.response.data.error.message,
+          });
+        },
+        onSuccess: (res) => {
+          openNotification({
+            state: "success",
+            title: "Success",
+            description: res.data.message,
+          });
+
+          queryClient.invalidateQueries({
+            queryKey: [QUERY_KEY_FOR_CHECK_OTP],
+          });
+          handleClose();
+        },
+      }
+    );
   };
   return (
     <Modal
@@ -48,7 +80,7 @@ export const SetupTwoFA = ({ open, handleClose, image }: DoublePropTwoFA) => {
 
           <div className="flex justify-between mt-3">
             <h3 className="text-lg">Cancel</h3>
-            <AppButton label="Enable" type="submit" />
+            <AppButton label="Enable" type="submit" isLoading={isLoading} />
           </div>
         </Form>
       </div>
