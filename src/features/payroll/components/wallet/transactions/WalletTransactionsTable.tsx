@@ -64,7 +64,17 @@ export const WalletTransactionsTable: React.FC = () => {
       <Table
         columns={selectedColumns}
         size="small"
-        dataSource={[]}
+        dataSource={[
+          {
+            status: "completed",
+            type: "credit",
+            amount: 1000,
+            balance: 1000,
+            createdAt: "2021-12-01T00:00:00.000Z",
+            narration: "credit",
+            updatedAt: "2021-12-01T00:00:00.000Z",
+          },
+        ]}
         loading={false}
         pagination={{ ...pagination, total: 0 }}
         onChange={onChange}
