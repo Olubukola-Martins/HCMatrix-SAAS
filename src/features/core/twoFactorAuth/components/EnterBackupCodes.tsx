@@ -1,13 +1,46 @@
 import { Form, Input, Modal } from "antd";
 import { AppButton } from "components/button/AppButton";
+import { useQueryClient } from "react-query";
 import { IModalProps } from "types";
 import { generalValidationRules } from "utils/formHelpers/validation";
+import { useDisableTwoFA } from "../hooks/useDisableTwoFA";
+import { openNotification } from "utils/notifications";
+import { QUERY_KEY_FOR_CHECK_OTP } from "../hooks/useGetTwoFA";
 
 export const EnterBackupCodes = ({ open, handleClose }: IModalProps) => {
+  const queryClient = useQueryClient();
   const [form] = Form.useForm();
+  const { isLoading, mutate } = useDisableTwoFA();
 
-  const handleFormSubmit = (values: any) => {
-    console.log(values);
+  const handleFormSubmit = (val: any) => {
+    mutate(
+      {
+        code: val.code,
+        withRecoveryCode: true,
+      },
+      {
+        onError: (err: any) => {
+          openNotification({
+            state: "error",
+            title: "Error Occurred",
+            description:
+              err?.response.data.message ?? err?.response.data.error.message,
+          });
+        },
+        onSuccess: (res) => {
+          openNotification({
+            state: "success",
+            title: "Success",
+            description: res.data.message,
+          });
+
+          queryClient.invalidateQueries({
+            queryKey: [QUERY_KEY_FOR_CHECK_OTP],
+          });
+          handleClose();
+        },
+      }
+    );
   };
 
   return (
@@ -19,7 +52,7 @@ export const EnterBackupCodes = ({ open, handleClose }: IModalProps) => {
     >
       <div className="text-center pt-5">
         <p>
-          Enter backup code to disable 2FA on your account. Each backup{" "}
+          Enter backup code to disable 2FA on your account. Each backup
           <br className="md:flex hidden" /> code can only be used once.
         </p>
 
@@ -30,12 +63,12 @@ export const EnterBackupCodes = ({ open, handleClose }: IModalProps) => {
           className="mt-4"
           requiredMark={false}
         >
-          <Form.Item name="digits" rules={generalValidationRules}>
+          <Form.Item name="code" rules={generalValidationRules}>
             <Input.OTP formatter={(str) => str.toUpperCase()} />
           </Form.Item>
 
           <div className="flex justify-end">
-            <AppButton label="Continue" type="submit" />
+            <AppButton label="Continue" type="submit" isLoading={isLoading} />
           </div>
         </Form>
       </div>

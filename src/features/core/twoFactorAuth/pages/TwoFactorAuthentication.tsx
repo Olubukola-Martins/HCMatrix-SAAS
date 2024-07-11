@@ -14,11 +14,11 @@ import { VerifyTwoFA } from "../components/VerifyTwoFA";
 const TwoFactorAuthentication = () => {
   const { isLoading, data: checkOtpData } = useGetTwoFA();
   const [image, setImage] = useState<string>();
+  const [backupCodes, setBackupCodes] = useState<string[]>();
   const [action, setAction] = useState<TAction>();
   const clearAction = () => {
     setAction(undefined);
   };
-  console.log(checkOtpData);
 
   return (
     <>
@@ -37,6 +37,8 @@ const TwoFactorAuthentication = () => {
       <GenerateBackupCodes
         open={action === "g-backup-codes"}
         handleClose={() => clearAction()}
+        setAction={setAction}
+        setBackupCodes={setBackupCodes}
       />
 
       <EnterBackupCodes
@@ -58,8 +60,10 @@ const TwoFactorAuthentication = () => {
                   <img src={twoFA} alt="authentication" loading="lazy" />
                 </div>
 
-                {checkOtpData?.isDisabled === null &&
-                checkOtpData?.isVerified !== null ? (
+                {checkOtpData === undefined || checkOtpData === null ? (
+                  <EnableTwoFA setAction={setAction} setImage={setImage} />
+                ) : checkOtpData?.isDisabled === false &&
+                  checkOtpData?.isVerified === true ? (
                   <div className="text-sm">
                     <p>
                       Your account is already protected with Two-Factor
@@ -87,9 +91,7 @@ const TwoFactorAuthentication = () => {
                       />
                     </div>
                   </div>
-                ) : (
-                  <EnableTwoFA setAction={setAction} setImage={setImage} />
-                )}
+                ) : null}
               </div>
             </div>
           </Skeleton>

@@ -1,6 +1,5 @@
 import { Form, Input, Modal } from "antd";
 import { AppButton } from "components/button/AppButton";
-import { IModalProps } from "types";
 import { generalValidationRules } from "utils/formHelpers/validation";
 import { DoublePropTwoFA } from "../types";
 import { useVerify2FA } from "../hooks/useVerify2Fa";

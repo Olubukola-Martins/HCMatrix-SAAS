@@ -5,7 +5,7 @@ import { ICurrentCompany } from "types";
 import { useApiAuth } from "hooks/useApiAuth";
 import { IGetTwoFAProps,} from "../types";
 
-export const QUERY_KEY_FOR_CHECK_OTP = "CHECK_OTP";
+export const QUERY_KEY_FOR_CHECK_OTP = "check_employee_otp";
 
 const getData = async (props: {
   auth: ICurrentCompany;

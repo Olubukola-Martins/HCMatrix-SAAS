@@ -4,6 +4,7 @@ import { Dispatch, SetStateAction } from "react";
 import { useQueryClient } from "react-query";
 import { openNotification } from "utils/notifications";
 import { useEnable2FA } from "../hooks/useEnable2FA";
+import { QUERY_KEY_FOR_CHECK_OTP } from "../hooks/useGetTwoFA";
 
 interface IProps {
   setAction: (action: TAction) => void;
@@ -34,11 +35,9 @@ export const EnableTwoFA = ({ setAction, setImage }: IProps) => {
             description: res.data.message,
           });
           setAction("setup-2fa");
-          console.log(res);
           setImage(res.data.data.qrCode);
           queryClient.invalidateQueries({
-            queryKey: [],
-            // exact: true,
+            queryKey: [QUERY_KEY_FOR_CHECK_OTP],
           });
         },
       }

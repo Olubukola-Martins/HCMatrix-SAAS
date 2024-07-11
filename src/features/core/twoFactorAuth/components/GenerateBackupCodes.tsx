@@ -2,14 +2,58 @@ import { Form, Input, Modal } from "antd";
 import { AppButton } from "components/button/AppButton";
 import { IModalProps } from "types";
 import { generalValidationRules } from "utils/formHelpers/validation";
+import { useGenerateBackCodes } from "../hooks/useGenerateBackCodes";
+import { openNotification } from "utils/notifications";
+import { QUERY_KEY_FOR_CHECK_OTP } from "../hooks/useGetTwoFA";
+import { useQueryClient } from "react-query";
+import { Dispatch, SetStateAction } from "react";
+import { TAction } from "../types";
 
-export const GenerateBackupCodes = ({ open, handleClose }: IModalProps) => {
+interface IProps extends IModalProps {
+  setAction: (action: TAction) => void;
+  setBackupCodes: Dispatch<SetStateAction<string[] | undefined>>;
+}
+
+export const GenerateBackupCodes = ({
+  open,
+  handleClose,
+  setAction,
+  setBackupCodes,
+}: IProps) => {
   const [form] = Form.useForm();
+  const queryClient = useQueryClient();
+  const { mutate, isLoading } = useGenerateBackCodes();
 
-  const handleFormSubmit = (values: any) => {
-    console.log(values);
+  const handleFormSubmit = (val: any) => {
+    mutate(
+      {
+        ...val,
+      },
+      {
+        onError: (err: any) => {
+          openNotification({
+            state: "error",
+            title: "Error Occurred",
+            description:
+              err?.response.data.message ?? err?.response.data.error.message,
+          });
+        },
+        onSuccess: (res) => {
+          openNotification({
+            state: "success",
+            title: "Success",
+            description: res.data.message,
+          });
+          setAction("list-backup-codes");
+          setBackupCodes(res.data.data);
+          queryClient.invalidateQueries({
+            queryKey: [QUERY_KEY_FOR_CHECK_OTP],
+          });
+          //   handleClose();
+        },
+      }
+    );
   };
-
   return (
     <Modal
       open={open}
@@ -31,12 +75,12 @@ export const GenerateBackupCodes = ({ open, handleClose }: IModalProps) => {
           className="mt-4"
           requiredMark={false}
         >
-          <Form.Item name="digits" rules={generalValidationRules}>
+          <Form.Item name="token" rules={generalValidationRules}>
             <Input.OTP formatter={(str) => str.toUpperCase()} />
           </Form.Item>
 
           <div className="flex justify-end">
-            <AppButton label="Continue" type="submit" />
+            <AppButton label="Continue" type="submit" isLoading={isLoading} />
           </div>
         </Form>
       </div>
