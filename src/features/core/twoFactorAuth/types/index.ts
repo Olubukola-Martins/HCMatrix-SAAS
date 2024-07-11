@@ -5,7 +5,7 @@ export type TAction =
   | "g-backup-codes"
   | "use-backup-codes"
   | "setup-2fa"
-  | "list-backup-codes"
+  | "list-backup-codes";
 
 export interface IGetTwoFAProps {
   employeeId: number;
@@ -15,7 +15,7 @@ export interface IGetTwoFAProps {
 }
 
 export interface DoublePropTwoFA extends IModalProps {
-    setAction: (action: TAction) => void;
-    image?: string;
-
-  }
+  setAction: (action: TAction) => void;
+  image?: string;
+  backupCodes?: string[];
+}

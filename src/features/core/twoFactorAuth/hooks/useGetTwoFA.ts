@@ -3,7 +3,7 @@ import { MICROSERVICE_ENDPOINTS } from "config/enviroment";
 import { useQuery } from "react-query";
 import { ICurrentCompany } from "types";
 import { useApiAuth } from "hooks/useApiAuth";
-import { IGetTwoFAProps,} from "../types";
+import { IGetTwoFAProps } from "../types";
 
 export const QUERY_KEY_FOR_CHECK_OTP = "check_employee_otp";
 
@@ -20,7 +20,7 @@ const getData = async (props: {
     },
   };
 
-  const res = await axios.get(url, config); 
+  const res = await axios.get(url, config);
   const ans: IGetTwoFAProps = res.data.data;
 
   return ans;

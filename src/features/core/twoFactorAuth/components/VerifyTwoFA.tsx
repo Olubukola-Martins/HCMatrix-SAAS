@@ -78,7 +78,7 @@ export const VerifyTwoFA = ({ open, handleClose, image }: DoublePropTwoFA) => {
           </Form.Item>
 
           <div className="flex justify-between mt-3">
-            <h3 className="text-lg">Cancel</h3>
+            <h3 className="text-lg cursor-pointer" onClick={() => handleClose()}>Cancel</h3>
             <AppButton label="Enable" type="submit" isLoading={isLoading} />
           </div>
         </Form>

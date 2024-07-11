@@ -10,9 +10,10 @@ import { EnableTwoFA } from "../components/EnableTwoFA";
 import { useGetTwoFA } from "../hooks/useGetTwoFA";
 import { Skeleton } from "antd";
 import { VerifyTwoFA } from "../components/VerifyTwoFA";
+import { ListBackupCodes } from "../components/ListBackupCodes";
 
 const TwoFactorAuthentication = () => {
-  const { isLoading, data: checkOtpData } = useGetTwoFA();
+  const { isLoading, data: checkOtpData, error, isError } = useGetTwoFA();
   const [image, setImage] = useState<string>();
   const [backupCodes, setBackupCodes] = useState<string[]>();
   const [action, setAction] = useState<TAction>();
@@ -26,6 +27,12 @@ const TwoFactorAuthentication = () => {
         open={action === "setup-2fa"}
         handleClose={() => clearAction()}
         image={image}
+        setAction={setAction}
+      />
+      <ListBackupCodes
+        open={action === "list-backup-codes"}
+        handleClose={() => clearAction()}
+        backupCodes={backupCodes}
         setAction={setAction}
       />
       <DisableTwoFA
@@ -60,7 +67,7 @@ const TwoFactorAuthentication = () => {
                   <img src={twoFA} alt="authentication" loading="lazy" />
                 </div>
 
-                {checkOtpData === undefined || checkOtpData === null ? (
+                {isError ? (
                   <EnableTwoFA setAction={setAction} setImage={setImage} />
                 ) : checkOtpData?.isDisabled === false &&
                   checkOtpData?.isVerified === true ? (

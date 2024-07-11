@@ -2,7 +2,7 @@ import { Form, Input, Modal } from "antd";
 import { AppButton } from "components/button/AppButton";
 import { useQueryClient } from "react-query";
 import { IModalProps } from "types";
-import { generalValidationRules } from "utils/formHelpers/validation";
+import { textInputValidationRules } from "utils/formHelpers/validation";
 import { useDisableTwoFA } from "../hooks/useDisableTwoFA";
 import { openNotification } from "utils/notifications";
 import { QUERY_KEY_FOR_CHECK_OTP } from "../hooks/useGetTwoFA";
@@ -60,11 +60,12 @@ export const EnterBackupCodes = ({ open, handleClose }: IModalProps) => {
           onFinish={handleFormSubmit}
           form={form}
           layout="vertical"
-          className="mt-4"
+          className="mt-6"
           requiredMark={false}
+          
         >
-          <Form.Item name="code" rules={generalValidationRules}>
-            <Input.OTP formatter={(str) => str.toUpperCase()} />
+          <Form.Item name="code" rules={textInputValidationRules}>
+            <Input />
           </Form.Item>
 
           <div className="flex justify-end">
