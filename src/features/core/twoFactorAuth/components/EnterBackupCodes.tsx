@@ -37,7 +37,9 @@ export const EnterBackupCodes = ({ open, handleClose }: IModalProps) => {
           queryClient.invalidateQueries({
             queryKey: [QUERY_KEY_FOR_CHECK_OTP],
           });
+          form.resetFields();
           handleClose();
+
         },
       }
     );
