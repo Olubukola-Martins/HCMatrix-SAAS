@@ -49,7 +49,10 @@ const FilterWalletTransactions = ({
             />
           </Form.Item>
           <Form.Item name={"date"} label="Date">
-            <DatePicker.RangePicker placeholder={["From", "To"]} />
+            <DatePicker.RangePicker
+              placeholder={["From", "To"]}
+              className="w-full"
+            />
           </Form.Item>
 
           <div className="flex justify-between items-center">

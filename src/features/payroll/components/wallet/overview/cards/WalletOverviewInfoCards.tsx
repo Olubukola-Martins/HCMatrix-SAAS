@@ -23,7 +23,7 @@ const WalletOverviewInfoCards: React.FC<IProps> = ({
     beneficiaries = 0,
     debit = 0,
     credit = 0,
-    weeklyUsage = "",
+    weeklyUsage = "0% less than last week",
   } = data;
   return (
     <div className={className}>

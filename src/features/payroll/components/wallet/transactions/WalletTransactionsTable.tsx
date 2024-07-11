@@ -43,23 +43,23 @@ export const WalletTransactionsTable: React.FC = () => {
         open={showM === "filter"}
         handleFilter={(vals) => setFilter(vals)}
       />
-      <div className="flex justify-end items-center">
-        <div className="flex-1 flex justify-between items-center">
-          <button
-            className="transparentButton flex items-center gap-2"
-            onClick={() => setShowM("filter")}
-          >
-            <span>Filter</span>
-          </button>
-          <Input.Search />
+      <div className="flex justify-between items-center">
+        <button
+          className="transparentButton flex items-center gap-2"
+          onClick={() => setShowM("filter")}
+        >
+          <span>Filter</span>
+        </button>
+        <div className="flex gap-x-3 ">
+          <Input.Search className="w-[12rem]" placeholder="Search" />
+          {TableFocusTypeBtn<TWalletTransaction>({
+            selectedColumns,
+            setSelectedColumns,
+            data: {
+              columns,
+            },
+          })}
         </div>
-        {TableFocusTypeBtn<TWalletTransaction>({
-          selectedColumns,
-          setSelectedColumns,
-          data: {
-            columns,
-          },
-        })}
       </div>
       <Table
         columns={selectedColumns}

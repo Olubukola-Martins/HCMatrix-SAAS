@@ -1,5 +1,5 @@
 import { Modal, Skeleton } from "antd";
-import { AppButton } from "components/button/AppButton";
+import { AppButton, IAppBtnProps } from "components/button/AppButton";
 import React, { useState } from "react";
 import { IModalProps } from "types";
 import { IDivProps } from "types/html";
@@ -13,14 +13,13 @@ type IProps = IModalProps &
 export const WalletTopUpModal: React.FC<IProps> = ({
   handleClose,
   open,
-  className = "border rounded-md p-3 shadow-sm bg-card hover:shadow-md border-caramel",
+  className = "p-3",
   isLoading,
   data,
 }) => {
   const [action, setAction] = useState<"view-other-payment-options">();
   const handleOtherPaymentOptions = () => {
     handleClose();
-    setAction("view-other-payment-options");
   };
   return (
     <>
@@ -28,38 +27,44 @@ export const WalletTopUpModal: React.FC<IProps> = ({
         handleClose={() => setAction(undefined)}
         open={action === "view-other-payment-options"}
       />
-      <Modal open={open} onCancel={() => handleClose()}>
+      <Modal
+        open={open}
+        onCancel={() => handleClose()}
+        footer={null}
+        title={null}
+      >
         <div className={className}>
           <Skeleton loading={isLoading} paragraph={{ rows: 3 }}>
             <>
               <div>
-                <h3 className="text-lg font-semibold">Payment Method</h3>
+                <h3 className="text-xl font-bold rounded-none">
+                  Payment Method
+                </h3>
                 <span>For Bank Transfer, kindly use: </span>
               </div>
               <div className="flex flex-col py-3 items-start">
-                <p className="text-sm font-medium mb-4  capitalize">{`Wallet Details`}</p>
                 {data?.map(({ accountNo, bankName, channel }, i, accounts) => (
                   <div
                     key={i}
-                    className={`flex flex-col cursor-pointer ${
-                      accounts.length === i + 1 ? "" : "border-b"
-                    } pb-2 px-3`}
+                    className={`flex flex-col w-full cursor-pointer ${
+                      accounts.length === i + 1 ? "" : "border-b-2"
+                    } py-4 px-3`}
                   >
-                    <p className="font-medium">
+                    <p className="font-normal">
                       Account Number:
-                      <span className="text-sm font-normal capitalize">
+                      <span className="text-sm ml-1 font-semibold capitalize">
                         {accountNo}
                       </span>
                     </p>
-                    <p className="font-medium">
+                    <p className="font-normal">
                       Bank Name:
-                      <span className="text-sm font-normal capitalize">
+                      <span className="text-sm ml-1 font-semibold capitalize">
                         {bankName}
                       </span>
                     </p>
-                    <p className="font-medium">
+                    <p className="font-normal">
                       Channel:
-                      <span className="text-sm font-normal capitalize">
+                      <span className="text-sm ml-1 font-semibold capitalize">
                         {channel}
                       </span>
                     </p>
@@ -68,7 +73,7 @@ export const WalletTopUpModal: React.FC<IProps> = ({
               </div>
               <div className="flex flex-col items-center gap-y-3">
                 <AppButton
-                  label="View Other payment Options"
+                  label="Close payment Options"
                   handleClick={handleOtherPaymentOptions}
                   variant="transparent"
                 />
@@ -80,13 +85,30 @@ export const WalletTopUpModal: React.FC<IProps> = ({
     </>
   );
 };
-export const WalletTopUpBtn: React.FC = () => {
+export const WalletTopUpBtn: React.FC<{
+  buttonProps?: Omit<IAppBtnProps, "handleClick">;
+}> = ({ buttonProps = { label: "Top Up" } }) => {
   const [open, setOpen] = useState(false);
   //   TODO: Fetch data n populate in modal
   return (
     <>
-      <WalletTopUpModal open={open} handleClose={() => setOpen(false)} />
-      <AppButton label="Top Up" />
+      <WalletTopUpModal
+        open={open}
+        handleClose={() => setOpen(false)}
+        data={[
+          {
+            accountNo: "1234567890",
+            bankName: "HDFC Bank",
+            channel: "HDFC ",
+          },
+          {
+            accountNo: "1234567890",
+            bankName: "Fidelity Bank",
+            channel: "Fidelity ",
+          },
+        ]}
+      />
+      <AppButton {...buttonProps} handleClick={() => setOpen(true)} />
     </>
   );
 };

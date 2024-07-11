@@ -46,7 +46,7 @@ const WalletOverviewBalanceGraph: React.FC<IProps> = ({
     <div className={className}>
       {/* header */}
       <div className="flex justify-between items-center">
-        <h4 className="text-lg">Wallet Balance</h4>
+        <h4 className="text-lg font-semibold">Wallet Balance</h4>
 
         <div className="flex gap-2 text-sm">
           <div>

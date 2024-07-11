@@ -28,7 +28,7 @@ const useGeneratePayrollNavRoutes = (): TData => {
       },
       {
         title: "Wallet",
-        path: appRoutes.payrollCostCentres,
+        path: appRoutes.payrollWallet,
         hidden: !canUserAccessComponent({
           userPermissions,
           requiredPermissions: ["manage-cost-centres"],

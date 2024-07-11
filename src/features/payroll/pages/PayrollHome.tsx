@@ -105,20 +105,45 @@ const PayrollHome = () => {
               }}
             />
             <>
+              <WalletOverviewDetailsCard
+                data={[
+                  {
+                    accountNo: "1234567890",
+                    bankName: "HDFC Bank",
+                  },
+                  {
+                    accountNo: "1234567890",
+                    bankName: "Fidelity Bank",
+                  },
+                ]}
+                className="border rounded-md p-4 bg-card shadow-md text-sm"
+              />
               <SimpleCardList
+                className="col-span-3 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4"
                 entries={[
-                  { title: "Wallet Balance", highlight: 0 },
+                  {
+                    title: "Wallet Balance",
+                    highlight: "13,175,000.00",
+                    highlightClassName: "font-bold text-xl mb-2 capitalize",
+                    className:
+                      "border rounded-md p-2 shadow-sm bg-card hover:shadow-md cursor-pointer group h-full",
+                  },
                   {
                     title: "Total Debit",
                     highlight: 0,
+                    highlightClassName: "font-bold text-xl mb-2 capitalize",
+                    className:
+                      "border rounded-md p-2 shadow-sm bg-card hover:shadow-md cursor-pointer group h-full",
                   },
                   {
                     title: "Total Credit",
                     highlight: 0,
+                    highlightClassName: "font-bold text-xl mb-2 capitalize",
+                    className:
+                      "border rounded-md p-2 shadow-sm bg-card hover:shadow-md cursor-pointer group h-full",
                   },
                 ]}
               />
-              <WalletOverviewDetailsCard />
 
               <AnimatePresence exitBeforeEnter>
                 {/* pending set up */}
