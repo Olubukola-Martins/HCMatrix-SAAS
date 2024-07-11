@@ -19,3 +19,15 @@ export interface ReorderableCardProps {
   onDragEnd: () => void;
   style: React.CSSProperties;
 }
+
+export interface IInterviewScoreRatingProps {
+  scoreTitle: string;
+  score: number;
+}
+
+export interface IConfigureScoreFormProps {
+  open: boolean;
+  onCancel: () => void;
+  handleScoreFormSubmit: (values: any) => void;
+  initialValues: IInterviewScoreRatingProps[];
+}

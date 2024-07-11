@@ -126,5 +126,61 @@ export const INTERVIEW_STAGE_SETTINGS_ARRAY = [
     label: "Behavioral/Cultural Fit Interview",
     name: "behavioralInterview",
   },
- 
+];
+
+export const INTERVIEW_STAGE_SETTINGS_MODE_OF_INTERVIEW = [
+  {
+    label: "Virtual",
+    name: "virtual",
+  },
+  {
+    label: "Physical",
+    name: "physical",
+  },
+];
+
+export const INTERVIEW_STAGE_SETTINGS_STATUS = [
+  {
+    label: "Scheduled",
+    name: "scheduled",
+  },
+  {
+    label: "Accepted",
+    name: "accepeted",
+  },
+  {
+    label: "Completed",
+    name: "completed",
+  },
+  {
+    label: "Rescheduled",
+    name: "rescheduled",
+  },
+  {
+    label: "Cancelled",
+    name: "cancelled",
+  },
+];
+
+export const INTERVIEW_STAGE_SETTINGS_SCORES = [
+  {
+    scoreTitle: "Poor",
+    score: 1,
+  },
+  {
+    scoreTitle: "Fair",
+    score: 2,
+  },
+  {
+    scoreTitle: "Good",
+    score: 3,
+  },
+  {
+    scoreTitle: "Very Good",
+    score: 4,
+  },
+  {
+    scoreTitle: "Excellent",
+    score: 5,
+  },
 ];
