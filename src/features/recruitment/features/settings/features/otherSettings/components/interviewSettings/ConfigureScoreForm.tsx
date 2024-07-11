@@ -1,9 +1,6 @@
 import { Form, Input, Modal } from "antd";
 import { AppButton } from "components/button/AppButton";
-import {
-  generalValidationRules,
-  textInputValidationRules,
-} from "utils/formHelpers/validation";
+import { textInputValidationRules } from "utils/formHelpers/validation";
 import { IConfigureScoreFormProps } from "../../types";
 
 export const ConfigureScoreForm: React.FC<IConfigureScoreFormProps> = ({
@@ -35,16 +32,16 @@ export const ConfigureScoreForm: React.FC<IConfigureScoreFormProps> = ({
               {fields.map((field, index) => (
                 <div key={field.key}>
                   <Form.Item
-                    label={`Score Title ${index + 1}`}
+                    label="Score Title"
                     name={[field.name, "scoreTitle"]}
                     rules={textInputValidationRules}
                   >
                     <Input />
                   </Form.Item>
                   <Form.Item
-                    label={`Score ${index + 1}`}
+                    label="Score"
                     name={[field.name, "score"]}
-                    rules={generalValidationRules}
+                    rules={textInputValidationRules}
                   >
                     <Input />
                   </Form.Item>
@@ -62,7 +59,7 @@ export const ConfigureScoreForm: React.FC<IConfigureScoreFormProps> = ({
                   <Form.Item
                     label="Score"
                     name={[0, "score"]}
-                    rules={generalValidationRules}
+                    rules={textInputValidationRules}
                   >
                     <Input />
                   </Form.Item>
