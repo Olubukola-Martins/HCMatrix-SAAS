@@ -347,7 +347,6 @@ export const settingRoutes = (props: TAppPageDataFnProps): TRouteData[] => {
       title: "Probation Setting",
       hidden: !canUserAccessComponent({
         userPermissions,
-
         requiredPermissions: ["manage-probation"],
         activeSubscription,
         requiredSubscriptionState: {
@@ -361,6 +360,15 @@ export const settingRoutes = (props: TAppPageDataFnProps): TRouteData[] => {
       path: appRoutes.twoFactorAuthentication,
       isSearchable: true,
       title: "Two Factor Authentication",
+      hidden: !canUserAccessComponent({
+        userPermissions,
+        requiredPermissions: [],
+        activeSubscription,
+        requiredSubscriptionState: {
+          label: "employee-management",
+          resources: [],
+        },
+      }),
     },
   ];
 };

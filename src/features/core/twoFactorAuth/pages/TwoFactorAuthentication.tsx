@@ -13,7 +13,7 @@ import { VerifyTwoFA } from "../components/VerifyTwoFA";
 import { ListBackupCodes } from "../components/ListBackupCodes";
 
 const TwoFactorAuthentication = () => {
-  const { isLoading, data: checkOtpData, error, isError } = useGetTwoFA();
+  const { isLoading, data: checkOtpData, isError } = useGetTwoFA();
   const [image, setImage] = useState<string>();
   const [backupCodes, setBackupCodes] = useState<string[]>();
   const [action, setAction] = useState<TAction>();
