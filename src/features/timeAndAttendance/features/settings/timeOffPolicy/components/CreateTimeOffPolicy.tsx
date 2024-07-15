@@ -133,11 +133,11 @@ export const CreateTimeOffPolicy = ({
                     <Form.Item
                       {...field}
                       name={[field.name, "duration"]}
-                      label="Duration in days"
+                      label="Duration in hours"
                       className="w-full"
                       rules={generalValidationRules}
                     >
-                      <InputNumber className="w-full" min={1} />
+                      <InputNumber className="w-full" min={1} max={24} />
                     </Form.Item>
                   </div>
                   <Form.Item

@@ -70,7 +70,6 @@ export const selfServiceRoutes = (props: TAppPageDataFnProps): TRouteData[] => {
         !isUserLicensed &&
         !canUserAccessComponent({
           userPermissions,
-
           requiredPermissions: [],
           activeSubscription,
           requiredSubscriptionState: {

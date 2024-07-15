@@ -4,9 +4,8 @@ import { useApiAuth } from "hooks/useApiAuth";
 import { useMutation } from "react-query";
 import { ICurrentCompany } from "types";
 
-type TData = {};
-const createData = async (props: { data?: TData; auth: ICurrentCompany }) => {
-  const url = `${MICROSERVICE_ENDPOINTS.UTILITY}/employee/totp`;
+const delData = async (props: { auth: ICurrentCompany; id: number }) => {
+  const url = `${MICROSERVICE_ENDPOINTS.TIME_AND_ATTENDANCE}/shift-swap/${props.id}`;
   const config = {
     headers: {
       Accept: "application/json",
@@ -15,16 +14,12 @@ const createData = async (props: { data?: TData; auth: ICurrentCompany }) => {
     },
   };
 
-  const data: TData = {
-    ...props.data,
-  };
-
-  const response = await axios.post(url, data, config);
+  const response = await axios.delete(url, config);
   return response;
 };
-export const useSetup2FA = () => {
+export const useCancelShiftSwapRequest = () => {
   const { token, companyId } = useApiAuth();
-  return useMutation((props: TData = {}) =>
-    createData({ data: props, auth: { token, companyId } })
+  return useMutation((id: number) =>
+    delData({ auth: { token, companyId }, id })
   );
 };

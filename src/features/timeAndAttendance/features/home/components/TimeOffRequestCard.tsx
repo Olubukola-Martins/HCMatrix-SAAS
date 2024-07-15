@@ -1,4 +1,3 @@
-import { RecentCard } from "components/cards/RecentCard";
 import { usePagination } from "hooks/usePagination";
 import {
   QUERY_KEY_FOR_TIME_OFF,
@@ -8,8 +7,13 @@ import { Dropdown, Empty, Menu, Popconfirm, Skeleton } from "antd";
 import { Link } from "react-router-dom";
 import { appRoutes } from "config/router/paths";
 import { useHandleTimeAndAttendanceStatus } from "features/timeAndAttendance/hooks/useHandleTimeAndAttendanceStatus";
+import { IDivProps } from "types/html";
 
-export const TimeOffRequestCard = () => {
+type IProps = IDivProps;
+
+export const TimeOffRequestCard: React.FC<IProps> = ({
+  className = "bg-mainBg pb-3 border rounded-lg text-sm shadow",
+}) => {
   const { pagination } = usePagination({ pageSize: 2 });
   const { data, isLoading } = useGetTimeOff({ pagination });
   const { requestType } = useHandleTimeAndAttendanceStatus({
@@ -17,7 +21,7 @@ export const TimeOffRequestCard = () => {
   });
 
   return (
-    <div className="bg-mainBg pb-3 border rounded-lg text-sm shadow">
+    <div className={className}>
       <div className="flex items-center justify-between px-3 py-3 border-b">
         <p className="font-medium">TimeOff Request</p>
         <span className="text-xs capitalize"></span>
@@ -103,7 +107,7 @@ export const TimeOffRequestCard = () => {
         </Skeleton>
       </div>
 
-      <div className="flex justify-end mt-2">
+      <div className="flex-1 flex justify-end mt-2 items-end">
         <Link
           to={appRoutes.timeOff}
           className="text-caramel text-right px-3 text-sm font-semibold cursor-pointer hover:text-accent pb-2 pt-1"

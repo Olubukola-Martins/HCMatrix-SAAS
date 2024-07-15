@@ -1,0 +1,12 @@
+.attendance_location_map {
+  margin-top: 1.2rem;
+  height: 500px;
+}
+
+.attendance_location_map .leaflet-container {
+  position: relative;
+  height: 100%;
+  width: 100%;
+  border-radius: 1.2rem;
+  z-index: 1;
+}

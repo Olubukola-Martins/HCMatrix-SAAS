@@ -1,4 +1,4 @@
-import { Affix, Skeleton, Tabs } from "antd";
+import { Affix, Skeleton } from "antd";
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import "../style/style.css";
@@ -9,8 +9,7 @@ import EmployeeInfoChart from "features/core/employees/components/EmployeeInfoCh
 import { Celebrations } from "./Celebrations";
 // import { PendingItem } from "./PendingItem";
 import { DoughnutChart } from "components/charts/DoughnutChart";
-import { LeaveWhoIsOut } from "./whoIsOut/LeaveWhoIsOut";
-import { RemoteWhoIsOut } from "./whoIsOut/RemoteWhoIsOut";
+
 import { useGetCompanyOwnerDashboard } from "features/core/company/hooks/dashboard/useGetCompanyOwnerDashboard";
 import ErrorBoundary from "components/errorHandlers/ErrorBoundary";
 import { ErrorWrapper } from "components/errorHandlers/ErrorWrapper";
@@ -26,6 +25,7 @@ import {
   DEFAULT_DESIGNATIONS_CREATED_BY_SYSTEM,
   DEFAULT_EMPLOYEES_CREATED_BY_SYSTEM,
 } from "constants/general";
+import WhoIsOut from "./whoIsOut/WhoIsOut";
 
 export const AdminHome: React.FC<{ user?: TAuthUser["user"] }> = ({ user }) => {
   const { globalDispatch } = useApiAuth();
@@ -146,31 +146,7 @@ export const AdminHome: React.FC<{ user?: TAuthUser["user"] }> = ({ user }) => {
                   />
                 </div>
 
-                <div className="col-span-2 bg-mainBg shadow border rounded-lg p-3">
-                  <h3 className="text-base">Who is out today?</h3>
-
-                  <Tabs
-                    defaultActiveKey="1"
-                    items={[
-                      {
-                        key: "1",
-                        label: `Leave (${data?.outToday.leave.totalCount})`,
-                        children: (
-                          <LeaveWhoIsOut data={data?.outToday.leave.result} />
-                        ),
-                      },
-                      {
-                        key: "2",
-                        label: `Remote Work (${data?.outToday.remoteWork.totalCount})`,
-                        children: (
-                          <RemoteWhoIsOut
-                            data={data?.outToday.remoteWork.result}
-                          />
-                        ),
-                      },
-                    ]}
-                  />
-                </div>
+                <WhoIsOut data={data} />
                 <div className="bg-mainBg shadow border rounded-lg p-3">
                   <Celebrations data={data?.celebrationsAndHolidays} />
                 </div>
