@@ -100,21 +100,25 @@ import { appRoutes } from "config/router/paths";
 import SelfServiceSubNav from "features/self-service/components/SelfServiceSubNav";
 import React, { useState } from "react";
 import { LoanTabsActionProps } from "../types/setting";
+import { LoanSettingSide } from "../components/settings/LoanSettingSide";
 
 const LoanPolicies = () => {
-  const [action, setAction] = useState<LoanTabsActionProps>()
+  const [action, setAction] = useState<LoanTabsActionProps>();
 
   return (
     <>
       <SelfServiceSubNav />
       <div className="Container">
         <PageIntro title="Loans Settings" link={appRoutes.loans} />
-        <p className="text-accent text-sm pt-2">Configure your loan settings</p>
+        <p className="text-accent text-sm pt-3">Configure your loan settings</p>
 
         <div className="grid grid-cols-1 md:grid-cols-3 mt-4 border-t">
-          <div className="col-span-1">1</div>
-
-          <div className="col-span-2">2</div>
+          <div className="col-span-1 border-r">
+            <LoanSettingSide setAction={setAction} action={action} />
+          </div>
+          <div className="col-span-2">
+            
+          </div>
         </div>
       </div>
     </>
