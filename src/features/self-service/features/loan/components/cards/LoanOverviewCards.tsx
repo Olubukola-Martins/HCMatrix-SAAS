@@ -38,11 +38,7 @@ const LoanOverviewCards = () => {
         </>
         {/* all */}
         <>
-          <SimpleCard
-            title="Total Loan Requests"
-            highlight={`${allData?.total ?? 0}`}
-            loading={isFetchingAllData}
-          />
+        
           <SimpleCard
             title="Pending Loan Requests"
             highlight={`${allData?.pending ?? 0}`}
@@ -56,6 +52,11 @@ const LoanOverviewCards = () => {
           <SimpleCard
             title="Rejected Loan Requests"
             highlight={`${allData?.rejected ?? 0}`}
+            loading={isFetchingAllData}
+          />
+            <SimpleCard
+            title="Loan Balance"
+            highlight={`${allData?.total ?? 0}`}
             loading={isFetchingAllData}
           />
         </>

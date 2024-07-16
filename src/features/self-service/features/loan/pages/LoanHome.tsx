@@ -26,6 +26,7 @@ export type TLoanTabKey =
   | "All Repayments"
   | "All Loans";
 type TAction = "new-loan" | "make-repayment";
+
 const LoanHome = () => {
   const { userPermissions } = useGetUserPermissions();
   const [key, setKey] = useState<TLoanTabKey>("Overview");

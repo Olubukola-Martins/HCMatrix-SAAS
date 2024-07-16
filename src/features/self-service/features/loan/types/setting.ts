@@ -31,3 +31,10 @@ interface CostCentre {
   updatedAt: string;
   deletedAt?: any;
 }
+
+export type LoanTabsActionProps =
+  | "approval-process"
+  | "loan-types"
+  | "eligibility-criteria"
+  | "configure-payment"
+  | "disbursement-setup";
