@@ -6,7 +6,7 @@ export const LoanSettingSide = ({
 }: AcceptSettingsAction) => {
   return (
     <div>
-      <ul className="flex flex-col gap-6 text-sm text-[#3A3A3A] mt-8">
+      <ul className="flex flex-col gap-6 text-sm text-[#3A3A3A]">
         <li>
           <span
             onClick={() => setAction("approval-process")}

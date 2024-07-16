@@ -44,3 +44,9 @@ export interface AcceptSettingsAction {
   setAction: (action: LoanTabsActionProps) => void;
   action?: string;
 }
+
+export type TLoanTypeProps = {
+  id: number;
+  name: string;
+  label: string;
+};
