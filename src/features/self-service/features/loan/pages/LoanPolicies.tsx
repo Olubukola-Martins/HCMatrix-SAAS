@@ -103,6 +103,8 @@ import { LoanTabsActionProps } from "../types/setting";
 import { LoanSettingSide } from "../components/settings/LoanSettingSide";
 import { SetUpApprovalProcess } from "../components/settings/SetUpApprovalProcess";
 import LoanTypeSetup from "../components/settings/loanTypes/LoanTypeSetup";
+import { DisbursementSetUp } from "../components/settings/DisbursementSetUp";
+import { EligibilityCriteria } from "../components/settings/EligibilityCriteria";
 
 const LoanPolicies = () => {
   const [action, setAction] = useState<LoanTabsActionProps>("approval-process");
@@ -121,6 +123,9 @@ const LoanPolicies = () => {
           <div className="col-span-2 pt-8 pl-3">
             {action === "approval-process" ? <SetUpApprovalProcess /> : null}
             {action === "loan-types" ? <LoanTypeSetup /> : null}
+            {action === "disbursement-setup" ? <DisbursementSetUp /> : null}
+            {action === "eligibility-criteria" ? <EligibilityCriteria /> : null}
+           
           </div>
         </div>
       </div>
