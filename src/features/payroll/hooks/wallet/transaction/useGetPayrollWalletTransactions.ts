@@ -18,7 +18,7 @@ const getData = async (props: {
   auth: ICurrentCompany;
   params: TParams;
 }): Promise<{ data: TPayrollWalletTransaction[]; total: number }> => {
-  const url = `${MICROSERVICE_ENDPOINTS.PAYROLL}/wallet/dashboard`;
+  const url = `${MICROSERVICE_ENDPOINTS.PAYROLL}/wallet/transaction`;
   const { pagination } = props.params;
   const limit = pagination?.limit ?? DEFAULT_PAGE_SIZE;
   const offset = pagination?.offset ?? 0;
