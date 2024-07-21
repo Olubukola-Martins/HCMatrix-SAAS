@@ -17,7 +17,11 @@ export const AddLoanType = ({ handleClose, open }: IModalProps) => {
       onCancel={() => handleClose()}
       title={`Add Loan Type`}
     >
-      <Form requiredMark={false} layout="vertical">
+      <Form
+        requiredMark={false}
+        layout="vertical"
+        onFinish={(val) => console.log(val)}
+      >
         <Form.Item
           name="name"
           label="Loan Type"
@@ -27,7 +31,7 @@ export const AddLoanType = ({ handleClose, open }: IModalProps) => {
         </Form.Item>
 
         <Form.Item
-          name="interest"
+          name="interest_rate"
           label="Do you want to attach an interest rate to this loan type"
           rules={generalValidationRules}
         >
