@@ -10,13 +10,14 @@ import PageSubHeader from "components/layout/PageSubHeader";
 import { appRoutes } from "config/router/paths";
 import { useNavigate } from "react-router-dom";
 import { NewLoan } from "../components/NewLoan";
-import EmployeeLoanRepayments from "../components/repayments/EmployeeLoanRepayments";
+import EmployeeLoanRepayments from "../components/EmployeeLoanPayment/EmployeeLoanRepayments";
 import AllLoanRepayments from "../components/repayments/AllLoanRepayments";
 import { MakeRepayment } from "../components/make_payment/MakeRepayment";
 import {
   canUserAccessComponent,
   useGetUserPermissions,
 } from "components/permission-restriction/PermissionRestrictor";
+import EmployeeLoanApprovals from "../components/EmployeeApprovals/EmployeeLoanApprovals";
 
 export type TLoanTabKey =
   | "Overview"
@@ -63,7 +64,7 @@ const LoanHome = () => {
 
     {
       label: "My Approvals",
-      children: <LoanApprovalsContainer />,
+      children: <EmployeeLoanApprovals />,
       key: "My Approvals",
       hidden: false,
     },
