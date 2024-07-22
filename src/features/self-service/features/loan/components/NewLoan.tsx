@@ -16,7 +16,7 @@ import {
 import { QUERY_KEY_FOR_LOAN_REQUESTS } from "../hooks/requests/useGetLoanRequests";
 import { QUERY_KEY_FOR_LOAN } from "../hooks/useGetLoan";
 import { FormLoanTypeInput } from "./settings/loanTypes/FormLoanTypeInput";
-import { FormLoanRepaymentPlanInput } from "./settings/repaymentPlans/FormLoanRepaymentPlanInput";
+// import { FormLoanRepaymentPlanInput } from "./settings/repaymentPlans/FormLoanRepaymentPlanInput";
 import LoanWorthiness from "./worthiness/LoanWorthiness";
 import { TLoanWorthinessInputData } from "../hooks/worthiness/useGetLoanWorthiness";
 import { useCurrentFileUploadUrl } from "hooks/useCurrentFileUploadUrl";
@@ -120,19 +120,17 @@ export const NewLoan: React.FC<IModalProps> = ({ open, handleClose }) => {
           Form={Form}
           control={{ name: "typeId", label: "Type" }}
         />
-        <FormLoanRepaymentPlanInput
+        {/* <FormLoanRepaymentPlanInput
           Form={Form}
           control={{ name: "paymentPlanId", label: "Payment Plan" }}
-          handleSelect={(_, plan) =>
-            setWorthinessInput((prev) => ({ ...prev, paymentPlanId: plan?.id }))
-          }
+         
           handleClear={() =>
             setWorthinessInput((prev) => ({
               ...prev,
               paymentPlanId: undefined,
             }))
           }
-        />
+        /> */}
 
         <Form.Item rules={generalValidationRules} name="amount" label="Amount">
           <InputNumber
