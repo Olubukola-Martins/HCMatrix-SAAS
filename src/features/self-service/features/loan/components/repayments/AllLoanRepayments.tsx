@@ -1,9 +1,18 @@
+import { TableWithFocusType } from "components/table";
+import { ALL_LOAN_PAYMENT_TABLE_COLUMNS } from "./columns";
 
 const AllLoanRepayments = () => {
-
+  const columns = ALL_LOAN_PAYMENT_TABLE_COLUMNS();
   return (
     <div>
-     hello
+     <TableWithFocusType
+        columns={columns}
+        dataSource={[]}
+        // loading={isLoading}
+        // pagination={{ ...pagination, total: data?.total }}
+        // onChange={onChange}
+        scroll={{ x: 500 }}
+      />
     </div>
   );
 };

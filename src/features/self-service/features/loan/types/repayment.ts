@@ -59,12 +59,22 @@ interface Type {
   updatedAt: string;
 }
 
-
 // ===== NEW
 export interface myLoanRePaymentProps {
   loanId: string;
   loanType: string;
   loanDate: string;
+  amount: number;
+  disbursedDate: string;
+  balance: number;
+}
+
+export interface AllLoanPaymentProps {
+  loanId: string;
+  employee: {
+    name: string;
+  };
+  loanType: string;
   amount: number;
   disbursedDate: string;
   balance: number;

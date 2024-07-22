@@ -16,6 +16,7 @@ import {
 } from "components/permission-restriction/PermissionRestrictor";
 import EmployeeLoanApprovals from "../components/EmployeeApprovals/EmployeeLoanApprovals";
 import AllLoanRequests from "../components/AllLoans/AllLoanRequests";
+import AllLoanRepayments from "../components/repayments/AllLoanRepayments";
 
 export type TLoanTabKey =
   | "Overview"
@@ -77,7 +78,7 @@ const LoanHome = () => {
     },
     {
       label: "All Repayments",
-      children: <div/>,
+      children: <AllLoanRepayments/>,
       key: "All Repayments",
       hidden: !canUserAccessComponent({
         userPermissions,
