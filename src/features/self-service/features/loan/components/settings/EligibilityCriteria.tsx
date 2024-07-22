@@ -58,7 +58,6 @@ export const EligibilityCriteria = () => {
 
         <Form.Item
           name="check_employee_status"
-          // noStyle
           rules={generalValidationRules}
         >
           <Checkbox.Group className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-4">

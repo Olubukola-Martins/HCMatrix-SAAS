@@ -1,5 +1,3 @@
-
-
 import { PageIntro } from "components/layout/PageIntro";
 import { appRoutes } from "config/router/paths";
 import SelfServiceSubNav from "features/self-service/components/SelfServiceSubNav";
@@ -19,7 +17,7 @@ const LoanPolicies = () => {
     <>
       <SelfServiceSubNav />
       <div className="Container">
-        <PageIntro title="Loans Settings" link=""/>
+        <PageIntro title="Loans Settings" link={true} />
         <p className="text-accent text-sm pt-3">Configure your loan settings</p>
 
         <div className="grid grid-cols-1 md:grid-cols-4 mt-4 border-t">
@@ -32,7 +30,6 @@ const LoanPolicies = () => {
             {action === "disbursement-setup" ? <DisbursementSetUp /> : null}
             {action === "eligibility-criteria" ? <EligibilityCriteria /> : null}
             {action === "configure-payment" ? <ConfigurePayment /> : null}
-            
           </div>
         </div>
       </div>

@@ -15,7 +15,7 @@ import {
 } from "../hooks/useRequestForLoan";
 import { QUERY_KEY_FOR_LOAN_REQUESTS } from "../hooks/requests/useGetLoanRequests";
 import { QUERY_KEY_FOR_LOAN } from "../hooks/useGetLoan";
-import { FormLoanTypeInput } from "./settings/loanTypes/FormLoanTypeInput";
+// import { FormLoanTypeInput } from "./settings/loanTypes/FormLoanTypeInput";
 // import { FormLoanRepaymentPlanInput } from "./settings/repaymentPlans/FormLoanRepaymentPlanInput";
 import LoanWorthiness from "./worthiness/LoanWorthiness";
 import { TLoanWorthinessInputData } from "../hooks/worthiness/useGetLoanWorthiness";
@@ -116,10 +116,10 @@ export const NewLoan: React.FC<IModalProps> = ({ open, handleClose }) => {
         >
           <DatePicker className="w-full" />
         </Form.Item>
-        <FormLoanTypeInput
+        {/* <FormLoanTypeInput
           Form={Form}
           control={{ name: "typeId", label: "Type" }}
-        />
+        /> */}
         {/* <FormLoanRepaymentPlanInput
           Form={Form}
           control={{ name: "paymentPlanId", label: "Payment Plan" }}

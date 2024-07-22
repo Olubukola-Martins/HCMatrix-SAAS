@@ -1,7 +1,6 @@
 import { Form } from "antd";
 import { AppButton } from "components/button/AppButton";
 import { FormWorkflowInput } from "features/core/workflows/components/FormWorkflowInput";
-import React from "react";
 
 export const SetUpApprovalProcess = () => {
   const [form] = Form.useForm();

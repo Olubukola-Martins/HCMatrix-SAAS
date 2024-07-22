@@ -1,15 +1,21 @@
 import { Checkbox, Form, Input, InputNumber, Radio, Switch } from "antd";
 import { AppButton } from "components/button/AppButton";
-import React, { useState } from "react";
+import { useState } from "react";
 import {
   generalValidationRules,
   textInputValidationRules,
 } from "utils/formHelpers/validation";
+import { RepaymentPlan } from "./RepaymentPlan";
 
 export const ConfigurePayment = () => {
   const [manualPayment, setManualPayment] = useState("wallet");
+  const [addNewPlan, setAddNewPlan] = useState(false);
   return (
     <div>
+      <RepaymentPlan
+        open={addNewPlan}
+        handleClose={() => setAddNewPlan(false)}
+      />
       <h3 className="font-medium pb-5">Payment Settings</h3>
       <hr />
       <Form
@@ -181,7 +187,11 @@ export const ConfigurePayment = () => {
           </Checkbox.Group>
         </Form.Item>
 
-        <AppButton label="+Add Plan" variant="transparent" />
+        <AppButton
+          label="+Add Plan"
+          variant="transparent"
+          handleClick={() => setAddNewPlan(true)}
+        />
         <hr className="my-5" />
 
         <div className="flex items-center justify-between mb-5">
