@@ -12,7 +12,7 @@ import { useNavigate } from "react-router-dom";
 import { NewLoan } from "../components/NewLoan";
 import EmployeeLoanRepayments from "../components/repayments/EmployeeLoanRepayments";
 import AllLoanRepayments from "../components/repayments/AllLoanRepayments";
-import { MakeRepayment } from "../components/MakeRepayment";
+import { MakeRepayment } from "../components/make_payment/MakeRepayment";
 import {
   canUserAccessComponent,
   useGetUserPermissions,
