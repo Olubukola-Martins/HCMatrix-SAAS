@@ -105,6 +105,7 @@ import { SetUpApprovalProcess } from "../components/settings/SetUpApprovalProces
 import LoanTypeSetup from "../components/settings/loanTypes/LoanTypeSetup";
 import { DisbursementSetUp } from "../components/settings/DisbursementSetUp";
 import { EligibilityCriteria } from "../components/settings/EligibilityCriteria";
+import { ConfigurePayment } from "../components/settings/ConfigurePayment";
 
 const LoanPolicies = () => {
   const [action, setAction] = useState<LoanTabsActionProps>("approval-process");
@@ -116,16 +117,17 @@ const LoanPolicies = () => {
         <PageIntro title="Loans Settings" link={appRoutes.loans} />
         <p className="text-accent text-sm pt-3">Configure your loan settings</p>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 mt-4 border-t">
+        <div className="grid grid-cols-1 md:grid-cols-4 mt-4 border-t">
           <div className="col-span-1 border-r pt-8">
             <LoanSettingSide setAction={setAction} action={action} />
           </div>
-          <div className="col-span-2 pt-8 pl-3">
+          <div className="col-span-3 pt-8 pb-10 pl-3">
             {action === "approval-process" ? <SetUpApprovalProcess /> : null}
             {action === "loan-types" ? <LoanTypeSetup /> : null}
             {action === "disbursement-setup" ? <DisbursementSetUp /> : null}
             {action === "eligibility-criteria" ? <EligibilityCriteria /> : null}
-           
+            {action === "configure-payment" ? <ConfigurePayment /> : null}
+            
           </div>
         </div>
       </div>

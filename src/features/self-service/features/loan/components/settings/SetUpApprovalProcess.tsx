@@ -16,7 +16,7 @@ export const SetUpApprovalProcess = () => {
           }}
         />
 
-        <AppButton type="submit" label="Save" />
+        <AppButton type="submit" label="Save Changes" />
       </Form>
     </>
   );
