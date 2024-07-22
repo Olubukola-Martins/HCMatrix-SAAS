@@ -1,6 +1,6 @@
 import SelfServiceSubNav from "features/self-service/components/SelfServiceSubNav";
 import LoanOverview from "../components/LoanOverview";
-import EmployeeLoanRequests from "../components/EmployeeLoanRequests";
+import EmployeeLoanRequests from "../components/EmployeeLoanRequest/EmployeeLoanRequests";
 import AllLoanRequests from "../components/AllLoanRequests";
 import LoanApprovalsContainer from "../components/LoanApprovalsContainer";
 import { useState } from "react";
