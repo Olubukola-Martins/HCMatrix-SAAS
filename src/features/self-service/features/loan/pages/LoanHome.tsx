@@ -9,7 +9,6 @@ import { appRoutes } from "config/router/paths";
 import { useNavigate } from "react-router-dom";
 import { NewLoan } from "../components/NewLoan";
 import EmployeeLoanRepayments from "../components/EmployeeLoanPayment/EmployeeLoanRepayments";
-
 import { MakeRepayment } from "../components/make_payment/MakeRepayment";
 import {
   canUserAccessComponent,
@@ -17,7 +16,6 @@ import {
 } from "components/permission-restriction/PermissionRestrictor";
 import EmployeeLoanApprovals from "../components/EmployeeApprovals/EmployeeLoanApprovals";
 import AllLoanRequests from "../components/AllLoans/AllLoanRequests";
-
 
 export type TLoanTabKey =
   | "Overview"
