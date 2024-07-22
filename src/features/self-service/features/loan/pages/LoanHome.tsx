@@ -1,8 +1,6 @@
 import SelfServiceSubNav from "features/self-service/components/SelfServiceSubNav";
 import LoanOverview from "../components/LoanOverview";
 import EmployeeLoanRequests from "../components/EmployeeLoanRequest/EmployeeLoanRequests";
-import AllLoanRequests from "../components/AllLoanRequests";
-import LoanApprovalsContainer from "../components/LoanApprovalsContainer";
 import { useState } from "react";
 import { Tabs } from "antd";
 import { PageIntro } from "components/layout/PageIntro";
@@ -11,13 +9,15 @@ import { appRoutes } from "config/router/paths";
 import { useNavigate } from "react-router-dom";
 import { NewLoan } from "../components/NewLoan";
 import EmployeeLoanRepayments from "../components/EmployeeLoanPayment/EmployeeLoanRepayments";
-import AllLoanRepayments from "../components/repayments/AllLoanRepayments";
+
 import { MakeRepayment } from "../components/make_payment/MakeRepayment";
 import {
   canUserAccessComponent,
   useGetUserPermissions,
 } from "components/permission-restriction/PermissionRestrictor";
 import EmployeeLoanApprovals from "../components/EmployeeApprovals/EmployeeLoanApprovals";
+import AllLoanRequests from "../components/AllLoans/AllLoanRequests";
+
 
 export type TLoanTabKey =
   | "Overview"
@@ -79,7 +79,7 @@ const LoanHome = () => {
     },
     {
       label: "All Repayments",
-      children: <AllLoanRepayments />,
+      children: <div/>,
       key: "All Repayments",
       hidden: !canUserAccessComponent({
         userPermissions,
