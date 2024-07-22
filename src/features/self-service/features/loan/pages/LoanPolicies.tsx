@@ -19,7 +19,7 @@ const LoanPolicies = () => {
     <>
       <SelfServiceSubNav />
       <div className="Container">
-        <PageIntro title="Loans Settings" link={appRoutes.loans} />
+        <PageIntro title="Loans Settings" link=""/>
         <p className="text-accent text-sm pt-3">Configure your loan settings</p>
 
         <div className="grid grid-cols-1 md:grid-cols-4 mt-4 border-t">
