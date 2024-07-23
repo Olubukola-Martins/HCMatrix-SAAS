@@ -1,6 +1,8 @@
 import { ColumnsType } from "antd/es/table";
 import { Dropdown, Menu } from "antd";
 import { AllLoanPaymentProps } from "../../../types/repayment";
+import { Link } from "react-router-dom";
+import { appRoutes } from "config/router/paths";
 
 export const ALL_LOAN_PAYMENT_TABLE_COLUMNS =
   (): ColumnsType<AllLoanPaymentProps> => [
@@ -39,7 +41,11 @@ export const ALL_LOAN_PAYMENT_TABLE_COLUMNS =
             overlay={
               <Menu>
                 <Menu.Item key="1">View Loan Details</Menu.Item>
-                <Menu.Item key="2">View Payment Plan</Menu.Item>
+                <Menu.Item key="2">
+                  <Link to={appRoutes.loanPaymentPlan(1).path}>
+                    View Payment Plan
+                  </Link>
+                </Menu.Item>
               </Menu>
             }
           >

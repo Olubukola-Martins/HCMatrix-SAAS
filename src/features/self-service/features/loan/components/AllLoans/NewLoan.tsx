@@ -1,6 +1,14 @@
-import { DatePicker, Form, Input, InputNumber, Modal, Select } from "antd";
+import {
+  DatePicker,
+  Form,
+  Input,
+  InputNumber,
+  Modal,
+  Select,
+  Tooltip,
+} from "antd";
 import { AppButton } from "components/button/AppButton";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { IModalProps } from "types";
 import {
   dateHasToBeGreaterThanCurrentDayRule,
@@ -158,13 +166,21 @@ export const NewLoan: React.FC<IModalProps> = ({ open, handleClose }) => {
           </span>
         </div>
 
-        <Form.Item
-          name="loanEligibility"
-          label="Loan Eligibility"
-          tooltip="This represent/show your eligibility of loan request "
-        >
-          <Input disabled />
-        </Form.Item>
+        <div>
+          <Form.Item
+            name="loanEligibility"
+            label="Loan Eligibility"
+            tooltip="This represent/show your eligibility of loan request "
+          >
+            <Input disabled />
+          </Form.Item>
+          <Tooltip
+            title="You are not eligible because you can only make loan request below
+              #000,000."
+          >
+            <span className="text-sm text-green-600 underline">See Reason</span>
+          </Tooltip>
+        </div>
 
         <div className="my-3">
           <h5 className="pb-2">Upload Document (optional)</h5>
