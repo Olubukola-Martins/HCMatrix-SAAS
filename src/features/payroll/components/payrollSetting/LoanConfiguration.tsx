@@ -1,4 +1,4 @@
-import { Checkbox, Input, InputNumber, Switch, Tooltip, Form } from "antd";
+import { Checkbox, Input, InputNumber, Switch, Form } from "antd";
 import React from "react";
 import { boxStyle, boxTitle } from "styles/reused";
 import {

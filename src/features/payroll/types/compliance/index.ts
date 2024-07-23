@@ -30,7 +30,7 @@ export type TShareholdersCompliance = {
 
 interface TShareholder {
   name: string;
-  imageUrl: string;
+  imageUrl?: string;
   sharesHeld: string;
 }
 
@@ -45,9 +45,9 @@ export type TDirectorsCompliance = {
   deletedAt?: null | string;
 };
 
-interface TDirector {
+export interface TDirector {
   name: string;
-  imageUrl: string;
+  imageUrl?: string;
   position: string;
 }
 

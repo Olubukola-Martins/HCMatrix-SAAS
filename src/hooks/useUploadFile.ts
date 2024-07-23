@@ -3,9 +3,10 @@ import { MICROSERVICE_ENDPOINTS } from "config/enviroment";
 import { useApiAuth } from "hooks/useApiAuth";
 import { useMutation } from "react-query";
 import { ICurrentCompany } from "types";
+import { TFormFileInput, TFormSingleFileInput } from "types/files";
 
 type TData = {
-  file: any;
+  file: TFormSingleFileInput["originFileObj"];
 };
 
 type TUploadFileApiResponse = {
@@ -38,7 +39,7 @@ export const uploadFile = async (props: {
 
 export const bulkUploadFiles = async (props: {
   data: {
-    files: any[];
+    files: TFormFileInput;
   };
   auth: ICurrentCompany;
 }): Promise<string[]> => {
