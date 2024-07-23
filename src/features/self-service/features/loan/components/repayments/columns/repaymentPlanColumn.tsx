@@ -1,35 +1,33 @@
 import { ColumnsType } from "antd/es/table";
 import { Dropdown, Menu } from "antd";
-import { AllLoanPaymentProps } from "../../../types/repayment";
-import { Link } from "react-router-dom";
-import { appRoutes } from "config/router/paths";
+import { repaymentPlanColumnProps } from "../../../types/repayment";
 
 export const REPAYMENT_PLAN_TABLE_COLUMNS =
-  (): ColumnsType<AllLoanPaymentProps> => [
+  (): ColumnsType<repaymentPlanColumnProps> => [
     {
-      title: "Loan ID",
-      key: "loanID",
+      title: "Date",
+      key: "date",
     },
     {
-      title: "Employee Name",
-      key: "employeeName",
-    },
-    {
-      title: "Loan Type",
-      key: "loanType",
-    },
-
-    {
-      title: "Amount",
+      title: "Amount Deducted",
       key: "amount",
     },
     {
-      title: "Balance",
+      title: "Interest",
+      key: "interest",
+    },
+
+    {
+      title: "Total Payment",
+      key: "totalPayment",
+    },
+    {
+      title: "Remaining Balance",
       key: "balance",
     },
     {
-      title: "Disbursed Date",
-      key: "disbursedDate",
+      title: "Status",
+      key: "status",
     },
     {
       title: "Action",
@@ -40,12 +38,7 @@ export const REPAYMENT_PLAN_TABLE_COLUMNS =
             trigger={["click"]}
             overlay={
               <Menu>
-                <Menu.Item key="1">View Loan Details</Menu.Item>
-                <Menu.Item key="2">
-                  <Link to={appRoutes.loanPaymentPlan(1).path}>
-                    View Payment Plan
-                  </Link>
-                </Menu.Item>
+                <Menu.Item key="1">Change Status</Menu.Item>
               </Menu>
             }
           >

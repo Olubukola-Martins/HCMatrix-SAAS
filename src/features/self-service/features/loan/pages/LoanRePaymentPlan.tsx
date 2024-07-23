@@ -11,7 +11,7 @@ const LoanRePaymentPlan = () => {
   return (
     <div>
       <SelfServiceSubNav />
-      <div className="relative">
+      <div className="relative mb-20">
         <BackgroundCurves />
         <div className="absolute top-4 Container mt-8 w-full">
           <PageIntro link={true} title="Repayment Plan" />
@@ -37,7 +37,16 @@ const LoanRePaymentPlan = () => {
               loading={false}
             />
           </div>
-          {/* Table */}
+          <div className="flex items-center gap-x-5">
+            <div className="flex items-center gap-3">
+              <h4 className="font-medium">Repayment dates remaining</h4>
+              <div className="border p-3 h-7 flex items-center rounded">
+                <span>50</span>
+              </div>
+            </div>
+
+            <i className="ri-download-2-fill text-xl cursor-pointer"></i>
+          </div>
           <TableWithFocusType
             columns={columns}
             dataSource={[]}

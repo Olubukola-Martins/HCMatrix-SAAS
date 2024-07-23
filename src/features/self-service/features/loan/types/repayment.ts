@@ -79,3 +79,12 @@ export interface AllLoanPaymentProps {
   disbursedDate: string;
   balance: number;
 }
+
+export interface repaymentPlanColumnProps {
+   date: string;
+   amount: number;
+   interest: number;
+   totalPayment: number;
+   balance: number;
+   status: string;
+}
