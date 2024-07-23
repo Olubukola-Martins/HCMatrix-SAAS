@@ -7,7 +7,7 @@ import { PageIntro } from "components/layout/PageIntro";
 import PageSubHeader from "components/layout/PageSubHeader";
 import { appRoutes } from "config/router/paths";
 import { useNavigate } from "react-router-dom";
-import { NewLoan } from "../components/NewLoan";
+import { NewLoan } from "../components/AllLoans/NewLoan";
 import EmployeeLoanRepayments from "../components/EmployeeLoanPayment/EmployeeLoanRepayments";
 import { MakeRepayment } from "../components/make_payment/MakeRepayment";
 import {
