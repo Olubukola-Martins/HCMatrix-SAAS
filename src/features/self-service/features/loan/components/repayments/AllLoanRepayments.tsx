@@ -1,5 +1,5 @@
 import { TableWithFocusType } from "components/table";
-import { ALL_LOAN_PAYMENT_TABLE_COLUMNS } from "./columns";
+import { ALL_LOAN_PAYMENT_TABLE_COLUMNS } from "./columns/allLoanPaymentColumn";
 
 const AllLoanRepayments = () => {
   const columns = ALL_LOAN_PAYMENT_TABLE_COLUMNS();
