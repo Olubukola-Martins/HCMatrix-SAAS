@@ -32,7 +32,7 @@ export const useGetDocumentsCompliance = ({
   type,
 }: {
   type?: TComplianceDocument["type"];
-}) => {
+} = {}) => {
   const { token, companyId } = useApiAuth();
   const queryData = useQuery(
     [QUERY_KEY_FOR_WALLET_DOCUMENTS_COMPLIANCE, type],

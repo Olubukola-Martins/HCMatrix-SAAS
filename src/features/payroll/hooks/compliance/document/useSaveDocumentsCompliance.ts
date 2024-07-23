@@ -2,10 +2,12 @@ import axios from "axios";
 import { MICROSERVICE_ENDPOINTS } from "config/enviroment";
 import { TComplianceDocument } from "features/payroll/types/compliance";
 import { useApiAuth } from "hooks/useApiAuth";
+import { uploadFile } from "hooks/useUploadFile";
 import { useMutation } from "react-query";
 import { ICurrentCompany } from "types";
+import { TFormFileInput } from "types/files";
 
-type TData = Pick<TComplianceDocument, "documentUrl" | "type">;
+type TData = Pick<TComplianceDocument, "type"> & { document: TFormFileInput };
 const createData = async (props: { data: TData; auth: ICurrentCompany }) => {
   const url = `${MICROSERVICE_ENDPOINTS.PAYROLL}/compliance/document/${props.data.type}`;
   const config = {
@@ -15,9 +17,14 @@ const createData = async (props: { data: TData; auth: ICurrentCompany }) => {
       "x-company-id": props.auth.companyId,
     },
   };
-
-  const data: Pick<TData, "documentUrl"> = {
-    documentUrl: props.data.documentUrl,
+  const { data: documentUrl } = await uploadFile({
+    auth: props.auth,
+    data: {
+      file: props.data.document?.[0].originFileObj,
+    },
+  });
+  const data: Pick<TComplianceDocument, "documentUrl"> = {
+    documentUrl,
   };
 
   const response = await axios.post(url, data, config);

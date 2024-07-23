@@ -1,10 +1,18 @@
 import { TTransactionStatus, TTransactionType } from "../types";
+import { TComplianceDocumentType } from "../types/compliance";
 import { TPayrollFrequency, TEssentialPayrollType } from "../types/payroll";
 import { TPayrollSchemeType } from "../types/payrollSchemes";
 import {
   TWalletTransactionStatus,
   TWalletTransactionType,
 } from "../types/payrollWallet";
+
+export const WALLET_COMPLIANCE_DOCUMENT_TYPES: TComplianceDocumentType[] = [
+  "cac-2",
+  "cac-7",
+  "certificate-of-incorporation",
+  "memorandum-of-incorporation",
+];
 
 export const DEFAULT_PENSION_ADMINISTRATORS = [
   "Access Pensions Limited",
