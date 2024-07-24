@@ -13,6 +13,8 @@ import OfferTemplateDetailsPage from "features/recruitment/features/settings/fea
 import { RecruitmentJobTemplate } from "features/recruitment/features/settings/features/jobTemplate/pages/RecruitmentJobTemplate";
 import JobTemplateDetailsPage from "features/recruitment/features/settings/features/jobTemplate/pages/JobTemplateDetailsPage";
 import { RecruitementOtherSettings } from "features/recruitment/features/settings/features/otherSettings/pages/RecruitmentOtherSettings";
+import { JobOpeningsPage } from "features/recruitment/features/dashboard/features/jobOpenings/pages/JobOpeningsPage";
+import AddJobOpening from "features/recruitment/features/dashboard/features/jobOpenings/pages/AddJobOpening";
 
 export const recruitmentRoutes: TRouteData[] = [
   {
@@ -42,6 +44,20 @@ export const recruitmentRoutes: TRouteData[] = [
     isSearchable: true,
     isPrimaryFeature: true,
     title: "Recruitment Report",
+  },
+  {
+    element: <JobOpeningsPage />,
+    path: appRoutes.recruitmentJobOpenings,
+    isSearchable: true,
+    isPrimaryFeature: true,
+    title: "Recruitment Job Openings",
+  },
+  {
+    element: <AddJobOpening />,
+    path: appRoutes.recruitmentAddJobOpenings,
+    isSearchable: true,
+    isPrimaryFeature: true,
+    title: "Recruitment Add Job Openings",
   },
 
   // SETTINGS
