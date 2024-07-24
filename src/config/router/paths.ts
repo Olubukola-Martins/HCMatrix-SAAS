@@ -75,36 +75,23 @@ export const appRoutes = {
   setupGradePayrollScheme: `/settings/payroll/schemes/grade/set-up/`,
   setupDirectSalaryPayrollScheme: `/settings/payroll/schemes/direct-salary/set-up/`,
   setupProjectPayrollScheme: `/settings/payroll/schemes/project/set-up/`,
-  setupSingleProjectPayrollSchemeWithoutExistingScheme: (props?: {
-    projectId?: number;
-  }) => {
+  setupSingleProjectPayrollSchemeWithoutExistingScheme: (props?: { projectId?: number }) => {
     return {
       format: `/settings/payroll/schemes/project/set-up/:projectId/scheme`,
       path: `/settings/payroll/schemes/project/set-up/${props?.projectId}/scheme`,
     };
   },
-  setupSingleProjectPayrollScheme: (props?: {
-    projectId?: number;
-    schemeId?: number;
-  }) => {
+  setupSingleProjectPayrollScheme: (props?: { projectId?: number; schemeId?: number }) => {
     return {
       format: `/settings/payroll/schemes/project/set-up/:projectId/scheme/:schemeId`,
-      path: `/settings/payroll/schemes/project/set-up/${
-        props?.projectId
-      }/scheme/${props?.schemeId ?? ""}`,
+      path: `/settings/payroll/schemes/project/set-up/${props?.projectId}/scheme/${props?.schemeId ?? ""}`,
     };
   },
   setupWagesPayrollScheme: `/settings/payroll/schemes/wages/set-up/`,
   setupDailyWagesPayrollScheme: `/settings/payroll/schemes/wages/set-up/daily`,
 
   setupMonthlyWagesPayrollScheme: `/settings/payroll/schemes/wages/set-up/monthly`,
-  setupWagesPayrollSchemeById: ({
-    frequency,
-    id,
-  }: {
-    frequency: "monthly" | "daily";
-    id?: number;
-  }) => ({
+  setupWagesPayrollSchemeById: ({ frequency, id }: { frequency: "monthly" | "daily"; id?: number }) => ({
     format: `/settings/payroll/schemes/wages/set-up/${frequency}/:id`,
     path: `/settings/payroll/schemes/wages/set-up/${frequency}/${id}`,
   }),
@@ -329,6 +316,8 @@ export const appRoutes = {
   recruitmentEmailTemplates: `/recruitment/email-templates`,
   recruitmentOfferTemplates: `/recruitment/offer-templates`,
   recruitmentJobTemplates: `/recruitment/job-templates`,
+  recruitmentJobOpenings: `/recruitment/job-opening`,
+  recruitmentAddJobOpenings: `/recruitment/add-job-openings`,
   recruitmentOtherSettings: `/recruitment/other-settings`,
   recruitmentEmailTemplateDetails: (id?: number) => ({
     format: `/recruitment/email-templates-details/:id`,
