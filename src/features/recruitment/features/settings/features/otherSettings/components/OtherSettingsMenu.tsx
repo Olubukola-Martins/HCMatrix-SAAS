@@ -3,9 +3,9 @@ import { RecruitmentBenefits } from "./RecruitmentBenefits";
 import { EmploymentType } from "./EmploymentType";
 import { ExperienceType } from "./ExperienceType";
 import { JobStatus } from "./JobStatus";
-import { InterviewStages } from "./InterviewStages";
-import { RatingSetUp } from "./RatingSetUp";
-import { InterviewConfiguration } from "./InterviewConfiguration";
+import { InterviewStages } from "./interviewSettings/InterviewStages";
+import { RatingSetUp } from "./interviewSettings/RatingSetUp";
+import { InterviewConfiguration } from "./interviewSettings/InterviewConfiguration";
 import { NotificationSettings } from "./NotificationSettings";
 import { PortalLink } from "./PortalLink";
 import { RequestDocument } from "./RequestDocument";
@@ -58,7 +58,7 @@ export const OtherSettingsMenu = () => {
     OtherSettingsMenuArray[0]
   );
   const [selectedChild, setSelectedChild] =
-    useState<IOtherSettingsSubMenuComponent | null>(null);
+    useState<IOtherSettingsSubMenuComponent>();
 
   useEffect(() => {
     if (selectedMenu.title === "Interview Settings" && selectedMenu.children) {
@@ -82,7 +82,6 @@ export const OtherSettingsMenu = () => {
               }`}
               onClick={() => {
                 setSelectedMenu(item);
-                setSelectedChild(null);
               }}
             >
               {item.title}

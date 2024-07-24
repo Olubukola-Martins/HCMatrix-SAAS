@@ -112,3 +112,19 @@ export const notificationSettings = [
   //   name: "icsFile",
   // },
 ];
+
+export const INTERVIEW_STAGE_SETTINGS_ARRAY = [
+  {
+    label: "Initial Screening Interview",
+    name: "initialScreening",
+  },
+  {
+    label: "Technical/Skill-Based Interview",
+    name: "technicalInterview",
+  },
+  {
+    label: "Behavioral/Cultural Fit Interview",
+    name: "behavioralInterview",
+  },
+ 
+];
