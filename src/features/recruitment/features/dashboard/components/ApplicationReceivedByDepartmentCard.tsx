@@ -15,8 +15,8 @@ const ApplicationReceivedByDepartmentCard = () => {
 
   const highestApplication = Math.max(...data.map((item) => item.count));
   return (
-    <CardWrapper>
-      <div className="flex flex-col justify-between gap-4">
+    <CardWrapper extraStyles=" h-full ">
+      <div className="flex flex-col justify-between gap-4 ">
         <div className="flex flex-row justify-between  gap-y-2">
           <h2 className="font-extrabold">Application Received by Department</h2>
           <RangePicker className="w-56" />

@@ -8,10 +8,12 @@ const EmploymentTypeAnalyticsCard = () => {
     { count: 26, label: "Internship", color: "#FF9800" },
   ];
   return (
-    <CardWrapper>
-      <div className="flex flex-col justify-between gap-4">
+    <CardWrapper extraStyles=" h-full ">
+      <div className="flex flex-col justify-between gap-4  h-full   ">
         <h2 className="font-extrabold">Employment Type Analytics</h2>
+        <div className="my-auto min-h-fit">
         <DoughnutChart data={data.map((item) => item.count)} labels={data.map((item) => item.label)} dataEntityLabel="Employment Type Analytics" bgColors={data.map((item) => item.color)} />
+        </div>
       </div>
     </CardWrapper>
   );
