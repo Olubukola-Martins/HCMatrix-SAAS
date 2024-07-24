@@ -27,6 +27,7 @@ export const PortalLink = () => {
         value={inputValue}
         onChange={handleInputChange}
       />
+
       <button
         onClick={handleCopyClick}
         className="flex p-2 my-4 gap-2 items-center border border-[#686868] rounded"
