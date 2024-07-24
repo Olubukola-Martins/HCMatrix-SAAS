@@ -31,3 +31,22 @@ export interface IConfigureScoreFormProps {
   handleScoreFormSubmit: (values: any) => void;
   initialValues: IInterviewScoreRatingProps[];
 }
+
+export interface ICriteriaField {
+  key: number;
+  name: number;
+}
+
+export interface IRatingSetUpDynamicFormProps {
+  initialValues: {
+    metric?: string;
+    weight?: string;
+    criteria?: string[];
+    newRatingSetup?: {
+      metric: string;
+      weight: string;
+      criteria: string[];
+    }[];
+  };
+  onSubmit: (values: any) => void;
+}
