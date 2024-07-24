@@ -60,19 +60,21 @@ export const EmailFormPage: React.FC<IEmailFormPageProps> = ({
           </div>
 
           <div className="grid grid-rows-2 gap-4 -full items-center lg:w-1/3">
-            <div className="grid grid-cols-2 lg:gap-1 items-center">
+            <div className="grid grid-cols-2 items-center">
               <p>Send automatically</p>
-              <Form.Item
-                valuePropName="checked"
-                name="sendAutomatically"
-                noStyle
-              >
-                <Switch
-                  defaultChecked={false}
-                  className="w-1/4"
-                  //   onChange={onChange}
-                />
-              </Form.Item>
+              <div className="">
+                <Form.Item
+                  valuePropName="checked"
+                  name="sendAutomatically"
+                  noStyle
+                >
+                  <Switch
+                    defaultChecked={false}
+                    // className="w-1/4 "
+                    //   onChange={onChange}
+                  />
+                </Form.Item>
+              </div>
             </div>
             {panelistSwitch && (
               <div className="grid grid-cols-2 lg:gap-3 items-center">

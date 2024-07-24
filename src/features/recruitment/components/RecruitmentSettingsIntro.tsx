@@ -18,9 +18,13 @@ export const RecruitmentSettingsIntro: React.FC<IRecruitmentSettingsProps> = ({
     <>
       <RecruitmentSettingSubNav />
       <div className="Container">
-        <div className="flex lg:flex-row flex-col justify-between items-center">
+        <div
+          className={`flex flex-col justify-between  lg:items-center ${
+            description === "" ? "md:flex-row" : "lg:flex-row"
+          }`}
+        >
           <div>
-            <PageIntro title={title} link={appRoutes.recruitmentDashboard}  />
+            <PageIntro title={title} link={appRoutes.recruitmentDashboard} />
             <p className="pt-1">{description}</p>
           </div>
           <div className="flex my-5 lg:my-0 gap-5 items-center">

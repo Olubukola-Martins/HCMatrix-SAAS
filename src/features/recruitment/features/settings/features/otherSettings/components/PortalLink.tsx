@@ -8,11 +8,17 @@ export const PortalLink = () => {
   const handleInputChange = (e: any) => {
     setInputValue(e.target.value);
   };
+
   const handleCopyClick = () => {
+    if (inputValue.trim() === "") {
+      alert("Input field is empty!");
+      return;
+    }
     navigator.clipboard.writeText(inputValue).then(() => {
       alert("Link copied to clipboard!");
     });
   };
+
   return (
     <div className="Container">
       <h2 className="text-base p-2 my-1">User Portal URL</h2>

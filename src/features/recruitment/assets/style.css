@@ -27,6 +27,8 @@
 }
 .add-job-opening-step .ant-steps .ant-steps-item-finish .ant-steps-item-icon {
   background: var(--caramel);
+  border-color: var(--caramel);
+  color: var(--caramel);
 }
 .add-job-opening-step
   .ant-steps
@@ -41,6 +43,8 @@
   > .ant-steps-item-container
   > .ant-steps-item-icon {
   background: var(--background);
+  border-color: var(--caramel);
+
 }
 .add-job-opening-step
   .ant-steps
@@ -49,6 +53,7 @@
   > .ant-steps-item-icon
   > .ant-steps-icon {
   color: var(--caramel);
+  border-color: var(--caramel);
 }
 
 .add-job-opening-step
@@ -60,6 +65,9 @@
 }
 .add-job-opening-step .ant-steps .ant-steps-item-tail:after {
   height: 4px;
+    background-color: var(--caramel);
+  border-color: var(--caramel);
+
 }
 .add-job-opening-step
   .ant-steps
