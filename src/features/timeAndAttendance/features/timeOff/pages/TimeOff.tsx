@@ -9,9 +9,6 @@ import { AddTimeOff } from "../components/AddTimeOff";
 import { AttendanceSubToper } from "features/timeAndAttendance/components/AttendanceSubToper";
 import { QUERY_KEY_FOR_TIME_OFF, useGetTimeOff } from "../hooks/useGetTimeOff";
 import { usePagination } from "hooks/usePagination";
-import { useDeleteTimeAndAttendance } from "features/timeAndAttendance/hooks/useDeleteTimeAndAttendance";
-import { useHandleTimeAndAttendanceStatus } from "features/timeAndAttendance/hooks/useHandleTimeAndAttendanceStatus";
-import { TableWithFocusType } from "components/table";
 import {
   useGetUserPermissions,
   canUserAccessComponent,
@@ -26,14 +23,6 @@ export const TimeOff = () => {
   const [timeOffId, settimeOffId] = useState<number>();
   const { pagination, onChange } = usePagination({ pageSize: 10 });
   const { data, isLoading } = useGetTimeOff({ pagination, status });
-  const { removeData } = useDeleteTimeAndAttendance({
-    EndPointUrl: "time-off-requests",
-    queryKey: QUERY_KEY_FOR_TIME_OFF,
-  });
-
-  const { requestType } = useHandleTimeAndAttendanceStatus({
-    queryKey: QUERY_KEY_FOR_TIME_OFF,
-  });
 
   const handleEdit = (id: number) => {
     setNewTimeOffModal(true);

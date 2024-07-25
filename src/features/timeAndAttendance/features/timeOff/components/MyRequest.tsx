@@ -2,12 +2,19 @@ import { Form, Select } from "antd";
 import { EMPLOYEE_TIMEOFF_REQUEST_TABLE_COLUMNS } from "./columns/myRequestColumns";
 import { TableWithFocusType } from "components/table";
 import { FormTimeOffPolicyInput } from "../../settings/timeOffPolicy/components/FormTimeOffPolicyInput";
-import { useGetTimeOff } from "../hooks/useGetTimeOff";
+import { QUERY_KEY_FOR_TIME_OFF, useGetTimeOff } from "../hooks/useGetTimeOff";
 import { usePagination } from "hooks/usePagination";
 import { useState } from "react";
+import { useHandleTimeAndAttendanceStatus } from "features/timeAndAttendance/hooks/useHandleTimeAndAttendanceStatus";
 
 export const MyRequest = () => {
-  const columns = EMPLOYEE_TIMEOFF_REQUEST_TABLE_COLUMNS();
+  const { requestType } = useHandleTimeAndAttendanceStatus({
+    queryKey: QUERY_KEY_FOR_TIME_OFF,
+  });
+  const columns = EMPLOYEE_TIMEOFF_REQUEST_TABLE_COLUMNS({
+    requestType,
+    approvalColumn: false,
+  });
   const [status, setStatus] = useState<string>();
   const [policyId, setPolicyId] = useState<number>();
   const { pagination, onChange } = usePagination({ pageSize: 10 });

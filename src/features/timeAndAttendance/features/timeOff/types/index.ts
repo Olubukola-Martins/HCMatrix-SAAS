@@ -14,3 +14,8 @@ export interface ITimeOffProps {
   }
   status?: string;
 }
+
+export type IColumnsProps = {
+  requestType?: (value: number, type: string) => void;
+  approvalColumn: boolean;
+};
