@@ -1,6 +1,14 @@
-import { DatePicker, Form, Input, InputNumber, Modal, Select } from "antd";
+import {
+  DatePicker,
+  Form,
+  Input,
+  InputNumber,
+  Modal,
+  Select,
+  Tooltip,
+} from "antd";
 import { AppButton } from "components/button/AppButton";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { IModalProps } from "types";
 import {
   dateHasToBeGreaterThanCurrentDayRule,
@@ -12,16 +20,14 @@ import { useQueryClient } from "react-query";
 import {
   TRequestForLoanData,
   useRequestForLoan,
-} from "../hooks/useRequestForLoan";
-import { QUERY_KEY_FOR_LOAN_REQUESTS } from "../hooks/requests/useGetLoanRequests";
-import { QUERY_KEY_FOR_LOAN } from "../hooks/useGetLoan";
-import { FormLoanTypeInput } from "./settings/loanTypes/FormLoanTypeInput";
-import { FormLoanRepaymentPlanInput } from "./settings/repaymentPlans/FormLoanRepaymentPlanInput";
-import LoanWorthiness from "./worthiness/LoanWorthiness";
-import { TLoanWorthinessInputData } from "../hooks/worthiness/useGetLoanWorthiness";
+} from "../../hooks/useRequestForLoan";
+import { QUERY_KEY_FOR_LOAN_REQUESTS } from "../../hooks/requests/useGetLoanRequests";
+import { QUERY_KEY_FOR_LOAN } from "../../hooks/useGetLoan";
+import { TLoanWorthinessInputData } from "../../hooks/worthiness/useGetLoanWorthiness";
 import { useCurrentFileUploadUrl } from "hooks/useCurrentFileUploadUrl";
-import { QUERY_KEY_FOR_LOAN_ANALYTICS } from "../hooks/analytics/useGetLoanAnalytics";
+import { QUERY_KEY_FOR_LOAN_ANALYTICS } from "../../hooks/analytics/useGetLoanAnalytics";
 import { QUERY_KEY_FOR_APPROVAL_REQUESTS } from "features/core/workflows/hooks/useFetchApprovalRequests";
+import { FileUpload } from "components/FileUpload";
 
 export const NewLoan: React.FC<IModalProps> = ({ open, handleClose }) => {
   const queryClient = useQueryClient();
@@ -29,6 +35,7 @@ export const NewLoan: React.FC<IModalProps> = ({ open, handleClose }) => {
   const [form] = Form.useForm<TRequestForLoanData>();
   const { mutate, isLoading } = useRequestForLoan();
   const documentUrl = useCurrentFileUploadUrl("documentUrl");
+
   const [requiresForm, setRequiresForm] = useState(false);
   const handleSubmit = (data: TRequestForLoanData) => {
     if (requiresForm && !documentUrl) {
@@ -92,6 +99,7 @@ export const NewLoan: React.FC<IModalProps> = ({ open, handleClose }) => {
     setRequiresForm(val);
   };
   const [_, startTransition] = React.useTransition();
+
   return (
     <Modal
       open={open}
@@ -106,50 +114,90 @@ export const NewLoan: React.FC<IModalProps> = ({ open, handleClose }) => {
         onFinish={handleSubmit}
         requiredMark={false}
       >
-        <Form.Item rules={generalValidationRules} name="title" label="Title">
-          <Input className="w-full" placeholder="Title" />
-        </Form.Item>
-        <Form.Item
-          rules={[dateHasToBeGreaterThanCurrentDayRule]}
-          name="date"
-          label="Date"
-        >
-          <DatePicker className="w-full" />
-        </Form.Item>
-        <FormLoanTypeInput
-          Form={Form}
-          control={{ name: "typeId", label: "Type" }}
-        />
-        <FormLoanRepaymentPlanInput
-          Form={Form}
-          control={{ name: "paymentPlanId", label: "Payment Plan" }}
-          handleSelect={(_, plan) =>
-            setWorthinessInput((prev) => ({ ...prev, paymentPlanId: plan?.id }))
-          }
-          handleClear={() =>
-            setWorthinessInput((prev) => ({
-              ...prev,
-              paymentPlanId: undefined,
-            }))
-          }
-        />
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-x-4">
+          <Form.Item
+            rules={generalValidationRules}
+            name="loanType"
+            label="Loan Type"
+          >
+            <Select options={[]} />
+          </Form.Item>
 
-        <Form.Item rules={generalValidationRules} name="amount" label="Amount">
-          <InputNumber
-            className="w-full"
-            placeholder="Amount"
-            // TODO: Implement Debounce for this
-            onChange={(val: number | null) =>
-              startTransition(() =>
-                setWorthinessInput((prev) => ({ ...prev, amount: val ?? 0 }))
-              )
-            }
+          <Form.Item
+            rules={[dateHasToBeGreaterThanCurrentDayRule]}
+            name="date"
+            label="Date"
+          >
+            <DatePicker className="w-full" />
+          </Form.Item>
+        </div>
+        <div>
+          <Form.Item
+            rules={generalValidationRules}
+            name="amount"
+            label="Amount"
+          >
+            <InputNumber
+              className="w-full"
+              placeholder="Amount"
+              // TODO: Implement Debounce for this
+              onChange={(val: number | null) =>
+                startTransition(() =>
+                  setWorthinessInput((prev) => ({ ...prev, amount: val ?? 0 }))
+                )
+              }
+            />
+          </Form.Item>
+          <span className="text-sm mb-5 text-green-600">
+            Interest Rate = 5%
+          </span>
+        </div>
+
+        <div>
+          <Form.Item
+            name="payment_plan"
+            label="Payment Plan"
+            rules={generalValidationRulesOp}
+          >
+            <Select options={[]} />
+          </Form.Item>
+          <span className="text-sm mb-5 text-green-600 underline">
+            View Loan Calculator
+          </span>
+        </div>
+
+        <div>
+          <Form.Item
+            name="loanEligibility"
+            label="Loan Eligibility"
+            tooltip="This represent/show your eligibility of loan request "
+          >
+            <Input disabled />
+          </Form.Item>
+          <Tooltip
+            title="You are not eligible because you can only make loan request below
+              #000,000."
+          >
+            <span className="text-sm text-green-600 underline">See Reason</span>
+          </Tooltip>
+        </div>
+
+        <div className="my-3">
+          <h5 className="pb-2">Upload Document (optional)</h5>
+          <FileUpload
+            allowedFileTypes={[
+              "image/jpeg",
+              "image/png",
+              "image/jpg",
+              "application/pdf",
+              "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+            ]}
+            fileKey="documentUrl"
+            textToDisplay="Add Documents"
+            displayType="dotted-box"
           />
-        </Form.Item>
-        <LoanWorthiness
-          input={worthinessInput}
-          handleRequiresForm={handleRequiresForm}
-        />
+        </div>
+
         <Form.Item
           rules={generalValidationRulesOp}
           name="description"

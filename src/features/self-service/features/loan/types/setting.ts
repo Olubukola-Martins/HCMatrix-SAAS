@@ -31,3 +31,22 @@ interface CostCentre {
   updatedAt: string;
   deletedAt?: any;
 }
+
+// new
+export type LoanTabsActionProps =
+  | "approval-process"
+  | "loan-types"
+  | "eligibility-criteria"
+  | "configure-payment"
+  | "disbursement-setup";
+
+export interface AcceptSettingsAction {
+  setAction: (action: LoanTabsActionProps) => void;
+  action?: string;
+}
+
+export type TLoanTypeProps = {
+  id: number;
+  name: string;
+  label: string;
+};

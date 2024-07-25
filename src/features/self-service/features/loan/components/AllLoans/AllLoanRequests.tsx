@@ -1,11 +1,11 @@
 import { TableWithFocusType } from "components/table";
-import { ALL_LOAN_PAYMENT_TABLE_COLUMNS } from "./columns/allLoanPaymentColumn";
+import { EMPLOYEE_ALL_LOAN_TABLE_COLUMNS } from "./colomns";
 
-const AllLoanRepayments = () => {
-  const columns = ALL_LOAN_PAYMENT_TABLE_COLUMNS();
+const AllLoanRequests = () => {
+  const columns = EMPLOYEE_ALL_LOAN_TABLE_COLUMNS();
   return (
     <div>
-     <TableWithFocusType
+      <TableWithFocusType
         columns={columns}
         dataSource={[]}
         // loading={isLoading}
@@ -17,4 +17,4 @@ const AllLoanRepayments = () => {
   );
 };
 
-export default AllLoanRepayments;
+export default AllLoanRequests;

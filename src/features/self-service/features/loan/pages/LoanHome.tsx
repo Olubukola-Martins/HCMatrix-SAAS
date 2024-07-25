@@ -1,22 +1,22 @@
 import SelfServiceSubNav from "features/self-service/components/SelfServiceSubNav";
 import LoanOverview from "../components/LoanOverview";
-import EmployeeLoanRequests from "../components/EmployeeLoanRequests";
-import AllLoanRequests from "../components/AllLoanRequests";
-import LoanApprovalsContainer from "../components/LoanApprovalsContainer";
+import EmployeeLoanRequests from "../components/EmployeeLoanRequest/EmployeeLoanRequests";
 import { useState } from "react";
 import { Tabs } from "antd";
 import { PageIntro } from "components/layout/PageIntro";
 import PageSubHeader from "components/layout/PageSubHeader";
 import { appRoutes } from "config/router/paths";
 import { useNavigate } from "react-router-dom";
-import { NewLoan } from "../components/NewLoan";
-import EmployeeLoanRepayments from "../components/repayments/EmployeeLoanRepayments";
-import AllLoanRepayments from "../components/repayments/AllLoanRepayments";
-import { MakeRepayment } from "../components/MakeRepayment";
+import { NewLoan } from "../components/AllLoans/NewLoan";
+import EmployeeLoanRepayments from "../components/EmployeeLoanPayment/EmployeeLoanRepayments";
+import { MakeRepayment } from "../components/make_payment/MakeRepayment";
 import {
   canUserAccessComponent,
   useGetUserPermissions,
 } from "components/permission-restriction/PermissionRestrictor";
+import EmployeeLoanApprovals from "../components/EmployeeApprovals/EmployeeLoanApprovals";
+import AllLoanRequests from "../components/AllLoans/AllLoanRequests";
+import AllLoanRepayments from "../components/repayments/AllLoanRepayments";
 
 export type TLoanTabKey =
   | "Overview"
@@ -26,6 +26,7 @@ export type TLoanTabKey =
   | "All Repayments"
   | "All Loans";
 type TAction = "new-loan" | "make-repayment";
+
 const LoanHome = () => {
   const { userPermissions } = useGetUserPermissions();
   const [key, setKey] = useState<TLoanTabKey>("Overview");
@@ -62,7 +63,7 @@ const LoanHome = () => {
 
     {
       label: "My Approvals",
-      children: <LoanApprovalsContainer />,
+      children: <EmployeeLoanApprovals />,
       key: "My Approvals",
       hidden: false,
     },
@@ -77,7 +78,7 @@ const LoanHome = () => {
     },
     {
       label: "All Repayments",
-      children: <AllLoanRepayments />,
+      children: <AllLoanRepayments/>,
       key: "All Repayments",
       hidden: !canUserAccessComponent({
         userPermissions,

@@ -7,19 +7,19 @@ export const EMPLOYEE_PER_SHIFT_TABLE_COLUMNS =
   (): ColumnsType<shiftPerEmployeeProps> => [
     {
       title: "Employees",
-      dataIndex: "employee",
+      key: "employee",
       render: (_, val) => (
         <span className="capitalize">{getEmployeeFullName(val?.employee)}</span>
       ),
     },
     {
       title: "Tracked time",
-      dataIndex: "trackedTime",
+      key: "trackedTime",
       render: (_, val) => convertMinutesToHours(val?.trackedTime),
     },
     {
       title: "Supervisors/shift-in-charge",
-      dataIndex: "supervisor",
+      key: "supervisor",
       render: (_, val) => (
         <span className="capitalize">
           {val?.departmentHead?.firstName} {val?.departmentHead?.lastName}
@@ -28,7 +28,7 @@ export const EMPLOYEE_PER_SHIFT_TABLE_COLUMNS =
     },
     {
       title: "Shift Type",
-      dataIndex: "shiftType",
+      key: "shiftType",
       render: (_, val) => <span className="capitalize">{val?.shiftType}</span>,
     },
   ];

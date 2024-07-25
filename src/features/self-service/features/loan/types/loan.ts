@@ -89,3 +89,23 @@ interface Type {
   createdAt: string;
   updatedAt: string;
 }
+
+//=== New
+export interface AllLoanRequestProps {
+  loanId: string;
+  requestDate: string;
+  employeeName: {
+    name: string;
+  };
+  department: {
+    name: string;
+  };
+  loanType: string;
+  loanDate: string;
+  balance: number;
+  amount: number;
+  Disbursed: string;
+  status: string;
+}
+
+
