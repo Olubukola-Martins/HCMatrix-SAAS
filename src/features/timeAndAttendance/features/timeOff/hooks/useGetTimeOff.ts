@@ -14,6 +14,7 @@ const getData = async (props: {
   pagination?: IPaginationProps;
   status?: string;
   empUid: string;
+  policyId?: number;
 }): Promise<{ data: ITimeOffProps[]; total: number }> => {
   const limit = props.pagination?.limit ?? DEFAULT_PAGE_SIZE;
   const offset = props.pagination?.offset ?? 0;
@@ -30,6 +31,7 @@ const getData = async (props: {
       offset,
       status: props.status,
       empUid: props.empUid,
+      policyId: props.policyId,
     },
   };
 
@@ -51,16 +53,18 @@ const getData = async (props: {
 export const useGetTimeOff = (props?: {
   pagination?: IPaginationProps;
   status?: string;
+  policyId?: number;
 }) => {
   const { companyId, token, currentCompanyEmployeeDetails } = useApiAuth();
   const queryData = useQuery(
-    [QUERY_KEY_FOR_TIME_OFF, props?.pagination, props?.status],
+    [QUERY_KEY_FOR_TIME_OFF, props?.pagination, props?.status, props?.policyId],
     () =>
       getData({
         token,
         companyId,
         pagination: props?.pagination,
         status: props?.status,
+        policyId: props?.policyId,
         empUid: currentCompanyEmployeeDetails?.empUid || "",
       }),
     {
