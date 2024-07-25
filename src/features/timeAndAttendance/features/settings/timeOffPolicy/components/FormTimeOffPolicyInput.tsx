@@ -6,13 +6,15 @@ import {
   generalValidationRulesOp,
 } from "utils/formHelpers/validation";
 import { useGetTimeOffPolicy } from "../hooks/useGetTimeOffPolicy";
+import { ITimeOffPolicyRule } from "../types";
 
 export const FormTimeOffPolicyInput: React.FC<{
   Form: typeof Form;
   showLabel?: boolean;
   control?: { label: string; name: string; multiple?: boolean };
   optional?: boolean;
-}> = ({ Form, showLabel = true, control, optional = false }) => {
+  handleSelect?: (val: number, timeOff?: ITimeOffPolicyRule) => void;
+}> = ({ Form, showLabel = true, control, optional = false, handleSelect }) => {
   const [searchTerm, setSearchTerm] = useState<string>("");
   const debouncedSearchTerm: string = useDebounce<string>(searchTerm);
 
@@ -42,6 +44,10 @@ export const FormTimeOffPolicyInput: React.FC<{
         defaultActiveFirstOption={false}
         showArrow={false}
         filterOption={false}
+        onSelect={(val: number) => {
+          const timeOff = data?.data.find((item) => item.id === val);
+          handleSelect?.(val, timeOff);
+        }}
       >
         {isSuccess ? (
           data?.data.map((item) => (
@@ -58,4 +64,3 @@ export const FormTimeOffPolicyInput: React.FC<{
     </Form.Item>
   );
 };
-

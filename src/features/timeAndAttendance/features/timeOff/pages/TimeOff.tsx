@@ -12,7 +12,10 @@ import { usePagination } from "hooks/usePagination";
 import { useDeleteTimeAndAttendance } from "features/timeAndAttendance/hooks/useDeleteTimeAndAttendance";
 import { useHandleTimeAndAttendanceStatus } from "features/timeAndAttendance/hooks/useHandleTimeAndAttendanceStatus";
 import { TableWithFocusType } from "components/table";
-import { useGetUserPermissions } from "components/permission-restriction/PermissionRestrictor";
+import {
+  useGetUserPermissions,
+  canUserAccessComponent,
+} from "components/permission-restriction/PermissionRestrictor";
 import { MyRequest } from "../components/MyRequest";
 import { TimeOffApproval } from "../components/TimeOffApproval";
 
@@ -137,10 +140,10 @@ export const TimeOff = () => {
       key: "2",
       label: `Timeoff Approvals`,
       children: <TimeOffApproval />,
-      // hidden: !canUserAccessComponent({
-      //   userPermissions,
-      //   requiredPermissions: ["view-all-swap-shif-requests"],
-      // }),
+      hidden: !canUserAccessComponent({
+        userPermissions,
+        requiredPermissions: ["view-all-time-off-requests"],
+      }),
     },
   ];
 
@@ -172,39 +175,6 @@ export const TimeOff = () => {
             </div>
           }
         />
-
-        {/* <div className="flex items-center justify-between">
-          <div className="flex items-center gap-x-3">
-            <Select
-              options={[
-                { value: "pending", label: "Pending" },
-                { value: "approved", label: "Approved" },
-                { value: "rejected", label: "Rejected" },
-                { value: "canceled", label: "Canceled" },
-              ]}
-              className="w-[7.8rem]"
-              placeholder="Status"
-              onChange={(val) => setStatus(val)}
-              allowClear
-            />
-            <AppButton
-              label="Add Time off"
-              handleClick={() => {
-                setNewTimeOffModal(true);
-                settimeOffId(undefined);
-              }}
-            />
-          </div>
-        </div> */}
-        {/*         
-        <TableWithFocusType
-          className="mt-3"
-          columns={columns}
-          dataSource={data?.data}
-          loading={isLoading}
-          pagination={{ ...pagination, total: data?.total }}
-          onChange={onChange}
-        /> */}
       </div>
     </>
   );

@@ -9,8 +9,9 @@ import { useState } from "react";
 export const MyRequest = () => {
   const columns = EMPLOYEE_TIMEOFF_REQUEST_TABLE_COLUMNS();
   const [status, setStatus] = useState<string>();
+  const [policyId, setPolicyId] = useState<number>();
   const { pagination, onChange } = usePagination({ pageSize: 10 });
-  const { data, isLoading } = useGetTimeOff({ pagination, status });
+  const { data, isLoading } = useGetTimeOff({ pagination, status, policyId });
 
   return (
     <div>
@@ -27,7 +28,11 @@ export const MyRequest = () => {
           allowClear
           className="w-40 -mt-6"
         />
-        <FormTimeOffPolicyInput Form={Form} control={{ label: "", name: "" }} />
+        <FormTimeOffPolicyInput
+          Form={Form}
+          control={{ label: "", name: "" }}
+          handleSelect={(_, val) => setPolicyId(val?.id)}
+        />
       </div>
 
       <TableWithFocusType
