@@ -19,6 +19,7 @@ import ProgressBar from "features/home/components/ProgressBar";
 import WalletOverviewDetailsCard from "../components/wallet/overview/cards/WalletOverviewDetailsCard";
 import { SimpleCard } from "components/cards/SimpleCard";
 import SimpleCardList from "components/cards/SimpleCardList";
+import { useRetrievePayrollWallets } from "../hooks/wallet/useRetrievePayrollWallets";
 
 const outerStyle =
   "group  transition ease-in-out duration-500 cursor-pointer shadow-md col-span-3 md:col-span-1 rounded-xl flex flex-col gap-2 w-full  p-3 bg-card";
@@ -37,6 +38,7 @@ const PayrollHome = () => {
   const { userPermissions } = useGetUserPermissions();
   const { data: pendingSetup, isLoading: pendingSetupLoading } =
     useGetPayrollPendingSetup();
+    const { data:wallets, isLoading:isLoadingWallets } = useRetrievePayrollWallets();
   return (
     <>
       <PayrollSubNav />
@@ -106,16 +108,8 @@ const PayrollHome = () => {
             />
             <>
               <WalletOverviewDetailsCard
-                data={[
-                  {
-                    accountNo: "1234567890",
-                    bankName: "HDFC Bank",
-                  },
-                  {
-                    accountNo: "1234567890",
-                    bankName: "Fidelity Bank",
-                  },
-                ]}
+                data={wallets}
+                isLoading={isLoadingWallets}
                 className="border rounded-md p-4 bg-card shadow-md text-sm"
               />
               <SimpleCardList
