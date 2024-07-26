@@ -201,7 +201,7 @@ export const EditMyProfile = ({ open, handleClose, employee }: IProps) => {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-x-4 mt-2">
-          <FormDesignationInput Form={Form} />
+          <FormDesignationInput Form={Form} disabled />
 
           <FormRoleInput Form={Form} disabled={authEmployee?.isOwner} />
           <Form.Item
