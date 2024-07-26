@@ -4,6 +4,7 @@ import WalletTransactionContainer from "./transactions/WalletTransactionContaine
 import WalletSettingsContainer from "./settings/WalletSettingsContainer";
 import { WalletTopUpBtn } from "./topup/WalletTopUp";
 import { useState } from "react";
+import { useRetrievePayrollWallets } from "features/payroll/hooks/wallet/useRetrievePayrollWallets";
 type TWalletContainerTabKey = "Overview" | "Transactions" | "Settings";
 const PayrollWalletContainer = () => {
   const tabItems = [
@@ -29,6 +30,7 @@ const PayrollWalletContainer = () => {
   ];
   const [selectedKey, setSelectedKey] =
     useState<TWalletContainerTabKey>("Overview");
+    const { data:wallets, isLoading:isLoadingWallets } = useRetrievePayrollWallets();
   return (
     <div>
       <Tabs
@@ -37,7 +39,7 @@ const PayrollWalletContainer = () => {
         tabBarExtraContent={
           <div className="flex justify-end">
             {["Transactions", "Settings"].includes(selectedKey) ? (
-              <WalletTopUpBtn />
+              <WalletTopUpBtn data={wallets} isLoading={isLoadingWallets} />
             ) : null}
           </div>
         }

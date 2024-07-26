@@ -4,6 +4,8 @@ import React, { useState } from "react";
 import { IModalProps } from "types";
 import { IDivProps } from "types/html";
 import { ViewOtherPaymentOptions } from "./ViewOtherPaymentOptions";
+import { useRetrievePayrollWallets } from "features/payroll/hooks/wallet/useRetrievePayrollWallets";
+import { TPayrollWallet } from "features/payroll/types/wallet";
 
 type IProps = IModalProps &
   Pick<IDivProps, "className"> & {
@@ -87,26 +89,22 @@ export const WalletTopUpModal: React.FC<IProps> = ({
 };
 export const WalletTopUpBtn: React.FC<{
   buttonProps?: Omit<IAppBtnProps, "handleClick">;
-}> = ({ buttonProps = { label: "Top Up" } }) => {
+  data?:TPayrollWallet[];
+  isLoading?:boolean;
+}> = ({ buttonProps = { label: "Top Up" }, isLoading, data }) => {
   const [open, setOpen] = useState(false);
-  //   TODO: Fetch data n populate in modal
+
   return (
     <>
       <WalletTopUpModal
         open={open}
+        isLoading={isLoading}
         handleClose={() => setOpen(false)}
-        data={[
-          {
-            accountNo: "1234567890",
-            bankName: "HDFC Bank",
-            channel: "HDFC ",
-          },
-          {
-            accountNo: "1234567890",
-            bankName: "Fidelity Bank",
-            channel: "Fidelity ",
-          },
-        ]}
+        data={data?.map(({accountNumber, bankName, provider}) => ({
+          accountNo: accountNumber,
+          bankName,
+          channel: provider,
+        }))}
       />
       <AppButton {...buttonProps} handleClick={() => setOpen(true)} />
     </>

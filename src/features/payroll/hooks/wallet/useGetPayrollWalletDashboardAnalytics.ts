@@ -17,7 +17,7 @@ type TParams = {
     | "histogram"
     | "area-graph"
     | "spider-chart";
-  year?: number;
+  year?: string;
 };
 const getData = async (props: {
   auth: ICurrentCompany;

@@ -2,7 +2,6 @@ import { useQueryClient } from "react-query";
 import { Form, Modal, Select } from "antd";
 import { IModalProps } from "types";
 import { openNotification } from "utils/notifications";
-import { QUERY_KEY_FOR_WALLET_DIRECTORS_COMPLIANCE } from "features/payroll/hooks/compliance/director/useGetDirectorsCompliance";
 import { textInputValidationRules } from "utils/formHelpers/validation";
 import { FormFileInput } from "components/generalFormInputs/FormFileInput";
 import { AppButton } from "components/button/AppButton";
@@ -14,6 +13,7 @@ import {
 import { useSaveDocumentsCompliance } from "features/payroll/hooks/compliance/document/useSaveDocumentsCompliance";
 import { TFormFileInput } from "types/files";
 import { WALLET_COMPLIANCE_DOCUMENT_TYPES } from "features/payroll/constants";
+import { QUERY_KEY_FOR_WALLET_DOCUMENTS_COMPLIANCE } from "features/payroll/hooks/compliance/document/useGetDocumentsCompliance";
 
 type TFormData = { document: TFormFileInput; type: TComplianceDocumentType };
 export const SaveComplianceDocument: React.FC<
@@ -66,7 +66,7 @@ export const SaveComplianceDocument: React.FC<
           handleClose();
 
           queryClient.invalidateQueries({
-            queryKey: [QUERY_KEY_FOR_WALLET_DIRECTORS_COMPLIANCE],
+            queryKey: [QUERY_KEY_FOR_WALLET_DOCUMENTS_COMPLIANCE],
           });
         },
       }

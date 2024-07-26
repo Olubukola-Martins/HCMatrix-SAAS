@@ -9,6 +9,8 @@ import {
 } from "./SaveComplianceDocument";
 import ProgressBar from "features/home/components/ProgressBar";
 import { AiOutlineEdit } from "react-icons/ai";
+import { getAppropriateColorForStatus } from "utils/colorHelpers/getAppropriateColorForStatus";
+
 
 type TAction = "edit";
 const WalletComplianceDocuments: React.FC = () => {
@@ -33,9 +35,8 @@ const WalletComplianceDocuments: React.FC = () => {
 
       <Skeleton loading={isLoading} active paragraph={{ rows: 10 }}>
         <div className="space-y-6">
-          <div className="space-y-s">
+          {data && data?.length > 0 ?<div className="space-y-4">
             <p>Approval Status</p>
-            {data ? (
               <ProgressBar
                 width={`${
                   (data?.filter((item) => item.approvalStatus === "approved")
@@ -44,8 +45,7 @@ const WalletComplianceDocuments: React.FC = () => {
                   100
                 }%`}
               />
-            ) : null}
-          </div>
+          </div> : null}
           <EmptyDataWrapper
             emptyProps={{ description: "No Documents" }}
             isEmpty={!(data && data?.length > 0)}
@@ -59,13 +59,13 @@ const WalletComplianceDocuments: React.FC = () => {
                         <div className="space-y-1">
                           <p className="font-normal">
                             Name:
-                            <span className="text-sm ml-1 font-semibold capitalize">
+                            <a href={documentUrl} className="hover:underline text-caramel"><span className="text-sm ml-1 font-semibold capitalize">
                               {type}
-                            </span>
+                            </span></a>
                           </p>
                           <p className="font-normal">
-                            Position:
-                            <span className="text-sm ml-1 font-semibold capitalize">
+                            Status:
+                            <span className="text-sm ml-1 font-semibold capitalize" style={{color:getAppropriateColorForStatus(approvalStatus)}}>
                               {approvalStatus}
                             </span>
                           </p>

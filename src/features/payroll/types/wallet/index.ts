@@ -1,3 +1,5 @@
+import { TPayrollGraphAnalyticsItem } from "../payroll";
+
 export type TPayrollWalletPaymentProvider = "Korapay" | "Providus";
 export type TWalletTransactionStatus = "completed" | "pending";
 export type TWalletTransactionType = "credit" | "debit";
@@ -32,7 +34,8 @@ export type TPayrollWalletDashboardAnalytics = {
   graphData: GraphData;
 };
 
-type GraphData = Record<string, number>;
+type GraphData = TPayrollGraphAnalyticsItem;
+// type GraphData = Record<string, number>;
 
 interface Balance {
   providus: number;

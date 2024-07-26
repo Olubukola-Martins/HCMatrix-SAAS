@@ -1,5 +1,4 @@
 import { DatePicker, Select } from "antd";
-import { useState } from "react";
 import { TPayrollGraphAnalyticsItemType } from "features/payroll/types/payroll";
 import { useGetPayrollGraphAnalytics } from "features/payroll/hooks/payroll/analytics/useGetPayrollGraphAnalytics";
 import {
@@ -7,9 +6,9 @@ import {
   selectPayrollGraphAnalyticsData,
 } from "features/payroll/utils/parsePayrollGraphData";
 import dayjs from "dayjs";
-import { CURRENT_YEAR } from "constants/dateFormats";
 import PayrollGraphsContainer from "../../graphs/PayrollGraphsContainer";
 import { IDivProps } from "types/html";
+import { TPayrollWalletDashboardAnalytics } from "features/payroll/types/wallet";
 
 const CHART_ITEMS: TPayrollGraphAnalyticsItemType[] = [
   "bar-chart",
@@ -22,20 +21,27 @@ const CHART_ITEMS: TPayrollGraphAnalyticsItemType[] = [
   "spider-chart",
 ];
 
-type IProps = Pick<IDivProps, "className">;
+type IProps = Pick<IDivProps, "className">&{
+  setChartItem: React.Dispatch<React.SetStateAction<TPayrollGraphAnalyticsItemType>>,
+  setYear: React.Dispatch<React.SetStateAction<string>>,
+  year:string, 
+  chartItem:TPayrollGraphAnalyticsItemType,
+  isLoading?:boolean
+  data?: TPayrollWalletDashboardAnalytics['graphData']
+};
 
 const WalletOverviewBalanceGraph: React.FC<IProps> = ({
   className = "flex flex-col gap-4",
+  year, 
+  setYear, 
+  chartItem, 
+  setChartItem,
+  data, 
+  isLoading
 }) => {
-  const [chartItem, setChartItem] = useState<TPayrollGraphAnalyticsItemType>(
-    CHART_ITEMS[0]
-  );
+ 
 
-  const [year, setYear] = useState<string>(CURRENT_YEAR);
-  const { data, isLoading } = useGetPayrollGraphAnalytics({
-    type: chartItem,
-    year,
-  });
+
 
   const parseAnalyticData = parsePayrollGraphAnalyticsData({ chartItem, data });
   const analyticsData = selectPayrollGraphAnalyticsData(

@@ -2,10 +2,12 @@ import { Skeleton } from "antd";
 import React from "react";
 import { IDivProps } from "types/html";
 import { WalletTopUpBtn } from "../../topup/WalletTopUp";
+import { TPayrollWallet } from "features/payroll/types/wallet";
+import { EmptyDataWrapper } from "components/data/EmptyDataWrapper";
 
 type IProps = Pick<IDivProps, "className"> & {
   isLoading?: boolean;
-  data?: { accountNo: string; bankName: string }[];
+  data?: TPayrollWallet[];
   showActions?: boolean;
 };
 const WalletOverviewDetailsCard: React.FC<IProps> = ({
@@ -20,7 +22,9 @@ const WalletOverviewDetailsCard: React.FC<IProps> = ({
         <>
           <div className="flex flex-col py-3 items-start">
             <p className="text-base font-semibold mb-2 capitalize">{`Wallet Details`}</p>
-            {data?.map(({ accountNo, bankName }, i, accounts) => (
+           <EmptyDataWrapper isEmpty={!(data && data?.length > 0)} emptyProps={{description: "No wallets are setup!"}}>
+            <>
+            {data?.map(({ accountNumber, bankName }, i, accounts) => (
               <div
                 key={i}
                 className={`flex flex-col w-full cursor-pointer ${
@@ -30,7 +34,7 @@ const WalletOverviewDetailsCard: React.FC<IProps> = ({
                 <p className="font-normal">
                   Account Number:
                   <span className="text-sm ml-1 font-semibold capitalize">
-                    {accountNo}
+                    {accountNumber}
                   </span>
                 </p>
                 <p className="font-normal">
@@ -49,9 +53,12 @@ const WalletOverviewDetailsCard: React.FC<IProps> = ({
                     label: "Top Up",
                     variant: "transparent",
                   }}
+                  data={data}
+                  isLoading={isLoading}
                 />
               </div>
-            ) : null}
+            ) : null}</>
+           </EmptyDataWrapper>
           </div>
         </>
       </Skeleton>
