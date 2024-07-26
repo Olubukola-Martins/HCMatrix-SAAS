@@ -7,7 +7,9 @@ import {
   WALLET_TRANSACTION_STATUSES,
   WALLET_TRANSACTION_TYPES,
 } from "features/payroll/constants";
+import { Dayjs } from "dayjs";
 
+type FormData = Pick<TWalletTransactionFilterProps, 'status' | 'type'> & {date:[Dayjs, Dayjs]}
 interface IProps extends IModalProps {
   handleFilter: (props: TWalletTransactionFilterProps) => void;
 }
@@ -17,9 +19,16 @@ const FilterWalletTransactions = ({
   open,
   handleFilter,
 }: IProps) => {
-  const [form] = Form.useForm<TWalletTransactionFilterProps>();
-  const handleSubmit = (data: TWalletTransactionFilterProps) => {
-    handleFilter(data);
+  const [form] = Form.useForm<FormData>();
+  const handleSubmit = ({status, type, date}: FormData) => {
+    handleFilter({
+      status, 
+      type,
+      date: {
+        from: date?.[0].toString(),
+        to: date?.[1].toString(),
+      }
+    });
   };
   return (
     <Drawer open={open} onClose={() => handleClose()} title="Filter">

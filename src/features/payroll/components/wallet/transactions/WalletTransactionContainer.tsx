@@ -1,7 +1,8 @@
 import React from "react";
 import { WalletTransactionsTable } from "./WalletTransactionsTable";
 
-const WalletTransactionContainer = () => {
+const WalletTransactionContainer:React.FC = () => {
+  
   return (
     <div>
       <WalletTransactionsTable />

@@ -12,6 +12,7 @@ import { WALLET_TRANSACTION_TABLE_COLUMNS } from "./columns";
 
 import { ViewWalletTransaction } from "./ViewWalletTransaction";
 import FilterWalletTransactions from "./FilterWalletTransactions";
+import { useGetPayrollWalletTransactions } from "features/payroll/hooks/wallet/transaction/useGetPayrollWalletTransactions";
 
 export const WalletTransactionsTable: React.FC = () => {
   const [filter, setFilter] = useState<TWalletTransactionFilterProps>({});
@@ -26,6 +27,7 @@ export const WalletTransactionsTable: React.FC = () => {
   };
 
   const { pagination, onChange } = usePagination();
+  const {data,isLoading} = useGetPayrollWalletTransactions(filter);
 
   const columns: ColumnsType<TWalletTransaction> =
     WALLET_TRANSACTION_TABLE_COLUMNS(handleAction);
@@ -64,19 +66,9 @@ export const WalletTransactionsTable: React.FC = () => {
       <Table
         columns={selectedColumns}
         size="small"
-        dataSource={[
-          {
-            status: "completed",
-            type: "credit",
-            amount: 1000,
-            balance: 1000,
-            createdAt: "2021-12-01T00:00:00.000Z",
-            narration: "credit",
-            updatedAt: "2021-12-01T00:00:00.000Z",
-          },
-        ]}
+        dataSource={data?.data}
         loading={false}
-        pagination={{ ...pagination, total: 0 }}
+        pagination={{ ...pagination, total: data?.total }}
         onChange={onChange}
       />
     </div>
