@@ -103,7 +103,7 @@ export const EmployeeOverviewCard: React.FC<IProps> = ({
                             className="cursor-pointer hover:text-caramel"
                             onClick={handleActivate}
                           >
-                            Enable User
+                            Enable User ffgfgf
                           </li>
                           <li
                             className="cursor-pointer hover:text-caramel"
