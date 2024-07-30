@@ -128,6 +128,7 @@ export const appRoutes = {
   gradeCategorySettings: `/settings/grade_categories`,
   probationPolicySettings: `/settings/probation-policy`,
   resignationPolicySettings: `/settings/resignation-policy`,
+  twoFactorAuthentication: `/settings/two-factor-authentication`,
 
   // Billing routes
   billingStatement: `/statement`,
