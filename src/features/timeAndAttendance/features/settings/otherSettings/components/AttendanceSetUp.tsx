@@ -21,6 +21,8 @@ export const AttendanceSetUp = () => {
   const { mutate, isLoading: isLoadingPost } = useCreateOtherSettings();
   const queryClient = useQueryClient();
 
+  console.log(data);
+
   useEffect(() => {
     if (isSuccess && data) {
       form.setFieldsValue({
@@ -29,6 +31,8 @@ export const AttendanceSetUp = () => {
           data.overtime_confirmation_workflow,
           10
         ),
+        timeOffRequestWorkflowId: parseInt(data.time_off_request_workflow, 10),
+
         enforceGeoFencing: data.enforce_geo_fencing === "1" ? true : false,
         enforceStrictDistance:
           data.enforce_strict_distance === "1" ? true : false,
@@ -183,6 +187,16 @@ export const AttendanceSetUp = () => {
                 allowClear
               />
             </Form.Item>
+          </div>
+
+          <div className={`${formWrapStyle}`}>
+            <FormWorkflowInput
+              Form={Form}
+              control={{
+                label: "Select time-off workflow",
+                name: "timeOffRequestWorkflowId",
+              }}
+            />
           </div>
 
           <div className="flex justify-end my-2">

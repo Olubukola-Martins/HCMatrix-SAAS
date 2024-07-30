@@ -50,7 +50,7 @@ const getData = async (props: {
 
   return ans;
 };
-export const useGetTimeOff = (props?: {
+export const useGetAllTimeOffRequest = (props?: {
   pagination?: IPaginationProps;
   status?: string;
   policyId?: number;
