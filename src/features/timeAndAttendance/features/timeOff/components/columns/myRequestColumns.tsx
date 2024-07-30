@@ -3,7 +3,7 @@ import { IColumnsProps, ITimeOffProps } from "../../types";
 import { Dropdown, Menu, Popconfirm } from "antd";
 
 export const EMPLOYEE_TIMEOFF_REQUEST_TABLE_COLUMNS = ({
-  requestType,
+  handleDelete,
   approvalColumn,
 }: IColumnsProps): ColumnsType<ITimeOffProps> => [
   {
@@ -51,7 +51,7 @@ export const EMPLOYEE_TIMEOFF_REQUEST_TABLE_COLUMNS = ({
                 <Popconfirm
                   title={`Cancel ${val.policy?.title}`}
                   onConfirm={() =>
-                    requestType && requestType(val.id as number, "canceled")
+                    handleDelete && handleDelete(val.id as number)
                   }
                 >
                   Cancel

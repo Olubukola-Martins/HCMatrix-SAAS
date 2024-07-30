@@ -6,7 +6,7 @@ import { ITimeOffProps } from "../types";
 import { IPaginationProps } from "types";
 import { DEFAULT_PAGE_SIZE } from "constants/general";
 
-export const QUERY_KEY_FOR_TIME_OFF = "timeOff";
+export const QUERY_KEY_FOR_TIME_OFF = "TIME_OFF_FOR_APPROVAL";
 
 const getData = async (props: {
   token: string;
@@ -19,7 +19,7 @@ const getData = async (props: {
   const limit = props.pagination?.limit ?? DEFAULT_PAGE_SIZE;
   const offset = props.pagination?.offset ?? 0;
 
-  const url = `${MICROSERVICE_ENDPOINTS.TIME_AND_ATTENDANCE}/time-off-requests/mine`;
+  const url = `${MICROSERVICE_ENDPOINTS.TIME_AND_ATTENDANCE}/workflow/approval/request/time-off`;
   const config = {
     headers: {
       Accept: "application/json",
