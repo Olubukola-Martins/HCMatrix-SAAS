@@ -1,6 +1,7 @@
 import { ColumnsType } from "antd/es/table";
 import { IColumnsProps, ITimeOffProps } from "../../types";
 import { Dropdown, Menu, Popconfirm } from "antd";
+import { getAppropriateColorForStatus } from "utils/colorHelpers/getAppropriateColorForStatus";
 
 export const EMPLOYEE_TIMEOFF_REQUEST_TABLE_COLUMNS = ({
   handleDelete,
@@ -30,6 +31,19 @@ export const EMPLOYEE_TIMEOFF_REQUEST_TABLE_COLUMNS = ({
     title: "Status",
     dataIndex: "status",
     key: "status",
+    render: (_, item) => {
+      if (!item || !item.status) {
+        return null;
+      }
+      return (
+        <span
+          style={{ color: getAppropriateColorForStatus(item.status) }}
+          className="capitalize"
+        >
+          {item.status}
+        </span>
+      );
+    },
   },
   {
     title: "Reasons",

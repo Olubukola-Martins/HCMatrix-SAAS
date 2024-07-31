@@ -5,6 +5,7 @@ import { ColumnsType } from "antd/es/table";
 import { ITimeOffProps } from "../types";
 import { usePagination } from "hooks/usePagination";
 import { getEmployeeFullName } from "features/core/employees/utils/getEmployeeFullName";
+import { getAppropriateColorForStatus } from "utils/colorHelpers/getAppropriateColorForStatus";
 
 export const AllTimeOffRequest = () => {
   const [status, setStatus] = useState<string>();
@@ -41,9 +42,22 @@ export const AllTimeOffRequest = () => {
       key: "time",
     },
     {
-      title: "Status",
-      dataIndex: "status",
-      key: "status",
+        title: "Status",
+        dataIndex: "status",
+        key: "status",
+        render: (_, item) => {
+            if (!item || !item.status) {
+                return null;
+            }
+            return (
+                <span
+                    style={{ color: getAppropriateColorForStatus(item.status) }}
+                    className="capitalize"
+                >
+                    {item.status}
+                </span>
+            );
+        },
     },
     {
       title: "Reasons",
@@ -54,6 +68,8 @@ export const AllTimeOffRequest = () => {
 
   return (
     <div>
+
+
       <TableWithFocusType
         className="mt-3"
         columns={columns}

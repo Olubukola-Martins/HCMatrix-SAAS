@@ -6,7 +6,7 @@ import { ITimeOffProps } from "../types";
 import { IPaginationProps } from "types";
 import { DEFAULT_PAGE_SIZE } from "constants/general";
 
-export const QUERY_KEY_FOR_TIME_OFF = "timeOff";
+export const QUERY_KEY_FOR_TIME_OFF = "GET_MY_TIME_Off";
 
 const getData = async (props: {
   token: string;
@@ -15,6 +15,7 @@ const getData = async (props: {
   status?: string;
   empUid: string;
   policyId?: number;
+  date?: string | null;
 }): Promise<{ data: ITimeOffProps[]; total: number }> => {
   const limit = props.pagination?.limit ?? DEFAULT_PAGE_SIZE;
   const offset = props.pagination?.offset ?? 0;
@@ -32,17 +33,14 @@ const getData = async (props: {
       status: props.status,
       empUid: props.empUid,
       policyId: props.policyId,
+      date: props.date,
     },
   };
 
   const res = await axios.get(url, config);
-
   const fetchedData = res.data.data;
-
   const result = fetchedData.result;
-
   const data: ITimeOffProps[] = result;
-
   const ans = {
     data,
     total: fetchedData.totalCount,
@@ -54,10 +52,17 @@ export const useGetTimeOff = (props?: {
   pagination?: IPaginationProps;
   status?: string;
   policyId?: number;
+  date?: string | null;
 }) => {
   const { companyId, token, currentCompanyEmployeeDetails } = useApiAuth();
   const queryData = useQuery(
-    [QUERY_KEY_FOR_TIME_OFF, props?.pagination, props?.status, props?.policyId],
+    [
+      QUERY_KEY_FOR_TIME_OFF,
+      props?.pagination,
+      props?.status,
+      props?.policyId,
+      props?.date,
+    ],
     () =>
       getData({
         token,
@@ -65,6 +70,7 @@ export const useGetTimeOff = (props?: {
         pagination: props?.pagination,
         status: props?.status,
         policyId: props?.policyId,
+        date: props?.date,
         empUid: currentCompanyEmployeeDetails?.empUid || "",
       }),
     {

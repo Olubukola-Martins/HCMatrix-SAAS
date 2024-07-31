@@ -83,7 +83,7 @@ export const AllRequest = () => {
           style={{ color: getAppropriateColorForStatus(item.status) }}
           className="capitalize"
         >
-          {item.status}{" "}
+          {item.status}
         </span>
       ),
     },

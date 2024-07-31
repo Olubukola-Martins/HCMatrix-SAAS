@@ -11,7 +11,9 @@ export const TimeOffApproval = () => {
   const [policyId, setPolicyId] = useState<number>();
   const { pagination, onChange } = usePagination({ pageSize: 10 });
   const { data, isLoading } = useGetAllTimeOffRequest();
-  const columns = EMPLOYEE_TIMEOFF_REQUEST_TABLE_COLUMNS({});
+  const columns = EMPLOYEE_TIMEOFF_REQUEST_TABLE_COLUMNS({
+    extraColumns: true,
+  });
   return (
     <div>
       <div className="flex items-center gap-4 mt-3">
