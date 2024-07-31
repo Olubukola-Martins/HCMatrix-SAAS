@@ -15,6 +15,9 @@ const SwapShiftRequest = () => {
   const [creteRequest, setCreteRequest] = useState(false);
   const { userPermissions } = useGetUserPermissions();
 
+  console.log(userPermissions.filter((item) => item.lastIndexOf("shif") != -1 ));
+  
+
   const tabItems = [
     {
       key: "1",
@@ -34,7 +37,7 @@ const SwapShiftRequest = () => {
       children: <AllRequest/>,
       hidden: !canUserAccessComponent({
         userPermissions,
-        requiredPermissions: ["view-all-swap-shif-requests"],
+        requiredPermissions: ["view-all-swap-shift-requests"],
       }),
     },
   ]
