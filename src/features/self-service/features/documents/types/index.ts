@@ -3,6 +3,7 @@ import { TFileListItem } from "./fileList";
 import { TFolderListItem } from "./folderList";
 import { TSingleFile } from "./singleFile";
 import { TSingleFolder } from "./singleFolder";
+import { TAssignedFiles } from "./assignedFiles";
 
 export {
   type TSingleFolder,
@@ -10,4 +11,5 @@ export {
   type TSingleFile,
   type TFileListItem,
   type TFileAccessListItem,
+  type TAssignedFiles,
 };
