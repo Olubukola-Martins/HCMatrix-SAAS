@@ -19,7 +19,7 @@ const getData = async (props: {
   const limit = props.pagination?.limit ?? DEFAULT_PAGE_SIZE;
   const offset = props.pagination?.offset ?? 0;
 
-  const url = `${MICROSERVICE_ENDPOINTS.UTILITY}/workflow/approval/request/time-off`;
+  const url = `${MICROSERVICE_ENDPOINTS.TIME_AND_ATTENDANCE}/time-off-requests`;
   const config = {
     headers: {
       Accept: "application/json",
@@ -37,8 +37,7 @@ const getData = async (props: {
 
   const res = await axios.get(url, config);
 
-  console.log("time-off",res);
-  
+  console.log("time-off", res);
 
   const fetchedData = res.data.data;
 

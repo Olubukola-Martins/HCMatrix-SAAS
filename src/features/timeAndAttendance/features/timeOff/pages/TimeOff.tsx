@@ -15,6 +15,7 @@ import {
 } from "components/permission-restriction/PermissionRestrictor";
 import { MyRequest } from "../components/MyRequest";
 import { TimeOffApproval } from "../components/TimeOffApproval";
+import { AllTimeOffRequest } from "../components/AllTimeOffRequest";
 
 export const TimeOff = () => {
   const [newTimeOffModal, setNewTimeOffModal] = useState(false);
@@ -129,6 +130,11 @@ export const TimeOff = () => {
       key: "2",
       label: `Timeoff Approvals`,
       children: <TimeOffApproval />,
+    },
+    {
+      key: "3",
+      label: `All Requests`,
+      children: <AllTimeOffRequest />,
       hidden: !canUserAccessComponent({
         userPermissions,
         requiredPermissions: ["view-all-time-off-requests"],

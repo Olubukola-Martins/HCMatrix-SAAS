@@ -7,14 +7,14 @@ import { useGetAllTimeOffRequest } from "../hooks/useGetAllTimeOffRequest";
 import { usePagination } from "hooks/usePagination";
 
 export const TimeOffApproval = () => {
-    const [status, setStatus] = useState<string>();
-    const [policyId, setPolicyId] = useState<number>();
-    const { pagination, onChange } = usePagination({ pageSize: 10 });
-    const {data, isLoading} = useGetAllTimeOffRequest()
-    const columns = EMPLOYEE_TIMEOFF_REQUEST_TABLE_COLUMNS({approvalColumn: true});
+  const [status, setStatus] = useState<string>();
+  const [policyId, setPolicyId] = useState<number>();
+  const { pagination, onChange } = usePagination({ pageSize: 10 });
+  const { data, isLoading } = useGetAllTimeOffRequest();
+  const columns = EMPLOYEE_TIMEOFF_REQUEST_TABLE_COLUMNS({});
   return (
     <div>
-       <div className="flex items-center gap-4 mt-3">
+      <div className="flex items-center gap-4 mt-3">
         <Select
           options={[
             { value: "pending", label: "Pending" },

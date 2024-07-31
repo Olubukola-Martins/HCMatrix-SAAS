@@ -4,7 +4,6 @@ import { Dropdown, Menu, Popconfirm } from "antd";
 
 export const EMPLOYEE_TIMEOFF_REQUEST_TABLE_COLUMNS = ({
   handleDelete,
-  approvalColumn,
 }: IColumnsProps): ColumnsType<ITimeOffProps> => [
   {
     title: "Time off Policy",
@@ -46,8 +45,7 @@ export const EMPLOYEE_TIMEOFF_REQUEST_TABLE_COLUMNS = ({
           trigger={["click"]}
           overlay={
             <Menu>
-              <Menu.Item key="1">Edit</Menu.Item>
-              <Menu.Item key="5">
+              <Menu.Item key="1">
                 <Popconfirm
                   title={`Cancel ${val.policy?.title}`}
                   onConfirm={() =>

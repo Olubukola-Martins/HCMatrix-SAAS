@@ -17,5 +17,4 @@ export interface ITimeOffProps {
 
 export type IColumnsProps = {
   handleDelete?: (id: number) => void;
-  approvalColumn: boolean;
 };
