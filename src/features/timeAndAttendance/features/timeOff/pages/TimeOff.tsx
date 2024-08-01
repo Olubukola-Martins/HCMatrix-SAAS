@@ -1,14 +1,9 @@
-import { useState } from "react";
 import { PageIntro } from "components/layout/PageIntro";
 import { appRoutes } from "config/router/paths";
 import { AppButton } from "components/button/AppButton";
-import { ColumnsType } from "antd/lib/table";
-import { Dropdown, Menu, Popconfirm, Select, Tabs } from "antd";
-import { ITimeOffProps } from "../types";
+import { Tabs } from "antd";
 import { AddTimeOff } from "../components/AddTimeOff";
 import { AttendanceSubToper } from "features/timeAndAttendance/components/AttendanceSubToper";
-import { QUERY_KEY_FOR_TIME_OFF, useGetTimeOff } from "../hooks/useGetTimeOff";
-import { usePagination } from "hooks/usePagination";
 import {
   useGetUserPermissions,
   canUserAccessComponent,
@@ -16,109 +11,11 @@ import {
 import { MyRequest } from "../components/MyRequest";
 import { TimeOffApproval } from "../components/TimeOffApproval";
 import { AllTimeOffRequest } from "../components/AllTimeOffRequest";
+import { useState } from "react";
 
 export const TimeOff = () => {
   const [newTimeOffModal, setNewTimeOffModal] = useState(false);
   const { userPermissions } = useGetUserPermissions();
-  const [status, setStatus] = useState<string>();
-  const [timeOffId, settimeOffId] = useState<number>();
-  const { pagination, onChange } = usePagination({ pageSize: 10 });
-  const { data, isLoading } = useGetTimeOff({ pagination, status });
-
-  const handleEdit = (id: number) => {
-    setNewTimeOffModal(true);
-    settimeOffId(id);
-  };
-
-  // const columns: ColumnsType<ITimeOffProps> = [
-  //   {
-  //     title: "Employee",
-  //     dataIndex: "employee",
-  //     render: (_, val) => (
-  //       <span>
-  //         {val?.employee?.firstName} {val?.employee?.lastName}
-  //       </span>
-  //     ),
-  //   },
-  //   {
-  //     title: "Time off Policy",
-  //     dataIndex: "timeOffPolicy",
-  //     render: (_, val) => <span>{val.policy?.title}</span>,
-  //   },
-  //   {
-  //     title: "Duration in hours",
-  //     dataIndex: "duration",
-  //     render: (_, val) => <span>{val.policy?.duration}</span>,
-  //   },
-  //   {
-  //     title: "Date",
-  //     dataIndex: "date",
-  //   },
-  //   {
-  //     title: "Time",
-  //     dataIndex: "time",
-  //   },
-  //   {
-  //     title: "Status",
-  //     dataIndex: "status",
-  //   },
-  //   {
-  //     title: "Comment",
-  //     dataIndex: "comment",
-  //   },
-  //   {
-  //     title: "Action",
-  //     render: (_, val) => (
-  //       <div>
-  //         <Dropdown
-  //           trigger={["click"]}
-  //           overlay={
-  //             <Menu>
-  //               <Menu.Item key="1" onClick={() => handleEdit(val.id as number)}>
-  //                 Edit
-  //               </Menu.Item>
-  //               <Menu.Item key="2">
-  //                 <Popconfirm
-  //                   title={`Delete ${val.policy?.title}`}
-  //                   onConfirm={() => removeData(val.id as number)}
-  //                 >
-  //                   Delete
-  //                 </Popconfirm>
-  //               </Menu.Item>
-  //               <Menu.Item key="5">
-  //                 <Popconfirm
-  //                   title={`Cancel ${val.policy?.title}`}
-  //                   onConfirm={() => requestType(val.id as number, "canceled")}
-  //                 >
-  //                   Cancel
-  //                 </Popconfirm>
-  //               </Menu.Item>
-  //               <Menu.Item key="3">
-  //                 <Popconfirm
-  //                   title={`Reject ${val.policy?.title}`}
-  //                   onConfirm={() => requestType(val.id as number, "rejected")}
-  //                 >
-  //                   Reject
-  //                 </Popconfirm>
-  //               </Menu.Item>
-  //               <Menu.Item key="4">
-  //                 <Popconfirm
-  //                   title={`Approve ${val.policy?.title}`}
-  //                   onConfirm={() => requestType(val.id as number, "approved")}
-  //                 >
-  //                   Approve
-  //                 </Popconfirm>
-  //               </Menu.Item>
-  //             </Menu>
-  //           }
-  //         >
-  //           <i className="ri-more-2-fill text-lg cursor-pointer"></i>
-  //         </Dropdown>
-  //       </div>
-  //     ),
-  //   },
-  // ];
-
   const tabItems = [
     {
       key: "1",
@@ -146,7 +43,6 @@ export const TimeOff = () => {
     <>
       <AttendanceSubToper active="time-off" />
       <AddTimeOff
-        id={timeOffId}
         open={newTimeOffModal}
         handleClose={() => setNewTimeOffModal(false)}
       />

@@ -5,12 +5,12 @@ import { TableWithFocusType } from "components/table";
 import { usePagination } from "hooks/usePagination";
 import dayjs from "dayjs";
 import { DEFAULT_DATE_FORMAT } from "constants/dateFormats";
-import { getEmployeeFullName } from "features/core/employees/utils/getEmployeeFullName";
 import { getAppropriateColorForStatus } from "utils/colorHelpers/getAppropriateColorForStatus";
 import { useState } from "react";
 import { ViewShiftSwapRequest } from "./ViewShiftSwapRequest";
 import { useGetMyShiftSwapRequest } from "../hooks/useGetMyShiftSwapRequest";
 import { CancelShiftSwapRequest } from "./CancelShiftSwapRequest";
+import { getEmployeeFullName } from "features/core/employees/utils/getEmployeeFullName";
 
 type TAction = "view" | "cancel";
 export const MyRequest = () => {
@@ -36,18 +36,6 @@ export const MyRequest = () => {
       render: (_, item) => (
         <span>{dayjs(item.createdAt).format(DEFAULT_DATE_FORMAT)}</span>
       ),
-    },
-    {
-      title: "Name",
-      key: "employee",
-      render: (_, item) => (
-        <span className="capitalize">{getEmployeeFullName(item.employee)}</span>
-      ),
-    },
-    {
-      title: "Department",
-      key: "department",
-      render: (_, item) => <span className="capitalize">{`N/A`}</span>,
     },
     {
       title: "Default Shift",

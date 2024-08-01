@@ -1,46 +1,169 @@
-import { Form, Select } from "antd";
+import { Space, Dropdown } from "antd";
+import { AiOutlineMore } from "react-icons/ai";
 import React, { useState } from "react";
-import { FormTimeOffPolicyInput } from "../../settings/timeOffPolicy/components/FormTimeOffPolicyInput";
-import { EMPLOYEE_TIMEOFF_REQUEST_TABLE_COLUMNS } from "./columns/myRequestColumns";
-import { TableWithFocusType } from "components/table";
-import { useGetAllTimeOffRequest } from "../hooks/useGetAllTimeOffRequest";
+import { ColumnsType } from "antd/lib/table";
+import { getAppropriateColorForStatus } from "utils/colorHelpers/getAppropriateColorForStatus";
 import { usePagination } from "hooks/usePagination";
+import { useApproveORReject } from "hooks/useApproveORReject";
+import { TApprovalRequest } from "features/core/workflows/types/approval-requests";
+import { useFetchApprovalRequests } from "features/core/workflows/hooks/useFetchApprovalRequests";
+import { useQueryClient } from "react-query";
+import { TableWithFocusType } from "components/table";
+import { ItemType } from "antd/es/menu/interface";
+import { getEmployeeFullName } from "features/core/employees/utils/getEmployeeFullName";
+import { QUERY_KEY_FOR_GENERAL_SHIFT_SWAP_APPROVAL } from "../../swapShiftRequest/hooks/useGetGeneralRequest";
+import { QUERY_KEY_FOR_MY_TIME_OFF_REQUEST } from "../hooks/useGetTimeOff";
 
-export const TimeOffApproval = () => {
-  const [status, setStatus] = useState<string>();
-  const [policyId, setPolicyId] = useState<number>();
-  const { pagination, onChange } = usePagination({ pageSize: 10 });
-  const { data, isLoading } = useGetAllTimeOffRequest();
-  const columns = EMPLOYEE_TIMEOFF_REQUEST_TABLE_COLUMNS({
-    extraColumns: true,
+export const TimeOffApproval: React.FC = () => {
+  const queryClient = useQueryClient();
+  const [request, setRequest] = useState<TApprovalRequest>();
+
+  const { pagination, onChange } = usePagination();
+  const { data, isFetching } = useFetchApprovalRequests({
+    pagination,
+    type: "time-off",
   });
+
+  console.log(data);
+  
+
+  const { confirmApprovalAction } = useApproveORReject({
+    handleSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: [QUERY_KEY_FOR_MY_TIME_OFF_REQUEST],
+      });
+      queryClient.invalidateQueries({
+        queryKey: [QUERY_KEY_FOR_GENERAL_SHIFT_SWAP_APPROVAL],
+      });
+    },
+  });
+
+  const generateMenuItems = (item: TApprovalRequest): ItemType[] => {
+    return [
+      {
+        hidden: item.shiftSwap?.status !== "pending",
+        onClick: () =>
+          confirmApprovalAction({
+            approvalStageId: item?.id,
+            status: "approved",
+            workflowType: !!item?.basicStageId ? "basic" : "advanced",
+            requires2FA: item?.advancedStage?.enableTwoFactorAuth,
+          }),
+        label: "Approve",
+        type: "item",
+        key: "approve",
+      },
+      {
+        hidden: item.shiftSwap?.status !== "pending",
+        onClick: () =>
+          confirmApprovalAction({
+            approvalStageId: item?.id,
+            status: "rejected",
+            workflowType: !!item?.basicStageId ? "basic" : "advanced",
+            requires2FA: item?.advancedStage?.enableTwoFactorAuth,
+          }),
+        label: "Reject",
+        type: "item",
+        key: "reject",
+      },
+    ]
+      .filter((item) => item.hidden !== true)
+      .map(
+        ({ key, label, onClick, type }): ItemType => ({
+          label,
+          onClick,
+          key,
+          type: type as "item",
+        })
+      );
+  };
+
+  const originalColumns: ColumnsType<TApprovalRequest> = [
+    {
+      title: "Name",
+      key: "employee",
+      render: (_, item) => (
+        <span className="capitalize">
+          {getEmployeeFullName(item?.timeOff?.employee)}
+        </span>
+      ),
+    },
+    {
+      title: "Time off Policy",
+      key: "timeOffPolicy",
+      render: (_, val) => <span>{val.timeOff?.policy?.title}</span>,
+    },
+    {
+      title: "Date",
+      key: "Date",
+      render: (_, item) => <span>{item.timeOff?.date}</span>,
+    },
+    {
+      title: "Duration in hours",
+      key: "duration",
+      render: (_, val) => <span>{val.timeOff?.policy?.duration}</span>,
+    },
+
+    {
+      title: "Start Time",
+      key: "time",
+      render: (_, val) => <span>{val.timeOff?.time}</span>,
+    },
+    {
+      title: "Department",
+      key: "department",
+      render: (_, item) => <span className="capitalize">{`N/A`}</span>,
+    },
+
+    {
+      title: "Status",
+      key: "status",
+      render: (_, item) => (
+        <span
+          style={{
+            color: getAppropriateColorForStatus(item?.timeOff?.status ?? ""),
+          }}
+          className="capitalize"
+        >
+          {item?.shiftSwap?.status}{" "}
+        </span>
+      ),
+    },
+
+    {
+      title: "Reasons",
+      key: "comment",
+      render: (_, val) => <span>{val.timeOff?.comment}</span>,
+    },
+
+    {
+      title: "Action",
+      key: "action",
+      width: 100,
+      render: (_, item) => (
+        <Space align="center" className="cursor-pointer">
+          <Dropdown
+            menu={{
+              items: generateMenuItems(item),
+            }}
+            trigger={["click"]}
+          >
+            <AiOutlineMore />
+          </Dropdown>
+        </Space>
+      ),
+    },
+  ];
+
+  const columns = originalColumns;
+
   return (
     <div>
-      <div className="flex items-center gap-4 mt-3">
-        <Select
-          options={[
-            { value: "pending", label: "Pending" },
-            { value: "approved", label: "Approved" },
-            { value: "rejected", label: "Rejected" },
-            { value: "canceled", label: "Canceled" },
-          ]}
-          placeholder="Status"
-          onChange={(val) => setStatus(val)}
-          allowClear
-          className="w-40 -mt-6"
-        />
-        <FormTimeOffPolicyInput
-          Form={Form}
-          control={{ label: "", name: "" }}
-          handleSelect={(_, val) => setPolicyId(val?.id)}
-        />
-      </div>
-
       <TableWithFocusType
-        className="mt-3"
         columns={columns}
+        size="small"
         dataSource={data?.data}
-        loading={isLoading}
+        loading={isFetching}
         pagination={{ ...pagination, total: data?.total }}
         onChange={onChange}
       />
