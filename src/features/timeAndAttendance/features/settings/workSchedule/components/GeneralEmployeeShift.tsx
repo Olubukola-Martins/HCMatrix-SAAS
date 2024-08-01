@@ -41,6 +41,7 @@ export const GeneralEmployeeShift = () => {
         },
       },
     });
+
   useEffect(() => {
     if (!categoriesData?.data) return;
     const transformedData =
