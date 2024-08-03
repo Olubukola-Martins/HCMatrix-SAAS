@@ -16,6 +16,7 @@ import { useGetActiveTrackingPolicy } from "../../settings/timeTrackingRules/hoo
 import { TIME_SHEET_TABLE_COLUMNS } from "../components/columns";
 import ExportTimeSheet from "../components/exports/ExportTimeSheet";
 import { TableWithFocusType } from "components/table";
+import { PermissionRestrictor } from "components/permission-restriction/PermissionRestrictor";
 
 const TimeSheet = () => {
   const [filterSheet, setFilterSheet] = useState(false);
@@ -71,25 +72,29 @@ const TimeSheet = () => {
 
         <div className="flex justify-between items-center mt-10 mb-7">
           <div className="flex items-center gap-x-5">
-            <Dropdown
-              trigger={["click"]}
-              disabled={policyData?.title === "Mandatory" ? true : false}
-              overlay={
-                <Menu>
-                  <Menu.Item key="1" onClick={() => setAddAttendance(true)}>
-                    Add Single
-                  </Menu.Item>
-                  <Menu.Item key="2" onClick={() => setAddMultiple(true)}>
-                    Add Bulk
-                  </Menu.Item>
-                </Menu>
-              }
+            <PermissionRestrictor
+              requiredPermissions={["upload-time-and-attendance-timesheet"]}
             >
-              <button className="button flex items-center gap-3">
-                <span>Upload Timesheet</span>
-                <i className="fa-solid fa-chevron-down"></i>
-              </button>
-            </Dropdown>
+              <Dropdown
+                trigger={["click"]}
+                disabled={policyData?.title === "Mandatory" ? true : false}
+                overlay={
+                  <Menu>
+                    <Menu.Item key="1" onClick={() => setAddAttendance(true)}>
+                      Add Single
+                    </Menu.Item>
+                    <Menu.Item key="2" onClick={() => setAddMultiple(true)}>
+                      Add Bulk
+                    </Menu.Item>
+                  </Menu>
+                }
+              >
+                <button className="button flex items-center gap-3">
+                  <span>Upload Timesheet</span>
+                  <i className="fa-solid fa-chevron-down"></i>
+                </button>
+              </Dropdown>
+            </PermissionRestrictor>
             {filterData !== undefined && (
               <AppButton
                 variant="transparent"
@@ -113,14 +118,18 @@ const TimeSheet = () => {
           </div>
         </div>
 
-        <TableWithFocusType
-          columns={columns}
-          dataSource={data?.data}
-          scroll={{ x: 500 }}
-          loading={isLoading}
-          pagination={{ ...pagination, total: data?.total }}
-          onChange={onChange}
-        />
+        <PermissionRestrictor
+          requiredPermissions={["view-all-time-and-attendance-timesheet"]}
+        >
+          <TableWithFocusType
+            columns={columns}
+            dataSource={data?.data}
+            scroll={{ x: 500 }}
+            loading={isLoading}
+            pagination={{ ...pagination, total: data?.total }}
+            onChange={onChange}
+          />
+        </PermissionRestrictor>
       </div>
     </>
   );

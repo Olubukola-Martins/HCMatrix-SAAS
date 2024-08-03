@@ -128,6 +128,7 @@ export const appRoutes = {
   gradeCategorySettings: `/settings/grade_categories`,
   probationPolicySettings: `/settings/probation-policy`,
   resignationPolicySettings: `/settings/resignation-policy`,
+  twoFactorAuthentication: `/settings/two-factor-authentication`,
 
   // Billing routes
   billingStatement: `/statement`,
@@ -215,6 +216,10 @@ export const appRoutes = {
   loans: `/self-service/loan`,
   loanRequests: `/self-service/loan-request`,
   loanPolicies: `/self-service/loan-policies`,
+  loanPaymentPlan: (id?: number) => ({
+    format: `/self-service/loan/:id/loan-payment-plan`,
+    path: `/self-service/loan/${id}/loan-payment-plan`,
+  }),
   vehicleBooking: `/self-service/vehicle-booking`,
   vehicleBookingSetting: `/self-service/vehicle-booking/setting`,
   vehicleDetails: (id?: number) => ({
@@ -293,6 +298,7 @@ export const appRoutes = {
   location: `/attendance/location`,
   otherSettings: `/attendance/other-settings`,
   breakSetUp: `/attendance/break-setup`,
+  swapShiftRequest: `/attendance/swap-shift-request`,
 
   // Leaning and development
   learningHome: `/learning/home`,

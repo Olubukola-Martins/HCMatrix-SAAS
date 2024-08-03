@@ -1,23 +1,17 @@
-import React from "react";
-import RepaymentTable from "../data-component/RepaymentTable";
-import { usePagination } from "hooks/usePagination";
-import { useGetLoanRepayments } from "../../hooks/repayment/useGetLoanRepayments";
+import { TableWithFocusType } from "components/table";
+import { ALL_LOAN_PAYMENT_TABLE_COLUMNS } from "./columns/allLoanPaymentColumn";
 
 const AllLoanRepayments = () => {
-  const { pagination, onChange } = usePagination();
-  const { data, isFetching } = useGetLoanRepayments({
-    type: undefined,
-    props: {
-      pagination,
-    },
-  });
+  const columns = ALL_LOAN_PAYMENT_TABLE_COLUMNS();
   return (
     <div>
-      <RepaymentTable
-        loading={isFetching}
-        data={data?.data}
-        total={data?.total}
-        onChange={onChange}
+     <TableWithFocusType
+        columns={columns}
+        dataSource={[]}
+        // loading={isLoading}
+        // pagination={{ ...pagination, total: data?.total }}
+        // onChange={onChange}
+        scroll={{ x: 500 }}
       />
     </div>
   );

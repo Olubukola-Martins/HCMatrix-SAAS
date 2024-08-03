@@ -12,7 +12,9 @@ export const FormDesignationInput: React.FC<{
   showLabel?: boolean;
   control?: { label: string; name: string | (string | number)[] };
   optional?: boolean;
-}> = ({ Form, showLabel = true, control, optional = false }) => {
+  disabled?: boolean;
+
+}> = ({ Form, showLabel = true, control, optional = false, disabled }) => {
   const [searchTerm, setSearchTerm] = useState<string>("");
   const debouncedSearchTerm: string = useDebounce<string>(searchTerm);
 
@@ -33,6 +35,7 @@ export const FormDesignationInput: React.FC<{
       rules={optional ? generalValidationRulesOp : generalValidationRules}
     >
       <Select
+        disabled={disabled}
         placeholder="Select designation"
         loading={isFetching} //TO DO : this should be added to all custom Fetch Form Inputs
         showSearch

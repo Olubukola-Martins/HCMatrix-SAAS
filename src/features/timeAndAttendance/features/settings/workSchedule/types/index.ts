@@ -43,14 +43,62 @@ export interface settingsBreakProps {
 export interface scheduleEmployeesShiftProps {
   id: number | undefined;
   employee?: TEmployeeProps;
-  shiftType: string;
+  shiftCategoryId: number;
   employeeIds: number[];
-  startDate: string;
-  endDate: string;
   isPermanent: boolean;
+  shiftCategory?: {
+    name: string;
+  };
 }
 
 export interface scheduleFilterProps {
   empUid?: string | undefined;
-  shiftTypes?: "morning" | "afternoon" | "night";
+  shiftTypes?: number;
+}
+
+export interface TWorkSheduleShiftCategory {
+  id: number;
+  name: string;
+  label: string;
+  isEnabled: boolean;
+  companyId: number;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface TWorkSheduleShiftSwapSetting {
+  id: number;
+  enableRotation: boolean;
+  rotationFrequency: number;
+  rotationFrequencyUnit: string;
+  enableShiftSwap: boolean;
+  swapWorkflowId: number;
+  swapEligibility: "same_department" | "same_designation" | "same_role" | "any";
+  companyId: number;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface TWorkSheduleShiftRotationSetting {
+  id: number;
+  enableRotation: boolean;
+  rotationFrequency: number;
+  rotationFrequencyUnit: "days";
+  enableShiftSwap: boolean;
+  swapWorkflowId: null;
+  swapEligibility: null;
+  companyId: number;
+  createdAt: string;
+  updatedAt: string;
+  pattern: Pattern[];
+  rotationPattern: { id: number; shiftFromId: number; shiftToId: number }[];
+}
+
+interface Pattern {
+  id: number;
+  shiftFromId: number;
+  shiftToId: number;
+  companyId: number;
+  createdAt: string;
+  updatedAt: string;
 }

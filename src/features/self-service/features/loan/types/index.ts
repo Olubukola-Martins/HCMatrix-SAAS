@@ -13,6 +13,7 @@ type TLoanType = {
   createdAt: string;
   updatedAt: string;
 };
+
 type TPaymentPlan = {
   id: number;
   name: string;
