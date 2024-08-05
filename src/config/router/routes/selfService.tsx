@@ -60,7 +60,7 @@ export const selfServiceRoutes = (props: TAppPageDataFnProps): TRouteData[] => {
       path: appRoutes.selfServiceHome,
       isSearchable: true,
       title: "My Self Service",
-      hidden: !isUserLicensed,
+      hidden: false,
     },
     {
       element: <PayslipsTransactionsPage />,
