@@ -42,6 +42,9 @@ export const GeneralEmployeeShift = () => {
       },
     });
 
+    console.log("categoriesData",categoriesData?.data);
+    
+
   useEffect(() => {
     if (!categoriesData?.data) return;
     const transformedData =
@@ -61,16 +64,14 @@ export const GeneralEmployeeShift = () => {
       ) ?? [];
     setTheInitialFormValues(transformedData);
   }, [categoriesData]);
-
-
-  console.log("data",data);
   
+
   useEffect(() => {
     let initialFormValues;
     if (isSuccess && data && data?.length !== 0) {
       initialFormValues = data?.map((item: any) => ({
-        type: capitalizeWord(item.type),
-        schedule: item?.schedule?.map((val: any) => ({
+        type: capitalizeWord(item.name),
+        schedule: item?.schedules?.map((val: any) => ({
           day: capitalizeWord(val.day),
           time: [
             dayjs(val?.startTime, "HH:mm:ss"),
