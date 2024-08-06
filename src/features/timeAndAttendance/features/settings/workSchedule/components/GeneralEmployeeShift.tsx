@@ -42,8 +42,7 @@ export const GeneralEmployeeShift = () => {
       },
     });
 
-    console.log("categoriesData",categoriesData?.data);
-    
+  console.log(data);
 
   useEffect(() => {
     if (!categoriesData?.data) return;
@@ -64,7 +63,6 @@ export const GeneralEmployeeShift = () => {
       ) ?? [];
     setTheInitialFormValues(transformedData);
   }, [categoriesData]);
-  
 
   useEffect(() => {
     let initialFormValues;
