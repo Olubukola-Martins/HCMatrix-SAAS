@@ -51,7 +51,6 @@ export const AttendanceHome = () => {
 
   const { currentCompanyEmployeeDetails } = useApiAuth();
 
-  console.log(currentCompanyEmployeeDetails);
 
   return (
     <ErrorBoundary>
