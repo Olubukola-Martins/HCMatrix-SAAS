@@ -2,7 +2,7 @@ import { Form, Input, Skeleton, TimePicker } from "antd";
 import { AppButton } from "components/button/AppButton";
 import { useContext, useEffect, useState } from "react";
 import { capitalizeWord } from "../../Utils";
-import dayjs from "dayjs";
+import dayjs, { Dayjs } from "dayjs";
 import { useQueryClient } from "react-query";
 import { useCreateShiftSchedule } from "../hooks/useCreateShiftSchedule";
 import {
@@ -19,6 +19,7 @@ interface TTransformedShiftCategory {
 
 interface Schedule {
   day: string;
+  time: [Dayjs | null, Dayjs | null];
 }
 
 const REASONABLE_AMOUNT_OF_SHIFT_CATEGORIES = 100;
@@ -42,7 +43,15 @@ export const GeneralEmployeeShift = () => {
       },
     });
 
-  console.log(data);
+  const DEFAULT_DAYS_SCHEDULE: TTransformedShiftCategory["schedule"] = [
+    { day: "Monday", time: [null, null] },
+    { day: "Tuesday", time: [null, null] },
+    { day: "Wednesday", time: [null, null] },
+    { day: "Thursday", time: [null, null] },
+    { day: "Friday", time: [null, null] },
+    { day: "Saturday", time: [null, null] },
+    { day: "Sunday", time: [null, null] },
+  ];
 
   useEffect(() => {
     if (!categoriesData?.data) return;
@@ -50,15 +59,7 @@ export const GeneralEmployeeShift = () => {
       categoriesData?.data?.map(
         (item): TTransformedShiftCategory => ({
           type: item.name,
-          schedule: [
-            { day: "Monday" },
-            { day: "Tuesday" },
-            { day: "Wednesday" },
-            { day: "Thursday" },
-            { day: "Friday" },
-            { day: "Saturday" },
-            { day: "Sunday" },
-          ],
+          schedule: DEFAULT_DAYS_SCHEDULE,
         })
       ) ?? [];
     setTheInitialFormValues(transformedData);
@@ -69,13 +70,16 @@ export const GeneralEmployeeShift = () => {
     if (isSuccess && data && data?.length !== 0) {
       initialFormValues = data?.map((item: any) => ({
         type: capitalizeWord(item.name),
-        schedule: item?.schedules?.map((val: any) => ({
-          day: capitalizeWord(val.day),
-          time: [
-            dayjs(val?.startTime, "HH:mm:ss"),
-            dayjs(val?.endTime, "HH:mm:ss"),
-          ],
-        })),
+        schedule:
+          item?.schedules?.length > 0
+            ? item?.schedules?.map((val: any) => ({
+                day: capitalizeWord(val.day),
+                time: [
+                  dayjs(val?.startTime, "HH:mm:ss"),
+                  dayjs(val?.endTime, "HH:mm:ss"),
+                ],
+              }))
+            : DEFAULT_DAYS_SCHEDULE,
       }));
     } else {
       initialFormValues = theInitialFormValues;
@@ -88,7 +92,7 @@ export const GeneralEmployeeShift = () => {
 
   const onFinish = (values: any) => {
     const data = values?.workDaysAndTime.map((item: any) => {
-      const schedule = item?.schedule.map((val: any) => {
+      const schedule = item?.schedule?.map((val: any) => {
         if (!val.time || val.time.length < 2) {
           return {
             day: val.day.toLowerCase(),
@@ -162,7 +166,7 @@ export const GeneralEmployeeShift = () => {
                                   {...item}
                                   name={[item.name, "day"]}
                                   initialValue={
-                                    theInitialFormValues[index].schedule[
+                                    theInitialFormValues[index]?.schedule[
                                       subIndex
                                     ].day
                                   }
