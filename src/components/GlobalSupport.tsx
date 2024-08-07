@@ -1,11 +1,19 @@
-import { Popover, } from "antd";
+import { Popover } from "antd";
 import { useState } from "react";
 import Themes from "./Themes";
 import CustomerComplaintModal from "./customerComplaint/CustomerComplaintModal";
+import AIChatBotModal from "features/ai-bot/components/AIChatBotModal";
+import SearchAIChatBotModal from "features/ai-bot/components/SearchAIChatBotModal";
+import SettingsAIChatBotModal from "features/ai-bot/components/SettingsAIChatBotModal";
+import NewChatAIChatBotModal from "features/ai-bot/components/NewChatAIChatBotModal";
 
 const GlobalSupport = () => {
   const [hovered, setHovered] = useState(false);
   const [queryModal, setQueryModal] = useState(false);
+  const [aiModal, setAiModal] = useState(false);
+  const [searchModal, setSearchModal] = useState(false);
+  const [settingsModal, setSettingsModal] = useState(false);
+  const [newChatModal, setNewChatModal] = useState(false);
 
   // const handleClick = (event) => {
   //   setAnchorEl(event.currentTarget);
@@ -13,6 +21,36 @@ const GlobalSupport = () => {
   const handleHoverChange = (open: boolean) => {
     setHovered(open);
   };
+
+  const handleOpenSearchModal =() => {
+    setAiModal(false);
+    setSearchModal(true);
+  }
+
+  const handleCloseSearchModal =() => {
+    setSearchModal(false);
+          setAiModal(true);
+  }
+
+  const handleOpenSettingsModal =() => {
+    setAiModal(false);
+    setSettingsModal(true);
+  }
+
+  const handleCloseSettingsModal =() => {
+    setSettingsModal(false);
+          setAiModal(true);
+  }
+
+  const handleOpenNewChatModal =() => {
+    setAiModal(false);
+    setNewChatModal(true);
+  }
+
+  const handleCloseNewChatModal =() => {
+    setNewChatModal(false);
+          setAiModal(true);
+  }
 
   return (
     <>
@@ -75,7 +113,7 @@ const GlobalSupport = () => {
                   </li>
                   <li
                     // onClick={() => setQueryModal(true)}
-                    className="flex items-center gap-x-5 pb-1  cursor-pointer group"
+                    className="flex items-center gap-x-5 border-b-2 pb-1  cursor-pointer group"
                   >
                     <i className="ri-mail-line text-xl"></i>
                     <a
@@ -89,6 +127,13 @@ const GlobalSupport = () => {
                     {/* <span className="group-hover:text-caramel">
                       Drop Complaint
                     </span> */}
+                  </li>
+                  <li
+                    onClick={() => setAiModal(true)}
+                    className="flex items-center gap-x-5 pb-1 cursor-pointer group"
+                  >
+                    <i className="ri-robot-line text-xl"></i>
+                    <span className="group-hover:text-caramel">AI Chatbot</span>
                   </li>
                 </ul>
               </div>
@@ -105,6 +150,29 @@ const GlobalSupport = () => {
       <CustomerComplaintModal
         open={queryModal}
         handleClose={() => setQueryModal(false)}
+      />
+
+      <AIChatBotModal 
+        open={aiModal} 
+        handleClose={() => setAiModal(false)} 
+        openSearchModal={handleOpenSearchModal}
+        openSettingsModal={handleOpenSettingsModal}
+        openNewChatModal={handleOpenNewChatModal}
+      />
+
+      <SearchAIChatBotModal
+        open={searchModal}
+        handleClose={handleCloseSearchModal}
+      />
+
+      <SettingsAIChatBotModal 
+      open={settingsModal}
+      handleClose={handleCloseSettingsModal}
+      />
+
+      <NewChatAIChatBotModal 
+        open={newChatModal}
+        handleClose={handleCloseNewChatModal}
       />
     </>
   );
