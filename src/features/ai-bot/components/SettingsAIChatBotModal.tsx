@@ -1,6 +1,7 @@
 import { Modal, Switch } from "antd";
 import React from "react";
 import Themes from "components/Themes";
+import { IoIosArrowBack } from "react-icons/io";
 
 interface IProps {
   open: boolean;
@@ -19,7 +20,7 @@ const SettingsAIChatBotModal = ({ open, handleClose }: IProps) => {
       <Themes>
         <div className="relative mb-4">
           <button onClick={() => handleClose()} className="absolute left-0">
-            {"<"}
+            <IoIosArrowBack  />
           </button>
           <h5 className="text-sm font-medium text-center">Settings</h5>
         </div>

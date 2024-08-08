@@ -1,6 +1,7 @@
 import { Modal, Button } from "antd";
 import Themes from "components/Themes";
 import PreviousChatCard from "./PreviousChatCard";
+import { IoIosArrowBack } from "react-icons/io";
 
 interface IProps {
   open: boolean;
@@ -28,7 +29,9 @@ const AIChatBotModal = ({
       <Themes>
         <div>
           <div className="flex items-center justify-between mb-6">
-            <button onClick={() => handleClose()}>{"<"}</button>
+            <button onClick={() => handleClose()}>
+                <IoIosArrowBack  />
+            </button>
             <h5 className="text-lg font-medium pl-9">HCMatrix AI Chatbot</h5>
             <div className="flex gap-2">
               <i

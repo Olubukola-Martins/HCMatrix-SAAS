@@ -7,13 +7,12 @@ import SearchAIChatBotModal from "features/ai-bot/components/SearchAIChatBotModa
 import SettingsAIChatBotModal from "features/ai-bot/components/SettingsAIChatBotModal";
 import NewChatAIChatBotModal from "features/ai-bot/components/NewChatAIChatBotModal";
 
+type TModal = 'ai-modal' | 'search-modal' | 'settings-modal' | 'new-chat-modal';
+
 const GlobalSupport = () => {
   const [hovered, setHovered] = useState(false);
   const [queryModal, setQueryModal] = useState(false);
-  const [aiModal, setAiModal] = useState(false);
-  const [searchModal, setSearchModal] = useState(false);
-  const [settingsModal, setSettingsModal] = useState(false);
-  const [newChatModal, setNewChatModal] = useState(false);
+  const [currentModal, setCurrentModal] = useState<TModal>();
 
   // const handleClick = (event) => {
   //   setAnchorEl(event.currentTarget);
@@ -22,35 +21,13 @@ const GlobalSupport = () => {
     setHovered(open);
   };
 
-  const handleOpenSearchModal =() => {
-    setAiModal(false);
-    setSearchModal(true);
-  }
+  const handleOpenModal = (modal: TModal) => {
+    setCurrentModal(modal);
+  };
 
-  const handleCloseSearchModal =() => {
-    setSearchModal(false);
-          setAiModal(true);
-  }
-
-  const handleOpenSettingsModal =() => {
-    setAiModal(false);
-    setSettingsModal(true);
-  }
-
-  const handleCloseSettingsModal =() => {
-    setSettingsModal(false);
-          setAiModal(true);
-  }
-
-  const handleOpenNewChatModal =() => {
-    setAiModal(false);
-    setNewChatModal(true);
-  }
-
-  const handleCloseNewChatModal =() => {
-    setNewChatModal(false);
-          setAiModal(true);
-  }
+  const handleCloseModal = () => {
+    setCurrentModal(undefined);
+  };
 
   return (
     <>
@@ -129,7 +106,7 @@ const GlobalSupport = () => {
                     </span> */}
                   </li>
                   <li
-                    onClick={() => setAiModal(true)}
+                    onClick={() => handleOpenModal('ai-modal')}
                     className="flex items-center gap-x-5 pb-1 cursor-pointer group"
                   >
                     <i className="ri-robot-line text-xl"></i>
@@ -153,26 +130,26 @@ const GlobalSupport = () => {
       />
 
       <AIChatBotModal 
-        open={aiModal} 
-        handleClose={() => setAiModal(false)} 
-        openSearchModal={handleOpenSearchModal}
-        openSettingsModal={handleOpenSettingsModal}
-        openNewChatModal={handleOpenNewChatModal}
+        open={currentModal === 'ai-modal'}
+        handleClose={handleCloseModal}
+        openSearchModal={() => handleOpenModal('search-modal')}
+        openSettingsModal={() => handleOpenModal('settings-modal')}
+        openNewChatModal={() => handleOpenModal('new-chat-modal')}
       />
 
       <SearchAIChatBotModal
-        open={searchModal}
-        handleClose={handleCloseSearchModal}
+        open={currentModal === 'search-modal'}
+        handleClose={handleCloseModal}
       />
 
       <SettingsAIChatBotModal 
-      open={settingsModal}
-      handleClose={handleCloseSettingsModal}
+       open={currentModal === 'settings-modal'}
+       handleClose={handleCloseModal}
       />
 
       <NewChatAIChatBotModal 
-        open={newChatModal}
-        handleClose={handleCloseNewChatModal}
+        open={currentModal === 'new-chat-modal'}
+        handleClose={handleCloseModal}
       />
     </>
   );

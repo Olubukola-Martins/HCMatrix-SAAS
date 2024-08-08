@@ -1,5 +1,6 @@
 import { Button, Empty, Input, Modal } from "antd";
 import React from "react";
+import { IoIosArrowBack } from "react-icons/io";
 import Themes from "components/Themes";
 import AttachmentIcon from "assets/svg-components/AttachmentIcon/AttachmentIcon";
 import SendMessageIcon from "assets/svg-components/SendMessageIcon/SendMessageIcon";
@@ -21,7 +22,7 @@ const NewChatAIChatBotModal = ({ open, handleClose }: IProps) => {
       <Themes>
         <div className="relative mb-4">
           <button onClick={() => handleClose()} className="absolute left-0">
-            {"<"}
+            <IoIosArrowBack  />
           </button>
           <h5 className="text-sm font-medium text-center">New Chat</h5>
         </div>
