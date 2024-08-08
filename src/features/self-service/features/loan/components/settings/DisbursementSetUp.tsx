@@ -5,9 +5,8 @@ import { useCreateDisbursementSetUp } from "../../hooks/setting/disbursementSetU
 import { useContext, useEffect } from "react";
 import { useQueryClient } from "react-query";
 import { EGlobalOps, GlobalContext } from "stateManagers/GlobalContextProvider";
-import { QUERY_KEY_FOR_GET_APPROVAL_PROCESS, useGetApprovalProcess } from "../../hooks/setting/approvalProcess/useGetApprovalProcess";
 import { openNotification } from "utils/notifications";
-import { useGetDisbursementSetUp } from "../../hooks/setting/disbursementSetUp/useGetDisbursementSetUp";
+import { QUERY_KEY_FOR_GET_DISBURSEMENT_SET_UP, useGetDisbursementSetUp } from "../../hooks/setting/disbursementSetUp/useGetDisbursementSetUp";
 
 export const DisbursementSetUp = () => {
   const [form] = Form.useForm();
@@ -48,7 +47,7 @@ export const DisbursementSetUp = () => {
             duration: 4,
           });
           dispatch({ type: EGlobalOps.setShowInitialSetup, payload: true });
-          queryClient.invalidateQueries([QUERY_KEY_FOR_GET_APPROVAL_PROCESS]);
+          queryClient.invalidateQueries([QUERY_KEY_FOR_GET_DISBURSEMENT_SET_UP]);
         },
       }
     );

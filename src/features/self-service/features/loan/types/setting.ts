@@ -59,3 +59,13 @@ export interface IApprovalProcessProps {
 export interface IDisbursementProps {
   enableDisbursement: boolean;
 }
+
+export interface IEligibilityCriteriaProps {
+  maxPercentage: number;
+  maxApplicationDuringRepayment: number;
+  employmentDuration: {
+    start: number;
+    end: number;
+  };
+  employmentStatus: string[];
+}

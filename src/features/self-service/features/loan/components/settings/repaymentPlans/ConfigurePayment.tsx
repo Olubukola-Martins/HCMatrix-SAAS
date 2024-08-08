@@ -36,7 +36,7 @@ export const ConfigurePayment = () => {
           </Form.Item>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-x-4">
+        {/* <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-x-4">
           <div>
             <h4 className="font-medium pb-1">Deduction Amount Calculation</h4>
             <Form.Item
@@ -74,7 +74,7 @@ export const ConfigurePayment = () => {
               />
             </Form.Item>
           </div>
-        </div>
+        </div> */}
 
         <h5 className="font-medium pb-2">Notification</h5>
 

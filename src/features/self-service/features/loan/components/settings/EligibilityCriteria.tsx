@@ -1,9 +1,56 @@
-import { Checkbox, Form, InputNumber, Switch, Tooltip } from "antd";
+import { Checkbox, Form, InputNumber, Radio, Switch, Tooltip } from "antd";
 import { PercentageOutlined } from "@ant-design/icons";
 import { generalValidationRules } from "utils/formHelpers/validation";
 import { AppButton } from "components/button/AppButton";
+import { useContext, useState } from "react";
+import { useEligibilityCriteria } from "../../hooks/setting/eligibilityCriteria/useEligibilityCriteria";
+import { EGlobalOps, GlobalContext } from "stateManagers/GlobalContextProvider";
+import { useQueryClient } from "react-query";
+import { openNotification } from "utils/notifications";
 
 export const EligibilityCriteria = () => {
+  const [employmentDuration, setEmploymentDuration] = useState<boolean>(true);
+  const [employmentStatus, setEmploymentStatus] = useState<boolean>(true);
+  const [form] = Form.useForm();
+  const globalCtx = useContext(GlobalContext);
+  const { dispatch } = globalCtx;
+  const queryClient = useQueryClient();
+  const { mutate, isLoading: createLoading } = useEligibilityCriteria();
+
+  const handleFinish = (values: any) => {
+    if (values.selectEmploymentDuration) {
+      const { start, end } = values.selectEmploymentDuration;
+      values.employmentDuration = { start, end };
+      delete values.selectEmploymentDuration;
+    }
+    mutate(
+      {
+        ...values,
+      },
+      {
+        onError: (err: any) => {
+          openNotification({
+            state: "error",
+            title: "Error Occurred",
+            description:
+              err?.response.data.message ?? err?.response.data.error.message,
+            duration: 7.0,
+          });
+        },
+        onSuccess: (res: any) => {
+          openNotification({
+            state: "success",
+            title: "Success",
+            description: res.data.message,
+            duration: 4,
+          });
+          dispatch({ type: EGlobalOps.setShowInitialSetup, payload: true });
+          queryClient.invalidateQueries([]);
+        },
+      }
+    );
+  };
+
   return (
     <div>
       <h3 className="font-medium pb-5">Eligibility Criteria</h3>
@@ -12,34 +59,32 @@ export const EligibilityCriteria = () => {
       </p>
       <hr />
 
-      <Form
-        layout="vertical"
-        requiredMark={false}
-        onFinish={(val) => console.log(val)}
-      >
+      <Form layout="vertical" requiredMark={false} onFinish={handleFinish}>
         <div className="flex items-center justify-between my-4">
           <h5 className="font-medium">Select employment duration</h5>
           <Form.Item
-            name="employmentDuration"
+            name="employmentDurationSwitch"
             noStyle
             rules={generalValidationRules}
             valuePropName="checked"
             initialValue={true}
           >
-            <Switch />
+            <Switch onChange={(val) => setEmploymentDuration(val)} />
           </Form.Item>
         </div>
-        <Form.Item
-          name="selectEmploymentDuration"
-          // noStyle
-          rules={generalValidationRules}
-        >
-          <Checkbox.Group>
-            <Checkbox value="1-2">1-2 year</Checkbox>
-            <Checkbox value="2-4">1-4 years</Checkbox>
-            <Checkbox value="5-10_above">5-10 years above</Checkbox>
-          </Checkbox.Group>
-        </Form.Item>
+
+        {employmentDuration && (
+          <Form.Item
+            name="selectEmploymentDuration"
+            rules={generalValidationRules}
+          >
+            <Radio.Group className="flex flex-col gap-4">
+              <Radio value={{ start: 1, end: 2 }}>1-2 years</Radio>
+              <Radio value={{ start: 3, end: 4 }}>3-4 years</Radio>
+              <Radio value={{ start: 5, end: null }}>5 years and above</Radio>
+            </Radio.Group>
+          </Form.Item>
+        )}
 
         <hr className="mt-4" />
 
@@ -52,27 +97,20 @@ export const EligibilityCriteria = () => {
             valuePropName="checked"
             initialValue={true}
           >
-            <Switch />
+            <Switch onChange={(val) => setEmploymentStatus(val)} />
           </Form.Item>
         </div>
 
-        <Form.Item
-          name="check_employee_status"
-          rules={generalValidationRules}
-        >
-          <Checkbox.Group className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-4">
-            <Checkbox value="Confirmed_employee">Confirmed employee</Checkbox>
-            <Checkbox value="Not_confirmed_employee">
-              Not confirmed employee
-            </Checkbox>
-            <Checkbox value="Probation_employee">Probation employee</Checkbox>
-            <Checkbox value="Suspended_employee">Suspended employee</Checkbox>
-            <Checkbox value="Licensed_employee">Licensed employee</Checkbox>
-            <Checkbox value="Unlicensed_employee">Unlicensed employee</Checkbox>
-            <Checkbox value="Unverified_employee">Unverified employee</Checkbox>
-            <Checkbox value="Verified employee">Verified employee</Checkbox>
-          </Checkbox.Group>
-        </Form.Item>
+        {employmentStatus && (
+          <Form.Item name="employmentStatus" rules={generalValidationRules}>
+            <Checkbox.Group className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+              <Checkbox value="probation">Probation</Checkbox>
+              <Checkbox value="confirmed">Confirmed</Checkbox>
+              <Checkbox value="suspended">Suspended</Checkbox>
+              <Checkbox value="terminated">Terminated</Checkbox>
+            </Checkbox.Group>
+          </Form.Item>
+        )}
         <hr className="my-4" />
         <div>
           <div className="flex items-center gap-2 mb-1">
@@ -82,12 +120,12 @@ export const EligibilityCriteria = () => {
             </Tooltip>
           </div>
           <Form.Item
-            name="loan_percentage"
+            name="maxPercentage"
             label="Define the loan percentage (%) of the annual gross salary of the employee that can be taken as a loan"
             rules={generalValidationRules}
           >
             <InputNumber
-              min={1}
+              min={0}
               max={100}
               placeholder="5"
               suffix={
@@ -100,13 +138,17 @@ export const EligibilityCriteria = () => {
 
         <Form.Item
           rules={generalValidationRules}
-          name="maximum_loan_amount"
+          name="maxApplicationDuringRepayment"
           label="What is the maximum amount of loans an employee can apply for while repaying a loan?"
         >
           <InputNumber className="w-full" />
         </Form.Item>
 
-        <AppButton type="submit" label="Save Changes" />
+        <AppButton
+          type="submit"
+          label="Save Changes"
+          isLoading={createLoading}
+        />
       </Form>
     </div>
   );
