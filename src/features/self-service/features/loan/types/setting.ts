@@ -65,7 +65,7 @@ export interface IEligibilityCriteriaProps {
   maxApplicationDuringRepayment: number;
   employmentDuration: {
     start: number;
-    end: number;
+    end?: number;
   };
   employmentStatus: string[];
 }

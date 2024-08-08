@@ -2,11 +2,15 @@ import { Checkbox, Form, InputNumber, Radio, Switch, Tooltip } from "antd";
 import { PercentageOutlined } from "@ant-design/icons";
 import { generalValidationRules } from "utils/formHelpers/validation";
 import { AppButton } from "components/button/AppButton";
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useEligibilityCriteria } from "../../hooks/setting/eligibilityCriteria/useEligibilityCriteria";
 import { EGlobalOps, GlobalContext } from "stateManagers/GlobalContextProvider";
 import { useQueryClient } from "react-query";
 import { openNotification } from "utils/notifications";
+import {
+  QUERY_KEY_FOR_GET_ELIGIBILITY_CRITERIA,
+  useGetEligibilityCriteria,
+} from "../../hooks/setting/eligibilityCriteria/useGetEligibilityCriteria";
 
 export const EligibilityCriteria = () => {
   const [employmentDuration, setEmploymentDuration] = useState<boolean>(true);
@@ -16,6 +20,15 @@ export const EligibilityCriteria = () => {
   const { dispatch } = globalCtx;
   const queryClient = useQueryClient();
   const { mutate, isLoading: createLoading } = useEligibilityCriteria();
+  const { data, isLoading, isSuccess } = useGetEligibilityCriteria();
+
+  useEffect(() => {
+    if (isSuccess && data) {
+      form.setFieldsValue({
+        ...data,
+      });
+    }
+  }, [data, isSuccess, form]);
 
   const handleFinish = (values: any) => {
     if (values.selectEmploymentDuration) {
@@ -45,7 +58,9 @@ export const EligibilityCriteria = () => {
             duration: 4,
           });
           dispatch({ type: EGlobalOps.setShowInitialSetup, payload: true });
-          queryClient.invalidateQueries([]);
+          queryClient.invalidateQueries([
+            QUERY_KEY_FOR_GET_ELIGIBILITY_CRITERIA,
+          ]);
         },
       }
     );
@@ -59,7 +74,13 @@ export const EligibilityCriteria = () => {
       </p>
       <hr />
 
-      <Form layout="vertical" requiredMark={false} onFinish={handleFinish}>
+      <Form
+        form={form}
+        layout="vertical"
+        requiredMark={false}
+        onFinish={handleFinish}
+        disabled={isLoading}
+      >
         <div className="flex items-center justify-between my-4">
           <h5 className="font-medium">Select employment duration</h5>
           <Form.Item
@@ -79,9 +100,10 @@ export const EligibilityCriteria = () => {
             rules={generalValidationRules}
           >
             <Radio.Group className="flex flex-col gap-4">
+              <Radio value={{ start: 0, end: 1 }}>0-1 year</Radio>
               <Radio value={{ start: 1, end: 2 }}>1-2 years</Radio>
               <Radio value={{ start: 3, end: 4 }}>3-4 years</Radio>
-              <Radio value={{ start: 5, end: null }}>5 years and above</Radio>
+              <Radio value={{ start: 5 }}>5 years and above</Radio>
             </Radio.Group>
           </Form.Item>
         )}
