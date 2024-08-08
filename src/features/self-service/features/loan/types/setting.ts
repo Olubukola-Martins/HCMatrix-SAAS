@@ -50,3 +50,8 @@ export type TLoanTypeProps = {
   name: string;
   label: string;
 };
+
+// New
+export interface IApprovalProcessProps {
+  workflowId: number;
+}
