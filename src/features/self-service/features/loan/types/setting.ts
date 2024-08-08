@@ -55,3 +55,7 @@ export type TLoanTypeProps = {
 export interface IApprovalProcessProps {
   workflowId: number;
 }
+
+export interface IDisbursementProps {
+  enableDisbursement: boolean;
+}
