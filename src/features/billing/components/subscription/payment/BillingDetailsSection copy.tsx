@@ -2,7 +2,7 @@ import { Form, FormInstance, Input } from "antd";
 import { FormAddressInput } from "components/generalFormInputs/FormAddressInput";
 import { FormPhoneInput } from "components/generalFormInputs/FormPhoneInput";
 import React from "react";
-import { boxStyle, boxTitle, cardStyle } from "styles/reused";
+import { boxStyle, boxTitle } from "styles/reused";
 import { generalValidationRules } from "utils/formHelpers/validation";
 
 type IProps = {
@@ -35,18 +35,36 @@ const BILLING_FORM_ITEMS: {
     inputType: "address",
   },
 ];
-const BillingDetailsSection: React.FC<IProps> = ({ Form, form, size = "sm" }) => {
+const BillingDetailsSection: React.FC<IProps> = ({
+  Form,
+  form,
+  size = "sm",
+}) => {
   return (
-    <div className={`${cardStyle} `}>
+    <div className={`${boxStyle} text-sm bg-card`}>
       <div className="flex items-center justify-between">
-        <h5 className={`${boxTitle} text-xl`}>Billing Details</h5>
+        <h5 className={boxTitle}>Billing Details</h5>
       </div>
       <div>
-        <div className="grid grid-cols-2 gap-4 mt-5">
+        <div className="grid grid-cols-2 gap-2 mt-5">
           {BILLING_FORM_ITEMS.map(({ name, options, title, inputType }, i) => (
-            <BillingFormItem form={form} Form={Form} name={name} title={title} options={options} key={i} inputType={inputType} gridSpanClass={`${size === "sm" ? "col-span-1" : "col-span-2"}`} />
+            <BillingFormItem
+              form={form}
+              Form={Form}
+              name={name}
+              title={title}
+              options={options}
+              key={i}
+              inputType={inputType}
+              gridSpanClass={
+                size === "lg"
+                  ? inputType === "address"
+                    ? "col-span-2"
+                    : "col-span-1"
+                  : undefined
+              }
+            />
           ))}
-          <FormAddressInput form={form} Form={Form} className={`${boxStyle} text-sm ${size === "sm" ? "col-span-1" : "col-span-2"}`} control={{ name: "address", label: "address" }} />
         </div>
       </div>
     </div>
@@ -61,23 +79,37 @@ const BillingFormItem: React.FC<
     inputType: TInputType;
     gridSpanClass?: string;
   }
-> = ({ Form, name, title, options, inputType, form, gridSpanClass = "col-span-2" }) => {
+> = ({
+  Form,
+  name,
+  title,
+  options,
+  inputType,
+  form,
+  gridSpanClass = "col-span-2",
+}) => {
   return (
-    // <div className={`${boxStyle} text-sm ${gridSpanClass}`}>
-    <>
+    <div className={`${boxStyle} text-sm ${gridSpanClass}`}>
+      <div className="flex items-center justify-between mb-4">
+        <h5 className={boxTitle}>{title}</h5>
+      </div>
       {inputType === "input" && (
-        <Form.Item className={`${boxStyle} text-sm ${gridSpanClass}`} label={title} name rules={generalValidationRules}>
-          <Input placeholder="Snapnet Solutions" />
+        <Form.Item name={name} rules={generalValidationRules}>
+          <Input placeholder={title} />
         </Form.Item>
       )}
 
       {inputType === "phone" && (
-        <div className={`${boxStyle} text-sm ${gridSpanClass}`}>
-          <FormPhoneInput Form={Form} control={{ name, label: title }} />
-        </div>
+        <FormPhoneInput Form={Form} control={{ name, label: "" }} />
       )}
-    </>
-    // </div>
+      {inputType === "address" && (
+        <FormAddressInput
+          form={form}
+          Form={Form}
+          control={{ name, label: "" }}
+        />
+      )}
+    </div>
   );
 };
 

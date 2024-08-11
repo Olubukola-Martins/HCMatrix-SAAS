@@ -4,17 +4,11 @@ import ModuleContainer from "./modules/ModuleContainer";
 import AddOnContainer from "./addOns/AddOnContainer";
 import { AppButton } from "components/button/AppButton";
 import { TCompanySubscription } from "features/billing/types/company/companySubscription";
-import {
-  TCreateCompanySubscriptionProps,
-  useCreateCompanySubscription,
-} from "features/billing/hooks/company/useCreateCompanySubscription";
+import { TCreateCompanySubscriptionProps, useCreateCompanySubscription } from "features/billing/hooks/company/useCreateCompanySubscription";
 import { useQueryClient } from "react-query";
 import { TSubscriptionPriceType } from "features/billing/types/priceType";
 import { TBillingCycle } from "features/billing/types/billingCycle";
-import {
-  ECreateCompanySubscriptionOps,
-  useCreateCompanySubscriptionStateAndDispatch,
-} from "features/billing/stateManagers";
+import { ECreateCompanySubscriptionOps, useCreateCompanySubscriptionStateAndDispatch } from "features/billing/stateManagers";
 import PaymentsContainer from "./payment/PaymentsContainer";
 import { useGetAllSubscriptions } from "features/billing/hooks/useGetAllSubscriptions";
 import { openNotification } from "utils/notifications";
@@ -26,41 +20,29 @@ import { useGetSubsciptionBillingDetails } from "features/billing/hooks/company/
 import { parsePhoneNumber } from "utils/dataHelpers/parsePhoneNumber";
 import { TSubscriptionType } from "features/billing/types/subscription";
 
-const STEPS = ["Select Module", "Add Ons", "Payment", "Select Users"];
-const SubscriptionContainer: React.FC<{
+const STEPS = ["Select Plan/Add Ons", "Payment", "Select Users"];
+const PurchaseExtraLicenseContainer: React.FC<{
   subscription?: TCompanySubscription;
   type?: TSubscriptionType;
 }> = ({ subscription, type = "module" }) => {
   const [form] = Form.useForm<TCreateCompanySubscriptionProps>();
-  const { data: billingDetails, isFetching: isFetchingDetails } =
-    useGetSubsciptionBillingDetails();
-  const { data: subscriptions, isFetching: isFetchingSubscriptions } =
-    useGetAllSubscriptions({
-      type,
-    });
+  const { data: billingDetails, isFetching: isFetchingDetails } = useGetSubsciptionBillingDetails();
+  const { data: subscriptions, isFetching: isFetchingSubscriptions } = useGetAllSubscriptions({
+    type,
+  });
   const {
-    state: {
-      billingCycle: selectedBillingCycle,
-      priceType: selectedPriceType,
-      autoRenew: autoRenewal,
-    },
+    state: { billingCycle: selectedBillingCycle, priceType: selectedPriceType, autoRenew: autoRenewal },
     dispatch,
   } = useCreateCompanySubscriptionStateAndDispatch();
   useLayoutEffect(() => {
     const ASSUMED_EMPLOYEE_SUBSCRIPTION_ID = 1;
-    const EMPLOYEMENT_SUBSCRIPTION_ID =
-      subscriptions?.data.find((item) => item.label === "employee-management")
-        ?.id ?? ASSUMED_EMPLOYEE_SUBSCRIPTION_ID;
+    const EMPLOYEMENT_SUBSCRIPTION_ID = subscriptions?.data.find((item) => item.label === "employee-management")?.id ?? ASSUMED_EMPLOYEE_SUBSCRIPTION_ID;
     if (subscription) {
       const address = billingDetails?.address;
 
       form.setFieldsValue({
         priceType: subscription?.priceType,
-        purchased:
-          subscription?.purchased === undefined ||
-          subscription?.purchased?.length > 0
-            ? subscription?.purchased?.map((item) => item.subscriptionId)
-            : [EMPLOYEMENT_SUBSCRIPTION_ID],
+        purchased: subscription?.purchased === undefined || subscription?.purchased?.length > 0 ? subscription?.purchased?.map((item) => item.subscriptionId) : [EMPLOYEMENT_SUBSCRIPTION_ID],
         billingCycle: subscription?.billingCycle,
         licensedEmployeeCount: subscription?.licensedEmployeeCount,
         unlicensedEmployeeCount: subscription?.unlicensedEmployeeCount,
@@ -84,11 +66,7 @@ const SubscriptionContainer: React.FC<{
           licensedEmployeeCount: subscription?.licensedEmployeeCount,
           unlicensedEmployeeCount: subscription?.unlicensedEmployeeCount,
           autoRenew: subscription?.autoRenew,
-          purchased:
-            subscription?.purchased === undefined ||
-            subscription?.purchased?.length > 0
-              ? subscription?.purchased?.map((item) => item.subscriptionId)
-              : [EMPLOYEMENT_SUBSCRIPTION_ID],
+          purchased: subscription?.purchased === undefined || subscription?.purchased?.length > 0 ? subscription?.purchased?.map((item) => item.subscriptionId) : [EMPLOYEMENT_SUBSCRIPTION_ID],
           priceType: subscription?.priceType,
           billingCycle: subscription?.billingCycle,
         },
@@ -101,13 +79,13 @@ const SubscriptionContainer: React.FC<{
       });
     }
   }, [dispatch, form, subscription, billingDetails, subscriptions?.data]);
-  
+
   const [activeStep, setActiveStep] = useState(0);
   const [showD, setShowD] = useState(false);
 
   const handlePrev = () => setActiveStep((prev) => prev - 1);
   const handleNext = () => setActiveStep((prev) => prev + 1);
-  
+
   const { mutate, isLoading: isPaying } = useCreateCompanySubscription();
   const queryClient = useQueryClient();
   const [url, setUrl] = useState<string>();
@@ -124,8 +102,7 @@ const SubscriptionContainer: React.FC<{
             state: "error",
             title: "Error Occurred",
             duration: 2,
-            description:
-              err?.response.data.message ?? err?.response.data.error.message,
+            description: err?.response.data.message ?? err?.response.data.error.message,
           });
         },
         onSuccess: (res) => {
@@ -153,86 +130,21 @@ const SubscriptionContainer: React.FC<{
   const navigate = useNavigate();
   return (
     <>
-      <SubscriptionPaymentModal
-        open={showD}
-        handleClose={() => onClose()}
-        url={url}
-        onPaymentCompletion={() => navigate(appRoutes.purchaseUserLicense)}
-      />
+      <SubscriptionPaymentModal open={showD} handleClose={() => onClose()} url={url} onPaymentCompletion={() => navigate(appRoutes.purchaseUserLicense)} />
       <div className="w-full flex flex-col  gap-12 ">
         <div className="self-center">
           <Steps progressDot current={activeStep}>
             {STEPS.map((item) => (
-              <Steps.Step
-                key={item}
-                title={<span className="text-sm">{item}</span>}
-              />
+              <Steps.Step key={item} title={<span className="text-sm">{item}</span>} />
             ))}
           </Steps>
         </div>
         <>
-          <Form
-            requiredMark={false}
-            form={form}
-            labelCol={{ span: 24 }}
-            onFinish={handleSubmit}
-          >
-            <div className="flex justify-between items-center">
-              <div className="flex gap-x-4">
-                <Form.Item name={"priceType"}>
-                  {/* TODO: Implement Geo Restriction to default to remove ngn from options when user is not from Nigeria */}
-                  <Segmented
-                    options={["usd", "ngn"].map((item) => ({
-                      label: <span className="uppercase">{item}</span>,
-                      value: item,
-                    }))}
-                    onChange={(val) =>
-                      dispatch({
-                        payload: { priceType: val as TSubscriptionPriceType },
-                        type: ECreateCompanySubscriptionOps.update,
-                      })
-                    }
-                  />
-                </Form.Item>
-                <Form.Item name={"billingCycle"}>
-                  <Segmented
-                    options={["yearly", "monthly"].map((item) => ({
-                      label: <span className="capitalize">{item}</span>,
-                      value: item,
-                    }))}
-                    onChange={(val) =>
-                      dispatch({
-                        payload: { billingCycle: val as TBillingCycle },
-                        type: ECreateCompanySubscriptionOps.update,
-                      })
-                    }
-                  />
-                </Form.Item>
-              </div>
-              <div className="flex gap-4">
-                {activeStep !== 0 && (
-                  <AppButton
-                    label="Back"
-                    handleClick={handlePrev}
-                    variant="transparent"
-                  />
-                )}
-                {STEPS.length - 1 !== activeStep &&
-                  [0].includes(activeStep) && (
-                    <AppButton label="Next" handleClick={handleNext} />
-                  )}
-              </div>
-            </div>
+          <Form requiredMark={false} form={form} labelCol={{ span: 24 }} onFinish={handleSubmit}>
+            
+            
+            
             <div className={activeStep === 0 ? "block" : "hidden"}>
-              <ModuleContainer
-                Form={Form}
-                subscriptions={subscriptions?.data}
-                isLoading={isFetchingSubscriptions}
-                selectedPriceType={selectedPriceType}
-                selectedBillingCycle={selectedBillingCycle}
-              />
-            </div>
-            <div className={activeStep === 1 ? "block" : "hidden"}>
               <AddOnContainer
                 subscriptions={subscriptions?.data}
                 isLoading={isFetchingSubscriptions}
@@ -247,22 +159,16 @@ const SubscriptionContainer: React.FC<{
                   })
                 }
                 onProceed={() => {
-                  setActiveStep(2);
+                  handleNext()
+                  // setActiveStep(2);
                 }}
+                showModules = {false}
               />
             </div>
-            <div className={activeStep === 2 ? "block" : "hidden"}>
-              <PaymentsContainer
-                Form={Form}
-                subscriptions={subscriptions?.data}
-                isLoading={isFetchingSubscriptions || isFetchingDetails}
-                form={form}
-                isPayingForSubscription={isPaying}
-              />
+            <div className={activeStep === 1 ? "block" : "hidden"}>
+              <PaymentsContainer Form={Form} onProceed= {()=> handleNext()} subscriptions={subscriptions?.data} isLoading={isFetchingSubscriptions || isFetchingDetails} form={form} isPayingForSubscription={isPaying} />
             </div>
-            {activeStep === 3 && (
-              <Navigate to={appRoutes.purchaseUserLicense} replace={true} />
-            )}
+            {activeStep === 2 && <Navigate to={appRoutes.purchaseUserLicense} replace={true} />}
           </Form>
         </>
       </div>
@@ -270,4 +176,4 @@ const SubscriptionContainer: React.FC<{
   );
 };
 
-export default SubscriptionContainer;
+export default PurchaseExtraLicenseContainer;

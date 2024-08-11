@@ -20,6 +20,7 @@ const AddOnContainer: React.FC<{
   subscriptions?: TSubscription[];
   isLoading?: boolean;
   onProceed: () => void;
+  showModules?:boolean
 }> = ({
   Form,
   selectedPriceType = "usd",
@@ -28,7 +29,7 @@ const AddOnContainer: React.FC<{
   handleAutoRenewal,
   subscriptions,
   isLoading,
-  onProceed,
+  onProceed,showModules
 }) => {
   const {
     pricePerLicensedEmployee,
@@ -41,21 +42,8 @@ const AddOnContainer: React.FC<{
     <Skeleton loading={isLoading} active paragraph={{ rows: 40 }}>
       <div className="mt-7 grid grid-cols-1 md:grid-cols-2 gap-7 text-accent">
         <div className="flex flex-col gap-4">
-          <SelectedModulesSection
-            Form={Form}
-            pricePerUser={`${
-              PRICE_TYPE_CURRENCY[selectedPriceType]
-            } ${formatNumberWithCommas(pricePerLicensedEmployee)}`}
-            selectedModules={selectedModules.map((item) => item.name)}
-          />
-          <AddOnSection
-            Form={Form}
-            pricePerUser={`${
-              PRICE_TYPE_CURRENCY[selectedPriceType]
-            } ${formatNumberWithCommas(pricePerUnLicensedEmployee)}`}
-            autoRenewal={autoRenewal}
-            handleAutoRenewal={handleAutoRenewal}
-          />
+          <SelectedModulesSection showModules={showModules} Form={Form} pricePerUser={`${PRICE_TYPE_CURRENCY[selectedPriceType]} ${formatNumberWithCommas(pricePerLicensedEmployee)}`} selectedModules={selectedModules.map((item) => item.name)} />
+          <AddOnSection Form={Form} pricePerUser={`${PRICE_TYPE_CURRENCY[selectedPriceType]} ${formatNumberWithCommas(pricePerUnLicensedEmployee)}`} autoRenewal={autoRenewal} handleAutoRenewal={handleAutoRenewal} />
         </div>
 
         <div className="flex flex-col gap-4">

@@ -8,10 +8,10 @@ import StorageManagements from "features/billing/pages/StorageManagements";
 import CompanyTrainingSessionManagement from "features/billing/pages/CompanyTrainingSessionManagement";
 import InformEmployeeOfInActiveSubscription from "features/billing/pages/InformEmployeeOfInActiveSubscription";
 import InformOwnerOfInActiveSubscription from "features/billing/pages/InformOwnerOfInActiveSubscription";
+import PurchaseExtraLicense from "features/billing/pages/PurchaseExtraLicense";
+import PurchaseModules from "features/billing/pages/PurchaseModules";
 
-export const billingRoutes = (
-  props: Omit<TAppPageDataFnProps, "isOwner" & { isOwner: boolean }>
-): TRouteData[] => {
+export const billingRoutes = (props: Omit<TAppPageDataFnProps, "isOwner" & { isOwner: boolean }>): TRouteData[] => {
   const { isOwner } = props;
   return [
     {
@@ -37,7 +37,8 @@ export const billingRoutes = (
       isSearchable: false,
       hidden: isOwner === false,
     },
-
+    { element: <PurchaseExtraLicense />, path: appRoutes.purchaseExtraLiense, isSearchable: false, hidden: isOwner === false },
+    { element: <PurchaseModules />, path: appRoutes.purchaseModules, isSearchable: false, hidden: isOwner === false },
     {
       element: <SubsciptionManagement />,
       path: appRoutes.billingSubscription,

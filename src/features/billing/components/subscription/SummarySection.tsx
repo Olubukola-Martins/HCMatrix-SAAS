@@ -6,42 +6,27 @@ import { useGetCreateCompanySubscriptionSummary } from "features/billing/hooks/u
 
 import { TSubscription } from "features/billing/types/subscription";
 import React from "react";
-import { boxStyle } from "styles/reused";
+import { cardStyle } from "styles/reused";
 import { formatNumberWithCommas } from "utils/dataHelpers/formatNumberWithCommas";
 
 const SummarySection: React.FC<{
   subscriptions?: TSubscription[];
   loading?: boolean;
+  summaryNotes?: React.ReactNode | string;
   proceed?: {
     fn: () => void;
     text?: string;
     isLoading?: boolean;
   };
-}> = ({ subscriptions, loading, proceed }) => {
-  const {
-    totalEmployeeCost,
-    totalNoOfUsers,
-    priceType,
-    licensedEmployeeCount,
-    unlicensedEmployeeCount,
-    vat,
-    discount,
-    totalCost,
-    supportCasePrice,
-    trainingSessionPrice,
-    storagePrice,
-    isLoading,
-    vatPercentage,
-    discountPercentage,
-  } = useGetCreateCompanySubscriptionSummary({ subscriptions });
+}> = ({ subscriptions, loading, proceed, summaryNotes }) => {
+  const { totalEmployeeCost, totalNoOfUsers, priceType, licensedEmployeeCount, unlicensedEmployeeCount, vat, discount, totalCost, supportCasePrice, trainingSessionPrice, storagePrice, isLoading, vatPercentage, discountPercentage } = useGetCreateCompanySubscriptionSummary({ subscriptions });
 
   return (
-    <div
-      className={`${boxStyle} text-sm bg-card flex flex-col gap-4 items-stretch`}
-    >
+    <div className={` ${cardStyle} text-sm flex flex-col gap-4 items-stretch`}>
       <SummaryCard
         isLoading={isLoading || loading}
         title="Summary"
+        summaryNotes={summaryNotes}
         highlights={[
           {
             name: "Number of User",
@@ -49,9 +34,7 @@ const SummarySection: React.FC<{
           },
           {
             name: "Monthly Amount",
-            value: `${PRICE_TYPE_CURRENCY[priceType]} ${formatNumberWithCommas(
-              totalEmployeeCost
-            )}`, //TODO: Refactor to a function to avoid repetion
+            value: `${PRICE_TYPE_CURRENCY[priceType]} ${formatNumberWithCommas(totalEmployeeCost)}`, //TODO: Refactor to a function to avoid repetion
           },
         ]}
         details={[
@@ -65,52 +48,31 @@ const SummarySection: React.FC<{
           },
           {
             name: "Storage",
-            value: `${PRICE_TYPE_CURRENCY[priceType]} ${formatNumberWithCommas(
-              storagePrice
-            )}`,
+            value: `${PRICE_TYPE_CURRENCY[priceType]} ${formatNumberWithCommas(storagePrice)}`,
           },
           {
             name: "Training",
-            value: `${PRICE_TYPE_CURRENCY[priceType]} ${formatNumberWithCommas(
-              trainingSessionPrice
-            )}`,
+            value: `${PRICE_TYPE_CURRENCY[priceType]} ${formatNumberWithCommas(trainingSessionPrice)}`,
           },
           {
             name: "Support",
-            value: `${PRICE_TYPE_CURRENCY[priceType]} ${formatNumberWithCommas(
-              supportCasePrice
-            )}`,
+            value: `${PRICE_TYPE_CURRENCY[priceType]} ${formatNumberWithCommas(supportCasePrice)}`,
           },
           {
             name: `Vat(${vatPercentage}%)`,
-            value: `${PRICE_TYPE_CURRENCY[priceType]} ${formatNumberWithCommas(
-              vat
-            )}`,
+            value: `${PRICE_TYPE_CURRENCY[priceType]} ${formatNumberWithCommas(vat)}`,
           },
           {
             name: `Discount(${discountPercentage}%)`,
-            value: `${PRICE_TYPE_CURRENCY[priceType]} ${formatNumberWithCommas(
-              discount
-            )}`,
+            value: `${PRICE_TYPE_CURRENCY[priceType]} ${formatNumberWithCommas(discount)}`,
           },
           {
             name: "Total Amount",
-            value: `${PRICE_TYPE_CURRENCY[priceType]} ${formatNumberWithCommas(
-              totalCost
-            )}`,
+            value: `${PRICE_TYPE_CURRENCY[priceType]} ${formatNumberWithCommas(totalCost)}`,
           },
         ]}
       />
-      {proceed && (
-        <AppButton
-          handleClick={() => proceed?.fn()}
-          disabled={proceed.isLoading}
-          isLoading={proceed.isLoading}
-          label={proceed?.text ?? "Proceed"}
-          type="button"
-          additionalClassNames={["button", "w-full"]}
-        />
-      )}
+      {proceed && <AppButton handleClick={() => proceed?.fn()} disabled={proceed.isLoading} isLoading={proceed.isLoading} label={proceed?.text ?? "Proceed"} type="button" additionalClassNames={["button", "w-full"]} />}
 
       <p className="text-center">
         By proceeding, you agree to our{" "}
