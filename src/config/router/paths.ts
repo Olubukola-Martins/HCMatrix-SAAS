@@ -126,6 +126,7 @@ export const appRoutes = {
   purchaseUserLicense: `/purchase-user-license`,
   purchaseExtraLiense: `/purchase-extra-license`,
   purchaseModules: `/purchase-modules`,
+  upgradePlan: `/upgrade-plan`,
   billingSubscription: `/billings/subscription`,
   billingInactiveSubscriptionInformEmployee: `/billings/subscription/inactive/inform-employee`,
   billingInactiveSubscriptionInformOwner: `/billings/subscription/inactive/inform-owner`,

@@ -10,6 +10,7 @@ import { useGetCreateCompanySubscriptionSummary } from "features/billing/hooks/u
 import { TSubscription } from "features/billing/types/subscription";
 import SummarySection from "../SummarySection";
 import { formatNumberWithCommas } from "utils/dataHelpers/formatNumberWithCommas";
+import { SelectedPlansSection } from "./SelectedPlansSection";
 
 const AddOnContainer: React.FC<{
   Form: typeof Form;
@@ -20,29 +21,17 @@ const AddOnContainer: React.FC<{
   subscriptions?: TSubscription[];
   isLoading?: boolean;
   onProceed: () => void;
-  showModules?:boolean
-}> = ({
-  Form,
-  selectedPriceType = "usd",
-  selectedBillingCycle = "yearly",
-  autoRenewal,
-  handleAutoRenewal,
-  subscriptions,
-  isLoading,
-  onProceed,showModules
-}) => {
-  const {
-    pricePerLicensedEmployee,
-    selectedModules,
-    pricePerUnLicensedEmployee,
-  } = useGetCreateCompanySubscriptionSummary({
+  showModules?: boolean;
+  showPlans?: boolean;
+}> = ({ Form, selectedPriceType = "usd", selectedBillingCycle = "yearly", autoRenewal, handleAutoRenewal, subscriptions, isLoading, onProceed, showModules, showPlans }) => {
+  const { pricePerLicensedEmployee, selectedModules, pricePerUnLicensedEmployee } = useGetCreateCompanySubscriptionSummary({
     subscriptions,
   });
   return (
     <Skeleton loading={isLoading} active paragraph={{ rows: 40 }}>
       <div className="mt-7 grid grid-cols-1 md:grid-cols-2 gap-7 text-accent">
         <div className="flex flex-col gap-4">
-          <SelectedModulesSection showModules={showModules} Form={Form} pricePerUser={`${PRICE_TYPE_CURRENCY[selectedPriceType]} ${formatNumberWithCommas(pricePerLicensedEmployee)}`} selectedModules={selectedModules.map((item) => item.name)} />
+          {showPlans ? <SelectedPlansSection selectedPlans={["Basic"]} Form={Form} pricePerUser={`${PRICE_TYPE_CURRENCY[selectedPriceType]} ${formatNumberWithCommas(pricePerLicensedEmployee)}`} /> : <SelectedModulesSection showModules={showModules} Form={Form} pricePerUser={`${PRICE_TYPE_CURRENCY[selectedPriceType]} ${formatNumberWithCommas(pricePerLicensedEmployee)}`} selectedModules={selectedModules.map((item) => item.name)} />}
           <AddOnSection Form={Form} pricePerUser={`${PRICE_TYPE_CURRENCY[selectedPriceType]} ${formatNumberWithCommas(pricePerUnLicensedEmployee)}`} autoRenewal={autoRenewal} handleAutoRenewal={handleAutoRenewal} />
         </div>
 

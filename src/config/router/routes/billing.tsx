@@ -10,6 +10,7 @@ import InformEmployeeOfInActiveSubscription from "features/billing/pages/InformE
 import InformOwnerOfInActiveSubscription from "features/billing/pages/InformOwnerOfInActiveSubscription";
 import PurchaseExtraLicense from "features/billing/pages/PurchaseExtraLicense";
 import PurchaseModules from "features/billing/pages/PurchaseModules";
+import UpgradePlanPage from "features/billing/pages/UpgradePlanPage";
 
 export const billingRoutes = (props: Omit<TAppPageDataFnProps, "isOwner" & { isOwner: boolean }>): TRouteData[] => {
   const { isOwner } = props;
@@ -39,6 +40,7 @@ export const billingRoutes = (props: Omit<TAppPageDataFnProps, "isOwner" & { isO
     },
     { element: <PurchaseExtraLicense />, path: appRoutes.purchaseExtraLiense, isSearchable: false, hidden: isOwner === false },
     { element: <PurchaseModules />, path: appRoutes.purchaseModules, isSearchable: false, hidden: isOwner === false },
+    { element: <UpgradePlanPage />, path: appRoutes.upgradePlan, isSearchable: false, hidden: isOwner === false },
     {
       element: <SubsciptionManagement />,
       path: appRoutes.billingSubscription,

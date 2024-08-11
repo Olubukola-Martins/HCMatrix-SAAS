@@ -1,4 +1,4 @@
-import React, { useLayoutEffect, useState } from "react";
+import React, {  useState } from "react";
 import ErrorBoundary from "components/errorHandlers/ErrorBoundary";
 import CurrentPlanCard from "../cards/CurrentPlanCard";
 import ModulesCard from "../cards/ModulesCard";
@@ -7,7 +7,7 @@ import BillingsHistoryTable from "../BillingHistoryTable";
 import UpgradePlan from "../modals/UpgradePlan";
 
 const BillingContainer = () => {
-  const [openUogradeModal, setOpenUpgradeModal] = useState(true);
+  const [openUogradeModal, setOpenUpgradeModal] = useState(false);
   return (
     <ErrorBoundary>
       <UpgradePlan open={openUogradeModal} handleClose={() => setOpenUpgradeModal(false)} />
