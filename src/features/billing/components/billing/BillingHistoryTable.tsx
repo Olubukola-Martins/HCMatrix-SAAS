@@ -8,6 +8,8 @@ import { useGetAllSubscriptionTransactions } from "features/billing/hooks/compan
 import { usePagination } from "hooks/usePagination";
 import { appRoutes } from "config/router/paths";
 import { useNavigate } from "react-router-dom";
+import { useGetCompanyActiveSubscription } from "features/billing/hooks/company/useGetCompanyActiveSubscription";
+import BillingInvoice from "./BillingInvoice";
 
 export interface BillingData {
   key: React.Key;
@@ -21,12 +23,15 @@ export interface BillingData {
 }
 
 interface BillingsTableProps {
-  data?: BillingData[];
+  dataHistory?: BillingData[];
 }
 
-const BillingsHistoryTable: React.FC<BillingsTableProps> = ({ data = mockDataBillingHistory }) => {
+const BillingsHistoryTable: React.FC<BillingsTableProps> = ({ dataHistory = mockDataBillingHistory }) => {
   const [selectedRowKeys, setSelectedRowKeys] = useState<React.Key[]>([]);
   const navigate = useNavigate();
+  const { isFetching, data } = useGetCompanyActiveSubscription();
+  const [action, setAction] = useState<"download-invoice">();
+
   // const { pagination, onChange } = usePagination();
 
   // const { data, isFetching } = useGetAllSubscriptionTransactions({
@@ -39,12 +44,14 @@ const BillingsHistoryTable: React.FC<BillingsTableProps> = ({ data = mockDataBil
     console.log("Click", e);
   };
 
-  const menu = (item) => (
+  const menu = (item:any) => (
     <Menu onClick={handleMenuClick}>
       <Menu.Item key="view-details" onClick={() => navigate(appRoutes.singleBillingSummary(item.id).path)}>
         View Details
       </Menu.Item>
-      <Menu.Item key="download-file">Download File</Menu.Item>
+      <Menu.Item key="download-file" onClick={() => setAction("download-invoice")}>
+        Download File
+      </Menu.Item>
     </Menu>
   );
 
@@ -98,18 +105,21 @@ const BillingsHistoryTable: React.FC<BillingsTableProps> = ({ data = mockDataBil
   };
 
   return (
-    <CardWrapper className="p-6">
-      <Table
-        rowSelection={rowSelection}
-        columns={columns}
-        dataSource={data}
-        pagination={{ pageSize: 5 }}
-        // pagination={{ ...pagination, total: data?.total }}
-        // onChange={onChange}
-        scroll={{ x: 700 }}
-      />
-      ;
-    </CardWrapper>
+    <>
+      {data ? <BillingInvoice open={action === "download-invoice"} handleClose={() => setAction(undefined)} subscription={data} /> : null}
+      <CardWrapper className="p-6">
+        <Table
+          rowSelection={rowSelection}
+          columns={columns}
+          dataSource={dataHistory}
+          pagination={{ pageSize: 5 }}
+          // pagination={{ ...pagination, total: data?.total }}
+          // onChange={onChange}
+          scroll={{ x: 700 }}
+        />
+        ;
+      </CardWrapper>
+    </>
   );
 };
 

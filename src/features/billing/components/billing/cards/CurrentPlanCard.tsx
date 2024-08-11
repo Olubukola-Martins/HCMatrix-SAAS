@@ -15,9 +15,11 @@ interface CurrentPlanCardProps {
   borderedProgressBar?: boolean;
   showUpgradeBtn?: boolean;
   extraStyles?: string;
+  handleUpgrade?:()=> void
 }
 
-const CurrentPlanCard: React.FC<CurrentPlanCardProps> = ({ currentPlanName, extraStyles, billingPrice, currentUsers, usersLimit, borderedProgressBar = false, showUpgradeBtn = true, currency = "usd", billingRate = "user/mnth" }) => {
+const CurrentPlanCard: React.FC<CurrentPlanCardProps> = ({ currentPlanName, extraStyles, billingPrice, handleUpgrade, currentUsers, usersLimit, borderedProgressBar = false, showUpgradeBtn = true, currency = "usd", billingRate = "user/mnth" }) => {
+  
   return (
     <CardWrapper className={`px-6 pt-6 pb-4 flex flex-col gap-9 w-full sm:w-80  ${extraStyles}`}>
       <div className="font-semibold flex flex-col gap-3">
@@ -43,9 +45,9 @@ const CurrentPlanCard: React.FC<CurrentPlanCardProps> = ({ currentPlanName, extr
         )}
       </div>
 
-      {showUpgradeBtn && (
+      {showUpgradeBtn && handleUpgrade && (
         <div className="ml-auto mr-0">
-          <AppButton label="Upgrade" variant="default" type="button" />
+          <AppButton label="Upgrade" variant="default" type="button" handleClick={handleUpgrade}/>
         </div>
       )}
     </CardWrapper>
