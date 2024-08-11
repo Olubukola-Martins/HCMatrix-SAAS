@@ -3,6 +3,7 @@ import { BillingData } from "../components/billing/BillingHistoryTable";
 export const mockDataBillingHistory: BillingData[] = [
   {
     key: "1",
+    id:69,
     billings: "Receipt #01 - Nov 2024",
     date: "Nov 2, 2024",
     status: "Paid",
@@ -12,6 +13,7 @@ export const mockDataBillingHistory: BillingData[] = [
   },
   {
     key: "2",
+    id:69,
     billings: "Receipt #02 - Dec 2024",
     date: "Dec 1, 2024",
     status: "Unpaid",
@@ -21,6 +23,7 @@ export const mockDataBillingHistory: BillingData[] = [
   },
   {
     key: "3",
+    id:69,
     billings: "Receipt #03 - Jan 2025",
     date: "Jan 15, 2025",
     status: "Paid",
@@ -30,6 +33,7 @@ export const mockDataBillingHistory: BillingData[] = [
   },
   {
     key: "4",
+    id:69,
     billings: "Receipt #04 - Feb 2025",
     date: "Feb 10, 2025",
     status: "Unpaid",
@@ -39,6 +43,7 @@ export const mockDataBillingHistory: BillingData[] = [
   },
   {
     key: "5",
+    id:69,
     billings: "Receipt #05 - Mar 2025",
     date: "Mar 5, 2025",
     status: "Paid",
@@ -48,6 +53,7 @@ export const mockDataBillingHistory: BillingData[] = [
   },
   {
     key: "6",
+    id:69,
     billings: "Receipt #06 - Apr 2025",
     date: "Apr 20, 2025",
     status: "Paid",
@@ -57,6 +63,7 @@ export const mockDataBillingHistory: BillingData[] = [
   },
   {
     key: "7",
+    id:69,
     billings: "Receipt #07 - May 2025",
     date: "May 25, 2025",
     status: "Unpaid",
@@ -66,6 +73,7 @@ export const mockDataBillingHistory: BillingData[] = [
   },
   {
     key: "8",
+    id:69,
     billings: "Receipt #08 - Jun 2025",
     date: "Jun 10, 2025",
     status: "Paid",
@@ -75,6 +83,7 @@ export const mockDataBillingHistory: BillingData[] = [
   },
   {
     key: "9",
+    id:69,
     billings: "Receipt #09 - Jul 2025",
     date: "Jul 1, 2025",
     status: "Paid",
@@ -84,6 +93,7 @@ export const mockDataBillingHistory: BillingData[] = [
   },
   {
     key: "10",
+    id:69,
     billings: "Receipt #10 - Aug 2025",
     date: "Aug 15, 2025",
     status: "Unpaid",
@@ -93,6 +103,7 @@ export const mockDataBillingHistory: BillingData[] = [
   },
   {
     key: "11",
+    id:69,
     billings: "Receipt #11 - Sep 2025",
     date: "Sep 5, 2025",
     status: "Paid",
@@ -102,6 +113,7 @@ export const mockDataBillingHistory: BillingData[] = [
   },
   {
     key: "12",
+    id:69,
     billings: "Receipt #12 - Oct 2025",
     date: "Oct 25, 2025",
     status: "Paid",

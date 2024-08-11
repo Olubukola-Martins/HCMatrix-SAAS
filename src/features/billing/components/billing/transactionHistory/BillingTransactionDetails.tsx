@@ -6,7 +6,7 @@ import { TCompanySubscriptionTransaction } from "features/billing/types/company/
 import { getEmployeeFullName } from "features/core/employees/utils/getEmployeeFullName";
 import dayjs from "dayjs";
 import React from "react";
-import { boxStyle } from "styles/reused";
+import { boxStyle, cardStyle } from "styles/reused";
 import { formatNumberWithCommas } from "utils/dataHelpers/formatNumberWithCommas";
 
 const BillingTransactionDetails: React.FC<{
@@ -16,57 +16,29 @@ const BillingTransactionDetails: React.FC<{
   const subscription = billingTransaction?.companySubscription;
   return (
     <div className="space-y-6">
-      <PurchasedModules data={subscription?.purchased} isLoading={isLoading} />
+      {/* <PurchasedModules data={subscription?.purchased} isLoading={isLoading} /> */}
       <BillingInsights
         isLoading={isLoading}
         data={{
           billingCycle: subscription?.billingCycle,
-          createdAt: dayjs(billingTransaction?.createdAt).format(
-            DEFAULT_DATE_FORMAT
-          ),
+          createdAt: dayjs(billingTransaction?.createdAt).format(DEFAULT_DATE_FORMAT),
           licensedEmployeeCount: subscription?.licensedEmployeeCount,
           unlicensedEmployeeCount: subscription?.unlicensedEmployeeCount,
-          totalAmountPaid: formatNumberWithCommas(
-            +(billingTransaction?.totalAmountPaid ?? 0)
-          ),
+          totalAmountPaid: formatNumberWithCommas(+(billingTransaction?.totalAmountPaid ?? 0)),
         }}
       />
-      <EmployeeWithLicenseTable
-        title={`Licensed User (${subscription?.licensedEmployeeCount})`}
-        data={subscription?.employeeLicenses.filter(
-          (item) => item.licenseType === "licensed"
-        )}
-        loading={isLoading}
-      />
+      <EmployeeWithLicenseTable title={`Licensed User (${subscription?.licensedEmployeeCount})`} data={subscription?.employeeLicenses.filter((item) => item.licenseType === "licensed")} loading={isLoading} />
 
-      <EmployeeWithLicenseTable
-        title={`Unlicensed User (${subscription?.unlicensedEmployeeCount})`}
-        data={subscription?.employeeLicenses.filter(
-          (item) => item.licenseType === "unlicensed"
-        )}
-        loading={isLoading}
-      />
+      <EmployeeWithLicenseTable title={`Unlicensed User (${subscription?.unlicensedEmployeeCount})`} data={subscription?.employeeLicenses.filter((item) => item.licenseType === "unlicensed")} loading={isLoading} />
     </div>
   );
 };
 
 const BillingInsights: React.FC<{
-  data: Partial<
-    Pick<
-      TCompanySubscriptionTransaction["companySubscription"],
-      "billingCycle" | "licensedEmployeeCount" | "unlicensedEmployeeCount"
-    > &
-      Pick<TCompanySubscriptionTransaction, "totalAmountPaid" | "createdAt">
-  >;
+  data: Partial<Pick<TCompanySubscriptionTransaction["companySubscription"], "billingCycle" | "licensedEmployeeCount" | "unlicensedEmployeeCount"> & Pick<TCompanySubscriptionTransaction, "totalAmountPaid" | "createdAt">>;
   isLoading?: boolean;
 }> = ({ data, isLoading }) => {
-  const {
-    billingCycle,
-    licensedEmployeeCount,
-    unlicensedEmployeeCount,
-    totalAmountPaid,
-    createdAt,
-  } = data;
+  const { billingCycle, licensedEmployeeCount, unlicensedEmployeeCount, totalAmountPaid, createdAt } = data;
   const items = [
     { title: "No of Licensed Users", value: licensedEmployeeCount },
     { title: "No of Unlicensed Users", value: unlicensedEmployeeCount },
@@ -75,15 +47,10 @@ const BillingInsights: React.FC<{
     { title: "Date", value: createdAt },
   ];
   return (
-    <div className={`${boxStyle} text-sm bg-card`}>
+    <div className={`${cardStyle} text-sm bg-card`}>
       <div className={`${boxStyle} flex gap-x-4 shadow-sm rounded-md`}>
         {items.map(({ title, value }, i) => (
-          <div
-            key={i}
-            className={`${
-              i !== items.length - 1 && "border-none border-slate-600"
-            } flex-1  flex flex-col gap-2`}
-          >
+          <div key={i} className={`${i !== items.length - 1 && " border-r"} flex-1  flex flex-col gap-2`}>
             <h6 className={"font-light text-sm capitalize"}>{title}</h6>
             <p className={"font-bold text-lg capitalize"}>{value}</p>
           </div>
@@ -139,29 +106,20 @@ const EmployeeWithLicenseTable: React.FC<{
       title: "Employee’s ID",
       dataIndex: "Employee’s ID",
       key: "Employee’s ID",
-      render: (val, item) => (
-        <span className="uppercase">{item.employee.empUid}</span>
-      ),
+      render: (val, item) => <span className="uppercase">{item.employee.empUid}</span>,
     },
     {
       title: "Employee’s Name",
       dataIndex: "Employee’s Name",
       key: "Employee’s Name",
-      render: (val, item) => (
-        <span className="capitalize">{getEmployeeFullName(item.employee)}</span>
-      ),
+      render: (val, item) => <span className="capitalize">{getEmployeeFullName(item.employee)}</span>,
     },
   ];
 
   return (
     <div className="flex flex-col gap-4">
       <h6 className="font-semiblod">{title}</h6>
-      <Table
-        columns={columns}
-        size="small"
-        dataSource={data?.map((item, i) => ({ ...item, key: i + 1 }))}
-        loading={loading}
-      />
+      <Table columns={columns} size="small" dataSource={data?.map((item, i) => ({ ...item, key: i + 1 }))} loading={loading} />
     </div>
   );
 };

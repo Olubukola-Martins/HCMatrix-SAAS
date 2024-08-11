@@ -7,7 +7,6 @@ import { useNavigate, useParams } from "react-router-dom";
 import ErrorBoundary from "components/errorHandlers/ErrorBoundary";
 import { Skeleton } from "antd";
 import { ErrorWrapper } from "components/errorHandlers/ErrorWrapper";
-import CurrentPlanCard from "features/billing/components/billing/cards/CurrentPlanCard";
 
 const SingleBillingHistory = () => {
   const params = useParams();
@@ -24,15 +23,32 @@ const SingleBillingHistory = () => {
   return (
     <ErrorBoundary>
       <Skeleton loading={isLoading} active paragraph={{ rows: 45 }}>
-        <ErrorWrapper isError={isError} message={error?.response?.data?.message ?? error?.response?.data?.error?.message}>
-          <div className="Container space-y-4 ">
-            <PageIntro title="Billing Summary" link={appRoutes.billingSummary} />
-            <div className="mb-7">
-              <PageSubHeader description={`Your Current Plan is Basic Plan`} hideBackground />
-              <CurrentPlanCard billingPrice={2.49} currentPlanName="Basic" currentUsers={500} usersLimit={1000} extraStyles="w-60 max-w-full" borderedProgressBar={true} showUpgradeBtn={false} />
-            </div>
+        <ErrorWrapper
+          isError={isError}
+          message={
+            error?.response?.data?.message ??
+            error?.response?.data?.error?.message
+          }
+        >
+          <div className="Container space-y-4">
+            <PageIntro
+              title="Billing Summary"
+              link={appRoutes.billingSummary}
+            />
+            <PageSubHeader
+              description={`Below are the purchased modules`}
+              hideBackground
+              actions={[
+                {
+                  name: "Manage User Licenses",
+                  handleClick: () => navigate(appRoutes.purchaseUserLicense),
+                },
+              ]}
+            />
 
-            <BillingTransactionDetails billingTransaction={billingTransaction} />
+            <BillingTransactionDetails
+              billingTransaction={billingTransaction}
+            />
           </div>
         </ErrorWrapper>
       </Skeleton>

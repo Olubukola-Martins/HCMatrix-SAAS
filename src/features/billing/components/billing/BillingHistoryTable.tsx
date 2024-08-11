@@ -6,9 +6,12 @@ import CardWrapper from "../ui/CardWrapper";
 import { mockDataBillingHistory } from "features/billing/utils/data";
 import { useGetAllSubscriptionTransactions } from "features/billing/hooks/company/transaction/useGetAllSubscriptionTransactions";
 import { usePagination } from "hooks/usePagination";
+import { appRoutes } from "config/router/paths";
+import { useNavigate } from "react-router-dom";
 
 export interface BillingData {
   key: React.Key;
+  id: number;
   billings: string;
   date: string;
   status: string;
@@ -23,6 +26,7 @@ interface BillingsTableProps {
 
 const BillingsHistoryTable: React.FC<BillingsTableProps> = ({ data = mockDataBillingHistory }) => {
   const [selectedRowKeys, setSelectedRowKeys] = useState<React.Key[]>([]);
+  const navigate = useNavigate();
   // const { pagination, onChange } = usePagination();
 
   // const { data, isFetching } = useGetAllSubscriptionTransactions({
@@ -35,9 +39,11 @@ const BillingsHistoryTable: React.FC<BillingsTableProps> = ({ data = mockDataBil
     console.log("Click", e);
   };
 
-  const menu = (
+  const menu = (item) => (
     <Menu onClick={handleMenuClick}>
-      <Menu.Item key="view-details">View Details</Menu.Item>
+      <Menu.Item key="view-details" onClick={() => navigate(appRoutes.singleBillingSummary(item.id).path)}>
+        View Details
+      </Menu.Item>
       <Menu.Item key="download-file">Download File</Menu.Item>
     </Menu>
   );
@@ -76,8 +82,8 @@ const BillingsHistoryTable: React.FC<BillingsTableProps> = ({ data = mockDataBil
     {
       title: "Action",
       key: "action",
-      render: () => (
-        <Dropdown overlay={menu} trigger={["click"]}>
+      render: (_, item) => (
+        <Dropdown overlay={menu(item)} trigger={["click"]}>
           <Button icon={<MoreOutlined />} type="text" />
         </Dropdown>
       ),
