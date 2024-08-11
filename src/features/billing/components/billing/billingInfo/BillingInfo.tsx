@@ -82,7 +82,7 @@ const BillingInfo = () => {
         labelCol={{ span: 24 }}
         className="space-y-4"
       >
-        <BillingDetailsSection Form={Form} form={form} size="lg" />
+        <BillingDetailsSection Form={Form} form={form} size="sm" />
         <div className="flex justify-end">
           <AppButton label="Save" type="submit" isLoading={isLoading} />
         </div>
