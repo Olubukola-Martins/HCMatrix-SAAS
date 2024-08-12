@@ -1,4 +1,4 @@
-import { Form, Input, Modal, Skeleton } from "antd";
+import { Form, Input, Drawer, Skeleton, Table } from "antd";
 import React, { useEffect } from "react";
 import { IModalProps } from "types";
 import { useApiAuth } from "hooks/useApiAuth";
@@ -52,12 +52,14 @@ export const ProfileEditRequestDetails: React.FC<IProps> = ({
   }, [id, form, data]);
   const queryClient = useQueryClient();
   return (
-    <Modal
+    <Drawer
       open={open}
-      onCancel={() => handleClose()}
+      onClose={() => handleClose()}
       footer={null}
       title={"Profile Edit Request Details"}
       style={{ top: 20 }}
+      width={`75%`}
+
     >
       <Skeleton active loading={isFetching} paragraph={{ rows: 8 }}>
         <ApproveOrRejectButton
@@ -87,50 +89,19 @@ export const ProfileEditRequestDetails: React.FC<IProps> = ({
           }}
         />
 
-        <Form form={form} disabled layout="vertical">
-          <Form.Item name={"date"} label="Date">
-            <Input className="w-full" />
-          </Form.Item>
-          <Form.Item name={"preferredStartDate"} label="Preferred Start Date">
-            <Input className="w-full" />
-          </Form.Item>
-          <Form.Item name={"employeeName"} label="Employee Name">
-            <Input />
-          </Form.Item>
-          <Form.Item name={"employeeID"} label="Employee ID">
-            <Input />
-          </Form.Item>
-          <Form.Item name={"proposedDesignation"} label="Proposed Designation">
-            <Input />
-          </Form.Item>
-          <Form.Item name={"justification"} label="Justification">
-            <Input.TextArea />
-          </Form.Item>
+        <Table columns={[
+          {
+            title: ''
+          },
+          {
+            title: 'Current Value'
+          },
+          {
+            title: 'Proposed Value'
+          },
 
-          {data && data?.attachmentUrls?.length > 0 && (
-            <Form.Item name={"attachment"} label="Attachment">
-              <div className={boxStyle}>
-                {data?.attachmentUrls.map((item, i) => (
-                  <a
-                    href={item}
-                    className="mb-2 text-sm underline text-caramel hover:no-underline"
-                  >
-                    Document {i + 1}
-                  </a>
-                ))}
-              </div>
-            </Form.Item>
-          )}
-          <Form.Item name={"status"} label="Status">
-            <Input
-              className="capitalize"
-              style={{
-                color: getAppropriateColorForStatus(data?.status ?? ""),
-              }}
-            />
-          </Form.Item>
-        </Form>
+        ]}/>
       </Skeleton>
-    </Modal>
+    </Drawer>
   );
 };

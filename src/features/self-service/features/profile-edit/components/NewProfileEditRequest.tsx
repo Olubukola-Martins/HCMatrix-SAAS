@@ -129,12 +129,10 @@ export const NewProfileEditRequest: React.FC<IModalProps> = ({
           }))} placeholder="Select Category" />
         </Form.Item>
         {
-          form.getFieldsValue().category === 'profile-edit/job-information' && <EditJobInformationRequest employeeId={currentUserEmployeeId} jobInformation={employee?.jobInformation}/>
+          <EditJobInformationRequest employeeId={currentUserEmployeeId} jobInformation={employee?.jobInformation}/>
         }
 
-        <div className="flex justify-end">
-          <AppButton type="submit" isLoading={isLoading} />
-        </div>
+       
       </Form>
     </Drawer>
   );
