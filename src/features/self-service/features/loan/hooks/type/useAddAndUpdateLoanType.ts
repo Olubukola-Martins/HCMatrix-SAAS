@@ -26,7 +26,8 @@ const createData = async (props: {
     ...props.data,
   };
 
-  const response = await axios.post(url, data, config);
+     const requestType = props.data.id ? axios.put : axios.post;
+   const response = await requestType(url, data, config);
   return response;
 };
 export const useAddAndUpdateLoanType = () => {
@@ -35,29 +36,3 @@ export const useAddAndUpdateLoanType = () => {
     createData({ data: props, auth: { token, companyId } })
   );
 };
-
-// const UserRequest = async (props: branchProps) => {
-
-//   const updateUrl = `/admin/branches/${props.id}`;
-//   const addUrl = "/admin/branches";
-//   const acceptedUrl = props.id ? updateUrl : addUrl;
-//   const url = `${END_POINT.BASE_URL}${acceptedUrl}`;
-
-//   const config = {
-//     headers: {
-//       Accept: "application/json",
-//       Authorization: `Bearer ${token}`,
-//     },
-//   };
-
-//   const data = {
-//     ...props,
-//   };
-//   const requestType = props.id ? axios.put : axios.post;
-//   const response = await requestType(url, data, config);
-//   return response;
-// };
-
-// export const useAddAndUpdateLoanType = () => {
-//   return useMutation(UserRequest);
-// };
