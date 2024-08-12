@@ -1,9 +1,10 @@
-import { DatePicker, Form, Input, Modal } from "antd";
+import { DatePicker, Form, Input, Modal, Select } from "antd";
 import { AppButton } from "components/button/AppButton";
 import React from "react";
 import { IModalProps } from "types";
 import {
   dateHasToBeGreaterThanOrEqualToCurrentDayRule,
+  generalValidationRules,
   textInputValidationRules,
 } from "utils/formHelpers/validation";
 import { useCurrentFileUploadUrl } from "hooks/useCurrentFileUploadUrl";
@@ -17,6 +18,7 @@ import { QUERY_KEY_FOR_APPROVAL_REQUESTS } from "features/core/workflows/hooks/u
 import { QUERY_KEY_FOR_UNREAD_NOTIFICATION_COUNT } from "features/notifications/hooks/unRead/useGetUnReadNotificationCount";
 import { QUERY_KEY_FOR_NOTIFICATIONS } from "features/notifications/hooks/useGetAlerts";
 import { FormUnlicensedEmployeeSSRequestInput } from "features/core/employees/components/FormEmployeeInput";
+import { PROFILE_EDIT_REQUEST_TYPES } from "../constants";
 
 export const NewProfileEditRequest: React.FC<IModalProps> = ({
   open,
@@ -103,34 +105,17 @@ export const NewProfileEditRequest: React.FC<IModalProps> = ({
             label: "Select Unlinsenced Employee",
           }}
         />
+   
+       
         <Form.Item
-          rules={[dateHasToBeGreaterThanOrEqualToCurrentDayRule]}
-          name="date"
-          label="Date"
+          rules={generalValidationRules}
+          name="category"
+          label="Category"
         >
-          <DatePicker placeholder="Date" className="w-full" />
-        </Form.Item>
-        <Form.Item
-          rules={[dateHasToBeGreaterThanOrEqualToCurrentDayRule]}
-          name="preferredStartDate"
-          label="Preferred Start Date"
-        >
-          <DatePicker placeholder="Preferred Start Date" className="w-full" />
-        </Form.Item>
-
-        <FormDesignationInput
-          Form={Form}
-          control={{
-            name: "proposedDesignationId",
-            label: "Proposed Designation",
-          }}
-        />
-        <Form.Item
-          rules={textInputValidationRules}
-          name="justification"
-          label="Justification"
-        >
-          <Input.TextArea placeholder="Justification" />
+          <Select options={PROFILE_EDIT_REQUEST_TYPES.map((item, i) => ({
+            value: item.type,
+            label: <span className="capitalize">{item.name}</span>
+          }))} placeholder="Select Category" />
         </Form.Item>
 
         <div className="flex justify-end">

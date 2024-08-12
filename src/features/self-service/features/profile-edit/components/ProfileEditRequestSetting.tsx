@@ -8,6 +8,8 @@ import { useQueryClient } from "react-query";
 import { openNotification } from "utils/notifications";
 import { useCreateOrUpdateRequisitionSetting } from "../../requisitions/hooks/setting/useCreateOrUpdateRequisitionSetting";
 import { useGetSingleRequisitionSetting, QUERY_KEY_FOR_SINGLE_REQUISITION_SETTING } from "../../requisitions/hooks/setting/useGetSingleRequisitionSetting";
+import { TProfileEditRequestType } from "../types";
+import { PROFILE_EDIT_REQUEST_TYPES } from "../constants";
 
 export const ProfileEditRequestSetting = () => {
   return (
@@ -20,30 +22,13 @@ export const ProfileEditRequestSetting = () => {
   );
 };
 
-export type TProfileEditRequestType ='profile-edit/finance' | 'profile-edit/profile' | 'profile-edit/personal-information'  | 'profile-edit/job-information'
-const EDIT_REQUEST_TYPES:{type:TProfileEditRequestType, name: string}[]= [
-  {
-    name: 'Finance',
-    type: 'profile-edit/finance'
-  },
-  {
-    name: 'Profile',
-    type: 'profile-edit/profile'
-  },
-  {
-    name: 'Personal Information',
-    type: 'profile-edit/personal-information'
-  },
-  {
-    name: 'Job Information',
-    type: 'profile-edit/job-information'
-  },
-]
+
+
 const ProfileEditRequestPolicy = () => {
  
   return (
     <div className="flex flex-col gap-y-6 mt-4">
-      {EDIT_REQUEST_TYPES.map((item, i) => (
+      {PROFILE_EDIT_REQUEST_TYPES.map((item, i) => (
         <div className="bg-card py-3 px-4" key={i}>
         <ProfileEditSingleRequisitionPolicyForm type={item.type} name={item.name} />
       </div>

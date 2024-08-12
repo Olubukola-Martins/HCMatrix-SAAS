@@ -1,0 +1,1 @@
+export type TProfileEditRequestType ='profile-edit/finance' | 'profile-edit/profile' | 'profile-edit/personal-information'  | 'profile-edit/job-information'
