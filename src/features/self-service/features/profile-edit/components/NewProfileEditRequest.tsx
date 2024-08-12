@@ -1,6 +1,6 @@
 import {  Form,  Drawer, Select } from "antd";
 import { AppButton } from "components/button/AppButton";
-import React from "react";
+import React, { useState } from "react";
 import { IModalProps } from "types";
 import {
   generalValidationRules,
@@ -27,7 +27,7 @@ export const NewProfileEditRequest: React.FC<IModalProps> = ({
 }) => {
   const queryClient = useQueryClient();
 
-  const [form] = Form.useForm<{category:TProfileEditRequestType}>();
+  const [category, setCategory] = useState<TProfileEditRequestType>('profile-edit/job-information')
   const { mutate, isLoading } = useCreatePromotionRequisition();
 
   const documentUrl = useCurrentFileUploadUrl("documentUrl");
@@ -58,7 +58,6 @@ export const NewProfileEditRequest: React.FC<IModalProps> = ({
             description: res.data.message,
             // duration: 0.4,
           });
-          form.resetFields();
           handleClose();
 
           queryClient.invalidateQueries({
@@ -105,7 +104,6 @@ export const NewProfileEditRequest: React.FC<IModalProps> = ({
     >
       <Form
         layout="vertical"
-        form={form}
         onFinish={handleSubmit}
         requiredMark={false}
       >
@@ -123,12 +121,12 @@ export const NewProfileEditRequest: React.FC<IModalProps> = ({
           name="category"
           label="Category"
         >
-          <Select options={PROFILE_EDIT_REQUEST_TYPES.map((item, i) => ({
+          <Select onSelect={(val) => setCategory(val)} options={PROFILE_EDIT_REQUEST_TYPES.map((item, i) => ({
             value: item.type,
             label: <span className="capitalize">{item.name}</span>
           }))} placeholder="Select Category" />
         </Form.Item>
-        {
+        {category === 'profile-edit/job-information' &&
           <EditJobInformationRequest employeeId={currentUserEmployeeId} jobInformation={employee?.jobInformation}/>
         }
 
