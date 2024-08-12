@@ -35,47 +35,6 @@ export const ConfigurePayment = () => {
             <Switch />
           </Form.Item>
         </div>
-
-        {/* <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-x-4">
-          <div>
-            <h4 className="font-medium pb-1">Deduction Amount Calculation</h4>
-            <Form.Item
-              name="loan_percentage"
-              label="Percentage of salary"
-              rules={generalValidationRules}
-              className="lg:mt-6"
-            >
-              <InputNumber
-                min={1}
-                max={100}
-                placeholder="10"
-                className="w-full"
-              />
-            </Form.Item>
-          </div>
-
-          <div>
-            <h4 className="font-medium pb-1">Deduction Limit</h4>
-            <Form.Item
-              name="deduction_Limit"
-              label="Set a maximum percentage of the salary that can be deducted"
-              rules={generalValidationRules}
-            >
-              <InputNumber
-                min={1}
-                max={100}
-                placeholder="5"
-                suffix={
-                  <div style={{ color: "rgba(0,0,0,.45)" }}>
-                    % of net salary
-                  </div>
-                }
-                className="w-full"
-              />
-            </Form.Item>
-          </div>
-        </div> */}
-
         <h5 className="font-medium pb-2">Notification</h5>
 
         <Form.Item

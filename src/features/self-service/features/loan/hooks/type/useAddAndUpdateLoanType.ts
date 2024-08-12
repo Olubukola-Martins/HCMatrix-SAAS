@@ -10,7 +10,7 @@ const createData = async (props: {
   auth: ICurrentCompany;
 }) => {
   const updateUrl = `/loan/type/${props.data.id}`;
-  const addUrl = "/loan/type`";
+  const addUrl = "/loan/type";
   const acceptedUrl = props.data.id ? updateUrl : addUrl;
 
   const url = `${MICROSERVICE_ENDPOINTS.PAYROLL}${acceptedUrl}`;

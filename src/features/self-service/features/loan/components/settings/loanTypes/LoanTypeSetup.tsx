@@ -1,28 +1,32 @@
 import { ColumnsType } from "antd/es/table";
 import { AppButton } from "components/button/AppButton";
-import { TLoanTypeProps } from "../../../types/setting";
 import { Table } from "antd/lib";
 import { AddLoanType } from "./AddLoanType";
 import { useState } from "react";
+import { useGetLoanTypes } from "../../../hooks/type/useGetLoanTypes";
+import { TLoanType } from "../../../types";
+import { usePagination } from "hooks/usePagination";
 
 const LoanTypeSetup = () => {
   const [openAddModal, setOpenAddModal] = useState<boolean>(false);
+  const { pagination, onChange } = usePagination({ pageSize: 5 });
+  const { data, isLoading } = useGetLoanTypes({pagination});
 
-  const columns: ColumnsType<TLoanTypeProps> = [
+  const columns: ColumnsType<TLoanType> = [
     {
       title: "Name",
       dataIndex: "name",
     },
     {
       title: "Interest",
-      dataIndex: "interest",
+      dataIndex: "interestRate",
     },
     {
       title: "Action",
       render: (_, val) => (
-        <div className="flex items-center gap-3">
-          <i className="ri-pencil-line"></i>
-          <i className="ri-delete-bin-line"></i>
+        <div className="flex items-center gap-4">
+          <i className="ri-pencil-line hover:text-caramel cursor-pointer text-lg"></i>
+          <i className="ri-delete-bin-line hover:text-caramel cursor-pointer text-lg"></i>
         </div>
       ),
     },
@@ -45,7 +49,14 @@ const LoanTypeSetup = () => {
         handleClick={() => setOpenAddModal(true)}
       />
 
-      <Table columns={columns} dataSource={[]} className="mt-5" />
+      <Table
+        columns={columns}
+        dataSource={data?.data}
+        loading={isLoading}
+        className="mt-5"
+        pagination={{ ...pagination, total: data?.total }}
+        onChange={onChange}
+      />
     </>
   );
 };
