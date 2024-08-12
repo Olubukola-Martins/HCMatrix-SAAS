@@ -12,7 +12,7 @@ import { TPromotionRequisition } from "../../requisitions/types/promotion";
 import { ProfileEditRequestDetails } from "./ProfileEditRequestDetails";
 import { getEmployeeFullName } from "features/core/employees/utils/getEmployeeFullName";
 import { useGetPromotionRequisitions4AuthEmployee } from "../../requisitions/hooks/promotion/useGetPromotionRequisitions4AuthEmployee";
-import { CancelPromotionRequest } from "./CancelPromotionRequest";
+import { CancelProfileEditRequest } from "./CancelProfileEditRequest";
 import ViewApprovalStages from "features/core/workflows/components/approval-request/ViewApprovalStages";
 
 type TAction = "cancel" | "view" | "view-approval-stages";
@@ -134,7 +134,7 @@ export const EmployeeProfileEditRequestsTable: React.FC<{
           type="promotion"
         />
       )}
-      <CancelPromotionRequest
+      <CancelProfileEditRequest
         handleClose={onClose}
         open={action === "cancel"}
         data={request}

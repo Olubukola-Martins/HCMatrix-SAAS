@@ -11,7 +11,7 @@ import { TPromotionRequisition } from "../../requisitions/types/promotion";
 interface IProps extends IModalProps {
   data?: TPromotionRequisition;
 }
-export const CancelPromotionRequest: React.FC<IProps> = ({
+export const CancelProfileEditRequest: React.FC<IProps> = ({
   open,
   handleClose,
   data,
