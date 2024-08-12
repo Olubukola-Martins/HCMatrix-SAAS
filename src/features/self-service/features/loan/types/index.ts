@@ -8,10 +8,8 @@ import { TLoanWorthiness } from "./worthiness";
 type TLoanType = {
   id: number;
   name: string;
-  label: string;
-  companyId: number;
-  createdAt: string;
-  updatedAt: string;
+  hasInterest: boolean;
+  interestRate: number;
 };
 
 type TPaymentPlan = {

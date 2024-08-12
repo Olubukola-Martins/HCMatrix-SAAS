@@ -10,6 +10,8 @@ import {
 export const AddLoanType = ({ handleClose, open }: IModalProps) => {
   const [interestOption, setInterestOption] = useState("no");
 
+   
+
   return (
     <Modal
       open={open}
