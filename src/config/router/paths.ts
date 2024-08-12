@@ -205,6 +205,8 @@ export const appRoutes = {
   selfServicePositionChangeSetting: `/self-service/position-change-setting`,
   selfServicePromotion: `/self-service/promotion`,
   selfServicePromotionSetting: `/self-service/promotion-setting`,
+  selfServiceProfileEdit: `/self-service/profile-edit`,
+  selfServiceProfileEditSetting: `/self-service/profile-edit-setting`,
   selfServiceAssets: `/self-service/assets`,
   selfServiceAssetSetting: `/self-service/asset-setting`,
   selfServiceTravels: `/self-service/travels`,

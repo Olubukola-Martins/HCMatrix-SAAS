@@ -11,7 +11,7 @@ const ProfileEditRequestsSettingPage = () => {
       <div className="Container ">
         <PageIntro
           title="Profile Edit Request Settings"
-          link={appRoutes.selfServicePromotion}
+          link={appRoutes.selfServiceProfileEdit}
         />
         <ProfileEditRequestSetting />
       </div>
