@@ -27,6 +27,19 @@ const useGeneratePayrollNavRoutes = (): TData => {
         }),
       },
       {
+        title: "Wallet",
+        path: appRoutes.payrollWallet,
+        hidden: !canUserAccessComponent({
+          userPermissions,
+          requiredPermissions: ["manage-cost-centres"],
+          activeSubscription,
+          requiredSubscriptionState: {
+            label: "payroll",
+            resources: ["payroll-analytics", "payroll-disbursement"],
+          },
+        }),
+      },
+      {
         title: "Cost Centres",
         path: appRoutes.payrollCostCentres,
         hidden: !canUserAccessComponent({

@@ -16,6 +16,10 @@ import {
 } from "components/permission-restriction/PermissionRestrictor";
 import { useGetPayrollPendingSetup } from "../hooks/payroll/pendingSetup/useGetPayrollPendingSetup";
 import ProgressBar from "features/home/components/ProgressBar";
+import WalletOverviewDetailsCard from "../components/wallet/overview/cards/WalletOverviewDetailsCard";
+import { SimpleCard } from "components/cards/SimpleCard";
+import SimpleCardList from "components/cards/SimpleCardList";
+import { useRetrievePayrollWallets } from "../hooks/wallet/useRetrievePayrollWallets";
 
 const outerStyle =
   "group  transition ease-in-out duration-500 cursor-pointer shadow-md col-span-3 md:col-span-1 rounded-xl flex flex-col gap-2 w-full  p-3 bg-card";
@@ -34,6 +38,7 @@ const PayrollHome = () => {
   const { userPermissions } = useGetUserPermissions();
   const { data: pendingSetup, isLoading: pendingSetupLoading } =
     useGetPayrollPendingSetup();
+    const { data:wallets, isLoading:isLoadingWallets } = useRetrievePayrollWallets();
   return (
     <>
       <PayrollSubNav />
@@ -101,88 +106,120 @@ const PayrollHome = () => {
                   : `You don't have access to this content!`,
               }}
             />
-
-            <AnimatePresence exitBeforeEnter>
-              {/* pending set up */}
-
-              <motion.div
-                layout
-                transition={{
-                  layout: {
-                    duration: showItems ? 0.5 : 0.1,
-                    ease: showItems ? "easeOut" : "easeIn",
+            <>
+              <WalletOverviewDetailsCard
+                data={wallets}
+                isLoading={isLoadingWallets}
+                className="border rounded-md p-4 bg-card shadow-md text-sm"
+              />
+              <SimpleCardList
+                className="col-span-3 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4"
+                entries={[
+                  {
+                    title: "Wallet Balance",
+                    highlight: "13,175,000.00",
+                    highlightClassName: "font-bold text-xl mb-2 capitalize",
+                    className:
+                      "border rounded-md p-2 shadow-sm bg-card hover:shadow-md cursor-pointer group h-full",
                   },
-                }}
-                className={`cursor-pointer relative z-10 ${
-                  showItems && "row-span-3"
-                } shadow-md hgrouphover:border-caramel col-span-3 lg:col-span-1 rounded-xl flex flex-col gap-2 w-full  p-3 bg-card`}
-                onClick={() => setShowItems((val) => !val)}
-              >
-                <div className="rounded-xl p-2 flex flex-col gap-8">
-                  <PayrollPendingSetup
-                    pendingItems={[
-                      {
-                        content: "Setup company currency settings",
-                        done: pendingSetup?.companyCurrencySettings,
-                        link: appRoutes.companyDetailsSettings,
-                      },
-                      {
-                        content: "Setup cost centres",
-                        done: pendingSetup?.costCentres,
-                        link: appRoutes.payrollCostCentres,
-                      },
-                      {
-                        content: "Setup payroll schemes",
-                        done: pendingSetup?.payrollSchemes,
-                        link: appRoutes.payrollSchemes,
-                      },
-                      {
-                        content: "Configure payroll report templates",
-                        done: pendingSetup?.payrollReportTemplates,
-                        link: appRoutes.payrollReport,
-                      },
-                      {
-                        content: "Configure payslip templates",
-                        done: pendingSetup?.payslipTemplates,
-                        link: appRoutes.payslips,
-                      },
-                      {
-                        content: "Setup ITF Authorities",
-                        done: pendingSetup?.itfAuthorities,
-                        link: appRoutes.itfAuthorities,
-                      },
-                      {
-                        content: "Setup NSITF Authorities",
-                        done: pendingSetup?.nsitfAuthorities,
-                        link: appRoutes.nsitfAuthorities,
-                      },
-                      {
-                        content: "Setup Pension Authorities",
-                        done: pendingSetup?.pensionAdministators,
-                        link: appRoutes.pensionAdministrators,
-                      },
-                      {
-                        content: "Setup Tax Authorities",
-                        done: pendingSetup?.taxAuthorities,
-                        link: appRoutes.taxAuthorities,
-                      },
-                      {
-                        content: "Configure payroll settings",
-                        done: pendingSetup?.payrollSettings,
-                        link: appRoutes.payrollSettings,
-                      },
-                      {
-                        content: "Add Employees",
-                        done: pendingSetup?.employees,
-                        link: appRoutes.employeeSettings,
-                      },
-                    ]}
-                    isLoading={pendingSetupLoading}
-                    showItems={showItems}
-                  />
-                </div>
-              </motion.div>
-              {/* <PayrollCard
+                  {
+                    title: "Total Debit",
+                    highlight: 0,
+                    highlightClassName: "font-bold text-xl mb-2 capitalize",
+                    className:
+                      "border rounded-md p-2 shadow-sm bg-card hover:shadow-md cursor-pointer group h-full",
+                  },
+                  {
+                    title: "Total Credit",
+                    highlight: 0,
+                    highlightClassName: "font-bold text-xl mb-2 capitalize",
+                    className:
+                      "border rounded-md p-2 shadow-sm bg-card hover:shadow-md cursor-pointer group h-full",
+                  },
+                ]}
+              />
+
+              <AnimatePresence exitBeforeEnter>
+                {/* pending set up */}
+
+                <motion.div
+                  layout
+                  transition={{
+                    layout: {
+                      duration: showItems ? 0.5 : 0.1,
+                      ease: showItems ? "easeOut" : "easeIn",
+                    },
+                  }}
+                  className={`cursor-pointer relative z-10 ${
+                    showItems && "row-span-3"
+                  } shadow-md hgrouphover:border-caramel col-span-3 lg:col-span-1 rounded-xl flex flex-col gap-2 w-full  p-3 bg-card`}
+                  onClick={() => setShowItems((val) => !val)}
+                >
+                  <div className="rounded-xl p-2 flex flex-col gap-8">
+                    <PayrollPendingSetup
+                      pendingItems={[
+                        {
+                          content: "Setup company currency settings",
+                          done: pendingSetup?.companyCurrencySettings,
+                          link: appRoutes.companyDetailsSettings,
+                        },
+                        {
+                          content: "Setup cost centres",
+                          done: pendingSetup?.costCentres,
+                          link: appRoutes.payrollCostCentres,
+                        },
+                        {
+                          content: "Setup payroll schemes",
+                          done: pendingSetup?.payrollSchemes,
+                          link: appRoutes.payrollSchemes,
+                        },
+                        {
+                          content: "Configure payroll report templates",
+                          done: pendingSetup?.payrollReportTemplates,
+                          link: appRoutes.payrollReport,
+                        },
+                        {
+                          content: "Configure payslip templates",
+                          done: pendingSetup?.payslipTemplates,
+                          link: appRoutes.payslips,
+                        },
+                        {
+                          content: "Setup ITF Authorities",
+                          done: pendingSetup?.itfAuthorities,
+                          link: appRoutes.itfAuthorities,
+                        },
+                        {
+                          content: "Setup NSITF Authorities",
+                          done: pendingSetup?.nsitfAuthorities,
+                          link: appRoutes.nsitfAuthorities,
+                        },
+                        {
+                          content: "Setup Pension Authorities",
+                          done: pendingSetup?.pensionAdministators,
+                          link: appRoutes.pensionAdministrators,
+                        },
+                        {
+                          content: "Setup Tax Authorities",
+                          done: pendingSetup?.taxAuthorities,
+                          link: appRoutes.taxAuthorities,
+                        },
+                        {
+                          content: "Configure payroll settings",
+                          done: pendingSetup?.payrollSettings,
+                          link: appRoutes.payrollSettings,
+                        },
+                        {
+                          content: "Add Employees",
+                          done: pendingSetup?.employees,
+                          link: appRoutes.employeeSettings,
+                        },
+                      ]}
+                      isLoading={pendingSetupLoading}
+                      showItems={showItems}
+                    />
+                  </div>
+                </motion.div>
+                {/* <PayrollCard
               {...{
                 image: Group,
                 title: "Payroll History",
@@ -191,25 +228,26 @@ const PayrollHome = () => {
               }}
             /> */}
 
-              {/* Payroll graph & charts  */}
-              <motion.div
-                layout
-                transition={{
-                  layout: {
-                    duration: showItems ? 0.1 : 0.5,
-                    ease: showItems ? "easeIn" : "easeOut",
-                  },
-                }}
-                className={`flex flex-col gap-4 w-full ${
-                  showItems
-                    ? "lg:col-span-3 col-span-3"
-                    : "lg:col-span-4 col-span-3"
-                }`}
-              >
-                {/* the chart goes here */}
-                <PayrollOverviewChart />
-              </motion.div>
-            </AnimatePresence>
+                {/* Payroll graph & charts  */}
+                <motion.div
+                  layout
+                  transition={{
+                    layout: {
+                      duration: showItems ? 0.1 : 0.5,
+                      ease: showItems ? "easeIn" : "easeOut",
+                    },
+                  }}
+                  className={`flex flex-col gap-4 w-full ${
+                    showItems
+                      ? "lg:col-span-3 col-span-3"
+                      : "lg:col-span-4 col-span-3"
+                  }`}
+                >
+                  {/* the chart goes here */}
+                  <PayrollOverviewChart />
+                </motion.div>
+              </AnimatePresence>
+            </>
           </div>
         </Skeleton>
       </div>
