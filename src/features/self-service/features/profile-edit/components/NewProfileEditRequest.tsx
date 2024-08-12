@@ -121,7 +121,7 @@ export const NewProfileEditRequest: React.FC<IModalProps> = ({
           name="category"
           label="Category"
         >
-          <Select onSelect={(val) => setCategory(val)} options={PROFILE_EDIT_REQUEST_TYPES.map((item, i) => ({
+          <Select onSelect={(_, {value}) => setCategory(value)} options={PROFILE_EDIT_REQUEST_TYPES.map((item, i) => ({
             value: item.type,
             label: <span className="capitalize">{item.name}</span>
           }))} placeholder="Select Category" />

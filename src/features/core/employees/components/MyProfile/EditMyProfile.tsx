@@ -195,7 +195,7 @@ export const EditMyProfile = ({ open, handleClose, employee }: IProps) => {
               label="Employee ID"
               rules={textInputValidationRules}
             >
-              <Input className="generalInputStyle" placeholder="Employee ID" />
+              <Input className="generalInputStyle" placeholder="Employee ID" disabled/>
             </Form.Item>
           </div>
         </div>
