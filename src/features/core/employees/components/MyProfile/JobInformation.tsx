@@ -31,11 +31,11 @@ import { DEFAULT_DATE_FORMAT } from "constants/dateFormats";
 import AppTooltip from "components/tooltip/AppTooltip";
 import { Dayjs } from "dayjs";
 
-interface IProps {
+export interface TJobInformationProps {
   employeeId?: number;
   jobInformation?: TSingleEmployee["jobInformation"];
 }
-export const JobInformation: React.FC<IProps> = ({
+export const JobInformation: React.FC<TJobInformationProps> = ({
   jobInformation,
   employeeId,
 }) => {

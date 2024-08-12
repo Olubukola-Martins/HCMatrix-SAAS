@@ -1,24 +1,25 @@
-import { DatePicker, Form, Input, Modal, Select } from "antd";
+import {  Form,  Drawer, Select } from "antd";
 import { AppButton } from "components/button/AppButton";
 import React from "react";
 import { IModalProps } from "types";
 import {
-  dateHasToBeGreaterThanOrEqualToCurrentDayRule,
   generalValidationRules,
-  textInputValidationRules,
 } from "utils/formHelpers/validation";
 import { useCurrentFileUploadUrl } from "hooks/useCurrentFileUploadUrl";
 import { openNotification } from "utils/notifications";
 import { useQueryClient } from "react-query";
 import { QUERY_KEY_FOR_PROMOTION_REQUISITIONS } from "../../requisitions/hooks/promotion/useGetPromotionRequisitions";
 import { useCreatePromotionRequisition } from "../../requisitions/hooks/promotion/useCreatePromotionRequisition";
-import { FormDesignationInput } from "features/core/designations/components/FormDesignationInput";
 import { QUERY_KEY_FOR_PROMOTION_REQUISITIONS_FOR_AUTH_EMPLOYEE } from "../../requisitions/hooks/promotion/useGetPromotionRequisitions4AuthEmployee";
 import { QUERY_KEY_FOR_APPROVAL_REQUESTS } from "features/core/workflows/hooks/useFetchApprovalRequests";
 import { QUERY_KEY_FOR_UNREAD_NOTIFICATION_COUNT } from "features/notifications/hooks/unRead/useGetUnReadNotificationCount";
 import { QUERY_KEY_FOR_NOTIFICATIONS } from "features/notifications/hooks/useGetAlerts";
 import { FormUnlicensedEmployeeSSRequestInput } from "features/core/employees/components/FormEmployeeInput";
 import { PROFILE_EDIT_REQUEST_TYPES } from "../constants";
+import { TProfileEditRequestType } from "../types";
+import { useFetchSingleEmployee } from "features/core/employees/hooks/useFetchSingleEmployee";
+import { useApiAuth } from "hooks/useApiAuth";
+import { EditJobInformationRequest } from "./category/EditJobInformationRequest";
 
 export const NewProfileEditRequest: React.FC<IModalProps> = ({
   open,
@@ -26,7 +27,7 @@ export const NewProfileEditRequest: React.FC<IModalProps> = ({
 }) => {
   const queryClient = useQueryClient();
 
-  const [form] = Form.useForm();
+  const [form] = Form.useForm<{category:TProfileEditRequestType}>();
   const { mutate, isLoading } = useCreatePromotionRequisition();
 
   const documentUrl = useCurrentFileUploadUrl("documentUrl");
@@ -84,13 +85,23 @@ export const NewProfileEditRequest: React.FC<IModalProps> = ({
       }
     );
   };
+  const { currentUserEmployeeId } = useApiAuth();
+  const {
+    data: employee,
+    isLoading: isLoadingEmployee,
+    isError,
+    error,
+  } = useFetchSingleEmployee({
+    employeeId: currentUserEmployeeId
+  });
   return (
-    <Modal
+    <Drawer
       open={open}
-      onCancel={() => handleClose()}
+      onClose={() => handleClose()}
       footer={null}
       title={"New Profile Edit Request"}
       style={{ top: 20 }}
+      width={`75%`}
     >
       <Form
         layout="vertical"
@@ -117,11 +128,14 @@ export const NewProfileEditRequest: React.FC<IModalProps> = ({
             label: <span className="capitalize">{item.name}</span>
           }))} placeholder="Select Category" />
         </Form.Item>
+        {
+          form.getFieldsValue().category === 'profile-edit/job-information' && <EditJobInformationRequest employeeId={currentUserEmployeeId} jobInformation={employee?.jobInformation}/>
+        }
 
         <div className="flex justify-end">
           <AppButton type="submit" isLoading={isLoading} />
         </div>
       </Form>
-    </Modal>
+    </Drawer>
   );
 };
