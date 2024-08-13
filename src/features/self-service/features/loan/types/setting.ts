@@ -77,11 +77,11 @@ export interface ILoanPaymentSettings {
     isActive: boolean;
     companyWallet: boolean;
     directToBankAccount: boolean;
-    bankAccountDetails: {
+    bankAccountDetails?: {
       bankName: string;
       accountName: string;
-      accountNumber: number;
-      swiftCode: string;
+      accountNumber: string;
+      swiftCode?: string;
     };
   };
   enableAutomaticPayrollDeductionForFailedRepayment: boolean;

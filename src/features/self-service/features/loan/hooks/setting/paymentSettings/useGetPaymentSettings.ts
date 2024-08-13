@@ -3,13 +3,13 @@ import { useQuery } from "react-query";
 import { MICROSERVICE_ENDPOINTS } from "config/enviroment";
 import { useApiAuth } from "hooks/useApiAuth";
 import { ICurrentCompany } from "types";
-import { IEligibilityCriteriaProps } from "../../../types/setting";
+import { ILoanPaymentSettings } from "../../../types/setting";
 
 export const QUERY_KEY_FOR_GET_LOAN_PAYMENT_SETTINGS = "GET_LOAN_PAYMENT_SETTINGS";
 
 const getData = async (
   props: ICurrentCompany
-): Promise<IEligibilityCriteriaProps> => {
+): Promise<ILoanPaymentSettings> => {
   const url = `${MICROSERVICE_ENDPOINTS.PAYROLL}/loan/setting/eligibility-criteria`;
   const config = {
     headers: {
@@ -19,8 +19,8 @@ const getData = async (
     },
   };
   const res = await axios.get(url, config);
-  const item: IEligibilityCriteriaProps = res.data.data;
-  const data: IEligibilityCriteriaProps = {
+  const item: ILoanPaymentSettings = res.data.data;
+  const data: ILoanPaymentSettings = {
     ...item,
   };
 

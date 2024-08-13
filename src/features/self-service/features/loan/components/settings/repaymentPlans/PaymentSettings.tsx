@@ -1,21 +1,84 @@
 import { Checkbox, Form, Input, InputNumber, Switch } from "antd";
 import { AppButton } from "components/button/AppButton";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import {
   generalValidationRules,
   textInputValidationRules,
   textInputValidationRulesOpt,
 } from "utils/formHelpers/validation";
+import { useCreatePaymentSettings } from "../../../hooks/setting/paymentSettings/useCreatePaymentSettings";
+import { useQueryClient } from "react-query";
+import { EGlobalOps, GlobalContext } from "stateManagers/GlobalContextProvider";
+import { openNotification } from "utils/notifications";
+import { QUERY_KEY_FOR_GET_LOAN_PAYMENT_SETTINGS } from "../../../hooks/setting/paymentSettings/useGetPaymentSettings";
 
 export const PaymentSettings = () => {
   const [showBankDetails, setShowBankDetails] = useState<boolean>(false);
-   
+  const [form] = Form.useForm();
+  const globalCtx = useContext(GlobalContext);
+  const { dispatch } = globalCtx;
+  const queryClient = useQueryClient();
+  const { mutate, isLoading: loanCreateSettings } = useCreatePaymentSettings();
+
+  const onSubmit = (values: any) => {
+    const manualRepaymentData: any = {
+      isActive: values.isActive || false,
+      companyWallet: values.companyWallet || false,
+      directToBankAccount: values.directToBankAccount || false,
+    };
+
+    // Conditionally add bankAccountDetails if directToBankAccount is true
+    if (manualRepaymentData.directToBankAccount) {
+      const bankAccountDetails: any = {
+        bankName: values.bankName || "",
+        accountName: values.accountName || "",
+        accountNumber: values.accountNumber || "",
+      };
+
+      // Conditionally add swiftCode if it is not empty
+      if (values.swiftCode) {
+        bankAccountDetails.swiftCode = values.swiftCode;
+      }
+
+      manualRepaymentData.bankAccountDetails = bankAccountDetails;
+    }
+
+    const payload = {
+      ...values,
+      enableManualRepayment: manualRepaymentData,
+    };
+    mutate(payload, {
+      onError: (err: any) => {
+        openNotification({
+          state: "error",
+          title: "Error Occurred",
+          description:
+            err?.response.data.message ?? err?.response.data.error.message,
+          duration: 7.0,
+        });
+      },
+      onSuccess: (res: any) => {
+        openNotification({
+          state: "success",
+          title: "Success",
+          description: res.data.message,
+          duration: 4,
+        });
+        dispatch({ type: EGlobalOps.setShowInitialSetup, payload: true });
+        queryClient.invalidateQueries([
+          QUERY_KEY_FOR_GET_LOAN_PAYMENT_SETTINGS,
+        ]);
+      },
+    });
+  };
+
   return (
     <div>
       <Form
         layout="vertical"
-        onFinish={(val) => console.log(val)}
+        onFinish={onSubmit}
         requiredMark={false}
+        form={form}
       >
         <div className="flex items-center justify-between my-5">
           <h5 className="font-medium">Enable Automatic Payroll Deduction</h5>
@@ -33,8 +96,8 @@ export const PaymentSettings = () => {
         <Form.Item
           name="notifyEmployeeViaEmailAboutDeduction"
           label="Configure notifications to inform employees about deductions"
-          rules={generalValidationRules}
           valuePropName="checked"
+          initialValue={false}
         >
           <Checkbox>Notify employees via email</Checkbox>
         </Form.Item>
@@ -59,13 +122,13 @@ export const PaymentSettings = () => {
             name="companyWallet"
             rules={generalValidationRules}
           >
-            <Checkbox>Direct to bank account</Checkbox>
+            <Checkbox>Company Wallet</Checkbox>
           </Form.Item>
 
           <Form.Item
             valuePropName="checked"
             name="directToBankAccount"
-            rules={generalValidationRules}
+            initialValue={false}
           >
             <Checkbox
               onChange={(val) => setShowBankDetails(val.target.checked)}
@@ -123,7 +186,11 @@ export const PaymentSettings = () => {
             <Switch />
           </Form.Item>
         </div>
-        <AppButton type="submit" label="Save Changes" />
+        <AppButton
+          type="submit"
+          label="Save Changes"
+          isLoading={loanCreateSettings}
+        />
       </Form>
     </div>
   );

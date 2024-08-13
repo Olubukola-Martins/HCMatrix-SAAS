@@ -19,9 +19,22 @@ export const createData = async (props: {
   };
 
   const data: any = {
-   
+    enableAutomaticPayrollDeduction: props.data.enableAutomaticPayrollDeduction,
+    notifyEmployeeViaEmailAboutDeduction: props.data.notifyEmployeeViaEmailAboutDeduction,
+    enableManualRepayment: {
+      isActive: props.data.enableManualRepayment.isActive,
+      companyWallet: props.data.enableManualRepayment.companyWallet,
+      directToBankAccount: props.data.enableManualRepayment.directToBankAccount,
+      bankAccountDetails: props.data.enableManualRepayment.directToBankAccount ?  {
+        bankName: props.data.enableManualRepayment.bankAccountDetails?.bankName,
+        accountName: props.data.enableManualRepayment.bankAccountDetails?.accountName,
+        accountNumber: props.data.enableManualRepayment.bankAccountDetails?.accountNumber.toString(),
+        swiftCode: props.data.enableManualRepayment.bankAccountDetails?.swiftCode,
+      } : undefined,
+    },
+    enableAutomaticPayrollDeductionForFailedRepayment:
+      props.data.enableAutomaticPayrollDeductionForFailedRepayment,
   };
-
   const response = await axios.post(url, data, config);
   return response;
 };
