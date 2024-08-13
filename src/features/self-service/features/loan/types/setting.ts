@@ -69,3 +69,20 @@ export interface IEligibilityCriteriaProps {
   };
   employmentStatus: string[];
 }
+
+export interface ILoanPaymentSettings {
+  enableAutomaticPayrollDeduction: boolean;
+  notifyEmployeeViaEmailAboutDeduction: boolean;
+  enableManualRepayment: {
+    isActive: boolean;
+    companyWallet: boolean;
+    directToBankAccount: boolean;
+    bankAccountDetails: {
+      bankName: string;
+      accountName: string;
+      accountNumber: number;
+      swiftCode: string;
+    };
+  };
+  enableAutomaticPayrollDeductionForFailedRepayment: boolean;
+}

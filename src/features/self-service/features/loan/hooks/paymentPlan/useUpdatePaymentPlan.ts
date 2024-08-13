@@ -8,7 +8,7 @@ import { TPaymentPlan } from "../../types";
 
 type TCostData = {
   id: number;
-  body: Partial<Pick<TPaymentPlan, "name" | "duration">>;
+  body: TPaymentPlan;
 };
 const createData = async (props: {
   data: TCostData;
