@@ -7,6 +7,7 @@ import { useEligibilityCriteria } from "../../hooks/setting/eligibilityCriteria/
 import { EGlobalOps, GlobalContext } from "stateManagers/GlobalContextProvider";
 import { useQueryClient } from "react-query";
 import { openNotification } from "utils/notifications";
+import classNames from "classnames";
 import {
   QUERY_KEY_FOR_GET_ELIGIBILITY_CRITERIA,
   useGetEligibilityCriteria,
@@ -25,10 +26,12 @@ export const EligibilityCriteria = () => {
   useEffect(() => {
     if (isSuccess && data) {
       form.setFieldsValue({
+        selectEmploymentDuration: data.employmentDuration,
         ...data,
       });
     }
   }, [data, isSuccess, form]);
+
 
   const handleFinish = (values: any) => {
     if (values.selectEmploymentDuration) {
@@ -100,10 +103,38 @@ export const EligibilityCriteria = () => {
             rules={generalValidationRules}
           >
             <Radio.Group className="flex flex-col gap-4">
-              <Radio value={{ start: 0, end: 1 }}>0-1 year</Radio>
-              <Radio value={{ start: 1, end: 2 }}>1-2 years</Radio>
-              <Radio value={{ start: 3, end: 4 }}>3-4 years</Radio>
-              <Radio value={{ start: 5 }}>5 years and above</Radio>
+              <Radio
+                className={
+                  data?.employmentDuration.start === 0 ? "text-blue-600" : ""
+                }
+                value={{ start: 0, end: 1 }}
+              >
+                0-1 year
+              </Radio>
+              <Radio
+                className={
+                  data?.employmentDuration.start === 1 ? "text-blue-600" : ""
+                }
+                value={{ start: 1, end: 2 }}
+              >
+                1-2 years
+              </Radio>
+              <Radio
+                className={
+                  data?.employmentDuration.start === 3 ? "text-blue-600" : ""
+                }
+                value={{ start: 3, end: 4 }}
+              >
+                3-4 years
+              </Radio>
+              <Radio
+                className={
+                  data?.employmentDuration.start === 5 ? "text-blue-600" : ""
+                }
+                value={{ start: 5 }}
+              >
+                5 years and above
+              </Radio>
             </Radio.Group>
           </Form.Item>
         )}

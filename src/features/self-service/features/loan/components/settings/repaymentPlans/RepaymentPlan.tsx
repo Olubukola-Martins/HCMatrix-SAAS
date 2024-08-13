@@ -94,7 +94,7 @@ export const RepaymentPlan = ({ handleClose, open, id }: IModalProps) => {
           <InputNumber min={0} className="w-full" />
         </Form.Item>
 
-        <AppButton type="submit" label="Add" isLoading={isLoadingCreate} />
+        <AppButton type="submit" label="Submit" isLoading={isLoadingCreate} />
       </Form>
     </Modal>
   );

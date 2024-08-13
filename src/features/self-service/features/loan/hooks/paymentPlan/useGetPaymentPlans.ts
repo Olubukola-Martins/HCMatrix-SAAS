@@ -22,7 +22,7 @@ const getData = async (props: {
   const offset = pagination?.offset ?? 0;
   const name = props.data.searchParams?.name ?? "";
 
-  const url = `${MICROSERVICE_ENDPOINTS.PAYROLL}/loan/payment-plan`;
+  const url = `${MICROSERVICE_ENDPOINTS.PAYROLL}/loan/payment/plan`;
 
   const config = {
     headers: {

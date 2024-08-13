@@ -33,11 +33,11 @@ export const PaymentPlan = () => {
 
   const columns: ColumnsType<TPaymentPlan> = [
     {
-      title: "Plan Name",
+      title: "Plan  Name",
       dataIndex: "name",
     },
     {
-      title: "Duration",
+      title: "Duration (in months)",
       dataIndex: "duration",
     },
     {
@@ -61,7 +61,7 @@ export const PaymentPlan = () => {
     <div>
       <RepaymentPlan
         open={addNewPlan}
-        handleClose={() => setAddNewPlan(true)}
+        handleClose={() => setAddNewPlan(false)}
         id={loanPlanId}
       />
 
@@ -71,7 +71,7 @@ export const PaymentPlan = () => {
         handleClose={() => setUseOpenDelete(false)}
       />
 
-      <AppButton label="Add Plan" handleClick={() => setAddNewPlan(true)} />
+      <AppButton label="Add Plan" handleClick={() => handleAddLoanPlan()} />
 
       <Table
         columns={columns}
