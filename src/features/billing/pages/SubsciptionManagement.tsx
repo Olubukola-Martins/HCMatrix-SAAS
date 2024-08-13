@@ -26,18 +26,29 @@ import BillingInfo from "../components/billing/billingInfo/BillingInfo";
 //   type?: TSubscriptionType;
 // }> = ({  type = "module" })
 const SubsciptionManagement = () => {
-  const navigate = useNavigate();
-  const { data: subscription, isLoading, isError, error } = useGetCompanyActiveSubscription();
-  const [form] = Form.useForm<TCreateCompanySubscriptionProps>();
   const { data: billingDetails, isFetching: isFetchingDetails } = useGetSubsciptionBillingDetails();
   const { data: subscriptions, isFetching: isFetchingSubscriptions } = useGetAllSubscriptions({
     type: "module",
   });
-  const [showD, setShowD] = useState(false);
   const {
     state: { billingCycle: selectedBillingCycle, priceType: selectedPriceType, autoRenew: autoRenewal },
     dispatch,
   } = useCreateCompanySubscriptionStateAndDispatch();
+
+  const headingCapsules: { text: "Billing" | "Plans" | "Modules Purchased" | "Billing History" | "Billing Addrerss"; tab: React.ReactNode }[] = [
+    { text: "Billing", tab: <BillingContainer /> },
+    { text: "Plans", tab: <PlansContainer /> },
+    { text: "Modules Purchased", tab: <ModuleContainer Form={Form} subscriptions={subscriptions?.data} isLoading={isFetchingSubscriptions} selectedPriceType={selectedPriceType} selectedBillingCycle={selectedBillingCycle} /> },
+    { text: "Billing History", tab: <BillingHistoryContainer /> },
+    { text: "Billing Addrerss", tab: <BillingInfo /> },
+  ] as const;
+  const [currentContentCapsule, setCurrentContentCapsule] = useState<THeadingCapsule>(headingCapsules[0]);
+  type THeadingCapsule = (typeof headingCapsules)[number];
+
+  const navigate = useNavigate();
+  const { data: subscription, isLoading, isError, error } = useGetCompanyActiveSubscription();
+  const [form] = Form.useForm<TCreateCompanySubscriptionProps>();
+  const [showD, setShowD] = useState(false);
   useLayoutEffect(() => {
     const ASSUMED_EMPLOYEE_SUBSCRIPTION_ID = 1;
     const EMPLOYEMENT_SUBSCRIPTION_ID = subscriptions?.data.find((item) => item.label === "employee-management")?.id ?? ASSUMED_EMPLOYEE_SUBSCRIPTION_ID;
@@ -86,7 +97,38 @@ const SubsciptionManagement = () => {
   const { mutate, isLoading: isPaying } = useCreateCompanySubscription();
   const queryClient = useQueryClient();
   const [url, setUrl] = useState<string>();
-
+  const renderButton = () => {
+    if (currentContentCapsule.text === "Billing") {
+      return (
+        <AppButton
+          label="Purchase Extra License"
+          variant="default"
+          type="button"
+          handleClick={() => {
+            navigate(appRoutes.purchaseExtraLiense);
+          }}
+        />
+      );
+    }
+    return null;
+  };
+  const renderSegmentedControl = () => {
+    if (currentContentCapsule.text === "Plans" || currentContentCapsule.text === "Modules Purchased") {
+      return (
+        <Form.Item name={"priceType"}>
+          {/* TODO: Implement Geo Restriction to default to remove ngn from options when user is not from Nigeria */}
+          <Segmented
+            options={["usd", "ngn"].map((item) => ({
+              label: <span className="uppercase">{item}</span>,
+              value: item,
+            }))}
+            size="large"
+          />
+        </Form.Item>
+      );
+    }
+    return null;
+  };
   const handleSubmit = (data: TCreateCompanySubscriptionProps) => {
     mutate(
       {
@@ -125,16 +167,6 @@ const SubsciptionManagement = () => {
     setUrl(undefined);
   };
 
-  const headingCapsules = [
-    { text: "Billing", tab: <BillingContainer /> },
-    { text: "Plans", tab: <PlansContainer /> },
-    { text: "Modules Purchased", tab: <ModuleContainer Form={Form} subscriptions={subscriptions?.data} isLoading={isFetchingSubscriptions} selectedPriceType={selectedPriceType} selectedBillingCycle={selectedBillingCycle} /> },
-    { text: "Billing History", tab: <BillingHistoryContainer /> },
-    { text: "Billing Addrerss", tab: <BillingInfo /> },
-  ] as const;
-  const [currentContentCapsule, setCurrentContentCapsule] = useState<THeadingCapsule>(headingCapsules[0]);
-  type THeadingCapsule = (typeof headingCapsules)[number];
-
   return (
     <>
       <SubscriptionPaymentModal open={showD} handleClose={() => onClose()} url={url} onPaymentCompletion={() => navigate(appRoutes.purchaseUserLicense)} />
@@ -161,28 +193,8 @@ const SubsciptionManagement = () => {
                           />
                         ))}
                       </div>
-                      {currentContentCapsule.text === "Billing" && (
-                        <AppButton
-                          label="Purchase Extra License"
-                          variant="default"
-                          type="button"
-                          handleClick={() => {
-                            navigate(appRoutes.purchaseExtraLiense);
-                          }}
-                        />
-                      )}
-                      {(currentContentCapsule.text === "Plans" || currentContentCapsule.text === "Modules Purchased") && (
-                        <Form.Item name={"priceType"}>
-                          {/* TODO: Implement Geo Restriction to default to remove ngn from options when user is not from Nigeria */}
-                          <Segmented
-                            options={["usd", "ngn"].map((item) => ({
-                              label: <span className="uppercase">{item}</span>,
-                              value: item,
-                            }))}
-                            size="large"
-                          />
-                        </Form.Item>
-                      )}
+                      {renderButton()}
+                      {renderSegmentedControl()}
                     </div>
                   </div>
 
