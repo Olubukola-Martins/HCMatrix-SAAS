@@ -10,7 +10,7 @@ export const QUERY_KEY_FOR_GET_LOAN_PAYMENT_SETTINGS = "GET_LOAN_PAYMENT_SETTING
 const getData = async (
   props: ICurrentCompany
 ): Promise<ILoanPaymentSettings> => {
-  const url = `${MICROSERVICE_ENDPOINTS.PAYROLL}/loan/setting/eligibility-criteria`;
+  const url = `${MICROSERVICE_ENDPOINTS.PAYROLL}/loan/setting/payment`;
   const config = {
     headers: {
       Accept: "application/json",

@@ -1,6 +1,6 @@
 import { Checkbox, Form, Input, InputNumber, Switch } from "antd";
 import { AppButton } from "components/button/AppButton";
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import {
   generalValidationRules,
   textInputValidationRules,
@@ -10,7 +10,10 @@ import { useCreatePaymentSettings } from "../../../hooks/setting/paymentSettings
 import { useQueryClient } from "react-query";
 import { EGlobalOps, GlobalContext } from "stateManagers/GlobalContextProvider";
 import { openNotification } from "utils/notifications";
-import { QUERY_KEY_FOR_GET_LOAN_PAYMENT_SETTINGS } from "../../../hooks/setting/paymentSettings/useGetPaymentSettings";
+import {
+  QUERY_KEY_FOR_GET_LOAN_PAYMENT_SETTINGS,
+  useGetPaymentSettings,
+} from "../../../hooks/setting/paymentSettings/useGetPaymentSettings";
 
 export const PaymentSettings = () => {
   const [showBankDetails, setShowBankDetails] = useState<boolean>(false);
@@ -19,6 +22,29 @@ export const PaymentSettings = () => {
   const { dispatch } = globalCtx;
   const queryClient = useQueryClient();
   const { mutate, isLoading: loanCreateSettings } = useCreatePaymentSettings();
+  const { data, isLoading, isSuccess } = useGetPaymentSettings();
+
+  useEffect(() => {
+    if (isSuccess && data) {
+      form.setFieldsValue({
+        enableAutomaticPayrollDeduction: data.enableAutomaticPayrollDeduction,
+        notifyEmployeeViaEmailAboutDeduction:
+          data.notifyEmployeeViaEmailAboutDeduction,
+        isActive: data.enableManualRepayment.isActive,
+        companyWallet: data.enableManualRepayment.companyWallet,
+        directToBankAccount: data.enableManualRepayment.directToBankAccount,
+        enableAutomaticPayrollDeductionForFailedRepayment:
+          data.enableAutomaticPayrollDeductionForFailedRepayment,
+        bankName: data?.enableManualRepayment?.bankAccountDetails?.bankName,
+        accountName:
+          data?.enableManualRepayment?.bankAccountDetails?.accountName,
+        accountNumber:
+          data?.enableManualRepayment?.bankAccountDetails?.accountNumber,
+        swiftCode: data?.enableManualRepayment?.bankAccountDetails?.swiftCode,
+      });
+      setShowBankDetails(data.enableManualRepayment.directToBankAccount);
+    }
+  }, [data, isSuccess, form]);
 
   const onSubmit = (values: any) => {
     const manualRepaymentData: any = {
@@ -79,6 +105,7 @@ export const PaymentSettings = () => {
         onFinish={onSubmit}
         requiredMark={false}
         form={form}
+        disabled={isLoading}
       >
         <div className="flex items-center justify-between my-5">
           <h5 className="font-medium">Enable Automatic Payroll Deduction</h5>
