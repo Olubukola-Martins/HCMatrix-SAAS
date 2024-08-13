@@ -71,7 +71,7 @@ export const AddLoanType = ({ handleClose, open, id }: IModalProps) => {
       open={open}
       footer={null}
       onCancel={() => handleClose()}
-      title={`${id ? "Edit" : "Add"}Loan Type`}
+      title={`${id ? "Edit" : "Add"} Loan Type`}
     >
       <Form
         requiredMark={false}
