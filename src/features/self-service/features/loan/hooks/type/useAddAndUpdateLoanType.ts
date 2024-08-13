@@ -22,17 +22,19 @@ const createData = async (props: {
     },
   };
 
-  const data: TLoanType = {
-    ...props.data,
+  const data: any = {
+    name: props.data.name,
+    hasInterest: props.data.hasInterest,
+    interestRate: props.data.interestRate,
   };
 
-     const requestType = props.data.id ? axios.put : axios.post;
-   const response = await requestType(url, data, config);
+  const requestType = props.data.id ? axios.put : axios.post;
+  const response = await requestType(url, data, config);
   return response;
 };
 export const useAddAndUpdateLoanType = () => {
   const { token, companyId } = useApiAuth();
-  return useMutation((props:  TLoanType) =>
+  return useMutation((props: TLoanType) =>
     createData({ data: props, auth: { token, companyId } })
   );
 };

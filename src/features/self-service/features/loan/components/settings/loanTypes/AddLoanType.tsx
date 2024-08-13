@@ -1,6 +1,6 @@
 import { Form, Input, InputNumber, Modal, Radio } from "antd";
 import { AppButton } from "components/button/AppButton";
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { IModalProps } from "types";
 import {
   generalValidationRules,
@@ -10,19 +10,36 @@ import { useAddAndUpdateLoanType } from "../../../hooks/type/useAddAndUpdateLoan
 import { openNotification } from "utils/notifications";
 import { EGlobalOps, GlobalContext } from "stateManagers/GlobalContextProvider";
 import { useQueryClient } from "react-query";
+import { useGetSingleLoanType } from "../../../hooks/type/useGetSingleLoanType";
+import { QUERY_KEY_FOR_LOAN_TYPES } from "../../../hooks/type/useGetLoanTypes";
 
 export const AddLoanType = ({ handleClose, open, id }: IModalProps) => {
-  const [interestOption, setInterestOption] = useState(false);
+  const [interestOption, setInterestOption] = useState<boolean>();
   const [form] = Form.useForm();
   const globalCtx = useContext(GlobalContext);
   const { dispatch } = globalCtx;
   const queryClient = useQueryClient();
-  const {mutate, isLoading: loadCreateLoan} = useAddAndUpdateLoanType()
-   
+  const { mutate, isLoading: loadCreateLoan } = useAddAndUpdateLoanType();
+  const { data, isSuccess, isLoading } = useGetSingleLoanType({
+    id: id as unknown as number,
+  });
+  useEffect(() => {
+    if (isSuccess && id) {
+      form.setFieldsValue({
+        ...data,
+      });
+      setInterestOption(data.hasInterest);
+    } else {
+      form.resetFields();
+    }
+  }, [form, id, data, isSuccess]);
+
+
   const onSubmit = (values: any) => {
     mutate(
       {
         ...values,
+        id,
       },
       {
         onError: (err: any) => {
@@ -42,25 +59,26 @@ export const AddLoanType = ({ handleClose, open, id }: IModalProps) => {
             duration: 4,
           });
           dispatch({ type: EGlobalOps.setShowInitialSetup, payload: true });
-          queryClient.invalidateQueries([]);
+          queryClient.invalidateQueries([QUERY_KEY_FOR_LOAN_TYPES]);
+          handleClose()
         },
       }
     );
   };
 
-   
   return (
     <Modal
       open={open}
       footer={null}
       onCancel={() => handleClose()}
-      title={`Add Loan Type`}
+      title={`${id ? "Edit" : "Add"}Loan Type`}
     >
       <Form
         requiredMark={false}
         layout="vertical"
         onFinish={onSubmit}
         form={form}
+        disabled={isLoading}
       >
         <Form.Item
           name="name"
@@ -99,7 +117,7 @@ export const AddLoanType = ({ handleClose, open, id }: IModalProps) => {
           </Form.Item>
         )}
 
-        <AppButton type="submit" label="Add" isLoading={loadCreateLoan} />
+        <AppButton type="submit" label="Submit" isLoading={loadCreateLoan} />
       </Form>
     </Modal>
   );
