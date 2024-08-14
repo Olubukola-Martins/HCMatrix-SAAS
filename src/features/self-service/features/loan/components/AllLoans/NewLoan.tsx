@@ -71,7 +71,7 @@ export const NewLoan: React.FC<IModalProps> = ({ open, handleClose }) => {
     mutate(
       {
         ...values,
-        documentUrl: getDocumentUrl ? [getDocumentUrl] : [],
+        documentUrl: getDocumentUrl ? getDocumentUrl : undefined,
       },
       {
         onError: (err: any) => {

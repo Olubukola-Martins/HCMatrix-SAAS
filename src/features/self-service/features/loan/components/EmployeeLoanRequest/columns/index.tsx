@@ -14,7 +14,8 @@ export const EMPLOYEE_LOAN_REQUEST_TABLE_COLUMNS =
     },
     {
       title: "Loan Type",
-      key: "loanType",
+      key: "type",
+      render: (_, val) => <span>{val?.type?.name}</span>
     },
     {
       title: "Loan Date",
@@ -22,6 +23,7 @@ export const EMPLOYEE_LOAN_REQUEST_TABLE_COLUMNS =
     },
     {
       title: "Amount",
+      dataIndex: "amount",
       key: "amount",
     },
     {
@@ -31,6 +33,7 @@ export const EMPLOYEE_LOAN_REQUEST_TABLE_COLUMNS =
     {
       title: "Status",
       key: "status",
+      dataIndex: "status",
     },
     {
       title: "Action",

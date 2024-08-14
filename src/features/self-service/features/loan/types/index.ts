@@ -5,7 +5,7 @@ import { TLoanRepayment } from "./repayment";
 import { TLoan } from "./loan";
 import { TLoanWorthiness } from "./worthiness";
 
-type TLoanType = {
+ type TLoanType = {
   id: number;
   name: string;
   hasInterest: boolean;

@@ -90,11 +90,11 @@ export const MakeRepayment: React.FC<IModalProps> = ({ open, handleClose }) => {
         requiredMark={false}
         className={`${!url ? "block" : "hidden"}`}
       >
-        <FormEmployeeLoanInput
+        {/* <FormEmployeeLoanInput
           Form={Form}
           control={{ label: "Select Loan", name: "loanId" }}
           handleSelect={(_, val) => setBalance(val?.balance)}
-        />
+        /> */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
           <Form.Item rules={generalValidationRules} label="Balance">
             <Input placeholder="Balance" disabled value={balance} />

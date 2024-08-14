@@ -1,4 +1,5 @@
 import { TLicenseType } from "features/authentication/types/auth-user";
+import { TLoanType } from ".";
 
 export type TLoanRequestStatus =
   | "pending"
@@ -105,7 +106,7 @@ interface Type {
 export interface myLoanRequestProps {
   loanId: string;
   requestDate: string;
-  loanType: string;
+  type: TLoanType;
   loanDate: string;
   amount: number;
   disbursedDate: string;
