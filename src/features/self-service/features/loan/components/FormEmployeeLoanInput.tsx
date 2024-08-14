@@ -59,7 +59,7 @@ export const FormEmployeeLoanInput: React.FC<{
       >
         {data?.data.map((item) => (
           <Select.Option key={item.id} value={item.id}>
-            {item.title}
+            {item.amount}
           </Select.Option>
         ))}
       </Select>

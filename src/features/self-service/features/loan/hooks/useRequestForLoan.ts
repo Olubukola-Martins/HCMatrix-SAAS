@@ -7,14 +7,14 @@ import { TLoanRequest } from "../types";
 
 export type TRequestForLoanData = Pick<
   TLoanRequest,
-  | "title"
   | "date"
   | "description"
   | "typeId"
   | "paymentPlanId"
-  | "guarantorFormUrls"
+  | "documentUrl"
   | "amount"
   | "loanEligibility"
+  | "employeeId"
 >;
 const createData = async (props: {
   data: TRequestForLoanData;
@@ -30,7 +30,13 @@ const createData = async (props: {
   };
 
   const data: TRequestForLoanData = {
-    ...props.data,
+    employeeId: props.data.employeeId,
+    typeId: props.data.typeId,
+    paymentPlanId: props.data.paymentPlanId,
+    date: props.data.date,
+    amount: props.data.amount,
+    description: props.data.description,
+    documentUrl: props.data.documentUrl,
   };
 
   const response = await axios.post(url, data, config);

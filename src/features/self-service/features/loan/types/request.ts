@@ -11,7 +11,6 @@ export type TLoanRequestStatus =
 export type TLoanRequest = {
   balance: number;
   id: number;
-  title: string;
   date: string;
   description: string;
   typeId: number;
@@ -19,7 +18,7 @@ export type TLoanRequest = {
   amount: string;
   employeeId: number;
   status: string;
-  guarantorFormUrls?: string[];
+  documentUrl?: string[];
   companyId: number;
   createdAt: string;
   updatedAt: string;
