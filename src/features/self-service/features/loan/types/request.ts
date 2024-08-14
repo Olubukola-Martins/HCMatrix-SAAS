@@ -28,6 +28,7 @@ export type TLoanRequest = {
   type: Type;
   paymentPlan: PaymentPlan;
   employee: Employee;
+  loanEligibility?: string;
 };
 
 interface Employee {

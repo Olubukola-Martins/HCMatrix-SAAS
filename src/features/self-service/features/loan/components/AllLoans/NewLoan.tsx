@@ -1,14 +1,6 @@
-import {
-  DatePicker,
-  Form,
-  Input,
-  InputNumber,
-  Modal,
-  Select,
-  Tooltip,
-} from "antd";
+import { DatePicker, Form, Input, InputNumber, Modal, Tooltip } from "antd";
 import { AppButton } from "components/button/AppButton";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { IModalProps } from "types";
 import {
   dateHasToBeGreaterThanCurrentDayRule,
@@ -23,7 +15,6 @@ import {
 } from "../../hooks/useRequestForLoan";
 import { QUERY_KEY_FOR_LOAN_REQUESTS } from "../../hooks/requests/useGetLoanRequests";
 import { QUERY_KEY_FOR_LOAN } from "../../hooks/useGetLoan";
-import { TLoanWorthinessInputData } from "../../hooks/worthiness/useGetLoanWorthiness";
 import { useCurrentFileUploadUrl } from "hooks/useCurrentFileUploadUrl";
 import { QUERY_KEY_FOR_LOAN_ANALYTICS } from "../../hooks/analytics/useGetLoanAnalytics";
 import { QUERY_KEY_FOR_APPROVAL_REQUESTS } from "features/core/workflows/hooks/useFetchApprovalRequests";
@@ -51,13 +42,21 @@ export const NewLoan: React.FC<IModalProps> = ({ open, handleClose }) => {
   const [lPlanDetail, setLPlanDetail] = useState<number>();
   const { worthinessInput, setAmount } = useLoanWorthinessInput(null, 500);
 
-  const { data, isLoading, isSuccess } = useCheckEligibility({
-    amount: worthinessInput?.amount as unknown as number,
-    paymentPlanId: lPlanDetail as unknown as number,
-    typeId: loanTypeDetails?.id as unknown as number,
+  const { data, isSuccess } = useCheckEligibility({
+    amount: worthinessInput?.amount ?? 0,
+    paymentPlanId: lPlanDetail ?? 0,
+    typeId: loanTypeDetails?.id ?? 0,
   });
 
-  console.log(data);
+  useEffect(() => {
+    if (isSuccess) {
+      form.setFieldsValue({
+        loanEligibility: data?.isEligible ? "Eligible" : "Not Eligible",
+      });
+    } else {
+      form.resetFields();
+    }
+  }, [form, data, isSuccess]);
 
   const handleSubmit = (values: any) => {
     if (requiresForm && !documentUrl) {
@@ -116,9 +115,13 @@ export const NewLoan: React.FC<IModalProps> = ({ open, handleClose }) => {
       <EligibilityModal
         open={openEligibility}
         handleClose={() => setOpenEligibility(false)}
-        typeId={loanTypeDetails?.id as unknown as number}
-        paymentPlanId={lPlanDetail as unknown as number}
-        amount={worthinessInput?.amount as unknown as number}
+        salary={data?.salary ?? ""}
+        loanAmount={data?.loanAmount ?? 0}
+        paymentPeriod={data?.paymentPeriod ?? { name: "", label: "" }}
+        interest={data?.interest ?? 0}
+        deduction={data?.deduction ?? { percentage: "", amount: 0 }}
+        isEligible={data?.isEligible ?? false}
+        errorMessage={data?.errorMessage ?? ""}
       />
       <Modal
         open={open}
@@ -193,12 +196,9 @@ export const NewLoan: React.FC<IModalProps> = ({ open, handleClose }) => {
 
           <div>
             <Form.Item
-              name=""
+              name="loanEligibility"
               label="Loan Eligibility"
               tooltip="This represent/show your eligibility of loan request"
-              initialValue={
-                isSuccess && data?.isEligible ? "Eligible" : "Not Eligible"
-              }
             >
               <Input disabled />
             </Form.Item>

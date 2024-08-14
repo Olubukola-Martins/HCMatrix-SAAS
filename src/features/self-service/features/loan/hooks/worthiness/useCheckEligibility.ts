@@ -1,17 +1,17 @@
 import axios from "axios";
-import { useMutation, useQuery } from "react-query";
+import { useQuery } from "react-query";
 import { MICROSERVICE_ENDPOINTS } from "config/enviroment";
 import { ICurrentCompany } from "types";
 import { useApiAuth } from "hooks/useApiAuth";
 import {
   ICheckEligibility,
-  ICheckEligibilityProps,
+  ICheckEligibilityParams,
 } from "../../types/worthiness";
 
 export const QUERY_KEY_FOR_CHECK_ELIGIBILITY = "CHECK_ELIGIBILITY";
 
 export const getData = async (props: {
-  data: ICheckEligibilityProps;
+  data: ICheckEligibilityParams;
   auth: ICurrentCompany;
 }): Promise<ICheckEligibility> => {
   const url = `${MICROSERVICE_ENDPOINTS.PAYROLL}/loan/eligibility`;
@@ -36,7 +36,7 @@ export const getData = async (props: {
   return data;
 };
 
-export const useCheckEligibility = (data: ICheckEligibilityProps) => {
+export const useCheckEligibility = (data: ICheckEligibilityParams) => {
   const { token, companyId } = useApiAuth();
   const canMakeRequest = () => {
     if (typeof data.amount !== "number") {
@@ -62,47 +62,3 @@ export const useCheckEligibility = (data: ICheckEligibilityProps) => {
 
   return queryData;
 };
-
-// ==============
-
-// import axios from "axios";
-// import { useQuery } from "react-query";
-// import { MICROSERVICE_ENDPOINTS } from "config/enviroment";
-// import { useApiAuth } from "hooks/useApiAuth";
-// import { ICurrentCompany } from "types";
-// import { IEligibilityCriteriaProps } from "../../../types/setting";
-
-// export const QUERY_KEY_FOR_GET_ELIGIBILITY_CRITERIA = "GET_ELIGIBILITY_CRITERIA";
-
-// const getData = async (
-//   props: ICurrentCompany
-// ): Promise<IEligibilityCriteriaProps> => {
-//   const url = `${MICROSERVICE_ENDPOINTS.PAYROLL}/loan/eligibility`;
-//   const config = {
-//     headers: {
-//       Accept: "application/json",
-//       Authorization: `Bearer ${props.token}`,
-//       "x-company-id": props.companyId,
-//     },
-//   };
-//   const res = await axios.get(url, config);
-//   const item: IEligibilityCriteriaProps = res.data.data;
-//   const data: IEligibilityCriteriaProps = {
-//     ...item,
-//   };
-
-//   return data;
-// };
-// export const useCheckEligibility = () => {
-//   const { companyId, token } = useApiAuth();
-//   const queryData = useQuery(
-//     [QUERY_KEY_FOR_GET_ELIGIBILITY_CRITERIA],
-//     () => getData({ token, companyId }),
-//     {
-//       onError: (err: any) => {},
-//       onSuccess: (data) => {},
-//     }
-//   );
-
-//   return queryData;
-// };

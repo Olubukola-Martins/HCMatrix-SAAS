@@ -4,8 +4,6 @@ export interface TLoanWorthiness {
   worthinessMessage: string;
 }
 
-
-
 export interface ICheckEligibility {
   salary: string;
   loanAmount: number;
@@ -22,17 +20,11 @@ interface Deduction {
 }
 
 interface PaymentPeriod {
-  id: number;
-  companyId: number;
   name: string;
   label: string;
-  duration: number;
-  isActive: boolean;
-  createdAt: string;
-  updatedAt: string;
 }
 
-export interface ICheckEligibilityProps {
+export interface ICheckEligibilityParams {
   typeId: number;
   paymentPlanId: number;
   amount: number;
