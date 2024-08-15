@@ -68,7 +68,8 @@ const ViewApprovalRequest: React.FC<IProps> = ({
           open={open}
           handleClose={handleClose}
           id={request.loan.id}
-          // approvalRequest={request}
+          approvalRequest={request}
+          loanDetailSource="all-loans-request"
         />
       )}
       {typeof request.conferenceRoomBooking !== "undefined" && (

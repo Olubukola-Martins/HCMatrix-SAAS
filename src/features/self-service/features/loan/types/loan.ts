@@ -74,18 +74,22 @@ interface Department {
 }
 
 //=== New
+
+interface ILoanEmployees {
+  firstName: string;
+  lastName: string;
+  empUid: string;
+  designation: {
+    department: {
+      name: string;
+    };
+  };
+}
+
 export interface AllLoanRequestProps {
   id: number;
   requestDate: string;
-  employee: {
-    firstName: string;
-    lastName: string;
-    designation: {
-      department: {
-        name: string;
-      };
-    };
-  };
+  employee: ILoanEmployees;
   department: {
     name: string;
   };
@@ -109,4 +113,5 @@ export interface ILoanDetails {
   amountToRepay: string;
   type: TLoanType;
   paymentPlan: PaymentPlan;
+  employee: ILoanEmployees;
 }

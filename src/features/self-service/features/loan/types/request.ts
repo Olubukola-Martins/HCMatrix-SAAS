@@ -117,6 +117,6 @@ export interface myLoanRequestProps {
 
 
 export interface EmployeeLoanRequestTableActions {
-  handleLoanTypeDelete: (id: number) => void;
+  handleLoanTypeDelete?: (id: number) => void;
   handleLoanDetails: (id: number) => void;
 }

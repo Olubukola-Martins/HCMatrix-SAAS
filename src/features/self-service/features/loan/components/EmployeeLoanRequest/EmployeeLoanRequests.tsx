@@ -40,7 +40,7 @@ const EmployeeLoanRequests = () => {
   const actions: EmployeeLoanRequestTableActions = {
     handleLoanTypeDelete,
     handleLoanDetails,
-    // You can add more functions here later
+    // You can add more functions here
   };
 
   const columns = EMPLOYEE_LOAN_REQUEST_TABLE_COLUMNS(actions);
@@ -56,6 +56,7 @@ const EmployeeLoanRequests = () => {
         open={openLoanDetails}
         handleClose={() => setOpenLoanDetails(false)}
         id={loanRequestId ?? 0}
+        loanDetailSource="my-loan-request"
       />
 
       <div className="flex items-center gap-3">

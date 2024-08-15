@@ -7,6 +7,7 @@ import { usePagination } from "hooks/usePagination";
 import { LoanDetails } from "./LoanDetails";
 import { DatePicker, Select } from "antd";
 import { APPROVAL_STATUS_OPTIONS } from "constants/statustes";
+import { EmployeeLoanRequestTableActions } from "../../types/request";
 
 const AllLoanRequests = () => {
   const [loanRequestId, setLoanRequestId] = useState<number>();
@@ -21,15 +22,26 @@ const AllLoanRequests = () => {
       status: storeStatus ?? [],
     },
   });
-  const columns = EMPLOYEE_ALL_LOAN_TABLE_COLUMNS();
+
+  const handleLoanDetails = (id: number) => {
+    setLoanRequestId(id);
+    setOpenLoanDetails(true);
+  };
+
+  const actions: EmployeeLoanRequestTableActions = {
+    handleLoanDetails,
+    // You can add more functions here
+  };
+
+  const columns = EMPLOYEE_ALL_LOAN_TABLE_COLUMNS(actions);
 
   return (
     <div>
-
-<LoanDetails
+      <LoanDetails
         open={openLoanDetails}
         handleClose={() => setOpenLoanDetails(false)}
         id={loanRequestId ?? 0}
+        loanDetailSource="all-loans-request"
       />
 
       <div className="flex items-center gap-3">

@@ -51,6 +51,7 @@ export const RecentLoanRequestsCard: React.FC<{
           id={loanId}
           handleClose={clearAction}
           open={action === "view"}
+          loanDetailSource="all-loans-request"
         />
       )}
       <RecentCard

@@ -77,7 +77,10 @@ export const EMPLOYEE_LOAN_REQUEST_TABLE_COLUMNS = (
             <Menu>
               <Menu.Item
                 key="3"
-                onClick={() => actions.handleLoanTypeDelete(val?.id)}
+                onClick={() =>
+                  actions.handleLoanTypeDelete &&
+                  actions.handleLoanTypeDelete(val?.id)
+                }
               >
                 Cancel Loan Request
               </Menu.Item>
