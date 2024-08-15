@@ -108,10 +108,11 @@ export interface myLoanRequestProps {
   loanId: string;
   requestDate: string;
   type: TLoanType;
-  loanDate: string;
+  date: string;
   amount: number;
-  disbursedDate: string;
+  disbursedAt: string;
   status: string;
+  createdAt: string;
 }
 
 

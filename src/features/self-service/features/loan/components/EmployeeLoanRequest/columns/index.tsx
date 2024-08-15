@@ -20,7 +20,7 @@ export const EMPLOYEE_LOAN_REQUEST_TABLE_COLUMNS = (
     title: "Request Date",
     key: "requestDate",
     render: (_, val) => (
-      <span>{dayjs(val?.requestDate).format(DEFAULT_DATE_FORMAT)}</span>
+      <span>{dayjs(val?.createdAt).format(DEFAULT_DATE_FORMAT)}</span>
     ),
   },
   {
@@ -30,9 +30,9 @@ export const EMPLOYEE_LOAN_REQUEST_TABLE_COLUMNS = (
   },
   {
     title: "Loan Date",
-    key: "loanDate",
+    key: "date",
     render: (_, val) => (
-      <span>{dayjs(val?.loanDate).format(DEFAULT_DATE_FORMAT)}</span>
+      <span>{dayjs(val?.date).format(DEFAULT_DATE_FORMAT)}</span>
     ),
   },
   {
@@ -44,7 +44,9 @@ export const EMPLOYEE_LOAN_REQUEST_TABLE_COLUMNS = (
     title: "Disbursed Date",
     key: "disbursedDate",
     render: (_, val) => (
-      <span>{dayjs(val?.disbursedDate).format(DEFAULT_DATE_FORMAT)}</span>
+      <span>
+        {val.disbursedAt && dayjs(val?.disbursedAt).format(DEFAULT_DATE_FORMAT)}
+      </span>
     ),
   },
   {

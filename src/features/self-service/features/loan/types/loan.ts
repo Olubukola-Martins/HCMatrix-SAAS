@@ -77,18 +77,25 @@ interface Department {
 export interface AllLoanRequestProps {
   id: number;
   requestDate: string;
-  employeeName: {
-    name: string;
+  employee: {
+    firstName: string;
+    lastName: string;
+    designation: {
+      department: {
+        name: string;
+      };
+    };
   };
   department: {
     name: string;
   };
-  loanType: string;
-  loanDate: string;
+  type: TLoanType;
+  date: string;
   balance: number;
   amount: number;
-  Disbursed: string;
+  createdAt: string;
   status: string;
+  disbursedAt: string;
 }
 
 export interface ILoanDetails {
