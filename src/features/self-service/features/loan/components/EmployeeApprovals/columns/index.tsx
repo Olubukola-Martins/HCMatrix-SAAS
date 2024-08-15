@@ -99,8 +99,10 @@ export const EMPLOYEE_LOAN_APPROVAL_TABLE_COLUMNS = (
               >
                 View
               </Menu.Item>
+              <Menu.Item key="2">Rejects</Menu.Item>
+              <Menu.Item key="3">Approve</Menu.Item>
               <Menu.Item
-                key="2"
+                key="4"
                 onClick={() =>
                   actions.handleLoanDisbursement &&
                   actions.handleLoanDisbursement(val?.loan?.id ?? 0)

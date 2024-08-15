@@ -23,7 +23,7 @@ const EmployeeLoanApprovals = () => {
   };
   const handleLoanDisbursement = (id: number) => {
     setLoanRequestId(id);
-    setOpenLoanDetails(true);
+    setOpenDisburse(true);
   };
   const actions: EmployeeLoanRequestTableActions = {
     handleLoanDetails,

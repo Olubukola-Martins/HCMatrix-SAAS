@@ -9,7 +9,7 @@ const createData = async (props: {
   data: IDisburseLoanProps;
   auth: ICurrentCompany;
 }) => {
-  const url = `${MICROSERVICE_ENDPOINTS.PAYROLL}/loan/${props.data.id}/disburse}`;
+  const url = `${MICROSERVICE_ENDPOINTS.PAYROLL}/loan/${props.data.id}/disburse`;
   const config = {
     headers: {
       Accept: "application/json",

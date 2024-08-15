@@ -97,8 +97,7 @@ export const EMPLOYEE_ALL_LOAN_TABLE_COLUMNS = (
               >
                 View Loan Details
               </Menu.Item>
-              <Menu.Item key="3">Rejects</Menu.Item>
-              <Menu.Item key="4">Approve</Menu.Item>
+             
             </Menu>
           }
         >
