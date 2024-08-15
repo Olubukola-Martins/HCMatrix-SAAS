@@ -7,6 +7,7 @@ export const EMPLOYEE_ALL_LOAN_TABLE_COLUMNS =
     {
         title: "Loan ID",
         key: "loanID",
+        render: (_, val) => <span>{val.id.toString().padStart(7,'0')}</span>
       },
       {
         title: "Request Date",

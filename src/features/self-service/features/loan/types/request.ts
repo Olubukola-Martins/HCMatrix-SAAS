@@ -81,7 +81,7 @@ interface Department {
   email: string;
 }
 
-interface PaymentPlan {
+export interface PaymentPlan {
   id: number;
   name: string;
   label: string;
@@ -104,6 +104,7 @@ interface Type {
 
 // ======= new
 export interface myLoanRequestProps {
+  id: number;
   loanId: string;
   requestDate: string;
   type: TLoanType;
@@ -111,4 +112,10 @@ export interface myLoanRequestProps {
   amount: number;
   disbursedDate: string;
   status: string;
+}
+
+
+export interface EmployeeLoanRequestTableActions {
+  handleLoanTypeDelete: (id: number) => void;
+  handleLoanDetails: (id: number) => void;
 }

@@ -6,7 +6,7 @@ import { useApproveORReject } from "hooks/useApproveORReject";
 import { useQueryClient } from "react-query";
 import { QUERY_KEY_FOR_LOAN_REQUESTS } from "../../hooks/requests/useGetLoanRequests";
 import { QUERY_KEY_FOR_LOAN_ANALYTICS } from "../../hooks/analytics/useGetLoanAnalytics";
-import { LoanDetails } from "../LoanDetails";
+import { LoanDetails } from "../AllLoans/LoanDetails";
 
 // TO DO: Remove this export and if need be move to styles/reused
 export const requestStyle =

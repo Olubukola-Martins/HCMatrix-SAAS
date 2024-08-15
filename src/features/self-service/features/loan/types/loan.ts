@@ -1,4 +1,6 @@
 import { TLicenseType } from "features/authentication/types/auth-user";
+import { TLoanType } from ".";
+import { PaymentPlan } from "./request";
 
 export type TLoan = {
   balance: number;
@@ -16,7 +18,7 @@ export type TLoan = {
   createdAt: string;
   updatedAt: string;
   deletedAt?: any;
-  type: Type;
+  type: TLoanType;
   paymentPlan: PaymentPlan;
   employee: Employee;
 };
@@ -71,28 +73,9 @@ interface Department {
   email: string;
 }
 
-interface PaymentPlan {
-  id: number;
-  name: string;
-  label: string;
-  duration: number;
-  companyId: number;
-  createdAt: string;
-  updatedAt: string;
-}
-
-interface Type {
-  id: number;
-  name: string;
-  label: string;
-  companyId: number;
-  createdAt: string;
-  updatedAt: string;
-}
-
 //=== New
 export interface AllLoanRequestProps {
-  loanId: string;
+  id: number;
   requestDate: string;
   employeeName: {
     name: string;
@@ -108,4 +91,15 @@ export interface AllLoanRequestProps {
   status: string;
 }
 
-
+export interface ILoanDetails {
+  id: number;
+  date: string;
+  amount: string;
+  status: string;
+  description: string;
+  documentUrl: string;
+  disbursedAt: null;
+  amountToRepay: string;
+  type: TLoanType;
+  paymentPlan: PaymentPlan;
+}
