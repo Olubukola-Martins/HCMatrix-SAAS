@@ -1,18 +1,46 @@
 import { Form, Input } from "antd";
+import { useEffect } from "react";
 
-export const BankDetails = () => {
+interface IProps {
+  bankName: string;
+  accountName: string;
+  accountNumber: string;
+  swiftCode: string;
+}
+
+export const BankDetails = ({
+  accountName,
+  accountNumber,
+  bankName,
+  swiftCode,
+}: IProps) => {
+  const [form] = Form.useForm();
+  useEffect(() => {
+    form.setFieldsValue({
+      accountName,
+      accountNumber,
+      bankName,
+      swiftCode,
+    });
+  }, [form]);
   return (
     <>
-      <Form layout="vertical" disabled className="mb-3">
+      <Form form={form} layout="vertical" disabled className="mb-3">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
           <Form.Item name="bankName" label="Bank Name">
             <Input />
           </Form.Item>
-          <Form.Item name="AccountNumber" label="Account Number">
+          <Form.Item name="accountNumber" label="Account Number">
             <Input />
           </Form.Item>
         </div>
-        <Form.Item name="AccountName" label="Account Name">
+        <Form.Item name="accountName" label="Account Name">
+          <Input />
+        </Form.Item>
+        <Form.Item
+          name="swiftCode"
+          label="SWIFT/BIC Code (for International transfer)"
+        >
           <Input />
         </Form.Item>
         <p className="text-sm -mt-2">

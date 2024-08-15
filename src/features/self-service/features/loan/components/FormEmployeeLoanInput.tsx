@@ -1,76 +1,71 @@
-// import { Select, Form } from "antd";
-// import { useDebounce } from "hooks/useDebounce";
-// import { useState } from "react";
-// import { generalValidationRules } from "utils/formHelpers/validation";
-// import { useGetLoanRequests } from "../hooks/requests/useGetLoanRequests";
-// import { TLoanRequest } from "../types";
+import { Select, Form, Spin } from "antd";
+import { useDebounce } from "hooks/useDebounce";
+import React, { useState } from "react";
+import {
+  generalValidationRules,
+  generalValidationRulesOp,
+} from "utils/formHelpers/validation";
+import { AllLoanRequestProps } from "../types/loan";
+import { useGetAllLoans } from "../hooks/requests/useGetAllLoans";
 
-// export const FormEmployeeLoanInput: React.FC<{
-//   Form: typeof Form;
-//   showLabel?: boolean;
-//   control?: { label: string; name: string | (string | number)[] };
-//   handleSelect?: (val: number, loan?: TLoanRequest) => void;
-//   handleClear?: () => void;
-// }> = ({ Form, showLabel = true, control, handleSelect, handleClear }) => {
-//   const [searchTerm, setSearchTerm] = useState<string>("");
-//   const debouncedSearchTerm: string = useDebounce<string>(searchTerm);
+export const FormEmployeeLoanInput: React.FC<{
+  Form: typeof Form;
+  showLabel?: boolean;
+  control?: { label: string; name: string; multiple?: boolean };
+  optional?: boolean;
+  handleSelect?: (val: number, loanList?: AllLoanRequestProps) => void;
+}> = ({ Form, showLabel = true, control, optional = false, handleSelect }) => {
+  const [searchTerm, setSearchTerm] = useState<string>("");
+  const debouncedSearchTerm: string = useDebounce<string>(searchTerm);
 
-//   const { data, isFetching } = useGetLoanRequests({
-//     props: {
-//       searchParams: {
-//         name: debouncedSearchTerm,
-//       },
-//       status: ["disbursed", "repayment-in-process"],
-//     },
-//   });
+  const { data, isFetching, isSuccess } = useGetAllLoans({
+    props: {
+      searchParams: {
+        name: debouncedSearchTerm,
+      },
+      status: ["disbursed", "repayment-in-process"],
+    },
+  });
 
-//   const handleSearch = (val: string) => {
-//     setSearchTerm(val);
-//   };
+  const handleSearch = (val: string) => {
+    setSearchTerm(val);
+  };
 
-//   const onClear = () => {
-//     setSearchTerm("");
-//     handleClear?.();
-//   };
-
-//   return (
-//     <Form.Item
-//       name={control?.name ?? "loanId"}
-//       label={showLabel ? control?.label ?? "Loan" : null}
-//       rules={generalValidationRules}
-//     >
-//       <Select
-//         placeholder="Select Loan"
-//         loading={isFetching}
-//         showSearch
-//         onSelect={(val: number) => {
-//           if (handleSelect) {
-//             const loan = data?.data.find((emp) => emp.id === val);
-//             handleSelect(val, loan);
-//           }
-//         }}
-//         onClear={onClear}
-//         onSearch={handleSearch}
-//         className="rounded border-slate-400 w-full"
-//         defaultActiveFirstOption={false}
-//         showArrow={false}
-//         filterOption={false}
-//       >
-//         {data?.data.map((item) => (
-//           <Select.Option key={item.id} value={item.id}>
-//             {item.amount}
-//           </Select.Option>
-//         ))}
-//       </Select>
-//     </Form.Item>
-//   );
-// };
-
-
-import React from 'react'
-
-export const FormEmployeeLoanInput = () => {
   return (
-    <div>FormEmployeeLoanInput</div>
-  )
-}
+    <Form.Item
+      name={control?.name ?? "loanId"}
+      label={showLabel ? control?.label ?? "Loan" : null}
+      rules={optional ? generalValidationRulesOp : generalValidationRules}
+    >
+      <Select
+        mode={control?.multiple ? "multiple" : undefined}
+        placeholder="Select loan"
+        loading={isFetching} //TO DO : this should be added to all custom Fetch Form Inputs
+        showSearch
+        allowClear
+        onClear={() => setSearchTerm("")}
+        onSearch={handleSearch}
+        className="rounded border-slate-400 w-full"
+        defaultActiveFirstOption={false}
+        showArrow={false}
+        filterOption={false}
+        onSelect={(val: number) => {
+          const loan = data?.data.find((item) => item.id === val);
+          handleSelect?.(val, loan);
+        }}
+      >
+        {isSuccess ? (
+          data?.data.map((item) => (
+            <Select.Option key={item.id} value={item.id}>
+              {item.id.toString().padStart(7, "0")}
+            </Select.Option>
+          ))
+        ) : (
+          <div className="flex justify-center items-center w-full">
+            <Spin size="small" />
+          </div>
+        )}
+      </Select>
+    </Form.Item>
+  );
+};

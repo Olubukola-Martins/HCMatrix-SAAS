@@ -19,6 +19,7 @@ export type TLoanRepayment = {
   updatedAt: string;
   deletedAt?: any;
   loan: Loan;
+  paymentMethod: string;
 };
 
 interface Loan {
@@ -81,10 +82,10 @@ export interface AllLoanPaymentProps {
 }
 
 export interface repaymentPlanColumnProps {
-   date: string;
-   amount: number;
-   interest: number;
-   totalPayment: number;
-   balance: number;
-   status: string;
+  date: string;
+  amount: number;
+  interest: number;
+  totalPayment: number;
+  balance: number;
+  status: string;
 }

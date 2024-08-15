@@ -100,6 +100,7 @@ export interface AllLoanRequestProps {
   createdAt: string;
   status: string;
   disbursedAt: string;
+  paymentPlan: PaymentPlan;
 }
 
 export interface ILoanDetails {
