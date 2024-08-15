@@ -22,7 +22,7 @@ export const BankDetails = ({
       bankName,
       swiftCode,
     });
-  }, [form]);
+  }, [form, accountName, accountNumber, bankName, swiftCode]);
   return (
     <>
       <Form form={form} layout="vertical" disabled className="mb-3">
