@@ -1,10 +1,8 @@
-import {  Form,  Drawer, Select } from "antd";
+import { Form, Drawer, Select } from "antd";
 import { AppButton } from "components/button/AppButton";
 import React, { useState } from "react";
 import { IModalProps } from "types";
-import {
-  generalValidationRules,
-} from "utils/formHelpers/validation";
+import { generalValidationRules } from "utils/formHelpers/validation";
 import { useCurrentFileUploadUrl } from "hooks/useCurrentFileUploadUrl";
 import { openNotification } from "utils/notifications";
 import { useQueryClient } from "react-query";
@@ -20,6 +18,14 @@ import { TProfileEditRequestType } from "../types";
 import { useFetchSingleEmployee } from "features/core/employees/hooks/useFetchSingleEmployee";
 import { useApiAuth } from "hooks/useApiAuth";
 import { EditJobInformationRequest } from "./category/EditJobInformationRequest";
+import { EditPersonalInfoRequest } from "./category/EditPersonalInfoRequest";
+import {
+  EditBankDetailsRequest,
+  EditITFDetailsRequest,
+  EditNSITFDetailsRequest,
+  EditPensionDetailsRequest,
+  EditTaxDetailsRequest,
+} from "./category/finance";
 
 export const NewProfileEditRequest: React.FC<IModalProps> = ({
   open,
@@ -27,7 +33,9 @@ export const NewProfileEditRequest: React.FC<IModalProps> = ({
 }) => {
   const queryClient = useQueryClient();
 
-  const [category, setCategory] = useState<TProfileEditRequestType>('profile-edit/job-information')
+  const [category, setCategory] = useState<TProfileEditRequestType>(
+    "profile-edit/job-information"
+  );
   const { mutate, isLoading } = useCreatePromotionRequisition();
 
   const documentUrl = useCurrentFileUploadUrl("documentUrl");
@@ -91,7 +99,7 @@ export const NewProfileEditRequest: React.FC<IModalProps> = ({
     isError,
     error,
   } = useFetchSingleEmployee({
-    employeeId: currentUserEmployeeId
+    employeeId: currentUserEmployeeId,
   });
   return (
     <Drawer
@@ -102,11 +110,7 @@ export const NewProfileEditRequest: React.FC<IModalProps> = ({
       style={{ top: 20 }}
       width={`75%`}
     >
-      <Form
-        layout="vertical"
-        onFinish={handleSubmit}
-        requiredMark={false}
-      >
+      <Form layout="vertical" onFinish={handleSubmit} requiredMark={false}>
         <FormUnlicensedEmployeeSSRequestInput
           Form={Form}
           control={{
@@ -114,23 +118,63 @@ export const NewProfileEditRequest: React.FC<IModalProps> = ({
             label: "Select Unlinsenced Employee",
           }}
         />
-   
-       
+
         <Form.Item
           rules={generalValidationRules}
           name="category"
           label="Category"
         >
-          <Select onSelect={(_, {value}) => setCategory(value)} options={PROFILE_EDIT_REQUEST_TYPES.map((item, i) => ({
-            value: item.type,
-            label: <span className="capitalize">{item.name}</span>
-          }))} placeholder="Select Category" />
+          <Select
+            onSelect={(_, { value }) => setCategory(value)}
+            options={PROFILE_EDIT_REQUEST_TYPES.map((item, i) => ({
+              value: item.type,
+              label: <span className="capitalize">{item.name}</span>,
+            }))}
+            placeholder="Select Category"
+          />
         </Form.Item>
-        {category === 'profile-edit/job-information' &&
-          <EditJobInformationRequest employeeId={currentUserEmployeeId} jobInformation={employee?.jobInformation}/>
-        }
-
-       
+        {category === "profile-edit/job-information" && (
+          <EditJobInformationRequest
+            employeeId={currentUserEmployeeId}
+            jobInformation={employee?.jobInformation}
+          />
+        )}
+        {category === "profile-edit/personal-information" && (
+          <EditPersonalInfoRequest
+            employeeId={currentUserEmployeeId}
+            jobInformation={employee?.jobInformation}
+          />
+        )}
+        {category === "profile-edit/finance/bank-details" && (
+          <EditBankDetailsRequest
+            employeeId={currentUserEmployeeId}
+            jobInformation={employee?.jobInformation}
+          />
+        )}
+        {category === "profile-edit/finance/tax" && (
+          <EditTaxDetailsRequest
+            employeeId={currentUserEmployeeId}
+            jobInformation={employee?.jobInformation}
+          />
+        )}
+        {category === "profile-edit/finance/itf" && (
+          <EditITFDetailsRequest
+            employeeId={currentUserEmployeeId}
+            jobInformation={employee?.jobInformation}
+          />
+        )}
+        {category === "profile-edit/finance/nsitf" && (
+          <EditNSITFDetailsRequest
+            employeeId={currentUserEmployeeId}
+            jobInformation={employee?.jobInformation}
+          />
+        )}
+        {category === "profile-edit/finance/pension" && (
+          <EditPensionDetailsRequest
+            employeeId={currentUserEmployeeId}
+            jobInformation={employee?.jobInformation}
+          />
+        )}
       </Form>
     </Drawer>
   );
