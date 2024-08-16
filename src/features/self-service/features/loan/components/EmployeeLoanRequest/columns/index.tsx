@@ -84,7 +84,15 @@ export const EMPLOYEE_LOAN_REQUEST_TABLE_COLUMNS = (
               >
                 Cancel Loan Request
               </Menu.Item>
-              <Menu.Item key="2">View Approval Stages</Menu.Item>
+              <Menu.Item
+                key="2"
+                onClick={() =>
+                  actions.handleLoanApprovalStages &&
+                  actions.handleLoanApprovalStages(val?.id)
+                }
+              >
+                View Approval Stages
+              </Menu.Item>
               <Menu.Item
                 key="1"
                 onClick={() => actions.handleLoanDetails(val?.id)}

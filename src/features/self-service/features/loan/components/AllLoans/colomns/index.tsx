@@ -90,14 +90,21 @@ export const EMPLOYEE_ALL_LOAN_TABLE_COLUMNS = (
           trigger={["click"]}
           overlay={
             <Menu>
-              <Menu.Item key="1">View Approval Stage</Menu.Item>
+              <Menu.Item
+                key="1"
+                onClick={() =>
+                  actions.handleLoanApprovalStages &&
+                  actions.handleLoanApprovalStages(val?.id)
+                }
+              >
+                View Approval Stage
+              </Menu.Item>
               <Menu.Item
                 key="2"
                 onClick={() => actions.handleLoanDetails(val?.id)}
               >
                 View Loan Details
               </Menu.Item>
-             
             </Menu>
           }
         >

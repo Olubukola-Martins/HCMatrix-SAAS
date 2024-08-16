@@ -122,4 +122,5 @@ export interface EmployeeLoanRequestTableActions {
   handleLoanDetails: (id: number) => void;
   handleLoanDisbursement?: (id: number) => void; 
   confirmApprovalAction?: (val: TConfirmApprovalActionProps) => void,
+  handleLoanApprovalStages?: (id: number) => void;
 }

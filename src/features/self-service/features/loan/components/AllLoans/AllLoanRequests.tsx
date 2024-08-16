@@ -8,10 +8,12 @@ import { LoanDetails } from "./LoanDetails";
 import { DatePicker, Select } from "antd";
 import { APPROVAL_STATUS_OPTIONS } from "constants/statustes";
 import { EmployeeLoanRequestTableActions } from "../../types/request";
+import ViewApprovalStages from "features/core/workflows/components/approval-request/ViewApprovalStages";
 
 const AllLoanRequests = () => {
   const [loanRequestId, setLoanRequestId] = useState<number>();
   const [openLoanDetails, setOpenLoanDetails] = useState(false);
+  const [openStageModal, setOpenStageModal] = useState(false);
   const [selectedDate, setSelectedDate] = useState<string | null>();
   const [storeStatus, setStoreStatus] = useState<TLoanRequestStatus[]>();
   const { pagination, onChange } = usePagination({ pageSize: 10 });
@@ -28,8 +30,14 @@ const AllLoanRequests = () => {
     setOpenLoanDetails(true);
   };
 
+  const handleLoanApprovalStages = (id: number) => {
+    setLoanRequestId(id);
+    setOpenStageModal(true);
+  };
+
   const actions: EmployeeLoanRequestTableActions = {
     handleLoanDetails,
+    handleLoanApprovalStages,
     // You can add more functions here
   };
 
@@ -42,6 +50,13 @@ const AllLoanRequests = () => {
         handleClose={() => setOpenLoanDetails(false)}
         id={loanRequestId ?? 0}
         loanDetailSource="all-loans-request"
+      />
+
+      <ViewApprovalStages
+        handleClose={() => setOpenStageModal(false)}
+        open={openStageModal}
+        id={loanRequestId ?? 0}
+        type="loan"
       />
 
       <div className="flex items-center gap-3">
