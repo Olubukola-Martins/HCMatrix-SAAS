@@ -1,5 +1,6 @@
 import { TLicenseType } from "features/authentication/types/auth-user";
 import { TLoanType } from ".";
+import { TConfirmApprovalActionProps } from "hooks/useApproveORReject";
 
 export type TLoanRequestStatus =
   | "pending"
@@ -120,4 +121,5 @@ export interface EmployeeLoanRequestTableActions {
   handleLoanTypeDelete?: (id: number) => void;
   handleLoanDetails: (id: number) => void;
   handleLoanDisbursement?: (id: number) => void; 
+  confirmApprovalAction?: (val: TConfirmApprovalActionProps) => void,
 }

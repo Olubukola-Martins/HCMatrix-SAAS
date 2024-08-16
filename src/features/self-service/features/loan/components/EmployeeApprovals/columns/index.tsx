@@ -87,7 +87,7 @@ export const EMPLOYEE_LOAN_APPROVAL_TABLE_COLUMNS = (
   {
     title: "Action",
     key: "action",
-    render: (_, val) => (
+    render: (_, item) => (
       <div>
         <Dropdown
           trigger={["click"]}
@@ -95,17 +95,45 @@ export const EMPLOYEE_LOAN_APPROVAL_TABLE_COLUMNS = (
             <Menu>
               <Menu.Item
                 key="1"
-                onClick={() => actions.handleLoanDetails(val?.loan?.id ?? 0)}
+                onClick={() => actions.handleLoanDetails(item?.loan?.id ?? 0)}
               >
                 View
               </Menu.Item>
-              <Menu.Item key="2">Rejects</Menu.Item>
-              <Menu.Item key="3">Approve</Menu.Item>
               <Menu.Item
+                hidden={item.loan?.status !== "pending"}
+                key="2"
+                onClick={() =>
+                  actions.confirmApprovalAction &&
+                  actions.confirmApprovalAction({
+                    approvalStageId: item?.id,
+                    status: "rejected",
+                    workflowType: !!item?.basicStageId ? "basic" : "advanced",
+                  })
+                }
+              >
+                Reject
+              </Menu.Item>
+              <Menu.Item
+                hidden={item?.loan?.status !== "pending"}
+                key="3"
+                onClick={() =>
+                  actions.confirmApprovalAction &&
+                  actions.confirmApprovalAction({
+                    approvalStageId: item?.id,
+                    status: "approved",
+                    workflowType: !!item?.basicStageId ? "basic" : "advanced",
+                    requires2FA: item?.advancedStage?.enableTwoFactorAuth,
+                  })
+                }
+              >
+                Approve
+              </Menu.Item>
+              <Menu.Item
+                disabled={item?.loan?.status === "pending"}
                 key="4"
                 onClick={() =>
                   actions.handleLoanDisbursement &&
-                  actions.handleLoanDisbursement(val?.loan?.id ?? 0)
+                  actions.handleLoanDisbursement(item?.loan?.id ?? 0)
                 }
               >
                 Disburse loan

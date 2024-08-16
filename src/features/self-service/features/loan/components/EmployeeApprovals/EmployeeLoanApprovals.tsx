@@ -6,8 +6,13 @@ import { useState } from "react";
 import { EmployeeLoanRequestTableActions } from "../../types/request";
 import { LoanDetails } from "../AllLoans/LoanDetails";
 import { LoanDisbursement } from "./LoanDisbursement";
+import { useQueryClient } from "react-query";
+import { useApproveORReject } from "hooks/useApproveORReject";
+import { QUERY_KEY_FOR_LOAN_REQUESTS } from "../../hooks/requests/useGetLoanRequests";
+import { QUERY_KEY_FOR_ALL_LOAN_REQUESTS } from "../../hooks/requests/useGetAllLoans";
 
 const EmployeeLoanApprovals = () => {
+  const queryClient = useQueryClient();
   const [loanRequestId, setLoanRequestId] = useState<number>();
   const [openLoanDetails, setOpenLoanDetails] = useState(false);
   const [openDisburse, setOpenDisburse] = useState(false);
@@ -15,6 +20,23 @@ const EmployeeLoanApprovals = () => {
   const { data, isLoading } = useFetchApprovalRequests({
     pagination,
     type: "loan",
+  });
+
+  const { confirmApprovalAction } = useApproveORReject({
+    handleSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: [QUERY_KEY_FOR_LOAN_REQUESTS],
+        // exact: true,
+      });
+      queryClient.invalidateQueries({
+        queryKey: [QUERY_KEY_FOR_ALL_LOAN_REQUESTS],
+        // exact: true,
+      });
+      queryClient.invalidateQueries({
+        queryKey: [],
+        // exact: true,
+      });
+    },
   });
 
   const handleLoanDetails = (id: number) => {
@@ -28,6 +50,8 @@ const EmployeeLoanApprovals = () => {
   const actions: EmployeeLoanRequestTableActions = {
     handleLoanDetails,
     handleLoanDisbursement,
+    confirmApprovalAction,
+
     // You can add more functions here
   };
   const columns = EMPLOYEE_LOAN_APPROVAL_TABLE_COLUMNS(actions);
