@@ -75,7 +75,7 @@ interface Department {
 
 //=== New
 
-interface ILoanEmployees {
+export interface ILoanEmployees {
   firstName: string;
   lastName: string;
   empUid: string;

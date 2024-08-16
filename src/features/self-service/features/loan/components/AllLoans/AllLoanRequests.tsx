@@ -62,7 +62,7 @@ const AllLoanRequests = () => {
       <div className="flex items-center gap-3">
         <DatePicker
           className="w-full"
-          style={{ width: "12rem" }}
+          style={{ width: "10rem" }}
           onChange={(val) =>
             setSelectedDate(val ? val.format("YYYY-MM-DD") : null)
           }
@@ -72,7 +72,7 @@ const AllLoanRequests = () => {
           options={APPROVAL_STATUS_OPTIONS}
           mode="multiple"
           onChange={(val) => setStoreStatus(val)}
-          style={{ width: "8rem" }}
+          style={{ width: "10rem" }}
         />
       </div>
 

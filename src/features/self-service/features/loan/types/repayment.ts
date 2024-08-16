@@ -1,6 +1,8 @@
+import { TLoanType } from ".";
+import { ILoanEmployees } from "./loan";
+
 export type TLoanRepayment = {
   id: number;
-  type: string;
   paymentType: string;
   status: string;
   sender: string;
@@ -12,7 +14,7 @@ export type TLoanRepayment = {
   loanId: number;
   employeeId: number;
   empUid: string;
-  employeeFullName: string;
+  employee: ILoanEmployees;
   costCentreId: number;
   companyId: number;
   createdAt: string;
@@ -20,6 +22,9 @@ export type TLoanRepayment = {
   deletedAt?: any;
   loan: Loan;
   paymentMethod: string;
+  type: TLoanType;
+  balance: number;
+  disbursedAt: string;
 };
 
 interface Loan {
