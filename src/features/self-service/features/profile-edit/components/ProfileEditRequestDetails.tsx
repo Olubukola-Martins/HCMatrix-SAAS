@@ -16,6 +16,7 @@ import { useQueryClient } from "react-query";
 import { QUERY_KEY_FOR_PROMOTION_REQUISITIONS } from "../../requisitions/hooks/promotion/useGetPromotionRequisitions";
 import { QUERY_KEY_FOR_PROMOTION_REQUISITIONS_FOR_AUTH_EMPLOYEE } from "../../requisitions/hooks/promotion/useGetPromotionRequisitions4AuthEmployee";
 import { QUERY_KEY_FOR_SELF_SERVICE_DB_ANALYTICS } from "features/self-service/hooks/useGetSelfServiceDashboardAnalytics";
+import { PageIntro } from "components/layout/PageIntro";
 
 interface IProps extends IModalProps {
   id: number;
@@ -88,16 +89,24 @@ export const ProfileEditRequestDetails: React.FC<IProps> = ({
             handleClose();
           }}
         />
+        <PageIntro title="Category: Personal Information"/>
 
         <Table columns={[
           {
             title: ''
+            render: () => <span>Account Number</span>
           },
           {
             title: 'Current Value'
+            render: () => <span>3120704672</span>
           },
           {
             title: 'Proposed Value'
+            render: () => <span>3120704772</span>
+          },
+          {
+            title: 'Modified'
+            render: () => <span>Yes</span>
           },
 
         ]}/>
