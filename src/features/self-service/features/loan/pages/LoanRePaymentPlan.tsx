@@ -14,6 +14,7 @@ const LoanRePaymentPlan = () => {
   const { data, isLoading } = useGetRepaymentPlanDetails({
     id: id as unknown as number,
   });
+
   const columns = REPAYMENT_PLAN_TABLE_COLUMNS();
 
   return (
@@ -59,7 +60,7 @@ const LoanRePaymentPlan = () => {
             columns={columns}
             dataSource={data?.result}
             loading={isLoading}
-            // pagination={{ ...pagination, total: data?.total }}
+            pagination={{ pageSize: 10, total: data?.totalCount }}
             scroll={{ x: 500 }}
           />
         </div>
