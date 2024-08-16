@@ -26,7 +26,9 @@ export const ALL_LOAN_PAYMENT_TABLE_COLUMNS = (
   {
     title: "Employee ID",
     key: "employeeId",
-    render: (_, item) => <span className="capitalize">{item?.employee?.empUid}</span>,
+    render: (_, item) => (
+      <span className="capitalize">{item?.employee?.empUid}</span>
+    ),
   },
   {
     title: "Loan Type",
@@ -69,7 +71,7 @@ export const ALL_LOAN_PAYMENT_TABLE_COLUMNS = (
                 View Loan Details
               </Menu.Item>
               <Menu.Item key="2">
-                <Link to={appRoutes.loanPaymentPlan(1).path}>
+                <Link to={appRoutes.loanPaymentPlan(val?.id).path}>
                   View Payment Plan
                 </Link>
               </Menu.Item>

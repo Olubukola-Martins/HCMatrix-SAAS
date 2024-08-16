@@ -1,9 +1,9 @@
 import { ColumnsType } from "antd/es/table";
 import { Dropdown, Menu } from "antd";
-import { repaymentPlanColumnProps } from "../../../types/repayment";
+import { IRepaymentPlanColumn } from "../../../types/repayment";
 
 export const REPAYMENT_PLAN_TABLE_COLUMNS =
-  (): ColumnsType<repaymentPlanColumnProps> => [
+  (): ColumnsType<IRepaymentPlanColumn> => [
     {
       title: "Date",
       key: "date",

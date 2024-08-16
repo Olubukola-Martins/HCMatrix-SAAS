@@ -75,22 +75,36 @@ export interface myLoanRePaymentProps {
   balance: number;
 }
 
-export interface AllLoanPaymentProps {
-  loanId: string;
-  employee: {
-    name: string;
-  };
-  loanType: string;
-  amount: number;
-  disbursedDate: string;
-  balance: number;
+// export interface AllLoanPaymentProps {
+//   loanId: string;
+//   employee: {
+//     name: string;
+//   };
+//   loanType: string;
+//   amount: number;
+//   disbursedDate: string;
+//   balance: number;
+// }
+
+
+export interface IPaymentPlanDetails {
+  loanAmount: string;
+  paidAmount: number;
+  pendingAmount: number;
+  result: IRepaymentPlanColumn[];
+  totalCount: number;
 }
 
-export interface repaymentPlanColumnProps {
-  date: string;
-  amount: number;
-  interest: number;
-  totalPayment: number;
-  balance: number;
+export interface IRepaymentPlanColumn {
+  id: number;
+  companyId: number;
+  loanId: number;
+  principalPayment: string;
+  interestPayment: string;
+  totalAmount: string;
+  remainingBalance: string;
   status: string;
+  paidAt: null | string;
+  createdAt: string;
+  updatedAt: string;
 }

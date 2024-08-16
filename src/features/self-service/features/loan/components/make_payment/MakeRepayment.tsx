@@ -26,7 +26,6 @@ export const MakeRepayment: React.FC<IModalProps> = ({ open, handleClose }) => {
   } = data?.enableManualRepayment?.bankAccountDetails || {};
   const { mutate, isLoading } = useMakeLoanRepayment();
 
-
   const handleSubmit = (data: any) => {
     mutate(
       {
@@ -50,8 +49,8 @@ export const MakeRepayment: React.FC<IModalProps> = ({ open, handleClose }) => {
             title: "Success",
             description: res.message,
           });
-
           form.resetFields();
+          handleClose();
         },
       }
     );

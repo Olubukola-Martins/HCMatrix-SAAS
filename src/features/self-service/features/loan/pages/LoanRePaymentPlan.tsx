@@ -4,8 +4,16 @@ import { TableWithFocusType } from "components/table";
 import { BackgroundCurves } from "features/self-service/components/BackgroundCurves";
 import SelfServiceSubNav from "features/self-service/components/SelfServiceSubNav";
 import { REPAYMENT_PLAN_TABLE_COLUMNS } from "../components/repayments/columns/repaymentPlanColumn";
+import { useGetRepaymentPlanDetails } from "../hooks/repayment/useGetRepaymentPlanDetails";
+import { useParams } from "react-router-dom";
 
 const LoanRePaymentPlan = () => {
+  const params = useParams();
+  const id = params.id;
+
+  const { data, isLoading } = useGetRepaymentPlanDetails({
+    id: id as unknown as number,
+  });
   const columns = REPAYMENT_PLAN_TABLE_COLUMNS();
 
   return (
@@ -18,23 +26,23 @@ const LoanRePaymentPlan = () => {
           <div className="grid grid-cols-1 md:grid-cols-4 gap-5 my-7">
             <SimpleCard
               title="Loan Amount"
-              highlight={`${0 ?? 0}`}
-              loading={false}
+              highlight={`${data?.loanAmount ?? 0}`}
+              loading={isLoading}
             />
             <SimpleCard
               title="Paid Amount"
-              highlight={`${0 ?? 0}`}
-              loading={false}
+              highlight={`${data?.paidAmount ?? 0}`}
+              loading={isLoading}
             />
             <SimpleCard
               title="Pending Amount"
-              highlight={`${0 ?? 0}`}
-              loading={false}
+              highlight={`${data?.pendingAmount ?? 0}`}
+              loading={isLoading}
             />
             <SimpleCard
               title="Next Payment Date"
-              highlight={`20/03/2024`}
-              loading={false}
+              highlight={`....`}
+              loading={isLoading}
             />
           </div>
           <div className="flex items-center gap-x-5">
@@ -49,10 +57,9 @@ const LoanRePaymentPlan = () => {
           </div>
           <TableWithFocusType
             columns={columns}
-            dataSource={[]}
-            // loading={isLoading}
+            dataSource={data?.result}
+            loading={isLoading}
             // pagination={{ ...pagination, total: data?.total }}
-            // onChange={onChange}
             scroll={{ x: 500 }}
           />
         </div>
