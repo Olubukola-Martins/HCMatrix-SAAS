@@ -1,7 +1,5 @@
-import React from "react";
 import { SimpleCard } from "components/cards/SimpleCard";
 import { useGetLoanAnalytics } from "../../hooks/analytics/useGetLoanAnalytics";
-// import { useGetLeaveAnalytics } from "../hooks/useGetLeaveAnalytics";
 
 const LoanOverviewCards = () => {
   const { data: employeeData, isFetching: isFetchingEmpData } =
@@ -9,7 +7,6 @@ const LoanOverviewCards = () => {
   const { data: allData, isFetching: isFetchingAllData } = useGetLoanAnalytics({
     type: "all",
   });
-  console.log(allData);
 
   return (
     <div>

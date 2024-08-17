@@ -229,7 +229,7 @@ export const NewLoan: React.FC<IModalProps> = ({ open, handleClose }) => {
           <Form.Item
             rules={generalValidationRulesOp}
             name="description"
-            label="Description"
+            label="Description (optional)"
           >
             <Input.TextArea className="w-full" placeholder="Description" />
           </Form.Item>

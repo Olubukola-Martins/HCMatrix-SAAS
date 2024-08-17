@@ -129,7 +129,7 @@ export const EMPLOYEE_LOAN_APPROVAL_TABLE_COLUMNS = (
                 Approve
               </Menu.Item>
               <Menu.Item
-                disabled={item?.loan?.status === "pending"}
+                disabled={(item?.loan?.status === "pending" || item?.loan?.status === "rejected")}
                 key="4"
                 onClick={() =>
                   actions.handleLoanDisbursement &&

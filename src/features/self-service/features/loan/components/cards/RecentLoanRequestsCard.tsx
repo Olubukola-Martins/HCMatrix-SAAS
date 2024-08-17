@@ -25,6 +25,7 @@ export const RecentLoanRequestsCard: React.FC<{
       limit: LIMIT_OF_ITEMS_TO_DISPLAY,
       offset: 0,
     },
+    
   });
   const { confirmApprovalAction } = useApproveORReject({
     handleSuccess: () => {

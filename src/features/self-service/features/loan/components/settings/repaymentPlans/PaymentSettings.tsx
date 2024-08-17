@@ -137,7 +137,7 @@ export const PaymentSettings = () => {
             noStyle
             rules={generalValidationRules}
             valuePropName="checked"
-            initialValue={true}
+            initialValue={false}
           >
             <Switch />
           </Form.Item>
