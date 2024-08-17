@@ -1,6 +1,5 @@
 import { TLoanSetting } from "./setting";
 import { TLoanRequest, TLoanRequestStatus } from "./request";
-import { TLoanAnalytics } from "./analytic";
 import { TLoanRepayment } from "./repayment";
 import { TLoan } from "./loan";
 import { TLoanWorthiness } from "./worthiness";
@@ -28,7 +27,6 @@ export {
   type TPaymentPlan,
   type TLoanRequest,
   type TLoanRequestStatus,
-  type TLoanAnalytics,
   type TLoanRepayment,
   type TLoan,
   type TLoanWorthiness,

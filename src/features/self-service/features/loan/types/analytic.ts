@@ -1,10 +1,20 @@
-export type TLoanAnalytics = {
+interface TLoanAnalytics {
   total: number;
   pending: number;
   approved: number;
   rejected: number;
   graphData: GraphData;
-};
+}
+
+// export interface TEmployeeLoanAnalytics {
+//   mine: TLoanAnalytics;
+// }
+
+export interface TAllLoanAnalytics {
+  mine: TLoanAnalytics;
+  company: TLoanAnalytics
+}
+
 
 interface GraphData {
   totalYearCount: number;

@@ -5,10 +5,11 @@ import { useGetLoanAnalytics } from "../../hooks/analytics/useGetLoanAnalytics";
 
 const LoanOverviewCards = () => {
   const { data: employeeData, isFetching: isFetchingEmpData } =
-    useGetLoanAnalytics({ type: "me" });
+    useGetLoanAnalytics({ type: "mine" });
   const { data: allData, isFetching: isFetchingAllData } = useGetLoanAnalytics({
     type: "all",
   });
+  console.log(allData);
 
   return (
     <div>
@@ -17,46 +18,45 @@ const LoanOverviewCards = () => {
         <>
           <SimpleCard
             title="My Total Loan Requests"
-            highlight={`${employeeData?.total ?? 0}`}
+            highlight={`${employeeData?.mine?.total ?? 0}`}
             loading={isFetchingEmpData}
           />
           <SimpleCard
             title="My Pending Loan Requests"
-            highlight={`${employeeData?.pending ?? 0}`}
+            highlight={`${employeeData?.mine?.pending ?? 0}`}
             loading={isFetchingEmpData}
           />
           <SimpleCard
             title="My Approved Loan Requests"
-            highlight={`${employeeData?.approved ?? 0}`}
+            highlight={`${employeeData?.mine?.approved ?? 0}`}
             loading={isFetchingEmpData}
           />
           <SimpleCard
             title="My Rejected Loan Requests"
-            highlight={`${employeeData?.rejected ?? 0}`}
+            highlight={`${employeeData?.mine?.rejected ?? 0}`}
             loading={isFetchingEmpData}
           />
         </>
         {/* all */}
         <>
-        
           <SimpleCard
             title="Pending Loan Requests"
-            highlight={`${allData?.pending ?? 0}`}
+            highlight={`${allData?.company?.pending ?? 0}`}
             loading={isFetchingAllData}
           />
           <SimpleCard
             title="Approved Loan Requests"
-            highlight={`${allData?.approved ?? 0}`}
+            highlight={`${allData?.company?.approved ?? 0}`}
             loading={isFetchingAllData}
           />
           <SimpleCard
             title="Rejected Loan Requests"
-            highlight={`${allData?.rejected ?? 0}`}
+            highlight={`${allData?.company.rejected ?? 0}`}
             loading={isFetchingAllData}
           />
-            <SimpleCard
+          <SimpleCard
             title="Loan Balance"
-            highlight={`${allData?.total ?? 0}`}
+            highlight={`${allData?.company?.total ?? 0}`}
             loading={isFetchingAllData}
           />
         </>

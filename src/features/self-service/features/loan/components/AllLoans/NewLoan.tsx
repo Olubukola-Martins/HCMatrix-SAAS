@@ -36,7 +36,6 @@ export const NewLoan: React.FC<IModalProps> = ({ open, handleClose }) => {
   const [form] = Form.useForm<TRequestForLoanData>();
   const { mutate, isLoading: isLoadingCreateLoan } = useRequestForLoan();
   const getDocumentUrl = useCurrentFileUploadUrl("documentUrl");
-  const [requiresForm, setRequiresForm] = useState(false);
   const [loanTypeDetails, setLoanTypeDetails] = useState<ILoanStateTpe>();
   const [openEligibility, setOpenEligibility] = useState(false);
   const [lPlanDetail, setLPlanDetail] = useState<number>();
@@ -59,7 +58,7 @@ export const NewLoan: React.FC<IModalProps> = ({ open, handleClose }) => {
   }, [form, data, isSuccess]);
 
   const handleSubmit = (values: any) => {
-    if (requiresForm && !getDocumentUrl) {
+    if (!getDocumentUrl) {
       openNotification({
         state: "error",
         title: "Guarantor's Form Required",

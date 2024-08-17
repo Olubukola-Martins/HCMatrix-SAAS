@@ -10,10 +10,10 @@ const items = APPROVAL_STATUS_OPTIONS.map((item) => item.value);
 export const LoanInsightsCard = () => {
   const [year, setYear] = useState<string>("2023");
   const [status, setStatus] = useState<TApprovalStatus[]>(items);
-  const { data, isLoading } = useGetLoanAnalytics({
-    type: "all",
-    props: { year, status },
-  });
+  // const { data, isLoading } = useGetLoanAnalytics({
+  //   type: "mine",
+  //   props: { year, status },
+  // });
   return (
     <div className="col-span-3 bg-mainBg border flex flex-col gap-4 rounded-lg text-sm shadow p-3">
       <div className="flex justify-between">
@@ -36,14 +36,14 @@ export const LoanInsightsCard = () => {
           />
         </div>
       </div>
-      <Skeleton active paragraph={{ rows: 9 }} loading={isLoading}>
+      {/* <Skeleton active paragraph={{ rows: 9 }} loading={isLoading}>
         <LineChart
           data={data ? Object.values(data?.graphData.countsByMonth) : []}
           labels={data ? Object.keys(data?.graphData.countsByMonth) : []}
           dataEntityLabel="loans"
           bgColors={"#ff6647"}
         />
-      </Skeleton>
+      </Skeleton> */}
     </div>
   );
 };
