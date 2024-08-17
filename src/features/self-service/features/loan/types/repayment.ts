@@ -75,18 +75,6 @@ export interface myLoanRePaymentProps {
   balance: number;
 }
 
-// export interface AllLoanPaymentProps {
-//   loanId: string;
-//   employee: {
-//     name: string;
-//   };
-//   loanType: string;
-//   amount: number;
-//   disbursedDate: string;
-//   balance: number;
-// }
-
-
 export interface IPaymentPlanDetails {
   loanAmount: string;
   paidAmount: number;
@@ -107,4 +95,10 @@ export interface IRepaymentPlanColumn {
   paidAt: null | string;
   createdAt: string;
   updatedAt: string;
+}
+
+export interface IRepaymentPlanChangeStatus {
+  paidAt: string;
+  scheduleId: number;
+  loanId: number;
 }

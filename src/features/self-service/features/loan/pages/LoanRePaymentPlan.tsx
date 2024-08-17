@@ -6,8 +6,13 @@ import SelfServiceSubNav from "features/self-service/components/SelfServiceSubNa
 import { REPAYMENT_PLAN_TABLE_COLUMNS } from "../components/repayments/columns/repaymentPlanColumn";
 import { useGetRepaymentPlanDetails } from "../hooks/repayment/useGetRepaymentPlanDetails";
 import { useParams } from "react-router-dom";
+import { ChangeRepaymentStatus } from "../components/repayments/ChangeRepaymentStatus";
+import { useState } from "react";
+import { EmployeeLoanRequestTableActions } from "../types/request";
 
 const LoanRePaymentPlan = () => {
+  const [openConfirmPayment, setOpenConfirmPayment] = useState(false);
+  const [getRepaymentId, setGetRepaymentId] = useState<number>();
   const params = useParams();
   const id = params.id;
 
@@ -15,11 +20,30 @@ const LoanRePaymentPlan = () => {
     id: id as unknown as number,
   });
 
-  const columns = REPAYMENT_PLAN_TABLE_COLUMNS();
+  const handleGetRepaymentPlan = (id: number) => {
+    setGetRepaymentId(id);
+    setOpenConfirmPayment(true);
+  };
+
+  const handleLoanDetails = () => {};
+
+  const actions: EmployeeLoanRequestTableActions = {
+    handleLoanDetails,
+    handleGetRepaymentPlan,
+    // You can add more functions here
+  };
+
+  const columns = REPAYMENT_PLAN_TABLE_COLUMNS(actions);
 
   return (
     <div>
       <SelfServiceSubNav />
+      <ChangeRepaymentStatus
+        open={openConfirmPayment}
+        handleClose={() => setOpenConfirmPayment(false)}
+        scheduleId={getRepaymentId ?? 0}
+        loanId={id as unknown as number}
+      />
       <div className="relative mb-20">
         <BackgroundCurves />
         <div className="absolute top-4 Container mt-8 w-full">

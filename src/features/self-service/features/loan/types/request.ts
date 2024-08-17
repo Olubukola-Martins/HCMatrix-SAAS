@@ -101,8 +101,6 @@ interface Type {
   updatedAt: string;
 }
 
-
-
 // ======= new
 export interface myLoanRequestProps {
   id: number;
@@ -116,11 +114,11 @@ export interface myLoanRequestProps {
   createdAt: string;
 }
 
-
 export interface EmployeeLoanRequestTableActions {
   handleLoanTypeDelete?: (id: number) => void;
   handleLoanDetails: (id: number) => void;
-  handleLoanDisbursement?: (id: number) => void; 
-  confirmApprovalAction?: (val: TConfirmApprovalActionProps) => void,
+  handleLoanDisbursement?: (id: number) => void;
+  confirmApprovalAction?: (val: TConfirmApprovalActionProps) => void;
   handleLoanApprovalStages?: (id: number) => void;
+  handleGetRepaymentPlan?: (id: number) => void;
 }
