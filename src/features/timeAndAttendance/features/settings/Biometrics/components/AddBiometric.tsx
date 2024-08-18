@@ -91,7 +91,7 @@ export const AddBiometric = ({ handleClose, open, id }: IDrawerProps) => {
         (_: any, i: number) => i !== index
       ),
     });
-  };
+  }; 
 
   return (
     <Drawer

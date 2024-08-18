@@ -280,7 +280,7 @@ export const appRoutes = {
   }),
   hoursPerEmployee: `/attendance/hours-per-employee`,
   employeesPerShift: `/attendance/employees-per-shift`,
-
+  uploadAttendance: `/attendance/upload-attendance`,
   timeTrackingRules: `/attendance/time-tracking-rules`,
   workSchedule: `/attendance/work-schedule`,
   timeOffPolicy: `/attendance/time-off-policy`,
@@ -306,7 +306,6 @@ export const appRoutes = {
     format: `/learning/training/:id`,
     path: `/learning/training/${id}`,
   }),
-
   gamification: `/learning/gamification`,
   paidTraining: `/learning/paid-training`,
   budgets: `/learning/budgets`,
@@ -314,6 +313,33 @@ export const appRoutes = {
   lAndDReport: `/learning/report`,
   udemy: `/learning/udemy`,
   leaningHome: `/leaning/home`,
+
+  // Recruitment
+  recruitmentSettings: `/recruitment/settings`,
+  recruitmentDashboard: `/recruitment/dashboard`,
+  recruitmentReport: `/recruitment/report`,
+  recruitmentHiredCandidate: `/recruitment/hired-candidate`,
+  recruitmentConfigureCandidateStatus: `/recruitment/configure-candidate-status`,
+  // recruitmentConfigureCandidateStatus: `/recruitment/settings`, // configure candidate status needs to be the default page when settings loads
+  recruitmentRecruitmentChannels: `/recruitment/recruitment-channels`,
+  recruitmentEmailTemplates: `/recruitment/email-templates`,
+  recruitmentOfferTemplates: `/recruitment/offer-templates`,
+  recruitmentJobTemplates: `/recruitment/job-templates`,
+  recruitmentJobOpenings: `/recruitment/job-opening`,
+  recruitmentAddJobOpenings: `/recruitment/add-job-openings`,
+  recruitmentOtherSettings: `/recruitment/other-settings`,
+  recruitmentEmailTemplateDetails: (id?: number) => ({
+    format: `/recruitment/email-templates-details/:id`,
+    path: `/recruitment/email-templates-details/${id}`,
+  }),
+  recruitmentOfferTemplateDetails: (id?: number) => ({
+    format: `/recruitment/offer-template-details/:id`,
+    path: `/recruitment/offer-template-details/${id}`,
+  }),
+  recruitmentJobTemplateDetails: (id?: number) => ({
+    format: `/recruitment/job-template-details/:id`,
+    path: `/recruitment/job-template-details/${id}`,
+  }),
 };
 
 // Routes that require API redirect and logout if authenticated, so the user is not automatically redirected to the login page, as that is the typical behaviour of such routes

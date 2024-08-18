@@ -7,8 +7,8 @@ export type TFileType =
   | "application/pdf"
   | "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
   | "text/csv"
-  | "video/mp4"
-  | "audio/mpeg";
+  | "audio/mpeg"
+  | "video/mp4";
 
 export type TFormFileInput = TFormSingleFileInput[];
 export interface TFormSingleFileInput {

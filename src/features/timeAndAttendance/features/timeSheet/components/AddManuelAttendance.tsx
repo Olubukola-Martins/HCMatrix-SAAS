@@ -72,7 +72,7 @@ export const AddManuelAttendance = ({ open, handleClose }: IModalProps) => {
       <p className="text-xs pb-3 text-yellow-500">
         Please note that attendance once created can not be edited or deleted!
       </p>
-      <Form layout="vertical" requiredMark="optional" onFinish={onSubmit}>
+      <Form layout="vertical" requiredMark={false} onFinish={onSubmit}>
         <FormEmployeeInput
           Form={Form}
           handleSelect={(_, val) => setEmpUid(val?.empUid)}
