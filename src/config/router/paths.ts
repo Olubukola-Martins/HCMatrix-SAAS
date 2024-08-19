@@ -319,6 +319,10 @@ export const appRoutes = {
   recruitmentDashboard: `/recruitment/dashboard`,
   recruitmentReport: `/recruitment/report`,
   recruitmentPanelist: `/recruitment/panelist`,
+  recruitmentPanelistFullJobDescription: (id?: number) => ({
+    format: `/recruitment/panelist/job-description/:id`,
+    path: `/recruitment/panelist/job-description/${id}`,
+  }),
   recruitmentHiredCandidate: `/recruitment/hired-candidate`,
   recruitmentConfigureCandidateStatus: `/recruitment/configure-candidate-status`,
   // recruitmentConfigureCandidateStatus: `/recruitment/settings`, // configure candidate status needs to be the default page when settings loads

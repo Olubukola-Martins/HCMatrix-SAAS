@@ -70,6 +70,11 @@ const InterviewCalendar: React.FC<CalendarProps> = ({ events }) => {
         events={events}
         startAccessor="start"
         endAccessor="end"
+        eventPropGetter={(event) => ({
+          style: {
+            backgroundColor: "#bfdbfe",
+          },
+        })}
         style={{ height: 500 }}
         onSelectEvent={(event) => handleEventClick(event)}
         components={{

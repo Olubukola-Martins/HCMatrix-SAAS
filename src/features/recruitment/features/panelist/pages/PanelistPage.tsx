@@ -7,9 +7,12 @@ import useCountdownTimer from "../hooks/useCountdownTimer";
 import InterviewCalendar from "../components/panelist/InterviewCalendar";
 import RejectInviteModal from "../components/panelist/modal/RejectInviteModal";
 import { useState } from "react";
+import { appRoutes } from "config/router/paths";
+import { useNavigate } from "react-router-dom";
 
 const PanelistPage = () => {
   const [rejectModalVisible, setRejectModalVisible] = useState(false);
+  const navigate = useNavigate();
   const { name, department, designation, panelistImg, numberOfCandidates, endDateToAcceptInvite, fullJobDescription } = PanelistInfoMockData;
 
   const timeLeft = useCountdownTimer(endDateToAcceptInvite);
@@ -48,7 +51,10 @@ const PanelistPage = () => {
           </div>
           <div className="absolute bottom-0 left-0 right-0 h-20 bg-gradient-to-t from-white to-transparent pointer-events-none"></div>
         </div>
-        <p className="text-xs text-caramel decoration-caramel underline underline-offset-1 cursor-pointer">View full job description</p>
+        <p className="text-xs text-caramel decoration-caramel hover:decoration-transparent underline underline-offset-1 cursor-pointer" onClick={() => navigate(appRoutes.recruitmentPanelistFullJobDescription(1).path)}>
+          <span>View full job description</span>
+          <i className="ri-arrow-right-s-fill text-base mb-1 absolute "></i>
+        </p>
 
         {/* interview calendar */}
         <div className="mt-3">
