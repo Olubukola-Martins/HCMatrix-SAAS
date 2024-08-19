@@ -46,8 +46,8 @@ import { canUserAccessComponent } from "components/permission-restriction/Permis
 import VehicleBookingSettings from "features/self-service/features/vehicle-booking/pages/VehicleBookingSettings";
 import EmployeeHealthAccessPage from "features/self-service/features/health-access/pages/EmployeeHealthAccessPage";
 import LoanRePaymentPlan from "features/self-service/features/loan/pages/LoanRePaymentPlan";
-import { ProfileEditRequestSetting } from "features/self-service/features/profile-edit/components/ProfileEditRequestSetting";
 import ProfileEditRequests from "features/self-service/features/profile-edit/pages/ProfileEditRequests";
+import ProfileEditRequestsSettingPage from "features/self-service/features/profile-edit/pages/ProfileEditRequestsSettingPage";
 
 // TO DO: This lazy loading might not be needed consider rethinking this, so just temporary
 // const Requisition = lazy(
@@ -334,7 +334,7 @@ export const selfServiceRoutes = (props: TAppPageDataFnProps): TRouteData[] => {
         }),
     },
     {
-      element: <ProfileEditRequestSetting />,
+      element: <ProfileEditRequestsSettingPage />,
       path: appRoutes.selfServiceProfileEditSetting,
       isSearchable: true,
       title: "Profile Edit Request Setting",
