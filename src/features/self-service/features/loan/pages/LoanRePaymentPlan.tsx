@@ -9,6 +9,7 @@ import { useParams } from "react-router-dom";
 import { ChangeRepaymentStatus } from "../components/repayments/ChangeRepaymentStatus";
 import { useState } from "react";
 import { EmployeeLoanRequestTableActions } from "../types/request";
+import { formatNumberWithCommas } from "utils/dataHelpers/formatNumberWithCommas";
 
 const LoanRePaymentPlan = () => {
   const [openConfirmPayment, setOpenConfirmPayment] = useState(false);
@@ -48,38 +49,30 @@ const LoanRePaymentPlan = () => {
         <BackgroundCurves />
         <div className="absolute top-4 Container mt-8 w-full">
           <PageIntro link={true} title="Repayment Plan" />
+
           <div className="grid grid-cols-1 md:grid-cols-4 gap-5 my-7">
             <SimpleCard
               title="Loan Amount"
-              highlight={`${data?.loanAmount ?? 0}`}
+              highlight={`${formatNumberWithCommas(data?.loanAmount ?? 0)}`}
               loading={isLoading}
             />
             <SimpleCard
               title="Paid Amount"
-              highlight={`${data?.paidAmount ?? 0}`}
+              highlight={`${formatNumberWithCommas(data?.paidAmount ?? 0)}`}
               loading={isLoading}
             />
             <SimpleCard
               title="Pending Amount"
-              highlight={`${data?.pendingAmount ?? 0}`}
+              highlight={`${formatNumberWithCommas(data?.pendingAmount ?? 0)}`}
               loading={isLoading}
             />
             <SimpleCard
-              title="Next Payment Date"
+             title="No. of Repayment left"
               highlight={`....`}
               loading={isLoading}
             />
           </div>
-          <div className="flex items-center gap-x-5">
-            <div className="flex items-center gap-3">
-              <h4 className="font-medium">Repayment dates remaining</h4>
-              <div className="border p-3 h-7 flex items-center rounded">
-                <span>50</span>
-              </div>
-            </div>
-
-            <i className="ri-download-2-fill text-xl cursor-pointer"></i>
-          </div>
+         
           <TableWithFocusType
             columns={columns}
             dataSource={data?.result}

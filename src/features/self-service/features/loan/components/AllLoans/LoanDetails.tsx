@@ -6,6 +6,7 @@ import dayjs from "dayjs";
 import { DEFAULT_DATE_FORMAT } from "constants/dateFormats";
 import { TApprovalRequest } from "features/core/workflows/types/approval-requests";
 import { getEmployeeFullName } from "features/core/employees/utils/getEmployeeFullName";
+import { formatNumberWithCommas } from "utils/dataHelpers/formatNumberWithCommas";
 
 interface IProps extends IModalProps {
   id: number;
@@ -32,7 +33,7 @@ export const LoanDetails = ({
         loanId: data.id.toString().padStart(7, "0"),
         type: data.type.name,
         date: dayjs(data.date).format(DEFAULT_DATE_FORMAT),
-        amount: data.amount,
+        amount: formatNumberWithCommas(data.amount),
         paymentPlan: data.paymentPlan.name,
         description: data.description,
         employee: getEmployeeFullName(data.employee),

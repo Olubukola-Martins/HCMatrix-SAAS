@@ -6,6 +6,7 @@ import { PageIntro } from "components/layout/PageIntro";
 import { BackgroundCurves } from "features/self-service/components/BackgroundCurves";
 import { SimpleCard } from "components/cards/SimpleCard";
 import { TableWithFocusType } from "components/table";
+import { formatNumberWithCommas } from "utils/dataHelpers/formatNumberWithCommas";
 
 const LoanRePaymentSchedule = () => {
   const params = useParams();
@@ -28,35 +29,26 @@ const LoanRePaymentSchedule = () => {
           <div className="grid grid-cols-1 md:grid-cols-4 gap-5 my-7">
             <SimpleCard
               title="Loan Amount"
-              highlight={`${data?.loanAmount ?? 0}`}
+              highlight={`${formatNumberWithCommas(data?.loanAmount ?? 0)}`}
               loading={isLoading}
             />
             <SimpleCard
               title="Paid Amount"
-              highlight={`${data?.paidAmount ?? 0}`}
+              highlight={`${formatNumberWithCommas(data?.paidAmount ?? 0)}`}
               loading={isLoading}
             />
             <SimpleCard
               title="Pending Amount"
-              highlight={`${data?.pendingAmount ?? 0}`}
+              highlight={`${formatNumberWithCommas(data?.pendingAmount ?? 0)}`}
               loading={isLoading}
             />
             <SimpleCard
-              title="Next Payment Date"
+              title="No. of Repayment left"
               highlight={`....`}
               loading={isLoading}
             />
           </div>
-          <div className="flex items-center gap-x-5">
-            <div className="flex items-center gap-3">
-              <h4 className="font-medium">Repayment dates remaining</h4>
-              <div className="border p-3 h-7 flex items-center rounded">
-                <span>50</span>
-              </div>
-            </div>
-
-            <i className="ri-download-2-fill text-xl cursor-pointer"></i>
-          </div>
+         
           <TableWithFocusType
             columns={columns}
             dataSource={data?.result}
