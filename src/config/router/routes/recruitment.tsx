@@ -15,6 +15,7 @@ import { RecruitementOtherSettings } from "features/recruitment/features/setting
 import { EmailTemplateDetails } from "features/recruitment/features/settings/pages/EmailTemplateDetails";
 import { JobOpeningsPage } from "features/recruitment/features/dashboard/features/jobOpenings/pages/JobOpeningsPage";
 import AddJobOpening from "features/recruitment/features/dashboard/features/jobOpenings/pages/AddJobOpening";
+import PanelistPage from "features/recruitment/features/panelist/pages/PanelistPage";
 
 export const recruitmentRoutes: TRouteData[] = [
   {
@@ -123,5 +124,13 @@ export const recruitmentRoutes: TRouteData[] = [
     isSearchable: true,
     isPrimaryFeature: true,
     title: "Job Template",
+  },
+  // Recruitment Panelist
+  {
+    element: <PanelistPage />,
+    path: appRoutes.recruitmentPanelist,
+    isSearchable: true,
+    isPrimaryFeature: true,
+    title: "Recruitment Panelist",
   },
 ];
