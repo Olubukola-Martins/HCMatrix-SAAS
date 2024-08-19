@@ -49,7 +49,7 @@ const ProfileEditRequestsContainer = () => {
           { name: "New Request", handleClick: () => setShowM(true) },
           {
             name: "Setting",
-            handleClick: () => navigate(appRoutes.selfServiceMonetarySetting),
+            handleClick: () => navigate(appRoutes.selfServiceProfileEditSetting),
             btnVariant: "transparent",
             hidden: !canUserAccessComponent({
               userPermissions,

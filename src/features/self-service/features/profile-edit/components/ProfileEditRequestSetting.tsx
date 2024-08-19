@@ -16,6 +16,7 @@ export const ProfileEditRequestSetting = () => {
     <div className="flex flex-col gap-4">
       <PageSubHeader
         description={`You can now select the workflow approval for profile edit requisition`}
+        
       />
       <ProfileEditRequestPolicy />
     </div>

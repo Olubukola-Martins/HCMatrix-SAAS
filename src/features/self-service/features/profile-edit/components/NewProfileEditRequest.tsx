@@ -120,11 +120,10 @@ export const NewProfileEditRequest: React.FC<IModalProps> = ({
         />
 
         <Form.Item
-          rules={generalValidationRules}
-          name="category"
           label="Category"
         >
           <Select
+          value={category}
             onSelect={(_, { value }) => setCategory(value)}
             options={PROFILE_EDIT_REQUEST_TYPES.map((item, i) => ({
               value: item.type,
@@ -142,37 +141,32 @@ export const NewProfileEditRequest: React.FC<IModalProps> = ({
         {category === "profile-edit/personal-information" && (
           <EditPersonalInfoRequest
             employeeId={currentUserEmployeeId}
-            jobInformation={employee?.jobInformation}
           />
         )}
         {category === "profile-edit/finance/bank-details" && (
           <EditBankDetailsRequest
             employeeId={currentUserEmployeeId}
-            jobInformation={employee?.jobInformation}
+
           />
         )}
         {category === "profile-edit/finance/tax" && (
           <EditTaxDetailsRequest
             employeeId={currentUserEmployeeId}
-            jobInformation={employee?.jobInformation}
           />
         )}
         {category === "profile-edit/finance/itf" && (
           <EditITFDetailsRequest
             employeeId={currentUserEmployeeId}
-            jobInformation={employee?.jobInformation}
           />
         )}
         {category === "profile-edit/finance/nsitf" && (
           <EditNSITFDetailsRequest
             employeeId={currentUserEmployeeId}
-            jobInformation={employee?.jobInformation}
           />
         )}
         {category === "profile-edit/finance/pension" && (
           <EditPensionDetailsRequest
             employeeId={currentUserEmployeeId}
-            jobInformation={employee?.jobInformation}
           />
         )}
       </Form>

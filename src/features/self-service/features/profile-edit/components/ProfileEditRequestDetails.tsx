@@ -93,19 +93,19 @@ export const ProfileEditRequestDetails: React.FC<IProps> = ({
 
         <Table columns={[
           {
-            title: ''
+            title: '',
             render: () => <span>Account Number</span>
           },
           {
-            title: 'Current Value'
+            title: 'Current Value',
             render: () => <span>3120704672</span>
           },
           {
-            title: 'Proposed Value'
+            title: 'Proposed Value',
             render: () => <span>3120704772</span>
           },
           {
-            title: 'Modified'
+            title: 'Modified',
             render: () => <span>Yes</span>
           },
 
