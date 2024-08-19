@@ -7,7 +7,7 @@ import getDay from "date-fns/getDay";
 import "react-big-calendar/lib/css/react-big-calendar.css";
 import { MoreOutlined } from "@ant-design/icons";
 import { enUS } from "date-fns/locale";
-import EventDetailsModal from "./EventDetailsModal"; 
+import EventDetailsModal from "./modal/EventDetailsModal";
 
 const locales = {
   "en-US": enUS,

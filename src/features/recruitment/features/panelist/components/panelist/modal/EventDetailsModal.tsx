@@ -1,6 +1,6 @@
 import React from "react";
 import { Modal } from "antd";
-import { InterviewEvent } from "./InterviewCalendar";
+import { InterviewEvent } from "../InterviewCalendar";
 
 interface EventDetailsModalProps {
   visible: boolean;

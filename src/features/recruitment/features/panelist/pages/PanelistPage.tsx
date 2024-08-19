@@ -5,13 +5,25 @@ import RecruitmentDBCards from "../../dashboard/components/RecruitmentDBCards";
 import InviteTimer from "../components/panelist/InviteTimer";
 import useCountdownTimer from "../hooks/useCountdownTimer";
 import InterviewCalendar from "../components/panelist/InterviewCalendar";
+import RejectInviteModal from "../components/panelist/modal/RejectInviteModal";
+import { useState } from "react";
 
 const PanelistPage = () => {
+  const [rejectModalVisible, setRejectModalVisible] = useState(false);
   const { name, department, designation, panelistImg, numberOfCandidates, endDateToAcceptInvite, fullJobDescription } = PanelistInfoMockData;
 
   const timeLeft = useCountdownTimer(endDateToAcceptInvite);
   return (
     <div className="Container m-2">
+      <RejectInviteModal
+        visible={rejectModalVisible}
+        onCancel={() => {
+          setRejectModalVisible(false);
+        }}
+        onSubmit={() => {
+          setRejectModalVisible(false);
+        }}
+      />
       <PageIntro title="Welcome Ruth" />
       <div className="w-full mt-7 flex flex-col gap-y-6">
         {/* Heading */}
@@ -19,7 +31,7 @@ const PanelistPage = () => {
           <PanelistInfoCard name={name} department={department} designation={designation} panelistImg={panelistImg} />
           <div className="flex justify-between flex-col-reverse sm:flex-row gap-3 flex-grow">
             <RecruitmentDBCards count={numberOfCandidates} title="All candidates" link="" />
-            <InviteTimer days={timeLeft.days} hours={timeLeft.hours} minutes={timeLeft.minutes} />
+            <InviteTimer days={timeLeft.days} hours={timeLeft.hours} minutes={timeLeft.minutes} handleAcceptInvite={() => {}} handleRejectInvite={() => setRejectModalVisible(true)} />
           </div>
         </div>
         {/* JD area */}
@@ -43,7 +55,7 @@ const PanelistPage = () => {
           <p>Interview calendar for the week</p>
 
           <div className="mt-5 px-2 py-4 border border-accent/70 rounded-lg">
-          <InterviewCalendar events={mockEvents} />
+            <InterviewCalendar events={mockEvents} />
           </div>
         </div>
       </div>
