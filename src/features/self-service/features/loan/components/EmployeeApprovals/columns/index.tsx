@@ -6,6 +6,7 @@ import { DEFAULT_DATE_FORMAT } from "constants/dateFormats";
 import { getEmployeeFullName } from "features/core/employees/utils/getEmployeeFullName";
 import { getAppropriateColorForStatus } from "utils/colorHelpers/getAppropriateColorForStatus";
 import { EmployeeLoanRequestTableActions } from "../../../types/request";
+import { formatNumberWithCommas } from "utils/dataHelpers/formatNumberWithCommas";
 
 export const EMPLOYEE_LOAN_APPROVAL_TABLE_COLUMNS = (
   actions: EmployeeLoanRequestTableActions
@@ -55,7 +56,9 @@ export const EMPLOYEE_LOAN_APPROVAL_TABLE_COLUMNS = (
   {
     title: "Balance",
     key: "balance",
-    render: (_, val) => <span>{val.loan?.balance.toLocaleString()}</span>,
+    render: (_, val) => (
+      <span>{formatNumberWithCommas(val?.loan?.balance)}</span>
+    ),
   },
   {
     title: "Disbursed",
@@ -129,7 +132,10 @@ export const EMPLOYEE_LOAN_APPROVAL_TABLE_COLUMNS = (
                 Approve
               </Menu.Item>
               <Menu.Item
-                disabled={(item?.loan?.status === "pending" || item?.loan?.status === "rejected")}
+                disabled={
+                  item?.loan?.status === "pending" ||
+                  item?.loan?.status === "rejected"
+                }
                 key="4"
                 onClick={() =>
                   actions.handleLoanDisbursement &&

@@ -3,15 +3,13 @@ interface TLoanAnalytics {
   pending: number;
   approved: number;
   rejected: number;
-  graphData: GraphData;
+  balance: number;
 }
-
 
 export interface TAllLoanAnalytics {
   mine: TLoanAnalytics;
-  company: TLoanAnalytics
+  company: TLoanAnalytics;
 }
-
 
 export interface GraphData {
   totalYearCount: number;

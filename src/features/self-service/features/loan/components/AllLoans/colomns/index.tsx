@@ -6,6 +6,7 @@ import { DEFAULT_DATE_FORMAT } from "constants/dateFormats";
 import dayjs from "dayjs";
 import { getEmployeeFullName } from "features/core/employees/utils/getEmployeeFullName";
 import { EmployeeLoanRequestTableActions } from "../../../types/request";
+import { formatNumberWithCommas } from "utils/dataHelpers/formatNumberWithCommas";
 
 export const EMPLOYEE_ALL_LOAN_TABLE_COLUMNS = (
   actions: EmployeeLoanRequestTableActions
@@ -53,7 +54,7 @@ export const EMPLOYEE_ALL_LOAN_TABLE_COLUMNS = (
   {
     title: "Balance",
     key: "balance",
-    dataIndex: "balance",
+    render: (_, val) => <span>{formatNumberWithCommas(val?.balance)}</span>,
   },
   {
     title: "Disbursed",

@@ -1,5 +1,7 @@
 import { SimpleCard } from "components/cards/SimpleCard";
 import { useGetLoanAnalytics } from "../../hooks/analytics/useGetLoanAnalytics";
+import { PermissionRestrictor } from "components/permission-restriction/PermissionRestrictor";
+import { formatNumberWithCommas } from "utils/dataHelpers/formatNumberWithCommas";
 
 const LoanOverviewCards = () => {
   const { data: employeeData, isFetching: isFetchingEmpData } =
@@ -33,29 +35,35 @@ const LoanOverviewCards = () => {
             highlight={`${employeeData?.mine?.rejected ?? 0}`}
             loading={isFetchingEmpData}
           />
+          <SimpleCard
+            title="Loan Balance"
+            highlight={`${formatNumberWithCommas(
+              employeeData?.mine?.balance ?? 0
+            )}`}
+            loading={isFetchingAllData}
+          />
         </>
         {/* all */}
         <>
-          <SimpleCard
-            title="Pending Loan Requests"
-            highlight={`${allData?.company?.pending ?? 0}`}
-            loading={isFetchingAllData}
-          />
-          <SimpleCard
-            title="Approved Loan Requests"
-            highlight={`${allData?.company?.approved ?? 0}`}
-            loading={isFetchingAllData}
-          />
-          <SimpleCard
-            title="Rejected Loan Requests"
-            highlight={`${allData?.company.rejected ?? 0}`}
-            loading={isFetchingAllData}
-          />
-          <SimpleCard
-            title="Loan Balance"
-            highlight={`${allData?.company?.total ?? 0}`}
-            loading={isFetchingAllData}
-          />
+          <PermissionRestrictor
+            requiredPermissions={["view-all-loan-requests"]}
+          >
+            <SimpleCard
+              title="Pending Loan Requests"
+              highlight={`${allData?.company?.pending ?? 0}`}
+              loading={isFetchingAllData}
+            />
+            <SimpleCard
+              title="Approved Loan Requests"
+              highlight={`${allData?.company?.approved ?? 0}`}
+              loading={isFetchingAllData}
+            />
+            <SimpleCard
+              title="Rejected Loan Requests"
+              highlight={`${allData?.company.rejected ?? 0}`}
+              loading={isFetchingAllData}
+            />
+          </PermissionRestrictor>
         </>
       </div>
     </div>
