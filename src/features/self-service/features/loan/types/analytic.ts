@@ -6,9 +6,6 @@ interface TLoanAnalytics {
   graphData: GraphData;
 }
 
-// export interface TEmployeeLoanAnalytics {
-//   mine: TLoanAnalytics;
-// }
 
 export interface TAllLoanAnalytics {
   mine: TLoanAnalytics;
@@ -16,7 +13,7 @@ export interface TAllLoanAnalytics {
 }
 
 
-interface GraphData {
+export interface GraphData {
   totalYearCount: number;
   countsByMonth: CountsByMonth;
 }
