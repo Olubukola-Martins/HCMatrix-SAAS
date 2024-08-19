@@ -6,6 +6,7 @@ import dayjs from "dayjs";
 import { DEFAULT_DATE_FORMAT } from "constants/dateFormats";
 import { Link } from "react-router-dom";
 import { appRoutes } from "config/router/paths";
+import { formatNumberWithCommas } from "utils/dataHelpers/formatNumberWithCommas";
 
 export const EMPLOYEE_LOAN_PAYMENT_TABLE_COLUMNS = (
   actions: EmployeeLoanRequestTableActions
@@ -24,12 +25,12 @@ export const EMPLOYEE_LOAN_PAYMENT_TABLE_COLUMNS = (
   {
     title: "Amount",
     key: "amount",
-    render: (_, val) => <span>{val?.amount.toLocaleString()}</span>,
+    render: (_, val) => <span>{formatNumberWithCommas(val?.amount)}</span>,
   },
   {
     title: "Balance",
     key: "balance",
-    render: (_, val) => <span>{val?.balance.toLocaleString()}</span>,
+    render: (_, val) => <span>{formatNumberWithCommas(val?.balance)}</span>,
   },
   {
     title: "Disbursed",

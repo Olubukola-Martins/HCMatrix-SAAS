@@ -2,6 +2,7 @@ import { ColumnsType } from "antd/es/table";
 import { IRepaymentPlanColumn } from "../../../types/repayment";
 import dayjs from "dayjs";
 import { DEFAULT_DATE_FORMAT } from "constants/dateFormats";
+import { formatNumberWithCommas } from "utils/dataHelpers/formatNumberWithCommas";
 
 export const REPAYMENT_SCHEDULE_TABLE_COLUMNS =
   (): ColumnsType<IRepaymentPlanColumn> => [
@@ -15,22 +16,30 @@ export const REPAYMENT_SCHEDULE_TABLE_COLUMNS =
     {
       title: "Principal Repayment",
       key: "amount",
-      dataIndex: "principalPayment",
+      render: (_, val) => (
+        <span>{formatNumberWithCommas(val?.principalPayment)}</span>
+      ),
     },
     {
       title: "Interest Payment",
       key: "interest",
-      dataIndex: "interestPayment",
+      render: (_, val) => (
+        <span>{formatNumberWithCommas(val?.interestPayment)}</span>
+      ),
     },
 
     {
       title: "Total Payment",
       key: "totalPayment",
-      dataIndex: "totalAmount",
+      render: (_, val) => (
+        <span>{formatNumberWithCommas(val?.totalAmount)}</span>
+      ),
     },
     {
       title: "Remaining Balance",
       key: "remainingBalance",
-      dataIndex: "remainingBalance",
+      render: (_, val) => (
+        <span>{formatNumberWithCommas(val?.remainingBalance)}</span>
+      ),
     },
   ];

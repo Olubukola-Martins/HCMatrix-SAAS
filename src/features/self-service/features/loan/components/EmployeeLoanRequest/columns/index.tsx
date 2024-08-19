@@ -7,6 +7,7 @@ import { Dropdown, Menu } from "antd";
 import { getAppropriateColorForStatus } from "utils/colorHelpers/getAppropriateColorForStatus";
 import dayjs from "dayjs";
 import { DEFAULT_DATE_FORMAT } from "constants/dateFormats";
+import { formatNumberWithCommas } from "utils/dataHelpers/formatNumberWithCommas";
 
 export const EMPLOYEE_LOAN_REQUEST_TABLE_COLUMNS = (
   actions: EmployeeLoanRequestTableActions
@@ -37,8 +38,9 @@ export const EMPLOYEE_LOAN_REQUEST_TABLE_COLUMNS = (
   },
   {
     title: "Amount",
-    dataIndex: "amount",
     key: "amount",
+    render: (_, val) => <span>{formatNumberWithCommas(val?.amount)}</span>,
+
   },
   {
     title: "Disbursed Date",

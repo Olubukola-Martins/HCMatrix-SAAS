@@ -5,6 +5,7 @@ import { getAppropriateColorForStatus } from "utils/colorHelpers/getAppropriateC
 import dayjs from "dayjs";
 import { DEFAULT_DATE_FORMAT } from "constants/dateFormats";
 import { EmployeeLoanRequestTableActions } from "../../../types/request";
+import { formatNumberWithCommas } from "utils/dataHelpers/formatNumberWithCommas";
 
 export const REPAYMENT_PLAN_TABLE_COLUMNS = (
   actions: EmployeeLoanRequestTableActions
@@ -19,23 +20,23 @@ export const REPAYMENT_PLAN_TABLE_COLUMNS = (
   {
     title: "Amount Deducted",
     key: "amount",
-    dataIndex: "principalPayment",
+    render: (_, val) => <span>{formatNumberWithCommas(val?.principalPayment)}</span>,
   },
   {
     title: "Interest",
     key: "interest",
-    dataIndex: "interestPayment",
+    render: (_, val) => <span>{formatNumberWithCommas(val?.interestPayment)}</span>,
   },
 
   {
     title: "Total Payment",
     key: "totalPayment",
-    dataIndex: "totalAmount",
+    render: (_, val) => <span>{formatNumberWithCommas(val?.totalAmount)}</span>,
   },
   {
     title: "Remaining Balance",
     key: "remainingBalance",
-    dataIndex: "remainingBalance",
+    render: (_, val) => <span>{formatNumberWithCommas(val?.remainingBalance)}</span>,
   },
   {
     title: "Status",

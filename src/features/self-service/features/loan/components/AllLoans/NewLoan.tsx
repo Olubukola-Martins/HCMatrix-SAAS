@@ -58,15 +58,15 @@ export const NewLoan: React.FC<IModalProps> = ({ open, handleClose }) => {
   }, [form, data, isSuccess]);
 
   const handleSubmit = (values: any) => {
-    if (!getDocumentUrl) {
-      openNotification({
-        state: "error",
-        title: "Guarantor's Form Required",
-        description: "Please upload a guarantor's form!",
-        duration: 0,
-      });
-      return;
-    }
+    // if (!getDocumentUrl) {
+    //   openNotification({
+    //     state: "error",
+    //     title: "Guarantor's Form Required",
+    //     description: "Please upload a guarantor's form!",
+    //     duration: 0,
+    //   });
+    //   return;
+    // }
     mutate(
       {
         ...values,
