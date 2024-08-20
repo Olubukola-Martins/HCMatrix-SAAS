@@ -71,7 +71,11 @@ interface Employee {
   roleId: number;
   status: string;
   companyId: number;
-  designationId: number;
+  designation: {
+    department: {
+      name: string;
+    };
+  };
   userId: number;
   avatarUrl: string;
   personalInformation: PersonalInformation;

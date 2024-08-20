@@ -1,5 +1,4 @@
 import { Space, Dropdown } from "antd";
-import { AiOutlineMore } from "react-icons/ai";
 import React, { useState } from "react";
 import { ColumnsType } from "antd/lib/table";
 import { getAppropriateColorForStatus } from "utils/colorHelpers/getAppropriateColorForStatus";
@@ -27,6 +26,8 @@ export const MySwapApprovals: React.FC = () => {
     pagination,
     type: "shift-swap",
   });
+
+  console.log(data);
 
   const { confirmApprovalAction } = useApproveORReject({
     handleSuccess: () => {
@@ -112,20 +113,24 @@ export const MySwapApprovals: React.FC = () => {
     {
       title: "Department",
       key: "department",
-      render: (_, item) => <span className="capitalize">{`N/A`}</span>,
+      render: (_, item) => (
+        <span className="capitalize">
+          {item?.shiftSwap?.employee?.designation?.department?.name}
+        </span>
+      ),
     },
     {
       title: "Default Shift",
       key: "defaultShift",
       render: (_, item) => (
-        <span className="capitalize">{item?.shiftSwap?.shiftFrom.name}</span>
+        <span className="capitalize">{item?.shiftSwap?.shiftFrom?.name}</span>
       ),
     },
     {
       title: "New Shift",
       key: "newShift",
       render: (_, item) => (
-        <span className="capitalize">{item?.shiftSwap?.shiftTo.name}</span>
+        <span className="capitalize">{item?.shiftSwap?.shiftTo?.name}</span>
       ),
     },
     {
@@ -164,7 +169,7 @@ export const MySwapApprovals: React.FC = () => {
             }}
             trigger={["click"]}
           >
-            <AiOutlineMore />
+            <i className="ri-more-2-fill text-lg cursor-pointer"></i>
           </Dropdown>
         </Space>
       ),
