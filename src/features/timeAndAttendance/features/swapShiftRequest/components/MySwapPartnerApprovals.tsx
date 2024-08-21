@@ -90,12 +90,16 @@ export const MySwapPartnerApprovals = () => {
                   label: "Accept",
                   key: "Accept",
                   type: "item",
+                  disabled:
+                    item?.status === "approved" || item?.status === "rejected",
                   onClick: () => handleRequestStatus(item.id, "approved"),
                 },
                 {
                   label: "Reject",
                   key: "Reject",
                   type: "item",
+                  disabled:
+                    item?.status === "rejected" || item?.status === "approved",
                   onClick: () => handleRequestStatus(item.id, "rejected"),
                 },
               ],

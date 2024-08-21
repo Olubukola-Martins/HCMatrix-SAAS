@@ -54,7 +54,11 @@ export const AllTimeOffRequest = () => {
     {
       title: "Department",
       key: "department",
-      render: (_, item) => <span className="capitalize">{`N/A`}</span>,
+      render: (_, item) => (
+        <span className="capitalize">
+          {item?.employee?.designation?.department?.name}
+        </span>
+      ),
     },
     {
       title: "Status",

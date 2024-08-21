@@ -24,9 +24,7 @@ export const TimeOffApproval: React.FC = () => {
     type: "time-off",
   });
 
-  console.log(data);
   
-
   const { confirmApprovalAction } = useApproveORReject({
     handleSuccess: () => {
       queryClient.invalidateQueries({
@@ -112,7 +110,7 @@ export const TimeOffApproval: React.FC = () => {
     {
       title: "Department",
       key: "department",
-      render: (_, item) => <span className="capitalize">{`N/A`}</span>,
+      render: (_, item) => <span className="capitalize">{item?.timeOff?.employee?.designation?.department?.name}</span>,
     },
 
     {

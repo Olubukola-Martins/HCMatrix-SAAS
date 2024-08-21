@@ -13,6 +13,11 @@ export interface ITimeOffProps {
   employee? : {
     firstName: string;
     lastName: string;
+    designation: {
+      department: {
+        name: string;
+      }
+    }
   }
   status?: string;
 }

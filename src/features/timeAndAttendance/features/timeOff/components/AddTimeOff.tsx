@@ -3,7 +3,7 @@ import TextArea from "antd/lib/input/TextArea";
 import { AppButton } from "components/button/AppButton";
 import { IModalProps } from "types";
 import {
-  dateHasToBeGreaterThanOrEqualToCurrentDayRule,
+  dateHasToBeGreaterThanCurrentDayRule,
   generalValidationRules,
   textInputValidationRulesOp,
 } from "utils/formHelpers/validation";
@@ -76,14 +76,14 @@ export const AddTimeOff = ({ open, handleClose }: IModalProps) => {
           Form={Form}
           control={{ label: "Time off policy", name: "policyId" }}
         />
-        <Form.Item
-          name="time"
-          label="Time"
-          rules={[dateHasToBeGreaterThanOrEqualToCurrentDayRule]}
-        >
+        <Form.Item name="time" label="Time" rules={generalValidationRules}>
           <TimePicker className="w-full" />
         </Form.Item>
-        <Form.Item name="date" label="Date" rules={generalValidationRules}>
+        <Form.Item
+          name="date"
+          label="Date"
+          rules={[dateHasToBeGreaterThanCurrentDayRule]}
+        >
           <DatePicker className="w-full" />
         </Form.Item>
 
