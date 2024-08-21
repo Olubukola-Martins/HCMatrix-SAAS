@@ -1,4 +1,4 @@
-import { Space, Dropdown } from "antd";
+import { Space, Dropdown, Menu } from "antd";
 import { AiOutlineMore } from "react-icons/ai";
 import React, { useState } from "react";
 import { ColumnsType } from "antd/lib/table";
@@ -24,7 +24,6 @@ export const TimeOffApproval: React.FC = () => {
     type: "time-off",
   });
 
-  
   const { confirmApprovalAction } = useApproveORReject({
     handleSuccess: () => {
       queryClient.invalidateQueries({
@@ -35,46 +34,6 @@ export const TimeOffApproval: React.FC = () => {
       });
     },
   });
-
-  const generateMenuItems = (item: TApprovalRequest): ItemType[] => {
-    return [
-      {
-        hidden: item.shiftSwap?.status !== "pending",
-        onClick: () =>
-          confirmApprovalAction({
-            approvalStageId: item?.id,
-            status: "approved",
-            workflowType: !!item?.basicStageId ? "basic" : "advanced",
-            requires2FA: item?.advancedStage?.enableTwoFactorAuth,
-          }),
-        label: "Approve",
-        type: "item",
-        key: "approve",
-      },
-      {
-        hidden: item.shiftSwap?.status !== "pending",
-        onClick: () =>
-          confirmApprovalAction({
-            approvalStageId: item?.id,
-            status: "rejected",
-            workflowType: !!item?.basicStageId ? "basic" : "advanced",
-            requires2FA: item?.advancedStage?.enableTwoFactorAuth,
-          }),
-        label: "Reject",
-        type: "item",
-        key: "reject",
-      },
-    ]
-      .filter((item) => item.hidden !== true)
-      .map(
-        ({ key, label, onClick, type }): ItemType => ({
-          label,
-          onClick,
-          key,
-          type: type as "item",
-        })
-      );
-  };
 
   const originalColumns: ColumnsType<TApprovalRequest> = [
     {
@@ -110,7 +69,11 @@ export const TimeOffApproval: React.FC = () => {
     {
       title: "Department",
       key: "department",
-      render: (_, item) => <span className="capitalize">{item?.timeOff?.employee?.designation?.department?.name}</span>,
+      render: (_, item) => (
+        <span className="capitalize">
+          {item?.timeOff?.employee?.designation?.department?.name}
+        </span>
+      ),
     },
 
     {
@@ -141,12 +104,44 @@ export const TimeOffApproval: React.FC = () => {
       render: (_, item) => (
         <Space align="center" className="cursor-pointer">
           <Dropdown
-            menu={{
-              items: generateMenuItems(item),
-            }}
             trigger={["click"]}
+            overlay={
+              <Menu>
+                <Menu.Item
+                  key="1"
+                  disabled={
+                    item?.status === "approved" || item?.status === "rejected"
+                  }
+                  onClick={() =>
+                    confirmApprovalAction({
+                      approvalStageId: item?.id,
+                      status: "rejected",
+                      workflowType: !!item?.basicStageId ? "basic" : "advanced",
+                    })
+                  }
+                >
+                  Reject
+                </Menu.Item>
+                <Menu.Item
+                  key="3"
+                  disabled={
+                    item?.status === "approved" || item?.status === "rejected"
+                  }
+                  onClick={() =>
+                    confirmApprovalAction({
+                      approvalStageId: item?.id,
+                      status: "approved",
+                      workflowType: !!item?.basicStageId ? "basic" : "advanced",
+                      requires2FA: item?.advancedStage?.enableTwoFactorAuth,
+                    })
+                  }
+                >
+                  Approve
+                </Menu.Item>
+              </Menu>
+            }
           >
-            <AiOutlineMore />
+            <i className="ri-more-2-fill text-lg cursor-pointer"></i>
           </Dropdown>
         </Space>
       ),

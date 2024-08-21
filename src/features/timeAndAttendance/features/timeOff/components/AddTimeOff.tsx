@@ -15,6 +15,7 @@ import { useCreateTimeOff } from "../hooks/useCreateTimeOff";
 import { FormTimeOffPolicyInput } from "../../settings/timeOffPolicy/components/FormTimeOffPolicyInput";
 import { QUERY_KEY_FOR_ALL_TIME_OFF_REQUEST } from "../hooks/useGetAllTimeOffRequest";
 import { QUERY_KEY_FOR_MY_TIME_OFF_REQUEST } from "../hooks/useGetTimeOff";
+import { QUERY_KEY_FOR_APPROVAL_REQUESTS } from "features/core/workflows/hooks/useFetchApprovalRequests";
 
 export const AddTimeOff = ({ open, handleClose }: IModalProps) => {
   const [form] = Form.useForm();
@@ -52,6 +53,8 @@ export const AddTimeOff = ({ open, handleClose }: IModalProps) => {
           dispatch({ type: EGlobalOps.setShowInitialSetup, payload: true });
           queryClient.invalidateQueries([QUERY_KEY_FOR_MY_TIME_OFF_REQUEST]);
           queryClient.invalidateQueries([QUERY_KEY_FOR_ALL_TIME_OFF_REQUEST]);
+          queryClient.invalidateQueries([QUERY_KEY_FOR_APPROVAL_REQUESTS]);
+
           handleClose();
         },
       }

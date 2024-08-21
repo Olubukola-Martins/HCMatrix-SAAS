@@ -60,19 +60,17 @@ export const EMPLOYEE_TIMEOFF_REQUEST_TABLE_COLUMNS = ({
           trigger={["click"]}
           overlay={
             <Menu>
-              <Menu.Item key="1">
-                <Popconfirm
-                  title={`Cancel ${val.policy?.title}`}
-                  onConfirm={() =>
-                    handleDelete && handleDelete(val.id as number)
-                  }
-                >
-                  Cancel
-                </Popconfirm>
+              <Menu.Item
+                key="1"
+                onClick={() => handleDelete && handleDelete(val.id as number)}
+              >
+                Cancel
               </Menu.Item>
               <Menu.Item
                 key="2"
-                onClick={() => handleViewStages && handleViewStages(val.id as number)}
+                onClick={() =>
+                  handleViewStages && handleViewStages(val.id as number)
+                }
               >
                 View Approval Stages
               </Menu.Item>

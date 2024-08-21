@@ -8,7 +8,7 @@ type TData = {
   id: number;
 };
 const delData = async (props: { data: TData; auth: ICurrentCompany }) => {
-  const url = `${MICROSERVICE_ENDPOINTS.PAYROLL}/time-off-requests/${props.data.id}`;
+  const url = `${MICROSERVICE_ENDPOINTS.TIME_AND_ATTENDANCE}/time-off-requests/${props.data.id}`;
   const config = {
     headers: {
       Accept: "application/json",
