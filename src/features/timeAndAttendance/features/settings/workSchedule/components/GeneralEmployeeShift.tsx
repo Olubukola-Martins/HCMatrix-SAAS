@@ -13,6 +13,7 @@ import { EGlobalOps, GlobalContext } from "stateManagers/GlobalContextProvider";
 import { openNotification } from "utils/notifications";
 import { useGetWorkSheduleShiftCategories } from "../hooks/shift/categories/useGetWorkSheduleShiftCategories";
 interface TTransformedShiftCategory {
+  categoryId: number;
   type: string;
   schedule: Schedule[];
 }
@@ -22,6 +23,10 @@ interface Schedule {
   time: [Dayjs | null, Dayjs | null];
 }
 
+const defaultTime: [Dayjs, Dayjs] = [
+  dayjs("00:00:00", "HH:mm:ss"),
+  dayjs("00:00:00", "HH:mm:ss"),
+];
 const REASONABLE_AMOUNT_OF_SHIFT_CATEGORIES = 100;
 export const GeneralEmployeeShift = () => {
   const [form] = Form.useForm();
@@ -44,13 +49,13 @@ export const GeneralEmployeeShift = () => {
     });
 
   const DEFAULT_DAYS_SCHEDULE: TTransformedShiftCategory["schedule"] = [
-    { day: "Monday", time: [null, null] },
-    { day: "Tuesday", time: [null, null] },
-    { day: "Wednesday", time: [null, null] },
-    { day: "Thursday", time: [null, null] },
-    { day: "Friday", time: [null, null] },
-    { day: "Saturday", time: [null, null] },
-    { day: "Sunday", time: [null, null] },
+    { day: "Monday", time: defaultTime },
+    { day: "Tuesday", time: defaultTime },
+    { day: "Wednesday", time: defaultTime },
+    { day: "Thursday", time: defaultTime },
+    { day: "Friday", time: defaultTime },
+    { day: "Saturday", time: defaultTime },
+    { day: "Sunday", time: defaultTime },
   ];
 
   useEffect(() => {
@@ -58,6 +63,7 @@ export const GeneralEmployeeShift = () => {
     const transformedData =
       categoriesData?.data?.map(
         (item): TTransformedShiftCategory => ({
+          categoryId: item.id,
           type: item.name,
           schedule: DEFAULT_DAYS_SCHEDULE,
         })
@@ -69,6 +75,7 @@ export const GeneralEmployeeShift = () => {
     let initialFormValues;
     if (isSuccess && data && data?.length !== 0) {
       initialFormValues = data?.map((item: any) => ({
+        categoryId: item.id,
         type: capitalizeWord(item.name),
         schedule:
           item?.schedules?.length > 0
@@ -110,7 +117,8 @@ export const GeneralEmployeeShift = () => {
 
       return {
         schedule: schedule,
-        type: item.type.toLowerCase(),
+        categoryId: item.categoryId,
+        // type: item.type.toLowerCase(),
       };
     });
 
@@ -150,6 +158,15 @@ export const GeneralEmployeeShift = () => {
                 {fields.map((field, index) => (
                   <div key={field.key} className="">
                     <div>
+                      <Form.Item
+                        hidden
+                        noStyle
+                        {...field}
+                        name={[field.name, "categoryId"]}
+                      >
+                        <Input disabled className="w-32" />
+                      </Form.Item>
+
                       <Form.Item {...field} name={[field.name, "type"]}>
                         <Input placeholder="type" disabled className="w-32" />
                       </Form.Item>
