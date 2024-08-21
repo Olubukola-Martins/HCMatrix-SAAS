@@ -51,6 +51,7 @@ export const PartnersApprovalModal = ({
           });
           form.resetFields();
           dispatch({ type: EGlobalOps.setShowInitialSetup, payload: true });
+          form.resetFields();
           handleClose();
           queryClient.invalidateQueries([
             QUERY_KEY_FOR_MY_SWAP_PARTNER_APPROVAL,

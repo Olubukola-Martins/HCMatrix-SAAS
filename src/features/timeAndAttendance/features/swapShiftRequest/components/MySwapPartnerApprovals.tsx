@@ -2,12 +2,13 @@ import { usePagination } from "hooks/usePagination";
 import { useGetSwapPartnerApprovals } from "../hooks/useGetSwapPartnerApprovals";
 import { ColumnsType } from "antd/es/table";
 import { ISwapPartnerApprovals } from "../types";
-import { Dropdown } from "antd";
+import { Dropdown, Select } from "antd";
 import { getAppropriateColorForStatus } from "utils/colorHelpers/getAppropriateColorForStatus";
 import { TableWithFocusType } from "components/table";
 import { useState } from "react";
 import { PartnersApprovalModal } from "./PartnersApprovalModal";
 import { getEmployeeFullName } from "features/core/employees/utils/getEmployeeFullName";
+import { statusItems } from "../../timeOff/constance";
 
 interface IRequestType {
   id: number;
@@ -15,13 +16,14 @@ interface IRequestType {
 }
 
 export const MySwapPartnerApprovals = () => {
+  const [status, setStatus] = useState<string>("");
   const { pagination, onChange } = usePagination();
   const [openApproval, setOpenApproval] = useState(false);
   const [getIdAndRequestStatus, setGetIdAndRequestStatus] =
     useState<IRequestType>();
   const { data, isFetching } = useGetSwapPartnerApprovals({
     pagination,
-    status: "",
+    status,
   });
 
   const handleRequestStatus = (id: number, status: string) => {
@@ -38,32 +40,30 @@ export const MySwapPartnerApprovals = () => {
     {
       title: "Requester name",
       key: "RequesterName",
-        render: (_, item) => (
-          <span className="capitalize">
-            {getEmployeeFullName(item?.shiftSwap?.employee)}
-          </span>
-        ),
+      render: (_, item) => (
+        <span className="capitalize">
+          {getEmployeeFullName(item?.shiftSwap?.employee)}
+        </span>
+      ),
     },
     {
       title: "Requester previous shift",
       key: "RequesterPreviousShift",
-        render: (_, item) => (
-          <span className="capitalize">{item?.shiftSwap?.shiftFrom?.name}</span>
-        ),
+      render: (_, item) => (
+        <span className="capitalize">{item?.shiftSwap?.shiftFrom?.name}</span>
+      ),
     },
     {
       title: "Requesting shift",
       key: "RequestingShift",
-        render: (_, item) => (
-          <span className="capitalize">{item?.shiftSwap?.shiftTo?.name}</span>
-        ),
+      render: (_, item) => (
+        <span className="capitalize">{item?.shiftSwap?.shiftTo?.name}</span>
+      ),
     },
     {
       title: "Reason",
       key: "reason",
-      render: (_, item) => (
-        <span>{item?.shiftSwap?.reason}</span>
-      ),
+      render: (_, item) => <span>{item?.shiftSwap?.reason}</span>,
     },
     {
       title: "Status",
@@ -90,7 +90,7 @@ export const MySwapPartnerApprovals = () => {
                   label: "Accept",
                   key: "Accept",
                   type: "item",
-                    onClick: () => handleRequestStatus(item.id, "approved"),
+                  onClick: () => handleRequestStatus(item.id, "approved"),
                 },
                 {
                   label: "Reject",
@@ -109,6 +109,13 @@ export const MySwapPartnerApprovals = () => {
   ];
   return (
     <div>
+      <Select
+        options={statusItems}
+        placeholder="Select Status"
+        onChange={(val) => setStatus(val)}
+        allowClear
+        className="w-[8rem] mt-5"
+      />
       <PartnersApprovalModal
         open={openApproval}
         handleClose={() => onClose()}
