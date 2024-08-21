@@ -27,8 +27,6 @@ export const MySwapApprovals: React.FC = () => {
     type: "shift-swap",
   });
 
-  console.log(data);
-
   const { confirmApprovalAction } = useApproveORReject({
     handleSuccess: () => {
       queryClient.invalidateQueries({
@@ -152,7 +150,7 @@ export const MySwapApprovals: React.FC = () => {
           }}
           className="capitalize"
         >
-          {item?.shiftSwap?.status}{" "}
+          {item?.shiftSwap?.status}
         </span>
       ),
     },

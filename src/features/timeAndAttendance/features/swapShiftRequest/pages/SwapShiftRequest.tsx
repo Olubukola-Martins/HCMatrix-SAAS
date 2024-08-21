@@ -10,13 +10,12 @@ import { AllRequest } from "../components/AllRequest";
 import { MySwapApprovals } from "../components/MySwapApprovals";
 import { MyRequest } from "../components/MyRequest";
 import { canUserAccessComponent, useGetUserPermissions } from "components/permission-restriction/PermissionRestrictor";
+import { TestChatBot } from "../components/TestChatBot";
+import { MySwapPartnerApprovals } from "../components/MySwapPartnerApprovals";
 
 const SwapShiftRequest = () => {
   const [creteRequest, setCreteRequest] = useState(false);
   const { userPermissions } = useGetUserPermissions();
-
-  console.log(userPermissions.filter((item) => item.lastIndexOf("shif") != -1 ));
-  
 
   const tabItems = [
     {
@@ -27,12 +26,18 @@ const SwapShiftRequest = () => {
     },
     {
       key: "2",
+      label: `My Swap Partner Approvals`,
+      children: <MySwapPartnerApprovals/>,
+      hidden: false,
+    },
+    {
+      key: "3",
       label: `My Swap Approvals`,
       children: <MySwapApprovals/>,
       hidden: false,
     },
     {
-      key: "3",
+      key: "4",
       label: `All Requests`,
       children: <AllRequest/>,
       hidden: !canUserAccessComponent({
@@ -40,6 +45,12 @@ const SwapShiftRequest = () => {
         requiredPermissions: ["view-all-swap-shift-requests"],
       }),
     },
+    // {
+    //   key: "5",
+    //   label: `Test chat bot`,
+    //   children: <TestChatBot/>,
+    //   hidden: false,
+    // },
   ]
 
 

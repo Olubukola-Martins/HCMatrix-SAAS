@@ -11,8 +11,9 @@ import { ViewShiftSwapRequest } from "./ViewShiftSwapRequest";
 import { useGetMyShiftSwapRequest } from "../hooks/useGetMyShiftSwapRequest";
 import { CancelShiftSwapRequest } from "./CancelShiftSwapRequest";
 import { getEmployeeFullName } from "features/core/employees/utils/getEmployeeFullName";
+import ViewApprovalStages from "features/core/workflows/components/approval-request/ViewApprovalStages";
 
-type TAction = "view" | "cancel";
+type TAction = "view" | "cancel" | "view-stages";
 export const MyRequest = () => {
   const { pagination, onChange } = usePagination({ pageSize: 10 });
   const { data, isLoading } = useGetMyShiftSwapRequest({
@@ -21,10 +22,14 @@ export const MyRequest = () => {
 
   const [request, setRequest] = useState<TShiftSwapRequest>();
   const [action, setAction] = useState<TAction>();
+
   const handleAction = (action: TAction, request?: TShiftSwapRequest) => {
     setAction(action);
     setRequest(request);
   };
+
+  console.log("my request", request?.id);
+
   const onClose = () => {
     setAction(undefined);
     setRequest(undefined);
@@ -93,6 +98,12 @@ export const MyRequest = () => {
                   type: "item",
                   onClick: () => handleAction("cancel", item),
                 },
+                {
+                  label: "View Approval Stages",
+                  key: "stages",
+                  type: "item",
+                  onClick: () => handleAction("view-stages", item),
+                },
               ],
             }}
           >
@@ -113,6 +124,12 @@ export const MyRequest = () => {
         handleClose={onClose}
         open={action === "cancel"}
         data={request}
+      />
+      <ViewApprovalStages
+        handleClose={onClose}
+        open={action === "view-stages"}
+        id={request?.id ?? 0}
+        type="shift-swap"
       />
       <div>
         <TableWithFocusType
