@@ -5,6 +5,7 @@ import { getAppropriateColorForStatus } from "utils/colorHelpers/getAppropriateC
 
 export const EMPLOYEE_TIMEOFF_REQUEST_TABLE_COLUMNS = ({
   handleDelete,
+  handleViewStages,
 }: IColumnsProps): ColumnsType<ITimeOffProps> => [
   {
     title: "Time off Policy",
@@ -68,6 +69,12 @@ export const EMPLOYEE_TIMEOFF_REQUEST_TABLE_COLUMNS = ({
                 >
                   Cancel
                 </Popconfirm>
+              </Menu.Item>
+              <Menu.Item
+                key="2"
+                onClick={() => handleViewStages && handleViewStages(val.id as number)}
+              >
+                View Approval Stages
               </Menu.Item>
             </Menu>
           }

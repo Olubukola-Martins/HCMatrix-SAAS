@@ -4,8 +4,11 @@ import { useApiAuth } from "hooks/useApiAuth";
 import { useMutation } from "react-query";
 import { ICurrentCompany } from "types";
 
-const delData = async (props: { auth: ICurrentCompany; id: number }) => {
-  const url = `${MICROSERVICE_ENDPOINTS.TIME_AND_ATTENDANCE}/time-off-requests/${props.id}`;
+type TData = {
+  id: number;
+};
+const delData = async (props: { data: TData; auth: ICurrentCompany }) => {
+  const url = `${MICROSERVICE_ENDPOINTS.PAYROLL}/time-off-requests/${props.data.id}`;
   const config = {
     headers: {
       Accept: "application/json",
@@ -17,9 +20,9 @@ const delData = async (props: { auth: ICurrentCompany; id: number }) => {
   const response = await axios.delete(url, config);
   return response;
 };
-export const useCancelTimeOffRequest = () => {
+export const useDeleteTimeOffRequest = () => {
   const { token, companyId } = useApiAuth();
-  return useMutation((id: number) =>
-    delData({ auth: { token, companyId }, id })
+  return useMutation((props: TData) =>
+    delData({ data: props, auth: { token, companyId } })
   );
 };

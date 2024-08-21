@@ -11,8 +11,8 @@ import { useQueryClient } from "react-query";
 import { TableWithFocusType } from "components/table";
 import { ItemType } from "antd/es/menu/interface";
 import { getEmployeeFullName } from "features/core/employees/utils/getEmployeeFullName";
-import { QUERY_KEY_FOR_GENERAL_SHIFT_SWAP_APPROVAL } from "../../swapShiftRequest/hooks/useGetGeneralRequest";
 import { QUERY_KEY_FOR_MY_TIME_OFF_REQUEST } from "../hooks/useGetTimeOff";
+import { QUERY_KEY_FOR_ALL_TIME_OFF_REQUEST } from "../hooks/useGetAllTimeOffRequest";
 
 export const TimeOffApproval: React.FC = () => {
   const queryClient = useQueryClient();
@@ -31,7 +31,7 @@ export const TimeOffApproval: React.FC = () => {
         queryKey: [QUERY_KEY_FOR_MY_TIME_OFF_REQUEST],
       });
       queryClient.invalidateQueries({
-        queryKey: [QUERY_KEY_FOR_GENERAL_SHIFT_SWAP_APPROVAL],
+        queryKey: [QUERY_KEY_FOR_ALL_TIME_OFF_REQUEST],
       });
     },
   });
@@ -123,7 +123,7 @@ export const TimeOffApproval: React.FC = () => {
           }}
           className="capitalize"
         >
-          {item?.shiftSwap?.status}{" "}
+          {item?.timeOff?.status}
         </span>
       ),
     },

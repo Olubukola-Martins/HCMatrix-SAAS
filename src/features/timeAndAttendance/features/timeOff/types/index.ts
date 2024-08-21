@@ -25,6 +25,7 @@ export interface ITimeOffProps {
 export type IColumnsProps = {
   handleDelete?: (id: number) => void;
   extraColumns: boolean;
+  handleViewStages?: (id: number) => void;
 };
 
 export interface IRequestFilter {
