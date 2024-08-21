@@ -5,42 +5,65 @@ import { ISwapPartnerApprovals } from "../types";
 import { Dropdown } from "antd";
 import { getAppropriateColorForStatus } from "utils/colorHelpers/getAppropriateColorForStatus";
 import { TableWithFocusType } from "components/table";
+import { useState } from "react";
+import { PartnersApprovalModal } from "./PartnersApprovalModal";
+import { getEmployeeFullName } from "features/core/employees/utils/getEmployeeFullName";
+
+interface IRequestType {
+  id: number;
+  status: string;
+}
 
 export const MySwapPartnerApprovals = () => {
   const { pagination, onChange } = usePagination();
+  const [openApproval, setOpenApproval] = useState(false);
+  const [getIdAndRequestStatus, setGetIdAndRequestStatus] =
+    useState<IRequestType>();
   const { data, isFetching } = useGetSwapPartnerApprovals({
     pagination,
     status: "",
   });
 
+  const handleRequestStatus = (id: number, status: string) => {
+    setGetIdAndRequestStatus({ id, status });
+    setOpenApproval(true);
+  };
+
+  const onClose = () => {
+    setGetIdAndRequestStatus(undefined);
+    setOpenApproval(false);
+  };
+
   const columns: ColumnsType<ISwapPartnerApprovals> = [
     {
       title: "Requester name",
       key: "RequesterName",
-      //   render: (_, item) => (
-      //     <span className="capitalize">
-      //       {getEmployeeFullName(item?.shiftSwap?.employee)}
-      //     </span>
-      //   ),
+        render: (_, item) => (
+          <span className="capitalize">
+            {getEmployeeFullName(item?.shiftSwap?.employee)}
+          </span>
+        ),
     },
     {
       title: "Requester previous shift",
       key: "RequesterPreviousShift",
-      //   render: (_, item) => (
-      //     <span className="capitalize">{item.shiftTo.name}</span>
-      //   ),
+        render: (_, item) => (
+          <span className="capitalize">{item?.shiftSwap?.shiftFrom?.name}</span>
+        ),
     },
     {
       title: "Requesting shift",
       key: "RequestingShift",
-      //   render: (_, item) => (
-      //     <span className="capitalize">{item.shiftTo.name}</span>
-      //   ),
+        render: (_, item) => (
+          <span className="capitalize">{item?.shiftSwap?.shiftTo?.name}</span>
+        ),
     },
     {
       title: "Reason",
       key: "reason",
-      dataIndex: "comment",
+      render: (_, item) => (
+        <span>{item?.shiftSwap?.reason}</span>
+      ),
     },
     {
       title: "Status",
@@ -67,13 +90,13 @@ export const MySwapPartnerApprovals = () => {
                   label: "Accept",
                   key: "Accept",
                   type: "item",
-                  //   onClick: () => handleAction("view", item),
+                    onClick: () => handleRequestStatus(item.id, "approved"),
                 },
                 {
                   label: "Reject",
                   key: "Reject",
                   type: "item",
-                  //   onClick: () => handleAction("cancel", item),
+                  onClick: () => handleRequestStatus(item.id, "rejected"),
                 },
               ],
             }}
@@ -86,6 +109,12 @@ export const MySwapPartnerApprovals = () => {
   ];
   return (
     <div>
+      <PartnersApprovalModal
+        open={openApproval}
+        handleClose={() => onClose()}
+        id={getIdAndRequestStatus?.id ?? 0}
+        status={getIdAndRequestStatus?.status ?? ""}
+      />
       <TableWithFocusType
         columns={columns}
         size="small"

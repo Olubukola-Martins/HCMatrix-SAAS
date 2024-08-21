@@ -115,10 +115,23 @@ interface ShiftFrom {
 export interface ISwapPartnerApprovals {
   id: number;
   status: string;
-  comment: string;
+  shiftSwap: {
+    reason: string;
+    shiftFrom: {
+      name: string;
+    };
+    shiftTo: {
+      name: string;
+    };
+    employee: Employee;
+  };
 }
 
-
+export interface IUpdateSwapPartnerApprovals {
+  id: number;
+  status: string;
+  comment: string;
+}
 
 // deleting soon
 export interface IAddChatProps {
