@@ -14,7 +14,8 @@ export const FormTimeOffPolicyInput: React.FC<{
   control?: { label: string; name: string; multiple?: boolean };
   optional?: boolean;
   handleSelect?: (val: number, timeOff?: ITimeOffPolicyRule) => void;
-}> = ({ Form, showLabel = true, control, optional = false, handleSelect }) => {
+  handleClear?: () => void;
+}> = ({ Form, showLabel = true, control, optional = false, handleSelect, handleClear }) => {
   const [searchTerm, setSearchTerm] = useState<string>("");
   const debouncedSearchTerm: string = useDebounce<string>(searchTerm);
 
@@ -26,6 +27,11 @@ export const FormTimeOffPolicyInput: React.FC<{
     setSearchTerm(val);
   };
 
+  const handleClearFunction = () => {
+    setSearchTerm("")
+    handleClear && handleClear()
+  }
+
   return (
     <Form.Item
       name={control?.name ?? "policyId"}
@@ -35,10 +41,10 @@ export const FormTimeOffPolicyInput: React.FC<{
       <Select
         mode={control?.multiple ? "multiple" : undefined}
         placeholder="Select timeoff policy"
-        loading={isFetching} //TO DO : this should be added to all custom Fetch Form Inputs
+        loading={isFetching} 
         showSearch
         allowClear
-        onClear={() => setSearchTerm("")}
+        onClear={() =>  handleClearFunction()}
         onSearch={handleSearch}
         className="rounded border-slate-400 w-full"
         defaultActiveFirstOption={false}
@@ -48,6 +54,7 @@ export const FormTimeOffPolicyInput: React.FC<{
           const timeOff = data?.data.find((item) => item.id === val);
           handleSelect?.(val, timeOff);
         }}
+        
       >
         {isSuccess ? (
           data?.data.map((item) => (

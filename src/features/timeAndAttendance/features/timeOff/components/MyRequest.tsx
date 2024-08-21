@@ -2,14 +2,16 @@ import { DatePicker, Form, Select } from "antd";
 import { EMPLOYEE_TIMEOFF_REQUEST_TABLE_COLUMNS } from "./columns/myRequestColumns";
 import { TableWithFocusType } from "components/table";
 import { FormTimeOffPolicyInput } from "../../settings/timeOffPolicy/components/FormTimeOffPolicyInput";
-import { useGetTimeOff } from "../hooks/useGetTimeOff";
+import { QUERY_KEY_FOR_MY_TIME_OFF_REQUEST, useGetTimeOff } from "../hooks/useGetTimeOff";
 import { usePagination } from "hooks/usePagination";
 import { useState } from "react";
 import { statusItems } from "../constance";
 import ViewApprovalStages from "features/core/workflows/components/approval-request/ViewApprovalStages";
 import { DeleteTimeOffRequest } from "./DeleteTimeOffRequest";
+import { useQueryClient } from "react-query";
 
 export const MyRequest = () => {
+  const queryClient = useQueryClient();
   const [status, setStatus] = useState<string>();
   const [policyId, setPolicyId] = useState<number>();
   const [timeOffId, setTimeOffId] = useState<number>();
@@ -40,6 +42,8 @@ export const MyRequest = () => {
     handleViewStages,
   });
 
+  
+
   return (
     <div>
       <ViewApprovalStages
@@ -67,6 +71,7 @@ export const MyRequest = () => {
           Form={Form}
           control={{ label: "", name: "" }}
           handleSelect={(_, val) => setPolicyId(val?.id)}
+          handleClear={() => setPolicyId(undefined)}
         />
         <div className="-mt-6">
           <DatePicker

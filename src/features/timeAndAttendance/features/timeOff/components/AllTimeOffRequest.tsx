@@ -99,6 +99,7 @@ export const AllTimeOffRequest = () => {
           Form={Form}
           control={{ label: "", name: "" }}
           handleSelect={(_, val) => setPolicyId(val?.id)}
+          handleClear={() => setPolicyId(undefined)}
         />
         <div className="-mt-6">
           <DatePicker
