@@ -112,7 +112,15 @@ interface ShiftFrom {
   isEnabled: boolean;
 }
 
+export interface ISwapPartnerApprovals {
+  id: number;
+  status: string;
+  comment: string;
+}
 
+
+
+// deleting soon
 export interface IAddChatProps {
   user_query: string;
   audio: boolean;
