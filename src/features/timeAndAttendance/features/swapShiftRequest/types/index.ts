@@ -133,18 +133,4 @@ export interface IUpdateSwapPartnerApprovals {
   comment: string;
 }
 
-// deleting soon
-export interface IAddChatProps {
-  user_query: string;
-  audio: boolean;
-  chat_id: string;
-  employee_metadata: Employeemetadata;
-}
 
-interface Employeemetadata {
-  department_id: string;
-  role_id: string;
-  group_id: string;
-  company_id: string;
-  id: string;
-}

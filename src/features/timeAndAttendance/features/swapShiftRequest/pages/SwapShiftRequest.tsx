@@ -10,7 +10,6 @@ import { AllRequest } from "../components/AllRequest";
 import { MySwapApprovals } from "../components/MySwapApprovals";
 import { MyRequest } from "../components/MyRequest";
 import { canUserAccessComponent, useGetUserPermissions } from "components/permission-restriction/PermissionRestrictor";
-import { TestChatBot } from "../components/TestChatBot";
 import { MySwapPartnerApprovals } from "../components/MySwapPartnerApprovals";
 
 const SwapShiftRequest = () => {
@@ -45,12 +44,6 @@ const SwapShiftRequest = () => {
         requiredPermissions: ["view-all-swap-shift-requests"],
       }),
     },
-    // {
-    //   key: "5",
-    //   label: `Test chat bot`,
-    //   children: <TestChatBot/>,
-    //   hidden: false,
-    // },
   ]
 
 
