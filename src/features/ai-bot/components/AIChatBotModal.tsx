@@ -2,13 +2,15 @@ import { Modal, Button } from "antd";
 import Themes from "components/Themes";
 import PreviousChatCard from "./PreviousChatCard";
 import { IoIosArrowBack } from "react-icons/io";
+import { randomNumber } from "../utils/randomNumber";
+import { useState } from "react";
 
 interface IProps {
   open: boolean;
   handleClose: Function;
   openSearchModal: Function;
   openSettingsModal: Function;
-  openNewChatModal: Function;
+  openNewChatModal: (chatId: string) => void;
 }
 
 const AIChatBotModal = ({
@@ -18,6 +20,15 @@ const AIChatBotModal = ({
   openSettingsModal,
   openNewChatModal,
 }: IProps) => {
+  const [chatId, setChatId] = useState<string | null>(null);
+
+  const handleStartNewChat = () => {
+    const newChatId = randomNumber();
+    console.log("chatid",newChatId);
+    setChatId(newChatId);
+    openNewChatModal(newChatId);
+  }
+
   return (
     <Modal
       open={open}
@@ -45,7 +56,7 @@ const AIChatBotModal = ({
             </div>
           </div>
           <div className="flex justify-center mb-6">
-            <button onClick={() => openNewChatModal()} className="button">
+            <button onClick={handleStartNewChat} className="button">
               + Start New Chat
             </button>
           </div>

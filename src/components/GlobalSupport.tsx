@@ -13,6 +13,7 @@ const GlobalSupport = () => {
   const [hovered, setHovered] = useState(false);
   const [queryModal, setQueryModal] = useState(false);
   const [currentModal, setCurrentModal] = useState<TModal>();
+  const [chatId, setChatId] = useState<string>("");
 
   // const handleClick = (event) => {
   //   setAnchorEl(event.currentTarget);
@@ -21,12 +22,16 @@ const GlobalSupport = () => {
     setHovered(open);
   };
 
-  const handleOpenModal = (modal: TModal) => {
+  const handleOpenModal = (modal: TModal, chatId?: string) => {
+    if (chatId) {
+      setChatId(chatId);
+    }
     setCurrentModal(modal);
   };
 
   const handleCloseModal = () => {
     setCurrentModal(undefined);
+    setChatId("");
   };
 
   return (
@@ -134,7 +139,7 @@ const GlobalSupport = () => {
         handleClose={handleCloseModal}
         openSearchModal={() => handleOpenModal('search-modal')}
         openSettingsModal={() => handleOpenModal('settings-modal')}
-        openNewChatModal={() => handleOpenModal('new-chat-modal')}
+        openNewChatModal={() => handleOpenModal('new-chat-modal', chatId)}
       />
 
       <SearchAIChatBotModal
@@ -150,6 +155,7 @@ const GlobalSupport = () => {
       <NewChatAIChatBotModal 
         open={currentModal === 'new-chat-modal'}
         handleClose={handleCloseModal}
+        chatId={chatId}
       />
     </>
   );
