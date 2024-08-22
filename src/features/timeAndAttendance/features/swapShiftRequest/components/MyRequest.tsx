@@ -28,13 +28,13 @@ export const MyRequest = () => {
     setRequest(request);
   };
 
-  console.log("my request", request?.id);
+  // console.log(request);
 
   const onClose = () => {
     setAction(undefined);
     setRequest(undefined);
   };
-  
+
   const columns: ColumnsType<TShiftSwapRequest> = [
     {
       title: "Date",
