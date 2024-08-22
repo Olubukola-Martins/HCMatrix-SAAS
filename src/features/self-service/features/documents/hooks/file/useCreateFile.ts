@@ -20,7 +20,7 @@ const createData = async (props: {
   folderId: number;
   auth: ICurrentCompany;
 }) => {
-  const url = `${MICROSERVICE_ENDPOINTS.UTILITY}/self-service/folder/${props.folderId}/file`;
+  const url = `${MICROSERVICE_ENDPOINTS.UTILITY}/self-service/document/folder/${props.folderId}/file`;
   const config = {
     headers: {
       Accept: "application/json",
