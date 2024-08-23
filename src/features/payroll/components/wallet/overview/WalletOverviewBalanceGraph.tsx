@@ -43,11 +43,11 @@ const WalletOverviewBalanceGraph: React.FC<IProps> = ({
 
 
 
-  const parseAnalyticData = parsePayrollGraphAnalyticsData({ chartItem, data });
-  const analyticsData = selectPayrollGraphAnalyticsData(
-    parseAnalyticData,
-    "Gross Pay"
-  );
+  // const parseAnalyticData = parsePayrollGraphAnalyticsData({ chartItem, data });
+  // const analyticsData = selectPayrollGraphAnalyticsData(
+  //   parseAnalyticData,
+  //   "Gross Pay"
+  // );
   return (
     <div className={className}>
       {/* header */}
@@ -84,11 +84,7 @@ const WalletOverviewBalanceGraph: React.FC<IProps> = ({
         </div>
       </div>
       {/* container 4 graphs */}
-      <PayrollGraphsContainer
-        analyticsData={analyticsData}
-        chartItem={chartItem}
-        isLoading={isLoading}
-      />
+    
     </div>
   );
 };

@@ -31,11 +31,10 @@ export type TPayrollWalletDashboardAnalytics = {
   totalTransactions: number;
   totalDebit: number;
   totalCredit: number;
-  graphData: GraphData;
+  graphData: Record<string, number>;
 };
 
-type GraphData = TPayrollGraphAnalyticsItem;
-// type GraphData = Record<string, number>;
+
 
 interface Balance {
   providus: number;
