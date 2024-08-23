@@ -28,7 +28,7 @@ export const MyRequest = () => {
     setRequest(request);
   };
 
-  // console.log(request);
+  console.log(request);
 
   const onClose = () => {
     setAction(undefined);

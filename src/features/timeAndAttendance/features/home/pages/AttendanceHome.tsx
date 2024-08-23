@@ -39,6 +39,8 @@ export const AttendanceHome = () => {
     {}
   );
 
+
+
   useEffect(() => {
     if (hour >= 5 && hour < 12) {
       setGreeting("Morning");
@@ -97,7 +99,7 @@ export const AttendanceHome = () => {
             isLoading={isLoadingTimeDBData}
           />
         </PermissionRestrictor>
-
+ 
         <PermissionRestrictor
           requiredPermissions={["view-all-time-off-requests"]}
         >

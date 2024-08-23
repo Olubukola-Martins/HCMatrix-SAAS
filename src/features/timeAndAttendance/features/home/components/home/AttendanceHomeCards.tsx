@@ -2,7 +2,9 @@ import { SimpleCard } from "components/cards/SimpleCard";
 import { PermissionRestrictor } from "components/permission-restriction/PermissionRestrictor";
 import React from "react";
 import { IDivProps } from "types/html";
+
 type IProps = IDivProps;
+
 const AttendanceHomeCards: React.FC<IProps> = ({
   className = "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5 my-3",
 }) => {
