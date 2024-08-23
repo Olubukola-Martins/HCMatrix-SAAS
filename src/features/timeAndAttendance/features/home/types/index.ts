@@ -4,12 +4,13 @@ export interface AnalyticsRecordProps {
   clockIns: number;
   clockOuts: number;
   employeesOnBreak: number;
+  totalEmployees: number;
+  totalEarlyEmployees: number;
+  totalLateEmployees: number;
+  totalAbsentEmployees: number;
   remoteWorkers: {
     count: number;
-  };
-  employeesOnLeave: {
-    count: number;
-  };
+  }
 }
 
 export interface timeSheetRecordProps {

@@ -6,7 +6,6 @@ import ErrorBoundary from "components/errorHandlers/ErrorBoundary";
 import useMostRecentApiAuth from "hooks/useMostRecentApiAuth";
 import { useEffect, useState } from "react";
 import { useWelcomeNote } from "../hooks/useWelcomeNote";
-import { useApiAuth } from "hooks/useApiAuth";
 import AttendanceHomeCards from "../components/home/AttendanceHomeCards";
 import AttendanceOverviewHomeCard from "../components/home/AttendanceOverviewHomeCard";
 import WhoIsOut from "features/home/components/whoIsOut/WhoIsOut";
@@ -17,6 +16,7 @@ import { TFilterAttendanceDBFormProps } from "../components/home/FilterDBBtn";
 import { useGetDashboardGraph } from "../hooks/useGetDashboardGraph";
 import AttendanceLocationCard from "../components/home/AttendanceLocationCard";
 import { PermissionRestrictor } from "components/permission-restriction/PermissionRestrictor";
+import { useGetAnalyticsRecord } from "../hooks/useGetAnalyticsRecord";
 
 export const AttendanceHome = () => {
   const [greeting, setGreeting] = useState("");
@@ -32,14 +32,13 @@ export const AttendanceHome = () => {
       year: fullYear.toString(),
     });
   const hour = today.getHours();
-
   const { user, isLoading: isRetrievingUserData } = useMostRecentApiAuth();
   const { data: welcomeNoteData } = useWelcomeNote();
   const [filterProps, setFilterProps] = useState<TFilterAttendanceDBFormProps>(
     {}
   );
-
-
+  const { data: analyticsData, isLoading: isLoadingAnalyticsData } =
+    useGetAnalyticsRecord();
 
   useEffect(() => {
     if (hour >= 5 && hour < 12) {
@@ -51,8 +50,7 @@ export const AttendanceHome = () => {
     }
   }, [hour]);
 
-  const { currentCompanyEmployeeDetails } = useApiAuth();
-
+  // const { currentCompanyEmployeeDetails } = useApiAuth();
 
   return (
     <ErrorBoundary>
@@ -73,14 +71,20 @@ export const AttendanceHome = () => {
           className="flex justify-between col-span-4"
         />
 
-        <AttendanceHomeCards className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5 my-3 col-span-4" />
+        <AttendanceHomeCards
+          analyticsData={analyticsData}
+          isLoadingAnalyticsData={isLoadingAnalyticsData}
+          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5 my-3 col-span-4"
+        />
 
         <PermissionRestrictor
           requiredPermissions={["view-time-and-attendance-dashboard-summary"]}
         >
-          <AttendanceStatusHomeCard className="bg-mainBg pb-3 border rounded-lg text-sm shadow  col-span-1" />
+          <AttendanceStatusHomeCard analyticsData={analyticsData}
+          isLoadingAnalyticsData={isLoadingAnalyticsData} className="bg-mainBg pb-3 border rounded-lg text-sm shadow  col-span-1" />
 
-          <AttendanceOverviewHomeCard className="bg-mainBg pb-3 border rounded-lg text-sm shadow  col-span-2" />
+          <AttendanceOverviewHomeCard  analyticsData={analyticsData}
+          isLoadingAnalyticsData={isLoadingAnalyticsData} className="bg-mainBg pb-3 border rounded-lg text-sm shadow  col-span-2" />
         </PermissionRestrictor>
 
         <PermissionRestrictor
@@ -99,7 +103,7 @@ export const AttendanceHome = () => {
             isLoading={isLoadingTimeDBData}
           />
         </PermissionRestrictor>
- 
+
         <PermissionRestrictor
           requiredPermissions={["view-all-time-off-requests"]}
         >
