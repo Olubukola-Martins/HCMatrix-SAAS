@@ -9,7 +9,7 @@ import {
 } from "utils/formHelpers/validation";
 import { openNotification } from "utils/notifications";
 import { useQueryClient } from "react-query";
-import { useCreateFile } from "../hooks/file/useCreateFile";
+import { TFileData, useCreateFile } from "../hooks/file/useCreateFile";
 import { QUERY_KEY_FOR_FILES_IN_A_FOLDER } from "../hooks/file/useGetFilesInFolder";
 import { FormFolderInput } from "./FormFolderInput";
 import { FileUpload } from "components/FileUpload";
@@ -56,10 +56,48 @@ export const AddFile: React.FC<IProps> = ({ open, handleClose }) => {
         {
           folderId: data.folderId,
           data: {
-            access: data.access.map((item: [string, number], i: number) => ({
-              type: item[0],
-              entityId: item[1],
-            })),
+            access: data.access
+              .map((item: [string, number], i: number) => ({
+                type: item[0],
+                entityId: item[1],
+              }))
+              .map(
+                ({
+                  type,
+                  entityId,
+                }: {
+                  type: "role" | "department" | "employee" | "group";
+                  entityId: number;
+                }) => {
+                  let value: TFileData["access"][number] | null = null;
+                  switch (type) {
+                    case "department":
+                      value = {
+                        departmentId: entityId,
+                      };
+                      break;
+                      case "role":
+                        value = {
+                          roleId: entityId,
+                        };
+                        break;
+                        case "employee":
+                          value = {
+                            employeeId: entityId,
+                          };
+                          break;
+                          case "group":
+                            value = {
+                              groupId: entityId,
+                            };
+                            break;
+
+                    default:
+                      break;
+                  }
+                  return value;
+                }
+              ),
             description: data.description,
             url: documentUrl,
             name: data.name,
@@ -89,6 +127,7 @@ export const AddFile: React.FC<IProps> = ({ open, handleClose }) => {
               queryKey: [QUERY_KEY_FOR_FILES_IN_A_FOLDER],
               // exact: true,
             });
+            // add folder query
           },
         }
       );

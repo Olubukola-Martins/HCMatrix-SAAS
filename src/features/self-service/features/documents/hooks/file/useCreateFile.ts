@@ -4,17 +4,23 @@ import { useApiAuth } from "hooks/useApiAuth";
 import { useMutation } from "react-query";
 import { ICurrentCompany } from "types";
 
-type TFileData = {
+export type TFileData = {
   url: string;
   name: string;
   description: string;
   access: Access[];
 };
 
-interface Access {
-  type: string; //TO DO:  define the types properly => 'role' | 'department' |  ....
-  entityId: number;
+type  Access  = {
+  groupId: number
+} | {
+  departmentId: number
+}| {
+  roleId: number
+} | {
+  employeeId: number
 }
+
 const createData = async (props: {
   data: TFileData;
   folderId: number;
