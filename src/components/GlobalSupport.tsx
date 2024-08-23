@@ -139,7 +139,7 @@ const GlobalSupport = () => {
         handleClose={handleCloseModal}
         openSearchModal={() => handleOpenModal('search-modal')}
         openSettingsModal={() => handleOpenModal('settings-modal')}
-        openNewChatModal={() => handleOpenModal('new-chat-modal', chatId)}
+        openNewChatModal={(chatId) => handleOpenModal('new-chat-modal', chatId)}
       />
 
       <SearchAIChatBotModal

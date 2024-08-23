@@ -7,9 +7,9 @@ import { useState } from "react";
 
 interface IProps {
   open: boolean;
-  handleClose: Function;
-  openSearchModal: Function;
-  openSettingsModal: Function;
+  handleClose: () => void;
+  openSearchModal: () => void;
+  openSettingsModal: () => void;
   openNewChatModal: (chatId: string) => void;
 }
 
@@ -20,12 +20,9 @@ const AIChatBotModal = ({
   openSettingsModal,
   openNewChatModal,
 }: IProps) => {
-  const [chatId, setChatId] = useState<string | null>(null);
 
   const handleStartNewChat = () => {
     const newChatId = randomNumber();
-    console.log("chatid",newChatId);
-    setChatId(newChatId);
     openNewChatModal(newChatId);
   }
 

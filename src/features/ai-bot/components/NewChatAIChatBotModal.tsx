@@ -1,5 +1,5 @@
 import { Button, Empty, Input, Modal, Skeleton } from "antd";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { IoIosArrowBack } from "react-icons/io";
 import Themes from "components/Themes";
 import AttachmentIcon from "assets/svg-components/AttachmentIcon/AttachmentIcon";
@@ -19,14 +19,16 @@ interface IProps {
 }
 
 const NewChatAIChatBotModal = ({ open, handleClose, chatId }: IProps) => {
+  
+  console.log("Received chatId in NewChatAIChatBotModal:",chatId);
   const queryClient = useQueryClient();
   
   const [message, setMessage] = useState<string>();
-  // const [audio, setAudio] = useState(false);
+  const [localChatHistory, setLocalChatHistory] = useState<any[]>([]);
 
-  const { currentCompanyEmployeeDetails: employee } = useMostRecentApiAuth();
-  const employeeId = employee?.id;
-  const { data: singleEmployee } = useFetchSingleEmployee({employeeId: employeeId || 0 });
+  // const { currentCompanyEmployeeDetails: employee } = useMostRecentApiAuth();
+  // const employeeId = employee?.id;
+  // const { data: singleEmployee } = useFetchSingleEmployee({employeeId: employeeId || 0 });
   const { data: chatHistory, isLoading: isLoadingHistory } = useGetChatHistory({
     employee_id:"372",
     company_id: "53",
@@ -38,9 +40,20 @@ const NewChatAIChatBotModal = ({ open, handleClose, chatId }: IProps) => {
   const { mutate: sendChatMessage, isLoading: isSendingText } = useAddChatText();
   // const { mutate: sendVoiceMessage, isLoading: isSendingVoice } = useGetChatAudio();
 
+  useEffect(() => {
+    const storedChatHistory = localStorage.getItem(`chat-history-${chatId}`);
+    if (storedChatHistory) {
+      setLocalChatHistory(JSON.parse(storedChatHistory));
+    } else if (chatHistory) {
+      setLocalChatHistory(chatHistory);
+    }
+  }, [chatHistory, chatId]);
+
+
   const handleSendMessage = () => {
     if (!message) return;
-    sendChatMessage({
+
+    const newMessage = {
       user_query: message,
         audio: false,
         chat_id: chatId,
@@ -55,8 +68,10 @@ const NewChatAIChatBotModal = ({ open, handleClose, chatId }: IProps) => {
           // group_id: singleEmployee?.userGroups?.[0]?.id.toString() || "",
           // company_id: singleEmployee?.companyId.toString() || "",
           // id: singleEmployee?.id.toString() || "",
-        },
-       },
+      },
+    };
+    sendChatMessage(
+      newMessage,
        {
         onError: (err: any) => {
           openNotification({
@@ -67,15 +82,23 @@ const NewChatAIChatBotModal = ({ open, handleClose, chatId }: IProps) => {
           });
         },
         onSuccess: (res: any) => {
+        const chatObject = {
+          chatId: res.chat_id, 
+          question: res.question,
+          time: res.timestamp,
+        };
+
+        const existingChatList = JSON.parse(localStorage.getItem('chatList') || '[]');
+        const updatedChatList = [...existingChatList, chatObject];
+        localStorage.setItem('chatList', JSON.stringify(updatedChatList));
+
           setMessage(undefined);
           queryClient.invalidateQueries({
             queryKey: ["chat-history", chatId],
-            exact: true,
+            // exact: true,
           });
         },
       });
-
-       setMessage("");
   };
 
   return (
