@@ -7,20 +7,11 @@ import { useGetPayrollWalletDashboardAnalytics } from "features/payroll/hooks/wa
 import { TPayrollGraphAnalyticsItemType } from "features/payroll/types/payroll";
 import { useRetrievePayrollWallets } from "features/payroll/hooks/wallet/useRetrievePayrollWallets";
 
-const CHART_ITEMS: TPayrollGraphAnalyticsItemType[] = [
-  "bar-chart",
-  "line-chart",
-  "scatter-chart",
-  "waterfall-chart",
-  "pie-chart",
-  "histogram",
-  "area-graph",
-  "spider-chart",
-];
+
 
 const WalletOverviewContainer = () => {
   const [chartItem, setChartItem] = useState<TPayrollGraphAnalyticsItemType>(
-    CHART_ITEMS[0]
+    'line-chart'
   );
   const [year, setYear] = useState<string>(CURRENT_YEAR);
 
