@@ -3,7 +3,7 @@ import Themes from "components/Themes";
 import PreviousChatCard from "./PreviousChatCard";
 import { IoIosArrowBack } from "react-icons/io";
 import { randomNumber } from "../utils/randomNumber";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 interface IProps {
   open: boolean;
@@ -20,6 +20,18 @@ const AIChatBotModal = ({
   openSettingsModal,
   openNewChatModal,
 }: IProps) => {
+  const [chatList, setChatList] = useState<{ chatId: string; question: string; time: string; }[]>([]);
+
+  useEffect(() => {
+    const storedChatList = localStorage.getItem('chatList');
+    if (storedChatList) {
+      const chatList = JSON.parse(storedChatList);
+      const sortedChatList = chatList.sort((a: any, b: any) => new Date(b.time).getTime() - new Date(a.time).getTime());
+      const latestChats = sortedChatList.slice(0, 5);
+
+      setChatList(latestChats);
+    }
+  }, []);
 
   const handleStartNewChat = () => {
     const newChatId = randomNumber();
@@ -61,19 +73,16 @@ const AIChatBotModal = ({
             <span>Previous Chat</span>
           </div>
           <div className="space-y-3">
-            <PreviousChatCard title="Login Issue...." date="19 - 03 - 2024" />
-            <PreviousChatCard
-              title="Clarification about ...."
-              date="19 - 03 - 2024"
-            />
-            <PreviousChatCard
-              title="Clarification about ...."
-              date="19 - 03 - 2024"
-            />
-            <PreviousChatCard
-              title="Clarification about ...."
-              date="19 - 03 - 2024"
-            />
+          {chatList.length > 0 ? (
+            chatList.map((chat) => (
+            <PreviousChatCard 
+            key={chat.chatId}
+            title={chat.question} 
+            date={new Date(chat.time).toLocaleDateString()} />
+          ))
+        ) : (
+          <div className="text-center text-sm">No previous chats found.</div>
+        )}
             <Button type="link" block>
               View all
             </Button>
