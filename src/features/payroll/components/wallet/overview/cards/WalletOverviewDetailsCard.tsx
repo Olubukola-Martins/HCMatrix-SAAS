@@ -22,7 +22,7 @@ const WalletOverviewDetailsCard: React.FC<IProps> = ({
         <>
           <div className="flex flex-col py-3 items-start">
             <p className="text-base font-semibold mb-2 capitalize">{`Wallet Details`}</p>
-           <EmptyDataWrapper isEmpty={!(data && data?.length > 0)} emptyProps={{description: "No wallets are setup!"}}>
+           <EmptyDataWrapper className="w-full mx-auto" isEmpty={!(data && data?.length > 0)} emptyProps={{description: "No wallets are setup!"}}>
             <>
             {data?.map(({ accountNumber, bankName }, i, accounts) => (
               <div
