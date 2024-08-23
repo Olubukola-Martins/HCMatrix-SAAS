@@ -1,6 +1,6 @@
 import { ColumnsType } from "antd/es/table";
 import { IColumnsProps, ITimeOffProps } from "../../types";
-import { Dropdown, Menu, Popconfirm } from "antd";
+import { Dropdown, Menu} from "antd";
 import { getAppropriateColorForStatus } from "utils/colorHelpers/getAppropriateColorForStatus";
 
 export const EMPLOYEE_TIMEOFF_REQUEST_TABLE_COLUMNS = ({

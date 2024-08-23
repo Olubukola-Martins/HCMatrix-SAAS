@@ -8,10 +8,8 @@ import { useState } from "react";
 import { statusItems } from "../constance";
 import ViewApprovalStages from "features/core/workflows/components/approval-request/ViewApprovalStages";
 import { DeleteTimeOffRequest } from "./DeleteTimeOffRequest";
-import { useQueryClient } from "react-query";
 
 export const MyRequest = () => {
-  const queryClient = useQueryClient();
   const [status, setStatus] = useState<string>();
   const [policyId, setPolicyId] = useState<number>();
   const [timeOffId, setTimeOffId] = useState<number>();
