@@ -1,24 +1,14 @@
-import { DatePicker, Select } from "antd";
+import { DatePicker, Select, Skeleton } from "antd";
 import { TPayrollGraphAnalyticsItemType } from "features/payroll/types/payroll";
-import { useGetPayrollGraphAnalytics } from "features/payroll/hooks/payroll/analytics/useGetPayrollGraphAnalytics";
-import {
-  parsePayrollGraphAnalyticsData,
-  selectPayrollGraphAnalyticsData,
-} from "features/payroll/utils/parsePayrollGraphData";
 import dayjs from "dayjs";
-import PayrollGraphsContainer from "../../graphs/PayrollGraphsContainer";
 import { IDivProps } from "types/html";
 import { TPayrollWalletDashboardAnalytics } from "features/payroll/types/wallet";
+import { BarChart, LineChart } from "components/charts";
 
 const CHART_ITEMS: TPayrollGraphAnalyticsItemType[] = [
   "bar-chart",
   "line-chart",
-  "scatter-chart",
-  "waterfall-chart",
-  "pie-chart",
-  "histogram",
-  "area-graph",
-  "spider-chart",
+
 ];
 
 type IProps = Pick<IDivProps, "className">&{
@@ -43,11 +33,7 @@ const WalletOverviewBalanceGraph: React.FC<IProps> = ({
 
 
 
-  // const parseAnalyticData = parsePayrollGraphAnalyticsData({ chartItem, data });
-  // const analyticsData = selectPayrollGraphAnalyticsData(
-  //   parseAnalyticData,
-  //   "Gross Pay"
-  // );
+
   return (
     <div className={className}>
       {/* header */}
@@ -83,8 +69,24 @@ const WalletOverviewBalanceGraph: React.FC<IProps> = ({
           </div>
         </div>
       </div>
-      {/* container 4 graphs */}
-    
+   <Skeleton loading={isLoading} active paragraph={{rows: 15}}>
+   {chartItem === "bar-chart" && (
+          <BarChart
+          data={data ? Object.values(data) : []}
+          labels={data ? Object.keys(data) : []}
+            dataEntityLabel="Amount"
+            bgColors={"#ff6647"}
+          />
+        )}
+   {chartItem === "line-chart" && (
+          <LineChart
+          data={data ? Object.values(data) : []}
+          labels={data ? Object.keys(data) : []}
+            dataEntityLabel="Amount"
+            bgColors={"#ff6647"}
+          />
+        )}
+   </Skeleton>
     </div>
   );
 };
