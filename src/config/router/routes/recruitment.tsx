@@ -18,6 +18,7 @@ import AddJobOpening from "features/recruitment/features/dashboard/features/jobO
 import PanelistPage from "features/recruitment/features/panelist/pages/PanelistPage";
 import FullJobDescription from "features/recruitment/features/panelist/pages/FullJobDescription";
 import AllCandidatesPage from "features/recruitment/features/panelist/pages/AllCandidatesPage";
+import CandidateInfoPage from "features/recruitment/features/panelist/pages/CandidateInfoPage";
 
 export const recruitmentRoutes: TRouteData[] = [
   {
@@ -141,6 +142,13 @@ export const recruitmentRoutes: TRouteData[] = [
     isSearchable: true,
     isPrimaryFeature: true,
     title: "All Candidates",
+  },
+  {
+    element: <CandidateInfoPage />,
+    path: appRoutes.recruitmentPanelistCandidateInformation().format,
+    isSearchable: true,
+    isPrimaryFeature: true,
+    title: "Candidate Information",
   },
   {
     element: <FullJobDescription />,

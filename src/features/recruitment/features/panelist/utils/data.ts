@@ -144,6 +144,7 @@ export const mockEvents: InterviewEvent[] = [
 export const candidatesTableDummyData: Candidate[] = [
   {
     key: "1",
+    id:1,
     name: "Chinonso Okeke",
     email: "chinonso.okeke@example.com",
     jobPosition: "Software Engineer",
@@ -154,6 +155,7 @@ export const candidatesTableDummyData: Candidate[] = [
   },
   {
     key: "2",
+    id:2,
     name: "Amina Bello",
     email: "amina.bello@example.com",
     jobPosition: "Data Analyst",
@@ -164,6 +166,7 @@ export const candidatesTableDummyData: Candidate[] = [
   },
   {
     key: "3",
+    id:3,
     name: "Ifeanyi Nwosu",
     email: "ifeanyi.nwosu@example.com",
     jobPosition: "Product Manager",
@@ -174,6 +177,7 @@ export const candidatesTableDummyData: Candidate[] = [
   },
   {
     key: "4",
+    id:4,
     name: "Yetunde Adebayo",
     email: "yetunde.adebayo@example.com",
     jobPosition: "UX Designer",
@@ -184,6 +188,7 @@ export const candidatesTableDummyData: Candidate[] = [
   },
   {
     key: "5",
+    id:5,
     name: "Musa Abdullahi",
     email: "musa.abdullahi@example.com",
     jobPosition: "DevOps Engineer",
@@ -194,6 +199,7 @@ export const candidatesTableDummyData: Candidate[] = [
   },
   {
     key: "6",
+    id:6,
     name: "Ngozi Umeh",
     email: "ngozi.umeh@example.com",
     jobPosition: "HR Specialist",
@@ -204,6 +210,7 @@ export const candidatesTableDummyData: Candidate[] = [
   },
   {
     key: "7",
+    id:7,
     name: "Tunde Alabi",
     email: "tunde.alabi@example.com",
     jobPosition: "Marketing Manager",
@@ -214,6 +221,7 @@ export const candidatesTableDummyData: Candidate[] = [
   },
   {
     key: "8",
+    id:8,
     name: "Zainab Yusuf",
     email: "zainab.yusuf@example.com",
     jobPosition: "Financial Analyst",
@@ -224,6 +232,7 @@ export const candidatesTableDummyData: Candidate[] = [
   },
   {
     key: "9",
+    id:9,
     name: "Olamide Taiwo",
     email: "olamide.taiwo@example.com",
     jobPosition: "Data Scientist",
@@ -234,6 +243,7 @@ export const candidatesTableDummyData: Candidate[] = [
   },
   {
     key: "10",
+    id:10,
     name: "Folake Akinyemi",
     email: "folake.akinyemi@example.com",
     jobPosition: "Customer Service Rep",
@@ -244,6 +254,7 @@ export const candidatesTableDummyData: Candidate[] = [
   },
   {
     key: "11",
+    id:11,
     name: "Kunle Obinna",
     email: "kunle.obinna@example.com",
     jobPosition: "Backend Developer",
@@ -254,6 +265,7 @@ export const candidatesTableDummyData: Candidate[] = [
   },
   {
     key: "12",
+    id:12,
     name: "Ezinne Okoro",
     email: "ezinne.okoro@example.com",
     jobPosition: "Frontend Developer",
@@ -264,6 +276,7 @@ export const candidatesTableDummyData: Candidate[] = [
   },
   {
     key: "13",
+    id:13,
     name: "Abubakar Aliyu",
     email: "abubakar.aliyu@example.com",
     jobPosition: "Business Analyst",
@@ -274,6 +287,7 @@ export const candidatesTableDummyData: Candidate[] = [
   },
   {
     key: "14",
+    id:14,
     name: "Omolara Bakare",
     email: "omolara.bakare@example.com",
     jobPosition: "IT Support",
@@ -284,6 +298,7 @@ export const candidatesTableDummyData: Candidate[] = [
   },
   {
     key: "15",
+    id:15,
     name: "Bashir Suleiman",
     email: "bashir.suleiman@example.com",
     jobPosition: "Systems Administrator",

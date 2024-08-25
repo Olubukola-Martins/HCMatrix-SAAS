@@ -1,9 +1,12 @@
 import React from "react";
 import { Table, Dropdown, Menu, Space } from "antd";
-import {  MoreOutlined } from "@ant-design/icons";
+import { MoreOutlined } from "@ant-design/icons";
+import { useNavigate } from "react-router-dom";
+import { appRoutes } from "config/router/paths";
 
 export interface Candidate {
   key: string;
+  id: number;
   name: string;
   email: React.ReactNode;
   jobPosition: string;
@@ -18,6 +21,8 @@ interface AllCandidatesTableProps {
 }
 
 const AllCandidatesTable: React.FC<AllCandidatesTableProps> = ({ data }) => {
+  const navigate = useNavigate();
+
   const columns = [
     {
       title: "Candidate Name",
@@ -28,7 +33,7 @@ const AllCandidatesTable: React.FC<AllCandidatesTableProps> = ({ data }) => {
       title: "Email",
       key: "email",
       render: (_: any, record: Candidate) => {
-       return <p className="w-28">{record.email}</p>;
+        return <p className="w-28">{record.email}</p>;
       },
     },
     {
@@ -63,7 +68,9 @@ const AllCandidatesTable: React.FC<AllCandidatesTableProps> = ({ data }) => {
         <Dropdown
           overlay={
             <Menu>
-              <Menu.Item key="view">View Candidate</Menu.Item>
+              <Menu.Item key="view" onClick={() => navigate(appRoutes.recruitmentPanelistCandidateInformation(record.id).path)}>
+                View Candidate
+              </Menu.Item>
               <Menu.Item key="rate">Rate Candidate</Menu.Item>
               <Menu.Item key="link">View Interview Link</Menu.Item>
             </Menu>
@@ -91,5 +98,3 @@ const AllCandidatesTable: React.FC<AllCandidatesTableProps> = ({ data }) => {
 };
 
 export default AllCandidatesTable;
-
-

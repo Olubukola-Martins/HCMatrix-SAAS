@@ -319,7 +319,11 @@ export const appRoutes = {
   recruitmentDashboard: `/recruitment/dashboard`,
   recruitmentReport: `/recruitment/report`,
   recruitmentPanelist: `/recruitment/panelist`,
-  recruitmentPanelistAllCandidates:`/recruitment/panelist/all-candidates`,
+  recruitmentPanelistAllCandidates: `/recruitment/panelist/all-candidates`,
+  recruitmentPanelistCandidateInformation: (id?: number) => ({
+    format: `/recruitment/panelist/candidate-information/:id`,
+    path: `/recruitment/panelist/candidate-information/${id}`,
+  }),
   recruitmentPanelistFullJobDescription: (id?: number) => ({
     format: `/recruitment/panelist/job-description/:id`,
     path: `/recruitment/panelist/job-description/${id}`,
