@@ -17,6 +17,7 @@ import { JobOpeningsPage } from "features/recruitment/features/dashboard/feature
 import AddJobOpening from "features/recruitment/features/dashboard/features/jobOpenings/pages/AddJobOpening";
 import PanelistPage from "features/recruitment/features/panelist/pages/PanelistPage";
 import FullJobDescription from "features/recruitment/features/panelist/pages/FullJobDescription";
+import AllCandidatesPage from "features/recruitment/features/panelist/pages/AllCandidatesPage";
 
 export const recruitmentRoutes: TRouteData[] = [
   {
@@ -135,10 +136,17 @@ export const recruitmentRoutes: TRouteData[] = [
     title: "Recruitment Panelist",
   },
   {
+    element: <AllCandidatesPage />,
+    path: appRoutes.recruitmentPanelistAllCandidates,
+    isSearchable: true,
+    isPrimaryFeature: true,
+    title: "All Candidates",
+  },
+  {
     element: <FullJobDescription />,
     path: appRoutes.recruitmentPanelistFullJobDescription().format,
     isSearchable: true,
     isPrimaryFeature: true,
-    title: "Recruitment Panelist",
+    title: "Full Job Description",
   },
 ];

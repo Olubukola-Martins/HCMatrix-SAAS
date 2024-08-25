@@ -1,11 +1,10 @@
+import { Candidate } from "../components/candidates/AllCandidatesTable";
 import { InterviewEvent } from "../components/panelist/InterviewCalendar";
 
-
-
-// Sample end date 
- const endDate = new Date();
- endDate.setDate(endDate.getDate() + 2); // Set end date to 2 days from now
- endDate.setHours(11, 0, 0, 0); // Set time to 11:00 AM
+// Sample end date
+const endDate = new Date();
+endDate.setDate(endDate.getDate() + 2); // Set end date to 2 days from now
+endDate.setHours(11, 0, 0, 0); // Set time to 11:00 AM
 
 export const PanelistInfoMockData = {
   name: "Emmanuel Ayomide",
@@ -142,5 +141,155 @@ export const mockEvents: InterviewEvent[] = [
   },
 ];
 
-
-
+export const candidatesTableDummyData: Candidate[] = [
+  {
+    key: "1",
+    name: "Chinonso Okeke",
+    email: "chinonso.okeke@example.com",
+    jobPosition: "Software Engineer",
+    interviewDate: "12/09/24",
+    interviewTime: "10:00 AM",
+    modeOfInterview: "Virtual",
+    totalScore: 85,
+  },
+  {
+    key: "2",
+    name: "Amina Bello",
+    email: "amina.bello@example.com",
+    jobPosition: "Data Analyst",
+    interviewDate: "13/09/24",
+    interviewTime: "11:00 AM",
+    modeOfInterview: "Physical",
+    totalScore: 78,
+  },
+  {
+    key: "3",
+    name: "Ifeanyi Nwosu",
+    email: "ifeanyi.nwosu@example.com",
+    jobPosition: "Product Manager",
+    interviewDate: "14/09/24",
+    interviewTime: "02:00 PM",
+    modeOfInterview: "Virtual",
+    totalScore: 90,
+  },
+  {
+    key: "4",
+    name: "Yetunde Adebayo",
+    email: "yetunde.adebayo@example.com",
+    jobPosition: "UX Designer",
+    interviewDate: "15/09/24",
+    interviewTime: "09:00 AM",
+    modeOfInterview: "Physical",
+    totalScore: 88,
+  },
+  {
+    key: "5",
+    name: "Musa Abdullahi",
+    email: "musa.abdullahi@example.com",
+    jobPosition: "DevOps Engineer",
+    interviewDate: "16/09/24",
+    interviewTime: "01:00 PM",
+    modeOfInterview: "Virtual",
+    totalScore: 82,
+  },
+  {
+    key: "6",
+    name: "Ngozi Umeh",
+    email: "ngozi.umeh@example.com",
+    jobPosition: "HR Specialist",
+    interviewDate: "17/09/24",
+    interviewTime: "03:00 PM",
+    modeOfInterview: "Physical",
+    totalScore: 77,
+  },
+  {
+    key: "7",
+    name: "Tunde Alabi",
+    email: "tunde.alabi@example.com",
+    jobPosition: "Marketing Manager",
+    interviewDate: "18/09/24",
+    interviewTime: "12:00 PM",
+    modeOfInterview: "Virtual",
+    totalScore: 80,
+  },
+  {
+    key: "8",
+    name: "Zainab Yusuf",
+    email: "zainab.yusuf@example.com",
+    jobPosition: "Financial Analyst",
+    interviewDate: "19/09/24",
+    interviewTime: "11:30 AM",
+    modeOfInterview: "Physical",
+    totalScore: 84,
+  },
+  {
+    key: "9",
+    name: "Olamide Taiwo",
+    email: "olamide.taiwo@example.com",
+    jobPosition: "Data Scientist",
+    interviewDate: "20/09/24",
+    interviewTime: "10:30 AM",
+    modeOfInterview: "Virtual",
+    totalScore: 87,
+  },
+  {
+    key: "10",
+    name: "Folake Akinyemi",
+    email: "folake.akinyemi@example.com",
+    jobPosition: "Customer Service Rep",
+    interviewDate: "21/09/24",
+    interviewTime: "09:30 AM",
+    modeOfInterview: "Physical",
+    totalScore: 79,
+  },
+  {
+    key: "11",
+    name: "Kunle Obinna",
+    email: "kunle.obinna@example.com",
+    jobPosition: "Backend Developer",
+    interviewDate: "22/09/24",
+    interviewTime: "03:30 PM",
+    modeOfInterview: "Virtual",
+    totalScore: 89,
+  },
+  {
+    key: "12",
+    name: "Ezinne Okoro",
+    email: "ezinne.okoro@example.com",
+    jobPosition: "Frontend Developer",
+    interviewDate: "23/09/24",
+    interviewTime: "02:30 PM",
+    modeOfInterview: "Physical",
+    totalScore: 81,
+  },
+  {
+    key: "13",
+    name: "Abubakar Aliyu",
+    email: "abubakar.aliyu@example.com",
+    jobPosition: "Business Analyst",
+    interviewDate: "24/09/24",
+    interviewTime: "12:30 PM",
+    modeOfInterview: "Virtual",
+    totalScore: 86,
+  },
+  {
+    key: "14",
+    name: "Omolara Bakare",
+    email: "omolara.bakare@example.com",
+    jobPosition: "IT Support",
+    interviewDate: "25/09/24",
+    interviewTime: "11:00 AM",
+    modeOfInterview: "Physical",
+    totalScore: 75,
+  },
+  {
+    key: "15",
+    name: "Bashir Suleiman",
+    email: "bashir.suleiman@example.com",
+    jobPosition: "Systems Administrator",
+    interviewDate: "26/09/24",
+    interviewTime: "10:00 AM",
+    modeOfInterview: "Virtual",
+    totalScore: 83,
+  },
+];

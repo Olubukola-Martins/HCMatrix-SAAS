@@ -33,7 +33,7 @@ const PanelistPage = () => {
         <div className="flex flex-col-reverse xl:flex-row  gap-5 items-center w-full">
           <PanelistInfoCard name={name} department={department} designation={designation} panelistImg={panelistImg} />
           <div className="flex justify-between flex-col-reverse sm:flex-row gap-3 flex-grow">
-            <RecruitmentDBCards count={numberOfCandidates} title="All candidates" link="" />
+            <RecruitmentDBCards count={numberOfCandidates} title="All candidates" link={appRoutes.recruitmentPanelistAllCandidates} />
             <InviteTimer days={timeLeft.days} hours={timeLeft.hours} minutes={timeLeft.minutes} handleAcceptInvite={() => {}} handleRejectInvite={() => setRejectModalVisible(true)} />
           </div>
         </div>

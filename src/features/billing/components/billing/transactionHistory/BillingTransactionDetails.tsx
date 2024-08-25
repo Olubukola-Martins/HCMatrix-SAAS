@@ -119,7 +119,7 @@ const EmployeeWithLicenseTable: React.FC<{
   return (
     <div className="flex flex-col gap-4">
       <h6 className="font-semiblod">{title}</h6>
-      <Table columns={columns} size="small" dataSource={data?.map((item, i) => ({ ...item, key: i + 1 }))} loading={loading} />
+      <Table columns={columns} size="small"  dataSource={data?.map((item, i) => ({ ...item, key: i + 1 }))} loading={loading} />
     </div>
   );
 };
