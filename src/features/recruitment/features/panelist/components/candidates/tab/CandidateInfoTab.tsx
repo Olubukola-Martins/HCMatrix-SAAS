@@ -2,6 +2,7 @@ import React from "react";
 import { Tabs } from "antd";
 import type { TabsProps } from "antd";
 import Document from "./Document";
+import CandidateInfo from "./CandidateInfo";
 
 const onChange = (key: string) => {
   console.log(key);
@@ -11,7 +12,7 @@ const items: TabsProps["items"] = [
   {
     key: "candidateInfo",
     label: "Candidate Info",
-    children: "Content of Tab Pane 1",
+    children: <CandidateInfo/>,
   },
   {
     key: "document",

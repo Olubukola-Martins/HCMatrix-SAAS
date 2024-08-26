@@ -5,7 +5,7 @@ import DocumentPreviewer from "../../DocumentViewer";
 const Document = () => {
   return (
     <div className="flex flex-col gap-y-4">
-      <p>Documents (Resume, Cover letter and other document )</p>
+      <p className="md:text-2xl">Documents (Resume, Cover letter and other document )</p>
       <div className="flex gap-x-4 items-center">
         <Select
           defaultValue={"resume"}
