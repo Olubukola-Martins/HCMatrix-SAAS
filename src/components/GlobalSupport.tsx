@@ -38,7 +38,14 @@ const GlobalSupport = () => {
                 <ul className="flex flex-col gap-y-3">
                   <li className="flex items-center gap-x-5 border-b-2 pb-1  cursor-pointer group">
                     <i className="ri-movie-line text-xl"></i>
-                    <span className="group-hover:text-caramel">Help Video</span>
+                    <a
+                      target="_blank"
+                      rel="noreferrer"
+                      href="https://snapnet.sharepoint.com/:f:/s/hcmatrix3userguide/EvWZGPYnhV5MraKLKZvJJHcBHzcRCvjbUiAlv-YvGQEqHA?e=ReptHw"
+                      className="group-hover:text-caramel"
+                    >
+                      Help Videos
+                    </a>
                   </li>
                   <li className="flex items-center gap-x-5 border-b-2 pb-1  cursor-pointer group">
                     <i className="ri-book-line text-xl"></i>

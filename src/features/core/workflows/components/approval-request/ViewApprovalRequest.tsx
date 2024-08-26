@@ -10,11 +10,11 @@ import { MonetaryRequestDetails } from "features/self-service/features/monetary-
 import { ReimbursementDetails } from "features/self-service/features/reimbursement/components/ReimbursementDetails";
 import CRBBookingDetails from "features/self-service/features/conference-room-booking/components/CRBBookingDetails";
 import { LeaveDetails } from "features/self-service/features/leave/components/LeaveDetails";
-import { LoanDetails } from "features/self-service/features/loan/components/LoanDetails";
 import { PromotionRequestDetails } from "features/self-service/features/promotions/components/PromotionRequestDetails";
 import { Navigate } from "react-router-dom";
 import { appRoutes } from "config/router/paths";
 import { TPayrollSchemeType } from "features/payroll/types/payrollSchemes";
+import { LoanDetails } from "features/self-service/features/loan/components/AllLoans/LoanDetails";
 
 interface IProps extends IModalProps {
   request?: TApprovalRequest;
@@ -69,6 +69,7 @@ const ViewApprovalRequest: React.FC<IProps> = ({
           handleClose={handleClose}
           id={request.loan.id}
           approvalRequest={request}
+          loanDetailSource="all-loans-request"
         />
       )}
       {typeof request.conferenceRoomBooking !== "undefined" && (

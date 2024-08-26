@@ -2,7 +2,6 @@ import { Avatar, Dropdown } from "antd";
 import Themes from "components/Themes";
 import { canUserAccessComponent } from "components/permission-restriction/PermissionRestrictor";
 import TransferOwnership from "components/transferOwnership/TransferOwnership";
-import { Setup2FA } from "components/twoFactorAuth/SetUp2FA";
 import { appRoutes } from "config/router/paths";
 import { DEFAULT_PROFILE_IMAGE_URL } from "constants/general";
 import { TCompanySubscription } from "features/billing/types/company/companySubscription";
@@ -75,7 +74,9 @@ const UserActions: React.FC<{
   activeSubscription?: TCompanySubscription;
 }> = ({ userPermissions, closeMenu, isOwner, activeSubscription }) => {
   type TAction = "transfer-ownership" | "setup-2fa";
+
   const [action, setAction] = useState<TAction>();
+
   const clearAction = () => {
     setAction(undefined);
   };
@@ -115,10 +116,9 @@ const UserActions: React.FC<{
       }),
       isLink: true,
     },
-
     {
-      text: "Enable 2FA",
-      onClick: () => setAction("setup-2fa"),
+      text: "Two Factor Authentication",
+      url: appRoutes.twoFactorAuthentication,
       hidden: !canUserAccessComponent({
         userPermissions,
         requiredPermissions: [],
@@ -128,7 +128,7 @@ const UserActions: React.FC<{
           resources: [],
         },
       }),
-      isLink: false,
+      isLink: true,
     },
 
     {
@@ -223,7 +223,8 @@ const UserActions: React.FC<{
 
   return (
     <>
-      <Setup2FA open={action === "setup-2fa"} handleClose={clearAction} />
+   
+
       <TransferOwnership
         open={action === "transfer-ownership"}
         handleClose={() => clearAction()}

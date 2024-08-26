@@ -30,7 +30,9 @@ const CompanyTrainingSessionManagement = () => {
       />
       <AppButton
         disabled
-        label={subscription?.addOns?.trainingSession?.name}
+        label={
+          subscription?.addOns?.trainingSession?.name ?? "No Training Session"
+        }
         isLoading={isLoading}
       />
 

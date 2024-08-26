@@ -1,4 +1,6 @@
 import { TLicenseType } from "features/authentication/types/auth-user";
+import { TLoanType } from ".";
+import { TConfirmApprovalActionProps } from "hooks/useApproveORReject";
 
 export type TLoanRequestStatus =
   | "pending"
@@ -11,7 +13,6 @@ export type TLoanRequestStatus =
 export type TLoanRequest = {
   balance: number;
   id: number;
-  title: string;
   date: string;
   description: string;
   typeId: number;
@@ -19,7 +20,7 @@ export type TLoanRequest = {
   amount: string;
   employeeId: number;
   status: string;
-  guarantorFormUrls?: string[];
+  documentUrl?: string[];
   companyId: number;
   createdAt: string;
   updatedAt: string;
@@ -28,6 +29,7 @@ export type TLoanRequest = {
   type: Type;
   paymentPlan: PaymentPlan;
   employee: Employee;
+  loanEligibility?: string;
 };
 
 interface Employee {
@@ -80,7 +82,7 @@ interface Department {
   email: string;
 }
 
-interface PaymentPlan {
+export interface PaymentPlan {
   id: number;
   name: string;
   label: string;
@@ -97,4 +99,26 @@ interface Type {
   companyId: number;
   createdAt: string;
   updatedAt: string;
+}
+
+// ======= new
+export interface myLoanRequestProps {
+  id: number;
+  loanId: string;
+  requestDate: string;
+  type: TLoanType;
+  date: string;
+  amount: number;
+  disbursedAt: string;
+  status: string;
+  createdAt: string;
+}
+
+export interface EmployeeLoanRequestTableActions {
+  handleLoanTypeDelete?: (id: number) => void;
+  handleLoanDetails: (id: number) => void;
+  handleLoanDisbursement?: (id: number) => void;
+  confirmApprovalAction?: (val: TConfirmApprovalActionProps) => void;
+  handleLoanApprovalStages?: (id: number) => void;
+  handleGetRepaymentPlan?: (id: number) => void;
 }
