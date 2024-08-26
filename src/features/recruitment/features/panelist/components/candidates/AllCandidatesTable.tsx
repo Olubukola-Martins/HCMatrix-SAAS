@@ -3,6 +3,7 @@ import { Table, Dropdown, Menu, Space } from "antd";
 import { MoreOutlined } from "@ant-design/icons";
 import { useNavigate } from "react-router-dom";
 import { appRoutes } from "config/router/paths";
+import ViewInterviewLinkModal from "./ViewInterviewLinkModal";
 
 export interface Candidate {
   key: string;
@@ -22,6 +23,7 @@ interface AllCandidatesTableProps {
 
 const AllCandidatesTable: React.FC<AllCandidatesTableProps> = ({ data }) => {
   const navigate = useNavigate();
+  const [inviteModalIsVisible, setInviteModalIsVisible] = React.useState(false);
 
   const columns = [
     {
@@ -72,7 +74,9 @@ const AllCandidatesTable: React.FC<AllCandidatesTableProps> = ({ data }) => {
                 View Candidate
               </Menu.Item>
               <Menu.Item key="rate">Rate Candidate</Menu.Item>
-              <Menu.Item key="link">View Interview Link</Menu.Item>
+              <Menu.Item key="link" onClick={() => setInviteModalIsVisible(true)}>
+                View Interview Link 
+              </Menu.Item>
             </Menu>
           }
           trigger={["click"]}>
@@ -85,15 +89,18 @@ const AllCandidatesTable: React.FC<AllCandidatesTableProps> = ({ data }) => {
   ];
 
   return (
-    <Table
-      columns={columns}
-      dataSource={data}
-      pagination={{ pageSize: 7, showSizeChanger: false }}
-      scroll={{ x: 700 }}
-      rowSelection={{
-        type: "checkbox",
-      }}
-    />
+    <>
+      <ViewInterviewLinkModal visible={inviteModalIsVisible} onClose={() => setInviteModalIsVisible(false)} link="xyz.com" />
+      <Table
+        columns={columns}
+        dataSource={data}
+        pagination={{ pageSize: 7, showSizeChanger: false }}
+        scroll={{ x: 700 }}
+        rowSelection={{
+          type: "checkbox",
+        }}
+      />
+    </>
   );
 };
 
