@@ -3,6 +3,8 @@ import { PermissionRestrictor } from "components/permission-restriction/Permissi
 import React from "react";
 import { IDivProps } from "types/html";
 import { AnalyticsRecordProps } from "../../types";
+import { useClockingAndBreakStatus } from "features/timeAndAttendance/hooks/useClockingAndBreakStatus";
+import { convertMinutesToHours } from "features/timeAndAttendance/utils";
 
 interface IProps extends IDivProps {
   analyticsData?: AnalyticsRecordProps;
@@ -14,6 +16,7 @@ const AttendanceHomeCards: React.FC<IProps> = ({
   analyticsData,
   isLoadingAnalyticsData,
 }) => {
+  const { data, isLoading } = useClockingAndBreakStatus();
 
   return (
     <div className={className}>
@@ -42,14 +45,26 @@ const AttendanceHomeCards: React.FC<IProps> = ({
         />
       </PermissionRestrictor>
 
-      {/* <SimpleCard loading={isLoading} title="Clocked in time" highlight={0} />
-      <SimpleCard loading={isLoading} title="Break time" highlight={0} />
-      <SimpleCard loading={isLoading} title="Clocked out time" highlight={0} />
+      <SimpleCard
+        loading={isLoading}
+        title="Clocked in time"
+        highlight={data?.clocking?.clockIn?.time ?? ""}
+      />
+      <SimpleCard
+        loading={isLoading}
+        title="Break time"
+        highlight={data?.activeBreakSession?.start ?? "----"}
+      />
+      <SimpleCard
+        loading={isLoading}
+        title="Clocked out time"
+        highlight={data?.clocking?.clockOut?.time ?? "----"}
+      />
       <SimpleCard
         loading={isLoading}
         title="Total Hours Spent for the day"
-        highlight={0}
-      /> */}
+        highlight={convertMinutesToHours(data?.totalHoursSpentToday ?? 0)}
+      />
     </div>
   );
 };

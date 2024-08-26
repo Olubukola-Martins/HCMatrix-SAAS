@@ -17,12 +17,14 @@ import { useGetDashboardGraph } from "../hooks/useGetDashboardGraph";
 import AttendanceLocationCard from "../components/home/AttendanceLocationCard";
 import { PermissionRestrictor } from "components/permission-restriction/PermissionRestrictor";
 import { useGetAnalyticsRecord } from "../hooks/useGetAnalyticsRecord";
+import dayjs from "dayjs";
 
 export const AttendanceHome = () => {
   const [greeting, setGreeting] = useState("");
   const today = new Date();
-  const month = today.toLocaleString("default", { month: "long" });
   const fullYear = today.getFullYear();
+  const formattedToday = dayjs(today).format("ddd, MMM D, YYYY");
+
   const { data: timeDBData, isLoading: isLoadingTimeDBData } =
     useGetDashboardGraph({
       year: fullYear,
@@ -37,6 +39,7 @@ export const AttendanceHome = () => {
   const [filterProps, setFilterProps] = useState<TFilterAttendanceDBFormProps>(
     {}
   );
+
   const { data: analyticsData, isLoading: isLoadingAnalyticsData } =
     useGetAnalyticsRecord();
 
@@ -50,17 +53,14 @@ export const AttendanceHome = () => {
     }
   }, [hour]);
 
-  // const { currentCompanyEmployeeDetails } = useApiAuth();
-
   return (
     <ErrorBoundary>
       <AttendanceSubToper active="none-active" />
       <div className="Container grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 md:gap-x-4 lg:gap-x-6 md:gap-y-8 lg:gap-y-12">
         <AttendanceWelcomeHeader
           {...{
-            fullYear,
-            month,
             greeting,
+            formattedToday,
             userFullName: user?.fullName,
             welcomeNoteData,
             filterProps: {
@@ -80,11 +80,17 @@ export const AttendanceHome = () => {
         <PermissionRestrictor
           requiredPermissions={["view-time-and-attendance-dashboard-summary"]}
         >
-          <AttendanceStatusHomeCard analyticsData={analyticsData}
-          isLoadingAnalyticsData={isLoadingAnalyticsData} className="bg-mainBg pb-3 border rounded-lg text-sm shadow  col-span-1" />
+          <AttendanceStatusHomeCard
+            analyticsData={analyticsData}
+            isLoadingAnalyticsData={isLoadingAnalyticsData}
+            className="bg-mainBg pb-3 border rounded-lg text-sm shadow  col-span-1"
+          />
 
-          <AttendanceOverviewHomeCard  analyticsData={analyticsData}
-          isLoadingAnalyticsData={isLoadingAnalyticsData} className="bg-mainBg pb-3 border rounded-lg text-sm shadow  col-span-2" />
+          <AttendanceOverviewHomeCard
+            analyticsData={analyticsData}
+            isLoadingAnalyticsData={isLoadingAnalyticsData}
+            className="bg-mainBg pb-3 border rounded-lg text-sm shadow  col-span-2"
+          />
         </PermissionRestrictor>
 
         <PermissionRestrictor
