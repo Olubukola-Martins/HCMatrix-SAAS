@@ -3,6 +3,7 @@ import { Tabs } from "antd";
 import type { TabsProps } from "antd";
 import Document from "./Document";
 import CandidateInfo from "./CandidateInfo";
+import Comment from "./Comment"
 
 const onChange = (key: string) => {
   console.log(key);
@@ -22,7 +23,7 @@ const items: TabsProps["items"] = [
   {
     key: "comments",
     label: "Comments",
-    children: "Content of Tab Pane 3",
+    children: <Comment/>,
   },
 ];
 
