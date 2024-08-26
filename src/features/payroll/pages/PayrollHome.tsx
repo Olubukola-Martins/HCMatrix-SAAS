@@ -38,7 +38,8 @@ const PayrollHome = () => {
   const { userPermissions } = useGetUserPermissions();
   const { data: pendingSetup, isLoading: pendingSetupLoading } =
     useGetPayrollPendingSetup();
-    const { data:wallets, isLoading:isLoadingWallets } = useRetrievePayrollWallets();
+  const { data: wallets, isLoading: isLoadingWallets } =
+    useRetrievePayrollWallets();
   return (
     <>
       <PayrollSubNav />
@@ -163,11 +164,11 @@ const PayrollHome = () => {
                           done: pendingSetup?.companyCurrencySettings,
                           link: appRoutes.companyDetailsSettings,
                         },
-                        {
-                          content: "Setup cost centres",
-                          done: pendingSetup?.costCentres,
-                          link: appRoutes.payrollCostCentres,
-                        },
+                        // {
+                        //   content: "Setup cost centres",
+                        //   done: pendingSetup?.costCentres,
+                        //   link: appRoutes.payrollCostCentres,
+                        // },
                         {
                           content: "Setup payroll schemes",
                           done: pendingSetup?.payrollSchemes,

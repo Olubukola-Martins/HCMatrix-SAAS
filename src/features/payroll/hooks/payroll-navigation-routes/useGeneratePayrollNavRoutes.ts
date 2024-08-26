@@ -39,19 +39,19 @@ const useGeneratePayrollNavRoutes = (): TData => {
           },
         }),
       },
-      {
-        title: "Cost Centres",
-        path: appRoutes.payrollCostCentres,
-        hidden: !canUserAccessComponent({
-          userPermissions,
-          requiredPermissions: ["manage-cost-centres"],
-          activeSubscription,
-          requiredSubscriptionState: {
-            label: "payroll",
-            resources: ["payroll-analytics", "payroll-disbursement"],
-          },
-        }),
-      },
+      // {
+      //   title: "Cost Centres",
+      //   path: appRoutes.payrollCostCentres,
+      //   hidden: !canUserAccessComponent({
+      //     userPermissions,
+      //     requiredPermissions: ["manage-cost-centres"],
+      //     activeSubscription,
+      //     requiredSubscriptionState: {
+      //       label: "payroll",
+      //       resources: ["payroll-analytics", "payroll-disbursement"],
+      //     },
+      //   }),
+      // },
       {
         title: "Exchange Rates",
         path: appRoutes.payrollExchangeRates,
