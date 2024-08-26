@@ -24,7 +24,7 @@ const sendReminder = async (
     },
   };
 
-  const data = {};
+  const data = undefined;
 
   const response = await axios.post(url, data, config);
   return response;

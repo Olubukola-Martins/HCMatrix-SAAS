@@ -16,7 +16,7 @@ interface IProps extends IModalProps {
   approvalRequest?: TApprovalRequest;
 }
 
-export const LoanDetails = ({
+export const LoanDetailsOld = ({
   id,
   open,
   handleClose,

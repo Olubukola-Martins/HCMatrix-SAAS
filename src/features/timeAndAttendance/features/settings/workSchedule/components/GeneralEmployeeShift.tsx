@@ -22,6 +22,7 @@ interface Schedule {
 }
 
 const REASONABLE_AMOUNT_OF_SHIFT_CATEGORIES = 100;
+
 export const GeneralEmployeeShift = () => {
   const [form] = Form.useForm();
   const globalCtx = useContext(GlobalContext);

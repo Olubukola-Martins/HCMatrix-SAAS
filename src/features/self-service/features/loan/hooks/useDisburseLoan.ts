@@ -3,18 +3,13 @@ import { MICROSERVICE_ENDPOINTS } from "config/enviroment";
 import { useApiAuth } from "hooks/useApiAuth";
 import { useMutation } from "react-query";
 import { ICurrentCompany } from "types";
-import { removeUndefinedProperties } from "utils/dataHelpers/removeUndefinedProperties";
-import { TPaymentPlan } from "../../types";
+import { IDisburseLoanProps } from "../types";
 
-type TCostData = {
-  id: number;
-  body: Partial<Pick<TPaymentPlan, "name" | "duration">>;
-};
 const createData = async (props: {
-  data: TCostData;
+  data: IDisburseLoanProps;
   auth: ICurrentCompany;
 }) => {
-  const url = `${MICROSERVICE_ENDPOINTS.PAYROLL}/loan/payment-plan/${props.data.id}`;
+  const url = `${MICROSERVICE_ENDPOINTS.PAYROLL}/loan/${props.data.id}/disburse`;
   const config = {
     headers: {
       Accept: "application/json",
@@ -23,16 +18,16 @@ const createData = async (props: {
     },
   };
 
-  const data = {
-    ...removeUndefinedProperties(props.data.body),
+  const data: any = {
+    disbursedAt: props.data.disbursedAt,
   };
 
-  const response = await axios.patch(url, data, config);
+  const response = await axios.post(url, data, config);
   return response;
 };
-export const useUpdateLoanPaymentPlan = () => {
+export const useDisburseLoan = () => {
   const { token, companyId } = useApiAuth();
-  return useMutation((props: TCostData) =>
+  return useMutation((props: IDisburseLoanProps) =>
     createData({ data: props, auth: { token, companyId } })
   );
 };

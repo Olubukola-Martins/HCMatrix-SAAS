@@ -46,6 +46,7 @@ import { canUserAccessComponent } from "components/permission-restriction/Permis
 import VehicleBookingSettings from "features/self-service/features/vehicle-booking/pages/VehicleBookingSettings";
 import EmployeeHealthAccessPage from "features/self-service/features/health-access/pages/EmployeeHealthAccessPage";
 import LoanRePaymentPlan from "features/self-service/features/loan/pages/LoanRePaymentPlan";
+import LoanRePaymentSchedule from "features/self-service/features/loan/pages/LoanRePaymentSchedule";
 
 // TO DO: This lazy loading might not be needed consider rethinking this, so just temporary
 // const Requisition = lazy(
@@ -449,7 +450,6 @@ export const selfServiceRoutes = (props: TAppPageDataFnProps): TRouteData[] => {
       title: "Loan Policies",
       hidden: !canUserAccessComponent({
         userPermissions,
-
         requiredPermissions: ["manage-loan-settings"],
         activeSubscription,
         requiredSubscriptionState: {
@@ -466,7 +466,21 @@ export const selfServiceRoutes = (props: TAppPageDataFnProps): TRouteData[] => {
       isSearchable: false,
       hidden: !canUserAccessComponent({
         userPermissions,
-        requiredPermissions: ["manage-loan-settings"],
+        requiredPermissions: [],
+        activeSubscription,
+        requiredSubscriptionState: {
+          label: "payroll",
+          resources: [],
+        },
+      }),
+    },
+    {
+      element: <LoanRePaymentSchedule />,
+      path: appRoutes.loanPaymentSchedule().format,
+      isSearchable: false,
+      hidden: !canUserAccessComponent({
+        userPermissions,
+        requiredPermissions: [],
         activeSubscription,
         requiredSubscriptionState: {
           label: "payroll",

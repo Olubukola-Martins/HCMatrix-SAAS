@@ -221,6 +221,10 @@ export const appRoutes = {
     format: `/self-service/loan/:id/loan-payment-plan`,
     path: `/self-service/loan/${id}/loan-payment-plan`,
   }),
+  loanPaymentSchedule: (id?: number) => ({
+    format: `/self-service/loan/:id/loan-payment-schedule`,
+    path: `/self-service/loan/${id}/loan-payment-schedule`,
+  }),
   vehicleBooking: `/self-service/vehicle-booking`,
   vehicleBookingSetting: `/self-service/vehicle-booking/setting`,
   vehicleDetails: (id?: number) => ({
