@@ -38,6 +38,10 @@ const AIChatBotModal = ({
     openNewChatModal(newChatId);
   }
 
+  const handleCardClick = (chatId: string) => {
+    openNewChatModal(chatId);
+  }
+
   return (
     <Modal
       open={open}
@@ -78,7 +82,10 @@ const AIChatBotModal = ({
             <PreviousChatCard 
             key={chat.chatId}
             title={chat.question} 
-            date={new Date(chat.time).toLocaleDateString()} />
+            date={new Date(chat.time).toLocaleDateString()}
+            chatId={chat.chatId}
+            onClick={handleCardClick} 
+            />
           ))
         ) : (
           <div className="text-center text-sm">No previous chats found.</div>

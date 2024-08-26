@@ -19,8 +19,6 @@ interface IProps {
 }
 
 const NewChatAIChatBotModal = ({ open, handleClose, chatId }: IProps) => {
-  
-  console.log("Received chatId in NewChatAIChatBotModal:",chatId);
   const queryClient = useQueryClient();
   
   const [message, setMessage] = useState<string>();
@@ -94,7 +92,7 @@ const NewChatAIChatBotModal = ({ open, handleClose, chatId }: IProps) => {
 
           setMessage(undefined);
           queryClient.invalidateQueries({
-            queryKey: ["chat-history", chatId],
+            queryKey: ["chat-history"],
             // exact: true,
           });
         },
