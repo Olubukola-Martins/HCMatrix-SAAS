@@ -20,6 +20,7 @@ const FilterDBBtn: React.FC<TFilterAttendanceDBBtnProps> = ({
   isLoading,
 }) => {
   const [open, setOpen] = useState<boolean>(false);
+
   return (
     <>
       <button
@@ -49,6 +50,11 @@ const FilterDBModal: React.FC<IModalProps & TFilterAttendanceDBBtnProps> = ({
   isLoading,
 }) => {
   const [form] = Form.useForm<TFilterAttendanceDBFormProps>();
+  const onFinish = (values: TFilterAttendanceDBFormProps) => {
+    handleSubmit(values);
+    form.resetFields(); 
+    handleClose();
+  };
   return (
     <Modal
       open={open}
@@ -60,7 +66,7 @@ const FilterDBModal: React.FC<IModalProps & TFilterAttendanceDBBtnProps> = ({
       <Form
         layout="vertical"
         form={form}
-        onFinish={handleSubmit}
+        onFinish={onFinish}
         requiredMark={false}
       >
         <FormBranchInput
@@ -71,7 +77,7 @@ const FilterDBModal: React.FC<IModalProps & TFilterAttendanceDBBtnProps> = ({
         <FormDepartmentInput
           optional
           Form={Form}
-          control={{ label: "Department", name: "deparmentId" }}
+          control={{ label: "Department", name: "departmentId" }}
         />
         <div className="flex justify-end">
           <AppButton type="submit" isLoading={isLoading} />

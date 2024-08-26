@@ -41,7 +41,12 @@ export const AttendanceHome = () => {
   );
 
   const { data: analyticsData, isLoading: isLoadingAnalyticsData } =
-    useGetAnalyticsRecord();
+    useGetAnalyticsRecord({
+      props: {
+        branchId: filterProps.branchId as unknown as number,
+        departmentId: filterProps.departmentId as unknown as number,
+      },
+    });
 
   useEffect(() => {
     if (hour >= 5 && hour < 12) {
