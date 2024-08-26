@@ -9,7 +9,6 @@ const AllCandidatesPage = () => {
     <div className="Container">
       <PageIntro link={true} title="Gt Sales 2024 Interview" />
       <div className="flex flex-col gap-2 md:flex-row justify-between items-center mt-8 mb-4">
-        {/* <TbFileExport size={32} className="cursor-pointer hover:backdrop-grayscale-0 ml-auto" /> */}
         <div className="flex flex-nowrap">
           <i className="ri-team-line text-caramel" />{" "}
           <p className="text-caramel">
