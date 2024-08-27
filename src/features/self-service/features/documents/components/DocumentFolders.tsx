@@ -8,6 +8,8 @@ import { DeleteFolder } from "./folders/DeleteFolder";
 import { TFolderListItem } from "../types";
 import { AddFile } from "./AddFile";
 import { EditFolder } from "./EditFolder";
+import { Link } from "react-router-dom";
+import { appRoutes } from "config/router/paths";
 
 export type TFolderAction = "edit" | "delete" | "view_file" | "add_file";
 export const DocumentFolders = () => {
@@ -77,7 +79,11 @@ export const DocumentFolders = () => {
                         >
                           Add File
                         </Menu.Item>
-                        <Menu.Item key="2">View Files</Menu.Item>
+                        <Menu.Item key="2">
+                          <Link to={appRoutes.filesInFolder(item?.id).path}>
+                            View Files
+                          </Link>
+                        </Menu.Item>
                         <Menu.Item
                           key="3"
                           onClick={() => handleEditFolder(item)}

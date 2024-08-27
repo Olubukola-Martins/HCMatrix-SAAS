@@ -39,7 +39,7 @@ const DocumentsPage = () => {
         <BackgroundCurves />
         <div className="absolute top-4 Container w-full">
           <div className="flex items-center justify-between mt-5">
-            <PageIntro title="Documents" link={appRoutes.settings} />
+            <PageIntro title="Documents" link={appRoutes.settings}  />
             <div className="flex items-center gap-3">
               <AppButton
                 label="Add New File"
