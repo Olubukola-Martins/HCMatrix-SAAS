@@ -44,7 +44,7 @@ const LoanRePaymentSchedule = () => {
             />
             <SimpleCard
               title="No. of Repayment left"
-              highlight={`....`}
+              highlight={`${data?.repaymentsLeft ?? 0}`}
               loading={isLoading}
             />
           </div>
