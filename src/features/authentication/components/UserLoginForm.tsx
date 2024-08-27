@@ -10,7 +10,7 @@ import { textInputValidationRules } from "utils/formHelpers/validation";
 import { openNotification } from "utils/notifications";
 import { IAuthDets, ILoginProps } from "../types";
 import { saveMessagingDeviceToken } from "config/firebase/messaging";
-import SpeechToText from "components/audio/SpeechToText";
+// import SpeechToText from "components/audio/SpeechToText";
 
 
 const UserLoginForm = ({ autoLoginDetails }: ILoginProps) => {
@@ -80,7 +80,7 @@ const UserLoginForm = ({ autoLoginDetails }: ILoginProps) => {
   };
   return (
     <>
-    <SpeechToText/>
+    {/* <SpeechToText/> */}
     <Form onFinish={handleSignIn} form={form}>
       <Form.Item name="emailOrEmpUid" rules={textInputValidationRules}>
         <Input

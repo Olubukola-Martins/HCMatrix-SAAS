@@ -1,16 +1,16 @@
 import { Button, Empty, Input, Modal, Skeleton } from "antd";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { IoIosArrowBack } from "react-icons/io";
 import Themes from "components/Themes";
-import AttachmentIcon from "assets/svg-components/AttachmentIcon/AttachmentIcon";
 import SendMessageIcon from "assets/svg-components/SendMessageIcon/SendMessageIcon";
 import { useGetChatHistory } from "../hooks/useGetChatHistory";
 import { useAddChatText } from "../hooks/useAddChatText";
-// import { useGetChatAudio } from "../hooks/useGetChatAudio";
-import useMostRecentApiAuth from "hooks/useMostRecentApiAuth";
-import { useFetchSingleEmployee } from "features/core/employees/hooks/useFetchSingleEmployee";
+// import useMostRecentApiAuth from "hooks/useMostRecentApiAuth";
+// import { useFetchSingleEmployee } from "features/core/employees/hooks/useFetchSingleEmployee";
 import { openNotification } from "utils/notifications";
 import { useQueryClient } from "react-query";
+import SpeechToText from "components/audio/SpeechToText";
+import { TbMicrophone } from "react-icons/tb";
 
 interface IProps {
   open: boolean;
@@ -23,6 +23,7 @@ const NewChatAIChatBotModal = ({ open, handleClose, chatId }: IProps) => {
   
   const [message, setMessage] = useState<string>();
   const [localChatHistory, setLocalChatHistory] = useState<any[]>([]);
+  const [isListening, setIsListening] = useState<boolean>(false); 
 
   // const { currentCompanyEmployeeDetails: employee } = useMostRecentApiAuth();
   // const employeeId = employee?.id;
@@ -36,7 +37,6 @@ const NewChatAIChatBotModal = ({ open, handleClose, chatId }: IProps) => {
     // employee_id: employeeId?.toString() || "",
   });
   const { mutate: sendChatMessage, isLoading: isSendingText } = useAddChatText();
-  // const { mutate: sendVoiceMessage, isLoading: isSendingVoice } = useGetChatAudio();
 
   useEffect(() => {
     const storedChatHistory = localStorage.getItem(`chat-history-${chatId}`);
@@ -47,13 +47,12 @@ const NewChatAIChatBotModal = ({ open, handleClose, chatId }: IProps) => {
     }
   }, [chatHistory, chatId]);
 
-
   const handleSendMessage = () => {
     if (!message) return;
 
     const newMessage = {
       user_query: message,
-        audio: false,
+        audio: true,
         chat_id: chatId,
         employee_metadata: {
           department_id: "43",
@@ -90,13 +89,16 @@ const NewChatAIChatBotModal = ({ open, handleClose, chatId }: IProps) => {
         const updatedChatList = [...existingChatList, chatObject];
         localStorage.setItem('chatList', JSON.stringify(updatedChatList));
 
-          setMessage(undefined);
-          queryClient.invalidateQueries({
-            queryKey: ["chat-history"],
-            // exact: true,
+        setMessage("");
+        queryClient.invalidateQueries({
+          queryKey: ["chat-history"]
           });
         },
       });
+  };
+
+  const handleMicClick = () => {
+    setIsListening((prev) => !prev); 
   };
 
   return (
@@ -129,6 +131,7 @@ const NewChatAIChatBotModal = ({ open, handleClose, chatId }: IProps) => {
                    ) }
                     <LeftMessage
                       message={item.answer}
+                      audio={item.audio_response}
                     />
                    </div>
                 ))} 
@@ -140,9 +143,15 @@ const NewChatAIChatBotModal = ({ open, handleClose, chatId }: IProps) => {
                )}
           </Skeleton> 
         </div>
+
+        <SpeechToText  
+        onTranscript={(transcript) => setMessage(transcript)}
+        startListening={isListening} 
+        />
+
         <div className="px-6 pt-4 pb-10 flex gap-2 sticky bg-white shadow-2xl bottom-0 w-full right-0 left-0">
           <div className="flex gap-4">
-            <Button icon={<AttachmentIcon />} type="text" />
+            <Button icon={<TbMicrophone />} type="text" onClick={handleMicClick} />
           </div>
           <div className="flex gap-4 flex-1">
             <Input
@@ -169,17 +178,51 @@ const NewChatAIChatBotModal = ({ open, handleClose, chatId }: IProps) => {
   );
 };
 
-const LeftMessage: React.FC<{ message: string;  }> = ({
+
+const LeftMessage: React.FC<{ message: string; audio?: string | null }> = ({
   message,
+  audio,
 }) => {
+  const audioRef = useRef<HTMLAudioElement | null>(null);
+
+  const handlePlayAudio = () => {
+    if (audio && audioRef.current) {
+      audioRef.current.play();
+    }
+  };
+
   return (
     <div className="flex justify-start mb-4">
       <div className="ml-2 py-3 px-4 bg-gray-400 rounded-br-3xl rounded-tr-3xl rounded-tl-xl text-white">
-        {message}
+        {audio ? (
+          <>
+            <button onClick={handlePlayAudio} className="mr-2">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                strokeWidth={1.5}
+                stroke="currentColor"
+                className="w-6 h-6"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M5.25 5.25v13.5l13.5-6.75-13.5-6.75z"
+                />
+              </svg>
+            </button>
+            <audio ref={audioRef} src={audio} />
+          </>
+        ) : (
+          message
+        )}
       </div>
     </div>
   );
 };
+
+
 const RightMessage: React.FC<{ message: string; }> = ({
   message,
 }) => {
