@@ -1,5 +1,7 @@
 export type TAssignedFiles = {
+  id: number;
   name: string;
   description: string;
-  date: string;
+  createdAt: string;
+  url: string;
 };
