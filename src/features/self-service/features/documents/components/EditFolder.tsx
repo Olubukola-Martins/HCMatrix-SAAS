@@ -5,26 +5,28 @@ import { IModalProps } from "types";
 import { textInputValidationRules } from "utils/formHelpers/validation";
 import { openNotification } from "utils/notifications";
 import { useQueryClient } from "react-query";
-
 import { QUERY_KEY_FOR_FOLDERS } from "../hooks/useGetFolders";
 import { useUpdateFolder } from "../hooks/useUpdateFolder";
-import { TFolderListItem } from "../types";
+import { useGetSingleFolder } from "../hooks/useGetSingleFolder";
 
-interface IProps extends IModalProps {
-  folder: TFolderListItem;
-}
-
-export const EditFolder: React.FC<IProps> = ({ open, handleClose, folder }) => {
+export const EditFolder: React.FC<IModalProps> = ({
+  open,
+  handleClose,
+  id,
+}) => {
   const queryClient = useQueryClient();
 
   const [form] = Form.useForm();
   const { mutate, isLoading } = useUpdateFolder();
+  const { data, isSuccess, isFetching } = useGetSingleFolder({
+    id: id as unknown as number,
+  });
+  console.log(data);
 
   const handleSubmit = (data: any) => {
     mutate(
       {
-        id: folder.id,
-
+        id: id as unknown as number,
         body: { name: data.name },
       },
       {
@@ -49,7 +51,6 @@ export const EditFolder: React.FC<IProps> = ({ open, handleClose, folder }) => {
 
           queryClient.invalidateQueries({
             queryKey: [QUERY_KEY_FOR_FOLDERS],
-            // exact: true,
           });
         },
       }
@@ -57,10 +58,14 @@ export const EditFolder: React.FC<IProps> = ({ open, handleClose, folder }) => {
   };
 
   useEffect(() => {
-    form.setFieldsValue({
-      name: folder.name,
-    });
-  }, [form, folder]);
+    if (data && id) {
+      form.setFieldsValue({
+        name: data.name,
+      });
+    } else {
+      form.resetFields();
+    }
+  }, [form, data, isSuccess, id]);
 
   return (
     <Modal
@@ -75,6 +80,7 @@ export const EditFolder: React.FC<IProps> = ({ open, handleClose, folder }) => {
         form={form}
         onFinish={handleSubmit}
         requiredMark={false}
+        disabled={isFetching}
       >
         <Form.Item
           rules={textInputValidationRules}

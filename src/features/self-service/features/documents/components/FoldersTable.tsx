@@ -38,7 +38,7 @@ export const FoldersTable: React.FC = () => {
       {folder && (
         <EditFolder
           open={action === "edit"}
-          folder={folder}
+          id={0}
           handleClose={onClose}
         />
       )}

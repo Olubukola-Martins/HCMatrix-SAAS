@@ -7,39 +7,52 @@ import { Dropdown, Empty, Menu, Skeleton } from "antd";
 import { DeleteFolder } from "./folders/DeleteFolder";
 import { TFolderListItem } from "../types";
 import { AddFile } from "./AddFile";
+import { EditFolder } from "./EditFolder";
 
+export type TFolderAction = "edit" | "delete" | "view_file" | "add_file";
 export const DocumentFolders = () => {
   const { pagination, onChange } = usePagination({ pageSize: 8 });
   const { data, isLoading } = useGetFolders({ pagination });
-  const [openDeleteModal, setOpenDeleteModal] = useState(false);
   const [request, setRequest] = useState<TFolderListItem>();
-  const [addFile, setAddFile] = useState(false);
+  const [action, setAction] = useState<TFolderAction>();
 
   const onCancel = () => {
     setRequest(undefined);
-    setOpenDeleteModal(false);
-    setAddFile(false);
+    setAction(undefined);
   };
 
   const handleDelete = (item: TFolderListItem) => {
     setRequest(item);
-    setOpenDeleteModal(true);
+    setAction("delete");
   };
 
   const handleAddFileToFolder = (item: TFolderListItem) => {
     setRequest(item);
-    setAddFile(true);
+    setAction("add_file");
+  };
+
+  const handleEditFolder = (item: TFolderListItem) => {
+    setRequest(item);
+    setAction("edit");
   };
 
   return (
     <div className="mt-10">
       <DeleteFolder
-        open={openDeleteModal}
+        open={action === "delete"}
         handleClose={onCancel}
         folder={request}
       />
-
-      <AddFile id={request?.id} open={addFile} handleClose={onCancel} />
+      <EditFolder
+        open={action === "edit"}
+        id={request?.id ?? 0}
+        handleClose={onCancel}
+      />
+      <AddFile
+        id={request?.id}
+        open={action === "add_file"}
+        handleClose={onCancel}
+      />
 
       {isLoading ? (
         <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4">
@@ -65,7 +78,12 @@ export const DocumentFolders = () => {
                           Add File
                         </Menu.Item>
                         <Menu.Item key="2">View Files</Menu.Item>
-                        <Menu.Item key="3">Rename Folder</Menu.Item>
+                        <Menu.Item
+                          key="3"
+                          onClick={() => handleEditFolder(item)}
+                        >
+                          Rename Folder
+                        </Menu.Item>
                         <Menu.Item key="4" onClick={() => handleDelete(item)}>
                           Delete Folder
                         </Menu.Item>
