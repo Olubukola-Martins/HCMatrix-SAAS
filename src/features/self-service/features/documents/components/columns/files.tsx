@@ -1,6 +1,6 @@
 import { Dropdown, Menu } from "antd";
 import { ColumnsType } from "antd/lib/table";
-import { TAssignedFiles, } from "../../types";
+import { TAssignedFiles } from "../../types";
 
 export const FILE_TABLE_COLUMNS =
   (): // handleView: (props: { file: TFileListItem }) => void,

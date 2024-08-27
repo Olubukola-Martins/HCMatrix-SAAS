@@ -18,6 +18,7 @@ import { useCurrentFileUploadUrl } from "hooks/useCurrentFileUploadUrl";
 import { useFetchDepartments } from "features/core/departments/hooks/useFetchDepartments";
 import { useFetchGroups } from "features/core/groups/hooks/useFetchGroups";
 import { useFetchRoles } from "features/core/roles-and-permissions/hooks/useFetchRoles";
+import { QUERY_KEY_FOR_FOLDERS } from "../hooks/useGetFolders";
 
 const SUITABLE_PAGE_SIZE_FOR_ENTITIES_TO_BE_DISPAYED = 250;
 
@@ -43,18 +44,23 @@ const displayRender = (
     return <span key={option.value}>{label} / </span>;
   });
 };
-export const AddFile: React.FC<IProps> = ({ open, handleClose }) => {
+export const AddFile: React.FC<IProps> = ({ open, handleClose, id }) => {
   const queryClient = useQueryClient();
-
   const [form] = Form.useForm();
   const { mutate, isLoading } = useCreateFile();
   const documentUrl = useCurrentFileUploadUrl("documentUrl");
+
+  useEffect(() => {
+    form.setFieldsValue({
+      folderId: id,
+    });
+  }, [id]);
 
   const handleSubmit = (data: any) => {
     if (documentUrl) {
       mutate(
         {
-          folderId: data.folderId,
+          folderId: id ? id : data.folderId,
           data: {
             access: data.access
               .map((item: [string, number], i: number) => ({
@@ -76,21 +82,21 @@ export const AddFile: React.FC<IProps> = ({ open, handleClose }) => {
                         departmentId: entityId,
                       };
                       break;
-                      case "role":
-                        value = {
-                          roleId: entityId,
-                        };
-                        break;
-                        case "employee":
-                          value = {
-                            employeeId: entityId,
-                          };
-                          break;
-                          case "group":
-                            value = {
-                              groupId: entityId,
-                            };
-                            break;
+                    case "role":
+                      value = {
+                        roleId: entityId,
+                      };
+                      break;
+                    case "employee":
+                      value = {
+                        employeeId: entityId,
+                      };
+                      break;
+                    case "group":
+                      value = {
+                        groupId: entityId,
+                      };
+                      break;
 
                     default:
                       break;
@@ -125,9 +131,10 @@ export const AddFile: React.FC<IProps> = ({ open, handleClose }) => {
 
             queryClient.invalidateQueries({
               queryKey: [QUERY_KEY_FOR_FILES_IN_A_FOLDER],
-              // exact: true,
             });
-            // add folder query
+            queryClient.invalidateQueries({
+              queryKey: [QUERY_KEY_FOR_FOLDERS],
+            });
           },
         }
       );
@@ -227,6 +234,7 @@ export const AddFile: React.FC<IProps> = ({ open, handleClose }) => {
           <FormFolderInput
             Form={Form}
             control={{ name: "folderId", label: "Folder" }}
+            disabled={id ? true : false}
           />
           <Form.Item
             rules={textInputValidationRules}

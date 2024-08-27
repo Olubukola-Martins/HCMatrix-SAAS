@@ -6,16 +6,19 @@ import dayjs from "dayjs";
 import { Dropdown, Empty, Menu, Skeleton } from "antd";
 import { DeleteFolder } from "./folders/DeleteFolder";
 import { TFolderListItem } from "../types";
+import { AddFile } from "./AddFile";
 
 export const DocumentFolders = () => {
-  const { pagination, onChange } = usePagination({ pageSize: 10 });
+  const { pagination, onChange } = usePagination({ pageSize: 8 });
   const { data, isLoading } = useGetFolders({ pagination });
   const [openDeleteModal, setOpenDeleteModal] = useState(false);
   const [request, setRequest] = useState<TFolderListItem>();
+  const [addFile, setAddFile] = useState(false);
 
   const onCancel = () => {
     setRequest(undefined);
     setOpenDeleteModal(false);
+    setAddFile(false);
   };
 
   const handleDelete = (item: TFolderListItem) => {
@@ -23,13 +26,20 @@ export const DocumentFolders = () => {
     setOpenDeleteModal(true);
   };
 
+  const handleAddFileToFolder = (item: TFolderListItem) => {
+    setRequest(item);
+    setAddFile(true);
+  };
+
   return (
-    <div className="mt-7">
+    <div className="mt-10">
       <DeleteFolder
         open={openDeleteModal}
         handleClose={onCancel}
         folder={request}
       />
+
+      <AddFile id={request?.id} open={addFile} handleClose={onCancel} />
 
       {isLoading ? (
         <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4">
@@ -48,9 +58,15 @@ export const DocumentFolders = () => {
                     trigger={["click"]}
                     overlay={
                       <Menu>
-                        <Menu.Item key="1">Add File</Menu.Item>
+                        <Menu.Item
+                          key="1"
+                          onClick={() => handleAddFileToFolder(item)}
+                        >
+                          Add File
+                        </Menu.Item>
                         <Menu.Item key="2">View Files</Menu.Item>
-                        <Menu.Item key="3" onClick={() => handleDelete(item)}>
+                        <Menu.Item key="3">Rename Folder</Menu.Item>
+                        <Menu.Item key="4" onClick={() => handleDelete(item)}>
                           Delete Folder
                         </Menu.Item>
                       </Menu>
