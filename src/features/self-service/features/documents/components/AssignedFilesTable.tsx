@@ -2,12 +2,17 @@ import { TableWithFocusType } from "components/table";
 import { FILE_TABLE_COLUMNS } from "./columns/files";
 import { useGetAllAssignedFiles } from "../hooks/file/useGetAllAssignedFiles";
 import { usePagination } from "hooks/usePagination";
+import { IViewFilesActions } from "../types/fileList";
 
 export const AssignedFilesTable = () => {
   const { pagination, onChange } = usePagination({ pageSize: 10 });
   const { data, isLoading } = useGetAllAssignedFiles({ pagination });
 
-  const columns = FILE_TABLE_COLUMNS();
+  const actions: IViewFilesActions = {
+    fromFolderView: false,
+  };
+
+  const columns = FILE_TABLE_COLUMNS(actions);
 
   return (
     <div>

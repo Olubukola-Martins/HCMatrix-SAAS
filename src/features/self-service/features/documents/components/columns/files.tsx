@@ -1,9 +1,10 @@
 import { Dropdown, Menu } from "antd";
 import { ColumnsType } from "antd/lib/table";
 import { TFileListItem } from "../../types";
+import { IViewFilesActions } from "../../types/fileList";
 
 export const FILE_TABLE_COLUMNS =
-  (): // handleView: (props: { file: TFileListItem }) => void,
+  (action: IViewFilesActions): // handleView: (props: { file: TFileListItem }) => void,
   // handleEdit: (props: { file: TFileListItem }) => void,
   // handleDelete: (props: { file: TFileListItem }) => void
   ColumnsType<TFileListItem> => [

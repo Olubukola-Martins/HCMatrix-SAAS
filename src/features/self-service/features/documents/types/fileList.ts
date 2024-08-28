@@ -8,3 +8,7 @@ export type TFileListItem = {
   createdAt: string;
   updatedAt: string;
 };
+
+export interface IViewFilesActions {
+  fromFolderView: boolean;
+}

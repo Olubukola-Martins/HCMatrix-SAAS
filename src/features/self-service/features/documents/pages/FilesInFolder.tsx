@@ -8,6 +8,7 @@ import { usePagination } from "hooks/usePagination";
 import { useParams } from "react-router-dom";
 import { TableWithFocusType } from "components/table";
 import { FILE_TABLE_COLUMNS } from "../components/columns/files";
+import { IViewFilesActions } from "../types/fileList";
 
 const FilesInFolder = () => {
   const params = useParams();
@@ -16,8 +17,15 @@ const FilesInFolder = () => {
   const { data, isLoading } = useGetFilesInFolder({
     data: { pagination },
     folderId: id as unknown as number,
-  });
-  const columns = FILE_TABLE_COLUMNS();
+  }); 
+  
+  const actions: IViewFilesActions = {
+      fromFolderView: true,
+  };
+
+
+  const columns = FILE_TABLE_COLUMNS(actions);
+
   return (
     <div>
       <SelfServiceSubNav />
