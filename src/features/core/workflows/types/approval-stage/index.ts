@@ -1,12 +1,13 @@
 import { TApprovalStatus } from "types/statuses";
 import { TWorkflowApprovalType, TWorkflowType } from "..";
 import { TLeaveRelieveApprovalStage } from "features/self-service/features/leave/hooks/leaveRelieverApproval/stage/useGetLeaveRelieveApprovalStage";
+import { TShiftSwapApprovalStage } from "features/timeAndAttendance/features/swapShiftRequest/hooks/useGetShiftSwapPartnerApprovalStage";
 
 export type TApprovalStage = {
   id: number;
   workflowId?: number;
   name: string;
-  type: TWorkflowApprovalType | "leave-relieve"; //this does not exist on api, done to ensure consistency, for the exception that is leave-relieve
+  type: TWorkflowApprovalType | "leave-relieve" | "swap-partner"; //this does not exist on api, done to ensure consistency, for the exception that is leave-relieve or swap partner;
   entityId: number;
   enableTwoFactorAuth: boolean;
   condition?: string;
@@ -19,6 +20,7 @@ export type TApprovalStage = {
   role?: Role;
   group?: Group;
   leaveReliever?: TLeaveRelieveApprovalStage["leave"]["reliever"]; //this does not exist by default(from api), but is added so the user can see th leave reliver when the type is a leave type(please refer to useGetApprovalStages for more info)
+  swapPartner?: TShiftSwapApprovalStage["shift_swap"]["shiftPartner"] //this does not exist by default(from api), but is added so the user can see the shift swap partner when the type is a shift swap type(please refer to useGetApprovalStages for more info)
 };
 
 interface Group {

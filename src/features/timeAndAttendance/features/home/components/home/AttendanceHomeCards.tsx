@@ -48,7 +48,7 @@ const AttendanceHomeCards: React.FC<IProps> = ({
       <SimpleCard
         loading={isLoading}
         title="Clocked in time"
-        highlight={data?.clocking?.clockIn?.time ?? ""}
+        highlight={data?.clocking?.clockIn?.time ?? "---"}
       />
       <SimpleCard
         loading={isLoading}

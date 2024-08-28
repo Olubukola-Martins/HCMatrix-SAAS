@@ -48,24 +48,39 @@ const ViewApprovalStages: React.FC<
               <div className="w-full">
                 <Steps className="w-full" size="small" direction="vertical">
                   {data?.data?.map((stage) => {
-                    const leaveRelieverName = stage.leaveReliever
-                      ? getEmployeeFullName(stage.leaveReliever)
-                      : undefined;
-                    const approverFullName =
-                      leaveRelieverName ??
-                      stage.group?.name ??
-                      stage.role?.name ??
-                      stage.approvals
-                        ?.map((approval) =>
-                          getEmployeeFullName(approval.approver)
-                        )
-                        .join(",");
-                    const approverName = truncateString(approverFullName, 12);
+                    const constructApprovalFullName = (): string => {
+                      let approvalFullName = "";
+                      if (stage.leaveReliever) {
+                        approvalFullName = getEmployeeFullName(
+                          stage.leaveReliever
+                        );
+                      }
+                      if (stage.swapPartner) {
+                        approvalFullName = getEmployeeFullName(
+                          stage.swapPartner
+                        );
+                      }
+                      approvalFullName =
+                        approvalFullName ??
+                        stage.group?.name ??
+                        stage.role?.name ??
+                        stage.approvals
+                          ?.map((approval) =>
+                            getEmployeeFullName(approval.approver)
+                          )
+                          .join(",");
+                      approvalFullName = truncateString(approvalFullName, 12);
+                      return approvalFullName;
+                    };
+
+                    // old
+                  
+                    const approverName =  constructApprovalFullName();
                     return (
                       <Steps.Step
                         title={
                           <div className="grid grid-cols-3 gap-x-4 capitalize">
-                            <h4 title={approverFullName}>{approverName}</h4>
+                            <h4 title={approverName}>{approverName}</h4>
                             <h4>{stage.type.split("-").join(" ")}</h4>
                             {stage.status === "pending" ? (
                               <SendReminderToStageApprover
