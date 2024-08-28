@@ -1,13 +1,15 @@
-import { Form, Modal } from "antd";
+import { DatePicker, Form, Modal } from "antd";
 import { AppButton } from "components/button/AppButton";
 import { FormBranchInput } from "features/core/branches/components/FormBranchInput";
 import { FormDepartmentInput } from "features/core/departments/components/FormDepartmentInput";
 import React, { useState } from "react";
 import { IModalProps } from "types";
+import { dateHasToBeLesserThanOrEqualToCurrentDayRule } from "utils/formHelpers/validation";
 
 export type TFilterAttendanceDBFormProps = {
   branchId?: number;
   departmentId?: number;
+  date?: string;
 };
 export type TFilterAttendanceDBBtnProps = {
   handleSubmit: (props: TFilterAttendanceDBFormProps) => void;
@@ -52,7 +54,7 @@ const FilterDBModal: React.FC<IModalProps & TFilterAttendanceDBBtnProps> = ({
   const [form] = Form.useForm<TFilterAttendanceDBFormProps>();
   const onFinish = (values: TFilterAttendanceDBFormProps) => {
     handleSubmit(values);
-    form.resetFields(); 
+    form.resetFields();
     handleClose();
   };
   return (
@@ -79,6 +81,13 @@ const FilterDBModal: React.FC<IModalProps & TFilterAttendanceDBBtnProps> = ({
           Form={Form}
           control={{ label: "Department", name: "departmentId" }}
         />
+        <Form.Item
+          name="date"
+          label="Select Date"
+          rules={[dateHasToBeLesserThanOrEqualToCurrentDayRule]}
+        >
+          <DatePicker className="w-full" />
+        </Form.Item>
         <div className="flex justify-end">
           <AppButton type="submit" isLoading={isLoading} />
         </div>

@@ -15,6 +15,7 @@ import { TApprovalStatus } from "types/statuses";
 import { TStageCondition } from ".";
 import { TShiftSwapRequest } from "features/timeAndAttendance/features/swapShiftRequest/types";
 import { ITimeOffProps } from "features/timeAndAttendance/features/timeOff/types";
+import { AllLoanRequestProps } from "features/self-service/features/loan/types/loan";
 
 interface AdvancedStage {
   id: number;

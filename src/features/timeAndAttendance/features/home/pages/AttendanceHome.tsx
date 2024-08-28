@@ -40,11 +40,16 @@ export const AttendanceHome = () => {
     {}
   );
 
+  const filterDate = dayjs(filterProps.date?.toLocaleString()).format(
+    "YYYY-MM-DD"
+  );
+
   const { data: analyticsData, isLoading: isLoadingAnalyticsData } =
     useGetAnalyticsRecord({
       props: {
         branchId: filterProps.branchId as unknown as number,
         departmentId: filterProps.departmentId as unknown as number,
+        date: filterDate,
       },
     });
 
