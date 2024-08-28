@@ -25,6 +25,8 @@ import {
 import { openNotification } from "utils/notifications";
 import { createCompany } from "../hooks/useCreateCompany";
 import { ICreateCompProps } from "../types";
+import { validateCaptcha } from "react-simple-captcha";
+import Recaptcha from "components/recaptcha/Recaptcha";
 
 const CompanyRegistrationForm = () => {
   const [showM, setShowM] = useState(false);
@@ -35,6 +37,15 @@ const CompanyRegistrationForm = () => {
   const { mutate, isLoading } = useMutation(createCompany);
 
   const handleSignUp = (data: any) => {
+    if (validateCaptcha(data?.recaptcha) === false) {
+      openNotification({
+        state: "error",
+        title: "Validation Error",
+        description: "Please validate captcha",
+      });
+
+      return;
+    }
     const phoneNumber = `${data?.phone?.code}-${data?.phone.number}`;
     const props: ICreateCompProps = {
       name: data.organization,
@@ -215,6 +226,14 @@ const CompanyRegistrationForm = () => {
               autoComplete="new-password"
             />
           </Form.Item>
+          <Form.Item name="recaptcha" rules={textInputValidationRules}>
+            <Input
+              placeholder="Enter recaptcha"
+              className="rounded border-slate-400"
+              style={{ padding: "6px 5px" }}
+            />
+          </Form.Item>
+          <Recaptcha />
           <Form.Item>
             <button
               className="authBtn w-full mt-4 mb-3"

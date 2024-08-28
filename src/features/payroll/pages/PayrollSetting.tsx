@@ -13,6 +13,7 @@ import { TPaystackBank } from "types/paystackBank";
 import { openNotification } from "utils/notifications";
 import { FormInstance } from "antd/es/form";
 import { useGetPayrollSetting } from "../hooks/payroll/setting/useGetPayrollSetting";
+import PaymentDisbursementConfiguration from "../components/payrollSetting/PaymentDisbursementConfiguration";
 
 const PayrollSetting = () => {
   const { data: setting, isFetching } = useGetPayrollSetting();
@@ -44,6 +45,7 @@ const PayrollSetting = () => {
         accountName: setting?.companyBankDetails?.accountName,
       });
     form.setFieldsValue({
+      disbursePayments: setting.disbursePayments,
       bankCode: setting.companyBankDetails?.bankCode,
       accountNumber: setting.companyBankDetails?.accountNumber,
       bankName: setting.companyBankDetails?.bankName,
@@ -69,6 +71,7 @@ const PayrollSetting = () => {
     mutate(
       {
         data: {
+          disbursePayments: data?.disbursePayments ?? false,
           companyBankDetails,
           loanConfiguration: {
             isActive: loanActivation,
@@ -179,6 +182,8 @@ const PayrollSettingContainer: React.FC<{
 
           <div className="flex flex-col gap-4">
             <SelectPayslipTemplate Form={Form} />
+
+            <PaymentDisbursementConfiguration Form={Form} />
           </div>
         </div>
       </Form>

@@ -28,6 +28,7 @@ const defaultTime: [Dayjs, Dayjs] = [
   dayjs("00:00:00", "HH:mm:ss"),
 ];
 const REASONABLE_AMOUNT_OF_SHIFT_CATEGORIES = 100;
+
 export const GeneralEmployeeShift = () => {
   const [form] = Form.useForm();
   const globalCtx = useContext(GlobalContext);

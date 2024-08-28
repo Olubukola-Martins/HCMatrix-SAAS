@@ -86,7 +86,7 @@ const ViewApprovalStages: React.FC<
                               <SendReminderToStageApprover
                                 approvalStageId={stage.id}
                                 entityId={id}
-                                entityType={stage.type}
+                                entityType={type}
                               />
                             ) : (
                               <AppButton label={stage.status} />

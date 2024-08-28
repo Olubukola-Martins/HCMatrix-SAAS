@@ -31,3 +31,58 @@ interface CostCentre {
   updatedAt: string;
   deletedAt?: any;
 }
+
+// new
+export type LoanTabsActionProps =
+  | "approval-process"
+  | "loan-types"
+  | "eligibility-criteria"
+  | "configure-payment"
+  | "disbursement-setup";
+
+export interface AcceptSettingsAction {
+  setAction: (action: LoanTabsActionProps) => void;
+  action?: string;
+}
+
+export type TLoanTypeProps = {
+  id: number;
+  name: string;
+  label: string;
+};
+
+// New
+export interface IApprovalProcessProps {
+  workflowId: number;
+}
+
+export interface IDisbursementProps {
+  enableDisbursement: boolean;
+}
+
+export interface IEligibilityCriteriaProps {
+  maxPercentage: number;
+  maxApplicationDuringRepayment: number;
+  employmentDuration: {
+    start: number;
+    end?: number;
+  };
+  employmentStatus: string[];
+}
+
+export interface ILoanPaymentSettings {
+  enableAutomaticPayrollDeduction: boolean;
+  notifyEmployeeViaEmailAboutDeduction: boolean;
+  enableManualRepayment: {
+    isActive: boolean;
+    companyWallet: boolean;
+    directToBankAccount: boolean;
+    bankAccountDetails?: {
+      bankName: string;
+      accountName: string;
+      accountNumber: string;
+      swiftCode?: string;
+    };
+  };
+  enableAutomaticPayrollDeductionForFailedRepayment: boolean;
+}

@@ -9,6 +9,7 @@ export type TPayrolSettingData = {
   companyBankDetails?: CompanyBankDetails;
   loanConfiguration: LoanConfiguration;
   payslipTemplate: PayslipTemplate;
+  disbursePayments: boolean;
 };
 
 interface PayslipTemplate {
