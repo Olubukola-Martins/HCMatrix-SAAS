@@ -4,7 +4,7 @@ import { useQuery } from "react-query";
 import { ICurrentCompany, IPaginationProps, ISearchParams } from "types";
 import { DEFAULT_PAGE_SIZE } from "constants/general";
 import { useApiAuth } from "hooks/useApiAuth";
-import { TAssignedFiles } from "../../types";
+import { TFileListItem } from "../../types";
 
 interface IGetDataProps {
   pagination?: IPaginationProps;
@@ -16,7 +16,7 @@ export const QUERY_KEY_FOR_ALL_ASSIGNED_FILES = "ALL_ASSIGNED_FILES";
 const getData = async (props: {
   data: IGetDataProps;
   auth: ICurrentCompany;
-}): Promise<{ data: TAssignedFiles[]; total: number }> => {
+}): Promise<{ data: TFileListItem[]; total: number }> => {
   const { pagination } = props.data;
   const limit = pagination?.limit ?? DEFAULT_PAGE_SIZE;
   const offset = pagination?.offset ?? 0;
@@ -42,8 +42,8 @@ const getData = async (props: {
   const fetchedData = res.data.data.result;
   const result = fetchedData;
 
-  const data: TAssignedFiles[] = result.map(
-    (item: TAssignedFiles): TAssignedFiles => ({ ...item })
+  const data: TFileListItem[] = result.map(
+    (item: TFileListItem): TFileListItem => ({ ...item })
   );
 
   const ans = {

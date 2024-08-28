@@ -3,8 +3,21 @@ import { PageIntro } from "components/layout/PageIntro";
 import { appRoutes } from "config/router/paths";
 import { BackgroundCurves } from "features/self-service/components/BackgroundCurves";
 import SelfServiceSubNav from "features/self-service/components/SelfServiceSubNav";
+import { useGetFilesInFolder } from "../hooks/file/useGetFilesInFolder";
+import { usePagination } from "hooks/usePagination";
+import { useParams } from "react-router-dom";
+import { TableWithFocusType } from "components/table";
+import { FILE_TABLE_COLUMNS } from "../components/columns/files";
 
 const FilesInFolder = () => {
+  const params = useParams();
+  const id = params.id;
+  const { pagination, onChange } = usePagination({ pageSize: 10 });
+  const { data, isLoading } = useGetFilesInFolder({
+    data: { pagination },
+    folderId: id as unknown as number,
+  });
+  const columns = FILE_TABLE_COLUMNS();
   return (
     <div>
       <SelfServiceSubNav />
@@ -21,7 +34,14 @@ const FilesInFolder = () => {
             You can now preview your files
           </p>
 
-          {/*  */}
+          <TableWithFocusType
+            className="mt-3"
+            columns={columns}
+            dataSource={data?.data}
+            loading={isLoading}
+            pagination={{ ...pagination, total: data?.total }}
+            onChange={onChange}
+          />
         </div>
       </div>
     </div>
