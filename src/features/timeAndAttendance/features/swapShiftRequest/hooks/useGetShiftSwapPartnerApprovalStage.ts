@@ -17,7 +17,7 @@ export const getShiftSwapPartnerApprovalStage = async (props: {
   auth: ICurrentCompany;
 }): Promise<TShiftSwapPartnerStageApiResponse> => {
   try {
-    const url = `${MICROSERVICE_ENDPOINTS.UTILITY}/shift-swap/${props.data.shiftSwapId}/partner-approval/stage`;
+    const url = `${MICROSERVICE_ENDPOINTS.TIME_AND_ATTENDANCE}/shift-swap/${props.data.shiftSwapId}/partner-approval/stage`;
 
     const config = {
       headers: {
@@ -79,5 +79,5 @@ export type TShiftSwapApprovalStage = {
   companyId: number;
   createdAt: string;
   updatedAt: string;
-  shift_swap: TShiftSwapRequest;
+  shiftSwap: TShiftSwapRequest;
 };

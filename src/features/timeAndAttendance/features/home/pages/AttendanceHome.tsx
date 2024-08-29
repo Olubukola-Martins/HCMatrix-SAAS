@@ -23,7 +23,6 @@ export const AttendanceHome = () => {
   const [greeting, setGreeting] = useState("");
   const today = new Date();
   const fullYear = today.getFullYear();
-  const formattedToday = dayjs(today).format("ddd, MMM D, YYYY");
 
   const { data: timeDBData, isLoading: isLoadingTimeDBData } =
     useGetDashboardGraph({
@@ -53,6 +52,10 @@ export const AttendanceHome = () => {
       },
     });
 
+  const formattedTodayAndFilter = dayjs(analyticsData?.date).format(
+    "ddd, MMM D, YYYY"
+  );
+
   useEffect(() => {
     if (hour >= 5 && hour < 12) {
       setGreeting("Morning");
@@ -70,7 +73,7 @@ export const AttendanceHome = () => {
         <AttendanceWelcomeHeader
           {...{
             greeting,
-            formattedToday,
+            formattedToday: formattedTodayAndFilter,
             userFullName: user?.fullName,
             welcomeNoteData,
             filterProps: {

@@ -101,12 +101,12 @@ const getData = async (props: {
       if (shiftSwapPartnerApprovalStage) {
         const shiftSwapPartnerApprovalStageFormatted: TApprovalStage = {
           id: shiftSwapPartnerApprovalStage.id,
-          entityId: shiftSwapPartnerApprovalStage.shift_swap.id,
+          entityId: shiftSwapPartnerApprovalStage.shiftSwap.id,
           enableTwoFactorAuth: false,
           status: shiftSwapPartnerApprovalStage.status,
           name: "Shift Swap Partner",
           type: "swap-partner",
-          swapPartner: shiftSwapPartnerApprovalStage.shift_swap.shiftPartner,
+          swapPartner: shiftSwapPartnerApprovalStage.shiftSwap.shiftPartner,
           approvals: [],
           createdAt: shiftSwapPartnerApprovalStage.createdAt,
           updatedAt: shiftSwapPartnerApprovalStage.updatedAt,

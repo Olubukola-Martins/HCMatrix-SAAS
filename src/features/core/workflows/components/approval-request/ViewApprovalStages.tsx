@@ -22,6 +22,9 @@ const ViewApprovalStages: React.FC<
       type,
     },
   });
+
+  console.log(data);
+  
   return (
     <Modal
       open={open}
@@ -35,7 +38,7 @@ const ViewApprovalStages: React.FC<
           <ErrorWrapper
             isError={isError}
             message={
-              error?.response.data.message ?? error?.response.data.error.message
+              error?.response?.data?.message ?? error?.response?.data?.error?.message
             }
           >
             <div className="space-y-6">
@@ -54,11 +57,13 @@ const ViewApprovalStages: React.FC<
                         approvalFullName = getEmployeeFullName(
                           stage.leaveReliever
                         );
+                        return approvalFullName;
                       }
                       if (stage.swapPartner) {
                         approvalFullName = getEmployeeFullName(
                           stage.swapPartner
                         );
+                        return approvalFullName;
                       }
                       approvalFullName =
                         approvalFullName ??
@@ -72,9 +77,7 @@ const ViewApprovalStages: React.FC<
                       approvalFullName = truncateString(approvalFullName, 12);
                       return approvalFullName;
                     };
-
-                    // old
-                  
+              
                     const approverName =  constructApprovalFullName();
                     return (
                       <Steps.Step

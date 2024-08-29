@@ -20,7 +20,7 @@ export type TApprovalStage = {
   role?: Role;
   group?: Group;
   leaveReliever?: TLeaveRelieveApprovalStage["leave"]["reliever"]; //this does not exist by default(from api), but is added so the user can see th leave reliver when the type is a leave type(please refer to useGetApprovalStages for more info)
-  swapPartner?: TShiftSwapApprovalStage["shift_swap"]["shiftPartner"] //this does not exist by default(from api), but is added so the user can see the shift swap partner when the type is a shift swap type(please refer to useGetApprovalStages for more info)
+  swapPartner?: TShiftSwapApprovalStage["shiftSwap"]["shiftPartner"] //this does not exist by default(from api), but is added so the user can see the shift swap partner when the type is a shift swap type(please refer to useGetApprovalStages for more info)
 };
 
 interface Group {
