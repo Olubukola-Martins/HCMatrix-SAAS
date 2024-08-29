@@ -8,13 +8,16 @@ import { usePagination } from "hooks/usePagination";
 import { useParams } from "react-router-dom";
 import { TableWithFocusType } from "components/table";
 import { FILE_TABLE_COLUMNS } from "../components/columns/files";
-import { IViewFilesActions } from "../types/fileList";
+import { IViewFilesActions, TFileListItem } from "../types/fileList";
 import { useGetSingleFolder } from "../hooks/useGetSingleFolder";
 import { AddFile } from "../components/AddFile";
 import { useState } from "react";
+import { TFolderAction } from "../components/DocumentFolders";
+import { DeleteFile } from "../components/files/DeleteFile";
 
 const FilesInFolder = () => {
-  const [openAddFile, setOpenAddFile] = useState(false);
+  const [action, setAction] = useState<TFolderAction>();
+  const [request, setRequest] = useState<TFileListItem>();
   const params = useParams();
   const id = params.id;
   const folderId = id as unknown as number;
@@ -28,8 +31,19 @@ const FilesInFolder = () => {
     folderId,
   });
 
+  const onCancel = () => {
+    setRequest(undefined);
+    setAction(undefined);
+  };
+
+  const handleDelete = (item: TFileListItem) => {
+    setRequest(item);
+    setAction("delete");
+  };
+
   const actions: IViewFilesActions = {
     fromFolderView: true,
+    handleDelete,
   };
   const columns = FILE_TABLE_COLUMNS(actions);
 
@@ -37,8 +51,13 @@ const FilesInFolder = () => {
     <div>
       <AddFile
         id={folderData?.id}
-        open={openAddFile}
-        handleClose={() => setOpenAddFile(false)}
+        open={action === "add_file"}
+        handleClose={() => setAction(undefined)}
+      />
+      <DeleteFile
+        open={action === "delete"}
+        handleClose={onCancel}
+        file={request}
       />
       <SelfServiceSubNav />
       <div className="relative mb-10">
@@ -52,7 +71,7 @@ const FilesInFolder = () => {
             <div className="flex items-center gap-3">
               <AppButton
                 label="Add New File"
-                handleClick={() => setOpenAddFile(true)}
+                handleClick={() => setAction("add_file")}
               />
             </div>
           </div>

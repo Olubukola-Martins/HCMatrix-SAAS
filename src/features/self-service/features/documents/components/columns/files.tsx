@@ -1,6 +1,6 @@
 import { Dropdown, Menu } from "antd";
 import { ColumnsType } from "antd/lib/table";
-import { TFileListItem } from "../../types";
+import { TFileListItem, TFolderListItem } from "../../types";
 import { IViewFilesActions } from "../../types/fileList";
 
 export const FILE_TABLE_COLUMNS = (
@@ -46,7 +46,6 @@ ColumnsType<TFileListItem> => [
           <Menu
             mode="vertical"
             items={[
-             
               {
                 label: "View",
                 key: "View",
@@ -64,14 +63,14 @@ ColumnsType<TFileListItem> => [
                 label: "Delete",
                 key: "Delete",
                 disabled: action.fromFolderView ? false : true,
-                // onClick: () => handleDelete({ file }),
+                onClick: () =>
+                  action.handleDelete &&
+                  action.handleDelete(file as unknown as TFileListItem),
               },
               {
                 label: (
                   <a href={file.url} rel="noreferrer">
-                    <span>
-                      Download
-                    </span>
+                    <span>Download</span>
                   </a>
                 ),
                 key: "Download",
