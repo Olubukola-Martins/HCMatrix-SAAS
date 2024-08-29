@@ -9,33 +9,51 @@ import { useParams } from "react-router-dom";
 import { TableWithFocusType } from "components/table";
 import { FILE_TABLE_COLUMNS } from "../components/columns/files";
 import { IViewFilesActions } from "../types/fileList";
+import { useGetSingleFolder } from "../hooks/useGetSingleFolder";
+import { AddFile } from "../components/AddFile";
+import { useState } from "react";
 
 const FilesInFolder = () => {
+  const [openAddFile, setOpenAddFile] = useState(false);
   const params = useParams();
   const id = params.id;
+  const folderId = id as unknown as number;
+  const { data: folderData, isLoading: folderIsLoading } = useGetSingleFolder({
+    id: folderId,
+  });
+
   const { pagination, onChange } = usePagination({ pageSize: 10 });
   const { data, isLoading } = useGetFilesInFolder({
     data: { pagination },
-    folderId: id as unknown as number,
-  }); 
-  
+    folderId,
+  });
+
   const actions: IViewFilesActions = {
-      fromFolderView: true,
+    fromFolderView: true,
   };
-
-
   const columns = FILE_TABLE_COLUMNS(actions);
 
   return (
     <div>
+      <AddFile
+        id={folderData?.id}
+        open={openAddFile}
+        handleClose={() => setOpenAddFile(false)}
+      />
       <SelfServiceSubNav />
       <div className="relative mb-10">
         <BackgroundCurves />
         <div className="absolute top-4 Container w-full">
           <div className="flex items-center justify-between mt-5">
-            <PageIntro title="Folder name" link={appRoutes.documents} />
+            <PageIntro
+              title={folderIsLoading ? "Loading..." : folderData?.name}
+              link={appRoutes.documents}
+            />
             <div className="flex items-center gap-3">
-              <AppButton label="Add New File" />
+              <AppButton
+                label="Add New File"
+                handleClick={() => setOpenAddFile(true)}
+              />
             </div>
           </div>
           <p className="text-accent text-[15px]">

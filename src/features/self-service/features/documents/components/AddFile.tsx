@@ -135,6 +135,9 @@ export const AddFile: React.FC<IProps> = ({ open, handleClose, id }) => {
             queryClient.invalidateQueries({
               queryKey: [QUERY_KEY_FOR_FOLDERS],
             });
+            queryClient.invalidateQueries({
+              queryKey: [QUERY_KEY_FOR_FILES_IN_A_FOLDER],
+            });
           },
         }
       );
