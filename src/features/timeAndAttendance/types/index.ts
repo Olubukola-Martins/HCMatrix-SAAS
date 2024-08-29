@@ -18,10 +18,17 @@ export interface softClockOutProps {
 
 export interface ClockingAndBreakStatusProps {
   clocking: {
-    clockIn: null;
-    clockOut: null;
+    clockIn: {
+      time: string;
+    };
+    clockOut: {
+      time: string;
+    };
   };
-  activeBreakSession: null;
+  activeBreakSession: {
+    start: string;
+  };
+  totalHoursSpentToday: number;
 }
 
 export interface goBreakProps {

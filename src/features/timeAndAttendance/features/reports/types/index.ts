@@ -6,7 +6,9 @@ export interface shiftPerEmployeeProps {
   department: {
     name: string;
   };
-  shiftType: string;
+  shiftCategory: {
+    name: string;
+  };
   totalTimeTracked: number;
   departmentHead: TEmployeeProps;
 }

@@ -14,6 +14,7 @@ import { TTHandOverForm } from "features/self-service/features/handover-forms/ty
 import { TApprovalStatus } from "types/statuses";
 import { TStageCondition } from ".";
 import { TShiftSwapRequest } from "features/timeAndAttendance/features/swapShiftRequest/types";
+import { ITimeOffProps } from "features/timeAndAttendance/features/timeOff/types";
 import { AllLoanRequestProps } from "features/self-service/features/loan/types/loan";
 
 interface AdvancedStage {
@@ -68,4 +69,5 @@ export type TApprovalRequest = {
   loan?: AllLoanRequestProps;
   exitHandoverForm?: TTHandOverForm;
   shiftSwap?: TShiftSwapRequest;
+  timeOff?: ITimeOffProps;
 };

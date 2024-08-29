@@ -1,13 +1,15 @@
-import { Form, Modal } from "antd";
+import { DatePicker, Form, Modal } from "antd";
 import { AppButton } from "components/button/AppButton";
 import { FormBranchInput } from "features/core/branches/components/FormBranchInput";
 import { FormDepartmentInput } from "features/core/departments/components/FormDepartmentInput";
 import React, { useState } from "react";
 import { IModalProps } from "types";
+import { dateHasToBeLesserThanOrEqualToCurrentDayRule } from "utils/formHelpers/validation";
 
 export type TFilterAttendanceDBFormProps = {
   branchId?: number;
   departmentId?: number;
+  date?: string;
 };
 export type TFilterAttendanceDBBtnProps = {
   handleSubmit: (props: TFilterAttendanceDBFormProps) => void;
@@ -20,6 +22,7 @@ const FilterDBBtn: React.FC<TFilterAttendanceDBBtnProps> = ({
   isLoading,
 }) => {
   const [open, setOpen] = useState<boolean>(false);
+
   return (
     <>
       <button
@@ -49,6 +52,11 @@ const FilterDBModal: React.FC<IModalProps & TFilterAttendanceDBBtnProps> = ({
   isLoading,
 }) => {
   const [form] = Form.useForm<TFilterAttendanceDBFormProps>();
+  const onFinish = (values: TFilterAttendanceDBFormProps) => {
+    handleSubmit(values);
+    form.resetFields();
+    handleClose();
+  };
   return (
     <Modal
       open={open}
@@ -60,7 +68,7 @@ const FilterDBModal: React.FC<IModalProps & TFilterAttendanceDBBtnProps> = ({
       <Form
         layout="vertical"
         form={form}
-        onFinish={handleSubmit}
+        onFinish={onFinish}
         requiredMark={false}
       >
         <FormBranchInput
@@ -71,8 +79,15 @@ const FilterDBModal: React.FC<IModalProps & TFilterAttendanceDBBtnProps> = ({
         <FormDepartmentInput
           optional
           Form={Form}
-          control={{ label: "Department", name: "deparmentId" }}
+          control={{ label: "Department", name: "departmentId" }}
         />
+        <Form.Item
+          name="date"
+          label="Select Date"
+          rules={[dateHasToBeLesserThanOrEqualToCurrentDayRule]}
+        >
+          <DatePicker className="w-full" />
+        </Form.Item>
         <div className="flex justify-end">
           <AppButton type="submit" isLoading={isLoading} />
         </div>

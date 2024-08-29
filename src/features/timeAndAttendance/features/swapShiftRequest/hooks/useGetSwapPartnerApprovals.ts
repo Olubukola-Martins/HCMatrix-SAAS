@@ -2,22 +2,21 @@ import axios from "axios";
 import { useQuery } from "react-query";
 import { MICROSERVICE_ENDPOINTS } from "config/enviroment";
 import { useApiAuth } from "hooks/useApiAuth";
-import { IGeneralRequestFilter, TShiftSwapRequest } from "../types";
+import { ISwapPartnerApprovals } from "../types";
 import { ICurrentCompany, IPaginationProps } from "types";
 import { DEFAULT_PAGE_SIZE } from "constants/general";
 
-export const QUERY_KEY_FOR_GENERAL_SHIFT_SWAP_APPROVAL =
-  "GeneralShiftSwapApproval";
+export const QUERY_KEY_FOR_MY_SWAP_PARTNER_APPROVAL = "MySwapPartnerApproval";
 
 export const getEmployeePerShift = async (props: {
   auth: ICurrentCompany;
   pagination?: IPaginationProps;
-  filter?: IGeneralRequestFilter;
-}): Promise<{ data: TShiftSwapRequest[]; total: number }> => {
+  status?: string;
+}): Promise<{ data: ISwapPartnerApprovals[]; total: number }> => {
   const limit = props.pagination?.limit ?? DEFAULT_PAGE_SIZE;
   const offset = props.pagination?.offset ?? 0;
 
-  const url = `${MICROSERVICE_ENDPOINTS.TIME_AND_ATTENDANCE}/shift-swap`;
+  const url = `${MICROSERVICE_ENDPOINTS.TIME_AND_ATTENDANCE}/shift-swap/partner-approval`;
   const config = {
     headers: {
       Accept: "application/json",
@@ -27,9 +26,7 @@ export const getEmployeePerShift = async (props: {
     params: {
       limit,
       offset,
-      departmentId: props.filter?.departmentId,
-      status: props.filter?.status,
-      employeeId: props.filter?.employeeId,
+      status: props.status,
     },
   };
 
@@ -38,7 +35,7 @@ export const getEmployeePerShift = async (props: {
 
   const result = fetchedData;
 
-  const data: TShiftSwapRequest[] = result;
+  const data: ISwapPartnerApprovals[] = result;
 
   const ans = {
     data,
@@ -47,28 +44,21 @@ export const getEmployeePerShift = async (props: {
 
   return ans;
 };
-export const useGetGeneralRequest = ({
+export const useGetSwapPartnerApprovals = ({
   pagination,
-  filter,
+  status,
 }: {
   pagination?: IPaginationProps;
-  filter?: IGeneralRequestFilter;
+  status?: string;
 } = {}) => {
   const { companyId, token } = useApiAuth();
-  const { departmentId, employeeId, status } = filter ?? {};
   const queryData = useQuery(
-    [
-      QUERY_KEY_FOR_GENERAL_SHIFT_SWAP_APPROVAL,
-      pagination,
-      departmentId,
-      employeeId,
-      status,
-    ],
+    [QUERY_KEY_FOR_MY_SWAP_PARTNER_APPROVAL, pagination, status],
     () =>
       getEmployeePerShift({
         auth: { token, companyId },
         pagination,
-        filter: { departmentId, employeeId, status },
+        status,
       }),
     {
       onError: (err: any) => {},

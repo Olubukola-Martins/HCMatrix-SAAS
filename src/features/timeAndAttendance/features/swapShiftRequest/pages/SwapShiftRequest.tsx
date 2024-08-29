@@ -9,7 +9,11 @@ import { useState } from "react";
 import { AllRequest } from "../components/AllRequest";
 import { MySwapApprovals } from "../components/MySwapApprovals";
 import { MyRequest } from "../components/MyRequest";
-import { canUserAccessComponent, useGetUserPermissions } from "components/permission-restriction/PermissionRestrictor";
+import {
+  canUserAccessComponent,
+  useGetUserPermissions,
+} from "components/permission-restriction/PermissionRestrictor";
+import { MySwapPartnerApprovals } from "../components/MySwapPartnerApprovals";
 
 const SwapShiftRequest = () => {
   const [creteRequest, setCreteRequest] = useState(false);
@@ -19,26 +23,31 @@ const SwapShiftRequest = () => {
     {
       key: "1",
       label: `My Requests`,
-      children: <MyRequest/>,
+      children: <MyRequest />,
       hidden: false,
     },
     {
       key: "2",
-      label: `My Swap Approvals`,
-      children: <MySwapApprovals/>,
+      label: `My Swap Partner Approvals`,
+      children: <MySwapPartnerApprovals />,
       hidden: false,
     },
     {
       key: "3",
+      label: `My Swap Approvals`,
+      children: <MySwapApprovals />,
+      hidden: false,
+    },
+    {
+      key: "4",
       label: `All Requests`,
-      children: <AllRequest/>,
+      children: <AllRequest />,
       hidden: !canUserAccessComponent({
         userPermissions,
-        requiredPermissions: ["view-all-swap-shif-requests"],
+        requiredPermissions: ["view-all-swap-shift-requests"],
       }),
     },
-  ]
-
+  ];
 
   return (
     <>
@@ -64,7 +73,10 @@ const SwapShiftRequest = () => {
           tabBarExtraContent={
             <div className="flex items-center gap-4">
               <TbFileExport className="text-2xl" />
-              <AppButton label="New Request" handleClick={() => setCreteRequest(true)}/>
+              <AppButton
+                label="New Request"
+                handleClick={() => setCreteRequest(true)}
+              />
             </div>
           }
         />

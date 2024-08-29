@@ -9,6 +9,7 @@ import { useClockingAndBreakStatus } from "../hooks/useClockingAndBreakStatus";
 import { useState } from "react";
 import { GoBreak } from "./GoBreak";
 import { SwitchActivity } from "./SwitchActivity";
+import { PermissionRestrictor } from "components/permission-restriction/PermissionRestrictor";
 
 interface IProps {
   active:
@@ -64,22 +65,31 @@ export const AttendanceSubToper = (props: IProps) => {
           >
             Swap Shift Request
           </Link>
-          <Link
-            to={appRoutes.hoursPerEmployee}
-            className={
-              props.active === "reports"
-                ? `${applyStyle}`
-                : "pb-3 hover:text-caramel"
-            }
+          <PermissionRestrictor
+            requiredPermissions={["view-time-and-attendance-reports"]}
           >
-            Reports
-          </Link>
+            <Link
+              to={appRoutes.hoursPerEmployee}
+              className={
+                props.active === "reports"
+                  ? `${applyStyle}`
+                  : "pb-3 hover:text-caramel"
+              }
+            >
+              Reports
+            </Link>
+          </PermissionRestrictor>
+
+          <PermissionRestrictor
+              requiredPermissions={["manage-time-and-attendance-settings"]}
+            >
           <Link
             to={appRoutes.timeTrackingRules}
             className={"pb-3 hover:text-caramel"}
           >
             Settings
           </Link>
+          </PermissionRestrictor>
         </div>
 
         <div className="flex items-center gap-x-4 mt-2">
