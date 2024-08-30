@@ -5,10 +5,7 @@ import { IViewFilesActions } from "../../types/fileList";
 
 export const FILE_TABLE_COLUMNS = (
   action: IViewFilesActions
-): // handleView: (props: { file: TFileListItem }) => void,
-// handleEdit: (props: { file: TFileListItem }) => void,
-// handleDelete: (props: { file: TFileListItem }) => void
-ColumnsType<TFileListItem> => [
+): ColumnsType<TFileListItem> => [
   {
     title: "Name",
     dataIndex: "name",
@@ -47,20 +44,17 @@ ColumnsType<TFileListItem> => [
             mode="vertical"
             items={[
               {
-                label: "View",
-                key: "View",
-                // hidden: true,
-                popupClassName: "hidden",
-                // onClick: () => handleView({ file }),
-              },
-              {
-                label: "Edit",
+                label: "Edit File",
                 key: "Edit",
                 disabled: action.fromFolderView ? false : true,
-                // onClick: () => handleEdit({ file }),
               },
               {
-                label: "Delete",
+                label: "Assign File",
+                key: "Assign",
+                disabled: action.fromFolderView ? false : true,
+              },
+              {
+                label: "Delete File",
                 key: "Delete",
                 disabled: action.fromFolderView ? false : true,
                 onClick: () =>

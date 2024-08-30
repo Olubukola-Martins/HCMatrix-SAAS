@@ -1,4 +1,4 @@
-import { Cascader, Form, Input, Modal, Skeleton } from "antd";
+import { Cascader, Checkbox, Form, Input, Modal, Skeleton } from "antd";
 import { AppButton } from "components/button/AppButton";
 import React, { useEffect, useState } from "react";
 import { IModalProps } from "types";
@@ -19,6 +19,10 @@ import { useFetchDepartments } from "features/core/departments/hooks/useFetchDep
 import { useFetchGroups } from "features/core/groups/hooks/useFetchGroups";
 import { useFetchRoles } from "features/core/roles-and-permissions/hooks/useFetchRoles";
 import { QUERY_KEY_FOR_FOLDERS } from "../hooks/useGetFolders";
+import { FormGroupInput } from "features/core/groups/components/FormGroupInput";
+import { FormDepartmentInput } from "features/core/departments/components/FormDepartmentInput";
+import { FormRoleInput } from "features/core/roles-and-permissions/components/FormRoleInput";
+import { FormEmployeeInput } from "features/core/employees/components/FormEmployeeInput";
 
 const SUITABLE_PAGE_SIZE_FOR_ENTITIES_TO_BE_DISPAYED = 250;
 
@@ -44,11 +48,15 @@ const displayRender = (
     return <span key={option.value}>{label} / </span>;
   });
 };
+
+type TFileEntities = "group" | "department" | "employee" | "role";
+
 export const AddFile: React.FC<IProps> = ({ open, handleClose, id }) => {
   const queryClient = useQueryClient();
   const [form] = Form.useForm();
   const { mutate, isLoading } = useCreateFile();
   const documentUrl = useCurrentFileUploadUrl("documentUrl");
+  const [entities, setEntities] = useState<TFileEntities[]>([]);
 
   useEffect(() => {
     form.setFieldsValue({
@@ -57,53 +65,74 @@ export const AddFile: React.FC<IProps> = ({ open, handleClose, id }) => {
   }, [id]);
 
   const handleSubmit = (data: any) => {
+    const defineAccessFromFormFields = () => {
+      const access: TFileData["access"] = [];
+      if (entities.includes("group")) {
+        access.push(...data?.groupIds?.map((id: number) => ({ groupId: id })));
+      }
+      if (entities.includes("department")) {
+        access.push(
+          ...data?.departmentIds?.map((id: number) => ({ departmentId: id }))
+        );
+      }
+      if (entities.includes("role")) {
+        access.push(...data?.roleIds?.map((id: number) => ({ roleId: id })));
+      }
+      if (entities.includes("employee")) {
+        access.push(
+          ...data?.employeeIds?.map((id: number) => ({ employeeId: id }))
+        );
+      }
+      return access;
+    };
     if (documentUrl) {
       mutate(
         {
           folderId: id ? id : data.folderId,
           data: {
-            access: data.access
-              .map((item: [string, number], i: number) => ({
-                type: item[0],
-                entityId: item[1],
-              }))
-              .map(
-                ({
-                  type,
-                  entityId,
-                }: {
-                  type: "role" | "department" | "employee" | "group";
-                  entityId: number;
-                }) => {
-                  let value: TFileData["access"][number] | null = null;
-                  switch (type) {
-                    case "department":
-                      value = {
-                        departmentId: entityId,
-                      };
-                      break;
-                    case "role":
-                      value = {
-                        roleId: entityId,
-                      };
-                      break;
-                    case "employee":
-                      value = {
-                        employeeId: entityId,
-                      };
-                      break;
-                    case "group":
-                      value = {
-                        groupId: entityId,
-                      };
-                      break;
+            access: defineAccessFromFormFields(),
+            // access: data.access
+            //   .map((item: [string, number], i: number) => ({
+            //     type: item[0],
+            //     entityId: item[1],
+            //   }))
+            //   .map(
+            //     ({
+            //       type,
+            //       entityId,
+            //     }: {
+            //       type: "role" | "department" | "employee" | "group";
+            //       entityId: number;
+            //     }) => {
+            //       let value: TFileData["access"][number] | null = null;
+            //       switch (type) {
+            //         case "department":
+            //           value = {
+            //             departmentId: entityId,
+            //           };
+            //           break;
+            //         case "role":
+            //           value = {
+            //             roleId: entityId,
+            //           };
+            //           break;
+            //         case "employee":
+            //           value = {
+            //             employeeId: entityId,
+            //           };
+            //           break;
+            //         case "group":
+            //           value = {
+            //             groupId: entityId,
+            //           };
+            //           break;
 
-                    default:
-                      break;
-                  }
-                  return value;
-                }
-              ),
+            //         default:
+            //           break;
+            //       }
+            //       return value;
+            //     }
+            //   ),
             description: data.description,
             url: documentUrl,
             name: data.name,
@@ -150,70 +179,70 @@ export const AddFile: React.FC<IProps> = ({ open, handleClose, id }) => {
     }
   };
 
-  const { data: departments, isFetching: isFetchingDepartments } =
-    useFetchDepartments({
-      pagination: {
-        offset: 0,
-        limit: SUITABLE_PAGE_SIZE_FOR_ENTITIES_TO_BE_DISPAYED,
-      },
-    });
-  const { data: roles, isFetching: isFetchingRoles } = useFetchRoles({
-    pagination: {
-      offset: 0,
-      limit: SUITABLE_PAGE_SIZE_FOR_ENTITIES_TO_BE_DISPAYED,
-    },
-  });
-  const { data: groups, isFetching: isFetchingGroups } = useFetchGroups({
-    pagination: {
-      offset: 0,
-      limit: SUITABLE_PAGE_SIZE_FOR_ENTITIES_TO_BE_DISPAYED,
-    },
-  });
+  // const { data: departments, isFetching: isFetchingDepartments } =
+  //   useFetchDepartments({
+  //     pagination: {
+  //       offset: 0,
+  //       limit: SUITABLE_PAGE_SIZE_FOR_ENTITIES_TO_BE_DISPAYED,
+  //     },
+  //   });
+  // const { data: roles, isFetching: isFetchingRoles } = useFetchRoles({
+  //   pagination: {
+  //     offset: 0,
+  //     limit: SUITABLE_PAGE_SIZE_FOR_ENTITIES_TO_BE_DISPAYED,
+  //   },
+  // });
+  // const { data: groups, isFetching: isFetchingGroups } = useFetchGroups({
+  //   pagination: {
+  //     offset: 0,
+  //     limit: SUITABLE_PAGE_SIZE_FOR_ENTITIES_TO_BE_DISPAYED,
+  //   },
+  // });
 
   const [FileAccessOptions, setFileAccessOptions] = useState<
     FileAccessOption[]
   >([]);
 
-  useEffect(() => {
-    if (departments && roles && groups) {
-      const groupOptions: FileAccessOption = {
-        disabled: groups && groups.total === 0,
-        label: "Group",
-        value: "group",
-        children: groups?.data?.map((item) => ({
-          label: `${item.name}`,
+  // useEffect(() => {
+  //   if (departments && roles && groups) {
+  //     const groupOptions: FileAccessOption = {
+  //       disabled: groups && groups.total === 0,
+  //       label: "Group",
+  //       value: "group",
+  //       children: groups?.data?.map((item) => ({
+  //         label: `${item.name}`,
 
-          value: item.id as unknown as number,
-        })),
-      };
-      const departmentOptions: FileAccessOption = {
-        disabled: departments && departments.total === 0,
-        label: "Department",
-        value: "department",
-        children: departments?.data?.map((item) => ({
-          label: `${item.name}`,
-          value: item.id as unknown as number,
-        })),
-      };
-      const roleOptions: FileAccessOption = {
-        disabled: roles && roles.total === 0,
-        label: "Role",
-        value: "role",
-        children: roles?.data?.map((item) => ({
-          label: `${item.name}`,
+  //         value: item.id as unknown as number,
+  //       })),
+  //     };
+  //     const departmentOptions: FileAccessOption = {
+  //       disabled: departments && departments.total === 0,
+  //       label: "Department",
+  //       value: "department",
+  //       children: departments?.data?.map((item) => ({
+  //         label: `${item.name}`,
+  //         value: item.id as unknown as number,
+  //       })),
+  //     };
+  //     const roleOptions: FileAccessOption = {
+  //       disabled: roles && roles.total === 0,
+  //       label: "Role",
+  //       value: "role",
+  //       children: roles?.data?.map((item) => ({
+  //         label: `${item.name}`,
 
-          value: item.id as unknown as number,
-        })),
-      };
-      const options: FileAccessOption[] = [
-        groupOptions,
-        departmentOptions,
-        roleOptions,
-      ];
+  //         value: item.id as unknown as number,
+  //       })),
+  //     };
+  //     const options: FileAccessOption[] = [
+  //       groupOptions,
+  //       departmentOptions,
+  //       roleOptions,
+  //     ];
 
-      setFileAccessOptions(options);
-    }
-  }, [departments, roles, groups]);
+  //     setFileAccessOptions(options);
+  //   }
+  // }, [departments, roles, groups]);
 
   return (
     <Modal
@@ -223,11 +252,11 @@ export const AddFile: React.FC<IProps> = ({ open, handleClose, id }) => {
       title={"Add File"}
       style={{ top: 20 }}
     >
-      <Skeleton
+      {/* <Skeleton
         active
-        loading={isFetchingDepartments || isFetchingRoles || isFetchingGroups}
+        // loading={isFetchingDepartments || isFetchingRoles || isFetchingGroups}
         paragraph={{ rows: 7 }}
-      >
+      > */}
         <Form
           layout="vertical"
           form={form}
@@ -253,7 +282,46 @@ export const AddFile: React.FC<IProps> = ({ open, handleClose, id }) => {
           >
             <Input.TextArea placeholder="Description" />
           </Form.Item>
-          <Form.Item
+          <Form.Item label="Assign File to">
+            <Checkbox.Group onChange={(val) => setEntities(val)}>
+              <Checkbox value="group">Group</Checkbox>
+              <Checkbox value="department">Department</Checkbox>
+              <Checkbox value="role">Role</Checkbox>
+              <Checkbox value="employee">Employee</Checkbox>
+            </Checkbox.Group>
+          </Form.Item>
+          {entities.includes("group") && (
+            <FormGroupInput
+              Form={Form}
+              control={{ label: "Groups", name: "groupIds" }}
+              mode="multiple"
+            />
+          )}
+          {entities.includes("department") && (
+            <FormDepartmentInput
+              Form={Form}
+              control={{
+                label: "Departments",
+                name: "departmentIds",
+                multiple: true,
+              }}
+            />
+          )}
+          {entities.includes("role") && (
+            <FormRoleInput
+              Form={Form}
+              control={{ label: "Roles", name: "roleIds" }}
+            />
+          )}
+          {entities.includes("employee") && (
+            <FormEmployeeInput
+              Form={Form}
+              control={{ label: "Employees", name: "employeeIds" }}
+              mode="multiple"
+            />
+          )}
+
+          {/* <Form.Item
             rules={generalValidationRules}
             name="access"
             label="Access"
@@ -265,7 +333,7 @@ export const AddFile: React.FC<IProps> = ({ open, handleClose, id }) => {
               allowClear
               showCheckedStrategy="SHOW_CHILD"
             />
-          </Form.Item>
+          </Form.Item> */}
 
           <div className={boxStyle}>
             <FileUpload
@@ -289,7 +357,7 @@ export const AddFile: React.FC<IProps> = ({ open, handleClose, id }) => {
             <AppButton type="submit" isLoading={isLoading} />
           </div>
         </Form>
-      </Skeleton>
+      {/* </Skeleton> */}
     </Modal>
   );
 };

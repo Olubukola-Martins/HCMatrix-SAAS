@@ -8,7 +8,8 @@ export const FormGroupInput: React.FC<{
   Form: typeof Form;
   showLabel?: boolean;
   control?: { label: string; name: string | (string | number)[] };
-}> = ({ Form, showLabel = true, control }) => {
+  mode?: "multiple" | "tags";
+}> = ({ Form, showLabel = true, control, mode }) => {
   const [searchTerm, setSearchTerm] = useState<string>("");
   const debouncedSearchTerm: string = useDebounce<string>(searchTerm);
 
@@ -39,6 +40,7 @@ export const FormGroupInput: React.FC<{
         defaultActiveFirstOption={false}
         showArrow={false}
         filterOption={false}
+        mode={mode}
       >
         {data?.data.map((item) => (
           <Select.Option key={item.id} value={item.id}>
