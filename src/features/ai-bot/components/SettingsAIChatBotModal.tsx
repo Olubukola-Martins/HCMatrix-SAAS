@@ -1,5 +1,5 @@
 import { Modal, Switch } from "antd";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Themes from "components/Themes";
 import { IoIosArrowBack } from "react-icons/io";
 
@@ -9,6 +9,31 @@ interface IProps {
 }
 
 const SettingsAIChatBotModal = ({ open, handleClose }: IProps) => {
+  const [settings, setSettings] = useState({
+    enableSuggestion: false,
+    enableVoiceResponse: false,
+  });
+
+  useEffect(() => {
+    const aiBotSettings = localStorage.getItem("aiBotSettings");
+    if (aiBotSettings) {
+      setSettings(JSON.parse(aiBotSettings));
+    } else {
+      const defaultSettings = {
+        enableSuggestion: false,
+        enableVoiceResponse: false,
+      };
+      localStorage.setItem("aiBotSettings", JSON.stringify(defaultSettings));
+      setSettings(defaultSettings);
+    }
+  }, []);
+
+  const handleToggle = (key: keyof typeof settings, value: boolean) => {
+    const updatedSettings = { ...settings, [key]: value };
+    localStorage.setItem("aiBotSettings", JSON.stringify(updatedSettings));
+    setSettings(updatedSettings);
+  };
+
   return (
     <Modal
       open={open}
@@ -20,7 +45,7 @@ const SettingsAIChatBotModal = ({ open, handleClose }: IProps) => {
       <Themes>
         <div className="relative mb-4">
           <button onClick={() => handleClose()} className="absolute left-0">
-            <IoIosArrowBack  />
+            <IoIosArrowBack />
           </button>
           <h5 className="text-sm font-medium text-center">Settings</h5>
         </div>
@@ -31,16 +56,22 @@ const SettingsAIChatBotModal = ({ open, handleClose }: IProps) => {
             <div className="flex justify-between space-x-4">
               <div className="flex justify-between items-center p-4 border rounded-lg w-1/2">
                 <span>Enable Suggestion</span>
-                <Switch defaultChecked />
+                <Switch
+                  checked={settings.enableSuggestion}
+                  onChange={(checked) => handleToggle("enableSuggestion",checked)}
+                />
               </div>
               <div className="flex justify-between items-center p-4 border rounded-lg w-1/2">
                 <span>Voice Response</span>
-                <Switch defaultChecked />
+                <Switch
+                  checked={settings.enableVoiceResponse}
+                  onChange={(checked) => handleToggle("enableVoiceResponse",checked)}
+                />
               </div>
             </div>
           </div>
 
-          <div className="mb-6">
+          {/* <div className="mb-6">
             <h6 className="text-lg font-semibold mb-4">
               Notification Settings
             </h6>
@@ -50,10 +81,10 @@ const SettingsAIChatBotModal = ({ open, handleClose }: IProps) => {
                 <Switch defaultChecked />
               </div>
             </div>
-          </div>
+          </div> */}
 
           <div className="flex justify-end mt-6">
-            <button className="button rounded-lg">Save</button>
+            <button className="button rounded-lg" onClick={() => handleClose()}>Save</button>
           </div>
         </div>
       </Themes>

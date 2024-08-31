@@ -20,23 +20,30 @@ interface IProps {
 
 const NewChatAIChatBotModal = ({ open, handleClose, chatId }: IProps) => {
   const queryClient = useQueryClient();
-  
+
   const [message, setMessage] = useState<string>();
   const [localChatHistory, setLocalChatHistory] = useState<any[]>([]);
-  const [isListening, setIsListening] = useState<boolean>(false); 
+  const [isListening, setIsListening] = useState<boolean>(false);
+
+  const suggestedQuestions = [
+    "Who is my line manager?",
+    "Where can I apply for leave?",
+    "Where can I find the company handbook?",
+  ];
 
   // const { currentCompanyEmployeeDetails: employee } = useMostRecentApiAuth();
   // const employeeId = employee?.id;
   // const { data: singleEmployee } = useFetchSingleEmployee({employeeId: employeeId || 0 });
   const { data: chatHistory, isLoading: isLoadingHistory } = useGetChatHistory({
-    employee_id:"372",
+    employee_id: "372",
     company_id: "53",
     chat_id: chatId,
     // company_id: singleEmployee?.companyId.toString() || "",
     // chat_id: chatId || "",
     // employee_id: employeeId?.toString() || "",
   });
-  const { mutate: sendChatMessage, isLoading: isSendingText } = useAddChatText();
+  const { mutate: sendChatMessage, isLoading: isSendingText } =
+    useAddChatText();
 
   useEffect(() => {
     const storedChatHistory = localStorage.getItem(`chat-history-${chatId}`);
@@ -47,58 +54,67 @@ const NewChatAIChatBotModal = ({ open, handleClose, chatId }: IProps) => {
     }
   }, [chatHistory, chatId]);
 
+  const aiBotSettings = JSON.parse(
+    localStorage.getItem("aiBotSettings") || "{}"
+  );
+
+  const handleSuggestedQuestionClick = (question: string) => {
+    setMessage(question);
+    handleSendMessage();
+  };
+
   const handleSendMessage = () => {
     if (!message) return;
 
     const newMessage = {
       user_query: message,
-        audio: true,
-        chat_id: chatId,
-        employee_metadata: {
-          department_id: "43",
-          role_id: "323",
-          group_id:  "54",
-          company_id:  "53",
-          id: "372",
-          // department_id: singleEmployee?.designation?.department?.id.toString() || "",
-          // role_id: singleEmployee?.roleId.toString() || "",
-          // group_id: singleEmployee?.userGroups?.[0]?.id.toString() || "",
-          // company_id: singleEmployee?.companyId.toString() || "",
-          // id: singleEmployee?.id.toString() || "",
+      audio: aiBotSettings.enableVoiceResponse || false,
+      chat_id: chatId,
+      employee_metadata: {
+        department_id: "43",
+        role_id: "323",
+        group_id: "54",
+        company_id: "53",
+        id: "372",
+        // department_id: singleEmployee?.designation?.department?.id.toString() || "",
+        // role_id: singleEmployee?.roleId.toString() || "",
+        // group_id: singleEmployee?.userGroups?.[0]?.id.toString() || "",
+        // company_id: singleEmployee?.companyId.toString() || "",
+        // id: singleEmployee?.id.toString() || "",
       },
     };
-    sendChatMessage(
-      newMessage,
-       {
-        onError: (err: any) => {
-          openNotification({
-            state: "error",
-            title: "Error Occurred",
-            description:
-              err?.response.data.message ?? err?.response.data.error.message,
-          });
-        },
-        onSuccess: (res: any) => {
+    sendChatMessage(newMessage, {
+      onError: (err: any) => {
+        openNotification({
+          state: "error",
+          title: "Error Occurred",
+          description:
+            err?.response.data.message ?? err?.response.data.error.message,
+        });
+      },
+      onSuccess: (res: any) => {
         const chatObject = {
-          chatId: res.chat_id, 
+          chatId: res.chat_id,
           question: res.question,
           time: res.timestamp,
         };
 
-        const existingChatList = JSON.parse(localStorage.getItem('chatList') || '[]');
+        const existingChatList = JSON.parse(
+          localStorage.getItem("chatList") || "[]"
+        );
         const updatedChatList = [...existingChatList, chatObject];
-        localStorage.setItem('chatList', JSON.stringify(updatedChatList));
+        localStorage.setItem("chatList", JSON.stringify(updatedChatList));
 
         setMessage("");
         queryClient.invalidateQueries({
-          queryKey: ["chat-history"]
-          });
-        },
-      });
+          queryKey: ["chat-history"],
+        });
+      },
+    });
   };
 
   const handleMicClick = () => {
-    setIsListening((prev) => !prev); 
+    setIsListening((prev) => !prev);
   };
 
   return (
@@ -112,72 +128,91 @@ const NewChatAIChatBotModal = ({ open, handleClose, chatId }: IProps) => {
       <Themes>
         <div className="relative mb-4">
           <button onClick={() => handleClose()} className="absolute left-0">
-            <IoIosArrowBack  />
+            <IoIosArrowBack />
           </button>
           <h5 className="text-sm font-medium text-center">New Chat</h5>
         </div>
+        {aiBotSettings.enableSuggestion && (
+          <div className="mb-4 px-6">
+            <h6 className="text-sm font-medium">Suggested Questions</h6>
+            <ul className="space-y-2">
+              {suggestedQuestions.map((question, index) => (
+                <li
+                  key={index}
+                  onClick={() => handleSuggestedQuestionClick(question)}
+                  className="cursor-pointer text-orange-600 hover:underline"
+                >
+                  {question}
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
         <div className="flex flex-col gap-4 h-full justify-between relative ">
-        <div className="mb-24 px-6 pt-4">
-           <Skeleton loading={isLoadingHistory} active paragraph={{ rows: 14 }}>
+          <div className="mb-24 px-6 pt-4">
+            <Skeleton
+              loading={isLoadingHistory}
+              active
+              paragraph={{ rows: 14 }}
+            >
               {chatHistory && chatHistory.length > 0 ? (
                 <div className="flex flex-col">
-                {chatHistory.map((item, index) => (
-                  <div key={index}>
-                  {item.employee_metadata.id === "372" && (
-                  // === employee?.id?.toString() ? ( 
-                    <RightMessage
-                      message={item.question}
-                    />
-                   ) }
-                    <LeftMessage
-                      message={item.answer}
-                      audio={item.audio_response}
-                    />
-                   </div>
-                ))} 
-               </div> 
-             ) : ( 
-              <div className="flex flex-col h-full items-center justify-center">
-                <Empty description="No chat yet" />
-              </div>
-               )}
-          </Skeleton> 
-        </div>
-
-        <SpeechToText  
-        onTranscript={(transcript) => setMessage(transcript)}
-        startListening={isListening} 
-        />
-
-        <div className="px-6 pt-4 pb-10 flex gap-2 sticky bg-white shadow-2xl bottom-0 w-full right-0 left-0">
-          <div className="flex gap-4">
-            <Button icon={<TbMicrophone />} type="text" onClick={handleMicClick} />
+                  {chatHistory.map((item, index) => (
+                    <div key={index}>
+                      {item.employee_metadata.id === "372" && (
+                        // === employee?.id?.toString() ? (
+                        <RightMessage message={item.question} />
+                      )}
+                      <LeftMessage
+                        message={item.answer}
+                        audio={item.audio_response}
+                      />
+                    </div>
+                  ))}
+                </div>
+              ) : (
+                <div className="flex flex-col h-full items-center justify-center">
+                  <Empty description="No chat yet" />
+                </div>
+              )}
+            </Skeleton>
           </div>
-          <div className="flex gap-4 flex-1">
-            <Input
-              className="rounded-full"
-              value={message}
-              onChange={(e) => setMessage(e.target.value)}
-              placeholder="Start Chat"
-              onPressEnter={handleSendMessage}
-              disabled={isSendingText }
-            />
-            <Button
-              icon={<SendMessageIcon />}
-              type="text"
-              onClick={handleSendMessage}
-              loading={isSendingText }
-            />
+
+          <SpeechToText
+            onTranscript={(transcript) => setMessage(transcript)}
+            startListening={isListening}
+          />
+
+          <div className="px-6 pt-4 pb-10 flex gap-2 sticky bg-white shadow-2xl bottom-0 w-full right-0 left-0">
+            <div className="flex gap-4">
+              <Button
+                icon={<TbMicrophone />}
+                type="text"
+                onClick={handleMicClick}
+              />
+            </div>
+            <div className="flex gap-4 flex-1">
+              <Input
+                className="rounded-full"
+                value={message}
+                onChange={(e) => setMessage(e.target.value)}
+                placeholder="Start Chat"
+                onPressEnter={handleSendMessage}
+                disabled={isSendingText}
+              />
+              <Button
+                icon={<SendMessageIcon />}
+                type="text"
+                onClick={handleSendMessage}
+                loading={isSendingText}
+              />
+            </div>
           </div>
         </div>
-      </div>
-
-      
       </Themes>
     </Modal>
   );
 };
-
 
 const LeftMessage: React.FC<{ message: string; audio?: string | null }> = ({
   message,
@@ -222,10 +257,7 @@ const LeftMessage: React.FC<{ message: string; audio?: string | null }> = ({
   );
 };
 
-
-const RightMessage: React.FC<{ message: string; }> = ({
-  message,
-}) => {
+const RightMessage: React.FC<{ message: string }> = ({ message }) => {
   return (
     <div className="flex justify-end mb-4">
       <div className="mr-2 py-3 px-4 bg-caramel rounded-bl-3xl rounded-br-3xl rounded-tl-xl text-white">
