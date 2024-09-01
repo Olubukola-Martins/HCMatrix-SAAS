@@ -1,5 +1,5 @@
 import { Button, Empty, Input, Modal, Skeleton } from "antd";
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import { IoIosArrowBack } from "react-icons/io";
 import Themes from "components/Themes";
 import SendMessageIcon from "assets/svg-components/SendMessageIcon/SendMessageIcon";
@@ -22,7 +22,6 @@ const NewChatAIChatBotModal = ({ open, handleClose, chatId }: IProps) => {
   const queryClient = useQueryClient();
 
   const [message, setMessage] = useState<string>();
-  const [localChatHistory, setLocalChatHistory] = useState<any[]>([]);
   const [isListening, setIsListening] = useState<boolean>(false);
 
   const suggestedQuestions = [
@@ -45,23 +44,9 @@ const NewChatAIChatBotModal = ({ open, handleClose, chatId }: IProps) => {
   const { mutate: sendChatMessage, isLoading: isSendingText } =
     useAddChatText();
 
-  useEffect(() => {
-    const storedChatHistory = localStorage.getItem(`chat-history-${chatId}`);
-    if (storedChatHistory) {
-      setLocalChatHistory(JSON.parse(storedChatHistory));
-    } else if (chatHistory) {
-      setLocalChatHistory(chatHistory);
-    }
-  }, [chatHistory, chatId]);
-
   const aiBotSettings = JSON.parse(
     localStorage.getItem("aiBotSettings") || "{}"
   );
-
-  const handleSuggestedQuestionClick = (question: string) => {
-    setMessage(question);
-    handleSendMessage();
-  };
 
   const handleSendMessage = () => {
     if (!message) return;
@@ -113,6 +98,11 @@ const NewChatAIChatBotModal = ({ open, handleClose, chatId }: IProps) => {
     });
   };
 
+  const handleSuggestedQuestionClick = (question: string) => {
+    setMessage(question);
+    handleSendMessage();
+  };
+
   const handleMicClick = () => {
     setIsListening((prev) => !prev);
   };
@@ -132,22 +122,6 @@ const NewChatAIChatBotModal = ({ open, handleClose, chatId }: IProps) => {
           </button>
           <h5 className="text-sm font-medium text-center">New Chat</h5>
         </div>
-        {aiBotSettings.enableSuggestion && (
-          <div className="mb-4 px-6">
-            <h6 className="text-sm font-medium">Suggested Questions</h6>
-            <ul className="space-y-2">
-              {suggestedQuestions.map((question, index) => (
-                <li
-                  key={index}
-                  onClick={() => handleSuggestedQuestionClick(question)}
-                  className="cursor-pointer text-orange-600 hover:underline"
-                >
-                  {question}
-                </li>
-              ))}
-            </ul>
-          </div>
-        )}
         <div className="flex flex-col gap-4 h-full justify-between relative ">
           <div className="mb-24 px-6 pt-4">
             <Skeleton
@@ -177,6 +151,22 @@ const NewChatAIChatBotModal = ({ open, handleClose, chatId }: IProps) => {
               )}
             </Skeleton>
           </div>
+          {aiBotSettings.enableSuggestion && (
+          <div className="mb-4 px-6 text-right">
+            <h6 className="text-sm font-medium">AI Suggest</h6>
+            <ul className="space-y-2">
+              {suggestedQuestions.map((question, index) => (
+                <li
+                  key={index}
+                  onClick={() => handleSuggestedQuestionClick(question)}
+                  className="cursor-pointer text-orange-600 hover:text-gray-600 block"
+                >
+                  {question}
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
 
           <SpeechToText
             onTranscript={(transcript) => setMessage(transcript)}
@@ -184,13 +174,6 @@ const NewChatAIChatBotModal = ({ open, handleClose, chatId }: IProps) => {
           />
 
           <div className="px-6 pt-4 pb-10 flex gap-2 sticky bg-white shadow-2xl bottom-0 w-full right-0 left-0">
-            <div className="flex gap-4">
-              <Button
-                icon={<TbMicrophone />}
-                type="text"
-                onClick={handleMicClick}
-              />
-            </div>
             <div className="flex gap-4 flex-1">
               <Input
                 className="rounded-full"
@@ -205,6 +188,11 @@ const NewChatAIChatBotModal = ({ open, handleClose, chatId }: IProps) => {
                 type="text"
                 onClick={handleSendMessage}
                 loading={isSendingText}
+              />
+              <Button
+                icon={<TbMicrophone />}
+                type="text"
+                onClick={handleMicClick}
               />
             </div>
           </div>
