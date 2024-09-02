@@ -47,6 +47,9 @@ export const FILE_TABLE_COLUMNS = (
                 label: "Edit File",
                 key: "Edit",
                 disabled: action.fromFolderView ? false : true,
+                onClick: () =>
+                action.handleEditFile &&
+                action.handleEditFile(file as unknown as TFileListItem),
               },
               {
                 label: "Assign File",

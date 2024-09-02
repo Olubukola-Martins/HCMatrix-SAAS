@@ -15,6 +15,7 @@ import { useState } from "react";
 import { TFolderAction } from "../components/DocumentFolders";
 import { DeleteFile } from "../components/files/DeleteFile";
 import { AssignFile } from "../components/files/AssignFile";
+import { EditFile } from "../components/files/EditFile";
 
 const FilesInFolder = () => {
   const [action, setAction] = useState<TFolderAction>();
@@ -47,10 +48,16 @@ const FilesInFolder = () => {
     setAction("assign_file");
   };
 
+  const handleEditFile = (item: TFileListItem) => {
+    setRequest(item);
+    setAction("edit_file");
+  };
+
   const actions: IViewFilesActions = {
     fromFolderView: true,
     handleDelete,
     handleAssignFile,
+    handleEditFile,
   };
   const columns = FILE_TABLE_COLUMNS(actions);
 
@@ -68,6 +75,11 @@ const FilesInFolder = () => {
       />
        <AssignFile
         open={action === "assign_file"}
+        handleClose={onCancel}
+        file={request}
+      />
+       <EditFile
+        open={action === "edit_file"}
         handleClose={onCancel}
         file={request}
       />

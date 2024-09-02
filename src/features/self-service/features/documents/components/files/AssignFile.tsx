@@ -13,6 +13,7 @@ import { openNotification } from "utils/notifications";
 import { useQueryClient } from "react-query";
 import { QUERY_KEY_FOR_FILES_IN_A_FOLDER } from "../../hooks/file/useGetFilesInFolder";
 import { TFileListItem } from "../../types";
+import { generalValidationRules } from "utils/formHelpers/validation";
 
 interface IProps extends IModalProps {
   file?: Pick<TFileListItem, "id" | "folderId">;
@@ -87,8 +88,12 @@ export const AssignFile = ({ open, handleClose, file }: IProps) => {
       title={"Assign File"}
       style={{ top: 20 }}
     >
-      <Form onFinish={handleSubmit} layout="vertical">
-        <Form.Item label="Assign File to">
+      <Form onFinish={handleSubmit} form={form} layout="vertical" requiredMark={false}>
+        <Form.Item
+          label="Assign File to"
+          name="file"
+          rules={generalValidationRules}
+        >
           <Checkbox.Group onChange={(val) => setEntities(val)}>
             <Checkbox value="group">Group</Checkbox>
             <Checkbox value="department">Department</Checkbox>

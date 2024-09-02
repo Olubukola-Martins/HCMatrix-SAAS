@@ -15,4 +15,5 @@ export interface IViewFilesActions {
   fromFolderView: boolean;
   handleDelete?: (file: TFileListItem) => void;
   handleAssignFile?: (file: TFileListItem) => void
+  handleEditFile?: (file: TFileListItem) => void
 }

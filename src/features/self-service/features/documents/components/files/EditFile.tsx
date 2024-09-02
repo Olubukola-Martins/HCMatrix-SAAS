@@ -1,134 +1,128 @@
-import { Cascader, Checkbox, Form, Input, Modal } from "antd";
-import { AppButton } from "components/button/AppButton";
-import React, { useEffect, useState } from "react";
+import { Checkbox, Form, Input, Modal } from "antd";
+import { useEffect, useState } from "react";
+import { useQueryClient } from "react-query";
 import { IModalProps } from "types";
+import { FormFolderInput } from "../folders/FormFolderInput";
 import {
   generalValidationRules,
   textInputValidationRules,
   textInputValidationRulesOp,
 } from "utils/formHelpers/validation";
-import { openNotification } from "utils/notifications";
-import { useQueryClient } from "react-query";
-import { TFileData, useCreateFile } from "../../hooks/file/useCreateFile";
-import { QUERY_KEY_FOR_FILES_IN_A_FOLDER } from "../../hooks/file/useGetFilesInFolder";
-import { FormFolderInput } from "../folders/FormFolderInput";
-import { FileUpload } from "components/FileUpload";
-import { boxStyle } from "styles/reused";
-import { useCurrentFileUploadUrl } from "hooks/useCurrentFileUploadUrl";
-
-import { QUERY_KEY_FOR_FOLDERS } from "../../hooks/useGetFolders";
 import { FormGroupInput } from "features/core/groups/components/FormGroupInput";
 import { FormDepartmentInput } from "features/core/departments/components/FormDepartmentInput";
 import { FormRoleInput } from "features/core/roles-and-permissions/components/FormRoleInput";
 import { FormEmployeeInput } from "features/core/employees/components/FormEmployeeInput";
+import { useCurrentFileUploadUrl } from "hooks/useCurrentFileUploadUrl";
+import { TFileEntities } from "./AddFile";
+import { FileUpload } from "components/FileUpload";
+import { AppButton } from "components/button/AppButton";
+import { boxStyle } from "styles/reused";
+import { TFileData } from "../../hooks/file/useCreateFile";
+import { openNotification } from "utils/notifications";
+import { useUpdateFile } from "../../hooks/file/useUpdateFile";
+import { QUERY_KEY_FOR_FILES_IN_A_FOLDER } from "../../hooks/file/useGetFilesInFolder";
+import { TFileListItem } from "../../types";
+import { QUERY_KEY_FOR_ALL_ASSIGNED_FILES } from "../../hooks/file/useGetAllAssignedFiles";
 
-interface IProps extends IModalProps {}
-export interface FileAccessOption {
-  value: number | string;
-  label: string;
-  children?: FileAccessOption[];
-  disabled?: boolean;
+interface IProps extends IModalProps {
+  file?: TFileListItem;
 }
 
-export type TFileEntities = "group" | "department" | "employee" | "role";
-
-export const AddFile: React.FC<IProps> = ({ open, handleClose, id }) => {
+interface TFormData {
+    groupIds: number[];
+    departmentIds: number[];
+    roleIds: number[];
+    employeeIds: number[];
+    name: string;
+    description:string;
+    url: string;
+  }
+export const EditFile = ({ open, handleClose, file }: IProps) => {
   const queryClient = useQueryClient();
-  const [form] = Form.useForm();
-  const { mutate, isLoading } = useCreateFile();
   const documentUrl = useCurrentFileUploadUrl("documentUrl");
   const [entities, setEntities] = useState<TFileEntities[]>([]);
+  const [form] = Form.useForm();
+  const { mutate, isLoading } = useUpdateFile();
+
+  console.log(file);
 
   useEffect(() => {
     form.setFieldsValue({
-      folderId: id,
+      folderId: file?.folderId,
+      name: file?.name,
+      description: file?.description,
+      url: file?.url,
     });
-  }, [id]);
+  }, [file, form]);
 
-  const handleSubmit = (data: any) => {
+  const handleSubmit = (value: TFormData) => {
     const defineAccessFromFormFields = () => {
       const access: TFileData["access"] = [];
       if (entities.includes("group")) {
-        access.push(...data?.groupIds?.map((id: number) => ({ groupId: id })));
+        access.push(...value?.groupIds?.map((id: number) => ({ groupId: id })));
       }
       if (entities.includes("department")) {
         access.push(
-          ...data?.departmentIds?.map((id: number) => ({ departmentId: id }))
+          ...value?.departmentIds?.map((id: number) => ({ departmentId: id }))
         );
       }
       if (entities.includes("role")) {
-        access.push(...data?.roleIds?.map((id: number) => ({ roleId: id })));
+        access.push(...value?.roleIds?.map((id: number) => ({ roleId: id })));
       }
       if (entities.includes("employee")) {
         access.push(
-          ...data?.employeeIds?.map((id: number) => ({ employeeId: id }))
+          ...value?.employeeIds?.map((id: number) => ({ employeeId: id }))
         );
       }
       return access;
     };
-    if (documentUrl) {
-      mutate(
-        {
-          folderId: id ? id : data.folderId,
-          data: {
-            access: defineAccessFromFormFields(),
 
-            description: data.description,
-            url: documentUrl,
-            name: data.name,
-          },
+    mutate(
+      {
+        data: {
+          url: documentUrl ?? "",
+          name: value.name,
+          description: value.description,
+          access: defineAccessFromFormFields(),
         },
-        {
-          onError: (err: any) => {
-            openNotification({
-              state: "error",
-              title: "Error Occurred",
-              description:
-                err?.response.data.message ?? err?.response.data.error.message,
-            });
-          },
-          onSuccess: (res: any) => {
-            openNotification({
-              state: "success",
+        folderId: file?.folderId ?? 0,
+        fileId: file?.id ?? 0,
+      },
+      {
+        onError: (err: any) => {
+          openNotification({
+            state: "error",
+            title: "Error Occurred",
+            description:
+              err?.response.data.message ?? err?.response.data.error.message,
+          });
+        },
+        onSuccess: (res: any) => {
+          openNotification({
+            state: "success",
+            title: "Success",
+            description: res.data.message,
+          });
+          form.resetFields();
+          handleClose();
 
-              title: "Success",
-              description: res.data.message,
-              // duration: 0.4,
-            });
-            form.resetFields();
-            handleClose();
-
-            queryClient.invalidateQueries({
-              queryKey: [QUERY_KEY_FOR_FILES_IN_A_FOLDER],
-            });
-            queryClient.invalidateQueries({
-              queryKey: [QUERY_KEY_FOR_FOLDERS],
-            });
-            queryClient.invalidateQueries({
-              queryKey: [QUERY_KEY_FOR_FILES_IN_A_FOLDER],
-            });
-          },
-        }
-      );
-    } else {
-      openNotification({
-        state: "error",
-        title: "No File Uploaded",
-        description: `Please upload a file to proceed!`,
-      });
-    }
+          queryClient.invalidateQueries({
+            queryKey: [QUERY_KEY_FOR_FILES_IN_A_FOLDER],
+          });
+          queryClient.invalidateQueries({
+            queryKey: [QUERY_KEY_FOR_ALL_ASSIGNED_FILES],
+          });
+        },
+      }
+    );
   };
-
-  // const [FileAccessOptions, setFileAccessOptions] = useState<
-  //   FileAccessOption[]
-  // >([]);
 
   return (
     <Modal
       open={open}
       onCancel={() => handleClose()}
       footer={null}
-      title={"Add File"}
+      title={"Edit File"}
       style={{ top: 20 }}
     >
       <Form
@@ -140,7 +134,6 @@ export const AddFile: React.FC<IProps> = ({ open, handleClose, id }) => {
         <FormFolderInput
           Form={Form}
           control={{ name: "folderId", label: "Folder" }}
-          disabled={id ? true : false}
         />
         <Form.Item
           rules={textInputValidationRules}
