@@ -6,8 +6,8 @@ import dayjs from "dayjs";
 import { Dropdown, Empty, Menu, Skeleton } from "antd";
 import { DeleteFolder } from "./folders/DeleteFolder";
 import { TFolderListItem } from "../types";
-import { AddFile } from "./AddFile";
-import { EditFolder } from "./EditFolder";
+import { AddFile } from "./files/AddFile";
+import { EditFolder } from "./folders/EditFolder";
 import { Link } from "react-router-dom";
 import { appRoutes } from "config/router/paths";
 

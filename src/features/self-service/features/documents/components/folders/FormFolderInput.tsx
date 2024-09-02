@@ -2,7 +2,7 @@ import { Select, Form } from "antd";
 import { useDebounce } from "hooks/useDebounce";
 import { useState } from "react";
 import { generalValidationRules } from "utils/formHelpers/validation";
-import { useGetFolders } from "../hooks/useGetFolders";
+import { useGetFolders } from "../../hooks/useGetFolders";
 
 export const FormFolderInput: React.FC<{
   Form: typeof Form;

@@ -10,7 +10,7 @@ import { TableWithFocusType } from "components/table";
 import { FILE_TABLE_COLUMNS } from "../components/columns/files";
 import { IViewFilesActions, TFileListItem } from "../types/fileList";
 import { useGetSingleFolder } from "../hooks/useGetSingleFolder";
-import { AddFile } from "../components/AddFile";
+import { AddFile } from "../components/files/AddFile";
 import { useState } from "react";
 import { TFolderAction } from "../components/DocumentFolders";
 import { DeleteFile } from "../components/files/DeleteFile";

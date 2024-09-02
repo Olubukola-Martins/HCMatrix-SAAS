@@ -1,33 +1,24 @@
 import { Form, Input, Modal } from "antd";
 import { AppButton } from "components/button/AppButton";
-import React, { useEffect } from "react";
+import React from "react";
 import { IModalProps } from "types";
 import { textInputValidationRules } from "utils/formHelpers/validation";
 import { openNotification } from "utils/notifications";
 import { useQueryClient } from "react-query";
-import { QUERY_KEY_FOR_FOLDERS } from "../hooks/useGetFolders";
-import { useUpdateFolder } from "../hooks/useUpdateFolder";
-import { useGetSingleFolder } from "../hooks/useGetSingleFolder";
 
-export const EditFolder: React.FC<IModalProps> = ({
-  open,
-  handleClose,
-  id,
-}) => {
+import { useCreateFolder } from "../../hooks/useCreateFolder";
+import { QUERY_KEY_FOR_FOLDERS } from "../../hooks/useGetFolders";
+
+export const AddFolder: React.FC<IModalProps> = ({ open, handleClose }) => {
   const queryClient = useQueryClient();
 
   const [form] = Form.useForm();
-  const { mutate, isLoading } = useUpdateFolder();
-  const { data, isSuccess, isFetching } = useGetSingleFolder({
-    id: id as unknown as number,
-  });
-  console.log(data);
+  const { mutate, isLoading } = useCreateFolder();
 
   const handleSubmit = (data: any) => {
     mutate(
       {
-        id: id as unknown as number,
-        body: { name: data.name },
+        name: data.name,
       },
       {
         onError: (err: any) => {
@@ -51,28 +42,18 @@ export const EditFolder: React.FC<IModalProps> = ({
 
           queryClient.invalidateQueries({
             queryKey: [QUERY_KEY_FOR_FOLDERS],
+            // exact: true,
           });
         },
       }
     );
   };
-
-  useEffect(() => {
-    if (data && id) {
-      form.setFieldsValue({
-        name: data.name,
-      });
-    } else {
-      form.resetFields();
-    }
-  }, [form, data, isSuccess, id]);
-
   return (
     <Modal
       open={open}
       onCancel={() => handleClose()}
       footer={null}
-      title={"Edit Folder"}
+      title={"Create Folder"}
       style={{ top: 20 }}
     >
       <Form
@@ -80,7 +61,6 @@ export const EditFolder: React.FC<IModalProps> = ({
         form={form}
         onFinish={handleSubmit}
         requiredMark={false}
-        disabled={isFetching}
       >
         <Form.Item
           rules={textInputValidationRules}
