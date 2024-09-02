@@ -52,6 +52,9 @@ export const FILE_TABLE_COLUMNS = (
                 label: "Assign File",
                 key: "Assign",
                 disabled: action.fromFolderView ? false : true,
+                onClick: () =>
+                  action.handleAssignFile &&
+                  action.handleAssignFile(file as unknown as TFileListItem),
               },
               {
                 label: "Delete File",

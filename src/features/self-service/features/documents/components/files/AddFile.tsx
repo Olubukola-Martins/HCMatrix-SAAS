@@ -31,7 +31,7 @@ export interface FileAccessOption {
 }
 
 
-type TFileEntities = "group" | "department" | "employee" | "role";
+export type TFileEntities = "group" | "department" | "employee" | "role";
 
 export const AddFile: React.FC<IProps> = ({ open, handleClose, id }) => {
   const queryClient = useQueryClient();
@@ -120,9 +120,9 @@ export const AddFile: React.FC<IProps> = ({ open, handleClose, id }) => {
     }
   };
 
-  const [FileAccessOptions, setFileAccessOptions] = useState<
-    FileAccessOption[]
-  >([]);
+  // const [FileAccessOptions, setFileAccessOptions] = useState<
+  //   FileAccessOption[]
+  // >([]);
 
   return (
     <Modal

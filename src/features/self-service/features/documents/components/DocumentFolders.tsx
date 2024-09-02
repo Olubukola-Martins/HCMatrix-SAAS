@@ -11,7 +11,7 @@ import { EditFolder } from "./folders/EditFolder";
 import { Link } from "react-router-dom";
 import { appRoutes } from "config/router/paths";
 
-export type TFolderAction = "edit" | "delete" | "view_file" | "add_file";
+export type TFolderAction = "edit" | "delete" | "view_file" | "add_file" | "assign_file";
 export const DocumentFolders = () => {
   const { pagination, onChange } = usePagination({ pageSize: 8 });
   const { data, isLoading } = useGetFolders({ pagination });

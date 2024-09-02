@@ -14,4 +14,5 @@ export type TFileListItem = {
 export interface IViewFilesActions {
   fromFolderView: boolean;
   handleDelete?: (file: TFileListItem) => void;
+  handleAssignFile?: (file: TFileListItem) => void
 }

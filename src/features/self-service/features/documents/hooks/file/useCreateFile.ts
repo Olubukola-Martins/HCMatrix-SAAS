@@ -11,7 +11,7 @@ export type TFileData = {
   access: Access[];
 };
 
-type  Access  = {
+export type Access  = {
   groupId: number
 } | {
   departmentId: number
