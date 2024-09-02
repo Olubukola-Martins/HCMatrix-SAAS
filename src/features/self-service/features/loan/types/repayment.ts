@@ -79,6 +79,7 @@ export interface IPaymentPlanDetails {
   loanAmount: string;
   paidAmount: number;
   pendingAmount: number;
+  repaymentsLeft: number;
   result: IRepaymentPlanColumn[];
   totalCount: number;
 }
