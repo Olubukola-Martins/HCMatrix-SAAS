@@ -23,35 +23,70 @@ import { useUpdateFile } from "../../hooks/file/useUpdateFile";
 import { QUERY_KEY_FOR_FILES_IN_A_FOLDER } from "../../hooks/file/useGetFilesInFolder";
 import { TFileListItem } from "../../types";
 import { QUERY_KEY_FOR_ALL_ASSIGNED_FILES } from "../../hooks/file/useGetAllAssignedFiles";
+import { TFormFileInput } from "types/files";
+import { FormFileInput } from "components/generalFormInputs/FormFileInput";
 
 interface IProps extends IModalProps {
   file?: TFileListItem;
 }
 
 interface TFormData {
-    groupIds: number[];
-    departmentIds: number[];
-    roleIds: number[];
-    employeeIds: number[];
-    name: string;
-    description:string;
-    url: string;
-  }
+  groupIds: number[];
+  departmentIds: number[];
+  roleIds: number[];
+  employeeIds: number[];
+  name: string;
+  description: string;
+  url: string;
+  folderId: number;
+  file?: TFormFileInput;
+}
 export const EditFile = ({ open, handleClose, file }: IProps) => {
   const queryClient = useQueryClient();
-  const documentUrl = useCurrentFileUploadUrl("documentUrl");
+  //   const documentUrl = useCurrentFileUploadUrl("documentUrl");
   const [entities, setEntities] = useState<TFileEntities[]>([]);
-  const [form] = Form.useForm();
+  const [form] = Form.useForm<TFormData>();
   const { mutate, isLoading } = useUpdateFile();
 
-  console.log(file);
-
   useEffect(() => {
+    const deFaultEntities: TFileEntities[] = [];
+
+    if (file?.access.some((item) => "groupId" in item)) {
+      deFaultEntities.push("group");
+    }
+    if (file?.access.some((item) => "roleId" in item)) {
+      deFaultEntities.push("role");
+    }
+    if (file?.access.some((item) => "departmentId" in item)) {
+      deFaultEntities.push("department");
+    }
+    if (file?.access.some((item) => "employeeId" in item)) {
+      deFaultEntities.push("employee");
+    }
+
+    setEntities(deFaultEntities);
+
     form.setFieldsValue({
       folderId: file?.folderId,
       name: file?.name,
       description: file?.description,
       url: file?.url,
+      groupIds: file?.access
+        .filter((a) => "groupId" in a)
+        .map((item) => ("groupId" in item ? item.groupId : 0))
+        .filter((x) => x !== 0),
+      departmentIds: file?.access
+        .filter((a) => "departmentId" in a)
+        .map((item) => ("departmentId" in item ? item.departmentId : 0))
+        .filter((x) => x !== 0),
+      roleIds: file?.access
+        .filter((a) => "roleId" in a)
+        .map((item) => ("roleId" in item ? item.roleId : 0))
+        .filter((x) => x !== 0),
+      employeeIds: file?.access
+        .filter((a) => "employeeId" in a)
+        .map((item) => ("employeeId" in item ? item.employeeId : 0))
+        .filter((x) => x !== 0),
     });
   }, [file, form]);
 
@@ -80,9 +115,10 @@ export const EditFile = ({ open, handleClose, file }: IProps) => {
     mutate(
       {
         data: {
-          url: documentUrl ?? "",
-          name: value.name,
-          description: value.description,
+          url: value?.url,
+          file: value?.file,
+          name: value?.name,
+          description: value?.description,
           access: defineAccessFromFormFields(),
         },
         folderId: file?.folderId ?? 0,
@@ -149,12 +185,8 @@ export const EditFile = ({ open, handleClose, file }: IProps) => {
         >
           <Input.TextArea placeholder="Description" />
         </Form.Item>
-        <Form.Item
-          label="Assign File to"
-          name="file"
-          rules={generalValidationRules}
-        >
-          <Checkbox.Group onChange={(val) => setEntities(val)}>
+        <Form.Item label="Assign File to" rules={generalValidationRules}>
+          <Checkbox.Group value={entities} onChange={(val) => setEntities(val)}>
             <Checkbox value="group">Group</Checkbox>
             <Checkbox value="department">Department</Checkbox>
             <Checkbox value="role">Role</Checkbox>
@@ -193,20 +225,22 @@ export const EditFile = ({ open, handleClose, file }: IProps) => {
         )}
 
         <div className={boxStyle}>
-          <FileUpload
-            allowedFileTypes={[
-              "image/jpeg",
-              "image/png",
-              "image/jpg",
-              "application/pdf",
-              "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
-              "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-              "text/csv",
-              "text/plain",
-            ]}
-            fileKey="documentUrl"
-            textToDisplay="Upload File"
-            displayType="form-space-between"
+          <FormFileInput
+            Form={Form}
+            name="file"
+            ruleOptions={{
+              allowedFileTypes: [
+                "image/jpeg",
+                "image/png",
+                "image/jpg",
+                "application/pdf",
+                "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+                "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+                "text/csv",
+                "text/plain",
+              ],
+              required: false,
+            }}
           />
         </div>
 

@@ -23,7 +23,7 @@ const createData = async (props: {
   };
 
   // upload document url
-  const fileUrl = props.data.file
+  const fileUrl = props?.data?.file
     ? await uploadFile({
         auth: { companyId: props.auth.companyId, token: props.auth.token },
         data: { file: props.data.file },
@@ -47,7 +47,7 @@ export const useUpdateFile = () => {
       folderId,
       fileId,
     }: {
-      data: TFileData;
+      data: TFileData & { file?: TFormFileInput };
       folderId: number;
       fileId: number;
     }) => createData({ data, folderId, fileId, auth: { token, companyId } })

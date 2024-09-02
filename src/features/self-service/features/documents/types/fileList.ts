@@ -1,3 +1,4 @@
+import { Access } from "../hooks/file/useCreateFile";
 
 
 export type TFileListItem = {
@@ -9,6 +10,7 @@ export type TFileListItem = {
   companyId: number;
   createdAt: string;
   updatedAt: string;
+  access: Access[]
 };
 
 export interface IViewFilesActions {
