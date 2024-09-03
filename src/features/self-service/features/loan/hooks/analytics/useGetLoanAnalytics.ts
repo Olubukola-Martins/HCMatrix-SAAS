@@ -3,19 +3,17 @@ import { MICROSERVICE_ENDPOINTS } from "config/enviroment";
 import { useQuery } from "react-query";
 import { ICurrentCompany } from "types";
 import { useApiAuth } from "hooks/useApiAuth";
-import { TLoanAnalytics } from "../../types";
-import { TApprovalStatus } from "types/statuses";
-import { APPROVAL_STATUS_OPTIONS } from "constants/statustes";
+import { TAllLoanAnalytics } from "../../types/analytic";
 
 export const QUERY_KEY_FOR_LOAN_ANALYTICS = "loan-analytics";
 
-type TData = { year?: string; status?: TApprovalStatus[] };
 const getData = async (props: {
-  type: "me" | "all";
-  data?: TData;
+  type: "mine" | "all";
   auth: ICurrentCompany;
-}): Promise<TLoanAnalytics> => {
-  const url = `${MICROSERVICE_ENDPOINTS.PAYROLL}/loan/analytic/${props.type}`;
+}): Promise<TAllLoanAnalytics> => {
+  const acceptedUrl = props.type === "mine" ? "analytic/mine" : "analytic";
+
+  const url = `${MICROSERVICE_ENDPOINTS.PAYROLL}/loan/${acceptedUrl}`;
 
   const config = {
     headers: {
@@ -23,18 +21,12 @@ const getData = async (props: {
       Authorization: `Bearer ${props.auth.token}`,
       "x-company-id": props.auth.companyId,
     },
-    params: {
-      status:
-        props.data?.status?.join(",") ??
-        APPROVAL_STATUS_OPTIONS.map((item) => item.value).join(","),
-      year: props.data?.year,
-    },
   };
 
   const res = await axios.get(url, config);
-  const item: TLoanAnalytics = res.data.data;
+  const item: TAllLoanAnalytics = res.data.data;
 
-  const data: TLoanAnalytics = {
+  const data: TAllLoanAnalytics = {
     ...item,
   };
 
@@ -42,13 +34,12 @@ const getData = async (props: {
 };
 
 export const useGetLoanAnalytics = (values: {
-  props?: TData;
-  type: "me" | "all";
+  type: "mine" | "all";
 }) => {
   const { token, companyId } = useApiAuth();
-  const { props, type } = values;
+  const { type } = values;
   const queryData = useQuery(
-    [QUERY_KEY_FOR_LOAN_ANALYTICS, type, props?.status, props?.year],
+    [QUERY_KEY_FOR_LOAN_ANALYTICS, type],
     () =>
       getData({
         type,
@@ -56,7 +47,6 @@ export const useGetLoanAnalytics = (values: {
           companyId,
           token,
         },
-        data: { ...props },
       }),
     {
       onError: (err: any) => {},

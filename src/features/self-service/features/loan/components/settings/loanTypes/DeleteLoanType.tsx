@@ -2,28 +2,23 @@ import React from "react";
 import { IModalProps } from "types";
 import { openNotification } from "utils/notifications";
 import { useQueryClient } from "react-query";
-import DeleteEntityModal from "components/entity/DeleteEntityModal";
-import { TLoanType } from "../../../types";
+import ConfirmationModal from "components/modals/ConfirmationModal";
 import { useDeleteLoanType } from "../../../hooks/type/useDeleteLoanType";
 import { QUERY_KEY_FOR_LOAN_TYPES } from "../../../hooks/type/useGetLoanTypes";
 
-interface IProps extends IModalProps {
-  type: TLoanType;
-}
-export const DeleteLoanType: React.FC<IProps> = ({
+export const DeleteLoanType: React.FC<IModalProps> = ({
   open,
   handleClose,
-  type,
+  id,
 }) => {
   const queryClient = useQueryClient();
 
   const { mutate, isLoading } = useDeleteLoanType();
 
   const handleDelete = () => {
+    if (!id) return;
     mutate(
-      {
-        id: type.id,
-      },
+      { id },
       {
         onError: (err: any) => {
           openNotification({
@@ -37,7 +32,6 @@ export const DeleteLoanType: React.FC<IProps> = ({
         onSuccess: (res: any) => {
           openNotification({
             state: "success",
-
             title: "Success",
             description: res.data.message,
             // duration: 0.4,
@@ -47,7 +41,6 @@ export const DeleteLoanType: React.FC<IProps> = ({
             queryKey: [QUERY_KEY_FOR_LOAN_TYPES],
             // exact: true,
           });
-
           handleClose();
         },
       }
@@ -55,12 +48,12 @@ export const DeleteLoanType: React.FC<IProps> = ({
   };
 
   return (
-    <DeleteEntityModal
-      title="Delete Loan Type"
-      entity={{ type: "type", name: type.name }}
+    <ConfirmationModal
+      title="Delete loan type"
+      description={`Are you sure you want to delete this loan type ?`}
       handleClose={handleClose}
       open={open}
-      handleDelete={{ fn: handleDelete, isLoading: isLoading }}
+      handleConfirm={{ fn: handleDelete, isLoading: isLoading }}
     />
   );
 };

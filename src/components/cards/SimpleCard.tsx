@@ -2,10 +2,12 @@ import { Skeleton } from "antd";
 import { AppButton, IAppBtnProps } from "components/button/AppButton";
 import React from "react";
 import { Link } from "react-router-dom";
+import { IDivProps } from "types/html";
 
-export interface ISimpleCard {
+export interface ISimpleCard extends IDivProps {
   title: string;
   highlight?: string | number;
+  highlightClassName?: string;
   url?: string;
   action?: IAppBtnProps;
   center?: boolean;
@@ -21,13 +23,14 @@ export const SimpleCard: React.FC<ISimpleCard> = ({
   center = false,
   loading,
   cardActions,
+  className,
+  highlightClassName = "font-semibold text-lg mb-2 capitalize",
 }) => {
+  const defaultClassName =
+    "border rounded-md p-2 shadow-sm bg-card hover:shadow-md cursor-pointer group";
   if (url) {
     return (
-      <Link
-        to={url}
-        className="border rounded-md p-2 shadow-sm bg-card hover:shadow-md cursor-pointer group"
-      >
+      <Link to={url} className={className ?? defaultClassName}>
         <div
           className={`rounded-md bg-mainBg shadow p-3 group-hover:border-b-2 group-hover:border-caramel flex flex-col ${
             center && "items-center text-center"
@@ -44,14 +47,14 @@ export const SimpleCard: React.FC<ISimpleCard> = ({
     );
   }
   return (
-    <div className="border rounded-md p-2 shadow-sm bg-card hover:shadow-md cursor-pointer group">
+    <div className={className ?? defaultClassName}>
       <div
-        className={`rounded-md bg-mainBg shadow p-3 group-hover:border-b-2 group-hover:border-caramel flex flex-col ${
+        className={`h-full rounded-md bg-mainBg shadow p-3 group-hover:border-b-2 group-hover:border-caramel flex flex-col ${
           center && "items-center text-center"
         }`}
       >
         <Skeleton loading={loading} paragraph={{ rows: 3 }}>
-          <>
+          <div className="h-full flex flex-col justify-evenly">
             <div className="flex justify-between py-3 items-start">
               <p className="text-sm font-medium  capitalize">{title}</p>
               <div className="flex gap-2">
@@ -63,12 +66,10 @@ export const SimpleCard: React.FC<ISimpleCard> = ({
               </div>
             </div>
             {highlight && (
-              <h2 className="font-semibold text-lg mb-2 capitalize">
-                {highlight}
-              </h2>
+              <h2 className={highlightClassName}>{highlight.toString()}</h2>
             )}
             {action && <AppButton {...action} />}
-          </>
+          </div>
         </Skeleton>
       </div>
     </div>

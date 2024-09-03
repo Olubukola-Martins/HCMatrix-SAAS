@@ -31,7 +31,7 @@ export const EmployeeOverviewCard: React.FC<IProps> = ({
   handleResignation,
   handleSuspension,
   handleActivate,
-  showMoreActions = true,
+  showMoreActions = false,
 }) => {
   const {
     fullName = "No name",

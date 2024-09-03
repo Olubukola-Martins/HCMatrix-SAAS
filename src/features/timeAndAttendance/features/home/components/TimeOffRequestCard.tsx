@@ -1,6 +1,6 @@
 import { usePagination } from "hooks/usePagination";
 import {
-  QUERY_KEY_FOR_TIME_OFF,
+  QUERY_KEY_FOR_MY_TIME_OFF_REQUEST,
   useGetTimeOff,
 } from "../../timeOff/hooks/useGetTimeOff";
 import { Dropdown, Empty, Menu, Popconfirm, Skeleton } from "antd";
@@ -17,7 +17,7 @@ export const TimeOffRequestCard: React.FC<IProps> = ({
   const { pagination } = usePagination({ pageSize: 2 });
   const { data, isLoading } = useGetTimeOff({ pagination });
   const { requestType } = useHandleTimeAndAttendanceStatus({
-    queryKey: QUERY_KEY_FOR_TIME_OFF,
+    queryKey: QUERY_KEY_FOR_MY_TIME_OFF_REQUEST,
   });
 
   return (
