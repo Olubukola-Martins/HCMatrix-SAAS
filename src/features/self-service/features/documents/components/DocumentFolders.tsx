@@ -3,7 +3,7 @@ import { folderCard } from "../assets";
 import { useGetFolders } from "../hooks/useGetFolders";
 import { usePagination } from "hooks/usePagination";
 import dayjs from "dayjs";
-import { Dropdown, Empty, Menu, Skeleton } from "antd";
+import { Dropdown, Empty, Menu, Pagination, Skeleton } from "antd";
 import { DeleteFolder } from "./folders/DeleteFolder";
 import { TFolderListItem } from "../types";
 import { AddFile } from "./files/AddFile";
@@ -11,7 +11,13 @@ import { EditFolder } from "./folders/EditFolder";
 import { Link } from "react-router-dom";
 import { appRoutes } from "config/router/paths";
 
-export type TFolderAction = "edit" | "delete" | "view_file" | "add_file" | "assign_file" | "edit_file";
+export type TFolderAction =
+  | "edit"
+  | "delete"
+  | "view_file"
+  | "add_file"
+  | "assign_file"
+  | "edit_file";
 export const DocumentFolders = () => {
   const { pagination, onChange } = usePagination({ pageSize: 8 });
   const { data, isLoading } = useGetFolders({ pagination });
@@ -118,6 +124,9 @@ export const DocumentFolders = () => {
               />
             </div>
           ))}
+          <div className="mt-4 col-span-4 flex justify-end">
+            <Pagination {...pagination} onChange={onChange} size="small" />
+          </div>
         </div>
       ) : (
         <Empty className="mt-15" />
