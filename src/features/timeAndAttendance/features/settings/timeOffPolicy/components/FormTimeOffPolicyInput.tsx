@@ -15,7 +15,14 @@ export const FormTimeOffPolicyInput: React.FC<{
   optional?: boolean;
   handleSelect?: (val: number, timeOff?: ITimeOffPolicyRule) => void;
   handleClear?: () => void;
-}> = ({ Form, showLabel = true, control, optional = false, handleSelect, handleClear }) => {
+}> = ({
+  Form,
+  showLabel = true,
+  control,
+  optional = false,
+  handleSelect,
+  handleClear,
+}) => {
   const [searchTerm, setSearchTerm] = useState<string>("");
   const debouncedSearchTerm: string = useDebounce<string>(searchTerm);
 
@@ -28,9 +35,9 @@ export const FormTimeOffPolicyInput: React.FC<{
   };
 
   const handleClearFunction = () => {
-    setSearchTerm("")
-    handleClear && handleClear()
-  }
+    setSearchTerm("");
+    handleClear && handleClear();
+  };
 
   return (
     <Form.Item
@@ -41,10 +48,10 @@ export const FormTimeOffPolicyInput: React.FC<{
       <Select
         mode={control?.multiple ? "multiple" : undefined}
         placeholder="Select timeoff policy"
-        loading={isFetching} 
+        loading={isFetching}
         showSearch
         allowClear
-        onClear={() =>  handleClearFunction()}
+        onClear={() => handleClearFunction()}
         onSearch={handleSearch}
         className="rounded border-slate-400 w-full"
         defaultActiveFirstOption={false}
@@ -54,7 +61,6 @@ export const FormTimeOffPolicyInput: React.FC<{
           const timeOff = data?.data.find((item) => item.id === val);
           handleSelect?.(val, timeOff);
         }}
-        
       >
         {isSuccess ? (
           data?.data.map((item) => (

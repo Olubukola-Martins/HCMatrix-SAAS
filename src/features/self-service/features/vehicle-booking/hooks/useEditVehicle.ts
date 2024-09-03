@@ -70,6 +70,7 @@ const editVehicle = async (props: {
     : undefined;
   delete props.data.image;
   delete props.data.documents;
+  
   const data: TEditPropsApi = {
     ...props.data,
     imageUrl: imageUrls ? imageUrls[0] : undefined,

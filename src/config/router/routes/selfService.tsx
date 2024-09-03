@@ -45,6 +45,7 @@ import Requisition from "features/self-service/features/requisitions/pages/Requi
 import { canUserAccessComponent } from "components/permission-restriction/PermissionRestrictor";
 import VehicleBookingSettings from "features/self-service/features/vehicle-booking/pages/VehicleBookingSettings";
 import EmployeeHealthAccessPage from "features/self-service/features/health-access/pages/EmployeeHealthAccessPage";
+import FilesInFolder from "features/self-service/features/documents/pages/FilesInFolder";
 import LoanRePaymentPlan from "features/self-service/features/loan/pages/LoanRePaymentPlan";
 import LoanRePaymentSchedule from "features/self-service/features/loan/pages/LoanRePaymentSchedule";
 
@@ -790,6 +791,21 @@ export const selfServiceRoutes = (props: TAppPageDataFnProps): TRouteData[] => {
       hidden: !canUserAccessComponent({
         userPermissions,
 
+        requiredPermissions: ["manage-documents"],
+        activeSubscription,
+        requiredSubscriptionState: {
+          label: "employee-management",
+          resources: [],
+        },
+      }),
+    },
+    {
+      element: <FilesInFolder />,
+      path: appRoutes.filesInFolder().format,
+      isSearchable: false,
+      isPrimaryFeature: true,
+      hidden: !canUserAccessComponent({
+        userPermissions,
         requiredPermissions: ["manage-documents"],
         activeSubscription,
         requiredSubscriptionState: {

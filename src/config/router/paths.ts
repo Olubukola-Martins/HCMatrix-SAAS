@@ -261,6 +261,10 @@ export const appRoutes = {
   }),
   hRLetters: `/self-service/hr-letters`,
   documents: `/self-service/documents`,
+  filesInFolder: (id?: number) => ({
+    format: `/self-service/documents/:id/files-in-folder`,
+    path: `/self-service/documents/${id}/files-in-folder`,
+  }),
   notifications: `/notifications`,
 
   // Performance route

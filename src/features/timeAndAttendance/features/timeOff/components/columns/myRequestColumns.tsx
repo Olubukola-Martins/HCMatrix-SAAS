@@ -1,11 +1,10 @@
 import { ColumnsType } from "antd/es/table";
 import { IColumnsProps, ITimeOffProps } from "../../types";
-import { Dropdown, Menu} from "antd";
-import { getAppropriateColorForStatus } from "utils/colorHelpers/getAppropriateColorForStatus";
+import { Dropdown, Menu, Popconfirm } from "antd";
 
 export const EMPLOYEE_TIMEOFF_REQUEST_TABLE_COLUMNS = ({
   handleDelete,
-  handleViewStages,
+  approvalColumn,
 }: IColumnsProps): ColumnsType<ITimeOffProps> => [
   {
     title: "Time off Policy",
@@ -32,19 +31,6 @@ export const EMPLOYEE_TIMEOFF_REQUEST_TABLE_COLUMNS = ({
     title: "Status",
     dataIndex: "status",
     key: "status",
-    render: (_, item) => {
-      if (!item || !item.status) {
-        return null;
-      }
-      return (
-        <span
-          style={{ color: getAppropriateColorForStatus(item.status) }}
-          className="capitalize"
-        >
-          {item.status}
-        </span>
-      );
-    },
   },
   {
     title: "Reasons",
@@ -60,19 +46,16 @@ export const EMPLOYEE_TIMEOFF_REQUEST_TABLE_COLUMNS = ({
           trigger={["click"]}
           overlay={
             <Menu>
-              <Menu.Item
-                key="1"
-                onClick={() => handleDelete && handleDelete(val.id as number)}
-              >
-                Cancel
-              </Menu.Item>
-              <Menu.Item
-                key="2"
-                onClick={() =>
-                  handleViewStages && handleViewStages(val.id as number)
-                }
-              >
-                View Approval Stages
+              <Menu.Item key="1">Edit</Menu.Item>
+              <Menu.Item key="5">
+                <Popconfirm
+                  title={`Cancel ${val.policy?.title}`}
+                  onConfirm={() =>
+                    handleDelete && handleDelete(val.id as number)
+                  }
+                >
+                  Cancel
+                </Popconfirm>
               </Menu.Item>
             </Menu>
           }

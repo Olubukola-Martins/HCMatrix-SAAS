@@ -1,31 +1,24 @@
 import { Form, Input, Modal } from "antd";
 import { AppButton } from "components/button/AppButton";
-import React, { useEffect } from "react";
+import React from "react";
 import { IModalProps } from "types";
 import { textInputValidationRules } from "utils/formHelpers/validation";
 import { openNotification } from "utils/notifications";
 import { useQueryClient } from "react-query";
 
-import { QUERY_KEY_FOR_FOLDERS } from "../hooks/useGetFolders";
-import { useUpdateFolder } from "../hooks/useUpdateFolder";
-import { TFolderListItem } from "../types";
+import { useCreateFolder } from "../../hooks/useCreateFolder";
+import { QUERY_KEY_FOR_FOLDERS } from "../../hooks/useGetFolders";
 
-interface IProps extends IModalProps {
-  folder: TFolderListItem;
-}
-
-export const EditFolder: React.FC<IProps> = ({ open, handleClose, folder }) => {
+export const AddFolder: React.FC<IModalProps> = ({ open, handleClose }) => {
   const queryClient = useQueryClient();
 
   const [form] = Form.useForm();
-  const { mutate, isLoading } = useUpdateFolder();
+  const { mutate, isLoading } = useCreateFolder();
 
   const handleSubmit = (data: any) => {
     mutate(
       {
-        id: folder.id,
-
-        body: { name: data.name },
+        name: data.name,
       },
       {
         onError: (err: any) => {
@@ -55,19 +48,12 @@ export const EditFolder: React.FC<IProps> = ({ open, handleClose, folder }) => {
       }
     );
   };
-
-  useEffect(() => {
-    form.setFieldsValue({
-      name: folder.name,
-    });
-  }, [form, folder]);
-
   return (
     <Modal
       open={open}
       onCancel={() => handleClose()}
       footer={null}
-      title={"Edit Folder"}
+      title={"Create Folder"}
       style={{ top: 20 }}
     >
       <Form

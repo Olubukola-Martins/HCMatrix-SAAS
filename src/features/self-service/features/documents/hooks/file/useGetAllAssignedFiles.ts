@@ -3,26 +3,26 @@ import { MICROSERVICE_ENDPOINTS } from "config/enviroment";
 import { useQuery } from "react-query";
 import { ICurrentCompany, IPaginationProps, ISearchParams } from "types";
 import { DEFAULT_PAGE_SIZE } from "constants/general";
-import { TFolderListItem } from "../types";
 import { useApiAuth } from "hooks/useApiAuth";
+import { TFileListItem } from "../../types";
 
 interface IGetDataProps {
   pagination?: IPaginationProps;
   searchParams?: ISearchParams;
 }
 
-export const QUERY_KEY_FOR_FOLDERS = "folders";
+export const QUERY_KEY_FOR_ALL_ASSIGNED_FILES = "ALL_ASSIGNED_FILES";
 
 const getData = async (props: {
   data: IGetDataProps;
   auth: ICurrentCompany;
-}): Promise<{ data: TFolderListItem[]; total: number }> => {
+}): Promise<{ data: TFileListItem[]; total: number }> => {
   const { pagination } = props.data;
   const limit = pagination?.limit ?? DEFAULT_PAGE_SIZE;
   const offset = pagination?.offset ?? 0;
   const name = props.data.searchParams?.name ?? "";
 
-  const url = `${MICROSERVICE_ENDPOINTS.UTILITY}/self-service/document/folder`;
+  const url = `${MICROSERVICE_ENDPOINTS.UTILITY}/self-service/document/assigned`;
 
   const config = {
     headers: {
@@ -38,11 +38,12 @@ const getData = async (props: {
   };
 
   const res = await axios.get(url, config);
-  const fetchedData = res.data.data;
+
+  const fetchedData = res.data.data.result;
   const result = fetchedData;
 
-  const data: TFolderListItem[] = result.map(
-    (item: TFolderListItem): TFolderListItem => ({ ...item })
+  const data: TFileListItem[] = result.map(
+    (item: TFileListItem): TFileListItem => ({ ...item })
   );
 
   const ans = {
@@ -53,12 +54,12 @@ const getData = async (props: {
   return ans;
 };
 
-export const useGetFolders = (props: IGetDataProps) => {
+export const useGetAllAssignedFiles = (props: IGetDataProps) => {
   const { token, companyId } = useApiAuth();
 
   const { pagination, searchParams } = props;
   const queryData = useQuery(
-    [QUERY_KEY_FOR_FOLDERS, pagination, searchParams],
+    [QUERY_KEY_FOR_ALL_ASSIGNED_FILES, pagination, searchParams],
     () =>
       getData({
         auth: { token, companyId },

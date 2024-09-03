@@ -3,11 +3,10 @@ import { useQuery } from "react-query";
 import { MICROSERVICE_ENDPOINTS } from "config/enviroment";
 import { useApiAuth } from "hooks/useApiAuth";
 import { IRequestFilter, ITimeOffProps } from "../types";
-import { ICurrentCompany} from "types";
+import { ICurrentCompany } from "types";
 import { DEFAULT_PAGE_SIZE } from "constants/general";
 
 export const QUERY_KEY_FOR_ALL_TIME_OFF_REQUEST = "GET_ALL_TIME_OFF_REQUEST";
-
 
 const getData = async (
   auth: ICurrentCompany,
@@ -61,11 +60,7 @@ export const useGetAllTimeOffRequest = (filter?: IRequestFilter) => {
       filter?.policyId,
       filter?.date,
     ],
-    () =>
-      getData(
-        { token, companyId },
-        { ...filter }
-      ),
+    () => getData({ token, companyId }, { ...filter }),
     {
       onError: (err: any) => {},
       onSuccess: (data) => {},

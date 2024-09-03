@@ -4,15 +4,8 @@ import { useApiAuth } from "hooks/useApiAuth";
 import { useMutation } from "react-query";
 import { ICurrentCompany } from "types";
 
-type TDelFileData = {
-  fileId: number;
-  folderId: number;
-};
-const delData = async (props: {
-  data: TDelFileData;
-  auth: ICurrentCompany;
-}) => {
-  const url = `${MICROSERVICE_ENDPOINTS.UTILITY}/self-service/document/folder/${props.data.folderId}/file/${props.data.fileId}`;
+const delData = async (props: { auth: ICurrentCompany; id: number }) => {
+  const url = `${MICROSERVICE_ENDPOINTS.TIME_AND_ATTENDANCE}/time-off-requests/${props.id}`;
   const config = {
     headers: {
       Accept: "application/json",
@@ -24,9 +17,9 @@ const delData = async (props: {
   const response = await axios.delete(url, config);
   return response;
 };
-export const useDeleteFile = () => {
+export const useCancelTimeOffRequest = () => {
   const { token, companyId } = useApiAuth();
-  return useMutation((props: TDelFileData) =>
-    delData({ data: props, auth: { token, companyId } })
+  return useMutation((id: number) =>
+    delData({ auth: { token, companyId }, id })
   );
 };

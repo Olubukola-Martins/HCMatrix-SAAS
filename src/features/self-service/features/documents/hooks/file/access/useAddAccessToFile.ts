@@ -3,18 +3,15 @@ import { MICROSERVICE_ENDPOINTS } from "config/enviroment";
 import { useApiAuth } from "hooks/useApiAuth";
 import { useMutation } from "react-query";
 import { ICurrentCompany } from "types";
+import { Access } from "../useCreateFile";
 
-interface TAccessData {
-  type: string; //TO DO:  define the types properly => 'role' | 'department' |  ....
-  entityId: number;
-}
 const createData = async (props: {
-  data: TAccessData;
+  data: Access[];
   folderId: number;
   fileId: number;
   auth: ICurrentCompany;
 }) => {
-  const url = `${MICROSERVICE_ENDPOINTS.UTILITY}/self-service/folder/${props.folderId}/file/${props.fileId}/access`;
+  const url = `${MICROSERVICE_ENDPOINTS.UTILITY}/self-service/document/folder/${props.folderId}/file/${props.fileId}/access`;
   const config = {
     headers: {
       Accept: "application/json",
@@ -23,11 +20,11 @@ const createData = async (props: {
     },
   };
 
-  const data: TAccessData = {
-    ...props.data,
+  const data: any = {
+    access: props.data,
   };
 
-  const response = await axios.post(url, data, config);
+  const response = await axios.put(url, data, config);
   return response;
 };
 export const useAddAccessToFile = () => {
@@ -38,7 +35,7 @@ export const useAddAccessToFile = () => {
       folderId,
       fileId,
     }: {
-      data: TAccessData;
+      data: Access[];
       folderId: number;
       fileId: number;
     }) => createData({ data, folderId, fileId, auth: { token, companyId } })
