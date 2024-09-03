@@ -26,10 +26,10 @@ const createData = async (props: {
   const fileUrl = props?.data?.file
     ? await uploadFile({
         auth: { companyId: props.auth.companyId, token: props.auth.token },
-        data: { file: props.data.file },
+        data: { file: props.data.file?.[0].originFileObj },
       })
     : props.data.url;
-  props.data.url = typeof fileUrl === "string" ? fileUrl : fileUrl.data;
+  props.data.url = typeof fileUrl === "string" ? fileUrl : fileUrl?.data;
   delete props.data.file;
 
   const data: TFileData = {
