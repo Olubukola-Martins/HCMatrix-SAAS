@@ -7,12 +7,10 @@ import { useFetchGroups } from "../hooks/useFetchGroups";
 export const FormGroupInput: React.FC<{
   Form: typeof Form;
   showLabel?: boolean;
-  mode?: "multiple" | "tags";
 
   control?: { label: string; name: string | (string | number)[] };
 
   mode?: "multiple" | "tags";
-
 }> = ({ Form, showLabel = true, control, mode }) => {
   const [searchTerm, setSearchTerm] = useState<string>("");
   const debouncedSearchTerm: string = useDebounce<string>(searchTerm);
@@ -45,7 +43,6 @@ export const FormGroupInput: React.FC<{
         defaultActiveFirstOption={false}
         showArrow={false}
         filterOption={false}
-        mode={mode}
       >
         {data?.data.map((item) => (
           <Select.Option key={item.id} value={item.id}>

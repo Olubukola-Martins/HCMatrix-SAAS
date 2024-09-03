@@ -12,7 +12,7 @@ import { EGlobalOps, GlobalContext } from "stateManagers/GlobalContextProvider";
 import { useContext, useEffect } from "react";
 import { useQueryClient } from "react-query";
 import { useCreateTimeOff } from "../hooks/useCreateTimeOff";
-import { QUERY_KEY_FOR_TIME_OFF } from "../hooks/useGetTimeOff";
+import { QUERY_KEY_FOR_MY_TIME_OFF_REQUEST } from "../hooks/useGetTimeOff";
 import { useGetSingleTimeOff } from "../hooks/useGetSingleTimeOff";
 import dayjs from "dayjs";
 import { FormTimeOffPolicyInput } from "../../settings/timeOffPolicy/components/FormTimeOffPolicyInput";
@@ -68,7 +68,7 @@ export const AddTimeOff = ({ open, handleClose, id }: IModalProps) => {
           });
           form.resetFields();
           dispatch({ type: EGlobalOps.setShowInitialSetup, payload: true });
-          queryClient.invalidateQueries([QUERY_KEY_FOR_TIME_OFF]);
+          queryClient.invalidateQueries([QUERY_KEY_FOR_MY_TIME_OFF_REQUEST]);
           handleClose();
         },
       }

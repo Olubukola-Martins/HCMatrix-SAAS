@@ -2,7 +2,10 @@ import { Form, Select } from "antd";
 import { EMPLOYEE_TIMEOFF_REQUEST_TABLE_COLUMNS } from "./columns/myRequestColumns";
 import { TableWithFocusType } from "components/table";
 import { FormTimeOffPolicyInput } from "../../settings/timeOffPolicy/components/FormTimeOffPolicyInput";
-import { QUERY_KEY_FOR_TIME_OFF, useGetTimeOff } from "../hooks/useGetTimeOff";
+import {
+  QUERY_KEY_FOR_MY_TIME_OFF_REQUEST,
+  useGetTimeOff,
+} from "../hooks/useGetTimeOff";
 import { usePagination } from "hooks/usePagination";
 import { useState } from "react";
 import { useHandleTimeAndAttendanceStatus } from "features/timeAndAttendance/hooks/useHandleTimeAndAttendanceStatus";
@@ -13,7 +16,7 @@ import { useQueryClient } from "react-query";
 export const MyRequest = () => {
   const { mutate, isLoading: loadCancel } = useCancelTimeOffRequest();
   const { requestType } = useHandleTimeAndAttendanceStatus({
-    queryKey: QUERY_KEY_FOR_TIME_OFF,
+    queryKey: QUERY_KEY_FOR_MY_TIME_OFF_REQUEST,
   });
   const queryClient = useQueryClient();
 
@@ -38,7 +41,7 @@ export const MyRequest = () => {
         });
 
         queryClient.invalidateQueries({
-          queryKey: [QUERY_KEY_FOR_TIME_OFF],
+          queryKey: [QUERY_KEY_FOR_MY_TIME_OFF_REQUEST],
         });
       },
     });
