@@ -1,9 +1,10 @@
-import { Modal, Button } from "antd";
+import { Modal, Button, Empty } from "antd";
 import Themes from "components/Themes";
 import PreviousChatCard from "./PreviousChatCard";
 import { IoIosArrowBack } from "react-icons/io";
 import { randomNumber } from "../utils/randomNumber";
 import { useEffect, useState } from "react";
+import { usePagination } from "hooks/usePagination";
 
 interface IProps {
   open: boolean;
@@ -20,27 +21,49 @@ const AIChatBotModal = ({
   openSettingsModal,
   openNewChatModal,
 }: IProps) => {
-  const [chatList, setChatList] = useState<{ chatId: string; question: string; time: string; }[]>([]);
+  const [chatList, setChatList] = useState<
+    { chatId: string; question: string; time: string }[]
+  >([]);
+  const { pagination, onChange } = usePagination({ pageSize: 5 });
 
   useEffect(() => {
-    const storedChatList = localStorage.getItem('chatList');
+    const storedChatList = localStorage.getItem("chatList");
     if (storedChatList) {
       const chatList = JSON.parse(storedChatList);
-      const sortedChatList = chatList.sort((a: any, b: any) => new Date(b.time).getTime() - new Date(a.time).getTime());
-      const latestChats = sortedChatList.slice(0, 5);
+      const sortedChatList = chatList.sort(
+        (a: any, b: any) =>
+          new Date(b.time).getTime() - new Date(a.time).getTime()
+      );
+      const chatMap = new Map<
+        string,
+        { chatId: string; question: string; time: string }
+      >();
 
-      setChatList(latestChats);
+      sortedChatList.forEach(
+        (chat: { chatId: string; question: string; time: string }) => {
+          if (!chatMap.has(chat.chatId)) {
+            chatMap.set(chat.chatId, chat);
+          }
+        }
+      );
+      const uniqueChatList = Array.from(chatMap.values());
+      setChatList(uniqueChatList);
+      onChange({ total: uniqueChatList.length });
     }
   }, []);
 
   const handleStartNewChat = () => {
     const newChatId = randomNumber();
     openNewChatModal(newChatId);
-  }
+  };
 
   const handleCardClick = (chatId: string) => {
     openNewChatModal(chatId);
-  }
+  };
+
+  const startIndex = (pagination.current! - 1) * pagination.pageSize!;
+  const endIndex = startIndex + pagination.pageSize!;
+  const displayedChats = chatList.slice(startIndex, endIndex);
 
   return (
     <Modal
@@ -54,7 +77,7 @@ const AIChatBotModal = ({
         <div>
           <div className="flex items-center justify-between mb-6">
             <button onClick={() => handleClose()}>
-                <IoIosArrowBack  />
+              <IoIosArrowBack />
             </button>
             <h5 className="text-lg font-medium pl-9">HCMatrix AI Chatbot</h5>
             <div className="flex gap-2">
@@ -77,22 +100,41 @@ const AIChatBotModal = ({
             <span>Previous Chat</span>
           </div>
           <div className="space-y-3">
-          {chatList.length > 0 ? (
-            chatList.map((chat) => (
-            <PreviousChatCard 
-            key={chat.chatId}
-            title={chat.question} 
-            date={new Date(chat.time).toLocaleDateString()}
-            chatId={chat.chatId}
-            onClick={handleCardClick} 
-            />
-          ))
-        ) : (
-          <div className="text-center text-sm">No previous chats found.</div>
-        )}
-            <Button type="link" block>
-              View all
-            </Button>
+            {displayedChats.length > 0 ? (
+              displayedChats.map((chat) => (
+                <PreviousChatCard
+                  key={chat.chatId}
+                  title={chat.question}
+                  date={new Date(chat.time).toLocaleDateString()}
+                  chatId={chat.chatId}
+                  onClick={handleCardClick}
+                />
+              ))
+            ) : (
+              <div className="flex flex-col h-full items-center justify-center">
+                <Empty description="No previous chat" />
+              </div>
+            )}
+            <div className="flex justify-between mt-4">
+              {pagination.current! > 1 && (
+                <Button
+                  type="link"
+                  block
+                  onClick={() => onChange(pagination.current! - 1)}
+                >
+                  Back
+                </Button>
+              )}
+              {endIndex < chatList.length && (
+                <Button
+                  type="link"
+                  block
+                  onClick={() => onChange(pagination.current! + 1)}
+                >
+                  View more
+                </Button>
+              )}
+            </div>
           </div>
         </div>
       </Themes>

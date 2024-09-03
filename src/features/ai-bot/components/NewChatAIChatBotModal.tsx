@@ -10,7 +10,7 @@ import { useAddChatText } from "../hooks/useAddChatText";
 import { openNotification } from "utils/notifications";
 import { useQueryClient } from "react-query";
 import SpeechToText from "components/audio/SpeechToText";
-import { TbMicrophone } from "react-icons/tb";
+import { TbMicrophone, TbMicrophoneOff } from "react-icons/tb";
 
 interface IProps {
   open: boolean;
@@ -123,7 +123,7 @@ const NewChatAIChatBotModal = ({ open, handleClose, chatId }: IProps) => {
           <h5 className="text-sm font-medium text-center">New Chat</h5>
         </div>
         <div className="flex flex-col gap-4 h-full justify-between relative ">
-          <div className="mb-24 px-6 pt-4">
+          <div className="mb-18 px-6 pt-4 max-h-[450px] overflow-y-auto">
             <Skeleton
               loading={isLoadingHistory}
               active
@@ -152,21 +152,21 @@ const NewChatAIChatBotModal = ({ open, handleClose, chatId }: IProps) => {
             </Skeleton>
           </div>
           {aiBotSettings.enableSuggestion && (
-          <div className="mb-4 px-6 text-right">
-            <h6 className="text-sm font-medium">AI Suggest</h6>
-            <ul className="space-y-2">
-              {suggestedQuestions.map((question, index) => (
-                <li
-                  key={index}
-                  onClick={() => handleSuggestedQuestionClick(question)}
-                  className="cursor-pointer text-orange-600 hover:text-gray-600 block"
-                >
-                  {question}
-                </li>
-              ))}
-            </ul>
-          </div>
-        )}
+            <div className="mb-2 px-6 text-right">
+              <h6 className="text-sm font-medium">AI Suggest</h6>
+              <ul className="space-y-2">
+                {suggestedQuestions.map((question, index) => (
+                  <li
+                    key={index}
+                    onClick={() => handleSuggestedQuestionClick(question)}
+                    className="cursor-pointer text-orange-600 hover:text-gray-600 block"
+                  >
+                    {question}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
 
           <SpeechToText
             onTranscript={(transcript) => setMessage(transcript)}
@@ -190,7 +190,7 @@ const NewChatAIChatBotModal = ({ open, handleClose, chatId }: IProps) => {
                 loading={isSendingText}
               />
               <Button
-                icon={<TbMicrophone />}
+                icon={isListening ? <TbMicrophoneOff /> : <TbMicrophone />}
                 type="text"
                 onClick={handleMicClick}
               />

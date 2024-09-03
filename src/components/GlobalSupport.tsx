@@ -40,7 +40,7 @@ const GlobalSupport = () => {
         openClassName="support"
         // style={{ width: 200, margin: "0 20px" }}
         title={
-          <div className="flex items-center gap-x-10  font-medium text-white">
+          <div className="flex items-center gap-x-10  font-medium text-white" style={{ background: 'var(--caramel)', width: '100%', padding: '10px' }}>
             <span>HCMatrix Quick Links</span>
             <i
               className="ri-close-line cursor-pointer"
