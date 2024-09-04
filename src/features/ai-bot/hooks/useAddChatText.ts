@@ -1,6 +1,7 @@
 import axios from "axios";
 import { useMutation } from "react-query";
 import { TChatText, TEmployee } from "../types";
+import { MICROSERVICE_ENDPOINTS } from "config/enviroment";
 
 interface IChatTextData {
   user_query: string;
@@ -10,7 +11,7 @@ interface IChatTextData {
   }
 
   const getChatText = async (data: IChatTextData): Promise<TChatText> => {
-    const url = "http://48.217.20.68:5000/chat";
+    const url = `${MICROSERVICE_ENDPOINTS.CHATBOT}/chat`;
 
     const res = await axios.post(url, data);
 

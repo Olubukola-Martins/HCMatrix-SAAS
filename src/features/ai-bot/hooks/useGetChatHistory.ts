@@ -1,6 +1,7 @@
 import axios from "axios";
 import { useQuery } from "react-query";
 import { TChatHistory } from "../types";
+import { MICROSERVICE_ENDPOINTS } from "config/enviroment";
 
 interface GetChatHistoryProps {
   employee_id: string;
@@ -15,7 +16,7 @@ interface GetChatHistoryProps {
     chat_id,
   }: GetChatHistoryProps
   ): Promise<TChatHistory[]> => {
-    const url = "http://48.217.20.68:5000/chat-history";
+    const url = `${MICROSERVICE_ENDPOINTS.CHATBOT}/chat-history`;
   
     const config = {
       headers: {
