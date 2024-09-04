@@ -50,9 +50,8 @@ export const EditShiftCategory: React.FC<IProps> = ({
         onSuccess: (res: any) => {
           openNotification({
             state: "success",
-
             title: "Success",
-            description: res.data.message,
+            description: "Shift category updated successfully!",
             // duration: 0.4,
           });
           form.resetFields();

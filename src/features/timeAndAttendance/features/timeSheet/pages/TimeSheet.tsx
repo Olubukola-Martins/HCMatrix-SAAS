@@ -67,7 +67,13 @@ const TimeSheet = () => {
         <PageIntro title="Timesheet" link={appRoutes.attendanceHome} />
         <p className="pt-2">
           Welcome on board, here is a detailed list of clocked work hours and
-          breaks of all employee.
+          breaks{" "}
+          <PermissionRestrictor
+            requiredPermissions={["view-all-time-and-attendance-timesheet"]}
+          >
+            <span>of all employee</span>
+          </PermissionRestrictor>
+          .
         </p>
 
         <div className="flex justify-between items-center mt-10 mb-7">
@@ -95,13 +101,18 @@ const TimeSheet = () => {
                 </button>
               </Dropdown>
             </PermissionRestrictor>
-            {filterData !== undefined && (
-              <AppButton
-                variant="transparent"
-                label="Reset Report"
-                handleClick={() => setFilterData(undefined)}
-              />
-            )}
+
+            <PermissionRestrictor
+              requiredPermissions={["view-all-time-and-attendance-timesheet"]}
+            >
+              {filterData !== undefined && (
+                <AppButton
+                  variant="transparent"
+                  label="Reset Report"
+                  handleClick={() => setFilterData(undefined)}
+                />
+              )}
+            </PermissionRestrictor>
           </div>
 
           <div className="flex items-center gap-x-3">
