@@ -52,7 +52,7 @@ const ViewApprovalStages: React.FC<
                 <Steps className="w-full" size="small" direction="vertical">
                   {data?.data?.map((stage) => {
                     const constructApprovalFullName = (): string => {
-                      let approvalFullName = "";
+                      let approvalFullName: string | undefined = undefined;
                       if (stage.leaveReliever) {
                         approvalFullName = getEmployeeFullName(
                           stage.leaveReliever
@@ -74,7 +74,7 @@ const ViewApprovalStages: React.FC<
                             getEmployeeFullName(approval.approver)
                           )
                           .join(",");
-                      approvalFullName = truncateString(approvalFullName, 12);
+                      
                       return approvalFullName;
                     };
               
@@ -83,7 +83,7 @@ const ViewApprovalStages: React.FC<
                       <Steps.Step
                         title={
                           <div className="grid grid-cols-3 gap-x-4 capitalize">
-                            <h4 title={approverName}>{approverName}</h4>
+                            <h4 title={approverName}>{truncateString(approverName, 12)}</h4>
                             <h4>{stage.type.split("-").join(" ")}</h4>
                             {stage.status === "pending" ? (
                               <SendReminderToStageApprover

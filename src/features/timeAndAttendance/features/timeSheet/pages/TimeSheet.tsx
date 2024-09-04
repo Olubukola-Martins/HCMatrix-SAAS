@@ -67,14 +67,19 @@ const TimeSheet = () => {
         <PageIntro title="Timesheet" link={appRoutes.attendanceHome} />
         <p className="pt-2">
           Welcome on board, here is a detailed list of clocked work hours and
-          breaks of all employee.
+          breaks{" "}
+          <PermissionRestrictor
+            requiredPermissions={["upload-time-and-attendance-timesheet"]}
+          >
+            <span>of all employee</span>
+          </PermissionRestrictor>.
         </p>
 
-        <div className="flex justify-between items-center mt-10 mb-7">
-          <div className="flex items-center gap-x-5">
-            <PermissionRestrictor
-              requiredPermissions={["upload-time-and-attendance-timesheet"]}
-            >
+        <PermissionRestrictor
+          requiredPermissions={["upload-time-and-attendance-timesheet"]}
+        >
+          <div className="flex justify-between items-center mt-10 mb-7">
+            <div className="flex items-center gap-x-5">
               <Dropdown
                 trigger={["click"]}
                 disabled={policyData?.title === "Mandatory" ? true : false}
@@ -94,29 +99,31 @@ const TimeSheet = () => {
                   <i className="fa-solid fa-chevron-down"></i>
                 </button>
               </Dropdown>
-            </PermissionRestrictor>
-            {filterData !== undefined && (
-              <AppButton
-                variant="transparent"
-                label="Reset Report"
-                handleClick={() => setFilterData(undefined)}
-              />
-            )}
-          </div>
 
-          <div className="flex items-center gap-x-3">
-            <button
-              className="flex items-center gap-x-2 transparentButton"
-              onClick={() => setFilterSheet(true)}
-            >
-              <span className="text-caramel font-medium">Filter</span>
-              <i className="ri-filter-2-line text-caramel"></i>
-            </button>
-            <ExportTimeSheet
-              trigger={<button className="button">Export</button>}
-            />
+              {filterData !== undefined && (
+                <AppButton
+                  variant="transparent"
+                  label="Reset Report"
+                  handleClick={() => setFilterData(undefined)}
+                />
+              )}
+            </div>
+
+            <div className="flex items-center gap-x-3">
+              <button
+                className="flex items-center gap-x-2 transparentButton"
+                onClick={() => setFilterSheet(true)}
+              >
+                <span className="text-caramel font-medium">Filter</span>
+                <i className="ri-filter-2-line text-caramel"></i>
+              </button>
+              <ExportTimeSheet
+                trigger={<button className="button">Export</button>}
+              />
+            </div>
           </div>
-        </div>
+        </PermissionRestrictor>
+        {/* here */}
 
         <PermissionRestrictor
           requiredPermissions={["view-all-time-and-attendance-timesheet"]}
