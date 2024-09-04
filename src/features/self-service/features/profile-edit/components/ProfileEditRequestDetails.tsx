@@ -60,7 +60,6 @@ export const ProfileEditRequestDetails: React.FC<IProps> = ({
       title={"Profile Edit Request Details"}
       style={{ top: 20 }}
       width={`75%`}
-
     >
       <Skeleton active loading={isFetching} paragraph={{ rows: 8 }}>
         <ApproveOrRejectButton
@@ -89,27 +88,30 @@ export const ProfileEditRequestDetails: React.FC<IProps> = ({
             handleClose();
           }}
         />
-        <PageIntro title="Category: Personal Information"/>
+        <PageIntro title="Category: Personal Information" />
 
-        <Table columns={[
-          {
-            title: '',
-            render: () => <span>Account Number</span>
-          },
-          {
-            title: 'Current Value',
-            render: () => <span>3120704672</span>
-          },
-          {
-            title: 'Proposed Value',
-            render: () => <span>3120704772</span>
-          },
-          {
-            title: 'Modified',
-            render: () => <span>Yes</span>
-          },
-
-        ]}/>
+        <Table
+          className="mt-6"
+          columns={[
+            {
+              title: "",
+              render: () => <span>Account Number</span>,
+            },
+            {
+              title: "Current Value",
+              render: () => <span>3120704672</span>,
+            },
+            {
+              title: "Proposed Value",
+              render: () => <span>3120704772</span>,
+            },
+            {
+              title: "Modified",
+              render: () => <span>Yes</span>,
+            },
+          ]}
+          dataSource={Array(4).fill(0)}
+        />
       </Skeleton>
     </Drawer>
   );
