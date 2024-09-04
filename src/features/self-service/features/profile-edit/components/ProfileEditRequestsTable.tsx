@@ -145,7 +145,60 @@ export const ProfileEditRequestsTable: React.FC<{
       )}
       <TableWithFocusType
         size="small"
-        dataSource={data?.data}
+        // dataSource={data?.data}
+        dataSource={[
+          {
+            id: 22,
+            date: "2024-09-04T23:00:00.000Z",
+            employeeId: 81,
+            proposedDesignationId: 38,
+            justification: "sds",
+            preferredStartDate: "2024-09-11T23:00:00.000Z",
+            attachmentUrls: [],
+            status: "pending",
+            companyId: 27,
+            createdAt: "2024-09-04T10:06:24.000Z",
+            updatedAt: "2024-09-04T10:06:24.000Z",
+            employee: {
+              id: 81,
+              firstName: "James",
+              lastName: "Doe",
+              email: "thisbroisfresh+1@gmail.com",
+              licenseType: "licensed",
+              empUid: "OWN0001",
+              roleId: 57,
+              status: "confirmed",
+              companyId: 27,
+              designationId: 38,
+              userId: 11,
+              avatarUrl: "null",
+              createdAt: "2023-11-22T22:05:08.000Z",
+              updatedAt: "2024-07-15T14:18:34.000Z",
+              deletedAt: "null",
+            },
+            proposedDesignation: {
+              id: 38,
+              name: "Backend Developer",
+              label: "backend-developer",
+              departmentId: 42,
+              companyId: 27,
+              createdAt: "2024-03-25T08:07:37.000Z",
+              updatedAt: "2024-03-25T08:07:37.000Z",
+              department: {
+                id: 42,
+                name: "Software Developmentqq",
+                label: "software-developmentqq",
+                companyId: 27,
+                departmentHeadId: null,
+                email: "test@bidautomate.com",
+                parentDepartmentId: null,
+                createdAt: "2024-03-25T08:07:16.000Z",
+                updatedAt: "2024-04-02T08:16:09.000Z",
+                deletedAt: null,
+              },
+            },
+          },
+        ]}
         loading={isFetching}
         columns={columns}
         pagination={{ ...pagination, total: data?.total }}
