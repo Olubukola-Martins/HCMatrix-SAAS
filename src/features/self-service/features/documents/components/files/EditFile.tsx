@@ -51,16 +51,18 @@ export const EditFile = ({ open, handleClose, file }: IProps) => {
   useEffect(() => {
     const deFaultEntities: TFileEntities[] = [];
 
-    if (file?.access.some((item) => "groupId" in item)) {
+    if (file?.access.some((item) => "groupId" in item && item.groupId)) {
       deFaultEntities.push("group");
     }
-    if (file?.access.some((item) => "roleId" in item)) {
+    if (file?.access.some((item) => "roleId" in item && item.roleId)) {
       deFaultEntities.push("role");
     }
-    if (file?.access.some((item) => "departmentId" in item)) {
+    if (
+      file?.access.some((item) => "departmentId" in item && item.departmentId)
+    ) {
       deFaultEntities.push("department");
     }
-    if (file?.access.some((item) => "employeeId" in item)) {
+    if (file?.access.some((item) => "employeeId" in item && item.employeeId)) {
       deFaultEntities.push("employee");
     }
 
@@ -112,15 +114,19 @@ export const EditFile = ({ open, handleClose, file }: IProps) => {
       return access;
     };
 
+    const data = {
+      url: file?.url,
+      file: value?.file,
+      name: value?.name,
+      description: value?.description,
+      access: defineAccessFromFormFields(),
+    };
+
+    console.log(data, "WHy are u happening");
+
     mutate(
       {
-        data: {
-          url: value?.url,
-          file: value?.file,
-          name: value?.name,
-          description: value?.description,
-          access: defineAccessFromFormFields(),
-        },
+        data: data,
         folderId: file?.folderId ?? 0,
         fileId: file?.id ?? 0,
       },

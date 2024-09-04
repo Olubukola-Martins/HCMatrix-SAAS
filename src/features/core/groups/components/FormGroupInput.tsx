@@ -1,4 +1,4 @@
-import { Select, Spin, Form } from "antd";
+import { Select, Form } from "antd";
 import { useDebounce } from "hooks/useDebounce";
 import { useState } from "react";
 import { generalValidationRules } from "utils/formHelpers/validation";
@@ -7,13 +7,15 @@ import { useFetchGroups } from "../hooks/useFetchGroups";
 export const FormGroupInput: React.FC<{
   Form: typeof Form;
   showLabel?: boolean;
+
   control?: { label: string; name: string | (string | number)[] };
+
   mode?: "multiple" | "tags";
 }> = ({ Form, showLabel = true, control, mode }) => {
   const [searchTerm, setSearchTerm] = useState<string>("");
   const debouncedSearchTerm: string = useDebounce<string>(searchTerm);
 
-  const { data, isFetching, isSuccess } = useFetchGroups({
+  const { data, isFetching } = useFetchGroups({
     searchParams: {
       name: debouncedSearchTerm,
     },
@@ -30,6 +32,7 @@ export const FormGroupInput: React.FC<{
       label={showLabel ? control?.label ?? "Group" : null}
     >
       <Select
+        mode={mode}
         placeholder="Select group"
         loading={isFetching} //TO DO : this should be added to all custom Fetch Form Inputs
         showSearch
@@ -40,7 +43,6 @@ export const FormGroupInput: React.FC<{
         defaultActiveFirstOption={false}
         showArrow={false}
         filterOption={false}
-        mode={mode}
       >
         {data?.data.map((item) => (
           <Select.Option key={item.id} value={item.id}>

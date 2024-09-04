@@ -7,7 +7,10 @@ import { Dropdown, Menu, Popconfirm, Select, Tabs } from "antd";
 import { ITimeOffProps } from "../types";
 import { AddTimeOff } from "../components/AddTimeOff";
 import { AttendanceSubToper } from "features/timeAndAttendance/components/AttendanceSubToper";
-import { QUERY_KEY_FOR_TIME_OFF, useGetTimeOff } from "../hooks/useGetTimeOff";
+import {
+  QUERY_KEY_FOR_MY_TIME_OFF_REQUEST,
+  useGetTimeOff,
+} from "../hooks/useGetTimeOff";
 import { usePagination } from "hooks/usePagination";
 import {
   useGetUserPermissions,

@@ -64,6 +64,7 @@ export const appRoutes = {
   }),
   payrollSettings: `/settings/payroll`,
   payrollCostCentres: `/settings/payroll/cost-centres`,
+  payrollWallet: `/settings/payroll/wallet`,
   singleCostCentre: (id?: number) => ({
     format: `/settings/payroll/cost-centres/:id`,
     path: `/settings/payroll/cost-centres/${id}`,
@@ -216,6 +217,14 @@ export const appRoutes = {
   loans: `/self-service/loan`,
   loanRequests: `/self-service/loan-request`,
   loanPolicies: `/self-service/loan-policies`,
+  loanPaymentPlan: (id?: number) => ({
+    format: `/self-service/loan/:id/loan-payment-plan`,
+    path: `/self-service/loan/${id}/loan-payment-plan`,
+  }),
+  loanPaymentSchedule: (id?: number) => ({
+    format: `/self-service/loan/:id/loan-payment-schedule`,
+    path: `/self-service/loan/${id}/loan-payment-schedule`,
+  }),
   vehicleBooking: `/self-service/vehicle-booking`,
   vehicleBookingSetting: `/self-service/vehicle-booking/setting`,
   vehicleDetails: (id?: number) => ({

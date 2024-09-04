@@ -18,11 +18,11 @@ export const WorkShift = () => {
               label: `Shift Category`,
               children: <ShiftCategoryContainer />,
             },
-            // {
-            //   key: "1",
-            //   label: `General Employee Shift`,
-            //   children: <GeneralEmployeeShift />,
-            // },
+            {
+              key: "1",
+              label: `General Employee Shift`,
+              children: <GeneralEmployeeShift />,
+            },
             {
               key: "2",
               label: `Schedule Employee Shift`,

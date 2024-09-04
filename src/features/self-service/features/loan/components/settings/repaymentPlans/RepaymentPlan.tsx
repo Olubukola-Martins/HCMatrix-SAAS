@@ -1,33 +1,43 @@
-import { Switch, Form, InputNumber, Input } from "antd";
-import React, { useState } from "react";
-import { boxStyle, boxTitle } from "styles/reused";
+import { Form, Input, InputNumber, Modal } from "antd";
+import { AppButton } from "components/button/AppButton";
+import { useContext, useEffect } from "react";
+import { useQueryClient } from "react-query";
+import { EGlobalOps, GlobalContext } from "stateManagers/GlobalContextProvider";
+import { IModalProps } from "types";
 import {
-  numberInputValidationRules,
+  generalValidationRules,
   textInputValidationRules,
 } from "utils/formHelpers/validation";
-import RepaymentPlanTable from "./RepaymentPlanTable";
-import {
-  QUERY_KEY_FOR_LOAN_PAYMENT_PLANS,
-  useGetLoanPaymentPlans,
-} from "../../../hooks/paymentPlan/useGetPaymentPlans";
 import { useAddLoanPaymentPlan } from "../../../hooks/paymentPlan/useAddPaymentPlan";
-import { useQueryClient } from "react-query";
 import { openNotification } from "utils/notifications";
-import { usePagination } from "hooks/usePagination";
-import { LoadingOutlined } from "@ant-design/icons";
+import { QUERY_KEY_FOR_LOAN_PAYMENT_PLANS } from "../../../hooks/paymentPlan/useGetPaymentPlans";
+import { useGetSingleLoanPaymentPlan } from "../../../hooks/paymentPlan/useGetSinglePaymentPlan";
 
-const RepaymentPlan = () => {
-  const [paymentPlanSwitch, setPaymentPlanSwitch] = useState(false);
+export const RepaymentPlan = ({ handleClose, open, id }: IModalProps) => {
   const [form] = Form.useForm();
-
+  const globalCtx = useContext(GlobalContext);
+  const { dispatch } = globalCtx;
   const queryClient = useQueryClient();
-  const { mutate, isLoading } = useAddLoanPaymentPlan();
+  const { mutate, isLoading: isLoadingCreate } = useAddLoanPaymentPlan();
 
-  const handleSubmit = (data: any) => {
+  const { data, isSuccess, isLoading } = useGetSingleLoanPaymentPlan({
+    id: id as unknown as number,
+  });
+  useEffect(() => {
+    if (isSuccess && id) {
+      form.setFieldsValue({
+        ...data,
+      });
+    } else {
+      form.resetFields();
+    }
+  }, [form, id, data, isSuccess]);
+
+  const onSubmit = (values: any) => {
     mutate(
       {
-        name: data.name,
-        duration: data.duration,
+        ...values,
+        id,
       },
       {
         onError: (err: any) => {
@@ -36,92 +46,56 @@ const RepaymentPlan = () => {
             title: "Error Occurred",
             description:
               err?.response.data.message ?? err?.response.data.error.message,
+            duration: 7.0,
           });
         },
         onSuccess: (res: any) => {
           openNotification({
             state: "success",
-
             title: "Success",
             description: res.data.message,
-            // duration: 0.4,
+            duration: 4,
           });
-          form.resetFields();
-
-          queryClient.invalidateQueries({
-            queryKey: [QUERY_KEY_FOR_LOAN_PAYMENT_PLANS],
-            // exact: true,
-          });
+          dispatch({ type: EGlobalOps.setShowInitialSetup, payload: true });
+          queryClient.invalidateQueries([QUERY_KEY_FOR_LOAN_PAYMENT_PLANS]);
+          handleClose();
         },
       }
     );
   };
 
-  const { pagination, onChange } = usePagination();
-
-  const { data, isFetching } = useGetLoanPaymentPlans({
-    pagination,
-  });
-
   return (
-    <div className={`${boxStyle} text-sm`}>
-      <div className="flex items-center justify-between">
-        <h5 className={boxTitle}>Set Payment Plan</h5>
-        <Switch
-          checked={paymentPlanSwitch}
-          onChange={(value) => {
-            setPaymentPlanSwitch(value);
-          }}
-        />
-      </div>
-      <p className="text-sm pt-2">
-        Define different loan repayment plans and their corresponding durations
-      </p>
-      {paymentPlanSwitch && (
-        <Form
-          className="mt-4"
-          form={form}
-          onFinish={handleSubmit}
-          layout="inline"
+    <Modal
+      open={open}
+      footer={null}
+      onCancel={() => handleClose()}
+      title={`${id ? "Edit" : "Add"} Payment Plan`}
+    >
+      <Form
+        layout="vertical"
+        requiredMark={false}
+        onFinish={onSubmit}
+        form={form}
+        disabled={isLoading}
+      >
+        <Form.Item
+          name="name"
+          label="Plan Name"
+          rules={textInputValidationRules}
         >
-          <Form.Item name="name" rules={textInputValidationRules}>
-            <Input placeholder="Enter name" />
-          </Form.Item>
-          <Form.Item name="duration" rules={numberInputValidationRules}>
-            <InputNumber
-              className="w-full"
-              placeholder="Enter the duration in months"
-            />
-          </Form.Item>
-          <span
-            onClick={() => form.submit()}
-            className="text-sm cursor-pointer text-caramel font-medium text-right block pt-2 underline"
-          >
-            {!isLoading ? "+ Add" : <LoadingOutlined />}
-          </span>
+          <Input />
+        </Form.Item>
 
-          <div className="mt-6 w-full">
-            <RepaymentPlanTable
-              pagination={pagination}
-              onChange={onChange}
-              data={data?.data}
-              total={data?.total}
-              loading={isFetching}
-            />
-          </div>
-          <div className="flex items-center justify-between mt-6 mb-2">
-            <button
-              type="button"
-              onClick={() => setPaymentPlanSwitch(false)}
-              className="transparentButton"
-            >
-              Cancel
-            </button>
-          </div>
-        </Form>
-      )}
-    </div>
+        <Form.Item
+          name="duration"
+          label="How many months"
+          rules={generalValidationRules}
+        >
+          <InputNumber min={0} className="w-full" />
+        </Form.Item>
+
+        <AppButton type="submit" label="Submit" isLoading={isLoadingCreate} />
+      </Form>
+    </Modal>
   );
 };
-
-export default RepaymentPlan;

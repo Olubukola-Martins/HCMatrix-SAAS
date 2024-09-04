@@ -3,6 +3,7 @@ import LoanOverviewCards from "./cards/LoanOverviewCards";
 import { LoanInsightsCard } from "./cards/LoanInsightsCard";
 import { RecentLoanRequestsCard } from "./cards/RecentLoanRequestsCard";
 import { TLoanTabKey } from "../pages/LoanHome";
+import { PermissionRestrictor } from "components/permission-restriction/PermissionRestrictor";
 interface IProps {
   handleTabKey: (val: TLoanTabKey) => void;
 }
@@ -11,9 +12,11 @@ const LoanOverview: React.FC<IProps> = ({ handleTabKey }) => {
     <div className="flex flex-col gap-4">
       <LoanOverviewCards />
       <div className="grid grid-cols-1 lg:grid-cols-4 gap-5  mt-4">
-        <div className="col-span-3">
-          <LoanInsightsCard />
-        </div>
+        <PermissionRestrictor requiredPermissions={["view-all-loan-requests"]}>
+          <div className="col-span-3">
+            <LoanInsightsCard />
+          </div>
+        </PermissionRestrictor>
 
         <div>
           <RecentLoanRequestsCard

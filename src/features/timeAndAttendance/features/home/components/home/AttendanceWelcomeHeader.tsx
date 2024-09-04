@@ -6,16 +6,14 @@ type IProps = IDivProps & {
   greeting: string;
   userFullName?: string;
   welcomeNoteData: string;
-  month: string;
-  fullYear: string | number;
   filterProps: TFilterAttendanceDBBtnProps;
+  formattedToday: string;
 };
 const AttendanceWelcomeHeader: React.FC<IProps> = ({
   className = "flex justify-between",
   greeting,
   userFullName,
-  month,
-  fullYear,
+  formattedToday,
   welcomeNoteData,
   filterProps,
 }) => {
@@ -28,11 +26,8 @@ const AttendanceWelcomeHeader: React.FC<IProps> = ({
         <p>{welcomeNoteData}</p>
       </div>
       <div className="space-x-4 flex items-start">
-        <button className="border rounded px-3 py-2 flex items-center gap-x-3 font-medium">
-          <i className="ri-calendar-2-line"></i>
-          <span>
-            {month} {fullYear}
-          </span>
+        <button className="border rounded cursor-text px-3 py-2 gap-x-3 font-medium">
+          {formattedToday}
         </button>
         <FilterDBBtn {...filterProps} />
       </div>

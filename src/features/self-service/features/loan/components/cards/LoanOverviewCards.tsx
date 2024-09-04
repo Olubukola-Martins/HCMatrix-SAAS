@@ -1,11 +1,11 @@
-import React from "react";
 import { SimpleCard } from "components/cards/SimpleCard";
 import { useGetLoanAnalytics } from "../../hooks/analytics/useGetLoanAnalytics";
-// import { useGetLeaveAnalytics } from "../hooks/useGetLeaveAnalytics";
+import { PermissionRestrictor } from "components/permission-restriction/PermissionRestrictor";
+import { formatNumberWithCommas } from "utils/dataHelpers/formatNumberWithCommas";
 
 const LoanOverviewCards = () => {
   const { data: employeeData, isFetching: isFetchingEmpData } =
-    useGetLoanAnalytics({ type: "me" });
+    useGetLoanAnalytics({ type: "mine" });
   const { data: allData, isFetching: isFetchingAllData } = useGetLoanAnalytics({
     type: "all",
   });
@@ -17,47 +17,53 @@ const LoanOverviewCards = () => {
         <>
           <SimpleCard
             title="My Total Loan Requests"
-            highlight={`${employeeData?.total ?? 0}`}
+            highlight={`${employeeData?.mine?.total ?? 0}`}
             loading={isFetchingEmpData}
           />
           <SimpleCard
             title="My Pending Loan Requests"
-            highlight={`${employeeData?.pending ?? 0}`}
+            highlight={`${employeeData?.mine?.pending ?? 0}`}
             loading={isFetchingEmpData}
           />
           <SimpleCard
             title="My Approved Loan Requests"
-            highlight={`${employeeData?.approved ?? 0}`}
+            highlight={`${employeeData?.mine?.approved ?? 0}`}
             loading={isFetchingEmpData}
           />
           <SimpleCard
             title="My Rejected Loan Requests"
-            highlight={`${employeeData?.rejected ?? 0}`}
+            highlight={`${employeeData?.mine?.rejected ?? 0}`}
             loading={isFetchingEmpData}
+          />
+          <SimpleCard
+            title="Loan Balance"
+            highlight={`${formatNumberWithCommas(
+              employeeData?.mine?.balance ?? 0
+            )}`}
+            loading={isFetchingAllData}
           />
         </>
         {/* all */}
         <>
-          <SimpleCard
-            title="Total Loan Requests"
-            highlight={`${allData?.total ?? 0}`}
-            loading={isFetchingAllData}
-          />
-          <SimpleCard
-            title="Pending Loan Requests"
-            highlight={`${allData?.pending ?? 0}`}
-            loading={isFetchingAllData}
-          />
-          <SimpleCard
-            title="Approved Loan Requests"
-            highlight={`${allData?.approved ?? 0}`}
-            loading={isFetchingAllData}
-          />
-          <SimpleCard
-            title="Rejected Loan Requests"
-            highlight={`${allData?.rejected ?? 0}`}
-            loading={isFetchingAllData}
-          />
+          <PermissionRestrictor
+            requiredPermissions={["view-all-loan-requests"]}
+          >
+            <SimpleCard
+              title="Pending Loan Requests"
+              highlight={`${allData?.company?.pending ?? 0}`}
+              loading={isFetchingAllData}
+            />
+            <SimpleCard
+              title="Approved Loan Requests"
+              highlight={`${allData?.company?.approved ?? 0}`}
+              loading={isFetchingAllData}
+            />
+            <SimpleCard
+              title="Rejected Loan Requests"
+              highlight={`${allData?.company.rejected ?? 0}`}
+              loading={isFetchingAllData}
+            />
+          </PermissionRestrictor>
         </>
       </div>
     </div>

@@ -5,21 +5,25 @@ import { useMutation } from "react-query";
 import { ICurrentCompany } from "types";
 
 export type TFileData = {
-  url: string;
+  url?: string;
   name: string;
   description: string;
   access: Access[];
 };
 
-export type Access  = {
-  groupId: number
-} | {
-  departmentId: number
-}| {
-  roleId: number
-} | {
-  employeeId: number
-}
+export type Access =
+  | {
+      groupId: number;
+    }
+  | {
+      departmentId: number;
+    }
+  | {
+      roleId: number;
+    }
+  | {
+      employeeId: number;
+    };
 
 const createData = async (props: {
   data: TFileData;
