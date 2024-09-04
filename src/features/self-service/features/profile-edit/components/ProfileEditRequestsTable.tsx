@@ -64,22 +64,10 @@ export const ProfileEditRequestsTable: React.FC<{
       ),
     },
     {
-      title: "Preferred Start Date",
+      title: "Category",
       dataIndex: "preferredStartDate",
       key: "preferredStartDate",
-      render: (_, item) => (
-        <span>
-          {moment(item.preferredStartDate).format(DEFAULT_DATE_FORMAT)}{" "}
-        </span>
-      ),
-    },
-    {
-      title: "Proposed Designation",
-      dataIndex: "proposedDesignationId",
-      key: "proposedDesignationId",
-      render: (_, item) => (
-        <span className="capitalize">{item.proposedDesignation.name} </span>
-      ),
+      render: (_, item) => <span>Personal Information</span>,
     },
 
     {
