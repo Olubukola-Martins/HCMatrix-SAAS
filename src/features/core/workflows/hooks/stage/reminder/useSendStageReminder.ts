@@ -2,6 +2,7 @@ import axios from "axios";
 import { MICROSERVICE_ENDPOINTS } from "config/enviroment";
 import { TApprovalStage } from "features/core/workflows/types/approval-stage";
 import { sendReminderForLeaveRelieverStage } from "features/self-service/features/leave/hooks/leaveRelieverApproval/stage/useSendReminderForLeaveRelieverStage";
+import { sendReminderForShiftSwapPartner } from "features/timeAndAttendance/features/swapShiftRequest/hooks/useSendReminderForShiftSwapPartner";
 import { useApiAuth } from "hooks/useApiAuth";
 import { useMutation } from "react-query";
 import { ICurrentCompany } from "types";
@@ -24,7 +25,7 @@ const sendReminder = async (
     },
   };
 
-  const data = {};
+  const data = undefined;
 
   const response = await axios.post(url, data, config);
   return response;
@@ -41,6 +42,17 @@ export const useSendStageReminder = () => {
         return sendReminderForLeaveRelieverStage(
           {
             leaveId: entityId,
+          },
+          {
+            token,
+            companyId,
+          }
+        );
+      }
+      if (entityType === "shift-swap") {
+        return sendReminderForShiftSwapPartner(
+          {
+            swapRequestId: entityId,
           },
           {
             token,

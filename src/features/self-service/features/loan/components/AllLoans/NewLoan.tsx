@@ -1,14 +1,6 @@
-import {
-  DatePicker,
-  Form,
-  Input,
-  InputNumber,
-  Modal,
-  Select,
-  Tooltip,
-} from "antd";
+import { DatePicker, Form, Input, InputNumber, Modal, Tooltip } from "antd";
 import { AppButton } from "components/button/AppButton";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { IModalProps } from "types";
 import {
   dateHasToBeGreaterThanCurrentDayRule,
@@ -23,34 +15,62 @@ import {
 } from "../../hooks/useRequestForLoan";
 import { QUERY_KEY_FOR_LOAN_REQUESTS } from "../../hooks/requests/useGetLoanRequests";
 import { QUERY_KEY_FOR_LOAN } from "../../hooks/useGetLoan";
-import { TLoanWorthinessInputData } from "../../hooks/worthiness/useGetLoanWorthiness";
 import { useCurrentFileUploadUrl } from "hooks/useCurrentFileUploadUrl";
 import { QUERY_KEY_FOR_LOAN_ANALYTICS } from "../../hooks/analytics/useGetLoanAnalytics";
 import { QUERY_KEY_FOR_APPROVAL_REQUESTS } from "features/core/workflows/hooks/useFetchApprovalRequests";
 import { FileUpload } from "components/FileUpload";
+import { FormLoanTypeInput } from "../settings/loanTypes/FormLoanTypeInput";
+import { FormLoanPlanInput } from "../settings/repaymentPlans/FormLoanPlanInput";
+import { FormUnlicensedEmployeeSSRequestInput } from "features/core/employees/components/FormEmployeeInput";
+import { EligibilityModal } from "./EligibilityModal";
+import { useLoanWorthinessInput } from "../../hooks/useLoanWorthinessInput";
+import { useCheckEligibility } from "../../hooks/worthiness/useCheckEligibility";
+
+type ILoanStateTpe = {
+  id: number;
+  interestRate: number;
+};
 
 export const NewLoan: React.FC<IModalProps> = ({ open, handleClose }) => {
   const queryClient = useQueryClient();
-
   const [form] = Form.useForm<TRequestForLoanData>();
-  const { mutate, isLoading } = useRequestForLoan();
-  const documentUrl = useCurrentFileUploadUrl("documentUrl");
+  const { mutate, isLoading: isLoadingCreateLoan } = useRequestForLoan();
+  const getDocumentUrl = useCurrentFileUploadUrl("documentUrl");
+  const [loanTypeDetails, setLoanTypeDetails] = useState<ILoanStateTpe>();
+  const [openEligibility, setOpenEligibility] = useState(false);
+  const [lPlanDetail, setLPlanDetail] = useState<number>();
+  const { worthinessInput, setAmount } = useLoanWorthinessInput(null, 500);
 
-  const [requiresForm, setRequiresForm] = useState(false);
-  const handleSubmit = (data: TRequestForLoanData) => {
-    if (requiresForm && !documentUrl) {
-      openNotification({
-        state: "error",
-        title: "Guarantor's Form Required",
-        description: "Please upload a guarantor's form!",
-        duration: 0,
+  const { data, isSuccess } = useCheckEligibility({
+    amount: worthinessInput?.amount ?? 0,
+    paymentPlanId: lPlanDetail ?? 0,
+    typeId: loanTypeDetails?.id ?? 0,
+  });
+
+  useEffect(() => {
+    if (isSuccess) {
+      form.setFieldsValue({
+        loanEligibility: data?.isEligible ? "Eligible" : "Not Eligible",
       });
-      return;
+    } else {
+      form.resetFields();
     }
+  }, [form, data, isSuccess]);
+
+  const handleSubmit = (values: any) => {
+    // if (!getDocumentUrl) {
+    //   openNotification({
+    //     state: "error",
+    //     title: "Guarantor's Form Required",
+    //     description: "Please upload a guarantor's form!",
+    //     duration: 0,
+    //   });
+    //   return;
+    // }
     mutate(
       {
-        ...data,
-        guarantorFormUrls: documentUrl ? [documentUrl] : [],
+        ...values,
+        documentUrl: getDocumentUrl ? getDocumentUrl : undefined,
       },
       {
         onError: (err: any) => {
@@ -68,148 +88,157 @@ export const NewLoan: React.FC<IModalProps> = ({ open, handleClose }) => {
 
             title: "Success",
             description: res.data.message,
-            // duration: 0.4,
           });
           form.resetFields();
           handleClose();
 
           queryClient.invalidateQueries({
             queryKey: [QUERY_KEY_FOR_LOAN_ANALYTICS],
-            // exact: true,
           });
           queryClient.invalidateQueries({
             queryKey: [QUERY_KEY_FOR_LOAN_REQUESTS],
-            // exact: true,
           });
           queryClient.invalidateQueries({
             queryKey: [QUERY_KEY_FOR_LOAN],
-            // exact: true,
           });
           queryClient.invalidateQueries({
             queryKey: [QUERY_KEY_FOR_APPROVAL_REQUESTS],
-            // exact: true,
           });
         },
       }
     );
   };
-  const [worthinessInput, setWorthinessInput] =
-    useState<TLoanWorthinessInputData>({});
-  const handleRequiresForm = (val: boolean) => {
-    setRequiresForm(val);
-  };
-  const [_, startTransition] = React.useTransition();
 
   return (
-    <Modal
-      open={open}
-      onCancel={() => handleClose()}
-      footer={null}
-      title={"New Loan"}
-      style={{ top: 20 }}
-    >
-      <Form
-        layout="vertical"
-        form={form}
-        onFinish={handleSubmit}
-        requiredMark={false}
+    <>
+      <EligibilityModal
+        open={openEligibility}
+        handleClose={() => setOpenEligibility(false)}
+        salary={data?.salary ?? ""}
+        loanAmount={data?.loanAmount ?? 0}
+        paymentPeriod={data?.paymentPeriod ?? { name: "", label: "" }}
+        interest={data?.interest ?? 0}
+        deduction={data?.deduction ?? { percentage: "", amount: 0 }}
+        isEligible={data?.isEligible ?? false}
+        errorMessage={data?.errorMessage ?? ""}
+      />
+      <Modal
+        open={open}
+        onCancel={() => handleClose()}
+        footer={null}
+        title={"New Loan"}
+        style={{ top: 20 }}
       >
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-x-4">
-          <Form.Item
-            rules={generalValidationRules}
-            name="loanType"
-            label="Loan Type"
-          >
-            <Select options={[]} />
-          </Form.Item>
-
-          <Form.Item
-            rules={[dateHasToBeGreaterThanCurrentDayRule]}
-            name="date"
-            label="Date"
-          >
-            <DatePicker className="w-full" />
-          </Form.Item>
-        </div>
-        <div>
-          <Form.Item
-            rules={generalValidationRules}
-            name="amount"
-            label="Amount"
-          >
-            <InputNumber
-              className="w-full"
-              placeholder="Amount"
-              // TODO: Implement Debounce for this
-              onChange={(val: number | null) =>
-                startTransition(() =>
-                  setWorthinessInput((prev) => ({ ...prev, amount: val ?? 0 }))
-                )
-              }
-            />
-          </Form.Item>
-          <span className="text-sm mb-5 text-green-600">
-            Interest Rate = 5%
-          </span>
-        </div>
-
-        <div>
-          <Form.Item
-            name="payment_plan"
-            label="Payment Plan"
-            rules={generalValidationRulesOp}
-          >
-            <Select options={[]} />
-          </Form.Item>
-          <span className="text-sm mb-5 text-green-600 underline">
-            View Loan Calculator
-          </span>
-        </div>
-
-        <div>
-          <Form.Item
-            name="loanEligibility"
-            label="Loan Eligibility"
-            tooltip="This represent/show your eligibility of loan request "
-          >
-            <Input disabled />
-          </Form.Item>
-          <Tooltip
-            title="You are not eligible because you can only make loan request below
-              #000,000."
-          >
-            <span className="text-sm text-green-600 underline">See Reason</span>
-          </Tooltip>
-        </div>
-
-        <div className="my-3">
-          <h5 className="pb-2">Upload Document (optional)</h5>
-          <FileUpload
-            allowedFileTypes={[
-              "image/jpeg",
-              "image/png",
-              "image/jpg",
-              "application/pdf",
-              "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
-            ]}
-            fileKey="documentUrl"
-            textToDisplay="Add Documents"
-            displayType="dotted-box"
-          />
-        </div>
-
-        <Form.Item
-          rules={generalValidationRulesOp}
-          name="description"
-          label="Description"
+        <Form
+          layout="vertical"
+          form={form}
+          onFinish={handleSubmit}
+          requiredMark={false}
         >
-          <Input.TextArea className="w-full" placeholder="Description" />
-        </Form.Item>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-x-4">
+            <FormUnlicensedEmployeeSSRequestInput
+              Form={Form}
+              control={{
+                name: "employeeId",
+                label: "Select Unlicensed Employee",
+              }}
+            />
+            <FormLoanTypeInput
+              Form={Form}
+              handleSelect={(_, val) => setLoanTypeDetails(val)}
+            />
 
-        <div className="flex justify-end">
-          <AppButton type="submit" isLoading={isLoading} />
-        </div>
-      </Form>
-    </Modal>
+            <Form.Item
+              rules={[dateHasToBeGreaterThanCurrentDayRule]}
+              name="date"
+              label="Date"
+            >
+              <DatePicker className="w-full" />
+            </Form.Item>
+
+            <Form.Item
+              rules={generalValidationRules}
+              name="amount"
+              label="Amount"
+            >
+              <InputNumber
+                className="w-full"
+                placeholder="Amount"
+                onChange={setAmount}
+                min={50}
+                max={99999999}
+              />
+            </Form.Item>
+          </div>
+          <div>
+            {loanTypeDetails?.interestRate && (
+              <span className="text-sm mb-5 text-green-600">
+                Interest Rate ={loanTypeDetails?.interestRate}%
+              </span>
+            )}
+          </div>
+
+          <div>
+            <FormLoanPlanInput
+              Form={Form}
+              handleSelect={(_, val) => setLPlanDetail(val?.id)}
+            />
+            {isSuccess && (
+              <span
+                className="text-sm mb-5 text-green-600 underline cursor-pointer"
+                onClick={() => setOpenEligibility(true)}
+              >
+                View Loan Calculator
+              </span>
+            )}
+          </div>
+
+          <div>
+            <Form.Item
+              name="loanEligibility"
+              label="Loan Eligibility"
+              tooltip="This represent/show your eligibility of loan request"
+            >
+              <Input disabled />
+            </Form.Item>
+            {isSuccess && (
+              <Tooltip title={data?.errorMessage}>
+                <span className="text-sm text-green-600 underline">
+                  See Reason
+                </span>
+              </Tooltip>
+            )}
+          </div>
+
+          <div className="my-3">
+            <h5 className="pb-2">Upload Document (optional)</h5>
+            <FileUpload
+              allowedFileTypes={[
+                "image/jpeg",
+                "image/png",
+                "image/jpg",
+                "application/pdf",
+                "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+              ]}
+              fileKey="documentUrl"
+              textToDisplay="Add Documents"
+              displayType="dotted-box"
+            />
+          </div>
+
+          <Form.Item
+            rules={generalValidationRulesOp}
+            name="description"
+            label="Description (optional)"
+          >
+            <Input.TextArea className="w-full" placeholder="Description" />
+          </Form.Item>
+
+          <div className="flex justify-end">
+            <AppButton type="submit" isLoading={isLoadingCreateLoan} />
+          </div>
+        </Form>
+      </Modal>
+    </>
   );
 };

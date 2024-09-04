@@ -43,10 +43,7 @@ const LoanHome = () => {
       label: "Overview",
       children: <LoanOverview handleTabKey={handleTabKey} />,
       key: "Overview",
-      hidden: !canUserAccessComponent({
-        userPermissions,
-        requiredPermissions: ["view-all-loan-requests"], //TODO: update to an overview permission if there is ever a need for it
-      }),
+      hidden: false
     },
     {
       label: "My Requests",

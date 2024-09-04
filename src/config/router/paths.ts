@@ -64,6 +64,7 @@ export const appRoutes = {
   }),
   payrollSettings: `/settings/payroll`,
   payrollCostCentres: `/settings/payroll/cost-centres`,
+  payrollWallet: `/settings/payroll/wallet`,
   singleCostCentre: (id?: number) => ({
     format: `/settings/payroll/cost-centres/:id`,
     path: `/settings/payroll/cost-centres/${id}`,
@@ -222,6 +223,10 @@ export const appRoutes = {
     format: `/self-service/loan/:id/loan-payment-plan`,
     path: `/self-service/loan/${id}/loan-payment-plan`,
   }),
+  loanPaymentSchedule: (id?: number) => ({
+    format: `/self-service/loan/:id/loan-payment-schedule`,
+    path: `/self-service/loan/${id}/loan-payment-schedule`,
+  }),
   vehicleBooking: `/self-service/vehicle-booking`,
   vehicleBookingSetting: `/self-service/vehicle-booking/setting`,
   vehicleDetails: (id?: number) => ({
@@ -259,6 +264,10 @@ export const appRoutes = {
   }),
   hRLetters: `/self-service/hr-letters`,
   documents: `/self-service/documents`,
+  filesInFolder: (id?: number) => ({
+    format: `/self-service/documents/:id/files-in-folder`,
+    path: `/self-service/documents/${id}/files-in-folder`,
+  }),
   notifications: `/notifications`,
 
   // Performance route

@@ -44,13 +44,19 @@ export const AllRequest = () => {
       title: "Name",
       key: "employee",
       render: (_, item) => (
-        <span className="capitalize">{getEmployeeFullName(item.employee)}</span>
+        <span className="capitalize">
+          {getEmployeeFullName(item?.employee)}
+        </span>
       ),
     },
     {
       title: "Department",
       key: "department",
-      render: (_, item) => <span className="capitalize">{`N/A`}</span>,
+      render: (_, item) => (
+        <span className="capitalize">
+          {item?.employee?.designation?.department?.name}
+        </span>
+      ),
     },
     {
       title: "Default Shift",
@@ -83,7 +89,7 @@ export const AllRequest = () => {
           style={{ color: getAppropriateColorForStatus(item.status) }}
           className="capitalize"
         >
-          {item.status}{" "}
+          {item.status}
         </span>
       ),
     },
@@ -119,7 +125,7 @@ export const AllRequest = () => {
         data={request}
       />
       <div className="mt-5">
-        <div className="w-[7rem]">
+        <div className="w-[10rem]">
           <SelectApprovalStatus
             value={status}
             onSelect={setStatus}

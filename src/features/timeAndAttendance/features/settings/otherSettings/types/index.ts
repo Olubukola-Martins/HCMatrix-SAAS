@@ -7,6 +7,7 @@ export interface IOtherSettings {
   allowSoftClocking: boolean;
   allowBiometricClocking: boolean;
   workArrangement: string;
+  timeOffRequestWorkflowId: number;
 }
 
 export interface getOtherSettingsProps {
@@ -19,6 +20,7 @@ export interface getOtherSettingsProps {
   allow_biometric_clocking: string;
   allow_soft_clocking: string;
   work_arrangement: string;
+  time_off_request_workflow: string;
 }
 type TPolicyReportFrequency = "daily" | "weekly" | "monthly";
 type TPolicyGracePeriod =

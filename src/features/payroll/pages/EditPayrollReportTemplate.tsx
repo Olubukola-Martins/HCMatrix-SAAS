@@ -5,7 +5,6 @@ import { appRoutes } from "config/router/paths";
 import PayrollReportTemplate from "../components/payrollReports/templates/PayrollReportTemplate";
 import PageSubHeader from "components/layout/PageSubHeader";
 import { useNavigate, useParams } from "react-router-dom";
-import { useCreateFolder } from "features/self-service/features/documents/hooks/useCreateFolder";
 import { QUERY_KEY_FOR_FOLDERS } from "features/self-service/features/documents/hooks/useGetFolders";
 import { useQueryClient } from "react-query";
 import { openNotification } from "utils/notifications";

@@ -45,9 +45,12 @@ import Requisition from "features/self-service/features/requisitions/pages/Requi
 import { canUserAccessComponent } from "components/permission-restriction/PermissionRestrictor";
 import VehicleBookingSettings from "features/self-service/features/vehicle-booking/pages/VehicleBookingSettings";
 import EmployeeHealthAccessPage from "features/self-service/features/health-access/pages/EmployeeHealthAccessPage";
+import FilesInFolder from "features/self-service/features/documents/pages/FilesInFolder";
 import LoanRePaymentPlan from "features/self-service/features/loan/pages/LoanRePaymentPlan";
 import ProfileEditRequests from "features/self-service/features/profile-edit/pages/ProfileEditRequests";
 import ProfileEditRequestsSettingPage from "features/self-service/features/profile-edit/pages/ProfileEditRequestsSettingPage";
+import LoanRePaymentSchedule from "features/self-service/features/loan/pages/LoanRePaymentSchedule";
+
 
 // TO DO: This lazy loading might not be needed consider rethinking this, so just temporary
 // const Requisition = lazy(
@@ -62,7 +65,7 @@ export const selfServiceRoutes = (props: TAppPageDataFnProps): TRouteData[] => {
       path: appRoutes.selfServiceHome,
       isSearchable: true,
       title: "My Self Service",
-      hidden: !isUserLicensed,
+      hidden: false,
     },
     {
       element: <PayslipsTransactionsPage />,
@@ -487,7 +490,6 @@ export const selfServiceRoutes = (props: TAppPageDataFnProps): TRouteData[] => {
       title: "Loan Policies",
       hidden: !canUserAccessComponent({
         userPermissions,
-
         requiredPermissions: ["manage-loan-settings"],
         activeSubscription,
         requiredSubscriptionState: {
@@ -504,7 +506,21 @@ export const selfServiceRoutes = (props: TAppPageDataFnProps): TRouteData[] => {
       isSearchable: false,
       hidden: !canUserAccessComponent({
         userPermissions,
-        requiredPermissions: ["manage-loan-settings"],
+        requiredPermissions: [],
+        activeSubscription,
+        requiredSubscriptionState: {
+          label: "payroll",
+          resources: [],
+        },
+      }),
+    },
+    {
+      element: <LoanRePaymentSchedule />,
+      path: appRoutes.loanPaymentSchedule().format,
+      isSearchable: false,
+      hidden: !canUserAccessComponent({
+        userPermissions,
+        requiredPermissions: [],
         activeSubscription,
         requiredSubscriptionState: {
           label: "payroll",
@@ -814,6 +830,21 @@ export const selfServiceRoutes = (props: TAppPageDataFnProps): TRouteData[] => {
       hidden: !canUserAccessComponent({
         userPermissions,
 
+        requiredPermissions: ["manage-documents"],
+        activeSubscription,
+        requiredSubscriptionState: {
+          label: "employee-management",
+          resources: [],
+        },
+      }),
+    },
+    {
+      element: <FilesInFolder />,
+      path: appRoutes.filesInFolder().format,
+      isSearchable: false,
+      isPrimaryFeature: true,
+      hidden: !canUserAccessComponent({
+        userPermissions,
         requiredPermissions: ["manage-documents"],
         activeSubscription,
         requiredSubscriptionState: {

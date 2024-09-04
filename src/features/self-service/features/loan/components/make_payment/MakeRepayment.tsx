@@ -11,18 +11,27 @@ import { useMakeLoanRepayment } from "../../hooks/repayment/useMakeLoanRepayment
 import { QUERY_KEY_FOR_LOAN } from "../../hooks/useGetLoan";
 import { QUERY_KEY_FOR_LOAN_ANALYTICS } from "../../hooks/analytics/useGetLoanAnalytics";
 import { BankDetails } from "./BankDetails";
+import { AllLoanRequestProps } from "../../types/loan";
+import { useGetPaymentSettings } from "../../hooks/setting/paymentSettings/useGetPaymentSettings";
 
 export const MakeRepayment: React.FC<IModalProps> = ({ open, handleClose }) => {
   const queryClient = useQueryClient();
-
   const [form] = Form.useForm();
+  const { data, isLoading: isLoadingPaymentSettings } = useGetPaymentSettings();
+  const {
+    accountName = "",
+    accountNumber = "",
+    bankName = "",
+    swiftCode = "",
+  } = data?.enableManualRepayment?.bankAccountDetails || {};
   const { mutate, isLoading } = useMakeLoanRepayment();
-  const [url, setUrl] = useState<string>();
+
   const handleSubmit = (data: any) => {
     mutate(
       {
         amount: data.amount,
         loanId: data.loanId,
+        paymentMethod: data.paymentMethod,
       },
       {
         onError: (err: any) => {
@@ -39,15 +48,14 @@ export const MakeRepayment: React.FC<IModalProps> = ({ open, handleClose }) => {
 
             title: "Success",
             description: res.message,
-            // duration: 0.4,
           });
-          setUrl(res.data.authorization_url);
           form.resetFields();
+          handleClose();
         },
       }
     );
   };
-  const [balance, setBalance] = useState<number>();
+  const [loanDe, setLoanDe] = useState<AllLoanRequestProps>();
   const [paymentMethod, setPaymentMethod] = useState<string>("");
 
   const onCancel = () => {
@@ -65,6 +73,7 @@ export const MakeRepayment: React.FC<IModalProps> = ({ open, handleClose }) => {
     });
     handleClose();
   };
+
   return (
     <Modal
       open={open}
@@ -73,34 +82,31 @@ export const MakeRepayment: React.FC<IModalProps> = ({ open, handleClose }) => {
       title={"Make Repayment"}
       style={{ top: 20 }}
     >
-      <div className={`${url ? "block" : "hidden"}`}>
-        <iframe
-          src={url}
-          width="100%"
-          height="850"
-          frameBorder="0"
-          title="Paystack"
-          id="paystack-frame"
-        ></iframe>
-      </div>
       <Form
         layout="vertical"
         form={form}
         onFinish={handleSubmit}
         requiredMark={false}
-        className={`${!url ? "block" : "hidden"}`}
       >
         <FormEmployeeLoanInput
           Form={Form}
           control={{ label: "Select Loan", name: "loanId" }}
-          handleSelect={(_, val) => setBalance(val?.balance)}
+          handleSelect={(_, val) => setLoanDe(val)}
         />
         <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
           <Form.Item rules={generalValidationRules} label="Balance">
-            <Input placeholder="Balance" disabled value={balance} />
+            <Input
+              placeholder="Balance"
+              disabled
+              value={loanDe?.balance.toLocaleString()}
+            />
           </Form.Item>
           <Form.Item rules={generalValidationRules} label="Repayment Plan">
-            <Input placeholder="Repayment plan" disabled value="3 months" />
+            <Input
+              placeholder="Repayment plan"
+              disabled
+              value={loanDe?.paymentPlan?.name}
+            />
           </Form.Item>
         </div>
         <Form.Item
@@ -111,20 +117,34 @@ export const MakeRepayment: React.FC<IModalProps> = ({ open, handleClose }) => {
           <Select
             placeholder="Select"
             allowClear
+            loading={isLoadingPaymentSettings}
             onChange={(val) => setPaymentMethod(val)}
             options={[
               {
                 label: "Bank Transfer",
-                value: "bank",
+                value: "bank-transfer",
+                disabled: data?.enableManualRepayment?.companyWallet
+                  ? false
+                  : true,
               },
               {
                 label: "Company Wallet",
                 value: "wallet",
+                disabled: data?.enableManualRepayment?.directToBankAccount
+                  ? false
+                  : true,
               },
             ]}
           />
         </Form.Item>
-        {paymentMethod === "bank" && <BankDetails />}
+        {paymentMethod === "bank-transfer" && (
+          <BankDetails
+            bankName={bankName}
+            accountName={accountName}
+            accountNumber={accountNumber}
+            swiftCode={swiftCode}
+          />
+        )}
         <Form.Item
           rules={generalValidationRules}
           name="amount"
