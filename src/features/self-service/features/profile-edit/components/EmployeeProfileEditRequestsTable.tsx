@@ -44,7 +44,11 @@ export const EmployeeProfileEditRequestsTable: React.FC<{
       title: "Employee",
       dataIndex: "Employee",
       key: "Employee",
-      render: (_, item) => <span>{getEmployeeFullName(item.employee)}</span>,
+      render: (_, item) => (
+        <span>
+          {item.employee.firstName} {item.employee.lastName}
+        </span>
+      ),
     },
     {
       title: "Date",
@@ -55,22 +59,10 @@ export const EmployeeProfileEditRequestsTable: React.FC<{
       ),
     },
     {
-      title: "Preferred Start Date",
+      title: "Category",
       dataIndex: "preferredStartDate",
       key: "preferredStartDate",
-      render: (_, item) => (
-        <span>
-          {moment(item.preferredStartDate).format(DEFAULT_DATE_FORMAT)}{" "}
-        </span>
-      ),
-    },
-    {
-      title: "Proposed Designation",
-      dataIndex: "proposedDesignationId",
-      key: "proposedDesignationId",
-      render: (_, item) => (
-        <span className="capitalize">{item.proposedDesignation.name} </span>
-      ),
+      render: (_, item) => <span>Personal Information</span>,
     },
 
     {
@@ -92,18 +84,18 @@ export const EmployeeProfileEditRequestsTable: React.FC<{
           overlay={
             <Menu>
               <Menu.Item
-                key="cancel"
-                hidden={item.status !== "pending"}
-                onClick={() => handleAction("cancel", item)}
+                key="3"
+                onClick={() => {
+                  handleAction("view", item);
+                }}
               >
-                Cancel
-              </Menu.Item>
-              <Menu.Item key="3" onClick={() => handleAction("view", item)}>
                 View Details
               </Menu.Item>
               <Menu.Item
-                key="3223"
-                onClick={() => handleAction("view-approval-stages", item)}
+                key="30-00"
+                onClick={() => {
+                  handleAction("view-approval-stages", item);
+                }}
               >
                 View Stages
               </Menu.Item>
@@ -141,7 +133,60 @@ export const EmployeeProfileEditRequestsTable: React.FC<{
       />
       <TableWithFocusType
         size="small"
-        dataSource={data?.data}
+        // dataSource={data?.data}
+        dataSource={[
+          {
+            id: 22,
+            date: "2024-09-04T23:00:00.000Z",
+            employeeId: 81,
+            proposedDesignationId: 38,
+            justification: "sds",
+            preferredStartDate: "2024-09-11T23:00:00.000Z",
+            attachmentUrls: [],
+            status: "pending",
+            companyId: 27,
+            createdAt: "2024-09-04T10:06:24.000Z",
+            updatedAt: "2024-09-04T10:06:24.000Z",
+            employee: {
+              id: 81,
+              firstName: "James",
+              lastName: "Doe",
+              email: "thisbroisfresh+1@gmail.com",
+              licenseType: "licensed",
+              empUid: "OWN0001",
+              roleId: 57,
+              status: "confirmed",
+              companyId: 27,
+              designationId: 38,
+              userId: 11,
+              avatarUrl: "null",
+              createdAt: "2023-11-22T22:05:08.000Z",
+              updatedAt: "2024-07-15T14:18:34.000Z",
+              deletedAt: "null",
+            },
+            proposedDesignation: {
+              id: 38,
+              name: "Backend Developer",
+              label: "backend-developer",
+              departmentId: 42,
+              companyId: 27,
+              createdAt: "2024-03-25T08:07:37.000Z",
+              updatedAt: "2024-03-25T08:07:37.000Z",
+              department: {
+                id: 42,
+                name: "Software Developmentqq",
+                label: "software-developmentqq",
+                companyId: 27,
+                departmentHeadId: null,
+                email: "test@bidautomate.com",
+                parentDepartmentId: null,
+                createdAt: "2024-03-25T08:07:16.000Z",
+                updatedAt: "2024-04-02T08:16:09.000Z",
+                deletedAt: null,
+              },
+            },
+          },
+        ]}
         loading={isFetching}
         columns={columns}
         pagination={{ ...pagination, total: data?.total }}
