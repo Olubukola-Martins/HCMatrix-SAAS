@@ -35,6 +35,7 @@ const getData = async (props: {
 
   const result = fetchedData.result;
 
+
   const data: biometricProps[] = result;
 
   const ans = {

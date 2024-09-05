@@ -6,7 +6,6 @@ import ErrorBoundary from "components/errorHandlers/ErrorBoundary";
 import useMostRecentApiAuth from "hooks/useMostRecentApiAuth";
 import { useEffect, useState } from "react";
 import { useWelcomeNote } from "../hooks/useWelcomeNote";
-import { useApiAuth } from "hooks/useApiAuth";
 import AttendanceHomeCards from "../components/home/AttendanceHomeCards";
 import AttendanceOverviewHomeCard from "../components/home/AttendanceOverviewHomeCard";
 import WhoIsOut from "features/home/components/whoIsOut/WhoIsOut";
@@ -17,12 +16,14 @@ import { TFilterAttendanceDBFormProps } from "../components/home/FilterDBBtn";
 import { useGetDashboardGraph } from "../hooks/useGetDashboardGraph";
 import AttendanceLocationCard from "../components/home/AttendanceLocationCard";
 import { PermissionRestrictor } from "components/permission-restriction/PermissionRestrictor";
+import { useGetAnalyticsRecord } from "../hooks/useGetAnalyticsRecord";
+import dayjs from "dayjs";
 
 export const AttendanceHome = () => {
   const [greeting, setGreeting] = useState("");
   const today = new Date();
-  const month = today.toLocaleString("default", { month: "long" });
   const fullYear = today.getFullYear();
+
   const { data: timeDBData, isLoading: isLoadingTimeDBData } =
     useGetDashboardGraph({
       year: fullYear,
@@ -32,11 +33,27 @@ export const AttendanceHome = () => {
       year: fullYear.toString(),
     });
   const hour = today.getHours();
-
   const { user, isLoading: isRetrievingUserData } = useMostRecentApiAuth();
   const { data: welcomeNoteData } = useWelcomeNote();
   const [filterProps, setFilterProps] = useState<TFilterAttendanceDBFormProps>(
     {}
+  );
+
+  const filterDate = dayjs(filterProps.date?.toLocaleString()).format(
+    "YYYY-MM-DD"
+  );
+
+  const { data: analyticsData, isLoading: isLoadingAnalyticsData } =
+    useGetAnalyticsRecord({
+      props: {
+        branchId: filterProps.branchId as unknown as number,
+        departmentId: filterProps.departmentId as unknown as number,
+        date: filterDate,
+      },
+    });
+
+  const formattedTodayAndFilter = dayjs(analyticsData?.date).format(
+    "ddd, MMM D, YYYY"
   );
 
   useEffect(() => {
@@ -49,19 +66,14 @@ export const AttendanceHome = () => {
     }
   }, [hour]);
 
-  const { currentCompanyEmployeeDetails } = useApiAuth();
-
-  console.log(currentCompanyEmployeeDetails);
-
   return (
     <ErrorBoundary>
       <AttendanceSubToper active="none-active" />
       <div className="Container grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 md:gap-x-4 lg:gap-x-6 md:gap-y-8 lg:gap-y-12">
         <AttendanceWelcomeHeader
           {...{
-            fullYear,
-            month,
             greeting,
+            formattedToday: formattedTodayAndFilter,
             userFullName: user?.fullName,
             welcomeNoteData,
             filterProps: {
@@ -72,14 +84,26 @@ export const AttendanceHome = () => {
           className="flex justify-between col-span-4"
         />
 
-        <AttendanceHomeCards className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5 my-3 col-span-4" />
+        <AttendanceHomeCards
+          analyticsData={analyticsData}
+          isLoadingAnalyticsData={isLoadingAnalyticsData}
+          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5 my-3 col-span-4"
+        />
 
         <PermissionRestrictor
           requiredPermissions={["view-time-and-attendance-dashboard-summary"]}
         >
-          <AttendanceStatusHomeCard className="bg-mainBg pb-3 border rounded-lg text-sm shadow  col-span-1" />
+          <AttendanceStatusHomeCard
+            analyticsData={analyticsData}
+            isLoadingAnalyticsData={isLoadingAnalyticsData}
+            className="bg-mainBg pb-3 border rounded-lg text-sm shadow  col-span-1"
+          />
 
-          <AttendanceOverviewHomeCard className="bg-mainBg pb-3 border rounded-lg text-sm shadow  col-span-2" />
+          <AttendanceOverviewHomeCard
+            analyticsData={analyticsData}
+            isLoadingAnalyticsData={isLoadingAnalyticsData}
+            className="bg-mainBg pb-3 border rounded-lg text-sm shadow  col-span-2"
+          />
         </PermissionRestrictor>
 
         <PermissionRestrictor

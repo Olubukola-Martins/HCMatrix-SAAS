@@ -2,12 +2,10 @@ import React from "react";
 import { IModalProps } from "types";
 import { openNotification } from "utils/notifications";
 import { useQueryClient } from "react-query";
-import { QUERY_KEY_FOR_ACTIVE_COMPANY_SUBSCRITION } from "features/billing/hooks/company/useGetCompanyActiveSubscription";
-import { useNavigate } from "react-router-dom";
-import { appRoutes } from "config/router/paths";
 import ConfirmationModal from "components/modals/ConfirmationModal";
 import { useCancelShiftSwapRequest } from "../hooks/useCancelShiftSwapRequest";
 import { TShiftSwapRequest } from "../types";
+import { QUERY_KEY_FOR_MY_SHIFT_REQUEST } from "../hooks/useGetMyShiftSwapRequest";
 
 interface IProps extends IModalProps {
   data?: Pick<TShiftSwapRequest, "id">;
@@ -17,7 +15,6 @@ export const CancelShiftSwapRequest: React.FC<IProps> = ({
   handleClose,
   data,
 }) => {
-  const navigate = useNavigate();
   const queryClient = useQueryClient();
 
   const { mutate, isLoading } = useCancelShiftSwapRequest();
@@ -40,14 +37,12 @@ export const CancelShiftSwapRequest: React.FC<IProps> = ({
 
           title: "Success",
           description: res.data.message,
-          // duration: 0.4,
         });
 
         queryClient.invalidateQueries({
-          queryKey: [QUERY_KEY_FOR_ACTIVE_COMPANY_SUBSCRITION],
-          // exact: true,
+          queryKey: [QUERY_KEY_FOR_MY_SHIFT_REQUEST],
         });
-        navigate(appRoutes.billingSubscription);
+
         handleClose();
       },
     });

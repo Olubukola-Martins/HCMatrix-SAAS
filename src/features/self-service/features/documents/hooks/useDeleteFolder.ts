@@ -8,7 +8,7 @@ type TFolderData = {
   id: number;
 };
 const delData = async (props: { data: TFolderData; auth: ICurrentCompany }) => {
-  const url = `${MICROSERVICE_ENDPOINTS.UTILITY}/self-service/folder/${props.data.id}`;
+  const url = `${MICROSERVICE_ENDPOINTS.UTILITY}/self-service/document/folder/${props.data.id}`;
   const config = {
     headers: {
       Accept: "application/json",

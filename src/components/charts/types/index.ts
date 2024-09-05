@@ -15,4 +15,5 @@ export interface IChartProps {
     borderSkipped?: boolean;
   }[];
   useDataSet?: boolean;
+  loading?: boolean;
 }

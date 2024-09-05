@@ -9,6 +9,7 @@ import { useClockingAndBreakStatus } from "../hooks/useClockingAndBreakStatus";
 import { useState } from "react";
 import { GoBreak } from "./GoBreak";
 import { SwitchActivity } from "./SwitchActivity";
+import { PermissionRestrictor } from "components/permission-restriction/PermissionRestrictor";
 
 interface IProps {
   active:
@@ -34,6 +35,9 @@ export const AttendanceSubToper = (props: IProps) => {
       <GoBreak open={goOnBreak} handleClose={() => setGoOnBreak(false)} />
       <div className="flex items-center justify-between py-3 mb-5 bg-card Container">
         <div className="flex items-center gap-x-4 text-sm font-medium">
+        <PermissionRestrictor
+            requiredPermissions={["view-all-time-and-attendance-timesheet"]}
+          >
           <Link
             to={appRoutes.timeSheet}
             className={
@@ -44,6 +48,7 @@ export const AttendanceSubToper = (props: IProps) => {
           >
             Timesheet
           </Link>
+          </PermissionRestrictor>
           <Link
             to={appRoutes.timeOff}
             className={
@@ -64,22 +69,31 @@ export const AttendanceSubToper = (props: IProps) => {
           >
             Swap Shift Request
           </Link>
-          <Link
-            to={appRoutes.hoursPerEmployee}
-            className={
-              props.active === "reports"
-                ? `${applyStyle}`
-                : "pb-3 hover:text-caramel"
-            }
+          <PermissionRestrictor
+            requiredPermissions={["view-time-and-attendance-reports"]}
           >
-            Reports
-          </Link>
+            <Link
+              to={appRoutes.hoursPerEmployee}
+              className={
+                props.active === "reports"
+                  ? `${applyStyle}`
+                  : "pb-3 hover:text-caramel"
+              }
+            >
+              Reports
+            </Link>
+          </PermissionRestrictor>
+
+          <PermissionRestrictor
+              requiredPermissions={["manage-time-and-attendance-settings"]}
+            >
           <Link
             to={appRoutes.timeTrackingRules}
             className={"pb-3 hover:text-caramel"}
           >
             Settings
           </Link>
+          </PermissionRestrictor>
         </div>
 
         <div className="flex items-center gap-x-4 mt-2">

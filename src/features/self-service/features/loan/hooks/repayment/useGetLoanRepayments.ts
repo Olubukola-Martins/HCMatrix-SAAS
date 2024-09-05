@@ -9,6 +9,7 @@ import { TLoanRepayment } from "../../types";
 interface IGetDataProps {
   pagination?: IPaginationProps;
   searchParams?: ISearchParams;
+  date?: string;
 }
 
 type TLoanAPIRepaymentType = "mine" | undefined;
@@ -24,9 +25,9 @@ const getData = async (props: {
   const offset = pagination?.offset ?? 0;
   const name = props.data.searchParams?.name ?? "";
 
-  let url = `${MICROSERVICE_ENDPOINTS.PAYROLL}/loan/repayment/`;
+  let url = `${MICROSERVICE_ENDPOINTS.PAYROLL}/loan/payment`;
   if (props.type === "mine") {
-    url = `${MICROSERVICE_ENDPOINTS.PAYROLL}/loan/repayment/${props.type}`;
+    url = `${MICROSERVICE_ENDPOINTS.PAYROLL}/loan/payment/mine`;
   }
 
   const config = {
@@ -39,6 +40,7 @@ const getData = async (props: {
       limit,
       offset,
       search: name,
+      date: props.data.date,
     },
   };
 
@@ -65,9 +67,9 @@ export const useGetLoanRepayments = (values: {
   const { props, type } = values;
   const { token, companyId } = useApiAuth();
 
-  const { pagination, searchParams } = props;
+  const { pagination, searchParams, date } = props;
   const queryData = useQuery(
-    [QUERY_KEY_FOR_LOAN_REPAYMENTS, type, pagination, searchParams],
+    [QUERY_KEY_FOR_LOAN_REPAYMENTS, type, pagination, searchParams, date],
     () =>
       getData({
         type,

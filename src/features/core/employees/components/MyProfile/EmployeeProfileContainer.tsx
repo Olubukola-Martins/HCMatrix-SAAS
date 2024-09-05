@@ -61,6 +61,7 @@ export const EmployeeProfileContainer = ({
                 <div className="bg-card p-1 md:p-5 mt-5  flex flex-col gap-5">
                   <EmployeeOverviewCard
                     {...{
+                      showMoreActions: false,
                       data: {
                         fullName: getEmployeeFullName(employee),
                         designation: employee?.designation?.name,

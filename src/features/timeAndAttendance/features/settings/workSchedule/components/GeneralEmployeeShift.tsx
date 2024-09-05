@@ -2,7 +2,7 @@ import { Form, Input, Skeleton, TimePicker } from "antd";
 import { AppButton } from "components/button/AppButton";
 import { useContext, useEffect, useState } from "react";
 import { capitalizeWord } from "../../Utils";
-import dayjs from "dayjs";
+import dayjs, { Dayjs } from "dayjs";
 import { useQueryClient } from "react-query";
 import { useCreateShiftSchedule } from "../hooks/useCreateShiftSchedule";
 import {
@@ -13,15 +13,22 @@ import { EGlobalOps, GlobalContext } from "stateManagers/GlobalContextProvider";
 import { openNotification } from "utils/notifications";
 import { useGetWorkSheduleShiftCategories } from "../hooks/shift/categories/useGetWorkSheduleShiftCategories";
 interface TTransformedShiftCategory {
+  categoryId: number;
   type: string;
   schedule: Schedule[];
 }
 
 interface Schedule {
   day: string;
+  time: [Dayjs | null, Dayjs | null];
 }
 
+const defaultTime: [Dayjs, Dayjs] = [
+  dayjs("00:00:00", "HH:mm:ss"),
+  dayjs("00:00:00", "HH:mm:ss"),
+];
 const REASONABLE_AMOUNT_OF_SHIFT_CATEGORIES = 100;
+
 export const GeneralEmployeeShift = () => {
   const [form] = Form.useForm();
   const globalCtx = useContext(GlobalContext);
@@ -41,21 +48,25 @@ export const GeneralEmployeeShift = () => {
         },
       },
     });
+
+  const DEFAULT_DAYS_SCHEDULE: TTransformedShiftCategory["schedule"] = [
+    { day: "Monday", time: defaultTime },
+    { day: "Tuesday", time: defaultTime },
+    { day: "Wednesday", time: defaultTime },
+    { day: "Thursday", time: defaultTime },
+    { day: "Friday", time: defaultTime },
+    { day: "Saturday", time: defaultTime },
+    { day: "Sunday", time: defaultTime },
+  ];
+
   useEffect(() => {
     if (!categoriesData?.data) return;
     const transformedData =
       categoriesData?.data?.map(
         (item): TTransformedShiftCategory => ({
+          categoryId: item.id,
           type: item.name,
-          schedule: [
-            { day: "Monday" },
-            { day: "Tuesday" },
-            { day: "Wednesday" },
-            { day: "Thursday" },
-            { day: "Friday" },
-            { day: "Saturday" },
-            { day: "Sunday" },
-          ],
+          schedule: DEFAULT_DAYS_SCHEDULE,
         })
       ) ?? [];
     setTheInitialFormValues(transformedData);
@@ -65,14 +76,18 @@ export const GeneralEmployeeShift = () => {
     let initialFormValues;
     if (isSuccess && data && data?.length !== 0) {
       initialFormValues = data?.map((item: any) => ({
-        type: capitalizeWord(item.type),
-        schedule: item.schedule.map((val: any) => ({
-          day: capitalizeWord(val.day),
-          time: [
-            dayjs(val?.startTime, "HH:mm:ss"),
-            dayjs(val?.endTime, "HH:mm:ss"),
-          ],
-        })),
+        categoryId: item.id,
+        type: capitalizeWord(item.name),
+        schedule:
+          item?.schedules?.length > 0
+            ? item?.schedules?.map((val: any) => ({
+                day: capitalizeWord(val.day),
+                time: [
+                  dayjs(val?.startTime, "HH:mm:ss"),
+                  dayjs(val?.endTime, "HH:mm:ss"),
+                ],
+              }))
+            : DEFAULT_DAYS_SCHEDULE,
       }));
     } else {
       initialFormValues = theInitialFormValues;
@@ -85,7 +100,7 @@ export const GeneralEmployeeShift = () => {
 
   const onFinish = (values: any) => {
     const data = values?.workDaysAndTime.map((item: any) => {
-      const schedule = item?.schedule.map((val: any) => {
+      const schedule = item?.schedule?.map((val: any) => {
         if (!val.time || val.time.length < 2) {
           return {
             day: val.day.toLowerCase(),
@@ -103,7 +118,8 @@ export const GeneralEmployeeShift = () => {
 
       return {
         schedule: schedule,
-        type: item.type.toLowerCase(),
+        categoryId: item.categoryId,
+        // type: item.type.toLowerCase(),
       };
     });
 
@@ -139,10 +155,19 @@ export const GeneralEmployeeShift = () => {
         <Form onFinish={onFinish} form={form} disabled={isLoadingGet}>
           <Form.List name="workDaysAndTime">
             {(fields) => (
-              <div className="grid grid-cols-3 gap-5">
+              <div className="grid grid-cols-3 gap-y-10 gap-x-5">
                 {fields.map((field, index) => (
                   <div key={field.key} className="">
                     <div>
+                      <Form.Item
+                        hidden
+                        noStyle
+                        {...field}
+                        name={[field.name, "categoryId"]}
+                      >
+                        <Input disabled className="w-32" />
+                      </Form.Item>
+
                       <Form.Item {...field} name={[field.name, "type"]}>
                         <Input placeholder="type" disabled className="w-32" />
                       </Form.Item>
@@ -159,7 +184,7 @@ export const GeneralEmployeeShift = () => {
                                   {...item}
                                   name={[item.name, "day"]}
                                   initialValue={
-                                    theInitialFormValues[index].schedule[
+                                    theInitialFormValues[index]?.schedule[
                                       subIndex
                                     ].day
                                   }

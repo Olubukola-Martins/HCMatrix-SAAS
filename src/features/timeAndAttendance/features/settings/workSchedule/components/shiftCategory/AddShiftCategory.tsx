@@ -45,7 +45,6 @@ export const AddShiftCategory: React.FC<IModalProps> = ({
 
           queryClient.invalidateQueries({
             queryKey: [QUERY_KEY_WORK_SCHEDULE_SHIFT_CATEGORIES],
-            // exact: true,
           });
         },
       }
