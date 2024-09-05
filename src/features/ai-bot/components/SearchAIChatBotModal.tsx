@@ -9,7 +9,7 @@ interface IProps {
   handleClose: () => void;
 }
 
-const SearchAIChatBotModal = ({ open, handleClose }: IProps) => { 
+const SearchAIChatBotModal = ({ open, handleClose }: IProps) => {
   const [searchTerm, setSearchTerm] = useState("");
   const [chatList, setChatList] = useState<
     { chatId: string; question: string; time: string }[]
@@ -19,7 +19,7 @@ const SearchAIChatBotModal = ({ open, handleClose }: IProps) => {
   >([]);
 
   useEffect(() => {
-    const storedChatList = localStorage.getItem("chatList");
+    const storedChatList = localStorage.getItem("chatList") || "[]";
     if (storedChatList) {
       const chatList = JSON.parse(storedChatList);
       setChatList(chatList);
@@ -49,7 +49,7 @@ const SearchAIChatBotModal = ({ open, handleClose }: IProps) => {
       <Themes>
         <div className="relative mb-4">
           <button onClick={() => handleClose()} className="absolute left-0">
-            <IoIosArrowBack  />
+            <IoIosArrowBack />
           </button>
           <h5 className="text-sm font-medium text-center">Search</h5>
         </div>
@@ -67,7 +67,7 @@ const SearchAIChatBotModal = ({ open, handleClose }: IProps) => {
         </div>
         <div className="space-y-3">
           {filteredChats.length > 0 ? (
-            filteredChats.map((chat) => (
+            filteredChats?.map((chat) => (
               <PreviousChatCard
                 key={chat.chatId}
                 title={chat.question}
