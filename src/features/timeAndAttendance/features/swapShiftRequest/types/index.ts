@@ -71,7 +71,11 @@ interface Employee {
   roleId: number;
   status: string;
   companyId: number;
-  designationId: number;
+  designation: {
+    department: {
+      name: string;
+    };
+  };
   userId: number;
   avatarUrl: string;
   personalInformation: PersonalInformation;
@@ -107,3 +111,26 @@ interface ShiftFrom {
   name: string;
   isEnabled: boolean;
 }
+
+export interface ISwapPartnerApprovals {
+  id: number;
+  status: string;
+  shiftSwap: {
+    reason: string;
+    shiftFrom: {
+      name: string;
+    };
+    shiftTo: {
+      name: string;
+    };
+    employee: Employee;
+  };
+}
+
+export interface IUpdateSwapPartnerApprovals {
+  id: number;
+  status: string;
+  comment: string;
+}
+
+

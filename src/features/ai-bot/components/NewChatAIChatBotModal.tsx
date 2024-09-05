@@ -155,7 +155,7 @@ const NewChatAIChatBotModal = ({ open, handleClose, chatId }: IProps) => {
             <div className="mb-2 px-6 text-right">
               <h6 className="text-sm font-medium">AI Suggest</h6>
               <ul className="space-y-2">
-                {suggestedQuestions.map((question, index) => (
+                {suggestedQuestions?.map((question, index) => (
                   <li
                     key={index}
                     onClick={() => handleSuggestedQuestionClick(question)}

@@ -41,7 +41,7 @@ export const useGenerateDBSidebarLinks = (): TData => {
           name: "Self-service",
           path: appRoutes.selfServiceHome,
           icon: <i className="ri-organization-chart" />,
-          hidden: !isUserLicensed,
+          hidden: false,
           matcherKeys: ["self-service"],
         },
         {

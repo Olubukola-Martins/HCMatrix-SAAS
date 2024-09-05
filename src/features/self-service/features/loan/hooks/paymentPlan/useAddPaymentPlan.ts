@@ -5,9 +5,13 @@ import { useMutation } from "react-query";
 import { ICurrentCompany } from "types";
 import { TPaymentPlan } from "../../types";
 
-type TData = Pick<TPaymentPlan, "name" | "duration">;
+type TData = Pick<TPaymentPlan, "name" | "duration" | "id">;
 const createData = async (props: { data: TData; auth: ICurrentCompany }) => {
-  const url = `${MICROSERVICE_ENDPOINTS.PAYROLL}/loan/payment-plan`;
+  const updateUrl = `/loan/payment/plan/${props.data.id}`;
+  const addUrl = "/loan/payment/plan";
+  const acceptedUrl = props.data.id ? updateUrl : addUrl;
+
+  const url = `${MICROSERVICE_ENDPOINTS.PAYROLL}${acceptedUrl}`;
   const config = {
     headers: {
       Accept: "application/json",
@@ -16,11 +20,13 @@ const createData = async (props: { data: TData; auth: ICurrentCompany }) => {
     },
   };
 
-  const data: TData = {
-    ...props.data,
+  const data: any = {
+    name: props.data.name,
+    duration: props.data.duration,
   };
 
-  const response = await axios.post(url, data, config);
+  const requestType = props.data.id ? axios.put : axios.post;
+  const response = await requestType(url, data, config);
   return response;
 };
 export const useAddLoanPaymentPlan = () => {

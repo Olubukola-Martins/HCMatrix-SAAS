@@ -10,11 +10,12 @@ import { ReimbursementRequestEntity } from "./approvalRequestEntities/reimbursem
 import { TransferRequestEntity } from "./approvalRequestEntities/transferRequestEntity";
 import { TravelRequestEntity } from "./approvalRequestEntities/travelRequestEntity";
 import { VehicleBookingEntity } from "./approvalRequestEntities/vehicleBookingEntity";
-import { TLoanRequest } from "features/self-service/features/loan/types";
 import { TTHandOverForm } from "features/self-service/features/handover-forms/types";
 import { TApprovalStatus } from "types/statuses";
 import { TStageCondition } from ".";
 import { TShiftSwapRequest } from "features/timeAndAttendance/features/swapShiftRequest/types";
+import { ITimeOffProps } from "features/timeAndAttendance/features/timeOff/types";
+import { AllLoanRequestProps } from "features/self-service/features/loan/types/loan";
 
 interface AdvancedStage {
   id: number;
@@ -43,14 +44,10 @@ export type TApprovalRequest = {
   id: number;
   advancedStageId?: number;
   basicStageId?: number;
-
   processed: boolean;
   comment?: string;
-
   advancedStage: AdvancedStage;
   basicStage: BasicStage;
-  //
-
   entityType: string;
   entityId: number;
   status: TApprovalStatus;
@@ -69,7 +66,8 @@ export type TApprovalRequest = {
   positionChangeRequisition?: PositionChangeRequestEntity;
   moneyRequisition?: MoneyRequestEntity;
   payroll?: TPayrollListData;
-  loan?: TLoanRequest;
+  loan?: AllLoanRequestProps;
   exitHandoverForm?: TTHandOverForm;
   shiftSwap?: TShiftSwapRequest;
+  timeOff?: ITimeOffProps;
 };

@@ -6,7 +6,7 @@ import { useApproveORReject } from "hooks/useApproveORReject";
 import { useQueryClient } from "react-query";
 import { QUERY_KEY_FOR_LOAN_REQUESTS } from "../../hooks/requests/useGetLoanRequests";
 import { QUERY_KEY_FOR_LOAN_ANALYTICS } from "../../hooks/analytics/useGetLoanAnalytics";
-import { LoanDetails } from "../LoanDetails";
+import { LoanDetails } from "../AllLoans/LoanDetails";
 
 // TO DO: Remove this export and if need be move to styles/reused
 export const requestStyle =
@@ -25,6 +25,7 @@ export const RecentLoanRequestsCard: React.FC<{
       limit: LIMIT_OF_ITEMS_TO_DISPLAY,
       offset: 0,
     },
+    
   });
   const { confirmApprovalAction } = useApproveORReject({
     handleSuccess: () => {
@@ -51,6 +52,7 @@ export const RecentLoanRequestsCard: React.FC<{
           id={loanId}
           handleClose={clearAction}
           open={action === "view"}
+          loanDetailSource="all-loans-request"
         />
       )}
       <RecentCard

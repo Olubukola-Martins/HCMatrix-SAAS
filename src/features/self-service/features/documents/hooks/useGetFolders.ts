@@ -22,7 +22,7 @@ const getData = async (props: {
   const offset = pagination?.offset ?? 0;
   const name = props.data.searchParams?.name ?? "";
 
-  const url = `${MICROSERVICE_ENDPOINTS.UTILITY}/self-service/folder`;
+  const url = `${MICROSERVICE_ENDPOINTS.UTILITY}/self-service/document/folder`;
 
   const config = {
     headers: {
@@ -39,7 +39,7 @@ const getData = async (props: {
 
   const res = await axios.get(url, config);
   const fetchedData = res.data.data;
-  const result = fetchedData.result;
+  const result = fetchedData;
 
   const data: TFolderListItem[] = result.map(
     (item: TFolderListItem): TFolderListItem => ({ ...item })
