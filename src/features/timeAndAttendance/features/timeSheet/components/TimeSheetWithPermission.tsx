@@ -9,20 +9,26 @@ import { useState } from "react";
 import ExportTimeSheet from "./exports/ExportTimeSheet";
 import { AddManuelAttendance } from "./AddManuelAttendance";
 import { AddMultipleAttendance } from "./AddMultipleAttendance";
+import { TSheetIProps } from "./EmployeeTimeSheet";
+import { AppButton } from "components/button/AppButton";
 
-export const TimeSheetWithPermission = () => {
+export const TimeSheetWithPermission = ({
+  filterData,
+  setFilterData,
+  setFilterSheet,
+}: TSheetIProps) => {
   const [addMultiple, setAddMultiple] = useState(false);
   const [addAttendance, setAddAttendance] = useState(false);
   const { pagination, onChange } = usePagination({ pageSize: 10 });
   const { data, isLoading } = useGetTimeSheet({
     pagination,
-    //   filter: {
-    //     employeeId: filterData?.employeeId,
-    //     startDate: filterData?.startDate,
-    //     endDate: filterData?.endDate,
-    //     date: filterData?.date,
-    //     period: filterData?.period,
-    //   },
+    filter: {
+      employeeId: filterData?.employeeId,
+      startDate: filterData?.startDate,
+      endDate: filterData?.endDate,
+      date: filterData?.date,
+      period: filterData?.period,
+    },
   });
   const { data: policyData } = useGetActiveTrackingPolicy();
   const noAttendance = () => {
@@ -37,7 +43,7 @@ export const TimeSheetWithPermission = () => {
 
   return (
     <div>
-         <AddManuelAttendance
+      <AddManuelAttendance
         open={addAttendance}
         handleClose={() => setAddAttendance(false)}
       />
@@ -66,20 +72,19 @@ export const TimeSheetWithPermission = () => {
               <i className="fa-solid fa-chevron-down"></i>
             </button>
           </Dropdown>
-
-          {/* {filterData !== undefined && (
-                <AppButton
-                  variant="transparent"
-                  label="Reset Report"
-                  handleClick={() => setFilterData(undefined)}
-                />
-              )} */}
+          {filterData !== undefined && (
+            <AppButton
+              variant="transparent"
+              label="Reset Report"
+              handleClick={() => setFilterData(undefined)}
+            />
+          )}
         </div>
 
         <div className="flex items-center gap-x-3">
           <button
             className="flex items-center gap-x-2 transparentButton"
-            // onClick={() => setFilterSheet(true)}
+            onClick={() => setFilterSheet(true)}
           >
             <span className="text-caramel font-medium">Filter</span>
             <i className="ri-filter-2-line text-caramel"></i>

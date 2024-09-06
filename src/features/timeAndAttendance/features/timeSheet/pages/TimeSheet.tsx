@@ -4,14 +4,13 @@ import { useState } from "react";
 import { AttendanceSubToper } from "features/timeAndAttendance/components/AttendanceSubToper";
 import { timeSheetFilterProps } from "../types";
 import { FilterTimeSheet } from "../components/FilterTimeSheet";
-import { AppButton } from "components/button/AppButton";
 import {  Select } from "antd";
 import { PermissionRestrictor } from "components/permission-restriction/PermissionRestrictor";
 import { EmployeeTimeSheet } from "../components/EmployeeTimeSheet";
 import { TimeSheetWithPermission } from "../components/TimeSheetWithPermission";
 
 const TimeSheet = () => {
-  const [filterSheet, setFilterSheet] = useState(false);
+  const [filterSheet, setFilterSheet] = useState<boolean>(false);
   const [switchView, setSwitchView] = useState("mine");
   const [filterData, setFilterData] = useState<timeSheetFilterProps>();
 
@@ -56,9 +55,9 @@ const TimeSheet = () => {
         </p>
 
         {switchView === "mine" ? (
-          <EmployeeTimeSheet />
+          <EmployeeTimeSheet filterData={filterData} setFilterData={setFilterData} setFilterSheet={setFilterSheet}/>
         ) : (
-          <TimeSheetWithPermission />
+          <TimeSheetWithPermission filterData={filterData} setFilterData={setFilterData} setFilterSheet={setFilterSheet} />
         )}
       </div>
     </>
