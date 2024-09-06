@@ -3,15 +3,15 @@ import { AppButton } from "components/button/AppButton";
 import { UseWindowWidth } from "features/timeAndAttendance/hooks/UseWindowWidth";
 import { useContext, useEffect } from "react";
 import { IDrawerProps } from "types";
-import { generalValidationRules } from "utils/formHelpers/validation";
+import { generalValidationRules, textInputValidationRules } from "utils/formHelpers/validation";
 import { useSetUpBreak } from "../../workSchedule/hooks/useSetUpBreak";
 import { openNotification } from "utils/notifications";
 import { EGlobalOps, GlobalContext } from "stateManagers/GlobalContextProvider";
 import { useQueryClient } from "react-query";
 import dayjs from "dayjs";
-import moment from "moment";
 import { QUERY_KEY_FOR_BREAK_POLICY } from "../hooks/useGetBreakPolicy";
 import { useGetSingleBreakPolicy } from "../../workSchedule/hooks/useGetSingleBreakPolicy";
+import duration from "dayjs/plugin/duration";
 
 export const AddBreak = ({ handleClose, open, id }: IDrawerProps) => {
   const { drawerSize } = UseWindowWidth();
@@ -32,6 +32,8 @@ export const AddBreak = ({ handleClose, open, id }: IDrawerProps) => {
     time: "",
     enforcePeriod: undefined,
   };
+
+  dayjs.extend(duration);
 
   useEffect(() => {
     if (id && isSuccess) {
@@ -94,10 +96,8 @@ export const AddBreak = ({ handleClose, open, id }: IDrawerProps) => {
         startAtValue = startTime && startTime.format("HH:mm:ss");
         endAtValue = endTime && endTime.format("HH:mm:ss");
       } else {
-        const duration = moment.duration(
-          moment(endTime.toString()).diff(startTime)
-        );
-        const totalHours = duration.hours();
+        const duration = dayjs.duration(endTime.diff(startTime));
+        const totalHours = Math.floor(duration.asHours());
         const totalMinutes = duration.minutes();
         durationValue = `${totalHours}h:${totalMinutes}m`;
       }
@@ -167,7 +167,7 @@ export const AddBreak = ({ handleClose, open, id }: IDrawerProps) => {
                       {...field}
                       name={[field.name, "name"]}
                       label="Break name"
-                      rules={generalValidationRules}
+                      rules={textInputValidationRules}
                     >
                       <Input placeholder="break Name" />
                     </Form.Item>
@@ -175,6 +175,7 @@ export const AddBreak = ({ handleClose, open, id }: IDrawerProps) => {
                       {...field}
                       name={[field.name, "enforcePeriod"]}
                       label="Allow break to be taken between the selected time"
+                      rules={generalValidationRules}
                     >
                       <Select
                         options={[
@@ -190,6 +191,7 @@ export const AddBreak = ({ handleClose, open, id }: IDrawerProps) => {
                       {...field}
                       name={[field.name, "time"]}
                       label="Time Range"
+                      rules={generalValidationRules}
                     >
                       <TimePicker.RangePicker className="w-full" />
                     </Form.Item>
@@ -198,6 +200,7 @@ export const AddBreak = ({ handleClose, open, id }: IDrawerProps) => {
                       {...field}
                       name={[field.name, "isPaid"]}
                       label="Break payment status"
+                      rules={generalValidationRules}
                     >
                       <Select
                         options={[
