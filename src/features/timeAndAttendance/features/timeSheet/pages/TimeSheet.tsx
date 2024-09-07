@@ -11,13 +11,16 @@ import { TimeSheetWithPermission } from "../components/TimeSheetWithPermission";
 
 const TimeSheet = () => {
   const [filterSheet, setFilterSheet] = useState<boolean>(false);
-  const [switchView, setSwitchView] = useState("mine");
+  const [switchView, setSwitchView] = useState<"mine" | "withPermission">(
+    "mine"
+  );
   const [filterData, setFilterData] = useState<timeSheetFilterProps>();
 
   return (
     <>
       <AttendanceSubToper active="time-sheet" />
       <FilterTimeSheet
+        attendanceView={switchView}
         open={filterSheet}
         handleClose={() => setFilterSheet(false)}
         setFilterData={setFilterData}
