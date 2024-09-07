@@ -4,7 +4,7 @@ import { useState } from "react";
 import { AttendanceSubToper } from "features/timeAndAttendance/components/AttendanceSubToper";
 import { timeSheetFilterProps } from "../types";
 import { FilterTimeSheet } from "../components/FilterTimeSheet";
-import {  Select } from "antd";
+import { Select } from "antd";
 import { PermissionRestrictor } from "components/permission-restriction/PermissionRestrictor";
 import { EmployeeTimeSheet } from "../components/EmployeeTimeSheet";
 import { TimeSheetWithPermission } from "../components/TimeSheetWithPermission";
@@ -34,7 +34,6 @@ const TimeSheet = () => {
               value={switchView}
               onChange={(val) => setSwitchView(val)}
               placeholder="Select View"
-              allowClear
               options={[
                 { label: "My Timesheet", value: "mine" },
                 { label: "Employee's Timesheet", value: "withPermission" },
@@ -55,9 +54,17 @@ const TimeSheet = () => {
         </p>
 
         {switchView === "mine" ? (
-          <EmployeeTimeSheet filterData={filterData} setFilterData={setFilterData} setFilterSheet={setFilterSheet}/>
+          <EmployeeTimeSheet
+            filterData={filterData}
+            setFilterData={setFilterData}
+            setFilterSheet={setFilterSheet}
+          />
         ) : (
-          <TimeSheetWithPermission filterData={filterData} setFilterData={setFilterData} setFilterSheet={setFilterSheet} />
+          <TimeSheetWithPermission
+            filterData={filterData}
+            setFilterData={setFilterData}
+            setFilterSheet={setFilterSheet}
+          />
         )}
       </div>
     </>

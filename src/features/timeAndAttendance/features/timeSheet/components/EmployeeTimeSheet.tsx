@@ -1,6 +1,11 @@
 import { timeSheetFilterProps } from "../types";
 import { AppButton } from "components/button/AppButton";
+import { SimpleCard } from "components/cards/SimpleCard";
 import { Dispatch, SetStateAction } from "react";
+import { useGetTimeSheet } from "../hooks/useGetTimeSheet";
+import useMostRecentApiAuth from "hooks/useMostRecentApiAuth";
+import { convertMinutesToHours } from "features/timeAndAttendance/utils";
+import { appRoutes } from "config/router/paths";
 
 export interface TSheetIProps {
   filterData: timeSheetFilterProps | undefined;
@@ -12,9 +17,21 @@ export const EmployeeTimeSheet = ({
   setFilterData,
   setFilterSheet,
 }: TSheetIProps) => {
+  const { currentCompanyEmployeeDetails: employee } = useMostRecentApiAuth();
+  const employeeId = employee?.empUid;
+  const { data, isLoading } = useGetTimeSheet({
+    filter: {
+      employeeId,
+      startDate: filterData?.startDate,
+      endDate: filterData?.endDate,
+      date: filterData?.date,
+      period: filterData?.period,
+    },
+  });
+
   return (
-    <div>
-      <div className="flex items-center justify-between mt-5">
+    <div className="mb-10">
+      <div className="flex items-center justify-between mt-5 mb-6">
         <div>
           {filterData !== undefined && (
             <AppButton
@@ -33,8 +50,107 @@ export const EmployeeTimeSheet = ({
         </button>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-x-4 gap-y-6">
-         
+      <div>
+        {data?.data.map((val) => (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-x-4 gap-y-6">
+            <SimpleCard
+              title="Monday"
+              highlight={convertMinutesToHours(
+                val?.days?.Monday?.totalTimeTracked
+              )}
+              //   url={
+              //     val?.days?.Monday?.date
+              //       ? appRoutes.timeSheetDetails(
+              //           val?.employee?.id,
+              //           val?.days?.Monday?.date
+              //         ).path
+              //       : "#!"
+              //   }
+              cardActions={[
+                {
+                  onClick: () => {},
+                  icon: <i className="ri-eye-line text-lg"></i>,
+                },
+              ]}
+            />
+            <SimpleCard
+              title="Tuesday"
+              highlight={convertMinutesToHours(
+                val?.days?.Tuesday?.totalTimeTracked
+              )}
+              url={
+                appRoutes.timeSheetDetails(
+                  val?.employee?.id,
+                  val?.days?.Tuesday?.date
+                ).path
+              }
+            />
+            <SimpleCard
+              title="Wednesday"
+              highlight={convertMinutesToHours(
+                val?.days?.Wednesday?.totalTimeTracked
+              )}
+              url={
+                appRoutes.timeSheetDetails(
+                  val?.employee?.id,
+                  val?.days?.Wednesday?.date
+                ).path
+              }
+            />
+            <SimpleCard
+              title="Thursday"
+              highlight={convertMinutesToHours(
+                val?.days?.Thursday?.totalTimeTracked
+              )}
+              url={
+                appRoutes.timeSheetDetails(
+                  val?.employee?.id,
+                  val?.days?.Thursday?.date
+                ).path
+              }
+            />
+            <SimpleCard
+              title="Friday"
+              highlight={convertMinutesToHours(
+                val?.days?.Friday?.totalTimeTracked
+              )}
+              url={
+                appRoutes.timeSheetDetails(
+                  val?.employee?.id,
+                  val?.days?.Friday?.date
+                ).path
+              }
+            />
+            <SimpleCard
+              title="Saturday"
+              highlight={convertMinutesToHours(
+                val?.days?.Saturday?.totalTimeTracked
+              )}
+              url={
+                appRoutes.timeSheetDetails(
+                  val?.employee?.id,
+                  val?.days?.Saturday?.date
+                ).path
+              }
+            />
+            <SimpleCard
+              title="Sunday"
+              highlight={convertMinutesToHours(
+                val?.days?.Sunday?.totalTimeTracked
+              )}
+              url={
+                appRoutes.timeSheetDetails(
+                  val?.employee?.id,
+                  val?.days?.Sunday?.date
+                ).path
+              }
+            />
+            <SimpleCard
+              title="Total"
+              highlight={convertMinutesToHours(val?.totalWeeklyTimeTracked)}
+            />
+          </div>
+        ))}
       </div>
     </div>
   );
