@@ -4,8 +4,12 @@ import { SimpleCard } from "components/cards/SimpleCard";
 import { Dispatch, SetStateAction } from "react";
 import { useGetTimeSheet } from "../hooks/useGetTimeSheet";
 import useMostRecentApiAuth from "hooks/useMostRecentApiAuth";
-import { convertMinutesToHours } from "features/timeAndAttendance/utils";
+import {
+  convertMinutesToHours,
+  noAttendance,
+} from "features/timeAndAttendance/utils";
 import { appRoutes } from "config/router/paths";
+import { useNavigate } from "react-router-dom";
 
 export interface TSheetIProps {
   filterData: timeSheetFilterProps | undefined;
@@ -17,6 +21,7 @@ export const EmployeeTimeSheet = ({
   setFilterData,
   setFilterSheet,
 }: TSheetIProps) => {
+  const navigate = useNavigate();
   const { currentCompanyEmployeeDetails: employee } = useMostRecentApiAuth();
   const employeeId = employee?.empUid;
   const { data, isLoading } = useGetTimeSheet({
@@ -28,6 +33,10 @@ export const EmployeeTimeSheet = ({
       period: filterData?.period,
     },
   });
+
+  const redirectToDetailsPage = (value: string) => {
+    navigate(value);
+  };
 
   return (
     <div className="mb-10">
@@ -58,92 +67,126 @@ export const EmployeeTimeSheet = ({
               highlight={convertMinutesToHours(
                 val?.days?.Monday?.totalTimeTracked
               )}
-              //   url={
-              //     val?.days?.Monday?.date
-              //       ? appRoutes.timeSheetDetails(
-              //           val?.employee?.id,
-              //           val?.days?.Monday?.date
-              //         ).path
-              //       : "#!"
-              //   }
-              cardActions={[
-                {
-                  onClick: () => {},
-                  icon: <i className="ri-eye-line text-lg"></i>,
-                },
-              ]}
+              handleClick={() => {
+                if (val?.days?.Monday?.date) {
+                  redirectToDetailsPage(
+                    appRoutes.timeSheetDetails(
+                      val?.employee?.id,
+                      val?.days?.Monday?.date
+                    ).path
+                  );
+                } else {
+                  noAttendance();
+                }
+              }}
             />
             <SimpleCard
               title="Tuesday"
               highlight={convertMinutesToHours(
                 val?.days?.Tuesday?.totalTimeTracked
               )}
-              url={
-                appRoutes.timeSheetDetails(
-                  val?.employee?.id,
-                  val?.days?.Tuesday?.date
-                ).path
-              }
+              handleClick={() => {
+                if (val?.days?.Tuesday?.date) {
+                  redirectToDetailsPage(
+                    appRoutes.timeSheetDetails(
+                      val?.employee?.id,
+                      val?.days?.Tuesday?.date
+                    ).path
+                  );
+                } else {
+                  noAttendance();
+                }
+              }}
             />
             <SimpleCard
               title="Wednesday"
               highlight={convertMinutesToHours(
                 val?.days?.Wednesday?.totalTimeTracked
               )}
-              url={
-                appRoutes.timeSheetDetails(
-                  val?.employee?.id,
-                  val?.days?.Wednesday?.date
-                ).path
-              }
+              handleClick={() => {
+                if (val?.days?.Wednesday?.date) {
+                  redirectToDetailsPage(
+                    appRoutes.timeSheetDetails(
+                      val?.employee?.id,
+                      val?.days?.Wednesday?.date
+                    ).path
+                  );
+                } else {
+                  noAttendance();
+                }
+              }}
             />
             <SimpleCard
               title="Thursday"
               highlight={convertMinutesToHours(
                 val?.days?.Thursday?.totalTimeTracked
               )}
-              url={
-                appRoutes.timeSheetDetails(
-                  val?.employee?.id,
-                  val?.days?.Thursday?.date
-                ).path
-              }
+              handleClick={() => {
+                if (val?.days?.Thursday?.date) {
+                  redirectToDetailsPage(
+                    appRoutes.timeSheetDetails(
+                      val?.employee?.id,
+                      val?.days?.Thursday?.date
+                    ).path
+                  );
+                } else {
+                  noAttendance();
+                }
+              }}
             />
             <SimpleCard
               title="Friday"
               highlight={convertMinutesToHours(
                 val?.days?.Friday?.totalTimeTracked
               )}
-              url={
-                appRoutes.timeSheetDetails(
-                  val?.employee?.id,
-                  val?.days?.Friday?.date
-                ).path
-              }
+              handleClick={() => {
+                if (val?.days?.Friday?.date) {
+                  redirectToDetailsPage(
+                    appRoutes.timeSheetDetails(
+                      val?.employee?.id,
+                      val?.days?.Friday?.date
+                    ).path
+                  );
+                } else {
+                  noAttendance();
+                }
+              }}
             />
             <SimpleCard
               title="Saturday"
               highlight={convertMinutesToHours(
                 val?.days?.Saturday?.totalTimeTracked
               )}
-              url={
-                appRoutes.timeSheetDetails(
-                  val?.employee?.id,
-                  val?.days?.Saturday?.date
-                ).path
-              }
+              handleClick={() => {
+                if (val?.days?.Saturday?.date) {
+                  redirectToDetailsPage(
+                    appRoutes.timeSheetDetails(
+                      val?.employee?.id,
+                      val?.days?.Saturday?.date
+                    ).path
+                  );
+                } else {
+                  noAttendance();
+                }
+              }}
             />
             <SimpleCard
               title="Sunday"
               highlight={convertMinutesToHours(
                 val?.days?.Sunday?.totalTimeTracked
               )}
-              url={
-                appRoutes.timeSheetDetails(
-                  val?.employee?.id,
-                  val?.days?.Sunday?.date
-                ).path
-              }
+              handleClick={() => {
+                if (val?.days?.Sunday?.date) {
+                  redirectToDetailsPage(
+                    appRoutes.timeSheetDetails(
+                      val?.employee?.id,
+                      val?.days?.Sunday?.date
+                    ).path
+                  );
+                } else {
+                  noAttendance();
+                }
+              }}
             />
             <SimpleCard
               title="Total"

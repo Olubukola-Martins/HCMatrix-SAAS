@@ -11,6 +11,7 @@ import { AddManuelAttendance } from "./AddManuelAttendance";
 import { AddMultipleAttendance } from "./AddMultipleAttendance";
 import { TSheetIProps } from "./EmployeeTimeSheet";
 import { AppButton } from "components/button/AppButton";
+import { noAttendance } from "features/timeAndAttendance/utils";
 
 export const TimeSheetWithPermission = ({
   filterData,
@@ -31,14 +32,7 @@ export const TimeSheetWithPermission = ({
     },
   });
   const { data: policyData } = useGetActiveTrackingPolicy();
-  const noAttendance = () => {
-    openNotification({
-      state: "error",
-      title: "Error",
-      description: "Attendance not found",
-      duration: 4.5,
-    });
-  };
+
   const columns = TIME_SHEET_TABLE_COLUMNS(noAttendance);
 
   return (
