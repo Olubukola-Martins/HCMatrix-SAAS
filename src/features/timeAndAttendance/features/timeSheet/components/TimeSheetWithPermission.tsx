@@ -69,7 +69,7 @@ export const TimeSheetWithPermission = ({
           {filterData !== undefined && (
             <AppButton
               variant="transparent"
-              label="Reset Report"
+              label="Reset Result"
               handleClick={() => setFilterData(undefined)}
             />
           )}

@@ -47,7 +47,7 @@ const TimeSheet = () => {
         </div>
         <p className="pt-2">
           Welcome on board, here is a detailed list of clocked work hours and
-          breaks{" "}
+          breaks
           <PermissionRestrictor
             requiredPermissions={["view-all-time-and-attendance-timesheet"]}
           >

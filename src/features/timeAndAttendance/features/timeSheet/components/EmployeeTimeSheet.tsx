@@ -10,7 +10,7 @@ import {
 } from "features/timeAndAttendance/utils";
 import { appRoutes } from "config/router/paths";
 import { useNavigate } from "react-router-dom";
-import { Skeleton } from "antd";
+import { Empty, Skeleton } from "antd";
 
 export interface TSheetIProps {
   filterData: timeSheetFilterProps | undefined;
@@ -45,8 +45,7 @@ export const EmployeeTimeSheet = ({
         <div>
           {filterData !== undefined && (
             <AppButton
-              variant="transparent"
-              label="Reset Report"
+              label="Reset Result"
               handleClick={() => setFilterData(undefined)}
             />
           )}
@@ -67,15 +66,15 @@ export const EmployeeTimeSheet = ({
               <Skeleton active loading={isLoading} key={item} />
             ))}
           </div>
-        ) : (
-          data?.data &&
+        ) : data?.data && data.data.length > 0 ? (
           data?.data.map((val) => (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-x-4 gap-y-6">
               <SimpleCard
                 title="Monday"
-                highlight={convertMinutesToHours(
-                  val?.days?.Monday?.totalTimeTracked
-                )??0}
+                highlight={
+                  convertMinutesToHours(val?.days?.Monday?.totalTimeTracked) ??
+                  0
+                }
                 handleClick={() => {
                   if (val?.days?.Monday?.date) {
                     redirectToDetailsPage(
@@ -91,9 +90,10 @@ export const EmployeeTimeSheet = ({
               />
               <SimpleCard
                 title="Tuesday"
-                highlight={convertMinutesToHours(
-                  val?.days?.Tuesday?.totalTimeTracked
-                )}
+                highlight={
+                  convertMinutesToHours(val?.days?.Tuesday?.totalTimeTracked) ??
+                  0
+                }
                 handleClick={() => {
                   if (val?.days?.Tuesday?.date) {
                     redirectToDetailsPage(
@@ -109,9 +109,11 @@ export const EmployeeTimeSheet = ({
               />
               <SimpleCard
                 title="Wednesday"
-                highlight={convertMinutesToHours(
-                  val?.days?.Wednesday?.totalTimeTracked
-                )}
+                highlight={
+                  convertMinutesToHours(
+                    val?.days?.Wednesday?.totalTimeTracked
+                  ) ?? 0
+                }
                 handleClick={() => {
                   if (val?.days?.Wednesday?.date) {
                     redirectToDetailsPage(
@@ -127,9 +129,11 @@ export const EmployeeTimeSheet = ({
               />
               <SimpleCard
                 title="Thursday"
-                highlight={convertMinutesToHours(
-                  val?.days?.Thursday?.totalTimeTracked
-                )}
+                highlight={
+                  convertMinutesToHours(
+                    val?.days?.Thursday?.totalTimeTracked
+                  ) ?? 0
+                }
                 handleClick={() => {
                   if (val?.days?.Thursday?.date) {
                     redirectToDetailsPage(
@@ -145,9 +149,10 @@ export const EmployeeTimeSheet = ({
               />
               <SimpleCard
                 title="Friday"
-                highlight={convertMinutesToHours(
-                  val?.days?.Friday?.totalTimeTracked
-                )}
+                highlight={
+                  convertMinutesToHours(val?.days?.Friday?.totalTimeTracked) ??
+                  0
+                }
                 handleClick={() => {
                   if (val?.days?.Friday?.date) {
                     redirectToDetailsPage(
@@ -163,9 +168,11 @@ export const EmployeeTimeSheet = ({
               />
               <SimpleCard
                 title="Saturday"
-                highlight={convertMinutesToHours(
-                  val?.days?.Saturday?.totalTimeTracked
-                )}
+                highlight={
+                  convertMinutesToHours(
+                    val?.days?.Saturday?.totalTimeTracked
+                  ) ?? 0
+                }
                 handleClick={() => {
                   if (val?.days?.Saturday?.date) {
                     redirectToDetailsPage(
@@ -181,9 +188,10 @@ export const EmployeeTimeSheet = ({
               />
               <SimpleCard
                 title="Sunday"
-                highlight={convertMinutesToHours(
-                  val?.days?.Sunday?.totalTimeTracked
-                )}
+                highlight={
+                  convertMinutesToHours(val?.days?.Sunday?.totalTimeTracked) ??
+                  0
+                }
                 handleClick={() => {
                   if (val?.days?.Sunday?.date) {
                     redirectToDetailsPage(
@@ -199,10 +207,14 @@ export const EmployeeTimeSheet = ({
               />
               <SimpleCard
                 title="Total"
-                highlight={convertMinutesToHours(val?.totalWeeklyTimeTracked)}
+                highlight={
+                  convertMinutesToHours(val?.totalWeeklyTimeTracked) ?? 0
+                }
               />
             </div>
           ))
+        ) : (
+          <Empty className="mt-15" description="Attendance not found" />
         )}
       </div>
     </div>
