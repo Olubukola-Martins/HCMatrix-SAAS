@@ -4,19 +4,24 @@ import { IDrawerProps } from "types";
 import { timeSheetFilterProps } from "../types";
 import { FormEmployeeInput } from "features/core/employees/components/FormEmployeeInput";
 import { AppButton } from "components/button/AppButton";
-import { generalValidationRules } from "utils/formHelpers/validation";
+import {
+  dateHasToBeLesserThanOrEqualToCurrentDayRule,
+  generalValidationRules,
+} from "utils/formHelpers/validation";
 import { openNotification } from "utils/notifications";
 
 interface FilterProps extends IDrawerProps {
   setFilterData: React.Dispatch<
     React.SetStateAction<timeSheetFilterProps | undefined>
   >;
+  attendanceView: string;
 }
 
 export const FilterTimeSheet = ({
   handleClose,
   open,
   setFilterData,
+  attendanceView,
 }: FilterProps) => {
   const [form] = Form.useForm();
   const [selectedPeriod, setSelectedPeriod] = useState<string>();
@@ -54,11 +59,13 @@ export const FilterTimeSheet = ({
         onFinish={onSubmit}
         requiredMark={false}
       >
-        <FormEmployeeInput
-          Form={Form}
-          optional={true}
-          handleSelect={(_, val) => setEmpUid(val?.empUid)}
-        />
+        {attendanceView === "withPermission" && (
+          <FormEmployeeInput
+            Form={Form}
+            optional={true}
+            handleSelect={(_, val) => setEmpUid(val?.empUid)}
+          />
+        )}
 
         <Form.Item name="period" label="Period">
           <Select
@@ -84,7 +91,7 @@ export const FilterTimeSheet = ({
           <Form.Item
             name="date"
             label="Date/week"
-            rules={generalValidationRules}
+            rules={[dateHasToBeLesserThanOrEqualToCurrentDayRule]}
           >
             <DatePicker className="w-full" format="MM/DD/YYYY" />
           </Form.Item>

@@ -35,9 +35,6 @@ export const AttendanceSubToper = (props: IProps) => {
       <GoBreak open={goOnBreak} handleClose={() => setGoOnBreak(false)} />
       <div className="flex items-center justify-between py-3 mb-5 bg-card Container">
         <div className="flex items-center gap-x-4 text-sm font-medium">
-        <PermissionRestrictor
-            requiredPermissions={["view-all-time-and-attendance-timesheet"]}
-          >
           <Link
             to={appRoutes.timeSheet}
             className={
@@ -48,7 +45,7 @@ export const AttendanceSubToper = (props: IProps) => {
           >
             Timesheet
           </Link>
-          </PermissionRestrictor>
+
           <Link
             to={appRoutes.timeOff}
             className={
@@ -85,14 +82,14 @@ export const AttendanceSubToper = (props: IProps) => {
           </PermissionRestrictor>
 
           <PermissionRestrictor
-              requiredPermissions={["manage-time-and-attendance-settings"]}
-            >
-          <Link
-            to={appRoutes.timeTrackingRules}
-            className={"pb-3 hover:text-caramel"}
+            requiredPermissions={["manage-time-and-attendance-settings"]}
           >
-            Settings
-          </Link>
+            <Link
+              to={appRoutes.timeTrackingRules}
+              className={"pb-3 hover:text-caramel"}
+            >
+              Settings
+            </Link>
           </PermissionRestrictor>
         </div>
 

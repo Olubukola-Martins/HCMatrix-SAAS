@@ -12,6 +12,7 @@ export interface ISimpleCard extends IDivProps {
   action?: IAppBtnProps;
   center?: boolean;
   loading?: boolean;
+  handleClick?: () => void; 
   cardActions?: { onClick: () => void; icon: React.ReactNode }[];
 }
 
@@ -24,10 +25,12 @@ export const SimpleCard: React.FC<ISimpleCard> = ({
   loading,
   cardActions,
   className,
+  handleClick,
   highlightClassName = "font-semibold text-lg mb-2 capitalize",
 }) => {
   const defaultClassName =
     "border rounded-md p-2 shadow-sm bg-card hover:shadow-md cursor-pointer group";
+    
   if (url) {
     return (
       <Link to={url} className={className ?? defaultClassName}>
@@ -47,7 +50,7 @@ export const SimpleCard: React.FC<ISimpleCard> = ({
     );
   }
   return (
-    <div className={className ?? defaultClassName}>
+    <div onClick={handleClick} className={className ?? defaultClassName}>
       <div
         className={`h-full rounded-md bg-mainBg shadow p-3 group-hover:border-b-2 group-hover:border-caramel flex flex-col ${
           center && "items-center text-center"
