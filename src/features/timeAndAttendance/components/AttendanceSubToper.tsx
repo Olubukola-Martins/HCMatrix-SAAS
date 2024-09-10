@@ -45,6 +45,7 @@ export const AttendanceSubToper = (props: IProps) => {
           >
             Timesheet
           </Link>
+
           <Link
             to={appRoutes.timeOff}
             className={
@@ -81,14 +82,14 @@ export const AttendanceSubToper = (props: IProps) => {
           </PermissionRestrictor>
 
           <PermissionRestrictor
-              requiredPermissions={["manage-time-and-attendance-settings"]}
-            >
-          <Link
-            to={appRoutes.timeTrackingRules}
-            className={"pb-3 hover:text-caramel"}
+            requiredPermissions={["manage-time-and-attendance-settings"]}
           >
-            Settings
-          </Link>
+            <Link
+              to={appRoutes.timeTrackingRules}
+              className={"pb-3 hover:text-caramel"}
+            >
+              Settings
+            </Link>
           </PermissionRestrictor>
         </div>
 

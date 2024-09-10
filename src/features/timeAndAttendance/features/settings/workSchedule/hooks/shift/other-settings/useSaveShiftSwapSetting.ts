@@ -56,9 +56,8 @@ export const useSaveShiftSwapSetting = ({
       onSuccess: (res: any) => {
         openNotification({
           state: "success",
-
           title: "Success",
-          description: res?.data?.message,
+          description: "Swap Eligibility Criteria Updated Successfully",
           // duration: 0.4,
         });
 

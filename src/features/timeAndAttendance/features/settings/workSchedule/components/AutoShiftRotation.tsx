@@ -109,14 +109,17 @@ export const AutoShiftRotation = () => {
                   {fields.map((field, index) => (
                     <div key={field.key} className="flex gap-5">
                       <div className="flex gap-5">
-                        <FormShiftCategoryInput
+                       <div className="w-[10rem]">
+                       <FormShiftCategoryInput
                           Form={Form}
                           control={{
                             name: [field.name, "shiftFromId"],
                             label: "",
                           }}
                         />
+                       </div>
                         <i className="ri-arrow-right-line text-xl pt-1"></i>
+                        <div className="w-[10rem]">
                         <FormShiftCategoryInput
                           Form={Form}
                           control={{
@@ -126,6 +129,7 @@ export const AutoShiftRotation = () => {
                           {...field}
                           noStyle
                         />
+                        </div>
                       </div>
                       <i
                         className="ri-delete-bin-line text-red-500 text-[22px] cursor-pointer hover:text-slate-500"

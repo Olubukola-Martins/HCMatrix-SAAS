@@ -1,4 +1,6 @@
 export const MICROSERVICE_ENDPOINTS = {
+
+  
   UTILITY:
     process.env.REACT_APP_UTILITY_BASE_URL ??
     "https://api.staging.hcmatrix.com/v1/utility",
@@ -14,6 +16,8 @@ export const MICROSERVICE_ENDPOINTS = {
   PAYROLL:
     process.env.REACT_APP_PAYROLL_BASE_URL ??
     "https://api.staging.hcmatrix.com/v1/payroll",
+  CHATBOT: process.env.REACT_APP_CHAT_BOT_BASE_URL
+
 };
 
 export const APP_AUTHENTICATION_PARAMETERS = {

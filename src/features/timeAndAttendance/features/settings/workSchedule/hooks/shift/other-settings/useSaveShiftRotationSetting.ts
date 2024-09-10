@@ -70,7 +70,7 @@ export const useSaveShiftRotationSetting = ({
           state: "success",
 
           title: "Success",
-          description: res?.data?.message,
+          description: "Rotation Pattern Updated Successfully",
           // duration: 0.4,
         });
 
