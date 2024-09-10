@@ -12,9 +12,7 @@ import { FormGroupInput } from "features/core/groups/components/FormGroupInput";
 import { FormDepartmentInput } from "features/core/departments/components/FormDepartmentInput";
 import { FormRoleInput } from "features/core/roles-and-permissions/components/FormRoleInput";
 import { FormEmployeeInput } from "features/core/employees/components/FormEmployeeInput";
-import { useCurrentFileUploadUrl } from "hooks/useCurrentFileUploadUrl";
 import { TFileEntities } from "./AddFile";
-import { FileUpload } from "components/FileUpload";
 import { AppButton } from "components/button/AppButton";
 import { boxStyle } from "styles/reused";
 import { TFileData } from "../../hooks/file/useCreateFile";
@@ -25,6 +23,7 @@ import { TFileListItem } from "../../types";
 import { QUERY_KEY_FOR_ALL_ASSIGNED_FILES } from "../../hooks/file/useGetAllAssignedFiles";
 import { TFormFileInput } from "types/files";
 import { FormFileInput } from "components/generalFormInputs/FormFileInput";
+import { useGetSingleFileInFolder } from "../../hooks/file/useGetSingleFileInFolder";
 
 interface IProps extends IModalProps {
   file?: TFileListItem;
@@ -43,56 +42,64 @@ interface TFormData {
 }
 export const EditFile = ({ open, handleClose, file }: IProps) => {
   const queryClient = useQueryClient();
-  //   const documentUrl = useCurrentFileUploadUrl("documentUrl");
   const [entities, setEntities] = useState<TFileEntities[]>([]);
   const [form] = Form.useForm<TFormData>();
   const { mutate, isLoading } = useUpdateFile();
+  const { data } = useGetSingleFileInFolder({
+    fileId: file?.id as unknown as number,
+    folderId: file?.folderId as unknown as number,
+  });
 
-  
 
   useEffect(() => {
     const deFaultEntities: TFileEntities[] = [];
 
-    if (file?.access.some((item) => "groupId" in item && item.groupId)) {
-      deFaultEntities.push("group");
-    }
-    if (file?.access.some((item) => "roleId" in item && item.roleId)) {
-      deFaultEntities.push("role");
-    }
-    if (
-      file?.access.some((item) => "departmentId" in item && item.departmentId)
-    ) {
-      deFaultEntities.push("department");
-    }
-    if (file?.access.some((item) => "employeeId" in item && item.employeeId)) {
-      deFaultEntities.push("employee");
-    }
+    if (data && file) {
+      if (data?.access.some((item) => "groupId" in item && item.groupId)) {
+        deFaultEntities.push("group");
+      }
+      if (data?.access.some((item) => "roleId" in item && item.roleId)) {
+        deFaultEntities.push("role");
+      }
+      if (
+        data?.access.some((item) => "departmentId" in item && item.departmentId)
+      ) {
+        deFaultEntities.push("department");
+      }
+      if (
+        data?.access.some((item) => "employeeId" in item && item.employeeId)
+      ) {
+        deFaultEntities.push("employee");
+      }
 
-    setEntities(deFaultEntities);
+      setEntities(deFaultEntities);
 
-    form.setFieldsValue({
-      folderId: file?.folderId,
-      name: file?.name,
-      description: file?.description,
-      url: file?.url,
-      groupIds: file?.access
-        .filter((a) => "groupId" in a)
-        .map((item) => ("groupId" in item ? item.groupId : 0))
-        .filter((x) => x !== 0),
-      departmentIds: file?.access
-        .filter((a) => "departmentId" in a)
-        .map((item) => ("departmentId" in item ? item.departmentId : 0))
-        .filter((x) => x !== 0),
-      roleIds: file?.access
-        .filter((a) => "roleId" in a)
-        .map((item) => ("roleId" in item ? item.roleId : 0))
-        .filter((x) => x !== 0),
-      employeeIds: file?.access
-        .filter((a) => "employeeId" in a)
-        .map((item) => ("employeeId" in item ? item.employeeId : 0))
-        .filter((x) => x !== 0),
-    });
-  }, [file, form]);
+      form.setFieldsValue({
+        folderId: data?.folderId,
+        name: data?.name,
+        description: data?.description,
+        url: data?.url,
+        groupIds: data?.access
+          .filter((a) => "groupId" in a && !!a.groupId)
+          .map((item) => ("groupId" in item ? item.groupId : 0))
+          .filter((x) => x !== 0) as unknown as number[],
+        departmentIds: data?.access
+          .filter((a) => "departmentId" in a && !!a.departmentId)
+          .map((item) => ("departmentId" in item ? item.departmentId : 0))
+          .filter((x) => x !== 0) as unknown as number[],
+        roleIds: data?.access
+          .filter((a) => "roleId" in a && !!a.roleId)
+          .map((item) => ("roleId" in item ? item.roleId : 0))
+          .filter((x) => x !== 0) as unknown as number[],
+        employeeIds: data?.access
+          .filter((a) => "employeeId" in a && !!a.employeeId)
+          .map((item) => ("employeeId" in item ? item.employeeId : 0))
+          .filter((x) => x !== 0) as unknown as number[],
+      });
+    } else {
+      form.resetFields();
+    }
+  }, [file, form, data]);
 
   const handleSubmit = (value: TFormData) => {
     const defineAccessFromFormFields = () => {
@@ -116,7 +123,7 @@ export const EditFile = ({ open, handleClose, file }: IProps) => {
       return access;
     };
 
-    const data = {
+    const payloadData = {
       url: file?.url,
       file: value?.file,
       name: value?.name,
@@ -124,11 +131,9 @@ export const EditFile = ({ open, handleClose, file }: IProps) => {
       access: defineAccessFromFormFields(),
     };
 
-    console.log(data, "WHy are u happening");
-
     mutate(
       {
-        data: data,
+        data: payloadData,
         folderId: file?.folderId ?? 0,
         fileId: file?.id ?? 0,
       },
