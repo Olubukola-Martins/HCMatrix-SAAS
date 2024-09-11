@@ -34,6 +34,11 @@ const GlobalSupport = () => {
     setChatId("");
   };
 
+  const handleSelectChat = (selectedChatId: string) => {
+    handleCloseModal();
+    handleOpenModal('new-chat-modal', selectedChatId);
+  };
+
   return (
     <>
       <Popover
@@ -152,6 +157,7 @@ const GlobalSupport = () => {
       <SearchAIChatBotModal
         open={currentModal === 'search-modal'}
         handleClose={handleCloseModal}
+        onSelectChat={handleSelectChat}
       />
 
       <SettingsAIChatBotModal 

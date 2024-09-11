@@ -7,9 +7,10 @@ import PreviousChatCard from "./PreviousChatCard";
 interface IProps {
   open: boolean;
   handleClose: () => void;
+  onSelectChat: (chatId: string) => void;
 }
 
-const SearchAIChatBotModal = ({ open, handleClose }: IProps) => {
+const SearchAIChatBotModal = ({ open, handleClose, onSelectChat }: IProps) => { 
   const [searchTerm, setSearchTerm] = useState("");
   const [chatList, setChatList] = useState<
     { chatId: string; question: string; time: string }[]
@@ -23,7 +24,7 @@ const SearchAIChatBotModal = ({ open, handleClose }: IProps) => {
     if (storedChatList) {
       const chatList = JSON.parse(storedChatList);
       setChatList(chatList);
-      setFilteredChats(chatList); // Initialize with all chats
+      setFilteredChats(chatList);
     }
   }, []);
 
@@ -34,9 +35,13 @@ const SearchAIChatBotModal = ({ open, handleClose }: IProps) => {
       );
       setFilteredChats(filtered);
     } else {
-      setFilteredChats([]); // Clear results if search term is empty
+      setFilteredChats([]);
     }
   }, [searchTerm, chatList]);
+
+  const handleCardClick = (chatId: string) => {
+    onSelectChat(chatId);
+  };
 
   return (
     <Modal
@@ -73,10 +78,7 @@ const SearchAIChatBotModal = ({ open, handleClose }: IProps) => {
                 title={chat.question}
                 date={new Date(chat.time).toLocaleDateString()}
                 chatId={chat.chatId}
-                onClick={() => {
-                  handleClose(); // Close the search modal
-                  // You can handle the click event here or pass a prop to handle it
-                }}
+                onClick={handleCardClick}
               />
             ))
           ) : searchTerm ? (
