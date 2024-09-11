@@ -69,7 +69,7 @@ export const AttendanceHome = () => {
   return (
     <ErrorBoundary>
       <AttendanceSubToper active="none-active" />
-      <div className="Container grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 md:gap-x-4 lg:gap-x-6 md:gap-y-8 lg:gap-y-12">
+      <div className="Container grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 md:gap-x-4 gap-y-5 lg:gap-x-6 md:gap-y-8 lg:gap-y-12">
         <AttendanceWelcomeHeader
           {...{
             greeting,
@@ -96,20 +96,20 @@ export const AttendanceHome = () => {
           <AttendanceStatusHomeCard
             analyticsData={analyticsData}
             isLoadingAnalyticsData={isLoadingAnalyticsData}
-            className="bg-mainBg pb-3 border rounded-lg text-sm shadow  col-span-1"
+            className="bg-mainBg pb-3 border rounded-lg text-sm shadow col-span-4 lg:col-span-1"
           />
 
           <AttendanceOverviewHomeCard
             analyticsData={analyticsData}
             isLoadingAnalyticsData={isLoadingAnalyticsData}
-            className="bg-mainBg pb-3 border rounded-lg text-sm shadow  col-span-2"
+            className="bg-mainBg pb-3 border rounded-lg text-sm shadow col-span-4 lg:col-span-2"
           />
         </PermissionRestrictor>
 
         <PermissionRestrictor
           requiredPermissions={["view-all-time-and-attendance-timesheet"]}
         >
-          <TimesheetCard className="bg-mainBg pb-3 border rounded-lg text-sm shadow col-span-1 flex flex-col" />
+          <TimesheetCard className="bg-mainBg pb-3 border rounded-lg text-sm shadow col-span-4 lg:col-span-1 flex flex-col" />
         </PermissionRestrictor>
 
         <PermissionRestrictor
@@ -126,11 +126,11 @@ export const AttendanceHome = () => {
         <PermissionRestrictor
           requiredPermissions={["view-all-time-off-requests"]}
         >
-          <TimeOffRequestCard className="bg-mainBg pb-3 border rounded-lg text-sm shadow col-span-1 flex flex-col" />
+          <TimeOffRequestCard className="bg-mainBg pb-3 border rounded-lg text-sm shadow col-span-4 lg:col-span-1 flex flex-col" />
         </PermissionRestrictor>
 
         <AttendanceLocationCard
-          className="col-span-3 bg-mainBg border rounded-lg text-sm shadow p-3"
+          className="col-span-4 lg:col-span-3 bg-mainBg border rounded-lg text-sm shadow p-3"
           isLoading={isRetrievingUserData}
         />
         <PermissionRestrictor

@@ -88,7 +88,7 @@ export const SoftClockOut = ({ componentType }: softClockInAndOutProps) => {
           onClick={() => setOpenClockOutForm(true)}
         />
       ) : (
-        <button className="button w-full">Clock - Out</button>
+        <button  onClick={() => setOpenClockOutForm(true)} className="button w-full">Clock - Out</button>
       )}
 
       <Modal

@@ -21,7 +21,7 @@ interface IProps {
 }
 
 export const AttendanceSubToper = (props: IProps) => {
-  const applyStyle = "text-caramel pb-3";
+  const applyStyle = "text-caramel";
   const { data } = useClockingAndBreakStatus();
   const [goOnBreak, setGoOnBreak] = useState(false);
   const [switchActivity, setSwitchActivity] = useState(false);
@@ -33,14 +33,14 @@ export const AttendanceSubToper = (props: IProps) => {
         handleClose={() => setSwitchActivity(false)}
       />
       <GoBreak open={goOnBreak} handleClose={() => setGoOnBreak(false)} />
-      <div className="flex items-center justify-between py-3 mb-5 bg-card Container">
-        <div className="flex items-center gap-x-4 text-sm font-medium">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-y-3 py-4 mb-5 bg-card Container">
+        <div className="lg:col-span-2 flex items-center gap-x-4 text-sm font-medium">
           <Link
             to={appRoutes.timeSheet}
             className={
               props.active === "time-sheet"
                 ? `${applyStyle}`
-                : "pb-3 hover:text-caramel"
+                : "hover:text-caramel"
             }
           >
             Timesheet
@@ -51,7 +51,7 @@ export const AttendanceSubToper = (props: IProps) => {
             className={
               props.active === "time-off"
                 ? `${applyStyle}`
-                : "pb-3 hover:text-caramel"
+                : "hover:text-caramel"
             }
           >
             Timeoff
@@ -61,7 +61,7 @@ export const AttendanceSubToper = (props: IProps) => {
             className={
               props.active === "swap-shift-request"
                 ? `${applyStyle}`
-                : "pb-3 hover:text-caramel"
+                : "hover:text-caramel"
             }
           >
             Swap Shift Request
@@ -74,7 +74,7 @@ export const AttendanceSubToper = (props: IProps) => {
               className={
                 props.active === "reports"
                   ? `${applyStyle}`
-                  : "pb-3 hover:text-caramel"
+                  : "hover:text-caramel"
               }
             >
               Reports
@@ -86,14 +86,14 @@ export const AttendanceSubToper = (props: IProps) => {
           >
             <Link
               to={appRoutes.timeTrackingRules}
-              className={"pb-3 hover:text-caramel"}
+              className={"hover:text-caramel"}
             >
               Settings
             </Link>
           </PermissionRestrictor>
         </div>
 
-        <div className="flex items-center gap-x-4 mt-2">
+        <div className="flex justify-start md:justify-end items-center gap-x-4">
           <LiveClock format="hh:mm:ss A" />
           <img
             src={onIndicator}
