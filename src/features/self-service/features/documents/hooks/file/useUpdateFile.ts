@@ -30,6 +30,7 @@ const createData = async (props: {
       })
     : props.data.url;
   props.data.url = typeof fileUrl === "string" ? fileUrl : fileUrl?.data;
+  
   delete props.data.file;
 
   const data: TFileData = {

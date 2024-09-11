@@ -87,9 +87,6 @@ export const AddManuelAttendance = ({ open, handleClose }: IModalProps) => {
         <Form.Item name="date" label="Date" rules={generalValidationRules}>
           <DatePicker
             className="w-full"
-            disabledDate={(current) =>
-              current && current >= moment().endOf("day")
-            }
           />
         </Form.Item>
         <Form.Item
