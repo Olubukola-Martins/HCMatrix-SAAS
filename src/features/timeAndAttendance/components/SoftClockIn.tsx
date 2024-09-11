@@ -4,7 +4,7 @@ import { useSoftClockIn } from "../hooks/useSoftClockIn";
 import { useContext, useState } from "react";
 import { EGlobalOps, GlobalContext } from "stateManagers/GlobalContextProvider";
 import { useQueryClient } from "react-query";
-import { Dropdown } from "antd";
+import { Dropdown, Modal } from "antd";
 import { AppButton } from "components/button/AppButton";
 import { LoadingOutlined } from "@ant-design/icons";
 import { useManageLocation } from "../hooks/useManageLocation";
@@ -15,6 +15,7 @@ import { QUERY_KEY_FOR_TIME_SHEET_DASHBOARD } from "../features/home/hooks/useGe
 import { softClockInAndOutProps } from "../types";
 
 export const SoftClockIn = ({ componentType }: softClockInAndOutProps) => {
+  const [openModal, setOpenModal] = useState(false);
   const globalCtx = useContext(GlobalContext);
   const { dispatch } = globalCtx;
   const queryClient = useQueryClient();
@@ -67,7 +68,18 @@ export const SoftClockIn = ({ componentType }: softClockInAndOutProps) => {
 
   return (
     <div>
-      <Dropdown
+      {componentType === "image" ? (
+        <img
+          src={offIndicator}
+          alt="off indicator"
+          className="cursor-pointer"
+          title="Clock in"
+          onClick={() => setOpenModal(true)}
+        />
+      ) : (
+        <button className="button w-full"  onClick={() => setOpenModal(true)}>Clock - In</button>
+      )}
+      {/* <Dropdown
         trigger={["click"]}
         visible={dropdownVisible}
         onVisibleChange={(visible) => setDropdownVisible(visible)}
@@ -101,7 +113,16 @@ export const SoftClockIn = ({ componentType }: softClockInAndOutProps) => {
         ) : (
           <button className="button w-full">Clock - In</button>
         )}
-      </Dropdown>
+      </Dropdown> */}
+      <Modal
+        open={openModal}
+        onCancel={() => setOpenModal(false)}
+        footer={null}
+        title={"Clock in"}
+        style={{ top: 15 }}
+      >
+        ClockInAndClockModal
+      </Modal>
     </div>
   );
 };
