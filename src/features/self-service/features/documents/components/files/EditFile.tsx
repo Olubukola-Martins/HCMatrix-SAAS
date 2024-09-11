@@ -50,55 +50,30 @@ export const EditFile = ({ open, handleClose, file }: IProps) => {
     folderId: file?.folderId as unknown as number,
   });
 
-
   useEffect(() => {
-    const deFaultEntities: TFileEntities[] = [];
+    const groupIds: number[] = [],
+      departmentIds: number[] = [],
+      roleIds: number[] = [],
+      employeeIds: number[] = [];
+    data?.access.forEach((item) => {
+      if ("groupId" in item && item.groupId) groupIds.push(item.groupId);
+      if ("departmentId" in item && item.departmentId)
+        departmentIds.push(item.departmentId);
+      if ("roleId" in item && item.roleId) roleIds.push(item.roleId);
+      if ("employeeId" in item && item.employeeId)
+        employeeIds.push(item.employeeId);
+    });
 
-    if (data && file) {
-      if (data?.access.some((item) => "groupId" in item && item.groupId)) {
-        deFaultEntities.push("group");
-      }
-      if (data?.access.some((item) => "roleId" in item && item.roleId)) {
-        deFaultEntities.push("role");
-      }
-      if (
-        data?.access.some((item) => "departmentId" in item && item.departmentId)
-      ) {
-        deFaultEntities.push("department");
-      }
-      if (
-        data?.access.some((item) => "employeeId" in item && item.employeeId)
-      ) {
-        deFaultEntities.push("employee");
-      }
-
-      setEntities(deFaultEntities);
-
-      form.setFieldsValue({
-        folderId: data?.folderId,
-        name: data?.name,
-        description: data?.description,
-        url: data?.url,
-        groupIds: data?.access
-          .filter((a) => "groupId" in a && !!a.groupId)
-          .map((item) => ("groupId" in item ? item.groupId : 0))
-          .filter((x) => x !== 0) as unknown as number[],
-        departmentIds: data?.access
-          .filter((a) => "departmentId" in a && !!a.departmentId)
-          .map((item) => ("departmentId" in item ? item.departmentId : 0))
-          .filter((x) => x !== 0) as unknown as number[],
-        roleIds: data?.access
-          .filter((a) => "roleId" in a && !!a.roleId)
-          .map((item) => ("roleId" in item ? item.roleId : 0))
-          .filter((x) => x !== 0) as unknown as number[],
-        employeeIds: data?.access
-          .filter((a) => "employeeId" in a && !!a.employeeId)
-          .map((item) => ("employeeId" in item ? item.employeeId : 0))
-          .filter((x) => x !== 0) as unknown as number[],
-      });
-    } else {
-      form.resetFields();
-    }
+    form.setFieldsValue({
+      folderId: data?.folderId,
+      name: data?.name,
+      description: data?.description,
+      url: data?.url,
+      groupIds,
+      departmentIds,
+      roleIds,
+      employeeIds,
+    });
   }, [file, form, data]);
 
   const handleSubmit = (value: TFormData) => {
