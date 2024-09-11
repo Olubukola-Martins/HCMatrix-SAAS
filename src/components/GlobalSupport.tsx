@@ -2,41 +2,16 @@ import { Popover } from "antd";
 import { useState } from "react";
 import Themes from "./Themes";
 import CustomerComplaintModal from "./customerComplaint/CustomerComplaintModal";
-import AIChatBotModal from "features/ai-bot/components/AIChatBotModal";
-import SearchAIChatBotModal from "features/ai-bot/components/SearchAIChatBotModal";
-import SettingsAIChatBotModal from "features/ai-bot/components/SettingsAIChatBotModal";
-import NewChatAIChatBotModal from "features/ai-bot/components/NewChatAIChatBotModal";
-
-type TModal = 'ai-modal' | 'search-modal' | 'settings-modal' | 'new-chat-modal';
 
 const GlobalSupport = () => {
   const [hovered, setHovered] = useState(false);
   const [queryModal, setQueryModal] = useState(false);
-  const [currentModal, setCurrentModal] = useState<TModal>();
-  const [chatId, setChatId] = useState<string>("");
 
   // const handleClick = (event) => {
   //   setAnchorEl(event.currentTarget);
   // };
   const handleHoverChange = (open: boolean) => {
     setHovered(open);
-  };
-
-  const handleOpenModal = (modal: TModal, chatId?: string) => {
-    if (chatId) {
-      setChatId(chatId);
-    }
-    setCurrentModal(modal);
-  };
-
-  const handleCloseModal = () => {
-    setCurrentModal(undefined);
-    setChatId("");
-  };
-
-  const handleSelectChat = (selectedChatId: string) => {
-    handleCloseModal();
-    handleOpenModal('new-chat-modal', selectedChatId);
   };
 
   return (
@@ -122,13 +97,6 @@ const GlobalSupport = () => {
                       Drop Complaint
                     </span> */}
                   </li>
-                  <li
-                    onClick={() => handleOpenModal('ai-modal')}
-                    className="flex items-center gap-x-5 pb-1 cursor-pointer group"
-                  >
-                    <i className="ri-robot-line text-xl"></i>
-                    <span className="group-hover:text-caramel">AI Chatbot</span>
-                  </li>
                 </ul>
               </div>
             </div>
@@ -146,30 +114,6 @@ const GlobalSupport = () => {
         handleClose={() => setQueryModal(false)}
       />
 
-      <AIChatBotModal 
-        open={currentModal === 'ai-modal'}
-        handleClose={handleCloseModal}
-        openSearchModal={() => handleOpenModal('search-modal')}
-        openSettingsModal={() => handleOpenModal('settings-modal')}
-        openNewChatModal={(chatId) => handleOpenModal('new-chat-modal', chatId)}
-      />
-
-      <SearchAIChatBotModal
-        open={currentModal === 'search-modal'}
-        handleClose={handleCloseModal}
-        onSelectChat={handleSelectChat}
-      />
-
-      <SettingsAIChatBotModal 
-       open={currentModal === 'settings-modal'}
-       handleClose={handleCloseModal}
-      />
-
-      <NewChatAIChatBotModal 
-        open={currentModal === 'new-chat-modal'}
-        handleClose={handleCloseModal}
-        chatId={chatId}
-      />
     </>
   );
 };
