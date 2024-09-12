@@ -27,7 +27,7 @@ const AttendanceWelcomeHeader: React.FC<IProps> = ({
         <p>{welcomeNoteData}</p>
       </div>
       <div className="space-x-4 flex items-start">
-        <button className="border hidden md:flex rounded cursor-text px-3 py-2 gap-x-3 font-medium">
+        <button className="border hidden lg:flex rounded cursor-text px-3 py-2 gap-x-3 font-medium">
           {formattedToday}
         </button>
         <PermissionRestrictor

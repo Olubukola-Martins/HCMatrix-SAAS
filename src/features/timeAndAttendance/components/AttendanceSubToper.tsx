@@ -92,9 +92,9 @@ export const AttendanceSubToper = (props: IProps) => {
               Settings
             </Link>
           </PermissionRestrictor>
-          <div>
+          <div className="flex lg:hidden">
             <Dropdown
-              trigger={["click"]}
+              trigger={["hover"]}
               overlay={
                 <Menu>
                   <Menu.Item>
