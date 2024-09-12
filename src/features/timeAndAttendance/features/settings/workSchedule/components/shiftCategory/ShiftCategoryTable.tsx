@@ -58,6 +58,7 @@ export const ShiftCategoryTable: React.FC = () => {
         columns={columns}
         pagination={{ ...pagination, total: data?.total }}
         onChange={onChange}
+        scroll={{ x: 500 }}
       />
     </div>
   );
