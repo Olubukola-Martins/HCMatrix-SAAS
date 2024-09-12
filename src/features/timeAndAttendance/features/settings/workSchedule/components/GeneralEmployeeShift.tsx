@@ -70,7 +70,7 @@ export const GeneralEmployeeShift = () => {
         })
       ) ?? [];
     setTheInitialFormValues(transformedData);
-  }, [categoriesData]);
+  }, [categoriesData, DEFAULT_DAYS_SCHEDULE]);
 
   useEffect(() => {
     let initialFormValues;
@@ -96,7 +96,7 @@ export const GeneralEmployeeShift = () => {
     form.setFieldsValue({
       workDaysAndTime: initialFormValues,
     });
-  }, [form, data, isSuccess, theInitialFormValues]);
+  }, [form, data, isSuccess, theInitialFormValues, DEFAULT_DAYS_SCHEDULE]);
 
   const onFinish = (values: any) => {
     const data = values?.workDaysAndTime.map((item: any) => {

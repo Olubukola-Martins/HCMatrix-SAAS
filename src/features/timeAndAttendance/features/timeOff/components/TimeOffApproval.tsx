@@ -1,6 +1,4 @@
 import { Space, Dropdown, Menu } from "antd";
-import { AiOutlineMore } from "react-icons/ai";
-import React, { useState } from "react";
 import { ColumnsType } from "antd/lib/table";
 import { getAppropriateColorForStatus } from "utils/colorHelpers/getAppropriateColorForStatus";
 import { usePagination } from "hooks/usePagination";
@@ -9,14 +7,13 @@ import { TApprovalRequest } from "features/core/workflows/types/approval-request
 import { useFetchApprovalRequests } from "features/core/workflows/hooks/useFetchApprovalRequests";
 import { useQueryClient } from "react-query";
 import { TableWithFocusType } from "components/table";
-import { ItemType } from "antd/es/menu/interface";
 import { getEmployeeFullName } from "features/core/employees/utils/getEmployeeFullName";
 import { QUERY_KEY_FOR_MY_TIME_OFF_REQUEST } from "../hooks/useGetTimeOff";
 import { QUERY_KEY_FOR_ALL_TIME_OFF_REQUEST } from "../hooks/useGetAllTimeOffRequest";
 
 export const TimeOffApproval: React.FC = () => {
   const queryClient = useQueryClient();
-  const [request, setRequest] = useState<TApprovalRequest>();
+
 
   const { pagination, onChange } = usePagination();
   const { data, isFetching } = useFetchApprovalRequests({
