@@ -62,7 +62,6 @@ export const SoftClockIn = ({ componentType }: softClockInAndOutProps) => {
           queryClient.invalidateQueries([QUERY_KEY_FOR_ANALYTICS_RECORDS]);
           queryClient.invalidateQueries([QUERY_KEY_FOR_TIME_SHEET_DASHBOARD]);
           queryClient.invalidateQueries([QUERY_KEY_FOR_DASHBOARD_GRAPH]);
-          
         },
       }
     );

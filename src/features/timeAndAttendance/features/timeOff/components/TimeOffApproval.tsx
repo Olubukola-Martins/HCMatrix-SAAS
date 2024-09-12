@@ -159,6 +159,7 @@ export const TimeOffApproval: React.FC = () => {
         loading={isFetching}
         pagination={{ ...pagination, total: data?.total }}
         onChange={onChange}
+        scroll={{ x: 500 }}
       />
     </div>
   );

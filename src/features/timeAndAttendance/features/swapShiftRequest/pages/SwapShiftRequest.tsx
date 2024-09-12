@@ -72,7 +72,7 @@ const SwapShiftRequest = () => {
           items={tabItems.filter((item) => item.hidden !== true)}
           tabBarExtraContent={
             <div className="flex items-center gap-4">
-              <TbFileExport className="text-2xl" />
+              {/* <TbFileExport className="text-2xl" /> */}
               <AppButton
                 label="New Request"
                 handleClick={() => setCreteRequest(true)}

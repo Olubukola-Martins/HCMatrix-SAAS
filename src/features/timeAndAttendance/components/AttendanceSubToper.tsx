@@ -10,6 +10,7 @@ import { useState } from "react";
 import { GoBreak } from "./GoBreak";
 import { SwitchActivity } from "./SwitchActivity";
 import { PermissionRestrictor } from "components/permission-restriction/PermissionRestrictor";
+import { Dropdown, Menu } from "antd";
 
 interface IProps {
   active:
@@ -73,8 +74,8 @@ export const AttendanceSubToper = (props: IProps) => {
               to={appRoutes.hoursPerEmployee}
               className={
                 props.active === "reports"
-                  ? `${applyStyle}`
-                  : "hover:text-caramel"
+                  ? `${applyStyle} hidden lg:flex`
+                  : "hover:text-caramel hidden lg:flex"
               }
             >
               Reports
@@ -86,11 +87,28 @@ export const AttendanceSubToper = (props: IProps) => {
           >
             <Link
               to={appRoutes.timeTrackingRules}
-              className={"hover:text-caramel"}
+              className={"hover:text-caramel hidden lg:flex"}
             >
               Settings
             </Link>
           </PermissionRestrictor>
+          <div>
+            <Dropdown
+              trigger={["click"]}
+              overlay={
+                <Menu>
+                  <Menu.Item>
+                    <Link to={appRoutes.hoursPerEmployee}>Reports</Link>
+                  </Menu.Item>
+                  <Menu.Item>
+                    <Link to={appRoutes.timeTrackingRules}>Settings</Link>
+                  </Menu.Item>
+                </Menu>
+              }
+            >
+              <i className="ri-more-fill text-xl cursor-pointer"></i>
+            </Dropdown>
+          </div>
         </div>
 
         <div className="flex justify-start md:justify-end items-center gap-x-4">

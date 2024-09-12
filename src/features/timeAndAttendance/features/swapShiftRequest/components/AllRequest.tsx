@@ -139,6 +139,7 @@ export const AllRequest = () => {
           loading={isLoading}
           pagination={{ ...pagination, total: data?.total }}
           onChange={onChange}
+          scroll={{ x: 500 }}
         />
       </div>
     </>
