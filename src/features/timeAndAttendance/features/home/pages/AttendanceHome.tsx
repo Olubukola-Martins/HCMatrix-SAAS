@@ -39,9 +39,6 @@ export const AttendanceHome = () => {
     {}
   );
 
-console.log("owndata",ownerDBData);
-
-
   const filterDate = dayjs(filterProps.date?.toLocaleString()).format(
     "YYYY-MM-DD"
   );
