@@ -1,6 +1,5 @@
 import { TableWithFocusType } from "components/table";
 import { TIME_SHEET_TABLE_COLUMNS } from "./columns";
-import { openNotification } from "utils/notifications";
 import { usePagination } from "hooks/usePagination";
 import { useGetTimeSheet } from "../hooks/useGetTimeSheet";
 import { useGetActiveTrackingPolicy } from "../../settings/timeTrackingRules/hooks/useGetActiveTrackingPolicy";

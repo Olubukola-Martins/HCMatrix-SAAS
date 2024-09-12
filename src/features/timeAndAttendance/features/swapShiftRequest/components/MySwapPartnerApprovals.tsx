@@ -133,6 +133,7 @@ export const MySwapPartnerApprovals = () => {
         loading={isFetching}
         pagination={{ ...pagination, total: data?.total }}
         onChange={onChange}
+        scroll={{ x: 500 }}
       />
     </div>
   );

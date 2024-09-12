@@ -24,10 +24,8 @@ export interface ITimeOffProps {
 
 export type IColumnsProps = {
   handleDelete?: (id: number) => void;
-
-  approvalColumn: boolean;
-
-
+  extraColumns: boolean;
+  handleViewStages?: (id: number) => void;
 };
 
 export interface IRequestFilter {
@@ -36,4 +34,3 @@ export interface IRequestFilter {
   policyId?: number;
   date?: string | null;
 }
-

@@ -9,7 +9,7 @@ const pendingStyle = `flex items-center justify-center rounded-full text-white p
 const linkStyle = `text-sm group-hover:text-caramel capitalize`;
 const linkWrap = `flex items-center gap-2 group`;
 export const AttendancePendingSetup = () => {
-  const { data, isLoading } = useGetAttendancePendingSetup();
+  const { data } = useGetAttendancePendingSetup();
   const totalNumberOfItems = Object.values(data || {}).length;
   const totalNumberOfCompletedItems = Object.values(data || {}).filter(
     (value) => value === true

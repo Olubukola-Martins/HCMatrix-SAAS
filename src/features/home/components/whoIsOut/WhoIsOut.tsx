@@ -23,14 +23,14 @@ const WhoIsOut: React.FC<IProps> = ({
           items={[
             {
               key: "1",
-              label: `Leave (${data?.outToday.leave.totalCount})`,
-              children: <LeaveWhoIsOut data={data?.outToday.leave.result} />,
+              label: `Leave (${data?.outToday?.leave?.totalCount})`,
+              children: <LeaveWhoIsOut data={data?.outToday?.leave?.result} />,
             },
             {
               key: "2",
-              label: `Remote Work (${data?.outToday.remoteWork.totalCount})`,
+              label: `Remote Work (${data?.outToday?.remoteWork?.totalCount})`,
               children: (
-                <RemoteWhoIsOut data={data?.outToday.remoteWork.result} />
+                <RemoteWhoIsOut data={data?.outToday?.remoteWork?.result} />
               ),
             },
           ]}

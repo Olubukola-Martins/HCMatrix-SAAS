@@ -70,7 +70,7 @@ export const GeneralEmployeeShift = () => {
         })
       ) ?? [];
     setTheInitialFormValues(transformedData);
-  }, [categoriesData]);
+  }, [categoriesData, DEFAULT_DAYS_SCHEDULE]);
 
   useEffect(() => {
     let initialFormValues;
@@ -96,7 +96,7 @@ export const GeneralEmployeeShift = () => {
     form.setFieldsValue({
       workDaysAndTime: initialFormValues,
     });
-  }, [form, data, isSuccess, theInitialFormValues]);
+  }, [form, data, isSuccess, theInitialFormValues, DEFAULT_DAYS_SCHEDULE]);
 
   const onFinish = (values: any) => {
     const data = values?.workDaysAndTime.map((item: any) => {
@@ -155,7 +155,7 @@ export const GeneralEmployeeShift = () => {
         <Form onFinish={onFinish} form={form} disabled={isLoadingGet}>
           <Form.List name="workDaysAndTime">
             {(fields) => (
-              <div className="grid grid-cols-3 gap-y-10 gap-x-5">
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-y-10 gap-x-5">
                 {fields.map((field, index) => (
                   <div key={field.key} className="">
                     <div>

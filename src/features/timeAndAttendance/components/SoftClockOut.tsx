@@ -20,6 +20,7 @@ import { QUERY_KEY_FOR_TIME_SHEET } from "../features/timeSheet/hooks/useGetTime
 import { QUERY_KEY_FOR_ANALYTICS_RECORDS } from "../features/home/hooks/useGetAnalyticsRecord";
 import { QUERY_KEY_FOR_TIME_SHEET_DASHBOARD } from "../features/home/hooks/useGetTimeSheetRecord";
 import { softClockInAndOutProps } from "../types";
+import { QUERY_KEY_FOR_DASHBOARD_GRAPH } from "../features/home/hooks/useGetDashboardGraph";
 
 export const SoftClockOut = ({ componentType }: softClockInAndOutProps) => {
   const globalCtx = useContext(GlobalContext);
@@ -68,6 +69,7 @@ export const SoftClockOut = ({ componentType }: softClockInAndOutProps) => {
           queryClient.invalidateQueries([QUERY_KEY_FOR_TIME_SHEET]);
           queryClient.invalidateQueries([QUERY_KEY_FOR_ANALYTICS_RECORDS]);
           queryClient.invalidateQueries([QUERY_KEY_FOR_TIME_SHEET_DASHBOARD]);
+          queryClient.invalidateQueries([QUERY_KEY_FOR_DASHBOARD_GRAPH]);
           form.resetFields();
           setOpenClockOutForm(false);
         },
@@ -86,7 +88,7 @@ export const SoftClockOut = ({ componentType }: softClockInAndOutProps) => {
           onClick={() => setOpenClockOutForm(true)}
         />
       ) : (
-        <button className="button w-full">Clock - Out</button>
+        <button  onClick={() => setOpenClockOutForm(true)} className="button w-full">Clock - Out</button>
       )}
 
       <Modal
