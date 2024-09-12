@@ -62,7 +62,7 @@ const EmployeeImportDataMapping = ({
             branchId: item?.branchId,
             payrollType: item?.payrollType,
             monthlyGross: item?.monthlyGross,
-            payGradeId: item?.payGradeId,
+            gradeId: item?.gradeId,
             frequency: item?.frequency,
             hourlyRate: item?.hourlyRate,
           },

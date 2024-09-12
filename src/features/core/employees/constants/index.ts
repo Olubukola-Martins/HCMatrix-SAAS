@@ -146,7 +146,7 @@ export const BULK_EMPLOYEE_IMPORT_MAPPING_SECTIONS: TBulkEmployeeImportMappingSe
         { name: "branchId", label: "branch", optional: false },
         { name: "payrollType", label: "payroll Type", optional: false },
         { name: "monthlyGross", label: "monthly Gross", optional: false },
-        { name: "payGradeId", label: "payGrade", optional: true },
+        { name: "gradeId", label: "payGrade", optional: true },
         { name: "frequency", label: "frequency", optional: false },
         { name: "hourlyRate", label: "Hourly Rate", optional: true },
       ],

@@ -58,7 +58,7 @@ export const JobInformation: React.FC<IProps> = ({
       form.setFieldsValue({
         lineManagerId: jobInfo.lineManagerId,
         branchId: jobInfo.branchId,
-        payGradeId: jobInfo?.payGradeId,
+        gradeId: jobInfo?.gradeId,
         startDate: jobInfo.startDate ? dayjs(jobInfo.startDate) : null,
         monthlyGross: jobInfo?.monthlyGross ? +jobInfo?.monthlyGross : 0, // to covert to number
         employmentType: jobInfo.employmentType,
@@ -98,7 +98,7 @@ export const JobInformation: React.FC<IProps> = ({
             probationEndDate: data.probationEndDate.format(DEFAULT_DATE_FORMAT),
             confirmationDate: data.confirmationDate.format(DEFAULT_DATE_FORMAT),
             lineManagerId: data.lineManagerId,
-            payGradeId: data.payGradeId,
+            gradeId: data.gradeId,
             payrollType: data.payrollType,
             branchId: data.branchId,
             hourlyRate: data.hourlyRate,
@@ -268,7 +268,7 @@ export const JobInformationFormItems: React.FC<{
       {payrollType === "office" && (
         <FormPayGradeInput
           Form={Form}
-          control={{ name: "payGradeId", label: "Pay Grade" }}
+          control={{ name: "gradeId", label: "Pay Grade" }}
         />
       )}
       <Form.Item

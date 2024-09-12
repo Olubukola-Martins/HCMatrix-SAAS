@@ -80,7 +80,7 @@ export const AddEmployee = () => {
           probationEndDate: data.probationEndDate.format(DEFAULT_DATE_FORMAT),
           confirmationDate: data.confirmationDate.format(DEFAULT_DATE_FORMAT),
           lineManagerId: data.lineManagerId,
-          payGradeId: data.payGradeId,
+          gradeId: data.gradeId,
           payrollType: data.payrollType,
           branchId: data.branchId,
           hourlyRate: data.hourlyRate,

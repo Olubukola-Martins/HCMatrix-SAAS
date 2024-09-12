@@ -285,7 +285,7 @@ interface JobInformation {
   payrollType: "direct-salary" | "office" | "wages";
   frequency: "monthly" | "daily";
   monthlyGross?: number;
-  payGradeId: number;
+  gradeId: number;
   hourlyRate?: number;
   createdAt: string;
   updatedAt: string;
