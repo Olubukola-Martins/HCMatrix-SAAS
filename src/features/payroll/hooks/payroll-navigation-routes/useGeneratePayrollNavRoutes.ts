@@ -78,19 +78,7 @@ const useGeneratePayrollNavRoutes = (): TData => {
           },
         }),
       },
-      {
-        title: "Grade & Categories",
-        path: appRoutes.payGradeAndCategorySettings,
-        hidden: !canUserAccessComponent({
-          userPermissions,
-          requiredPermissions: ["manage-pay-grades-and-categories"],
-          activeSubscription,
-          requiredSubscriptionState: {
-            label: "payroll",
-            resources: ["payroll-analytics", "payroll-disbursement"],
-          },
-        }),
-      },
+
       {
         title: "Organizations",
         hidden: !canUserAccessComponent({
