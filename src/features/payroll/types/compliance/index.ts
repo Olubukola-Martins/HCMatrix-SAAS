@@ -55,6 +55,7 @@ export type TBvnCompliance = {
   id: number;
   companyId: number;
   bvn: string;
+  bvnDateOfBirth?: string;
   approvalStatus: TApprovalStatus;
   comment?: null | string;
   createdAt: string;

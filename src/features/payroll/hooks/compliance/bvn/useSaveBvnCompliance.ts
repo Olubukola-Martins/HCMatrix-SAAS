@@ -5,7 +5,7 @@ import { useApiAuth } from "hooks/useApiAuth";
 import { useMutation } from "react-query";
 import { ICurrentCompany } from "types";
 
-type TData = Pick<TBvnCompliance, "bvn">;
+type TData = Pick<TBvnCompliance, "bvn" | "bvnDateOfBirth">;
 const createData = async (props: { data: TData; auth: ICurrentCompany }) => {
   const url = `${MICROSERVICE_ENDPOINTS.PAYROLL}/compliance/bvn`;
   const config = {

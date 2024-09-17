@@ -1,7 +1,10 @@
 import { useQueryClient } from "react-query";
-import { Form, Input, Skeleton } from "antd";
+import { DatePicker, Form, Input, Skeleton } from "antd";
 import { openNotification } from "utils/notifications";
-import { textInputValidationRules } from "utils/formHelpers/validation";
+import {
+  generalValidationRulesOp,
+  textInputValidationRules,
+} from "utils/formHelpers/validation";
 import { AppButton } from "components/button/AppButton";
 import { useEffect } from "react";
 
@@ -11,8 +14,11 @@ import {
   QUERY_KEY_FOR_WALLET_BVN_COMPLIANCE,
   useGetBvnCompliance,
 } from "features/payroll/hooks/compliance/bvn/useGetBvnCompliance";
+import dayjs, { Dayjs } from "dayjs";
 
-type TFormData = Pick<TBvnCompliance, "bvn">;
+type TFormData = Pick<TBvnCompliance, "bvn"> & {
+  bvnDateOfBirth?: Dayjs | null;
+};
 export const SaveComplianceBvn: React.FC = () => {
   const queryClient = useQueryClient();
 
@@ -20,18 +26,19 @@ export const SaveComplianceBvn: React.FC = () => {
   const { data, isFetching } = useGetBvnCompliance();
   const { mutate, isLoading } = useSaveBvnCompliance();
   const bvn = data?.bvn;
+  const bvnDateOfBirth = data?.bvnDateOfBirth;
   useEffect(() => {
-    if (bvn) {
-      form.setFieldsValue({
-        bvn,
-      });
-    }
-  }, [bvn, form]);
+    form.setFieldsValue({
+      bvn,
+      bvnDateOfBirth: bvnDateOfBirth ? dayjs(bvnDateOfBirth) : null,
+    });
+  }, [bvn, bvnDateOfBirth, form]);
 
   const handleSubmit = (data: TFormData) => {
     mutate(
       {
         bvn: data.bvn,
+        bvnDateOfBirth: data.bvnDateOfBirth?.toString(),
       },
       {
         onError: (err: any) => {
@@ -66,9 +73,17 @@ export const SaveComplianceBvn: React.FC = () => {
         onFinish={handleSubmit}
         requiredMark={false}
       >
-        <Form.Item<TFormData> rules={textInputValidationRules} name="bvn">
-          <Input placeholder="Enter Bank Verfification Number" />
-        </Form.Item>
+        <div className="grid lg:gap-x-24 md:gap-x-12 lg:grid-cols-3 grid-cols-1">
+          <Form.Item<TFormData> rules={textInputValidationRules} name="bvn">
+            <Input placeholder="Enter Bank Verfification Number" />
+          </Form.Item>
+          <Form.Item<TFormData>
+            rules={generalValidationRulesOp}
+            name="bvnDateOfBirth"
+          >
+            <DatePicker placeholder="Enter BVN DOB" className="w-full" />
+          </Form.Item>
+        </div>
 
         <div className="flex justify-end">
           <AppButton type="submit" isLoading={isLoading} label="Save" />
