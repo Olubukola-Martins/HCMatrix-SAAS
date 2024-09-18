@@ -13,7 +13,7 @@ export const QUERY_KEY_FOR_APPROVAL_REQUESTS = "approval-requests";
 interface IGetDataProps {
   pagination?: IPaginationProps;
   searchParams?: ISearchParams;
-  type: TWorkflowApprovalType | TWorkflowApprovalType[];
+  type: TWorkflowApprovalType;
 }
 
 const getData = async (
@@ -27,9 +27,7 @@ const getData = async (
   const limit = pagination?.limit ?? DEFAULT_PAGE_SIZE;
   const offset = pagination?.offset ?? 0;
   const name = props.searchParams?.name ?? "";
-  const url = `${MICROSERVICE_ENDPOINTS.UTILITY}/workflow/approval/request/${
-    typeof type === "string" ? type : type.join(",")
-  }/`;
+  const url = `${MICROSERVICE_ENDPOINTS.UTILITY}/workflow/approval/request/${type}/`;
 
   const config = {
     headers: {

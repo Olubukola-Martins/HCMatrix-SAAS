@@ -31,15 +31,7 @@ const ProfileEditApprovalRequestsTable: React.FC<{
   const { pagination, onChange } = usePagination();
   const { data, isFetching } = useFetchApprovalRequests({
     pagination,
-    type: [
-      "personal-information",
-      "bank-detail",
-      "tax",
-      "job-information",
-      "nsitf",
-      "itf",
-      "pension",
-    ],
+    type: "profile-edit",
   });
 
   const { confirmApprovalAction } = useApproveORReject({

@@ -34,10 +34,12 @@ import { Dayjs } from "dayjs";
 export interface TJobInformationProps {
   employeeId?: number;
   jobInformation?: TSingleEmployee["jobInformation"];
+  isOwner?: boolean;
 }
 export const JobInformation: React.FC<TJobInformationProps> = ({
   jobInformation,
   employeeId,
+  isOwner = false,
 }) => {
   const [payrollType, setPayrollType] =
     useState<TEssentialPayrollType>("direct-salary");
@@ -134,16 +136,18 @@ export const JobInformation: React.FC<TJobInformationProps> = ({
     <div className="bg-mainBg shadow-sm rounded-md p-4 mt-5">
       <div className="flex justify-between mb-3">
         <h2 className="font-medium text-lg">Job Information</h2>
-        <Tooltip title={disable ? "Enable editing" : "Disable editing"}>
-          <i
-            className={
-              disable
-                ? `ri-pencil-line cursor-pointer hover:text-caramel text-xl`
-                : `ri-lock-line cursor-pointer hover:text-caramel text-xl`
-            }
-            onClick={enableEdit}
-          ></i>
-        </Tooltip>
+        {isOwner && (
+          <Tooltip title={disable ? "Enable editing" : "Disable editing"}>
+            <i
+              className={
+                disable
+                  ? `ri-pencil-line cursor-pointer hover:text-caramel text-xl`
+                  : `ri-lock-line cursor-pointer hover:text-caramel text-xl`
+              }
+              onClick={enableEdit}
+            ></i>
+          </Tooltip>
+        )}
       </div>
       <div className="bg-card p-3 rounded">
         <Form

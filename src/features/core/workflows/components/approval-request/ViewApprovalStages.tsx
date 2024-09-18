@@ -23,8 +23,6 @@ const ViewApprovalStages: React.FC<
     },
   });
 
-  console.log(data);
-  
   return (
     <Modal
       open={open}
@@ -38,7 +36,8 @@ const ViewApprovalStages: React.FC<
           <ErrorWrapper
             isError={isError}
             message={
-              error?.response?.data?.message ?? error?.response?.data?.error?.message
+              error?.response?.data?.message ??
+              error?.response?.data?.error?.message
             }
           >
             <div className="space-y-6">
@@ -77,8 +76,8 @@ const ViewApprovalStages: React.FC<
                       approvalFullName = truncateString(approvalFullName, 12);
                       return approvalFullName;
                     };
-              
-                    const approverName =  constructApprovalFullName();
+
+                    const approverName = constructApprovalFullName();
                     return (
                       <Steps.Step
                         title={
