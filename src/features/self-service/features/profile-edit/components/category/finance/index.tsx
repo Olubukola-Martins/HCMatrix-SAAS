@@ -1,10 +1,13 @@
 import { Input, Form } from "antd";
 import { AppButton } from "components/button/AppButton";
 import { FormBankInput } from "components/generalFormInputs/FormBankInput";
-import { useSaveEmployeeFinance } from "features/core/employees/hooks/finance/useSaveEmployeeFinance";
-import { QUERY_KEY_FOR_SINGLE_EMPLOYEE } from "features/core/employees/hooks/useFetchSingleEmployee";
+
 import { TBankValue, TPensionValue } from "features/core/employees/types";
-import { TITFValue, TNSITFValue, TTaxValue } from "features/core/employees/types/singleEmployee";
+import {
+  TITFValue,
+  TNSITFValue,
+  TTaxValue,
+} from "features/core/employees/types/singleEmployee";
 import { FormITFAuthInput } from "features/payroll/components/organizations/itfAuthorities/FormITFAuthInput";
 import { FormNSITFAuthInput } from "features/payroll/components/organizations/nsitfAuthorities/FormNSITFAuthInput";
 import { FormPensionAdminInput } from "features/payroll/components/organizations/pensionAdministrators/FormPensionAdminInput";
@@ -14,6 +17,9 @@ import { useQueryClient } from "react-query";
 import { TPaystackBank } from "types/paystackBank";
 import { textInputValidationRules } from "utils/formHelpers/validation";
 import { openNotification } from "utils/notifications";
+import { useCreateProfileEditRequest } from "../../../hooks/useCreateProfileEditRequest";
+import { QUERY_KEY_FOR_PROFILE_EDIT_REQUISITIONS } from "../../../hooks/useGetAllProfileEditRequests";
+import { QUERY_KEY_FOR_PROFILE_EDIT_REQUISITIONS_FOR_AUTH_EMPLOYEE } from "../../../hooks/useGetMyProfileEditRequests";
 
 export const EditBankDetailsRequest: React.FC<{
   employeeId?: number;
@@ -22,22 +28,21 @@ export const EditBankDetailsRequest: React.FC<{
 }> = ({ employeeId, disabled = false, value }) => {
   const [form] = Form.useForm();
   const queryClient = useQueryClient();
-  const { mutate, isLoading } = useSaveEmployeeFinance();
+  const { mutate, isLoading } = useCreateProfileEditRequest();
+
   const [selectedBank, setSetlectedBank] = useState<TPaystackBank>();
 
   const handleFinish = (data: any) => {
-    if (employeeId && selectedBank) {
+    if (selectedBank) {
       mutate(
         {
           employeeId,
-          data: {
-            key: "bank",
-            value: {
-              bvn: data.bvn,
-              bankName: selectedBank.name,
-              accountNumber: data?.accountNumber,
-              bankCode: data.bankcode ?? selectedBank?.code,
-            },
+          category: "bank-detail",
+          content: {
+            bvn: data.bvn,
+            bankName: selectedBank.name,
+            accountNumber: data?.accountNumber,
+            bankCode: data.bankcode ?? selectedBank?.code,
           },
         },
         {
@@ -57,8 +62,14 @@ export const EditBankDetailsRequest: React.FC<{
               description: res?.data?.message,
             });
             queryClient.invalidateQueries({
-              queryKey: [QUERY_KEY_FOR_SINGLE_EMPLOYEE],
-              exact: true,
+              queryKey: [QUERY_KEY_FOR_PROFILE_EDIT_REQUISITIONS],
+              // exact: true,
+            });
+            queryClient.invalidateQueries({
+              queryKey: [
+                QUERY_KEY_FOR_PROFILE_EDIT_REQUISITIONS_FOR_AUTH_EMPLOYEE,
+              ],
+              // exact: true,
             });
           },
         }
@@ -132,45 +143,49 @@ export const EditITFDetailsRequest: React.FC<{
 }> = ({ employeeId, disabled = false, value }) => {
   const [form] = Form.useForm();
   const queryClient = useQueryClient();
-  const { mutate, isLoading } = useSaveEmployeeFinance();
+  const { mutate, isLoading } = useCreateProfileEditRequest();
 
   const handleFinish = (data: any) => {
-    if (employeeId) {
-      mutate(
-        {
-          employeeId,
-          data: {
-            key: "itf",
-            value: {
-              itfAuthorityId: data.itfAuthorityId,
-              employeeItfId: data.employeeItfId,
-            },
-          },
-        },
-        {
-          onError: (err: any) => {
-            openNotification({
-              state: "error",
-              title: "Error Occured",
-              description:
-                err?.response.data.message ?? err?.response.data.error.message,
-            });
-          },
-          onSuccess: (res: any) => {
-            openNotification({
-              state: "success",
+    mutate(
+      {
+        employeeId,
+        category: "itf",
 
-              title: "Success",
-              description: res?.data?.message,
-            });
-            queryClient.invalidateQueries({
-              queryKey: [QUERY_KEY_FOR_SINGLE_EMPLOYEE],
-              exact: true,
-            });
-          },
-        }
-      );
-    }
+        content: {
+          itfAuthorityId: data.itfAuthorityId,
+          employeeItfId: data.employeeItfId,
+          itfAuthorityName: "",
+        },
+      },
+      {
+        onError: (err: any) => {
+          openNotification({
+            state: "error",
+            title: "Error Occured",
+            description:
+              err?.response.data.message ?? err?.response.data.error.message,
+          });
+        },
+        onSuccess: (res: any) => {
+          openNotification({
+            state: "success",
+
+            title: "Success",
+            description: res?.data?.message,
+          });
+          queryClient.invalidateQueries({
+            queryKey: [QUERY_KEY_FOR_PROFILE_EDIT_REQUISITIONS],
+            // exact: true,
+          });
+          queryClient.invalidateQueries({
+            queryKey: [
+              QUERY_KEY_FOR_PROFILE_EDIT_REQUISITIONS_FOR_AUTH_EMPLOYEE,
+            ],
+            // exact: true,
+          });
+        },
+      }
+    );
   };
   useEffect(() => {
     if (value) {
@@ -219,45 +234,48 @@ export const EditNSITFDetailsRequest: React.FC<{
 }> = ({ employeeId, disabled = false, value }) => {
   const [form] = Form.useForm();
   const queryClient = useQueryClient();
-  const { mutate, isLoading } = useSaveEmployeeFinance();
+  const { mutate, isLoading } = useCreateProfileEditRequest();
 
   const handleFinish = (data: any) => {
-    if (employeeId) {
-      mutate(
-        {
-          employeeId,
-          data: {
-            key: "nsitf",
-            value: {
-              nsitfAuthorityId: data.nsitfAuthorityId,
-              employeeNsitfId: data.employeeNsitfId,
-            },
-          },
+    mutate(
+      {
+        employeeId,
+        category: "nsitf",
+        content: {
+          nsitfAuthorityId: data.nsitfAuthorityId,
+          employeeNsitfId: data.employeeNsitfId,
+          nsitfAuthorityName: "",
         },
-        {
-          onError: (err: any) => {
-            openNotification({
-              state: "error",
-              title: "Error Occured",
-              description:
-                err?.response.data.message ?? err?.response.data.error.message,
-            });
-          },
-          onSuccess: (res: any) => {
-            openNotification({
-              state: "success",
+      },
+      {
+        onError: (err: any) => {
+          openNotification({
+            state: "error",
+            title: "Error Occured",
+            description:
+              err?.response.data.message ?? err?.response.data.error.message,
+          });
+        },
+        onSuccess: (res: any) => {
+          openNotification({
+            state: "success",
 
-              title: "Success",
-              description: res?.data?.message,
-            });
-            queryClient.invalidateQueries({
-              queryKey: [QUERY_KEY_FOR_SINGLE_EMPLOYEE],
-              exact: true,
-            });
-          },
-        }
-      );
-    }
+            title: "Success",
+            description: res?.data?.message,
+          });
+          queryClient.invalidateQueries({
+            queryKey: [QUERY_KEY_FOR_PROFILE_EDIT_REQUISITIONS],
+            // exact: true,
+          });
+          queryClient.invalidateQueries({
+            queryKey: [
+              QUERY_KEY_FOR_PROFILE_EDIT_REQUISITIONS_FOR_AUTH_EMPLOYEE,
+            ],
+            // exact: true,
+          });
+        },
+      }
+    );
   };
   useEffect(() => {
     if (value) {
@@ -306,45 +324,48 @@ export const EditTaxDetailsRequest: React.FC<{
 }> = ({ employeeId, disabled = false, value }) => {
   const [form] = Form.useForm();
   const queryClient = useQueryClient();
-  const { mutate, isLoading } = useSaveEmployeeFinance();
+  const { mutate, isLoading } = useCreateProfileEditRequest();
 
   const handleFinish = (data: any) => {
-    if (employeeId) {
-      mutate(
-        {
-          employeeId,
-          data: {
-            key: "tax",
-            value: {
-              taxAuthorityId: data.taxAuthorityId,
-              employeeTaxId: data.employeeTaxId,
-            },
-          },
+    mutate(
+      {
+        employeeId,
+        category: "tax",
+        content: {
+          employeeTaxId: data.employeeTaxId,
+          taxAuthorityId: data.taxAuthorityId,
+          taxAuthorityName: "",
         },
-        {
-          onError: (err: any) => {
-            openNotification({
-              state: "error",
-              title: "Error Occured",
-              description:
-                err?.response.data.message ?? err?.response.data.error.message,
-            });
-          },
-          onSuccess: (res: any) => {
-            openNotification({
-              state: "success",
+      },
+      {
+        onError: (err: any) => {
+          openNotification({
+            state: "error",
+            title: "Error Occured",
+            description:
+              err?.response.data.message ?? err?.response.data.error.message,
+          });
+        },
+        onSuccess: (res: any) => {
+          openNotification({
+            state: "success",
 
-              title: "Success",
-              description: res?.data?.message,
-            });
-            queryClient.invalidateQueries({
-              queryKey: [QUERY_KEY_FOR_SINGLE_EMPLOYEE],
-              exact: true,
-            });
-          },
-        }
-      );
-    }
+            title: "Success",
+            description: res?.data?.message,
+          });
+          queryClient.invalidateQueries({
+            queryKey: [QUERY_KEY_FOR_PROFILE_EDIT_REQUISITIONS],
+            // exact: true,
+          });
+          queryClient.invalidateQueries({
+            queryKey: [
+              QUERY_KEY_FOR_PROFILE_EDIT_REQUISITIONS_FOR_AUTH_EMPLOYEE,
+            ],
+            // exact: true,
+          });
+        },
+      }
+    );
   };
   useEffect(() => {
     if (value) {
@@ -394,20 +415,19 @@ export const EditPensionDetailsRequest: React.FC<{
 }> = ({ employeeId, disabled = false, value }) => {
   const [form] = Form.useForm();
   const queryClient = useQueryClient();
-  const { mutate, isLoading } = useSaveEmployeeFinance();
+  const { mutate, isLoading } = useCreateProfileEditRequest();
 
   const handleFinish = (data: any) => {
     if (employeeId) {
       mutate(
         {
           employeeId,
-          data: {
-            key: "pension",
-            value: {
-              pensionType: data?.pensionType,
-              employeePensionId: data?.employeePensionId,
-              pensionAdministratorId: data?.pensionAdministratorId,
-            },
+          category: "pension",
+          content: {
+            pensionType: data?.pensionType,
+            employeePensionId: data?.employeePensionId,
+            pensionAdministratorId: data?.pensionAdministratorId,
+            pensionAdministratorName: "",
           },
         },
         {
@@ -427,8 +447,14 @@ export const EditPensionDetailsRequest: React.FC<{
               description: res?.data?.message,
             });
             queryClient.invalidateQueries({
-              queryKey: [QUERY_KEY_FOR_SINGLE_EMPLOYEE],
-              exact: true,
+              queryKey: [QUERY_KEY_FOR_PROFILE_EDIT_REQUISITIONS],
+              // exact: true,
+            });
+            queryClient.invalidateQueries({
+              queryKey: [
+                QUERY_KEY_FOR_PROFILE_EDIT_REQUISITIONS_FOR_AUTH_EMPLOYEE,
+              ],
+              // exact: true,
             });
           },
         }

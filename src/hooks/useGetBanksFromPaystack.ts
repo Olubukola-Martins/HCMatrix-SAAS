@@ -10,7 +10,7 @@ interface IGetDataProps {
 
 export const QUERY_KEY_FOR_PAYSTACK_BANKS = "paystack-banks";
 
-const getData = async (props: {
+export const getBanksFromPaystack = async (props: {
   data?: IGetDataProps;
 }): Promise<{ data: TPaystackBank[]; total: number }> => {
   const url = `https://api.paystack.co/bank`;
@@ -43,7 +43,7 @@ export const useGetBanksFromPaystack = (props: IGetDataProps = {}) => {
   const queryData = useQuery(
     [QUERY_KEY_FOR_PAYSTACK_BANKS, pagination, searchParams],
     () =>
-      getData({
+      getBanksFromPaystack({
         data: {
           ...props,
         },

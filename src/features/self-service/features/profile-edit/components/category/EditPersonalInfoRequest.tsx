@@ -10,8 +10,6 @@ import {
   GENDERS,
   MARITAL_STATUSES,
 } from "constants/general";
-import { useSaveEmployeePersonalInformation } from "features/core/employees/hooks/personalInformation/useSaveEmployeePersonalInformation";
-import { QUERY_KEY_FOR_SINGLE_EMPLOYEE } from "features/core/employees/hooks/useFetchSingleEmployee";
 import { TSingleEmployee } from "features/core/employees/types";
 import { FormExchangeRateInput } from "features/payroll/components/exchangeRates/FormExchangeRateInput";
 import { useCurrentFileUploadUrl } from "hooks/useCurrentFileUploadUrl";
@@ -27,6 +25,9 @@ import {
   generalValidationRules,
 } from "utils/formHelpers/validation";
 import { openNotification } from "utils/notifications";
+import { useCreateProfileEditRequest } from "../../hooks/useCreateProfileEditRequest";
+import { QUERY_KEY_FOR_PROFILE_EDIT_REQUISITIONS } from "../../hooks/useGetAllProfileEditRequests";
+import { QUERY_KEY_FOR_PROFILE_EDIT_REQUISITIONS_FOR_AUTH_EMPLOYEE } from "../../hooks/useGetMyProfileEditRequests";
 
 interface IProps {
   personalInfo?: TSingleEmployee["personalInformation"];
@@ -96,15 +97,14 @@ export const EditPersonalInfoRequest: React.FC<IProps> = ({
     );
   }, [personalInfo, form]);
 
-  const { mutate, isLoading } = useSaveEmployeePersonalInformation();
+  const { mutate, isLoading } = useCreateProfileEditRequest();
 
   const handleFinish = (data: any) => {
-    if (!employeeId) return;
-
     mutate(
       {
         employeeId,
-        data: {
+        category: "personal-information",
+        content: {
           dob: data?.dob?.format(DEFAULT_DATE_FORMAT),
           gender: data.gender,
           phoneNumber: formatPhoneNumber({
@@ -129,6 +129,7 @@ export const EditPersonalInfoRequest: React.FC<IProps> = ({
             number: data.alternativePhoneNumber.number,
           }),
           nin: data.nin,
+          exchangeRateName: "",
         },
       },
       {
@@ -150,7 +151,13 @@ export const EditPersonalInfoRequest: React.FC<IProps> = ({
           });
 
           queryClient.invalidateQueries({
-            queryKey: [QUERY_KEY_FOR_SINGLE_EMPLOYEE],
+            queryKey: [QUERY_KEY_FOR_PROFILE_EDIT_REQUISITIONS],
+            // exact: true,
+          });
+          queryClient.invalidateQueries({
+            queryKey: [
+              QUERY_KEY_FOR_PROFILE_EDIT_REQUISITIONS_FOR_AUTH_EMPLOYEE,
+            ],
             // exact: true,
           });
         },

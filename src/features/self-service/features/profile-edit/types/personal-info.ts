@@ -9,13 +9,17 @@ interface Content {
   phoneNumber: string;
   eligibility: string;
   exchangeRateId: number;
-  exchangeRateName: string;
+  exchangeRateName: string | undefined;
   maritalStatus: string;
   nationality: string;
   address: Address;
   alternativeEmail: string;
   alternativePhoneNumber: string;
   nin: string;
+
+  //
+  validDocumentUrl?: string;
+  passportExpirationDate?: string;
 }
 
 interface Address {

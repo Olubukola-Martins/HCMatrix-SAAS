@@ -5,6 +5,7 @@ import { JobInfoData } from "./job-info";
 import { NSITFData } from "./nsitf";
 import { PersonalInfoData } from "./personal-info";
 import { TaxData } from "./tax";
+import { PensioData } from "./pension";
 
 export type TProfileEditRequestType =
   | "bank-detail"
@@ -32,6 +33,7 @@ export type CreateProfileEditRequestInput = (
   | ITFData
   | NSITFData
   | TaxData
+  | PensioData
 ) & {
   employeeId?: number;
 };
