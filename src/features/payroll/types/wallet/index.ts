@@ -34,9 +34,4 @@ export type TPayrollWalletDashboardAnalytics = {
   graphData: Record<string, number>;
 };
 
-
-
-interface Balance {
-  providus: number;
-  wema: number;
-}
+type Balance = Record<string, number>;

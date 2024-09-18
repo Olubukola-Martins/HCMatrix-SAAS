@@ -20,6 +20,8 @@ import WalletOverviewDetailsCard from "../components/wallet/overview/cards/Walle
 import { SimpleCard } from "components/cards/SimpleCard";
 import SimpleCardList from "components/cards/SimpleCardList";
 import { useRetrievePayrollWallets } from "../hooks/wallet/useRetrievePayrollWallets";
+import { useGetPayrollWalletDashboardAnalytics } from "../hooks/wallet/useGetPayrollWalletDashboardAnalytics";
+import { CURRENT_YEAR } from "constants/dateFormats";
 
 const outerStyle =
   "group  transition ease-in-out duration-500 cursor-pointer shadow-md col-span-3 md:col-span-1 rounded-xl flex flex-col gap-2 w-full  p-3 bg-card";
@@ -40,6 +42,7 @@ const PayrollHome = () => {
     useGetPayrollPendingSetup();
   const { data: wallets, isLoading: isLoadingWallets } =
     useRetrievePayrollWallets();
+
   return (
     <>
       <PayrollSubNav />
@@ -113,32 +116,7 @@ const PayrollHome = () => {
                 isLoading={isLoadingWallets}
                 className="border rounded-md p-4 bg-card shadow-md text-sm"
               />
-              <SimpleCardList
-                className="col-span-3 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4"
-                entries={[
-                  {
-                    title: "Wallet Balance",
-                    highlight: "13,175,000.00",
-                    highlightClassName: "font-bold text-xl mb-2 capitalize",
-                    className:
-                      "border rounded-md p-2 shadow-sm bg-card hover:shadow-md cursor-pointer group h-full",
-                  },
-                  {
-                    title: "Total Debit",
-                    highlight: 0,
-                    highlightClassName: "font-bold text-xl mb-2 capitalize",
-                    className:
-                      "border rounded-md p-2 shadow-sm bg-card hover:shadow-md cursor-pointer group h-full",
-                  },
-                  {
-                    title: "Total Credit",
-                    highlight: 0,
-                    highlightClassName: "font-bold text-xl mb-2 capitalize",
-                    className:
-                      "border rounded-md p-2 shadow-sm bg-card hover:shadow-md cursor-pointer group h-full",
-                  },
-                ]}
-              />
+              <WalletAnalyticsHomeCards />
 
               <AnimatePresence exitBeforeEnter>
                 {/* pending set up */}
@@ -323,7 +301,53 @@ const PayrollPendingSetup: React.FC<{
     </Skeleton>
   );
 };
+const WalletAnalyticsHomeCards = () => {
+  const { data, isLoading: walletAnalyticsLoading } =
+    useGetPayrollWalletDashboardAnalytics({
+      type: "area-graph",
+      year: CURRENT_YEAR,
+    });
+  const balance = formatNumberWithCommas(
+    Object.values(data?.balance ?? {}).reduce((prev, curr) => prev + curr, 0)
+  );
+  const credit = formatNumberWithCommas(data?.totalCredit);
+  const debit = formatNumberWithCommas(data?.totalDebit);
+  return (
+    <>
+      <SimpleCardList
+        className="col-span-3 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4"
+        entries={[
+          {
+            loading: walletAnalyticsLoading,
+            title: "Wallet Balance",
+            highlight: balance,
+            highlightClassName: "font-bold text-xl mb-2 capitalize",
+            className:
+              "border rounded-md p-2 shadow-sm bg-card hover:shadow-md cursor-pointer group h-full",
+          },
+          {
+            loading: walletAnalyticsLoading,
 
+            title: "Total Debit",
+            highlight: debit,
+            highlightClassName: "font-bold text-xl mb-2 capitalize",
+            className:
+              "border rounded-md p-2 shadow-sm bg-card hover:shadow-md cursor-pointer group h-full",
+          },
+          {
+            loading: walletAnalyticsLoading,
+
+            title: "Total Credit",
+            highlight: credit,
+            highlightClassName: "font-bold text-xl mb-2 capitalize",
+            className:
+              "border rounded-md p-2 shadow-sm bg-card hover:shadow-md cursor-pointer group h-full",
+          },
+        ]}
+      />
+    </>
+  );
+};
 interface IPayrollCardProps {
   link?: string;
   title: string;
