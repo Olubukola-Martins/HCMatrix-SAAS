@@ -17,7 +17,6 @@ import {
 import { useGetPayrollPendingSetup } from "../hooks/payroll/pendingSetup/useGetPayrollPendingSetup";
 import ProgressBar from "features/home/components/ProgressBar";
 import WalletOverviewDetailsCard from "../components/wallet/overview/cards/WalletOverviewDetailsCard";
-import { SimpleCard } from "components/cards/SimpleCard";
 import SimpleCardList from "components/cards/SimpleCardList";
 import { useRetrievePayrollWallets } from "../hooks/wallet/useRetrievePayrollWallets";
 import { useGetPayrollWalletDashboardAnalytics } from "../hooks/wallet/useGetPayrollWalletDashboardAnalytics";
@@ -359,7 +358,7 @@ interface IPayrollCardProps {
 const PayrollCard: React.FC<IPayrollCardProps> = (props) => {
   if (props.link) {
     return (
-      <Link className={`${outerStyle}`} to={props.link}>
+      <Link className={`${outerStyle} `} to={props.link}>
         <PayrollCardContent {...props} />
       </Link>
     );
@@ -379,7 +378,7 @@ const PayrollCardContent: React.FC<IPayrollCardProps> = ({
 }) => {
   return (
     <>
-      <div className={`${innerStyle}`}>
+      <div className={`${innerStyle} max-h-48`}>
         <div className="flex items-center gap-2">
           <div className="bg-caramel p-2 flex justify-center items-center rounded-full min-h-min min-w-min">
             {typeof image === "string" ? (
@@ -394,7 +393,7 @@ const PayrollCardContent: React.FC<IPayrollCardProps> = ({
         <span className="block text-xs">{content}</span>
       </div>
       <div
-        className={`flex items-center justify-between group-hover:text-caramel ${
+        className={`mt-auto flex items-center justify-between group-hover:text-caramel ${
           link ? "" : "invisible"
         }`}
       >
