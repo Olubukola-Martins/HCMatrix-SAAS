@@ -22,6 +22,7 @@ import {
   TNSITFValue,
   TITFValue,
 } from "features/core/employees/types/singleEmployee";
+import { useGetProfileEditSetting } from "../hooks/useGetProfileEditSetting";
 
 type TStep = "select-category" | "handle-edit";
 
@@ -72,7 +73,8 @@ export const NewProfileEditRequest: React.FC<IModalProps> = ({
   const itfValue = finance?.find((item) => item.key === "itf")?.value as
     | TITFValue
     | undefined;
-  console.log(finance, "finance");
+  const { data: setting, isLoading: isLoadingSettings } =
+    useGetProfileEditSetting();
   return (
     <Drawer
       open={open}
@@ -94,11 +96,15 @@ export const NewProfileEditRequest: React.FC<IModalProps> = ({
 
           <Form.Item label="Category" name="category">
             <Select
-              options={PROFILE_EDIT_REQUEST_TYPES.map((item, i) => ({
+              options={PROFILE_EDIT_REQUEST_TYPES.filter(
+                //Ensures that only profile edit categories  that are displayed are present here
+                ({ type }) => setting && setting[type]
+              ).map((item, i) => ({
                 value: item.type,
                 label: <span className="capitalize">{item.name}</span>,
               }))}
               placeholder="Select Category"
+              loading={isLoadingSettings}
             />
           </Form.Item>
           <div className="flex justify-end">
