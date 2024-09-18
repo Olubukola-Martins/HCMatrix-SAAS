@@ -1,5 +1,6 @@
 import { SimpleCard } from "components/cards/SimpleCard";
 import { IDivProps } from "types/html";
+import { formatNumberWithCommas } from "utils/dataHelpers/formatNumberWithCommas";
 
 type IProps = Pick<IDivProps, "className"> & {
   data: Partial<{
@@ -8,7 +9,7 @@ type IProps = Pick<IDivProps, "className"> & {
     beneficiaries: number;
     debit: number;
     credit: number;
-    weeklyUsage: string;
+    lastFunded: string;
   }>;
   isLoading?: boolean;
 };
@@ -23,39 +24,39 @@ const WalletOverviewInfoCards: React.FC<IProps> = ({
     beneficiaries = 0,
     debit = 0,
     credit = 0,
-    weeklyUsage = "No data is available!",
+    lastFunded = "No data is available!",
   } = data;
   return (
     <div className={className}>
       <>
         <SimpleCard
           title="Wallet Balance"
-          highlight={`${balance}`}
+          highlight={`${formatNumberWithCommas(balance)}`}
           loading={isLoading}
         />
         <SimpleCard
           title="Total Transactions"
-          highlight={`${transactions}`}
+          highlight={`${formatNumberWithCommas(transactions, 0)}`}
           loading={isLoading}
         />
         <SimpleCard
           title="Total Beneficiaries"
-          highlight={`${beneficiaries}`}
+          highlight={`${formatNumberWithCommas(beneficiaries, 0)}`}
           loading={isLoading}
         />
         <SimpleCard
           title="Total Debit"
-          highlight={`${debit}`}
+          highlight={`${formatNumberWithCommas(debit)}`}
           loading={isLoading}
         />
         <SimpleCard
           title="Total Credit"
-          highlight={`${credit}`}
+          highlight={`${formatNumberWithCommas(credit)}`}
           loading={isLoading}
         />
         <SimpleCard
-          title="Weekly Wallet Usage"
-          highlight={`${weeklyUsage}`}
+          title="Last Funded Amount"
+          highlight={`${formatNumberWithCommas(lastFunded)}`}
           loading={isLoading}
         />
       </>
