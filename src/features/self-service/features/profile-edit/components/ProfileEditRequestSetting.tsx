@@ -3,82 +3,73 @@ import { AppButton } from "components/button/AppButton";
 import PageSubHeader from "components/layout/PageSubHeader";
 import { FormWorkflowInput } from "features/core/workflows/components/FormWorkflowInput";
 import { useApiAuth } from "hooks/useApiAuth";
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
 import { useQueryClient } from "react-query";
 import { openNotification } from "utils/notifications";
-import { useCreateOrUpdateRequisitionSetting } from "../../requisitions/hooks/setting/useCreateOrUpdateRequisitionSetting";
-import { useGetSingleRequisitionSetting, QUERY_KEY_FOR_SINGLE_REQUISITION_SETTING } from "../../requisitions/hooks/setting/useGetSingleRequisitionSetting";
 import { TProfileEditRequestType } from "../types";
 import { PROFILE_EDIT_REQUEST_TYPES } from "../constants";
+import {
+  QUERY_KEY_FOR_WORKFLOW_APPROVAL_SETTING,
+  useFetchWorkflowApprovalSetting,
+} from "features/core/workflows/hooks/useFetchWorkflowApprovalSetting";
+import { useCreateOrUpdateWorkflowApprovalSetting } from "features/core/workflows/hooks/useCreateOrUpdateWorkflowApprovalSetting";
 
 export const ProfileEditRequestSetting = () => {
   return (
     <div className="flex flex-col gap-4">
       <PageSubHeader
         description={`You can now select the workflow approval for profile edit requisition`}
-        
       />
       <ProfileEditRequestPolicy />
     </div>
   );
 };
 
-
-
 const ProfileEditRequestPolicy = () => {
- 
   return (
     <div className="flex flex-col gap-y-6 mt-4">
       {PROFILE_EDIT_REQUEST_TYPES.map((item, i) => (
         <div className="bg-card py-3 px-4" key={i}>
-        <ProfileEditSingleRequisitionPolicyForm type={item.type} name={item.name} />
-      </div>
+          <ProfileEditSingleRequisitionPolicyForm
+            type={item.type}
+            name={item.name}
+          />
+        </div>
       ))}
     </div>
-    
   );
 };
 
-
-
-
-
-export const ProfileEditSingleRequisitionPolicyForm: React.FC<{ type: TProfileEditRequestType, name: string}> = ({
-  type,
-  name
-}) => {
+export const ProfileEditSingleRequisitionPolicyForm: React.FC<{
+  type: TProfileEditRequestType;
+  name: string;
+}> = ({ type, name }) => {
   const queryClient = useQueryClient();
   const [form] = Form.useForm();
   const { companyId, token } = useApiAuth();
-  const [isActive, setIsActive] = useState(false);
 
-  const { data, isFetching } = useGetSingleRequisitionSetting({
-    type: 'asset',//TODO: populate correctly when updated
+  const { data, isFetching } = useFetchWorkflowApprovalSetting({
     companyId,
     token,
+    type,
   });
 
   useEffect(() => {
     if (data) {
       form.setFieldsValue({
         workflowId: data.workflowId,
-        isActive: data.isActive,
       });
-      setIsActive(data?.isActive);
     }
   }, [data, form]);
 
-  const { mutate, isLoading } = useCreateOrUpdateRequisitionSetting();
+  const { mutate, isLoading } = useCreateOrUpdateWorkflowApprovalSetting();
 
   const handleSubmit = (values: any) => {
     mutate(
       {
-        type: 'asset',//TODO: populate correctly when updated
+        type,
 
-        body: {
-          isActive,
-          workflowId: values.workflowId,
-        },
+        workflowId: values.workflowId,
       },
       {
         onError: (err: any) => {
@@ -98,10 +89,8 @@ export const ProfileEditSingleRequisitionPolicyForm: React.FC<{ type: TProfileEd
             // duration: 0.4,
           });
 
-          form.resetFields();
-
           queryClient.invalidateQueries({
-            queryKey: [QUERY_KEY_FOR_SINGLE_REQUISITION_SETTING, type],
+            queryKey: [QUERY_KEY_FOR_WORKFLOW_APPROVAL_SETTING, type],
             // exact: true,
           });
         },
@@ -118,13 +107,11 @@ export const ProfileEditSingleRequisitionPolicyForm: React.FC<{ type: TProfileEd
           onFinish={handleSubmit}
         >
           <div className="flex flex-col gap-2">
-            
             <div className="w-full flex gap-x-6 items-center">
               <Form.Item>
-                <Input disabled value={name}/>
+                <Input disabled value={name} />
               </Form.Item>
               <FormWorkflowInput
-              
                 Form={Form}
                 control={{ label: "", name: "workflowId" }}
               />

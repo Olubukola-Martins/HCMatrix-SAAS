@@ -1,7 +1,6 @@
 import { Input, Form } from "antd";
 import { AppButton } from "components/button/AppButton";
 import { FormBankInput } from "components/generalFormInputs/FormBankInput";
-
 import { TBankValue, TPensionValue } from "features/core/employees/types";
 import {
   TITFValue,
@@ -418,48 +417,46 @@ export const EditPensionDetailsRequest: React.FC<{
   const { mutate, isLoading } = useCreateProfileEditRequest();
 
   const handleFinish = (data: any) => {
-    if (employeeId) {
-      mutate(
-        {
-          employeeId,
-          category: "pension",
-          content: {
-            pensionType: data?.pensionType,
-            employeePensionId: data?.employeePensionId,
-            pensionAdministratorId: data?.pensionAdministratorId,
-            pensionAdministratorName: "",
-          },
+    mutate(
+      {
+        employeeId,
+        category: "pension",
+        content: {
+          pensionType: data?.pensionType,
+          employeePensionId: data?.employeePensionId,
+          pensionAdministratorId: data?.pensionAdministratorId,
+          pensionAdministratorName: "",
         },
-        {
-          onError: (err: any) => {
-            openNotification({
-              state: "error",
-              title: "Error Occured",
-              description:
-                err?.response.data.message ?? err?.response.data.error.message,
-            });
-          },
-          onSuccess: (res: any) => {
-            openNotification({
-              state: "success",
+      },
+      {
+        onError: (err: any) => {
+          openNotification({
+            state: "error",
+            title: "Error Occured",
+            description:
+              err?.response.data.message ?? err?.response.data.error.message,
+          });
+        },
+        onSuccess: (res: any) => {
+          openNotification({
+            state: "success",
 
-              title: "Success",
-              description: res?.data?.message,
-            });
-            queryClient.invalidateQueries({
-              queryKey: [QUERY_KEY_FOR_PROFILE_EDIT_REQUISITIONS],
-              // exact: true,
-            });
-            queryClient.invalidateQueries({
-              queryKey: [
-                QUERY_KEY_FOR_PROFILE_EDIT_REQUISITIONS_FOR_AUTH_EMPLOYEE,
-              ],
-              // exact: true,
-            });
-          },
-        }
-      );
-    }
+            title: "Success",
+            description: res?.data?.message,
+          });
+          queryClient.invalidateQueries({
+            queryKey: [QUERY_KEY_FOR_PROFILE_EDIT_REQUISITIONS],
+            // exact: true,
+          });
+          queryClient.invalidateQueries({
+            queryKey: [
+              QUERY_KEY_FOR_PROFILE_EDIT_REQUISITIONS_FOR_AUTH_EMPLOYEE,
+            ],
+            // exact: true,
+          });
+        },
+      }
+    );
   };
   useEffect(() => {
     if (value) {

@@ -14,6 +14,7 @@ import { getStates } from "hooks/useFetchStates";
 import { getSingleTaxAuthority } from "features/payroll/hooks/organization/taxAuthorities/useGetSingleTaxAuthority";
 import { getSingleItfAuthority } from "features/payroll/hooks/organization/itfAuthorities/useGetSingleITFAuthority";
 import { getSingleNsitfAuthority } from "features/payroll/hooks/organization/nsitfAuthorities/useGetSingleNSITFAuthority";
+import { getSinglePensionAdmin } from "features/payroll/hooks/organization/pensionAdministrators/useGetSinglePensionAdmin";
 
 type TCreateProps = CreateProfileEditRequestInput;
 
@@ -91,7 +92,7 @@ const createData = async (props: {
 
       break;
     case "pension":
-      const pensionAuthority = await getSingleTaxAuthority({
+      const pensionAuthority = await getSinglePensionAdmin({
         auth: props.auth,
         data: {
           id: data.content.pensionAdministratorId,

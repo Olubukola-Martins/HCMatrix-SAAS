@@ -37,6 +37,13 @@ export type TWorkflowApprovalType =
   | "payroll"
   | "loan"
   | "exit-handover-form"
+  | "bank-detail"
+  | "job-information"
+  | "personal-information"
+  | "pension"
+  | "itf"
+  | "nsitf"
+  | "tax"
   | "shift-swap"
   | "time-off";
 

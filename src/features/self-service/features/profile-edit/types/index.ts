@@ -6,6 +6,7 @@ import { NSITFData } from "./nsitf";
 import { PersonalInfoData } from "./personal-info";
 import { TaxData } from "./tax";
 import { PensioData } from "./pension";
+import { TLicenseType } from "features/authentication/types/auth-user";
 
 export type TProfileEditRequestType =
   | "bank-detail"
@@ -23,7 +24,25 @@ export type ProfileEditRequest = {
   status: TApprovalStatus;
   createdAt: string;
   updatedAt: string;
+  employee?: Employee;
 } & CreateProfileEditRequestInput;
+interface Employee {
+  id: number;
+  firstName: string;
+  lastName: string;
+  email: string;
+  licenseType: TLicenseType;
+  empUid: string;
+  roleId: number;
+  status: string;
+  companyId: number;
+  designationId: number;
+  userId: number;
+  avatarUrl: string;
+  createdAt: string;
+  updatedAt: string;
+  deletedAt?: string | null;
+}
 
 export type CreateProfileEditRequestInput = (
   | CreateBankDetail

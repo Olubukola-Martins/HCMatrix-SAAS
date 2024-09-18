@@ -55,5 +55,5 @@ interface Employee {
   avatarUrl: string;
   createdAt: string;
   updatedAt: string;
-  deletedAt?: any;
+  deletedAt?: string | null;
 }

@@ -3,13 +3,13 @@ import { IModalProps } from "types";
 import { openNotification } from "utils/notifications";
 import { useQueryClient } from "react-query";
 import DeleteEntityModal from "components/entity/DeleteEntityModal";
-import { useCancelRequisition } from "../../requisitions/hooks/useCancelRequisition";
 import { QUERY_KEY_FOR_PROMOTION_REQUISITIONS_FOR_AUTH_EMPLOYEE } from "../../requisitions/hooks/promotion/useGetPromotionRequisitions4AuthEmployee";
 import { QUERY_KEY_FOR_PROMOTION_REQUISITIONS } from "../../requisitions/hooks/promotion/useGetPromotionRequisitions";
-import { TPromotionRequisition } from "../../requisitions/types/promotion";
+import { useCancelProfileEditRequest } from "../hooks/useCancelProfileEditRequest";
+import { ProfileEditRequest } from "../types";
 
 interface IProps extends IModalProps {
-  data?: TPromotionRequisition;
+  data?: Pick<ProfileEditRequest, "id" | "category">;
 }
 export const CancelProfileEditRequest: React.FC<IProps> = ({
   open,
@@ -18,14 +18,13 @@ export const CancelProfileEditRequest: React.FC<IProps> = ({
 }) => {
   const queryClient = useQueryClient();
 
-  const { mutate, isLoading } = useCancelRequisition();
+  const { mutate, isLoading } = useCancelProfileEditRequest();
 
   const handleDelete = () => {
     if (!data) return;
     mutate(
       {
-        entityId: data.id,
-        type: "promotion",
+        id: data.id,
       },
       {
         onError: (err: any) => {
@@ -66,7 +65,7 @@ export const CancelProfileEditRequest: React.FC<IProps> = ({
       title="Cancel Profile Edit request"
       entity={{
         type: `profile edit request`,
-        name: `${data?.proposedDesignation.name}`,
+        name: `${data?.category}`,
       }}
       handleClose={handleClose}
       open={open}

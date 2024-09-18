@@ -14,10 +14,10 @@ import { TApprovalRequest } from "features/core/workflows/types/approval-request
 import { useFetchApprovalRequests } from "features/core/workflows/hooks/useFetchApprovalRequests";
 import { useQueryClient } from "react-query";
 import { ProfileEditRequestDetails } from "./ProfileEditRequestDetails";
-import { QUERY_KEY_FOR_PROMOTION_REQUISITIONS } from "../../requisitions/hooks/promotion/useGetPromotionRequisitions";
 import { getEmployeeFullName } from "features/core/employees/utils/getEmployeeFullName";
-import { QUERY_KEY_FOR_PROMOTION_REQUISITIONS_FOR_AUTH_EMPLOYEE } from "../../requisitions/hooks/promotion/useGetPromotionRequisitions4AuthEmployee";
 import { DEFAULT_DATE_FORMAT } from "constants/dateFormats";
+import { QUERY_KEY_FOR_PROFILE_EDIT_REQUISITIONS } from "../hooks/useGetAllProfileEditRequests";
+import { QUERY_KEY_FOR_PROFILE_EDIT_REQUISITIONS_FOR_AUTH_EMPLOYEE } from "../hooks/useGetMyProfileEditRequests";
 
 const ProfileEditApprovalRequestsTable: React.FC<{
   status?: TApprovalStatus;
@@ -31,17 +31,25 @@ const ProfileEditApprovalRequestsTable: React.FC<{
   const { pagination, onChange } = usePagination();
   const { data, isFetching } = useFetchApprovalRequests({
     pagination,
-    type: "promotion",
+    type: [
+      "personal-information",
+      "bank-detail",
+      "tax",
+      "job-information",
+      "nsitf",
+      "itf",
+      "pension",
+    ],
   });
 
   const { confirmApprovalAction } = useApproveORReject({
     handleSuccess: () => {
       queryClient.invalidateQueries({
-        queryKey: [QUERY_KEY_FOR_PROMOTION_REQUISITIONS],
+        queryKey: [QUERY_KEY_FOR_PROFILE_EDIT_REQUISITIONS],
         // exact: true,
       });
       queryClient.invalidateQueries({
-        queryKey: [QUERY_KEY_FOR_PROMOTION_REQUISITIONS_FOR_AUTH_EMPLOYEE],
+        queryKey: [QUERY_KEY_FOR_PROFILE_EDIT_REQUISITIONS_FOR_AUTH_EMPLOYEE],
         // exact: true,
       });
     },
@@ -54,8 +62,8 @@ const ProfileEditApprovalRequestsTable: React.FC<{
       key: "Employee",
       render: (_, item) => (
         <span>
-          {item?.promotionRequisition
-            ? getEmployeeFullName(item?.promotionRequisition?.employee)
+          {item?.profileEditRequest
+            ? getEmployeeFullName(item?.profileEditRequest?.employee)
             : ""}
         </span>
       ),
@@ -66,29 +74,20 @@ const ProfileEditApprovalRequestsTable: React.FC<{
       key: "date",
       render: (_, item) => (
         <span>
-          {moment(item?.promotionRequisition?.date).format(DEFAULT_DATE_FORMAT)}{" "}
-        </span>
-      ),
-    },
-    {
-      title: "Preferred Start Date",
-      dataIndex: "preferredStartDate",
-      key: "preferredStartDate",
-      render: (_, item) => (
-        <span>
-          {moment(item?.promotionRequisition?.preferredStartDate).format(
+          {moment(item?.profileEditRequest?.createdAt).format(
             DEFAULT_DATE_FORMAT
           )}{" "}
         </span>
       ),
     },
+
     {
-      title: "Proposed Designation",
-      dataIndex: "proposedDesignationId",
-      key: "proposedDesignationId",
+      title: "Category",
+      dataIndex: "category",
+      key: "category",
       render: (_, item) => (
         <span className="capitalize">
-          {item?.promotionRequisition?.proposedDesignation.name}{" "}
+          {item?.profileEditRequest?.category.split("-").join(" ")}
         </span>
       ),
     },
@@ -103,11 +102,11 @@ const ProfileEditApprovalRequestsTable: React.FC<{
           className="capitalize"
           style={{
             color: getAppropriateColorForStatus(
-              item?.promotionRequisition?.status ?? ""
+              item?.profileEditRequest?.status ?? ""
             ),
           }}
         >
-          {item?.promotionRequisition?.status}
+          {item?.profileEditRequest?.status}
         </span>
       ),
     },
@@ -131,7 +130,7 @@ const ProfileEditApprovalRequestsTable: React.FC<{
                   View
                 </Menu.Item>
                 <Menu.Item
-                  hidden={item?.promotionRequisition?.status !== "pending"}
+                  hidden={item?.profileEditRequest?.status !== "pending"}
                   key="2"
                   onClick={() =>
                     confirmApprovalAction({
@@ -145,7 +144,7 @@ const ProfileEditApprovalRequestsTable: React.FC<{
                   Approve
                 </Menu.Item>
                 <Menu.Item
-                  hidden={item?.promotionRequisition?.status !== "pending"}
+                  hidden={item?.profileEditRequest?.status !== "pending"}
                   key="1"
                   onClick={() =>
                     confirmApprovalAction({
@@ -172,11 +171,11 @@ const ProfileEditApprovalRequestsTable: React.FC<{
 
   return (
     <div>
-      {request?.promotionRequisition && (
+      {request?.profileEditRequest && (
         <ProfileEditRequestDetails
           open={showD}
           handleClose={() => setShowD(false)}
-          id={request.promotionRequisition.id}
+          id={request.profileEditRequest.id}
           approvalRequest={request}
         />
       )}

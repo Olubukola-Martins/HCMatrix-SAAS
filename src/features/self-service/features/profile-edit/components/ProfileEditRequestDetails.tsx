@@ -1,15 +1,7 @@
-import { Form, Input, Drawer, Skeleton, Table } from "antd";
-import React, { useEffect } from "react";
+import { Drawer, Skeleton, Table } from "antd";
+import React from "react";
 import { IModalProps } from "types";
 import { useApiAuth } from "hooks/useApiAuth";
-import { boxStyle } from "styles/reused";
-import { getAppropriateColorForStatus } from "utils/colorHelpers/getAppropriateColorForStatus";
-import {
-  QUERY_KEY_FOR_SINGLE_PROMOTION_REQUISITION,
-  useGetSinglePromotionRequisition,
-} from "../../requisitions/hooks/promotion/useGetSinglePromotionRequisition";
-import dayjs from "dayjs";
-import { DEFAULT_DATE_FORMAT } from "constants/dateFormats";
 import ApproveOrRejectButton from "features/core/workflows/components/approval-request/ApproveOrRejectButton";
 import { TApprovalRequest } from "features/core/workflows/types/approval-requests";
 import { useQueryClient } from "react-query";
@@ -17,6 +9,10 @@ import { QUERY_KEY_FOR_PROMOTION_REQUISITIONS } from "../../requisitions/hooks/p
 import { QUERY_KEY_FOR_PROMOTION_REQUISITIONS_FOR_AUTH_EMPLOYEE } from "../../requisitions/hooks/promotion/useGetPromotionRequisitions4AuthEmployee";
 import { QUERY_KEY_FOR_SELF_SERVICE_DB_ANALYTICS } from "features/self-service/hooks/useGetSelfServiceDashboardAnalytics";
 import { PageIntro } from "components/layout/PageIntro";
+import {
+  QUERY_KEY_FOR_SINGLE_PROFILE_EDIT_REQUEST,
+  useGetProfileEditRequestById,
+} from "../hooks/useGetProfileEditRequestById";
 
 interface IProps extends IModalProps {
   id: number;
@@ -30,27 +26,12 @@ export const ProfileEditRequestDetails: React.FC<IProps> = ({
   approvalRequest,
 }) => {
   const { companyId, token } = useApiAuth();
-  const [form] = Form.useForm();
-  const { data, isFetching } = useGetSinglePromotionRequisition({
+  const { data, isFetching } = useGetProfileEditRequestById({
     id,
     companyId,
     token,
   });
-  useEffect(() => {
-    if (data) {
-      form.setFieldsValue({
-        date: dayjs(data.date).format(DEFAULT_DATE_FORMAT),
-        employeeName: `${data.employee.firstName} ${data.employee.lastName}`,
-        preferredStartDate: dayjs(data.preferredStartDate).format(
-          DEFAULT_DATE_FORMAT
-        ),
-        employeeID: data.employee.empUid,
-        proposedDesignation: data.proposedDesignation.name,
-        justification: data.justification,
-        status: data.status,
-      });
-    }
-  }, [id, form, data]);
+
   const queryClient = useQueryClient();
   return (
     <Drawer
@@ -77,7 +58,7 @@ export const ProfileEditRequestDetails: React.FC<IProps> = ({
               // exact: true,
             });
             queryClient.invalidateQueries({
-              queryKey: [QUERY_KEY_FOR_SINGLE_PROMOTION_REQUISITION, id],
+              queryKey: [QUERY_KEY_FOR_SINGLE_PROFILE_EDIT_REQUEST, id],
               // exact: true,
             });
 
@@ -88,7 +69,7 @@ export const ProfileEditRequestDetails: React.FC<IProps> = ({
             handleClose();
           }}
         />
-        <PageIntro title="Category: Personal Information" />
+        <PageIntro title={`Category: ${data?.category.split("-").join(" ")}`} />
 
         <Table
           className="mt-6"

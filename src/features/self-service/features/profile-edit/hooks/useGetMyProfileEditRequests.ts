@@ -5,6 +5,7 @@ import { ICurrentCompany, IPaginationProps, ISearchParams } from "types";
 import { DEFAULT_PAGE_SIZE } from "constants/general";
 import { TApprovalStatus } from "types/statuses";
 import { ProfileEditRequest } from "../types";
+import { useApiAuth } from "hooks/useApiAuth";
 
 interface IGetDataProps extends ICurrentCompany {
   pagination?: IPaginationProps;
@@ -61,12 +62,17 @@ const getData = async (
   return ans;
 };
 
-export const useGetAllProfileEditRequests = (props: IGetDataProps) => {
+export const useGetMyProfileEditRequests = (
+  props: Omit<IGetDataProps, "companyId" | "token">
+) => {
+  const { companyId, token } = useApiAuth();
   const queryData = useQuery(
     [QUERY_KEY_FOR_PROFILE_EDIT_REQUISITIONS_FOR_AUTH_EMPLOYEE, props],
     () =>
       getData({
         ...props,
+        companyId,
+        token,
       }),
     {
       onError: (err: any) => {},
