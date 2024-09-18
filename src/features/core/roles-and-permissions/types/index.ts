@@ -77,7 +77,8 @@ export type TPermissionLabel =
   | "view-all-time-off-requests"
   | "upload-time-and-attendance-timesheet"
   | "view-all-time-and-attendance-timesheet"
-  | "view-time-and-attendance-dashboard-summary";
+  | "view-time-and-attendance-dashboard-summary"
+  | "view-all-profile-edit-requests"; //profile-edit
 
 export type TPermissionInDelegation = {
   id: number;

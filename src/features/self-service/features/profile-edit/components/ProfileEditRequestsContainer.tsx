@@ -34,7 +34,7 @@ const ProfileEditRequestsContainer = () => {
       children: <ProfileEditRequestsTableContainer />,
       hidden: !canUserAccessComponent({
         userPermissions,
-        requiredPermissions: ["view-all-promotion-requests"],
+        requiredPermissions: ["view-all-profile-edit-requests"],
       }),
     },
   ];
@@ -49,7 +49,8 @@ const ProfileEditRequestsContainer = () => {
           { name: "New Request", handleClick: () => setShowM(true) },
           {
             name: "Setting",
-            handleClick: () => navigate(appRoutes.selfServiceProfileEditSetting),
+            handleClick: () =>
+              navigate(appRoutes.selfServiceProfileEditSetting),
             btnVariant: "transparent",
             hidden: !canUserAccessComponent({
               userPermissions,
