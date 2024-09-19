@@ -40,7 +40,7 @@ export const EditJobInformationRequest: React.FC<TJobInformationProps> = ({
       form.setFieldsValue({
         lineManagerId: jobInfo.lineManagerId,
         branchId: jobInfo.branchId,
-        payGradeId: jobInfo?.payGradeId,
+        gradeId: jobInfo?.gradeId,
         startDate: jobInfo.startDate ? dayjs(jobInfo.startDate) : null,
         monthlyGross: jobInfo?.monthlyGross ? +jobInfo?.monthlyGross : 0, // to covert to number
         employmentType: jobInfo.employmentType,
@@ -74,7 +74,7 @@ export const EditJobInformationRequest: React.FC<TJobInformationProps> = ({
     probationEndDate: Dayjs;
     confirmationDate: Dayjs;
     lineManagerId: number;
-    payGradeId: number;
+    gradeId: number;
     payrollType: string;
     branchId: number;
     hourlyRate: number;
