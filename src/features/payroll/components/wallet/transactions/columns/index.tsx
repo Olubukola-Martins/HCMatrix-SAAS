@@ -51,7 +51,9 @@ export const WALLET_TRANSACTION_TABLE_COLUMNS = (
     render: (val, item) => (
       <span
         className="capitalize"
-        style={{ color: item.type === "credit" ? "green" : "red" }}
+        style={{
+          color: item.type.toLowerCase() === "credit" ? "green" : "red",
+        }}
       >
         {item.type}
       </span>
