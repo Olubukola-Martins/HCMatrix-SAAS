@@ -20,7 +20,14 @@ const GlobalSupport = () => {
         openClassName="support"
         // style={{ width: 200, margin: "0 20px" }}
         title={
-          <div className="flex items-center gap-x-10  font-medium text-white" style={{ background: 'var(--caramel)', width: '100%', padding: '10px' }}>
+          <div
+            className="flex items-center gap-x-10  font-medium text-white"
+            style={{
+              background: "var(--caramel)",
+              width: "100%",
+              padding: "10px",
+            }}
+          >
             <span>HCMatrix Quick Links</span>
             <i
               className="ri-close-line cursor-pointer"
@@ -41,7 +48,8 @@ const GlobalSupport = () => {
                     <a
                       target="_blank"
                       rel="noreferrer"
-                      href="https://snapnet.sharepoint.com/:f:/s/hcmatrix3userguide/EvWZGPYnhV5MraKLKZvJJHcBHzcRCvjbUiAlv-YvGQEqHA?e=ReptHw"
+                      // href="https://snapnet.sharepoint.com/:f:/s/hcmatrix3userguide/EvWZGPYnhV5MraKLKZvJJHcBHzcRCvjbUiAlv-YvGQEqHA?e=ReptHw"
+                      href="https://www.youtube.com/playlist?list=PLNSckt_sIi9RmQTuEVZBHbJXBaXkHDsK2"
                       className="group-hover:text-caramel"
                     >
                       Help Videos
@@ -113,7 +121,6 @@ const GlobalSupport = () => {
         open={queryModal}
         handleClose={() => setQueryModal(false)}
       />
-
     </>
   );
 };
