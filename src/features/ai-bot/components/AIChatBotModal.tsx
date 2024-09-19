@@ -69,9 +69,10 @@ const AIChatBotModal = ({
     <Modal
       open={open}
       onCancel={() => handleClose()}
-      style={{ maxWidth: 500, top: 10 }}
+      style={{ maxWidth: 600, top: 10 }}
       footer={null}
       closable={false}
+      width={600} 
     >
       <Themes>
         <div>
