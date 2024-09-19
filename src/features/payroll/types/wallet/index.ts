@@ -1,18 +1,9 @@
-import { TPayrollGraphAnalyticsItem } from "../payroll";
+import { TWalletTransaction } from "../payrollWallet";
 
 export type TPayrollWalletPaymentProvider = "Korapay" | "Providus";
 export type TWalletTransactionStatus = "completed" | "pending";
 export type TWalletTransactionType = "credit" | "debit";
-export type TPayrollWalletTransaction = {
-  createdAt?: string;
-  updatedAt?: string;
-  narration?: string;
-  amount?: number;
-  type: TWalletTransactionType;
-  provider: TPayrollWalletPaymentProvider;
-  balance?: number;
-  status: TWalletTransactionStatus;
-};
+export type TPayrollWalletTransaction = TWalletTransaction;
 export type TPayrollWallet = {
   id: number;
   companyId: number;

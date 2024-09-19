@@ -9,6 +9,7 @@ import {
 } from "features/payroll/types/payrollWallet";
 import { truncateString } from "utils/dataHelpers/truncateString";
 import { getAppropriateColorForStatus } from "utils/colorHelpers/getAppropriateColorForStatus";
+import { formatNumberWithCommas } from "utils/dataHelpers/formatNumberWithCommas";
 
 export const WALLET_TRANSACTION_TABLE_COLUMNS = (
   handleAction: (
@@ -21,9 +22,7 @@ export const WALLET_TRANSACTION_TABLE_COLUMNS = (
     dataIndex: "date",
     key: "date",
     render: (val, item) => (
-      <span className="capitalize text-caramel">
-        {dayjs(item.createdAt).format(DEFAULT_DATE_FORMAT)}
-      </span>
+      <span>{dayjs(item.createdAt).format(DEFAULT_DATE_FORMAT)}</span>
     ),
   },
 
@@ -41,19 +40,32 @@ export const WALLET_TRANSACTION_TABLE_COLUMNS = (
     title: "Amount",
     dataIndex: "amount",
     key: "amount",
-    render: (val, item) => <span className="capitalize">{item.amount}</span>,
+    render: (val, item) => (
+      <span className="capitalize">{formatNumberWithCommas(item.amount)}</span>
+    ),
   },
   {
     title: "Type",
     dataIndex: "type",
     key: "type",
-    render: (val, item) => <span className="capitalize">{item.type}</span>,
+    render: (val, item) => (
+      <span
+        className="capitalize"
+        style={{ color: item.type === "credit" ? "green" : "red" }}
+      >
+        {item.type}
+      </span>
+    ),
   },
   {
     title: "Balance",
     dataIndex: "balance",
     key: "balance",
-    render: (val, item) => <span className="capitalize">{item.balance}</span>,
+    render: (val, item) => (
+      <span className="capitalize">
+        {formatNumberWithCommas(item.balanceAfter)}
+      </span>
+    ),
   },
   {
     title: "Status",
@@ -78,8 +90,8 @@ export const WALLET_TRANSACTION_TABLE_COLUMNS = (
         menu={{
           items: [
             {
-              label: "Edit",
-              key: "Edit",
+              label: "View",
+              key: "View",
               onClick: () => handleAction(item, "view"),
             },
           ],

@@ -2,7 +2,9 @@
 
 const ECOLOR: { [key: string]: string } = {
   pending: "#FFA600",
+  credit: "#01966B",
   approved: "#01966B",
+  debit: "#FF221E",
   rejected: "#FF221E",
   closed: "#1ace17",
   low: "#06e9ec",
