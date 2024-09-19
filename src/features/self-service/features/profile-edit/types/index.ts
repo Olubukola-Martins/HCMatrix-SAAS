@@ -26,7 +26,7 @@ export type ProfileEditRequest = {
   updatedAt: string;
   employee?: Employee;
 } & CreateProfileEditRequestInput & {
-    proposed?: CreateProfileEditRequestInput["content"];
+    current?: CreateProfileEditRequestInput["content"];
   };
 interface Employee {
   id: number;

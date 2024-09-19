@@ -15,6 +15,8 @@ import {
 } from "../hooks/useGetProfileEditRequestById";
 import { ColumnsType } from "antd/es/table";
 import { formatNumberWithCommas } from "utils/dataHelpers/formatNumberWithCommas";
+import { formatCamelCaseToReadable } from "utils/dataHelpers/formatCamelCaseToReadable";
+import moment from "moment";
 
 interface IProps extends IModalProps {
   id: number;
@@ -79,6 +81,53 @@ export const ProfileEditRequestDetails: React.FC<IProps> = ({
       render: (_, item) => <span>{item.isModified ? "Yes" : "No"} </span>,
     },
   ];
+  const proposedValues = Object.entries(data?.content ?? {}).map(
+    ([key, value]) => {
+      return {
+        key,
+        value,
+      };
+    }
+  );
+  const nestedProposedValues = proposedValues
+    .filter((p) => typeof p.value === "object")
+    .map((n) => ({ value: n.value, parentKey: n.key }));
+  nestedProposedValues.forEach((n) =>
+    proposedValues.push(
+      ...Object.entries(n.value ?? {}).map(([key, value]) => {
+        return {
+          key: `${n.parentKey}/${key}`,
+          value,
+        };
+      })
+    )
+  );
+  const currentValues = Object.entries(data?.current ?? {}).map(
+    ([key, value]) => ({
+      key,
+      value,
+    })
+  );
+  const nestedCurrentValues = currentValues
+    .filter((p) => typeof p.value === "object")
+    .map((n) => ({ value: n.value, parentKey: n.key }));
+  nestedCurrentValues.forEach((n) =>
+    currentValues.push(
+      ...Object.entries(n.value ?? {}).map(([key, value]) => {
+        return {
+          key: `${n.parentKey}/${key}`,
+          value,
+        };
+      })
+    )
+  );
+
+  const proposedValuesWithNestedObjs = proposedValues.filter(
+    (p) => typeof p.value !== "object"
+  );
+  const currentValuesWithNestedObjs = currentValues.filter(
+    (p) => typeof p.value !== "object"
+  );
   return (
     <Drawer
       open={open}
@@ -120,13 +169,27 @@ export const ProfileEditRequestDetails: React.FC<IProps> = ({
         <Table
           className="mt-6"
           columns={columns}
-          dataSource={Object.entries(data?.content ?? {}).map(
-            ([key, value]): TProfileEditRequestComparison => {
+          dataSource={proposedValuesWithNestedObjs.map(
+            (item): TProfileEditRequestComparison => {
+              let currentValue =
+                currentValuesWithNestedObjs.find((p) => p.key === item.key)
+                  ?.value || `N/A`;
+              let proposedValue = item.value;
+              const field = formatCamelCaseToReadable(item.key);
+              if (
+                typeof proposedValue === "string" &&
+                moment(proposedValue).isValid()
+              ) {
+                proposedValue =
+                  moment(proposedValue).format("DD/MM/YY HH:mm:ss");
+                currentValue = moment(currentValue).format("DD/MM/YY HH:mm:ss");
+              }
+
               return {
-                currentValue: value,
-                field: key,
-                isModified: false,
-                proposedValue: `nil`,
+                currentValue,
+                field,
+                isModified: proposedValue !== currentValue,
+                proposedValue,
               };
             }
           )}
