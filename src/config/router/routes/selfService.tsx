@@ -47,7 +47,10 @@ import VehicleBookingSettings from "features/self-service/features/vehicle-booki
 import EmployeeHealthAccessPage from "features/self-service/features/health-access/pages/EmployeeHealthAccessPage";
 import FilesInFolder from "features/self-service/features/documents/pages/FilesInFolder";
 import LoanRePaymentPlan from "features/self-service/features/loan/pages/LoanRePaymentPlan";
+import ProfileEditRequests from "features/self-service/features/profile-edit/pages/ProfileEditRequests";
+import ProfileEditRequestsSettingPage from "features/self-service/features/profile-edit/pages/ProfileEditRequestsSettingPage";
 import LoanRePaymentSchedule from "features/self-service/features/loan/pages/LoanRePaymentSchedule";
+
 
 // TO DO: This lazy loading might not be needed consider rethinking this, so just temporary
 // const Requisition = lazy(
@@ -319,6 +322,42 @@ export const selfServiceRoutes = (props: TAppPageDataFnProps): TRouteData[] => {
       path: appRoutes.selfServicePromotion,
       isSearchable: true,
       title: "Promotion Requests",
+      isPrimaryFeature: true,
+      hidden:
+        !isUserLicensed &&
+        !canUserAccessComponent({
+          userPermissions,
+
+          requiredPermissions: [],
+          activeSubscription,
+          requiredSubscriptionState: {
+            label: "hr-admin",
+            resources: [],
+          },
+        }),
+    },
+    {
+      element: <ProfileEditRequestsSettingPage />,
+      path: appRoutes.selfServiceProfileEditSetting,
+      isSearchable: true,
+      title: "Profile Edit Request Setting",
+      isPrimaryFeature: false,
+      hidden: !canUserAccessComponent({
+        userPermissions,
+
+        requiredPermissions: ["manage-requsition-settings"],
+        activeSubscription,
+        requiredSubscriptionState: {
+          label: "hr-admin",
+          resources: [],
+        },
+      }),
+    },
+    {
+      element: <ProfileEditRequests />,
+      path: appRoutes.selfServiceProfileEdit,
+      isSearchable: true,
+      title: "Profile Edit Requests",
       isPrimaryFeature: true,
       hidden:
         !isUserLicensed &&

@@ -9,7 +9,7 @@ interface IDataProps {
   id: number;
 }
 export const QUERY_KEY_FOR_SINGLE_PENSION_ADMIN = "single-pension-admin";
-const getData = async (props: {
+export const getSinglePensionAdmin = async (props: {
   data: IDataProps;
   auth: ICurrentCompany;
 }): Promise<TTaxAuthority> => {
@@ -38,7 +38,7 @@ export const useGetSinglePensionAdmin = (props: IDataProps) => {
   const queryData = useQuery(
     [QUERY_KEY_FOR_SINGLE_PENSION_ADMIN],
     () =>
-      getData({
+      getSinglePensionAdmin({
         auth: {
           companyId,
           token,

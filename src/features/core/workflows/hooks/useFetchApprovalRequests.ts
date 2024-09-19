@@ -5,6 +5,7 @@ import { IPaginationProps, ICurrentCompany, ISearchParams } from "types";
 import { DEFAULT_PAGE_SIZE } from "constants/general";
 import { TWorkflowApprovalType } from "../types";
 import { TApprovalRequest } from "../types/approval-requests";
+import { MICROSERVICE_ENDPOINTS } from "config/enviroment";
 
 export const QUERY_KEY_FOR_APPROVAL_REQUESTS = "approval-requests";
 
@@ -26,7 +27,7 @@ const getData = async (
   const limit = pagination?.limit ?? DEFAULT_PAGE_SIZE;
   const offset = pagination?.offset ?? 0;
   const name = props.searchParams?.name ?? "";
-  const url = `${process.env.REACT_APP_UTILITY_BASE_URL}/workflow/approval/request/${type}/`;
+  const url = `${MICROSERVICE_ENDPOINTS.UTILITY}/workflow/approval/request/${type}/`;
 
   const config = {
     headers: {

@@ -89,7 +89,11 @@ export const EmployeeProfileContainer = ({
                       },
                     }}
                   />
-                  <EmployeeTabs isLoading={isLoading} employee={employee} />
+                  <EmployeeTabs
+                    isLoading={isLoading}
+                    employee={employee}
+                    isOwner={employee?.isOwner}
+                  />
                 </div>
               </div>
             </ErrorWrapper>

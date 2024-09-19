@@ -1,7 +1,6 @@
 import { TSingleEmployee } from "features/core/employees/types";
 import { PersonalInformation } from "./PersonalInformation";
 import { EmergencyContact } from "./EmergencyContact";
-import { Dependents } from "./Dependents/Dependents";
 import EmployeeDependents from "./Dependents/EmployeeDependents";
 
 interface IProps {
@@ -10,6 +9,7 @@ interface IProps {
   dependents?: TSingleEmployee["dependents"];
 
   employeeId?: number;
+  isOwner?: boolean;
 }
 
 const Profile: React.FC<IProps> = ({
@@ -17,12 +17,14 @@ const Profile: React.FC<IProps> = ({
   employeeId,
   emergencyContact,
   dependents,
+  isOwner = false,
 }) => {
   return (
     <>
       <PersonalInformation
         personalInfo={personalInfo}
         employeeId={employeeId}
+        isOwner={isOwner}
       />
       <EmergencyContact
         emergencyContact={emergencyContact}

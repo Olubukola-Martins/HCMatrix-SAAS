@@ -16,6 +16,7 @@ import { TStageCondition } from ".";
 import { TShiftSwapRequest } from "features/timeAndAttendance/features/swapShiftRequest/types";
 import { ITimeOffProps } from "features/timeAndAttendance/features/timeOff/types";
 import { AllLoanRequestProps } from "features/self-service/features/loan/types/loan";
+import { ProfileEditRequest } from "features/self-service/features/profile-edit/types";
 
 interface AdvancedStage {
   id: number;
@@ -70,4 +71,5 @@ export type TApprovalRequest = {
   exitHandoverForm?: TTHandOverForm;
   shiftSwap?: TShiftSwapRequest;
   timeOff?: ITimeOffProps;
+  profileEditRequest?: ProfileEditRequest;
 };

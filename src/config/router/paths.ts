@@ -206,6 +206,8 @@ export const appRoutes = {
   selfServicePositionChangeSetting: `/self-service/position-change-setting`,
   selfServicePromotion: `/self-service/promotion`,
   selfServicePromotionSetting: `/self-service/promotion-setting`,
+  selfServiceProfileEdit: `/self-service/profile-edit`,
+  selfServiceProfileEditSetting: `/self-service/profile-edit-setting`,
   selfServiceAssets: `/self-service/assets`,
   selfServiceAssetSetting: `/self-service/asset-setting`,
   selfServiceTravels: `/self-service/travels`,
@@ -241,6 +243,7 @@ export const appRoutes = {
   conferenceRoomBookingSetting: `/self-service/conference-room-booking/setting`,
   leaveHome: `/self-service/leave`,
   leaveSettings: `/self-service/leave/settings`,
+  profileEditHome: `/self-service/profile-edit`,
   healthAccessHome: `/self-service/health-access`,
   healthAccessDetails: (id?: number) => ({
     format: `/self-service/health-access/:id`,

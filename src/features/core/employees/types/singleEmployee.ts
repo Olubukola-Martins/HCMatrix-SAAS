@@ -5,6 +5,7 @@ import { TOnboarding } from "features/self-service/features/onboarding/types";
 
 export type TSingleEmployee = {
   id: number;
+  isOwner?: boolean;
   firstName: string;
   lastName: string;
   email: string;
