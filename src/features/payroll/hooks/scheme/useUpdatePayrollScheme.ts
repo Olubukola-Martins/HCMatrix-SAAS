@@ -12,7 +12,7 @@ type TSchemeData = {
   allowDisbursement: boolean;
   allowApproval: boolean;
   workflowId: number;
-  costCentreId: number;
+  costCentreId?: number;
   issuePayslip: boolean;
   runAutomatically: boolean;
   automaticRunDay: number | string;

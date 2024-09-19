@@ -39,7 +39,7 @@ interface TPayrollListData {
   frequency: string;
   status: string;
   approvalStatus?: string;
-  costCentreId: number;
+  costCentreId?: number;
   companyId: number;
   createdAt: string;
   updatedAt: string;
@@ -57,7 +57,7 @@ interface Scheme {
   frequency: string;
   allowDisbursement: boolean;
   disbursement: number;
-  costCentreId: number;
+  costCentreId?: number;
   allowApproval: boolean;
   workflowId: number;
   issuePayslip: boolean;

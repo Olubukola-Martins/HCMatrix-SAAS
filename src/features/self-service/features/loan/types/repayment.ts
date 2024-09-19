@@ -15,7 +15,7 @@ export type TLoanRepayment = {
   employeeId: number;
   empUid: string;
   employee: ILoanEmployees;
-  costCentreId: number;
+  costCentreId?: number;
   companyId: number;
   createdAt: string;
   updatedAt: string;

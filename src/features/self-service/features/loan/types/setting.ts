@@ -1,7 +1,7 @@
 export type TLoanSetting = {
   id: number;
   workflowId: number;
-  costCentreId: number;
+  costCentreId?: number;
   maxLoanPercentage: number;
   cannotExceedMaxLoanPercentage: boolean;
   shouldFillGuarantorsForm: boolean;

@@ -22,7 +22,6 @@ import { ExchangeRateContainer } from "../exchangeRates/ExchangeRateContainer";
 import { SalaryComponentsContainer } from "../salaryComponents/SalaryComponentsContainer";
 import { TPayrollSchemeType } from "features/payroll/types/payrollSchemes";
 import { appRoutes } from "config/router/paths";
-import { FormCostCentreInput } from "../costCentres/FormCostCentreInput";
 import { useCreatePayroll } from "features/payroll/hooks/payroll/useCreatePayroll";
 import { useGetPayrollSchemeByTypeOrId } from "features/payroll/hooks/scheme/useGetPayrollSchemeByTypeOrId";
 import { TSalaryComponent } from "features/payroll/types/salaryComponents";
@@ -459,11 +458,11 @@ export const CreatePayrollInitialForm: React.FC<IFormProps> = ({
             </div>
           </Form.Item>
         )}
-        <FormCostCentreInput
+        {/* <FormCostCentreInput
           Form={Form}
           control={{ name: "costCentreId", label: "Cost Centre" }}
           onSelect={(_, data) => setCostCentre(data.name)}
-        />
+        /> */}
         {type === "project" && (
           <Form.Item name="date" label="Date">
             <DatePicker className="w-full" placeholder="Date" />
@@ -832,7 +831,7 @@ const CreatePayrollContainer: React.FC<{
                 </div>
               </div>
             </div>
-            <div className={boxStyle}>
+            {/* <div className={boxStyle}>
               <div className="w-full">
                 <div className="flex justify-between">
                   <div>
@@ -846,7 +845,7 @@ const CreatePayrollContainer: React.FC<{
                   <Input value={payroll?.costCentre.name} disabled />
                 </div>
               </div>
-            </div>
+            </div> */}
             <div className={boxStyle}>
               <div className="w-full">
                 <div className="flex justify-between">

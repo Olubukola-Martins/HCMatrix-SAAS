@@ -19,7 +19,7 @@ interface IGetDataProps {
 }
 
 export type TTransactionApiEntity =
-  | { costCentreId: number; entity: "cost-centre" }
+  | { costCentreId?: number; entity: "cost-centre" }
   | "transaction";
 
 export const QUERY_KEY_FOR_TRANSACTIONS_BY_API_ENTITY =

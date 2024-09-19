@@ -21,7 +21,7 @@ export type TSinglePayroll = {
   createdAt: string;
   updatedAt: string;
   employeePayrolls: TEmployeesInPayrollData[];
-  costCentre: CostCentre;
+  // costCentre?: CostCentre;
 
   totalAllowances: number;
   totalDeductions: number;
@@ -29,7 +29,7 @@ export type TSinglePayroll = {
   totalGrossPay: number;
   totalTax: number;
 
-  costCentreId: number;
+  costCentreId?: number;
 
   scheme: Scheme;
 };
@@ -53,7 +53,7 @@ interface Scheme {
   frequency: string;
   allowDisbursement: boolean;
   disbursement: number;
-  costCentreId: number;
+  costCentreId?: number;
   allowApproval: boolean;
   workflowId: number;
   issuePayslip: boolean;

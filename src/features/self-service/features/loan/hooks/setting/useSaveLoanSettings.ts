@@ -6,7 +6,7 @@ import { ICurrentCompany } from "types";
 
 type TData = {
   workflowId: number;
-  costCentreId: number;
+  costCentreId?: number;
   maxLoanPercentage: number;
   cannotExceedMaxLoanPercentage: boolean;
   shouldFillGuarantorsForm: boolean;

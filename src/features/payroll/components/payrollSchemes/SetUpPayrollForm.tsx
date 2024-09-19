@@ -426,7 +426,7 @@ export const SetUpPayrollForm: React.FC<{
               runAutomatically,
               type,
               workflowId: data.workflowId,
-              costCentreId: data.costCentreId,
+              // costCentreId: data.costCentreId,
             },
           },
           {
@@ -516,7 +516,7 @@ export const SetUpPayrollForm: React.FC<{
           runAutomatically,
           type,
           workflowId: data.workflowId,
-          costCentreId: data.costCentreId,
+          // costCentreId: data.costCentreId,
         },
         {
           onError: (err: any) => {
@@ -739,7 +739,7 @@ export const SetUpPayrollForm: React.FC<{
         disbursement: scheme?.disbursement,
         workflowId: scheme?.workflowId,
         automaticRunDay: scheme?.automaticRunDay,
-        costCentreId: scheme?.costCentreId,
+        // costCentreId: scheme?.costCentreId,
         frequency: +scheme?.frequency,
         ...convertObjectToKeyMomentValues(JSON.parse(scheme.automaticRunDay)),
       });
@@ -1112,7 +1112,7 @@ export const SetUpPayrollForm: React.FC<{
                   Do you want to disburse payment after approval/confirmation?
                 </p>
               </div>
-              <div className={boxStyle}>
+              {/* <div className={boxStyle}>
                 <h5 className={boxTitle}>Default Cost Centre</h5>
                 <p className="text-sm">
                   This is the default cost centre that will be used when payroll
@@ -1127,7 +1127,7 @@ export const SetUpPayrollForm: React.FC<{
                     }}
                   />
                 </div>
-              </div>
+              </div> */}
               <div className={boxStyle}>
                 <div className="flex items-center justify-between">
                   <h5

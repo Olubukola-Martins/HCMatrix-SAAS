@@ -8,7 +8,7 @@ type TCostData = {
   amount: number;
 };
 const createData = async (props: {
-  costCentreId: number;
+  costCentreId?: number;
   data: TCostData;
   auth: ICurrentCompany;
 }) => {
