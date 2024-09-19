@@ -1,4 +1,5 @@
 import { ConfigProvider, Modal } from "antd";
+import { HELPFUL_COLORS } from "constants/color";
 import { TWalletTransaction } from "features/payroll/types/payrollWallet";
 import moment from "moment";
 import React from "react";
@@ -29,18 +30,23 @@ export const ViewWalletTransaction: React.FC<IProps> = ({
         open={open}
         onCancel={() => handleClose()}
         footer={null}
-        title={<div className="bg-[#F6F7FB]">Transaction Details</div>}
+        title={
+          <div className="bg-[#F6F7FB] text-xl font-bold">
+            Transaction Details
+          </div>
+        }
+        width={`52%`}
         style={{ top: 20 }}
       >
-        <div className="bg-mainBg border rounded-lg text-sm shadow py-4 px-3 flex flex-col gap-3 mt-6">
+        <div className="bg-mainBg border rounded-lg text-sm shadow py-4 px-4 flex flex-col gap-y-6 mt-6 ">
           <div className="space-y-3 text-center">
-            <p className="font-semibold text-lg capitalize">
+            <p className="font-bold text-xl capitalize">
               {transaction.type === "credit" ? "+" : "-"}
-              {formatNumberWithCommas(transaction.amount)}
+              {` `}₦{formatNumberWithCommas(transaction.amount)}
             </p>
-            <span>
+            <p className="text-sm">
               {moment(transaction.createdAt).format("DD/MM/YY, hh:mm A")}
-            </span>
+            </p>
           </div>
           {[
             {
@@ -57,12 +63,12 @@ export const ViewWalletTransaction: React.FC<IProps> = ({
             },
           ].map(({ label, accName, accNo, bankName }, i) => (
             <div
-              className={`flex items-center justify-between cursor-pointer pb-2 `}
+              className={`flex items-center justify-between cursor-pointer`}
               key={i}
             >
-              <span className="text-sm capitalize">{label}</span>
+              <span className="text-lg capitalize">{label}</span>
               <div className="text-right">
-                <h5 className="font-semibold text-lg">{accName}</h5>
+                <h5 className="font-bold text-xl">{accName}</h5>
                 <p className="capitalize">
                   {accNo} - {bankName || truncateString(accName, 12)}
                 </p>
@@ -72,36 +78,31 @@ export const ViewWalletTransaction: React.FC<IProps> = ({
           <div
             className={`flex items-center justify-between cursor-pointer pb-2 `}
           >
-            <span className="text-sm capitalize">{`Session ID`}</span>
+            <span className="text-lg capitalize">{`Session ID`}</span>
             <div className="text-right">
-              <h5 className="font-semibold">{transaction.reference}</h5>
+              <h5 className="font-bold">{transaction.reference}</h5>
             </div>
           </div>
           <div
             className={`flex items-center justify-between cursor-pointer pb-2 `}
           >
-            <span className="text-sm capitalize">{`Narration`}</span>
-            <div className="text-right">
-              <h5 className="font-medium">
+            <span className="text-lg capitalize">{`Narration`}</span>
+            <div className="text-right text-lg">
+              <h5 className="">
                 {truncateString(transaction.narration || "", 20)}
               </h5>
             </div>
           </div>
-          <div
-            className={`flex items-center justify-between cursor-pointer pb-2 `}
-          >
-            <span className="text-sm capitalize">{`Total`}</span>
-            <h5 className="font-medium">
-              {formatNumberWithCommas(transaction.amount)}
-            </h5>
-          </div>
 
-          <div className="space-y-3 text-center">
-            <span>Transaction Status</span>
+          <div className="space-y-1 text-center">
+            <p className="">Transaction Status</p>
             <p
-              className="font-semibold text-lg capitalize"
+              className="font-bold text-2xl capitalize"
               style={{
-                color: transaction.status === "completed" ? "green" : "red",
+                color:
+                  transaction.status === "completed"
+                    ? HELPFUL_COLORS.completed
+                    : HELPFUL_COLORS.rejected,
               }}
             >
               {transaction.status}

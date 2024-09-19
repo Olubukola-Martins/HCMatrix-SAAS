@@ -10,6 +10,7 @@ import {
 import { truncateString } from "utils/dataHelpers/truncateString";
 import { getAppropriateColorForStatus } from "utils/colorHelpers/getAppropriateColorForStatus";
 import { formatNumberWithCommas } from "utils/dataHelpers/formatNumberWithCommas";
+import { HELPFUL_COLORS } from "constants/color";
 
 export const WALLET_TRANSACTION_TABLE_COLUMNS = (
   handleAction: (
@@ -52,7 +53,10 @@ export const WALLET_TRANSACTION_TABLE_COLUMNS = (
       <span
         className="capitalize"
         style={{
-          color: item.type.toLowerCase() === "credit" ? "green" : "red",
+          color:
+            item.type.toLowerCase() === "credit"
+              ? HELPFUL_COLORS.credit
+              : HELPFUL_COLORS.debit,
         }}
       >
         {item.type}
