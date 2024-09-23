@@ -39,11 +39,11 @@ const WalletOverviewInfoCards: React.FC<IProps> = ({
           highlight={`${formatNumberWithCommas(transactions, 0)}`}
           loading={isLoading}
         />
-        <SimpleCard
+        {/* <SimpleCard
           title="Total Beneficiaries"
           highlight={`${formatNumberWithCommas(beneficiaries, 0)}`}
           loading={isLoading}
-        />
+        /> */}
         <SimpleCard
           title="Total Debit"
           highlight={`${formatNumberWithCommas(debit)}`}
