@@ -26,7 +26,7 @@ export const EMPLOYEE_PAYROLL_UPDATE_TABLE_COLUMNS = (
       title: "Payment Status",
       dataIndex: "Payment Status",
       key: "Payment Status",
-      render: (_, item) => <span>{item.paymentStatus ?? "N/A"}</span>,
+      render: (_, item) => <span>{item.paymentStatus ?? ""}</span>,
     },
     {
       title: "Paid At",
@@ -34,9 +34,7 @@ export const EMPLOYEE_PAYROLL_UPDATE_TABLE_COLUMNS = (
       key: "Paid At",
       render: (_, item) => (
         <span>
-          {item.paidAt
-            ? moment(item.paidAt).format(DEFAULT_DATE_FORMAT)
-            : "N/A"}
+          {item.paidAt ? moment(item.paidAt).format(DEFAULT_DATE_FORMAT) : ""}
         </span>
       ),
     },

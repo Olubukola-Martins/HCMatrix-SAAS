@@ -147,7 +147,7 @@ export const PayrollTable: React.FC<{
       render: (_, item) => (
         <span>
           {item?.disbursementDate
-            ? moment(item.disbursementDate).format(DEFAULT_DATE_FORMAT)
+            ? moment(item.disbursementDate).format("MMMM, YYYY")
             : ""}{" "}
         </span>
       ),

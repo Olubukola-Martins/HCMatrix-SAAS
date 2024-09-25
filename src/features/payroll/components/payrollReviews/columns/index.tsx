@@ -84,9 +84,7 @@ export const PAYROLL_REVIEW_TABLE_COLUMNS = (
       key: "Disbursment Date",
       ellipsis: true,
       render: (_, item) => (
-        <span>
-          {moment(item.disbursementDate).format(DEFAULT_DATE_FORMAT)}{" "}
-        </span>
+        <span>{moment(item.disbursementDate).format("MMMM,YYYY")} </span>
       ),
     },
     {
