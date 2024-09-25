@@ -815,7 +815,7 @@ export const SetUpPayrollForm: React.FC<{
         isActive: displayBasicSalary,
         isDefault: true,
         dependencies,
-        description: `This allows you to create an basic salary component(allowance)`,
+        description: `This allows you to create a basic salary component(allowance)`,
 
         onSwitch: () => dispatch({ type: "displayBasicSalary" }),
         salaryComponent: salaryComponents.find(
@@ -831,7 +831,7 @@ export const SetUpPayrollForm: React.FC<{
         isActive: displayTransportAllowance,
         isDefault: true,
         dependencies,
-        description: `This allows you to create an transport allowance component(allowance)`,
+        description: `This allows you to create a transport allowance component(allowance)`,
 
         onSwitch: () => dispatch({ type: "displayTransportAllowance" }),
         salaryComponent: salaryComponents.find(
@@ -847,7 +847,7 @@ export const SetUpPayrollForm: React.FC<{
         isActive: displayHousingAllowance,
         isDefault: true,
         dependencies,
-        description: `This allows you to create an housing allowance component(allowance)`,
+        description: `This allows you to create a housing allowance component(allowance)`,
 
         onSwitch: () => dispatch({ type: "displayHousingAllowance" }),
         salaryComponent: salaryComponents.find(
