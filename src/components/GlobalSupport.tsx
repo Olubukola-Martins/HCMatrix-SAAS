@@ -60,7 +60,7 @@ const GlobalSupport = () => {
                     <a
                       target="_blank"
                       rel="noreferrer"
-                      href="https://user-guide-frontend-h3-0.vercel.app/"
+                      href="https://userguide.hcmatrix.com"
                       className="group-hover:text-caramel"
                     >
                       User Guide
