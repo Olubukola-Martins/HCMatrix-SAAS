@@ -26,6 +26,12 @@ export const WALLET_TRANSACTION_TABLE_COLUMNS = (
       <span>{dayjs(item.createdAt).format(DEFAULT_DATE_FORMAT)}</span>
     ),
   },
+  {
+    title: "Provider",
+    dataIndex: "Provider",
+    key: "Provider",
+    render: (val, item) => <span className="capitalize">{item.provider}</span>,
+  },
 
   {
     title: "Narration",
