@@ -93,9 +93,10 @@ export const SaveLeaveType: React.FC<IProps> = ({
               return;
             }
             if (
-              data?.category === "annual" &&
-              data?.typeOfLength !== "dynamic" &&
-              data?.length !== "grade"
+              (data?.category === "annual" &&
+                data?.typeOfLength === "dynamic" &&
+                data?.length !== "grade") ||
+              (data?.category === "annual" && data?.typeOfLength === "fixed")
             ) {
               openNotification({
                 state: "info",

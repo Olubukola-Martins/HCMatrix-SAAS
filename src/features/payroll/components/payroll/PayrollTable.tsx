@@ -147,7 +147,7 @@ export const PayrollTable: React.FC<{
       render: (_, item) => (
         <span>
           {item?.disbursementDate
-            ? moment(item.disbursementDate).format("MMMM, YYYY")
+            ? moment(item.disbursementDate).format(DEFAULT_DATE_FORMAT)
             : ""}{" "}
         </span>
       ),
@@ -159,7 +159,8 @@ export const PayrollTable: React.FC<{
         <Dropdown
           overlay={
             <Menu>
-              {item.status === "awaiting-disbursement" && (
+              {(item.status === "awaiting-disbursement" ||
+                item.status === "in-disbursement") && (
                 <Menu.Item
                   key="manual-disbursement"
                   onClick={() => {

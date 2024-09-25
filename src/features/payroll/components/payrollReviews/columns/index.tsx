@@ -1,7 +1,6 @@
 import { Dropdown, Menu, Button } from "antd";
 import { ColumnsType } from "antd/lib/table";
 import { appRoutes } from "config/router/paths";
-import { DEFAULT_DATE_FORMAT } from "constants/dateFormats";
 import { TPayrollListData } from "features/payroll/types/payroll";
 import { TPayrollSchemeType } from "features/payroll/types/payrollSchemes";
 import moment from "moment";
@@ -11,6 +10,7 @@ import { formatNumberWithCommas } from "utils/dataHelpers/formatNumberWithCommas
 import { TPayrollReviewAction } from "../PayrollReviewContainer";
 import { AiOutlineMore } from "react-icons/ai";
 import { PermissionRestrictor } from "components/permission-restriction/PermissionRestrictor";
+import { DEFAULT_DATE_FORMAT } from "constants/dateFormats";
 
 export const PAYROLL_REVIEW_TABLE_COLUMNS = (
   handleAction: (key: TPayrollReviewAction, item?: TPayrollListData) => void,
@@ -84,7 +84,9 @@ export const PAYROLL_REVIEW_TABLE_COLUMNS = (
       key: "Disbursment Date",
       ellipsis: true,
       render: (_, item) => (
-        <span>{moment(item.disbursementDate).format("MMMM,YYYY")} </span>
+        <span>
+          {moment(item.disbursementDate).format(DEFAULT_DATE_FORMAT)}{" "}
+        </span>
       ),
     },
     {
@@ -124,16 +126,22 @@ export const PAYROLL_REVIEW_TABLE_COLUMNS = (
         <Dropdown
           overlay={
             <Menu>
-              {item.status === "awaiting-disbursement" && (
-                <Menu.Item
-                  key="manual-disbursement"
-                  onClick={() => {
-                    handleAction("manual-disbursement", item);
-                  }}
-                >
-                  Disburse manually
-                </Menu.Item>
-              )}
+              <PermissionRestrictor
+                key="comparison-basic"
+                requiredPermissions={["disburse-payroll"]}
+              >
+                {(item.status === "awaiting-disbursement" ||
+                  item.status === "in-disbursement") && (
+                  <Menu.Item
+                    key="manual-disbursement"
+                    onClick={() => {
+                      handleAction("manual-disbursement", item);
+                    }}
+                  >
+                    Disburse manually
+                  </Menu.Item>
+                )}
+              </PermissionRestrictor>
               <PermissionRestrictor
                 key="comparison-basic"
                 requiredPermissions={["compare-payrolls"]}

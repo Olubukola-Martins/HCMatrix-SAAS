@@ -18,6 +18,7 @@ export type TPermissionLabel =
   | "manage-employee-onboarding"
   | "manage-vehicle-settings"
   | "manage-vehicles"
+  | "disburse-payroll"
   | "view-vehicle-overview"
   | "view-all-vehicle-bookings"
   | "manage-conference-room-settings"

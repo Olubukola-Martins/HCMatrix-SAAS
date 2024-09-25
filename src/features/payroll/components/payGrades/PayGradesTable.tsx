@@ -57,7 +57,7 @@ const PayGradesTable: React.FC<{
       title: "Leave Length",
       dataIndex: "Leave Length",
       key: "Leave Length",
-      render: (_, item) => item.leaveLength,
+      render: (_, item) => item?.leaveLength,
     },
     {
       title: "Gross pay",
