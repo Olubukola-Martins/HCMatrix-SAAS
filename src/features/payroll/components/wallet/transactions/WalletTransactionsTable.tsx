@@ -27,7 +27,10 @@ export const WalletTransactionsTable: React.FC = () => {
   };
 
   const { pagination, onChange } = usePagination();
-  const { data, isLoading } = useGetPayrollWalletTransactions(filter);
+  const { data, isLoading } = useGetPayrollWalletTransactions({
+    ...filter,
+    pagination,
+  });
 
   const columns: ColumnsType<TWalletTransaction> =
     WALLET_TRANSACTION_TABLE_COLUMNS(handleAction);
