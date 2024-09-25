@@ -1327,7 +1327,7 @@ export const SetUpPayrollForm: React.FC<{
               {type !== "wages" && (
                 <div className={boxStyle}>
                   <div className="flex items-center justify-between">
-                    <h5 className={boxTitle}>Run Payroll automatically</h5>
+                    <h5 className={boxTitle}>Create Payroll automatically</h5>
                     <Switch
                       checked={runAutomatically}
                       onChange={() => dispatch({ type: "runAutomatically" })}
