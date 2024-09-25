@@ -4,6 +4,8 @@ import { TEmployeesInPayrollData } from "features/payroll/types";
 import { AiOutlineMore } from "react-icons/ai";
 import { TEmployeePayrollUpdateActionItem } from "../EmployeePayrollUpdatesContainer";
 import { formatNumberWithCommas } from "utils/dataHelpers/formatNumberWithCommas";
+import moment from "moment";
+import { DEFAULT_DATE_FORMAT } from "constants/dateFormats";
 
 export const EMPLOYEE_PAYROLL_UPDATE_TABLE_COLUMNS = (
   employeeIds: number[],
@@ -19,6 +21,24 @@ export const EMPLOYEE_PAYROLL_UPDATE_TABLE_COLUMNS = (
       dataIndex: "Name",
       key: "Name",
       render: (_, item) => item.fullName,
+    },
+    {
+      title: "Payment Status",
+      dataIndex: "Payment Status",
+      key: "Payment Status",
+      render: (_, item) => <span>{item.paymentStatus ?? "N/A"}</span>,
+    },
+    {
+      title: "Paid At",
+      dataIndex: "Paid At",
+      key: "Paid At",
+      render: (_, item) => (
+        <span>
+          {item.paidAt
+            ? moment(item.paidAt).format(DEFAULT_DATE_FORMAT)
+            : "N/A"}
+        </span>
+      ),
     },
 
     {

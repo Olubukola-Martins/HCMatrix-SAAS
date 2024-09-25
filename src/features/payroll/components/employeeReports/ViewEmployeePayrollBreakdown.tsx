@@ -140,7 +140,7 @@ const ViewEmployeePayrollBreakdown: React.FC<IProps> = ({
 
     {
       label: "Pay Date",
-      value: moment(employeePayroll?.createdAt).format("YYYY-MM-DD"),
+      value: moment(employeePayroll?.payroll?.date).format("MMMM, YYYY"),
       takeFullSpace: true,
     },
     ...[],
