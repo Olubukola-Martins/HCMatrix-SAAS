@@ -2,7 +2,7 @@ import { Form, Modal, Select } from "antd";
 import { AppButton } from "components/button/AppButton";
 import React from "react";
 import { IModalProps } from "types";
-import { textInputValidationRules } from "utils/formHelpers/validation";
+import { generalValidationRules } from "utils/formHelpers/validation";
 import { openNotification } from "utils/notifications";
 import { useQueryClient } from "react-query";
 import { useInitiateManualDisbursement } from "features/payroll/hooks/disbursement/useInitiateManualDisbursement";
@@ -69,7 +69,7 @@ export const DisbursePayroll: React.FC<IModalProps & { payrollId: number }> = ({
         requiredMark={false}
       >
         <Form.Item<FormData>
-          rules={textInputValidationRules}
+          rules={generalValidationRules}
           name="walletProvider"
           label="Select Wallet to disburse from"
         >
