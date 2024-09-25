@@ -112,7 +112,7 @@ const EditPayGrade: React.FC<IProps> = ({ open, handleClose, grade }) => {
           name="leaveLength"
           label="Leave Length"
         >
-          <InputNumber placeholder="Leave Length" className="w-2/4" />
+          <InputNumber placeholder="Leave Length" className="w-full" />
         </Form.Item>
 
         <Form.Item
