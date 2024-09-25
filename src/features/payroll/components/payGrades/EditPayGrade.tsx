@@ -3,7 +3,7 @@ import { AppButton } from "components/button/AppButton";
 import React, { useEffect, useState } from "react";
 import { IModalProps } from "types";
 import {
-  generalValidationRules,
+  numberHasToBeGreaterThanValueRule,
   numberHasToBeInRange,
   textInputValidationRules,
 } from "utils/formHelpers/validation";
@@ -32,6 +32,7 @@ const EditPayGrade: React.FC<IProps> = ({ open, handleClose, grade }) => {
       categoryId: grade.categoryId,
       grossPay: grade.grossPay,
       name: grade.name,
+      leaveLength: grade?.leaveLength,
     });
     setCategoryRange({
       max: +grade.category.maxGrossPay,
@@ -47,6 +48,7 @@ const EditPayGrade: React.FC<IProps> = ({ open, handleClose, grade }) => {
           categoryId: data.categoryId,
           grossPay: data.grossPay,
           name: data.name,
+          leaveLength: data.leaveLength,
         },
       },
       {
@@ -105,6 +107,13 @@ const EditPayGrade: React.FC<IProps> = ({ open, handleClose, grade }) => {
             })
           }
         />
+        <Form.Item
+          rules={[numberHasToBeGreaterThanValueRule(0)]}
+          name="leaveLength"
+          label="Leave Length"
+        >
+          <InputNumber placeholder="Leave Length" className="w-2/4" />
+        </Form.Item>
 
         <Form.Item
           rules={[numberHasToBeInRange(categoryRange.min, categoryRange.max)]}

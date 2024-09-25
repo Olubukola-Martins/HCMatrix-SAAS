@@ -8,6 +8,7 @@ type TGradeData = {
   name: string;
   categoryId: number;
   grossPay: number;
+  leaveLength?: number;
 };
 const createData = async (props: {
   data: TGradeData;
