@@ -13,8 +13,10 @@ import { Skeleton } from "antd";
 
 export const EmployeeProfileContainer = ({
   employeeId,
+  isOwner = false,
 }: {
   employeeId: number;
+  isOwner?: boolean;
 }) => {
   const {
     data: employee,
@@ -92,7 +94,7 @@ export const EmployeeProfileContainer = ({
                   <EmployeeTabs
                     isLoading={isLoading}
                     employee={employee}
-                    isOwner={employee?.isOwner}
+                    isOwner={isOwner}
                   />
                 </div>
               </div>
