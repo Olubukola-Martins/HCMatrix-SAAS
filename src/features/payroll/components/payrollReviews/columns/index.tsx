@@ -127,7 +127,7 @@ export const PAYROLL_REVIEW_TABLE_COLUMNS = (
           overlay={
             <Menu>
               <PermissionRestrictor
-                key="comparison-basic"
+                key="manual-disbursement"
                 requiredPermissions={["disburse-payroll"]}
               >
                 {(item.status === "awaiting-disbursement" ||
