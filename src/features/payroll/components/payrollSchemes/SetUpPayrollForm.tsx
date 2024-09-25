@@ -45,6 +45,7 @@ const DEFAULT_COMPONENT_LABELS = {
   bonus: "bonus",
   basicSalary: "basic_salary",
   transportAllowance: "transport_allowance",
+  houseAllowance: "housing_allowance",
 };
 const boxStyle = "px-4 py-3 shadow rounded-md bg-mainBg";
 const boxTitle = "font-medium text-base pb-1";
@@ -60,6 +61,7 @@ const initialState: TActionState = {
   runAutomatically: false,
   displayBasicSalary: false,
   displayTransportAllowance: false,
+  displayHousingAllowance: false,
   displayAllowances: false,
   displayDeductions: false,
   display13thMonth: false,
@@ -86,6 +88,7 @@ interface TActionState {
   issuePayslip: boolean;
   runAutomatically: boolean;
   displayBasicSalary: boolean;
+  displayHousingAllowance: boolean;
   displayTransportAllowance: boolean;
   displayAllowances: boolean;
   displayDeductions: boolean;
@@ -111,6 +114,7 @@ type TActionType =
   | "displayEmployerPensionContribution"
   | "displayBasicSalary"
   | "displayTransportAllowance"
+  | "displayHousingAllowance"
   | "displayBonus"
   | "allowDisbursement"
   | "allowApproval"
@@ -187,6 +191,11 @@ function reducer(
       return {
         ...state,
         runAutomatically: !state.runAutomatically,
+      };
+    case "displayHousingAllowance":
+      return {
+        ...state,
+        displayHousingAllowance: !state.displayHousingAllowance,
       };
     case "displayBasicSalary":
       return {
@@ -325,6 +334,7 @@ export const SetUpPayrollForm: React.FC<{
     allowDisbursement,
     runAutomatically,
     issuePayslip,
+    displayHousingAllowance,
     displayAllowances,
     displayDeductions,
     display13thMonth,
@@ -689,6 +699,9 @@ export const SetUpPayrollForm: React.FC<{
           runAutomatically:
             scheme.type === "wages" ? false : scheme?.runAutomatically,
 
+          displayHousingAllowance: !!ogSalaryComponents.find(
+            (item) => item.label === DEFAULT_COMPONENT_LABELS.houseAllowance
+          )?.isActive,
           displayTransportAllowance: !!ogSalaryComponents.find(
             (item) => item.label === DEFAULT_COMPONENT_LABELS.transportAllowance
           )?.isActive,
@@ -799,7 +812,7 @@ export const SetUpPayrollForm: React.FC<{
         title: "Basic Salary",
         type: "allowance",
         handleSave: handleAddAllowance,
-        isActive: display13thMonth,
+        isActive: displayBasicSalary,
         isDefault: true,
         dependencies,
         description: `This allows you to create an basic salary component(allowance)`,
@@ -815,7 +828,7 @@ export const SetUpPayrollForm: React.FC<{
         title: "Transport Allowance",
         type: "allowance",
         handleSave: handleAddAllowance,
-        isActive: display13thMonth,
+        isActive: displayTransportAllowance,
         isDefault: true,
         dependencies,
         description: `This allows you to create an transport allowance component(allowance)`,
@@ -825,6 +838,22 @@ export const SetUpPayrollForm: React.FC<{
           (item) => item.label === DEFAULT_COMPONENT_LABELS.transportAllowance
         ),
         componentName: DEFAULT_COMPONENT_LABELS.transportAllowance,
+        schemeId: scheme?.id,
+      },
+      {
+        title: "Housing Allowance",
+        type: "allowance",
+        handleSave: handleAddAllowance,
+        isActive: displayHousingAllowance,
+        isDefault: true,
+        dependencies,
+        description: `This allows you to create an housing allowance component(allowance)`,
+
+        onSwitch: () => dispatch({ type: "displayHousingAllowance" }),
+        salaryComponent: salaryComponents.find(
+          (item) => item.label === DEFAULT_COMPONENT_LABELS.houseAllowance
+        ),
+        componentName: DEFAULT_COMPONENT_LABELS.houseAllowance,
         schemeId: scheme?.id,
       },
       {
@@ -989,6 +1018,7 @@ export const SetUpPayrollForm: React.FC<{
       salaryComponents,
       dependencies,
       display13thMonth,
+      displayHousingAllowance,
       displayITF,
       displayLeaveAllowance,
       displayNIF,
