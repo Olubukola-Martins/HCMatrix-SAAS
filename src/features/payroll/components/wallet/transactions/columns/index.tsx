@@ -94,7 +94,7 @@ export const WALLET_TRANSACTION_TABLE_COLUMNS = (
   },
 
   {
-    title: "Actions",
+    title: "Action",
     dataIndex: "action",
     key: "action",
     render: (_, item) => (
