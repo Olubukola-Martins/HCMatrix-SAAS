@@ -238,7 +238,7 @@ export const RequestForLeave: React.FC<IProps> = ({ handleClose, open }) => {
             Form={Form}
             control={{ name: "leaveTypeId", label: "Leave Type" }}
             handleSelect={(_, type) => {
-              const maxLength = employeeLeaveAnalytics?.spillOver ?? 0;
+              const maxLength = employeeLeaveAnalytics?.spillover ?? 0;
               setRequiresLeaveReliever(!!type?.requireReliever);
 
               if (

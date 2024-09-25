@@ -12,7 +12,7 @@ export interface ISimpleCard extends IDivProps {
   action?: IAppBtnProps;
   center?: boolean;
   loading?: boolean;
-  handleClick?: () => void; 
+  handleClick?: () => void;
   cardActions?: { onClick: () => void; icon: React.ReactNode }[];
 }
 
@@ -30,7 +30,7 @@ export const SimpleCard: React.FC<ISimpleCard> = ({
 }) => {
   const defaultClassName =
     "border rounded-md p-2 shadow-sm bg-card hover:shadow-md cursor-pointer group";
-    
+
   if (url) {
     return (
       <Link to={url} className={className ?? defaultClassName}>
@@ -59,7 +59,15 @@ export const SimpleCard: React.FC<ISimpleCard> = ({
         <Skeleton loading={loading} paragraph={{ rows: 3 }}>
           <div className="h-full flex flex-col justify-evenly">
             <div className="flex justify-between py-3 items-start">
-              <p className="text-sm font-medium  capitalize">{title}</p>
+              <div className="flex justify-between items-center w-full">
+                <p className="text-sm font-medium  capitalize">{title}</p>
+                {handleClick && (
+                  <i
+                    onClick={handleClick}
+                    className="ri-arrow-right-s-line text-lg cursor-pointer group-hover:text-caramel"
+                  ></i>
+                )}
+              </div>
               <div className="flex gap-2">
                 {cardActions?.map(({ icon, onClick }, i) => (
                   <div key={i} onClick={onClick}>
