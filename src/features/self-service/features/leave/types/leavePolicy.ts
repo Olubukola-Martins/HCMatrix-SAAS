@@ -9,6 +9,10 @@ export interface TLeavePolicy {
   createdAt: string;
   updatedAt: string;
   workflow: Workflow;
+
+  carryoverMonth: number; // min: 0, max: 11. required if carry over is set to true
+  carryoverDay: number; // min: 1, max: 31 (depending on the month) required if carryover is set to true
+  proration: boolean;
 }
 
 interface Workflow {
