@@ -20,7 +20,6 @@ import {
 } from "features/payroll/types/payrollSchemes";
 import { PayrollSingleProjectParticipantsContainer } from "../projectParticipants/PayrollSingleProjectParticipantsContainer";
 import { TSetupPayrollSchemeData } from "features/payroll/types/setUpSchemeInputData";
-import { FormCostCentreInput } from "../costCentres/FormCostCentreInput";
 import { TSingleProject } from "features/core/projects/types";
 import { getEmployeeFullName } from "features/core/employees/utils/getEmployeeFullName";
 import { TSingleProjectPayrollScheme } from "features/payroll/types/payrollSchemes/singleProject";
@@ -44,6 +43,8 @@ const DEFAULT_COMPONENT_LABELS = {
   leaveAllowance: "leave_allowance",
   employerPensionContribution: "employer_pension_contribution",
   bonus: "bonus",
+  basicSalary: "basic_salary",
+  transportAllowance: "transport_allowance",
 };
 const boxStyle = "px-4 py-3 shadow rounded-md bg-mainBg";
 const boxTitle = "font-medium text-base pb-1";
@@ -57,6 +58,8 @@ const initialState: TActionState = {
 
   issuePayslip: false,
   runAutomatically: false,
+  displayBasicSalary: false,
+  displayTransportAllowance: false,
   displayAllowances: false,
   displayDeductions: false,
   display13thMonth: false,
@@ -82,6 +85,8 @@ interface TActionState {
   allowApproval: boolean;
   issuePayslip: boolean;
   runAutomatically: boolean;
+  displayBasicSalary: boolean;
+  displayTransportAllowance: boolean;
   displayAllowances: boolean;
   displayDeductions: boolean;
   display13thMonth: boolean;
@@ -104,6 +109,8 @@ interface TActionState {
 
 type TActionType =
   | "displayEmployerPensionContribution"
+  | "displayBasicSalary"
+  | "displayTransportAllowance"
   | "displayBonus"
   | "allowDisbursement"
   | "allowApproval"
@@ -180,6 +187,16 @@ function reducer(
       return {
         ...state,
         runAutomatically: !state.runAutomatically,
+      };
+    case "displayBasicSalary":
+      return {
+        ...state,
+        displayBasicSalary: !state.displayBasicSalary,
+      };
+    case "displayTransportAllowance":
+      return {
+        ...state,
+        displayTransportAllowance: !state.displayTransportAllowance,
       };
     case "displayAllowances":
       return {
@@ -325,6 +342,8 @@ export const SetUpPayrollForm: React.FC<{
     projectParticipants,
     displayEmployerPensionContribution,
     displayBonus,
+    displayBasicSalary,
+    displayTransportAllowance,
   } = state;
   const {
     mutate: mutateProjectPartcipant,
@@ -670,6 +689,12 @@ export const SetUpPayrollForm: React.FC<{
           runAutomatically:
             scheme.type === "wages" ? false : scheme?.runAutomatically,
 
+          displayTransportAllowance: !!ogSalaryComponents.find(
+            (item) => item.label === DEFAULT_COMPONENT_LABELS.transportAllowance
+          )?.isActive,
+          displayBasicSalary: !!ogSalaryComponents.find(
+            (item) => item.label === DEFAULT_COMPONENT_LABELS.basicSalary
+          )?.isActive,
           displayEmployerPensionContribution: !!ogSalaryComponents.find(
             (item) =>
               item.label ===
@@ -770,6 +795,38 @@ export const SetUpPayrollForm: React.FC<{
   const dependencies = salaryComponents.map((item) => item.label);
   const DEFAULT_SALARY_COMPONENTS: TDefaultSalaryComp[] = useMemo(
     () => [
+      {
+        title: "Basic Salary",
+        type: "allowance",
+        handleSave: handleAddAllowance,
+        isActive: display13thMonth,
+        isDefault: true,
+        dependencies,
+        description: `This allows you to create an basic salary component(allowance)`,
+
+        onSwitch: () => dispatch({ type: "displayBasicSalary" }),
+        salaryComponent: salaryComponents.find(
+          (item) => item.label === DEFAULT_COMPONENT_LABELS.basicSalary
+        ),
+        componentName: DEFAULT_COMPONENT_LABELS.basicSalary,
+        schemeId: scheme?.id,
+      },
+      {
+        title: "Transport Allowance",
+        type: "allowance",
+        handleSave: handleAddAllowance,
+        isActive: display13thMonth,
+        isDefault: true,
+        dependencies,
+        description: `This allows you to create an transport allowance component(allowance)`,
+
+        onSwitch: () => dispatch({ type: "displayTransportAllowance" }),
+        salaryComponent: salaryComponents.find(
+          (item) => item.label === DEFAULT_COMPONENT_LABELS.transportAllowance
+        ),
+        componentName: DEFAULT_COMPONENT_LABELS.transportAllowance,
+        schemeId: scheme?.id,
+      },
       {
         title: "13th Month Salary",
         type: "allowance",
@@ -941,6 +998,8 @@ export const SetUpPayrollForm: React.FC<{
       displayTax,
       displayBonus,
       displayEmployerPensionContribution,
+      displayTransportAllowance,
+      displayBasicSalary,
       handleAddAllowance,
       handleAddDeduction,
       scheme,
