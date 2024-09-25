@@ -10,7 +10,7 @@ const LeaveHome = () => {
       <SelfServiceSubNav />
 
       <div>
-        <div className="Container">
+        <div className="Container min-h-[120vh]">
           {/* header */}
           <LeaveHomePageHeader />
 
