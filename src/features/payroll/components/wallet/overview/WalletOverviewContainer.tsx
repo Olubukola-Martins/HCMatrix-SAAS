@@ -22,6 +22,7 @@ const WalletOverviewContainer = () => {
     <div className="grid grid-cols-2 lg:grid-cols-4 gap-6 mt-4">
       <WalletOverviewInfoCards
         data={{
+          balanceOverview: data?.balance,
           balance: Object.values(data?.balance ?? {}).reduce(
             (prev, curr) => prev + curr,
             0

@@ -27,4 +27,4 @@ export type TPayrollWalletDashboardAnalytics = {
   graphData: Record<string, number>;
 };
 
-type Balance = Record<string, number>;
+type Balance = Record<TPayrollWalletPaymentProvider, number>;
