@@ -37,7 +37,7 @@ interface TPayrollListData {
   date: string;
   description: string;
   frequency: string;
-  status: string;
+  status: TSinglePayroll["status"];
   approvalStatus?: string;
   costCentreId?: number;
   companyId: number;

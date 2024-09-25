@@ -7,6 +7,11 @@ import {
   TWalletTransactionType,
 } from "../types/payrollWallet";
 
+export const WALLET_PAYMENT_PROVIDERS = [
+  "Monnify",
+  "Korapay",
+  "Providus",
+] as const;
 export const WALLET_COMPLIANCE_DOCUMENT_TYPES: TComplianceDocumentType[] = [
   "cac-2",
   "cac-7",

@@ -1,6 +1,8 @@
+import { WALLET_PAYMENT_PROVIDERS } from "features/payroll/constants";
 import { TWalletTransaction } from "../payrollWallet";
 
-export type TPayrollWalletPaymentProvider = "Korapay" | "Providus";
+export type TPayrollWalletPaymentProvider =
+  (typeof WALLET_PAYMENT_PROVIDERS)[number];
 export type TWalletTransactionStatus = "completed" | "pending";
 export type TWalletTransactionType = "credit" | "debit";
 export type TPayrollWalletTransaction = TWalletTransaction;

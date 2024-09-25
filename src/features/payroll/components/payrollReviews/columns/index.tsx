@@ -126,7 +126,20 @@ export const PAYROLL_REVIEW_TABLE_COLUMNS = (
         <Dropdown
           overlay={
             <Menu>
-              <PermissionRestrictor requiredPermissions={["compare-payrolls"]}>
+              {item.status === "awaiting-disbursement" && (
+                <Menu.Item
+                  key="manual-disbursement"
+                  onClick={() => {
+                    handleAction("manual-disbursement", item);
+                  }}
+                >
+                  Disburse manually
+                </Menu.Item>
+              )}
+              <PermissionRestrictor
+                key="comparison-basic"
+                requiredPermissions={["compare-payrolls"]}
+              >
                 <Menu.Item
                   key="comparison-basic"
                   onClick={() => {
