@@ -96,7 +96,7 @@ export const SaveLeaveType: React.FC<IProps> = ({
             if (
               data?.category === "annual" &&
               data?.typeOfLength === "fixed" &&
-              typeof data?.length === "number"
+              typeof data?.length !== "number"
             ) {
               openNotification({
                 state: "info",
