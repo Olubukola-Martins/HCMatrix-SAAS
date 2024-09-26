@@ -94,6 +94,19 @@ export const SaveLeaveType: React.FC<IProps> = ({
               return;
             }
             if (
+              data?.category === "annual" &&
+              data?.typeOfLength === "fixed" &&
+              typeof data?.length === "number"
+            ) {
+              openNotification({
+                state: "info",
+                title: "Warning!",
+                description:
+                  "An annual leave category with a fixed type of length must have the length set to a number. Please correct and try again. Thank you!",
+              });
+              return;
+            }
+            if (
               (data?.category === "annual" &&
                 data?.typeOfLength === "dynamic" &&
                 data?.length !== "grade") ||
@@ -103,7 +116,7 @@ export const SaveLeaveType: React.FC<IProps> = ({
                 state: "info",
                 title: "Warning!",
                 description:
-                  "An annual leave category must have a dynamic type of length and the length set to grade. Please correct and try again. Thank you!",
+                  "An annual leave category with a dynamic type of length must have the length set to grade. Please correct and try again. Thank you!",
               });
               return;
             }
