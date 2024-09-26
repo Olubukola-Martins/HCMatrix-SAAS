@@ -47,6 +47,7 @@ export const SaveLeaveType: React.FC<IProps> = ({
     form.setFieldsValue({
       name: data.name,
       typeOfLength: data.typeOfLength,
+      category: data?.category,
       length: data.length,
       employeesGetAllowance: data.employeesGetAllowance,
       eligibilityCriteria: {
