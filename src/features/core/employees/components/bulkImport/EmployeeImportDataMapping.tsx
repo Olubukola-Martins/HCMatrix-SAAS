@@ -108,7 +108,6 @@ const EmployeeImportDataMapping = ({
         return employeeData;
       }
     );
-    console.log(dataToBeSubmitted, "Data to be ..");
 
     handleDataToBeSubmitted(dataToBeSubmitted);
   };

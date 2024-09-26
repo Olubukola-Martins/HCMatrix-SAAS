@@ -42,8 +42,7 @@ export const useGetCompanyOwnerDashboard = (props: IGetDataProps = {}) => {
     companyId,
     currentCompanyEmployeeDetails: employee,
   } = useMostRecentApiAuth();
-  // console.log("employee.owner", employee);
-  
+
   const queryData = useQuery(
     [QUERY_KEY_FOR_COMPANY_OWNER_DASHBOARD, props.year],
     () =>

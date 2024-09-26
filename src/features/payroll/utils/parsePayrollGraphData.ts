@@ -1,5 +1,5 @@
 import {
-    TPayrollGraphAnalyticsFormattedData,
+  TPayrollGraphAnalyticsFormattedData,
   TPayrollGraphAnalyticsItem,
   TPayrollGraphAnalyticsItem4Waterfall,
   TPayrollGraphAnalyticsItemType,
@@ -33,7 +33,6 @@ export const parsePayrollGraphAnalyticsData = (props: {
       totalDeductions: [],
     },
   };
-  console.log("first");
   if (!data) return value;
 
   if (chartItem === "waterfall-chart") {

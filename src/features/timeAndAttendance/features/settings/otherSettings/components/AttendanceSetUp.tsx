@@ -21,8 +21,6 @@ export const AttendanceSetUp = () => {
   const { mutate, isLoading: isLoadingPost } = useCreateOtherSettings();
   const queryClient = useQueryClient();
 
-  console.log(data);
-
   useEffect(() => {
     if (isSuccess && data) {
       form.setFieldsValue({

@@ -5,7 +5,3 @@ export function formatCamelCaseToReadable(input: string): string {
     .toLowerCase() // Convert the whole string to lowercase
     .replace(/^./, (str) => str.toUpperCase()); // Capitalize the first letter
 }
-
-// Example usage
-const result = formatCamelCaseToReadable("alternativeEmail");
-console.log(result); // Output: "Alternative email"

@@ -11,9 +11,7 @@ export const useManageLocation = () => {
           setLat(position.coords.latitude);
           setLong(position.coords.longitude);
         },
-        function (error) {
-          console.error("Error getting geolocation:", error);
-        }
+        function (error) {}
       );
     };
 

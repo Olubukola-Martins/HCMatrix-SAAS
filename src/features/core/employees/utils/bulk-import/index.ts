@@ -58,7 +58,6 @@ export const validateBulkEmployeeInfo = (
       }));
       errors.push(...validationErrors);
     } else {
-      console.error("Unexpected error:", error);
     }
   }
 
@@ -100,7 +99,6 @@ export const validateBulkEmergencyContact = (
       }));
       errors.push(...validationErrors);
     } else {
-      console.error("Unexpected error:", error);
     }
   }
 
@@ -151,7 +149,6 @@ export const validateBulkJobInformation = (
       }));
       errors.push(...validationErrors);
     } else {
-      console.error("Unexpected error:", error);
     }
   }
 
@@ -210,7 +207,6 @@ export const validateBulkPersonalInformation = (
       }));
       errors.push(...validationErrors);
     } else {
-      console.error("Unexpected error:", error);
     }
   }
   return { isDataValid: errors.length === 0, errors, personalInformation };

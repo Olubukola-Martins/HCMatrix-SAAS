@@ -28,4 +28,3 @@ let ans = eval(
     ? 0 + (gross_pay * 20 - 0) * 0.07
     : 0
 );
-console.log(ans, "...");

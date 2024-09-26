@@ -46,7 +46,6 @@ export const FileUpload = ({
     },
     onChange(info) {
       if (info.file.status !== "uploading") {
-        // console.log(info.file.response.data);
       }
       if (info.file.status === "done") {
         dispatch({

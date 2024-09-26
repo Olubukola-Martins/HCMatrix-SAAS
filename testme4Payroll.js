@@ -44,9 +44,6 @@ const test = eval("const re = 1;  re + 2 + 2;");
 
 const AH4 = 400000; // Replace with the actual value of AH4
 const result = calculateSalary(AH4);
-console.log(result, "met 1");
-
-console.log(test);
 
 function calculateSalary2(AH4, conditions) {
   for (let i = 0; i < conditions.length; i++) {
@@ -68,7 +65,6 @@ const conditions = [
 ];
 
 let result1 = calculateSalary2(AH4, conditions);
-console.log(result, "met 2");
 
 function calculateSalaryEval(AH4, conditions) {
   const evalStatement = conditions.reduce((statement, condition, index) => {
@@ -86,8 +82,6 @@ function calculateSalaryEval(AH4, conditions) {
 
 const formula = calculateSalary(AH4, conditions);
 const result3 = eval(formula);
-console.log(formula, "FORMULA");
-console.log(result3, "method eval ");
 
 export function calculateSalaryEvalStatement(AH4, conditions) {
   const evalStatement = conditions.reduce((statement, condition, index) => {
@@ -104,6 +98,3 @@ export function calculateSalaryEvalStatement(AH4, conditions) {
 }
 const result4 = calculateSalaryEvalStatement("taxable_income", conditions);
 const evalStatement = `const taxable_income = ${AH4}; ${result4};`;
-
-console.log(result4, "tax = ", eval(evalStatement));
-console.log("tax = ", evalStatement);

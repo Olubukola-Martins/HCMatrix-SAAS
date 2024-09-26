@@ -13,7 +13,6 @@ export const LoanInsightsCard = () => {
   const { data, isLoading } = useGetGraphData({
     props: { year, status },
   });
-  console.log(year);
 
   return (
     <div className="col-span-3 bg-mainBg border flex flex-col gap-4 rounded-lg text-sm shadow p-3">

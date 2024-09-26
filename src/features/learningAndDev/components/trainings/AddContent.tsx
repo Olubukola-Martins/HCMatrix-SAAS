@@ -13,7 +13,7 @@ export const AddContent = ({ open, handleClose }: IModalProps) => {
       title="Add Content"
       style={{ top: 15 }}
     >
-      <Form layout="vertical" onFinish={(val) => console.log(val)}>
+      <Form layout="vertical" onFinish={(val) => {}}>
         <Tabs
           defaultActiveKey="1"
           className=""

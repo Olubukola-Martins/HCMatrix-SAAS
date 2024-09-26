@@ -19,7 +19,6 @@ export const AssetMonthlyInsightsCard = () => {
           items={items}
           handleClick={(key) => {
             // TO DO: HANDLE SWITCH LOGIC HERE
-            console.log(key);
           }}
         /> */}
         </div>

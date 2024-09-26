@@ -29,7 +29,6 @@ const handleFCMToken = async (props: {
 
   const response = await axios.post(url, data, config);
 
-  console.log("FCM", response);
   return response;
 };
 
@@ -42,13 +41,11 @@ export const requestNotificationsPermission = async ({
   employeeId: number;
   token: string;
 }) => {
-  console.log("Requesting Notifications permission");
   const permission = await Notification.requestPermission();
 
   if (permission === "granted") {
     await saveMessagingDeviceToken({ companyId, token, employeeId });
   } else {
-    console.log("Unable to get permission to notify");
     // TO DO: Propogate message to ui to inform user
   }
 };
@@ -68,10 +65,8 @@ export const saveMessagingDeviceToken = async ({
   }
 
   const fcmToken = await getToken(msg, { vapidKey: VAPID_KEY });
-  console.log("fcmToken: ", fcmToken);
 
   if (fcmToken && msg) {
-    console.log("Got FCM device token:", fcmToken);
     // make api call to send token and employeeId to backend
     await handleFCMToken({
       auth: { companyId, token },
@@ -79,10 +74,6 @@ export const saveMessagingDeviceToken = async ({
     });
 
     onMessage(msg, (message) => {
-      console.log(
-        "New foreground notification from firebase",
-        message.notification
-      );
       const notification = message.notification;
       notification?.title &&
         new Notification(notification?.title, { body: notification.body });
@@ -98,7 +89,6 @@ export const saveMessagingDeviceToken = async ({
       }
     });
   } else {
-    console.log("Permission needed");
     requestNotificationsPermission({ companyId, token, employeeId });
   }
 };
