@@ -92,8 +92,7 @@ export const SaveLeaveType: React.FC<IProps> = ({
                   "A casual leave category must have a fixed type of length and the length set to valid number. Please correct and try again. Thank you!",
               });
               return;
-            }
-            if (
+            } else if (
               data?.category === "annual" &&
               data?.typeOfLength === "fixed" &&
               typeof data?.length !== "number"
@@ -105,8 +104,7 @@ export const SaveLeaveType: React.FC<IProps> = ({
                   "An annual leave category with a fixed type of length must have the length set to a number. Please correct and try again. Thank you!",
               });
               return;
-            }
-            if (
+            } else if (
               (data?.category === "annual" &&
                 data?.typeOfLength === "dynamic" &&
                 data?.length !== "grade") ||
