@@ -1,6 +1,23 @@
 import { TTransactionStatus, TTransactionType } from "../types";
+import { TComplianceDocumentType } from "../types/compliance";
 import { TPayrollFrequency, TEssentialPayrollType } from "../types/payroll";
 import { TPayrollSchemeType } from "../types/payrollSchemes";
+import {
+  TWalletTransactionStatus,
+  TWalletTransactionType,
+} from "../types/payrollWallet";
+
+export const WALLET_PAYMENT_PROVIDERS = [
+  "Monnify",
+  "Korapay",
+  "Providus",
+] as const;
+export const WALLET_COMPLIANCE_DOCUMENT_TYPES: TComplianceDocumentType[] = [
+  "cac-2",
+  "cac-7",
+  "certificate-of-incorporation",
+  "memorandum-of-incorporation",
+];
 
 export const DEFAULT_PENSION_ADMINISTRATORS = [
   "Access Pensions Limited",
@@ -87,3 +104,12 @@ export const TRANSACTION_TYPE_OPTIONS: {
   value: TTransactionType;
   label: string;
 }[] = TRANSACTION_TYPES.map((item) => ({ label: item, value: item }));
+
+export const WALLET_TRANSACTION_TYPES: TWalletTransactionType[] = [
+  "credit",
+  "debit",
+];
+export const WALLET_TRANSACTION_STATUSES: TWalletTransactionStatus[] = [
+  "completed",
+  "pending",
+];

@@ -1,7 +1,7 @@
 export type TLoanSetting = {
   id: number;
   workflowId: number;
-  costCentreId: number;
+  costCentreId?: number;
   maxLoanPercentage: number;
   cannotExceedMaxLoanPercentage: boolean;
   shouldFillGuarantorsForm: boolean;
@@ -50,3 +50,39 @@ export type TLoanTypeProps = {
   name: string;
   label: string;
 };
+
+// New
+export interface IApprovalProcessProps {
+  workflowId: number;
+}
+
+export interface IDisbursementProps {
+  enableDisbursement: boolean;
+}
+
+export interface IEligibilityCriteriaProps {
+  maxPercentage: number;
+  maxApplicationDuringRepayment: number;
+  employmentDuration: {
+    start: number;
+    end?: number;
+  };
+  employmentStatus: string[];
+}
+
+export interface ILoanPaymentSettings {
+  enableAutomaticPayrollDeduction: boolean;
+  notifyEmployeeViaEmailAboutDeduction: boolean;
+  enableManualRepayment: {
+    isActive: boolean;
+    companyWallet: boolean;
+    directToBankAccount: boolean;
+    bankAccountDetails?: {
+      bankName: string;
+      accountName: string;
+      accountNumber: string;
+      swiftCode?: string;
+    };
+  };
+  enableAutomaticPayrollDeductionForFailedRepayment: boolean;
+}

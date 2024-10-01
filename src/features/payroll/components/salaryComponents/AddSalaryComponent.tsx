@@ -309,13 +309,6 @@ export const AddSalaryComponentForm: React.FC<IFormProps> = ({
   const [taxConfig, setTaxConfig] = useState<TTaxConfig>();
   useEffect(() => {
     if (salaryComponent) {
-      console.log(
-        "TAX DECOUPLE",
-        salaryComponent.name,
-        salaryComponent.amount,
-        salaryComponent.description,
-        extractParamsFromInput(`${salaryComponent.amount}`)
-      );
       form.setFieldsValue({
         name: salaryComponent.name?.split("_").join(" "),
         amount: salaryComponent.amount,
@@ -323,12 +316,6 @@ export const AddSalaryComponentForm: React.FC<IFormProps> = ({
         shouldDisplayOnReviewTable: salaryComponent.shouldDisplayOnReviewTable,
       });
       if (salaryComponent.description) {
-        console.log(
-          "first",
-          salaryComponent.name,
-          "OOOOOOOOOOO",
-          salaryComponent.description
-        );
         // setComponentDescription(JSON.stringify(salaryComponent.description));
         const data = JSON.parse(salaryComponent.description);
         const conditions = data?.conditions ?? dummyConditions; // show default conditions if not provided

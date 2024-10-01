@@ -42,18 +42,18 @@ function App() {
       message="Please contact administrator!"
       errImageOrIcon={<PageNotFoundIcon />}
     >
-      <ErrorWrapper
-        isError={!isOnline}
-        errImage={<PageNotFoundIcon />}
-        message="Please check your internet connection!"
-      >
-        <BrowserRouter>
-          <AuthProvider
-            authType={"localstorage"}
-            authName={LOCAL_STORAGE_AUTH_KEY}
-            // cookieDomain={window.location.hostname}
-            // cookieSecure={window.location.protocol === "https:"}
-            // refresh={refreshApi}
+      <BrowserRouter>
+        <AuthProvider
+          authType={"localstorage"}
+          authName={LOCAL_STORAGE_AUTH_KEY}
+          // cookieDomain={window.location.hostname}
+          // cookieSecure={window.location.protocol === "https:"}
+          // refresh={refreshApi}
+        >
+          <ErrorWrapper
+            isError={!isOnline}
+            errImage={<PageNotFoundIcon />}
+            message="Please check your internet connection!"
           >
             <QueryClientProvider client={queryClient}>
               <GlobalContextProvider>
@@ -66,9 +66,9 @@ function App() {
                 position="bottom-right"
               />
             </QueryClientProvider>
-          </AuthProvider>
-        </BrowserRouter>
-      </ErrorWrapper>
+          </ErrorWrapper>
+        </AuthProvider>
+      </BrowserRouter>
     </ErrorBoundary>
   );
 }

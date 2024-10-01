@@ -20,7 +20,6 @@ import {
 } from "features/payroll/types/payrollSchemes";
 import { PayrollSingleProjectParticipantsContainer } from "../projectParticipants/PayrollSingleProjectParticipantsContainer";
 import { TSetupPayrollSchemeData } from "features/payroll/types/setUpSchemeInputData";
-import { FormCostCentreInput } from "../costCentres/FormCostCentreInput";
 import { TSingleProject } from "features/core/projects/types";
 import { getEmployeeFullName } from "features/core/employees/utils/getEmployeeFullName";
 import { TSingleProjectPayrollScheme } from "features/payroll/types/payrollSchemes/singleProject";
@@ -44,6 +43,9 @@ const DEFAULT_COMPONENT_LABELS = {
   leaveAllowance: "leave_allowance",
   employerPensionContribution: "employer_pension_contribution",
   bonus: "bonus",
+  basicSalary: "basic_salary",
+  transportAllowance: "transport_allowance",
+  houseAllowance: "housing_allowance",
 };
 const boxStyle = "px-4 py-3 shadow rounded-md bg-mainBg";
 const boxTitle = "font-medium text-base pb-1";
@@ -57,6 +59,9 @@ const initialState: TActionState = {
 
   issuePayslip: false,
   runAutomatically: false,
+  displayBasicSalary: false,
+  displayTransportAllowance: false,
+  displayHousingAllowance: false,
   displayAllowances: false,
   displayDeductions: false,
   display13thMonth: false,
@@ -82,6 +87,9 @@ interface TActionState {
   allowApproval: boolean;
   issuePayslip: boolean;
   runAutomatically: boolean;
+  displayBasicSalary: boolean;
+  displayHousingAllowance: boolean;
+  displayTransportAllowance: boolean;
   displayAllowances: boolean;
   displayDeductions: boolean;
   display13thMonth: boolean;
@@ -104,6 +112,9 @@ interface TActionState {
 
 type TActionType =
   | "displayEmployerPensionContribution"
+  | "displayBasicSalary"
+  | "displayTransportAllowance"
+  | "displayHousingAllowance"
   | "displayBonus"
   | "allowDisbursement"
   | "allowApproval"
@@ -180,6 +191,21 @@ function reducer(
       return {
         ...state,
         runAutomatically: !state.runAutomatically,
+      };
+    case "displayHousingAllowance":
+      return {
+        ...state,
+        displayHousingAllowance: !state.displayHousingAllowance,
+      };
+    case "displayBasicSalary":
+      return {
+        ...state,
+        displayBasicSalary: !state.displayBasicSalary,
+      };
+    case "displayTransportAllowance":
+      return {
+        ...state,
+        displayTransportAllowance: !state.displayTransportAllowance,
       };
     case "displayAllowances":
       return {
@@ -308,6 +334,7 @@ export const SetUpPayrollForm: React.FC<{
     allowDisbursement,
     runAutomatically,
     issuePayslip,
+    displayHousingAllowance,
     displayAllowances,
     displayDeductions,
     display13thMonth,
@@ -325,6 +352,8 @@ export const SetUpPayrollForm: React.FC<{
     projectParticipants,
     displayEmployerPensionContribution,
     displayBonus,
+    displayBasicSalary,
+    displayTransportAllowance,
   } = state;
   const {
     mutate: mutateProjectPartcipant,
@@ -426,7 +455,7 @@ export const SetUpPayrollForm: React.FC<{
               runAutomatically,
               type,
               workflowId: data.workflowId,
-              costCentreId: data.costCentreId,
+              // costCentreId: data.costCentreId,
             },
           },
           {
@@ -516,7 +545,7 @@ export const SetUpPayrollForm: React.FC<{
           runAutomatically,
           type,
           workflowId: data.workflowId,
-          costCentreId: data.costCentreId,
+          // costCentreId: data.costCentreId,
         },
         {
           onError: (err: any) => {
@@ -670,6 +699,15 @@ export const SetUpPayrollForm: React.FC<{
           runAutomatically:
             scheme.type === "wages" ? false : scheme?.runAutomatically,
 
+          displayHousingAllowance: !!ogSalaryComponents.find(
+            (item) => item.label === DEFAULT_COMPONENT_LABELS.houseAllowance
+          )?.isActive,
+          displayTransportAllowance: !!ogSalaryComponents.find(
+            (item) => item.label === DEFAULT_COMPONENT_LABELS.transportAllowance
+          )?.isActive,
+          displayBasicSalary: !!ogSalaryComponents.find(
+            (item) => item.label === DEFAULT_COMPONENT_LABELS.basicSalary
+          )?.isActive,
           displayEmployerPensionContribution: !!ogSalaryComponents.find(
             (item) =>
               item.label ===
@@ -739,7 +777,7 @@ export const SetUpPayrollForm: React.FC<{
         disbursement: scheme?.disbursement,
         workflowId: scheme?.workflowId,
         automaticRunDay: scheme?.automaticRunDay,
-        costCentreId: scheme?.costCentreId,
+        // costCentreId: scheme?.costCentreId,
         frequency: +scheme?.frequency,
         ...convertObjectToKeyMomentValues(JSON.parse(scheme.automaticRunDay)),
       });
@@ -770,6 +808,54 @@ export const SetUpPayrollForm: React.FC<{
   const dependencies = salaryComponents.map((item) => item.label);
   const DEFAULT_SALARY_COMPONENTS: TDefaultSalaryComp[] = useMemo(
     () => [
+      {
+        title: "Basic Salary",
+        type: "allowance",
+        handleSave: handleAddAllowance,
+        isActive: displayBasicSalary,
+        isDefault: true,
+        dependencies,
+        description: `This allows you to create a basic salary component(allowance)`,
+
+        onSwitch: () => dispatch({ type: "displayBasicSalary" }),
+        salaryComponent: salaryComponents.find(
+          (item) => item.label === DEFAULT_COMPONENT_LABELS.basicSalary
+        ),
+        componentName: DEFAULT_COMPONENT_LABELS.basicSalary,
+        schemeId: scheme?.id,
+      },
+      {
+        title: "Transport Allowance",
+        type: "allowance",
+        handleSave: handleAddAllowance,
+        isActive: displayTransportAllowance,
+        isDefault: true,
+        dependencies,
+        description: `This allows you to create a transport allowance component(allowance)`,
+
+        onSwitch: () => dispatch({ type: "displayTransportAllowance" }),
+        salaryComponent: salaryComponents.find(
+          (item) => item.label === DEFAULT_COMPONENT_LABELS.transportAllowance
+        ),
+        componentName: DEFAULT_COMPONENT_LABELS.transportAllowance,
+        schemeId: scheme?.id,
+      },
+      {
+        title: "Housing Allowance",
+        type: "allowance",
+        handleSave: handleAddAllowance,
+        isActive: displayHousingAllowance,
+        isDefault: true,
+        dependencies,
+        description: `This allows you to create a housing allowance component(allowance)`,
+
+        onSwitch: () => dispatch({ type: "displayHousingAllowance" }),
+        salaryComponent: salaryComponents.find(
+          (item) => item.label === DEFAULT_COMPONENT_LABELS.houseAllowance
+        ),
+        componentName: DEFAULT_COMPONENT_LABELS.houseAllowance,
+        schemeId: scheme?.id,
+      },
       {
         title: "13th Month Salary",
         type: "allowance",
@@ -932,6 +1018,7 @@ export const SetUpPayrollForm: React.FC<{
       salaryComponents,
       dependencies,
       display13thMonth,
+      displayHousingAllowance,
       displayITF,
       displayLeaveAllowance,
       displayNIF,
@@ -941,6 +1028,8 @@ export const SetUpPayrollForm: React.FC<{
       displayTax,
       displayBonus,
       displayEmployerPensionContribution,
+      displayTransportAllowance,
+      displayBasicSalary,
       handleAddAllowance,
       handleAddDeduction,
       scheme,
@@ -1112,7 +1201,7 @@ export const SetUpPayrollForm: React.FC<{
                   Do you want to disburse payment after approval/confirmation?
                 </p>
               </div>
-              <div className={boxStyle}>
+              {/* <div className={boxStyle}>
                 <h5 className={boxTitle}>Default Cost Centre</h5>
                 <p className="text-sm">
                   This is the default cost centre that will be used when payroll
@@ -1127,7 +1216,7 @@ export const SetUpPayrollForm: React.FC<{
                     }}
                   />
                 </div>
-              </div>
+              </div> */}
               <div className={boxStyle}>
                 <div className="flex items-center justify-between">
                   <h5
@@ -1238,7 +1327,7 @@ export const SetUpPayrollForm: React.FC<{
               {type !== "wages" && (
                 <div className={boxStyle}>
                   <div className="flex items-center justify-between">
-                    <h5 className={boxTitle}>Run Payroll automatically</h5>
+                    <h5 className={boxTitle}>Create Payroll automatically</h5>
                     <Switch
                       checked={runAutomatically}
                       onChange={() => dispatch({ type: "runAutomatically" })}

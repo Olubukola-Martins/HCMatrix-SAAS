@@ -12,7 +12,7 @@ export type TOfficeSetupSchemeInputData = {
   disbursement: number;
   allowApproval: boolean;
   workflowId: number;
-  costCentreId: number;
+  costCentreId?: number;
   issuePayslip: boolean;
   runAutomatically: boolean;
   automaticRunDay: number;

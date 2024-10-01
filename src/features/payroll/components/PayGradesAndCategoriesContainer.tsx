@@ -33,7 +33,7 @@ export const PayGradesAndCategoriesContainer = () => {
       <div className="flex flex-col gap-6">
         {/* <NewTransfer open={showM} handleClose={() => setShowM(false)} /> */}
         <PageSubHeader
-          description={`You can now create/edit pay grade and their parent categories.`}
+          description={`You can now create/edit grade and their parent categories.`}
           actions={[
             {
               name: "New Category",

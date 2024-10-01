@@ -69,7 +69,7 @@ export const jobInformationValidationSchema = (props: TValidateProps) => {
           }
           return undefined;
         }),
-      payGradeId: z
+      gradeId: z
         .string()
         .nullable()
         .optional()
@@ -229,19 +229,19 @@ export const jobInformationValidationSchema = (props: TValidateProps) => {
           path: ["hourlyRate"],
         });
       }
-      // if payroll type is office, then paygradeId should be present and valid
-      const payGradeId = data.payGradeId;
+      // if payroll type is office, then gradeId should be present and valid
+      const gradeId = data.gradeId;
 
       if (
         data.payrollType === "office" &&
-        !payGrades?.some((item) => item.id === payGradeId)
+        !payGrades?.some((item) => item.id === gradeId)
       ) {
         ctx.addIssue({
           code: "custom",
           message: `Pay grade has to be one of the following ${payGrades?.map(
             (item) => item.name
           )} for an ${data.payrollType} payroll`,
-          path: ["payGradeId"],
+          path: ["gradeId"],
         });
       }
     });

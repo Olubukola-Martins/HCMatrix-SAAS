@@ -1,4 +1,4 @@
-import { Button, } from "antd";
+import { Button } from "antd";
 
 import React, { useState } from "react";
 import { ColumnsType } from "antd/lib/table";
@@ -52,6 +52,12 @@ const PayGradesTable: React.FC<{
       dataIndex: "Category",
       key: "Category",
       render: (_, item) => item.category.name,
+    },
+    {
+      title: "Leave Length",
+      dataIndex: "Leave Length",
+      key: "Leave Length",
+      render: (_, item) => item?.leaveLength,
     },
     {
       title: "Gross pay",

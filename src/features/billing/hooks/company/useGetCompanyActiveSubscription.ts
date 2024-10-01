@@ -39,6 +39,7 @@ export const useGetCompanyActiveSubscription = () => {
         },
       }),
     {
+      enabled: !!token && !!companyId, //Dont make api calls if token & companyId are not present
       onError: (err: any) => {},
       onSuccess: (data) => {},
     }

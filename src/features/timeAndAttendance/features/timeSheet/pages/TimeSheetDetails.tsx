@@ -32,6 +32,7 @@ const TimeSheetDetails = () => {
     lng: data?.attendance.clockIn?.longitude || "",
   });
 
+
   return (
     <>
       <AttendanceSubToper active="time-sheet" />
@@ -71,11 +72,11 @@ const TimeSheetDetails = () => {
                   {employeeData?.firstName} {employeeData?.lastName}
                 </h3>
                 <h3 className="font-medium">
-                  {employeeData?.designation.department.name}
+                  {employeeData?.designation?.department?.name}
                 </h3>
                 <span>{employeeData?.role.name}</span>
                 <h3 className="font-medium">
-                  {employeeData?.designation.name}
+                  {employeeData?.designation?.name}
                 </h3>
               </div>
             </div>
@@ -97,7 +98,7 @@ const TimeSheetDetails = () => {
                 <h3>
                   Pay extra hours:
                   <span className="pl-5">
-                    {data?.attendance.clockOut.payExtraHours ? "Yes" : "No"}
+                    {data?.attendance?.clockOut?.payExtraHours ? "Yes" : "No"}
                   </span>
                 </h3>
               </div>
@@ -124,23 +125,23 @@ const TimeSheetDetails = () => {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
             <SimpleCard
               title="Clocked in"
-              highlight={data?.attendance?.clockIn?.time}
+              highlight={data?.attendance?.clockIn?.time ?? "----"}
             />
             <SimpleCard
               title="Clocked out"
-              highlight={data?.attendance?.clockOut?.time}
+              highlight={data?.attendance?.clockOut?.time ?? "----"}
             />
             <SimpleCard
               title="Break"
-              highlight={convertMinutesToHours(data?.totalBreakUsage || 0)}
+              highlight={convertMinutesToHours(data?.totalBreakUsage ?? 0)}
             />
             <SimpleCard
               title="Total worked hours"
-              highlight={convertMinutesToHours(data?.totalTimeTracked || 0)}
+              highlight={convertMinutesToHours(data?.totalTimeTracked ?? 0)}
             />
             <SimpleCard
               title="Extra worked hours"
-              highlight={convertMinutesToHours(data?.extraWorkedHours || 0)}
+              highlight={convertMinutesToHours(data?.extraWorkedHours ?? 0)}
             />
           </div>
 
@@ -149,7 +150,7 @@ const TimeSheetDetails = () => {
               Clock Out Comment:
             </h3>
             <p className="text-sm">
-              {`${data?.attendance?.clockOut?.comment}` || `....`}
+              {`${data?.attendance?.clockOut?.comment ?? "..."}`}
             </p>
           </div>
           <DailySwitchActivityTable

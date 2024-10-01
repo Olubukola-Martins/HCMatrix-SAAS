@@ -117,6 +117,7 @@ export const Biometrics = () => {
           className="mt-5"
           pagination={{ ...pagination, total: data?.total }}
           onChange={onChange}
+          scroll={{ x: 500 }}
         />
       </div>
     </>

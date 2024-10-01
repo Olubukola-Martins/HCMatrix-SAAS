@@ -34,7 +34,6 @@ export const getEmployeePerShift = async (props: {
   };
 
   const res = await axios.get(url, config);
-
   const fetchedData = res.data.data.result;
 
   const result = fetchedData;

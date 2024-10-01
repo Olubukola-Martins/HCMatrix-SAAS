@@ -18,6 +18,7 @@ export type TPermissionLabel =
   | "manage-employee-onboarding"
   | "manage-vehicle-settings"
   | "manage-vehicles"
+  | "disburse-payroll"
   | "view-vehicle-overview"
   | "view-all-vehicle-bookings"
   | "manage-conference-room-settings"
@@ -73,11 +74,12 @@ export type TPermissionLabel =
   | "manage-unlicensed-employees"
   | "manage-time-and-attendance-settings" //time & attendance permissions begin here
   | "view-time-and-attendance-reports"
-  | "view-all-swap-shif-requests"
+  | "view-all-swap-shift-requests"
   | "view-all-time-off-requests"
   | "upload-time-and-attendance-timesheet"
   | "view-all-time-and-attendance-timesheet"
-  | "view-time-and-attendance-dashboard-summary";
+  | "view-time-and-attendance-dashboard-summary"
+  | "view-all-profile-edit-requests"; //profile-edit
 
 export type TPermissionInDelegation = {
   id: number;

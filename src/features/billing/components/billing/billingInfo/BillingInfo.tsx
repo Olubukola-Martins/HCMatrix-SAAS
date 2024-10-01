@@ -25,7 +25,6 @@ const BillingInfo = () => {
   const [form] = Form.useForm<FormProps>();
   const queryClient = useQueryClient();
   useLayoutEffect(() => {
-    console.log(data, ">>");
     if (!data) return;
     const address = data.address;
     form.setFieldsValue({

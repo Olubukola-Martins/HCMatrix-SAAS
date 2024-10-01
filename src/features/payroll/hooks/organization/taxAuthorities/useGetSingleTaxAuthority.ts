@@ -9,7 +9,7 @@ interface IDataProps {
   id: number;
 }
 export const QUERY_KEY_FOR_SINGLE_TAX_AUTHORITY = "single-tax-authority";
-const getData = async (props: {
+export const getSingleTaxAuthority = async (props: {
   data: IDataProps;
   auth: ICurrentCompany;
 }): Promise<TTaxAuthority> => {
@@ -38,7 +38,7 @@ export const useGetSingleTaxAuthority = (props: IDataProps) => {
   const queryData = useQuery(
     [QUERY_KEY_FOR_SINGLE_TAX_AUTHORITY],
     () =>
-      getData({
+      getSingleTaxAuthority({
         auth: {
           companyId,
           token,

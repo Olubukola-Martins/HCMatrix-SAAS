@@ -20,7 +20,7 @@ export interface IFlexible {
 export type workScheduleFlexibleProps = IFlexible[];
 
 export interface IShift {
-  type: string;
+  categoryId: number;
   schedule: scheduleProps[];
 }
 

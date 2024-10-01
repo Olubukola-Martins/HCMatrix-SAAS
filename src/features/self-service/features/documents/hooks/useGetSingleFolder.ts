@@ -13,7 +13,7 @@ const getData = async (props: {
   data: IDataProps;
   auth: ICurrentCompany;
 }): Promise<TSingleFolder> => {
-  const url = `${MICROSERVICE_ENDPOINTS.UTILITY}/self-service/folder/${props.data.id}`;
+  const url = `${MICROSERVICE_ENDPOINTS.UTILITY}/self-service/document/folder/${props.data.id}`;
 
   const config = {
     headers: {

@@ -1,4 +1,4 @@
-import { Form, Typography, InputNumber, Skeleton } from "antd";
+import { Form, Typography, InputNumber, Skeleton, Select } from "antd";
 import { FormWorkflowInput } from "features/core/workflows/components/FormWorkflowInput";
 import { useEffect, useState } from "react";
 import { useQueryClient } from "react-query";
@@ -10,7 +10,12 @@ import {
   useGetLeavePolicySetting,
 } from "../../../hooks/leavePolicySetting/useGetLeavePolicySetting";
 import { useSaveLeavePolicySetting } from "../../../hooks/leavePolicySetting/useSaveLeavePolicySetting";
-import { numberHasToBeAWholeNumberRule } from "utils/formHelpers/validation";
+import {
+  generalValidationRules,
+  numberHasToBeAWholeNumberRule,
+  numberHasToBeInRange,
+} from "utils/formHelpers/validation";
+import { MONTH_CHART_LABELS } from "constants/general";
 
 const btwnStyle =
   "bg-card pt-4 px-3 flex flex-row w-full justify-between align-center rounded-md";
@@ -23,14 +28,17 @@ const LeavePolicyForm = () => {
   const { data, isFetching } = useGetLeavePolicySetting();
   const { mutate, isLoading } = useSaveLeavePolicySetting();
   const handleSubmit = (data: any) => {
+    const input = {
+      workflowId: data.workflowId,
+      includeWeekends: !!data.includeWeekends,
+      includeHolidays: !!data.includeHolidays,
+      carryover: !!data.carryover,
+      maxLengthCarryover: data?.maxLengthCarryover,
+      carryoverDay: data?.carryoverDay,
+      carryoverMonth: data?.carryoverMonth,
+    };
     mutate(
-      {
-        workflowId: data.workflowId,
-        includeWeekends: !!data.includeWeekends,
-        includeHolidays: !!data.includeHolidays,
-        carryover: !!data.carryover,
-        maxLengthCarryover: data.maxLengthCarryover,
-      },
+      input,
 
       {
         onError: (err: any) => {
@@ -68,6 +76,9 @@ const LeavePolicyForm = () => {
         includeHolidays: data.includeHolidays,
         carryover: data.carryover,
         maxLengthCarryover: data.maxLengthCarryover,
+        proration: data.proration,
+        carryoverMonth: data.carryoverMonth,
+        carryoverDay: data.carryoverDay,
       });
     }
   }, [form, data]);
@@ -129,14 +140,16 @@ const LeavePolicyForm = () => {
           <div className={btwnStyle}>
             <div>
               {" "}
-              <Typography.Text>Do you carry leave over?</Typography.Text>
+              <Typography.Text>
+                Do you wish to prorate your leave?
+              </Typography.Text>
             </div>
             <div>
-              <Form.Item label="" className="flex-1" name="carryover">
+              <Form.Item label="" className="flex-1" name="proration">
                 <AppSwitch
                   checkedChildren="Yes"
                   unCheckedChildren="No"
-                  defaultChecked={!!data?.carryover}
+                  defaultChecked={!!data?.proration}
 
                   // size="small"
                 />
@@ -144,42 +157,80 @@ const LeavePolicyForm = () => {
             </div>
           </div>
           <div className={btwnStyle}>
-            <div className="flex flex-col gap-4">
+            <div>
               {" "}
-              <Typography.Text>
-                Do you have a maximum number of days when carrying leave over?
-              </Typography.Text>
-              {showMaxCODays && (
-                <Form.Item
-                  label=""
-                  className="flex-1 "
-                  name="maxLengthCarryover"
-                  rules={[numberHasToBeAWholeNumberRule]}
-                >
-                  <InputNumber
-                    placeholder="What is your Maximum Leave Carryover Length"
-                    className="w-full"
-                    min={1}
-                  />
-                </Form.Item>
-              )}
+              <Typography.Text>Do you carry leave over?</Typography.Text>
             </div>
             <div>
-              <Form.Item
-                label=""
-                className="flex-1"
-                name="just-toshow-max-leave-len-days"
-              >
+              <Form.Item label="" className="flex-1" name="carryover">
                 <AppSwitch
                   checkedChildren="Yes"
                   unCheckedChildren="No"
                   defaultChecked={showMaxCODays}
                   onChange={() => setShowMaxCODays((val) => !val)}
+
                   // size="small"
                 />
               </Form.Item>
             </div>
           </div>
+          {showMaxCODays && (
+            <>
+              <div className={btwnStyle}>
+                <div className="flex flex-col gap-4">
+                  {" "}
+                  <Typography.Text>
+                    What is the maximum number of days when carrying leave over?
+                  </Typography.Text>
+                  <Form.Item
+                    label=""
+                    className="flex-1 "
+                    name="maxLengthCarryover"
+                    rules={[numberHasToBeAWholeNumberRule]}
+                  >
+                    <InputNumber
+                      placeholder="What is your Maximum Leave Carryover Length"
+                      className="w-full"
+                      min={1}
+                    />
+                  </Form.Item>
+                </div>
+              </div>
+              <div className={btwnStyle}>
+                <div className="flex flex-col gap-4">
+                  {" "}
+                  <Typography.Text>
+                    What is your carryover day and month?
+                  </Typography.Text>
+                  <div className="flex gap-x-12 w-full">
+                    <Form.Item
+                      label=""
+                      className="flex-1 "
+                      name="carryoverMonth"
+                      rules={generalValidationRules}
+                    >
+                      <Select
+                        placeholder="Month"
+                        className="w-full"
+                        options={MONTH_CHART_LABELS.map((label, value) => ({
+                          value,
+                          label: <span className="capitalize">{label}</span>,
+                        }))}
+                      />
+                    </Form.Item>
+                    <Form.Item
+                      label=""
+                      className="flex-1 "
+                      name="carryoverDay"
+                      rules={[numberHasToBeInRange(1, 31)]}
+                    >
+                      <InputNumber placeholder="Day" className="w-full" />
+                    </Form.Item>
+                  </div>
+                </div>
+              </div>
+            </>
+          )}
 
           <div className="flex justify-end">
             <Form.Item>

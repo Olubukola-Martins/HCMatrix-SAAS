@@ -6,6 +6,7 @@ import { useState } from "react";
 import { generalValidationRules } from "utils/formHelpers/validation";
 
 export const FormCostCentreInput: React.FC<{
+  //depracted, payroll currently uses wallet
   Form: typeof Form;
   showLabel?: boolean;
   onSelect?: (val: number, option: TCostCentre) => void;

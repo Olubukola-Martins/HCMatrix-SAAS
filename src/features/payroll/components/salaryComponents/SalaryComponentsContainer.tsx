@@ -12,6 +12,7 @@ import {
 } from "features/payroll/types/salaryComponents";
 import DeleteSalaryComponent from "./DeleteSalaryComponent";
 import { EditSalaryComponent } from "./EditSalaryComponent";
+import { formatNumberWithCommas } from "utils/dataHelpers/formatNumberWithCommas";
 
 interface IProps {
   loading?: boolean;
@@ -69,7 +70,9 @@ export const SalaryComponentsContainer: React.FC<IProps> = ({
       dataIndex: "Amount",
       key: "Amount",
       ellipsis: true,
-      render: (_, item) => <span className="">{item.amount}</span>,
+      render: (_, item) => (
+        <span className="">{formatNumberWithCommas(item.amount)}</span>
+      ),
     },
     {
       title: "Display on Review Table",

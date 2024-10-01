@@ -19,6 +19,7 @@ export type TCreateLeaveTypeProps = Pick<
   | "maritalStatus"
   | "employeeStatus"
   | "requireReliever"
+  | "category"
 >;
 
 const createLeaveType = async (props: {

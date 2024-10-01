@@ -136,7 +136,7 @@ interface Payroll {
   description: string;
   frequency: string;
   status: string;
-  costCentreId: number;
+  costCentreId?: number;
   companyId: number;
   createdAt: string;
   updatedAt: string;
@@ -150,7 +150,7 @@ interface Scheme {
   frequency: string;
   allowDisbursement: boolean;
   disbursement?: any;
-  costCentreId: number;
+  costCentreId?: number;
   allowApproval: boolean;
   workflowId: number;
   issuePayslip: boolean;

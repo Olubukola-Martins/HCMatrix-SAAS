@@ -91,7 +91,7 @@ const columns: ColumnsType<TTransaction> = [
 
 interface ComponentProps {
   type: TTransactionType[];
-  costCentreId: number;
+  costCentreId?: number;
 }
 
 const Component: React.FC<
@@ -114,7 +114,7 @@ const TransactionsWithFilter = withFilterTransactionContainer(Component, {
 });
 
 const CostCentreTransactions: React.FC<{
-  costCentreId: number;
+  costCentreId?: number;
 }> = ({ costCentreId }) => {
   const tabItems = [
     {

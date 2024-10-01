@@ -8,8 +8,6 @@ import { PayrollPayslip } from "features/payroll/pages/PayrollPayslip";
 import EmployeePayslips from "features/payroll/pages/EmployeePayslips";
 import CreatePayslipTemplate from "features/payroll/pages/CreatePayslipTemplate";
 import PayrollCostCentresPage from "features/payroll/pages/PayrollCostCentresPage";
-import PayrollTaxPoliciesPage from "features/payroll/pages/PayrollTaxPoliciesPage";
-import CreateTaxPolicyPage from "features/payroll/pages/CreateTaxPolicyPage";
 import ExchangeRatesPage from "features/payroll/pages/ExchangeRatesPage";
 import PayrollSchemesPage from "features/payroll/pages/PayrollSchemesPage";
 import SetupGradePayrollSchemePage from "features/payroll/pages/SetupGradePayrollSchemePage";
@@ -35,6 +33,7 @@ import ViewPayslipTemplate from "features/payroll/pages/ViewPayslipTemplate";
 import SingleCostCentrePage from "features/payroll/pages/SingleCostCentrePage";
 import PayrollSetting from "features/payroll/pages/PayrollSetting";
 import { canUserAccessComponent } from "components/permission-restriction/PermissionRestrictor";
+import PayrollWalletPage from "features/payroll/pages/PayrollWalletPage";
 
 // TODO: Perm Restrict payroll pages [Done], then move to home dashboard, then handbook, then company organogram, then back to self service restrictions as per components, then payroll bug fixes n removal of leave comp, and then tax finale
 
@@ -56,6 +55,22 @@ export const payrollRoutes = (props: TAppPageDataFnProps): TRouteData[] => {
         },
       }),
       isPrimaryFeature: false,
+    },
+    {
+      element: <PayrollWalletPage />,
+      path: appRoutes.payrollWallet,
+      isSearchable: true,
+      title: "Wallet",
+      isPrimaryFeature: true,
+      hidden: !canUserAccessComponent({
+        userPermissions,
+        requiredPermissions: ["manage-cost-centres"],
+        activeSubscription,
+        requiredSubscriptionState: {
+          label: "payroll",
+          resources: ["payroll-analytics", "payroll-disbursement"],
+        },
+      }),
     },
     {
       element: <PayrollCostCentresPage />,

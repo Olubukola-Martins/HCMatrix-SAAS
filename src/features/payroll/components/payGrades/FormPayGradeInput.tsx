@@ -26,7 +26,7 @@ export const FormPayGradeInput: React.FC<{
 
   return (
     <Form.Item
-      name={control?.name ?? "payGradeId"}
+      name={control?.name ?? "gradeId"}
       label={showLabel ? control?.label ?? "Pay Grade " : null}
       rules={generalValidationRules}
     >

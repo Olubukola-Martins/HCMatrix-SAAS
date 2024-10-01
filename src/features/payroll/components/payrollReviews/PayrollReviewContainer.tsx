@@ -4,11 +4,13 @@ import PayrollReviewTable from "./PayrollReviewTable";
 import { TPayrollListData } from "features/payroll/types/payroll";
 import ViewApprovalStages from "features/core/workflows/components/approval-request/ViewApprovalStages";
 import { ComparePayroll } from "../payrollComparism/ComparePayroll";
+import { DisbursePayroll } from "../disbursement/DisbursePayroll";
 
 export type TPayrollReviewAction =
   | "view-approval-stages"
   | "comapare-payroll-basic"
-  | "compare-payroll-advanced";
+  | "compare-payroll-advanced"
+  | "manual-disbursement";
 
 export const PayrollReviewContainer = () => {
   const [request, setRequest] = useState<TPayrollListData>();
@@ -29,6 +31,13 @@ export const PayrollReviewContainer = () => {
           open={action === "view-approval-stages"}
           id={request?.id}
           type="payroll"
+        />
+      )}
+      {request && (
+        <DisbursePayroll
+          handleClose={onClose}
+          open={action === "manual-disbursement"}
+          payrollId={request?.id}
         />
       )}
       {request && (

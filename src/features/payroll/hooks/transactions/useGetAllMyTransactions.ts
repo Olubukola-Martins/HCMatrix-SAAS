@@ -22,7 +22,7 @@ export const QUERY_KEY_FOR_ALL_MY_TRANSACTIONS = "al-my-transactions";
 const getData = async (props: {
   data: IGetDataProps;
   auth: ICurrentCompany;
-  costCentreId: number;
+  costCentreId?: number;
 }): Promise<{ data: TTransaction[]; total: number }> => {
   const { pagination, type, status } = props.data;
   const limit = pagination?.limit ?? DEFAULT_PAGE_SIZE;
@@ -64,7 +64,7 @@ const getData = async (props: {
 
 export const useGetAllMyTransactions = (data: {
   props: IGetDataProps;
-  costCentreId: number;
+  costCentreId?: number;
 }) => {
   const { props, costCentreId } = data;
   const { token, companyId } = useApiAuth();

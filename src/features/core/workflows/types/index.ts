@@ -37,7 +37,16 @@ export type TWorkflowApprovalType =
   | "payroll"
   | "loan"
   | "exit-handover-form"
-  | "shift-swap";
+  | "profile-edit"
+  | "bank-detail"
+  | "job-information"
+  | "personal-information"
+  | "pension"
+  | "itf"
+  | "nsitf"
+  | "tax"
+  | "shift-swap"
+  | "time-off";
 
 export type TStagingType =
   | "employee"

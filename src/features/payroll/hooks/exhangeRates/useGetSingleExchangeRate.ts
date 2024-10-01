@@ -9,7 +9,7 @@ interface IDataProps {
   id: number;
 }
 export const QUERY_KEY_FOR_SINGLE_EXCHANGE_RATE = "single-exchange-rate";
-const getData = async (props: {
+export const getSingleExchangeRate = async (props: {
   data: IDataProps;
   auth: ICurrentCompany;
 }): Promise<TExchangeRateListItem> => {
@@ -38,7 +38,7 @@ export const useGetSingleExchangeRate = (props: IDataProps) => {
   const queryData = useQuery(
     [QUERY_KEY_FOR_SINGLE_EXCHANGE_RATE],
     () =>
-      getData({
+      getSingleExchangeRate({
         auth: {
           companyId,
           token,

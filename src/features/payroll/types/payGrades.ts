@@ -4,6 +4,7 @@ export type TPayGrade = {
   label: string;
   categoryId: number;
   grossPay: string;
+  leaveLength?: number | null;
   companyId: number;
   createdAt: string;
   updatedAt: string;

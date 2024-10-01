@@ -21,11 +21,10 @@ export const FormColorInput: React.FC<{
       label={showLabel ? control?.label ?? "Color" : null}
       valuePropName={control?.name as string} //as per the value it pick from the associated state object
       getValueFromEvent={(color) => {
-        console.log(color?.toHexString(), "color");
         return color?.toHexString();
       }}
       rules={optional ? generalValidationRulesOp : generalValidationRules}
-    >   
+    >
       <ColorPicker
         showText={(color) => <span>Color {optional ? "(optional)" : ""} </span>}
       />

@@ -1,3 +1,5 @@
+import { IPaginationProps } from "types";
+
 export interface ITimeOffProps {
   id?: number;
   policyId: number;
@@ -11,6 +13,24 @@ export interface ITimeOffProps {
   employee? : {
     firstName: string;
     lastName: string;
+    designation: {
+      department: {
+        name: string;
+      }
+    }
   }
   status?: string;
+}
+
+export type IColumnsProps = {
+  handleDelete?: (id: number) => void;
+  extraColumns: boolean;
+  handleViewStages?: (id: number) => void;
+};
+
+export interface IRequestFilter {
+  pagination?: IPaginationProps;
+  status?: string;
+  policyId?: number;
+  date?: string | null;
 }

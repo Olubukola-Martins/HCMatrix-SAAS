@@ -64,6 +64,7 @@ export const appRoutes = {
   }),
   payrollSettings: `/settings/payroll`,
   payrollCostCentres: `/settings/payroll/cost-centres`,
+  payrollWallet: `/settings/payroll/wallet`,
   singleCostCentre: (id?: number) => ({
     format: `/settings/payroll/cost-centres/:id`,
     path: `/settings/payroll/cost-centres/${id}`,
@@ -195,6 +196,8 @@ export const appRoutes = {
   selfServicePositionChangeSetting: `/self-service/position-change-setting`,
   selfServicePromotion: `/self-service/promotion`,
   selfServicePromotionSetting: `/self-service/promotion-setting`,
+  selfServiceProfileEdit: `/self-service/profile-edit`,
+  selfServiceProfileEditSetting: `/self-service/profile-edit-setting`,
   selfServiceAssets: `/self-service/assets`,
   selfServiceAssetSetting: `/self-service/asset-setting`,
   selfServiceTravels: `/self-service/travels`,
@@ -209,6 +212,10 @@ export const appRoutes = {
   loanPaymentPlan: (id?: number) => ({
     format: `/self-service/loan/:id/loan-payment-plan`,
     path: `/self-service/loan/${id}/loan-payment-plan`,
+  }),
+  loanPaymentSchedule: (id?: number) => ({
+    format: `/self-service/loan/:id/loan-payment-schedule`,
+    path: `/self-service/loan/${id}/loan-payment-schedule`,
   }),
   vehicleBooking: `/self-service/vehicle-booking`,
   vehicleBookingSetting: `/self-service/vehicle-booking/setting`,
@@ -226,6 +233,7 @@ export const appRoutes = {
   conferenceRoomBookingSetting: `/self-service/conference-room-booking/setting`,
   leaveHome: `/self-service/leave`,
   leaveSettings: `/self-service/leave/settings`,
+  profileEditHome: `/self-service/profile-edit`,
   healthAccessHome: `/self-service/health-access`,
   healthAccessDetails: (id?: number) => ({
     format: `/self-service/health-access/:id`,
@@ -246,6 +254,10 @@ export const appRoutes = {
   }),
   hRLetters: `/self-service/hr-letters`,
   documents: `/self-service/documents`,
+  filesInFolder: (id?: number) => ({
+    format: `/self-service/documents/:id/files-in-folder`,
+    path: `/self-service/documents/${id}/files-in-folder`,
+  }),
   notifications: `/notifications`,
 
   // Performance route

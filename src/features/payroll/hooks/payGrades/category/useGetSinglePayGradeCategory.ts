@@ -14,7 +14,7 @@ const getData = async (props: {
   data: IDataProps;
   auth: ICurrentCompany;
 }): Promise<TPayGradeCategory> => {
-  const url = `${MICROSERVICE_ENDPOINTS.PAYROLL}/pay-grade/category/${props.data.id}`;
+  const url = `${MICROSERVICE_ENDPOINTS.UTILITY}/grade/category/${props.data.id}`;
 
   const config = {
     headers: {

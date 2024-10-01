@@ -18,7 +18,6 @@ const app = initializeApp(firebaseConfig);
 
 export const messaging = async (): Promise<Messaging | null> => {
   const browserSupports = await isSupported();
-  console.log("SUPP", browserSupports);
   if (browserSupports) {
     return getMessaging(app);
   }

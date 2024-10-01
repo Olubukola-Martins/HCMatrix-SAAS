@@ -17,7 +17,7 @@ import { AttendanceSettingsIntro } from "../../components/AttendanceSettingsIntr
 const WorkBreak = () => {
   const [openBreak, setOpenBreak] = useState(false);
   const [breakPolicyId, setBreakPolicyId] = useState<number>();
-  const { pagination, onChange } = usePagination({ pageSize: 5 });
+  const { pagination, onChange } = usePagination({ pageSize: 10 });
   const { data, isLoading } = useGetBreakPolicy({ pagination });
   const { removeData } = useDeleteTimeAndAttendance({
     EndPointUrl: "settings/break-policies",
@@ -104,7 +104,7 @@ const WorkBreak = () => {
         description=" Schedule breaks by setting fixed times or durations here. If left
         empty, members can clock into breaks freely."
       />
-      <div className="Container">
+      <div className="Container mt-5">
         <div className="flex justify-end">
           <AppButton
             label="Add break"
@@ -122,6 +122,7 @@ const WorkBreak = () => {
           loading={isLoading}
           pagination={{ ...pagination, total: data?.total }}
           onChange={onChange}
+          scroll={{ x: 500 }}
         />
       </div>
     </>

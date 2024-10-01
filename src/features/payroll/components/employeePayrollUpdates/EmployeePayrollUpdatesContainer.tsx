@@ -451,7 +451,6 @@ export const EmployeePayrollUpdatesContainer: React.FC<IProps> = ({
 
       <div className="flex flex-col gap-4">
         {/* btns */}
-
         <div className="flex justify-between">
           <div className="flex gap-6">
             <div className="flex gap-2">
@@ -526,7 +525,6 @@ export const EmployeePayrollUpdatesContainer: React.FC<IProps> = ({
             </div>
           )}
         </div>
-
         {/* table */}
         <TableWithFocusType
           rowSelection={

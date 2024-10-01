@@ -10,6 +10,8 @@ type TCreateProps = {
   includeHolidays: boolean;
   carryover: boolean;
   maxLengthCarryover?: number;
+  carryOverDay?: number;
+  carryOverMonth?: number;
 };
 
 const createData = async (props: {

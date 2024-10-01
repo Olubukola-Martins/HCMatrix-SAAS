@@ -32,6 +32,10 @@ export const settingNavItems: TSettNavItem[] = [
       { name: "Designations", link: appRoutes.designationSettings },
       { name: "Branches", link: appRoutes.locationSettings },
       { name: "Groups", link: appRoutes.groupSettings },
+      {
+        name: "Grade & Categories",
+        link: appRoutes.payGradeAndCategorySettings,
+      },
     ],
     category: "basic",
   },
@@ -63,10 +67,7 @@ export const settingNavItems: TSettNavItem[] = [
     items: [
       { name: "Cost Centres", link: appRoutes.payrollCostCentres },
       { name: "Exchange Rates", link: appRoutes.payrollExchangeRates },
-      {
-        name: "Pay Grade & Categories",
-        link: appRoutes.payGradeAndCategorySettings,
-      },
+
       { name: "Settings", link: appRoutes.payrollSettings },
     ],
     category: "payroll",

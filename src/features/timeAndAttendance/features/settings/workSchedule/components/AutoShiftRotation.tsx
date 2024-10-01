@@ -23,7 +23,6 @@ export const AutoShiftRotation = () => {
     },
   });
 
-
   useEffect(() => {
     form.setFieldsValue({
       enableRotation: setting?.enableRotation,
@@ -35,8 +34,6 @@ export const AutoShiftRotation = () => {
       rotationFrequencyUnit: setting?.rotationFrequencyUnit ?? "days",
     });
   }, [setting, form]);
-
-  console.log(setting);
 
   const { handleSubmit, isLoading: isSaving } = useSaveShiftRotationSetting();
 
@@ -109,23 +106,27 @@ export const AutoShiftRotation = () => {
                   {fields.map((field, index) => (
                     <div key={field.key} className="flex gap-5">
                       <div className="flex gap-5">
-                        <FormShiftCategoryInput
-                          Form={Form}
-                          control={{
-                            name: [field.name, "shiftFromId"],
-                            label: "",
-                          }}
-                        />
+                        <div className="w-[10rem]">
+                          <FormShiftCategoryInput
+                            Form={Form}
+                            control={{
+                              name: [field.name, "shiftFromId"],
+                              label: "",
+                            }}
+                          />
+                        </div>
                         <i className="ri-arrow-right-line text-xl pt-1"></i>
-                        <FormShiftCategoryInput
-                          Form={Form}
-                          control={{
-                            name: [field.name, "shiftToId"],
-                            label: "",
-                          }}
-                          {...field}
-                          noStyle
-                        />
+                        <div className="w-[10rem]">
+                          <FormShiftCategoryInput
+                            Form={Form}
+                            control={{
+                              name: [field.name, "shiftToId"],
+                              label: "",
+                            }}
+                            {...field}
+                            noStyle
+                          />
+                        </div>
                       </div>
                       <i
                         className="ri-delete-bin-line text-red-500 text-[22px] cursor-pointer hover:text-slate-500"
