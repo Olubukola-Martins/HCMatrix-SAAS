@@ -41,7 +41,9 @@ function App() {
     return (
       <div className="flex items-center flex-col gap-6">
         <div className="py-12">{<PageNotFoundIcon />}</div>
-        <h1 className="text-xl ">{"Site under maintenance!"}</h1>
+        <h1 className="text-2xl text-black dark:text-white">
+          {"Site under maintenance!"}
+        </h1>
       </div>
     );
   }
