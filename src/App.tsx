@@ -37,7 +37,7 @@ function App() {
 
   // check online status
   const { isOnline } = useNetworkState();
-  if (process.env.REACT_APP_MAINTAINANCE === "true") {
+  if (process.env.REACT_APP_MAINTENANCE === "true") {
     return (
       <ErrorWrapper
         isError={process.env.REACT_APP_MAINTENANCE === "true"}
