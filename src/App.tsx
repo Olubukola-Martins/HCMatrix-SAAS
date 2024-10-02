@@ -42,9 +42,9 @@ function App() {
       <ErrorWrapper
         isError={process.env.REACT_APP_MAINTENANCE === "true"}
         errImage={<PageNotFoundIcon />}
-        message="Site under maitainance!"
+        message="Site under maintenance!"
       >
-        Site under maitainance!
+        Site under maintenance!
       </ErrorWrapper>
     );
   }
