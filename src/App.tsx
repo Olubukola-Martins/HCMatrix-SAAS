@@ -37,6 +37,17 @@ function App() {
 
   // check online status
   const { isOnline } = useNetworkState();
+  if (process.env.REACT_APP_MAINTAINANCE === "true") {
+    return (
+      <ErrorWrapper
+        isError={process.env.REACT_APP_MAINTENANCE === "true"}
+        errImage={<PageNotFoundIcon />}
+        message="Site under maitainance!"
+      >
+        Site under maitainance!
+      </ErrorWrapper>
+    );
+  }
   return (
     <ErrorBoundary
       message="Please contact administrator!"
