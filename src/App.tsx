@@ -39,13 +39,10 @@ function App() {
   const { isOnline } = useNetworkState();
   if (process.env.REACT_APP_MAINTENANCE === "true") {
     return (
-      <ErrorWrapper
-        isError={process.env.REACT_APP_MAINTENANCE === "true"}
-        errImage={<PageNotFoundIcon />}
-        message="Site under maintenance!"
-      >
-        Site under maintenance!
-      </ErrorWrapper>
+      <div className="flex items-center flex-col gap-6">
+        <div className="py-12">{<PageNotFoundIcon />}</div>
+        <h1 className="text-xl ">{"Site under maintenance!"}</h1>
+      </div>
     );
   }
   return (
