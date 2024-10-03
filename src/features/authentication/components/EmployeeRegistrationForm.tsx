@@ -145,6 +145,7 @@ export const EmployeeRegistrationForm = ({
             style={{ padding: "6px 5px" }}
           />
         </Form.Item>
+        <Recaptcha />
         <Form.Item name="recaptcha" rules={textInputValidationRules}>
           <Input
             placeholder="Enter recaptcha"
@@ -152,7 +153,6 @@ export const EmployeeRegistrationForm = ({
             style={{ padding: "6px 5px" }}
           />
         </Form.Item>
-        <Recaptcha />
 
         <button className="authBtn w-full mt-4 mb-3">
           {isLoading ? <BeatLoader color="#fff" /> : "Sign Up"}

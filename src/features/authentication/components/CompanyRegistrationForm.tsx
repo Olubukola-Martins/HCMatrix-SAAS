@@ -226,6 +226,7 @@ const CompanyRegistrationForm = () => {
               autoComplete="new-password"
             />
           </Form.Item>
+          <Recaptcha />
           <Form.Item name="recaptcha" rules={textInputValidationRules}>
             <Input
               placeholder="Enter recaptcha"
@@ -233,7 +234,6 @@ const CompanyRegistrationForm = () => {
               style={{ padding: "6px 5px" }}
             />
           </Form.Item>
-          <Recaptcha />
           <Form.Item>
             <button
               className="authBtn w-full mt-4 mb-3"
