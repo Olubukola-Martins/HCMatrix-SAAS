@@ -4,5 +4,5 @@ export type TBillingVat = {
   isActive: boolean;
   createdAt: string;
   updatedAt: string;
-  deletedAt?: any;
+  deletedAt?: string | null;
 };

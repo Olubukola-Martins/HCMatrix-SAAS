@@ -11,8 +11,11 @@ import InformOwnerOfInActiveSubscription from "features/billing/pages/InformOwne
 import PurchaseExtraLicense from "features/billing/pages/PurchaseExtraLicense";
 import PurchaseModules from "features/billing/pages/PurchaseModules";
 import UpgradePlanPage from "features/billing/pages/UpgradePlanPage";
+import PurchaseSubscriptionByPlanPage from "features/billing/pages/PurchaseSubscriptionByPlanPage";
 
-export const billingRoutes = (props: Omit<TAppPageDataFnProps, "isOwner" & { isOwner: boolean }>): TRouteData[] => {
+export const billingRoutes = (
+  props: Omit<TAppPageDataFnProps, "isOwner" & { isOwner: boolean }>
+): TRouteData[] => {
   const { isOwner } = props;
   return [
     {
@@ -38,9 +41,30 @@ export const billingRoutes = (props: Omit<TAppPageDataFnProps, "isOwner" & { isO
       isSearchable: false,
       hidden: isOwner === false,
     },
-    { element: <PurchaseExtraLicense />, path: appRoutes.purchaseExtraLiense, isSearchable: false, hidden: isOwner === false },
-    { element: <PurchaseModules />, path: appRoutes.purchaseModules, isSearchable: false, hidden: isOwner === false },
-    { element: <UpgradePlanPage />, path: appRoutes.upgradePlan, isSearchable: false, hidden: isOwner === false },
+    {
+      element: <PurchaseExtraLicense />,
+      path: appRoutes.purchaseExtraLiense,
+      isSearchable: false,
+      hidden: isOwner === false,
+    },
+    {
+      element: <PurchaseModules />,
+      path: appRoutes.purchaseModules,
+      isSearchable: false,
+      hidden: isOwner === false,
+    },
+    {
+      element: <UpgradePlanPage />,
+      path: appRoutes.upgradePlan,
+      isSearchable: false,
+      hidden: isOwner === false,
+    },
+    {
+      element: <PurchaseSubscriptionByPlanPage />,
+      path: appRoutes.purchaseSubscriptionByPlan().format,
+      isSearchable: false,
+      hidden: isOwner === false,
+    },
     {
       element: <SubsciptionManagement />,
       path: appRoutes.billingSubscription,

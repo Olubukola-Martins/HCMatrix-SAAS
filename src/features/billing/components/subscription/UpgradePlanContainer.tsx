@@ -1,14 +1,16 @@
 import React, { useLayoutEffect, useState } from "react";
-import { Form, Segmented, Steps } from "antd";
-import ModuleContainer from "./modules/ModuleContainer";
+import { Form, Steps } from "antd";
 import AddOnContainer from "./addOns/AddOnContainer";
-import { AppButton } from "components/button/AppButton";
 import { TCompanySubscription } from "features/billing/types/company/companySubscription";
-import { TCreateCompanySubscriptionProps, useCreateCompanySubscription } from "features/billing/hooks/company/useCreateCompanySubscription";
+import {
+  TCreateCompanySubscriptionProps,
+  useCreateCompanySubscription,
+} from "features/billing/hooks/company/useCreateCompanySubscription";
 import { useQueryClient } from "react-query";
-import { TSubscriptionPriceType } from "features/billing/types/priceType";
-import { TBillingCycle } from "features/billing/types/billingCycle";
-import { ECreateCompanySubscriptionOps, useCreateCompanySubscriptionStateAndDispatch } from "features/billing/stateManagers";
+import {
+  ECreateCompanySubscriptionOps,
+  useCreateCompanySubscriptionStateAndDispatch,
+} from "features/billing/stateManagers";
 import PaymentsContainer from "./payment/PaymentsContainer";
 import { useGetAllSubscriptions } from "features/billing/hooks/useGetAllSubscriptions";
 import { openNotification } from "utils/notifications";
@@ -26,23 +28,34 @@ const UpgradePlanContainer: React.FC<{
   type?: TSubscriptionType;
 }> = ({ subscription, type = "module" }) => {
   const [form] = Form.useForm<TCreateCompanySubscriptionProps>();
-  const { data: billingDetails, isFetching: isFetchingDetails } = useGetSubsciptionBillingDetails();
-  const { data: subscriptions, isFetching: isFetchingSubscriptions } = useGetAllSubscriptions({
-    type,
-  });
+  const { data: billingDetails, isFetching: isFetchingDetails } =
+    useGetSubsciptionBillingDetails();
+  const { data: subscriptions, isFetching: isFetchingSubscriptions } =
+    useGetAllSubscriptions({
+      type,
+    });
   const {
-    state: { billingCycle: selectedBillingCycle, priceType: selectedPriceType, autoRenew: autoRenewal },
+    state: {
+      billingCycle: selectedBillingCycle,
+      priceType: selectedPriceType,
+      autoRenew: autoRenewal,
+    },
     dispatch,
   } = useCreateCompanySubscriptionStateAndDispatch();
   useLayoutEffect(() => {
     const ASSUMED_EMPLOYEE_SUBSCRIPTION_ID = 1;
-    const EMPLOYEMENT_SUBSCRIPTION_ID = subscriptions?.data.find((item) => item.label === "employee-management")?.id ?? ASSUMED_EMPLOYEE_SUBSCRIPTION_ID;
+    const EMPLOYEMENT_SUBSCRIPTION_ID =
+      subscriptions?.data.find((item) => item.label === "employee-management")
+        ?.id ?? ASSUMED_EMPLOYEE_SUBSCRIPTION_ID;
     if (subscription) {
       const address = billingDetails?.address;
 
       form.setFieldsValue({
-        priceType: subscription?.priceType,
-        purchased: subscription?.purchased === undefined || subscription?.purchased?.length > 0 ? subscription?.purchased?.map((item) => item.subscriptionId) : [EMPLOYEMENT_SUBSCRIPTION_ID],
+        priceType: subscription?.currency,
+        purchased:
+          subscription?.type === "module"
+            ? subscription?.modules?.map((item) => item.id)
+            : subscription?.plan.modules?.map((item) => item.id),
         billingCycle: subscription?.billingCycle,
         licensedEmployeeCount: subscription?.licensedEmployeeCount,
         unlicensedEmployeeCount: subscription?.unlicensedEmployeeCount,
@@ -57,23 +70,26 @@ const UpgradePlanContainer: React.FC<{
               timezone: address?.timezone ?? undefined,
             }
           : undefined,
-        billingName: billingDetails?.billingName,
-        phoneNumber: parsePhoneNumber(billingDetails?.phoneNumber),
+        billingName: billingDetails?.name,
+        phoneNumber: parsePhoneNumber(billingDetails?.phone),
       });
       dispatch({
         type: ECreateCompanySubscriptionOps.update,
         payload: {
           licensedEmployeeCount: subscription?.licensedEmployeeCount,
           unlicensedEmployeeCount: subscription?.unlicensedEmployeeCount,
-          autoRenew: subscription?.autoRenew,
-          purchased: subscription?.purchased === undefined || subscription?.purchased?.length > 0 ? subscription?.purchased?.map((item) => item.subscriptionId) : [EMPLOYEMENT_SUBSCRIPTION_ID],
-          priceType: subscription?.priceType,
+          autoRenew: subscription?.autoRenewal,
+          purchased:
+            subscription?.type === "module"
+              ? subscription?.modules?.map((item) => item.id)
+              : subscription?.plan.modules?.map((item) => item.id),
+          priceType: subscription?.currency,
           billingCycle: subscription?.billingCycle,
         },
       });
     } else {
       form.setFieldsValue({
-        priceType: "usd",
+        priceType: "USD",
         purchased: [EMPLOYEMENT_SUBSCRIPTION_ID],
         billingCycle: "yearly",
       });
@@ -102,7 +118,8 @@ const UpgradePlanContainer: React.FC<{
             state: "error",
             title: "Error Occurred",
             duration: 2,
-            description: err?.response.data.message ?? err?.response.data.error.message,
+            description:
+              err?.response.data.message ?? err?.response.data.error.message,
           });
         },
         onSuccess: (res) => {
@@ -130,17 +147,30 @@ const UpgradePlanContainer: React.FC<{
   const navigate = useNavigate();
   return (
     <>
-      <SubscriptionPaymentModal open={showD} handleClose={() => onClose()} url={url} onPaymentCompletion={() => navigate(appRoutes.purchaseUserLicense)} />
+      <SubscriptionPaymentModal
+        open={showD}
+        handleClose={() => onClose()}
+        url={url}
+        onPaymentCompletion={() => navigate(appRoutes.purchaseUserLicense)}
+      />
       <div className="w-full flex flex-col  gap-12 ">
         <div className="self-center">
           <Steps progressDot current={activeStep}>
             {STEPS.map((item) => (
-              <Steps.Step key={item} title={<span className="text-sm">{item}</span>} />
+              <Steps.Step
+                key={item}
+                title={<span className="text-sm">{item}</span>}
+              />
             ))}
           </Steps>
         </div>
         <>
-          <Form requiredMark={false} form={form} labelCol={{ span: 24 }} onFinish={handleSubmit}>
+          <Form
+            requiredMark={false}
+            form={form}
+            labelCol={{ span: 24 }}
+            onFinish={handleSubmit}
+          >
             <div className={activeStep === 0 ? "block" : "hidden"}>
               <AddOnContainer
                 subscriptions={subscriptions?.data}
@@ -163,9 +193,18 @@ const UpgradePlanContainer: React.FC<{
               />
             </div>
             <div className={activeStep === 1 ? "block" : "hidden"}>
-              <PaymentsContainer Form={Form} onProceed={() => handleNext()} subscriptions={subscriptions?.data} isLoading={isFetchingSubscriptions || isFetchingDetails} form={form} isPayingForSubscription={isPaying} />
+              <PaymentsContainer
+                Form={Form}
+                onProceed={() => handleNext()}
+                subscriptions={subscriptions?.data}
+                isLoading={isFetchingSubscriptions || isFetchingDetails}
+                form={form}
+                isPayingForSubscription={isPaying}
+              />
             </div>
-            {activeStep === 2 && <Navigate to={appRoutes.purchaseUserLicense} replace={true} />}
+            {activeStep === 2 && (
+              <Navigate to={appRoutes.purchaseUserLicense} replace={true} />
+            )}
           </Form>
         </>
       </div>

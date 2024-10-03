@@ -1,7 +1,6 @@
 import { AppButton } from "components/button/AppButton";
 import { SummaryCard } from "components/cards/SummaryCard";
 import { DEFAULT_DATE_FORMAT } from "constants/dateFormats";
-import { PRICE_TYPE_CURRENCY } from "features/billing/constants";
 import { useGetCompanyActiveSubscription } from "features/billing/hooks/company/useGetCompanyActiveSubscription";
 import dayjs from "dayjs";
 import { useState } from "react";
@@ -22,11 +21,13 @@ const BillingSubscriptionBalance = () => {
         open={action === "cancel-subscription"}
         handleClose={() => setAction(undefined)}
       />
-      {data ? <BillingInvoice
-        open={action === "download-invoice"}
-        handleClose={() => setAction(undefined)}
-        subscription={data}
-      /> : null}
+      {data ? (
+        <BillingInvoice
+          open={action === "download-invoice"}
+          handleClose={() => setAction(undefined)}
+          billingHistoryId={data.billingHistory?.[0].id} //TODO: Confirm this is valid from backend
+        />
+      ) : null}
       <div
         className={`${boxStyle} text-sm bg-card flex flex-col gap-4 items-stretch`}
       >
@@ -43,16 +44,16 @@ const BillingSubscriptionBalance = () => {
                   )
                 : 0,
             },
-            {
-              name: "Total Balance",
-              value: data
-                ? `${
-                    PRICE_TYPE_CURRENCY[data?.priceType]
-                  } ${formatNumberWithCommas(
-                    data?.transaction?.totalAmountPaid
-                  )}`
-                : "", //TODO: Refactor to a function to avoid repetion
-            },
+            // {
+            //   name: "Total Balance",
+            //   value: data
+            //     ? `${
+            //         PRICE_TYPE_CURRENCY[data?.priceType]
+            //       } ${formatNumberWithCommas(
+            //         data?.transaction?.totalAmountPaid
+            //       )}`
+            //     : "", //TODO: Refactor to a function to avoid repetion
+            // },
           ]}
           details={[
             {
@@ -63,20 +64,20 @@ const BillingSubscriptionBalance = () => {
               name: "Expiry Date",
               value: dayjs(data?.endDate).format(DEFAULT_DATE_FORMAT),
             },
-            {
-              name: "Total Amount for License Purchase",
-              value: data
-                ? `${
-                    PRICE_TYPE_CURRENCY[data?.priceType]
-                  } ${formatNumberWithCommas(
-                    data?.transaction?.totalAmountPaid
-                  )}`
-                : "",
-            },
+            // {
+            //   name: "Total Amount for License Purchase",
+            //   value: data
+            //     ? `${
+            //         PRICE_TYPE_CURRENCY?.[data?.priceType]
+            //       } ${formatNumberWithCommas(
+            //         data?.transaction?.totalAmountPaid
+            //       )}`
+            //     : "",
+            // },
           ]}
         />
 
-        {!!data?.autoRenew && (
+        {!!data?.autoRenewal && (
           <AppButton
             label="Cancel Subscription"
             handleClick={() => setAction("cancel-subscription")}

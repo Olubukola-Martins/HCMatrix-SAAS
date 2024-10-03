@@ -28,3 +28,5 @@ export interface IModalProps extends IDrawerProps {}
 
 // container props
 export type TListDataTypeView = "list" | "grid";
+
+export type ApiResponse<T> = { message: string; data?: T };

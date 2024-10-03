@@ -76,23 +76,36 @@ export const appRoutes = {
   setupGradePayrollScheme: `/settings/payroll/schemes/grade/set-up/`,
   setupDirectSalaryPayrollScheme: `/settings/payroll/schemes/direct-salary/set-up/`,
   setupProjectPayrollScheme: `/settings/payroll/schemes/project/set-up/`,
-  setupSingleProjectPayrollSchemeWithoutExistingScheme: (props?: { projectId?: number }) => {
+  setupSingleProjectPayrollSchemeWithoutExistingScheme: (props?: {
+    projectId?: number;
+  }) => {
     return {
       format: `/settings/payroll/schemes/project/set-up/:projectId/scheme`,
       path: `/settings/payroll/schemes/project/set-up/${props?.projectId}/scheme`,
     };
   },
-  setupSingleProjectPayrollScheme: (props?: { projectId?: number; schemeId?: number }) => {
+  setupSingleProjectPayrollScheme: (props?: {
+    projectId?: number;
+    schemeId?: number;
+  }) => {
     return {
       format: `/settings/payroll/schemes/project/set-up/:projectId/scheme/:schemeId`,
-      path: `/settings/payroll/schemes/project/set-up/${props?.projectId}/scheme/${props?.schemeId ?? ""}`,
+      path: `/settings/payroll/schemes/project/set-up/${
+        props?.projectId
+      }/scheme/${props?.schemeId ?? ""}`,
     };
   },
   setupWagesPayrollScheme: `/settings/payroll/schemes/wages/set-up/`,
   setupDailyWagesPayrollScheme: `/settings/payroll/schemes/wages/set-up/daily`,
 
   setupMonthlyWagesPayrollScheme: `/settings/payroll/schemes/wages/set-up/monthly`,
-  setupWagesPayrollSchemeById: ({ frequency, id }: { frequency: "monthly" | "daily"; id?: number }) => ({
+  setupWagesPayrollSchemeById: ({
+    frequency,
+    id,
+  }: {
+    frequency: "monthly" | "daily";
+    id?: number;
+  }) => ({
     format: `/settings/payroll/schemes/wages/set-up/${frequency}/:id`,
     path: `/settings/payroll/schemes/wages/set-up/${frequency}/${id}`,
   }),
@@ -135,6 +148,11 @@ export const appRoutes = {
   singleBillingSummary: (id?: number) => ({
     format: `/billings/summary/:id`,
     path: `/billings/summary/${id}`,
+  }),
+
+  purchaseSubscriptionByPlan: (id?: number) => ({
+    format: `/billings/purchase/subscription/plan/:id`,
+    path: `/billings/purchase/subscription/plan/${id}`,
   }),
 
   billingStorageManagement: `/billings/storage-management`,
@@ -329,4 +347,10 @@ export const appRoutes = {
 };
 
 // Routes that require API redirect and logout if authenticated, so the user is not automatically redirected to the login page, as that is the typical behaviour of such routes
-export const ROUTES_THAT_REQUIRE_API_REDIRECT_AND_LOGOUT_IF_AUTHENTICATED = [appRoutes.microsoftCallback, appRoutes.verify, appRoutes.verifyEmployee, appRoutes.resetPassword, appRoutes.invitedEmployee];
+export const ROUTES_THAT_REQUIRE_API_REDIRECT_AND_LOGOUT_IF_AUTHENTICATED = [
+  appRoutes.microsoftCallback,
+  appRoutes.verify,
+  appRoutes.verifyEmployee,
+  appRoutes.resetPassword,
+  appRoutes.invitedEmployee,
+];

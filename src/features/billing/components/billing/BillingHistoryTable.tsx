@@ -1,14 +1,11 @@
 import React, { useState } from "react";
-import { Table, Menu, Dropdown, Button } from "antd";
+import { Table, Dropdown, Button } from "antd";
 import { ColumnsType } from "antd/es/table";
 import { MoreOutlined } from "@ant-design/icons";
 import CardWrapper from "../ui/CardWrapper";
 import { mockDataBillingHistory } from "features/billing/utils/data";
-import { useGetAllSubscriptionTransactions } from "features/billing/hooks/company/transaction/useGetAllSubscriptionTransactions";
-import { usePagination } from "hooks/usePagination";
 import { appRoutes } from "config/router/paths";
 import { useNavigate } from "react-router-dom";
-import { useGetCompanyActiveSubscription } from "features/billing/hooks/company/useGetCompanyActiveSubscription";
 import BillingInvoice from "./BillingInvoice";
 
 export interface BillingData {
@@ -26,34 +23,21 @@ interface BillingsTableProps {
   dataHistory?: BillingData[];
 }
 
-const BillingsHistoryTable: React.FC<BillingsTableProps> = ({ dataHistory = mockDataBillingHistory }) => {
-  const [selectedRowKeys, setSelectedRowKeys] = useState<React.Key[]>([]);
+const BillingsHistoryTable: React.FC<BillingsTableProps> = ({
+  dataHistory = mockDataBillingHistory,
+}) => {
   const navigate = useNavigate();
-  const { isFetching, data } = useGetCompanyActiveSubscription();
   const [action, setAction] = useState<"download-invoice">();
-
-  // const { pagination, onChange } = usePagination();
-
-  // const { data, isFetching } = useGetAllSubscriptionTransactions({
-  //   props: {
-  //     pagination,
-  //   },
-  // });
-
-  const handleMenuClick = (e: any) => {
-    console.log("Click", e);
+  const [history, setHistory] = useState<BillingData>();
+  const handleAction = (action: "download-invoice", history: BillingData) => {
+    setAction(action);
+    setHistory(history);
   };
 
-  const menu = (item:any) => (
-    <Menu onClick={handleMenuClick}>
-      <Menu.Item key="view-details" onClick={() => navigate(appRoutes.singleBillingSummary(item.id).path)}>
-        View Details
-      </Menu.Item>
-      <Menu.Item key="download-file" onClick={() => setAction("download-invoice")}>
-        Download File
-      </Menu.Item>
-    </Menu>
-  );
+  const handleClose = () => {
+    setAction(undefined);
+    setHistory(undefined);
+  };
 
   const columns: ColumnsType<BillingData> = [
     {
@@ -90,31 +74,44 @@ const BillingsHistoryTable: React.FC<BillingsTableProps> = ({ dataHistory = mock
       title: "Action",
       key: "action",
       render: (_, item) => (
-        <Dropdown overlay={menu(item)} trigger={["click"]}>
+        <Dropdown
+          menu={{
+            items: [
+              {
+                key: 0,
+                label: "View Details",
+                onClick: () =>
+                  navigate(appRoutes.singleBillingSummary(item.id).path),
+              },
+              {
+                key: 1,
+                label: "Download Invoice",
+                onClick: () => handleAction("download-invoice", item),
+              },
+            ],
+          }}
+          trigger={["click"]}
+        >
           <Button icon={<MoreOutlined />} type="text" />
         </Dropdown>
       ),
     },
   ];
 
-  const rowSelection = {
-    selectedRowKeys,
-    onChange: (selectedRowKeys: React.Key[]) => {
-      setSelectedRowKeys(selectedRowKeys);
-    },
-  };
-
   return (
     <>
-      {data ? <BillingInvoice open={action === "download-invoice"} handleClose={() => setAction(undefined)} subscription={data} /> : null}
+      {history ? (
+        <BillingInvoice
+          open={action === "download-invoice"}
+          handleClose={handleClose}
+          billingHistoryId={history.id}
+        />
+      ) : null}
       <CardWrapper className="p-6">
         <Table
-          rowSelection={rowSelection}
           columns={columns}
           dataSource={dataHistory}
           pagination={{ pageSize: 5 }}
-          // pagination={{ ...pagination, total: data?.total }}
-          // onChange={onChange}
           scroll={{ x: 700 }}
         />
         ;

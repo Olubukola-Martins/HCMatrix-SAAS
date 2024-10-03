@@ -7,7 +7,7 @@ type StateProps = Omit<Partial<TCreateCompanySubscriptionProps>, "addOns"> & {
 
 const initState: StateProps = {
   billingCycle: "yearly",
-  priceType: "usd",
+  priceType: "USD",
   autoRenew: true,
 };
 
@@ -72,7 +72,7 @@ export const CreateCompanySubscriptionContextProvider: React.FC<IProps> = ({
     // TODO: Implement geolocation to be able to determine default pricing type, based on product owner description
     return {
       billingCycle: "yearly",
-      priceType: "usd",
+      priceType: "USD",
       autoRenew: true,
     };
   });

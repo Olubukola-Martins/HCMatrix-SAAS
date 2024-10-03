@@ -28,56 +28,56 @@ const BillingInfo = () => {
     console.log(data, ">>");
     if (!data) return;
     const address = data.address;
-    form.setFieldsValue({
-      address: {
-        countryId: address?.countryId,
-        latitude: address?.latitude,
-        longitude: address?.longitude,
-        lgaId: address?.lgaId ?? undefined,
-        stateId: address?.stateId,
-        streetAddress: address?.streetAddress,
-        timezone: address?.timezone ?? undefined,
-      },
-      billingName: data.billingName,
-      phoneNumber: parsePhoneNumber(data?.phoneNumber),
-    });
+    // form.setFieldsValue({
+    //   address: {
+    //     countryId: address?.countryId,
+    //     latitude: address?.latitude,
+    //     longitude: address?.longitude,
+    //     lgaId: address?.lgaId ?? undefined,
+    //     stateId: address?.stateId,
+    //     streetAddress: address?.streetAddress,
+    //     timezone: address?.timezone ?? undefined,
+    //   },
+    //   billingName: data.billingName,
+    //   phoneNumber: parsePhoneNumber(data?.phoneNumber),
+    // });
   }, [data, form]);
-  const handleSubmit = (data: FormProps) => {
-    mutate(
-      {
-        ...data,
-        phoneNumber: formatPhoneNumber(data?.phoneNumber),
-      },
-      {
-        onError: (err: any) => {
-          openNotification({
-            state: "error",
-            title: "Error Occurred",
-            description:
-              err?.response.data.message ?? err?.response.data.error.message,
-          });
-        },
-        onSuccess: (res: any) => {
-          openNotification({
-            state: "success",
+  // const handleSubmit = (data: FormProps) => {
+  //   mutate(
+  //     {
+  //       ...data,
+  //       phoneNumber: formatPhoneNumber(data?.phoneNumber),
+  //     },
+  //     {
+  //       onError: (err: any) => {
+  //         openNotification({
+  //           state: "error",
+  //           title: "Error Occurred",
+  //           description:
+  //             err?.response.data.message ?? err?.response.data.error.message,
+  //         });
+  //       },
+  //       onSuccess: (res: any) => {
+  //         openNotification({
+  //           state: "success",
 
-            title: "Success",
-            description: res.data.message,
-          });
+  //           title: "Success",
+  //           description: res.data.message,
+  //         });
 
-          queryClient.invalidateQueries({
-            queryKey: [QUERY_KEY_FOR_SUBSCRIPTION_BILLING_DETAILS],
-          });
-        },
-      }
-    );
-  };
+  //         queryClient.invalidateQueries({
+  //           queryKey: [QUERY_KEY_FOR_SUBSCRIPTION_BILLING_DETAILS],
+  //         });
+  //       },
+  //     }
+  //   );
+  // };
 
   return (
     <Skeleton loading={isFetchingDetails} active paragraph={{ rows: 10 }}>
       <Form
         form={form}
-        onFinish={handleSubmit}
+        // onFinish={handleSubmit}
         requiredMark={false}
         labelCol={{ span: 24 }}
         className="space-y-4"

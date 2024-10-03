@@ -37,15 +37,15 @@ const BillingInfo = () => {
         streetAddress: address?.streetAddress,
         timezone: address?.timezone ?? undefined,
       },
-      billingName: data.billingName,
-      phoneNumber: parsePhoneNumber(data?.phoneNumber),
+      name: data.name,
+      phoneNumber: parsePhoneNumber(data?.phone),
     });
   }, [data, form]);
   const handleSubmit = (data: FormProps) => {
     mutate(
       {
         ...data,
-        phoneNumber: formatPhoneNumber(data?.phoneNumber),
+        phone: formatPhoneNumber(data?.phoneNumber),
       },
       {
         onError: (err: any) => {

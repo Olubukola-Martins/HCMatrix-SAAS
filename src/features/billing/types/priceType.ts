@@ -1,5 +1,4 @@
-export type TSubscriptionPriceType = "ngn" | "usd";
-
+export type TSubscriptionPriceType = "NGN" | "USD";
 
 export interface ICurrencyFormatterProp {
   amount: number;

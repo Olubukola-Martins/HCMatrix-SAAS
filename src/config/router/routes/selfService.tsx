@@ -51,7 +51,6 @@ import ProfileEditRequests from "features/self-service/features/profile-edit/pag
 import ProfileEditRequestsSettingPage from "features/self-service/features/profile-edit/pages/ProfileEditRequestsSettingPage";
 import LoanRePaymentSchedule from "features/self-service/features/loan/pages/LoanRePaymentSchedule";
 
-
 // TO DO: This lazy loading might not be needed consider rethinking this, so just temporary
 // const Requisition = lazy(
 //   () => import("features/self-service/features/requisitions/pages/Requisition")
@@ -348,7 +347,7 @@ export const selfServiceRoutes = (props: TAppPageDataFnProps): TRouteData[] => {
         requiredPermissions: ["manage-requsition-settings"],
         activeSubscription,
         requiredSubscriptionState: {
-          label: "hr-admin",
+          label: "employee-management",
           resources: [],
         },
       }),
@@ -367,7 +366,7 @@ export const selfServiceRoutes = (props: TAppPageDataFnProps): TRouteData[] => {
           requiredPermissions: [],
           activeSubscription,
           requiredSubscriptionState: {
-            label: "hr-admin",
+            label: "employee-management",
             resources: [],
           },
         }),
@@ -705,7 +704,7 @@ export const selfServiceRoutes = (props: TAppPageDataFnProps): TRouteData[] => {
           requiredPermissions: [],
           activeSubscription,
           requiredSubscriptionState: {
-            label: "hr-admin",
+            label: "employee-management",
             resources: [],
           },
         }),
@@ -755,7 +754,7 @@ export const selfServiceRoutes = (props: TAppPageDataFnProps): TRouteData[] => {
         requiredPermissions: ["manage-employee-onboarding"],
         activeSubscription,
         requiredSubscriptionState: {
-          label: "hr-admin",
+          label: "employee-management",
           resources: [],
         },
       }),

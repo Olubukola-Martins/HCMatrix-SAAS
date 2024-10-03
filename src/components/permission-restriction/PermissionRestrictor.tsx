@@ -23,40 +23,42 @@ export const canUserAccessComponent = ({
   activeSubscription?: TCompanySubscription;
   requiredSubscriptionState?: TRequiredSubscriptionState;
 }) => {
-  let canAccess = false;
+  let canAccess: boolean = false;
   const activeSubscriptionWasNotDefined = activeSubscription === undefined;
   // check subscription first
-  let canAccessViaSubscription = activeSubscriptionWasNotDefined
-    ? true
-    : !!activeSubscription?.purchased.some((item) => {
-        if (item.subscription.type === "module") {
-          const labelWasNotDefined =
-            requiredSubscriptionState?.label === undefined;
-          return labelWasNotDefined
-            ? true
-            : item.subscription.label === requiredSubscriptionState?.label;
-        }
-        if (item.subscription.type === "plan") {
-          const resourcesWereNotDefined =
-            item.subscription.resources === undefined ||
-            item.subscription.resources?.length === 0;
-          return resourcesWereNotDefined
-            ? true
-            : item.subscription.resources?.some((resource) =>
-                requiredSubscriptionState?.resources?.includes(
-                  resource.resource.label
-                )
-              );
-        }
-        return false;
+  let canAccessViaSubscription = (): boolean => {
+    if (activeSubscriptionWasNotDefined) {
+      return false;
+    }
+    if (activeSubscription.type === "plan") {
+      canAccess = activeSubscription.plan.modules.some((item) => {
+        const labelWasNotDefined =
+          requiredSubscriptionState?.label === undefined;
+        return labelWasNotDefined
+          ? true
+          : item.label === requiredSubscriptionState?.label;
       });
+      return canAccess;
+    }
+    if (activeSubscription.type === "module") {
+      canAccess = activeSubscription.modules.some((item) => {
+        const labelWasNotDefined =
+          requiredSubscriptionState?.label === undefined;
+        return labelWasNotDefined
+          ? true
+          : item.label === requiredSubscriptionState?.label;
+      });
+      return canAccess;
+    }
+    return false;
+  };
   const requiredPermissionsWereNotDefined =
     requiredPermissions === undefined || requiredPermissions.length === 0;
   // then check permissions
   let canAccessViaPermissions = requiredPermissionsWereNotDefined
     ? true
     : !!userPermissions?.some((item) => requiredPermissions?.includes(item));
-  canAccess = canAccessViaSubscription && canAccessViaPermissions;
+  canAccess = canAccessViaSubscription() && canAccessViaPermissions;
   return canAccess;
 };
 

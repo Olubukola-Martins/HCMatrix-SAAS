@@ -10,12 +10,23 @@ import PurchaseExtraLicenseContainer from "../components/subscription/PurchaseEx
 
 const PurchaseExtraLicense = () => {
   const navigate = useNavigate();
-  const { data: subscription, isLoading, isError, error } = useGetCompanyActiveSubscription();
+  const {
+    data: subscription,
+    isLoading,
+    isError,
+    error,
+  } = useGetCompanyActiveSubscription();
   return (
     <>
       <ErrorBoundary>
         <Skeleton loading={isLoading} active paragraph={{ rows: 45 }}>
-          <ErrorWrapper isError={isError} message={error?.response?.data?.message ?? error?.response?.data?.error?.message}>
+          <ErrorWrapper
+            isError={isError}
+            message={
+              error?.response?.data?.message ??
+              error?.response?.data?.error?.message
+            }
+          >
             <CreateCompanySubscriptionContextProvider>
               <div className="Container space-y-8 lg:space-y-16">
                 <PageIntro
@@ -23,7 +34,7 @@ const PurchaseExtraLicense = () => {
                   link={appRoutes.settings}
                   comps={[
                     <Segmented
-                      options={["usd", "ngn"].map((item) => ({
+                      options={["USD", "NGN"].map((item) => ({
                         label: <span className="uppercase">{item}</span>,
                         value: item,
                       }))}

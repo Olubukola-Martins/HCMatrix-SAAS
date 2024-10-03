@@ -32,8 +32,8 @@ export const SUBSCRIPTION_ADD_ONS: TAddOn[] = [
 ];
 
 export const PRICE_TYPE_CURRENCY = {
-  ngn: "₦",
-  usd: "$",
+  NGN: "₦",
+  USD: "$",
 };
 
 export const TRAINING_BOOKING_STATUSES: TTrainingSessionBookingStatus[] = [

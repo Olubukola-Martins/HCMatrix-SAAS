@@ -3,13 +3,13 @@ import { MICROSERVICE_ENDPOINTS } from "config/enviroment";
 import { useQuery } from "react-query";
 import { ICurrentCompany } from "types";
 import { useApiAuth } from "hooks/useApiAuth";
-import { TCompanySubscription } from "features/billing/types/company/companySubscription";
+import { AciveCompanySubscription } from "features/billing/types/company/active-company-subscription";
 
 export const QUERY_KEY_FOR_ACTIVE_COMPANY_SUBSCRITION =
   "active-company-subscription";
 const getData = async (props: {
   auth: ICurrentCompany;
-}): Promise<TCompanySubscription | undefined> => {
+}): Promise<AciveCompanySubscription | undefined> => {
   const url = `${MICROSERVICE_ENDPOINTS.UTILITY}/subscription/company`;
 
   const config = {
@@ -21,7 +21,7 @@ const getData = async (props: {
   };
 
   const res = await axios.get(url, config);
-  const item: TCompanySubscription | null = res.data.data;
+  const item: AciveCompanySubscription | null = res.data.data;
   const data = item === null ? undefined : item;
 
   return data;

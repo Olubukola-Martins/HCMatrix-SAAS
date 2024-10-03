@@ -1,26 +1,70 @@
-import React, {  useState } from "react";
+import React, { useState } from "react";
 import ErrorBoundary from "components/errorHandlers/ErrorBoundary";
 import CurrentPlanCard from "../cards/CurrentPlanCard";
 import ModulesCard from "../cards/ModulesCard";
 import SupportPlanCard from "../cards/SupportPlanCard";
 import BillingsHistoryTable from "../BillingHistoryTable";
 import UpgradePlan from "../modals/UpgradePlan";
+import { useGetCompanyActiveSubscription } from "features/billing/hooks/company/useGetCompanyActiveSubscription";
+import { Skeleton } from "antd";
+import { contructBillingDetailsBasedOnSubsriptionType } from "features/billing/utils";
+import moment from "moment";
 
 const BillingContainer = () => {
   const [openUogradeModal, setOpenUpgradeModal] = useState(false);
+  const { data: sub, isLoading: isLoadingSub } =
+    useGetCompanyActiveSubscription();
+  const {
+    subName,
+    billingPrice,
+    currentUsers,
+    userLimit,
+    billingCurrency,
+    billingCycle,
+    modules,
+    currentReoccuringAmount,
+    nextReoccuringDate,
+  } = contructBillingDetailsBasedOnSubsriptionType(sub);
   return (
     <ErrorBoundary>
-      <UpgradePlan open={openUogradeModal} handleClose={() => setOpenUpgradeModal(false)} />
+      <UpgradePlan
+        open={openUogradeModal}
+        handleClose={() => setOpenUpgradeModal(false)}
+      />
       <div className="flex flex-col gap-y-7">
-        <div className="flex flex-col sm:gap-4 sm:flex-wrap max-sm:gap-y-4 sm:flex-row sm:justify-between mx-auto align-middle items-center justify-items-center">
-          <CurrentPlanCard handleUpgrade={() => setOpenUpgradeModal(true)} billingPrice={2.49} currentPlanName="Basic" currentUsers={500} usersLimit={1000} />
-          <SupportPlanCard currentRecurringAmount={300} date="mm/dd/yyyy" />
-          <ModulesCard />
-        </div>
+        <Skeleton loading={isLoadingSub} active paragraph={{ rows: 12 }}>
+          <div className="grid grid-cols-1 lg:grid-cols-4 gap-x-4">
+            <CurrentPlanCard
+              handleUpgrade={() => setOpenUpgradeModal(true)}
+              billingPrice={billingPrice}
+              currentPlanName={subName}
+              currentUsers={currentUsers}
+              usersLimit={userLimit}
+              currency={billingCurrency}
+              cycle={billingCycle}
+            />
+            <ModulesCard modulesData={modules} />
+            <SupportPlanCard
+              currentRecurringAmount={currentReoccuringAmount}
+              date={nextReoccuringDate}
+            />
+          </div>
+        </Skeleton>
 
         <div className="flex flex-col gap-4">
           <p className="font-bold text-lg">Billing History</p>
-          <BillingsHistoryTable />
+          <BillingsHistoryTable
+            dataHistory={sub?.billingHistory?.map((b) => ({
+              amount: b.amountPaid,
+              billingCycle: "N/A",
+              date: moment(b.billingDate).format(`MMMM DD, YYYY`),
+              status: b.status,
+              id: b.id,
+              key: b.id,
+              type: b.name,
+              billings: `#${b.paymentReference}`,
+            }))}
+          />
         </div>
       </div>
     </ErrorBoundary>

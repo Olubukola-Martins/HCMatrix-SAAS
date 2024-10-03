@@ -1,7 +1,7 @@
 import { useMemo } from "react";
 import { useCreateCompanySubscriptionStateAndDispatch } from "../stateManagers";
 import { TSubscription } from "../types/subscription";
-import { getPricePerEmployee } from "../utils";
+import { calculatAddonTotalPrice, getPricePerEmployee } from "../utils";
 import { useGetAllExtraStorages } from "./addOns/extraStorage/useGetAllExtraStorages";
 import { useGetAllSupportCases } from "./addOns/supportCase/useGetAllSupportCases";
 import { useGetAllTrainingSessions } from "./addOns/trainingSession/useGetAllTrainingSessions";
@@ -21,7 +21,7 @@ export const useGetCreateCompanySubscriptionSummary = (props: {
       purchased,
       licensedEmployeeCount,
       unlicensedEmployeeCount,
-      priceType = "usd",
+      priceType = "USD",
       billingCycle = "yearly",
       addOns,
     },
@@ -91,26 +91,27 @@ export const useGetCreateCompanySubscriptionSummary = (props: {
   const supportCase = supportCases?.data?.find(
     (item) => item.id === addOns?.supportCaseId
   );
-  const supportCasePrice = +(
-    ((priceType === "ngn"
-      ? supportCase?.priceInNgn
-      : supportCase?.priceInUsd) as unknown as number) ?? 0
+  const supportCasePrice = calculatAddonTotalPrice(
+    supportCase?.prices,
+    billingCycle,
+    priceType
   );
   const storage = storages?.data?.find(
     (item) => item.id === addOns?.extraStorageId
   );
-  const storagePrice = +(
-    ((priceType === "ngn"
-      ? storage?.priceInNgn
-      : storage?.priceInUsd) as unknown as number) ?? 0
+  const storagePrice = calculatAddonTotalPrice(
+    storage?.prices,
+    billingCycle,
+    priceType
   );
+
   const trainingSession = trainingSessions?.data?.find(
     (item) => item.id === addOns?.trainingSessionId
   );
-  const trainingSessionPrice = +(
-    ((priceType === "ngn"
-      ? trainingSession?.priceInNgn
-      : trainingSession?.priceInUsd) as unknown as number) ?? 0
+  const trainingSessionPrice = calculatAddonTotalPrice(
+    trainingSession?.prices,
+    billingCycle,
+    priceType
   );
   const initialTotalCost =
     totalEmployeeCost + trainingSessionPrice + supportCasePrice + storagePrice;
