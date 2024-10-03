@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Table, Dropdown, Button } from "antd";
-import { ColumnsType } from "antd/es/table";
+import { ColumnsType, TablePaginationConfig } from "antd/es/table";
 import { MoreOutlined } from "@ant-design/icons";
 import CardWrapper from "../ui/CardWrapper";
 import { mockDataBillingHistory } from "features/billing/utils/data";
@@ -21,10 +21,14 @@ export interface BillingData {
 
 interface BillingsTableProps {
   dataHistory?: BillingData[];
+  pagination?: TablePaginationConfig;
+  loading?: boolean;
 }
 
 const BillingsHistoryTable: React.FC<BillingsTableProps> = ({
   dataHistory = mockDataBillingHistory,
+  pagination = { pageSize: 5 },
+  loading,
 }) => {
   const navigate = useNavigate();
   const [action, setAction] = useState<"download-invoice">();
@@ -111,8 +115,9 @@ const BillingsHistoryTable: React.FC<BillingsTableProps> = ({
         <Table
           columns={columns}
           dataSource={dataHistory}
-          pagination={{ pageSize: 5 }}
+          pagination={pagination}
           scroll={{ x: 700 }}
+          loading={loading}
         />
         ;
       </CardWrapper>

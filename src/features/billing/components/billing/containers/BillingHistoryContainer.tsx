@@ -1,11 +1,33 @@
 import React from "react";
 import BillingsHistoryTable from "../BillingHistoryTable";
+import { usePagination } from "hooks/usePagination";
+import { useGetBillingHistory } from "features/billing/hooks/company/billingHistory/useGetBillingHistory";
+import moment from "moment";
 
 const BillingHistoryContainer = () => {
+  const { onChange, pagination } = usePagination();
+  const { data, isLoading } = useGetBillingHistory({
+    props: {
+      pagination,
+    },
+  });
   return (
     <div className="flex flex-col gap-4">
       <p className="font-bold text-lg">Billing History</p>
-      <BillingsHistoryTable />
+      <BillingsHistoryTable
+        dataHistory={data?.data?.map((b) => ({
+          amount: b.amountPaid,
+          billingCycle: "N/A",
+          date: moment(b.billingDate).format(`MMMM DD, YYYY`),
+          status: b.status,
+          id: b.id,
+          key: b.id,
+          type: b.name,
+          billings: `#${b.paymentReference}`,
+        }))}
+        loading={isLoading}
+        pagination={{ ...pagination, onChange, total: data?.total }}
+      />
     </div>
   );
 };
