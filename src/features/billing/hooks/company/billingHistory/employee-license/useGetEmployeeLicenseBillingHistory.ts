@@ -5,10 +5,10 @@ import { ICurrentCompany, IPaginationProps } from "types";
 import { DEFAULT_PAGE_SIZE } from "constants/general";
 import { useApiAuth } from "hooks/useApiAuth";
 
-interface IGetDataProps {
+type IGetDataProps = {
   pagination?: IPaginationProps;
   billingHistoryId: number;
-}
+} & Partial<Pick<TEmployeeLicenseBillingHistory, "licenseType">>;
 
 export const QUERY_KEY_FOR_EMPLOYEE_LICENSE_BILLING_HISTORY =
   "employee-license-billing-history";
@@ -17,7 +17,7 @@ const getData = async (props: {
   data: IGetDataProps;
   auth: ICurrentCompany;
 }): Promise<{ data: TEmployeeLicenseBillingHistory[]; total: number }> => {
-  const { pagination } = props.data;
+  const { pagination, licenseType } = props.data;
   const limit = pagination?.limit ?? DEFAULT_PAGE_SIZE;
   const offset = pagination?.offset ?? 0;
 
@@ -32,6 +32,7 @@ const getData = async (props: {
     params: {
       limit,
       offset,
+      licenseType,
     },
   };
 
@@ -83,7 +84,7 @@ export type TEmployeeLicenseBillingHistory = {
   id: number;
   companySubscriptionId: number;
   employeeId: number;
-  licenseType: string;
+  licenseType: "licensed" | "unlicensed";
   createdAt: string;
   updatedAt: string;
   employee: Employee;
