@@ -223,8 +223,6 @@ const UserActions: React.FC<{
 
   return (
     <>
-   
-
       <TransferOwnership
         open={action === "transfer-ownership"}
         handleClose={() => clearAction()}
@@ -327,6 +325,9 @@ const UserProfileMenuDropdown: React.FC<{
   userPermissions,
   activeSubscription,
 }) => {
+  const handleToggleDropdown = () => {
+    onOpenChange(!open);
+  };
   return (
     <Dropdown
       overlay={
@@ -347,7 +348,7 @@ const UserProfileMenuDropdown: React.FC<{
         src={avatarUrl ?? DEFAULT_PROFILE_IMAGE_URL}
         alt=""
         className="h-6 md:h-9 cursor-pointer border-2 border-slate-300 rounded-full ml-1"
-        onClick={() => onOpenChange(true)}
+        onClick={handleToggleDropdown}
       />
     </Dropdown>
   );
