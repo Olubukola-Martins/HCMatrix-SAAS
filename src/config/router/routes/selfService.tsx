@@ -97,7 +97,7 @@ export const selfServiceRoutes = (props: TAppPageDataFnProps): TRouteData[] => {
           requiredPermissions: [],
           activeSubscription,
           requiredSubscriptionState: {
-            label: "hr-admin",
+            label: "core-hr",
             resources: [],
           },
         }),
@@ -114,7 +114,7 @@ export const selfServiceRoutes = (props: TAppPageDataFnProps): TRouteData[] => {
         requiredPermissions: ["manage-requsition-settings"],
         activeSubscription,
         requiredSubscriptionState: {
-          label: "hr-admin",
+          label: "core-hr",
           resources: [],
         },
       }),
@@ -131,7 +131,7 @@ export const selfServiceRoutes = (props: TAppPageDataFnProps): TRouteData[] => {
         requiredPermissions: ["manage-requsition-settings"],
         activeSubscription,
         requiredSubscriptionState: {
-          label: "hr-admin",
+          label: "core-hr",
           resources: [],
         },
       }),
@@ -150,7 +150,7 @@ export const selfServiceRoutes = (props: TAppPageDataFnProps): TRouteData[] => {
           requiredPermissions: [],
           activeSubscription,
           requiredSubscriptionState: {
-            label: "hr-admin",
+            label: "core-hr",
             resources: [],
           },
         }),
@@ -167,7 +167,7 @@ export const selfServiceRoutes = (props: TAppPageDataFnProps): TRouteData[] => {
         requiredPermissions: ["manage-requsition-settings"],
         activeSubscription,
         requiredSubscriptionState: {
-          label: "hr-admin",
+          label: "core-hr",
           resources: [],
         },
       }),
@@ -186,7 +186,7 @@ export const selfServiceRoutes = (props: TAppPageDataFnProps): TRouteData[] => {
           requiredPermissions: [],
           activeSubscription,
           requiredSubscriptionState: {
-            label: "hr-admin",
+            label: "core-hr",
             resources: [],
           },
         }),
@@ -203,7 +203,7 @@ export const selfServiceRoutes = (props: TAppPageDataFnProps): TRouteData[] => {
         requiredPermissions: ["manage-requsition-settings"],
         activeSubscription,
         requiredSubscriptionState: {
-          label: "hr-admin",
+          label: "core-hr",
           resources: [],
         },
       }),
@@ -222,7 +222,7 @@ export const selfServiceRoutes = (props: TAppPageDataFnProps): TRouteData[] => {
           requiredPermissions: [],
           activeSubscription,
           requiredSubscriptionState: {
-            label: "hr-admin",
+            label: "core-hr",
             resources: [],
           },
         }),
@@ -239,7 +239,7 @@ export const selfServiceRoutes = (props: TAppPageDataFnProps): TRouteData[] => {
         requiredPermissions: ["manage-requsition-settings"],
         activeSubscription,
         requiredSubscriptionState: {
-          label: "hr-admin",
+          label: "core-hr",
           resources: [],
         },
       }),
@@ -258,7 +258,7 @@ export const selfServiceRoutes = (props: TAppPageDataFnProps): TRouteData[] => {
           requiredPermissions: [],
           activeSubscription,
           requiredSubscriptionState: {
-            label: "hr-admin",
+            label: "core-hr",
             resources: [],
           },
         }),
@@ -275,7 +275,7 @@ export const selfServiceRoutes = (props: TAppPageDataFnProps): TRouteData[] => {
         requiredPermissions: ["manage-requsition-settings"],
         activeSubscription,
         requiredSubscriptionState: {
-          label: "hr-admin",
+          label: "core-hr",
           resources: [],
         },
       }),
@@ -294,7 +294,7 @@ export const selfServiceRoutes = (props: TAppPageDataFnProps): TRouteData[] => {
           requiredPermissions: [],
           activeSubscription,
           requiredSubscriptionState: {
-            label: "hr-admin",
+            label: "core-hr",
             resources: [],
           },
         }),
@@ -311,7 +311,7 @@ export const selfServiceRoutes = (props: TAppPageDataFnProps): TRouteData[] => {
         requiredPermissions: ["manage-requsition-settings"],
         activeSubscription,
         requiredSubscriptionState: {
-          label: "hr-admin",
+          label: "core-hr",
           resources: [],
         },
       }),
@@ -330,7 +330,7 @@ export const selfServiceRoutes = (props: TAppPageDataFnProps): TRouteData[] => {
           requiredPermissions: [],
           activeSubscription,
           requiredSubscriptionState: {
-            label: "hr-admin",
+            label: "core-hr",
             resources: [],
           },
         }),
@@ -385,7 +385,7 @@ export const selfServiceRoutes = (props: TAppPageDataFnProps): TRouteData[] => {
           requiredPermissions: [],
           activeSubscription,
           requiredSubscriptionState: {
-            label: "hr-admin",
+            label: "core-hr",
             resources: [],
           },
         }),
@@ -402,7 +402,7 @@ export const selfServiceRoutes = (props: TAppPageDataFnProps): TRouteData[] => {
         requiredPermissions: ["manage-requsition-settings"],
         activeSubscription,
         requiredSubscriptionState: {
-          label: "hr-admin",
+          label: "core-hr",
           resources: [],
         },
       }),
@@ -421,7 +421,7 @@ export const selfServiceRoutes = (props: TAppPageDataFnProps): TRouteData[] => {
           requiredPermissions: [],
           activeSubscription,
           requiredSubscriptionState: {
-            label: "hr-admin",
+            label: "core-hr",
             resources: [],
           },
         }),
@@ -438,7 +438,7 @@ export const selfServiceRoutes = (props: TAppPageDataFnProps): TRouteData[] => {
         requiredPermissions: ["manage-requsition-settings"],
         activeSubscription,
         requiredSubscriptionState: {
-          label: "hr-admin",
+          label: "core-hr",
           resources: [],
         },
       }),
@@ -457,7 +457,7 @@ export const selfServiceRoutes = (props: TAppPageDataFnProps): TRouteData[] => {
           requiredPermissions: [],
           activeSubscription,
           requiredSubscriptionState: {
-            label: "hr-admin",
+            label: "core-hr",
             resources: [],
           },
         }),
@@ -542,7 +542,7 @@ export const selfServiceRoutes = (props: TAppPageDataFnProps): TRouteData[] => {
           requiredPermissions: [],
           activeSubscription,
           requiredSubscriptionState: {
-            label: "hr-admin",
+            label: "core-hr",
             resources: [],
           },
         }),
@@ -559,7 +559,7 @@ export const selfServiceRoutes = (props: TAppPageDataFnProps): TRouteData[] => {
         requiredPermissions: ["manage-vehicle-settings"],
         activeSubscription,
         requiredSubscriptionState: {
-          label: "hr-admin",
+          label: "core-hr",
           resources: [],
         },
       }),
@@ -575,7 +575,7 @@ export const selfServiceRoutes = (props: TAppPageDataFnProps): TRouteData[] => {
         requiredPermissions: ["manage-vehicle-settings"],
         activeSubscription,
         requiredSubscriptionState: {
-          label: "hr-admin",
+          label: "core-hr",
           resources: [],
         },
       }),
@@ -615,7 +615,7 @@ export const selfServiceRoutes = (props: TAppPageDataFnProps): TRouteData[] => {
           requiredPermissions: [],
           activeSubscription,
           requiredSubscriptionState: {
-            label: "hr-admin",
+            label: "core-hr",
             resources: [],
           },
         }),
@@ -631,7 +631,7 @@ export const selfServiceRoutes = (props: TAppPageDataFnProps): TRouteData[] => {
         requiredPermissions: ["manage-conference-room-settings"],
         activeSubscription,
         requiredSubscriptionState: {
-          label: "hr-admin",
+          label: "core-hr",
           resources: [],
         },
       }),
@@ -650,7 +650,7 @@ export const selfServiceRoutes = (props: TAppPageDataFnProps): TRouteData[] => {
           requiredPermissions: [],
           activeSubscription,
           requiredSubscriptionState: {
-            label: "hr-admin",
+            label: "core-hr",
             resources: [],
           },
         }),
@@ -666,7 +666,7 @@ export const selfServiceRoutes = (props: TAppPageDataFnProps): TRouteData[] => {
         requiredPermissions: ["manage-leave-settings"],
         activeSubscription,
         requiredSubscriptionState: {
-          label: "hr-admin",
+          label: "core-hr",
           resources: [],
         },
       }),

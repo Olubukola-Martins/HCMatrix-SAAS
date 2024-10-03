@@ -1,7 +1,7 @@
 export type TSubscriptionType = "module" | "plan";
 export type TSubscriptionLabel =
   | "employee-management"
-  | "hr-admin"
+  | "core-hr"
   | "payroll"
   | "time-and-attendance"
   | "performance"

@@ -21,7 +21,7 @@ const MAPPING: Record<TSubscriptionLabel, React.ReactNode> = {
   "employee-management": (
     <i className="ri-line-chart-line text-xs text-white font-light" />
   ),
-  "hr-admin": <i className="ri-book-2-line text-xs text-white font-light" />,
+  "core-hr": <i className="ri-book-2-line text-xs text-white font-light" />,
   payroll: <i className="ri-book-2-line text-xs text-white font-light" />,
   "time-and-attendance": (
     <i className="ri-time-line text-xs text-white font-light" />

@@ -20,7 +20,7 @@ const modules: IModulesCardData[] = [
   },
   {
     name: "HR Admin",
-    label: "hr-admin",
+    label: "core-hr",
     icon: <i className="ri-book-2-line text-xs text-white font-light" />,
   },
   {

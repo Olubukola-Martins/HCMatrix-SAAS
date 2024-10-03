@@ -87,7 +87,7 @@ export const useGetActivatedSelfServiceLinksAndAnalytics = (): {
                   userPermissions,
                   activeSubscription,
                   requiredSubscriptionState: {
-                    label: "hr-admin",
+                    label: "core-hr",
                     resources: [],
                   },
                 }),
@@ -165,7 +165,7 @@ export const useGetActivatedSelfServiceLinksAndAnalytics = (): {
                   userPermissions,
                   activeSubscription,
                   requiredSubscriptionState: {
-                    label: "hr-admin",
+                    label: "core-hr",
                     resources: [],
                   },
                 }),
@@ -187,7 +187,7 @@ export const useGetActivatedSelfServiceLinksAndAnalytics = (): {
                   userPermissions,
                   activeSubscription,
                   requiredSubscriptionState: {
-                    label: "hr-admin",
+                    label: "core-hr",
                     resources: [],
                   },
                 }),
@@ -204,7 +204,7 @@ export const useGetActivatedSelfServiceLinksAndAnalytics = (): {
                 userPermissions,
                 activeSubscription,
                 requiredSubscriptionState: {
-                  label: "hr-admin",
+                  label: "core-hr",
                   resources: [],
                 },
               }),
@@ -265,7 +265,7 @@ export const useGetActivatedSelfServiceLinksAndAnalytics = (): {
                     userPermissions,
                     activeSubscription,
                     requiredSubscriptionState: {
-                      label: "hr-admin",
+                      label: "core-hr",
                       resources: [],
                     },
                   }),
@@ -282,7 +282,7 @@ export const useGetActivatedSelfServiceLinksAndAnalytics = (): {
                     userPermissions,
                     activeSubscription,
                     requiredSubscriptionState: {
-                      label: "hr-admin",
+                      label: "core-hr",
                       resources: [],
                     },
                   }),
@@ -299,7 +299,7 @@ export const useGetActivatedSelfServiceLinksAndAnalytics = (): {
                     userPermissions,
                     activeSubscription,
                     requiredSubscriptionState: {
-                      label: "hr-admin",
+                      label: "core-hr",
                       resources: [],
                     },
                   }),
@@ -316,7 +316,7 @@ export const useGetActivatedSelfServiceLinksAndAnalytics = (): {
                     userPermissions,
                     activeSubscription,
                     requiredSubscriptionState: {
-                      label: "hr-admin",
+                      label: "core-hr",
                       resources: [],
                     },
                   }),
@@ -333,7 +333,7 @@ export const useGetActivatedSelfServiceLinksAndAnalytics = (): {
                     userPermissions,
                     activeSubscription,
                     requiredSubscriptionState: {
-                      label: "hr-admin",
+                      label: "core-hr",
                       resources: [],
                     },
                   }),
@@ -350,7 +350,7 @@ export const useGetActivatedSelfServiceLinksAndAnalytics = (): {
                     userPermissions,
                     activeSubscription,
                     requiredSubscriptionState: {
-                      label: "hr-admin",
+                      label: "core-hr",
                       resources: [],
                     },
                   }),
@@ -367,7 +367,7 @@ export const useGetActivatedSelfServiceLinksAndAnalytics = (): {
                     userPermissions,
                     activeSubscription,
                     requiredSubscriptionState: {
-                      label: "hr-admin",
+                      label: "core-hr",
                       resources: [],
                     },
                   }),
@@ -384,7 +384,7 @@ export const useGetActivatedSelfServiceLinksAndAnalytics = (): {
                     userPermissions,
                     activeSubscription,
                     requiredSubscriptionState: {
-                      label: "hr-admin",
+                      label: "core-hr",
                       resources: [],
                     },
                   }),
@@ -402,7 +402,7 @@ export const useGetActivatedSelfServiceLinksAndAnalytics = (): {
                   userPermissions,
                   activeSubscription,
                   requiredSubscriptionState: {
-                    label: "hr-admin",
+                    label: "core-hr",
                     resources: [],
                   },
                 }),
@@ -415,7 +415,7 @@ export const useGetActivatedSelfServiceLinksAndAnalytics = (): {
                   userPermissions,
                   activeSubscription,
                   requiredSubscriptionState: {
-                    label: "hr-admin",
+                    label: "core-hr",
                     resources: [],
                   },
                 }),
@@ -428,7 +428,7 @@ export const useGetActivatedSelfServiceLinksAndAnalytics = (): {
                   userPermissions,
                   activeSubscription,
                   requiredSubscriptionState: {
-                    label: "hr-admin",
+                    label: "core-hr",
                     resources: [],
                   },
                 }),
@@ -441,7 +441,7 @@ export const useGetActivatedSelfServiceLinksAndAnalytics = (): {
                   userPermissions,
                   activeSubscription,
                   requiredSubscriptionState: {
-                    label: "hr-admin",
+                    label: "core-hr",
                     resources: [],
                   },
                 }),
@@ -454,7 +454,7 @@ export const useGetActivatedSelfServiceLinksAndAnalytics = (): {
                   userPermissions,
                   activeSubscription,
                   requiredSubscriptionState: {
-                    label: "hr-admin",
+                    label: "core-hr",
                     resources: [],
                   },
                 }),
@@ -467,7 +467,7 @@ export const useGetActivatedSelfServiceLinksAndAnalytics = (): {
                   userPermissions,
                   activeSubscription,
                   requiredSubscriptionState: {
-                    label: "hr-admin",
+                    label: "core-hr",
                     resources: [],
                   },
                 }),
@@ -480,7 +480,7 @@ export const useGetActivatedSelfServiceLinksAndAnalytics = (): {
                   userPermissions,
                   activeSubscription,
                   requiredSubscriptionState: {
-                    label: "hr-admin",
+                    label: "core-hr",
                     resources: [],
                   },
                 }),
