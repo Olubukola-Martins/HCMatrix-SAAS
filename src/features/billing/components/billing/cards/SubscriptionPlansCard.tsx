@@ -8,12 +8,20 @@ interface ISubscriptionPlansCardProps {
   costDescription?: string;
 }
 
-const SubscriptionPlansCard: React.FC<ISubscriptionPlansCardProps> = ({ extraClass, name, description, modules, costDescription }) => {
+const SubscriptionPlansCard: React.FC<ISubscriptionPlansCardProps> = ({
+  extraClass,
+  name,
+  description,
+  modules,
+  costDescription,
+}) => {
   return (
     <div className={`h-64 flex flex-col justify-between ${extraClass}`}>
       <div>
-        <h2 className="sm:text-lg flex flex-col gap-y-2 font-bold">{name} Plan</h2>
-        {description && <p className="text-xs sm:text-sm opacity-75">{description}</p>}
+        <h2 className="sm:text-lg flex flex-col gap-y-2 font-bold">{name}</h2>
+        {description && (
+          <p className="text-xs sm:text-sm opacity-75">{description}</p>
+        )}
       </div>
       <div className="flex flex-col gap-y-2">
         <p className="text-sm sm:text-base">Modules</p>
@@ -25,7 +33,11 @@ const SubscriptionPlansCard: React.FC<ISubscriptionPlansCardProps> = ({ extraCla
         ))}
       </div>
 
-      {costDescription && <p className="text-xs sm:text-sm opacity-75 font-bold">Cost:{costDescription}</p>}
+      {costDescription && (
+        <p className="text-xs sm:text-sm opacity-75 font-bold">
+          Cost:{costDescription}
+        </p>
+      )}
     </div>
   );
 };
