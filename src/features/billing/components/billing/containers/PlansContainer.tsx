@@ -1,28 +1,25 @@
 import React from "react";
 import SubscriptionPlansCard from "../cards/SubscriptionPlansCard";
-import {
-  basicPlanFeatures,
-  premiumPlanFeatures,
-  rateDetails,
-} from "features/billing/utils/data";
 import { Carousel, Skeleton } from "antd";
 import SubscriptionBreakdownCard from "../cards/SubscriptionBreakdownCard";
 import { useGetSubscriptionPlans } from "features/billing/hooks/plan/useGetSubscriptionPlans";
 import formatCurrency from "features/billing/utils/currencyFormatter";
 import { calculateTotalAmountFromSubscriptionPrices } from "features/billing/utils";
 import { TCompanySubscription } from "features/billing/types/company/companySubscription";
-
-const basicPlanFeatMockData: { name: string; sub_cat?: string[] }[] =
-  basicPlanFeatures;
-const premiumPlanFeatMockData: { name: string; sub_cat?: string[] }[] =
-  premiumPlanFeatures;
+import { useGetCompanyActiveSubscription } from "features/billing/hooks/company/useGetCompanyActiveSubscription";
 
 const PlansContainer: React.FC<
   Pick<TCompanySubscription, "currency" | "billingCycle">
 > = ({ billingCycle, currency }) => {
   const { data, isLoading } = useGetSubscriptionPlans();
+  const { data: sub, isLoading: isLoadingSub } =
+    useGetCompanyActiveSubscription();
   return (
-    <Skeleton active loading={isLoading} paragraph={{ rows: 24 }}>
+    <Skeleton
+      active
+      loading={isLoading ?? isLoadingSub}
+      paragraph={{ rows: 24 }}
+    >
       <div className="flex flex-col gap-y-9">
         <div className="flex flex-col gap-4">
           <p className="font-bold text-lg">
@@ -78,21 +75,29 @@ const PlansContainer: React.FC<
           <p className="font-bold text-lg">
             Subscription Breakdown of Plan with pricing 
           </p>
-          <div className="flex justify-around">
-            <SubscriptionBreakdownCard
-              name="Basic"
-              rateDetails={rateDetails}
-              isActivePlan={true}
-              features={basicPlanFeatMockData}
-              extraStyles="w-2/5"
-            />
-            <SubscriptionBreakdownCard
-              featuresPrefix="Includes all Basic plan features plus:"
-              name="Premium"
-              rateDetails={rateDetails}
-              features={premiumPlanFeatMockData}
-              extraStyles="w-2/5"
-            />
+          <div className="lg:grid lg:grid-cols-3 gap-x-6 gap-y-14 grid-cols-1 ">
+            {data?.data.map((s) => (
+              <SubscriptionBreakdownCard
+                key={s.id}
+                id={s.id}
+                name={s.name}
+                rateDetails={[
+                  [
+                    `${formatCurrency({
+                      amount: calculateTotalAmountFromSubscriptionPrices({
+                        prices: s.prices,
+                        cycle: billingCycle,
+                        currency,
+                      }),
+                      currency,
+                    })}/${billingCycle}`,
+                  ],
+                ]}
+                isActivePlan={sub?.planId === s.id}
+                features={s.modules.map((b) => ({ name: b.name }))}
+                extraStyles="w-2/5"
+              />
+            ))}
           </div>
         </div>
       </div>

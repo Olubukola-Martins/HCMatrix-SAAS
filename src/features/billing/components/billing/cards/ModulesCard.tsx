@@ -17,7 +17,10 @@ interface ModulesCardProps {
   modulesData?: IModulesCardData[];
 }
 
-const MAPPING: Record<TSubscriptionLabel, React.ReactNode> = {
+export const SUBSCRIPTION_ICON_MAPPING: Record<
+  TSubscriptionLabel,
+  React.ReactNode
+> = {
   "employee-management": (
     <i className="ri-line-chart-line text-xs text-white font-light" />
   ),
@@ -59,7 +62,7 @@ const ModulesCard: React.FC<ModulesCardProps> = ({ modulesData = [] }) => {
                     {module?.iconUrl ? (
                       <img src={module?.iconUrl} alt={module.name} />
                     ) : (
-                      MAPPING?.[module.label]
+                      SUBSCRIPTION_ICON_MAPPING?.[module.label]
                     )}
                   </div>{" "}
                   <p className="lg:text-lg">{module.name}</p>{" "}
