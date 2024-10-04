@@ -4,20 +4,13 @@ import { AiOutlineMore } from "react-icons/ai";
 import { THospital } from "../../types/hospital/hospital";
 import { THospitalAction } from "../settings/hospital/HospitalTable";
 
-export const HOSPITAL_TABLE_COLUMNS = (
-  handleAction: (action: THospitalAction, data: THospital) => void,
-  showDelete?: boolean,
-  showEdit?: boolean
-): ColumnsType<THospital> => [
+export const HOSPITAL_TABLE_COLUMNS = (handleAction: (action: THospitalAction, data: THospital) => void, showDelete?: boolean, showEdit?: boolean): ColumnsType<THospital> => [
   {
     title: "",
-    dataIndex: "_",
-    key: "_",
+    dataIndex: "Recommended",
+    key: "Recommended",
     width: 50,
-    render: (_, item) =>
-      item.isRecommended ? (
-        <div className="mx-auto bg-caramel w-2 h-2 rounded-full" />
-      ) : null,
+    render: (_, item) => (item.isRecommended ? <div className="mx-auto bg-caramel w-2 h-2 rounded-full" /> : null),
   },
 
   {
@@ -30,37 +23,27 @@ export const HOSPITAL_TABLE_COLUMNS = (
     title: "Category",
     dataIndex: "Category",
     key: "Category",
-    render: (_, item) => (
-      <span className="capitalize">{item.category.name} </span>
-    ),
+    render: (_, item) => <span className="capitalize">{item.category.name} </span>,
   },
   {
     title: "HMO Plan(s)",
     dataIndex: "HMO Plans",
     key: "HMO Plans",
     ellipsis: true,
-    render: (_, item) => (
-      <span className="capitalize">
-        {item.hmoPlanManagement.map((x) => x.hmoPlan.name).join(", ")}{" "}
-      </span>
-    ),
+    render: (_, item) => <span className="capitalize">{item.hmoPlanManagement.map((x) => x.hmoPlan.name).join(", ")} </span>,
   },
   {
     title: "Contact",
     dataIndex: "Contact",
     key: "Contact",
-    render: (_, item) => (
-      <span className="capitalize">{item?.phoneNumber} </span>
-    ),
+    render: (_, item) => <span className="capitalize">{item?.phoneNumber} </span>,
   },
   {
     title: "Address",
     dataIndex: "Address",
     key: "Address",
     ellipsis: true,
-    render: (_, item) => (
-      <span className="capitalize">{item.address?.streetAddress}</span>
-    ),
+    render: (_, item) => <span className="capitalize">{item.address?.streetAddress}</span>,
   },
 
   {
@@ -73,24 +56,15 @@ export const HOSPITAL_TABLE_COLUMNS = (
             <Menu.Item key="view" onClick={() => handleAction("view", item)}>
               View Details
             </Menu.Item>
-            <Menu.Item
-              hidden={showEdit === false}
-              key="edit"
-              onClick={() => handleAction("edit", item)}
-            >
+            <Menu.Item hidden={showEdit === false} key="edit" onClick={() => handleAction("edit", item)}>
               Edit
             </Menu.Item>
-            <Menu.Item
-              key="delete"
-              hidden={showDelete === false}
-              onClick={() => handleAction("delete", item)}
-            >
+            <Menu.Item key="delete" hidden={showDelete === false} onClick={() => handleAction("delete", item)}>
               Delete
             </Menu.Item>
           </Menu>
         }
-        trigger={["click"]}
-      >
+        trigger={["click"]}>
         <Button title="Actions" icon={<AiOutlineMore />} type="text" />
       </Dropdown>
     ),
