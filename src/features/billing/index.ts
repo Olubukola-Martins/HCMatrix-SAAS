@@ -27,9 +27,9 @@ export interface SubscriptionAttributeI {
 }
 
 export enum ISubscriptionPriceType {
-  NGN = "ngn",
+  NGN = "NGN",
 
-  USD = "usd",
+  USD = "USD",
 }
 
 export interface SubscriptionPriceAttributeI {

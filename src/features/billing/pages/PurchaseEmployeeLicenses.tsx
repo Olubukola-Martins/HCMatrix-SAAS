@@ -15,7 +15,8 @@ const PurchaseEmployeeLicenses = () => {
     isError,
     error,
   } = useGetCompanyActiveSubscription();
-  const unableToPurchaseUserLicense = !subscription || !subscription?.isActive;
+  const unableToPurchaseUserLicense =
+    !subscription || subscription?.status === "inactive";
   return (
     <>
       {unableToPurchaseUserLicense && (

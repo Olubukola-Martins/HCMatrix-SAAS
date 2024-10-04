@@ -14,7 +14,7 @@ interface Datum {
 }
 
 const createData = async (props: { data: TProps; auth: ICurrentCompany }) => {
-  const url = `${MICROSERVICE_ENDPOINTS.UTILITY}/subscription/company/employee-license`;
+  const url = `${MICROSERVICE_ENDPOINTS.UTILITY}/subscription/company/employee/license`;
   const config = {
     headers: {
       Accept: "application/json",

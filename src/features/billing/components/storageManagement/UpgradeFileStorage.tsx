@@ -2,11 +2,7 @@ import { Form, Input, Modal, Select } from "antd";
 import { AppButton } from "components/button/AppButton";
 import React from "react";
 import { IModalProps } from "types";
-import {
-  generalValidationRules,
-  numberHasToBeGreaterThanValueRule,
-  textInputValidationRules,
-} from "utils/formHelpers/validation";
+import { generalValidationRules } from "utils/formHelpers/validation";
 import { openNotification } from "utils/notifications";
 import { useQueryClient } from "react-query";
 import { QUERY_KEY_FOR_FILE_STORAGE_SETTING } from "features/core/company/hooks/fileStorage/setting/useGetFileStorageSetting";
@@ -31,8 +27,8 @@ export const UpgradeFileStorage: React.FC<IModalProps> = ({
   const handleSubmit = (data: FormProps) => {
     mutate(
       {
-        extraStorageId: data.extraStorage.id,
-        priceType: data.extraStorage.priceType,
+        addonId: data.extraStorage.id,
+        currency: data.extraStorage.priceType,
       },
       {
         onError: (err: any) => {
@@ -101,7 +97,7 @@ export const UpgradeFileStorage: React.FC<IModalProps> = ({
               <Select
                 placeholder="Currency"
                 style={{ width: "25%" }}
-                options={["ngn", "usd"].map((item) => ({
+                options={["NGN", "USD"].map((item) => ({
                   label: item,
                   value: item,
                 }))}

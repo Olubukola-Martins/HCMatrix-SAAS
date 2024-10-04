@@ -1,6 +1,6 @@
 import { Form, Select } from "antd";
 import React from "react";
-import { boxStyle, boxTitle } from "styles/reused";
+import { boxCardTitle, boxStyle, cardStyle } from "styles/reused";
 import { generalValidationRulesOp } from "utils/formHelpers/validation";
 import AppSwitch from "components/switch/AppSwitch";
 import { AddNoOfUsers } from "./AddNoOfUsers";
@@ -24,11 +24,14 @@ export const AddOnSection: React.FC<IProps> = ({
   autoRenewal,
   handleAutoRenewal,
 }) => {
-  const { dispatch } = useCreateCompanySubscriptionStateAndDispatch();
+  const {
+    dispatch,
+    state: { autoRenew },
+  } = useCreateCompanySubscriptionStateAndDispatch();
   return (
-    <div className={`${boxStyle} text-sm bg-card`}>
+    <div className={`${cardStyle} text-sm bg-card`}>
       <div className="flex items-center justify-between">
-        <h5 className={boxTitle}>Add Ons</h5>
+        <h5 className={boxCardTitle}>Add Ons</h5>
       </div>
 
       <div>
@@ -56,10 +59,17 @@ export const AddOnSection: React.FC<IProps> = ({
             <span>{`Auto-Renewal`}</span>
             <AppSwitch
               size="small"
-              checked={autoRenewal}
+              checked={autoRenew}
               checkedChildren="On"
               unCheckedChildren="Off"
-              onChange={handleAutoRenewal}
+              onChange={() =>
+                dispatch({
+                  type: ECreateCompanySubscriptionOps.update,
+                  payload: {
+                    autoRenew: autoRenew === undefined ? false : !autoRenew,
+                  },
+                })
+              }
             />
           </div>
         </div>
@@ -138,7 +148,7 @@ const SelectAddon: React.FC<
   return (
     <div className={`${boxStyle} text-sm`}>
       <div className="flex items-center justify-between mb-4">
-        <h5 className={boxTitle}>{title}</h5>
+        <h5 className={boxCardTitle}>{title}</h5>
       </div>
       <Form.Item name={name} rules={generalValidationRulesOp}>
         <Select

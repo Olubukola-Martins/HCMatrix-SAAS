@@ -21,7 +21,7 @@ const getData = async (props: {
   const limit = pagination?.limit ?? DEFAULT_PAGE_SIZE;
   const offset = pagination?.offset ?? 0;
 
-  let url = `${MICROSERVICE_ENDPOINTS.UTILITY}/subscription/company/employee-license`;
+  let url = `${MICROSERVICE_ENDPOINTS.UTILITY}/subscription/company/employee/license`;
 
   const config = {
     headers: {

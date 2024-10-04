@@ -14,7 +14,7 @@ const delData = async (props: { auth: ICurrentCompany }) => {
     },
   };
 
-  const response = await axios.delete(url, config);
+  const response = await axios.patch(url, config);
   return response;
 };
 export const useCancelCompanySubscription = () => {

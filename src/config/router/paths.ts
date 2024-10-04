@@ -138,6 +138,9 @@ export const appRoutes = {
   billingHistory: `billing/history`, //to be removed
   // start here
   purchaseUserLicense: `/purchase-user-license`,
+  purchaseExtraLiense: `/purchase-extra-license`,
+  purchaseModules: `/purchase-modules`,
+  upgradePlan: `/upgrade-plan`,
   billingSubscription: `/billings/subscription`,
   billingInactiveSubscriptionInformEmployee: `/billings/subscription/inactive/inform-employee`,
   billingInactiveSubscriptionInformOwner: `/billings/subscription/inactive/inform-owner`,
@@ -145,6 +148,11 @@ export const appRoutes = {
   singleBillingSummary: (id?: number) => ({
     format: `/billings/summary/:id`,
     path: `/billings/summary/${id}`,
+  }),
+
+  purchaseSubscriptionByPlan: (id?: number) => ({
+    format: `/billings/purchase/subscription/plan/:id`,
+    path: `/billings/purchase/subscription/plan/${id}`,
   }),
 
   billingStorageManagement: `/billings/storage-management`,

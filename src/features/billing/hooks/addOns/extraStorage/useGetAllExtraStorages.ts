@@ -10,7 +10,7 @@ export const QUERY_KEY_FOR_ALL_EXTRA_STORAGES = "all-extra-storages";
 const getData = async (props: {
   auth: ICurrentCompany;
 }): Promise<{ data: TExtraStorage[]; total: number }> => {
-  const url = `${MICROSERVICE_ENDPOINTS.UTILITY}/subscription/add-ons/extra-storage`;
+  const url = `${MICROSERVICE_ENDPOINTS.UTILITY}/subscription/add-ons/storage`;
 
   const config = {
     headers: {

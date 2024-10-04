@@ -3,27 +3,43 @@ import { SummaryCard } from "components/cards/SummaryCard";
 import { PRICE_TYPE_CURRENCY } from "features/billing/constants";
 
 import { useGetCreateCompanySubscriptionSummary } from "features/billing/hooks/useGetCreateCompanySubscriptionSummary";
-
-import { TSubscription } from "features/billing/types/subscription";
+import { Form as _Form } from "antd";
 import React from "react";
-import { boxStyle } from "styles/reused";
+import { cardStyle } from "styles/reused";
 import { formatNumberWithCommas } from "utils/dataHelpers/formatNumberWithCommas";
+import { TBillingCycle } from "features/billing/types/billingCycle";
+import { TSubscriptionPriceType } from "features/billing/types/priceType";
+import { useCreateCompanySubscriptionStateAndDispatch } from "features/billing/stateManagers";
 
 const SummarySection: React.FC<{
-  subscriptions?: TSubscription[];
-  loading?: boolean;
+  Form: typeof _Form;
+  selectedPriceType?: TSubscriptionPriceType;
+  selectedBillingCycle?: TBillingCycle;
+
+  summaryNotes?: React.ReactNode | string;
   proceed?: {
     fn: () => void;
     text?: string;
     isLoading?: boolean;
   };
-}> = ({ subscriptions, loading, proceed }) => {
+}> = ({
+  Form,
+  selectedBillingCycle,
+  selectedPriceType,
+  proceed,
+  summaryNotes,
+}) => {
+  const {
+    state: {
+      licensedEmployeeCount,
+      unlicensedEmployeeCount,
+      planOrModulePrices,
+    },
+  } = useCreateCompanySubscriptionStateAndDispatch();
   const {
     totalEmployeeCost,
     totalNoOfUsers,
-    priceType,
-    licensedEmployeeCount,
-    unlicensedEmployeeCount,
+    currency,
     vat,
     discount,
     totalCost,
@@ -33,15 +49,18 @@ const SummarySection: React.FC<{
     isLoading,
     vatPercentage,
     discountPercentage,
-  } = useGetCreateCompanySubscriptionSummary({ subscriptions });
+    remainingFundsAmount,
+  } = useGetCreateCompanySubscriptionSummary({
+    currency: selectedPriceType,
+    cycle: selectedBillingCycle,
+  });
 
   return (
-    <div
-      className={`${boxStyle} text-sm bg-card flex flex-col gap-4 items-stretch`}
-    >
+    <div className={` ${cardStyle} text-sm flex flex-col gap-4 items-stretch`}>
       <SummaryCard
-        isLoading={isLoading || loading}
+        isLoading={isLoading}
         title="Summary"
+        summaryNotes={summaryNotes}
         highlights={[
           {
             name: "Number of User",
@@ -49,7 +68,7 @@ const SummarySection: React.FC<{
           },
           {
             name: "Monthly Amount",
-            value: `${PRICE_TYPE_CURRENCY[priceType]} ${formatNumberWithCommas(
+            value: `${PRICE_TYPE_CURRENCY[currency]} ${formatNumberWithCommas(
               totalEmployeeCost
             )}`, //TODO: Refactor to a function to avoid repetion
           },
@@ -65,37 +84,43 @@ const SummarySection: React.FC<{
           },
           {
             name: "Storage",
-            value: `${PRICE_TYPE_CURRENCY[priceType]} ${formatNumberWithCommas(
+            value: `${PRICE_TYPE_CURRENCY[currency]} ${formatNumberWithCommas(
               storagePrice
             )}`,
           },
           {
             name: "Training",
-            value: `${PRICE_TYPE_CURRENCY[priceType]} ${formatNumberWithCommas(
+            value: `${PRICE_TYPE_CURRENCY[currency]} ${formatNumberWithCommas(
               trainingSessionPrice
             )}`,
           },
           {
             name: "Support",
-            value: `${PRICE_TYPE_CURRENCY[priceType]} ${formatNumberWithCommas(
+            value: `${PRICE_TYPE_CURRENCY[currency]} ${formatNumberWithCommas(
               supportCasePrice
             )}`,
           },
           {
             name: `Vat(${vatPercentage}%)`,
-            value: `${PRICE_TYPE_CURRENCY[priceType]} ${formatNumberWithCommas(
+            value: `${PRICE_TYPE_CURRENCY[currency]} ${formatNumberWithCommas(
               vat
             )}`,
           },
           {
             name: `Discount(${discountPercentage}%)`,
-            value: `${PRICE_TYPE_CURRENCY[priceType]} ${formatNumberWithCommas(
+            value: `${PRICE_TYPE_CURRENCY[currency]} ${formatNumberWithCommas(
               discount
             )}`,
           },
           {
+            name: `Remining Funds`,
+            value: `${PRICE_TYPE_CURRENCY[currency]} ${formatNumberWithCommas(
+              remainingFundsAmount
+            )}`,
+          },
+          {
             name: "Total Amount",
-            value: `${PRICE_TYPE_CURRENCY[priceType]} ${formatNumberWithCommas(
+            value: `${PRICE_TYPE_CURRENCY[currency]} ${formatNumberWithCommas(
               totalCost
             )}`,
           },

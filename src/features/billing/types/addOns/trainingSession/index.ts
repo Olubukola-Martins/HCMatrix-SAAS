@@ -1,13 +1,15 @@
+import { GeneralPrice } from "../..";
+
 export type TTrainingSession = {
   id: number;
   name: string;
   label: string;
+  type: "training";
   description: string;
-  numberOfHours: number;
-  priceInNgn: string;
-  priceInUsd: string;
+  trainingHours: number;
   createdAt: string;
   updatedAt: string;
+  prices: GeneralPrice[];
 };
 
 export {

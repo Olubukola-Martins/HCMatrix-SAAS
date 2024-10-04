@@ -1,5 +1,5 @@
 export const appLogger = () => {
-  if (process.env.DEBUG) {
+  if (process.env.REACT_APP_DEBUG === "true") {
     return console;
   }
 };

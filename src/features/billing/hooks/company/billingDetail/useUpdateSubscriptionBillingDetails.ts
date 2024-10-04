@@ -6,8 +6,8 @@ import { ICurrentCompany } from "types";
 import { TAddress } from "types/address";
 
 export type TUpdateBillingDetailsProps = {
-  billingName: string;
-  phoneNumber: string;
+  name: string;
+  phone: string;
   address: TAddress;
 };
 
@@ -15,7 +15,7 @@ const createData = async (props: {
   data: TUpdateBillingDetailsProps;
   auth: ICurrentCompany;
 }) => {
-  const url = `${MICROSERVICE_ENDPOINTS.UTILITY}/subscription/company/billing-detail`;
+  const url = `${MICROSERVICE_ENDPOINTS.UTILITY}/subscription/company/billing/info`;
   const config = {
     headers: {
       Accept: "application/json",
@@ -28,7 +28,7 @@ const createData = async (props: {
     ...props.data,
   };
 
-  const response = await axios.put(url, data, config);
+  const response = await axios.post(url, data, config);
   return response;
 };
 export const useUpdateSubscriptionBillingDetails = () => {

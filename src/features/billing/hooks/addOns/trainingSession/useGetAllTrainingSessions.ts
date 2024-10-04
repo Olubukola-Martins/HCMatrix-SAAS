@@ -10,7 +10,7 @@ export const QUERY_KEY_FOR_TRAINING_SESSIONS = "training-sessions";
 const getData = async (props: {
   auth: ICurrentCompany;
 }): Promise<{ data: TTrainingSession[]; total: number }> => {
-  const url = `${MICROSERVICE_ENDPOINTS.UTILITY}/subscription/add-ons/training-session`;
+  const url = `${MICROSERVICE_ENDPOINTS.UTILITY}/subscription/add-ons/training`;
 
   const config = {
     headers: {

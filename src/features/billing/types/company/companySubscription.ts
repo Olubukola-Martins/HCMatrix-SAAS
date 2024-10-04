@@ -4,8 +4,12 @@ import { TTrainingSession } from "../addOns/trainingSession";
 import { TBillingCycle } from "../billingCycle";
 import { TSubscriptionPriceType } from "../priceType";
 import { TSubscription } from "../subscription";
+import { AciveCompanySubscription } from "./active-company-subscription";
 
-export type TCompanySubscription = {
+export type TCompanySubscription = AciveCompanySubscription;
+// deprecated
+
+export type TCompanySubscriptionDeprecated = {
   id: number;
   companyId: number;
   isActive: boolean;

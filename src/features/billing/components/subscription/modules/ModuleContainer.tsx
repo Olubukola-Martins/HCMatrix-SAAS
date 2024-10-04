@@ -1,77 +1,124 @@
-import { employeeManagementSvg } from "assets/images";
 import React from "react";
 import { ModuleCards } from "./ModuleCards";
 import { Form, Skeleton } from "antd";
 import { PRICE_TYPE_CURRENCY } from "features/billing/constants";
 import { TSubscriptionPriceType } from "features/billing/types/priceType";
 import { TBillingCycle } from "features/billing/types/billingCycle";
-import { getPricePerEmployee } from "features/billing/utils";
+import {
+  calculateSubscriptionPlanTotalPrice,
+  getPricePerEmployee,
+} from "features/billing/utils";
 import {
   ECreateCompanySubscriptionOps,
   useCreateCompanySubscriptionStateAndDispatch,
 } from "features/billing/stateManagers";
-import { TSubscription } from "features/billing/types/subscription";
+import {
+  TSubscription,
+  TSubscriptionType,
+} from "features/billing/types/subscription";
+import {
+  IModulesCardData,
+  SUBSCRIPTION_ICON_MAPPING,
+} from "../../billing/cards/ModulesCard";
+import { useGetCompanyActiveSubscription } from "features/billing/hooks/company/useGetCompanyActiveSubscription";
+import { EmptyDataWrapper } from "components/data/EmptyDataWrapper";
+import { IModuleCardProps } from "./ModuleCard";
+
+const modules: IModulesCardData[] = [
+  {
+    name: "Employee Management",
+    label: "employee-management",
+    icon: <i className="ri-line-chart-line text-xs text-white font-light" />,
+  },
+  {
+    name: "HR Admin",
+    label: "core-hr",
+    icon: <i className="ri-book-2-line text-xs text-white font-light" />,
+  },
+  {
+    name: "Time and Attendance",
+
+    label: "time-and-attendance",
+    icon: <i className="ri-time-line text-xs text-white font-light" />,
+  },
+  {
+    name: "Payroll",
+    label: "payroll",
+    icon: <i className="ri-book-2-line text-xs text-white font-light" />,
+  },
+];
 
 const ModuleContainer: React.FC<{
-  Form: typeof Form;
-  selectedPriceType?: TSubscriptionPriceType;
-  selectedBillingCycle?: TBillingCycle;
+  currency?: TSubscriptionPriceType;
+  billingCycle?: TBillingCycle;
   isLoading?: boolean;
   subscriptions?: TSubscription[];
-}> = ({
-  Form,
-  selectedPriceType = "usd",
-  selectedBillingCycle = "yearly",
-  isLoading,
-  subscriptions,
-}) => {
+}> = ({ currency = "USD", billingCycle = "yearly", isLoading }) => {
+  const { data: sub, isLoading: isLoadingSub } =
+    useGetCompanyActiveSubscription();
+  const moduleData: IModuleCardProps[] | undefined =
+    sub?.type === "plan"
+      ? sub.plan.modules.map((m) => ({
+          icon: m?.iconUrl ? (
+            <img src={m?.iconUrl} alt={m.name} />
+          ) : (
+            SUBSCRIPTION_ICON_MAPPING?.[m.label]
+          ),
+          title: {
+            mainText: m.name,
+            supportingText: m.description ?? "",
+          },
+          disabled: m.label === "employee-management",
+          features: m?.features?.map((f) => f.name),
+          pricePerLicensedEmployee: {
+            amount: 0,
+            currency,
+          },
+          subscriptionId: sub.id,
+        }))
+      : sub?.modules.map((m) => ({
+          icon: m?.iconUrl ? (
+            <img src={m?.iconUrl} alt={m.name} />
+          ) : (
+            SUBSCRIPTION_ICON_MAPPING?.[m.label]
+          ),
+          title: {
+            mainText: m.name,
+            supportingText: m.description ?? "",
+          },
+          disabled: m.label === "employee-management",
+          features: m?.features?.map((f) => f.name),
+          pricePerLicensedEmployee: {
+            amount: 0,
+            currency,
+          },
+          subscriptionId: sub.id,
+        }));
   const { dispatch } = useCreateCompanySubscriptionStateAndDispatch();
   return (
     <div className="flex flex-col gap-2 ">
-      <p className="text-left">
-        Checkbox the module you would like to purchase.
+      <p className="text-left pb-2 text-lg">
+        {sub?.type === "plan"
+          ? `Here are the modules purchased based on your plan.`
+          : `Here are the modules purchase.`}
       </p>
-      <Skeleton loading={isLoading} active paragraph={{ rows: 40 }}>
-        <ModuleCards
-          Form={Form}
-          onChange={(val) =>
-            dispatch({
-              type: ECreateCompanySubscriptionOps.update,
-              payload: { purchased: val.map((item) => +item) },
-            })
-          }
-          data={subscriptions?.map((item) => ({
-            subscriptionId: item.id,
-            disabled: item.label === "employee-management",
-            icon: (
-              // TODO: Refactor to a module icon component
-              <div className="bg-[#3A3A3A] p-2 rounded-md">
-                <img
-                  className="w-[16px] h-[16px]"
-                  alt="Employee Management"
-                  src={item?.iconUrl ? item.iconUrl : employeeManagementSvg}
-                />
-              </div>
-            ),
-            pricePerLicensedEmployee:
-              item.label === "employee-management"
-                ? undefined
-                : {
-                    amount: getPricePerEmployee({
-                      selectedPriceType,
-                      selectedBillingCycle,
-                      subscription: item,
-                      type: "licensed",
-                    }),
-                    currency: PRICE_TYPE_CURRENCY[selectedPriceType],
-                  },
-            title: {
-              mainText: item.name,
-              supportingText: item.description,
-            },
-            features: item.resources.map((item) => item.resource.name),
-          }))}
-        />
+      <Skeleton
+        loading={isLoadingSub || isLoading}
+        active
+        paragraph={{ rows: 40 }}
+      >
+        <EmptyDataWrapper isEmpty={moduleData?.length === 0}>
+          <ModuleCards
+            Form={Form}
+            onChange={(val) =>
+              dispatch({
+                type: ECreateCompanySubscriptionOps.update,
+                payload: { purchased: val.map((item) => +item) },
+              })
+            }
+            data={moduleData}
+          />
+        </EmptyDataWrapper>
       </Skeleton>
     </div>
   );
