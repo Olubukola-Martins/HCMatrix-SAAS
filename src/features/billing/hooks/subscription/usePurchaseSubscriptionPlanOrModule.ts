@@ -5,22 +5,13 @@ import { TSubscriptionPriceType } from "features/billing/types/priceType";
 import { useApiAuth } from "hooks/useApiAuth";
 import { useMutation } from "react-query";
 import { ApiResponse, ICurrentCompany } from "types";
+import { TAddress } from "types/address";
 
 type TBillingInfo = {
   name: string;
   phone: string;
-  address: Address;
+  address: TAddress;
 };
-
-interface Address {
-  streetAddress: string;
-  countryId: number;
-  stateId: number;
-  lgaId: number;
-  timezone: string;
-  longitude: string;
-  latitude: string;
-}
 
 export type TPurchasePlanOrModulesSubscriptionInputProps =
   | {

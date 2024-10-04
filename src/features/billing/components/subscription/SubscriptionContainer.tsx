@@ -250,7 +250,6 @@ const SubscriptionContainer: React.FC<{
             <div className={activeStep === 2 ? "block" : "hidden"}>
               <PaymentsContainer
                 Form={Form}
-                subscriptions={subscriptions?.data}
                 isLoading={isFetchingSubscriptions || isFetchingDetails}
                 form={form}
                 isPayingForSubscription={isPaying}

@@ -10,11 +10,32 @@ import BillingHistoryContainer from "../components/billing/containers/BillingHis
 import PlansContainer from "../components/billing/containers/PlansContainer";
 import ModuleContainer from "../components/subscription/modules/ModuleContainer";
 import BillingInfo from "../components/billing/billingInfo/BillingInfo";
-import { useState } from "react";
+import React, { useState } from "react";
 import { TCompanySubscription } from "../types/company/companySubscription";
 import { TSubscriptionPriceType } from "../types/priceType";
 import { TBillingCycle } from "../types/billingCycle";
 
+type THeadingCapsule = {
+  text:
+    | "Billing"
+    | "Plans"
+    | "Billing History"
+    | "Modules Purchased"
+    | "Billing Address";
+  tab: React.ReactNode;
+};
+const headingCapsulesDef = (
+  filter: Pick<TCompanySubscription, "currency" | "billingCycle">
+): THeadingCapsule[] => [
+  { text: "Billing", tab: <BillingContainer /> },
+  { text: "Plans", tab: <PlansContainer {...filter} /> },
+  {
+    text: "Modules Purchased",
+    tab: <ModuleContainer {...filter} />,
+  },
+  { text: "Billing History", tab: <BillingHistoryContainer /> },
+  { text: "Billing Address", tab: <BillingInfo /> },
+];
 const SubsciptionManagement = () => {
   const [filter, setFilter] = useState<
     Pick<TCompanySubscription, "currency" | "billingCycle">
@@ -22,24 +43,15 @@ const SubsciptionManagement = () => {
     billingCycle: "monthly",
     currency: "USD",
   });
-  const headingCapsules = [
-    { text: "Billing", tab: <BillingContainer /> },
-    { text: "Plans", tab: <PlansContainer /> },
-    {
-      text: "Modules Purchased",
-      tab: <ModuleContainer {...filter} />,
-    },
-    { text: "Billing History", tab: <BillingHistoryContainer /> },
-    { text: "Billing Address", tab: <BillingInfo /> },
-  ];
-  type THeadingCapsule = (typeof headingCapsules)[number];
+
+  const headingCapsules = headingCapsulesDef(filter);
   const [currentContentCapsule, setCurrentContentCapsule] =
-    useState<THeadingCapsule>(headingCapsules[0]);
+    useState<THeadingCapsule["text"]>("Billing");
 
   const navigate = useNavigate();
 
   const renderButton = () => {
-    if (currentContentCapsule.text === "Billing") {
+    if (currentContentCapsule === "Billing") {
       return (
         <AppButton
           label="Purchase Extra License"
@@ -55,8 +67,8 @@ const SubsciptionManagement = () => {
   };
   const renderSegmentedControl = () => {
     if (
-      currentContentCapsule.text === "Plans" ||
-      currentContentCapsule.text === "Modules Purchased"
+      currentContentCapsule === "Plans" ||
+      currentContentCapsule === "Modules Purchased"
     ) {
       return (
         <div className="flex gap-x-2">
@@ -66,14 +78,16 @@ const SubsciptionManagement = () => {
               value: item,
             }))}
             size="large"
-            onChange={(val) =>
+            value={filter.currency}
+            onChange={(val) => {
               setFilter((v) => ({
                 ...v,
                 currency: val as TSubscriptionPriceType,
-              }))
-            }
+              }));
+            }}
           />
           <Segmented
+            value={filter.billingCycle}
             options={["monthly", "yearly"].map((item) => ({
               label: <span className="uppercase">{item}</span>,
               value: item,
@@ -107,9 +121,9 @@ const SubsciptionManagement = () => {
                 {headingCapsules.map((heading) => (
                   <Capsule
                     name={heading.text}
-                    isActive={currentContentCapsule.text === heading.text}
+                    isActive={currentContentCapsule === heading.text}
                     onClick={() => {
-                      setCurrentContentCapsule(heading);
+                      setCurrentContentCapsule(heading.text);
                     }}
                   />
                 ))}
@@ -120,7 +134,7 @@ const SubsciptionManagement = () => {
           </div>
 
           {/* body area */}
-          {currentContentCapsule.tab}
+          {headingCapsules.find((r) => r.text === currentContentCapsule)?.tab}
         </div>
       </ErrorBoundary>
     </>

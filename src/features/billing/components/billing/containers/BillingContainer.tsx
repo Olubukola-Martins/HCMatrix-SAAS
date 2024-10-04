@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import ErrorBoundary from "components/errorHandlers/ErrorBoundary";
 import CurrentPlanCard from "../cards/CurrentPlanCard";
 import ModulesCard from "../cards/ModulesCard";
@@ -9,6 +9,7 @@ import { useGetCompanyActiveSubscription } from "features/billing/hooks/company/
 import { Skeleton } from "antd";
 import { contructBillingDetailsBasedOnSubsriptionType } from "features/billing/utils";
 import moment from "moment";
+import BillingHistoryContainer from "./BillingHistoryContainer";
 
 const BillingContainer = () => {
   const [openUogradeModal, setOpenUpgradeModal] = useState(false);
@@ -52,19 +53,7 @@ const BillingContainer = () => {
         </Skeleton>
 
         <div className="flex flex-col gap-4">
-          <p className="font-bold text-lg">Billing History</p>
-          <BillingsHistoryTable
-            dataHistory={sub?.billingHistory?.map((b) => ({
-              amount: b.amountPaid,
-              billingCycle: "N/A",
-              date: moment(b.billingDate).format(`MMMM DD, YYYY`),
-              status: b.status,
-              id: b.id,
-              key: b.id,
-              type: b.name,
-              billings: `#${b.paymentReference}`,
-            }))}
-          />
+          <BillingHistoryContainer />
         </div>
       </div>
     </ErrorBoundary>

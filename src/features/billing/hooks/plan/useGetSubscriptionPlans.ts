@@ -4,6 +4,7 @@ import { useQuery } from "react-query";
 import { ICurrentCompany } from "types";
 import { useApiAuth } from "hooks/useApiAuth";
 import { TSubscriptionLabel } from "features/billing/types/subscription";
+import { GeneralPrice } from "features/billing/types";
 
 export const QUERY_KEY_FOR_SUBSCRIPTION_PLANS = "subscription-plans";
 
@@ -62,7 +63,7 @@ export type TSubscriptionPlanListData = {
   description: null;
   createdAt: string;
   updatedAt: string;
-  prices: Price[];
+  prices: GeneralPrice[];
   modules: Module[];
 };
 
@@ -92,16 +93,4 @@ interface Subscriptionplanmodule {
   updatedAt: string;
   moduleId: number;
   planId: number;
-}
-
-interface Price {
-  id: number;
-  planId: number;
-  addonId: null;
-  moduleId: null;
-  amount: string;
-  billingCycle: string;
-  currency: string;
-  createdAt: string;
-  updatedAt: string;
 }

@@ -31,7 +31,7 @@ const CurrentPlanCard: React.FC<CurrentPlanCardProps> = ({
   currency = "NGN",
   cycle = "monthly",
 }) => {
-  const billingRate = `user/${cycle}`;
+  const billingRate = `user/${cycle === "monthly" ? "month" : "year"}`;
   return (
     <CardWrapper
       className={`px-6 pt-6 pb-4 flex flex-col gap-9 w-full ${extraStyles}`}

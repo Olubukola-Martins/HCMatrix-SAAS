@@ -8,6 +8,46 @@ import formatCurrency from "./currencyFormatter";
 import moment from "moment";
 import { TSubscriptionPlan } from "../hooks/plan/useGetGetSubscriptionPlanById";
 import { GeneralPrice } from "../types";
+import { TCompanySubscriptionDiscount } from "../types/discount";
+
+export const calculateCompanyDiscount = ({
+  initialTotalCost,
+  discountData,
+}: {
+  discountData?: TCompanySubscriptionDiscount;
+  initialTotalCost: number;
+}): number => {
+  let amount = 0;
+  if (discountData?.type === "amount") {
+    amount = +(discountData.value || 0);
+    return amount;
+  }
+  if (discountData?.type === "percentage") {
+    let percentage = +(discountData.value || 0);
+    if (percentage === 0) return 0;
+    amount = percentage * 100 * initialTotalCost;
+    return amount;
+  }
+  return amount;
+};
+
+export const calculateTotalAmountFromSubscriptionPrices = (
+  props: {
+    prices?: GeneralPrice[];
+    cycle?: TBillingCycle;
+    currency?: TSubscriptionPriceType;
+  } = {}
+): number => {
+  let amount = 0;
+  const { currency = "NGN", cycle = "monthly", prices } = props;
+
+  const summedPriceAmount = prices
+    ?.filter((p) => p.billingCycle === cycle && p.currency === currency)
+    .reduce((prev, curr) => prev + +curr.amount, 0);
+  amount = summedPriceAmount ?? 0;
+
+  return amount;
+};
 
 export const getPricePerEmployee = (props: {
   subscription: TSubscription;
@@ -74,7 +114,7 @@ export const contructBillingDetailsBasedOnSubsriptionType = (
 
       break;
     case "plan":
-      subName = `${sub.plan.name} Plan`;
+      subName = `${sub.plan.name}`;
       billingCurrency = sub.currency;
       billingCycle = sub.billingCycle;
 

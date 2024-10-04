@@ -1,73 +1,51 @@
 import { useMemo } from "react";
-import { useCreateCompanySubscriptionStateAndDispatch } from "../stateManagers";
-import { TSubscription } from "../types/subscription";
-import { calculatAddonTotalPrice, getPricePerEmployee } from "../utils";
+import {
+  calculateTotalAmountFromSubscriptionPrices,
+  calculateCompanyDiscount,
+} from "../utils";
 import { useGetAllExtraStorages } from "./addOns/extraStorage/useGetAllExtraStorages";
 import { useGetAllSupportCases } from "./addOns/supportCase/useGetAllSupportCases";
 import { useGetAllTrainingSessions } from "./addOns/trainingSession/useGetAllTrainingSessions";
 import { useGetCompanySubsriptionDiscount } from "./discount/useGetCompanySubsriptionDiscount";
 import { useGetBillingVat } from "./vat/useGetBillingVat";
+import { TBillingCycle } from "../types/billingCycle";
+import { TSubscriptionPriceType } from "../types/priceType";
+import { useGetUnlicensedEmployeeAddOn } from "./addOns/unlicensedEmployee/useGetUnlicensedEmployeeAddOn";
+import { useGetRemainingFundsForActiveSubscription } from "./company/useGetRemainingFundsForActiveSubscription";
+import { useCreateCompanySubscriptionStateAndDispatch } from "../stateManagers";
 
 export const useGetCreateCompanySubscriptionSummary = (props: {
-  subscriptions?: TSubscription[];
+  cycle?: TBillingCycle;
+  currency?: TSubscriptionPriceType;
 }) => {
-  const { subscriptions } = props;
-  const { data: discountData, isLoading: isFetchingDiscount } =
-    useGetCompanySubsriptionDiscount();
-  const { data: vatData, isLoading: isFetchingVat } = useGetBillingVat();
-
+  const { cycle = "monthly", currency = "USD" } = props;
   const {
     state: {
-      purchased,
       licensedEmployeeCount,
       unlicensedEmployeeCount,
-      priceType = "USD",
-      billingCycle = "yearly",
+      planOrModulePrices,
       addOns,
     },
   } = useCreateCompanySubscriptionStateAndDispatch();
-  const selectedSubscriptionIds = useMemo(
-    () => purchased?.map((subscriptionId) => subscriptionId),
-    [purchased]
-  );
-  const selectedModules = useMemo(
-    () =>
-      subscriptions?.filter((subscription) =>
-        selectedSubscriptionIds?.some((id) => id === subscription.id)
-      ) ?? [],
-    [selectedSubscriptionIds, subscriptions]
-  );
-  const totalNoOfUsers = useMemo(
-    () => (licensedEmployeeCount ?? 0) + (unlicensedEmployeeCount ?? 0),
-    [licensedEmployeeCount, unlicensedEmployeeCount]
-  );
-  const pricePerLicensedEmployee = selectedModules.reduce(
-    (acc, subscription) => {
-      return (
-        acc +
-        getPricePerEmployee({
-          subscription,
-          selectedPriceType: priceType,
-          selectedBillingCycle: billingCycle,
-          type: "licensed",
-        })
-      );
-    },
-    0
-  );
-  const pricePerUnLicensedEmployee = selectedModules.reduce(
-    (acc, subscription) => {
-      return (
-        acc +
-        getPricePerEmployee({
-          subscription,
-          selectedPriceType: priceType,
-          selectedBillingCycle: billingCycle,
-          type: "unlicensed",
-        })
-      );
-    },
-    0
+  const totalSubscriptionAmount = calculateTotalAmountFromSubscriptionPrices({
+    prices: planOrModulePrices,
+    cycle,
+    currency,
+  });
+  const { data: discountData, isLoading: isFetchingDiscount } =
+    useGetCompanySubsriptionDiscount();
+  const { data: vatData, isLoading: isFetchingVat } = useGetBillingVat();
+  const {
+    data: unlicensedEmployeeAddOn,
+    isLoading: isLoadingUnlicensedEmployeeAddOn,
+  } = useGetUnlicensedEmployeeAddOn();
+  const { data: remainingFunds, isLoading: isLoadingRemainingFunds } =
+    useGetRemainingFundsForActiveSubscription();
+  const remainingFundsAmount = +(remainingFunds?.data || 0);
+
+  const pricePerLicensedEmployee = totalSubscriptionAmount;
+  const pricePerUnLicensedEmployee = calculateTotalAmountFromSubscriptionPrices(
+    { prices: unlicensedEmployeeAddOn?.data?.[0].prices, cycle, currency }
   );
   const totalEmployeeCost = useMemo(
     () =>
@@ -87,52 +65,54 @@ export const useGetCreateCompanySubscriptionSummary = (props: {
   const { data: trainingSessions, isFetching: isFetchingTrainingSessions } =
     useGetAllTrainingSessions();
   const vatPercentage = +(vatData?.value ?? 0);
-  const discountPercentage = +(discountData?.value ?? 0);
-  const supportCase = supportCases?.data?.find(
-    (item) => item.id === addOns?.supportCaseId
-  );
-  const supportCasePrice = calculatAddonTotalPrice(
-    supportCase?.prices,
-    billingCycle,
-    priceType
-  );
-  const storage = storages?.data?.find(
-    (item) => item.id === addOns?.extraStorageId
-  );
-  const storagePrice = calculatAddonTotalPrice(
-    storage?.prices,
-    billingCycle,
-    priceType
-  );
 
-  const trainingSession = trainingSessions?.data?.find(
-    (item) => item.id === addOns?.trainingSessionId
-  );
-  const trainingSessionPrice = calculatAddonTotalPrice(
-    trainingSession?.prices,
-    billingCycle,
-    priceType
-  );
+  const supportCasePrice = calculateTotalAmountFromSubscriptionPrices({
+    prices: supportCases?.data?.find((s) => s.id === addOns?.supportCaseId)
+      ?.prices,
+    cycle,
+    currency,
+  });
+  const storagePrice = calculateTotalAmountFromSubscriptionPrices({
+    prices: storages?.data?.find((s) => s.id === addOns?.extraStorageId)
+      ?.prices,
+
+    cycle,
+    currency,
+  });
+  const trainingSessionPrice = calculateTotalAmountFromSubscriptionPrices({
+    prices: trainingSessions?.data?.find(
+      (s) => s.id === addOns?.trainingSessionId
+    )?.prices,
+
+    cycle,
+    currency,
+  });
+
   const initialTotalCost =
     totalEmployeeCost + trainingSessionPrice + supportCasePrice + storagePrice;
   const vat = vatPercentage ? initialTotalCost * (vatPercentage / 100) : 0;
-  const discount = discountPercentage
-    ? initialTotalCost * (discountPercentage / 100)
-    : 0;
-  const totalCost = initialTotalCost + vat - discount;
+
+  const discount = calculateCompanyDiscount({ initialTotalCost, discountData });
+  const discountPercentage = (discount / initialTotalCost) * 100;
+  const totalCost = initialTotalCost + vat - (discount + remainingFundsAmount);
+
+  const totalNoOfUsers =
+    +(licensedEmployeeCount || 0) + +(unlicensedEmployeeCount || 0);
   return {
     isLoading:
+      isLoadingUnlicensedEmployeeAddOn ||
       isFetchingStorages ||
       isFetchingSupportCases ||
       isFetchingTrainingSessions ||
       isFetchingDiscount ||
-      isFetchingVat,
-    selectedModules,
+      isFetchingVat ||
+      isLoadingRemainingFunds,
+    remainingFundsAmount,
     pricePerLicensedEmployee,
     pricePerUnLicensedEmployee,
     totalNoOfUsers,
     totalEmployeeCost,
-    priceType,
+    currency,
     licensedEmployeeCount,
     unlicensedEmployeeCount,
     vat,
@@ -143,6 +123,7 @@ export const useGetCreateCompanySubscriptionSummary = (props: {
     supportCasePrice,
     vatPercentage,
     discountPercentage,
+    cycle,
   };
 };
 

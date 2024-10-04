@@ -196,8 +196,6 @@ const UpgradePlanContainer: React.FC<{
               <PaymentsContainer
                 Form={Form}
                 onProceed={() => handleNext()}
-                subscriptions={subscriptions?.data}
-                isLoading={isFetchingSubscriptions || isFetchingDetails}
                 form={form}
                 isPayingForSubscription={isPaying}
               />

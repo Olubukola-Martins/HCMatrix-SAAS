@@ -16,39 +16,39 @@ const AddOnContainer: React.FC<{
   Form: typeof Form;
   selectedPriceType?: TSubscriptionPriceType;
   selectedBillingCycle?: TBillingCycle;
-  autoRenewal: boolean;
-  handleAutoRenewal: (val: boolean) => void;
+  autoRenewal?: boolean;
+  handleAutoRenewal?: (val: boolean) => void;
   subscriptions?: TSubscription[];
   isLoading?: boolean;
   onProceed: () => void;
   showModules?: boolean;
   showPlans?: boolean;
+  planId?: number;
 }> = ({
   Form,
   selectedPriceType = "USD",
   selectedBillingCycle = "yearly",
-  autoRenewal,
-  handleAutoRenewal,
+  autoRenewal = false,
   subscriptions,
   isLoading,
   onProceed,
   showModules,
   showPlans,
+  handleAutoRenewal = () => {},
+  planId,
 }) => {
-  const {
-    pricePerLicensedEmployee,
-    selectedModules,
-    pricePerUnLicensedEmployee,
-  } = useGetCreateCompanySubscriptionSummary({
-    subscriptions,
-  });
+  const { pricePerLicensedEmployee, pricePerUnLicensedEmployee } =
+    useGetCreateCompanySubscriptionSummary({
+      currency: selectedPriceType,
+      cycle: selectedBillingCycle,
+    });
   return (
     <Skeleton loading={isLoading} active paragraph={{ rows: 40 }}>
       <div className="mt-7 grid grid-cols-1 md:grid-cols-2 gap-7 text-accent">
         <div className="flex flex-col gap-4">
           {showPlans ? (
             <SelectedPlansSection
-              selectedPlans={["Basic"]}
+              planId={planId}
               Form={Form}
               pricePerUser={`${
                 PRICE_TYPE_CURRENCY[selectedPriceType]
@@ -61,7 +61,6 @@ const AddOnContainer: React.FC<{
               pricePerUser={`${
                 PRICE_TYPE_CURRENCY[selectedPriceType]
               } ${formatNumberWithCommas(pricePerLicensedEmployee)}`}
-              selectedModules={selectedModules.map((item) => item.name)}
             />
           )}
           <AddOnSection
@@ -76,8 +75,9 @@ const AddOnContainer: React.FC<{
 
         <div className="flex flex-col gap-4">
           <SummarySection
-            subscriptions={subscriptions}
-            loading={isLoading}
+            Form={Form}
+            selectedBillingCycle={selectedBillingCycle}
+            selectedPriceType={selectedPriceType}
             proceed={{
               text: "Proceed",
               fn() {

@@ -1,6 +1,4 @@
 import { GeneralPrice } from "../..";
-import { TBillingCycle } from "../../billingCycle";
-import { TSubscriptionPriceType } from "../../priceType";
 
 export type TExtraStorage = {
   size: string;

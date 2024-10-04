@@ -1,14 +1,17 @@
 import React, { useReducer, createContext, ReactNode, useContext } from "react";
 import { TCreateCompanySubscriptionProps } from "../hooks/company/useCreateCompanySubscription";
+import { GeneralPrice } from "../types";
 
 type StateProps = Omit<Partial<TCreateCompanySubscriptionProps>, "addOns"> & {
   addOns?: Partial<TCreateCompanySubscriptionProps["addOns"]>;
+  planOrModulePrices?: GeneralPrice[];
 };
 
 const initState: StateProps = {
   billingCycle: "yearly",
   priceType: "USD",
   autoRenew: true,
+  planOrModulePrices: [],
 };
 
 interface ICreateCompanySubscriptionContext {
@@ -19,6 +22,9 @@ interface ICreateCompanySubscriptionContext {
 export enum ECreateCompanySubscriptionOps {
   update,
   updateAddOnsOnly,
+  updateBillingCycle,
+  updateBillingCurrency,
+  updatePlanOrModulesPrices,
 }
 
 type IAction = {
@@ -31,6 +37,27 @@ const reducer = (state: StateProps, action: IAction): StateProps => {
     ...state,
   };
   switch (action.type) {
+    case ECreateCompanySubscriptionOps.updatePlanOrModulesPrices:
+      newState = {
+        ...state,
+        planOrModulePrices: action.payload?.planOrModulePrices,
+      };
+
+      return newState;
+    case ECreateCompanySubscriptionOps.updateBillingCycle:
+      newState = {
+        ...state,
+        billingCycle: action.payload?.billingCycle,
+      };
+
+      return newState;
+    case ECreateCompanySubscriptionOps.updateBillingCurrency:
+      newState = {
+        ...state,
+        priceType: action.payload?.priceType,
+      };
+
+      return newState;
     case ECreateCompanySubscriptionOps.update:
       newState = {
         ...state,

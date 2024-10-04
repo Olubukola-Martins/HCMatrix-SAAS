@@ -1,22 +1,12 @@
 import React, { useLayoutEffect, useState } from "react";
-import { Form, Segmented, Steps } from "antd";
-import ModuleContainer from "./modules/ModuleContainer";
+import { Form, Steps } from "antd";
 import AddOnContainer from "./addOns/AddOnContainer";
-import { AppButton } from "components/button/AppButton";
 import { TCompanySubscription } from "features/billing/types/company/companySubscription";
-import {
-  TCreateCompanySubscriptionProps,
-  useCreateCompanySubscription,
-} from "features/billing/hooks/company/useCreateCompanySubscription";
+import { TCreateCompanySubscriptionProps } from "features/billing/hooks/company/useCreateCompanySubscription";
 import { useQueryClient } from "react-query";
 import { TSubscriptionPriceType } from "features/billing/types/priceType";
 import { TBillingCycle } from "features/billing/types/billingCycle";
-import {
-  ECreateCompanySubscriptionOps,
-  useCreateCompanySubscriptionStateAndDispatch,
-} from "features/billing/stateManagers";
 import PaymentsContainer from "./payment/PaymentsContainer";
-import { useGetAllSubscriptions } from "features/billing/hooks/useGetAllSubscriptions";
 import { openNotification } from "utils/notifications";
 import { QUERY_KEY_FOR_ACTIVE_COMPANY_SUBSCRITION } from "features/billing/hooks/company/useGetCompanyActiveSubscription";
 import { SubscriptionPaymentModal } from "./payment/SubscriptionPaymentModal";
@@ -25,32 +15,21 @@ import { Navigate, useNavigate } from "react-router-dom";
 import { useGetSubsciptionBillingDetails } from "features/billing/hooks/company/billingDetail/useGetSubsciptionBillingDetails";
 import { parsePhoneNumber } from "utils/dataHelpers/parsePhoneNumber";
 import { TSubscriptionType } from "features/billing/types/subscription";
+import { usePurchaseSubscriptionPlanOrModule } from "features/billing/hooks/subscription/usePurchaseSubscriptionPlanOrModule";
+import { formatPhoneNumber } from "utils/dataHelpers/formatPhoneNumber";
 
 const STEPS = ["Select Plan/Add Ons", "Payment", "Select Users"];
-const PurchaseExtraLicenseContainer: React.FC<{
+const PurchaseModulesContainer: React.FC<{
   subscription?: TCompanySubscription;
   type?: TSubscriptionType;
-}> = ({ subscription, type = "module" }) => {
+  cycle?: TBillingCycle;
+  currency?: TSubscriptionPriceType;
+  planId?: number;
+}> = ({ subscription, type = "module", cycle, currency, planId }) => {
   const [form] = Form.useForm<TCreateCompanySubscriptionProps>();
-  const { data: billingDetails, isFetching: isFetchingDetails } =
-    useGetSubsciptionBillingDetails();
-  const { data: subscriptions, isFetching: isFetchingSubscriptions } =
-    useGetAllSubscriptions({
-      type,
-    });
-  const {
-    state: {
-      billingCycle: selectedBillingCycle,
-      priceType: selectedPriceType,
-      autoRenew: autoRenewal,
-    },
-    dispatch,
-  } = useCreateCompanySubscriptionStateAndDispatch();
+  const { data: billingDetails } = useGetSubsciptionBillingDetails();
+
   useLayoutEffect(() => {
-    const ASSUMED_EMPLOYEE_SUBSCRIPTION_ID = 1;
-    const EMPLOYEMENT_SUBSCRIPTION_ID =
-      subscriptions?.data.find((item) => item.label === "employee-management")
-        ?.id ?? ASSUMED_EMPLOYEE_SUBSCRIPTION_ID;
     if (subscription) {
       const address = billingDetails?.address;
 
@@ -77,28 +56,14 @@ const PurchaseExtraLicenseContainer: React.FC<{
         billingName: billingDetails?.name,
         phoneNumber: parsePhoneNumber(billingDetails?.phone),
       });
-      dispatch({
-        type: ECreateCompanySubscriptionOps.update,
-        payload: {
-          licensedEmployeeCount: subscription?.licensedEmployeeCount,
-          unlicensedEmployeeCount: subscription?.unlicensedEmployeeCount,
-          autoRenew: subscription?.autoRenewal,
-          purchased:
-            subscription?.type === "module"
-              ? subscription?.modules?.map((item) => item.id)
-              : subscription?.plan.modules?.map((item) => item.id),
-          billingCycle: subscription?.billingCycle,
-          priceType: subscription?.currency,
-        },
-      });
     } else {
       form.setFieldsValue({
         priceType: "USD",
-        purchased: [EMPLOYEMENT_SUBSCRIPTION_ID],
+        purchased: [],
         billingCycle: "yearly",
       });
     }
-  }, [dispatch, form, subscription, billingDetails, subscriptions?.data]);
+  }, [form, subscription, billingDetails]);
 
   const [activeStep, setActiveStep] = useState(0);
   const [showD, setShowD] = useState(false);
@@ -106,16 +71,52 @@ const PurchaseExtraLicenseContainer: React.FC<{
   const handlePrev = () => setActiveStep((prev) => prev - 1);
   const handleNext = () => setActiveStep((prev) => prev + 1);
 
-  const { mutate, isLoading: isPaying } = useCreateCompanySubscription();
+  const { mutate, isLoading: isPaying } = usePurchaseSubscriptionPlanOrModule();
   const queryClient = useQueryClient();
   const [url, setUrl] = useState<string>();
 
   const handleSubmit = (data: TCreateCompanySubscriptionProps) => {
+    if (!cycle || !currency) return;
     mutate(
-      {
-        ...data,
-        autoRenew: !!autoRenewal,
-      },
+      type === "module"
+        ? {
+            billingCycle: cycle,
+            billingInfo: {
+              address: data.address,
+              name: data.billingName,
+              phone: formatPhoneNumber(data.phoneNumber),
+            },
+            autoRenewal: !!data.autoRenew,
+            currency,
+            licensedEmployeeCount: data.licensedEmployeeCount,
+            moduleIds: data.purchased,
+            type,
+            unlicensedEmployeeCount: data.unlicensedEmployeeCount,
+            addonIds: [
+              data?.addOns?.extraStorageId,
+              data?.addOns?.supportCaseId,
+              data?.addOns?.trainingSessionId,
+            ].filter((r) => !!r),
+          }
+        : {
+            billingCycle: cycle,
+            billingInfo: {
+              address: data.address,
+              name: data.billingName,
+              phone: formatPhoneNumber(data.phoneNumber),
+            },
+            autoRenewal: !!data.autoRenew,
+            currency,
+            licensedEmployeeCount: data.licensedEmployeeCount,
+            type,
+            planId: data?.planId as number,
+            unlicensedEmployeeCount: data.unlicensedEmployeeCount,
+            addonIds: [
+              data?.addOns?.extraStorageId,
+              data?.addOns?.supportCaseId,
+              data?.addOns?.trainingSessionId,
+            ].filter((r) => !!r),
+          },
       {
         onError: (err: any) => {
           openNotification({
@@ -175,23 +176,18 @@ const PurchaseExtraLicenseContainer: React.FC<{
             labelCol={{ span: 24 }}
             onFinish={handleSubmit}
           >
+            <span className="cursor-pointer" onClick={handlePrev}>
+              Go Back
+            </span>
             <div className={activeStep === 0 ? "block" : "hidden"}>
               <AddOnContainer
-                subscriptions={subscriptions?.data}
-                isLoading={isFetchingSubscriptions}
                 Form={Form}
-                selectedPriceType={selectedPriceType}
-                selectedBillingCycle={selectedBillingCycle}
-                autoRenewal={!!autoRenewal}
-                handleAutoRenewal={(autoRenew) =>
-                  dispatch({
-                    payload: { autoRenew },
-                    type: ECreateCompanySubscriptionOps.update,
-                  })
-                }
+                selectedPriceType={currency}
+                selectedBillingCycle={cycle}
+                showPlans={type === "plan"}
+                planId={planId}
                 onProceed={() => {
                   handleNext();
-                  // setActiveStep(2);
                 }}
               />
             </div>
@@ -199,8 +195,6 @@ const PurchaseExtraLicenseContainer: React.FC<{
               <PaymentsContainer
                 Form={Form}
                 onProceed={() => handleNext()}
-                subscriptions={subscriptions?.data}
-                isLoading={isFetchingSubscriptions || isFetchingDetails}
                 form={form}
                 isPayingForSubscription={isPaying}
               />
@@ -215,4 +209,4 @@ const PurchaseExtraLicenseContainer: React.FC<{
   );
 };
 
-export default PurchaseExtraLicenseContainer;
+export default PurchaseModulesContainer;

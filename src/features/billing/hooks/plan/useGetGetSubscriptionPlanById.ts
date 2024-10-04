@@ -4,11 +4,12 @@ import { useQuery } from "react-query";
 import { ICurrentCompany } from "types";
 import { useApiAuth } from "hooks/useApiAuth";
 import { TSubscriptionLabel } from "features/billing/types/subscription";
+import { GeneralPrice } from "features/billing/types";
 
 export const QUERY_KEY_FOR_SUBSCRIPTION_PLAN_BY_ID = "subscription-plan-by-id";
 
 const getData = async (props: {
-  data: { id: number };
+  data: { id?: number };
   auth: ICurrentCompany;
 }): Promise<TSubscriptionPlan> => {
   const url = `${MICROSERVICE_ENDPOINTS.UTILITY}/subscription/plan/${props.data.id}`;
@@ -28,7 +29,7 @@ const getData = async (props: {
   return data;
 };
 
-export const useGetGetSubscriptionPlanById = ({ id }: { id: number }) => {
+export const useGetGetSubscriptionPlanById = ({ id }: { id?: number }) => {
   const { token, companyId } = useApiAuth();
 
   const queryData = useQuery(
@@ -43,6 +44,7 @@ export const useGetGetSubscriptionPlanById = ({ id }: { id: number }) => {
     {
       onError: (err: any) => {},
       onSuccess: (data) => {},
+      enabled: !!id,
     }
   );
 
@@ -56,7 +58,7 @@ export type TSubscriptionPlan = {
   description: null;
   createdAt: string;
   updatedAt: string;
-  prices: Price[];
+  prices: GeneralPrice[];
   modules: Module[];
 };
 
