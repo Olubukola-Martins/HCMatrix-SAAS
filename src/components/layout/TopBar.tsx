@@ -165,7 +165,6 @@ const TopBar = ({
                     },
                   ].filter((item) => item?.hidden === false)}
                   defaultValue={currentCompany?.name}
-                  value={currentCompany?.name}
                   style={{ width: 200, borderRadius: "100px" }}
                   onSelect={onSelect}
                   onSearch={onSearch}
