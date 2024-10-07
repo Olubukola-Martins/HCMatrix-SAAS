@@ -31,7 +31,6 @@ const UpgradePlan: React.FC<IProps> = ({ open, handleClose, subscription }) => {
   const [currency, setCurrency] = useState<TSubscriptionPriceType>("USD");
 
   const onChange = (e: RadioChangeEvent) => {
-    console.log("radio checked", e.target.value);
     setPlanId(e.target.value);
   };
   const { data, isLoading } = useGetSubscriptionPlans();
