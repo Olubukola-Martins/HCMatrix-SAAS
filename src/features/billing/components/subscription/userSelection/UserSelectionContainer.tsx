@@ -62,7 +62,8 @@ const UserSelectionContainer = () => {
     <div className="flex flex-col gap-4">
       <p className="text-sm text-light">
         N:B The users not selected for either license or unlicensed will
-        automatically be deactivated from the system.
+        automatically be deactivated from the system. Only deactivated employees
+        can become either licensed or unlicensed
       </p>
       <div className={`${boxStyle} text-sm bg-card flex flex-col gap-6`}>
         <SelectUserHeader

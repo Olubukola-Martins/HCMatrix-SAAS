@@ -1,9 +1,8 @@
-import axios from "axios";
-import { MICROSERVICE_ENDPOINTS } from "config/enviroment";
 import { useQuery } from "react-query";
 import { ICurrentCompany } from "types";
 import { useApiAuth } from "hooks/useApiAuth";
 import { TEmployeeLicenseCountLeft } from "features/billing/types/company/employeeLicense/count/employeeLicenseCountLeft";
+import { getCompanyActiveSubscription } from "../../useGetCompanyActiveSubscription";
 
 export const QUERY_KEY_FOR_EMPLOYEE_LICENSE_COUNT_LEFT =
   "employee-license-count-left";
@@ -11,20 +10,14 @@ export const QUERY_KEY_FOR_EMPLOYEE_LICENSE_COUNT_LEFT =
 const getData = async (props: {
   auth: ICurrentCompany;
 }): Promise<TEmployeeLicenseCountLeft> => {
-  const url = `${MICROSERVICE_ENDPOINTS.UTILITY}/subscription/company/employee-license/count`;
+  const res = await getCompanyActiveSubscription({
+    auth: props.auth,
+  });
 
-  const config = {
-    headers: {
-      Accept: "application/json",
-      Authorization: `Bearer ${props.auth.token}`,
-      "x-company-id": props.auth.companyId,
-    },
+  const data: TEmployeeLicenseCountLeft = {
+    licensedEmployeeCountLeft: res?.licensedEmployeeCount || 0,
+    unlicensedEmployeeCountLeft: res?.unlicensedEmployeeCount || 0,
   };
-
-  const res = await axios.get(url, config);
-  const result = res.data.data as TEmployeeLicenseCountLeft;
-
-  const data: TEmployeeLicenseCountLeft = result;
 
   return data;
 };

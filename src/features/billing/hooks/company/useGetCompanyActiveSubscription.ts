@@ -7,7 +7,7 @@ import { AciveCompanySubscription } from "features/billing/types/company/active-
 
 export const QUERY_KEY_FOR_ACTIVE_COMPANY_SUBSCRITION =
   "active-company-subscription";
-const getData = async (props: {
+export const getCompanyActiveSubscription = async (props: {
   auth: ICurrentCompany;
 }): Promise<AciveCompanySubscription | undefined> => {
   const url = `${MICROSERVICE_ENDPOINTS.UTILITY}/subscription/company`;
@@ -32,7 +32,7 @@ export const useGetCompanyActiveSubscription = () => {
   const queryData = useQuery(
     [QUERY_KEY_FOR_ACTIVE_COMPANY_SUBSCRITION],
     () =>
-      getData({
+      getCompanyActiveSubscription({
         auth: {
           companyId,
           token,

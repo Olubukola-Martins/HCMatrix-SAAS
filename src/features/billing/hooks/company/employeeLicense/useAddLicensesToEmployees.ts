@@ -23,9 +23,7 @@ const createData = async (props: { data: TProps; auth: ICurrentCompany }) => {
     },
   };
 
-  const data: TProps = {
-    ...props.data,
-  };
+  const data: TProps["data"] = props.data.data;
 
   const response = await axios.post(url, data, config);
   return response;
