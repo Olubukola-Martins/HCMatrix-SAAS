@@ -39,7 +39,7 @@ const COMPULSORY_BULK_MAPPING_SECTION_FOR_EMPLOYEE_INFO: TBulkEmployeeImportMapp
       { name: "firstName", label: "First Name", optional: false },
       { name: "lastName", label: "Last Name", optional: false },
       { name: "email", label: "Email", optional: false },
-      { name: "licenseType", label: "License Type", optional: true },
+      // { name: "licenseType", label: "License Type", optional: true }, //Removed as per agreement with BE that license type will be managed from one central point (purchase/select license under the subscription module)
       { name: "empUid", label: "Employee ID", optional: false }, //Cos this is the unique key for import
     ],
   };

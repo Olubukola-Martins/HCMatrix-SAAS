@@ -5,7 +5,7 @@ export type TBulkImportEmployeeProp = {
   firstName: string;
   lastName: string;
   email: string;
-  licenseType: TLicenseType;
+  licenseType?: TLicenseType;
   empUid: string;
   personalInformation?: TPersonalInfo;
   jobInformation?: TJobInfo;
