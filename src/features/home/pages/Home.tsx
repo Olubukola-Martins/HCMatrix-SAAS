@@ -49,7 +49,9 @@ function Home() {
                     />
                   </div>
                 )}
-                {view === "owner" && <AdminHome user={user} />}
+                {view === "owner" && (
+                  <AdminHome user={user} employee={employee} />
+                )}
                 {view === "employee" && <EmployeeHome employee={employee} />}
               </>
             </div>

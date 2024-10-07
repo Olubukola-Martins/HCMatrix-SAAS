@@ -13,7 +13,7 @@ import { DoughnutChart } from "components/charts/DoughnutChart";
 import { useGetCompanyOwnerDashboard } from "features/core/company/hooks/dashboard/useGetCompanyOwnerDashboard";
 import ErrorBoundary from "components/errorHandlers/ErrorBoundary";
 import { ErrorWrapper } from "components/errorHandlers/ErrorWrapper";
-import dayjs, {Dayjs} from "dayjs";
+import dayjs, { Dayjs } from "dayjs";
 import { appRoutes } from "config/router/paths";
 import RecentApprovalRequestsCard from "features/core/workflows/components/approval-request/RecentApprovalRequestsCard";
 import { useApiAuth } from "hooks/useApiAuth";
@@ -26,8 +26,16 @@ import {
   DEFAULT_EMPLOYEES_CREATED_BY_SYSTEM,
 } from "constants/general";
 import WhoIsOut from "./whoIsOut/WhoIsOut";
+import { TEmployee } from "features/core/employees/types";
+import { getEmployeeFullName } from "features/core/employees/utils/getEmployeeFullName";
 
-export const AdminHome: React.FC<{ user?: TAuthUser["user"] }> = ({ user }) => {
+export const AdminHome: React.FC<{
+  user?: TAuthUser["user"];
+  employee?: Pick<
+    TEmployee,
+    "id" | "email" | "empUid" | "firstName" | "lastName"
+  >;
+}> = ({ user, employee }) => {
   const { globalDispatch } = useApiAuth();
 
   const handleGetStarted = () => {
@@ -52,7 +60,7 @@ export const AdminHome: React.FC<{ user?: TAuthUser["user"] }> = ({ user }) => {
             <div className="Container">
               <div className="flex items-center justify-between mt-2">
                 <h1 className="text-xl md:text-2xl font-black">
-                  Welcome {user?.fullName} ,
+                  Welcome {getEmployeeFullName(employee)} ,
                 </h1>
               </div>
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-5 mt-6">
