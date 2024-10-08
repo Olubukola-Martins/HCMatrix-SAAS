@@ -25,7 +25,6 @@ const getAllOnboarding = async (vals: {
   const name = props.searchParams?.name ?? "";
 
   const url = `${MICROSERVICE_ENDPOINTS.UTILITY}/self-service/onboarding`;
-
   const config = {
     headers: {
       Accept: "application/json",
@@ -61,7 +60,7 @@ export const useFetchAllOnboarding = (props: IGetDataProps = {}) => {
   const { companyId, token } = useApiAuth();
   const { pagination, searchParams } = props;
   const queryData = useQuery(
-    [QUERY_KEY_FOR_ONBOARDING, pagination?.limit, searchParams?.name],
+    [QUERY_KEY_FOR_ONBOARDING, pagination?.limit, searchParams?.name, pagination?.offset],
     () =>
       getAllOnboarding({
         auth: {
