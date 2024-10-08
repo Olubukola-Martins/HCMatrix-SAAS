@@ -12,6 +12,11 @@ import { getAppropriateColorForStatus } from "utils/colorHelpers/getAppropriateC
 const ManageOnboarding = () => {
   const columns: ColumnsType<TOnboarding> = [
     {
+      title: "S/N", 
+      key: "index",
+      render: (text, item, index) => index + 1, 
+    },
+    {
       title: "Name",
       dataIndex: "name",
       key: "name",
@@ -26,37 +31,26 @@ const ManageOnboarding = () => {
       title: "Employee ID",
       dataIndex: "EmployeeID",
       key: "EmployeeID",
-      render: (_, item) => (
-        <span className="uppercase">{item.employee.empUid}</span>
-      ),
+      render: (_, item) => <span className="uppercase">{item.employee.empUid}</span>,
     },
     {
       title: "Department",
       dataIndex: "department",
       key: "department",
-      render: (_, item) => (
-        <span className="capitalize">
-          {item.employee.designation?.department.name}
-        </span>
-      ),
+      render: (_, item) => <span className="capitalize">{item.employee.designation?.department.name}</span>,
     },
     {
       title: "Email",
       dataIndex: "Email",
       key: "Email",
-      render: (_, item) => (
-        <span className="lowercase">{item.employee.email}</span>
-      ),
+      render: (_, item) => <span className="lowercase">{item.employee.email}</span>,
     },
     {
       title: "Status",
       dataIndex: "status",
       key: "status",
       render: (val) => (
-        <span
-          className="capitalize"
-          style={{ color: getAppropriateColorForStatus(val) }}
-        >
+        <span className="capitalize" style={{ color: getAppropriateColorForStatus(val) }}>
           {val}
         </span>
       ),
@@ -69,9 +63,7 @@ const ManageOnboarding = () => {
       render: (val, item) => (
         <div className="cursor-pointer">
           <Link to={appRoutes.startOnBoarding(item.id).path}>
-            <button className="transparentButton text-caramel">
-              {item.status === "pending" ? "Start" : "View"}
-            </button>
+            <button className="transparentButton text-caramel">{item.status === "pending" ? "Start" : "View"}</button>
           </Link>
         </div>
       ),
