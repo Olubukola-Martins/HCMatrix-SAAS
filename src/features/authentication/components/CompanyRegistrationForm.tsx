@@ -1,5 +1,5 @@
 import { Form, Input, Modal, Result, Select, Skeleton } from "antd";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   LockOutlined,
   ReconciliationOutlined,
@@ -27,6 +27,7 @@ import { createCompany } from "../hooks/useCreateCompany";
 import { ICreateCompProps } from "../types";
 import { validateCaptcha } from "react-simple-captcha";
 import Recaptcha from "components/recaptcha/Recaptcha";
+import { IndustrySelect } from "./IndustrySelect";
 
 const CompanyRegistrationForm = () => {
   const [showM, setShowM] = useState(false);
@@ -35,6 +36,29 @@ const CompanyRegistrationForm = () => {
   const { data: industries, isSuccess: isISuccess } = useFetchIndustries();
   const { isSuccess: isCSuccess } = useFetchCountries();
   const { mutate, isLoading } = useMutation(createCompany);
+
+  const [filteredOptions, setFilteredOptions] = useState(industries);
+
+  // Custom search handler
+  const handleSearch = (searchValue: string) => {
+    console.log("search val", searchValue);
+    // Filter logic based on user input
+    if (searchValue) {
+      const filtered = industries?.filter(({ name }) =>
+        name.toLowerCase().includes(searchValue.toLowerCase())
+      );
+      setFilteredOptions(filtered);
+      console.log("filtered", filtered);
+    } else {
+      // Reset to all options if search is cleared
+      setFilteredOptions(industries);
+    }
+  };
+
+  useEffect(() => {
+    // Reset the filtered options whenever the original data (industries) changes
+    setFilteredOptions(industries);
+  }, [industries]);
 
   const handleSignUp = (data: any) => {
     if (validateCaptcha(data?.recaptcha) === false) {
@@ -135,7 +159,7 @@ const CompanyRegistrationForm = () => {
               style={{ padding: "6px 5px" }}
             />
           </Form.Item>
-          <Form.Item name="industry" rules={generalValidationRules}>
+          {/* <Form.Item name="industry" rules={generalValidationRules}>
             <Select
               showSearch
               allowClear
@@ -148,9 +172,10 @@ const CompanyRegistrationForm = () => {
                 </div>
               }
               style={{ width: "100%" }}
+              onSearch={handleSearch}
             >
               {isISuccess &&
-                industries.map(({ name, id }) => (
+                filteredOptions?.map(({ name, id }) => (
                   <Select.Option
                     key={id}
                     value={id}
@@ -167,7 +192,8 @@ const CompanyRegistrationForm = () => {
                   </Select.Option>
                 ))}
             </Select>
-          </Form.Item>
+          </Form.Item> */}
+          <IndustrySelect industries={industries} isISuccess={isISuccess} />
           <Form.Item
             name="email"
             rules={emailValidationRules as Rule[]}

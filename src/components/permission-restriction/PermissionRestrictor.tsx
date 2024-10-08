@@ -28,7 +28,7 @@ export const canUserAccessComponent = ({
   // check subscription first
   let canAccessViaSubscription = (): boolean => {
     if (activeSubscriptionWasNotDefined) {
-      return false;
+      return true;
     }
     if (activeSubscription.type === "plan") {
       canAccess = activeSubscription.plan.modules.some((item) => {
@@ -79,12 +79,12 @@ export const useGetUserPermissions = () => {
     currentCompanyEmployeeDetails?.delegation?.permissions?.map(
       (item) => item.permission.label
     ) ?? [];
-
+  const userPermissions = [
+    ...userPermissionsViaRole,
+    ...userPermissionsViaDelegations,
+  ];
   return {
-    userPermissions: [
-      ...userPermissionsViaRole,
-      ...userPermissionsViaDelegations,
-    ],
+    userPermissions,
     licenseType,
     isOwner: !!currentCompanyEmployeeDetails?.isOwner,
     companyActiveSubscription,

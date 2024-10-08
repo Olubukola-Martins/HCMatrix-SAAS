@@ -5,6 +5,7 @@ import { ICurrentCompany, IPaginationProps } from "types";
 import { DEFAULT_PAGE_SIZE } from "constants/general";
 import { useApiAuth } from "hooks/useApiAuth";
 import { TCompanyEmployeeWithLicense } from "features/billing/types/company/employeeLicense/companyWithLicense";
+import { TLicenseType } from "features/authentication/types/auth-user";
 
 interface IGetDataProps {
   pagination?: IPaginationProps;
@@ -12,12 +13,12 @@ interface IGetDataProps {
 
 export const QUERY_KEY_FOR_ALL_EMPLOYEES_WITH_LICENSES =
   "all-employees-with-licenses";
-
+type TProps = IGetDataProps & { licenseType?: TLicenseType };
 const getData = async (props: {
-  data: IGetDataProps;
+  data: TProps;
   auth: ICurrentCompany;
 }): Promise<{ data: TCompanyEmployeeWithLicense[]; total: number }> => {
-  const { pagination } = props.data;
+  const { pagination, licenseType } = props.data;
   const limit = pagination?.limit ?? DEFAULT_PAGE_SIZE;
   const offset = pagination?.offset ?? 0;
 
@@ -32,6 +33,7 @@ const getData = async (props: {
     params: {
       limit,
       offset,
+      licenseType,
     },
   };
 
@@ -53,12 +55,12 @@ const getData = async (props: {
   return ans;
 };
 
-export const useGetAllEmployeesWithLicense = (props: IGetDataProps) => {
+export const useGetAllEmployeesWithLicense = (props: TProps) => {
   const { token, companyId } = useApiAuth();
 
-  const { pagination } = props;
+  const { pagination, licenseType } = props;
   const queryData = useQuery(
-    [QUERY_KEY_FOR_ALL_EMPLOYEES_WITH_LICENSES, pagination],
+    [QUERY_KEY_FOR_ALL_EMPLOYEES_WITH_LICENSES, pagination, licenseType],
     () =>
       getData({
         auth: { token, companyId },

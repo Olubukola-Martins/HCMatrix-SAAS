@@ -1,4 +1,4 @@
-import { useLayoutEffect, useState } from "react";
+import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { AutoComplete, Avatar, Button } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
@@ -59,10 +59,24 @@ const TopBar = ({
     useGetUserPermissions();
 
   const [action, setAction] = useState<TAction>();
-  const [options, setOptions] = useState<TCompanyOption[]>([]);
   const navigate = useNavigate();
+  const companies: TCompanyOption[] =
+    userCompanies?.map((item) => ({
+      value: item.company.name,
+      id: item.company.id,
+      image: item.company?.logoUrl ?? DEFAULT_LOGO_IMAGE_URL,
+      hidden: false,
+      label: (
+        <div className="flex gap-2 items-center">
+          <Avatar src={item.company?.logoUrl ?? DEFAULT_LOGO_IMAGE_URL} />
+          <span>{item.company.name}</span>
+        </div>
+      ),
+    })) ?? [];
+  const [options, setOptions] = useState<TCompanyOption[]>(companies);
+
   const onSearch = (searchText: string) => {
-    const result = options.filter(
+    const result = companies.filter(
       (item) =>
         item.value.toLowerCase().indexOf(searchText.toLowerCase()) !== -1
     );
@@ -81,22 +95,7 @@ const TopBar = ({
     navigate(appRoutes.home); //this ensures that the user is redirected to home page, because this is the only page that all users have access to regardless of permissions
     window.location.reload();
   };
-  useLayoutEffect(() => {
-    if (!userCompanies) return;
-    const companies: TCompanyOption[] = userCompanies?.map((item) => ({
-      value: item.company.name,
-      id: item.company.id,
-      image: item.company?.logoUrl ?? DEFAULT_LOGO_IMAGE_URL,
-      hidden: false,
-      label: (
-        <div className="flex gap-2 items-center">
-          <Avatar src={item.company?.logoUrl ?? DEFAULT_LOGO_IMAGE_URL} />
-          <span>{item.company.name}</span>
-        </div>
-      ),
-    }));
-    setOptions(companies);
-  }, [userCompanies]);
+
   return (
     <>
       <AddSisterCompanyForm
@@ -165,7 +164,6 @@ const TopBar = ({
                     },
                   ].filter((item) => item?.hidden === false)}
                   defaultValue={currentCompany?.name}
-                  value={currentCompany?.name}
                   style={{ width: 200, borderRadius: "100px" }}
                   onSelect={onSelect}
                   onSearch={onSearch}

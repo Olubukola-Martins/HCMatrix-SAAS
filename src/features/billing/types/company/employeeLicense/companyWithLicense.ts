@@ -10,19 +10,19 @@ export type TCompanyEmployeeWithLicense = {
 
 interface Employee {
   id: number;
+  empUid: string;
   firstName: string;
   lastName: string;
-  email: string;
-  isOwner: boolean;
-  licenseType: string;
-  empUid: string;
-  roleId: number;
-  status: string;
-  companyId: number;
-  designationId: number;
-  userId: number;
-  avatarUrl: string;
-  createdAt: string;
-  updatedAt: string;
-  deletedAt?: any;
+  designation: Designation | null;
+}
+
+interface Designation {
+  id: number;
+  name: string;
+  department: Department;
+}
+
+interface Department {
+  id: number;
+  name: string;
 }

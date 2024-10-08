@@ -40,7 +40,7 @@ const SubscriptionBreakdownCard: React.FC<ISubscriptionBreakdownProps> = ({
       isActive={isActivePlan}
     >
       <div className="flex justify-between w-full items-center pb-2 ">
-        <h2 className="font-bold sm:text-lg">{name} Plan</h2>
+        <h2 className="font-bold sm:text-lg">{name}</h2>
         {isActivePlan && (
           <span className="rounded-full h-5 w-5 border-2 border-caramel flex items-center justify-center">
             <i className="ri-check-line text-caramel h-3 w-4 font-bold mb-[10px]" />

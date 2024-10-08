@@ -21,6 +21,7 @@ import { DEFAULT_DATE_FORMAT } from "constants/dateFormats";
 import { TTHandOverForm } from "../types";
 import moment from "moment";
 import { FormUnlicensedEmployeeSSRequestInput } from "features/core/employees/components/FormEmployeeInput";
+import dayjs, { Dayjs } from "dayjs";
 
 const boxStyle = "px-4 py-3 shadow rounded-md bg-mainBg";
 const boxTitle = "font-medium text-base pb-1";
@@ -54,7 +55,8 @@ export const EmployeeHandOverForm: React.FC<IProps> = ({
     if (!handover) return;
     form.setFieldsValue({
       ...handover,
-      separationDate: moment(handover.separationDate),
+      separationDate: dayjs(handover?.separationDate ?? null),
+
       assetChecklist: handover?.assetChecklist?.map(
         (item) => item.assetRequisitionId
       ),
@@ -75,7 +77,9 @@ export const EmployeeHandOverForm: React.FC<IProps> = ({
       {
         employeeId: data?.employeeId,
         reasonForLeaving: data.reasonForLeaving,
-        separationDate: data.separationDate,
+        separationDate: (data?.separationDate as Dayjs).format(
+          DEFAULT_DATE_FORMAT
+        ),
         supervisorClearanceUrl: supervisorClearanceUrl,
         supportingDocumentUrl: supportingDocumentUrl,
         assetChecklist: data?.assetChecklist?.map((item: number) => ({

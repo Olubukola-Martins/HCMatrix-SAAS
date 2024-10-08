@@ -17,6 +17,7 @@ import { parsePhoneNumber } from "utils/dataHelpers/parsePhoneNumber";
 
 type FormProps = Omit<TUpdateBillingDetailsProps, "phoneNumber"> & {
   phoneNumber: { code: string; number: string };
+  billingName: string;
 };
 const BillingInfo = () => {
   const { data, isFetching: isFetchingDetails } =
@@ -37,7 +38,7 @@ const BillingInfo = () => {
         streetAddress: address?.streetAddress,
         timezone: address?.timezone ?? undefined,
       },
-      name: data.name,
+      billingName: data.name,
       phoneNumber: parsePhoneNumber(data?.phone),
     });
   }, [data, form]);

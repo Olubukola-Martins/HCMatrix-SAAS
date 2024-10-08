@@ -67,7 +67,7 @@ export const AddEmployee = () => {
         email: data.email,
         firstName: data.firstName,
         lastName: data.lastName,
-        licenseType: data.licenseType,
+        licenseType: data?.licenseType,
         roleId: data.roleId,
         empUid: data.empUid,
         jobInformation: {
@@ -206,7 +206,7 @@ export const AddEmployee = () => {
               </Collapse>
             </div>
 
-            <div className="bg-mainBg rounded-md md:px-4 pt-4 pb-3 shadow-sm mt-8">
+            {/* <div className="bg-mainBg rounded-md md:px-4 pt-4 pb-3 shadow-sm mt-8">
               <Collapse defaultActiveKey={["1"]} ghost expandIconPosition="end">
                 <Panel
                   header={"Select user license type ?"}
@@ -239,7 +239,7 @@ export const AddEmployee = () => {
                   </Form.Item>
                 </Panel>
               </Collapse>
-            </div>
+            </div> */}
             <div className="flex items-center gap-3 justify-end mt-5">
               <Dropdown
                 placement="top"

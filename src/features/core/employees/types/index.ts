@@ -165,7 +165,7 @@ export interface ICreateEmpProps {
   firstName: string;
   lastName: string;
   email: string;
-  licenseType: TLicenseType;
+  licenseType?: TLicenseType;
   empUid?: string;
   roleId: number;
   designationId: number;

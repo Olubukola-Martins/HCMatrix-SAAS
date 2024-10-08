@@ -42,7 +42,6 @@ export const SelectedModulesSection: React.FC<IProps> = ({
               <Checkbox.Group
                 className="flex flex-col gap-2"
                 onChange={(val: number[]) => {
-                  console.log(val, "check");
                   dispatch({
                     type: ECreateCompanySubscriptionOps.updatePlanOrModulesPrices,
                     payload: {
