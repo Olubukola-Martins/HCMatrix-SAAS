@@ -5,10 +5,12 @@ import { ICurrentCompany, IPaginationProps, ISearchParams } from "types";
 import { DEFAULT_PAGE_SIZE } from "constants/general";
 import { useApiAuth } from "hooks/useApiAuth";
 import { TAssetRequisition } from "features/self-service/features/requisitions/types/asset";
+import { TApprovalStatus } from "types/statuses";
 
 interface IGetDataProps {
   pagination?: IPaginationProps;
   searchParams?: ISearchParams;
+  status?: TApprovalStatus[];
 }
 
 export const QUERY_KEY_FOR_ASSET_REQUISITIONS_FOR_AUTH_EMPLOYEE =
@@ -18,7 +20,7 @@ const getData = async (props: {
   data: IGetDataProps;
   auth: ICurrentCompany;
 }): Promise<{ data: TAssetRequisition[]; total: number }> => {
-  const { pagination } = props.data;
+  const { pagination, status } = props.data;
   const limit = pagination?.limit ?? DEFAULT_PAGE_SIZE;
   const offset = pagination?.offset ?? 0;
   const name = props.data.searchParams?.name ?? "";
@@ -35,6 +37,7 @@ const getData = async (props: {
       limit,
       offset,
       search: name,
+      status: status?.join(","),
     },
   };
 
@@ -57,12 +60,13 @@ const getData = async (props: {
 export const useGetAssetRequisitions4AuthEmployee = (props: IGetDataProps) => {
   const { token, companyId } = useApiAuth();
 
-  const { pagination, searchParams } = props;
+  const { pagination, searchParams, status } = props;
   const queryData = useQuery(
     [
       QUERY_KEY_FOR_ASSET_REQUISITIONS_FOR_AUTH_EMPLOYEE,
       pagination,
       searchParams,
+      status,
     ],
     () =>
       getData({
