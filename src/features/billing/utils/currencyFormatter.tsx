@@ -1,11 +1,10 @@
+import { formatNumberWithCommas } from "utils/dataHelpers/formatNumberWithCommas";
 import { ICurrencyFormatterProp } from "../types/priceType";
+import { PRICE_TYPE_CURRENCY } from "../constants";
 
 export default function formatCurrency({
   amount,
   currency = "USD",
 }: ICurrencyFormatterProp) {
-  return new Intl.NumberFormat("en-US", {
-    style: "currency",
-    currency: currency,
-  }).format(amount);
+  return `${PRICE_TYPE_CURRENCY[currency]}${formatNumberWithCommas(amount)}`;
 }
