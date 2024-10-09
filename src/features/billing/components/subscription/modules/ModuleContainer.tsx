@@ -6,6 +6,7 @@ import { TSubscriptionPriceType } from "features/billing/types/priceType";
 import { TBillingCycle } from "features/billing/types/billingCycle";
 import {
   calculateSubscriptionPlanTotalPrice,
+  generateRandomBgColorClassNameForSubscriptionModule,
   getPricePerEmployee,
 } from "features/billing/utils";
 import {
@@ -23,6 +24,7 @@ import {
 import { useGetCompanyActiveSubscription } from "features/billing/hooks/company/useGetCompanyActiveSubscription";
 import { EmptyDataWrapper } from "components/data/EmptyDataWrapper";
 import { IModuleCardProps } from "./ModuleCard";
+import { ActiveModuleSubscription } from "features/billing/types/company/active-company-subscription/module";
 
 const modules: IModulesCardData[] = [
   {
@@ -56,44 +58,63 @@ const ModuleContainer: React.FC<{
 }> = ({ currency = "USD", billingCycle = "yearly", isLoading }) => {
   const { data: sub, isLoading: isLoadingSub } =
     useGetCompanyActiveSubscription();
-  const moduleData: IModuleCardProps[] | undefined =
+  const moduleDataUnParsed:
+    | (IModuleCardProps &
+        Pick<
+          ActiveModuleSubscription["modules"][number],
+          "iconUrl" | "name" | "label"
+        >)[]
+    | undefined =
     sub?.type === "plan"
       ? sub.plan.modules.map((m) => ({
-          icon: m?.iconUrl ? (
-            <img src={m?.iconUrl} alt={m.name} />
-          ) : (
-            SUBSCRIPTION_ICON_MAPPING?.[m.label]
-          ),
+          ...m,
+          icon: null,
           title: {
             mainText: m.name,
             supportingText: m.description ?? "",
           },
-          disabled: m.label === "employee-management",
+          disabled: true,
           features: m?.features?.map((f) => f.name),
-          pricePerLicensedEmployee: {
-            amount: 0,
-            currency,
-          },
+          // pricePerLicensedEmployee: { //Commented bcos BE does not provide data needed
+          //   amount: 0,
+          //   currency: PRICE_TYPE_CURRENCY[sub.currency],
+          // },
           subscriptionId: sub.id,
         }))
       : sub?.modules.map((m) => ({
-          icon: m?.iconUrl ? (
-            <img src={m?.iconUrl} alt={m.name} />
-          ) : (
-            SUBSCRIPTION_ICON_MAPPING?.[m.label]
-          ),
+          ...m,
+          icon: null,
+
           title: {
             mainText: m.name,
             supportingText: m.description ?? "",
           },
-          disabled: m.label === "employee-management",
+          disabled: true,
           features: m?.features?.map((f) => f.name),
-          pricePerLicensedEmployee: {
-            amount: 0,
-            currency,
-          },
+          // pricePerLicensedEmployee: {
+          //   amount: 0,
+          //   currency: PRICE_TYPE_CURRENCY[sub.currency],
+          // },
           subscriptionId: sub.id,
         }));
+
+  const moduleData = moduleDataUnParsed?.map((module, index) => {
+    const bgColor = generateRandomBgColorClassNameForSubscriptionModule(index);
+    return {
+      ...module,
+      icon: (
+        <div
+          className={`h-6 w-6 rounded flex align-middle justify-center py-1  ${bgColor} `}
+        >
+          {module?.iconUrl ? (
+            <img src={module?.iconUrl} alt={module.name} />
+          ) : (
+            SUBSCRIPTION_ICON_MAPPING?.[module.label]
+          )}
+        </div>
+      ),
+    };
+  });
   const { dispatch } = useCreateCompanySubscriptionStateAndDispatch();
   return (
     <div className="flex flex-col gap-2 ">

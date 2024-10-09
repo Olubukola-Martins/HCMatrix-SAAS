@@ -121,7 +121,7 @@ const PurchaseModulesContainer: React.FC<{
             currency,
             licensedEmployeeCount: data.licensedEmployeeCount,
             type,
-            planId: data?.planId as number,
+            planId: planId as number,
             unlicensedEmployeeCount: data.unlicensedEmployeeCount,
             addonIds: [
               data?.addOns?.extraStorageId,
