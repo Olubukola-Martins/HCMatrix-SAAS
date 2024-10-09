@@ -78,6 +78,7 @@ const PurchaseModules = () => {
                   subscription={subscription}
                   currency={filter.currency}
                   cycle={filter.billingCycle}
+                  type={"module"}
                 />
               </CreateCompanySubscriptionContextProvider>
             </div>

@@ -89,17 +89,14 @@ export const AddMedication = ({
           label="Condition"
           rules={textInputValidationRules}
         >
-          <Input className="generalInputStyle" placeholder="Enter Condition" />
+          <Input placeholder="Enter Condition" />
         </Form.Item>
         <Form.Item
           name="dateOfOnset"
           label="Date of Onset"
           rules={[dateHasToBeLesserThanOrEqualToCurrentDayRule]}
         >
-          <DatePicker
-            format={DEFAULT_DATE_FORMAT}
-            className="generalInputStyle"
-          />
+          <DatePicker format={DEFAULT_DATE_FORMAT} className="w-full" />
         </Form.Item>
         <div className="flex justify-end">
           <AppButton type="submit" label="Save" isLoading={isLoading} />

@@ -56,6 +56,8 @@ const UpgradePlan: React.FC<IProps> = ({ open, handleClose, subscription }) => {
           name: p.name,
           planId: p.id,
           rates: rates,
+          isSelectedPlan:
+            subscription?.type === "plan" && subscription.planId === p.id,
         };
       }) || []
     );
@@ -112,7 +114,6 @@ const UpgradePlan: React.FC<IProps> = ({ open, handleClose, subscription }) => {
                       planName={plan.name}
                       planRates={plan.rates}
                       isCurrentPlan={plan.isCurrentPlan}
-                      isSelectable={!plan.isCurrentPlan || !plan.isFree}
                       isSelectedPlan={plan.planId === planId}
                     />
                   ))}

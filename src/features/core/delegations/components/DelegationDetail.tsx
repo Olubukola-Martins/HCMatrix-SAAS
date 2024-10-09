@@ -67,14 +67,10 @@ export const DelegationDetail: React.FC<IProps> = ({
             />
           </Form.Item>
 
-          <Form.Item
-            name="description"
-            label="Description (Optional)"
-          
-          >
+          <Form.Item name="description" label="Description (Optional)">
             <Input.TextArea
               rows={3}
-              className="generalInputStyle"
+              className="w-full"
               placeholder="Enter Description"
             />
           </Form.Item>

@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { appRoutes } from "config/router/paths";
 import { TSubscriptionLabel } from "features/billing/types/subscription";
 import { EmptyDataWrapper } from "components/data/EmptyDataWrapper";
+import { generateRandomBgColorClassNameForSubscriptionModule } from "features/billing/utils";
 
 export interface IModulesCardData {
   name: string;
@@ -47,13 +48,7 @@ const ModulesCard: React.FC<ModulesCardProps> = ({ modulesData = [] }) => {
               // const bgColors = ["#7987A5", "#4764FF", "#FD8311D1", "#FF6647"];
               // const color = bgColors[index % bgColors.length];
               const bgColor =
-                index % 4 === 0
-                  ? "bg-[#7987A5]"
-                  : index % 4 === 1
-                  ? "bg-[#4764FF]"
-                  : index % 4 === 2
-                  ? "bg-[#FD8311D1]"
-                  : "bg-[#FF6647]";
+                generateRandomBgColorClassNameForSubscriptionModule(index);
               return (
                 <div className="flex align-middle items-center gap-x-2">
                   <div

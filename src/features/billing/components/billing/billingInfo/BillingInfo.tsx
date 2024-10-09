@@ -45,7 +45,9 @@ const BillingInfo = () => {
   const handleSubmit = (data: FormProps) => {
     mutate(
       {
-        ...data,
+        name: data.billingName,
+        address: data.address,
+
         phone: formatPhoneNumber(data?.phoneNumber),
       },
       {

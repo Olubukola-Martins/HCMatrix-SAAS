@@ -37,7 +37,7 @@ const AddOnContainer: React.FC<{
   handleAutoRenewal = () => {},
   planId,
 }) => {
-  const { pricePerLicensedEmployee, pricePerUnLicensedEmployee } =
+  const { pricePerLicensedEmployee, pricePerUnLicensedEmployee , } =
     useGetCreateCompanySubscriptionSummary({
       currency: selectedPriceType,
       cycle: selectedBillingCycle,

@@ -29,4 +29,9 @@ export interface IModalProps extends IDrawerProps {}
 // container props
 export type TListDataTypeView = "list" | "grid";
 
+
+export { EThemePrimaryColor } from "./theme";
+export type { TThemeMode } from "./theme";
+
 export type ApiResponse<T> = { message: string; data?: T };
+

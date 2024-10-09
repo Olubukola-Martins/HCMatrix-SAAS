@@ -108,7 +108,7 @@ export const PersonalInfo = ({
           >
             <DatePicker
               format="YYYY/MM/DD"
-              className="generalInputStyle"
+              className="w-full"
               disabled={citizenCheck}
             />
           </Form.Item>
@@ -116,7 +116,7 @@ export const PersonalInfo = ({
           {/* <Form.Item label="Upload valid document" name="validDocumentUrl">
             <Input
               type="hidden"
-              className="generalInputStyle"
+              className="w-full"
               defaultValue={fileUrl}
             />
             <FileUpload

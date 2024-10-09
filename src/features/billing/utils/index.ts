@@ -154,6 +154,19 @@ export const contructBillingDetailsBasedOnSubsriptionType = (
   };
 };
 
+export const generateRandomBgColorClassNameForSubscriptionModule = (
+  index: number = 0
+) => {
+  const bgColors = [
+    "bg-[#7987A5]",
+    "bg-[#4764FF]",
+    "bg-[#FD8311D1]",
+    "bg-[#FF6647]",
+  ];
+
+  return bgColors[index % bgColors.length];
+};
+
 export const calculateSubscriptionPlanTotalPrice = (
   subPlanPrices: TSubscriptionPlan["prices"],
   billingCycle: TBillingCycle,

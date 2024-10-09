@@ -1,4 +1,5 @@
 import { Collapse, Skeleton } from "antd";
+import { appRoutes } from "config/router/paths";
 import { THoliday } from "features/core/holidays/types";
 import moment from "moment";
 import { Link } from "react-router-dom";
@@ -43,7 +44,7 @@ export const Holidays: React.FC<{
               </Panel>
             </Collapse>
             <Link
-              to="/"
+              to={appRoutes.holidaySettings}
               className="underline text-caramel flex justify-center pt-7"
             >
               View All

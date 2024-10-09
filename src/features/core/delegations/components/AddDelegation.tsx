@@ -94,7 +94,7 @@ export const AddDelegation = ({ open, handleClose }: IModalProps) => {
           label="Select Period"
           rules={[dateHasToBeGreaterThanOrEqualToCurrentDayRuleForRange]}
         >
-          <RangePicker className="generalInputStyle" />
+          <RangePicker className="w-full" />
         </Form.Item>
 
         {delegatorRoleId ? (
@@ -108,7 +108,7 @@ export const AddDelegation = ({ open, handleClose }: IModalProps) => {
         <Form.Item name="description" label="Description (Optional)">
           <TextArea
             rows={3}
-            className="generalInputStyle"
+            className="w-full"
             placeholder="Enter Description"
           />
         </Form.Item>

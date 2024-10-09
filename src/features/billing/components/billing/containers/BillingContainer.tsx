@@ -3,12 +3,10 @@ import ErrorBoundary from "components/errorHandlers/ErrorBoundary";
 import CurrentPlanCard from "../cards/CurrentPlanCard";
 import ModulesCard from "../cards/ModulesCard";
 import SupportPlanCard from "../cards/SupportPlanCard";
-import BillingsHistoryTable from "../BillingHistoryTable";
 import UpgradePlan from "../modals/UpgradePlan";
 import { useGetCompanyActiveSubscription } from "features/billing/hooks/company/useGetCompanyActiveSubscription";
 import { Skeleton } from "antd";
 import { contructBillingDetailsBasedOnSubsriptionType } from "features/billing/utils";
-import moment from "moment";
 import BillingHistoryContainer from "./BillingHistoryContainer";
 
 const BillingContainer = () => {
@@ -31,10 +29,11 @@ const BillingContainer = () => {
       <UpgradePlan
         open={openUogradeModal}
         handleClose={() => setOpenUpgradeModal(false)}
+        subscription={sub}
       />
       <div className="flex flex-col gap-y-7">
         <Skeleton loading={isLoadingSub} active paragraph={{ rows: 12 }}>
-          <div className="grid grid-cols-1 lg:grid-cols-4 gap-x-4">
+          <div className="grid grid-cols-1 lg:grid-cols-4 gap-4">
             <CurrentPlanCard
               handleUpgrade={() => setOpenUpgradeModal(true)}
               billingPrice={billingPrice}
