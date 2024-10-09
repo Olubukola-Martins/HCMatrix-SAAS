@@ -11,6 +11,8 @@ import { useNetworkState } from "hooks/network/useNetworkState";
 import { ErrorWrapper } from "components/errorHandlers/ErrorWrapper";
 import PageNotFoundIcon from "assets/svg-components/PageNotFoundIcon/PageNotFoundIcon";
 import { useInitializeGoogleAnalyticsTracking } from "hooks/analtyics";
+import AntdConfigProvider from "components/providers/AntdConfigProvider";
+import ThemeContextProvider from "components/providers/ThemeContextProvider";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -67,9 +69,13 @@ function App() {
           >
             <QueryClientProvider client={queryClient}>
               <GlobalContextProvider>
-                <Suspense fallback={<div>temporary Loading...</div>}>
-                  <Router />
-                </Suspense>
+                <ThemeContextProvider>
+                  <AntdConfigProvider>
+                    <Suspense fallback={<div>temporary Loading...</div>}>
+                      <Router />
+                    </Suspense>
+                  </AntdConfigProvider>
+                </ThemeContextProvider>
               </GlobalContextProvider>
               <ReactQueryDevtools
                 initialIsOpen={false}

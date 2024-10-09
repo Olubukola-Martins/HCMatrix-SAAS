@@ -1,4 +1,5 @@
 import Themes from "components/Themes";
+import useHandleColorTheme from "hooks/theme/useHandleColorTheme";
 import React from "react";
 import { BeatLoader } from "react-spinners";
 
@@ -24,6 +25,7 @@ export const AppButton: React.FunctionComponent<IAppBtnProps> = ({
   handleClick,
   additionalClassNames = ["button"],
 }) => {
+  const { color } = useHandleColorTheme();
   if (variant === "style-with-class") {
     return (
       <Themes isBg={false}>
@@ -62,6 +64,7 @@ export const AppButton: React.FunctionComponent<IAppBtnProps> = ({
         type={type}
         onClick={() => handleClick?.()}
         disabled={disabled}
+        style={{ backgroundColor: color, borderColor: color }}
       >
         {isLoading ? <BeatLoader color="#fff" /> : label}
       </button>

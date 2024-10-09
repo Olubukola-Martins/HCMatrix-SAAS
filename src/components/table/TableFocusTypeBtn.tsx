@@ -1,6 +1,7 @@
 import { Dropdown, Checkbox, Space } from "antd";
 import { ColumnsType } from "antd/lib/table";
 import { AppButton } from "components/button/AppButton";
+import useHandleColorTheme from "hooks/theme/useHandleColorTheme";
 
 interface TableFocusTypeBtnProps<TEntity> {
   selectedColumns: ColumnsType<TEntity>;
@@ -15,11 +16,17 @@ export function TableFocusTypeBtn<TEntity>({
   setSelectedColumns,
   data,
 }: TableFocusTypeBtnProps<TEntity>): JSX.Element {
+  const { mode } = useHandleColorTheme();
   return (
     <Dropdown
       trigger={["click"]}
       overlay={
-        <div className="bg-white px-2 py-3 shadow-lg">
+        <div
+          className="px-2 py-3 shadow-lg"
+          style={{
+            background: mode === "dark" ? "#1a202c" : "#fff",
+          }}
+        >
           <Checkbox.Group
             value={selectedColumns.map(
               (column) => column.key?.toString() ?? ""

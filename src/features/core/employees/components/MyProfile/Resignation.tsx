@@ -21,7 +21,7 @@ export const Resignation = ({ open, handleClose }: IDrawerProps) => {
           rules={[{ required: true, message: "Field is required!" }]}
           label="Resignation Date"
         >
-          <DatePicker format="YYYY/MM/DD" className="generalInputStyle" />
+          <DatePicker format="YYYY/MM/DD" className="w-full" />
         </Form.Item>
         <Form.Item
           name="policyLastDate"
@@ -29,7 +29,7 @@ export const Resignation = ({ open, handleClose }: IDrawerProps) => {
         >
           <DatePicker
             format="YYYY/MM/DD"
-            className="generalInputStyle"
+            className="w-full"
             disabled
             defaultPickerValue={dayjs("2020-06-09T12:40:14+0000")}
           />
@@ -39,10 +39,10 @@ export const Resignation = ({ open, handleClose }: IDrawerProps) => {
           label="Last Day of Work Requested"
           rules={[{ required: true, message: "Field is required!" }]}
         >
-          <DatePicker format="YYYY/MM/DD" className="generalInputStyle" />
+          <DatePicker format="YYYY/MM/DD" className="w-full" />
         </Form.Item>
         <Form.Item name="reason" label="Reason">
-          <TextArea rows={3} className="generalInputStyle" />
+          <TextArea rows={3} className="w-full" />
         </Form.Item>
         <Form.Item
           name="resignationLetter"

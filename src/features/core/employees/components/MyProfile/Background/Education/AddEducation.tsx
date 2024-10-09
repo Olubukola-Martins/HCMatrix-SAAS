@@ -87,24 +87,21 @@ export const AddEducation: React.FC<IProps> = ({
           label="School"
           rules={textInputValidationRules}
         >
-          <Input className="generalInputStyle" placeholder="Enter School" />
+          <Input className="w-full" placeholder="Enter School" />
         </Form.Item>
         <Form.Item
           name="degree"
           label="Degree"
           rules={textInputValidationRules}
         >
-          <Input className="generalInputStyle" placeholder="Enter Degree" />
+          <Input className="w-full" placeholder="Enter Degree" />
         </Form.Item>
         <Form.Item
           name="specialization"
           label="Specialization"
           rules={textInputValidationRules}
         >
-          <Input
-            className="generalInputStyle"
-            placeholder="Enter Specialization"
-          />
+          <Input className="w-full" placeholder="Enter Specialization" />
         </Form.Item>
         <Form.Item
           name="duration"
@@ -114,7 +111,7 @@ export const AddEducation: React.FC<IProps> = ({
           <DatePicker.RangePicker
             placeholder={["Start Date", "End Date"]}
             format={DEFAULT_DATE_FORMAT}
-            className="generalInputStyle"
+            className="w-full"
           />
         </Form.Item>
 

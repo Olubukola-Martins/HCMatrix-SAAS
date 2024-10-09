@@ -16,7 +16,7 @@ export const AddFromAddress = ({ open, handleClose }: IModalProps) => {
           label="Display Name"
           rules={textInputValidationRules}
         >
-          <Input className="generalInputStyle" placeholder="Add display name" />
+          <Input className="w-full" placeholder="Add display name" />
         </Form.Item>
         <Form.Item
           name="email"
@@ -32,7 +32,7 @@ export const AddFromAddress = ({ open, handleClose }: IModalProps) => {
             },
           ]}
         >
-          <Input className="generalInputStyle" placeholder="john@gmail.com" />
+          <Input className="w-full" placeholder="john@gmail.com" />
         </Form.Item>
 
         <button className="button">Submit</button>
