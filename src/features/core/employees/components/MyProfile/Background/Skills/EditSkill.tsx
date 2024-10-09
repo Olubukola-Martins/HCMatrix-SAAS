@@ -88,7 +88,7 @@ export const EditSkill: React.FC<IProps> = ({
         requiredMark={false}
       >
         <Form.Item name="skill" label="Skill" rules={textInputValidationRules}>
-          <Input className="generalInputStyle" placeholder="Enter Skill" />
+          <Input className="w-full" placeholder="Enter Skill" />
         </Form.Item>
         <Form.Item
           name="competency"

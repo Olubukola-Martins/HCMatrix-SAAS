@@ -756,7 +756,7 @@ const CreatePayrollContainer: React.FC<{
                 disabled
                 type="text"
                 value={payroll?.name}
-                className="bg-slate-100 cursor-not-allowed  border text-accent rounded px-3 py-1 border-gray-400 bg-mainBg"
+                className="cursor-not-allowed  border text-accent rounded px-3 py-1 border-gray-400 bg-mainBg"
                 placeholder="Payroll Name"
               />
             </div>
@@ -780,7 +780,7 @@ const CreatePayrollContainer: React.FC<{
                           ? `Payment ${payroll?.frequency}`
                           : payroll?.frequency
                       }
-                      className="capitalize bg-slate-100 cursor-not-allowed border text-accent rounded px-3 py-1 border-gray-400 bg-mainBg"
+                      className="capitalize cursor-not-allowed border text-accent rounded px-3 py-1 border-gray-400 bg-mainBg"
                     />
                   </div>
                 </div>
@@ -791,7 +791,7 @@ const CreatePayrollContainer: React.FC<{
                       value={dayjs(payroll?.date).format("YYYY-MM-DD")}
                       type="date"
                       placeholder="Select day"
-                      className=" bg-slate-100 cursor-not-allowed border text-accent rounded px-3 py-1 border-gray-400 bg-mainBg"
+                      className="cursor-not-allowed border text-accent rounded px-3 py-1 border-gray-400 bg-mainBg"
                     />
                   )}
                   {payroll?.frequency === "daily" && (
@@ -800,7 +800,7 @@ const CreatePayrollContainer: React.FC<{
                       value={dayjs(payroll?.date).format("YYYY-MM-DD")}
                       type="date"
                       placeholder="Select day"
-                      className=" bg-slate-100 cursor-not-allowed border text-accent rounded px-3 py-1 border-gray-400 bg-mainBg"
+                      className="cursor-not-allowed border text-accent rounded px-3 py-1 border-gray-400 bg-mainBg"
                     />
                   )}
                   {payroll?.frequency === "monthly" && (
@@ -809,7 +809,7 @@ const CreatePayrollContainer: React.FC<{
                       value={dayjs(payroll?.date).format("YYYY-MM")}
                       type="month"
                       placeholder="Select month"
-                      className=" bg-slate-100 cursor-not-allowed border text-accent rounded px-3 py-1 border-gray-400 bg-mainBg"
+                      className="cursor-not-allowed border text-accent rounded px-3 py-1 border-gray-400 bg-mainBg"
                     />
                   )}
                 </div>

@@ -1,5 +1,4 @@
-import React, { useState } from "react";
-import useLocalStorage from "use-local-storage";
+import { useState } from "react";
 import { Outlet } from "react-router-dom";
 import GlobalSupport from "components/GlobalSupport";
 import SideBar from "./SideBar";
@@ -7,59 +6,21 @@ import TopBar from "./TopBar";
 import AdminWelcomeContainer from "components/AdminWelcomeContainer";
 import ApprovalContainer from "components/ApprovalContainer";
 import UserFeedbackContainer from "components/UserFeedbackContainer";
+import useHandleColorTheme from "hooks/theme/useHandleColorTheme";
 
 const DashboardLayout = () => {
-  const [theme, setTheme] = useLocalStorage("theme" ? "dark" : "light", "");
-  const [colorTheme, setColorThem] = useLocalStorage("", "");
   const [sidebarToggle, setSidebarToggle] = useState(true);
 
-  const switchTheme = () => {
-    const newTheme = theme === "light" ? "dark" : "light";
-    setTheme(newTheme);
-    // Temporary fix to dark mode
-    // window.location.reload();
-  };
-
-  const switchGreenColor = () => {
-    const newTheme = colorTheme === "light" ? "orange" : "green";
-    setColorThem(newTheme);
-  };
-
-  const switchOrangeColor = () => {
-    const newTheme = colorTheme === "light" ? "green" : "orange";
-    setColorThem(newTheme);
-  };
-
-  const switchBlueColor = () => {
-    const newTheme = colorTheme === "light" ? "orange" : "blue";
-    setColorThem(newTheme);
-  };
-
-  const switchPurpleColor = () => {
-    const newTheme = colorTheme === "light" ? "blue" : "purple";
-    setColorThem(newTheme);
-  };
-
-  const switchYellowColor = () => {
-    const newTheme = colorTheme === "default";
-    setColorThem(newTheme as unknown as string);
-  };
+  const { color, mode } = useHandleColorTheme(); //TODO: Remove this after verifying its not needed for the div its passed to
 
   return (
     <>
       <UserFeedbackContainer />
       <AdminWelcomeContainer />
       <ApprovalContainer />
-      <div className="mode_color" data-theme={theme} color-theme={colorTheme}>
+      <div className="mode_color" data-theme={mode} color-theme={color}>
         <div className="h-screen overflow-y-auto">
           <TopBar
-            switchTheme={switchTheme}
-            theme={theme as unknown as string}
-            green={switchGreenColor}
-            orange={switchOrangeColor}
-            yellow={switchYellowColor}
-            blue={switchBlueColor}
-            purple={switchPurpleColor}
             sidebarToggle={sidebarToggle}
             setSidebarToggle={() => setSidebarToggle(!sidebarToggle)}
           />

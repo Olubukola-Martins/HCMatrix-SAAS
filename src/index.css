@@ -33,37 +33,52 @@
   --scrollBg: #808080;
 }
 
-[color-theme="orange"] {
+[color-theme="#d69a00"] {
   --caramel: #d69a00;
-}
-
-[color-theme="green"] {
-  --caramel: #01966b;
-}
-
-[color-theme="blue"] {
-  --caramel: #349ce4;
-}
-
-[color-theme="purple"] {
-  --caramel: #6e55ff;
-}
-
-[color-theme="orange"] {
   --faded: rgb(255, 102, 71, 0.5);
 }
 
-[color-theme="green"] {
+[color-theme="#01966b"] {
+  --caramel: #01966b;
   --faded: rgb(1, 150, 107, 0.5);
 }
 
-[color-theme="blue"] {
+[color-theme="#349ce4"] {
+  --caramel: #349ce4;
   --faded: rgb(52, 156, 228, 0.5);
 }
 
-[color-theme="purple"] {
+[color-theme="#6e55ff"] {
+  --caramel: #6e55ff;
   --faded: rgb(110, 85, 255, 0.5);
 }
+/* Fix for antd btn, conflicting with tailwind */
+/* TODO: Find a more dynamic fix that will allow antd theme config styles to be used */
+.ant-btn-primary {
+  background-color: var(--caramel);
+}
+
+/* svg styles for auth background */
+.st0 {
+  fill: none;
+}
+
+.st1 {
+  fill: url(#SVGID_1_);
+}
+
+.st2 {
+  fill: var(--faded);
+}
+/* svg styles for auth background */
+
+/* override big-calender-css */
+.rbc-event,
+.rbc-event.rbc-selected {
+  background: var(--caramel) !important;
+}
+
+/* override big-calender-css */
 
 html {
   scroll-behavior: smooth;
@@ -265,14 +280,14 @@ textarea.ant-input,
 
 /* enable disabled date inputs to be grayed out as intended */
 .ant-picker.ant-picker-disabled {
-  background: #f5f5f5 !important;
-  border-color: #d9d9d9 !important;
+  /* background: #f5f5f5 !important; */
+  /* border-color: #d9d9d9 !important; */
   cursor: not-allowed;
 }
 .ant-picker-input > input[disabled] {
   color: rgba(18, 18, 18, 0.838) !important;
-  background-color: #f5f5f5 !important;
-  border-color: #d9d9d9 !important;
+  /* background-color: var(--card) !important; */
+  /* border-color: #d9d9d9 !important; */
   box-shadow: none;
   cursor: not-allowed;
   opacity: 1;
@@ -342,9 +357,9 @@ textarea.ant-input,
 }
 
 /* modal adjustments */
-.ant-modal-root .ant-modal-content .ant-modal-header {
+/* .ant-modal-root .ant-modal-content .ant-modal-header {
   background: var(--background);
-}
+} */
 
 /* ant btn primary */
 .ant-btn-primary {

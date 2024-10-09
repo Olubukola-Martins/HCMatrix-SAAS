@@ -65,7 +65,7 @@ export const AdminHome: React.FC<{
               </div>
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-5 mt-6">
                 <div className="md:col-span-4">
-                  <div className="shadow rounded-lg p-3">
+                  <div className="border shadow rounded-lg p-3">
                     <div className="flex items-center justify-between">
                       <h4 className="text-base text-gray-500">
                         Total Employee
