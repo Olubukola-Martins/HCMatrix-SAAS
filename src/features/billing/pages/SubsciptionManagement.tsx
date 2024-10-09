@@ -89,7 +89,7 @@ const SubsciptionManagement = () => {
           <Segmented
             value={filter.billingCycle}
             options={["monthly", "yearly"].map((item) => ({
-              label: <span className="uppercase">{item}</span>,
+              label: <span className="capitalize">{item}</span>,
               value: item,
             }))}
             size="large"

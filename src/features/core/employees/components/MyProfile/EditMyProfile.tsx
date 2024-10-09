@@ -16,7 +16,6 @@ import { QUERY_KEY_FOR_SINGLE_EMPLOYEE } from "../../hooks/useFetchSingleEmploye
 import { QUERY_KEY_FOR_LIST_OF_EMPLOYEES } from "../../hooks/useFetchEmployees";
 import { FormFileInput } from "components/generalFormInputs/FormFileInput";
 import { AppButton } from "components/button/AppButton";
-import AppSwitch from "components/switch/AppSwitch";
 import { bulkUploadFiles } from "hooks/useUploadFile";
 import { QUERY_KEY_FOR_AUTHENTICATED_USER } from "features/authentication/hooks/useGetAuthUser";
 
@@ -195,7 +194,11 @@ export const EditMyProfile = ({ open, handleClose, employee }: IProps) => {
               label="Employee ID"
               rules={textInputValidationRules}
             >
-              <Input className="generalInputStyle" placeholder="Employee ID" disabled/>
+              <Input
+                className="generalInputStyle"
+                placeholder="Employee ID"
+                disabled
+              />
             </Form.Item>
           </div>
         </div>

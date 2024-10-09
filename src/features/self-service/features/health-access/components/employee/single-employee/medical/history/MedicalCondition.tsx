@@ -59,7 +59,7 @@ export const MedicalCondition: React.FC<{
           </button>
         </div>
 
-        <div className="p-1 md:p-4 bg-gray-200 rounded mt-3">
+        <div className="p-1 md:p-4 bg-mainBg rounded mt-3">
           <table className="w-full text-center">
             <thead>
               <tr>

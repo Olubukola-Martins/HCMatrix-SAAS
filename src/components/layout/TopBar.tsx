@@ -16,6 +16,7 @@ import {
 import { appRoutes } from "config/router/paths";
 import useMostRecentApiAuth from "hooks/useMostRecentApiAuth";
 import { DEFAULT_LOGO_IMAGE_URL } from "constants/general";
+import ModeSwitcher from "components/theme/ModeSwitcher";
 
 const ADD_COMPANY_KEY_VALUE = "";
 type TCompanyOption = {
@@ -28,27 +29,10 @@ type TCompanyOption = {
 type TAction = "user-menu" | "add-company" | "search";
 
 interface IProps {
-  switchTheme: Function;
-  theme: string;
-  green: Function;
-  yellow: Function;
-  orange: Function;
-  blue: Function;
-  purple: Function;
   sidebarToggle: boolean;
   setSidebarToggle: Function;
 }
-const TopBar = ({
-  switchTheme,
-  theme,
-  green,
-  yellow,
-  orange,
-  blue,
-  purple,
-  sidebarToggle,
-  setSidebarToggle,
-}: IProps) => {
+const TopBar = ({ sidebarToggle, setSidebarToggle }: IProps) => {
   const { globalDispatch } = useApiAuth();
   const {
     companies: userCompanies,
@@ -123,6 +107,7 @@ const TopBar = ({
           </div>
 
           <div className="flex gap-4 items-center">
+            <ModeSwitcher />
             <i
               onClick={() => setAction("search")}
               className="fa-solid fa-magnifying-glass lg:hidden cursor-pointer text-base"
@@ -211,13 +196,6 @@ const TopBar = ({
             <UserNotificationsBadge />
 
             <UserProfileMenuDropdown
-              colorFns={{
-                green,
-                yellow,
-                orange,
-                blue,
-                purple,
-              }}
               avatarUrl={currentCompanyEmployeeDetails?.avatarUrl}
               onOpenChange={(val) => setAction(val ? "user-menu" : undefined)}
               open={action === "user-menu"}

@@ -23,7 +23,7 @@ export const AddDomain = ({ open, handleClose }: IModalProps) => {
             },
           ]}
         >
-          <Input className="generalInputStyle" placeholder="www.domain.com" />
+          <Input className="w-full" placeholder="www.domain.com" />
         </Form.Item>
 
         <button className="button">Submit</button>

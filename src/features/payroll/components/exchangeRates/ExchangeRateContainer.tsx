@@ -49,7 +49,7 @@ const ExchangeRateForm: React.FC<IProps> = ({ onlyView }) => {
   return (
     <Skeleton active paragraph={{ rows: 5 }} loading={isBaseCurrencyLoading}>
       <div className="flex justify-center">
-        <p className="text-center font-bold px-6 py-2 shadow-md  bg-white rounded-md">
+        <p className="text-center font-bold px-6 py-2 shadow-md  bg-mainBg rounded-md">
           Base Currency - {baseCurrency?.currency}
         </p>
       </div>

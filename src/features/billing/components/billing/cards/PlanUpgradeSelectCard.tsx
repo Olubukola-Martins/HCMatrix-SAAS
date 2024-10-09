@@ -7,34 +7,39 @@ interface IProps {
   planRates: string;
   isCurrentPlan?: boolean;
   isSelectedPlan?: boolean;
-  isSelectable?: boolean;
 }
 
 const PlanUpgradeSelectCard = ({
   planName,
   planRates,
-  isSelectable = true,
   isCurrentPlan,
   isSelectedPlan,
   planId,
 }: IProps) => {
   return (
     <CardWrapper
-      className={`flex gap-x-2 w-full ${isSelectable && "cursor-not-allowed"}`}
+      className={`flex gap-x-2 w-full ${isCurrentPlan && "cursor-not-allowed"}`}
       isActive={isSelectedPlan}
     >
-      <Radio value={planId} disabled={!isSelectable} />
-      <div className="flex flex-col gap-y-3 w-full h-fit">
-        <div className="flex justify-between font-medium text-sm">
-          <p>{planName}</p>
-          {(isSelectable || isCurrentPlan) && (
-            <p className={`${isSelectable && "opacity-70"}`}>
-              {isCurrentPlan ? "Current plan" : ""}
-            </p>
-          )}
+      <Radio
+        value={planId}
+        disabled={isCurrentPlan}
+        className="w-full relative"
+      >
+        <div className="space-y-3 w-full items-stretch  h-fit">
+          <div className="flex w-full justify-between font-medium text-sm">
+            <p>{planName}</p>
+
+            {isCurrentPlan && (
+              <p className={`${"opacity-70 absolute right-0"}`}>Current plan</p>
+            )}
+          </div>
+          <p className="opacity-85 font-normal text-base  w-full">
+            {" "}
+            {planRates}{" "}
+          </p>
         </div>
-        <p className="opacity-85 font-normal text-base"> {planRates} </p>
-      </div>
+      </Radio>
     </CardWrapper>
   );
 };

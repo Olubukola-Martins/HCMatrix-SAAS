@@ -17,6 +17,10 @@ import { parsePhoneNumber } from "utils/dataHelpers/parsePhoneNumber";
 import { TSubscriptionType } from "features/billing/types/subscription";
 import { usePurchaseSubscriptionPlanOrModule } from "features/billing/hooks/subscription/usePurchaseSubscriptionPlanOrModule";
 import { formatPhoneNumber } from "utils/dataHelpers/formatPhoneNumber";
+import {
+  ECreateCompanySubscriptionOps,
+  useCreateCompanySubscriptionStateAndDispatch,
+} from "features/billing/stateManagers";
 
 const STEPS = ["Select Plan/Add Ons", "Payment", "Select Users"];
 const PurchaseModulesContainer: React.FC<{
@@ -32,8 +36,7 @@ const PurchaseModulesContainer: React.FC<{
   useLayoutEffect(() => {
     if (subscription) {
       const address = billingDetails?.address;
-
-      form.setFieldsValue({
+      const parsedData = {
         priceType: subscription?.currency,
         purchased:
           subscription?.type === "module"
@@ -55,6 +58,14 @@ const PurchaseModulesContainer: React.FC<{
           : undefined,
         billingName: billingDetails?.name,
         phoneNumber: parsePhoneNumber(billingDetails?.phone),
+      };
+
+      form.setFieldsValue(parsedData);
+      dispatch({
+        type: ECreateCompanySubscriptionOps.update,
+        payload: {
+          ...parsedData,
+        },
       });
     } else {
       form.setFieldsValue({
@@ -68,12 +79,13 @@ const PurchaseModulesContainer: React.FC<{
   const [activeStep, setActiveStep] = useState(0);
   const [showD, setShowD] = useState(false);
 
-  const handlePrev = () => setActiveStep((prev) => prev - 1);
+  const handlePrev = () => setActiveStep((prev) => (prev > 0 ? prev - 1 : 0));
   const handleNext = () => setActiveStep((prev) => prev + 1);
 
   const { mutate, isLoading: isPaying } = usePurchaseSubscriptionPlanOrModule();
   const queryClient = useQueryClient();
   const [url, setUrl] = useState<string>();
+  const { dispatch } = useCreateCompanySubscriptionStateAndDispatch();
 
   const handleSubmit = (data: TCreateCompanySubscriptionProps) => {
     if (!cycle || !currency) return;
@@ -109,7 +121,7 @@ const PurchaseModulesContainer: React.FC<{
             currency,
             licensedEmployeeCount: data.licensedEmployeeCount,
             type,
-            planId: data?.planId as number,
+            planId: planId as number,
             unlicensedEmployeeCount: data.unlicensedEmployeeCount,
             addonIds: [
               data?.addOns?.extraStorageId,
@@ -176,9 +188,16 @@ const PurchaseModulesContainer: React.FC<{
             labelCol={{ span: 24 }}
             onFinish={handleSubmit}
           >
-            <span className="cursor-pointer" onClick={handlePrev}>
-              Go Back
-            </span>
+            <div className="justify-end">
+              <span
+                className={
+                  activeStep === 0 ? "cursor-not-allowed" : "cursor-pointer"
+                }
+                onClick={handlePrev}
+              >
+                Go Back
+              </span>
+            </div>
             <div className={activeStep === 0 ? "block" : "hidden"}>
               <AddOnContainer
                 Form={Form}
@@ -194,6 +213,8 @@ const PurchaseModulesContainer: React.FC<{
             <div className={activeStep === 1 ? "block" : "hidden"}>
               <PaymentsContainer
                 Form={Form}
+                selectedPriceType={currency}
+                selectedBillingCycle={cycle}
                 onProceed={() => handleNext()}
                 form={form}
                 isPayingForSubscription={isPaying}

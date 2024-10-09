@@ -13,8 +13,15 @@ export const FormDesignationInput: React.FC<{
   control?: { label: string; name: string | (string | number)[] };
   optional?: boolean;
   disabled?: boolean;
-
-}> = ({ Form, showLabel = true, control, optional = false, disabled }) => {
+  mode?: "multiple" | "tags";
+}> = ({
+  Form,
+  showLabel = true,
+  control,
+  optional = false,
+  disabled,
+  mode,
+}) => {
   const [searchTerm, setSearchTerm] = useState<string>("");
   const debouncedSearchTerm: string = useDebounce<string>(searchTerm);
 
@@ -31,7 +38,7 @@ export const FormDesignationInput: React.FC<{
   return (
     <Form.Item
       name={control?.name ?? "designationId"}
-      label={showLabel ? control?.label ?? "Designation" : null}
+      label={showLabel ? (control?.label ?? "Designation") : null}
       rules={optional ? generalValidationRulesOp : generalValidationRules}
     >
       <Select
@@ -46,6 +53,7 @@ export const FormDesignationInput: React.FC<{
         defaultActiveFirstOption={false}
         showArrow={false}
         filterOption={false}
+        mode={mode}
       >
         {data?.data.map((item) => (
           <Select.Option key={item.id} value={item.id}>
