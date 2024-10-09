@@ -17,6 +17,10 @@ import { parsePhoneNumber } from "utils/dataHelpers/parsePhoneNumber";
 import { TSubscriptionType } from "features/billing/types/subscription";
 import { usePurchaseSubscriptionPlanOrModule } from "features/billing/hooks/subscription/usePurchaseSubscriptionPlanOrModule";
 import { formatPhoneNumber } from "utils/dataHelpers/formatPhoneNumber";
+import {
+  ECreateCompanySubscriptionOps,
+  useCreateCompanySubscriptionStateAndDispatch,
+} from "features/billing/stateManagers";
 
 const STEPS = ["Select Plan/Add Ons", "Payment", "Select Users"];
 const PurchaseModulesContainer: React.FC<{
@@ -32,8 +36,7 @@ const PurchaseModulesContainer: React.FC<{
   useLayoutEffect(() => {
     if (subscription) {
       const address = billingDetails?.address;
-
-      form.setFieldsValue({
+      const parsedData = {
         priceType: subscription?.currency,
         purchased:
           subscription?.type === "module"
@@ -55,6 +58,14 @@ const PurchaseModulesContainer: React.FC<{
           : undefined,
         billingName: billingDetails?.name,
         phoneNumber: parsePhoneNumber(billingDetails?.phone),
+      };
+
+      form.setFieldsValue(parsedData);
+      dispatch({
+        type: ECreateCompanySubscriptionOps.update,
+        payload: {
+          ...parsedData,
+        },
       });
     } else {
       form.setFieldsValue({
@@ -74,6 +85,7 @@ const PurchaseModulesContainer: React.FC<{
   const { mutate, isLoading: isPaying } = usePurchaseSubscriptionPlanOrModule();
   const queryClient = useQueryClient();
   const [url, setUrl] = useState<string>();
+  const { dispatch } = useCreateCompanySubscriptionStateAndDispatch();
 
   const handleSubmit = (data: TCreateCompanySubscriptionProps) => {
     if (!cycle || !currency) return;
