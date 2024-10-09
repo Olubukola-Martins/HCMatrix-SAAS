@@ -35,7 +35,7 @@ const BillingContainer = () => {
       />
       <div className="flex flex-col gap-y-7">
         <Skeleton loading={isLoadingSub} active paragraph={{ rows: 12 }}>
-          <div className="grid grid-cols-1 lg:grid-cols-4 gap-x-4">
+          <div className="grid grid-cols-1 lg:grid-cols-4 gap-4">
             <CurrentPlanCard
               handleUpgrade={() => setOpenUpgradeModal(true)}
               billingPrice={billingPrice}

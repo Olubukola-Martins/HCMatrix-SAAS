@@ -3,7 +3,6 @@ import { Table, Dropdown, Button } from "antd";
 import { ColumnsType, TablePaginationConfig } from "antd/es/table";
 import { MoreOutlined } from "@ant-design/icons";
 import CardWrapper from "../ui/CardWrapper";
-import { mockDataBillingHistory } from "features/billing/utils/data";
 import { appRoutes } from "config/router/paths";
 import { useNavigate } from "react-router-dom";
 import BillingInvoice from "./BillingInvoice";
@@ -26,7 +25,7 @@ interface BillingsTableProps {
 }
 
 const BillingsHistoryTable: React.FC<BillingsTableProps> = ({
-  dataHistory = mockDataBillingHistory,
+  dataHistory = [],
   pagination = { pageSize: 5 },
   loading,
 }) => {
@@ -58,11 +57,13 @@ const BillingsHistoryTable: React.FC<BillingsTableProps> = ({
       title: "Status",
       dataIndex: "status",
       key: "status",
+      render: (val) => <span className="capitalize">{val}</span>,
     },
     {
       title: "Type",
       dataIndex: "type",
       key: "type",
+      render: (val) => <span className="capitalize">{val}</span>,
     },
     {
       title: "Amount",
@@ -73,6 +74,7 @@ const BillingsHistoryTable: React.FC<BillingsTableProps> = ({
       title: "Billing Cycle",
       dataIndex: "billingCycle",
       key: "billingCycle",
+      render: (val) => <span className="capitalize">{val}</span>,
     },
     {
       title: "Action",
