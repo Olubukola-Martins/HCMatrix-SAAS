@@ -31,6 +31,7 @@ const BillingContainer = () => {
       <UpgradePlan
         open={openUogradeModal}
         handleClose={() => setOpenUpgradeModal(false)}
+        subscription={sub}
       />
       <div className="flex flex-col gap-y-7">
         <Skeleton loading={isLoadingSub} active paragraph={{ rows: 12 }}>
