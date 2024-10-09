@@ -1,10 +1,14 @@
 import { Button } from "antd";
 import MoonIcon from "assets/svg-components/MoonIcon/MoonIcon";
+import { UI_MODE_SETTINGS } from "config/enviroment";
 import useHandleColorTheme from "hooks/theme/useHandleColorTheme";
 import { IoIosSunny } from "react-icons/io";
 
 const ModeSwitcher = () => {
   const { mode, handleModeSwitch } = useHandleColorTheme();
+  if (UI_MODE_SETTINGS.ALLOW_UI_DARK_MODE === false) {
+    return null;
+  }
   return (
     <>
       {mode === "light" ? (

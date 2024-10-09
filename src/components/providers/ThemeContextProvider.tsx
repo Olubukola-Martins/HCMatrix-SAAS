@@ -1,3 +1,4 @@
+import { UI_MODE_SETTINGS } from "config/enviroment";
 import React, { createContext, useEffect, useState } from "react";
 import { EThemePrimaryColor, TThemeMode } from "types";
 
@@ -36,13 +37,18 @@ const ThemeContextProvider = ({ children }: IProps) => {
 
       // mode
       // check sytem prefernece
-      const mq = window.matchMedia("(prefers-color-scheme: dark)");
+      if (UI_MODE_SETTINGS.ALLOW_UI_DARK_MODE) {
+        const mq = window.matchMedia("(prefers-color-scheme: dark)");
 
-      if (mq.matches) {
-        handleModeSwitch("dark");
+        if (mq.matches) {
+          handleModeSwitch("dark");
+        } else {
+          handleModeSwitch("light");
+        }
       } else {
         handleModeSwitch("light");
       }
+
       // mode --end
 
       return;
