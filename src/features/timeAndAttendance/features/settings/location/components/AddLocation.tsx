@@ -11,6 +11,8 @@ import { openNotification } from "utils/notifications";
 import { useGetBiometricDevice } from "../../Biometrics/hooks/useGetBiometricDevice";
 import { useCreateLocation } from "../hooks/useCreateLocation";
 import { useGetSingleLocation } from "../hooks/useGetSingleLocation";
+import { QUERY_KEY_FOR_LOCATION } from "../hooks/useGetLocations";
+import { useQueryClient } from "react-query";
 const formWrapStyle =
   "bg-card px-4 pt-4 rounded grid grid-cols-1 md:grid-cols-2 gap-x-10 mb-5 shadow-sm";
 export const AddLocation = ({ handleClose, open, id }: IDrawerProps) => {
@@ -23,6 +25,7 @@ export const AddLocation = ({ handleClose, open, id }: IDrawerProps) => {
   const debouncedSearchTerm: string = useDebounce<string>(searchTerm);
   const { data: biometricData, isLoading: loadBiometric } =
     useGetBiometricDevice();
+  const queryClient = useQueryClient();
 
   const { data: branchData, isFetching } = useFetchBranches({
     searchParams: {
@@ -81,6 +84,9 @@ export const AddLocation = ({ handleClose, open, id }: IDrawerProps) => {
           form.resetFields();
           handleClose();
           dispatch({ type: EGlobalOps.setShowInitialSetup, payload: true });
+          queryClient.invalidateQueries({
+            queryKey: [QUERY_KEY_FOR_LOCATION],
+          });
         },
       }
     );

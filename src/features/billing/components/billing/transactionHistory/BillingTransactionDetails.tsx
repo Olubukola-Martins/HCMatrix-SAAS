@@ -6,17 +6,24 @@ import { TCompanySubscriptionTransaction } from "features/billing/types/company/
 import { getEmployeeFullName } from "features/core/employees/utils/getEmployeeFullName";
 import dayjs from "dayjs";
 import React from "react";
-import { boxStyle } from "styles/reused";
+import { boxStyle, cardStyle } from "styles/reused";
 import { formatNumberWithCommas } from "utils/dataHelpers/formatNumberWithCommas";
+import { TSingleBillingHistory } from "features/billing/hooks/company/billingHistory/useGetBillingHistoryById";
+import { usePagination } from "hooks/usePagination";
+import {
+  TEmployeeLicenseBillingHistory,
+  useGeTEmployeeLicenseBillingHistory,
+} from "features/billing/hooks/company/billingHistory/employee-license/useGetEmployeeLicenseBillingHistory";
 
 const BillingTransactionDetails: React.FC<{
-  billingTransaction?: TCompanySubscriptionTransaction;
+  billingTransaction?: TSingleBillingHistory;
   isLoading?: boolean;
 }> = ({ billingTransaction, isLoading }) => {
   const subscription = billingTransaction?.companySubscription;
+
   return (
     <div className="space-y-6">
-      <PurchasedModules data={subscription?.purchased} isLoading={isLoading} />
+      {/* <PurchasedModules data={subscription?.purchased} isLoading={isLoading} /> */}
       <BillingInsights
         isLoading={isLoading}
         data={{
@@ -27,25 +34,25 @@ const BillingTransactionDetails: React.FC<{
           licensedEmployeeCount: subscription?.licensedEmployeeCount,
           unlicensedEmployeeCount: subscription?.unlicensedEmployeeCount,
           totalAmountPaid: formatNumberWithCommas(
-            +(billingTransaction?.totalAmountPaid ?? 0)
+            +(billingTransaction?.amountPaid ?? 0)
           ),
         }}
       />
-      <EmployeeWithLicenseTable
-        title={`Licensed User (${subscription?.licensedEmployeeCount})`}
-        data={subscription?.employeeLicenses.filter(
-          (item) => item.licenseType === "licensed"
-        )}
-        loading={isLoading}
-      />
+      {billingTransaction ? (
+        <>
+          <EmployeeWithLicenseTable
+            title={`Licensed User (${subscription?.licensedEmployeeCount})`}
+            billingHistoryId={billingTransaction?.id}
+            licenseType="licensed"
+          />
 
-      <EmployeeWithLicenseTable
-        title={`Unlicensed User (${subscription?.unlicensedEmployeeCount})`}
-        data={subscription?.employeeLicenses.filter(
-          (item) => item.licenseType === "unlicensed"
-        )}
-        loading={isLoading}
-      />
+          <EmployeeWithLicenseTable
+            title={`Unlicensed User (${subscription?.unlicensedEmployeeCount})`}
+            billingHistoryId={billingTransaction?.id}
+            licenseType="unlicensed"
+          />
+        </>
+      ) : null}
     </div>
   );
 };
@@ -75,13 +82,13 @@ const BillingInsights: React.FC<{
     { title: "Date", value: createdAt },
   ];
   return (
-    <div className={`${boxStyle} text-sm bg-card`}>
+    <div className={`${cardStyle} text-sm bg-card`}>
       <div className={`${boxStyle} flex gap-x-4 shadow-sm rounded-md`}>
         {items.map(({ title, value }, i) => (
           <div
             key={i}
             className={`${
-              i !== items.length - 1 && "border-none border-slate-600"
+              i !== items.length - 1 && " border-r"
             } flex-1  flex flex-col gap-2`}
           >
             <h6 className={"font-light text-sm capitalize"}>{title}</h6>
@@ -119,13 +126,22 @@ const PurchasedModules: React.FC<{
   );
 };
 
-const EmployeeWithLicenseTable: React.FC<{
-  title: string;
-  loading?: boolean;
-  data?: TCompanySubscriptionTransaction["companySubscription"]["employeeLicenses"];
-}> = ({ title, data, loading }) => {
+const EmployeeWithLicenseTable: React.FC<
+  {
+    title: string;
+    billingHistoryId: number;
+  } & Partial<Pick<TEmployeeLicenseBillingHistory, "licenseType">>
+> = ({ title, billingHistoryId, licenseType }) => {
+  const { onChange, pagination } = usePagination();
+  const { data, isLoading } = useGeTEmployeeLicenseBillingHistory({
+    props: {
+      pagination,
+      billingHistoryId,
+      licenseType,
+    },
+  });
   const columns: ColumnsType<
-    TCompanySubscriptionTransaction["companySubscription"]["employeeLicenses"][0] & {
+    TEmployeeLicenseBillingHistory & {
       key: number;
     }
   > = [
@@ -159,8 +175,9 @@ const EmployeeWithLicenseTable: React.FC<{
       <Table
         columns={columns}
         size="small"
-        dataSource={data?.map((item, i) => ({ ...item, key: i + 1 }))}
-        loading={loading}
+        dataSource={data?.data.map((item, i) => ({ ...item, key: i + 1 }))}
+        loading={isLoading}
+        pagination={{ ...pagination, onChange, total: data?.total }}
       />
     </div>
   );

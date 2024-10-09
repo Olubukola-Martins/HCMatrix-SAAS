@@ -4,6 +4,7 @@ import React, { useEffect, useState } from "react";
 import { IModalProps } from "types";
 import {
   generalValidationRules,
+  generalValidationRulesOp,
   numberHasToBeAWholeNumberRule,
   textInputValidationRules,
 } from "utils/formHelpers/validation";
@@ -16,6 +17,8 @@ import FormItem from "antd/es/form/FormItem";
 import { GENDERS, MARITAL_STATUSES } from "constants/general";
 import { EMPLOYEE_STATUSES_OPTIONS } from "features/core/employees/constants";
 import { TCreateLeaveTypeProps } from "../../../hooks/leaveTypes/useCreateLeaveType";
+import { LEAVE_TYPE_CATEGORIES } from "../../../types/leaveType";
+import { openNotification } from "utils/notifications";
 
 interface IProps extends IModalProps {
   onSubmit: {
@@ -44,6 +47,7 @@ export const SaveLeaveType: React.FC<IProps> = ({
     form.setFieldsValue({
       name: data.name,
       typeOfLength: data.typeOfLength,
+      category: data?.category,
       length: data.length,
       employeesGetAllowance: data.employeesGetAllowance,
       eligibilityCriteria: {
@@ -79,7 +83,40 @@ export const SaveLeaveType: React.FC<IProps> = ({
         <Form
           layout="vertical"
           form={form}
-          onFinish={(data) =>
+          onFinish={(data) => {
+            if (data?.category === "casual" && data?.typeOfLength !== "fixed") {
+              openNotification({
+                state: "info",
+                title: "Warning!",
+                description:
+                  "A casual leave category must have a fixed type of length and the length set to valid number. Please correct and try again. Thank you!",
+              });
+              return;
+            } else if (
+              data?.category === "annual" &&
+              data?.typeOfLength === "fixed" &&
+              typeof data?.length !== "number"
+            ) {
+              openNotification({
+                state: "info",
+                title: "Warning!",
+                description:
+                  "An annual leave category with a fixed type of length must have the length set to a valid number. Please correct and try again. Thank you!",
+              });
+              return;
+            } else if (
+              data?.category === "annual" &&
+              data?.typeOfLength === "dynamic" &&
+              data?.length !== "grade"
+            ) {
+              openNotification({
+                state: "info",
+                title: "Warning!",
+                description:
+                  "An annual leave category with a dynamic type of length must have the length set to grade. Please correct and try again. Thank you!",
+              });
+              return;
+            }
             onSubmit.fn({
               name: data.name,
               typeOfLength: data.typeOfLength,
@@ -91,8 +128,9 @@ export const SaveLeaveType: React.FC<IProps> = ({
               groupId: data.eligibilityCriteria?.groupId ?? null,
               applicableToCertainGroup: usesGroup,
               requireReliever: !!data.requireReliever,
-            })
-          }
+              category: data.category,
+            });
+          }}
           className="grid grid-cols-2 gap-x-4"
           requiredMark={false}
         >
@@ -103,6 +141,20 @@ export const SaveLeaveType: React.FC<IProps> = ({
             label="Name"
           >
             <Input placeholder="Leave Name" />
+          </Form.Item>
+          <Form.Item
+            className="col-span-2"
+            rules={generalValidationRulesOp}
+            name="category"
+            label="Category"
+          >
+            <Select
+              options={LEAVE_TYPE_CATEGORIES.map((item) => ({
+                label: <span className="capitalize">{item}</span>,
+                value: item,
+              }))}
+              placeholder="Leave Category"
+            />
           </Form.Item>
           <Form.Item
             className="col-span-1"
@@ -123,7 +175,8 @@ export const SaveLeaveType: React.FC<IProps> = ({
               className="w-full"
               placeholder="type of leave length"
               options={["dynamic", "fixed"].map((item) => ({
-                label: item,
+                label: <span className="capitalize">{item}</span>,
+
                 value: item,
               }))}
               value={leaveLengthType}
@@ -150,8 +203,8 @@ export const SaveLeaveType: React.FC<IProps> = ({
               <Select
                 className="w-full"
                 placeholder="Employee Attribute"
-                options={["spillover"].map((item) => ({
-                  label: item,
+                options={["spillover", "grade"].map((item) => ({
+                  label: <span className="capitalize">{item}</span>,
                   value: item,
                 }))}
               />

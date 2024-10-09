@@ -70,21 +70,21 @@ export const countWeekendsInclusive = (_start: Dayjs, _end: Dayjs): number => {
   return weekendCount;
 };
 
-export const isDateGreaterThanCurrentDay = (_date:Dayjs) => {
+export const isDateGreaterThanCurrentDay = (_date: Dayjs) => {
   const currentDate = moment();
-  const date  = moment(_date.toString())
+  const date = moment(_date.toString());
   if (!date) return;
   return date.isAfter(currentDate, "day"); // Check if selected date is greater than the current day
 };
-export const isDateGreaterThanOrEqualToCurrentDay = (_date:Dayjs) => {
+export const isDateGreaterThanOrEqualToCurrentDay = (_date: Dayjs) => {
   const currentDate = moment();
-  const date  = moment(_date.toString())
+  const date = moment(_date.toString());
   if (!date) return;
   return date.isSameOrAfter(currentDate, "day"); // Check if selected date is greater than the current day
 };
-export const isDateLesserThanOrEqualToCurrentDay = (_date:Dayjs) => {
+export const isDateLesserThanOrEqualToCurrentDay = (_date: Dayjs) => {
   const currentDate = moment();
-  const date  = moment(_date.toString())
+  const date = moment(_date.toString());
   if (!date) return;
   return date.isSameOrBefore(currentDate, "day"); // Check if selected date is greater than the current day
 };
@@ -396,12 +396,10 @@ export function isValidEvalExpression(
       ?.filter((value, index, self) => self.indexOf(value) === index)
       ?.map((item) => `const ${item} = 0;`)
       .join("")} ${expression};`;
-    console.log(parsedExpression, "parsed");
     // eslint-disable-next-line no-eval
     eval(parsedExpression);
     return true;
   } catch (error) {
-    console.log(error, "ERR");
     // If eval throws an error, the expression is invalid
     return false;
   }
@@ -417,7 +415,6 @@ export const isFormulaValid = (input: string, acceptedVariables: string[]) => {
 
   // Split the input string into an array of words using whitespace as the delimiter
   const inputWords = input.split(regex).filter((item) => item.trim() !== "");
-  console.log(inputWords, "WHY");
 
   // Check if every word in the inputWords array is present in the wordArray
   return inputWords.every((word) => recognizedWords.includes(word));

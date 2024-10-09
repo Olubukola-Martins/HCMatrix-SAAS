@@ -34,7 +34,7 @@ export const TimeOffPolicy = () => {
       dataIndex: "title",
     },
     {
-      title: "Duration In Days",
+      title: "Duration In Hours",
       dataIndex: "duration",
     },
     {
@@ -99,6 +99,7 @@ export const TimeOffPolicy = () => {
           loading={isLoading}
           pagination={{ ...pagination, total: data?.total }}
           onChange={onChange}
+          scroll={{ x: 500 }}
         />
       </div>
     </>

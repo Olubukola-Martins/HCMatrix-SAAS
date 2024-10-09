@@ -1,4 +1,4 @@
-import {  Menu, Button, Dropdown } from "antd";
+import { Menu, Button, Dropdown } from "antd";
 import { ColumnsType } from "antd/lib/table";
 import { AppButton } from "components/button/AppButton";
 import { TAssetRequisition } from "features/self-service/features/requisitions/types/asset";
@@ -23,10 +23,11 @@ export const EmployeeAssetRequisitionHistory: React.FC<{
 }> = ({ title }) => {
   const { pagination, onChange } = usePagination();
 
+  const [status, setStatus] = useState<TApprovalStatus>();
   const { data, isFetching } = useGetAssetRequisitions4AuthEmployee({
     pagination,
+    status: status ? [status] : undefined,
   });
-  const [status, setStatus] = useState<TApprovalStatus>();
   const [showM, setShowM] = useState<TAction>();
   const [request, setRequest] = useState<TAssetRequisition>();
   const handleAction = (action: TAction, item?: TAssetRequisition) => {

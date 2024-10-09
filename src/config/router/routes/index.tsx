@@ -16,7 +16,9 @@ export const appPagesData = (props: TAppPageDataFnProps): TRouteData[] => {
   const { userPermissions, licenseType, isOwner, activeSubscription } = props;
   return [
     ...authRoutesDontRequireAuthentication,
-    ...billingRoutes({ userPermissions, licenseType, isOwner: !!isOwner }),
+    ...billingRoutes({ userPermissions, licenseType, isOwner: !!isOwner }).map(
+      (r) => ({ ...r, hidden: false })
+    ),
     ...homeRoutes,
     ...notFoundRoutes,
     ...notificationRoutes,
@@ -25,7 +27,7 @@ export const appPagesData = (props: TAppPageDataFnProps): TRouteData[] => {
     ...settingRoutes({ userPermissions, activeSubscription }),
     ...systemAdminRoutes,
     ...performanceRoutes,
-    ...attendanceRoutes,
+    ...attendanceRoutes({ userPermissions, licenseType, activeSubscription }),
     ...leaningRoutes,
   ].filter((item) => item?.hidden === false || item.hidden === undefined);
 };

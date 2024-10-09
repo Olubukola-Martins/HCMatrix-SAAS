@@ -1,4 +1,10 @@
-import { TableProps, TablePaginationConfig } from "antd";
+import {
+  TableProps,
+  TablePaginationConfig,
+  Button,
+  Dropdown,
+  Menu,
+} from "antd";
 import { ColumnsType } from "antd/lib/table";
 import { appRoutes } from "config/router/paths";
 import { DEFAULT_DATE_FORMAT } from "constants/dateFormats";
@@ -8,6 +14,10 @@ import moment from "moment";
 import { Link } from "react-router-dom";
 import { formatNumberWithCommas } from "utils/dataHelpers/formatNumberWithCommas";
 import { TableWithFocusType } from "components/table";
+import { AiOutlineMore } from "react-icons/ai";
+import { useState } from "react";
+import { TPayrollReviewAction } from "../payrollReviews/PayrollReviewContainer";
+import { DisbursePayroll } from "../disbursement/DisbursePayroll";
 
 export const PayrollTable: React.FC<{
   isProject?: boolean;
@@ -24,6 +34,16 @@ export const PayrollTable: React.FC<{
   total,
   pagination,
 }) => {
+  const [request, setRequest] = useState<TPayrollListData>();
+  const [action, setAction] = useState<TPayrollReviewAction>();
+  const handleAction = (key: TPayrollReviewAction, item?: TPayrollListData) => {
+    setAction(key);
+    setRequest(item);
+  };
+  const onClose = () => {
+    setAction(undefined);
+    setRequest(undefined);
+  };
   let ogColumns: ColumnsType<TPayrollListData> = [
     {
       title: "Created At",
@@ -132,6 +152,32 @@ export const PayrollTable: React.FC<{
         </span>
       ),
     },
+    {
+      title: "Action",
+      key: "action",
+      render: (_, item) => (
+        <Dropdown
+          overlay={
+            <Menu>
+              {(item.status === "awaiting-disbursement" ||
+                item.status === "in-disbursement") && (
+                <Menu.Item
+                  key="manual-disbursement"
+                  onClick={() => {
+                    handleAction("manual-disbursement", item);
+                  }}
+                >
+                  Disburse manually
+                </Menu.Item>
+              )}
+            </Menu>
+          }
+          trigger={["click"]}
+        >
+          <Button title="Actions" icon={<AiOutlineMore />} type="text" />
+        </Dropdown>
+      ),
+    },
   ];
 
   const columns: ColumnsType<TPayrollListData> = isProject
@@ -148,6 +194,13 @@ export const PayrollTable: React.FC<{
 
   return (
     <>
+      {request && (
+        <DisbursePayroll
+          handleClose={onClose}
+          open={action === "manual-disbursement"}
+          payrollId={request?.id}
+        />
+      )}
       <TableWithFocusType
         size="small"
         dataSource={data}

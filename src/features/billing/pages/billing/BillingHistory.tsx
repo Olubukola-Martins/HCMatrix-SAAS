@@ -1,6 +1,6 @@
 import { PageIntro } from "components/layout/PageIntro";
 import { appRoutes } from "config/router/paths";
-import BillingContainer from "features/billing/components/billing/BillingContainer";
+import BillingContainer from "features/billing/components/billing/containers/BillingContainer";
 import BillingSupportPlan from "features/billing/components/billing/BillingSupportPlan";
 import { useState } from "react";
 
@@ -11,10 +11,7 @@ const BillingHistory = () => {
   };
   return (
     <div className="Container space-y-8 lg:space-y-16">
-      <BillingSupportPlan
-        open={action === "download-support-plan"}
-        handleClose={() => setAction(undefined)}
-      />
+      <BillingSupportPlan open={action === "download-support-plan"} handleClose={() => setAction(undefined)} />
       <PageIntro
         title="Billing Summary"
         link={appRoutes.settings}

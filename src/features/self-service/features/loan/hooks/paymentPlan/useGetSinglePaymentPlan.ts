@@ -15,7 +15,7 @@ const getData = async (props: {
   data: TData;
   auth: ICurrentCompany;
 }): Promise<TPaymentPlan> => {
-  const url = `${MICROSERVICE_ENDPOINTS.PAYROLL}/loan/payment-plan/${props.data.id}`;
+  const url = `${MICROSERVICE_ENDPOINTS.PAYROLL}/loan/payment/plan/${props.data.id}`;
 
   const config = {
     headers: {

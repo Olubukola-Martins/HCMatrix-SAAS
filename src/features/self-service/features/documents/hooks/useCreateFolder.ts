@@ -11,7 +11,7 @@ const createData = async (props: {
   data: TFolderData;
   auth: ICurrentCompany;
 }) => {
-  const url = `${MICROSERVICE_ENDPOINTS.UTILITY}/self-service/folder`;
+  const url = `${MICROSERVICE_ENDPOINTS.UTILITY}/self-service/document/folder`;
   const config = {
     headers: {
       Accept: "application/json",

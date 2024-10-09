@@ -87,7 +87,7 @@ export const useGetActivatedSelfServiceLinksAndAnalytics = (): {
                   userPermissions,
                   activeSubscription,
                   requiredSubscriptionState: {
-                    label: "hr-admin",
+                    label: "core-hr",
                     resources: [],
                   },
                 }),
@@ -165,7 +165,7 @@ export const useGetActivatedSelfServiceLinksAndAnalytics = (): {
                   userPermissions,
                   activeSubscription,
                   requiredSubscriptionState: {
-                    label: "hr-admin",
+                    label: "core-hr",
                     resources: [],
                   },
                 }),
@@ -187,7 +187,7 @@ export const useGetActivatedSelfServiceLinksAndAnalytics = (): {
                   userPermissions,
                   activeSubscription,
                   requiredSubscriptionState: {
-                    label: "hr-admin",
+                    label: "core-hr",
                     resources: [],
                   },
                 }),
@@ -204,7 +204,7 @@ export const useGetActivatedSelfServiceLinksAndAnalytics = (): {
                 userPermissions,
                 activeSubscription,
                 requiredSubscriptionState: {
-                  label: "hr-admin",
+                  label: "core-hr",
                   resources: [],
                 },
               }),
@@ -232,6 +232,23 @@ export const useGetActivatedSelfServiceLinksAndAnalytics = (): {
                 desc: "You can now manage documents within your organization",
               },
             },
+            {
+              hidden: !canUserAccessComponent({
+                requiredPermissions: [],
+                userPermissions,
+                activeSubscription,
+                requiredSubscriptionState: {
+                  label: "employee-management",
+                  resources: [],
+                },
+              }),
+              item: {
+                icon: health, //TODO: Update the icon to what is on figma
+                link: appRoutes.profileEditHome,
+                title: "Profile Edit Request",
+                desc: "You can now request to edit your profile!",
+              },
+            },
           ],
           requisitionData: {
             icon: requisition,
@@ -248,7 +265,7 @@ export const useGetActivatedSelfServiceLinksAndAnalytics = (): {
                     userPermissions,
                     activeSubscription,
                     requiredSubscriptionState: {
-                      label: "hr-admin",
+                      label: "core-hr",
                       resources: [],
                     },
                   }),
@@ -265,7 +282,7 @@ export const useGetActivatedSelfServiceLinksAndAnalytics = (): {
                     userPermissions,
                     activeSubscription,
                     requiredSubscriptionState: {
-                      label: "hr-admin",
+                      label: "core-hr",
                       resources: [],
                     },
                   }),
@@ -282,7 +299,7 @@ export const useGetActivatedSelfServiceLinksAndAnalytics = (): {
                     userPermissions,
                     activeSubscription,
                     requiredSubscriptionState: {
-                      label: "hr-admin",
+                      label: "core-hr",
                       resources: [],
                     },
                   }),
@@ -299,7 +316,7 @@ export const useGetActivatedSelfServiceLinksAndAnalytics = (): {
                     userPermissions,
                     activeSubscription,
                     requiredSubscriptionState: {
-                      label: "hr-admin",
+                      label: "core-hr",
                       resources: [],
                     },
                   }),
@@ -316,7 +333,7 @@ export const useGetActivatedSelfServiceLinksAndAnalytics = (): {
                     userPermissions,
                     activeSubscription,
                     requiredSubscriptionState: {
-                      label: "hr-admin",
+                      label: "core-hr",
                       resources: [],
                     },
                   }),
@@ -333,7 +350,7 @@ export const useGetActivatedSelfServiceLinksAndAnalytics = (): {
                     userPermissions,
                     activeSubscription,
                     requiredSubscriptionState: {
-                      label: "hr-admin",
+                      label: "core-hr",
                       resources: [],
                     },
                   }),
@@ -350,7 +367,7 @@ export const useGetActivatedSelfServiceLinksAndAnalytics = (): {
                     userPermissions,
                     activeSubscription,
                     requiredSubscriptionState: {
-                      label: "hr-admin",
+                      label: "core-hr",
                       resources: [],
                     },
                   }),
@@ -367,7 +384,7 @@ export const useGetActivatedSelfServiceLinksAndAnalytics = (): {
                     userPermissions,
                     activeSubscription,
                     requiredSubscriptionState: {
-                      label: "hr-admin",
+                      label: "core-hr",
                       resources: [],
                     },
                   }),
@@ -385,7 +402,7 @@ export const useGetActivatedSelfServiceLinksAndAnalytics = (): {
                   userPermissions,
                   activeSubscription,
                   requiredSubscriptionState: {
-                    label: "hr-admin",
+                    label: "core-hr",
                     resources: [],
                   },
                 }),
@@ -398,7 +415,7 @@ export const useGetActivatedSelfServiceLinksAndAnalytics = (): {
                   userPermissions,
                   activeSubscription,
                   requiredSubscriptionState: {
-                    label: "hr-admin",
+                    label: "core-hr",
                     resources: [],
                   },
                 }),
@@ -411,7 +428,7 @@ export const useGetActivatedSelfServiceLinksAndAnalytics = (): {
                   userPermissions,
                   activeSubscription,
                   requiredSubscriptionState: {
-                    label: "hr-admin",
+                    label: "core-hr",
                     resources: [],
                   },
                 }),
@@ -424,7 +441,7 @@ export const useGetActivatedSelfServiceLinksAndAnalytics = (): {
                   userPermissions,
                   activeSubscription,
                   requiredSubscriptionState: {
-                    label: "hr-admin",
+                    label: "core-hr",
                     resources: [],
                   },
                 }),
@@ -437,7 +454,7 @@ export const useGetActivatedSelfServiceLinksAndAnalytics = (): {
                   userPermissions,
                   activeSubscription,
                   requiredSubscriptionState: {
-                    label: "hr-admin",
+                    label: "core-hr",
                     resources: [],
                   },
                 }),
@@ -450,7 +467,7 @@ export const useGetActivatedSelfServiceLinksAndAnalytics = (): {
                   userPermissions,
                   activeSubscription,
                   requiredSubscriptionState: {
-                    label: "hr-admin",
+                    label: "core-hr",
                     resources: [],
                   },
                 }),
@@ -463,7 +480,7 @@ export const useGetActivatedSelfServiceLinksAndAnalytics = (): {
                   userPermissions,
                   activeSubscription,
                   requiredSubscriptionState: {
-                    label: "hr-admin",
+                    label: "core-hr",
                     resources: [],
                   },
                 }),

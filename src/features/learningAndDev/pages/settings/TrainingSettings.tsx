@@ -7,9 +7,7 @@ const { Panel } = Collapse;
 export const TrainingSettings = () => {
   const [form] = Form.useForm();
 
-  const handleFormSubmit = (values: any) => {
-    console.log("Form submitted:", values);
-  };
+  const handleFormSubmit = (values: any) => {};
 
   return (
     <>

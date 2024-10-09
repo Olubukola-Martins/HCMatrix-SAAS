@@ -4,7 +4,7 @@ import { useSoftClockIn } from "../hooks/useSoftClockIn";
 import { useContext, useState } from "react";
 import { EGlobalOps, GlobalContext } from "stateManagers/GlobalContextProvider";
 import { useQueryClient } from "react-query";
-import { Dropdown } from "antd";
+import { Modal } from "antd";
 import { AppButton } from "components/button/AppButton";
 import { LoadingOutlined } from "@ant-design/icons";
 import { useManageLocation } from "../hooks/useManageLocation";
@@ -13,13 +13,15 @@ import { QUERY_KEY_FOR_TIME_SHEET } from "../features/timeSheet/hooks/useGetTime
 import { QUERY_KEY_FOR_ANALYTICS_RECORDS } from "../features/home/hooks/useGetAnalyticsRecord";
 import { QUERY_KEY_FOR_TIME_SHEET_DASHBOARD } from "../features/home/hooks/useGetTimeSheetRecord";
 import { softClockInAndOutProps } from "../types";
+import confirmActionSvg from "../assets/images/confirmClocking.svg";
+import { QUERY_KEY_FOR_DASHBOARD_GRAPH } from "../features/home/hooks/useGetDashboardGraph";
 
 export const SoftClockIn = ({ componentType }: softClockInAndOutProps) => {
+  const [openModal, setOpenModal] = useState(false);
   const globalCtx = useContext(GlobalContext);
   const { dispatch } = globalCtx;
   const queryClient = useQueryClient();
-  const { mutate } = useSoftClockIn();
-  const [dropdownVisible, setDropdownVisible] = useState(false);
+  const { mutate, isLoading } = useSoftClockIn();
   const { lat, long } = useManageLocation();
 
   const onSubmit = () => {
@@ -59,49 +61,55 @@ export const SoftClockIn = ({ componentType }: softClockInAndOutProps) => {
           queryClient.invalidateQueries([QUERY_KEY_FOR_TIME_SHEET]);
           queryClient.invalidateQueries([QUERY_KEY_FOR_ANALYTICS_RECORDS]);
           queryClient.invalidateQueries([QUERY_KEY_FOR_TIME_SHEET_DASHBOARD]);
+          queryClient.invalidateQueries([QUERY_KEY_FOR_DASHBOARD_GRAPH]);
         },
       }
     );
-    setDropdownVisible(false);
   };
 
   return (
     <div>
-      <Dropdown
-        trigger={["click"]}
-        visible={dropdownVisible}
-        onVisibleChange={(visible) => setDropdownVisible(visible)}
-        overlay={
-          <div className="bg-mainBg rounded py-3 px-3 border shadow mt-3">
-            <p className="font-medium">Want to clock in ?</p>
-
-            <div className="flex justify-between items-center mt-5">
-              <AppButton
-                variant="transparent"
-                label="No"
-                handleClick={() => setDropdownVisible(false)}
-              />
-
-              <AppButton
-                label="Yes"
-                type="submit"
-                handleClick={() => onSubmit()}
-              />
-            </div>
-          </div>
-        }
+      {componentType === "image" ? (
+        <img
+          src={offIndicator}
+          alt="off indicator"
+          className="cursor-pointer"
+          title="Clock in"
+          onClick={() => setOpenModal(true)}
+        />
+      ) : (
+        <button className="button w-full" onClick={() => setOpenModal(true)}>
+          Clock - In
+        </button>
+      )}
+      <Modal
+        open={openModal}
+        onCancel={() => setOpenModal(false)}
+        footer={null}
+        title={"Clock In"}
+        style={{ top: 15 }}
       >
-        {componentType === "image" ? (
-          <img
-            src={offIndicator}
-            alt="off indicator"
-            className="cursor-pointer"
-            title="Clock in"
-          />
-        ) : (
-          <button className="button w-full">Clock - In</button>
-        )}
-      </Dropdown>
+        <div className="flex flex-col gap-4 items-center">
+          <div className="flex justify-center h-[50vh] items-center">
+            <img
+              src={confirmActionSvg}
+              alt="confirm action"
+              className="object-contain h-4/5"
+            />
+          </div>
+          <h4 className="text-center text-base mb-4 font-semibold">
+            Are you sure you want to clock in
+          </h4>
+          <div className="flex justify-between w-full">
+            <AppButton
+              label="Cancel"
+              variant="transparent"
+              handleClick={() => setOpenModal(false)}
+            />
+            <AppButton label={"Confirm"} isLoading={isLoading} handleClick={() => onSubmit()} />
+          </div>
+        </div>
+      </Modal>
     </div>
   );
 };

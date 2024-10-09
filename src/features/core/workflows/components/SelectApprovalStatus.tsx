@@ -24,7 +24,10 @@ export const SelectApprovalStatus: React.FC<IProps> = ({
         size={size}
         value={value}
         placeholder="Select Status"
-        options={APPROVAL_STATUS_OPTIONS}
+        options={APPROVAL_STATUS_OPTIONS.map((a) => ({
+          value: a.value,
+          label: <span className="capitalize">{a.label}</span>,
+        }))}
         allowClear
         className="rounded border-slate-400 w-full capitalize"
         defaultActiveFirstOption={false}

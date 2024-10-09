@@ -2,24 +2,28 @@ import { Divider, Modal, Skeleton } from "antd";
 import LogoHeading from "components/LogoHeading";
 import { DEFAULT_DATE_FORMAT } from "constants/dateFormats";
 import { INVOICE_QUOTATION_BOTTOM_INFO } from "features/billing/constants";
-import { useGetSubsciptionBillingDetails } from "features/billing/hooks/company/billingDetail/useGetSubsciptionBillingDetails";
 import { TCompanySubscriptionBillingDetail } from "features/billing/types/company/billingDetails/companySubscriptionBillingDetail";
-import { TCompanySubscription } from "features/billing/types/company/companySubscription";
 import dayjs from "dayjs";
 
 import React, { useRef } from "react";
 import ReactToPrint from "react-to-print";
 import { IModalProps } from "types";
+import {
+  TSingleBillingHistory,
+  useGetBillingHistoryById,
+} from "features/billing/hooks/company/billingHistory/useGetBillingHistoryById";
 interface IProps extends IModalProps {
-  subscription?: TCompanySubscription;
+  billingHistoryId: number;
 }
 
 const BillingInvoice: React.FC<IProps> = ({
   open,
   handleClose,
-  subscription,
+  billingHistoryId,
 }) => {
-  const { data: billingDetail, isLoading } = useGetSubsciptionBillingDetails();
+  const { data: billingDetail, isLoading } = useGetBillingHistoryById({
+    id: billingHistoryId,
+  });
   return (
     <Modal
       open={open}
@@ -33,21 +37,22 @@ const BillingInvoice: React.FC<IProps> = ({
         <div className="relative">
           <div className="absolute right-0 top-8">
             <PrintBtn
-              subscription={subscription}
+              subscription={billingDetail?.companySubscription}
               billingDetail={billingDetail}
             />
           </div>
         </div>
         <BillingInvoiceInfo
           billingDetail={billingDetail}
-          subscription={subscription}
+          subscription={billingDetail?.companySubscription}
         />
       </Skeleton>
     </Modal>
   );
 };
+
 const PrintBtn: React.FC<{
-  subscription?: TCompanySubscription;
+  subscription?: TSingleBillingHistory["companySubscription"];
   billingDetail?: TCompanySubscriptionBillingDetail;
 }> = ({ subscription, billingDetail }) => {
   const componentRef = useRef<HTMLDivElement>(null);
@@ -77,7 +82,7 @@ const PrintBtn: React.FC<{
   );
 };
 const BillingInvoiceInfo: React.FC<{
-  subscription?: TCompanySubscription;
+  subscription?: TSingleBillingHistory["companySubscription"];
   billingDetail?: TCompanySubscriptionBillingDetail;
 }> = ({ subscription, billingDetail }) => {
   return (
@@ -88,7 +93,7 @@ const BillingInvoiceInfo: React.FC<{
       {/* billing info */}
       <div className="flex flex-col gap-y-2">
         <div>
-          <span>To</span> <br /> <span>{billingDetail?.billingName}</span>{" "}
+          <span>To</span> <br /> <span>{billingDetail?.name}</span>{" "}
         </div>
 
         <div>
@@ -118,9 +123,8 @@ const BillingInvoiceInfo: React.FC<{
         <div>
           <h6 className=" uppercase font-semibold">HR Management Software</h6>
           <p>
-            Summary for{" "}
-            {dayjs(subscription?.startDate).format("MMMM DD, YYYY")} -{" "}
-            {dayjs(subscription?.endDate).format("MMMM DD, YYYY")}
+            Summary for {dayjs(subscription?.startDate).format("MMMM DD, YYYY")}{" "}
+            - {dayjs(subscription?.endDate).format("MMMM DD, YYYY")}
           </p>
           <Divider className="my-1 border-slate-400" />
           <div>
@@ -203,18 +207,18 @@ const BillingInvoiceInfo: React.FC<{
           <table className="w-2/5">
             <tbody>
               {[
-                {
-                  name: "Total",
-                  value: subscription?.transaction?.totalAmount,
-                  capitalize: true,
-                },
+                // {
+                //   name: "Total",
+                //   value: subscription?.transaction?.totalAmount,
+                //   capitalize: true,
+                // },
                 { name: "VAT 0%", value: "$0" },
-                { name: "Discount", value: "$0" },
-                {
-                  name: "TOTAL INCLUDING VAT",
-                  value: subscription?.transaction?.totalAmountPaid,
-                  capitalize: true,
-                },
+                { name: "Discount", value: "$0", capitalize: true },
+                // {
+                //   name: "TOTAL INCLUDING VAT",
+                //   value: subscription?.transaction?.totalAmountPaid,
+                //   capitalize: true,
+                // },
               ].map(({ name, value, capitalize }, i) => (
                 <tr key={i} className="pb-6">
                   <td>

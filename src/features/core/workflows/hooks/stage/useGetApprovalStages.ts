@@ -6,6 +6,7 @@ import { useApiAuth } from "hooks/useApiAuth";
 import { TWorkflowApprovalType } from "../../types";
 import { TApprovalStage } from "../../types/approval-stage";
 import { getLeaveRelieveApprovalStage } from "features/self-service/features/leave/hooks/leaveRelieverApproval/stage/useGetLeaveRelieveApprovalStage";
+import { getShiftSwapPartnerApprovalStage } from "features/timeAndAttendance/features/swapShiftRequest/hooks/useGetShiftSwapPartnerApprovalStage";
 
 interface IGetDataProps {
   id: number;
@@ -88,6 +89,33 @@ const getData = async (props: {
         data = [...data, leaveRelieveApprovalStageFormatted];
       }
     }
+
+     // the code below accounts for time and attendance swap partner
+     if (props.data.type === "shift-swap") {
+      const shiftSwapPartnerApprovalStage = await getShiftSwapPartnerApprovalStage({
+        auth: props.auth,
+        data: {
+          shiftSwapId: props.data.id,
+        },
+      });
+      if (shiftSwapPartnerApprovalStage) {
+        const shiftSwapPartnerApprovalStageFormatted: TApprovalStage = {
+          id: shiftSwapPartnerApprovalStage.id,
+          entityId: shiftSwapPartnerApprovalStage.shiftSwap.id,
+          enableTwoFactorAuth: false,
+          status: shiftSwapPartnerApprovalStage.status,
+          name: "Shift Swap Partner",
+          type: "swap-partner",
+          swapPartner: shiftSwapPartnerApprovalStage.shiftSwap.shiftPartner,
+          approvals: [],
+          createdAt: shiftSwapPartnerApprovalStage.createdAt,
+          updatedAt: shiftSwapPartnerApprovalStage.updatedAt,
+        };
+
+        data = [...data, shiftSwapPartnerApprovalStageFormatted];
+      }
+    }
+
     const approvalStages = await getApprovalStages({
       auth: props.auth,
       data: {

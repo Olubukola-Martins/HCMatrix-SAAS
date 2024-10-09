@@ -9,7 +9,7 @@ interface IDataProps {
   id: number;
 }
 export const QUERY_KEY_FOR_SINGLE_NSITF_AUTHORITY = "single-nsitf-authority";
-const getData = async (props: {
+export const getSingleNsitfAuthority = async (props: {
   data: IDataProps;
   auth: ICurrentCompany;
 }): Promise<TTaxAuthority> => {
@@ -38,7 +38,7 @@ export const useGetSingleNSITFAuthority = (props: IDataProps) => {
   const queryData = useQuery(
     [QUERY_KEY_FOR_SINGLE_NSITF_AUTHORITY],
     () =>
-      getData({
+      getSingleNsitfAuthority({
         auth: {
           companyId,
           token,

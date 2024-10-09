@@ -21,9 +21,14 @@ interface IProps {
   finance?: TSingleEmployee["finance"];
   employeeId?: number;
   onFinishAction?: () => void;
+  isOwner?: boolean;
 }
 
-export const Finance = ({ finance = [], employeeId }: IProps) => {
+export const Finance = ({
+  finance = [],
+  employeeId,
+  isOwner = false,
+}: IProps) => {
   const [disable, setDisable] = useState(true);
   const enableEdit = () => {
     setDisable(!disable);
@@ -51,16 +56,18 @@ export const Finance = ({ finance = [], employeeId }: IProps) => {
     <div className="bg-mainBg shadow-sm rounded-md p-4 mt-5">
       <div className="flex justify-between mb-3">
         <h2 className="font-medium text-lg">Finance</h2>
-        <Tooltip title={disable ? "Enable editing" : "Disable editing"}>
-          <i
-            className={
-              disable
-                ? `ri-pencil-line cursor-pointer hover:text-caramel text-xl`
-                : `ri-lock-line cursor-pointer hover:text-caramel text-xl`
-            }
-            onClick={enableEdit}
-          ></i>
-        </Tooltip>
+        {isOwner && (
+          <Tooltip title={disable ? "Enable editing" : "Disable editing"}>
+            <i
+              className={
+                disable
+                  ? `ri-pencil-line cursor-pointer hover:text-caramel text-xl`
+                  : `ri-lock-line cursor-pointer hover:text-caramel text-xl`
+              }
+              onClick={enableEdit}
+            ></i>
+          </Tooltip>
+        )}
       </div>
       <div className="bg-card p-3 rounded">
         <BankDetailsForm

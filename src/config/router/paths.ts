@@ -64,6 +64,7 @@ export const appRoutes = {
   }),
   payrollSettings: `/settings/payroll`,
   payrollCostCentres: `/settings/payroll/cost-centres`,
+  payrollWallet: `/settings/payroll/wallet`,
   singleCostCentre: (id?: number) => ({
     format: `/settings/payroll/cost-centres/:id`,
     path: `/settings/payroll/cost-centres/${id}`,
@@ -128,6 +129,7 @@ export const appRoutes = {
   gradeCategorySettings: `/settings/grade_categories`,
   probationPolicySettings: `/settings/probation-policy`,
   resignationPolicySettings: `/settings/resignation-policy`,
+  twoFactorAuthentication: `/settings/two-factor-authentication`,
 
   // Billing routes
   billingStatement: `/statement`,
@@ -136,6 +138,9 @@ export const appRoutes = {
   billingHistory: `billing/history`, //to be removed
   // start here
   purchaseUserLicense: `/purchase-user-license`,
+  purchaseExtraLiense: `/purchase-extra-license`,
+  purchaseModules: `/purchase-modules`,
+  upgradePlan: `/upgrade-plan`,
   billingSubscription: `/billings/subscription`,
   billingInactiveSubscriptionInformEmployee: `/billings/subscription/inactive/inform-employee`,
   billingInactiveSubscriptionInformOwner: `/billings/subscription/inactive/inform-owner`,
@@ -143,6 +148,11 @@ export const appRoutes = {
   singleBillingSummary: (id?: number) => ({
     format: `/billings/summary/:id`,
     path: `/billings/summary/${id}`,
+  }),
+
+  purchaseSubscriptionByPlan: (id?: number) => ({
+    format: `/billings/purchase/subscription/plan/:id`,
+    path: `/billings/purchase/subscription/plan/${id}`,
   }),
 
   billingStorageManagement: `/billings/storage-management`,
@@ -204,6 +214,8 @@ export const appRoutes = {
   selfServicePositionChangeSetting: `/self-service/position-change-setting`,
   selfServicePromotion: `/self-service/promotion`,
   selfServicePromotionSetting: `/self-service/promotion-setting`,
+  selfServiceProfileEdit: `/self-service/profile-edit`,
+  selfServiceProfileEditSetting: `/self-service/profile-edit-setting`,
   selfServiceAssets: `/self-service/assets`,
   selfServiceAssetSetting: `/self-service/asset-setting`,
   selfServiceTravels: `/self-service/travels`,
@@ -215,6 +227,14 @@ export const appRoutes = {
   loans: `/self-service/loan`,
   loanRequests: `/self-service/loan-request`,
   loanPolicies: `/self-service/loan-policies`,
+  loanPaymentPlan: (id?: number) => ({
+    format: `/self-service/loan/:id/loan-payment-plan`,
+    path: `/self-service/loan/${id}/loan-payment-plan`,
+  }),
+  loanPaymentSchedule: (id?: number) => ({
+    format: `/self-service/loan/:id/loan-payment-schedule`,
+    path: `/self-service/loan/${id}/loan-payment-schedule`,
+  }),
   vehicleBooking: `/self-service/vehicle-booking`,
   vehicleBookingSetting: `/self-service/vehicle-booking/setting`,
   vehicleDetails: (id?: number) => ({
@@ -231,6 +251,7 @@ export const appRoutes = {
   conferenceRoomBookingSetting: `/self-service/conference-room-booking/setting`,
   leaveHome: `/self-service/leave`,
   leaveSettings: `/self-service/leave/settings`,
+  profileEditHome: `/self-service/profile-edit`,
   healthAccessHome: `/self-service/health-access`,
   healthAccessDetails: (id?: number) => ({
     format: `/self-service/health-access/:id`,
@@ -251,6 +272,10 @@ export const appRoutes = {
   }),
   hRLetters: `/self-service/hr-letters`,
   documents: `/self-service/documents`,
+  filesInFolder: (id?: number) => ({
+    format: `/self-service/documents/:id/files-in-folder`,
+    path: `/self-service/documents/${id}/files-in-folder`,
+  }),
   notifications: `/notifications`,
 
   // Performance route
@@ -293,6 +318,7 @@ export const appRoutes = {
   location: `/attendance/location`,
   otherSettings: `/attendance/other-settings`,
   breakSetUp: `/attendance/break-setup`,
+  swapShiftRequest: `/attendance/swap-shift-request`,
 
   // Leaning and development
   learningHome: `/learning/home`,

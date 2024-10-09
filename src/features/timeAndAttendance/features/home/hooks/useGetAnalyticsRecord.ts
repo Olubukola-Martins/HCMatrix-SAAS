@@ -5,17 +5,32 @@ import { useApiAuth } from "hooks/useApiAuth";
 import { ICurrentCompany } from "types";
 import { AnalyticsRecordProps } from "../types";
 
+interface IGetDataProps {
+  branchId: number;
+  departmentId: number;
+  date: string;
+}
+
 export const QUERY_KEY_FOR_ANALYTICS_RECORDS = "analyticsRecords";
 
-const getData = async (
-  props: ICurrentCompany
-): Promise<AnalyticsRecordProps> => {
+const getData = async (props: {
+  data: IGetDataProps;
+  auth: ICurrentCompany;
+}): Promise<AnalyticsRecordProps> => {
+  const branchId = props.data.branchId;
+  const departmentId = props.data.departmentId;
+  const date = props.data.date ?? "";
   const url = `${MICROSERVICE_ENDPOINTS.TIME_AND_ATTENDANCE}/dashboard/analytics`;
   const config = {
     headers: {
       Accept: "application/json",
-      Authorization: `Bearer ${props.token}`,
-      "x-company-id": props.companyId,
+      Authorization: `Bearer ${props.auth.token}`,
+      "x-company-id": props.auth.companyId,
+    },
+    params: {
+      branchId,
+      departmentId,
+      date,
     },
   };
   const res = await axios.get(url, config);
@@ -27,11 +42,19 @@ const getData = async (
 
   return data;
 };
-export const useGetAnalyticsRecord = () => {
+export const useGetAnalyticsRecord = (values: { props: IGetDataProps }) => {
+  const { props } = values;
   const { companyId, token } = useApiAuth();
+  const { branchId, departmentId, date } = props;
   const queryData = useQuery(
-    [QUERY_KEY_FOR_ANALYTICS_RECORDS],
-    () => getData({ token, companyId }),
+    [QUERY_KEY_FOR_ANALYTICS_RECORDS, branchId, departmentId, date],
+    () =>
+      getData({
+        auth: { token, companyId },
+        data: {
+          ...props,
+        },
+      }),
     {
       onError: (err: any) => {},
       onSuccess: (data) => {},

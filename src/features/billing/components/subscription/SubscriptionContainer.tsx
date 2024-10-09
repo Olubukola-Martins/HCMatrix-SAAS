@@ -55,13 +55,13 @@ const SubscriptionContainer: React.FC<{
       const address = billingDetails?.address;
 
       form.setFieldsValue({
-        priceType: subscription?.priceType,
+        priceType: subscription?.currency,
         purchased:
-          subscription?.purchased === undefined ||
-          subscription?.purchased?.length > 0
-            ? subscription?.purchased?.map((item) => item.subscriptionId)
-            : [EMPLOYEMENT_SUBSCRIPTION_ID],
+          subscription?.type === "module"
+            ? subscription?.modules?.map((item) => item.id)
+            : subscription?.plan.modules?.map((item) => item.id),
         billingCycle: subscription?.billingCycle,
+
         licensedEmployeeCount: subscription?.licensedEmployeeCount,
         unlicensedEmployeeCount: subscription?.unlicensedEmployeeCount,
         address: address
@@ -75,37 +75,38 @@ const SubscriptionContainer: React.FC<{
               timezone: address?.timezone ?? undefined,
             }
           : undefined,
-        billingName: billingDetails?.billingName,
-        phoneNumber: parsePhoneNumber(billingDetails?.phoneNumber),
+        billingName: billingDetails?.name,
+        phoneNumber: parsePhoneNumber(billingDetails?.phone),
       });
       dispatch({
         type: ECreateCompanySubscriptionOps.update,
         payload: {
           licensedEmployeeCount: subscription?.licensedEmployeeCount,
           unlicensedEmployeeCount: subscription?.unlicensedEmployeeCount,
-          autoRenew: subscription?.autoRenew,
+          autoRenew: subscription?.autoRenewal,
           purchased:
-            subscription?.purchased === undefined ||
-            subscription?.purchased?.length > 0
-              ? subscription?.purchased?.map((item) => item.subscriptionId)
-              : [EMPLOYEMENT_SUBSCRIPTION_ID],
-          priceType: subscription?.priceType,
+            subscription?.type === "module"
+              ? subscription?.modules?.map((item) => item.id)
+              : subscription?.plan.modules?.map((item) => item.id),
           billingCycle: subscription?.billingCycle,
+          priceType: subscription?.currency,
         },
       });
     } else {
       form.setFieldsValue({
-        priceType: "usd",
+        priceType: "USD",
         purchased: [EMPLOYEMENT_SUBSCRIPTION_ID],
         billingCycle: "yearly",
       });
     }
   }, [dispatch, form, subscription, billingDetails, subscriptions?.data]);
+
   const [activeStep, setActiveStep] = useState(0);
   const [showD, setShowD] = useState(false);
 
   const handlePrev = () => setActiveStep((prev) => prev - 1);
   const handleNext = () => setActiveStep((prev) => prev + 1);
+
   const { mutate, isLoading: isPaying } = useCreateCompanySubscription();
   const queryClient = useQueryClient();
   const [url, setUrl] = useState<string>();
@@ -180,7 +181,7 @@ const SubscriptionContainer: React.FC<{
                 <Form.Item name={"priceType"}>
                   {/* TODO: Implement Geo Restriction to default to remove ngn from options when user is not from Nigeria */}
                   <Segmented
-                    options={["usd", "ngn"].map((item) => ({
+                    options={["USD", "NGN"].map((item) => ({
                       label: <span className="uppercase">{item}</span>,
                       value: item,
                     }))}
@@ -223,11 +224,8 @@ const SubscriptionContainer: React.FC<{
             </div>
             <div className={activeStep === 0 ? "block" : "hidden"}>
               <ModuleContainer
-                Form={Form}
                 subscriptions={subscriptions?.data}
                 isLoading={isFetchingSubscriptions}
-                selectedPriceType={selectedPriceType}
-                selectedBillingCycle={selectedBillingCycle}
               />
             </div>
             <div className={activeStep === 1 ? "block" : "hidden"}>
@@ -252,7 +250,6 @@ const SubscriptionContainer: React.FC<{
             <div className={activeStep === 2 ? "block" : "hidden"}>
               <PaymentsContainer
                 Form={Form}
-                subscriptions={subscriptions?.data}
                 isLoading={isFetchingSubscriptions || isFetchingDetails}
                 form={form}
                 isPayingForSubscription={isPaying}

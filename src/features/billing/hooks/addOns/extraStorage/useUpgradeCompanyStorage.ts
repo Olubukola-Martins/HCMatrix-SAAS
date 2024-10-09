@@ -6,11 +6,11 @@ import { ICurrentCompany } from "types";
 import { TSubscriptionPriceType } from "features/billing/types/priceType";
 
 type TData = {
-  extraStorageId: number;
-  priceType: TSubscriptionPriceType;
+  addonId: number;
+  currency: TSubscriptionPriceType;
 };
 const createData = async (props: { data: TData; auth: ICurrentCompany }) => {
-  const url = `${MICROSERVICE_ENDPOINTS.UTILITY}/subscription/add-ons/extra-storage`;
+  const url = `${MICROSERVICE_ENDPOINTS.UTILITY}/subscription/company/extra-storage`;
   const config = {
     headers: {
       Accept: "application/json",

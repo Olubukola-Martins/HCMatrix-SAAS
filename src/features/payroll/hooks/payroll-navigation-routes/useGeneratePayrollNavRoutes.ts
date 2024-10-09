@@ -27,8 +27,8 @@ const useGeneratePayrollNavRoutes = (): TData => {
         }),
       },
       {
-        title: "Cost Centres",
-        path: appRoutes.payrollCostCentres,
+        title: "Wallet",
+        path: appRoutes.payrollWallet,
         hidden: !canUserAccessComponent({
           userPermissions,
           requiredPermissions: ["manage-cost-centres"],
@@ -39,6 +39,19 @@ const useGeneratePayrollNavRoutes = (): TData => {
           },
         }),
       },
+      // {
+      //   title: "Cost Centres",
+      //   path: appRoutes.payrollCostCentres,
+      //   hidden: !canUserAccessComponent({
+      //     userPermissions,
+      //     requiredPermissions: ["manage-cost-centres"],
+      //     activeSubscription,
+      //     requiredSubscriptionState: {
+      //       label: "payroll",
+      //       resources: ["payroll-analytics", "payroll-disbursement"],
+      //     },
+      //   }),
+      // },
       {
         title: "Exchange Rates",
         path: appRoutes.payrollExchangeRates,
@@ -65,19 +78,7 @@ const useGeneratePayrollNavRoutes = (): TData => {
           },
         }),
       },
-      {
-        title: "Grade & Categories",
-        path: appRoutes.payGradeAndCategorySettings,
-        hidden: !canUserAccessComponent({
-          userPermissions,
-          requiredPermissions: ["manage-pay-grades-and-categories"],
-          activeSubscription,
-          requiredSubscriptionState: {
-            label: "payroll",
-            resources: ["payroll-analytics", "payroll-disbursement"],
-          },
-        }),
-      },
+
       {
         title: "Organizations",
         hidden: !canUserAccessComponent({

@@ -27,10 +27,6 @@ export function excelSerialToDate(
 
   return date.toISOString();
 }
-// Example usage
-const serial = 30559;
-const date = excelSerialToDate(serial);
-console.log(date); // "1983-08-31"
 
 function isValidDate(dateString: string) {
   const date = new Date(dateString);

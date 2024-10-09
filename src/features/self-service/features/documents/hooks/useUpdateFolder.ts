@@ -14,7 +14,7 @@ const createData = async (props: {
   data: TFolderData;
   auth: ICurrentCompany;
 }) => {
-  const url = `${MICROSERVICE_ENDPOINTS.UTILITY}/self-service/folder/${props.data.id}`;
+  const url = `${MICROSERVICE_ENDPOINTS.UTILITY}/self-service/document/folder/${props.data.id}`;
   const config = {
     headers: {
       Accept: "application/json",
@@ -27,7 +27,7 @@ const createData = async (props: {
     ...props.data.body,
   };
 
-  const response = await axios.patch(url, data, config);
+  const response = await axios.put(url, data, config);
   return response;
 };
 export const useUpdateFolder = () => {

@@ -20,7 +20,7 @@ export type TSetupPayrollSchemeData = {
   allowDisbursement: boolean;
   allowApproval: boolean;
   workflowId: number;
-  costCentreId: number;
+  costCentreId?: number;
   issuePayslip: boolean;
   runAutomatically: boolean;
   automaticRunDay: string | number; //{\"1-Payment\": \"2023-07-27\",\"2-Payment\": \"2023-10-27\",\"3-Payment\": \"2024-02-01\"} OR day of month

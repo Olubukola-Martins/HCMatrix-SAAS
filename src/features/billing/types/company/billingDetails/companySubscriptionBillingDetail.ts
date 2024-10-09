@@ -1,9 +1,9 @@
 export type TCompanySubscriptionBillingDetail = {
   id: number;
-  companySubscriptionId: number;
-  billingName: string;
-  phoneNumber: string;
+  name: string;
+  phone: string;
   addressId: number;
+  companyId: number;
   createdAt: string;
   updatedAt: string;
   address: Address;
@@ -11,6 +11,7 @@ export type TCompanySubscriptionBillingDetail = {
 
 interface Address {
   id: number;
+  companyId: number;
   streetAddress: string;
   countryId: number;
   stateId: number;

@@ -1,4 +1,3 @@
-import Table from "antd/lib/table";
 import { ReportNav } from "../components/ReportNav";
 import { AttendanceSubToper } from "features/timeAndAttendance/components/AttendanceSubToper";
 import { PageIntro } from "components/layout/PageIntro";
@@ -11,6 +10,7 @@ import { AppButton } from "components/button/AppButton";
 import { FilterHoursPerEmployee } from "../components/FilterHoursPerEmployee";
 import { HOURS_PER_SHIFT_TABLE_COLUMNS } from "../components/columns/hoursPerShiftColumn";
 import ExportHourPerEmployee from "../components/exports/ExportHourPerEmployee";
+import { TableWithFocusType } from "components/table";
 
 const columns = HOURS_PER_SHIFT_TABLE_COLUMNS();
 
@@ -62,7 +62,7 @@ const HoursPerEmployee = () => {
         </div>
       </div>
       <div className="Container">
-        <Table
+        <TableWithFocusType
           columns={columns}
           dataSource={data?.data}
           loading={isLoading}

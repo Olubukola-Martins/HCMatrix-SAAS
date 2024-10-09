@@ -165,7 +165,7 @@ export interface ICreateEmpProps {
   firstName: string;
   lastName: string;
   email: string;
-  licenseType: TLicenseType;
+  licenseType?: TLicenseType;
   empUid?: string;
   roleId: number;
   designationId: number;
@@ -248,7 +248,7 @@ export type TJobInfo = {
   branchId?: number;
   payrollType?: "direct-salary" | "office" | "wages";
   monthlyGross: number;
-  payGradeId?: number;
+  gradeId?: number;
   frequency?: "daily" | "monthly";
   hourlyRate: number;
 };

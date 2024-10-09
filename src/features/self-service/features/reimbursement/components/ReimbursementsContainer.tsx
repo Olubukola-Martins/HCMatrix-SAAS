@@ -48,7 +48,7 @@ const ReimbursementsContainer = () => {
           { name: "New Request", handleClick: () => setShowM(true) },
           {
             name: "Setting",
-            handleClick: () => navigate(appRoutes.selfServiceReimbursement),
+            handleClick: () => navigate(appRoutes.selfServiceReimbursementSetting),
             btnVariant: "transparent",
             hidden: !canUserAccessComponent({
               userPermissions,

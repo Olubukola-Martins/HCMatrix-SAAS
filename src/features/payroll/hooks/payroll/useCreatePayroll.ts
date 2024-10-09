@@ -10,7 +10,7 @@ type TPayrollData = {
   date: string;
   description: string;
   frequency: "monthly" | "daily" | number;
-  costCentreId: number;
+  costCentreId?: number;
   csvFile?: any;
 };
 type CreatePayrollResponse = {
@@ -24,7 +24,7 @@ type CreatePayrollResponse = {
     date: string;
     description: string;
     frequency: string;
-    costCentreId: number;
+    costCentreId?: number;
     companyId: number;
     updatedAt: string;
     createdAt: string;

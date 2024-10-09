@@ -4,23 +4,33 @@ import { useApiAuth } from "hooks/useApiAuth";
 import { useMutation } from "react-query";
 import { ICurrentCompany } from "types";
 
-type TFileData = {
-  url: string;
+export type TFileData = {
+  url?: string;
   name: string;
   description: string;
   access: Access[];
 };
 
-interface Access {
-  type: string; //TO DO:  define the types properly => 'role' | 'department' |  ....
-  entityId: number;
-}
+export type Access =
+  | {
+      groupId: number;
+    }
+  | {
+      departmentId: number;
+    }
+  | {
+      roleId: number;
+    }
+  | {
+      employeeId: number;
+    };
+
 const createData = async (props: {
   data: TFileData;
   folderId: number;
   auth: ICurrentCompany;
 }) => {
-  const url = `${MICROSERVICE_ENDPOINTS.UTILITY}/self-service/folder/${props.folderId}/file`;
+  const url = `${MICROSERVICE_ENDPOINTS.UTILITY}/self-service/document/folder/${props.folderId}/file`;
   const config = {
     headers: {
       Accept: "application/json",

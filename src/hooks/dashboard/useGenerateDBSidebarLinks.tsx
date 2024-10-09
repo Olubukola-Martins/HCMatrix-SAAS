@@ -1,7 +1,4 @@
-import {
-  canUserAccessComponent,
-  useGetUserPermissions,
-} from "components/permission-restriction/PermissionRestrictor";
+import { canUserAccessComponent, useGetUserPermissions } from "components/permission-restriction/PermissionRestrictor";
 import { appRoutes } from "config/router/paths";
 
 type TSideBarRoute = {
@@ -19,15 +16,7 @@ type TData = {
 };
 // TODO: Fill requiredSubsciptionState resources when fleshed out and updated by team
 export const useGenerateDBSidebarLinks = (): TData => {
-  const {
-    userPermissions,
-    licenseType,
-    isOwner,
-    companyActiveSubscription,
-    isError,
-    isLoading,
-    isSuccess,
-  } = useGetUserPermissions();
+  const { userPermissions, licenseType, isOwner, companyActiveSubscription, isError, isLoading, isSuccess } = useGetUserPermissions();
   const isUserLicensed = licenseType === "licensed";
   const sidebarRoutes: TSideBarRoute[] = isSuccess
     ? [
@@ -41,7 +30,7 @@ export const useGenerateDBSidebarLinks = (): TData => {
           name: "Self-service",
           path: appRoutes.selfServiceHome,
           icon: <i className="ri-organization-chart" />,
-          hidden: !isUserLicensed,
+          hidden: false,
           matcherKeys: ["self-service"],
         },
         {

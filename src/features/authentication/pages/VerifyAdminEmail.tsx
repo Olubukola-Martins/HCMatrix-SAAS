@@ -126,9 +126,23 @@ export const VerifyAdminEmail = () => {
               className="flex items-center gap-2 justify-center text-xs py-5"
               style={{ color: "var(--authPrimary)" }}
             >
-              <span>Privacy Policy</span>
+              <a
+                href="https://hcmatrix.com/privacy-policy/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="cursor-pointer hover:underline"
+              >
+                Privacy Policy
+              </a>
               <span className="text-black font-semibold text-xl">.</span>
-              <span>Terms of service</span>
+              <a
+                href="https://hcmatrix.com/terms-of-use/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="cursor-pointer hover:underline"
+              >
+                Terms of service
+              </a>
             </div>
           </div>
         </div>

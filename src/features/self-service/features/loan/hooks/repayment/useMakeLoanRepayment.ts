@@ -15,12 +15,13 @@ interface Data {
   access_code: string;
   reference: string;
 }
-type TData = Pick<TLoanRepayment, "loanId" | "amount">;
+
+type TData = Pick<TLoanRepayment, "loanId" | "amount" | "paymentMethod">;
 const createData = async (props: {
   data: TData;
   auth: ICurrentCompany;
 }): Promise<TMakeLoanRepayResponse> => {
-  const url = `${MICROSERVICE_ENDPOINTS.PAYROLL}/loan/repayment`;
+  const url = `${MICROSERVICE_ENDPOINTS.PAYROLL}/loan/payment`;
   const config = {
     headers: {
       Accept: "application/json",

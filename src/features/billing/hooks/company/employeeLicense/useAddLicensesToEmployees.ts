@@ -14,7 +14,7 @@ interface Datum {
 }
 
 const createData = async (props: { data: TProps; auth: ICurrentCompany }) => {
-  const url = `${MICROSERVICE_ENDPOINTS.UTILITY}/subscription/company/employee-license`;
+  const url = `${MICROSERVICE_ENDPOINTS.UTILITY}/subscription/company/employee/license`;
   const config = {
     headers: {
       Accept: "application/json",
@@ -23,9 +23,7 @@ const createData = async (props: { data: TProps; auth: ICurrentCompany }) => {
     },
   };
 
-  const data: TProps = {
-    ...props.data,
-  };
+  const data: TProps["data"] = props.data.data;
 
   const response = await axios.post(url, data, config);
   return response;

@@ -16,7 +16,6 @@ import { QUERY_KEY_FOR_SINGLE_EMPLOYEE } from "../../hooks/useFetchSingleEmploye
 import { QUERY_KEY_FOR_LIST_OF_EMPLOYEES } from "../../hooks/useFetchEmployees";
 import { FormFileInput } from "components/generalFormInputs/FormFileInput";
 import { AppButton } from "components/button/AppButton";
-import AppSwitch from "components/switch/AppSwitch";
 import { bulkUploadFiles } from "hooks/useUploadFile";
 import { QUERY_KEY_FOR_AUTHENTICATED_USER } from "features/authentication/hooks/useGetAuthUser";
 
@@ -180,7 +179,7 @@ export const EditMyProfile = ({ open, handleClose, employee }: IProps) => {
               label="First Name"
               rules={textInputValidationRules}
             >
-              <Input className="w-full" placeholder="First Name" />
+              <Input className="generalInputStyle" placeholder="First Name" />
             </Form.Item>
 
             <Form.Item
@@ -188,20 +187,24 @@ export const EditMyProfile = ({ open, handleClose, employee }: IProps) => {
               label="Last Name"
               rules={textInputValidationRules}
             >
-              <Input className="w-full" placeholder="Last Name" />
+              <Input className="generalInputStyle" placeholder="Last Name" />
             </Form.Item>
             <Form.Item
               name="empUid"
               label="Employee ID"
               rules={textInputValidationRules}
             >
-              <Input className="w-full" placeholder="Employee ID" />
+              <Input
+                className="generalInputStyle"
+                placeholder="Employee ID"
+                disabled
+              />
             </Form.Item>
           </div>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-x-4 mt-2">
-          <FormDesignationInput Form={Form} />
+          <FormDesignationInput Form={Form} disabled />
 
           <FormRoleInput Form={Form} disabled={authEmployee?.isOwner} />
           <Form.Item
@@ -209,7 +212,11 @@ export const EditMyProfile = ({ open, handleClose, employee }: IProps) => {
             label="Work/Official Email"
             rules={emailValidationRules}
           >
-            <Input className="w-full" placeholder="Enter Email" disabled />
+            <Input
+              className="generalInputStyle"
+              placeholder="Enter Email"
+              disabled
+            />
           </Form.Item>
         </div>
         <div className="flex items-center justify-between mt-2">

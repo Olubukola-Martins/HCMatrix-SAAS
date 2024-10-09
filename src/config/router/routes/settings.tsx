@@ -22,6 +22,7 @@ import ProjectsPage from "features/core/projects/pages/ProjectsPage";
 import SingleProjectPage from "features/core/projects/pages/SingleProjectPage";
 import { canUserAccessComponent } from "components/permission-restriction/PermissionRestrictor";
 import ProbationSettingsPage from "features/core/policies/pages/ProbationSettingsPage";
+import TwoFactorAuthentication from "features/core/twoFactorAuth/pages/TwoFactorAuthentication";
 
 export const settingRoutes = (props: TAppPageDataFnProps): TRouteData[] => {
   const { userPermissions, activeSubscription } = props;
@@ -346,8 +347,22 @@ export const settingRoutes = (props: TAppPageDataFnProps): TRouteData[] => {
       title: "Probation Setting",
       hidden: !canUserAccessComponent({
         userPermissions,
-
         requiredPermissions: ["manage-probation"],
+        activeSubscription,
+        requiredSubscriptionState: {
+          label: "employee-management",
+          resources: [],
+        },
+      }),
+    },
+    {
+      element: <TwoFactorAuthentication />,
+      path: appRoutes.twoFactorAuthentication,
+      isSearchable: true,
+      title: "Two Factor Authentication",
+      hidden: !canUserAccessComponent({
+        userPermissions,
+        requiredPermissions: [],
         activeSubscription,
         requiredSubscriptionState: {
           label: "employee-management",

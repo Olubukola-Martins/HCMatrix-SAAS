@@ -286,7 +286,6 @@ export const TaxUIFormulaForm: React.FC<
     const newData = [...dataSource];
     const index = newData.findIndex((item) => row.key === item.key);
     const item = newData[index];
-    console.log("first,", row.key, item.key);
     const data = newData.map((item) =>
       row.key === item.key ? { ...item, ...row } : item
     );
@@ -316,7 +315,6 @@ export const TaxUIFormulaForm: React.FC<
         rate: item.taxRate / 100,
       })
     );
-    console.log("conditions", conditions);
 
     // const conditions = [
     //   { min: 0, max: 300000 / 12, yearlyTaxableIncome: 0, rate: 0.07 },

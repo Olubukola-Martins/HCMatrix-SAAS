@@ -1,9 +1,23 @@
 export const MICROSERVICE_ENDPOINTS = {
-  UTILITY: process.env.REACT_APP_UTILITY_BASE_URL,
-  AUTHENTICATION: process.env.REACT_APP_AUTHENTICATION_BASE_URL,
-  NOTIFICATION: process.env.REACT_APP_NOTIFICATION_BASE_URL,
-  TIME_AND_ATTENDANCE: process.env.REACT_APP_TIME_AND_ATTENDANCE_BASE_URL,
-  PAYROLL: process.env.REACT_APP_PAYROLL_BASE_URL,
+
+  
+  UTILITY:
+    process.env.REACT_APP_UTILITY_BASE_URL ??
+    "https://api.staging.hcmatrix.com/v1/utility",
+  AUTHENTICATION:
+    process.env.REACT_APP_AUTHENTICATION_BASE_URL ??
+    "https://api.staging.hcmatrix.com/v1/authentication",
+  NOTIFICATION:
+    process.env.REACT_APP_NOTIFICATION_BASE_URL ??
+    "https://api.staging.hcmatrix.com/v1/notification",
+  TIME_AND_ATTENDANCE:
+    process.env.REACT_APP_TIME_AND_ATTENDANCE_BASE_URL ??
+    "https://api.staging.hcmatrix.com/v1/time-and-attendance",
+  PAYROLL:
+    process.env.REACT_APP_PAYROLL_BASE_URL ??
+    "https://api.staging.hcmatrix.com/v1/payroll",
+  CHATBOT: process.env.REACT_APP_CHAT_BOT_BASE_URL
+
 };
 
 export const APP_AUTHENTICATION_PARAMETERS = {

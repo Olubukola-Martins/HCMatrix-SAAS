@@ -1,4 +1,4 @@
-import { Affix, Skeleton, Tabs } from "antd";
+import { Affix, Skeleton } from "antd";
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import "../style/style.css";
@@ -9,8 +9,7 @@ import EmployeeInfoChart from "features/core/employees/components/EmployeeInfoCh
 import { Celebrations } from "./Celebrations";
 // import { PendingItem } from "./PendingItem";
 import { DoughnutChart } from "components/charts/DoughnutChart";
-import { LeaveWhoIsOut } from "./whoIsOut/LeaveWhoIsOut";
-import { RemoteWhoIsOut } from "./whoIsOut/RemoteWhoIsOut";
+
 import { useGetCompanyOwnerDashboard } from "features/core/company/hooks/dashboard/useGetCompanyOwnerDashboard";
 import ErrorBoundary from "components/errorHandlers/ErrorBoundary";
 import { ErrorWrapper } from "components/errorHandlers/ErrorWrapper";
@@ -26,8 +25,17 @@ import {
   DEFAULT_DESIGNATIONS_CREATED_BY_SYSTEM,
   DEFAULT_EMPLOYEES_CREATED_BY_SYSTEM,
 } from "constants/general";
+import WhoIsOut from "./whoIsOut/WhoIsOut";
+import { TEmployee } from "features/core/employees/types";
+import { getEmployeeFullName } from "features/core/employees/utils/getEmployeeFullName";
 
-export const AdminHome: React.FC<{ user?: TAuthUser["user"] }> = ({ user }) => {
+export const AdminHome: React.FC<{
+  user?: TAuthUser["user"];
+  employee?: Pick<
+    TEmployee,
+    "id" | "email" | "empUid" | "firstName" | "lastName"
+  >;
+}> = ({ user, employee }) => {
   const { globalDispatch } = useApiAuth();
 
   const handleGetStarted = () => {
@@ -52,7 +60,7 @@ export const AdminHome: React.FC<{ user?: TAuthUser["user"] }> = ({ user }) => {
             <div className="Container">
               <div className="flex items-center justify-between mt-2">
                 <h1 className="text-xl md:text-2xl font-black">
-                  Welcome {user?.fullName} ,
+                  Welcome {getEmployeeFullName(employee)} ,
                 </h1>
               </div>
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-5 mt-6">
@@ -146,31 +154,7 @@ export const AdminHome: React.FC<{ user?: TAuthUser["user"] }> = ({ user }) => {
                   />
                 </div>
 
-                <div className="col-span-2 bg-mainBg shadow border rounded-lg p-3">
-                  <h3 className="text-base">Who is out today?</h3>
-
-                  <Tabs
-                    defaultActiveKey="1"
-                    items={[
-                      {
-                        key: "1",
-                        label: `Leave (${data?.outToday.leave.totalCount})`,
-                        children: (
-                          <LeaveWhoIsOut data={data?.outToday.leave.result} />
-                        ),
-                      },
-                      {
-                        key: "2",
-                        label: `Remote Work (${data?.outToday.remoteWork.totalCount})`,
-                        children: (
-                          <RemoteWhoIsOut
-                            data={data?.outToday.remoteWork.result}
-                          />
-                        ),
-                      },
-                    ]}
-                  />
-                </div>
+                <WhoIsOut data={data} />
                 <div className="bg-mainBg shadow border rounded-lg p-3">
                   <Celebrations data={data?.celebrationsAndHolidays} />
                 </div>

@@ -1,11 +1,13 @@
 import { GENDERS, MARITAL_STATUSES } from "constants/general";
 import { TEmployeeStatus } from "features/core/employees/types";
 
+export const LEAVE_TYPE_CATEGORIES = ["annual", "casual", "normal"] as const;
 export interface TLeaveType {
   id: number;
   name: string;
   label: string;
-  length: number | "spillover";
+  category: (typeof LEAVE_TYPE_CATEGORIES)[number];
+  length: number | "spillover" | "grade";
   typeOfLength: "fixed" | "dynamic";
   employeesGetAllowance: boolean;
   calculation: string;

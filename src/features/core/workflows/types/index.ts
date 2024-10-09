@@ -36,7 +36,17 @@ export type TWorkflowApprovalType =
   | "travel"
   | "payroll"
   | "loan"
-  | "exit-handover-form";
+  | "exit-handover-form"
+  | "profile-edit"
+  | "bank-detail"
+  | "job-information"
+  | "personal-information"
+  | "pension"
+  | "itf"
+  | "nsitf"
+  | "tax"
+  | "shift-swap"
+  | "time-off";
 
 export type TStagingType =
   | "employee"

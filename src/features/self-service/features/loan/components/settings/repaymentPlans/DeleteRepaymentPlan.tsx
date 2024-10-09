@@ -2,29 +2,23 @@ import React from "react";
 import { IModalProps } from "types";
 import { openNotification } from "utils/notifications";
 import { useQueryClient } from "react-query";
-import DeleteEntityModal from "components/entity/DeleteEntityModal";
-
-import { TPaymentPlan } from "../../../types";
+import ConfirmationModal from "components/modals/ConfirmationModal";
+import { QUERY_KEY_FOR_LOAN_TYPES } from "../../../hooks/type/useGetLoanTypes";
 import { useDeleteLoanPaymentPlan } from "../../../hooks/paymentPlan/useDeletePaymentPlan";
-import { QUERY_KEY_FOR_LOAN_PAYMENT_PLANS } from "../../../hooks/paymentPlan/useGetPaymentPlans";
 
-interface IProps extends IModalProps {
-  plan: TPaymentPlan;
-}
-export const DeleteRepaymentPlan: React.FC<IProps> = ({
+export const DeleteRepaymentPlan: React.FC<IModalProps> = ({
   open,
   handleClose,
-  plan,
+  id,
 }) => {
   const queryClient = useQueryClient();
 
   const { mutate, isLoading } = useDeleteLoanPaymentPlan();
 
   const handleDelete = () => {
+    if (!id) return;
     mutate(
-      {
-        id: plan.id,
-      },
+      { id },
       {
         onError: (err: any) => {
           openNotification({
@@ -38,17 +32,15 @@ export const DeleteRepaymentPlan: React.FC<IProps> = ({
         onSuccess: (res: any) => {
           openNotification({
             state: "success",
-
             title: "Success",
             description: res.data.message,
             // duration: 0.4,
           });
 
           queryClient.invalidateQueries({
-            queryKey: [QUERY_KEY_FOR_LOAN_PAYMENT_PLANS],
+            queryKey: [QUERY_KEY_FOR_LOAN_TYPES],
             // exact: true,
           });
-
           handleClose();
         },
       }
@@ -56,12 +48,12 @@ export const DeleteRepaymentPlan: React.FC<IProps> = ({
   };
 
   return (
-    <DeleteEntityModal
-      title="Delete Payment Plan"
-      entity={{ type: "plan", name: plan.name }}
+    <ConfirmationModal
+      title="Delete loan repayment plan"
+      description={`Are you sure you want to delete this loan repayment plan ?`}
       handleClose={handleClose}
       open={open}
-      handleDelete={{ fn: handleDelete, isLoading: isLoading }}
+      handleConfirm={{ fn: handleDelete, isLoading: isLoading }}
     />
   );
 };

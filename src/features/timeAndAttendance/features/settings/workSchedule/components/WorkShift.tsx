@@ -1,10 +1,10 @@
 import "../../../../assets/style.css";
 import { Tabs } from "antd";
-import { AppButton } from "components/button/AppButton";
-import { useState } from "react";
-import { AddMultipleEmployeeShift } from "./AddMultipleEmployeeShift";
 import { ScheduleEmployeeShift } from "./ScheduleEmployeeShift";
 import { GeneralEmployeeShift } from "./GeneralEmployeeShift";
+import { AutoShiftRotation } from "./AutoShiftRotation";
+import { ShiftSwapConfig } from "./ShiftSwapConfig";
+import ShiftCategoryContainer from "./shiftCategory/ShiftCategoryContainer";
 
 export const WorkShift = () => {
   return (
@@ -14,6 +14,11 @@ export const WorkShift = () => {
           defaultActiveKey="1"
           items={[
             {
+              key: "0",
+              label: `Shift Category`,
+              children: <ShiftCategoryContainer />,
+            },
+            {
               key: "1",
               label: `General Employee Shift`,
               children: <GeneralEmployeeShift />,
@@ -22,6 +27,16 @@ export const WorkShift = () => {
               key: "2",
               label: `Schedule Employee Shift`,
               children: <ScheduleEmployeeShift />,
+            },
+            {
+              key: "3",
+              label: `Shift Settings`,
+              children: (
+                <div>
+                  <AutoShiftRotation />
+                  <ShiftSwapConfig />
+                </div>
+              ),
             },
           ]}
         />

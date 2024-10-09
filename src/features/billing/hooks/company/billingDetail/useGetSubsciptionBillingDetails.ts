@@ -11,7 +11,7 @@ export const QUERY_KEY_FOR_SUBSCRIPTION_BILLING_DETAILS =
 const getData = async (props: {
   auth: ICurrentCompany;
 }): Promise<TCompanySubscriptionBillingDetail> => {
-  const url = `${MICROSERVICE_ENDPOINTS.UTILITY}/subscription/company/billing-detail`;
+  const url = `${MICROSERVICE_ENDPOINTS.UTILITY}/subscription/company/billing/info`;
 
   const config = {
     headers: {

@@ -16,7 +16,7 @@ const createData = async (props: {
   data: TCategoryData;
   auth: ICurrentCompany;
 }) => {
-  const url = `${MICROSERVICE_ENDPOINTS.PAYROLL}/pay-grade/category/${props.data.id}`;
+  const url = `${MICROSERVICE_ENDPOINTS.UTILITY}/grade/category/${props.data.id}`;
   const config = {
     headers: {
       Accept: "application/json",

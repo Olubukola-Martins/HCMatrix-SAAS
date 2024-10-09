@@ -3,13 +3,16 @@ import { usePagination } from "hooks/usePagination";
 import { Dropdown, Empty, Menu, Skeleton } from "antd";
 import { Link } from "react-router-dom";
 import { appRoutes } from "config/router/paths";
-
-export const TimesheetCard = () => {
+import { IDivProps } from "types/html";
+type IProps = IDivProps;
+export const TimesheetCard: React.FC<IProps> = ({
+  className = "bg-mainBg pb-3 border rounded-lg text-sm shadow mt-4",
+}) => {
   const { pagination } = usePagination({ pageSize: 4 });
   const { data, isLoading } = useGetTimeSheetRecord({ pagination });
 
   return (
-    <div className="bg-mainBg pb-3 border rounded-lg text-sm shadow mt-4">
+    <div className={className}>
       <div className="flex items-center justify-between px-3 py-3 border-b">
         <p className="font-medium">Timesheet</p>
         <span className="text-xs capitalize"></span>
@@ -67,7 +70,7 @@ export const TimesheetCard = () => {
         </Skeleton>
       </div>
 
-      <div className="flex justify-end mt-2">
+      <div className="flex-1 flex justify-end mt-2 items-end">
         <Link
           to={appRoutes.timeSheet}
           className="text-caramel text-right px-3 text-sm font-semibold cursor-pointer hover:text-accent pb-2 pt-1"

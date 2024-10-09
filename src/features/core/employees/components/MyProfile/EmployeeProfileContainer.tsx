@@ -13,8 +13,10 @@ import { Skeleton } from "antd";
 
 export const EmployeeProfileContainer = ({
   employeeId,
+  isOwner = false,
 }: {
   employeeId: number;
+  isOwner?: boolean;
 }) => {
   const {
     data: employee,
@@ -61,6 +63,7 @@ export const EmployeeProfileContainer = ({
                 <div className="bg-card p-1 md:p-5 mt-5  flex flex-col gap-5">
                   <EmployeeOverviewCard
                     {...{
+                      showMoreActions: false,
                       data: {
                         fullName: getEmployeeFullName(employee),
                         designation: employee?.designation?.name,
@@ -88,7 +91,11 @@ export const EmployeeProfileContainer = ({
                       },
                     }}
                   />
-                  <EmployeeTabs isLoading={isLoading} employee={employee} />
+                  <EmployeeTabs
+                    isLoading={isLoading}
+                    employee={employee}
+                    isOwner={isOwner}
+                  />
                 </div>
               </div>
             </ErrorWrapper>

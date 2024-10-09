@@ -1,10 +1,11 @@
-import { Drawer, Form, Select } from "antd";
+import { Drawer, Form } from "antd";
 import { AppButton } from "components/button/AppButton";
 import { FormEmployeeInput } from "features/core/employees/components/FormEmployeeInput";
 import { useState } from "react";
 import { IDrawerProps } from "types";
 import { scheduleFilterProps } from "../types";
 import { openNotification } from "utils/notifications";
+import { FormShiftCategoryInput } from "./shiftCategory/FormShiftCategoryInput";
 
 interface FilterShiftPerEmployeeProps extends IDrawerProps {
   setFilterData: React.Dispatch<
@@ -22,12 +23,12 @@ export const FilterScheduledEmp = ({
 
   const onSubmit = (value: any) => {
     if (value.employeeId || value.shiftTypes) {
-        setFilterData({
-          empUid: empUid,
-          shiftTypes: value.shiftTypes,
-        })
-        handleClose();
-        form.resetFields();
+      setFilterData({
+        empUid: empUid,
+        shiftTypes: value.shiftTypes,
+      });
+      handleClose();
+      form.resetFields();
     } else {
       openNotification({
         state: "error",
@@ -46,18 +47,7 @@ export const FilterScheduledEmp = ({
           optional={true}
           handleSelect={(_, val) => setEmpUid(val?.empUid)}
         />
-        <Form.Item name="shiftTypes" label="Shift Type">
-          <Select
-            className="w-full"
-            placeholder="Select"
-            options={[
-              { value: "morning", label: "Morning" },
-              { value: "afternoon", label: "Afternoon" },
-              { value: "night", label: "Night" },
-            ]}
-            allowClear
-          />
-        </Form.Item>
+        <FormShiftCategoryInput optional Form={Form} control={{label: "Select Shift", name: "shiftTypes"}} />
 
         <AppButton type="submit" />
       </Form>

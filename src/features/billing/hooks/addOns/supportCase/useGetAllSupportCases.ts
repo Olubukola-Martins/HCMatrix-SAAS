@@ -10,7 +10,7 @@ export const QUERY_KEY_FOR_SUPPORT_CASES = "support-cases";
 const getData = async (props: {
   auth: ICurrentCompany;
 }): Promise<{ data: TSupportCase[]; total: number }> => {
-  const url = `${MICROSERVICE_ENDPOINTS.UTILITY}/subscription/add-ons/support-case`;
+  const url = `${MICROSERVICE_ENDPOINTS.UTILITY}/subscription/add-ons/support`;
 
   const config = {
     headers: {

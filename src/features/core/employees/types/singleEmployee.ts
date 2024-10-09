@@ -5,6 +5,7 @@ import { TOnboarding } from "features/self-service/features/onboarding/types";
 
 export type TSingleEmployee = {
   id: number;
+  isOwner?: boolean;
   firstName: string;
   lastName: string;
   email: string;
@@ -285,7 +286,7 @@ interface JobInformation {
   payrollType: "direct-salary" | "office" | "wages";
   frequency: "monthly" | "daily";
   monthlyGross?: number;
-  payGradeId: number;
+  gradeId: number;
   hourlyRate?: number;
   createdAt: string;
   updatedAt: string;

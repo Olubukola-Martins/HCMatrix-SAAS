@@ -1,10 +1,11 @@
-import { Checkbox, Pagination, Skeleton } from "antd";
+import { Button, Checkbox, Pagination, Skeleton } from "antd";
 import { AppButton } from "components/button/AppButton";
+import { UserOneBriefInfoCard } from "components/cards/UserOneBriefInfoCard";
 import { useGetAllEmployeesWithLicense } from "features/billing/hooks/company/employeeLicense/useGetAllEmployeesWithLicense";
 import { useFetchEmployees } from "features/core/employees/hooks/useFetchEmployees";
 import { getEmployeeFullName } from "features/core/employees/utils/getEmployeeFullName";
 import { usePagination } from "hooks/usePagination";
-import React, { useLayoutEffect, useState } from "react";
+import React, { useEffect, useLayoutEffect, useState } from "react";
 import { boxStyle } from "styles/reused";
 
 const SelectUserContent: React.FC<{
@@ -14,15 +15,22 @@ const SelectUserContent: React.FC<{
   departmentId?: number;
   onHandleLisence: { fn: (selected: number[]) => void; isLoading?: boolean };
 }> = ({ employeeName, departmentId, onHandleLisence, licenseType }) => {
-  const { pagination, onChange } = usePagination({ pageSize: 40 });
+  const [showOnlyDeactivated, setShowOnlyDeactivated] = useState(false);
+  const { pagination, onChange, resetPagination } = usePagination({
+    pageSize: 100,
+  });
   const { data, isLoading } = useFetchEmployees({
     departmentId,
     pagination,
+    licenseType: showOnlyDeactivated ? ["deactivated"] : undefined,
   });
   const {
     data: employeesWithLicense,
     isFetching: isFetchingEmployeesWithLicense,
-  } = useGetAllEmployeesWithLicense({ pagination });
+  } = useGetAllEmployeesWithLicense({ pagination, licenseType });
+  useEffect(() => {
+    resetPagination();
+  }, [departmentId, licenseType, showOnlyDeactivated]);
   const [selected, setSelected] = useState<number[]>([]);
   useLayoutEffect(() => {
     if (!employeesWithLicense) return;
@@ -46,13 +54,21 @@ const SelectUserContent: React.FC<{
   };
   return (
     <div className="flex flex-col gap-4">
-      <div className="flex gap-4">
-        {" "}
-        <Checkbox
-          onChange={(e) => handleSelectAll(e.target.checked)}
-          checked={selected.length === data?.data.length}
-        />{" "}
-        <p>Select All</p>
+      <div className="flex justify-between items-center">
+        <div className="flex gap-4">
+          {" "}
+          <Checkbox
+            onChange={(e) => handleSelectAll(e.target.checked)}
+            checked={selected.length === data?.data.length}
+          />{" "}
+          <p>Select All</p>
+        </div>
+        <Button
+          type="default"
+          onClick={() => setShowOnlyDeactivated((val) => !val)}
+        >
+          {showOnlyDeactivated ? "Show All" : "Show only deactivated employees"}
+        </Button>
       </div>
       <Skeleton
         loading={isLoading || isFetchingEmployeesWithLicense}
@@ -70,8 +86,17 @@ const SelectUserContent: React.FC<{
                 <Checkbox
                   onChange={() => handleCheckBox(employee.id)}
                   checked={selected.includes(employee.id)}
+                  disabled={employee.licenseType !== "deactivated"}
                 />
-                <p>{getEmployeeFullName(employee)}</p>
+                <UserOneBriefInfoCard
+                  {...{
+                    info3: employee.licenseType ?? "",
+                    info2: employee.designation?.name ?? "",
+                    info: employee.empUid ?? "",
+                    name: getEmployeeFullName(employee),
+                    avatarUrl: employee.avatarUrl,
+                  }}
+                />
               </div>
             ))}
           <div className="col-span-3 flex justify-end mt-4">

@@ -48,6 +48,7 @@ export type TCreateCompanySubscriptionProps = Omit<
     number: string;
   };
   billingName: string;
+  planId?: number;
 };
 const createData = async (props: {
   data: TCreateCompanySubscriptionApiProps;

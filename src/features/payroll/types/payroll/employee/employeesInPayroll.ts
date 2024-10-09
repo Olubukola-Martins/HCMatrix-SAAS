@@ -20,6 +20,8 @@ export interface TEmployeesInPayrollData {
   companyId: number;
   createdAt: string;
   updatedAt: string;
+  paidAt?: string | null;
+  paymentStatus?: string | null;
   employeeSalaryComponents: EmployeeSalaryComponent[];
 }
 

@@ -16,6 +16,9 @@ export interface TSingleEmployeePayroll {
   companyId: number;
   createdAt: string;
   updatedAt: string;
+  payroll?: {
+    date?: string | null;
+  };
   employeeSalaryComponents: EmployeeSalaryComponent[];
 
   // added new types

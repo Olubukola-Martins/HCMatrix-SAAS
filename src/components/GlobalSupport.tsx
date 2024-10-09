@@ -1,4 +1,4 @@
-import { Popover, } from "antd";
+import { Popover } from "antd";
 import { useState } from "react";
 import Themes from "./Themes";
 import CustomerComplaintModal from "./customerComplaint/CustomerComplaintModal";
@@ -20,7 +20,14 @@ const GlobalSupport = () => {
         openClassName="support"
         // style={{ width: 200, margin: "0 20px" }}
         title={
-          <div className="flex items-center gap-x-10  font-medium text-white">
+          <div
+            className="flex items-center gap-x-10  font-medium text-white"
+            style={{
+              background: "var(--caramel)",
+              width: "100%",
+              padding: "10px",
+            }}
+          >
             <span>HCMatrix Quick Links</span>
             <i
               className="ri-close-line cursor-pointer"
@@ -38,14 +45,22 @@ const GlobalSupport = () => {
                 <ul className="flex flex-col gap-y-3">
                   <li className="flex items-center gap-x-5 border-b-2 pb-1  cursor-pointer group">
                     <i className="ri-movie-line text-xl"></i>
-                    <span className="group-hover:text-caramel">Help Video</span>
+                    <a
+                      target="_blank"
+                      rel="noreferrer"
+                      // href="https://snapnet.sharepoint.com/:f:/s/hcmatrix3userguide/EvWZGPYnhV5MraKLKZvJJHcBHzcRCvjbUiAlv-YvGQEqHA?e=ReptHw"
+                      href="https://www.youtube.com/playlist?list=PLNSckt_sIi9RmQTuEVZBHbJXBaXkHDsK2"
+                      className="group-hover:text-caramel"
+                    >
+                      Help Videos
+                    </a>
                   </li>
                   <li className="flex items-center gap-x-5 border-b-2 pb-1  cursor-pointer group">
                     <i className="ri-book-line text-xl"></i>
                     <a
                       target="_blank"
                       rel="noreferrer"
-                      href="https://user-guide-frontend-h3-0.vercel.app/"
+                      href="https://userguide.hcmatrix.com"
                       className="group-hover:text-caramel"
                     >
                       User Guide
@@ -75,7 +90,7 @@ const GlobalSupport = () => {
                   </li>
                   <li
                     // onClick={() => setQueryModal(true)}
-                    className="flex items-center gap-x-5 pb-1  cursor-pointer group"
+                    className="flex items-center gap-x-5 border-b-2 pb-1  cursor-pointer group"
                   >
                     <i className="ri-mail-line text-xl"></i>
                     <a

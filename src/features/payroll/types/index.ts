@@ -31,7 +31,7 @@ export type TTransaction = {
   employeeId?: number;
   empUid?: string;
   employeeFullName?: string;
-  costCentreId: number;
+  costCentreId?: number;
   companyId: number;
   createdAt: string;
   updatedAt: string;

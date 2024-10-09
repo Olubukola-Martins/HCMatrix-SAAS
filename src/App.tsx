@@ -39,23 +39,33 @@ function App() {
 
   // check online status
   const { isOnline } = useNetworkState();
+  if (process.env.REACT_APP_MAINTENANCE === "true") {
+    return (
+      <div className="flex items-center flex-col gap-6">
+        <div className="py-12">{<PageNotFoundIcon />}</div>
+        <h1 className="text-2xl text-black dark:text-white">
+          {"Site under maintenance!"}
+        </h1>
+      </div>
+    );
+  }
   return (
     <ErrorBoundary
       message="Please contact administrator!"
       errImageOrIcon={<PageNotFoundIcon />}
     >
-      <ErrorWrapper
-        isError={!isOnline}
-        errImage={<PageNotFoundIcon />}
-        message="Please check your internet connection!"
-      >
-        <BrowserRouter>
-          <AuthProvider
-            authType={"localstorage"}
-            authName={LOCAL_STORAGE_AUTH_KEY}
-            // cookieDomain={window.location.hostname}
-            // cookieSecure={window.location.protocol === "https:"}
-            // refresh={refreshApi}
+      <BrowserRouter>
+        <AuthProvider
+          authType={"localstorage"}
+          authName={LOCAL_STORAGE_AUTH_KEY}
+          // cookieDomain={window.location.hostname}
+          // cookieSecure={window.location.protocol === "https:"}
+          // refresh={refreshApi}
+        >
+          <ErrorWrapper
+            isError={!isOnline}
+            errImage={<PageNotFoundIcon />}
+            message="Please check your internet connection!"
           >
             <QueryClientProvider client={queryClient}>
               <GlobalContextProvider>
@@ -72,9 +82,9 @@ function App() {
                 position="bottom-right"
               />
             </QueryClientProvider>
-          </AuthProvider>
-        </BrowserRouter>
-      </ErrorWrapper>
+          </ErrorWrapper>
+        </AuthProvider>
+      </BrowserRouter>
     </ErrorBoundary>
   );
 }

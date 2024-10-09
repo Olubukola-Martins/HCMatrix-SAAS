@@ -39,7 +39,7 @@ const COMPULSORY_BULK_MAPPING_SECTION_FOR_EMPLOYEE_INFO: TBulkEmployeeImportMapp
       { name: "firstName", label: "First Name", optional: false },
       { name: "lastName", label: "Last Name", optional: false },
       { name: "email", label: "Email", optional: false },
-      { name: "licenseType", label: "License Type", optional: true },
+      // { name: "licenseType", label: "License Type", optional: true }, //Removed as per agreement with BE that license type will be managed from one central point (purchase/select license under the subscription module)
       { name: "empUid", label: "Employee ID", optional: false }, //Cos this is the unique key for import
     ],
   };
@@ -146,7 +146,7 @@ export const BULK_EMPLOYEE_IMPORT_MAPPING_SECTIONS: TBulkEmployeeImportMappingSe
         { name: "branchId", label: "branch", optional: false },
         { name: "payrollType", label: "payroll Type", optional: false },
         { name: "monthlyGross", label: "monthly Gross", optional: false },
-        { name: "payGradeId", label: "payGrade", optional: true },
+        { name: "gradeId", label: "payGrade", optional: true },
         { name: "frequency", label: "frequency", optional: false },
         { name: "hourlyRate", label: "Hourly Rate", optional: true },
       ],

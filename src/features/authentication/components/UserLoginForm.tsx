@@ -2,18 +2,16 @@ import { LockOutlined, MailOutlined } from "@ant-design/icons";
 import { Form, Input } from "antd";
 import { useSignIn } from "react-auth-kit";
 import { useContext, useEffect } from "react";
-
 import { BeatLoader } from "react-spinners";
 import { useLoginUser } from "../hooks/useLoginUser";
-import {
-  TOKEN_EXPIRES_IN,
-  REFRESH_TOKEN_EXPIRES_IN,
-} from "config/refreshTokenApi";
+import { TOKEN_EXPIRES_IN } from "config/refreshTokenApi";
 import { GlobalContext, EGlobalOps } from "stateManagers/GlobalContextProvider";
 import { textInputValidationRules } from "utils/formHelpers/validation";
 import { openNotification } from "utils/notifications";
 import { IAuthDets, ILoginProps } from "../types";
 import { saveMessagingDeviceToken } from "config/firebase/messaging";
+// import SpeechToText from "components/audio/SpeechToText";
+
 
 const UserLoginForm = ({ autoLoginDetails }: ILoginProps) => {
   const signIn = useSignIn();
@@ -81,6 +79,8 @@ const UserLoginForm = ({ autoLoginDetails }: ILoginProps) => {
     );
   };
   return (
+    <>
+    {/* <SpeechToText/> */}
     <Form onFinish={handleSignIn} form={form}>
       <Form.Item name="emailOrEmpUid" rules={textInputValidationRules}>
         <Input
@@ -109,7 +109,8 @@ const UserLoginForm = ({ autoLoginDetails }: ILoginProps) => {
       >
         {isLoading ? <BeatLoader color="#fff" /> : "Sign In"}
       </button>
-    </Form>
+    </Form></>
+
   );
 };
 

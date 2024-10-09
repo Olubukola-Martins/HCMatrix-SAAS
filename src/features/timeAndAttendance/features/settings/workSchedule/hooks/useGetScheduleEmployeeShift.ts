@@ -28,7 +28,7 @@ const getData = async (props: {
       limit,
       offset,
       empUid: props?.filter?.empUid,
-      shiftTypes: props?.filter?.shiftTypes,
+      shiftId: props?.filter?.shiftTypes,
     },
   };
 

@@ -6,16 +6,20 @@ import { JobInformation } from "./JobInformation";
 import ManagerAndDirectReports from "./ManagerAndDirectReports/ManagerAndDirectReports";
 import Profile from "./Profile/Profile";
 import { UserGroups } from "./UserGroups";
-import { FingerPrint } from "./FingerPrint";
 import { EmployeeProjects } from "./EmployeeProjects";
 import { TSingleEmployee } from "../../types";
 
 interface IProps {
   employee?: TSingleEmployee;
   isLoading: boolean;
+  isOwner?: boolean;
 }
 
-export const EmployeeTabs: React.FC<IProps> = ({ employee, isLoading }) => {
+export const EmployeeTabs: React.FC<IProps> = ({
+  employee,
+  isLoading,
+  isOwner = false,
+}) => {
   const tabItems = [
     {
       key: "Profile",
@@ -27,6 +31,7 @@ export const EmployeeTabs: React.FC<IProps> = ({ employee, isLoading }) => {
             emergencyContact: employee?.emergencyContact,
             employeeId: employee?.id,
             personalInfo: employee?.personalInformation,
+            isOwner,
           }}
         />
       ),
@@ -39,6 +44,7 @@ export const EmployeeTabs: React.FC<IProps> = ({ employee, isLoading }) => {
           {...{
             employeeId: employee?.id,
             jobInformation: employee?.jobInformation,
+            isOwner,
           }}
         />
       ),
@@ -51,6 +57,7 @@ export const EmployeeTabs: React.FC<IProps> = ({ employee, isLoading }) => {
           {...{
             employeeId: employee?.id,
             finance: employee?.finance,
+            isOwner,
           }}
         />
       ),

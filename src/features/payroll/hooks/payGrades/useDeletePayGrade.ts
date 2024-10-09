@@ -11,7 +11,7 @@ const delData = async (props: {
   data: TCategoryData;
   auth: ICurrentCompany;
 }) => {
-  const url = `${MICROSERVICE_ENDPOINTS.PAYROLL}/pay-grade/${props.data.id}`;
+  const url = `${MICROSERVICE_ENDPOINTS.UTILITY}/grade/${props.data.id}`;
   const config = {
     headers: {
       Accept: "application/json",
