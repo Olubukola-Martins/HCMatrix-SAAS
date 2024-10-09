@@ -6,7 +6,7 @@ import { appRoutes } from "config/router/paths";
 import { Link } from "react-router-dom";
 import { TOnboarding } from "../types";
 import BulkOnboardingActionHeader from "./BulkOnboardingActionHeader";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { getAppropriateColorForStatus } from "utils/colorHelpers/getAppropriateColorForStatus";
 
 const ManageOnboarding = () => {
@@ -67,7 +67,7 @@ const ManageOnboarding = () => {
 
   const { pagination, onChange } = usePagination();
 
-  const { data, isLoading,refetch } = useFetchAllOnboarding({
+  const { data, isLoading } = useFetchAllOnboarding({
     pagination,
   });
   const [selectedData, setSelectedData] = useState<TOnboarding[]>([]);
