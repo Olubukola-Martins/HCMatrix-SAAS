@@ -67,7 +67,7 @@ const SummarySection: React.FC<{
             value: formatNumberWithCommas(totalNoOfUsers, 0),
           },
           {
-            name: "Monthly Amount",
+            name: `${selectedBillingCycle} Amount`,
             value: `${PRICE_TYPE_CURRENCY[currency]} ${formatNumberWithCommas(
               totalEmployeeCost
             )}`, //TODO: Refactor to a function to avoid repetion
