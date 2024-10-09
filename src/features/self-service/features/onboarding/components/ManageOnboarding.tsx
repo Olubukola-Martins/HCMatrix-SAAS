@@ -12,9 +12,11 @@ import { getAppropriateColorForStatus } from "utils/colorHelpers/getAppropriateC
 const ManageOnboarding = () => {
   const columns: ColumnsType<TOnboarding> = [
     {
-      title: "S/N", 
+      title: "S/N",
       key: "index",
-      render: (text, item, index) => index + 1, 
+      render: (text, item, index) => {
+      return index + 1 >= 1000 ? (index + 1).toString() : (index + 1).toString().padStart(4, "0");
+    }, 
     },
     {
       title: "Name",
