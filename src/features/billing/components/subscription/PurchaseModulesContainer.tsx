@@ -79,7 +79,7 @@ const PurchaseModulesContainer: React.FC<{
   const [activeStep, setActiveStep] = useState(0);
   const [showD, setShowD] = useState(false);
 
-  const handlePrev = () => setActiveStep((prev) => prev - 1);
+  const handlePrev = () => setActiveStep((prev) => (prev > 0 ? prev - 1 : 0));
   const handleNext = () => setActiveStep((prev) => prev + 1);
 
   const { mutate, isLoading: isPaying } = usePurchaseSubscriptionPlanOrModule();
@@ -188,9 +188,16 @@ const PurchaseModulesContainer: React.FC<{
             labelCol={{ span: 24 }}
             onFinish={handleSubmit}
           >
-            <span className="cursor-pointer" onClick={handlePrev}>
-              Go Back
-            </span>
+            <div className="justify-end">
+              <span
+                className={
+                  activeStep === 0 ? "cursor-not-allowed" : "cursor-pointer"
+                }
+                onClick={handlePrev}
+              >
+                Go Back
+              </span>
+            </div>
             <div className={activeStep === 0 ? "block" : "hidden"}>
               <AddOnContainer
                 Form={Form}
@@ -206,6 +213,8 @@ const PurchaseModulesContainer: React.FC<{
             <div className={activeStep === 1 ? "block" : "hidden"}>
               <PaymentsContainer
                 Form={Form}
+                selectedPriceType={currency}
+                selectedBillingCycle={cycle}
                 onProceed={() => handleNext()}
                 form={form}
                 isPayingForSubscription={isPaying}

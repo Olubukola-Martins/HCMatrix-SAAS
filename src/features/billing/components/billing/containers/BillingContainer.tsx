@@ -3,12 +3,10 @@ import ErrorBoundary from "components/errorHandlers/ErrorBoundary";
 import CurrentPlanCard from "../cards/CurrentPlanCard";
 import ModulesCard from "../cards/ModulesCard";
 import SupportPlanCard from "../cards/SupportPlanCard";
-import BillingsHistoryTable from "../BillingHistoryTable";
 import UpgradePlan from "../modals/UpgradePlan";
 import { useGetCompanyActiveSubscription } from "features/billing/hooks/company/useGetCompanyActiveSubscription";
 import { Skeleton } from "antd";
 import { contructBillingDetailsBasedOnSubsriptionType } from "features/billing/utils";
-import moment from "moment";
 import BillingHistoryContainer from "./BillingHistoryContainer";
 
 const BillingContainer = () => {
