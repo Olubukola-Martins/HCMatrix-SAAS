@@ -1,4 +1,4 @@
-import { Select, Spin, Form } from "antd";
+import { Select, Form } from "antd";
 import { useDebounce } from "hooks/useDebounce";
 import { useState } from "react";
 import {
@@ -14,11 +14,18 @@ export const FormRoleInput: React.FC<{
   optional?: boolean;
   disabled?: boolean;
   mode?: "multiple" | "tags";
-}> = ({ Form, showLabel = true, control, optional = false, disabled, mode }) => {
+}> = ({
+  Form,
+  showLabel = true,
+  control,
+  optional = false,
+  disabled,
+  mode,
+}) => {
   const [searchTerm, setSearchTerm] = useState<string>("");
   const debouncedSearchTerm: string = useDebounce<string>(searchTerm);
 
-  const { data, isFetching, isSuccess } = useFetchRoles({
+  const { data, isFetching } = useFetchRoles({
     searchParams: {
       name: debouncedSearchTerm,
     },
@@ -32,7 +39,7 @@ export const FormRoleInput: React.FC<{
     <Form.Item
       rules={optional ? generalValidationRulesOp : generalValidationRules}
       name={control?.name ?? "roleId"}
-      label={showLabel ? control?.label ?? "Role" : null}
+      label={showLabel ? (control?.label ?? "Role") : null}
     >
       <Select
         disabled={disabled}
